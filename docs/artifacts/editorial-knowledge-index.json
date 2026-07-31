@@ -1,0 +1,209 @@
+{
+  "by_category": {
+    "Experiment reproducibility": [
+      "EK-007"
+    ],
+    "Net Editorial Utility": [
+      "EK-005"
+    ],
+    "Prompt Delta Budget": [
+      "EK-006"
+    ],
+    "QUOTE_MUTATION": [
+      "EK-001",
+      "EK-003"
+    ],
+    "SOURCE_AUTHORITY_DRIFT": [
+      "EK-003"
+    ],
+    "editorial_acceptance": [
+      "EK-004",
+      "EK-005",
+      "EK-008"
+    ],
+    "instruction_compliance": [
+      "EK-002",
+      "EK-008"
+    ],
+    "meaning_preservation": [
+      "EK-002",
+      "EK-008"
+    ],
+    "quote_preservation": [
+      "EK-001",
+      "EK-002",
+      "EK-008"
+    ],
+    "source_authority_preservation": [
+      "EK-002",
+      "EK-008"
+    ]
+  },
+  "by_confidence": {
+    "HIGH": [
+      "EK-004",
+      "EK-005",
+      "EK-007"
+    ],
+    "LOW": [
+      "EK-003"
+    ],
+    "MEDIUM": [
+      "EK-001",
+      "EK-002",
+      "EK-006",
+      "EK-008"
+    ]
+  },
+  "by_experiment": {
+    "20260728-144134-openai-gpt-4.1-mini-7h2": [
+      "EK-001",
+      "EK-002",
+      "EK-003",
+      "EK-004",
+      "EK-005",
+      "EK-006",
+      "EK-007"
+    ],
+    "20260728-161607-openai-gpt-4.1-mini-7h4": [
+      "EK-008"
+    ]
+  },
+  "by_finding_type": {
+    "BEST_PRACTICE": [
+      "EK-004",
+      "EK-005",
+      "EK-006",
+      "EK-007"
+    ],
+    "PROMPT_BEHAVIOR": [
+      "EK-001",
+      "EK-008"
+    ],
+    "PROMPT_INTERACTION": [
+      "EK-003"
+    ],
+    "TRADE_OFF": [
+      "EK-002"
+    ]
+  },
+  "by_scenario": {
+    "SYN-01": [
+      "EK-006",
+      "EK-007"
+    ],
+    "SYN-02": [
+      "EK-006",
+      "EK-007"
+    ],
+    "SYN-03": [
+      "EK-006",
+      "EK-007"
+    ],
+    "SYN-04": [
+      "EK-006",
+      "EK-007"
+    ],
+    "SYN-05": [
+      "EK-006",
+      "EK-007"
+    ],
+    "SYN-06": [
+      "EK-006",
+      "EK-007",
+      "EK-008"
+    ],
+    "SYN-07": [
+      "EK-006",
+      "EK-007"
+    ],
+    "SYN-08": [
+      "EK-006",
+      "EK-007"
+    ],
+    "SYN-09": [
+      "EK-006",
+      "EK-007"
+    ],
+    "SYN-10": [
+      "EK-001",
+      "EK-002",
+      "EK-003",
+      "EK-004",
+      "EK-005",
+      "EK-006",
+      "EK-007",
+      "EK-008"
+    ],
+    "SYN-11": [
+      "EK-006",
+      "EK-007"
+    ],
+    "SYN-12": [
+      "EK-006",
+      "EK-007"
+    ],
+    "SYN-13": [
+      "EK-006",
+      "EK-007"
+    ],
+    "SYN-14": [
+      "EK-006",
+      "EK-007"
+    ],
+    "SYN-15": [
+      "EK-006",
+      "EK-007",
+      "EK-008"
+    ],
+    "SYN-16": [
+      "EK-006",
+      "EK-007"
+    ],
+    "SYN-17": [
+      "EK-006",
+      "EK-007"
+    ],
+    "SYN-18": [
+      "EK-006",
+      "EK-007"
+    ],
+    "SYN-19": [
+      "EK-006",
+      "EK-007"
+    ],
+    "SYN-20": [
+      "EK-002",
+      "EK-004",
+      "EK-005",
+      "EK-006",
+      "EK-007",
+      "EK-008"
+    ],
+    "SYN-21": [
+      "EK-006",
+      "EK-007"
+    ],
+    "SYN-22": [
+      "EK-006",
+      "EK-007"
+    ],
+    "SYN-23": [
+      "EK-001",
+      "EK-002",
+      "EK-003",
+      "EK-004",
+      "EK-005",
+      "EK-006",
+      "EK-007",
+      "EK-008"
+    ],
+    "SYN-24": [
+      "EK-006",
+      "EK-007"
+    ]
+  },
+  "entry_count": 8,
+  "knowledge_base_fingerprint": "735b8a8af1ed4ddcbe16e1f9f7cbc764071fa6f3813cf77873ef8e4e019ecaf9",
+  "schema_version": 1
+}

@@ -1,0 +1,916 @@
+{
+  "aggregate_diagnostics": {
+    "category_distribution": {
+      "ADVERSARIAL_AMBIGUITY": {
+        "openai_provider_output_reference_unknown": 2
+      },
+      "GRAMMAR_AND_FLOW": {
+        "openai_provider_output_reference_unauthorized": 1,
+        "openai_provider_output_reference_unknown": 1
+      },
+      "HIGH_CONSTRAINT_REVISION": {
+        "openai_provider_output_reference_unauthorized": 2
+      },
+      "MINIMAL_CLARITY": {
+        "openai_provider_output_reference_unauthorized": 1,
+        "openai_provider_output_reference_unknown": 1
+      },
+      "MULTI_COMPONENT_REVISION": {
+        "openai_provider_output_reference_unknown": 2
+      },
+      "NO_CHANGE_REQUIRED": {
+        "openai_provider_output_reference_unauthorized": 1,
+        "openai_provider_output_reference_unknown": 1
+      },
+      "NUMERIC_FACT_PRESERVATION": {
+        "openai_provider_output_reference_unauthorized": 1,
+        "openai_provider_output_reference_unknown": 1
+      },
+      "PROTECTED_STRUCTURE": {
+        "openai_provider_output_reference_unauthorized": 1,
+        "openai_provider_output_schema_invalid": 1
+      },
+      "QUOTE_PRESERVATION": {
+        "openai_provider_output_reference_unauthorized": 2
+      },
+      "SOURCE_AUTHORITY": {
+        "openai_provider_output_reference_unauthorized": 1,
+        "openai_provider_output_reference_unknown": 1
+      },
+      "SUBSTANTIAL_REWRITE": {
+        "openai_provider_output_reference_unknown": 2
+      },
+      "TEMPORAL_FACT_PRESERVATION": {
+        "openai_provider_output_reference_unauthorized": 1,
+        "openai_provider_output_reference_unknown": 1
+      }
+    },
+    "failure_clusters": {
+      "provider_dto_schema_rejection": 1,
+      "reference_contract_rejection": 23
+    },
+    "failure_frequency": {
+      "openai_provider_output_reference_unauthorized": 11,
+      "openai_provider_output_reference_unknown": 12,
+      "openai_provider_output_schema_invalid": 1
+    },
+    "failure_stage_distribution": {
+      "authorization_mapping": 23,
+      "provider_dto_validation": 1
+    },
+    "most_common_unauthorized_reference": null,
+    "most_common_unknown_reference": null,
+    "reference_confusion_matrix": null,
+    "reference_frequency_table": null,
+    "unavailable_reason": "provider reference values were not retained"
+  },
+  "artifact_version": 1,
+  "authorization_analysis": {
+    "deterministic": true,
+    "evidence_of_rejecting_valid_references": false,
+    "matches_documented_exact_set_contract": true,
+    "rejects_invalid_references": true,
+    "validator": "OpenAIControlledRevisionReconstructor.reconstruct"
+  },
+  "benchmark_artifacts_analyzed": 1,
+  "benchmark_id": "20260728-092119-openai-gpt-4.1-mini",
+  "candidate_root_causes": [
+    {
+      "affected_scenarios": 23,
+      "alternative_explanation": "provider ignored explicit prompt references",
+      "attribution_status": "not distinguishable from retained evidence",
+      "candidate": "provider-visible schema lacks invocation-specific reference constraints",
+      "confidence": "HIGH",
+      "supporting_diagnostics": [
+        "openai_provider_output_reference_unknown",
+        "openai_provider_output_reference_unauthorized"
+      ]
+    },
+    {
+      "affected_scenarios": 23,
+      "alternative_explanation": "generic schema guided a different schema-valid reference",
+      "attribution_status": "not distinguishable from retained evidence",
+      "candidate": "provider failed to copy explicit authorized references",
+      "confidence": "MEDIUM",
+      "supporting_diagnostics": [
+        "deterministic exact-set rejection"
+      ]
+    },
+    {
+      "affected_scenarios": 24,
+      "alternative_explanation": null,
+      "attribution_status": "confirmed diagnostic defect; not the original reference-generation cause",
+      "candidate": "benchmark runner lost required reference diagnostics and misclassified failures",
+      "confidence": "HIGH",
+      "supporting_diagnostics": [
+        "provider-produced references absent",
+        "23 reconstruction rejections recorded as PROVIDER_FAILURE"
+      ]
+    }
+  ],
+  "category_count": 12,
+  "contract_analysis": {
+    "ambiguous": true,
+    "complete": false,
+    "evidence": [
+      "runtime authorization requires exact equality with invocation references",
+      "provider-visible story reference schema constrains syntax but not invocation-specific values",
+      "23 schema/DTO-accepted outputs reached deterministic reference rejection"
+    ],
+    "internally_inconsistent": false,
+    "over_constrained": false,
+    "under_specified": true
+  },
+  "evidence_limitations": [
+    "provider-produced reference values were not retained",
+    "raw provider responses are intentionally unavailable",
+    "reference precision, recall, overlap, and confusion pairs cannot be reconstructed",
+    "failed interpretation did not retain latency, token, or cost usage"
+  ],
+  "final_recommendation": "FIX_RUNNER_ONLY",
+  "history_entries_analyzed": 1,
+  "history_unchanged": true,
+  "milestone_type": "CONTROLLED_REVISION_CONTRACT_DIAGNOSTICS",
+  "network_requests": 0,
+  "offline_detectability": {
+    "reference_value_mismatch": {
+      "affected_scenarios": 23,
+      "classification": "Detectable only after provider response",
+      "earliest_stage": "DTO-valid response authorization mapping"
+    },
+    "runner_diagnostic_retention_gap": {
+      "classification": "Detectable offline",
+      "earliest_stage": "benchmark artifact contract validation",
+      "explanation": "preflight could have rejected a runner unable to preserve required bounded diagnostics",
+      "potential_request_reduction": 24
+    },
+    "schema_dynamic-reference_gap": {
+      "classification": "Detectable offline",
+      "earliest_stage": "provider schema construction audit",
+      "potential_request_reduction": "not quantifiable from retained references"
+    }
+  },
+  "production_components_modified": false,
+  "production_schema_fingerprint": "70f4ad299e9c35e86ab473705ed449a244ead2e9574745012cc179afbf6a9556",
+  "prompt_analysis": {
+    "clearly_specifies_reference_requirements": true,
+    "contains_ambiguous_reference_wording": false,
+    "contains_conflicting_reference_instructions": false,
+    "evidence": [
+      "frozen instructions require exact copying and exactly one authorized reference",
+      "projected input includes required references and editable component references"
+    ],
+    "permits_multiple_reference_interpretations": false,
+    "prompt_contents_retained": false,
+    "relies_on_implicit_reference_behavior": false
+  },
+  "provider_replay": false,
+  "provider_requests": 0,
+  "root_conclusion": "INSUFFICIENT_EVIDENCE",
+  "runner_analysis": {
+    "artifact_execution_counts_accurate": true,
+    "artifact_reference_diagnostics_complete": false,
+    "classification_defect": "23 deterministic provider-output reference rejections were recorded as PROVIDER_FAILURE",
+    "failure_classification_correct": false,
+    "provider_responses_captured_for_execution": true,
+    "reference_extraction_executed": true,
+    "reference_values_captured_for_diagnostics": false,
+    "requests_projected_correctly": true
+  },
+  "scenario_count": 24,
+  "scenario_diagnostics": [
+    {
+      "authorized_references": [
+        "story:101"
+      ],
+      "category": "MINIMAL_CLARITY",
+      "corrected_failure_class": "PROVIDER_OUTPUT_REJECTED_SAFELY",
+      "failure_stage": "authorization_mapping",
+      "first_deterministic_failure": "openai_provider_output_reference_unauthorized",
+      "first_invalid_reference": null,
+      "missing_references": null,
+      "observed_diagnostic": "openai_provider_output_reference_unauthorized",
+      "offline_detectability": {
+        "classification": "Detectable only after provider response",
+        "earliest_stage": "authorization mapping"
+      },
+      "provider_produced_references": null,
+      "recorded_operational_outcome": "PROVIDER_FAILURE",
+      "reference_overlap": null,
+      "reference_precision": null,
+      "reference_recall": null,
+      "reference_values_retained": false,
+      "request_projection_valid": true,
+      "responsible_component": "deterministic reconstructor",
+      "responsible_contract": "exact authorized-reference set contract",
+      "responsible_validator": "OpenAIControlledRevisionReconstructor.reconstruct",
+      "scenario_id": "SYN-01",
+      "unauthorized_references": null,
+      "unexpected_references": null,
+      "unknown_references": null
+    },
+    {
+      "authorized_references": [
+        "story:101"
+      ],
+      "category": "MINIMAL_CLARITY",
+      "corrected_failure_class": "PROVIDER_OUTPUT_REJECTED_SAFELY",
+      "failure_stage": "authorization_mapping",
+      "first_deterministic_failure": "openai_provider_output_reference_unknown",
+      "first_invalid_reference": null,
+      "missing_references": null,
+      "observed_diagnostic": "openai_provider_output_reference_unknown",
+      "offline_detectability": {
+        "classification": "Detectable only after provider response",
+        "earliest_stage": "authorization mapping"
+      },
+      "provider_produced_references": null,
+      "recorded_operational_outcome": "PROVIDER_FAILURE",
+      "reference_overlap": null,
+      "reference_precision": null,
+      "reference_recall": null,
+      "reference_values_retained": false,
+      "request_projection_valid": true,
+      "responsible_component": "deterministic reconstructor",
+      "responsible_contract": "exact authorized-reference set contract",
+      "responsible_validator": "OpenAIControlledRevisionReconstructor.reconstruct",
+      "scenario_id": "SYN-02",
+      "unauthorized_references": null,
+      "unexpected_references": null,
+      "unknown_references": null
+    },
+    {
+      "authorized_references": [
+        "story:101"
+      ],
+      "category": "GRAMMAR_AND_FLOW",
+      "corrected_failure_class": "PROVIDER_OUTPUT_REJECTED_SAFELY",
+      "failure_stage": "authorization_mapping",
+      "first_deterministic_failure": "openai_provider_output_reference_unauthorized",
+      "first_invalid_reference": null,
+      "missing_references": null,
+      "observed_diagnostic": "openai_provider_output_reference_unauthorized",
+      "offline_detectability": {
+        "classification": "Detectable only after provider response",
+        "earliest_stage": "authorization mapping"
+      },
+      "provider_produced_references": null,
+      "recorded_operational_outcome": "PROVIDER_FAILURE",
+      "reference_overlap": null,
+      "reference_precision": null,
+      "reference_recall": null,
+      "reference_values_retained": false,
+      "request_projection_valid": true,
+      "responsible_component": "deterministic reconstructor",
+      "responsible_contract": "exact authorized-reference set contract",
+      "responsible_validator": "OpenAIControlledRevisionReconstructor.reconstruct",
+      "scenario_id": "SYN-03",
+      "unauthorized_references": null,
+      "unexpected_references": null,
+      "unknown_references": null
+    },
+    {
+      "authorized_references": [
+        "story:101"
+      ],
+      "category": "GRAMMAR_AND_FLOW",
+      "corrected_failure_class": "PROVIDER_OUTPUT_REJECTED_SAFELY",
+      "failure_stage": "authorization_mapping",
+      "first_deterministic_failure": "openai_provider_output_reference_unknown",
+      "first_invalid_reference": null,
+      "missing_references": null,
+      "observed_diagnostic": "openai_provider_output_reference_unknown",
+      "offline_detectability": {
+        "classification": "Detectable only after provider response",
+        "earliest_stage": "authorization mapping"
+      },
+      "provider_produced_references": null,
+      "recorded_operational_outcome": "PROVIDER_FAILURE",
+      "reference_overlap": null,
+      "reference_precision": null,
+      "reference_recall": null,
+      "reference_values_retained": false,
+      "request_projection_valid": true,
+      "responsible_component": "deterministic reconstructor",
+      "responsible_contract": "exact authorized-reference set contract",
+      "responsible_validator": "OpenAIControlledRevisionReconstructor.reconstruct",
+      "scenario_id": "SYN-04",
+      "unauthorized_references": null,
+      "unexpected_references": null,
+      "unknown_references": null
+    },
+    {
+      "authorized_references": [
+        "story:101"
+      ],
+      "category": "SUBSTANTIAL_REWRITE",
+      "corrected_failure_class": "PROVIDER_OUTPUT_REJECTED_SAFELY",
+      "failure_stage": "authorization_mapping",
+      "first_deterministic_failure": "openai_provider_output_reference_unknown",
+      "first_invalid_reference": null,
+      "missing_references": null,
+      "observed_diagnostic": "openai_provider_output_reference_unknown",
+      "offline_detectability": {
+        "classification": "Detectable only after provider response",
+        "earliest_stage": "authorization mapping"
+      },
+      "provider_produced_references": null,
+      "recorded_operational_outcome": "PROVIDER_FAILURE",
+      "reference_overlap": null,
+      "reference_precision": null,
+      "reference_recall": null,
+      "reference_values_retained": false,
+      "request_projection_valid": true,
+      "responsible_component": "deterministic reconstructor",
+      "responsible_contract": "exact authorized-reference set contract",
+      "responsible_validator": "OpenAIControlledRevisionReconstructor.reconstruct",
+      "scenario_id": "SYN-05",
+      "unauthorized_references": null,
+      "unexpected_references": null,
+      "unknown_references": null
+    },
+    {
+      "authorized_references": [
+        "story:101"
+      ],
+      "category": "SUBSTANTIAL_REWRITE",
+      "corrected_failure_class": "PROVIDER_OUTPUT_REJECTED_SAFELY",
+      "failure_stage": "authorization_mapping",
+      "first_deterministic_failure": "openai_provider_output_reference_unknown",
+      "first_invalid_reference": null,
+      "missing_references": null,
+      "observed_diagnostic": "openai_provider_output_reference_unknown",
+      "offline_detectability": {
+        "classification": "Detectable only after provider response",
+        "earliest_stage": "authorization mapping"
+      },
+      "provider_produced_references": null,
+      "recorded_operational_outcome": "PROVIDER_FAILURE",
+      "reference_overlap": null,
+      "reference_precision": null,
+      "reference_recall": null,
+      "reference_values_retained": false,
+      "request_projection_valid": true,
+      "responsible_component": "deterministic reconstructor",
+      "responsible_contract": "exact authorized-reference set contract",
+      "responsible_validator": "OpenAIControlledRevisionReconstructor.reconstruct",
+      "scenario_id": "SYN-06",
+      "unauthorized_references": null,
+      "unexpected_references": null,
+      "unknown_references": null
+    },
+    {
+      "authorized_references": [
+        "story:101"
+      ],
+      "category": "PROTECTED_STRUCTURE",
+      "corrected_failure_class": "PROVIDER_OUTPUT_REJECTED_SAFELY",
+      "failure_stage": "provider_dto_validation",
+      "first_deterministic_failure": "openai_provider_output_schema_invalid",
+      "first_invalid_reference": null,
+      "missing_references": null,
+      "observed_diagnostic": "openai_provider_output_schema_invalid",
+      "offline_detectability": {
+        "classification": "Detectable only after provider response",
+        "earliest_stage": "provider DTO validation"
+      },
+      "provider_produced_references": null,
+      "recorded_operational_outcome": "PROVIDER_OUTPUT_REJECTED_SAFELY",
+      "reference_overlap": null,
+      "reference_precision": null,
+      "reference_recall": null,
+      "reference_values_retained": false,
+      "request_projection_valid": true,
+      "responsible_component": "provider DTO interpreter",
+      "responsible_contract": "provider output DTO",
+      "responsible_validator": "Pydantic model validation",
+      "scenario_id": "SYN-07",
+      "unauthorized_references": null,
+      "unexpected_references": null,
+      "unknown_references": null
+    },
+    {
+      "authorized_references": [
+        "story:101"
+      ],
+      "category": "PROTECTED_STRUCTURE",
+      "corrected_failure_class": "PROVIDER_OUTPUT_REJECTED_SAFELY",
+      "failure_stage": "authorization_mapping",
+      "first_deterministic_failure": "openai_provider_output_reference_unauthorized",
+      "first_invalid_reference": null,
+      "missing_references": null,
+      "observed_diagnostic": "openai_provider_output_reference_unauthorized",
+      "offline_detectability": {
+        "classification": "Detectable only after provider response",
+        "earliest_stage": "authorization mapping"
+      },
+      "provider_produced_references": null,
+      "recorded_operational_outcome": "PROVIDER_FAILURE",
+      "reference_overlap": null,
+      "reference_precision": null,
+      "reference_recall": null,
+      "reference_values_retained": false,
+      "request_projection_valid": true,
+      "responsible_component": "deterministic reconstructor",
+      "responsible_contract": "exact authorized-reference set contract",
+      "responsible_validator": "OpenAIControlledRevisionReconstructor.reconstruct",
+      "scenario_id": "SYN-08",
+      "unauthorized_references": null,
+      "unexpected_references": null,
+      "unknown_references": null
+    },
+    {
+      "authorized_references": [
+        "story:101"
+      ],
+      "category": "SOURCE_AUTHORITY",
+      "corrected_failure_class": "PROVIDER_OUTPUT_REJECTED_SAFELY",
+      "failure_stage": "authorization_mapping",
+      "first_deterministic_failure": "openai_provider_output_reference_unknown",
+      "first_invalid_reference": null,
+      "missing_references": null,
+      "observed_diagnostic": "openai_provider_output_reference_unknown",
+      "offline_detectability": {
+        "classification": "Detectable only after provider response",
+        "earliest_stage": "authorization mapping"
+      },
+      "provider_produced_references": null,
+      "recorded_operational_outcome": "PROVIDER_FAILURE",
+      "reference_overlap": null,
+      "reference_precision": null,
+      "reference_recall": null,
+      "reference_values_retained": false,
+      "request_projection_valid": true,
+      "responsible_component": "deterministic reconstructor",
+      "responsible_contract": "exact authorized-reference set contract",
+      "responsible_validator": "OpenAIControlledRevisionReconstructor.reconstruct",
+      "scenario_id": "SYN-09",
+      "unauthorized_references": null,
+      "unexpected_references": null,
+      "unknown_references": null
+    },
+    {
+      "authorized_references": [
+        "story:101"
+      ],
+      "category": "SOURCE_AUTHORITY",
+      "corrected_failure_class": "PROVIDER_OUTPUT_REJECTED_SAFELY",
+      "failure_stage": "authorization_mapping",
+      "first_deterministic_failure": "openai_provider_output_reference_unauthorized",
+      "first_invalid_reference": null,
+      "missing_references": null,
+      "observed_diagnostic": "openai_provider_output_reference_unauthorized",
+      "offline_detectability": {
+        "classification": "Detectable only after provider response",
+        "earliest_stage": "authorization mapping"
+      },
+      "provider_produced_references": null,
+      "recorded_operational_outcome": "PROVIDER_FAILURE",
+      "reference_overlap": null,
+      "reference_precision": null,
+      "reference_recall": null,
+      "reference_values_retained": false,
+      "request_projection_valid": true,
+      "responsible_component": "deterministic reconstructor",
+      "responsible_contract": "exact authorized-reference set contract",
+      "responsible_validator": "OpenAIControlledRevisionReconstructor.reconstruct",
+      "scenario_id": "SYN-10",
+      "unauthorized_references": null,
+      "unexpected_references": null,
+      "unknown_references": null
+    },
+    {
+      "authorized_references": [
+        "story:101"
+      ],
+      "category": "QUOTE_PRESERVATION",
+      "corrected_failure_class": "PROVIDER_OUTPUT_REJECTED_SAFELY",
+      "failure_stage": "authorization_mapping",
+      "first_deterministic_failure": "openai_provider_output_reference_unauthorized",
+      "first_invalid_reference": null,
+      "missing_references": null,
+      "observed_diagnostic": "openai_provider_output_reference_unauthorized",
+      "offline_detectability": {
+        "classification": "Detectable only after provider response",
+        "earliest_stage": "authorization mapping"
+      },
+      "provider_produced_references": null,
+      "recorded_operational_outcome": "PROVIDER_FAILURE",
+      "reference_overlap": null,
+      "reference_precision": null,
+      "reference_recall": null,
+      "reference_values_retained": false,
+      "request_projection_valid": true,
+      "responsible_component": "deterministic reconstructor",
+      "responsible_contract": "exact authorized-reference set contract",
+      "responsible_validator": "OpenAIControlledRevisionReconstructor.reconstruct",
+      "scenario_id": "SYN-11",
+      "unauthorized_references": null,
+      "unexpected_references": null,
+      "unknown_references": null
+    },
+    {
+      "authorized_references": [
+        "story:101"
+      ],
+      "category": "QUOTE_PRESERVATION",
+      "corrected_failure_class": "PROVIDER_OUTPUT_REJECTED_SAFELY",
+      "failure_stage": "authorization_mapping",
+      "first_deterministic_failure": "openai_provider_output_reference_unauthorized",
+      "first_invalid_reference": null,
+      "missing_references": null,
+      "observed_diagnostic": "openai_provider_output_reference_unauthorized",
+      "offline_detectability": {
+        "classification": "Detectable only after provider response",
+        "earliest_stage": "authorization mapping"
+      },
+      "provider_produced_references": null,
+      "recorded_operational_outcome": "PROVIDER_FAILURE",
+      "reference_overlap": null,
+      "reference_precision": null,
+      "reference_recall": null,
+      "reference_values_retained": false,
+      "request_projection_valid": true,
+      "responsible_component": "deterministic reconstructor",
+      "responsible_contract": "exact authorized-reference set contract",
+      "responsible_validator": "OpenAIControlledRevisionReconstructor.reconstruct",
+      "scenario_id": "SYN-12",
+      "unauthorized_references": null,
+      "unexpected_references": null,
+      "unknown_references": null
+    },
+    {
+      "authorized_references": [
+        "story:101"
+      ],
+      "category": "NUMERIC_FACT_PRESERVATION",
+      "corrected_failure_class": "PROVIDER_OUTPUT_REJECTED_SAFELY",
+      "failure_stage": "authorization_mapping",
+      "first_deterministic_failure": "openai_provider_output_reference_unauthorized",
+      "first_invalid_reference": null,
+      "missing_references": null,
+      "observed_diagnostic": "openai_provider_output_reference_unauthorized",
+      "offline_detectability": {
+        "classification": "Detectable only after provider response",
+        "earliest_stage": "authorization mapping"
+      },
+      "provider_produced_references": null,
+      "recorded_operational_outcome": "PROVIDER_FAILURE",
+      "reference_overlap": null,
+      "reference_precision": null,
+      "reference_recall": null,
+      "reference_values_retained": false,
+      "request_projection_valid": true,
+      "responsible_component": "deterministic reconstructor",
+      "responsible_contract": "exact authorized-reference set contract",
+      "responsible_validator": "OpenAIControlledRevisionReconstructor.reconstruct",
+      "scenario_id": "SYN-13",
+      "unauthorized_references": null,
+      "unexpected_references": null,
+      "unknown_references": null
+    },
+    {
+      "authorized_references": [
+        "story:101"
+      ],
+      "category": "NUMERIC_FACT_PRESERVATION",
+      "corrected_failure_class": "PROVIDER_OUTPUT_REJECTED_SAFELY",
+      "failure_stage": "authorization_mapping",
+      "first_deterministic_failure": "openai_provider_output_reference_unknown",
+      "first_invalid_reference": null,
+      "missing_references": null,
+      "observed_diagnostic": "openai_provider_output_reference_unknown",
+      "offline_detectability": {
+        "classification": "Detectable only after provider response",
+        "earliest_stage": "authorization mapping"
+      },
+      "provider_produced_references": null,
+      "recorded_operational_outcome": "PROVIDER_FAILURE",
+      "reference_overlap": null,
+      "reference_precision": null,
+      "reference_recall": null,
+      "reference_values_retained": false,
+      "request_projection_valid": true,
+      "responsible_component": "deterministic reconstructor",
+      "responsible_contract": "exact authorized-reference set contract",
+      "responsible_validator": "OpenAIControlledRevisionReconstructor.reconstruct",
+      "scenario_id": "SYN-14",
+      "unauthorized_references": null,
+      "unexpected_references": null,
+      "unknown_references": null
+    },
+    {
+      "authorized_references": [
+        "story:101"
+      ],
+      "category": "TEMPORAL_FACT_PRESERVATION",
+      "corrected_failure_class": "PROVIDER_OUTPUT_REJECTED_SAFELY",
+      "failure_stage": "authorization_mapping",
+      "first_deterministic_failure": "openai_provider_output_reference_unknown",
+      "first_invalid_reference": null,
+      "missing_references": null,
+      "observed_diagnostic": "openai_provider_output_reference_unknown",
+      "offline_detectability": {
+        "classification": "Detectable only after provider response",
+        "earliest_stage": "authorization mapping"
+      },
+      "provider_produced_references": null,
+      "recorded_operational_outcome": "PROVIDER_FAILURE",
+      "reference_overlap": null,
+      "reference_precision": null,
+      "reference_recall": null,
+      "reference_values_retained": false,
+      "request_projection_valid": true,
+      "responsible_component": "deterministic reconstructor",
+      "responsible_contract": "exact authorized-reference set contract",
+      "responsible_validator": "OpenAIControlledRevisionReconstructor.reconstruct",
+      "scenario_id": "SYN-15",
+      "unauthorized_references": null,
+      "unexpected_references": null,
+      "unknown_references": null
+    },
+    {
+      "authorized_references": [
+        "story:101"
+      ],
+      "category": "TEMPORAL_FACT_PRESERVATION",
+      "corrected_failure_class": "PROVIDER_OUTPUT_REJECTED_SAFELY",
+      "failure_stage": "authorization_mapping",
+      "first_deterministic_failure": "openai_provider_output_reference_unauthorized",
+      "first_invalid_reference": null,
+      "missing_references": null,
+      "observed_diagnostic": "openai_provider_output_reference_unauthorized",
+      "offline_detectability": {
+        "classification": "Detectable only after provider response",
+        "earliest_stage": "authorization mapping"
+      },
+      "provider_produced_references": null,
+      "recorded_operational_outcome": "PROVIDER_FAILURE",
+      "reference_overlap": null,
+      "reference_precision": null,
+      "reference_recall": null,
+      "reference_values_retained": false,
+      "request_projection_valid": true,
+      "responsible_component": "deterministic reconstructor",
+      "responsible_contract": "exact authorized-reference set contract",
+      "responsible_validator": "OpenAIControlledRevisionReconstructor.reconstruct",
+      "scenario_id": "SYN-16",
+      "unauthorized_references": null,
+      "unexpected_references": null,
+      "unknown_references": null
+    },
+    {
+      "authorized_references": [
+        "story:101"
+      ],
+      "category": "MULTI_COMPONENT_REVISION",
+      "corrected_failure_class": "PROVIDER_OUTPUT_REJECTED_SAFELY",
+      "failure_stage": "authorization_mapping",
+      "first_deterministic_failure": "openai_provider_output_reference_unknown",
+      "first_invalid_reference": null,
+      "missing_references": null,
+      "observed_diagnostic": "openai_provider_output_reference_unknown",
+      "offline_detectability": {
+        "classification": "Detectable only after provider response",
+        "earliest_stage": "authorization mapping"
+      },
+      "provider_produced_references": null,
+      "recorded_operational_outcome": "PROVIDER_FAILURE",
+      "reference_overlap": null,
+      "reference_precision": null,
+      "reference_recall": null,
+      "reference_values_retained": false,
+      "request_projection_valid": true,
+      "responsible_component": "deterministic reconstructor",
+      "responsible_contract": "exact authorized-reference set contract",
+      "responsible_validator": "OpenAIControlledRevisionReconstructor.reconstruct",
+      "scenario_id": "SYN-17",
+      "unauthorized_references": null,
+      "unexpected_references": null,
+      "unknown_references": null
+    },
+    {
+      "authorized_references": [
+        "story:101"
+      ],
+      "category": "MULTI_COMPONENT_REVISION",
+      "corrected_failure_class": "PROVIDER_OUTPUT_REJECTED_SAFELY",
+      "failure_stage": "authorization_mapping",
+      "first_deterministic_failure": "openai_provider_output_reference_unknown",
+      "first_invalid_reference": null,
+      "missing_references": null,
+      "observed_diagnostic": "openai_provider_output_reference_unknown",
+      "offline_detectability": {
+        "classification": "Detectable only after provider response",
+        "earliest_stage": "authorization mapping"
+      },
+      "provider_produced_references": null,
+      "recorded_operational_outcome": "PROVIDER_FAILURE",
+      "reference_overlap": null,
+      "reference_precision": null,
+      "reference_recall": null,
+      "reference_values_retained": false,
+      "request_projection_valid": true,
+      "responsible_component": "deterministic reconstructor",
+      "responsible_contract": "exact authorized-reference set contract",
+      "responsible_validator": "OpenAIControlledRevisionReconstructor.reconstruct",
+      "scenario_id": "SYN-18",
+      "unauthorized_references": null,
+      "unexpected_references": null,
+      "unknown_references": null
+    },
+    {
+      "authorized_references": [
+        "story:101"
+      ],
+      "category": "HIGH_CONSTRAINT_REVISION",
+      "corrected_failure_class": "PROVIDER_OUTPUT_REJECTED_SAFELY",
+      "failure_stage": "authorization_mapping",
+      "first_deterministic_failure": "openai_provider_output_reference_unauthorized",
+      "first_invalid_reference": null,
+      "missing_references": null,
+      "observed_diagnostic": "openai_provider_output_reference_unauthorized",
+      "offline_detectability": {
+        "classification": "Detectable only after provider response",
+        "earliest_stage": "authorization mapping"
+      },
+      "provider_produced_references": null,
+      "recorded_operational_outcome": "PROVIDER_FAILURE",
+      "reference_overlap": null,
+      "reference_precision": null,
+      "reference_recall": null,
+      "reference_values_retained": false,
+      "request_projection_valid": true,
+      "responsible_component": "deterministic reconstructor",
+      "responsible_contract": "exact authorized-reference set contract",
+      "responsible_validator": "OpenAIControlledRevisionReconstructor.reconstruct",
+      "scenario_id": "SYN-19",
+      "unauthorized_references": null,
+      "unexpected_references": null,
+      "unknown_references": null
+    },
+    {
+      "authorized_references": [
+        "story:101"
+      ],
+      "category": "HIGH_CONSTRAINT_REVISION",
+      "corrected_failure_class": "PROVIDER_OUTPUT_REJECTED_SAFELY",
+      "failure_stage": "authorization_mapping",
+      "first_deterministic_failure": "openai_provider_output_reference_unauthorized",
+      "first_invalid_reference": null,
+      "missing_references": null,
+      "observed_diagnostic": "openai_provider_output_reference_unauthorized",
+      "offline_detectability": {
+        "classification": "Detectable only after provider response",
+        "earliest_stage": "authorization mapping"
+      },
+      "provider_produced_references": null,
+      "recorded_operational_outcome": "PROVIDER_FAILURE",
+      "reference_overlap": null,
+      "reference_precision": null,
+      "reference_recall": null,
+      "reference_values_retained": false,
+      "request_projection_valid": true,
+      "responsible_component": "deterministic reconstructor",
+      "responsible_contract": "exact authorized-reference set contract",
+      "responsible_validator": "OpenAIControlledRevisionReconstructor.reconstruct",
+      "scenario_id": "SYN-20",
+      "unauthorized_references": null,
+      "unexpected_references": null,
+      "unknown_references": null
+    },
+    {
+      "authorized_references": [
+        "story:101"
+      ],
+      "category": "NO_CHANGE_REQUIRED",
+      "corrected_failure_class": "PROVIDER_OUTPUT_REJECTED_SAFELY",
+      "failure_stage": "authorization_mapping",
+      "first_deterministic_failure": "openai_provider_output_reference_unauthorized",
+      "first_invalid_reference": null,
+      "missing_references": null,
+      "observed_diagnostic": "openai_provider_output_reference_unauthorized",
+      "offline_detectability": {
+        "classification": "Detectable only after provider response",
+        "earliest_stage": "authorization mapping"
+      },
+      "provider_produced_references": null,
+      "recorded_operational_outcome": "PROVIDER_FAILURE",
+      "reference_overlap": null,
+      "reference_precision": null,
+      "reference_recall": null,
+      "reference_values_retained": false,
+      "request_projection_valid": true,
+      "responsible_component": "deterministic reconstructor",
+      "responsible_contract": "exact authorized-reference set contract",
+      "responsible_validator": "OpenAIControlledRevisionReconstructor.reconstruct",
+      "scenario_id": "SYN-21",
+      "unauthorized_references": null,
+      "unexpected_references": null,
+      "unknown_references": null
+    },
+    {
+      "authorized_references": [
+        "story:101"
+      ],
+      "category": "NO_CHANGE_REQUIRED",
+      "corrected_failure_class": "PROVIDER_OUTPUT_REJECTED_SAFELY",
+      "failure_stage": "authorization_mapping",
+      "first_deterministic_failure": "openai_provider_output_reference_unknown",
+      "first_invalid_reference": null,
+      "missing_references": null,
+      "observed_diagnostic": "openai_provider_output_reference_unknown",
+      "offline_detectability": {
+        "classification": "Detectable only after provider response",
+        "earliest_stage": "authorization mapping"
+      },
+      "provider_produced_references": null,
+      "recorded_operational_outcome": "PROVIDER_FAILURE",
+      "reference_overlap": null,
+      "reference_precision": null,
+      "reference_recall": null,
+      "reference_values_retained": false,
+      "request_projection_valid": true,
+      "responsible_component": "deterministic reconstructor",
+      "responsible_contract": "exact authorized-reference set contract",
+      "responsible_validator": "OpenAIControlledRevisionReconstructor.reconstruct",
+      "scenario_id": "SYN-22",
+      "unauthorized_references": null,
+      "unexpected_references": null,
+      "unknown_references": null
+    },
+    {
+      "authorized_references": [
+        "story:101"
+      ],
+      "category": "ADVERSARIAL_AMBIGUITY",
+      "corrected_failure_class": "PROVIDER_OUTPUT_REJECTED_SAFELY",
+      "failure_stage": "authorization_mapping",
+      "first_deterministic_failure": "openai_provider_output_reference_unknown",
+      "first_invalid_reference": null,
+      "missing_references": null,
+      "observed_diagnostic": "openai_provider_output_reference_unknown",
+      "offline_detectability": {
+        "classification": "Detectable only after provider response",
+        "earliest_stage": "authorization mapping"
+      },
+      "provider_produced_references": null,
+      "recorded_operational_outcome": "PROVIDER_FAILURE",
+      "reference_overlap": null,
+      "reference_precision": null,
+      "reference_recall": null,
+      "reference_values_retained": false,
+      "request_projection_valid": true,
+      "responsible_component": "deterministic reconstructor",
+      "responsible_contract": "exact authorized-reference set contract",
+      "responsible_validator": "OpenAIControlledRevisionReconstructor.reconstruct",
+      "scenario_id": "SYN-23",
+      "unauthorized_references": null,
+      "unexpected_references": null,
+      "unknown_references": null
+    },
+    {
+      "authorized_references": [
+        "story:101"
+      ],
+      "category": "ADVERSARIAL_AMBIGUITY",
+      "corrected_failure_class": "PROVIDER_OUTPUT_REJECTED_SAFELY",
+      "failure_stage": "authorization_mapping",
+      "first_deterministic_failure": "openai_provider_output_reference_unknown",
+      "first_invalid_reference": null,
+      "missing_references": null,
+      "observed_diagnostic": "openai_provider_output_reference_unknown",
+      "offline_detectability": {
+        "classification": "Detectable only after provider response",
+        "earliest_stage": "authorization mapping"
+      },
+      "provider_produced_references": null,
+      "recorded_operational_outcome": "PROVIDER_FAILURE",
+      "reference_overlap": null,
+      "reference_precision": null,
+      "reference_recall": null,
+      "reference_values_retained": false,
+      "request_projection_valid": true,
+      "responsible_component": "deterministic reconstructor",
+      "responsible_contract": "exact authorized-reference set contract",
+      "responsible_validator": "OpenAIControlledRevisionReconstructor.reconstruct",
+      "scenario_id": "SYN-24",
+      "unauthorized_references": null,
+      "unexpected_references": null,
+      "unknown_references": null
+    }
+  ],
+  "schema_analysis": {
+    "allows_schema_compliant_unauthorized_story_ids": true,
+    "invocation_specific_reference_values_constrained": false,
+    "reference_syntax_constrained": true,
+    "requires_additional_dynamic_constraints": true,
+    "story_reference_rule": {
+      "pattern": "^story:[1-9][0-9]*$",
+      "title": "Component Reference",
+      "type": "string"
+    },
+    "strict_object_shapes": true
+  },
+  "sdk_requests": 0
+}

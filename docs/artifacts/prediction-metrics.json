@@ -1,0 +1,15 @@
+{
+  "confidence_calibration": "UNDERCONFIDENT",
+  "experiment_id": "20260728-161607-openai-gpt-4.1-mini-7h4",
+  "failure_f1": 1.0,
+  "failure_precision": 1.0,
+  "failure_recall": 1.0,
+  "predictive_quality_score": 75.0,
+  "risk_prediction": "ACCURATE",
+  "scenario_f1": 0.7499999999999999,
+  "scenario_precision": 1.0,
+  "scenario_recall": 0.6,
+  "schema_version": 1,
+  "utility_accuracy": 25.0,
+  "weighting": "five equal 20% dimensions"
+}

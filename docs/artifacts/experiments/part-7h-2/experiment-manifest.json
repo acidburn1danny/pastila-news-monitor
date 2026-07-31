@@ -1,0 +1,472 @@
+{
+  "artifacts": [
+    {
+      "artifact_path": "docs/controlled-second-prompt-hypothesis-experiment.md",
+      "artifact_type": "PRIMARY_REPORT",
+      "exists": true,
+      "fingerprint": "c205603792bdb3a5e5866deb9e3d8994e6c4f1467510dbc7adc547e98979a96d",
+      "fingerprint_algorithm": "SHA-256",
+      "required": true,
+      "validation_status": "PASS"
+    },
+    {
+      "artifact_path": "docs/artifacts/controlled-second-prompt-hypothesis-experiment.json",
+      "artifact_type": "STRUCTURED_RESULT",
+      "exists": true,
+      "fingerprint": "0419dfb1d40d745bfcbfca53e2ffc09995a7c3c023fe227a6b2650dca25b3c38",
+      "fingerprint_algorithm": "SHA-256",
+      "required": true,
+      "validation_status": "PASS"
+    },
+    {
+      "artifact_path": "docs/artifacts/prompt-delta-budget.json",
+      "artifact_type": "PROMPT_DELTA_BUDGET",
+      "exists": true,
+      "fingerprint": "fe17cb217ddc1c5e31a7c2f1b2936588fed6d52bbd60e4acc2b71d85684ae348",
+      "fingerprint_algorithm": "SHA-256",
+      "required": true,
+      "validation_status": "PASS"
+    },
+    {
+      "artifact_path": "docs/artifacts/h2-scenario-comparison.json",
+      "artifact_type": "SCENARIO_COMPARISON",
+      "exists": true,
+      "fingerprint": "7339712e22291b0b259f6977f4ed661f2301d98509946a6fc42e6d210bdc3b71",
+      "fingerprint_algorithm": "SHA-256",
+      "required": true,
+      "validation_status": "PASS"
+    },
+    {
+      "artifact_path": "docs/artifacts/controlled-provider-quality-history.json",
+      "artifact_type": "BENCHMARK_HISTORY",
+      "exists": true,
+      "fingerprint": "f1008e095d2aed895582a0d6ef36033b65086b5fa1945abde3aabf3287a99f9f",
+      "fingerprint_algorithm": "SHA-256",
+      "required": true,
+      "validation_status": "PASS"
+    },
+    {
+      "artifact_path": "docs/artifacts/second-prompt-hypothesis-design.json",
+      "artifact_type": "H2_DESIGN",
+      "exists": true,
+      "fingerprint": "41d3e5b7d77bdfc8aacc33f690f51c0f67c1e608d8b56d5855aa9eda1ba7455d",
+      "fingerprint_algorithm": "SHA-256",
+      "required": true,
+      "validation_status": "PASS"
+    },
+    {
+      "artifact_path": "docs/artifacts/controlled-provider-quality-baseline-7c-2.json",
+      "artifact_type": "BASELINE",
+      "exists": true,
+      "fingerprint": "e5b9784930dc099f1300d5d501037069dedf7f0b8b1a8abe2fcd971ffb4a58ae",
+      "fingerprint_algorithm": "SHA-256",
+      "required": true,
+      "validation_status": "PASS"
+    },
+    {
+      "artifact_path": "docs/artifacts/pipeline-success-semantics-reconciliation.json",
+      "artifact_type": "SEMANTICS_DEFINITION",
+      "exists": true,
+      "fingerprint": "8c45f26b809793179f6649079f8567ae8830025456946524b6e332cddf9f215e",
+      "fingerprint_algorithm": "SHA-256",
+      "required": true,
+      "validation_status": "PASS"
+    },
+    {
+      "artifact_path": "docs/artifacts/controlled-prompt-effectiveness-experiment.json",
+      "artifact_type": "H1_EXPERIMENT",
+      "exists": true,
+      "fingerprint": "a3b647f276315e53f8f7a781d380bc2b398f1cdbcf1217c5d1db05451f581345",
+      "fingerprint_algorithm": "SHA-256",
+      "required": true,
+      "validation_status": "PASS"
+    }
+  ],
+  "baseline": {
+    "artifact_paths": [
+      "docs/artifacts/controlled-provider-quality-baseline-7c-2.json"
+    ],
+    "configuration_fingerprint": "9f721ca7200fecb4b08652b5af354165fcff2ba8a1a6ba69cb5899300e0f3e78",
+    "corpus_fingerprint": "7b99fe43c13c8f613d96c271db0b8a0ca1e106acde587fa2ed5edf34390c2440",
+    "identity": "Part 7C.2 production baseline",
+    "milestone": "Part 7C.2",
+    "prompt_fingerprint": "a96575ff38ec6f7b50d4174157f0f99c73ed16857a8cb4235cb5487cf8507264",
+    "provider_fingerprint": "9f721ca7200fecb4b08652b5af354165fcff2ba8a1a6ba69cb5899300e0f3e78",
+    "rubric_fingerprint": "54e0a9add7cf85f3fd2796accd6f2151ea714296862b19cd71eeaf0d3f64c65e",
+    "run_id": "20260728-120420-openai-gpt-4.1-mini-7c2",
+    "schema_fingerprint": "06dbc0c4106c697ec0873ad1b51e526425a231bd89399b6a2c69a687c37602b9"
+  },
+  "benchmark": {
+    "authorization_contract_fingerprint": "8776a3a2c4ce65326eb370ce561a9333a5b3f3ff3186165e960640c0925b3ea7",
+    "benchmark_id": "20260728-120420-openai-gpt-4.1-mini-7c2",
+    "benchmark_version": "controlled-provider-quality-baseline-7c2",
+    "dto_contract_fingerprint": "b0df41f4cc78c5e1c0703906bcc183c4bd4c2f3b4861398fa35e17ced4f54d60",
+    "editorial_rubric_fingerprint": "54e0a9add7cf85f3fd2796accd6f2151ea714296862b19cd71eeaf0d3f64c65e",
+    "editorial_threshold": "all frozen evaluation dimensions required",
+    "episode_draft_contract_fingerprint": "69b69c5a6a966281533b22dc948490c2d87f0816f63ebe69eb83e8415b0aebc9",
+    "provider_schema_fingerprint": "06dbc0c4106c697ec0873ad1b51e526425a231bd89399b6a2c69a687c37602b9",
+    "reconstruction_contract_fingerprint": "5bd7ebefebbe29ea7b969c984b3e40086f868d5f6406aeaf91a19cf7da455909",
+    "scenario_corpus_fingerprint": "7b99fe43c13c8f613d96c271db0b8a0ca1e106acde587fa2ed5edf34390c2440",
+    "scenario_count": 24,
+    "scenario_ids": [
+      "SYN-01",
+      "SYN-02",
+      "SYN-03",
+      "SYN-04",
+      "SYN-05",
+      "SYN-06",
+      "SYN-07",
+      "SYN-08",
+      "SYN-09",
+      "SYN-10",
+      "SYN-11",
+      "SYN-12",
+      "SYN-13",
+      "SYN-14",
+      "SYN-15",
+      "SYN-16",
+      "SYN-17",
+      "SYN-18",
+      "SYN-19",
+      "SYN-20",
+      "SYN-21",
+      "SYN-22",
+      "SYN-23",
+      "SYN-24"
+    ],
+    "scenario_order_fingerprint": "7b99fe43c13c8f613d96c271db0b8a0ca1e106acde587fa2ed5edf34390c2440"
+  },
+  "decision": {
+    "candidate_decision": "REJECT",
+    "decision_gates": {
+      "editorial_improvement": "FAIL",
+      "experiment_integrity": "PASS",
+      "prompt_delta_budget": "PASS",
+      "reference_non_regression": "PASS",
+      "technical_non_regression": "PASS"
+    },
+    "decision_reason": "Targeted quote reduction did not satisfy aggregate editorial improvement gates.",
+    "recommendation": "DESIGN_THIRD_PROMPT_HYPOTHESIS",
+    "root_conclusion": "H2_PROMPT_INEFFECTIVE"
+  },
+  "execution": {
+    "actual": {
+      "fallbacks": 0,
+      "provider_requests": 24,
+      "provider_responses": 24,
+      "replays": 0,
+      "retries": 0
+    },
+    "planned": {
+      "fallbacks": 0,
+      "provider_requests": 24,
+      "provider_responses": null,
+      "replays": 0,
+      "retries": 0
+    }
+  },
+  "experiment": {
+    "benchmark_series": "controlled-revision-quality",
+    "completed_at": "2026-07-28T14:41:34.619729+00:00",
+    "created_at": "2026-07-28T14:41:34.619729+00:00",
+    "experiment_id": "20260728-144134-openai-gpt-4.1-mini-7h2",
+    "experiment_name": "Controlled Second Prompt Hypothesis Experiment",
+    "experiment_type": "PROMPT_EXPERIMENT",
+    "milestone": "Part 7H.2",
+    "repository_revision": null,
+    "run_id": "20260728-144134-openai-gpt-4.1-mini-7h2"
+  },
+  "historical_backfill_assessment": {
+    "Part 7C.2": "BACKFILL_READY",
+    "Part 7H": "BACKFILL_READY"
+  },
+  "hypothesis": {
+    "evidence_source": [
+      "Part 7H",
+      "Part 7H.1",
+      "SYN-10",
+      "SYN-23"
+    ],
+    "expected_direction": "DECREASE",
+    "falsifiable": true,
+    "hypothesis_id": "H2",
+    "hypothesis_text": "Adding one concise, quote-specific verbatim-preservation instruction will reduce QUOTE_MUTATION without changing structural output behavior or exact-reference compliance.",
+    "status": "NOT_SUPPORTED",
+    "targeted_behavior": "QUOTE_MUTATION",
+    "targeted_metric": "QUOTE_MUTATION"
+  },
+  "independent_variable": {
+    "behavioral_mechanism_count": 1,
+    "control_value_fingerprint": "a96575ff38ec6f7b50d4174157f0f99c73ed16857a8cb4235cb5487cf8507264",
+    "documented_change_count": 1,
+    "treatment_value_fingerprint": "64d9a75f54e83861061f2999a324124e40ea8c361366d6e82deabbfec429daac",
+    "variable_name": "controlled revision provider instruction",
+    "variable_type": "PROMPT_TEXT"
+  },
+  "integrity": {
+    "artifact_validation": {
+      "expected": "PASS",
+      "failure_reason": null,
+      "observed": "PASS",
+      "status": "PASS"
+    },
+    "offline_request_assembly": {
+      "expected": 24,
+      "failure_reason": null,
+      "observed": 24,
+      "status": "PASS"
+    },
+    "production_prompt_fingerprint": {
+      "expected": "a96575ff38ec6f7b50d4174157f0f99c73ed16857a8cb4235cb5487cf8507264",
+      "failure_reason": null,
+      "observed": "a96575ff38ec6f7b50d4174157f0f99c73ed16857a8cb4235cb5487cf8507264",
+      "status": "PASS"
+    },
+    "projection_count_equality": {
+      "expected": 24,
+      "failure_reason": null,
+      "observed": 24,
+      "status": "PASS"
+    },
+    "projection_set_equality": {
+      "expected": 24,
+      "failure_reason": null,
+      "observed": 24,
+      "status": "PASS"
+    },
+    "prompt_delta_budget": {
+      "expected": "PASS",
+      "failure_reason": null,
+      "observed": "PASS",
+      "status": "PASS"
+    },
+    "prompt_identity": {
+      "expected": 24,
+      "failure_reason": null,
+      "observed": 24,
+      "status": "PASS"
+    },
+    "provider_comparability": {
+      "expected": "COMPARABLE",
+      "failure_reason": null,
+      "observed": "COMPARABLE",
+      "status": "PASS"
+    },
+    "repository_validation": {
+      "expected": "PASS",
+      "failure_reason": null,
+      "observed": "PASS",
+      "status": "PASS"
+    },
+    "scenario_pairing": {
+      "expected": 24,
+      "failure_reason": null,
+      "observed": 24,
+      "status": "PASS"
+    },
+    "treatment_prompt_fingerprint": {
+      "expected": "64d9a75f54e83861061f2999a324124e40ea8c361366d6e82deabbfec429daac",
+      "failure_reason": null,
+      "observed": "64d9a75f54e83861061f2999a324124e40ea8c361366d6e82deabbfec429daac",
+      "status": "PASS"
+    }
+  },
+  "lifecycle": {
+    "design_status": "READY",
+    "evaluation_status": "COMPLETE",
+    "execution_status": "COMPLETE",
+    "promotion_status": "NOT_PROMOTED",
+    "status": "COMPLETE",
+    "validation_status": "PASS"
+  },
+  "lineage": [
+    {
+      "artifact_fingerprint": "e5b9784930dc099f1300d5d501037069dedf7f0b8b1a8abe2fcd971ffb4a58ae",
+      "artifact_path": "docs/artifacts/controlled-provider-quality-baseline-7c-2.json",
+      "milestone": "Part 7C.2",
+      "relationship": "BASELINE",
+      "required": true
+    },
+    {
+      "artifact_fingerprint": "8c45f26b809793179f6649079f8567ae8830025456946524b6e332cddf9f215e",
+      "artifact_path": "docs/artifacts/pipeline-success-semantics-reconciliation.json",
+      "milestone": "Part 7C.2.1",
+      "relationship": "SEMANTICS_DEFINITION",
+      "required": true
+    },
+    {
+      "artifact_fingerprint": "a3b647f276315e53f8f7a781d380bc2b398f1cdbcf1217c5d1db05451f581345",
+      "artifact_path": "docs/artifacts/controlled-prompt-effectiveness-experiment.json",
+      "milestone": "Part 7H",
+      "relationship": "PREVIOUS_EXPERIMENT",
+      "required": true
+    },
+    {
+      "artifact_fingerprint": "41d3e5b7d77bdfc8aacc33f690f51c0f67c1e608d8b56d5855aa9eda1ba7455d",
+      "artifact_path": "docs/artifacts/second-prompt-hypothesis-design.json",
+      "milestone": "Part 7H.1",
+      "relationship": "HYPOTHESIS_DESIGN",
+      "required": true
+    },
+    {
+      "artifact_fingerprint": "0419dfb1d40d745bfcbfca53e2ffc09995a7c3c023fe227a6b2650dca25b3c38",
+      "artifact_path": "docs/artifacts/controlled-second-prompt-hypothesis-experiment.json",
+      "milestone": "Part 7H.2",
+      "relationship": "CURRENT_EXPERIMENT",
+      "required": true
+    }
+  ],
+  "manifest": {
+    "contract_version": 1,
+    "fingerprint_algorithm": "SHA-256",
+    "generated_at": "2026-07-28T14:41:34.619729+00:00",
+    "generator": "scripts.build_experiment_manifest",
+    "generator_version": "1.0.0",
+    "manifest_fingerprint": "2a47289e42c0397277de3e4ee7b563131ded24a41697a539540b1c7feb822fd6",
+    "schema_name": "scout_revision_quality_experiment_manifest",
+    "schema_version": "1.0.0"
+  },
+  "promotion": {
+    "authoritative_production_baseline": "Part 7C.2",
+    "production_promotion": false,
+    "production_prompt_changed": false,
+    "promotion_approved_by": null,
+    "promotion_timestamp": null
+  },
+  "prompt_delta_budget": {
+    "benchmark_specific_instructions": 0,
+    "budget_consumed": 1,
+    "budget_exceeded": false,
+    "budget_limit": 1,
+    "evaluator_specific_instructions": 0,
+    "evidence_derived_hypotheses": 1,
+    "independent_behavioral_mechanisms": 1,
+    "production_irrelevant_instructions": 0,
+    "undocumented_semantic_changes": 0,
+    "validation_status": "PASS"
+  },
+  "provider": {
+    "api_version": null,
+    "comparability": "COMPARABLE",
+    "model": "gpt-4.1-mini",
+    "model_alias": "gpt-4.1-mini",
+    "model_revision": null,
+    "provider_configuration": {
+      "configuration_version": "1",
+      "endpoint": null,
+      "maximum_context_tokens": 32000,
+      "metadata": [],
+      "model_identifier": "gpt-4.1-mini",
+      "provider_identifier": "openai",
+      "rate_limit_policy": {
+        "maximum_requests_per_minute": null,
+        "maximum_tokens_per_minute": null
+      },
+      "retry_policy": {
+        "delay_seconds": 0.0,
+        "maximum_attempts": 1,
+        "retry_rate_limits": true,
+        "retry_timeouts": true,
+        "retry_transport_errors": true
+      },
+      "structured_output": {
+        "supported_modes": [
+          "json",
+          "schema_constrained"
+        ]
+      },
+      "supports_streaming": false,
+      "timeout_seconds": 30.0
+    },
+    "provider_configuration_fingerprint": "9f721ca7200fecb4b08652b5af354165fcff2ba8a1a6ba69cb5899300e0f3e78",
+    "provider_drift_notes": null,
+    "provider_drift_observed": false,
+    "provider_name": "openai",
+    "sdk_version": "2.48.0"
+  },
+  "results": {
+    "editorial": {
+      "acceptance_transitions": {
+        "FAIL_TO_FAIL": 23,
+        "PASS_TO_FAIL": 1
+      },
+      "editorial_acceptance_failures": 24,
+      "editorial_acceptance_passes": 0,
+      "editorial_evaluations": 24,
+      "editorial_improvement": "FAIL",
+      "failure_category_transitions": {
+        "NEW_FAILURE": 1,
+        "REGRESSED": 2,
+        "UNCHANGED": 21
+      },
+      "mean_editorial_score": 73.3333,
+      "median_editorial_score": 73.3333,
+      "targeted_metric": {
+        "control_value": 2.0,
+        "direction_satisfied": true,
+        "expected_direction": "DECREASE",
+        "metric_name": "QUOTE_MUTATION",
+        "net_change": -2.0,
+        "net_change_convention": "treatment_value - control_value",
+        "new_cases": 0,
+        "persisting_cases": 0,
+        "resolved_cases": 2,
+        "treatment_value": 0.0
+      }
+    },
+    "operational": {
+      "completion_tokens": 1973,
+      "cost_currency": "USD",
+      "estimated_cost": 0.0126504,
+      "median_latency_ms": 2391.836,
+      "p95_latency_ms": 4126.931,
+      "prompt_tokens": 23734,
+      "total_tokens": 25707
+    },
+    "reference": {
+      "duplicate_references": 0,
+      "exact_reference_compliance_count": 24,
+      "exact_reference_compliance_total": 24,
+      "malformed_references": 0,
+      "missing_authorized_references": 0,
+      "reference_non_regression": "PASS",
+      "reference_precision": 1.0,
+      "reference_recall": 1.0,
+      "unauthorized_references": 0,
+      "unknown_references": 0
+    },
+    "technical": {
+      "authorization_passes": 24,
+      "dto_validation_passes": 24,
+      "episode_draft_validation_passes": 24,
+      "reconstruction_passes": 24,
+      "technical_non_regression": "PASS",
+      "technical_pipeline_failures": 0,
+      "technical_pipeline_successes": 24
+    }
+  },
+  "treatment": {
+    "artifact_paths": [
+      "docs/artifacts/second-prompt-hypothesis-design.json"
+    ],
+    "configuration_fingerprint": "9f721ca7200fecb4b08652b5af354165fcff2ba8a1a6ba69cb5899300e0f3e78",
+    "corpus_fingerprint": "7b99fe43c13c8f613d96c271db0b8a0ca1e106acde587fa2ed5edf34390c2440",
+    "identity": "H2 frozen candidate",
+    "milestone": "Part 7H.1",
+    "prompt_fingerprint": "64d9a75f54e83861061f2999a324124e40ea8c361366d6e82deabbfec429daac",
+    "provider_fingerprint": "9f721ca7200fecb4b08652b5af354165fcff2ba8a1a6ba69cb5899300e0f3e78",
+    "rubric_fingerprint": "54e0a9add7cf85f3fd2796accd6f2151ea714296862b19cd71eeaf0d3f64c65e",
+    "run_id": "20260728-144134-openai-gpt-4.1-mini-7h2",
+    "schema_fingerprint": "06dbc0c4106c697ec0873ad1b51e526425a231bd89399b6a2c69a687c37602b9"
+  },
+  "validation": {
+    "errors": [],
+    "failed_invariants": [],
+    "status": "PASS",
+    "validated_artifacts": 9,
+    "warnings": [
+      "provider model revision unavailable",
+      "provider API version unavailable"
+    ]
+  }
+}

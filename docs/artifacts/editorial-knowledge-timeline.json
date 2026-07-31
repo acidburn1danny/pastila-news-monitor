@@ -1,0 +1,387 @@
+{
+  "event_count": 15,
+  "events": [
+    {
+      "confidence_after": "MEDIUM",
+      "confidence_before": "MEDIUM",
+      "event_fingerprint": "e634a41f46169989aa1c222136f23be277abe2d0c7c5d273005223637cc738a7",
+      "event_id": "EVE-EK-001-001",
+      "event_type": "KNOWLEDGE_EVOLUTION",
+      "knowledge_id": "EK-001",
+      "new_state": {
+        "confidence": "MEDIUM",
+        "cumulative_evidence_count": 6,
+        "entry_version": 1,
+        "evolution_version": 1,
+        "status": "ACTIVE"
+      },
+      "previous_state": {
+        "confidence": "MEDIUM",
+        "cumulative_evidence_count": 0,
+        "entry_version": 1,
+        "evolution_version": 0,
+        "status": "PROPOSED"
+      },
+      "reason": "Backfilled creation from the immutable knowledge entry and its original repository evidence.",
+      "supporting_artifacts": [
+        "docs/artifacts/controlled-second-prompt-hypothesis-experiment.json",
+        "docs/artifacts/causal-editorial-tradeoff-analysis.json"
+      ],
+      "supporting_experiments": [
+        "20260728-144134-openai-gpt-4.1-mini-7h2"
+      ],
+      "supporting_manifests": [
+        "docs/artifacts/experiments/part-7h-2/experiment-manifest.json"
+      ],
+      "timestamp": "2026-07-28T14:41:34.619729+00:00",
+      "trigger": "STATUS_TRANSITION"
+    },
+    {
+      "confidence_after": "MEDIUM",
+      "confidence_before": "MEDIUM",
+      "event_fingerprint": "b83ccb24dde3c083781ab0de7377e28ca3b5e5674bfd124d585a0fd7608827f0",
+      "event_id": "EVE-EK-002-001",
+      "event_type": "KNOWLEDGE_EVOLUTION",
+      "knowledge_id": "EK-002",
+      "new_state": {
+        "confidence": "MEDIUM",
+        "cumulative_evidence_count": 7,
+        "entry_version": 1,
+        "evolution_version": 1,
+        "status": "ACTIVE"
+      },
+      "previous_state": {
+        "confidence": "MEDIUM",
+        "cumulative_evidence_count": 0,
+        "entry_version": 1,
+        "evolution_version": 0,
+        "status": "PROPOSED"
+      },
+      "reason": "Backfilled creation from the immutable knowledge entry and its original repository evidence.",
+      "supporting_artifacts": [
+        "docs/artifacts/causal-editorial-tradeoff-analysis.json",
+        "docs/artifacts/editorial-tradeoff-matrix.json"
+      ],
+      "supporting_experiments": [
+        "20260728-144134-openai-gpt-4.1-mini-7h2"
+      ],
+      "supporting_manifests": [
+        "docs/artifacts/experiments/part-7h-2/experiment-manifest.json"
+      ],
+      "timestamp": "2026-07-28T14:41:34.619729+00:00",
+      "trigger": "STATUS_TRANSITION"
+    },
+    {
+      "confidence_after": "LOW",
+      "confidence_before": "LOW",
+      "event_fingerprint": "1345106a22c15ab318e2f417c3672196055bb882fb22b7aab66c23ff5d28ecf5",
+      "event_id": "EVE-EK-003-001",
+      "event_type": "KNOWLEDGE_EVOLUTION",
+      "knowledge_id": "EK-003",
+      "new_state": {
+        "confidence": "LOW",
+        "cumulative_evidence_count": 5,
+        "entry_version": 1,
+        "evolution_version": 1,
+        "status": "ACTIVE"
+      },
+      "previous_state": {
+        "confidence": "LOW",
+        "cumulative_evidence_count": 0,
+        "entry_version": 1,
+        "evolution_version": 0,
+        "status": "PROPOSED"
+      },
+      "reason": "Backfilled creation from the immutable knowledge entry and its original repository evidence.",
+      "supporting_artifacts": [
+        "docs/artifacts/causal-editorial-tradeoff-analysis.json"
+      ],
+      "supporting_experiments": [
+        "20260728-144134-openai-gpt-4.1-mini-7h2"
+      ],
+      "supporting_manifests": [
+        "docs/artifacts/experiments/part-7h-2/experiment-manifest.json"
+      ],
+      "timestamp": "2026-07-28T14:41:34.619729+00:00",
+      "trigger": "STATUS_TRANSITION"
+    },
+    {
+      "confidence_after": "HIGH",
+      "confidence_before": "HIGH",
+      "event_fingerprint": "efd85341314c628df871bf1e0b1b38f9acf26804095b072ae77fa9d261ce8657",
+      "event_id": "EVE-EK-004-001",
+      "event_type": "KNOWLEDGE_EVOLUTION",
+      "knowledge_id": "EK-004",
+      "new_state": {
+        "confidence": "HIGH",
+        "cumulative_evidence_count": 4,
+        "entry_version": 1,
+        "evolution_version": 1,
+        "status": "ACTIVE"
+      },
+      "previous_state": {
+        "confidence": "HIGH",
+        "cumulative_evidence_count": 0,
+        "entry_version": 1,
+        "evolution_version": 0,
+        "status": "PROPOSED"
+      },
+      "reason": "Backfilled creation from the immutable knowledge entry and its original repository evidence.",
+      "supporting_artifacts": [
+        "docs/artifacts/controlled-second-prompt-hypothesis-experiment.json",
+        "docs/artifacts/causal-editorial-tradeoff-analysis.json"
+      ],
+      "supporting_experiments": [
+        "20260728-144134-openai-gpt-4.1-mini-7h2"
+      ],
+      "supporting_manifests": [
+        "docs/artifacts/experiments/part-7h-2/experiment-manifest.json"
+      ],
+      "timestamp": "2026-07-28T14:41:34.619729+00:00",
+      "trigger": "STATUS_TRANSITION"
+    },
+    {
+      "confidence_after": "HIGH",
+      "confidence_before": "HIGH",
+      "event_fingerprint": "c2e7f0814bf7b10dea20da9f217c549689bb777b3674a8f97c1a5d936e30be28",
+      "event_id": "EVE-EK-005-001",
+      "event_type": "KNOWLEDGE_EVOLUTION",
+      "knowledge_id": "EK-005",
+      "new_state": {
+        "confidence": "HIGH",
+        "cumulative_evidence_count": 4,
+        "entry_version": 1,
+        "evolution_version": 1,
+        "status": "ACTIVE"
+      },
+      "previous_state": {
+        "confidence": "HIGH",
+        "cumulative_evidence_count": 0,
+        "entry_version": 1,
+        "evolution_version": 0,
+        "status": "PROPOSED"
+      },
+      "reason": "Backfilled creation from the immutable knowledge entry and its original repository evidence.",
+      "supporting_artifacts": [
+        "docs/artifacts/causal-editorial-tradeoff-analysis.json",
+        "docs/artifacts/editorial-tradeoff-matrix.json"
+      ],
+      "supporting_experiments": [
+        "20260728-144134-openai-gpt-4.1-mini-7h2"
+      ],
+      "supporting_manifests": [
+        "docs/artifacts/experiments/part-7h-2/experiment-manifest.json"
+      ],
+      "timestamp": "2026-07-28T14:41:34.619729+00:00",
+      "trigger": "STATUS_TRANSITION"
+    },
+    {
+      "confidence_after": "MEDIUM",
+      "confidence_before": "MEDIUM",
+      "event_fingerprint": "116d74600e683e574e43a8c66305d0d4c3ca61343a1a5a4b025c53518789f90f",
+      "event_id": "EVE-EK-006-001",
+      "event_type": "KNOWLEDGE_EVOLUTION",
+      "knowledge_id": "EK-006",
+      "new_state": {
+        "confidence": "MEDIUM",
+        "cumulative_evidence_count": 4,
+        "entry_version": 1,
+        "evolution_version": 1,
+        "status": "ACTIVE"
+      },
+      "previous_state": {
+        "confidence": "MEDIUM",
+        "cumulative_evidence_count": 0,
+        "entry_version": 1,
+        "evolution_version": 0,
+        "status": "PROPOSED"
+      },
+      "reason": "Backfilled creation from the immutable knowledge entry and its original repository evidence.",
+      "supporting_artifacts": [
+        "docs/artifacts/prompt-delta-budget.json",
+        "docs/artifacts/experiments/part-7h-2/experiment-manifest.json"
+      ],
+      "supporting_experiments": [
+        "20260728-144134-openai-gpt-4.1-mini-7h2"
+      ],
+      "supporting_manifests": [
+        "docs/artifacts/experiments/part-7h-2/experiment-manifest.json"
+      ],
+      "timestamp": "2026-07-28T14:41:34.619729+00:00",
+      "trigger": "STATUS_TRANSITION"
+    },
+    {
+      "confidence_after": "HIGH",
+      "confidence_before": "HIGH",
+      "event_fingerprint": "87e5aafca32bed67687e27bc0734b904b59f13f0e7239e487f9f5e39f6193ac6",
+      "event_id": "EVE-EK-007-001",
+      "event_type": "KNOWLEDGE_EVOLUTION",
+      "knowledge_id": "EK-007",
+      "new_state": {
+        "confidence": "HIGH",
+        "cumulative_evidence_count": 3,
+        "entry_version": 1,
+        "evolution_version": 1,
+        "status": "ACTIVE"
+      },
+      "previous_state": {
+        "confidence": "HIGH",
+        "cumulative_evidence_count": 0,
+        "entry_version": 1,
+        "evolution_version": 0,
+        "status": "PROPOSED"
+      },
+      "reason": "Backfilled creation from the immutable knowledge entry and its original repository evidence.",
+      "supporting_artifacts": [
+        "docs/artifacts/experiments/part-7h-2/experiment-manifest.json"
+      ],
+      "supporting_experiments": [
+        "20260728-144134-openai-gpt-4.1-mini-7h2"
+      ],
+      "supporting_manifests": [
+        "docs/artifacts/experiments/part-7h-2/experiment-manifest.json"
+      ],
+      "timestamp": "2026-07-28T14:41:34.619729+00:00",
+      "trigger": "STATUS_TRANSITION"
+    },
+    {
+      "action": "ADDED",
+      "event_fingerprint": "adfc244db81044a9e60facbec8d26db1b4d1b53141e6b17545bd496770b67958",
+      "event_type": "RELATIONSHIP_EVOLUTION",
+      "relationship_event_id": "REL-001",
+      "relationship_type": "DEPENDS_ON",
+      "source_id": "EK-002",
+      "supporting_artifact": "docs/artifacts/editorial-knowledge-base.json",
+      "target_id": "EK-001",
+      "timestamp": "2026-07-28T14:41:34.619729+00:00"
+    },
+    {
+      "action": "ADDED",
+      "event_fingerprint": "e0e2e07033e8b956081619758c588e666b4b9f2d930e7337a917527b564fb622",
+      "event_type": "RELATIONSHIP_EVOLUTION",
+      "relationship_event_id": "REL-002",
+      "relationship_type": "REFINES",
+      "source_id": "EK-003",
+      "supporting_artifact": "docs/artifacts/editorial-knowledge-base.json",
+      "target_id": "EK-001",
+      "timestamp": "2026-07-28T14:41:34.619729+00:00"
+    },
+    {
+      "action": "ADDED",
+      "event_fingerprint": "14cc241657d037535d602598ec1984b409afcacec7e275a5fc5671c070f1a7c2",
+      "event_type": "RELATIONSHIP_EVOLUTION",
+      "relationship_event_id": "REL-003",
+      "relationship_type": "REFINES",
+      "source_id": "EK-005",
+      "supporting_artifact": "docs/artifacts/editorial-knowledge-base.json",
+      "target_id": "EK-004",
+      "timestamp": "2026-07-28T14:41:34.619729+00:00"
+    },
+    {
+      "action": "ADDED",
+      "event_fingerprint": "545e72fd3f7b807f0c06912e07fb3cf59e23f26be09a8cdc7a3128bf5e79ad4b",
+      "event_type": "RELATIONSHIP_EVOLUTION",
+      "relationship_event_id": "REL-004",
+      "relationship_type": "RELATED_TO",
+      "source_id": "EK-006",
+      "supporting_artifact": "docs/artifacts/editorial-knowledge-base.json",
+      "target_id": "EK-001",
+      "timestamp": "2026-07-28T14:41:34.619729+00:00"
+    },
+    {
+      "action": "ADDED",
+      "event_fingerprint": "22a74c17e7b6f8a9bc13b820069d1ad1182112c45a0a42d2fe52562e2ae3b795",
+      "event_type": "RELATIONSHIP_EVOLUTION",
+      "relationship_event_id": "REL-005",
+      "relationship_type": "SUPPORTS",
+      "source_id": "EK-007",
+      "supporting_artifact": "docs/artifacts/editorial-knowledge-base.json",
+      "target_id": "EK-006",
+      "timestamp": "2026-07-28T14:41:34.619729+00:00"
+    },
+    {
+      "confidence_after": "MEDIUM",
+      "confidence_before": "MEDIUM",
+      "event_fingerprint": "64f2af961206b9e3241ab2be733021779ca67e91df2b33428e640a0db1f5fdea",
+      "event_id": "EVE-EK-002-002",
+      "event_type": "KNOWLEDGE_EVOLUTION",
+      "knowledge_id": "EK-002",
+      "new_state": {
+        "confidence": "MEDIUM",
+        "cumulative_evidence_count": 10,
+        "entry_version": 1,
+        "evolution_version": 2,
+        "status": "REFINED"
+      },
+      "previous_state": {
+        "confidence": "MEDIUM",
+        "cumulative_evidence_count": 7,
+        "entry_version": 1,
+        "evolution_version": 1,
+        "status": "ACTIVE"
+      },
+      "reason": "H3 produced positive utility but only partially confirmed EK-002's predicted mechanism and breadth.",
+      "supporting_artifacts": [
+        "docs/artifacts/h3-experiment.json",
+        "docs/artifacts/prediction-validation.json",
+        "docs/artifacts/knowledge-validation.json"
+      ],
+      "supporting_experiments": [
+        "20260728-161607-openai-gpt-4.1-mini-7h4"
+      ],
+      "supporting_manifests": [
+        "docs/artifacts/experiments/part-7h-2/experiment-manifest.json"
+      ],
+      "timestamp": "2026-07-28T16:16:07.895690+00:00",
+      "trigger": "EXPERIMENT_REFINED"
+    },
+    {
+      "confidence_after": "MEDIUM",
+      "confidence_before": "MEDIUM",
+      "event_fingerprint": "2628777dbbd3c1db2f2c61c5a229b9fffd87bc40a48b7a2f0c9bb1a2054e17bb",
+      "event_id": "EVE-EK-008-001",
+      "event_type": "KNOWLEDGE_EVOLUTION",
+      "knowledge_id": "EK-008",
+      "new_state": {
+        "confidence": "MEDIUM",
+        "cumulative_evidence_count": 9,
+        "entry_version": 1,
+        "evolution_version": 1,
+        "status": "ACTIVE"
+      },
+      "previous_state": {
+        "confidence": "MEDIUM",
+        "cumulative_evidence_count": 0,
+        "entry_version": 1,
+        "evolution_version": 0,
+        "status": "PROPOSED"
+      },
+      "reason": "Backfilled creation from the immutable knowledge entry and its original repository evidence.",
+      "supporting_artifacts": [
+        "docs/artifacts/h3-experiment.json",
+        "docs/artifacts/prediction-validation.json"
+      ],
+      "supporting_experiments": [
+        "20260728-161607-openai-gpt-4.1-mini-7h4"
+      ],
+      "supporting_manifests": [
+        "docs/artifacts/experiments/part-7h-2/experiment-manifest.json"
+      ],
+      "timestamp": "2026-07-28T16:16:07.895690+00:00",
+      "trigger": "STATUS_TRANSITION"
+    },
+    {
+      "action": "ADDED",
+      "event_fingerprint": "6a1b0d9705703dc6c94035a3951b8254204bed771af8180ccef4677870991735",
+      "event_type": "RELATIONSHIP_EVOLUTION",
+      "relationship_event_id": "REL-006",
+      "relationship_type": "REFINES",
+      "source_id": "EK-008",
+      "supporting_artifact": "docs/artifacts/editorial-knowledge-base.json",
+      "target_id": "EK-002",
+      "timestamp": "2026-07-28T16:16:07.895690+00:00"
+    }
+  ],
+  "history_fingerprint": "23749e551e01b028345dfcd258ec52c5b6840794b2111e9a26c40fbedbd1f57e",
+  "schema_version": 1
+}

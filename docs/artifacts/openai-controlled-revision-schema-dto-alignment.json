@@ -1,0 +1,37 @@
+{
+  "alignment_version": "part5k-v1",
+  "old_schema_sha256": "3a643d39384e92fddbabd9e176a1cbda6e7bc2539d1a3937c88fdc025f07d31c",
+  "new_schema_sha256": "70f4ad299e9c35e86ab473705ed449a244ead2e9574745012cc179afbf6a9556",
+  "canonicalization": "UTF-8 JSON, sorted keys, compact separators, SHA-256",
+  "union_structure": "root anyOf with text/story/cta branches",
+  "text_reference_branches": {
+    "opening": "exact literal",
+    "transition": "anchored transition numeric-pair pattern",
+    "closing": "exact literal"
+  },
+  "schema_dto_outcomes": {
+    "K01_valid_text": "SCHEMA_PASS_DTO_PASS",
+    "K02_valid_story": "SCHEMA_PASS_DTO_PASS",
+    "K03_valid_cta": "SCHEMA_PASS_DTO_PASS",
+    "K04_story_reference_text_type": "SCHEMA_FAIL_DTO_FAIL",
+    "K05_cta_reference_text_type": "SCHEMA_FAIL_DTO_FAIL",
+    "K06_text_reference_story_type": "SCHEMA_FAIL_DTO_FAIL",
+    "K07_cta_reference_story_type": "SCHEMA_FAIL_DTO_FAIL",
+    "K08_text_reference_cta_type": "SCHEMA_FAIL_DTO_FAIL",
+    "K09_story_reference_cta_type": "SCHEMA_FAIL_DTO_FAIL",
+    "K10_invalid_generic_reference": "SCHEMA_FAIL_DTO_FAIL",
+    "K11_boundary_valid_transition": "SCHEMA_PASS_DTO_PASS",
+    "K12_boundary_invalid_transition": "SCHEMA_FAIL_DTO_FAIL",
+    "K13_historical_mismatch": "SCHEMA_FAIL_DTO_FAIL"
+  },
+  "remaining_dto_only_rules": [
+    "cross-item component reference uniqueness"
+  ],
+  "post_schema_semantic_rules": [
+    "authorized reference membership",
+    "complete authorized reference set",
+    "source type preservation",
+    "source ordering",
+    "story commentary cardinality matches source"
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "milestone": "Part 7G — Invocation-Specific Exact-Reference Schema Projection",
+  "created_at": "2026-07-28",
+  "part_7f_decision": "C2_DYNAMIC_EXACT_SCHEMA",
+  "implementation_status": "complete",
+  "source_of_truth": "ControlledRevisionRequest.revision_targets via ControlledRevisionTarget.canonical_reference",
+  "projection_entrypoint": "projected_controlled_revision_schema_json",
+  "authorization_entrypoint": "OpenAIControlledRevisionReconstructor.reconstruct",
+  "provider_request_entrypoint": "OpenAIControlledRevisionProjector.project",
+  "reference_fields": [
+    {
+      "dto_variant": "OpenAIRevisedTextComponent",
+      "path": "revised_components[].component_reference",
+      "required": true,
+      "projected_constraint": "const"
+    },
+    {
+      "dto_variant": "OpenAIRevisedStoryComponent",
+      "path": "revised_components[].component_reference",
+      "required": true,
+      "projected_constraint": "const"
+    },
+    {
+      "dto_variant": "OpenAIRevisedCallToActionComponent",
+      "path": "revised_components[].component_reference",
+      "required": true,
+      "projected_constraint": "const"
+    }
+  ],
+  "files_modified": [
+    "src/pastila_scout/editor/generation/revision/contracts.py",
+    "src/pastila_scout/editor/generation/ai_provider_adapter/openai/models.py",
+    "src/pastila_scout/editor/generation/ai_provider_adapter/openai/projector.py",
+    "src/pastila_scout/editor/generation/ai_provider_adapter/openai/reconstructor.py",
+    "src/pastila_scout/editor/generation/ai_provider_adapter/openai/__init__.py",
+    "tests/test_invocation_specific_reference_schema.py",
+    "docs/reference-contract-schema-projection-implementation.md",
+    "docs/artifacts/reference-contract-schema-projection-implementation.json"
+  ],
+  "tests_added": 20,
+  "tests_updated": 0,
+  "production_prompt_modified": false,
+  "provider_schema_modified": true,
+  "provider_dto_modified": false,
+  "authorization_modified": false,
+  "reconstruction_modified": false,
+  "runtime_modified": false,
+  "benchmark_corpus_modified": false,
+  "benchmark_history_modified": false,
+  "provider_requests": 0,
+  "benchmark_executions": 0,
+  "architecture_compliance": {
+    "single_source_of_truth": true,
+    "pure_projection": true,
+    "exact_constraints": true,
+    "base_schema_immutable": true,
+    "invocation_isolation": true,
+    "authorization_active": true,
+    "reconstruction_deterministic": true,
+    "permissive_fallback": false
+  },
+  "performance": {
+    "representative_reference_count": 50,
+    "projection_duration_ms": 2.119,
+    "serialized_schema_bytes": 41601
+  },
+  "regression_results": {
+    "focused_schema_projection": "passed: 20",
+    "focused_controlled_revision": "passed: 70",
+    "focused_architecture_compatibility": "passed: 22",
+    "full_regression": "passed: 1214",
+    "ruff": "passed",
+    "black": "passed",
+    "compileall": "passed",
+    "pip_check": "passed"
+  },
+  "root_conclusion": "EXACT_REFERENCE_SCHEMA_PROJECTION_IMPLEMENTED",
+  "recommended_next_milestone": "Part 7C.2 — Controlled Provider Quality Baseline After Reference Contract Remediation"
+}

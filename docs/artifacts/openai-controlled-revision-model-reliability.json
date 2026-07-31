@@ -1,0 +1,191 @@
+{
+  "assessment_version": "part5i-v1",
+  "configuration": {
+    "models": [
+      "gpt-4.1-mini"
+    ],
+    "runs_per_scenario": 1,
+    "scenarios": [
+      "E2E-01",
+      "E2E-02",
+      "E2E-03",
+      "E2E-04"
+    ]
+  },
+  "dto_sha256": "3973409a1069fd0d9b965aeddb554604dda452bdb570631c443056288fdca6ee",
+  "ordering": "sample, scenario, model",
+  "request_budget": 4,
+  "schema_sha256": "70f4ad299e9c35e86ab473705ed449a244ead2e9574745012cc179afbf6a9556",
+  "summary": [
+    {
+      "authorization_failures": 0,
+      "completed_trials": 1,
+      "dto_failures": 0,
+      "dto_passes": 1,
+      "dto_success_rate": 1.0,
+      "dto_wilson_95": [
+        0.20654931437723745,
+        1.0
+      ],
+      "editorial_failures": 1,
+      "end_to_end_passes": 0,
+      "end_to_end_success_rate": 0.0,
+      "external_failures": 0,
+      "malformed_component_failures": 0,
+      "median_duration_ms": 2914,
+      "median_total_tokens": 1375,
+      "model": "gpt-4.1-mini",
+      "other_structural_failures": 0,
+      "scenario": "E2E-01"
+    },
+    {
+      "authorization_failures": 0,
+      "completed_trials": 1,
+      "dto_failures": 1,
+      "dto_passes": 0,
+      "dto_success_rate": 0.0,
+      "dto_wilson_95": [
+        0.0,
+        0.7934506856227626
+      ],
+      "editorial_failures": 0,
+      "end_to_end_passes": 0,
+      "end_to_end_success_rate": 0.0,
+      "external_failures": 0,
+      "malformed_component_failures": 0,
+      "median_duration_ms": 2545,
+      "median_total_tokens": null,
+      "model": "gpt-4.1-mini",
+      "other_structural_failures": 1,
+      "scenario": "E2E-02"
+    },
+    {
+      "authorization_failures": 0,
+      "completed_trials": 1,
+      "dto_failures": 1,
+      "dto_passes": 0,
+      "dto_success_rate": 0.0,
+      "dto_wilson_95": [
+        0.0,
+        0.7934506856227626
+      ],
+      "editorial_failures": 0,
+      "end_to_end_passes": 0,
+      "end_to_end_success_rate": 0.0,
+      "external_failures": 0,
+      "malformed_component_failures": 0,
+      "median_duration_ms": 2660,
+      "median_total_tokens": null,
+      "model": "gpt-4.1-mini",
+      "other_structural_failures": 1,
+      "scenario": "E2E-03"
+    },
+    {
+      "authorization_failures": 0,
+      "completed_trials": 1,
+      "dto_failures": 1,
+      "dto_passes": 0,
+      "dto_success_rate": 0.0,
+      "dto_wilson_95": [
+        0.0,
+        0.7934506856227626
+      ],
+      "editorial_failures": 0,
+      "end_to_end_passes": 0,
+      "end_to_end_success_rate": 0.0,
+      "external_failures": 0,
+      "malformed_component_failures": 0,
+      "median_duration_ms": 2074,
+      "median_total_tokens": null,
+      "model": "gpt-4.1-mini",
+      "other_structural_failures": 1,
+      "scenario": "E2E-04"
+    }
+  ],
+  "trials": [
+    {
+      "affected_component_count": null,
+      "aggregate_pass": false,
+      "configured_model": "gpt-4.1-mini",
+      "dto_error_count": null,
+      "duplicate_reference_triggered": null,
+      "duration_ms": 2914,
+      "furthest_stage": "acceptance_evaluated",
+      "input_tokens": 1299,
+      "output_tokens": 76,
+      "primary_safe_category": null,
+      "request_id_available": true,
+      "result_category": "EDITORIAL_ACCEPTANCE_FAILURE",
+      "returned_model_available": true,
+      "sample_index": 1,
+      "scenario": "E2E-01",
+      "total_tokens": 1375,
+      "union_error_count": null,
+      "union_expansion_suspected": null,
+      "usage_available": true
+    },
+    {
+      "affected_component_count": null,
+      "aggregate_pass": false,
+      "configured_model": "gpt-4.1-mini",
+      "dto_error_count": null,
+      "duplicate_reference_triggered": null,
+      "duration_ms": 2545,
+      "furthest_stage": "json_decoded",
+      "input_tokens": null,
+      "output_tokens": null,
+      "primary_safe_category": null,
+      "request_id_available": false,
+      "result_category": "PROVIDER_DTO_OTHER_STRUCTURAL_FAILURE",
+      "returned_model_available": false,
+      "sample_index": 1,
+      "scenario": "E2E-02",
+      "total_tokens": null,
+      "union_error_count": null,
+      "union_expansion_suspected": null,
+      "usage_available": false
+    },
+    {
+      "affected_component_count": 0,
+      "aggregate_pass": false,
+      "configured_model": "gpt-4.1-mini",
+      "dto_error_count": 1,
+      "duplicate_reference_triggered": true,
+      "duration_ms": 2660,
+      "furthest_stage": "json_decoded",
+      "input_tokens": null,
+      "output_tokens": null,
+      "primary_safe_category": "duplicate_component_reference",
+      "request_id_available": false,
+      "result_category": "PROVIDER_DTO_DUPLICATE_REFERENCE",
+      "returned_model_available": false,
+      "sample_index": 1,
+      "scenario": "E2E-03",
+      "total_tokens": null,
+      "union_error_count": 0,
+      "union_expansion_suspected": false,
+      "usage_available": false
+    },
+    {
+      "affected_component_count": null,
+      "aggregate_pass": false,
+      "configured_model": "gpt-4.1-mini",
+      "dto_error_count": null,
+      "duplicate_reference_triggered": null,
+      "duration_ms": 2074,
+      "furthest_stage": "json_decoded",
+      "input_tokens": null,
+      "output_tokens": null,
+      "primary_safe_category": null,
+      "request_id_available": false,
+      "result_category": "PROVIDER_DTO_OTHER_STRUCTURAL_FAILURE",
+      "returned_model_available": false,
+      "sample_index": 1,
+      "scenario": "E2E-04",
+      "total_tokens": null,
+      "union_error_count": null,
+      "union_expansion_suspected": null,
+      "usage_available": false
+    }
+  ]
+}

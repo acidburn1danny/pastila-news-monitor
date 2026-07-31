@@ -1,0 +1,25 @@
+{
+  "chains": [
+    {
+      "expected_editorial_effect": "Preserve the two observed quote gains while preventing the four introduced instruction, meaning, authority, and acceptance failures.",
+      "knowledge_entry_fingerprint": "ad7bcded12608381ff21cbe09bf72e92d2ff43a9c4dd9ca87bd85709f6e91bef",
+      "knowledge_entry_id": "EK-002",
+      "observed_behavior": "Two resolved scenario-criterion failures were offset by four introduced failures.",
+      "prompt_change_id": "H3-C01",
+      "prompt_modification": "BALANCED PRESERVATION: Preserve non-target quotation wording, but never at the expense of completing the authorized revision or preserving the original meaning and source authority.",
+      "supporting_experiment": "20260728-144134-openai-gpt-4.1-mini-7h2",
+      "supporting_manifest_fingerprint": "2a47289e42c0397277de3e4ee7b563131ded24a41697a539540b1c7feb822fd6",
+      "supporting_manifest_path": "docs/artifacts/experiments/part-7h-2/experiment-manifest.json",
+      "supporting_scenarios": [
+        "SYN-10",
+        "SYN-20",
+        "SYN-23"
+      ],
+      "supporting_tradeoff_path": "docs/artifacts/causal-editorial-tradeoff-analysis.json"
+    }
+  ],
+  "hypothesis_id": "H3",
+  "orphan_prompt_changes": 0,
+  "schema_version": 1,
+  "validation_status": "PASS"
+}

@@ -1,0 +1,27 @@
+{
+  "confidence": "LOW",
+  "expected_affected_scenarios": [
+    "SYN-10",
+    "SYN-20",
+    "SYN-23"
+  ],
+  "expected_net_editorial_utility": 2,
+  "expected_utility_basis": "If H2's two resolved quote failures are retained and SYN-20's four introduced failures are avoided, the paired criterion delta becomes +2 relative to baseline; this is a testable expectation, not an observed result.",
+  "hypothesis_id": "H3",
+  "interaction_risk": "MEDIUM",
+  "likelihood_of_regression": "MEDIUM",
+  "mitigations": [
+    "one behavioral mechanism",
+    "explicit non-target quotation scope",
+    "authorized revision completion has stated precedence",
+    "frozen 24-scenario paired experiment plan"
+  ],
+  "potential_interaction": "The balance clause may create ambiguity when quotation preservation conflicts with an authorized quotation edit.",
+  "potential_side_effects": [
+    "under-editing a quotation that is itself the authorized target",
+    "instruction-priority competition between preservation and completion"
+  ],
+  "regression_risk": "MEDIUM",
+  "schema_version": 1,
+  "validation_status": "PASS"
+}

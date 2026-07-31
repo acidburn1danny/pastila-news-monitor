@@ -1,0 +1,36 @@
+[project]
+name = "pastila-news-monitor"
+version = "0.1.0"
+description = "A news monitoring project for Pastila"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "beautifulsoup4",
+    "feedparser",
+    "httpx",
+    "openai>=2.48,<3",
+    "pydantic",
+    "PyYAML",
+]
+
+[project.scripts]
+pastila-scout = "pastila_scout.cli:main"
+
+[project.optional-dependencies]
+dev = [
+    "black>=25.12,<26",
+    "jsonschema>=4.23,<5",
+    "pytest",
+    "ruff",
+]
+
+[build-system]
+requires = ["setuptools>=80"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+addopts = "-ra"
+testpaths = ["tests"]

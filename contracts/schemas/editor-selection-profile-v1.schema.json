@@ -1,0 +1,154 @@
+{
+  "$defs": {
+    "CategoryCountConstraint": {
+      "additionalProperties": false,
+      "properties": {
+        "extensions": {
+          "additionalProperties": true,
+          "title": "Extensions",
+          "type": "object"
+        },
+        "maximum": {
+          "minimum": 0,
+          "title": "Maximum",
+          "type": "integer"
+        },
+        "minimum": {
+          "minimum": 0,
+          "title": "Minimum",
+          "type": "integer"
+        },
+        "minimum_policy": {
+          "$ref": "#/$defs/MinimumPolicy"
+        },
+        "preferred": {
+          "minimum": 0,
+          "title": "Preferred",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "minimum",
+        "preferred",
+        "maximum",
+        "minimum_policy"
+      ],
+      "title": "CategoryCountConstraint",
+      "type": "object"
+    },
+    "MinimumPolicy": {
+      "enum": [
+        "hard",
+        "soft"
+      ],
+      "title": "MinimumPolicy",
+      "type": "string"
+    },
+    "ProviderPolicy": {
+      "enum": [
+        "optional",
+        "required",
+        "forbidden"
+      ],
+      "title": "ProviderPolicy",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "avoid_semantic_redundancy": {
+      "title": "Avoid Semantic Redundancy",
+      "type": "boolean"
+    },
+    "backup_count": {
+      "minimum": 0,
+      "title": "Backup Count",
+      "type": "integer"
+    },
+    "category_constraints": {
+      "additionalProperties": {
+        "$ref": "#/$defs/CategoryCountConstraint"
+      },
+      "title": "Category Constraints",
+      "type": "object"
+    },
+    "closing_story_preference": {
+      "anyOf": [
+        {
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Closing Story Preference"
+    },
+    "contract_version": {
+      "default": "editor-selection-profile-v1",
+      "pattern": "^editor-selection-profile-v1$",
+      "title": "Contract Version",
+      "type": "string"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "maximum_stories_from_one_category": {
+      "exclusiveMinimum": 0,
+      "title": "Maximum Stories From One Category",
+      "type": "integer"
+    },
+    "minimum_source_diversity": {
+      "exclusiveMinimum": 0,
+      "title": "Minimum Source Diversity",
+      "type": "integer"
+    },
+    "opening_story_preference": {
+      "anyOf": [
+        {
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Opening Story Preference"
+    },
+    "profile_name": {
+      "minLength": 1,
+      "title": "Profile Name",
+      "type": "string"
+    },
+    "profile_version": {
+      "minLength": 1,
+      "title": "Profile Version",
+      "type": "string"
+    },
+    "provider_policy": {
+      "$ref": "#/$defs/ProviderPolicy",
+      "default": "optional"
+    },
+    "target_story_count": {
+      "exclusiveMinimum": 0,
+      "title": "Target Story Count",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "profile_name",
+    "profile_version",
+    "target_story_count",
+    "backup_count",
+    "category_constraints",
+    "maximum_stories_from_one_category",
+    "minimum_source_diversity",
+    "avoid_semantic_redundancy"
+  ],
+  "title": "SelectionProfileV1",
+  "type": "object"
+}

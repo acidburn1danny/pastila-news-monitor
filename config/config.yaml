@@ -1,0 +1,48 @@
+# Scout application configuration. Source definitions belong in sources.yaml.
+sources_file: sources.yaml
+
+polling:
+  max_article_age_hours: 168
+  max_articles_per_source: 100
+  accept_articles_without_date: true
+  future_date_tolerance_minutes: 60
+  concurrency: 3
+
+# Event matching is local and deterministic; articles remain separate records.
+event_matching:
+  enabled: true
+  lookback_hours: 168
+  similarity_threshold: 0.72
+
+# AI verification is advisory and never changes event assignments. Enable it
+# only after OPENAI_API_KEY is available in the environment or local .env file.
+ai:
+  provider: openai
+  model: gpt-4.1-mini
+  temperature: 0.0
+  max_retries: 2
+  retry_delay: 3.0
+  prompt_version: event-verification-v1
+  enable_ai: true
+
+cache:
+  ai_verification_directory: data/ai_cache
+  ai_editorial_directory: data/ai_cache/editorial
+
+scoring:
+  deterministic_schema_version: event-score-v1
+  editorial_schema_version: editorial-score-v1
+  editorial_prompt_version: editorial-ranking-v1
+  deterministic_weight: 0.55
+  ai_weight: 0.45
+  # Set current provider/model prices to enable estimated cost reporting.
+  input_cost_per_million_tokens: null
+  output_cost_per_million_tokens: null
+  category_weights:
+    Politica: 1.0
+    Social: 0.9
+    Conspiratii: 0.95
+    Economie: 0.85
+    CanCan: 0.75
+    Externe: 0.8
+    Diverse: 0.6

@@ -1,0 +1,411 @@
+{
+  "additional_safe_diagnostics": "USEFUL_BUT_NOT_REQUIRED",
+  "diagnostic_sufficiency": "PARTIALLY_SUFFICIENT",
+  "dto_fingerprint": "3973409a1069fd0d9b965aeddb554604dda452bdb570631c443056288fdca6ee",
+  "dto_validator_audit": {
+    "case_sensitive": true,
+    "cases": {
+      "case_variation": {
+        "accepted": false,
+        "duplicate_validator": false,
+        "total_errors": 12,
+        "union_errors": 11
+      },
+      "different_body_same_reference": {
+        "accepted": false,
+        "duplicate_validator": true,
+        "total_errors": 1,
+        "union_errors": 0
+      },
+      "different_type_same_suffix": {
+        "accepted": true,
+        "duplicate_validator": false,
+        "total_errors": 0,
+        "union_errors": 0
+      },
+      "exact_duplicate": {
+        "accepted": false,
+        "duplicate_validator": true,
+        "total_errors": 1,
+        "union_errors": 0
+      },
+      "index_variation": {
+        "accepted": true,
+        "duplicate_validator": false,
+        "total_errors": 0,
+        "union_errors": 0
+      },
+      "prefix_variation": {
+        "accepted": false,
+        "duplicate_validator": false,
+        "total_errors": 12,
+        "union_errors": 11
+      },
+      "same_body_different_reference": {
+        "accepted": true,
+        "duplicate_validator": false,
+        "total_errors": 0,
+        "union_errors": 0
+      },
+      "separator_variation": {
+        "accepted": false,
+        "duplicate_validator": false,
+        "total_errors": 12,
+        "union_errors": 11
+      },
+      "unicode_variation": {
+        "accepted": false,
+        "duplicate_validator": false,
+        "total_errors": 12,
+        "union_errors": 11
+      }
+    },
+    "classification": "CORRECT",
+    "comparison_field": "component_reference",
+    "deterministic": true,
+    "normalization": "none"
+  },
+  "final_recommendation": "KEEP_CURRENT_PRODUCTION_BEHAVIOR",
+  "fixture_classification": "FIXTURE_VALID",
+  "hypothesis_outcomes": [
+    {
+      "hypothesis": "H1",
+      "outcome": "FALSIFIED"
+    },
+    {
+      "hypothesis": "H2",
+      "outcome": "FALSIFIED"
+    },
+    {
+      "hypothesis": "H3",
+      "outcome": "FALSIFIED"
+    },
+    {
+      "hypothesis": "H4",
+      "outcome": "FALSIFIED"
+    },
+    {
+      "hypothesis": "H5",
+      "outcome": "FALSIFIED"
+    },
+    {
+      "hypothesis": "H6",
+      "outcome": "NOT_SUPPORTED"
+    },
+    {
+      "hypothesis": "H7",
+      "outcome": "FALSIFIED"
+    },
+    {
+      "hypothesis": "H8",
+      "outcome": "FALSIFIED"
+    },
+    {
+      "hypothesis": "H9",
+      "outcome": "SUPPORTED"
+    },
+    {
+      "hypothesis": "H10",
+      "outcome": "NOT_SUPPORTED"
+    },
+    {
+      "hypothesis": "H11",
+      "outcome": "PARTIALLY_SUPPORTED"
+    },
+    {
+      "hypothesis": "H12",
+      "outcome": "SUPPORTED"
+    }
+  ],
+  "input_component_count": 1,
+  "input_reference_uniqueness_classification": "INPUT_REFERENCES_UNIQUE",
+  "instruction_conformance_matrix": [
+    {
+      "rule": "one_output_per_input",
+      "status": "EXPLICIT"
+    },
+    {
+      "rule": "exact_reference_copying",
+      "status": "EXPLICIT"
+    },
+    {
+      "rule": "no_duplicate_references",
+      "status": "EXPLICIT"
+    },
+    {
+      "rule": "no_missing_references",
+      "status": "MISSING"
+    },
+    {
+      "rule": "no_unauthorized_references",
+      "status": "EXPLICIT"
+    },
+    {
+      "rule": "preserve_component_type",
+      "status": "EXPLICIT"
+    },
+    {
+      "rule": "preserve_component_order",
+      "status": "MISSING"
+    },
+    {
+      "rule": "complete_variant_shape",
+      "status": "EXPLICIT"
+    },
+    {
+      "rule": "no_hybrid_variants",
+      "status": "EXPLICIT"
+    },
+    {
+      "rule": "final_self_check",
+      "status": "EXPLICIT"
+    }
+  ],
+  "lineage": [
+    {
+      "alias": "R01",
+      "dto_field": true,
+      "interpreter_passthrough": true,
+      "projection": true,
+      "prompt_serialization": true,
+      "reconstructor_lookup": true,
+      "schema_field": true,
+      "source_component": true
+    }
+  ],
+  "live_request_count": 0,
+  "local_mutation_classification": "LOCAL_POST_PROVIDER_MUTATION_EXCLUDED",
+  "milestone": "part5m",
+  "perturbation_metrics": [
+    {
+      "component_count": 1,
+      "dimension": "component_count",
+      "level": 1,
+      "reference_occurrence_count": 2,
+      "schema_bytes": 3660,
+      "synthetic_prompt_bytes": 8,
+      "visually_similar_pair_count": 0
+    },
+    {
+      "component_count": 5,
+      "dimension": "component_count",
+      "level": 5,
+      "reference_occurrence_count": 10,
+      "schema_bytes": 3660,
+      "synthetic_prompt_bytes": 40,
+      "visually_similar_pair_count": 0
+    },
+    {
+      "component_count": 1,
+      "dimension": "reference_length",
+      "level": 4,
+      "reference_occurrence_count": 2,
+      "schema_bytes": 3660,
+      "synthetic_prompt_bytes": 4,
+      "visually_similar_pair_count": 0
+    },
+    {
+      "component_count": 1,
+      "dimension": "reference_length",
+      "level": 40,
+      "reference_occurrence_count": 2,
+      "schema_bytes": 3660,
+      "synthetic_prompt_bytes": 40,
+      "visually_similar_pair_count": 0
+    },
+    {
+      "component_count": 3,
+      "dimension": "prefix_similarity",
+      "level": 0,
+      "reference_occurrence_count": 6,
+      "schema_bytes": 3660,
+      "synthetic_prompt_bytes": 24,
+      "visually_similar_pair_count": 0
+    },
+    {
+      "component_count": 3,
+      "dimension": "prefix_similarity",
+      "level": 1,
+      "reference_occurrence_count": 6,
+      "schema_bytes": 3660,
+      "synthetic_prompt_bytes": 24,
+      "visually_similar_pair_count": 3
+    },
+    {
+      "component_count": 1,
+      "dimension": "transition_count",
+      "level": 0,
+      "reference_occurrence_count": 2,
+      "schema_bytes": 3660,
+      "synthetic_prompt_bytes": 8,
+      "visually_similar_pair_count": 0
+    },
+    {
+      "component_count": 5,
+      "dimension": "transition_count",
+      "level": 4,
+      "reference_occurrence_count": 10,
+      "schema_bytes": 3660,
+      "synthetic_prompt_bytes": 64,
+      "visually_similar_pair_count": 4
+    },
+    {
+      "component_count": 1,
+      "dimension": "story_count",
+      "level": 1,
+      "reference_occurrence_count": 2,
+      "schema_bytes": 3660,
+      "synthetic_prompt_bytes": 8,
+      "visually_similar_pair_count": 0
+    },
+    {
+      "component_count": 5,
+      "dimension": "story_count",
+      "level": 5,
+      "reference_occurrence_count": 10,
+      "schema_bytes": 3660,
+      "synthetic_prompt_bytes": 40,
+      "visually_similar_pair_count": 5
+    },
+    {
+      "component_count": 2,
+      "dimension": "adjacent_same_type",
+      "level": 0,
+      "reference_occurrence_count": 4,
+      "schema_bytes": 3660,
+      "synthetic_prompt_bytes": 16,
+      "visually_similar_pair_count": 0
+    },
+    {
+      "component_count": 2,
+      "dimension": "adjacent_same_type",
+      "level": 1,
+      "reference_occurrence_count": 4,
+      "schema_bytes": 3660,
+      "synthetic_prompt_bytes": 16,
+      "visually_similar_pair_count": 1
+    },
+    {
+      "component_count": 3,
+      "dimension": "ordering_reversed",
+      "level": 0,
+      "reference_occurrence_count": 6,
+      "schema_bytes": 3660,
+      "synthetic_prompt_bytes": 24,
+      "visually_similar_pair_count": 0
+    },
+    {
+      "component_count": 3,
+      "dimension": "ordering_reversed",
+      "level": 1,
+      "reference_occurrence_count": 6,
+      "schema_bytes": 3660,
+      "synthetic_prompt_bytes": 24,
+      "visually_similar_pair_count": 0
+    },
+    {
+      "component_count": 1,
+      "dimension": "reference_repetition",
+      "level": 1,
+      "reference_occurrence_count": 1,
+      "schema_bytes": 3660,
+      "synthetic_prompt_bytes": 8,
+      "visually_similar_pair_count": 0
+    },
+    {
+      "component_count": 1,
+      "dimension": "reference_repetition",
+      "level": 3,
+      "reference_occurrence_count": 3,
+      "schema_bytes": 3660,
+      "synthetic_prompt_bytes": 24,
+      "visually_similar_pair_count": 0
+    }
+  ],
+  "production_frozen": true,
+  "projection_uniqueness_classification": "INPUT_REFERENCES_UNIQUE",
+  "prompt_fingerprint": "cb6f07d47ec80ee8dfa246e5151f4c5a625adac2372f05a7cbccf4cbc3ebbf1c",
+  "prompt_mapping_classification": "UNAMBIGUOUS",
+  "prompt_reference_occurrence_aggregates": {
+    "R01": {
+      "authorized_reference_section": 1,
+      "editable_component_section": 1,
+      "instructions": 0,
+      "schema": 0,
+      "total": 2
+    }
+  },
+  "risk_factors": [
+    {
+      "evidence": "NO_EVIDENCE",
+      "factor": "large_projected_component_count",
+      "presence": "ABSENT"
+    },
+    {
+      "evidence": "NO_EVIDENCE",
+      "factor": "repeated_projected_component_types",
+      "presence": "ABSENT"
+    },
+    {
+      "evidence": "NO_EVIDENCE",
+      "factor": "many_projected_transitions",
+      "presence": "ABSENT"
+    },
+    {
+      "evidence": "NO_EVIDENCE",
+      "factor": "similar_reference_prefixes",
+      "presence": "ABSENT"
+    },
+    {
+      "evidence": "NO_EVIDENCE",
+      "factor": "long_references",
+      "presence": "ABSENT"
+    },
+    {
+      "evidence": "PLAUSIBLE_ONLY",
+      "factor": "dense_prompt",
+      "presence": "UNKNOWN"
+    },
+    {
+      "evidence": "NO_EVIDENCE",
+      "factor": "repeated_one_to_one_instructions",
+      "presence": "PRESENT"
+    },
+    {
+      "evidence": "NO_EVIDENCE",
+      "factor": "adjacent_same_shape_components",
+      "presence": "ABSENT"
+    },
+    {
+      "evidence": "NO_EVIDENCE",
+      "factor": "multiple_commentary_blocks",
+      "presence": "ABSENT"
+    },
+    {
+      "evidence": "NO_EVIDENCE",
+      "factor": "large_output_shape",
+      "presence": "ABSENT"
+    }
+  ],
+  "root_conclusion": "PROVIDER_DUPLICATE_GENERATION_CONFIRMED",
+  "safe_failure_topology": {
+    "duplicate_body_relationship_known": false,
+    "duplicate_location_known": false,
+    "duplicate_type_relationship_known": false,
+    "minimum_duplicate_occurrences": 2,
+    "omitted_reference_known": false
+  },
+  "safe_topology_prototype": {
+    "component_count": 2,
+    "duplicate_group_count": 1,
+    "duplicate_type_histogram": {
+      "story": 2
+    },
+    "maximum_duplicate_multiplicity": 2,
+    "positional_distance_bucket": "adjacent",
+    "unique_reference_count": 1
+  },
+  "schema_fingerprint": "70f4ad299e9c35e86ab473705ed449a244ead2e9574745012cc179afbf6a9556",
+  "sdk_request_count": 0,
+  "sdk_transformation_classification": "SDK_TRANSFORMATION_EXCLUDED"
+}

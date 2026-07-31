@@ -1,0 +1,207 @@
+{
+  "$defs": {
+    "DurationValue": {
+      "additionalProperties": false,
+      "properties": {
+        "unit": {
+          "default": "seconds",
+          "pattern": "^seconds$",
+          "title": "Unit",
+          "type": "string"
+        },
+        "value": {
+          "minimum": 0,
+          "title": "Value",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "value"
+      ],
+      "title": "DurationValue",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "audience": {
+      "minLength": 1,
+      "title": "Audience",
+      "type": "string"
+    },
+    "avoid_recent_event_ids": {
+      "default": [],
+      "items": {
+        "type": "integer"
+      },
+      "title": "Avoid Recent Event Ids",
+      "type": "array"
+    },
+    "closing_preference": {
+      "anyOf": [
+        {
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Closing Preference"
+    },
+    "contract_version": {
+      "default": "episode-context-v1",
+      "pattern": "^episode-context-v1$",
+      "title": "Contract Version",
+      "type": "string"
+    },
+    "episode_format": {
+      "minLength": 1,
+      "title": "Episode Format",
+      "type": "string"
+    },
+    "episode_objective": {
+      "minLength": 1,
+      "title": "Episode Objective",
+      "type": "string"
+    },
+    "excluded_event_ids": {
+      "default": [],
+      "items": {
+        "type": "integer"
+      },
+      "title": "Excluded Event Ids",
+      "type": "array"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "factual_strictness": {
+      "minLength": 1,
+      "title": "Factual Strictness",
+      "type": "string"
+    },
+    "humor_style": {
+      "default": [],
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "title": "Humor Style",
+      "type": "array"
+    },
+    "language": {
+      "minLength": 1,
+      "title": "Language",
+      "type": "string"
+    },
+    "mandatory_event_ids": {
+      "default": [],
+      "items": {
+        "type": "integer"
+      },
+      "title": "Mandatory Event Ids",
+      "type": "array"
+    },
+    "opening_preference": {
+      "anyOf": [
+        {
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Opening Preference"
+    },
+    "pacing": {
+      "minLength": 1,
+      "title": "Pacing",
+      "type": "string"
+    },
+    "platform": {
+      "minLength": 1,
+      "title": "Platform",
+      "type": "string"
+    },
+    "political_balance": {
+      "minLength": 1,
+      "title": "Political Balance",
+      "type": "string"
+    },
+    "presenter_notes": {
+      "default": [],
+      "items": {
+        "maxLength": 200,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 20,
+      "title": "Presenter Notes",
+      "type": "array"
+    },
+    "previous_episode_reference": {
+      "anyOf": [
+        {
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Previous Episode Reference"
+    },
+    "target_runtime": {
+      "$ref": "#/$defs/DurationValue"
+    },
+    "target_story_count": {
+      "exclusiveMinimum": 0,
+      "title": "Target Story Count",
+      "type": "integer"
+    },
+    "theme": {
+      "anyOf": [
+        {
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Theme"
+    },
+    "tone": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Tone",
+      "type": "array"
+    }
+  },
+  "required": [
+    "episode_format",
+    "platform",
+    "language",
+    "target_runtime",
+    "target_story_count",
+    "audience",
+    "pacing",
+    "tone",
+    "factual_strictness",
+    "political_balance",
+    "episode_objective"
+  ],
+  "title": "EpisodeContextV1",
+  "type": "object"
+}

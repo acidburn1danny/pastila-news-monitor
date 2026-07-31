@@ -1,0 +1,55 @@
+{
+  "causal_mechanism": "PARTIALLY_CONFIRMED",
+  "confidence_calibration": "UNDERCONFIDENT",
+  "experiment_id": "20260728-161607-openai-gpt-4.1-mini-7h4",
+  "failure_metrics": {
+    "f1": 1.0,
+    "precision": 1.0,
+    "recall": 1.0
+  },
+  "observed_affected_scenarios": [
+    "SYN-06",
+    "SYN-10",
+    "SYN-15",
+    "SYN-20",
+    "SYN-23"
+  ],
+  "observed_failure_categories": [
+    "editorial_acceptance",
+    "instruction_compliance",
+    "meaning_preservation",
+    "quote_preservation",
+    "source_authority_preservation"
+  ],
+  "observed_net_editorial_utility": 8,
+  "predicted_affected_scenarios": [
+    "SYN-10",
+    "SYN-20",
+    "SYN-23"
+  ],
+  "predicted_confidence": "LOW",
+  "predicted_failure_categories": [
+    "editorial_acceptance",
+    "instruction_compliance",
+    "meaning_preservation",
+    "quote_preservation",
+    "source_authority_preservation"
+  ],
+  "predicted_net_editorial_utility": 2,
+  "prediction_error": 6,
+  "prediction_root_conclusion": "H3_PREDICTION_PARTIALLY_VALIDATED",
+  "predictive_quality_score": 75.0,
+  "risk_validation": {
+    "classification": "ACCURATE",
+    "observed_interaction": true,
+    "observed_regression": true,
+    "predicted_interaction_risk": "MEDIUM",
+    "predicted_regression_risk": "MEDIUM"
+  },
+  "scenario_metrics": {
+    "f1": 0.7499999999999999,
+    "precision": 1.0,
+    "recall": 0.6
+  },
+  "schema_version": 1
+}

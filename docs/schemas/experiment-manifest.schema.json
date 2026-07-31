@@ -1,0 +1,1326 @@
+{
+  "$defs": {
+    "ArtifactReference": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_path": {
+          "title": "Artifact Path",
+          "type": "string"
+        },
+        "artifact_type": {
+          "title": "Artifact Type",
+          "type": "string"
+        },
+        "exists": {
+          "title": "Exists",
+          "type": "boolean"
+        },
+        "fingerprint": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Fingerprint",
+          "type": "string"
+        },
+        "fingerprint_algorithm": {
+          "title": "Fingerprint Algorithm",
+          "type": "string"
+        },
+        "required": {
+          "title": "Required",
+          "type": "boolean"
+        },
+        "validation_status": {
+          "$ref": "#/$defs/GateStatus"
+        }
+      },
+      "required": [
+        "artifact_type",
+        "artifact_path",
+        "required",
+        "exists",
+        "fingerprint",
+        "fingerprint_algorithm",
+        "validation_status"
+      ],
+      "title": "ArtifactReference",
+      "type": "object"
+    },
+    "Benchmark": {
+      "additionalProperties": false,
+      "properties": {
+        "authorization_contract_fingerprint": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Authorization Contract Fingerprint",
+          "type": "string"
+        },
+        "benchmark_id": {
+          "title": "Benchmark Id",
+          "type": "string"
+        },
+        "benchmark_version": {
+          "title": "Benchmark Version",
+          "type": "string"
+        },
+        "dto_contract_fingerprint": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Dto Contract Fingerprint",
+          "type": "string"
+        },
+        "editorial_rubric_fingerprint": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Editorial Rubric Fingerprint",
+          "type": "string"
+        },
+        "editorial_threshold": {
+          "title": "Editorial Threshold",
+          "type": "string"
+        },
+        "episode_draft_contract_fingerprint": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Episode Draft Contract Fingerprint",
+          "type": "string"
+        },
+        "provider_schema_fingerprint": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Provider Schema Fingerprint",
+          "type": "string"
+        },
+        "reconstruction_contract_fingerprint": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Reconstruction Contract Fingerprint",
+          "type": "string"
+        },
+        "scenario_corpus_fingerprint": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Scenario Corpus Fingerprint",
+          "type": "string"
+        },
+        "scenario_count": {
+          "exclusiveMinimum": 0,
+          "title": "Scenario Count",
+          "type": "integer"
+        },
+        "scenario_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Scenario Ids",
+          "type": "array"
+        },
+        "scenario_order_fingerprint": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Scenario Order Fingerprint",
+          "type": "string"
+        }
+      },
+      "required": [
+        "benchmark_id",
+        "benchmark_version",
+        "scenario_count",
+        "scenario_order_fingerprint",
+        "scenario_corpus_fingerprint",
+        "scenario_ids",
+        "editorial_rubric_fingerprint",
+        "editorial_threshold",
+        "provider_schema_fingerprint",
+        "dto_contract_fingerprint",
+        "authorization_contract_fingerprint",
+        "reconstruction_contract_fingerprint",
+        "episode_draft_contract_fingerprint"
+      ],
+      "title": "Benchmark",
+      "type": "object"
+    },
+    "Decision": {
+      "additionalProperties": false,
+      "properties": {
+        "candidate_decision": {
+          "title": "Candidate Decision",
+          "type": "string"
+        },
+        "decision_gates": {
+          "additionalProperties": {
+            "$ref": "#/$defs/GateStatus"
+          },
+          "title": "Decision Gates",
+          "type": "object"
+        },
+        "decision_reason": {
+          "title": "Decision Reason",
+          "type": "string"
+        },
+        "recommendation": {
+          "title": "Recommendation",
+          "type": "string"
+        },
+        "root_conclusion": {
+          "title": "Root Conclusion",
+          "type": "string"
+        }
+      },
+      "required": [
+        "candidate_decision",
+        "decision_reason",
+        "decision_gates",
+        "root_conclusion",
+        "recommendation"
+      ],
+      "title": "Decision",
+      "type": "object"
+    },
+    "EditorialResults": {
+      "additionalProperties": false,
+      "properties": {
+        "acceptance_transitions": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "title": "Acceptance Transitions",
+          "type": "object"
+        },
+        "editorial_acceptance_failures": {
+          "minimum": 0,
+          "title": "Editorial Acceptance Failures",
+          "type": "integer"
+        },
+        "editorial_acceptance_passes": {
+          "minimum": 0,
+          "title": "Editorial Acceptance Passes",
+          "type": "integer"
+        },
+        "editorial_evaluations": {
+          "minimum": 0,
+          "title": "Editorial Evaluations",
+          "type": "integer"
+        },
+        "editorial_improvement": {
+          "$ref": "#/$defs/GateStatus"
+        },
+        "failure_category_transitions": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "title": "Failure Category Transitions",
+          "type": "object"
+        },
+        "mean_editorial_score": {
+          "title": "Mean Editorial Score",
+          "type": "number"
+        },
+        "median_editorial_score": {
+          "title": "Median Editorial Score",
+          "type": "number"
+        },
+        "targeted_metric": {
+          "$ref": "#/$defs/TargetedMetric"
+        }
+      },
+      "required": [
+        "editorial_evaluations",
+        "editorial_acceptance_passes",
+        "editorial_acceptance_failures",
+        "mean_editorial_score",
+        "median_editorial_score",
+        "editorial_improvement",
+        "acceptance_transitions",
+        "failure_category_transitions",
+        "targeted_metric"
+      ],
+      "title": "EditorialResults",
+      "type": "object"
+    },
+    "Execution": {
+      "additionalProperties": false,
+      "properties": {
+        "actual": {
+          "$ref": "#/$defs/ExecutionCounts"
+        },
+        "planned": {
+          "$ref": "#/$defs/ExecutionCounts"
+        }
+      },
+      "required": [
+        "planned",
+        "actual"
+      ],
+      "title": "Execution",
+      "type": "object"
+    },
+    "ExecutionCounts": {
+      "additionalProperties": false,
+      "properties": {
+        "fallbacks": {
+          "minimum": 0,
+          "title": "Fallbacks",
+          "type": "integer"
+        },
+        "provider_requests": {
+          "minimum": 0,
+          "title": "Provider Requests",
+          "type": "integer"
+        },
+        "provider_responses": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Provider Responses"
+        },
+        "replays": {
+          "minimum": 0,
+          "title": "Replays",
+          "type": "integer"
+        },
+        "retries": {
+          "minimum": 0,
+          "title": "Retries",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "provider_requests",
+        "retries",
+        "fallbacks",
+        "replays"
+      ],
+      "title": "ExecutionCounts",
+      "type": "object"
+    },
+    "ExperimentIdentity": {
+      "additionalProperties": false,
+      "properties": {
+        "benchmark_series": {
+          "minLength": 1,
+          "title": "Benchmark Series",
+          "type": "string"
+        },
+        "completed_at": {
+          "title": "Completed At",
+          "type": "string"
+        },
+        "created_at": {
+          "title": "Created At",
+          "type": "string"
+        },
+        "experiment_id": {
+          "minLength": 1,
+          "title": "Experiment Id",
+          "type": "string"
+        },
+        "experiment_name": {
+          "minLength": 1,
+          "title": "Experiment Name",
+          "type": "string"
+        },
+        "experiment_type": {
+          "$ref": "#/$defs/ExperimentType"
+        },
+        "milestone": {
+          "minLength": 1,
+          "title": "Milestone",
+          "type": "string"
+        },
+        "repository_revision": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Repository Revision"
+        },
+        "run_id": {
+          "minLength": 1,
+          "title": "Run Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "experiment_id",
+        "milestone",
+        "experiment_name",
+        "experiment_type",
+        "run_id",
+        "benchmark_series",
+        "created_at",
+        "completed_at"
+      ],
+      "title": "ExperimentIdentity",
+      "type": "object"
+    },
+    "ExperimentType": {
+      "enum": [
+        "BASELINE",
+        "PROMPT_EXPERIMENT",
+        "SCHEMA_EXPERIMENT",
+        "PROVIDER_EXPERIMENT",
+        "RUBRIC_EXPERIMENT",
+        "OFFLINE_ANALYSIS",
+        "INFRASTRUCTURE"
+      ],
+      "title": "ExperimentType",
+      "type": "string"
+    },
+    "Gate": {
+      "additionalProperties": false,
+      "properties": {
+        "expected": {
+          "title": "Expected"
+        },
+        "failure_reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Failure Reason"
+        },
+        "observed": {
+          "title": "Observed"
+        },
+        "status": {
+          "$ref": "#/$defs/GateStatus"
+        }
+      },
+      "required": [
+        "status",
+        "expected",
+        "observed"
+      ],
+      "title": "Gate",
+      "type": "object"
+    },
+    "GateStatus": {
+      "enum": [
+        "PASS",
+        "FAIL",
+        "NOT_APPLICABLE",
+        "NOT_EVALUATED"
+      ],
+      "title": "GateStatus",
+      "type": "string"
+    },
+    "Hypothesis": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence_source": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Source",
+          "type": "array"
+        },
+        "expected_direction": {
+          "title": "Expected Direction",
+          "type": "string"
+        },
+        "falsifiable": {
+          "title": "Falsifiable",
+          "type": "boolean"
+        },
+        "hypothesis_id": {
+          "title": "Hypothesis Id",
+          "type": "string"
+        },
+        "hypothesis_text": {
+          "title": "Hypothesis Text",
+          "type": "string"
+        },
+        "status": {
+          "title": "Status",
+          "type": "string"
+        },
+        "targeted_behavior": {
+          "title": "Targeted Behavior",
+          "type": "string"
+        },
+        "targeted_metric": {
+          "title": "Targeted Metric",
+          "type": "string"
+        }
+      },
+      "required": [
+        "hypothesis_id",
+        "hypothesis_text",
+        "targeted_behavior",
+        "targeted_metric",
+        "expected_direction",
+        "evidence_source",
+        "falsifiable",
+        "status"
+      ],
+      "title": "Hypothesis",
+      "type": "object"
+    },
+    "IndependentVariable": {
+      "additionalProperties": false,
+      "properties": {
+        "behavioral_mechanism_count": {
+          "minimum": 0,
+          "title": "Behavioral Mechanism Count",
+          "type": "integer"
+        },
+        "control_value_fingerprint": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Control Value Fingerprint",
+          "type": "string"
+        },
+        "documented_change_count": {
+          "minimum": 0,
+          "title": "Documented Change Count",
+          "type": "integer"
+        },
+        "treatment_value_fingerprint": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Treatment Value Fingerprint",
+          "type": "string"
+        },
+        "variable_name": {
+          "title": "Variable Name",
+          "type": "string"
+        },
+        "variable_type": {
+          "title": "Variable Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "variable_type",
+        "variable_name",
+        "control_value_fingerprint",
+        "treatment_value_fingerprint",
+        "documented_change_count",
+        "behavioral_mechanism_count"
+      ],
+      "title": "IndependentVariable",
+      "type": "object"
+    },
+    "Lifecycle": {
+      "additionalProperties": false,
+      "properties": {
+        "design_status": {
+          "title": "Design Status",
+          "type": "string"
+        },
+        "evaluation_status": {
+          "title": "Evaluation Status",
+          "type": "string"
+        },
+        "execution_status": {
+          "title": "Execution Status",
+          "type": "string"
+        },
+        "promotion_status": {
+          "title": "Promotion Status",
+          "type": "string"
+        },
+        "status": {
+          "title": "Status",
+          "type": "string"
+        },
+        "validation_status": {
+          "title": "Validation Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "status",
+        "design_status",
+        "execution_status",
+        "evaluation_status",
+        "validation_status",
+        "promotion_status"
+      ],
+      "title": "Lifecycle",
+      "type": "object"
+    },
+    "LineageEntry": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_fingerprint": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Artifact Fingerprint",
+          "type": "string"
+        },
+        "artifact_path": {
+          "title": "Artifact Path",
+          "type": "string"
+        },
+        "milestone": {
+          "title": "Milestone",
+          "type": "string"
+        },
+        "relationship": {
+          "title": "Relationship",
+          "type": "string"
+        },
+        "required": {
+          "title": "Required",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "milestone",
+        "relationship",
+        "artifact_path",
+        "artifact_fingerprint",
+        "required"
+      ],
+      "title": "LineageEntry",
+      "type": "object"
+    },
+    "ManifestIdentity": {
+      "additionalProperties": false,
+      "properties": {
+        "contract_version": {
+          "minimum": 1,
+          "title": "Contract Version",
+          "type": "integer"
+        },
+        "fingerprint_algorithm": {
+          "default": "SHA-256",
+          "title": "Fingerprint Algorithm",
+          "type": "string"
+        },
+        "generated_at": {
+          "title": "Generated At",
+          "type": "string"
+        },
+        "generator": {
+          "title": "Generator",
+          "type": "string"
+        },
+        "generator_version": {
+          "title": "Generator Version",
+          "type": "string"
+        },
+        "manifest_fingerprint": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Manifest Fingerprint",
+          "type": "string"
+        },
+        "schema_name": {
+          "pattern": "^[a-z][a-z0-9_]+$",
+          "title": "Schema Name",
+          "type": "string"
+        },
+        "schema_version": {
+          "pattern": "^1\\.[0-9]+\\.[0-9]+$",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_name",
+        "schema_version",
+        "contract_version",
+        "generated_at",
+        "generator",
+        "generator_version",
+        "manifest_fingerprint"
+      ],
+      "title": "ManifestIdentity",
+      "type": "object"
+    },
+    "ManifestValidation": {
+      "additionalProperties": false,
+      "properties": {
+        "errors": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Errors",
+          "type": "array"
+        },
+        "failed_invariants": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Failed Invariants",
+          "type": "array"
+        },
+        "status": {
+          "$ref": "#/$defs/GateStatus"
+        },
+        "validated_artifacts": {
+          "minimum": 0,
+          "title": "Validated Artifacts",
+          "type": "integer"
+        },
+        "warnings": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Warnings",
+          "type": "array"
+        }
+      },
+      "required": [
+        "status",
+        "errors",
+        "warnings",
+        "validated_artifacts",
+        "failed_invariants"
+      ],
+      "title": "ManifestValidation",
+      "type": "object"
+    },
+    "OperationalResults": {
+      "additionalProperties": false,
+      "properties": {
+        "completion_tokens": {
+          "minimum": 0,
+          "title": "Completion Tokens",
+          "type": "integer"
+        },
+        "cost_currency": {
+          "title": "Cost Currency",
+          "type": "string"
+        },
+        "estimated_cost": {
+          "minimum": 0,
+          "title": "Estimated Cost",
+          "type": "number"
+        },
+        "median_latency_ms": {
+          "minimum": 0,
+          "title": "Median Latency Ms",
+          "type": "number"
+        },
+        "p95_latency_ms": {
+          "minimum": 0,
+          "title": "P95 Latency Ms",
+          "type": "number"
+        },
+        "prompt_tokens": {
+          "minimum": 0,
+          "title": "Prompt Tokens",
+          "type": "integer"
+        },
+        "total_tokens": {
+          "minimum": 0,
+          "title": "Total Tokens",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "median_latency_ms",
+        "p95_latency_ms",
+        "prompt_tokens",
+        "completion_tokens",
+        "total_tokens",
+        "estimated_cost",
+        "cost_currency"
+      ],
+      "title": "OperationalResults",
+      "type": "object"
+    },
+    "Promotion": {
+      "additionalProperties": false,
+      "properties": {
+        "authoritative_production_baseline": {
+          "title": "Authoritative Production Baseline",
+          "type": "string"
+        },
+        "production_promotion": {
+          "title": "Production Promotion",
+          "type": "boolean"
+        },
+        "production_prompt_changed": {
+          "title": "Production Prompt Changed",
+          "type": "boolean"
+        },
+        "promotion_approved_by": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Promotion Approved By"
+        },
+        "promotion_timestamp": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Promotion Timestamp"
+        }
+      },
+      "required": [
+        "production_promotion",
+        "production_prompt_changed",
+        "authoritative_production_baseline",
+        "promotion_approved_by",
+        "promotion_timestamp"
+      ],
+      "title": "Promotion",
+      "type": "object"
+    },
+    "PromptDeltaBudget": {
+      "additionalProperties": false,
+      "properties": {
+        "benchmark_specific_instructions": {
+          "minimum": 0,
+          "title": "Benchmark Specific Instructions",
+          "type": "integer"
+        },
+        "budget_consumed": {
+          "minimum": 0,
+          "title": "Budget Consumed",
+          "type": "integer"
+        },
+        "budget_exceeded": {
+          "title": "Budget Exceeded",
+          "type": "boolean"
+        },
+        "budget_limit": {
+          "minimum": 0,
+          "title": "Budget Limit",
+          "type": "integer"
+        },
+        "evaluator_specific_instructions": {
+          "minimum": 0,
+          "title": "Evaluator Specific Instructions",
+          "type": "integer"
+        },
+        "evidence_derived_hypotheses": {
+          "minimum": 0,
+          "title": "Evidence Derived Hypotheses",
+          "type": "integer"
+        },
+        "independent_behavioral_mechanisms": {
+          "minimum": 0,
+          "title": "Independent Behavioral Mechanisms",
+          "type": "integer"
+        },
+        "production_irrelevant_instructions": {
+          "minimum": 0,
+          "title": "Production Irrelevant Instructions",
+          "type": "integer"
+        },
+        "undocumented_semantic_changes": {
+          "minimum": 0,
+          "title": "Undocumented Semantic Changes",
+          "type": "integer"
+        },
+        "validation_status": {
+          "$ref": "#/$defs/GateStatus"
+        }
+      },
+      "required": [
+        "budget_limit",
+        "budget_consumed",
+        "independent_behavioral_mechanisms",
+        "evidence_derived_hypotheses",
+        "undocumented_semantic_changes",
+        "benchmark_specific_instructions",
+        "evaluator_specific_instructions",
+        "production_irrelevant_instructions",
+        "budget_exceeded",
+        "validation_status"
+      ],
+      "title": "PromptDeltaBudget",
+      "type": "object"
+    },
+    "Provider": {
+      "additionalProperties": false,
+      "properties": {
+        "api_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Api Version"
+        },
+        "comparability": {
+          "title": "Comparability",
+          "type": "string"
+        },
+        "model": {
+          "title": "Model",
+          "type": "string"
+        },
+        "model_alias": {
+          "title": "Model Alias",
+          "type": "string"
+        },
+        "model_revision": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Model Revision"
+        },
+        "provider_configuration": {
+          "additionalProperties": true,
+          "title": "Provider Configuration",
+          "type": "object"
+        },
+        "provider_configuration_fingerprint": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Provider Configuration Fingerprint",
+          "type": "string"
+        },
+        "provider_drift_notes": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Provider Drift Notes"
+        },
+        "provider_drift_observed": {
+          "title": "Provider Drift Observed",
+          "type": "boolean"
+        },
+        "provider_name": {
+          "title": "Provider Name",
+          "type": "string"
+        },
+        "sdk_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Sdk Version"
+        }
+      },
+      "required": [
+        "provider_name",
+        "model",
+        "model_alias",
+        "model_revision",
+        "api_version",
+        "sdk_version",
+        "provider_configuration",
+        "provider_configuration_fingerprint",
+        "comparability",
+        "provider_drift_observed",
+        "provider_drift_notes"
+      ],
+      "title": "Provider",
+      "type": "object"
+    },
+    "ReferenceResults": {
+      "additionalProperties": false,
+      "properties": {
+        "duplicate_references": {
+          "minimum": 0,
+          "title": "Duplicate References",
+          "type": "integer"
+        },
+        "exact_reference_compliance_count": {
+          "minimum": 0,
+          "title": "Exact Reference Compliance Count",
+          "type": "integer"
+        },
+        "exact_reference_compliance_total": {
+          "minimum": 0,
+          "title": "Exact Reference Compliance Total",
+          "type": "integer"
+        },
+        "malformed_references": {
+          "minimum": 0,
+          "title": "Malformed References",
+          "type": "integer"
+        },
+        "missing_authorized_references": {
+          "minimum": 0,
+          "title": "Missing Authorized References",
+          "type": "integer"
+        },
+        "reference_non_regression": {
+          "$ref": "#/$defs/GateStatus"
+        },
+        "reference_precision": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Reference Precision",
+          "type": "number"
+        },
+        "reference_recall": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Reference Recall",
+          "type": "number"
+        },
+        "unauthorized_references": {
+          "minimum": 0,
+          "title": "Unauthorized References",
+          "type": "integer"
+        },
+        "unknown_references": {
+          "minimum": 0,
+          "title": "Unknown References",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "unknown_references",
+        "unauthorized_references",
+        "missing_authorized_references",
+        "duplicate_references",
+        "malformed_references",
+        "reference_precision",
+        "reference_recall",
+        "exact_reference_compliance_count",
+        "exact_reference_compliance_total",
+        "reference_non_regression"
+      ],
+      "title": "ReferenceResults",
+      "type": "object"
+    },
+    "Results": {
+      "additionalProperties": false,
+      "properties": {
+        "editorial": {
+          "$ref": "#/$defs/EditorialResults"
+        },
+        "operational": {
+          "$ref": "#/$defs/OperationalResults"
+        },
+        "reference": {
+          "$ref": "#/$defs/ReferenceResults"
+        },
+        "technical": {
+          "$ref": "#/$defs/TechnicalResults"
+        }
+      },
+      "required": [
+        "technical",
+        "reference",
+        "editorial",
+        "operational"
+      ],
+      "title": "Results",
+      "type": "object"
+    },
+    "TargetedMetric": {
+      "additionalProperties": false,
+      "properties": {
+        "control_value": {
+          "title": "Control Value",
+          "type": "number"
+        },
+        "direction_satisfied": {
+          "title": "Direction Satisfied",
+          "type": "boolean"
+        },
+        "expected_direction": {
+          "title": "Expected Direction",
+          "type": "string"
+        },
+        "metric_name": {
+          "title": "Metric Name",
+          "type": "string"
+        },
+        "net_change": {
+          "title": "Net Change",
+          "type": "number"
+        },
+        "net_change_convention": {
+          "title": "Net Change Convention",
+          "type": "string"
+        },
+        "new_cases": {
+          "minimum": 0,
+          "title": "New Cases",
+          "type": "integer"
+        },
+        "persisting_cases": {
+          "minimum": 0,
+          "title": "Persisting Cases",
+          "type": "integer"
+        },
+        "resolved_cases": {
+          "minimum": 0,
+          "title": "Resolved Cases",
+          "type": "integer"
+        },
+        "treatment_value": {
+          "title": "Treatment Value",
+          "type": "number"
+        }
+      },
+      "required": [
+        "metric_name",
+        "control_value",
+        "treatment_value",
+        "resolved_cases",
+        "persisting_cases",
+        "new_cases",
+        "net_change",
+        "net_change_convention",
+        "expected_direction",
+        "direction_satisfied"
+      ],
+      "title": "TargetedMetric",
+      "type": "object"
+    },
+    "TechnicalResults": {
+      "additionalProperties": false,
+      "properties": {
+        "authorization_passes": {
+          "minimum": 0,
+          "title": "Authorization Passes",
+          "type": "integer"
+        },
+        "dto_validation_passes": {
+          "minimum": 0,
+          "title": "Dto Validation Passes",
+          "type": "integer"
+        },
+        "episode_draft_validation_passes": {
+          "minimum": 0,
+          "title": "Episode Draft Validation Passes",
+          "type": "integer"
+        },
+        "reconstruction_passes": {
+          "minimum": 0,
+          "title": "Reconstruction Passes",
+          "type": "integer"
+        },
+        "technical_non_regression": {
+          "$ref": "#/$defs/GateStatus"
+        },
+        "technical_pipeline_failures": {
+          "minimum": 0,
+          "title": "Technical Pipeline Failures",
+          "type": "integer"
+        },
+        "technical_pipeline_successes": {
+          "minimum": 0,
+          "title": "Technical Pipeline Successes",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "technical_pipeline_successes",
+        "technical_pipeline_failures",
+        "dto_validation_passes",
+        "authorization_passes",
+        "reconstruction_passes",
+        "episode_draft_validation_passes",
+        "technical_non_regression"
+      ],
+      "title": "TechnicalResults",
+      "type": "object"
+    },
+    "Variant": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_paths": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Artifact Paths",
+          "type": "array"
+        },
+        "configuration_fingerprint": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Configuration Fingerprint",
+          "type": "string"
+        },
+        "corpus_fingerprint": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Corpus Fingerprint",
+          "type": "string"
+        },
+        "identity": {
+          "title": "Identity",
+          "type": "string"
+        },
+        "milestone": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Milestone"
+        },
+        "prompt_fingerprint": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Prompt Fingerprint",
+          "type": "string"
+        },
+        "provider_fingerprint": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Provider Fingerprint",
+          "type": "string"
+        },
+        "rubric_fingerprint": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Rubric Fingerprint",
+          "type": "string"
+        },
+        "run_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Run Id"
+        },
+        "schema_fingerprint": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Schema Fingerprint",
+          "type": "string"
+        }
+      },
+      "required": [
+        "identity",
+        "prompt_fingerprint",
+        "provider_fingerprint",
+        "corpus_fingerprint",
+        "rubric_fingerprint",
+        "schema_fingerprint",
+        "configuration_fingerprint",
+        "artifact_paths"
+      ],
+      "title": "Variant",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Canonical controlled-experiment contract.",
+  "properties": {
+    "artifacts": {
+      "items": {
+        "$ref": "#/$defs/ArtifactReference"
+      },
+      "title": "Artifacts",
+      "type": "array"
+    },
+    "baseline": {
+      "$ref": "#/$defs/Variant"
+    },
+    "benchmark": {
+      "$ref": "#/$defs/Benchmark"
+    },
+    "decision": {
+      "$ref": "#/$defs/Decision"
+    },
+    "execution": {
+      "$ref": "#/$defs/Execution"
+    },
+    "experiment": {
+      "$ref": "#/$defs/ExperimentIdentity"
+    },
+    "historical_backfill_assessment": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Historical Backfill Assessment",
+      "type": "object"
+    },
+    "hypothesis": {
+      "$ref": "#/$defs/Hypothesis"
+    },
+    "independent_variable": {
+      "$ref": "#/$defs/IndependentVariable"
+    },
+    "integrity": {
+      "additionalProperties": {
+        "$ref": "#/$defs/Gate"
+      },
+      "title": "Integrity",
+      "type": "object"
+    },
+    "lifecycle": {
+      "$ref": "#/$defs/Lifecycle"
+    },
+    "lineage": {
+      "items": {
+        "$ref": "#/$defs/LineageEntry"
+      },
+      "title": "Lineage",
+      "type": "array"
+    },
+    "manifest": {
+      "$ref": "#/$defs/ManifestIdentity"
+    },
+    "promotion": {
+      "$ref": "#/$defs/Promotion"
+    },
+    "prompt_delta_budget": {
+      "$ref": "#/$defs/PromptDeltaBudget"
+    },
+    "provider": {
+      "$ref": "#/$defs/Provider"
+    },
+    "results": {
+      "$ref": "#/$defs/Results"
+    },
+    "treatment": {
+      "$ref": "#/$defs/Variant"
+    },
+    "validation": {
+      "$ref": "#/$defs/ManifestValidation"
+    }
+  },
+  "required": [
+    "manifest",
+    "experiment",
+    "lifecycle",
+    "lineage",
+    "hypothesis",
+    "independent_variable",
+    "baseline",
+    "treatment",
+    "prompt_delta_budget",
+    "provider",
+    "benchmark",
+    "execution",
+    "integrity",
+    "results",
+    "decision",
+    "promotion",
+    "artifacts",
+    "validation",
+    "historical_backfill_assessment"
+  ],
+  "title": "ExperimentManifest",
+  "type": "object"
+}

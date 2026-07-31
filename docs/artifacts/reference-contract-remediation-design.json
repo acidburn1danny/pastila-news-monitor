@@ -1,0 +1,358 @@
+{
+  "schema_version": 1,
+  "milestone": "Part 7F — Reference Contract Remediation Design",
+  "created_at": "2026-07-28",
+  "evidence_sources": [
+    "Part 7C baseline",
+    "Part 7D contract diagnostics",
+    "Part 7E diagnostics capture",
+    "Part 7C.1 instrumented baseline",
+    "current production contracts"
+  ],
+  "production_guarantees": [
+    "single provider request",
+    "single deterministic reconstruction",
+    "single authorization pass",
+    "fail-closed behavior",
+    "deterministic runtime",
+    "offline validation",
+    "immutable benchmark corpus",
+    "provider independence",
+    "no benchmark-specific production behavior"
+  ],
+  "discovery": {
+    "raw_ideas": [
+      "prompt-only exact-reference reinforcement",
+      "invocation-specific reference enum schema",
+      "invocation-specific reference-keyed object schema",
+      "strict tool arguments constrained to invocation references",
+      "opaque authorized handles with deterministic mapping",
+      "reference-free ordered patch slots",
+      "static registry-wide reference enum",
+      "runtime alias, normalization, or fuzzy matching",
+      "runtime reference injection from provider order",
+      "multi-request reference repair"
+    ],
+    "equivalence_merges": [
+      {
+        "ideas": [
+          "invocation-specific reference enum schema",
+          "invocation-specific reference-keyed object schema",
+          "strict tool arguments constrained to invocation references"
+        ],
+        "family": "C2_DYNAMIC_EXACT_SCHEMA",
+        "reason": "All make the authorized invocation set the provider-visible structural language; serialization shape is an implementation detail."
+      },
+      {
+        "ideas": [
+          "reference-free ordered patch slots",
+          "runtime reference injection from provider order"
+        ],
+        "family": "C4_ORDERED_PATCH_SLOTS",
+        "reason": "Both transfer reference ownership to deterministic positional slots and differ only in reconstruction mechanics."
+      }
+    ],
+    "families_after_merge": 7
+  },
+  "candidate_families": [
+    {
+      "candidate_id": "C1_PROMPT_ONLY",
+      "status": "VIABLE",
+      "architecture_summary": "Retain the generic schema and exact runtime contract while strengthening only provider instructions and reference presentation.",
+      "problem_addressed": "Provider failure to copy the authorized structural identifier.",
+      "core_idea": "Use natural-language instruction as the sole invocation-specific constraint.",
+      "production_boundary": "Provider projector prompt construction.",
+      "components_affected": ["production prompt projection"],
+      "expected_production_impact": "Reference semantics and runtime remain unchanged; provider input wording changes.",
+      "expected_benchmark_impact": "Uncertain because the frozen prompt already states exact-copy requirements and produced 0 exact references in 24 trials."
+    },
+    {
+      "candidate_id": "C2_DYNAMIC_EXACT_SCHEMA",
+      "status": "PREFERRED",
+      "architecture_summary": "Project an invocation-specific strict output schema whose allowed component branches, exact reference constants, and cardinality are derived from the already-authorized target set.",
+      "problem_addressed": "The static schema accepts structural identifiers outside the invocation-authorized set.",
+      "core_idea": "Make the provider-visible structural language equal to the authorization language before the single request.",
+      "production_boundary": "Provider adapter request projection and schema construction.",
+      "components_affected": ["provider-visible schema projection", "schema fingerprint/version diagnostics"],
+      "expected_production_impact": "Provider output is constrained earlier; DTO, registry, authorization, reconstruction, runtime, and gateway remain fail-closed and unchanged.",
+      "expected_benchmark_impact": "Eliminates schema-valid unknown and unauthorized references by construction while preserving measurement of other output failures."
+    },
+    {
+      "candidate_id": "C3_OPAQUE_HANDLES",
+      "status": "DOMINATED",
+      "architecture_summary": "Transmit short invocation-owned handles and deterministically map returned handles to canonical references before authorization.",
+      "problem_addressed": "Provider generation of semantically suggestive but incorrect structural identifiers.",
+      "core_idea": "Separate provider-facing identifiers from canonical domain references.",
+      "production_boundary": "Projection, provider DTO/schema, handle registry, and reconstruction adapter.",
+      "components_affected": ["provider schema", "provider DTO", "reference mapping", "diagnostics"],
+      "expected_production_impact": "Adds a second reference representation and mapping contract.",
+      "expected_benchmark_impact": "Likely high compliance when handles are enum-constrained, but requires new mapping-specific failure metrics."
+    },
+    {
+      "candidate_id": "C4_ORDERED_PATCH_SLOTS",
+      "status": "VIABLE_NOT_SELECTED",
+      "architecture_summary": "Remove provider-authored references and bind returned patch slots deterministically to the ordered authorized target list.",
+      "problem_addressed": "Provider cannot reliably emit canonical identifiers.",
+      "core_idea": "Move reference ownership entirely to runtime and make provider output positional.",
+      "production_boundary": "Provider DTO/schema and deterministic reconstruction input mapping.",
+      "components_affected": ["provider schema", "provider DTO", "reference mapping", "reconstruction boundary"],
+      "expected_production_impact": "Canonical references are never provider-authored, but ordering/cardinality becomes security-critical.",
+      "expected_benchmark_impact": "Reference-string failures disappear; missing, extra, or reordered slots become the new measured contract failures."
+    },
+    {
+      "candidate_id": "E1_STATIC_REGISTRY_ENUM",
+      "status": "ELIMINATED_DOMINATED",
+      "architecture_summary": "Constrain schema references to every reference known in the source episode.",
+      "elimination_reason": "It can prevent unknown references but still permits the 17 observed unauthorized-reference scenarios; C2 narrows the same mechanism to the exact authorized set without weakening any guarantee."
+    },
+    {
+      "candidate_id": "E2_TOLERANT_RUNTIME_MAPPING",
+      "status": "ELIMINATED_CONSTRAINT_VIOLATION",
+      "architecture_summary": "Normalize, alias, infer, or fuzzily match provider references after response.",
+      "elimination_reason": "It weakens exact authorization, creates spoofing/confusion risk, and makes accepted mappings dependent on heuristics rather than the frozen deterministic contract."
+    },
+    {
+      "candidate_id": "E3_MULTI_REQUEST_REPAIR",
+      "status": "ELIMINATED_CONSTRAINT_VIOLATION",
+      "architecture_summary": "Issue a second provider request to repair invalid references.",
+      "elimination_reason": "It violates the mandatory single-provider-request guarantee and introduces retry-like operational uncertainty."
+    }
+  ],
+  "evaluation_method": {
+    "scale": {
+      "1": "Material weakness or unacceptable exposure",
+      "2": "Significant cost, risk, or uncertainty",
+      "3": "Manageable but material trade-off",
+      "4": "Strong preservation with bounded cost",
+      "5": "Directly preserves or strengthens the criterion with low residual risk"
+    },
+    "weighting": "All mandatory criteria are equally weighted.",
+    "criteria": [
+      "determinism",
+      "provider_compliance_probability",
+      "authorization_compatibility",
+      "reference_integrity",
+      "reference_ownership",
+      "operational_simplicity",
+      "runtime_complexity",
+      "prompt_complexity",
+      "schema_complexity",
+      "migration_complexity",
+      "testing_complexity",
+      "regression_risk",
+      "operational_safety",
+      "failure_isolation",
+      "maintainability",
+      "extensibility",
+      "provider_portability",
+      "offline_validation_capability",
+      "future_benchmark_compatibility"
+    ]
+  },
+  "evaluation_matrix": [
+    {
+      "candidate_id": "C1_PROMPT_ONLY",
+      "scores": [5, 1, 5, 2, 2, 5, 5, 2, 5, 5, 4, 4, 3, 3, 3, 3, 5, 3, 2],
+      "total": 67,
+      "evidence": "The prompt already demands exact copying, yet Part 7C.1 produced no exact authorized reference in 24 responses."
+    },
+    {
+      "candidate_id": "C2_DYNAMIC_EXACT_SCHEMA",
+      "scores": [5, 5, 5, 5, 5, 4, 4, 5, 3, 4, 4, 4, 5, 5, 4, 4, 4, 5, 5],
+      "total": 85,
+      "evidence": "It closes the exact static-schema gap identified in Part 7D and measured in Part 7C.1 before unchanged authorization runs."
+    },
+    {
+      "candidate_id": "C3_OPAQUE_HANDLES",
+      "scores": [5, 5, 5, 4, 4, 3, 3, 4, 3, 2, 3, 2, 4, 4, 3, 3, 3, 5, 4],
+      "total": 69,
+      "evidence": "Enum-constrained handles can prevent free generation, but add a second identity system not required by the observed failure."
+    },
+    {
+      "candidate_id": "C4_ORDERED_PATCH_SLOTS",
+      "scores": [5, 5, 4, 3, 5, 4, 3, 5, 4, 2, 3, 2, 3, 3, 3, 4, 4, 5, 4],
+      "total": 71,
+      "evidence": "It removes provider reference generation but makes order/cardinality authoritative and changes DTO and reconstruction ownership."
+    }
+  ],
+  "trade_offs": {
+    "C1_PROMPT_ONLY": {
+      "benefits_gained": ["small production boundary", "no schema or DTO migration"],
+      "costs_introduced": ["greater prompt complexity", "continued dependence on unconstrained generation"],
+      "risks_reduced": ["none demonstrated by existing benchmark"],
+      "risks_introduced": ["repeat systematic failure despite wording changes"],
+      "operational_implications": "No new runtime stages, but provider compliance remains uncertain.",
+      "maintenance_implications": "Prompt behavior must be revalidated across models and prompt revisions.",
+      "extensibility_implications": "Portable, but every provider remains dependent on natural-language adherence."
+    },
+    "C2_DYNAMIC_EXACT_SCHEMA": {
+      "benefits_gained": ["invalid references excluded before response", "canonical reference ownership retained", "unchanged fail-closed authorization"],
+      "costs_introduced": ["invocation-specific schema construction", "schema fingerprint/version migration"],
+      "risks_reduced": ["unknown references", "unauthorized references", "missing branches caused by generic union choice"],
+      "risks_introduced": ["schema projection defect could reject request preflight"],
+      "operational_implications": "Still one request and one production pipeline; projection validation becomes more important.",
+      "maintenance_implications": "One schema projection must remain aligned with DTO branches and target contracts.",
+      "extensibility_implications": "Each provider adapter can express the same neutral authorized set using its native constrained-output mechanism."
+    },
+    "C3_OPAQUE_HANDLES": {
+      "benefits_gained": ["short provider-visible identifiers", "canonical domain identifiers hidden from generation"],
+      "costs_introduced": ["new handle lifecycle", "new mapping and diagnostic contracts", "DTO migration"],
+      "risks_reduced": ["semantic identifier invention"],
+      "risks_introduced": ["handle/canonical mapping drift", "dual-identity confusion"],
+      "operational_implications": "Adds deterministic mapping before existing authorization.",
+      "maintenance_implications": "Both handle and canonical identity contracts require permanent support.",
+      "extensibility_implications": "Portable but duplicates reference representation for every provider."
+    },
+    "C4_ORDERED_PATCH_SLOTS": {
+      "benefits_gained": ["provider never authors reference strings", "schema may remain compact"],
+      "costs_introduced": ["DTO and reconstruction contract migration", "order/cardinality becomes authoritative"],
+      "risks_reduced": ["reference spelling and identifier invention"],
+      "risks_introduced": ["correct prose bound to wrong target slot", "multi-target order confusion"],
+      "operational_implications": "Requires strict count/order validation before deterministic binding.",
+      "maintenance_implications": "Every target-shape evolution must preserve positional semantics.",
+      "extensibility_implications": "Provider-portable but less self-describing for new component types."
+    }
+  },
+  "failure_analysis": {
+    "C1_PROMPT_ONLY": {
+      "expected_failure_modes": ["provider repeats alternative schema-valid references", "prompt/model sensitivity"],
+      "visibility": "Existing Part 7E diagnostics",
+      "detectability": "After provider response",
+      "containment": "Unchanged exact authorization rejects safely",
+      "recovery": "Requires another prompt revision and benchmark",
+      "authorization_impact": "None",
+      "reconstruction_impact": "None",
+      "benchmark_reproducibility": "Prompt version changes require a new baseline"
+    },
+    "C2_DYNAMIC_EXACT_SCHEMA": {
+      "expected_failure_modes": ["invalid dynamic schema", "provider rejects constrained request", "DTO/schema branch drift"],
+      "visibility": "Offline projection validation or bounded provider-call failure",
+      "detectability": "Mostly before provider request",
+      "containment": "Preflight abort; unchanged authorization remains the final guard",
+      "recovery": "Rollback schema projector/version without data migration",
+      "authorization_impact": "Strengthens early alignment; does not weaken final authorization",
+      "reconstruction_impact": "None",
+      "benchmark_reproducibility": "Schema fingerprint/version makes runs comparable"
+    },
+    "C3_OPAQUE_HANDLES": {
+      "expected_failure_modes": ["unknown handle", "duplicate handle", "handle mapping drift"],
+      "visibility": "New handle diagnostics plus existing authorization",
+      "detectability": "Schema/preflight for allowed handles; response time for returned values",
+      "containment": "Fail closed before canonical reconstruction",
+      "recovery": "Rollback coordinated DTO/schema/mapper migration",
+      "authorization_impact": "Requires proof that mapped canonical reference was invocation-authorized",
+      "reconstruction_impact": "Adds mapping dependency",
+      "benchmark_reproducibility": "Requires new handle-specific metrics"
+    },
+    "C4_ORDERED_PATCH_SLOTS": {
+      "expected_failure_modes": ["missing slot", "extra slot", "wrong order", "wrong component shape in slot"],
+      "visibility": "Count/order/type validation",
+      "detectability": "After provider response",
+      "containment": "Fail closed before binding and reconstruction",
+      "recovery": "Rollback coordinated DTO/reconstruction migration",
+      "authorization_impact": "Authorization shifts from explicit identity to validated position",
+      "reconstruction_impact": "Material ownership change",
+      "benchmark_reproducibility": "Reference metrics must be replaced by slot-alignment metrics"
+    }
+  },
+  "security_analysis": {
+    "C1_PROMPT_ONLY": "Authorization stays exact, but contract ambiguity and spoof/confusion exposure remain at the provider boundary.",
+    "C2_DYNAMIC_EXACT_SCHEMA": "Exact allowed constants minimize spoofing and confusion; unchanged authorization provides defense in depth; no new privilege path is introduced.",
+    "C3_OPAQUE_HANDLES": "Handles are capability-like values and must be invocation-scoped; mapping bugs create a new privilege-confusion surface.",
+    "C4_ORDERED_PATCH_SLOTS": "No reference spoofing is possible, but position confusion can bind valid prose to the wrong authorized target unless count, order, and type are all fail-closed."
+  },
+  "migration_analysis": {
+    "C1_PROMPT_ONLY": {
+      "components": ["prompt projection"],
+      "backward_compatibility": "Runtime compatible; prompt fingerprint changes",
+      "deployment_complexity": "LOW",
+      "rollback_complexity": "LOW",
+      "testing": "prompt contract, privacy, and provider benchmark",
+      "documentation": "prompt version and baseline",
+      "effort": "LOW"
+    },
+    "C2_DYNAMIC_EXACT_SCHEMA": {
+      "components": ["provider schema projector", "schema identity diagnostics"],
+      "backward_compatibility": "DTO and runtime compatible; static schema fingerprint superseded by a versioned projection fingerprint strategy",
+      "deployment_complexity": "MODERATE",
+      "rollback_complexity": "LOW",
+      "testing": "all target types, multi-target cardinality, DTO parity, invalid projection preflight, architecture boundaries, provider benchmark",
+      "documentation": "schema ownership, fingerprint semantics, provider capability mapping",
+      "effort": "MODERATE"
+    },
+    "C3_OPAQUE_HANDLES": {
+      "components": ["projector", "schema", "DTO", "handle mapper", "diagnostics"],
+      "backward_compatibility": "Requires contract version transition",
+      "deployment_complexity": "HIGH",
+      "rollback_complexity": "MODERATE",
+      "testing": "handle uniqueness, scope, mapping lineage, DTO, authorization, all providers",
+      "documentation": "dual identity ownership and lifecycle",
+      "effort": "HIGH"
+    },
+    "C4_ORDERED_PATCH_SLOTS": {
+      "components": ["schema", "DTO", "reference mapping", "reconstruction boundary", "diagnostics"],
+      "backward_compatibility": "Requires new provider-output contract version",
+      "deployment_complexity": "HIGH",
+      "rollback_complexity": "MODERATE",
+      "testing": "order, cardinality, shape, multi-target binding, authorization equivalence",
+      "documentation": "positional ownership and failure semantics",
+      "effort": "HIGH"
+    }
+  },
+  "dominance_analysis": [
+    {
+      "dominated": "E1_STATIC_REGISTRY_ENUM",
+      "dominant": "C2_DYNAMIC_EXACT_SCHEMA",
+      "reason": "C2 uses the same schema mechanism but excludes both unknown and unauthorized values rather than only unknown values."
+    },
+    {
+      "dominated": "C3_OPAQUE_HANDLES",
+      "dominant": "C2_DYNAMIC_EXACT_SCHEMA",
+      "reason": "Both require invocation-specific constrained values and have equal expected compliance; C2 preserves one canonical identity and avoids DTO, mapping, diagnostics, and migration costs introduced by handles."
+    }
+  ],
+  "ranking": [
+    {"rank": 1, "candidate_id": "C2_DYNAMIC_EXACT_SCHEMA", "score": 85},
+    {"rank": 2, "candidate_id": "C4_ORDERED_PATCH_SLOTS", "score": 71},
+    {"rank": 3, "candidate_id": "C1_PROMPT_ONLY", "score": 67},
+    {"rank": 4, "candidate_id": "C3_OPAQUE_HANDLES", "score": 69, "dominated": true}
+  ],
+  "preferred_candidate": {
+    "candidate_id": "C2_DYNAMIC_EXACT_SCHEMA",
+    "direction": "Invocation-specific exact-reference provider schema",
+    "why": "It directly closes the measured provider-schema/authorization language gap at the earliest boundary while retaining canonical reference ownership and every deterministic runtime guard.",
+    "guarantees_preserved": [
+      "single request",
+      "single authorization",
+      "single reconstruction",
+      "fail-closed runtime",
+      "provider-neutral domain contract",
+      "offline validation",
+      "benchmark reproducibility"
+    ],
+    "implementation_prerequisites": [
+      "freeze an invocation-specific schema projection contract",
+      "define stable base-schema and projected-schema fingerprint semantics",
+      "prove DTO parity for every component branch",
+      "prove exact reference constants and item cardinality for single and multi-target invocations",
+      "retain unchanged final authorization and reconstruction",
+      "add provider-capability abstraction for constrained reference sets",
+      "authorize a separate post-implementation benchmark"
+    ]
+  },
+  "rejected_candidates": [
+    "C1_PROMPT_ONLY",
+    "C3_OPAQUE_HANDLES",
+    "C4_ORDERED_PATCH_SLOTS",
+    "E1_STATIC_REGISTRY_ENUM",
+    "E2_TOLERANT_RUNTIME_MAPPING",
+    "E3_MULTI_REQUEST_REPAIR"
+  ],
+  "architecture_impact": "MODERATE",
+  "root_conclusion": "SCHEMA_REMEDIATION_RECOMMENDED",
+  "final_recommendation": "IMPLEMENT_SELECTED_REFERENCE_CONTRACT",
+  "implementation_included": false,
+  "provider_requests": 0,
+  "benchmark_executions": 0,
+  "benchmark_replays": 0
+}

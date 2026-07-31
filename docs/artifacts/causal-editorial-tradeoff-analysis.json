@@ -1,0 +1,578 @@
+{
+  "benchmark_executions": 0,
+  "benchmark_replays": 0,
+  "causal_claims": [
+    {
+      "changed_category": "quote_preservation",
+      "claim_id": "CAUSAL-01",
+      "confidence": "MEDIUM",
+      "counterevidence": "No factorial or repeated-provider trial isolates H2 from stochasticity.",
+      "evidence": [
+        "SYN-10",
+        "SYN-23"
+      ],
+      "likely_cause": "Prompt wording"
+    },
+    {
+      "changed_category": "editorial_acceptance",
+      "claim_id": "CAUSAL-02",
+      "confidence": "LOW",
+      "counterevidence": "A single paired response cannot exclude provider stochasticity or benchmark variance.",
+      "evidence": [
+        "SYN-20"
+      ],
+      "likely_cause": "Prompt interaction"
+    },
+    {
+      "changed_category": "instruction_compliance",
+      "claim_id": "CAUSAL-03",
+      "confidence": "LOW",
+      "counterevidence": "A single paired response cannot exclude provider stochasticity or benchmark variance.",
+      "evidence": [
+        "SYN-20"
+      ],
+      "likely_cause": "Prompt interaction"
+    },
+    {
+      "changed_category": "meaning_preservation",
+      "claim_id": "CAUSAL-04",
+      "confidence": "LOW",
+      "counterevidence": "A single paired response cannot exclude provider stochasticity or benchmark variance.",
+      "evidence": [
+        "SYN-20"
+      ],
+      "likely_cause": "Prompt interaction"
+    },
+    {
+      "changed_category": "source_authority_preservation",
+      "claim_id": "CAUSAL-05",
+      "confidence": "LOW",
+      "counterevidence": "A single paired response cannot exclude provider stochasticity or benchmark variance.",
+      "evidence": [
+        "SYN-20"
+      ],
+      "likely_cause": "Prompt interaction"
+    },
+    {
+      "changed_category": "SOURCE_AUTHORITY_DRIFT",
+      "claim_id": "CAUSAL-06",
+      "confidence": "LOW",
+      "counterevidence": "A single paired response cannot exclude provider stochasticity or benchmark variance.",
+      "evidence": [
+        "SYN-20"
+      ],
+      "likely_cause": "Prompt interaction"
+    }
+  ],
+  "causal_confidence_counts": {
+    "HIGH": 0,
+    "INSUFFICIENT_EVIDENCE": 0,
+    "LOW": 5,
+    "MEDIUM": 1
+  },
+  "causal_narrative": "H2 successfully reduced observed quote mutation in both targeted control cases. Those cases still failed on pre-existing source-authority criteria, while SYN-20 newly failed four criteria and moved pass-to-fail. The trade-off prevented aggregate editorial improvement. Evidence for the targeted effect is medium; attribution of the SYN-20 regression is low-confidence because provider stochasticity and benchmark variance remain plausible.",
+  "created_at": "2026-07-28T15:40:05.809572+00:00",
+  "evidence_fingerprints": {
+    "experiment": "0419dfb1d40d745bfcbfca53e2ffc09995a7c3c023fe227a6b2650dca25b3c38",
+    "experiment_manifest": "237af61366ae00832905a7e679d5be5826195d7e2b6c6272ddb981299a80d021",
+    "scenario_comparison": "7339712e22291b0b259f6977f4ed661f2301d98509946a6fc42e6d210bdc3b71"
+  },
+  "graph_path": "docs/artifacts/editorial-dependency-graph.json",
+  "h2_assessment": {
+    "hypothesis_correct": true,
+    "production_candidate": false,
+    "reason": "QUOTE_MUTATION fell from 2 to 0, but acceptance fell from 1 to 0 and aggregate editorial improvement failed."
+  },
+  "h3_design_guidance": {
+    "additional_evidence_required": [
+      "SOURCE_AUTHORITY_DRIFT causal mechanism",
+      "SYN-20 pass-to-fail reproducibility",
+      "interaction between quote constraints and broader meaning preservation"
+    ],
+    "architectural_candidates": [
+      "independent editorial criterion gating before aggregate acceptance",
+      "multi-objective experiment design for preservation interactions"
+    ],
+    "prompt_addressable": [
+      "quote_preservation remains prompt-responsive but cannot be optimized alone",
+      "instruction compliance may be prompt-addressable with explicit trade-off protection"
+    ]
+  },
+  "hidden_tradeoffs": [
+    {
+      "finding": "QUOTE_MUTATION ceased to be primary in SYN-10 and SYN-23, exposing pre-existing SOURCE_AUTHORITY_DRIFT rather than curing those scenarios.",
+      "type": "FAILURE_SUBSTITUTION"
+    },
+    {
+      "finding": "SYN-20 introduced four criterion failures and became PASS_TO_FAIL, offsetting the two resolved quote-preservation failures.",
+      "type": "COMPENSATING_FAILURE"
+    },
+    {
+      "finding": "The quote-specific constraint improved its narrow target but did not generalize to aggregate editorial acceptance.",
+      "type": "CONSTRAINT_OVER_FITTING"
+    },
+    {
+      "finding": "Possible only: SYN-20 regressed in instruction compliance, meaning, and authority; one paired sample is insufficient for causal isolation.",
+      "type": "INSTRUCTION_COMPETITION"
+    },
+    {
+      "finding": "Not supported: H2 added one short mechanism and preserved technical behavior.",
+      "type": "PROMPT_SATURATION"
+    }
+  ],
+  "matrix_path": "docs/artifacts/editorial-tradeoff-matrix.json",
+  "milestone": "Part 7H.2.2 — Causal Editorial Trade-off Analysis",
+  "net_editorial_utility": {
+    "formula": "resolved scenario-criterion failures - introduced scenario-criterion failures",
+    "net_utility": -2,
+    "new_failures": 4,
+    "resolved_failures": 2,
+    "supplement_only": true
+  },
+  "network_calls": 0,
+  "provider_requests": 0,
+  "recommended_next_milestone": "Part 7H.3 — Third Evidence-Derived Prompt Hypothesis",
+  "root_conclusion": "EDITORIAL_TRADE_OFFS_CHARACTERIZED",
+  "scenario_analysis": [
+    {
+      "acceptance_transition": "FAIL_TO_FAIL",
+      "baseline_primary_category": "SOURCE_AUTHORITY_DRIFT",
+      "editorial_failures_introduced": [],
+      "editorial_failures_removed": [],
+      "editorial_failures_unchanged": [
+        "editorial_acceptance",
+        "instruction_compliance",
+        "meaning_preservation",
+        "source_authority_preservation"
+      ],
+      "editorial_score_delta": 0.0,
+      "failure_category_transition": "UNCHANGED",
+      "quote_mutation_transition": "ABSENT",
+      "scenario_id": "SYN-01",
+      "scenario_order": 1,
+      "treatment_primary_category": "SOURCE_AUTHORITY_DRIFT"
+    },
+    {
+      "acceptance_transition": "FAIL_TO_FAIL",
+      "baseline_primary_category": "SOURCE_AUTHORITY_DRIFT",
+      "editorial_failures_introduced": [],
+      "editorial_failures_removed": [],
+      "editorial_failures_unchanged": [
+        "editorial_acceptance",
+        "instruction_compliance",
+        "meaning_preservation",
+        "source_authority_preservation"
+      ],
+      "editorial_score_delta": 0.0,
+      "failure_category_transition": "UNCHANGED",
+      "quote_mutation_transition": "ABSENT",
+      "scenario_id": "SYN-02",
+      "scenario_order": 2,
+      "treatment_primary_category": "SOURCE_AUTHORITY_DRIFT"
+    },
+    {
+      "acceptance_transition": "FAIL_TO_FAIL",
+      "baseline_primary_category": "SOURCE_AUTHORITY_DRIFT",
+      "editorial_failures_introduced": [],
+      "editorial_failures_removed": [],
+      "editorial_failures_unchanged": [
+        "editorial_acceptance",
+        "instruction_compliance",
+        "meaning_preservation",
+        "source_authority_preservation"
+      ],
+      "editorial_score_delta": 0.0,
+      "failure_category_transition": "UNCHANGED",
+      "quote_mutation_transition": "ABSENT",
+      "scenario_id": "SYN-03",
+      "scenario_order": 3,
+      "treatment_primary_category": "SOURCE_AUTHORITY_DRIFT"
+    },
+    {
+      "acceptance_transition": "FAIL_TO_FAIL",
+      "baseline_primary_category": "SOURCE_AUTHORITY_DRIFT",
+      "editorial_failures_introduced": [],
+      "editorial_failures_removed": [],
+      "editorial_failures_unchanged": [
+        "editorial_acceptance",
+        "instruction_compliance",
+        "meaning_preservation",
+        "source_authority_preservation"
+      ],
+      "editorial_score_delta": 0.0,
+      "failure_category_transition": "UNCHANGED",
+      "quote_mutation_transition": "ABSENT",
+      "scenario_id": "SYN-04",
+      "scenario_order": 4,
+      "treatment_primary_category": "SOURCE_AUTHORITY_DRIFT"
+    },
+    {
+      "acceptance_transition": "FAIL_TO_FAIL",
+      "baseline_primary_category": "SOURCE_AUTHORITY_DRIFT",
+      "editorial_failures_introduced": [],
+      "editorial_failures_removed": [],
+      "editorial_failures_unchanged": [
+        "editorial_acceptance",
+        "instruction_compliance",
+        "meaning_preservation",
+        "source_authority_preservation"
+      ],
+      "editorial_score_delta": 0.0,
+      "failure_category_transition": "UNCHANGED",
+      "quote_mutation_transition": "ABSENT",
+      "scenario_id": "SYN-05",
+      "scenario_order": 5,
+      "treatment_primary_category": "SOURCE_AUTHORITY_DRIFT"
+    },
+    {
+      "acceptance_transition": "FAIL_TO_FAIL",
+      "baseline_primary_category": "SOURCE_AUTHORITY_DRIFT",
+      "editorial_failures_introduced": [],
+      "editorial_failures_removed": [],
+      "editorial_failures_unchanged": [
+        "editorial_acceptance",
+        "instruction_compliance",
+        "meaning_preservation",
+        "source_authority_preservation"
+      ],
+      "editorial_score_delta": 0.0,
+      "failure_category_transition": "UNCHANGED",
+      "quote_mutation_transition": "ABSENT",
+      "scenario_id": "SYN-06",
+      "scenario_order": 6,
+      "treatment_primary_category": "SOURCE_AUTHORITY_DRIFT"
+    },
+    {
+      "acceptance_transition": "FAIL_TO_FAIL",
+      "baseline_primary_category": "SOURCE_AUTHORITY_DRIFT",
+      "editorial_failures_introduced": [],
+      "editorial_failures_removed": [],
+      "editorial_failures_unchanged": [
+        "editorial_acceptance",
+        "instruction_compliance",
+        "meaning_preservation",
+        "source_authority_preservation"
+      ],
+      "editorial_score_delta": 0.0,
+      "failure_category_transition": "UNCHANGED",
+      "quote_mutation_transition": "ABSENT",
+      "scenario_id": "SYN-07",
+      "scenario_order": 7,
+      "treatment_primary_category": "SOURCE_AUTHORITY_DRIFT"
+    },
+    {
+      "acceptance_transition": "FAIL_TO_FAIL",
+      "baseline_primary_category": "SOURCE_AUTHORITY_DRIFT",
+      "editorial_failures_introduced": [],
+      "editorial_failures_removed": [],
+      "editorial_failures_unchanged": [
+        "editorial_acceptance",
+        "instruction_compliance",
+        "meaning_preservation",
+        "source_authority_preservation"
+      ],
+      "editorial_score_delta": 0.0,
+      "failure_category_transition": "UNCHANGED",
+      "quote_mutation_transition": "ABSENT",
+      "scenario_id": "SYN-08",
+      "scenario_order": 8,
+      "treatment_primary_category": "SOURCE_AUTHORITY_DRIFT"
+    },
+    {
+      "acceptance_transition": "FAIL_TO_FAIL",
+      "baseline_primary_category": "SOURCE_AUTHORITY_DRIFT",
+      "editorial_failures_introduced": [],
+      "editorial_failures_removed": [],
+      "editorial_failures_unchanged": [
+        "editorial_acceptance",
+        "instruction_compliance",
+        "meaning_preservation",
+        "source_authority_preservation"
+      ],
+      "editorial_score_delta": 0.0,
+      "failure_category_transition": "UNCHANGED",
+      "quote_mutation_transition": "ABSENT",
+      "scenario_id": "SYN-09",
+      "scenario_order": 9,
+      "treatment_primary_category": "SOURCE_AUTHORITY_DRIFT"
+    },
+    {
+      "acceptance_transition": "FAIL_TO_FAIL",
+      "baseline_primary_category": "QUOTE_MUTATION",
+      "editorial_failures_introduced": [],
+      "editorial_failures_removed": [
+        "quote_preservation"
+      ],
+      "editorial_failures_unchanged": [
+        "editorial_acceptance",
+        "instruction_compliance",
+        "meaning_preservation",
+        "source_authority_preservation"
+      ],
+      "editorial_score_delta": 6.666666666666657,
+      "failure_category_transition": "REGRESSED",
+      "quote_mutation_transition": "RESOLVED",
+      "scenario_id": "SYN-10",
+      "scenario_order": 10,
+      "treatment_primary_category": "SOURCE_AUTHORITY_DRIFT"
+    },
+    {
+      "acceptance_transition": "FAIL_TO_FAIL",
+      "baseline_primary_category": "SOURCE_AUTHORITY_DRIFT",
+      "editorial_failures_introduced": [],
+      "editorial_failures_removed": [],
+      "editorial_failures_unchanged": [
+        "editorial_acceptance",
+        "instruction_compliance",
+        "meaning_preservation",
+        "source_authority_preservation"
+      ],
+      "editorial_score_delta": 0.0,
+      "failure_category_transition": "UNCHANGED",
+      "quote_mutation_transition": "ABSENT",
+      "scenario_id": "SYN-11",
+      "scenario_order": 11,
+      "treatment_primary_category": "SOURCE_AUTHORITY_DRIFT"
+    },
+    {
+      "acceptance_transition": "FAIL_TO_FAIL",
+      "baseline_primary_category": "SOURCE_AUTHORITY_DRIFT",
+      "editorial_failures_introduced": [],
+      "editorial_failures_removed": [],
+      "editorial_failures_unchanged": [
+        "editorial_acceptance",
+        "instruction_compliance",
+        "meaning_preservation",
+        "source_authority_preservation"
+      ],
+      "editorial_score_delta": 0.0,
+      "failure_category_transition": "UNCHANGED",
+      "quote_mutation_transition": "ABSENT",
+      "scenario_id": "SYN-12",
+      "scenario_order": 12,
+      "treatment_primary_category": "SOURCE_AUTHORITY_DRIFT"
+    },
+    {
+      "acceptance_transition": "FAIL_TO_FAIL",
+      "baseline_primary_category": "SOURCE_AUTHORITY_DRIFT",
+      "editorial_failures_introduced": [],
+      "editorial_failures_removed": [],
+      "editorial_failures_unchanged": [
+        "editorial_acceptance",
+        "instruction_compliance",
+        "meaning_preservation",
+        "source_authority_preservation"
+      ],
+      "editorial_score_delta": 0.0,
+      "failure_category_transition": "UNCHANGED",
+      "quote_mutation_transition": "ABSENT",
+      "scenario_id": "SYN-13",
+      "scenario_order": 13,
+      "treatment_primary_category": "SOURCE_AUTHORITY_DRIFT"
+    },
+    {
+      "acceptance_transition": "FAIL_TO_FAIL",
+      "baseline_primary_category": "SOURCE_AUTHORITY_DRIFT",
+      "editorial_failures_introduced": [],
+      "editorial_failures_removed": [],
+      "editorial_failures_unchanged": [
+        "editorial_acceptance",
+        "instruction_compliance",
+        "meaning_preservation",
+        "source_authority_preservation"
+      ],
+      "editorial_score_delta": 0.0,
+      "failure_category_transition": "UNCHANGED",
+      "quote_mutation_transition": "ABSENT",
+      "scenario_id": "SYN-14",
+      "scenario_order": 14,
+      "treatment_primary_category": "SOURCE_AUTHORITY_DRIFT"
+    },
+    {
+      "acceptance_transition": "FAIL_TO_FAIL",
+      "baseline_primary_category": "SOURCE_AUTHORITY_DRIFT",
+      "editorial_failures_introduced": [],
+      "editorial_failures_removed": [],
+      "editorial_failures_unchanged": [
+        "editorial_acceptance",
+        "instruction_compliance",
+        "meaning_preservation",
+        "source_authority_preservation"
+      ],
+      "editorial_score_delta": 0.0,
+      "failure_category_transition": "UNCHANGED",
+      "quote_mutation_transition": "ABSENT",
+      "scenario_id": "SYN-15",
+      "scenario_order": 15,
+      "treatment_primary_category": "SOURCE_AUTHORITY_DRIFT"
+    },
+    {
+      "acceptance_transition": "FAIL_TO_FAIL",
+      "baseline_primary_category": "SOURCE_AUTHORITY_DRIFT",
+      "editorial_failures_introduced": [],
+      "editorial_failures_removed": [],
+      "editorial_failures_unchanged": [
+        "editorial_acceptance",
+        "instruction_compliance",
+        "meaning_preservation",
+        "source_authority_preservation"
+      ],
+      "editorial_score_delta": 0.0,
+      "failure_category_transition": "UNCHANGED",
+      "quote_mutation_transition": "ABSENT",
+      "scenario_id": "SYN-16",
+      "scenario_order": 16,
+      "treatment_primary_category": "SOURCE_AUTHORITY_DRIFT"
+    },
+    {
+      "acceptance_transition": "FAIL_TO_FAIL",
+      "baseline_primary_category": "SOURCE_AUTHORITY_DRIFT",
+      "editorial_failures_introduced": [],
+      "editorial_failures_removed": [],
+      "editorial_failures_unchanged": [
+        "editorial_acceptance",
+        "instruction_compliance",
+        "meaning_preservation",
+        "source_authority_preservation"
+      ],
+      "editorial_score_delta": 0.0,
+      "failure_category_transition": "UNCHANGED",
+      "quote_mutation_transition": "ABSENT",
+      "scenario_id": "SYN-17",
+      "scenario_order": 17,
+      "treatment_primary_category": "SOURCE_AUTHORITY_DRIFT"
+    },
+    {
+      "acceptance_transition": "FAIL_TO_FAIL",
+      "baseline_primary_category": "SOURCE_AUTHORITY_DRIFT",
+      "editorial_failures_introduced": [],
+      "editorial_failures_removed": [],
+      "editorial_failures_unchanged": [
+        "editorial_acceptance",
+        "instruction_compliance",
+        "meaning_preservation",
+        "source_authority_preservation"
+      ],
+      "editorial_score_delta": 0.0,
+      "failure_category_transition": "UNCHANGED",
+      "quote_mutation_transition": "ABSENT",
+      "scenario_id": "SYN-18",
+      "scenario_order": 18,
+      "treatment_primary_category": "SOURCE_AUTHORITY_DRIFT"
+    },
+    {
+      "acceptance_transition": "FAIL_TO_FAIL",
+      "baseline_primary_category": "SOURCE_AUTHORITY_DRIFT",
+      "editorial_failures_introduced": [],
+      "editorial_failures_removed": [],
+      "editorial_failures_unchanged": [
+        "editorial_acceptance",
+        "instruction_compliance",
+        "meaning_preservation",
+        "source_authority_preservation"
+      ],
+      "editorial_score_delta": 0.0,
+      "failure_category_transition": "UNCHANGED",
+      "quote_mutation_transition": "ABSENT",
+      "scenario_id": "SYN-19",
+      "scenario_order": 19,
+      "treatment_primary_category": "SOURCE_AUTHORITY_DRIFT"
+    },
+    {
+      "acceptance_transition": "PASS_TO_FAIL",
+      "baseline_primary_category": null,
+      "editorial_failures_introduced": [
+        "editorial_acceptance",
+        "instruction_compliance",
+        "meaning_preservation",
+        "source_authority_preservation"
+      ],
+      "editorial_failures_removed": [],
+      "editorial_failures_unchanged": [],
+      "editorial_score_delta": -26.66666666666667,
+      "failure_category_transition": "NEW_FAILURE",
+      "quote_mutation_transition": "ABSENT",
+      "scenario_id": "SYN-20",
+      "scenario_order": 20,
+      "treatment_primary_category": "SOURCE_AUTHORITY_DRIFT"
+    },
+    {
+      "acceptance_transition": "FAIL_TO_FAIL",
+      "baseline_primary_category": "SOURCE_AUTHORITY_DRIFT",
+      "editorial_failures_introduced": [],
+      "editorial_failures_removed": [],
+      "editorial_failures_unchanged": [
+        "editorial_acceptance",
+        "instruction_compliance",
+        "meaning_preservation",
+        "source_authority_preservation"
+      ],
+      "editorial_score_delta": 0.0,
+      "failure_category_transition": "UNCHANGED",
+      "quote_mutation_transition": "ABSENT",
+      "scenario_id": "SYN-21",
+      "scenario_order": 21,
+      "treatment_primary_category": "SOURCE_AUTHORITY_DRIFT"
+    },
+    {
+      "acceptance_transition": "FAIL_TO_FAIL",
+      "baseline_primary_category": "SOURCE_AUTHORITY_DRIFT",
+      "editorial_failures_introduced": [],
+      "editorial_failures_removed": [],
+      "editorial_failures_unchanged": [
+        "editorial_acceptance",
+        "instruction_compliance",
+        "meaning_preservation",
+        "source_authority_preservation"
+      ],
+      "editorial_score_delta": 0.0,
+      "failure_category_transition": "UNCHANGED",
+      "quote_mutation_transition": "ABSENT",
+      "scenario_id": "SYN-22",
+      "scenario_order": 22,
+      "treatment_primary_category": "SOURCE_AUTHORITY_DRIFT"
+    },
+    {
+      "acceptance_transition": "FAIL_TO_FAIL",
+      "baseline_primary_category": "QUOTE_MUTATION",
+      "editorial_failures_introduced": [],
+      "editorial_failures_removed": [
+        "quote_preservation"
+      ],
+      "editorial_failures_unchanged": [
+        "editorial_acceptance",
+        "instruction_compliance",
+        "meaning_preservation",
+        "source_authority_preservation"
+      ],
+      "editorial_score_delta": 6.666666666666657,
+      "failure_category_transition": "REGRESSED",
+      "quote_mutation_transition": "RESOLVED",
+      "scenario_id": "SYN-23",
+      "scenario_order": 23,
+      "treatment_primary_category": "SOURCE_AUTHORITY_DRIFT"
+    },
+    {
+      "acceptance_transition": "FAIL_TO_FAIL",
+      "baseline_primary_category": "SOURCE_AUTHORITY_DRIFT",
+      "editorial_failures_introduced": [],
+      "editorial_failures_removed": [],
+      "editorial_failures_unchanged": [
+        "editorial_acceptance",
+        "instruction_compliance",
+        "meaning_preservation",
+        "source_authority_preservation"
+      ],
+      "editorial_score_delta": 0.0,
+      "failure_category_transition": "UNCHANGED",
+      "quote_mutation_transition": "ABSENT",
+      "scenario_id": "SYN-24",
+      "scenario_order": 24,
+      "treatment_primary_category": "SOURCE_AUTHORITY_DRIFT"
+    }
+  ],
+  "scenarios_analyzed": 24,
+  "schema_version": 1,
+  "source_experiment_id": "20260728-144134-openai-gpt-4.1-mini-7h2",
+  "source_manifest_fingerprint": "2a47289e42c0397277de3e4ee7b563131ded24a41697a539540b1c7feb822fd6"
+}

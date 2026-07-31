@@ -1,0 +1,535 @@
+{
+  "conformance_matrix": [
+    {
+      "classification": "ALIGNED",
+      "dto_status": "required",
+      "field": "component_type",
+      "interpreter_use": "dto_validation",
+      "provider_instruction": "required",
+      "reconstructor_use": "read",
+      "schema_status": "required",
+      "validator_status": "field_validation",
+      "variant": "text"
+    },
+    {
+      "classification": "ALIGNED",
+      "dto_status": "required",
+      "field": "component_reference",
+      "interpreter_use": "dto_validation",
+      "provider_instruction": "required",
+      "reconstructor_use": "read",
+      "schema_status": "required",
+      "validator_status": "field_validation",
+      "variant": "text"
+    },
+    {
+      "classification": "ALIGNED",
+      "dto_status": "required",
+      "field": "revised_text",
+      "interpreter_use": "dto_validation",
+      "provider_instruction": "required",
+      "reconstructor_use": "read",
+      "schema_status": "required",
+      "validator_status": "field_validation",
+      "variant": "text"
+    },
+    {
+      "classification": "ALIGNED",
+      "dto_status": "required",
+      "field": "component_type",
+      "interpreter_use": "dto_validation",
+      "provider_instruction": "required",
+      "reconstructor_use": "read",
+      "schema_status": "required",
+      "validator_status": "field_validation",
+      "variant": "story"
+    },
+    {
+      "classification": "ALIGNED",
+      "dto_status": "required",
+      "field": "component_reference",
+      "interpreter_use": "dto_validation",
+      "provider_instruction": "required",
+      "reconstructor_use": "read",
+      "schema_status": "required",
+      "validator_status": "field_validation",
+      "variant": "story"
+    },
+    {
+      "classification": "ALIGNED",
+      "dto_status": "required",
+      "field": "factual_summary",
+      "interpreter_use": "dto_validation",
+      "provider_instruction": "required",
+      "reconstructor_use": "read",
+      "schema_status": "required",
+      "validator_status": "field_validation",
+      "variant": "story"
+    },
+    {
+      "classification": "ALIGNED",
+      "dto_status": "required",
+      "field": "commentary_block_texts",
+      "interpreter_use": "dto_validation",
+      "provider_instruction": "required",
+      "reconstructor_use": "read",
+      "schema_status": "required",
+      "validator_status": "field_validation",
+      "variant": "story"
+    },
+    {
+      "classification": "ALIGNED",
+      "dto_status": "required",
+      "field": "ending",
+      "interpreter_use": "dto_validation",
+      "provider_instruction": "required",
+      "reconstructor_use": "read",
+      "schema_status": "required",
+      "validator_status": "field_validation",
+      "variant": "story"
+    },
+    {
+      "classification": "ALIGNED",
+      "dto_status": "required",
+      "field": "component_type",
+      "interpreter_use": "dto_validation",
+      "provider_instruction": "required",
+      "reconstructor_use": "read",
+      "schema_status": "required",
+      "validator_status": "field_validation",
+      "variant": "cta"
+    },
+    {
+      "classification": "ALIGNED",
+      "dto_status": "required",
+      "field": "component_reference",
+      "interpreter_use": "dto_validation",
+      "provider_instruction": "required",
+      "reconstructor_use": "read",
+      "schema_status": "required",
+      "validator_status": "field_validation",
+      "variant": "cta"
+    },
+    {
+      "classification": "ALIGNED",
+      "dto_status": "required",
+      "field": "bridge_text",
+      "interpreter_use": "dto_validation",
+      "provider_instruction": "required",
+      "reconstructor_use": "read",
+      "schema_status": "required",
+      "validator_status": "field_validation",
+      "variant": "cta"
+    },
+    {
+      "classification": "DTO_VALIDATOR_ONLY_RULE",
+      "dto_status": "required",
+      "field": "reference_to_type_correspondence",
+      "interpreter_use": "dto_validation",
+      "provider_instruction": "required",
+      "reconstructor_use": "dispatch_and_lookup",
+      "schema_status": "not_expressed",
+      "validator_status": "reference_matches_type",
+      "variant": "text"
+    },
+    {
+      "classification": "DTO_VALIDATOR_ONLY_RULE",
+      "dto_status": "required",
+      "field": "reference_uniqueness",
+      "interpreter_use": "dto_validation",
+      "provider_instruction": "required",
+      "reconstructor_use": "not_applicable",
+      "schema_status": "not_expressed",
+      "validator_status": "unique_references",
+      "variant": "root"
+    },
+    {
+      "classification": "RECONSTRUCTOR_ONLY_EXPECTATION",
+      "dto_status": "not_expressed",
+      "field": "authorized_reference_exact_set",
+      "interpreter_use": "reconstructor_delegation",
+      "provider_instruction": "required",
+      "reconstructor_use": "required",
+      "schema_status": "not_expressed",
+      "validator_status": "not_applicable",
+      "variant": "root"
+    }
+  ],
+  "differential_cases": {
+    "D01_valid_text": {
+      "classification": "SCHEMA_PASS_DTO_PASS",
+      "downstream_owner": null
+    },
+    "D02_valid_story": {
+      "classification": "SCHEMA_PASS_DTO_PASS",
+      "downstream_owner": null
+    },
+    "D03_valid_cta": {
+      "classification": "SCHEMA_PASS_DTO_PASS",
+      "downstream_owner": null
+    },
+    "D04_story_missing_ending": {
+      "classification": "SCHEMA_FAIL_DTO_FAIL",
+      "downstream_owner": null
+    },
+    "D05_story_with_revised_text": {
+      "classification": "SCHEMA_FAIL_DTO_FAIL",
+      "downstream_owner": null
+    },
+    "D06_text_with_story_fields": {
+      "classification": "SCHEMA_FAIL_DTO_FAIL",
+      "downstream_owner": null
+    },
+    "D07_cta_wrong_body": {
+      "classification": "SCHEMA_FAIL_DTO_FAIL",
+      "downstream_owner": null
+    },
+    "D08_empty_factual_summary": {
+      "classification": "SCHEMA_FAIL_DTO_FAIL",
+      "downstream_owner": null
+    },
+    "D09_empty_ending": {
+      "classification": "SCHEMA_FAIL_DTO_FAIL",
+      "downstream_owner": null
+    },
+    "D10_empty_commentary": {
+      "classification": "SCHEMA_PASS_DTO_PASS",
+      "downstream_owner": null
+    },
+    "D11_empty_commentary_item": {
+      "classification": "SCHEMA_PASS_DTO_PASS",
+      "downstream_owner": null
+    },
+    "D12_null_body": {
+      "classification": "SCHEMA_FAIL_DTO_FAIL",
+      "downstream_owner": null
+    },
+    "D13_unknown_type": {
+      "classification": "SCHEMA_FAIL_DTO_FAIL",
+      "downstream_owner": null
+    },
+    "D14_missing_type": {
+      "classification": "SCHEMA_FAIL_DTO_FAIL",
+      "downstream_owner": null
+    },
+    "D15_extra_field": {
+      "classification": "SCHEMA_FAIL_DTO_FAIL",
+      "downstream_owner": null
+    },
+    "D16_duplicate_references": {
+      "classification": "SCHEMA_PASS_DTO_FAIL",
+      "downstream_owner": "DTO_MODEL_VALIDATION"
+    },
+    "D17_source_type_mismatch": {
+      "classification": "SCHEMA_FAIL_DTO_FAIL",
+      "downstream_owner": "DTO_MODEL_VALIDATION"
+    },
+    "D18_wrong_order": {
+      "classification": "SCHEMA_PASS_DTO_PASS",
+      "downstream_owner": "POST_SCHEMA_SEMANTIC_CONTRACT"
+    },
+    "D19_missing_authorized": {
+      "classification": "SCHEMA_PASS_DTO_PASS",
+      "downstream_owner": "POST_SCHEMA_SEMANTIC_CONTRACT"
+    },
+    "D20_additional_unauthorized": {
+      "classification": "SCHEMA_PASS_DTO_PASS",
+      "downstream_owner": "POST_SCHEMA_SEMANTIC_CONTRACT"
+    }
+  },
+  "dto_sha256": "3973409a1069fd0d9b965aeddb554604dda452bdb570631c443056288fdca6ee",
+  "exact_live_signature_matches": [
+    "J14_text_reference_validator"
+  ],
+  "inventory": {
+    "branch_order": [
+      "OpenAIRevisedCallToActionComponent",
+      "OpenAIRevisedStoryComponent",
+      "OpenAIRevisedTextComponent"
+    ],
+    "discriminator": null,
+    "maximum_components": 50,
+    "minimum_components": 1,
+    "root_additional_properties": false,
+    "root_custom_validator": "unique_references",
+    "root_required": [
+      "revised_components"
+    ],
+    "union_keyword": "anyOf",
+    "variants": {
+      "OpenAIRevisedCallToActionComponent": {
+        "additional_properties": false,
+        "custom_validator": null,
+        "fields": {
+          "bridge_text": {
+            "literal": null,
+            "maximum_items": null,
+            "maximum_length": 100000,
+            "minimum_items": null,
+            "minimum_length": 1,
+            "pattern_present": false,
+            "required": true,
+            "type": "string"
+          },
+          "component_reference": {
+            "literal": "call_to_action",
+            "maximum_items": null,
+            "maximum_length": null,
+            "minimum_items": null,
+            "minimum_length": null,
+            "pattern_present": false,
+            "required": true,
+            "type": "string"
+          },
+          "component_type": {
+            "literal": "call_to_action",
+            "maximum_items": null,
+            "maximum_length": null,
+            "minimum_items": null,
+            "minimum_length": null,
+            "pattern_present": false,
+            "required": true,
+            "type": "string"
+          }
+        }
+      },
+      "OpenAIRevisedStoryComponent": {
+        "additional_properties": false,
+        "custom_validator": null,
+        "fields": {
+          "commentary_block_texts": {
+            "literal": null,
+            "maximum_items": 100,
+            "maximum_length": null,
+            "minimum_items": null,
+            "minimum_length": null,
+            "pattern_present": false,
+            "required": true,
+            "type": "array"
+          },
+          "component_reference": {
+            "literal": null,
+            "maximum_items": null,
+            "maximum_length": null,
+            "minimum_items": null,
+            "minimum_length": null,
+            "pattern_present": true,
+            "required": true,
+            "type": "string"
+          },
+          "component_type": {
+            "literal": "story",
+            "maximum_items": null,
+            "maximum_length": null,
+            "minimum_items": null,
+            "minimum_length": null,
+            "pattern_present": false,
+            "required": true,
+            "type": "string"
+          },
+          "ending": {
+            "literal": null,
+            "maximum_items": null,
+            "maximum_length": 100000,
+            "minimum_items": null,
+            "minimum_length": 1,
+            "pattern_present": false,
+            "required": true,
+            "type": "string"
+          },
+          "factual_summary": {
+            "literal": null,
+            "maximum_items": null,
+            "maximum_length": 100000,
+            "minimum_items": null,
+            "minimum_length": 1,
+            "pattern_present": false,
+            "required": true,
+            "type": "string"
+          }
+        }
+      },
+      "OpenAIRevisedTextComponent": {
+        "additional_properties": false,
+        "custom_validator": "reference_matches_type",
+        "fields": {
+          "component_reference": {
+            "literal": "opening",
+            "maximum_items": null,
+            "maximum_length": 100,
+            "minimum_items": null,
+            "minimum_length": 1,
+            "pattern_present": false,
+            "required": true,
+            "type": "string"
+          },
+          "component_type": {
+            "literal": "opening",
+            "maximum_items": null,
+            "maximum_length": null,
+            "minimum_items": null,
+            "minimum_length": null,
+            "pattern_present": false,
+            "required": true,
+            "type": "string"
+          },
+          "revised_text": {
+            "literal": null,
+            "maximum_items": null,
+            "maximum_length": 100000,
+            "minimum_items": null,
+            "minimum_length": 1,
+            "pattern_present": false,
+            "required": true,
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "investigation_version": "part5j-v1",
+  "post_schema_rules": [
+    "authorized_reference_membership",
+    "complete_authorized_reference_set",
+    "source_type_preservation",
+    "source_order_preservation",
+    "story_commentary_cardinality_matches_source"
+  ],
+  "previous_schema_sha256": "3a643d39384e92fddbabd9e176a1cbda6e7bc2539d1a3937c88fdc025f07d31c",
+  "prompt_contract_sha256": "cb6f07d47ec80ee8dfa246e5151f4c5a625adac2372f05a7cbccf4cbc3ebbf1c",
+  "schema_sha256": "70f4ad299e9c35e86ab473705ed449a244ead2e9574745012cc179afbf6a9556",
+  "synthetic_signatures": {
+    "J01_missing_required_body": {
+      "affected_components": 1,
+      "duplicate_validator": false,
+      "model_validator_errors": 0,
+      "nested_errors": 10,
+      "primary_category": "missing_required_field",
+      "top_level_errors": 1,
+      "total_errors": 11,
+      "union_errors": 9
+    },
+    "J02_wrong_body_field": {
+      "affected_components": 1,
+      "duplicate_validator": false,
+      "model_validator_errors": 0,
+      "nested_errors": 9,
+      "primary_category": "missing_required_field",
+      "top_level_errors": 1,
+      "total_errors": 10,
+      "union_errors": 7
+    },
+    "J03_text_type_story_body": {
+      "affected_components": 1,
+      "duplicate_validator": false,
+      "model_validator_errors": 0,
+      "nested_errors": 11,
+      "primary_category": "missing_required_field",
+      "top_level_errors": 1,
+      "total_errors": 12,
+      "union_errors": 7
+    },
+    "J04_story_type_text_body": {
+      "affected_components": 1,
+      "duplicate_validator": false,
+      "model_validator_errors": 0,
+      "nested_errors": 10,
+      "primary_category": "missing_required_field",
+      "top_level_errors": 1,
+      "total_errors": 11,
+      "union_errors": 5
+    },
+    "J05_cta_type_text_body": {
+      "affected_components": 1,
+      "duplicate_validator": false,
+      "model_validator_errors": 0,
+      "nested_errors": 10,
+      "primary_category": "missing_required_field",
+      "top_level_errors": 1,
+      "total_errors": 11,
+      "union_errors": 7
+    },
+    "J06_valid_plus_foreign": {
+      "affected_components": 1,
+      "duplicate_validator": false,
+      "model_validator_errors": 0,
+      "nested_errors": 12,
+      "primary_category": "extra_field",
+      "top_level_errors": 1,
+      "total_errors": 13,
+      "union_errors": 11
+    },
+    "J07_empty_required": {
+      "affected_components": 1,
+      "duplicate_validator": false,
+      "model_validator_errors": 0,
+      "nested_errors": 12,
+      "primary_category": "constraint_violation",
+      "top_level_errors": 1,
+      "total_errors": 13,
+      "union_errors": 11
+    },
+    "J08_too_short_required": {
+      "affected_components": 1,
+      "duplicate_validator": false,
+      "model_validator_errors": 0,
+      "nested_errors": 11,
+      "primary_category": "constraint_violation",
+      "top_level_errors": 1,
+      "total_errors": 12,
+      "union_errors": 10
+    },
+    "J09_empty_commentary": null,
+    "J10_empty_commentary_item": null,
+    "J11_null_required": {
+      "affected_components": 1,
+      "duplicate_validator": false,
+      "model_validator_errors": 0,
+      "nested_errors": 12,
+      "primary_category": "invalid_nested_type",
+      "top_level_errors": 1,
+      "total_errors": 13,
+      "union_errors": 11
+    },
+    "J12_missing_component_type": {
+      "affected_components": 1,
+      "duplicate_validator": false,
+      "model_validator_errors": 0,
+      "nested_errors": 12,
+      "primary_category": "missing_required_field",
+      "top_level_errors": 1,
+      "total_errors": 13,
+      "union_errors": 11
+    },
+    "J13_unknown_component_type": {
+      "affected_components": 1,
+      "duplicate_validator": false,
+      "model_validator_errors": 0,
+      "nested_errors": 12,
+      "primary_category": "wrong_component_type",
+      "top_level_errors": 1,
+      "total_errors": 13,
+      "union_errors": 11
+    },
+    "J14_text_reference_validator": {
+      "affected_components": 1,
+      "duplicate_validator": false,
+      "model_validator_errors": 0,
+      "nested_errors": 10,
+      "primary_category": "invalid_component_shape",
+      "top_level_errors": 1,
+      "total_errors": 11,
+      "union_errors": 9
+    },
+    "J15_duplicate_reference": {
+      "affected_components": 0,
+      "duplicate_validator": true,
+      "model_validator_errors": 1,
+      "nested_errors": 0,
+      "primary_category": "duplicate_component_reference",
+      "top_level_errors": 1,
+      "total_errors": 1,
+      "union_errors": 0
+    }
+  }
+}

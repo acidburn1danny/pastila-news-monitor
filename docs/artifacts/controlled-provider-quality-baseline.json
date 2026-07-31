@@ -1,0 +1,670 @@
+{
+  "aggregate": {
+    "category_count": 12,
+    "cost": {
+      "average_per_editorial_acceptance": null,
+      "average_per_structural_success": null,
+      "average_per_usable_revision": null,
+      "estimated": true,
+      "scenario": {
+        "maximum": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "minimum": 0.0,
+        "p95": 0.0
+      },
+      "total": 0.0
+    },
+    "fallback_count": 0,
+    "latency_ms": {
+      "maximum": 0.0,
+      "mean": 0.0,
+      "median": 0.0,
+      "minimum": 0.0,
+      "p95": 0.0
+    },
+    "operational_outcomes": {
+      "PROVIDER_FAILURE": 23,
+      "PROVIDER_OUTPUT_REJECTED_SAFELY": 1
+    },
+    "provider_requests": 24,
+    "quality_rates": {},
+    "quality_sample_count": 0,
+    "retry_count": 0,
+    "scenario_count": 24,
+    "tokens": {
+      "billable_total": 0,
+      "cached_prompt": null,
+      "completion": {
+        "maximum": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "minimum": 0.0,
+        "p95": 0.0
+      },
+      "prompt": {
+        "maximum": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "minimum": 0.0,
+        "p95": 0.0
+      },
+      "reasoning": null
+    },
+    "usable_revision_rate": 0.0
+  },
+  "artifact_version": 1,
+  "benchmark_date": "2026-07-28T09:21:19.110010+00:00",
+  "benchmark_id": "20260728-092119-openai-gpt-4.1-mini",
+  "benchmark_version": "controlled-provider-quality-baseline-v1",
+  "final_recommendation": "INVESTIGATE_PROVIDER_FAILURES",
+  "model": "gpt-4.1-mini",
+  "pricing_basis": "estimated",
+  "pricing_version": "openai-gpt-4-1-mini-2026-07-28",
+  "prompt_version": "sha256:cb6f07d47ec80ee8dfa246e5151f4c5a625adac2372f05a7cbccf4cbc3ebbf1c",
+  "provider": "openai",
+  "root_conclusion": "INSUFFICIENT_SAMPLE",
+  "schema_fingerprint": "70f4ad299e9c35e86ab473705ed449a244ead2e9574745012cc179afbf6a9556",
+  "trials": [
+    {
+      "category": "MINIMAL_CLARITY",
+      "cost": {
+        "amount": 0.0,
+        "currency": "USD",
+        "estimated": true
+      },
+      "diagnostic_code": "openai_provider_output_reference_unauthorized",
+      "failure_category": null,
+      "fallback_count": 0,
+      "latency_ms": 0.0,
+      "operational_outcome": "PROVIDER_FAILURE",
+      "provider_requests": 1,
+      "quality": null,
+      "retry_count": 0,
+      "scenario_id": "SYN-01",
+      "tokens": {
+        "billable": 0,
+        "cached_prompt": null,
+        "completion": 0,
+        "prompt": 0,
+        "reasoning": null
+      },
+      "usable_revision": null
+    },
+    {
+      "category": "MINIMAL_CLARITY",
+      "cost": {
+        "amount": 0.0,
+        "currency": "USD",
+        "estimated": true
+      },
+      "diagnostic_code": "openai_provider_output_reference_unknown",
+      "failure_category": null,
+      "fallback_count": 0,
+      "latency_ms": 0.0,
+      "operational_outcome": "PROVIDER_FAILURE",
+      "provider_requests": 1,
+      "quality": null,
+      "retry_count": 0,
+      "scenario_id": "SYN-02",
+      "tokens": {
+        "billable": 0,
+        "cached_prompt": null,
+        "completion": 0,
+        "prompt": 0,
+        "reasoning": null
+      },
+      "usable_revision": null
+    },
+    {
+      "category": "GRAMMAR_AND_FLOW",
+      "cost": {
+        "amount": 0.0,
+        "currency": "USD",
+        "estimated": true
+      },
+      "diagnostic_code": "openai_provider_output_reference_unauthorized",
+      "failure_category": null,
+      "fallback_count": 0,
+      "latency_ms": 0.0,
+      "operational_outcome": "PROVIDER_FAILURE",
+      "provider_requests": 1,
+      "quality": null,
+      "retry_count": 0,
+      "scenario_id": "SYN-03",
+      "tokens": {
+        "billable": 0,
+        "cached_prompt": null,
+        "completion": 0,
+        "prompt": 0,
+        "reasoning": null
+      },
+      "usable_revision": null
+    },
+    {
+      "category": "GRAMMAR_AND_FLOW",
+      "cost": {
+        "amount": 0.0,
+        "currency": "USD",
+        "estimated": true
+      },
+      "diagnostic_code": "openai_provider_output_reference_unknown",
+      "failure_category": null,
+      "fallback_count": 0,
+      "latency_ms": 0.0,
+      "operational_outcome": "PROVIDER_FAILURE",
+      "provider_requests": 1,
+      "quality": null,
+      "retry_count": 0,
+      "scenario_id": "SYN-04",
+      "tokens": {
+        "billable": 0,
+        "cached_prompt": null,
+        "completion": 0,
+        "prompt": 0,
+        "reasoning": null
+      },
+      "usable_revision": null
+    },
+    {
+      "category": "SUBSTANTIAL_REWRITE",
+      "cost": {
+        "amount": 0.0,
+        "currency": "USD",
+        "estimated": true
+      },
+      "diagnostic_code": "openai_provider_output_reference_unknown",
+      "failure_category": null,
+      "fallback_count": 0,
+      "latency_ms": 0.0,
+      "operational_outcome": "PROVIDER_FAILURE",
+      "provider_requests": 1,
+      "quality": null,
+      "retry_count": 0,
+      "scenario_id": "SYN-05",
+      "tokens": {
+        "billable": 0,
+        "cached_prompt": null,
+        "completion": 0,
+        "prompt": 0,
+        "reasoning": null
+      },
+      "usable_revision": null
+    },
+    {
+      "category": "SUBSTANTIAL_REWRITE",
+      "cost": {
+        "amount": 0.0,
+        "currency": "USD",
+        "estimated": true
+      },
+      "diagnostic_code": "openai_provider_output_reference_unknown",
+      "failure_category": null,
+      "fallback_count": 0,
+      "latency_ms": 0.0,
+      "operational_outcome": "PROVIDER_FAILURE",
+      "provider_requests": 1,
+      "quality": null,
+      "retry_count": 0,
+      "scenario_id": "SYN-06",
+      "tokens": {
+        "billable": 0,
+        "cached_prompt": null,
+        "completion": 0,
+        "prompt": 0,
+        "reasoning": null
+      },
+      "usable_revision": null
+    },
+    {
+      "category": "PROTECTED_STRUCTURE",
+      "cost": {
+        "amount": 0.0,
+        "currency": "USD",
+        "estimated": true
+      },
+      "diagnostic_code": "openai_provider_output_schema_invalid",
+      "failure_category": null,
+      "fallback_count": 0,
+      "latency_ms": 0.0,
+      "operational_outcome": "PROVIDER_OUTPUT_REJECTED_SAFELY",
+      "provider_requests": 1,
+      "quality": null,
+      "retry_count": 0,
+      "scenario_id": "SYN-07",
+      "tokens": {
+        "billable": 0,
+        "cached_prompt": null,
+        "completion": 0,
+        "prompt": 0,
+        "reasoning": null
+      },
+      "usable_revision": null
+    },
+    {
+      "category": "PROTECTED_STRUCTURE",
+      "cost": {
+        "amount": 0.0,
+        "currency": "USD",
+        "estimated": true
+      },
+      "diagnostic_code": "openai_provider_output_reference_unauthorized",
+      "failure_category": null,
+      "fallback_count": 0,
+      "latency_ms": 0.0,
+      "operational_outcome": "PROVIDER_FAILURE",
+      "provider_requests": 1,
+      "quality": null,
+      "retry_count": 0,
+      "scenario_id": "SYN-08",
+      "tokens": {
+        "billable": 0,
+        "cached_prompt": null,
+        "completion": 0,
+        "prompt": 0,
+        "reasoning": null
+      },
+      "usable_revision": null
+    },
+    {
+      "category": "SOURCE_AUTHORITY",
+      "cost": {
+        "amount": 0.0,
+        "currency": "USD",
+        "estimated": true
+      },
+      "diagnostic_code": "openai_provider_output_reference_unknown",
+      "failure_category": null,
+      "fallback_count": 0,
+      "latency_ms": 0.0,
+      "operational_outcome": "PROVIDER_FAILURE",
+      "provider_requests": 1,
+      "quality": null,
+      "retry_count": 0,
+      "scenario_id": "SYN-09",
+      "tokens": {
+        "billable": 0,
+        "cached_prompt": null,
+        "completion": 0,
+        "prompt": 0,
+        "reasoning": null
+      },
+      "usable_revision": null
+    },
+    {
+      "category": "SOURCE_AUTHORITY",
+      "cost": {
+        "amount": 0.0,
+        "currency": "USD",
+        "estimated": true
+      },
+      "diagnostic_code": "openai_provider_output_reference_unauthorized",
+      "failure_category": null,
+      "fallback_count": 0,
+      "latency_ms": 0.0,
+      "operational_outcome": "PROVIDER_FAILURE",
+      "provider_requests": 1,
+      "quality": null,
+      "retry_count": 0,
+      "scenario_id": "SYN-10",
+      "tokens": {
+        "billable": 0,
+        "cached_prompt": null,
+        "completion": 0,
+        "prompt": 0,
+        "reasoning": null
+      },
+      "usable_revision": null
+    },
+    {
+      "category": "QUOTE_PRESERVATION",
+      "cost": {
+        "amount": 0.0,
+        "currency": "USD",
+        "estimated": true
+      },
+      "diagnostic_code": "openai_provider_output_reference_unauthorized",
+      "failure_category": null,
+      "fallback_count": 0,
+      "latency_ms": 0.0,
+      "operational_outcome": "PROVIDER_FAILURE",
+      "provider_requests": 1,
+      "quality": null,
+      "retry_count": 0,
+      "scenario_id": "SYN-11",
+      "tokens": {
+        "billable": 0,
+        "cached_prompt": null,
+        "completion": 0,
+        "prompt": 0,
+        "reasoning": null
+      },
+      "usable_revision": null
+    },
+    {
+      "category": "QUOTE_PRESERVATION",
+      "cost": {
+        "amount": 0.0,
+        "currency": "USD",
+        "estimated": true
+      },
+      "diagnostic_code": "openai_provider_output_reference_unauthorized",
+      "failure_category": null,
+      "fallback_count": 0,
+      "latency_ms": 0.0,
+      "operational_outcome": "PROVIDER_FAILURE",
+      "provider_requests": 1,
+      "quality": null,
+      "retry_count": 0,
+      "scenario_id": "SYN-12",
+      "tokens": {
+        "billable": 0,
+        "cached_prompt": null,
+        "completion": 0,
+        "prompt": 0,
+        "reasoning": null
+      },
+      "usable_revision": null
+    },
+    {
+      "category": "NUMERIC_FACT_PRESERVATION",
+      "cost": {
+        "amount": 0.0,
+        "currency": "USD",
+        "estimated": true
+      },
+      "diagnostic_code": "openai_provider_output_reference_unauthorized",
+      "failure_category": null,
+      "fallback_count": 0,
+      "latency_ms": 0.0,
+      "operational_outcome": "PROVIDER_FAILURE",
+      "provider_requests": 1,
+      "quality": null,
+      "retry_count": 0,
+      "scenario_id": "SYN-13",
+      "tokens": {
+        "billable": 0,
+        "cached_prompt": null,
+        "completion": 0,
+        "prompt": 0,
+        "reasoning": null
+      },
+      "usable_revision": null
+    },
+    {
+      "category": "NUMERIC_FACT_PRESERVATION",
+      "cost": {
+        "amount": 0.0,
+        "currency": "USD",
+        "estimated": true
+      },
+      "diagnostic_code": "openai_provider_output_reference_unknown",
+      "failure_category": null,
+      "fallback_count": 0,
+      "latency_ms": 0.0,
+      "operational_outcome": "PROVIDER_FAILURE",
+      "provider_requests": 1,
+      "quality": null,
+      "retry_count": 0,
+      "scenario_id": "SYN-14",
+      "tokens": {
+        "billable": 0,
+        "cached_prompt": null,
+        "completion": 0,
+        "prompt": 0,
+        "reasoning": null
+      },
+      "usable_revision": null
+    },
+    {
+      "category": "TEMPORAL_FACT_PRESERVATION",
+      "cost": {
+        "amount": 0.0,
+        "currency": "USD",
+        "estimated": true
+      },
+      "diagnostic_code": "openai_provider_output_reference_unknown",
+      "failure_category": null,
+      "fallback_count": 0,
+      "latency_ms": 0.0,
+      "operational_outcome": "PROVIDER_FAILURE",
+      "provider_requests": 1,
+      "quality": null,
+      "retry_count": 0,
+      "scenario_id": "SYN-15",
+      "tokens": {
+        "billable": 0,
+        "cached_prompt": null,
+        "completion": 0,
+        "prompt": 0,
+        "reasoning": null
+      },
+      "usable_revision": null
+    },
+    {
+      "category": "TEMPORAL_FACT_PRESERVATION",
+      "cost": {
+        "amount": 0.0,
+        "currency": "USD",
+        "estimated": true
+      },
+      "diagnostic_code": "openai_provider_output_reference_unauthorized",
+      "failure_category": null,
+      "fallback_count": 0,
+      "latency_ms": 0.0,
+      "operational_outcome": "PROVIDER_FAILURE",
+      "provider_requests": 1,
+      "quality": null,
+      "retry_count": 0,
+      "scenario_id": "SYN-16",
+      "tokens": {
+        "billable": 0,
+        "cached_prompt": null,
+        "completion": 0,
+        "prompt": 0,
+        "reasoning": null
+      },
+      "usable_revision": null
+    },
+    {
+      "category": "MULTI_COMPONENT_REVISION",
+      "cost": {
+        "amount": 0.0,
+        "currency": "USD",
+        "estimated": true
+      },
+      "diagnostic_code": "openai_provider_output_reference_unknown",
+      "failure_category": null,
+      "fallback_count": 0,
+      "latency_ms": 0.0,
+      "operational_outcome": "PROVIDER_FAILURE",
+      "provider_requests": 1,
+      "quality": null,
+      "retry_count": 0,
+      "scenario_id": "SYN-17",
+      "tokens": {
+        "billable": 0,
+        "cached_prompt": null,
+        "completion": 0,
+        "prompt": 0,
+        "reasoning": null
+      },
+      "usable_revision": null
+    },
+    {
+      "category": "MULTI_COMPONENT_REVISION",
+      "cost": {
+        "amount": 0.0,
+        "currency": "USD",
+        "estimated": true
+      },
+      "diagnostic_code": "openai_provider_output_reference_unknown",
+      "failure_category": null,
+      "fallback_count": 0,
+      "latency_ms": 0.0,
+      "operational_outcome": "PROVIDER_FAILURE",
+      "provider_requests": 1,
+      "quality": null,
+      "retry_count": 0,
+      "scenario_id": "SYN-18",
+      "tokens": {
+        "billable": 0,
+        "cached_prompt": null,
+        "completion": 0,
+        "prompt": 0,
+        "reasoning": null
+      },
+      "usable_revision": null
+    },
+    {
+      "category": "HIGH_CONSTRAINT_REVISION",
+      "cost": {
+        "amount": 0.0,
+        "currency": "USD",
+        "estimated": true
+      },
+      "diagnostic_code": "openai_provider_output_reference_unauthorized",
+      "failure_category": null,
+      "fallback_count": 0,
+      "latency_ms": 0.0,
+      "operational_outcome": "PROVIDER_FAILURE",
+      "provider_requests": 1,
+      "quality": null,
+      "retry_count": 0,
+      "scenario_id": "SYN-19",
+      "tokens": {
+        "billable": 0,
+        "cached_prompt": null,
+        "completion": 0,
+        "prompt": 0,
+        "reasoning": null
+      },
+      "usable_revision": null
+    },
+    {
+      "category": "HIGH_CONSTRAINT_REVISION",
+      "cost": {
+        "amount": 0.0,
+        "currency": "USD",
+        "estimated": true
+      },
+      "diagnostic_code": "openai_provider_output_reference_unauthorized",
+      "failure_category": null,
+      "fallback_count": 0,
+      "latency_ms": 0.0,
+      "operational_outcome": "PROVIDER_FAILURE",
+      "provider_requests": 1,
+      "quality": null,
+      "retry_count": 0,
+      "scenario_id": "SYN-20",
+      "tokens": {
+        "billable": 0,
+        "cached_prompt": null,
+        "completion": 0,
+        "prompt": 0,
+        "reasoning": null
+      },
+      "usable_revision": null
+    },
+    {
+      "category": "NO_CHANGE_REQUIRED",
+      "cost": {
+        "amount": 0.0,
+        "currency": "USD",
+        "estimated": true
+      },
+      "diagnostic_code": "openai_provider_output_reference_unauthorized",
+      "failure_category": null,
+      "fallback_count": 0,
+      "latency_ms": 0.0,
+      "operational_outcome": "PROVIDER_FAILURE",
+      "provider_requests": 1,
+      "quality": null,
+      "retry_count": 0,
+      "scenario_id": "SYN-21",
+      "tokens": {
+        "billable": 0,
+        "cached_prompt": null,
+        "completion": 0,
+        "prompt": 0,
+        "reasoning": null
+      },
+      "usable_revision": null
+    },
+    {
+      "category": "NO_CHANGE_REQUIRED",
+      "cost": {
+        "amount": 0.0,
+        "currency": "USD",
+        "estimated": true
+      },
+      "diagnostic_code": "openai_provider_output_reference_unknown",
+      "failure_category": null,
+      "fallback_count": 0,
+      "latency_ms": 0.0,
+      "operational_outcome": "PROVIDER_FAILURE",
+      "provider_requests": 1,
+      "quality": null,
+      "retry_count": 0,
+      "scenario_id": "SYN-22",
+      "tokens": {
+        "billable": 0,
+        "cached_prompt": null,
+        "completion": 0,
+        "prompt": 0,
+        "reasoning": null
+      },
+      "usable_revision": null
+    },
+    {
+      "category": "ADVERSARIAL_AMBIGUITY",
+      "cost": {
+        "amount": 0.0,
+        "currency": "USD",
+        "estimated": true
+      },
+      "diagnostic_code": "openai_provider_output_reference_unknown",
+      "failure_category": null,
+      "fallback_count": 0,
+      "latency_ms": 0.0,
+      "operational_outcome": "PROVIDER_FAILURE",
+      "provider_requests": 1,
+      "quality": null,
+      "retry_count": 0,
+      "scenario_id": "SYN-23",
+      "tokens": {
+        "billable": 0,
+        "cached_prompt": null,
+        "completion": 0,
+        "prompt": 0,
+        "reasoning": null
+      },
+      "usable_revision": null
+    },
+    {
+      "category": "ADVERSARIAL_AMBIGUITY",
+      "cost": {
+        "amount": 0.0,
+        "currency": "USD",
+        "estimated": true
+      },
+      "diagnostic_code": "openai_provider_output_reference_unknown",
+      "failure_category": null,
+      "fallback_count": 0,
+      "latency_ms": 0.0,
+      "operational_outcome": "PROVIDER_FAILURE",
+      "provider_requests": 1,
+      "quality": null,
+      "retry_count": 0,
+      "scenario_id": "SYN-24",
+      "tokens": {
+        "billable": 0,
+        "cached_prompt": null,
+        "completion": 0,
+        "prompt": 0,
+        "reasoning": null
+      },
+      "usable_revision": null
+    }
+  ]
+}

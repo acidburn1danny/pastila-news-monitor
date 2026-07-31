@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "milestone": "Part 7C.2.1 — Pipeline Success Semantics Reconciliation",
+  "created_at": "2026-07-28T12:32:30.023902+00:00",
+  "source_milestone": "Part 7C.2",
+  "source_run_id": "20260728-120420-openai-gpt-4.1-mini-7c2",
+  "provider_requests": 0,
+  "benchmark_executions": 0,
+  "benchmark_replays": 0,
+  "raw_scenario_results_modified": false,
+  "observed_inconsistency": "Pipeline Successes = 24 while Editorial Acceptance Passes = 1",
+  "evidence_sources": [
+    "OperationalOutcome.PIPELINE_SUCCESS",
+    "execute_trial and build_v2_artifacts",
+    "test_acceptance_failure_remains_pipeline_success",
+    "Part 7C.2 frozen trial quality records",
+    "Part 7C.2 benchmark history entry"
+  ],
+  "success_term_inventory": [
+    "pipeline_success",
+    "technical_pipeline_success",
+    "operational_success",
+    "editorial_evaluation",
+    "editorial_acceptance",
+    "usable_revision",
+    "quality_sample",
+    "quality_sample_sufficient",
+    "safe_rejection",
+    "pipeline_completion",
+    "full_benchmark_success"
+  ],
+  "canonical_definitions": {
+    "pipeline_success": "technical production of a valid EpisodeDraft; editorial acceptance excluded",
+    "editorial_acceptance": "independent frozen-rubric quality pass over a technically valid output",
+    "quality_sample": "technically valid outputs with completed editorial evaluation"
+  },
+  "technical_pipeline_success_definition": "DTO valid, references authorized, reconstruction complete, and EpisodeDraft valid",
+  "editorial_acceptance_definition": "technically valid result passes the frozen editorial rubric",
+  "full_benchmark_success_definition": null,
+  "quality_sample_sufficiency_definition": "editorial_evaluation_completions >= 12",
+  "part_7h_readiness_definition": "at least 12 evaluable outputs with preserved failure dimensions and uncontaminated reference compliance",
+  "original_metrics": {
+    "pipeline_successes": 24,
+    "json_editorial_acceptance_passes": 24,
+    "quality_editorial_acceptance_passes": 1
+  },
+  "reconciled_metrics": {
+    "pipeline_successes_deprecated_alias": 24,
+    "technical_pipeline_successes": 24,
+    "editorial_evaluation_attempts": 24,
+    "editorial_evaluation_completions": 24,
+    "editorial_acceptance_passes": 1,
+    "editorial_acceptance_failures": 23
+  },
+  "renamed_fields": {
+    "pipeline_successes": "technical_pipeline_successes"
+  },
+  "deprecated_fields": [
+    "pipeline_successes"
+  ],
+  "affected_files": [
+    "scripts/run_controlled_provider_quality_baseline_v2.py",
+    "scripts/reconcile_pipeline_success_semantics.py",
+    "tests/test_pipeline_success_semantics_reconciliation.py",
+    "docs/controlled-provider-quality-baseline-7c-2.md",
+    "docs/artifacts/controlled-provider-quality-baseline-7c-2.json",
+    "docs/artifacts/controlled-provider-quality-history.json",
+    "docs/pipeline-success-semantics-reconciliation.md",
+    "docs/artifacts/pipeline-success-semantics-reconciliation.json"
+  ],
+  "affected_artifacts": [
+    "Part 7C.2 Markdown report",
+    "Part 7C.2 structured artifact",
+    "Part 7C.2 benchmark history entry"
+  ],
+  "benchmark_history_modified": true,
+  "part_7c_1_comparison_modified": false,
+  "part_7c_2_root_conclusion": "REFERENCE_CONTRACT_REMEDIATION_EFFECTIVE",
+  "quality_sample_sufficiency": "SUFFICIENT",
+  "ready_for_part_7h": true,
+  "tests": {
+    "added": 8,
+    "updated": 0
+  },
+  "regression_results": {
+    "focused_semantics": "passed",
+    "aggregate_invariants": "passed",
+    "report_consistency": "passed",
+    "artifact_schema": "passed",
+    "benchmark_history": "passed",
+    "part_7c_2_comparison": "passed",
+    "full_regression": "passed: 1226",
+    "ruff": "passed",
+    "black": "passed",
+    "compileall": "passed",
+    "pip_check": "passed"
+  },
+  "root_conclusion": "PIPELINE_SUCCESS_SEMANTICS_RECONCILED",
+  "recommended_next_milestone": "Part 7H — Controlled Prompt Effectiveness Experiment"
+}

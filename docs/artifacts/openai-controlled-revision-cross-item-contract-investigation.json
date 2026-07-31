@@ -1,0 +1,416 @@
+{
+  "architectural_ownership": "mixed_structural_and_post_schema_semantic",
+  "candidate_results": [
+    {
+      "candidate": "A",
+      "different_body_duplicate_rejected": false,
+      "dynamic": false,
+      "identical_duplicate_rejected": false,
+      "provider_compatibility": "current_contract"
+    },
+    {
+      "candidate": "B",
+      "different_body_duplicate_rejected": false,
+      "dynamic": false,
+      "identical_duplicate_rejected": true,
+      "provider_compatibility": "unproven_by_repository"
+    },
+    {
+      "candidate": "C",
+      "different_body_duplicate_rejected": true,
+      "dynamic": true,
+      "identical_duplicate_rejected": true,
+      "provider_compatibility": "unproven_by_repository"
+    },
+    {
+      "candidate": "D",
+      "different_body_duplicate_rejected": true,
+      "dynamic": true,
+      "identical_duplicate_rejected": true,
+      "provider_compatibility": "unproven_by_repository"
+    },
+    {
+      "candidate": "E",
+      "different_body_duplicate_rejected": true,
+      "dynamic": true,
+      "identical_duplicate_rejected": true,
+      "provider_compatibility": "unproven_by_repository"
+    }
+  ],
+  "capability_matrix": [
+    {
+      "complexity": "low",
+      "keyword": "uniqueItems",
+      "local_draft_2020_12_support": true,
+      "provider_support_proven_by_repository": false,
+      "requires_dynamic_generation": false,
+      "sufficiency": "identical_object_uniqueness_only"
+    },
+    {
+      "complexity": "high",
+      "keyword": "contains",
+      "local_draft_2020_12_support": true,
+      "provider_support_proven_by_repository": false,
+      "requires_dynamic_generation": true,
+      "sufficiency": "dynamic_reference_membership"
+    },
+    {
+      "complexity": "high",
+      "keyword": "minContains",
+      "local_draft_2020_12_support": true,
+      "provider_support_proven_by_repository": false,
+      "requires_dynamic_generation": true,
+      "sufficiency": "dynamic_at_least_once"
+    },
+    {
+      "complexity": "high",
+      "keyword": "maxContains",
+      "local_draft_2020_12_support": true,
+      "provider_support_proven_by_repository": false,
+      "requires_dynamic_generation": true,
+      "sufficiency": "dynamic_at_most_once"
+    },
+    {
+      "complexity": "high",
+      "keyword": "prefixItems",
+      "local_draft_2020_12_support": true,
+      "provider_support_proven_by_repository": false,
+      "requires_dynamic_generation": true,
+      "sufficiency": "dynamic_order_and_identity"
+    },
+    {
+      "complexity": "low",
+      "keyword": "items",
+      "local_draft_2020_12_support": true,
+      "provider_support_proven_by_repository": true,
+      "requires_dynamic_generation": false,
+      "sufficiency": "homogeneous_item_shape"
+    },
+    {
+      "complexity": "low",
+      "keyword": "const",
+      "local_draft_2020_12_support": true,
+      "provider_support_proven_by_repository": true,
+      "requires_dynamic_generation": false,
+      "sufficiency": "fixed_value"
+    },
+    {
+      "complexity": "low",
+      "keyword": "enum",
+      "local_draft_2020_12_support": true,
+      "provider_support_proven_by_repository": false,
+      "requires_dynamic_generation": true,
+      "sufficiency": "finite_membership"
+    },
+    {
+      "complexity": "low",
+      "keyword": "dependentSchemas",
+      "local_draft_2020_12_support": true,
+      "provider_support_proven_by_repository": false,
+      "requires_dynamic_generation": false,
+      "sufficiency": "property_dependency_not_cross_item_identity"
+    },
+    {
+      "complexity": "high",
+      "keyword": "if/then/else",
+      "local_draft_2020_12_support": true,
+      "provider_support_proven_by_repository": false,
+      "requires_dynamic_generation": false,
+      "sufficiency": "conditional_shape_only"
+    },
+    {
+      "complexity": "low",
+      "keyword": "unevaluatedItems",
+      "local_draft_2020_12_support": true,
+      "provider_support_proven_by_repository": false,
+      "requires_dynamic_generation": false,
+      "sufficiency": "item_closure"
+    },
+    {
+      "complexity": "low",
+      "keyword": "unevaluatedProperties",
+      "local_draft_2020_12_support": true,
+      "provider_support_proven_by_repository": false,
+      "requires_dynamic_generation": false,
+      "sufficiency": "property_closure"
+    }
+  ],
+  "investigation_version": "part5l-v1",
+  "live_requests": 0,
+  "ownership_map": [
+    {
+      "authorization_visible": false,
+      "current_owner": "provider_dto",
+      "dto_visible": true,
+      "gateway_visible": false,
+      "interpreter_visible": true,
+      "provider_visible": true,
+      "reconstructor_visible": false,
+      "rule": "component_reference_uniqueness",
+      "schema_visible": false
+    },
+    {
+      "authorization_visible": true,
+      "current_owner": "reconstructor",
+      "dto_visible": false,
+      "gateway_visible": false,
+      "interpreter_visible": true,
+      "provider_visible": true,
+      "reconstructor_visible": true,
+      "rule": "exactly_once_occurrence",
+      "schema_visible": false
+    },
+    {
+      "authorization_visible": true,
+      "current_owner": "reconstructor",
+      "dto_visible": false,
+      "gateway_visible": false,
+      "interpreter_visible": true,
+      "provider_visible": true,
+      "reconstructor_visible": true,
+      "rule": "authorized_reference_membership",
+      "schema_visible": false
+    },
+    {
+      "authorization_visible": true,
+      "current_owner": "reconstructor",
+      "dto_visible": false,
+      "gateway_visible": false,
+      "interpreter_visible": true,
+      "provider_visible": true,
+      "reconstructor_visible": true,
+      "rule": "complete_authorized_reference_set",
+      "schema_visible": false
+    },
+    {
+      "authorization_visible": true,
+      "current_owner": "reconstructor",
+      "dto_visible": false,
+      "gateway_visible": false,
+      "interpreter_visible": true,
+      "provider_visible": true,
+      "reconstructor_visible": true,
+      "rule": "source_order_preservation",
+      "schema_visible": false
+    },
+    {
+      "authorization_visible": true,
+      "current_owner": "reconstructor",
+      "dto_visible": false,
+      "gateway_visible": false,
+      "interpreter_visible": true,
+      "provider_visible": true,
+      "reconstructor_visible": true,
+      "rule": "component_count_equality",
+      "schema_visible": false
+    },
+    {
+      "authorization_visible": true,
+      "current_owner": "reconstructor",
+      "dto_visible": false,
+      "gateway_visible": false,
+      "interpreter_visible": true,
+      "provider_visible": true,
+      "reconstructor_visible": true,
+      "rule": "one_output_per_authorized_input",
+      "schema_visible": false
+    },
+    {
+      "authorization_visible": true,
+      "current_owner": "reconstructor",
+      "dto_visible": false,
+      "gateway_visible": false,
+      "interpreter_visible": true,
+      "provider_visible": true,
+      "reconstructor_visible": true,
+      "rule": "absence_of_unauthorized_outputs",
+      "schema_visible": false
+    }
+  ],
+  "recommendation": "KEEP_DUPLICATE_VALIDATION_IN_DTO",
+  "root_conclusion": "CURRENT_DTO_OWNERSHIP_IS_CORRECT",
+  "rule_classifications": [
+    {
+      "classification": "SCHEMA_PARTIALLY_EXPRESSIBLE",
+      "reason": "uniqueItems compares whole objects; full enforcement needs dynamic identity constraints",
+      "rule": "component_reference_uniqueness"
+    },
+    {
+      "classification": "SCHEMA_PARTIALLY_EXPRESSIBLE",
+      "reason": "dynamic contains with min/max or prefixItems can express it locally",
+      "rule": "exactly_once_occurrence"
+    },
+    {
+      "classification": "SCHEMA_PARTIALLY_EXPRESSIBLE",
+      "reason": "requires invocation-specific enum or const generation",
+      "rule": "authorized_reference_membership"
+    },
+    {
+      "classification": "SCHEMA_PARTIALLY_EXPRESSIBLE",
+      "reason": "requires one dynamic constraint per authorized identity",
+      "rule": "complete_authorized_reference_set"
+    },
+    {
+      "classification": "SCHEMA_PARTIALLY_EXPRESSIBLE",
+      "reason": "dynamic prefixItems can express order locally",
+      "rule": "source_order_preservation"
+    },
+    {
+      "classification": "SCHEMA_EXPRESSIBLE",
+      "reason": "invocation-specific equal minItems and maxItems are sufficient",
+      "rule": "component_count_equality"
+    },
+    {
+      "classification": "SCHEMA_PARTIALLY_EXPRESSIBLE",
+      "reason": "combines dynamic membership, completeness, cardinality, and uniqueness",
+      "rule": "one_output_per_authorized_input"
+    },
+    {
+      "classification": "SCHEMA_PARTIALLY_EXPRESSIBLE",
+      "reason": "requires invocation-specific finite membership",
+      "rule": "absence_of_unauthorized_outputs"
+    }
+  ],
+  "size_estimates": [
+    {
+      "candidate": "A",
+      "canonical_bytes": 250,
+      "component_count": 1,
+      "dynamic_generation": false,
+      "maintainability": "high"
+    },
+    {
+      "candidate": "A",
+      "canonical_bytes": 250,
+      "component_count": 10,
+      "dynamic_generation": false,
+      "maintainability": "high"
+    },
+    {
+      "candidate": "A",
+      "canonical_bytes": 250,
+      "component_count": 25,
+      "dynamic_generation": false,
+      "maintainability": "high"
+    },
+    {
+      "candidate": "A",
+      "canonical_bytes": 250,
+      "component_count": 50,
+      "dynamic_generation": false,
+      "maintainability": "high"
+    },
+    {
+      "candidate": "B",
+      "canonical_bytes": 269,
+      "component_count": 1,
+      "dynamic_generation": false,
+      "maintainability": "high"
+    },
+    {
+      "candidate": "B",
+      "canonical_bytes": 269,
+      "component_count": 10,
+      "dynamic_generation": false,
+      "maintainability": "high"
+    },
+    {
+      "candidate": "B",
+      "canonical_bytes": 269,
+      "component_count": 25,
+      "dynamic_generation": false,
+      "maintainability": "high"
+    },
+    {
+      "candidate": "B",
+      "canonical_bytes": 269,
+      "component_count": 50,
+      "dynamic_generation": false,
+      "maintainability": "high"
+    },
+    {
+      "candidate": "C",
+      "canonical_bytes": 436,
+      "component_count": 1,
+      "dynamic_generation": true,
+      "maintainability": "medium"
+    },
+    {
+      "candidate": "C",
+      "canonical_bytes": 1853,
+      "component_count": 10,
+      "dynamic_generation": true,
+      "maintainability": "medium"
+    },
+    {
+      "candidate": "C",
+      "canonical_bytes": 4238,
+      "component_count": 25,
+      "dynamic_generation": true,
+      "maintainability": "medium"
+    },
+    {
+      "candidate": "C",
+      "canonical_bytes": 8213,
+      "component_count": 50,
+      "dynamic_generation": true,
+      "maintainability": "medium"
+    },
+    {
+      "candidate": "D",
+      "canonical_bytes": 304,
+      "component_count": 1,
+      "dynamic_generation": true,
+      "maintainability": "low"
+    },
+    {
+      "candidate": "D",
+      "canonical_bytes": 1882,
+      "component_count": 10,
+      "dynamic_generation": true,
+      "maintainability": "low"
+    },
+    {
+      "candidate": "D",
+      "canonical_bytes": 4522,
+      "component_count": 25,
+      "dynamic_generation": true,
+      "maintainability": "low"
+    },
+    {
+      "candidate": "D",
+      "canonical_bytes": 8922,
+      "component_count": 50,
+      "dynamic_generation": true,
+      "maintainability": "low"
+    },
+    {
+      "candidate": "E",
+      "canonical_bytes": 177,
+      "component_count": 1,
+      "dynamic_generation": true,
+      "maintainability": "low"
+    },
+    {
+      "candidate": "E",
+      "canonical_bytes": 593,
+      "component_count": 10,
+      "dynamic_generation": true,
+      "maintainability": "low"
+    },
+    {
+      "candidate": "E",
+      "canonical_bytes": 1313,
+      "component_count": 25,
+      "dynamic_generation": true,
+      "maintainability": "low"
+    },
+    {
+      "candidate": "E",
+      "canonical_bytes": 2513,
+      "component_count": 50,
+      "dynamic_generation": true,
+      "maintainability": "low"
+    }
+  ]
+}

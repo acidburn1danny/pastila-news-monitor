@@ -1,0 +1,57 @@
+{
+  "edges": [
+    {
+      "confidence": "LOW",
+      "evidence_scenarios": [
+        "SYN-10",
+        "SYN-23"
+      ],
+      "interpretation": "Removing quote failure exposed an already-present authority failure as the primary category; it did not introduce the underlying criterion failures.",
+      "label": "POSSIBLY_CAUSES",
+      "source": "QUOTE_MUTATION",
+      "target": "SOURCE_AUTHORITY_DRIFT"
+    },
+    {
+      "confidence": "LOW",
+      "evidence_scenarios": [
+        "SYN-20"
+      ],
+      "interpretation": "The new instruction-compliance failure co-occurred with the only pass-to-fail transition.",
+      "label": "LIKELY_CAUSES",
+      "source": "instruction_compliance",
+      "target": "editorial_acceptance"
+    },
+    {
+      "confidence": "LOW",
+      "evidence_scenarios": [
+        "SYN-20"
+      ],
+      "interpretation": "The new meaning-preservation failure co-occurred with the only pass-to-fail transition.",
+      "label": "LIKELY_CAUSES",
+      "source": "meaning_preservation",
+      "target": "editorial_acceptance"
+    },
+    {
+      "confidence": "LOW",
+      "evidence_scenarios": [
+        "SYN-20"
+      ],
+      "interpretation": "The new authority failure co-occurred with the only pass-to-fail transition.",
+      "label": "LIKELY_CAUSES",
+      "source": "source_authority_preservation",
+      "target": "editorial_acceptance"
+    }
+  ],
+  "milestone": "Part 7H.2.2",
+  "nodes": [
+    "QUOTE_MUTATION",
+    "SOURCE_AUTHORITY_DRIFT",
+    "editorial_acceptance",
+    "instruction_compliance",
+    "meaning_preservation",
+    "quote_preservation",
+    "source_authority_preservation"
+  ],
+  "observational_only": true,
+  "schema_version": 1
+}

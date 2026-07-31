@@ -1,0 +1,198 @@
+# Set enabled: false to disable a source without removing its stable database ID.
+# categories describe broad source coverage in Romanian; --category filters
+# sources, not individual articles. RSS is preferred. HTML sources may be
+# enabled only with selectors verified against current public markup.
+# Every source ID must remain stable, unique, lowercase, and ASCII.
+
+sources:
+  - id: digi24
+    name: Digi24
+    adapter: rss
+    url: https://www.digi24.ro/rss
+    enabled: true
+    prioritate: 1
+    source_category: [Politica, Social, Economie, Diverse]
+    max_articles_per_poll: 60
+
+  - id: hotnews
+    name: HotNews
+    adapter: rss
+    url: https://hotnews.ro/feed
+    enabled: true
+    prioritate: 1
+    source_category: [Politica, Social, Economie, Diverse]
+
+  - id: g4media
+    name: G4Media
+    adapter: rss
+    url: https://www.g4media.ro/feed
+    enabled: true
+    prioritate: 1
+    source_category: [Politica, Social, Economie, Diverse]
+
+  # Disabled: the official homepage publishes no verified RSS/Atom discovery link.
+  - id: newsro
+    name: News.ro
+    adapter: html
+    url: https://www.news.ro/
+    enabled: false
+    disabled_reason: No verified RSS/Atom discovery link on the official homepage.
+    prioritate: 1
+    source_category: [Politica, Social, Economie, Diverse]
+
+  - id: adevarul
+    name: Adevărul
+    adapter: rss
+    url: https://adevarul.ro/rss/index
+    enabled: true
+    prioritate: 1
+    source_category: [Politica, Social, Economie, CanCan, Diverse]
+
+  - id: libertatea
+    name: Libertatea
+    adapter: rss
+    url: https://www.libertatea.ro/feed
+    enabled: true
+    prioritate: 1
+    source_category: [Politica, Social, CanCan, Diverse]
+
+  - id: observatornews
+    name: Observator News
+    adapter: rss
+    url: https://observatornews.ro/rss/
+    enabled: true
+    prioritate: 1
+    source_category: [Politica, Social, CanCan, Diverse]
+
+  - id: antena3
+    name: Antena 3 CNN
+    adapter: rss
+    url: https://www.antena3.ro/rss
+    enabled: true
+    prioritate: 1
+    source_category: [Politica, Social, Conspiratii, Economie, Diverse]
+
+  # Disabled: official /api/ discovery URL returned zero feed entries on live validation.
+  - id: europalibera
+    name: Europa Liberă România
+    adapter: rss
+    url: https://romania.europalibera.org/api/
+    enabled: false
+    disabled_reason: Official discovery endpoint produced no feed entries during validation.
+    prioritate: 1
+    source_category: [Politica, Social, Economie, Diverse]
+
+  - id: rfi
+    name: RFI România
+    adapter: rss
+    url: https://www.rfi.fr/ro/rss
+    enabled: true
+    prioritate: 1
+    source_category: [Politica, Social, Economie, Diverse]
+
+  - id: recorder
+    name: Recorder
+    adapter: rss
+    url: https://recorder.ro/feed/
+    enabled: true
+    prioritate: 1
+    source_category: [Politica, Social, Economie, Diverse]
+
+  # Disabled: the official homepage publishes no verified RSS/Atom discovery link.
+  - id: pressone
+    name: PressOne
+    adapter: html
+    url: https://pressone.ro/
+    enabled: false
+    disabled_reason: No verified RSS/Atom discovery link on the official homepage.
+    prioritate: 1
+    source_category: [Politica, Social, Economie, Diverse]
+
+  - id: economica
+    name: Economica.net
+    adapter: rss
+    url: https://www.economica.net/feed
+    enabled: true
+    prioritate: 1
+    source_category: [Economie, Social, Diverse]
+
+  # Disabled: the official homepage publishes no verified RSS/Atom discovery link.
+  - id: profit
+    name: Profit.ro
+    adapter: html
+    url: https://www.profit.ro/
+    enabled: false
+    disabled_reason: No verified RSS/Atom discovery link on the official homepage.
+    prioritate: 1
+    source_category: [Economie, Politica, Diverse]
+
+  - id: ziare
+    name: Ziare.com
+    adapter: rss
+    url: https://ziare.com/rss/breaking_news.xml
+    enabled: true
+    prioritate: 1
+    source_category: [Politica, Social, Economie, CanCan, Diverse]
+
+  # Disabled: Reuters' public World page returned HTTP 401 and no stable,
+  # unauthenticated RSS or Atom endpoint could be verified.
+  - id: reuters
+    name: Reuters
+    adapter: html
+    url: https://www.reuters.com/world/
+    enabled: false
+    disabled_reason: No reliable unauthenticated public feed was verified.
+    prioritate: 1
+    source_category: [Externe]
+    max_articles_per_poll: 50
+
+  # Disabled: AP advertises this RSS endpoint, but it returned HTTP 401 to the
+  # Scout client during live validation on 2026-07-26.
+  - id: ap
+    name: Associated Press
+    adapter: rss
+    url: https://apnews.com/index.rss
+    enabled: false
+    disabled_reason: Official RSS endpoint returned HTTP 401 during live validation.
+    prioritate: 1
+    source_category: [Externe]
+    max_articles_per_poll: 50
+
+  - id: bbc_world
+    name: BBC News World
+    adapter: rss
+    url: https://feeds.bbci.co.uk/news/world/rss.xml
+    enabled: true
+    prioritate: 1
+    source_category: [Externe]
+    max_articles_per_poll: 50
+
+  - id: politico_europe
+    name: Politico Europe
+    adapter: rss
+    url: https://www.politico.eu/feed/
+    enabled: true
+    prioritate: 1
+    source_category: [Externe]
+    max_articles_per_poll: 50
+
+  # CNN's public site exposes no verified RSS/Atom discovery link; its
+  # documented Newsource syndication feeds require credentials.
+  - id: cnn
+    name: CNN
+    adapter: html
+    url: https://edition.cnn.com/world
+    enabled: false
+    disabled_reason: No reliable unauthenticated public feed was verified.
+    prioritate: 1
+    source_category: [Externe]
+    max_articles_per_poll: 50
+
+  - id: msnow
+    name: MS NOW
+    adapter: rss
+    url: https://www.ms.now/feed
+    enabled: true
+    prioritate: 1
+    source_category: [Externe]
+    max_articles_per_poll: 50

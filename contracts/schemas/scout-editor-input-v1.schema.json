@@ -1,0 +1,560 @@
+{
+  "$defs": {
+    "DeterministicScoreBreakdown": {
+      "additionalProperties": false,
+      "properties": {
+        "category_weight": {
+          "$ref": "#/$defs/PublicScoreComponent"
+        },
+        "national_relevance": {
+          "$ref": "#/$defs/PublicScoreComponent"
+        },
+        "recency": {
+          "$ref": "#/$defs/PublicScoreComponent"
+        },
+        "source_credibility": {
+          "$ref": "#/$defs/PublicScoreComponent"
+        },
+        "source_diversity": {
+          "$ref": "#/$defs/PublicScoreComponent"
+        },
+        "supporting_articles": {
+          "$ref": "#/$defs/PublicScoreComponent"
+        },
+        "title_strength": {
+          "$ref": "#/$defs/PublicScoreComponent"
+        }
+      },
+      "required": [
+        "supporting_articles",
+        "source_diversity",
+        "source_credibility",
+        "recency",
+        "national_relevance",
+        "category_weight",
+        "title_strength"
+      ],
+      "title": "DeterministicScoreBreakdown",
+      "type": "object"
+    },
+    "EventCounts": {
+      "additionalProperties": false,
+      "properties": {
+        "eligible": {
+          "minimum": 0,
+          "title": "Eligible",
+          "type": "integer"
+        },
+        "processed": {
+          "minimum": 0,
+          "title": "Processed",
+          "type": "integer"
+        },
+        "reported": {
+          "minimum": 0,
+          "title": "Reported",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "eligible",
+        "processed",
+        "reported"
+      ],
+      "title": "EventCounts",
+      "type": "object"
+    },
+    "PublicAIEditorialDimensions": {
+      "additionalProperties": false,
+      "properties": {
+        "absurdity": {
+          "maximum": 10,
+          "minimum": 0,
+          "title": "Absurdity",
+          "type": "integer"
+        },
+        "emotional_impact": {
+          "maximum": 10,
+          "minimum": 0,
+          "title": "Emotional Impact",
+          "type": "integer"
+        },
+        "importance": {
+          "maximum": 10,
+          "minimum": 0,
+          "title": "Importance",
+          "type": "integer"
+        },
+        "originality": {
+          "maximum": 10,
+          "minimum": 0,
+          "title": "Originality",
+          "type": "integer"
+        },
+        "public_interest": {
+          "maximum": 10,
+          "minimum": 0,
+          "title": "Public Interest",
+          "type": "integer"
+        },
+        "satirical_potential": {
+          "maximum": 10,
+          "minimum": 0,
+          "title": "Satirical Potential",
+          "type": "integer"
+        },
+        "virality": {
+          "maximum": 10,
+          "minimum": 0,
+          "title": "Virality",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "importance",
+        "virality",
+        "absurdity",
+        "satirical_potential",
+        "public_interest",
+        "emotional_impact",
+        "originality"
+      ],
+      "title": "PublicAIEditorialDimensions",
+      "type": "object"
+    },
+    "PublicAIEditorialScore": {
+      "additionalProperties": false,
+      "properties": {
+        "dimensions": {
+          "$ref": "#/$defs/PublicAIEditorialDimensions"
+        },
+        "score": {
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Score",
+          "type": "number"
+        }
+      },
+      "required": [
+        "score",
+        "dimensions"
+      ],
+      "title": "PublicAIEditorialScore",
+      "type": "object"
+    },
+    "PublicDeterministicScore": {
+      "additionalProperties": false,
+      "properties": {
+        "components": {
+          "$ref": "#/$defs/DeterministicScoreBreakdown"
+        },
+        "schema_version": {
+          "minLength": 1,
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "score": {
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Score",
+          "type": "number"
+        }
+      },
+      "required": [
+        "score",
+        "schema_version",
+        "components"
+      ],
+      "title": "PublicDeterministicScore",
+      "type": "object"
+    },
+    "PublicScoreComponent": {
+      "additionalProperties": false,
+      "properties": {
+        "explanation": {
+          "minLength": 1,
+          "title": "Explanation",
+          "type": "string"
+        },
+        "maximum_contribution": {
+          "minimum": 0,
+          "title": "Maximum Contribution",
+          "type": "number"
+        },
+        "normalized_value": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Normalized Value",
+          "type": "number"
+        },
+        "raw_input": {
+          "title": "Raw Input",
+          "type": "number"
+        },
+        "weighted_contribution": {
+          "minimum": 0,
+          "title": "Weighted Contribution",
+          "type": "number"
+        }
+      },
+      "required": [
+        "raw_input",
+        "normalized_value",
+        "weighted_contribution",
+        "maximum_contribution",
+        "explanation"
+      ],
+      "title": "PublicScoreComponent",
+      "type": "object"
+    },
+    "PublicationBounds": {
+      "additionalProperties": false,
+      "properties": {
+        "first_published_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "First Published At"
+        },
+        "last_published_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Last Published At"
+        }
+      },
+      "title": "PublicationBounds",
+      "type": "object"
+    },
+    "RankedEditorialEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "ai_editorial_score": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PublicAIEditorialScore"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "article_count": {
+          "exclusiveMinimum": 0,
+          "title": "Article Count",
+          "type": "integer"
+        },
+        "canonical_summary": {
+          "minLength": 1,
+          "title": "Canonical Summary",
+          "type": "string"
+        },
+        "canonical_title": {
+          "minLength": 1,
+          "title": "Canonical Title",
+          "type": "string"
+        },
+        "categories": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 3,
+          "minItems": 1,
+          "title": "Categories",
+          "type": "array"
+        },
+        "deterministic_score": {
+          "$ref": "#/$defs/PublicDeterministicScore"
+        },
+        "editorial_risks": {
+          "default": [],
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Editorial Risks",
+          "type": "array"
+        },
+        "event_id": {
+          "exclusiveMinimum": 0,
+          "title": "Event Id",
+          "type": "integer"
+        },
+        "extensions": {
+          "additionalProperties": true,
+          "title": "Extensions",
+          "type": "object"
+        },
+        "final_score": {
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Final Score",
+          "type": "number"
+        },
+        "provenance_truncated": {
+          "title": "Provenance Truncated",
+          "type": "boolean"
+        },
+        "publication_bounds": {
+          "$ref": "#/$defs/PublicationBounds"
+        },
+        "rank": {
+          "exclusiveMinimum": 0,
+          "title": "Rank",
+          "type": "integer"
+        },
+        "recommendation": {
+          "pattern": "^(STRONG_PICK|POSSIBLE_PICK|BACKUP|SKIP)$",
+          "title": "Recommendation",
+          "type": "string"
+        },
+        "score_basis": {
+          "minLength": 1,
+          "title": "Score Basis",
+          "type": "string"
+        },
+        "score_rank": {
+          "exclusiveMinimum": 0,
+          "title": "Score Rank",
+          "type": "integer"
+        },
+        "scout_recommendation_reason": {
+          "minLength": 1,
+          "title": "Scout Recommendation Reason",
+          "type": "string"
+        },
+        "source_count": {
+          "exclusiveMinimum": 0,
+          "title": "Source Count",
+          "type": "integer"
+        },
+        "source_provenance": {
+          "items": {
+            "$ref": "#/$defs/SourceReference"
+          },
+          "maxItems": 3,
+          "minItems": 1,
+          "title": "Source Provenance",
+          "type": "array"
+        }
+      },
+      "required": [
+        "rank",
+        "score_rank",
+        "event_id",
+        "canonical_title",
+        "canonical_summary",
+        "publication_bounds",
+        "categories",
+        "source_count",
+        "article_count",
+        "source_provenance",
+        "provenance_truncated",
+        "deterministic_score",
+        "final_score",
+        "recommendation",
+        "scout_recommendation_reason",
+        "score_basis"
+      ],
+      "title": "RankedEditorialEvent",
+      "type": "object"
+    },
+    "RankingParameters": {
+      "additionalProperties": false,
+      "properties": {
+        "ai_enabled": {
+          "title": "Ai Enabled",
+          "type": "boolean"
+        },
+        "category_filter": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Category Filter"
+        },
+        "days": {
+          "exclusiveMinimum": 0,
+          "title": "Days",
+          "type": "integer"
+        },
+        "limit": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Limit"
+        },
+        "minimum_score": {
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Minimum Score",
+          "type": "number"
+        },
+        "top": {
+          "exclusiveMinimum": 0,
+          "title": "Top",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "days",
+        "top",
+        "minimum_score",
+        "ai_enabled"
+      ],
+      "title": "RankingParameters",
+      "type": "object"
+    },
+    "SourceReference": {
+      "additionalProperties": false,
+      "properties": {
+        "published_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Published At"
+        },
+        "source_id": {
+          "minLength": 1,
+          "title": "Source Id",
+          "type": "string"
+        },
+        "source_name": {
+          "minLength": 1,
+          "title": "Source Name",
+          "type": "string"
+        },
+        "title": {
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "url": {
+          "minLength": 1,
+          "title": "Url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_id",
+        "source_name",
+        "url",
+        "title"
+      ],
+      "title": "SourceReference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "content_fingerprint": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Content Fingerprint",
+      "type": "string"
+    },
+    "contract_version": {
+      "default": "scout-editor-input-v1",
+      "pattern": "^scout-editor-input-v1$",
+      "title": "Contract Version",
+      "type": "string"
+    },
+    "editorial_contract_version": {
+      "default": "scout-editorial-semantics-v1",
+      "pattern": "^scout-editorial-semantics-v1$",
+      "title": "Editorial Contract Version",
+      "type": "string"
+    },
+    "event_counts": {
+      "$ref": "#/$defs/EventCounts"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "generated_at": {
+      "format": "date-time",
+      "title": "Generated At",
+      "type": "string"
+    },
+    "ranked_events": {
+      "items": {
+        "$ref": "#/$defs/RankedEditorialEvent"
+      },
+      "maxItems": 1000,
+      "title": "Ranked Events",
+      "type": "array"
+    },
+    "ranking_parameters": {
+      "$ref": "#/$defs/RankingParameters"
+    },
+    "ranking_schema_version": {
+      "minLength": 1,
+      "title": "Ranking Schema Version",
+      "type": "string"
+    },
+    "report_id": {
+      "pattern": "^scout-editor-input-v1:sha256:[0-9a-f]{64}$",
+      "title": "Report Id",
+      "type": "string"
+    },
+    "scout_version": {
+      "minLength": 1,
+      "title": "Scout Version",
+      "type": "string"
+    },
+    "source_run_id": {
+      "pattern": "^(poll-run:[1-9][0-9]*|snapshot:sha256:[0-9a-f]{64})$",
+      "title": "Source Run Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "generated_at",
+    "report_id",
+    "content_fingerprint",
+    "scout_version",
+    "ranking_schema_version",
+    "source_run_id",
+    "ranking_parameters",
+    "event_counts",
+    "ranked_events"
+  ],
+  "title": "ScoutEditorInputV1",
+  "type": "object"
+}

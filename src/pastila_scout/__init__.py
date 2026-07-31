@@ -1,0 +1,1 @@
+"""Pastila news monitoring package."""

@@ -1,0 +1,340 @@
+{
+  "causal_mechanism": "PARTIALLY_CONFIRMED",
+  "evidence": {
+    "observed_affected_scenarios": [
+      "SYN-06",
+      "SYN-10",
+      "SYN-15",
+      "SYN-20",
+      "SYN-23"
+    ],
+    "observed_net_editorial_utility": 8,
+    "scenario_transitions": [
+      {
+        "acceptance_transition": "FAIL_TO_FAIL",
+        "introduced_failures": [],
+        "removed_failures": [],
+        "scenario_id": "SYN-01",
+        "score_delta": 0.0,
+        "unchanged_failures": [
+          "editorial_acceptance",
+          "instruction_compliance",
+          "meaning_preservation",
+          "source_authority_preservation"
+        ]
+      },
+      {
+        "acceptance_transition": "FAIL_TO_FAIL",
+        "introduced_failures": [],
+        "removed_failures": [],
+        "scenario_id": "SYN-02",
+        "score_delta": 0.0,
+        "unchanged_failures": [
+          "editorial_acceptance",
+          "instruction_compliance",
+          "meaning_preservation",
+          "source_authority_preservation"
+        ]
+      },
+      {
+        "acceptance_transition": "FAIL_TO_FAIL",
+        "introduced_failures": [],
+        "removed_failures": [],
+        "scenario_id": "SYN-03",
+        "score_delta": 0.0,
+        "unchanged_failures": [
+          "editorial_acceptance",
+          "instruction_compliance",
+          "meaning_preservation",
+          "source_authority_preservation"
+        ]
+      },
+      {
+        "acceptance_transition": "FAIL_TO_FAIL",
+        "introduced_failures": [],
+        "removed_failures": [],
+        "scenario_id": "SYN-04",
+        "score_delta": 0.0,
+        "unchanged_failures": [
+          "editorial_acceptance",
+          "instruction_compliance",
+          "meaning_preservation",
+          "source_authority_preservation"
+        ]
+      },
+      {
+        "acceptance_transition": "FAIL_TO_FAIL",
+        "introduced_failures": [],
+        "removed_failures": [],
+        "scenario_id": "SYN-05",
+        "score_delta": 0.0,
+        "unchanged_failures": [
+          "editorial_acceptance",
+          "instruction_compliance",
+          "meaning_preservation",
+          "source_authority_preservation"
+        ]
+      },
+      {
+        "acceptance_transition": "FAIL_TO_PASS",
+        "introduced_failures": [
+          "quote_preservation"
+        ],
+        "removed_failures": [
+          "editorial_acceptance",
+          "instruction_compliance",
+          "source_authority_preservation"
+        ],
+        "scenario_id": "SYN-06",
+        "score_delta": 13.333333333333343,
+        "unchanged_failures": [
+          "meaning_preservation"
+        ]
+      },
+      {
+        "acceptance_transition": "FAIL_TO_FAIL",
+        "introduced_failures": [],
+        "removed_failures": [],
+        "scenario_id": "SYN-07",
+        "score_delta": 0.0,
+        "unchanged_failures": [
+          "editorial_acceptance",
+          "instruction_compliance",
+          "meaning_preservation",
+          "source_authority_preservation"
+        ]
+      },
+      {
+        "acceptance_transition": "FAIL_TO_FAIL",
+        "introduced_failures": [],
+        "removed_failures": [],
+        "scenario_id": "SYN-08",
+        "score_delta": 0.0,
+        "unchanged_failures": [
+          "editorial_acceptance",
+          "instruction_compliance",
+          "meaning_preservation",
+          "source_authority_preservation"
+        ]
+      },
+      {
+        "acceptance_transition": "FAIL_TO_FAIL",
+        "introduced_failures": [],
+        "removed_failures": [],
+        "scenario_id": "SYN-09",
+        "score_delta": 0.0,
+        "unchanged_failures": [
+          "editorial_acceptance",
+          "instruction_compliance",
+          "meaning_preservation",
+          "source_authority_preservation"
+        ]
+      },
+      {
+        "acceptance_transition": "FAIL_TO_FAIL",
+        "introduced_failures": [],
+        "removed_failures": [
+          "quote_preservation"
+        ],
+        "scenario_id": "SYN-10",
+        "score_delta": 6.666666666666657,
+        "unchanged_failures": [
+          "editorial_acceptance",
+          "instruction_compliance",
+          "meaning_preservation",
+          "source_authority_preservation"
+        ]
+      },
+      {
+        "acceptance_transition": "FAIL_TO_FAIL",
+        "introduced_failures": [],
+        "removed_failures": [],
+        "scenario_id": "SYN-11",
+        "score_delta": 0.0,
+        "unchanged_failures": [
+          "editorial_acceptance",
+          "instruction_compliance",
+          "meaning_preservation",
+          "source_authority_preservation"
+        ]
+      },
+      {
+        "acceptance_transition": "FAIL_TO_FAIL",
+        "introduced_failures": [],
+        "removed_failures": [],
+        "scenario_id": "SYN-12",
+        "score_delta": 0.0,
+        "unchanged_failures": [
+          "editorial_acceptance",
+          "instruction_compliance",
+          "meaning_preservation",
+          "source_authority_preservation"
+        ]
+      },
+      {
+        "acceptance_transition": "FAIL_TO_FAIL",
+        "introduced_failures": [],
+        "removed_failures": [],
+        "scenario_id": "SYN-13",
+        "score_delta": 0.0,
+        "unchanged_failures": [
+          "editorial_acceptance",
+          "instruction_compliance",
+          "meaning_preservation",
+          "source_authority_preservation"
+        ]
+      },
+      {
+        "acceptance_transition": "FAIL_TO_FAIL",
+        "introduced_failures": [],
+        "removed_failures": [],
+        "scenario_id": "SYN-14",
+        "score_delta": 0.0,
+        "unchanged_failures": [
+          "editorial_acceptance",
+          "instruction_compliance",
+          "meaning_preservation",
+          "source_authority_preservation"
+        ]
+      },
+      {
+        "acceptance_transition": "FAIL_TO_PASS",
+        "introduced_failures": [],
+        "removed_failures": [
+          "editorial_acceptance",
+          "instruction_compliance",
+          "meaning_preservation",
+          "source_authority_preservation"
+        ],
+        "scenario_id": "SYN-15",
+        "score_delta": 26.66666666666667,
+        "unchanged_failures": []
+      },
+      {
+        "acceptance_transition": "FAIL_TO_FAIL",
+        "introduced_failures": [],
+        "removed_failures": [],
+        "scenario_id": "SYN-16",
+        "score_delta": 0.0,
+        "unchanged_failures": [
+          "editorial_acceptance",
+          "instruction_compliance",
+          "meaning_preservation",
+          "source_authority_preservation"
+        ]
+      },
+      {
+        "acceptance_transition": "FAIL_TO_FAIL",
+        "introduced_failures": [],
+        "removed_failures": [],
+        "scenario_id": "SYN-17",
+        "score_delta": 0.0,
+        "unchanged_failures": [
+          "editorial_acceptance",
+          "instruction_compliance",
+          "meaning_preservation",
+          "source_authority_preservation"
+        ]
+      },
+      {
+        "acceptance_transition": "FAIL_TO_FAIL",
+        "introduced_failures": [],
+        "removed_failures": [],
+        "scenario_id": "SYN-18",
+        "score_delta": 0.0,
+        "unchanged_failures": [
+          "editorial_acceptance",
+          "instruction_compliance",
+          "meaning_preservation",
+          "source_authority_preservation"
+        ]
+      },
+      {
+        "acceptance_transition": "FAIL_TO_FAIL",
+        "introduced_failures": [],
+        "removed_failures": [],
+        "scenario_id": "SYN-19",
+        "score_delta": 0.0,
+        "unchanged_failures": [
+          "editorial_acceptance",
+          "instruction_compliance",
+          "meaning_preservation",
+          "source_authority_preservation"
+        ]
+      },
+      {
+        "acceptance_transition": "PASS_TO_FAIL",
+        "introduced_failures": [
+          "editorial_acceptance",
+          "instruction_compliance",
+          "meaning_preservation",
+          "source_authority_preservation"
+        ],
+        "removed_failures": [],
+        "scenario_id": "SYN-20",
+        "score_delta": -26.66666666666667,
+        "unchanged_failures": []
+      },
+      {
+        "acceptance_transition": "FAIL_TO_FAIL",
+        "introduced_failures": [],
+        "removed_failures": [],
+        "scenario_id": "SYN-21",
+        "score_delta": 0.0,
+        "unchanged_failures": [
+          "editorial_acceptance",
+          "instruction_compliance",
+          "meaning_preservation",
+          "source_authority_preservation"
+        ]
+      },
+      {
+        "acceptance_transition": "FAIL_TO_FAIL",
+        "introduced_failures": [],
+        "removed_failures": [],
+        "scenario_id": "SYN-22",
+        "score_delta": 0.0,
+        "unchanged_failures": [
+          "editorial_acceptance",
+          "instruction_compliance",
+          "meaning_preservation",
+          "source_authority_preservation"
+        ]
+      },
+      {
+        "acceptance_transition": "FAIL_TO_PASS",
+        "introduced_failures": [],
+        "removed_failures": [
+          "editorial_acceptance",
+          "instruction_compliance",
+          "meaning_preservation",
+          "quote_preservation",
+          "source_authority_preservation"
+        ],
+        "scenario_id": "SYN-23",
+        "score_delta": 33.33333333333333,
+        "unchanged_failures": []
+      },
+      {
+        "acceptance_transition": "FAIL_TO_FAIL",
+        "introduced_failures": [],
+        "removed_failures": [],
+        "scenario_id": "SYN-24",
+        "score_delta": 0.0,
+        "unchanged_failures": [
+          "editorial_acceptance",
+          "instruction_compliance",
+          "meaning_preservation",
+          "source_authority_preservation"
+        ]
+      }
+    ]
+  },
+  "experiment_id": "20260728-161607-openai-gpt-4.1-mini-7h4",
+  "knowledge_base_update_required": true,
+  "knowledge_entry_id": "EK-002",
+  "prior_status": "ACTIVE",
+  "schema_version": 1,
+  "update_strategy": "append a new immutable experiment finding; retain EK-002",
+  "validation_outcome": "REFINED"
+}

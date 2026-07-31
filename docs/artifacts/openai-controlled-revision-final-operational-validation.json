@@ -1,0 +1,73 @@
+{
+  "milestone": "part5n",
+  "model": "gpt-4.1-mini",
+  "schema_sha256": "70f4ad299e9c35e86ab473705ed449a244ead2e9574745012cc179afbf6a9556",
+  "requests": 4,
+  "provider_responses": 4,
+  "dto_passes": 1,
+  "dto_failures": 3,
+  "safe_rejections": 3,
+  "pipeline_successes": 1,
+  "external_failures": 0,
+  "runtime_failures": 0,
+  "retries": 0,
+  "fallbacks": 0,
+  "scenarios": [
+    {
+      "scenario": "E2E-01",
+      "operational_classification": "PIPELINE_SUCCESS",
+      "provider_response_received": true,
+      "dto_pass": true,
+      "authorization_reached": true,
+      "reconstruction_reached": true,
+      "episode_draft_reached": true,
+      "gateway_reached": true,
+      "acceptance_reached": true,
+      "editorial_acceptance_pass": false,
+      "runtime_terminated_safely": true,
+      "duration_ms": 2914
+    },
+    {
+      "scenario": "E2E-02",
+      "operational_classification": "PROVIDER_OUTPUT_REJECTED_SAFELY",
+      "provider_response_received": true,
+      "dto_pass": false,
+      "safe_failure_category": "other_structural_failure",
+      "authorization_reached": false,
+      "reconstruction_reached": false,
+      "episode_draft_reached": false,
+      "gateway_reached": false,
+      "acceptance_reached": false,
+      "runtime_terminated_safely": true,
+      "duration_ms": 2545
+    },
+    {
+      "scenario": "E2E-03",
+      "operational_classification": "PROVIDER_OUTPUT_REJECTED_SAFELY",
+      "provider_response_received": true,
+      "dto_pass": false,
+      "safe_failure_category": "duplicate_component_reference",
+      "authorization_reached": false,
+      "reconstruction_reached": false,
+      "episode_draft_reached": false,
+      "gateway_reached": false,
+      "acceptance_reached": false,
+      "runtime_terminated_safely": true,
+      "duration_ms": 2660
+    },
+    {
+      "scenario": "E2E-04",
+      "operational_classification": "PROVIDER_OUTPUT_REJECTED_SAFELY",
+      "provider_response_received": true,
+      "dto_pass": false,
+      "safe_failure_category": "other_structural_failure",
+      "authorization_reached": false,
+      "reconstruction_reached": false,
+      "episode_draft_reached": false,
+      "gateway_reached": false,
+      "acceptance_reached": false,
+      "runtime_terminated_safely": true,
+      "duration_ms": 2074
+    }
+  ]
+}

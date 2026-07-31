@@ -1,0 +1,475 @@
+{
+  "benchmark_executions": 0,
+  "benchmark_replays": 0,
+  "contract_version": 1,
+  "entries": [
+    {
+      "affected_categories": [
+        "QUOTE_MUTATION",
+        "quote_preservation"
+      ],
+      "affected_scenarios": [
+        "SYN-10",
+        "SYN-23"
+      ],
+      "causal_explanation": "The only intended variable was one quote-specific instruction; paired evidence is consistent with a prompt effect.",
+      "confidence": "MEDIUM",
+      "confidence_justification": "Both paired targeted scenarios improved, but one run cannot exclude provider stochasticity.",
+      "created_at": "2026-07-28T14:41:34.619729+00:00",
+      "deprecated": false,
+      "description": "The H2 quote-specific instruction removed both observed primary QUOTE_MUTATION failures.",
+      "entry_fingerprint": "2df6de172666ae23d9679b7b221c5461c5f72be7880aab5a3e118eac498a3026",
+      "entry_version": 1,
+      "finding_type": "PROMPT_BEHAVIOR",
+      "knowledge_id": "EK-001",
+      "net_editorial_utility": 2,
+      "observed_behavior": "QUOTE_MUTATION decreased from two scenarios to zero.",
+      "recommended_usage": "Retain as evidence that quote handling is prompt-responsive, not as proof of production suitability.",
+      "reusable": true,
+      "side_effects": [
+        "Both scenarios remained editorially rejected."
+      ],
+      "source_experiments": [
+        "20260728-144134-openai-gpt-4.1-mini-7h2"
+      ],
+      "status": "ACTIVE",
+      "superseded_by": null,
+      "supporting_evidence": [
+        {
+          "artifact_paths": [
+            "docs/artifacts/controlled-second-prompt-hypothesis-experiment.json",
+            "docs/artifacts/causal-editorial-tradeoff-analysis.json"
+          ],
+          "experiment_id": "20260728-144134-openai-gpt-4.1-mini-7h2",
+          "manifest_fingerprint": "2a47289e42c0397277de3e4ee7b563131ded24a41697a539540b1c7feb822fd6",
+          "manifest_path": "docs/artifacts/experiments/part-7h-2/experiment-manifest.json",
+          "scenario_ids": [
+            "SYN-10",
+            "SYN-23"
+          ]
+        }
+      ],
+      "title": "Quote-specific preservation reduced quote mutation"
+    },
+    {
+      "affected_categories": [
+        "quote_preservation",
+        "instruction_compliance",
+        "meaning_preservation",
+        "source_authority_preservation"
+      ],
+      "affected_scenarios": [
+        "SYN-10",
+        "SYN-20",
+        "SYN-23"
+      ],
+      "causal_explanation": "The paired treatment improved its target but SYN-20 regressed across four criteria; prompt interaction and stochasticity remain alternatives.",
+      "confidence": "MEDIUM",
+      "confidence_justification": "The transition counts are deterministic; causal attribution of the new failures remains lower confidence.",
+      "created_at": "2026-07-28T14:41:34.619729+00:00",
+      "deprecated": false,
+      "description": "H2 resolved two criterion failures but introduced four, producing net utility minus two.",
+      "entry_fingerprint": "ad7bcded12608381ff21cbe09bf72e92d2ff43a9c4dd9ca87bd85709f6e91bef",
+      "entry_version": 1,
+      "finding_type": "TRADE_OFF",
+      "knowledge_id": "EK-002",
+      "net_editorial_utility": -2,
+      "observed_behavior": "Two resolved scenario-criterion failures were offset by four introduced failures.",
+      "recommended_usage": "Require multi-criterion trade-off review before promoting a targeted prompt improvement.",
+      "reusable": true,
+      "side_effects": [
+        "Editorial acceptance decreased from one pass to zero."
+      ],
+      "source_experiments": [
+        "20260728-144134-openai-gpt-4.1-mini-7h2"
+      ],
+      "status": "ACTIVE",
+      "superseded_by": null,
+      "supporting_evidence": [
+        {
+          "artifact_paths": [
+            "docs/artifacts/causal-editorial-tradeoff-analysis.json",
+            "docs/artifacts/editorial-tradeoff-matrix.json"
+          ],
+          "experiment_id": "20260728-144134-openai-gpt-4.1-mini-7h2",
+          "manifest_fingerprint": "2a47289e42c0397277de3e4ee7b563131ded24a41697a539540b1c7feb822fd6",
+          "manifest_path": "docs/artifacts/experiments/part-7h-2/experiment-manifest.json",
+          "scenario_ids": [
+            "SYN-10",
+            "SYN-20",
+            "SYN-23"
+          ]
+        }
+      ],
+      "title": "Narrow target improvement can have negative net editorial utility"
+    },
+    {
+      "affected_categories": [
+        "QUOTE_MUTATION",
+        "SOURCE_AUTHORITY_DRIFT"
+      ],
+      "affected_scenarios": [
+        "SYN-10",
+        "SYN-23"
+      ],
+      "causal_explanation": "Failure prioritization exposed authority failures already present in control evidence; H2 did not cure them.",
+      "confidence": "LOW",
+      "confidence_justification": "Primary-category substitution is observed, but its causal mechanism was not independently tested.",
+      "created_at": "2026-07-28T14:41:34.619729+00:00",
+      "deprecated": false,
+      "description": "SOURCE_AUTHORITY_DRIFT replaced QUOTE_MUTATION as primary in two scenarios without introducing the underlying authority criteria.",
+      "entry_fingerprint": "94c13fcf74dc68e7ac7b64ae5602e21a704f03d84eaac60dcfc7c8f8cb2c7025",
+      "entry_version": 1,
+      "finding_type": "PROMPT_INTERACTION",
+      "knowledge_id": "EK-003",
+      "net_editorial_utility": 2,
+      "observed_behavior": "Resolving quote preservation changed the primary failure label while the scenarios remained rejected.",
+      "recommended_usage": "Inspect criterion-level transitions whenever a primary failure category disappears.",
+      "reusable": true,
+      "side_effects": [
+        "Primary-category frequency can obscure unchanged secondary failures."
+      ],
+      "source_experiments": [
+        "20260728-144134-openai-gpt-4.1-mini-7h2"
+      ],
+      "status": "ACTIVE",
+      "superseded_by": null,
+      "supporting_evidence": [
+        {
+          "artifact_paths": [
+            "docs/artifacts/causal-editorial-tradeoff-analysis.json"
+          ],
+          "experiment_id": "20260728-144134-openai-gpt-4.1-mini-7h2",
+          "manifest_fingerprint": "2a47289e42c0397277de3e4ee7b563131ded24a41697a539540b1c7feb822fd6",
+          "manifest_path": "docs/artifacts/experiments/part-7h-2/experiment-manifest.json",
+          "scenario_ids": [
+            "SYN-10",
+            "SYN-23"
+          ]
+        }
+      ],
+      "title": "Removing quote failure exposed pre-existing authority failure"
+    },
+    {
+      "affected_categories": [
+        "editorial_acceptance"
+      ],
+      "affected_scenarios": [
+        "SYN-10",
+        "SYN-20",
+        "SYN-23"
+      ],
+      "causal_explanation": "Acceptance is a terminal judgment rather than a diagnostic decomposition.",
+      "confidence": "HIGH",
+      "confidence_justification": "The frozen H2 evidence contains the same zero treatment passes alongside both improvements and regressions.",
+      "created_at": "2026-07-28T14:41:34.619729+00:00",
+      "deprecated": false,
+      "description": "Aggregate acceptance alone cannot identify resolved, substituted, or introduced editorial failures.",
+      "entry_fingerprint": "94bcd3bd651d7057b70a97f00b0da9054b2340e0642abc30796da15339fbc829",
+      "entry_version": 1,
+      "finding_type": "BEST_PRACTICE",
+      "knowledge_id": "EK-004",
+      "net_editorial_utility": -2,
+      "observed_behavior": "One aggregate acceptance value coexisted with two resolved and four introduced criterion failures.",
+      "recommended_usage": "Always retain criterion and transition diagnostics beside acceptance counts.",
+      "reusable": true,
+      "side_effects": [],
+      "source_experiments": [
+        "20260728-144134-openai-gpt-4.1-mini-7h2"
+      ],
+      "status": "ACTIVE",
+      "superseded_by": null,
+      "supporting_evidence": [
+        {
+          "artifact_paths": [
+            "docs/artifacts/controlled-second-prompt-hypothesis-experiment.json",
+            "docs/artifacts/causal-editorial-tradeoff-analysis.json"
+          ],
+          "experiment_id": "20260728-144134-openai-gpt-4.1-mini-7h2",
+          "manifest_fingerprint": "2a47289e42c0397277de3e4ee7b563131ded24a41697a539540b1c7feb822fd6",
+          "manifest_path": "docs/artifacts/experiments/part-7h-2/experiment-manifest.json",
+          "scenario_ids": []
+        }
+      ],
+      "title": "Editorial acceptance requires criterion-level explanation"
+    },
+    {
+      "affected_categories": [
+        "editorial_acceptance",
+        "Net Editorial Utility"
+      ],
+      "affected_scenarios": [
+        "SYN-10",
+        "SYN-20",
+        "SYN-23"
+      ],
+      "causal_explanation": "The metric counts compensating criterion changes without replacing the frozen acceptance gate.",
+      "confidence": "HIGH",
+      "confidence_justification": "The metric is deterministically reconstructed from all 24 paired criterion transitions.",
+      "created_at": "2026-07-28T14:41:34.619729+00:00",
+      "deprecated": false,
+      "description": "Scenario-criterion resolutions minus introductions exposes compensating changes hidden by acceptance.",
+      "entry_fingerprint": "54bb07c1b03c0b7d6ec2aa850cfccd61c7f5a0a118a837e65a4688185fafcce2",
+      "entry_version": 1,
+      "finding_type": "BEST_PRACTICE",
+      "knowledge_id": "EK-005",
+      "net_editorial_utility": -2,
+      "observed_behavior": "Net Editorial Utility was minus two while targeted quote behavior improved.",
+      "recommended_usage": "Use as a diagnostic paired metric alongside, never instead of, acceptance.",
+      "reusable": true,
+      "side_effects": [
+        "It must not replace editorial acceptance."
+      ],
+      "source_experiments": [
+        "20260728-144134-openai-gpt-4.1-mini-7h2"
+      ],
+      "status": "ACTIVE",
+      "superseded_by": null,
+      "supporting_evidence": [
+        {
+          "artifact_paths": [
+            "docs/artifacts/causal-editorial-tradeoff-analysis.json",
+            "docs/artifacts/editorial-tradeoff-matrix.json"
+          ],
+          "experiment_id": "20260728-144134-openai-gpt-4.1-mini-7h2",
+          "manifest_fingerprint": "2a47289e42c0397277de3e4ee7b563131ded24a41697a539540b1c7feb822fd6",
+          "manifest_path": "docs/artifacts/experiments/part-7h-2/experiment-manifest.json",
+          "scenario_ids": []
+        }
+      ],
+      "title": "Net Editorial Utility supplements editorial acceptance"
+    },
+    {
+      "affected_categories": [
+        "Prompt Delta Budget"
+      ],
+      "affected_scenarios": [
+        "SYN-01",
+        "SYN-02",
+        "SYN-03",
+        "SYN-04",
+        "SYN-05",
+        "SYN-06",
+        "SYN-07",
+        "SYN-08",
+        "SYN-09",
+        "SYN-10",
+        "SYN-11",
+        "SYN-12",
+        "SYN-13",
+        "SYN-14",
+        "SYN-15",
+        "SYN-16",
+        "SYN-17",
+        "SYN-18",
+        "SYN-19",
+        "SYN-20",
+        "SYN-21",
+        "SYN-22",
+        "SYN-23",
+        "SYN-24"
+      ],
+      "causal_explanation": "Restricting the intended variable makes claims narrower, though it does not eliminate stochastic uncertainty.",
+      "confidence": "MEDIUM",
+      "confidence_justification": "The manifest verifies a one-of-one budget and frozen technical variables; provider stochasticity still limits attribution.",
+      "created_at": "2026-07-28T14:41:34.619729+00:00",
+      "deprecated": false,
+      "description": "H2 changed one documented behavioral mechanism and preserved all technical contracts.",
+      "entry_fingerprint": "f9cb3b6e6280111204bda074d6c752a77efe1491f3e27fceb9bf2f7e6d0ac1a1",
+      "entry_version": 1,
+      "finding_type": "BEST_PRACTICE",
+      "knowledge_id": "EK-006",
+      "net_editorial_utility": -2,
+      "observed_behavior": "One prompt mechanism was evaluated with 24/24 technical and reference preservation.",
+      "recommended_usage": "Keep future prompt experiments within a precommitted semantic delta budget.",
+      "reusable": true,
+      "side_effects": [
+        "A narrow mechanism may optimize only one criterion."
+      ],
+      "source_experiments": [
+        "20260728-144134-openai-gpt-4.1-mini-7h2"
+      ],
+      "status": "ACTIVE",
+      "superseded_by": null,
+      "supporting_evidence": [
+        {
+          "artifact_paths": [
+            "docs/artifacts/prompt-delta-budget.json",
+            "docs/artifacts/experiments/part-7h-2/experiment-manifest.json"
+          ],
+          "experiment_id": "20260728-144134-openai-gpt-4.1-mini-7h2",
+          "manifest_fingerprint": "2a47289e42c0397277de3e4ee7b563131ded24a41697a539540b1c7feb822fd6",
+          "manifest_path": "docs/artifacts/experiments/part-7h-2/experiment-manifest.json",
+          "scenario_ids": []
+        }
+      ],
+      "title": "Single-mechanism prompt budgets bound causal interpretation"
+    },
+    {
+      "affected_categories": [
+        "Experiment reproducibility"
+      ],
+      "affected_scenarios": [
+        "SYN-01",
+        "SYN-02",
+        "SYN-03",
+        "SYN-04",
+        "SYN-05",
+        "SYN-06",
+        "SYN-07",
+        "SYN-08",
+        "SYN-09",
+        "SYN-10",
+        "SYN-11",
+        "SYN-12",
+        "SYN-13",
+        "SYN-14",
+        "SYN-15",
+        "SYN-16",
+        "SYN-17",
+        "SYN-18",
+        "SYN-19",
+        "SYN-20",
+        "SYN-21",
+        "SYN-22",
+        "SYN-23",
+        "SYN-24"
+      ],
+      "causal_explanation": "Typed invariants and raw-byte artifact fingerprints detect inconsistent reconstruction.",
+      "confidence": "HIGH",
+      "confidence_justification": "Deterministic fingerprint and artifact validation are enforced by executable contracts and tests.",
+      "created_at": "2026-07-28T14:41:34.619729+00:00",
+      "deprecated": false,
+      "description": "The Part 7H.2 manifest validates identity, lineage, gates, results, decision, and nine supporting artifacts.",
+      "entry_fingerprint": "46d7fb5934d0d6d04e87ce1aeef3f04a731538699252c76907af8f609fff511d",
+      "entry_version": 1,
+      "finding_type": "BEST_PRACTICE",
+      "knowledge_id": "EK-007",
+      "net_editorial_utility": null,
+      "observed_behavior": "One canonical manifest reconstructs and validates the complete H2 experiment state.",
+      "recommended_usage": "Create and validate a canonical manifest before extracting reusable knowledge.",
+      "reusable": true,
+      "side_effects": [],
+      "source_experiments": [
+        "20260728-144134-openai-gpt-4.1-mini-7h2"
+      ],
+      "status": "ACTIVE",
+      "superseded_by": null,
+      "supporting_evidence": [
+        {
+          "artifact_paths": [
+            "docs/artifacts/experiments/part-7h-2/experiment-manifest.json"
+          ],
+          "experiment_id": "20260728-144134-openai-gpt-4.1-mini-7h2",
+          "manifest_fingerprint": "2a47289e42c0397277de3e4ee7b563131ded24a41697a539540b1c7feb822fd6",
+          "manifest_path": "docs/artifacts/experiments/part-7h-2/experiment-manifest.json",
+          "scenario_ids": []
+        }
+      ],
+      "title": "Canonical manifests make experiment conclusions reproducible"
+    },
+    {
+      "affected_categories": [
+        "editorial_acceptance",
+        "instruction_compliance",
+        "meaning_preservation",
+        "quote_preservation",
+        "source_authority_preservation"
+      ],
+      "affected_scenarios": [
+        "SYN-06",
+        "SYN-10",
+        "SYN-15",
+        "SYN-20",
+        "SYN-23"
+      ],
+      "causal_explanation": "A single balanced-preservation rule was the intended variable; its broader scenario effect and remaining regressions make the exact mechanism only partially confirmed.",
+      "confidence": "MEDIUM",
+      "confidence_justification": "The paired 24-scenario experiment is technically complete, while the predicted causal mechanism was only partially confirmed.",
+      "created_at": "2026-07-28T16:16:07.895690+00:00",
+      "deprecated": false,
+      "description": "H3 increased editorial acceptance and produced Net Editorial Utility +8 while preserving technical and reference contracts.",
+      "entry_fingerprint": "dc1445fba7975a0433b713a0fb3bbaef05743902831bb65e8f5a2eb20b68c941",
+      "entry_version": 1,
+      "finding_type": "PROMPT_BEHAVIOR",
+      "knowledge_id": "EK-008",
+      "net_editorial_utility": 8,
+      "observed_behavior": "H3 resolved 13 scenario-criterion failures, introduced five, and increased acceptance from one to three passes.",
+      "recommended_usage": "Use as evidence for balanced multi-criterion preservation and retain predictive uncertainty in future experiments.",
+      "reusable": true,
+      "side_effects": [
+        "Five criterion failures were introduced.",
+        "One control pass still became a treatment failure."
+      ],
+      "source_experiments": [
+        "20260728-161607-openai-gpt-4.1-mini-7h4"
+      ],
+      "status": "ACTIVE",
+      "superseded_by": null,
+      "supporting_evidence": [
+        {
+          "artifact_paths": [
+            "docs/artifacts/h3-experiment.json",
+            "docs/artifacts/prediction-validation.json"
+          ],
+          "experiment_id": "20260728-161607-openai-gpt-4.1-mini-7h4",
+          "manifest_fingerprint": "2a47289e42c0397277de3e4ee7b563131ded24a41697a539540b1c7feb822fd6",
+          "manifest_path": "docs/artifacts/experiments/part-7h-2/experiment-manifest.json",
+          "scenario_ids": [
+            "SYN-06",
+            "SYN-10",
+            "SYN-15",
+            "SYN-20",
+            "SYN-23"
+          ]
+        }
+      ],
+      "title": "Balanced preservation produced positive multi-criterion utility"
+    }
+  ],
+  "generated_at": "2026-07-28T14:41:34.619729+00:00",
+  "generator": "scripts.build_editorial_knowledge_base",
+  "knowledge_base_fingerprint": "735b8a8af1ed4ddcbe16e1f9f7cbc764071fa6f3813cf77873ef8e4e019ecaf9",
+  "network_calls": 0,
+  "provider_requests": 0,
+  "relationships": [
+    {
+      "explanation": "The trade-off calculation depends on the targeted quote resolution.",
+      "relationship_type": "DEPENDS_ON",
+      "source_id": "EK-002",
+      "target_id": "EK-001"
+    },
+    {
+      "explanation": "Criterion evidence refines what the primary quote-category reduction means.",
+      "relationship_type": "REFINES",
+      "source_id": "EK-003",
+      "target_id": "EK-001"
+    },
+    {
+      "explanation": "Net utility supplies the diagnostic decomposition acceptance lacks.",
+      "relationship_type": "REFINES",
+      "source_id": "EK-005",
+      "target_id": "EK-004"
+    },
+    {
+      "explanation": "The bounded prompt delta supports narrow interpretation of the quote finding.",
+      "relationship_type": "RELATED_TO",
+      "source_id": "EK-006",
+      "target_id": "EK-001"
+    },
+    {
+      "explanation": "Manifest validation preserves the frozen variables required by the delta budget.",
+      "relationship_type": "SUPPORTS",
+      "source_id": "EK-007",
+      "target_id": "EK-006"
+    },
+    {
+      "explanation": "H3 validates that the H2 trade-off can be improved while retaining residual regressions and broader-than-predicted effects.",
+      "relationship_type": "REFINES",
+      "source_id": "EK-008",
+      "target_id": "EK-002"
+    }
+  ],
+  "schema_name": "scout_editorial_knowledge_base",
+  "schema_version": "1.0.0"
+}

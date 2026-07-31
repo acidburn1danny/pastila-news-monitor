@@ -1,0 +1,753 @@
+{
+  "$defs": {
+    "BackupStory": {
+      "additionalProperties": false,
+      "properties": {
+        "canonical_title": {
+          "minLength": 1,
+          "title": "Canonical Title",
+          "type": "string"
+        },
+        "editorial_confidence": {
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Editorial Confidence",
+          "type": "integer"
+        },
+        "event_id": {
+          "exclusiveMinimum": 0,
+          "title": "Event Id",
+          "type": "integer"
+        },
+        "extensions": {
+          "additionalProperties": true,
+          "title": "Extensions",
+          "type": "object"
+        },
+        "factual_editorial_risks": {
+          "default": [],
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Factual Editorial Risks",
+          "type": "array"
+        },
+        "inherited_scout_scores": {
+          "$ref": "#/$defs/InheritedScoutScores"
+        },
+        "position": {
+          "exclusiveMinimum": 0,
+          "title": "Position",
+          "type": "integer"
+        },
+        "replacement_for": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Replacement For"
+        },
+        "selection_reason": {
+          "minLength": 1,
+          "title": "Selection Reason",
+          "type": "string"
+        },
+        "source_references": {
+          "items": {
+            "$ref": "#/$defs/SourceReference"
+          },
+          "maxItems": 3,
+          "minItems": 1,
+          "title": "Source References",
+          "type": "array"
+        },
+        "suggested_treatment_length": {
+          "$ref": "#/$defs/DurationValue"
+        },
+        "tone_recommendation": {
+          "minLength": 1,
+          "title": "Tone Recommendation",
+          "type": "string"
+        }
+      },
+      "required": [
+        "position",
+        "event_id",
+        "canonical_title",
+        "selection_reason",
+        "tone_recommendation",
+        "suggested_treatment_length",
+        "editorial_confidence",
+        "source_references",
+        "inherited_scout_scores"
+      ],
+      "title": "BackupStory",
+      "type": "object"
+    },
+    "ContractIssue": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "minLength": 1,
+          "title": "Code",
+          "type": "string"
+        },
+        "event_id": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Event Id"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "recoverable": {
+          "title": "Recoverable",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "code",
+        "message",
+        "recoverable"
+      ],
+      "title": "ContractIssue",
+      "type": "object"
+    },
+    "ContractStatus": {
+      "enum": [
+        "success",
+        "partial_success",
+        "invalid_input",
+        "incompatible_contract",
+        "insufficient_candidates",
+        "provider_unavailable",
+        "failed"
+      ],
+      "title": "ContractStatus",
+      "type": "string"
+    },
+    "DurationValue": {
+      "additionalProperties": false,
+      "properties": {
+        "unit": {
+          "default": "seconds",
+          "pattern": "^seconds$",
+          "title": "Unit",
+          "type": "string"
+        },
+        "value": {
+          "minimum": 0,
+          "title": "Value",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "value"
+      ],
+      "title": "DurationValue",
+      "type": "object"
+    },
+    "EpisodeFlowStep": {
+      "additionalProperties": false,
+      "properties": {
+        "event_id": {
+          "exclusiveMinimum": 0,
+          "title": "Event Id",
+          "type": "integer"
+        },
+        "expected_transition_type": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Expected Transition Type"
+        },
+        "extensions": {
+          "additionalProperties": true,
+          "title": "Extensions",
+          "type": "object"
+        },
+        "placement_reason": {
+          "minLength": 1,
+          "title": "Placement Reason",
+          "type": "string"
+        },
+        "position": {
+          "exclusiveMinimum": 0,
+          "title": "Position",
+          "type": "integer"
+        },
+        "role": {
+          "minLength": 1,
+          "title": "Role",
+          "type": "string"
+        }
+      },
+      "required": [
+        "position",
+        "event_id",
+        "role",
+        "placement_reason"
+      ],
+      "title": "EpisodeFlowStep",
+      "type": "object"
+    },
+    "EpisodeProposalV1": {
+      "additionalProperties": false,
+      "properties": {
+        "backup_stories": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/BackupStory"
+          },
+          "title": "Backup Stories",
+          "type": "array"
+        },
+        "editorial_angle": {
+          "minLength": 1,
+          "title": "Editorial Angle",
+          "type": "string"
+        },
+        "editorial_notes": {
+          "default": [],
+          "items": {
+            "maxLength": 200,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Editorial Notes",
+          "type": "array"
+        },
+        "episode_flow": {
+          "items": {
+            "$ref": "#/$defs/EpisodeFlowStep"
+          },
+          "title": "Episode Flow",
+          "type": "array"
+        },
+        "episode_title_suggestion": {
+          "minLength": 1,
+          "title": "Episode Title Suggestion",
+          "type": "string"
+        },
+        "estimated_total_runtime": {
+          "$ref": "#/$defs/DurationValue"
+        },
+        "extensions": {
+          "additionalProperties": true,
+          "title": "Extensions",
+          "type": "object"
+        },
+        "overall_selection_reasoning": {
+          "minLength": 1,
+          "title": "Overall Selection Reasoning",
+          "type": "string"
+        },
+        "rejection_summary": {
+          "$ref": "#/$defs/RejectionSummary"
+        },
+        "selected_stories": {
+          "items": {
+            "$ref": "#/$defs/SelectedStory"
+          },
+          "title": "Selected Stories",
+          "type": "array"
+        },
+        "warnings": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/ContractIssue"
+          },
+          "title": "Warnings",
+          "type": "array"
+        }
+      },
+      "required": [
+        "episode_title_suggestion",
+        "editorial_angle",
+        "estimated_total_runtime",
+        "selected_stories",
+        "episode_flow",
+        "rejection_summary",
+        "overall_selection_reasoning"
+      ],
+      "title": "EpisodeProposalV1",
+      "type": "object"
+    },
+    "InheritedScoutScores": {
+      "additionalProperties": false,
+      "properties": {
+        "ai_editorial_score": {
+          "anyOf": [
+            {
+              "maximum": 100,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ai Editorial Score"
+        },
+        "deterministic_score": {
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Deterministic Score",
+          "type": "number"
+        },
+        "final_score": {
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Final Score",
+          "type": "number"
+        },
+        "recommendation": {
+          "pattern": "^(STRONG_PICK|POSSIBLE_PICK|BACKUP|SKIP)$",
+          "title": "Recommendation",
+          "type": "string"
+        }
+      },
+      "required": [
+        "deterministic_score",
+        "final_score",
+        "recommendation"
+      ],
+      "title": "InheritedScoutScores",
+      "type": "object"
+    },
+    "NotableExclusion": {
+      "additionalProperties": false,
+      "properties": {
+        "event_id": {
+          "exclusiveMinimum": 0,
+          "title": "Event Id",
+          "type": "integer"
+        },
+        "extensions": {
+          "additionalProperties": true,
+          "title": "Extensions",
+          "type": "object"
+        },
+        "reason": {
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        },
+        "reason_code": {
+          "minLength": 1,
+          "title": "Reason Code",
+          "type": "string"
+        }
+      },
+      "required": [
+        "event_id",
+        "reason_code",
+        "reason"
+      ],
+      "title": "NotableExclusion",
+      "type": "object"
+    },
+    "RejectionSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "backups": {
+          "minimum": 0,
+          "title": "Backups",
+          "type": "integer"
+        },
+        "excluded_by_constraints": {
+          "minimum": 0,
+          "title": "Excluded By Constraints",
+          "type": "integer"
+        },
+        "extensions": {
+          "additionalProperties": true,
+          "title": "Extensions",
+          "type": "object"
+        },
+        "notable_exclusions": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/NotableExclusion"
+          },
+          "maxItems": 5,
+          "title": "Notable Exclusions",
+          "type": "array"
+        },
+        "otherwise_not_selected": {
+          "minimum": 0,
+          "title": "Otherwise Not Selected",
+          "type": "integer"
+        },
+        "selected": {
+          "minimum": 0,
+          "title": "Selected",
+          "type": "integer"
+        },
+        "semantically_redundant": {
+          "minimum": 0,
+          "title": "Semantically Redundant",
+          "type": "integer"
+        },
+        "total_candidates": {
+          "minimum": 0,
+          "title": "Total Candidates",
+          "type": "integer"
+        },
+        "unused_strong_candidates": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/UnusedStrongCandidate"
+          },
+          "maxItems": 5,
+          "title": "Unused Strong Candidates",
+          "type": "array"
+        }
+      },
+      "required": [
+        "total_candidates",
+        "selected",
+        "backups",
+        "excluded_by_constraints",
+        "semantically_redundant",
+        "otherwise_not_selected"
+      ],
+      "title": "RejectionSummary",
+      "type": "object"
+    },
+    "SelectedStory": {
+      "additionalProperties": false,
+      "properties": {
+        "canonical_title": {
+          "minLength": 1,
+          "title": "Canonical Title",
+          "type": "string"
+        },
+        "editorial_confidence": {
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Editorial Confidence",
+          "type": "integer"
+        },
+        "episode_role": {
+          "minLength": 1,
+          "title": "Episode Role",
+          "type": "string"
+        },
+        "event_id": {
+          "exclusiveMinimum": 0,
+          "title": "Event Id",
+          "type": "integer"
+        },
+        "extensions": {
+          "additionalProperties": true,
+          "title": "Extensions",
+          "type": "object"
+        },
+        "factual_editorial_risks": {
+          "default": [],
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 20,
+          "title": "Factual Editorial Risks",
+          "type": "array"
+        },
+        "inherited_scout_scores": {
+          "$ref": "#/$defs/InheritedScoutScores"
+        },
+        "position": {
+          "exclusiveMinimum": 0,
+          "title": "Position",
+          "type": "integer"
+        },
+        "selection_reason": {
+          "minLength": 1,
+          "title": "Selection Reason",
+          "type": "string"
+        },
+        "source_references": {
+          "items": {
+            "$ref": "#/$defs/SourceReference"
+          },
+          "maxItems": 3,
+          "minItems": 1,
+          "title": "Source References",
+          "type": "array"
+        },
+        "suggested_treatment_length": {
+          "$ref": "#/$defs/DurationValue"
+        },
+        "tone_recommendation": {
+          "minLength": 1,
+          "title": "Tone Recommendation",
+          "type": "string"
+        },
+        "transition_reason": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Transition Reason"
+        }
+      },
+      "required": [
+        "position",
+        "event_id",
+        "canonical_title",
+        "episode_role",
+        "selection_reason",
+        "tone_recommendation",
+        "suggested_treatment_length",
+        "editorial_confidence",
+        "source_references",
+        "inherited_scout_scores"
+      ],
+      "title": "SelectedStory",
+      "type": "object"
+    },
+    "SelectionProfileReference": {
+      "additionalProperties": false,
+      "properties": {
+        "extensions": {
+          "additionalProperties": true,
+          "title": "Extensions",
+          "type": "object"
+        },
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version"
+      ],
+      "title": "SelectionProfileReference",
+      "type": "object"
+    },
+    "SourceReference": {
+      "additionalProperties": false,
+      "properties": {
+        "published_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Published At"
+        },
+        "source_id": {
+          "minLength": 1,
+          "title": "Source Id",
+          "type": "string"
+        },
+        "source_name": {
+          "minLength": 1,
+          "title": "Source Name",
+          "type": "string"
+        },
+        "title": {
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "url": {
+          "minLength": 1,
+          "title": "Url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_id",
+        "source_name",
+        "url",
+        "title"
+      ],
+      "title": "SourceReference",
+      "type": "object"
+    },
+    "UnusedStrongCandidate": {
+      "additionalProperties": false,
+      "properties": {
+        "canonical_title": {
+          "minLength": 1,
+          "title": "Canonical Title",
+          "type": "string"
+        },
+        "event_id": {
+          "exclusiveMinimum": 0,
+          "title": "Event Id",
+          "type": "integer"
+        },
+        "exclusion_reason": {
+          "minLength": 1,
+          "title": "Exclusion Reason",
+          "type": "string"
+        },
+        "exclusion_reason_code": {
+          "minLength": 1,
+          "title": "Exclusion Reason Code",
+          "type": "string"
+        },
+        "extensions": {
+          "additionalProperties": true,
+          "title": "Extensions",
+          "type": "object"
+        },
+        "final_score": {
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Final Score",
+          "type": "number"
+        },
+        "scout_recommendation": {
+          "pattern": "^(STRONG_PICK|POSSIBLE_PICK|BACKUP|SKIP)$",
+          "title": "Scout Recommendation",
+          "type": "string"
+        }
+      },
+      "required": [
+        "event_id",
+        "canonical_title",
+        "scout_recommendation",
+        "final_score",
+        "exclusion_reason_code",
+        "exclusion_reason"
+      ],
+      "title": "UnusedStrongCandidate",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "contract_version": {
+      "default": "editor-agent-output-v1",
+      "pattern": "^editor-agent-output-v1$",
+      "title": "Contract Version",
+      "type": "string"
+    },
+    "editor_agent_version": {
+      "minLength": 1,
+      "title": "Editor Agent Version",
+      "type": "string"
+    },
+    "editorial_contract_version": {
+      "default": "scout-editorial-semantics-v1",
+      "pattern": "^scout-editorial-semantics-v1$",
+      "title": "Editorial Contract Version",
+      "type": "string"
+    },
+    "episode_proposal": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/EpisodeProposalV1"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "errors": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/ContractIssue"
+      },
+      "title": "Errors",
+      "type": "array"
+    },
+    "extensions": {
+      "additionalProperties": true,
+      "title": "Extensions",
+      "type": "object"
+    },
+    "generated_at": {
+      "format": "date-time",
+      "title": "Generated At",
+      "type": "string"
+    },
+    "requested_episode_size": {
+      "exclusiveMinimum": 0,
+      "title": "Requested Episode Size",
+      "type": "integer"
+    },
+    "selection_profile": {
+      "$ref": "#/$defs/SelectionProfileReference"
+    },
+    "source_content_fingerprint": {
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "Source Content Fingerprint",
+      "type": "string"
+    },
+    "source_contract_version": {
+      "pattern": "^scout-editor-input-v1$",
+      "title": "Source Contract Version",
+      "type": "string"
+    },
+    "source_report_id": {
+      "pattern": "^scout-editor-input-v1:sha256:[0-9a-f]{64}$",
+      "title": "Source Report Id",
+      "type": "string"
+    },
+    "status": {
+      "$ref": "#/$defs/ContractStatus"
+    }
+  },
+  "required": [
+    "generated_at",
+    "editor_agent_version",
+    "source_report_id",
+    "source_contract_version",
+    "source_content_fingerprint",
+    "selection_profile",
+    "requested_episode_size",
+    "status",
+    "episode_proposal"
+  ],
+  "title": "EditorAgentOutputV1",
+  "type": "object"
+}

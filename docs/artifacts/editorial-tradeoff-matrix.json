@@ -1,0 +1,102 @@
+{
+  "criterion_level_rows": [
+    {
+      "absolute_delta": 1,
+      "baseline_frequency": 23,
+      "causal_confidence": "LOW",
+      "causal_explanation": "The only control pass became a failure together with three underlying criterion regressions.",
+      "classification": "INCREASED",
+      "editorial_category": "editorial_acceptance",
+      "evidence_count": 1,
+      "evidence_scenarios": [
+        "SYN-20"
+      ],
+      "likely_cause": "Prompt interaction",
+      "relative_delta": 0.043478260869565216,
+      "treatment_frequency": 24
+    },
+    {
+      "absolute_delta": 1,
+      "baseline_frequency": 23,
+      "causal_confidence": "LOW",
+      "causal_explanation": "One new failure coincided with H2, but one provider sample cannot isolate wording from stochasticity.",
+      "classification": "INCREASED",
+      "editorial_category": "instruction_compliance",
+      "evidence_count": 1,
+      "evidence_scenarios": [
+        "SYN-20"
+      ],
+      "likely_cause": "Prompt interaction",
+      "relative_delta": 0.043478260869565216,
+      "treatment_frequency": 24
+    },
+    {
+      "absolute_delta": 1,
+      "baseline_frequency": 23,
+      "causal_confidence": "LOW",
+      "causal_explanation": "One new failure coincided with H2, with provider stochasticity and benchmark variance remaining alternatives.",
+      "classification": "INCREASED",
+      "editorial_category": "meaning_preservation",
+      "evidence_count": 1,
+      "evidence_scenarios": [
+        "SYN-20"
+      ],
+      "likely_cause": "Prompt interaction",
+      "relative_delta": 0.043478260869565216,
+      "treatment_frequency": 24
+    },
+    {
+      "absolute_delta": -2,
+      "baseline_frequency": 2,
+      "causal_confidence": "MEDIUM",
+      "causal_explanation": "Both preidentified quote failures disappeared under the quote-specific H2 instruction; one paired run cannot exclude provider stochasticity.",
+      "classification": "ELIMINATED",
+      "editorial_category": "quote_preservation",
+      "evidence_count": 2,
+      "evidence_scenarios": [
+        "SYN-10",
+        "SYN-23"
+      ],
+      "likely_cause": "Prompt wording",
+      "relative_delta": -1.0,
+      "treatment_frequency": 0
+    },
+    {
+      "absolute_delta": 1,
+      "baseline_frequency": 23,
+      "causal_confidence": "LOW",
+      "causal_explanation": "One new failure coincided with H2; H1/H2 evidence does not independently isolate the mechanism.",
+      "classification": "INCREASED",
+      "editorial_category": "source_authority_preservation",
+      "evidence_count": 1,
+      "evidence_scenarios": [
+        "SYN-20"
+      ],
+      "likely_cause": "Prompt interaction",
+      "relative_delta": 0.043478260869565216,
+      "treatment_frequency": 24
+    }
+  ],
+  "frequency_unit": "scenario-category failure",
+  "milestone": "Part 7H.2.2",
+  "net_change_convention": "treatment_frequency - baseline_frequency",
+  "primary_taxonomy_rows": [
+    {
+      "absolute_delta": -2,
+      "baseline_frequency": 2,
+      "classification": "ELIMINATED",
+      "editorial_category": "QUOTE_MUTATION",
+      "relative_delta": -1.0,
+      "treatment_frequency": 0
+    },
+    {
+      "absolute_delta": 3,
+      "baseline_frequency": 21,
+      "classification": "INCREASED",
+      "editorial_category": "SOURCE_AUTHORITY_DRIFT",
+      "relative_delta": 0.14285714285714285,
+      "treatment_frequency": 24
+    }
+  ],
+  "schema_version": 1
+}

@@ -1,0 +1,23 @@
+{
+  "benchmark_specific_instructions": 0,
+  "budget_consumed": 1,
+  "budget_exceeded": false,
+  "budget_limit": 1,
+  "control_prompt_fingerprint": "a96575ff38ec6f7b50d4174157f0f99c73ed16857a8cb4235cb5487cf8507264",
+  "evaluator_specific_instructions": 0,
+  "evidence_derived_hypotheses": 1,
+  "evidence_mapping": [
+    [
+      "SYN-10",
+      "SYN-23"
+    ]
+  ],
+  "h2_prompt_fingerprint": "64d9a75f54e83861061f2999a324124e40ea8c361366d6e82deabbfec429daac",
+  "independent_behavioral_mechanisms": 1,
+  "milestone": "Part 7H.2",
+  "production_irrelevant_instructions": 0,
+  "prompt_diff_fingerprint": "cfa4423130bf7fa4b70f0770c9d7d2d2087722992ed0dda56816f01a0a9808e4",
+  "schema_version": 1,
+  "undocumented_semantic_changes": 0,
+  "validation_result": "PASS"
+}

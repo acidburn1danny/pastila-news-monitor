@@ -1,0 +1,2360 @@
+{
+  "benchmark_id": "20260728-120420-openai-gpt-4.1-mini-7c2",
+  "benchmark_name": "Controlled Provider Quality Baseline After Reference Contract Remediation",
+  "benchmark_version": "controlled-provider-quality-baseline-7c2",
+  "category_count": 12,
+  "comparison_with_part_7c_1": {
+    "authorization_passes": [
+      0,
+      24
+    ],
+    "average_reference_precision": [
+      0.0,
+      1.0
+    ],
+    "average_reference_recall": [
+      0.0,
+      1.0
+    ],
+    "duplicate_references": [
+      9,
+      0
+    ],
+    "missing_authorized_references": [
+      24,
+      0
+    ],
+    "part_7c_1_benchmark_id": "20260728-102323-openai-gpt-4.1-mini-v2",
+    "pipeline_successes": [
+      0,
+      24
+    ],
+    "provider_requests": [
+      24,
+      24
+    ],
+    "reconstruction_passes": [
+      0,
+      24
+    ],
+    "total_cost_usd": [
+      0.017506400000000002,
+      0.0123576
+    ],
+    "unauthorized_references": [
+      25,
+      0
+    ],
+    "unknown_references": [
+      19,
+      0
+    ]
+  },
+  "cost_metrics": {
+    "calculability_rate": 1.0,
+    "calculable_scenarios": 24,
+    "coverage_complete": true,
+    "estimated": true,
+    "known_cost_distribution": {
+      "count": 24,
+      "maximum": 0.0005616,
+      "mean": 0.0005149,
+      "median": 0.0005112000000000001,
+      "minimum": 0.0005040000000000001,
+      "p50": 0.0005108000000000001,
+      "p90": 0.0005276,
+      "p95": 0.0005448,
+      "percentile_method": "nearest-rank"
+    },
+    "known_estimated_total_cost_usd": 0.0123576,
+    "pricing_effective_date": "2026-07-28",
+    "pricing_source": "OpenAI GPT-4.1 mini model pricing page, accessed 2026-07-28",
+    "pricing_version": "openai-gpt-4-1-mini-2026-07-28",
+    "unknown_scenarios": 0
+  },
+  "created_at": "2026-07-28T12:04:20.962254+00:00",
+  "failure_code_distribution": {},
+  "failure_stage_distribution": {
+    "NONE": 24
+  },
+  "fallback_count": 0,
+  "final_recommendation": "RUN_CONTROLLED_PROMPT_EFFECTIVENESS_EXPERIMENT",
+  "latency_metrics": {
+    "all_provider_calls": {
+      "count": 24,
+      "maximum": 14287.841100012884,
+      "mean": 2846.277320815716,
+      "median": 2060.607500025071,
+      "minimum": 1545.371500076726,
+      "p50": 2040.7650999259204,
+      "p90": 3583.992099855095,
+      "p95": 4297.788699856028,
+      "percentile_method": "nearest-rank"
+    },
+    "pipeline_successes": {
+      "count": 24,
+      "maximum": 14287.841100012884,
+      "mean": 2846.277320815716,
+      "median": 2060.607500025071,
+      "minimum": 1545.371500076726,
+      "p50": 2040.7650999259204,
+      "p90": 3583.992099855095,
+      "p95": 4297.788699856028,
+      "percentile_method": "nearest-rank"
+    },
+    "provider_execution_failures": null,
+    "safe_rejections": null
+  },
+  "metric_semantics": {
+    "editorial_acceptance_passes": {
+      "definition": "technically valid output passing the frozen editorial rubric",
+      "includes_technical_completion": true
+    },
+    "pipeline_successes": {
+      "canonical_field": "technical_pipeline_successes",
+      "definition": "valid EpisodeDraft produced by the technical provider pipeline",
+      "includes_editorial_acceptance": false,
+      "status": "deprecated_alias"
+    },
+    "quality_sample_sufficiency": {
+      "denominator": "editorial_evaluation_completions",
+      "minimum": 12
+    }
+  },
+  "milestone": "Part 7C.2",
+  "model": "gpt-4.1-mini",
+  "official_baseline": true,
+  "operational_outcome_distribution": {
+    "PIPELINE_SUCCESS": 24
+  },
+  "part_7g_artifact_fingerprint": "1b8fea55d0f47708b26c9a3eafdcf1edfd8a705af720d34f49238f44dab17ec5",
+  "pipeline_funnel": {
+    "authorization_passes": 24,
+    "editorial_acceptance_failures": 23,
+    "editorial_acceptance_passes": 1,
+    "editorial_evaluation_attempts": 24,
+    "editorial_evaluation_completions": 24,
+    "episode_draft_validation_passes": 24,
+    "json_parse_passes": 24,
+    "pipeline_successes": 24,
+    "provider_call_failures": 0,
+    "provider_dto_passes": 24,
+    "provider_responses_received": 24,
+    "quality_evaluation_completions": 24,
+    "reconstruction_passes": 24,
+    "reference_mapping_passes": 24,
+    "scenarios_requested": 24,
+    "technical_pipeline_successes": 24
+  },
+  "pricing_configuration": {
+    "cached_input_per_1m_tokens": 0.1,
+    "contract_version": "controlled-revision-provider-pricing-v1",
+    "currency": "USD",
+    "effective_date": "2026-07-28",
+    "estimated_cost": true,
+    "input_per_1m_tokens": 0.4,
+    "model": "gpt-4.1-mini",
+    "output_per_1m_tokens": 1.6,
+    "pricing_source": "OpenAI GPT-4.1 mini model pricing page, accessed 2026-07-28",
+    "pricing_version": "openai-gpt-4-1-mini-2026-07-28",
+    "provider": "openai",
+    "reasoning_per_1m_tokens": null
+  },
+  "pricing_effective_date": "2026-07-28",
+  "pricing_fingerprint": "885c1ce9bcdc750da6737ca053d268b252560327d3e67443cc744571f55d34fc",
+  "pricing_source": "OpenAI GPT-4.1 mini model pricing page, accessed 2026-07-28",
+  "pricing_version": "openai-gpt-4-1-mini-2026-07-28",
+  "production_prompt_fingerprint": "sha256:cb6f07d47ec80ee8dfa246e5151f4c5a625adac2372f05a7cbccf4cbc3ebbf1c",
+  "projection_checkpoint": {
+    "all_scenarios_passed": true,
+    "authorized_reference_count_total": 24,
+    "count_equality_failures": 0,
+    "count_equality_passes": 24,
+    "projected_schema_reference_count_total": 24,
+    "scenarios": [
+      {
+        "authorized_reference_count": 1,
+        "authorized_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "count_equality": true,
+        "duplicate_projected_references": [],
+        "effective_schema_fingerprint": "06dbc0c4106c697ec0873ad1b51e526425a231bd89399b6a2c69a687c37602b9",
+        "missing_from_projection": [],
+        "projected_schema_reference_count": 1,
+        "projected_schema_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "scenario_id": "SYN-01",
+        "set_equality": true,
+        "unexpected_in_projection": []
+      },
+      {
+        "authorized_reference_count": 1,
+        "authorized_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "count_equality": true,
+        "duplicate_projected_references": [],
+        "effective_schema_fingerprint": "06dbc0c4106c697ec0873ad1b51e526425a231bd89399b6a2c69a687c37602b9",
+        "missing_from_projection": [],
+        "projected_schema_reference_count": 1,
+        "projected_schema_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "scenario_id": "SYN-02",
+        "set_equality": true,
+        "unexpected_in_projection": []
+      },
+      {
+        "authorized_reference_count": 1,
+        "authorized_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "count_equality": true,
+        "duplicate_projected_references": [],
+        "effective_schema_fingerprint": "06dbc0c4106c697ec0873ad1b51e526425a231bd89399b6a2c69a687c37602b9",
+        "missing_from_projection": [],
+        "projected_schema_reference_count": 1,
+        "projected_schema_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "scenario_id": "SYN-03",
+        "set_equality": true,
+        "unexpected_in_projection": []
+      },
+      {
+        "authorized_reference_count": 1,
+        "authorized_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "count_equality": true,
+        "duplicate_projected_references": [],
+        "effective_schema_fingerprint": "06dbc0c4106c697ec0873ad1b51e526425a231bd89399b6a2c69a687c37602b9",
+        "missing_from_projection": [],
+        "projected_schema_reference_count": 1,
+        "projected_schema_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "scenario_id": "SYN-04",
+        "set_equality": true,
+        "unexpected_in_projection": []
+      },
+      {
+        "authorized_reference_count": 1,
+        "authorized_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "count_equality": true,
+        "duplicate_projected_references": [],
+        "effective_schema_fingerprint": "06dbc0c4106c697ec0873ad1b51e526425a231bd89399b6a2c69a687c37602b9",
+        "missing_from_projection": [],
+        "projected_schema_reference_count": 1,
+        "projected_schema_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "scenario_id": "SYN-05",
+        "set_equality": true,
+        "unexpected_in_projection": []
+      },
+      {
+        "authorized_reference_count": 1,
+        "authorized_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "count_equality": true,
+        "duplicate_projected_references": [],
+        "effective_schema_fingerprint": "06dbc0c4106c697ec0873ad1b51e526425a231bd89399b6a2c69a687c37602b9",
+        "missing_from_projection": [],
+        "projected_schema_reference_count": 1,
+        "projected_schema_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "scenario_id": "SYN-06",
+        "set_equality": true,
+        "unexpected_in_projection": []
+      },
+      {
+        "authorized_reference_count": 1,
+        "authorized_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "count_equality": true,
+        "duplicate_projected_references": [],
+        "effective_schema_fingerprint": "06dbc0c4106c697ec0873ad1b51e526425a231bd89399b6a2c69a687c37602b9",
+        "missing_from_projection": [],
+        "projected_schema_reference_count": 1,
+        "projected_schema_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "scenario_id": "SYN-07",
+        "set_equality": true,
+        "unexpected_in_projection": []
+      },
+      {
+        "authorized_reference_count": 1,
+        "authorized_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "count_equality": true,
+        "duplicate_projected_references": [],
+        "effective_schema_fingerprint": "06dbc0c4106c697ec0873ad1b51e526425a231bd89399b6a2c69a687c37602b9",
+        "missing_from_projection": [],
+        "projected_schema_reference_count": 1,
+        "projected_schema_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "scenario_id": "SYN-08",
+        "set_equality": true,
+        "unexpected_in_projection": []
+      },
+      {
+        "authorized_reference_count": 1,
+        "authorized_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "count_equality": true,
+        "duplicate_projected_references": [],
+        "effective_schema_fingerprint": "06dbc0c4106c697ec0873ad1b51e526425a231bd89399b6a2c69a687c37602b9",
+        "missing_from_projection": [],
+        "projected_schema_reference_count": 1,
+        "projected_schema_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "scenario_id": "SYN-09",
+        "set_equality": true,
+        "unexpected_in_projection": []
+      },
+      {
+        "authorized_reference_count": 1,
+        "authorized_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "count_equality": true,
+        "duplicate_projected_references": [],
+        "effective_schema_fingerprint": "06dbc0c4106c697ec0873ad1b51e526425a231bd89399b6a2c69a687c37602b9",
+        "missing_from_projection": [],
+        "projected_schema_reference_count": 1,
+        "projected_schema_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "scenario_id": "SYN-10",
+        "set_equality": true,
+        "unexpected_in_projection": []
+      },
+      {
+        "authorized_reference_count": 1,
+        "authorized_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "count_equality": true,
+        "duplicate_projected_references": [],
+        "effective_schema_fingerprint": "06dbc0c4106c697ec0873ad1b51e526425a231bd89399b6a2c69a687c37602b9",
+        "missing_from_projection": [],
+        "projected_schema_reference_count": 1,
+        "projected_schema_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "scenario_id": "SYN-11",
+        "set_equality": true,
+        "unexpected_in_projection": []
+      },
+      {
+        "authorized_reference_count": 1,
+        "authorized_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "count_equality": true,
+        "duplicate_projected_references": [],
+        "effective_schema_fingerprint": "06dbc0c4106c697ec0873ad1b51e526425a231bd89399b6a2c69a687c37602b9",
+        "missing_from_projection": [],
+        "projected_schema_reference_count": 1,
+        "projected_schema_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "scenario_id": "SYN-12",
+        "set_equality": true,
+        "unexpected_in_projection": []
+      },
+      {
+        "authorized_reference_count": 1,
+        "authorized_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "count_equality": true,
+        "duplicate_projected_references": [],
+        "effective_schema_fingerprint": "06dbc0c4106c697ec0873ad1b51e526425a231bd89399b6a2c69a687c37602b9",
+        "missing_from_projection": [],
+        "projected_schema_reference_count": 1,
+        "projected_schema_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "scenario_id": "SYN-13",
+        "set_equality": true,
+        "unexpected_in_projection": []
+      },
+      {
+        "authorized_reference_count": 1,
+        "authorized_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "count_equality": true,
+        "duplicate_projected_references": [],
+        "effective_schema_fingerprint": "06dbc0c4106c697ec0873ad1b51e526425a231bd89399b6a2c69a687c37602b9",
+        "missing_from_projection": [],
+        "projected_schema_reference_count": 1,
+        "projected_schema_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "scenario_id": "SYN-14",
+        "set_equality": true,
+        "unexpected_in_projection": []
+      },
+      {
+        "authorized_reference_count": 1,
+        "authorized_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "count_equality": true,
+        "duplicate_projected_references": [],
+        "effective_schema_fingerprint": "06dbc0c4106c697ec0873ad1b51e526425a231bd89399b6a2c69a687c37602b9",
+        "missing_from_projection": [],
+        "projected_schema_reference_count": 1,
+        "projected_schema_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "scenario_id": "SYN-15",
+        "set_equality": true,
+        "unexpected_in_projection": []
+      },
+      {
+        "authorized_reference_count": 1,
+        "authorized_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "count_equality": true,
+        "duplicate_projected_references": [],
+        "effective_schema_fingerprint": "06dbc0c4106c697ec0873ad1b51e526425a231bd89399b6a2c69a687c37602b9",
+        "missing_from_projection": [],
+        "projected_schema_reference_count": 1,
+        "projected_schema_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "scenario_id": "SYN-16",
+        "set_equality": true,
+        "unexpected_in_projection": []
+      },
+      {
+        "authorized_reference_count": 1,
+        "authorized_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "count_equality": true,
+        "duplicate_projected_references": [],
+        "effective_schema_fingerprint": "06dbc0c4106c697ec0873ad1b51e526425a231bd89399b6a2c69a687c37602b9",
+        "missing_from_projection": [],
+        "projected_schema_reference_count": 1,
+        "projected_schema_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "scenario_id": "SYN-17",
+        "set_equality": true,
+        "unexpected_in_projection": []
+      },
+      {
+        "authorized_reference_count": 1,
+        "authorized_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "count_equality": true,
+        "duplicate_projected_references": [],
+        "effective_schema_fingerprint": "06dbc0c4106c697ec0873ad1b51e526425a231bd89399b6a2c69a687c37602b9",
+        "missing_from_projection": [],
+        "projected_schema_reference_count": 1,
+        "projected_schema_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "scenario_id": "SYN-18",
+        "set_equality": true,
+        "unexpected_in_projection": []
+      },
+      {
+        "authorized_reference_count": 1,
+        "authorized_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "count_equality": true,
+        "duplicate_projected_references": [],
+        "effective_schema_fingerprint": "06dbc0c4106c697ec0873ad1b51e526425a231bd89399b6a2c69a687c37602b9",
+        "missing_from_projection": [],
+        "projected_schema_reference_count": 1,
+        "projected_schema_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "scenario_id": "SYN-19",
+        "set_equality": true,
+        "unexpected_in_projection": []
+      },
+      {
+        "authorized_reference_count": 1,
+        "authorized_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "count_equality": true,
+        "duplicate_projected_references": [],
+        "effective_schema_fingerprint": "06dbc0c4106c697ec0873ad1b51e526425a231bd89399b6a2c69a687c37602b9",
+        "missing_from_projection": [],
+        "projected_schema_reference_count": 1,
+        "projected_schema_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "scenario_id": "SYN-20",
+        "set_equality": true,
+        "unexpected_in_projection": []
+      },
+      {
+        "authorized_reference_count": 1,
+        "authorized_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "count_equality": true,
+        "duplicate_projected_references": [],
+        "effective_schema_fingerprint": "06dbc0c4106c697ec0873ad1b51e526425a231bd89399b6a2c69a687c37602b9",
+        "missing_from_projection": [],
+        "projected_schema_reference_count": 1,
+        "projected_schema_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "scenario_id": "SYN-21",
+        "set_equality": true,
+        "unexpected_in_projection": []
+      },
+      {
+        "authorized_reference_count": 1,
+        "authorized_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "count_equality": true,
+        "duplicate_projected_references": [],
+        "effective_schema_fingerprint": "06dbc0c4106c697ec0873ad1b51e526425a231bd89399b6a2c69a687c37602b9",
+        "missing_from_projection": [],
+        "projected_schema_reference_count": 1,
+        "projected_schema_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "scenario_id": "SYN-22",
+        "set_equality": true,
+        "unexpected_in_projection": []
+      },
+      {
+        "authorized_reference_count": 1,
+        "authorized_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "count_equality": true,
+        "duplicate_projected_references": [],
+        "effective_schema_fingerprint": "06dbc0c4106c697ec0873ad1b51e526425a231bd89399b6a2c69a687c37602b9",
+        "missing_from_projection": [],
+        "projected_schema_reference_count": 1,
+        "projected_schema_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "scenario_id": "SYN-23",
+        "set_equality": true,
+        "unexpected_in_projection": []
+      },
+      {
+        "authorized_reference_count": 1,
+        "authorized_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "count_equality": true,
+        "duplicate_projected_references": [],
+        "effective_schema_fingerprint": "06dbc0c4106c697ec0873ad1b51e526425a231bd89399b6a2c69a687c37602b9",
+        "missing_from_projection": [],
+        "projected_schema_reference_count": 1,
+        "projected_schema_reference_set_fingerprint": "5b1446a9dbf86711eaa6ed0bf783c9698825ad0233863de7df85758f47ff3077",
+        "scenario_id": "SYN-24",
+        "set_equality": true,
+        "unexpected_in_projection": []
+      }
+    ],
+    "scenarios_checked": 24,
+    "set_equality_failures": 0,
+    "set_equality_passes": 24
+  },
+  "provider": "openai",
+  "provider_configuration": {
+    "authentication": "environment credential reference (redacted)",
+    "configuration_version": "1",
+    "endpoint": null,
+    "maximum_context_tokens": 32000,
+    "metadata": [],
+    "model_identifier": "gpt-4.1-mini",
+    "provider_identifier": "openai",
+    "rate_limit_policy": {
+      "maximum_requests_per_minute": null,
+      "maximum_tokens_per_minute": null
+    },
+    "retry_policy": {
+      "delay_seconds": 0.0,
+      "maximum_attempts": 1,
+      "retry_rate_limits": true,
+      "retry_timeouts": true,
+      "retry_transport_errors": true
+    },
+    "structured_output": {
+      "supported_modes": [
+        "json",
+        "schema_constrained"
+      ]
+    },
+    "supports_streaming": false,
+    "timeout_seconds": 30.0
+  },
+  "provider_configuration_fingerprint": "60f92da639c9a07ef32c4fddb5e406cc69e8df46711180eff22616ea644679eb",
+  "provider_request_count": 24,
+  "quality_metrics": {
+    "authorization_pass_rate": 1.0,
+    "editorial_acceptance_rate": 0.041666666666666664,
+    "episode_draft_validation_pass_rate": 1.0,
+    "meaning_preservation_rate": 0.041666666666666664,
+    "provider_dto_pass_rate": 1.0,
+    "reconstruction_pass_rate": 1.0,
+    "sample_count": 24,
+    "usable_revision_rate": 0.041666666666666664
+  },
+  "quality_sample_status": "SUFFICIENT",
+  "reconciliation": {
+    "benchmark_executions": 0,
+    "benchmark_replays": 0,
+    "canonical_metric_names": [
+      "technical_pipeline_successes",
+      "editorial_evaluation_completions",
+      "editorial_acceptance_passes",
+      "editorial_acceptance_failures"
+    ],
+    "evidence": [
+      "OperationalOutcome.PIPELINE_SUCCESS",
+      "test_acceptance_failure_remains_pipeline_success",
+      "frozen Part 7C.2 trial quality records"
+    ],
+    "previous_aggregate_values": {
+      "editorial_acceptance_passes": 24,
+      "pipeline_successes": 24
+    },
+    "previous_metric_names": [
+      "pipeline_successes"
+    ],
+    "provider_requests_executed": 0,
+    "raw_scenario_results_modified": false,
+    "reason": "funnel rendering conflated technical completion with editorial acceptance",
+    "reconciled_aggregate_values": {
+      "editorial_acceptance_failures": 23,
+      "editorial_acceptance_passes": 1,
+      "editorial_evaluation_attempts": 24,
+      "editorial_evaluation_completions": 24,
+      "technical_pipeline_successes": 24
+    },
+    "reconciled_at": "2026-07-28T12:32:30.023902+00:00",
+    "reconciliation_milestone": "Part 7C.2.1",
+    "semantic_fields_reconciled": [
+      "pipeline_funnel.technical_pipeline_successes",
+      "pipeline_funnel.editorial_evaluation_attempts",
+      "pipeline_funnel.editorial_evaluation_completions",
+      "pipeline_funnel.editorial_acceptance_passes",
+      "pipeline_funnel.editorial_acceptance_failures"
+    ],
+    "source_run_id": "20260728-120420-openai-gpt-4.1-mini-7c2"
+  },
+  "reference_metrics": {
+    "confusion_matrix": {
+      "story:101 -> story:101": 24
+    },
+    "duplicate_scenarios": 0,
+    "exact_authorized_scenarios": 24,
+    "exact_reference_compliance_rate": 1.0,
+    "exact_reference_compliance_scenarios": 24,
+    "malformed_scenarios": 0,
+    "missing_scenarios": 0,
+    "most_common_first_invalid_reference": null,
+    "most_common_unauthorized_reference": null,
+    "most_common_unknown_reference": null,
+    "precision": {
+      "maximum": 1.0,
+      "mean": 1.0,
+      "median": 1.0,
+      "minimum": 1.0,
+      "p95": 1.0
+    },
+    "precision_availability_rate": 1.0,
+    "recall": {
+      "maximum": 1.0,
+      "mean": 1.0,
+      "median": 1.0,
+      "minimum": 1.0,
+      "p95": 1.0
+    },
+    "recall_availability_rate": 1.0,
+    "unauthorized_scenarios": 0,
+    "unknown_scenarios": 0
+  },
+  "remediation_effectiveness": "EFFECTIVE",
+  "repository_revision": null,
+  "retry_count": 0,
+  "root_conclusion": "REFERENCE_CONTRACT_REMEDIATION_EFFECTIVE",
+  "scenario_count": 24,
+  "scenario_replay_count": 0,
+  "schema_fingerprint": "70f4ad299e9c35e86ab473705ed449a244ead2e9574745012cc179afbf6a9556",
+  "schema_version": 4,
+  "temperature": null,
+  "trials": [
+    {
+      "category": "MINIMAL_CLARITY",
+      "cost": {
+        "cost_status": "CALCULATED",
+        "estimated": true,
+        "estimated_cost_usd": 0.0005148,
+        "pricing_effective_date": "2026-07-28",
+        "pricing_source": "OpenAI GPT-4.1 mini model pricing page, accessed 2026-07-28",
+        "pricing_version": "openai-gpt-4-1-mini-2026-07-28"
+      },
+      "failure_code": null,
+      "failure_stage": "NONE",
+      "model": "gpt-4.1-mini",
+      "operational_outcome": "PIPELINE_SUCCESS",
+      "provider": "openai",
+      "provider_latency_ms": 3476.9266999792308,
+      "provider_request_id_hash": "sha256:34c8a6da67a4ab4e5cd573c4fe39b6f269916914ebe820a1fd21f71dfe48e067",
+      "quality": {
+        "authorization_validity": true,
+        "dto_validity": true,
+        "editorial_acceptance": false,
+        "episode_draft_validity": true,
+        "instruction_compliance": false,
+        "meaning_preservation": false,
+        "no_op_compliance": true,
+        "numeric_fact_preservation": true,
+        "protected_structure_preservation": true,
+        "quote_preservation": true,
+        "reconstruction_validity": true,
+        "revision_proportionality": true,
+        "source_authority_preservation": false,
+        "structural_validity": true,
+        "temporal_fact_preservation": true
+      },
+      "quality_failure_category": "SOURCE_AUTHORITY_DRIFT",
+      "references": {
+        "authorized_reference_count": 1,
+        "authorized_references": [
+          "story:101"
+        ],
+        "duplicate_provider_references": [],
+        "first_invalid_reference": null,
+        "first_invalid_reference_kind": "NONE",
+        "missing_authorized_references": [],
+        "provider_produced_references_ordered": [
+          "story:101"
+        ],
+        "provider_reference_count": 1,
+        "recognized_provider_references": [
+          "story:101"
+        ],
+        "reference_overlap_count": 1,
+        "reference_precision": 1.0,
+        "reference_recall": 1.0,
+        "unauthorized_references": [],
+        "unexpected_references": [],
+        "unknown_references": []
+      },
+      "scenario_id": "SYN-01",
+      "usable_revision": false,
+      "usage": {
+        "cached_prompt_tokens": 0,
+        "completion_tokens": 81,
+        "derived_total_tokens": null,
+        "input_audio_tokens": null,
+        "output_audio_tokens": null,
+        "prompt_tokens": 963,
+        "provider_reported_total_tokens": 1044,
+        "reasoning_tokens": 0,
+        "total_tokens_source": "PROVIDER_REPORTED"
+      }
+    },
+    {
+      "category": "MINIMAL_CLARITY",
+      "cost": {
+        "cost_status": "CALCULATED",
+        "estimated": true,
+        "estimated_cost_usd": 0.0005056,
+        "pricing_effective_date": "2026-07-28",
+        "pricing_source": "OpenAI GPT-4.1 mini model pricing page, accessed 2026-07-28",
+        "pricing_version": "openai-gpt-4-1-mini-2026-07-28"
+      },
+      "failure_code": null,
+      "failure_stage": "NONE",
+      "model": "gpt-4.1-mini",
+      "operational_outcome": "PIPELINE_SUCCESS",
+      "provider": "openai",
+      "provider_latency_ms": 3171.7592999339104,
+      "provider_request_id_hash": "sha256:26b0bc79df7b68cd2568a0827b8fa6654b708489ba2688cf0a8b899734d42ebe",
+      "quality": {
+        "authorization_validity": true,
+        "dto_validity": true,
+        "editorial_acceptance": false,
+        "episode_draft_validity": true,
+        "instruction_compliance": false,
+        "meaning_preservation": false,
+        "no_op_compliance": true,
+        "numeric_fact_preservation": true,
+        "protected_structure_preservation": true,
+        "quote_preservation": true,
+        "reconstruction_validity": true,
+        "revision_proportionality": true,
+        "source_authority_preservation": false,
+        "structural_validity": true,
+        "temporal_fact_preservation": true
+      },
+      "quality_failure_category": "SOURCE_AUTHORITY_DRIFT",
+      "references": {
+        "authorized_reference_count": 1,
+        "authorized_references": [
+          "story:101"
+        ],
+        "duplicate_provider_references": [],
+        "first_invalid_reference": null,
+        "first_invalid_reference_kind": "NONE",
+        "missing_authorized_references": [],
+        "provider_produced_references_ordered": [
+          "story:101"
+        ],
+        "provider_reference_count": 1,
+        "recognized_provider_references": [
+          "story:101"
+        ],
+        "reference_overlap_count": 1,
+        "reference_precision": 1.0,
+        "reference_recall": 1.0,
+        "unauthorized_references": [],
+        "unexpected_references": [],
+        "unknown_references": []
+      },
+      "scenario_id": "SYN-02",
+      "usable_revision": false,
+      "usage": {
+        "cached_prompt_tokens": 0,
+        "completion_tokens": 80,
+        "derived_total_tokens": null,
+        "input_audio_tokens": null,
+        "output_audio_tokens": null,
+        "prompt_tokens": 944,
+        "provider_reported_total_tokens": 1024,
+        "reasoning_tokens": 0,
+        "total_tokens_source": "PROVIDER_REPORTED"
+      }
+    },
+    {
+      "category": "GRAMMAR_AND_FLOW",
+      "cost": {
+        "cost_status": "CALCULATED",
+        "estimated": true,
+        "estimated_cost_usd": 0.0005128,
+        "pricing_effective_date": "2026-07-28",
+        "pricing_source": "OpenAI GPT-4.1 mini model pricing page, accessed 2026-07-28",
+        "pricing_version": "openai-gpt-4-1-mini-2026-07-28"
+      },
+      "failure_code": null,
+      "failure_stage": "NONE",
+      "model": "gpt-4.1-mini",
+      "operational_outcome": "PIPELINE_SUCCESS",
+      "provider": "openai",
+      "provider_latency_ms": 2040.7650999259204,
+      "provider_request_id_hash": "sha256:e59140ebc085dfa852af8ac64f1afd63bb05752d18ddf73f6c7836bbb0d317c0",
+      "quality": {
+        "authorization_validity": true,
+        "dto_validity": true,
+        "editorial_acceptance": false,
+        "episode_draft_validity": true,
+        "instruction_compliance": false,
+        "meaning_preservation": false,
+        "no_op_compliance": true,
+        "numeric_fact_preservation": true,
+        "protected_structure_preservation": true,
+        "quote_preservation": true,
+        "reconstruction_validity": true,
+        "revision_proportionality": true,
+        "source_authority_preservation": false,
+        "structural_validity": true,
+        "temporal_fact_preservation": true
+      },
+      "quality_failure_category": "SOURCE_AUTHORITY_DRIFT",
+      "references": {
+        "authorized_reference_count": 1,
+        "authorized_references": [
+          "story:101"
+        ],
+        "duplicate_provider_references": [],
+        "first_invalid_reference": null,
+        "first_invalid_reference_kind": "NONE",
+        "missing_authorized_references": [],
+        "provider_produced_references_ordered": [
+          "story:101"
+        ],
+        "provider_reference_count": 1,
+        "recognized_provider_references": [
+          "story:101"
+        ],
+        "reference_overlap_count": 1,
+        "reference_precision": 1.0,
+        "reference_recall": 1.0,
+        "unauthorized_references": [],
+        "unexpected_references": [],
+        "unknown_references": []
+      },
+      "scenario_id": "SYN-03",
+      "usable_revision": false,
+      "usage": {
+        "cached_prompt_tokens": 0,
+        "completion_tokens": 80,
+        "derived_total_tokens": null,
+        "input_audio_tokens": null,
+        "output_audio_tokens": null,
+        "prompt_tokens": 962,
+        "provider_reported_total_tokens": 1042,
+        "reasoning_tokens": 0,
+        "total_tokens_source": "PROVIDER_REPORTED"
+      }
+    },
+    {
+      "category": "GRAMMAR_AND_FLOW",
+      "cost": {
+        "cost_status": "CALCULATED",
+        "estimated": true,
+        "estimated_cost_usd": 0.0005056,
+        "pricing_effective_date": "2026-07-28",
+        "pricing_source": "OpenAI GPT-4.1 mini model pricing page, accessed 2026-07-28",
+        "pricing_version": "openai-gpt-4-1-mini-2026-07-28"
+      },
+      "failure_code": null,
+      "failure_stage": "NONE",
+      "model": "gpt-4.1-mini",
+      "operational_outcome": "PIPELINE_SUCCESS",
+      "provider": "openai",
+      "provider_latency_ms": 3583.992099855095,
+      "provider_request_id_hash": "sha256:5185e8850b2e8ab6bfb67d60fa12c15f1e9f166f266d7e8d674838275d909789",
+      "quality": {
+        "authorization_validity": true,
+        "dto_validity": true,
+        "editorial_acceptance": false,
+        "episode_draft_validity": true,
+        "instruction_compliance": false,
+        "meaning_preservation": false,
+        "no_op_compliance": true,
+        "numeric_fact_preservation": true,
+        "protected_structure_preservation": true,
+        "quote_preservation": true,
+        "reconstruction_validity": true,
+        "revision_proportionality": true,
+        "source_authority_preservation": false,
+        "structural_validity": true,
+        "temporal_fact_preservation": true
+      },
+      "quality_failure_category": "SOURCE_AUTHORITY_DRIFT",
+      "references": {
+        "authorized_reference_count": 1,
+        "authorized_references": [
+          "story:101"
+        ],
+        "duplicate_provider_references": [],
+        "first_invalid_reference": null,
+        "first_invalid_reference_kind": "NONE",
+        "missing_authorized_references": [],
+        "provider_produced_references_ordered": [
+          "story:101"
+        ],
+        "provider_reference_count": 1,
+        "recognized_provider_references": [
+          "story:101"
+        ],
+        "reference_overlap_count": 1,
+        "reference_precision": 1.0,
+        "reference_recall": 1.0,
+        "unauthorized_references": [],
+        "unexpected_references": [],
+        "unknown_references": []
+      },
+      "scenario_id": "SYN-04",
+      "usable_revision": false,
+      "usage": {
+        "cached_prompt_tokens": 0,
+        "completion_tokens": 78,
+        "derived_total_tokens": null,
+        "input_audio_tokens": null,
+        "output_audio_tokens": null,
+        "prompt_tokens": 952,
+        "provider_reported_total_tokens": 1030,
+        "reasoning_tokens": 0,
+        "total_tokens_source": "PROVIDER_REPORTED"
+      }
+    },
+    {
+      "category": "SUBSTANTIAL_REWRITE",
+      "cost": {
+        "cost_status": "CALCULATED",
+        "estimated": true,
+        "estimated_cost_usd": 0.0005448,
+        "pricing_effective_date": "2026-07-28",
+        "pricing_source": "OpenAI GPT-4.1 mini model pricing page, accessed 2026-07-28",
+        "pricing_version": "openai-gpt-4-1-mini-2026-07-28"
+      },
+      "failure_code": null,
+      "failure_stage": "NONE",
+      "model": "gpt-4.1-mini",
+      "operational_outcome": "PIPELINE_SUCCESS",
+      "provider": "openai",
+      "provider_latency_ms": 14287.841100012884,
+      "provider_request_id_hash": "sha256:7613179b085515c59fbc1c07c5624b1601c4d1e51175987b374ecb996da8a5e9",
+      "quality": {
+        "authorization_validity": true,
+        "dto_validity": true,
+        "editorial_acceptance": false,
+        "episode_draft_validity": true,
+        "instruction_compliance": false,
+        "meaning_preservation": false,
+        "no_op_compliance": true,
+        "numeric_fact_preservation": true,
+        "protected_structure_preservation": true,
+        "quote_preservation": true,
+        "reconstruction_validity": true,
+        "revision_proportionality": true,
+        "source_authority_preservation": false,
+        "structural_validity": true,
+        "temporal_fact_preservation": true
+      },
+      "quality_failure_category": "SOURCE_AUTHORITY_DRIFT",
+      "references": {
+        "authorized_reference_count": 1,
+        "authorized_references": [
+          "story:101"
+        ],
+        "duplicate_provider_references": [],
+        "first_invalid_reference": null,
+        "first_invalid_reference_kind": "NONE",
+        "missing_authorized_references": [],
+        "provider_produced_references_ordered": [
+          "story:101"
+        ],
+        "provider_reference_count": 1,
+        "recognized_provider_references": [
+          "story:101"
+        ],
+        "reference_overlap_count": 1,
+        "reference_precision": 1.0,
+        "reference_recall": 1.0,
+        "unauthorized_references": [],
+        "unexpected_references": [],
+        "unknown_references": []
+      },
+      "scenario_id": "SYN-05",
+      "usable_revision": false,
+      "usage": {
+        "cached_prompt_tokens": 0,
+        "completion_tokens": 102,
+        "derived_total_tokens": null,
+        "input_audio_tokens": null,
+        "output_audio_tokens": null,
+        "prompt_tokens": 954,
+        "provider_reported_total_tokens": 1056,
+        "reasoning_tokens": 0,
+        "total_tokens_source": "PROVIDER_REPORTED"
+      }
+    },
+    {
+      "category": "SUBSTANTIAL_REWRITE",
+      "cost": {
+        "cost_status": "CALCULATED",
+        "estimated": true,
+        "estimated_cost_usd": 0.0005616,
+        "pricing_effective_date": "2026-07-28",
+        "pricing_source": "OpenAI GPT-4.1 mini model pricing page, accessed 2026-07-28",
+        "pricing_version": "openai-gpt-4-1-mini-2026-07-28"
+      },
+      "failure_code": null,
+      "failure_stage": "NONE",
+      "model": "gpt-4.1-mini",
+      "operational_outcome": "PIPELINE_SUCCESS",
+      "provider": "openai",
+      "provider_latency_ms": 1886.6677999030799,
+      "provider_request_id_hash": "sha256:0867c3f1227636d9b2f1cde3826c22edc8706526f7a6c49b2244fbb46828bdb8",
+      "quality": {
+        "authorization_validity": true,
+        "dto_validity": true,
+        "editorial_acceptance": false,
+        "episode_draft_validity": true,
+        "instruction_compliance": false,
+        "meaning_preservation": false,
+        "no_op_compliance": true,
+        "numeric_fact_preservation": true,
+        "protected_structure_preservation": true,
+        "quote_preservation": true,
+        "reconstruction_validity": true,
+        "revision_proportionality": true,
+        "source_authority_preservation": false,
+        "structural_validity": true,
+        "temporal_fact_preservation": true
+      },
+      "quality_failure_category": "SOURCE_AUTHORITY_DRIFT",
+      "references": {
+        "authorized_reference_count": 1,
+        "authorized_references": [
+          "story:101"
+        ],
+        "duplicate_provider_references": [],
+        "first_invalid_reference": null,
+        "first_invalid_reference_kind": "NONE",
+        "missing_authorized_references": [],
+        "provider_produced_references_ordered": [
+          "story:101"
+        ],
+        "provider_reference_count": 1,
+        "recognized_provider_references": [
+          "story:101"
+        ],
+        "reference_overlap_count": 1,
+        "reference_precision": 1.0,
+        "reference_recall": 1.0,
+        "unauthorized_references": [],
+        "unexpected_references": [],
+        "unknown_references": []
+      },
+      "scenario_id": "SYN-06",
+      "usable_revision": false,
+      "usage": {
+        "cached_prompt_tokens": 0,
+        "completion_tokens": 111,
+        "derived_total_tokens": null,
+        "input_audio_tokens": null,
+        "output_audio_tokens": null,
+        "prompt_tokens": 960,
+        "provider_reported_total_tokens": 1071,
+        "reasoning_tokens": 0,
+        "total_tokens_source": "PROVIDER_REPORTED"
+      }
+    },
+    {
+      "category": "PROTECTED_STRUCTURE",
+      "cost": {
+        "cost_status": "CALCULATED",
+        "estimated": true,
+        "estimated_cost_usd": 0.0005108000000000001,
+        "pricing_effective_date": "2026-07-28",
+        "pricing_source": "OpenAI GPT-4.1 mini model pricing page, accessed 2026-07-28",
+        "pricing_version": "openai-gpt-4-1-mini-2026-07-28"
+      },
+      "failure_code": null,
+      "failure_stage": "NONE",
+      "model": "gpt-4.1-mini",
+      "operational_outcome": "PIPELINE_SUCCESS",
+      "provider": "openai",
+      "provider_latency_ms": 1939.417300047353,
+      "provider_request_id_hash": "sha256:4d9ccd60442cb1fadb60f00aba7ac88d2b4425e232e4add4c05dbe4f7c136c27",
+      "quality": {
+        "authorization_validity": true,
+        "dto_validity": true,
+        "editorial_acceptance": false,
+        "episode_draft_validity": true,
+        "instruction_compliance": false,
+        "meaning_preservation": false,
+        "no_op_compliance": true,
+        "numeric_fact_preservation": true,
+        "protected_structure_preservation": true,
+        "quote_preservation": true,
+        "reconstruction_validity": true,
+        "revision_proportionality": true,
+        "source_authority_preservation": false,
+        "structural_validity": true,
+        "temporal_fact_preservation": true
+      },
+      "quality_failure_category": "SOURCE_AUTHORITY_DRIFT",
+      "references": {
+        "authorized_reference_count": 1,
+        "authorized_references": [
+          "story:101"
+        ],
+        "duplicate_provider_references": [],
+        "first_invalid_reference": null,
+        "first_invalid_reference_kind": "NONE",
+        "missing_authorized_references": [],
+        "provider_produced_references_ordered": [
+          "story:101"
+        ],
+        "provider_reference_count": 1,
+        "recognized_provider_references": [
+          "story:101"
+        ],
+        "reference_overlap_count": 1,
+        "reference_precision": 1.0,
+        "reference_recall": 1.0,
+        "unauthorized_references": [],
+        "unexpected_references": [],
+        "unknown_references": []
+      },
+      "scenario_id": "SYN-07",
+      "usable_revision": false,
+      "usage": {
+        "cached_prompt_tokens": 0,
+        "completion_tokens": 81,
+        "derived_total_tokens": null,
+        "input_audio_tokens": null,
+        "output_audio_tokens": null,
+        "prompt_tokens": 953,
+        "provider_reported_total_tokens": 1034,
+        "reasoning_tokens": 0,
+        "total_tokens_source": "PROVIDER_REPORTED"
+      }
+    },
+    {
+      "category": "PROTECTED_STRUCTURE",
+      "cost": {
+        "cost_status": "CALCULATED",
+        "estimated": true,
+        "estimated_cost_usd": 0.0005040000000000001,
+        "pricing_effective_date": "2026-07-28",
+        "pricing_source": "OpenAI GPT-4.1 mini model pricing page, accessed 2026-07-28",
+        "pricing_version": "openai-gpt-4-1-mini-2026-07-28"
+      },
+      "failure_code": null,
+      "failure_stage": "NONE",
+      "model": "gpt-4.1-mini",
+      "operational_outcome": "PIPELINE_SUCCESS",
+      "provider": "openai",
+      "provider_latency_ms": 1868.7207999173552,
+      "provider_request_id_hash": "sha256:7eb5b0f2203342280f71176c6049d0e0725b8b7adbab9cf4b2b407e2e230b918",
+      "quality": {
+        "authorization_validity": true,
+        "dto_validity": true,
+        "editorial_acceptance": false,
+        "episode_draft_validity": true,
+        "instruction_compliance": false,
+        "meaning_preservation": false,
+        "no_op_compliance": true,
+        "numeric_fact_preservation": true,
+        "protected_structure_preservation": true,
+        "quote_preservation": true,
+        "reconstruction_validity": true,
+        "revision_proportionality": true,
+        "source_authority_preservation": false,
+        "structural_validity": true,
+        "temporal_fact_preservation": true
+      },
+      "quality_failure_category": "SOURCE_AUTHORITY_DRIFT",
+      "references": {
+        "authorized_reference_count": 1,
+        "authorized_references": [
+          "story:101"
+        ],
+        "duplicate_provider_references": [],
+        "first_invalid_reference": null,
+        "first_invalid_reference_kind": "NONE",
+        "missing_authorized_references": [],
+        "provider_produced_references_ordered": [
+          "story:101"
+        ],
+        "provider_reference_count": 1,
+        "recognized_provider_references": [
+          "story:101"
+        ],
+        "reference_overlap_count": 1,
+        "reference_precision": 1.0,
+        "reference_recall": 1.0,
+        "unauthorized_references": [],
+        "unexpected_references": [],
+        "unknown_references": []
+      },
+      "scenario_id": "SYN-08",
+      "usable_revision": false,
+      "usage": {
+        "cached_prompt_tokens": 0,
+        "completion_tokens": 78,
+        "derived_total_tokens": null,
+        "input_audio_tokens": null,
+        "output_audio_tokens": null,
+        "prompt_tokens": 948,
+        "provider_reported_total_tokens": 1026,
+        "reasoning_tokens": 0,
+        "total_tokens_source": "PROVIDER_REPORTED"
+      }
+    },
+    {
+      "category": "SOURCE_AUTHORITY",
+      "cost": {
+        "cost_status": "CALCULATED",
+        "estimated": true,
+        "estimated_cost_usd": 0.0005172,
+        "pricing_effective_date": "2026-07-28",
+        "pricing_source": "OpenAI GPT-4.1 mini model pricing page, accessed 2026-07-28",
+        "pricing_version": "openai-gpt-4-1-mini-2026-07-28"
+      },
+      "failure_code": null,
+      "failure_stage": "NONE",
+      "model": "gpt-4.1-mini",
+      "operational_outcome": "PIPELINE_SUCCESS",
+      "provider": "openai",
+      "provider_latency_ms": 2015.9773000050336,
+      "provider_request_id_hash": "sha256:2caa262a350a7e63b53a99cbca813fe58cbe8eab5e71e21383d089041a1e2d4b",
+      "quality": {
+        "authorization_validity": true,
+        "dto_validity": true,
+        "editorial_acceptance": false,
+        "episode_draft_validity": true,
+        "instruction_compliance": false,
+        "meaning_preservation": false,
+        "no_op_compliance": true,
+        "numeric_fact_preservation": true,
+        "protected_structure_preservation": true,
+        "quote_preservation": true,
+        "reconstruction_validity": true,
+        "revision_proportionality": true,
+        "source_authority_preservation": false,
+        "structural_validity": true,
+        "temporal_fact_preservation": true
+      },
+      "quality_failure_category": "SOURCE_AUTHORITY_DRIFT",
+      "references": {
+        "authorized_reference_count": 1,
+        "authorized_references": [
+          "story:101"
+        ],
+        "duplicate_provider_references": [],
+        "first_invalid_reference": null,
+        "first_invalid_reference_kind": "NONE",
+        "missing_authorized_references": [],
+        "provider_produced_references_ordered": [
+          "story:101"
+        ],
+        "provider_reference_count": 1,
+        "recognized_provider_references": [
+          "story:101"
+        ],
+        "reference_overlap_count": 1,
+        "reference_precision": 1.0,
+        "reference_recall": 1.0,
+        "unauthorized_references": [],
+        "unexpected_references": [],
+        "unknown_references": []
+      },
+      "scenario_id": "SYN-09",
+      "usable_revision": false,
+      "usage": {
+        "cached_prompt_tokens": 0,
+        "completion_tokens": 85,
+        "derived_total_tokens": null,
+        "input_audio_tokens": null,
+        "output_audio_tokens": null,
+        "prompt_tokens": 953,
+        "provider_reported_total_tokens": 1038,
+        "reasoning_tokens": 0,
+        "total_tokens_source": "PROVIDER_REPORTED"
+      }
+    },
+    {
+      "category": "SOURCE_AUTHORITY",
+      "cost": {
+        "cost_status": "CALCULATED",
+        "estimated": true,
+        "estimated_cost_usd": 0.0005276,
+        "pricing_effective_date": "2026-07-28",
+        "pricing_source": "OpenAI GPT-4.1 mini model pricing page, accessed 2026-07-28",
+        "pricing_version": "openai-gpt-4-1-mini-2026-07-28"
+      },
+      "failure_code": null,
+      "failure_stage": "NONE",
+      "model": "gpt-4.1-mini",
+      "operational_outcome": "PIPELINE_SUCCESS",
+      "provider": "openai",
+      "provider_latency_ms": 1942.2304001636803,
+      "provider_request_id_hash": "sha256:7e5f981e0ce542d559147621da6bfdd106b53cb35ae5aaa958bde713d9b91c13",
+      "quality": {
+        "authorization_validity": true,
+        "dto_validity": true,
+        "editorial_acceptance": false,
+        "episode_draft_validity": true,
+        "instruction_compliance": false,
+        "meaning_preservation": false,
+        "no_op_compliance": true,
+        "numeric_fact_preservation": true,
+        "protected_structure_preservation": true,
+        "quote_preservation": false,
+        "reconstruction_validity": true,
+        "revision_proportionality": true,
+        "source_authority_preservation": false,
+        "structural_validity": true,
+        "temporal_fact_preservation": true
+      },
+      "quality_failure_category": "QUOTE_MUTATION",
+      "references": {
+        "authorized_reference_count": 1,
+        "authorized_references": [
+          "story:101"
+        ],
+        "duplicate_provider_references": [],
+        "first_invalid_reference": null,
+        "first_invalid_reference_kind": "NONE",
+        "missing_authorized_references": [],
+        "provider_produced_references_ordered": [
+          "story:101"
+        ],
+        "provider_reference_count": 1,
+        "recognized_provider_references": [
+          "story:101"
+        ],
+        "reference_overlap_count": 1,
+        "reference_precision": 1.0,
+        "reference_recall": 1.0,
+        "unauthorized_references": [],
+        "unexpected_references": [],
+        "unknown_references": []
+      },
+      "scenario_id": "SYN-10",
+      "usable_revision": false,
+      "usage": {
+        "cached_prompt_tokens": 0,
+        "completion_tokens": 88,
+        "derived_total_tokens": null,
+        "input_audio_tokens": null,
+        "output_audio_tokens": null,
+        "prompt_tokens": 967,
+        "provider_reported_total_tokens": 1055,
+        "reasoning_tokens": 0,
+        "total_tokens_source": "PROVIDER_REPORTED"
+      }
+    },
+    {
+      "category": "QUOTE_PRESERVATION",
+      "cost": {
+        "cost_status": "CALCULATED",
+        "estimated": true,
+        "estimated_cost_usd": 0.0005128,
+        "pricing_effective_date": "2026-07-28",
+        "pricing_source": "OpenAI GPT-4.1 mini model pricing page, accessed 2026-07-28",
+        "pricing_version": "openai-gpt-4-1-mini-2026-07-28"
+      },
+      "failure_code": null,
+      "failure_stage": "NONE",
+      "model": "gpt-4.1-mini",
+      "operational_outcome": "PIPELINE_SUCCESS",
+      "provider": "openai",
+      "provider_latency_ms": 2352.8044999111444,
+      "provider_request_id_hash": "sha256:2e4d845b268a3c35b5775f952d0c2655d00baa5a451102096a3f18f310b6a5a8",
+      "quality": {
+        "authorization_validity": true,
+        "dto_validity": true,
+        "editorial_acceptance": false,
+        "episode_draft_validity": true,
+        "instruction_compliance": false,
+        "meaning_preservation": false,
+        "no_op_compliance": true,
+        "numeric_fact_preservation": true,
+        "protected_structure_preservation": true,
+        "quote_preservation": true,
+        "reconstruction_validity": true,
+        "revision_proportionality": true,
+        "source_authority_preservation": false,
+        "structural_validity": true,
+        "temporal_fact_preservation": true
+      },
+      "quality_failure_category": "SOURCE_AUTHORITY_DRIFT",
+      "references": {
+        "authorized_reference_count": 1,
+        "authorized_references": [
+          "story:101"
+        ],
+        "duplicate_provider_references": [],
+        "first_invalid_reference": null,
+        "first_invalid_reference_kind": "NONE",
+        "missing_authorized_references": [],
+        "provider_produced_references_ordered": [
+          "story:101"
+        ],
+        "provider_reference_count": 1,
+        "recognized_provider_references": [
+          "story:101"
+        ],
+        "reference_overlap_count": 1,
+        "reference_precision": 1.0,
+        "reference_recall": 1.0,
+        "unauthorized_references": [],
+        "unexpected_references": [],
+        "unknown_references": []
+      },
+      "scenario_id": "SYN-11",
+      "usable_revision": false,
+      "usage": {
+        "cached_prompt_tokens": 0,
+        "completion_tokens": 80,
+        "derived_total_tokens": null,
+        "input_audio_tokens": null,
+        "output_audio_tokens": null,
+        "prompt_tokens": 962,
+        "provider_reported_total_tokens": 1042,
+        "reasoning_tokens": 0,
+        "total_tokens_source": "PROVIDER_REPORTED"
+      }
+    },
+    {
+      "category": "QUOTE_PRESERVATION",
+      "cost": {
+        "cost_status": "CALCULATED",
+        "estimated": true,
+        "estimated_cost_usd": 0.0005048,
+        "pricing_effective_date": "2026-07-28",
+        "pricing_source": "OpenAI GPT-4.1 mini model pricing page, accessed 2026-07-28",
+        "pricing_version": "openai-gpt-4-1-mini-2026-07-28"
+      },
+      "failure_code": null,
+      "failure_stage": "NONE",
+      "model": "gpt-4.1-mini",
+      "operational_outcome": "PIPELINE_SUCCESS",
+      "provider": "openai",
+      "provider_latency_ms": 2248.6249001231045,
+      "provider_request_id_hash": "sha256:880d0e37783188f73964f5f57f2fafc0dd47ad83c47a4e7af090c3ddb88f5a44",
+      "quality": {
+        "authorization_validity": true,
+        "dto_validity": true,
+        "editorial_acceptance": false,
+        "episode_draft_validity": true,
+        "instruction_compliance": false,
+        "meaning_preservation": false,
+        "no_op_compliance": true,
+        "numeric_fact_preservation": true,
+        "protected_structure_preservation": true,
+        "quote_preservation": true,
+        "reconstruction_validity": true,
+        "revision_proportionality": true,
+        "source_authority_preservation": false,
+        "structural_validity": true,
+        "temporal_fact_preservation": true
+      },
+      "quality_failure_category": "SOURCE_AUTHORITY_DRIFT",
+      "references": {
+        "authorized_reference_count": 1,
+        "authorized_references": [
+          "story:101"
+        ],
+        "duplicate_provider_references": [],
+        "first_invalid_reference": null,
+        "first_invalid_reference_kind": "NONE",
+        "missing_authorized_references": [],
+        "provider_produced_references_ordered": [
+          "story:101"
+        ],
+        "provider_reference_count": 1,
+        "recognized_provider_references": [
+          "story:101"
+        ],
+        "reference_overlap_count": 1,
+        "reference_precision": 1.0,
+        "reference_recall": 1.0,
+        "unauthorized_references": [],
+        "unexpected_references": [],
+        "unknown_references": []
+      },
+      "scenario_id": "SYN-12",
+      "usable_revision": false,
+      "usage": {
+        "cached_prompt_tokens": 0,
+        "completion_tokens": 78,
+        "derived_total_tokens": null,
+        "input_audio_tokens": null,
+        "output_audio_tokens": null,
+        "prompt_tokens": 950,
+        "provider_reported_total_tokens": 1028,
+        "reasoning_tokens": 0,
+        "total_tokens_source": "PROVIDER_REPORTED"
+      }
+    },
+    {
+      "category": "NUMERIC_FACT_PRESERVATION",
+      "cost": {
+        "cost_status": "CALCULATED",
+        "estimated": true,
+        "estimated_cost_usd": 0.0005068,
+        "pricing_effective_date": "2026-07-28",
+        "pricing_source": "OpenAI GPT-4.1 mini model pricing page, accessed 2026-07-28",
+        "pricing_version": "openai-gpt-4-1-mini-2026-07-28"
+      },
+      "failure_code": null,
+      "failure_stage": "NONE",
+      "model": "gpt-4.1-mini",
+      "operational_outcome": "PIPELINE_SUCCESS",
+      "provider": "openai",
+      "provider_latency_ms": 1942.4447999335825,
+      "provider_request_id_hash": "sha256:970eaa21c1546bd3d12d614a4633e919e2dc0434e3a8afc0f7a55193bf9bb85d",
+      "quality": {
+        "authorization_validity": true,
+        "dto_validity": true,
+        "editorial_acceptance": false,
+        "episode_draft_validity": true,
+        "instruction_compliance": false,
+        "meaning_preservation": false,
+        "no_op_compliance": true,
+        "numeric_fact_preservation": true,
+        "protected_structure_preservation": true,
+        "quote_preservation": true,
+        "reconstruction_validity": true,
+        "revision_proportionality": true,
+        "source_authority_preservation": false,
+        "structural_validity": true,
+        "temporal_fact_preservation": true
+      },
+      "quality_failure_category": "SOURCE_AUTHORITY_DRIFT",
+      "references": {
+        "authorized_reference_count": 1,
+        "authorized_references": [
+          "story:101"
+        ],
+        "duplicate_provider_references": [],
+        "first_invalid_reference": null,
+        "first_invalid_reference_kind": "NONE",
+        "missing_authorized_references": [],
+        "provider_produced_references_ordered": [
+          "story:101"
+        ],
+        "provider_reference_count": 1,
+        "recognized_provider_references": [
+          "story:101"
+        ],
+        "reference_overlap_count": 1,
+        "reference_precision": 1.0,
+        "reference_recall": 1.0,
+        "unauthorized_references": [],
+        "unexpected_references": [],
+        "unknown_references": []
+      },
+      "scenario_id": "SYN-13",
+      "usable_revision": false,
+      "usage": {
+        "cached_prompt_tokens": 0,
+        "completion_tokens": 78,
+        "derived_total_tokens": null,
+        "input_audio_tokens": null,
+        "output_audio_tokens": null,
+        "prompt_tokens": 955,
+        "provider_reported_total_tokens": 1033,
+        "reasoning_tokens": 0,
+        "total_tokens_source": "PROVIDER_REPORTED"
+      }
+    },
+    {
+      "category": "NUMERIC_FACT_PRESERVATION",
+      "cost": {
+        "cost_status": "CALCULATED",
+        "estimated": true,
+        "estimated_cost_usd": 0.0005068,
+        "pricing_effective_date": "2026-07-28",
+        "pricing_source": "OpenAI GPT-4.1 mini model pricing page, accessed 2026-07-28",
+        "pricing_version": "openai-gpt-4-1-mini-2026-07-28"
+      },
+      "failure_code": null,
+      "failure_stage": "NONE",
+      "model": "gpt-4.1-mini",
+      "operational_outcome": "PIPELINE_SUCCESS",
+      "provider": "openai",
+      "provider_latency_ms": 1859.546999912709,
+      "provider_request_id_hash": "sha256:95ab6f38ad216113ca519e7dd1449348ad442ef473b50fd4bfa6e3d41e3e7486",
+      "quality": {
+        "authorization_validity": true,
+        "dto_validity": true,
+        "editorial_acceptance": false,
+        "episode_draft_validity": true,
+        "instruction_compliance": false,
+        "meaning_preservation": false,
+        "no_op_compliance": true,
+        "numeric_fact_preservation": true,
+        "protected_structure_preservation": true,
+        "quote_preservation": true,
+        "reconstruction_validity": true,
+        "revision_proportionality": true,
+        "source_authority_preservation": false,
+        "structural_validity": true,
+        "temporal_fact_preservation": true
+      },
+      "quality_failure_category": "SOURCE_AUTHORITY_DRIFT",
+      "references": {
+        "authorized_reference_count": 1,
+        "authorized_references": [
+          "story:101"
+        ],
+        "duplicate_provider_references": [],
+        "first_invalid_reference": null,
+        "first_invalid_reference_kind": "NONE",
+        "missing_authorized_references": [],
+        "provider_produced_references_ordered": [
+          "story:101"
+        ],
+        "provider_reference_count": 1,
+        "recognized_provider_references": [
+          "story:101"
+        ],
+        "reference_overlap_count": 1,
+        "reference_precision": 1.0,
+        "reference_recall": 1.0,
+        "unauthorized_references": [],
+        "unexpected_references": [],
+        "unknown_references": []
+      },
+      "scenario_id": "SYN-14",
+      "usable_revision": false,
+      "usage": {
+        "cached_prompt_tokens": 0,
+        "completion_tokens": 78,
+        "derived_total_tokens": null,
+        "input_audio_tokens": null,
+        "output_audio_tokens": null,
+        "prompt_tokens": 955,
+        "provider_reported_total_tokens": 1033,
+        "reasoning_tokens": 0,
+        "total_tokens_source": "PROVIDER_REPORTED"
+      }
+    },
+    {
+      "category": "TEMPORAL_FACT_PRESERVATION",
+      "cost": {
+        "cost_status": "CALCULATED",
+        "estimated": true,
+        "estimated_cost_usd": 0.0005116000000000001,
+        "pricing_effective_date": "2026-07-28",
+        "pricing_source": "OpenAI GPT-4.1 mini model pricing page, accessed 2026-07-28",
+        "pricing_version": "openai-gpt-4-1-mini-2026-07-28"
+      },
+      "failure_code": null,
+      "failure_stage": "NONE",
+      "model": "gpt-4.1-mini",
+      "operational_outcome": "PIPELINE_SUCCESS",
+      "provider": "openai",
+      "provider_latency_ms": 2448.4669000376016,
+      "provider_request_id_hash": "sha256:79bdb346dc3690c76cb0dc5a5bc07f9452b9a10037a933216d926b13dc35852e",
+      "quality": {
+        "authorization_validity": true,
+        "dto_validity": true,
+        "editorial_acceptance": false,
+        "episode_draft_validity": true,
+        "instruction_compliance": false,
+        "meaning_preservation": false,
+        "no_op_compliance": true,
+        "numeric_fact_preservation": true,
+        "protected_structure_preservation": true,
+        "quote_preservation": true,
+        "reconstruction_validity": true,
+        "revision_proportionality": true,
+        "source_authority_preservation": false,
+        "structural_validity": true,
+        "temporal_fact_preservation": true
+      },
+      "quality_failure_category": "SOURCE_AUTHORITY_DRIFT",
+      "references": {
+        "authorized_reference_count": 1,
+        "authorized_references": [
+          "story:101"
+        ],
+        "duplicate_provider_references": [],
+        "first_invalid_reference": null,
+        "first_invalid_reference_kind": "NONE",
+        "missing_authorized_references": [],
+        "provider_produced_references_ordered": [
+          "story:101"
+        ],
+        "provider_reference_count": 1,
+        "recognized_provider_references": [
+          "story:101"
+        ],
+        "reference_overlap_count": 1,
+        "reference_precision": 1.0,
+        "reference_recall": 1.0,
+        "unauthorized_references": [],
+        "unexpected_references": [],
+        "unknown_references": []
+      },
+      "scenario_id": "SYN-15",
+      "usable_revision": false,
+      "usage": {
+        "cached_prompt_tokens": 0,
+        "completion_tokens": 82,
+        "derived_total_tokens": null,
+        "input_audio_tokens": null,
+        "output_audio_tokens": null,
+        "prompt_tokens": 951,
+        "provider_reported_total_tokens": 1033,
+        "reasoning_tokens": 0,
+        "total_tokens_source": "PROVIDER_REPORTED"
+      }
+    },
+    {
+      "category": "TEMPORAL_FACT_PRESERVATION",
+      "cost": {
+        "cost_status": "CALCULATED",
+        "estimated": true,
+        "estimated_cost_usd": 0.0005156000000000001,
+        "pricing_effective_date": "2026-07-28",
+        "pricing_source": "OpenAI GPT-4.1 mini model pricing page, accessed 2026-07-28",
+        "pricing_version": "openai-gpt-4-1-mini-2026-07-28"
+      },
+      "failure_code": null,
+      "failure_stage": "NONE",
+      "model": "gpt-4.1-mini",
+      "operational_outcome": "PIPELINE_SUCCESS",
+      "provider": "openai",
+      "provider_latency_ms": 2005.6455999147147,
+      "provider_request_id_hash": "sha256:63e2541ebb48443efe145bac8933a6ca338d4198f8da24d5dc64f3a794dc678e",
+      "quality": {
+        "authorization_validity": true,
+        "dto_validity": true,
+        "editorial_acceptance": false,
+        "episode_draft_validity": true,
+        "instruction_compliance": false,
+        "meaning_preservation": false,
+        "no_op_compliance": true,
+        "numeric_fact_preservation": true,
+        "protected_structure_preservation": true,
+        "quote_preservation": true,
+        "reconstruction_validity": true,
+        "revision_proportionality": true,
+        "source_authority_preservation": false,
+        "structural_validity": true,
+        "temporal_fact_preservation": true
+      },
+      "quality_failure_category": "SOURCE_AUTHORITY_DRIFT",
+      "references": {
+        "authorized_reference_count": 1,
+        "authorized_references": [
+          "story:101"
+        ],
+        "duplicate_provider_references": [],
+        "first_invalid_reference": null,
+        "first_invalid_reference_kind": "NONE",
+        "missing_authorized_references": [],
+        "provider_produced_references_ordered": [
+          "story:101"
+        ],
+        "provider_reference_count": 1,
+        "recognized_provider_references": [
+          "story:101"
+        ],
+        "reference_overlap_count": 1,
+        "reference_precision": 1.0,
+        "reference_recall": 1.0,
+        "unauthorized_references": [],
+        "unexpected_references": [],
+        "unknown_references": []
+      },
+      "scenario_id": "SYN-16",
+      "usable_revision": false,
+      "usage": {
+        "cached_prompt_tokens": 0,
+        "completion_tokens": 83,
+        "derived_total_tokens": null,
+        "input_audio_tokens": null,
+        "output_audio_tokens": null,
+        "prompt_tokens": 957,
+        "provider_reported_total_tokens": 1040,
+        "reasoning_tokens": 0,
+        "total_tokens_source": "PROVIDER_REPORTED"
+      }
+    },
+    {
+      "category": "MULTI_COMPONENT_REVISION",
+      "cost": {
+        "cost_status": "CALCULATED",
+        "estimated": true,
+        "estimated_cost_usd": 0.0005096,
+        "pricing_effective_date": "2026-07-28",
+        "pricing_source": "OpenAI GPT-4.1 mini model pricing page, accessed 2026-07-28",
+        "pricing_version": "openai-gpt-4-1-mini-2026-07-28"
+      },
+      "failure_code": null,
+      "failure_stage": "NONE",
+      "model": "gpt-4.1-mini",
+      "operational_outcome": "PIPELINE_SUCCESS",
+      "provider": "openai",
+      "provider_latency_ms": 1545.371500076726,
+      "provider_request_id_hash": "sha256:4a84ccb7314a05efc12c272bc87ea0f29a206766454ed92aecf40041c23c49f2",
+      "quality": {
+        "authorization_validity": true,
+        "dto_validity": true,
+        "editorial_acceptance": false,
+        "episode_draft_validity": true,
+        "instruction_compliance": false,
+        "meaning_preservation": false,
+        "no_op_compliance": true,
+        "numeric_fact_preservation": true,
+        "protected_structure_preservation": true,
+        "quote_preservation": true,
+        "reconstruction_validity": true,
+        "revision_proportionality": true,
+        "source_authority_preservation": false,
+        "structural_validity": true,
+        "temporal_fact_preservation": true
+      },
+      "quality_failure_category": "SOURCE_AUTHORITY_DRIFT",
+      "references": {
+        "authorized_reference_count": 1,
+        "authorized_references": [
+          "story:101"
+        ],
+        "duplicate_provider_references": [],
+        "first_invalid_reference": null,
+        "first_invalid_reference_kind": "NONE",
+        "missing_authorized_references": [],
+        "provider_produced_references_ordered": [
+          "story:101"
+        ],
+        "provider_reference_count": 1,
+        "recognized_provider_references": [
+          "story:101"
+        ],
+        "reference_overlap_count": 1,
+        "reference_precision": 1.0,
+        "reference_recall": 1.0,
+        "unauthorized_references": [],
+        "unexpected_references": [],
+        "unknown_references": []
+      },
+      "scenario_id": "SYN-17",
+      "usable_revision": false,
+      "usage": {
+        "cached_prompt_tokens": 0,
+        "completion_tokens": 78,
+        "derived_total_tokens": null,
+        "input_audio_tokens": null,
+        "output_audio_tokens": null,
+        "prompt_tokens": 962,
+        "provider_reported_total_tokens": 1040,
+        "reasoning_tokens": 0,
+        "total_tokens_source": "PROVIDER_REPORTED"
+      }
+    },
+    {
+      "category": "MULTI_COMPONENT_REVISION",
+      "cost": {
+        "cost_status": "CALCULATED",
+        "estimated": true,
+        "estimated_cost_usd": 0.0005072000000000001,
+        "pricing_effective_date": "2026-07-28",
+        "pricing_source": "OpenAI GPT-4.1 mini model pricing page, accessed 2026-07-28",
+        "pricing_version": "openai-gpt-4-1-mini-2026-07-28"
+      },
+      "failure_code": null,
+      "failure_stage": "NONE",
+      "model": "gpt-4.1-mini",
+      "operational_outcome": "PIPELINE_SUCCESS",
+      "provider": "openai",
+      "provider_latency_ms": 2349.273700034246,
+      "provider_request_id_hash": "sha256:25d9a9ff5768bf8f6402da4b680e9d9319284931c814ba07faff2c062ad47e98",
+      "quality": {
+        "authorization_validity": true,
+        "dto_validity": true,
+        "editorial_acceptance": false,
+        "episode_draft_validity": true,
+        "instruction_compliance": false,
+        "meaning_preservation": false,
+        "no_op_compliance": true,
+        "numeric_fact_preservation": true,
+        "protected_structure_preservation": true,
+        "quote_preservation": true,
+        "reconstruction_validity": true,
+        "revision_proportionality": true,
+        "source_authority_preservation": false,
+        "structural_validity": true,
+        "temporal_fact_preservation": true
+      },
+      "quality_failure_category": "SOURCE_AUTHORITY_DRIFT",
+      "references": {
+        "authorized_reference_count": 1,
+        "authorized_references": [
+          "story:101"
+        ],
+        "duplicate_provider_references": [],
+        "first_invalid_reference": null,
+        "first_invalid_reference_kind": "NONE",
+        "missing_authorized_references": [],
+        "provider_produced_references_ordered": [
+          "story:101"
+        ],
+        "provider_reference_count": 1,
+        "recognized_provider_references": [
+          "story:101"
+        ],
+        "reference_overlap_count": 1,
+        "reference_precision": 1.0,
+        "reference_recall": 1.0,
+        "unauthorized_references": [],
+        "unexpected_references": [],
+        "unknown_references": []
+      },
+      "scenario_id": "SYN-18",
+      "usable_revision": false,
+      "usage": {
+        "cached_prompt_tokens": 0,
+        "completion_tokens": 78,
+        "derived_total_tokens": null,
+        "input_audio_tokens": null,
+        "output_audio_tokens": null,
+        "prompt_tokens": 956,
+        "provider_reported_total_tokens": 1034,
+        "reasoning_tokens": 0,
+        "total_tokens_source": "PROVIDER_REPORTED"
+      }
+    },
+    {
+      "category": "HIGH_CONSTRAINT_REVISION",
+      "cost": {
+        "cost_status": "CALCULATED",
+        "estimated": true,
+        "estimated_cost_usd": 0.00052,
+        "pricing_effective_date": "2026-07-28",
+        "pricing_source": "OpenAI GPT-4.1 mini model pricing page, accessed 2026-07-28",
+        "pricing_version": "openai-gpt-4-1-mini-2026-07-28"
+      },
+      "failure_code": null,
+      "failure_stage": "NONE",
+      "model": "gpt-4.1-mini",
+      "operational_outcome": "PIPELINE_SUCCESS",
+      "provider": "openai",
+      "provider_latency_ms": 1740.5340999830514,
+      "provider_request_id_hash": "sha256:3f25dba719a1b5899304cfd4c6b3d599c9e2db90e79f6fa421e5be00c9eabd50",
+      "quality": {
+        "authorization_validity": true,
+        "dto_validity": true,
+        "editorial_acceptance": false,
+        "episode_draft_validity": true,
+        "instruction_compliance": false,
+        "meaning_preservation": false,
+        "no_op_compliance": true,
+        "numeric_fact_preservation": true,
+        "protected_structure_preservation": true,
+        "quote_preservation": true,
+        "reconstruction_validity": true,
+        "revision_proportionality": true,
+        "source_authority_preservation": false,
+        "structural_validity": true,
+        "temporal_fact_preservation": true
+      },
+      "quality_failure_category": "SOURCE_AUTHORITY_DRIFT",
+      "references": {
+        "authorized_reference_count": 1,
+        "authorized_references": [
+          "story:101"
+        ],
+        "duplicate_provider_references": [],
+        "first_invalid_reference": null,
+        "first_invalid_reference_kind": "NONE",
+        "missing_authorized_references": [],
+        "provider_produced_references_ordered": [
+          "story:101"
+        ],
+        "provider_reference_count": 1,
+        "recognized_provider_references": [
+          "story:101"
+        ],
+        "reference_overlap_count": 1,
+        "reference_precision": 1.0,
+        "reference_recall": 1.0,
+        "unauthorized_references": [],
+        "unexpected_references": [],
+        "unknown_references": []
+      },
+      "scenario_id": "SYN-19",
+      "usable_revision": false,
+      "usage": {
+        "cached_prompt_tokens": 0,
+        "completion_tokens": 83,
+        "derived_total_tokens": null,
+        "input_audio_tokens": null,
+        "output_audio_tokens": null,
+        "prompt_tokens": 968,
+        "provider_reported_total_tokens": 1051,
+        "reasoning_tokens": 0,
+        "total_tokens_source": "PROVIDER_REPORTED"
+      }
+    },
+    {
+      "category": "HIGH_CONSTRAINT_REVISION",
+      "cost": {
+        "cost_status": "CALCULATED",
+        "estimated": true,
+        "estimated_cost_usd": 0.0005044,
+        "pricing_effective_date": "2026-07-28",
+        "pricing_source": "OpenAI GPT-4.1 mini model pricing page, accessed 2026-07-28",
+        "pricing_version": "openai-gpt-4-1-mini-2026-07-28"
+      },
+      "failure_code": null,
+      "failure_stage": "NONE",
+      "model": "gpt-4.1-mini",
+      "operational_outcome": "PIPELINE_SUCCESS",
+      "provider": "openai",
+      "provider_latency_ms": 3376.2511000968516,
+      "provider_request_id_hash": "sha256:88583200486f97ad9a9b6d33cee4255b1c6b01ed7beb3508e4c8223c00c2f029",
+      "quality": {
+        "authorization_validity": true,
+        "dto_validity": true,
+        "editorial_acceptance": true,
+        "episode_draft_validity": true,
+        "instruction_compliance": true,
+        "meaning_preservation": true,
+        "no_op_compliance": true,
+        "numeric_fact_preservation": true,
+        "protected_structure_preservation": true,
+        "quote_preservation": true,
+        "reconstruction_validity": true,
+        "revision_proportionality": true,
+        "source_authority_preservation": true,
+        "structural_validity": true,
+        "temporal_fact_preservation": true
+      },
+      "quality_failure_category": "USABLE_REVISION",
+      "references": {
+        "authorized_reference_count": 1,
+        "authorized_references": [
+          "story:101"
+        ],
+        "duplicate_provider_references": [],
+        "first_invalid_reference": null,
+        "first_invalid_reference_kind": "NONE",
+        "missing_authorized_references": [],
+        "provider_produced_references_ordered": [
+          "story:101"
+        ],
+        "provider_reference_count": 1,
+        "recognized_provider_references": [
+          "story:101"
+        ],
+        "reference_overlap_count": 1,
+        "reference_precision": 1.0,
+        "reference_recall": 1.0,
+        "unauthorized_references": [],
+        "unexpected_references": [],
+        "unknown_references": []
+      },
+      "scenario_id": "SYN-20",
+      "usable_revision": true,
+      "usage": {
+        "cached_prompt_tokens": 0,
+        "completion_tokens": 76,
+        "derived_total_tokens": null,
+        "input_audio_tokens": null,
+        "output_audio_tokens": null,
+        "prompt_tokens": 957,
+        "provider_reported_total_tokens": 1033,
+        "reasoning_tokens": 0,
+        "total_tokens_source": "PROVIDER_REPORTED"
+      }
+    },
+    {
+      "category": "NO_CHANGE_REQUIRED",
+      "cost": {
+        "cost_status": "CALCULATED",
+        "estimated": true,
+        "estimated_cost_usd": 0.0005052,
+        "pricing_effective_date": "2026-07-28",
+        "pricing_source": "OpenAI GPT-4.1 mini model pricing page, accessed 2026-07-28",
+        "pricing_version": "openai-gpt-4-1-mini-2026-07-28"
+      },
+      "failure_code": null,
+      "failure_stage": "NONE",
+      "model": "gpt-4.1-mini",
+      "operational_outcome": "PIPELINE_SUCCESS",
+      "provider": "openai",
+      "provider_latency_ms": 4297.788699856028,
+      "provider_request_id_hash": "sha256:5841ace5ad910dac9cbfac26b23bbe6b85b00d2d5d247a99a5bea0846f3790bf",
+      "quality": {
+        "authorization_validity": true,
+        "dto_validity": true,
+        "editorial_acceptance": false,
+        "episode_draft_validity": true,
+        "instruction_compliance": false,
+        "meaning_preservation": false,
+        "no_op_compliance": true,
+        "numeric_fact_preservation": true,
+        "protected_structure_preservation": true,
+        "quote_preservation": true,
+        "reconstruction_validity": true,
+        "revision_proportionality": true,
+        "source_authority_preservation": false,
+        "structural_validity": true,
+        "temporal_fact_preservation": true
+      },
+      "quality_failure_category": "SOURCE_AUTHORITY_DRIFT",
+      "references": {
+        "authorized_reference_count": 1,
+        "authorized_references": [
+          "story:101"
+        ],
+        "duplicate_provider_references": [],
+        "first_invalid_reference": null,
+        "first_invalid_reference_kind": "NONE",
+        "missing_authorized_references": [],
+        "provider_produced_references_ordered": [
+          "story:101"
+        ],
+        "provider_reference_count": 1,
+        "recognized_provider_references": [
+          "story:101"
+        ],
+        "reference_overlap_count": 1,
+        "reference_precision": 1.0,
+        "reference_recall": 1.0,
+        "unauthorized_references": [],
+        "unexpected_references": [],
+        "unknown_references": []
+      },
+      "scenario_id": "SYN-21",
+      "usable_revision": false,
+      "usage": {
+        "cached_prompt_tokens": 0,
+        "completion_tokens": 78,
+        "derived_total_tokens": null,
+        "input_audio_tokens": null,
+        "output_audio_tokens": null,
+        "prompt_tokens": 951,
+        "provider_reported_total_tokens": 1029,
+        "reasoning_tokens": 0,
+        "total_tokens_source": "PROVIDER_REPORTED"
+      }
+    },
+    {
+      "category": "NO_CHANGE_REQUIRED",
+      "cost": {
+        "cost_status": "CALCULATED",
+        "estimated": true,
+        "estimated_cost_usd": 0.0005096,
+        "pricing_effective_date": "2026-07-28",
+        "pricing_source": "OpenAI GPT-4.1 mini model pricing page, accessed 2026-07-28",
+        "pricing_version": "openai-gpt-4-1-mini-2026-07-28"
+      },
+      "failure_code": null,
+      "failure_stage": "NONE",
+      "model": "gpt-4.1-mini",
+      "operational_outcome": "PIPELINE_SUCCESS",
+      "provider": "openai",
+      "provider_latency_ms": 1732.8707999549806,
+      "provider_request_id_hash": "sha256:6dde874b2cf8343948447b7729df225122e931dfe1e042e279cb1319fd8eab5a",
+      "quality": {
+        "authorization_validity": true,
+        "dto_validity": true,
+        "editorial_acceptance": false,
+        "episode_draft_validity": true,
+        "instruction_compliance": false,
+        "meaning_preservation": false,
+        "no_op_compliance": true,
+        "numeric_fact_preservation": true,
+        "protected_structure_preservation": true,
+        "quote_preservation": true,
+        "reconstruction_validity": true,
+        "revision_proportionality": true,
+        "source_authority_preservation": false,
+        "structural_validity": true,
+        "temporal_fact_preservation": true
+      },
+      "quality_failure_category": "SOURCE_AUTHORITY_DRIFT",
+      "references": {
+        "authorized_reference_count": 1,
+        "authorized_references": [
+          "story:101"
+        ],
+        "duplicate_provider_references": [],
+        "first_invalid_reference": null,
+        "first_invalid_reference_kind": "NONE",
+        "missing_authorized_references": [],
+        "provider_produced_references_ordered": [
+          "story:101"
+        ],
+        "provider_reference_count": 1,
+        "recognized_provider_references": [
+          "story:101"
+        ],
+        "reference_overlap_count": 1,
+        "reference_precision": 1.0,
+        "reference_recall": 1.0,
+        "unauthorized_references": [],
+        "unexpected_references": [],
+        "unknown_references": []
+      },
+      "scenario_id": "SYN-22",
+      "usable_revision": false,
+      "usage": {
+        "cached_prompt_tokens": 0,
+        "completion_tokens": 78,
+        "derived_total_tokens": null,
+        "input_audio_tokens": null,
+        "output_audio_tokens": null,
+        "prompt_tokens": 962,
+        "provider_reported_total_tokens": 1040,
+        "reasoning_tokens": 0,
+        "total_tokens_source": "PROVIDER_REPORTED"
+      }
+    },
+    {
+      "category": "ADVERSARIAL_AMBIGUITY",
+      "cost": {
+        "cost_status": "CALCULATED",
+        "estimated": true,
+        "estimated_cost_usd": 0.0005156000000000001,
+        "pricing_effective_date": "2026-07-28",
+        "pricing_source": "OpenAI GPT-4.1 mini model pricing page, accessed 2026-07-28",
+        "pricing_version": "openai-gpt-4-1-mini-2026-07-28"
+      },
+      "failure_code": null,
+      "failure_stage": "NONE",
+      "model": "gpt-4.1-mini",
+      "operational_outcome": "PIPELINE_SUCCESS",
+      "provider": "openai",
+      "provider_latency_ms": 2080.449900124222,
+      "provider_request_id_hash": "sha256:df6dcb184e0313e9ced3f8b464a393a2880bba1c429e60bc1c29690ac756ac05",
+      "quality": {
+        "authorization_validity": true,
+        "dto_validity": true,
+        "editorial_acceptance": false,
+        "episode_draft_validity": true,
+        "instruction_compliance": false,
+        "meaning_preservation": false,
+        "no_op_compliance": true,
+        "numeric_fact_preservation": true,
+        "protected_structure_preservation": true,
+        "quote_preservation": false,
+        "reconstruction_validity": true,
+        "revision_proportionality": true,
+        "source_authority_preservation": false,
+        "structural_validity": true,
+        "temporal_fact_preservation": true
+      },
+      "quality_failure_category": "QUOTE_MUTATION",
+      "references": {
+        "authorized_reference_count": 1,
+        "authorized_references": [
+          "story:101"
+        ],
+        "duplicate_provider_references": [],
+        "first_invalid_reference": null,
+        "first_invalid_reference_kind": "NONE",
+        "missing_authorized_references": [],
+        "provider_produced_references_ordered": [
+          "story:101"
+        ],
+        "provider_reference_count": 1,
+        "recognized_provider_references": [
+          "story:101"
+        ],
+        "reference_overlap_count": 1,
+        "reference_precision": 1.0,
+        "reference_recall": 1.0,
+        "unauthorized_references": [],
+        "unexpected_references": [],
+        "unknown_references": []
+      },
+      "scenario_id": "SYN-23",
+      "usable_revision": false,
+      "usage": {
+        "cached_prompt_tokens": 0,
+        "completion_tokens": 82,
+        "derived_total_tokens": null,
+        "input_audio_tokens": null,
+        "output_audio_tokens": null,
+        "prompt_tokens": 961,
+        "provider_reported_total_tokens": 1043,
+        "reasoning_tokens": 0,
+        "total_tokens_source": "PROVIDER_REPORTED"
+      }
+    },
+    {
+      "category": "ADVERSARIAL_AMBIGUITY",
+      "cost": {
+        "cost_status": "CALCULATED",
+        "estimated": true,
+        "estimated_cost_usd": 0.0005228,
+        "pricing_effective_date": "2026-07-28",
+        "pricing_source": "OpenAI GPT-4.1 mini model pricing page, accessed 2026-07-28",
+        "pricing_version": "openai-gpt-4-1-mini-2026-07-28"
+      },
+      "failure_code": null,
+      "failure_stage": "NONE",
+      "model": "gpt-4.1-mini",
+      "operational_outcome": "PIPELINE_SUCCESS",
+      "provider": "openai",
+      "provider_latency_ms": 2116.2842998746783,
+      "provider_request_id_hash": "sha256:0a56591e53052e7d04ae14227ff48b5d31be6ef364dc814d08c7eb159d9a7a03",
+      "quality": {
+        "authorization_validity": true,
+        "dto_validity": true,
+        "editorial_acceptance": false,
+        "episode_draft_validity": true,
+        "instruction_compliance": false,
+        "meaning_preservation": false,
+        "no_op_compliance": true,
+        "numeric_fact_preservation": true,
+        "protected_structure_preservation": true,
+        "quote_preservation": true,
+        "reconstruction_validity": true,
+        "revision_proportionality": true,
+        "source_authority_preservation": false,
+        "structural_validity": true,
+        "temporal_fact_preservation": true
+      },
+      "quality_failure_category": "SOURCE_AUTHORITY_DRIFT",
+      "references": {
+        "authorized_reference_count": 1,
+        "authorized_references": [
+          "story:101"
+        ],
+        "duplicate_provider_references": [],
+        "first_invalid_reference": null,
+        "first_invalid_reference_kind": "NONE",
+        "missing_authorized_references": [],
+        "provider_produced_references_ordered": [
+          "story:101"
+        ],
+        "provider_reference_count": 1,
+        "recognized_provider_references": [
+          "story:101"
+        ],
+        "reference_overlap_count": 1,
+        "reference_precision": 1.0,
+        "reference_recall": 1.0,
+        "unauthorized_references": [],
+        "unexpected_references": [],
+        "unknown_references": []
+      },
+      "scenario_id": "SYN-24",
+      "usable_revision": false,
+      "usage": {
+        "cached_prompt_tokens": 0,
+        "completion_tokens": 86,
+        "derived_total_tokens": null,
+        "input_audio_tokens": null,
+        "output_audio_tokens": null,
+        "prompt_tokens": 963,
+        "provider_reported_total_tokens": 1049,
+        "reasoning_tokens": 0,
+        "total_tokens_source": "PROVIDER_REPORTED"
+      }
+    }
+  ],
+  "usage_metrics": {
+    "availability_rate": 1.0,
+    "available_scenarios": 24,
+    "cached_prompt_tokens": 0,
+    "completion_tokens": 1982,
+    "derived_total_tokens": 0,
+    "known_total_tokens": 24948,
+    "prompt_tokens": 22966,
+    "provider_reported_total_tokens": 24948,
+    "reasoning_tokens": 0,
+    "unavailable_scenarios": 0
+  },
+  "working_tree_status": "git metadata unavailable in workspace"
+}

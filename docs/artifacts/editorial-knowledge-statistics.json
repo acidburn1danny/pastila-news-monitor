@@ -1,0 +1,22 @@
+{
+  "confirmation_statistics": {
+    "confirmations": 0,
+    "contradictions": 0,
+    "deprecations": 0,
+    "refinements": 1,
+    "supersessions": 0
+  },
+  "evolution_events": 9,
+  "knowledge_entries": 8,
+  "relationship_events": 6,
+  "schema_version": 1,
+  "states": {
+    "ACTIVE": 7,
+    "DEPRECATED": 0,
+    "INVALIDATED": 0,
+    "PROPOSED": 0,
+    "REFINED": 1,
+    "SUPERSEDED": 0,
+    "SUPPORTED": 0
+  }
+}

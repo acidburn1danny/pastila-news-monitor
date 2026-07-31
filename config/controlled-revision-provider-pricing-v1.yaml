@@ -1,0 +1,12 @@
+contract_version: controlled-revision-provider-pricing-v1
+provider: openai
+model: gpt-4.1-mini
+currency: USD
+pricing_version: openai-gpt-4-1-mini-2026-07-28
+effective_date: "2026-07-28"
+input_per_1m_tokens: 0.40
+cached_input_per_1m_tokens: 0.10
+output_per_1m_tokens: 1.60
+reasoning_per_1m_tokens: null
+pricing_source: OpenAI GPT-4.1 mini model pricing page, accessed 2026-07-28
+estimated_cost: true
