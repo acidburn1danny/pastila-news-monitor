@@ -148,7 +148,7 @@ def _inputs(
     projector=None,
     credentials=None,
     interpreter_error=None,
-    cancelled=False
+    cancelled=False,
 ):
     _, preparation = _prepared()
     invocation = ControlledRevisionInvocationFactory().create(preparation)

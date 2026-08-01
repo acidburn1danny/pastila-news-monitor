@@ -228,7 +228,7 @@ class EditorialReviewOrchestrator:
         editorial_result,
         status,
         diagnostics,
-        trace
+        trace,
     ):
         completeness = _completeness(
             pipeline_result,

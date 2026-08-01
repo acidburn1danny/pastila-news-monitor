@@ -47,7 +47,7 @@ class LanguageModelProvider(Protocol):
         *,
         prompt: GenerationPrompt,
         output_schema: type[T],
-        config: LanguageGenerationConfig
+        config: LanguageGenerationConfig,
     ) -> T: ...
 
 

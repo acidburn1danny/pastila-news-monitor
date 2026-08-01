@@ -70,7 +70,7 @@ def finding(
     severity=EditorialSeverity.WARNING,
     *,
     component="story-01",
-    code="structure.example"
+    code="structure.example",
 ):
     scope = ReviewScope.EPISODE if component is None else ReviewScope.STORY
     return EditorialFinding.build(

@@ -113,7 +113,7 @@ class DraftRegenerationRequestFactory:
         input_resolver: DraftRegenerationInputResolver,
         *,
         projector=None,
-        precondition_evaluator=None
+        precondition_evaluator=None,
     ):
         self._resolver = input_resolver
         self._projector = projector or ControlledGenerationRequestProjector()

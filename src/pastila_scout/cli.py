@@ -651,10 +651,13 @@ def _validate_config(config_path: Path, timeout: float, category: str = "all") -
     validation_results: list[tuple[int, SourceConfig, int, Exception | None]] = []
 
     if selected_sources:
-        with HTTPClient(timeout=timeout) as client, ThreadPoolExecutor(
-            max_workers=config.polling.concurrency,
-            thread_name_prefix="pastila-validation",
-        ) as executor:
+        with (
+            HTTPClient(timeout=timeout) as client,
+            ThreadPoolExecutor(
+                max_workers=config.polling.concurrency,
+                thread_name_prefix="pastila-validation",
+            ) as executor,
+        ):
             futures = {
                 executor.submit(_validate_source, index, source, client): index
                 for index, source in enumerate(selected_sources)

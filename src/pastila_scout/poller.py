@@ -310,9 +310,12 @@ def _collect_source_results(
         return []
 
     results: list[_SourceWorkResult] = []
-    with HTTPClient(timeout=timeout) as client, ThreadPoolExecutor(
-        max_workers=concurrency, thread_name_prefix="pastila-source"
-    ) as executor:
+    with (
+        HTTPClient(timeout=timeout) as client,
+        ThreadPoolExecutor(
+            max_workers=concurrency, thread_name_prefix="pastila-source"
+        ) as executor,
+    ):
         futures = {
             executor.submit(
                 _process_source,
