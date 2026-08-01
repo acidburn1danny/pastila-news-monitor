@@ -15,6 +15,7 @@ from pydantic import (
     StrictBool,
     StrictFloat,
     StrictInt,
+    StrictStr,
     field_validator,
 )
 
@@ -38,9 +39,17 @@ class OpenAIRuntimeConfigV2(BaseModel):
         hide_input_in_errors=True,
     )
 
+    model: StrictStr
     enabled: StrictBool = True
     max_retries: StrictInt = 0
     request_timeout_seconds: StrictInt | StrictFloat = Field(gt=0)
+
+    @field_validator("model", mode="before")
+    @classmethod
+    def validate_model(cls, value: object) -> object:
+        if type(value) is not str or not value.strip() or value != value.strip():
+            raise ValueError("invalid OpenAI runtime model")
+        return value
 
     @field_validator("max_retries", mode="before")
     @classmethod
@@ -60,7 +69,14 @@ class OpenAIRuntimeConfigV2(BaseModel):
 class _OpenAIRuntimeLifecycleOwnerV2:
     """Private single-threaded close-once owner for one runtime resource."""
 
-    __slots__ = ("_closed", "_function", "_receiver")
+    __slots__ = (
+        "_closed",
+        "_failure_function",
+        "_function",
+        "_receiver",
+        "_success_function",
+        "_transition_receiver",
+    )
 
     def __init__(self, lifecycle: object) -> None:
         authority = _validated_close_authority(lifecycle)
@@ -69,7 +85,28 @@ class _OpenAIRuntimeLifecycleOwnerV2:
         function, receiver = authority
         object.__setattr__(self, "_function", function)
         object.__setattr__(self, "_receiver", receiver)
+        object.__setattr__(self, "_success_function", None)
+        object.__setattr__(self, "_failure_function", None)
+        object.__setattr__(self, "_transition_receiver", None)
         object.__setattr__(self, "_closed", False)
+
+    @classmethod
+    def _from_pinned(
+        cls,
+        function: FunctionType,
+        receiver: object,
+        success_function: FunctionType,
+        failure_function: FunctionType,
+        transition_receiver: object,
+    ) -> _OpenAIRuntimeLifecycleOwnerV2:
+        owner = object.__new__(cls)
+        object.__setattr__(owner, "_function", function)
+        object.__setattr__(owner, "_receiver", receiver)
+        object.__setattr__(owner, "_success_function", success_function)
+        object.__setattr__(owner, "_failure_function", failure_function)
+        object.__setattr__(owner, "_transition_receiver", transition_receiver)
+        object.__setattr__(owner, "_closed", False)
+        return owner
 
     @property
     def closed(self) -> bool:
@@ -86,9 +123,24 @@ class _OpenAIRuntimeLifecycleOwnerV2:
         object.__setattr__(self, "_closed", True)
         function = object.__getattribute__(self, "_function")
         receiver = object.__getattribute__(self, "_receiver")
+        success_function = object.__getattribute__(self, "_success_function")
+        failure_function = object.__getattribute__(self, "_failure_function")
+        transition_receiver = object.__getattribute__(self, "_transition_receiver")
         failed = not _close_isolated(function, receiver)
+        transition_function = failure_function if failed else success_function
+        if transition_function is not None:
+            _transition_isolated(transition_function, transition_receiver)
+        object.__setattr__(self, "_function", None)
+        object.__setattr__(self, "_receiver", None)
+        object.__setattr__(self, "_success_function", None)
+        object.__setattr__(self, "_failure_function", None)
+        object.__setattr__(self, "_transition_receiver", None)
         del function
         del receiver
+        del success_function
+        del failure_function
+        del transition_function
+        del transition_receiver
         return _SafeCleanupOutcome(failed)
 
     def __copy__(self) -> Self:
@@ -246,6 +298,13 @@ def _close_isolated(function: FunctionType, receiver: object) -> bool:
     except Exception:  # noqa: BLE001 - injected lifecycles share no base
         return False
     return True
+
+
+def _transition_isolated(function: FunctionType, receiver: object) -> None:
+    try:
+        function(receiver)
+    except Exception:  # noqa: BLE001 - bookkeeping cannot trigger another close
+        return
 
 
 def _return_or_raise_cleanup(outcome: _SafeCleanupOutcome) -> None:

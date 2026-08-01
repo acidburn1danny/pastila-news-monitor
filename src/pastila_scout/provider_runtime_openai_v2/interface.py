@@ -12,7 +12,13 @@ class OpenAICredentialSourceV2(Protocol):
 class OpenAISDKFactoryV2(Protocol):
     """Trusted synchronous factory for an official SDK client."""
 
-    def create_client(self, *, api_key: str, max_retries: int) -> object: ...
+    def create_client(
+        self,
+        *,
+        api_key: str,
+        max_retries: int,
+        request_timeout_seconds: float,
+    ) -> object: ...
 
     def close_client(self, client: object) -> None: ...
 

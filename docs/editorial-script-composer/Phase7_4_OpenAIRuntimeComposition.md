@@ -1,10 +1,10 @@
-# Module 2.9 Phase 7.4 Revision 5 — Active-Exception Context Isolation
+# Module 2.9 Phase 7.4 Revision 7 — Coherent Handoff and Unique Ownership
 
 Status: Implemented — awaiting independent verification
 
 ## Purpose and dependency direction
 
-This specification-only package defines trusted runtime composition above the
+This package defines trusted runtime composition above the
 frozen Phase 7.3 SDK adapter:
 
 ```text
@@ -39,17 +39,19 @@ globals are not anti-tamper security boundaries.
 ## Runtime configuration
 
 `OpenAIRuntimeConfigV2` is strict, immutable, extra-forbidding, and defensively
-revalidated. It contains only `enabled`, exact built-in integer `max_retries=0`,
-and a positive finite request timeout. It contains no API key, header, bearer token,
-HTTP client, transport, organization, or project data.
+revalidated. It contains an exact nonblank unpadded `model`, `enabled`, exact
+built-in integer `max_retries=0`, and a positive finite request timeout. It contains
+no API key, header, bearer token, HTTP client, transport, organization, or project
+data.
 
 ## Credential-source boundary
 
 `OpenAICredentialSourceV2` is explicitly injected and exposes only
 `get_api_key()`. Construction validates its static method shape without binding or
-executing descriptors, lookup hooks, or the method body. Revision 2 never calls it.
+executing descriptors, lookup hooks, or the method body. Each eligible `compose()`
+call invokes the pinned source function exactly once.
 
-A future retrieved key must be an exact built-in string, nonempty,
+A retrieved key must be an exact built-in string, nonempty,
 non-whitespace-only, and unpadded. Keys never enter errors, public DTOs, results,
 logs, or representations. No environment-backed source, `.env` parsing, prefix
 assumption, or `OPENAI_API_KEY` access exists in this revision.
@@ -57,14 +59,24 @@ assumption, or `OPENAI_API_KEY` access exists in this revision.
 ## SDK-factory boundary
 
 `OpenAISDKFactoryV2` is explicitly injected. Its synchronous `create_client` shape
-accepts only the future `api_key` and exact `max_retries=0` policy; `close_client`
-represents lifecycle cleanup. Static validation ignores forged `__signature__` and
+accepts the validated `api_key`, exact `max_retries=0`, and the positive finite
+`request_timeout_seconds`; `close_client` remains part of its validated lifecycle
+contract. Static validation ignores forged `__signature__` and
 `__wrapped__` metadata and rejects descriptors, custom lookup, incompatible shapes,
 and async factories without executing controlled code.
 
-Normal package import loads no official SDK type, constructs no `OpenAI(...)` client,
-and calls neither factory operation. A missing SDK will become a fixed, localized
-`OpenAIRuntimeDependencyError` in the operational revision.
+Normal package import constructs no `OpenAI(...)` client and calls neither factory
+operation. Revision 7 adds no concrete official factory or environment-backed source.
+The trusted factory must use the private one-client handoff mint. That mint statically
+derives the synchronous Responses resource and pinned close authority from the same
+raw client, requires weak-reference support, and returns an exact frozen handoff.
+It accepts no independent Responses argument, so split execution and cleanup
+provenance cannot be represented through the supported contract.
+
+Before a valid handoff is returned, the factory owns the client and is responsible
+for cleanup if minting fails. The composer never guesses cleanup for arbitrary or
+malformed factory values. Ownership transfers only when the composer revalidates and
+registers the exact coherent handoff.
 
 ## Lifecycle ownership and composition result
 
@@ -99,15 +111,33 @@ Adapter-owned traceback locals therefore retain only the safe outcome and no run
 ownership state. Context, cause, and module globals retain no cleanup failure or
 history.
 
-Ownership transfers only after complete successful construction. Credential failure
-creates no client; factory failure returns no composition; capability, adapter, or
-executor assembly failure must close an owned client exactly once; successful
-composition transfers the client to the lifecycle owner; composition close performs
-cleanup exactly once. No partial composition result is returned. Revision 2 remains
-specification-only and performs no client construction or close operation in the
-production composer.
+One private identity tracker prevents two live owners for the same raw-client object
+without invoking its equality or hash behavior. It stores only integer identities and
+weak references and is not an anti-tamper security boundary. A duplicate handoff is
+rejected with `OpenAI runtime client is already owned` before a second lifecycle
+owner or close attempt exists. A successful close or rollback removes the live record,
+so a trusted factory may begin a new ownership cycle for that same client. A failed
+close or rollback instead replaces the live record with a terminal failed-cleanup
+record, and every later handoff for that exact client is rejected with
+`OpenAI runtime client cleanup previously failed` without another close attempt.
+Trusted factories should ordinarily return a fresh client.
 
-## Startup validation and non-operational behavior
+The private terminal record contains only the raw-client integer identity, indirectly
+as its tracker key, one weak reference, and a fixed terminal state. It retains no raw
+client, close authority, Responses resource, handoff, credential, factory, exception,
+transport, or call history. Its weak-reference callback removes only the record that
+still contains that exact weak reference. Ordinary Python object collection therefore
+removes the tombstone, while a stale callback cannot affect a newer object that reuses
+the integer ID. Neither acquisition nor collection invokes client equality or hashing.
+This identity tracker assumes ordinary Python object lifetime and remains an internal
+ownership invariant, not an anti-tamper security boundary.
+
+Credential failure creates no client; factory failure returns no composition; every
+failure after accepted registration closes the owned client exactly once and either
+removes or terminally transitions its record; successful composition transfers the pinned handoff authority to the
+lifecycle owner. No partial composition result is returned.
+
+## Startup validation and operational composition
 
 `OpenAIRuntimeComposerV2` reconstructs runtime policy and statically validates the
 required credential source, synchronous factory, and close lifecycle shapes. It
@@ -115,17 +145,23 @@ rejects invalid retry policy, copied-invalid config, missing dependencies,
 descriptors, lookup hooks, forged callable metadata, incompatible callables, and
 async factories without retrieving credentials or calling a factory.
 
-`compose()` remains deliberately non-operational and produces an immutable,
-nonsensitive dependency-failure outcome containing only a fixed category and fixed
-message. The frame that held the composer and its injected dependencies removes that
-reference before a separate clean helper raises the fixed
-`OpenAIRuntimeDependencyError`: `OpenAI runtime composition is not implemented`.
-Runtime-package traceback frames retain only that safe outcome. The public error
-retains no composer, config, credential source, SDK factory, dependency state, raw
-exception, representation, credential, or transport. Repeated failures retain no
-module-global history. Credential-source and factory invocation counts remain zero.
-The Revision 3 lifecycle behavior is unchanged, and no usable runtime result is
-fabricated.
+`compose()` defensively reconstructs configuration, retrieves and validates one
+credential, invokes the injected factory once, builds the pinned Responses
+capability, narrow SDK client, model-configured executor, private lifecycle owner,
+and final composition. The factory receives only the unchanged key, exact integer
+zero retry policy, and configured timeout. The executor receives the explicitly
+configured, exact nonblank model. No request is made during assembly.
+
+After an exact coherent handoff is revalidated and its identity registration
+succeeds, the composer owns the raw client until authority is transferred to the
+private lifecycle owner. The handoff's pinned cleanup function and receiver are used
+without later raw-client lookup. Any later assembly failure closes and releases
+through that owner exactly once. If assembly and rollback both fail, the fixed
+lifecycle error `OpenAI runtime rollback failed` takes precedence; otherwise assembly
+maps to the fixed dependency error `OpenAI runtime assembly failed`. Raw exceptions
+and partial results never escape. Successful compositions retain only the narrow SDK
+client, executor, and private owner; the composer caches no key, raw client, result,
+or failure history. Each call is independent.
 
 Revision 5 additionally isolates both dependency and lifecycle errors from an
 unrelated exception already active in the caller. `raise ... from None` alone only
@@ -136,13 +172,14 @@ completes. This mechanism never reads, represents, or classifies the active call
 exception. Normal, active-handler, and nested-handler failures retain no caller
 exception state and keep their fixed safe messages. Runtime traceback locals contain
 only the safe outcome and fresh public error. Composer behavior remains
-non-operational, and lifecycle ownership and close-once behavior are unchanged.
+operational through injected offline-testable dependencies, while lifecycle ownership
+and close-once behavior are unchanged.
 
 ## Retry responsibility
 
-The runtime policy requires exact built-in integer zero. In the operational revision, trusted
-composition must pass `max_retries=0` to official `OpenAI(...)` construction and
-then build `OpenAISDKCapabilityV2`. Phase 7.3 guarantees exactly one adapter-level
+The runtime policy requires exact built-in integer zero. Trusted composition passes
+`max_retries=0` to the injected factory and `OpenAISDKCapabilityV2`. Phase 7.3
+guarantees exactly one adapter-level
 capability invocation; neither layer claims proof of one SDK-internal or HTTP
 transport attempt.
 
@@ -157,15 +194,14 @@ registration, or observable output. Frozen lower layers do not load this package
 
 ## Operational exclusions
 
-Revision 2 has no credential acquisition, `.env` access, environment access,
-official SDK construction, live request, network, streaming, async execution,
+Revision 6 has no `.env` access, environment access, concrete official SDK factory,
+live request, network, streaming, async execution,
 application retry, persistence, logging, telemetry, metrics, tracing, provider
 discovery, automatic registration, or application composition-root integration.
 
 ## Operational revision responsibilities
 
-A separately scoped and independently verified future revision may add the official SDK
-factory, an injected credential implementation, `max_retries=0` client construction,
-client lifecycle and failure atomicity, capability assembly, startup validation,
-and an explicitly opt-in live smoke-test specification. It must remain above and
-must not modify the frozen Phase 7.3 package.
+A separately scoped and independently verified future revision may add the official
+synchronous SDK factory, an injected environment credential implementation, and an
+explicitly opt-in live smoke-test specification. It must remain above and must not
+modify the frozen Phase 7.3 package.

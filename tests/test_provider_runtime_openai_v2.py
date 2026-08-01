@@ -31,7 +31,13 @@ from pastila_scout.provider_runtime_openai_v2 import (
     OpenAIRuntimeDependencyError,
     OpenAIRuntimeLifecycleError,
 )
-from pastila_scout.provider_runtime_openai_v2.composition import _validate_api_key
+from pastila_scout.provider_runtime_openai_v2.composition import (
+    _OWNERSHIP_TRACKER,
+    _mint_factory_handoff,
+    _OwnershipRecord,
+    _OwnershipState,
+    _validate_api_key,
+)
 from pastila_scout.provider_runtime_openai_v2.models import (
     _OpenAIRuntimeLifecycleOwnerV2,
 )
@@ -54,9 +60,17 @@ class _Factory:
     def __init__(self) -> None:
         self.create_calls = 0
         self.close_calls = 0
+        self.arguments = None
 
-    def create_client(self, *, api_key: str, max_retries: int) -> object:
+    def create_client(
+        self,
+        *,
+        api_key: str,
+        max_retries: int,
+        request_timeout_seconds: float,
+    ) -> object:
         self.create_calls += 1
+        self.arguments = (api_key, max_retries, request_timeout_seconds)
         return object()
 
     def close_client(self, client: object) -> None:
@@ -66,6 +80,52 @@ class _Factory:
 class _Responses:
     def create(self, **arguments: object) -> object:
         raise AssertionError("SDK operation must remain unused")
+
+
+class _RawClient:
+    def __init__(self, responses: object, *, fail_close: bool = False) -> None:
+        self.responses = responses
+        self.close_calls = 0
+        self.fail_close = fail_close
+
+    def close(self) -> None:
+        self.close_calls += 1
+        if self.fail_close:
+            raise RuntimeError("SECRET_RAW_CLOSE_FAILURE")
+
+
+class _OperationalFactory(_Factory):
+    def __init__(
+        self,
+        *,
+        responses: object | None = None,
+        fail_create: bool = False,
+        fail_close: bool = False,
+    ) -> None:
+        super().__init__()
+        self.responses = responses if responses is not None else _Responses()
+        self.fail_create = fail_create
+        self.fail_close = fail_close
+        self.clients: list[_RawClient] = []
+
+    def create_client(
+        self,
+        *,
+        api_key: str,
+        max_retries: int,
+        request_timeout_seconds: float,
+    ) -> object:
+        self.create_calls += 1
+        self.arguments = (api_key, max_retries, request_timeout_seconds)
+        if self.fail_create:
+            raise RuntimeError("SECRET_FACTORY_FAILURE")
+        client = _RawClient(self.responses, fail_close=self.fail_close)
+        self.clients.append(client)
+        try:
+            return _mint_factory_handoff(client)
+        except Exception:
+            client.close()
+            raise
 
 
 class _Lifecycle:
@@ -98,7 +158,9 @@ def _composition(
 
 
 def _config() -> OpenAIRuntimeConfigV2:
-    return OpenAIRuntimeConfigV2(request_timeout_seconds=12.5)
+    return OpenAIRuntimeConfigV2(
+        model="gpt-contract-model", request_timeout_seconds=12.5
+    )
 
 
 def test_public_api_is_exact() -> None:
@@ -183,7 +245,9 @@ def test_frozen_phase_seven_three_hashes_and_exports_are_unchanged() -> None:
 )
 def test_config_rejects_non_exact_retry_zero(value: object) -> None:
     with pytest.raises(ValidationError):
-        OpenAIRuntimeConfigV2(request_timeout_seconds=1, max_retries=value)
+        OpenAIRuntimeConfigV2(
+            model="gpt-contract-model", request_timeout_seconds=1, max_retries=value
+        )
 
 
 @pytest.mark.parametrize(
@@ -191,7 +255,7 @@ def test_config_rejects_non_exact_retry_zero(value: object) -> None:
 )
 def test_config_rejects_invalid_timeout(value: object) -> None:
     with pytest.raises(ValidationError):
-        OpenAIRuntimeConfigV2(request_timeout_seconds=value)
+        OpenAIRuntimeConfigV2(model="gpt-contract-model", request_timeout_seconds=value)
 
 
 def test_config_is_immutable_and_revalidates_copied_invalid_state() -> None:
@@ -205,6 +269,12 @@ def test_config_is_immutable_and_revalidates_copied_invalid_state() -> None:
             credential_source=_CredentialSource(),
             sdk_factory=_Factory(),
         )
+
+
+@pytest.mark.parametrize("value", (None, False, 1, "", " ", " model", "model "))
+def test_runtime_model_is_exact_nonblank_and_unpadded(value: object) -> None:
+    with pytest.raises(ValidationError):
+        OpenAIRuntimeConfigV2(model=value, request_timeout_seconds=1)
 
 
 def test_constructor_requires_dependencies_without_invoking_them() -> None:
@@ -272,7 +342,13 @@ def test_factory_actual_shape_is_authoritative_and_async_is_rejected() -> None:
         )
 
     class AsyncFactory:
-        async def create_client(self, *, api_key: str, max_retries: int) -> object:
+        async def create_client(
+            self,
+            *,
+            api_key: str,
+            max_retries: int,
+            request_timeout_seconds: float,
+        ) -> object:
             return object()
 
         def close_client(self, client: object) -> None:
@@ -296,7 +372,598 @@ def test_valid_key_probe_retains_nothing() -> None:
     assert _validate_api_key("test-key-secret") is None
 
 
-def test_compose_is_deterministically_non_operational() -> None:
+def test_operational_composition_wires_exact_runtime_and_transfers_ownership() -> None:
+    source = _CredentialSource()
+    factory = _OperationalFactory()
+    composer = OpenAIRuntimeComposerV2(
+        _config(), credential_source=source, sdk_factory=factory
+    )
+
+    result = composer.compose()
+
+    assert type(result) is OpenAIRuntimeCompositionV2
+    assert type(result.sdk_client) is OpenAISDKClientV2
+    assert type(result.executor) is OpenAIProviderExecutorV2
+    assert result.executor.client is result.sdk_client
+    assert result.executor.config.model == "gpt-contract-model"
+    assert source.calls == factory.create_calls == 1
+    assert factory.arguments == ("test-key-secret", 0, 12.5)
+    assert type(factory.arguments[1]) is int
+    assert len(factory.clients) == 1
+    raw_client = factory.clients[0]
+    assert raw_client.close_calls == 0
+    assert "test-key-secret" not in repr(result)
+    assert "_RawClient" not in repr(result)
+    assert result.close() is None
+    assert result.closed is True
+    assert raw_client.close_calls == 1
+    assert result.close() is None
+    assert raw_client.close_calls == 1
+
+
+@pytest.mark.parametrize(
+    "value",
+    (None, False, 1, b"key", "", " ", " key", "key ", "key\n", "key\t"),
+)
+def test_operational_composer_rejects_invalid_credentials_before_factory(
+    value: object,
+) -> None:
+    class Source:
+        def __init__(self) -> None:
+            self.calls = 0
+
+        def get_api_key(self) -> object:
+            self.calls += 1
+            return value
+
+    source = Source()
+    factory = _OperationalFactory()
+    composer = OpenAIRuntimeComposerV2(
+        _config(), credential_source=source, sdk_factory=factory
+    )
+    with pytest.raises(OpenAIRuntimeCredentialError) as raised:
+        composer.compose()
+    assert raised.value.args == ("invalid OpenAI credential",)
+    assert raised.value.__context__ is None
+    assert raised.value.__cause__ is None
+    assert raised.value.__suppress_context__ is True
+    assert source.calls == 1
+    assert factory.create_calls == 0
+
+
+def test_operational_source_and_factory_exceptions_are_fixed_and_isolated() -> None:
+    class FailingSource(_CredentialSource):
+        def get_api_key(self) -> str:
+            self.calls += 1
+            raise RuntimeError("SECRET_CREDENTIAL_FAILURE")
+
+    source = FailingSource()
+    factory = _OperationalFactory()
+    composer = OpenAIRuntimeComposerV2(
+        _config(), credential_source=source, sdk_factory=factory
+    )
+    with pytest.raises(OpenAIRuntimeCredentialError) as credential_raised:
+        composer.compose()
+    assert credential_raised.value.args == ("OpenAI credential retrieval failed",)
+    assert credential_raised.value.__context__ is None
+    assert source.calls == 1
+    assert factory.create_calls == 0
+
+    source = _CredentialSource()
+    factory = _OperationalFactory(fail_create=True)
+    composer = OpenAIRuntimeComposerV2(
+        _config(), credential_source=source, sdk_factory=factory
+    )
+    with pytest.raises(OpenAIRuntimeDependencyError) as factory_raised:
+        composer.compose()
+    assert factory_raised.value.args == ("OpenAI SDK construction failed",)
+    assert factory_raised.value.__context__ is None
+    assert source.calls == factory.create_calls == 1
+    assert factory.clients == []
+
+
+def test_invalid_responses_fails_before_handoff_under_factory_ownership() -> None:
+    factory = _OperationalFactory(responses=object())
+    composer = OpenAIRuntimeComposerV2(
+        _config(), credential_source=_CredentialSource(), sdk_factory=factory
+    )
+    with pytest.raises(OpenAIRuntimeDependencyError) as raised:
+        composer.compose()
+    assert raised.value.args == ("OpenAI SDK construction failed",)
+    assert raised.value.__context__ is None
+    assert len(factory.clients) == 1
+    assert factory.clients[0].close_calls == 1
+
+
+@pytest.mark.parametrize(
+    "stage", ("capability", "sdk_client", "executor", "composition")
+)
+def test_each_post_factory_assembly_failure_rolls_back_once(
+    monkeypatch: pytest.MonkeyPatch,
+    stage: str,
+) -> None:
+    import pastila_scout.provider_execution_openai_sdk_v2 as sdk_module
+    import pastila_scout.provider_execution_openai_v2 as execution_module
+    import pastila_scout.provider_runtime_openai_v2.composition as composition_module
+
+    calls = 0
+
+    def fail(*args: object, **kwargs: object) -> object:
+        nonlocal calls
+        calls += 1
+        raise RuntimeError(f"SECRET_{stage.upper()}_ASSEMBLY")
+
+    if stage == "capability":
+        monkeypatch.setattr(sdk_module, "OpenAISDKCapabilityV2", fail)
+    elif stage == "sdk_client":
+        monkeypatch.setattr(sdk_module, "OpenAISDKClientV2", fail)
+    elif stage == "executor":
+        monkeypatch.setattr(execution_module, "OpenAIProviderExecutorV2", fail)
+    else:
+        monkeypatch.setattr(composition_module, "OpenAIRuntimeCompositionV2", fail)
+
+    factory = _OperationalFactory()
+    composer = OpenAIRuntimeComposerV2(
+        _config(), credential_source=_CredentialSource(), sdk_factory=factory
+    )
+    with pytest.raises(OpenAIRuntimeDependencyError) as raised:
+        composer.compose()
+    assert raised.value.args == ("OpenAI runtime assembly failed",)
+    assert raised.value.__context__ is None
+    assert calls == 1
+    assert factory.create_calls == 1
+    assert factory.clients[0].close_calls == 1
+
+
+def test_operational_rollback_failure_has_safe_lifecycle_precedence(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    import pastila_scout.provider_execution_openai_sdk_v2 as sdk_module
+
+    def fail(*args: object, **kwargs: object) -> object:
+        raise RuntimeError("SECRET_CAPABILITY_ASSEMBLY")
+
+    monkeypatch.setattr(sdk_module, "OpenAISDKCapabilityV2", fail)
+    factory = _OperationalFactory(fail_close=True)
+    composer = OpenAIRuntimeComposerV2(
+        _config(), credential_source=_CredentialSource(), sdk_factory=factory
+    )
+    with pytest.raises(OpenAIRuntimeLifecycleError) as raised:
+        composer.compose()
+    assert raised.value.args == ("OpenAI runtime rollback failed",)
+    assert raised.value.__context__ is None
+    assert raised.value.__cause__ is None
+    assert raised.value.__suppress_context__ is True
+    assert factory.clients[0].close_calls == 1
+
+
+def test_factory_result_rejects_descriptor_close_without_execution() -> None:
+    class Descriptor:
+        calls = 0
+
+        def __get__(self, instance, owner):
+            type(self).calls += 1
+            raise AssertionError("raw client descriptor executed")
+
+    class InvalidRawClient:
+        close = Descriptor()
+
+    class Factory(_OperationalFactory):
+        def create_client(
+            self,
+            *,
+            api_key: str,
+            max_retries: int,
+            request_timeout_seconds: float,
+        ) -> object:
+            self.create_calls += 1
+            client = InvalidRawClient()
+            try:
+                return _mint_factory_handoff(client)
+            except Exception:
+                self.close_client(client)
+                raise
+
+    factory = Factory()
+    composer = OpenAIRuntimeComposerV2(
+        _config(), credential_source=_CredentialSource(), sdk_factory=factory
+    )
+    with pytest.raises(OpenAIRuntimeDependencyError) as raised:
+        composer.compose()
+    assert raised.value.args == ("OpenAI SDK construction failed",)
+    assert Descriptor.calls == 0
+    assert factory.create_calls == 1
+    assert factory.close_calls == 1
+
+
+def test_operational_repeated_compositions_are_independent() -> None:
+    source = _CredentialSource()
+    factory = _OperationalFactory()
+    composer = OpenAIRuntimeComposerV2(
+        _config(), credential_source=source, sdk_factory=factory
+    )
+    first = composer.compose()
+    second = composer.compose()
+    assert first is not second
+    assert first.sdk_client is not second.sdk_client
+    assert source.calls == factory.create_calls == 2
+    assert len(factory.clients) == 2
+    first.close()
+    second.close()
+    assert [client.close_calls for client in factory.clients] == [1, 1]
+
+
+def test_handoff_is_single_client_derived_and_not_directly_constructible() -> None:
+    import pastila_scout.provider_runtime_openai_v2.composition as composition_module
+
+    raw_client = _RawClient(_Responses())
+    handoff = _mint_factory_handoff(raw_client)
+    assert object.__getattribute__(handoff, "raw_client") is raw_client
+    assert (
+        object.__getattribute__(handoff, "responses_resource") is raw_client.responses
+    )
+    assert object.__getattribute__(handoff, "close_receiver") is raw_client
+    assert object.__getattribute__(handoff, "ownership_identity") == id(raw_client)
+    assert copy.copy(handoff) is copy.deepcopy(handoff) is handoff
+    with pytest.raises(TypeError):
+        pickle.dumps(handoff)
+    with pytest.raises(TypeError):
+        composition_module._OpenAISDKFactoryResultV2(raw_client, _Responses())
+
+
+def test_forged_mismatched_handoff_cannot_establish_runtime_authority() -> None:
+    import pastila_scout.provider_runtime_openai_v2.composition as composition_module
+
+    raw_client = _RawClient(_Responses())
+    valid = _mint_factory_handoff(raw_client)
+    forged = object.__new__(composition_module._OpenAISDKFactoryResultV2)
+    for name in (
+        "raw_client",
+        "close_function",
+        "close_receiver",
+        "ownership_identity",
+        "client_reference",
+    ):
+        object.__setattr__(forged, name, object.__getattribute__(valid, name))
+    object.__setattr__(forged, "responses_resource", _Responses())
+
+    class Factory(_OperationalFactory):
+        def create_client(
+            self,
+            *,
+            api_key: str,
+            max_retries: int,
+            request_timeout_seconds: float,
+        ) -> object:
+            self.create_calls += 1
+            return forged
+
+    factory = Factory()
+    composer = OpenAIRuntimeComposerV2(
+        _config(), credential_source=_CredentialSource(), sdk_factory=factory
+    )
+    with pytest.raises(OpenAIRuntimeDependencyError) as raised:
+        composer.compose()
+    assert raised.value.args == ("invalid OpenAI SDK factory result",)
+    assert raw_client.close_calls == 0
+    assert id(raw_client) not in _OWNERSHIP_TRACKER
+
+
+def test_duplicate_live_handoff_is_rejected_without_closing_first_owner() -> None:
+    raw_client = _RawClient(_Responses())
+    handoff = _mint_factory_handoff(raw_client)
+
+    class Factory(_OperationalFactory):
+        def create_client(
+            self,
+            *,
+            api_key: str,
+            max_retries: int,
+            request_timeout_seconds: float,
+        ) -> object:
+            self.create_calls += 1
+            return handoff
+
+    factory = Factory()
+    first_composer = OpenAIRuntimeComposerV2(
+        _config(), credential_source=_CredentialSource(), sdk_factory=factory
+    )
+    second_composer = OpenAIRuntimeComposerV2(
+        _config(), credential_source=_CredentialSource(), sdk_factory=factory
+    )
+    first = first_composer.compose()
+    with pytest.raises(OpenAIRuntimeLifecycleError) as raised:
+        second_composer.compose()
+    assert raised.value.args == ("OpenAI runtime client is already owned",)
+    assert raised.value.__context__ is None
+    assert raw_client.close_calls == 0
+    assert id(raw_client) in _OWNERSHIP_TRACKER
+    first.close()
+    assert raw_client.close_calls == 1
+    assert id(raw_client) not in _OWNERSHIP_TRACKER
+
+    reused = second_composer.compose()
+    reused.close()
+    assert raw_client.close_calls == 2
+    assert id(raw_client) not in _OWNERSHIP_TRACKER
+
+
+def test_failed_public_close_establishes_terminal_non_reusable_ownership() -> None:
+    raw_client = _RawClient(_Responses(), fail_close=True)
+    handoff = _mint_factory_handoff(raw_client)
+
+    class Factory(_OperationalFactory):
+        def create_client(
+            self,
+            *,
+            api_key: str,
+            max_retries: int,
+            request_timeout_seconds: float,
+        ) -> object:
+            return handoff
+
+    composer = OpenAIRuntimeComposerV2(
+        _config(), credential_source=_CredentialSource(), sdk_factory=Factory()
+    )
+    result = composer.compose()
+    assert id(raw_client) in _OWNERSHIP_TRACKER
+    with pytest.raises(OpenAIRuntimeLifecycleError):
+        result.close()
+    assert raw_client.close_calls == 1
+    record = _OWNERSHIP_TRACKER[id(raw_client)]
+    assert record.state is _OwnershipState.TERMINAL_FAILED
+    assert record.client_reference() is raw_client
+
+    for _ in range(3):
+        with pytest.raises(OpenAIRuntimeLifecycleError) as raised:
+            composer.compose()
+        assert raised.value.args == ("OpenAI runtime client cleanup previously failed",)
+        assert raised.value.__context__ is None
+        assert raised.value.__cause__ is None
+        assert raised.value.__suppress_context__ is True
+        assert _OWNERSHIP_TRACKER[id(raw_client)] is record
+        assert raw_client.close_calls == 1
+    assert result.close() is None
+    assert raw_client.close_calls == 1
+
+
+def test_terminal_failed_client_rejected_across_composers_and_new_handoff() -> None:
+    raw_client = _RawClient(_Responses(), fail_close=True)
+    handoffs = [_mint_factory_handoff(raw_client)]
+
+    class Factory(_OperationalFactory):
+        def create_client(
+            self,
+            *,
+            api_key: str,
+            max_retries: int,
+            request_timeout_seconds: float,
+        ) -> object:
+            return handoffs[-1]
+
+    factory = Factory()
+    first_composer = OpenAIRuntimeComposerV2(
+        _config(), credential_source=_CredentialSource(), sdk_factory=factory
+    )
+    second_composer = OpenAIRuntimeComposerV2(
+        _config(), credential_source=_CredentialSource(), sdk_factory=factory
+    )
+    first = first_composer.compose()
+    with pytest.raises(OpenAIRuntimeLifecycleError):
+        first.close()
+    terminal = _OWNERSHIP_TRACKER[id(raw_client)]
+
+    handoffs.append(_mint_factory_handoff(raw_client))
+    with pytest.raises(OpenAIRuntimeLifecycleError) as raised:
+        second_composer.compose()
+    assert raised.value.args == ("OpenAI runtime client cleanup previously failed",)
+    assert raw_client.close_calls == 1
+    assert _OWNERSHIP_TRACKER[id(raw_client)] is terminal
+
+
+def test_terminal_failed_record_disappears_after_client_collection() -> None:
+    raw_client = _RawClient(_Responses(), fail_close=True)
+    identity = id(raw_client)
+    handoff = _mint_factory_handoff(raw_client)
+
+    class Factory(_OperationalFactory):
+        def __init__(self, value: object) -> None:
+            super().__init__()
+            self.value = value
+
+        def create_client(
+            self,
+            *,
+            api_key: str,
+            max_retries: int,
+            request_timeout_seconds: float,
+        ) -> object:
+            return self.value
+
+    factory = Factory(handoff)
+    composer = OpenAIRuntimeComposerV2(
+        _config(), credential_source=_CredentialSource(), sdk_factory=factory
+    )
+    result = composer.compose()
+    with pytest.raises(OpenAIRuntimeLifecycleError):
+        result.close()
+    assert _OWNERSHIP_TRACKER[identity].state is _OwnershipState.TERMINAL_FAILED
+
+    del result
+    del composer
+    del factory
+    del handoff
+    del raw_client
+    gc.collect()
+    assert identity not in _OWNERSHIP_TRACKER
+
+
+def test_tracker_never_dispatches_client_hash_or_equality() -> None:
+    class HostileIdentityClient(_RawClient):
+        hash_calls = 0
+        equality_calls = 0
+
+        def __hash__(self) -> int:
+            type(self).hash_calls += 1
+            raise AssertionError("raw-client hash executed")
+
+        def __eq__(self, other: object) -> bool:
+            type(self).equality_calls += 1
+            raise AssertionError("raw-client equality executed")
+
+    raw_client = HostileIdentityClient(_Responses(), fail_close=True)
+    handoff = _mint_factory_handoff(raw_client)
+
+    class Factory(_OperationalFactory):
+        def create_client(
+            self,
+            *,
+            api_key: str,
+            max_retries: int,
+            request_timeout_seconds: float,
+        ) -> object:
+            return handoff
+
+    composer = OpenAIRuntimeComposerV2(
+        _config(), credential_source=_CredentialSource(), sdk_factory=Factory()
+    )
+    result = composer.compose()
+    with pytest.raises(OpenAIRuntimeLifecycleError):
+        result.close()
+    with pytest.raises(OpenAIRuntimeLifecycleError):
+        composer.compose()
+    assert HostileIdentityClient.hash_calls == 0
+    assert HostileIdentityClient.equality_calls == 0
+    assert raw_client.close_calls == 1
+
+
+def test_stale_weakref_callback_cannot_remove_newer_record() -> None:
+    first_client = _RawClient(_Responses())
+    first_handoff = _mint_factory_handoff(first_client)
+
+    class Factory(_OperationalFactory):
+        def create_client(
+            self,
+            *,
+            api_key: str,
+            max_retries: int,
+            request_timeout_seconds: float,
+        ) -> object:
+            return first_handoff
+
+    composer = OpenAIRuntimeComposerV2(
+        _config(), credential_source=_CredentialSource(), sdk_factory=Factory()
+    )
+    result = composer.compose()
+    identity = id(first_client)
+    old_record = _OWNERSHIP_TRACKER[identity]
+    callback = old_record.client_reference.__callback__
+    assert callback is not None
+
+    newer_client = _RawClient(_Responses())
+    newer_handoff = _mint_factory_handoff(newer_client)
+    newer_reference = object.__getattribute__(newer_handoff, "client_reference")
+    newer_record = _OwnershipRecord(newer_reference, _OwnershipState.LIVE)
+    _OWNERSHIP_TRACKER[identity] = newer_record
+    callback(old_record.client_reference)
+    assert _OWNERSHIP_TRACKER[identity] is newer_record
+
+    _OWNERSHIP_TRACKER.pop(identity)
+    result.close()
+    assert first_client.close_calls == 1
+
+
+def test_failed_rollback_is_terminal_and_reuse_skips_assembly(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    import pastila_scout.provider_execution_openai_sdk_v2 as sdk_module
+
+    assembly_calls = 0
+
+    def fail(*args: object, **kwargs: object) -> object:
+        nonlocal assembly_calls
+        assembly_calls += 1
+        raise RuntimeError("SECRET_CAPABILITY_ASSEMBLY")
+
+    monkeypatch.setattr(sdk_module, "OpenAISDKCapabilityV2", fail)
+    raw_client = _RawClient(_Responses(), fail_close=True)
+    handoff = _mint_factory_handoff(raw_client)
+
+    class Factory(_OperationalFactory):
+        def create_client(
+            self,
+            *,
+            api_key: str,
+            max_retries: int,
+            request_timeout_seconds: float,
+        ) -> object:
+            self.create_calls += 1
+            return handoff
+
+    factory = Factory()
+    source = _CredentialSource()
+    composer = OpenAIRuntimeComposerV2(
+        _config(), credential_source=source, sdk_factory=factory
+    )
+    with pytest.raises(OpenAIRuntimeLifecycleError) as first:
+        composer.compose()
+    assert first.value.args == ("OpenAI runtime rollback failed",)
+    assert raw_client.close_calls == assembly_calls == 1
+    assert _OWNERSHIP_TRACKER[id(raw_client)].state is _OwnershipState.TERMINAL_FAILED
+
+    with pytest.raises(OpenAIRuntimeLifecycleError) as second:
+        composer.compose()
+    assert second.value.args == ("OpenAI runtime client cleanup previously failed",)
+    assert source.calls == factory.create_calls == 2
+    assert assembly_calls == raw_client.close_calls == 1
+
+
+def test_reentrant_failed_close_becomes_terminal_without_retry() -> None:
+    class ReentrantRawClient(_RawClient):
+        def __init__(self) -> None:
+            super().__init__(_Responses(), fail_close=True)
+            self.composer: OpenAIRuntimeComposerV2 | None = None
+            self.nested_error: Exception | None = None
+
+        def close(self) -> None:
+            self.close_calls += 1
+            assert self.composer is not None
+            try:
+                self.composer.compose()
+            except Exception as error:  # noqa: BLE001 - verifier-owned probe
+                self.nested_error = error
+            raise RuntimeError("SECRET_REENTRANT_CLOSE")
+
+    raw_client = ReentrantRawClient()
+    handoff = _mint_factory_handoff(raw_client)
+
+    class Factory(_OperationalFactory):
+        def create_client(
+            self,
+            *,
+            api_key: str,
+            max_retries: int,
+            request_timeout_seconds: float,
+        ) -> object:
+            return handoff
+
+    composer = OpenAIRuntimeComposerV2(
+        _config(), credential_source=_CredentialSource(), sdk_factory=Factory()
+    )
+    raw_client.composer = composer
+    result = composer.compose()
+    with pytest.raises(OpenAIRuntimeLifecycleError):
+        result.close()
+    assert type(raw_client.nested_error) is OpenAIRuntimeLifecycleError
+    assert raw_client.nested_error.args == ("OpenAI runtime client is already owned",)
+    assert raw_client.close_calls == 1
+    assert _OWNERSHIP_TRACKER[id(raw_client)].state is _OwnershipState.TERMINAL_FAILED
+    with pytest.raises(OpenAIRuntimeLifecycleError):
+        composer.compose()
+    assert raw_client.close_calls == 1
+
+
+def test_compose_rejects_malformed_factory_result_deterministically() -> None:
     source = _CredentialSource()
     factory = _Factory()
     composer = OpenAIRuntimeComposerV2(
@@ -304,12 +971,13 @@ def test_compose_is_deterministically_non_operational() -> None:
     )
     with pytest.raises(
         OpenAIRuntimeDependencyError,
-        match="OpenAI runtime composition is not implemented",
+        match="invalid OpenAI SDK factory result",
     ) as raised:
         composer.compose()
     assert raised.value.__cause__ is None
     assert raised.value.__context__ is None
-    assert source.calls == factory.create_calls == factory.close_calls == 0
+    assert source.calls == factory.create_calls == 1
+    assert factory.close_calls == 0
 
 
 def test_composer_dependency_failure_traceback_contains_only_safe_outcome() -> None:
@@ -346,7 +1014,7 @@ def test_composer_dependency_failure_traceback_contains_only_safe_outcome() -> N
 
     assert tuple(name for name, _ in runtime_locals) == (
         "compose",
-        "_return_or_raise_dependency",
+        "_return_or_raise_composition",
     )
     assert tuple(tuple(values) for _, values in runtime_locals) == (
         ("outcome",),
@@ -356,17 +1024,18 @@ def test_composer_dependency_failure_traceback_contains_only_safe_outcome() -> N
     for _, values in runtime_locals:
         assert not any(value is item for value in values.values() for item in forbidden)
         outcome = values["outcome"]
-        assert type(outcome).__name__ == "_SafeDependencyFailureOutcome"
+        assert type(outcome).__name__ == "_SafeCompositionFailure"
         assert outcome.category == "dependency"
-        assert outcome.message == "OpenAI runtime composition is not implemented"
+        assert outcome.message == "invalid OpenAI SDK factory result"
         assert not hasattr(outcome, "__dict__")
 
-    assert error.args == ("OpenAI runtime composition is not implemented",)
+    assert error.args == ("invalid OpenAI SDK factory result",)
     assert vars(error) == {}
     assert error.__context__ is None
     assert error.__cause__ is None
     assert error.__suppress_context__ is True
-    assert source.calls == factory.create_calls == factory.close_calls == 0
+    assert source.calls == factory.create_calls == 1
+    assert factory.close_calls == 0
 
 
 def test_composer_dependency_error_graph_excludes_dependencies_and_secrets() -> None:
@@ -489,7 +1158,7 @@ def test_dependency_error_isolated_from_nested_active_exception_graph() -> None:
     assert error.__context__ is None
     assert error.__cause__ is None
     assert error.__suppress_context__ is True
-    assert error.args == ("OpenAI runtime composition is not implemented",)
+    assert error.args == ("invalid OpenAI SDK factory result",)
     assert vars(error) == {}
     runtime_locals = []
     traceback = error.__traceback__
@@ -501,7 +1170,7 @@ def test_dependency_error_isolated_from_nested_active_exception_graph() -> None:
         traceback = traceback.tb_next
     assert tuple(name for name, _ in runtime_locals) == (
         "compose",
-        "_return_or_raise_dependency",
+        "_return_or_raise_composition",
     )
     assert tuple(tuple(values) for _, values in runtime_locals) == (
         ("outcome",),
@@ -515,7 +1184,8 @@ def test_dependency_error_isolated_from_nested_active_exception_graph() -> None:
         for item in forbidden
     )
     assert HostileError.repr_calls == HostileError.str_calls == 0
-    assert source.calls == factory.create_calls == factory.close_calls == 0
+    assert source.calls == factory.create_calls == 1
+    assert factory.close_calls == 0
 
 
 def test_dependency_failures_are_fresh_across_mixed_exception_contexts() -> None:
@@ -539,9 +1209,7 @@ def test_dependency_failures_are_fresh_across_mixed_exception_contexts() -> None
     assert all(error.__context__ is None for error in errors)
     assert all(error.__cause__ is None for error in errors)
     assert all(error.__suppress_context__ is True for error in errors)
-    assert {error.args for error in errors} == {
-        ("OpenAI runtime composition is not implemented",)
-    }
+    assert {error.args for error in errors} == {("invalid OpenAI SDK factory result",)}
 
 
 def test_mixed_dependency_and_lifecycle_failures_have_no_stale_context() -> None:
@@ -571,7 +1239,8 @@ def test_mixed_dependency_and_lifecycle_failures_have_no_stale_context() -> None
     assert all(error.__context__ is None for error in public_errors)
     assert all(error.__cause__ is None for error in public_errors)
     assert all(error.__suppress_context__ is True for error in public_errors)
-    assert source.calls == factory.create_calls == factory.close_calls == 0
+    assert source.calls == factory.create_calls == 3
+    assert factory.close_calls == 0
 
 
 def test_repeated_composer_failures_leave_no_dependency_module_state() -> None:
@@ -593,10 +1262,9 @@ def test_repeated_composer_failures_leave_no_dependency_module_state() -> None:
         for _ in range(3):
             with pytest.raises(OpenAIRuntimeDependencyError) as raised:
                 composer.compose()
-            assert raised.value.args == (
-                "OpenAI runtime composition is not implemented",
-            )
-        assert source.calls == factory.create_calls == factory.close_calls == 0
+            assert raised.value.args == ("invalid OpenAI SDK factory result",)
+        assert source.calls == factory.create_calls == 3
+        assert factory.close_calls == 0
 
     del composer, factory, source, raised
     gc.collect()
