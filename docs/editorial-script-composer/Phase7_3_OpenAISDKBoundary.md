@@ -1,4 +1,4 @@
-# Module 2.9 Phase 7.3 Revision 2 — OpenAI SDK Boundary
+# Module 2.9 Phase 7.3 Revision 6 — Explicit In-Process Trust Boundary
 
 Status: Implemented — awaiting independent verification
 
@@ -18,23 +18,41 @@ provider_execution_openai_sdk_v2
 future runtime composition
 ```
 
-The official `openai` package is already a declared project dependency, but this
-revision deliberately imports no SDK module. Existing verified packages therefore
-remain importable without loading the SDK. Missing or deferred SDK dispatch is
-reported locally through `OpenAISDKDependencyError`.
+The official `openai` 2.x package is a declared project dependency. The operational
+boundary targets its synchronous Responses API `responses.create` surface and
+imports only official exception types for trusted classification. Importing this
+isolated package loads SDK definitions but constructs no SDK client. Existing
+verified lower-level packages remain importable without loading the SDK.
 
 ## Injected capability and dispatch status
 
-`OpenAISDKClientV2` requires an already-authorized `OpenAISDKCapabilityV2`. The
-protocol exposes only one future `create(OpenAISDKRequestV2)` operation. The client
-does not construct `OpenAI()`, discover endpoints, read credentials, or use global
-state. Constructor validation is static and does not bind descriptors or invoke the
-capability.
+`OpenAISDKCapabilityV2` is an immutable nominal wrapper supplied by trusted runtime
+composition. Construction validates an explicit exact built-in `max_retries=0`
+policy and statically pins the raw `create` function and receiver without descriptor
+binding or execution. `complete()` performs exactly one adapter-level invocation
+of that pinned capability, with no application retry, fallback, polling, recursion,
+or secondary API surface. It does not claim exactly one SDK-internal or network
+transport attempt.
 
-Revision 1 intentionally leaves `complete()` non-operational and raises a
-deterministic dependency error. It performs no live call and never fabricates a
-successful provider response. Revision 2 will connect the pure mapping and
-reconstruction boundaries to exactly one invocation of the injected capability.
+Official SDK construction remains the next trusted-composition responsibility.
+That layer must construct the official client with `max_retries=0` and inject its
+synchronous Responses capability. The adapter neither reads arbitrary SDK private
+internals nor independently proves transport retry behavior.
+
+## In-process trust boundary
+
+Application composition and project-owned production modules are trusted, as is
+the official SDK capability they inject under ordinary Python runtime behavior.
+Provider requests, copied-invalid DTOs, provider responses, exception payloads,
+and external provider behavior are untrusted and validated at this boundary.
+
+Malicious code already executing in the same interpreter is out of scope. Importing
+and mutating private module state, `object.__new__` or `object.__setattr__` attacks,
+monkeypatching project internals, debugger access, and memory instrumentation are
+equivalent to in-process code-execution compromise. Python private names, frozen
+dataclasses, closures, and sentinels are not security seals against that threat.
+Production contains no authority registry and no test transport, response holder,
+failure holder, call history, or attempt counter.
 
 ## Pure request and response boundaries
 
@@ -62,11 +80,28 @@ rejected before it can establish provider authority. Defensive reconstruction
 revalidates copied Pydantic instances and every nested output rather than trusting
 their runtime types.
 
+Operational dispatch sends ordered role/content inputs and preserves model,
+temperature, maximum output tokens, and fractional timeout. It explicitly sends
+`store=False`, `stream=False`, and `background=False`. The Responses API create
+surface does not support stop sequences, so a nonempty stop tuple is rejected
+before dispatch rather than silently dropped. No instructions, tools, metadata,
+hidden messages, or request headers are added.
+
+The untrusted SDK response is reduced immediately to plain field values. Only
+message items containing `output_text` fragments are accepted; tool calls,
+refusals, image/audio items, missing text, whitespace-only text, and unknown states
+are rejected. Text fragments become separate ordered outputs without concatenation.
+Raw SDK models, output items, transports, headers, and clients are never retained.
+The structured `created_at` response timestamp is the sole time authority; absence
+or invalidity is rejected, and no current clock is read. Unix zero and negative
+timestamps are permitted; non-finite, nonnumeric, boolean, overflow, and
+platform-invalid timestamps are rejected behind the fixed response error.
+
 ## Exceptions, timeout, cancellation, and retries
 
-Exception classification uses structured status codes and built-in timeout type,
-never exception text. Authentication, rate limiting, timeout, cancellation,
-invalid request, provider unavailability, and unknown internal errors map to stable
+Exception classification uses trusted official SDK types, structured official
+status codes, and built-in timeout authority, never exception text. Authentication,
+rate limiting, timeout, invalid request, provider unavailability, and unknown internal errors map to stable
 `OpenAIClientErrorCategoryV2` values. Malformed responses are represented by the
 dedicated reconstruction error boundary.
 
@@ -75,18 +110,31 @@ No timer, sleep, or deadline is created. Cancellation remains exclusively the
 verified executor's pre-dispatch check; this boundary claims no mid-flight
 cancellation.
 
-The official SDK may retry by default. Revision 2 runtime construction must set
-`max_retries=0` on the injected official SDK client before enabling dispatch. The
-application client will make one capability call and implement no retry, fallback,
-or recursion.
+Normal `completed` state maps to `stop`. Structured `incomplete` reasons
+`max_output_tokens` and `content_filter` map to `length` and `content_filter`.
+Completed responses require absent incomplete details and completed message items.
+Incomplete responses require matching incomplete message items and exactly one of
+the two supported reasons. Failed, cancelled, queued, in-progress, mixed, padded,
+case-altered, and otherwise contradictory states are rejected. SDK exceptions are
+translated using trusted official SDK exception types and structured status codes.
+Classification and request-bearing execution occur in private frames that return
+only a safe result or immutable failure token. Those frames exit before a separate
+clean helper raises the public fixed error; the public traceback contains no
+request, arguments, prompt, raw exception, body, headers, or transport in adapter
+locals. Context and cause are also absent. Python tracebacks expose module globals;
+the adapter therefore guarantees that its globals hold no request-specific,
+response-specific, credential, or raw-exception state.
+
+Temperature is forwarded exactly when supplied. Model-specific temperature support
+is provider-owned; a structured provider rejection maps to invalid request and
+does not trigger retry, fallback, or model substitution.
 
 ## Credential and operational exclusions
 
-Credentials belong to future runtime composition. This revision has no API-key
-parameter, environment or `.env` access, SDK client construction, live request,
-streaming, async execution, persistence, logging, telemetry, registration, or
-composition change.
-
-Revision 2 adds semantic DTO hardening only. It does not add operational SDK
-execution or change the deferred responsibilities of the future dispatch
-successor.
+Credentials and official SDK construction belong to the next runtime-composition
+revision. This adapter has no API-key parameter, environment or `.env` access,
+automatic SDK construction, streaming, async execution, persistence, logging,
+telemetry, registration, or composition change. Cancellation remains the verified
+outer executor's pre-dispatch responsibility; no mid-flight cancellation is
+claimed. Tests use injected offline capabilities only, and no live request is made
+during this revision.
