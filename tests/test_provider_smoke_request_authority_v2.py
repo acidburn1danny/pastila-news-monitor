@@ -8,13 +8,22 @@ import pickle
 import subprocess
 import sys
 from datetime import UTC, datetime, timedelta, timezone
+from decimal import Decimal
+from fractions import Fraction
 from pathlib import Path
 
 import pytest
 from pydantic import ValidationError
 
 import pastila_scout.provider_smoke_request_authority_v2 as authority_package
+import pastila_scout.provider_smoke_request_authority_v2.authority as authority_module
 import pastila_scout.provider_smoke_request_authority_v2.interface as authority_interface
+from pastila_scout.provider_adapters_v2.openai import OpenAIProviderAdapter
+from pastila_scout.provider_execution_v2 import (
+    ExecutionContextV2,
+    ProviderExecutionRequestV2,
+    TimeoutPolicyV2,
+)
 from pastila_scout.provider_smoke_request_authority_v2 import (
     SmokeExecutionPlanV2,
     SmokeExecutionRequestAuthorityError,
@@ -22,6 +31,14 @@ from pastila_scout.provider_smoke_request_authority_v2 import (
     SmokeExecutionRequestDependencyError,
     SmokeProviderExecutionRequestAuthorityV2,
     build_canonical_smoke_execution_plan,
+)
+from pastila_scout.provider_v2 import (
+    ProviderMessageInputV2,
+    ProviderRequestEnvelopeV2,
+    ProviderRequestIntentV2,
+    ProviderRequestUnitInputV2,
+    validate_provider_descriptor,
+    validate_provider_request_envelope,
 )
 from pastila_scout.provider_v2.canonical import canonical_json, semantic_sha256
 
@@ -215,16 +232,48 @@ def test_timeout_policy_is_strict(timeout: object) -> None:
         SmokeProviderExecutionRequestAuthorityV2().construct(**arguments)
 
 
-@pytest.mark.parametrize("timeout", (1, 1.5))
-def test_valid_inputs_reach_only_fixed_non_operational_failure(timeout: object) -> None:
+@pytest.mark.parametrize("timeout", (1, 30, 10**100, 0.1, 30.25, 1e308))
+def test_valid_inputs_construct_exact_provider_request(timeout: object) -> None:
     arguments = _valid_arguments()
     arguments["timeout_seconds"] = timeout
-    with pytest.raises(SmokeExecutionRequestDependencyError) as raised:
-        SmokeProviderExecutionRequestAuthorityV2().construct(**arguments)
-    assert raised.value.args == (
-        "canonical smoke request construction is not operational",
+    result = SmokeProviderExecutionRequestAuthorityV2().construct(**arguments)
+    assert type(result) is ProviderExecutionRequestV2
+    assert type(result.request_intent) is ProviderRequestIntentV2
+    assert type(result.request_envelope) is ProviderRequestEnvelopeV2
+    assert type(result.context) is ExecutionContextV2
+    assert type(result.timeout_policy) is TimeoutPolicyV2
+    assert result.provider == OpenAIProviderAdapter.descriptor
+    assert result.provider.provider_id == "openai"
+    assert validate_provider_descriptor(result.provider) == ()
+    assert (
+        validate_provider_request_envelope(
+            result.request_envelope, result.request_intent, result.provider
+        )
+        == ()
     )
-    _assert_isolated(raised.value)
+    plan = arguments["execution_plan"]
+    assert isinstance(plan, SmokeExecutionPlanV2)
+    assert result.request_intent.execution_plan_reference == plan.plan_reference
+    assert result.request_intent.execution_plan_identity == plan.plan_identity
+    assert result.request_intent.execution_plan_fingerprint == plan.plan_fingerprint
+    assert result.request_intent.draft_reference == plan.draft_reference
+    assert result.request_intent.draft_fingerprint == plan.draft_fingerprint
+    assert len(result.request_intent.request_units) == 1
+    unit = result.request_intent.request_units[0]
+    assert type(unit) is ProviderRequestUnitInputV2
+    assert unit.source_request_reference == "canonical-smoke-source-request-v2"
+    assert unit.ordinal == 0
+    assert len(unit.messages) == 1
+    assert type(unit.messages[0]) is ProviderMessageInputV2
+    assert unit.messages[0].role == "generation"
+    assert unit.messages[0].content == FIXED_PROMPT
+    assert unit.messages[0].ordinal == 0
+    assert result.context.request_id == arguments["execution_request_id"]
+    assert result.context.requested_at == REQUESTED_AT
+    assert result.context.metadata == ()
+    assert result.context.cancellation.cancellation_requested is False
+    assert type(result.timeout_policy.timeout_seconds) is type(timeout)
+    assert result.timeout_policy.timeout_seconds == timeout
 
 
 def test_hostile_input_hooks_are_not_executed() -> None:
@@ -268,8 +317,10 @@ def test_active_nested_exception_is_not_retained() -> None:
         except RuntimeError:
             raise ValueError("nested secret")
     except ValueError:
-        with pytest.raises(SmokeExecutionRequestDependencyError) as raised:
-            SmokeProviderExecutionRequestAuthorityV2().construct(**_valid_arguments())
+        arguments = _valid_arguments()
+        arguments["execution_plan"] = object()
+        with pytest.raises(SmokeExecutionRequestConfigurationError) as raised:
+            SmokeProviderExecutionRequestAuthorityV2().construct(**arguments)
     _assert_isolated(raised.value)
     assert raised.value.__context__ is not caller
 
@@ -277,9 +328,9 @@ def test_active_nested_exception_is_not_retained() -> None:
 def test_traceback_contains_no_authority_inputs() -> None:
     plan = build_canonical_smoke_execution_plan()
     authority = SmokeProviderExecutionRequestAuthorityV2()
-    with pytest.raises(SmokeExecutionRequestDependencyError) as raised:
+    with pytest.raises(SmokeExecutionRequestConfigurationError) as raised:
         authority.construct(
-            execution_plan=plan,
+            execution_plan=plan.model_copy(update={"plan_fingerprint": "0" * 64}),
             execution_request_id="secret-request-id",
             requested_at=REQUESTED_AT,
             timeout_seconds=19,
@@ -308,14 +359,13 @@ def test_authority_holder_copy_repr_and_pickle_policy() -> None:
             pickle.dumps(authority, protocol=protocol)
 
 
-def test_package_has_no_operational_imports_or_provider_dto_construction() -> None:
+def test_package_has_no_runtime_sdk_network_or_credential_capability() -> None:
     package = ROOT / "src" / "pastila_scout" / "provider_smoke_request_authority_v2"
     source = "\n".join(
         path.read_text(encoding="utf-8") for path in package.glob("*.py")
     )
     for forbidden in (
         "OPENAI_API_KEY",
-        "ProviderExecutionRequestV2(",
         "OpenAIRuntimeComposerV2",
         "OpenAI(",
         "responses.create",
@@ -364,8 +414,8 @@ print('authority-clean-import-ok')
 
 def test_module_globals_retain_no_runtime_or_request_objects() -> None:
     authority = SmokeProviderExecutionRequestAuthorityV2()
-    with pytest.raises(SmokeExecutionRequestDependencyError):
-        authority.construct(**_valid_arguments())
+    request = authority.construct(**_valid_arguments())
+    del request
     del authority
     gc.collect()
     for value in vars(authority_package).values():
@@ -392,3 +442,296 @@ def test_construct_signature_is_explicit_and_keyword_only() -> None:
         for name, parameter in parameters.items()
         if name != "self"
     )
+
+
+@pytest.mark.parametrize(
+    "timeout", (10**1000, 10**10000), ids=("10-to-1000", "10-to-10000")
+)
+def test_frozen_incompatible_large_timeout_is_configuration_error(
+    timeout: int, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    calls = 0
+
+    def acquire():
+        nonlocal calls
+        calls += 1
+        return OpenAIProviderAdapter.descriptor
+
+    monkeypatch.setattr(authority_module, "_canonical_openai_descriptor", acquire)
+    arguments = _valid_arguments()
+    arguments["timeout_seconds"] = timeout
+    with pytest.raises(SmokeExecutionRequestConfigurationError) as raised:
+        SmokeProviderExecutionRequestAuthorityV2().construct(**arguments)
+    assert raised.value.args == ("invalid canonical smoke request authority input",)
+    _assert_isolated(raised.value)
+    assert calls == 0
+
+
+def test_large_compatible_integer_matches_frozen_policy() -> None:
+    timeout = 10**308
+    frozen = TimeoutPolicyV2(timeout_seconds=timeout)
+    result = SmokeProviderExecutionRequestAuthorityV2().construct(
+        **{**_valid_arguments(), "timeout_seconds": timeout}
+    )
+    assert frozen.timeout_seconds == timeout
+    assert type(result.timeout_policy.timeout_seconds) is int
+    assert result.timeout_policy.timeout_seconds == timeout
+
+
+def test_same_inputs_are_deterministic_and_attempt_fields_are_isolated() -> None:
+    authority = SmokeProviderExecutionRequestAuthorityV2()
+    arguments = _valid_arguments()
+    first = authority.construct(**arguments)
+    second = authority.construct(**arguments)
+    assert first == second
+    changed_id = authority.construct(
+        **{**arguments, "execution_request_id": "another-attempt"}
+    )
+    changed_time = authority.construct(
+        **{**arguments, "requested_at": datetime(2026, 8, 2, 13, tzinfo=UTC)}
+    )
+    changed_timeout = authority.construct(**{**arguments, "timeout_seconds": 41})
+    for changed in (changed_id, changed_time, changed_timeout):
+        assert changed.provider == first.provider
+        assert changed.request_intent == first.request_intent
+        assert changed.request_envelope == first.request_envelope
+    assert changed_id.context.request_id != first.context.request_id
+    assert changed_time.context.requested_at != first.context.requested_at
+    assert changed_timeout.timeout_policy != first.timeout_policy
+
+
+def test_dependency_failure_is_fixed_and_isolated(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    def fail_descriptor() -> object:
+        raise RuntimeError("raw dependency secret")
+
+    monkeypatch.setattr(
+        authority_module, "_canonical_openai_descriptor", fail_descriptor
+    )
+    with pytest.raises(SmokeExecutionRequestDependencyError) as raised:
+        SmokeProviderExecutionRequestAuthorityV2().construct(**_valid_arguments())
+    assert raised.value.args == ("canonical smoke request construction failed",)
+    _assert_isolated(raised.value)
+    assert "raw dependency secret" not in repr(raised.value)
+
+
+def test_invalid_input_precedes_descriptor_acquisition(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    calls = 0
+
+    def acquire():
+        nonlocal calls
+        calls += 1
+        return OpenAIProviderAdapter.descriptor
+
+    monkeypatch.setattr(authority_module, "_canonical_openai_descriptor", acquire)
+    arguments = _valid_arguments()
+    arguments["execution_request_id"] = " padded"
+    with pytest.raises(SmokeExecutionRequestConfigurationError):
+        SmokeProviderExecutionRequestAuthorityV2().construct(**arguments)
+    assert calls == 0
+
+
+def test_valid_input_acquires_descriptor_once(monkeypatch: pytest.MonkeyPatch) -> None:
+    calls = 0
+
+    def acquire():
+        nonlocal calls
+        calls += 1
+        return OpenAIProviderAdapter.descriptor
+
+    monkeypatch.setattr(authority_module, "_canonical_openai_descriptor", acquire)
+    result = SmokeProviderExecutionRequestAuthorityV2().construct(**_valid_arguments())
+    assert type(result) is ProviderExecutionRequestV2
+    assert calls == 1
+
+
+def test_returned_request_graph_contains_no_operational_authority() -> None:
+    result = SmokeProviderExecutionRequestAuthorityV2().construct(**_valid_arguments())
+    rendered = json.dumps(result.model_dump(mode="json"), sort_keys=True).lower()
+    for forbidden in (
+        "api_key",
+        "credential",
+        "runtime",
+        "executor",
+        "transport",
+        "sdk",
+        "model",
+    ):
+        assert forbidden not in rendered
+
+
+def test_final_request_is_defensively_reconstructed() -> None:
+    result = SmokeProviderExecutionRequestAuthorityV2().construct(**_valid_arguments())
+    forged = result.model_copy(
+        update={
+            "request_envelope": result.request_envelope.model_copy(
+                update={"fingerprint": "0" * 64}
+            )
+        }
+    )
+    with pytest.raises(ValidationError):
+        ProviderExecutionRequestV2.model_validate(
+            forged.model_dump(mode="python"), strict=True
+        )
+
+
+@pytest.mark.parametrize(
+    "mutation",
+    (
+        "plan-reference",
+        "plan-identity",
+        "plan-fingerprint",
+        "draft-reference",
+        "draft-fingerprint",
+        "source-reference",
+        "unit-collection",
+        "unit-ordinal",
+        "message-collection",
+        "message-ordinal",
+        "message-role",
+        "message-content",
+    ),
+)
+def test_full_copied_invalid_plan_matrix_stops_before_descriptor(
+    mutation: str, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    plan = build_canonical_smoke_execution_plan()
+    unit = plan.request_units[0]
+    message = unit.messages[0]
+    if mutation == "plan-reference":
+        forged = plan.model_copy(update={"plan_reference": "foreign"})
+    elif mutation == "plan-identity":
+        forged = plan.model_copy(update={"plan_identity": "foreign"})
+    elif mutation == "plan-fingerprint":
+        forged = plan.model_copy(update={"plan_fingerprint": "0" * 64})
+    elif mutation == "draft-reference":
+        forged = plan.model_copy(update={"draft_reference": "foreign"})
+    elif mutation == "draft-fingerprint":
+        forged = plan.model_copy(update={"draft_fingerprint": "0" * 64})
+    elif mutation == "source-reference":
+        forged = plan.model_copy(
+            update={
+                "request_units": (
+                    unit.model_copy(update={"source_request_reference": "foreign"}),
+                )
+            }
+        )
+    elif mutation == "unit-collection":
+        forged = plan.model_copy(update={"request_units": ()})
+    elif mutation == "unit-ordinal":
+        forged = plan.model_copy(
+            update={"request_units": (unit.model_copy(update={"ordinal": 1}),)}
+        )
+    elif mutation == "message-collection":
+        forged = plan.model_copy(
+            update={"request_units": (unit.model_copy(update={"messages": ()}),)}
+        )
+    else:
+        field, value = {
+            "message-ordinal": ("ordinal", 1),
+            "message-role": ("role", "context"),
+            "message-content": ("content", "SMOKE_OK"),
+        }[mutation]
+        forged_message = message.model_copy(update={field: value})
+        forged = plan.model_copy(
+            update={
+                "request_units": (
+                    unit.model_copy(update={"messages": (forged_message,)}),
+                )
+            }
+        )
+    calls = 0
+
+    def acquire():
+        nonlocal calls
+        calls += 1
+        return OpenAIProviderAdapter.descriptor
+
+    monkeypatch.setattr(authority_module, "_canonical_openai_descriptor", acquire)
+    with pytest.raises(SmokeExecutionRequestConfigurationError):
+        SmokeProviderExecutionRequestAuthorityV2().construct(
+            **{**_valid_arguments(), "execution_plan": forged}
+        )
+    assert calls == 0
+
+
+def test_strict_subclass_and_numeric_timeout_inputs_are_rejected() -> None:
+    class TextSubclass(str):
+        pass
+
+    class DateSubclass(datetime):
+        pass
+
+    class IntSubclass(int):
+        pass
+
+    class FloatSubclass(float):
+        pass
+
+    invalid = (
+        ("execution_request_id", TextSubclass("request")),
+        ("requested_at", DateSubclass(2026, 8, 2, tzinfo=UTC)),
+        ("timeout_seconds", IntSubclass(1)),
+        ("timeout_seconds", FloatSubclass(1.0)),
+        ("timeout_seconds", Decimal(1)),
+        ("timeout_seconds", Fraction(1, 2)),
+    )
+    for field, value in invalid:
+        with pytest.raises(SmokeExecutionRequestConfigurationError):
+            SmokeProviderExecutionRequestAuthorityV2().construct(
+                **{**_valid_arguments(), field: value}
+            )
+
+
+def test_frozen_envelope_builder_is_used_once(monkeypatch: pytest.MonkeyPatch) -> None:
+    original = authority_module.build_provider_request_envelope
+    calls = 0
+
+    def tracked(intent, descriptor):
+        nonlocal calls
+        calls += 1
+        return original(intent, descriptor)
+
+    monkeypatch.setattr(authority_module, "build_provider_request_envelope", tracked)
+    result = SmokeProviderExecutionRequestAuthorityV2().construct(**_valid_arguments())
+    assert type(result) is ProviderExecutionRequestV2
+    assert calls == 1
+
+
+def test_dependency_traceback_retains_no_partial_dtos(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    def fail_envelope(*args: object) -> object:
+        del args
+        raise RuntimeError("builder secret")
+
+    monkeypatch.setattr(
+        authority_module, "build_provider_request_envelope", fail_envelope
+    )
+    with pytest.raises(SmokeExecutionRequestDependencyError) as raised:
+        SmokeProviderExecutionRequestAuthorityV2().construct(**_valid_arguments())
+    _assert_isolated(raised.value)
+    traceback = raised.value.__traceback__
+    forbidden_names = {
+        "ProviderDescriptorV2",
+        "ProviderRequestIntentV2",
+        "ProviderRequestEnvelopeV2",
+        "ExecutionContextV2",
+        "TimeoutPolicyV2",
+        "ProviderExecutionRequestV2",
+    }
+    while traceback is not None:
+        if traceback.tb_frame.f_globals.get("__name__", "").startswith(
+            "pastila_scout.provider_smoke_request_authority_v2"
+        ):
+            assert (
+                not {
+                    value.__class__.__name__
+                    for value in traceback.tb_frame.f_locals.values()
+                }
+                & forbidden_names
+            )
+        traceback = traceback.tb_next

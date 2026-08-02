@@ -1,4 +1,4 @@
-"""Canonical smoke plan minting and a deliberately non-operational shell."""
+"""Canonical smoke-plan minting and provider execution-request construction."""
 
 from __future__ import annotations
 
@@ -10,6 +10,21 @@ from typing import Never, Self
 
 from pydantic import ValidationError
 
+from pastila_scout.provider_adapters_v2.openai import OpenAIProviderAdapter
+from pastila_scout.provider_execution_v2 import (
+    ExecutionContextV2,
+    ProviderExecutionRequestV2,
+    TimeoutPolicyV2,
+)
+from pastila_scout.provider_v2 import (
+    ProviderDescriptorV2,
+    ProviderMessageInputV2,
+    ProviderRequestIntentV2,
+    ProviderRequestUnitInputV2,
+    build_provider_request_envelope,
+    validate_provider_descriptor,
+    validate_provider_request_envelope,
+)
 from pastila_scout.provider_v2.canonical import semantic_sha256
 
 from .errors import (
@@ -24,6 +39,8 @@ from .models import (
     _SOURCE_REQUEST_REFERENCE,
     SmokeExecutionPlanV2,
 )
+
+type _TimeoutValue = int | float
 
 
 def _draft_semantics() -> dict[str, object]:
@@ -100,28 +117,30 @@ def build_canonical_smoke_execution_plan() -> SmokeExecutionPlanV2:
 
 class _ConstructionCategory(Enum):
     INVALID = auto()
-    NON_OPERATIONAL = auto()
+    DEPENDENCY_FAILURE = auto()
+    SUCCESS = auto()
 
 
 @dataclass(frozen=True, slots=True)
 class _SafeConstructionOutcome:
     category: _ConstructionCategory
+    request: ProviderExecutionRequestV2 | None = None
 
 
 class SmokeProviderExecutionRequestAuthorityV2:
-    """Immutable non-operational holder for future request construction."""
+    """Immutable authority for the canonical smoke execution request."""
 
     __slots__ = ()
 
     def construct(
         self,
         *,
-        execution_plan: object,
-        execution_request_id: object,
-        requested_at: object,
-        timeout_seconds: object,
-    ) -> Never:
-        """Validate specification inputs without constructing a provider DTO."""
+        execution_plan: SmokeExecutionPlanV2,
+        execution_request_id: str,
+        requested_at: datetime,
+        timeout_seconds: _TimeoutValue,
+    ) -> ProviderExecutionRequestV2:
+        """Construct a defensively reconstructed canonical execution request."""
 
         outcome = _evaluate_inputs(
             execution_plan,
@@ -134,7 +153,13 @@ class SmokeProviderExecutionRequestAuthorityV2:
         del requested_at
         del timeout_seconds
         del self
-        _raise_outcome(outcome)
+        if outcome.category is not _ConstructionCategory.SUCCESS:
+            _raise_outcome(outcome)
+        request = outcome.request
+        del outcome
+        if type(request) is not ProviderExecutionRequestV2:
+            _raise_dependency_error()
+        return request
 
     def __copy__(self) -> Self:
         return self
@@ -197,15 +222,92 @@ def _evaluate_inputs(
         return _SafeConstructionOutcome(_ConstructionCategory.INVALID)
     if type(requested_at) is not datetime or requested_at.tzinfo is not UTC:
         return _SafeConstructionOutcome(_ConstructionCategory.INVALID)
-    if type(timeout_seconds) is int:
-        valid_timeout = timeout_seconds > 0
-    elif type(timeout_seconds) is float:
-        valid_timeout = math.isfinite(timeout_seconds) and timeout_seconds > 0.0
-    else:
-        valid_timeout = False
-    if not valid_timeout:
+    if not _timeout_is_frozen_compatible(timeout_seconds):
         return _SafeConstructionOutcome(_ConstructionCategory.INVALID)
-    return _SafeConstructionOutcome(_ConstructionCategory.NON_OPERATIONAL)
+    return _construct_request(
+        execution_plan,
+        execution_request_id,
+        requested_at,
+        timeout_seconds,
+    )
+
+
+def _timeout_is_frozen_compatible(value: object) -> bool:
+    """Return whether frozen ``TimeoutPolicyV2`` can represent the exact value."""
+
+    if type(value) is int:
+        if value <= 0:
+            return False
+        try:
+            return math.isfinite(value)
+        except OverflowError:
+            return False
+    if type(value) is float:
+        return math.isfinite(value) and value > 0.0
+    return False
+
+
+def _construct_request(
+    execution_plan: SmokeExecutionPlanV2,
+    execution_request_id: str,
+    requested_at: datetime,
+    timeout_seconds: _TimeoutValue,
+) -> _SafeConstructionOutcome:
+    try:
+        descriptor = _canonical_openai_descriptor()
+        if validate_provider_descriptor(descriptor):
+            return _SafeConstructionOutcome(_ConstructionCategory.DEPENDENCY_FAILURE)
+        unit = execution_plan.request_units[0]
+        message = unit.messages[0]
+        intent = ProviderRequestIntentV2(
+            execution_plan_reference=execution_plan.plan_reference,
+            execution_plan_identity=execution_plan.plan_identity,
+            execution_plan_fingerprint=execution_plan.plan_fingerprint,
+            draft_reference=execution_plan.draft_reference,
+            draft_fingerprint=execution_plan.draft_fingerprint,
+            request_units=(
+                ProviderRequestUnitInputV2(
+                    source_request_reference=unit.source_request_reference,
+                    ordinal=unit.ordinal,
+                    messages=(
+                        ProviderMessageInputV2(
+                            role=message.role,
+                            content=message.content,
+                            ordinal=message.ordinal,
+                        ),
+                    ),
+                ),
+            ),
+        )
+        envelope = build_provider_request_envelope(intent, descriptor)
+        if validate_provider_request_envelope(envelope, intent, descriptor):
+            return _SafeConstructionOutcome(_ConstructionCategory.DEPENDENCY_FAILURE)
+        context = ExecutionContextV2(
+            request_id=execution_request_id,
+            requested_at=requested_at,
+        )
+        timeout_policy = TimeoutPolicyV2(timeout_seconds=timeout_seconds)
+        request = ProviderExecutionRequestV2(
+            provider=descriptor,
+            request_intent=intent,
+            request_envelope=envelope,
+            context=context,
+            timeout_policy=timeout_policy,
+        )
+        rebuilt = ProviderExecutionRequestV2.model_validate(
+            request.model_dump(mode="python", warnings=False), strict=True
+        )
+    except Exception:  # noqa: BLE001 - isolate every project-owned dependency failure
+        return _SafeConstructionOutcome(_ConstructionCategory.DEPENDENCY_FAILURE)
+    if type(rebuilt) is not ProviderExecutionRequestV2:
+        return _SafeConstructionOutcome(_ConstructionCategory.DEPENDENCY_FAILURE)
+    return _SafeConstructionOutcome(_ConstructionCategory.SUCCESS, rebuilt)
+
+
+def _canonical_openai_descriptor() -> ProviderDescriptorV2:
+    """Acquire the verified static OpenAI descriptor without runtime activity."""
+
+    return OpenAIProviderAdapter.descriptor
 
 
 def _raise_outcome(outcome: _SafeConstructionOutcome) -> Never:
@@ -217,8 +319,20 @@ def _raise_outcome(outcome: _SafeConstructionOutcome) -> Never:
         )
     else:
         error = SmokeExecutionRequestDependencyError(
-            "canonical smoke request construction is not operational"
+            "canonical smoke request construction failed"
         )
+    try:
+        raise error from None
+    finally:
+        error.__context__ = None
+        error.__cause__ = None
+        error.__suppress_context__ = True
+
+
+def _raise_dependency_error() -> Never:
+    error = SmokeExecutionRequestDependencyError(
+        "canonical smoke request construction failed"
+    )
     try:
         raise error from None
     finally:

@@ -1,4 +1,4 @@
-# Module 2.9 Phase 7.6 Revision 1 — Canonical Smoke Request Authority
+# Module 2.9 Phase 7.6 Revision 2 — Canonical Smoke Request Authority
 
 Status: Implemented — awaiting independent verification
 
@@ -9,9 +9,9 @@ runtime cannot honestly create a live request by themselves. Neither layer owns
 the execution-plan, draft, source-request, request-identity, timestamp, and timeout
 authority required by `ProviderExecutionRequestV2`.
 
-Phase 7.6 introduces the higher-layer smoke-domain authority that will eventually
-own that projection. Revision 1 defines and validates the canonical smoke plan but
-deliberately does not construct a provider execution request.
+Phase 7.6 introduces the higher-layer smoke-domain authority that owns that
+projection. Revision 2 validates the canonical smoke plan and constructs a complete
+provider execution request without executing it.
 
 The dependency direction is:
 
@@ -80,7 +80,7 @@ content are invalid.
 The stable plan does not own a runtime attempt identifier or timestamp. A future
 trusted application composition root will supply them explicitly. Private
 specification protocols describe synchronous request-ID and timestamp sources;
-they are not invoked or exported in Revision 1.
+they are not invoked or exported in Revision 2.
 
 The future construction boundary accepts an exact built-in, nonblank, unpadded
 request ID of at most 200 characters. It accepts only an exact `datetime` whose
@@ -90,20 +90,26 @@ during import or validation.
 
 ## Timeout ownership
 
-The trusted application root supplies the timeout for a particular attempt. The
-boundary accepts an exact positive built-in integer or a finite positive built-in
-float. Booleans, coercible objects, strings, zero, negative, infinity, and NaN are
-invalid. Integers are not converted to floats and no default override exists.
+The trusted application root supplies the timeout for a particular attempt. During
+the first Revision 2 construction attempt, verification found that frozen
+`TimeoutPolicyV2` applies `math.isfinite()` to exact integers and therefore raises
+`OverflowError` for sufficiently large values such as `10**1000`. The frozen layer
+remains unchanged.
 
-A future revision will project the exact value into `TimeoutPolicyV2` and require
-coherence with the production runtime configuration.
+The Phase 7.6 boundary consequently accepts an exact positive built-in integer only
+when `math.isfinite(value)` completes successfully, or a finite positive exact
+built-in float. This private compatibility preflight mirrors frozen
+representability; the accepted value is then passed unchanged through the real
+`TimeoutPolicyV2` validator. `10**1000` and `10**10000` are configuration errors.
+There is no guessed ceiling, numeric coercion, float conversion, fallback, or
+default. Exact type and value are preserved for every accepted timeout.
 
 ## Provider authority and future projections
 
-The future root targets only the canonical `OpenAIProviderAdapter.descriptor`. It
-will not mint or modify a provider descriptor.
+The construction boundary targets only the canonical static
+`OpenAIProviderAdapter.descriptor`. It does not mint or modify a provider descriptor.
 
-The intended pure projection is:
+The exact projection is:
 
 | Smoke authority | `ProviderRequestIntentV2` |
 |---|---|
@@ -118,7 +124,7 @@ The intended pure projection is:
 | exact fixed content | message content |
 | message ordinal `0` | message ordinal `0` |
 
-The future sequence is:
+The implemented sequence is:
 
 ```text
 SmokeExecutionPlanV2
@@ -136,10 +142,12 @@ TimeoutPolicyV2(explicit timeout)
 ProviderExecutionRequestV2
 ```
 
-Revision 1 stops before the first provider DTO. It neither duplicates the frozen
-envelope seals nor fabricates a downstream request.
+The frozen `build_provider_request_envelope()` builder exclusively owns envelope
+projection, identity, and fingerprint construction. After the final request is
+built, it is dumped and strictly reconstructed through the frozen
+`ProviderExecutionRequestV2` contract before return.
 
-## Non-operational construction shell
+## Canonical construction boundary
 
 `SmokeProviderExecutionRequestAuthorityV2.construct()` accepts only:
 
@@ -148,14 +156,17 @@ envelope seals nor fabricates a downstream request.
 - an explicit UTC timestamp;
 - an explicit timeout.
 
-It defensively reconstructs the plan, validates every specification input, returns
-an internal safe outcome, and raises the fixed
-`SmokeExecutionRequestDependencyError` message `canonical smoke request
-construction is not operational`. Invalid input produces the fixed
-`SmokeExecutionRequestConfigurationError` message `invalid canonical smoke request
-authority input`.
+It defensively reconstructs the plan, validates every caller input before provider
+authority acquisition, projects the exact nested intent, uses the frozen envelope
+builder, constructs an explicit execution context and timeout policy, and returns a
+strictly reconstructed `ProviderExecutionRequestV2`.
 
-It never returns or constructs `ProviderExecutionRequestV2` in Revision 1.
+Invalid caller input, including a timeout incompatible with frozen
+`TimeoutPolicyV2`, produces the fixed `SmokeExecutionRequestConfigurationError`
+message `invalid canonical smoke request authority input`. A project-owned
+descriptor or builder incompatibility produces the fixed
+`SmokeExecutionRequestDependencyError` message `canonical smoke request
+construction failed`.
 
 The holder has no persistent state, copies and deep-copies by identity, has a fixed
 representation, and rejects pickle. Public errors are fresh, suppress context, and
@@ -196,13 +207,14 @@ The package exports exactly:
 Canonicalization helpers, seal internals, private source protocols, test doubles,
 provider runtime types, SDK types, and CLI types are not exported.
 
-## Non-operational scope
+## Operational exclusions
 
-Revision 1 performs no credential lookup, environment access, SDK import or
-construction, runtime composition, provider DTO construction, network operation,
-provider call, persistence, telemetry, CLI registration, live request, or Ollama
-work.
+Revision 2 constructs provider-neutral DTOs only. It performs no credential lookup,
+environment access, SDK import or construction, runtime composition, network
+operation, provider call, persistence, telemetry, CLI registration, live request,
+or Ollama work. Model selection remains owned by `OpenAIRuntimeConfigV2`; credential
+authority remains owned by the runtime composer and neither is present in the
+returned request graph.
 
-Revision 2 is reserved for canonical provider request construction after this
-authority contract passes independent verification. Phase 7.7 remains reserved
-for separately authorized live execution.
+Phase 7.7 remains reserved for separately authorized live execution that consumes
+this authoritative request and verifies runtime/request coherence.
