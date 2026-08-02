@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import math
+import os
 from collections.abc import Callable
 from dataclasses import FrozenInstanceError, dataclass, field
 from enum import Enum, auto
@@ -73,6 +74,56 @@ class _ExplicitOpenAICredentialSourceV2:
         return "_ExplicitOpenAICredentialSourceV2(<private>)"
 
 
+class _EnvironmentOpenAICredentialSourceV2:
+    """Stateless source that reads only OPENAI_API_KEY when explicitly invoked."""
+
+    __slots__ = ()
+
+    def get_api_key(self) -> str:
+        outcome = _read_environment_credential_isolated()
+        del self
+        return _return_or_raise_credential_outcome(outcome)
+
+    def __copy__(self) -> Self:
+        return self
+
+    def __deepcopy__(self, memo: dict[int, object]) -> Self:
+        memo[id(self)] = self
+        return self
+
+    def __reduce__(self) -> Never:
+        del self
+        _raise_serialization_error()
+
+    def __reduce_ex__(self, protocol: int) -> Never:
+        del protocol
+        del self
+        _raise_serialization_error()
+
+    def __getstate__(self) -> Never:
+        del self
+        _raise_serialization_error()
+
+    def __setstate__(self, state: object) -> Never:
+        del state
+        del self
+        _raise_serialization_error()
+
+    def __setattr__(self, name: str, value: object) -> None:
+        del name
+        del value
+        del self
+        _raise_frozen_error()
+
+    def __delattr__(self, name: str) -> None:
+        del name
+        del self
+        _raise_frozen_error()
+
+    def __repr__(self) -> str:
+        return "_EnvironmentOpenAICredentialSourceV2(<private>)"
+
+
 class _OfficialOpenAISDKFactoryV2:
     """Stateless factory that constructs one official synchronous SDK client."""
 
@@ -127,6 +178,34 @@ class _SafeConstructorOutcome:
 class _SafeFactoryFailure:
     category: str
     message: str
+
+
+@dataclass(frozen=True, slots=True)
+class _SafeCredentialFailure:
+    message: str
+
+
+def _read_environment_credential_isolated() -> str | _SafeCredentialFailure:
+    try:
+        value = os.getenv("OPENAI_API_KEY")
+    except Exception:  # noqa: BLE001 - process environment failures share no base
+        return _SafeCredentialFailure("OpenAI credential retrieval failed")
+    if value is None:
+        return _SafeCredentialFailure("OpenAI environment credential is unavailable")
+    if not _api_key_is_valid(value):
+        del value
+        return _SafeCredentialFailure("invalid OpenAI credential")
+    return value
+
+
+def _return_or_raise_credential_outcome(
+    outcome: str | _SafeCredentialFailure,
+) -> str:
+    if type(outcome) is str:
+        return outcome
+    message = outcome.message
+    del outcome
+    _raise_credential_error(message)
 
 
 def _create_client_isolated(

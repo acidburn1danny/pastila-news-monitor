@@ -1,4 +1,4 @@
-# Module 2.9 Phase 7.4 Revision 11 — Arbitrary-Precision Timeout Validation
+# Module 2.9 Phase 7.4 Revision 12 — Explicit Environment Credential Adapter
 
 Status: Implemented — awaiting independent verification
 
@@ -51,20 +51,28 @@ data.
 executing descriptors, lookup hooks, or the method body. Each eligible `compose()`
 call invokes the pinned source function exactly once.
 
-A private production source accepts exactly one explicitly injected key at
+One private production source accepts exactly one explicitly injected key at
 construction, validates it immediately, stores no fallback or refresh mechanism,
-and returns it unchanged from `get_api_key()`. The source is immutable and its fixed
-representation excludes the key. A retrieved key must be an exact built-in string, nonempty,
-non-whitespace-only, and unpadded. Keys never enter errors, public DTOs, results,
-logs, or representations. No environment-backed source, `.env` parsing, prefix
-assumption, or `OPENAI_API_KEY` access exists in this revision.
+and returns it unchanged from `get_api_key()`. A second private, stateless production
+source reads exactly `OPENAI_API_KEY` once from the process environment on each
+`get_api_key()` call. It performs no caching or memoization and recognizes no aliases.
+It does not enumerate the environment, read `.env` files, import or call dotenv,
+consult the registry or credential manager, or read credentials from files.
 
-The concrete source is an immutable secret-bearing identity object: shallow and deep
-copy return the same source, and all pickle reduction and state serialization paths
-reject with `OpenAI credential sources cannot be serialized`. The trusted source
-necessarily retains its injected key, and the official SDK client may retain the key
-internally. The composer, runtime config, factory, handoff, ownership tracker, public
-composition fields, errors, module globals, and history do not duplicate it.
+Both sources apply the same policy: a retrieved key must be an exact built-in string,
+nonempty, non-whitespace-only, and unpadded. No key prefix is required. Missing or
+invalid environment values produce fixed credential errors without exposing the
+variable value or process information. Keys never enter errors, public DTOs,
+results, logs, or representations.
+
+Both concrete sources are immutable identity objects: shallow and deep copy return
+the same source, and all pickle reduction and state serialization paths reject with
+`OpenAI credential sources cannot be serialized`. Their fixed representations
+exclude credentials. The explicit source necessarily retains its injected key, while
+the environment source retains no key between retrievals. The official SDK client
+may retain the key internally. The composer, runtime config, factory, handoff,
+ownership tracker, public composition fields, errors, module globals, and history do
+not duplicate it.
 
 ## SDK-factory boundary
 
@@ -225,18 +233,18 @@ The public taxonomy separates composition, configuration, credential, dependency
 and lifecycle failures. Messages are fixed and contain no credential value, raw
 exception text, object representation, memory address, header, body, or transport.
 
-Clean import performs no credential/environment read, SDK construction, network,
+Clean import performs no credential or environment read, SDK construction, network,
 registration, or observable output. Frozen lower layers do not load this package.
 
 ## Operational exclusions
 
-Revision 9 has no `.env` access, environment access, live request, network,
+Revision 12 has no `.env` access, environment enumeration, live request, network,
 streaming, async execution,
 application retry, persistence, logging, telemetry, metrics, tracing, provider
 discovery, automatic registration, or application composition-root integration.
 
 ## Operational revision responsibilities
 
-A separately scoped and independently verified future revision may add an injected
-environment credential implementation and an explicitly opt-in live smoke-test
-specification. It must remain above and must not modify the frozen Phase 7.3 package.
+A separately scoped and independently verified future revision may add an explicitly
+opt-in live smoke-test specification. It must remain above and must not modify the
+frozen Phase 7.3 package.

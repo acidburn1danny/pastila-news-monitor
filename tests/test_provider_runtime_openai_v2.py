@@ -45,6 +45,7 @@ from pastila_scout.provider_runtime_openai_v2.models import (
     _OpenAIRuntimeLifecycleOwnerV2,
 )
 from pastila_scout.provider_runtime_openai_v2.production import (
+    _EnvironmentOpenAICredentialSourceV2,
     _ExplicitOpenAICredentialSourceV2,
     _OfficialOpenAISDKFactoryV2,
 )
@@ -177,6 +178,209 @@ def test_explicit_credential_source_copy_identity_and_pickle_rejection() -> None
             pickle.dumps(source, protocol=protocol)
         assert raised.value.args == ("OpenAI credential sources cannot be serialized",)
         assert key not in str(raised.value)
+
+
+def test_environment_credential_source_reads_only_exact_variable_without_cache(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    import pastila_scout.provider_runtime_openai_v2.production as production_module
+
+    calls: list[str] = []
+    values = iter(("first-valid-key", "second-valid-key"))
+
+    def getenv(name: str) -> object:
+        calls.append(name)
+        return next(values)
+
+    monkeypatch.setattr(production_module.os, "getenv", getenv)
+    source = _EnvironmentOpenAICredentialSourceV2()
+    assert source.get_api_key() == "first-valid-key"
+    assert source.get_api_key() == "second-valid-key"
+    assert calls == ["OPENAI_API_KEY", "OPENAI_API_KEY"]
+
+
+@pytest.mark.parametrize(
+    ("value", "message"),
+    (
+        (None, "OpenAI environment credential is unavailable"),
+        ("", "invalid OpenAI credential"),
+        (" ", "invalid OpenAI credential"),
+        ("\t", "invalid OpenAI credential"),
+        ("\n", "invalid OpenAI credential"),
+        (" key", "invalid OpenAI credential"),
+        ("key ", "invalid OpenAI credential"),
+        (b"key", "invalid OpenAI credential"),
+        (False, "invalid OpenAI credential"),
+        (1, "invalid OpenAI credential"),
+        (1.0, "invalid OpenAI credential"),
+    ),
+)
+def test_environment_credential_source_rejects_missing_and_invalid_values(
+    monkeypatch: pytest.MonkeyPatch,
+    value: object,
+    message: str,
+) -> None:
+    import pastila_scout.provider_runtime_openai_v2.production as production_module
+
+    calls = 0
+
+    def getenv(name: str) -> object:
+        nonlocal calls
+        calls += 1
+        assert name == "OPENAI_API_KEY"
+        return value
+
+    monkeypatch.setattr(production_module.os, "getenv", getenv)
+    with pytest.raises(OpenAIRuntimeCredentialError) as raised:
+        _EnvironmentOpenAICredentialSourceV2().get_api_key()
+    assert raised.value.args == (message,)
+    assert raised.value.__context__ is None
+    assert raised.value.__cause__ is None
+    assert raised.value.__suppress_context__ is True
+    assert calls == 1
+
+
+def test_environment_credential_source_is_immutable_copy_safe_and_unserializable() -> (
+    None
+):
+    source = _EnvironmentOpenAICredentialSourceV2()
+    assert copy.copy(source) is source
+    assert copy.deepcopy(source) is source
+    assert repr(source) == "_EnvironmentOpenAICredentialSourceV2(<private>)"
+    assert str(source) == repr(source)
+    assert not hasattr(source, "__dict__")
+    with pytest.raises(FrozenInstanceError):
+        source.value = "key"
+    for protocol in range(pickle.HIGHEST_PROTOCOL + 1):
+        with pytest.raises(TypeError) as raised:
+            pickle.dumps(source, protocol=protocol)
+        assert raised.value.args == ("OpenAI credential sources cannot be serialized",)
+
+
+def test_environment_credential_error_traceback_contains_only_safe_locals(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    import pastila_scout.provider_runtime_openai_v2.production as production_module
+
+    marker = " SECRET_ENVIRONMENT_KEY "
+    source = _EnvironmentOpenAICredentialSourceV2()
+    monkeypatch.setattr(production_module.os, "getenv", lambda name: marker)
+    with pytest.raises(OpenAIRuntimeCredentialError) as raised:
+        source.get_api_key()
+    error = raised.value
+    traceback = error.__traceback__
+    while traceback is not None:
+        if traceback.tb_frame.f_code.co_filename.endswith("production.py"):
+            values = tuple(traceback.tb_frame.f_locals.values())
+            assert marker not in values
+            assert not any(value is source for value in values)
+            assert not any(value is production_module.os.environ for value in values)
+        traceback = traceback.tb_next
+    assert marker not in str(error)
+
+
+def test_environment_credential_error_isolated_from_nested_active_context(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    import pastila_scout.provider_runtime_openai_v2.production as production_module
+
+    class CallerError(RuntimeError):
+        repr_calls = 0
+        str_calls = 0
+
+        def __repr__(self) -> str:
+            type(self).repr_calls += 1
+            raise AssertionError("caller repr executed")
+
+        def __str__(self) -> str:
+            type(self).str_calls += 1
+            raise AssertionError("caller str executed")
+
+    monkeypatch.setattr(production_module.os, "getenv", lambda name: None)
+    outer = CallerError("SECRET_OUTER")
+    inner = CallerError("SECRET_INNER")
+    try:
+        raise outer
+    except CallerError:
+        try:
+            raise inner
+        except CallerError:
+            with pytest.raises(OpenAIRuntimeCredentialError) as raised:
+                _EnvironmentOpenAICredentialSourceV2().get_api_key()
+    error = raised.value
+    assert error.__context__ is None
+    assert error.__cause__ is None
+    assert error.__suppress_context__ is True
+    assert CallerError.repr_calls == CallerError.str_calls == 0
+
+
+def test_environment_credential_failure_graph_retains_no_sensitive_objects(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    import pastila_scout.provider_runtime_openai_v2.production as production_module
+
+    marker = " SECRET_RECURSIVE_ENVIRONMENT_KEY "
+    source = _EnvironmentOpenAICredentialSourceV2()
+    environment = production_module.os.environ
+    caller_error = RuntimeError("SECRET_CALLER_ERROR")
+    monkeypatch.setattr(production_module.os, "getenv", lambda name: marker)
+    try:
+        raise caller_error
+    except RuntimeError:
+        with pytest.raises(OpenAIRuntimeCredentialError) as raised:
+            source.get_api_key()
+
+    roots: list[object] = [raised.value]
+    traceback = raised.value.__traceback__
+    while traceback is not None:
+        if traceback.tb_frame.f_code.co_filename.endswith("production.py"):
+            roots.extend(traceback.tb_frame.f_locals.values())
+        traceback = traceback.tb_next
+
+    seen: set[int] = set()
+
+    def visit(value: object) -> None:
+        if id(value) in seen:
+            return
+        seen.add(id(value))
+        assert value is not source
+        assert value is not environment
+        assert value is not caller_error
+        assert value != marker
+        if isinstance(value, BaseException):
+            visit(value.args)
+            if value.__context__ is not None:
+                visit(value.__context__)
+            if value.__cause__ is not None:
+                visit(value.__cause__)
+        elif isinstance(value, dict):
+            for key, item in value.items():
+                visit(key)
+                visit(item)
+        elif isinstance(value, (tuple, list, set, frozenset)):
+            for item in value:
+                visit(item)
+
+    for root in roots:
+        visit(root)
+
+
+def test_environment_credential_source_rejects_string_subclasses(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    import pastila_scout.provider_runtime_openai_v2.production as production_module
+
+    class StringSubclass(str):
+        pass
+
+    monkeypatch.setattr(
+        production_module.os,
+        "getenv",
+        lambda name: StringSubclass("apparently-valid-key"),
+    )
+    with pytest.raises(OpenAIRuntimeCredentialError) as raised:
+        _EnvironmentOpenAICredentialSourceV2().get_api_key()
+    assert raised.value.args == ("invalid OpenAI credential",)
 
 
 @pytest.mark.parametrize(
@@ -737,9 +941,11 @@ def test_dependency_direction_and_capability_absence() -> None:
         "subprocess",
     }
     forbidden_text = (
-        "OPENAI_API_KEY",
-        "os.getenv",
         "os.environ",
+        "OPENAI_KEY",
+        "OPENAI_TOKEN",
+        "OPENAI_SECRET",
+        "load_dotenv",
         "provider_composition_v2",
         "register(",
     )
@@ -758,6 +964,23 @@ def test_dependency_direction_and_capability_absence() -> None:
         }
         assert not imports & forbidden_imports
         assert all(value not in source for value in forbidden_text)
+
+        environment_reads = [
+            node
+            for node in ast.walk(tree)
+            if isinstance(node, ast.Call)
+            and isinstance(node.func, ast.Attribute)
+            and isinstance(node.func.value, ast.Name)
+            and node.func.value.id == "os"
+            and node.func.attr == "getenv"
+        ]
+        if path.name == "production.py":
+            assert len(environment_reads) == 1
+            assert len(environment_reads[0].args) == 1
+            assert isinstance(environment_reads[0].args[0], ast.Constant)
+            assert environment_reads[0].args[0].value == "OPENAI_API_KEY"
+        else:
+            assert not environment_reads
 
     for relative in (
         "provider_v2",
