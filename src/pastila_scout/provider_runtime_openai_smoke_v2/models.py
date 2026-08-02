@@ -1,4 +1,4 @@
-"""Immutable configuration for a future opt-in OpenAI smoke test."""
+"""Immutable contracts for the injected offline OpenAI smoke boundary."""
 
 from __future__ import annotations
 
@@ -51,4 +51,25 @@ class OpenAISmokeTestConfigurationV2(BaseModel):
         return value
 
 
-__all__ = ("OpenAISmokeTestConfigurationV2",)
+class OpenAISmokeTestResultV2(BaseModel):
+    """Minimal deterministic result returned by an offline smoke execution."""
+
+    model_config = ConfigDict(
+        frozen=True,
+        extra="forbid",
+        revalidate_instances="always",
+        hide_input_in_errors=True,
+    )
+
+    success: StrictBool
+    response_text: StrictStr
+
+    @field_validator("response_text", mode="before")
+    @classmethod
+    def validate_response_text(cls, value: object) -> object:
+        if type(value) is not str or not value or value != value.strip():
+            raise ValueError("invalid OpenAI smoke-test response")
+        return value
+
+
+__all__ = ("OpenAISmokeTestConfigurationV2", "OpenAISmokeTestResultV2")

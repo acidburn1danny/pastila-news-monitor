@@ -1,4 +1,4 @@
-"""Non-operational contracts for a future opt-in OpenAI smoke test."""
+"""Injected offline contracts for an opt-in OpenAI smoke test."""
 
 from .errors import (
     OpenAISmokeTestConfigurationError,
@@ -6,7 +6,7 @@ from .errors import (
     OpenAISmokeTestDependencyError,
     OpenAISmokeTestError,
 )
-from .models import OpenAISmokeTestConfigurationV2
+from .models import OpenAISmokeTestConfigurationV2, OpenAISmokeTestResultV2
 from .runner import OpenAISmokeTestRunnerV2
 
 __all__ = (
@@ -15,5 +15,6 @@ __all__ = (
     "OpenAISmokeTestConfirmationError",
     "OpenAISmokeTestDependencyError",
     "OpenAISmokeTestError",
+    "OpenAISmokeTestResultV2",
     "OpenAISmokeTestRunnerV2",
 )

@@ -1,4 +1,4 @@
-"""Fixed errors for the non-operational OpenAI smoke-test boundary."""
+"""Fixed errors for the injected offline OpenAI smoke-test boundary."""
 
 
 class OpenAISmokeTestError(RuntimeError):
@@ -14,7 +14,7 @@ class OpenAISmokeTestConfigurationError(OpenAISmokeTestError):
 
 
 class OpenAISmokeTestDependencyError(OpenAISmokeTestError):
-    """The operational smoke-test implementation is unavailable."""
+    """An injected smoke-test dependency or lifecycle operation failed."""
 
 
 __all__ = (
