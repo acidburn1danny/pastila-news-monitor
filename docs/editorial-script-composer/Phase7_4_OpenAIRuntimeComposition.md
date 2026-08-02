@@ -1,4 +1,4 @@
-# Module 2.9 Phase 7.4 Revision 7 — Coherent Handoff and Unique Ownership
+# Module 2.9 Phase 7.4 Revision 11 — Arbitrary-Precision Timeout Validation
 
 Status: Implemented — awaiting independent verification
 
@@ -51,10 +51,20 @@ data.
 executing descriptors, lookup hooks, or the method body. Each eligible `compose()`
 call invokes the pinned source function exactly once.
 
-A retrieved key must be an exact built-in string, nonempty,
+A private production source accepts exactly one explicitly injected key at
+construction, validates it immediately, stores no fallback or refresh mechanism,
+and returns it unchanged from `get_api_key()`. The source is immutable and its fixed
+representation excludes the key. A retrieved key must be an exact built-in string, nonempty,
 non-whitespace-only, and unpadded. Keys never enter errors, public DTOs, results,
 logs, or representations. No environment-backed source, `.env` parsing, prefix
 assumption, or `OPENAI_API_KEY` access exists in this revision.
+
+The concrete source is an immutable secret-bearing identity object: shallow and deep
+copy return the same source, and all pickle reduction and state serialization paths
+reject with `OpenAI credential sources cannot be serialized`. The trusted source
+necessarily retains its injected key, and the official SDK client may retain the key
+internally. The composer, runtime config, factory, handoff, ownership tracker, public
+composition fields, errors, module globals, and history do not duplicate it.
 
 ## SDK-factory boundary
 
@@ -66,17 +76,43 @@ contract. Static validation ignores forged `__signature__` and
 and async factories without executing controlled code.
 
 Normal package import constructs no `OpenAI(...)` client and calls neither factory
-operation. Revision 7 adds no concrete official factory or environment-backed source.
+operation. The private stateless production factory independently validates the exact
+key, zero retry policy, and positive finite timeout before importing the SDK. It then
+loads `OpenAI` only inside isolated factory execution and constructs it exactly once as
+`OpenAI(api_key=<validated key>, max_retries=0, timeout=<configured timeout>)`.
+The timeout is passed unchanged, with no rounding, conversion, default substitution,
+or second timeout authority. The factory supplies no organization, project, base URL,
+headers, telemetry, or transport override. Construction
+does not call Responses or perform authentication or network traffic; no live request
+or smoke test is part of this revision. Missing SDK imports map to `OpenAI SDK is
+unavailable`, other ordinary import failures to `OpenAI SDK could not be loaded`, and
+missing or noncallable constructors to `OpenAI SDK is incompatible`. Constructor
+failures map to `OpenAI SDK construction failed`. Import and constructor scopes return
+only safe fixed outcomes before public errors are raised, so keys, constructors, raw
+exceptions, modules, and transports are absent from public traceback frames. Process
+control `BaseException` subclasses propagate unchanged.
+
+Timeout validation is exact-type and coercion-free. Positive exact built-in integers
+use arbitrary-precision integer comparison only and are never converted to floating
+point. Exact built-in floats must be finite and greater than zero. Booleans,
+subclasses, and coercible numeric objects are rejected without invoking conversion,
+truthiness, or comparison hooks. Arbitrarily large positive integers remain part of
+the runtime contract and reach the SDK constructor unchanged; if an installed SDK or
+transport cannot represent one, its ordinary constructor failure follows the same
+isolated fixed `OpenAI SDK construction failed` path.
+
 The trusted factory must use the private one-client handoff mint. That mint statically
 derives the synchronous Responses resource and pinned close authority from the same
 raw client, requires weak-reference support, and returns an exact frozen handoff.
 It accepts no independent Responses argument, so split execution and cleanup
 provenance cannot be represented through the supported contract.
 
-Before a valid handoff is returned, the factory owns the client and is responsible
-for cleanup if minting fails. The composer never guesses cleanup for arbitrary or
-malformed factory values. Ownership transfers only when the composer revalidates and
-registers the exact coherent handoff.
+Before a valid handoff is returned, the factory owns the client. If minting fails and
+a descriptor-safe close authority exists, cleanup is attempted exactly once; cleanup
+failure takes lifecycle-error precedence. If no safe close authority exists, the
+factory does not execute descriptors or guess cleanup. The composer never guesses
+cleanup for arbitrary or malformed factory values. Ownership transfers only when the
+composer revalidates and registers the exact coherent handoff.
 
 ## Lifecycle ownership and composition result
 
@@ -194,14 +230,13 @@ registration, or observable output. Frozen lower layers do not load this package
 
 ## Operational exclusions
 
-Revision 6 has no `.env` access, environment access, concrete official SDK factory,
-live request, network, streaming, async execution,
+Revision 9 has no `.env` access, environment access, live request, network,
+streaming, async execution,
 application retry, persistence, logging, telemetry, metrics, tracing, provider
 discovery, automatic registration, or application composition-root integration.
 
 ## Operational revision responsibilities
 
-A separately scoped and independently verified future revision may add the official
-synchronous SDK factory, an injected environment credential implementation, and an
-explicitly opt-in live smoke-test specification. It must remain above and must not
-modify the frozen Phase 7.3 package.
+A separately scoped and independently verified future revision may add an injected
+environment credential implementation and an explicitly opt-in live smoke-test
+specification. It must remain above and must not modify the frozen Phase 7.3 package.

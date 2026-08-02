@@ -61,9 +61,17 @@ class OpenAIRuntimeConfigV2(BaseModel):
     @field_validator("request_timeout_seconds", mode="before")
     @classmethod
     def validate_timeout(cls, value: object) -> object:
-        if type(value) not in {int, float} or not math.isfinite(value):
+        if not _timeout_is_valid(value):
             raise ValueError("invalid OpenAI runtime timeout")
         return value
+
+
+def _timeout_is_valid(value: object) -> bool:
+    if type(value) is int:
+        return value > 0
+    if type(value) is float:
+        return math.isfinite(value) and value > 0.0
+    return False
 
 
 class _OpenAIRuntimeLifecycleOwnerV2:

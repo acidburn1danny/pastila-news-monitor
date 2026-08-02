@@ -5,10 +5,13 @@ import copy
 import gc
 import hashlib
 import pickle
+import sys
 from dataclasses import FrozenInstanceError, replace
+from decimal import Decimal
+from fractions import Fraction
 from inspect import Parameter, Signature
 from pathlib import Path
-from types import CellType
+from types import CellType, ModuleType
 
 import pytest
 from pydantic import ValidationError
@@ -40,6 +43,10 @@ from pastila_scout.provider_runtime_openai_v2.composition import (
 )
 from pastila_scout.provider_runtime_openai_v2.models import (
     _OpenAIRuntimeLifecycleOwnerV2,
+)
+from pastila_scout.provider_runtime_openai_v2.production import (
+    _ExplicitOpenAICredentialSourceV2,
+    _OfficialOpenAISDKFactoryV2,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -139,6 +146,546 @@ class _Lifecycle:
             raise RuntimeError("secret lifecycle failure")
 
 
+@pytest.mark.parametrize("value", (None, b"key", False, 1, "", " ", " key", "key "))
+def test_explicit_credential_source_rejects_invalid_values(value: object) -> None:
+    with pytest.raises(OpenAIRuntimeCredentialError) as raised:
+        _ExplicitOpenAICredentialSourceV2(value)
+    assert raised.value.args == ("invalid OpenAI credential",)
+    assert repr(value) not in str(raised.value)
+
+
+def test_explicit_credential_source_is_immutable_and_repr_safe() -> None:
+    key = "SECRET_EXPLICIT_API_KEY"
+    source = _ExplicitOpenAICredentialSourceV2(key)
+    assert source.get_api_key() == key
+    assert key not in repr(source)
+    assert key not in str(source)
+    with pytest.raises(FrozenInstanceError):
+        source._api_key = "replacement"
+    with pytest.raises(FrozenInstanceError):
+        del source._api_key
+
+
+def test_explicit_credential_source_copy_identity_and_pickle_rejection() -> None:
+    key = "SECRET_CONCRETE_OPENAI_KEY"
+    source = _ExplicitOpenAICredentialSourceV2(key)
+    assert copy.copy(source) is source
+    assert copy.deepcopy(source) is source
+    assert source.get_api_key() is key
+    for protocol in range(pickle.HIGHEST_PROTOCOL + 1):
+        with pytest.raises(TypeError) as raised:
+            pickle.dumps(source, protocol=protocol)
+        assert raised.value.args == ("OpenAI credential sources cannot be serialized",)
+        assert key not in str(raised.value)
+
+
+@pytest.mark.parametrize(
+    ("argument", "value"),
+    (
+        ("api_key", None),
+        ("api_key", b"key"),
+        ("api_key", False),
+        ("api_key", 1),
+        ("api_key", 1.0),
+        ("api_key", ""),
+        ("api_key", " "),
+        ("api_key", "\t"),
+        ("api_key", "\n"),
+        ("api_key", " key"),
+        ("api_key", "key "),
+        ("max_retries", None),
+        ("max_retries", False),
+        ("max_retries", 0.0),
+        ("max_retries", "0"),
+        ("max_retries", -1),
+        ("max_retries", 1),
+        ("request_timeout_seconds", None),
+        ("request_timeout_seconds", False),
+        ("request_timeout_seconds", True),
+        ("request_timeout_seconds", "1"),
+        ("request_timeout_seconds", 0),
+        ("request_timeout_seconds", -1),
+        ("request_timeout_seconds", float("nan")),
+        ("request_timeout_seconds", float("inf")),
+        ("request_timeout_seconds", float("-inf")),
+    ),
+)
+def test_official_factory_rejects_invalid_inputs_before_sdk_import(
+    monkeypatch: pytest.MonkeyPatch,
+    argument: str,
+    value: object,
+) -> None:
+    import pastila_scout.provider_runtime_openai_v2.production as production_module
+
+    import_calls = 0
+
+    def forbidden_import(name: str) -> object:
+        nonlocal import_calls
+        import_calls += 1
+        raise AssertionError(name)
+
+    monkeypatch.setattr(production_module, "import_module", forbidden_import)
+    arguments: dict[str, object] = {
+        "api_key": "valid-key",
+        "max_retries": 0,
+        "request_timeout_seconds": 1.5,
+    }
+    arguments[argument] = value
+    with pytest.raises(OpenAIRuntimeDependencyError) as raised:
+        _OfficialOpenAISDKFactoryV2().create_client(**arguments)
+    assert raised.value.__context__ is None
+    assert raised.value.__cause__ is None
+    assert raised.value.__suppress_context__ is True
+    assert "valid-key" not in str(raised.value)
+    assert import_calls == 0
+
+
+@pytest.mark.parametrize(
+    "timeout",
+    (1, 30, 10**100, 10**1000, 10**10000),
+    ids=("one", "thirty", "pow100", "pow1000", "pow10000"),
+)
+def test_arbitrary_precision_integer_timeout_reaches_constructor_exactly(
+    monkeypatch: pytest.MonkeyPatch,
+    timeout: int,
+) -> None:
+    calls: list[dict[str, object]] = []
+    raw_client = _RawClient(_Responses())
+
+    def constructor(**arguments: object) -> object:
+        calls.append(arguments)
+        return raw_client
+
+    module = ModuleType("openai")
+    module.OpenAI = constructor
+    monkeypatch.setitem(sys.modules, "openai", module)
+    config = OpenAIRuntimeConfigV2(
+        model="gpt-contract-model", request_timeout_seconds=timeout
+    )
+    assert type(config.request_timeout_seconds) is int
+    assert config.request_timeout_seconds == timeout
+    _OfficialOpenAISDKFactoryV2().create_client(
+        api_key="valid-key",
+        max_retries=0,
+        request_timeout_seconds=config.request_timeout_seconds,
+    )
+    assert calls == [{"api_key": "valid-key", "max_retries": 0, "timeout": timeout}]
+    assert type(calls[0]["timeout"]) is int
+
+
+@pytest.mark.parametrize("timeout", (0, -1, -(10**1000)))
+def test_huge_nonpositive_integer_timeout_rejects_before_import(
+    monkeypatch: pytest.MonkeyPatch,
+    timeout: int,
+) -> None:
+    import pastila_scout.provider_runtime_openai_v2.production as production_module
+
+    import_calls = 0
+
+    def forbidden_import(name: str) -> object:
+        nonlocal import_calls
+        import_calls += 1
+        raise AssertionError(name)
+
+    monkeypatch.setattr(production_module, "import_module", forbidden_import)
+    with pytest.raises(ValidationError):
+        OpenAIRuntimeConfigV2(
+            model="gpt-contract-model", request_timeout_seconds=timeout
+        )
+    with pytest.raises(OpenAIRuntimeDependencyError) as raised:
+        _OfficialOpenAISDKFactoryV2().create_client(
+            api_key="valid-key",
+            max_retries=0,
+            request_timeout_seconds=timeout,
+        )
+    assert raised.value.args == ("invalid OpenAI SDK timeout",)
+    assert raised.value.__context__ is None
+    assert import_calls == 0
+
+
+def test_copied_invalid_huge_negative_timeout_rejects_safely() -> None:
+    config = OpenAIRuntimeConfigV2(
+        model="gpt-contract-model", request_timeout_seconds=10**1000
+    )
+    copied = config.model_copy(update={"request_timeout_seconds": -(10**1000)})
+    source = _CredentialSource()
+    factory = _Factory()
+    with pytest.raises(OpenAIRuntimeConfigurationError) as raised:
+        OpenAIRuntimeComposerV2(copied, credential_source=source, sdk_factory=factory)
+    assert raised.value.args == ("invalid OpenAI runtime config",)
+    assert raised.value.__context__ is None
+    assert source.calls == factory.create_calls == 0
+
+
+@pytest.mark.parametrize("timeout", (0.000001, 0.5, 30.0, 30.25, 1e308))
+def test_positive_finite_float_timeout_remains_valid(timeout: float) -> None:
+    config = OpenAIRuntimeConfigV2(
+        model="gpt-contract-model", request_timeout_seconds=timeout
+    )
+    assert type(config.request_timeout_seconds) is float
+    assert config.request_timeout_seconds == timeout
+
+
+def test_timeout_validation_never_coerces_hostile_numeric_values(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    import pastila_scout.provider_runtime_openai_v2.production as production_module
+
+    class HostileNumber:
+        float_calls = 0
+        int_calls = 0
+        bool_calls = 0
+        comparison_calls = 0
+
+        def __float__(self) -> float:
+            type(self).float_calls += 1
+            raise AssertionError("float coercion executed")
+
+        def __int__(self) -> int:
+            type(self).int_calls += 1
+            raise AssertionError("integer coercion executed")
+
+        def __bool__(self) -> bool:
+            type(self).bool_calls += 1
+            raise AssertionError("truthiness executed")
+
+        def __gt__(self, other: object) -> bool:
+            type(self).comparison_calls += 1
+            raise AssertionError("comparison executed")
+
+    class IntegerSubclass(int):
+        pass
+
+    class FloatSubclass(float):
+        pass
+
+    values = (
+        None,
+        False,
+        True,
+        "30",
+        b"30",
+        Decimal(30),
+        Fraction(30, 1),
+        IntegerSubclass(30),
+        FloatSubclass(30.0),
+        HostileNumber(),
+    )
+    import_calls = 0
+
+    def forbidden_import(name: str) -> object:
+        nonlocal import_calls
+        import_calls += 1
+        raise AssertionError(name)
+
+    monkeypatch.setattr(production_module, "import_module", forbidden_import)
+    for value in values:
+        with pytest.raises(ValidationError):
+            OpenAIRuntimeConfigV2(
+                model="gpt-contract-model", request_timeout_seconds=value
+            )
+        with pytest.raises(OpenAIRuntimeDependencyError):
+            _OfficialOpenAISDKFactoryV2().create_client(
+                api_key="valid-key",
+                max_retries=0,
+                request_timeout_seconds=value,
+            )
+    assert import_calls == 0
+    assert HostileNumber.float_calls == 0
+    assert HostileNumber.int_calls == 0
+    assert HostileNumber.bool_calls == 0
+    assert HostileNumber.comparison_calls == 0
+
+
+def test_huge_integer_timeout_propagates_through_concrete_composition(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    timeout = 10**1000
+    calls: list[dict[str, object]] = []
+    raw_client = _RawClient(_Responses())
+
+    def constructor(**arguments: object) -> object:
+        calls.append(arguments)
+        return raw_client
+
+    module = ModuleType("openai")
+    module.OpenAI = constructor
+    monkeypatch.setitem(sys.modules, "openai", module)
+    source = _ExplicitOpenAICredentialSourceV2("valid-key")
+    composer = OpenAIRuntimeComposerV2(
+        OpenAIRuntimeConfigV2(
+            model="gpt-contract-model", request_timeout_seconds=timeout
+        ),
+        credential_source=source,
+        sdk_factory=_OfficialOpenAISDKFactoryV2(),
+    )
+    result = composer.compose()
+    assert calls == [{"api_key": "valid-key", "max_retries": 0, "timeout": timeout}]
+    assert type(calls[0]["timeout"]) is int
+    assert raw_client.close_calls == 0
+    result.close()
+    assert raw_client.close_calls == 1
+
+
+def test_official_factory_constructs_once_without_network(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    constructor_calls: list[dict[str, object]] = []
+    responses = _Responses()
+    raw_client = _RawClient(responses)
+
+    def openai_constructor(**arguments: object) -> object:
+        constructor_calls.append(arguments)
+        return raw_client
+
+    fake_openai = ModuleType("openai")
+    fake_openai.OpenAI = openai_constructor
+    monkeypatch.setitem(sys.modules, "openai", fake_openai)
+
+    import socket
+
+    def forbid_network(*args: object, **kwargs: object) -> object:
+        raise AssertionError("network access attempted")
+
+    monkeypatch.setattr(socket, "socket", forbid_network)
+    factory = _OfficialOpenAISDKFactoryV2()
+    handoff = factory.create_client(
+        api_key="SECRET_EXPLICIT_API_KEY",
+        max_retries=0,
+        request_timeout_seconds=7.5,
+    )
+    assert constructor_calls == [
+        {"api_key": "SECRET_EXPLICIT_API_KEY", "max_retries": 0, "timeout": 7.5}
+    ]
+    assert object.__getattribute__(handoff, "raw_client") is raw_client
+    assert object.__getattribute__(handoff, "responses_resource") is responses
+    assert object.__getattribute__(handoff, "close_receiver") is raw_client
+    assert raw_client.close_calls == 0
+
+
+def test_official_factory_missing_sdk_is_safe(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    import pastila_scout.provider_runtime_openai_v2.production as production_module
+
+    def fail_openai_import(name: str) -> object:
+        assert name == "openai"
+        raise ImportError("SECRET_IMPORT_FAILURE")
+
+    monkeypatch.setattr(production_module, "import_module", fail_openai_import)
+    with pytest.raises(OpenAIRuntimeDependencyError) as raised:
+        _OfficialOpenAISDKFactoryV2().create_client(
+            api_key="SECRET_EXPLICIT_API_KEY",
+            max_retries=0,
+            request_timeout_seconds=7.5,
+        )
+    assert raised.value.args == ("OpenAI SDK is unavailable",)
+    assert raised.value.__context__ is None
+    assert "SECRET" not in str(raised.value)
+
+
+@pytest.mark.parametrize(
+    ("failure", "message"),
+    (
+        (ModuleNotFoundError("SECRET_MISSING"), "OpenAI SDK is unavailable"),
+        (ImportError("SECRET_IMPORT"), "OpenAI SDK is unavailable"),
+        (RuntimeError("SECRET_BROKEN"), "OpenAI SDK could not be loaded"),
+    ),
+)
+def test_official_factory_contains_sdk_import_failures(
+    monkeypatch: pytest.MonkeyPatch,
+    failure: Exception,
+    message: str,
+) -> None:
+    import pastila_scout.provider_runtime_openai_v2.production as production_module
+
+    def fail(name: str) -> object:
+        assert name == "openai"
+        raise failure
+
+    monkeypatch.setattr(production_module, "import_module", fail)
+    with pytest.raises(OpenAIRuntimeDependencyError) as raised:
+        _OfficialOpenAISDKFactoryV2().create_client(
+            api_key="SECRET_IMPORT_KEY",
+            max_retries=0,
+            request_timeout_seconds=1.0,
+        )
+    assert raised.value.args == (message,)
+    assert raised.value.__context__ is None
+    assert raised.value.__cause__ is None
+    assert raised.value.__suppress_context__ is True
+    assert "SECRET" not in str(raised.value)
+
+
+@pytest.mark.parametrize("constructor", (None, object()))
+def test_official_factory_rejects_incompatible_sdk(
+    monkeypatch: pytest.MonkeyPatch,
+    constructor: object,
+) -> None:
+    import pastila_scout.provider_runtime_openai_v2.production as production_module
+
+    module = ModuleType("openai")
+    module.OpenAI = constructor
+    monkeypatch.setattr(production_module, "import_module", lambda name: module)
+    with pytest.raises(OpenAIRuntimeDependencyError) as raised:
+        _OfficialOpenAISDKFactoryV2().create_client(
+            api_key="SECRET_INCOMPATIBLE_KEY",
+            max_retries=0,
+            request_timeout_seconds=1.0,
+        )
+    assert raised.value.args == ("OpenAI SDK is incompatible",)
+    assert raised.value.__context__ is None
+
+
+@pytest.mark.parametrize(
+    "failure", (KeyboardInterrupt(), SystemExit(), GeneratorExit())
+)
+def test_official_factory_propagates_sdk_import_base_exceptions(
+    monkeypatch: pytest.MonkeyPatch,
+    failure: BaseException,
+) -> None:
+    import pastila_scout.provider_runtime_openai_v2.production as production_module
+
+    def fail(name: str) -> object:
+        raise failure
+
+    monkeypatch.setattr(production_module, "import_module", fail)
+    with pytest.raises(type(failure)) as raised:
+        _OfficialOpenAISDKFactoryV2().create_client(
+            api_key="valid-key", max_retries=0, request_timeout_seconds=1.0
+        )
+    assert raised.value is failure
+
+
+def test_official_constructor_failure_traceback_is_secret_free(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    key = "SECRET_CONSTRUCTOR_KEY"
+    raw_error = RuntimeError("SECRET_CONSTRUCTOR_FAILURE")
+
+    def fail_constructor(**arguments: object) -> object:
+        raise raw_error
+
+    module = ModuleType("openai")
+    module.OpenAI = fail_constructor
+    monkeypatch.setitem(sys.modules, "openai", module)
+    with pytest.raises(OpenAIRuntimeDependencyError) as raised:
+        _OfficialOpenAISDKFactoryV2().create_client(
+            api_key=key, max_retries=0, request_timeout_seconds=2.5
+        )
+    error = raised.value
+    assert error.args == ("OpenAI SDK construction failed",)
+    assert error.__context__ is None
+    assert error.__cause__ is None
+    assert error.__suppress_context__ is True
+    traceback = error.__traceback__
+    while traceback is not None:
+        if traceback.tb_frame.f_code.co_filename.endswith("production.py"):
+            values = tuple(traceback.tb_frame.f_locals.values())
+            assert key not in values
+            assert fail_constructor not in values
+            assert raw_error not in values
+        traceback = traceback.tb_next
+
+
+def test_official_constructor_failure_isolated_from_nested_active_context(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    class CallerError(RuntimeError):
+        repr_calls = 0
+        str_calls = 0
+
+        def __repr__(self) -> str:
+            type(self).repr_calls += 1
+            raise AssertionError("caller repr executed")
+
+        def __str__(self) -> str:
+            type(self).str_calls += 1
+            raise AssertionError("caller str executed")
+
+    def fail_constructor(**arguments: object) -> object:
+        raise RuntimeError("SECRET_CONSTRUCTOR_FAILURE")
+
+    module = ModuleType("openai")
+    module.OpenAI = fail_constructor
+    monkeypatch.setitem(sys.modules, "openai", module)
+    outer = CallerError("SECRET_OUTER")
+    inner = CallerError("SECRET_INNER")
+    try:
+        raise outer
+    except CallerError:
+        try:
+            raise inner
+        except CallerError:
+            with pytest.raises(OpenAIRuntimeDependencyError) as raised:
+                _OfficialOpenAISDKFactoryV2().create_client(
+                    api_key="SECRET_NESTED_KEY",
+                    max_retries=0,
+                    request_timeout_seconds=2.5,
+                )
+    error = raised.value
+    assert error.__context__ is None
+    assert error.__cause__ is None
+    assert error.__suppress_context__ is True
+    assert CallerError.repr_calls == CallerError.str_calls == 0
+
+
+@pytest.mark.parametrize("fail_close", (False, True))
+def test_official_factory_malformed_client_cleanup_precedence(
+    monkeypatch: pytest.MonkeyPatch,
+    fail_close: bool,
+) -> None:
+    raw_client = _RawClient(object(), fail_close=fail_close)
+    module = ModuleType("openai")
+    module.OpenAI = lambda **arguments: raw_client
+    monkeypatch.setitem(sys.modules, "openai", module)
+    expected = (
+        OpenAIRuntimeLifecycleError if fail_close else OpenAIRuntimeDependencyError
+    )
+    with pytest.raises(expected) as raised:
+        _OfficialOpenAISDKFactoryV2().create_client(
+            api_key="valid-key", max_retries=0, request_timeout_seconds=1.0
+        )
+    expected_message = (
+        "OpenAI SDK cleanup failed" if fail_close else "invalid OpenAI SDK client"
+    )
+    assert raised.value.args == (expected_message,)
+    assert raw_client.close_calls == 1
+
+
+def test_concrete_dependencies_compose_without_responses_request(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    constructor_calls: list[dict[str, object]] = []
+    responses = _Responses()
+    raw_client = _RawClient(responses)
+
+    def openai_constructor(**arguments: object) -> object:
+        constructor_calls.append(arguments)
+        return raw_client
+
+    fake_openai = ModuleType("openai")
+    fake_openai.OpenAI = openai_constructor
+    monkeypatch.setitem(sys.modules, "openai", fake_openai)
+    source = _ExplicitOpenAICredentialSourceV2("SECRET_EXPLICIT_API_KEY")
+    factory = _OfficialOpenAISDKFactoryV2()
+    composer = OpenAIRuntimeComposerV2(
+        _config(), credential_source=source, sdk_factory=factory
+    )
+    result = composer.compose()
+    assert constructor_calls == [
+        {
+            "api_key": "SECRET_EXPLICIT_API_KEY",
+            "max_retries": 0,
+            "timeout": 12.5,
+        }
+    ]
+    assert result.closed is False
+    assert raw_client.close_calls == 0
+    result.close()
+    assert raw_client.close_calls == 1
+
+
 def _runtime_objects() -> tuple[OpenAISDKClientV2, OpenAIProviderExecutorV2]:
     sdk_client = OpenAISDKClientV2(OpenAISDKCapabilityV2(_Responses(), max_retries=0))
     executor = OpenAIProviderExecutorV2(
@@ -193,7 +740,6 @@ def test_dependency_direction_and_capability_absence() -> None:
         "OPENAI_API_KEY",
         "os.getenv",
         "os.environ",
-        "OpenAI(",
         "provider_composition_v2",
         "register(",
     )
