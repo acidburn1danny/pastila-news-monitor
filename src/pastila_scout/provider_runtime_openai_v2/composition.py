@@ -49,10 +49,12 @@ class _OpenAISDKFactoryResultV2:
 class _OwnershipLease:
     identity: int
     client_reference: ReferenceType[object] = field(repr=False)
+    generation: object | None = field(default=None, repr=False)
 
 
 class _OwnershipState(Enum):
     LIVE = auto()
+    CLAIMED = auto()
     TERMINAL_FAILED = auto()
 
 
@@ -63,6 +65,83 @@ class _OwnershipRecord:
 
 
 _OWNERSHIP_TRACKER: dict[int, _OwnershipRecord] = {}
+
+
+class _RuntimeRegistrationAuthority:
+    """Sealed process-local provenance for one raw-client registration."""
+
+    __slots__ = (
+        "_callback",
+        "_generation",
+        "_owner",
+        "_target_identity",
+        "_target_reference",
+    )
+
+    def __copy__(self) -> _RuntimeRegistrationAuthority:
+        return self
+
+    def __deepcopy__(self, memo: dict[int, object]) -> _RuntimeRegistrationAuthority:
+        memo[id(self)] = self
+        return self
+
+    def __reduce_ex__(self, protocol: int) -> object:
+        del protocol
+        raise TypeError("runtime registration authorities cannot be serialized")
+
+    def __setattr__(self, name: str, value: object) -> None:
+        del name, value
+        raise TypeError("runtime registration authorities are immutable")
+
+    def __delattr__(self, name: str) -> None:
+        del name
+        raise TypeError("runtime registration authorities are immutable")
+
+    def __repr__(self) -> str:
+        return "_RuntimeRegistrationAuthority(<private>)"
+
+    __str__ = __repr__
+
+
+@dataclass(frozen=True, slots=True)
+class _RuntimeRegistrationRecord:
+    authority: _RuntimeRegistrationAuthority = field(repr=False)
+    state: _OwnershipState
+
+
+class _RuntimeValidatedClaim:
+    """Opaque proof that the lower registry atomically accepted one claim."""
+
+    __slots__ = ("_generation",)
+
+    def __copy__(self) -> _RuntimeValidatedClaim:
+        return self
+
+    def __deepcopy__(self, memo: dict[int, object]) -> _RuntimeValidatedClaim:
+        memo[id(self)] = self
+        return self
+
+    def __reduce_ex__(self, protocol: int) -> object:
+        del protocol
+        raise TypeError("runtime registration claims cannot be serialized")
+
+    def __setattr__(self, name: str, value: object) -> None:
+        del name, value
+        raise TypeError("runtime registration claims are immutable")
+
+    def __delattr__(self, name: str) -> None:
+        del name
+        raise TypeError("runtime registration claims are immutable")
+
+    def __repr__(self) -> str:
+        return "_RuntimeValidatedClaim(<private>)"
+
+    __str__ = __repr__
+
+
+_RUNTIME_REGISTRATION_OWNER = object()
+_RUNTIME_REGISTRATIONS: dict[object, _RuntimeRegistrationRecord] = {}
+_RUNTIME_GENERATION_BY_TARGET_ID: dict[int, object] = {}
 
 
 def _mint_factory_handoff(raw_client: object) -> _OpenAISDKFactoryResultV2:
@@ -131,7 +210,18 @@ class OpenAIRuntimeComposerV2:
 
         outcome = _compose_isolated(self)
         del self
-        return _return_or_raise_composition(outcome)
+        try:
+            return _return_or_raise_composition(outcome)
+        except (KeyboardInterrupt, SystemExit, GeneratorExit) as error:
+            error.__context__ = None
+            error.__cause__ = None
+            error.__suppress_context__ = True
+            try:
+                raise error from None
+            finally:
+                error.__context__ = None
+                error.__cause__ = None
+                error.__suppress_context__ = True
 
 
 @dataclass(frozen=True, slots=True)
@@ -140,9 +230,14 @@ class _SafeCompositionFailure:
     message: str
 
 
+@dataclass(frozen=True, slots=True)
+class _SafeBaseExceptionFailure:
+    error: BaseException = field(repr=False)
+
+
 def _compose_isolated(
     composer: OpenAIRuntimeComposerV2,
-) -> OpenAIRuntimeCompositionV2 | _SafeCompositionFailure:
+) -> OpenAIRuntimeCompositionV2 | _SafeCompositionFailure | _SafeBaseExceptionFailure:
     config = _validate_config(object.__getattribute__(composer, "config"))
     if config is None:
         return _SafeCompositionFailure("configuration", "invalid OpenAI runtime config")
@@ -174,7 +269,11 @@ def _compose_isolated(
     del api_key
     del factory
     del factory_function
-    claimed = _claim_factory_handoff(factory_result)
+    try:
+        claimed = _claim_factory_handoff(factory_result)
+    except BaseException as error:  # noqa: BLE001 - exact process signal is deferred
+        del factory_result
+        return _SafeBaseExceptionFailure(error)
     del factory_result
     if claimed is None:
         return _SafeCompositionFailure(
@@ -183,6 +282,7 @@ def _compose_isolated(
     if type(claimed) is _SafeCompositionFailure:
         return claimed
     responses_resource, lifecycle = claimed
+    deferred_error: BaseException | None = None
     try:
         from pastila_scout.provider_execution_openai_sdk_v2 import (
             OpenAISDKCapabilityV2,
@@ -205,13 +305,46 @@ def _compose_isolated(
         del executor
         return result
     except Exception:  # noqa: BLE001 - assembly boundaries use distinct errors
-        rollback = lifecycle._close_and_sanitize()
-        del lifecycle
-        if rollback.failed:
+        try:
+            rollback = lifecycle._close_and_sanitize()
+        except BaseException as cleanup_error:  # noqa: BLE001 - exact signal preserved
+            lease = object.__getattribute__(lifecycle, "_transition_receiver")
+            if type(lease) is _OwnershipLease:
+                _terminalize_registration(lease)
+            del lease
+            del lifecycle
+            deferred_error = cleanup_error
+        else:
+            del lifecycle
+            if rollback.failed:
+                return _SafeCompositionFailure(
+                    "lifecycle", "OpenAI runtime rollback failed"
+                )
             return _SafeCompositionFailure(
-                "lifecycle", "OpenAI runtime rollback failed"
+                "dependency", "OpenAI runtime assembly failed"
             )
-        return _SafeCompositionFailure("dependency", "OpenAI runtime assembly failed")
+    except BaseException as construction_error:  # noqa: BLE001 - exact signal deferred
+        try:
+            rollback = lifecycle._close_and_sanitize()
+        except BaseException as cleanup_error:  # noqa: BLE001 - exact signal preserved
+            lease = object.__getattribute__(lifecycle, "_transition_receiver")
+            if type(lease) is _OwnershipLease:
+                _terminalize_registration(lease)
+            del lease
+            del lifecycle
+            deferred_error = cleanup_error
+        else:
+            del lifecycle
+            if rollback.failed:
+                return _SafeCompositionFailure(
+                    "lifecycle", "OpenAI runtime rollback failed"
+                )
+            deferred_error = construction_error
+    deferred_error.__context__ = None
+    deferred_error.__cause__ = None
+    deferred_error.__suppress_context__ = True
+    deferred_error.__traceback__ = None
+    return _SafeBaseExceptionFailure(deferred_error)
 
 
 def _claim_factory_handoff(
@@ -250,53 +383,383 @@ def _claim_factory_handoff(
             )
         _OWNERSHIP_TRACKER.pop(identity, None)
 
+    generation = object()
+
     def discard_stale(reference: ReferenceType[object]) -> None:
-        current = _OWNERSHIP_TRACKER.get(identity)
-        if current is not None and current.client_reference is reference:
-            _OWNERSHIP_TRACKER.pop(identity, None)
+        current_generation = _RUNTIME_GENERATION_BY_TARGET_ID.get(identity)
+        current = _RUNTIME_REGISTRATIONS.get(generation)
+        authority = (
+            object.__getattribute__(current, "authority")
+            if type(current) is _RuntimeRegistrationRecord
+            else None
+        )
+        if (
+            reference() is None
+            and current_generation is generation
+            and type(authority) is _RuntimeRegistrationAuthority
+            and object.__getattribute__(authority, "_owner")
+            is _RUNTIME_REGISTRATION_OWNER
+            and object.__getattribute__(authority, "_generation") is generation
+            and object.__getattribute__(authority, "_target_reference") is reference
+            and object.__getattribute__(authority, "_callback") is discard_stale
+        ):
+            compatibility = _OWNERSHIP_TRACKER.get(identity)
+            if (
+                type(compatibility) is _OwnershipRecord
+                and compatibility.client_reference is reference
+            ):
+                _OWNERSHIP_TRACKER.pop(identity, None)
+            _RUNTIME_GENERATION_BY_TARGET_ID.pop(identity, None)
+            _RUNTIME_REGISTRATIONS.pop(generation, None)
 
     tracked_reference = ref(raw_client, discard_stale)
-    _OWNERSHIP_TRACKER[identity] = _OwnershipRecord(
-        tracked_reference, _OwnershipState.LIVE
-    )
-    lease = _OwnershipLease(identity, tracked_reference)
-    lifecycle = _OpenAIRuntimeLifecycleOwnerV2._from_pinned(
-        close_function,
-        close_receiver,
-        _release_ownership_success,
-        _mark_ownership_cleanup_failed,
-        lease,
-    )
+    authority = object.__new__(_RuntimeRegistrationAuthority)
+    object.__setattr__(authority, "_callback", discard_stale)
+    object.__setattr__(authority, "_generation", generation)
+    object.__setattr__(authority, "_owner", _RUNTIME_REGISTRATION_OWNER)
+    object.__setattr__(authority, "_target_identity", identity)
+    object.__setattr__(authority, "_target_reference", tracked_reference)
+    registration = _RuntimeRegistrationRecord(authority, _OwnershipState.LIVE)
+    if (
+        generation in _RUNTIME_REGISTRATIONS
+        or identity in _RUNTIME_GENERATION_BY_TARGET_ID
+    ):
+        return _SafeCompositionFailure(
+            "lifecycle", "OpenAI runtime client is already owned"
+        )
+    try:
+        _RUNTIME_REGISTRATIONS[generation] = registration
+        _RUNTIME_GENERATION_BY_TARGET_ID[identity] = generation
+        _OWNERSHIP_TRACKER[identity] = _OwnershipRecord(
+            tracked_reference, _OwnershipState.LIVE
+        )
+    except BaseException:
+        if _RUNTIME_GENERATION_BY_TARGET_ID.get(identity) is generation:
+            _RUNTIME_GENERATION_BY_TARGET_ID.pop(identity, None)
+        if _RUNTIME_REGISTRATIONS.get(generation) is registration:
+            _RUNTIME_REGISTRATIONS.pop(generation, None)
+        compatibility = _OWNERSHIP_TRACKER.get(identity)
+        if (
+            type(compatibility) is _OwnershipRecord
+            and compatibility.client_reference is tracked_reference
+        ):
+            _OWNERSHIP_TRACKER.pop(identity, None)
+        raise
+    try:
+        lease = _OwnershipLease(identity, tracked_reference, generation)
+        lifecycle = _OpenAIRuntimeLifecycleOwnerV2._from_pinned(
+            close_function,
+            close_receiver,
+            _release_ownership_success,
+            _mark_ownership_cleanup_failed,
+            lease,
+        )
+    except Exception:  # noqa: BLE001 - construction is an injected boundary
+        rollback_failed = not _rollback_unpublished_registration(
+            identity=identity,
+            generation=generation,
+            reference=tracked_reference,
+            close_function=close_function,
+            close_receiver=close_receiver,
+        )
+        if rollback_failed:
+            return _SafeCompositionFailure(
+                "lifecycle", "OpenAI runtime rollback failed"
+            )
+        return _SafeCompositionFailure("dependency", "OpenAI runtime assembly failed")
+    except BaseException:
+        rollback_succeeded = _rollback_unpublished_registration(
+            identity=identity,
+            generation=generation,
+            reference=tracked_reference,
+            close_function=close_function,
+            close_receiver=close_receiver,
+        )
+        if not rollback_succeeded:
+            return _SafeCompositionFailure(
+                "lifecycle", "OpenAI runtime rollback failed"
+            )
+        raise
     return responses_resource, lifecycle
+
+
+def _rollback_unpublished_registration(
+    *,
+    identity: int,
+    generation: object,
+    reference: ReferenceType[object],
+    close_function: FunctionType,
+    close_receiver: object,
+) -> bool:
+    """Close an unpublished target and reconcile its exact registration."""
+
+    try:
+        close_function(close_receiver)
+    except Exception:  # noqa: BLE001 - raw clients share no exception type
+        _terminalize_exact_registration(identity, generation, reference)
+        return False
+    except BaseException as cleanup_error:  # noqa: BLE001 - exact signal preserved
+        _terminalize_exact_registration(identity, generation, reference)
+        cleanup_error.__context__ = None
+        cleanup_error.__cause__ = None
+        cleanup_error.__suppress_context__ = True
+        try:
+            raise cleanup_error from None
+        finally:
+            cleanup_error.__context__ = None
+            cleanup_error.__cause__ = None
+            cleanup_error.__suppress_context__ = True
+    _discard_exact_registration(identity, generation, reference)
+    return True
+
+
+def _discard_exact_registration(
+    identity: int,
+    generation: object,
+    reference: ReferenceType[object],
+) -> None:
+    if _RUNTIME_GENERATION_BY_TARGET_ID.get(identity) is generation:
+        _RUNTIME_GENERATION_BY_TARGET_ID.pop(identity, None)
+    _RUNTIME_REGISTRATIONS.pop(generation, None)
+    compatibility = _OWNERSHIP_TRACKER.get(identity)
+    if (
+        type(compatibility) is _OwnershipRecord
+        and compatibility.client_reference is reference
+    ):
+        _OWNERSHIP_TRACKER.pop(identity, None)
+
+
+def _terminalize_registration(lease: _OwnershipLease) -> bool:
+    generation = lease.generation
+    return generation is not None and _terminalize_exact_registration(
+        lease.identity, generation, lease.client_reference
+    )
+
+
+def _terminalize_exact_registration(
+    identity: int,
+    generation: object,
+    reference: ReferenceType[object],
+) -> bool:
+    """Establish an exact no-retry tombstone without invoking cleanup."""
+
+    registration = _RUNTIME_REGISTRATIONS.get(generation)
+    compatibility = _OWNERSHIP_TRACKER.get(identity)
+    if (
+        type(registration) is not _RuntimeRegistrationRecord
+        or type(registration.authority) is not _RuntimeRegistrationAuthority
+        or _RUNTIME_GENERATION_BY_TARGET_ID.get(identity) is not generation
+        or type(compatibility) is not _OwnershipRecord
+        or compatibility.client_reference is not reference
+    ):
+        return False
+    authority = registration.authority
+    callback = object.__getattribute__(authority, "_callback")
+    if (
+        object.__getattribute__(authority, "_owner") is not _RUNTIME_REGISTRATION_OWNER
+        or object.__getattribute__(authority, "_generation") is not generation
+        or object.__getattribute__(authority, "_target_identity") != identity
+        or object.__getattribute__(authority, "_target_reference") is not reference
+        or type(reference) is not ReferenceType
+        or reference.__callback__ is not callback
+        or registration.state
+        not in {_OwnershipState.LIVE, _OwnershipState.TERMINAL_FAILED}
+        or compatibility.state
+        not in {_OwnershipState.LIVE, _OwnershipState.TERMINAL_FAILED}
+    ):
+        return False
+    if registration.state is _OwnershipState.LIVE:
+        _RUNTIME_REGISTRATIONS[generation] = _RuntimeRegistrationRecord(
+            authority, _OwnershipState.TERMINAL_FAILED
+        )
+    if compatibility.state is _OwnershipState.LIVE:
+        _OWNERSHIP_TRACKER[identity] = _OwnershipRecord(
+            reference, _OwnershipState.TERMINAL_FAILED
+        )
+    return True
 
 
 def _release_ownership_success(lease: _OwnershipLease) -> None:
     current = _OWNERSHIP_TRACKER.get(lease.identity)
+    registration = _runtime_registration_for_lease(lease)
     if (
         current is not None
         and current.client_reference is lease.client_reference
         and current.state is _OwnershipState.LIVE
+        and registration is not None
+        and registration.state in {_OwnershipState.LIVE, _OwnershipState.CLAIMED}
     ):
         _OWNERSHIP_TRACKER.pop(lease.identity, None)
+        _RUNTIME_GENERATION_BY_TARGET_ID.pop(lease.identity, None)
+        _RUNTIME_REGISTRATIONS.pop(lease.generation, None)
 
 
 def _mark_ownership_cleanup_failed(lease: _OwnershipLease) -> None:
     current = _OWNERSHIP_TRACKER.get(lease.identity)
+    registration = _runtime_registration_for_lease(lease)
     if (
         current is not None
         and current.client_reference is lease.client_reference
         and current.state is _OwnershipState.LIVE
+        and registration is not None
+        and registration.state in {_OwnershipState.LIVE, _OwnershipState.CLAIMED}
     ):
         _OWNERSHIP_TRACKER[lease.identity] = _OwnershipRecord(
             lease.client_reference, _OwnershipState.TERMINAL_FAILED
         )
+        _RUNTIME_REGISTRATIONS[lease.generation] = _RuntimeRegistrationRecord(
+            registration.authority, _OwnershipState.TERMINAL_FAILED
+        )
+
+
+def _runtime_registration_for_lease(
+    lease: _OwnershipLease,
+) -> _RuntimeRegistrationRecord | None:
+    generation = lease.generation
+    if generation is None:
+        return None
+    registration = _RUNTIME_REGISTRATIONS.get(generation)
+    if type(registration) is not _RuntimeRegistrationRecord:
+        return None
+    authority = registration.authority
+    if type(authority) is not _RuntimeRegistrationAuthority:
+        return None
+    reference = object.__getattribute__(authority, "_target_reference")
+    target = reference() if type(reference) is ReferenceType else None
+    if (
+        object.__getattribute__(authority, "_owner") is not _RUNTIME_REGISTRATION_OWNER
+        or object.__getattribute__(authority, "_generation") is not generation
+        or object.__getattribute__(authority, "_target_identity") != lease.identity
+        or reference is not lease.client_reference
+        or target is None
+        or id(target) != lease.identity
+        or reference.__callback__ is not object.__getattribute__(authority, "_callback")
+        or _RUNTIME_GENERATION_BY_TARGET_ID.get(lease.identity) is not generation
+    ):
+        return None
+    return registration
+
+
+def _claim_runtime_registration_authority(
+    *,
+    composition: object,
+    expected_sdk_client: object,
+) -> _RuntimeValidatedClaim | None:
+    """Atomically validate and claim one authentic lower-owned registration."""
+
+    if type(composition) is not OpenAIRuntimeCompositionV2:
+        return None
+    try:
+        from pastila_scout.provider_execution_openai_sdk_v2 import (
+            OpenAISDKCapabilityV2,
+            OpenAISDKClientV2,
+        )
+        from pastila_scout.provider_execution_openai_sdk_v2.client import (
+            _validated_create_authority,
+        )
+        from pastila_scout.provider_execution_openai_v2 import (
+            OpenAIExecutionConfigV2,
+            OpenAIProviderExecutorV2,
+        )
+        from pastila_scout.provider_execution_openai_v2.executor import (
+            _validated_client_authority,
+        )
+
+        sdk_client = object.__getattribute__(composition, "sdk_client")
+        executor = object.__getattribute__(composition, "executor")
+        lifecycle = object.__getattribute__(composition, "_lifecycle")
+        if (
+            type(sdk_client) is not OpenAISDKClientV2
+            or sdk_client is not expected_sdk_client
+            or type(executor) is not OpenAIProviderExecutorV2
+            or object.__getattribute__(executor, "client") is not sdk_client
+            or type(object.__getattribute__(executor, "config"))
+            is not OpenAIExecutionConfigV2
+            or type(lifecycle) is not _OpenAIRuntimeLifecycleOwnerV2
+            or object.__getattribute__(lifecycle, "_closed") is not False
+        ):
+            return None
+        capability = object.__getattribute__(sdk_client, "_sdk_capability")
+        if type(capability) is not OpenAISDKCapabilityV2:
+            return None
+        capability_function = object.__getattribute__(capability, "_function")
+        responses = object.__getattribute__(capability, "_receiver")
+        capability_authority = _validated_create_authority(responses)
+        executor_authority = _validated_client_authority(sdk_client)
+        if (
+            capability_authority is None
+            or capability_authority[0] is not capability_function
+            or capability_authority[1] is not responses
+            or executor_authority is None
+            or object.__getattribute__(executor, "_authorized_function")
+            is not executor_authority[0]
+            or object.__getattribute__(executor, "_invocation_kind")
+            != executor_authority[1]
+            or object.__getattribute__(executor, "_receiver")
+            is not executor_authority[2]
+        ):
+            return None
+        function = object.__getattribute__(lifecycle, "_function")
+        receiver = object.__getattribute__(lifecycle, "_receiver")
+        success = object.__getattribute__(lifecycle, "_success_function")
+        failure = object.__getattribute__(lifecycle, "_failure_function")
+        lease = object.__getattribute__(lifecycle, "_transition_receiver")
+        if (
+            type(lease) is not _OwnershipLease
+            or success is not _release_ownership_success
+            or failure is not _mark_ownership_cleanup_failed
+            or _static_method_authority(receiver, "close", mode="raw_closer")
+            is not function
+            or _static_instance_field(receiver, "responses") is not responses
+        ):
+            return None
+        registration = _runtime_registration_for_lease(lease)
+        if registration is None or registration.state is not _OwnershipState.LIVE:
+            return None
+        authority = registration.authority
+        reference = object.__getattribute__(authority, "_target_reference")
+        callback = object.__getattribute__(authority, "_callback")
+        compatibility = _OWNERSHIP_TRACKER.get(lease.identity)
+        if (
+            type(reference) is not ReferenceType
+            or reference() is not receiver
+            or reference.__callback__ is not callback
+            or type(compatibility) is not _OwnershipRecord
+            or compatibility.client_reference is not reference
+            or compatibility.state is not _OwnershipState.LIVE
+        ):
+            return None
+        generation = lease.generation
+        _RUNTIME_REGISTRATIONS[generation] = _RuntimeRegistrationRecord(
+            authority, _OwnershipState.CLAIMED
+        )
+        claim = object.__new__(_RuntimeValidatedClaim)
+        object.__setattr__(claim, "_generation", generation)
+        return claim
+    except (AttributeError, KeyError, TypeError, ValueError):
+        return None
 
 
 def _return_or_raise_composition(
-    outcome: OpenAIRuntimeCompositionV2 | _SafeCompositionFailure,
+    outcome: (
+        OpenAIRuntimeCompositionV2 | _SafeCompositionFailure | _SafeBaseExceptionFailure
+    ),
 ) -> OpenAIRuntimeCompositionV2:
     if type(outcome) is OpenAIRuntimeCompositionV2:
         return outcome
+    if type(outcome) is _SafeBaseExceptionFailure:
+        error = outcome.error
+        del outcome
+        error.__context__ = None
+        error.__cause__ = None
+        error.__suppress_context__ = True
+        error.__traceback__ = None
+        try:
+            raise error from None
+        finally:
+            error.__context__ = None
+            error.__cause__ = None
+            error.__suppress_context__ = True
     if outcome.category == "configuration":
         error = OpenAIRuntimeConfigurationError(outcome.message)
     elif outcome.category == "credential":

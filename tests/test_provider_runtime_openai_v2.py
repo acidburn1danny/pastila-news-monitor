@@ -12,6 +12,7 @@ from fractions import Fraction
 from inspect import Parameter, Signature
 from pathlib import Path
 from types import CellType, ModuleType
+from weakref import ref
 
 import pytest
 from pydantic import ValidationError
@@ -36,9 +37,16 @@ from pastila_scout.provider_runtime_openai_v2 import (
 )
 from pastila_scout.provider_runtime_openai_v2.composition import (
     _OWNERSHIP_TRACKER,
+    _RUNTIME_GENERATION_BY_TARGET_ID,
+    _RUNTIME_REGISTRATIONS,
+    _claim_factory_handoff,
+    _claim_runtime_registration_authority,
     _mint_factory_handoff,
     _OwnershipRecord,
     _OwnershipState,
+    _RuntimeRegistrationAuthority,
+    _RuntimeValidatedClaim,
+    _terminalize_exact_registration,
     _validate_api_key,
 )
 from pastila_scout.provider_runtime_openai_v2.models import (
@@ -2565,3 +2573,489 @@ def test_composer_is_immutable() -> None:
     )
     with pytest.raises(FrozenInstanceError):
         composer.config = _config()  # type: ignore[misc]
+
+
+def _registered_runtime_composition(
+    *, fail_close: bool = False
+) -> tuple[OpenAIRuntimeCompositionV2, _RawClient]:
+    factory = _OperationalFactory(fail_close=fail_close)
+    composer = OpenAIRuntimeComposerV2(
+        _config(), credential_source=_CredentialSource(), sdk_factory=factory
+    )
+    composition = composer.compose()
+    return composition, factory.clients[0]
+
+
+def test_runtime_registration_authority_is_unique_sealed_and_safe() -> None:
+    first, first_raw = _registered_runtime_composition()
+    second, second_raw = _registered_runtime_composition()
+    first_generation = _RUNTIME_GENERATION_BY_TARGET_ID[id(first_raw)]
+    second_generation = _RUNTIME_GENERATION_BY_TARGET_ID[id(second_raw)]
+    assert first_generation is not second_generation
+    first_record = _RUNTIME_REGISTRATIONS[first_generation]
+    authority = first_record.authority
+    assert type(authority) is _RuntimeRegistrationAuthority
+    assert copy.copy(authority) is authority
+    assert copy.deepcopy(authority) is authority
+    assert repr(authority) == "_RuntimeRegistrationAuthority(<private>)"
+    assert not hasattr(authority, "__dict__")
+    for protocol in range(pickle.HIGHEST_PROTOCOL + 1):
+        with pytest.raises(
+            TypeError, match="^runtime registration authorities cannot be serialized$"
+        ):
+            pickle.dumps(authority, protocol=protocol)
+    first.close()
+    second.close()
+
+
+def test_runtime_registration_claim_is_atomic_and_single_use() -> None:
+    composition, raw = _registered_runtime_composition()
+    sdk_client = object.__getattribute__(composition, "sdk_client")
+    claim = _claim_runtime_registration_authority(
+        composition=composition, expected_sdk_client=sdk_client
+    )
+    assert type(claim) is _RuntimeValidatedClaim
+    assert copy.copy(claim) is claim
+    assert copy.deepcopy(claim) is claim
+    assert repr(claim) == "_RuntimeValidatedClaim(<private>)"
+    assert (
+        _claim_runtime_registration_authority(
+            composition=composition, expected_sdk_client=sdk_client
+        )
+        is None
+    )
+    composition.close()
+    assert id(raw) not in _RUNTIME_GENERATION_BY_TARGET_ID
+
+
+def test_runtime_registration_rejects_coordinated_weakref_substitution() -> None:
+    composition, raw = _registered_runtime_composition()
+    lifecycle = object.__getattribute__(composition, "_lifecycle")
+    lease = object.__getattribute__(lifecycle, "_transition_receiver")
+    generation = object.__getattribute__(lease, "generation")
+    compatibility = _OWNERSHIP_TRACKER[id(raw)]
+    replacement = ref(raw)
+    original_lease_reference = object.__getattribute__(lease, "client_reference")
+    original_record_reference = object.__getattribute__(
+        compatibility, "client_reference"
+    )
+    object.__setattr__(lease, "client_reference", replacement)
+    object.__setattr__(compatibility, "client_reference", replacement)
+    try:
+        assert (
+            _claim_runtime_registration_authority(
+                composition=composition,
+                expected_sdk_client=object.__getattribute__(composition, "sdk_client"),
+            )
+            is None
+        )
+        assert _RUNTIME_GENERATION_BY_TARGET_ID[id(raw)] is generation
+    finally:
+        object.__setattr__(lease, "client_reference", original_lease_reference)
+        object.__setattr__(compatibility, "client_reference", original_record_reference)
+    composition.close()
+
+
+def test_runtime_registration_terminal_failure_is_generation_owned() -> None:
+    composition, raw = _registered_runtime_composition(fail_close=True)
+    generation = _RUNTIME_GENERATION_BY_TARGET_ID[id(raw)]
+    with pytest.raises(OpenAIRuntimeLifecycleError):
+        composition.close()
+    registration = _RUNTIME_REGISTRATIONS[generation]
+    assert registration.state is _OwnershipState.TERMINAL_FAILED
+    assert _RUNTIME_GENERATION_BY_TARGET_ID[id(raw)] is generation
+
+
+@pytest.mark.parametrize(
+    "mutation",
+    ("lease_generation", "owner", "authority_generation", "callback", "weakref"),
+)
+def test_runtime_registration_claim_rejects_foreign_provenance(
+    mutation: str,
+) -> None:
+    composition, _raw = _registered_runtime_composition()
+    lifecycle = object.__getattribute__(composition, "_lifecycle")
+    lease = object.__getattribute__(lifecycle, "_transition_receiver")
+    generation = object.__getattribute__(lease, "generation")
+    authority = _RUNTIME_REGISTRATIONS[generation].authority
+    if mutation == "lease_generation":
+        target, field, replacement = lease, "generation", object()
+    elif mutation == "owner":
+        target, field, replacement = authority, "_owner", object()
+    elif mutation == "authority_generation":
+        target, field, replacement = authority, "_generation", object()
+    elif mutation == "callback":
+        target, field, replacement = authority, "_callback", lambda _: None
+    else:
+        target, field = authority, "_target_reference"
+        replacement = ref(_RawClient(_Responses()))
+    original = object.__getattribute__(target, field)
+    object.__setattr__(target, field, replacement)
+    try:
+        assert (
+            _claim_runtime_registration_authority(
+                composition=composition,
+                expected_sdk_client=object.__getattribute__(composition, "sdk_client"),
+            )
+            is None
+        )
+    finally:
+        object.__setattr__(target, field, original)
+    composition.close()
+
+
+def _assert_no_runtime_registration(raw: object) -> None:
+    assert id(raw) not in _RUNTIME_GENERATION_BY_TARGET_ID
+    assert id(raw) not in _OWNERSHIP_TRACKER
+    assert all(
+        record.authority._target_reference() is not raw
+        for record in _RUNTIME_REGISTRATIONS.values()
+    )
+
+
+@pytest.mark.parametrize("stage", ("lease", "lifecycle"))
+def test_post_registration_construction_failure_rolls_back_exactly_once(
+    monkeypatch: pytest.MonkeyPatch,
+    stage: str,
+) -> None:
+    import pastila_scout.provider_runtime_openai_v2.composition as composition_module
+
+    calls = 0
+
+    def fail(*args: object, **kwargs: object) -> object:
+        nonlocal calls
+        calls += 1
+        raise RuntimeError(f"SECRET_{stage.upper()}_CONSTRUCTION_FAILURE")
+
+    if stage == "lease":
+        monkeypatch.setattr(composition_module, "_OwnershipLease", fail)
+    else:
+        monkeypatch.setattr(
+            _OpenAIRuntimeLifecycleOwnerV2, "_from_pinned", classmethod(fail)
+        )
+    factory = _OperationalFactory()
+    composer = OpenAIRuntimeComposerV2(
+        _config(), credential_source=_CredentialSource(), sdk_factory=factory
+    )
+
+    with pytest.raises(OpenAIRuntimeDependencyError) as raised:
+        composer.compose()
+
+    raw = factory.clients[0]
+    assert raised.value.args == ("OpenAI runtime assembly failed",)
+    assert raised.value.__context__ is None
+    assert raised.value.__cause__ is None
+    assert raised.value.__suppress_context__ is True
+    assert calls == raw.close_calls == 1
+    _assert_no_runtime_registration(raw)
+
+
+def test_post_registration_construction_rollback_failure_is_terminal(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    def fail(*args: object, **kwargs: object) -> object:
+        raise RuntimeError("SECRET_LIFECYCLE_CONSTRUCTION_FAILURE")
+
+    monkeypatch.setattr(
+        _OpenAIRuntimeLifecycleOwnerV2, "_from_pinned", classmethod(fail)
+    )
+    factory = _OperationalFactory(fail_close=True)
+    composer = OpenAIRuntimeComposerV2(
+        _config(), credential_source=_CredentialSource(), sdk_factory=factory
+    )
+
+    with pytest.raises(OpenAIRuntimeLifecycleError) as raised:
+        composer.compose()
+
+    raw = factory.clients[0]
+    generation = _RUNTIME_GENERATION_BY_TARGET_ID[id(raw)]
+    assert raised.value.args == ("OpenAI runtime rollback failed",)
+    assert raw.close_calls == 1
+    assert _RUNTIME_REGISTRATIONS[generation].state is _OwnershipState.TERMINAL_FAILED
+    assert _OWNERSHIP_TRACKER[id(raw)].state is _OwnershipState.TERMINAL_FAILED
+
+
+@pytest.mark.parametrize(
+    "exception_type", (KeyboardInterrupt, SystemExit, GeneratorExit)
+)
+def test_lifecycle_construction_baseexception_rolls_back_then_propagates(
+    monkeypatch: pytest.MonkeyPatch,
+    exception_type: type[BaseException],
+) -> None:
+    marker = exception_type("verifier construction interrupt")
+
+    def fail(*args: object, **kwargs: object) -> object:
+        raise marker
+
+    monkeypatch.setattr(
+        _OpenAIRuntimeLifecycleOwnerV2, "_from_pinned", classmethod(fail)
+    )
+    factory = _OperationalFactory()
+    composer = OpenAIRuntimeComposerV2(
+        _config(), credential_source=_CredentialSource(), sdk_factory=factory
+    )
+
+    with pytest.raises(exception_type) as raised:
+        composer.compose()
+
+    raw = factory.clients[0]
+    assert raised.value is marker
+    assert raw.close_calls == 1
+    _assert_no_runtime_registration(raw)
+
+
+def test_lifecycle_construction_baseexception_yields_to_rollback_failure(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    marker = KeyboardInterrupt("verifier construction interrupt")
+
+    def fail(*args: object, **kwargs: object) -> object:
+        raise marker
+
+    monkeypatch.setattr(
+        _OpenAIRuntimeLifecycleOwnerV2, "_from_pinned", classmethod(fail)
+    )
+    factory = _OperationalFactory(fail_close=True)
+    composer = OpenAIRuntimeComposerV2(
+        _config(), credential_source=_CredentialSource(), sdk_factory=factory
+    )
+
+    with pytest.raises(OpenAIRuntimeLifecycleError) as raised:
+        composer.compose()
+
+    raw = factory.clients[0]
+    generation = _RUNTIME_GENERATION_BY_TARGET_ID[id(raw)]
+    assert raised.value.args == ("OpenAI runtime rollback failed",)
+    assert raised.value.__context__ is None
+    assert raw.close_calls == 1
+    assert _RUNTIME_REGISTRATIONS[generation].state is _OwnershipState.TERMINAL_FAILED
+
+
+@pytest.mark.parametrize(
+    "exception_type", (KeyboardInterrupt, SystemExit, GeneratorExit)
+)
+def test_composition_construction_baseexception_rolls_back_then_propagates(
+    monkeypatch: pytest.MonkeyPatch,
+    exception_type: type[BaseException],
+) -> None:
+    import pastila_scout.provider_runtime_openai_v2.composition as composition_module
+
+    marker = exception_type("verifier composition interrupt")
+
+    def fail(*args: object, **kwargs: object) -> object:
+        raise marker
+
+    monkeypatch.setattr(composition_module, "OpenAIRuntimeCompositionV2", fail)
+    factory = _OperationalFactory()
+    composer = OpenAIRuntimeComposerV2(
+        _config(), credential_source=_CredentialSource(), sdk_factory=factory
+    )
+
+    with pytest.raises(exception_type) as raised:
+        composer.compose()
+
+    raw = factory.clients[0]
+    assert raised.value is marker
+    assert raw.close_calls == 1
+    _assert_no_runtime_registration(raw)
+
+
+@pytest.mark.parametrize(
+    "exception_type", (KeyboardInterrupt, SystemExit, GeneratorExit)
+)
+def test_rollback_baseexception_establishes_terminal_no_retry_tombstone(
+    monkeypatch: pytest.MonkeyPatch,
+    exception_type: type[BaseException],
+) -> None:
+    marker = exception_type("verifier rollback interrupt")
+
+    class InterruptingRaw(_RawClient):
+        def close(self) -> None:
+            self.close_calls += 1
+            raise marker
+
+    class InterruptingFactory(_OperationalFactory):
+        def create_client(self, **kwargs: object) -> object:
+            self.create_calls += 1
+            raw = InterruptingRaw(self.responses)
+            self.clients.append(raw)
+            return _mint_factory_handoff(raw)
+
+    def fail(*args: object, **kwargs: object) -> object:
+        raise RuntimeError("SECRET_LIFECYCLE_CONSTRUCTION_FAILURE")
+
+    monkeypatch.setattr(
+        _OpenAIRuntimeLifecycleOwnerV2, "_from_pinned", classmethod(fail)
+    )
+    factory = InterruptingFactory()
+    composer = OpenAIRuntimeComposerV2(
+        _config(), credential_source=_CredentialSource(), sdk_factory=factory
+    )
+
+    with pytest.raises(exception_type) as raised:
+        composer.compose()
+
+    raw = factory.clients[0]
+    generation = _RUNTIME_GENERATION_BY_TARGET_ID[id(raw)]
+    registration = _RUNTIME_REGISTRATIONS[generation]
+    compatibility = _OWNERSHIP_TRACKER[id(raw)]
+    assert raised.value is marker
+    assert raised.value.__context__ is None
+    assert raised.value.__cause__ is None
+    assert raised.value.__suppress_context__ is True
+    assert raw.close_calls == 1
+    assert registration.state is _OwnershipState.TERMINAL_FAILED
+    assert compatibility.state is _OwnershipState.TERMINAL_FAILED
+    assert _claim_factory_handoff(_mint_factory_handoff(raw)).category == "lifecycle"
+    assert raw.close_calls == 1
+
+
+def test_terminal_transition_is_idempotent_and_rejects_foreign_authority() -> None:
+    composition, raw = _registered_runtime_composition()
+    lifecycle = object.__getattribute__(composition, "_lifecycle")
+    lease = object.__getattribute__(lifecycle, "_transition_receiver")
+    generation = object.__getattribute__(lease, "generation")
+    reference = object.__getattribute__(lease, "client_reference")
+    authority = _RUNTIME_REGISTRATIONS[generation].authority
+
+    assert _terminalize_exact_registration(id(raw), generation, reference)
+    assert _terminalize_exact_registration(id(raw), generation, reference)
+    assert _RUNTIME_REGISTRATIONS[generation].authority is authority
+    assert _RUNTIME_REGISTRATIONS[generation].state is _OwnershipState.TERMINAL_FAILED
+    assert not _terminalize_exact_registration(id(raw), object(), reference)
+    assert _RUNTIME_REGISTRATIONS[generation].authority is authority
+    assert raw.close_calls == 0
+
+
+def test_terminal_tombstone_is_removed_only_after_target_collection() -> None:
+    import weakref
+
+    composition, raw = _registered_runtime_composition()
+    lifecycle = object.__getattribute__(composition, "_lifecycle")
+    lease = object.__getattribute__(lifecycle, "_transition_receiver")
+    generation = object.__getattribute__(lease, "generation")
+    reference = object.__getattribute__(lease, "client_reference")
+    callback = reference.__callback__
+    identity = id(raw)
+    raw_reference = weakref.ref(raw)
+
+    assert _terminalize_exact_registration(identity, generation, reference)
+    callback(reference)
+    assert generation in _RUNTIME_REGISTRATIONS
+    object.__setattr__(lifecycle, "_receiver", None)
+    object.__setattr__(lifecycle, "_transition_receiver", None)
+    object.__setattr__(composition, "_lifecycle", None)
+    del lease
+    del lifecycle
+    del composition
+    del raw
+    gc.collect()
+
+    assert raw_reference() is None
+    assert generation not in _RUNTIME_REGISTRATIONS
+    assert identity not in _RUNTIME_GENERATION_BY_TARGET_ID
+    assert identity not in _OWNERSHIP_TRACKER
+
+
+@pytest.mark.parametrize("stage", ("lease", "lifecycle", "composition"))
+@pytest.mark.parametrize(
+    "cleanup_exception_type", (KeyboardInterrupt, SystemExit, GeneratorExit)
+)
+def test_each_construction_stage_cleanup_baseexception_is_terminal_and_no_retry(
+    monkeypatch: pytest.MonkeyPatch,
+    stage: str,
+    cleanup_exception_type: type[BaseException],
+) -> None:
+    import pastila_scout.provider_runtime_openai_v2.composition as composition_module
+
+    cleanup_marker = cleanup_exception_type(f"{stage} cleanup interrupt")
+
+    class InterruptingRaw(_RawClient):
+        def close(self) -> None:
+            self.close_calls += 1
+            raise cleanup_marker
+
+    class InterruptingFactory(_OperationalFactory):
+        def create_client(self, **kwargs: object) -> object:
+            self.create_calls += 1
+            raw = InterruptingRaw(self.responses)
+            self.clients.append(raw)
+            return _mint_factory_handoff(raw)
+
+    def fail(*args: object, **kwargs: object) -> object:
+        raise RuntimeError(f"SECRET_{stage.upper()}_CONSTRUCTION_FAILURE")
+
+    if stage == "lease":
+        monkeypatch.setattr(composition_module, "_OwnershipLease", fail)
+    elif stage == "lifecycle":
+        monkeypatch.setattr(
+            _OpenAIRuntimeLifecycleOwnerV2, "_from_pinned", classmethod(fail)
+        )
+    else:
+        monkeypatch.setattr(composition_module, "OpenAIRuntimeCompositionV2", fail)
+    factory = InterruptingFactory()
+    composer = OpenAIRuntimeComposerV2(
+        _config(), credential_source=_CredentialSource(), sdk_factory=factory
+    )
+
+    with pytest.raises(cleanup_exception_type) as raised:
+        composer.compose()
+
+    raw = factory.clients[0]
+    generation = _RUNTIME_GENERATION_BY_TARGET_ID[id(raw)]
+    assert raised.value is cleanup_marker
+    assert raised.value.__context__ is None
+    assert raised.value.__cause__ is None
+    assert _RUNTIME_REGISTRATIONS[generation].state is _OwnershipState.TERMINAL_FAILED
+    assert _OWNERSHIP_TRACKER[id(raw)].state is _OwnershipState.TERMINAL_FAILED
+    assert _claim_factory_handoff(_mint_factory_handoff(raw)).category == "lifecycle"
+    assert raw.close_calls == 1
+
+
+@pytest.mark.parametrize(
+    "construction_exception_type", (KeyboardInterrupt, SystemExit, GeneratorExit)
+)
+@pytest.mark.parametrize(
+    "cleanup_exception_type", (KeyboardInterrupt, SystemExit, GeneratorExit)
+)
+def test_cleanup_baseexception_precedes_construction_baseexception_without_context(
+    monkeypatch: pytest.MonkeyPatch,
+    construction_exception_type: type[BaseException],
+    cleanup_exception_type: type[BaseException],
+) -> None:
+    construction_marker = construction_exception_type("construction interrupt")
+    cleanup_marker = cleanup_exception_type("cleanup interrupt")
+
+    class InterruptingRaw(_RawClient):
+        def close(self) -> None:
+            self.close_calls += 1
+            raise cleanup_marker
+
+    class InterruptingFactory(_OperationalFactory):
+        def create_client(self, **kwargs: object) -> object:
+            self.create_calls += 1
+            raw = InterruptingRaw(self.responses)
+            self.clients.append(raw)
+            return _mint_factory_handoff(raw)
+
+    def fail(*args: object, **kwargs: object) -> object:
+        raise construction_marker
+
+    monkeypatch.setattr(
+        _OpenAIRuntimeLifecycleOwnerV2, "_from_pinned", classmethod(fail)
+    )
+    factory = InterruptingFactory()
+    composer = OpenAIRuntimeComposerV2(
+        _config(), credential_source=_CredentialSource(), sdk_factory=factory
+    )
+
+    with pytest.raises(cleanup_exception_type) as raised:
+        composer.compose()
+
+    raw = factory.clients[0]
+    generation = _RUNTIME_GENERATION_BY_TARGET_ID[id(raw)]
+    assert raised.value is cleanup_marker
+    assert raised.value.__context__ is None
+    assert raised.value.__cause__ is None
+    assert _RUNTIME_REGISTRATIONS[generation].state is _OwnershipState.TERMINAL_FAILED
+    assert raw.close_calls == 1
