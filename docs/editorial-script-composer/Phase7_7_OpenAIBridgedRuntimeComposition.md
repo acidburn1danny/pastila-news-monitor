@@ -2,6 +2,40 @@
 
 Status: implemented, awaiting independent verification.
 
+## Compatibility Revision 6 base-claim lineage
+
+Base-claim evidence is now resolved registry-first.  The bridged authority binds
+the exact base composition, authoritative base generation, authoritative base
+registration record, and original base claim captured immediately after the
+lower-owned atomic claim.  A later bridged claim first resolves the exact base
+registration from that base composition and requires its `CLAIMED` generation
+and record identities to match before accepting either stored bridged claim
+binding.  Coordinated foreign-claim replacement and exact-type claims carrying
+foreign generations therefore cannot authenticate.  The base runtime remains
+unchanged; local deep lifecycle and configuration checks remain supplemental
+compatibility validation rather than the provenance root.
+
+## Compatibility Revision 5 registration provenance
+
+Wrapper ownership now uses a private, process-local generation authority rather
+than treating `_LIVE_WRAPPERS` as sufficient proof. Each published wrapper is
+bound to a fresh opaque `object()` generation, a sealed authority containing
+the verified base-runtime claim and exact weakref/callback provenance, an
+authoritative generation record, and a target-ID index. `_LIVE_WRAPPERS`
+remains only as a compatibility projection.
+
+The private keyword-only bridged claim validates the complete wrapper,
+executor, bridge, base-composition, generation, callback, index, and
+compatibility graph before atomically changing `LIVE` to `CLAIMED`. Base
+ownership is claimed during bridged construction through the verified
+base-runtime claim API; the bridged layer no longer reconstructs the base
+tracker as its trust root. Successful close removes bridged registration state.
+Ordinary and BaseException cleanup failures retain an exact
+`TERMINAL_FAILED` tombstone, so cleanup cannot be retried. Weakref callbacks
+remove only an exact dead registration and cannot remove a live target or a
+newer generation. These guarantees are process-local and assume the existing
+single-threaded composition contract.
+
 ## Revision 8 authority correction
 
 Revision 7 independent verification found that outer exact types alone did not

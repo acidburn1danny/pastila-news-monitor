@@ -12,6 +12,7 @@ from fractions import Fraction
 from functools import cached_property
 from pathlib import Path
 from types import FunctionType
+from weakref import ref
 
 import pytest
 
@@ -1116,6 +1117,476 @@ def test_reentrant_close_through_alias_delegates_once() -> None:
     alias.close()
     assert composition.closed is True
     assert factory.clients[0].close_calls == 1
+
+
+def _bridged_registration_for(composition: object):
+    identity = object.__getattribute__(composition, "_tracker_identity")
+    generation = object.__getattribute__(composition, "_registration_generation")
+    return identity, generation, module._BRIDGED_REGISTRATIONS[generation]
+
+
+def test_bridged_registration_authority_is_unique_sealed_and_private() -> None:
+    first, _, _, _ = _compose()
+    second, _, _, _ = _compose()
+    _, first_generation, first_record = _bridged_registration_for(first)
+    _, second_generation, _ = _bridged_registration_for(second)
+    authority = first_record.authority
+
+    assert type(first_generation) is object
+    assert first_generation is not second_generation
+    assert type(authority) is module._BridgedRegistrationAuthority
+    assert copy.copy(authority) is authority
+    assert copy.deepcopy(authority) is authority
+    assert repr(authority) == "_BridgedRegistrationAuthority(<private>)"
+    assert not hasattr(authority, "__dict__")
+    for protocol in range(pickle.HIGHEST_PROTOCOL + 1):
+        with pytest.raises(TypeError, match="cannot be serialized"):
+            pickle.dumps(authority, protocol=protocol)
+    with pytest.raises(TypeError, match="immutable"):
+        authority._owner = object()
+    first.close()
+    second.close()
+
+
+def test_bridged_registration_claim_is_atomic_and_single_use() -> None:
+    composition, _, _, _ = _compose()
+    executor = object.__getattribute__(composition, "executor")
+
+    assert (
+        module._claim_bridged_registration_authority(
+            composition=composition, expected_executor=object()
+        )
+        is None
+    )
+    claim = module._claim_bridged_registration_authority(
+        composition=composition, expected_executor=executor
+    )
+    assert type(claim) is module._BridgedValidatedClaim
+    assert copy.copy(claim) is claim
+    assert copy.deepcopy(claim) is claim
+    assert repr(claim) == "_BridgedValidatedClaim(<private>)"
+    for protocol in range(pickle.HIGHEST_PROTOCOL + 1):
+        with pytest.raises(TypeError, match="cannot be serialized"):
+            pickle.dumps(claim, protocol=protocol)
+    assert (
+        module._claim_bridged_registration_authority(
+            composition=composition, expected_executor=executor
+        )
+        is None
+    )
+    composition.close()
+
+
+def test_coordinated_compatibility_weakref_replacement_cannot_claim() -> None:
+    composition, _, _, _ = _compose()
+    identity, generation, registration = _bridged_registration_for(composition)
+    authentic = module._LIVE_WRAPPERS[identity]
+    replacement = ref(composition)
+    module._LIVE_WRAPPERS[identity] = replacement
+    try:
+        assert (
+            module._claim_bridged_registration_authority(
+                composition=composition,
+                expected_executor=object.__getattribute__(composition, "executor"),
+            )
+            is None
+        )
+        assert module._BRIDGED_REGISTRATIONS[generation] is registration
+    finally:
+        module._LIVE_WRAPPERS[identity] = authentic
+    composition.close()
+
+
+@pytest.mark.parametrize("callback_kind", ("none", "foreign", "authentic"))
+def test_replacement_weakref_never_authenticates(
+    callback_kind: str,
+) -> None:
+    composition, _, _, _ = _compose()
+    identity, _, registration = _bridged_registration_for(composition)
+    authentic = module._LIVE_WRAPPERS[identity]
+    callback = {
+        "none": None,
+        "foreign": lambda reference: None,
+        "authentic": object.__getattribute__(registration.authority, "_callback"),
+    }[callback_kind]
+    replacement = ref(composition, callback)
+    module._LIVE_WRAPPERS[identity] = replacement
+    try:
+        assert (
+            module._claim_bridged_registration_authority(
+                composition=composition,
+                expected_executor=object.__getattribute__(composition, "executor"),
+            )
+            is None
+        )
+    finally:
+        module._LIVE_WRAPPERS[identity] = authentic
+    composition.close()
+
+
+@pytest.mark.parametrize(
+    "mutation", ("owner", "generation", "callback", "target_index")
+)
+def test_bridged_claim_rejects_foreign_registration_provenance(
+    mutation: str,
+) -> None:
+    composition, _, _, _ = _compose()
+    identity, generation, registration = _bridged_registration_for(composition)
+    authority = registration.authority
+    if mutation == "target_index":
+        target, key, original = (
+            module._BRIDGED_GENERATION_BY_TARGET_ID,
+            identity,
+            generation,
+        )
+        target[key] = object()
+    else:
+        field = {
+            "owner": "_owner",
+            "generation": "_generation",
+            "callback": "_callback",
+        }[mutation]
+        target, key = authority, field
+        original = object.__getattribute__(authority, field)
+        object.__setattr__(authority, field, object())
+    try:
+        assert (
+            module._claim_bridged_registration_authority(
+                composition=composition,
+                expected_executor=object.__getattribute__(composition, "executor"),
+            )
+            is None
+        )
+    finally:
+        if mutation == "target_index":
+            target[key] = original
+        else:
+            object.__setattr__(target, key, original)
+    composition.close()
+
+
+def test_bridged_claim_rejects_foreign_base_registration_claim() -> None:
+    first, _, _, _ = _compose()
+    second, _, _, _ = _compose()
+    _, _, first_record = _bridged_registration_for(first)
+    _, _, second_record = _bridged_registration_for(second)
+    authority = first_record.authority
+    authentic_claim = object.__getattribute__(authority, "_base_claim")
+    object.__setattr__(authority, "_base_claim", second_record.base_claim)
+    try:
+        assert (
+            module._claim_bridged_registration_authority(
+                composition=first,
+                expected_executor=object.__getattribute__(first, "executor"),
+            )
+            is None
+        )
+    finally:
+        object.__setattr__(authority, "_base_claim", authentic_claim)
+    first.close()
+    second.close()
+
+
+def test_cross_composition_authority_donation_cannot_claim() -> None:
+    first, _, _, _ = _compose()
+    second, _, _, _ = _compose()
+    _, first_generation, first_record = _bridged_registration_for(first)
+    _, _, second_record = _bridged_registration_for(second)
+    module._BRIDGED_REGISTRATIONS[first_generation] = module._BridgedRegistrationRecord(
+        second_record.authority,
+        first_record.base_claim,
+        first_record.base_generation,
+        first_record.base_registration,
+        module._BridgedRegistrationState.LIVE,
+    )
+    try:
+        assert (
+            module._claim_bridged_registration_authority(
+                composition=first,
+                expected_executor=object.__getattribute__(first, "executor"),
+            )
+            is None
+        )
+    finally:
+        module._BRIDGED_REGISTRATIONS[first_generation] = first_record
+    first.close()
+    second.close()
+
+
+def test_coordinated_foreign_base_claim_cannot_authenticate() -> None:
+    first, _, _, _ = _compose()
+    second, _, _, _ = _compose()
+    _, generation, first_record = _bridged_registration_for(first)
+    _, _, second_record = _bridged_registration_for(second)
+    authority = first_record.authority
+    authentic_claim = object.__getattribute__(authority, "_base_claim")
+    object.__setattr__(authority, "_base_claim", second_record.base_claim)
+    module._BRIDGED_REGISTRATIONS[generation] = module._BridgedRegistrationRecord(
+        authority,
+        second_record.base_claim,
+        first_record.base_generation,
+        first_record.base_registration,
+        module._BridgedRegistrationState.LIVE,
+    )
+    try:
+        assert (
+            module._claim_bridged_registration_authority(
+                composition=first,
+                expected_executor=object.__getattribute__(first, "executor"),
+            )
+            is None
+        )
+    finally:
+        object.__setattr__(authority, "_base_claim", authentic_claim)
+        module._BRIDGED_REGISTRATIONS[generation] = first_record
+    first.close()
+    second.close()
+
+
+@pytest.mark.parametrize("generation_kind", ("foreign", "authentic"))
+def test_forged_exact_base_claim_cannot_authenticate(
+    generation_kind: str,
+) -> None:
+    from pastila_scout.provider_runtime_openai_v2 import composition as base_runtime
+
+    composition, _, _, _ = _compose()
+    _, generation, record = _bridged_registration_for(composition)
+    authority = record.authority
+    authentic_claim = object.__getattribute__(authority, "_base_claim")
+    forged = object.__new__(base_runtime._RuntimeValidatedClaim)
+    forged_generation = (
+        object() if generation_kind == "foreign" else record.base_generation
+    )
+    object.__setattr__(forged, "_generation", forged_generation)
+    object.__setattr__(authority, "_base_claim", forged)
+    module._BRIDGED_REGISTRATIONS[generation] = module._BridgedRegistrationRecord(
+        authority,
+        forged,
+        record.base_generation,
+        record.base_registration,
+        module._BridgedRegistrationState.LIVE,
+    )
+    try:
+        assert (
+            module._claim_bridged_registration_authority(
+                composition=composition,
+                expected_executor=object.__getattribute__(composition, "executor"),
+            )
+            is None
+        )
+    finally:
+        object.__setattr__(authority, "_base_claim", authentic_claim)
+        module._BRIDGED_REGISTRATIONS[generation] = record
+    composition.close()
+
+
+@pytest.mark.parametrize("mutation", ("generation", "registration"))
+def test_foreign_authoritative_base_lineage_cannot_authenticate(
+    mutation: str,
+) -> None:
+    first, _, _, _ = _compose()
+    second, _, _, _ = _compose()
+    _, generation, first_record = _bridged_registration_for(first)
+    _, _, second_record = _bridged_registration_for(second)
+    authority = first_record.authority
+    field = f"_base_{mutation}"
+    original = object.__getattribute__(authority, field)
+    foreign = getattr(second_record, f"base_{mutation}")
+    object.__setattr__(authority, field, foreign)
+    values = {
+        "base_generation": first_record.base_generation,
+        "base_registration": first_record.base_registration,
+    }
+    values[f"base_{mutation}"] = foreign
+    module._BRIDGED_REGISTRATIONS[generation] = module._BridgedRegistrationRecord(
+        authority,
+        first_record.base_claim,
+        values["base_generation"],
+        values["base_registration"],
+        module._BridgedRegistrationState.LIVE,
+    )
+    try:
+        assert (
+            module._claim_bridged_registration_authority(
+                composition=first,
+                expected_executor=object.__getattribute__(first, "executor"),
+            )
+            is None
+        )
+    finally:
+        object.__setattr__(authority, field, original)
+        module._BRIDGED_REGISTRATIONS[generation] = first_record
+    first.close()
+    second.close()
+
+
+@pytest.mark.parametrize("foreign_mask", range(1, 8))
+def test_foreign_base_lineage_cross_product_is_rejected(
+    foreign_mask: int,
+) -> None:
+    first, _, _, _ = _compose()
+    second, _, _, _ = _compose()
+    _, generation, authentic = _bridged_registration_for(first)
+    _, _, foreign = _bridged_registration_for(second)
+    authority = authentic.authority
+    values = {
+        "claim": foreign.base_claim if foreign_mask & 1 else authentic.base_claim,
+        "generation": (
+            foreign.base_generation if foreign_mask & 2 else authentic.base_generation
+        ),
+        "registration": (
+            foreign.base_registration
+            if foreign_mask & 4
+            else authentic.base_registration
+        ),
+    }
+    original = {
+        name: object.__getattribute__(authority, f"_base_{name}") for name in values
+    }
+    for name, value in values.items():
+        object.__setattr__(authority, f"_base_{name}", value)
+    module._BRIDGED_REGISTRATIONS[generation] = module._BridgedRegistrationRecord(
+        authority,
+        values["claim"],
+        values["generation"],
+        values["registration"],
+        module._BridgedRegistrationState.LIVE,
+    )
+    try:
+        assert (
+            module._claim_bridged_registration_authority(
+                composition=first,
+                expected_executor=object.__getattribute__(first, "executor"),
+            )
+            is None
+        )
+    finally:
+        for name, value in original.items():
+            object.__setattr__(authority, f"_base_{name}", value)
+        module._BRIDGED_REGISTRATIONS[generation] = authentic
+    first.close()
+    second.close()
+
+
+def test_uninitialized_private_authority_and_claim_cannot_authenticate() -> None:
+    composition, _, _, _ = _compose()
+    identity, generation, record = _bridged_registration_for(composition)
+    forged_authority = object.__new__(module._BridgedRegistrationAuthority)
+    forged_claim = object.__new__(module._BridgedValidatedClaim)
+
+    assert repr(forged_authority) == "_BridgedRegistrationAuthority(<private>)"
+    assert repr(forged_claim) == "_BridgedValidatedClaim(<private>)"
+    assert module._release_wrapper(identity, object(), composition) is None
+    assert module._terminalize_wrapper(identity, object(), composition) is False
+    assert module._BRIDGED_REGISTRATIONS[generation] is record
+    composition.close()
+
+
+def test_hostile_generation_is_rejected_without_hook_execution() -> None:
+    composition, _, _, _ = _compose()
+    authentic = object.__getattribute__(composition, "_registration_generation")
+    hostile = _HostileNestedValue()
+    object.__setattr__(composition, "_registration_generation", hostile)
+    try:
+        assert (
+            module._claim_bridged_registration_authority(
+                composition=composition,
+                expected_executor=object.__getattribute__(composition, "executor"),
+            )
+            is None
+        )
+        assert hostile.calls == 0
+    finally:
+        object.__setattr__(composition, "_registration_generation", authentic)
+    composition.close()
+
+
+def test_successful_close_removes_all_bridged_registration_state() -> None:
+    composition, _, _, factory = _compose()
+    identity, generation, _ = _bridged_registration_for(composition)
+    composition.close()
+
+    assert generation not in module._BRIDGED_REGISTRATIONS
+    assert identity not in module._BRIDGED_GENERATION_BY_TARGET_ID
+    assert identity not in module._LIVE_WRAPPERS
+    assert factory.clients[0].close_calls == 1
+
+
+def test_ordinary_cleanup_failure_is_terminal_and_not_claimable() -> None:
+    composition, _, _, factory = _compose(fail_close=True)
+    identity, generation, _ = _bridged_registration_for(composition)
+    with pytest.raises(OpenAIBridgedRuntimeLifecycleError):
+        composition.close()
+
+    assert (
+        module._BRIDGED_REGISTRATIONS[generation].state
+        is module._BridgedRegistrationState.TERMINAL_FAILED
+    )
+    assert module._BRIDGED_GENERATION_BY_TARGET_ID[identity] is generation
+    assert (
+        module._claim_bridged_registration_authority(
+            composition=composition,
+            expected_executor=object.__getattribute__(composition, "executor"),
+        )
+        is None
+    )
+    composition.close()
+    assert factory.clients[0].close_calls == 1
+
+
+@pytest.mark.parametrize(
+    "exception_type", (KeyboardInterrupt, SystemExit, GeneratorExit)
+)
+def test_cleanup_baseexception_is_terminal_exact_and_no_retry(
+    exception_type: type[BaseException],
+) -> None:
+    composition, _, _, factory = _compose()
+    marker = exception_type("bridged cleanup interrupt")
+
+    def interrupt() -> None:
+        raise marker
+
+    factory.clients[0].close_callback = interrupt
+    identity, generation, _ = _bridged_registration_for(composition)
+    with pytest.raises(exception_type) as raised:
+        composition.close()
+
+    assert raised.value is marker
+    assert raised.value.__cause__ is None
+    assert (
+        module._BRIDGED_REGISTRATIONS[generation].state
+        is module._BridgedRegistrationState.TERMINAL_FAILED
+    )
+    assert module._BRIDGED_GENERATION_BY_TARGET_ID[identity] is generation
+    composition.close()
+    assert factory.clients[0].close_calls == 1
+
+
+def test_bridged_stale_callback_requires_dead_exact_target() -> None:
+    composition, _, _, _ = _compose()
+    identity, generation, registration = _bridged_registration_for(composition)
+    reference = object.__getattribute__(registration.authority, "_wrapper_reference")
+    callback = reference.__callback__
+
+    callback(reference)
+    assert module._BRIDGED_GENERATION_BY_TARGET_ID[identity] is generation
+    assert generation in module._BRIDGED_REGISTRATIONS
+    composition.close()
+    callback(reference)
+    assert identity not in module._BRIDGED_GENERATION_BY_TARGET_ID
+
+
+def test_claim_after_successful_close_is_rejected() -> None:
+    composition, _, _, _ = _compose()
+    executor = object.__getattribute__(composition, "executor")
+    composition.close()
+
+    assert (
+        module._claim_bridged_registration_authority(
+            composition=composition, expected_executor=executor
+        )
+        is None
+    )
 
 
 def test_direct_composition_construction_rejects() -> None:
