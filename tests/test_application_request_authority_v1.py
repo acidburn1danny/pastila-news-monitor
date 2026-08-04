@@ -19,6 +19,7 @@ from pastila_scout.application_request_authority_v1 import (
     ApplicationProviderRequestV1,
     ApplicationRequestAuthorityError,
     ApplicationRequestAuthorityV1,
+    canonical,
 )
 from pastila_scout.application_request_authority_v1.models import (
     MAX_PROMPT_CHARACTERS,
@@ -122,6 +123,85 @@ def test_provider_neutral_intent_is_identical_across_provider_choices() -> None:
         openai.request_envelope.descriptor_identity
         != ollama.request_envelope.descriptor_identity
     )
+
+
+@pytest.mark.parametrize("choice", (ProviderChoiceV1.OPENAI, ProviderChoiceV1.OLLAMA))
+def test_composed_and_decomposed_prompts_have_identical_lower_authority(choice) -> None:
+    composed = "Răspunde exact: OK"
+    decomposed = "Ra\u0306spunde exact: OK"
+    composed_source = _application_request(choice, prompt=composed)
+    decomposed_source = _application_request(choice, prompt=decomposed)
+
+    composed_result = ApplicationRequestAuthorityV1().build(composed_source)
+    decomposed_result = ApplicationRequestAuthorityV1().build(decomposed_source)
+
+    assert composed_source.prompt == composed
+    assert decomposed_source.prompt == decomposed
+    assert composed_source.prompt != decomposed_source.prompt
+    assert composed_result == decomposed_result
+    assert (
+        decomposed_result.request_intent.request_units[0].messages[0].content
+        == composed
+    )
+    assert (
+        decomposed_result.request_envelope.request_units[0].messages[0].content
+        == composed
+    )
+
+
+def test_nfc_is_applied_once_by_application_authority(monkeypatch) -> None:
+    calls = []
+    unicode_module = canonical.unicodedata
+
+    class UnicodeProxy:
+        @staticmethod
+        def normalize(form, value):
+            calls.append((form, value))
+            return unicode_module.normalize(form, value)
+
+    monkeypatch.setattr(canonical, "unicodedata", UnicodeProxy)
+    prompt = "Ra\u0306spunde"
+
+    ApplicationRequestAuthorityV1().build(_application_request(prompt=prompt))
+
+    assert calls == [("NFC", prompt)]
+
+
+def test_canonicalization_does_not_apply_nfkc_or_change_internal_whitespace() -> None:
+    fullwidth = ApplicationRequestAuthorityV1().build(
+        _application_request(prompt="Ａ  B\tC")
+    )
+    ascii_text = ApplicationRequestAuthorityV1().build(
+        _application_request(prompt="A  B\tC")
+    )
+
+    actual = fullwidth.request_intent.request_units[0].messages[0].content
+    assert actual == "Ａ  B\tC"
+    assert actual != ascii_text.request_intent.request_units[0].messages[0].content
+    assert fullwidth.request_intent != ascii_text.request_intent
+
+
+def test_forged_noncanonical_lower_reconstruction_fails_closed(monkeypatch) -> None:
+    original = ProviderExecutionRequestV2.model_validate
+
+    def forge(cls, value, *, strict=None, **kwargs):
+        rebuilt = original(value, strict=strict, **kwargs)
+        intent = rebuilt.request_intent
+        unit = intent.request_units[0]
+        message = unit.messages[0].model_copy(update={"content": "a\u0306"})
+        forged_unit = unit.model_copy(update={"messages": (message,)})
+        forged_intent = intent.model_copy(update={"request_units": (forged_unit,)})
+        return rebuilt.model_copy(update={"request_intent": forged_intent})
+
+    monkeypatch.setattr(
+        ProviderExecutionRequestV2, "model_validate", classmethod(forge)
+    )
+
+    with pytest.raises(
+        ApplicationRequestAuthorityError,
+        match="application provider request construction failed",
+    ):
+        ApplicationRequestAuthorityV1().build(_application_request(prompt="ă"))
 
 
 def test_repeated_construction_has_stable_complete_lineage() -> None:

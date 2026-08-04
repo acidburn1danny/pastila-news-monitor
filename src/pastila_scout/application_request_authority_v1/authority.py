@@ -1,5 +1,6 @@
 """Construct one authoritative provider-neutral execution request."""
 
+import unicodedata
 from dataclasses import dataclass
 from typing import NoReturn, Self
 
@@ -17,7 +18,7 @@ from pastila_scout.provider_v2 import (
 
 from ..provider_adapters_v2.ollama import OllamaProviderAdapter
 from ..provider_adapters_v2.openai import OpenAIProviderAdapter
-from .canonical import application_request_seals
+from .canonical import application_request_seals, canonical_application_prompt
 from .errors import ApplicationRequestAuthorityError
 from .models import ApplicationProviderRequestV1
 
@@ -66,6 +67,7 @@ def _construct(request: object) -> ProviderExecutionRequestV2 | None:
         if type(request) is not ApplicationProviderRequestV1:
             return None
         source = request.__copy__()
+        canonical_prompt = canonical_application_prompt(source.prompt)
         descriptor = _descriptor(source.provider)
         (
             plan_reference,
@@ -74,7 +76,7 @@ def _construct(request: object) -> ProviderExecutionRequestV2 | None:
             draft_reference,
             draft_fingerprint,
             unit_reference,
-        ) = application_request_seals(source.request_reference, source.prompt)
+        ) = application_request_seals(source.request_reference, canonical_prompt)
         intent = ProviderRequestIntentV2(
             execution_plan_reference=plan_reference,
             execution_plan_identity=plan_identity,
@@ -87,7 +89,7 @@ def _construct(request: object) -> ProviderExecutionRequestV2 | None:
                     ordinal=0,
                     messages=(
                         ProviderMessageInputV2(
-                            role="generation", content=source.prompt, ordinal=0
+                            role="generation", content=canonical_prompt, ordinal=0
                         ),
                     ),
                 ),
@@ -109,7 +111,10 @@ def _construct(request: object) -> ProviderExecutionRequestV2 | None:
         built = ProviderExecutionRequestV2.model_validate(
             candidate.model_dump(mode="python", warnings=False), strict=True
         )
-        if built.request_intent.request_units[0].messages[0].content != source.prompt:
+        lower_prompt = built.request_intent.request_units[0].messages[0].content
+        if lower_prompt != canonical_prompt or not unicodedata.is_normalized(
+            "NFC", lower_prompt
+        ):
             return None
         return built
     except Exception:  # noqa: BLE001 - all lower details remain private

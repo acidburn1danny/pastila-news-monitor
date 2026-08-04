@@ -1,8 +1,15 @@
 """Deterministic semantics for one generic application generation request."""
 
+import unicodedata
+
 from pastila_scout.provider_v2.canonical import semantic_sha256
 
 _DOMAIN = "module-3.6-application-request-authority-v1"
+
+
+def canonical_application_prompt(prompt: str) -> str:
+    """Derive the one NFC form authoritative for every lower prompt semantic."""
+    return unicodedata.normalize("NFC", prompt)
 
 
 def application_request_semantics(reference: str, prompt: str) -> dict[str, object]:
@@ -47,4 +54,8 @@ def application_request_seals(
     )
 
 
-__all__ = ("application_request_seals", "application_request_semantics")
+__all__ = (
+    "application_request_seals",
+    "application_request_semantics",
+    "canonical_application_prompt",
+)
