@@ -252,6 +252,7 @@ def build_parser() -> argparse.ArgumentParser:
     verification_parser.add_argument(
         "--no-ai", action="store_true", help="use cache only; make no AI requests"
     )
+    verification_parser.add_argument("--provider", choices=("openai", "ollama"))
     ranking_parser = subparsers.add_parser(
         "rank-events", help="rank recent canonical events for editorial review"
     )
@@ -400,6 +401,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             details=arguments.details,
             output_directory=arguments.output_directory,
             no_ai=arguments.no_ai,
+            provider_name=arguments.provider,
         )
     if arguments.command == "rank-events":
         return _rank_events(
@@ -1141,6 +1143,7 @@ def _verify_event_candidates(
     details: bool,
     output_directory: Path,
     no_ai: bool,
+    provider_name: str | None,
 ) -> int:
     """Wire read-only candidate loading to the provider-neutral verifier."""
 
@@ -1164,15 +1167,28 @@ def _verify_event_candidates(
             lookback_hours=config.event_matching.lookback_hours,
             event_id=event_id,
         )
-        api_key = resolve_openai_api_key()
-        provider = None
-        if ai_config.enable_ai and api_key:
-            provider = OpenAIProvider(ai_config, api_key)
+        if provider_name is None:
+            api_key = resolve_openai_api_key()
+            provider = None
+            if ai_config.enable_ai and api_key:
+                provider = OpenAIProvider(ai_config, api_key)
+            provider_available = bool(api_key)
+        else:
+            from pastila_scout.verify_event_candidates_runtime_v1 import (
+                compose_event_verification_provider,
+            )
+
+            provider = (
+                compose_event_verification_provider(provider_name)
+                if ai_config.enable_ai
+                else None
+            )
+            provider_available = True
         verifier = EventVerifier(
             ai_config,
             FileVerificationCache(config.cache.ai_verification_directory),
             provider,
-            api_key_available=bool(api_key),
+            api_key_available=provider_available,
             input_cost_per_million_tokens=(
                 config.scoring.input_cost_per_million_tokens
             ),
