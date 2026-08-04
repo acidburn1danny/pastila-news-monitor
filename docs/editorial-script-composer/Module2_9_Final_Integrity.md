@@ -1,0 +1,378 @@
+# Module 2.9 — Final Integrity Manifest
+
+Status: FINAL FREEZE CANDIDATE  
+Captured: 2026-08-04T02:31:12+03:00
+
+## Baseline
+
+- Branch: `feature/openai-sdk`
+- HEAD: `26f22b128b37822501636bc57294f05f0a9aac87`
+- Final verified tag: `module-2.9-phase-7.8-r6-verified`
+- Final tag object: `2f006a37363529765405ee413fa7f75b2fc519c6`
+- Final tag dereferenced commit: `26f22b128b37822501636bc57294f05f0a9aac87`
+- Frozen Phase 7.3: `module-2.9-phase-7.3-frozen` / `24e2eb163b4d0fac485c70f7efb1d6c934a6ba79`
+- Python: `3.14.3 [MSC v.1944 64 bit (AMD64)]`
+- Platform: `Windows-11-10.0.26200-SP0`
+
+## Manifest scope
+
+This manifest covers the core Module 2.9 Script Composer package, all 12 related
+provider packages, focused Script Composer and provider tests, and the complete
+supporting documentation set. Paths are sorted lexicographically. The integrity
+document itself is excluded because a document cannot contain its own stable
+digest.
+
+## SHA-256 manifest
+
+```text
+385ec357045704b37e8ebbc79865aa7679c5ca941299d24d13236205a5a80f52  docs/editorial-script-composer/Module2_9_Final_Freeze.md
+ec45dd1f58f3cdeaed2a8556f18f628c41631df59c65e2254f5822329a858ac5  docs/editorial-script-composer/Phase1DomainFoundation.md
+798a14b13b22c684c3fa2d13fb62ca72a21d61e8dbafe99ee2c0e421059eae60  docs/editorial-script-composer/Phase2InputCompatibility.md
+a29d9ed83dd6735acec40a4c0f67b92206e2b6c7d6b5effa797211096e6930e0  docs/editorial-script-composer/Phase3ProviderNeutralExecutionContracts.md
+2bc7b6e516295d459c408ce079bdc8d056b0051f8ccb0d8f7b53bcb0e6c9cc69  docs/editorial-script-composer/Phase4ClaimBinding.md
+5231fae7ae1920c8976dc80c6bf5cbdd7e7028a4f95f315de75e637645dfa394  docs/editorial-script-composer/Phase4DraftStructureModels.md
+b4cd030a414b4c1bd7853cc7e3f96e5320b79abd3fa5edc7aff530132b9d1f1e  docs/editorial-script-composer/Phase4SectionComposition.md
+ff33ad054b7f694cde22241fc53bffd5911ada5befda19a49cfc8a53e17f2ae0  docs/editorial-script-composer/Phase5LLMRequestComposition.md
+581a1ffae7e69f09825d636c8e1d594cc8a7fdf09e0e1c08853ac884552bd4b4  docs/editorial-script-composer/Phase5PromptRendering.md
+2ffc97fadd307a363c6f14c12b43c02bcceba2b7a70410cebcecd9b9c3b19e4c  docs/editorial-script-composer/Phase6ExecutionPlanning.md
+2ccc7a9bdd8db66206e8a58ede60305cde0dbbc97d4fdc96be8cc3bba855b92b  docs/editorial-script-composer/Phase6ProviderMapping.md
+e23955e5f67f67e46abed36ec452b17893f2306df9f89c74f21bf6142f65e79e  docs/editorial-script-composer/Phase6ProviderResults.md
+47c9543523e044d62538ece14cb9db6aa4fc75395c8ef8d19573e824200eee04  docs/editorial-script-composer/Phase7_1_Revision8_Freeze.md
+501f14a4a381ad1d366a1fa6c26bd4901aef2eb2bd91cd0b1ab05fe48ad0dcc0  docs/editorial-script-composer/Phase7_1_Revision8_Integrity.md
+c3335ccc570c406d825363dd9e31113110336c5240fe4ff507641cd36580832d  docs/editorial-script-composer/Phase7_2_ExecutionBoundary.md
+5f1d234402a5322955da318be9b747f53537bc95ab07c5f4acc89077660eb514  docs/editorial-script-composer/Phase7_2_ExecutionHarness.md
+f2363b59d25c7e70bc2aae026582d22b25454879e965e30d1fe0af285673f86d  docs/editorial-script-composer/Phase7_2_OpenAIExecutionBoundary.md
+6d64e3006cd8ad9ba698b75a5c920f13d48ddaa28894b58608fc6553d94085e6  docs/editorial-script-composer/Phase7_2_OpenAIExecutor.md
+280a7c73e8dcbf1f79ccb09fdb88b142a705147892abf39b8788ff8a829b804f  docs/editorial-script-composer/Phase7_3_Freeze.md
+7f3f673c6f6aca1b14dc69015a7d18ef23066ce40854869682609bc2bd284d36  docs/editorial-script-composer/Phase7_3_Integrity.md
+17917e5a4efdddbe91a42912c5d24f5d72a9b4e34b97f41bd1d371a4f64992b9  docs/editorial-script-composer/Phase7_3_OpenAISDKBoundary.md
+2f8cd81891c5a70b24f6f4ccf6e12fa9bc82832f5be0b92ecdc6260acd73151f  docs/editorial-script-composer/Phase7_4_OpenAIRuntimeComposition.md
+b89242a3fe95fd239640224948f6baba33db39ddeb1049f21672aec528b27aeb  docs/editorial-script-composer/Phase7_5_OpenAISmokeTest.md
+81558e3f79c0b3a8f8d1290a9c3fad9ecc00dce1dcdd496572143acc3d2b1a0b  docs/editorial-script-composer/Phase7_6_SmokeRequestAuthority.md
+b966c392237e5a8eccc4c68923c0101ce61e827d0a82a99a2a5424b3c6ccb833  docs/editorial-script-composer/Phase7_7_OpenAIBridgedRuntimeComposition.md
+4ee4dbb1d79eefe12050d40092a23ed6a0c4526d11e9d0347129d2b666074023  docs/editorial-script-composer/Phase7_7_OpenAIExecutionSDKBridge.md
+c5e3b8bdb8e213bb59a413d1e0f02b343107924ffabdb6bb7c0259a580aee634  docs/editorial-script-composer/Phase7_8_OpenAILiveSmokeIntegration.md
+ce0f4416bcd7a93e83a5669728fd3e0c23b302a63686aa6fceb2e2ec30eb4fe6  docs/editorial-script-composer/Phase7ProviderNeutralizationV2.md
+c70714efabce0dec2399630ee50da2b1e03d71de2346fe4bbb55b29bf114c5a9  docs/editorial-script-composer/README.md
+412363e838912f260175f1062278e56823e1e021c566ac43a3d4c63b8340a00a  src/pastila_scout/editor/script_composer/__init__.py
+ddf9726fd4a295c147cb1cd449b6ecdb57fe8fb06af524c71c2ba55ea3506835  src/pastila_scout/editor/script_composer/canonical.py
+5b801727c19066f7f177b5ee4c5e64b4ea986ef04a7a51e108cb635948ee66b7  src/pastila_scout/editor/script_composer/claim_binding_identity.py
+69ae35761618e5edc265c1d2ba9daf0fcf9fd4a3094a8151895e99ab869674fc  src/pastila_scout/editor/script_composer/claim_binding_models.py
+fa88efcc95d375e39df4dcf88414894010ade2ff61273243e1e3108f49b46be2  src/pastila_scout/editor/script_composer/claim_binding_validation.py
+b090ed1c996ca8d30960e9c1b982b5e6449bbe46d5d52e109fafdc6ac7afe21b  src/pastila_scout/editor/script_composer/compatibility.py
+e135e02a604a0353f3b834bdb6614ce746892492469e5639d3b1b64f6f42c8fb  src/pastila_scout/editor/script_composer/defaults.py
+5b1173330f4e6d554d4d2929b66b0286143dfbae0e9666d3b219e63bdd031d77  src/pastila_scout/editor/script_composer/draft_identity.py
+b5cf36463298c17ea795943fe2bd986cc1198f76f3cbf4c3f36f345924e24af8  src/pastila_scout/editor/script_composer/draft_models.py
+726e16f64296d926ceb2f3d31c80fdb7f63454a941939033bbbfc44ad60bac1b  src/pastila_scout/editor/script_composer/draft_validation.py
+c288b49ab10f4492c03b8f93fb10279d8660824a5c1186f838e3afb174c77d0d  src/pastila_scout/editor/script_composer/errors.py
+2daa1a692da947a1fe9086a521ed6caa7712d5145a8df1d5367588d541ff61f9  src/pastila_scout/editor/script_composer/execution_defaults.py
+524accbd574aae71bc7a823d02c1826c74fb2bc7bd9b30574e4124e3079fb828  src/pastila_scout/editor/script_composer/execution_identity.py
+a30f503269842b7d239678af504ab5b01af0613481357660b6bf6bebe3c41b2d  src/pastila_scout/editor/script_composer/execution_invariants.py
+b6983bd8539c3e0432729257c949f054cd57e64688759408bbe146d5497970be  src/pastila_scout/editor/script_composer/execution_models.py
+96c6a357c92a297fe100b5e5700820c155bad648efcacdfaaec006676594fce6  src/pastila_scout/editor/script_composer/execution_validation.py
+130d3a8edbc7a627a23864fa3be3b930d99f8e7884c1e7295e50b96c0372571a  src/pastila_scout/editor/script_composer/extracted_result_identity.py
+00b249f174fd4348010de556eafa3fe233b38f5bd6a766ff45c55c5f7cc56c2f  src/pastila_scout/editor/script_composer/extracted_result_models.py
+71b39e6e335e12c440fbf6990e75f3482749a972f9173c0e623ab53ebdeeae8a  src/pastila_scout/editor/script_composer/extracted_result_validation.py
+09285860512286d12a21bcb42fbabdef24f6d888e90390516585783d575e6636  src/pastila_scout/editor/script_composer/identity.py
+fbcac0f8241f4e279794d0b2814aced2bb7bd69aeed8ece0326f4a520b4ea0a5  src/pastila_scout/editor/script_composer/invariants.py
+f6effdaaf2fd1404929361a39063ca7cf836949cb7d0875d7ee67887a423ddc8  src/pastila_scout/editor/script_composer/llm_execution_identity.py
+3a2f7ae582e92edb130c8fc4f02b12074fc872c6cdbad653382c35419aac9907  src/pastila_scout/editor/script_composer/llm_execution_models.py
+daa5d18985765b71dfcb905364813ef533fd625fbdaadd792586c1e41d43839f  src/pastila_scout/editor/script_composer/llm_execution_validation.py
+1bdc35a6475d754ec0375ff5be50d55cad2b7cb20d00f6c78b5066ea3385c4d4  src/pastila_scout/editor/script_composer/llm_request_identity.py
+ed7c392193bc1fed9acb9c7b417f8ffab97f80cd5e272c6a3760d02fc5e29005  src/pastila_scout/editor/script_composer/llm_request_models.py
+3eacc33898c485c1a9e4fc305f746037bc3b5c95daf30316d70cd2cc43a7fbd1  src/pastila_scout/editor/script_composer/llm_request_validation.py
+1a7e16475e12cc142cbfb61c2c6d68fa55e0d828cec690fe19e6a48ace0309f2  src/pastila_scout/editor/script_composer/models.py
+303406a24b57807e23b941bd947646261cdf3701c3c1254d2ef39c1b55d1df01  src/pastila_scout/editor/script_composer/openai_mapping_identity.py
+cbc412df17eea4d5de5d05babe2db0b5130aac26783b0fef96895d5bb1d739f6  src/pastila_scout/editor/script_composer/openai_mapping_models.py
+126fe3fad3ee9a8c1a45ebdec98e78bd2dcd6489619073548d26b8c249d03c87  src/pastila_scout/editor/script_composer/openai_mapping_validation.py
+7ccdfc48f0b7a9e79ded2fb0a49b2157925b710ca4e16850d05796feaa765dfd  src/pastila_scout/editor/script_composer/openai_result_identity.py
+b136034991e90274dbcdae7d6504d37a26ba24be08a158e33327cf69b219b7ec  src/pastila_scout/editor/script_composer/openai_result_models.py
+62e720ac1eafba6faf0579e2bfdc0495161f2ca420023769f84ac4771a13a1e9  src/pastila_scout/editor/script_composer/openai_result_validation.py
+2fbe1ccad77e18a8dfa29b5d541d1236202c9282e575ad454896735912c1fc2c  src/pastila_scout/editor/script_composer/profile.py
+ee810a01ecc5e53aa5320bedc8443ed973ca34b8f9d365e1e0e44a0ff8d031a5  src/pastila_scout/editor/script_composer/prompt_rendering_identity.py
+6aeb09fb434c6f04f39a3a9e5518bdc3c684e6861f85ef501c15b227ab917c21  src/pastila_scout/editor/script_composer/prompt_rendering_models.py
+a31167a7d21e304d9783ed51483be7456ef63d9858380d01f876651a7b48490a  src/pastila_scout/editor/script_composer/prompt_rendering_validation.py
+17226e27bbb64e39226770dfdce87c479555ae6fb2ac72d4fe7666f9f436e829  src/pastila_scout/editor/script_composer/provider_mapping_identity.py
+8a63fc798337f27fb98bf3616b8fbf7510f02484f4cbe0c56e2bd6252c161f7b  src/pastila_scout/editor/script_composer/provider_mapping_models.py
+b0c38f3b08f35ded7d4060bac432ef0fd02d006fb9d794915db1e5e7f7800e02  src/pastila_scout/editor/script_composer/provider_mapping_validation.py
+0d61aee0774047436106f357aead5f91e54e77b106738382f528a810596d349c  src/pastila_scout/editor/script_composer/provider_result_identity.py
+11abaf070e9be9f53ad124a0e07c504d477dc68be3a55bebd29ad22e12026f88  src/pastila_scout/editor/script_composer/provider_result_models.py
+a8145ac89b3dc3340684b675c8d1561962e39bed633c41a5fe8885945c83faec  src/pastila_scout/editor/script_composer/provider_result_validation.py
+33e8ae79b6d3841e3231fb9d13e1000439fa76fe0c48bcee0754abda6c9c40c0  src/pastila_scout/editor/script_composer/section_composition_identity.py
+f20625cb338eafe5b96b5ac37e24e5701a4a95df5533318bc0685b61a386cdf1  src/pastila_scout/editor/script_composer/section_composition_models.py
+94711e612cf25028b68b9e6be413dceed695a8849921c642ad9ba7d5fb0eb6de  src/pastila_scout/editor/script_composer/section_composition_validation.py
+9267cc183e1fdabb0afa1a831a6dda5447a28a30ef580ae88b45234da83a296b  src/pastila_scout/editor/script_composer/validation.py
+d7662134ed1f1b36e30fe2631b2df8749836794b3d0f6a583bfa002354ba2f36  src/pastila_scout/editor/script_composer/vocabularies.py
+72e72966daf74c7e0285992932de907a545baafb07eadd01e7220062f9eb9785  src/pastila_scout/provider_adapters_v2/__init__.py
+47668eca30b0e4a224973650230e5248764a4977e23e1f5249eaaac1a5e12167  src/pastila_scout/provider_adapters_v2/base.py
+c730b330c3000992bd58b03692e21ba06b7f2bc7534b789ddf2d621888c655a7  src/pastila_scout/provider_adapters_v2/claude.py
+fb2f326e8b8e4dc3d53c3025751b77177a69876beb1a315e19ccc20df468df3b  src/pastila_scout/provider_adapters_v2/gemini.py
+6deb7799a2c32d3748bddadd017aa3ca33db01ffb97e1a3ca87ddd2875b0e8b0  src/pastila_scout/provider_adapters_v2/ollama.py
+1f4736f29ca39eca25e9d78be3bd644240c4212f7c1a7a0a39e1569d9d957f06  src/pastila_scout/provider_adapters_v2/openai.py
+aa75d3a090b6ff34c709304b393d268026dbb5297de4bf1552cdf212d7e29933  src/pastila_scout/provider_execution_openai_sdk_bridge_v2/__init__.py
+7887d64e337ed085b58d0bc236d5417af9b1965af4d6f69913b3629493c0daa1  src/pastila_scout/provider_execution_openai_sdk_bridge_v2/bootstrap.py
+fbed7daf60b1bfcc3388aee6f45fdd473781c3ebb3a12d32a050108ba4b075a2  src/pastila_scout/provider_execution_openai_sdk_bridge_v2/client.py
+248f4b663e0f7373cc6ebf11a02fa45232644311b377deee6e1a949909cca526  src/pastila_scout/provider_execution_openai_sdk_bridge_v2/errors.py
+2e9dfe46cc32258336741fc63ab282e52dcb429c6f6991367e373549808e2f05  src/pastila_scout/provider_execution_openai_sdk_v2/__init__.py
+f42b5b30366a30755c4bba4a1bb9cd66e954cd63577d08f8053eae03ddaec889  src/pastila_scout/provider_execution_openai_sdk_v2/client.py
+2b097697c5964fdab7ca30254186ad83658c241b6829ddfb46af49ae67f9dcea  src/pastila_scout/provider_execution_openai_sdk_v2/errors.py
+a022a7c082ff2ea9025bcc437d2ac1412782736c38e95c59674a670bd910b510  src/pastila_scout/provider_execution_openai_sdk_v2/mapping.py
+af7a43b75215b0de3b3d30f530c3b2e9874789acea0b0bf128726f10ea87d8d4  src/pastila_scout/provider_execution_openai_sdk_v2/models.py
+292dfbbf495e9af2e17ba4da98b5125e24bcf66bcd4eec55fbf26e317411ee9b  src/pastila_scout/provider_execution_openai_v2/__init__.py
+5d000bc994dcb42ae123a50a00c96274b237fc76c8bfd184d0834eb752793f19  src/pastila_scout/provider_execution_openai_v2/errors.py
+9a6ace945336d383c11009f3501984a8f8faadfaeb13b08eedacf96d4885366e  src/pastila_scout/provider_execution_openai_v2/executor.py
+6aad6427badc3eecfac48207f5f5346ca14cb647b56bab0363524183dcc5db68  src/pastila_scout/provider_execution_openai_v2/interface.py
+caca8ab14d4d89c81eb45c79bbfcb544af9d4728fdaa567d7f763fd3b580ff77  src/pastila_scout/provider_execution_openai_v2/mapping.py
+1428bb5f2ee7f34cde047f4b0baca74d1ed442393114bb31a3cfd142029dd78c  src/pastila_scout/provider_execution_openai_v2/models.py
+be680a68fba193fea8766ee6396cf1c2a5305c4e11df5cd76a82ba62501a5174  src/pastila_scout/provider_execution_testing_v2/__init__.py
+18c792c9b12dd0fcfb454232848e54ff7bb09592942bdb4929a6c32eb5ce9504  src/pastila_scout/provider_execution_testing_v2/fake_executor.py
+7947dc6773104fdaeeef14cbb24830a2d218f0974c8c11253663ce0cbca4701f  src/pastila_scout/provider_execution_testing_v2/history.py
+46a9046bfb1ac54b3a0ee089a603f7ba9db9a4be73d7919de1406c19601a38cf  src/pastila_scout/provider_execution_testing_v2/scenarios.py
+ff5091903be0b4902785cc40922f9cd0ca122eec5ff2fc3a864ce662a8549c73  src/pastila_scout/provider_execution_v2/__init__.py
+efb5c9eda7462b219a32d2535d97ae640ee299e24be73c85e1c6bb3152826f9b  src/pastila_scout/provider_execution_v2/errors.py
+f81a4404ddd0174d89b3dbfd847ca59c38f92d6ea9d9d8b23e80da099aee1c4e  src/pastila_scout/provider_execution_v2/interface.py
+011192c8b5bc78303098200c59cb679c53bcca74d08dcda0859cc46453cc8ba2  src/pastila_scout/provider_execution_v2/models.py
+fbf456f61b4180f6d3f0f5dc77044429de730728d9df52ba4c3d6257108c58ac  src/pastila_scout/provider_runtime_openai_bridged_v2/__init__.py
+b3dbc825c438f5b4170fd7656ddaa5b058212a77d93cfb4fded689fc810cda0c  src/pastila_scout/provider_runtime_openai_bridged_v2/composition.py
+e29d329a176483c629ce57936f67bafc991ab70331a98cf8b6068d0331f1c65d  src/pastila_scout/provider_runtime_openai_bridged_v2/errors.py
+6c63d298657fb375236c4405049e74b0f7198799c07e1b07fb9f9081d323c058  src/pastila_scout/provider_runtime_openai_bridged_v2/models.py
+2941d602486ab17535180a58db6b8f940e2afc60c848997b750c117d56612a04  src/pastila_scout/provider_runtime_openai_live_smoke_v2/__init__.py
+d2b1c616f266e473516e5a298cb696857abc0acd8b8cfa1604e86e71d60a6727  src/pastila_scout/provider_runtime_openai_live_smoke_v2/errors.py
+142f90b54dab9a1fff0ec0a321f2174c3465c94944b8d22cdabd2075ba5c4aaf  src/pastila_scout/provider_runtime_openai_live_smoke_v2/models.py
+a37d8d479935a5019b80fcbd01ae8c2780a43609675554b851fd5bce349c22a3  src/pastila_scout/provider_runtime_openai_live_smoke_v2/runner.py
+0ae486b9f40f93975969929aa348086893c3973831fd9f47324fcb89b6f5f3f8  src/pastila_scout/provider_runtime_openai_smoke_v2/__init__.py
+2152eab278e9145911934ea0ce8da69a271581ce52031f84484ae09eb3346e92  src/pastila_scout/provider_runtime_openai_smoke_v2/errors.py
+6a432300da2f5a0ca559f80e6c803cc304e49192fab2a0f3de4c7b5aef279f40  src/pastila_scout/provider_runtime_openai_smoke_v2/interface.py
+ea17a62f9fc5c01e0a0afcf9f2cc4100bf40509b2148518d53bfc3581b7438d3  src/pastila_scout/provider_runtime_openai_smoke_v2/models.py
+1177aacaf4e2c33abed092bdd82d79516a08c3f8c47f65ded516a1d48a47517b  src/pastila_scout/provider_runtime_openai_smoke_v2/runner.py
+5b71236dc70143c118ca9a9d0d26ff5e2813a5299ec75d25ec10bbb79cb89696  src/pastila_scout/provider_runtime_openai_v2/__init__.py
+623023a71ddabca88617a95343482187f652fcbf8cd8b320fa8dd015756f29b4  src/pastila_scout/provider_runtime_openai_v2/composition.py
+2401d2e4876999dce3807ab2a0e8234a4678ee1995bc7fdf9c1a56fb19c70cde  src/pastila_scout/provider_runtime_openai_v2/errors.py
+e8ae13ba56e94c5e13498e8e4e70bcba1e275c087943854815c1d11b2f74c72f  src/pastila_scout/provider_runtime_openai_v2/interface.py
+0a01a75af94dfc5932461d2d2aec8709c4c1666197d8951f2ff5cfb01f98c205  src/pastila_scout/provider_runtime_openai_v2/models.py
+ffa8c3e6ae69c1b3305d5d82e01b538320ad15d4967b9ce4e96ec034b63b4682  src/pastila_scout/provider_runtime_openai_v2/production.py
+0e27c0d87bbe6bce0417dc87dc34b30468bf1cc3cb9688fcdc5c2440bd88ed8e  src/pastila_scout/provider_smoke_request_authority_v2/__init__.py
+25e493fff6e823d6eaaaf0031078b169f30a41559b9a380416bbee2117f018a4  src/pastila_scout/provider_smoke_request_authority_v2/authority.py
+e9efe007af4de8e8bc7c1e56edc73f44f5461ae12a74682ac9add5b30c8c545d  src/pastila_scout/provider_smoke_request_authority_v2/errors.py
+50384c57d100ee230df6c72bb7a6f8c61293855539aabd6abf3a5a307542c702  src/pastila_scout/provider_smoke_request_authority_v2/interface.py
+0609ebf26293463262e02d8d17b90198f9bfa2bd15daa48a88de81582cdb97fe  src/pastila_scout/provider_smoke_request_authority_v2/models.py
+385f224ce9d2cea3ad1cf2affe44cb8733ad6b434c5fbf5b4cee53a2ce7edd8e  src/pastila_scout/provider_v2/__init__.py
+01585407c95a6a704ab6e912c3deeff9743f8e94282209b5c59192ebfb2f76f1  src/pastila_scout/provider_v2/authority.py
+8f11e4fde41f87b76037fb340e79558aca19a9ee0a38ad2b99dbe8c990605d01  src/pastila_scout/provider_v2/canonical.py
+db3ba553037f54e808b18cb958765f9cd7bff0c68929d87a8fab31bd0fd1e286  src/pastila_scout/provider_v2/errors.py
+96675d2bbe3a9d4de70e18dbb2a46e21edacd0e40ec93376e8d521da7efb72e7  src/pastila_scout/provider_v2/identity.py
+4e66fdcf6298f86aa8b5bd2c6bbbb52cdb70b40e02f3ab586ed00d46a4a212da  src/pastila_scout/provider_v2/interface.py
+5b9958c3f54c5008f9e22c0308eed013e72adb59d1d11eecf302f5542e9acd9e  src/pastila_scout/provider_v2/models.py
+e12efaf1ba60ab2ef65734e48fb4bea62c00c926bae86cf93ff6008e9c8efa68  src/pastila_scout/provider_v2/registry.py
+ac30151c35c0ffcf800e21929c53cebce2ed611286e6e4ddc12f185a42c5088e  tests/test_editorial_script_composer_claim_binding.py
+52bc11a34668286dde2c33026574990c6f968614aa6804521e31fb53adbcc59b  tests/test_editorial_script_composer_compatibility.py
+978480f8f995cb124ba359b1de879b907a60ed6c6175fc85875efe28f445b0cb  tests/test_editorial_script_composer_domain.py
+451d1ef50313a8194fb3c8e3c7b01e3c9db590fe7740d9c906f4d44d094c746b  tests/test_editorial_script_composer_draft_structure.py
+2af0005d95366e613fc5ac487959299d516068c8e05a2340d37a9caa3e73fca5  tests/test_editorial_script_composer_execution.py
+3280cb84a8c2f81c90d33d5780c476611fe73afa021fa1bbda19c56f5690c7ed  tests/test_editorial_script_composer_hardening.py
+455786a7bd5756d5f4563b99dbe487aaebe3c57776470e6d38e3fec19e47c852  tests/test_editorial_script_composer_llm_execution.py
+6575f7200618fa3cbecf007eaff45e66608f6eb18b7114fc1a69e195110a1fe5  tests/test_editorial_script_composer_llm_execution_final_freeze.py
+acd1a7d648f19edc33e5c2200bf591e395c9c1e3e3754107dbe5aef3da2c2f8d  tests/test_editorial_script_composer_llm_execution_freeze.py
+1f8f21fe44b37f9297f8774e33f88ea4f0d50f5c862607134ab8b31b4d6c93a0  tests/test_editorial_script_composer_llm_request.py
+84f11e2ce7f0f23a2aecda1f98e169b8f8e9fad35cb9d9971fb6867886b5b7d6  tests/test_editorial_script_composer_llm_request_freeze.py
+889af329ce0c74965cd67f7e77947a33278ee8d7e5ac7db3dfdafdf143779d9e  tests/test_editorial_script_composer_prompt_rendering.py
+9dbba4373d7ec761341deba81f1d4faea25d3bb5a0a3fc8d61cca8ec0e6f6544  tests/test_editorial_script_composer_prompt_rendering_freeze.py
+385f48d3804826197515763341822596cecbc5fa8fd40661a62a48b55515f58f  tests/test_editorial_script_composer_provider_mapping.py
+a540c35eb5c6c749fa508c62abe29f202166093fbaccd92b442dd09ea610337a  tests/test_editorial_script_composer_provider_mapping_final_freeze.py
+c2aee46da03285133f5c8f29c736224d64dcae8d287054cd1e9f998ae1cc4b8d  tests/test_editorial_script_composer_provider_mapping_freeze.py
+4a99e81850a5edd226821cacbd73d7cb1a4fa689dd1a6ea1f72dda40165b5aca  tests/test_editorial_script_composer_provider_neutral_v2.py
+571bba3fef7e069818c135513a29eba37362dc1eb8d51d45891e13d336157cd7  tests/test_editorial_script_composer_provider_results.py
+4358b7a600395b253ae6b6186f427e37f35a7d9a4ec6a2eea8990525eae4d991  tests/test_editorial_script_composer_provider_results_exhaustive_freeze.py
+e8224bbe9ead34bcec3e65b8f1b447a47dce97f83aefeff8ad96f45d7f36553b  tests/test_editorial_script_composer_provider_results_final_freeze.py
+54c9c22ecc044eac6268f90bf798e605117dacd02b5afe714193b86ec31dfd1b  tests/test_editorial_script_composer_provider_results_freeze.py
+0efdcee0c7e0494c17fca9fa375d99e86cecab7327a9a43e41788b81fe14a1cf  tests/test_editorial_script_composer_section_composition.py
+8120ab8673b3f49c33e5bb7d10c0c579647255912a88dd076d9a44dc198683c8  tests/test_provider_execution_openai_executor_v2.py
+02e0bf8cf588ff94259f53964fe83b371bfb691c6ab0923468f6413dda6b02be  tests/test_provider_execution_openai_sdk_bridge_v2.py
+0ca8bbe7fca6b79ba9fd053520a3cee29722d937441dc1dd306869d887d1b88d  tests/test_provider_execution_openai_sdk_v2.py
+e8beb4cc938bf0954f5cbfe9ed9a9a447415569a790378b3a08d4d7563fcf844  tests/test_provider_execution_openai_v2.py
+6a221e82855247cd761393004c0f926878b1f10ce79056deb90fd74ee1be9d77  tests/test_provider_execution_testing_v2.py
+36899f185d38efc0ea8bfc765707dab4bdeea5f93ae091f369f3928f16e6a84c  tests/test_provider_execution_v2.py
+11e9f2b046fc745cb049a460985da5a8b93487473d3aaec27e88105639b9741a  tests/test_provider_runtime_openai_bridged_v2.py
+eababf05d9c5899fe0161de01086fffc90231851cb58dd9a84384ccee72c79fc  tests/test_provider_runtime_openai_live_smoke_v2.py
+a56e1199b5e094d59325dce59b945638c9ef6a68e7b3574b5bef077a214f8fac  tests/test_provider_runtime_openai_smoke_v2.py
+32b8c6e2a2a09cff30ff13dc2dda12fb74861cd8374f07fd793926363110eeec  tests/test_provider_runtime_openai_v2.py
+6ffe772ff4af1d97e5f9a062734f265086e964512360e08ee1cc1dba134c5266  tests/test_provider_smoke_request_authority_v2.py
+```
+
+Manifest entries: **172**.
+
+## Ordered public export snapshot
+
+### `provider_execution_openai_sdk_v2` — 10
+
+```text
+OpenAISDKBoundaryError
+OpenAISDKCapabilityV2
+OpenAISDKClientV2
+OpenAISDKConfigurationError
+OpenAISDKDependencyError
+OpenAISDKRequestV2
+OpenAISDKResponseError
+build_openai_sdk_request
+classify_openai_sdk_exception
+reconstruct_openai_sdk_response
+```
+
+### `provider_runtime_openai_v2` — 11
+
+```text
+OpenAICredentialSourceV2
+OpenAIRuntimeComposerV2
+OpenAIRuntimeCompositionError
+OpenAIRuntimeCompositionV2
+OpenAIRuntimeConfigV2
+OpenAIRuntimeConfigurationError
+OpenAIRuntimeCredentialError
+OpenAIRuntimeDependencyError
+OpenAIRuntimeLifecycleError
+OpenAIRuntimeLifecycleV2
+OpenAISDKFactoryV2
+```
+
+### `provider_runtime_openai_smoke_v2` — 7
+
+```text
+OpenAISmokeTestConfigurationError
+OpenAISmokeTestConfigurationV2
+OpenAISmokeTestConfirmationError
+OpenAISmokeTestDependencyError
+OpenAISmokeTestError
+OpenAISmokeTestResultV2
+OpenAISmokeTestRunnerV2
+```
+
+### `provider_smoke_request_authority_v2` — 6
+
+```text
+SmokeExecutionPlanV2
+SmokeExecutionRequestAuthorityError
+SmokeExecutionRequestConfigurationError
+SmokeExecutionRequestDependencyError
+SmokeProviderExecutionRequestAuthorityV2
+build_canonical_smoke_execution_plan
+```
+
+### `provider_execution_openai_sdk_bridge_v2` — 4
+
+```text
+OpenAIExecutionSDKBridgeClientV2
+OpenAIExecutionSDKBridgeError
+OpenAIExecutionSDKBridgeConfigurationError
+OpenAIExecutionSDKBridgeDependencyError
+```
+
+### `provider_runtime_openai_bridged_v2` — 6
+
+```text
+OpenAIBridgedRuntimeComposerV2
+OpenAIBridgedRuntimeCompositionV2
+OpenAIBridgedRuntimeError
+OpenAIBridgedRuntimeConfigurationError
+OpenAIBridgedRuntimeDependencyError
+OpenAIBridgedRuntimeLifecycleError
+```
+
+### `provider_runtime_openai_live_smoke_v2` — 7
+
+```text
+OpenAILiveSmokeRunnerV2
+OpenAILiveSmokeConfigurationV2
+OpenAILiveSmokeResultV2
+OpenAILiveSmokeError
+OpenAILiveSmokeConfigurationError
+OpenAILiveSmokeDependencyError
+OpenAILiveSmokeLifecycleError
+```
+
+## Historical verified test snapshot
+
+Phase 7.8 Revision 6 recorded:
+
+- Focused Phase 7.8: 99 passed
+- Runtime selector: 507 passed
+- Expanded selector: 1251 passed
+- Historical selector: 2966 passed
+- Complete repository: 5460 passed
+- Ruff, Black, compileall, pip check, and `git diff --check`: passed
+
+## Final-freeze rerun snapshot
+
+The authoritative cache-disabled rerun results are recorded after execution:
+
+- Focused Phase 7.8: 99 passed in 3.27s
+- Runtime selector: 507 passed, 4953 deselected in 9.00s
+- Expanded selector: 1251 passed, 4209 deselected in 38.10s
+- Historical selector: 2966 passed, 2494 deselected in 564.97s
+- Complete repository: 5460 passed in 605.30s
+- Ruff: passed (`All checks passed!`)
+- Black: passed (588 files would be left unchanged)
+- compileall: passed (`src` and `tests`)
+- pip check: passed (`No broken requirements found.`)
+- `git diff --check`: passed
+- Clean-process passive imports: package-specific results recorded below
+
+## Clean-import snapshot
+
+Clean-process auditing produced the following package-specific snapshot:
+
+| Package | Official `openai` loaded | OpenAI/Azure environment inspection | Official client construction | Runtime composition | Provider execution | Networking | Threads | Subprocesses | stdout | stderr | Warnings |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| `provider_v2` | No | No | No | No | No | No | No | No | Empty | Empty | None |
+| `provider_adapters_v2` | No | No | No | No | No | No | No | No | Empty | Empty | None |
+| `provider_execution_v2` | No | No | No | No | No | No | No | No | Empty | Empty | None |
+| `provider_execution_testing_v2` | No | No | No | No | No | No | No | No | Empty | Empty | None |
+| `provider_execution_openai_v2` | No | No | No | No | No | No | No | No | Empty | Empty | None |
+| `provider_execution_openai_sdk_v2` | Yes | Yes, by third-party SDK initialization | No | No | No | No | No | No | Empty | Empty | None |
+| `provider_execution_openai_sdk_bridge_v2` | No | No | No | No | No | No | No | No | Empty | Empty | None |
+| `provider_runtime_openai_v2` | No | No | No | No | No | No | No | No | Empty | Empty | None |
+| `provider_runtime_openai_smoke_v2` | No | No | No | No | No | No | No | No | Empty | Empty | None |
+| `provider_smoke_request_authority_v2` | No | No | No | No | No | No | No | No | Empty | Empty | None |
+| `provider_runtime_openai_bridged_v2` | No | No | No | No | No | No | No | No | Empty | Empty | None |
+| `provider_runtime_openai_live_smoke_v2` | No | No | No | No | No | No | No | No | Empty | Empty | None |
+
+The SDK adapter imports official SDK definitions. Third-party SDK initialization
+was observed inspecting `OPENAI_LOG`, `OPENAI_API_TYPE`, `OPENAI_API_VERSION`,
+`AZURE_OPENAI_ENDPOINT`, and `AZURE_OPENAI_AD_TOKEN`. Project code does not
+intentionally retrieve or retain those values during import. No official client
+was constructed, and no networking or provider execution occurred.
+
+For every remaining package, the table records the stronger passive-import
+result independently for SDK loading, environment inspection, client and runtime
+construction, execution, networking, process/thread activity, both output
+streams, and warnings.
+
+## Git snapshot
+
+- HEAD: `26f22b128b37822501636bc57294f05f0a9aac87`
+- Annotated tag object: `2f006a37363529765405ee413fa7f75b2fc519c6`
+- Dereferenced tag commit: `26f22b128b37822501636bc57294f05f0a9aac87`
+- Initial status: clean
+- Expected final status: only the two final-freeze documents untracked
+
+### Last 20 commits
+
+```text
+26f22b128b37822501636bc57294f05f0a9aac87 module-2.9-phase-7.8-r6-verified
+e871af89cf49f1bcd71a7b6c186818de98633f34 module-2.9-phase-7.7-compat-r6-verified
+880d8dad00185a2b44a82d28627359c0c664184e module-2.9-phase-7.7-compat-r4-verified
+d360adb7ec569bb3d0af6b3330e32f279e4ff98d module-2.9-phase-7.7-r9-verified
+4d9036617f043208377f62db35f62657a43aec18 module-2.9-phase-7.7-r6-verified
+31009b3ef66a4d5ffaa8c8d0566cc69c1ebd7a28 module-2.9-phase-7.6-r2-verified
+ffa02e87285388baecae5672ecadbbc3eb21a21d module-2.9-phase-7.6-r1-verified
+426087b7407eb4dd45f544d6b902675ec8ad4fc6 module-2.9-phase-7.5-r4-verified
+3e1372cce6d7defee8cbc7e90dc2eeee503588c5 module-2.9-phase-7.5-r2-verified
+7933644125552d5f7dbfd39781b086c5846b5042 module-2.9-phase-7.4-r12-verified
+a58603bdd6f5f20a02c5c9a3a259ca39a173b238 module-2.9-phase-7.4-r11-verified
+af60ee90dda35e417d72663460440b5ed8874e0c module-2.9-phase-7.4-r8-verified
+fa0e8c81f4f9cf8eab1dfead51ba43ffeb1604a7 module-2.9-phase-7.4-r5-verified
+24e2eb163b4d0fac485c70f7efb1d6c934a6ba79 module-2.9-phase-7.3-frozen
+d47d69b0fb9ce6f4c6a7539808ccd4debfc819cd module-2.9-phase-7.3-r6-verified
+4c2e38bc8f2260494ca51a5e6c5405e5921ec1a7 module-2.9-phase-7.3-r2-verified
+cf3f4ee3443cf6434a52528c721304f82e3d1c42 Format verified baseline files with declared Black version
+728e8aa79ebb65f9f25afc555226c9e1a017e7a9 module-2.9-phase-7.2-r10-verified
+```
