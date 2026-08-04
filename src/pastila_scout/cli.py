@@ -273,6 +273,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     ranking_parser.add_argument("--no-ai", action="store_true")
     ranking_parser.add_argument("--force-refresh", action="store_true")
+    ranking_parser.add_argument("--provider", choices=("openai", "ollama"))
     contract_validate_parser = subparsers.add_parser(
         "validate-contract", help="validate a local Scout or Editor contract"
     )
@@ -416,6 +417,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             output_directory=arguments.output_directory,
             no_ai=arguments.no_ai,
             force_refresh=arguments.force_refresh,
+            provider_name=arguments.provider,
         )
     if arguments.command == "validate-contract":
         return _validate_contract(
@@ -1228,6 +1230,7 @@ def _rank_events(
     output_directory: Path,
     no_ai: bool,
     force_refresh: bool,
+    provider_name: str | None,
 ) -> int:
     """Rank canonical events while enforcing read-only database access."""
 
@@ -1254,16 +1257,29 @@ def _rank_events(
                 load_event_snapshot(connection, event_id, source_metadata)
                 for event_id in event_ids
             )
-        api_key = resolve_openai_api_key()
-        provider = None
-        if ai_config.enable_ai and api_key:
-            provider = OpenAIProvider(ai_config, api_key)
+        if provider_name is None:
+            api_key = resolve_openai_api_key()
+            provider = None
+            if ai_config.enable_ai and api_key:
+                provider = OpenAIProvider(ai_config, api_key)
+            provider_available = bool(api_key)
+        else:
+            from pastila_scout.rank_events_runtime_v1 import (
+                compose_rank_events_provider,
+            )
+
+            provider = (
+                compose_rank_events_provider(provider_name)
+                if ai_config.enable_ai
+                else None
+            )
+            provider_available = True
         scorer = EditorialEventScorer(
             ai_config,
             config.scoring,
             FileJSONCache(config.cache.ai_editorial_directory),
             provider,
-            api_key_available=bool(api_key),
+            api_key_available=provider_available,
             force_refresh=force_refresh,
         )
         report = rank_event_snapshots(
