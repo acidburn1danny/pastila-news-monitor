@@ -318,6 +318,13 @@ def build_parser() -> argparse.ArgumentParser:
     ai_group = editor_export_parser.add_mutually_exclusive_group(required=True)
     ai_group.add_argument("--ai-enabled", action="store_true")
     ai_group.add_argument("--no-ai", action="store_true")
+    provider_run_parser = subparsers.add_parser(
+        "provider-run", help="execute one explicit provider-neutral prompt"
+    )
+    provider_run_parser.add_argument(
+        "--provider", choices=("openai", "ollama"), required=True
+    )
+    provider_run_parser.add_argument("--prompt", required=True)
     return parser
 
 
@@ -328,6 +335,10 @@ def main(argv: Sequence[str] | None = None) -> int:
     arguments = build_parser().parse_args(argv)
     configure_logging(verbose=getattr(arguments, "verbose", False))
 
+    if arguments.command == "provider-run":
+        from pastila_scout.scout_cli_provider_run_v1 import run_provider_command
+
+        return run_provider_command(arguments.provider, arguments.prompt)
     if arguments.command == "validate-config":
         return _validate_config(arguments.config, arguments.timeout, arguments.category)
     if arguments.command == "status":
