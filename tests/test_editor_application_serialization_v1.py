@@ -450,6 +450,14 @@ m.undo()
 
 def test_current_revision_scope_and_frozen_integrity() -> None:
     root = Path(__file__).resolve().parents[1]
+    baseline = "phase-4.3-editor-application-serialization-r3-verified"
+    serializer_path = "src/pastila_scout/editor_application_v1/serialization.py"
+    init_path = "src/pastila_scout/editor_application_v1/__init__.py"
+    test_path = "tests/test_editor_application_serialization_v1.py"
+    frozen_paths = (serializer_path, init_path, test_path)
+    correction_digest = (
+        "E098AD40DA70F5A5FB1D231CF04A857028F90451E7FC262C41A998A7C03054DD"
+    )
 
     def names(*arguments: str) -> set[str]:
         return set(
@@ -462,7 +470,6 @@ def test_current_revision_scope_and_frozen_integrity() -> None:
             ).stdout.splitlines()
         )
 
-    baseline = "phase-4.3-editor-application-configuration-r2-verified"
     assert (
         subprocess.run(
             ["git", "rev-parse", f"{baseline}^{{}}"],
@@ -471,28 +478,37 @@ def test_current_revision_scope_and_frozen_integrity() -> None:
             capture_output=True,
             text=True,
         ).stdout.strip()
-        == "c44f851896824651eed56058ad1c40f451d77ba1"
+        == "3eaa742f19943e5c671ba27614f861a8e5c96311"
     )
-    assert names("diff", "--cached", "--name-only") == set()
-    assert names("diff", "--name-only") == {
-        "src/pastila_scout/editor_application_v1/__init__.py",
-        "tests/test_editor_application_contracts_v1.py",
-        "tests/test_editor_generation_execution_request_authority_v1.py",
-    }
-    assert names("ls-files", "--others", "--exclude-standard") == {
-        "src/pastila_scout/editor_application_v1/serialization.py",
-        "tests/test_editor_application_serialization_v1.py",
-    }
-    assert (
-        names(
-            "diff",
-            "--name-only",
-            baseline,
-            "--",
-            "docs/editorial-application/EditorApplicationCompositionSpecificationV1.md",
-            "src/pastila_scout/editor_application_v1/configuration.py",
-            "src/pastila_scout/editor_application_v1/errors.py",
-            "src/pastila_scout/editor_application_v1/models.py",
+    assert names("ls-files", "--error-unmatch", *frozen_paths) == set(frozen_paths)
+    assert all((root / path).is_file() for path in frozen_paths)
+    assert names("diff", "--name-only", baseline, "--", serializer_path) == set()
+    assert names("diff", "--cached", "--name-only", "--", *frozen_paths) == set()
+    assert not set(frozen_paths).intersection(
+        names("ls-files", "--others", "--exclude-standard")
+    )
+
+    frozen_init = subprocess.run(
+        ["git", "show", f"{baseline}:{init_path}"],
+        cwd=root,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout
+    current_init = (root / init_path).read_text(encoding="utf-8")
+    export_additions = ()
+    if (root / "src/pastila_scout/editor_application_v1/export.py").is_file():
+        export_additions = (
+            "from .export import EditorAtomicExporterV1\n",
+            '    "EditorAtomicExporterV1",\n',
         )
-        == set()
-    )
+    revision_3_init = current_init
+    for exact_addition in export_additions:
+        assert revision_3_init.count(exact_addition) == 1
+        revision_3_init = revision_3_init.replace(exact_addition, "")
+    assert revision_3_init == frozen_init
+
+    test_bytes = (root / test_path).read_bytes()
+    normalized = test_bytes.replace(correction_digest.encode(), b"0" * 64)
+    assert normalized != test_bytes
+    assert hashlib.sha256(normalized).hexdigest().upper() == correction_digest

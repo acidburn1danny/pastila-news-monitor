@@ -120,13 +120,34 @@ def failure(code: EditorApplicationFailureCodeV1) -> EditorApplicationFailureV1:
 
 
 def test_exact_revision_2_public_api_and_passive_import() -> None:
+    root = Path(__file__).resolve().parents[1]
     serializer = "EditorOperationalResultSerializerV1"
-    expected_current_api = (*EXPECTED_API[:14], serializer, *EXPECTED_API[14:])
+    exporter = "EditorAtomicExporterV1"
+    serializer_exists = (
+        root / "src/pastila_scout/editor_application_v1/serialization.py"
+    ).is_file()
+    exporter_exists = (
+        root / "src/pastila_scout/editor_application_v1/export.py"
+    ).is_file()
+    expected_current_api = (
+        *EXPECTED_API[:13],
+        *((exporter,) if exporter_exists else ()),
+        EXPECTED_API[13],
+        *((serializer,) if serializer_exists else ()),
+        *EXPECTED_API[14:],
+    )
     assert public.__all__ == expected_current_api
     assert all(getattr(public, name) is not None for name in EXPECTED_API)
-    assert public.EditorOperationalResultSerializerV1.__module__ == (
+    assert serializer_exists
+    assert getattr(public, serializer).__module__ == (
         "pastila_scout.editor_application_v1.serialization"
     )
+    if exporter_exists:
+        assert getattr(public, exporter).__module__ == (
+            "pastila_scout.editor_application_v1.export"
+        )
+    else:
+        assert not hasattr(public, exporter)
 
 
 @pytest.mark.parametrize(
@@ -654,7 +675,7 @@ def test_current_revision_git_scope_and_frozen_specification_are_exact() -> None
     test_path = "tests/test_editor_application_contracts_v1.py"
     frozen_paths = (*production_paths, init_path, test_path)
     correction_digest = (
-        "4A87600648A0B4F725753A5538CAB030E50B33036FD2D9579E1F89CBE6937643"
+        "F150A400A061409922B27C7B9F8BB2B2AC08CB1A8A0A32576C92EDA704F32064"
     )
 
     def names(*arguments: str) -> set[str]:
@@ -694,9 +715,25 @@ def test_current_revision_git_scope_and_frozen_specification_are_exact() -> None
         text=True,
     ).stdout
     current_init = (root / init_path).read_text(encoding="utf-8")
-    revision_2_init = current_init.replace(
-        "from .serialization import EditorOperationalResultSerializerV1\n", ""
-    ).replace('    "EditorOperationalResultSerializerV1",\n', "")
+    additions = []
+    if (root / "src/pastila_scout/editor_application_v1/serialization.py").is_file():
+        additions.extend(
+            (
+                "from .serialization import EditorOperationalResultSerializerV1\n",
+                '    "EditorOperationalResultSerializerV1",\n',
+            )
+        )
+    if (root / "src/pastila_scout/editor_application_v1/export.py").is_file():
+        additions.extend(
+            (
+                "from .export import EditorAtomicExporterV1\n",
+                '    "EditorAtomicExporterV1",\n',
+            )
+        )
+    revision_2_init = current_init
+    for exact_addition in additions:
+        assert revision_2_init.count(exact_addition) == 1
+        revision_2_init = revision_2_init.replace(exact_addition, "")
     assert revision_2_init == frozen_init
 
     test_bytes = (root / test_path).read_bytes()
