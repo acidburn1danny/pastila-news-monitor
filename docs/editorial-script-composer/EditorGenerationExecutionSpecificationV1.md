@@ -1,8 +1,8 @@
-# Phase 4.2 — Editor Generation Execution Specification V3
+# Phase 4.2 — Editor Generation Execution Specification V6
 
-Status: **normative specification — strict JSON-mode and runtime-session boundaries corrected**
+Status: **normative specification — singular runtime-composition ownership and workflow-factory lifecycle corrected**
 
-Baseline: `phase-4.2-editor-generation-provider-r3c-verified` / `0afbe27480623e1f100b5275109b46ac3572bc3a`
+Baseline: `phase-4.2-editor-generation-runtime-spec-v2-ready` / `612f68345ded9ed23e9ff866f41b318d49ce810a`
 
 ## 1. Normative scope
 
@@ -334,7 +334,7 @@ def __init__(
     *,
     openai_composer_factory: EditorOpenAIRuntimeComposerFactoryV1,
     ollama_session_factory: EditorOllamaRuntimeFactoryV1,
-    workflow_factory: EditorScoutWorkflowFactoryV1,
+    legacy_workflow: LegacyScoutWorkflowExecutionV1,
     adapter_dependency_factory: EditorAdapterDependencyFactoryV1,
     fingerprint_authority: EditorRequestFingerprintAuthorityV1,
 ) -> None: ...
@@ -349,18 +349,27 @@ def open(
 
 It branches exactly once on the exact `ProviderChoiceV1`; this is composition,
 not routing. It opens only the selected provider. The unselected composer or
-factory is not invoked. It creates exactly one `ProviderSelectorV1`, registers
-exactly one selected executor, creates the frozen workflow/bridge composition,
-mints the runtime authority atomically, then calls the adapter dependency
-factory with the exact coordinator operation reference and creates the adapter
-with the exact injected fingerprint authority.
+factory is not invoked. It creates exactly one operational selected executor
+and one package-private inert executor for the unselected identity, registers
+exactly `openai` and `ollama`, creates exactly one frozen `ProviderSelectorV1`,
+selects only the explicit provider, constructs the authoritative
+`ScoutRuntimeCompositionV1`, constructs one package-private workflow factory
+that retains the exact legacy dependency, passes the composition identity
+exactly once to that factory, mints the runtime authority atomically, then calls
+the adapter
+dependency factory with the exact coordinator operation reference and creates
+the adapter with the exact injected fingerprint authority.
 The operation reference is identity input only; no execution request or
 deterministic artifact is passed to or retained by the adapter. Composition
 failure closes any acquired selected resource exactly once before returning the
 fixed `Editor generation runtime composition failed.` error.
 
-Factory construction is inert. Only explicit `open(options,
-operation_reference=...)` may compose the selected provider, create resources,
+Factory construction is inert. It statically validates `legacy_workflow` and
+all other injected dependencies, retains their exact identities without copy,
+deepcopy, wrapper, registry, or hook invocation, and constructs no private
+workflow factory or runtime/provider/session value. It owns no operational
+resource. Only explicit `open(options, operation_reference=...)` may construct
+the private workflow factory, compose the selected provider, create resources,
 create the operation-scoped adapter dependencies and recorder, mint the runtime
 authority, create the adapter, and publish the session. `options` is exact
 `EditorGenerationRuntimeOptionsV1`; `operation_reference` is an exact built-in,
@@ -368,6 +377,21 @@ nonempty, unpadded NFC string of at most 120 characters. Provider selection is
 only `options.provider`, with exact `ProviderChoiceV1.OPENAI` or
 `ProviderChoiceV1.OLLAMA`; there is no string input, alias, default, case fold,
 normalization, discovery, routing, or fallback.
+
+`EditorGenerationRuntimeSessionFactoryV1` is frozen, slotted, init-disabled,
+identity-dependency-bearing, and has no `__dict__`, setter, cached workflow
+factory, mutable/global hidden state, or public dependency property. Its private
+fields retain exactly the five constructor dependency identities, including the
+legacy workflow and excluding `_EditorScoutWorkflowFactoryV1`. Its fixed repr
+is `EditorGenerationRuntimeSessionFactoryV1(<injected dependencies>)` and calls
+no dependency repr. Equality compares exact dependency identities without
+calling dependency equality. Shallow copy constructs a new validated public
+factory wrapper preserving those same identities; deepcopy does the same
+without traversing dependencies. Pickle raises fixed `TypeError("Editor
+generation runtime session factory cannot be pickled.")` before traversal.
+Every public operation revalidates exact retained fields and static descriptors;
+post-construction substitution or copied-invalid state fails with the fixed
+runtime-composition error.
 
 Construction is atomic. Before publication the factory retains each acquired
 owned lifecycle authority privately. If any later construction step fails, it
@@ -407,6 +431,233 @@ verified `OllamaProviderExecutorV1` with exact model, temperature, maximum
 tokens, empty stops, and the separately injected fixed endpoint configuration.
 It returns the executor plus one idempotence-guarded close authority for that
 same HTTP client. Parser, adapter, coordinator, and selector never own it.
+
+#### 4.6.1 Selector-compatible unselected registration policy
+
+The frozen `ProviderSelectorV1` requires both supported registrations before it
+selects one. Revision 3C.1 therefore uses exactly this deterministic flow:
+
+```text
+exact ProviderChoiceV1
+  -> construct only its verified operational executor
+  -> construct one inert executor carrying the other ProviderChoiceV1
+  -> reconstruct registrations in (openai, ollama) order
+  -> ProviderSelectorV1(exact config, exact two-registration tuple)
+  -> retain only selector.executor for the explicit choice
+```
+
+For OpenAI, the tuple is `(openai -> selected verified OpenAI executor, ollama
+-> inert ollama executor)`. For Ollama, it is `(openai -> inert openai
+executor, ollama -> selected verified Ollama executor)`. Registration order is
+always `ProviderChoiceV1.OPENAI`, then `ProviderChoiceV1.OLLAMA`; the selector
+input is exactly `tuple[ProviderExecutorRegistrationV1,
+ProviderExecutorRegistrationV1]`. The configuration is exactly
+`ProviderSelectionConfigV1(provider=options.provider)`. Both registration
+instances are reconstructed from their exact public `provider` and `executor`
+attributes and must retain identity equality before selector construction.
+There is no separate registration fingerprint or provenance field in the
+frozen registration contract; provenance is the exact canonical
+`ProviderChoiceV1` key, statically validated executor type, and, for the
+selected executor, the already specified verified descriptor/configuration
+authority. No fingerprint is fabricated.
+
+The session factory is the sole selector and runtime-composition owner. After
+selector construction it constructs exactly one `ScoutRuntimeCompositionV1`
+from:
+
+```python
+ScoutRuntimeCompositionV1(
+    selector=selector,
+    config=ScoutRuntimeConfigV1("editor-generation-runtime-config-v1"),
+    options=ScoutRuntimeOptionsV1("editor-generation-runtime-options-v1"),
+    cancellation=ScoutCancellationV1(False),
+)
+```
+
+The two fixed identities describe only this frozen bridge composition and are
+not provider, model, request, or fingerprint authority. The false composition
+cancellation value is inert bridge configuration; fresh authoritative request
+cancellation remains owned by the adapter/application request and is never
+inferred from this value. The session factory reconstructs the candidate
+composition exactly once with `copy.copy`, requires a distinct exact
+`ScoutRuntimeCompositionV1`, the same selector identity, and exact equality of
+reconstructed config, options, and cancellation, then discards the candidate.
+The reconstructed object is the sole authoritative application-owned
+composition. At `open` stage 10 the session factory constructs one exact
+`_EditorScoutWorkflowFactoryV1` with its retained exact legacy-workflow
+identity, then passes the authoritative composition exactly once as the sole
+argument to
+`EditorScoutWorkflowFactoryV1.create`. The create argument is the authoritative
+composition by identity. The workflow factory neither copies nor reconstructs
+it, and the frozen `ScoutRuntimeExecutionBridgeV1` constructor retains that
+exact supplied composition identity. Registrations and inert state are not
+copied into runtime authority or runtime-fingerprint semantics;
+the selected provider remains exactly `options.provider`, and the existing
+runtime fingerprint continues to cover exact options, operation reference, and
+selected-provider/model semantics only.
+
+`composition.py` owns the sole concrete package-private primitive:
+
+```python
+@dataclass(frozen=True, slots=True, repr=False)
+class _NonOperationalProviderExecutorV2:
+    provider: ProviderChoiceV1
+
+    def __init__(self, *, provider: ProviderChoiceV1) -> None: ...
+
+    def execute(
+        self,
+        request: ProviderExecutionRequestV2,
+    ) -> ProviderExecutionResultV2: ...
+```
+
+The annotations above resolve to the exact frozen classes from
+`pastila_scout.provider_execution_v2.models`. `execute` is an ordinary
+instance function defined directly on the exact class: no property,
+static/class method, partial, wrapper, dynamic hook, instance substitution,
+variadic argument, default argument, or forged annotation is permitted. The
+class is final by exact-type validation. Its sole retained field is an exact
+canonical `ProviderChoiceV1`; construction rejects every other type. OpenAI
+inert identity is exactly `ProviderChoiceV1.OPENAI`; Ollama inert identity is
+exactly `ProviderChoiceV1.OLLAMA`. It never infers identity from a model, URL,
+descriptor, selected executor, or string and never reuses or impersonates the
+selected identity.
+
+The inert executor is value-equal only to the same exact class carrying the
+same exact provider. Its fixed, address-free representation is
+`_NonOperationalProviderExecutorV2(provider='openai')` or
+`_NonOperationalProviderExecutorV2(provider='ollama')`. `copy.copy` and
+`copy.deepcopy` return the same immutable identity without dependency
+traversal. Pickle is rejected by a fixed `TypeError("Non-operational provider
+executor cannot be pickled.")` raised before state traversal. Authoritative
+reconstruction calls the exact constructor with the retrieved exact provider,
+requires equality and exact field parity, and rejects copied-invalid state.
+The type is absent from package `__all__`, has no alias, and is not imported by
+Revision 3D.
+
+If incorrectly invoked, `execute` first strictly reconstructs
+`ProviderExecutionRequestV2` from `request.model_dump(mode="python",
+warnings=False)` and requires `request.provider.provider_id ==
+self.provider.value`. A wrong request type, malformed/copied-invalid request, or
+identity mismatch raises the fixed
+`EditorGenerationRuntimeCompositionError("Non-operational provider registration
+was invoked incorrectly.")` from no cause or context. For a valid matching
+request it returns exactly one freshly reconstructed
+`ProviderExecutionResultV2` with:
+
+```text
+request_id = request.context.request_id
+provider_id = request.provider.provider_id
+request_envelope_identity = request.request_envelope.identity
+outcome = ExecutionOutcomeV2.INTERNAL_EXECUTION_FAILURE
+finished_at = request.context.requested_at
+provider_result = None
+failure_code = "non-operational-provider-registration"
+failure_message = "Non-operational provider registration was invoked."
+```
+
+The result is reconstructed through `ProviderExecutionResultV2.model_validate`
+with strict input and exact field parity before return. It is non-retryable by
+policy: the runtime performs no retry and this fixed code is not classified as
+a timeout or retryable selected-provider failure. It is distinguishable from a
+genuine selected-provider failure only by that fixed neutral code and message.
+It retains no request or exception. Validation errors are discarded, context
+and cause are suppressed, and neither the fixed result nor the fixed error,
+repr, equality, copy, deepcopy, or pickle path exposes prompt, envelope,
+lineage objects, credentials, selected executor, selector, runtime, client,
+paths, memory addresses, raw failures, or traceback locals after propagation.
+
+The factory statically validates before selector construction that there are
+exactly two exact registration objects in canonical order with distinct exact
+keys; the selected key equals `options.provider`; its executor is the exact
+verified operational executor type constructed for that provider; the later
+application request descriptor has the same canonical `provider_id`; the other
+key is the opposite canonical identity and its executor is an exactly
+reconstructed `_NonOperationalProviderExecutorV2` carrying that same opposite
+identity. It rejects wrong, duplicate, missing, swapped, or selected-as-inert
+identities; operational executors under the wrong key; an inert executor under
+the selected key; dynamic or forged executor shapes; and copied-invalid
+registration or executor state. Validation is static and never invokes an
+executor body.
+
+Both registrations satisfy the selector's structural contract, but this does
+not create fallback or routing. Cardinality is exactly: registrations 2,
+explicit selector constructions 1, explicit selections 1, later selected
+executor calls 1, valid-path inert calls 0, fallback attempts 0, and routing
+attempts 0. A selected-provider failure is returned unchanged through the
+existing path and never invokes the inert executor or other provider.
+
+Construction isolation is exact. OpenAI selection constructs OpenAI operational
+resources and one inert Ollama value; it invokes no Ollama factory, HTTP,
+transport, model discovery, pull, runtime, or cleanup. Ollama selection
+constructs Ollama operational resources and one inert OpenAI value; it invokes
+no OpenAI factory, credential/environment read, client, runtime, or cleanup.
+The inert value requires no provider-specific configuration and performs zero
+credential/environment access, client/provider construction, networking, HTTP,
+model loading/discovery/pull, workflow execution, retry, fallback, cleanup,
+persistence, filesystem/database access, threads, subprocesses, timers,
+stdout/stderr, or warnings. Construction and all object-safety operations are
+deterministic local operations only.
+
+The inert executor owns no resource and has no close, aclose, shutdown, or
+context-management method. Its cleanup count is always zero. Session close and
+partial-construction rollback close only acquired selected-provider lifecycle
+authorities. The inert value and its registration are discarded locally and
+are never included in rollback ownership.
+
+The corrected atomic `open` algorithm is exactly:
+
+1. validate the explicit provider and all runtime options;
+2. construct only the selected operational provider/runtime and retain its
+   lifecycle authority;
+3. construct and reconstruct the selected registration;
+4. construct and reconstruct the opposite-identity inert executor;
+5. construct and reconstruct the inert registration;
+6. validate and reconstruct both registrations in canonical order;
+7. construct `ProviderSelectorV1` with exactly those registrations and exact
+   selection config, then require `selector.executor is selected_executor`;
+8. construct one candidate `ScoutRuntimeCompositionV1`;
+9. authoritatively reconstruct it exactly once, validate identity authority,
+   discard the candidate, and retain only the reconstructed composition;
+10. construct exactly one `_EditorScoutWorkflowFactoryV1(
+    legacy_workflow=retained_legacy_workflow)` after statically revalidating the
+    retained identity without invoking its body or hooks;
+11. call `workflow_factory.create(
+    runtime_composition=authoritative_runtime_composition)` exactly once and
+    validate its exact `ScoutWorkflowExecutionV1` result;
+12. construct and reconstruct the runtime authority for exactly the selected
+    options and operation reference;
+13. construct the operation-scoped attempt recorder and remaining adapter
+    dependencies;
+14. construct the adapter with the exact shared dependencies;
+15. construct and validate the runtime session;
+16. return the session.
+
+Failure after any stage discards inert local values without cleanup and closes
+only already acquired selected lifecycle authorities, exactly once each in
+reverse acquisition order. It then raises the existing fixed composition error
+from no cause or context. Candidate/authoritative immutable compositions and the
+package-private workflow factory are discarded without cleanup. The externally
+owned retained legacy workflow, selector, registrations, inert executor,
+bridge, and workflow are never closed. No session is published on failure.
+
+Failure timing is exact. A malformed constructor dependency fails during public
+session-factory construction with
+`EditorGenerationRuntimeCompositionError("Editor generation runtime composition
+failed.")`. Valid construction followed by substituted or copied-invalid
+retained legacy state fails during `open` stage 10 before a private workflow
+factory is published. Private workflow-factory construction failure is also a
+stage-10 failure. Bridge, workflow, or workflow-result validation failure is a
+stage-11 failure. Every `open` failure uses that same fixed error with
+`__cause__ is None`, `__context__ is None`, and suppression true after local/raw
+references are discarded. Stage-10 and stage-11 failures close already acquired
+selected-provider resources exactly once in reverse acquisition order, close
+nothing else, and return no session.
+
+Revision 3D remains provider-blind. It receives only the public runtime session
+factory, calls `open`, and consumes the already specified session surface. It
+never constructs or inspects registrations, sees the inert executor, accesses
+the selector, performs fallback, or interprets selected versus inert status.
 
 `EditorGenerationRuntimeSessionV1` has private exact references to
 `ScoutWorkflowExecutionV1`, `EditorGenerationRuntimeAuthorityV1`,
@@ -476,8 +727,9 @@ tests/test_editor_generation_runtime_v1.py
 ```
 
 There is no `session.py` or `factory.py`. `composition.py` owns the public
-session and session factory implementation; `models.py` owns only exact private
-runtime values; `protocols.py` owns only private injected protocols.
+session and session factory implementation plus the sole package-private
+concrete `_NonOperationalProviderExecutorV2`; `models.py` owns only exact
+private runtime values; `protocols.py` owns only private injected protocols.
 
 The exact ordered package API is:
 
@@ -1336,7 +1588,9 @@ class EditorOllamaRuntimeFactoryV1(Protocol):
 
 class EditorScoutWorkflowFactoryV1(Protocol):
     def create(
-        self, *, provider: ProviderChoiceV1, selected_executor: ProviderExecutorV2
+        self,
+        *,
+        runtime_composition: ScoutRuntimeCompositionV1,
     ) -> ScoutWorkflowExecutionV1: ...
 
 class EditorAdapterDependencyFactoryV1(Protocol):
@@ -1348,6 +1602,88 @@ authorities and exposes neither publicly. `EditorAdapterDependenciesV1` is a
 frozen private bundle containing exactly one clock, cancellation source,
 reference factory, and recorder. Its factory returns fresh operation-scoped
 dependencies; no dependency is global or shared between sessions.
+
+`EditorScoutWorkflowFactoryV1` is a package-private protocol located only in
+`editor_generation_runtime_v1/protocols.py` and absent from `__all__`. Its
+`create` member is one ordinary instance method with exactly one keyword-only
+parameter named `runtime_composition`, annotated with the exact frozen public
+`ScoutRuntimeCompositionV1`, and exact return annotation
+`ScoutWorkflowExecutionV1`. It has no default, overload, positional-only or
+variadic parameter, `legacy_workflow`, provider, selected-executor, selector,
+wrapper, property/cached property, static/class method, partial, or dynamic
+replacement. The session factory statically validates the concrete
+implementation's exact descriptor without invoking it or any instance hook.
+
+`composition.py` owns exactly one package-private concrete implementation:
+
+```python
+@dataclass(frozen=True, slots=True, init=False, eq=False, repr=False)
+class _EditorScoutWorkflowFactoryV1:
+    _legacy_workflow: LegacyScoutWorkflowExecutionV1
+
+    def __init__(
+        self,
+        *,
+        legacy_workflow: LegacyScoutWorkflowExecutionV1,
+    ) -> None: ...
+
+    def create(
+        self,
+        *,
+        runtime_composition: ScoutRuntimeCompositionV1,
+    ) -> ScoutWorkflowExecutionV1: ...
+```
+
+The constructor requires the exact keyword-only `legacy_workflow` parameter and
+statically validates the exact ordinary `execute(self, request:
+ScoutRuntimeRequestV1) -> ScoutRuntimeResultV1` protocol shape without invoking
+descriptors or bodies. It rejects subclasses, proxies, wrappers, dynamic
+attributes, instance method replacement, missing/copied-invalid state, and
+every nonconforming signature with the existing fixed runtime-composition
+error. It retains the exact dependency identity in its sole private field; no
+copy, deepcopy, proxy, registry, lookup, setter, or per-call replacement exists.
+Construction performs no workflow/runtime/provider operation.
+
+The implementation is exact-type validated, slotted with no `__dict__`, and
+immutable. Its repr is exactly
+`_EditorScoutWorkflowFactoryV1(legacy_workflow=<injected>)` and never calls the
+dependency repr. Equality is identity only and never calls dependency equality.
+`copy.copy` and `copy.deepcopy` return `self` without traversal or resource
+duplication. Pickle raises fixed `TypeError("Editor Scout workflow factory
+cannot be pickled.")` before state traversal. Every operation revalidates the
+retained exact dependency statically and rejects copied-invalid state. It has no
+mutable or global hidden state and remains absent from every public export.
+
+`create` first validates by exact type and direct static field inspection that
+the supplied object is the sole authoritative `ScoutRuntimeCompositionV1`, its
+selector is exact `ProviderSelectorV1`, and its config/options/cancellation are
+the exact frozen types with the already specified values. It invokes no
+composition descriptor, repr, equality, copy, deepcopy, or reconstruction. It
+constructs exactly one `ScoutRuntimeExecutionBridgeV1` from that same supplied
+object and requires `runtime_bridge.composition is runtime_composition` and the
+bridge's authorized executor identity to be the exact selector executor. The
+frozen bridge constructor retains the supplied composition directly and does
+not reconstruct it. The factory then constructs exactly one
+`ScoutWorkflowExecutionV1(retained_legacy_workflow, runtime_bridge)` and
+validates by exact type/direct retained-field identities that the workflow owns
+that exact legacy dependency and bridge. It performs no workflow copy or
+reconstruction before returning the exact constructed workflow.
+
+The workflow factory performs no provider or executor construction, registration
+construction, selector construction or selection, provider inference,
+application/runtime-authority construction, execution, fallback, routing,
+retry, credential access, networking, or cleanup. It owns no provider resource.
+Factory construction additionally performs zero bridge/workflow construction,
+legacy execution, attempt recording, JSON validation, persistence,
+filesystem/database access, threads, subprocesses, timers, stdout/stderr, or
+warnings. `create` may construct only the bridge and workflow and never invokes
+either execution method.
+Malformed composition, retained legacy dependency, bridge, or workflow
+is translated to the existing fixed
+`EditorGenerationRuntimeCompositionError("Editor generation runtime composition
+failed.")` with cause/context cleared and suppression true after all local and
+raw exception references are discarded. It does not close the supplied
+composition, selector, executor, legacy dependency, bridge, or workflow.
 The dependency factory validates the unpadded operation reference and binds it
 privately into the reference factory. Application references are deterministic
 functions of that operation reference, prompt fingerprint, and attempt number;
@@ -1495,15 +1831,47 @@ frozen integrity. Its dependency/import tests explicitly reject every
 coordinator-level type listed in section 8.
 
 Revision 3C.1 specifically tests the exact five-file runtime package and
-focused test; exact three-symbol exports and order; absence of configuration
-error aliases and public controlled-generator factories; exact session-factory
-constructor/open signatures; exact session properties and identity returns;
-the recorder identity shared with the adapter without adapter traversal;
-operation-reference binding; open/closed behavior and access-after-close;
-explicit prohibition of context management; identity copy/deepcopy and rejected
-pickle; explicit OpenAI and Ollama fake composition with the unselected path
-untouched; no default/alias/discovery/fallback; zero execution/generation on
-construction and property access; byte-for-byte runtime-fingerprint parity with
+focused test; exact three-symbol exports and order; absence of the inert type,
+configuration error aliases, and public controlled-generator factories; exact
+session-factory constructor/open signatures; exact session properties and
+identity returns; the recorder identity shared with the adapter without adapter
+traversal; operation-reference binding; open/closed behavior and
+access-after-close; explicit prohibition of context management; identity
+copy/deepcopy and rejected pickle; explicit OpenAI and Ollama fake composition;
+exactly two registrations keyed in `openai`, `ollama` order; exact selected
+verified executor and exact opposite-identity inert executor; frozen-protocol
+signature compatibility; passive inert construction; exact fixed inert result
+and malformed/wrong-identity fixed error; inert copy/deepcopy/pickle/repr,
+copied-invalid, and traceback safety; selected execution once and inert
+execution zero; selected failure never invoking inert or fallback; wrong,
+swapped, duplicate, missing, and operational-under-wrong-identity registrations
+rejected statically without body invocation; OpenAI selection with zero Ollama
+operational/network/model activity; Ollama selection with zero OpenAI
+operational/credential activity; inert cleanup zero; selected-resource cleanup
+only; exact sole selector/registration ownership in the session factory; exact
+`ScoutRuntimeCompositionV1` constants and reconstruction; exact workflow-factory
+protocol signature with only `runtime_composition`; one candidate composition
+construction and exactly one session-factory authoritative reconstruction;
+candidate discarded; exact authoritative composition identity passed once;
+workflow-factory composition copy/deepcopy/reconstruction counts all zero;
+bridge retains that exact identity; exact concrete workflow-factory constructor
+retains the legacy workflow once; public session-factory constructor retains
+the exact legacy identity but constructs zero private workflow factories and
+zero operational values; private workflow factory constructed exactly once at
+`open` stage 10 with that retained identity; no cached/preconstructed factory;
+stage-10 and stage-11 failure timing plus selected-resource rollback; external
+legacy and private factory never closed; exact 16-stage call ordering; create
+rejects legacy/provider/executor/selector parameters; public and concrete
+factory slots/repr/identity equality/copy/deepcopy/pickle and copied-invalid
+safety; one bridge and one workflow constructed with no
+workflow reconstruction; no selector, registration, provider, execution, or
+cleanup construction by the workflow factory; exact retained legacy-workflow
+identity; malformed factory/composition/legacy/bridge/workflow failure isolation;
+no duplicate selector or workflow composition; no
+default/alias/discovery/fallback/routing;
+zero execution/generation on construction and property access; frozen selector
+source/hash unchanged;
+byte-for-byte runtime-fingerprint parity with
 the frozen constructor across provider/model/reference, Unicode, and tagged
 numeric/timeout types, plus forbidden-private-import scanning; contiguous
 immutable recorder snapshots;
@@ -1578,6 +1946,30 @@ remains a model error, and malformed syntax produces `json_invalid`. No frozen
 model change, manual conversion, preprocessing, or non-strict validation is
 required. Revision 3C is implementation-ready only with this single path.
 
+### Gate H — selector-compatible isolated composition: **RESOLVED**
+
+Section 4.6.1 supplies both registrations required by the unchanged frozen
+selector while constructing only one operational provider. The other canonical
+identity is represented by one exact package-private, resource-free, fail-closed
+executor. Its invocation result, validation, identity, object safety, passivity,
+and cleanup behavior are closed; canonical registration ordering and exact
+cardinality prohibit fallback or routing. Revision 3C.1 is implementation-ready
+only if its focused tests prove this policy and frozen-selector integrity.
+
+### Gate I — selector/workflow ownership: **RESOLVED**
+
+The session factory alone constructs both registrations, the selector, and the
+authoritative `ScoutRuntimeCompositionV1`. The package-private workflow factory
+is constructed exactly once during `open` stage 10 from the exact legacy
+boundary retained inertly by the public factory; public factory construction
+creates no private workflow factory. Its operational `create` method accepts
+only the authoritative composition exactly once. It
+owns only identity-preserving validation and bridge/workflow construction, and
+cannot copy or reconstruct composition or selector state. Runtime authority
+remains selected-provider authority and does not include the inert registration.
+No second selector, registration, application-owned composition reconstruction,
+cleanup owner, fallback, or routing path remains.
+
 ## 20. Implementation roadmap
 
 ### Revision 3B — generation authority and execution-request contract
@@ -1610,7 +2002,7 @@ required. Revision 3C is implementation-ready only with this single path.
 ### Revision 3C.1 — runtime session and factory
 
 - Entry: verified 3C and this independently implementation-ready Runtime
-  Specification V2 boundary.
+  Specification V6 workflow-factory lifecycle boundary.
 - Authorized files only:
   `editor_generation_runtime_v1/__init__.py`, `composition.py`, `errors.py`,
   `models.py`, `protocols.py`, and
@@ -1619,9 +2011,14 @@ required. Revision 3C is implementation-ready only with this single path.
   CLI, persistence, Producer, provider modification, discovery, routing, and
   fallback.
 - Exit: exact public API/session surface, explicit selected-provider fake
-  composition, shared recorder identity, atomic construction, singular cleanup,
-  object/passivity/error-isolation tests, full gates, and independent
-  verification.
+  composition, canonical two-registration selector input with one selected
+  operational and one opposite-identity inert executor, zero unselected-provider
+  construction, singular session-factory selector ownership, exact authoritative
+  runtime-composition handoff to the package-private workflow factory, singular
+  bridge/workflow construction, zero fallback/routing, shared recorder identity,
+  atomic construction, selected-resource-only cleanup, inert fail-closed and
+  object/passivity/error-isolation tests, frozen-selector integrity, full gates,
+  and independent verification.
 - Rollback/Git policy: additive removal; commit/tag only after verification and
   separate authorization.
 
