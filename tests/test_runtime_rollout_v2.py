@@ -58,6 +58,8 @@ def test_repository_discovery_matches_authoritative_inventory() -> None:
         "pastila_scout.ai.openai_provider",
         "pastila_scout.cli",
         "pastila_scout.editor.generation.ai_provider_adapter.openai",
+        "pastila_scout.editor_generation_runtime_v1.composition",
+        "pastila_scout.editor_generation_runtime_v1.protocols",
     )
 
 
@@ -95,6 +97,54 @@ def test_inventory_contains_only_verified_migration_candidates() -> None:
         }
         for item in RUNTIME_CONSUMER_INVENTORY_V1
     )
+
+
+def test_editor_generation_runtime_modules_are_explicitly_authorized() -> None:
+    expected = {
+        "pastila_scout.editor_generation_runtime_v1.composition": (
+            "public OpenAI runtime and executor composition contracts",
+            "explicit selected-provider Editor runtime-session composition",
+        ),
+        "pastila_scout.editor_generation_runtime_v1.protocols": (
+            "public OpenAI runtime composition protocol contracts",
+            "static Editor runtime composition dependency protocols",
+        ),
+    }
+    entries = tuple(
+        item
+        for item in RUNTIME_CONSUMER_INVENTORY_V1
+        if item.package.startswith("pastila_scout.editor_generation_runtime_v1")
+    )
+
+    assert len(entries) == 2
+    assert {item.package for item in entries} == set(expected)
+    assert all(
+        item.classification is RuntimeConsumerClassificationV1.DIRECT_RUNTIME_CONSUMER
+        for item in entries
+    )
+    assert all(
+        (item.dependency, item.execution_boundary) == expected[item.package]
+        for item in entries
+    )
+    assert all(
+        item.package != "pastila_scout.editor_generation_runtime_v1"
+        for item in RUNTIME_CONSUMER_INVENTORY_V1
+    )
+
+
+def test_each_editor_runtime_module_entry_is_required_for_exact_inventory() -> None:
+    discovered = discover_direct_runtime_consumers(SOURCE_ROOT)
+    authoritative = tuple(
+        sorted(item.package for item in RUNTIME_CONSUMER_INVENTORY_V1)
+    )
+    editor_modules = (
+        "pastila_scout.editor_generation_runtime_v1.composition",
+        "pastila_scout.editor_generation_runtime_v1.protocols",
+    )
+
+    assert discovered == authoritative
+    for module in editor_modules:
+        assert tuple(item for item in authoritative if item != module) != discovered
 
 
 @pytest.mark.parametrize(

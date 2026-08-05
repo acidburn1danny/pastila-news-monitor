@@ -35,6 +35,24 @@ RUNTIME_CONSUMER_DISCOVERY_V1 = _validated_discovery_tuple(
             migration_candidate=True,
         ),
         RuntimeConsumerDiscoveryRecordV1(
+            package="pastila_scout.editor_generation_runtime_v1.composition",
+            dependency=("public OpenAI runtime and executor composition contracts"),
+            classification=(RuntimeConsumerClassificationV1.DIRECT_RUNTIME_CONSUMER),
+            execution_boundary=(
+                "explicit selected-provider Editor runtime-session composition"
+            ),
+            migration_candidate=True,
+        ),
+        RuntimeConsumerDiscoveryRecordV1(
+            package="pastila_scout.editor_generation_runtime_v1.protocols",
+            dependency="public OpenAI runtime composition protocol contracts",
+            classification=(RuntimeConsumerClassificationV1.DIRECT_RUNTIME_CONSUMER),
+            execution_boundary=(
+                "static Editor runtime composition dependency protocols"
+            ),
+            migration_candidate=True,
+        ),
+        RuntimeConsumerDiscoveryRecordV1(
             package="pastila_scout.ai.verification",
             dependency="provider-neutral AIProvider protocol",
             classification=RuntimeConsumerClassificationV1.TRANSITIVE_CONSUMER,
