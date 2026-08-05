@@ -1,8 +1,8 @@
-# Phase 4.2 — Editor Generation Execution Specification V1
+# Phase 4.2 — Editor Generation Execution Specification V2
 
-Status: **normative specification — ready for independent implementation-readiness review**
+Status: **normative specification — adapter/execution-request boundary corrected**
 
-Baseline: `phase-4.2-editor-operational-r2-verified` / `d25ac84bdae8667ff5331de19516002412c4eea3`
+Baseline: `phase-4.2-editor-generation-authority-r3b-verified` / `bcd6d804d894b0dcef7419060a172732aa9543fa`
 
 ## 1. Normative scope
 
@@ -10,7 +10,7 @@ The words **MUST**, **MUST NOT**, **SHALL**, **SHALL NOT**, and **MAY** are
 normative. This document specifies additive future work only. It changes no
 frozen contract or implementation.
 
-The future flow is exactly:
+The future coordinator flow is exactly:
 
 ```text
 EditorOperationalPreparationResultV1
@@ -19,6 +19,7 @@ EditorOperationalPreparationResultV1
   -> EditorOperationalExecutionCoordinatorV1
   -> ControlledGenerator
   -> EditorNeutralLanguageModelProviderV1
+  -> EditorGenerationApplicationRequestV1
   -> EditorGenerationRequestAuthorityV1
   -> ScoutWorkflowExecutionV1.execute_provider_neutral
   -> ScoutRuntimeExecutionBridgeV1
@@ -32,6 +33,11 @@ EditorOperationalPreparationResultV1
 `EditorOperationalCoordinatorV1` and `EditorGenerationPlanV1` remain unchanged.
 There is no CLI, persistence, Producer handoff, fallback, automatic routing, or
 direct provider execution.
+
+The Revision 3C adapter flow begins at `ControlledGenerator` and does not
+include either `EditorGenerationExecutionRequestV1` or any deterministic Editor
+artifact. The execution request belongs exclusively to the coordinator prefix
+of the flow above.
 
 ## 2. Reproduced blockers and repository grounding
 
@@ -100,6 +106,7 @@ src/pastila_scout/editor_generation_execution_v1/
 src/pastila_scout/editor_generation_provider_adapter_v1/
     __init__.py
     adapter.py
+    application_request.py
     errors.py
     parsing.py
     protocols.py
@@ -133,7 +140,9 @@ editor_generation_execution_v1
   -> frozen Revision 2 public API and existing deterministic Editor API
 
 editor_generation_provider_adapter_v1
-  -> existing LanguageModelProvider/GenerationPrompt and frozen Scout workflow API
+  -> existing LanguageModelProvider/GenerationPrompt
+  -> editor_generation_authority_v1
+  -> frozen Scout workflow API
 
 editor_generation_runtime_v1
   -> verified public OpenAI/Ollama composition and Scout workflow APIs
@@ -142,6 +151,8 @@ editor_generation_runtime_v1
 The authority package imports no Editor domain type. The adapter imports no
 provider implementation, SDK, deterministic builder, coordinator, CLI,
 persistence, or Producer type. Frozen packages never import these packages.
+The adapter MUST NOT import `editor_generation_execution_v1` or
+`editor_operational_v1`.
 
 ## 4. Generation-capable application authority
 
@@ -270,11 +281,14 @@ def __init__(
     ollama_session_factory: EditorOllamaRuntimeFactoryV1,
     workflow_factory: EditorScoutWorkflowFactoryV1,
     adapter_dependency_factory: EditorAdapterDependencyFactoryV1,
+    fingerprint_authority: EditorRequestFingerprintAuthorityV1,
 ) -> None: ...
 
 def open(
     self,
     options: EditorGenerationRuntimeOptionsV1,
+    *,
+    operation_reference: str,
 ) -> EditorGenerationRuntimeSessionV1: ...
 ```
 
@@ -282,7 +296,11 @@ It branches exactly once on the exact `ProviderChoiceV1`; this is composition,
 not routing. It opens only the selected provider. The unselected composer or
 factory is not invoked. It creates exactly one `ProviderSelectorV1`, registers
 exactly one selected executor, creates the frozen workflow/bridge composition,
-mints the runtime authority atomically, then creates the adapter. Composition
+mints the runtime authority atomically, then calls the adapter dependency
+factory with the exact coordinator operation reference and creates the adapter
+with the exact injected fingerprint authority.
+The operation reference is identity input only; no execution request or
+deterministic artifact is passed to or retained by the adapter. Composition
 failure closes any acquired selected resource exactly once before returning the
 fixed `Editor generation runtime composition failed.` error.
 
@@ -350,6 +368,10 @@ schema enforcement, both paths fail closed until the neutral contract and both
 verified providers support it; no provider-specific editorial branch is allowed.
 
 ## 6. Deterministic enrichment and execution request
+
+This entire section is coordinator-level authority for future Revision 3D.
+Neither package nor value in this section is imported, accepted, retained,
+reconstructed, or fabricated by the Revision 3C provider adapter.
 
 ### 6.1 `EditorGenerationPreparationCoordinatorV1`
 
@@ -468,6 +490,29 @@ coordinator MUST NOT duplicate or reinterpret them.
 
 ## 8. Provider-neutral `LanguageModelProvider` adapter
 
+The Revision 3C flow is exactly:
+
+```text
+ControlledGenerator
+  -> LanguageModelProvider.generate_structured(
+       GenerationPrompt, output_schema, LanguageGenerationConfig)
+  -> GenerationPrompt.text
+  -> EditorGenerationApplicationRequestV1
+  -> EditorGenerationRequestAuthorityV1
+  -> ProviderExecutionRequestV2
+  -> ScoutRuntimeRequestV1
+  -> ScoutWorkflowExecutionV1.execute_provider_neutral
+  -> generated text
+  -> one JSON parse
+  -> one strict output_schema validation
+  -> validated Pydantic model
+```
+
+The adapter MUST NOT construct, accept, retain, reconstruct, or depend on
+`EditorGenerationExecutionRequestV1`, `EditorOperationalPreparationResultV1`,
+`EditorGenerationPlanV1`, `FlowOptimizationResult`, `EditorialBlueprint`,
+`EpisodeCommentaryBlueprint`, or `EpisodeVoicePlan`.
+
 ### 8.1 `EditorNeutralLanguageModelProviderV1`
 
 It satisfies the existing protocol and has exact public field:
@@ -485,6 +530,7 @@ def __init__(
     provider: ProviderChoiceV1,
     workflow: ScoutWorkflowExecutionV1,
     runtime_authority: EditorGenerationRuntimeAuthorityV1,
+    fingerprint_authority: EditorRequestFingerprintAuthorityV1,
     request_authority: EditorGenerationRequestAuthorityV1,
     requested_at_factory: EditorGenerationClockV1,
     cancellation_source: EditorGenerationCancellationSourceV1,
@@ -496,6 +542,16 @@ def __init__(
 Every callable protocol has an exact annotated signature and is statically
 validated. The workflow must be exact `ScoutWorkflowExecutionV1`; adapter code
 does not access its bridge, selector, or executor.
+
+The constructor contains only adapter-level dependencies. It has no execution
+request, preparation result, generation plan, deterministic artifact, setter,
+late injection method, registry, or runtime lookup.
+
+The exact fingerprint dependency is the public
+`EditorRequestFingerprintAuthorityV1`. The adapter validates its exact type
+without invoking it during construction and passes it to the package-private
+application-request builder. The adapter never implements canonicalization or
+SHA-256 itself.
 
 Exact method signature is the existing protocol signature:
 
@@ -515,7 +571,10 @@ Execution steps:
 2. prove config exactly matches runtime authority;
 3. derive canonical schema once under section 5;
 4. obtain one aware timestamp, fresh cancellation snapshot, and unique reference;
-5. construct `EditorGenerationApplicationRequestV1` using `prompt.text` exactly;
+5. call the package-private application-request builder once using
+   `prompt.text`, reconstructed options/schema authority, timestamp, reference,
+   and cancellation; the builder calls the public fingerprint authority once
+   and returns one reconstructed `EditorGenerationApplicationRequestV1`;
 6. build one `ProviderExecutionRequestV2` through the new authority;
 7. wrap it in `ScoutRuntimeRequestV1(True, lower_request)`;
 8. call `workflow.execute_provider_neutral` exactly once;
@@ -530,6 +589,37 @@ Execution steps:
 14. call `output_schema.model_validate(parsed, strict=True)` exactly once; and
 15. return that validated model.
 
+`GenerationPrompt` has no system/user-message pair. Its authoritative textual
+serialization is its frozen `text` property: ordered sections joined exactly by
+two LF characters, with each section rendered as
+`[<layer>] <title>\n<content>`. The adapter reconstructs the exact prompt model,
+then reads `prompt.text` once and passes that exact string to
+`EditorGenerationApplicationRequestV1`. It adds no role, message, system
+content, wrapper, separator, or absence marker. The generation authority alone
+performs its verified single NFC semantic canonicalization for the lower
+message; the adapter performs none.
+
+The application-request mapping is exact:
+
+| Application field | Source |
+|---|---|
+| provider | injected exact `ProviderChoiceV1`, equal to config/runtime authority |
+| prompt | exact `GenerationPrompt.text` |
+| request reference | injected reference factory output for the current attempt |
+| requested at | one aware timestamp from the injected clock |
+| options | exact reconstructed runtime authority options, proven equal to config |
+| schema name | exact allowlisted `output_schema.__name__` |
+| canonical schema JSON | section 5, computed once |
+| schema fingerprint | section 5 SHA-256 |
+| cancellation | one fresh injected cancellation snapshot |
+| request fingerprint | Revision 3B canonical application-request authority |
+
+Config mapping is exact for provider, model identifier/revision, numeric type
+and value of temperature/top-p, maximum output tokens, seed, structured-output
+mode, and timeout. Stops remain the exact empty runtime tuple because the frozen
+generation config has no stop field. No option is inferred, defaulted, dropped,
+normalized, or provider-specialized.
+
 No trim, normalization after authority, Markdown handling, fence stripping,
 repair, coercion, retry, fallback, second parse, or provider branch is permitted.
 Malformed JSON/schema maps to fixed `ProviderStructuredOutputError("Provider
@@ -539,7 +629,61 @@ cancellation to a new non-timeout `ProviderCancellationError` subclass of
 `ProviderError`, and malformed/lineage/internal failures to fixed safe provider
 errors. Raw lower messages are never retained.
 
-### 8.2 Attempt observation
+### 8.2 Application-request construction boundary
+
+`application_request.py` defines package-private
+`_EditorGenerationApplicationRequestBuilderV1`. It is not exported. Its exact
+constructor and method are:
+
+```python
+def __init__(
+    self,
+    fingerprint_authority: EditorRequestFingerprintAuthorityV1,
+) -> None: ...
+
+def build(
+    self,
+    *,
+    provider: ProviderChoiceV1,
+    prompt: str,
+    request_reference: str,
+    requested_at: datetime,
+    options: EditorGenerationRuntimeOptionsV1,
+    output_schema_name: str,
+    output_schema_canonical_json: str,
+    output_schema_fingerprint: str,
+    cancellation: CancellationTokenV2,
+) -> EditorGenerationApplicationRequestV1: ...
+```
+
+The builder statically validates and retains only the exact stateless
+fingerprint authority. For each explicit `build` call it:
+
+1. reconstructs the nine semantic inputs using public contract behavior;
+2. calls `fingerprint_authority.fingerprint` exactly once with those same nine
+   values in the exact keyword order above;
+3. constructs `EditorGenerationApplicationRequestV1` exactly once with those
+   values followed by the returned digest;
+4. reconstructs the request through its public copy behavior;
+5. requires every reconstructed semantic field to equal the authoritative
+   input and its fingerprint to equal the authority result using
+   `hmac.compare_digest`; and
+6. returns the reconstructed request.
+
+It performs no independent canonicalization, hashing, schema construction,
+provider selection/execution, retry, clock/cancellation acquisition, or lower
+request construction. It accepts no caller-supplied request fingerprint. A
+fingerprint-authority error, invalid returned digest, request-construction
+failure, copied-invalid request, or coordinated field/fingerprint substitution
+maps to fixed `EditorGenerationProviderAdapterError("Editor generation provider
+adapter failed.")` outside an active exception context with no retained cause.
+
+The builder is the application-request construction boundary for Revision 3C.
+It is package-private because it is an implementation detail of the one public
+adapter, not a second application policy API. This closes the construction path
+without changing or weakening frozen Revision 3B.
+
+### 8.3 Attempt observation
 
 `EditorGenerationAttemptObservationV1` fields:
 
@@ -561,6 +705,53 @@ It contains no text, prompt, schema, client, exception, or provider result.
 `EditorGenerationAttemptRecorderV1.record(observation) -> None` is per operation,
 injected, and append-only. Recorder failure is terminal internal failure; it is
 never ignored because result attempt provenance depends on it.
+
+Before constructing an application request, the adapter calls `snapshot()`
+once, reconstructs every existing observation, requires attempt numbers exactly
+`1..N`, and sets the current `attempt_number` to `N + 1`. It then calls
+`request_reference_factory.create(prompt_fingerprint=prompt.prompt_fingerprint,
+attempt_number=attempt_number)` exactly once. The factory is operation-scoped
+and is seeded by composition with the exact coordinator
+`operation_reference` passed under section 4.6; the
+adapter neither sees nor fabricates coordinator lineage. The returned reference
+must be fresh relative to the snapshot. A duplicate, gap, reordering, prompt
+fingerprint mismatch for a timeout retry, or invalid snapshot fails before
+lower execution. The adapter owns no mutable attempt counter.
+
+One provider call has exact cardinality:
+
+```text
+one ControlledGenerator provider call
+  = one adapter invocation
+  = one EditorGenerationApplicationRequestV1
+  = one ProviderExecutionRequestV2
+  = one lower provider execution
+```
+
+If `ControlledGenerator` retries after timeout, it invokes the adapter again.
+That second invocation obtains a fresh timestamp, cancellation snapshot,
+attempt number, application reference, application request, lower request, and
+lower execution. `EditorGenerationExecutionRequestV1` remains unchanged at the
+coordinator layer across both calls.
+
+### 8.4 Separate lineage layers
+
+Adapter-level lineage is owned only by
+`EditorGenerationApplicationRequestV1`, `EditorGenerationRequestAuthorityV1`,
+and `ProviderExecutionRequestV2`. It covers prompt and schema authority,
+generation options, provider/model, timeout, cancellation, application and
+lower request identities, envelope identity, request-unit/output references,
+and provider-neutral fingerprints. The adapter validates those exact lower
+identities before parsing text.
+
+Coordinator-level lineage is owned only by
+`EditorGenerationExecutionRequestV1`,
+`EditorOperationalExecutionCoordinatorV1`, and `EditorOperationalResultV1`.
+It covers preparation identity, generation-plan identity, deterministic
+artifacts, the `ControlledGenerator` operation, adapter attempt observations,
+and the final operational result. The adapter never fabricates or interprets
+this lineage. The coordinator records safe attempt observations but never
+reinterprets lower provider lineage.
 
 ## 9. Retry, timeout, cancellation, and cleanup
 
@@ -592,7 +783,9 @@ coordinator and adapter have no close method and never traverse resources.
 
 ## 10. Execution coordinator
 
-`EditorOperationalExecutionCoordinatorV1` is separate from Revision 2.
+`EditorOperationalExecutionCoordinatorV1` is future Revision 3D and is separate
+from Revision 2 and the Revision 3C adapter. It is the sole consumer of
+`EditorGenerationExecutionRequestV1`.
 
 Constructor:
 
@@ -618,7 +811,8 @@ Dependencies are statically validated without execution. Execution order:
 
 1. reconstruct request; invalid deterministic artifacts return pre-dispatch
    failure with zero session/generator/provider calls;
-2. create one runtime session for exact request options/provider;
+2. create one runtime session for exact request options/provider and pass
+   `request.request_reference` as its `operation_reference`;
 3. create one adapter bound to the session and one generator using section 7;
 4. invoke `ControlledGenerator.generate` exactly once;
 5. reconstruct `ControlledGenerationResult` and its draft, trace, manifest, and
@@ -782,12 +976,12 @@ cleanup-failed results cannot be handed downstream.
 ### `editor_generation_execution_v1.__all__`
 
 ```python
-(
-    "EditorGenerationExecutionRequestV1",
-    "EditorGenerationPreparationCoordinatorV1",
-    "EditorGenerationPreparationError",
-)
+("EditorGenerationExecutionRequestV1",)
 ```
+
+This is the exact frozen Revision 3B public API. The future deterministic
+preparation coordinator and its error are not Revision 3B exports and must not
+be imported by Revision 3C.
 
 ### `editor_generation_provider_adapter_v1.__all__`
 
@@ -871,7 +1065,7 @@ class EditorScoutWorkflowFactoryV1(Protocol):
     ) -> ScoutWorkflowExecutionV1: ...
 
 class EditorAdapterDependencyFactoryV1(Protocol):
-    def create(self) -> EditorAdapterDependenciesV1: ...
+    def create(self, *, operation_reference: str) -> EditorAdapterDependenciesV1: ...
 ```
 
 `EditorOllamaRuntimeHandleV1` contains exact private executor and lifecycle
@@ -879,6 +1073,10 @@ authorities and exposes neither publicly. `EditorAdapterDependenciesV1` is a
 frozen private bundle containing exactly one clock, cancellation source,
 reference factory, and recorder. Its factory returns fresh operation-scoped
 dependencies; no dependency is global or shared between sessions.
+The dependency factory validates the unpadded operation reference and binds it
+privately into the reference factory. Application references are deterministic
+functions of that operation reference, prompt fingerprint, and attempt number;
+the coordinator reference is not exposed to the adapter.
 
 The deterministic protocols reproduce these discovered public call shapes
 without adding parameters: `EpisodeFlowOptimizerV1.optimize(scout_input,
@@ -1002,6 +1200,20 @@ Each implementing revision SHALL test, offline:
 22. frozen hashes/exports, focused/full suite, Ruff, Black, compileall, pip
     check, and diff check.
 
+Revision 3C specifically tests only adapter-level responsibilities: exact
+ordered exports; exact frozen `LanguageModelProvider` signature compatibility;
+static dependency validation; exact `GenerationPrompt.text`; schema/options
+mapping; OpenAI-selected and Ollama-selected workflow fakes with identical
+application semantics; one authority build/workflow/lower execution per call;
+fresh deterministic attempt identity; lower request/provider/envelope/output
+lineage; completed/success/single ordinal-zero output requirements; timeout,
+cancellation, provider/internal/partial/malformed mappings; exact unmodified
+generated text; duplicate-key-aware single JSON parse; one strict schema
+validation; validated-model return; zero retry/cleanup/persistence/Producer;
+copy/deepcopy/pickle/repr/error-graph safety; passive imports/construction; and
+frozen integrity. Its dependency/import tests explicitly reject every
+coordinator-level type listed in section 8.
+
 ## 19. Hard gates
 
 ### Gate A — generation options: **RESOLVED BY CLOSED POLICY**
@@ -1031,48 +1243,61 @@ Both providers receive identical prompt/schema semantics; strict application
 parsing is identical. Native schema mode is not claimed. Unsupported policy
 fails closed.
 
+### Gate F — adapter/execution-request separation: **RESOLVED**
+
+Revision 3C has every input required to build
+`EditorGenerationApplicationRequestV1`: exact prompt, schema class, generation
+config, provider/runtime authority, clock, cancellation source, reference
+factory, attempt recorder, and public fingerprint authority. Its exact
+package-private builder accepts no fingerprint input and performs assembly. It
+requires no coordinator artifact. One adapter
+call maps to one application request and one lower execution; parsing and schema
+validation each occur once. All adapter references to
+`EditorGenerationExecutionRequestV1` are prohibitions or coordinator-boundary
+clarifications only.
+
 Repository inspection proves atomic runtime authority is implementable through
 section 4.6 using only verified public composition and executor boundaries. The
 OpenAI lifecycle remains with its verified composition while its same verified
 SDK client is injected into the option-complete verified executor; Ollama has
-one explicitly owned client handle. Revision 3B MUST reproduce this proof with
-offline fakes and fail closed if exact identity or cleanup ownership differs.
+one explicitly owned client handle. Future runtime-session composition MUST
+reproduce this proof with offline fakes and fail closed if exact identity or
+cleanup ownership differs; Revision 3C only receives injected authorities and
+does not construct either runtime.
 
 ## 20. Implementation roadmap
 
-### Revision 3B — authority and runtime-binding contracts
+### Revision 3B — generation authority and execution-request contract
 
 - Entry: this specification independently implementation-ready.
-- Authorized: `editor_generation_authority_v1` and
-  `editor_generation_runtime_v1` files plus focused tests only.
+- Verified output: `editor_generation_authority_v1`, the exact
+  `EditorGenerationExecutionRequestV1` aggregate in
+  `editor_generation_execution_v1`, and focused tests.
 - Forbidden: execution, providers, Editor generation, Revision 2 changes.
-- Exit: exact options/schema/request identity, atomic binding proof with fake
-  sessions, object/passivity tests, full gates, independent verification.
+- Exit: exact options/schema/application-request identity and coordinator-level
+  deterministic execution-request authority, object/passivity tests, full
+  gates, independent verification.
 - Rollback: remove additive files/tests.
 - Commit/tag: only after verification and separate Git authorization.
 
-### Revision 3C — deterministic enrichment request
+### Revision 3C — neutral language-provider adapter
 
-- Entry: verified 3B.
-- Authorized: `editor_generation_execution_v1` files and focused test.
-- Forbidden: provider/generation execution, Revision 2 changes.
-- Exit: exact four-builder order/artifacts/request lineage, zero AI, full gates,
-  independent verification.
-- Rollback and commit/tag policy: additive removal; Git only after verification
-  and authorization.
-
-### Revision 3D — neutral language-provider adapter
-
-- Entry: verified 3B–3C and atomic verified runtime session composition.
+- Entry: verified 3B; independently verified and tagged Revision 3B.1 public
+  fingerprint authority; and frozen implementation-ready Execution
+  Specification V2.
 - Authorized: `editor_generation_provider_adapter_v1` files and focused test.
 - Forbidden: coordinator, CLI, persistence, Producer, provider modifications.
 - Exit: exact prompt/schema/options, fake OpenAI/Ollama equivalence, result
-  parsing, timeout/cancellation cardinality, full gates, independent verification.
+  parsing, timeout/cancellation cardinality, exact package-private application
+  request construction through the public fingerprint authority, full gates,
+  independent verification.
 - Rollback/Git policy: additive removal; no Git action without authorization.
 
-### Revision 3E — operational execution coordinator/result
+### Revision 3D — operational execution coordinator/result
 
-- Entry: verified 3D.
+- Entry: verified 3C; exact coordinator API, deterministic artifact sources,
+  operational result, and retry/timeout/cancellation mapping independently
+  confirmed.
 - Authorized: `editor_operational_execution_v1` files and focused test.
 - Forbidden: Revision 2 changes, CLI, persistence, Producer, provider changes.
 - Exit: exact generator call/result/lifecycle/cleanup, complete offline path,
@@ -1080,7 +1305,9 @@ offline fakes and fail closed if exact identity or cleanup ownership differs.
 - Rollback/Git policy: additive removal; commit/tag only after verification and
   authorization.
 
-### Revision 3F — CLI rollout
+### Later revision — CLI rollout
 
 CLI remains outside Revision 3 generation foundation. It requires a separate
-specification and verified 3E baseline. No file or behavior is authorized here.
+specification and verified 3D baseline. Its caller will explicitly compose the
+preparation result, execution request, execution coordinator, provider/runtime,
+and output/export policy. No file or behavior is authorized here.
