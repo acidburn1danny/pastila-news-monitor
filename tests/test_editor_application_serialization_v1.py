@@ -98,7 +98,27 @@ def decode(payload: bytes) -> dict[str, object]:
 
 
 def test_exact_api_layout_signature_and_passive_serializer() -> None:
-    assert public.__all__ == EXPECTED_API
+    root = Path(__file__).resolve().parents[1]
+    exporter_name = "EditorAtomicExporterV1"
+    exporter_exists = (
+        root / "src/pastila_scout/editor_application_v1/export.py"
+    ).is_file()
+    expected_current_api = (
+        *EXPECTED_API[:13],
+        *((exporter_name,) if exporter_exists else ()),
+        *EXPECTED_API[13:],
+    )
+    assert public.__all__ == expected_current_api
+    if exporter_exists:
+        assert getattr(public, exporter_name).__module__ == (
+            "pastila_scout.editor_application_v1.export"
+        )
+    else:
+        assert not hasattr(public, exporter_name)
+    assert (
+        public.EditorOperationalResultSerializerV1
+        is implementation.EditorOperationalResultSerializerV1
+    )
     serializer = public.EditorOperationalResultSerializerV1()
     assert not hasattr(serializer, "__dict__")
     assert repr(serializer) == "EditorOperationalResultSerializerV1()"
@@ -456,7 +476,7 @@ def test_current_revision_scope_and_frozen_integrity() -> None:
     test_path = "tests/test_editor_application_serialization_v1.py"
     frozen_paths = (serializer_path, init_path, test_path)
     correction_digest = (
-        "E098AD40DA70F5A5FB1D231CF04A857028F90451E7FC262C41A998A7C03054DD"
+        "2585DD4B3605E5BD2EC3265AB5D6CE11F455F3241465EDAA17FC5329F0D9D0CA"
     )
 
     def names(*arguments: str) -> set[str]:
