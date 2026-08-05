@@ -1,9 +1,9 @@
-# Phase 4.3 — Editor Application Composition Specification V4
+# Phase 4.3 — Editor Application Composition Specification V6
 
 Status: **normative specification — implementation-ready**
 
-Baseline: `phase-4.2-editor-generation-execution-request-authority-r2-verified` /
-`3a6dab653510a0251f0d63a5a10fb2a5ff8d8838`
+Baseline: `phase-4.3-editor-application-export-r4-verified` /
+`d9fe8d613da972ec2728dd08e1b82e96fb53aca5`
 
 ## 1. Scope and normative language
 
@@ -13,9 +13,10 @@ Editor operational execution coordinator. It implements nothing. Producer,
 GUI, queue, scheduling, database persistence, provider behavior, prompt
 behavior, retry, and lower cleanup are outside its scope.
 
-The previously missing aggregate execution-request authority is now verified.
-Implementation remains revision-gated by section 20, not architecturally
-blocked.
+The aggregate execution-request authority and Revision 2--4 application
+prerequisites are verified. Coordinator implementation remains revision-gated
+by the serialized-result authority in section 6.6 and the roadmap in section
+20; no checksum authority remains implicit.
 
 ## 2. Repository grounding
 
@@ -445,6 +446,73 @@ returned request; bypass the authority; or accept any CLI/configuration
 fingerprint. It may later copy the public fingerprint from a validated lower
 result solely as exported lineage.
 
+## 6.6 Serialized operational-result authority closure
+
+The verified Revision 3 serializer currently exposes only
+`EditorOperationalResultSerializerV1.serialize(...) -> bytes`. Its canonical
+envelope embeds `payload_sha256`, but that digest is calculated over the
+canonical envelope with `payload_sha256` set to the empty string. Consequently,
+SHA-256 of the final self-containing bytes does not recover the embedded
+digest. No frozen public contract returns the payload and the serializer-owned
+digest together. Revision 5 therefore cannot populate
+`EditorApplicationResultV1.payload_sha256` without parsing serializer-owned
+JSON, duplicating the placeholder algorithm, or trusting caller text.
+
+Specification V5 closes that authority gap through one controlled public
+signature revision (Model A). Revision 3A supersedes the Revision 3 serializer
+contract:
+
+```python
+EditorOperationalResultSerializerV1.serialize(
+    *, result: EditorOperationalResultV1,
+) -> EditorSerializedOperationalResultV1
+```
+
+There is no compatibility method returning raw bytes, no second serialization
+entry point, and no public extraction helper. All callers migrate to
+`serialized.payload`. This intentionally breaks the Revision 3 raw-byte return
+contract so payload construction and checksum calculation retain one owner.
+An additive authoritative method (Model B) is rejected because it leaves two
+public serialization entry points and ambiguous coordinator usage. A separate
+extraction/reconstruction authority (Model C) is rejected because it adds a
+second public operation over already-built bytes and is strictly more complex
+than returning the serializer-owned pair at its point of creation.
+
+`EditorSerializedOperationalResultV1` is defined in `serialization.py` and has
+exactly these ordered fields:
+
+```python
+payload: bytes
+payload_sha256: str
+```
+
+Its exact constructor is
+`EditorSerializedOperationalResultV1(payload: bytes, payload_sha256: str)`.
+It contains no schema-name, schema-version, operation-reference, execution
+fingerprint, destination, provider, runtime or filesystem field: those values
+are either already embedded authoritatively or are not needed across this
+boundary.
+
+The contract is frozen, slotted, exact-type validated and subclass-rejecting,
+with no `__dict__` or mutable buffer. Its deterministic repr is exactly
+`EditorSerializedOperationalResultV1(payload=<redacted>,
+payload_sha256=<redacted>)`. Equality compares the two reconstructed public
+values. `copy.copy` and `copy.deepcopy` return independent authoritative
+reconstructions; pickle is rejected before payload traversal. Construction,
+copy, equality and repr expose only `EditorApplicationSerializationError` on
+invalid state, raised from `None` with cleared context and no payload, checksum,
+schema or parser detail.
+
+Construction requires exact built-in `bytes`, exact built-in `str`, and all
+canonical payload rules in section 10. Every copy reconstruction additionally
+requires the exact wrapper type and exact two-field slotted state.
+Reconstruction parses and validates the envelope only inside
+`serialization.py`, re-encodes it canonically, blanks `payload_sha256`, performs
+the one reconstruction-owned checksum calculation, and requires public,
+embedded and recomputed checksums to be identical. Hidden or additional object
+state, copied-invalid payload/checksum state, noncanonical encoding and
+equality-only validation are rejected.
+
 ## 7. Application composition root
 
 `EditorApplicationCoordinatorV1` is the sole public
@@ -520,11 +588,13 @@ dependency body, repr, equality, or descriptor.
 11. invoke `EditorOperationalExecutionCoordinatorV1.execute(...)` exactly once;
 12. public-copy reconstruct `EditorOperationalResultV1`;
 13. classify the application terminal state;
-14. only for a completed, cleanup-successful result, serialize exactly once;
+14. only for a completed, cleanup-successful result, serialize exactly once and
+    receive one validated `EditorSerializedOperationalResultV1`;
 15. invoke the sole package-private
     `_reconstruct_completed_application_candidate` integrity operation and
     construct the immutable completed `EditorApplicationResultV1` with its
-    intended destination/checksum, but do not expose it;
+    intended destination and exact `serialized.payload_sha256`, but do not
+    expose it;
 16. if and only if step 15 succeeds, atomically publish exactly once;
 17. after successful publication, return the already validated completed result.
 
@@ -668,8 +738,9 @@ unenumerated source is implicitly included:
 
 `_CompletedApplicationCandidateStateV1` is package-private, frozen and slotted
 and contains only the exact reconstructed operational result, exact intended
-destination, private serialized bytes and derived checksum needed to construct
-the completed candidate. The state type, helper and private integrity error are
+destination and exact reconstructed `EditorSerializedOperationalResultV1`
+needed to construct the completed candidate. The state type, helper and private
+integrity error are
 defined only in `application.py`. The helper calls no injected dependency, performs no
 I/O, owns no resource, and validates only the application-owned completed-result
 field parity from sections 9 and 10. It either returns one reconstructed
@@ -705,9 +776,11 @@ unexpected-defect boundary in section 17.
 
 ## 10. Serialization and export envelope
 
-`EditorOperationalResultSerializerV1.serialize(result) -> bytes` reconstructs
-the exact result and accepts only completed, cleanup-successful results with a
-draft. It produces one envelope:
+`EditorOperationalResultSerializerV1.serialize(result) ->
+EditorSerializedOperationalResultV1` reconstructs the exact result and accepts
+only completed, cleanup-successful results with a draft. It produces one
+serialized-result authority containing the final canonical payload and its
+serializer-owned checksum. The payload contains this envelope:
 
 ```json
 {
@@ -755,11 +828,101 @@ are reserialized. Reconstruction blanks and recomputes it. No `repr`, raw
 provider response/message, prompt, credential, exception, traceback, client,
 executor, selector, runtime session, or private state appears.
 
+The public payload is exact built-in `bytes`, nonempty UTF-8 without BOM, one
+canonical JSON object and exactly one terminal LF. CRLF, missing or duplicate
+LF, trailing data, invalid UTF-8, nonobject roots, duplicate keys, nonfinite
+numbers, normalization-created key collisions, unknown top-level fields,
+wrong schema name/version, and noncanonical re-encoding are invalid. The final
+object contains exactly one `payload_sha256` field.
+
+The checksum algorithm is singular and exact:
+
+1. construct the semantic envelope with `payload_sha256=""`;
+2. encode with UTF-8, sorted keys, compact separators, `ensure_ascii=False`,
+   `allow_nan=False`, NFC string values/keys and exactly one terminal LF;
+3. calculate SHA-256 exactly once over those placeholder bytes;
+4. format `sha256:` followed by 64 lowercase hexadecimal characters;
+5. insert that value into the envelope;
+6. encode the final payload once using the identical canonical settings; and
+7. construct `EditorSerializedOperationalResultV1(final_payload, checksum)`
+   exactly once and return that directly constructed contract.
+
+Nominal serializer cardinality is therefore: operational-result
+reconstruction one, semantic projection one, placeholder encoding one,
+serializer production SHA-256 calculation one, final encoding one,
+serialized-result construction one, and constructor-owned validation SHA-256
+calculation one. Total nominal SHA-256 calculations are exactly two: one
+production calculation owned by the serializer and one validation calculation
+owned by the public wrapper constructor. There is no second production
+checksum, serialization, alternate bytes method, final-payload hash or
+coordinator hash.
+
+The constructor must validate through the public path. A trusted/private
+constructor bypass, skipped validation or wrapper trust in caller checksum text
+is prohibited. Later `copy.copy` or `copy.deepcopy` reconstruction performs
+exactly one new validation SHA-256 calculation per invocation and performs no
+production checksum calculation or payload construction. Production and
+validation checksum calculations have distinct responsibilities even though
+both use the same normative placeholder preimage and must produce the same
+value.
+
+Reconstruction parses only inside `serialization.py`. It requires exact schema
+and field sets, reconstructs the canonical semantic projection, requires final
+canonical re-encoding byte parity, reads the embedded checksum, substitutes the
+normative blank value, canonically encodes that placeholder representation and
+recomputes SHA-256 once. The embedded checksum, public `payload_sha256` and
+recomputed checksum must be identical. In particular, SHA-256 of the final
+self-containing payload is neither authoritative nor accepted as a substitute.
+
+Invalid/ineligible operational results, canonical projection, placeholder
+encoding, checksum calculation, final encoding, wrapper construction,
+wrapper reconstruction, canonical mismatch, checksum-shape mismatch,
+embedded/public mismatch, recomputed mismatch and finite package-owned
+serialization corruption all raise only `EditorApplicationSerializationError`
+with its fixed content-free message from `None`. Payload/checksum/schema,
+result/draft/trace/manifest/fingerprint and raw parser/exception detail never
+cross that boundary.
+
+Revision 5 treats the wrapper as opaque authority. It calls `copy.copy` once in
+the completed-candidate helper, uses `serialized.payload` only as the exporter
+argument, and uses `serialized.payload_sha256` only as the completed
+application-result checksum. It does not parse, textually extract, re-encode,
+hash, compare, mutate or independently validate either field. Failed and
+internal application results expose neither; a successful result retains only
+the checksum and output path, never the payload.
+
+The exact Revision 5 integration is:
+
+```python
+serialized = serializer.serialize(result=operational_result)
+completed_candidate = _reconstruct_completed_application_candidate(
+    state=_CompletedApplicationCandidateStateV1(
+        operational_result=operational_result,
+        destination=destination,
+        serialized=serialized,
+    )
+)
+exporter.publish(payload=serialized.payload, destination=destination)
+return completed_candidate
+```
+
+The helper public-copy reconstructs `serialized` once, requires an exact
+completed operational result and exact destination/result lineage, and builds
+the prevalidated success result using only `serialized.payload_sha256`. It
+delegates payload canonicality and checksum parity entirely to wrapper
+reconstruction. It performs no JSON parsing, checksum calculation, textual
+extraction, serializer-private import, dependency call or I/O. After successful
+publication no result construction or reconstruction remains.
+
 ## 11. Atomic export and overwrite policy
 
 `EditorAtomicExporterV1.publish(payload: bytes, destination:
 EditorOutputDestinationV1) -> Path` owns filesystem publication. It requires
 exact bytes ending in one LF and `FAIL_IF_EXISTS`.
+
+Revision 5 passes exactly `serialized.payload`. The exporter remains opaque to
+the envelope and checksum, receives no wrapper or checksum argument, and owns
+no checksum validation or calculation.
 
 Rules:
 
@@ -974,11 +1137,17 @@ __all__ = (
     "EditorAtomicExporterV1",
     "EditorEpisodeContextAuthorityV1",
     "EditorOperationalResultSerializerV1",
+    "EditorSerializedOperationalResultV1",
     "EditorOutputDestinationV1",
     "EditorOverwritePolicyV1",
     "EditorSelectionProfileAuthorityV1",
 )
 ```
+
+The tuple contains exactly 21 symbols. Revision 3A inserts
+`EditorSerializedOperationalResultV1` immediately after
+`EditorOperationalResultSerializerV1`; every Revision 2--4 symbol retains its
+relative order and identity.
 
 No lower provider/runtime type, factory, protocol, builder, client, serializer
 helper, path helper, or composition helper is exported. The execution-request
@@ -1021,7 +1190,9 @@ class _EditorOperationalExecutionDependencyV1(Protocol):
     ) -> EditorOperationalResultV1: ...
 
 class _EditorSerializerDependencyV1(Protocol):
-    def serialize(self, *, result: EditorOperationalResultV1) -> bytes: ...
+    def serialize(
+        self, *, result: EditorOperationalResultV1,
+    ) -> EditorSerializedOperationalResultV1: ...
 
 class _EditorExporterDependencyV1(Protocol):
     def publish(
@@ -1182,6 +1353,37 @@ Each revision must test, offline:
 
 ## 20. Revision roadmap
 
+The single historical and dependency order is:
+
+```text
+Revision 1 -> Revision 2 -> Revision 3 -> Revision 4 -> Revision 3A
+-> Revision 5 -> Revision 6
+```
+
+`3A` denotes corrective ownership of the Revision 3 serialization boundary;
+it does not denote chronology before Revision 4. Revision 3A requires the
+verified Revision 4 baseline. Revision 5 requires the independently verified
+Revision 3A milestone and does not depend directly on the superseded Revision 3
+serializer contract. The graph is acyclic.
+
+Before Revision 3A freeze, its focused matrix must materially cover exact API
+and serializer signature; valid wrapper and exact field order; final payload
+bytes; embedded/public/placeholder-preimage checksum parity; proof that the
+final payload is not the checksum preimage; prefix and lowercase hexadecimal
+shape; NFC keys/values; datetime, numeric and sequence projection; UTF-8 without
+BOM; exactly one LF; canonical re-encoding; invalid UTF-8, BOM, CRLF,
+missing/double LF and trailing data; malformed/nonobject/duplicate-key JSON;
+wrong schema or schema version; missing/extra checksum field; invalid checksum
+shape; embedded/public and recomputed mismatch; copied-invalid payload and
+checksum; subclass rejection; copy/deepcopy; pickle rejection before traversal;
+safe repr/equality; recursive traceback isolation; passive import/construction;
+cross-process determinism; exactly two nominal SHA-256 calculations comprising
+one serializer production calculation and one mandatory public-constructor
+validation calculation; exactly one validation calculation for every later
+wrapper reconstruction; prohibition of trusted constructor bypass; coordinator
+prohibition from parsing or recalculating; unchanged checksum-blind exporter
+behavior; exact API migration; and frozen/Git-scope integrity.
+
 ### Closed prerequisite
 
 `EditorGenerationExecutionRequestAuthorityV1` is independently verified at
@@ -1218,6 +1420,29 @@ normative additive `__init__.py` exports. Keep package-private native adapters
 in `export.py`. No application execution or CLI. Verify
 fail-if-exists races, unsupported platforms and cleanup, then freeze.
 
+### Revision 3A — corrective serialized-result public authority
+
+Revision 3A names serializer ownership but is chronologically implemented
+after Revision 4. From the verified Revision 4 baseline, perform one controlled
+superseding serialization revision before Revision 5. Modify only
+`src/pastila_scout/editor_application_v1/serialization.py`,
+`src/pastila_scout/editor_application_v1/__init__.py`, and
+`tests/test_editor_application_serialization_v1.py`. Implement
+`EditorSerializedOperationalResultV1`, change the sole `serialize` return type
+from `bytes` to that contract, migrate all serializer-focused expectations and
+freeze a new Revision 3A milestone. Raw-byte return compatibility is
+intentionally removed; all callers use `.payload`. No compatibility method,
+adapter, alias or second encoding path remains.
+
+Because Revision 3A follows the verified Revision 4 milestone, the following
+frozen tests require separately authorized, assertion-only maintenance where
+their exact API/scope checks encode the earlier return type or public tuple:
+`tests/test_editor_application_contracts_v1.py`,
+`tests/test_editor_application_serialization_v1.py`, and
+`tests/test_editor_application_export_v1.py`. Such maintenance may permit only
+the exact new symbol, return annotation and bounded Revision 3A paths; it may
+not weaken ordering, identity, frozen production or Git-scope ownership.
+
 ### Revision 5 — application coordinator
 
 Add only `protocols.py`, `application.py`,
@@ -1225,7 +1450,9 @@ Add only `protocols.py`, `application.py`,
 `__init__.py` exports. Keep private adapters/composition helpers in those two
 modules. Compose frozen coordinators and the verified request authority
 once; no CLI/Producer/database. Freeze only after independent argument mapping,
-cardinality, traceback and frozen-integrity verification.
+cardinality, traceback and frozen-integrity verification. Revision 5 requires
+the independently verified Revision 3A milestone and consumes only the wrapper
+fields; it performs no checksum or envelope work.
 
 ### Revision 6 — opt-in CLI
 
