@@ -1,8 +1,8 @@
 # Phase 4.2 — Editor Generation Execution Specification V3
 
-Status: **normative specification — strict JSON-mode validation corrected**
+Status: **normative specification — strict JSON-mode and runtime-session boundaries corrected**
 
-Baseline: `phase-4.2-editor-request-fingerprint-authority-r3b1-verified` / `098b0b6f13fa0f30af6fba990592d004550305a1`
+Baseline: `phase-4.2-editor-generation-provider-r3c-verified` / `0afbe27480623e1f100b5275109b46ac3572bc3a`
 
 ## 1. Normative scope
 
@@ -269,6 +269,61 @@ the exact model, temperature, max tokens, empty stops, and timeout. A declaratio
 not atomically produced with the session is invalid. This is the sole authority
 connecting non-lower option values to the configured executor.
 
+The runtime session factory is the sole construction owner and independently
+reproduces the frozen V1 bytes without importing a private Revision 3B helper.
+It reconstructs exact `EditorGenerationRuntimeOptionsV1`, then hashes exactly:
+
+```python
+{
+    "options": {
+        "provider": options.provider.value,
+        "model_identifier": options.model_identifier,
+        "model_revision": options.model_revision,
+        "temperature": {
+            "type": "int" if type(options.temperature) is int else "float",
+            "value": options.temperature,
+        },
+        "top_p": {
+            "type": "int" if type(options.top_p) is int else "float",
+            "value": options.top_p,
+        },
+        "max_output_tokens": options.max_output_tokens,
+        "seed": options.seed,
+        "stop_sequences": options.stop_sequences,
+        "structured_output_mode": options.structured_output_mode,
+        "timeout_seconds": {
+            "type": (
+                "int"
+                if type(options.timeout_policy.timeout_seconds) is int
+                else "float"
+            ),
+            "value": options.timeout_policy.timeout_seconds,
+        },
+    },
+    "runtime_reference": runtime_reference,
+}
+```
+
+Every string value and key is normalized to NFC for fingerprint semantics;
+tuples become ordered JSON arrays; nonfinite numbers and unsupported values are
+rejected. Serialization is exactly
+`json.dumps(payload, ensure_ascii=False, sort_keys=True, separators=(",", ":"),
+allow_nan=False)`. The runtime fingerprint is lowercase SHA-256 over those
+UTF-8 bytes with no prefix. `runtime_reference` is exactly the already-validated
+session operation reference; no second runtime/session identifier is invented.
+
+The factory immediately constructs `EditorGenerationRuntimeAuthorityV1` with
+the reconstructed options, exact reference, and digest, then reconstructs it
+through public copy behavior and requires exact options/reference/digest parity.
+Failure occurs before session publication and triggers normal partial cleanup.
+The implementation MUST NOT import
+`editor_generation_authority_v1.canonical`, `_options_semantics`,
+`_option_values`, or any other private Revision 3B symbol. V1 deliberately
+duplicates the frozen bytes because no public construction authority exists;
+any future algorithm requires a new runtime-session version. Focused tests use
+the frozen constructor as the parity oracle for integer/float tagged values,
+Unicode, timeout types, provider/model, and operation reference.
+
 ### 4.6 Exact runtime-session composition
 
 `EditorGenerationRuntimeSessionFactoryV1` has this exact constructor and method:
@@ -304,6 +359,28 @@ deterministic artifact is passed to or retained by the adapter. Composition
 failure closes any acquired selected resource exactly once before returning the
 fixed `Editor generation runtime composition failed.` error.
 
+Factory construction is inert. Only explicit `open(options,
+operation_reference=...)` may compose the selected provider, create resources,
+create the operation-scoped adapter dependencies and recorder, mint the runtime
+authority, create the adapter, and publish the session. `options` is exact
+`EditorGenerationRuntimeOptionsV1`; `operation_reference` is an exact built-in,
+nonempty, unpadded NFC string of at most 120 characters. Provider selection is
+only `options.provider`, with exact `ProviderChoiceV1.OPENAI` or
+`ProviderChoiceV1.OLLAMA`; there is no string input, alias, default, case fold,
+normalization, discovery, routing, or fallback.
+
+Construction is atomic. Before publication the factory retains each acquired
+owned lifecycle authority privately. If any later construction step fails, it
+closes only those acquired owned authorities, once each, in reverse acquisition
+order, discards all raw failures, and raises the fixed composition error from no
+cause or context. Externally injected factories and authorities are never
+closed. `open` performs no provider/workflow/adapter execution, generator call,
+request construction, JSON validation, retry, timeout enforcement, cancellation
+poll, smoke prompt, model discovery/pull, persistence, Producer, or observer
+call. OpenAI credentials may be accessed only inside the selected verified
+OpenAI composer during explicit OpenAI `open`; the Ollama path never invokes
+that factory.
+
 OpenAI composition is exact and additive:
 
 1. `EditorOpenAIRuntimeComposerFactoryV1.create(model_identifier,
@@ -333,13 +410,160 @@ same HTTP client. Parser, adapter, coordinator, and selector never own it.
 
 `EditorGenerationRuntimeSessionV1` has private exact references to
 `ScoutWorkflowExecutionV1`, `EditorGenerationRuntimeAuthorityV1`,
-`EditorNeutralLanguageModelProviderV1`, and the selected lifecycle authority.
-Its public read-only properties are `workflow`, `runtime_authority`, and
-`adapter`. `close() -> None` invokes the lifecycle authority once; a second call
-raises fixed `Editor generation runtime session is already closed.` without a
-second lower close. A closed session cannot expose usable dependencies. It is
-identity-only, address-free in repr, copy/deepcopy return identity, and pickle
-is rejected.
+`EditorNeutralLanguageModelProviderV1`, the exact operation-scoped
+`EditorGenerationAttemptRecorderV1`, the operation reference, and the selected
+lifecycle authority. Its complete public surface is exactly:
+
+```python
+@property
+def workflow(self) -> ScoutWorkflowExecutionV1: ...
+
+@property
+def runtime_authority(self) -> EditorGenerationRuntimeAuthorityV1: ...
+
+@property
+def adapter(self) -> EditorNeutralLanguageModelProviderV1: ...
+
+@property
+def attempt_recorder(self) -> EditorGenerationAttemptRecorderV1: ...
+
+@property
+def operation_reference(self) -> str: ...
+
+@property
+def is_closed(self) -> bool: ...
+
+def close(self) -> None: ...
+```
+
+The first four properties return the exact retained identities without copies,
+proxies, or adapter traversal. While open, access performs no execution,
+snapshot, attempt creation, or cleanup. After close, `workflow`,
+`runtime_authority`, `adapter`, and `attempt_recorder` raise
+`EditorGenerationRuntimeCompositionError("Editor generation runtime session is
+closed.")`. The non-authority values `operation_reference` and `is_closed`
+remain readable after close so ownership and diagnostics can be established
+without reopening the session. `is_closed` is exact bool.
+
+The recorder protocol remains runtime-package-private and absent from
+`__all__`; its exact instance crosses the package boundary only as the return
+value of the public `attempt_recorder` property. Revision 3D uses that property
+and its normative `snapshot()` method without importing a private helper or
+traversing adapter internals.
+
+`close() -> None` transitions the private lifecycle atomically from open to
+closed and invokes the selected lifecycle authority exactly once. A second
+call raises `EditorGenerationRuntimeCompositionError("Editor generation runtime
+session is already closed.")` without a second lower close. There is no public
+closing state and no reopening. Context management (`__enter__`, `__exit__`,
+`__aenter__`, and `__aexit__`) is not supported; the future coordinator owns
+one explicit `close()` in `finally`. The session is identity-only,
+address-free in repr, copy/deepcopy return identity, and pickle is rejected
+before resource traversal.
+
+### 4.7 Definitive runtime package and public API
+
+Revision 3C.1 creates exactly:
+
+```text
+src/pastila_scout/editor_generation_runtime_v1/
+    __init__.py
+    composition.py
+    errors.py
+    models.py
+    protocols.py
+tests/test_editor_generation_runtime_v1.py
+```
+
+There is no `session.py` or `factory.py`. `composition.py` owns the public
+session and session factory implementation; `models.py` owns only exact private
+runtime values; `protocols.py` owns only private injected protocols.
+
+The exact ordered package API is:
+
+```python
+__all__ = (
+    "EditorGenerationRuntimeCompositionError",
+    "EditorGenerationRuntimeSessionFactoryV1",
+    "EditorGenerationRuntimeSessionV1",
+)
+```
+
+There is no alias or second error. In particular,
+`EditorGenerationRuntimeConfigurationError` does not exist and a controlled
+generator factory is not a runtime public symbol.
+
+`EditorGenerationRuntimeCompositionError` subclasses `Exception`, has no extra
+fields, and owns exactly these fixed messages:
+
+```text
+Editor generation runtime composition failed.
+Editor generation runtime session is closed.
+Editor generation runtime session is already closed.
+```
+
+Every translated error is raised with `__cause__ is None`, `__context__ is
+None`, and `__suppress_context__ is True`. Validation and resource exceptions
+are discarded in private outcome functions before the public error is raised;
+no public error or package traceback retains a dependency, resource, recorder,
+operation reference, provider detail, or raw exception.
+
+### 4.8 Operation-scoped dependencies and attempt provenance
+
+`EditorAdapterDependenciesV1` is a private frozen/slotted bundle with exact
+fields `clock`, `cancellation_source`, `reference_factory`, and
+`attempt_recorder`. `EditorAdapterDependencyFactoryV1.create`, called once per
+session with the exact operation reference, returns one fresh bundle. The
+factory and session retain the same recorder identity passed to
+`EditorNeutralLanguageModelProviderV1`; no second recorder, wrapper, copy, or
+proxy exists.
+
+The recorder implements the already specified exact methods:
+
+```python
+def record(self, observation: EditorGenerationAttemptObservationV1) -> None: ...
+def snapshot(self) -> tuple[EditorGenerationAttemptObservationV1, ...]: ...
+```
+
+It is operation-scoped, append-only, and validates/reconstructs every
+observation. Snapshots are immutable ordered tuples with contiguous attempt
+numbers starting at one, no duplicates or gaps, and distinct request
+references. The recorder is bound to the session operation reference through
+the same private reference factory used by the adapter. Thus every recorded
+attempt belongs to that one operation authority even though the safe public
+observation deliberately does not duplicate the operation-reference text.
+Property access and snapshot perform no provider execution and create no
+attempt. The coordinator reads a snapshot only after generation and never
+records, mutates, fabricates, or recomputes an observation.
+
+The remaining private runtime composition values are exact:
+
+```python
+class _EditorRuntimeLifecycleAuthorityV1(Protocol):
+    def close(self) -> None: ...
+
+@dataclass(frozen=True, slots=True)
+class EditorOllamaRuntimeHandleV1:
+    executor: ProviderExecutorV2
+    lifecycle: _EditorRuntimeLifecycleAuthorityV1
+
+@dataclass(frozen=True, slots=True)
+class EditorAdapterDependenciesV1:
+    clock: EditorGenerationClockV1
+    cancellation_source: EditorGenerationCancellationSourceV1
+    reference_factory: EditorGenerationReferenceFactoryV1
+    attempt_recorder: EditorGenerationAttemptRecorderV1
+```
+
+Both bundles are package-private, absent from `__all__`, exact-type validated,
+slotted, address-free, and reject pickle. The Ollama handle owns only the
+lifecycle explicitly returned by the injected Ollama factory. For OpenAI, the
+exact `OpenAIRuntimeCompositionV2` returned by the verified composer is the
+lifecycle authority and its `sdk_client` is used only to construct the
+option-complete verified executor; the runtime session retains no separately
+closable SDK/client reference. Lifecycle `close()` is the only private cleanup
+shape. It is statically validated and invoked only by construction rollback or
+session close.
 
 ## 5. Structured-output authority
 
@@ -838,9 +1062,16 @@ def __init__(
     self,
     *,
     session_factory: EditorGenerationRuntimeSessionFactoryV1,
-    generator_factory: EditorControlledGeneratorFactoryV1,
+    generator_factory: _EditorControlledGeneratorFactoryV1,
 ) -> None: ...
 ```
+
+`_EditorControlledGeneratorFactoryV1` is owned by the future
+`editor_operational_execution_v1.protocols` module, not the runtime package.
+It is package-private inside the same package as its coordinator consumer and
+is absent from every public `__all__`. The public session factory is the only
+cross-package constructor dependency. This removes the former requirement for
+Revision 3D to import a private runtime protocol.
 
 Exact method:
 
@@ -1085,7 +1316,7 @@ class EditorGenerationAttemptRecorderV1(Protocol):
     def record(self, observation: EditorGenerationAttemptObservationV1) -> None: ...
     def snapshot(self) -> tuple[EditorGenerationAttemptObservationV1, ...]: ...
 
-class EditorControlledGeneratorFactoryV1(Protocol):
+class _EditorControlledGeneratorFactoryV1(Protocol):
     def create(
         self,
         *,
@@ -1263,6 +1494,24 @@ copy/deepcopy/pickle/repr/error-graph safety; passive imports/construction; and
 frozen integrity. Its dependency/import tests explicitly reject every
 coordinator-level type listed in section 8.
 
+Revision 3C.1 specifically tests the exact five-file runtime package and
+focused test; exact three-symbol exports and order; absence of configuration
+error aliases and public controlled-generator factories; exact session-factory
+constructor/open signatures; exact session properties and identity returns;
+the recorder identity shared with the adapter without adapter traversal;
+operation-reference binding; open/closed behavior and access-after-close;
+explicit prohibition of context management; identity copy/deepcopy and rejected
+pickle; explicit OpenAI and Ollama fake composition with the unselected path
+untouched; no default/alias/discovery/fallback; zero execution/generation on
+construction and property access; byte-for-byte runtime-fingerprint parity with
+the frozen constructor across provider/model/reference, Unicode, and tagged
+numeric/timeout types, plus forbidden-private-import scanning; contiguous
+immutable recorder snapshots;
+exactly-once close and deterministic second-close failure; reverse-order
+partial-construction cleanup without closing injected dependencies; malformed
+dependency descriptors and dynamic hooks; error/traceback isolation; passive
+fresh-process import/factory construction; and frozen integrity.
+
 ## 19. Hard gates
 
 ### Gate A — generation options: **RESOLVED BY CLOSED POLICY**
@@ -1358,11 +1607,29 @@ required. Revision 3C is implementation-ready only with this single path.
   independent verification.
 - Rollback/Git policy: additive removal; no Git action without authorization.
 
+### Revision 3C.1 — runtime session and factory
+
+- Entry: verified 3C and this independently implementation-ready Runtime
+  Specification V2 boundary.
+- Authorized files only:
+  `editor_generation_runtime_v1/__init__.py`, `composition.py`, `errors.py`,
+  `models.py`, `protocols.py`, and
+  `tests/test_editor_generation_runtime_v1.py`.
+- Forbidden: `session.py`, `factory.py`, Revision 3D, generation execution,
+  CLI, persistence, Producer, provider modification, discovery, routing, and
+  fallback.
+- Exit: exact public API/session surface, explicit selected-provider fake
+  composition, shared recorder identity, atomic construction, singular cleanup,
+  object/passivity/error-isolation tests, full gates, and independent
+  verification.
+- Rollback/Git policy: additive removal; commit/tag only after verification and
+  separate authorization.
+
 ### Revision 3D — operational execution coordinator/result
 
-- Entry: verified 3C; exact coordinator API, deterministic artifact sources,
-  operational result, and retry/timeout/cancellation mapping independently
-  confirmed.
+- Entry: verified 3C and verified/tagged Revision 3C.1 runtime session; exact
+  coordinator API, deterministic artifact sources, operational result, and
+  retry/timeout/cancellation mapping independently confirmed.
 - Authorized: `editor_operational_execution_v1` files and focused test.
 - Forbidden: Revision 2 changes, CLI, persistence, Producer, provider changes.
 - Exit: exact generator call/result/lifecycle/cleanup, complete offline path,
