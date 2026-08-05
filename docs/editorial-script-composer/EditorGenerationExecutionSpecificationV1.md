@@ -1,8 +1,8 @@
-# Phase 4.2 — Editor Generation Execution Specification V2
+# Phase 4.2 — Editor Generation Execution Specification V3
 
-Status: **normative specification — adapter/execution-request boundary corrected**
+Status: **normative specification — strict JSON-mode validation corrected**
 
-Baseline: `phase-4.2-editor-generation-authority-r3b-verified` / `bcd6d804d894b0dcef7419060a172732aa9543fa`
+Baseline: `phase-4.2-editor-request-fingerprint-authority-r3b1-verified` / `098b0b6f13fa0f30af6fba990592d004550305a1`
 
 ## 1. Normative scope
 
@@ -360,7 +360,46 @@ The existing `PromptBuilder` already embeds the schema in the ordered
 it adds no second schema text. The schema name, canonical JSON, and fingerprint
 are also identity authority in `EditorGenerationApplicationRequestV1`, but
 because frozen lower DTOs lack schema fields they are not sent as a provider
-option. Structured enforcement is application-owned strict parsing.
+option. Structured enforcement is application-owned strict JSON-mode
+validation.
+
+### 5.1 Sole structured-output validation path
+
+The generated text is passed byte-for-byte unchanged to exactly one call:
+
+```python
+output_schema.model_validate_json(generated_text, strict=True)
+```
+
+This call is the sole structured-output parsing and validation path. Pydantic
+owns the one JSON parse internally and performs the one schema validation in
+JSON strict mode. The adapter performs zero explicit `json.loads` calls and
+MUST NOT trim, normalize, repair, unwrap Markdown, extract a code block,
+pre-convert lists to tuples, coerce values, invoke non-strict validation, or
+attempt a fallback or second parse.
+
+Strict JSON mode deliberately preserves the frozen Editor models. JSON arrays
+are accepted for tuple-typed fields according to Pydantic JSON-mode strict
+semantics and are returned as tuples in the exact validated frozen model. This
+applies to empty arrays, nonempty arrays, and nested tuple fields. Invalid
+element types and wrong root shapes remain schema-validation failures.
+
+One `pydantic.ValidationError` is classified using only its safe structured
+error type. A sole `json_invalid` error maps to
+`ProviderStructuredOutputError("Provider returned malformed structured
+output.")`. Any other validation error maps to
+`ProviderStructuredOutputError("Provider returned structured output that failed
+schema validation.")`. These are the exact fixed messages. Neither mapping
+exposes generated text, raw Pydantic messages, input values, locations derived
+from provider content, or a chained exception. Classification may inspect
+`errors(include_url=False, include_context=False, include_input=False)` exactly
+once; it MUST retain or expose none of that temporary structure. The adapter
+does not use a second parser to distinguish these categories.
+
+For one successful adapter call, generated-text extraction occurs once,
+`model_validate_json(..., strict=True)` occurs once, Pydantic owns exactly one
+JSON parse and one schema validation, and explicit `json.loads`, preprocessing,
+repair, fallback parsing, and fallback validation each occur zero times.
 
 OpenAI and Ollama receive the identical single generation message. Neither
 receives a native schema option. If future policy requires native provider
@@ -503,8 +542,7 @@ ControlledGenerator
   -> ScoutRuntimeRequestV1
   -> ScoutWorkflowExecutionV1.execute_provider_neutral
   -> generated text
-  -> one JSON parse
-  -> one strict output_schema validation
+  -> output_schema.model_validate_json(generated_text, strict=True) exactly once
   -> validated Pydantic model
 ```
 
@@ -583,11 +621,13 @@ Execution steps:
 10. record one safe attempt observation;
 11. require completed execution, successful provider result, exactly one output,
     ordinal zero, and completed finish reason;
-12. copy `generated_text` exactly; reject empty, leading/trailing whitespace, or
-    any text not exactly one JSON document;
-13. parse once with `json.loads` and duplicate-key rejection; require exact dict;
-14. call `output_schema.model_validate(parsed, strict=True)` exactly once; and
-15. return that validated model.
+12. copy `generated_text` exactly without inspecting, trimming, or changing it;
+13. call `output_schema.model_validate_json(generated_text, strict=True)` exactly
+    once, allowing Pydantic to perform the sole JSON parse and strict schema
+    validation;
+14. safely distinguish Pydantic `json_invalid` from other validation failures
+    without a second parse or raw diagnostic exposure; and
+15. return that exact validated frozen model.
 
 `GenerationPrompt` has no system/user-message pair. Its authoritative textual
 serialization is its frozen `text` property: ordered sections joined exactly by
@@ -621,13 +661,17 @@ generation config has no stop field. No option is inferred, defaulted, dropped,
 normalized, or provider-specialized.
 
 No trim, normalization after authority, Markdown handling, fence stripping,
-repair, coercion, retry, fallback, second parse, or provider branch is permitted.
-Malformed JSON/schema maps to fixed `ProviderStructuredOutputError("Provider
-returned invalid structured output.")` from no cause. Provider failure maps to
-the existing safe Provider error class. Timeout maps to `ProviderTimeoutError`,
-cancellation to a new non-timeout `ProviderCancellationError` subclass of
-`ProviderError`, and malformed/lineage/internal failures to fixed safe provider
-errors. Raw lower messages are never retained.
+repair, preprocessing, list-to-tuple conversion, coercion, retry, fallback,
+explicit `json.loads`, second parse, or provider branch is permitted. Invalid
+JSON syntax maps to the fixed malformed structured-output error. Syntactically
+valid JSON that fails the frozen model maps to the fixed structured
+schema-validation error. The exact class/messages are defined in section 5.1.
+Both are raised from no cause and expose no raw Pydantic or provider content.
+Provider failure maps to the existing safe
+Provider error class. Timeout maps to `ProviderTimeoutError`, cancellation to a
+new non-timeout `ProviderCancellationError` subclass of `ProviderError`, and
+malformed/lineage/internal failures to fixed safe provider errors. Raw lower
+messages are never retained.
 
 ### 8.2 Application-request construction boundary
 
@@ -1185,8 +1229,11 @@ Each implementing revision SHALL test, offline:
 10. one lower execution per adapter invocation;
 11. two calls only after timeout, none for other errors, no backoff;
 12. fresh reference/request/cancellation per call and cancellation precedence;
-13. exact successful text extraction, duplicate-key rejection, no trim/fence or
-    repair, one JSON parse, strict Pydantic validation;
+13. exact successful text extraction; strict `model_validate_json` acceptance
+    of empty, nonempty, and nested tuple-field arrays; invalid tuple elements
+    and wrong root rejection; no trim/fence, preprocessing, repair, explicit
+    `json.loads`, fallback, or second validation; one Pydantic-owned JSON parse
+    and one strict schema validation;
 14. provider failure, timeout exhaustion, cancellation, malformed result,
     lineage mismatch, JSON failure, schema failure, internal failure;
 15. `ControlledGenerator` constructed/called once and exact argument mapping;
@@ -1208,8 +1255,10 @@ application semantics; one authority build/workflow/lower execution per call;
 fresh deterministic attempt identity; lower request/provider/envelope/output
 lineage; completed/success/single ordinal-zero output requirements; timeout,
 cancellation, provider/internal/partial/malformed mappings; exact unmodified
-generated text; duplicate-key-aware single JSON parse; one strict schema
-validation; validated-model return; zero retry/cleanup/persistence/Producer;
+generated text; one exact `model_validate_json(..., strict=True)` call; zero
+explicit `json.loads`; empty/nonempty/nested tuple-array compatibility; safely
+distinguished malformed JSON and schema-invalid JSON; exact validated-model
+return; zero preprocessing/repair/fallback/retry/cleanup/persistence/Producer;
 copy/deepcopy/pickle/repr/error-graph safety; passive imports/construction; and
 frozen integrity. Its dependency/import tests explicitly reject every
 coordinator-level type listed in section 8.
@@ -1240,8 +1289,9 @@ ownership.
 ### Gate E — structured equivalence: **RESOLVED BY APPLICATION ENFORCEMENT**
 
 Both providers receive identical prompt/schema semantics; strict application
-parsing is identical. Native schema mode is not claimed. Unsupported policy
-fails closed.
+JSON-mode validation is identical. Frozen tuple fields accept corresponding
+JSON arrays without model changes, preprocessing, or non-strict coercion.
+Native schema mode is not claimed. Unsupported policy fails closed.
 
 ### Gate F — adapter/execution-request separation: **RESOLVED**
 
@@ -1251,8 +1301,9 @@ config, provider/runtime authority, clock, cancellation source, reference
 factory, attempt recorder, and public fingerprint authority. Its exact
 package-private builder accepts no fingerprint input and performs assembly. It
 requires no coordinator artifact. One adapter
-call maps to one application request and one lower execution; parsing and schema
-validation each occur once. All adapter references to
+call maps to one application request and one lower execution. One direct strict
+JSON-mode validation call owns exactly one internal parse and one schema
+validation; the adapter performs no explicit parse. All adapter references to
 `EditorGenerationExecutionRequestV1` are prohibitions or coordinator-boundary
 clarifications only.
 
@@ -1264,6 +1315,19 @@ one explicitly owned client handle. Future runtime-session composition MUST
 reproduce this proof with offline fakes and fail closed if exact identity or
 cleanup ownership differs; Revision 3C only receives injected authorities and
 does not construct either runtime.
+
+### Gate G — strict JSON-mode compatibility: **RESOLVED**
+
+Direct verification against every frozen component output model proves that
+`model_validate_json(model.model_dump_json(), strict=True)` returns the exact
+model type. `CallToActionGenerationResult` accepts empty and nonempty JSON
+arrays for tuple fields. `StoryGenerationResult` accepts nested arrays for its
+tuple of `CommentaryBlockResult` values and each block's tuple fields. The
+Transition, Opening, Closing, and Call-to-Action models likewise accept their
+tuple arrays. Invalid tuple elements remain strict schema errors, a wrong root
+remains a model error, and malformed syntax produces `json_invalid`. No frozen
+model change, manual conversion, preprocessing, or non-strict validation is
+required. Revision 3C is implementation-ready only with this single path.
 
 ## 20. Implementation roadmap
 
@@ -1284,11 +1348,12 @@ does not construct either runtime.
 
 - Entry: verified 3B; independently verified and tagged Revision 3B.1 public
   fingerprint authority; and frozen implementation-ready Execution
-  Specification V2.
+  Specification V3.
 - Authorized: `editor_generation_provider_adapter_v1` files and focused test.
 - Forbidden: coordinator, CLI, persistence, Producer, provider modifications.
-- Exit: exact prompt/schema/options, fake OpenAI/Ollama equivalence, result
-  parsing, timeout/cancellation cardinality, exact package-private application
+- Exit: exact prompt/schema/options, fake OpenAI/Ollama equivalence, direct
+  strict JSON-mode validation with frozen tuple compatibility,
+  timeout/cancellation cardinality, exact package-private application
   request construction through the public fingerprint authority, full gates,
   independent verification.
 - Rollback/Git policy: additive removal; no Git action without authorization.
