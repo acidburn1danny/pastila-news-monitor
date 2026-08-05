@@ -1074,9 +1074,20 @@ def test_private_import_and_aggregate_duplication_audit() -> None:
 
 
 def test_current_revision_git_scope_and_frozen_integrity_are_exact() -> None:
-    """Verify this pre-commit revision; this is not a future lifecycle owner."""
+    """Verify the frozen authority without claiming future repository state."""
     root = Path(__file__).resolve().parents[1]
-    baseline = "phase-4.2-editor-operational-execution-integrity-test-r1-verified"
+    baseline = "phase-4.2-editor-generation-execution-request-authority-r2-verified"
+    production_paths = (
+        "src/pastila_scout/editor_generation_execution_request_authority_v1/__init__.py",
+        "src/pastila_scout/editor_generation_execution_request_authority_v1/authority.py",
+        "src/pastila_scout/editor_generation_execution_request_authority_v1/canonical.py",
+        "src/pastila_scout/editor_generation_execution_request_authority_v1/errors.py",
+    )
+    test_path = "tests/test_editor_generation_execution_request_authority_v1.py"
+    frozen_paths = (*production_paths, test_path)
+    correction_digest = (
+        "9536835DF76C973B5890AB3466318FA2227989BE2E666577AEAACDF7189A99DB"
+    )
 
     def names(*arguments):
         return set(
@@ -1089,25 +1100,27 @@ def test_current_revision_git_scope_and_frozen_integrity_are_exact() -> None:
             ).stdout.splitlines()
         )
 
-    assert names("diff", "--name-only", baseline) == set()
-    assert names("diff", "--cached", "--name-only") == set()
-    assert names("ls-files", "--others", "--exclude-standard") == {
-        "docs/editorial-application/EditorApplicationCompositionSpecificationV1.md",
-        "src/pastila_scout/editor_generation_execution_request_authority_v1/__init__.py",
-        "src/pastila_scout/editor_generation_execution_request_authority_v1/authority.py",
-        "src/pastila_scout/editor_generation_execution_request_authority_v1/canonical.py",
-        "src/pastila_scout/editor_generation_execution_request_authority_v1/errors.py",
-        "tests/test_editor_generation_execution_request_authority_v1.py",
-    }
-    protected = (
-        root
-        / "docs"
-        / "editorial-application"
-        / "EditorApplicationCompositionSpecificationV1.md"
-    ).read_bytes()
-    assert hashlib.sha256(protected).hexdigest().upper() == (
-        "7FCA0F92083F6C8944DA3641F4CA167038C40101550F88A2BDD3F4D7E0C0445F"
+    resolved_baseline = subprocess.run(
+        ["git", "rev-parse", f"{baseline}^{{}}"],
+        cwd=root,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+    assert resolved_baseline == "3a6dab653510a0251f0d63a5a10fb2a5ff8d8838"
+    assert names("ls-files", "--error-unmatch", *frozen_paths) == set(frozen_paths)
+    assert all((root / path).is_file() for path in frozen_paths)
+    assert names("diff", "--name-only", baseline, "--", *production_paths) == set()
+    assert names("diff", "--cached", "--name-only", "--", *frozen_paths) == set()
+    assert not set(frozen_paths).intersection(
+        names("ls-files", "--others", "--exclude-standard")
     )
+    assert names("diff", "--name-only", "--", *frozen_paths) == {test_path}
+
+    test_bytes = (root / test_path).read_bytes()
+    normalized = test_bytes.replace(correction_digest.encode(), b"0" * 64)
+    assert normalized != test_bytes
+    assert hashlib.sha256(normalized).hexdigest().upper() == correction_digest
 
 
 def test_caller_fingerprint_is_impossible() -> None:
