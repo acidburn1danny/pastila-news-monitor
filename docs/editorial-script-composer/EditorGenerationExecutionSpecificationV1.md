@@ -778,15 +778,35 @@ def snapshot(self) -> tuple[EditorGenerationAttemptObservationV1, ...]: ...
 ```
 
 It is operation-scoped, append-only, and validates/reconstructs every
-observation. Snapshots are immutable ordered tuples with contiguous attempt
-numbers starting at one, no duplicates or gaps, and distinct request
-references. The recorder is bound to the session operation reference through
-the same private reference factory used by the adapter. Thus every recorded
-attempt belongs to that one operation authority even though the safe public
-observation deliberately does not duplicate the operation-reference text.
+observation. Snapshots are immutable ordered tuples with recorder-global,
+contiguous attempt numbers starting at one, no duplicates or gaps, and distinct
+request references. The exact recorder identity exposed by the opened session
+is the sole operation-membership authority. The recorder is bound privately to
+the session operation reference, but the safe public observation deliberately
+does not duplicate that text and its request reference is opaque. Revision 3D
+MUST NOT parse or recompute operation identity from a request reference, require
+references to embed operation text, or attempt to detect foreign/mixed
+operation-reference text in individual observations.
+
 Property access and snapshot perform no provider execution and create no
-attempt. The coordinator reads a snapshot only after generation and never
-records, mutates, fabricates, or recomputes an observation.
+attempt. The coordinator accesses the exact session recorder, invokes
+`session.attempt_recorder.snapshot()` exactly once from coordinator-owned code
+after generation terminates, and never accesses or reads it again.
+It invokes `snapshot()` on that exact retrieved identity, preserves order, and
+reconstructs observations without recording, mutating, repairing, reordering,
+fabricating, or recomputing them. There is no second recorder identity or
+private adapter field available for comparison; the coordinator MUST NOT invent
+one or attempt to detect substitution that occurred before the authoritative
+public property access. Adapter-owned internal recorder snapshots during
+provider execution are outside this coordinator-owned cardinality.
+
+The snapshot is operation-global and variable length. After at least one
+adapter dispatch its length is a positive integer determined by generated
+stories, transitions, opening, closing, conditional CTA, component-semantic
+attempts, and timeout retries. It has no global one-observation success rule and
+no maximum of two. Zero observations are valid only when a terminal failure
+occurs after session open but before the first adapter invocation; after public
+evidence that dispatch began, zero observations are invalid provenance.
 
 The remaining private runtime composition values are exact:
 
@@ -871,6 +891,22 @@ from provider content, or a chained exception. Classification may inspect
 `errors(include_url=False, include_context=False, include_input=False)` exactly
 once; it MUST retain or expose none of that temporary structure. The adapter
 does not use a second parser to distinguish these categories.
+
+This malformed-versus-schema distinction is adapter-internal only. Both paths
+cross the public adapter boundary as `ProviderStructuredOutputError`, are
+caught by the frozen `ControlledGenerator`, and are ultimately observable by
+Revision 3D only as `ControlledGenerationError`. Their provider attempt is
+correctly recorded as `COMPLETED` because lower provider execution completed
+before application-owned structured-output acceptance failed. The attempt
+record exposes no malformed-versus-schema discriminator.
+
+Revision 3D follows an observable-authority rule: it classifies failures only
+from public, verified, reachable contracts at its boundary. It MUST NOT derive
+a category from exception text or string matching, raw provider messages, raw
+generated text, Pydantic or JSON-parser details, private adapter helpers or
+private exception types, traceback locals, `__context__`, `__cause__`,
+implementation-specific attributes, or guessed mappings. When internal causes
+collapse to one public signal, the operational contract exposes one category.
 
 For one successful adapter call, generated-text extraction occurs once,
 `model_validate_json(..., strict=True)` occurs once, Pydantic owns exactly one
@@ -1342,23 +1378,41 @@ Dependencies are statically validated without execution. Execution order:
    `request.request_reference` as its `operation_reference`;
 3. create one adapter bound to the session and one generator using section 7;
 4. invoke `ControlledGenerator.generate` exactly once;
-5. reconstruct `ControlledGenerationResult` and its draft, trace, manifest, and
-   final state;
-6. snapshot recorder observations and retain only a private candidate outcome;
-7. close the session once;
-8. construct/reconstruct `EditorOperationalResultV1` only after the close
+5. access the exact session recorder and invoke
+   `session.attempt_recorder.snapshot()` exactly once from coordinator-owned
+   code; adapter-owned internal recorder snapshots are outside this
+   coordinator cardinality;
+6. reconstruct and structurally validate the operation-global provenance;
+7. reconstruct `ControlledGenerationResult` and its draft, trace, manifest, and
+   final state when generation returned, then cross-validate trace/group order;
+8. derive the final observable failure classification from the public terminal
+   signal and validated provenance;
+9. close the session once;
+10. construct/reconstruct `EditorOperationalResultV1` only after the close
    outcome is known; and
-9. if an earlier step raises, close once in `finally`, then construct the safe
+11. if an earlier step raises, close once in `finally`, then construct the safe
    failed/cancelled result from the retained candidate state.
 
-The coordinator never publishes a completed result before cleanup. Cleanup
-failure converts a would-be completion to `cleanup_failed`. When cleanup fails
-after another terminal failure, the primary failure remains authoritative and
-`cleanup_failed=True` records the additional safe fact.
+The coordinator never publishes a result before cleanup. Cleanup failure after
+any opened-session outcome takes publication precedence and maps to
+`cleanup_failed`; generated output is suppressed and `cleanup_failed=True`
+records the safe fact. The coordinator never attempts a second close.
 
 The coordinator performs no deterministic selection/enrichment, provider
 selection policy, raw client access, retry loop, timeout enforcement,
 cancellation polling, persistence, CLI, Producer, or output rendering.
+
+When `ControlledGenerator.generate` raises `ControlledGenerationError`, the
+coordinator invokes `session.attempt_recorder.snapshot()` exactly once from
+coordinator-owned code, validates provenance, and reduces the exact public
+exception type to
+`controlled_generation_failed` unless a distinct public timeout,
+cancellation, provider, invalid-provenance, cleanup, request, or runtime signal
+has higher precedence. It closes the runtime session exactly once and publishes
+only after successful close. It performs no output reconstruction, second
+parse, direct adapter call, coordinator retry, generated-text inspection, or
+exception-message inspection. Adapter-owned recorder snapshots used internally
+during provider execution are not counted by this coordinator-owned invariant.
 
 ## 11. Lifecycle and failures
 
@@ -1394,39 +1448,186 @@ Valid lifecycle tuples are closed:
 | Code | Message | Retryable |
 |---|---|---|
 | `invalid_execution_request` | `Editor generation request is invalid.` | false |
-| `deterministic_artifact_invalid` | `Editor deterministic generation artifact is invalid.` | false |
 | `runtime_composition_failed` | `Editor generation runtime composition failed.` | false |
 | `provider_failed` | `Editor generation provider failed.` | false |
 | `timeout_exhausted` | `Editor generation timed out.` | false |
 | `cancelled` | `Editor generation was cancelled.` | false |
-| `malformed_provider_result` | `Editor provider result is malformed.` | false |
-| `invalid_provider_lineage` | `Editor provider result lineage is invalid.` | false |
-| `malformed_generated_json` | `Editor generated JSON is malformed.` | false |
-| `generated_schema_invalid` | `Editor generated schema is invalid.` | false |
 | `controlled_generation_failed` | `Editor controlled generation failed.` | false |
+| `attempt_provenance_invalid` | `Editor generation attempt provenance is invalid.` | false |
 | `controlled_result_invalid` | `Editor controlled generation result is invalid.` | false |
 | `internal_execution_failure` | `Editor generation execution failed.` | false |
 | `cleanup_failed` | `Editor generation cleanup failed.` | false |
 
 `EditorOperationalGenerationFailureV1` fields are `code`, `safe_message`, and
-`retryable=False`. No raw lower code/message is public. Cleanup failure overrides
-a would-be completed result because resource ownership did not terminate
-successfully; it does not replace cancellation or an existing execution failure,
-but is retained only as an additional safe cleanup flag in diagnostics.
+`retryable=False`. No raw lower code/message is public. Cleanup failure takes
+publication precedence over completion and every pre-cleanup terminal failure
+because resource ownership did not terminate successfully. It suppresses all
+generated output and is retained with `cleanup_failed=True`.
 
 There is no partial draft. Any failed/cancelled outcome has no draft, generation
 trace, manifest, or final state and prohibits downstream handoff.
 
+`invalid_execution_request` also covers copied-invalid or inconsistent nested
+deterministic artifacts discovered while authoritatively reconstructing the
+single frozen execution-request aggregate. The public reconstruction boundary
+does not expose which nested artifact failed, so Revision 3D MUST NOT invent a
+separate deterministic-artifact failure category.
+
 Because frozen `ControlledGenerator` wraps provider exceptions, terminal
-classification is derived only from the operation-scoped safe attempt record,
-never from exception text or traceback. If the final observation is cancelled,
-the result is cancelled. If the final two immediately consecutive observations
-have the same prompt fingerprint and both are timeout, the result is
-`timeout_exhausted`. A malformed/lineage/JSON/schema/provider observation maps
-to its corresponding closed failure code. If no safe observation proves a more
-specific category, the result is `controlled_generation_failed` or
-`internal_execution_failure` according to the failing boundary. Earlier
-observations never override the final attempt.
+classification is derived only from the operation-scoped safe attempt record
+and the exact public exception type, never from exception text or traceback. If
+the final observation is cancelled, the result is cancelled. If the final two
+immediately consecutive observations have the same prompt fingerprint and both
+are timeout, the result is `timeout_exhausted`. A final recorded
+`PROVIDER_FAILURE` maps to `provider_failed`. Frozen adapter rejection of a
+malformed lower result and frozen adapter rejection of lower lineage both
+collapse to the same public internal provider error without a discriminating
+attempt observation, are caught by `ControlledGenerator`, and reach Revision 3D
+only as `ControlledGenerationError`. Both therefore map to
+`controlled_generation_failed`. Revision 3D MUST NOT expose separate
+malformed-result, lineage, or hidden-adapter-internal categories.
+
+Every `ControlledGenerationError` with otherwise valid provenance maps to
+`controlled_generation_failed` unless a distinct public timeout, cancellation,
+provider, invalid-provenance, cleanup, invalid-request, or runtime-session
+signal has higher precedence. A final `COMPLETED` observation does not prove
+that it belongs to the failing component: it may belong to an earlier completed
+component when the later adapter invocation failed before recording. Revision
+3D therefore MUST NOT infer structured-output rejection from `COMPLETED`,
+attempt position, exception text, or any private diagnostic.
+
+`controlled_generation_failed` uses the generation-failure lifecycle ending in
+`failed`; retryable is exact false; draft, trace, manifest, and final state are
+absent; downstream handoff is prohibited; valid ordered attempt observations
+are retained without rewriting their outcomes; and publication occurs only
+after successful runtime-session close. Adapter-internal malformed JSON and
+schema-validation distinctions remain private and deliberately collapse into
+this same operational category. Internal failure is limited to the two finite
+package-owned sources defined next.
+
+`internal_execution_failure` is reserved for an independently observable
+coordinator-owned or runtime-owned internal boundary that does not arrive as
+`ControlledGenerationError`. Its exhaustive sources are exactly: (A) an
+unexpected exception raised by package-owned Revision 3D coordinator code after
+dependency validation and entry into a package-owned operation, after neutral
+reduction, when no other closed public category applies; and (B) failure to
+construct or authoritatively reconstruct `EditorOperationalResultV1` solely
+because of package-owned internal corruption, excluding copied-invalid caller
+input, malformed provider/generator output, invalid provenance, cleanup failure,
+or another existing closed code. Frozen inspection identifies no distinct
+public runtime-internal exception/outcome reaching Revision 3D directly, so no
+third runtime-signal source exists.
+
+The exclusion list is exhaustive: `internal_execution_failure` never owns a
+`ControlledGenerationError`, malformed JSON, schema-invalid output,
+structured-output rejection, malformed lower result, lower-lineage rejection,
+retry failure before `_record()`, hidden adapter failure, provider failure,
+timeout, cancellation, invalid provenance, runtime-session open failure,
+cleanup failure, invalid execution request, `controlled_result_invalid`, a
+cause inferred from text/private state, a discarded lower cause, or any future
+unenumerated signal. A collapsed lower cause is never re-expanded into a more
+specific operational category.
+
+After a session opens, classification precedence is closed: cleanup failure;
+invalid attempt provenance; a separately observable timeout, cancellation, or
+provider failure; `controlled_generation_failed` for every remaining
+`ControlledGenerationError`; then an independently observable
+`internal_execution_failure`. Invalid execution request and runtime-session
+open failure terminate before this opened-session precedence applies.
+
+### 11.1 Operation-global attempt provenance
+
+Attempt-provenance validation belongs exclusively to
+`EditorOperationalExecutionCoordinatorV1`. It validates the single immutable
+snapshot obtained from the exact `session.attempt_recorder` identity. The
+coordinator validates only public fields of exact reconstructed
+`EditorGenerationAttemptObservationV1` values and never traverses the adapter,
+runtime, lower request/result, or reference factory.
+
+Attempt numbers are recorder-global: the adapter reconstructs the existing
+snapshot and assigns `len(snapshot) + 1`. A valid nonempty snapshot therefore
+has exact built-in positive numbers `1..N` in tuple order, exact observation
+types, globally distinct request references, no duplicate complete observation,
+and provider IDs equal to the public runtime provider authority. Total `N` is
+variable and is not capped at two.
+
+A public dispatch group is one maximal adjacent run with the same
+`prompt_fingerprint`. Frozen generation is sequential. A normal dispatch group
+contains one observation. A timeout retry group contains exactly two adjacent
+observations with the same prompt fingerprint: the first outcome is `TIMEOUT`,
+the second has a fresh request reference and the next recorder-global attempt
+number. No third observation may share that timeout-retry run. Semantic retries
+are separate generator attempts with newly built prompts and are therefore
+separate public groups; Revision 3D does not infer their private reason.
+
+For completed generation, trace/group parity uses this exact partition of the
+reconstructed public `GenerationTrace.attempts`: a node is provider-backed if
+and only if its `provider_identifier` equals the reconstructed execution
+request's `provider.value`; those nodes participate, in tuple order, in parity
+validation. A node is deterministic-local if and only if its
+`provider_identifier == "deterministic-local"` and its `component_type` is
+`GenerationComponentType.ASSEMBLY` or
+`GenerationComponentType.TELEPROMPTER_FORMATTING`; those nodes are excluded
+from parity validation. Any trace node satisfying neither partition, or a
+`deterministic-local` node with any other component type, makes the controlled
+result invalid. Collapsing each provider-attempt timeout pair to its terminal
+observation MUST produce exactly the ordered prompt fingerprints of the
+provider-backed trace nodes. This validates the multi-component story,
+transition, opening, closing, and conditional-CTA sequence without inventing a
+component type in the observation. For terminal failure, no partial trace is
+promoted; the final public group is the relevant terminal authority and all
+earlier groups must remain structurally valid.
+
+A nonterminal `TIMEOUT` must be followed immediately in the full snapshot by
+its same-fingerprint retry. Two adjacent `TIMEOUT` observations in that group
+prove `timeout_exhausted`. A terminal singleton `TIMEOUT` accompanying a public
+generator failure is not fabricated into timeout exhaustion: the frozen retry
+may have failed before recording a second observation, so it maps to
+`controlled_generation_failed`. Timeout retry count is the number of valid
+same-fingerprint adjacent pairs whose first observation is `TIMEOUT`; it is not
+derived from total snapshot length. Earlier successful groups do not alter a
+public terminal provider-failure, cancellation, or timeout mapping and are
+never treated as proof of a private structured-output cause.
+
+The retry-before-record scenario is normative. Attempt `N` records `TIMEOUT`
+with prompt fingerprint `P`; frozen `ControlledGenerator` performs its sole
+same-prompt timeout retry; that retry fails before adapter `_record()`; and
+Revision 3D receives `ControlledGenerationError` with the snapshot still ending
+at the valid timeout observation. If the available operation-global snapshot is
+otherwise valid, this maps to `controlled_generation_failed`, not
+`timeout_exhausted`, `internal_execution_failure`, or
+`attempt_provenance_invalid`. The coordinator does not require/fabricate a
+second observation, infer its outcome/lower code, or treat the recorded timeout
+as the final operational outcome. Cleanup failure alone may override this
+candidate at publication.
+
+The four timeout cases are disjoint: two adjacent recorded same-prompt
+`TIMEOUT` observations prove `timeout_exhausted`; a recorded timeout followed
+by a recorded successful same-prompt retry continues according to the generator
+result; a recorded timeout followed by an unrecorded retry failure and
+`ControlledGenerationError` maps to `controlled_generation_failed`; and an
+independently malformed/contradictory public timeout sequence maps to
+`attempt_provenance_invalid`.
+
+`attempt_provenance_invalid` is used only for publicly detectable provenance
+violations: wrong snapshot type; wrong or copied-invalid observation type;
+failure to snapshot the exact retrieved recorder; noncontiguous/out-of-order recorder-global
+numbers; duplicate complete observations; duplicate request references;
+provider mismatch; invalid same-fingerprint grouping; nonterminal timeout
+without its adjacent retry; more than one timeout retry in one group; terminal
+outcome inconsistent with the derived public outcome; or a successful
+controlled result whose collapsed groups do not match its reconstructed trace.
+Opaque operation-reference membership is not revalidated from observation
+text.
+
+Provenance failure takes precedence over timeout, cancellation, provider,
+generic controlled-generation, and successful-result
+classification. The session is still closed exactly once. Cleanup failure then
+takes publication precedence over provenance failure. If cleanup succeeds, the
+failed lifecycle and `attempt_provenance_invalid` are published with no output,
+no handoff, retryable false, public attempts `()`, `attempt_count=0`, and
+`timeout_retry_count=0`. Malformed observations and the raw snapshot are never
+retained or exposed.
 
 ## 12. `EditorOperationalResultV1`
 
@@ -1467,6 +1668,10 @@ trace, manifest and final revision; at least one successful attempt; no failure;
 and `cleanup_failed=False`. Failed/cancelled requires all generated output fields
 absent and one matching failure. Cancelled has the cancelled code/lifecycle.
 Failed may have zero attempts pre-dispatch. `cleanup_failed` is exact bool.
+For `attempt_provenance_invalid`, attempts are exactly `()`, attempt count and
+timeout retry count are zero, and no malformed or partially validated
+observation is included. Other terminal outcomes retain the exact validated
+operation-global snapshot and total count when provenance is valid.
 
 Result fingerprint is SHA-256 over canonical UTF-8 JSON of every preceding
 field. Canonicalization follows section 4.3 and includes full validated draft
@@ -1769,8 +1974,8 @@ session and invokes `ControlledGenerator`/neutral runtime.
 | timeout then success | 2 | 1 | operation continues | once after operation |
 | timeout twice | 2 | 1 | failed, no draft | once |
 | cancellation before retry | 1 | 0 second dispatch | cancelled, no draft | once |
-| malformed lower result/lineage | 1 | 0 | failed, no draft | once |
-| malformed JSON/schema | one per existing component attempt | generator policy only | terminal failure has no draft | once |
+| hidden malformed lower result/lineage | existing recorded attempts only | 0 | `controlled_generation_failed`, no draft | once |
+| adapter-internal structured-output rejection | one per existing component attempt | generator policy only | `controlled_generation_failed`, no draft | once |
 | controlled result invalid | existing attempts | no coordinator retry | failed, no draft | once |
 | cleanup failure after success | existing attempts | none | failed, no public draft | exactly one attempted close |
 
@@ -1802,7 +2007,7 @@ Each implementing revision SHALL test, offline:
     `json.loads`, fallback, or second validation; one Pydantic-owned JSON parse
     and one strict schema validation;
 14. provider failure, timeout exhaustion, cancellation, malformed result,
-    lineage mismatch, JSON failure, schema failure, internal failure;
+    lineage mismatch, generic controlled-generation failure, internal failure;
 15. `ControlledGenerator` constructed/called once and exact argument mapping;
 16. exact result lifecycle/failure/output/attempt/cleanup contradictions;
 17. session cleanup exactly once on every opened-session path and never between
@@ -1829,6 +2034,67 @@ return; zero preprocessing/repair/fallback/retry/cleanup/persistence/Producer;
 copy/deepcopy/pickle/repr/error-graph safety; passive imports/construction; and
 frozen integrity. Its dependency/import tests explicitly reject every
 coordinator-level type listed in section 8.
+
+Revision 3D tests the public operational collapse explicitly. Adapter-internal
+malformed JSON and schema-invalid JSON paths both map to
+`controlled_generation_failed`; where all public observable inputs are equal,
+their public operational results are equal. Each retains the exact lower
+`COMPLETED` attempt, exposes no parser/Pydantic detail or generated output,
+permits no handoff or coordinator retry, invokes
+`session.attempt_recorder.snapshot()` exactly once from coordinator-owned code,
+closes the session once, and publishes only after successful cleanup. Tests
+MUST prove
+that classification never reads exception text or generated text. Every
+otherwise unclassified `ControlledGenerationError`, including a later internal
+pre-record adapter failure after earlier completed groups, maps to the same
+`controlled_generation_failed`. Timeout, cancellation, provider failure,
+invalid attempt provenance, cleanup failure, and internal runtime failure remain
+distinct only through their public signals.
+
+The same matrix explicitly injects malformed lower-result and lower-lineage
+rejection before `_record()` and requires `controlled_generation_failed` with
+the same fixed message and materially equivalent public failure object when all
+observable inputs match. Earlier valid observations may remain but are not
+treated as terminal-cause proof. Tests prohibit lower-result/lineage inspection,
+fabricated observations, coordinator retry, and any hidden-adapter mapping to
+`internal_execution_failure`; that code is tested only at the independently
+observable coordinator/runtime internal boundaries listed in section 11.
+
+The separately named load-bearing requirement
+`test_timeout_retry_failure_before_record_maps_to_controlled_generation_failed`
+constructs an opened session whose recorder contains one valid `TIMEOUT`
+observation for prompt fingerprint `P`, exercises the frozen one retry, makes
+that retry fail before adapter `_record()`, and exposes
+`ControlledGenerationError` with no second observation. It asserts the result
+is `controlled_generation_failed` and is not timeout, internal, or provenance
+failure solely because the retry observation is absent; the existing timeout
+observation remains unchanged; no observation/lower cause is fabricated; the
+coordinator invokes `session.attempt_recorder.snapshot()` exactly once and
+closes the session once; adapter-owned internal snapshot calls are not included
+in that assertion; output/handoff and coordinator retry are absent; and
+separately injected cleanup failure takes precedence.
+
+Companion tests distinguish recorded timeout exhaustion, recorded successful
+timeout retry, unrecorded retry failure, and independently invalid timeout
+provenance exactly as section 11.1 specifies.
+
+Revision 3D provenance tests additionally cover variable multi-component
+snapshots for stories, transitions, opening, closing, CTA present/absent, and
+component-semantic attempts; total counts greater than two; exact retrieved
+recorder identity and one coordinator-owned snapshot call with no alternate
+recorder; wrong snapshot or
+observation types; copied-invalid and duplicate observations; duplicate request
+references; recorder-global numbering/order; provider mismatch; valid middle
+and terminal timeout pairs; nonadjacent retry, repeated timeout retry, and
+terminal-group mismatch; provider failure, cancellation, adapter-internal
+structured-output rejection, and generic failure after earlier completed
+groups; successful exact provider-backed trace fingerprint/group parity with
+deterministic-local assembly and teleprompter nodes excluded by the normative
+partition; valid zero-attempt pre-dispatch failure; invalid zero
+attempts when dispatch is publicly established; empty public attempts/count
+zero for `attempt_provenance_invalid`; cleanup precedence; and explicit absence
+of operation-reference-text parsing, reference recomputation, mutation, retry,
+output, handoff, or malformed-provenance publication.
 
 Revision 3C.1 specifically tests the exact five-file runtime package and
 focused test; exact three-symbol exports and order; absence of the inert type,
