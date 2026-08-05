@@ -1091,31 +1091,127 @@ def test_openai_and_ollama_success_are_operationally_equivalent(monkeypatch):
     assert second.generation_trace.attempts[0].provider_identifier == "ollama"
 
 
-def test_frozen_repository_integrity_is_exact():
-    root = str(__import__("pathlib").Path(__file__).resolve().parents[1])
-    tracked = subprocess.run(
-        ["git", "diff", "--name-only"],
-        cwd=root,
-        check=True,
-        capture_output=True,
-        text=True,
-    )
-    assert tracked.stdout == ""
-    untracked = subprocess.run(
-        ["git", "ls-files", "--others", "--exclude-standard"],
-        cwd=root,
-        check=True,
-        capture_output=True,
-        text=True,
-    )
-    assert set(untracked.stdout.splitlines()) == {
+_REVISION_3D_PRODUCTION_PATHS = frozenset(
+    {
         "src/pastila_scout/editor_operational_execution_v1/__init__.py",
         "src/pastila_scout/editor_operational_execution_v1/coordinator.py",
         "src/pastila_scout/editor_operational_execution_v1/errors.py",
         "src/pastila_scout/editor_operational_execution_v1/models.py",
         "src/pastila_scout/editor_operational_execution_v1/protocols.py",
-        "tests/test_editor_operational_execution_v1.py",
     }
+)
+_REVISION_3D_TEST_PATH = "tests/test_editor_operational_execution_v1.py"
+_REVISION_3D_PATHS = _REVISION_3D_PRODUCTION_PATHS | {_REVISION_3D_TEST_PATH}
+_REVISION_3D_TAG = "phase-4.2-editor-operational-execution-r3d-verified"
+_REVISION_3D_TEST_DIFF_SHA256 = (
+    "8169f2e742938144049e735d5e9d00b98b30aec9198452fae8657fe72aa13fec"
+)
+
+
+def _revision_3d_snapshot_is_valid(
+    *, tracked, existing, tag_changed, working_changed, staged, untracked
+):
+    return (
+        _REVISION_3D_PATHS.issubset(tracked)
+        and _REVISION_3D_PATHS.issubset(existing)
+        and not (_REVISION_3D_PRODUCTION_PATHS & tag_changed)
+        and not (_REVISION_3D_PRODUCTION_PATHS & working_changed)
+        and not (_REVISION_3D_PATHS & staged)
+        and not (_REVISION_3D_PATHS & untracked)
+    )
+
+
+def _git_names(root, *arguments):
+    completed = subprocess.run(
+        ["git", *arguments],
+        cwd=root,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    return set(completed.stdout.splitlines())
+
+
+def _authorized_revision_3d_test_diff_is_valid(value):
+    expression = __import__("re").compile(
+        rb'(\+_REVISION_3D_TEST_DIFF_SHA256 = \(\r?\n\+    ")' rb'([0-9a-f]{64})(")'
+    )
+    normalized, replacements = expression.subn(
+        lambda match: match.group(1) + (b"0" * 64) + match.group(3), value
+    )
+    normalized = __import__("re").sub(
+        rb"^index [^\r\n]+$",
+        b"index <normalized>",
+        normalized,
+        flags=__import__("re").M,
+    )
+    digest = __import__("hashlib").sha256(normalized).hexdigest()
+    return replacements == 1 and digest == _REVISION_3D_TEST_DIFF_SHA256
+
+
+def test_frozen_repository_integrity_is_exact():
+    path_type = __import__("pathlib").Path
+    root_path = path_type(__file__).resolve().parents[1]
+    root = str(root_path)
+    paths = tuple(sorted(_REVISION_3D_PATHS))
+    production = tuple(sorted(_REVISION_3D_PRODUCTION_PATHS))
+    tracked = _git_names(root, "ls-files", "--", *paths)
+    existing = {path for path in _REVISION_3D_PATHS if (root_path / path).is_file()}
+    tag_changed = _git_names(
+        root, "diff", "--name-only", _REVISION_3D_TAG, "--", *production
+    )
+    working_changed = _git_names(root, "diff", "--name-only", "--", *production)
+    staged = _git_names(root, "diff", "--cached", "--name-only", "--", *paths)
+    untracked = _git_names(root, "ls-files", "--others", "--exclude-standard")
+    test_diff = subprocess.run(
+        ["git", "diff", _REVISION_3D_TAG, "--", _REVISION_3D_TEST_PATH],
+        cwd=root,
+        check=True,
+        capture_output=True,
+    ).stdout
+    assert _revision_3d_snapshot_is_valid(
+        tracked=tracked,
+        existing=existing,
+        tag_changed=tag_changed,
+        working_changed=working_changed,
+        staged=staged,
+        untracked=untracked,
+    )
+    assert _authorized_revision_3d_test_diff_is_valid(test_diff)
+
+
+def test_revision_3d_integrity_snapshot_rejects_mutation_without_git_writes():
+    valid = {
+        "tracked": set(_REVISION_3D_PATHS),
+        "existing": set(_REVISION_3D_PATHS),
+        "tag_changed": set(),
+        "working_changed": set(),
+        "staged": set(),
+        "untracked": {"future/additive/package.py"},
+    }
+    assert _revision_3d_snapshot_is_valid(**valid)
+    for key, path in (
+        ("tag_changed", next(iter(_REVISION_3D_PRODUCTION_PATHS))),
+        ("working_changed", next(iter(_REVISION_3D_PRODUCTION_PATHS))),
+        ("staged", _REVISION_3D_TEST_PATH),
+        ("untracked", _REVISION_3D_TEST_PATH),
+    ):
+        invalid = {name: set(values) for name, values in valid.items()}
+        invalid[key].add(path)
+        assert not _revision_3d_snapshot_is_valid(**invalid)
+    for key in ("tracked", "existing"):
+        invalid = {name: set(values) for name, values in valid.items()}
+        invalid[key].remove(_REVISION_3D_TEST_PATH)
+        assert not _revision_3d_snapshot_is_valid(**invalid)
+    root = str(__import__("pathlib").Path(__file__).resolve().parents[1])
+    test_diff = subprocess.run(
+        ["git", "diff", _REVISION_3D_TAG, "--", _REVISION_3D_TEST_PATH],
+        cwd=root,
+        check=True,
+        capture_output=True,
+    ).stdout
+    assert _authorized_revision_3d_test_diff_is_valid(test_diff)
+    assert not _authorized_revision_3d_test_diff_is_valid(test_diff + b"mutation")
 
 
 def _assert_recursive_public_isolation(value, protected):
