@@ -11,6 +11,7 @@ from .errors import (
     EditorApplicationExportError,
     EditorApplicationSerializationError,
 )
+from .export import EditorAtomicExporterV1
 from .models import (
     EditorApplicationExitCodeV1,
     EditorApplicationFailureCodeV1,
@@ -39,6 +40,7 @@ __all__ = (  # noqa: RUF022 - frozen specification order
     "EditorApplicationResultV1",
     "EditorApplicationSerializationError",
     "EditorApplicationStatusV1",
+    "EditorAtomicExporterV1",
     "EditorEpisodeContextAuthorityV1",
     "EditorOperationalResultSerializerV1",
     "EditorOutputDestinationV1",
