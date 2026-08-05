@@ -120,8 +120,13 @@ def failure(code: EditorApplicationFailureCodeV1) -> EditorApplicationFailureV1:
 
 
 def test_exact_revision_2_public_api_and_passive_import() -> None:
-    assert public.__all__ == EXPECTED_API
+    serializer = "EditorOperationalResultSerializerV1"
+    expected_current_api = (*EXPECTED_API[:14], serializer, *EXPECTED_API[14:])
+    assert public.__all__ == expected_current_api
     assert all(getattr(public, name) is not None for name in EXPECTED_API)
+    assert public.EditorOperationalResultSerializerV1.__module__ == (
+        "pastila_scout.editor_application_v1.serialization"
+    )
 
 
 @pytest.mark.parametrize(
@@ -639,6 +644,18 @@ def test_fresh_process_determinism_and_network_passivity() -> None:
 
 def test_current_revision_git_scope_and_frozen_specification_are_exact() -> None:
     root = Path(__file__).resolve().parents[1]
+    baseline = "phase-4.3-editor-application-configuration-r2-verified"
+    production_paths = (
+        "src/pastila_scout/editor_application_v1/configuration.py",
+        "src/pastila_scout/editor_application_v1/errors.py",
+        "src/pastila_scout/editor_application_v1/models.py",
+    )
+    init_path = "src/pastila_scout/editor_application_v1/__init__.py"
+    test_path = "tests/test_editor_application_contracts_v1.py"
+    frozen_paths = (*production_paths, init_path, test_path)
+    correction_digest = (
+        "4A87600648A0B4F725753A5538CAB030E50B33036FD2D9579E1F89CBE6937643"
+    )
 
     def names(*arguments: str) -> set[str]:
         return set(
@@ -651,18 +668,41 @@ def test_current_revision_git_scope_and_frozen_specification_are_exact() -> None
             ).stdout.splitlines()
         )
 
-    expected_additions = {
-        "src/pastila_scout/editor_application_v1/__init__.py",
-        "src/pastila_scout/editor_application_v1/configuration.py",
-        "src/pastila_scout/editor_application_v1/errors.py",
-        "src/pastila_scout/editor_application_v1/models.py",
-        "tests/test_editor_application_contracts_v1.py",
-    }
-    assert names("ls-files", "--others", "--exclude-standard") == expected_additions
-    assert names("diff", "--name-only") == {
-        "tests/test_editor_generation_execution_request_authority_v1.py"
-    }
-    assert names("diff", "--cached", "--name-only") == set()
+    assert (
+        subprocess.run(
+            ["git", "rev-parse", f"{baseline}^{{}}"],
+            cwd=root,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        == "c44f851896824651eed56058ad1c40f451d77ba1"
+    )
+    assert names("ls-files", "--error-unmatch", *frozen_paths) == set(frozen_paths)
+    assert all((root / path).is_file() for path in frozen_paths)
+    assert names("diff", "--name-only", baseline, "--", *production_paths) == set()
+    assert names("diff", "--cached", "--name-only", "--", *frozen_paths) == set()
+    assert not set(frozen_paths).intersection(
+        names("ls-files", "--others", "--exclude-standard")
+    )
+
+    frozen_init = subprocess.run(
+        ["git", "show", f"{baseline}:{init_path}"],
+        cwd=root,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout
+    current_init = (root / init_path).read_text(encoding="utf-8")
+    revision_2_init = current_init.replace(
+        "from .serialization import EditorOperationalResultSerializerV1\n", ""
+    ).replace('    "EditorOperationalResultSerializerV1",\n', "")
+    assert revision_2_init == frozen_init
+
+    test_bytes = (root / test_path).read_bytes()
+    normalized = test_bytes.replace(correction_digest.encode(), b"0" * 64)
+    assert normalized != test_bytes
+    assert hashlib.sha256(normalized).hexdigest().upper() == correction_digest
     specification = (
         root
         / "docs"
@@ -673,7 +713,7 @@ def test_current_revision_git_scope_and_frozen_specification_are_exact() -> None
         names(
             "diff",
             "--name-only",
-            "phase-4.3-editor-application-composition-spec-v4-ready",
+            baseline,
             "--",
             specification.relative_to(root).as_posix(),
         )

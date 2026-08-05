@@ -1076,7 +1076,10 @@ def test_private_import_and_aggregate_duplication_audit() -> None:
 def test_current_revision_git_scope_and_frozen_integrity_are_exact() -> None:
     """Verify the frozen authority without claiming future repository state."""
     root = Path(__file__).resolve().parents[1]
-    baseline = "phase-4.2-editor-generation-execution-request-authority-r2-verified"
+    production_baseline = (
+        "phase-4.2-editor-generation-execution-request-authority-r2-verified"
+    )
+    test_baseline = "phase-4.2-editor-generation-execution-request-authority-integrity-test-r2-verified"
     production_paths = (
         "src/pastila_scout/editor_generation_execution_request_authority_v1/__init__.py",
         "src/pastila_scout/editor_generation_execution_request_authority_v1/authority.py",
@@ -1086,7 +1089,7 @@ def test_current_revision_git_scope_and_frozen_integrity_are_exact() -> None:
     test_path = "tests/test_editor_generation_execution_request_authority_v1.py"
     frozen_paths = (*production_paths, test_path)
     correction_digest = (
-        "9536835DF76C973B5890AB3466318FA2227989BE2E666577AEAACDF7189A99DB"
+        "E83895381AAF8491BCE510FD210CF4FB320FDFDD4D980DF0F9613C3F8C551A43"
     )
 
     def names(*arguments):
@@ -1100,23 +1103,32 @@ def test_current_revision_git_scope_and_frozen_integrity_are_exact() -> None:
             ).stdout.splitlines()
         )
 
-    resolved_baseline = subprocess.run(
-        ["git", "rev-parse", f"{baseline}^{{}}"],
+    resolved_production_baseline = subprocess.run(
+        ["git", "rev-parse", f"{production_baseline}^{{}}"],
         cwd=root,
         check=True,
         capture_output=True,
         text=True,
     ).stdout.strip()
-    assert resolved_baseline == "3a6dab653510a0251f0d63a5a10fb2a5ff8d8838"
+    resolved_test_baseline = subprocess.run(
+        ["git", "rev-parse", f"{test_baseline}^{{}}"],
+        cwd=root,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+    assert resolved_production_baseline == ("3a6dab653510a0251f0d63a5a10fb2a5ff8d8838")
+    assert resolved_test_baseline == "82cc6389689b919531e9554095440fea23706d7f"
     assert names("ls-files", "--error-unmatch", *frozen_paths) == set(frozen_paths)
     assert all((root / path).is_file() for path in frozen_paths)
-    assert names("diff", "--name-only", baseline, "--", *production_paths) == set()
+    assert (
+        names("diff", "--name-only", production_baseline, "--", *production_paths)
+        == set()
+    )
     assert names("diff", "--cached", "--name-only", "--", *frozen_paths) == set()
     assert not set(frozen_paths).intersection(
         names("ls-files", "--others", "--exclude-standard")
     )
-    assert names("diff", "--name-only", "--", *frozen_paths) == {test_path}
-
     test_bytes = (root / test_path).read_bytes()
     normalized = test_bytes.replace(correction_digest.encode(), b"0" * 64)
     assert normalized != test_bytes
