@@ -1,5 +1,6 @@
 """Application-owned Editor configuration and immutable contracts."""
 
+from .application import EditorApplicationCoordinatorV1
 from .configuration import (
     EditorApplicationGenerationConfigurationAuthorityV1,
     EditorEpisodeContextAuthorityV1,
@@ -32,6 +33,7 @@ from .serialization import (
 __all__ = (  # noqa: RUF022 - frozen specification order
     "EditorApplicationConfigurationError",
     "EditorApplicationCoordinatorError",
+    "EditorApplicationCoordinatorV1",
     "EditorApplicationExitCodeV1",
     "EditorApplicationExportError",
     "EditorApplicationFailureCodeV1",

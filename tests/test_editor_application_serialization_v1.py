@@ -100,17 +100,26 @@ def decode(payload: bytes) -> dict[str, object]:
 def test_exact_api_layout_signature_and_passive_serializer() -> None:
     root = Path(__file__).resolve().parents[1]
     exporter_name = "EditorAtomicExporterV1"
+    coordinator_name = "EditorApplicationCoordinatorV1"
+    coordinator_exists = (
+        root / "src/pastila_scout/editor_application_v1/application.py"
+    ).is_file()
     exporter_exists = (
         root / "src/pastila_scout/editor_application_v1/export.py"
     ).is_file()
     expected_current_api = (
-        *EXPECTED_API[:13],
+        *EXPECTED_API[:2],
+        *((coordinator_name,) if coordinator_exists else ()),
+        *EXPECTED_API[2:13],
         *((exporter_name,) if exporter_exists else ()),
         *EXPECTED_API[13:15],
         "EditorSerializedOperationalResultV1",
         *EXPECTED_API[15:],
     )
     assert public.__all__ == expected_current_api
+    assert coordinator_exists == hasattr(public, coordinator_name)
+    if coordinator_exists:
+        assert public.__all__[2] == coordinator_name
     if exporter_exists:
         assert getattr(public, exporter_name).__module__ == (
             "pastila_scout.editor_application_v1.export"
@@ -674,20 +683,18 @@ m.undo()
 
 def test_current_revision_scope_and_frozen_integrity() -> None:
     root = Path(__file__).resolve().parents[1]
-    baseline = "phase-4.3-editor-application-composition-spec-v6-ready"
-    exact_commit = "a62ea03d008f2b777a263ffd274a98c608e644e9"
+    baseline = "phase-4.3-application-result-contract-r2-verified"
+    exact_commit = "3ea6751d586b2f1c8a5c8f7bb49a9526f88b94e9"
     serializer_path = "src/pastila_scout/editor_application_v1/serialization.py"
     init_path = "src/pastila_scout/editor_application_v1/__init__.py"
     test_path = "tests/test_editor_application_serialization_v1.py"
     allowed = {
-        serializer_path,
         init_path,
-        "tests/test_editor_application_contracts_v1.py",
         test_path,
         "tests/test_editor_application_export_v1.py",
     }
     correction_digest = (
-        "40FB867BCF24984FBDF812CFDEBD5D9E6B1F1D70B9B628BDF18EB043202A2A09"
+        "97898927CA89F6973486EE66CABE51264B71376F72CE85CCF4CD6454F78A7D1B"
     )
 
     def names(*arguments: str) -> set[str]:
@@ -712,7 +719,11 @@ def test_current_revision_scope_and_frozen_integrity() -> None:
         == exact_commit
     )
     assert names("diff", "--cached", "--name-only") == set()
-    assert names("ls-files", "--others", "--exclude-standard") == set()
+    assert names("ls-files", "--others", "--exclude-standard") == {
+        "src/pastila_scout/editor_application_v1/application.py",
+        "src/pastila_scout/editor_application_v1/protocols.py",
+        "tests/test_editor_application_v1.py",
+    }
     assert names("diff", "--name-only", baseline) == allowed
     protected = {
         "docs/editorial-application/EditorApplicationCompositionSpecificationV1.md",
@@ -720,6 +731,8 @@ def test_current_revision_scope_and_frozen_integrity() -> None:
         "src/pastila_scout/editor_application_v1/errors.py",
         "src/pastila_scout/editor_application_v1/export.py",
         "src/pastila_scout/editor_application_v1/models.py",
+        serializer_path,
+        "tests/test_editor_application_contracts_v1.py",
     }
     assert names("diff", "--name-only", baseline, "--", *protected) == set()
 

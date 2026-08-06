@@ -48,7 +48,7 @@ def install_local_no_replace(monkeypatch: pytest.MonkeyPatch, calls: list[str]) 
 
 
 def test_exact_public_api_position_identity_and_signature() -> None:
-    assert public.__all__[12:18] == (
+    assert public.__all__[13:19] == (
         "EditorApplicationStatusV1",
         "EditorAtomicExporterV1",
         "EditorEpisodeContextAuthorityV1",
@@ -632,16 +632,14 @@ def test_import_and_construction_are_passive_in_fresh_process() -> None:
 
 def test_current_revision_scope_and_frozen_integrity() -> None:
     root = Path(__file__).resolve().parents[1]
-    baseline = "phase-4.3-editor-application-composition-spec-v6-ready"
-    exact_commit = "a62ea03d008f2b777a263ffd274a98c608e644e9"
+    baseline = "phase-4.3-application-result-contract-r2-verified"
+    exact_commit = "3ea6751d586b2f1c8a5c8f7bb49a9526f88b94e9"
     allowed = {
         "src/pastila_scout/editor_application_v1/__init__.py",
-        "src/pastila_scout/editor_application_v1/serialization.py",
-        "tests/test_editor_application_contracts_v1.py",
         "tests/test_editor_application_serialization_v1.py",
         "tests/test_editor_application_export_v1.py",
     }
-    self_digest = "7EE6D8945DCB7C5B44B6D85EBAC4ECBD5613C85F8AE7C86E3C1E809F76A6BF9A"
+    self_digest = "DC24BEA8CBFFAE37FD9AD6FA0FB13EB2CF94A17F5CF2DEA848FA272BC80BF100"
 
     def names(*arguments: str) -> set[str]:
         return set(
@@ -664,12 +662,18 @@ def test_current_revision_scope_and_frozen_integrity() -> None:
     assert resolved == exact_commit
     assert names("diff", "--cached", "--name-only") == set()
     assert names("diff", "--name-only", baseline) == allowed
-    assert names("ls-files", "--others", "--exclude-standard") == set()
+    assert names("ls-files", "--others", "--exclude-standard") == {
+        "src/pastila_scout/editor_application_v1/application.py",
+        "src/pastila_scout/editor_application_v1/protocols.py",
+        "tests/test_editor_application_v1.py",
+    }
     frozen = {
         "docs/editorial-application/EditorApplicationCompositionSpecificationV1.md",
         "src/pastila_scout/editor_application_v1/configuration.py",
         "src/pastila_scout/editor_application_v1/errors.py",
         "src/pastila_scout/editor_application_v1/models.py",
+        "src/pastila_scout/editor_application_v1/serialization.py",
+        "tests/test_editor_application_contracts_v1.py",
         "src/pastila_scout/editor_application_v1/export.py",
     }
     assert names("diff", "--name-only", baseline, "--", *frozen) == set()
