@@ -48,10 +48,13 @@ def install_local_no_replace(monkeypatch: pytest.MonkeyPatch, calls: list[str]) 
 
 
 def test_exact_public_api_position_identity_and_signature() -> None:
-    assert public.__all__[12:15] == (
+    assert public.__all__[12:18] == (
         "EditorApplicationStatusV1",
         "EditorAtomicExporterV1",
         "EditorEpisodeContextAuthorityV1",
+        "EditorOperationalResultSerializerV1",
+        "EditorSerializedOperationalResultV1",
+        "EditorOutputDestinationV1",
     )
     assert public.EditorAtomicExporterV1 is EditorAtomicExporterV1
     assert implementation.__all__ == ("EditorAtomicExporterV1",)
@@ -629,15 +632,16 @@ def test_import_and_construction_are_passive_in_fresh_process() -> None:
 
 def test_current_revision_scope_and_frozen_integrity() -> None:
     root = Path(__file__).resolve().parents[1]
-    baseline = "phase-4.3-editor-application-frozen-tests-r4-prerequisite-verified"
-    exact_commit = "026c862ea3d86658dcc882a45c6aa4abacf24449"
+    baseline = "phase-4.3-editor-application-composition-spec-v6-ready"
+    exact_commit = "a62ea03d008f2b777a263ffd274a98c608e644e9"
     allowed = {
         "src/pastila_scout/editor_application_v1/__init__.py",
-        "src/pastila_scout/editor_application_v1/export.py",
+        "src/pastila_scout/editor_application_v1/serialization.py",
+        "tests/test_editor_application_contracts_v1.py",
         "tests/test_editor_application_serialization_v1.py",
         "tests/test_editor_application_export_v1.py",
     }
-    self_digest = "3AA980D28B43B98827EBE96826EA5163460858C64C7146AAB84A12ADE90A0189"
+    self_digest = "7EE6D8945DCB7C5B44B6D85EBAC4ECBD5613C85F8AE7C86E3C1E809F76A6BF9A"
 
     def names(*arguments: str) -> set[str]:
         return set(
@@ -659,21 +663,14 @@ def test_current_revision_scope_and_frozen_integrity() -> None:
     ).stdout.strip()
     assert resolved == exact_commit
     assert names("diff", "--cached", "--name-only") == set()
-    tracked = names("diff", "--name-only", baseline)
-    untracked = names("ls-files", "--others", "--exclude-standard")
-    assert tracked | untracked == allowed
-    assert tracked == {
-        "src/pastila_scout/editor_application_v1/__init__.py",
-        "tests/test_editor_application_serialization_v1.py",
-    }
-    assert untracked == allowed - tracked
+    assert names("diff", "--name-only", baseline) == allowed
+    assert names("ls-files", "--others", "--exclude-standard") == set()
     frozen = {
         "docs/editorial-application/EditorApplicationCompositionSpecificationV1.md",
         "src/pastila_scout/editor_application_v1/configuration.py",
         "src/pastila_scout/editor_application_v1/errors.py",
         "src/pastila_scout/editor_application_v1/models.py",
-        "src/pastila_scout/editor_application_v1/serialization.py",
-        "tests/test_editor_application_contracts_v1.py",
+        "src/pastila_scout/editor_application_v1/export.py",
     }
     assert names("diff", "--name-only", baseline, "--", *frozen) == set()
     test_bytes = (root / "tests/test_editor_application_export_v1.py").read_bytes()

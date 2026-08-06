@@ -106,7 +106,9 @@ def test_exact_api_layout_signature_and_passive_serializer() -> None:
     expected_current_api = (
         *EXPECTED_API[:13],
         *((exporter_name,) if exporter_exists else ()),
-        *EXPECTED_API[13:],
+        *EXPECTED_API[13:15],
+        "EditorSerializedOperationalResultV1",
+        *EXPECTED_API[15:],
     )
     assert public.__all__ == expected_current_api
     if exporter_exists:
@@ -132,14 +134,18 @@ def test_exact_api_layout_signature_and_passive_serializer() -> None:
     signature = inspect.signature(serializer.serialize)
     assert tuple(signature.parameters) == ("result",)
     assert signature.parameters["result"].kind is inspect.Parameter.KEYWORD_ONLY
-    assert signature.return_annotation in {bytes, "bytes"}
+    assert signature.return_annotation in {
+        public.EditorSerializedOperationalResultV1,
+        "EditorSerializedOperationalResultV1",
+    }
 
 
 def test_completed_result_serializes_all_fields_and_exact_lineage(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     result = completed_result(monkeypatch)
-    payload = public.EditorOperationalResultSerializerV1().serialize(result=result)
+    serialized = public.EditorOperationalResultSerializerV1().serialize(result=result)
+    payload = serialized.payload
     envelope = decode(payload)
     assert set(envelope) == {
         "schema_name",
@@ -175,13 +181,17 @@ def test_canonical_json_terminal_lf_and_embedded_checksum(
 ) -> None:
     result = completed_result(monkeypatch)
     serializer = public.EditorOperationalResultSerializerV1()
-    first = serializer.serialize(result=result)
-    second = serializer.serialize(result=result)
+    first_result = serializer.serialize(result=result)
+    second_result = serializer.serialize(result=result)
+    first = first_result.payload
+    second = second_result.payload
     assert first == second
+    assert first_result.payload_sha256 == second_result.payload_sha256
     assert first.endswith(b"\n") and not first.endswith(b"\n\n")
     assert b"\r\n" not in first and not first.startswith(b"\xef\xbb\xbf")
     envelope = decode(first)
     checksum = envelope["payload_sha256"]
+    assert first_result.payload_sha256 == checksum
     assert isinstance(checksum, str)
     assert checksum.startswith("sha256:") and len(checksum) == 71
     assert checksum[7:] == checksum[7:].lower()
@@ -204,6 +214,139 @@ def test_canonical_json_terminal_lf_and_embedded_checksum(
         sort_keys=True,
         separators=(",", ":"),
     ).encode("utf-8")
+    assert f"sha256:{hashlib.sha256(first).hexdigest()}" != checksum
+
+
+def test_serialized_result_object_contract_and_reconstruction(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    serialized = public.EditorOperationalResultSerializerV1().serialize(
+        result=completed_result(monkeypatch)
+    )
+    assert not hasattr(serialized, "__dict__")
+    assert tuple(type(serialized).__slots__) == ("payload", "payload_sha256")
+    assert repr(serialized) == (
+        "EditorSerializedOperationalResultV1("
+        "payload=<redacted>, payload_sha256=<redacted>)"
+    )
+    copied = copy.copy(serialized)
+    deep = copy.deepcopy(serialized)
+    assert copied == deep == serialized
+    assert copied is not serialized and deep is not serialized
+    with pytest.raises(TypeError, match="does not support pickle"):
+        pickle.dumps(serialized)
+    with pytest.raises(TypeError, match="cannot be subclassed"):
+        type("ForgedSerializedResult", (type(serialized),), {})
+    with pytest.raises((AttributeError, TypeError)):
+        serialized.payload = b"changed\n"  # type: ignore[misc]
+
+
+def test_wrapper_construction_rejects_invalid_payload_and_checksum(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    serialized = public.EditorOperationalResultSerializerV1().serialize(
+        result=completed_result(monkeypatch)
+    )
+    cases = (
+        (bytearray(serialized.payload), serialized.payload_sha256),
+        (serialized.payload, serialized.payload_sha256.upper()),
+        (serialized.payload[:-1], serialized.payload_sha256),
+        (serialized.payload + b"\n", serialized.payload_sha256),
+        (b"\xef\xbb\xbf" + serialized.payload, serialized.payload_sha256),
+        (
+            serialized.payload.replace(
+                b'"schema_version":"1"', b'"schema_version":"2"'
+            ),
+            serialized.payload_sha256,
+        ),
+        (serialized.payload, "sha256:" + "0" * 64),
+    )
+    for payload, checksum in cases:
+        with pytest.raises(public.EditorApplicationSerializationError) as caught:
+            public.EditorSerializedOperationalResultV1(payload, checksum)
+        assert caught.value.__cause__ is caught.value.__context__ is None
+
+
+def test_wrapper_rejects_resigned_invalid_operational_semantics(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    serialized = public.EditorOperationalResultSerializerV1().serialize(
+        result=completed_result(monkeypatch)
+    )
+    envelope = decode(serialized.payload)
+    envelope["operational_result"]["status"] = "failed"
+    envelope["payload_sha256"] = ""
+    placeholder = implementation._encode(envelope)
+    checksum = f"sha256:{hashlib.sha256(placeholder).hexdigest()}"
+    envelope["payload_sha256"] = checksum
+    forged = implementation._encode(envelope)
+    with pytest.raises(public.EditorApplicationSerializationError):
+        public.EditorSerializedOperationalResultV1(forged, checksum)
+
+
+@pytest.mark.parametrize(
+    "payload",
+    [
+        b"{\n",
+        b"[]\n",
+        b'{"a":1,"a":1}\n',
+        b'{"e\\u0301":1,"\\u00e9":1}\n',
+        b'{"schema_name":"pastila-editor-operational-export"} trailing\n',
+    ],
+)
+def test_wrapper_rejects_malformed_nonobject_duplicate_and_noncanonical_json(
+    payload: bytes,
+) -> None:
+    with pytest.raises(public.EditorApplicationSerializationError) as caught:
+        public.EditorSerializedOperationalResultV1(payload, "sha256:" + "0" * 64)
+    assert str(caught.value) == "Editor operational result serialization failed."
+    assert caught.value.__cause__ is caught.value.__context__ is None
+
+
+def test_copied_invalid_wrapper_operations_fail_closed(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    serialized = public.EditorOperationalResultSerializerV1().serialize(
+        result=completed_result(monkeypatch)
+    )
+    valid_peer = copy.copy(serialized)
+    object.__setattr__(serialized, "payload_sha256", "sha256:" + "0" * 64)
+    operations = (
+        lambda: copy.copy(serialized),
+        lambda: copy.deepcopy(serialized),
+        lambda: repr(serialized),
+        lambda: serialized == valid_peer,
+    )
+    for operation in operations:
+        with pytest.raises(public.EditorApplicationSerializationError):
+            operation()
+
+
+def test_later_wrapper_reconstruction_performs_one_validation_checksum(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    serialized = public.EditorOperationalResultSerializerV1().serialize(
+        result=completed_result(monkeypatch)
+    )
+    original = implementation.hashlib.sha256
+    count = 0
+
+    def counted(value=b""):
+        nonlocal count
+        count += 1
+        return original(value)
+
+    monkeypatch.setattr(implementation.hashlib, "sha256", counted)
+    copied = copy.copy(serialized)
+    assert copied.payload == serialized.payload
+    assert copied.payload_sha256 == serialized.payload_sha256
+    assert count == 1
+
+
+def test_no_legacy_serialization_entry_point() -> None:
+    serializer = public.EditorOperationalResultSerializerV1()
+    assert not hasattr(serializer, "serialize_bytes")
+    assert not hasattr(serializer, "extract_checksum")
 
 
 @pytest.mark.parametrize("bad", [None, object(), b"payload", "result"])
@@ -273,7 +416,9 @@ def test_serialization_performs_no_filesystem_io(
     monkeypatch.setattr(builtins, "open", forbidden)
     monkeypatch.setattr(Path, "write_bytes", forbidden)
     monkeypatch.setattr(Path, "write_text", forbidden)
-    payload = public.EditorOperationalResultSerializerV1().serialize(result=result)
+    payload = (
+        public.EditorOperationalResultSerializerV1().serialize(result=result).payload
+    )
     assert payload.endswith(b"\n")
 
 
@@ -302,7 +447,7 @@ def test_nontrivial_attempt_order_and_numeric_types_are_preserved(
         output=controlled_output(),
     )
     projected = decode(
-        public.EditorOperationalResultSerializerV1().serialize(result=result)
+        public.EditorOperationalResultSerializerV1().serialize(result=result).payload
     )["operational_result"]
     assert [item["attempt_number"] for item in projected["attempts"]] == [1, 2]
     assert [item["outcome"] for item in projected["attempts"]] == [
@@ -314,7 +459,7 @@ def test_nontrivial_attempt_order_and_numeric_types_are_preserved(
     assert projected["timeout_retry_count"] == 1
 
 
-def test_one_result_reconstruction_and_one_checksum(
+def test_one_result_reconstruction_and_exact_two_checksums(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     result = completed_result(monkeypatch)
@@ -340,7 +485,7 @@ def test_one_result_reconstruction_and_one_checksum(
     monkeypatch.setattr(implementation.hashlib, "sha256", counted_sha256)
     monkeypatch.setattr(implementation, "_encode", counted_encode)
     public.EditorOperationalResultSerializerV1().serialize(result=result)
-    assert counts == {"result_copy": 1, "encode": 2, "sha256": 1}
+    assert counts == {"result_copy": 1, "encode": 4, "sha256": 2}
 
 
 def test_ineligible_input_suppresses_projection_and_checksum(
@@ -372,6 +517,62 @@ def test_package_owned_failure_stages_reduce_to_fixed_error(
     with pytest.raises(public.EditorApplicationSerializationError) as caught:
         public.EditorOperationalResultSerializerV1().serialize(result=result)
     assert str(caught.value) == "Editor operational result serialization failed."
+    assert caught.value.__cause__ is caught.value.__context__ is None
+
+
+def test_production_checksum_failure_suppresses_wrapper_construction(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    result = completed_result(monkeypatch)
+    wrapper_calls = 0
+
+    def broken_sha256(*args, **kwargs):
+        del args, kwargs
+        raise RuntimeError("protected checksum detail")
+
+    class ForbiddenWrapper:
+        def __init__(self, *args, **kwargs) -> None:
+            del args, kwargs
+            nonlocal wrapper_calls
+            wrapper_calls += 1
+
+    monkeypatch.setattr(implementation.hashlib, "sha256", broken_sha256)
+    monkeypatch.setattr(
+        implementation, "EditorSerializedOperationalResultV1", ForbiddenWrapper
+    )
+    with pytest.raises(public.EditorApplicationSerializationError):
+        public.EditorOperationalResultSerializerV1().serialize(result=result)
+    assert wrapper_calls == 0
+
+
+def test_final_encoding_and_wrapper_validation_are_distinct_fail_closed_stages(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    result = completed_result(monkeypatch)
+    original_encode = implementation._encode
+    encode_calls = 0
+
+    def fail_second_encode(value):
+        nonlocal encode_calls
+        encode_calls += 1
+        if encode_calls == 2:
+            raise RuntimeError("protected final encoding detail")
+        return original_encode(value)
+
+    monkeypatch.setattr(implementation, "_encode", fail_second_encode)
+    with pytest.raises(public.EditorApplicationSerializationError):
+        public.EditorOperationalResultSerializerV1().serialize(result=result)
+    assert encode_calls == 2
+
+    monkeypatch.setattr(implementation, "_encode", original_encode)
+
+    def invalid_pair(*args, **kwargs):
+        del args, kwargs
+        raise TypeError("protected wrapper validation detail")
+
+    monkeypatch.setattr(implementation, "_validated_serialized_pair", invalid_pair)
+    with pytest.raises(public.EditorApplicationSerializationError) as caught:
+        public.EditorOperationalResultSerializerV1().serialize(result=result)
     assert caught.value.__cause__ is caught.value.__context__ is None
 
 
@@ -432,7 +633,10 @@ def test_private_import_and_architectural_prohibition_audit() -> None:
         "EditorApplicationCoordinator",
     )
     assert not any(term in source for term in prohibited)
-    assert implementation.__all__ == ("EditorOperationalResultSerializerV1",)
+    assert implementation.__all__ == (
+        "EditorOperationalResultSerializerV1",
+        "EditorSerializedOperationalResultV1",
+    )
 
 
 def test_fresh_process_determinism() -> None:
@@ -448,7 +652,7 @@ from pastila_scout.provider_execution_v2 import ExecutionOutcomeV2
 m=MonkeyPatch()
 r,*_=execute_fake(m,(observation(1,'a',ExecutionOutcomeV2.COMPLETED),),output=controlled_output())
 p=EditorOperationalResultSerializerV1().serialize(result=r)
-print(p.hex())
+print(p.payload.hex(),p.payload_sha256)
 m.undo()
 """
     outputs = []
@@ -470,13 +674,20 @@ m.undo()
 
 def test_current_revision_scope_and_frozen_integrity() -> None:
     root = Path(__file__).resolve().parents[1]
-    baseline = "phase-4.3-editor-application-serialization-r3-verified"
+    baseline = "phase-4.3-editor-application-composition-spec-v6-ready"
+    exact_commit = "a62ea03d008f2b777a263ffd274a98c608e644e9"
     serializer_path = "src/pastila_scout/editor_application_v1/serialization.py"
     init_path = "src/pastila_scout/editor_application_v1/__init__.py"
     test_path = "tests/test_editor_application_serialization_v1.py"
-    frozen_paths = (serializer_path, init_path, test_path)
+    allowed = {
+        serializer_path,
+        init_path,
+        "tests/test_editor_application_contracts_v1.py",
+        test_path,
+        "tests/test_editor_application_export_v1.py",
+    }
     correction_digest = (
-        "2585DD4B3605E5BD2EC3265AB5D6CE11F455F3241465EDAA17FC5329F0D9D0CA"
+        "40FB867BCF24984FBDF812CFDEBD5D9E6B1F1D70B9B628BDF18EB043202A2A09"
     )
 
     def names(*arguments: str) -> set[str]:
@@ -498,35 +709,19 @@ def test_current_revision_scope_and_frozen_integrity() -> None:
             capture_output=True,
             text=True,
         ).stdout.strip()
-        == "3eaa742f19943e5c671ba27614f861a8e5c96311"
+        == exact_commit
     )
-    assert names("ls-files", "--error-unmatch", *frozen_paths) == set(frozen_paths)
-    assert all((root / path).is_file() for path in frozen_paths)
-    assert names("diff", "--name-only", baseline, "--", serializer_path) == set()
-    assert names("diff", "--cached", "--name-only", "--", *frozen_paths) == set()
-    assert not set(frozen_paths).intersection(
-        names("ls-files", "--others", "--exclude-standard")
-    )
-
-    frozen_init = subprocess.run(
-        ["git", "show", f"{baseline}:{init_path}"],
-        cwd=root,
-        check=True,
-        capture_output=True,
-        text=True,
-    ).stdout
-    current_init = (root / init_path).read_text(encoding="utf-8")
-    export_additions = ()
-    if (root / "src/pastila_scout/editor_application_v1/export.py").is_file():
-        export_additions = (
-            "from .export import EditorAtomicExporterV1\n",
-            '    "EditorAtomicExporterV1",\n',
-        )
-    revision_3_init = current_init
-    for exact_addition in export_additions:
-        assert revision_3_init.count(exact_addition) == 1
-        revision_3_init = revision_3_init.replace(exact_addition, "")
-    assert revision_3_init == frozen_init
+    assert names("diff", "--cached", "--name-only") == set()
+    assert names("ls-files", "--others", "--exclude-standard") == set()
+    assert names("diff", "--name-only", baseline) == allowed
+    protected = {
+        "docs/editorial-application/EditorApplicationCompositionSpecificationV1.md",
+        "src/pastila_scout/editor_application_v1/configuration.py",
+        "src/pastila_scout/editor_application_v1/errors.py",
+        "src/pastila_scout/editor_application_v1/export.py",
+        "src/pastila_scout/editor_application_v1/models.py",
+    }
+    assert names("diff", "--name-only", baseline, "--", *protected) == set()
 
     test_bytes = (root / test_path).read_bytes()
     normalized = test_bytes.replace(correction_digest.encode(), b"0" * 64)

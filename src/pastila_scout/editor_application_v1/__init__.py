@@ -24,7 +24,10 @@ from .models import (
     EditorOutputDestinationV1,
     EditorOverwritePolicyV1,
 )
-from .serialization import EditorOperationalResultSerializerV1
+from .serialization import (
+    EditorOperationalResultSerializerV1,
+    EditorSerializedOperationalResultV1,
+)
 
 __all__ = (  # noqa: RUF022 - frozen specification order
     "EditorApplicationConfigurationError",
@@ -43,6 +46,7 @@ __all__ = (  # noqa: RUF022 - frozen specification order
     "EditorAtomicExporterV1",
     "EditorEpisodeContextAuthorityV1",
     "EditorOperationalResultSerializerV1",
+    "EditorSerializedOperationalResultV1",
     "EditorOutputDestinationV1",
     "EditorOverwritePolicyV1",
     "EditorSelectionProfileAuthorityV1",
