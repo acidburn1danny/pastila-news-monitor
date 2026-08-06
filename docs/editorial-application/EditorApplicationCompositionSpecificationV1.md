@@ -634,7 +634,15 @@ export_failed
 export_cleanup_failed
 internal_application_failure
 cancelled
+invalid_execution_request
 ```
+
+`INVALID_EXECUTION_REQUEST = "invalid_execution_request"` is appended after
+every existing `EditorApplicationFailureCodeV1` member. Existing member order,
+names, values, equality, and canonical projections remain unchanged. The new
+member means exactly that lower operational execution rejected the aggregate
+execution request before authoritative lower request lineage existed. It is
+not an alias or catch-all.
 
 `EditorApplicationResultV1` exact ordered fields are:
 
@@ -655,7 +663,9 @@ Completed requires an operational result, output path and checksum, exported
 and handoff permitted true, no failure, and exit 0. Every other state has no
 output path/checksum, exported and handoff false. Preparation failure has no
 operational result. Operational failures retain only the reconstructed safe
-operational result. Serialized bytes are never retained in the result.
+operational result except lower `INVALID_EXECUTION_REQUEST`, whose empty lower
+lineage makes public retention forbidden under section 9.2. Serialized bytes
+are never retained in the result.
 
 Fixed messages and retryability:
 
@@ -676,6 +686,7 @@ Fixed messages and retryability:
 | export_cleanup_failed | `Editor output cleanup failed.` | false |
 | internal_application_failure | `Editor application execution failed.` | false |
 | cancelled | `Editor application execution was cancelled.` | false |
+| invalid_execution_request | `Editor operational execution request is invalid.` | false |
 
 Closed observability rules:
 
@@ -684,7 +695,8 @@ Closed observability rules:
 | invalid application/Scout/profile/context/configuration/destination or initially existing destination | absent | absent | none | 2 |
 | preparation failed | absent | absent | none | 3 |
 | execution-request construction failed | absent | absent | none | 3 |
-| operational failure | reconstructed safe result present | absent | none | 3 |
+| operational failure with authoritative lineage | reconstructed safe result present | absent | none | 3 |
+| lower invalid execution request | absent after exact classification | absent | none | 3 |
 | lower timeout | reconstructed safe result present | absent | none | 4 |
 | lower cleanup failure | reconstructed safe result present | absent | none | 7 |
 | cancellation | lower safe result only when cancellation occurred below | absent | none | 5 |
@@ -723,9 +735,11 @@ exception before such a result does not append `executed`.
 
 `operation_reference` is `None` only when the application request or a nested
 authority cannot be authoritatively reconstructed. Every outcome after
-successful request reconstruction, including destination rejection and
-initial cancellation, carries the exact reconstructed application operation
-reference. No failure path derives, shortens, or replaces it.
+successful request reconstruction, including destination rejection, initial
+cancellation, and lower `INVALID_EXECUTION_REQUEST`, carries the exact
+reconstructed application operation reference. The lower empty reference does
+not replace it. No failure path derives, shortens, regenerates, omits, or
+replaces it.
 
 ### 9.1 Exhaustive internal-failure authority
 
@@ -773,6 +787,135 @@ Malformed definitions and injected/lower/request-authority/operational/
 serializer/exporter/cleanup exceptions never map to
 `internal_application_failure`; they use their exact existing category or the
 unexpected-defect boundary in section 17.
+
+### 9.2 Application Result Contract Revision 2 — invalid lower request authority
+
+This section supersedes only the former assumption that every operational
+failure retains its lower result. Frozen lower
+`EditorOperationalGenerationFailureCodeV1.INVALID_EXECUTION_REQUEST` requires
+all five lower lineage fields to be empty. Retaining that result would violate
+the application/lower reference-parity invariant; replacing its empty lineage
+would fabricate authority. The lower result is therefore reconstructed and
+classified, but never retained or rewritten.
+
+The additive public discriminator is exactly:
+
+```python
+EditorApplicationFailureCodeV1.INVALID_EXECUTION_REQUEST = (
+    "invalid_execution_request"
+)
+```
+
+It is appended after `CANCELLED`; there is no alias. Its exact failure is
+`EditorApplicationFailureV1(INVALID_EXECUTION_REQUEST,
+"Editor operational execution request is invalid.", False)`. Construction,
+copy/deepcopy, equality, repr, pickle rejection, sealing, reconstruction, and
+safe error behavior remain those of the existing failure contract. No lower
+result, validation detail, request content, fingerprint, provider, model, raw
+exception, or operation reference is retained in that failure object.
+
+The sole valid application-result combination for this code is:
+
+| Field | Exact value |
+|---|---|
+| `operation_reference` | exact nonempty reconstructed `EditorApplicationRequestV1.operation_reference` |
+| `status` | `EditorApplicationStatusV1.FAILED` |
+| `lifecycle` | `(ACCEPTED, VALIDATED, PREPARED, EXECUTED, FAILED)` |
+| `operational_result` | `None` |
+| `output_path` | `None` |
+| `payload_sha256` | `None` |
+| `exported` | `False` |
+| `handoff_permitted` | `False` |
+| `failure` | exact new failure object above |
+| `exit_code` | `EditorApplicationExitCodeV1.EXECUTION_FAILED` (`3`) |
+
+Authoritative `EditorApplicationResultV1` construction and reconstruction
+accept exactly that combination and reject a blank reference, retained lower
+result, different lifecycle/status/code/message/exit, retryable failure,
+path/checksum presence, exported or handoff state, missing failure, hidden
+state, subclass, coercion, or copied-invalid nested value. The existing
+`OPERATIONAL_EXECUTION_FAILED` branch remains strict: it still requires a
+retained failed operational result with authoritative application/lower
+reference parity. `OPERATIONAL_EXECUTION_FAILED + operational_result=None`
+and `INVALID_EXECUTION_REQUEST + operational_result present` are invalid.
+
+Closed lower-outcome retention and downstream policy:
+
+| Lower public outcome | Application failure | Retention | Reference authority | Lifecycle terminal | Serializer | Exporter |
+|---|---|---|---|---|---:|---:|
+| completed | none | required | application/lower parity | completed | 1 | 1 |
+| timeout exhausted | `operational_execution_failed` | required | application/lower parity | failed | 0 | 0 |
+| cancelled | `cancelled` | required | application/lower parity | cancelled | 0 | 0 |
+| provider failed | `operational_execution_failed` | required | application/lower parity | failed | 0 | 0 |
+| controlled generation failed | `operational_execution_failed` | required | application/lower parity | failed | 0 | 0 |
+| attempt provenance invalid | `operational_execution_failed` | required | application/lower parity | failed | 0 | 0 |
+| invalid execution request | `invalid_execution_request` | forbidden | application request only | failed | 0 | 0 |
+| runtime composition failed | `operational_execution_failed` | required | application/lower parity | failed | 0 | 0 |
+| cleanup failed | `operational_execution_failed` | required | application/lower parity | failed | 0 | 0 |
+| controlled result invalid | `operational_execution_failed` | required | application/lower parity | failed | 0 | 0 |
+| internal execution failure | `operational_execution_failed` | required | application/lower parity | failed | 0 | 0 |
+
+Frozen lower construction gives every listed non-invalid-request failure
+nonempty authoritative lineage. `INVALID_EXECUTION_REQUEST` is the singular
+empty-lineage outcome. Absence of public lower-result retention does not erase
+classification: the finite application failure code is its sole public
+representation.
+
+Coordinator classification is exactly:
+
+1. reconstruct the exact lower `EditorOperationalResultV1`;
+2. inspect only its exact public status and public failure code;
+3. recognize exact lower `INVALID_EXECUTION_REQUEST`;
+4. reduce it to the neutral application `INVALID_EXECUTION_REQUEST` category;
+5. select the forbidden-retention policy and clear the lower result, its empty
+   lineage fields, raw exception, temporary classification values and private
+   status;
+6. construct the exact fixed application failure;
+7. construct `EditorApplicationResultV1` with the authoritative application
+   reference and `operational_result=None`;
+8. authoritatively reconstruct and return that application result.
+
+There is no message-text classification, private-status inspection, broad
+catch mapping, lineage patch, copied empty application reference, new
+reference, fallback, serializer, wrapper, completed-candidate helper,
+exporter, filesystem mutation, provider-specific branch, retry, or cleanup.
+Cardinalities for these operations are all zero. The lower result exists only
+transiently inside the classification boundary and is absent from public and
+exception traceback graphs.
+
+This is an expected returned result, not a configuration/coordinator error.
+Only corrupted neutral classification or failed authoritative failure/result
+construction raises fixed `EditorApplicationCoordinatorError` from `None`
+after protected values are cleared; no fallback result is fabricated.
+
+#### 9.2.1 Bounded prerequisite implementation revision
+
+Before Revision 5 resumes, implement exactly **Phase 4.3 — Application Result
+Contract Revision 2 — INVALID_EXECUTION_REQUEST Non-Retained Outcome
+Authority**. Production scope is
+`src/pastila_scout/editor_application_v1/models.py`; focused scope is
+`tests/test_editor_application_contracts_v1.py`. `__init__.py` requires no new
+symbol because the owning enum is already public. Later Revision 5 remediation
+may update only `application.py` and `tests/test_editor_application_v1.py` for
+this mapping. No lower model, serializer, exporter, protocol, provider, runtime,
+CLI, or compatibility alias changes.
+
+The contract matrix must prove the exact appended member/value and unchanged
+prior ordering/values; the one valid shape; copy/deepcopy/equality/repr and
+cross-process determinism; reconstruction and passive import; and rejection of
+blank reference, retained lower result, generic operational failure without a
+result, wrong lifecycle/status/exit/message/retryability, path/checksum,
+export/handoff, missing or copied-invalid failure/result, subclass, coercion,
+and pickle. Every prior valid result stays valid and every prior invalid shape
+except this one new code-specific combination stays invalid.
+
+Revision 5 resumption tests must use a real reconstructed lower invalid-request
+result, prove all five lower lineage fields empty, preserve the nonempty
+application reference, return the exact new code with no retained operational
+result, and prove zero serializer/exporter/checksum/JSON/provider-specific
+work. They must contrast the accepted new combination against rejected
+retained-lower and generic non-retained combinations and recursively verify
+protected-value clearing.
 
 ## 10. Serialization and export envelope
 
@@ -1020,8 +1163,11 @@ The application library returns the enum and never calls `sys.exit`.
 Exact lower projection is: cancelled operational status -> 5;
 `TIMEOUT_EXHAUSTED` -> 4; `cleanup_failed=True` -> 7; every other reconstructed
 operational failure -> 3. The application failure code remains
-`operational_execution_failed` for these lower-owned outcomes and never parses
-the lower safe message.
+`operational_execution_failed` for lower-owned outcomes that retain an
+authoritative reconstructed operational result and never parses the lower safe
+message. Exact lower `INVALID_EXECUTION_REQUEST` also maps to 3, but section
+9.2 instead requires the distinct application failure code
+`invalid_execution_request` and forbids lower-result retention.
 
 ## 13. Cardinality
 
@@ -1357,14 +1503,15 @@ The single historical and dependency order is:
 
 ```text
 Revision 1 -> Revision 2 -> Revision 3 -> Revision 4 -> Revision 3A
--> Revision 5 -> Revision 6
+-> Application Result Contract Revision 2 -> Revision 5 -> Revision 6
 ```
 
 `3A` denotes corrective ownership of the Revision 3 serialization boundary;
 it does not denote chronology before Revision 4. Revision 3A requires the
 verified Revision 4 baseline. Revision 5 requires the independently verified
-Revision 3A milestone and does not depend directly on the superseded Revision 3
-serializer contract. The graph is acyclic.
+Revision 3A milestone and the independently verified Application Result
+Contract Revision 2 prerequisite; it does not depend directly on the
+superseded Revision 3 serializer contract. The graph is acyclic.
 
 Before Revision 3A freeze, its focused matrix must materially cover exact API
 and serializer signature; valid wrapper and exact field order; final payload
@@ -1443,6 +1590,17 @@ their exact API/scope checks encode the earlier return type or public tuple:
 the exact new symbol, return annotation and bounded Revision 3A paths; it may
 not weaken ordering, identity, frozen production or Git-scope ownership.
 
+### Application Result Contract Revision 2 — invalid lower request authority
+
+Before Revision 5 resumes, modify only
+`src/pastila_scout/editor_application_v1/models.py` and
+`tests/test_editor_application_contracts_v1.py` as bounded by section 9.2.
+Append the exact public application failure category, enforce its singular
+non-retained result shape, preserve every existing enum value and result
+combination, and freeze the independently verified prerequisite. No execution,
+serialization, export, filesystem, provider, CLI or Producer behavior is
+introduced.
+
 ### Revision 5 — application coordinator
 
 Add only `protocols.py`, `application.py`,
@@ -1451,8 +1609,9 @@ Add only `protocols.py`, `application.py`,
 modules. Compose frozen coordinators and the verified request authority
 once; no CLI/Producer/database. Freeze only after independent argument mapping,
 cardinality, traceback and frozen-integrity verification. Revision 5 requires
-the independently verified Revision 3A milestone and consumes only the wrapper
-fields; it performs no checksum or envelope work.
+the independently verified Revision 3A and Application Result Contract
+Revision 2 milestones and consumes only the wrapper fields; it performs no
+checksum or envelope work.
 
 ### Revision 6 — opt-in CLI
 
