@@ -100,6 +100,7 @@ class EditorApplicationFailureCodeV1(_SafeStrEnum):
     EXPORT_CLEANUP_FAILED = "export_cleanup_failed"
     INTERNAL_APPLICATION_FAILURE = "internal_application_failure"
     CANCELLED = "cancelled"
+    INVALID_EXECUTION_REQUEST = "invalid_execution_request"
 
 
 class EditorApplicationExitCodeV1(_SafeIntEnum):
@@ -128,6 +129,7 @@ _FAILURE_MESSAGES = {
     EditorApplicationFailureCodeV1.EXPORT_CLEANUP_FAILED: "Editor output cleanup failed.",
     EditorApplicationFailureCodeV1.INTERNAL_APPLICATION_FAILURE: "Editor application execution failed.",
     EditorApplicationFailureCodeV1.CANCELLED: "Editor application execution was cancelled.",
+    EditorApplicationFailureCodeV1.INVALID_EXECUTION_REQUEST: "Editor operational execution request is invalid.",
 }
 
 
@@ -1015,6 +1017,13 @@ def _validate_failed_result(reference, lifecycle, operational, code, exit_code) 
     elif code is EditorApplicationFailureCodeV1.OPERATIONAL_EXECUTION_FAILED:
         valid = _operational_failure_is_valid(
             reference, lifecycle, operational, exit_code
+        )
+    elif code is EditorApplicationFailureCodeV1.INVALID_EXECUTION_REQUEST:
+        valid = (
+            reference is not None
+            and lifecycle == _EXECUTED_FAILED
+            and operational is None
+            and exit_code is EditorApplicationExitCodeV1.EXECUTION_FAILED
         )
     elif code is EditorApplicationFailureCodeV1.SERIALIZATION_FAILED:
         valid = (

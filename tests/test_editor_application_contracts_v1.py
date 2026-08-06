@@ -12,17 +12,21 @@ from pathlib import Path
 
 import pytest
 from test_editor_operational_execution_v1 import (
+    GeneratorFactory,
+    SessionFactory,
     controlled_output,
     execute_fake,
     observation,
 )
 
 import pastila_scout.editor_application_v1 as public
+from pastila_scout import editor_operational_execution_v1 as operational_public
 from pastila_scout.contracts.samples import (
     sample_episode_context,
     sample_scout_input,
     sample_selection_profile,
 )
+from pastila_scout.editor.generation import ControlledGenerationError
 from pastila_scout.editor_application_v1 import (
     EditorApplicationConfigurationError,
     EditorApplicationCoordinatorError,
@@ -115,6 +119,7 @@ def failure(code: EditorApplicationFailureCodeV1) -> EditorApplicationFailureV1:
         EditorApplicationFailureCodeV1.INVALID_APPLICATION_REQUEST: "Editor application request is invalid.",
         EditorApplicationFailureCodeV1.PREPARATION_FAILED: "Editor preparation failed.",
         EditorApplicationFailureCodeV1.CANCELLED: "Editor application execution was cancelled.",
+        EditorApplicationFailureCodeV1.INVALID_EXECUTION_REQUEST: "Editor operational execution request is invalid.",
     }
     return EditorApplicationFailureV1(code, messages[code], False)
 
@@ -124,6 +129,10 @@ def test_exact_revision_2_public_api_and_passive_import() -> None:
     serializer = "EditorOperationalResultSerializerV1"
     serialized_result = "EditorSerializedOperationalResultV1"
     exporter = "EditorAtomicExporterV1"
+    coordinator = "EditorApplicationCoordinatorV1"
+    coordinator_exists = (
+        root / "src/pastila_scout/editor_application_v1/application.py"
+    ).is_file()
     serializer_exists = (
         root / "src/pastila_scout/editor_application_v1/serialization.py"
     ).is_file()
@@ -131,7 +140,9 @@ def test_exact_revision_2_public_api_and_passive_import() -> None:
         root / "src/pastila_scout/editor_application_v1/export.py"
     ).is_file()
     expected_current_api = (
-        *EXPECTED_API[:13],
+        *EXPECTED_API[:2],
+        *((coordinator,) if coordinator_exists else ()),
+        *EXPECTED_API[2:13],
         *((exporter,) if exporter_exists else ()),
         EXPECTED_API[13],
         *((serializer,) if serializer_exists else ()),
@@ -139,6 +150,10 @@ def test_exact_revision_2_public_api_and_passive_import() -> None:
         *EXPECTED_API[14:],
     )
     assert public.__all__ == expected_current_api
+    if coordinator_exists:
+        assert getattr(public, coordinator).__module__ == (
+            "pastila_scout.editor_application_v1.application"
+        )
     assert all(getattr(public, name) is not None for name in EXPECTED_API)
     assert serializer_exists
     assert getattr(public, serializer).__module__ == (
@@ -572,6 +587,213 @@ def test_result_accepts_nested_destination_reconstruction_failure() -> None:
     assert result.failure == destination_failure
 
 
+def invalid_execution_request_result() -> EditorApplicationResultV1:
+    return EditorApplicationResultV1(
+        "editor-application-operation-1",
+        EditorApplicationStatusV1.FAILED,
+        (
+            EditorApplicationLifecycleStateV1.ACCEPTED,
+            EditorApplicationLifecycleStateV1.VALIDATED,
+            EditorApplicationLifecycleStateV1.PREPARED,
+            EditorApplicationLifecycleStateV1.EXECUTED,
+            EditorApplicationLifecycleStateV1.FAILED,
+        ),
+        None,
+        None,
+        None,
+        False,
+        False,
+        failure(EditorApplicationFailureCodeV1.INVALID_EXECUTION_REQUEST),
+        EditorApplicationExitCodeV1.EXECUTION_FAILED,
+    )
+
+
+def test_invalid_execution_request_enum_and_result_are_exact() -> None:
+    expected_prior = (
+        "invalid_application_request",
+        "invalid_scout_input",
+        "invalid_selection_profile",
+        "invalid_episode_context",
+        "invalid_generation_configuration",
+        "preparation_failed",
+        "execution_request_construction_failed",
+        "operational_execution_failed",
+        "serialization_failed",
+        "invalid_destination",
+        "destination_exists",
+        "export_failed",
+        "export_cleanup_failed",
+        "internal_application_failure",
+        "cancelled",
+    )
+    members = tuple(EditorApplicationFailureCodeV1)
+    assert tuple(item.value for item in members[:-1]) == expected_prior
+    assert members[-1] is EditorApplicationFailureCodeV1.INVALID_EXECUTION_REQUEST
+    assert members[-1].value == "invalid_execution_request"
+    assert len(EditorApplicationFailureCodeV1.__members__) == len(members)
+
+    result = invalid_execution_request_result()
+    assert result.operation_reference == "editor-application-operation-1"
+    assert result.status is EditorApplicationStatusV1.FAILED
+    assert result.operational_result is None
+    assert result.output_path is result.payload_sha256 is None
+    assert not result.exported and not result.handoff_permitted
+    assert result.failure == failure(
+        EditorApplicationFailureCodeV1.INVALID_EXECUTION_REQUEST
+    )
+    assert result.exit_code is EditorApplicationExitCodeV1.EXECUTION_FAILED
+    assert copy.copy(result) == copy.deepcopy(result) == result
+    assert "0x" not in repr(result)
+    with pytest.raises(EditorApplicationConfigurationError):
+        EditorApplicationFailureV1(
+            EditorApplicationFailureCodeV1.INVALID_EXECUTION_REQUEST,
+            "different message",
+            False,
+        )
+    with pytest.raises(EditorApplicationConfigurationError):
+        EditorApplicationFailureV1(
+            EditorApplicationFailureCodeV1.INVALID_EXECUTION_REQUEST,
+            "Editor operational execution request is invalid.",
+            True,
+        )
+    with pytest.raises(TypeError):
+        pickle.dumps(result)
+
+
+@pytest.mark.parametrize(
+    ("field", "replacement"),
+    (
+        ("operation_reference", ""),
+        ("status", EditorApplicationStatusV1.COMPLETED),
+        (
+            "lifecycle",
+            (
+                EditorApplicationLifecycleStateV1.ACCEPTED,
+                EditorApplicationLifecycleStateV1.FAILED,
+            ),
+        ),
+        ("output_path", Path("forbidden.json")),
+        ("payload_sha256", f"sha256:{'a' * 64}"),
+        ("exported", True),
+        ("handoff_permitted", True),
+        ("failure", failure(EditorApplicationFailureCodeV1.PREPARATION_FAILED)),
+        ("exit_code", EditorApplicationExitCodeV1.INVALID_INPUT),
+    ),
+)
+def test_invalid_execution_request_rejects_every_alternate_shape(
+    field: str, replacement: object
+) -> None:
+    valid = invalid_execution_request_result()
+    values = {
+        name: getattr(valid, name)
+        for name in (
+            "operation_reference",
+            "status",
+            "lifecycle",
+            "operational_result",
+            "output_path",
+            "payload_sha256",
+            "exported",
+            "handoff_permitted",
+            "failure",
+            "exit_code",
+        )
+    }
+    values[field] = replacement
+    with pytest.raises(EditorApplicationConfigurationError):
+        EditorApplicationResultV1(*values.values())
+
+
+def test_invalid_execution_request_retention_and_generic_absence_are_rejected() -> None:
+    lower = operational_public.EditorOperationalExecutionCoordinatorV1(
+        session_factory=SessionFactory(), generator_factory=GeneratorFactory()
+    ).execute(object())
+    assert lower.failure is not None
+    assert (
+        lower.failure.code
+        is operational_public.EditorOperationalGenerationFailureCodeV1.INVALID_EXECUTION_REQUEST
+    )
+    assert (
+        lower.source_report_id,
+        lower.source_report_fingerprint,
+        lower.preparation_result_fingerprint,
+        lower.execution_request_reference,
+        lower.execution_request_fingerprint,
+    ) == ("", "", "", "", "")
+    valid = invalid_execution_request_result()
+    with pytest.raises(EditorApplicationConfigurationError):
+        EditorApplicationResultV1(
+            valid.operation_reference,
+            valid.status,
+            valid.lifecycle,
+            lower,
+            None,
+            None,
+            False,
+            False,
+            valid.failure,
+            valid.exit_code,
+        )
+    with pytest.raises(EditorApplicationConfigurationError):
+        EditorApplicationResultV1(
+            valid.operation_reference,
+            valid.status,
+            valid.lifecycle,
+            None,
+            None,
+            None,
+            False,
+            False,
+            EditorApplicationFailureV1(
+                EditorApplicationFailureCodeV1.OPERATIONAL_EXECUTION_FAILED,
+                "Editor operational execution failed.",
+                False,
+            ),
+            valid.exit_code,
+        )
+
+
+def test_invalid_execution_request_copied_invalid_state_is_rejected() -> None:
+    result = invalid_execution_request_result()
+    object.__setattr__(result, "operation_reference", "")
+    for operation in (copy.copy, copy.deepcopy, repr):
+        with pytest.raises(EditorApplicationConfigurationError):
+            operation(result)
+
+
+def test_generic_operational_failure_retention_remains_valid(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    operational, *_ = execute_fake(
+        monkeypatch,
+        (observation(1, "a", ExecutionOutcomeV2.PROVIDER_FAILURE),),
+        failure=ControlledGenerationError("not inspected"),
+    )
+    result = EditorApplicationResultV1(
+        operational.execution_request_reference,
+        EditorApplicationStatusV1.FAILED,
+        (
+            EditorApplicationLifecycleStateV1.ACCEPTED,
+            EditorApplicationLifecycleStateV1.VALIDATED,
+            EditorApplicationLifecycleStateV1.PREPARED,
+            EditorApplicationLifecycleStateV1.EXECUTED,
+            EditorApplicationLifecycleStateV1.FAILED,
+        ),
+        operational,
+        None,
+        None,
+        False,
+        False,
+        EditorApplicationFailureV1(
+            EditorApplicationFailureCodeV1.OPERATIONAL_EXECUTION_FAILED,
+            "Editor operational execution failed.",
+            False,
+        ),
+        EditorApplicationExitCodeV1.EXECUTION_FAILED,
+    )
+    assert result.operational_result == operational
+
+
 def test_completed_and_sole_internal_result_invariants(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:
@@ -670,7 +892,7 @@ def test_fresh_process_determinism_and_network_passivity() -> None:
 
 def test_current_revision_git_scope_and_frozen_specification_are_exact() -> None:
     root = Path(__file__).resolve().parents[1]
-    baseline = "phase-4.3-editor-application-configuration-r2-verified"
+    baseline = "phase-4.3-editor-application-result-contract-r2-spec-verified"
     production_paths = (
         "src/pastila_scout/editor_application_v1/configuration.py",
         "src/pastila_scout/editor_application_v1/errors.py",
@@ -680,7 +902,7 @@ def test_current_revision_git_scope_and_frozen_specification_are_exact() -> None
     test_path = "tests/test_editor_application_contracts_v1.py"
     frozen_paths = (*production_paths, init_path, test_path)
     correction_digest = (
-        "746C93392B0E89483BC6B702334B3288DA53897AAA39925C31F6F9A2B74A2546"
+        "76CBC0EE4B7763EF1D6F0057846535FD37179FDFCA4E3AC7925E142A544CCF34"
     )
 
     def names(*arguments: str) -> set[str]:
@@ -702,11 +924,13 @@ def test_current_revision_git_scope_and_frozen_specification_are_exact() -> None
             capture_output=True,
             text=True,
         ).stdout.strip()
-        == "c44f851896824651eed56058ad1c40f451d77ba1"
+        == "7c7fc6bdeffb6e2322fa4911352eab160f57b4ad"
     )
     assert names("ls-files", "--error-unmatch", *frozen_paths) == set(frozen_paths)
     assert all((root / path).is_file() for path in frozen_paths)
-    assert names("diff", "--name-only", baseline, "--", *production_paths) == set()
+    assert names("diff", "--name-only", baseline, "--", *production_paths) == {
+        "src/pastila_scout/editor_application_v1/models.py"
+    }
     assert names("diff", "--cached", "--name-only", "--", *frozen_paths) == set()
     assert not set(frozen_paths).intersection(
         names("ls-files", "--others", "--exclude-standard")
@@ -721,26 +945,11 @@ def test_current_revision_git_scope_and_frozen_specification_are_exact() -> None
     ).stdout
     current_init = (root / init_path).read_text(encoding="utf-8")
     additions = []
-    if (root / "src/pastila_scout/editor_application_v1/serialization.py").is_file():
-        serialization_lines = (
-            "from .serialization import (",
-            "    EditorOperationalResultSerializerV1,",
-            "    EditorSerializedOperationalResultV1,",
-            ")",
-        )
-        serialization_import = "\n".join(serialization_lines) + "\n"
+    if (root / "src/pastila_scout/editor_application_v1/application.py").is_file():
         additions.extend(
             (
-                serialization_import,
-                '    "EditorOperationalResultSerializerV1",\n',
-                '    "EditorSerializedOperationalResultV1",\n',
-            )
-        )
-    if (root / "src/pastila_scout/editor_application_v1/export.py").is_file():
-        additions.extend(
-            (
-                "from .export import EditorAtomicExporterV1\n",
-                '    "EditorAtomicExporterV1",\n',
+                "from .application import EditorApplicationCoordinatorV1\n",
+                '    "EditorApplicationCoordinatorV1",\n',
             )
         )
     revision_2_init = current_init
@@ -763,12 +972,12 @@ def test_current_revision_git_scope_and_frozen_specification_are_exact() -> None
         names(
             "diff",
             "--name-only",
-            "phase-4.3-editor-application-composition-spec-v6-ready",
+            baseline,
             "--",
             specification.relative_to(root).as_posix(),
         )
         == set()
     )
     assert hashlib.sha256(specification.read_bytes()).hexdigest().upper() == (
-        "45FD9F193E948041B8F83FD797BEE4D7F98EC6915F381CBA5AC7656EE1EF02EE"
+        "AAE04D376D0BE386C85008BE91ABBA73E9B9A87C0E8BDB3657E576BF693A4C4E"
     )
