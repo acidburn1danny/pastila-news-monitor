@@ -9,8 +9,13 @@ import json
 import math
 import unicodedata
 from dataclasses import dataclass
+from datetime import datetime, timezone
+from importlib import import_module
 from types import FunctionType
-from typing import NoReturn, get_type_hints
+from typing import TYPE_CHECKING, NoReturn, get_type_hints
+
+if TYPE_CHECKING:
+    import httpx
 
 from pastila_scout.editor_generation_authority_v1 import (
     EditorGenerationRequestAuthorityV1,
@@ -28,6 +33,7 @@ from pastila_scout.provider_execution_openai_v2 import (
     OpenAIProviderExecutorV2,
 )
 from pastila_scout.provider_execution_v2 import (
+    CancellationTokenV2,
     ExecutionOutcomeV2,
     ProviderExecutionRequestV2,
     ProviderExecutionResultV2,
@@ -36,6 +42,9 @@ from pastila_scout.provider_runtime_openai_v2 import (
     OpenAIRuntimeComposerV2,
     OpenAIRuntimeCompositionV2,
 )
+from pastila_scout.provider_runtime_openai_v2.production import (
+    _create_environment_openai_runtime_composer_v2,
+)
 from pastila_scout.provider_selection_v1 import (
     ProviderChoiceV1,
     ProviderExecutorRegistrationV1,
@@ -43,6 +52,10 @@ from pastila_scout.provider_selection_v1 import (
     ProviderSelectorV1,
 )
 from pastila_scout.scout_runtime_execution_v1 import ScoutRuntimeExecutionBridgeV1
+from pastila_scout.scout_runtime_execution_v1.models import (
+    ScoutRuntimeRequestV1,
+    ScoutRuntimeResultV1,
+)
 from pastila_scout.scout_runtime_v1 import (
     ScoutCancellationV1,
     ScoutRuntimeCompositionV1,
@@ -55,7 +68,11 @@ from pastila_scout.scout_workflow_execution_v1 import (
 )
 
 from .errors import EditorGenerationRuntimeCompositionError
-from .models import EditorAdapterDependenciesV1, EditorOllamaRuntimeHandleV1
+from .models import (
+    EditorAdapterDependenciesV1,
+    EditorOllamaRuntimeHandleV1,
+    _EditorGenerationAttemptRecorderV1,
+)
 from .protocols import (
     EditorAdapterDependencyFactoryV1,
     EditorGenerationAttemptRecorderV1,
@@ -825,6 +842,281 @@ def _text(value, maximum):
         and value == value.strip()
         and len(value) <= maximum
         and unicodedata.is_normalized("NFC", value)
+    )
+
+
+_PRIVATE_PICKLE_ERROR = (
+    "Editor application runtime composition values cannot be pickled."
+)
+
+
+class _PrivateStatelessV1:
+    __slots__ = ()
+
+    def __init_subclass__(cls, **kwargs):
+        del kwargs
+        if cls.__base__ is not _PrivateStatelessV1:
+            raise TypeError("Editor runtime composition values cannot be subclassed.")
+
+    def __repr__(self) -> str:
+        _require_exact_stateless(self)
+        return f"{type(self).__name__}()"
+
+    def __eq__(self, other: object) -> bool:
+        _require_exact_stateless(self)
+        return type(other) is type(self)
+
+    def __copy__(self):
+        _require_exact_stateless(self)
+        return type(self)()
+
+    def __deepcopy__(self, memo):
+        del memo
+        return self.__copy__()
+
+    def __reduce_ex__(self, protocol):
+        del self, protocol
+        raise TypeError(_PRIVATE_PICKLE_ERROR)
+
+
+def _require_exact_stateless(value: object) -> None:
+    if type(value).__base__ is not _PrivateStatelessV1:
+        _raise()
+
+
+class _OpenAIComposerFactoryV1(_PrivateStatelessV1):
+    __slots__ = ()
+
+    def create(
+        self, *, model_identifier: str, timeout_seconds: int | float  # noqa: PYI041
+    ) -> OpenAIRuntimeComposerV2:
+        _require_exact_stateless(self)
+        try:
+            result = _create_environment_openai_runtime_composer_v2(
+                model_identifier=model_identifier,
+                timeout_seconds=timeout_seconds,
+            )
+        except (TypeError, ValueError):
+            _raise()
+        if type(result) is not OpenAIRuntimeComposerV2:
+            _raise()
+        return result
+
+
+class _OllamaRuntimeLifecycleV1:
+    __slots__ = ("_client", "_closed")
+
+    def __init__(self, client: httpx.Client) -> None:
+        if type(client) is not _httpx_client_type():
+            _raise()
+        object.__setattr__(self, "_client", client)
+        object.__setattr__(self, "_closed", False)
+
+    def close(self) -> None:
+        try:
+            if type(self) is not _OllamaRuntimeLifecycleV1:
+                _raise()
+            client = object.__getattribute__(self, "_client")
+            closed = object.__getattribute__(self, "_closed")
+            if (
+                type(client) is not _httpx_client_type()
+                or type(closed) is not bool
+                or closed
+            ):
+                _raise()
+            client.close()
+            object.__setattr__(self, "_closed", True)
+        except EditorGenerationRuntimeCompositionError:
+            raise
+        except Exception:  # noqa: BLE001 - client details remain private
+            _raise()
+
+    def __repr__(self) -> str:
+        _ollama_lifecycle_state(self)
+        return "_OllamaRuntimeLifecycleV1(<owned client>)"
+
+    def __eq__(self, other: object) -> bool:
+        _ollama_lifecycle_state(self)
+        return self is other
+
+    def __copy__(self):
+        _ollama_lifecycle_state(self)
+        raise TypeError("Editor Ollama runtime lifecycle cannot be copied.")
+
+    def __deepcopy__(self, memo):
+        del memo
+        return self.__copy__()
+
+    def __reduce_ex__(self, protocol):
+        del self, protocol
+        raise TypeError(_PRIVATE_PICKLE_ERROR)
+
+
+def _ollama_lifecycle_state(value: object) -> tuple[object, bool]:
+    try:
+        if type(value) is not _OllamaRuntimeLifecycleV1:
+            _raise()
+        client = object.__getattribute__(value, "_client")
+        closed = object.__getattribute__(value, "_closed")
+        if type(client) is not _httpx_client_type() or type(closed) is not bool:
+            _raise()
+        return client, closed
+    except EditorGenerationRuntimeCompositionError:
+        raise
+    except Exception:  # noqa: BLE001 - copied-invalid state is isolated
+        _raise()
+
+
+class _OllamaRuntimeSessionFactoryV1(_PrivateStatelessV1):
+    __slots__ = ()
+
+    def open(
+        self, options: EditorGenerationRuntimeOptionsV1
+    ) -> EditorOllamaRuntimeHandleV1:
+        _require_exact_stateless(self)
+        client = None
+        try:
+            if type(options) is not EditorGenerationRuntimeOptionsV1:
+                _raise()
+            ollama = import_module("pastila_scout.provider_execution_ollama_v1")
+            client = _httpx_client_type()()
+            executor = ollama.OllamaProviderExecutorV1(
+                ollama.OllamaHttpClientV1(client),
+                ollama.OllamaExecutionConfigV1(
+                    model=options.model_identifier,
+                    base_url="http://localhost:11434",
+                    temperature=options.temperature,
+                    max_output_tokens=options.max_output_tokens,
+                    stop_sequences=options.stop_sequences,
+                ),
+            )
+            lifecycle = _OllamaRuntimeLifecycleV1(client)
+            return EditorOllamaRuntimeHandleV1(executor, lifecycle)
+        except EditorGenerationRuntimeCompositionError:
+            if client is not None:
+                client.close()
+            raise
+        except Exception:  # noqa: BLE001 - construction details remain private
+            if client is not None:
+                try:
+                    client.close()
+                except Exception:  # noqa: BLE001, S110 - unpublished cleanup
+                    pass
+            _raise()
+
+
+def _httpx_client_type() -> type:
+    module = import_module("httpx")
+    return module.Client
+
+
+class _EditorRuntimeClockV1(_PrivateStatelessV1):
+    __slots__ = ()
+
+    def now(self) -> datetime:
+        _require_exact_stateless(self)
+        return datetime.now(timezone.utc)  # noqa: UP017 - normative spelling
+
+
+class _EditorRuntimeCancellationSourceV1(_PrivateStatelessV1):
+    __slots__ = ()
+
+    def snapshot(self) -> CancellationTokenV2:
+        _require_exact_stateless(self)
+        return CancellationTokenV2(cancellation_requested=False)
+
+
+class _EditorAttemptReferenceFactoryV1:
+    __slots__ = ("_operation_reference",)
+
+    def __init__(self, *, operation_reference: str) -> None:
+        if not _text(operation_reference, 120):
+            _raise()
+        object.__setattr__(self, "_operation_reference", operation_reference)
+
+    def create(self, *, prompt_fingerprint: str, attempt_number: int) -> str:
+        operation_reference = _attempt_reference_state(self)
+        if (
+            type(prompt_fingerprint) is not str
+            or len(prompt_fingerprint) != 64
+            or any(
+                character not in "0123456789abcdef" for character in prompt_fingerprint
+            )
+            or type(attempt_number) is not int
+            or attempt_number < 1
+        ):
+            _raise()
+        payload = (
+            operation_reference + "\0" + prompt_fingerprint + "\0" + str(attempt_number)
+        )
+        digest = hashlib.sha256(payload.encode("utf-8")).hexdigest()
+        return f"editor-attempt-v1-{attempt_number}-{digest[:32]}"
+
+    def __repr__(self) -> str:
+        _attempt_reference_state(self)
+        return "_EditorAttemptReferenceFactoryV1(<operation reference>)"
+
+    def __eq__(self, other: object) -> bool:
+        left = _attempt_reference_state(self)
+        return type(other) is type(self) and left == _attempt_reference_state(other)
+
+    def __copy__(self):
+        return type(self)(operation_reference=_attempt_reference_state(self))
+
+    def __deepcopy__(self, memo):
+        del memo
+        return self.__copy__()
+
+    def __reduce_ex__(self, protocol):
+        del self, protocol
+        raise TypeError(_PRIVATE_PICKLE_ERROR)
+
+
+def _attempt_reference_state(value: object) -> str:
+    try:
+        if type(value) is not _EditorAttemptReferenceFactoryV1:
+            _raise()
+        reference = object.__getattribute__(value, "_operation_reference")
+        if not _text(reference, 120):
+            _raise()
+        return reference
+    except EditorGenerationRuntimeCompositionError:
+        raise
+    except Exception:  # noqa: BLE001 - copied-invalid state is isolated
+        _raise()
+
+
+class _EditorAdapterDependenciesFactoryV1(_PrivateStatelessV1):
+    __slots__ = ()
+
+    def create(self, *, operation_reference: str) -> EditorAdapterDependenciesV1:
+        _require_exact_stateless(self)
+        return EditorAdapterDependenciesV1(
+            _EditorRuntimeClockV1(),
+            _EditorRuntimeCancellationSourceV1(),
+            _EditorAttemptReferenceFactoryV1(operation_reference=operation_reference),
+            _EditorGenerationAttemptRecorderV1(),
+        )
+
+
+class _FailClosedLegacyWorkflowV1(_PrivateStatelessV1):
+    __slots__ = ()
+
+    def execute(self, request: ScoutRuntimeRequestV1) -> ScoutRuntimeResultV1:
+        del request
+        _require_exact_stateless(self)
+        _raise()
+
+
+def _create_editor_generation_runtime_session_factory_v1() -> (
+    EditorGenerationRuntimeSessionFactoryV1
+):
+    return EditorGenerationRuntimeSessionFactoryV1(
+        openai_composer_factory=_OpenAIComposerFactoryV1(),
+        ollama_session_factory=_OllamaRuntimeSessionFactoryV1(),
+        legacy_workflow=_FailClosedLegacyWorkflowV1(),
+        adapter_dependency_factory=_EditorAdapterDependenciesFactoryV1(),
+        fingerprint_authority=EditorRequestFingerprintAuthorityV1(),
     )
 
 

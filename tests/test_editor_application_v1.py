@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import inspect
 import pickle
 import subprocess
@@ -693,15 +694,35 @@ def test_passive_fresh_import() -> None:
 
 def test_revision_5_scope_and_frozen_integrity() -> None:
     root = Path(__file__).resolve().parents[1]
-    baseline = "phase-4.3-application-result-contract-r2-verified"
-    expected = {
+    revision_5 = "phase-4.3-editor-application-coordinator-r5-verified"
+    prerequisite = (
+        "phase-4.3-editor-application-frozen-integrity-r6-prerequisite-verified"
+    )
+    current_baseline = "phase-4.3-editor-command-time-runtime-composition-spec-v3-ready"
+    frozen_revision_5 = {
         "src/pastila_scout/editor_application_v1/__init__.py",
         "src/pastila_scout/editor_application_v1/application.py",
         "src/pastila_scout/editor_application_v1/protocols.py",
+    }
+    maintained_tests = {
         "tests/test_editor_application_v1.py",
         "tests/test_editor_application_serialization_v1.py",
         "tests/test_editor_application_export_v1.py",
     }
+    implementation_scope = {
+        "src/pastila_scout/provider_runtime_openai_v2/production.py",
+        "src/pastila_scout/editor_generation_runtime_v1/composition.py",
+        "src/pastila_scout/editor_operational_execution_v1/production.py",
+        "src/pastila_scout/editor_application_v1/runtime_composition.py",
+        "tests/test_editor_application_runtime_composition_v1.py",
+    }
+    maintenance_scope = {
+        "tests/test_editor_application_contracts_v1.py",
+        "tests/test_editor_application_v1.py",
+    }
+    correction_digest = (
+        "2A10448E0DD5CE022982D88A94F8142F0C0F1E1E6F021C813703FA8936B56074"
+    )
 
     def names(*args: str) -> set[str]:
         return set(
@@ -710,19 +731,45 @@ def test_revision_5_scope_and_frozen_integrity() -> None:
             ).stdout.splitlines()
         )
 
+    commits = {
+        revision_5: "5d63e27cbc685c12611e0cf07003bfc2433988bf",
+        prerequisite: "09ff8afade2be74bc93841e9eaffbd882697ec7d",
+        current_baseline: "dddaa69234825066f72c346abce135e98d9bec23",
+    }
+    for tag, expected in commits.items():
+        actual = subprocess.run(
+            ["git", "rev-parse", f"{tag}^{{}}"],
+            cwd=root,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        assert actual == expected
+    protected = frozen_revision_5 | maintained_tests
+    assert names("ls-files", "--error-unmatch", *protected) == protected
+    assert all((root / path).is_file() for path in protected)
+    assert names("diff", "--name-only", revision_5, "--", *frozen_revision_5) == set()
+    assert (
+        names(
+            "diff",
+            "--name-only",
+            prerequisite,
+            "--",
+            "tests/test_editor_application_serialization_v1.py",
+            "tests/test_editor_application_export_v1.py",
+        )
+        == set()
+    )
     assert names("diff", "--cached", "--name-only") == set()
     assert (
-        names("diff", "--name-only", baseline)
+        names("diff", "--name-only")
         | names("ls-files", "--others", "--exclude-standard")
-        == expected
+        == implementation_scope | maintenance_scope
     )
-    protected = {
-        "docs/editorial-application/EditorApplicationCompositionSpecificationV1.md",
-        "src/pastila_scout/editor_application_v1/configuration.py",
-        "src/pastila_scout/editor_application_v1/errors.py",
-        "src/pastila_scout/editor_application_v1/export.py",
-        "src/pastila_scout/editor_application_v1/models.py",
-        "src/pastila_scout/editor_application_v1/serialization.py",
-        "tests/test_editor_application_contracts_v1.py",
-    }
-    assert names("diff", "--name-only", baseline, "--", *protected) == set()
+    assert names("diff", "--name-only", "--", *frozen_revision_5) == set()
+    test_bytes = (root / "tests/test_editor_application_v1.py").read_bytes()
+    normalized = test_bytes.replace(correction_digest.encode(), b"0" * 64)
+    assert normalized != test_bytes
+    assert hashlib.sha256(normalized).hexdigest().upper() == correction_digest
+    assert "_compose_editor_application_runtime_v1" not in public.__all__
+    assert names("diff", "--name-only", "--", "src/pastila_scout/cli.py") == set()

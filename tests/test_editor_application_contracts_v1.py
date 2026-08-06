@@ -892,7 +892,8 @@ def test_fresh_process_determinism_and_network_passivity() -> None:
 
 def test_current_revision_git_scope_and_frozen_specification_are_exact() -> None:
     root = Path(__file__).resolve().parents[1]
-    baseline = "phase-4.3-editor-application-result-contract-r2-spec-verified"
+    contract_baseline = "phase-4.3-application-result-contract-r2-verified"
+    current_baseline = "phase-4.3-editor-command-time-runtime-composition-spec-v3-ready"
     production_paths = (
         "src/pastila_scout/editor_application_v1/configuration.py",
         "src/pastila_scout/editor_application_v1/errors.py",
@@ -901,8 +902,17 @@ def test_current_revision_git_scope_and_frozen_specification_are_exact() -> None
     init_path = "src/pastila_scout/editor_application_v1/__init__.py"
     test_path = "tests/test_editor_application_contracts_v1.py"
     frozen_paths = (*production_paths, init_path, test_path)
+    authorized = {
+        "src/pastila_scout/provider_runtime_openai_v2/production.py",
+        "src/pastila_scout/editor_generation_runtime_v1/composition.py",
+        "src/pastila_scout/editor_operational_execution_v1/production.py",
+        "src/pastila_scout/editor_application_v1/runtime_composition.py",
+        "tests/test_editor_application_runtime_composition_v1.py",
+        "tests/test_editor_application_contracts_v1.py",
+        "tests/test_editor_application_v1.py",
+    }
     correction_digest = (
-        "76CBC0EE4B7763EF1D6F0057846535FD37179FDFCA4E3AC7925E142A544CCF34"
+        "9C40AD597BC4B819AF6174E01C59B9DB54EFB9DFB540A044FBBE07275A3C158A"
     )
 
     def names(*arguments: str) -> set[str]:
@@ -918,45 +928,37 @@ def test_current_revision_git_scope_and_frozen_specification_are_exact() -> None
 
     assert (
         subprocess.run(
-            ["git", "rev-parse", f"{baseline}^{{}}"],
+            ["git", "rev-parse", f"{contract_baseline}^{{}}"],
             cwd=root,
             check=True,
             capture_output=True,
             text=True,
         ).stdout.strip()
-        == "7c7fc6bdeffb6e2322fa4911352eab160f57b4ad"
+        == "3ea6751d586b2f1c8a5c8f7bb49a9526f88b94e9"
+    )
+    assert (
+        subprocess.run(
+            ["git", "rev-parse", f"{current_baseline}^{{}}"],
+            cwd=root,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        == "dddaa69234825066f72c346abce135e98d9bec23"
     )
     assert names("ls-files", "--error-unmatch", *frozen_paths) == set(frozen_paths)
     assert all((root / path).is_file() for path in frozen_paths)
-    assert names("diff", "--name-only", baseline, "--", *production_paths) == {
-        "src/pastila_scout/editor_application_v1/models.py"
-    }
-    assert names("diff", "--cached", "--name-only", "--", *frozen_paths) == set()
-    assert not set(frozen_paths).intersection(
-        names("ls-files", "--others", "--exclude-standard")
+    assert (
+        names("diff", "--name-only", contract_baseline, "--", *production_paths)
+        == set()
     )
-
-    frozen_init = subprocess.run(
-        ["git", "show", f"{baseline}:{init_path}"],
-        cwd=root,
-        check=True,
-        capture_output=True,
-        text=True,
-    ).stdout
-    current_init = (root / init_path).read_text(encoding="utf-8")
-    additions = []
-    if (root / "src/pastila_scout/editor_application_v1/application.py").is_file():
-        additions.extend(
-            (
-                "from .application import EditorApplicationCoordinatorV1\n",
-                '    "EditorApplicationCoordinatorV1",\n',
-            )
-        )
-    revision_2_init = current_init
-    for exact_addition in additions:
-        assert revision_2_init.count(exact_addition) == 1
-        revision_2_init = revision_2_init.replace(exact_addition, "")
-    assert revision_2_init == frozen_init
+    assert names("diff", "--name-only", "--", *production_paths, init_path) == set()
+    assert names("diff", "--cached", "--name-only") == set()
+    assert (
+        names("diff", "--name-only")
+        | names("ls-files", "--others", "--exclude-standard")
+        == authorized
+    )
 
     test_bytes = (root / test_path).read_bytes()
     normalized = test_bytes.replace(correction_digest.encode(), b"0" * 64)
@@ -968,16 +970,12 @@ def test_current_revision_git_scope_and_frozen_specification_are_exact() -> None
         / "editorial-application"
         / "EditorApplicationCompositionSpecificationV1.md"
     )
-    assert (
-        names(
-            "diff",
-            "--name-only",
-            baseline,
-            "--",
-            specification.relative_to(root).as_posix(),
-        )
-        == set()
-    )
+    specification_path = specification.relative_to(root).as_posix()
+    assert names("ls-files", "--error-unmatch", specification_path) == {
+        specification_path
+    }
+    assert names("diff", "--name-only", "--", specification_path) == set()
+    assert names("diff", "--cached", "--name-only", "--", specification_path) == set()
     assert hashlib.sha256(specification.read_bytes()).hexdigest().upper() == (
-        "AAE04D376D0BE386C85008BE91ABBA73E9B9A87C0E8BDB3657E576BF693A4C4E"
+        "1742A84289B07A8D6CBD7D7A96F9E58F34A05EA090A6EEE6A1F212FB96068473"
     )

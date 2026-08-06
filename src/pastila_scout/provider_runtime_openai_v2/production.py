@@ -10,12 +10,34 @@ from enum import Enum, auto
 from importlib import import_module
 from typing import Never, Self
 
-from .composition import _mint_factory_handoff, _static_method_authority
+from .composition import (
+    OpenAIRuntimeComposerV2,
+    _mint_factory_handoff,
+    _static_method_authority,
+)
 from .errors import (
     OpenAIRuntimeCredentialError,
     OpenAIRuntimeDependencyError,
     OpenAIRuntimeLifecycleError,
 )
+from .models import OpenAIRuntimeConfigV2
+
+
+def _create_environment_openai_runtime_composer_v2(
+    *, model_identifier: str, timeout_seconds: int | float  # noqa: PYI041
+) -> OpenAIRuntimeComposerV2:
+    """Create a passive runtime plan whose operational work remains deferred."""
+
+    return OpenAIRuntimeComposerV2(
+        OpenAIRuntimeConfigV2(
+            model=model_identifier,
+            enabled=True,
+            max_retries=0,
+            request_timeout_seconds=timeout_seconds,
+        ),
+        credential_source=_EnvironmentOpenAICredentialSourceV2(),
+        sdk_factory=_OfficialOpenAISDKFactoryV2(),
+    )
 
 
 class _ExplicitOpenAICredentialSourceV2:
