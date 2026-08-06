@@ -527,9 +527,11 @@ application coordinator. Its constructor receives exact statically validated:
 - application result serializer; and
 - application atomic publisher.
 
-The caller constructs these dependencies at command time through one
-package-private factory. The factory composes provider-specific clients only
-through the verified runtime-session factory; parsing/help constructs nothing.
+The caller constructs these dependencies at command time through the one
+package-private authority defined in section 20. The authority constructs
+passive provider/runtime factories only; provider clients remain constructed
+only by the verified runtime-session factory during operational execution.
+Parsing/help constructs nothing.
 The coordinator receives the already-composed execution coordinator and never
 sees selectors, executors, clients, credentials, runtime sessions, adapters, or
 generator factories.
@@ -550,11 +552,13 @@ EditorApplicationCoordinatorV1(
 
 It exposes only `execute(*, request: EditorApplicationRequestV1) ->
 EditorApplicationResultV1`. The command-time package-private composition
-factory creates the three configuration authorities, exact verified runtime
-session/generator composition, the two lower coordinator adapters, artifact
+authority creates the exact verified runtime-session/generator composition,
+operational coordinator, the two lower coordinator adapters, artifact
 preparer, exact request authority, serializer, exporter and application
-coordinator once. The future CLI owns the injected clock/reference and initial
-cancellation value. No other component constructs or retains these objects.
+coordinator once. Configuration authorities remain file-loading authorities
+owned by the caller. The future CLI owns its command-time UTC clock/reference
+and initial cancellation value. No other component constructs or retains the
+composed execution graph.
 
 Coordinator retained-dependency identity is authoritatively checked before
 application-request reconstruction on every `execute` call. Failure raises
@@ -1096,8 +1100,9 @@ are:
 - macOS: `renamex_np(temp, destination, RENAME_EXCL)`; `EEXIST` maps to
   `destination_exists`.
 
-The adapter is selected statically by the package-private composition factory,
-not discovered at execution. Unsupported platforms/filesystems fail closed as
+The adapter is selected statically by the exporter's package-private native
+adapter factory, not by section 20 and not discovered at execution. Unsupported
+platforms/filesystems fail closed as
 `export_failed` before temporary creation. Native calls use exact absolute
 same-parent paths and preserve the OS error only as a neutral private status.
 Focused platform tests must exercise real or sealed adapter calls plus races.
@@ -1259,6 +1264,7 @@ src/pastila_scout/editor_application_v1/
     export.py
     models.py
     protocols.py
+    runtime_composition.py  # package-private; added by section 20
     serialization.py
 ```
 
@@ -1497,13 +1503,466 @@ Each revision must test, offline:
 16. zero Producer/database/GUI/fallback/discovery/retry/duplicate cleanup; and
 17. frozen hashes/exports, full offline suite and all static gates.
 
-## 20. Revision roadmap
+## 20. Command-time runtime composition boundary
+
+### 20.1 Grounded gap and architecture decision
+
+Verified production currently stops at
+`_compose_editor_application_coordinator_v1(*,
+preparation_coordinator: EditorOperationalCoordinatorV1,
+operational_execution_coordinator: EditorOperationalExecutionCoordinatorV1)`.
+The helper requires a prebuilt operational execution coordinator.
+`EditorOperationalExecutionCoordinatorV1` in turn requires, keyword-only, one
+exact `EditorGenerationRuntimeSessionFactoryV1` and one structural
+`_EditorControlledGeneratorFactoryV1`. No production implementation of the
+controlled-generator factory exists and no production caller constructs the
+runtime-session factory's five dependencies. Existing instances are test
+fakes. Therefore the complete command-time factory described earlier in this
+document does not yet exist.
+
+The only selected architecture is one zero-argument package-private function:
+
+```python
+def _compose_editor_application_runtime_v1() -> EditorApplicationCoordinatorV1:
+    ...
+```
+
+It is defined in exactly
+`src/pastila_scout/editor_application_v1/runtime_composition.py`. The
+zero-argument contract is deliberate. Provider, model, temperature, `top_p`,
+token limit, seed, timeout and cancellation already belong to the verified
+`EditorApplicationRequestV1` and its exact generation-configuration authority.
+Accepting any again would create a second semantic owner and permit an
+uncheckable mismatch with a later request. The function accepts no namespace,
+mapping, JSON, path, request, fingerprint, serialized value, destination,
+retry/fallback policy, client, selector, registry or callback. It retains no
+caller value and has no defaulted parameter.
+
+The CLI and GUI may not construct this graph, import private runtime models,
+contain provider branches, accept a prebuilt operational coordinator, or
+accept provider clients/factories. Extending the existing application helper
+alone cannot close the lower missing factories. One dedicated
+application-launch composition authority plus narrowly bounded owning-package
+concrete factories is the sole architecture.
+
+### 20.2 Exact dependency graph and placement
+
+```text
+future CLI / future GUI
+    -> editor_application_v1.runtime_composition
+        -> editor_operational_v1 (SelectionEngine + preparation coordinator)
+        -> editor_operational_execution_v1.production
+            -> editor_generation_runtime_v1.composition
+                -> provider_runtime_openai_v2.production
+                -> provider_execution_ollama_v1
+                -> frozen workflow/adapter/request authorities
+            -> ControlledGenerator
+        -> editor_application_v1.application
+            -> serializer and exporter
+```
+
+No lower package imports `editor_application_v1`; the graph is acyclic.
+Concrete private values are added only to their owning layers:
+
+- `provider_runtime_openai_v2.production` adds package-private
+  `_create_environment_openai_runtime_composer_v2(*, model_identifier: str,
+  timeout_seconds: int | float) -> OpenAIRuntimeComposerV2`;
+- existing `editor_generation_runtime_v1/composition.py` owns the concrete
+  OpenAI composer factory, Ollama session factory, legacy fail-closed workflow,
+  adapter-dependency factory, clock, cancellation source, reference factory,
+  recorder creation and `_create_editor_generation_runtime_session_factory_v1()`;
+- new `editor_operational_execution_v1/production.py` owns the structural
+  controlled-generator factory and
+  `_create_editor_operational_execution_coordinator_v1(*,
+  session_factory: EditorGenerationRuntimeSessionFactoryV1) ->
+  EditorOperationalExecutionCoordinatorV1`;
+- new `editor_application_v1/runtime_composition.py` is the sole top-level
+  assembly authority.
+
+None is re-exported. Direct package-private imports are permitted only along
+the arrows above. `editor_application_v1.__all__`, all three existing public
+coordinator APIs and every provider/runtime public facade remain unchanged.
+
+Module 3.0 Runtime Rollout compatibility is a hard placement authority. Its
+AST discovery treats any non-excluded module with a direct OpenAI/provider
+runtime import as a distinct consumer and its frozen inventory authorizes
+exactly `editor_generation_runtime_v1.composition` and
+`editor_generation_runtime_v1.protocols`. Therefore no
+`editor_generation_runtime_v1.production` module exists or may be introduced.
+All new runtime-owned symbols are additive private definitions in the already
+inventoried `composition.py`; that package identity is unchanged. The additive
+OpenAI helper remains under the discovery-excluded
+`provider_runtime_openai_v2` prefix. Operational and application composition
+modules import only the existing Editor runtime boundary and never import an
+OpenAI provider/runtime module directly. Consequently discovery output,
+`RUNTIME_CONSUMER_DISCOVERY_V1`, `RUNTIME_CONSUMER_INVENTORY_V1`, migration
+planning, and `tests/test_runtime_rollout_v2.py` remain byte-for-byte unchanged;
+no inventory/discovery/test maintenance is required or authorized.
+
+The complete concrete-symbol inventory is exact:
+
+| Module | Exact private symbol and constructor | Exact operational method | Retained fields |
+|---|---|---|---|
+| `provider_runtime_openai_v2.production` | `_create_environment_openai_runtime_composer_v2(*, model_identifier: str, timeout_seconds: int \| float) -> OpenAIRuntimeComposerV2` | pure factory function; no other method | none |
+| `editor_generation_runtime_v1.composition` | `_create_editor_generation_runtime_session_factory_v1() -> EditorGenerationRuntimeSessionFactoryV1` | pure factory function; no other method | none |
+| `editor_generation_runtime_v1.composition` | `_OpenAIComposerFactoryV1()` | `create(*, model_identifier: str, timeout_seconds: int \| float) -> OpenAIRuntimeComposerV2` | none |
+| `editor_generation_runtime_v1.composition` | `_OllamaRuntimeSessionFactoryV1()` | `open(options: EditorGenerationRuntimeOptionsV1) -> EditorOllamaRuntimeHandleV1` | none |
+| `editor_generation_runtime_v1.composition` | `_OllamaRuntimeLifecycleV1(client: httpx.Client)` | `close() -> None` | exact `_client`, exact `_closed: bool` |
+| `editor_generation_runtime_v1.composition` | `_EditorAdapterDependenciesFactoryV1()` | `create(*, operation_reference: str) -> EditorAdapterDependenciesV1` | none |
+| `editor_generation_runtime_v1.composition` | `_EditorRuntimeClockV1()` | `now() -> datetime` | none |
+| `editor_generation_runtime_v1.composition` | `_EditorRuntimeCancellationSourceV1()` | `snapshot() -> CancellationTokenV2` | none |
+| `editor_generation_runtime_v1.composition` | `_EditorAttemptReferenceFactoryV1(*, operation_reference: str)` | `create(*, prompt_fingerprint: str, attempt_number: int) -> str` | exact `_operation_reference: str` |
+| `editor_generation_runtime_v1.composition` | `_FailClosedLegacyWorkflowV1()` | `execute(request: ScoutRuntimeRequestV1) -> ScoutRuntimeResultV1` | none |
+| `editor_operational_execution_v1.production` | `_EditorControlledGeneratorFactoryV1Impl()` | `create(*, provider: LanguageModelProvider, config: LanguageGenerationConfig) -> ControlledGenerator` | none |
+| `editor_operational_execution_v1.production` | `_create_editor_operational_execution_coordinator_v1(*, session_factory: EditorGenerationRuntimeSessionFactoryV1) -> EditorOperationalExecutionCoordinatorV1` | pure factory function; no other method | none |
+| `editor_application_v1.runtime_composition` | `_EditorApplicationRuntimeCompositionDefectV1()` | private fieldless exception; no operational method | none |
+| `editor_application_v1.runtime_composition` | `_compose_editor_application_runtime_v1() -> EditorApplicationCoordinatorV1` | pure composition function; no other method | none |
+
+Every listed class is exact-type-only (`type(value) is Class`), final by
+subclass rejection, frozen, slotted, init-enabled only with the constructor
+shown, and has no `__dict__`. Stateless classes have equality by exact type;
+the attempt-reference factory compares its validated string value; the Ollama
+lifecycle compares only by identity because it owns a client. Repr is exactly
+`ClassName()` for stateless classes,
+`_EditorAttemptReferenceFactoryV1(<operation reference>)`, and
+`_OllamaRuntimeLifecycleV1(<owned client>)`; neither stateful repr emits the
+retained value, client repr or address. Shallow and deep copy reconstruct
+stateless/reference factories without dependency traversal. The lifecycle is
+noncopyable. Every class rejects pickle before field traversal with fixed
+`TypeError("Editor application runtime composition values cannot be pickled.")`.
+Copied-invalid or post-construction field substitution fails before any method
+body work with the owning fixed composition/configuration error. No class has a
+cache, registry, mutable class attribute or optional constructor argument.
+
+Constructors for all symbols except `_OllamaRuntimeLifecycleV1` and
+`_EditorAttemptReferenceFactoryV1` perform only exact object allocation. The
+reference constructor validates and retains one string without hashing. The
+lifecycle constructor validates and retains one already-created exact
+`httpx.Client` and sets `_closed=False`; it is reached only inside selected
+Ollama `open`, never command-time composition. No listed constructor imports
+an SDK, reads environment/credentials/time, creates an HTTP client, opens a
+runtime, probes or executes a provider, uses a socket, or performs I/O.
+
+### 20.3 Exact construction sequence and cardinality
+
+Each explicit call performs exactly:
+
+1. construct one `SelectionEngine` and one
+   `EditorOperationalCoordinatorV1`;
+2. call `_create_editor_generation_runtime_session_factory_v1()` once;
+3. inside that owning runtime factory, construct one passive OpenAI composer
+   factory, one passive Ollama session factory, one fail-closed legacy workflow
+   dependency, one adapter-dependency factory and one exact
+   `EditorRequestFingerprintAuthorityV1`;
+4. construct one `EditorGenerationRuntimeSessionFactoryV1` with those five
+   exact identities;
+5. pass that factory once to
+   `_create_editor_operational_execution_coordinator_v1`;
+6. construct one private `_EditorControlledGeneratorFactoryV1Impl` and one
+   `EditorOperationalExecutionCoordinatorV1`;
+7. invoke `_compose_editor_application_coordinator_v1` once with the exact
+   preparation and operational coordinators; and
+8. return its exact `EditorApplicationCoordinatorV1` identity.
+
+Nominal cardinality is: application composition 1, runtime-session factory 1,
+controlled-generator factory 1, preparation coordinator 1, operational
+coordinator 1, provider client 0, selector 0, runtime open 0, workflow
+execution 0, application execution 0, serialization 0, export 0, retry 0 and
+fallback 0. Each launcher invocation receives an isolated graph. There is no
+cache, singleton, mutable registry or service locator.
+
+### 20.4 Provider and credential ownership
+
+Supported provider identities remain exactly `ProviderChoiceV1.OPENAI` and
+`ProviderChoiceV1.OLLAMA`. Composition receives or selects no provider. The
+verified request/configuration authorities reject every other identity before
+application execution. The existing runtime-session factory performs the sole
+exact provider branch when `open()` receives validated runtime options; it
+opens only the selected provider and supplies the other registration with its
+existing non-operational executor. There is no probe, alias, case folding,
+discovery, substitution, route or fallback.
+
+The OpenAI composer factory's `create` delegates once to the new provider-owned
+helper. That helper constructs `OpenAIRuntimeConfigV2` with exact model,
+enabled true, zero SDK retries and exact timeout, plus the existing private
+environment credential source and official SDK factory. It does not call
+`compose()`. Construction therefore reads no credential/environment value or
+imports the SDK; the existing composer reads `OPENAI_API_KEY` only during a
+selected OpenAI runtime open. No credential crosses into application/launcher
+state, repr, traceback or output.
+
+The Ollama session factory retains no client. Its `open(options)` constructs
+one exact `httpx.Client()` with no constructor argument,
+`OllamaHttpClientV1(client)`, and `OllamaExecutionConfigV1(model=options.model_identifier,
+base_url="http://localhost:11434", temperature=options.temperature,
+max_output_tokens=options.max_output_tokens,
+stop_sequences=options.stop_sequences)`, then one
+`OllamaProviderExecutorV1(client, config)` and one private close-once
+lifecycle. It publishes exact `EditorOllamaRuntimeHandleV1` only after complete
+construction and closes the raw client on partial failure. It performs no
+request, discovery, pull or connectivity probe. Client construction occurs
+only after the Ollama runtime branch is selected, never during command-time
+composition.
+
+`_OllamaRuntimeLifecycleV1.close()` validates retained exact state, rejects a
+second call with `EditorGenerationRuntimeCompositionError`, calls the statically
+validated exact `httpx.Client.close` once, and marks `_closed=True` only after
+that call succeeds. A close failure is reduced to the same fixed runtime
+composition error with no cause/context and remains the sole cleanup failure;
+no caller or application layer retries it.
+
+### 20.5 Runtime and adapter private-type closure
+
+`EditorOllamaRuntimeHandleV1`, `EditorAdapterDependenciesV1` and the attempt
+recorder remain private to `editor_generation_runtime_v1`. Only that package's
+existing `composition.py` imports or constructs them. Neither application composition
+nor a launcher imports their modules, annotations or identities.
+
+The adapter-dependency factory retains the exact structural method:
+
+```python
+def create(self, *, operation_reference: str) -> EditorAdapterDependenciesV1:
+    ...
+```
+
+Its return expression is exactly
+`EditorAdapterDependenciesV1(_EditorRuntimeClockV1(),
+_EditorRuntimeCancellationSourceV1(),
+_EditorAttemptReferenceFactoryV1(operation_reference=operation_reference),
+_EditorGenerationAttemptRecorderV1())`; the existing recorder is not replaced
+or reimplemented. It constructs one aware-UTC clock, immutable always-not-cancelled runtime
+cancellation source, deterministic attempt reference factory and fresh attempt
+recorder. The application request's frozen initial cancellation token remains
+authoritative and is checked before operational execution; V1 adds no mutable
+cancellation polling channel. Attempt references derive only from the validated
+operation reference, prompt fingerprint and positive attempt number, are
+NFC/unpadded, at most 120 characters and collision-free within that operation.
+No request content is retained.
+
+The clock's exact `now() -> datetime` body returns one fresh
+`datetime.now(timezone.utc)` value. The cancellation source's exact
+`snapshot() -> CancellationTokenV2` body returns
+`CancellationTokenV2(cancellation_requested=False)`. The reference factory is
+constructed with the exact operation reference and implements
+`create(*, prompt_fingerprint: str, attempt_number: int) -> str`. It validates a
+64-character lowercase hexadecimal fingerprint and exact positive integer,
+then returns exactly
+`editor-attempt-v1-{attempt_number}-{digest[:32]}`, where `digest` is lowercase
+SHA-256 of UTF-8 bytes for the NFC string
+`operation_reference + "\u0000" + prompt_fingerprint + "\u0000" +
+str(attempt_number)`. No timestamp, random value, process identity, hash seed or
+provider identity enters the reference.
+
+The legacy workflow dependency is package-private, stateless and fail-closed.
+Its exact ordinary `execute(request: ScoutRuntimeRequestV1) ->
+ScoutRuntimeResultV1` signature satisfies the frozen validator, but its body
+raises the fixed runtime composition error from no cause/context if invoked.
+The provider-neutral Editor workflow never invokes it; it exists only because
+the frozen bridge requires the retained legacy dependency.
+
+### 20.6 Controlled-generator factory
+
+`editor_operational_execution_v1.production` defines one frozen, slotted
+`_EditorControlledGeneratorFactoryV1Impl`. Its sole method is:
+
+```python
+def create(
+    self,
+    *,
+    provider: LanguageModelProvider,
+    config: LanguageGenerationConfig,
+) -> ControlledGenerator:
+    return ControlledGenerator(provider, config=config)
+```
+
+It has no injected dependency, provider branch, policy override or prompt
+builder override. The exact default `ControlledGenerator` retry policy and
+`PromptBuilder` remain sole owners. Construction performs no generation. The
+owning helper validates the exact supplied runtime-session factory and creates
+the factory and operational coordinator once. It imports no runtime private
+protocol/model; existing structural validation remains authoritative.
+
+### 20.7 Failure model and isolation
+
+Composition occurs before application execution and never fabricates an
+`EditorApplicationResultV1`. Failure authority is exhaustive and finite:
+
+| Stage/owner | Exact failure source caught | Published error and fixed message | Retryable | Suppressed downstream work | Lifecycle |
+|---|---|---|---|---|---|
+| caller's existing provider/configuration authority, before composition | exact `EditorApplicationConfigurationError` raised by existing validation for unsupported provider, malformed/copy-invalid generation configuration, model or timeout mismatch; composition catches nothing | the same exact `EditorApplicationConfigurationError`; `Editor application configuration is invalid.` | no | composition and every lower constructor | no resource acquired |
+| `editor_application_v1.runtime_composition`, preparation construction | exact `EditorOperationalConfigurationError` from `EditorOperationalCoordinatorV1(SelectionEngine())` | `EditorApplicationConfigurationError`; `Editor application configuration is invalid.` | no | runtime, operational and application composition | no resource acquired |
+| `editor_generation_runtime_v1.composition`, concrete dependency and runtime-session-factory construction | exact `EditorGenerationRuntimeCompositionError` raised by explicit validation, copied-invalid state, malformed structural dependency or `EditorGenerationRuntimeSessionFactoryV1(...)` rejection | `EditorApplicationConfigurationError`; `Editor application configuration is invalid.` | no | operational and application composition | no resource acquired |
+| `editor_operational_execution_v1.production`, controlled-generator factory or operational coordinator construction | exact `EditorOperationalExecutionConfigurationError` from explicit factory validation or `EditorOperationalExecutionCoordinatorV1(...)` rejection | `EditorApplicationConfigurationError`; `Editor application configuration is invalid.` | no | application composition | no resource acquired |
+| `editor_application_v1.application`, verified application helper construction | exact `EditorApplicationConfigurationError` | the same exact `EditorApplicationConfigurationError`; `Editor application configuration is invalid.` | no | coordinator publication | no resource acquired |
+| `editor_application_v1.runtime_composition`, exact RT1–RT3 result-type postconditions only | exact package-private `_EditorApplicationRuntimeCompositionDefectV1`, raised only by RT1, RT2 or RT3 below when one named helper result fails `type(value) is ExpectedType` | `EditorApplicationCoordinatorError`; `Editor application coordinator failed.` | no | every construction after the failed check and coordinator publication | no resource acquired |
+
+`_EditorApplicationRuntimeCompositionDefectV1` is defined only in
+`runtime_composition.py`, is fieldless/slotted, never accepts or retains a
+payload, and has exactly these three sources:
+
+- **RT1:** immediately after
+  `_create_editor_generation_runtime_session_factory_v1()` returns, the owning
+  `_compose_editor_application_runtime_v1` checks
+  `type(value) is EditorGenerationRuntimeSessionFactoryV1`; failure clears the
+  transient value and suppresses operational and application construction;
+- **RT2:** immediately after
+  `_create_editor_operational_execution_coordinator_v1(...)` returns, the same
+  owning helper checks
+  `type(value) is EditorOperationalExecutionCoordinatorV1`; failure clears the
+  transient value and runtime-factory local and suppresses application
+  construction; and
+- **RT3:** immediately after
+  `_compose_editor_application_coordinator_v1(...)` returns, the same owning
+  helper checks `type(value) is EditorApplicationCoordinatorV1`; failure clears
+  the transient value and lower coordinator locals and suppresses publication.
+
+Each failure constructs one fresh
+`_EditorApplicationRuntimeCompositionDefectV1()` locally after protected values
+are cleared. The outer content-free boundary catches only that exact private
+type, discards it, and raises fresh `EditorApplicationCoordinatorError()` from
+`None`, with fixed message `Editor application coordinator failed.`, cause and
+context `None`, suppression true, and no application result, provider, client,
+credential, environment, model, path, repr or exception text. Failure while
+constructing or reducing the private defect is not mapped to configuration and
+does not fabricate a result. RT1–RT3 are the sole package-owned
+programming-defect sources converted by this boundary. There is no fourth
+source, `except Exception`, `except BaseException`, tuple of generic built-ins,
+text matching or
+open-ended "unexpected" category. Any exception not shown in the table is not
+claimed or converted by this composition authority; process-control exceptions
+always propagate unchanged.
+
+Object identity, dependency passing, call order and cardinality are not runtime
+defect-classification sources. Identity is guaranteed structurally by passing
+each exact freshly constructed dependency directly to the next constructor,
+with no substitution or cache, and verified through retained-state,
+post-construction mutation and same-object probes. Cardinality remains the
+section 20.3 orchestration contract and is verified through implementation
+structure, injected constructor probes, call histories and fresh-instance
+tests. No runtime counter, mutable registry, global state, identity comparison
+against an expected object, or additional private exception is introduced.
+Failure of a named helper through one of its finite declared construction
+exceptions retains the existing configuration mapping; arbitrary unlisted
+exceptions gain no catch-all conversion.
+
+Each listed caught domain exception is discarded before publishing a fresh
+fieldless application error from `None`. Cause/context are cleared, suppression
+is true, and recursive state retains no credential, environment value, provider
+detail, model, client, request, path or dependency identity. Composition
+acquires no operational resource and performs no cleanup; partial resource
+cleanup remains inside selected runtime `open` exactly as frozen.
+
+### 20.8 Passivity, validation and object safety
+
+Import and explicit composition perform zero file read/write, environment or
+credential lookup, SDK import, HTTP client construction, socket operation,
+provider probe/execution, runtime open, selector construction, request or
+fingerprint construction, generation, retry, cleanup, serialization, export,
+persistence, thread, subprocess, timer, logging, warning or stream output.
+Only immutable/stateless dependencies and coordinators are constructed.
+
+The application authority is a pure function, so no redundant factory object
+is introduced. Every concrete dependency is final by exact-type validation,
+frozen and slotted without `__dict__`; has exact address-free repr; deterministic
+identity/state equality; copy/deepcopy reconstruction without dependency
+traversal; and pickle rejection before traversal. No mutable global/cache exists.
+
+Injected structural validation uses `inspect.getattr_static`, exact
+`FunctionType`, `inspect.signature(..., follow_wrapped=False)` and exact resolved
+annotations without invoking bodies, descriptors, properties, repr or equality.
+It rejects dynamic attributes, overridden `__getattribute__`, descriptors,
+abstract or instance-replaced methods, partials, forged `__signature__` or
+`__wrapped__`, and wrong parameter count/kind/default/annotation or unsafe
+deferred annotation. Existing verified validators remain authoritative where
+legally accessible; their algorithms are not duplicated in the application
+layer.
+
+### 20.9 Launcher integration and output
+
+Future CLI and GUI launchers import only
+`_compose_editor_application_runtime_v1`. Their common flow is:
+
+```text
+parse/validate caller input
+-> load verified configuration/input authorities
+-> call composition authority once
+-> construct one EditorApplicationRequestV1
+-> call returned coordinator.execute(...) once
+-> project the public result
+```
+
+They do not construct factories/generators, select runtimes, access credentials,
+open/close sessions, retry, serialize or export. The boundary returns exactly
+one `EditorApplicationCoordinatorV1`, never a session, client, generator,
+operational coordinator, container, registry, mapping or cleanup callback. It
+has no argparse, terminal, path, shell or process-global dependency and is
+reusable unchanged by a future GUI.
+
+### 20.10 Implementation and verification revision
+
+Insert one prerequisite implementation revision before CLI Revision 6. Exact
+authorized production/test scope:
+
+```text
+src/pastila_scout/provider_runtime_openai_v2/production.py
+src/pastila_scout/editor_generation_runtime_v1/composition.py
+src/pastila_scout/editor_operational_execution_v1/production.py
+src/pastila_scout/editor_application_v1/runtime_composition.py
+tests/test_editor_application_runtime_composition_v1.py
+```
+
+No facade, protocol, existing coordinator/model/executor/runtime-session,
+serializer, exporter, CLI or GUI changes. The OpenAI production edit is
+additive and exports no public symbol. No extra file is allowed absent separate
+frozen-test maintenance authority.
+
+Focused tests cover exact private names/modules/signatures/output and no facade
+export; valid offline OpenAI/Ollama composition; exact dependency identities
+and cardinality; zero credential/SDK/client/socket/network/runtime/provider
+activity; unsupported provider rejection through existing configuration;
+zero fallback; malformed, abstract, wrapped, forged, descriptor, replaced and
+copied-invalid dependencies; post-construction corruption; every finite
+construction failure; recursive traceback isolation; copy/deepcopy/repr/pickle
+safety; passive import/construction in socket-disabled fresh processes and
+multiple `PYTHONHASHSEED` values; a distinct fresh process that replaces
+`os.getenv`, the `os.environ` mapping, and the provider-owned credential-source
+method with fail-on-access authorities after harness bootstrap but before both
+target import and explicit composition, proving zero environment access; no
+CLI/GUI/persistence/serializer/export ownership; acyclic imports; no private
+runtime leakage; specification hash; exact scope; direct execution of
+`tests/test_runtime_rollout_v2.py` proving the discovered/authoritative tuple
+and exactly-two Editor runtime entries remain unchanged; complete offline suite
+and static gates. The focused architecture audit also asserts that
+`editor_generation_runtime_v1.production` is absent and every new runtime-owned
+symbol has `pastila_scout.editor_generation_runtime_v1.composition` as
+`__module__`.
+
+The focused matrix executes RT1, RT2 and RT3 independently by replacing only
+the named package-owned helper with a statically valid probe returning a wrong
+exact type. Each test proves local private-defect selection, exact public
+`EditorApplicationCoordinatorError`, fixed message, cause/context suppression,
+recursive traceback-local isolation, zero downstream construction and no
+`EditorApplicationResultV1`. A closed-source audit proves there is no fourth
+private-defect construction site. Separate nominal identity/call-history tests
+prove exact same-object forwarding and section 20.3 cardinality while asserting
+that neither invariant constructs `_EditorApplicationRuntimeCompositionDefectV1`
+and that no runtime counter, global registry or cache exists.
+
+Compatibility is strict: no existing public API, execution semantics, request
+or result contract, runtime-session/provider behavior, retry, cleanup,
+serializer/exporter, CLI or GUI behavior changes. Claude and Gemini remain
+absent.
+
+## 21. Revision roadmap
 
 The single historical and dependency order is:
 
 ```text
 Revision 1 -> Revision 2 -> Revision 3 -> Revision 4 -> Revision 3A
--> Application Result Contract Revision 2 -> Revision 5 -> Revision 6
+-> Application Result Contract Revision 2 -> Revision 5
+-> Frozen Integrity Revision 6 Prerequisite
+-> Command-Time Runtime Composition Specification V3
+-> Command-Time Runtime Composition Implementation R1 -> Revision 6
 ```
 
 `3A` denotes corrective ownership of the Revision 3 serialization boundary;
@@ -1613,6 +2072,12 @@ the independently verified Revision 3A and Application Result Contract
 Revision 2 milestones and consumes only the wrapper fields; it performs no
 checksum or envelope work.
 
+### Command-Time Runtime Composition Implementation R1
+
+Implement and freeze only the bounded composition infrastructure and focused
+test in section 20.10. It performs no provider or application execution and
+must be independently verified before a launcher consumes it.
+
 ### Revision 6 — opt-in CLI
 
 Add only `src/pastila_scout/editor_cli_run_v1/{__init__.py,command.py,
@@ -1630,7 +2095,7 @@ focused/full offline tests, Ruff, Black, compileall, pip check,
 `git diff --check`, independent verification, separate commit/tag authority,
 and rollback by removing only its additive scope.
 
-## 21. Contradiction scan and unresolved decisions
+## 22. Contradiction scan and unresolved decisions
 
 The document defines one application coordinator, one authority per
 configuration class, one serializer, one atomic publisher, one fail-if-exists
@@ -1641,16 +2106,20 @@ Search terms reviewed: `EditorApplication`, `SelectionProfile`,
 `EpisodeContext`, `GenerationConfiguration`, `EditorOperationalResultV1`,
 `serialize`, `serialization`, `atomic`, `export`, `overwrite`, `destination`,
 `temporary`, `editor-run`, `exit code`, `Producer`, `persistence`, `cleanup`,
-`retry`, `provider`, `runtime session`, `CLI`, `stdout`, and `stderr`.
+`retry`, `provider`, `runtime session`, `runtime composition`, `controlled
+generator factory`, `runtime handle`, `adapter dependencies`, `credentials`,
+`environment`, `private protocol`, `private model`, `CLI`, `GUI`, `stdout`, and
+`stderr`.
 
 The verified aggregate authority is integrated exactly once. Application code
 owns no aggregate fingerprint calculation or validation. Configuration,
 execution order, result/failure closure, cancellation, serializer, native
 no-replace publication, overwrite, CLI, streams, protocols, object safety,
-cleanup and revision ownership are singular and finite. There are no unresolved
-load-bearing decisions or missing public prerequisites.
+cleanup and revision ownership are singular and finite. Section 20 defines the
+one previously missing production composition prerequisite without public API
+expansion. There are no unresolved load-bearing decisions.
 
-## 22. Findings by severity
+## 23. Findings by severity
 
 Critical: none.
 
