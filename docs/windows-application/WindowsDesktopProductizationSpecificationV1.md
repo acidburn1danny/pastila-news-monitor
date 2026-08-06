@@ -1364,9 +1364,21 @@ Every implementation phase runs focused/full offline
 tests and static gates before its stated verdict. Commit/tag actions occur only after
 independent verification and outside the implementation task.
 
+The `Prerequisite` column names every exact frozen milestone that must exist before its
+row may begin. It never denotes the historical revision that introduced a concept, a
+superseded Productization tag, or an unfrozen development state. A future prerequisite
+must equal exactly one preceding producer row's output tag; an already frozen prerequisite
+must resolve to its recorded commit before work begins. Multiple prerequisites are
+conjunctive and each must satisfy the same rule.
+
+The external Productization root for this roadmap is the frozen Revision 10 maintenance
+output `phase-5-windows-desktop-productization-spec-v10-roadmap-baseline-ready`. It is
+produced by freezing this document before any implementation row begins; it is not a
+roadmap row output and therefore creates no roadmap self-dependency.
+
 | Phase | Prerequisite | Exact authorized paths | Exact focused tests | API impact | Additional forbidden scope | Expected verdict | Commit message | Tag |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 5.1A Facade specification | `phase-5-windows-productization-spec-v4-ready` | `docs/windows-application/DesktopApplicationFacadeSpecificationV1.md` | none; specification review | specifies public facade only | production/tests/GUI | `PHASE_5_1A_DESKTOP_APPLICATION_FACADE_SPECIFICATION_V1_READY_FOR_FREEZE` | `Specify desktop application facade V1` | `phase-5.1a-desktop-application-facade-spec-v1-ready` |
+| 5.1A Facade specification | `phase-5-windows-desktop-productization-spec-v10-roadmap-baseline-ready` | `docs/windows-application/DesktopApplicationFacadeSpecificationV1.md` | none; specification review | specifies public facade only | production/tests/GUI | `PHASE_5_1A_DESKTOP_APPLICATION_FACADE_SPECIFICATION_V1_READY_FOR_FREEZE` | `Specify desktop application facade V1` | `phase-5.1a-desktop-application-facade-spec-v1-ready` |
 | 5.1B Facade implementation | `phase-5.1a-desktop-application-facade-spec-v1-ready` | `src/pastila_scout/desktop_application_v1/__init__.py`, `src/pastila_scout/desktop_application_v1/models.py`, `src/pastila_scout/desktop_application_v1/services.py`, `src/pastila_scout/desktop_application_v1/errors.py` | `tests/test_desktop_application_v1.py` | adds only specified public requests/results/services | Tk/widgets/HTML/paths/updates | `PHASE_5_1B_DESKTOP_APPLICATION_FACADE_REVISION_1_VERIFIED` | `Add verified desktop application facade` | `phase-5.1b-desktop-application-facade-r1-verified` |
 | 5.1C Shell specification | `phase-5.1b-desktop-application-facade-r1-verified` | `docs/windows-application/DesktopShellSpecificationV1.md` | none; specification review | specifies private desktop layer | backend implementation/packaging | `PHASE_5_1C_DESKTOP_SHELL_SPECIFICATION_V1_READY_FOR_FREEZE` | `Specify Windows desktop shell V1` | `phase-5.1c-desktop-shell-spec-v1-ready` |
 | 5.1D Shell implementation | `phase-5.1c-desktop-shell-spec-v1-ready` | `src/pastila_scout/desktop_v1/__init__.py`, `src/pastila_scout/desktop_v1/entrypoint.py`, `src/pastila_scout/desktop_v1/controller.py`, `src/pastila_scout/desktop_v1/models.py`, `src/pastila_scout/desktop_v1/views.py`, `src/pastila_scout/desktop_v1/resources.py`, `src/pastila_scout/desktop_v1/errors.py`, `pyproject.toml` | `tests/test_desktop_shell_v1.py` | private GUI plus `pastila-scout-gui` entry point; About has no version value | backend execution/paths/updater/version consumption | `PHASE_5_1D_DESKTOP_SHELL_REVISION_1_VERIFIED` | `Add verified Windows desktop shell` | `phase-5.1d-desktop-shell-r1-verified` |
