@@ -698,7 +698,7 @@ def test_revision_5_scope_and_frozen_integrity() -> None:
     prerequisite = (
         "phase-4.3-editor-application-frozen-integrity-r6-prerequisite-verified"
     )
-    current_baseline = "phase-4.3-editor-command-time-runtime-composition-spec-v3-ready"
+    current_baseline = "phase-4.3-editor-command-time-runtime-composition-r1-verified"
     frozen_revision_5 = {
         "src/pastila_scout/editor_application_v1/__init__.py",
         "src/pastila_scout/editor_application_v1/application.py",
@@ -710,18 +710,19 @@ def test_revision_5_scope_and_frozen_integrity() -> None:
         "tests/test_editor_application_export_v1.py",
     }
     implementation_scope = {
-        "src/pastila_scout/provider_runtime_openai_v2/production.py",
-        "src/pastila_scout/editor_generation_runtime_v1/composition.py",
-        "src/pastila_scout/editor_operational_execution_v1/production.py",
-        "src/pastila_scout/editor_application_v1/runtime_composition.py",
-        "tests/test_editor_application_runtime_composition_v1.py",
+        "src/pastila_scout/editor_cli_run_v1/__init__.py",
+        "src/pastila_scout/editor_cli_run_v1/command.py",
+        "src/pastila_scout/editor_cli_run_v1/composition.py",
+        "src/pastila_scout/cli.py",
+        "tests/test_editor_cli_run_v1.py",
     }
     maintenance_scope = {
         "tests/test_editor_application_contracts_v1.py",
+        "tests/test_editor_application_runtime_composition_v1.py",
         "tests/test_editor_application_v1.py",
     }
     correction_digest = (
-        "2A10448E0DD5CE022982D88A94F8142F0C0F1E1E6F021C813703FA8936B56074"
+        "BE26679CF650CE6345B9D1E7FBA77947F48E7361A752A6CFA04B6943B51D8AC1"
     )
 
     def names(*args: str) -> set[str]:
@@ -734,7 +735,7 @@ def test_revision_5_scope_and_frozen_integrity() -> None:
     commits = {
         revision_5: "5d63e27cbc685c12611e0cf07003bfc2433988bf",
         prerequisite: "09ff8afade2be74bc93841e9eaffbd882697ec7d",
-        current_baseline: "dddaa69234825066f72c346abce135e98d9bec23",
+        current_baseline: "5c80d4edc402f661040035db11ad7d9785de1362",
     }
     for tag, expected in commits.items():
         actual = subprocess.run(
@@ -772,4 +773,6 @@ def test_revision_5_scope_and_frozen_integrity() -> None:
     assert normalized != test_bytes
     assert hashlib.sha256(normalized).hexdigest().upper() == correction_digest
     assert "_compose_editor_application_runtime_v1" not in public.__all__
-    assert names("diff", "--name-only", "--", "src/pastila_scout/cli.py") == set()
+    assert names("diff", "--name-only", "--", "src/pastila_scout/cli.py") == {
+        "src/pastila_scout/cli.py"
+    }

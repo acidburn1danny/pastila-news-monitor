@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import inspect
 import pickle
 import sys
@@ -38,13 +39,14 @@ from pastila_scout.provider_runtime_openai_v2.production import (
 )
 
 IMPLEMENTATION_SCOPE = {
-    "src/pastila_scout/provider_runtime_openai_v2/production.py",
-    "src/pastila_scout/editor_generation_runtime_v1/composition.py",
-    "src/pastila_scout/editor_operational_execution_v1/production.py",
-    "src/pastila_scout/editor_application_v1/runtime_composition.py",
-    "tests/test_editor_application_runtime_composition_v1.py",
+    "src/pastila_scout/editor_cli_run_v1/__init__.py",
+    "src/pastila_scout/editor_cli_run_v1/command.py",
+    "src/pastila_scout/editor_cli_run_v1/composition.py",
+    "src/pastila_scout/cli.py",
+    "tests/test_editor_cli_run_v1.py",
 }
 MAINTENANCE_SCOPE = {
+    "tests/test_editor_application_runtime_composition_v1.py",
     "tests/test_editor_application_contracts_v1.py",
     "tests/test_editor_application_v1.py",
 }
@@ -262,11 +264,62 @@ def test_no_public_facade_expansion() -> None:
 def test_exact_authorized_worktree_shape() -> None:
     import subprocess
 
-    output = subprocess.run(
-        ["git", "status", "--porcelain"],
-        check=True,
-        capture_output=True,
-        text=True,
-    ).stdout.splitlines()
-    paths = {line[3:].replace("\\", "/") for line in output}
+    def names(*arguments: str) -> set[str]:
+        return set(
+            subprocess.run(
+                ["git", *arguments],
+                check=True,
+                capture_output=True,
+                text=True,
+            ).stdout.splitlines()
+        )
+
+    paths = names("diff", "--name-only") | names(
+        "ls-files", "--others", "--exclude-standard"
+    )
     assert paths == IMPLEMENTATION_SCOPE | MAINTENANCE_SCOPE
+    root = Path(__file__).resolve().parents[1]
+    baseline = "phase-4.3-editor-command-time-runtime-composition-r1-verified"
+    assert (
+        subprocess.run(
+            ["git", "rev-parse", f"{baseline}^{{}}"],
+            cwd=root,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        == "5c80d4edc402f661040035db11ad7d9785de1362"
+    )
+    assert (
+        subprocess.run(
+            ["git", "diff", "--cached", "--name-only"],
+            cwd=root,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout
+        == ""
+    )
+    protected = (
+        "src/pastila_scout/provider_runtime_openai_v2/production.py",
+        "src/pastila_scout/editor_generation_runtime_v1/composition.py",
+        "src/pastila_scout/editor_operational_execution_v1/production.py",
+        "src/pastila_scout/editor_application_v1/runtime_composition.py",
+    )
+    assert (
+        subprocess.run(
+            ["git", "diff", "--name-only", "--", *protected],
+            cwd=root,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout
+        == ""
+    )
+    correction_digest = (
+        "BDD2FC120CA507D6228E61D74651634FAEECE384A9E09706EEB51C5FE973E705"
+    )
+    test_bytes = Path(__file__).read_bytes()
+    normalized = test_bytes.replace(correction_digest.encode(), b"0" * 64)
+    assert normalized != test_bytes
+    assert hashlib.sha256(normalized).hexdigest().upper() == correction_digest

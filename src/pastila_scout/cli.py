@@ -1,8 +1,10 @@
 """Command-line interface for Pastila Scout."""
 
 import argparse
+import math
 import sqlite3
 import sys
+import unicodedata
 from collections.abc import Sequence
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import UTC, datetime, timedelta
@@ -327,6 +329,27 @@ def build_parser() -> argparse.ArgumentParser:
         "--provider", choices=("openai", "ollama"), required=True
     )
     provider_run_parser.add_argument("--prompt", required=True)
+    editor_run_parser = subparsers.add_parser(
+        "editor-run", help="execute one Editor application request"
+    )
+    editor_run_parser.add_argument("--input", type=Path, required=True)
+    editor_run_parser.add_argument("--selection-profile", type=Path, required=True)
+    editor_run_parser.add_argument("--episode-context", type=Path, required=True)
+    editor_run_parser.add_argument("--generation-config", type=Path, required=True)
+    editor_run_parser.add_argument(
+        "--provider", choices=("openai", "ollama"), required=True
+    )
+    editor_run_parser.add_argument("--model", type=_nonempty_text, required=True)
+    editor_run_parser.add_argument(
+        "--timeout-seconds", type=_finite_positive_float, required=True
+    )
+    editor_run_parser.add_argument(
+        "--cancelled", choices=("false", "true"), required=True
+    )
+    editor_run_parser.add_argument("--output", type=Path, required=True)
+    editor_run_parser.add_argument(
+        "--overwrite-policy", choices=("fail_if_exists",), required=True
+    )
     return parser
 
 
@@ -341,6 +364,21 @@ def main(argv: Sequence[str] | None = None) -> int:
         from pastila_scout.scout_cli_provider_run_v1 import run_provider_command
 
         return run_provider_command(arguments.provider, arguments.prompt)
+    if arguments.command == "editor-run":
+        from pastila_scout.editor_cli_run_v1 import run_editor_command
+
+        return run_editor_command(
+            input_path=arguments.input,
+            selection_profile_path=arguments.selection_profile,
+            episode_context_path=arguments.episode_context,
+            generation_config_path=arguments.generation_config,
+            provider=arguments.provider,
+            model=arguments.model,
+            timeout_seconds=arguments.timeout_seconds,
+            cancelled=arguments.cancelled,
+            output_path=arguments.output,
+            overwrite_policy=arguments.overwrite_policy,
+        )
     if arguments.command == "validate-config":
         return _validate_config(arguments.config, arguments.timeout, arguments.category)
     if arguments.command == "status":
@@ -866,6 +904,27 @@ def _positive_float(value: str) -> float:
     if parsed <= 0:
         raise argparse.ArgumentTypeError("must be a positive number")
     return parsed
+
+
+def _finite_positive_float(value: str) -> float:
+    """Parse a finite positive float for an exact command authority."""
+
+    parsed = float(value)
+    if not math.isfinite(parsed) or parsed <= 0:
+        raise argparse.ArgumentTypeError("must be a finite positive number")
+    return parsed
+
+
+def _nonempty_text(value: str) -> str:
+    """Reject padded, blank, or non-NFC command text."""
+
+    if (
+        not value
+        or value != value.strip()
+        or not unicodedata.is_normalized("NFC", value)
+    ):
+        raise argparse.ArgumentTypeError("must be nonempty and unpadded")
+    return value
 
 
 def _score_float(value: str) -> float:

@@ -893,7 +893,7 @@ def test_fresh_process_determinism_and_network_passivity() -> None:
 def test_current_revision_git_scope_and_frozen_specification_are_exact() -> None:
     root = Path(__file__).resolve().parents[1]
     contract_baseline = "phase-4.3-application-result-contract-r2-verified"
-    current_baseline = "phase-4.3-editor-command-time-runtime-composition-spec-v3-ready"
+    current_baseline = "phase-4.3-editor-command-time-runtime-composition-r1-verified"
     production_paths = (
         "src/pastila_scout/editor_application_v1/configuration.py",
         "src/pastila_scout/editor_application_v1/errors.py",
@@ -903,16 +903,17 @@ def test_current_revision_git_scope_and_frozen_specification_are_exact() -> None
     test_path = "tests/test_editor_application_contracts_v1.py"
     frozen_paths = (*production_paths, init_path, test_path)
     authorized = {
-        "src/pastila_scout/provider_runtime_openai_v2/production.py",
-        "src/pastila_scout/editor_generation_runtime_v1/composition.py",
-        "src/pastila_scout/editor_operational_execution_v1/production.py",
-        "src/pastila_scout/editor_application_v1/runtime_composition.py",
-        "tests/test_editor_application_runtime_composition_v1.py",
+        "src/pastila_scout/editor_cli_run_v1/__init__.py",
+        "src/pastila_scout/editor_cli_run_v1/command.py",
+        "src/pastila_scout/editor_cli_run_v1/composition.py",
+        "src/pastila_scout/cli.py",
+        "tests/test_editor_cli_run_v1.py",
         "tests/test_editor_application_contracts_v1.py",
+        "tests/test_editor_application_runtime_composition_v1.py",
         "tests/test_editor_application_v1.py",
     }
     correction_digest = (
-        "9C40AD597BC4B819AF6174E01C59B9DB54EFB9DFB540A044FBBE07275A3C158A"
+        "844A54471606B15EFEE5EBDF026ED4C0F8AA292C41B67765D91084794D643261"
     )
 
     def names(*arguments: str) -> set[str]:
@@ -944,7 +945,7 @@ def test_current_revision_git_scope_and_frozen_specification_are_exact() -> None
             capture_output=True,
             text=True,
         ).stdout.strip()
-        == "dddaa69234825066f72c346abce135e98d9bec23"
+        == "5c80d4edc402f661040035db11ad7d9785de1362"
     )
     assert names("ls-files", "--error-unmatch", *frozen_paths) == set(frozen_paths)
     assert all((root / path).is_file() for path in frozen_paths)
