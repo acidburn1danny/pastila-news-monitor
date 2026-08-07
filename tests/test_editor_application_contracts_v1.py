@@ -902,18 +902,12 @@ def test_current_revision_git_scope_and_frozen_specification_are_exact() -> None
     init_path = "src/pastila_scout/editor_application_v1/__init__.py"
     test_path = "tests/test_editor_application_contracts_v1.py"
     frozen_paths = (*production_paths, init_path, test_path)
-    authorized = {
-        "src/pastila_scout/editor_cli_run_v1/__init__.py",
-        "src/pastila_scout/editor_cli_run_v1/command.py",
-        "src/pastila_scout/editor_cli_run_v1/composition.py",
-        "src/pastila_scout/cli.py",
-        "tests/test_editor_cli_run_v1.py",
-        "tests/test_editor_application_contracts_v1.py",
-        "tests/test_editor_application_runtime_composition_v1.py",
-        "tests/test_editor_application_v1.py",
+    historical_delta = {
+        "src/pastila_scout/editor_application_v1/models.py",
+        test_path,
     }
     correction_digest = (
-        "844A54471606B15EFEE5EBDF026ED4C0F8AA292C41B67765D91084794D643261"
+        "0F36D19BFF17CEAC81247AD52C130F1815F23C9E97B6B5E72E5ADCD9CBBAF559"
     )
 
     def names(*arguments: str) -> set[str]:
@@ -955,11 +949,15 @@ def test_current_revision_git_scope_and_frozen_specification_are_exact() -> None
     )
     assert names("diff", "--name-only", "--", *production_paths, init_path) == set()
     assert names("diff", "--cached", "--name-only") == set()
-    assert (
-        names("diff", "--name-only")
-        | names("ls-files", "--others", "--exclude-standard")
-        == authorized
+    assert names("diff", "--name-only", f"{contract_baseline}^", contract_baseline) == (
+        historical_delta
     )
+    current_paths = names("diff", "--name-only") | names(
+        "ls-files", "--others", "--exclude-standard"
+    )
+    frozen_owners = set(production_paths) | {init_path}
+    assert current_paths.isdisjoint(frozen_owners)
+    assert {"src/pastila_scout/future_phase_v1/service.py"}.isdisjoint(frozen_owners)
 
     test_bytes = (root / test_path).read_bytes()
     normalized = test_bytes.replace(correction_digest.encode(), b"0" * 64)

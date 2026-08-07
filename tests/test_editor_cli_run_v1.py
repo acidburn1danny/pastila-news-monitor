@@ -271,7 +271,7 @@ def test_fresh_import_and_help_are_socket_passive() -> None:
 
 def test_exact_revision_scope_and_frozen_specification() -> None:
     root = Path(__file__).resolve().parents[1]
-    expected = {
+    historical_delta = {
         "src/pastila_scout/editor_cli_run_v1/__init__.py",
         "src/pastila_scout/editor_cli_run_v1/command.py",
         "src/pastila_scout/editor_cli_run_v1/composition.py",
@@ -282,7 +282,7 @@ def test_exact_revision_scope_and_frozen_specification() -> None:
         "tests/test_editor_application_contracts_v1.py",
     }
     correction_digest = (
-        "F08978E8A35EDC14A9F36D1207CDD44D7ECEB8961E23D98F2F8EEA9868FECCBF"
+        "8E7F0DAB355AF1D3D597329EDF01261D129A7A8101BE722891FDFEF8260A6E21"
     )
 
     def names(*arguments: str) -> set[str]:
@@ -296,12 +296,14 @@ def test_exact_revision_scope_and_frozen_specification() -> None:
             ).stdout.splitlines()
         )
 
+    baseline = "phase-4.3-editor-command-time-runtime-composition-r1-verified"
+    cli_revision = "phase-4.3-editor-cli-run-r6-verified"
     assert (
         subprocess.run(
             [
                 "git",
                 "rev-parse",
-                "phase-4.3-editor-command-time-runtime-composition-r1-verified^{}",
+                f"{baseline}^{{}}",
             ],
             cwd=root,
             check=True,
@@ -311,10 +313,19 @@ def test_exact_revision_scope_and_frozen_specification() -> None:
         == "5c80d4edc402f661040035db11ad7d9785de1362"
     )
     assert names("diff", "--cached", "--name-only") == set()
-    assert (
-        names("diff", "--name-only")
-        | names("ls-files", "--others", "--exclude-standard")
-        == expected
+    assert names("diff", "--name-only", baseline, cli_revision) == historical_delta
+    frozen_cli_owners = {
+        "src/pastila_scout/editor_cli_run_v1/__init__.py",
+        "src/pastila_scout/editor_cli_run_v1/command.py",
+        "src/pastila_scout/editor_cli_run_v1/composition.py",
+        "src/pastila_scout/cli.py",
+    }
+    current_paths = names("diff", "--name-only") | names(
+        "ls-files", "--others", "--exclude-standard"
+    )
+    assert current_paths.isdisjoint(frozen_cli_owners)
+    assert {"src/pastila_scout/future_phase_v1/service.py"}.isdisjoint(
+        frozen_cli_owners
     )
     test_bytes = (root / "tests/test_editor_cli_run_v1.py").read_bytes()
     normalized = test_bytes.replace(correction_digest.encode(), b"0" * 64)

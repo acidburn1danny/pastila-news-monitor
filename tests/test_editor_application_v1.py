@@ -709,20 +709,8 @@ def test_revision_5_scope_and_frozen_integrity() -> None:
         "tests/test_editor_application_serialization_v1.py",
         "tests/test_editor_application_export_v1.py",
     }
-    implementation_scope = {
-        "src/pastila_scout/editor_cli_run_v1/__init__.py",
-        "src/pastila_scout/editor_cli_run_v1/command.py",
-        "src/pastila_scout/editor_cli_run_v1/composition.py",
-        "src/pastila_scout/cli.py",
-        "tests/test_editor_cli_run_v1.py",
-    }
-    maintenance_scope = {
-        "tests/test_editor_application_contracts_v1.py",
-        "tests/test_editor_application_runtime_composition_v1.py",
-        "tests/test_editor_application_v1.py",
-    }
     correction_digest = (
-        "BE26679CF650CE6345B9D1E7FBA77947F48E7361A752A6CFA04B6943B51D8AC1"
+        "1205ED67D66E4DAB32AA88664125022BEFEC657E841972595B56D4D401DE817D"
     )
 
     def names(*args: str) -> set[str]:
@@ -762,17 +750,24 @@ def test_revision_5_scope_and_frozen_integrity() -> None:
         == set()
     )
     assert names("diff", "--cached", "--name-only") == set()
-    assert (
-        names("diff", "--name-only")
-        | names("ls-files", "--others", "--exclude-standard")
-        == implementation_scope | maintenance_scope
+    assert names("diff", "--name-only", f"{revision_5}^", revision_5) == (
+        frozen_revision_5 | maintained_tests
     )
     assert names("diff", "--name-only", "--", *frozen_revision_5) == set()
+    current_paths = names("diff", "--name-only") | names(
+        "ls-files", "--others", "--exclude-standard"
+    )
+    assert current_paths.isdisjoint(frozen_revision_5)
+    assert {"src/pastila_scout/future_phase_v1/service.py"}.isdisjoint(
+        frozen_revision_5
+    )
     test_bytes = (root / "tests/test_editor_application_v1.py").read_bytes()
     normalized = test_bytes.replace(correction_digest.encode(), b"0" * 64)
     assert normalized != test_bytes
     assert hashlib.sha256(normalized).hexdigest().upper() == correction_digest
     assert "_compose_editor_application_runtime_v1" not in public.__all__
-    assert names("diff", "--name-only", "--", "src/pastila_scout/cli.py") == {
-        "src/pastila_scout/cli.py"
-    }
+    cli_revision = "phase-4.3-editor-cli-run-r6-verified"
+    assert "src/pastila_scout/cli.py" in names(
+        "diff", "--name-only", f"{cli_revision}^", cli_revision
+    )
+    assert names("diff", "--name-only", "--", "src/pastila_scout/cli.py") == set()

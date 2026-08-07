@@ -38,19 +38,6 @@ from pastila_scout.provider_runtime_openai_v2.production import (
     _create_environment_openai_runtime_composer_v2,
 )
 
-IMPLEMENTATION_SCOPE = {
-    "src/pastila_scout/editor_cli_run_v1/__init__.py",
-    "src/pastila_scout/editor_cli_run_v1/command.py",
-    "src/pastila_scout/editor_cli_run_v1/composition.py",
-    "src/pastila_scout/cli.py",
-    "tests/test_editor_cli_run_v1.py",
-}
-MAINTENANCE_SCOPE = {
-    "tests/test_editor_application_runtime_composition_v1.py",
-    "tests/test_editor_application_contracts_v1.py",
-    "tests/test_editor_application_v1.py",
-}
-
 
 def test_exact_private_zero_argument_authority() -> None:
     function = application_runtime._compose_editor_application_runtime_v1
@@ -274,10 +261,6 @@ def test_exact_authorized_worktree_shape() -> None:
             ).stdout.splitlines()
         )
 
-    paths = names("diff", "--name-only") | names(
-        "ls-files", "--others", "--exclude-standard"
-    )
-    assert paths == IMPLEMENTATION_SCOPE | MAINTENANCE_SCOPE
     root = Path(__file__).resolve().parents[1]
     baseline = "phase-4.3-editor-command-time-runtime-composition-r1-verified"
     assert (
@@ -306,6 +289,13 @@ def test_exact_authorized_worktree_shape() -> None:
         "src/pastila_scout/editor_operational_execution_v1/production.py",
         "src/pastila_scout/editor_application_v1/runtime_composition.py",
     )
+    historical_delta = {
+        *protected,
+        "tests/test_editor_application_contracts_v1.py",
+        "tests/test_editor_application_runtime_composition_v1.py",
+        "tests/test_editor_application_v1.py",
+    }
+    assert names("diff", "--name-only", f"{baseline}^", baseline) == historical_delta
     assert (
         subprocess.run(
             ["git", "diff", "--name-only", "--", *protected],
@@ -316,8 +306,13 @@ def test_exact_authorized_worktree_shape() -> None:
         ).stdout
         == ""
     )
+    current_paths = names("diff", "--name-only") | names(
+        "ls-files", "--others", "--exclude-standard"
+    )
+    assert current_paths.isdisjoint(protected)
+    assert {"src/pastila_scout/future_phase_v1/service.py"}.isdisjoint(protected)
     correction_digest = (
-        "BDD2FC120CA507D6228E61D74651634FAEECE384A9E09706EEB51C5FE973E705"
+        "201BB8A711FD2472E0333856DB18CBE62BE9F93AD3C325D6F7B7D09875F29BB3"
     )
     test_bytes = Path(__file__).read_bytes()
     normalized = test_bytes.replace(correction_digest.encode(), b"0" * 64)
