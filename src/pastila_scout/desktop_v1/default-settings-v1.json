@@ -1,0 +1,15 @@
+{
+  "schema": "pastila-scout-settings",
+  "schema_version": 1,
+  "scout_period_days": 7,
+  "scout_category": "all",
+  "log_level": "INFO",
+  "editor_profile_path": null,
+  "editor_context_path": null,
+  "editor_generation_path": null,
+  "editor_provider": "openai",
+  "editor_model": "gpt-4.1-mini",
+  "editor_timeout_seconds": 120.0,
+  "editor_output_directory": null,
+  "updates_enabled": true
+}
