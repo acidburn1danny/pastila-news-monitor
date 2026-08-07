@@ -1356,6 +1356,40 @@ unchanged public `EditorApplicationResultV1` projection. The facade performs no 
 update, packaging, credential, or provider-specific work. Its public package is
 `pastila_scout.desktop_application_v1`; composition implementations remain private.
 
+Production desktop composition has one owner and one caller. Phase 5.3B's private
+`pastila_scout.desktop_editor_v1.composition` module owns construction of the production
+Scout operation supplied by verified Phase 5.2B, construction of the production Editor
+operation by reusing `_compose_editor_application_runtime_v1()`, and exactly one
+`DesktopApplicationFacadeV1` from those two dependencies. Its exact private boundary is
+`_compose_desktop_application_facade_v1() -> DesktopApplicationFacadeV1`. It raises one
+fixed private composition error from no cause when dependency or facade construction
+fails. The composer is passive on import, creates no Tk object or executor, performs no
+operation execution, and returns one fresh composed facade per invocation. It does not
+cache a process-global facade, expose a service locator, invoke a CLI/subprocess, or
+reconstruct provider composition. Phase 5.3A owns the exact private composition-error
+contract; Phase 5.3C consumes that error without redefining it.
+
+Phase 5.3B's focused test must prove passive import, explicit construction only, one
+facade construction, exact identity of the selected Scout and Editor dependencies, no Tk
+or executor construction, no provider/runtime duplication, no CLI/subprocess, no global
+singleton, no retry or fallback, and one-construction cardinality. Phase 5.3D's focused
+test must prove one startup composer call, reuse of that facade by both named shell
+bindings, safe composition-failure projection, and zero composition during import or per
+button activation.
+
+Phase 5.3D is the first production GUI consumer. At explicit `pastila-scout-gui`
+application startup, and never at import or first button activation, the private desktop
+startup integration calls the Phase 5.3B composer exactly once before constructing the
+main window, controller, or executors. The entrypoint retains that facade in its local
+shell-lifetime bindings and binds it through the shell's named Scout and Editor integration
+surfaces. Button actions reuse the retained facade. If composition fails, no main window,
+controller, or executor is constructed: the entrypoint consumes the one private composition
+error, projects the one finite Romanian startup-configuration presentation owned by Phase
+5.3C, and terminates without retry, fallback, or raw exception disclosure. The
+shell/controller continue to own Tk, the publication queue, and both executors. Composition
+owns none of them. Windows path/state and updater composition remain their later owners and
+are not absorbed by this application-facade boundary.
+
 Common forbidden scope for every row is frozen Scout/Editor/provider semantics, GUI
 business-logic duplication, fallback/routing/retry, live-provider tests, and any path not
 listed in that row. “Private” API means no addition to the package `__all__`; “public”
@@ -1384,9 +1418,11 @@ roadmap row output and therefore creates no roadmap self-dependency.
 | 5.1D Shell implementation | `phase-5.1c-desktop-shell-spec-v1-ready` | `src/pastila_scout/desktop_v1/__init__.py`, `src/pastila_scout/desktop_v1/entrypoint.py`, `src/pastila_scout/desktop_v1/controller.py`, `src/pastila_scout/desktop_v1/models.py`, `src/pastila_scout/desktop_v1/views.py`, `src/pastila_scout/desktop_v1/resources.py`, `src/pastila_scout/desktop_v1/errors.py`, `pyproject.toml` | `tests/test_desktop_shell_v1.py` | private GUI plus `pastila-scout-gui` entry point; About has no version value | backend execution/paths/updater/version consumption | `PHASE_5_1D_DESKTOP_SHELL_REVISION_1_VERIFIED` | `Add verified Windows desktop shell` | `phase-5.1d-desktop-shell-r1-verified` |
 | 5.2A Scout GUI specification | `phase-5.1d-desktop-shell-r1-verified` | `docs/windows-application/ScoutDesktopIntegrationSpecificationV1.md` | none; specification review | specifies private Scout adapter/report facade | Editor/updates | `PHASE_5_2A_SCOUT_DESKTOP_SPECIFICATION_V1_READY_FOR_FREEZE` | `Specify Scout desktop integration V1` | `phase-5.2a-scout-desktop-spec-v1-ready` |
 | 5.2B Scout GUI implementation | `phase-5.2a-scout-desktop-spec-v1-ready` | `src/pastila_scout/desktop_scout_v1/__init__.py`, `src/pastila_scout/desktop_scout_v1/models.py`, `src/pastila_scout/desktop_scout_v1/service.py`, `src/pastila_scout/desktop_report_v1/__init__.py`, `src/pastila_scout/desktop_report_v1/models.py`, `src/pastila_scout/desktop_report_v1/service.py`, `src/pastila_scout/desktop_report_v1/html.py` | `tests/test_desktop_scout_v1.py`, `tests/test_desktop_report_v1.py` | facade implementation private; frozen facade unchanged | Editor/updates/existing reports | `PHASE_5_2B_SCOUT_DESKTOP_REVISION_1_VERIFIED` | `Add verified Scout desktop integration` | `phase-5.2b-scout-desktop-r1-verified` |
-| 5.3A Editor GUI specification | `phase-5.2b-scout-desktop-r1-verified` | `docs/windows-application/EditorDesktopIntegrationSpecificationV1.md` | none; specification review | specifies private Editor facade composition | Scout/updates/provider changes | `PHASE_5_3A_EDITOR_DESKTOP_SPECIFICATION_V1_READY_FOR_FREEZE` | `Specify Editor desktop integration V1` | `phase-5.3a-editor-desktop-spec-v1-ready` |
-| 5.3B Editor GUI implementation | `phase-5.3a-editor-desktop-spec-v1-ready` | `src/pastila_scout/desktop_editor_v1/__init__.py`, `src/pastila_scout/desktop_editor_v1/models.py`, `src/pastila_scout/desktop_editor_v1/service.py`, `src/pastila_scout/desktop_editor_v1/composition.py` | `tests/test_desktop_editor_v1.py` | private implementation of frozen public facade | CLI/provider/runtime changes | `PHASE_5_3B_EDITOR_DESKTOP_REVISION_1_VERIFIED` | `Add verified Editor desktop integration` | `phase-5.3b-editor-desktop-r1-verified` |
-| 5.4A Windows state specification | `phase-5.3b-editor-desktop-r1-verified` | `docs/windows-application/WindowsStateSpecificationV1.md` | none; specification review | specifies private path/settings/migration APIs | packaging/updater | `PHASE_5_4A_WINDOWS_STATE_SPECIFICATION_V1_READY_FOR_FREEZE` | `Specify Windows application state V1` | `phase-5.4a-windows-state-spec-v1-ready` |
+| 5.3A Editor GUI and desktop composition specification | `phase-5.2b-scout-desktop-r1-verified` | `docs/windows-application/EditorDesktopIntegrationSpecificationV1.md` | none; specification review | specifies the private Editor operation and sole private production `DesktopApplicationFacadeV1` composer | Tk/executors/Scout behavior/updates/provider changes/CLI reuse | `PHASE_5_3A_EDITOR_DESKTOP_SPECIFICATION_V1_READY_FOR_FREEZE` | `Specify Editor desktop integration V1` | `phase-5.3a-editor-desktop-spec-v1-ready` |
+| 5.3B Editor GUI and desktop composition implementation | `phase-5.3a-editor-desktop-spec-v1-ready` | `src/pastila_scout/desktop_editor_v1/__init__.py`, `src/pastila_scout/desktop_editor_v1/models.py`, `src/pastila_scout/desktop_editor_v1/service.py`, `src/pastila_scout/desktop_editor_v1/composition.py` | `tests/test_desktop_editor_v1.py` | private Editor adapter plus sole private production facade composer | Tk/executors/Scout behavior/updates/provider changes/CLI subprocess/global state | `PHASE_5_3B_EDITOR_DESKTOP_REVISION_1_VERIFIED` | `Add verified Editor desktop integration` | `phase-5.3b-editor-desktop-r1-verified` |
+| 5.3C Desktop startup integration specification | `phase-5.3b-editor-desktop-r1-verified` | `docs/windows-application/DesktopStartupIntegrationSpecificationV1.md` | none; specification review | specifies entrypoint invocation, failure presentation, facade handoff and lifetime, and unchanged shell executor ownership | backend/provider/path/update semantics/packaging/public API/composition redefinition | `PHASE_5_3C_DESKTOP_STARTUP_INTEGRATION_SPECIFICATION_V1_READY_FOR_FREEZE` | `Specify desktop startup integration V1` | `phase-5.3c-desktop-startup-integration-spec-v1-ready` |
+| 5.3D Desktop startup integration implementation | `phase-5.3c-desktop-startup-integration-spec-v1-ready` | `src/pastila_scout/desktop_v1/entrypoint.py`, `src/pastila_scout/desktop_v1/resources.py` | `tests/test_desktop_startup_integration_v1.py`, `tests/test_desktop_shell_v1.py` | private startup wiring and finite Romanian startup-failure resource only; no public Python API | backend/provider/path/update semantics/packaging/CLI subprocess/singletons/service locators/controller/view/model redesign | `PHASE_5_3D_DESKTOP_STARTUP_INTEGRATION_REVISION_1_VERIFIED` | `Add verified desktop startup integration` | `phase-5.3d-desktop-startup-integration-r1-verified` |
+| 5.4A Windows state specification | `phase-5.3d-desktop-startup-integration-r1-verified` | `docs/windows-application/WindowsStateSpecificationV1.md` | none; specification review | specifies private path/settings/migration APIs | packaging/updater | `PHASE_5_4A_WINDOWS_STATE_SPECIFICATION_V1_READY_FOR_FREEZE` | `Specify Windows application state V1` | `phase-5.4a-windows-state-spec-v1-ready` |
 | 5.4B Windows state implementation | `phase-5.4a-windows-state-spec-v1-ready` | `src/pastila_scout/windows_state_v1/__init__.py`, `src/pastila_scout/windows_state_v1/paths.py`, `src/pastila_scout/windows_state_v1/settings.py`, `src/pastila_scout/windows_state_v1/migrations.py`, `src/pastila_scout/windows_state_v1/errors.py`, `src/pastila_scout/desktop_v1/default-settings-v1.json` | `tests/test_windows_paths_v1.py`, `tests/test_windows_settings_v1.py`, `tests/test_windows_migrations_v1.py` | private | installer/updater/source bundles | `PHASE_5_4B_WINDOWS_STATE_REVISION_1_VERIFIED` | `Add verified Windows application state` | `phase-5.4b-windows-state-r1-verified` |
 | 5.5A Trust bootstrap specification | `phase-5.4b-windows-state-r1-verified` | `docs/windows-application/TrustBootstrapSpecificationV1.md` | none; specification review | specifies immutable non-secret bootstrap resources | private keys/updater/packaging | `PHASE_5_5A_TRUST_BOOTSTRAP_SPECIFICATION_V1_READY_FOR_FREEZE` | `Specify Windows trust bootstrap V1` | `phase-5.5a-trust-bootstrap-spec-v1-ready` |
 | 5.5B Trust bootstrap materialization | `phase-5.5a-trust-bootstrap-spec-v1-ready` | `resources/trust/pastila-root-1.pub`, `resources/trust/bootstrap-root-v1.json`, `resources/trust/bootstrap-root-provenance-v1.json`, `tests/fixtures/windows-trust/development-pastila-root-1.pub`, `tests/fixtures/windows-trust/development-bootstrap-root-v1.json` | `tests/test_trust_bootstrap_resource_v1.py` | no runtime API | private material/updater/packaging/stable build without verified production public key | `PHASE_5_5B_TRUST_BOOTSTRAP_REVISION_1_VERIFIED` | `Materialize verified Windows trust bootstrap` | `phase-5.5b-trust-bootstrap-r1-verified` |
@@ -1415,8 +1451,9 @@ supports Python 3.14. Phase 5.5B requires externally generated production public
 material but never its private key. Phase 5.7F requires a provisioned development endpoint
 and release key; Phase 5.7H requires independently Authenticode-authorized recovery test
 fixtures. Stable publication requires the production endpoint and Authenticode
-certificate. The future implementation chain is facade -> shell -> Scout -> Editor ->
-state -> trust bootstrap -> version projection -> packaging -> installer -> trust
+certificate. The future implementation chain is facade -> shell -> Scout -> Editor and
+private facade composition -> desktop startup integration -> state -> trust bootstrap ->
+version projection -> packaging -> installer -> trust
 contracts -> updater -> root recovery -> integrated verification -> Update Center ->
 source bundles -> release. Frozen Protocol 5.7A and Persistence 5.7B are already available
 inputs to the explicitly named trust/updater prerequisites; they are not rerun in future
