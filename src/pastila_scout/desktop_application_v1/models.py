@@ -588,8 +588,6 @@ class ScoutDesktopResultV1(_ValueSafety):
                 or any(not _counter(item) for item in counters)
                 or type(failed_source_ids) is not tuple
                 or any(not _valid_text(item) for item in failed_source_ids)
-                or failed_source_ids != tuple(sorted(failed_source_ids))
-                or len(set(failed_source_ids)) != len(failed_source_ids)
                 or type(executed_period_days) is not int
                 or executed_period_days not in _PERIODS
                 or type(executed_category) is not ScoutDesktopCategoryV1

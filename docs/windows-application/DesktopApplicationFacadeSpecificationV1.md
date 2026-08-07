@@ -271,8 +271,9 @@ ScoutDesktopResultV1(
 )
 ```
 
-`failed_source_ids` is sorted by Unicode code point and unique. It exposes identifiers,
-not lower exception messages. Counter invariants are:
+`failed_source_ids` preserves the authoritative lower failure-occurrence order and
+multiplicity. It is not sorted or deduplicated. It exposes identifiers, not lower
+exception messages. Counter invariants are:
 
 - `sources_succeeded + sources_failed == sources_checked`;
 - `len(failed_source_ids) == sources_failed`;

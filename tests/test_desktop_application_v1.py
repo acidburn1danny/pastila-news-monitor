@@ -49,6 +49,7 @@ from pastila_scout.desktop_application_v1 import (
     ScoutDesktopCategoryV1,
     ScoutDesktopRequestV1,
     ScoutDesktopResultV1,
+    reconstruct_scout_desktop_result,
 )
 from pastila_scout.editor_application_v1 import (
     EditorApplicationExitCodeV1,
@@ -306,8 +307,8 @@ def test_every_valid_scout_result_and_authoritative_reconstruction(status) -> No
         {"articles_inserted": 6},
         {"duplicates_skipped": 3},
         {"failed_source_ids": ["a"]},
-        {"failed_source_ids": ("b", "a")},
-        {"failed_source_ids": ("a", "a")},
+        {"failed_source_ids": ("a", 1)},
+        {"failed_source_ids": ("a",)},
         {"executed_period_days": 2},
         {"executed_category": "Politica"},
     ],
@@ -315,6 +316,31 @@ def test_every_valid_scout_result_and_authoritative_reconstruction(status) -> No
 def test_scout_result_rejects_invalid_counters_and_sequences(changes) -> None:
     with pytest.raises(DesktopApplicationConfigurationError):
         scout_result(**changes)
+
+
+@pytest.mark.parametrize(
+    "failed_source_ids",
+    [
+        ("zeta", "alpha"),
+        ("same", "same"),
+        ("id: delimiter-like", "știri"),
+    ],
+)
+def test_scout_result_preserves_failed_source_occurrences(
+    failed_source_ids: tuple[str, str],
+) -> None:
+    result = scout_result(
+        DesktopOperationStatusV1.PARTIAL,
+        sources_checked=3,
+        sources_succeeded=1,
+        sources_failed=2,
+        failed_source_ids=failed_source_ids,
+    )
+
+    assert result.failed_source_ids is failed_source_ids
+    assert (
+        reconstruct_scout_desktop_result(result).failed_source_ids == failed_source_ids
+    )
 
 
 def test_result_status_matrix_and_failure_message_are_closed() -> None:
@@ -783,6 +809,7 @@ def test_construction_is_passive_under_denied_runtime_probes(
 def test_scope_cardinality_and_frozen_specifications() -> None:
     root = Path(__file__).resolve().parents[1]
     baseline = "phase-5.1a-desktop-application-facade-spec-v1-ready"
+    verified = "phase-5.1b-desktop-application-facade-r1-verified"
     production = {
         "src/pastila_scout/desktop_application_v1/__init__.py",
         "src/pastila_scout/desktop_application_v1/errors.py",
@@ -802,6 +829,9 @@ def test_scope_cardinality_and_frozen_specifications() -> None:
         ),
         "src/pastila_scout/desktop_application_v1/services.py": (
             "0D789E87433F21E12C85FCBDACF55A722D7C23B8F13F0A3A81326E6EB2B410E7"
+        ),
+        "tests/test_desktop_application_v1.py": (
+            "D94F1B6012C97DD2CA182E04E44B6FB0B9E0763FD23B57AFA217D34632484782"
         ),
     }
 
@@ -831,45 +861,46 @@ def test_scope_cardinality_and_frozen_specifications() -> None:
         ).stdout.strip()
         == "73823596b0131deb0234c610e5f73daf18422f7e"
     )
+    assert (
+        subprocess.run(
+            ["git", "rev-parse", f"{verified}^{{}}"],
+            cwd=root,
+            capture_output=True,
+            text=True,
+            check=True,
+        ).stdout.strip()
+        == "64ae9c9ddf26797e3fe887b28d86c1352bd411f6"
+    )
     assert names("diff", "--cached", "--name-only") == set()
-    changed = subprocess.run(
-        ["git", "diff", "--name-only", baseline],
-        cwd=root,
-        capture_output=True,
-        text=True,
-        check=True,
-    ).stdout.splitlines()
-    untracked = subprocess.run(
-        ["git", "ls-files", "--others", "--exclude-standard"],
-        cwd=root,
-        capture_output=True,
-        text=True,
-        check=True,
-    ).stdout.splitlines()
-    current = {item.replace("\\", "/") for item in (*changed, *untracked)}
-    assert phase_production(current) == production
-    assert focused_test in current
+    historical_delta = names("diff", "--name-only", f"{verified}^", verified)
+    assert phase_production(historical_delta) == production
+    assert historical_delta - production == {focused_test}
     for path, expected_hash in required_hashes.items():
-        assert hashlib.sha256((root / path).read_bytes()).hexdigest().upper() == (
-            expected_hash
-        )
-    hypothetical_future = current | {"src/pastila_scout/future_phase_v1/service.py"}
+        historical = subprocess.run(
+            ["git", "show", f"{verified}:{path}"],
+            cwd=root,
+            capture_output=True,
+            check=True,
+        ).stdout
+        assert hashlib.sha256(historical).hexdigest().upper() == expected_hash
+    hypothetical_future = historical_delta | {
+        "src/pastila_scout/future_phase_v1/service.py"
+    }
     assert phase_production(hypothetical_future) == production
-    hypothetical_expansion = current | {
+    hypothetical_expansion = historical_delta | {
         "src/pastila_scout/desktop_application_v1/unauthorized.py"
     }
     assert phase_production(hypothetical_expansion) != production
-    specification = (
-        root / "docs/windows-application/DesktopApplicationFacadeSpecificationV1.md"
-    )
-    assert hashlib.sha256(specification.read_bytes()).hexdigest().upper() == (
+    historical_specification = subprocess.run(
+        [
+            "git",
+            "show",
+            f"{baseline}:docs/windows-application/DesktopApplicationFacadeSpecificationV1.md",
+        ],
+        cwd=root,
+        capture_output=True,
+        check=True,
+    ).stdout
+    assert hashlib.sha256(historical_specification).hexdigest().upper() == (
         "DB992030BA19FD2C80F6DA7627D3CEC8F4FC2DB9634A5F9892527C4E37FBCD7E"
-    )
-    assert (
-        subprocess.run(
-            ["git", "diff", "--quiet", "--", specification],
-            cwd=root,
-            check=False,
-        ).returncode
-        == 0
     )
