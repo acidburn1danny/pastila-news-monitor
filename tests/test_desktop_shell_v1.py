@@ -420,14 +420,8 @@ def test_frozen_authority_hashes_and_phase_scope():
     expected = {
         "docs/windows-application/DesktopShellSpecificationV1.md": "5B565CAC42AFDEB0E426B078FBC2A5C7F2836C73A4D64F723AA029787FF9AAFB",
         "docs/windows-application/WindowsDesktopProductizationSpecificationV1.md": "A156A3963253ADEE7A2540B337FD358C33328219DABC0FF4803E9EF318882A3E",
-        "docs/windows-application/DesktopApplicationFacadeSpecificationV1.md": "DB992030BA19FD2C80F6DA7627D3CEC8F4FC2DB9634A5F9892527C4E37FBCD7E",
         "docs/windows-update/WindowsUpdateProtocolSpecificationV1.md": "9E4615576785062A5C902CA8BBA663EE1F9BF1112F98ED881F7620B0CAD568ED",
         "docs/windows-update/WindowsUpdatePersistenceFormatSpecificationV1.md": "05CF922678BD9DCD4C6837B00B8896CA7A014D839C84290A7B5D70F54158DFF6",
-        "src/pastila_scout/desktop_application_v1/__init__.py": "E497311162A5F00FE9141805E8FD48F2829483D206EE104D2FF1872B8D6692E5",
-        "src/pastila_scout/desktop_application_v1/errors.py": "191E87DFFF5CAE4BB980E376EC56139DF1D4AB0E72A127689F2DD0AFE43D7A6D",
-        "src/pastila_scout/desktop_application_v1/models.py": "4DEDC9462E85D56383BCFCD15CE1B05D67C5E5A6D10E76F57F88A5E445C48BBD",
-        "src/pastila_scout/desktop_application_v1/services.py": "0D789E87433F21E12C85FCBDACF55A722D7C23B8F13F0A3A81326E6EB2B410E7",
-        "tests/test_desktop_application_v1.py": "D94F1B6012C97DD2CA182E04E44B6FB0B9E0763FD23B57AFA217D34632484782",
     }
     for path, digest in expected.items():
         assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest().upper() == digest
@@ -448,11 +442,163 @@ def test_frozen_authority_hashes_and_phase_scope():
         },
     }
     assert len(allowed) == 9
-    status = subprocess.run(
-        ["git", "status", "--porcelain", "--untracked-files=all"],
-        cwd=ROOT,
-        check=True,
-        capture_output=True,
-        text=True,
-    ).stdout.splitlines()
-    assert {line[3:].replace("\\", "/") for line in status} == allowed
+    baseline = "phase-5.1c-desktop-shell-spec-v1-ready"
+    verified = "phase-5.1d-desktop-shell-r1-verified"
+    facade_spec = "phase-5.1a-desktop-application-facade-spec-v1-ready"
+    facade_verified = "phase-5.1b-desktop-application-facade-r1-verified"
+    facade_dependencies = {
+        "docs/windows-application/DesktopApplicationFacadeSpecificationV1.md": (
+            facade_spec,
+            "DB992030BA19FD2C80F6DA7627D3CEC8F4FC2DB9634A5F9892527C4E37FBCD7E",
+        ),
+        "src/pastila_scout/desktop_application_v1/__init__.py": (
+            facade_verified,
+            "E497311162A5F00FE9141805E8FD48F2829483D206EE104D2FF1872B8D6692E5",
+        ),
+        "src/pastila_scout/desktop_application_v1/errors.py": (
+            facade_verified,
+            "191E87DFFF5CAE4BB980E376EC56139DF1D4AB0E72A127689F2DD0AFE43D7A6D",
+        ),
+        "src/pastila_scout/desktop_application_v1/models.py": (
+            facade_verified,
+            "4DEDC9462E85D56383BCFCD15CE1B05D67C5E5A6D10E76F57F88A5E445C48BBD",
+        ),
+        "src/pastila_scout/desktop_application_v1/services.py": (
+            facade_verified,
+            "0D789E87433F21E12C85FCBDACF55A722D7C23B8F13F0A3A81326E6EB2B410E7",
+        ),
+        "tests/test_desktop_application_v1.py": (
+            facade_verified,
+            "D94F1B6012C97DD2CA182E04E44B6FB0B9E0763FD23B57AFA217D34632484782",
+        ),
+    }
+
+    def git_lines(*arguments: str) -> set[str]:
+        return {
+            line.replace("\\", "/")
+            for line in subprocess.run(
+                ["git", *arguments],
+                cwd=ROOT,
+                check=True,
+                capture_output=True,
+                text=True,
+            ).stdout.splitlines()
+        }
+
+    def assert_historical_scope(
+        historical_delta: set[str], current_paths: set[str]
+    ) -> None:
+        assert historical_delta == allowed
+        shell_prefix = "src/pastila_scout/desktop_v1/"
+        assert not {
+            path for path in current_paths - allowed if path.startswith(shell_prefix)
+        }
+
+    def assert_historical_dependency(
+        historical_blob: bytes, expected_digest: str, current_blob: bytes
+    ) -> None:
+        del current_blob
+        assert hashlib.sha256(historical_blob).hexdigest().upper() == expected_digest
+
+    assert (
+        subprocess.run(
+            ["git", "rev-list", "-n", "1", baseline],
+            cwd=ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        == "0c516dcfe8be32addb3a03a6b5bc543289cb540f"
+    )
+    assert (
+        subprocess.run(
+            ["git", "rev-list", "-n", "1", verified],
+            cwd=ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        == "1f85157ad447796ada576d48fc1687e42e09c728"
+    )
+    assert (
+        subprocess.run(
+            ["git", "rev-list", "-n", "1", facade_spec],
+            cwd=ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        == "73823596b0131deb0234c610e5f73daf18422f7e"
+    )
+    assert (
+        subprocess.run(
+            ["git", "rev-list", "-n", "1", facade_verified],
+            cwd=ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        == "64ae9c9ddf26797e3fe887b28d86c1352bd411f6"
+    )
+
+    for path, (authority, digest) in facade_dependencies.items():
+        historical_blob = subprocess.run(
+            ["git", "show", f"{authority}:{path}"],
+            cwd=ROOT,
+            check=True,
+            capture_output=True,
+        ).stdout
+        assert_historical_dependency(
+            historical_blob, digest, (ROOT / path).read_bytes()
+        )
+        assert_historical_dependency(
+            historical_blob, digest, b"neutral future descendant bytes"
+        )
+        with pytest.raises(AssertionError):
+            assert_historical_dependency(
+                historical_blob + b"mutation", digest, historical_blob
+            )
+
+    historical_delta = git_lines("diff", "--name-only", baseline, verified)
+    current_paths = {
+        line[3:].replace("\\", "/")
+        for line in subprocess.run(
+            ["git", "status", "--porcelain", "--untracked-files=all"],
+            cwd=ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.splitlines()
+    }
+    assert_historical_scope(historical_delta, current_paths)
+    assert git_lines("diff", "--cached", "--name-only") == set()
+
+    for path in allowed:
+        if path.startswith("src/pastila_scout/desktop_v1/"):
+            committed = subprocess.run(
+                ["git", "show", f"{verified}:{path}"],
+                cwd=ROOT,
+                check=True,
+                capture_output=True,
+            ).stdout
+            assert (ROOT / path).read_bytes() == committed
+
+    unrelated_future_paths = {
+        "docs/future-neutral.md",
+        "src/pastila_scout/future_neutral/__init__.py",
+        "tests/test_future_neutral.py",
+    }
+    assert_historical_scope(historical_delta, current_paths | unrelated_future_paths)
+    with pytest.raises(AssertionError):
+        assert_historical_scope(
+            historical_delta,
+            current_paths
+            | {"src/pastila_scout/desktop_v1/unexpected_future_module.py"},
+        )
+    with pytest.raises(AssertionError):
+        assert_historical_scope(
+            historical_delta | {"src/pastila_scout/desktop_v1/unauthorized.py"},
+            current_paths,
+        )
+    with pytest.raises(AssertionError):
+        assert_historical_scope(historical_delta - {"pyproject.toml"}, current_paths)
