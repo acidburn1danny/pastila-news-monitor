@@ -47,6 +47,7 @@ class PollResult:
     articles_filtered_undated: int = 0
     articles_filtered_limit: int = 0
     category: str = "all"
+    failed_source_ids: tuple[str, ...] = ()
 
 
 def poll_once(
@@ -128,6 +129,7 @@ def poll_once(
         filtered_limit = 0
         successful_sources = 0
         failures: list[str] = []
+        failed_source_ids: list[str] = []
 
         work_results = _collect_source_results(
             selected_sources,
@@ -147,6 +149,7 @@ def poll_once(
                     "Source task failed id=%s reason=%s", source.id, work.error
                 )
                 failures.append(f"{source.id}: {work.error}")
+                failed_source_ids.append(source.id)
                 continue
 
             articles_found += work.extracted_count
@@ -222,6 +225,7 @@ def poll_once(
                     "Source persistence failed id=%s reason=%s", source.id, exc
                 )
                 failures.append(f"{source.id}: {exc}")
+                failed_source_ids.append(source.id)
 
         status = _run_status(successful_sources, failures)
         error_message = "; ".join(failures) or None
@@ -250,6 +254,7 @@ def poll_once(
             articles_filtered_undated=filtered_undated,
             articles_filtered_limit=filtered_limit,
             category=category,
+            failed_source_ids=tuple(failed_source_ids),
         )
         logger.info(
             "Poll completed status=%s sources_checked=%d sources_succeeded=%d "

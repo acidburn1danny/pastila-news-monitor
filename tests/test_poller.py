@@ -1,4 +1,6 @@
+import copy
 import json
+import pickle
 import sqlite3
 import threading
 from datetime import UTC, datetime, timedelta
@@ -11,7 +13,7 @@ from pastila_scout.config import SourceConfig
 from pastila_scout.database import open_database
 from pastila_scout.logging_config import configure_logging
 from pastila_scout.models import ArticleCandidate
-from pastila_scout.poller import poll_once
+from pastila_scout.poller import PollResult, poll_once
 
 RSS = b"""<rss version="2.0"><channel>
   <title>News</title><link>https://example.com</link><description>News</description>
@@ -144,6 +146,7 @@ def test_poll_groups_matching_articles_and_keeps_distinct_source_counts(
     result = poll_once(database_path=database, config_path=config)
 
     assert result.status == "success"
+    assert result.failed_source_ids == ()
     with open_database(database) as connection:
         events = connection.execute("SELECT * FROM events").fetchall()
         articles = connection.execute("SELECT * FROM articles").fetchall()
@@ -939,6 +942,150 @@ def test_failure_order_is_deterministic_despite_worker_completion_order(
     assert result.source_failures == (
         "source0: first failed later",
         "source1: second failed first",
+    )
+    assert result.failed_source_ids == ("source0", "source1")
+
+
+@pytest.mark.parametrize(
+    "source_id",
+    (
+        "plain-ascii",
+        "id with spaces",
+        "id:colon",
+        "id::multiple::colons",
+        "id: offline: delimiter-like",
+        "path/segment",
+        r"path\segment",
+        "punctuation.!@#$%^&*()[]{}",
+        "știri-românești",
+    ),
+)
+def test_failed_source_identity_is_lossless_and_diagnostic_is_compatible(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    source_id: str,
+) -> None:
+    config = tmp_path / "sources.yaml"
+    config.write_text(
+        json.dumps(
+            {
+                "sources": [
+                    {
+                        "id": source_id,
+                        "name": "Adversarial source",
+                        "type": "rss",
+                        "url": "https://example.com/feed",
+                        "enabled": True,
+                        "categories": ["Politica"],
+                    }
+                ]
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    install_client(monkeypatch, {})
+
+    class FailingAdapter:
+        def fetch(self, source: object, http_client: object) -> list[ArticleCandidate]:
+            raise RuntimeError("offline: retry later")
+
+    monkeypatch.setattr(
+        "pastila_scout.poller.get_adapter", lambda source_type: FailingAdapter()
+    )
+
+    result = poll_once(config, tmp_path / "news.db")
+
+    assert result.failed_source_ids == (source_id,)
+    assert result.source_failures == (f"{source_id}: offline: retry later",)
+    assert result.sources_failed == 1
+
+
+def test_poll_result_appended_identity_field_preserves_constructor_protocols() -> None:
+    legacy = PollResult(1, "success", 0, 0, 0, None)
+    structured = PollResult(
+        2,
+        "failed",
+        1,
+        0,
+        0,
+        "source: offline",
+        sources_failed=1,
+        source_failures=("source: offline",),
+        failed_source_ids=("source",),
+    )
+
+    assert legacy.failed_source_ids == ()
+    assert copy.copy(structured) == structured
+    assert copy.deepcopy(structured) == structured
+    assert pickle.loads(pickle.dumps(structured)) == structured
+    assert "failed_source_ids=('source',)" in repr(structured)
+
+
+def test_structured_failure_ids_cover_interleaved_and_persistence_failures(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    source_ids = ("first:failure", "success", "persist\\failure")
+    config = tmp_path / "sources.yaml"
+    config.write_text(
+        json.dumps(
+            {
+                "polling": {"concurrency": 3},
+                "sources": [
+                    {
+                        "id": source_id,
+                        "name": source_id,
+                        "type": "rss",
+                        "url": f"https://example.com/{index}",
+                        "enabled": True,
+                        "categories": ["Politica"],
+                    }
+                    for index, source_id in enumerate(source_ids)
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    install_client(monkeypatch, {})
+
+    class MixedAdapter:
+        def fetch(
+            self, source: SourceConfig, http_client: object
+        ) -> list[ArticleCandidate]:
+            if source.id == "first:failure":
+                raise RuntimeError("fetch failed")
+            if source.id == "success":
+                return []
+            return [
+                ArticleCandidate(
+                    source_id=source.id,
+                    url="https://example.com/persistence-candidate",
+                    title="candidate",
+                    summary=None,
+                    published_at=None,
+                    raw_payload=None,
+                )
+            ]
+
+    monkeypatch.setattr(
+        "pastila_scout.poller.get_adapter", lambda source_type: MixedAdapter()
+    )
+    monkeypatch.setattr(
+        "pastila_scout.poller._insert_candidate",
+        lambda connection, candidate: (_ for _ in ()).throw(
+            RuntimeError("persistence failed")
+        ),
+    )
+
+    result = poll_once(config, tmp_path / "news.db")
+
+    assert result.status == "partial"
+    assert result.sources_succeeded == 1
+    assert result.sources_failed == 2
+    assert result.failed_source_ids == ("first:failure", "persist\\failure")
+    assert result.source_failures == (
+        "first:failure: fetch failed",
+        "persist\\failure: persistence failed",
     )
 
 
