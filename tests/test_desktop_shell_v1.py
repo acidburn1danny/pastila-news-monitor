@@ -466,12 +466,46 @@ def test_import_graph_has_no_backend_or_composition_ownership(monkeypatch):
 def test_frozen_authority_hashes_and_phase_scope():
     expected = {
         "docs/windows-application/DesktopShellSpecificationV1.md": "5B565CAC42AFDEB0E426B078FBC2A5C7F2836C73A4D64F723AA029787FF9AAFB",
-        "docs/windows-application/WindowsDesktopProductizationSpecificationV1.md": "A156A3963253ADEE7A2540B337FD358C33328219DABC0FF4803E9EF318882A3E",
         "docs/windows-update/WindowsUpdateProtocolSpecificationV1.md": "9E4615576785062A5C902CA8BBA663EE1F9BF1112F98ED881F7620B0CAD568ED",
         "docs/windows-update/WindowsUpdatePersistenceFormatSpecificationV1.md": "05CF922678BD9DCD4C6837B00B8896CA7A014D839C84290A7B5D70F54158DFF6",
     }
     for path, digest in expected.items():
         assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest().upper() == digest
+    productization = (
+        "docs/windows-application/WindowsDesktopProductizationSpecificationV1.md"
+    )
+    historical_blob = subprocess.check_output(
+        ["git", "show", f"phase-5.1d-desktop-shell-r1-verified:{productization}"],
+        cwd=ROOT,
+    )
+    assert hashlib.sha256(historical_blob).hexdigest().upper() == (
+        "A156A3963253ADEE7A2540B337FD358C33328219DABC0FF4803E9EF318882A3E"
+    )
+    v12_tag = "phase-5-windows-desktop-productization-spec-v12-windows-state-consumption-roadmap-ready"
+    assert (
+        subprocess.check_output(
+            ["git", "cat-file", "-t", v12_tag], cwd=ROOT, text=True
+        ).strip()
+        == "tag"
+    )
+    assert (
+        subprocess.check_output(
+            ["git", "rev-parse", f"{v12_tag}^{{}}"], cwd=ROOT, text=True
+        ).strip()
+        == "dbda63533033aa25fe2ea2e970f6943851056078"
+    )
+    current_blob = subprocess.check_output(
+        ["git", "show", f"{v12_tag}:{productization}"], cwd=ROOT
+    )
+    assert hashlib.sha256(current_blob).hexdigest().upper() == (
+        "556ECE4D3D64C163CC42B17BD0431A424FB06CFA89011BBCF89EC151EE0D593C"
+    )
+    assert current_blob == (ROOT / productization).read_bytes()
+    assert historical_blob != current_blob
+    with pytest.raises(AssertionError):
+        assert hashlib.sha256(historical_blob + b"mutation").hexdigest().upper() == (
+            "A156A3963253ADEE7A2540B337FD358C33328219DABC0FF4803E9EF318882A3E"
+        )
     allowed = {
         "pyproject.toml",
         "tests/test_desktop_shell_v1.py",
@@ -532,20 +566,20 @@ def test_frozen_authority_hashes_and_phase_scope():
             ).stdout.splitlines()
         }
 
-    def assert_historical_scope(
-        historical_delta: set[str], current_paths: set[str]
-    ) -> None:
+    def assert_historical_scope(historical_delta: set[str]) -> None:
         assert historical_delta == allowed
-        shell_prefix = "src/pastila_scout/desktop_v1/"
-        assert not {
-            path for path in current_paths - allowed if path.startswith(shell_prefix)
-        }
 
     def assert_historical_dependency(
         historical_blob: bytes, expected_digest: str, current_blob: bytes
     ) -> None:
         del current_blob
         assert hashlib.sha256(historical_blob).hexdigest().upper() == expected_digest
+
+    def assert_staging(paths: set[str]) -> None:
+        assert paths == set()
+
+    def assert_tag_target(actual: str, expected: str) -> None:
+        assert actual == expected
 
     assert (
         subprocess.run(
@@ -587,6 +621,27 @@ def test_frozen_authority_hashes_and_phase_scope():
         ).stdout.strip()
         == "64ae9c9ddf26797e3fe887b28d86c1352bd411f6"
     )
+    historical_productization_tag = (
+        "phase-5-windows-desktop-productization-spec-v11-"
+        "gui-command-time-composition-roadmap-ready"
+    )
+    assert git_lines("cat-file", "-t", historical_productization_tag) == {"tag"}
+    historical_productization_target = subprocess.check_output(
+        ["git", "rev-parse", f"{historical_productization_tag}^{{}}"],
+        cwd=ROOT,
+        text=True,
+    ).strip()
+    assert_tag_target(
+        historical_productization_target,
+        "4727a480ad95da82dd6a982bfdde53ae0e73d0a6",
+    )
+    with pytest.raises(AssertionError):
+        assert_tag_target("synthetic-wrong-target", historical_productization_target)
+    tagged_productization_blob = subprocess.check_output(
+        ["git", "show", f"{historical_productization_tag}:{productization}"],
+        cwd=ROOT,
+    )
+    assert tagged_productization_blob == historical_blob
 
     for path, (authority, digest) in facade_dependencies.items():
         historical_blob = subprocess.run(
@@ -607,18 +662,10 @@ def test_frozen_authority_hashes_and_phase_scope():
             )
 
     historical_delta = git_lines("diff", "--name-only", baseline, verified)
-    current_paths = {
-        line[3:].replace("\\", "/")
-        for line in subprocess.run(
-            ["git", "status", "--porcelain", "--untracked-files=all"],
-            cwd=ROOT,
-            check=True,
-            capture_output=True,
-            text=True,
-        ).stdout.splitlines()
-    }
-    assert_historical_scope(historical_delta, current_paths)
-    assert git_lines("diff", "--cached", "--name-only") == set()
+    assert_historical_scope(historical_delta)
+    assert_staging(git_lines("diff", "--cached", "--name-only"))
+    with pytest.raises(AssertionError):
+        assert_staging({"synthetic-staged-mutation.py"})
 
     for path in allowed:
         if path.startswith("src/pastila_scout/desktop_v1/"):
@@ -638,18 +685,11 @@ def test_frozen_authority_hashes_and_phase_scope():
         "docs/future-neutral.md",
         "src/pastila_scout/future_neutral/__init__.py",
         "tests/test_future_neutral.py",
+        "src/pastila_scout/desktop_v1/future_descendant.py",
     }
-    assert_historical_scope(historical_delta, current_paths | unrelated_future_paths)
+    assert unrelated_future_paths.isdisjoint(historical_delta)
+    assert_historical_scope(historical_delta)
     with pytest.raises(AssertionError):
-        assert_historical_scope(
-            historical_delta,
-            current_paths
-            | {"src/pastila_scout/desktop_v1/unexpected_future_module.py"},
-        )
+        assert_historical_scope(historical_delta | {"historical-expansion.py"})
     with pytest.raises(AssertionError):
-        assert_historical_scope(
-            historical_delta | {"src/pastila_scout/desktop_v1/unauthorized.py"},
-            current_paths,
-        )
-    with pytest.raises(AssertionError):
-        assert_historical_scope(historical_delta - {"pyproject.toml"}, current_paths)
+        assert_historical_scope(historical_delta - {"pyproject.toml"})

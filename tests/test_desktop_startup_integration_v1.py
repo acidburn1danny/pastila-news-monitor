@@ -493,11 +493,55 @@ def test_import_is_passive_and_ownership_exclusions_are_static() -> None:
 def test_phase_scope_and_frozen_authorities() -> None:
     expected = {
         "docs/windows-application/DesktopStartupIntegrationSpecificationV1.md": "F32D701E3397D2DE8EFA13D1A69D543FA76A826672008A7267060F45DE2E45F9",
-        "docs/windows-application/WindowsDesktopProductizationSpecificationV1.md": "A156A3963253ADEE7A2540B337FD358C33328219DABC0FF4803E9EF318882A3E",
         "src/pastila_scout/desktop_editor_v1/composition.py": "1C340F7D550E1606BCB055F4EBB1E13BC1A8FFDC2F57AADF950EA5A351A375E5",
     }
     for path, digest in expected.items():
         assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest().upper() == digest
+    productization = (
+        "docs/windows-application/WindowsDesktopProductizationSpecificationV1.md"
+    )
+    historical_blob = subprocess.check_output(
+        [
+            "git",
+            "show",
+            f"phase-5.3d-desktop-startup-integration-r1-verified:{productization}",
+        ],
+        cwd=ROOT,
+    )
+    assert hashlib.sha256(historical_blob).hexdigest().upper() == (
+        "A156A3963253ADEE7A2540B337FD358C33328219DABC0FF4803E9EF318882A3E"
+    )
+    v12_tag = "phase-5-windows-desktop-productization-spec-v12-windows-state-consumption-roadmap-ready"
+    assert (
+        subprocess.check_output(
+            ["git", "cat-file", "-t", v12_tag], cwd=ROOT, text=True
+        ).strip()
+        == "tag"
+    )
+    assert (
+        subprocess.check_output(
+            ["git", "rev-parse", f"{v12_tag}^{{}}"], cwd=ROOT, text=True
+        ).strip()
+        == "dbda63533033aa25fe2ea2e970f6943851056078"
+    )
+    current_blob = subprocess.check_output(
+        ["git", "show", f"{v12_tag}:{productization}"], cwd=ROOT
+    )
+    assert hashlib.sha256(current_blob).hexdigest().upper() == (
+        "556ECE4D3D64C163CC42B17BD0431A424FB06CFA89011BBCF89EC151EE0D593C"
+    )
+    assert current_blob == (ROOT / productization).read_bytes()
+    assert historical_blob != current_blob
+    with pytest.raises(AssertionError):
+        assert hashlib.sha256(historical_blob + b"mutation").hexdigest().upper() == (
+            "A156A3963253ADEE7A2540B337FD358C33328219DABC0FF4803E9EF318882A3E"
+        )
+    assert (
+        subprocess.check_output(
+            ["git", "diff", "--cached", "--name-only"], cwd=ROOT, text=True
+        ).strip()
+        == ""
+    )
     baseline = subprocess.check_output(
         [
             "git",
