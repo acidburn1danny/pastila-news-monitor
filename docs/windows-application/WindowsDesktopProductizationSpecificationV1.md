@@ -3,6 +3,13 @@
 Status: implementation-ready specification. This document is normative for Phase 5.
 It defines architecture only; it does not authorize implementation.
 
+Revision 12 is the roadmap authority for every unfrozen milestone beginning with Phase
+5.4A. Its maintenance verdict, commit subject, and annotated tag are
+`PHASE_5_WINDOWS_DESKTOP_PRODUCTIZATION_SPECIFICATION_V12_WINDOWS_STATE_CONSUMPTION_ROADMAP_READY_FOR_FREEZE`,
+`Close Windows state consumption roadmap`, and
+`phase-5-windows-desktop-productization-spec-v12-windows-state-consumption-roadmap-ready`.
+Completed identities and prerequisites through Phase 5.3D remain unchanged.
+
 ## 1. Baseline and scope
 
 The authority baseline is `phase-4.3-editor-cli-run-r6-verified` at
@@ -49,9 +56,11 @@ Repository inspection establishes the following facts.
   `EditorApplicationRequestV1` to `EditorApplicationCoordinatorV1.execute()` and its
   public `EditorApplicationResultV1`. Command-time composition is currently private
   (`_compose_editor_application_runtime_v1()` and the CLI composition adapter).
-- `config/config.yaml` owns polling, matching, AI, cache, and scoring settings.
-  `config/sources.yaml` owns validated source definitions. Both are repository files,
-  not yet installed-user configuration contracts.
+- `config/config.yaml` is development-only Scout application configuration owned by
+  `config.py`; it owns polling, matching, AI, cache, scoring, and the reference to a
+  source-definition file. `config/sources.yaml` is the development source-definition
+  document whose YAML parsing, validation, categories, and source semantics are also
+  owned by `config.py`. Neither file is the Windows application `settings.json` schema.
 - Credentials are not configuration fields. OpenAI obtains `OPENAI_API_KEY` at
   command-time provider composition. Ollama owns a local HTTP client and configurable
   model. Credentials and clients never enter GUI models, logs, settings exports, or
@@ -208,6 +217,8 @@ HTML. Existing report writers remain unchanged.
 | Ownership | Exact location |
 | --- | --- |
 | Read-only binaries/resources/keys/defaults | `%LOCALAPPDATA%\Programs\PastilaScout\app\` |
+| immutable Scout application configuration | `%LOCALAPPDATA%\Programs\PastilaScout\app\config\config.yaml` |
+| immutable bundled source definitions | `%LOCALAPPDATA%\Programs\PastilaScout\app\config\sources.yaml` |
 | SQLite database | `%LOCALAPPDATA%\PastilaScout\data\news_monitor.db` |
 | reports | `%LOCALAPPDATA%\PastilaScout\reports\` |
 | cache | `%LOCALAPPDATA%\PastilaScout\cache\` |
@@ -231,19 +242,23 @@ and tested with non-ASCII usernames and long paths. Creation rejects reparse poi
 security-sensitive update directories. Permission failure maps to configuration/storage
 failure and never falls back to the install directory.
 
-On first installed launch, an explicit migration screen offers to copy a detected
-development database/reports/config. It shows source and destination, never deletes the
-source, validates before activation, records a receipt, and is skipped if destination
-state exists. There is no silent cwd migration.
+On first installed launch, the Phase 5.4D integration offers an explicit migration
+screen. The user selects one development root; there is no detection scan. It offers
+only the database, reports, existing development `config/settings.json`, and validated
+`config/sources.yaml`. It shows source and destination, never deletes the source,
+validates before activation, records a receipt, and is skipped if destination state
+exists. `config/config.yaml` is development-only and never migrates, copies, transforms,
+or seeds installed state. There is no silent cwd migration.
 
 ## 7. Configuration ownership and precedence
 
 | Item | Class | Owner/location |
 | --- | --- | --- |
-| default sources | bundled immutable default | signed application resource |
+| Scout application configuration | bundled immutable installed default; development repository file | installed `app\config\config.yaml`; development `config/config.yaml` |
+| default sources | bundled immutable default | installed `app\config\sources.yaml` |
 | trusted source set | remotely updateable trusted data | local data bundle store |
 | source edits | user-editable override | roaming `sources.override.yaml` |
-| Scout/settings/log level | user-editable settings | roaming `settings.json` |
+| Desktop preferences/log level | user-editable application settings | roaming `settings.json`; JSON schema distinct from Scout YAML |
 | Editor profile/context/generation | user-selected validated documents | user paths; recent references only in settings |
 | provider/model/output defaults | user-editable settings | roaming settings |
 | update channel | bundled immutable | `stable`; not user-changeable in Phase 5 |
@@ -260,6 +275,95 @@ verified remote source bundle, then bundled default. Overrides identify sources 
 stable ID and may only change fields allowed by their schema. A corrupt user file is
 quarantined by rename only with consent, reported visibly, and never silently ignored.
 Application updates never overwrite roaming files.
+
+### 7.1 Windows-state consumption and development migration closure
+
+Phase 5.4B is a passive producer of private path, settings, and migration APIs. It does
+not modify frozen startup or composition. Phase 5.4C specifies their sole initial
+production consumption contract; Phase 5.4D implements it before trust bootstrap,
+packaging, or installation work begins.
+
+Installed startup resolves `WindowsApplicationPathsV1`, creates only its authorized
+mutable directories, loads `settings.json`, offers the explicit first-launch migration,
+selects one source-definition path, and then composes the existing facade. Development
+startup uses an explicit repository development root supplied by the development entry
+boundary and resolves the existing `config/config.yaml`, `config/sources.yaml`,
+`data/news_monitor.db`, and `reports/` paths. Development mode never offers or executes
+migration. Installed mode never falls back to those development-relative paths.
+The non-frozen GUI entrypoint supplies exactly
+`Path(__file__).resolve().parents[3]` as its development root and validates the expected
+repository layout; failure is terminal and never falls back to the current directory.
+Installed mode requires `sys.frozen` plus the bundled `default-settings-v1.json` marker.
+
+`desktop_v1/state_composition.py` is the sole new integration boundary. The entrypoint
+calls its one private composition function once while the root is withdrawn and supplies
+only explicit environment/frozen/development-root inputs plus a synchronous migration-
+consent callback. That function resolves state, performs the authorized initialization
+and optional migration, selects source configuration, and calls
+`_compose_desktop_application_facade_v1` exactly once with keyword-only `config_path`,
+`sources_path`, `database_path`, and `report_directory` concrete paths. It returns the
+facade plus an immutable safe projection of application settings for view construction.
+The entrypoint retains both for the Shell lifetime. No global registry, service locator,
+singleton, lazy discovery, second composer, or per-command resolution exists.
+The state boundary runs at the existing single composer position: after root withdrawal
+and before controller/view construction. In installed mode with an eligible migration
+plan, the entrypoint uses a modal directory chooser and confirmation owned by 5.4D; a
+cancel or refusal continues with untouched installed state, while a migration failure
+terminates startup through the existing finite safe presentation. No path or configuration
+content enters the failure message.
+
+The desktop Scout adapter retains both injected Scout paths and passes them to an
+additive `poll_once(..., sources_path=...)` keyword. `poll_once` delegates their parsing
+to `load_configuration`; it owns no precedence or Windows path selection. The view
+receives only the validated Scout period/category and Editor profile/context/generation/
+provider/model/timeout/output defaults that already correspond to its fields. Logging,
+update preferences, and a future settings editor remain owned by their later milestones.
+
+The installed immutable Scout application configuration is
+`<installation-root>\config\config.yaml`; it remains parsed and validated only by
+`config.py`. Its `sources_file` value does not choose runtime precedence. The integration
+passes the independently selected source-definition path through the desktop Scout
+adapter and `poll_once` to the existing `load_configuration(application_path,
+sources_path=...)` authority. This additive injected path changes no Scout schema,
+category, polling, provider, retry, or persistence semantics.
+The installed file is a release-bundled immutable resource derived during packaging;
+first-launch migration never creates or replaces it.
+
+Source selection is exact: a present roaming `sources.override.yaml` is validated by
+the existing Scout source validator and wins; otherwise a valid active signed bundle
+wins after Phase 5.9B; otherwise the bundled immutable `config\sources.yaml` wins. Before
+Phase 5.9B there is no active-bundle candidate. A malformed, inaccessible, non-regular,
+or reparse user override blocks Scout composition with a finite safe error and never
+falls through. Signed-bundle validation, activation, and recovery remain Phase 5.9B
+ownership.
+
+Development migration treats `config/sources.yaml` as a source-only YAML document. If
+it is present, Scout validation succeeds, and roaming `sources.override.yaml` is absent,
+explicit confirmed migration copies its exact bytes without transformation. If the
+override exists, migration does not overwrite or merge it. An absent source is a no-op;
+a malformed source fails before publication; a repeated completed migration is an
+idempotent no-op. `config/config.yaml` is never eligible. Existing development
+`config/settings.json`, when present, is application settings and migrates only through
+the Windows settings validator to an absent roaming `settings.json`. Database and report
+migration retain Section 6 ownership. No source/config/settings file is read during
+development-mode migration because that operation is disabled there.
+
+The development source/configuration migration matrix is exact:
+
+| Mode/source/destination | Result |
+| --- | --- |
+| development mode | migration unavailable; existing explicit development paths remain active |
+| installed mode, selected source root absent | finite no-source result; no mutation |
+| `config/config.yaml` present in either mode | ignored by migration; never copied or transformed |
+| `config/sources.yaml` absent, override absent | no override is created; bundled default remains selected |
+| valid `config/sources.yaml`, override absent | explicit consent seeds exact validated bytes as `sources.override.yaml` |
+| valid `config/sources.yaml`, override present | override wins; no copy, merge, or overwrite |
+| malformed, inaccessible, or reparse `config/sources.yaml` | safe failure before publication |
+| installed immutable default present | remains read-only and is never a migration destination |
+| valid `config/settings.json`, roaming settings absent | explicit consent publishes validated canonical settings |
+| development settings absent | migration creates no settings file |
+| roaming settings present | no settings copy, merge, or overwrite |
+| valid completed receipt | deterministic no-op without source reads |
 
 ## 8. Source-update architecture
 
@@ -430,8 +534,9 @@ Before a PyInstaller build the exact inventory and producer tags are:
 | bootstrap raw public key | `resources/trust/pastila-root-1.pub` | `phase-5.5b-trust-bootstrap-r1-verified` |
 | version projection | `src/pastila_scout/__init__.py` and package metadata | `phase-5.5d-version-projection-r1-verified` |
 | bundled source defaults | `config/sources.yaml` | frozen baseline plus Phase 5.5E hash inventory |
-| default settings/template | `config/config.yaml`, `src/pastila_scout/desktop_v1/default-settings-v1.json` | frozen baseline and `phase-5.4b-windows-state-r1-verified` |
-| Romanian localization | `src/pastila_scout/desktop_v1/resources.py` | `phase-5.1d-desktop-shell-r1-verified` |
+| immutable Scout application configuration | `config/config.yaml` | frozen Scout configuration baseline plus Phase 5.5E hash inventory; never a roaming settings file |
+| default Windows application settings | `src/pastila_scout/desktop_v1/default-settings-v1.json` | `phase-5.4b-windows-state-r1-verified` |
+| Romanian localization | `src/pastila_scout/desktop_v1/resources.py` | `phase-5.5d-version-projection-r1-verified` |
 | licenses/notices | `packaging/resources/THIRD-PARTY-NOTICES.txt` | Phase 5.5F build preparation, verified before PyInstaller invocation |
 
 Packaging consumes these inputs and never generates a trust identity or edits version
@@ -1405,10 +1510,12 @@ must equal exactly one preceding producer row's output tag; an already frozen pr
 must resolve to its recorded commit before work begins. Multiple prerequisites are
 conjunctive and each must satisfy the same rule.
 
-The external Productization root for this roadmap is the frozen Revision 10 maintenance
-output `phase-5-windows-desktop-productization-spec-v10-roadmap-baseline-ready`. It is
-produced by freezing this document before any implementation row begins; it is not a
-roadmap row output and therefore creates no roadmap self-dependency.
+The external Productization root for completed rows through Phase 5.3D is the frozen
+Revision 10 output `phase-5-windows-desktop-productization-spec-v10-roadmap-baseline-ready`.
+The external Productization root for every unfrozen row beginning with Phase 5.4A is
+`phase-5-windows-desktop-productization-spec-v12-windows-state-consumption-roadmap-ready`.
+Each is produced by freezing this document outside the roadmap and therefore creates no
+roadmap self-dependency.
 
 | Phase | Prerequisite | Exact authorized paths | Exact focused tests | API impact | Additional forbidden scope | Expected verdict | Commit message | Tag |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -1422,9 +1529,11 @@ roadmap row output and therefore creates no roadmap self-dependency.
 | 5.3B Editor GUI and desktop composition implementation | `phase-5.3a-editor-desktop-spec-v1-ready` | `src/pastila_scout/desktop_editor_v1/__init__.py`, `src/pastila_scout/desktop_editor_v1/models.py`, `src/pastila_scout/desktop_editor_v1/service.py`, `src/pastila_scout/desktop_editor_v1/composition.py` | `tests/test_desktop_editor_v1.py` | private Editor adapter plus sole private production facade composer | Tk/executors/Scout behavior/updates/provider changes/CLI subprocess/global state | `PHASE_5_3B_EDITOR_DESKTOP_REVISION_1_VERIFIED` | `Add verified Editor desktop integration` | `phase-5.3b-editor-desktop-r1-verified` |
 | 5.3C Desktop startup integration specification | `phase-5.3b-editor-desktop-r1-verified` | `docs/windows-application/DesktopStartupIntegrationSpecificationV1.md` | none; specification review | specifies entrypoint invocation, failure presentation, facade handoff and lifetime, and unchanged shell executor ownership | backend/provider/path/update semantics/packaging/public API/composition redefinition | `PHASE_5_3C_DESKTOP_STARTUP_INTEGRATION_SPECIFICATION_V1_READY_FOR_FREEZE` | `Specify desktop startup integration V1` | `phase-5.3c-desktop-startup-integration-spec-v1-ready` |
 | 5.3D Desktop startup integration implementation | `phase-5.3c-desktop-startup-integration-spec-v1-ready` | `src/pastila_scout/desktop_v1/entrypoint.py`, `src/pastila_scout/desktop_v1/resources.py` | `tests/test_desktop_startup_integration_v1.py`, `tests/test_desktop_shell_v1.py` | private startup wiring and finite Romanian startup-failure resource only; no public Python API | backend/provider/path/update semantics/packaging/CLI subprocess/singletons/service locators/controller/view/model redesign | `PHASE_5_3D_DESKTOP_STARTUP_INTEGRATION_REVISION_1_VERIFIED` | `Add verified desktop startup integration` | `phase-5.3d-desktop-startup-integration-r1-verified` |
-| 5.4A Windows state specification | `phase-5.3d-desktop-startup-integration-r1-verified` | `docs/windows-application/WindowsStateSpecificationV1.md` | none; specification review | specifies private path/settings/migration APIs | packaging/updater | `PHASE_5_4A_WINDOWS_STATE_SPECIFICATION_V1_READY_FOR_FREEZE` | `Specify Windows application state V1` | `phase-5.4a-windows-state-spec-v1-ready` |
+| 5.4A Windows state specification | `phase-5.3d-desktop-startup-integration-r1-verified` and `phase-5-windows-desktop-productization-spec-v12-windows-state-consumption-roadmap-ready` | `docs/windows-application/WindowsStateSpecificationV1.md` | none; specification review | specifies private path/settings/migration APIs | packaging/updater | `PHASE_5_4A_WINDOWS_STATE_SPECIFICATION_V1_READY_FOR_FREEZE` | `Specify Windows application state V1` | `phase-5.4a-windows-state-spec-v1-ready` |
 | 5.4B Windows state implementation | `phase-5.4a-windows-state-spec-v1-ready` | `src/pastila_scout/windows_state_v1/__init__.py`, `src/pastila_scout/windows_state_v1/paths.py`, `src/pastila_scout/windows_state_v1/settings.py`, `src/pastila_scout/windows_state_v1/migrations.py`, `src/pastila_scout/windows_state_v1/errors.py`, `src/pastila_scout/desktop_v1/default-settings-v1.json` | `tests/test_windows_paths_v1.py`, `tests/test_windows_settings_v1.py`, `tests/test_windows_migrations_v1.py` | private | installer/updater/source bundles | `PHASE_5_4B_WINDOWS_STATE_REVISION_1_VERIFIED` | `Add verified Windows application state` | `phase-5.4b-windows-state-r1-verified` |
-| 5.5A Trust bootstrap specification | `phase-5.4b-windows-state-r1-verified` | `docs/windows-application/TrustBootstrapSpecificationV1.md` | none; specification review | specifies immutable non-secret bootstrap resources | private keys/updater/packaging | `PHASE_5_5A_TRUST_BOOTSTRAP_SPECIFICATION_V1_READY_FOR_FREEZE` | `Specify Windows trust bootstrap V1` | `phase-5.5a-trust-bootstrap-spec-v1-ready` |
+| 5.4C Windows state consumption specification | `phase-5.4b-windows-state-r1-verified` | `docs/windows-application/WindowsStateConsumptionSpecificationV1.md` | none; specification review | specifies private installed/development state injection, source selection, and migration presentation | packaging/updater/source-bundle implementation/Scout semantics/GUI redesign | `PHASE_5_4C_WINDOWS_STATE_CONSUMPTION_SPECIFICATION_V1_READY_FOR_FREEZE` | `Specify Windows state consumption V1` | `phase-5.4c-windows-state-consumption-spec-v1-ready` |
+| 5.4D Windows state consumption implementation | `phase-5.4c-windows-state-consumption-spec-v1-ready` | `src/pastila_scout/desktop_v1/state_composition.py`, `src/pastila_scout/desktop_v1/settings.py`, `src/pastila_scout/desktop_v1/entrypoint.py`, `src/pastila_scout/desktop_v1/views.py`, `src/pastila_scout/desktop_v1/resources.py`, `src/pastila_scout/desktop_editor_v1/composition.py`, `src/pastila_scout/desktop_scout_v1/service.py`, `src/pastila_scout/poller.py` | `tests/test_windows_state_consumption_v1.py`, `tests/test_desktop_startup_integration_v1.py`, `tests/test_desktop_shell_v1.py`, `tests/test_desktop_editor_v1.py`, `tests/test_desktop_scout_v1.py`, `tests/test_poller.py` | private state-bound desktop startup/composition only | packaging/updater/source-bundle implementation/Scout semantics/CLI/global state/service locators/GUI redesign/settings editor | `PHASE_5_4D_WINDOWS_STATE_CONSUMPTION_REVISION_1_VERIFIED` | `Add verified Windows state consumption` | `phase-5.4d-windows-state-consumption-r1-verified` |
+| 5.5A Trust bootstrap specification | `phase-5.4d-windows-state-consumption-r1-verified` | `docs/windows-application/TrustBootstrapSpecificationV1.md` | none; specification review | specifies immutable non-secret bootstrap resources | private keys/updater/packaging | `PHASE_5_5A_TRUST_BOOTSTRAP_SPECIFICATION_V1_READY_FOR_FREEZE` | `Specify Windows trust bootstrap V1` | `phase-5.5a-trust-bootstrap-spec-v1-ready` |
 | 5.5B Trust bootstrap materialization | `phase-5.5a-trust-bootstrap-spec-v1-ready` | `resources/trust/pastila-root-1.pub`, `resources/trust/bootstrap-root-v1.json`, `resources/trust/bootstrap-root-provenance-v1.json`, `tests/fixtures/windows-trust/development-pastila-root-1.pub`, `tests/fixtures/windows-trust/development-bootstrap-root-v1.json` | `tests/test_trust_bootstrap_resource_v1.py` | no runtime API | private material/updater/packaging/stable build without verified production public key | `PHASE_5_5B_TRUST_BOOTSTRAP_REVISION_1_VERIFIED` | `Materialize verified Windows trust bootstrap` | `phase-5.5b-trust-bootstrap-r1-verified` |
 | 5.5C Version projection specification | `phase-5.5b-trust-bootstrap-r1-verified` | `docs/windows-application/VersionProjectionSpecificationV1.md` | none; specification review | specifies `pastila_scout.__version__` only | packaging/GUI redesign/second version authority | `PHASE_5_5C_VERSION_PROJECTION_SPECIFICATION_V1_READY_FOR_FREEZE` | `Specify package version projection V1` | `phase-5.5c-version-projection-spec-v1-ready` |
 | 5.5D Version projection implementation | `phase-5.5c-version-projection-spec-v1-ready` | `src/pastila_scout/__init__.py`, `src/pastila_scout/cli.py`, `src/pastila_scout/logging_config.py`, `src/pastila_scout/desktop_v1/views.py`, `src/pastila_scout/desktop_v1/resources.py` | `tests/test_package_version_projection_v1.py`, `tests/test_cli.py`, `tests/test_logging.py`, `tests/test_desktop_shell_v1.py` | adds `pastila_scout.__version__`, root CLI `--version`, GUI About projection, and log projection only | other CLI/GUI/log behavior/`project.version` changes/packaging/updater | `PHASE_5_5D_VERSION_PROJECTION_REVISION_1_VERIFIED` | `Add verified package version projection` | `phase-5.5d-version-projection-r1-verified` |
@@ -1452,7 +1561,7 @@ material but never its private key. Phase 5.7F requires a provisioned developmen
 and release key; Phase 5.7H requires independently Authenticode-authorized recovery test
 fixtures. Stable publication requires the production endpoint and Authenticode
 certificate. The future implementation chain is facade -> shell -> Scout -> Editor and
-private facade composition -> desktop startup integration -> state -> trust bootstrap ->
+private facade composition -> desktop startup integration -> state -> state consumption -> trust bootstrap ->
 version projection -> packaging -> installer -> trust
 contracts -> updater -> root recovery -> integrated verification -> Update Center ->
 source bundles -> release. Frozen Protocol 5.7A and Persistence 5.7B are already available
@@ -1494,7 +1603,8 @@ relative paths are explicitly development-mode defaults, not installed-mode auth
 
 Two independent implementers following this document must produce materially equivalent
 framework, navigation, dual-executor topology, update deduplication, filesystem,
-precedence, version, build, installer, artifact names, endpoint, schema, root/release-key
+state-consumption boundary, development-config classification, source precedence,
+version, build, installer, artifact names, endpoint, schema, root/release-key
 trust, checks, bounded path launch, honest recovery, source parsing/activation,
 `user_version` migration registry, release flow, and exact phase paths. A divergence in
 any such choice is a defect, not an implementation option.
@@ -1541,10 +1651,21 @@ specifications and adding their concrete implementation paths to the signed upda
 It changes no wire value, Protocol projection, GUI architecture, packaging technology,
 trust policy, source schema, SQLite schema, release flow, or version authority.
 
+Revision 12 closes the Windows-state producer/consumer edge and development configuration
+migration ownership. It adds the specification-first 5.4C/5.4D pair, makes 5.5A consume
+verified state integration, classifies `config/config.yaml` as development-only and
+non-migrating, permits only validated byte-identical `config/sources.yaml` seeding of an
+absent roaming override, and makes the V12 freeze tag an external prerequisite of 5.4A.
+It changes no completed milestone through 5.3D, Scout schema or runtime semantics,
+settings schema, database/report/Editor authority, packaging technology, installer,
+updater, trust, source-bundle cryptography, Protocol/Persistence, or release behavior.
+
 ## 20. Findings and readiness
 
 Repository gaps found were absence of GUI, installed path authority, HTML product report,
 packaging, installer, updater, signing/release infrastructure, and GUI-facing facades.
 They are intentional future work and each has an exact owner and phased prerequisite
-above. No Critical, Major, or blocking Minor specification finding remains. No production,
+above. Revision 12 additionally reproduced and closed the missing state-consumption edge
+and ambiguous development-config migration rule. No Critical, Major, or blocking Minor
+specification finding remains. No production,
 test, packaging, configuration, or workflow file is changed by this specification.
