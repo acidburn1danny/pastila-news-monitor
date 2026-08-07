@@ -51,6 +51,9 @@ from pastila_scout.desktop_application_v1 import (
     ScoutDesktopResultV1,
     reconstruct_scout_desktop_result,
 )
+from pastila_scout.desktop_report_v1.service import _DesktopReportFacadeV1
+from pastila_scout.desktop_scout_v1.service import _ScoutDesktopOperationV1
+from pastila_scout.desktop_v1.views import _validate_binding
 from pastila_scout.editor_application_v1 import (
     EditorApplicationExitCodeV1,
     EditorApplicationFailureCodeV1,
@@ -72,6 +75,7 @@ EXPECTED_API = (
     "DesktopProgressEventV1",
     "DesktopProgressSinkV1",
     "DesktopProgressStageV1",
+    "DesktopReportOperationV1",
     "DesktopReportReferenceV1",
     "EditorDesktopOperationV1",
     "EditorDesktopRequestV1",
@@ -195,6 +199,17 @@ class EditorOperation:
         return self.result  # type: ignore[return-value]
 
 
+class ReportOperation:
+    def __init__(self, error: BaseException | None = None):
+        self.error = error
+        self.calls: list[str] = []
+
+    def open_report(self, *, reference: str) -> None:
+        self.calls.append(reference)
+        if self.error is not None:
+            raise self.error
+
+
 class Sink:
     def __init__(self, fail_at: int | None = None):
         self.events: list[DesktopProgressEventV1] = []
@@ -207,11 +222,14 @@ class Sink:
 
 
 def facade(
-    scout: ScoutOperation | None = None, editor: EditorOperation | None = None
+    scout: ScoutOperation | None = None,
+    editor: EditorOperation | None = None,
+    report: ReportOperation | None = None,
 ) -> DesktopApplicationFacadeV1:
     return DesktopApplicationFacadeV1(
         scout_operation=scout or ScoutOperation(),
         editor_operation=editor or EditorOperation(),
+        report_operation=report or ReportOperation(),
     )
 
 
@@ -225,6 +243,50 @@ def test_exact_public_api_ownership_and_signatures() -> None:
         "(self, *, request: 'ScoutDesktopRequestV1', "
         "progress_sink: 'DesktopProgressSinkV1') -> 'ScoutDesktopResultV1'"
     )
+    assert str(inspect.signature(public.DesktopApplicationFacadeV1.open_report)) == (
+        "(self, *, reference: 'str') -> 'None'"
+    )
+
+
+def test_report_opening_delegates_exactly_once_without_path_exposure() -> None:
+    report = ReportOperation()
+    value = facade(report=report)
+    assert value.open_report(reference="scout-report-v1:opaque") is None
+    assert report.calls == ["scout-report-v1:opaque"]
+
+
+def test_report_opening_safe_failures_and_process_control() -> None:
+    with pytest.raises(DesktopApplicationConfigurationError):
+        facade().open_report(reference="")
+    report = ReportOperation(RuntimeError("C:/secret/report.html"))
+    with pytest.raises(DesktopApplicationExecutionError) as caught:
+        facade(report=report).open_report(reference="report-reference")
+    assert caught.value.__cause__ is None
+    assert caught.value.__context__ is None
+    assert "secret" not in str(caught.value)
+    for control in (KeyboardInterrupt(), SystemExit(), GeneratorExit()):
+        with pytest.raises(type(control)):
+            facade(report=ReportOperation(control)).open_report(reference="report")
+
+
+def test_future_composition_and_shell_report_binding_are_legally_reachable(
+    tmp_path: Path,
+) -> None:
+    def opener(path: Path) -> None:
+        del path
+
+    report = _DesktopReportFacadeV1(report_directory=tmp_path, opener=opener)
+    scout = _ScoutDesktopOperationV1(
+        config_path=Path("config/config.yaml"),
+        database_path=Path("data/news_monitor.db"),
+        report_facade=report,
+    )
+    value = DesktopApplicationFacadeV1(
+        scout_operation=scout,
+        editor_operation=EditorOperation(),
+        report_operation=report,
+    )
+    _validate_binding(value.open_report, "reference")
 
 
 def test_closed_enum_vocabularies_copy_and_pickle() -> None:
@@ -667,7 +729,9 @@ def test_dependency_shape_rejected_without_body_execution(invalid_type: str) -> 
     bad_type = type("BadScout", (), {"run_scout": member})
     with pytest.raises(DesktopApplicationConfigurationError):
         DesktopApplicationFacadeV1(
-            scout_operation=bad_type(), editor_operation=EditorOperation()
+            scout_operation=bad_type(),
+            editor_operation=EditorOperation(),
+            report_operation=ReportOperation(),
         )
     assert calls == []
 
@@ -734,8 +798,9 @@ def test_facade_equality_never_invokes_dependency_equality_hooks() -> None:
 
     scout = EqualityScout()
     editor = EditorOperation()
-    first = facade(scout, editor)
-    second = facade(scout, editor)
+    report = ReportOperation()
+    first = facade(scout, editor, report)
+    second = facade(scout, editor, report)
     assert first == second
     assert first != facade(EqualityScout(), editor)
     assert calls == []

@@ -18,10 +18,12 @@ from .models import (
     DesktopOperationStatusV1,
     DesktopProgressEventV1,
     DesktopProgressStageV1,
+    DesktopReportReferenceV1,
     EditorDesktopRequestV1,
     EditorDesktopResultV1,
     ScoutDesktopRequestV1,
     ScoutDesktopResultV1,
+    reconstruct_desktop_report_reference,
     reconstruct_editor_desktop_request,
     reconstruct_editor_desktop_result,
     reconstruct_scout_desktop_request,
@@ -55,6 +57,12 @@ class EditorDesktopOperationV1(Protocol):
     ) -> EditorDesktopResultV1: ...
 
 
+class DesktopReportOperationV1(Protocol):
+    """Open one opaque desktop report reference through its owning catalog."""
+
+    def open_report(self, *, reference: str) -> None: ...
+
+
 class DesktopProgressSinkV1(Protocol):
     """Receive one facade-owned progress event synchronously."""
 
@@ -64,7 +72,12 @@ class DesktopProgressSinkV1(Protocol):
 class DesktopApplicationFacadeV1:
     """Validate and delegate exactly one selected desktop application operation."""
 
-    __slots__ = ("_editor_operation", "_identity", "_scout_operation")
+    __slots__ = (
+        "_editor_operation",
+        "_identity",
+        "_report_operation",
+        "_scout_operation",
+    )
 
     def __init_subclass__(cls, **kwargs) -> NoReturn:
         del cls, kwargs
@@ -75,24 +88,32 @@ class DesktopApplicationFacadeV1:
         *,
         scout_operation: ScoutDesktopOperationV1,
         editor_operation: EditorDesktopOperationV1,
+        report_operation: DesktopReportOperationV1,
     ) -> None:
-        if not _valid_method(
-            scout_operation,
-            "run_scout",
-            "ScoutDesktopRequestV1",
-            "ScoutDesktopResultV1",
-        ) or not _valid_method(
-            editor_operation,
-            "run_editor",
-            "EditorDesktopRequestV1",
-            "EditorDesktopResultV1",
+        if (
+            not _valid_method(
+                scout_operation,
+                "run_scout",
+                "ScoutDesktopRequestV1",
+                "ScoutDesktopResultV1",
+            )
+            or not _valid_method(
+                editor_operation,
+                "run_editor",
+                "EditorDesktopRequestV1",
+                "EditorDesktopResultV1",
+            )
+            or not _valid_report_method(report_operation)
         ):
-            del self, scout_operation, editor_operation
+            del self, scout_operation, editor_operation, report_operation
             _raise_configuration()
         object.__setattr__(self, "_scout_operation", scout_operation)
         object.__setattr__(self, "_editor_operation", editor_operation)
+        object.__setattr__(self, "_report_operation", report_operation)
         object.__setattr__(
-            self, "_identity", (id(scout_operation), id(editor_operation))
+            self,
+            "_identity",
+            (id(scout_operation), id(editor_operation), id(report_operation)),
         )
 
     def run_scout(
@@ -128,7 +149,7 @@ class DesktopApplicationFacadeV1:
         ):
             del self, request, progress_sink, valid, invalid, dependencies, reference
             _raise_execution()
-        scout, editor = dependencies
+        scout, editor, report = dependencies
         result = None
         failed = False
         try:
@@ -146,17 +167,17 @@ class DesktopApplicationFacadeV1:
                 DesktopProgressStageV1.FAILED,
             )
             del self, request, progress_sink, valid, invalid, dependencies
-            del reference, scout, editor, result, failed
+            del reference, scout, editor, report, result, failed
             _raise_execution()
         terminal = _scout_terminal(result.status)
         if not _publish(
             progress_sink, reference, DesktopOperationKindV1.SCOUT, terminal
         ):
             del self, request, progress_sink, valid, invalid, dependencies
-            del reference, scout, editor, result, failed, terminal
+            del reference, scout, editor, report, result, failed, terminal
             _raise_execution()
         del self, request, progress_sink, valid, invalid, dependencies
-        del reference, scout, editor, failed, terminal
+        del reference, scout, editor, report, failed, terminal
         return result
 
     def run_editor(
@@ -194,7 +215,7 @@ class DesktopApplicationFacadeV1:
             del self, request, progress_sink, valid, invalid, dependencies
             del nested_request, reference
             _raise_execution()
-        scout, editor = dependencies
+        scout, editor, report = dependencies
         result = None
         failed = False
         try:
@@ -217,19 +238,44 @@ class DesktopApplicationFacadeV1:
                 DesktopProgressStageV1.FAILED,
             )
             del self, request, progress_sink, valid, invalid, dependencies
-            del nested_request, reference, scout, editor, result, failed, nested_result
+            del nested_request, reference, scout, editor, report, result, failed
+            del nested_result
             _raise_execution()
         terminal = _editor_terminal(object.__getattribute__(nested_result, "status"))
         if not _publish(
             progress_sink, reference, DesktopOperationKindV1.EDITOR, terminal
         ):
             del self, request, progress_sink, valid, invalid, dependencies
-            del nested_request, reference, scout, editor, result, failed
+            del nested_request, reference, scout, editor, report, result, failed
             del nested_result, terminal
             _raise_execution()
         del self, request, progress_sink, valid, invalid, dependencies
-        del nested_request, reference, scout, editor, failed, nested_result, terminal
+        del nested_request, reference, scout, editor, report, failed, nested_result
+        del terminal
         return result
+
+    def open_report(self, *, reference: str) -> None:
+        valid = None
+        invalid = False
+        try:
+            valid = DesktopReportReferenceV1(report_reference=reference)
+            valid = reconstruct_desktop_report_reference(valid)
+        except DesktopApplicationConfigurationError:
+            invalid = True
+        if invalid:
+            del self, reference, valid, invalid
+            _raise_configuration()
+        scout, editor, report = _validated_dependencies(self)
+        failed = False
+        try:
+            if report.open_report(reference=valid.report_reference) is not None:
+                raise TypeError
+        except Exception:  # noqa: BLE001 - report details collapse at this boundary
+            failed = True
+        if failed:
+            del self, reference, valid, invalid, scout, editor, report, failed
+            _raise_execution()
+        del self, reference, valid, invalid, scout, editor, report, failed
 
     @_isolated_configuration
     def __repr__(self) -> str:
@@ -242,13 +288,15 @@ class DesktopApplicationFacadeV1:
             return False
         left = _validated_dependencies(self)
         right = _validated_dependencies(other)
-        return left[0] is right[0] and left[1] is right[1]
+        return all(a is b for a, b in zip(left, right, strict=True))
 
     @_isolated_configuration
     def __copy__(self) -> DesktopApplicationFacadeV1:
-        scout, editor = _validated_dependencies(self)
+        scout, editor, report = _validated_dependencies(self)
         return DesktopApplicationFacadeV1(
-            scout_operation=scout, editor_operation=editor
+            scout_operation=scout,
+            editor_operation=editor,
+            report_operation=report,
         )
 
     @_isolated_configuration
@@ -314,6 +362,39 @@ def _valid_method(
         return False
 
 
+def _valid_report_method(dependency: object) -> bool:
+    try:
+        dependency_type = type(dependency)
+        if (
+            inspect.getattr_static(dependency_type, "__getattribute__")
+            is not object.__getattribute__
+            or inspect.getattr_static(dependency_type, "__getattr__", None) is not None
+        ):
+            return False
+        static = inspect.getattr_static(dependency_type, "open_report")
+        if type(static) is not FunctionType:
+            return False
+        namespace = object.__getattribute__(static, "__dict__")
+        if "__signature__" in namespace or "__wrapped__" in namespace:
+            return False
+        instance_namespace = _instance_namespace(dependency)
+        if type(instance_namespace) is dict and "open_report" in instance_namespace:
+            return False
+        signature = inspect.signature(static, follow_wrapped=False)
+        parameters = tuple(signature.parameters.values())
+        return (
+            len(parameters) == 2
+            and parameters[0].name == "self"
+            and parameters[0].kind is inspect.Parameter.POSITIONAL_OR_KEYWORD
+            and parameters[1].name == "reference"
+            and parameters[1].kind is inspect.Parameter.KEYWORD_ONLY
+            and _annotation_matches(parameters[1].annotation, str, "str")
+            and signature.return_annotation in (None, "None")
+        )
+    except Exception:  # noqa: BLE001 - adversarial dependency state is rejected
+        return False
+
+
 def _valid_sink(sink: object) -> bool:
     try:
         sink_type = type(sink)
@@ -353,16 +434,17 @@ def _valid_sink(sink: object) -> bool:
 
 def _validated_dependencies(
     facade: DesktopApplicationFacadeV1,
-) -> tuple[ScoutDesktopOperationV1, EditorDesktopOperationV1]:
-    scout = editor = identity = None
+) -> tuple[ScoutDesktopOperationV1, EditorDesktopOperationV1, DesktopReportOperationV1]:
+    scout = editor = report = identity = None
     invalid = False
     try:
         scout = object.__getattribute__(facade, "_scout_operation")
         editor = object.__getattribute__(facade, "_editor_operation")
+        report = object.__getattribute__(facade, "_report_operation")
         identity = object.__getattribute__(facade, "_identity")
         if (
             type(identity) is not tuple
-            or identity != (id(scout), id(editor))
+            or identity != (id(scout), id(editor), id(report))
             or not _valid_method(
                 scout,
                 "run_scout",
@@ -375,15 +457,16 @@ def _validated_dependencies(
                 "EditorDesktopRequestV1",
                 "EditorDesktopResultV1",
             )
+            or not _valid_report_method(report)
         ):
             raise TypeError
     except Exception:  # noqa: BLE001 - copied-invalid retained state is rejected
         invalid = True
     if invalid:
-        del facade, scout, editor, identity, invalid
+        del facade, scout, editor, report, identity, invalid
         _raise_configuration()
     del facade, identity, invalid
-    return scout, editor
+    return scout, editor, report
 
 
 def _publish(sink, reference, operation, stage) -> bool:
@@ -439,6 +522,7 @@ def _pickle_error() -> NoReturn:
 __all__ = (
     "DesktopApplicationFacadeV1",
     "DesktopProgressSinkV1",
+    "DesktopReportOperationV1",
     "EditorDesktopOperationV1",
     "ScoutDesktopOperationV1",
 )

@@ -28,6 +28,7 @@ from .models import (
 from .services import (
     DesktopApplicationFacadeV1,
     DesktopProgressSinkV1,
+    DesktopReportOperationV1,
     EditorDesktopOperationV1,
     ScoutDesktopOperationV1,
 )
@@ -43,6 +44,7 @@ __all__ = (
     "DesktopProgressEventV1",
     "DesktopProgressSinkV1",
     "DesktopProgressStageV1",
+    "DesktopReportOperationV1",
     "DesktopReportReferenceV1",
     "EditorDesktopOperationV1",
     "EditorDesktopRequestV1",

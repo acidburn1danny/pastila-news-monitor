@@ -1,9 +1,9 @@
 # Desktop Application Facade Specification V1
 
-Status: implementation-ready specification for Phase 5.1A. This document specifies
-the public, GUI-neutral facade contracts implemented in Phase 5.1B. It does not
-authorize GUI, Scout adapter, Editor adapter, report, path, configuration, or runtime
-composition implementation.
+Status: maintained implementation-ready specification. Report-opener reachability
+maintenance adds one narrow GUI-neutral delegation while preserving the Phase 5.1B
+value and execution contracts. It does not authorize GUI, report implementation, path,
+configuration, or runtime composition.
 
 ## 1. Authority and scope
 
@@ -21,7 +21,8 @@ Phase 5.1B is limited to:
 - `src/pastila_scout/desktop_application_v1/errors.py`;
 - `tests/test_desktop_application_v1.py`.
 
-The facade exposes immutable contracts and two synchronous service operations. It
+The facade exposes immutable contracts, two execution operations, and one synchronous
+opaque-report opening delegation. It
 does not supply production Scout or Editor adapters. Those private adapters belong to
 Phases 5.2B and 5.3B. It does not create a GUI, executor, provider, database, report,
 path authority, or composition root.
@@ -67,9 +68,9 @@ must not import `cli`, `editor_cli_run_v1`, provider-specific packages, private 
 composition modules, `sqlite3`, `tkinter`, reporting implementations, or Windows update
 packages.
 
-## 4. Closed operation inventory
+## 4. Closed operation inventory after report-opener maintenance
 
-The public facade has exactly two operations and two injected operation protocols:
+The public facade has exactly three operations and three injected operation protocols:
 
 ```python
 class ScoutDesktopOperationV1(Protocol):
@@ -86,12 +87,16 @@ class EditorDesktopOperationV1(Protocol):
         request: EditorDesktopRequestV1,
     ) -> EditorDesktopResultV1: ...
 
+class DesktopReportOperationV1(Protocol):
+    def open_report(self, *, reference: str) -> None: ...
+
 class DesktopApplicationFacadeV1:
     def __init__(
         self,
         *,
         scout_operation: ScoutDesktopOperationV1,
         editor_operation: EditorDesktopOperationV1,
+        report_operation: DesktopReportOperationV1,
     ) -> None: ...
 
     def run_scout(
@@ -107,24 +112,28 @@ class DesktopApplicationFacadeV1:
         request: EditorDesktopRequestV1,
         progress_sink: DesktopProgressSinkV1,
     ) -> EditorDesktopResultV1: ...
+
+    def open_report(self, *, reference: str) -> None: ...
 ```
 
-There is no generic command execution operation. Report catalog/open/reveal,
+There is no generic command execution operation. Report catalog resolution and opening
+remain solely implemented by the injected Phase 5.2B report operation; the facade only
+validates the opaque scalar and delegates once. Report reveal,
 configuration/source projection, capabilities, status queries, updates, and source
 updates are not V1 operations. The first three belong to Phase 5.2; configuration and
 installed-path ownership begin in Phase 5.4; update behavior begins in Phase 5.7.
 
 `DesktopApplicationFacadeV1` is a final concrete delegator, not a composition root. Its
-constructor accepts exactly the two injected operations shown above and performs no
+constructor accepts exactly the three injected operations shown above and performs no
 lower construction. Phase 5.3B's private composition is the first phase allowed to
 assemble the already-implemented private Scout and Editor adapters and inject them into
 this constructor. No global registry, singleton, service locator, hidden cache, or
 zero-argument public composer exists.
 
-The concrete class has exact slots `_scout_operation`, `_editor_operation`, and
-`_identity`, rejects subclassing, and exposes no public dependency property. `_identity`
-is the ordered pair of injected object identities captured after validation. No other
-instance state is legal.
+The concrete class has exact slots `_scout_operation`, `_editor_operation`,
+`_report_operation`, and `_identity`, rejects subclassing, and exposes no public
+dependency property. `_identity` is the ordered triple of injected object identities
+captured after validation. No other instance state is legal.
 
 ## 5. Shared vocabularies
 
@@ -405,7 +414,7 @@ shape. Instance `__dict__` must not contain the method name. Annotation equality
 checked against the exact public types after resolving only the facade module's own
 static namespace; no dependency-controlled annotation evaluator runs.
 
-The facade stores the two dependency identities and validates unchanged identity and
+The facade stores the three dependency identities and validates unchanged identity and
 method ownership before every operation. Post-construction substitution and copied-invalid
 facade state fail before either dependency executes. Facade `repr` is
 `DesktopApplicationFacadeV1(dependencies=<injected>)`; equality is dependency identity
@@ -422,6 +431,15 @@ selected dependency, sink publication, or result reconstruction is reduced to
 execution or result validation fails after `RUNNING`, the facade attempts one `FAILED`
 event; failure of that terminal publication does not replace or chain the fixed facade
 exception. Failure of `ACCEPTED` or `RUNNING` publication causes zero lower calls.
+
+`open_report` first constructs and reconstructs an exact `DesktopReportReferenceV1`
+from the supplied scalar, revalidates all three dependencies, and calls the injected
+`report_operation.open_report(reference=validated.report_reference)` exactly once. It
+requires a `None` return. Invalid scalar or dependency state raises the fixed
+configuration error without an opening call. An ordinary opening exception or invalid
+return becomes the fixed execution error raised outside the active exception handler
+from no cause; process-control exceptions propagate. The facade owns no catalog, path,
+opener, report implementation, retry, fallback, or second invocation.
 
 ## 11. Error reduction and exception boundary
 
@@ -543,6 +561,7 @@ URLs, report/output paths, or nested request/result representations.
     "DesktopProgressEventV1",
     "DesktopProgressSinkV1",
     "DesktopProgressStageV1",
+    "DesktopReportOperationV1",
     "DesktopReportReferenceV1",
     "EditorDesktopOperationV1",
     "EditorDesktopRequestV1",
@@ -567,7 +586,7 @@ Symbol ownership is exact:
 | --- | --- |
 | `errors.py` | the two public exceptions |
 | `models.py` | enums, seven concrete values, and seven reconstruction functions |
-| `services.py` | the two operation protocols, progress-sink protocol, and concrete `DesktopApplicationFacadeV1` |
+| `services.py` | three operation protocols, progress-sink protocol, and concrete `DesktopApplicationFacadeV1` |
 | `__init__.py` | imports and the exact `__all__` only |
 
 No symbol is added to `pastila_scout.__init__`. No additional production module is
@@ -632,7 +651,7 @@ Two implementers must derive the same sequence:
 
 1. create only the four authorized package files;
 2. implement exact enums, values, reconstruction, and errors;
-3. declare the three exact protocols and implement the injected delegator without
+3. declare the four exact protocols and implement the injected delegator without
    composing lower services;
 4. expose exactly Section 15's `__all__`;
 5. add only `tests/test_desktop_application_v1.py`;
@@ -647,10 +666,21 @@ is `phase-5.1b-desktop-application-facade-r1-verified`.
 
 ## 18. Closed non-goals
 
-Phase 5.1B does not implement Scout or Editor adapters, composition, HTML, report
-catalog/open/reveal, configuration projection/mutation, installed paths, capabilities,
+The facade does not implement Scout or Editor adapters, composition, HTML, report
+catalog/path resolution/reveal, configuration projection/mutation, installed paths, capabilities,
 updates, GUI, localization, scheduling, database access, provider execution, retry,
 fallback, routing, polling beyond a future adapter's single invocation, or CLI changes.
 
 There is no alternative facade shape, generic extension point, optional operation,
 provider-specific branch, or hidden implementation path in V1.
+
+## 19. Report-opener reachability maintenance
+
+The bounded maintenance repairs the Phase 5.3D reachability gap without transferring
+report ownership. Future Phase 5.3B constructs one `_DesktopReportFacadeV1`, injects
+that exact object into `_ScoutDesktopOperationV1.report_facade` and
+`DesktopApplicationFacadeV1.report_operation`, and returns the facade. Future Phase
+5.3D binds `facade.open_report` directly to the frozen Shell callback shape
+`(*, reference: str) -> None`. The opaque reference remains the only crossing value;
+the private report facade remains the only validator, catalog resolver, and opener
+invoker. No startup or Shell code receives a path or report implementation object.
