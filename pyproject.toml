@@ -15,6 +15,7 @@ dependencies = [
 
 [project.scripts]
 pastila-scout = "pastila_scout.cli:main"
+pastila-scout-gui = "pastila_scout.desktop_v1.entrypoint:main"
 
 [project.optional-dependencies]
 dev = [
