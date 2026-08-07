@@ -1,0 +1,61 @@
+"""Public GUI-neutral desktop application facade."""
+
+from .errors import (
+    DesktopApplicationConfigurationError,
+    DesktopApplicationExecutionError,
+)
+from .models import (
+    DesktopApplicationFailureCodeV1,
+    DesktopApplicationFailureV1,
+    DesktopOperationKindV1,
+    DesktopOperationStatusV1,
+    DesktopProgressEventV1,
+    DesktopProgressStageV1,
+    DesktopReportReferenceV1,
+    EditorDesktopRequestV1,
+    EditorDesktopResultV1,
+    ScoutDesktopCategoryV1,
+    ScoutDesktopRequestV1,
+    ScoutDesktopResultV1,
+    reconstruct_desktop_application_failure,
+    reconstruct_desktop_progress_event,
+    reconstruct_desktop_report_reference,
+    reconstruct_editor_desktop_request,
+    reconstruct_editor_desktop_result,
+    reconstruct_scout_desktop_request,
+    reconstruct_scout_desktop_result,
+)
+from .services import (
+    DesktopApplicationFacadeV1,
+    DesktopProgressSinkV1,
+    EditorDesktopOperationV1,
+    ScoutDesktopOperationV1,
+)
+
+__all__ = (
+    "DesktopApplicationConfigurationError",
+    "DesktopApplicationExecutionError",
+    "DesktopApplicationFacadeV1",
+    "DesktopApplicationFailureCodeV1",
+    "DesktopApplicationFailureV1",
+    "DesktopOperationKindV1",
+    "DesktopOperationStatusV1",
+    "DesktopProgressEventV1",
+    "DesktopProgressSinkV1",
+    "DesktopProgressStageV1",
+    "DesktopReportReferenceV1",
+    "EditorDesktopOperationV1",
+    "EditorDesktopRequestV1",
+    "EditorDesktopResultV1",
+    "ScoutDesktopCategoryV1",
+    "ScoutDesktopOperationV1",
+    "ScoutDesktopRequestV1",
+    "ScoutDesktopResultV1",
+    "reconstruct_desktop_application_failure",
+    "reconstruct_desktop_progress_event",
+    "reconstruct_desktop_report_reference",
+    "reconstruct_editor_desktop_request",
+    "reconstruct_editor_desktop_result",
+    "reconstruct_scout_desktop_request",
+    "reconstruct_scout_desktop_result",
+)
