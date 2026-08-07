@@ -1,20 +1,72 @@
-"""Structural GUI entrypoint; production composition is intentionally absent."""
+"""Explicit production startup wiring for the private desktop application."""
 
 # ruff: noqa: BLE001, S110
 
 from __future__ import annotations
 
 import ctypes
+import math
 import sys
 import tkinter
+import unicodedata
+import uuid
+from datetime import UTC, datetime
+from pathlib import Path
+from tkinter import messagebox
+from typing import NoReturn
+
+from pastila_scout.contracts.identity import verify_scout_input_identity
+from pastila_scout.contracts.io import load_contract
+from pastila_scout.contracts.scout_editor import ScoutEditorInputV1
+from pastila_scout.desktop_application_v1 import (
+    DesktopApplicationFacadeV1,
+    DesktopProgressEventV1,
+    EditorDesktopRequestV1,
+    EditorDesktopResultV1,
+    ScoutDesktopCategoryV1,
+    ScoutDesktopRequestV1,
+    reconstruct_desktop_progress_event,
+    reconstruct_editor_desktop_result,
+    reconstruct_scout_desktop_result,
+)
+from pastila_scout.desktop_editor_v1.composition import (
+    _compose_desktop_application_facade_v1,
+)
+from pastila_scout.editor_application_v1 import (
+    EditorApplicationGenerationConfigurationAuthorityV1,
+    EditorApplicationRequestV1,
+    EditorEpisodeContextAuthorityV1,
+    EditorOutputDestinationV1,
+    EditorOverwritePolicyV1,
+    EditorSelectionProfileAuthorityV1,
+)
+from pastila_scout.provider_execution_v2 import CancellationTokenV2
 
 from .controller import _DesktopTaskControllerV1
+from .errors import _DesktopShellConfigurationError
+from .models import (
+    _reconstruct_desktop_editor_action_input_v1,
+    _reconstruct_desktop_scout_action_input_v1,
+)
+from .resources import _text_v1
 from .views import _DesktopMainWindowV1
+
+
+class _DesktopStartupProgressSinkV1:
+    __slots__ = ()
+
+    def __init_subclass__(cls, **kwargs) -> NoReturn:
+        del cls, kwargs
+        raise TypeError("Desktop startup progress sinks cannot be subclassed")
+
+    def publish(self, *, event: DesktopProgressEventV1) -> None:
+        reconstruct_desktop_progress_event(event)
 
 
 def main() -> int:
     root = None
     controller = None
+    present_failure = False
     try:
         if sys.platform == "win32":
             try:
@@ -23,7 +75,10 @@ def main() -> int:
                 pass
         root = tkinter.Tk()
         root.tk.call("tk", "scaling", 2.0)
-        cells: dict[str, object] = {}
+        root.withdraw()
+        present_failure = True
+        facade = _compose_desktop_application_facade_v1()
+        cells: dict[str, object] = {"facade": facade}
         closed = False
 
         def select_page(*, page) -> None:
@@ -49,11 +104,46 @@ def main() -> int:
             root=root, on_select_page=select_page, on_close=close
         )
         cells.update(controller=controller, view=view)
+
+        def run_scout(*, input) -> None:
+            request = _scout_request(input)
+
+            def task():
+                return facade.run_scout(
+                    request=request, progress_sink=_DesktopStartupProgressSinkV1()
+                )
+
+            def on_completed(*, result) -> None:
+                _publish_scout_result(view, result)
+
+            controller.submit_application(task=task, on_completed=on_completed)
+
+        def run_editor(*, input) -> None:
+            values = _editor_values(input)
+
+            def task():
+                return _run_editor(facade, values)
+
+            def on_completed(*, result) -> None:
+                _publish_editor_result(view, result)
+
+            controller.submit_application(task=task, on_completed=on_completed)
+
+        def open_report(*, reference: str) -> None:
+            facade.open_report(reference=reference)
+
+        view.bind_scout_action(callback=run_scout)
+        view.bind_editor_action(callback=run_editor)
+        view.bind_report_action(callback=open_report)
         root.protocol("WM_DELETE_WINDOW", close)
         controller.start()
+        root.deiconify()
+        present_failure = False
         root.mainloop()
         return 0
     except BaseException:
+        if present_failure and root is not None:
+            _present_startup_failure(root)
         return 1
     finally:
         if controller is not None:
@@ -66,3 +156,151 @@ def main() -> int:
                 root.destroy()
             except BaseException:
                 pass
+
+
+def _scout_request(value: object) -> ScoutDesktopRequestV1:
+    try:
+        valid = _reconstruct_desktop_scout_action_input_v1(value)
+        period = int(valid.period, 10)
+        if str(period) != valid.period:
+            raise ValueError
+        category = ScoutDesktopCategoryV1(valid.category)
+        return ScoutDesktopRequestV1(
+            operation_reference=f"scout-desktop-v1:{uuid.uuid4().hex}",
+            period_days=period,
+            category=category,
+        )
+    except BaseException:
+        raise _DesktopShellConfigurationError() from None
+
+
+def _editor_values(value: object) -> tuple[object, ...]:
+    try:
+        valid = _reconstruct_desktop_editor_action_input_v1(value)
+        strings = tuple(
+            getattr(valid, name)
+            for name in (
+                "scout_input_path",
+                "selection_profile_path",
+                "episode_context_path",
+                "generation_config_path",
+                "provider",
+                "model",
+                "timeout_seconds",
+                "output_path",
+            )
+        )
+        if not valid.no_replace or not all(_safe_input(item) for item in strings):
+            raise ValueError
+        timeout = float(valid.timeout_seconds)
+        if not math.isfinite(timeout) or timeout <= 0:
+            raise ValueError
+        output = Path(valid.output_path)
+        if not output.is_absolute():
+            output = Path.cwd() / output
+        return (
+            *(Path(item) for item in strings[:4]),
+            strings[4],
+            strings[5],
+            timeout,
+            output,
+            f"editor-desktop-v1:{uuid.uuid4().hex}",
+        )
+    except BaseException:
+        raise _DesktopShellConfigurationError() from None
+
+
+def _run_editor(
+    facade: DesktopApplicationFacadeV1, values: tuple[object, ...]
+) -> EditorDesktopResultV1:
+    (
+        scout_path,
+        profile_path,
+        context_path,
+        generation_path,
+        provider,
+        model,
+        timeout,
+        output,
+        reference,
+    ) = values
+    source = load_contract(scout_path)
+    if type(source) is not ScoutEditorInputV1:
+        raise _DesktopShellConfigurationError() from None
+    source = ScoutEditorInputV1.model_validate(
+        source.model_dump(mode="python", warnings=False), strict=True
+    )
+    verify_scout_input_identity(source)
+    profile = EditorSelectionProfileAuthorityV1().load(path=profile_path)
+    context = EditorEpisodeContextAuthorityV1().load(path=context_path)
+    generation = EditorApplicationGenerationConfigurationAuthorityV1().load(
+        path=generation_path
+    )
+    if not (
+        generation.provider.value == provider
+        and generation.model_identifier == model
+        and generation.timeout_seconds == timeout
+    ):
+        raise _DesktopShellConfigurationError() from None
+    nested = EditorApplicationRequestV1(
+        source,
+        profile,
+        context,
+        generation,
+        EditorOutputDestinationV1(output, EditorOverwritePolicyV1.FAIL_IF_EXISTS),
+        datetime.now(UTC),
+        reference,
+        CancellationTokenV2(cancellation_requested=False),
+    )
+    return facade.run_editor(
+        request=EditorDesktopRequestV1(application_request=nested),
+        progress_sink=_DesktopStartupProgressSinkV1(),
+    )
+
+
+def _publish_scout_result(view: object, value: object) -> None:
+    result = reconstruct_scout_desktop_result(value)
+    report = result.report_reference
+    view.publish_scout_result(  # type: ignore[attr-defined]
+        summary=(
+            f"Surse: {result.sources_checked}; reușite: {result.sources_succeeded}; "
+            f"nereușite: {result.sources_failed}; articole: {result.articles_found}; "
+            f"noi: {result.articles_inserted}; duplicate: {result.duplicates_skipped}."
+        ),
+        failed_sources=result.failed_source_ids,
+        footer=result.status.value,
+        report_reference=None if report is None else report.report_reference,
+    )
+
+
+def _publish_editor_result(view: object, value: object) -> None:
+    result = reconstruct_editor_desktop_result(value)
+    view.publish_editor_result(  # type: ignore[attr-defined]
+        status=result.application_result.status.value
+    )
+
+
+def _present_startup_failure(root: object) -> None:
+    try:
+        messagebox.showerror(
+            title=_text_v1(key="app.title"),
+            message=_text_v1(key="startup.error"),
+            parent=root,
+        )
+    except BaseException:
+        pass
+
+
+def _safe_input(value: object) -> bool:
+    return (
+        type(value) is str
+        and bool(value)
+        and value == value.strip()
+        and unicodedata.is_normalized("NFC", value)
+        and all(
+            ord(character) >= 32
+            and not 127 <= ord(character) <= 159
+            and not 0xD800 <= ord(character) <= 0xDFFF
+            for character in value
+        )
+    )

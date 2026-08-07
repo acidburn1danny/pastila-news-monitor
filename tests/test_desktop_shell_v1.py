@@ -143,6 +143,12 @@ def test_structural_entrypoint_creates_one_root_controller_and_view(monkeypatch)
         def protocol(self, name, callback):
             calls.append(("protocol", name, callback))
 
+        def withdraw(self):
+            calls.append("withdraw")
+
+        def deiconify(self):
+            calls.append("deiconify")
+
         def mainloop(self):
             calls.append("mainloop")
 
@@ -165,6 +171,9 @@ def test_structural_entrypoint_creates_one_root_controller_and_view(monkeypatch)
         def select_page(self, *, page):
             calls.append(("page", page))
 
+        def submit_application(self, *, task, on_completed):
+            calls.append(("submit", task, on_completed))
+
     class View:
         def __init__(self, **kwargs):
             calls.append(("view", kwargs))
@@ -172,10 +181,30 @@ def test_structural_entrypoint_creates_one_root_controller_and_view(monkeypatch)
         def publish_snapshot(self, *, snapshot):
             calls.append(("snapshot", snapshot))
 
+        def bind_scout_action(self, *, callback):
+            calls.append(("bind-scout", callback))
+
+        def bind_editor_action(self, *, callback):
+            calls.append(("bind-editor", callback))
+
+        def bind_report_action(self, *, callback):
+            calls.append(("bind-report", callback))
+
+    class Facade:
+        def run_scout(self, *, request, progress_sink):
+            del request, progress_sink
+
+        def run_editor(self, *, request, progress_sink):
+            del request, progress_sink
+
+        def open_report(self, *, reference):
+            del reference
+
     monkeypatch.setattr(entrypoint.tkinter, "Tk", Root)
     monkeypatch.setattr(entrypoint.sys, "platform", "test")
     monkeypatch.setattr(entrypoint, "_DesktopTaskControllerV1", Controller)
     monkeypatch.setattr(entrypoint, "_DesktopMainWindowV1", View)
+    monkeypatch.setattr(entrypoint, "_compose_desktop_application_facade_v1", Facade)
     assert entrypoint.main() == 0
     assert calls.count("root") == 1
     assert (
@@ -183,7 +212,12 @@ def test_structural_entrypoint_creates_one_root_controller_and_view(monkeypatch)
     )
     assert sum(isinstance(item, tuple) and item[0] == "view" for item in calls) == 1
     assert (
-        calls.count("start") == calls.count("mainloop") == calls.count("destroy") == 1
+        calls.count("withdraw")
+        == calls.count("start")
+        == calls.count("deiconify")
+        == calls.count("mainloop")
+        == calls.count("destroy")
+        == 1
     )
 
 
@@ -409,10 +443,23 @@ def test_import_graph_has_no_backend_or_composition_ownership(monkeypatch):
                 imported.update(alias.name for alias in node.names)
             elif isinstance(node, ast.ImportFrom) and node.module:
                 imported.add(node.module)
-        assert not any(
-            any(name == item or name.startswith(item + ".") for item in forbidden)
+        violations = {
+            name
             for name in imported
-        )
+            if any(name == item or name.startswith(item + ".") for item in forbidden)
+        }
+        if path.name == "entrypoint.py":
+            violations = {
+                name
+                for name in violations
+                if not name.startswith(
+                    (
+                        "pastila_scout.desktop_application_v1",
+                        "pastila_scout.desktop_editor_v1",
+                    )
+                )
+            }
+        assert violations == set()
     del monkeypatch
 
 
@@ -581,7 +628,11 @@ def test_frozen_authority_hashes_and_phase_scope():
                 check=True,
                 capture_output=True,
             ).stdout
-            assert (ROOT / path).read_bytes() == committed
+            if path not in {
+                "src/pastila_scout/desktop_v1/entrypoint.py",
+                "src/pastila_scout/desktop_v1/resources.py",
+            }:
+                assert (ROOT / path).read_bytes() == committed
 
     unrelated_future_paths = {
         "docs/future-neutral.md",

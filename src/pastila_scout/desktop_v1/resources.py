@@ -41,6 +41,7 @@ _TEXT_V1 = (
     ("about.body", "Pastila Scout"),
     ("close.running", "Închidere în curs…"),
     ("error.internal", "Aplicația a întâmpinat o eroare internă."),
+    ("startup.error", "Aplicația nu a putut fi configurată."),
 )
 _LOOKUP = dict(_TEXT_V1)
 if len(_LOOKUP) != len(_TEXT_V1):
