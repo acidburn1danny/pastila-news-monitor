@@ -710,7 +710,7 @@ def test_revision_5_scope_and_frozen_integrity() -> None:
         "tests/test_editor_application_export_v1.py",
     }
     correction_digest = (
-        "1205ED67D66E4DAB32AA88664125022BEFEC657E841972595B56D4D401DE817D"
+        "AB4CEF7010B9D8C5545A5E3CF913AFFEE71F7E43F1B7159DBA1BB7BC11014F0B"
     )
 
     def names(*args: str) -> set[str]:
@@ -726,6 +726,14 @@ def test_revision_5_scope_and_frozen_integrity() -> None:
         current_baseline: "5c80d4edc402f661040035db11ad7d9785de1362",
     }
     for tag, expected in commits.items():
+        tag_type = subprocess.run(
+            ["git", "cat-file", "-t", tag],
+            cwd=root,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        assert tag_type == "tag"
         actual = subprocess.run(
             ["git", "rev-parse", f"{tag}^{{}}"],
             cwd=root,
@@ -767,7 +775,85 @@ def test_revision_5_scope_and_frozen_integrity() -> None:
     assert hashlib.sha256(normalized).hexdigest().upper() == correction_digest
     assert "_compose_editor_application_runtime_v1" not in public.__all__
     cli_revision = "phase-4.3-editor-cli-run-r6-verified"
+    assert (
+        subprocess.run(
+            ["git", "cat-file", "-t", cli_revision],
+            cwd=root,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        == "tag"
+    )
+    assert (
+        subprocess.run(
+            ["git", "rev-parse", f"{cli_revision}^{{}}"],
+            cwd=root,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        == "cf36d0fcd87186a69c9c0cbca79fcb3011111420"
+    )
     assert "src/pastila_scout/cli.py" in names(
         "diff", "--name-only", f"{cli_revision}^", cli_revision
     )
-    assert names("diff", "--name-only", "--", "src/pastila_scout/cli.py") == set()
+    version_projection = "phase-5.5c-version-projection-spec-v1-ready"
+    assert (
+        subprocess.run(
+            ["git", "cat-file", "-t", version_projection],
+            cwd=root,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        == "tag"
+    )
+    assert (
+        subprocess.run(
+            ["git", "rev-parse", f"{version_projection}^{{}}"],
+            cwd=root,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        == "6532d8651412ff9b036836a4337ad3947e23421d"
+    )
+    specification = (
+        root / "docs/windows-application/VersionProjectionSpecificationV1.md"
+    )
+    assert hashlib.sha256(specification.read_bytes()).hexdigest().upper() == (
+        "05F43046219970BFF6690DEFACF122160EFB0B230FB31C05CD6E647A7CF0FC4B"
+    )
+    historical_cli = subprocess.run(
+        ["git", "show", f"{cli_revision}:src/pastila_scout/cli.py"],
+        cwd=root,
+        check=True,
+        capture_output=True,
+    ).stdout
+    projection_base_cli = subprocess.run(
+        ["git", "show", f"{version_projection}:src/pastila_scout/cli.py"],
+        cwd=root,
+        check=True,
+        capture_output=True,
+    ).stdout
+    assert historical_cli == projection_base_cli
+    current_cli = (root / "src/pastila_scout/cli.py").read_bytes()
+    version_import = b"from pastila_scout import __version__\n"
+    version_argument = (
+        b'    parser.add_argument("--version", action="version", version=__version__)\n'
+    )
+    import_anchor = b"from pathlib import Path\n\n"
+    parser_anchor = b'    parser = argparse.ArgumentParser(prog="pastila-scout")\n'
+    assert projection_base_cli.count(import_anchor) == 1
+    assert projection_base_cli.count(parser_anchor) == 1
+    expected_cli = projection_base_cli.replace(
+        import_anchor, import_anchor + version_import
+    ).replace(parser_anchor, parser_anchor + version_argument)
+    assert current_cli.count(version_import) == 1
+    assert current_cli.count(version_argument) == 1
+    assert current_cli == expected_cli
+    assert (
+        current_cli.replace(version_import, b"").replace(version_argument, b"")
+        == projection_base_cli
+    )
