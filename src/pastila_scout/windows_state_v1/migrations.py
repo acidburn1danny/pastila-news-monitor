@@ -51,6 +51,33 @@ class _SafeValue:
         raise TypeError("Migration values do not support pickle")
 
 
+@dataclass(frozen=True, slots=True)
+class DevelopmentMigrationApplicabilityV1:
+    status: str
+
+    def __post_init__(self) -> None:
+        if type(self.status) is not str or self.status not in {
+            "development_root_required",
+            "already_migrated",
+        }:
+            raise _WindowsStateMigrationError() from None
+
+    def __init_subclass__(cls, **kwargs) -> NoReturn:
+        del cls, kwargs
+        raise TypeError("DevelopmentMigrationApplicabilityV1 cannot be subclassed")
+
+    def __copy__(self):
+        return type(self)(self.status)
+
+    def __deepcopy__(self, memo):
+        del memo
+        return self.__copy__()
+
+    def __reduce_ex__(self, protocol: int) -> NoReturn:
+        del self, protocol
+        raise TypeError("DevelopmentMigrationApplicabilityV1 does not support pickle")
+
+
 @dataclass(frozen=True, slots=True, repr=False)
 class DevelopmentMigrationPlanV1(_SafeValue):
     status: str
@@ -150,6 +177,31 @@ _PLAN_BOOLS = (
 )
 
 
+def _inspect_development_state_migration_applicability_v1(
+    *, destination: WindowsApplicationPathsV1
+) -> DevelopmentMigrationApplicabilityV1:
+    """Recover installed migration state and validate any completed receipt."""
+
+    invalid = False
+    try:
+        paths = _reconstruct_windows_application_paths_v1(destination)
+        if paths.mode != "installed":
+            raise ValueError
+        _recover_pending(paths)
+        if paths.migration_receipt_path.exists():
+            _read_receipt(paths.migration_receipt_path)
+            return DevelopmentMigrationApplicabilityV1("already_migrated")
+        return DevelopmentMigrationApplicabilityV1("development_root_required")
+    except (KeyboardInterrupt, SystemExit, GeneratorExit, MemoryError):
+        raise
+    except Exception:  # noqa: BLE001 - fixed safe migration boundary
+        invalid = True
+    if invalid:
+        del destination, invalid
+        raise _WindowsStateMigrationError() from None
+    raise AssertionError("unreachable")
+
+
 def _inspect_development_state_migration_v1(
     *, development_root: Path, destination: WindowsApplicationPathsV1
 ) -> DevelopmentMigrationPlanV1:
@@ -163,10 +215,10 @@ def _inspect_development_state_migration_v1(
             or not development_root.is_dir()
         ):
             raise ValueError
-        _recover_pending(paths)
-        receipt = paths.migration_receipt_path
-        if receipt.exists():
-            _read_receipt(receipt)
+        applicability = _inspect_development_state_migration_applicability_v1(
+            destination=paths
+        )
+        if applicability.status == "already_migrated":
             return _plan("already_migrated", development_root, paths)
         database = development_root / "data" / "news_monitor.db"
         reports = development_root / "reports"

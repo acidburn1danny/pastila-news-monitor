@@ -1,15 +1,22 @@
 from __future__ import annotations
 
+import copy
 import json
+import pickle
 import shutil
 import sqlite3
+import weakref
+from dataclasses import FrozenInstanceError, fields
 from pathlib import Path
 
 import pytest
 
+from pastila_scout.windows_state_v1 import migrations
 from pastila_scout.windows_state_v1.errors import _WindowsStateMigrationError
 from pastila_scout.windows_state_v1.migrations import (
+    DevelopmentMigrationApplicabilityV1,
     _execute_development_state_migration_v1,
+    _inspect_development_state_migration_applicability_v1,
     _inspect_development_state_migration_v1,
     _migrate_windows_database_v1,
 )
@@ -32,6 +39,286 @@ def test_no_development_state_is_a_passive_noop(tmp_path: Path) -> None:
         _execute_development_state_migration_v1(plan=plan).status
         == "nothing_to_migrate"
     )
+
+
+def test_applicability_requires_a_root_without_reading_source_state(
+    tmp_path: Path,
+) -> None:
+    root, paths = _layout(tmp_path)
+    malformed = root / "config" / "sources.yaml"
+    malformed.parent.mkdir(parents=True)
+    malformed.write_text("ai: {}\n", encoding="utf-8")
+
+    first = _inspect_development_state_migration_applicability_v1(destination=paths)
+    second = _inspect_development_state_migration_applicability_v1(destination=paths)
+
+    assert first.status == second.status == "development_root_required"
+    assert first == second
+
+
+def test_applicability_validates_receipt_without_development_root(
+    tmp_path: Path,
+) -> None:
+    root, paths = _layout(tmp_path)
+    settings = root / "config" / "settings.json"
+    settings.parent.mkdir(parents=True)
+    settings.write_bytes(DEFAULTS.read_bytes())
+    _execute_development_state_migration_v1(
+        plan=_inspect_development_state_migration_v1(
+            development_root=root, destination=paths
+        )
+    )
+
+    applicability = _inspect_development_state_migration_applicability_v1(
+        destination=paths
+    )
+
+    assert applicability.status == "already_migrated"
+
+
+def test_applicability_recovers_pending_state_without_development_root(
+    tmp_path: Path,
+) -> None:
+    _, paths = _layout(tmp_path)
+    operation = "a" * 32
+    local_stage = paths.local_state_root / f".development-migration-{operation}"
+    roaming_stage = paths.roaming_state_root / f".development-migration-{operation}"
+    local_stage.mkdir()
+    roaming_stage.mkdir()
+    paths.migration_pending_path.write_text(
+        json.dumps(
+            {
+                "schema": "pastila-scout-development-migration-pending",
+                "schema_version": 1,
+                "operation_id": operation,
+                "artifacts": [],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    applicability = _inspect_development_state_migration_applicability_v1(
+        destination=paths
+    )
+
+    assert applicability.status == "development_root_required"
+    assert not paths.migration_pending_path.exists()
+    assert not local_stage.exists()
+    assert not roaming_stage.exists()
+
+
+def test_applicability_rejects_invalid_receipt_safely(tmp_path: Path) -> None:
+    _, paths = _layout(tmp_path)
+    paths.migration_receipt_path.write_text('{"schema":"wrong"}\n', encoding="utf-8")
+
+    with pytest.raises(_WindowsStateMigrationError) as raised:
+        _inspect_development_state_migration_applicability_v1(destination=paths)
+
+    assert str(raised.value) == "Windows application state migration failed."
+    assert raised.value.__cause__ is None
+    assert raised.value.__context__ is None
+
+
+def test_applicability_rejects_unsupported_receipt_version(tmp_path: Path) -> None:
+    _, paths = _layout(tmp_path)
+    _write_receipt(paths, schema_version=2)
+
+    with pytest.raises(_WindowsStateMigrationError) as raised:
+        _inspect_development_state_migration_applicability_v1(destination=paths)
+
+    assert raised.value.__cause__ is None
+    assert raised.value.__context__ is None
+
+
+def test_applicability_rejects_invalid_pending_recovery_safely(tmp_path: Path) -> None:
+    _, paths = _layout(tmp_path)
+    paths.migration_pending_path.write_text("{}\n", encoding="utf-8")
+
+    with pytest.raises(_WindowsStateMigrationError) as raised:
+        _inspect_development_state_migration_applicability_v1(destination=paths)
+
+    assert raised.value.__cause__ is None
+    assert raised.value.__context__ is None
+    assert paths.migration_pending_path.exists()
+
+
+def test_applicability_value_is_hardened_and_minimal() -> None:
+    required = DevelopmentMigrationApplicabilityV1("development_root_required")
+    same = DevelopmentMigrationApplicabilityV1("development_root_required")
+    migrated = DevelopmentMigrationApplicabilityV1("already_migrated")
+
+    assert required == same
+    assert required != migrated
+    assert hash(required) == hash(same)
+    shallow = copy.copy(required)
+    deep = copy.deepcopy(required)
+    assert shallow == deep == required
+    assert shallow is not required
+    assert deep is not required
+    assert tuple(item.name for item in fields(required)) == ("status",)
+    assert not hasattr(required, "__dict__")
+    with pytest.raises(TypeError):
+        weakref.ref(required)
+    assert repr(required) == (
+        "DevelopmentMigrationApplicabilityV1(status='development_root_required')"
+    )
+    with pytest.raises(FrozenInstanceError):
+        required.status = "already_migrated"  # type: ignore[misc]
+    assert required.status == "development_root_required"
+    with pytest.raises((FrozenInstanceError, AttributeError, TypeError)):
+        required.receipt = {}  # type: ignore[attr-defined]
+    assert not hasattr(required, "receipt")
+    with pytest.raises(TypeError):
+        pickle.dumps(required)
+    with pytest.raises(TypeError):
+
+        class DerivedApplicability(DevelopmentMigrationApplicabilityV1):
+            pass
+
+    for invalid in ("unknown", 1, None):
+        with pytest.raises(_WindowsStateMigrationError):
+            DevelopmentMigrationApplicabilityV1(invalid)  # type: ignore[arg-type]
+
+
+@pytest.mark.parametrize(
+    "process_control",
+    [KeyboardInterrupt, SystemExit, GeneratorExit, MemoryError],
+)
+def test_applicability_propagates_process_control(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    process_control: type[BaseException],
+) -> None:
+    _, paths = _layout(tmp_path)
+
+    def interrupt(_paths) -> None:
+        raise process_control
+
+    monkeypatch.setattr(migrations, "_recover_pending", interrupt)
+    with pytest.raises(process_control) as raised:
+        _inspect_development_state_migration_applicability_v1(destination=paths)
+    assert raised.type is process_control
+
+
+@pytest.mark.parametrize(
+    "state",
+    ["valid_receipt", "malformed_receipt", "pending", "recovery_failure"],
+)
+def test_full_inspector_rejects_invalid_root_before_applicability(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    state: str,
+) -> None:
+    _, paths = _layout(tmp_path)
+    if state == "valid_receipt":
+        _write_receipt(paths)
+    elif state == "malformed_receipt":
+        paths.migration_receipt_path.write_text("{}\n", encoding="utf-8")
+    elif state in {"pending", "recovery_failure"}:
+        paths.migration_pending_path.write_text(
+            (_pending_json(operation="b" * 32) if state == "pending" else "{}\n"),
+            encoding="utf-8",
+        )
+    receipt_before = (
+        paths.migration_receipt_path.read_bytes()
+        if paths.migration_receipt_path.exists()
+        else None
+    )
+    pending_before = (
+        paths.migration_pending_path.read_bytes()
+        if paths.migration_pending_path.exists()
+        else None
+    )
+    called = False
+
+    def applicability_spy(*, destination):
+        nonlocal called
+        del destination
+        called = True
+        raise AssertionError
+
+    monkeypatch.setattr(
+        migrations,
+        "_inspect_development_state_migration_applicability_v1",
+        applicability_spy,
+    )
+    with pytest.raises(_WindowsStateMigrationError):
+        _inspect_development_state_migration_v1(
+            development_root=(tmp_path / "missing").resolve(), destination=paths
+        )
+
+    assert not called
+    assert (
+        paths.migration_receipt_path.read_bytes()
+        if paths.migration_receipt_path.exists()
+        else None
+    ) == receipt_before
+    assert (
+        paths.migration_pending_path.read_bytes()
+        if paths.migration_pending_path.exists()
+        else None
+    ) == pending_before
+
+
+def test_applicability_never_inspects_development_sources(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    _, paths = _layout(tmp_path)
+
+    def forbidden(*args, **kwargs):
+        del args, kwargs
+        raise AssertionError
+
+    monkeypatch.setattr(migrations, "load_sources_config", forbidden)
+    monkeypatch.setattr(migrations, "_load_windows_settings_v1", forbidden)
+    monkeypatch.setattr(migrations, "_regular_optional", forbidden)
+    monkeypatch.setattr(migrations, "_reports_optional", forbidden)
+
+    result = _inspect_development_state_migration_applicability_v1(destination=paths)
+
+    assert result.status == "development_root_required"
+
+
+def test_applicability_recovery_is_idempotent(tmp_path: Path) -> None:
+    _, paths = _layout(tmp_path)
+    operation = "c" * 32
+    paths.migration_pending_path.write_text(
+        _pending_json(operation=operation), encoding="utf-8"
+    )
+
+    first = _inspect_development_state_migration_applicability_v1(destination=paths)
+    second = _inspect_development_state_migration_applicability_v1(destination=paths)
+
+    assert (
+        first
+        == second
+        == DevelopmentMigrationApplicabilityV1("development_root_required")
+    )
+    assert not paths.migration_pending_path.exists()
+
+
+def test_applicability_preserves_all_artifact_eligibility(tmp_path: Path) -> None:
+    root, paths = _layout(tmp_path)
+    database = root / "data" / "news_monitor.db"
+    database.parent.mkdir(parents=True)
+    database.write_bytes(b"database")
+    reports = root / "reports"
+    reports.mkdir()
+    (reports / "report.html").write_text("report", encoding="utf-8")
+    settings = root / "config" / "settings.json"
+    settings.parent.mkdir(parents=True)
+    settings.write_bytes(DEFAULTS.read_bytes())
+    shutil.copyfile(SOURCES, root / "config" / "sources.yaml")
+
+    plan = _inspect_development_state_migration_v1(
+        development_root=root, destination=paths
+    )
+
+    assert plan.status == "ready"
+    assert plan.database_eligible
+    assert plan.reports_eligible
+    assert plan.settings_eligible
+    assert plan.source_eligible
 
 
 def test_source_seed_is_validated_byte_preserving_and_idempotent(
@@ -103,6 +390,32 @@ def test_existing_override_is_never_overwritten(tmp_path: Path) -> None:
     assert paths.source_override_path.read_bytes() == b"existing\n"
 
 
+def test_applicability_preserves_partial_eligibility_and_executor_freshness(
+    tmp_path: Path,
+) -> None:
+    root, paths = _layout(tmp_path)
+    settings = root / "config" / "settings.json"
+    settings.parent.mkdir(parents=True)
+    settings.write_bytes(DEFAULTS.read_bytes())
+    source = root / "config" / "sources.yaml"
+    shutil.copyfile(SOURCES, source)
+    paths.source_override_path.write_bytes(b"existing\n")
+
+    partial = _inspect_development_state_migration_v1(
+        development_root=root, destination=paths
+    )
+    assert partial.status == "ready"
+    assert partial.settings_eligible
+    assert not partial.source_eligible
+
+    paths.settings_path.write_bytes(DEFAULTS.read_bytes())
+    with pytest.raises(_WindowsStateMigrationError) as raised:
+        _execute_development_state_migration_v1(plan=partial)
+    assert raised.value.__cause__ is None
+    assert raised.value.__context__ is None
+    assert not paths.migration_receipt_path.exists()
+
+
 def test_receipt_is_final_success_authority(tmp_path: Path) -> None:
     root, paths = _layout(tmp_path)
     settings = root / "config" / "settings.json"
@@ -127,6 +440,8 @@ def test_development_destination_is_rejected(tmp_path: Path) -> None:
         bundled_application_root=None,
         development_root=root,
     )
+    with pytest.raises(_WindowsStateMigrationError):
+        _inspect_development_state_migration_applicability_v1(destination=paths)
     with pytest.raises(_WindowsStateMigrationError):
         _inspect_development_state_migration_v1(
             development_root=root, destination=paths
@@ -191,3 +506,32 @@ def _layout(tmp_path: Path):
     )
     _create_windows_application_directories_v1(paths=paths)
     return development, paths
+
+
+def _write_receipt(paths, *, schema_version: int = 1) -> None:
+    paths.migration_receipt_path.write_text(
+        json.dumps(
+            {
+                "schema": "pastila-scout-development-migration",
+                "schema_version": schema_version,
+                "operation_id": "d" * 32,
+                "database_copied": False,
+                "reports_copied": 0,
+                "settings_copied": False,
+                "source_override_seeded": False,
+                "completed_at": "2026-08-08T00:00:00Z",
+            }
+        ),
+        encoding="utf-8",
+    )
+
+
+def _pending_json(*, operation: str) -> str:
+    return json.dumps(
+        {
+            "schema": "pastila-scout-development-migration-pending",
+            "schema_version": 1,
+            "operation_id": operation,
+            "artifacts": [],
+        }
+    )
