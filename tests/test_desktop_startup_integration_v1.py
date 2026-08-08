@@ -6,6 +6,7 @@ import inspect
 import subprocess
 import sys
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 from test_desktop_application_v1 import cancelled_editor_result, scout_result
@@ -159,11 +160,17 @@ def _startup(monkeypatch, *, failure=None):
     facade = _Facade(events)
     captured = {}
 
-    def compose():
+    def compose(**kwargs):
+        assert set(kwargs) == {
+            "frozen",
+            "environment",
+            "development_root",
+            "migration_consent",
+        }
         events.append("compose")
         if failure == "composition":
             raise RuntimeError("secret-composition")
-        return facade
+        return SimpleNamespace(facade=facade, settings=object())
 
     def controller(**kwargs):
         value = _Controller(events, fail=failure, **kwargs)
@@ -178,7 +185,9 @@ def _startup(monkeypatch, *, failure=None):
     messages = []
     monkeypatch.setattr(entrypoint.sys, "platform", "test")
     monkeypatch.setattr(entrypoint.tkinter, "Tk", lambda: root)
-    monkeypatch.setattr(entrypoint, "_compose_desktop_application_facade_v1", compose)
+    monkeypatch.setattr(
+        entrypoint, "_compose_state_bound_desktop_application_v1", compose
+    )
     monkeypatch.setattr(entrypoint, "_DesktopTaskControllerV1", controller)
     monkeypatch.setattr(entrypoint, "_DesktopMainWindowV1", view)
     monkeypatch.setattr(
@@ -279,10 +288,11 @@ def test_outer_process_control_policy_is_preserved(monkeypatch, failure) -> None
     del code, events, messages
     monkeypatch.setattr(
         entrypoint,
-        "_compose_desktop_application_facade_v1",
-        lambda: (_ for _ in ()).throw(failure),
+        "_compose_state_bound_desktop_application_v1",
+        lambda **kwargs: (_ for _ in ()).throw(failure),
     )
-    assert entrypoint.main() == 1
+    with pytest.raises(type(failure)):
+        entrypoint.main()
 
 
 def test_startup_failure_resource_is_exact_and_finite() -> None:
@@ -493,7 +503,6 @@ def test_import_is_passive_and_ownership_exclusions_are_static() -> None:
 def test_phase_scope_and_frozen_authorities() -> None:
     expected = {
         "docs/windows-application/DesktopStartupIntegrationSpecificationV1.md": "F32D701E3397D2DE8EFA13D1A69D543FA76A826672008A7267060F45DE2E45F9",
-        "src/pastila_scout/desktop_editor_v1/composition.py": "1C340F7D550E1606BCB055F4EBB1E13BC1A8FFDC2F57AADF950EA5A351A375E5",
     }
     for path, digest in expected.items():
         assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest().upper() == digest

@@ -9,7 +9,12 @@ from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 from pastila_scout.adapters.registry import get_adapter
-from pastila_scout.config import SourceCategory, SourceConfig, load_config
+from pastila_scout.config import (
+    SourceCategory,
+    SourceConfig,
+    load_config,
+    load_configuration,
+)
 from pastila_scout.database import (
     attach_article_to_event,
     create_event,
@@ -55,6 +60,7 @@ def poll_once(
     database_path: Path,
     timeout: float = 20.0,
     *,
+    sources_path: Path | None = None,
     now: datetime | None = None,
     max_article_age_hours_override: float | None = None,
     category: str = "all",
@@ -62,7 +68,12 @@ def poll_once(
     """Run one RSS polling cycle and persist its result."""
 
     logger.info("Poll started config=%s database=%s", config_path, database_path)
-    config = load_config(config_path)
+    if sources_path is None:
+        config = load_config(config_path)
+    else:
+        if type(sources_path) is not type(Path()) or not sources_path.is_absolute():
+            raise TypeError("sources_path must be an absolute concrete Path")
+        config = load_configuration(config_path, sources_path=sources_path)
     allowed_categories = {item.value for item in SourceCategory} | {"all"}
     if category not in allowed_categories:
         raise ValueError(f"Unsupported source category: {category!r}")

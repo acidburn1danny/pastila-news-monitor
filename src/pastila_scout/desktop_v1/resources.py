@@ -42,6 +42,15 @@ _TEXT_V1 = (
     ("close.running", "Închidere în curs…"),
     ("error.internal", "Aplicația a întâmpinat o eroare internă."),
     ("startup.error", "Aplicația nu a putut fi configurată."),
+    ("state.error", "Starea aplicației Windows nu a putut fi inițializată."),
+    ("migration.title", "Importă starea de dezvoltare"),
+    (
+        "migration.prompt",
+        "Selectați un proiect de dezvoltare pentru import. Fișierele sursă nu vor fi șterse.",
+    ),
+    ("migration.confirm", "Importați starea validată în profilul Windows?"),
+    ("migration.error", "Starea de dezvoltare nu a putut fi importată."),
+    ("sources.override.error", "Configurația surselor personalizate este invalidă."),
 )
 _LOOKUP = dict(_TEXT_V1)
 if len(_LOOKUP) != len(_TEXT_V1):

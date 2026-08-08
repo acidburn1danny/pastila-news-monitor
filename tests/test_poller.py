@@ -1,4 +1,5 @@
 import copy
+import inspect
 import json
 import pickle
 import sqlite3
@@ -9,6 +10,7 @@ from typing import Self
 
 import pytest
 
+from pastila_scout import poller
 from pastila_scout.config import SourceConfig
 from pastila_scout.database import open_database
 from pastila_scout.logging_config import configure_logging
@@ -107,6 +109,69 @@ def candidate(name: str, published_at: datetime | None) -> ArticleCandidate:
         published_at=published_at.isoformat() if published_at else None,
         raw_payload=None,
     )
+
+
+def test_explicit_sources_path_is_forwarded_unchanged_to_configuration_authority(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    config_path = tmp_path / "config.yaml"
+    sources_path = tmp_path / "explicit-sources.yaml"
+    database_path = tmp_path / "news.db"
+    failure = RuntimeError("configuration authority failure")
+    calls: list[tuple[Path, Path]] = []
+
+    def load_configuration(config: Path, *, sources_path: Path):
+        calls.append((config, sources_path))
+        raise failure
+
+    monkeypatch.setattr(poller, "load_configuration", load_configuration)
+    monkeypatch.setattr(
+        poller,
+        "load_config",
+        lambda path: pytest.fail(f"legacy loader used for explicit path: {path}"),
+    )
+    with pytest.raises(RuntimeError) as caught:
+        poll_once(config_path, database_path, sources_path=sources_path)
+    assert caught.value is failure
+    assert calls == [(config_path, sources_path)]
+    assert not database_path.exists()
+
+
+def test_omitted_sources_path_preserves_legacy_loader(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    config_path = tmp_path / "config.yaml"
+    failure = RuntimeError("legacy configuration failure")
+    calls: list[Path] = []
+
+    def load_config(path: Path):
+        calls.append(path)
+        raise failure
+
+    monkeypatch.setattr(poller, "load_config", load_config)
+    monkeypatch.setattr(
+        poller,
+        "load_configuration",
+        lambda *args, **kwargs: pytest.fail(
+            "explicit loader used without sources_path"
+        ),
+    )
+    with pytest.raises(RuntimeError) as caught:
+        poll_once(config_path, tmp_path / "news.db")
+    assert caught.value is failure
+    assert calls == [config_path]
+
+
+def test_sources_path_is_keyword_only_and_poller_owns_no_selection_policy() -> None:
+    parameter = inspect.signature(poll_once).parameters["sources_path"]
+    assert parameter.kind is inspect.Parameter.KEYWORD_ONLY
+    assert parameter.default is None
+    with pytest.raises(TypeError):
+        poll_once(Path("config.yaml"), Path("news.db"), 20.0, Path("sources.yaml"))
+    source = inspect.getsource(poller)
+    assert "source_override_path" not in source
+    assert "bundled_source_path" not in source
+    assert "load_sources_config" not in source
 
 
 def test_poll_groups_matching_articles_and_keeps_distinct_source_counts(

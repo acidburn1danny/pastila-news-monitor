@@ -6,13 +6,14 @@ from __future__ import annotations
 
 import ctypes
 import math
+import os
 import sys
 import tkinter
 import unicodedata
 import uuid
 from datetime import UTC, datetime
 from pathlib import Path
-from tkinter import messagebox
+from tkinter import filedialog, messagebox
 from typing import NoReturn
 
 from pastila_scout.contracts.identity import verify_scout_input_identity
@@ -29,9 +30,6 @@ from pastila_scout.desktop_application_v1 import (
     reconstruct_editor_desktop_result,
     reconstruct_scout_desktop_result,
 )
-from pastila_scout.desktop_editor_v1.composition import (
-    _compose_desktop_application_facade_v1,
-)
 from pastila_scout.editor_application_v1 import (
     EditorApplicationGenerationConfigurationAuthorityV1,
     EditorApplicationRequestV1,
@@ -41,6 +39,9 @@ from pastila_scout.editor_application_v1 import (
     EditorSelectionProfileAuthorityV1,
 )
 from pastila_scout.provider_execution_v2 import CancellationTokenV2
+from pastila_scout.windows_state_v1.migrations import (
+    _inspect_development_state_migration_v1,
+)
 
 from .controller import _DesktopTaskControllerV1
 from .errors import _DesktopShellConfigurationError
@@ -49,6 +50,10 @@ from .models import (
     _reconstruct_desktop_scout_action_input_v1,
 )
 from .resources import _text_v1
+from .state_composition import (
+    _compose_state_bound_desktop_application_v1,
+    _DesktopStateConsumptionError,
+)
 from .views import _DesktopMainWindowV1
 
 
@@ -77,7 +82,37 @@ def main() -> int:
         root.tk.call("tk", "scaling", 2.0)
         root.withdraw()
         present_failure = True
-        facade = _compose_desktop_application_facade_v1()
+        frozen = bool(getattr(sys, "frozen", False))
+        development_root = None if frozen else Path(__file__).resolve().parents[3]
+
+        def migration_consent(paths):
+            messagebox.showinfo(
+                title=_text_v1(key="migration.title"),
+                message=_text_v1(key="migration.prompt"),
+                parent=root,
+            )
+            selected = filedialog.askdirectory(parent=root, mustexist=True)
+            if not selected:
+                return None
+            plan = _inspect_development_state_migration_v1(
+                development_root=Path(selected), destination=paths
+            )
+            if plan.status != "ready":
+                return None
+            accepted = messagebox.askyesno(
+                title=_text_v1(key="migration.title"),
+                message=_text_v1(key="migration.confirm"),
+                parent=root,
+            )
+            return plan if accepted else None
+
+        state = _compose_state_bound_desktop_application_v1(
+            frozen=frozen,
+            environment=dict(os.environ),
+            development_root=development_root,
+            migration_consent=migration_consent,
+        )
+        facade = state.facade
         cells: dict[str, object] = {"facade": facade}
         closed = False
 
@@ -101,7 +136,10 @@ def main() -> int:
             publish_snapshot=publish_snapshot,
         )
         view = _DesktopMainWindowV1(
-            root=root, on_select_page=select_page, on_close=close
+            root=root,
+            on_select_page=select_page,
+            on_close=close,
+            settings=state.settings,
         )
         cells.update(controller=controller, view=view)
 
@@ -141,9 +179,13 @@ def main() -> int:
         present_failure = False
         root.mainloop()
         return 0
-    except BaseException:
+    except _DesktopStateConsumptionError as exc:
         if present_failure and root is not None:
-            _present_startup_failure(root)
+            _present_startup_failure(root, key=exc.presentation_key)
+        return 1
+    except Exception:
+        if present_failure and root is not None:
+            _present_startup_failure(root, key="startup.error")
         return 1
     finally:
         if controller is not None:
@@ -280,11 +322,11 @@ def _publish_editor_result(view: object, value: object) -> None:
     )
 
 
-def _present_startup_failure(root: object) -> None:
+def _present_startup_failure(root: object, *, key: str = "startup.error") -> None:
     try:
         messagebox.showerror(
             title=_text_v1(key="app.title"),
-            message=_text_v1(key="startup.error"),
+            message=_text_v1(key=key),
             parent=root,
         )
     except BaseException:

@@ -8,6 +8,7 @@ import pickle
 import subprocess
 import threading
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 
@@ -204,7 +205,11 @@ def test_structural_entrypoint_creates_one_root_controller_and_view(monkeypatch)
     monkeypatch.setattr(entrypoint.sys, "platform", "test")
     monkeypatch.setattr(entrypoint, "_DesktopTaskControllerV1", Controller)
     monkeypatch.setattr(entrypoint, "_DesktopMainWindowV1", View)
-    monkeypatch.setattr(entrypoint, "_compose_desktop_application_facade_v1", Facade)
+    monkeypatch.setattr(
+        entrypoint,
+        "_compose_state_bound_desktop_application_v1",
+        lambda **kwargs: SimpleNamespace(facade=Facade(), settings=object()),
+    )
     assert entrypoint.main() == 0
     assert calls.count("root") == 1
     assert (
@@ -224,7 +229,9 @@ def test_structural_entrypoint_creates_one_root_controller_and_view(monkeypatch)
 def test_withdrawn_tk_window_has_exact_structural_root_and_initial_state():
     import tkinter
 
+    from pastila_scout.desktop_v1.settings import _project_desktop_settings_v1
     from pastila_scout.desktop_v1.views import _DesktopMainWindowV1
+    from pastila_scout.windows_state_v1.settings import _default_windows_settings_v1
 
     try:
         root = tkinter.Tk()
@@ -237,7 +244,15 @@ def test_withdrawn_tk_window_has_exact_structural_root_and_initial_state():
             assert type(page) is _DesktopPageV1
 
         view = _DesktopMainWindowV1(
-            root=root, on_select_page=select, on_close=lambda: None
+            root=root,
+            on_select_page=select,
+            on_close=lambda: None,
+            settings=_project_desktop_settings_v1(
+                settings=_default_windows_settings_v1(
+                    defaults_path=ROOT
+                    / "src/pastila_scout/desktop_v1/default-settings-v1.json"
+                )
+            ),
         )
         assert root.title() == "Pastila Scout"
         assert tuple(root.minsize()) == (900, 600)
@@ -448,7 +463,7 @@ def test_import_graph_has_no_backend_or_composition_ownership(monkeypatch):
             for name in imported
             if any(name == item or name.startswith(item + ".") for item in forbidden)
         }
-        if path.name == "entrypoint.py":
+        if path.name in {"entrypoint.py", "state_composition.py"}:
             violations = {
                 name
                 for name in violations
@@ -678,6 +693,7 @@ def test_frozen_authority_hashes_and_phase_scope():
             if path not in {
                 "src/pastila_scout/desktop_v1/entrypoint.py",
                 "src/pastila_scout/desktop_v1/resources.py",
+                "src/pastila_scout/desktop_v1/views.py",
             }:
                 assert (ROOT / path).read_bytes() == committed
 

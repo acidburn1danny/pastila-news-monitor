@@ -40,6 +40,15 @@ SPEC = (
 )
 
 
+def _compose():
+    return composition._compose_desktop_application_facade_v1(
+        config_path=Path("config/config.yaml"),
+        sources_path=Path("config/sources.yaml"),
+        database_path=Path("data/news_monitor.db"),
+        report_directory=Path("reports"),
+    )
+
+
 def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest().upper()
 
@@ -70,14 +79,9 @@ def test_exact_private_layout_exports_and_signatures() -> None:
     run = inspect.signature(_EditorDesktopOperationV1.run_editor)
     assert tuple(run.parameters) == ("self", "request")
     assert run.parameters["request"].kind is inspect.Parameter.KEYWORD_ONLY
-    assert (
-        tuple(
-            inspect.signature(
-                composition._compose_desktop_application_facade_v1
-            ).parameters
-        )
-        == ()
-    )
+    assert tuple(
+        inspect.signature(composition._compose_desktop_application_facade_v1).parameters
+    ) == ("config_path", "sources_path", "database_path", "report_directory")
     with pytest.raises(TypeError):
 
         class Invalid(_EditorDesktopOperationV1):
@@ -241,7 +245,7 @@ def test_composer_constructs_exact_graph_in_exact_order(
     )
     monkeypatch.setattr(composition, "_EditorDesktopOperationV1", Editor)
     monkeypatch.setattr(composition, "DesktopApplicationFacadeV1", Facade)
-    facade = composition._compose_desktop_application_facade_v1()
+    facade = _compose()
     assert [name for name, _ in calls] == ["report", "scout", "editor", "facade"]
     report, scout, editor, facade_call = (values for _, values in calls)
     assert report == {
@@ -267,8 +271,8 @@ def test_composer_is_fresh_and_report_identity_is_shared(
         "_compose_editor_application_runtime_v1",
         lambda: coordinator(values),
     )
-    first = composition._compose_desktop_application_facade_v1()
-    second = composition._compose_desktop_application_facade_v1()
+    first = _compose()
+    second = _compose()
     assert type(first) is DesktopApplicationFacadeV1
     assert first is not second
     first_scout = object.__getattribute__(first, "_scout_operation")
@@ -298,7 +302,7 @@ def test_every_composition_failure_is_reduced_safely(
 
     monkeypatch.setattr(composition, name, fail)
     with pytest.raises(_DesktopApplicationCompositionErrorV1) as caught:
-        composition._compose_desktop_application_facade_v1()
+        _compose()
     assert caught.value.__cause__ is None
     assert caught.value.__context__ is None
     assert "secret" not in repr(caught.value)
@@ -315,7 +319,7 @@ def test_composition_process_control_exceptions_propagate(
 
         monkeypatch.setattr(composition, "_DesktopReportFacadeV1", controlled)
         with pytest.raises(error):
-            composition._compose_desktop_application_facade_v1()
+            _compose()
 
 
 def test_composition_constructs_without_executing_any_operation(
@@ -344,7 +348,7 @@ def test_composition_constructs_without_executing_any_operation(
     )
     monkeypatch.setattr(composition, "_EditorDesktopOperationV1", Passive)
     monkeypatch.setattr(composition, "DesktopApplicationFacadeV1", Passive)
-    assert type(composition._compose_desktop_application_facade_v1()) is Passive
+    assert type(_compose()) is Passive
 
 
 def test_phase_5_3d_can_bind_all_three_facade_operations_without_redesign() -> None:

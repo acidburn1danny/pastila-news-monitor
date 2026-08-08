@@ -27,7 +27,13 @@ from .models import _reconstruct_poll_result
 
 
 class _ScoutDesktopOperationV1:
-    __slots__ = ("_config_path", "_database_path", "_identity", "_report_facade")
+    __slots__ = (
+        "_config_path",
+        "_database_path",
+        "_identity",
+        "_report_facade",
+        "_sources_path",
+    )
 
     def __init_subclass__(cls, **kwargs) -> NoReturn:
         del cls, kwargs
@@ -37,23 +43,26 @@ class _ScoutDesktopOperationV1:
         self,
         *,
         config_path: Path,
+        sources_path: Path,
         database_path: Path,
         report_facade: _DesktopReportFacadeV1,
     ) -> None:
         if (
             type(config_path) is not type(Path())
+            or type(sources_path) is not type(Path())
             or type(database_path) is not type(Path())
             or not _valid_report_facade(report_facade)
         ):
             raise DesktopApplicationConfigurationError() from None
         object.__setattr__(self, "_config_path", config_path)
+        object.__setattr__(self, "_sources_path", sources_path)
         object.__setattr__(self, "_database_path", database_path)
         object.__setattr__(self, "_report_facade", report_facade)
         object.__setattr__(self, "_identity", id(report_facade))
 
     def run_scout(self, *, request: ScoutDesktopRequestV1) -> ScoutDesktopResultV1:
         valid_request = reconstruct_scout_desktop_request(request)
-        config_path, database_path, report_facade = _dependencies(self)
+        config_path, sources_path, database_path, report_facade = _dependencies(self)
 
         lower = None
         failed = False
@@ -61,6 +70,7 @@ class _ScoutDesktopOperationV1:
             lower = poll_once(
                 config_path,
                 database_path,
+                sources_path=sources_path,
                 max_article_age_hours_override=float(valid_request.period_days * 24),
                 category=valid_request.category.value,
             )
@@ -186,17 +196,19 @@ def _instance_namespace(value: object) -> dict[str, object] | None:
 def _dependencies(operation):
     try:
         config = object.__getattribute__(operation, "_config_path")
+        sources = object.__getattribute__(operation, "_sources_path")
         database = object.__getattribute__(operation, "_database_path")
         facade = object.__getattribute__(operation, "_report_facade")
         identity = object.__getattribute__(operation, "_identity")
         if (
             type(config) is not type(Path())
+            or type(sources) is not type(Path())
             or type(database) is not type(Path())
             or identity != id(facade)
             or not _valid_report_facade(facade)
         ):
             raise TypeError
-        return config, database, facade
+        return config, sources, database, facade
     except Exception:  # noqa: BLE001 - copied-invalid retained state is rejected
         raise DesktopApplicationConfigurationError() from None
 

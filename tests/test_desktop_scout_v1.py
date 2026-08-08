@@ -65,6 +65,7 @@ def test_private_exports_and_exact_projection(tmp_path, monkeypatch):
     facade = _DesktopReportFacadeV1(report_directory=reports, opener=_opener)
     operation = _ScoutDesktopOperationV1(
         config_path=Path("config.yaml"),
+        sources_path=Path("sources.yaml"),
         database_path=Path("scout.db"),
         report_facade=facade,
     )
@@ -80,7 +81,11 @@ def test_private_exports_and_exact_projection(tmp_path, monkeypatch):
     assert calls == [
         (
             (Path("config.yaml"), Path("scout.db")),
-            {"max_article_age_hours_override": 168.0, "category": "Politica"},
+            {
+                "sources_path": Path("sources.yaml"),
+                "max_article_age_hours_override": 168.0,
+                "category": "Politica",
+            },
         )
     ]
     assert result.report_reference is not None
@@ -90,6 +95,7 @@ def test_structural_report_facade_is_accepted(monkeypatch):
     facade = _ReportFacadeFake()
     operation = _ScoutDesktopOperationV1(
         config_path=Path("config.yaml"),
+        sources_path=Path("sources.yaml"),
         database_path=Path("scout.db"),
         report_facade=facade,
     )
@@ -115,6 +121,7 @@ def test_failed_source_identity_is_unchanged(tmp_path, monkeypatch, failed_ids):
     reports.mkdir()
     operation = _ScoutDesktopOperationV1(
         config_path=Path("c"),
+        sources_path=Path("s"),
         database_path=Path("d"),
         report_facade=_DesktopReportFacadeV1(report_directory=reports, opener=_opener),
     )
@@ -132,6 +139,7 @@ def test_failed_value_has_no_report(tmp_path, monkeypatch):
     reports.mkdir()
     operation = _ScoutDesktopOperationV1(
         config_path=Path("c"),
+        sources_path=Path("s"),
         database_path=Path("d"),
         report_facade=_DesktopReportFacadeV1(report_directory=reports, opener=_opener),
     )
@@ -150,6 +158,7 @@ def test_lower_exception_is_safely_reduced(tmp_path, monkeypatch):
     reports.mkdir()
     operation = _ScoutDesktopOperationV1(
         config_path=Path("c"),
+        sources_path=Path("s"),
         database_path=Path("d"),
         report_facade=_DesktopReportFacadeV1(report_directory=reports, opener=_opener),
     )

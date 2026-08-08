@@ -19,6 +19,10 @@ from .models import (
     _DesktopTaskStateV1,
 )
 from .resources import _text_v1
+from .settings import (
+    _DesktopSettingsProjectionV1,
+    _reconstruct_desktop_settings_projection_v1,
+)
 
 
 def _validate_binding(value: object, parameter: str) -> None:
@@ -60,7 +64,14 @@ def _validate_binding(value: object, parameter: str) -> None:
 
 
 class _DesktopMainWindowV1:
-    def __init__(self, *, root: tkinter.Tk, on_select_page, on_close) -> None:
+    def __init__(
+        self,
+        *,
+        root: tkinter.Tk,
+        on_select_page,
+        on_close,
+        settings: _DesktopSettingsProjectionV1,
+    ) -> None:
         if not callable(on_select_page) or not callable(on_close):
             raise _DesktopShellConfigurationError() from None
         self._root = root
@@ -71,6 +82,7 @@ class _DesktopMainWindowV1:
         self._about: tkinter.Toplevel | None = None
         self._on_select_page = on_select_page
         self._on_close = on_close
+        self._settings = _reconstruct_desktop_settings_projection_v1(settings)
         root.title(_text_v1(key="app.title"))
         root.minsize(900, 600)
         root.columnconfigure(0, weight=1)
@@ -100,7 +112,24 @@ class _DesktopMainWindowV1:
         self._build_scout()
         self._build_editor()
         self._build_menu()
+        self._apply_settings()
         self._raise_page(_DesktopPageV1.SCOUT)
+
+    def _apply_settings(self) -> None:
+        settings = self._settings
+        self._period.set(str(settings.scout_period_days))
+        self._category.set(settings.scout_category)
+        projected = {
+            "selection_profile_path": settings.editor_profile_path,
+            "episode_context_path": settings.editor_context_path,
+            "generation_config_path": settings.editor_generation_path,
+            "model": settings.editor_model,
+            "timeout_seconds": settings.editor_timeout_seconds,
+            "output_path": settings.editor_output_directory,
+        }
+        for name, value in projected.items():
+            self._editor_values[name].set("" if value is None else str(value))
+        self._provider.set(settings.editor_provider)
 
     def _check(self) -> None:
         if threading.get_ident() != self._thread or self._closed:
