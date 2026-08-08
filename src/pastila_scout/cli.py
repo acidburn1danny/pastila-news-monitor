@@ -10,6 +10,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
+from pastila_scout import __version__
 from pastila_scout.adapters.registry import get_adapter
 from pastila_scout.ai.cache import FileJSONCache, FileVerificationCache
 from pastila_scout.ai.editorial_scoring import EditorialEventScorer
@@ -104,6 +105,7 @@ def build_parser() -> argparse.ArgumentParser:
     """Build the Pastila Scout command-line parser."""
 
     parser = argparse.ArgumentParser(prog="pastila-scout")
+    parser.add_argument("--version", action="version", version=__version__)
     subparsers = parser.add_subparsers(dest="command", required=True)
     poll_parser = subparsers.add_parser("poll-once", help="poll enabled sources once")
     poll_parser.add_argument("--config", type=Path, default=Path("config/sources.yaml"))

@@ -1,5 +1,7 @@
 """Immutable Romanian resources for the desktop shell."""
 
+from pastila_scout import __version__
+
 from .errors import _DesktopShellConfigurationError
 
 _TEXT_V1 = (
@@ -39,6 +41,7 @@ _TEXT_V1 = (
     ("editor.run", "GENEREAZĂ"),
     ("about.title", "Despre Pastila Scout"),
     ("about.body", "Pastila Scout"),
+    ("about.version", __version__),
     ("close.running", "Închidere în curs…"),
     ("error.internal", "Aplicația a întâmpinat o eroare internă."),
     ("startup.error", "Aplicația nu a putut fi configurată."),

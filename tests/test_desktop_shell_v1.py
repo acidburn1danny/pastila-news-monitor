@@ -264,6 +264,20 @@ def test_withdrawn_tk_window_has_exact_structural_root_and_initial_state():
         root.destroy()
 
 
+def test_about_projects_exact_package_version_without_redesign() -> None:
+    import inspect
+
+    from pastila_scout import __version__
+    from pastila_scout.desktop_v1.resources import _text_v1
+    from pastila_scout.desktop_v1.views import _DesktopMainWindowV1
+
+    assert _text_v1(key="about.body") == "Pastila Scout"
+    assert _text_v1(key="about.version") == __version__
+    source = inspect.getsource(_DesktopMainWindowV1._show_about)
+    assert '_text_v1(key="about.body")' in source
+    assert '_text_v1(key="about.version")' in source
+
+
 def test_models_are_closed_safe_and_reconstructable():
     snapshot = _DesktopShellSnapshotV1(
         _DesktopPageV1.SCOUT,

@@ -304,8 +304,11 @@ class _DesktopMainWindowV1:
         ttk.Label(child, text=_text_v1(key="about.body")).grid(
             row=0, column=0, padx=20, pady=12
         )
+        ttk.Label(child, text=_text_v1(key="about.version")).grid(
+            row=1, column=0, padx=20, pady=4
+        )
         ttk.Button(child, text="OK", command=child.destroy).grid(
-            row=1, column=0, pady=8
+            row=2, column=0, pady=8
         )
         child.grab_set()
         self._about = child

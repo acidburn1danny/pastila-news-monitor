@@ -3,6 +3,7 @@ from typing import Self
 
 import pytest
 
+from pastila_scout import __version__
 from pastila_scout.cli import _select_poll_days, build_parser, main
 from pastila_scout.database import (
     initialize_database,
@@ -109,6 +110,22 @@ def test_cli_help_is_not_rss_specific() -> None:
     assert "plan-event-reconciliation" in help_text
     assert "apply-event-reconciliation" in help_text
     assert "canonicalize-events" in help_text
+
+
+def test_root_version_projects_package_version_without_configuring_application(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    def forbidden(*args: object, **kwargs: object) -> None:
+        raise AssertionError((args, kwargs))
+
+    monkeypatch.setattr("pastila_scout.cli.configure_logging", forbidden)
+    monkeypatch.setattr("pastila_scout.cli.poll_once", forbidden)
+    with pytest.raises(SystemExit) as captured:
+        main(["--version"])
+    assert captured.value.code == 0
+    output = capsys.readouterr()
+    assert output.out == f"{__version__}\n"
+    assert output.err == ""
 
 
 class FakeValidationClient:

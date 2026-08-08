@@ -3,8 +3,10 @@
 import logging
 import sys
 
+from pastila_scout import __version__
+
 LOGGER_NAME = "pastila_scout"
-LOG_FORMAT = "%(asctime)s %(levelname)s %(name)s %(message)s"
+LOG_FORMAT = f"%(asctime)s %(levelname)s %(name)s version={__version__} %(message)s"
 DATE_FORMAT = "%Y-%m-%dT%H:%M:%S"
 _HANDLER_MARKER = "_pastila_scout_console_handler"
 

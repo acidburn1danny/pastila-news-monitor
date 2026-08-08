@@ -2,7 +2,8 @@ import logging
 
 import pytest
 
-from pastila_scout.logging_config import LOGGER_NAME, configure_logging
+from pastila_scout import __version__
+from pastila_scout.logging_config import LOG_FORMAT, LOGGER_NAME, configure_logging
 
 
 def test_normal_mode_logs_info_but_not_debug(
@@ -26,7 +27,10 @@ def test_verbose_mode_logs_debug(capsys: pytest.CaptureFixture[str]) -> None:
     logging.getLogger(f"{LOGGER_NAME}.test").debug("visible diagnostic")
 
     output = capsys.readouterr()
-    assert "DEBUG pastila_scout.test visible diagnostic" in output.err
+    assert (
+        f"DEBUG pastila_scout.test version={__version__} visible diagnostic"
+        in output.err
+    )
     assert output.out == ""
 
 
@@ -41,3 +45,14 @@ def test_repeated_configuration_does_not_duplicate_handlers() -> None:
         if getattr(handler, "_pastila_scout_console_handler", False)
     ]
     assert len(managed_handlers) == 1
+
+
+def test_logging_projects_exact_package_version(
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    assert f"version={__version__}" in LOG_FORMAT
+    configure_logging()
+    logging.getLogger(f"{LOGGER_NAME}.version").info("projection")
+    output = capsys.readouterr()
+    assert f"version={__version__} projection" in output.err
+    assert output.out == ""
