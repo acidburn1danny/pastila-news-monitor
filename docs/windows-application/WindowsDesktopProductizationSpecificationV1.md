@@ -1669,3 +1669,61 @@ above. Revision 12 additionally reproduced and closed the missing state-consumpt
 and ambiguous development-config migration rule. No Critical, Major, or blocking Minor
 specification finding remains. No production,
 test, packaging, configuration, or workflow file is changed by this specification.
+
+## 21. Single-owner trust-policy maintenance overlay
+
+This section is a maintenance overlay for the Productization trust policy and takes
+precedence over conflicting organizational assumptions in Sections 10, 16, and 17. It
+does not alter frozen Protocol V6, Persistence V6, completed desktop behavior, or any
+existing tag. Scout is a private, local, single-user Windows application whose one owner
+is also its developer, operator, and release authority. It is not a public service,
+commercial distribution, multi-user system, or organization with separable release and
+custody roles.
+
+The proportionate bootstrap trust model is one owner-controlled Ed25519 bootstrap-root
+key and one immutable bundled public trust anchor. Whether later signing operations use
+that root directly or a separately authorized release key remains owned by their later
+specifications and does not require another human authority. The public resource remains
+exactly 32 raw Ed25519 bytes at `resources/trust/pastila-root-1.pub`. The strict-JCS
+bootstrap object remains at `resources/trust/bootstrap-root-v1.json` and contains exactly
+these six members: string `schema` = `pastila-scout-bootstrap-root`; integer
+`schema_version` = 1; string `key_id` = `pastila-root-1`; string `algorithm` = `Ed25519`;
+string `public_key_filename` = `pastila-root-1.pub`; and string `public_key_sha256` = the
+raw 64-lowercase-hex SHA-256 of those public bytes. These two resources cross-identify the
+same immutable key and fail closed on malformed content, wrong identity, wrong algorithm,
+wrong length, noncanonical metadata, or hash mismatch. Mutable state, the network,
+environment configuration, development fixtures, and trust-on-first-use never replace
+this authority.
+
+`resources/trust/bootstrap-root-provenance-v1.json`, `provenance_filename`,
+`provenance_sha256`, `generated_offline_at`, `independent_verifier_ids`, and
+`verification_receipt_ids` are organizational ceremony evidence rather than inputs to
+cryptographic verification. They are removed from the target Productization contract.
+Two operators, two-person approval, external verification receipts, hardware-backed
+custody, a dedicated offline host, removable-media transfer, and offline-only signing are
+not mandatory Productization requirements. They remain optional owner-selected defenses
+and must never be claimed unless actually used.
+
+The private key remains outside the repository, application resources, builders, CI,
+logs, test fixtures, and distributable artifacts. Encryption at rest and offline storage
+are recommended when proportionate to the owner's device and recovery model, but neither
+changes the bundled public authority. Invalid or unsigned source bundles, manifests,
+updates, installers, and trust metadata continue to fail closed under their owning
+specifications. No fallback key, optional-signature mode, TOFU, or mutable trust override
+is introduced.
+
+Development uses a deterministic synthetic public-key/bootstrap test vector distinct from
+production. The corrected 5.5A authority must fix its exact public bytes and metadata; it
+adds no private-key fixture. The vector requires no external generation event, operator
+receipt, witness, or production provenance resource. Stable mode continues to reject its
+fixture paths and hashes.
+
+This overlay changes only the Productization target authority. Before Phase 5.5B may
+materialize anything, a separately reviewed 5.5A maintenance unit must consume the frozen
+form of this overlay, reduce the production bootstrap from three resources to two, update
+the exact bootstrap schema and cross-binding rules, remove provenance validation, adjust
+the Phase 5.5B path/test ownership and reproducibility obligations, and recompute its
+verification matrix. Phase 5.5B then materializes only the two production resources, the
+two deterministic development fixtures, and their sole test owner under that corrected
+5.5A authority. No formal maintenance verdict, commit subject, or tag name is assigned by
+this candidate.
