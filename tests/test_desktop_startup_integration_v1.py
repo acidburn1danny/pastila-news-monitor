@@ -533,14 +533,42 @@ def test_phase_scope_and_frozen_authorities() -> None:
         ).strip()
         == "dbda63533033aa25fe2ea2e970f6943851056078"
     )
-    current_blob = subprocess.check_output(
+    v12_blob = subprocess.check_output(
         ["git", "show", f"{v12_tag}:{productization}"], cwd=ROOT
     )
-    assert hashlib.sha256(current_blob).hexdigest().upper() == (
+    assert hashlib.sha256(v12_blob).hexdigest().upper() == (
         "556ECE4D3D64C163CC42B17BD0431A424FB06CFA89011BBCF89EC151EE0D593C"
     )
-    assert current_blob == (ROOT / productization).read_bytes()
-    assert historical_blob != current_blob
+    maintenance_tag = (
+        "phase-5-productization-single-owner-trust-policy-maintenance-r1-verified"
+    )
+    assert (
+        subprocess.check_output(
+            ["git", "cat-file", "-t", maintenance_tag], cwd=ROOT, text=True
+        ).strip()
+        == "tag"
+    )
+    assert (
+        subprocess.check_output(
+            ["git", "rev-parse", f"{maintenance_tag}^{{}}"], cwd=ROOT, text=True
+        ).strip()
+        == "1b8ef121b4ff5d147b069d91a68c33156c51f3a6"
+    )
+    assert (
+        subprocess.check_output(
+            ["git", "rev-parse", f"{maintenance_tag}^{{}}^"], cwd=ROOT, text=True
+        ).strip()
+        == "556ee1a3269329dd78745e2f6bbf8e96dfc5ac07"
+    )
+    maintained_blob = subprocess.check_output(
+        ["git", "show", f"{maintenance_tag}:{productization}"], cwd=ROOT
+    )
+    assert hashlib.sha256(maintained_blob).hexdigest().upper() == (
+        "D73BC2B477CE0BAE00376420CB24F7393D44A251FFA9B4E204B1C5D8DEEF9B70"
+    )
+    assert maintained_blob == (ROOT / productization).read_bytes()
+    assert historical_blob != v12_blob
+    assert v12_blob != maintained_blob
     with pytest.raises(AssertionError):
         assert hashlib.sha256(historical_blob + b"mutation").hexdigest().upper() == (
             "A156A3963253ADEE7A2540B337FD358C33328219DABC0FF4803E9EF318882A3E"
