@@ -278,6 +278,7 @@ def test_future_composition_and_shell_report_binding_are_legally_reachable(
     report = _DesktopReportFacadeV1(report_directory=tmp_path, opener=opener)
     scout = _ScoutDesktopOperationV1(
         config_path=Path("config/config.yaml"),
+        sources_path=tmp_path / "sources.yaml",
         database_path=Path("data/news_monitor.db"),
         report_facade=report,
     )
