@@ -416,8 +416,8 @@ evidence.
 
 ## 13. Requirements and verification
 
-`PKG-045` Normative requirements are exactly `PKG-001` through `PKG-050`. Verification
-rows are exactly `V-001` through `V-050`, each maps one requirement exactly once, and no
+`PKG-045` Normative requirements are exactly `PKG-001` through `PKG-061`. Verification
+rows are exactly `V-001` through `V-061`, each maps one requirement exactly once, and no
 row without a normative requirement is a test. Missing, orphaned, and duplicate mappings
 must each equal zero.
 
@@ -489,9 +489,165 @@ additionally requires successful external evidence for every probe row.
 | `V-042` | `PKG-042` | specification review | no disproportionate packaging mechanism enters scope |
 | `V-043` | `PKG-043` | specification review | maintenance precedence resolves historical conflict |
 | `V-044` | `PKG-044` | specification review + external probe | decision procedures close environment-specific facts |
-| `V-045` | `PKG-045` | specification review | ID/count script reports 50/50 and zero mapping defects |
+| `V-045` | `PKG-045` | specification review | ID/count script reports 61/61 and zero mapping defects |
 | `V-046` | `PKG-046` | specification review | review evidence does not impersonate executable evidence |
 | `V-047` | `PKG-047` | external probe | actual external execution evidence exists before freeze |
 | `V-048` | `PKG-048` | 5.5F | permanent implementation tests verify their owned artifacts |
 | `V-049` | `PKG-049` | specification review + later | later rows remain handoffs, not false 5.5E passes |
 | `V-050` | `PKG-050` | specification review | local-fixpoint counters are zero; freeze remains probe-gated |
+| `V-051` | `PKG-051` | specification review | maintenance precedence and historical preservation are explicit |
+| `V-052` | `PKG-052` | specification review + 5.5F | stable is mandatory and every other mode fails before mutation |
+| `V-053` | `PKG-053` | specification review + 5.5F | wrapper paths, exact bytes, use, and cleanup converge |
+| `V-054` | `PKG-054` | specification review + 5.5F | exact five-parameter interface and canonical path gates pass |
+| `V-055` | `PKG-055` | specification review + 5.5F | fresh offline environment and leakage rejection pass |
+| `V-056` | `PKG-056` | specification review + 5.5F | wheel cardinality, recursive closure, and inventory gates pass |
+| `V-057` | `PKG-057` | specification review + 5.5F | exact PyInstaller artifact/hash and Python policy pass |
+| `V-058` | `PKG-058` | specification review + 5.5F | PE identity/version/legal-field rules pass |
+| `V-059` | `PKG-059` | specification review + 5.5F | final approved icon passes technical and embedded-resource gates |
+| `V-060` | `PKG-060` | specification review + 5.5F | notices sources, exact serialization, coverage, and approval pass |
+| `V-061` | `PKG-061` | specification review + 5.5F | historical evidence is not substituted for permanent verification |
+
+## 14. Productization packaging-compatibility maintenance overlay
+
+`PKG-051` This section is the later Phase 5.5E compatibility overlay required by the
+frozen Productization Packaging Compatibility Maintenance Revision 1 at annotated tag
+`phase-5-productization-packaging-compatibility-maintenance-r1-verified`. It takes
+precedence over conflicting or incomplete wording in Sections 1 through 13, including
+historical development-package, entry-script, build-input, candidate-selection, and
+probe-as-acceptance implications. The historical
+`phase-5.5e-windows-executable-spec-v1-ready` tag, its target, its document bytes, and
+the 107-file clean-probe evidence remain immutable. This overlay changes only the current
+copy of this specification and creates no Phase 5.5F artifact.
+
+`PKG-052` Permanent Phase 5.5F output is stable-only. `build.ps1` requires exactly
+`-BuildMode stable`; omission, `development`, or any other value fails before filesystem
+mutation, environment creation, or PyInstaller analysis. Historical executable
+requirements for development trust, a development endpoint, an unsigned console-debug
+package, or a `DEVELOPMENT — UNTRUSTED` UI mark are superseded and acquire no replacement
+machinery. The stable package retains exactly the two launchers, the flat shared onedir,
+canonical stable version authority, and the two production trust resources, with no
+private, development, provenance, fallback, or mutable trust material. Accordingly,
+the plural "build modes" wording in `PKG-022` means only enforcement and negative
+testing of this single stable mode.
+
+`PKG-053` `build.ps1` generates exactly two disposable wrappers beneath `WorkRoot`.
+Their respective exact UTF-8-without-BOM, LF-terminated byte sequences are
+`from pastila_scout.desktop_v1.entrypoint import main\n\nraise SystemExit(main())\n`
+and `from pastila_scout.cli import main\n\nraise SystemExit(main())\n`. They contain no
+other logic or authority. `PastilaScout.spec` consumes only their absolute paths to make
+the governed windowed and console launchers. The wrappers are verified byte-for-byte,
+removed with `WorkRoot` on success or failure, and never created in the repository,
+installed as resources, or treated as permanent entry points.
+
+`PKG-054` The permanent script interface is exactly `-BuildMode stable
+-PythonExecutable <absolute-file> -Wheelhouse <absolute-directory> -WorkRoot
+<absolute-directory> -DistRoot <absolute-directory>`; all five parameters are mandatory.
+Those parameters are the sole authority for their values; environment variables, the
+current directory, script location, defaults, and prompts cannot supply or replace one.
+The selected interpreter and wheelhouse are existing read-only inputs. `WorkRoot` must
+not exist; `DistRoot` must not exist or must be empty. Both output roots are external to
+the repository, neither is a filesystem root or existing user-profile directory, and
+neither contains `..` or traverses a reparse point. Existing inputs and existing output
+ancestors are resolved to canonical final targets before comparison. `WorkRoot` and
+`DistRoot` may be neither equal to, ancestors of, nor descendants of the repository,
+wheelhouse, Python installation, or each other. Invalid, relative, overlapping, or
+nonempty paths fail before mutation. Equality and ancestry comparisons use Windows
+case-insensitive semantics after canonical final-target resolution and normalization of
+redundant trailing separators, so spelling or alias changes cannot evade them. The script
+creates all transient environment,
+wrapper, render, cache, and PyInstaller work content under `WorkRoot`, removes it on
+success or failure, and retains only the verified shared `app` onedir under `DistRoot`.
+
+`PKG-055` The permanent application input is exactly one newly built
+`pastila_news_monitor-<version>-py3-none-any.whl` in a caller-prepared absolute external
+wheelhouse. Preparation occurs outside the offline build boundary and records source
+HEAD/state, build frontend and requirements, every input wheel filename/hash, the output
+application-wheel hash, and unchanged repository state. `build.ps1` creates a fresh venv
+beneath `WorkRoot` and installs non-editably only from the wheelhouse with indexes and
+dependency downloads disabled. The fresh venv must already contain a functioning local
+installer; absence fails rather than authorizing bootstrap or network acquisition. It
+rejects a reused environment, missing or nonstable
+application metadata/version, active `.pth` or `sys.path` exposure of the repository or
+another unrecorded development root, `PYTHONPATH`/source-checkout leakage, and installed
+module origins outside the fresh environment. Preparation records are evidence, not a
+new repository or dependency authority; no lockfile or `pyproject.toml` change is owned.
+
+`PKG-056` Every wheelhouse member is a wheel, exactly one wheel exists for each normalized
+distribution name, and exactly one is the application wheel. Its declared requirements
+and every recursively declared requirement resolve using only compatible wheelhouse
+members. At each edge, PEP 508 markers are evaluated against the selected Windows AMD64
+CPython environment; a false-marker edge adds no identity. Extras are empty unless an
+active parent requirement explicitly requests them, in which case only requirements
+activated by that exact extra enter the closure. Each selected wheel's version satisfies
+every active specifier and its wheel tags are compatible with the selected interpreter.
+The resolved set is the least fixed point reached from the application wheel and the
+exact PyInstaller wheel; every wheelhouse member outside that set is unused and fails.
+After installation, installed names and versions equal that closure, including
+PyInstaller and its resolved build-tool dependencies. Only unchanged distributions
+recorded immediately after fresh-venv creation are excluded from that comparison.
+Missing, duplicate, incompatible, unexpected installed, or unused wheels fail closed.
+Floating application ranges remain governed by `pyproject.toml`; recorded concrete
+external resolution is build evidence and not a lock authority.
+
+`PKG-057` Permanent PyInstaller authority is exactly version `6.22.0`, wheel
+`pyinstaller-6.22.0-py3-none-win_amd64.whl`, and SHA-256
+`6E5F3656DE100954BF5DB25536C43E097E46D482843A96D03A0852BF266E4853`.
+Before installation, absence, duplication, filename/version divergence, or hash mismatch
+fails. Preinstalled PyInstaller is not consulted and no alternate source is accepted.
+The interpreter must be Windows AMD64 CPython 3.14 with functioning Tcl/Tk. Python 3.14.6
+is the proven regression baseline, not a permanent patch pin; another 3.14 patch is
+admissible only after the complete permanent build and integration matrix passes and its
+exact version and Tcl/Tk sources are recorded. Python 3.15, 32-bit or ambiguous
+architecture, or incomplete Tcl/Tk fails before provisioning. This fixed authority
+supersedes `PKG-025`'s historical future candidate-selection procedure for Phase 5.5F.
+
+`PKG-058` PE `ProductName` is `Pastila Scout`; launcher file descriptions use the
+governed `PastilaScout.exe` and `pastila-scout.exe` identities. Version fields derive
+only from installed distribution metadata through frozen Version Projection V1.
+`CompanyName` and `LegalCopyright` are optional exact owner-supplied strings and are
+omitted when absent. No default, placeholder, username-derived, inferred, or fabricated
+value is permitted. Their absence does not block a correct PE version resource; supplied
+or changed bytes require owner approval before that stable candidate freezes.
+
+`PKG-059` `packaging/resources/PastilaScout.ico` must contain final owner-approved ICO
+bytes used by both executables. An externally converted owner-approved master is allowed
+only when its source, settings, and resulting bytes are approved before entry into the
+candidate. Placeholder, guessed, probe-derived, or unapproved branding is forbidden.
+The file must have a valid ICO header/directory, at least one decodable Windows icon
+image, no trailing non-ICO payload, and be accepted and reproduced as both PE icon
+resources. No artwork, image count, or size set is invented. Approved bytes are an
+external product input required before materialization and independent 5.5F review.
+
+`PKG-060` `packaging/resources/THIRD-PARTY-NOTICES.txt` is an owner-approved preservation
+of authoritative license and notice text for distributions actually shipped. A source
+record maps normalized name and exact version to wheel filename/hash and wheel license
+files or authoritative metadata. Entries sort by case-insensitive distribution name,
+then version; sources sort by ordinal wheel-relative path or METADATA field. Legal text
+is preserved verbatim with LF normalization, build-only tools are excluded unless their
+material is redistributed, and text is never paraphrased or inferred. The UTF-8-without-
+BOM, LF-terminated file begins `Pastila Scout Third-Party Notices\n\n`. Each entry begins
+`================================================================================\n`,
+then `Distribution: <normalized-name>\n`, `Version: <version>\n`, `Wheel: <filename>\n`,
+and `SHA-256: <64-uppercase-hex>\n`. Each source begins
+`--------------------------------------------------------------------------------\n`,
+then `Source: <wheel-relative-path-or-METADATA-field>\n\n`, followed by exact text ending
+in one LF; entries have one blank line between them. When inspection finds no
+redistributable notice text, the sole block is
+`Source: NONE DECLARED BY UPSTREAM\n\nNo notice text declared by upstream.\n`.
+Tests verify serialization, non-placeholder content, shipped-distribution coverage,
+source identities, and absence of unsupported entries without claiming legal judgment.
+Every distinct authoritative source identity produces one block even when its exact text
+duplicates another source; the serializer neither coalesces identical text nor emits the
+same source identity twice. The owner approves the corpus; neither test nor build script
+supplies that approval.
+
+`PKG-061` The accepted 107-file clean probe proves historical feasibility, PyInstaller
+selection, resource/import discovery, and regression behavior. It does not prove the
+permanent Phase 5.5F implementation. Phase 5.5F must rerun the complete material Windows
+build and integration matrix against the permanent `.spec`, `build.ps1`, generated
+wrappers, version template, exact wheel closure, final approved icon and notices, actual
+built layout/launchers/resources, and all three owned tests. Stable-only applicability
+matches the accepted probe; changed wrapper and provisioning scaffolding requires fresh
+permanent verification but does not invalidate historical evidence. A development
+executable can return only through new higher authority, explicit runtime ownership,
+independent trust-separation review, and a later compatibility maintenance.
