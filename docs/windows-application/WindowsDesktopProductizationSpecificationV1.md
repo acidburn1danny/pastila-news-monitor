@@ -1727,3 +1727,175 @@ verification matrix. Phase 5.5B then materializes only the two production resour
 two deterministic development fixtures, and their sole test owner under that corrected
 5.5A authority. No formal maintenance verdict, commit subject, or tag name is assigned by
 this candidate.
+
+## 22. Phase 5.5F packaging-applicability compatibility maintenance overlay
+
+This section is a maintenance overlay for Phase 5.5F packaging applicability. It takes
+precedence over conflicting packaging assumptions in Sections 9, 10, 15, and 17 while
+preserving the literal five-production-path and three-test-path Phase 5.5F owner. It
+changes no application runtime behavior, trust resource, frozen Phase 5.5E byte, or later
+installer, updater, signing, and publication ownership.
+
+Phase 5.5F produces only a **stable** executable package. Source execution, repository
+tests, and the clean packaging verification environment already serve development and
+diagnostic workflows. A separately distributable development executable has no current
+product use-case proportionate to its alternate trust path, endpoint, and UI-marking
+cost. Historical requirements for `-BuildMode development`, development trust in an
+executable, a development endpoint, an unsigned console-debug package, and a
+`DEVELOPMENT — UNTRUSTED` window or About mark are superseded. `build.ps1` requires
+exactly `-BuildMode stable`; omission or another value fails before analysis. The stable
+package keeps exactly two launchers, the flat shared onedir, the frozen production trust
+pair, a canonical stable version, and no private, development, provenance, fallback, or
+mutable trust material.
+
+PyInstaller script inputs are packaging mechanics, not new application entry points.
+`build.ps1` generates exactly two deterministic disposable wrapper scripts beneath its
+explicit external work root. Their UTF-8-without-BOM, LF-terminated contents are exactly
+`from pastila_scout.desktop_v1.entrypoint import main\n\nraise SystemExit(main())\n`
+and
+`from pastila_scout.cli import main\n\nraise SystemExit(main())\n`, respectively. The
+wrappers contain no application logic, version, root, configuration, endpoint, trust, or
+error-policy behavior. Their exact bytes are verified by packaging tests, they are
+removed with the work root after the build, and they are never created in the source
+tree, committed, installed as resources, or treated as repository authority.
+`PastilaScout.spec` consumes only those two absolute generated paths and still creates
+exactly the governed windowed and console launchers.
+
+The permanent build input is one caller-prepared, absolute external wheelhouse. It
+contains a newly built `pastila_news_monitor-<version>-py3-none-any.whl`, its complete
+resolved runtime dependency wheel set, and
+`pyinstaller-6.22.0-py3-none-win_amd64.whl`. Preparation may use an approved package
+source, but is outside the offline build boundary. The caller also selects the complete
+Windows AMD64 CPython 3.14 executable used to invoke `build.ps1`; the script never
+downloads Python or packages. The application wheel is built from the exact candidate
+checkout by the existing standards-based build backend in an external isolated build
+environment. Preparation records the source HEAD and Git state, build-frontend and
+build-requirement identities, input wheel filenames and SHA-256 values, resulting
+application-wheel SHA-256, and the unchanged repository state. These records are build
+evidence, not new repository authorities.
+
+`build.ps1` verifies the interpreter is Windows AMD64 CPython 3.14 with functioning
+Tcl/Tk, creates a fresh virtual environment below the explicit external work root, and
+installs only from the supplied wheelhouse with index and dependency download disabled.
+It rejects an editable install, a reused environment, an application wheel whose
+metadata/version is missing or nonstable, any active `.pth` or resulting `sys.path` entry
+that exposes the repository or another unrecorded development root, and module origins
+outside the fresh environment. Preinstalled PyInstaller is neither consulted nor
+accepted. Before installation the script requires the exact PyInstaller filename above
+and SHA-256
+`6E5F3656DE100954BF5DB25536C43E097E46D482843A96D03A0852BF266E4853`;
+absence, duplicate candidates, version divergence, or hash mismatch fails closed. No new
+dependency-lock or `pyproject.toml` path is authorized. The exact application and
+dependency wheel identities and hashes are recorded as build evidence rather than made a
+second dependency authority. Every wheelhouse member is a wheel, and exactly one wheel
+exists for each normalized distribution name. The application wheel's declared
+requirements plus their recursively declared requirements must resolve using only those
+wheels. After installation, the script compares installed distribution names and
+versions with that resolved closure plus PyInstaller and its resolved build-tool
+dependencies; an unresolved requirement, duplicate candidate, incompatible wheel,
+unexpected installed distribution, or unused wheel fails. The exact distribution
+inventory immediately after fresh-venv creation is recorded as the environment baseline;
+only those unchanged baseline distributions are excluded from the post-install closure
+comparison. Floating application dependency ranges remain owned by `pyproject.toml`; the
+selected concrete external set is recorded, not promoted to a lock authority.
+
+The script interface is exactly `-BuildMode stable -PythonExecutable <absolute-file>
+-Wheelhouse <absolute-directory> -WorkRoot <absolute-directory> -DistRoot
+<absolute-directory>`. Every parameter is mandatory. `WorkRoot` and `DistRoot` must be
+outside the repository and must not overlap each other, the wheelhouse, or the Python
+installation. `WorkRoot` must not exist; `DistRoot` must not exist or must be empty.
+The script creates the work root, virtual environment, wrappers, PyInstaller work/cache,
+and rendered version resource beneath `WorkRoot`; it removes that entire root on success
+or failure. It retains only the verified shared `app` onedir beneath `DistRoot`. Invalid,
+relative, repository-contained, overlapping, or nonempty paths fail before mutation.
+All existing inputs and existing ancestors of output paths are resolved to canonical
+final filesystem targets before comparison. `WorkRoot` and `DistRoot` may be neither a
+filesystem root nor an existing user-profile directory; may contain no `..` segment or
+reparse-point traversal; and may be neither equal to, an ancestor of, nor a descendant
+of the repository, wheelhouse, Python installation, or each other. The wheelhouse and
+selected Python installation are read-only inputs.
+
+Python 3.14.6 is the successfully probed interpreter and remains the regression
+baseline, not a permanent patch-level product authority. Another Windows AMD64 CPython
+3.14 patch is admissible only if the complete permanent Phase 5.5F build and integration
+matrix passes with its exact version and Tcl/Tk sources recorded. Python 3.15, 32-bit
+Python, an incomplete Tcl/Tk installation, or architecture ambiguity fails before
+provisioning.
+
+PE `ProductName` and file descriptions use the governed product and launcher identities:
+`Pastila Scout`, `PastilaScout.exe`, and `pastila-scout.exe`. Version fields derive only
+from installed distribution metadata through the frozen version projection. `CompanyName`
+and `LegalCopyright` are optional owner-supplied strings because no legal entity or exact
+copyright notice is currently governed. They are omitted when absent; no PyInstaller
+default, placeholder, repository username, or fabricated value is permitted. Supplying or
+changing them requires explicit owner-approved bytes before the corresponding stable
+candidate can freeze, but their absence does not block implementation or a correctly
+formed PE version resource.
+
+`packaging/resources/PastilaScout.ico` contains final owner-approved Windows ICO bytes
+and is used by both executables; later installer work may reuse the same file. The
+preferred input is the final approved `.ico`. Conversion from an owner-approved master is
+permitted only as an external preparation step whose source, conversion settings, and
+result are approved before the bytes enter the Phase 5.5F candidate. Placeholder,
+generated-by-guesswork, probe-derived, or unapproved branding is forbidden. The file must
+have a valid ICO header and directory, at least one decodable Windows icon image, no
+trailing non-ICO payload, and must be accepted and reproduced as the icon resource of
+both built PE files. No particular artwork, image count, or size set is invented as
+architecture authority; the owner-approved final bytes are the visual identity. The
+approved icon is an external product input required before that owned path can be
+materialized and before Phase 5.5F implementation review can close.
+
+`packaging/resources/THIRD-PARTY-NOTICES.txt` is a curated, owner-approved preservation
+of authoritative license and notice text for the distributions actually included by the
+stable wheelhouse and frozen bundle. Its source record maps normalized distribution name
+and exact version to the supplied wheel filename/hash and that wheel's license files or
+authoritative metadata. Entries use deterministic case-insensitive distribution-name,
+then version ordering; preserve legal text verbatim; distinguish absent upstream notice
+text from omission; exclude build-only tools unless their material is redistributed in
+the bundle; and never paraphrase or infer a license. The UTF-8-without-BOM,
+LF-terminated file begins exactly `Pastila Scout Third-Party Notices\n`. After one blank
+line, each ordered entry begins
+`================================================================================\n`,
+then `Distribution: <normalized-name>\n`, `Version: <version>\n`,
+`Wheel: <filename>\n`, and `SHA-256: <64-uppercase-hex>\n`. For each authoritative source
+in ordinal wheel-relative-path or METADATA-field order, append
+`--------------------------------------------------------------------------------\n`,
+`Source: <wheel-relative-path-or-METADATA-field>\n\n`, and that source's exact text.
+Each text is LF-normalized and ends with one LF; entries are separated by one blank line.
+When authoritative source inspection yields no redistributable notice text, the sole
+source block instead contains `Source: NONE DECLARED BY UPSTREAM\n\n` and exact text
+`No notice text declared by upstream.\n`; that factual marker is not a license inference.
+Automated tests verify this exact format, non-placeholder content, packaged-distribution
+coverage, source identities, and absence of unsupported entries, but make no claim of
+legal judgment. The owner approves the final corpus before Phase 5.5F review closes.
+Authoritative source texts are external inputs; approval cannot be delegated to the
+build script.
+
+The three packaging test owners divide responsibility as follows.
+`test_frozen_application_v1.py` verifies the stable-only flat shared bundle, exact
+launchers and deterministic wrappers, resource/import inventories, trust and deferred
+provider exclusions, metadata, Tcl/Tk/CA expectations, and the boundary between static
+checks and actual Windows execution. `test_version_parity_v1.py` independently compares
+wheel metadata, `pastila_scout.__version__`, rendered four-part PE versions, executable
+version fields, and console output while testing omission or exact owner-supplied legal
+strings. `test_build_mode_v1.py` verifies mandatory `stable`, rejection of every other
+mode, the external wheelhouse/fresh-environment/offline contract, exact PyInstaller
+wheel/hash enforcement, Python policy, source-leakage rejection, cleanup, icon/notices
+input gates, and absence of signing, installer, updater, or publication behavior.
+
+The clean Phase 5.5E probe remains valid feasibility, toolchain-selection,
+resource/import-discovery, and regression evidence. Phase 5.5F must repeat the complete
+material Windows build and integration matrix using the permanent specification, script,
+template, icon, notices, and tests. Stable-only applicability matches the accepted probe;
+the wrapper location and provisioning closure change scaffolding ownership rather than
+the architecture exercised, so they require permanent-build verification but do not
+invalidate the historical probe. Any future reintroduction of a development executable
+requires a new higher-authority use-case, explicit runtime ownership, independent trust
+separation review, and a new compatibility maintenance; it is not a Phase 5.5F local
+implementation choice.
+
+This candidate assigns no maintenance verdict, commit subject, or tag. Once independently
+reviewed and formally frozen, it is the prerequisite for any lower-authority textual
+maintenance needed to make the frozen Phase 5.5E wording reproduce the stable-only model
+without relying on precedence inference. No Phase 5.5F implementation begins until that
+authority sequence and the approved icon input are complete.
