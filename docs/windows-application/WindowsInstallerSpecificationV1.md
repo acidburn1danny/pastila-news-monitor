@@ -109,6 +109,56 @@ Directories have `size=null` and `sha256=null`; files have a nonnegative integer
 byte size and an uppercase 64-hex SHA-256. The input root itself is implicit and
 is not a member. Empty directories, when present, are represented explicitly.
 
+The accepted historical Phase 5.5F evidence did not contain these exact JCS
+bytes. Its `output-inventory.json`, SHA-256
+`A52C66E2DDEA82A8A0950621675A3CA146DB2C6804D7F3718030DFC2AA2F41E9`,
+describes the distribution root, represents `app` itself, and uses non-JCS
+presentation. Phase 5.6B therefore derives a new inventory prospectively as
+external preparation evidence; it MUST NOT describe that inventory as historical
+Phase 5.5F evidence.
+
+The derivation input is exactly the `app` directory accepted by
+`phase-5.5f-windows-executable-r1-verified` at
+`47af1a3012807eee4695551cd2b413def5ebc6b2`. Enumeration is recursive and
+no-follow. It emits every child directory, including an empty directory, and every
+regular file, but not the input root. A reparse point, symlink, junction, mount
+point, alternate stream, or other non-regular object fails derivation. Each path
+is the exact Windows name relative to `app`, converted only from backslash to
+forward slash; Unicode is preserved without normalization. Paths MUST satisfy the
+syntax and case-insensitive uniqueness rules above and are ordered by the ordinal
+comparison of their UTF-8 byte sequences. File size is the exact byte length and
+file `sha256` is uppercase hexadecimal; directory size and hash are JSON `null`.
+
+Serialization is RFC 8785 JCS UTF-8 without BOM or trailing newline. Consequently
+the four object member names serialize in JCS order as `path`, `sha256`, `size`,
+and `type`; no insignificant whitespace is present. The derived inventory SHA-256
+is calculated over all and only those serialized bytes and written as uppercase
+hexadecimal.
+
+The deterministic derivation identifier is exactly
+`phase-5.6a-ins-065-jcs-derivation-v1`. The binding record is itself strict JCS
+with exactly these members: `accepted_output_inventory_sha256`, `derivation_id`,
+`derived_inventory_sha256`, `derived_inventory_size`, `independently_derived`,
+`phase_5_5f_commit`, `phase_5_5f_tag`, `payload_directories`, `payload_entry_count`,
+`payload_files`, and `payload_root`. Hashes use uppercase hexadecimal; sizes and
+counts are nonnegative JSON integers; `independently_derived` is JSON `true`; and
+`payload_root` is the absolute no-follow-validated preparation source path. Sealing
+means writing the binding record before repository implementation consumes the
+inventory, hashing its exact JCS bytes, and recording that hash and record path in
+the immutable-by-workflow Phase 5.6B preparation evidence inventory. It does not
+mean or imply a retrospective signature or Phase 5.5F artifact.
+
+Projection against accepted `output-inventory.json` is exact: require one
+directory member whose path is `app`; require every other accepted member to have
+a path beginning `app/`; remove that exact prefix; and compare the resulting set
+one-for-one with the newly enumerated entries. Paths, types, sizes, and file hashes
+MUST match exactly, with zero missing, extra, duplicate, type-mismatched,
+size-mismatched, or hash-mismatched entries. Presentation differences and the
+intentional root/prefix transformation are the only permitted differences. The
+accepted JSON MUST also parse without duplicate object members and every entry
+MUST have exactly the four schema members; permissive parsing cannot normalize or
+discard a substantive historical-evidence defect.
+
 `INS-009` Before invoking Inno Setup, the build wrapper MUST verify the complete
 payload against its supplied inventory and MUST reject a missing, extra, duplicate,
 non-regular, or byte-mismatched entry.
@@ -134,11 +184,19 @@ residue, mutable databases, reports, logs, caches, or updater state.
 `INS-014` The installer build MUST consume the payload bytes without modifying,
 normalizing, regenerating, or substituting any application file.
 
-`INS-065` The wrapper MUST reject inventory bytes that are not exact JCS, violate
-the schema or ordering above, disagree with a fresh no-follow enumeration, name
-an unsupported filesystem object, or whose own SHA-256 was not recorded with the
-accepted 5.5F evidence. The installer MUST embed the validated expected entries
-as construction data, not install the external inventory as runtime payload.
+`INS-065` Before Phase 5.6B repository implementation or installer construction
+consumes an inventory, external preparation MUST independently perform the
+derivation and accepted-evidence projection above twice, require byte-identical
+results, and seal a binding record containing the frozen 5.5F tag and commit, the
+absolute frozen payload root, a deterministic derivation identifier, the accepted
+`output-inventory.json` SHA-256, and the derived JCS size and SHA-256. Any authority,
+enumeration, projection, serialization, re-derivation, or binding mismatch MUST
+stop before consumption. The build wrapper MUST revalidate the sealed record,
+source authority, exact JCS bytes, fresh no-follow enumeration, and projection
+before compilation. The JCS remains external preparation/build authority: the
+installer MAY embed its validated entries only as construction data and MUST NOT
+install the inventory, treat it as application state, replace Phase 5.5F packaging
+authority, or claim it existed in historical Phase 5.5F evidence.
 
 ## 4. Path safety and pre-mutation validation
 
@@ -536,7 +594,7 @@ only of the three repository paths above and independently retained external evi
 | INS-012 | Required resources | Resource inventory test | Build wrapper/tests |
 | INS-013 | Forbidden payload content | Recursive negative scan | Build wrapper/tests |
 | INS-014 | Byte-preserving consumption | Pre/post hash comparison | Build wrapper |
-| INS-065 | Canonical inventory schema and evidence binding | JCS/schema/order/enumeration mutation matrix | Build wrapper/tests |
+| INS-065 | Prospective canonical inventory derivation and frozen-evidence binding | Independent byte-equality, projection, binding-record, and mutation matrix | External preparation/build wrapper/tests |
 | INS-015 | Absolute normalized paths | Path-table unit tests | Build wrapper/installer |
 | INS-016 | Alias/ancestry rejection | Alias matrix | Build wrapper/installer |
 | INS-017 | Reparse rejection | Junction/symlink tests | Installer tests |
