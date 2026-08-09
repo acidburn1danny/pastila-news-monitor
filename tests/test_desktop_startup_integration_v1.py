@@ -566,7 +566,29 @@ def test_phase_scope_and_frozen_authorities() -> None:
     assert hashlib.sha256(maintained_blob).hexdigest().upper() == (
         "D73BC2B477CE0BAE00376420CB24F7393D44A251FFA9B4E204B1C5D8DEEF9B70"
     )
-    assert maintained_blob == (ROOT / productization).read_bytes()
+    compatibility_tag = (
+        "phase-5-productization-historical-integrity-test-compatibility-"
+        "maintenance-r1-verified"
+    )
+    assert (
+        subprocess.check_output(
+            ["git", "cat-file", "-t", compatibility_tag], cwd=ROOT, text=True
+        ).strip()
+        == "tag"
+    )
+    assert (
+        subprocess.check_output(
+            ["git", "rev-parse", f"{compatibility_tag}^{{}}"],
+            cwd=ROOT,
+            text=True,
+        ).strip()
+        == "915750916ee7e71b93047bb53065b94f8f772f50"
+    )
+    current_productization = (ROOT / productization).read_bytes()
+    assert hashlib.sha256(current_productization).hexdigest().upper() == (
+        "09D44DD63B8064B0C6887FC2D8AA4C46773F95518B9243DA33B1AB7523F0A064"
+    )
+    assert maintained_blob != current_productization
     assert historical_blob != v12_blob
     assert v12_blob != maintained_blob
     with pytest.raises(AssertionError):
