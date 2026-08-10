@@ -1,0 +1,336 @@
+{
+    "schema":  "pastila-scout-phase-5.6b-vm-matrix-frozen-authority-maintenance-r1-v1",
+    "formal_name":  "Phase 5.6B VM Matrix Frozen Authority Maintenance R1",
+    "scope":  "Authority maintenance only; no executable runner or replacement handoff",
+    "repository":  {
+                       "branch":  "feature/openai-sdk",
+                       "head":  "e6a8630559efe2217d01af308fbb815f4e501ff4"
+                   },
+    "preserved":  {
+                      "candidate_sha256":  {
+                                               "iss":  "8D8E3C6C92A2517D2BF2D6151CFC7F8A8B805B27140050A1318E5D3E2A9514A5",
+                                               "wrapper":  "C8C0B2AEF7D7EF3D3D7530D1DD0FB8D42966E5332744C3DBC38557C1043D7DB6",
+                                               "installer_test":  "39BD76109D598D1295E2E9E3611D221FD433A30EC8D8442E66F29CF1FFD8E89F"
+                                           },
+                      "build033":  {
+                                       "size":  22343107,
+                                       "sha256":  "0963DD03CC895BA00D9B51338734B7591B7C0F04DD98E58E87F9C69D97B3BCA2"
+                                   },
+                      "historical_matrix_sha256":  "E5A115D5F1F9B97B44CF351C1E779AB8E77016CF40136AF93674B43FE2D9BC46",
+                      "historical_handoff_inventory_sha256":  "4E051C9C65262FF797FA19EC20BB19754C174B000BDF7578CA086F7D2134B20D",
+                      "vm":  "PastilaScout-Phase56B-Disposable",
+                      "checkpoint":  "Phase56B-Clean-Baseline"
+                  },
+    "normative_sources":  [
+                              {
+                                  "source":  "docs/windows-application/WindowsInstallerSpecificationV1.md",
+                                  "sha256":  "D5C5AE513FC763C3E3E2A1B9A4F9ACA0893EC4BC6215AE22C3BF679C5D0F4F0A",
+                                  "authority":  "Frozen requirements and lifecycle verification matrix"
+                              },
+                              {
+                                  "source":  "testability resolution final-decision.json",
+                                  "sha256":  "6083E8EE32EB716385AA3ADDBAFAADBEE0715BABD16B6DB449AD918D005C79AC",
+                                  "authority":  "Completed non-mutating classification decision"
+                              },
+                              {
+                                  "source":  "historical vm-only-matrix.json",
+                                  "sha256":  "E5A115D5F1F9B97B44CF351C1E779AB8E77016CF40136AF93674B43FE2D9BC46",
+                                  "authority":  "Historical evidence only; not self-authorizing normative count"
+                              }
+                          ],
+    "decisions":  {
+                      "vm07_historical_defect":  "A runtime millisecond-filename collision was prescribed without a controllable clock/name seam, making the proof race-dependent and non-deterministic.",
+                      "vm07_frozen_property":  "INS-056/INS-057/INS-058 require bounded, truthful, local result logging and correct failure classification.",
+                      "vm07_reformulation":  "VM-07A creation denial and VM-07B pruning deletion denial are deterministic VM proofs; VM-07C preserves collision-branch coverage at the static/unit layer.",
+                      "vm10_historical_defect":  "Remaining rollback/failure injections is an open-ended catch-all without a finite requirement-derived case list.",
+                      "vm10_finite_list":  "NONE; INS-024/025/026/047/056/069 are already allocated to named lifecycle, VM-01, VM-05, VM-06, VM-07, or existing uninstall evidence.",
+                      "vm10_action":  "REMOVE_FROM_EXECUTABLE_FROZEN_AUTHORITY_WITHOUT_RENUMBERING",
+                      "scenario_count":  "TEN_SCENARIO_COUNT_HISTORICAL_ONLY",
+                      "rationale":  "The frozen specification enumerates requirements and proof methods, not a normative count of ten; the count originates in the historical matrix itself."
+                  },
+    "top_level_scenario_count":  9,
+    "top_level_scenario_ids":  [
+                                   "VM-01",
+                                   "VM-02",
+                                   "VM-03",
+                                   "VM-04",
+                                   "VM-05",
+                                   "VM-06",
+                                   "VM-07",
+                                   "VM-08",
+                                   "VM-09"
+                               ],
+    "scenarios":  [
+                      {
+                          "id":  "VM-01",
+                          "property":  "INS-025/INS-056/INS-069 contained and honest cleanup failure",
+                          "requirements":  [
+                                               "INS-025",
+                                               "INS-056",
+                                               "INS-069"
+                                           ],
+                          "classification":  "EXTERNALLY_TESTABLE_WITH_REVISED_MECHANISM",
+                          "proof":  "VM: pre-established inherited deny-delete ACL on clean canonical root"
+                      },
+                      {
+                          "id":  "VM-02",
+                          "property":  "INS-015/INS-016 short-name alias rejection",
+                          "requirements":  [
+                                               "INS-015",
+                                               "INS-016"
+                                           ],
+                          "classification":  "EXTERNALLY_TESTABLE_WITH_REVISED_MECHANISM",
+                          "proof":  "VM: sealed VM-local copies plus deterministic 8.3 identity runner"
+                      },
+                      {
+                          "id":  "VM-03",
+                          "property":  "INS-016/INS-017 wrapper reparse alias rejection",
+                          "requirements":  [
+                                               "INS-016",
+                                               "INS-017"
+                                           ],
+                          "classification":  "EXTERNALLY_TESTABLE_WITH_REVISED_MECHANISM",
+                          "proof":  "VM: finite VM-local junction and symlink source/work/output cases"
+                      },
+                      {
+                          "id":  "VM-04",
+                          "property":  "INS-017/INS-058/INS-059 log containment",
+                          "requirements":  [
+                                               "INS-017",
+                                               "INS-058",
+                                               "INS-059"
+                                           ],
+                          "classification":  "EXTERNALLY_TESTABLE_WITH_REVISED_MECHANISM",
+                          "proof":  "VM: pre-created installer-log junction with sentinel target"
+                      },
+                      {
+                          "id":  "VM-05",
+                          "property":  "INS-024/INS-056/INS-069 honest restoration failure after displacement",
+                          "requirements":  [
+                                               "INS-024",
+                                               "INS-056",
+                                               "INS-069"
+                                           ],
+                          "classification":  "TEST_ONLY_INSTRUMENTATION_REQUIRED",
+                          "proof":  "Future distinct test build: compile-time-only pre-activation and pre-restoration named-event barriers; not implemented here"
+                      },
+                      {
+                          "id":  "VM-06",
+                          "property":  "INS-026 surface-publication rollback and preservation",
+                          "requirements":  [
+                                               "INS-026"
+                                           ],
+                          "classification":  "EXTERNALLY_TESTABLE_WITH_REVISED_MECHANISM",
+                          "proof":  "VM: separate snapshot cases pre-denying exact HKCU64 ARP and Start Menu targets"
+                      },
+                      {
+                          "id":  "VM-07",
+                          "property":  "INS-056/INS-057/INS-058 bounded truthful result logging",
+                          "requirements":  [
+                                               "INS-056",
+                                               "INS-057",
+                                               "INS-058"
+                                           ],
+                          "classification":  "EXTERNALLY_TESTABLE_WITH_REVISED_MECHANISM",
+                          "proof":  "Split deterministic proof obligations; filename-collision branch remains lower-level evidence",
+                          "obligations":  [
+                                              {
+                                                  "id":  "VM-07A",
+                                                  "property":  "Result creation denial",
+                                                  "layer":  "VM",
+                                                  "mechanism":  "Pre-create the governed result destination directory with deterministic create-file denial while preserving traversal; invoke the non-destructive result writer path",
+                                                  "expected":  "Documented nonzero logging failure; bounded category; no write outside frozen log root; no false success"
+                                              },
+                                              {
+                                                  "id":  "VM-07B",
+                                                  "property":  "Pruning deletion denial",
+                                                  "layer":  "VM",
+                                                  "mechanism":  "Seed an over-retention set and apply deterministic delete denial to the oldest disposable result before pruning",
+                                                  "expected":  "Cleanup/pruning failure reported truthfully; retained records remain bounded/accounted; no root escape"
+                                              },
+                                              {
+                                                  "id":  "VM-07C",
+                                                  "property":  "Existing-name collision branch",
+                                                  "layer":  "static/unit",
+                                                  "mechanism":  "Inspect and execute the collision-handling branch with a controlled lower-level filename provider or equivalent unit fixture",
+                                                  "expected":  "No overwrite, bounded retry/failure behavior, and correct classification",
+                                                  "runtime_vm_required":  false
+                                              }
+                                          ]
+                      },
+                      {
+                          "id":  "VM-08",
+                          "property":  "INS-017/INS-018/INS-046/INS-059 governed-component reparse rejection",
+                          "requirements":  [
+                                               "INS-017",
+                                               "INS-018",
+                                               "INS-046",
+                                               "INS-059"
+                                           ],
+                          "classification":  "EXTERNALLY_TESTABLE_WITH_REVISED_MECHANISM",
+                          "proof":  "VM: finite Programs, canonical-root, log-component, and optional-state-root variants"
+                      },
+                      {
+                          "id":  "VM-09",
+                          "property":  "INS-018/INS-019/INS-056 actual LocalAppData-volume capacity preflight",
+                          "requirements":  [
+                                               "INS-018",
+                                               "INS-019",
+                                               "INS-056"
+                                           ],
+                          "classification":  "EXTERNALLY_TESTABLE_WITH_REVISED_MECHANISM",
+                          "proof":  "VM: disposable guest profile on constrained VM-local NTFS volume below 252607590 free bytes"
+                      }
+                  ],
+    "requirement_mapping":  [
+                                {
+                                    "requirement":  "INS-015",
+                                    "prior":  "VM-02",
+                                    "revised":  "VM-02",
+                                    "proof":  "VM alias identity",
+                                    "status":  "PRESERVED"
+                                },
+                                {
+                                    "requirement":  "INS-016",
+                                    "prior":  "VM-02, VM-03",
+                                    "revised":  "VM-02, VM-03",
+                                    "proof":  "VM alias/reparse cases",
+                                    "status":  "PRESERVED"
+                                },
+                                {
+                                    "requirement":  "INS-017",
+                                    "prior":  "VM-03, VM-04, VM-08",
+                                    "revised":  "VM-03, VM-04, VM-08",
+                                    "proof":  "VM reparse cases",
+                                    "status":  "PRESERVED"
+                                },
+                                {
+                                    "requirement":  "INS-018",
+                                    "prior":  "VM-08, VM-09",
+                                    "revised":  "VM-08, VM-09",
+                                    "proof":  "VM topology/capacity cases",
+                                    "status":  "PRESERVED"
+                                },
+                                {
+                                    "requirement":  "INS-019",
+                                    "prior":  "VM-09",
+                                    "revised":  "VM-09",
+                                    "proof":  "VM constrained volume",
+                                    "status":  "PRESERVED"
+                                },
+                                {
+                                    "requirement":  "INS-024",
+                                    "prior":  "VM-05, vague VM-10",
+                                    "revised":  "VM-05",
+                                    "proof":  "Test-only instrumentation decision",
+                                    "status":  "PRESERVED_NO_RESIDUAL"
+                                },
+                                {
+                                    "requirement":  "INS-025",
+                                    "prior":  "VM-01, vague VM-10",
+                                    "revised":  "VM-01",
+                                    "proof":  "VM deterministic cleanup denial",
+                                    "status":  "PRESERVED_NO_RESIDUAL"
+                                },
+                                {
+                                    "requirement":  "INS-026",
+                                    "prior":  "VM-06, vague VM-10",
+                                    "revised":  "VM-06",
+                                    "proof":  "VM surface denial cases",
+                                    "status":  "PRESERVED_NO_RESIDUAL"
+                                },
+                                {
+                                    "requirement":  "INS-046",
+                                    "prior":  "VM-08",
+                                    "revised":  "VM-08",
+                                    "proof":  "VM topology cases",
+                                    "status":  "PRESERVED"
+                                },
+                                {
+                                    "requirement":  "INS-056",
+                                    "prior":  "VM-01, VM-05, VM-07, VM-09, vague VM-10",
+                                    "revised":  "VM-01, VM-05, VM-07A, VM-07B, VM-07C, VM-09",
+                                    "proof":  "VM plus lower-level collision branch",
+                                    "status":  "PRESERVED_NO_RESIDUAL"
+                                },
+                                {
+                                    "requirement":  "INS-057",
+                                    "prior":  "VM-07",
+                                    "revised":  "VM-07A, VM-07B, VM-07C",
+                                    "proof":  "Deterministic VM and lower-level assertions",
+                                    "status":  "PRESERVED"
+                                },
+                                {
+                                    "requirement":  "INS-058",
+                                    "prior":  "VM-04, VM-07",
+                                    "revised":  "VM-04, VM-07A, VM-07B, VM-07C",
+                                    "proof":  "VM containment/failure plus lower-level collision",
+                                    "status":  "PRESERVED"
+                                },
+                                {
+                                    "requirement":  "INS-059",
+                                    "prior":  "VM-04, VM-08",
+                                    "revised":  "VM-04, VM-08",
+                                    "proof":  "VM adversarial rejection",
+                                    "status":  "PRESERVED"
+                                },
+                                {
+                                    "requirement":  "INS-069",
+                                    "prior":  "VM-01, VM-05, vague VM-10",
+                                    "revised":  "VM-01, VM-05",
+                                    "proof":  "VM cleanup plus future instrumented restoration",
+                                    "status":  "PRESERVED_NO_RESIDUAL"
+                                }
+                            ],
+    "requirement_accounting":  {
+                                   "no_loss":  true,
+                                   "no_invention":  true,
+                                   "vm10_residual_count":  0,
+                                   "vm07_security_properties_preserved":  true
+                               },
+    "semantic_diff":  [
+                          {
+                              "target":  "VM-07",
+                              "before":  "result collision and pruning failure via seeded runtime collision and deletion denial",
+                              "after":  "VM-07A deterministic result-creation denial; VM-07B deterministic pruning-deletion denial; VM-07C lower-level collision-branch proof",
+                              "effect":  "Removes timing race while preserving result safety, classification, containment, and retention obligations"
+                          },
+                          {
+                              "target":  "VM-10",
+                              "before":  "remaining rollback/failure injections",
+                              "after":  "removed",
+                              "effect":  "Removes non-finite non-normative catch-all; no frozen obligation removed"
+                          },
+                          {
+                              "target":  "top-level count",
+                              "before":  10,
+                              "after":  9,
+                              "effect":  "Count follows frozen requirements; IDs are not renumbered"
+                          }
+                      ],
+    "alternatives":  {
+                         "selected":  [
+                                          "deterministic VM-07 reformulation",
+                                          "remove invalid VM-10 catch-all",
+                                          "allow count to follow frozen authority"
+                                      ],
+                         "rejected":  [
+                                          "retain inaccessible runtime collision",
+                                          "instrument timestamp solely for collision",
+                                          "retain or guess VM-10 cases",
+                                          "preserve ten cosmetically"
+                                      ]
+                     },
+    "formal_identity":  {
+                            "commit_subject":  "Correct Phase 5.6B VM matrix frozen authority",
+                            "annotated_tag":  "phase-5.6b-vm-matrix-frozen-authority-maintenance-r1-verified",
+                            "annotation":  "Verify Phase 5.6B VM Matrix Frozen Authority Maintenance Revision 1"
+                        },
+    "prohibitions":  {
+                         "candidate_mutation":  "NONE",
+                         "build034":  "NOT CREATED",
+                         "preparation_refresh":  "NOT PERFORMED",
+                         "vm_execution":  "NOT PERFORMED",
+                         "commit_tag_freeze":  "NOT PERFORMED"
+                     }
+}
