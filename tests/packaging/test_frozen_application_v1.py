@@ -21,6 +21,21 @@ TESTS = {
     "tests/packaging/test_version_parity_v1.py",
     "tests/packaging/test_build_mode_v1.py",
 }
+EXTERNALLY_OWNED_PATHS = {
+    "tests/packaging/test_inno_installer_v1.py": (
+        "C8A31B0EF8BC14670BAE7399DD7A1082C00D4CB1FE2A7F084E24ADB37C2FC640"
+    ),
+}
+
+
+def has_external_ownership(root: Path, relative_path: str) -> bool:
+    expected = EXTERNALLY_OWNED_PATHS.get(relative_path)
+    if expected is None:
+        return False
+    return (
+        hashlib.sha256((root / relative_path).read_bytes()).hexdigest().upper()
+        == expected
+    )
 
 
 def phase_candidate_files(root: Path) -> set[str]:
@@ -35,6 +50,7 @@ def phase_candidate_files(root: Path) -> set[str]:
         for path in owned_root.rglob("*")
         if path.is_file()
         and not (path.suffix == ".pyc" and "__pycache__" in path.parts)
+        and not has_external_ownership(root, path.relative_to(root).as_posix())
     }
 
 
@@ -209,3 +225,32 @@ def test_ownership_ignores_only_real_python_cache_bytecode(tmp_path: Path) -> No
     rogue = cache / "rogue.py"
     rogue.write_text("not a cache artifact", encoding="utf-8")
     assert phase_candidate_files(tmp_path) == {rogue.relative_to(tmp_path).as_posix()}
+
+
+def test_external_ownership_requires_exact_path_and_identity(tmp_path: Path) -> None:
+    relative = "tests/packaging/test_inno_installer_v1.py"
+    authorized = tmp_path / relative
+    authorized.parent.mkdir(parents=True)
+    authorized.write_bytes((ROOT / relative).read_bytes())
+    assert phase_candidate_files(tmp_path) == set()
+
+    authorized.write_bytes(b"wrong identity")
+    assert phase_candidate_files(tmp_path) == {relative}
+
+
+def test_external_ownership_does_not_hide_similar_or_arbitrary_paths(
+    tmp_path: Path,
+) -> None:
+    packaging = tmp_path / "tests" / "packaging"
+    packaging.mkdir(parents=True)
+    similar = packaging / "test_inno_installer_v2.py"
+    ignored = packaging / "ignored-arbitrary.py"
+    similar.write_bytes(
+        (ROOT / "tests/packaging/test_inno_installer_v1.py").read_bytes()
+    )
+    ignored.write_text("ignored by Git is not ownership", encoding="utf-8")
+    (tmp_path / ".gitignore").write_text("ignored-arbitrary.py\n", encoding="utf-8")
+    assert phase_candidate_files(tmp_path) == {
+        "tests/packaging/ignored-arbitrary.py",
+        "tests/packaging/test_inno_installer_v2.py",
+    }
