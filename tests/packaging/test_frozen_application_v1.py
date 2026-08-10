@@ -79,6 +79,10 @@ def test_spec_has_exact_launcher_names_and_subsystems() -> None:
 
 def test_spec_resource_and_provider_inventories_are_closed() -> None:
     text = SPEC.read_text(encoding="utf-8")
+    assert text.count('"default-settings-v1.json"') == 1
+    assert text.count('"desktop_v1/default-settings-v1.json"') == 0
+    assert text.count('"desktop_v1",') == 1
+    assert text.count('"pastila_scout/desktop_v1"') == 0
     assert text.count("pastila-root-1.pub") == 1
     assert text.count("bootstrap-root-v1.json") == 1
     assert "THIRD-PARTY-NOTICES.txt" in text

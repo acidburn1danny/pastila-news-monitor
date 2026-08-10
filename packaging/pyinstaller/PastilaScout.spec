@@ -41,7 +41,7 @@ datas = [
     (str(resource_root / "config" / "sources.yaml"), "config"),
     (
         str(resource_root / "desktop_v1" / "default-settings-v1.json"),
-        "pastila_scout/desktop_v1",
+        "desktop_v1",
     ),
     (str(resource_root / "resources" / "trust" / "pastila-root-1.pub"), "resources/trust"),
     (
