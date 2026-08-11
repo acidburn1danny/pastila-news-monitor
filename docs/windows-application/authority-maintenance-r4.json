@@ -1,0 +1,156 @@
+{
+  "schema": "phase56b-vm01a-handle-access-mask-frozen-authority-maintenance-r4",
+  "formal_name": "Phase 5.6B VM-01A Handle Access-Mask Frozen Authority Maintenance R4",
+  "status": "READY_FOR_FORMAL_FREEZE",
+  "scope": "VM-01A controller-side directory-handle desired-access correction only",
+  "predecessor": {
+    "path": "docs/windows-application/authority-maintenance-r3.json",
+    "sha256": "11C09BD9238326F6A4A01553520A995F8D6CE750F1DCF301F88452A11EA4CF33",
+    "tag": "phase-5.6b-vm01a-fault-fixture-frozen-authority-maintenance-r3-verified",
+    "commit": "7e7e6c134326369af5cf97b2dff660f23e7e6693",
+    "preserved": true
+  },
+  "repository_authority": {
+    "branch": "feature/openai-sdk",
+    "head": "7e7e6c134326369af5cf97b2dff660f23e7e6693",
+    "candidate_sha256": {
+      "packaging/inno/PastilaScout.iss": "1D50C9CD1F127DCB09A07E365E7608D43DEC5E76257E8A0F5983B090956B859F",
+      "packaging/inno/build-installer.ps1": "E2769779659B92E20A52C116AA3507A7D2D9250971B6B7D3984F96C773C540CE",
+      "tests/packaging/test_inno_installer_v1.py": "39BD76109D598D1295E2E9E3611D221FD433A30EC8D8442E66F29CF1FFD8E89F"
+    },
+    "ownership_status": "OWNERSHIP_SHA_STILL_VALID",
+    "candidate_mutation": "NONE"
+  },
+  "build_authority": {
+    "build035": {"size": 22343126, "sha256": "D5F839930B8C6A8918F83BC5875A457EC8FD64C87D9B30449FFB4E9BD9E6020A", "preserved": true},
+    "build036": {"size": 22343862, "sha256": "18A3172775272FC73B321BB430E1FB2CD863AED9D8C7F10936FBDDE183EAE59A", "role": "VM01A_TEST_INSTRUMENTED_FIXTURE_ONLY", "preserved": true},
+    "build037": "NOT_CREATED"
+  },
+  "r3_failed_closed_evidence": {
+    "root": "C:/PastilaScout-Installer-Evidence/phase-5.6b/vm01a-r3-build036-deterministic-r1-20260811-001",
+    "inventory_entries": 41,
+    "inventory_sha256": "CB131CDD867470A43951A700E32A8B7E146F4B8A34C216BAF5C020081578414F",
+    "validation_sha256": "C78EFA1D3ADFC49B0C3D7517C069F71A0E6C14246839CED75781B8D6725C2080",
+    "validation": "VALID_FAILED_CLOSED_ATTEMPT",
+    "facts": {
+      "barrier_reached": true,
+      "stage_path_exact_and_contained": true,
+      "first_handle_opened": true,
+      "desired_access": "0x00000000",
+      "share_mode": "0x00000003",
+      "delete_probe_unexpectedly_succeeded": true,
+      "continue_signals": 0,
+      "product_result_accepted": false,
+      "candidate_defect": false
+    },
+    "classification": "R3_HANDLE_ACCESS_MASK_EMPIRICALLY_INSUFFICIENT"
+  },
+  "normative_preservation": {
+    "requirements": ["INS-025", "INS-056", "INS-069"],
+    "requirements_changed": false,
+    "expected_result_changed": false,
+    "proof_intent": "verified stage; post-Verify fault; activation rename failure; cleanup failure; truthful cleanup_failure; contained residue; no publication or unrelated mutation",
+    "changed_dimension": "first directory-handle desired access only"
+  },
+  "windows_sharing_model": {
+    "sources": [
+      {"title": "CreateFile", "url": "https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfilea", "fact": "Requested access must be compatible with existing handle sharing; FILE_SHARE_DELETE governs subsequent delete-access opens; delete access includes rename."},
+      {"title": "IoCheckShareAccess", "url": "https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/wdm/nf-wdm-iocheckshareaccess", "fact": "Share compatibility is evaluated from granted desired access and desired share access."},
+      {"title": "IoCheckLinkShareAccess", "url": "https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/wdm/nf-wdm-iochecklinkshareaccess", "fact": "Force-check is separately defined for requests that are not read, write, or delete access, explaining why zero or metadata-only access cannot be assumed to participate."},
+      {"title": "File Access Rights Constants", "url": "https://learn.microsoft.com/en-us/windows/win32/fileio/file-access-rights-constants", "fact": "FILE_LIST_DIRECTORY is directory read-data access value 1; FILE_READ_ATTRIBUTES is distinct value 128."},
+      {"title": "Access Mask", "url": "https://learn.microsoft.com/en-us/windows-hardware/drivers/ifs/access-mask", "fact": "FILE_LIST_DIRECTORY lists directory contents; FILE_READ_ATTRIBUTES reads directory attribute information."}
+    ],
+    "reconstruction": "On the tested local NTFS implementation, zero and FILE_READ_ATTRIBUTES opens did not enter the read/write/delete share-compatibility state needed to make omitted FILE_SHARE_DELETE conflict with a later DELETE open. FILE_LIST_DIRECTORY is the smallest prospectively tested directory data-read right and did participate, producing ERROR_SHARING_VIOLATION for DELETE, rename, and final removal.",
+    "os_semantics_not_project_authority": true
+  },
+  "characterization": {
+    "evidence_root": "C:/PastilaScout-Installer-Evidence/phase-5.6b/vm01a-handle-access-r4-20260811-003",
+    "matrix_frozen_before_execution": true,
+    "dynamic_additions": false,
+    "environment": {
+      "target": "fresh disposable host-local directory per case",
+      "volume": "local NTFS system volume",
+      "token": "normal Medium-integrity PASTILAACIDA/black",
+      "equivalence": "CreateFileW, MoveFileExW, RemoveDirectoryW and NTFS share checking are kernel/filesystem semantics independent of product state; no guest-specific identity or ACL behavior is relied upon",
+      "product_or_vm_used": false
+    },
+    "constants": {
+      "first_share_mode": "FILE_SHARE_READ | FILE_SHARE_WRITE (0x00000003)",
+      "file_share_delete": false,
+      "creation": "OPEN_EXISTING (3)",
+      "flags": "FILE_FLAG_BACKUP_SEMANTICS (0x02000000)",
+      "delete_probe_access": "DELETE (0x00010000)",
+      "delete_probe_share": "FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE (0x00000007)"
+    },
+    "results": [
+      {"symbol": "ZERO", "mask": "0x00000000", "first_open": "SUCCESS", "first_error": 0, "delete_probe": "SUCCESS", "delete_error": null, "rename": "SUCCESS", "rename_error": null, "final_remove": "SUCCESS", "final_remove_error": null, "cleanup": "PASS", "deterministic": false},
+      {"symbol": "FILE_READ_ATTRIBUTES", "mask": "0x00000080", "first_open": "SUCCESS", "first_error": 0, "delete_probe": "SUCCESS", "delete_error": null, "rename": "SUCCESS", "rename_error": null, "final_remove": "SUCCESS", "final_remove_error": null, "cleanup": "PASS", "deterministic": false},
+      {"symbol": "FILE_LIST_DIRECTORY", "mask": "0x00000001", "first_open": "SUCCESS", "first_error": 0, "delete_probe": "FAIL", "delete_error": 32, "rename": "FAIL", "rename_error": 32, "final_remove": "FAIL", "final_remove_error": 32, "cleanup": "PASS", "deterministic": true},
+      {"symbol": "FILE_READ_ATTRIBUTES | FILE_LIST_DIRECTORY", "mask": "0x00000081", "first_open": "SUCCESS", "first_error": 0, "delete_probe": "FAIL", "delete_error": 32, "rename": "FAIL", "rename_error": 32, "final_remove": "FAIL", "final_remove_error": 32, "cleanup": "PASS", "deterministic": true},
+      {"symbol": "GENERIC_READ", "mask": "0x80000000", "first_open": "SUCCESS", "first_error": 0, "delete_probe": "FAIL", "delete_error": 32, "rename": "FAIL", "rename_error": 32, "final_remove": "FAIL", "final_remove_error": 32, "cleanup": "PASS", "deterministic": true}
+    ],
+    "all_close_counts": 1,
+    "all_cleanup": "PASS",
+    "failed_harness_attempts_preserved": ["vm01a-handle-access-r4-20260811-001", "vm01a-handle-access-r4-20260811-002"]
+  },
+  "minimality": {
+    "passing_masks": ["FILE_LIST_DIRECTORY", "FILE_READ_ATTRIBUTES | FILE_LIST_DIRECTORY", "GENERIC_READ"],
+    "selected": "FILE_LIST_DIRECTORY",
+    "table": [
+      {"mask": "FILE_LIST_DIRECTORY", "rights": "directory data/list access only", "decision": "SELECT_SMALLEST"},
+      {"mask": "FILE_READ_ATTRIBUTES | FILE_LIST_DIRECTORY", "rights": "selected right plus unnecessary metadata access", "decision": "REJECT_BROADER"},
+      {"mask": "GENERIC_READ", "rights": "mapped read attributes, directory data, read EA, standard read, synchronize", "decision": "REJECT_BROADER"}
+    ]
+  },
+  "selected_handle_tuple": {
+    "id": "VM01A_STAGEPATH_FILE_LIST_DIRECTORY_NON_DELETE_SHARING_HANDLE",
+    "api": "CreateFileW",
+    "desired_access_numeric": "0x00000001",
+    "desired_access_symbolic": "FILE_LIST_DIRECTORY",
+    "share_flags": "FILE_SHARE_READ | FILE_SHARE_WRITE (0x00000003); FILE_SHARE_DELETE omitted",
+    "creation_disposition": "OPEN_EXISTING (3)",
+    "directory_flags": "FILE_FLAG_BACKUP_SEMANTICS (0x02000000)",
+    "security_attributes": "NULL",
+    "handle_inheritable": false,
+    "token": "phase56b Interactive/Limited Medium RID8192",
+    "precondition": "exact published StagePath exists, is a direct contained child of canonical root, and verification completed before any preservation or activation rename",
+    "probe": {"api": "CreateFileW", "access": "DELETE (0x00010000)", "share": "READ|WRITE|DELETE (0x00000007)", "mutating": false, "required_result": "INVALID_HANDLE_VALUE", "required_error": "ERROR_SHARING_VIOLATION (32)"},
+    "lifetime": "acquire after barrier validation; retain through activation, cleanup, and required evidence capture",
+    "release": "CloseHandle only after evidence capture or fail-closed controller cleanup",
+    "close_once": true,
+    "runtime_alternatives": false,
+    "fallback_ladder": false
+  },
+  "build036_reuse": {
+    "decision": "BUILD036_REUSE_AUTHORIZED_FOR_VM01A_R4_FIXTURE",
+    "basis": ["barrier and StagePath channel unchanged", "instrumentation and 120000 ms timeout unchanged", "only controller desired access changes", "candidate and Build036 bytes unchanged", "preparation and projections unchanged", "expected result unchanged"],
+    "new_build_required": false
+  },
+  "expected_vm01a_result": {"exit_code": 9, "final_status": "failure", "failure_class": "cleanup_failure", "failure_stage": "cleanup", "activation_status": "not_activated", "stage_cleanup_status": "failed", "contained_stage_residue": true, "arp_published": false, "start_menu_published": false, "unrelated_state_mutated": false, "false_success": false, "instrumentation_failure": false},
+  "controller_authority_delta": {"from": "desiredAccess=0", "to": "desiredAccess=FILE_LIST_DIRECTORY (0x00000001)", "other_r3_fields_changed": false},
+  "independent_reviews": {
+    "windows_semantics": {"verdict": "PASS", "findings": [], "basis": "Documented access/share model and empirical boundary agree; selected right is documented directory read-data access."},
+    "empirical_characterization": {"verdict": "PASS", "findings": [], "basis": "All five prospectively frozen cases ran with constant parameters, exact native outcomes, close-once accounting, isolated fixtures, and complete cleanup."},
+    "authority_security": {"verdict": "PASS", "findings": [], "basis": "Requirements, barrier, transport, expected result, candidate and build remain unchanged; selected exact-path process-local right is least privileged among passing cases."},
+    "disagreements": []
+  },
+  "false_positive_audit": {"matrix_changed_post_execution": false, "exact_error32_required": true, "rename_and_remove_probed": true, "host_guest_contradiction": false, "smallest_passing_selected": true, "runtime_alternatives": false, "build036_reuse_proven": true, "vm01_closed": false, "r3_failure_candidate_defect": false, "verdict": "PASS"},
+  "scenario_accounting": [
+    {"id": "VM-01", "state": "OPEN", "fixture": "R4_FILE_LIST_DIRECTORY_HANDLE"},
+    {"id": "VM-02", "state": "OPEN"}, {"id": "VM-03", "state": "OPEN"}, {"id": "VM-04", "state": "OPEN"},
+    {"id": "VM-05", "state": "CLOSED"}, {"id": "VM-06", "state": "OPEN"}, {"id": "VM-07", "state": "OPEN"},
+    {"id": "VM-08", "state": "OPEN"}, {"id": "VM-09", "state": "OPEN"}, {"id": "VM-10", "state": "NOT_APPLICABLE_REMOVED"}
+  ],
+  "architectural_humility": [
+    {"option": "desiredAccess=0", "sharing": "FAIL", "privilege": "none", "scope": "exact", "determinism": "falsified", "decision": "REJECT"},
+    {"option": "FILE_READ_ATTRIBUTES", "sharing": "FAIL", "privilege": "metadata read", "scope": "exact", "determinism": "falsified", "decision": "REJECT"},
+    {"option": "FILE_LIST_DIRECTORY", "sharing": "PASS", "privilege": "directory list", "scope": "exact", "determinism": "PASS", "decision": "SELECT"},
+    {"option": "combined narrow", "sharing": "PASS", "privilege": "list plus attributes", "scope": "exact", "determinism": "PASS", "decision": "REJECT_BROADER"},
+    {"option": "GENERIC_READ", "sharing": "PASS", "privilege": "broad read mapping", "scope": "exact", "determinism": "PASS", "decision": "REJECT_BROADER"},
+    {"option": "parent DELETE_CHILD ACL", "sharing": "not applicable", "privilege": "ACL mutation", "scope": "parent plus object", "determinism": "complex", "decision": "REJECT"},
+    {"option": "new instrumentation", "sharing": "not required", "privilege": "product change", "scope": "candidate", "determinism": "unnecessary", "decision": "REJECT"},
+    {"option": "leave blocked", "sharing": "not applicable", "privilege": "none", "scope": "none", "determinism": "no closure", "decision": "REJECT"}
+  ],
+  "formal_freeze_proposal": {"commit_subject": "Correct Phase 5.6B VM-01A handle access authority", "annotated_tag": "phase-5.6b-vm01a-handle-access-frozen-authority-maintenance-r4-verified", "annotation": "Verify Phase 5.6B VM-01A Handle Access-Mask Frozen Authority Maintenance Revision 4"},
+  "prohibitions": {"candidate_mutation": true, "build036_mutation": true, "build037_creation": true, "preparation_or_projection_refresh": true, "vm01a_product_execution": true, "vm02plus_execution": true, "commit_or_tag": true, "freeze_sign_or_publish": true}
+}
