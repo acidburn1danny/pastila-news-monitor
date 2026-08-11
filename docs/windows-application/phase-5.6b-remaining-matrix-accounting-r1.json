@@ -1,0 +1,142 @@
+{
+  "schema": "phase56b-remaining-vm-matrix-accounting-refresh-r1",
+  "status": "READY_FOR_FORMAL_FREEZE",
+  "repository": {
+    "branch": "feature/openai-sdk",
+    "head": "4439dbb28937be4e8d68843f6ab29a1b4474cfc6",
+    "candidate_mutation": "NONE",
+    "ownership_status": "OWNERSHIP_SHA_STILL_VALID"
+  },
+  "authority_chain": [
+    {"revision": "R1", "artifact": "docs/windows-application/authority-maintenance-r1.json", "preserved": true},
+    {"revision": "R2", "artifact": "docs/windows-application/authority-maintenance-r2.json", "sha256": "E8E088F3AF790B3C200193BB91C23CC053D763A577647A1D7138DBC59D194283", "preserved": true},
+    {"revision": "R3", "artifact": "docs/windows-application/authority-maintenance-r3.json", "sha256": "11C09BD9238326F6A4A01553520A995F8D6CE750F1DCF301F88452A11EA4CF33", "preserved": true},
+    {"revision": "R4", "artifact": "docs/windows-application/authority-maintenance-r4.json", "sha256": "5A5EAC050E8BBC82CB3EB34292EB54A7AC7F557E713A8544D262EB8870C7D336", "preserved": true}
+  ],
+  "candidate_sha256": {
+    "packaging/inno/PastilaScout.iss": "1D50C9CD1F127DCB09A07E365E7608D43DEC5E76257E8A0F5983B090956B859F",
+    "packaging/inno/build-installer.ps1": "E2769779659B92E20A52C116AA3507A7D2D9250971B6B7D3984F96C773C540CE",
+    "tests/packaging/test_inno_installer_v1.py": "39BD76109D598D1295E2E9E3611D221FD433A30EC8D8442E66F29CF1FFD8E89F"
+  },
+  "vm01_closure": {
+    "verdict": "PHASE_5_6B_VM01A_R4_BUILD036_DETERMINISTIC_EXECUTION_R2_VERIFIED — VM01_CLOSED",
+    "evidence_root": "C:/PastilaScout-Installer-Evidence/phase-5.6b/vm01a-r4-build036-deterministic-r2-20260811-001",
+    "entries": 88,
+    "inventory_sha256": "DD3361010B420AF5663C41D88B1F3A4978D0C3FDA58B8D0A4B3B7709F40EDDFA",
+    "validation_sha256": "479C737DD2A94E51312CF7AA9D04D0F021C004D3E3BA765FCF0C1D9DA527BA76",
+    "validation": "VALID",
+    "independent_verdict": "VM01A_R4_FILE_LIST_DIRECTORY_HANDLE_EVIDENCE_VALID",
+    "clean_verdict": "CLEAN_BASELINE_R2_POST_VM01A_R4_REVERT_VERIFIED",
+    "facts": {
+      "build036_exact": true,
+      "medium_limited": true,
+      "barrier_arrivals": 1,
+      "stage_contained": true,
+      "handle_access": "FILE_LIST_DIRECTORY (0x00000001)",
+      "share": "FILE_SHARE_READ | FILE_SHARE_WRITE (0x00000003)",
+      "delete_share": false,
+      "delete_probe_error": 32,
+      "continue_signals": 1,
+      "exit_code": 9,
+      "final_status": "failure",
+      "failure_class": "cleanup_failure",
+      "failure_stage": "cleanup",
+      "activation_status": "not_activated",
+      "stage_cleanup_status": "failed",
+      "surface_publication_status": "not_published",
+      "arp": false,
+      "start_menu": false,
+      "unrelated_user_state_mutation": false,
+      "contained_stage_residue_observed": true,
+      "candidate_defect": false,
+      "credential_destroyed": true
+    }
+  },
+  "vm05_closure": {
+    "verdict": "PHASE_5_6B_VM05_INSTRUMENTED_BUILD034_DETERMINISTIC_EXECUTION_R2_VERIFIED — VM05_CLOSED",
+    "evidence_root": "C:/PastilaScout-Installer-Evidence/phase-5.6b/vm05-build034-deterministic-r2-20260811-001",
+    "inventory_entries": 15,
+    "inventory_sha256": "908CBFB932AAA59017456632895AE1909D1E4C0EC4BFAD8A9B408712F2E71BCD",
+    "acceptance_sha256": "7F1C076805E6462FCE5B83AA7886220DF5AD832D32BF466E3A08590D022D967A",
+    "accepted": true,
+    "clean_r2": true,
+    "credential_destroyed": true
+  },
+  "scenario_accounting": [
+    {"id": "VM-01", "state": "CLOSED", "owner": "sealed R4 Build036 deterministic evidence"},
+    {"id": "VM-02", "state": "OPEN", "owner": "unchanged"},
+    {"id": "VM-03", "state": "OPEN", "owner": "unchanged"},
+    {"id": "VM-04", "state": "OPEN", "owner": "unchanged"},
+    {"id": "VM-05", "state": "CLOSED", "owner": "sealed Build034 deterministic evidence"},
+    {"id": "VM-06", "state": "OPEN", "owner": "unchanged"},
+    {"id": "VM-07", "state": "OPEN", "owner": "unchanged"},
+    {"id": "VM-08", "state": "OPEN", "owner": "unchanged"},
+    {"id": "VM-09", "state": "OPEN", "owner": "unchanged"},
+    {"id": "VM-10", "state": "REMOVED_NOT_APPLICABLE", "owner": "frozen authority maintenance"}
+  ],
+  "requirement_accounting": [
+    {"requirement": "INS-025", "owner": "VM-01 R4 evidence", "prior": "OPEN", "new": "CLOSED_FOR_VM01_ALLOCATION", "evidence": "DD3361010B420AF5663C41D88B1F3A4978D0C3FDA58B8D0A4B3B7709F40EDDFA", "residual": "allocations owned by open scenarios remain open"},
+    {"requirement": "INS-056", "owner": "VM-01 R4 evidence", "prior": "OPEN", "new": "CLOSED_FOR_VM01_ALLOCATION", "evidence": "DD3361010B420AF5663C41D88B1F3A4978D0C3FDA58B8D0A4B3B7709F40EDDFA", "residual": "allocations owned by open scenarios remain open"},
+    {"requirement": "INS-069", "owner": "VM-01 R4 evidence", "prior": "OPEN", "new": "CLOSED_FOR_VM01_ALLOCATION", "evidence": "DD3361010B420AF5663C41D88B1F3A4978D0C3FDA58B8D0A4B3B7709F40EDDFA", "residual": "allocations owned by open scenarios remain open"},
+    {"requirement": "VM05 restoration-failure allocation", "owner": "VM-05 Build034 evidence", "prior": "CLOSED", "new": "CLOSED_RETAINED", "evidence": "908CBFB932AAA59017456632895AE1909D1E4C0EC4BFAD8A9B408712F2E71BCD", "residual": "none for VM-05"},
+    {"requirement": "remaining scenario allocations", "owner": "VM-02/03/04/06/07/08/09", "prior": "OPEN", "new": "OPEN", "evidence": null, "residual": "execute only after fresh release qualification"}
+  ],
+  "build_accounting": [
+    {"build": "Build034", "size": 22343695, "sha256": "54DC06441E39EE701E4AA39407947EA3560562B94DC0F887D59B6E6812C40F9C", "classification": "HISTORICAL_VM05_TEST_INSTRUMENTED_EVIDENCE", "release": false, "vm02plus": false, "sign": false, "publish": false},
+    {"build": "Build035", "size": 22343126, "sha256": "D5F839930B8C6A8918F83BC5875A457EC8FD64C87D9B30449FFB4E9BD9E6020A", "classification": "PRESERVED_PRE_VM01A_INSTRUMENTATION_FREE_RELEASE_EVIDENCE", "release": false, "vm02plus": false, "reason": "predates final VM01A instrumentation source state"},
+    {"build": "Build036", "size": 22343862, "sha256": "18A3172775272FC73B321BB430E1FB2CD863AED9D8C7F10936FBDDE183EAE59A", "classification": "HISTORICAL_VM01A_TEST_INSTRUMENTED_EVIDENCE", "release": false, "vm02plus": false, "sign": false, "publish": false}
+  ],
+  "fresh_release_obligation": {
+    "mandatory_before": ["VM-02", "VM-03", "VM-04", "VM-06", "VM-07", "VM-08", "VM-09"],
+    "source": "exact current final 3/3 candidate",
+    "build_number": "UNASSIGNED_IN_THIS_WORKFLOW",
+    "requirements": ["governed release provenance", "RELEASE_ARTIFACT_INSTRUMENTATION_ABSENT for VM01A", "RELEASE_ARTIFACT_INSTRUMENTATION_ABSENT for VM05", "smoke acceptance", "clean R2 revert"],
+    "test_build_substitution": false
+  },
+  "preparation_dag_consequence": [
+    {"artifact": "payload-derived authority", "action": "RETAIN", "reason": "payload bytes unchanged"},
+    {"artifact": "Phase 5.5F binding", "action": "RETAIN", "reason": "installer-test ownership SHA unchanged"},
+    {"artifact": "frozen toolchain", "action": "RETAIN", "reason": "toolchain unchanged"},
+    {"artifact": "current candidate identities", "action": "RETAIN_AND_REVERIFY", "reason": "exact final 3/3 inputs"},
+    {"artifact": "current HEAD", "action": "REFRESH", "reason": "must bind post-R4 accounting freeze identity"},
+    {"artifact": "Release projection", "action": "REFRESH", "reason": "must select instrumentation-free variant"},
+    {"artifact": "VM01A/VM05 absence proof", "action": "REFRESH", "reason": "must prove both absent from release artifact"},
+    {"artifact": "Build036 preparation", "action": "HISTORICAL_ONLY", "reason": "test-variant authority cannot authorize release"},
+    {"artifact": "scenario accounting", "action": "REFRESH", "reason": "VM-01 and VM-05 are closed"},
+    {"artifact": "release build-variant authority", "action": "REFRESH", "reason": "future artifact must be explicit Release"},
+    {"artifact": "prospective DAG/inventory", "action": "REFRESH", "reason": "bind refreshed inputs without cycles"}
+  ],
+  "remaining_matrix_consequence": {
+    "mechanics_unchanged": ["VM-02", "VM-03", "VM-04", "VM-06", "VM-07", "VM-08", "VM-09"],
+    "must_supersede": ["fixture identity", "scenario-state accounting", "release provenance and absence-proof bindings", "handoff inventory"],
+    "future_fixture_identity": "UNKNOWN_UNTIL_FRESH_RELEASE",
+    "execution_authorized_here": false
+  },
+  "repository_persistence": {
+    "decision": "REPOSITORY_ACCOUNTING_FREEZE_REQUIRED",
+    "basis": ["scenario closure is derived evidence state but is a required input to future preparation and remaining-matrix selection", "repository identity prevents stale Build035/036 fixture replay", "stable closure record improves deterministic replay and auditability", "external evidence alone is not consumed automatically by repository-bound future build governance"]
+  },
+  "independent_reviews": {
+    "evidence_accounting": {"verdict": "PASS", "findings": []},
+    "build_lifecycle": {"verdict": "PASS", "findings": []},
+    "authority_security": {"verdict": "PASS", "findings": []},
+    "disagreements": []
+  },
+  "false_positive_audit": {"vm01_bound_to_sealed_evidence": true, "vm05_reopened": false, "vm02plus_closed": false, "build036_release_eligible": false, "build035_future_fixture_eligible": false, "fresh_release_required": true, "vm10_recreated": false, "requirement_double_counting": false, "preparation_staleness_ignored": false, "normative_requirements_changed": false, "verdict": "PASS"},
+  "architectural_humility": [
+    {"option": "skip refresh", "auditability": "poor", "staleness": "high", "build_safety": "fail", "decision": "REJECT"},
+    {"option": "external accounting only", "auditability": "moderate", "staleness": "medium", "build_safety": "not repository-bound", "decision": "REJECT"},
+    {"option": "repository-frozen accounting", "auditability": "high", "staleness": "low", "build_safety": "pass", "decision": "SELECT"},
+    {"option": "modify R4", "auditability": "history mutation", "staleness": "low", "build_safety": "unnecessary", "decision": "REJECT"},
+    {"option": "reuse Build035", "auditability": "misleading", "staleness": "high", "build_safety": "fail", "decision": "REJECT"},
+    {"option": "use Build036 for VM02+", "auditability": "misleading", "staleness": "test fixture", "build_safety": "fail", "decision": "REJECT"},
+    {"option": "fresh instrumentation-free Release", "auditability": "high", "staleness": "low", "build_safety": "required", "decision": "MANDATORY_AFTER_FREEZE"}
+  ],
+  "formal_freeze_proposal": {
+    "formal_name": "Phase 5.6B Remaining VM Matrix Accounting Refresh after VM-01 Closure R1",
+    "commit_subject": "Refresh Phase 5.6B remaining VM matrix accounting",
+    "annotated_tag": "phase-5.6b-remaining-vm-matrix-accounting-r1-verified",
+    "annotation": "Verify Phase 5.6B Remaining VM Matrix Accounting Refresh Revision 1"
+  },
+  "prohibitions": {"candidate_mutation": true, "build_creation_or_execution": true, "vm_execution": true, "vm_or_checkpoint_mutation": true, "preparation_refresh": true, "commit_or_tag": true, "sign_or_publish": true}
+}
