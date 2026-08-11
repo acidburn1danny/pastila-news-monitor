@@ -1,0 +1,277 @@
+{
+  "schema": "phase56b-vm01-testability-frozen-authority-maintenance-r2",
+  "formal_name": "Phase 5.6B VM-01 Testability Frozen Authority Maintenance R2",
+  "status": "READY_FOR_FORMAL_FREEZE",
+  "scope": "VM-01 testability mechanism and classification only",
+  "predecessor": {
+    "path": "docs/windows-application/authority-maintenance-r1.json",
+    "sha256": "CDB358D72537532F8A1936E73E42BBC7153AE70601695DDAFE7EEBE37CD55D1F",
+    "preserved": true
+  },
+  "normative_source": {
+    "path": "docs/windows-application/WindowsInstallerSpecificationV1.md",
+    "sha256": "D5C5AE513FC763C3E3E2A1B9A4F9ACA0893EC4BC6215AE22C3BF679C5D0F4F0A",
+    "requirements_changed": false
+  },
+  "requirement_preservation": [
+    {
+      "id": "INS-025",
+      "property": "Stage and rollback directories use unpredictable operation-local names beneath the verified canonical root, reject reparse points, are removed after confirmed success, and report failed cleanup without misclassifying it as rollback failure when the active payload is valid.",
+      "before": "UNCHANGED",
+      "after": "UNCHANGED",
+      "loss_or_invention": false
+    },
+    {
+      "id": "INS-056",
+      "property": "The installer distinguishes cleanup failure from invalid payload, platform, scope, topology, destination, process, permission, capacity, staging, verification, replacement, surface, version, uninstall, and rollback failures.",
+      "before": "UNCHANGED",
+      "after": "UNCHANGED",
+      "loss_or_invention": false
+    },
+    {
+      "id": "INS-069",
+      "property": "Helper-free staged verification, same-parent preservation and activation renames, restoration, bounded cleanup, and honest terminal reporting remain required without copy fallback, reboot replacement, or a second runnable root.",
+      "before": "UNCHANGED",
+      "after": "UNCHANGED",
+      "loss_or_invention": false
+    }
+  ],
+  "vm01_maintenance": {
+    "state": "OPEN",
+    "prior_classification": "EXTERNALLY_TESTABLE_WITH_REVISED_MECHANISM",
+    "prior_mechanism": "Pre-established inheritable deny-delete ACL on a clean canonical root",
+    "prior_mechanism_status": "FALSIFIED_BY_DETERMINISTIC_VM_EVIDENCE",
+    "new_classification": "TEST_ONLY_INSTRUMENTATION_REQUIRED",
+    "requirement_ids": [
+      "INS-025",
+      "INS-056",
+      "INS-069"
+    ],
+    "normative_property": "Contained and honest cleanup failure",
+    "authority_maintenance_grants_pass": false,
+    "no_external_synchronization_boundary": true,
+    "preestablished_acl_can_target_without_earlier_interference": false
+  },
+  "impossibility_evidence": [
+    {
+      "attempt": "A",
+      "root": "C:/PastilaScout-Installer-Evidence/phase-5.6b/remaining-eight-vm-operational-r1-20260811-006",
+      "result_sha256": "EA5C75DB892AD648367C0A82784B2145F463249A8C53ED90DACA450585546A22",
+      "topology": "Broad inherited deny DELETE and DELETE_CHILD",
+      "actual_boundary": "Inno uninstall-file rename before stage creation",
+      "required_boundary_reached": false
+    },
+    {
+      "attempt": "B",
+      "root": "C:/PastilaScout-Installer-Evidence/phase-5.6b/remaining-eight-vm-operational-r1-20260811-007",
+      "result_sha256": "10CF95141C9388D79618909D87B45C0E69AD4BAEB6B6B9A196919B6D1D343970",
+      "topology": "Directory-inherit deny DELETE without INHERIT_ONLY",
+      "actual_boundary": "Canonical-root semantics still blocked Inno uninstall-file rename",
+      "required_boundary_reached": false
+    },
+    {
+      "attempt": "C",
+      "root": "C:/PastilaScout-Installer-Evidence/phase-5.6b/remaining-eight-vm-operational-r1-20260811-008",
+      "result_sha256": "F2E6B48D7A9E4D9047A2BECA13025C1626D43B594D32150B602A6B2E79BFF07E",
+      "topology": "Directory-inherit, inherit-only deny DELETE",
+      "actual_boundary": "Stage directory created but Inno stage population rename failed before verification",
+      "required_boundary_reached": false
+    }
+  ],
+  "reclassification_findings": {
+    "acl_is_mechanism_not_requirement": true,
+    "deterministic_non_acl_mechanism_available": false,
+    "polling_or_timing_fixture_permitted": false,
+    "equivalent_evidence_fully_closes_property": false,
+    "requirement_reformulation_preserves_full_coverage": false,
+    "instrumentation_necessity_threshold": "PASS",
+    "independent_reclassification_reviewers": {
+      "normative_fidelity": "PASS",
+      "control_flow_testability": "PASS",
+      "security_false_positive": "PASS",
+      "disagreements": []
+    }
+  },
+  "single_barrier_authority": {
+    "barrier_count": 1,
+    "compile_symbol": "PASTILA_VM01A_TEST_INSTRUMENTATION",
+    "placement": "After successful VerifyStagedPayload(StagePath) and immediately before any preservation or activation rename",
+    "purpose": "Expose a complete and verified stage so the controller can deterministically apply deny-DELETE directly to that stage before unchanged activation and cleanup logic runs",
+    "sequence": [
+      "Installer completes and verifies StagePath",
+      "Installer signals verified-stage-ready",
+      "Controller receives the exact StagePath through the authorized synchronization contract",
+      "Controller applies deny-DELETE directly to the fully populated stage directory",
+      "Controller signals continue",
+      "Unchanged RenameFile(StagePath, AppPath) fails",
+      "Unchanged DelTree(StagePath, True, True, True) fails",
+      "Unchanged result logic reports cleanup failure"
+    ],
+    "additional_barrier_authorized": false,
+    "future_additional_barrier_requires_authority_maintenance": true
+  },
+  "compile_time_isolation": {
+    "absent_by_default": true,
+    "explicit_test_variant_only": true,
+    "release_wait_path": false,
+    "runtime_activation_forbidden": [
+      "environment variable",
+      "registry value",
+      "CLI switch",
+      "magic filename",
+      "service",
+      "socket or network",
+      "generic fault-injection channel"
+    ],
+    "all_waits_bounded": true,
+    "synchronization_failure_classification": "TEST_FIXTURE_FAILURE_ONLY",
+    "synchronization_failure_must_not_be_cleanup_failure": true
+  },
+  "controller_authority": {
+    "session_scope": "local disposable guest session only",
+    "allowed": [
+      "Observe or open exact VM-01A synchronization objects",
+      "Receive exact StagePath through the authorized contract",
+      "Apply exact post-verification deny-DELETE ACL to StagePath",
+      "Signal continuation",
+      "Capture bounded evidence",
+      "Enforce timeout"
+    ],
+    "forbidden": [
+      "Code patching or injection",
+      "Network control",
+      "Generic production control",
+      "Polling or timing race",
+      "Mutation outside disposable guest-local roots"
+    ]
+  },
+  "expected_vm01a_result": {
+    "exit_code": 9,
+    "failure_class": "cleanup_failure",
+    "failure_stage": "cleanup",
+    "activation_status": "not_activated",
+    "stage_cleanup_status": "failed",
+    "contained_stage_residue": true,
+    "arp_published": false,
+    "start_menu_published": false,
+    "unrelated_user_state_mutated": false,
+    "false_success": false
+  },
+  "release_absence_obligation": {
+    "required_verdict": "RELEASE_ARTIFACT_INSTRUMENTATION_ABSENT",
+    "required_proofs": [
+      "Release and test preprocessing projections",
+      "Release definitions exclude the VM-01A symbol",
+      "Release projection excludes VM-01A identifiers, named objects, waits, and test-failure logic",
+      "Wrapper Release path inspection",
+      "Safe release compilation",
+      "Meaningful binary and resource inspection",
+      "Independent static review"
+    ]
+  },
+  "build_architecture": {
+    "build035": {
+      "sha256": "D5F839930B8C6A8918F83BC5875A457EC8FD64C87D9B30449FFB4E9BD9E6020A",
+      "size": 22343126,
+      "role": "PRESERVED_PRE_VM01A_INSTRUMENTATION_FREE_RELEASE_EVIDENCE"
+    },
+    "future_build036": {
+      "role": "VM01A_TEST_INSTRUMENTED_FIXTURE_ONLY",
+      "classification": "TEST_INSTRUMENTED_NOT_RELEASE_CANDIDATE"
+    },
+    "post_vm01a_release": {
+      "fresh_instrumentation_free_artifact_required_before_vm02_plus": true,
+      "release_absence_reproof_required": true,
+      "smoke_acceptance_required": true
+    }
+  },
+  "lifecycle_consequences": {
+    "candidate_change_makes_prospective_context_and_build_authority_stale": true,
+    "stale_records": [
+      "candidate-dependent context and start records",
+      "variant and inventory records",
+      "dependency DAG",
+      "build authorization"
+    ],
+    "payload_dependent_authority_remains_valid_if_payload_unchanged": true,
+    "future_dag_requirement": "ZERO_CYCLES",
+    "current_installer_test_sha256": "39BD76109D598D1295E2E9E3611D221FD433A30EC8D8442E66F29CF1FFD8E89F",
+    "ownership_status_if_test_unchanged": "OWNERSHIP_SHA_STILL_VALID",
+    "ownership_status_if_test_changes": "OWNERSHIP_SHA_REFRESH_REQUIRED",
+    "r2_checkpoint": "Phase56B-Clean-Baseline-R2",
+    "r2_checkpoint_id": "9ff43859-d72a-4160-96f0-279218ffd457",
+    "r2_mutation_authorized_by_this_artifact": false
+  },
+  "scenario_accounting": [
+    {"id": "VM-01", "classification": "TEST_ONLY_INSTRUMENTATION_REQUIRED", "state": "OPEN"},
+    {"id": "VM-02", "classification": "UNCHANGED", "state": "OPEN"},
+    {"id": "VM-03", "classification": "UNCHANGED", "state": "OPEN"},
+    {"id": "VM-04", "classification": "UNCHANGED", "state": "OPEN"},
+    {"id": "VM-05", "classification": "UNCHANGED", "state": "CLOSED"},
+    {"id": "VM-06", "classification": "UNCHANGED", "state": "OPEN"},
+    {"id": "VM-07", "classification": "UNCHANGED", "state": "OPEN"},
+    {"id": "VM-08", "classification": "UNCHANGED", "state": "OPEN"},
+    {"id": "VM-09", "classification": "UNCHANGED", "state": "OPEN"},
+    {"id": "VM-10", "classification": "REMOVED_NOT_APPLICABLE", "state": "NOT_APPLICABLE"}
+  ],
+  "operational_consequence": {
+    "inherited_acl_mechanism_superseded": true,
+    "failed_roots_005_through_008_preserved": true,
+    "vm02_through_vm09_changed": false,
+    "renumbering": false
+  },
+  "independent_reviews": {
+    "authority_fidelity": {
+      "verdict": "PASS",
+      "findings": [],
+      "basis": "INS-025, INS-056, and INS-069 remain unchanged; only the falsified proof mechanism and its classification change."
+    },
+    "security_testability_determinism": {
+      "verdict": "PASS",
+      "findings": [],
+      "basis": "One post-verification/pre-activation barrier is sufficient, race-free, bounded, test-only, and independently removable from release projection."
+    },
+    "build_authority_lifecycle": {
+      "verdict": "PASS",
+      "findings": [],
+      "basis": "Build035 remains historical release evidence, Build036 is test-only, and a fresh absence-proven release artifact is mandatory before VM02+."
+    },
+    "disagreements": []
+  },
+  "false_positive_audit": {
+    "acl_remains_authoritative": false,
+    "vm01_marked_closed": false,
+    "runtime_activatable_instrumentation": false,
+    "more_than_one_barrier_authorized": false,
+    "build036_can_be_release": false,
+    "build035_can_be_future_vm02_fixture_after_source_change": false,
+    "release_absence_optional": false,
+    "failed_acl_evidence_discarded": false,
+    "normative_requirement_weakened": false,
+    "verdict": "PASS"
+  },
+  "architectural_humility": [
+    {"option": "Preserve falsified R1 ACL", "decision": "REJECT"},
+    {"option": "Try more ACL variants", "decision": "REJECT"},
+    {"option": "Timing or polling mutation", "decision": "REJECT"},
+    {"option": "Requirement reformulation", "decision": "REJECT"},
+    {"option": "Claim equivalent evidence", "decision": "REJECT"},
+    {"option": "One compile-time test-only barrier", "decision": "SELECT"},
+    {"option": "Generic test framework", "decision": "REJECT"},
+    {"option": "Leave blocked", "decision": "REJECT"}
+  ],
+  "formal_freeze_proposal": {
+    "commit_subject": "Correct Phase 5.6B VM-01 testability authority",
+    "annotated_tag": "phase-5.6b-vm01-testability-frozen-authority-maintenance-r2-verified",
+    "annotation": "Verify Phase 5.6B VM-01 Testability Frozen Authority Maintenance Revision 2"
+  },
+  "prohibitions": {
+    "candidate_mutation": true,
+    "instrumentation_implementation": true,
+    "build036_creation": true,
+    "vm_execution": true,
+    "r1_history_mutation": true,
+    "commit_or_tag": true,
+    "freeze_sign_or_publish": true
+  }
+}
