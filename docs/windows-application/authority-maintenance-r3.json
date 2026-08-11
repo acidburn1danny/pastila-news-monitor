@@ -1,0 +1,325 @@
+{
+  "schema": "phase56b-vm01a-fault-fixture-frozen-authority-maintenance-r3",
+  "formal_name": "Phase 5.6B VM-01A Fault Fixture Frozen Authority Maintenance R3",
+  "status": "READY_FOR_FORMAL_FREEZE",
+  "scope": "VM-01A deterministic controller-side fault primitive only",
+  "predecessor": {
+    "path": "docs/windows-application/authority-maintenance-r2.json",
+    "sha256": "E8E088F3AF790B3C200193BB91C23CC053D763A577647A1D7138DBC59D194283",
+    "preserved": true
+  },
+  "repository_authority": {
+    "branch": "feature/openai-sdk",
+    "head": "932dc75f6db1bf171005644328c34efa75d447b5",
+    "candidate_sha256": {
+      "packaging/inno/PastilaScout.iss": "1D50C9CD1F127DCB09A07E365E7608D43DEC5E76257E8A0F5983B090956B859F",
+      "packaging/inno/build-installer.ps1": "E2769779659B92E20A52C116AA3507A7D2D9250971B6B7D3984F96C773C540CE",
+      "tests/packaging/test_inno_installer_v1.py": "39BD76109D598D1295E2E9E3611D221FD433A30EC8D8442E66F29CF1FFD8E89F"
+    },
+    "ownership_status": "OWNERSHIP_SHA_STILL_VALID",
+    "candidate_mutation": "NONE"
+  },
+  "build_authority": {
+    "build035": {
+      "size": 22343126,
+      "sha256": "D5F839930B8C6A8918F83BC5875A457EC8FD64C87D9B30449FFB4E9BD9E6020A",
+      "preserved": true
+    },
+    "build036": {
+      "size": 22343862,
+      "sha256": "18A3172775272FC73B321BB430E1FB2CD863AED9D8C7F10936FBDDE183EAE59A",
+      "role": "VM01A_TEST_INSTRUMENTED_FIXTURE_ONLY",
+      "release_candidate": false,
+      "preserved": true
+    },
+    "build037": "NOT_CREATED"
+  },
+  "empirical_predecessor_evidence": {
+    "root": "C:/PastilaScout-Installer-Evidence/phase-5.6b/powershell-direct-orchestration-remediation-r1-20260811-013",
+    "inventory_entries": 968,
+    "inventory_sha256": "18C23B27A2C1F1E475E3946FC33119256AD13099B83BB810D215374449B0A2E9",
+    "independent_validation": "VALID",
+    "phase_a": {
+      "repetitions": 3,
+      "calls_per_repetition": 15,
+      "all_calls_passed": true,
+      "pipeline_stopped_count": 0,
+      "transport_verdict": "HOST_GUEST_ORCHESTRATION_STABILITY_VERIFIED",
+      "review_verdict": "HOST_GUEST_ORCHESTRATION_STABILITY_EVIDENCE_VALID"
+    },
+    "phase_b": {
+      "barrier_arrivals": 1,
+      "continue_signals": 1,
+      "medium_integrity": true,
+      "r2_object_delete_deny_verified": true,
+      "observed_exit_code": 0,
+      "observed_status": "success",
+      "observed_activation": "activated",
+      "observed_stage_cleanup": "removed",
+      "observed_surface_publication": "published",
+      "classification": "R2_FAULT_FIXTURE_EMPIRICALLY_INSUFFICIENT"
+    },
+    "clean_r2_restored": true,
+    "credential_destroyed": true
+  },
+  "normative_preservation": {
+    "requirements": ["INS-025", "INS-056", "INS-069"],
+    "requirements_changed": false,
+    "proof_intent": [
+      "StagePath is fully populated and verified before fault application",
+      "Fault is applied only at the existing post-Verify/pre-rename barrier",
+      "Activation rename fails",
+      "Subsequent StagePath cleanup fails",
+      "Terminal result truthfully reports cleanup failure",
+      "Residue remains contained beneath the canonical root",
+      "ARP and Start Menu surfaces are not published",
+      "Unrelated state is not mutated and false success is forbidden"
+    ],
+    "changed_dimension": "deterministic controller-side fault primitive only"
+  },
+  "windows_semantics": {
+    "authoritative_sources": [
+      {
+        "title": "CreateFile function",
+        "url": "https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createfilea",
+        "facts": [
+          "FILE_SHARE_DELETE permits subsequent opens requesting delete access; omission prevents them",
+          "Delete access includes delete and rename operations",
+          "Sharing options remain effective until the handle is closed",
+          "FILE_FLAG_BACKUP_SEMANTICS is required to obtain a directory handle",
+          "OPEN_EXISTING is the valid directory disposition"
+        ]
+      },
+      {
+        "title": "MoveFileEx function",
+        "url": "https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-movefileexa",
+        "facts": [
+          "MoveFileEx moves an existing file or directory",
+          "Delete or rename may be authorized by object DELETE or parent DELETE_CHILD"
+        ]
+      },
+      {
+        "title": "DeleteFile function",
+        "url": "https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-deletefile",
+        "facts": [
+          "Delete or rename requires either delete permission on the object or delete-child permission in the parent"
+        ]
+      },
+      {
+        "title": "File Access Rights Constants",
+        "url": "https://learn.microsoft.com/en-us/windows/win32/fileio/file-access-rights-constants",
+        "facts": [
+          "FILE_DELETE_CHILD is a parent-directory-specific right",
+          "DELETE is a distinct standard object right"
+        ]
+      }
+    ],
+    "os_semantics_not_project_authority": true,
+    "r2_failure_explanation": {
+      "object_delete": "explicitly denied on exact StagePath",
+      "parent_delete_child": "remained allowed through the canonical parent",
+      "rename_permitted": true,
+      "cleanup_permitted": true,
+      "observed_result": "exit 0; activated; published; stage removed",
+      "reason": "Windows may authorize rename or deletion through either path, so denying object DELETE alone does not negate parent DELETE_CHILD"
+    }
+  },
+  "candidate_a_parent_delete_child_acl": {
+    "mechanism": "At the barrier, deny FILE_DELETE_CHILD on the canonical parent and also neutralize the independently sufficient object DELETE path on StagePath",
+    "deterministic_if_both_authorization_paths_controlled": true,
+    "single_parent_ace_sufficient": false,
+    "single_object_ace_sufficient": false,
+    "required_scope": [
+      "Canonical parent directory DACL",
+      "Exact StagePath DACL"
+    ],
+    "risks": [
+      "Parent mutation affects AppPath, old directories, siblings, and other child operations",
+      "Inherited and direct ACE evaluation requires two-path effective-right proof",
+      "Restoration must survive installer failure and controller interruption",
+      "Parent denial can interfere with unrelated cleanup or surface behavior"
+    ],
+    "falsification": "Rejected because a precise parent-only denial is bypassed by object DELETE, while controlling both paths broadens mutation beyond exact StagePath and increases restoration/security risk",
+    "decision": "REJECT"
+  },
+  "candidate_b_non_delete_sharing_handle": {
+    "mechanism": "Open and retain one handle to exact verified StagePath without FILE_SHARE_DELETE",
+    "api": "CreateFileW",
+    "parameters": {
+      "lpFileName": "exact barrier-provided and containment-verified StagePath",
+      "dwDesiredAccess": "0x00000000",
+      "dwShareMode": "FILE_SHARE_READ | FILE_SHARE_WRITE (0x00000003); FILE_SHARE_DELETE omitted",
+      "lpSecurityAttributes": "NULL; non-inheritable",
+      "dwCreationDisposition": "OPEN_EXISTING (3)",
+      "dwFlagsAndAttributes": "FILE_FLAG_BACKUP_SEMANTICS (0x02000000)",
+      "hTemplateFile": "NULL"
+    },
+    "acquisition_boundary": "After verified-stage-ready, StagePath publication, containment/topology verification, and before signalling Continue",
+    "lifetime": "Retain continuously while unchanged activation rename and subsequent cleanup execute; close only after installer completion and result/evidence capture, or during bounded controller failure cleanup",
+    "privilege": "No elevation or backup privilege required; FILE_FLAG_BACKUP_SEMANTICS enables a directory handle but does not itself bypass ordinary security checks",
+    "activation_effect": "A rename requires delete access; the retained handle omitted FILE_SHARE_DELETE, so the rename open fails with sharing violation",
+    "cleanup_effect": "Children remain independently accessible and may be deleted; final removal of exact StagePath requires delete access and fails while the handle remains open",
+    "scope": "Exact disposable guest-local StagePath object only",
+    "race_control": "The existing barrier holds the installer before rename; handle acquisition and causal probe complete before exactly one Continue signal",
+    "causal_evidence": [
+      "Handle value is valid and not INVALID_HANDLE_VALUE",
+      "Final path or file identity from the handle equals verified StagePath",
+      "Share mask is exactly READ|WRITE with DELETE absent",
+      "A non-mutating probe open requesting DELETE fails with ERROR_SHARING_VIOLATION while the handle is retained",
+      "Handle remains open through installer completion and result capture",
+      "Handle is closed deterministically afterward"
+    ],
+    "stale_handle_behavior": "No named or persistent object; handle is process-local and released by CloseHandle or process termination; R2 revert remains final isolation",
+    "decision": "SELECT"
+  },
+  "comparative_falsification": [
+    {"criterion": "Deterministic activation failure", "parent_acl": "Only if both parent DELETE_CHILD and object DELETE authorization paths are controlled", "handle": "PASS: omitted FILE_SHARE_DELETE blocks later delete-access open used for rename"},
+    {"criterion": "Deterministic cleanup failure", "parent_acl": "Requires two-scope ACL design and proof", "handle": "PASS: children can be removed but final StagePath removal is blocked"},
+    {"criterion": "Pre-barrier interference", "parent_acl": "Risk if applied early; existing barrier mitigates but does not narrow parent scope", "handle": "None; exact handle is acquired only at barrier"},
+    {"criterion": "Path scope", "parent_acl": "Canonical parent plus StagePath", "handle": "Exact StagePath only"},
+    {"criterion": "Sibling/result-log impact", "parent_acl": "Potential", "handle": "None"},
+    {"criterion": "Restoration burden", "parent_acl": "DACL capture and reliable restoration required", "handle": "CloseHandle; process termination is fail-safe release"},
+    {"criterion": "Evidence quality", "parent_acl": "Complex effective-right proof across two objects", "handle": "Direct handle identity, share mask, sharing-violation probe, lifetime chronology"},
+    {"criterion": "Security/minimality", "parent_acl": "Broader mutable authorization state", "handle": "Process-local, nonpersistent, exact object"},
+    {"criterion": "Existing barrier compatibility", "parent_acl": "Compatible but broadened", "handle": "Directly compatible"},
+    {"criterion": "Build036 reuse", "parent_acl": "Possible but unnecessary complexity", "handle": "PASS without candidate or barrier change"}
+  ],
+  "selected_fixture": {
+    "id": "VM01A_STAGEPATH_NON_DELETE_SHARING_DIRECTORY_HANDLE",
+    "selection": "candidate_b_non_delete_sharing_handle",
+    "runtime_alternatives_authorized": false,
+    "controller_steps": [
+      "Receive exact StagePath from the existing authenticated local-session barrier contract",
+      "Verify canonical containment, direct-parent topology, stage existence, completed verification, and no preservation/activation rename",
+      "Call CreateFileW with the frozen parameters and fail closed if acquisition fails",
+      "Verify handle identity maps to exact StagePath",
+      "Perform one non-mutating DELETE-access probe and require ERROR_SHARING_VIOLATION",
+      "Signal Continue exactly once",
+      "Retain handle through unchanged RenameFile and DelTree paths and installer result completion",
+      "Capture exit/result/surface/residue and handle-lifetime chronology",
+      "Close handle exactly once during deterministic controller cleanup"
+    ],
+    "forbidden": [
+      "Any parent or sibling ACL mutation",
+      "Any StagePath ACL mutation",
+      "FILE_SHARE_DELETE on the retained handle",
+      "Polling or timing-race fault application",
+      "Pre-barrier handle acquisition",
+      "Generic lock or arbitrary path input",
+      "Candidate, Build036, barrier, preparation, VM, or checkpoint mutation"
+    ]
+  },
+  "expected_vm01a_result": {
+    "exit_code": 9,
+    "final_status": "failure",
+    "failure_class": "cleanup_failure",
+    "failure_stage": "cleanup",
+    "activation_status": "not_activated",
+    "stage_cleanup_status": "failed",
+    "contained_stage_residue": true,
+    "arp_published": false,
+    "start_menu_published": false,
+    "unrelated_user_state_mutated": false,
+    "instrumentation_failure": false,
+    "false_success": false
+  },
+  "barrier_and_release_preservation": {
+    "compile_symbol": "PASTILA_VM01A_TEST_INSTRUMENTATION",
+    "barrier_count": 1,
+    "placement": "After VerifyStagedPayload(StagePath), before any preservation or activation rename",
+    "local_session_sync": true,
+    "bounded_wait": true,
+    "release_absence_obligation": "UNCHANGED",
+    "candidate_change": false
+  },
+  "qualified_transport_preservation": {
+    "host_process": "bounded fresh native PowerShell process per operation",
+    "powershell_direct": "one fresh New-PSSession/Remove-PSSession pair per operation; never reused",
+    "guest_task": "phase56b Interactive/Limited, Medium RID8192",
+    "network_adapters": 0,
+    "guest_service_interface": "DISABLED",
+    "writable_host_share": false,
+    "hidden_elevation": false,
+    "requalification_required": false
+  },
+  "build036_reuse": {
+    "decision": "BUILD036_REUSE_AUTHORIZED_FOR_VM01A_R3_FIXTURE",
+    "basis": [
+      "Existing barrier exposes exact verified StagePath at the required boundary",
+      "Existing local-session synchronization and 120000 ms timeout remain sufficient",
+      "Only controller-side process-local fixture changes",
+      "Candidate, projected source, preparation authority, and Build036 bytes remain unchanged"
+    ],
+    "preparation_refresh_required": false,
+    "projection_refresh_required": false,
+    "new_build_required": false
+  },
+  "alternatives": [
+    {"mechanism": "R2 deny object DELETE only", "decision": "REJECT_EMPIRICALLY_FALSIFIED"},
+    {"mechanism": "Broad canonical-root ACL", "decision": "REJECT_SCOPE_AND_EARLY_INTERFERENCE"},
+    {"mechanism": "Parent DELETE_CHILD plus object DELETE control", "decision": "REJECT_BROADER_TWO_OBJECT_MUTATION"},
+    {"mechanism": "Polling or timed ACL mutation", "decision": "REJECT_RACE"},
+    {"mechanism": "File corruption", "decision": "REJECT_WRONG_REQUIREMENT"},
+    {"mechanism": "New instrumentation or Build037", "decision": "REJECT_NOT_NECESSARY"},
+    {"mechanism": "Generic fault injection", "decision": "REJECT_SECURITY"},
+    {"mechanism": "Leave VM01 blocked", "decision": "REJECT_BECAUSE_EXACT_HANDLE_FIXTURE_IS_PROVEN"}
+  ],
+  "independent_reviews": {
+    "windows_semantics": {
+      "verdict": "PASS",
+      "findings": [],
+      "basis": "Microsoft CreateFile sharing semantics directly establish that omitting FILE_SHARE_DELETE blocks later delete-access opens, and delete access includes rename. Exact-directory handle requirements are explicit."
+    },
+    "authority_fidelity": {
+      "verdict": "PASS",
+      "findings": [],
+      "basis": "INS-025/056/069, the single barrier, expected result, compile-time isolation, release absence, and VM accounting remain unchanged; only the falsified controller fault primitive is replaced."
+    },
+    "security_testability": {
+      "verdict": "PASS",
+      "findings": [],
+      "basis": "The selected mechanism is exact-path, process-local, bounded, race-free at the existing barrier, nonpersistent, Medium-token compatible, and provides direct causal evidence without parent or host mutation."
+    },
+    "disagreements": []
+  },
+  "false_positive_audit": {
+    "both_mechanisms_runtime_authorized": false,
+    "selected_fixture_proven_for_activation_and_cleanup": true,
+    "expected_result_changed": false,
+    "build036_reuse_unsupported": false,
+    "transport_discarded": false,
+    "barrier_changed": false,
+    "vm01_marked_closed": false,
+    "exit0_treated_as_candidate_defect": false,
+    "parent_acl_affects_unrelated_paths": false,
+    "timing_race_required": false,
+    "verdict": "PASS"
+  },
+  "scenario_accounting": [
+    {"id": "VM-01", "fixture": "R3_SELECTED_HANDLE", "state": "OPEN"},
+    {"id": "VM-02", "fixture": "UNCHANGED", "state": "OPEN"},
+    {"id": "VM-03", "fixture": "UNCHANGED", "state": "OPEN"},
+    {"id": "VM-04", "fixture": "UNCHANGED", "state": "OPEN"},
+    {"id": "VM-05", "fixture": "UNCHANGED", "state": "CLOSED"},
+    {"id": "VM-06", "fixture": "UNCHANGED", "state": "OPEN"},
+    {"id": "VM-07", "fixture": "UNCHANGED", "state": "OPEN"},
+    {"id": "VM-08", "fixture": "UNCHANGED", "state": "OPEN"},
+    {"id": "VM-09", "fixture": "UNCHANGED", "state": "OPEN"},
+    {"id": "VM-10", "fixture": "REMOVED_NOT_APPLICABLE", "state": "NOT_APPLICABLE"}
+  ],
+  "formal_freeze_proposal": {
+    "commit_subject": "Correct Phase 5.6B VM-01A fault fixture authority",
+    "annotated_tag": "phase-5.6b-vm01a-fault-fixture-frozen-authority-maintenance-r3-verified",
+    "annotation": "Verify Phase 5.6B VM-01A Fault Fixture Frozen Authority Maintenance Revision 3"
+  },
+  "prohibitions": {
+    "candidate_mutation": true,
+    "build036_mutation": true,
+    "build037_creation": true,
+    "preparation_or_projection_refresh": true,
+    "vm_execution": true,
+    "vm_or_checkpoint_mutation": true,
+    "commit_or_tag": true,
+    "freeze_sign_or_publish": true
+  }
+}
