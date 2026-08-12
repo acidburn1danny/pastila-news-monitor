@@ -1,0 +1,128 @@
+{
+  "schema": "phase5.6b-r7-mandatory-uninstaller-surface-set-frozen-authority-correction-r8",
+  "formal_name": "Phase 5.6B R7 Mandatory Uninstaller Surface Set Frozen Authority Correction R8",
+  "status": "READY_FOR_FORMAL_FREEZE",
+  "predecessor": {
+    "head": "a77133868d9242a5012bf21f30908dadd8563cdc",
+    "r7_tag": "phase-5.6b-transactional-publication-failure-repair-authority-r7-verified",
+    "r7_sha256": "2E9C7190D7BC9F412017827E0C25B320AAEDD7CC7B91D941F810CE727A2FF1CD",
+    "r7_blob": "a9041c3abb1e239982c12ab74649bb3366a5b6e9"
+  },
+  "contradiction": {
+    "classification": "R7_UNINSTALLER_SURFACE_SET_OVERCONSTRAINED",
+    "evidence_path": "C:\\PastilaScout-Installer-Evidence\\phase-5.6b\\vm05-build034-deterministic-r2-20260811-001\\prior-build033-state.json",
+    "evidence_sha256": "0C5067B2B885EFA0D32D14ABD311717A4C6B8DE2221693204C2A13ADD87C014A",
+    "mentions": {
+      "unins000.exe": 2,
+      "unins000.dat": 1,
+      "unins000.msg": 0
+    },
+    "product_validation_requires_msg": false,
+    "conclusion": "governed publication and validation establish exe and dat only; requiring msg rejects legitimate installs"
+  },
+  "governed_toolchain": {
+    "product": "Inno Setup",
+    "version": "6.7.3",
+    "compiler_path": "C:\\PastilaScout-Installer-Toolchain\\phase-5.6b\\inno-setup-6-001\\toolchain\\ISCC.exe",
+    "compiler_size": 1456272,
+    "compiler_sha256": "0A8757031B33777E4C9CBFFEE40F11A5062B36D25CBE144C1DB73B6102B80AD7",
+    "GOVERNED_INNO_UNINSTALLER_SURFACE_SET": [
+      "unins000.exe",
+      "unins000.dat"
+    ]
+  },
+  "exact_correction": {
+    "unins000.exe": "MANDATORY",
+    "unins000.dat": "MANDATORY",
+    "unins000.msg": "ABSENT_NOT_APPLICABLE",
+    "sole_normative_delta": "remove unins000.msg from R7 required publication, verification, snapshot, restoration and cleanup sets"
+  },
+  "canonical_mandatory_surface_set": [
+    "HKCU64_ARP",
+    "unins000.exe",
+    "unins000.dat",
+    "START_MENU_SHORTCUT"
+  ],
+  "msg_policy": {
+    "status": "ABSENT_NOT_APPLICABLE",
+    "synthesis": "FORBIDDEN",
+    "required_test_fixture": false,
+    "absence_is_publication_failure": false,
+    "cleanup_or_restoration_member": false,
+    "future_toolchain_change": "requires separate frozen authority maintenance"
+  },
+  "uninstaller_contract_after_r8": {
+    "snapshot": "capture independent prior-present flags, exact paths, sizes and SHA-256 identities for unins000.exe and unins000.dat only",
+    "publication_verification": "require both exact files and require ARP UninstallString to reference exact canonical unins000.exe",
+    "failed_new_cleanup": "check operation result and verify required absence/restoration independently for exe and dat only",
+    "upgrade_restoration": "restore exact prior exe/dat state according to independent prior-present flags",
+    "clean_install_rollback": "verify new exe/dat absent",
+    "identity_or_path_relaxation": "FORBIDDEN"
+  },
+  "transactional_preservation": {
+    "commit": "only after activation and independent verification of every applicable mandatory surface",
+    "snapshot_before_mutation": true,
+    "failed_new_removal_before_restoration": true,
+    "deterministic_prior_payload_and_surface_restoration": true,
+    "arp_restore_order": "values first, verify, saved DACL/SDDL last, reread and verify",
+    "clean_install_failure": "no canonical new payload, ARP, exe, dat or Start Menu surface after successful cleanup",
+    "upgrade_failure": "exact prior payload, ARP, exe, dat and Start Menu surface restored",
+    "aggregate_cleanup": "every applicable operation result and reread must pass",
+    "ignored_cleanup_result": "FORBIDDEN"
+  },
+  "r6_result_schema_preserved": {
+    "failure_class": "surface_publication_failure",
+    "failure_stage": "surface_publication",
+    "custom_project_result_code": 11,
+    "native_inno_process_exit": 4,
+    "final_status": "failure",
+    "activation_status": "activated",
+    "surface_publication_status": "not_published",
+    "cleanup_override": {
+      "failure_class": "cleanup_failure",
+      "failure_stage": "cleanup",
+      "custom_project_result_code": 9,
+      "initiating_failure": {
+        "class": "surface_publication_failure",
+        "stage": "surface_publication",
+        "result_code": 11
+      }
+    }
+  },
+  "ownership_policy": {
+    "branch_sensitive_tests": "REMAIN_AUTHORIZED_BY_R7",
+    "new_test_sha": "REQUIRES_INDEPENDENT_OWNERSHIP_REVIEW_AND_SEPARATE_FROZEN_REFRESH",
+    "fresh_build_before_ownership_freeze": "FORBIDDEN"
+  },
+  "vm06_r2": {
+    "eleven_security_findings": "ALL_REMAIN_OPEN",
+    "controller_or_token_acl_inventory_readiness": "NOT_CLAIMED",
+    "execution_authority": "NOT_GRANTED"
+  },
+  "build_lifecycle": {
+    "BUILD037_REMAINS_BYTE_VALID_DURING_R8_AUTHORITY_ONLY_CORRECTION": true,
+    "BUILD037_BECOMES_STALE_AFTER_FUTURE_R7_R8_IMPLEMENTATION": true,
+    "Build038": "NOT_CREATED"
+  },
+  "closed_scenarios": {
+    "VM01_THROUGH_VM05": "NOT_REOPENED",
+    "historical_three_file_consumers": "STALE_AUTHORITY_CONSUMER_FOR_LATER_REGROUNDING_IF_FOUND"
+  },
+  "consumer_impact": {
+    "candidate_implementation": "implement four-surface aggregate and never synthesize msg",
+    "tests": "assert exe/dat mandatory and msg ABSENT_NOT_APPLICABLE",
+    "publication_verifier": "remove msg from aggregate; retain exact exe/dat checks",
+    "snapshot_restoration": "snapshot and restore exe/dat only",
+    "cleanup_aggregator": "exclude msg; retain all applicable checks",
+    "acceptance_validator": "bind exact four-surface set",
+    "preparation_DAG_and_handoff": "refresh stale R7 three-file references during later full regrounding"
+  },
+  "preservation": {
+    "R7_transaction_result_and_initiating_context_semantics": "UNCHANGED_EXCEPT_EXACT_SURFACE_MEMBER_CORRECTION",
+    "INS_026": "UNCHANGED",
+    "candidate_test_controller_ownership_Build037": "UNCHANGED",
+    "R1_R7_VM04_closure_preparation_DAG": "UNCHANGED",
+    "VM06_VM09": "NOT_EXECUTED",
+    "commit_tag_freeze_sign_publish": "NOT_PERFORMED"
+  }
+}
