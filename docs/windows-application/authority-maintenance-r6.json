@@ -1,0 +1,136 @@
+{
+  "schema": "phase5.6b-surface-publication-failure-result-schema-authority-maintenance-r6",
+  "formal_name": "Phase 5.6B Surface Publication Failure Result Schema Frozen Authority Maintenance R6",
+  "status": "READY_FOR_FORMAL_FREEZE",
+  "predecessor": {
+    "head": "4f016f8c01d761104be14146a570e6456a5e20f8",
+    "closure_tag": "phase-5.6b-vm04-closure-accounting-after-r5-r1-verified",
+    "closure_sha256": "BF3A091C570EABD27FDF0BF18F7AE4168F1D4DC876C474B07EB0CE0E3D02BA6D"
+  },
+  "blocker": "CANONICAL_PUBLICATION_FAILURE_VOCABULARY_MISSING",
+  "scope": "mandatory post-activation installer-surface publication failure only",
+  "canonical_mapping": {
+    "failure_class": "surface_publication_failure",
+    "failure_stage": "surface_publication",
+    "custom_project_result_code": 11,
+    "native_inno_process_exit": 4,
+    "final_status": "failure",
+    "activation_status": "activated",
+    "surface_publication_status": "not_published"
+  },
+  "selection": {
+    "class": {
+      "surface_publication_failure": "SELECTED: exact domain and initiating failure",
+      "publication_failure": "rejected as unnecessarily generic",
+      "activation_failure": "rejected because activation completed",
+      "cleanup_failure": "rejected because cleanup is consequential"
+    },
+    "stage": {
+      "surface_publication": "SELECTED: exact mandatory lifecycle stage",
+      "publication": "rejected as generic",
+      "surface": "rejected as ambiguous",
+      "post_activation": "rejected because it describes position rather than stage",
+      "activation": "rejected because activation completed",
+      "cleanup": "rejected because cleanup is consequential"
+    }
+  },
+  "existing_custom_result_codes": {
+    "0": "success after all mandatory stages",
+    "1": "generic pre-initialization failure fallback",
+    "7": "destination rejection",
+    "9": "initialized operation failure including activation failure",
+    "10": "authoritative result retention/write failure",
+    "11": "NEW: mandatory post-activation surface publication failure"
+  },
+  "collision_proof": "11 is nonzero and unused by every existing project custom-result mapping; native Inno exit codes are a distinct namespace",
+  "lifecycle_rule": "ActivationComplete=true may coexist with overall failure. Overall success requires successful activation and every mandatory publication stage.",
+  "native_custom_relationship": "Native Inno process exit 4 reports installer failure; project result code 11 reports the narrower governed cause. Equality is neither required nor implied.",
+  "cleanup_precedence": [
+    {
+      "condition": "publication fails and failed-surface cleanup succeeds",
+      "failure_class": "surface_publication_failure",
+      "failure_stage": "surface_publication",
+      "custom_result_code": 11
+    },
+    {
+      "condition": "publication fails and cleanup also fails",
+      "failure_class": "cleanup_failure",
+      "failure_stage": "cleanup",
+      "custom_result_code": 9,
+      "initiating_failure_must_remain_auditable": true
+    }
+  ],
+  "result_record_contract": {
+    "authoritative_json_required": true,
+    "exact_fields": {
+      "final_status": "failure",
+      "final_result_code": 11,
+      "failure_class": "surface_publication_failure",
+      "failure_stage": "surface_publication",
+      "activation_status": "activated",
+      "surface_publication_status": "not_published"
+    },
+    "cleanup_and_restoration_fields": "truthful observed governed values",
+    "missing_malformed_or_contradictory_result": "acceptance failure",
+    "result_write_failure": "remains governed separately by existing code 10 semantics"
+  },
+  "vm06_acceptance": {
+    "requirement": "INS-026",
+    "subcases": ["VM-06A", "VM-06B"],
+    "same_classification": true,
+    "native_exit": 4,
+    "custom_result_code": 11,
+    "failure_class": "surface_publication_failure",
+    "failure_stage": "surface_publication",
+    "final_status": "failure",
+    "surface_publication_status": "not_published",
+    "existing_fixture_rollback_containment_and_state_expectations": "UNCHANGED_BY_REFERENCE"
+  },
+  "implementation_contract": [
+    "detect failure of a mandatory post-activation surface publication",
+    "set surface_publication_failure and surface_publication",
+    "set custom result code 11",
+    "preserve ActivationComplete=true when activation completed",
+    "derive final_status=failure independently of ActivationComplete",
+    "emit surface_publication_status=not_published",
+    "retain failed-surface cleanup and rollback semantics",
+    "apply existing cleanup_failure precedence if cleanup fails",
+    "never emit success for required publication failure"
+  ],
+  "compatibility": {
+    "existing_class_strings": "UNCHANGED",
+    "existing_stage_strings": "UNCHANGED",
+    "existing_result_codes": "UNCHANGED",
+    "successful_install": "UNCHANGED",
+    "activation_failure": "UNCHANGED",
+    "cleanup_failure": "UNCHANGED",
+    "vm04_destination_exit7": "UNCHANGED",
+    "vm01_vm05": "UNCHANGED",
+    "historical_evidence": "REMAINS_VALID"
+  },
+  "consumer_impact": {
+    "product_source": "implement mapping in a later authorized candidate workflow",
+    "installer_tests": "add independent VM06A and VM06B mapping and regressions",
+    "result_validators": "accept and enforce the new exact pair/code",
+    "operational_authority": "bind exact R6 mapping after formal freeze",
+    "evidence_and_matrix_consumers": "distinguish native exit 4 from custom code 11",
+    "historical_consumers": "no reinterpretation"
+  },
+  "security": {
+    "INS_026": "UNCHANGED",
+    "VM06_SECURITY_REQUIREMENTS_UNCHANGED": true,
+    "r2_findings": "ALL_ELEVEN_REMAIN_OPEN",
+    "vm06_execution_authority": "NOT_GRANTED"
+  },
+  "build_lifecycle": {
+    "BUILD037_REMAINS_BYTE_VALID_DURING_R6_AUTHORITY_ONLY_MAINTENANCE": true,
+    "BUILD037_BECOMES_STALE_AFTER_FUTURE_CANDIDATE_IMPLEMENTATION": true,
+    "Build038": "NOT_CREATED"
+  },
+  "preservation": {
+    "candidate_product_test_controller_bytes": "UNCHANGED",
+    "R1_R5_and_VM04_closure": "UNCHANGED",
+    "VM06_VM09": "NOT_EXECUTED",
+    "commit_tag_freeze_sign_publish": "NOT_PERFORMED"
+  }
+}
