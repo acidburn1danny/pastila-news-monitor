@@ -21,15 +21,48 @@ TESTS = {
     "tests/packaging/test_version_parity_v1.py",
     "tests/packaging/test_build_mode_v1.py",
 }
-EXTERNALLY_OWNED_PATHS = {
-    "tests/packaging/test_inno_installer_v1.py": (
-        "39BD76109D598D1295E2E9E3611D221FD433A30EC8D8442E66F29CF1FFD8E89F"
-    ),
-}
+OWNERSHIP_AUTHORITY = (
+    ROOT
+    / "docs"
+    / "windows-application"
+    / "phase-5.6b-r7-r8-installer-test-ownership-refresh-r2.json"
+)
+OWNERSHIP_AUTHORITY_SHA256 = (
+    "63E8E773C5F049C224D1E0C51C7F36E36E5232A7AD6219FE2F3F18AFE1F32933"
+)
+OWNERSHIP_AUTHORITY_SCHEMA = (
+    "pastila-scout-phase-5.6b-installer-test-ownership-refresh-v2"
+)
+
+
+def external_ownership(authority: Path = OWNERSHIP_AUTHORITY) -> dict[str, str]:
+    raw = authority.read_bytes()
+    if hashlib.sha256(raw).hexdigest().upper() != OWNERSHIP_AUTHORITY_SHA256:
+        raise ValueError("installer-test ownership authority identity mismatch")
+    record = json.loads(raw)
+    if (
+        record.get("schema") != OWNERSHIP_AUTHORITY_SCHEMA
+        or record.get("status") != "CANDIDATE_READY_FOR_SEPARATE_FORMAL_FREEZE"
+        or record.get("decision") != "R7_R8_TEST_OWNERSHIP_SCOPE_VALID"
+    ):
+        raise ValueError("installer-test ownership authority is malformed")
+    binding = record.get("ownership_binding")
+    candidates = record.get("candidate_set")
+    if not isinstance(binding, dict) or not isinstance(candidates, dict):
+        raise TypeError("installer-test ownership binding is absent")
+    path = binding.get("path")
+    expected = binding.get("refreshed_sha256")
+    if (
+        path != "tests/packaging/test_inno_installer_v1.py"
+        or not isinstance(expected, str)
+        or candidates.get(path) != expected
+    ):
+        raise ValueError("installer-test ownership binding is inconsistent")
+    return {path: expected}
 
 
 def has_external_ownership(root: Path, relative_path: str) -> bool:
-    expected = EXTERNALLY_OWNED_PATHS.get(relative_path)
+    expected = external_ownership().get(relative_path)
     if expected is None:
         return False
     return (
@@ -254,3 +287,36 @@ def test_external_ownership_does_not_hide_similar_or_arbitrary_paths(
         "tests/packaging/ignored-arbitrary.py",
         "tests/packaging/test_inno_installer_v2.py",
     }
+
+
+def test_external_ownership_consumes_exact_frozen_r2_authority() -> None:
+    assert external_ownership() == {
+        "tests/packaging/test_inno_installer_v1.py": (
+            "831B730ABD0F8C876C48D50FB0D29DF0E47A4568B6A35C9C6F7E4599272F99CE"
+        )
+    }
+
+
+def test_external_ownership_authority_fails_closed(tmp_path: Path) -> None:
+    authority = tmp_path / "authority.json"
+    try:
+        external_ownership(authority)
+    except OSError:
+        pass
+    else:
+        raise AssertionError("missing ownership authority was accepted")
+    for raw in (
+        b"{}",
+        b"not json",
+        OWNERSHIP_AUTHORITY.read_bytes().replace(
+            b"831B730ABD0F8C876C48D50FB0D29DF0E47A4568B6A35C9C6F7E4599272F99CE",
+            b"39BD76109D598D1295E2E9E3611D221FD433A30EC8D8442E66F29CF1FFD8E89F",
+        ),
+    ):
+        authority.write_bytes(raw)
+        try:
+            external_ownership(authority)
+        except (ValueError, json.JSONDecodeError):
+            pass
+        else:
+            raise AssertionError("invalid ownership authority was accepted")
