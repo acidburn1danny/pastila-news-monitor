@@ -1,0 +1,122 @@
+{
+  "schema": "pastila-scout-phase-5.6b-build038-launcher-r11-authority",
+  "formal_name": "Phase 5.6B Build038 Launcher/Schema Contract Maintenance R11",
+  "status": "READY_FOR_FORMAL_FREEZE",
+  "decision": "R2_ONLY_LAUNCHER_R11_FREEZE_THEN_EXECUTION_CONSUMER_R2_FINALIZATION",
+  "parent_head": "f0c933182ba4dfc06d5760ff0f7d0731ab3be14a",
+  "historical_execution_consumer_r1": {
+    "path": "docs/windows-application/phase-5.6b-build038-execution-consumer-r1.json",
+    "sha256": "CEB88EFBAB7D5B2CF58381AE0BA47EBFED71957DEE71CFB46ADC4493D952EC4E",
+    "tag": "phase-5.6b-build038-execution-consumer-r1-verified",
+    "tag_object": "a7696e2c48188be9cec33c087549be572673dc46",
+    "classification": "HISTORICAL_EXECUTION_CONSUMER_R1_FROZEN_NONEXECUTABLE_FOR_CURRENT_BUILD038"
+  },
+  "r10_stop": "LAUNCHER_R1_CONTRACT_HARDCODE_PREVENTS_NONOVERWRITING_SUCCESSOR_CONSUMPTION",
+  "r9": {
+    "path": "docs/windows-application/authority-maintenance-r9.json",
+    "sha256": "C8C1F69E1D7A920B73E2F424F1833A6DC25191278C4FD2C275375D0256BD40FB",
+    "tag": "phase-5.6b-nonrecursive-build-execution-authority-r9-verified",
+    "commit": "4f3ae364c156e14a1304ba046730889b8d9c9113"
+  },
+  "historical_launcher_r1": {
+    "path": "C:\\PastilaScout-Installer-Evidence\\phase-5.6b\\nonrecursive-governed-launcher-r1-20260812-001\\invoke-governed-build.ps1",
+    "sha256": "91D88EFF4B0A541B16F8F6D855962A21C9E932AE9C4F37D7D05172E9185425EB",
+    "classification": "HISTORICAL_LAUNCHER_R1_SUPERSEDED_FOR_CURRENT_BUILD038_EXECUTION"
+  },
+  "canonical_r2_contract": {
+    "build_root_path": "build_root",
+    "nested_build_lifecycle_build_root": "FORBIDDEN",
+    "fallback_or_alias": "FORBIDDEN",
+    "schema": "pastila-scout-phase-5.6b-build038-execution-consumer-r2",
+    "repository_path": "docs/windows-application/phase-5.6b-build038-execution-consumer-r2.json",
+    "annotated_tag": "phase-5.6b-build038-execution-consumer-r2-verified",
+    "exact_build_root": "C:\\PastilaScout-Installer-Build\\phase-5.6b\\build-20260812-038"
+  },
+  "launcher_r11": {
+    "persistence_model": "EXTERNAL_EVIDENCE_CONTROLLED_LAUNCHER_WITH_REPOSITORY_IDENTITY_AUTHORITY",
+    "path": "C:\\PastilaScout-Installer-Evidence\\phase-5.6b\\build038-launcher-schema-r11-20260812-005\\invoke-governed-build.ps1",
+    "sha256": "44466A5BEBD3A388D5EDFA7473F3B6A36FA7DB2ADF6849D1B6184E9A7E601228",
+    "r2_only": true,
+    "r1_fallback": false,
+    "historical_launcher_overwritten": false
+  },
+  "qualification": {
+    "fixture_classification": "SIMULATED_R2_EXECUTION_CONSUMER_FOR_LAUNCHER_QUALIFICATION_ONLY",
+    "positive_control": "ALL_R11_R2_LAUNCHER_GATES_ACCEPTED_BEFORE_ISCC",
+    "positive_boundary_count": 1,
+    "original_r9_cases": 32,
+    "original_r9_passed": 32,
+    "schema_cases": 22,
+    "schema_passed": 22,
+    "wrong_gate_failures": 0,
+    "actual_iscc_starts": 0,
+    "executable_outputs": 0,
+    "harness_verdict": "R11_NEGATIVE_HARNESS_INDEPENDENTLY_VALIDATED"
+  },
+  "authority_dag": {
+    "order": [
+      "R9",
+      "historical-execution-consumer-R1",
+      "R10-stop",
+      "historical-launcher-R1",
+      "launcher-R11-implementation-and-qualification",
+      "launcher-R11-identity-freeze",
+      "real-execution-consumer-R2-record",
+      "real-execution-consumer-R2-tag",
+      "immutable-R2-checkout-positive-control",
+      "future-Build038-execution"
+    ],
+    "launcher_depends_on_real_r2_record_sha": false,
+    "real_r2_record_depends_on_frozen_launcher_sha": true,
+    "build038_artifact_authorizes_authority": false,
+    "cycles": [],
+    "verdict": "ZERO_AUTHORITY_CYCLES"
+  },
+  "persistence_decision": "EXTERNAL_LAUNCHER_R11_IDENTITY_FREEZE_REQUIRED",
+  "build_lifecycle": {
+    "Build037": "HISTORICAL_STALE_FOR_VM06_PLUS",
+    "Build038": "NOT_CREATED_NEXT_GOVERNED_BUILD",
+    "Build039": "UNAUTHORIZED",
+    "build038_authorized_by_this_freeze_alone": false
+  },
+  "matrix": {
+    "VM01_VM05": "CLOSED",
+    "VM06_VM09": "OPEN_NOT_EXECUTED",
+    "VM10": "REMOVED_NOT_APPLICABLE",
+    "vm06_r2_findings": "ALL_ELEVEN_OPEN",
+    "execution_authority": "NOT_GRANTED"
+  },
+  "evidence_root": "C:\\PastilaScout-Installer-Evidence\\phase-5.6b\\build038-launcher-schema-r11-20260812-005",
+  "evidence_closure": {
+    "inventory_entries": 1299,
+    "inventory_size": 363682,
+    "inventory_sha256": "A159A0F6B8D23FC82E3FDB894BCA52EC64B28AE4B0C121FCDEA43E9375535324",
+    "aggregate_bytes": 18015744,
+    "inventory_self": "EXCLUDED",
+    "post_inventory_review": "EXCLUDED",
+    "authority_candidate_twin": "EXCLUDED_TO_AVOID_CANDIDATE_INVENTORY_HASH_CYCLE",
+    "final_inventory_review_sha256": "BF41C31E3B1CD32C4E7A1ADE70D7F27C5F058AC9FF2DB6C5AFE2B9E1274E0165"
+  },
+  "post_freeze_sequence": [
+    "verify external launcher SHA against frozen launcher R11 authority",
+    "create and independently review the real execution-consumer R2 record binding frozen launcher R11",
+    "formally freeze the real R2 record and annotated tag",
+    "run the immutable tagged-checkout non-producing positive control",
+    "require boundary once, native ISCC zero, and executables zero",
+    "only then resume governed Build038 creation"
+  ],
+  "preservation": {
+    "candidate_mutation": "NONE",
+    "wrapper_mutation": "NONE",
+    "historical_authority_mutation": "NONE",
+    "build038_created": false,
+    "native_iscc_executed": false,
+    "vm_execution": "NOT_PERFORMED",
+    "commit_tag_freeze_sign_publish": "NOT_PERFORMED"
+  },
+  "freeze_proposal": {
+    "commit_subject": "Record Phase 5.6B Build038 nonrecursive launcher R11 authority",
+    "annotated_tag": "phase-5.6b-build038-launcher-r11-verified",
+    "annotation": "Verify Phase 5.6B Build038 Nonrecursive Launcher Schema Contract Revision 11"
+  }
+}
