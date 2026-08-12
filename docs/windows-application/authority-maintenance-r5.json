@@ -1,0 +1,194 @@
+{
+  "schema": "phase56b-vm04a-expected-exit-frozen-authority-maintenance-r5",
+  "formal_name": "Phase 5.6B VM-04A Expected-Exit Frozen Authority Maintenance R5",
+  "status": "READY_FOR_FORMAL_FREEZE",
+  "scope": "VM-04A expected-exit correction only",
+  "predecessor": {
+    "path": "docs/windows-application/authority-maintenance-r4.json",
+    "sha256": "5A5EAC050E8BBC82CB3EB34292EB54A7AC7F557E713A8544D262EB8870C7D336",
+    "tag": "phase-5.6b-vm01a-handle-access-frozen-authority-maintenance-r4-verified",
+    "commit": "4439dbb",
+    "accounting_tag": "phase-5.6b-remaining-vm-matrix-accounting-r1-verified",
+    "accounting_tag_object": "9744a83b4b415ecd055de4bc977a53967007d168",
+    "accounting_tag_peel": "80f1b9ba7eb3783f42c971c3a3cfb628adbb3829",
+    "r1_through_r4_and_accounting_preserved": true
+  },
+  "repository_authority": {
+    "branch": "feature/openai-sdk",
+    "head": "80f1b9ba7eb3783f42c971c3a3cfb628adbb3829",
+    "candidate_sha256": {
+      "packaging/inno/PastilaScout.iss": "1D50C9CD1F127DCB09A07E365E7608D43DEC5E76257E8A0F5983B090956B859F",
+      "packaging/inno/build-installer.ps1": "68A260CA6C6E4FF3BBC4B7603A9E68A60A424CCE364BD99D16ADC70BE646101A",
+      "tests/packaging/test_inno_installer_v1.py": "39BD76109D598D1295E2E9E3611D221FD433A30EC8D8442E66F29CF1FFD8E89F"
+    },
+    "ownership_status": "OWNERSHIP_SHA_STILL_VALID",
+    "candidate_mutation": "NONE"
+  },
+  "build_authority": {
+    "build037": {
+      "size": 22343126,
+      "sha256": "D5F839930B8C6A8918F83BC5875A457EC8FD64C87D9B30449FFB4E9BD9E6020A",
+      "role": "CURRENT_REMAINING_MATRIX_RELEASE_FIXTURE",
+      "decision": "BUILD037_REMAINS_VALID_AFTER_R5_AUTHORITY_CORRECTION"
+    },
+    "build038": "NOT_CREATED",
+    "new_build_required": false,
+    "basis": "R5 changes only the stale expected interpretation; candidate, Build037, fixture, command, transport and runtime semantics remain byte-identical.",
+    "release_verification_evidence_root": "C:/PastilaScout-Installer-Evidence/phase-5.6b/build037-release-verification-r1-20260811-001"
+  },
+  "faithful_medium_evidence": {
+    "root": "C:/PastilaScout-Installer-Evidence/phase-5.6b/vm04a-interactive-medium-final-reproduction-r2-20260812-001",
+    "classification": "FAITHFUL_VM04A_MEDIUM_REPRODUCTION_VALID",
+    "inventory_entries": 18,
+    "inventory_sha256": "D2DBD9522BCA551472BDBA5C0737D2B08AF08B18EE5BF9164A6D1E5566634FF2",
+    "validation_sha256": "33396DDE1BE59743368404CCC52A7342AD4A100600C2426BCFED2EAE9FDD7409",
+    "classification_sha256": "690B45FB658A9F06E3EF432C2D423589A530E8A88129592904A1B673C51BF270",
+    "validation": "PASS",
+    "facts": {
+      "login": "normal console interactive login",
+      "identity": "DESKTOP-HLIAI3U\\phase56b",
+      "sid": "S-1-5-21-1301541280-2754826440-2262162330-1001",
+      "session_id": 2,
+      "session_state": "Active",
+      "explorer_present": true,
+      "integrity_rid": 8192,
+      "elevation_type": 3,
+      "limited": true,
+      "linked_high_available": true,
+      "uac_enabled": true,
+      "hkcu64_same_token": "PASS",
+      "child_integrity_rid": 8192,
+      "build037_sha256": "D5F839930B8C6A8918F83BC5875A457EC8FD64C87D9B30449FFB4E9BD9E6020A",
+      "native_exit": 7,
+      "result_json_count": 0,
+      "failure_class": "preflight_failure",
+      "failure_stage": "destination",
+      "containment": "HELD",
+      "sentinel_sha256": "A5850518D794706BE0DD1E6370440D509C4963B7FF4F709B1DD38F1056ABD84A",
+      "sentinel_unchanged": true,
+      "install": false,
+      "arp": false,
+      "start_menu": false,
+      "process_residue": 0,
+      "stage_old_rollback": [0, 0, 0],
+      "user_state_unchanged": true,
+      "r2_clean_revert": true,
+      "credential_destroyed": true
+    }
+  },
+  "diagnostic_history": {
+    "original_stop_record_sha256": "54E07FEC4476FE84876AC8C14322F309DD44641117AE95C3C5AC8286EE41A441",
+    "high_token_reproduction": "DIAGNOSTIC_ONLY",
+    "high_integrity_rid": 12288,
+    "prior_verdict": "PHASE_5_6B_VM04A_EXIT_CLASSIFICATION_INDEPENDENT_REPRODUCTION_R1_NOT_READY — REPRODUCTION_NOT_FAITHFUL",
+    "used_as_r5_authority": false
+  },
+  "vm04a_authority": {
+    "requirements": ["INS-017", "INS-058", "INS-059"],
+    "fixture": "Governed installer result component is a junction to the VM-local sentinel target",
+    "command": "/DIR=\"C:\\PastilaScout-Matrix\\RejectedDestination\" /VERYSILENT /SUPPRESSMSGBOXES /NORESTART /SP- /LOG=<VM04A_EVIDENCE>\\inno.log",
+    "token_requirement": "phase56b Interactive/Limited Medium RID8192",
+    "old_expected_exit": 1,
+    "expected_result_json_count": 0,
+    "containment": "HELD",
+    "sentinel": "UNCHANGED",
+    "escaped_result": false,
+    "install": false,
+    "arp": false,
+    "start_menu": false,
+    "process_residue": 0,
+    "stage_old_rollback": [0, 0, 0],
+    "unrelated_user_state_mutation": false
+  },
+  "normative_mapping": {
+    "source": "packaging/inno/PastilaScout.iss",
+    "source_sha256": "1D50C9CD1F127DCB09A07E365E7608D43DEC5E76257E8A0F5983B090956B859F",
+    "properties": [
+      {"property": "noncanonical destination", "normative_source": "PrepareToInstall sets FailureClass=preflight_failure and FailureStage=destination", "old_vm04a": "exit 1", "faithful_observation": "destination preflight rejection", "r5_value": "destination preflight rejection"},
+      {"property": "native exit", "normative_source": "GetCustomSetupExitCode maps FailureStage=destination to 7", "old_vm04a": 1, "faithful_observation": 7, "r5_value": 7},
+      {"property": "result JSON", "normative_source": "destination rejection selects exit 7; deinitialization attempts final emission, then the attacked result-root junction is rejected before JSON creation", "old_vm04a": 0, "faithful_observation": 0, "r5_value": 0},
+      {"property": "security state", "normative_source": "INS-017/058/059", "old_vm04a": "containment/no publication/no residue", "faithful_observation": "containment/no publication/no residue", "r5_value": "unchanged"}
+    ],
+    "product_spec_authority_separated_from_matrix_expectation": true
+  },
+  "authority_delta": {
+    "exact_stale_fields": ["VM-04A.expected_exit"],
+    "replacements": [{"path": "VM-04A.expected_exit", "from": 1, "to": 7}],
+    "dependent_fields_changed": [],
+    "result_json_semantics_changed": false,
+    "fixture_changed": false,
+    "requirements_changed": false,
+    "scenario_order_changed": false,
+    "scenario_pass_granted": false
+  },
+  "security_preservation": {
+    "verdict": "SECURITY_REQUIREMENTS_UNCHANGED",
+    "obligations": ["reject hostile/noncanonical destination", "contain all writes", "preserve sentinel", "no escaped JSON", "no install root", "ARP absent", "Start Menu absent", "no lingering process", "no stage/old/rollback residue", "no unrelated user-state mutation"],
+    "relaxed_obligations": []
+  },
+  "evidence_lifecycle": {
+    "decision": "VM04A_PRE_FREEZE_EVIDENCE_REUSE_AUTHORIZED",
+    "basis": ["exact unchanged Build037 and candidate bytes", "exact unchanged fixture and command", "exact R2 and Interactive/Limited Medium RID8192 execution", "direct native exit and security state are hash-sealed", "independent validation PASS", "R5 changes interpretation only and no runtime parameter", "replay adds no semantic evidence and introduces avoidable mutation risk"],
+    "audit_risk": "Bounded by immutable hashes, complete inventory, direct native-exit capture and independent validation.",
+    "third_product_execution_required": false,
+    "vm04_state_before_freeze": "OPEN",
+    "closure_condition": "Formal R5 freeze followed by independent VM04 closure/accounting consumption of the sealed evidence"
+  },
+  "matrix_consequence": {
+    "VM-02A": "ACCEPTED",
+    "VM-03A": "ACCEPTED",
+    "VM-03B": "ACCEPTED",
+    "VM-04": "OPEN",
+    "VM-06": "NOT_EXECUTED",
+    "VM-07": "NOT_EXECUTED",
+    "VM-08": "NOT_EXECUTED",
+    "VM-09": "NOT_EXECUTED",
+    "next_after_freeze": "Independent VM04 closure/accounting consumption; resume at VM06 only after closure"
+  },
+  "preparation_handoff": {
+    "preparation_projection_dual_absence_product_valid": true,
+    "authority_revision_binding_refresh": "Determine narrowly during formal freeze/closure accounting; no product rebuild or broad preparation refresh authorized here"
+  },
+  "false_positive_audit": {
+    "exit7_accepted_from_observation_alone": false,
+    "high_token_used_as_authority": false,
+    "security_weakened": false,
+    "fixture_changed": false,
+    "json_absence_source_proven": true,
+    "vm04_closed_prematurely": false,
+    "reuse_without_analysis": false,
+    "build037_invalidated": false,
+    "candidate_defect_inferred": false,
+    "vm06plus_authorized": false,
+    "verdict": "PASS"
+  },
+  "architectural_humility": [
+    {"option": "keep exit1", "decision": "REJECT_NORMATIVE_CONFLICT"},
+    {"option": "change only exit1 to exit7", "decision": "SELECT_SMALLEST"},
+    {"option": "change fixture to force exit1", "decision": "REJECT_SCOPE_AND_SEMANTIC_CHANGE"},
+    {"option": "change product to return1", "decision": "REJECT_PRODUCT_CHANGE"},
+    {"option": "require result JSON", "decision": "REJECT_PRE_RESULT_ROOT_PATH"},
+    {"option": "reuse faithful Medium evidence", "decision": "SELECT_HASH_SEALED_UNCHANGED_RUNTIME"},
+    {"option": "post-freeze confirmation", "decision": "REJECT_REDUNDANT_RUNTIME_MUTATION"}
+  ],
+  "independent_reviews": {
+    "authority_fidelity": {"verdict": "PASS", "findings": [], "basis": "Only VM-04A.expected_exit changes 1 to 7; INS-017/058/059, fixture, command, JSON count and security state remain unchanged; VM-04 remains OPEN."},
+    "product_result_semantics": {"verdict": "PASS", "findings": [], "basis": "Noncanonical /DIR sets preflight_failure/destination and exit 7; deinitialization attempts final emission but the governed result-root junction rejects the write before JSON creation."},
+    "security_evidence_lifecycle": {"verdict": "PASS", "findings": [], "basis": "Faithful evidence hashes and Medium/runtime facts validate; High diagnostic is excluded; evidence reuse and Build037 validity are governance-consistent."},
+    "disagreements": []
+  },
+  "formal_freeze_proposal": {
+    "commit_subject": "Correct Phase 5.6B VM-04A expected exit authority",
+    "annotated_tag": "phase-5.6b-vm04a-expected-exit-frozen-authority-maintenance-r5-verified",
+    "annotation": "Verify Phase 5.6B VM-04A Expected-Exit Frozen Authority Maintenance Revision 5"
+  },
+  "prohibitions": {
+    "candidate_or_build_mutation": true,
+    "vm_execution": true,
+    "build038_creation": true,
+    "vm04_closure": true,
+    "vm06plus_execution": true,
+    "commit_or_tag": true,
+    "freeze_sign_or_publish": true
+  }
+}
