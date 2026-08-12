@@ -1,0 +1,71 @@
+{
+  "schema": "pastila-scout-phase-5.6b-installer-test-ownership-refresh-v2",
+  "formal_name": "Phase 5.6B R7/R8 Installer-Test Ownership Refresh R2",
+  "decision": "R7_R8_TEST_OWNERSHIP_SCOPE_VALID",
+  "status": "CANDIDATE_READY_FOR_SEPARATE_FORMAL_FREEZE",
+  "repository_head": "e3a65b1151e3137c4aee31b5c2deecadabe38d09",
+  "authority": {
+    "r6_commit": "a57ea2b58a97731620f5a627c98924baab0e262e",
+    "r7_commit": "a77133868d9242a5012bf21f30908dadd8563cdc",
+    "r8_commit": "e3a65b1151e3137c4aee31b5c2deecadabe38d09",
+    "r8_tag": "phase-5.6b-mandatory-uninstaller-surface-set-r8-verified"
+  },
+  "supersession": {
+    "rejected_record": "docs/windows-application/phase-5.6b-r7-r8-installer-test-ownership-refresh-r1.json",
+    "rejected_sha256": "CDEBBEC580D5E2FC5E1DD90D3DA877E4F711F19643EF2FC0402C5D36C9688C76",
+    "classification": "REJECTED_STALE_VALIDATION_IDENTITY",
+    "sole_correction": "full_suite_pre_refresh literal pytest counts and failure wording"
+  },
+  "ownership_binding": {
+    "path": "tests/packaging/test_inno_installer_v1.py",
+    "prior_sha256": "39BD76109D598D1295E2E9E3611D221FD433A30EC8D8442E66F29CF1FFD8E89F",
+    "refreshed_sha256": "831B730ABD0F8C876C48D50FB0D29DF0E47A4568B6A35C9C6F7E4599272F99CE",
+    "trigger": "OWNERSHIP_SHA_REFRESH_REQUIRED_BY_R7_R8_AUTHORIZED_TEST_MUTATION"
+  },
+  "candidate_set": {
+    "packaging/inno/PastilaScout.iss": "FE37D23D2BA2B47527A432B2DDF6BE9E3A77638536305009DEC9788CAC05E2FC",
+    "packaging/inno/build-installer.ps1": "68A260CA6C6E4FF3BBC4B7603A9E68A60A424CCE364BD99D16ADC70BE646101A",
+    "tests/packaging/test_inno_installer_v1.py": "831B730ABD0F8C876C48D50FB0D29DF0E47A4568B6A35C9C6F7E4599272F99CE"
+  },
+  "authorized_scope": [
+    "R7 transaction commit, restoration, evidence sealing, and rollback semantics",
+    "R8 exact HKCU64 ARP/unins000.exe/unins000.dat/Start Menu surface aggregate",
+    "R6 code11 and cleanup code9 result precedence and structured initiating_failure",
+    "callback ordering, complete payload identity, DACL-last, cleanup, disposal, and VM01/VM04/VM05 regressions"
+  ],
+  "validation": {
+    "focused_installer_suite": {"passed": 30, "failed": 0},
+    "full_suite_pre_refresh": {"passed": 6659, "skipped": 2, "failed": 2, "natural_completion": true, "runtime_seconds": 527.94, "exit_code": 1},
+    "failure_attribution": "FULL_SUITE_TWO_FAILURES_EXCLUSIVELY_STALE_OWNERSHIP_GUARD",
+    "failed_nodes": [
+      "tests/packaging/test_frozen_application_v1.py::test_exact_final_ownership_and_complete_eight_path_state",
+      "tests/packaging/test_frozen_application_v1.py::test_external_ownership_requires_exact_path_and_identity"
+    ],
+    "hidden_product_or_test_failure": false,
+    "disposable_inno_6_7_3_compile": ["Release PASS", "VM01A PASS", "VM05 PASS"]
+  },
+  "evidence": {
+    "prior_root": "C:\\PastilaScout-Installer-Evidence\\phase-5.6b\\r7-r8-test-ownership-refresh-readiness-r2-20260812-001",
+    "prior_inventory_sha256": "38244F196660321C99BBCBAFFAB52ECD6BA13883B631C29254C57FA518E47E4A",
+    "corrected_root": "C:\\PastilaScout-Installer-Evidence\\phase-5.6b\\r7-r8-test-ownership-refresh-validation-correction-r2-20260812-001",
+    "corrected_inventory": "inventory.json"
+  },
+  "post_freeze_contract": [
+    "rebind the ownership consumer to the formally frozen refreshed test identity",
+    "rerun the complete offline suite against unchanged final candidate bytes and require literal exit 0 with zero failures",
+    "then perform full candidate regrounding, projections, dual instrumentation absence, preparation, DAG, and inventories",
+    "authorize a fresh instrumentation-free Release only afterward; resume VM06 R2 security closure only after that release"
+  ],
+  "lifecycle": {
+    "Build037": "BUILD037_PRESERVED_HISTORICAL_STALE_FOR_VM06_PLUS",
+    "Build038": "BUILD038_NOT_CREATED",
+    "fresh_release": "NOT_AUTHORIZED",
+    "vm_execution": "NOT_PERFORMED",
+    "vm06_execution_authority": "NOT_GRANTED"
+  },
+  "freeze_proposal": {
+    "commit_subject": "Refresh Phase 5.6B R7/R8 installer-test ownership",
+    "annotated_tag": "phase-5.6b-r7-r8-installer-test-ownership-refresh-r2-verified",
+    "annotation": "Verify Phase 5.6B R7/R8 Installer-Test Ownership Refresh Revision 2"
+  }
+}
