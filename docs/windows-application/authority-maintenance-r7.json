@@ -1,0 +1,292 @@
+{
+  "schema": "phase5.6b-r6-transactional-publication-failure-repair-authority-maintenance-r7",
+  "formal_name": "Phase 5.6B R6 Transactional Publication-Failure Repair Authority Maintenance R7",
+  "status": "READY_FOR_FORMAL_FREEZE",
+  "predecessor": {
+    "head": "a57ea2b58a97731620f5a627c98924baab0e262e",
+    "r6_tag": "phase-5.6b-surface-publication-failure-result-schema-r6-verified",
+    "r6_sha256": "0DAB197B0E353D618C48BC44FDDD92F99B4FE37571B03DBEE59561E706B96DCB",
+    "r6_blob": "6a24c798ca23802a7cbbf73507519e1529f7455f"
+  },
+  "prior_stop": {
+    "classification": "R6_TRANSACTIONAL_PUBLICATION_REPAIR_AUTHORITY_INCOMPLETE",
+    "candidate_restored": true,
+    "blockers": [
+      "old payload was deleted before mandatory publication completed",
+      "exact prior payload therefore could not be restored",
+      "ARP, uninstaller, and Start Menu cleanup outcomes were not aggregated and verified",
+      "partial ARP publication could satisfy a minimal presence check",
+      "cleanup override lacked structured initiating-failure context",
+      "branch-sensitive tests require a governed ownership SHA refresh"
+    ]
+  },
+  "r6_preserved": {
+    "failure_class": "surface_publication_failure",
+    "failure_stage": "surface_publication",
+    "custom_project_result_code": 11,
+    "native_inno_process_exit": 4,
+    "final_status": "failure",
+    "activation_status": "activated",
+    "surface_publication_status": "not_published",
+    "INS_026": "UNCHANGED"
+  },
+  "transaction": {
+    "phases": [
+      "stage_new_payload",
+      "verify_staged_payload",
+      "snapshot_existing_payload_and_mandatory_surfaces",
+      "activate_staged_payload",
+      "publish_all_mandatory_surfaces",
+      "verify_all_mandatory_surfaces",
+      "commit_transaction",
+      "remove_preserved_old_payload"
+    ],
+    "commit_rule": "TransactionCommitted becomes true only after the activated canonical payload and every mandatory publication surface independently verify successfully.",
+    "activation_complete_is_not_commit": true,
+    "old_payload_disposable_only_after_commit": true,
+    "success_rule": "final_status=success only when TransactionCommitted=true",
+    "uninstall_semantics": "UNCHANGED"
+  },
+  "payload_preservation": {
+    "transaction_root": "the versioned payload is {app}\\app; do not rename the whole {app} root because canonical unins000.* publication occupies that root",
+    "existing_payload": "rename the exact canonical {app}\\app payload to the collision-safe operation-specific preserved-old path before activating staged bytes",
+    "preserved_identity": "record path, existence, file inventory, sizes and SHA-256 values before activation",
+    "lifetime": "retain byte-exact until transaction commit",
+    "clean_install": "record prior_payload_present=false; no restoration source exists or is implied",
+    "upgrade": "record prior_payload_present=true; restoration must reproduce the recorded preserved identity",
+    "premature_deletion": "FORBIDDEN"
+  },
+  "prior_surface_snapshot": {
+    "timing": "before activation or any new mandatory-surface publication",
+    "lifetime": "success branch: retain through transaction commit; failure branch: retain through completed restoration verification and evidence sealing",
+    "presence_flags": "record prior-present independently for ARP, each uninstaller file, and Start Menu shortcut",
+    "arp": "record exact governed values DisplayName, DisplayVersion, InstallLocation, DisplayIcon and UninstallString plus key presence and DACL/SDDL needed for exact restoration",
+    "uninstaller": "snapshot and inventory exactly {app}\\unins000.exe, {app}\\unins000.dat and {app}\\unins000.msg individually with presence, size and SHA-256",
+    "start_menu": "copy the exact prior {userprograms}\\Pastila Scout.lnk to collision-safe evidence/preservation storage and record file size/SHA-256 plus resolved target, arguments and working directory",
+    "ambiguity": "missing identity, failed snapshot, unexpected companion, or unreadable prior surface fails closed before mutation",
+    "disposal_policy": "success branch: remove preserved payload and snapshots only after commit; failure branch: after restoration verification and evidence seal, remove and verify only snapshot/residue artifacts while proving restored authority state remains untouched"
+  },
+  "restoration": {
+    "trigger": "any mandatory publication operation or verification failure before commit",
+    "steps": [
+      "retire or remove the failed newly activated payload",
+      "remove and verify absence of failed-new partial mandatory surfaces",
+      "restore the preserved old payload when prior_payload_present=true",
+      "restore every prior mandatory surface from its pre-publication snapshot according to its independent prior-present flag",
+      "reread and compare canonical payload and every restored or required-absent surface to the recorded identities and presence flags",
+      "record restoration and cleanup results independently",
+      "retain snapshots through evidence sealing after failure, then remove and verify only transaction snapshots/residue without touching restored authority state"
+    ],
+    "clean_install_final_state": "no canonical installed payload, ARP record, uninstaller, mandatory Start Menu shortcut, stage, old, or rollback residue",
+    "upgrade_final_state": "byte-exact prior canonical {app}\\app payload and every prior mandatory surface restored and independently matched to its recorded identity; no failed-new surface or transaction residue",
+    "restoration_failure": "cleanup_failure / cleanup / custom code 9 with structured initiating_failure"
+  },
+  "mandatory_surfaces": [
+    {
+      "id": "hkcu64_arp",
+      "mandatory": true,
+      "path": "HKCU64:\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\PastilaScout_is1",
+      "verification": {
+        "DisplayName": "Pastila Scout",
+        "DisplayVersion": "exact candidate AppVersion and valid stable SemVer",
+        "InstallLocation": "exact canonical per-user install root",
+        "DisplayIcon": "exact canonical app executable path",
+        "UninstallString": "quoted exact canonical uninstaller path"
+      },
+      "partial_record": "FAIL",
+      "cleanup": "delete governed key, check operation result, then prove key and governed values absent"
+    },
+    {
+      "id": "canonical_uninstaller",
+      "mandatory": true,
+      "path": "exact bounded set: {app}\\unins000.exe, {app}\\unins000.dat, {app}\\unins000.msg",
+      "verification": "all three exact canonical files exist and ARP UninstallString resolves exactly to unins000.exe; no stale-old path or unenumerated companion is accepted",
+      "cleanup": "delete each of the three enumerated files, check every return value, then prove each exact path absent"
+    },
+    {
+      "id": "start_menu_shortcut",
+      "mandatory": true,
+      "path": "{userprograms}\\Pastila Scout.lnk",
+      "verification": "exact path; target {app}\\app\\PastilaScout.exe; no arguments; working directory {app}; no stale target accepted",
+      "cleanup": "delete exact shortcut, check return value, then prove exact path absent"
+    },
+    {
+      "id": "desktop_shortcut",
+      "mandatory": false,
+      "reason": "governed optional unchecked task; not part of aggregate mandatory-publication success"
+    }
+  ],
+  "aggregate_publication": {
+    "verdict_name": "ALL_MANDATORY_SURFACES_PUBLISHED_AND_VERIFIED",
+    "pass_rule": "every mandatory surface operation succeeds and every exact post-publication verification passes",
+    "fail_rule": "one failed, partial, stale, missing, inaccessible, or ambiguous surface fails the aggregate",
+    "proxy_verification_forbidden": true,
+    "same_token_hkcu64_visibility_required": true
+  },
+  "prior_surface_restoration": {
+    "order": [
+      "remove and verify absence of failed-new partial surfaces",
+      "restore prior unins000.exe, unins000.dat and unins000.msg according to recorded presence flags",
+      "restore prior HKCU64 ARP governed values according to recorded key presence, verify values, then apply the recorded DACL/SDDL last and verify security state",
+      "restore prior Start Menu shortcut artifact according to its recorded presence flag",
+      "independently compare all restored files, values, paths, shortcut properties and security identity to snapshots"
+    ],
+    "absent_before": "if a prior-present flag is false, the corresponding surface must be absent after rollback",
+    "failure": "any removal, restoration, reread, identity mismatch, or ambiguous state produces cleanup_failure / cleanup / 9 with exact initiating_failure context"
+  },
+  "verified_aggregate_cleanup": {
+    "items": [
+      "partial HKCU64 ARP key and governed values",
+      "partial or failed-new canonical uninstaller files",
+      "partial mandatory Start Menu shortcut",
+      "failed-new activated payload",
+      "stage, old and rollback transaction residue"
+    ],
+    "per_item_contract": [
+      "capture invocation result",
+      "do not ignore return or exit status",
+      "reread exact target state",
+      "compare with required absence or restored-state identity",
+      "record independently queryable evidence"
+    ],
+    "aggregate_pass": "cleanup_success only when every applicable operation and verification passes",
+    "aggregate_fail": "any failed or ambiguous applicable item produces cleanup_failure / cleanup / 9"
+  },
+  "failure_precedence": [
+    {
+      "condition": "publication fails; restoration and aggregate cleanup succeed",
+      "final_class": "surface_publication_failure",
+      "final_stage": "surface_publication",
+      "custom_code": 11,
+      "initiating_failure": "omitted because final fields already represent the cause"
+    },
+    {
+      "condition": "publication fails; restoration or aggregate cleanup fails",
+      "final_class": "cleanup_failure",
+      "final_stage": "cleanup",
+      "custom_code": 9,
+      "initiating_failure": {
+        "class": "surface_publication_failure",
+        "stage": "surface_publication",
+        "result_code": 11
+      }
+    }
+  ],
+  "initiating_failure_schema": {
+    "selected_model": "optional nested object",
+    "field": "initiating_failure",
+    "shape": {
+      "class": "string",
+      "stage": "string",
+      "result_code": "integer"
+    },
+    "permitted_value_for_r7": {
+      "class": "surface_publication_failure",
+      "stage": "surface_publication",
+      "result_code": 11
+    },
+    "required_when": "cleanup_failure overrides an initiating R6 publication failure",
+    "omitted_when": "not applicable or the final fields already express the publication failure",
+    "validation": "all three members required and exact when object is present; arbitrary strings/codes rejected",
+    "backward_compatibility": "historical records without the optional field remain valid and are not rewritten; every strict consumer must receive a schema/validator upgrade before consuming R7 records, and safe ignoring of unknown fields is not assumed",
+    "extra_members": "REJECT",
+    "log_only_context": "FORBIDDEN"
+  },
+  "terminology": {
+    "restoration_or_rollback": "restore authoritative payload state after transaction failure",
+    "surface_cleanup": "remove partial publication artifacts",
+    "general_cleanup_failure": "failure of any required cleanup or restoration action governed by code 9"
+  },
+  "vm06": {
+    "subcases": ["VM-06A", "VM-06B"],
+    "requirement": "INS-026",
+    "fixture_mechanics": "UNCHANGED",
+    "expected_native_exit": 4,
+    "transaction_commit": false,
+    "aggregate_publication": "FAIL",
+    "restoration": "exact prior payload if present; otherwise no canonical installed payload",
+    "partial_surfaces": "removed and independently verified",
+    "successful_cleanup_result": "surface_publication_failure / surface_publication / 11",
+    "failed_cleanup_result": "cleanup_failure / cleanup / 9 plus exact initiating_failure object"
+  },
+  "custom_exit_precedence": [
+    "destination preflight remains 7",
+    "authoritative result write/retention remains 10",
+    "cleanup or restoration failure remains 9",
+    "surface publication failure with successful cleanup is 11",
+    "other existing earlier failure mappings remain unchanged",
+    "committed install/upgrade success is 0"
+  ],
+  "ownership_refresh_authority": {
+    "branch_sensitive_test_change": "AUTHORIZED_ONLY_FOR_R7_TRANSACTION_SEMANTICS",
+    "required_process": [
+      "implement the R7-required tests",
+      "complete focused and full validation",
+      "compute final test size, lines, SHA-256 and Git blob",
+      "obtain independent ownership-scope review",
+      "create and formally freeze a new ownership refresh record",
+      "only then allow governed fresh Release preparation to consume the new test identity"
+    ],
+    "silent_sha_acceptance": "FORBIDDEN",
+    "ownership_control_waiver": false
+  },
+  "future_test_authority": [
+    "clean-install publication failure",
+    "upgrade publication failure with exact old-payload restoration",
+    "partial ARP publication",
+    "ARP cleanup failure",
+    "uninstaller cleanup failure",
+    "Start Menu cleanup failure",
+    "aggregate cleanup success and failure",
+    "code 11 and code 9 override paths",
+    "structured initiating_failure",
+    "transaction commit success",
+    "unchanged activation and unrelated cleanup failure",
+    "VM01, VM04 and VM05 regressions"
+  ],
+  "consumer_impact": {
+    "installer_state_machine": "defer old-payload deletion until transaction commit and implement restoration",
+    "result_writer_and_exit_logic": "emit R6 mapping and optional exact initiating_failure object",
+    "result_validator_and_evidence_parsers": "strictly validate/preserve the optional nested object",
+    "operational_acceptance_and_matrix_validators": "enforce aggregate publication, cleanup and restoration evidence",
+    "installer_tests": "implement branch-sensitive R7 test authority under ownership refresh",
+    "ownership_authority": "freeze final refreshed test identity before build authority",
+    "preparation_DAG_and_provenance": "reground after implementation and ownership freeze",
+    "fresh_release": "consume only final candidate and refreshed ownership identities"
+  },
+  "lifecycle": {
+    "closed_VM01_THROUGH_VM05": "NOT_REOPENED_BY_R7; future implementation requires separate impact analysis",
+    "BUILD037_REMAINS_BYTE_VALID_DURING_R7_AUTHORITY_ONLY_MAINTENANCE": true,
+    "BUILD037_BECOMES_STALE_AFTER_FUTURE_R7_IMPLEMENTATION": true,
+    "Build038": "NOT_CREATED",
+    "vm06_r2_findings": "ALL_ELEVEN_REMAIN_OPEN",
+    "additional_vm06_r2_requirements": [
+      "transactional baseline",
+      "aggregate publication verification",
+      "verified cleanup",
+      "exact restoration",
+      "structured initiating_failure",
+      "ownership-refreshed test identity",
+      "fresh Release artifact"
+    ],
+    "vm06_execution_authority": "NOT_GRANTED"
+  },
+  "false_positive_rejections": [
+    "activation completion treated as transaction commit",
+    "old payload deleted before all surface verification",
+    "ignored cleanup return or exit status",
+    "partial ARP accepted",
+    "log-only initiating failure",
+    "code 9 without structured causal context",
+    "silent ownership SHA acceptance",
+    "Build037 treated as implementing R7",
+    "VM06 execution authorization"
+  ],
+  "preservation": {
+    "candidate_test_controller": "UNCHANGED",
+    "R1_R6_and_VM04_closure": "UNCHANGED",
+    "preparation_DAG": "UNCHANGED",
+    "VM06_VM09": "NOT_EXECUTED",
+    "commit_tag_freeze_sign_publish": "NOT_PERFORMED"
+  }
+}
