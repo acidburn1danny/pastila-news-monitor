@@ -1,0 +1,176 @@
+{
+  "schema": "phase56b-vm04-closure-accounting-consumption-after-r5-r1",
+  "formal_name": "Phase 5.6B VM-04 Closure Accounting Consumption after R5 R1",
+  "status": "READY_FOR_FORMAL_FREEZE",
+  "repository": {
+    "branch": "feature/openai-sdk",
+    "head": "8599f8fc1ef50992ef76f44562c1b3affa0e9f52",
+    "candidate_mutation": "NONE",
+    "ownership_status": "OWNERSHIP_SHA_STILL_VALID"
+  },
+  "r5_freeze": {
+    "commit": "8599f8fc1ef50992ef76f44562c1b3affa0e9f52",
+    "parent": "80f1b9ba7eb3783f42c971c3a3cfb628adbb3829",
+    "subject": "Correct Phase 5.6B VM-04A expected exit authority",
+    "path": "docs/windows-application/authority-maintenance-r5.json",
+    "sha256": "4475C829F85E9CF34E2A7246594B4C83C5E44D70732AF17C260CAF3A34AF2376",
+    "git_blob": "d969c2558c8658718c95a34c9e409dcb8cb13de0",
+    "tag": "phase-5.6b-vm04a-expected-exit-frozen-authority-maintenance-r5-verified",
+    "tag_object": "f514af0a6b6dda1e1f6801cbd0f6472b275615ee",
+    "annotation": "Verify Phase 5.6B VM-04A Expected-Exit Frozen Authority Maintenance Revision 5",
+    "verified": true
+  },
+  "r5_semantics": {
+    "delta": {"path": "VM-04A.expected_exit", "from": 1, "to": 7},
+    "requirements": ["INS-017", "INS-058", "INS-059"],
+    "result_json_count": 0,
+    "security": "SECURITY_REQUIREMENTS_UNCHANGED",
+    "evidence_reuse": "VM04A_PRE_FREEZE_EVIDENCE_REUSE_AUTHORIZED",
+    "build037": "BUILD037_REMAINS_VALID_AFTER_R5_AUTHORITY_CORRECTION",
+    "runtime_fixture_or_candidate_change": false
+  },
+  "faithful_medium_evidence": {
+    "root": "C:/PastilaScout-Installer-Evidence/phase-5.6b/vm04a-interactive-medium-final-reproduction-r2-20260812-001",
+    "inventory_entries": 18,
+    "inventory_sha256": "D2DBD9522BCA551472BDBA5C0737D2B08AF08B18EE5BF9164A6D1E5566634FF2",
+    "validation_sha256": "33396DDE1BE59743368404CCC52A7342AD4A100600C2426BCFED2EAE9FDD7409",
+    "classification_sha256": "690B45FB658A9F06E3EF432C2D423589A530E8A88129592904A1B673C51BF270",
+    "reuse_verdict": "VM04A_R5_PRE_FREEZE_EVIDENCE_REUSE_VALID",
+    "facts": {
+      "build037_sha256": "D5F839930B8C6A8918F83BC5875A457EC8FD64C87D9B30449FFB4E9BD9E6020A",
+      "checkpoint": "Phase56B-Clean-Baseline-R2",
+      "checkpoint_id": "9ff43859-d72a-4160-96f0-279218ffd457",
+      "identity": "DESKTOP-HLIAI3U\\phase56b",
+      "interactive_session": 2,
+      "integrity_rid": 8192,
+      "limited_linked_high_uac": true,
+      "hkcu64": "PASS",
+      "child_integrity_rid": 8192,
+      "fixture_and_command_exact": true,
+      "native_exit": 7,
+      "result_json_count": 0,
+      "failure_class": "preflight_failure",
+      "failure_stage": "destination",
+      "containment": "HELD",
+      "sentinel_unchanged": true,
+      "install": false,
+      "arp": false,
+      "start_menu": false,
+      "process_residue": 0,
+      "stage_old_rollback": [0, 0, 0],
+      "user_state_unchanged": true,
+      "clean_r2_revert": true,
+      "credential_destroyed": true
+    }
+  },
+  "closure_property_matrix": [
+    {"property": "fixture/command", "expected": "exact frozen VM-04A", "observed": "exact", "match": true, "evidence": "690B45FB658A9F06E3EF432C2D423589A530E8A88129592904A1B673C51BF270"},
+    {"property": "token", "expected": "Interactive/Limited Medium RID8192", "observed": "session2/RID8192", "match": true, "evidence": "33396DDE1BE59743368404CCC52A7342AD4A100600C2426BCFED2EAE9FDD7409"},
+    {"property": "Build037", "expected": "D5F839...E6020A", "observed": "D5F839...E6020A", "match": true, "evidence": "reproduction/native-process.json"},
+    {"property": "native exit", "expected": 7, "observed": 7, "match": true, "evidence": "reproduction/native-process.json"},
+    {"property": "result JSON", "expected": 0, "observed": 0, "match": true, "evidence": "reproduction/security-after.json"},
+    {"property": "containment/sentinel", "expected": "held/unchanged", "observed": "held/unchanged", "match": true, "evidence": "reproduction/security-after.json"},
+    {"property": "install/ARP/Start Menu/process", "expected": "absent/absent/absent/0", "observed": "absent/absent/absent/0", "match": true, "evidence": "reproduction/security-after.json"},
+    {"property": "stage/old/rollback", "expected": "0/0/0", "observed": "0/0/0", "match": true, "evidence": "reproduction/security-after.json"},
+    {"property": "user state", "expected": "unchanged", "observed": "unchanged", "match": true, "evidence": "reproduction/security-after.json"},
+    {"property": "clean revert", "expected": "exact R2 Off/network0/media0", "observed": "exact", "match": true, "evidence": "final-r2-revert.json"}
+  ],
+  "vm04_transition": {
+    "prior": "OPEN",
+    "new": "CLOSED",
+    "verdict": "VM04_CLOSED_BY_R5_AUTHORIZED_SEALED_EVIDENCE_CONSUMPTION",
+    "product_rerun": false
+  },
+  "requirement_accounting": [
+    {"requirement": "INS-017", "owner": "VM-04", "prior": "OPEN", "new": "CLOSED_FOR_VM04_ALLOCATION", "evidence": "D2DBD9522BCA551472BDBA5C0737D2B08AF08B18EE5BF9164A6D1E5566634FF2", "residual": "VM-03 allocation is closed by accepted VM-03A/VM-03B; VM-08 allocation remains open"},
+    {"requirement": "INS-058", "owner": "VM-04", "prior": "OPEN", "new": "CLOSED_FOR_VM04_ALLOCATION", "evidence": "D2DBD9522BCA551472BDBA5C0737D2B08AF08B18EE5BF9164A6D1E5566634FF2", "residual": "VM-07 allocation remains open"},
+    {"requirement": "INS-059", "owner": "VM-04", "prior": "OPEN", "new": "CLOSED_FOR_VM04_ALLOCATION", "evidence": "D2DBD9522BCA551472BDBA5C0737D2B08AF08B18EE5BF9164A6D1E5566634FF2", "residual": "VM-08 allocation remains open"}
+  ],
+  "accepted_prior_scenarios": {
+    "VM-02A": {"state": "ACCEPTED", "review_sha256": "51985233DE5AA63DC539B703F092925AA3011E35335B512859B57F2E38067FB1"},
+    "VM-03A": {"state": "ACCEPTED", "review_sha256": "393A980550F9904EE74616E5B58BAAAEF5AC98A6F6EB19D7AFDED124B2FA7965"},
+    "VM-03B": {"state": "ACCEPTED", "review_sha256": "9F445CC0A5074C47A1278E06060FA1CD56BBE23D54EAC6C448F7240A0C3A05E3"}
+  },
+  "scenario_accounting": [
+    {"id": "VM-01", "state": "CLOSED"},
+    {"id": "VM-02", "state": "CLOSED", "basis": "sole subcase VM-02A accepted"},
+    {"id": "VM-03", "state": "CLOSED", "basis": "all subcases VM-03A/VM-03B accepted"},
+    {"id": "VM-04", "state": "CLOSED", "basis": "R5-authorized sealed evidence consumption"},
+    {"id": "VM-05", "state": "CLOSED"},
+    {"id": "VM-06", "state": "OPEN", "execution": "NOT_PERFORMED"},
+    {"id": "VM-07", "state": "OPEN", "execution": "NOT_PERFORMED"},
+    {"id": "VM-08", "state": "OPEN", "execution": "NOT_PERFORMED"},
+    {"id": "VM-09", "state": "OPEN", "execution": "NOT_PERFORMED"},
+    {"id": "VM-10", "state": "REMOVED_NOT_APPLICABLE"}
+  ],
+  "next_matrix_execution_scenario": "VM-06",
+  "build037": {
+    "filename": "PastilaScout-0.1.0-Setup.exe",
+    "size": 22343126,
+    "sha256": "D5F839930B8C6A8918F83BC5875A457EC8FD64C87D9B30449FFB4E9BD9E6020A",
+    "classifications": ["CURRENT_PHASE_5_6B_INSTRUMENTATION_FREE_RELEASE_FIXTURE", "REMAINING_VM_MATRIX_RELEASE_EQUIVALENT_FIXTURE"],
+    "dual_absence": "PASS",
+    "smoke": "PASS",
+    "valid": true,
+    "rebuild": false,
+    "substitution_build034_035_036": false
+  },
+  "consumer_consequence": [
+    {"consumer": "R5 authority", "classification": "RETAIN_VALID"},
+    {"consumer": "Build037 provenance and dual absence", "classification": "RETAIN_VALID"},
+    {"consumer": "guest runner and per-scenario mechanics", "classification": "RETAIN_VALID"},
+    {"consumer": "remaining-seven host orchestrator", "classification": "REFRESH_HEAD_BINDING_REQUIRED", "reason": "hard-binds pre-R5 HEAD 80f1b9b"},
+    {"consumer": "repository build wrapper", "classification": "REFRESH_HEAD_BINDING_REQUIRED", "required_actions": ["REFRESH_HEAD_BINDING_REQUIRED", "REFRESH_ACCOUNTING_BINDING_REQUIRED"], "reason": "hard-binds old accounting tag peel and prospective context"},
+    {"consumer": "preparation/DAG payload-toolchain-product inputs", "classification": "RETAIN_VALID"},
+    {"consumer": "preparation/DAG prospective authority bindings", "classification": "REFRESH_HEAD_BINDING_REQUIRED", "required_actions": ["REFRESH_HEAD_BINDING_REQUIRED", "REFRESH_ACCOUNTING_BINDING_REQUIRED"], "reason": "narrow governance refresh before future build; existing Build037 remains valid"},
+    {"consumer": "current HEAD binding", "classification": "REFRESH_HEAD_BINDING_REQUIRED"},
+    {"consumer": "frozen remaining-matrix accounting", "classification": "REFRESH_ACCOUNTING_BINDING_REQUIRED"},
+    {"consumer": "pre-R5 remaining-matrix handoff", "classification": "STALE", "reason": "records VM-02/03/04 OPEN and pre-R5 HEAD"},
+    {"consumer": "new VM04 closure handoff", "classification": "REFRESH_ACCOUNTING_BINDING_REQUIRED"}
+  ],
+  "repository_persistence": {
+    "decision": "REPOSITORY_VM04_CLOSURE_ACCOUNTING_FREEZE_REQUIRED",
+    "basis": ["frozen accounting predates VM-02/03 acceptance and VM-04 closure", "future preparation and matrix selection consume repository-bound scenario state", "existing accounting precedent rejects external-only state", "a tracked successor prevents stale OPEN VM-04 replay"],
+    "external_only_sufficient": false,
+    "vm06_execution_before_freeze": false
+  },
+  "independent_reviews": {
+    "closure_fidelity": {"verdict": "PASS", "findings": [], "basis": "R5 expressly authorizes reuse; all 18 sealed entries and closure properties independently validate without rerun"},
+    "matrix_requirement_accounting": {"verdict": "PASS", "findings": [], "basis": "VM-02A and complete VM-03A/B accepted; exact INS residual ownership preserved; VM-06 is next only after accounting freeze"},
+    "governance_build_lifecycle": {"verdict": "PASS", "findings": [], "basis": "Build037 remains valid; stale HEAD/accounting consumers are identified; repository persistence is required"},
+    "disagreements": []
+  },
+  "false_positive_audit": {
+    "high_token_used": false,
+    "vm02_vm03_overclaimed": false,
+    "vm06_skips_unresolved_work": false,
+    "build037_invalidated": false,
+    "consumer_staleness_ignored": false,
+    "external_only_claimed": false,
+    "repository_freeze_performed": false,
+    "vm_executed": false,
+    "verdict": "PASS"
+  },
+  "architectural_humility": [
+    {"option": "rerun VM04", "decision": "REJECT_R5_REUSE_AUTHORITY"},
+    {"option": "consume R5 evidence", "decision": "SELECT"},
+    {"option": "close without artifact", "decision": "REJECT_AUDITABILITY"},
+    {"option": "external accounting only", "decision": "REJECT_TRACKED_CONSUMER_GAP"},
+    {"option": "repository freeze", "decision": "SELECT_REQUIRED"},
+    {"option": "rebuild Build037 for HEAD only", "decision": "REJECT_NO_BYTE_DEPENDENCY"},
+    {"option": "resume VM06 without reconciliation", "decision": "REJECT"}
+  ],
+  "formal_freeze_proposal": {
+    "formal_name": "Phase 5.6B VM-04 Closure Accounting after R5 R1",
+    "commit_subject": "Record Phase 5.6B VM-04 closure accounting",
+    "annotated_tag": "phase-5.6b-vm04-closure-accounting-after-r5-r1-verified",
+    "annotation": "Verify Phase 5.6B VM-04 Closure Accounting after R5 Revision 1"
+  },
+  "prohibitions": {
+    "candidate_build_authority_preparation_mutation": true,
+    "vm_execution_or_mutation": true,
+    "build038_creation": true,
+    "vm06plus_execution": true,
+    "commit_tag_freeze_sign_publish": true
+  }
+}
