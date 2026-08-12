@@ -1,0 +1,81 @@
+{
+  "schema": "pastila-scout-phase-5.6b-full-candidate-regrounding-r2",
+  "status": "READY_FOR_SEPARATE_FORMAL_FREEZE",
+  "decision": "REPOSITORY_BUILD038_REGROUNDING_AUTHORITY_FREEZE_REQUIRED",
+  "repository_head": "2ae2f27a9814d6ce8852f451e96962d5154cd85f",
+  "wrapper_authority": {
+    "tag": "phase-5.6b-wrapper-accounting-consumer-refresh-r1-verified",
+    "tag_object": "1199c1e8c437cbc6380d91f2f3c8bcbb4aadd1bb",
+    "peel": "2ae2f27a9814d6ce8852f451e96962d5154cd85f",
+    "sha256": "DC4FAD25289A3EB4528D51CBA6452DFEB3F12580C978EEC75931F694BC9F5720"
+  },
+  "accounting_authority": {
+    "commit": "10f5404a0b290dea1351d82763dd443efc201fda",
+    "tag": "phase-5.6b-current-vm-matrix-accounting-after-r7-r8-r1-verified",
+    "sha256": "655A5253BE353AE8E332BFC12FC77982952762244274D67D3FE898981B6538F4",
+    "ancestor_of_wrapper_head": true
+  },
+  "candidate_set": {
+    "packaging/inno/PastilaScout.iss": "FE37D23D2BA2B47527A432B2DDF6BE9E3A77638536305009DEC9788CAC05E2FC",
+    "packaging/inno/build-installer.ps1": "DC4FAD25289A3EB4528D51CBA6452DFEB3F12580C978EEC75931F694BC9F5720",
+    "tests/packaging/test_inno_installer_v1.py": "831B730ABD0F8C876C48D50FB0D29DF0E47A4568B6A35C9C6F7E4599272F99CE"
+  },
+  "preparation": {
+    "root": "C:\\PastilaScout-Installer-Preparation\\phase-5.6b\\post-r7-r8-wrapper-refresh-regrounding-r2-20260812-002",
+    "context_sha256": "20A819848ACDCB5A3C1615C0232210945F30FFFFD81B08B6BA53D4F4C121292A",
+    "start_sha256": "AF12D232F62017DD96549EF25A44D3342D13693964E6FCE603D22CE4E0D6B119",
+    "release_variant_sha256": "3C8389473F7856FE138268029AD16FC528671F59ED898CBF08854EEAE1189210",
+    "dag_sha256": "39DF7A678D37CEDF9795326CEA09C036A9CC97132F3731191DF79784E1D9A08A",
+    "dag_nodes": 26,
+    "dag_edges": 25,
+    "dag_verdict": "ZERO_CYCLES",
+    "prospective_inventory_sha256": "03A0C1E22A440591D413CA5552063495F4E3695D249A1F4501103FC21A9F685D",
+    "validator_sha256": "52462F4C6E7E3BA66D5FC19DF9C4BCDE6C9E4865AA41037AABEFB4B5162AF0B0",
+    "validator_verdict": "VALID",
+    "build038_authorization_sha256": "1C6E40309D0374C9B70832AECB2159521FCF136A907F8F5D16902EB6E54702AA",
+    "final_inventory_entries": 19,
+    "final_inventory_sha256": "131C23EE5CF1FDB855118B85FA0B92EF7A9D02AEB16F03952014E6DA3F606049"
+  },
+  "projections": {
+    "Release": "8AC5261DADCE455FEFAD9D2DE46F0FE1EA23918BE18DF677D4D8D7759DAEC1AA",
+    "VM01A": "B7BBE7076AFD14CF82299F52C4F3437AD658DC182B255E31F708808DEA497AE5",
+    "VM05": "66D1EEF5240F2B13EF1FDE21601A3235CB8E8FE25CC4C5DD2D822881EE9FD2B2",
+    "release_dual_instrumentation_absence": "PASS",
+    "disposable_compiles": ["Release PASS", "VM01A PASS", "VM05 PASS"]
+  },
+  "wrapper_acceptance": {
+    "verdict": "ALL_REGROUNDED_RELEASE_BUILD_GATES_ACCEPTED_BEFORE_ISCC_START",
+    "intercepted_boundary_count": 1,
+    "actual_iscc_starts": 0,
+    "executable_outputs": 0
+  },
+  "matrix": {
+    "closed": ["VM01", "VM02", "VM03", "VM04", "VM05"],
+    "open": ["VM06", "VM07", "VM08", "VM09"],
+    "removed": ["VM10"],
+    "next": "VM06",
+    "execution_authority": false
+  },
+  "build_lifecycle": {
+    "Build037": "HISTORICAL_STALE_FOR_VM06_PLUS",
+    "Build038": "NOT_CREATED",
+    "next_governed_build": 38,
+    "authority_after_freeze": "FRESH_INSTRUMENTATION_FREE_RELEASE_BUILD038_AUTHORITY_READY"
+  },
+  "vm06": {
+    "findings_open": 11,
+    "execution_authority": false
+  },
+  "preservation": {
+    "candidate_mutation": "NONE",
+    "build038_created": false,
+    "vm_execution": "NOT_PERFORMED",
+    "signing": false,
+    "publication": false
+  },
+  "freeze_proposal": {
+    "commit_subject": "Record Phase 5.6B full candidate regrounding after wrapper refresh",
+    "annotated_tag": "phase-5.6b-full-candidate-regrounding-r2-verified",
+    "annotation": "Verify Phase 5.6B Full Candidate-Dependent Regrounding Revision 2"
+  }
+}
