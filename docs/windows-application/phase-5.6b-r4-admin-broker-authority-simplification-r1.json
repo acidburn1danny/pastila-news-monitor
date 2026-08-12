@@ -1,0 +1,151 @@
+{
+  "schema": "pastila-scout-phase-5.6b-r4-admin-broker-authority-simplification-r1",
+  "formal_name": "Phase 5.6B R4 Administrative Broker Authority Simplification R1",
+  "status": "READY_FOR_SEPARATE_FORMAL_FREEZE",
+  "decision": "SIMPLE_LOCAL_DESKTOP_SECURITY_SUFFICIENT_FOR_ONE_TRUSTED_USER",
+  "scope": "AUTHORITY_SIMPLIFICATION_ONLY",
+  "product_priority": "Scout -> Editor -> Editor-Chief",
+  "authority_inputs": {
+    "repository_head": "123c9144b38e787756f7f856474cbb76802fa75a",
+    "simplification_sha256": "B406134B1184BF97EDA51365C7D427CFC9D7C4CCBF51EF6FD446107A2B97B620",
+    "administrative_bootstrap_sha256": "1D1331B3F76142802AE0687691BB029305F1A968898B2D700C3DB12B246FEBDE",
+    "revision_4_sha256": "7D927F3505A253B9E3A5A0080C2B345F1A1D5A724F64BB88E12CF252AC0E3B25"
+  },
+  "precedence": {
+    "applies_to": "Phase5_6B_R4_Administrative_Broker_Bootstrap.md",
+    "overrides_only": [
+      "the requirement that bootstrap execute specifically as DESKTOP-HLIAI3U\\Phase56bAdmin",
+      "the requirement that bootstrap provenance be established by one named administrator account",
+      "FURTHER_AUTHORITY_REQUIRED when the only missing fact is named-administrator provenance"
+    ],
+    "does_not_override": [
+      "Revision 4 qualification authority",
+      "consumer non-administrator requirements",
+      "service identity, service SID, ACL, service-DACL, IPC, validation, denial, authority-custody, rollback, recovery, evidence, review, or preservation gates"
+    ]
+  },
+  "deployment_model": {
+    "trusted_human_users": 1,
+    "windows_pcs": 1,
+    "application_type": "LOCAL_DESKTOP",
+    "shared_workstation_boundary": false,
+    "enterprise_domain": false,
+    "multi_tenant": false,
+    "remote_administration": false,
+    "hostile_local_administrator": false,
+    "defend_against_machine_owner": false,
+    "offline_vm_required": true
+  },
+  "trusted_administrative_execution": {
+    "rule": "Bootstrap operations must execute under trusted administrative authority and resulting protected guest state must be independently verified.",
+    "allowed": [
+      "interactive Phase56bAdmin High",
+      "host-controlled PowerShell Direct administrative execution",
+      "another explicitly approved local administrator context"
+    ],
+    "powershell_direct_role": "OUT_OF_BAND_ADMINISTRATIVE_ORCHESTRATION",
+    "powershell_direct_may": [
+      "install and configure the service",
+      "configure service SID, service DACL, filesystem ownership, and ACLs",
+      "place protected files and configure local registry/service state",
+      "perform rollback, recovery, administrative inspection, and evidence collection"
+    ],
+    "powershell_direct_must_not": [
+      "be production IPC",
+      "be broker runtime authority",
+      "authenticate the consumer",
+      "be a Scout runtime dependency",
+      "grant phase56b administrative authority"
+    ],
+    "credential_transfer_required": false,
+    "result_verification_required": true
+  },
+  "mandatory_security_properties": [
+    "phase56b remains non-administrative and outside Administrators",
+    "broker service uses the intended protected service identity and correctly configured service SID",
+    "phase56b cannot modify broker binaries, configuration, or authority material",
+    "phase56b cannot modify governed Build038 or governed toolchain inputs where qualification depends on them",
+    "service DACL denies phase56b reconfiguration, deletion, and security-descriptor modification",
+    "authenticated local IPC accepts authorized requests and rejects unauthorized, malformed, stale, replayed, concurrent-invalid, and substituted requests",
+    "broker validates operation, caller, canonical paths, governed outputs, tool and input identity, anti-replay state, and expected execution topology before privileged use",
+    "protected authority material and administrator credentials remain inaccessible to phase56b",
+    "bootstrap denial checks run in the non-administrator consumer context",
+    "rollback and recovery restore a known clean state",
+    "VM networking remains disabled"
+  ],
+  "result_verification_record": [
+    "requested_state",
+    "actual_state",
+    "security_consequence",
+    "non_admin_denial_result"
+  ],
+  "in_scope_threats": [
+    "accidental non-admin mutation",
+    "unauthorized protected-consumer requests",
+    "stale or malformed privileged requests",
+    "broken rollback or recovery",
+    "accidental exposure of protected broker material"
+  ],
+  "out_of_scope_controls": [
+    "enterprise PKI",
+    "domain service accounts",
+    "multi-tenant authorization",
+    "remote broker administration",
+    "network authentication",
+    "credential delegation",
+    "certificate-based local IPC unless independently required by the implementation",
+    "hardware-backed attestation",
+    "external secret vaults",
+    "redundant administrator principals",
+    "separate administrator login solely to prove account provenance",
+    "controls whose only threat is the trusted machine owner or administrator",
+    "another governance layer solely recording who ran bootstrap"
+  ],
+  "bootstrap_execution_state": {
+    "performed_by_this_workflow": false,
+    "service_installed": false,
+    "build038_created_or_consumed": false,
+    "revision_4_started": false,
+    "native_build038_qualification": false,
+    "verdict": "NOT_EVALUATED_BY_AUTHORITY_SIMPLIFICATION"
+  },
+  "independent_reviews": {
+    "review_a_product_security_fit": {
+      "verdict": "ACCEPT",
+      "finding": "Named-administrator provenance is unnecessary for the single-owner threat model; retained result-based gates still protect every concrete R4 broker property."
+    },
+    "review_b_windows_implementation": {
+      "verdict": "ACCEPT",
+      "finding": "The successor retains service SID, protected ACL and service-DACL semantics, authenticated IPC, broker-side validation, consumer denial checks, protected authority custody, and rollback/recovery."
+    },
+    "review_c_complexity_audit": {
+      "verdict": "ACCEPT",
+      "finding": "Enterprise-only provenance, PKI, domain, remote, multi-tenant, hostile-admin, vault, attestation, and redundant-governance requirements are excluded unless a later concrete in-scope property independently requires one."
+    }
+  },
+  "car": {
+    "iterations": 1,
+    "local_fixpoint": true,
+    "action": "Resolved terminal-status ambiguity by separating authority-simplification freeze readiness from future bootstrap readiness.",
+    "regression_rule": "This artifact must never be interpreted as evidence that the broker bootstrap or Revision 4 qualification passed."
+  },
+  "terminal_status": "PHASE_5_6B_R4_ADMINISTRATIVE_BROKER_AUTHORITY_SIMPLIFICATION_R1_READY_FOR_FORMAL_FREEZE",
+  "preservation": {
+    "historical_authority_rewritten": false,
+    "historical_evidence_mutated": false,
+    "pre_existing_untracked_state_preserved": true,
+    "networking_enabled": false,
+    "phase56b_elevated": false,
+    "commit": false,
+    "tag": false,
+    "freeze": false,
+    "signing": false,
+    "publication": false
+  },
+  "formal_freeze_proposal": {
+    "commit_subject": "Simplify Phase 5.6B R4 administrative broker authority",
+    "annotated_tag": "phase-5.6b-r4-admin-broker-authority-simplification-r1-verified",
+    "annotation": "Verify Phase 5.6B R4 Administrative Broker Authority Simplification Revision 1"
+  },
+  "next_step": "Separately review and formally freeze this successor authority; only afterward execute the administrative broker bootstrap under trusted administrative authority with full result-based verification, then stop before Revision 4 qualification."
+}
