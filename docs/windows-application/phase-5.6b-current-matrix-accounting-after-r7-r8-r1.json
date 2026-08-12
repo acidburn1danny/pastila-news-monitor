@@ -1,0 +1,97 @@
+{
+  "schema": "pastila-scout-phase-5.6b-current-matrix-accounting-after-r7-r8-v1",
+  "formal_name": "Phase 5.6B Post-R7/R8 Current Matrix Accounting Successor R1",
+  "status": "READY_FOR_FORMAL_FREEZE",
+  "repository": {
+    "branch": "feature/openai-sdk",
+    "head": "bb05e73c8b6962d4ea2a664a0c79190a10e2e4b5",
+    "candidate_mutation": "NONE",
+    "wrapper_mutation": "NONE"
+  },
+  "predecessor": {
+    "path": "docs/windows-application/phase-5.6b-remaining-matrix-accounting-r1.json",
+    "sha256": "9BC6D91F1B62D7F4281E4522813377352E5B35716C71D2DD23399D2D84AF9427",
+    "tag": "phase-5.6b-remaining-vm-matrix-accounting-r1-verified",
+    "tag_object": "9744a83b4b415ecd055de4bc977a53967007d168",
+    "peel": "80f1b9ba7eb3783f42c971c3a3cfb628adbb3829",
+    "classification": "HISTORICAL_ACCOUNTING_PREDECESSOR_SUPERSEDED_FOR_CURRENT_CONSUMPTION"
+  },
+  "current_frozen_chain": [
+    {"authority":"VM04 expected-exit R5","commit":"8599f8fc1ef50992ef76f44562c1b3affa0e9f52","tag":"phase-5.6b-vm04a-expected-exit-frozen-authority-maintenance-r5-verified","tag_object":"f514af0a6b6dda1e1f6801cbd0f6472b275615ee","sha256":"4475C829F85E9CF34E2A7246594B4C83C5E44D70732AF17C260CAF3A34AF2376"},
+    {"authority":"VM04 closure accounting","commit":"4f016f8c01d761104be14146a570e6456a5e20f8","tag":"phase-5.6b-vm04-closure-accounting-after-r5-r1-verified","tag_object":"420779fa4bb0c065aa28e0b2b144fc937ad64120","sha256":"BF3A091C570EABD27FDF0BF18F7AE4168F1D4DC876C474B07EB0CE0E3D02BA6D"},
+    {"authority":"R6 publication result schema","commit":"a57ea2b58a97731620f5a627c98924baab0e262e","tag":"phase-5.6b-surface-publication-failure-result-schema-r6-verified","tag_object":"f0a204a811f182dc9921ecdd15ffba0883c74abb","sha256":"0DAB197B0E353D618C48BC44FDDD92F99B4FE37571B03DBEE59561E706B96DCB"},
+    {"authority":"R7 transactional repair","commit":"a77133868d9242a5012bf21f30908dadd8563cdc","tag":"phase-5.6b-transactional-publication-failure-repair-authority-r7-verified","tag_object":"5f4ddcd56ca82db6126c5275ee1c4bd22d007e74","sha256":"2E9C7190D7BC9F412017827E0C25B320AAEDD7CC7B91D941F810CE727A2FF1CD"},
+    {"authority":"R8 uninstaller surface correction","commit":"e3a65b1151e3137c4aee31b5c2deecadabe38d09","tag":"phase-5.6b-mandatory-uninstaller-surface-set-r8-verified","tag_object":"fe81de6c31464c91a9a3f974903e508edceeb9b0","sha256":"76E310365CC002A0987569C5092E5A23C13577E9F5B1C6E086799BCEBDA6E9BE"},
+    {"authority":"ownership refresh R2","commit":"29953f0ee38093b6b028eeb68a602d175c191b72","tag":"phase-5.6b-r7-r8-installer-test-ownership-refresh-r2-verified","tag_object":"46f926ebae7651113946e3635954f43093617c6a","sha256":"63E8E773C5F049C224D1E0C51C7F36E36E5232A7AD6219FE2F3F18AFE1F32933"},
+    {"authority":"ownership consumer rebind R1","commit":"bb05e73c8b6962d4ea2a664a0c79190a10e2e4b5","tag":"phase-5.6b-r7-r8-installer-test-ownership-consumer-rebind-r1-verified","tag_object":"73b51eab54aa11d4ac2fe6625c914132fccfe16c","sha256":"DC77DCE9B1AFCFBA05EE7E0C1D11CD2557FF3BF25B056E7C019827603646830C"}
+  ],
+  "validated_candidate": {
+    "packaging/inno/PastilaScout.iss": {"size":53211,"lines":1341,"sha256":"FE37D23D2BA2B47527A432B2DDF6BE9E3A77638536305009DEC9788CAC05E2FC"},
+    "packaging/inno/build-installer.ps1": {"size":18920,"lines":260,"sha256":"68A260CA6C6E4FF3BBC4B7603A9E68A60A424CCE364BD99D16ADC70BE646101A"},
+    "tests/packaging/test_inno_installer_v1.py": {"size":20503,"lines":543,"sha256":"831B730ABD0F8C876C48D50FB0D29DF0E47A4568B6A35C9C6F7E4599272F99CE"},
+    "full_suite": {"passed":6663,"skipped":2,"failed":0,"runtime_seconds":504.56,"exit_code":0,"log_sha256":"67CBCB33E9C863EAA4F9B6500D458731A4F543F1D73564BF0D72FC7D3E92100A"}
+  },
+  "scenario_transitions": [
+    {"scenario":"VM-01","prior":"CLOSED","transition":"retained sealed R4 Build036 acceptance","current":"CLOSED","confirmation_obligation":"VM01A projection, disposable compile, and static regression confirmation during regrounding; no scenario rerun implied"},
+    {"scenario":"VM-02","prior":"OPEN","transition":"sole VM-02A accepted, review SHA 51985233DE5AA63DC539B703F092925AA3011E35335B512859B57F2E38067FB1","current":"CLOSED","confirmation_obligation":"none; unchanged wrapper rejects overlap before ISCC/product execution"},
+    {"scenario":"VM-03A","prior":"OPEN","transition":"accepted, review SHA 393A980550F9904EE74616E5B58BAAAEF5AC98A6F6EB19D7AFDED124B2FA7965","current":"CLOSED","confirmation_obligation":"none; historical closure remains evidence-bound"},
+    {"scenario":"VM-03B","prior":"OPEN","transition":"accepted, review SHA 9F445CC0A5074C47A1278E06060FA1CD56BBE23D54EAC6C448F7240A0C3A05E3","current":"CLOSED","confirmation_obligation":"none; historical closure remains evidence-bound"},
+    {"scenario":"VM-04","prior":"OPEN","transition":"R5-authorized sealed faithful Medium evidence consumption","current":"CLOSED","confirmation_obligation":"none; destination preflight exit7 is outside post-activation R7/R8 path"},
+    {"scenario":"VM-05","prior":"CLOSED","transition":"retained sealed Build034 acceptance","current":"CLOSED","confirmation_obligation":"VM05 projection, disposable compile, and static regression confirmation during regrounding; no scenario rerun implied"}
+  ],
+  "closed_scenario_impact": [
+    {"scenario":"VM-01","changed_code_reachable":true,"acceptance_semantics_affected":false,"existing_evidence_sufficient":true,"decision":"CLOSED","reason":"R7/R8 publication transaction follows activation; frozen activation/cleanup failure allocation is not reinterpreted"},
+    {"scenario":"VM-02","changed_code_reachable":false,"acceptance_semantics_affected":false,"existing_evidence_sufficient":true,"decision":"CLOSED","reason":"unchanged wrapper rejects WorkRoot overlap before ISCC or installer-product execution"},
+    {"scenario":"VM-03A","changed_code_reachable":false,"acceptance_semantics_affected":false,"existing_evidence_sufficient":true,"decision":"CLOSED","reason":"output-root containment failure precedes publication transaction"},
+    {"scenario":"VM-03B","changed_code_reachable":false,"acceptance_semantics_affected":false,"existing_evidence_sufficient":true,"decision":"CLOSED","reason":"output-root containment failure precedes publication transaction"},
+    {"scenario":"VM-04","changed_code_reachable":false,"acceptance_semantics_affected":false,"existing_evidence_sufficient":true,"decision":"CLOSED","reason":"canonical destination rejection occurs in PrepareToInstall before activation/publication"},
+    {"scenario":"VM-05","changed_code_reachable":true,"acceptance_semantics_affected":false,"existing_evidence_sufficient":true,"decision":"CLOSED","reason":"frozen activation/restoration failure evidence remains historical; VM05 projection, disposable compile, and static regression confirmation are required during regrounding; no scenario rerun implied"}
+  ],
+  "matrix": {
+    "VM-01":"CLOSED","VM-02":"CLOSED","VM-03":"CLOSED","VM-03A":"CLOSED","VM-03B":"CLOSED","VM-04":"CLOSED","VM-05":"CLOSED",
+    "VM-06":"OPEN","VM-07":"OPEN","VM-08":"OPEN","VM-09":"OPEN","VM-10":"REMOVED_NOT_APPLICABLE",
+    "next_execution_scenario":"VM-06","execution_authorized_here":false
+  },
+  "requirement_residuals": [
+    {"requirement":"INS-017","closed_allocations":["VM-03","VM-04"],"open_residual":["VM-08"]},
+    {"requirement":"INS-058","closed_allocations":["VM-04"],"open_residual":["VM-07"]},
+    {"requirement":"INS-059","closed_allocations":["VM-04"],"open_residual":["VM-08"]},
+    {"requirement":"INS-026","closed_allocations":[],"open_residual":["VM-06A","VM-06B"]},
+    {"requirement":"non-additive open-scenario summary","classification":"SCENARIO_SUMMARY_NOT_REQUIREMENT_ALLOCATION","excludes":["INS-017","INS-026","INS-058","INS-059"],"open_scenarios":["VM-06","VM-07","VM-08","VM-09"]}
+  ],
+  "build_lifecycle": {
+    "Build034":"HISTORICAL_VM05_TEST_INSTRUMENTED_EVIDENCE_ONLY",
+    "Build035":"HISTORICAL_INSTRUMENTATION_FREE_RELEASE_EVIDENCE_ONLY",
+    "Build036":"HISTORICAL_VM01A_TEST_INSTRUMENTED_EVIDENCE_ONLY",
+    "Build037":"HISTORICAL_STALE_FOR_VM06_PLUS",
+    "Build038":"NOT_CREATED",
+    "NEXT_EXPECTED_GOVERNED_RELEASE_BUILD":"038",
+    "fresh_release_requirement":"FRESH_INSTRUMENTATION_FREE_RELEASE_REQUIRED_BEFORE_VM06_EXECUTION"
+  },
+  "r6_r7_r8_semantics": {
+    "publication_failure":{"class":"surface_publication_failure","stage":"surface_publication","custom_code":11,"native_exit":4},
+    "cleanup_override":{"class":"cleanup_failure","stage":"cleanup","custom_code":9,"initiating_failure":{"class":"surface_publication_failure","stage":"surface_publication","result_code":11}},
+    "transaction_commit":"activation plus independent verification of every mandatory surface",
+    "mandatory_surfaces":["HKCU64_ARP","unins000.exe","unins000.dat","START_MENU_SHORTCUT"],
+    "unins000.msg":"ABSENT_NOT_APPLICABLE_SYNTHESIS_FORBIDDEN"
+  },
+  "vm06_r2_findings": [
+    "mandatory Mode/CaseId","bounded waits","linked High proof","same-launch child","authoritative WTS Active proof","ACL apply/reread/effective-denial proof","full acceptance contract","exact R2 origin/revert","independent recomputation","active negative-security falsification","physical inventory closure"
+  ],
+  "vm06_r2_findings_state":"ALL_ELEVEN_OPEN",
+  "wrapper_consumption": {
+    "decision":"CURRENT_ACCOUNTING_SUCCESSOR_REQUIRED_FOR_WRAPPER_REBIND",
+    "next_workflow":"GOVERNED_WRAPPER_ACCOUNTING_CONSUMER_REFRESH_REQUIRED",
+    "authority_direction":"ACCOUNTING_SUCCESSOR_TO_WRAPPER_REFRESH_TO_PROSPECTIVE_CONTEXT_AND_PREPARATION",
+    "future_contract":["bind exact successor SHA, annotated tag, and fixed accounting-successor commit peel","require accounting-successor commit to be an ancestor and immutable authority input of the wrapper-refresh commit","bind current Git HEAD to the separately frozen wrapper-refresh authority/consumer tag peel, not to the older accounting-successor peel","require prospective context to bind both current wrapper-refresh HEAD and accounting successor SHA/tag/peel without equating their commits","reject predecessor accounting R1 and all stale chain states","add positive current-chain and negative stale predecessor/wrong-successor-tag/wrong-peel/wrong-SHA/non-ancestor/wrong-current-wrapper-HEAD-or-tag/context tests","establish and validate a new wrapper candidate identity before regrounding"],
+    "cycles":[]
+  },
+  "stale_replay_rejections":["predecessor accounting R1","pre-R5 VM04-open state","pre-R6 schema","pre-R7 transaction","pre-R8 three-uninstaller-file state","pre-ownership-R2 state","pre-consumer-rebind state","Build037 as current VM06 fixture"],
+  "architectural_humility":"FREEZE_CURRENT_ACCOUNTING_SUCCESSOR_THEN_REFRESH_WRAPPER_FAIL_CLOSED",
+  "formal_freeze_proposal": {
+    "commit_subject":"Refresh Phase 5.6B current VM matrix accounting after R7/R8",
+    "annotated_tag":"phase-5.6b-current-vm-matrix-accounting-after-r7-r8-r1-verified",
+    "annotation":"Verify Phase 5.6B Post-R7/R8 Current VM Matrix Accounting Successor Revision 1"
+  },
+  "prohibitions":{"wrapper_mutation":true,"candidate_mutation":true,"build038_creation":true,"vm_execution":true,"projection_preparation_dag":true,"commit_tag_freeze_sign_publish":true}
+}
