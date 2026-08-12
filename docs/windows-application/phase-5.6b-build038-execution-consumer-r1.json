@@ -1,0 +1,161 @@
+{
+  "schema": "pastila-scout-phase-5.6b-build038-execution-consumer-r1",
+  "formal_name": "Phase 5.6B Final Nonrecursive Build-Execution Authority / External Launcher Identity R1",
+  "status": "FROZEN_EXECUTION_AUTHORITY",
+  "decision": "EXTERNAL_LAUNCHER_IDENTITY_AND_FINAL_EXECUTION_AUTHORITY_FREEZE_REQUIRED",
+  "parent_head": "4f3ae364c156e14a1304ba046730889b8d9c9113",
+  "execution_tag": "phase-5.6b-build038-execution-consumer-r1-verified",
+  "launcher_path": "C:\\PastilaScout-Installer-Evidence\\phase-5.6b\\nonrecursive-governed-launcher-r1-20260812-001\\invoke-governed-build.ps1",
+  "launcher_size": 12654,
+  "launcher_lines": 104,
+  "launcher_sha256": "91D88EFF4B0A541B16F8F6D855962A21C9E932AE9C4F37D7D05172E9185425EB",
+  "launcher_git_blob_format": "22987a2f4b5350d92632cd043722d41b66bfb7e8",
+  "launcher_line_endings": "LF_ONLY_ZERO_CR",
+  "r9": {
+    "path": "docs/windows-application/authority-maintenance-r9.json",
+    "sha256": "C8C1F69E1D7A920B73E2F424F1833A6DC25191278C4FD2C275375D0256BD40FB",
+    "tag": "phase-5.6b-nonrecursive-build-execution-authority-r9-verified",
+    "tag_object": "e66aaaf5137d5091e66588ab48d7ab953f036ad1",
+    "peel": "4f3ae364c156e14a1304ba046730889b8d9c9113"
+  },
+  "regrounding": {
+    "path": "docs/windows-application/phase-5.6b-full-candidate-regrounding-r2.json",
+    "sha256": "8FEEAD6E874CB988E2ECDD487F99326D9BA65E63CBE2371121A034330D48D74E",
+    "tag": "phase-5.6b-full-candidate-regrounding-r2-verified",
+    "tag_object": "cc4e04fee5413bd78686852b6c5f6dc6ea37885a",
+    "peel": "1ff89e4511c8c60de0b6b2e8ee760e8147a4072f"
+  },
+  "wrapper_authority": {
+    "path": "packaging/inno/build-installer.ps1",
+    "sha256": "DC4FAD25289A3EB4528D51CBA6452DFEB3F12580C978EEC75931F694BC9F5720",
+    "tag": "phase-5.6b-wrapper-accounting-consumer-refresh-r1-verified",
+    "tag_object": "1199c1e8c437cbc6380d91f2f3c8bcbb4aadd1bb",
+    "peel": "2ae2f27a9814d6ce8852f451e96962d5154cd85f"
+  },
+  "accounting": {
+    "path": "docs/windows-application/phase-5.6b-current-matrix-accounting-after-r7-r8-r1.json",
+    "sha256": "655A5253BE353AE8E332BFC12FC77982952762244274D67D3FE898981B6538F4",
+    "tag": "phase-5.6b-current-vm-matrix-accounting-after-r7-r8-r1-verified",
+    "tag_object": "dead6e7d5ecefc462fd028dec475415ad3f674e9",
+    "peel": "10f5404a0b290dea1351d82763dd443efc201fda"
+  },
+  "ownership": {
+    "record_path": "docs/windows-application/phase-5.6b-r7-r8-installer-test-ownership-refresh-r2.json",
+    "record_sha256": "63E8E773C5F049C224D1E0C51C7F36E36E5232A7AD6219FE2F3F18AFE1F32933",
+    "record_tag": "phase-5.6b-r7-r8-installer-test-ownership-refresh-r2-verified",
+    "record_peel": "29953f0ee38093b6b028eeb68a602d175c191b72",
+    "consumer_path": "tests/packaging/test_frozen_application_v1.py",
+    "consumer_sha256": "DC77DCE9B1AFCFBA05EE7E0C1D11CD2557FF3BF25B056E7C019827603646830C",
+    "consumer_tag": "phase-5.6b-r7-r8-installer-test-ownership-consumer-rebind-r1-verified",
+    "consumer_peel": "bb05e73c8b6962d4ea2a664a0c79190a10e2e4b5"
+  },
+  "candidates": {
+    "iss": "FE37D23D2BA2B47527A432B2DDF6BE9E3A77638536305009DEC9788CAC05E2FC",
+    "wrapper": "DC4FAD25289A3EB4528D51CBA6452DFEB3F12580C978EEC75931F694BC9F5720",
+    "installer_test": "831B730ABD0F8C876C48D50FB0D29DF0E47A4568B6A35C9C6F7E4599272F99CE"
+  },
+  "preparation_root": "C:\\PastilaScout-Installer-Preparation\\phase-5.6b\\post-r7-r8-wrapper-refresh-regrounding-r2-20260812-002",
+  "preparation": {
+    "context_sha256": "20A819848ACDCB5A3C1615C0232210945F30FFFFD81B08B6BA53D4F4C121292A",
+    "implementation_start_sha256": "AF12D232F62017DD96549EF25A44D3342D13693964E6FCE603D22CE4E0D6B119",
+    "release_variant_sha256": "3C8389473F7856FE138268029AD16FC528671F59ED898CBF08854EEAE1189210",
+    "dependency_dag_sha256": "39DF7A678D37CEDF9795326CEA09C036A9CC97132F3731191DF79784E1D9A08A",
+    "prospective_inventory_sha256": "03A0C1E22A440591D413CA5552063495F4E3695D249A1F4501103FC21A9F685D",
+    "validator_sha256": "52462F4C6E7E3BA66D5FC19DF9C4BCDE6C9E4865AA41037AABEFB4B5162AF0B0",
+    "final_inventory_sha256": "131C23EE5CF1FDB855118B85FA0B92EF7A9D02AEB16F03952014E6DA3F606049",
+    "build038_authorization_sha256": "1C6E40309D0374C9B70832AECB2159521FCF136A907F8F5D16902EB6E54702AA",
+    "release_projection_sha256": "8AC5261DADCE455FEFAD9D2DE46F0FE1EA23918BE18DF677D4D8D7759DAEC1AA",
+    "vm01a_projection_sha256": "B7BBE7076AFD14CF82299F52C4F3437AD658DC182B255E31F708808DEA497AE5",
+    "vm05_projection_sha256": "66D1EEF5240F2B13EF1FDE21601A3235CB8E8FE25CC4C5DD2D822881EE9FD2B2"
+  },
+  "launcher_qualification": {
+    "evidence_root": "C:\\PastilaScout-Installer-Evidence\\phase-5.6b\\nonrecursive-governed-launcher-r1-20260812-001",
+    "inventory_entries": 800,
+    "inventory_size": 227128,
+    "inventory_sha256": "C61FF4ABCFFE056BE8DE1C1735AB348063E82D3516536E44CB33719438FCB5F3",
+    "final_inventory_review_sha256": "B82A79C5E5C039C7042FE3806A8987FB967E23E56CF2F3025114848AFC61D88E",
+    "positive_control": "PASS",
+    "intercepted_pre_iscc_boundary": 1,
+    "actual_iscc_starts": 0,
+    "executable_outputs": 0,
+    "active_negative_cases": 32,
+    "active_negative_passed": 32,
+    "wrong_gate_failures": 0,
+    "reviews": "PASS_PASS_PASS",
+    "dag": "ZERO_AUTHORITY_CYCLES"
+  },
+  "immutable_wrapper_contract": {
+    "source_is_exact_git_blob": true,
+    "authorized_overlays": [
+      "packaging/inno/PastilaScout.iss",
+      "tests/packaging/test_inno_installer_v1.py"
+    ],
+    "all_other_changes_forbidden": true,
+    "pre_and_post_hashes_required": true,
+    "exact_status_required": true,
+    "verified_cleanup_required": true,
+    "stale_wrapper_product_input_forbidden": true
+  },
+  "build_lifecycle": {
+    "Build037": "HISTORICAL_STALE_FOR_VM06_PLUS",
+    "Build038": "NEXT_GOVERNED_BUILD_NOT_CREATED",
+    "Build039": "UNAUTHORIZED",
+    "build_root": "C:\\PastilaScout-Installer-Build\\phase-5.6b\\build-20260812-038",
+    "aborted_attempt": "SEALED_PRE_ISCC_NEGATIVE_EVIDENCE",
+    "aborted_seal_sha256": "A1281CC5CC294F0A43EBD0FE2BABF54D74A60E9C940C5E7E6A9EFBDA65669A10",
+    "aborted_inventory_sha256": "240DC70C6A944B51E9F2E7CEE2469A1592B4970D0E0FC14C6DBBE2FF50E5E33A",
+    "reuse": "ONLY_AFTER_FREEZE_AND_POST_FREEZE_NONPRODUCING_CONTROL_PASS"
+  },
+  "matrix": {
+    "VM01_VM05": "CLOSED",
+    "VM06_VM09": "OPEN_NOT_EXECUTED",
+    "VM10": "REMOVED_NOT_APPLICABLE",
+    "vm06_r2_findings_open": 11,
+    "vm06_execution_authority": false
+  },
+  "authority_dag": {
+    "order": [
+      "accounting",
+      "ownership",
+      "wrapper-refresh",
+      "regrounding-R2",
+      "R9",
+      "external-launcher",
+      "final-execution-record",
+      "final-execution-tag",
+      "immutable-execution-checkout",
+      "post-freeze-positive-control",
+      "future-Build038"
+    ],
+    "cycles": [],
+    "artifact_dependency": false,
+    "verdict": "ZERO_AUTHORITY_CYCLES"
+  },
+  "post_freeze_gate": {
+    "required": true,
+    "nonproducing": true,
+    "final_tagged_checkout_required": true,
+    "launcher_sha256": "91D88EFF4B0A541B16F8F6D855962A21C9E932AE9C4F37D7D05172E9185425EB",
+    "intercepted_boundary_required": 1,
+    "actual_iscc_starts_required": 0,
+    "executables_required": 0,
+    "failure_consequence": "BUILD038_REMAINS_UNAUTHORIZED"
+  },
+  "freeze_identity_status": {
+    "record_path": "DETERMINED",
+    "schema": "DETERMINED",
+    "annotated_tag": "DETERMINED",
+    "commit_subject": "NOT_PRESENT_IN_REVIEWED_EVIDENCE",
+    "annotation": "NOT_PRESENT_IN_REVIEWED_EVIDENCE",
+    "formal_freeze": "STOP_PENDING_EXACT_REVIEWED_COMMIT_SUBJECT_AND_ANNOTATION"
+  },
+  "preservation": {
+    "candidate_mutation": "NONE",
+    "wrapper_mutation": "NONE",
+    "native_iscc_execution": "NOT_PERFORMED",
+    "build038_created": false,
+    "vm_execution": "NOT_PERFORMED",
+    "signing": false,
+    "publication": false
+  }
+}
