@@ -1,0 +1,155 @@
+{
+  "schema": "pastila-scout-phase-5.6b-nonrecursive-build-execution-consumer-authority-r9",
+  "formal_name": "Phase 5.6B Nonrecursive Build-Execution Consumer Authority Schema Maintenance R9",
+  "status": "READY_FOR_SEPARATE_FORMAL_FREEZE",
+  "decision": "EXTERNAL_NONRECURSIVE_BUILD_EXECUTION_CONSUMER_WITH_IMMUTABLE_FROZEN_WRAPPER",
+  "problem": {
+    "classification": "SECOND_ORDER_WRAPPER_HEAD_GOVERNANCE_RECURSION",
+    "required_resolution": "NONRECURSIVE_BUILD_EXECUTION_CONSUMER_REQUIRED",
+    "live_head": "1ff89e4511c8c60de0b6b2e8ee760e8147a4072f",
+    "wrapper_authority_peel": "2ae2f27a9814d6ce8852f451e96962d5154cd85f",
+    "observed_gate": "repository HEAD does not match frozen wrapper authority",
+    "actual_iscc_starts": 0,
+    "executable_outputs": 0,
+    "product_or_compiler_defect": false
+  },
+  "rejected_alternatives": [
+    "move historical tags",
+    "ancestry-only live-HEAD validation",
+    "detached old live checkout as authority substitute",
+    "Git spoofing or environment/CLI HEAD override",
+    "warning-only mismatch",
+    "hard-code the current transient HEAD in another wrapper commit",
+    "chase later HEAD through repeated wrapper mutation",
+    "bypass frozen wrapper checks",
+    "reuse Build037",
+    "advance to Build039"
+  ],
+  "authority_roles": {
+    "build_execution_checkout": {
+      "authority_model": "FINAL_STABLE_ANNOTATED_BUILD_EXECUTION_TAG",
+      "future_tag": "phase-5.6b-build038-execution-consumer-r1-verified",
+      "head_must_equal_future_tag_peel": true,
+      "must_bind_regrounding_tag": "phase-5.6b-full-candidate-regrounding-r2-verified",
+      "must_bind_r9_tag": "phase-5.6b-nonrecursive-build-execution-authority-r9-verified",
+      "caller_working_tree_head_is_not_authority": true
+    },
+    "immutable_wrapper_source": {
+      "annotated_tag": "phase-5.6b-wrapper-accounting-consumer-refresh-r1-verified",
+      "tag_object": "1199c1e8c437cbc6380d91f2f3c8bcbb4aadd1bb",
+      "peel": "2ae2f27a9814d6ce8852f451e96962d5154cd85f",
+      "path": "packaging/inno/build-installer.ps1",
+      "sha256": "DC4FAD25289A3EB4528D51CBA6452DFEB3F12580C978EEC75931F694BC9F5720"
+    },
+    "accounting": {
+      "commit": "10f5404a0b290dea1351d82763dd443efc201fda",
+      "annotated_tag": "phase-5.6b-current-vm-matrix-accounting-after-r7-r8-r1-verified",
+      "sha256": "655A5253BE353AE8E332BFC12FC77982952762244274D67D3FE898981B6538F4"
+    },
+    "build_authorization": {
+      "authority_path": "docs/windows-application/phase-5.6b-full-candidate-regrounding-r2.json",
+      "sha256": "8FEEAD6E874CB988E2ECDD487F99326D9BA65E63CBE2371121A034330D48D74E",
+      "preparation_root": "C:\\PastilaScout-Installer-Preparation\\phase-5.6b\\post-r7-r8-wrapper-refresh-regrounding-r2-20260812-002",
+      "build038_authorization_sha256": "1C6E40309D0374C9B70832AECB2159521FCF136A907F8F5D16902EB6E54702AA"
+    }
+  },
+  "launcher_contract": [
+    "validate immutable build-execution checkout HEAD equals its final stable annotated execution-authority tag peel",
+    "validate the execution-authority record binds exact frozen R9, launcher identity, regrounding R2, candidates, and preparation",
+    "validate exact regrounding authority SHA and preparation identities",
+    "validate exact live candidate 3/3",
+    "validate accounting SHA, annotated tag, and peel",
+    "validate wrapper annotated tag, object, peel, path, and SHA",
+    "materialize only the wrapper-refresh commit at a collision-free temporary path",
+    "rehash the immutable wrapper before execution",
+    "overlay exactly two allowlisted current authorized inputs, PastilaScout.iss and test_inno_installer_v1.py, into their wrapper-permitted paths",
+    "rehash wrapper and both overlays before and after execution and require Git status contains only those exact two untracked paths",
+    "invoke the immutable wrapper with exact preparation root and explicit Release variant",
+    "independently enforce final build-execution checkout authority that the frozen wrapper cannot express nonrecursively",
+    "preserve wrapper accounting, candidate, preparation, projection, DAG, inventory, and variant gates",
+    "write no output into the immutable source materialization and verify cleanup"
+  ],
+  "immutable_wrapper_semantics": {
+    "source_commit_exact": true,
+    "wrapper_script_edits_forbidden": true,
+    "allowlisted_candidate_overlays": ["packaging/inno/PastilaScout.iss", "tests/packaging/test_inno_installer_v1.py"],
+    "all_other_materialization_changes_forbidden": true,
+    "wrapper_sha_reverified": true,
+    "current_candidate_inputs_required": true,
+    "stale_wrapper_commit_product_inputs_forbidden": true,
+    "temporary_only": true,
+    "output_outside_materialization": true
+  },
+  "live_candidate_set": {
+    "packaging/inno/PastilaScout.iss": "FE37D23D2BA2B47527A432B2DDF6BE9E3A77638536305009DEC9788CAC05E2FC",
+    "packaging/inno/build-installer.ps1": "DC4FAD25289A3EB4528D51CBA6452DFEB3F12580C978EEC75931F694BC9F5720",
+    "tests/packaging/test_inno_installer_v1.py": "831B730ABD0F8C876C48D50FB0D29DF0E47A4568B6A35C9C6F7E4599272F99CE"
+  },
+  "preparation_contract": {
+    "final_inventory_entries": 19,
+    "final_inventory_sha256": "131C23EE5CF1FDB855118B85FA0B92EF7A9D02AEB16F03952014E6DA3F606049",
+    "validator": "VALID",
+    "dag_nodes": 26,
+    "dag_edges": 25,
+    "dag_verdict": "ZERO_CYCLES"
+  },
+  "compatibility_responsibility": [
+    {"invariant":"immutable wrapper commit/SHA","wrapper":true,"launcher":true,"input":"wrapper annotated tag","duplication":"intentional defense-in-depth"},
+    {"invariant":"accounting SHA/tag/peel","wrapper":true,"launcher":true,"input":"exact frozen accounting authority","duplication":"intentional"},
+    {"invariant":"current candidate 3/3","wrapper":true,"launcher":true,"input":"live authorized paths","duplication":"intentional"},
+    {"invariant":"preparation/projections/DAG/inventories/Release variant","wrapper":true,"launcher":true,"input":"root 002","duplication":"intentional"},
+    {"invariant":"execution checkout HEAD equals final execution-authority tag peel","wrapper":false,"launcher":true,"input":"immutable execution checkout","duplication":"no"},
+    {"invariant":"Build038 authorization","wrapper":false,"launcher":true,"input":"frozen R2 authority","duplication":"no"}
+  ],
+  "no_bypass_verdict": "IMMUTABLE_WRAPPER_EXECUTION_IS_NOT_PROVENANCE_BYPASS",
+  "aborted_build038": {
+    "root": "C:\\PastilaScout-Installer-Build\\phase-5.6b\\build-20260812-038",
+    "classification": "BUILD038_ABORTED_PRE_ISCC_NEGATIVE_EVIDENCE",
+    "files": 0,
+    "executables": 0,
+    "compiler_started": false,
+    "accepted_provenance": false,
+    "reuse": "BUILD038_NUMBER_AND_ROOT_REUSE_AUTHORIZED_AFTER_EMPTY_ABORT_SEAL",
+    "empty_abort_evidence_root": "C:\\PastilaScout-Installer-Evidence\\phase-5.6b\\build038-pre-iscc-abort-r1-20260812-001",
+    "empty_abort_seal_sha256": "A1281CC5CC294F0A43EBD0FE2BABF54D74A60E9C940C5E7E6A9EFBDA65669A10",
+    "empty_abort_inventory_sha256": "240DC70C6A944B51E9F2E7CEE2469A1592B4970D0E0FC14C6DBBE2FF50E5E33A",
+    "reuse_preflight": "immediately before reuse require the root to be non-reparse and contain exactly the work-release and output-release directory entries; require each child directory to be non-reparse and empty; require zero files and zero executables recursively; reject every additional entry"
+  },
+  "launcher_persistence_model": "SEPARATELY_REVIEWED_AND_FROZEN_EXECUTION_BEARING_LAUNCHER_REQUIRED",
+  "positive_control": {
+    "expected": "ALL_NONRECURSIVE_BUILD_EXECUTION_GATES_ACCEPTED_BEFORE_ISCC",
+    "actual_iscc_starts": 0
+  },
+  "negative_cases": [
+    "wrong execution-checkout HEAD","wrong execution-authority tag","lightweight execution-authority tag","wrong execution-authority peel","altered regrounding authority bytes","wrong preparation root","preparation inventory mismatch","wrong ISS SHA","wrong wrapper SHA","wrong installer-test SHA","wrong wrapper tag","lightweight wrapper tag","wrong wrapper peel","altered wrapper worktree bytes","wrong accounting SHA","wrong accounting tag","wrong accounting peel","historical accounting R1 substitution","Build037 substitution","wrong Build038 authorization","arbitrary Release define","VM01A variant substitution","VM05 variant substitution","missing DAG/inventory node","stale context/start authority","altered launcher identity","unexpected Build038 root entry","nonempty Build038 work-release child","nonempty Build038 output-release child","reparse Build038 root","reparse Build038 work-release child","reparse Build038 output-release child"
+  ],
+  "authority_dag": {
+    "order": ["accounting","ownership","wrapper-refresh","regrounding-R2","R9","launcher-implementation","transitive-execution-bindings","final-execution-authority-tag","immutable-execution-checkout","immutable-wrapper-materialization","preparation","future-Build038-execution"],
+    "cycles": [],
+    "verdict": "ZERO_AUTHORITY_CYCLES"
+  },
+  "false_positive_audit": "PASS",
+  "post_freeze_sequence": [
+    "formally freeze R9",
+    "separately implement and validate launcher",
+    "run positive control and 32-case active negative matrix in isolated authority fixtures",
+    "refresh transitive build-execution bindings before the final execution-authority tag is created",
+    "independently review and freeze the exact launcher identity and final execution-authority record/tag",
+    "materialize the immutable execution checkout at that final stable tag and rerun the governed positive control",
+    "resume governed Build038 using number 038",
+    "host verify, R2 smoke, and clean R2 revert",
+    "resume VM06 remediation only afterward"
+  ],
+  "preservation": {
+    "candidate_mutation": "NONE",
+    "build038_created": false,
+    "vm_execution": "NOT_PERFORMED",
+    "signing": false,
+    "publication": false
+  },
+  "freeze_proposal": {
+    "commit_subject": "Define Phase 5.6B nonrecursive build execution authority",
+    "annotated_tag": "phase-5.6b-nonrecursive-build-execution-authority-r9-verified",
+    "annotation": "Verify Phase 5.6B Nonrecursive Build-Execution Consumer Authority Schema Maintenance Revision 9"
+  }
+}
