@@ -13,7 +13,7 @@ internal sealed class PastilaScoutBuildBrokerR4 : ServiceBase
 {
     private const string PipeName = "PastilaScout.BuildBroker.R4";
     private const string ConsumerSid = "S-1-5-21-1301541280-2754826440-2262162330-1001";
-    private const string BuildRoot = @"C:\PastilaScout-Installer-Build\phase-5.6b\build-20260812-038";
+    private const string BuildRoot = @"C:\PastilaScout-Installer-Build\phase-5.6b\build-20260813-044";
     private const string ToolPath = @"C:\PastilaScout-Installer-Toolchain\phase-5.6b\inno-setup-6-001\toolchain\ISCC.exe";
     private const string ToolSha256 = "0A8757031B33777E4C9CBFFEE40F11A5062B36D25CBE144C1DB73B6102B80AD7";
     private const string ExecutionFlag = @"C:\ProgramData\PastilaScout\BuildBrokerR4\authority\execution-enabled";

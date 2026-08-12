@@ -247,6 +247,66 @@ def test_activation_precedes_conditional_surfaces_and_forces_failure_exit() -> N
     assert "DelTree(StagePath, True, True, True)" in definition
 
 
+def test_vm07a_result_creation_denial_precedes_invalid_destination_exit() -> None:
+    definition = text(ISS)
+    prepare = _procedure(
+        definition, "function PrepareToInstall", "function SnapshotFile"
+    )
+    invalid = prepare[prepare.index("if not IsCanonicalInstallRoot") :]
+    write = invalid.index("WriteFinalOperationResult();")
+    failed = invalid.index("else if ResultWriteFailed then")
+    exit_one = invalid.index("ExitProcess(1);")
+    destination_error = invalid.index(
+        "Result := 'The canonical per-user installation root is unavailable.';"
+    )
+    assert write < failed < exit_one < destination_error
+
+
+def test_vm07b_retention_failure_preserves_native_exit_ten() -> None:
+    definition = text(ISS)
+    prepare = _procedure(
+        definition, "function PrepareToInstall", "function SnapshotFile"
+    )
+    invalid = prepare[prepare.index("if not IsCanonicalInstallRoot") :]
+    write = invalid.index("WriteFinalOperationResult();")
+    retention_class = invalid.index("FailureClass = 'logging_retention_failure'")
+    retention_stage = invalid.index("FailureStage = 'final_result'")
+    exit_ten = invalid.index("ExitProcess(10)")
+    generic_denial = invalid.index("else if ResultWriteFailed then")
+    exit_one = invalid.index("ExitProcess(1);")
+    assert write < retention_class < retention_stage < exit_ten < generic_denial < exit_one
+
+
+def test_vm07a_successful_result_creation_retains_destination_exit_seven() -> None:
+    definition = text(ISS)
+    prepare = _procedure(
+        definition, "function PrepareToInstall", "function SnapshotFile"
+    )
+    custom_exit = _procedure(
+        definition, "function GetCustomSetupExitCode", "function GetProjectResultCode"
+    )
+    assert "if FailureStage = 'destination' then Result := 7" in custom_exit
+    assert "Result := 'The canonical per-user installation root is unavailable.';" in prepare
+    assert "CaptureTransactionSnapshot" not in prepare
+    assert "ActivateStagedPayload" not in prepare
+
+
+def test_vm09a_insufficient_space_has_specific_preflight_classification() -> None:
+    definition = text(ISS)
+    initialize = _procedure(
+        definition, "function InitializeSetup", "function PrepareToInstall"
+    )
+    low_space = initialize[initialize.index("if not HasRequiredDiskSpace then begin") :]
+    rejection = low_space.index("SuppressibleMsgBox('Insufficient disk space")
+    exit_statement = low_space.index("exit;", rejection)
+    assert low_space.index("FailureClass := 'insufficient_space';") < rejection
+    assert low_space.index("FailureStage := 'preflight';") < rejection
+    assert rejection < exit_statement
+    assert "SetupInitialized := True" not in low_space[:exit_statement]
+    assert "CaptureTransactionSnapshot" not in low_space[:exit_statement]
+    assert "ActivateStagedPayload" not in low_space[:exit_statement]
+
+
 def _procedure(definition: str, name: str, next_name: str) -> str:
     start = definition.index(name)
     return definition[start : definition.index(next_name, start)]
@@ -316,6 +376,9 @@ def test_r7_clean_install_rollback_verifies_aggregate_absence() -> None:
         "not FileExists(ShortcutPath)",
     ):
         assert value in clean
+    assert "(not DirExists(Root) or RemoveDir(Root)) and not DirExists(Root)" in clean
+    prior = restore[: restore.index("end else begin")]
+    assert "RemoveDir(Root)" not in prior
     assert "unins000.msg" not in restore
 
 
@@ -351,6 +414,41 @@ def test_r7_snapshot_is_before_install_mutation_and_msg_is_not_synthesized() -> 
     assert "unins000.msg" not in definition
 
 
+def test_vm06a_clean_install_probes_preexisting_arp_publication_rights() -> None:
+    definition = text(ISS)
+    snapshot = _procedure(
+        definition, "function CaptureTransactionSnapshot", "function VerifyMandatoryPublicationSurfaces"
+    )
+    assert "(not PriorPayloadExisted) and PriorArpExisted" in snapshot
+    assert "Phase56BPublicationWriteProbe" in snapshot
+    assert "RegWriteStringValue(HKCU64, Key, PublicationProbe, 'probe')" in snapshot
+    assert "RegDeleteValue(HKCU64, Key, PublicationProbe)" in snapshot
+    assert "PublicationFailed := True" in snapshot
+    assert "FailureClass := 'surface_publication_failure'" in snapshot
+    assert "FailureStage := 'surface_publication'" in snapshot
+
+
+def test_vm06a_snapshot_publication_failure_uses_native_install_exit_four() -> None:
+    definition = text(ISS)
+    custom_exit = _procedure(
+        definition, "function GetCustomSetupExitCode", "function GetProjectResultCode"
+    )
+    step = _procedure(
+        definition, "procedure CurStepChanged", "procedure DeinitializeSetup"
+    )
+    publication_failure = step[
+        step.index("if PublicationFailed then begin") : step.index(
+            "RaiseException('Unable to capture the transactional installation baseline.')"
+        )
+    ]
+    assert "else if PublicationFailed then Result := 4" in custom_exit
+    assert "WriteFinalOperationResult();" in publication_failure
+    assert "ExitProcess(GetCustomSetupExitCode);" in publication_failure
+    assert publication_failure.index("WriteFinalOperationResult();") < publication_failure.index(
+        "ExitProcess(GetCustomSetupExitCode);"
+    )
+
+
 def test_r7_transaction_is_resolved_before_custom_exit_callback() -> None:
     definition = text(ISS)
     steps = _procedure(
@@ -360,7 +458,10 @@ def test_r7_transaction_is_resolved_before_custom_exit_callback() -> None:
         definition, "procedure DeinitializeSetup", "function InitializeUninstall"
     )
     assert "CurStep = ssPostInstall" in steps
-    assert steps.index("ResolveTransaction") < steps.index("WriteFinalOperationResult")
+    post_install = steps[steps.index("CurStep = ssPostInstall") :]
+    assert post_install.index("ResolveTransaction") < post_install.index(
+        "WriteFinalOperationResult"
+    )
     assert "ResolveTransaction" in deinitialize  # fatal-publication fallback
     assert "TransactionResolved" in definition
 

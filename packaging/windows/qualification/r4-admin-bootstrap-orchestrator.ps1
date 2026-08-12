@@ -1,7 +1,7 @@
 param([Parameter(Mandatory)][string]$BrokerSource,[Parameter(Mandatory)][string]$ResultPath,[ValidateSet('Bootstrap','Qualification')][string]$Mode='Bootstrap',[string]$CandidateSource,[string]$PreparationSource,[string]$PayloadSource,[string]$PreparationArchive,[string]$PayloadArchive)
 $ErrorActionPreference='Stop'
 $vm='PastilaScout-Phase56B-Disposable';$svc='PastilaScoutBuildBrokerR4'
-$build='C:\PastilaScout-Installer-Build\phase-5.6b\build-20260812-038'
+$build='C:\PastilaScout-Installer-Build\phase-5.6b\build-20260813-044'
 $toolRoot='C:\PastilaScout-Installer-Toolchain\phase-5.6b\inno-setup-6-001'
 $tool="$toolRoot\toolchain\ISCC.exe";$toolSha='0A8757031B33777E4C9CBFFEE40F11A5062B36D25CBE144C1DB73B6102B80AD7'
 $evidence='C:\PastilaScout-Installer-Evidence\phase-5.6b\r4-admin-bootstrap-20260813-001'
@@ -43,17 +43,17 @@ $unauthorizedClient={
   try{$p.Connect(3000);$r=[IO.StreamReader]::new($p,[Text.UTF8Encoding]::new($false),$false,4096,$true);$r.ReadLine()}finally{$p.Dispose()}
 }
 if($Mode -eq 'Qualification'){
-  $qEvidence='C:\PastilaScout-Installer-Evidence\phase-5.6b\r4-qualification-direct-r1-20260813-001'
-  $candidateSha='FE37D23D2BA2B47527A432B2DDF6BE9E3A77638536305009DEC9788CAC05E2FC'
+  $qEvidence='C:\PastilaScout-Installer-Evidence\phase-5.6b\build044-vm09a-classification-fix-r1-20260813-001'
+  $candidateSha='09CA3AE545A727DD2D00FB752042A076A7D52DCCD757406EFA846ABAE8C47592'
   $adapter=@'
 $ErrorActionPreference='Stop';Set-StrictMode -Version 2
 trap {[IO.File]::WriteAllText('C:\ProgramData\PastilaScout\BuildBrokerR4\config\adapter-error.txt',($_|Out-String),[Text.UTF8Encoding]::new($false));exit 1}
-$repo='C:\Projects\pastila-news-monitor';$build='C:\PastilaScout-Installer-Build\phase-5.6b\build-20260812-038';$work="$build\work-release";$out="$build\output-release"
+$repo='C:\Projects\pastila-news-monitor';$build='C:\PastilaScout-Installer-Build\phase-5.6b\build-20260813-044';$work="$build\work-release";$out="$build\output-release"
 $payload='C:\PastilaScout-Packaging-Build\phase-5.5f\maintenance-r1-build-20260810-002\dist\app'
 $prep='C:\PastilaScout-Installer-Preparation\phase-5.6b\post-r7-r8-wrapper-refresh-regrounding-r2-20260812-002'
 $tool='C:\PastilaScout-Installer-Toolchain\phase-5.6b\inno-setup-6-001\toolchain\ISCC.exe';$candidate="$repo\packaging\inno\PastilaScout.iss";$icon="$repo\packaging\resources\PastilaScout.ico"
 function HashFile($p){(Get-FileHash -LiteralPath $p -Algorithm SHA256).Hash.ToUpperInvariant()}
-if((HashFile $candidate)-ne'FE37D23D2BA2B47527A432B2DDF6BE9E3A77638536305009DEC9788CAC05E2FC'){throw 'candidate identity'}
+if((HashFile $candidate)-ne'09CA3AE545A727DD2D00FB752042A076A7D52DCCD757406EFA846ABAE8C47592'){throw 'candidate identity'}
 if((HashFile $tool)-ne'0A8757031B33777E4C9CBFFEE40F11A5062B36D25CBE144C1DB73B6102B80AD7'){throw 'tool identity'}
 $jcs="$prep\inventory\payload-inventory.jcs.json";if((HashFile $jcs)-ne'852361716089EA7205A4149CB52FC4D0837F74A7B2F57154D070660F27E44D13'){throw 'payload inventory identity'}
 $entries=Get-Content -Raw -LiteralPath $jcs|ConvertFrom-Json;$files=@($entries|Where-Object type -eq 'file');if($entries.Count-ne1035-or$files.Count-ne984){throw 'payload inventory cardinality'}
@@ -76,6 +76,7 @@ $outs=@(Get-ChildItem $out -File -Filter *.exe);$result=[ordered]@{definitions=$
     $admin=Get-Credential -UserName '.\Phase56bAdmin' -Message 'R4 qualification administrator credential (memory only)';if(!$admin){throw 'admin cancelled'}
     $consumer=Get-Credential -UserName '.\phase56b' -Message 'R4 qualification consumer credential (memory only)';if(!$consumer){throw 'consumer cancelled'}
     $adminSession=New-PSSession -VMName $vm -Credential $admin;$consumerSession=New-PSSession -VMName $vm -Credential $consumer
+    Admin {param($Build) if(Get-ChildItem 'C:\PastilaScout-Installer-Build\phase-5.6b' -Directory|Where-Object Name -Match 'build-\d{8}-045$'){throw 'Build045 present'};if(Test-Path $Build){throw 'Build044 collision'};New-Item "$Build\output-release","$Build\work-release" -ItemType Directory|Out-Null} -ArgumentValues ([object[]]@($build))
     $remoteSource='C:\Windows\Temp\PastilaScoutBuildBrokerR4.cs';Copy-Item $BrokerSource $remoteSource -ToSession $adminSession -Force
     $remoteCandidate='C:\Windows\Temp\PastilaScout.iss';Copy-Item $CandidateSource $remoteCandidate -ToSession $adminSession -Force
     Copy-Item $PreparationArchive 'C:\Windows\Temp\r4-preparation.zip' -ToSession $adminSession -Force;Copy-Item $PayloadArchive 'C:\Windows\Temp\r4-payload.zip' -ToSession $adminSession -Force

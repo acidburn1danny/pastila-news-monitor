@@ -156,6 +156,8 @@ function GetFileAttributesW(lpFileName: String): Longint;
   external 'GetFileAttributesW@kernel32.dll stdcall';
 function GetTickCount64(): Int64;
   external 'GetTickCount64@kernel32.dll stdcall';
+procedure ExitProcess(ExitCode: LongWord);
+  external 'ExitProcess@kernel32.dll stdcall';
 function RmStartSession(var SessionHandle: LongWord; SessionFlags: LongWord;
   SessionKey: String): LongWord;
   external 'RmStartSession@rstrtmgr.dll stdcall';
@@ -223,6 +225,7 @@ function Vm01aGetProcessTimes(ProcessHandle: LongWord;
 procedure RegisterRestartManagerResource(const SessionHandle: LongWord;
   const Filename: String); forward;
 procedure RecordActivationFailure(const MessageText: String); forward;
+procedure WriteFinalOperationResult(); forward;
 
 #ifdef PASTILA_VM05_TEST_INSTRUMENTATION
 function Vm05Barrier(const BarrierId: String): Boolean;
@@ -796,6 +799,8 @@ begin
     exit;
   end;
   if not HasRequiredDiskSpace then begin
+    FailureClass := 'insufficient_space';
+    FailureStage := 'preflight';
     SuppressibleMsgBox('Insufficient disk space for verified staging, bounded rollback, overhead, and the 64 MiB safety margin.', mbCriticalError, MB_OK, IDOK);
     exit;
   end;
@@ -855,6 +860,12 @@ begin
   if not IsCanonicalInstallRoot(ExpandConstant('{app}')) then begin
     FailureClass := 'preflight_failure';
     FailureStage := 'destination';
+    WriteFinalOperationResult();
+    if (FailureClass = 'logging_retention_failure') and
+       (FailureStage = 'final_result') then
+      ExitProcess(10)
+    else if ResultWriteFailed then
+      ExitProcess(1);
     Result := 'The canonical per-user installation root is unavailable.';
   end;
 end;
@@ -946,7 +957,7 @@ end;
 
 function CaptureTransactionSnapshot(): Boolean;
 var
-  Root, AppPath, Key, ShortcutPath: String;
+  Root, AppPath, Key, ShortcutPath, PublicationProbe: String;
 begin
   Result := False;
   Root := ExpandConstant('{app}');
@@ -965,6 +976,17 @@ begin
       'capture-payload-inventory.ps1') then exit;
   end;
   PriorArpExisted := RegKeyExists(HKCU64, Key);
+  if (not PriorPayloadExisted) and PriorArpExisted then begin
+    PublicationProbe := 'Phase56BPublicationWriteProbe';
+    if RegValueExists(HKCU64, Key, PublicationProbe) or
+       not RegWriteStringValue(HKCU64, Key, PublicationProbe, 'probe') or
+       not RegDeleteValue(HKCU64, Key, PublicationProbe) then begin
+      PublicationFailed := True;
+      FailureClass := 'surface_publication_failure';
+      FailureStage := 'surface_publication';
+      exit;
+    end;
+  end;
   if PriorPayloadExisted then begin
     if not PriorArpExisted or
        not RegQueryStringValue(HKCU64, Key, 'DisplayName', PriorArpDisplayName) or
@@ -1076,6 +1098,8 @@ begin
       not FileExists(Root + '\unins000.exe') and not FileExists(Root + '\unins000.dat') and
       not FileExists(ShortcutPath);
     if DirExists(OldPath) then Result := False;
+    if Result then
+      Result := (not DirExists(Root) or RemoveDir(Root)) and not DirExists(Root);
   end;
 end;
 
@@ -1285,8 +1309,13 @@ end;
 procedure CurStepChanged(CurStep: TSetupStep);
 begin
   if CurStep = ssInstall then begin
-    if not CaptureTransactionSnapshot then
+    if not CaptureTransactionSnapshot then begin
+      if PublicationFailed then begin
+        WriteFinalOperationResult();
+        ExitProcess(GetCustomSetupExitCode);
+      end;
       RaiseException('Unable to capture the transactional installation baseline.');
+    end;
   end else if (CurStep = ssPostInstall) and not ActivationComplete then begin
     if ExistingSurfacesAtStart then
       Log('Phase 5.6B preserving pre-existing installer surfaces after failed repair.')
