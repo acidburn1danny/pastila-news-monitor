@@ -36,11 +36,7 @@ _SCOUT_CATEGORY_CHOICES = (
     "Externe",
     "Diverse",
 )
-_EDITOR_REQUIRED_CONFIGURATION = (
-    "selection_profile_path",
-    "episode_context_path",
-    "generation_config_path",
-)
+_EDITOR_REQUIRED_CONFIGURATION = ("model", "timeout_seconds", "output_path")
 _BUTTON_STYLE = "TButton"
 _PRIMARY_LABEL_STYLE = "PastilaPrimary.TLabel"
 _PRIMARY_ACTION_COLOR = "#e31919"
@@ -95,8 +91,41 @@ def _primary_action_button(
     return button
 
 
-def _editor_configuration_ready(values: dict[str, tkinter.StringVar]) -> bool:
-    return all(values[name].get() for name in _EDITOR_REQUIRED_CONFIGURATION)
+def _editor_configuration_ready(
+    values: dict[str, tkinter.StringVar], *, provider: str
+) -> bool:
+    return provider in {"openai", "ollama"} and all(
+        values[name].get().strip() for name in _EDITOR_REQUIRED_CONFIGURATION
+    )
+
+
+def _editor_selection_supported(
+    *, selected_event_ids: tuple[int, ...], supported_event_id: int | None
+) -> bool:
+    return (
+        len(selected_event_ids) == 1
+        and supported_event_id is not None
+        and selected_event_ids[0] == supported_event_id
+    )
+
+
+def _editor_action_enabled(
+    *,
+    idle: bool,
+    callback_bound: bool,
+    configuration_ready: bool,
+    selected_event_ids: tuple[int, ...],
+    supported_event_id: int | None,
+) -> bool:
+    return (
+        idle
+        and callback_bound
+        and configuration_ready
+        and _editor_selection_supported(
+            selected_event_ids=selected_event_ids,
+            supported_event_id=supported_event_id,
+        )
+    )
 
 
 def _restored_candidate_summary(*, current: str, count: int) -> str:
@@ -384,12 +413,31 @@ class _DesktopMainWindowV1:
         ttk.Label(page, textvariable=self._editor_status).grid(
             row=1, column=0, columnspan=2
         )
-        self._active_project = tkinter.StringVar(value="—")
+        self._editor_worklist = ttk.Treeview(
+            page,
+            columns=("story", "status"),
+            show="headings",
+            selectmode="extended",
+            height=7,
+        )
+        self._editor_worklist.heading(
+            "story", text=_text_v1(key="editor.worklist.story")
+        )
+        self._editor_worklist.heading(
+            "status", text=_text_v1(key="editor.worklist.status")
+        )
+        self._editor_worklist.column("story", width=620)
+        self._editor_worklist.column("status", width=130)
+        self._editor_worklist.grid(row=2, column=0, columnspan=2, sticky="nsew", pady=8)
+        self._editor_worklist.bind("<<TreeviewSelect>>", self._editor_worklist_changed)
+        self._editor_supported_event_id: int | None = None
+        self._editor_idle = True
+        self._active_project = tkinter.StringVar(value="")
         ttk.Label(
             page, text=_text_v1(key="editor.active_project"), style=_PRIMARY_LABEL_STYLE
-        ).grid(row=2, column=0, sticky="w")
+        ).grid(row=3, column=0, sticky="w")
         ttk.Label(page, textvariable=self._active_project).grid(
-            row=2, column=1, sticky="w"
+            row=3, column=1, sticky="w"
         )
         hidden_paths = (
             "scout_input_path",
@@ -404,7 +452,7 @@ class _DesktopMainWindowV1:
         }
         fields = (("model", "editor.model"),)
         self._editor_widgets: list[ttk.Widget] = []
-        for row, (name, key) in enumerate(fields, start=3):
+        for row, (name, key) in enumerate(fields, start=4):
             ttk.Label(page, text=_text_v1(key=key), style=_PRIMARY_LABEL_STYLE).grid(
                 row=row, column=0, sticky="w"
             )
@@ -413,7 +461,7 @@ class _DesktopMainWindowV1:
             widget.grid(row=row, column=1, sticky="ew")
             self._editor_values[name] = value
             self._editor_widgets.append(widget)
-        row = 3 + len(fields)
+        row = 4 + len(fields)
         ttk.Label(
             page, text=_text_v1(key="editor.provider"), style=_PRIMARY_LABEL_STYLE
         ).grid(row=row, column=0, sticky="w")
@@ -605,7 +653,7 @@ class _DesktopMainWindowV1:
             widget.configure(
                 state="normal" if not isinstance(widget, ttk.Combobox) else "readonly"
             )
-        self._editor_button.configure(state="disabled")
+        self._sync_editor_action()
 
     def bind_report_action(self, *, callback) -> None:
         self._bind("report", callback)
@@ -704,6 +752,17 @@ class _DesktopMainWindowV1:
         )
         self._invoke("editor", input=_DesktopEditorActionInputV1(**values))
 
+    def _editor_worklist_changed(self, event: object) -> None:
+        del event
+        self._check()
+        selected = self._editor_worklist.selection()
+        focused = self._editor_worklist.focus()
+        if focused not in selected:
+            focused = selected[-1] if selected else ""
+        title = self._editor_worklist.set(focused, "story") if focused else ""
+        self._active_project.set(title)
+        self._sync_editor_action()
+
     def _report(self) -> None:
         self._invoke("report", reference=self._report_reference)
 
@@ -770,9 +829,53 @@ class _DesktopMainWindowV1:
         self._check()
         if type(title) is not str or type(message) is not str:
             raise _DesktopShellConfigurationError() from None
-        self._active_project.set(title)
         self._editor_status.set(message)
-        self._editor_button.configure(state="normal" if title else "disabled")
+        self._sync_editor_action()
+
+    def publish_editor_worklist(
+        self,
+        *,
+        items: tuple[tuple[int, str, str], ...],
+        supported_event_id: int | None,
+    ) -> None:
+        self._check()
+        statuses = {"pending", "running", "completed", "failed"}
+        if (
+            type(items) is not tuple
+            or any(
+                type(item) is not tuple
+                or len(item) != 3
+                or type(item[0]) is not int
+                or type(item[1]) is not str
+                or type(item[2]) is not str
+                or item[2] not in statuses
+                for item in items
+            )
+            or len({item[0] for item in items}) != len(items)
+            or (supported_event_id is not None and type(supported_event_id) is not int)
+        ):
+            raise _DesktopShellConfigurationError() from None
+        selected = set(self._editor_worklist.selection())
+        focused = self._editor_worklist.focus()
+        for iid in self._editor_worklist.get_children(""):
+            self._editor_worklist.delete(iid)
+        for event_id, title, status in items:
+            self._editor_worklist.insert(
+                "",
+                "end",
+                iid=str(event_id),
+                values=(title, _text_v1(key=f"editor.worklist.{status}")),
+            )
+        existing = set(self._editor_worklist.get_children(""))
+        retained = tuple(
+            iid for iid in self._editor_worklist.get_children("") if iid in selected
+        )
+        if retained:
+            self._editor_worklist.selection_set(retained)
+        if focused in existing:
+            self._editor_worklist.focus(focused)
+        self._editor_supported_event_id = supported_event_id
+        self._editor_worklist_changed(None)
 
     def publish_chief_editor(
         self,
@@ -877,15 +980,8 @@ class _DesktopMainWindowV1:
         self._scout_button.configure(
             state="normal" if idle and "scout" in self._bindings else "disabled"
         )
-        self._editor_button.configure(
-            state=(
-                "normal"
-                if idle
-                and "editor" in self._bindings
-                and self._active_project.get() != "—"
-                else "disabled"
-            )
-        )
+        self._editor_idle = idle
+        self._sync_editor_action()
         if not idle:
             self._handoff_button.configure(state="disabled")
         else:
@@ -896,6 +992,22 @@ class _DesktopMainWindowV1:
             self._editor_button.configure(state="disabled")
             self._handoff_button.configure(state="disabled")
             self._report_button.configure(state="disabled")
+
+    def _sync_editor_action(self) -> None:
+        try:
+            selected = tuple(int(iid) for iid in self._editor_worklist.selection())
+        except ValueError:
+            selected = ()
+        enabled = _editor_action_enabled(
+            idle=self._editor_idle,
+            callback_bound="editor" in self._bindings,
+            configuration_ready=_editor_configuration_ready(
+                self._editor_values, provider=self._provider.get()
+            ),
+            selected_event_ids=selected,
+            supported_event_id=self._editor_supported_event_id,
+        )
+        self._editor_button.configure(state="normal" if enabled else "disabled")
 
     def __repr__(self) -> str:
         return "_DesktopMainWindowV1(<redacted>)"

@@ -16,7 +16,11 @@ from pastila_scout.active_project_v1 import (
 )
 from pastila_scout.contracts.identity import verify_scout_input_identity
 from pastila_scout.database import initialize_database
-from pastila_scout.desktop_v1.entrypoint import _complete_handoff, _save_chief_editor
+from pastila_scout.desktop_v1.entrypoint import (
+    _complete_handoff,
+    _publish_editor_worklist,
+    _save_chief_editor,
+)
 from pastila_scout.desktop_v1.models import _DesktopPageV1
 
 
@@ -132,11 +136,15 @@ def test_desktop_handoff_persists_material_and_opens_editor(tmp_path):
     _database(database)
     store = ActiveProjectStoreV1(database_path=database, project_path=project_path)
     published = []
+    worklists = []
     pages = []
 
     class View:
         def publish_active_project(self, *, title, message):
             published.append((title, message))
+
+        def publish_editor_worklist(self, *, items, supported_event_id):
+            worklists.append((items, supported_event_id))
 
     class Controller:
         def select_page(self, *, page):
@@ -152,6 +160,7 @@ def test_desktop_handoff_persists_material_and_opens_editor(tmp_path):
     )
     assert cells["project"].candidate.canonical_title == "Titlu ales"
     assert published[0][0] == "Titlu ales"
+    assert worklists == [(((7, "Titlu ales", "pending"),), 7)]
     assert pages == [_DesktopPageV1.EDITOR]
     assert (
         ActiveProjectStoreV1(database_path=database, project_path=project_path)
@@ -324,6 +333,23 @@ def test_bulk_handoff_creates_ordered_persistent_editor_worklist(tmp_path):
     assert appended.editor_worklist[0].status is EditorWorkItemStatusV1.FAILED
     assert appended.editor_materials == developed.editor_materials
     assert appended.chief_editor_items == developed.chief_editor_items
+    projection = []
+
+    class View:
+        def publish_editor_worklist(self, *, items, supported_event_id):
+            projection.append((items, supported_event_id))
+
+    _publish_editor_worklist(View(), appended)
+    assert projection == [
+        (
+            (
+                (8, "Al doilea material", "failed"),
+                (7, "Titlu ales", "pending"),
+                (9, "Al treilea material", "pending"),
+            ),
+            8,
+        )
+    ]
     assert (
         ActiveProjectStoreV1(database_path=database, project_path=project_path).load()
         == appended

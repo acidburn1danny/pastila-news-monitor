@@ -347,6 +347,7 @@ def main() -> int:
                 title=active_project.title,
                 message=_text_v1(key="scout.handoff_success"),
             )
+            _publish_editor_worklist(view, active_project)
             _publish_chief_editor(view, active_project)
             controller.select_page(
                 page=(
@@ -527,8 +528,24 @@ def _complete_handoff(
     if skipped:
         message += _text_v1(key="scout.handoff_duplicates").format(count=skipped)
     view.publish_active_project(title=project.title, message=message)
+    _publish_editor_worklist(view, project)
     controller.select_page(page=_DesktopPageV1.EDITOR)
     return True
+
+
+def _publish_editor_worklist(view: object, project: object) -> None:
+    events = {item.event_id: item for item in project.scout_input.ranked_events}
+    view.publish_editor_worklist(  # type: ignore[attr-defined]
+        items=tuple(
+            (
+                item.event_id,
+                events[item.event_id].canonical_title,
+                item.status.value,
+            )
+            for item in project.editor_worklist
+        ),
+        supported_event_id=project.candidate.event_id,
+    )
 
 
 def _save_chief_editor(store: ActiveProjectStoreV1, value: object):

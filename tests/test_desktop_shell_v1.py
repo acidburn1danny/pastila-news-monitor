@@ -35,7 +35,9 @@ from pastila_scout.desktop_v1.views import (
     _OPENAI_MODEL_CHOICES,
     _SCOUT_CATEGORY_CHOICES,
     _SCOUT_PERIOD_CHOICES,
+    _editor_action_enabled,
     _editor_configuration_ready,
+    _editor_selection_supported,
     _handoff_label,
     _restored_candidate_summary,
 )
@@ -292,6 +294,7 @@ def test_withdrawn_tk_window_has_exact_structural_root_and_initial_state():
         assert int(view._scout_button.cget("height")) == 1
         assert view._scout_button.master.cget("background") == "#e31919"
         assert str(view._editor_button.cget("state")) == "disabled"
+        assert str(view._editor_worklist.cget("selectmode")) == "extended"
         assert view._editor_button.cget("text") == "Genereaza"
         assert view._editor_button.cget("foreground") == "#e31919"
         assert view._editor_button.cget("font") == "TkDefaultFont 11 bold"
@@ -311,8 +314,97 @@ def test_withdrawn_tk_window_has_exact_structural_root_and_initial_state():
             "height"
         )
         assert str(view._report_button.cget("state")) == "disabled"
+        view.bind_editor_action(callback=lambda **kwargs: None)
+        view.publish_editor_worklist(
+            items=(
+                (7, "Prima stire", "pending"),
+                (8, "A doua stire", "failed"),
+                (9, "A treia stire", "completed"),
+            ),
+            supported_event_id=7,
+        )
+        assert view._editor_worklist.get_children("") == ("7", "8", "9")
+        assert view._editor_worklist.item("7", "values") == (
+            "Prima stire",
+            "In asteptare",
+        )
+        assert view._editor_worklist.item("8", "values")[1] == "Eroare"
+        assert view._editor_worklist.item("9", "values")[1] == "Generata"
+        view._editor_worklist.selection_set("7")
+        view._editor_worklist.focus("7")
+        view._editor_worklist_changed(None)
+        assert view._active_project.get() == "Prima stire"
+        assert str(view._editor_button.cget("state")) == "normal"
+        view._editor_idle = False
+        view._editor_worklist_changed(None)
+        assert str(view._editor_button.cget("state")) == "disabled"
+        view.publish_editor_worklist(
+            items=(
+                (7, "Prima stire", "running"),
+                (8, "A doua stire", "failed"),
+                (9, "A treia stire", "completed"),
+            ),
+            supported_event_id=7,
+        )
+        assert view._editor_worklist.selection() == ("7",)
+        assert str(view._editor_button.cget("state")) == "disabled"
+        view._editor_idle = True
+        view._editor_worklist_changed(None)
+        assert str(view._editor_button.cget("state")) == "normal"
+        view._editor_worklist.selection_set(("7", "8"))
+        view._editor_worklist.focus("8")
+        view._editor_worklist_changed(None)
+        assert view._active_project.get() == "A doua stire"
+        assert str(view._editor_button.cget("state")) == "disabled"
+        view._editor_worklist.selection_set("8")
+        view._editor_worklist_changed(None)
+        assert str(view._editor_button.cget("state")) == "disabled"
+        view.publish_editor_worklist(
+            items=((7, "Prima stire", "running"), (8, "A doua stire", "failed")),
+            supported_event_id=7,
+        )
+        assert view._editor_worklist.item("7", "values")[1] == "In procesare"
+        view.publish_editor_worklist(items=(), supported_event_id=None)
+        assert view._editor_worklist.get_children("") == ()
+        assert view._active_project.get() == ""
+        assert str(view._editor_button.cget("state")) == "disabled"
     finally:
         root.destroy()
+
+
+def test_editor_slice2_generation_selection_is_safely_bounded():
+    assert tuple(
+        _text_v1(key=f"editor.worklist.{status}")
+        for status in ("pending", "running", "completed", "failed")
+    ) == ("In asteptare", "In procesare", "Generata", "Eroare")
+    assert _editor_selection_supported(selected_event_ids=(7,), supported_event_id=7)
+    assert not _editor_selection_supported(selected_event_ids=(), supported_event_id=7)
+    assert not _editor_selection_supported(
+        selected_event_ids=(7, 8), supported_event_id=7
+    )
+    assert not _editor_selection_supported(
+        selected_event_ids=(8,), supported_event_id=7
+    )
+    assert not _editor_selection_supported(
+        selected_event_ids=(7,), supported_event_id=None
+    )
+    baseline = {
+        "idle": True,
+        "callback_bound": True,
+        "configuration_ready": True,
+        "selected_event_ids": (7,),
+        "supported_event_id": 7,
+    }
+    assert _editor_action_enabled(**baseline)
+    for changed in (
+        {"idle": False},
+        {"callback_bound": False},
+        {"configuration_ready": False},
+        {"selected_event_ids": ()},
+        {"selected_event_ids": (7, 8)},
+        {"selected_event_ids": (8,)},
+    ):
+        assert not _editor_action_enabled(**(baseline | changed))
 
 
 def test_about_projects_exact_package_version_without_redesign() -> None:
@@ -395,7 +487,7 @@ def test_daily_scout_choices_and_restored_candidate_summary_are_truthful():
     assert _handoff_label(3) == "Trimite in Editor (3)"
 
 
-def test_integrated_editor_is_disabled_without_required_configuration():
+def test_integrated_editor_uses_runtime_configuration_not_legacy_paths():
     class Value:
         def __init__(self, value):
             self.value = value
@@ -405,8 +497,14 @@ def test_integrated_editor_is_disabled_without_required_configuration():
 
     missing = {name: Value("") for name in _EDITOR_REQUIRED_CONFIGURATION}
     configured = {name: Value(name) for name in _EDITOR_REQUIRED_CONFIGURATION}
-    assert not _editor_configuration_ready(missing)
-    assert _editor_configuration_ready(configured)
+    configured.update(
+        selection_profile_path=Value(""),
+        episode_context_path=Value(""),
+        generation_config_path=Value(""),
+    )
+    assert not _editor_configuration_ready(missing, provider="ollama")
+    assert not _editor_configuration_ready(configured, provider="")
+    assert _editor_configuration_ready(configured, provider="ollama")
 
 
 def test_resources_are_exact_unique_nfc_and_unknown_is_safe():
