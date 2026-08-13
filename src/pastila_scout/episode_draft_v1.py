@@ -6,6 +6,7 @@ import hashlib
 import json
 import unicodedata
 from datetime import datetime
+from enum import StrEnum
 from pathlib import Path
 from typing import Literal
 
@@ -45,12 +46,80 @@ class EpisodeDraftIncludedMaterialV1(_FrozenModel):
         return self
 
 
+class EpisodeDraftFailureStageV1(StrEnum):
+    REQUEST_CONSTRUCTION = "request_construction"
+    INPUT_VALIDATION = "input_validation"
+    PROVIDER_EXECUTION = "provider_execution"
+    TIMEOUT = "timeout"
+    CANCELLATION = "cancellation"
+    PROVIDER_RESPONSE = "provider_response"
+    RESPONSE_PARSING = "response_parsing"
+    SCHEMA_VALIDATION = "schema_validation"
+    RESULT_VALIDATION = "result_validation"
+    ARTIFACT_PERSISTENCE = "artifact_persistence"
+    MATERIAL_REGISTRATION = "material_registration"
+    UNKNOWN = "unknown"
+
+
+class EpisodeDraftFailureAttemptV1(_FrozenModel):
+    attempt_number: int = Field(ge=1, le=3)
+    failure_stage: EpisodeDraftFailureStageV1
+    failure_category: str = Field(pattern=r"^[a-z0-9_.-]+$", max_length=80)
+    failure_code: str | None = Field(
+        default=None, pattern=r"^[a-z0-9_.-]+$", max_length=80
+    )
+    sanitized_reason: str = Field(min_length=1, max_length=500)
+    provider_id: str | None = Field(default=None, min_length=1, max_length=100)
+    model_id: str | None = Field(default=None, min_length=1, max_length=200)
+    request_id: str | None = Field(default=None, min_length=1, max_length=200)
+    attempt_id: str | None = Field(default=None, min_length=1, max_length=200)
+    finish_reason: str | None = Field(default=None, min_length=1, max_length=100)
+    validation_path: str | None = Field(default=None, min_length=1, max_length=300)
+    timeout_seconds: float | None = Field(default=None, gt=0, le=3600)
+
+    @model_validator(mode="after")
+    def safe_attempt(self):
+        if type(self.attempt_number) is not int:
+            raise ValueError("invalid attempt identity")
+        values = (
+            self.sanitized_reason,
+            self.provider_id,
+            self.model_id,
+            self.request_id,
+            self.attempt_id,
+            self.finish_reason,
+            self.validation_path,
+        )
+        if any(value is not None and not _safe_text(value) for value in values):
+            raise ValueError("unsafe attempt evidence")
+        return self
+
+
 class EpisodeDraftExcludedFailureV1(_FrozenModel):
     event_id: int = Field(gt=0)
+    title_snapshot: str = Field(min_length=1, max_length=300)
     attempt_count: int = Field(ge=1, le=3)
-    failure_category: str = Field(min_length=1, max_length=80)
+    maximum_attempts: Literal[3] = 3
+    failure_stage: EpisodeDraftFailureStageV1
+    failure_category: str = Field(pattern=r"^[a-z0-9_.-]+$", max_length=80)
+    failure_code: str | None = Field(
+        default=None, pattern=r"^[a-z0-9_.-]+$", max_length=80
+    )
     sanitized_reason: str = Field(min_length=1, max_length=500)
     failure_evidence_reference: str | None = Field(default=None, min_length=1)
+    provider_id: str | None = Field(default=None, min_length=1, max_length=100)
+    model_id: str | None = Field(default=None, min_length=1, max_length=200)
+    request_id: str | None = Field(default=None, min_length=1, max_length=200)
+    last_attempt_id: str | None = Field(default=None, min_length=1, max_length=200)
+    finish_reason: str | None = Field(default=None, min_length=1, max_length=100)
+    validation_path: str | None = Field(default=None, min_length=1, max_length=300)
+    last_successful_stage: str | None = Field(
+        default=None, min_length=1, max_length=100
+    )
+    timeout_seconds: float | None = Field(default=None, gt=0, le=3600)
+    attempt_summaries: tuple[EpisodeDraftFailureAttemptV1, ...] = Field(
+        default=(), max_length=3
+    )
     final_disposition: Literal["excluded_exhausted_failure"] = (
         "excluded_exhausted_failure"
     )
@@ -59,24 +128,38 @@ class EpisodeDraftExcludedFailureV1(_FrozenModel):
     def safe_terminal_failure(self):
         if type(self.event_id) is not int or type(self.attempt_count) is not int:
             raise ValueError("invalid excluded failure identity")
-        text_values = (self.failure_category, self.sanitized_reason)
-        if self.failure_evidence_reference is not None:
-            text_values += (self.failure_evidence_reference,)
-        if any(not _canonical_text(value) for value in text_values):
-            raise ValueError("terminal failure reason is blank")
-        unsafe = (
-            "api_key",
-            "api key",
-            "apikey",
-            "bearer ",
-            "authorization:",
-            "access_token",
-            "access token",
-            "token=",
-            "sk-",
+        text_values = (
+            self.title_snapshot,
+            self.sanitized_reason,
+            self.failure_evidence_reference,
+            self.provider_id,
+            self.model_id,
+            self.request_id,
+            self.last_attempt_id,
+            self.finish_reason,
+            self.validation_path,
+            self.last_successful_stage,
         )
-        if any(token in self.sanitized_reason.casefold() for token in unsafe):
-            raise ValueError("unsafe terminal failure reason")
+        if any(value is not None and not _safe_text(value) for value in text_values):
+            raise ValueError("unsafe terminal failure evidence")
+        numbers = tuple(item.attempt_number for item in self.attempt_summaries)
+        if numbers != tuple(sorted(set(numbers))):
+            raise ValueError("attempt summaries must be unique and ordered")
+        if numbers and numbers[-1] != self.attempt_count:
+            raise ValueError("last attempt summary mismatch")
+        attempt_ids = tuple(
+            item.attempt_id
+            for item in self.attempt_summaries
+            if item.attempt_id is not None
+        )
+        if len(attempt_ids) != len(set(attempt_ids)):
+            raise ValueError("duplicate attempt evidence identity")
+        if (
+            self.attempt_summaries
+            and self.attempt_summaries[-1].attempt_id is not None
+            and self.last_attempt_id != self.attempt_summaries[-1].attempt_id
+        ):
+            raise ValueError("last attempt identity mismatch")
         return self
 
 
@@ -309,8 +392,27 @@ def _canonical_text(value: str) -> bool:
     )
 
 
+def _safe_text(value: str) -> bool:
+    unsafe = (
+        "api_key",
+        "api key",
+        "apikey",
+        "bearer ",
+        "authorization:",
+        "access_token",
+        "access token",
+        "token=",
+        "sk-",
+    )
+    return _canonical_text(value) and not any(
+        token in value.casefold() for token in unsafe
+    )
+
+
 __all__ = (
     "EpisodeDraftExcludedFailureV1",
+    "EpisodeDraftFailureAttemptV1",
+    "EpisodeDraftFailureStageV1",
     "EpisodeDraftIncludedMaterialV1",
     "EpisodeDraftPersistenceError",
     "EpisodeDraftRevisionRefV1",

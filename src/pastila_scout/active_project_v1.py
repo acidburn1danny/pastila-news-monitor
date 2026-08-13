@@ -20,6 +20,7 @@ from pastila_scout.contracts.identity import (
 )
 from pastila_scout.contracts.scout_editor import ScoutEditorInputV1
 from pastila_scout.episode_draft_v1 import (
+    EpisodeDraftExcludedFailureV1,
     EpisodeDraftPersistenceError,
     EpisodeDraftRevisionRefV1,
     EpisodeDraftRevisionRepositoryV1,
@@ -84,6 +85,7 @@ class ActiveProjectV1:
     chief_editor_updated_at: datetime | None = None
     editor_worklist: tuple[EditorWorkItemV1, ...] = ()
     current_episode_draft_revision: EpisodeDraftRevisionRefV1 | None = None
+    editor_terminal_failures: tuple[EpisodeDraftExcludedFailureV1, ...] = ()
 
     @property
     def candidate(self):
@@ -195,6 +197,9 @@ class ActiveProjectStoreV1:
             current_episode_draft_revision=(
                 None if existing is None else existing.current_episode_draft_revision
             ),
+            editor_terminal_failures=(
+                () if existing is None else existing.editor_terminal_failures
+            ),
         )
         self._write(project)
         return project
@@ -265,6 +270,9 @@ class ActiveProjectStoreV1:
             ),
             current_episode_draft_revision=(
                 None if existing is None else existing.current_episode_draft_revision
+            ),
+            editor_terminal_failures=(
+                () if existing is None else existing.editor_terminal_failures
             ),
         )
         self._write(project)
@@ -350,6 +358,7 @@ class ActiveProjectStoreV1:
             datetime.now(UTC),
             project.editor_worklist,
             project.current_episode_draft_revision,
+            project.editor_terminal_failures,
         )
         self._write(updated)
         return updated
@@ -381,6 +390,7 @@ class ActiveProjectStoreV1:
             datetime.now(UTC),
             project.editor_worklist,
             project.current_episode_draft_revision,
+            project.editor_terminal_failures,
         )
         self._write(updated)
         return updated
@@ -462,6 +472,7 @@ class ActiveProjectStoreV1:
             project.chief_editor_updated_at,
             worklist,
             project.current_episode_draft_revision,
+            project.editor_terminal_failures,
         )
         self._write(updated)
         return updated
@@ -496,6 +507,7 @@ class ActiveProjectStoreV1:
             project.chief_editor_updated_at,
             worklist,
             project.current_episode_draft_revision,
+            project.editor_terminal_failures,
         )
         self._write(updated)
         return updated
@@ -555,6 +567,18 @@ class ActiveProjectStoreV1:
                     or material.payload_sha256 != lineage.payload_sha256
                 ):
                     raise ValueError
+            terminal_failures = {
+                item.event_id: item for item in project.editor_terminal_failures
+            }
+            if (
+                len(terminal_failures) != len(project.editor_terminal_failures)
+                or tuple(
+                    terminal_failures.get(event_id)
+                    for event_id in revision.excluded_failed_event_ids
+                )
+                != revision.excluded_failures
+            ):
+                raise ValueError
             current = project.current_episode_draft_revision
             if current is None:
                 if reference.parent_revision_id is not None:
@@ -580,6 +604,7 @@ class ActiveProjectStoreV1:
             project.chief_editor_updated_at,
             project.editor_worklist,
             reference,
+            project.editor_terminal_failures,
         )
         self._write(updated)
         return updated
@@ -609,6 +634,54 @@ class ActiveProjectStoreV1:
         ):
             raise EpisodeDraftPersistenceError("referenced revision identity mismatch")
         return revision
+
+    def record_terminal_editor_failure(
+        self, *, evidence: EpisodeDraftExcludedFailureV1
+    ) -> ActiveProjectV1:
+        """Persist explicit terminal evidence without changing generation behavior."""
+
+        project = self._required()
+        if type(evidence) is not EpisodeDraftExcludedFailureV1:
+            raise ValueError("Evidenta esec Editor invalida")
+        events = tuple(
+            event
+            for event in project.scout_input.ranked_events
+            if event.event_id == evidence.event_id
+        )
+        matches = tuple(
+            item
+            for item in project.editor_worklist
+            if item.event_id == evidence.event_id
+        )
+        if (
+            len(events) != 1
+            or evidence.title_snapshot != events[0].canonical_title
+            or len(matches) != 1
+            or matches[0].status is not EditorWorkItemStatusV1.FAILED
+            or any(
+                item.event_id == evidence.event_id for item in project.editor_materials
+            )
+            or any(
+                item.event_id == evidence.event_id
+                for item in project.editor_terminal_failures
+            )
+        ):
+            raise ValueError("Evidenta esec Editor invalida")
+        updated = ActiveProjectV1(
+            project.project_id,
+            project.title,
+            project.handed_off_at,
+            project.scout_input,
+            project.editor_materials,
+            project.chief_editor_items,
+            project.chief_editor_title,
+            project.chief_editor_updated_at,
+            project.editor_worklist,
+            project.current_episode_draft_revision,
+            (*project.editor_terminal_failures, evidence),
+        )
+        self._write(updated)
+        return updated
 
     def _required(self) -> ActiveProjectV1:
         project = self._load(recover_running=False)
@@ -647,6 +720,10 @@ class ActiveProjectStoreV1:
                 if project.current_episode_draft_revision is None
                 else project.current_episode_draft_revision.model_dump(mode="json")
             ),
+            "editor_terminal_failures": [
+                item.model_dump(mode="json")
+                for item in project.editor_terminal_failures
+            ],
             "chief_editor": {
                 "title": project.chief_editor_title,
                 "updated_at": (
@@ -704,6 +781,12 @@ class ActiveProjectStoreV1:
         updated_at = chief_data.get("updated_at")
         raw_worklist = data.get("editor_worklist")
         raw_draft_reference = data.get("current_episode_draft_revision")
+        terminal_failures = tuple(
+            EpisodeDraftExcludedFailureV1.model_validate_json(
+                json.dumps(item, ensure_ascii=False), strict=True
+            )
+            for item in data.get("editor_terminal_failures", ())
+        )
         draft_reference = (
             None
             if raw_draft_reference is None
@@ -749,6 +832,7 @@ class ActiveProjectStoreV1:
             ),
             editor_worklist=worklist,
             current_episode_draft_revision=draft_reference,
+            editor_terminal_failures=terminal_failures,
         )
         if (
             not source.ranked_events

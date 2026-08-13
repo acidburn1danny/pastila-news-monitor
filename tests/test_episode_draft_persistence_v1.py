@@ -25,6 +25,7 @@ from pastila_scout.editor.generation.models import (
 )
 from pastila_scout.episode_draft_v1 import (
     EpisodeDraftExcludedFailureV1,
+    EpisodeDraftFailureAttemptV1,
     EpisodeDraftIncludedMaterialV1,
     EpisodeDraftPersistenceError,
     EpisodeDraftRevisionRepositoryV1,
@@ -102,7 +103,9 @@ def _revision(**changes) -> EpisodeDraftRevisionV1:
         "excluded_failures": (
             EpisodeDraftExcludedFailureV1(
                 event_id=6,
+                title_snapshot="Story 6",
                 attempt_count=3,
+                failure_stage="timeout",
                 failure_category="provider_timeout",
                 sanitized_reason="Ollama timeout after the final attempt.",
                 failure_evidence_reference="attempts:event:6",
@@ -190,9 +193,102 @@ def test_exclusion_rejects_blank_unsafe_or_excess_attempt_evidence() -> None:
         with pytest.raises(ValidationError):
             EpisodeDraftExcludedFailureV1(
                 event_id=6,
+                title_snapshot="Story 6",
                 attempt_count=values.get("attempt_count", 3),
+                failure_stage="timeout",
                 failure_category="timeout",
                 sanitized_reason=values.get("sanitized_reason", "timeout"),
+            )
+
+
+def test_terminal_failure_preserves_bounded_structured_diagnostics() -> None:
+    evidence = EpisodeDraftExcludedFailureV1(
+        event_id=6,
+        title_snapshot="Story 6",
+        attempt_count=3,
+        failure_stage="schema_validation",
+        failure_category="structured_output",
+        failure_code="missing_field",
+        sanitized_reason="Required story ending was absent.",
+        provider_id="ollama",
+        model_id="qwen3:14b",
+        request_id="request:6",
+        last_attempt_id="attempt:3",
+        finish_reason="stop",
+        validation_path="draft.stories.0.ending",
+        last_successful_stage="response_parsing",
+        attempt_summaries=(
+            EpisodeDraftFailureAttemptV1(
+                attempt_number=1,
+                failure_stage="schema_validation",
+                failure_category="structured_output",
+                sanitized_reason="Required story ending was absent.",
+                attempt_id="attempt:1",
+            ),
+            EpisodeDraftFailureAttemptV1(
+                attempt_number=3,
+                failure_stage="schema_validation",
+                failure_category="structured_output",
+                sanitized_reason="Required story ending was absent.",
+                attempt_id="attempt:3",
+            ),
+        ),
+    )
+    restored = EpisodeDraftExcludedFailureV1.model_validate_json(
+        evidence.model_dump_json(), strict=True
+    )
+    assert restored == evidence
+    assert restored.maximum_attempts == 3
+
+
+@pytest.mark.parametrize(
+    "changes",
+    (
+        {"failure_stage": "arbitrary_stage"},
+        {"failure_category": "generic category"},
+        {"failure_code": "BAD CODE"},
+        {"provider_id": "Authorization: secret"},
+        {"validation_path": "token=secret"},
+        {"maximum_attempts": 4},
+    ),
+)
+def test_terminal_failure_rejects_unbounded_or_unsafe_diagnostics(changes) -> None:
+    values = {
+        "event_id": 6,
+        "title_snapshot": "Story 6",
+        "attempt_count": 1,
+        "failure_stage": "provider_execution",
+        "failure_category": "provider_error",
+        "sanitized_reason": "Provider execution failed.",
+    }
+    values.update(changes)
+    with pytest.raises(ValidationError):
+        EpisodeDraftExcludedFailureV1(**values)
+
+
+def test_terminal_failure_rejects_unordered_duplicate_or_mismatched_attempts() -> None:
+    first = EpisodeDraftFailureAttemptV1(
+        attempt_number=1,
+        failure_stage="timeout",
+        failure_category="provider_timeout",
+        sanitized_reason="Timed out.",
+        attempt_id="attempt:1",
+    )
+    second = first.model_copy(update={"attempt_number": 2})
+    base = {
+        "event_id": 6,
+        "title_snapshot": "Story 6",
+        "attempt_count": 2,
+        "failure_stage": "timeout",
+        "failure_category": "provider_timeout",
+        "sanitized_reason": "Timed out.",
+        "last_attempt_id": "attempt:1",
+    }
+    for summaries in ((second, first), (first, second), (first,)):
+        with pytest.raises(ValidationError):
+            EpisodeDraftExcludedFailureV1(
+                **base,
+                attempt_summaries=summaries,
             )
 
 
@@ -224,7 +320,9 @@ def test_material_and_failure_evidence_require_canonical_bounded_text() -> None:
         with pytest.raises(ValidationError):
             EpisodeDraftExcludedFailureV1(
                 event_id=6,
+                title_snapshot="Story 6",
                 attempt_count=1,
+                failure_stage="timeout",
                 failure_category=values.get("failure_category", "timeout"),
                 sanitized_reason=values.get("sanitized_reason", "Failure."),
                 failure_evidence_reference=values.get("failure_evidence_reference"),
@@ -332,7 +430,9 @@ def _active_revision(project) -> EpisodeDraftRevisionV1:
         excluded_failures=(
             EpisodeDraftExcludedFailureV1(
                 event_id=12,
+                title_snapshot="Material 12",
                 attempt_count=3,
+                failure_stage="schema_validation",
                 failure_category="validation",
                 sanitized_reason="Model output failed validation.",
             ),
@@ -341,8 +441,22 @@ def _active_revision(project) -> EpisodeDraftRevisionV1:
     )
 
 
+def _record_active_terminal_failure(store: ActiveProjectStoreV1) -> None:
+    store.record_terminal_editor_failure(
+        evidence=EpisodeDraftExcludedFailureV1(
+            event_id=12,
+            title_snapshot="Material 12",
+            attempt_count=3,
+            failure_stage="schema_validation",
+            failure_category="validation",
+            sanitized_reason="Model output failed validation.",
+        )
+    )
+
+
 def test_active_project_installs_and_restores_ready_reference(tmp_path: Path) -> None:
     store, project = _active_project(tmp_path)
+    _record_active_terminal_failure(store)
     path = tmp_path / "drafts" / "revision.json"
     reference = EpisodeDraftRevisionRepositoryV1().publish(
         revision=_active_revision(project), destination=path
@@ -417,6 +531,7 @@ def test_missing_or_corrupt_referenced_artifact_is_not_silently_cleared(
     tmp_path: Path,
 ) -> None:
     store, project = _active_project(tmp_path)
+    _record_active_terminal_failure(store)
     path = tmp_path / "drafts" / "revision.json"
     reference = EpisodeDraftRevisionRepositoryV1().publish(
         revision=_active_revision(project), destination=path
@@ -433,6 +548,7 @@ def test_tampered_current_reference_lineage_is_rejected_without_clearing(
     tmp_path: Path,
 ) -> None:
     store, project = _active_project(tmp_path)
+    _record_active_terminal_failure(store)
     path = tmp_path / "drafts" / "revision.json"
     reference = EpisodeDraftRevisionRepositoryV1().publish(
         revision=_active_revision(project), destination=path
@@ -457,6 +573,7 @@ def test_child_install_requires_current_parent_and_stable_project_snapshot(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     store, project = _active_project(tmp_path)
+    _record_active_terminal_failure(store)
     repository = EpisodeDraftRevisionRepositoryV1()
     first = repository.publish(
         revision=_active_revision(project), destination=tmp_path / "first.json"
