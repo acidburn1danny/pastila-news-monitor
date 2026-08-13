@@ -7,10 +7,18 @@ import shutil
 import sqlite3
 import weakref
 from dataclasses import FrozenInstanceError, fields
+from datetime import UTC, datetime
 from pathlib import Path
 
 import pytest
 
+from pastila_scout.active_project_v1 import (
+    ActiveProjectStoreV1,
+    ActiveProjectV1,
+    ChiefEditorItemV1,
+    EditorMaterialV1,
+)
+from pastila_scout.contracts.samples import sample_scout_input
 from pastila_scout.windows_state_v1 import migrations
 from pastila_scout.windows_state_v1.errors import _WindowsStateMigrationError
 from pastila_scout.windows_state_v1.migrations import (
@@ -319,6 +327,64 @@ def test_applicability_preserves_all_artifact_eligibility(tmp_path: Path) -> Non
     assert plan.reports_eligible
     assert plan.settings_eligible
     assert plan.source_eligible
+
+
+def test_current_desktop_project_and_editor_output_are_imported_and_remapped(
+    tmp_path: Path,
+) -> None:
+    root, paths = _layout(tmp_path)
+    reports = root / "reports"
+    reports.mkdir()
+    output = reports / "editor-555.json"
+    output.write_text('{"status":"completed"}\n', encoding="utf-8")
+    (reports / "structura-episod.md").write_text("export\n", encoding="utf-8")
+    (reports / "editor-diagnostics").mkdir()
+    source = sample_scout_input()
+    material = EditorMaterialV1(
+        "editor-material-v1:event:555",
+        source.ranked_events[0].event_id,
+        source.ranked_events[0].canonical_title,
+        source.ranked_events[0].canonical_summary,
+        str(output),
+        "sha256:" + "1" * 64,
+    )
+    project_path = root / "data" / "active-project-v1.json"
+    ActiveProjectStoreV1(
+        database_path=root / "data" / "news_monitor.db",
+        project_path=project_path,
+    )._write(
+        ActiveProjectV1(
+            "active-project-v1:test",
+            source.ranked_events[0].canonical_title,
+            datetime.now(UTC),
+            source,
+            (material,),
+            (ChiefEditorItemV1(material.reference, "Externe", "Tranziție"),),
+            "Test E2E Pastila Scout",
+            datetime.now(UTC),
+        )
+    )
+
+    plan = _inspect_development_state_migration_v1(
+        development_root=root, destination=paths
+    )
+    assert plan.status == "ready"
+    assert plan.active_project_available and plan.active_project_eligible
+    assert not plan.reports_available
+    result = _execute_development_state_migration_v1(plan=plan)
+    assert result.status == "completed" and result.active_project_copied
+    installed = ActiveProjectStoreV1(
+        database_path=paths.database_path,
+        project_path=paths.database_path.parent / "active-project-v1.json",
+    ).load()
+    assert installed is not None
+    assert installed.chief_editor_title == "Test E2E Pastila Scout"
+    assert installed.chief_editor_items[0].section == "Externe"
+    assert installed.editor_materials[0].output_path == str(
+        paths.report_directory / output.name
+    )
+    assert (paths.report_directory / output.name).read_bytes() == output.read_bytes()
+    assert not (paths.report_directory / "structura-episod.md").exists()
 
 
 def test_source_seed_is_validated_byte_preserving_and_idempotent(

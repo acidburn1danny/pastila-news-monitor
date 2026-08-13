@@ -14,6 +14,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import NoReturn
 
+from pastila_scout.active_project_v1 import ActiveProjectStoreV1
 from pastila_scout.config import load_sources_config
 
 from .errors import _WindowsStateMigrationError
@@ -85,10 +86,12 @@ class DevelopmentMigrationPlanV1(_SafeValue):
     reports_available: bool
     settings_available: bool
     source_available: bool
+    active_project_available: bool
     database_eligible: bool
     reports_eligible: bool
     settings_eligible: bool
     source_eligible: bool
+    active_project_eligible: bool
     _development_root: Path
     _destination: WindowsApplicationPathsV1
 
@@ -124,6 +127,7 @@ class DevelopmentMigrationResultV1(_SafeValue):
     reports_copied: int
     settings_copied: bool
     source_override_seeded: bool
+    active_project_copied: bool
 
     def __post_init__(self) -> None:
         if (
@@ -139,6 +143,7 @@ class DevelopmentMigrationResultV1(_SafeValue):
             or self.reports_copied < 0
             or type(self.settings_copied) is not bool
             or type(self.source_override_seeded) is not bool
+            or type(self.active_project_copied) is not bool
         ):
             raise _WindowsStateMigrationError() from None
 
@@ -170,10 +175,12 @@ _PLAN_BOOLS = (
     "reports_available",
     "settings_available",
     "source_available",
+    "active_project_available",
     "database_eligible",
     "reports_eligible",
     "settings_eligible",
     "source_eligible",
+    "active_project_eligible",
 )
 
 
@@ -224,11 +231,15 @@ def _inspect_development_state_migration_v1(
         reports = development_root / "reports"
         settings = development_root / "config" / "settings.json"
         source = development_root / "config" / "sources.yaml"
+        active_project = development_root / "data" / "active-project-v1.json"
         available = {
             "database": _regular_optional(database),
             "reports": _reports_optional(reports),
             "settings": _regular_optional(settings),
             "source": _regular_optional(source),
+            "active_project": _active_project_optional(
+                active_project, database, development_root / "reports"
+            ),
         }
         if available["source"]:
             load_sources_config(source)
@@ -245,6 +256,11 @@ def _inspect_development_state_migration_v1(
             ),
             "settings": available["settings"] and not paths.settings_path.exists(),
             "source": available["source"] and not paths.source_override_path.exists(),
+            "active_project": available["active_project"]
+            and not (paths.database_path.parent / "active-project-v1.json").exists()
+            and _active_project_outputs_available(
+                active_project, paths.report_directory
+            ),
         }
         if any(eligible.values()):
             status = "ready"
@@ -276,7 +292,9 @@ def _execute_development_state_migration_v1(
     try:
         valid = _reconstruct_plan(plan)
         if valid.status != "ready":
-            return DevelopmentMigrationResultV1(valid.status, False, 0, False, False)
+            return DevelopmentMigrationResultV1(
+                valid.status, False, 0, False, False, False
+            )
         fresh = _inspect_development_state_migration_v1(
             development_root=valid._development_root, destination=valid._destination
         )
@@ -335,6 +353,40 @@ def _execute_development_state_migration_v1(
             )
             load_sources_config(staged)
             artifacts.append(("roaming", staged, paths.source_override_path))
+        if valid.active_project_eligible:
+            project_source = root / "data" / "active-project-v1.json"
+            project = json.loads(project_source.read_text(encoding="utf-8"))
+            for material in project.get("editor_materials", ()):
+                output = material.get("output_path")
+                if output is None:
+                    continue
+                source_output = Path(output)
+                destination_output = paths.report_directory / source_output.name
+                artifacts.append(
+                    (
+                        "local",
+                        _copy(source_output, local_stage / "reports" / source_output.name),
+                        destination_output,
+                    )
+                )
+                material["output_path"] = str(destination_output)
+            staged_project = local_stage / "data" / "active-project-v1.json"
+            staged_project.parent.mkdir(parents=True, exist_ok=True)
+            staged_project.write_text(
+                json.dumps(project, ensure_ascii=False, sort_keys=True) + "\n",
+                encoding="utf-8",
+            )
+            ActiveProjectStoreV1(
+                database_path=paths.database_path,
+                project_path=staged_project,
+            ).load()
+            artifacts.append(
+                (
+                    "local",
+                    staged_project,
+                    paths.database_path.parent / "active-project-v1.json",
+                )
+            )
         journal = _journal(operation, artifacts, paths)
         _publish_json(paths.migration_pending_path, journal)
         for _, staged, destination in artifacts:
@@ -350,6 +402,7 @@ def _execute_development_state_migration_v1(
             "reports_copied": report_count,
             "settings_copied": valid.settings_eligible,
             "source_override_seeded": valid.source_eligible,
+            "active_project_copied": valid.active_project_eligible,
             "completed_at": datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
         }
         _publish_json(paths.migration_receipt_path, receipt)
@@ -362,6 +415,7 @@ def _execute_development_state_migration_v1(
             report_count,
             valid.settings_eligible,
             valid.source_eligible,
+            valid.active_project_eligible,
         )
     except (KeyboardInterrupt, SystemExit, GeneratorExit, MemoryError):
         raise
@@ -515,13 +569,42 @@ def _reports_optional(path: Path) -> bool:
         return False
     if not path.is_dir() or path.is_symlink():
         raise ValueError
-    entries = tuple(path.iterdir())
-    if any(
-        not item.is_file() or item.is_symlink() or item.suffix.lower() != ".html"
-        for item in entries
-    ):
+    return any(
+        item.is_file() and not item.is_symlink() and item.suffix.lower() == ".html"
+        for item in path.iterdir()
+    )
+
+
+def _active_project_optional(path: Path, database: Path, reports: Path) -> bool:
+    if not _regular_optional(path):
+        return False
+    project = ActiveProjectStoreV1(database_path=database, project_path=path).load()
+    if project is None:
         raise ValueError
-    return bool(entries)
+    report_root = reports.resolve()
+    for material in project.editor_materials:
+        if material.output_path is None:
+            continue
+        output = Path(material.output_path)
+        if (
+            not output.is_absolute()
+            or not output.is_file()
+            or output.is_symlink()
+            or output.parent.resolve() != report_root
+        ):
+            raise ValueError
+    return True
+
+
+def _active_project_outputs_available(path: Path, destination: Path) -> bool:
+    project = ActiveProjectStoreV1(
+        database_path=path.parent / "news_monitor.db", project_path=path
+    ).load()
+    return project is not None and all(
+        material.output_path is None
+        or not (destination / Path(material.output_path).name).exists()
+        for material in project.editor_materials
+    )
 
 
 def _plan(
@@ -645,7 +728,7 @@ def _recover_pending(paths: WindowsApplicationPathsV1) -> None:
 
 def _read_receipt(path: Path) -> dict[str, object]:
     value = json.loads(path.read_text(encoding="utf-8"))
-    names = (
+    legacy_names = (
         "schema",
         "schema_version",
         "operation_id",
@@ -655,9 +738,10 @@ def _read_receipt(path: Path) -> dict[str, object]:
         "source_override_seeded",
         "completed_at",
     )
+    names = legacy_names[:-1] + ("active_project_copied", "completed_at")
     if (
         type(value) is not dict
-        or tuple(value) != names
+        or tuple(value) not in {legacy_names, names}
         or value["schema"] != "pastila-scout-development-migration"
         or value["schema_version"] != 1
     ):
