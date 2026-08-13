@@ -43,6 +43,22 @@ _EDITOR_REQUIRED_CONFIGURATION = (
 )
 _BUTTON_STYLE = "TButton"
 _PRIMARY_LABEL_STYLE = "PastilaPrimary.TLabel"
+_PRIMARY_ACTION_COLOR = "#e31919"
+_PRIMARY_ACTION_BUTTON_OPTIONS = {
+    "activebackground": "#ffffff",
+    "activeforeground": _PRIMARY_ACTION_COLOR,
+    "background": "#ffffff",
+    "borderwidth": 0,
+    "disabledforeground": "#777777",
+    "font": ("TkDefaultFont", 11, "bold"),
+    "foreground": _PRIMARY_ACTION_COLOR,
+    "height": 1,
+    "highlightthickness": 0,
+    "padx": 4,
+    "pady": 2,
+    "relief": "flat",
+    "width": 16,
+}
 
 
 def _configure_desktop_styles(root: object) -> None:
@@ -62,6 +78,21 @@ def _configure_desktop_styles(root: object) -> None:
         foreground=(("disabled", "#777777"), ("!disabled", "#000000")),
     )
     style.configure(_PRIMARY_LABEL_STYLE, font=("TkDefaultFont", 9, "bold"))
+
+
+def _primary_action_button(
+    parent: tkinter.Misc, *, text: str, command: object, state: str = "normal"
+) -> tkinter.Button:
+    border = tkinter.Frame(parent, background=_PRIMARY_ACTION_COLOR, padx=1, pady=1)
+    button = tkinter.Button(
+        border,
+        text=text,
+        state=state,
+        command=command,
+        **_PRIMARY_ACTION_BUTTON_OPTIONS,
+    )
+    button.pack()
+    return button
 
 
 def _editor_configuration_ready(values: dict[str, tkinter.StringVar]) -> bool:
@@ -270,10 +301,13 @@ class _DesktopMainWindowV1:
             text=_text_v1(key="scout.provider_test"),
             command=self._test_scout_provider,
         ).pack(side="left")
-        self._scout_button = ttk.Button(
-            page, text=_text_v1(key="scout.run"), state="disabled", command=self._scout
+        self._scout_button = _primary_action_button(
+            page,
+            text=_text_v1(key="scout.run"),
+            state="disabled",
+            command=self._scout,
         )
-        self._scout_button.grid(row=6, column=0, columnspan=2, pady=8)
+        self._scout_button.master.grid(row=6, column=0, columnspan=2, pady=8)
         source = ttk.Frame(page)
         source.grid(row=5, column=0, columnspan=2, sticky="ew")
         ttk.Label(
@@ -401,13 +435,13 @@ class _DesktopMainWindowV1:
         )
         check.grid(row=row + 1, column=0, columnspan=2)
         self._editor_widgets.append(check)
-        self._editor_button = ttk.Button(
+        self._editor_button = _primary_action_button(
             page,
             text=_text_v1(key="editor.run"),
             state="disabled",
             command=self._editor,
         )
-        self._editor_button.grid(row=row + 2, column=0, columnspan=2)
+        self._editor_button.master.grid(row=row + 2, column=0, columnspan=2)
 
     def _build_chief_editor(self) -> None:
         page = ttk.Frame(self._content)
@@ -475,16 +509,18 @@ class _DesktopMainWindowV1:
         ttk.Entry(page, textvariable=self._chief_note).grid(
             row=5, column=1, sticky="ew"
         )
-        ttk.Button(
+        self._chief_save_button = _primary_action_button(
             page,
             text=_text_v1(key="chief_editor.save"),
             command=self._chief_editor_save_action,
-        ).grid(row=6, column=0)
-        ttk.Button(
+        )
+        self._chief_save_button.master.grid(row=6, column=0)
+        self._chief_export_button = _primary_action_button(
             page,
             text=_text_v1(key="chief_editor.export"),
             command=self._chief_editor_export_action,
-        ).grid(row=6, column=1)
+        )
+        self._chief_export_button.master.grid(row=6, column=1)
         self._chief_status = tkinter.StringVar(value=_text_v1(key="chief_editor.empty"))
         ttk.Label(page, textvariable=self._chief_status).grid(
             row=7, column=0, columnspan=2, sticky="w"

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import inspect
 import sqlite3
 from pathlib import Path
 
@@ -10,7 +11,10 @@ from pastila_scout.database import initialize_database
 from pastila_scout.desktop_v1 import source_settings
 from pastila_scout.desktop_v1.views import (
     _BUTTON_STYLE,
+    _PRIMARY_ACTION_BUTTON_OPTIONS,
+    _PRIMARY_ACTION_COLOR,
     _PRIMARY_LABEL_STYLE,
+    _primary_action_button,
 )
 
 
@@ -187,3 +191,26 @@ def test_source_override_rebase_does_not_duplicate_new_canonical_source(tmp_path
 def test_small_shared_styles_are_named_for_buttons_and_primary_labels():
     assert _BUTTON_STYLE == "TButton"
     assert _PRIMARY_LABEL_STYLE == "PastilaPrimary.TLabel"
+
+
+def test_primary_actions_have_isolated_red_bold_large_presentation():
+    assert _PRIMARY_ACTION_COLOR == "#e31919"
+    assert _PRIMARY_ACTION_BUTTON_OPTIONS == {
+        "activebackground": "#ffffff",
+        "activeforeground": "#e31919",
+        "background": "#ffffff",
+        "borderwidth": 0,
+        "disabledforeground": "#777777",
+        "font": ("TkDefaultFont", 11, "bold"),
+        "foreground": "#e31919",
+        "height": 1,
+        "highlightthickness": 0,
+        "padx": 4,
+        "pady": 2,
+        "relief": "flat",
+        "width": 16,
+    }
+    source = inspect.getsource(_primary_action_button)
+    assert "tkinter.Frame" in source
+    assert "tkinter.Button" in source
+    assert "button.pack()" in source

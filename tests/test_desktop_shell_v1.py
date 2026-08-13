@@ -285,7 +285,31 @@ def test_withdrawn_tk_window_has_exact_structural_root_and_initial_state():
         assert tuple(root.minsize()) == (900, 600)
         assert view._navigation.get_children("") == ("scout", "editor", "chief_editor")
         assert str(view._scout_button.cget("state")) == "disabled"
+        assert view._scout_button.cget("text") == "Cauta"
+        assert view._scout_button.cget("foreground") == "#e31919"
+        assert view._scout_button.cget("font") == "TkDefaultFont 11 bold"
+        assert int(view._scout_button.cget("width")) == 16
+        assert int(view._scout_button.cget("height")) == 1
+        assert view._scout_button.master.cget("background") == "#e31919"
         assert str(view._editor_button.cget("state")) == "disabled"
+        assert view._editor_button.cget("text") == "Genereaza"
+        assert view._editor_button.cget("foreground") == "#e31919"
+        assert view._editor_button.cget("font") == "TkDefaultFont 11 bold"
+        assert view._editor_button.master.cget("background") == "#e31919"
+        assert view._chief_save_button.cget("text") == "Salveaza"
+        assert view._chief_save_button.cget("foreground") == "#e31919"
+        assert view._chief_save_button.cget("font") == "TkDefaultFont 11 bold"
+        assert view._chief_save_button.master.cget("background") == "#e31919"
+        assert view._chief_export_button.cget("text") == "Exporta structura"
+        assert view._chief_export_button.cget("foreground") == "#e31919"
+        assert view._chief_export_button.cget("font") == "TkDefaultFont 11 bold"
+        assert view._chief_export_button.master.cget("background") == "#e31919"
+        assert view._chief_save_button.cget("width") == view._chief_export_button.cget(
+            "width"
+        )
+        assert view._chief_save_button.cget("height") == view._chief_export_button.cget(
+            "height"
+        )
         assert str(view._report_button.cget("state")) == "disabled"
     finally:
         root.destroy()
@@ -390,7 +414,10 @@ def test_resources_are_exact_unique_nfc_and_unknown_is_safe():
 
     assert len(dict(_TEXT_V1)) == len(_TEXT_V1)
     assert all(unicodedata.normalize("NFC", value) == value for _, value in _TEXT_V1)
-    assert _text_v1(key="scout.run") == "CAUTA"
+    assert _text_v1(key="scout.period") == "Perioada"
+    assert _text_v1(key="scout.category") == "Categorie"
+    assert _text_v1(key="scout.run") == "Cauta"
+    assert _text_v1(key="editor.active_project") == "Stire selectata"
     forbidden = set("ăâîșşțţĂÂÎȘŞȚŢ")
     assert not any(forbidden.intersection(value) for _, value in _TEXT_V1)
     assert _text_v1(key="scout.provider") == "AI Engine"
