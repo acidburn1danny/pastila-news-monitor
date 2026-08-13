@@ -23,6 +23,20 @@ from pastila_scout.models import (
     TokenUsage,
 )
 
+EDITORIAL_SCORING_INSTRUCTIONS = (
+    "Evaluate this Romanian news event for editorial recommendation. Use "
+    "only supplied confirmed facts. Score every dimension 0-10. Keep the "
+    "reason concise and list concrete editorial risks without inventing facts. "
+    "Be conservative with low-value noise such as advertising, unsupported "
+    "clickbait, horoscope, trivial local entertainment, stale unsupported claims, "
+    "and ordinary celebrity activity. Editorial relevance also includes meaningful "
+    "international political developments and concrete, source-supported unusual "
+    "or absurd events with clear satire/commentary potential or a broader social "
+    "point; novelty alone is insufficient. Treat broad systemic or major public "
+    "consequences as high priority, bounded but editorially useful impact as medium, "
+    "and irrelevant or weak material as low."
+)
+
 
 def editorial_cache_key(
     request: EditorialScoringRequest,
@@ -133,7 +147,7 @@ class EditorialEventScorer:
             started = time.perf_counter()
             try:
                 response = self.provider.complete_structured(
-                    _provider_request(request, self.scoring_config)
+                    build_editorial_scoring_task(request, self.scoring_config)
                 )
                 latency_ms += (time.perf_counter() - started) * 1000
                 decision = EditorialDecision.model_validate_json(response.output_text)
@@ -246,7 +260,7 @@ class EditorialEventScorer:
         )
 
 
-def _provider_request(
+def build_editorial_scoring_task(
     request: EditorialScoringRequest, config: ScoringConfig
 ) -> StructuredAIRequest:
     event = request.event
@@ -273,11 +287,7 @@ def _provider_request(
     }
     return StructuredAIRequest(
         name="editorial_event_score",
-        instructions=(
-            "Evaluate this Romanian news event for editorial recommendation. Use "
-            "only supplied confirmed facts. Score every dimension 0-10. Keep the "
-            "reason concise and list concrete editorial risks without inventing facts."
-        ),
+        instructions=EDITORIAL_SCORING_INSTRUCTIONS,
         input_json=json.dumps(confirmed, ensure_ascii=False),
         json_schema=EditorialDecision.model_json_schema(),
     )
