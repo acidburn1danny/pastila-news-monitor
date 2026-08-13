@@ -62,7 +62,7 @@ def test_exact_private_contracts_and_projection() -> None:
             pass
 
 
-def test_real_development_composition_has_two_field_result() -> None:
+def test_real_development_composition_exposes_project_persistence_paths() -> None:
     result = _compose_state_bound_desktop_application_v1(
         frozen=False,
         environment={},
@@ -72,7 +72,14 @@ def test_real_development_composition_has_two_field_result() -> None:
     assert type(result) is _DesktopStateCompositionV1
     assert type(result.facade) is DesktopApplicationFacadeV1
     assert type(result.settings) is _DesktopSettingsProjectionV1
-    assert set(result.__slots__) == {"facade", "settings"}
+    assert set(result.__slots__) == {
+        "active_project_path",
+        "database_path",
+        "facade",
+        "settings",
+    }
+    assert result.database_path == ROOT / "data" / "news_monitor.db"
+    assert result.active_project_path == ROOT / "data" / "active-project-v1.json"
 
 
 def test_source_selector_override_and_bundled_precedence(tmp_path: Path) -> None:

@@ -16,6 +16,7 @@ from pathlib import Path
 from tkinter import filedialog, messagebox
 from typing import NoReturn
 
+from pastila_scout.active_project_v1 import ActiveProjectStoreV1, ChiefEditorItemV1
 from pastila_scout.contracts.identity import verify_scout_input_identity
 from pastila_scout.contracts.io import load_contract
 from pastila_scout.contracts.scout_editor import ScoutEditorInputV1
@@ -46,6 +47,7 @@ from pastila_scout.windows_state_v1.migrations import (
 from .controller import _DesktopTaskControllerV1
 from .errors import _DesktopShellConfigurationError
 from .models import (
+    _DesktopPageV1,
     _reconstruct_desktop_editor_action_input_v1,
     _reconstruct_desktop_scout_action_input_v1,
 )
@@ -113,7 +115,12 @@ def main() -> int:
             migration_consent=migration_consent,
         )
         facade = state.facade
-        cells: dict[str, object] = {"facade": facade}
+        project_store = ActiveProjectStoreV1(
+            database_path=state.database_path,
+            project_path=state.active_project_path,
+        )
+        active_project = project_store.load()
+        cells: dict[str, object] = {"facade": facade, "project": active_project}
         closed = False
 
         def select_page(*, page) -> None:
@@ -153,6 +160,7 @@ def main() -> int:
 
             def on_completed(*, result) -> None:
                 _publish_scout_result(view, result)
+                _publish_candidates(view, project_store)
 
             controller.submit_application(task=task, on_completed=on_completed)
 
@@ -160,19 +168,70 @@ def main() -> int:
             values = _editor_values(input)
 
             def task():
-                return _run_editor(facade, values)
+                project = cells.get("project")
+                source = None if project is None else project.scout_input  # type: ignore[attr-defined]
+                return _run_editor(facade, values, source=source)
 
             def on_completed(*, result) -> None:
                 _publish_editor_result(view, result)
+                application_result = reconstruct_editor_desktop_result(result).application_result
+                if (
+                    application_result.handoff_permitted
+                    and application_result.output_path is not None
+                    and application_result.payload_sha256 is not None
+                ):
+                    cells["project"] = project_store.record_editor_output(
+                        output_path=application_result.output_path,
+                        payload_sha256=application_result.payload_sha256,
+                    )
+                    _publish_chief_editor(view, cells["project"])
 
             controller.submit_application(task=task, on_completed=on_completed)
 
         def open_report(*, reference: str) -> None:
             facade.open_report(reference=reference)
 
+        def handoff(*, input) -> None:
+            _complete_handoff(
+                store=project_store,
+                event_id=input,
+                cells=cells,
+                view=view,
+                controller=controller,
+            )
+
+        def save_chief_editor(*, input) -> None:
+            project = _save_chief_editor(project_store, input)
+            cells["project"] = project
+            _publish_chief_editor(view, project, _text_v1(key="chief_editor.saved"))
+
+        def export_chief_editor(*, input) -> None:
+            project = _save_chief_editor(project_store, input)
+            selected = filedialog.asksaveasfilename(
+                parent=root,
+                defaultextension=".md",
+                filetypes=(("Markdown", "*.md"), ("Text", "*.txt")),
+                initialfile="structura-episod.md",
+            )
+            if selected:
+                project_store.export_chief_editor(destination=Path(selected))
+            cells["project"] = project
+            _publish_chief_editor(view, project, _text_v1(key="chief_editor.saved"))
+
         view.bind_scout_action(callback=run_scout)
         view.bind_editor_action(callback=run_editor)
         view.bind_report_action(callback=open_report)
+        view.bind_handoff_action(callback=handoff)
+        view.bind_chief_editor_actions(
+            save_callback=save_chief_editor, export_callback=export_chief_editor
+        )
+        _publish_candidates(view, project_store)
+        if active_project is not None:
+            view.publish_active_project(
+                title=active_project.title,
+                message=_text_v1(key="scout.handoff_success"),
+            )
+            _publish_chief_editor(view, active_project)
         root.protocol("WM_DELETE_WINDOW", close)
         controller.start()
         root.deiconify()
@@ -232,7 +291,11 @@ def _editor_values(value: object) -> tuple[object, ...]:
                 "output_path",
             )
         )
-        if not valid.no_replace or not all(_safe_input(item) for item in strings):
+        if (
+            not valid.no_replace
+            or not all(_safe_input(item) for item in strings[1:])
+            or (strings[0] and not _safe_input(strings[0]))
+        ):
             raise ValueError
         timeout = float(valid.timeout_seconds)
         if not math.isfinite(timeout) or timeout <= 0:
@@ -253,7 +316,10 @@ def _editor_values(value: object) -> tuple[object, ...]:
 
 
 def _run_editor(
-    facade: DesktopApplicationFacadeV1, values: tuple[object, ...]
+    facade: DesktopApplicationFacadeV1,
+    values: tuple[object, ...],
+    *,
+    source: ScoutEditorInputV1 | None = None,
 ) -> EditorDesktopResultV1:
     (
         scout_path,
@@ -266,7 +332,7 @@ def _run_editor(
         output,
         reference,
     ) = values
-    source = load_contract(scout_path)
+    source = load_contract(scout_path) if source is None else source
     if type(source) is not ScoutEditorInputV1:
         raise _DesktopShellConfigurationError() from None
     source = ScoutEditorInputV1.model_validate(
@@ -297,6 +363,62 @@ def _run_editor(
     return facade.run_editor(
         request=EditorDesktopRequestV1(application_request=nested),
         progress_sink=_DesktopStartupProgressSinkV1(),
+    )
+
+
+def _publish_candidates(view: object, store: ActiveProjectStoreV1) -> None:
+    candidates = store.list_candidates()
+    view.publish_candidates(  # type: ignore[attr-defined]
+        candidates=tuple(
+            (item.event_id, item.title, item.category, item.source_count)
+            for item in candidates
+        )
+    )
+
+
+def _complete_handoff(*, store, event_id: int, cells, view, controller) -> bool:
+    try:
+        project = store.handoff(event_id=event_id)
+    except Exception:
+        view.publish_active_project(
+            title="—", message=_text_v1(key="scout.handoff_failure")
+        )
+        return False
+    cells["project"] = project
+    view.publish_active_project(
+        title=project.title, message=_text_v1(key="scout.handoff_success")
+    )
+    controller.select_page(page=_DesktopPageV1.EDITOR)
+    return True
+
+
+def _save_chief_editor(store: ActiveProjectStoreV1, value: object):
+    if type(value) is not dict or set(value) != {"title", "items"}:
+        raise _DesktopShellConfigurationError() from None
+    raw_items = value["items"]
+    if type(value["title"]) is not str or type(raw_items) is not tuple:
+        raise _DesktopShellConfigurationError() from None
+    try:
+        items = tuple(
+            ChiefEditorItemV1(reference, section.strip(), note.strip())
+            for reference, section, note in raw_items
+        )
+        return store.save_chief_editor(title=value["title"], items=items)
+    except Exception:
+        raise _DesktopShellConfigurationError() from None
+
+
+def _publish_chief_editor(view: object, project: object, status: str = "") -> None:
+    materials = {item.reference: item for item in project.editor_materials}
+    view.publish_chief_editor(  # type: ignore[attr-defined]
+        title=project.chief_editor_title or project.title,
+        available=tuple((item.reference, item.title) for item in project.editor_materials),
+        items=tuple(
+            (item.material_reference, materials[item.material_reference].title, item.section, item.note)
+            for item in project.chief_editor_items
+            if item.material_reference in materials
+        ),
+        status=status,
     )
 
 

@@ -20,6 +20,7 @@ def _pickle(name: str) -> NoReturn:
 class _DesktopPageV1(StrEnum):
     SCOUT = "scout"
     EDITOR = "editor"
+    CHIEF_EDITOR = "chief_editor"
 
     def __reduce_ex__(self, protocol: int) -> NoReturn:
         del protocol

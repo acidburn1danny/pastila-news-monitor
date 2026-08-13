@@ -45,7 +45,7 @@ class _DesktopStateConsumptionError(Exception):
 
 
 class _DesktopStateCompositionV1:
-    __slots__ = ("facade", "settings")
+    __slots__ = ("active_project_path", "database_path", "facade", "settings")
 
     def __init_subclass__(cls, **kwargs) -> NoReturn:
         del cls, kwargs
@@ -56,13 +56,21 @@ class _DesktopStateCompositionV1:
         *,
         facade: DesktopApplicationFacadeV1,
         settings: _DesktopSettingsProjectionV1,
+        database_path: Path,
+        active_project_path: Path,
     ) -> None:
-        if type(facade) is not DesktopApplicationFacadeV1:
+        if (
+            type(facade) is not DesktopApplicationFacadeV1
+            or not database_path.is_absolute()
+            or not active_project_path.is_absolute()
+        ):
             raise TypeError("Invalid desktop facade")
         object.__setattr__(self, "facade", facade)
         object.__setattr__(
             self, "settings", _reconstruct_desktop_settings_projection_v1(settings)
         )
+        object.__setattr__(self, "database_path", database_path)
+        object.__setattr__(self, "active_project_path", active_project_path)
 
     def __setattr__(self, name: str, value: object) -> NoReturn:
         del name, value
@@ -175,7 +183,12 @@ def _compose_state_bound_desktop_application_v1(
             report_directory=paths.report_directory,
         )
         projection = _project_desktop_settings_v1(settings=settings)
-        return _DesktopStateCompositionV1(facade=facade, settings=projection)
+        return _DesktopStateCompositionV1(
+            facade=facade,
+            settings=projection,
+            database_path=paths.database_path,
+            active_project_path=paths.database_path.parent / "active-project-v1.json",
+        )
     except (KeyboardInterrupt, SystemExit, GeneratorExit, MemoryError):
         raise
     except Exception:

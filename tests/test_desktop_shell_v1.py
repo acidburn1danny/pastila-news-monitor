@@ -191,6 +191,15 @@ def test_structural_entrypoint_creates_one_root_controller_and_view(monkeypatch)
         def bind_report_action(self, *, callback):
             calls.append(("bind-report", callback))
 
+        def bind_handoff_action(self, *, callback):
+            calls.append(("bind-handoff", callback))
+
+        def bind_chief_editor_actions(self, *, save_callback, export_callback):
+            calls.append(("bind-chief-editor", save_callback, export_callback))
+
+        def publish_candidates(self, *, candidates):
+            calls.append(("candidates", candidates))
+
     class Facade:
         def run_scout(self, *, request, progress_sink):
             del request, progress_sink
@@ -208,7 +217,12 @@ def test_structural_entrypoint_creates_one_root_controller_and_view(monkeypatch)
     monkeypatch.setattr(
         entrypoint,
         "_compose_state_bound_desktop_application_v1",
-        lambda **kwargs: SimpleNamespace(facade=Facade(), settings=object()),
+        lambda **kwargs: SimpleNamespace(
+            facade=Facade(),
+            settings=object(),
+            database_path=ROOT / "missing.db",
+            active_project_path=ROOT / "missing-active-project.json",
+        ),
     )
     assert entrypoint.main() == 0
     assert calls.count("root") == 1
@@ -256,7 +270,7 @@ def test_withdrawn_tk_window_has_exact_structural_root_and_initial_state():
         )
         assert root.title() == "Pastila Scout"
         assert tuple(root.minsize()) == (900, 600)
-        assert view._navigation.get_children("") == ("scout", "editor")
+        assert view._navigation.get_children("") == ("scout", "editor", "chief_editor")
         assert str(view._scout_button.cget("state")) == "disabled"
         assert str(view._editor_button.cget("state")) == "disabled"
         assert str(view._report_button.cget("state")) == "disabled"
@@ -756,6 +770,7 @@ def test_frozen_authority_hashes_and_phase_scope():
             ).stdout
             if path not in {
                 "src/pastila_scout/desktop_v1/entrypoint.py",
+                "src/pastila_scout/desktop_v1/models.py",
                 "src/pastila_scout/desktop_v1/resources.py",
                 "src/pastila_scout/desktop_v1/views.py",
             }:
