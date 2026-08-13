@@ -9,6 +9,7 @@ import tempfile
 import uuid
 from dataclasses import dataclass
 from datetime import UTC, datetime
+from enum import StrEnum
 from pathlib import Path
 
 from pastila_scout import __version__
@@ -47,6 +48,25 @@ class ChiefEditorItemV1:
     note: str = ""
 
 
+class EditorWorkItemStatusV1(StrEnum):
+    PENDING = "pending"
+    RUNNING = "running"
+    COMPLETED = "completed"
+    FAILED = "failed"
+
+
+@dataclass(frozen=True, slots=True)
+class EditorWorkItemV1:
+    event_id: int
+    status: EditorWorkItemStatusV1 = EditorWorkItemStatusV1.PENDING
+
+    def __post_init__(self) -> None:
+        if type(self.event_id) is not int or self.event_id <= 0:
+            raise ValueError("Element Editor invalid")
+        if type(self.status) is not EditorWorkItemStatusV1:
+            raise ValueError("Stare Editor invalida")
+
+
 @dataclass(frozen=True, slots=True)
 class ActiveProjectV1:
     project_id: str
@@ -57,6 +77,7 @@ class ActiveProjectV1:
     chief_editor_items: tuple[ChiefEditorItemV1, ...] = ()
     chief_editor_title: str = ""
     chief_editor_updated_at: datetime | None = None
+    editor_worklist: tuple[EditorWorkItemV1, ...] = ()
 
     @property
     def candidate(self):
@@ -97,7 +118,7 @@ class ActiveProjectStoreV1:
 
     def handoff(self, *, event_id: int) -> ActiveProjectV1:
         source = _scout_input(self.database_path, event_id)
-        existing = self.load()
+        existing = self._load(recover_running=False)
         project = ActiveProjectV1(
             project_id=(
                 existing.project_id
@@ -119,6 +140,10 @@ class ActiveProjectStoreV1:
             chief_editor_updated_at=(
                 None if existing is None else existing.chief_editor_updated_at
             ),
+            editor_worklist=_synchronize_editor_worklist(
+                source.ranked_events,
+                () if existing is None else existing.editor_worklist,
+            ),
         )
         self._write(project)
         return project
@@ -132,7 +157,7 @@ class ActiveProjectStoreV1:
             or any(type(value) is not int for value in event_ids)
         ):
             raise ValueError("Selectie Scout invalida")
-        existing = self.load()
+        existing = self._load(recover_running=False)
         existing_ids = (
             ()
             if existing is None
@@ -183,6 +208,10 @@ class ActiveProjectStoreV1:
             chief_editor_updated_at=(
                 None if existing is None else existing.chief_editor_updated_at
             ),
+            editor_worklist=_synchronize_editor_worklist(
+                source.ranked_events,
+                () if existing is None else existing.editor_worklist,
+            ),
         )
         self._write(project)
         return project, len(event_ids) - len(inputs)
@@ -216,6 +245,7 @@ class ActiveProjectStoreV1:
             chief,
             project.chief_editor_title or project.title,
             datetime.now(UTC),
+            project.editor_worklist,
         )
         self._write(updated)
         return updated
@@ -245,6 +275,7 @@ class ActiveProjectStoreV1:
             items,
             title,
             datetime.now(UTC),
+            project.editor_worklist,
         )
         self._write(updated)
         return updated
@@ -268,14 +299,78 @@ class ActiveProjectStoreV1:
         destination.write_text(text, encoding="utf-8", newline="\n")
         return text
 
+    def mark_editor_item_running(self, *, event_id: int) -> ActiveProjectV1:
+        return self._transition_editor_item(
+            event_id=event_id,
+            allowed=(EditorWorkItemStatusV1.PENDING,),
+            target=EditorWorkItemStatusV1.RUNNING,
+        )
+
+    def mark_editor_item_completed(self, *, event_id: int) -> ActiveProjectV1:
+        return self._transition_editor_item(
+            event_id=event_id,
+            allowed=(EditorWorkItemStatusV1.RUNNING,),
+            target=EditorWorkItemStatusV1.COMPLETED,
+        )
+
+    def mark_editor_item_failed(self, *, event_id: int) -> ActiveProjectV1:
+        return self._transition_editor_item(
+            event_id=event_id,
+            allowed=(EditorWorkItemStatusV1.RUNNING,),
+            target=EditorWorkItemStatusV1.FAILED,
+        )
+
+    def retry_editor_item(self, *, event_id: int) -> ActiveProjectV1:
+        return self._transition_editor_item(
+            event_id=event_id,
+            allowed=(EditorWorkItemStatusV1.FAILED,),
+            target=EditorWorkItemStatusV1.PENDING,
+        )
+
+    def _transition_editor_item(
+        self,
+        *,
+        event_id: int,
+        allowed: tuple[EditorWorkItemStatusV1, ...],
+        target: EditorWorkItemStatusV1,
+    ) -> ActiveProjectV1:
+        project = self._required()
+        matches = tuple(
+            item for item in project.editor_worklist if item.event_id == event_id
+        )
+        if len(matches) != 1 or matches[0].status not in allowed:
+            raise ValueError("Tranzitie Editor invalida")
+        worklist = tuple(
+            EditorWorkItemV1(item.event_id, target)
+            if item.event_id == event_id
+            else item
+            for item in project.editor_worklist
+        )
+        updated = ActiveProjectV1(
+            project.project_id,
+            project.title,
+            project.handed_off_at,
+            project.scout_input,
+            project.editor_materials,
+            project.chief_editor_items,
+            project.chief_editor_title,
+            project.chief_editor_updated_at,
+            worklist,
+        )
+        self._write(updated)
+        return updated
+
     def _required(self) -> ActiveProjectV1:
-        project = self.load()
+        project = self._load(recover_running=False)
         if project is None:
             raise ValueError("Nu există proiect activ")
         return project
 
     def _write(self, project: ActiveProjectV1) -> None:
         self.project_path.parent.mkdir(parents=True, exist_ok=True)
+        worklist = _synchronize_editor_worklist(
+            project.scout_input.ranked_events, project.editor_worklist
+        )
         payload = {
             "version": "active-project-v1",
             "project_id": project.project_id,
@@ -292,6 +387,10 @@ class ActiveProjectStoreV1:
                     "payload_sha256": item.payload_sha256,
                 }
                 for item in project.editor_materials
+            ],
+            "editor_worklist": [
+                {"event_id": item.event_id, "status": item.status.value}
+                for item in worklist
             ],
             "chief_editor": {
                 "title": project.chief_editor_title,
@@ -328,6 +427,9 @@ class ActiveProjectStoreV1:
             raise
 
     def load(self) -> ActiveProjectV1 | None:
+        return self._load(recover_running=True)
+
+    def _load(self, *, recover_running: bool) -> ActiveProjectV1 | None:
         if not self.project_path.is_file():
             return None
         data = json.loads(self.project_path.read_text(encoding="utf-8"))
@@ -345,6 +447,32 @@ class ActiveProjectStoreV1:
             ChiefEditorItemV1(**item) for item in chief_data.get("items", ())
         )
         updated_at = chief_data.get("updated_at")
+        raw_worklist = data.get("editor_worklist")
+        recovered_running = False
+        if raw_worklist is None:
+            worklist = _synchronize_editor_worklist(source.ranked_events, ())
+        else:
+            if type(raw_worklist) is not list:
+                raise ValueError("Lista Editor invalida")
+            recovered_running = recover_running and any(
+                item["status"] == EditorWorkItemStatusV1.RUNNING.value
+                for item in raw_worklist
+            )
+            worklist = tuple(
+                EditorWorkItemV1(
+                    event_id=item["event_id"],
+                    status=(
+                        EditorWorkItemStatusV1.PENDING
+                        if recover_running
+                        and item["status"] == EditorWorkItemStatusV1.RUNNING.value
+                        else EditorWorkItemStatusV1(item["status"])
+                    ),
+                )
+                for item in raw_worklist
+            )
+            expected_ids = tuple(event.event_id for event in source.ranked_events)
+            if tuple(item.event_id for item in worklist) != expected_ids:
+                raise ValueError("Lista Editor invalida")
         project = ActiveProjectV1(
             project_id=str(data["project_id"]),
             title=str(data["title"]),
@@ -356,12 +484,15 @@ class ActiveProjectStoreV1:
             chief_editor_updated_at=(
                 None if updated_at is None else datetime.fromisoformat(updated_at)
             ),
+            editor_worklist=worklist,
         )
         if (
             not source.ranked_events
             or project.title != project.candidate.canonical_title
         ):
             raise ValueError("Invalid active project")
+        if recovered_running:
+            self._write(project)
         return project
 
 
@@ -382,6 +513,24 @@ def _merge_scout_inputs(events: tuple[object, ...], template: ScoutEditorInputV1
     data["ranking_parameters"]["limit"] = len(ranked)
     data["ranking_parameters"]["top"] = len(ranked)
     return assign_scout_input_identity(data)
+
+
+def _synchronize_editor_worklist(
+    ranked_events: tuple[object, ...], existing: tuple[EditorWorkItemV1, ...]
+) -> tuple[EditorWorkItemV1, ...]:
+    if type(existing) is not tuple or any(
+        type(item) is not EditorWorkItemV1 for item in existing
+    ):
+        raise ValueError("Lista Editor invalida")
+    by_event = {item.event_id: item for item in existing}
+    if len(by_event) != len(existing):
+        raise ValueError("Lista Editor invalida")
+    event_ids = tuple(event.event_id for event in ranked_events)
+    if len(event_ids) != len(set(event_ids)):
+        raise ValueError("Lista Scout invalida")
+    return tuple(
+        by_event.get(event_id, EditorWorkItemV1(event_id)) for event_id in event_ids
+    )
 
 
 def move_chief_editor_item(
