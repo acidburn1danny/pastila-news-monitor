@@ -63,7 +63,10 @@ from .models import (
 )
 from .resources import _text_v1
 from .settings import _project_desktop_settings_v1
-from .source_settings import _add_scout_source_v1
+from .source_settings import (
+    _add_scout_source_v1,
+    _rebase_scout_sources_override_v1,
+)
 from .state_composition import (
     _compose_state_bound_desktop_application_v1,
     _DesktopStateConsumptionError,
@@ -132,19 +135,19 @@ def main() -> int:
             project_path=state.active_project_path,
         )
         source_override = state.settings_path.parent / "sources.override.yaml"
-        sources_path = (
-            source_override
-            if source_override.is_file()
-            else (
-                development_root / "config" / "sources.yaml"
-                if development_root is not None
-                else state.database_path.parent.parent
-                / "Programs"
-                / "PastilaScout"
-                / "app"
-                / "config"
-                / "sources.yaml"
-            )
+        canonical_sources = (
+            development_root / "config" / "sources.yaml"
+            if development_root is not None
+            else state.database_path.parent.parent
+            / "Programs"
+            / "PastilaScout"
+            / "app"
+            / "config"
+            / "sources.yaml"
+        )
+        sources_path = _rebase_scout_sources_override_v1(
+            canonical_path=canonical_sources,
+            override_path=source_override,
         )
         settings = state.settings
         if sources_path.is_file() and hasattr(state.settings, "scout_provider"):

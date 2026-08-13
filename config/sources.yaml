@@ -1,10 +1,8 @@
-# Set enabled: false to disable a source without removing its stable database ID.
-# categories describe broad source coverage in Romanian; --category filters
-# sources, not individual articles. RSS is preferred. HTML sources may be
-# enabled only with selectors verified against current public markup.
-# Every source ID must remain stable, unique, lowercase, and ASCII.
+# Canonical operational Scout sources. RSS/Atom feeds are validated through
+# the generic Scout ingestion path. IDs are stable, unique, lowercase ASCII.
 
 sources:
+  # Romania - Core
   - id: digi24
     name: Digi24
     adapter: rss
@@ -30,23 +28,13 @@ sources:
     prioritate: 1
     source_category: [Politica, Social, Economie, Diverse]
 
-  # Disabled: the official homepage publishes no verified RSS/Atom discovery link.
-  - id: newsro
-    name: News.ro
-    adapter: html
-    url: https://www.news.ro/
-    enabled: false
-    disabled_reason: No verified RSS/Atom discovery link on the official homepage.
-    prioritate: 1
-    source_category: [Politica, Social, Economie, Diverse]
-
-  - id: adevarul
-    name: Adevărul
+  - id: antena3
+    name: Antena 3 CNN
     adapter: rss
-    url: https://adevarul.ro/rss/index
+    url: https://www.antena3.ro/rss
     enabled: true
     prioritate: 1
-    source_category: [Politica, Social, Economie, CanCan, Diverse]
+    source_category: [Politica, Social, Conspiratii, Economie, Diverse]
 
   - id: libertatea
     name: Libertatea
@@ -56,34 +44,8 @@ sources:
     prioritate: 1
     source_category: [Politica, Social, CanCan, Diverse]
 
-  - id: observatornews
-    name: Observator News
-    adapter: rss
-    url: https://observatornews.ro/rss/
-    enabled: true
-    prioritate: 1
-    source_category: [Politica, Social, CanCan, Diverse]
-
-  - id: antena3
-    name: Antena 3 CNN
-    adapter: rss
-    url: https://www.antena3.ro/rss
-    enabled: true
-    prioritate: 1
-    source_category: [Politica, Social, Conspiratii, Economie, Diverse]
-
-  # Disabled: official /api/ discovery URL returned zero feed entries on live validation.
-  - id: europalibera
-    name: Europa Liberă România
-    adapter: rss
-    url: https://romania.europalibera.org/api/
-    enabled: false
-    disabled_reason: Official discovery endpoint produced no feed entries during validation.
-    prioritate: 1
-    source_category: [Politica, Social, Economie, Diverse]
-
   - id: rfi
-    name: RFI România
+    name: RFI Romania
     adapter: rss
     url: https://www.rfi.fr/ro/rss
     enabled: true
@@ -98,16 +60,6 @@ sources:
     prioritate: 1
     source_category: [Politica, Social, Economie, Diverse]
 
-  # Disabled: the official homepage publishes no verified RSS/Atom discovery link.
-  - id: pressone
-    name: PressOne
-    adapter: html
-    url: https://pressone.ro/
-    enabled: false
-    disabled_reason: No verified RSS/Atom discovery link on the official homepage.
-    prioritate: 1
-    source_category: [Politica, Social, Economie, Diverse]
-
   - id: economica
     name: Economica.net
     adapter: rss
@@ -116,48 +68,41 @@ sources:
     prioritate: 1
     source_category: [Economie, Social, Diverse]
 
-  # Disabled: the official homepage publishes no verified RSS/Atom discovery link.
-  - id: profit
-    name: Profit.ro
-    adapter: html
-    url: https://www.profit.ro/
-    enabled: false
-    disabled_reason: No verified RSS/Atom discovery link on the official homepage.
-    prioritate: 1
-    source_category: [Economie, Politica, Diverse]
-
-  - id: ziare
-    name: Ziare.com
+  # Romania - Secondary
+  - id: adevarul
+    name: Adevarul
     adapter: rss
-    url: https://ziare.com/rss/breaking_news.xml
+    url: https://adevarul.ro/rss/index
     enabled: true
     prioritate: 1
     source_category: [Politica, Social, Economie, CanCan, Diverse]
 
-  # Disabled: Reuters' public World page returned HTTP 401 and no stable,
-  # unauthenticated RSS or Atom endpoint could be verified.
-  - id: reuters
-    name: Reuters
-    adapter: html
-    url: https://www.reuters.com/world/
-    enabled: false
-    disabled_reason: No reliable unauthenticated public feed was verified.
-    prioritate: 1
-    source_category: [Externe]
-    max_articles_per_poll: 50
-
-  # Disabled: AP advertises this RSS endpoint, but it returned HTTP 401 to the
-  # Scout client during live validation on 2026-07-26.
-  - id: ap
-    name: Associated Press
+  - id: observatornews
+    name: Observator News
     adapter: rss
-    url: https://apnews.com/index.rss
-    enabled: false
-    disabled_reason: Official RSS endpoint returned HTTP 401 during live validation.
+    url: https://observatornews.ro/rss/
+    enabled: true
     prioritate: 1
-    source_category: [Externe]
+    source_category: [Politica, Social, CanCan, Diverse]
+
+  - id: context
+    name: Context.ro
+    adapter: rss
+    url: https://context.ro/feed
+    enabled: true
+    prioritate: 1
+    source_category: [Politica, Social, Economie, Diverse]
+
+  - id: romaniatv
+    name: RomaniaTV.net
+    adapter: rss
+    url: https://www.romaniatv.net/feed
+    enabled: true
+    prioritate: 1
+    source_category: [Politica, Social, Conspiratii, Diverse]
     max_articles_per_poll: 50
 
+  # International - Core
   - id: bbc_world
     name: BBC News World
     adapter: rss
@@ -176,18 +121,43 @@ sources:
     source_category: [Externe]
     max_articles_per_poll: 50
 
-  # CNN's public site exposes no verified RSS/Atom discovery link; its
-  # documented Newsource syndication feeds require credentials.
-  - id: cnn
-    name: CNN
-    adapter: html
-    url: https://edition.cnn.com/world
-    enabled: false
-    disabled_reason: No reliable unauthenticated public feed was verified.
+  - id: guardian_world
+    name: Guardian World
+    adapter: rss
+    url: https://www.theguardian.com/world/rss
+    enabled: true
     prioritate: 1
     source_category: [Externe]
     max_articles_per_poll: 50
 
+  - id: aljazeera
+    name: Al Jazeera
+    adapter: rss
+    url: https://www.aljazeera.com/xml/rss/all.xml
+    enabled: true
+    prioritate: 1
+    source_category: [Externe]
+    max_articles_per_poll: 50
+
+  - id: cbs_news
+    name: CBS News
+    adapter: rss
+    url: https://www.cbsnews.com/latest/rss/main
+    enabled: true
+    prioritate: 1
+    source_category: [Externe]
+    max_articles_per_poll: 50
+
+  - id: abc_news
+    name: ABC News
+    adapter: rss
+    url: https://feeds.abcnews.com/abcnews/topstories
+    enabled: true
+    prioritate: 1
+    source_category: [Externe]
+    max_articles_per_poll: 50
+
+  # International - Secondary
   - id: msnow
     name: MS NOW
     adapter: rss
@@ -195,4 +165,40 @@ sources:
     enabled: true
     prioritate: 1
     source_category: [Externe]
+    max_articles_per_poll: 50
+
+  - id: cbs_entertainment
+    name: CBS Entertainment
+    adapter: rss
+    url: https://www.cbsnews.com/latest/rss/entertainment
+    enabled: true
+    prioritate: 1
+    source_category: [Externe, CanCan]
+    max_articles_per_poll: 50
+
+  - id: ars_technica
+    name: Ars Technica
+    adapter: rss
+    url: https://feeds.arstechnica.com/arstechnica/index
+    enabled: true
+    prioritate: 1
+    source_category: [Externe, Diverse]
+    max_articles_per_poll: 50
+
+  - id: techcrunch
+    name: TechCrunch
+    adapter: rss
+    url: https://techcrunch.com/feed
+    enabled: true
+    prioritate: 1
+    source_category: [Externe, Economie, Diverse]
+    max_articles_per_poll: 50
+
+  - id: e_news
+    name: E! News
+    adapter: rss
+    url: https://eol-feeds.eonline.com/rssfeed/us/top_stories
+    enabled: true
+    prioritate: 1
+    source_category: [Externe, CanCan]
     max_articles_per_poll: 50

@@ -116,6 +116,74 @@ def test_source_add_validates_persists_and_survives_reload(tmp_path, monkeypatch
     )
 
 
+def test_source_override_rebase_keeps_user_additions_without_old_canonical_entries(
+    tmp_path,
+):
+    canonical = tmp_path / "canonical.yaml"
+    override = tmp_path / "profile" / "sources.override.yaml"
+    canonical.write_text(
+        """sources:
+  - id: guardian_world
+    name: Guardian World
+    type: rss
+    url: https://www.theguardian.com/world/rss
+    enabled: true
+    categories: [Externe]
+""",
+        encoding="utf-8",
+    )
+    override.parent.mkdir()
+    override.write_text(
+        """sources:
+  - id: ziare
+    name: Ziare
+    type: rss
+    url: https://ziare.com/rss/breaking_news.xml
+    enabled: true
+    categories: [Diverse]
+  - id: user_feed
+    name: User Feed
+    type: rss
+    url: https://user.test/feed
+    enabled: true
+    categories: [Diverse]
+""",
+        encoding="utf-8",
+    )
+
+    selected = source_settings._rebase_scout_sources_override_v1(
+        canonical_path=canonical,
+        override_path=override,
+    )
+
+    assert selected == override
+    saved = yaml.safe_load(override.read_text(encoding="utf-8"))["sources"]
+    assert [item["id"] for item in saved] == ["guardian_world", "user_feed"]
+    assert len({item["url"] for item in saved}) == 2
+
+
+def test_source_override_rebase_does_not_duplicate_new_canonical_source(tmp_path):
+    canonical = tmp_path / "canonical.yaml"
+    override = tmp_path / "sources.override.yaml"
+    source = """  - id: context
+    name: Context
+    type: rss
+    url: https://context.ro/feed
+    enabled: true
+    categories: [Diverse]
+"""
+    canonical.write_text(f"sources:\n{source}", encoding="utf-8")
+    override.write_text(f"sources:\n{source}", encoding="utf-8")
+
+    source_settings._rebase_scout_sources_override_v1(
+        canonical_path=canonical,
+        override_path=override,
+    )
+
+    saved = yaml.safe_load(override.read_text(encoding="utf-8"))["sources"]
+    assert [item["id"] for item in saved] == ["context"]
+
+
 def test_small_shared_styles_are_named_for_buttons_and_primary_labels():
     assert _BUTTON_STYLE == "TButton"
     assert _PRIMARY_LABEL_STYLE == "PastilaPrimary.TLabel"

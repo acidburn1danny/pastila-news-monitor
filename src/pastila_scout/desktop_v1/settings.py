@@ -16,6 +16,8 @@ from pastila_scout.windows_state_v1.settings import (
     _reconstruct_windows_settings_v1,
 )
 
+from .source_settings import _rebase_scout_sources_override_v1
+
 
 @dataclass(frozen=True, slots=True, init=False, repr=False)
 class _DesktopSettingsProjectionV1:
@@ -98,10 +100,9 @@ def _reconstruct_desktop_settings_projection_v1(
 
 def _select_scout_sources_path_v1(*, paths: WindowsApplicationPathsV1) -> Path:
     valid = _reconstruct_windows_application_paths_v1(paths)
-    selected = (
-        valid.source_override_path
-        if valid.source_override_path.exists()
-        else valid.bundled_source_path
+    selected = _rebase_scout_sources_override_v1(
+        canonical_path=valid.bundled_source_path,
+        override_path=valid.source_override_path,
     )
     if (
         type(selected) is not type(Path())

@@ -192,34 +192,36 @@ def test_rss_source_remains_valid_without_html_fields() -> None:
     assert source.list_selector is None
 
 
-def test_checked_in_config_contains_small_real_rss_source_set() -> None:
+def test_checked_in_config_contains_approved_operational_rss_source_set() -> None:
     config = load_config(Path("config/sources.yaml"))
 
-    assert len(config.sources) == 21
+    assert len(config.sources) == 23
     assert len({source.id for source in config.sources}) == len(config.sources)
     assert all(source.categories for source in config.sources)
     assert {source.id for source in config.sources} == {
         "digi24",
         "hotnews",
         "g4media",
-        "newsro",
         "adevarul",
         "libertatea",
         "observatornews",
         "antena3",
-        "europalibera",
         "rfi",
         "recorder",
-        "pressone",
         "economica",
-        "profit",
-        "ziare",
-        "reuters",
-        "ap",
+        "context",
+        "romaniatv",
         "bbc_world",
         "politico_europe",
-        "cnn",
+        "guardian_world",
+        "aljazeera",
+        "cbs_news",
+        "abc_news",
         "msnow",
+        "cbs_entertainment",
+        "ars_technica",
+        "techcrunch",
+        "e_news",
     }
     assert all("example.com" not in source.url for source in config.sources)
     assert config.polling.max_article_age_hours == 168
@@ -232,24 +234,21 @@ def test_checked_in_config_contains_small_real_rss_source_set() -> None:
         if SourceCategory.EXTERNE in source.categories
     }
     assert set(international) == {
-        "reuters",
-        "ap",
         "bbc_world",
         "politico_europe",
-        "cnn",
+        "guardian_world",
+        "aljazeera",
+        "cbs_news",
+        "abc_news",
         "msnow",
+        "cbs_entertainment",
+        "ars_technica",
+        "techcrunch",
+        "e_news",
     }
     assert all(source.max_articles_per_poll == 50 for source in international.values())
-    assert {source.id for source in international.values() if source.enabled} == {
-        "bbc_world",
-        "politico_europe",
-        "msnow",
-    }
-    assert all(
-        source.disabled_reason
-        for source in international.values()
-        if not source.enabled
-    )
+    assert all(source.enabled for source in config.sources)
+    assert not any(source.disabled_reason for source in config.sources)
 
 
 def test_global_polling_defaults_are_applied_to_legacy_configuration(
