@@ -102,6 +102,24 @@ sources:
     source_category: [Politica, Social, Conspiratii, Diverse]
     max_articles_per_poll: 50
 
+  - id: cancan
+    name: CanCan.ro
+    adapter: rss
+    url: https://www.cancan.ro/feed
+    enabled: true
+    prioritate: 1
+    source_category: [CanCan, Social, Diverse]
+    max_articles_per_poll: 50
+
+  - id: click
+    name: Click.ro
+    adapter: rss
+    url: https://click.ro/rss/index
+    enabled: true
+    prioritate: 1
+    source_category: [CanCan, Social, Diverse]
+    max_articles_per_poll: 50
+
   # International - Core
   - id: bbc_world
     name: BBC News World

@@ -165,10 +165,10 @@ def test_source_override_rebase_keeps_user_additions_without_old_canonical_entri
 def test_source_override_rebase_does_not_duplicate_new_canonical_source(tmp_path):
     canonical = tmp_path / "canonical.yaml"
     override = tmp_path / "sources.override.yaml"
-    source = """  - id: context
-    name: Context
+    source = """  - id: cancan
+    name: CanCan.ro
     type: rss
-    url: https://context.ro/feed
+    url: https://www.cancan.ro/feed
     enabled: true
     categories: [Diverse]
 """
@@ -181,7 +181,7 @@ def test_source_override_rebase_does_not_duplicate_new_canonical_source(tmp_path
     )
 
     saved = yaml.safe_load(override.read_text(encoding="utf-8"))["sources"]
-    assert [item["id"] for item in saved] == ["context"]
+    assert [item["id"] for item in saved] == ["cancan"]
 
 
 def test_small_shared_styles_are_named_for_buttons_and_primary_labels():

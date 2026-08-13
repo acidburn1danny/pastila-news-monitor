@@ -195,8 +195,9 @@ def test_rss_source_remains_valid_without_html_fields() -> None:
 def test_checked_in_config_contains_approved_operational_rss_source_set() -> None:
     config = load_config(Path("config/sources.yaml"))
 
-    assert len(config.sources) == 23
+    assert len(config.sources) == 25
     assert len({source.id for source in config.sources}) == len(config.sources)
+    assert len({source.url for source in config.sources}) == len(config.sources)
     assert all(source.categories for source in config.sources)
     assert {source.id for source in config.sources} == {
         "digi24",
@@ -211,6 +212,8 @@ def test_checked_in_config_contains_approved_operational_rss_source_set() -> Non
         "economica",
         "context",
         "romaniatv",
+        "cancan",
+        "click",
         "bbc_world",
         "politico_europe",
         "guardian_world",
