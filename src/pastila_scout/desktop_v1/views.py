@@ -123,6 +123,9 @@ class _DesktopMainWindowV1:
         settings = self._settings
         self._period.set(str(settings.scout_period_days))
         self._category.set(settings.scout_category)
+        self._scout_provider.set(settings.scout_provider)
+        self._ollama_url.set(settings.ollama_base_url)
+        self._ollama_model.set(settings.ollama_model)
         projected = {
             "selection_profile_path": settings.editor_profile_path,
             "episode_context_path": settings.editor_context_path,
@@ -160,33 +163,52 @@ class _DesktopMainWindowV1:
             page, textvariable=self._category, state="disabled"
         )
         self._category_widget.grid(row=1, column=1, sticky="ew")
+        ttk.Label(page, text=_text_v1(key="scout.provider")).grid(row=2, column=0, sticky="w")
+        self._scout_provider = tkinter.StringVar(value="openai")
+        self._scout_provider_widget = ttk.Combobox(
+            page,
+            textvariable=self._scout_provider,
+            values=("openai", "ollama"),
+            state="readonly",
+        )
+        self._scout_provider_widget.grid(row=2, column=1, sticky="ew")
+        ttk.Label(page, text=_text_v1(key="scout.ollama_url")).grid(row=3, column=0, sticky="w")
+        self._ollama_url = tkinter.StringVar(value="")
+        ttk.Entry(page, textvariable=self._ollama_url).grid(row=3, column=1, sticky="ew")
+        ttk.Label(page, text=_text_v1(key="scout.ollama_model")).grid(row=4, column=0, sticky="w")
+        self._ollama_model = tkinter.StringVar(value="")
+        ttk.Entry(page, textvariable=self._ollama_model).grid(row=4, column=1, sticky="ew")
+        provider_buttons = ttk.Frame(page)
+        provider_buttons.grid(row=5, column=0, columnspan=2)
+        ttk.Button(provider_buttons, text=_text_v1(key="scout.provider_save"), command=self._save_scout_provider).pack(side="left")
+        ttk.Button(provider_buttons, text=_text_v1(key="scout.provider_test"), command=self._test_scout_provider).pack(side="left")
         self._scout_button = ttk.Button(
             page, text=_text_v1(key="scout.run"), state="disabled", command=self._scout
         )
-        self._scout_button.grid(row=2, column=0, columnspan=2, pady=8)
+        self._scout_button.grid(row=6, column=0, columnspan=2, pady=8)
         self._progress = ttk.Progressbar(page, mode="determinate", value=0)
-        self._progress.grid(row=3, column=0, columnspan=2, sticky="ew")
+        self._progress.grid(row=7, column=0, columnspan=2, sticky="ew")
         self._status = tkinter.StringVar(value=_text_v1(key="scout.intro"))
         ttk.Label(page, textvariable=self._status).grid(
-            row=4, column=0, columnspan=2, sticky="w"
+            row=8, column=0, columnspan=2, sticky="w"
         )
         ttk.Label(page, text=_text_v1(key="scout.results")).grid(
-            row=5, column=0, sticky="w"
+            row=9, column=0, sticky="w"
         )
         self._summary = tkinter.StringVar(value="0")
-        ttk.Label(page, textvariable=self._summary).grid(row=5, column=1, sticky="w")
+        ttk.Label(page, textvariable=self._summary).grid(row=9, column=1, sticky="w")
         ttk.Label(page, text=_text_v1(key="scout.failed_sources")).grid(
-            row=6, column=0, sticky="nw"
+            row=10, column=0, sticky="nw"
         )
         self._failed = tkinter.StringVar(value="")
-        ttk.Label(page, textvariable=self._failed).grid(row=6, column=1, sticky="w")
+        ttk.Label(page, textvariable=self._failed).grid(row=10, column=1, sticky="w")
         self._report_button = ttk.Button(
             page,
             text=_text_v1(key="scout.report"),
             state="disabled",
             command=self._report,
         )
-        self._report_button.grid(row=7, column=0, columnspan=2)
+        self._report_button.grid(row=11, column=0, columnspan=2)
         self._candidates = ttk.Treeview(
             page,
             columns=("title", "category", "sources"),
@@ -200,7 +222,7 @@ class _DesktopMainWindowV1:
         self._candidates.column("title", width=520)
         self._candidates.column("category", width=110)
         self._candidates.column("sources", width=60)
-        self._candidates.grid(row=8, column=0, columnspan=2, sticky="nsew", pady=8)
+        self._candidates.grid(row=12, column=0, columnspan=2, sticky="nsew", pady=8)
         self._candidates.bind("<<TreeviewSelect>>", self._candidate_changed)
         self._handoff_button = ttk.Button(
             page,
@@ -208,10 +230,10 @@ class _DesktopMainWindowV1:
             state="disabled",
             command=self._handoff,
         )
-        self._handoff_button.grid(row=9, column=0, columnspan=2)
+        self._handoff_button.grid(row=13, column=0, columnspan=2)
         self._footer = tkinter.StringVar(value="")
         ttk.Label(page, textvariable=self._footer).grid(
-            row=10, column=0, columnspan=2, sticky="w"
+            row=14, column=0, columnspan=2, sticky="w"
         )
 
     def _build_editor(self) -> None:
@@ -405,6 +427,27 @@ class _DesktopMainWindowV1:
     def bind_handoff_action(self, *, callback) -> None:
         self._bind("handoff", callback)
         self._sync_handoff()
+
+    def bind_scout_provider_actions(self, *, save_callback, test_callback) -> None:
+        self._bind("scout_provider_save", save_callback)
+        self._bind("scout_provider_test", test_callback)
+
+    def _scout_provider_payload(self) -> dict[str, str]:
+        return {
+            "provider": self._scout_provider.get(),
+            "base_url": self._ollama_url.get(),
+            "model": self._ollama_model.get(),
+        }
+
+    def _save_scout_provider(self) -> None:
+        self._invoke("scout_provider_save", input=self._scout_provider_payload())
+
+    def _test_scout_provider(self) -> None:
+        self._invoke("scout_provider_test", input=self._scout_provider_payload())
+
+    def publish_scout_provider_status(self, *, status: str) -> None:
+        self._check()
+        self._status.set(status)
 
     def bind_chief_editor_actions(self, *, save_callback, export_callback) -> None:
         self._bind("chief_editor_save", save_callback)

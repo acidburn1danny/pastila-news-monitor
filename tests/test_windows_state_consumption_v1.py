@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import inspect
+import json
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -9,6 +10,7 @@ import pytest
 from pastila_scout.desktop_application_v1 import DesktopApplicationFacadeV1
 from pastila_scout.desktop_v1 import settings as desktop_settings
 from pastila_scout.desktop_v1 import state_composition
+from pastila_scout.desktop_v1.entrypoint import _save_scout_provider_settings
 from pastila_scout.desktop_v1.settings import (
     _DesktopSettingsProjectionV1,
     _project_desktop_settings_v1,
@@ -25,7 +27,10 @@ from pastila_scout.windows_state_v1.migrations import (
 from pastila_scout.windows_state_v1.paths import (
     _resolve_windows_application_paths_v1,
 )
-from pastila_scout.windows_state_v1.settings import _default_windows_settings_v1
+from pastila_scout.windows_state_v1.settings import (
+    _default_windows_settings_v1,
+    _load_windows_settings_v1,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULTS = ROOT / "src/pastila_scout/desktop_v1/default-settings-v1.json"
@@ -35,6 +40,41 @@ def _projection() -> _DesktopSettingsProjectionV1:
     return _project_desktop_settings_v1(
         settings=_default_windows_settings_v1(defaults_path=DEFAULTS)
     )
+
+
+def test_scout_ollama_provider_settings_persist_and_reload(tmp_path: Path) -> None:
+    path = tmp_path / "settings.json"
+    saved = _save_scout_provider_settings(
+        path=path,
+        current=_projection(),
+        value={
+            "provider": "ollama",
+            "base_url": "http://127.0.0.1:11434/",
+            "model": "qwen3:8b",
+        },
+    )
+    loaded = _load_windows_settings_v1(path=path, defaults_path=DEFAULTS)
+    assert loaded == saved
+    assert loaded.scout_provider == "ollama"
+    assert loaded.ollama_base_url == "http://127.0.0.1:11434"
+    assert loaded.ollama_model == "qwen3:8b"
+
+
+def test_legacy_settings_reload_with_safe_provider_defaults(tmp_path: Path) -> None:
+    current = json.loads(DEFAULTS.read_text(encoding="utf-8"))
+    for name in (
+        "scout_provider",
+        "ollama_base_url",
+        "ollama_model",
+        "scout_ai_timeout_seconds",
+    ):
+        current.pop(name)
+    path = tmp_path / "settings.json"
+    path.write_text(json.dumps(current), encoding="utf-8")
+    loaded = _load_windows_settings_v1(path=path, defaults_path=DEFAULTS)
+    assert loaded.scout_provider == "openai"
+    assert loaded.ollama_base_url == "http://localhost:11434"
+    assert loaded.ollama_model == "qwen3:14b"
 
 
 def test_exact_private_contracts_and_projection() -> None:
@@ -77,9 +117,11 @@ def test_real_development_composition_exposes_project_persistence_paths() -> Non
         "database_path",
         "facade",
         "settings",
+        "settings_path",
     }
     assert result.database_path == ROOT / "data" / "news_monitor.db"
     assert result.active_project_path == ROOT / "data" / "active-project-v1.json"
+    assert result.settings_path == ROOT / "config" / "settings.json"
 
 
 def test_source_selector_override_and_bundled_precedence(tmp_path: Path) -> None:

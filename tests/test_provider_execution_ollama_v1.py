@@ -13,6 +13,9 @@ from pastila_scout.provider_execution_ollama_v1 import (
     OllamaProviderExecutorV1,
     build_ollama_request,
 )
+from pastila_scout.provider_execution_ollama_v1.errors import (
+    OllamaModelUnavailableError,
+)
 from pastila_scout.provider_execution_v2 import (
     ExecutionConfigurationError,
     ExecutionContextV2,
@@ -324,3 +327,33 @@ def test_passive_import_performs_no_http(monkeypatch) -> None:
 
     assert package.OllamaProviderExecutorV1
     assert calls == []
+
+
+def test_discovery_verifies_health_and_exact_configured_model() -> None:
+    paths = []
+
+    def handler(request):
+        paths.append(request.url.path)
+        if request.url.path == "/api/version":
+            return httpx.Response(200, json={"version": "0.11.0"})
+        return httpx.Response(200, json={"models": [{"name": "qwen3:14b"}]})
+
+    with httpx.Client(transport=httpx.MockTransport(handler)) as http:
+        OllamaHttpClientV1(http).check_model(
+            model="qwen3:14b", base_url="http://localhost:11434", timeout=3.0
+        )
+    assert paths == ["/api/version", "/api/tags"]
+
+
+def test_discovery_missing_model_is_explicit() -> None:
+    def handler(request):
+        payload = {"version": "0.11.0"} if request.url.path == "/api/version" else {"models": []}
+        return httpx.Response(200, json=payload)
+
+    with (
+        httpx.Client(transport=httpx.MockTransport(handler)) as http,
+        pytest.raises(OllamaModelUnavailableError),
+    ):
+        OllamaHttpClientV1(http).check_model(
+            model="missing", base_url="http://localhost:11434", timeout=3.0
+        )

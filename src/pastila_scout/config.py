@@ -107,8 +107,9 @@ class AIConfig(BaseModel):
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 
-    provider: Literal["openai"] = "openai"
+    provider: Literal["openai", "ollama"] = "openai"
     model: str = "gpt-4.1-mini"
+    ollama_base_url: str = "http://localhost:11434"
     temperature: float = Field(default=0.0, ge=0, le=2, strict=True)
     max_retries: int = Field(default=2, ge=0, le=2, strict=True)
     retry_delay: float = Field(default=3.0, ge=0, strict=True)

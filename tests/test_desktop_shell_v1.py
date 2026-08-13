@@ -197,6 +197,9 @@ def test_structural_entrypoint_creates_one_root_controller_and_view(monkeypatch)
         def bind_chief_editor_actions(self, *, save_callback, export_callback):
             calls.append(("bind-chief-editor", save_callback, export_callback))
 
+        def bind_scout_provider_actions(self, *, save_callback, test_callback):
+            calls.append(("bind-scout-provider", save_callback, test_callback))
+
         def publish_candidates(self, *, candidates):
             calls.append(("candidates", candidates))
 
@@ -222,6 +225,7 @@ def test_structural_entrypoint_creates_one_root_controller_and_view(monkeypatch)
             settings=object(),
             database_path=ROOT / "missing.db",
             active_project_path=ROOT / "missing-active-project.json",
+            settings_path=ROOT / "config" / "settings.json",
         ),
     )
     assert entrypoint.main() == 0

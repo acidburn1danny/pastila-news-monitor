@@ -16,6 +16,8 @@ from pathlib import Path
 from tkinter import filedialog, messagebox
 from typing import NoReturn
 
+import httpx
+
 from pastila_scout.active_project_v1 import ActiveProjectStoreV1, ChiefEditorItemV1
 from pastila_scout.contracts.identity import verify_scout_input_identity
 from pastila_scout.contracts.io import load_contract
@@ -39,9 +41,14 @@ from pastila_scout.editor_application_v1 import (
     EditorOverwritePolicyV1,
     EditorSelectionProfileAuthorityV1,
 )
+from pastila_scout.provider_execution_ollama_v1 import OllamaHttpClientV1
 from pastila_scout.provider_execution_v2 import CancellationTokenV2
 from pastila_scout.windows_state_v1.migrations import (
     _inspect_development_state_migration_v1,
+)
+from pastila_scout.windows_state_v1.settings import (
+    WindowsSettingsV1,
+    _save_windows_settings_v1,
 )
 
 from .controller import _DesktopTaskControllerV1
@@ -120,7 +127,11 @@ def main() -> int:
             project_path=state.active_project_path,
         )
         active_project = project_store.load()
-        cells: dict[str, object] = {"facade": facade, "project": active_project}
+        cells: dict[str, object] = {
+            "facade": facade,
+            "project": active_project,
+            "settings": state.settings,
+        }
         closed = False
 
         def select_page(*, page) -> None:
@@ -218,12 +229,41 @@ def main() -> int:
             cells["project"] = project
             _publish_chief_editor(view, project, _text_v1(key="chief_editor.saved"))
 
+        def save_scout_provider(*, input) -> None:
+            settings = _save_scout_provider_settings(
+                path=state.settings_path,
+                current=cells["settings"],
+                value=input,
+            )
+            cells["settings"] = settings
+            view.publish_scout_provider_status(
+                status=_text_v1(key="scout.provider_saved")
+            )
+
+        def test_scout_provider(*, input) -> None:
+            try:
+                values = _scout_provider_values(input)
+                if values[0] == "ollama":
+                    with httpx.Client() as client:
+                        OllamaHttpClientV1(client).check_model(
+                            model=values[2],
+                            base_url=values[1],
+                            timeout=state.settings.scout_ai_timeout_seconds,
+                        )
+                status = _text_v1(key="scout.ollama_ready")
+            except Exception:
+                status = _text_v1(key="scout.ollama_unavailable")
+            view.publish_scout_provider_status(status=status)
+
         view.bind_scout_action(callback=run_scout)
         view.bind_editor_action(callback=run_editor)
         view.bind_report_action(callback=open_report)
         view.bind_handoff_action(callback=handoff)
         view.bind_chief_editor_actions(
             save_callback=save_chief_editor, export_callback=export_chief_editor
+        )
+        view.bind_scout_provider_actions(
+            save_callback=save_scout_provider, test_callback=test_scout_provider
         )
         _publish_candidates(view, project_store)
         if active_project is not None:
@@ -420,6 +460,36 @@ def _publish_chief_editor(view: object, project: object, status: str = "") -> No
         ),
         status=status,
     )
+
+
+def _scout_provider_values(value: object) -> tuple[str, str, str]:
+    if type(value) is not dict or set(value) != {"provider", "base_url", "model"}:
+        raise _DesktopShellConfigurationError() from None
+    provider, base_url, model = (
+        value["provider"],
+        value["base_url"],
+        value["model"],
+    )
+    if (
+        provider not in {"openai", "ollama"}
+        or not all(_safe_input(item) for item in (base_url, model))
+    ):
+        raise _DesktopShellConfigurationError() from None
+    return provider, base_url.rstrip("/"), model
+
+
+def _save_scout_provider_settings(*, path: Path, current: object, value: object):
+    provider, base_url, model = _scout_provider_values(value)
+    names = tuple(WindowsSettingsV1.__dataclass_fields__)
+    values = {name: getattr(current, name) for name in names}
+    values.update(
+        scout_provider=provider,
+        ollama_base_url=base_url,
+        ollama_model=model,
+    )
+    settings = WindowsSettingsV1(**values)
+    _save_windows_settings_v1(path=path, settings=settings)
+    return settings
 
 
 def _publish_scout_result(view: object, value: object) -> None:

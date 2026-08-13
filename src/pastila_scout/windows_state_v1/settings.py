@@ -18,6 +18,10 @@ _NAMES = (
     "schema_version",
     "scout_period_days",
     "scout_category",
+    "scout_provider",
+    "ollama_base_url",
+    "ollama_model",
+    "scout_ai_timeout_seconds",
     "log_level",
     "editor_profile_path",
     "editor_context_path",
@@ -28,6 +32,13 @@ _NAMES = (
     "editor_output_directory",
     "updates_enabled",
 )
+_SCOUT_PROVIDER_NAMES = (
+    "scout_provider",
+    "ollama_base_url",
+    "ollama_model",
+    "scout_ai_timeout_seconds",
+)
+_LEGACY_NAMES = tuple(name for name in _NAMES if name not in _SCOUT_PROVIDER_NAMES)
 
 
 @dataclass(frozen=True, slots=True, init=False, repr=False)
@@ -36,6 +47,10 @@ class WindowsSettingsV1:
     schema_version: int
     scout_period_days: int
     scout_category: str
+    scout_provider: str
+    ollama_base_url: str
+    ollama_model: str
+    scout_ai_timeout_seconds: float
     log_level: str
     editor_profile_path: Path | None
     editor_context_path: Path | None
@@ -193,9 +208,18 @@ def _read_settings(path: Path) -> WindowsSettingsV1:
         if type(pairs) is not list or any(type(item) is not tuple for item in pairs):
             raise ValueError
         names = tuple(name for name, _ in pairs)
-        if names != _NAMES or len(set(names)) != len(names):
+        if names not in {_NAMES, _LEGACY_NAMES} or len(set(names)) != len(names):
             raise ValueError
-        return WindowsSettingsV1(**dict(pairs))
+        values = dict(pairs)
+        if names == _LEGACY_NAMES:
+            values.update(
+                scout_provider="openai",
+                ollama_base_url="http://localhost:11434",
+                ollama_model="qwen3:14b",
+                scout_ai_timeout_seconds=120.0,
+            )
+            values = {name: values[name] for name in _NAMES}
+        return WindowsSettingsV1(**values)
     except (KeyboardInterrupt, SystemExit, GeneratorExit, MemoryError):
         raise
     except Exception:  # noqa: BLE001 - fixed safe parser boundary
@@ -234,6 +258,23 @@ def _validate(values: dict[str, object]) -> dict[str, object]:
         "WARNING",
         "INFO",
     }:
+        raise TypeError
+    if values["scout_provider"] not in {"openai", "ollama"}:
+        raise TypeError
+    if type(values["ollama_base_url"]) is not str or not values[
+        "ollama_base_url"
+    ].startswith(("http://", "https://")):
+        raise TypeError
+    if type(values["ollama_model"]) is not str or not 1 <= len(
+        values["ollama_model"].encode("utf-8")
+    ) <= 200:
+        raise TypeError
+    scout_timeout = values["scout_ai_timeout_seconds"]
+    if (
+        type(scout_timeout) is not float
+        or not math.isfinite(scout_timeout)
+        or not 0 < scout_timeout <= 3600
+    ):
         raise TypeError
     if type(values["editor_provider"]) is not str or values["editor_provider"] not in {
         "openai",

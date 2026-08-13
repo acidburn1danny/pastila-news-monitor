@@ -66,6 +66,37 @@ class OllamaHttpClientV1:
             raise _isolated(OllamaHttpError(response.status_code))
         return payload
 
+    def check_model(self, *, model: str, base_url: str, timeout: float) -> None:
+        """Verify the local server and configured model without generation."""
+        try:
+            version = self._client.get(f"{base_url}/api/version", timeout=timeout)
+            tags = self._client.get(f"{base_url}/api/tags", timeout=timeout)
+        except httpx.TimeoutException:
+            raise _isolated(OllamaTimeoutError("Ollama availability check timed out"))
+        except httpx.RequestError:
+            raise _isolated(OllamaConnectionError("Ollama connection failed"))
+        if not version.is_success or not tags.is_success:
+            raise _isolated(OllamaHttpError(tags.status_code))
+        try:
+            version_payload = version.json()
+            payload = tags.json()
+            models = payload["models"]
+            names = {
+                item["name"]
+                for item in models
+                if type(item) is dict and type(item.get("name")) is str
+            }
+            if (
+                type(version_payload) is not dict
+                or type(version_payload.get("version")) is not str
+                or type(models) is not list
+            ):
+                raise TypeError
+        except (TypeError, KeyError, ValueError):
+            raise _isolated(OllamaMalformedResponseError("Ollama returned invalid discovery data"))
+        if model not in names:
+            raise _isolated(OllamaModelUnavailableError("Ollama model is unavailable"))
+
 
 def _error_text(response: httpx.Response) -> str:
     try:

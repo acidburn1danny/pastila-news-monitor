@@ -23,6 +23,10 @@ class _DesktopSettingsProjectionV1:
     schema_version: int
     scout_period_days: int
     scout_category: str
+    scout_provider: str
+    ollama_base_url: str
+    ollama_model: str
+    scout_ai_timeout_seconds: float
     log_level: str
     editor_profile_path: Path | None
     editor_context_path: Path | None
