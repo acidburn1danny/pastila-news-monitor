@@ -116,6 +116,11 @@ class ActiveProjectStoreV1:
             for row in rows
         )
 
+    def load_runtime_state(self) -> ActiveProjectV1 | None:
+        """Read current in-process state without restart recovery transitions."""
+
+        return self._load(recover_running=False)
+
     def handoff(self, *, event_id: int) -> ActiveProjectV1:
         source = _scout_input(self.database_path, event_id)
         existing = self._load(recover_running=False)
@@ -220,13 +225,62 @@ class ActiveProjectStoreV1:
         self, *, output_path: Path, payload_sha256: str
     ) -> ActiveProjectV1:
         project = self._required()
-        candidate = project.candidate
-        reference = f"editor-material-v1:event:{candidate.event_id}"
+        return self._record_editor_output(
+            event_id=project.candidate.event_id,
+            output_path=output_path,
+            payload_sha256=payload_sha256,
+            require_running=False,
+        )
+
+    def record_editor_output_for_event(
+        self,
+        *,
+        event_id: int,
+        output_path: Path,
+        payload_sha256: str,
+    ) -> ActiveProjectV1:
+        return self._record_editor_output(
+            event_id=event_id,
+            output_path=output_path,
+            payload_sha256=payload_sha256,
+            require_running=True,
+        )
+
+    def _record_editor_output(
+        self,
+        *,
+        event_id: int,
+        output_path: Path,
+        payload_sha256: str,
+        require_running: bool,
+    ) -> ActiveProjectV1:
+        project = self._required()
+        matches = tuple(
+            event
+            for event in project.scout_input.ranked_events
+            if event.event_id == event_id
+        )
+        if len(matches) != 1:
+            raise ValueError("Material Editor invalid")
+        work_items = tuple(
+            item for item in project.editor_worklist if item.event_id == event_id
+        )
+        if (
+            type(require_running) is not bool
+            or len(work_items) != 1
+            or (
+                require_running
+                and work_items[0].status is not EditorWorkItemStatusV1.RUNNING
+            )
+        ):
+            raise ValueError("Material Editor invalid")
+        event = matches[0]
+        reference = f"editor-material-v1:event:{event_id}"
         material = EditorMaterialV1(
             reference=reference,
-            event_id=candidate.event_id,
-            title=candidate.canonical_title,
-            summary=candidate.canonical_summary,
+            event_id=event_id,
+            title=event.canonical_title,
+            summary=event.canonical_summary,
             output_path=str(output_path),
             payload_sha256=payload_sha256,
         )

@@ -143,8 +143,8 @@ def test_desktop_handoff_persists_material_and_opens_editor(tmp_path):
         def publish_active_project(self, *, title, message):
             published.append((title, message))
 
-        def publish_editor_worklist(self, *, items, supported_event_id):
-            worklists.append((items, supported_event_id))
+        def publish_editor_worklist(self, *, items):
+            worklists.append(items)
 
     class Controller:
         def select_page(self, *, page):
@@ -160,7 +160,7 @@ def test_desktop_handoff_persists_material_and_opens_editor(tmp_path):
     )
     assert cells["project"].candidate.canonical_title == "Titlu ales"
     assert published[0][0] == "Titlu ales"
-    assert worklists == [(((7, "Titlu ales", "pending"),), 7)]
+    assert worklists == [((7, "Titlu ales", "pending"),)]
     assert pages == [_DesktopPageV1.EDITOR]
     assert (
         ActiveProjectStoreV1(database_path=database, project_path=project_path)
@@ -336,18 +336,15 @@ def test_bulk_handoff_creates_ordered_persistent_editor_worklist(tmp_path):
     projection = []
 
     class View:
-        def publish_editor_worklist(self, *, items, supported_event_id):
-            projection.append((items, supported_event_id))
+        def publish_editor_worklist(self, *, items):
+            projection.append(items)
 
     _publish_editor_worklist(View(), appended)
     assert projection == [
         (
-            (
-                (8, "Al doilea material", "failed"),
-                (7, "Titlu ales", "pending"),
-                (9, "Al treilea material", "pending"),
-            ),
-            8,
+            (8, "Al doilea material", "failed"),
+            (7, "Titlu ales", "pending"),
+            (9, "Al treilea material", "pending"),
         )
     ]
     assert (
@@ -364,6 +361,10 @@ def test_editor_worklist_transitions_persist_and_reject_invalid_changes(tmp_path
     store.handoff(event_id=7)
 
     store.mark_editor_item_running(event_id=7)
+    assert (
+        store.load_runtime_state().editor_worklist[0].status
+        is EditorWorkItemStatusV1.RUNNING
+    )
     completed = store.mark_editor_item_completed(event_id=7)
     assert completed.editor_worklist[0].status is EditorWorkItemStatusV1.COMPLETED
     assert store.load().editor_worklist == completed.editor_worklist
@@ -374,12 +375,8 @@ def test_editor_worklist_transitions_persist_and_reject_invalid_changes(tmp_path
         (store.retry_editor_item, 7),
         (store.retry_editor_item, 999),
     ):
-        try:
+        with pytest.raises(ValueError):
             operation(event_id=event_id)
-        except ValueError:
-            pass
-        else:
-            raise AssertionError("invalid Editor transition was accepted")
 
     project_path.unlink()
     store.handoff(event_id=7)
@@ -398,6 +395,43 @@ def test_editor_worklist_transitions_persist_and_reject_invalid_changes(tmp_path
     assert retried.editor_worklist[0].status is EditorWorkItemStatusV1.PENDING
     with pytest.raises(ValueError):
         store.retry_editor_item(event_id=7)
+
+
+def test_explicit_non_first_editor_material_registration_preserves_identity(tmp_path):
+    database = tmp_path / "scout.db"
+    project_path = tmp_path / "active-project-v1.json"
+    _database(database)
+    _additional_event(database, 8, "Titlu ales")
+    store = ActiveProjectStoreV1(database_path=database, project_path=project_path)
+    project, _ = store.handoff_many(event_ids=(7, 8))
+    assert project.candidate.event_id == 7
+    store.mark_editor_item_running(event_id=8)
+
+    registered = store.record_editor_output_for_event(
+        event_id=8,
+        output_path=tmp_path / "editor-8.json",
+        payload_sha256="sha256:" + "d" * 64,
+    )
+
+    material = registered.editor_materials[-1]
+    assert (material.event_id, material.reference, material.title) == (
+        8,
+        "editor-material-v1:event:8",
+        "Titlu ales",
+    )
+    assert all(item.event_id != 7 for item in registered.editor_materials)
+    assert tuple(
+        (item.event_id, item.status) for item in registered.editor_worklist
+    ) == (
+        (7, EditorWorkItemStatusV1.PENDING),
+        (8, EditorWorkItemStatusV1.RUNNING),
+    )
+    with pytest.raises(ValueError):
+        store.record_editor_output_for_event(
+            event_id=999,
+            output_path=tmp_path / "editor-999.json",
+            payload_sha256="sha256:" + "e" * 64,
+        )
 
 
 def test_legacy_project_derives_worklist_and_stale_running_recovers(

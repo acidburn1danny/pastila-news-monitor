@@ -2,7 +2,9 @@ from pathlib import Path
 from types import SimpleNamespace
 
 import httpx
+import pytest
 
+from pastila_scout.contracts.identity import assign_scout_input_identity
 from pastila_scout.contracts.samples import sample_scout_input
 from pastila_scout.desktop_v1.first_run import _complete_desktop_setup_v1
 from pastila_scout.desktop_v1.integrated_editor import _integrated_editor_request_v1
@@ -22,6 +24,16 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULTS = ROOT / "src/pastila_scout/desktop_v1/default-settings-v1.json"
 
 
+def _multi_scout_input():
+    original = sample_scout_input()
+    data = original.model_dump(mode="json")
+    second = dict(data["ranked_events"][0])
+    second.update(rank=2, score_rank=2, event_id=45, canonical_title="Alt material")
+    data["ranked_events"].append(second)
+    data["event_counts"]["reported"] = 2
+    return assign_scout_input_identity(data)
+
+
 def test_recovered_project_builds_complete_ollama_editor_request(tmp_path):
     settings = _default_windows_settings_v1(defaults_path=DEFAULTS)
     settings = _complete_desktop_setup_v1(
@@ -32,7 +44,7 @@ def test_recovered_project_builds_complete_ollama_editor_request(tmp_path):
         model="qwen3:14b",
         output_directory=tmp_path / "reports",
     )
-    source = sample_scout_input()
+    source = _multi_scout_input()
     project = SimpleNamespace(scout_input=source, candidate=source.ranked_events[0])
     request = _integrated_editor_request_v1(project=project, settings=settings)
     assert request.scout_input == source
@@ -61,10 +73,61 @@ def test_recovered_project_builds_complete_ollama_editor_request(tmp_path):
     session.close()
 
 
+def test_non_first_selected_event_has_explicit_request_and_output_identity(tmp_path):
+    settings = _default_windows_settings_v1(defaults_path=DEFAULTS)
+    settings = _complete_desktop_setup_v1(
+        settings=settings,
+        settings_path=tmp_path / "settings.json",
+        provider="ollama",
+        base_url="http://localhost:11434",
+        model="qwen3:14b",
+        output_directory=tmp_path / "reports",
+    )
+    source = _multi_scout_input()
+    selected = source.ranked_events[1]
+    project = SimpleNamespace(scout_input=source, candidate=source.ranked_events[0])
+
+    request = _integrated_editor_request_v1(
+        project=project, settings=settings, event_id=selected.event_id
+    )
+
+    assert tuple(event.event_id for event in request.scout_input.ranked_events) == (
+        selected.event_id,
+    )
+    assert (
+        request.scout_input.ranked_events[0].canonical_title == selected.canonical_title
+    )
+    assert request.episode_context.mandatory_event_ids == (selected.event_id,)
+    assert request.destination.path.name.startswith(f"editor-{selected.event_id}-")
+    assert not request.destination.path.name.startswith(
+        f"editor-{project.candidate.event_id}-"
+    )
+    with pytest.raises(ValueError):
+        _integrated_editor_request_v1(project=project, settings=settings, event_id=999)
+
+    third_data = source.model_dump(mode="json")
+    third = dict(third_data["ranked_events"][0])
+    third.update(rank=3, score_rank=3, event_id=46, canonical_title="Alt material")
+    third_data["ranked_events"].append(third)
+    third_data["event_counts"]["reported"] = 3
+    last_source = assign_scout_input_identity(third_data)
+    last_project = SimpleNamespace(
+        scout_input=last_source, candidate=last_source.ranked_events[0]
+    )
+    last_request = _integrated_editor_request_v1(
+        project=last_project, settings=settings, event_id=46
+    )
+    assert tuple(
+        event.event_id for event in last_request.scout_input.ranked_events
+    ) == (46,)
+
+
 def test_ollama_model_discovery_uses_tags_and_exact_names():
     def handler(request: httpx.Request) -> httpx.Response:
         assert request.url.path == "/api/tags"
-        return httpx.Response(200, json={"models": [{"name": "qwen3:14b"}, {"name": "gemma3:4b"}]})
+        return httpx.Response(
+            200, json={"models": [{"name": "qwen3:14b"}, {"name": "gemma3:4b"}]}
+        )
 
     with httpx.Client(transport=httpx.MockTransport(handler)) as client:
         assert OllamaHttpClientV1(client).list_models(

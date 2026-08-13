@@ -314,21 +314,21 @@ def test_withdrawn_tk_window_has_exact_structural_root_and_initial_state():
             "height"
         )
         assert str(view._report_button.cget("state")) == "disabled"
-        view.bind_editor_action(callback=lambda **kwargs: None)
+        editor_actions = []
+        view.bind_editor_action(callback=lambda **kwargs: editor_actions.append(kwargs))
         view.publish_editor_worklist(
             items=(
                 (7, "Prima stire", "pending"),
-                (8, "A doua stire", "failed"),
+                (8, "A doua stire", "pending"),
                 (9, "A treia stire", "completed"),
             ),
-            supported_event_id=7,
         )
         assert view._editor_worklist.get_children("") == ("7", "8", "9")
         assert view._editor_worklist.item("7", "values") == (
             "Prima stire",
             "In asteptare",
         )
-        assert view._editor_worklist.item("8", "values")[1] == "Eroare"
+        assert view._editor_worklist.item("8", "values")[1] == "In asteptare"
         assert view._editor_worklist.item("9", "values")[1] == "Generata"
         view._editor_worklist.selection_set("7")
         view._editor_worklist.focus("7")
@@ -340,11 +340,10 @@ def test_withdrawn_tk_window_has_exact_structural_root_and_initial_state():
         assert str(view._editor_button.cget("state")) == "disabled"
         view.publish_editor_worklist(
             items=(
-                (7, "Prima stire", "running"),
-                (8, "A doua stire", "failed"),
+                (7, "Prima stire", "pending"),
+                (8, "A doua stire", "pending"),
                 (9, "A treia stire", "completed"),
             ),
-            supported_event_id=7,
         )
         assert view._editor_worklist.selection() == ("7",)
         assert str(view._editor_button.cget("state")) == "disabled"
@@ -358,13 +357,16 @@ def test_withdrawn_tk_window_has_exact_structural_root_and_initial_state():
         assert str(view._editor_button.cget("state")) == "disabled"
         view._editor_worklist.selection_set("8")
         view._editor_worklist_changed(None)
-        assert str(view._editor_button.cget("state")) == "disabled"
+        assert str(view._editor_button.cget("state")) == "normal"
+        view._editor()
+        assert editor_actions[-1]["input"].event_id == 8
         view.publish_editor_worklist(
             items=((7, "Prima stire", "running"), (8, "A doua stire", "failed")),
-            supported_event_id=7,
         )
         assert view._editor_worklist.item("7", "values")[1] == "In procesare"
-        view.publish_editor_worklist(items=(), supported_event_id=None)
+        assert view._editor_worklist.item("8", "values")[1] == "Eroare"
+        assert str(view._editor_button.cget("state")) == "disabled"
+        view.publish_editor_worklist(items=())
         assert view._editor_worklist.get_children("") == ()
         assert view._active_project.get() == ""
         assert str(view._editor_button.cget("state")) == "disabled"
@@ -377,23 +379,31 @@ def test_editor_slice2_generation_selection_is_safely_bounded():
         _text_v1(key=f"editor.worklist.{status}")
         for status in ("pending", "running", "completed", "failed")
     ) == ("In asteptare", "In procesare", "Generata", "Eroare")
-    assert _editor_selection_supported(selected_event_ids=(7,), supported_event_id=7)
-    assert not _editor_selection_supported(selected_event_ids=(), supported_event_id=7)
-    assert not _editor_selection_supported(
-        selected_event_ids=(7, 8), supported_event_id=7
+    eligible = frozenset({7, 8})
+    assert _editor_selection_supported(
+        selected_event_ids=(7,), eligible_event_ids=eligible
+    )
+    assert _editor_selection_supported(
+        selected_event_ids=(8,), eligible_event_ids=eligible
     )
     assert not _editor_selection_supported(
-        selected_event_ids=(8,), supported_event_id=7
+        selected_event_ids=(), eligible_event_ids=eligible
     )
     assert not _editor_selection_supported(
-        selected_event_ids=(7,), supported_event_id=None
+        selected_event_ids=(7, 8), eligible_event_ids=eligible
+    )
+    assert not _editor_selection_supported(
+        selected_event_ids=(9,), eligible_event_ids=eligible
+    )
+    assert not _editor_selection_supported(
+        selected_event_ids=(7,), eligible_event_ids=frozenset()
     )
     baseline = {
         "idle": True,
         "callback_bound": True,
         "configuration_ready": True,
         "selected_event_ids": (7,),
-        "supported_event_id": 7,
+        "eligible_event_ids": eligible,
     }
     assert _editor_action_enabled(**baseline)
     for changed in (
@@ -402,7 +412,7 @@ def test_editor_slice2_generation_selection_is_safely_bounded():
         {"configuration_ready": False},
         {"selected_event_ids": ()},
         {"selected_event_ids": (7, 8)},
-        {"selected_event_ids": (8,)},
+        {"selected_event_ids": (9,)},
     ):
         assert not _editor_action_enabled(**(baseline | changed))
 
@@ -453,6 +463,7 @@ def test_action_inputs_are_redacted_and_exact():
     scout = _DesktopScoutActionInputV1("7", "all")
     assert "7" not in repr(scout)
     editor = _DesktopEditorActionInputV1(
+        event_id=7,
         scout_input_path="a",
         selection_profile_path="b",
         episode_context_path="c",

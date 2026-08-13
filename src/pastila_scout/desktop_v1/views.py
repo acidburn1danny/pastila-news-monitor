@@ -100,13 +100,9 @@ def _editor_configuration_ready(
 
 
 def _editor_selection_supported(
-    *, selected_event_ids: tuple[int, ...], supported_event_id: int | None
+    *, selected_event_ids: tuple[int, ...], eligible_event_ids: frozenset[int]
 ) -> bool:
-    return (
-        len(selected_event_ids) == 1
-        and supported_event_id is not None
-        and selected_event_ids[0] == supported_event_id
-    )
+    return len(selected_event_ids) == 1 and selected_event_ids[0] in eligible_event_ids
 
 
 def _editor_action_enabled(
@@ -115,7 +111,7 @@ def _editor_action_enabled(
     callback_bound: bool,
     configuration_ready: bool,
     selected_event_ids: tuple[int, ...],
-    supported_event_id: int | None,
+    eligible_event_ids: frozenset[int],
 ) -> bool:
     return (
         idle
@@ -123,7 +119,7 @@ def _editor_action_enabled(
         and configuration_ready
         and _editor_selection_supported(
             selected_event_ids=selected_event_ids,
-            supported_event_id=supported_event_id,
+            eligible_event_ids=eligible_event_ids,
         )
     )
 
@@ -430,7 +426,7 @@ class _DesktopMainWindowV1:
         self._editor_worklist.column("status", width=130)
         self._editor_worklist.grid(row=2, column=0, columnspan=2, sticky="nsew", pady=8)
         self._editor_worklist.bind("<<TreeviewSelect>>", self._editor_worklist_changed)
-        self._editor_supported_event_id: int | None = None
+        self._editor_eligible_event_ids: frozenset[int] = frozenset()
         self._editor_idle = True
         self._active_project = tkinter.StringVar(value="")
         ttk.Label(
@@ -746,9 +742,14 @@ class _DesktopMainWindowV1:
             self._invoke("handoff", input=ordered)
 
     def _editor(self) -> None:
+        selected = self._editor_worklist.selection()
+        if len(selected) != 1:
+            raise _DesktopShellConfigurationError() from None
         values = {name: value.get() for name, value in self._editor_values.items()}
         values.update(
-            provider=self._provider.get(), no_replace=bool(self._no_replace.get())
+            event_id=int(selected[0]),
+            provider=self._provider.get(),
+            no_replace=bool(self._no_replace.get()),
         )
         self._invoke("editor", input=_DesktopEditorActionInputV1(**values))
 
@@ -836,7 +837,6 @@ class _DesktopMainWindowV1:
         self,
         *,
         items: tuple[tuple[int, str, str], ...],
-        supported_event_id: int | None,
     ) -> None:
         self._check()
         statuses = {"pending", "running", "completed", "failed"}
@@ -852,7 +852,6 @@ class _DesktopMainWindowV1:
                 for item in items
             )
             or len({item[0] for item in items}) != len(items)
-            or (supported_event_id is not None and type(supported_event_id) is not int)
         ):
             raise _DesktopShellConfigurationError() from None
         selected = set(self._editor_worklist.selection())
@@ -874,7 +873,9 @@ class _DesktopMainWindowV1:
             self._editor_worklist.selection_set(retained)
         if focused in existing:
             self._editor_worklist.focus(focused)
-        self._editor_supported_event_id = supported_event_id
+        self._editor_eligible_event_ids = frozenset(
+            event_id for event_id, _, status in items if status == "pending"
+        )
         self._editor_worklist_changed(None)
 
     def publish_chief_editor(
@@ -1005,7 +1006,7 @@ class _DesktopMainWindowV1:
                 self._editor_values, provider=self._provider.get()
             ),
             selected_event_ids=selected,
-            supported_event_id=self._editor_supported_event_id,
+            eligible_event_ids=self._editor_eligible_event_ids,
         )
         self._editor_button.configure(state="normal" if enabled else "disabled")
 

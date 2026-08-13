@@ -318,6 +318,7 @@ def test_scout_request_is_exact_and_rejects_equivalent_text(monkeypatch) -> None
 def test_editor_values_and_nested_request_are_exact(tmp_path, monkeypatch) -> None:
     source = application_request(tmp_path, operation_reference="source")
     raw = _DesktopEditorActionInputV1(
+        event_id=44,
         scout_input_path="scout.json",
         selection_profile_path="profile.json",
         episode_context_path="context.json",
@@ -437,6 +438,7 @@ def test_editor_binding_submits_through_controller_and_projects_result(
     _, _, facade, captured, _ = _startup(monkeypatch)
     view = captured["view"]
     raw = _DesktopEditorActionInputV1(
+        event_id=44,
         scout_input_path="scout.json",
         selection_profile_path="profile.json",
         episode_context_path="context.json",

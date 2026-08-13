@@ -53,11 +53,12 @@ from pastila_scout.windows_state_v1.settings import (
 )
 
 from .controller import _DesktopTaskControllerV1
-from .errors import _DesktopShellConfigurationError
+from .errors import _DesktopShellConfigurationError, _DesktopShellExecutionError
 from .first_run import _complete_desktop_setup_v1, _inspect_desktop_readiness_v1
 from .integrated_editor import _integrated_editor_request_v1
 from .models import (
     _DesktopPageV1,
+    _DesktopTaskStateV1,
     _reconstruct_desktop_editor_action_input_v1,
     _reconstruct_desktop_scout_action_input_v1,
 )
@@ -191,6 +192,11 @@ def main() -> int:
 
         def publish_snapshot(*, snapshot) -> None:
             cells["view"].publish_snapshot(snapshot=snapshot)  # type: ignore[attr-defined]
+            if snapshot.application_state is _DesktopTaskStateV1.FAILED:
+                failed_project = project_store.load_runtime_state()
+                if failed_project is not None:
+                    cells["project"] = failed_project
+                    _publish_editor_worklist(view, failed_project)
 
         controller = _DesktopTaskControllerV1(
             schedule_after=root.after,
@@ -220,37 +226,68 @@ def main() -> int:
             controller.submit_application(task=task, on_completed=on_completed)
 
         def run_editor(*, input) -> None:
-            del input
+            selected = _reconstruct_desktop_editor_action_input_v1(input)
+            event_id = selected.event_id
+            project = project_store.mark_editor_item_running(event_id=event_id)
+            cells["project"] = project
+            _publish_editor_worklist(view, project)
+            execution: dict[str, Path] = {}
 
             def task():
-                project = cells.get("project")
-                if project is None:
-                    raise _DesktopShellConfigurationError() from None
-                request = _integrated_editor_request_v1(
-                    project=project, settings=cells["settings"]
-                )
-                return facade.run_editor(
-                    request=EditorDesktopRequestV1(application_request=request),
-                    progress_sink=_DesktopStartupProgressSinkV1(),
-                )
+                try:
+                    request = _integrated_editor_request_v1(
+                        project=project,
+                        settings=cells["settings"],
+                        event_id=event_id,
+                    )
+                    execution["output_path"] = request.destination.path
+                    return facade.run_editor(
+                        request=EditorDesktopRequestV1(application_request=request),
+                        progress_sink=_DesktopStartupProgressSinkV1(),
+                    )
+                except BaseException:
+                    project_store.mark_editor_item_failed(event_id=event_id)
+                    raise
 
             def on_completed(*, result) -> None:
-                _publish_editor_result(view, result)
-                application_result = reconstruct_editor_desktop_result(
-                    result
-                ).application_result
-                if (
-                    application_result.handoff_permitted
-                    and application_result.output_path is not None
-                    and application_result.payload_sha256 is not None
-                ):
-                    cells["project"] = project_store.record_editor_output(
+                try:
+                    _publish_editor_result(view, result)
+                    application_result = reconstruct_editor_desktop_result(
+                        result
+                    ).application_result
+                    if not (
+                        application_result.handoff_permitted
+                        and application_result.output_path is not None
+                        and application_result.payload_sha256 is not None
+                        and application_result.output_path
+                        == execution.get("output_path")
+                    ):
+                        raise _DesktopShellExecutionError() from None
+                    project_store.record_editor_output_for_event(
+                        event_id=event_id,
                         output_path=application_result.output_path,
                         payload_sha256=application_result.payload_sha256,
                     )
-                    _publish_chief_editor(view, cells["project"])
+                    cells["project"] = project_store.mark_editor_item_completed(
+                        event_id=event_id
+                    )
+                except BaseException:
+                    cells["project"] = project_store.mark_editor_item_failed(
+                        event_id=event_id
+                    )
+                    _publish_editor_worklist(view, cells["project"])
+                    raise
+                _publish_editor_worklist(view, cells["project"])
+                _publish_chief_editor(view, cells["project"])
 
-            controller.submit_application(task=task, on_completed=on_completed)
+            try:
+                controller.submit_application(task=task, on_completed=on_completed)
+            except BaseException:
+                cells["project"] = project_store.mark_editor_item_failed(
+                    event_id=event_id
+                )
+                _publish_editor_worklist(view, cells["project"])
+                raise
 
         def open_report(*, reference: str) -> None:
             facade.open_report(reference=reference)
@@ -544,7 +581,6 @@ def _publish_editor_worklist(view: object, project: object) -> None:
             )
             for item in project.editor_worklist
         ),
-        supported_event_id=project.candidate.event_id,
     )
 
 
