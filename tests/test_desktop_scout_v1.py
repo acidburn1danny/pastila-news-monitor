@@ -42,6 +42,80 @@ def _request() -> ScoutDesktopRequestV1:
     )
 
 
+@pytest.mark.parametrize("period", (1, 3, 7))
+def test_targeted_request_always_uses_exact_48_hour_window(monkeypatch, period):
+    operation = _ScoutDesktopOperationV1(
+        config_path=Path("config.yaml"),
+        sources_path=Path("sources.yaml"),
+        database_path=Path("scout.db"),
+        report_facade=_ReportFacadeFake(),
+    )
+    calls = []
+    monkeypatch.setattr(
+        "pastila_scout.desktop_scout_v1.service.poll_once",
+        lambda *args, **kwargs: calls.append((args, kwargs)) or _poll(),
+    )
+
+    result = operation.run_scout(
+        request=ScoutDesktopRequestV1(
+            operation_reference="targeted-operation",
+            period_days=period,
+            category=ScoutDesktopCategoryV1.POLITICA,
+            targeted_query="Donald Trump Iran",
+        )
+    )
+
+    assert calls[0][1]["max_article_age_hours_override"] == 48.0
+    assert calls[0][1]["category"] == "Politica"
+    assert result.targeted_candidate_ids == ()
+
+
+def test_normal_request_retains_selected_period_and_global_projection_marker(
+    monkeypatch,
+):
+    operation = _ScoutDesktopOperationV1(
+        config_path=Path("config.yaml"),
+        sources_path=Path("sources.yaml"),
+        database_path=Path("scout.db"),
+        report_facade=_ReportFacadeFake(),
+    )
+    calls = []
+    monkeypatch.setattr(
+        "pastila_scout.desktop_scout_v1.service.poll_once",
+        lambda *args, **kwargs: calls.append((args, kwargs)) or _poll(),
+    )
+
+    result = operation.run_scout(request=_request())
+
+    assert calls[0][1]["max_article_age_hours_override"] == 168.0
+    assert result.targeted_candidate_ids is None
+
+
+def test_targeted_source_failure_retains_empty_scope(monkeypatch):
+    operation = _ScoutDesktopOperationV1(
+        config_path=Path("config.yaml"),
+        sources_path=Path("sources.yaml"),
+        database_path=Path("scout.db"),
+        report_facade=_ReportFacadeFake(),
+    )
+    monkeypatch.setattr(
+        "pastila_scout.desktop_scout_v1.service.poll_once",
+        lambda *args, **kwargs: _poll("failed", 0, ("unavailable",)),
+    )
+
+    result = operation.run_scout(
+        request=ScoutDesktopRequestV1(
+            operation_reference="targeted-failure",
+            period_days=1,
+            category=ScoutDesktopCategoryV1.ALL,
+            targeted_query="breaking topic",
+        )
+    )
+
+    assert result.status is DesktopOperationStatusV1.FAILED
+    assert result.targeted_candidate_ids == ()
+
+
 def _poll(status="success", succeeded=2, failed_ids=()):
     failed = len(failed_ids)
     return PollResult(

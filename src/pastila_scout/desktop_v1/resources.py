@@ -19,6 +19,7 @@ _TEXT_V1 = (
     ("navigation.chief_editor", "Chief Editor"),
     ("scout.period", "Perioada"),
     ("scout.category", "Categorie"),
+    ("scout.latest", "Ultima Ora"),
     ("scout.provider", "AI Engine"),
     ("scout.ollama_url", "Adresa Ollama"),
     ("scout.ollama_model", "Model Ollama"),

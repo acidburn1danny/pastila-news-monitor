@@ -71,11 +71,15 @@ class _ScoutDesktopOperationV1:
                 config_path,
                 database_path,
                 sources_path=sources_path,
-                max_article_age_hours_override=float(valid_request.period_days * 24),
+                max_article_age_hours_override=(
+                    48.0
+                    if valid_request.targeted_query is not None
+                    else float(valid_request.period_days * 24)
+                ),
                 category=valid_request.category.value,
             )
             lower = _reconstruct_poll_result(lower)
-        except (KeyboardInterrupt, SystemExit, GeneratorExit):
+        except KeyboardInterrupt, SystemExit, GeneratorExit:
             raise
         except Exception:  # noqa: BLE001 - lower details collapse at safe boundary
             failed = True
@@ -103,10 +107,16 @@ class _ScoutDesktopOperationV1:
         failed = False
         try:
             reference = report_facade.generate_report(
-                result=_DesktopScoutReportInputV1(**values)
+                result=_DesktopScoutReportInputV1(
+                    **{
+                        name: value
+                        for name, value in values.items()
+                        if name != "targeted_candidate_ids"
+                    }
+                )
             )
             reference = reconstruct_desktop_report_reference(reference)
-        except (KeyboardInterrupt, SystemExit, GeneratorExit):
+        except KeyboardInterrupt, SystemExit, GeneratorExit:
             raise
         except Exception:  # noqa: BLE001 - report details collapse at safe boundary
             failed = True
@@ -130,6 +140,9 @@ def _result_values(request, lower, status) -> dict[str, object]:
         "failed_source_ids": lower.failed_source_ids,
         "executed_period_days": request.period_days,
         "executed_category": request.category,
+        # U2 supplies relevance-scoped event identities. Until then, targeted
+        # execution is intentionally empty rather than globally restored.
+        "targeted_candidate_ids": (() if request.targeted_query is not None else None),
     }
 
 

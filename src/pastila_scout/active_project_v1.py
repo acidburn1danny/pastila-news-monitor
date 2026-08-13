@@ -116,6 +116,43 @@ class ActiveProjectStoreV1:
             for row in rows
         )
 
+    def list_candidates_by_ids(
+        self, *, event_ids: tuple[int, ...]
+    ) -> tuple[ScoutCandidateV1, ...]:
+        if (
+            type(event_ids) is not tuple
+            or any(type(value) is not int or value <= 0 for value in event_ids)
+            or len(event_ids) != len(set(event_ids))
+        ):
+            raise ValueError("Selectie Scout invalida")
+        if not event_ids or not self.database_path.is_file():
+            return ()
+        placeholders = ",".join("?" for _ in event_ids)
+        with sqlite3.connect(self.database_path) as connection:
+            connection.row_factory = sqlite3.Row
+            rows = connection.execute(
+                f"""SELECT id, canonical_title, summary, category, source_count,
+                           article_count
+                    FROM events
+                    WHERE id IN ({placeholders})
+                      AND TRIM(canonical_title) <> ''
+                      AND TRIM(COALESCE(summary, '')) <> ''""",
+                event_ids,
+            ).fetchall()
+        by_id = {int(row["id"]): row for row in rows}
+        return tuple(
+            ScoutCandidateV1(
+                event_id=int(row["id"]),
+                title=str(row["canonical_title"]),
+                summary=str(row["summary"]),
+                category=_category(row["category"]),
+                source_count=int(row["source_count"]),
+                article_count=int(row["article_count"]),
+            )
+            for event_id in event_ids
+            if (row := by_id.get(event_id)) is not None
+        )
+
     def load_runtime_state(self) -> ActiveProjectV1 | None:
         """Read current in-process state without restart recovery transitions."""
 

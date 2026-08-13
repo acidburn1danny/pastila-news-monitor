@@ -328,15 +328,22 @@ class _DesktopMainWindowV1:
             text=_text_v1(key="scout.provider_test"),
             command=self._test_scout_provider,
         ).pack(side="left")
+        ttk.Label(page, text=_text_v1(key="scout.latest")).grid(
+            row=5, column=0, sticky="w"
+        )
+        self._targeted_query = tkinter.StringVar(value="")
+        ttk.Entry(page, textvariable=self._targeted_query).grid(
+            row=5, column=1, sticky="ew"
+        )
         self._scout_button = _primary_action_button(
             page,
             text=_text_v1(key="scout.run"),
             state="disabled",
             command=self._scout,
         )
-        self._scout_button.master.grid(row=6, column=0, columnspan=2, pady=8)
+        self._scout_button.master.grid(row=7, column=0, columnspan=2, pady=8)
         source = ttk.Frame(page)
-        source.grid(row=5, column=0, columnspan=2, sticky="ew")
+        source.grid(row=6, column=0, columnspan=2, sticky="ew")
         ttk.Label(
             source, text=_text_v1(key="scout.source_add"), style=_PRIMARY_LABEL_STYLE
         ).pack(side="left")
@@ -348,28 +355,28 @@ class _DesktopMainWindowV1:
             source, text=_text_v1(key="scout.source_save"), command=self._save_source
         ).pack(side="left")
         self._progress = ttk.Progressbar(page, mode="determinate", value=0)
-        self._progress.grid(row=7, column=0, columnspan=2, sticky="ew")
+        self._progress.grid(row=8, column=0, columnspan=2, sticky="ew")
         self._status = tkinter.StringVar(value=_text_v1(key="scout.intro"))
         ttk.Label(page, textvariable=self._status).grid(
-            row=8, column=0, columnspan=2, sticky="w"
+            row=9, column=0, columnspan=2, sticky="w"
         )
         ttk.Label(page, text=_text_v1(key="scout.results")).grid(
-            row=9, column=0, sticky="w"
+            row=10, column=0, sticky="w"
         )
         self._summary = tkinter.StringVar(value="0")
-        ttk.Label(page, textvariable=self._summary).grid(row=9, column=1, sticky="w")
+        ttk.Label(page, textvariable=self._summary).grid(row=10, column=1, sticky="w")
         ttk.Label(page, text=_text_v1(key="scout.failed_sources")).grid(
-            row=10, column=0, sticky="nw"
+            row=11, column=0, sticky="nw"
         )
         self._failed = tkinter.StringVar(value="")
-        ttk.Label(page, textvariable=self._failed).grid(row=10, column=1, sticky="w")
+        ttk.Label(page, textvariable=self._failed).grid(row=11, column=1, sticky="w")
         self._report_button = ttk.Button(
             page,
             text=_text_v1(key="scout.report"),
             state="disabled",
             command=self._report,
         )
-        self._report_button.grid(row=11, column=0, columnspan=2)
+        self._report_button.grid(row=12, column=0, columnspan=2)
         self._candidates = ttk.Treeview(
             page,
             columns=("title", "category", "sources"),
@@ -383,7 +390,7 @@ class _DesktopMainWindowV1:
         self._candidates.column("title", width=520)
         self._candidates.column("category", width=110)
         self._candidates.column("sources", width=60)
-        self._candidates.grid(row=12, column=0, columnspan=2, sticky="nsew", pady=8)
+        self._candidates.grid(row=13, column=0, columnspan=2, sticky="nsew", pady=8)
         self._candidates.bind("<<TreeviewSelect>>", self._candidate_changed)
         self._handoff_button = ttk.Button(
             page,
@@ -391,10 +398,10 @@ class _DesktopMainWindowV1:
             state="disabled",
             command=self._handoff,
         )
-        self._handoff_button.grid(row=13, column=0, columnspan=2)
+        self._handoff_button.grid(row=14, column=0, columnspan=2)
         self._footer = tkinter.StringVar(value="")
         ttk.Label(page, textvariable=self._footer).grid(
-            row=14, column=0, columnspan=2, sticky="w"
+            row=15, column=0, columnspan=2, sticky="w"
         )
 
     def _build_editor(self) -> None:
@@ -737,7 +744,9 @@ class _DesktopMainWindowV1:
     def _scout(self) -> None:
         self._invoke(
             "scout",
-            input=_DesktopScoutActionInputV1(self._period.get(), self._category.get()),
+            input=_DesktopScoutActionInputV1(
+                self._period.get(), self._category.get(), self._targeted_query.get()
+            ),
         )
 
     def _candidate_changed(self, event: object) -> None:

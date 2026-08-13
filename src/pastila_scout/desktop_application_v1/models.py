@@ -279,6 +279,7 @@ class ScoutDesktopRequestV1(_ValueSafety):
     operation_reference: str
     period_days: int
     category: ScoutDesktopCategoryV1
+    targeted_query: str | None
     _seal: str
 
     def __init_subclass__(cls, **kwargs) -> NoReturn:
@@ -291,20 +292,31 @@ class ScoutDesktopRequestV1(_ValueSafety):
         operation_reference: str,
         period_days: int,
         category: ScoutDesktopCategoryV1,
+        targeted_query: str | None = None,
     ) -> None:
         if (
             not _valid_text(operation_reference)
             or type(period_days) is not int
             or period_days not in _PERIODS
             or type(category) is not ScoutDesktopCategoryV1
+            or (
+                targeted_query is not None
+                and (
+                    not _valid_text(targeted_query)
+                    or targeted_query != targeted_query.strip()
+                )
+            )
         ):
-            del self, operation_reference, period_days, category
+            del self, operation_reference, period_days, category, targeted_query
             _raise_configuration()
         object.__setattr__(self, "operation_reference", operation_reference)
         object.__setattr__(self, "period_days", period_days)
         object.__setattr__(self, "category", category)
+        object.__setattr__(self, "targeted_query", targeted_query)
         object.__setattr__(
-            self, "_seal", _seal((operation_reference, period_days, category.value))
+            self,
+            "_seal",
+            _seal((operation_reference, period_days, category.value, targeted_query)),
         )
 
     @_isolated_configuration
@@ -313,7 +325,8 @@ class ScoutDesktopRequestV1(_ValueSafety):
         return (
             "ScoutDesktopRequestV1("
             f"operation_reference={valid.operation_reference!r}, "
-            f"period_days={valid.period_days!r}, category={valid.category.value!r})"
+            f"period_days={valid.period_days!r}, category={valid.category.value!r}, "
+            f"targeted_query={'<redacted>' if valid.targeted_query is not None else None})"
         )
 
     @_isolated_configuration
@@ -335,7 +348,12 @@ class ScoutDesktopRequestV1(_ValueSafety):
 def _scout_request_values(value: ScoutDesktopRequestV1) -> tuple[object, ...]:
     return tuple(
         object.__getattribute__(value, field)
-        for field in ("operation_reference", "period_days", "category")
+        for field in (
+            "operation_reference",
+            "period_days",
+            "category",
+            "targeted_query",
+        )
     )
 
 
@@ -348,6 +366,7 @@ def reconstruct_scout_desktop_request(value: object) -> ScoutDesktopRequestV1:
             operation_reference=object.__getattribute__(value, "operation_reference"),
             period_days=object.__getattribute__(value, "period_days"),
             category=object.__getattribute__(value, "category"),
+            targeted_query=object.__getattribute__(value, "targeted_query"),
         )
         if not _same_seal(value, rebuilt):
             raise TypeError
@@ -547,6 +566,7 @@ class ScoutDesktopResultV1(_ValueSafety):
     failed_source_ids: tuple[str, ...]
     executed_period_days: int
     executed_category: ScoutDesktopCategoryV1
+    targeted_candidate_ids: tuple[int, ...] | None
     report_reference: DesktopReportReferenceV1 | None
     failure: DesktopApplicationFailureV1 | None
     _seal: str
@@ -569,6 +589,7 @@ class ScoutDesktopResultV1(_ValueSafety):
         failed_source_ids: tuple[str, ...],
         executed_period_days: int,
         executed_category: ScoutDesktopCategoryV1,
+        targeted_candidate_ids: tuple[int, ...] | None = None,
         report_reference: DesktopReportReferenceV1 | None,
         failure: DesktopApplicationFailureV1 | None,
     ) -> None:
@@ -589,8 +610,20 @@ class ScoutDesktopResultV1(_ValueSafety):
                 or type(failed_source_ids) is not tuple
                 or any(not _valid_text(item) for item in failed_source_ids)
                 or type(executed_period_days) is not int
-                or executed_period_days not in _PERIODS
                 or type(executed_category) is not ScoutDesktopCategoryV1
+                or (
+                    targeted_candidate_ids is not None
+                    and (
+                        type(targeted_candidate_ids) is not tuple
+                        or any(
+                            type(item) is not int or item <= 0
+                            for item in targeted_candidate_ids
+                        )
+                        or len(targeted_candidate_ids)
+                        != len(set(targeted_candidate_ids))
+                    )
+                )
+                or executed_period_days not in _PERIODS
             ):
                 raise TypeError
             report = (
@@ -618,6 +651,7 @@ class ScoutDesktopResultV1(_ValueSafety):
                 failed_source_ids,
                 executed_period_days,
                 executed_category,
+                targeted_candidate_ids,
                 report,
                 valid_failure,
             )
@@ -627,6 +661,7 @@ class ScoutDesktopResultV1(_ValueSafety):
             del operation_reference, status, sources_checked, sources_succeeded
             del sources_failed, articles_found, articles_inserted, duplicates_skipped
             del failed_source_ids, executed_period_days, executed_category
+            del targeted_candidate_ids
             del report_reference, failure
             _raise_configuration()
         for name, value in zip(_SCOUT_RESULT_FIELDS, values, strict=True):
@@ -672,6 +707,7 @@ _SCOUT_RESULT_FIELDS = (
     "failed_source_ids",
     "executed_period_days",
     "executed_category",
+    "targeted_candidate_ids",
     "report_reference",
     "failure",
 )

@@ -195,17 +195,24 @@ class _ActionInputBase(_ValueSafety):
 class _DesktopScoutActionInputV1(_ActionInputBase):
     period: str
     category: str
+    targeted_query: str
 
-    def __init__(self, period: str, category: str) -> None:
-        if type(period) is not str or type(category) is not str:
+    def __init__(self, period: str, category: str, targeted_query: str = "") -> None:
+        if any(type(value) is not str for value in (period, category, targeted_query)):
             _bad()
         object.__setattr__(self, "period", period)
         object.__setattr__(self, "category", category)
+        object.__setattr__(self, "targeted_query", targeted_query)
 
     def __eq__(self, other: object) -> bool:
-        return type(other) is type(self) and (other.period, other.category) == (
+        return type(other) is type(self) and (
+            other.period,
+            other.category,
+            other.targeted_query,
+        ) == (
             self.period,
             self.category,
+            self.targeted_query,
         )
 
     def __copy__(self):
@@ -309,7 +316,9 @@ def _reconstruct_desktop_scout_action_input_v1(
 ) -> _DesktopScoutActionInputV1:
     if type(value) is not _DesktopScoutActionInputV1:
         _bad()
-    return _DesktopScoutActionInputV1(value.period, value.category)
+    return _DesktopScoutActionInputV1(
+        value.period, value.category, value.targeted_query
+    )
 
 
 def _reconstruct_desktop_editor_action_input_v1(

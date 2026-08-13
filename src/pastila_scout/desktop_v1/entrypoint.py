@@ -222,8 +222,7 @@ def main() -> int:
                 )
 
             def on_completed(*, result) -> None:
-                _publish_scout_result(view, result)
-                _publish_candidates(view, project_store)
+                _publish_scout_completion(view, project_store, result)
 
             controller.submit_application(task=task, on_completed=on_completed)
 
@@ -475,10 +474,12 @@ def _scout_request(value: object) -> ScoutDesktopRequestV1:
         if str(period) != valid.period:
             raise ValueError
         category = ScoutDesktopCategoryV1(valid.category)
+        targeted_query = valid.targeted_query.strip() or None
         return ScoutDesktopRequestV1(
             operation_reference=f"scout-desktop-v1:{uuid.uuid4().hex}",
             period_days=period,
             category=category,
+            targeted_query=targeted_query,
         )
     except BaseException:
         raise _DesktopShellConfigurationError() from None
@@ -577,6 +578,30 @@ def _run_editor(
 
 def _publish_candidates(view: object, store: ActiveProjectStoreV1) -> None:
     candidates = store.list_candidates()
+    view.publish_candidates(  # type: ignore[attr-defined]
+        candidates=tuple(
+            (item.event_id, item.title, item.category, item.source_count)
+            for item in candidates
+        )
+    )
+
+
+def _publish_scout_completion(
+    view: object, store: ActiveProjectStoreV1, value: object
+) -> None:
+    result = reconstruct_scout_desktop_result(value)
+    _publish_scout_result(view, result)
+    scoped_ids = result.targeted_candidate_ids
+    if scoped_ids is None:
+        _publish_candidates(view, store)
+    else:
+        _publish_scoped_candidates(view, store, scoped_ids)
+
+
+def _publish_scoped_candidates(
+    view: object, store: ActiveProjectStoreV1, event_ids: tuple[int, ...]
+) -> None:
+    candidates = store.list_candidates_by_ids(event_ids=event_ids)
     view.publish_candidates(  # type: ignore[attr-defined]
         candidates=tuple(
             (item.event_id, item.title, item.category, item.source_count)
