@@ -46,6 +46,7 @@ def test_event_creation_attachment_and_distinct_source_counts(tmp_path: Path) ->
         initialize_database(connection)
         _source(connection, "digi", "Digi24")
         _source(connection, "hotnews", "HotNews")
+        _source(connection, "g4media", "G4Media")
         first = _article(connection, "digi", "one")
         event_id = create_event(
             connection,
@@ -64,15 +65,21 @@ def test_event_creation_attachment_and_distinct_source_counts(tmp_path: Path) ->
             article_id=_article(connection, "hotnews", "three"),
             event_id=event_id,
         )
+        attach_article_to_event(
+            connection,
+            article_id=_article(connection, "g4media", "four"),
+            event_id=event_id,
+        )
 
         event = connection.execute(
             "SELECT * FROM events WHERE id = ?", (event_id,)
         ).fetchone()
-        assert event["article_count"] == 3
-        assert event["source_count"] == 2
-        assert len(get_event_articles(connection, event_id)) == 3
+        assert event["article_count"] == 4
+        assert event["source_count"] == 3
+        assert len(get_event_articles(connection, event_id)) == 4
         assert [row["name"] for row in get_event_sources(connection, event_id)] == [
             "Digi24",
+            "G4Media",
             "HotNews",
         ]
 
