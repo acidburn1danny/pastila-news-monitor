@@ -13,6 +13,7 @@ from enum import StrEnum
 from pathlib import Path
 
 from pastila_scout import __version__
+from pastila_scout.category_integrity import CATEGORY_ORDER
 from pastila_scout.contracts.common import ALLOWED_CATEGORIES
 from pastila_scout.contracts.identity import (
     assign_scout_input_identity,
@@ -104,13 +105,25 @@ class ActiveProjectStoreV1:
             return ()
         with sqlite3.connect(self.database_path) as connection:
             connection.row_factory = sqlite3.Row
+            category_order = " ".join(
+                f"WHEN ? THEN {position}"
+                for position, _category_name in enumerate(CATEGORY_ORDER)
+            )
             rows = connection.execute(
-                """SELECT id, canonical_title, summary, category, source_count,
-                          article_count
-                   FROM events
-                   WHERE TRIM(canonical_title) <> '' AND TRIM(COALESCE(summary, '')) <> ''
-                   ORDER BY last_seen_at DESC, id DESC LIMIT ?""",
-                (limit,),
+                f"""SELECT id, canonical_title, summary, category, source_count,
+                           article_count
+                    FROM (
+                        SELECT id, canonical_title, summary, category, source_count,
+                               article_count, last_seen_at
+                        FROM events
+                        WHERE TRIM(canonical_title) <> ''
+                          AND TRIM(COALESCE(summary, '')) <> ''
+                        ORDER BY last_seen_at DESC, id DESC
+                        LIMIT ?
+                    ) AS recent_candidates
+                   ORDER BY CASE category {category_order} ELSE {len(CATEGORY_ORDER)} END,
+                            source_count DESC, last_seen_at DESC, id ASC""",
+                (limit, *CATEGORY_ORDER),
             ).fetchall()
         return tuple(
             ScoutCandidateV1(

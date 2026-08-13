@@ -5,6 +5,11 @@ from collections import Counter, defaultdict
 from collections.abc import Sequence
 from datetime import UTC, datetime
 
+from pastila_scout.category_integrity import (
+    CATEGORY_ORDER,
+    article_categories,
+    is_clearly_english_title,
+)
 from pastila_scout.models import (
     ArticleProvenance,
     EventSnapshot,
@@ -12,15 +17,7 @@ from pastila_scout.models import (
     SourceProvenance,
 )
 
-ALLOWED_CATEGORIES = (
-    "Politica",
-    "Social",
-    "Conspiratii",
-    "Economie",
-    "CanCan",
-    "Externe",
-    "Diverse",
-)
+ALLOWED_CATEGORIES = CATEGORY_ORDER
 _CATEGORY_ORDER = {category: index for index, category in enumerate(ALLOWED_CATEGORIES)}
 
 
@@ -35,6 +32,9 @@ def canonicalize_event(
     ordered_articles = tuple(sorted(articles, key=lambda article: article.id))
     selected = select_canonical_article(ordered_articles)
     categories = derive_categories(ordered_articles)
+    categories = _prioritize_canonical_title_category(
+        categories, selected=selected, articles=ordered_articles
+    )
     if not categories:
         categories = tuple(
             category for category in event.categories if category in _CATEGORY_ORDER
@@ -100,8 +100,9 @@ def derive_categories(articles: Sequence[ArticleProvenance]) -> tuple[str, ...]:
 
     counts: Counter[str] = Counter()
     for article in articles:
-        candidates = set(article.source_categories) | _raw_categories(
-            article.raw_payload
+        candidates = article_categories(
+            article.title,
+            set(article.source_categories) | _raw_categories(article.raw_payload),
         )
         counts.update(
             category for category in candidates if category in _CATEGORY_ORDER
@@ -123,12 +124,31 @@ def canonical_selection_reason(article: ArticleProvenance) -> str:
     )
 
 
+def _prioritize_canonical_title_category(
+    categories: tuple[str, ...],
+    *,
+    selected: ArticleProvenance,
+    articles: Sequence[ArticleProvenance],
+) -> tuple[str, ...]:
+    """Keep an English canonical title external absent a domestic majority."""
+
+    if not is_clearly_english_title(selected.title):
+        return categories
+    english_articles = sum(is_clearly_english_title(item.title) for item in articles)
+    if english_articles < len(articles) - english_articles:
+        return categories
+    return (
+        "Externe",
+        *(category for category in categories if category != "Externe"),
+    )[:3]
+
+
 def _raw_categories(raw_payload: str | None) -> set[str]:
     if not raw_payload:
         return set()
     try:
         payload = json.loads(raw_payload)
-    except (TypeError, ValueError):
+    except TypeError, ValueError:
         return set()
     values: list[object] = []
     if isinstance(payload, dict):
