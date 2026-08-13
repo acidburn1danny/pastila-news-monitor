@@ -19,6 +19,11 @@ from pastila_scout.contracts.identity import (
     verify_scout_input_identity,
 )
 from pastila_scout.contracts.scout_editor import ScoutEditorInputV1
+from pastila_scout.episode_draft_v1 import (
+    EpisodeDraftPersistenceError,
+    EpisodeDraftRevisionRefV1,
+    EpisodeDraftRevisionRepositoryV1,
+)
 
 
 @dataclass(frozen=True, slots=True)
@@ -78,6 +83,7 @@ class ActiveProjectV1:
     chief_editor_title: str = ""
     chief_editor_updated_at: datetime | None = None
     editor_worklist: tuple[EditorWorkItemV1, ...] = ()
+    current_episode_draft_revision: EpisodeDraftRevisionRefV1 | None = None
 
     @property
     def candidate(self):
@@ -186,6 +192,9 @@ class ActiveProjectStoreV1:
                 source.ranked_events,
                 () if existing is None else existing.editor_worklist,
             ),
+            current_episode_draft_revision=(
+                None if existing is None else existing.current_episode_draft_revision
+            ),
         )
         self._write(project)
         return project
@@ -253,6 +262,9 @@ class ActiveProjectStoreV1:
             editor_worklist=_synchronize_editor_worklist(
                 source.ranked_events,
                 () if existing is None else existing.editor_worklist,
+            ),
+            current_episode_draft_revision=(
+                None if existing is None else existing.current_episode_draft_revision
             ),
         )
         self._write(project)
@@ -337,6 +349,7 @@ class ActiveProjectStoreV1:
             project.chief_editor_title or project.title,
             datetime.now(UTC),
             project.editor_worklist,
+            project.current_episode_draft_revision,
         )
         self._write(updated)
         return updated
@@ -367,6 +380,7 @@ class ActiveProjectStoreV1:
             title,
             datetime.now(UTC),
             project.editor_worklist,
+            project.current_episode_draft_revision,
         )
         self._write(updated)
         return updated
@@ -447,6 +461,7 @@ class ActiveProjectStoreV1:
             project.chief_editor_title,
             project.chief_editor_updated_at,
             worklist,
+            project.current_episode_draft_revision,
         )
         self._write(updated)
         return updated
@@ -480,9 +495,120 @@ class ActiveProjectStoreV1:
             project.chief_editor_title,
             project.chief_editor_updated_at,
             worklist,
+            project.current_episode_draft_revision,
         )
         self._write(updated)
         return updated
+
+    def install_episode_draft_revision(
+        self, *, reference: EpisodeDraftRevisionRefV1
+    ) -> ActiveProjectV1:
+        """Atomically install one already-published, strictly validated ready revision."""
+
+        project = self._required()
+        try:
+            if type(reference) is not EpisodeDraftRevisionRefV1:
+                raise TypeError
+            revision = EpisodeDraftRevisionRepositoryV1().load(
+                path=Path(reference.artifact_path),
+                artifact_sha256=reference.artifact_sha256,
+            )
+            if (
+                reference.project_id != project.project_id
+                or revision.project_id != project.project_id
+                or reference.draft_id != revision.draft_id
+                or reference.revision_id != revision.revision_id
+                or reference.parent_revision_id != revision.parent_revision_id
+                or reference.episode_id != revision.episode_id
+                or reference.requested_event_ids != revision.requested_event_ids
+                or reference.included_event_ids != revision.included_event_ids
+                or reference.excluded_failed_event_ids
+                != revision.excluded_failed_event_ids
+                or reference.created_at != revision.created_at
+            ):
+                raise ValueError
+            if tuple(item.event_id for item in project.editor_worklist) != (
+                revision.requested_event_ids
+            ):
+                raise ValueError
+            statuses = {item.event_id: item.status for item in project.editor_worklist}
+            if any(
+                statuses[event_id] is not EditorWorkItemStatusV1.COMPLETED
+                for event_id in revision.included_event_ids
+            ) or any(
+                statuses[event_id] is not EditorWorkItemStatusV1.FAILED
+                for event_id in revision.excluded_failed_event_ids
+            ):
+                raise ValueError
+            if len({item.event_id for item in project.editor_materials}) != len(
+                project.editor_materials
+            ) or len({item.reference for item in project.editor_materials}) != len(
+                project.editor_materials
+            ):
+                raise ValueError
+            materials = {item.event_id: item for item in project.editor_materials}
+            for lineage in revision.included_materials:
+                material = materials.get(lineage.event_id)
+                if (
+                    material is None
+                    or material.reference != lineage.material_reference
+                    or material.payload_sha256 != lineage.payload_sha256
+                ):
+                    raise ValueError
+            current = project.current_episode_draft_revision
+            if current is None:
+                if reference.parent_revision_id is not None:
+                    raise ValueError
+            elif (
+                reference.draft_id != current.draft_id
+                or reference.parent_revision_id != current.revision_id
+                or reference.revision_id == current.revision_id
+            ):
+                raise ValueError
+        except (EpisodeDraftPersistenceError, TypeError, ValueError) as exc:
+            raise ValueError("Revizie Episode Draft invalida") from exc
+        if self._required() != project:
+            raise ValueError("Revizie Episode Draft invalida")
+        updated = ActiveProjectV1(
+            project.project_id,
+            project.title,
+            project.handed_off_at,
+            project.scout_input,
+            project.editor_materials,
+            project.chief_editor_items,
+            project.chief_editor_title,
+            project.chief_editor_updated_at,
+            project.editor_worklist,
+            reference,
+        )
+        self._write(updated)
+        return updated
+
+    def load_episode_draft_revision(self):
+        """Load the current referenced revision without fallback or provider work."""
+
+        project = self._required()
+        reference = project.current_episode_draft_revision
+        if reference is None:
+            return None
+        revision = EpisodeDraftRevisionRepositoryV1().load(
+            path=Path(reference.artifact_path),
+            artifact_sha256=reference.artifact_sha256,
+        )
+        if (
+            revision.project_id != project.project_id
+            or reference.project_id != revision.project_id
+            or revision.revision_id != reference.revision_id
+            or revision.draft_id != reference.draft_id
+            or revision.parent_revision_id != reference.parent_revision_id
+            or revision.episode_id != reference.episode_id
+            or revision.created_at != reference.created_at
+            or revision.requested_event_ids != reference.requested_event_ids
+            or revision.included_event_ids != reference.included_event_ids
+            or revision.excluded_failed_event_ids != reference.excluded_failed_event_ids
+        ):
+            raise EpisodeDraftPersistenceError("referenced revision identity mismatch")
+        return revision
 
     def _required(self) -> ActiveProjectV1:
         project = self._load(recover_running=False)
@@ -516,6 +642,11 @@ class ActiveProjectStoreV1:
                 {"event_id": item.event_id, "status": item.status.value}
                 for item in worklist
             ],
+            "current_episode_draft_revision": (
+                None
+                if project.current_episode_draft_revision is None
+                else project.current_episode_draft_revision.model_dump(mode="json")
+            ),
             "chief_editor": {
                 "title": project.chief_editor_title,
                 "updated_at": (
@@ -572,6 +703,14 @@ class ActiveProjectStoreV1:
         )
         updated_at = chief_data.get("updated_at")
         raw_worklist = data.get("editor_worklist")
+        raw_draft_reference = data.get("current_episode_draft_revision")
+        draft_reference = (
+            None
+            if raw_draft_reference is None
+            else EpisodeDraftRevisionRefV1.model_validate_json(
+                json.dumps(raw_draft_reference, ensure_ascii=False), strict=True
+            )
+        )
         recovered_running = False
         if raw_worklist is None:
             worklist = _synchronize_editor_worklist(source.ranked_events, ())
@@ -609,6 +748,7 @@ class ActiveProjectStoreV1:
                 None if updated_at is None else datetime.fromisoformat(updated_at)
             ),
             editor_worklist=worklist,
+            current_episode_draft_revision=draft_reference,
         )
         if (
             not source.ranked_events

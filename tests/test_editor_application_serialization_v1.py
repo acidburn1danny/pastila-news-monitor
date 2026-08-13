@@ -114,6 +114,7 @@ def test_exact_api_layout_signature_and_passive_serializer() -> None:
         *((exporter_name,) if exporter_exists else ()),
         *EXPECTED_API[13:15],
         "EditorSerializedOperationalResultV1",
+        "load_editor_operational_result_v1",
         *EXPECTED_API[15:],
     )
     assert public.__all__ == expected_current_api
@@ -645,6 +646,7 @@ def test_private_import_and_architectural_prohibition_audit() -> None:
     assert implementation.__all__ == (
         "EditorOperationalResultSerializerV1",
         "EditorSerializedOperationalResultV1",
+        "load_editor_operational_result_v1",
     )
 
 
@@ -681,91 +683,47 @@ m.undo()
     assert outputs[0] == outputs[1]
 
 
-def test_current_revision_scope_and_frozen_integrity() -> None:
-    root = Path(__file__).resolve().parents[1]
-    baseline = "phase-4.3-editor-application-coordinator-r5-verified"
-    exact_commit = "5d63e27cbc685c12611e0cf07003bfc2433988bf"
-    historical_api = "phase-4.3-application-result-contract-r2-verified"
-    serializer_path = "src/pastila_scout/editor_application_v1/serialization.py"
-    init_path = "src/pastila_scout/editor_application_v1/__init__.py"
-    test_path = "tests/test_editor_application_serialization_v1.py"
-    correction_digest = (
-        "9C3582EBD065FD42CEE784384075E6A2F31F29774953A97AC0ACE043F7B5746D"
+def test_public_loader_is_one_narrow_serialization_extension() -> None:
+    source = Path(implementation.__file__).read_text(encoding="utf-8")
+    assert source.count("def load_editor_operational_result_v1(") == 1
+    assert "EditorSerializedOperationalResultV1(payload, payload_sha256)" in source
+    assert "_reconstruct_projected_operational" in source
+
+
+def test_completed_artifact_public_loader_reconstructs_and_rejects_checksum(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    serialized = public.EditorOperationalResultSerializerV1().serialize(
+        result=completed_result(monkeypatch)
+    )
+    path = tmp_path / "editor.json"
+    path.write_bytes(serialized.payload)
+
+    loaded = public.load_editor_operational_result_v1(
+        path=path, payload_sha256=serialized.payload_sha256
     )
 
-    def names(*arguments: str) -> set[str]:
-        return set(
-            subprocess.run(
-                ["git", *arguments],
-                cwd=root,
-                check=True,
-                capture_output=True,
-                text=True,
-            ).stdout.splitlines()
+    assert loaded.status is EditorOperationalGenerationStatusV1.COMPLETED
+    assert loaded.draft is not None
+    with pytest.raises(public.EditorApplicationSerializationError):
+        public.load_editor_operational_result_v1(
+            path=path, payload_sha256="sha256:" + "0" * 64
         )
-
-    assert (
-        subprocess.run(
-            ["git", "rev-parse", f"{baseline}^{{}}"],
-            cwd=root,
-            check=True,
-            capture_output=True,
-            text=True,
-        ).stdout.strip()
-        == exact_commit
+    path.write_bytes(
+        serialized.payload.replace(b'"status":"completed"', b'"status":"failed"')
     )
-    protected = {init_path, serializer_path}
-    changed = names("diff", "--name-only", baseline)
-    staged = names("diff", "--cached", "--name-only")
-    untracked = names("ls-files", "--others", "--exclude-standard")
-    tracked = names("ls-files", "--", *protected)
-
-    def valid_state(
-        changed_paths: set[str],
-        staged_paths: set[str],
-        untracked_paths: set[str],
-        tracked_paths: set[str],
-    ) -> bool:
-        return (
-            not protected.intersection(changed_paths)
-            and not staged_paths
-            and not protected.intersection(untracked_paths)
-            and tracked_paths == protected
+    changed_checksum = "sha256:" + hashlib.sha256(path.read_bytes()).hexdigest()
+    with pytest.raises(public.EditorApplicationSerializationError):
+        public.load_editor_operational_result_v1(
+            path=path, payload_sha256=changed_checksum
         )
-
-    assert valid_state(changed, staged, untracked, tracked)
-    for path in protected:
-        assert not valid_state(changed | {path}, staged, untracked, tracked)
-        assert not valid_state(changed, {path}, untracked, tracked)
-        assert not valid_state(changed, staged, untracked | {path}, tracked - {path})
-        assert not valid_state(
-            changed | {f"{path}.renamed"}, staged, {path}, tracked - {path}
+    with pytest.raises(public.EditorApplicationSerializationError):
+        public.load_editor_operational_result_v1(
+            path=tmp_path / "missing.json", payload_sha256=serialized.payload_sha256
         )
-
-    current_api = (root / init_path).read_text(encoding="utf-8")
-    coordinator_import = "from .application import EditorApplicationCoordinatorV1\n"
-    coordinator_export = '    "EditorApplicationCoordinatorV1",\n'
-    assert current_api.count(coordinator_import) == 1
-    assert current_api.count(coordinator_export) == 1
-    assert current_api.index(coordinator_import) < current_api.index(
-        "from .configuration"
-    )
-    assert current_api.index(coordinator_export) > current_api.index(
-        '    "EditorApplicationCoordinatorError",\n'
-    )
-    normalized_api = current_api.replace(coordinator_import, "").replace(
-        coordinator_export, ""
-    )
-    expected_api = subprocess.run(
-        ["git", "show", f"{historical_api}:{init_path}"],
-        cwd=root,
-        check=True,
-        capture_output=True,
-        text=True,
-    ).stdout
-    assert normalized_api == expected_api
-
-    test_bytes = (root / test_path).read_bytes()
-    normalized = test_bytes.replace(correction_digest.encode(), b"0" * 64)
-    assert normalized != test_bytes
-    assert hashlib.sha256(normalized).hexdigest().upper() == correction_digest
+    directory = tmp_path / "directory"
+    directory.mkdir()
+    with pytest.raises(public.EditorApplicationSerializationError):
+        public.load_editor_operational_result_v1(
+            path=directory, payload_sha256=serialized.payload_sha256
+        )

@@ -28,6 +28,7 @@ from .models import (
 from .serialization import (
     EditorOperationalResultSerializerV1,
     EditorSerializedOperationalResultV1,
+    load_editor_operational_result_v1,
 )
 
 __all__ = (  # noqa: RUF022 - frozen specification order
@@ -49,6 +50,7 @@ __all__ = (  # noqa: RUF022 - frozen specification order
     "EditorEpisodeContextAuthorityV1",
     "EditorOperationalResultSerializerV1",
     "EditorSerializedOperationalResultV1",
+    "load_editor_operational_result_v1",
     "EditorOutputDestinationV1",
     "EditorOverwritePolicyV1",
     "EditorSelectionProfileAuthorityV1",

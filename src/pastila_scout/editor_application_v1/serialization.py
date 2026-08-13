@@ -10,6 +10,7 @@ import unicodedata
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from enum import Enum, auto
+from pathlib import Path
 from typing import NoReturn
 
 from pydantic import BaseModel
@@ -186,6 +187,34 @@ class EditorOperationalResultSerializerV1:
             del status, serialized
             _raise_serialization_error()
         return serialized
+
+
+def load_editor_operational_result_v1(
+    *, path: Path, payload_sha256: str
+) -> EditorOperationalResultV1:
+    """Load one canonical completed Editor artifact with external checksum validation."""
+
+    try:
+        if not isinstance(path, Path) or not _valid_checksum(payload_sha256):
+            raise TypeError
+        payload = path.read_bytes()
+        serialized = EditorSerializedOperationalResultV1(payload, payload_sha256)
+        parsed = json.loads(
+            serialized.payload[:-1].decode("utf-8"),
+            object_pairs_hook=_strict_object,
+            parse_constant=_reject_constant,
+        )
+        result = _reconstruct_projected_operational(parsed["operational_result"])
+        if (
+            result.status is not EditorOperationalGenerationStatusV1.COMPLETED
+            or result.cleanup_failed
+            or result.failure is not None
+            or result.draft is None
+        ):
+            raise TypeError
+        return result
+    except Exception:  # noqa: BLE001 - public artifact boundary collapses safely
+        _raise_serialization_error()
 
 
 def _serialize_neutral(
@@ -573,4 +602,5 @@ def _raise_serialization_error() -> NoReturn:
 __all__ = (
     "EditorOperationalResultSerializerV1",
     "EditorSerializedOperationalResultV1",
+    "load_editor_operational_result_v1",
 )
