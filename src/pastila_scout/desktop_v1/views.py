@@ -24,6 +24,40 @@ from .settings import (
     _reconstruct_desktop_settings_projection_v1,
 )
 
+_SCOUT_PERIOD_CHOICES = ("1", "3", "7", "14", "30")
+_OPENAI_MODEL_CHOICES = ("gpt-4.1-mini",)
+_SCOUT_CATEGORY_CHOICES = (
+    "all",
+    "Politica",
+    "Social",
+    "Conspiratii",
+    "Economie",
+    "CanCan",
+    "Externe",
+    "Diverse",
+)
+_EDITOR_REQUIRED_CONFIGURATION = (
+    "selection_profile_path",
+    "episode_context_path",
+    "generation_config_path",
+)
+
+
+def _editor_configuration_ready(values: dict[str, tkinter.StringVar]) -> bool:
+    return all(values[name].get() for name in _EDITOR_REQUIRED_CONFIGURATION)
+
+
+def _restored_candidate_summary(*, current: str, count: int) -> str:
+    return f"{count} candidați restaurați" if current == "0" else current
+
+
+def _editor_display_model(settings: _DesktopSettingsProjectionV1) -> str:
+    return (
+        settings.ollama_model
+        if settings.editor_provider == "ollama"
+        else settings.editor_model
+    )
+
 
 def _validate_binding(value: object, parameter: str) -> None:
     target = value
@@ -126,11 +160,18 @@ class _DesktopMainWindowV1:
         self._scout_provider.set(settings.scout_provider)
         self._ollama_url.set(settings.ollama_base_url)
         self._ollama_model.set(settings.ollama_model)
+        self._model_widget.configure(
+            values=(
+                (settings.ollama_model,)
+                if settings.scout_provider == "ollama"
+                else (settings.editor_model,)
+            )
+        )
         projected = {
             "selection_profile_path": settings.editor_profile_path,
             "episode_context_path": settings.editor_context_path,
             "generation_config_path": settings.editor_generation_path,
-            "model": settings.editor_model,
+            "model": _editor_display_model(settings),
             "timeout_seconds": settings.editor_timeout_seconds,
             "output_path": settings.editor_output_directory,
         }
@@ -152,7 +193,10 @@ class _DesktopMainWindowV1:
         )
         self._period = tkinter.StringVar(value="")
         self._period_widget = ttk.Combobox(
-            page, textvariable=self._period, state="disabled"
+            page,
+            textvariable=self._period,
+            values=_SCOUT_PERIOD_CHOICES,
+            state="disabled",
         )
         self._period_widget.grid(row=0, column=1, sticky="ew")
         ttk.Label(page, text=_text_v1(key="scout.category")).grid(
@@ -160,7 +204,10 @@ class _DesktopMainWindowV1:
         )
         self._category = tkinter.StringVar(value="")
         self._category_widget = ttk.Combobox(
-            page, textvariable=self._category, state="disabled"
+            page,
+            textvariable=self._category,
+            values=_SCOUT_CATEGORY_CHOICES,
+            state="disabled",
         )
         self._category_widget.grid(row=1, column=1, sticky="ew")
         ttk.Label(page, text=_text_v1(key="scout.provider")).grid(row=2, column=0, sticky="w")
@@ -172,14 +219,14 @@ class _DesktopMainWindowV1:
             state="readonly",
         )
         self._scout_provider_widget.grid(row=2, column=1, sticky="ew")
-        ttk.Label(page, text=_text_v1(key="scout.ollama_url")).grid(row=3, column=0, sticky="w")
+        self._scout_provider_widget.bind("<<ComboboxSelected>>", self._provider_changed)
         self._ollama_url = tkinter.StringVar(value="")
-        ttk.Entry(page, textvariable=self._ollama_url).grid(row=3, column=1, sticky="ew")
-        ttk.Label(page, text=_text_v1(key="scout.ollama_model")).grid(row=4, column=0, sticky="w")
+        ttk.Label(page, text=_text_v1(key="scout.model")).grid(row=3, column=0, sticky="w")
         self._ollama_model = tkinter.StringVar(value="")
-        ttk.Entry(page, textvariable=self._ollama_model).grid(row=4, column=1, sticky="ew")
+        self._model_widget = ttk.Combobox(page, textvariable=self._ollama_model, state="readonly")
+        self._model_widget.grid(row=3, column=1, sticky="ew")
         provider_buttons = ttk.Frame(page)
-        provider_buttons.grid(row=5, column=0, columnspan=2)
+        provider_buttons.grid(row=4, column=0, columnspan=2)
         ttk.Button(provider_buttons, text=_text_v1(key="scout.provider_save"), command=self._save_scout_provider).pack(side="left")
         ttk.Button(provider_buttons, text=_text_v1(key="scout.provider_test"), command=self._test_scout_provider).pack(side="left")
         self._scout_button = ttk.Button(
@@ -257,16 +304,18 @@ class _DesktopMainWindowV1:
         ttk.Label(page, textvariable=self._active_project).grid(
             row=2, column=1, sticky="w"
         )
-        fields = (
-            ("scout_input_path", "editor.scout_input"),
-            ("selection_profile_path", "editor.selection_profile"),
-            ("episode_context_path", "editor.episode_context"),
-            ("generation_config_path", "editor.generation_config"),
-            ("model", "editor.model"),
-            ("timeout_seconds", "editor.timeout"),
-            ("output_path", "editor.output"),
+        hidden_paths = (
+            "scout_input_path",
+            "selection_profile_path",
+            "episode_context_path",
+            "generation_config_path",
+            "timeout_seconds",
+            "output_path",
         )
-        self._editor_values: dict[str, tkinter.StringVar] = {}
+        self._editor_values = {
+            name: tkinter.StringVar(value="") for name in hidden_paths
+        }
+        fields = (("model", "editor.model"),)
         self._editor_widgets: list[ttk.Widget] = []
         for row, (name, key) in enumerate(fields, start=3):
             ttk.Label(page, text=_text_v1(key=key)).grid(row=row, column=0, sticky="w")
@@ -408,8 +457,8 @@ class _DesktopMainWindowV1:
 
     def bind_scout_action(self, *, callback) -> None:
         self._bind("scout", callback)
-        self._period_widget.configure(state="normal")
-        self._category_widget.configure(state="normal")
+        self._period_widget.configure(state="readonly")
+        self._category_widget.configure(state="readonly")
         self._scout_button.configure(state="normal")
 
     def bind_editor_action(self, *, callback) -> None:
@@ -418,7 +467,7 @@ class _DesktopMainWindowV1:
             widget.configure(
                 state="normal" if not isinstance(widget, ttk.Combobox) else "readonly"
             )
-        self._editor_button.configure(state="normal")
+        self._editor_button.configure(state="disabled")
 
     def bind_report_action(self, *, callback) -> None:
         self._bind("report", callback)
@@ -439,6 +488,16 @@ class _DesktopMainWindowV1:
             "model": self._ollama_model.get(),
         }
 
+    def _provider_changed(self, event: object) -> None:
+        del event
+        if self._scout_provider.get() == "openai":
+            self._model_widget.configure(values=_OPENAI_MODEL_CHOICES)
+            self._ollama_model.set(_OPENAI_MODEL_CHOICES[0])
+        else:
+            configured = self._settings.ollama_model
+            self._model_widget.configure(values=(configured,))
+            self._ollama_model.set(configured)
+
     def _save_scout_provider(self) -> None:
         self._invoke("scout_provider_save", input=self._scout_provider_payload())
 
@@ -448,6 +507,12 @@ class _DesktopMainWindowV1:
     def publish_scout_provider_status(self, *, status: str) -> None:
         self._check()
         self._status.set(status)
+
+    def publish_scout_models(self, *, models: tuple[str, ...]) -> None:
+        self._check()
+        self._model_widget.configure(values=models)
+        if models and self._ollama_model.get() not in models:
+            self._ollama_model.set(models[0])
 
     def bind_chief_editor_actions(self, *, save_callback, export_callback) -> None:
         self._bind("chief_editor_save", save_callback)
@@ -536,6 +601,11 @@ class _DesktopMainWindowV1:
             self._candidates.insert(
                 "", "end", iid=str(event_id), values=(title, category, str(sources))
             )
+        self._summary.set(
+            _restored_candidate_summary(
+                current=self._summary.get(), count=len(candidates)
+            )
+        )
         self._sync_handoff()
 
     def publish_active_project(self, *, title: str, message: str) -> None:
@@ -544,6 +614,7 @@ class _DesktopMainWindowV1:
             raise _DesktopShellConfigurationError() from None
         self._active_project.set(title)
         self._editor_status.set(message)
+        self._editor_button.configure(state="normal" if title else "disabled")
 
     def publish_chief_editor(self, *, title: str, available: tuple[tuple[str, str], ...], items: tuple[tuple[str, str, str, str], ...], status: str = "") -> None:
         self._check()
@@ -641,7 +712,13 @@ class _DesktopMainWindowV1:
             state="normal" if idle and "scout" in self._bindings else "disabled"
         )
         self._editor_button.configure(
-            state="normal" if idle and "editor" in self._bindings else "disabled"
+            state=(
+                "normal"
+                if idle
+                and "editor" in self._bindings
+                and self._active_project.get() != "—"
+                else "disabled"
+            )
         )
         if not idle:
             self._handoff_button.configure(state="disabled")

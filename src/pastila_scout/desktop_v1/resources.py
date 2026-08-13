@@ -22,6 +22,7 @@ _TEXT_V1 = (
     ("scout.provider", "Furnizor AI Scout"),
     ("scout.ollama_url", "Adresă Ollama"),
     ("scout.ollama_model", "Model Ollama"),
+    ("scout.model", "Model"),
     ("scout.provider_save", "Salvează furnizorul"),
     ("scout.provider_test", "Testează conexiunea"),
     ("scout.provider_saved", "Furnizorul Scout a fost salvat."),
@@ -53,6 +54,10 @@ _TEXT_V1 = (
     ("editor.output", "Fișier de ieșire"),
     ("editor.no_replace", "Nu înlocui fișierul existent"),
     ("editor.run", "GENEREAZĂ"),
+    (
+        "editor.configuration_required",
+        "Generarea Editor necesită încă profilul, contextul și configurația de generare; fluxul integrat nu le configurează încă.",
+    ),
     ("chief_editor.title", "Titlu episod / proiect"),
     ("chief_editor.section", "Secțiune"),
     ("chief_editor.note", "Notă / tranziție"),
@@ -94,6 +99,7 @@ _TEXT_V1 = (
     ),
     ("setup.openai_local", "OpenAI este verificat local, fără apel și fără cost."),
     ("setup.ollama_test_required", "Testează conexiunea Ollama înainte de continuare."),
+    ("setup.ollama_no_models", "Ollama este disponibil, dar nu are modele instalate."),
     ("setup.invalid", "Configurația nu este validă. Verifică furnizorul și modelul."),
     ("setup.continue", "Salvează și continuă"),
 )

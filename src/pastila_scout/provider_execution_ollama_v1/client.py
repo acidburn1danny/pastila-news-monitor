@@ -97,6 +97,31 @@ class OllamaHttpClientV1:
         if model not in names:
             raise _isolated(OllamaModelUnavailableError("Ollama model is unavailable"))
 
+    def list_models(self, *, base_url: str, timeout: float) -> tuple[str, ...]:
+        """Return exact installed model names from Ollama discovery."""
+        try:
+            response = self._client.get(f"{base_url}/api/tags", timeout=timeout)
+        except httpx.TimeoutException:
+            raise _isolated(OllamaTimeoutError("Ollama availability check timed out"))
+        except httpx.RequestError:
+            raise _isolated(OllamaConnectionError("Ollama connection failed"))
+        if not response.is_success:
+            raise _isolated(OllamaHttpError(response.status_code))
+        try:
+            models = response.json()["models"]
+            names = tuple(
+                item["name"]
+                for item in models
+                if type(item) is dict and type(item.get("name")) is str
+            )
+            if type(models) is not list:
+                raise TypeError
+            return names
+        except (TypeError, KeyError, ValueError):
+            raise _isolated(
+                OllamaMalformedResponseError("Ollama returned invalid discovery data")
+            )
+
 
 def _error_text(response: httpx.Response) -> str:
     try:

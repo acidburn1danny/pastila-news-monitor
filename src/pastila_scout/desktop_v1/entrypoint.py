@@ -55,12 +55,14 @@ from pastila_scout.windows_state_v1.settings import (
 from .controller import _DesktopTaskControllerV1
 from .errors import _DesktopShellConfigurationError
 from .first_run import _complete_desktop_setup_v1, _inspect_desktop_readiness_v1
+from .integrated_editor import _integrated_editor_request_v1
 from .models import (
     _DesktopPageV1,
     _reconstruct_desktop_editor_action_input_v1,
     _reconstruct_desktop_scout_action_input_v1,
 )
 from .resources import _text_v1
+from .settings import _project_desktop_settings_v1
 from .state_composition import (
     _compose_state_bound_desktop_application_v1,
     _DesktopStateConsumptionError,
@@ -214,12 +216,19 @@ def main() -> int:
             controller.submit_application(task=task, on_completed=on_completed)
 
         def run_editor(*, input) -> None:
-            values = _editor_values(input)
+            del input
 
             def task():
                 project = cells.get("project")
-                source = None if project is None else project.scout_input  # type: ignore[attr-defined]
-                return _run_editor(facade, values, source=source)
+                if project is None:
+                    raise _DesktopShellConfigurationError() from None
+                request = _integrated_editor_request_v1(
+                    project=project, settings=cells["settings"]
+                )
+                return facade.run_editor(
+                    request=EditorDesktopRequestV1(application_request=request),
+                    progress_sink=_DesktopStartupProgressSinkV1(),
+                )
 
             def on_completed(*, result) -> None:
                 _publish_editor_result(view, result)
@@ -285,9 +294,14 @@ def main() -> int:
                 values = _scout_provider_values(input)
                 if values[0] == "ollama":
                     with httpx.Client() as client:
-                        OllamaHttpClientV1(client).check_model(
-                            model=values[2],
+                        ollama = OllamaHttpClientV1(client)
+                        models = ollama.list_models(
                             base_url=values[1],
+                            timeout=state.settings.scout_ai_timeout_seconds,
+                        )
+                        view.publish_scout_models(models=models)
+                        ollama.check_model(
+                            model=values[2], base_url=values[1],
                             timeout=state.settings.scout_ai_timeout_seconds,
                         )
                 status = _text_v1(key="scout.ollama_ready")
@@ -539,6 +553,8 @@ def _save_scout_provider_settings(*, path: Path, current: object, value: object)
         scout_provider=provider,
         ollama_base_url=base_url,
         ollama_model=model,
+        editor_provider=provider,
+        editor_model=model,
     )
     settings = WindowsSettingsV1(**values)
     _save_windows_settings_v1(path=path, settings=settings)
@@ -599,15 +615,14 @@ def _show_first_run_setup(root: object, state: object, readiness: object):
     window.title(_text_v1(key="setup.title"))
     window.resizable(False, False)
     provider = tkinter.StringVar(value=state.settings.scout_provider)
-    base_url = tkinter.StringVar(value=state.settings.ollama_base_url)
+    base_url = "http://localhost:11434"
     model = tkinter.StringVar(value=state.settings.ollama_model)
     result: list[object] = []
     ttk.Label(window, text=_text_v1(key="setup.intro"), wraplength=520).grid(
         row=0, column=0, columnspan=2, padx=16, pady=10, sticky="w"
     )
     for row, (label, variable) in enumerate(
-        (("Furnizor", provider), ("Adresă Ollama", base_url), ("Model Ollama", model)),
-        start=1,
+        (("Furnizor AI", provider), ("Model", model)), start=1
     ):
         ttk.Label(window, text=label).grid(row=row, column=0, padx=16, sticky="w")
         if row == 1:
@@ -618,9 +633,10 @@ def _show_first_run_setup(root: object, state: object, readiness: object):
                 state="readonly",
             ).grid(row=row, column=1, padx=16, sticky="ew")
         else:
-            ttk.Entry(window, textvariable=variable, width=38).grid(
-                row=row, column=1, padx=16
+            model_widget = ttk.Combobox(
+                window, textvariable=variable, state="readonly", width=36
             )
+            model_widget.grid(row=row, column=1, padx=16)
     names = (
         ", ".join(
             f"{item.name} ({'activă' if item.enabled else 'inactivă'})"
@@ -644,9 +660,20 @@ def _show_first_run_setup(root: object, state: object, readiness: object):
             return
         try:
             with httpx.Client() as client:
-                OllamaHttpClientV1(client).check_model(
+                ollama = OllamaHttpClientV1(client)
+                models = ollama.list_models(
+                    base_url=base_url,
+                    timeout=state.settings.scout_ai_timeout_seconds,
+                )
+                model_widget.configure(values=models)
+                if not models:
+                    status.set(_text_v1(key="setup.ollama_no_models"))
+                    return
+                if model.get() not in models:
+                    model.set(models[0])
+                ollama.check_model(
                     model=model.get(),
-                    base_url=base_url.get().rstrip("/"),
+                    base_url=base_url,
                     timeout=state.settings.scout_ai_timeout_seconds,
                 )
             status.set(_text_v1(key="scout.ollama_ready"))
@@ -669,14 +696,14 @@ def _show_first_run_setup(root: object, state: object, readiness: object):
                 settings=state.settings,
                 settings_path=state.settings_path,
                 provider=provider.get(),
-                base_url=base_url.get(),
+                base_url=base_url,
                 model=model.get(),
                 output_directory=readiness.output_directory,
             )
         except Exception:
             status.set(_text_v1(key="setup.invalid"))
             return
-        result.append(completed)
+        result.append(_desktop_setup_settings_v1(completed))
         window.destroy()
 
     buttons = ttk.Frame(window)
@@ -687,8 +714,19 @@ def _show_first_run_setup(root: object, state: object, readiness: object):
     ttk.Button(buttons, text=_text_v1(key="setup.continue"), command=finish).pack(
         side="left"
     )
+    _present_first_run_window(root=root, window=window)
+    return result[0] if result else None
+
+
+def _present_first_run_window(*, root: object, window: object) -> None:
+    """Present setup independently of the intentionally withdrawn shell root."""
     window.protocol("WM_DELETE_WINDOW", window.destroy)
-    window.transient(root)
+    window.deiconify()
+    window.lift()
     window.grab_set()
     root.wait_window(window)
-    return result[0] if result else None
+
+
+def _desktop_setup_settings_v1(settings: WindowsSettingsV1):
+    """Project newly persisted Windows settings into the desktop shell type."""
+    return _project_desktop_settings_v1(settings=settings)

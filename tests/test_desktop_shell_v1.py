@@ -30,6 +30,14 @@ from pastila_scout.desktop_v1.models import (
     _reconstruct_desktop_shell_snapshot_v1,
 )
 from pastila_scout.desktop_v1.resources import _TEXT_V1, _text_v1
+from pastila_scout.desktop_v1.views import (
+    _EDITOR_REQUIRED_CONFIGURATION,
+    _OPENAI_MODEL_CHOICES,
+    _SCOUT_CATEGORY_CHOICES,
+    _SCOUT_PERIOD_CHOICES,
+    _editor_configuration_ready,
+    _restored_candidate_summary,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -341,6 +349,39 @@ def test_action_inputs_are_redacted_and_exact():
     assert "openai" not in repr(editor)
     with pytest.raises(_DesktopShellConfigurationError):
         _DesktopScoutActionInputV1(7, "all")
+
+
+def test_daily_scout_choices_and_restored_candidate_summary_are_truthful():
+    assert _OPENAI_MODEL_CHOICES == ("gpt-4.1-mini",)
+    assert _SCOUT_PERIOD_CHOICES == ("1", "3", "7", "14", "30")
+    assert _SCOUT_CATEGORY_CHOICES == (
+        "all",
+        "Politica",
+        "Social",
+        "Conspiratii",
+        "Economie",
+        "CanCan",
+        "Externe",
+        "Diverse",
+    )
+    assert _restored_candidate_summary(current="0", count=3) == (
+        "3 candidați restaurați"
+    )
+    assert _restored_candidate_summary(current="Surse: 14", count=3) == "Surse: 14"
+
+
+def test_integrated_editor_is_disabled_without_required_configuration():
+    class Value:
+        def __init__(self, value):
+            self.value = value
+
+        def get(self):
+            return self.value
+
+    missing = {name: Value("") for name in _EDITOR_REQUIRED_CONFIGURATION}
+    configured = {name: Value(name) for name in _EDITOR_REQUIRED_CONFIGURATION}
+    assert not _editor_configuration_ready(missing)
+    assert _editor_configuration_ready(configured)
 
 
 def test_resources_are_exact_unique_nfc_and_unknown_is_safe():

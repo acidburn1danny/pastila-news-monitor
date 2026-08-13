@@ -285,7 +285,12 @@ def _method(value, name, expected, returns) -> bool:
             or custom_getattr is not None
         ):
             return False
-        instance_state = object.__getattribute__(value, "__dict__")
+        try:
+            instance_state = object.__getattribute__(value, "__dict__")
+        except AttributeError:
+            instance_state = {}
+        if type(instance_state) is not dict:
+            return False
         if name in instance_state:
             return False
         descriptor = inspect.getattr_static(type(value), name)

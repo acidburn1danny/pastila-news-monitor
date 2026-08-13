@@ -80,6 +80,7 @@ def _complete_desktop_setup_v1(
         ollama_base_url=base_url.rstrip("/"),
         ollama_model=model,
         editor_provider=provider,
+        editor_model=model,
         editor_output_directory=output_directory.resolve(),
     )
     completed = WindowsSettingsV1(**values)

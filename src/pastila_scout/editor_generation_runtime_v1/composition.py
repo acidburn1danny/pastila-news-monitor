@@ -1036,18 +1036,23 @@ class _EditorAttemptReferenceFactoryV1:
 
     def create(self, *, prompt_fingerprint: str, attempt_number: int) -> str:
         operation_reference = _attempt_reference_state(self)
+        fingerprint = (
+            prompt_fingerprint.removeprefix("sha256:")
+            if type(prompt_fingerprint) is str
+            else prompt_fingerprint
+        )
         if (
-            type(prompt_fingerprint) is not str
-            or len(prompt_fingerprint) != 64
+            type(fingerprint) is not str
+            or len(fingerprint) != 64
             or any(
-                character not in "0123456789abcdef" for character in prompt_fingerprint
+                character not in "0123456789abcdef" for character in fingerprint
             )
             or type(attempt_number) is not int
             or attempt_number < 1
         ):
             _raise()
         payload = (
-            operation_reference + "\0" + prompt_fingerprint + "\0" + str(attempt_number)
+            operation_reference + "\0" + fingerprint + "\0" + str(attempt_number)
         )
         digest = hashlib.sha256(payload.encode("utf-8")).hexdigest()
         return f"editor-attempt-v1-{attempt_number}-{digest[:32]}"
