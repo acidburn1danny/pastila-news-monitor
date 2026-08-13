@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import inspect
+from datetime import UTC, datetime
 from pathlib import Path
 from types import FunctionType
 from typing import NoReturn
@@ -24,6 +25,7 @@ from pastila_scout.desktop_report_v1.service import _DesktopReportFacadeV1
 from pastila_scout.poller import poll_once
 
 from .models import _reconstruct_poll_result
+from .targeted_search import project_targeted_event_ids
 
 
 class _ScoutDesktopOperationV1:
@@ -66,6 +68,9 @@ class _ScoutDesktopOperationV1:
 
         lower = None
         failed = False
+        targeted_now = (
+            datetime.now(UTC) if valid_request.targeted_query is not None else None
+        )
         try:
             lower = poll_once(
                 config_path,
@@ -77,6 +82,7 @@ class _ScoutDesktopOperationV1:
                     else float(valid_request.period_days * 24)
                 ),
                 category=valid_request.category.value,
+                **({"now": targeted_now} if targeted_now is not None else {}),
             )
             lower = _reconstruct_poll_result(lower)
         except KeyboardInterrupt, SystemExit, GeneratorExit:
@@ -93,7 +99,20 @@ class _ScoutDesktopOperationV1:
             "partial": DesktopOperationStatusV1.PARTIAL,
             "failed": DesktopOperationStatusV1.FAILED,
         }[lower.status]
-        values = _result_values(valid_request, lower, status)
+        targeted_ids: tuple[int, ...] | None = None
+        if valid_request.targeted_query is not None:
+            targeted_ids = ()
+            if status is not DesktopOperationStatusV1.FAILED:
+                try:
+                    targeted_ids = project_targeted_event_ids(
+                        database_path=database_path,
+                        query=valid_request.targeted_query,
+                        now=targeted_now,
+                        excluded_source_ids=lower.failed_source_ids,
+                    )
+                except Exception:  # noqa: BLE001 - targeted projection fails closed
+                    targeted_ids = ()
+        values = _result_values(valid_request, lower, status, targeted_ids)
         if status is DesktopOperationStatusV1.FAILED:
             return ScoutDesktopResultV1(
                 **values,
@@ -127,7 +146,7 @@ class _ScoutDesktopOperationV1:
         return ScoutDesktopResultV1(**values, report_reference=reference, failure=None)
 
 
-def _result_values(request, lower, status) -> dict[str, object]:
+def _result_values(request, lower, status, targeted_ids) -> dict[str, object]:
     return {
         "operation_reference": request.operation_reference,
         "status": status,
@@ -140,9 +159,7 @@ def _result_values(request, lower, status) -> dict[str, object]:
         "failed_source_ids": lower.failed_source_ids,
         "executed_period_days": request.period_days,
         "executed_category": request.category,
-        # U2 supplies relevance-scoped event identities. Until then, targeted
-        # execution is intentionally empty rather than globally restored.
-        "targeted_candidate_ids": (() if request.targeted_query is not None else None),
+        "targeted_candidate_ids": targeted_ids,
     }
 
 

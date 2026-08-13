@@ -40,6 +40,13 @@ _EDITOR_REQUIRED_CONFIGURATION = ("model", "timeout_seconds", "output_path")
 _BUTTON_STYLE = "TButton"
 _PRIMARY_LABEL_STYLE = "PastilaPrimary.TLabel"
 _PRIMARY_ACTION_COLOR = "#e31919"
+_LATEST_LABEL_STYLE = "PastilaLatest.TLabel"
+_SOURCE_LABEL_STYLE = "PastilaSource.TLabel"
+_SCOUT_STATUS_STYLE = "PastilaScoutStatus.TLabel"
+_SOURCE_LABEL_COLOR = "#2563b8"
+_SEARCH_LABEL_COLUMN = 0
+_SEARCH_ENTRY_COLUMN = 1
+_SEARCH_ACTION_COLUMN = 2
 _PRIMARY_ACTION_BUTTON_OPTIONS = {
     "activebackground": "#ffffff",
     "activeforeground": _PRIMARY_ACTION_COLOR,
@@ -74,6 +81,17 @@ def _configure_desktop_styles(root: object) -> None:
         foreground=(("disabled", "#777777"), ("!disabled", "#000000")),
     )
     style.configure(_PRIMARY_LABEL_STYLE, font=("TkDefaultFont", 9, "bold"))
+    style.configure(
+        _LATEST_LABEL_STYLE,
+        font=("TkDefaultFont", 9, "bold"),
+        foreground=_PRIMARY_ACTION_COLOR,
+    )
+    style.configure(
+        _SOURCE_LABEL_STYLE,
+        font=("TkDefaultFont", 9, "bold"),
+        foreground=_SOURCE_LABEL_COLOR,
+    )
+    style.configure(_SCOUT_STATUS_STYLE, foreground=_PRIMARY_ACTION_COLOR)
 
 
 def _primary_action_button(
@@ -127,7 +145,19 @@ def _editor_action_enabled(
 
 
 def _restored_candidate_summary(*, current: str, count: int) -> str:
-    return f"{count} candidati restaurati" if current == "0" else current
+    if type(current) is not str or type(count) is not int or count < 0:
+        raise _DesktopShellConfigurationError() from None
+    if current != "0":
+        return current
+    return f"{count} {'stire restaurata' if count == 1 else 'stiri restaurate'}"
+
+
+def _failed_sources_summary(failed_sources: tuple[str, ...]) -> str:
+    if type(failed_sources) is not tuple or any(
+        type(value) is not str for value in failed_sources
+    ):
+        raise _DesktopShellConfigurationError() from None
+    return f"{_text_v1(key='scout.failed_sources')} {len(failed_sources)}"
 
 
 def _handoff_label(count: int) -> str:
@@ -328,12 +358,50 @@ class _DesktopMainWindowV1:
             text=_text_v1(key="scout.provider_test"),
             command=self._test_scout_provider,
         ).pack(side="left")
-        ttk.Label(page, text=_text_v1(key="scout.latest")).grid(
-            row=5, column=0, sticky="w"
+        search_section = ttk.Frame(page)
+        search_section.grid(row=6, column=0, columnspan=2, sticky="ew", pady=(8, 0))
+        search_section.columnconfigure(_SEARCH_ENTRY_COLUMN, weight=1)
+        self._targeted_query_label = ttk.Label(
+            search_section,
+            text=_text_v1(key="scout.latest"),
+            style=_LATEST_LABEL_STYLE,
+        )
+        self._targeted_query_label.grid(
+            row=0, column=_SEARCH_LABEL_COLUMN, sticky="w", pady=(0, 4)
         )
         self._targeted_query = tkinter.StringVar(value="")
-        ttk.Entry(page, textvariable=self._targeted_query).grid(
-            row=5, column=1, sticky="ew"
+        self._targeted_query_widget = ttk.Entry(
+            search_section, textvariable=self._targeted_query
+        )
+        self._targeted_query_widget.grid(
+            row=0, column=_SEARCH_ENTRY_COLUMN, sticky="ew", pady=(0, 4)
+        )
+        self._source_label = ttk.Label(
+            search_section,
+            text=_text_v1(key="scout.source_add"),
+            style=_SOURCE_LABEL_STYLE,
+        )
+        self._source_label.grid(
+            row=1, column=_SEARCH_LABEL_COLUMN, sticky="w", pady=(4, 0)
+        )
+        self._source_url = tkinter.StringVar(value="")
+        self._source_url_widget = ttk.Entry(
+            search_section, textvariable=self._source_url
+        )
+        self._source_url_widget.grid(
+            row=1, column=_SEARCH_ENTRY_COLUMN, sticky="ew", pady=(4, 0)
+        )
+        self._source_save_button = ttk.Button(
+            search_section,
+            text=_text_v1(key="scout.source_save"),
+            command=self._save_source,
+            width=16,
+        )
+        self._source_save_button.grid(
+            row=1,
+            column=_SEARCH_ACTION_COLUMN,
+            padx=(8, 0),
+            pady=(4, 0),
         )
         self._scout_button = _primary_action_button(
             page,
@@ -342,18 +410,6 @@ class _DesktopMainWindowV1:
             command=self._scout,
         )
         self._scout_button.master.grid(row=7, column=0, columnspan=2, pady=8)
-        source = ttk.Frame(page)
-        source.grid(row=6, column=0, columnspan=2, sticky="ew")
-        ttk.Label(
-            source, text=_text_v1(key="scout.source_add"), style=_PRIMARY_LABEL_STYLE
-        ).pack(side="left")
-        self._source_url = tkinter.StringVar(value="")
-        ttk.Entry(source, textvariable=self._source_url, width=46).pack(
-            side="left", fill="x", expand=True
-        )
-        ttk.Button(
-            source, text=_text_v1(key="scout.source_save"), command=self._save_source
-        ).pack(side="left")
         self._progress = ttk.Progressbar(page, mode="determinate", value=0)
         self._progress.grid(row=8, column=0, columnspan=2, sticky="ew")
         self._status = tkinter.StringVar(value=_text_v1(key="scout.intro"))
@@ -364,12 +420,13 @@ class _DesktopMainWindowV1:
             row=10, column=0, sticky="w"
         )
         self._summary = tkinter.StringVar(value="0")
-        ttk.Label(page, textvariable=self._summary).grid(row=10, column=1, sticky="w")
-        ttk.Label(page, text=_text_v1(key="scout.failed_sources")).grid(
-            row=11, column=0, sticky="nw"
+        ttk.Label(page, textvariable=self._summary, style=_SCOUT_STATUS_STYLE).grid(
+            row=10, column=1, sticky="w"
         )
-        self._failed = tkinter.StringVar(value="")
-        ttk.Label(page, textvariable=self._failed).grid(row=11, column=1, sticky="w")
+        self._failed = tkinter.StringVar(value=_failed_sources_summary(()))
+        ttk.Label(page, textvariable=self._failed, style=_SCOUT_STATUS_STYLE).grid(
+            row=11, column=0, columnspan=2, sticky="w"
+        )
         self._report_button = ttk.Button(
             page,
             text=_text_v1(key="scout.report"),
@@ -838,7 +895,7 @@ class _DesktopMainWindowV1:
         ):
             raise _DesktopShellConfigurationError() from None
         self._summary.set(summary)
-        self._failed.set("\n".join(failed_sources))
+        self._failed.set(_failed_sources_summary(failed_sources))
         self._footer.set(footer)
         self._report_reference = report_reference
         self._sync_report()

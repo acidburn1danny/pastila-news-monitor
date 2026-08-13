@@ -260,6 +260,7 @@ def test_structural_entrypoint_creates_one_root_controller_and_view(monkeypatch)
 
 def test_withdrawn_tk_window_has_exact_structural_root_and_initial_state():
     import tkinter
+    from tkinter import ttk
 
     from pastila_scout.desktop_v1.settings import _project_desktop_settings_v1
     from pastila_scout.desktop_v1.views import _DesktopMainWindowV1
@@ -296,6 +297,38 @@ def test_withdrawn_tk_window_has_exact_structural_root_and_initial_state():
         assert int(view._scout_button.cget("width")) == 16
         assert int(view._scout_button.cget("height")) == 1
         assert view._scout_button.master.cget("background") == "#e31919"
+        targeted_grid = view._targeted_query_widget.grid_info()
+        source_grid = view._source_url_widget.grid_info()
+        save_grid = view._source_save_button.grid_info()
+        assert view._targeted_query_widget.master is view._source_url_widget.master
+        assert targeted_grid["column"] == source_grid["column"] == 1
+        assert targeted_grid["columnspan"] == source_grid["columnspan"] == 1
+        assert targeted_grid["sticky"] == source_grid["sticky"] == "ew"
+        assert save_grid["column"] == 2
+        assert not view._targeted_query_widget.master.grid_slaves(row=0, column=2)
+        assert int(view._source_save_button.cget("width")) == 16
+        assert str(save_grid["padx"]) == "8 0"
+        style = ttk.Style(root)
+        assert style.lookup("PastilaLatest.TLabel", "foreground") == "#e31919"
+        assert style.lookup("PastilaSource.TLabel", "foreground") == "#2563b8"
+        assert style.lookup("PastilaScoutStatus.TLabel", "foreground") == "#e31919"
+        assert "bold" in str(style.lookup("PastilaLatest.TLabel", "font"))
+        assert "bold" in str(style.lookup("PastilaSource.TLabel", "font"))
+
+        def descendants(parent):
+            children = tuple(parent.winfo_children())
+            return children + tuple(
+                nested for child in children for nested in descendants(child)
+            )
+
+        scout_buttons = [
+            child
+            for child in descendants(view._pages[_DesktopPageV1.SCOUT])
+            if hasattr(child, "cget")
+            and "text" in child
+            and child.cget("text") == "Cauta"
+        ]
+        assert scout_buttons == [view._scout_button]
         assert str(view._editor_button.cget("state")) == "disabled"
         assert str(view._editor_worklist.cget("selectmode")) == "extended"
         assert view._editor_button.cget("text") == "Genereaza"
@@ -325,6 +358,44 @@ def test_withdrawn_tk_window_has_exact_structural_root_and_initial_state():
             "height"
         )
         assert str(view._report_button.cget("state")) == "disabled"
+        assert view._failed.get() == "Surse cu erori: 0"
+
+        def open_report(*, reference):
+            del reference
+
+        view.bind_report_action(callback=open_report)
+        view.publish_scout_result(
+            summary="summary",
+            failed_sources=(),
+            footer="completed",
+            report_reference=None,
+        )
+        assert view._failed.get() == "Surse cu erori: 0"
+        assert str(view._report_button.cget("state")) == "disabled"
+        view.publish_scout_result(
+            summary="summary",
+            failed_sources=(),
+            footer="completed",
+            report_reference="zero-error-report",
+        )
+        assert view._failed.get() == "Surse cu erori: 0"
+        assert str(view._report_button.cget("state")) == "normal"
+        view.publish_scout_result(
+            summary="summary",
+            failed_sources=("one",),
+            footer="partial",
+            report_reference=None,
+        )
+        assert view._failed.get() == "Surse cu erori: 1"
+        assert str(view._report_button.cget("state")) == "disabled"
+        view.publish_scout_result(
+            summary="summary",
+            failed_sources=("one", "two", "three"),
+            footer="partial",
+            report_reference="report-reference",
+        )
+        assert view._failed.get() == "Surse cu erori: 3"
+        assert str(view._report_button.cget("state")) == "normal"
         editor_actions = []
         retry_actions = []
         view.bind_editor_action(callback=lambda **kwargs: editor_actions.append(kwargs))
@@ -511,7 +582,7 @@ def test_daily_scout_choices_and_restored_candidate_summary_are_truthful():
         "Externe",
         "Diverse",
     )
-    assert _restored_candidate_summary(current="0", count=3) == "3 candidati restaurati"
+    assert _restored_candidate_summary(current="0", count=3) == "3 stiri restaurate"
     assert _restored_candidate_summary(current="Surse: 14", count=3) == "Surse: 14"
     assert _handoff_label(0) == _handoff_label(1) == "Trimite in Editor"
     assert _handoff_label(3) == "Trimite in Editor (3)"
@@ -545,6 +616,15 @@ def test_resources_are_exact_unique_nfc_and_unknown_is_safe():
     assert _text_v1(key="scout.period") == "Perioada"
     assert _text_v1(key="scout.category") == "Categorie"
     assert _text_v1(key="scout.run") == "Cauta"
+    assert _text_v1(key="scout.results") == "Rezultate"
+    assert _text_v1(key="scout.latest") == "Ultima Ora"
+    assert _text_v1(key="scout.intro") == (
+        "Selectati optiunile dorite, apoi apasati Cauta."
+    )
+    assert _text_v1(key="scout.failed_sources") == "Surse cu erori:"
+    assert not any(value == "REZULTATE" for _, value in _TEXT_V1)
+    assert not any("candidat" in value.casefold() for _, value in _TEXT_V1)
+    assert not any("Surse nereusite" in value for _, value in _TEXT_V1)
     assert _text_v1(key="editor.active_project") == "Stire selectata"
     forbidden = set("ăâîșşțţĂÂÎȘŞȚŢ")
     assert not any(forbidden.intersection(value) for _, value in _TEXT_V1)

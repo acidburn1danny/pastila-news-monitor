@@ -4,6 +4,7 @@ import inspect
 import sqlite3
 from pathlib import Path
 
+import pytest
 import yaml
 
 from pastila_scout.active_project_v1 import ActiveProjectStoreV1
@@ -11,10 +12,19 @@ from pastila_scout.database import initialize_database
 from pastila_scout.desktop_v1 import source_settings
 from pastila_scout.desktop_v1.views import (
     _BUTTON_STYLE,
+    _LATEST_LABEL_STYLE,
     _PRIMARY_ACTION_BUTTON_OPTIONS,
     _PRIMARY_ACTION_COLOR,
     _PRIMARY_LABEL_STYLE,
+    _SCOUT_STATUS_STYLE,
+    _SEARCH_ACTION_COLUMN,
+    _SEARCH_ENTRY_COLUMN,
+    _SEARCH_LABEL_COLUMN,
+    _SOURCE_LABEL_COLOR,
+    _SOURCE_LABEL_STYLE,
+    _failed_sources_summary,
     _primary_action_button,
+    _restored_candidate_summary,
 )
 
 
@@ -191,6 +201,15 @@ def test_source_override_rebase_does_not_duplicate_new_canonical_source(tmp_path
 def test_small_shared_styles_are_named_for_buttons_and_primary_labels():
     assert _BUTTON_STYLE == "TButton"
     assert _PRIMARY_LABEL_STYLE == "PastilaPrimary.TLabel"
+    assert _LATEST_LABEL_STYLE == "PastilaLatest.TLabel"
+    assert _SOURCE_LABEL_STYLE == "PastilaSource.TLabel"
+    assert _SCOUT_STATUS_STYLE == "PastilaScoutStatus.TLabel"
+    assert _SOURCE_LABEL_COLOR == "#2563b8"
+    assert (
+        _SEARCH_LABEL_COLUMN,
+        _SEARCH_ENTRY_COLUMN,
+        _SEARCH_ACTION_COLUMN,
+    ) == (0, 1, 2)
 
 
 def test_primary_actions_have_isolated_red_bold_large_presentation():
@@ -214,3 +233,31 @@ def test_primary_actions_have_isolated_red_bold_large_presentation():
     assert "tkinter.Frame" in source
     assert "tkinter.Button" in source
     assert "button.pack()" in source
+
+
+@pytest.mark.parametrize(
+    ("failed_sources", "expected"),
+    (
+        ((), "Surse cu erori: 0"),
+        (("one",), "Surse cu erori: 1"),
+        (("a", "b", "c"), "Surse cu erori: 3"),
+    ),
+)
+def test_failed_source_summary_uses_authoritative_collection_count(
+    failed_sources, expected
+):
+    assert _failed_sources_summary(failed_sources) == expected
+
+
+@pytest.mark.parametrize(
+    ("count", "expected"),
+    (
+        (0, "0 stiri restaurate"),
+        (1, "1 stire restaurata"),
+        (2, "2 stiri restaurate"),
+        (50, "50 stiri restaurate"),
+    ),
+)
+def test_restored_news_summary_has_dynamic_romanian_number_agreement(count, expected):
+    assert _restored_candidate_summary(current="0", count=count) == expected
+    assert "candidat" not in expected

@@ -116,6 +116,66 @@ def test_targeted_source_failure_retains_empty_scope(monkeypatch):
     assert result.targeted_candidate_ids == ()
 
 
+def test_targeted_projection_ids_are_carried_and_uses_same_window_time(monkeypatch):
+    operation = _ScoutDesktopOperationV1(
+        config_path=Path("config.yaml"),
+        sources_path=Path("sources.yaml"),
+        database_path=Path("scout.db"),
+        report_facade=_ReportFacadeFake(),
+    )
+    calls = []
+    monkeypatch.setattr(
+        "pastila_scout.desktop_scout_v1.service.poll_once",
+        lambda *args, **kwargs: calls.append(("poll", kwargs)) or _poll(),
+    )
+    monkeypatch.setattr(
+        "pastila_scout.desktop_scout_v1.service.project_targeted_event_ids",
+        lambda **kwargs: calls.append(("project", kwargs)) or (9, 4),
+    )
+
+    result = operation.run_scout(
+        request=ScoutDesktopRequestV1(
+            operation_reference="targeted-projection",
+            period_days=7,
+            category=ScoutDesktopCategoryV1.ALL,
+            targeted_query="Donald Trump Iran",
+        )
+    )
+
+    assert result.targeted_candidate_ids == (9, 4)
+    assert calls[0][1]["now"] is calls[1][1]["now"]
+    assert calls[1][1]["database_path"] == Path("scout.db")
+    assert calls[1][1]["excluded_source_ids"] == ()
+
+
+def test_targeted_projection_exception_fails_closed(monkeypatch):
+    operation = _ScoutDesktopOperationV1(
+        config_path=Path("config.yaml"),
+        sources_path=Path("sources.yaml"),
+        database_path=Path("scout.db"),
+        report_facade=_ReportFacadeFake(),
+    )
+    monkeypatch.setattr(
+        "pastila_scout.desktop_scout_v1.service.poll_once",
+        lambda *args, **kwargs: _poll(),
+    )
+    monkeypatch.setattr(
+        "pastila_scout.desktop_scout_v1.service.project_targeted_event_ids",
+        lambda **kwargs: (_ for _ in ()).throw(RuntimeError("projection failed")),
+    )
+
+    result = operation.run_scout(
+        request=ScoutDesktopRequestV1(
+            operation_reference="targeted-projection-failure",
+            period_days=3,
+            category=ScoutDesktopCategoryV1.ALL,
+            targeted_query="Donald Trump Iran",
+        )
+    )
+
+    assert result.targeted_candidate_ids == ()
+
+
 def _poll(status="success", succeeded=2, failed_ids=()):
     failed = len(failed_ids)
     return PollResult(
