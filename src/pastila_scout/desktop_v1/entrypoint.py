@@ -63,11 +63,12 @@ from .models import (
 )
 from .resources import _text_v1
 from .settings import _project_desktop_settings_v1
+from .source_settings import _add_scout_source_v1
 from .state_composition import (
     _compose_state_bound_desktop_application_v1,
     _DesktopStateConsumptionError,
 )
-from .views import _DesktopMainWindowV1
+from .views import _PRIMARY_LABEL_STYLE, _configure_desktop_styles, _DesktopMainWindowV1
 
 
 class _DesktopStartupProgressSinkV1:
@@ -254,7 +255,7 @@ def main() -> int:
         def handoff(*, input) -> None:
             _complete_handoff(
                 store=project_store,
-                event_id=input,
+                event_ids=input,
                 cells=cells,
                 view=view,
                 controller=controller,
@@ -301,13 +302,29 @@ def main() -> int:
                         )
                         view.publish_scout_models(models=models)
                         ollama.check_model(
-                            model=values[2], base_url=values[1],
+                            model=values[2],
+                            base_url=values[1],
                             timeout=state.settings.scout_ai_timeout_seconds,
                         )
                 status = _text_v1(key="scout.ollama_ready")
             except Exception:
                 status = _text_v1(key="scout.ollama_unavailable")
             view.publish_scout_provider_status(status=status)
+
+        def save_scout_source(*, input) -> None:
+            selected_sources = (
+                source_override if source_override.is_file() else sources_path
+            )
+            result = _add_scout_source_v1(
+                url=input, current_path=selected_sources, override_path=source_override
+            )
+            if result == "saved":
+                scout_operation = object.__getattribute__(facade, "_scout_operation")
+                object.__setattr__(scout_operation, "_sources_path", source_override)
+            view.publish_source_status(
+                status=_text_v1(key=f"scout.source_{result}"),
+                clear=result == "saved",
+            )
 
         view.bind_scout_action(callback=run_scout)
         view.bind_editor_action(callback=run_editor)
@@ -319,6 +336,8 @@ def main() -> int:
         view.bind_scout_provider_actions(
             save_callback=save_scout_provider, test_callback=test_scout_provider
         )
+        if hasattr(view, "bind_scout_source_action"):
+            view.bind_scout_source_action(callback=save_scout_source)
         _publish_candidates(view, project_store)
         if active_project is not None:
             view.publish_active_project(
@@ -477,18 +496,34 @@ def _publish_candidates(view: object, store: ActiveProjectStoreV1) -> None:
     )
 
 
-def _complete_handoff(*, store, event_id: int, cells, view, controller) -> bool:
+def _complete_handoff(
+    *,
+    store,
+    event_ids: tuple[int, ...] | None = None,
+    event_id: int | None = None,
+    cells,
+    view,
+    controller,
+) -> bool:
     try:
-        project = store.handoff(event_id=event_id)
+        if event_ids is None:
+            event_ids = (event_id,) if type(event_id) is int else ()
+        project, skipped = store.handoff_many(event_ids=event_ids)
     except Exception:
         view.publish_active_project(
             title="—", message=_text_v1(key="scout.handoff_failure")
         )
         return False
     cells["project"] = project
-    view.publish_active_project(
-        title=project.title, message=_text_v1(key="scout.handoff_success")
+    added = len(event_ids) - skipped
+    message = (
+        _text_v1(key="scout.handoff_success")
+        if added == 1
+        else _text_v1(key="scout.handoff_many").format(count=added)
     )
+    if skipped:
+        message += _text_v1(key="scout.handoff_duplicates").format(count=skipped)
+    view.publish_active_project(title=project.title, message=message)
     controller.select_page(page=_DesktopPageV1.EDITOR)
     return True
 
@@ -566,8 +601,8 @@ def _publish_scout_result(view: object, value: object) -> None:
     report = result.report_reference
     view.publish_scout_result(  # type: ignore[attr-defined]
         summary=(
-            f"Surse: {result.sources_checked}; reușite: {result.sources_succeeded}; "
-            f"nereușite: {result.sources_failed}; articole: {result.articles_found}; "
+            f"Surse: {result.sources_checked}; reusite: {result.sources_succeeded}; "
+            f"nereusite: {result.sources_failed}; articole: {result.articles_found}; "
             f"noi: {result.articles_inserted}; duplicate: {result.duplicates_skipped}."
         ),
         failed_sources=result.failed_source_ids,
@@ -612,6 +647,7 @@ def _safe_input(value: object) -> bool:
 def _show_first_run_setup(root: object, state: object, readiness: object):
     """Show compact setup without performing provider calls."""
     window = tkinter.Toplevel(root)
+    _configure_desktop_styles(root)
     window.title(_text_v1(key="setup.title"))
     window.resizable(False, False)
     provider = tkinter.StringVar(value=state.settings.scout_provider)
@@ -622,9 +658,11 @@ def _show_first_run_setup(root: object, state: object, readiness: object):
         row=0, column=0, columnspan=2, padx=16, pady=10, sticky="w"
     )
     for row, (label, variable) in enumerate(
-        (("Furnizor AI", provider), ("Model", model)), start=1
+        (("AI Engine", provider), ("Model", model)), start=1
     ):
-        ttk.Label(window, text=label).grid(row=row, column=0, padx=16, sticky="w")
+        ttk.Label(window, text=label, style=_PRIMARY_LABEL_STYLE).grid(
+            row=row, column=0, padx=16, sticky="w"
+        )
         if row == 1:
             ttk.Combobox(
                 window,
@@ -639,16 +677,16 @@ def _show_first_run_setup(root: object, state: object, readiness: object):
             model_widget.grid(row=row, column=1, padx=16)
     names = (
         ", ".join(
-            f"{item.name} ({'activă' if item.enabled else 'inactivă'})"
+            f"{item.name} ({'activa' if item.enabled else 'inactiva'})"
             for item in readiness.sources
         )
-        or "Nicio sursă configurată"
+        or "Nicio sursa configurata"
     )
     ttk.Label(window, text=f"Surse active: {names}", wraplength=520).grid(
         row=4, column=0, columnspan=2, padx=16, pady=8, sticky="w"
     )
     ttk.Label(
-        window, text=f"Ieșire: {readiness.output_directory}", wraplength=520
+        window, text=f"Iesire: {readiness.output_directory}", wraplength=520
     ).grid(row=5, column=0, columnspan=2, padx=16, sticky="w")
     status = tkinter.StringVar(value="")
     ollama_verified = [False]

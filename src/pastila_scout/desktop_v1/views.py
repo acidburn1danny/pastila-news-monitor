@@ -41,6 +41,27 @@ _EDITOR_REQUIRED_CONFIGURATION = (
     "episode_context_path",
     "generation_config_path",
 )
+_BUTTON_STYLE = "TButton"
+_PRIMARY_LABEL_STYLE = "PastilaPrimary.TLabel"
+
+
+def _configure_desktop_styles(root: object) -> None:
+    style = ttk.Style(root)
+    style.configure(
+        _BUTTON_STYLE,
+        anchor="center",
+        justify="center",
+        borderwidth=1,
+        relief="solid",
+        bordercolor="#000000",
+        lightcolor="#000000",
+        darkcolor="#000000",
+    )
+    style.map(
+        _BUTTON_STYLE,
+        foreground=(("disabled", "#777777"), ("!disabled", "#000000")),
+    )
+    style.configure(_PRIMARY_LABEL_STYLE, font=("TkDefaultFont", 9, "bold"))
 
 
 def _editor_configuration_ready(values: dict[str, tkinter.StringVar]) -> bool:
@@ -48,7 +69,12 @@ def _editor_configuration_ready(values: dict[str, tkinter.StringVar]) -> bool:
 
 
 def _restored_candidate_summary(*, current: str, count: int) -> str:
-    return f"{count} candidați restaurați" if current == "0" else current
+    return f"{count} candidati restaurati" if current == "0" else current
+
+
+def _handoff_label(count: int) -> str:
+    base = _text_v1(key="scout.send_editor")
+    return f"{base} ({count})" if count > 1 else base
 
 
 def _editor_display_model(settings: _DesktopSettingsProjectionV1) -> str:
@@ -85,7 +111,7 @@ def _validate_binding(value: object, parameter: str) -> None:
         parameters = tuple(
             inspect.signature(target, follow_wrapped=False).parameters.values()
         )
-    except (TypeError, ValueError):
+    except TypeError, ValueError:
         raise _DesktopShellConfigurationError() from None
     if drop_self:
         parameters = parameters[1:]
@@ -117,6 +143,7 @@ class _DesktopMainWindowV1:
         self._on_select_page = on_select_page
         self._on_close = on_close
         self._settings = _reconstruct_desktop_settings_projection_v1(settings)
+        _configure_desktop_styles(root)
         root.title(_text_v1(key="app.title"))
         root.minsize(900, 600)
         root.columnconfigure(0, weight=1)
@@ -188,9 +215,9 @@ class _DesktopMainWindowV1:
         page.grid(row=0, column=0, sticky="nsew")
         page.columnconfigure(1, weight=1)
         self._pages[_DesktopPageV1.SCOUT] = page
-        ttk.Label(page, text=_text_v1(key="scout.period")).grid(
-            row=0, column=0, sticky="w"
-        )
+        ttk.Label(
+            page, text=_text_v1(key="scout.period"), style=_PRIMARY_LABEL_STYLE
+        ).grid(row=0, column=0, sticky="w")
         self._period = tkinter.StringVar(value="")
         self._period_widget = ttk.Combobox(
             page,
@@ -199,9 +226,9 @@ class _DesktopMainWindowV1:
             state="disabled",
         )
         self._period_widget.grid(row=0, column=1, sticky="ew")
-        ttk.Label(page, text=_text_v1(key="scout.category")).grid(
-            row=1, column=0, sticky="w"
-        )
+        ttk.Label(
+            page, text=_text_v1(key="scout.category"), style=_PRIMARY_LABEL_STYLE
+        ).grid(row=1, column=0, sticky="w")
         self._category = tkinter.StringVar(value="")
         self._category_widget = ttk.Combobox(
             page,
@@ -210,7 +237,9 @@ class _DesktopMainWindowV1:
             state="disabled",
         )
         self._category_widget.grid(row=1, column=1, sticky="ew")
-        ttk.Label(page, text=_text_v1(key="scout.provider")).grid(row=2, column=0, sticky="w")
+        ttk.Label(
+            page, text=_text_v1(key="scout.provider"), style=_PRIMARY_LABEL_STYLE
+        ).grid(row=2, column=0, sticky="w")
         self._scout_provider = tkinter.StringVar(value="openai")
         self._scout_provider_widget = ttk.Combobox(
             page,
@@ -221,18 +250,42 @@ class _DesktopMainWindowV1:
         self._scout_provider_widget.grid(row=2, column=1, sticky="ew")
         self._scout_provider_widget.bind("<<ComboboxSelected>>", self._provider_changed)
         self._ollama_url = tkinter.StringVar(value="")
-        ttk.Label(page, text=_text_v1(key="scout.model")).grid(row=3, column=0, sticky="w")
+        ttk.Label(
+            page, text=_text_v1(key="scout.model"), style=_PRIMARY_LABEL_STYLE
+        ).grid(row=3, column=0, sticky="w")
         self._ollama_model = tkinter.StringVar(value="")
-        self._model_widget = ttk.Combobox(page, textvariable=self._ollama_model, state="readonly")
+        self._model_widget = ttk.Combobox(
+            page, textvariable=self._ollama_model, state="readonly"
+        )
         self._model_widget.grid(row=3, column=1, sticky="ew")
         provider_buttons = ttk.Frame(page)
         provider_buttons.grid(row=4, column=0, columnspan=2)
-        ttk.Button(provider_buttons, text=_text_v1(key="scout.provider_save"), command=self._save_scout_provider).pack(side="left")
-        ttk.Button(provider_buttons, text=_text_v1(key="scout.provider_test"), command=self._test_scout_provider).pack(side="left")
+        ttk.Button(
+            provider_buttons,
+            text=_text_v1(key="scout.provider_save"),
+            command=self._save_scout_provider,
+        ).pack(side="left")
+        ttk.Button(
+            provider_buttons,
+            text=_text_v1(key="scout.provider_test"),
+            command=self._test_scout_provider,
+        ).pack(side="left")
         self._scout_button = ttk.Button(
             page, text=_text_v1(key="scout.run"), state="disabled", command=self._scout
         )
         self._scout_button.grid(row=6, column=0, columnspan=2, pady=8)
+        source = ttk.Frame(page)
+        source.grid(row=5, column=0, columnspan=2, sticky="ew")
+        ttk.Label(
+            source, text=_text_v1(key="scout.source_add"), style=_PRIMARY_LABEL_STYLE
+        ).pack(side="left")
+        self._source_url = tkinter.StringVar(value="")
+        ttk.Entry(source, textvariable=self._source_url, width=46).pack(
+            side="left", fill="x", expand=True
+        )
+        ttk.Button(
+            source, text=_text_v1(key="scout.source_save"), command=self._save_source
+        ).pack(side="left")
         self._progress = ttk.Progressbar(page, mode="determinate", value=0)
         self._progress.grid(row=7, column=0, columnspan=2, sticky="ew")
         self._status = tkinter.StringVar(value=_text_v1(key="scout.intro"))
@@ -260,7 +313,7 @@ class _DesktopMainWindowV1:
             page,
             columns=("title", "category", "sources"),
             show="headings",
-            selectmode="browse",
+            selectmode="extended",
             height=8,
         )
         self._candidates.heading("title", text="Titlu")
@@ -298,9 +351,9 @@ class _DesktopMainWindowV1:
             row=1, column=0, columnspan=2
         )
         self._active_project = tkinter.StringVar(value="—")
-        ttk.Label(page, text=_text_v1(key="editor.active_project")).grid(
-            row=2, column=0, sticky="w"
-        )
+        ttk.Label(
+            page, text=_text_v1(key="editor.active_project"), style=_PRIMARY_LABEL_STYLE
+        ).grid(row=2, column=0, sticky="w")
         ttk.Label(page, textvariable=self._active_project).grid(
             row=2, column=1, sticky="w"
         )
@@ -318,16 +371,18 @@ class _DesktopMainWindowV1:
         fields = (("model", "editor.model"),)
         self._editor_widgets: list[ttk.Widget] = []
         for row, (name, key) in enumerate(fields, start=3):
-            ttk.Label(page, text=_text_v1(key=key)).grid(row=row, column=0, sticky="w")
+            ttk.Label(page, text=_text_v1(key=key), style=_PRIMARY_LABEL_STYLE).grid(
+                row=row, column=0, sticky="w"
+            )
             value = tkinter.StringVar(value="")
             widget = ttk.Entry(page, textvariable=value, state="disabled")
             widget.grid(row=row, column=1, sticky="ew")
             self._editor_values[name] = value
             self._editor_widgets.append(widget)
         row = 3 + len(fields)
-        ttk.Label(page, text=_text_v1(key="editor.provider")).grid(
-            row=row, column=0, sticky="w"
-        )
+        ttk.Label(
+            page, text=_text_v1(key="editor.provider"), style=_PRIMARY_LABEL_STYLE
+        ).grid(row=row, column=0, sticky="w")
         self._provider = tkinter.StringVar(value="openai")
         provider = ttk.Combobox(
             page,
@@ -360,33 +415,80 @@ class _DesktopMainWindowV1:
         page.columnconfigure(1, weight=1)
         page.rowconfigure(2, weight=1)
         self._pages[_DesktopPageV1.CHIEF_EDITOR] = page
-        ttk.Label(page, text=_text_v1(key="chief_editor.title")).grid(row=0, column=0, sticky="w")
+        ttk.Label(page, text=_text_v1(key="chief_editor.title")).grid(
+            row=0, column=0, sticky="w"
+        )
         self._chief_title = tkinter.StringVar(value="")
-        ttk.Entry(page, textvariable=self._chief_title).grid(row=0, column=1, sticky="ew")
-        self._chief_available = ttk.Treeview(page, columns=("title",), show="headings", selectmode="browse", height=4)
+        ttk.Entry(page, textvariable=self._chief_title).grid(
+            row=0, column=1, sticky="ew"
+        )
+        self._chief_available = ttk.Treeview(
+            page, columns=("title",), show="headings", selectmode="browse", height=4
+        )
         self._chief_available.heading("title", text="Materiale disponibile")
         self._chief_available.grid(row=1, column=0, columnspan=2, sticky="ew")
-        ttk.Button(page, text=_text_v1(key="chief_editor.add"), command=self._chief_editor_add).grid(row=1, column=2)
-        self._chief_items = ttk.Treeview(page, columns=("title", "section", "note"), show="headings", selectmode="browse")
-        for name, label in (("title", "Material"), ("section", "Secțiune"), ("note", "Notă / tranziție")):
+        ttk.Button(
+            page, text=_text_v1(key="chief_editor.add"), command=self._chief_editor_add
+        ).grid(row=1, column=2)
+        self._chief_items = ttk.Treeview(
+            page,
+            columns=("title", "section", "note"),
+            show="headings",
+            selectmode="browse",
+        )
+        for name, label in (
+            ("title", "Material"),
+            ("section", "Sectiune"),
+            ("note", "Nota / tranzitie"),
+        ):
             self._chief_items.heading(name, text=label)
         self._chief_items.grid(row=2, column=0, columnspan=2, sticky="nsew")
         self._chief_items.bind("<<TreeviewSelect>>", self._chief_editor_selected)
         controls = ttk.Frame(page)
         controls.grid(row=3, column=0, columnspan=2, sticky="ew")
-        ttk.Button(controls, text=_text_v1(key="chief_editor.up"), command=lambda: self._chief_editor_move(-1)).pack(side="left")
-        ttk.Button(controls, text=_text_v1(key="chief_editor.down"), command=lambda: self._chief_editor_move(1)).pack(side="left")
-        ttk.Button(controls, text=_text_v1(key="chief_editor.remove"), command=self._chief_editor_remove_selected).pack(side="left")
-        ttk.Label(page, text=_text_v1(key="chief_editor.section")).grid(row=4, column=0, sticky="w")
+        ttk.Button(
+            controls,
+            text=_text_v1(key="chief_editor.up"),
+            command=lambda: self._chief_editor_move(-1),
+        ).pack(side="left")
+        ttk.Button(
+            controls,
+            text=_text_v1(key="chief_editor.down"),
+            command=lambda: self._chief_editor_move(1),
+        ).pack(side="left")
+        ttk.Button(
+            controls,
+            text=_text_v1(key="chief_editor.remove"),
+            command=self._chief_editor_remove_selected,
+        ).pack(side="left")
+        ttk.Label(
+            page, text=_text_v1(key="chief_editor.section"), style=_PRIMARY_LABEL_STYLE
+        ).grid(row=4, column=0, sticky="w")
         self._chief_section = tkinter.StringVar(value="")
-        ttk.Entry(page, textvariable=self._chief_section).grid(row=4, column=1, sticky="ew")
-        ttk.Label(page, text=_text_v1(key="chief_editor.note")).grid(row=5, column=0, sticky="w")
+        ttk.Entry(page, textvariable=self._chief_section).grid(
+            row=4, column=1, sticky="ew"
+        )
+        ttk.Label(
+            page, text=_text_v1(key="chief_editor.note"), style=_PRIMARY_LABEL_STYLE
+        ).grid(row=5, column=0, sticky="w")
         self._chief_note = tkinter.StringVar(value="")
-        ttk.Entry(page, textvariable=self._chief_note).grid(row=5, column=1, sticky="ew")
-        ttk.Button(page, text=_text_v1(key="chief_editor.save"), command=self._chief_editor_save_action).grid(row=6, column=0)
-        ttk.Button(page, text=_text_v1(key="chief_editor.export"), command=self._chief_editor_export_action).grid(row=6, column=1)
+        ttk.Entry(page, textvariable=self._chief_note).grid(
+            row=5, column=1, sticky="ew"
+        )
+        ttk.Button(
+            page,
+            text=_text_v1(key="chief_editor.save"),
+            command=self._chief_editor_save_action,
+        ).grid(row=6, column=0)
+        ttk.Button(
+            page,
+            text=_text_v1(key="chief_editor.export"),
+            command=self._chief_editor_export_action,
+        ).grid(row=6, column=1)
         self._chief_status = tkinter.StringVar(value=_text_v1(key="chief_editor.empty"))
-        ttk.Label(page, textvariable=self._chief_status).grid(row=7, column=0, columnspan=2, sticky="w")
+        ttk.Label(page, textvariable=self._chief_status).grid(
+            row=7, column=0, columnspan=2, sticky="w"
+        )
 
     def _build_menu(self) -> None:
         menu = tkinter.Menu(self._root)
@@ -481,6 +583,18 @@ class _DesktopMainWindowV1:
         self._bind("scout_provider_save", save_callback)
         self._bind("scout_provider_test", test_callback)
 
+    def bind_scout_source_action(self, *, callback) -> None:
+        self._bind("scout_source", callback)
+
+    def _save_source(self) -> None:
+        self._invoke("scout_source", input=self._source_url.get())
+
+    def publish_source_status(self, *, status: str, clear: bool = False) -> None:
+        self._check()
+        self._status.set(status)
+        if clear:
+            self._source_url.set("")
+
     def _scout_provider_payload(self) -> dict[str, str]:
         return {
             "provider": self._scout_provider.get(),
@@ -539,7 +653,13 @@ class _DesktopMainWindowV1:
     def _handoff(self) -> None:
         selected = self._candidates.selection()
         if selected:
-            self._invoke("handoff", input=int(selected[0]))
+            selected_set = set(selected)
+            ordered = tuple(
+                int(item)
+                for item in self._candidates.get_children("")
+                if item in selected_set
+            )
+            self._invoke("handoff", input=ordered)
 
     def _editor(self) -> None:
         values = {name: value.get() for name, value in self._editor_values.items()}
@@ -593,7 +713,9 @@ class _DesktopMainWindowV1:
             raise _DesktopShellConfigurationError() from None
         self._editor_status.set(status)
 
-    def publish_candidates(self, *, candidates: tuple[tuple[int, str, str, int], ...]) -> None:
+    def publish_candidates(
+        self, *, candidates: tuple[tuple[int, str, str, int], ...]
+    ) -> None:
         self._check()
         for item in self._candidates.get_children(""):
             self._candidates.delete(item)
@@ -616,7 +738,14 @@ class _DesktopMainWindowV1:
         self._editor_status.set(message)
         self._editor_button.configure(state="normal" if title else "disabled")
 
-    def publish_chief_editor(self, *, title: str, available: tuple[tuple[str, str], ...], items: tuple[tuple[str, str, str, str], ...], status: str = "") -> None:
+    def publish_chief_editor(
+        self,
+        *,
+        title: str,
+        available: tuple[tuple[str, str], ...],
+        items: tuple[tuple[str, str, str, str], ...],
+        status: str = "",
+    ) -> None:
         self._check()
         self._chief_title.set(title)
         for iid in self._chief_available.get_children(""):
@@ -626,8 +755,12 @@ class _DesktopMainWindowV1:
         for iid in self._chief_items.get_children(""):
             self._chief_items.delete(iid)
         for reference, item_title, section, note in items:
-            self._chief_items.insert("", "end", iid=reference, values=(item_title, section, note))
-        self._chief_status.set(status or (_text_v1(key="chief_editor.empty") if not items else ""))
+            self._chief_items.insert(
+                "", "end", iid=reference, values=(item_title, section, note)
+            )
+        self._chief_status.set(
+            status or (_text_v1(key="chief_editor.empty") if not items else "")
+        )
 
     def _chief_editor_add(self) -> None:
         selected = self._chief_available.selection()
@@ -686,12 +819,9 @@ class _DesktopMainWindowV1:
         self._invoke("chief_editor_export", input=self._chief_editor_payload())
 
     def _sync_handoff(self) -> None:
-        state = (
-            "normal"
-            if "handoff" in self._bindings and bool(self._candidates.selection())
-            else "disabled"
-        )
-        self._handoff_button.configure(state=state)
+        count = len(self._candidates.selection())
+        state = "normal" if "handoff" in self._bindings and count else "disabled"
+        self._handoff_button.configure(state=state, text=_handoff_label(count))
 
     def _sync_report(self) -> None:
         state = (

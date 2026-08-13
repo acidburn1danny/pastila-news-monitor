@@ -48,7 +48,7 @@ def _inspect_desktop_readiness_v1(
     try:
         project = project_store.load()
     except OSError, ValueError, TypeError, KeyError, UnicodeError:
-        warning = "Proiectul activ nu poate fi deschis. Fișierul a fost păstrat."
+        warning = "Proiectul activ nu poate fi deschis. Fisierul a fost pastrat."
     return _DesktopReadinessV1(
         not settings_path.is_file()
         or not provider_ready

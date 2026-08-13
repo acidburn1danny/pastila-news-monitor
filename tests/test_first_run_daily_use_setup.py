@@ -95,7 +95,7 @@ def test_project_recovery_and_invalid_project_safe_warning(tmp_path, monkeypatch
     assert _inspect(tmp_path, monkeypatch, project=project).active_project is project
     invalid = _inspect(tmp_path, monkeypatch, failure=ValueError("invalid"))
     assert invalid.active_project is None
-    assert "păstrat" in invalid.project_warning
+    assert "pastrat" in invalid.project_warning
 
 
 def test_setup_window_is_visible_before_modal_wait():

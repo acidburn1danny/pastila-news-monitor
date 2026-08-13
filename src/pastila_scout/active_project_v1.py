@@ -98,21 +98,94 @@ class ActiveProjectStoreV1:
     def handoff(self, *, event_id: int) -> ActiveProjectV1:
         source = _scout_input(self.database_path, event_id)
         existing = self.load()
-        project_id = (
-            existing.project_id if existing is not None else f"active-project-v1:{uuid.uuid4().hex}"
-        )
         project = ActiveProjectV1(
-            project_id=project_id,
-            title=(existing.title if existing is not None else source.ranked_events[0].canonical_title),
+            project_id=(
+                existing.project_id
+                if existing
+                else f"active-project-v1:{uuid.uuid4().hex}"
+            ),
+            title=(
+                existing.title if existing else source.ranked_events[0].canonical_title
+            ),
             handed_off_at=datetime.now(UTC),
             scout_input=source,
             editor_materials=(() if existing is None else existing.editor_materials),
-            chief_editor_items=(() if existing is None else existing.chief_editor_items),
-            chief_editor_title=("" if existing is None else existing.chief_editor_title),
-            chief_editor_updated_at=(None if existing is None else existing.chief_editor_updated_at),
+            chief_editor_items=(
+                () if existing is None else existing.chief_editor_items
+            ),
+            chief_editor_title=(
+                "" if existing is None else existing.chief_editor_title
+            ),
+            chief_editor_updated_at=(
+                None if existing is None else existing.chief_editor_updated_at
+            ),
         )
         self._write(project)
         return project
+
+    def handoff_many(
+        self, *, event_ids: tuple[int, ...]
+    ) -> tuple[ActiveProjectV1, int]:
+        if (
+            type(event_ids) is not tuple
+            or not event_ids
+            or any(type(value) is not int for value in event_ids)
+        ):
+            raise ValueError("Selectie Scout invalida")
+        existing = self.load()
+        existing_ids = (
+            ()
+            if existing is None
+            else tuple(item.event_id for item in existing.scout_input.ranked_events)
+        )
+        new_ids = tuple(
+            value
+            for index, value in enumerate(event_ids)
+            if value not in existing_ids and value not in event_ids[:index]
+        )
+        inputs = []
+        for value in new_ids:
+            try:
+                inputs.append(_scout_input(self.database_path, value))
+            except ValueError:
+                continue
+        inputs = tuple(inputs)
+        if not inputs:
+            if existing is None:
+                raise ValueError("Nu exista selectie Scout")
+            return existing, len(event_ids)
+        source = _merge_scout_inputs(
+            (() if existing is None else existing.scout_input.ranked_events)
+            + tuple(value.ranked_events[0] for value in inputs),
+            inputs[0],
+        )
+        project_id = (
+            existing.project_id
+            if existing is not None
+            else f"active-project-v1:{uuid.uuid4().hex}"
+        )
+        project = ActiveProjectV1(
+            project_id=project_id,
+            title=(
+                existing.title
+                if existing is not None
+                else source.ranked_events[0].canonical_title
+            ),
+            handed_off_at=datetime.now(UTC),
+            scout_input=source,
+            editor_materials=(() if existing is None else existing.editor_materials),
+            chief_editor_items=(
+                () if existing is None else existing.chief_editor_items
+            ),
+            chief_editor_title=(
+                "" if existing is None else existing.chief_editor_title
+            ),
+            chief_editor_updated_at=(
+                None if existing is None else existing.chief_editor_updated_at
+            ),
+        )
+        self._write(project)
+        return project, len(event_ids) - len(inputs)
 
     def record_editor_output(
         self, *, output_path: Path, payload_sha256: str
@@ -264,7 +337,9 @@ class ActiveProjectStoreV1:
             json.dumps(data["scout_input"], ensure_ascii=False)
         )
         verify_scout_input_identity(source)
-        materials = tuple(EditorMaterialV1(**item) for item in data.get("editor_materials", ()))
+        materials = tuple(
+            EditorMaterialV1(**item) for item in data.get("editor_materials", ())
+        )
         chief_data = data.get("chief_editor", {})
         chief_items = tuple(
             ChiefEditorItemV1(**item) for item in chief_data.get("items", ())
@@ -282,16 +357,42 @@ class ActiveProjectStoreV1:
                 None if updated_at is None else datetime.fromisoformat(updated_at)
             ),
         )
-        if len(source.ranked_events) != 1 or project.title != project.candidate.canonical_title:
+        if (
+            not source.ranked_events
+            or project.title != project.candidate.canonical_title
+        ):
             raise ValueError("Invalid active project")
         return project
+
+
+def _merge_scout_inputs(events: tuple[object, ...], template: ScoutEditorInputV1):
+    data = template.model_dump(mode="python")
+    ranked = []
+    for rank, event in enumerate(events, start=1):
+        value = event.model_dump(mode="python")
+        value["rank"] = rank
+        value["score_rank"] = rank
+        ranked.append(value)
+    data["ranked_events"] = ranked
+    data["event_counts"] = {
+        "eligible": len(ranked),
+        "processed": len(ranked),
+        "reported": len(ranked),
+    }
+    data["ranking_parameters"]["limit"] = len(ranked)
+    data["ranking_parameters"]["top"] = len(ranked)
+    return assign_scout_input_identity(data)
 
 
 def move_chief_editor_item(
     items: tuple[ChiefEditorItemV1, ...], index: int, offset: int
 ) -> tuple[ChiefEditorItemV1, ...]:
     target = index + offset
-    if offset not in {-1, 1} or not 0 <= index < len(items) or not 0 <= target < len(items):
+    if (
+        offset not in {-1, 1}
+        or not 0 <= index < len(items)
+        or not 0 <= target < len(items)
+    ):
         return items
     values = list(items)
     values[index], values[target] = values[target], values[index]
@@ -306,8 +407,14 @@ def _category(value: object) -> str:
 def _scout_input(database_path: Path, event_id: int) -> ScoutEditorInputV1:
     with sqlite3.connect(database_path) as connection:
         connection.row_factory = sqlite3.Row
-        event = connection.execute("SELECT * FROM events WHERE id = ?", (event_id,)).fetchone()
-        if event is None or not str(event["canonical_title"]).strip() or not str(event["summary"] or "").strip():
+        event = connection.execute(
+            "SELECT * FROM events WHERE id = ?", (event_id,)
+        ).fetchone()
+        if (
+            event is None
+            or not str(event["canonical_title"]).strip()
+            or not str(event["summary"] or "").strip()
+        ):
             raise ValueError("Candidate incomplet")
         articles = connection.execute(
             """SELECT a.source_id, COALESCE(s.name, a.source_id) source_name,
@@ -334,23 +441,56 @@ def _scout_input(database_path: Path, event_id: int) -> ScoutEditorInputV1:
             "scout_version": __version__,
             "ranking_schema_version": "desktop-manual-selection-v1",
             "source_run_id": f"snapshot:sha256:{'0' * 64}",
-            "ranking_parameters": {"days": 1, "category_filter": category, "limit": 1, "top": 1, "minimum_score": 0.0, "ai_enabled": False},
+            "ranking_parameters": {
+                "days": 1,
+                "category_filter": category,
+                "limit": 1,
+                "top": 1,
+                "minimum_score": 0.0,
+                "ai_enabled": False,
+            },
             "event_counts": {"eligible": 1, "processed": 1, "reported": 1},
-            "ranked_events": [{
-                "rank": 1, "score_rank": 1, "event_id": event_id,
-                "canonical_title": str(event["canonical_title"]).strip(),
-                "canonical_summary": str(event["summary"]).strip(),
-                "publication_bounds": {"first_published_at": event["first_published_at"], "last_published_at": event["last_published_at"]},
-                "categories": (category,), "source_count": int(event["source_count"]),
-                "article_count": int(event["article_count"]),
-                "source_provenance": tuple(dict(row) for row in articles),
-                "provenance_truncated": int(event["article_count"]) > len(articles),
-                "deterministic_score": {"score": 0.0, "schema_version": "desktop-manual-selection-v1", "components": {name: component(name) for name in ("supporting_articles", "source_diversity", "source_credibility", "recency", "national_relevance", "category_weight", "title_strength")}},
-                "ai_editorial_score": None, "final_score": 0.0,
-                "recommendation": "POSSIBLE_PICK",
-                "scout_recommendation_reason": "Selectat manual de utilizator pentru Editor.",
-                "editorial_risks": (), "score_basis": "Selecție manuală, fără recalcularea scorului Scout.", "extensions": {},
-            }],
+            "ranked_events": [
+                {
+                    "rank": 1,
+                    "score_rank": 1,
+                    "event_id": event_id,
+                    "canonical_title": str(event["canonical_title"]).strip(),
+                    "canonical_summary": str(event["summary"]).strip(),
+                    "publication_bounds": {
+                        "first_published_at": event["first_published_at"],
+                        "last_published_at": event["last_published_at"],
+                    },
+                    "categories": (category,),
+                    "source_count": int(event["source_count"]),
+                    "article_count": int(event["article_count"]),
+                    "source_provenance": tuple(dict(row) for row in articles),
+                    "provenance_truncated": int(event["article_count"]) > len(articles),
+                    "deterministic_score": {
+                        "score": 0.0,
+                        "schema_version": "desktop-manual-selection-v1",
+                        "components": {
+                            name: component(name)
+                            for name in (
+                                "supporting_articles",
+                                "source_diversity",
+                                "source_credibility",
+                                "recency",
+                                "national_relevance",
+                                "category_weight",
+                                "title_strength",
+                            )
+                        },
+                    },
+                    "ai_editorial_score": None,
+                    "final_score": 0.0,
+                    "recommendation": "POSSIBLE_PICK",
+                    "scout_recommendation_reason": "Selectat manual de utilizator pentru Editor.",
+                    "editorial_risks": (),
+                    "score_basis": "Selecție manuală, fără recalcularea scorului Scout.",
+                    "extensions": {},
+                }
+            ],
             "extensions": {"pastila.active_project_handoff": True},
         }
     return assign_scout_input_identity(data)

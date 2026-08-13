@@ -36,6 +36,7 @@ from pastila_scout.desktop_v1.views import (
     _SCOUT_CATEGORY_CHOICES,
     _SCOUT_PERIOD_CHOICES,
     _editor_configuration_ready,
+    _handoff_label,
     _restored_candidate_summary,
 )
 
@@ -364,10 +365,10 @@ def test_daily_scout_choices_and_restored_candidate_summary_are_truthful():
         "Externe",
         "Diverse",
     )
-    assert _restored_candidate_summary(current="0", count=3) == (
-        "3 candidați restaurați"
-    )
+    assert _restored_candidate_summary(current="0", count=3) == "3 candidati restaurati"
     assert _restored_candidate_summary(current="Surse: 14", count=3) == "Surse: 14"
+    assert _handoff_label(0) == _handoff_label(1) == "Trimite in Editor"
+    assert _handoff_label(3) == "Trimite in Editor (3)"
 
 
 def test_integrated_editor_is_disabled_without_required_configuration():
@@ -389,7 +390,12 @@ def test_resources_are_exact_unique_nfc_and_unknown_is_safe():
 
     assert len(dict(_TEXT_V1)) == len(_TEXT_V1)
     assert all(unicodedata.normalize("NFC", value) == value for _, value in _TEXT_V1)
-    assert _text_v1(key="scout.run") == "CAUTĂ"
+    assert _text_v1(key="scout.run") == "CAUTA"
+    forbidden = set("ăâîșşțţĂÂÎȘŞȚŢ")
+    assert not any(forbidden.intersection(value) for _, value in _TEXT_V1)
+    assert _text_v1(key="scout.provider") == "AI Engine"
+    assert _text_v1(key="editor.provider") == "AI Engine"
+    assert not any("Furnizor" in value for _, value in _TEXT_V1)
     with pytest.raises(_DesktopShellConfigurationError):
         _text_v1(key="missing")
 
