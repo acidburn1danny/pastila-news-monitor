@@ -13,12 +13,13 @@ import unicodedata
 import uuid
 from datetime import UTC, datetime
 from pathlib import Path
-from tkinter import filedialog, messagebox
+from tkinter import filedialog, messagebox, ttk
 from typing import NoReturn
 
 import httpx
 
 from pastila_scout.active_project_v1 import ActiveProjectStoreV1, ChiefEditorItemV1
+from pastila_scout.ai.provider import resolve_openai_api_key
 from pastila_scout.contracts.identity import verify_scout_input_identity
 from pastila_scout.contracts.io import load_contract
 from pastila_scout.contracts.scout_editor import ScoutEditorInputV1
@@ -53,6 +54,7 @@ from pastila_scout.windows_state_v1.settings import (
 
 from .controller import _DesktopTaskControllerV1
 from .errors import _DesktopShellConfigurationError
+from .first_run import _complete_desktop_setup_v1, _inspect_desktop_readiness_v1
 from .models import (
     _DesktopPageV1,
     _reconstruct_desktop_editor_action_input_v1,
@@ -126,11 +128,47 @@ def main() -> int:
             database_path=state.database_path,
             project_path=state.active_project_path,
         )
-        active_project = project_store.load()
+        source_override = state.settings_path.parent / "sources.override.yaml"
+        sources_path = (
+            source_override
+            if source_override.is_file()
+            else (
+                development_root / "config" / "sources.yaml"
+                if development_root is not None
+                else state.database_path.parent.parent
+                / "Programs"
+                / "PastilaScout"
+                / "app"
+                / "config"
+                / "sources.yaml"
+            )
+        )
+        settings = state.settings
+        if sources_path.is_file() and hasattr(state.settings, "scout_provider"):
+            readiness = _inspect_desktop_readiness_v1(
+                settings=state.settings,
+                settings_path=state.settings_path,
+                sources_path=sources_path,
+                default_output_directory=state.database_path.parent.parent / "reports",
+                project_store=project_store,
+            )
+            if readiness.setup_required:
+                settings = _show_first_run_setup(root, state, readiness)
+                if settings is None:
+                    return 0
+            active_project = readiness.active_project
+            if readiness.project_warning:
+                messagebox.showwarning(
+                    title=_text_v1(key="setup.title"),
+                    message=readiness.project_warning,
+                    parent=root,
+                )
+        else:  # compatibility for injected startup test compositions
+            active_project = project_store.load()
         cells: dict[str, object] = {
             "facade": facade,
             "project": active_project,
-            "settings": state.settings,
+            "settings": settings,
         }
         closed = False
 
@@ -157,7 +195,7 @@ def main() -> int:
             root=root,
             on_select_page=select_page,
             on_close=close,
-            settings=state.settings,
+            settings=settings,
         )
         cells.update(controller=controller, view=view)
 
@@ -185,7 +223,9 @@ def main() -> int:
 
             def on_completed(*, result) -> None:
                 _publish_editor_result(view, result)
-                application_result = reconstruct_editor_desktop_result(result).application_result
+                application_result = reconstruct_editor_desktop_result(
+                    result
+                ).application_result
                 if (
                     application_result.handoff_permitted
                     and application_result.output_path is not None
@@ -272,6 +312,13 @@ def main() -> int:
                 message=_text_v1(key="scout.handoff_success"),
             )
             _publish_chief_editor(view, active_project)
+            controller.select_page(
+                page=(
+                    _DesktopPageV1.CHIEF_EDITOR
+                    if active_project.editor_materials
+                    else _DesktopPageV1.EDITOR
+                )
+            )
         root.protocol("WM_DELETE_WINDOW", close)
         controller.start()
         root.deiconify()
@@ -452,9 +499,16 @@ def _publish_chief_editor(view: object, project: object, status: str = "") -> No
     materials = {item.reference: item for item in project.editor_materials}
     view.publish_chief_editor(  # type: ignore[attr-defined]
         title=project.chief_editor_title or project.title,
-        available=tuple((item.reference, item.title) for item in project.editor_materials),
+        available=tuple(
+            (item.reference, item.title) for item in project.editor_materials
+        ),
         items=tuple(
-            (item.material_reference, materials[item.material_reference].title, item.section, item.note)
+            (
+                item.material_reference,
+                materials[item.material_reference].title,
+                item.section,
+                item.note,
+            )
             for item in project.chief_editor_items
             if item.material_reference in materials
         ),
@@ -470,9 +524,8 @@ def _scout_provider_values(value: object) -> tuple[str, str, str]:
         value["base_url"],
         value["model"],
     )
-    if (
-        provider not in {"openai", "ollama"}
-        or not all(_safe_input(item) for item in (base_url, model))
+    if provider not in {"openai", "ollama"} or not all(
+        _safe_input(item) for item in (base_url, model)
     ):
         raise _DesktopShellConfigurationError() from None
     return provider, base_url.rstrip("/"), model
@@ -538,3 +591,104 @@ def _safe_input(value: object) -> bool:
             for character in value
         )
     )
+
+
+def _show_first_run_setup(root: object, state: object, readiness: object):
+    """Show compact setup without performing provider calls."""
+    window = tkinter.Toplevel(root)
+    window.title(_text_v1(key="setup.title"))
+    window.resizable(False, False)
+    provider = tkinter.StringVar(value=state.settings.scout_provider)
+    base_url = tkinter.StringVar(value=state.settings.ollama_base_url)
+    model = tkinter.StringVar(value=state.settings.ollama_model)
+    result: list[object] = []
+    ttk.Label(window, text=_text_v1(key="setup.intro"), wraplength=520).grid(
+        row=0, column=0, columnspan=2, padx=16, pady=10, sticky="w"
+    )
+    for row, (label, variable) in enumerate(
+        (("Furnizor", provider), ("Adresă Ollama", base_url), ("Model Ollama", model)),
+        start=1,
+    ):
+        ttk.Label(window, text=label).grid(row=row, column=0, padx=16, sticky="w")
+        if row == 1:
+            ttk.Combobox(
+                window,
+                textvariable=variable,
+                values=("openai", "ollama"),
+                state="readonly",
+            ).grid(row=row, column=1, padx=16, sticky="ew")
+        else:
+            ttk.Entry(window, textvariable=variable, width=38).grid(
+                row=row, column=1, padx=16
+            )
+    names = (
+        ", ".join(
+            f"{item.name} ({'activă' if item.enabled else 'inactivă'})"
+            for item in readiness.sources
+        )
+        or "Nicio sursă configurată"
+    )
+    ttk.Label(window, text=f"Surse active: {names}", wraplength=520).grid(
+        row=4, column=0, columnspan=2, padx=16, pady=8, sticky="w"
+    )
+    ttk.Label(
+        window, text=f"Ieșire: {readiness.output_directory}", wraplength=520
+    ).grid(row=5, column=0, columnspan=2, padx=16, sticky="w")
+    status = tkinter.StringVar(value="")
+    ollama_verified = [False]
+    ttk.Label(window, textvariable=status).grid(row=6, column=0, columnspan=2, padx=16)
+
+    def test_ollama() -> None:
+        if provider.get() != "ollama":
+            status.set(_text_v1(key="setup.openai_local"))
+            return
+        try:
+            with httpx.Client() as client:
+                OllamaHttpClientV1(client).check_model(
+                    model=model.get(),
+                    base_url=base_url.get().rstrip("/"),
+                    timeout=state.settings.scout_ai_timeout_seconds,
+                )
+            status.set(_text_v1(key="scout.ollama_ready"))
+            ollama_verified[0] = True
+        except Exception:
+            status.set(_text_v1(key="scout.ollama_unavailable"))
+
+    def finish() -> None:
+        if not readiness.enabled_sources:
+            status.set(_text_v1(key="setup.no_sources"))
+            return
+        if provider.get() == "openai" and not resolve_openai_api_key():
+            status.set(_text_v1(key="setup.openai_missing"))
+            return
+        if provider.get() == "ollama" and not ollama_verified[0]:
+            status.set(_text_v1(key="setup.ollama_test_required"))
+            return
+        try:
+            completed = _complete_desktop_setup_v1(
+                settings=state.settings,
+                settings_path=state.settings_path,
+                provider=provider.get(),
+                base_url=base_url.get(),
+                model=model.get(),
+                output_directory=readiness.output_directory,
+            )
+        except Exception:
+            status.set(_text_v1(key="setup.invalid"))
+            return
+        result.append(completed)
+        window.destroy()
+
+    buttons = ttk.Frame(window)
+    buttons.grid(row=7, column=0, columnspan=2, pady=12)
+    ttk.Button(
+        buttons, text=_text_v1(key="scout.provider_test"), command=test_ollama
+    ).pack(side="left")
+    ttk.Button(buttons, text=_text_v1(key="setup.continue"), command=finish).pack(
+        side="left"
+    )
+    window.protocol("WM_DELETE_WINDOW", window.destroy)
+    window.transient(root)
+    window.grab_set()
+    root.wait_window(window)
+    return result[0] if result else None

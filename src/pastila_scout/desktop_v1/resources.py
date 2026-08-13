@@ -79,6 +79,23 @@ _TEXT_V1 = (
     ("migration.confirm", "Importați starea validată în profilul Windows?"),
     ("migration.error", "Starea de dezvoltare nu a putut fi importată."),
     ("sources.override.error", "Configurația surselor personalizate este invalidă."),
+    ("setup.title", "Configurare Pastila Scout"),
+    (
+        "setup.intro",
+        "Alege furnizorul și verifică pregătirea pentru utilizarea zilnică.",
+    ),
+    (
+        "setup.no_sources",
+        "Activează cel puțin o sursă Scout în configurația existentă.",
+    ),
+    (
+        "setup.openai_missing",
+        "Cheia OpenAI nu este disponibilă prin mecanismul existent.",
+    ),
+    ("setup.openai_local", "OpenAI este verificat local, fără apel și fără cost."),
+    ("setup.ollama_test_required", "Testează conexiunea Ollama înainte de continuare."),
+    ("setup.invalid", "Configurația nu este validă. Verifică furnizorul și modelul."),
+    ("setup.continue", "Salvează și continuă"),
 )
 _LOOKUP = dict(_TEXT_V1)
 if len(_LOOKUP) != len(_TEXT_V1):
