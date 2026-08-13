@@ -71,6 +71,7 @@ _TEXT_V1 = (
     ("editor.output", "Fisier de iesire"),
     ("editor.no_replace", "Nu inlocui fisierul existent"),
     ("editor.run", "Genereaza"),
+    ("editor.retry", "Reincearca"),
     ("editor.configuration_required", "Configuratia Editor nu este completa."),
     ("chief_editor.title", "Titlu episod / proiect"),
     ("chief_editor.section", "Sectiune"),

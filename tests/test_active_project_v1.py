@@ -434,6 +434,29 @@ def test_explicit_non_first_editor_material_registration_preserves_identity(tmp_
         )
 
 
+def test_multi_failed_retry_is_one_validated_worklist_transition(tmp_path):
+    database = tmp_path / "scout.db"
+    project_path = tmp_path / "active-project-v1.json"
+    _database(database)
+    _additional_event(database, 8, "Al doilea material")
+    store = ActiveProjectStoreV1(database_path=database, project_path=project_path)
+    store.handoff_many(event_ids=(7, 8))
+    for event_id in (7, 8):
+        store.mark_editor_item_running(event_id=event_id)
+        store.mark_editor_item_failed(event_id=event_id)
+
+    retried = store.retry_editor_items(event_ids=(8, 7))
+
+    assert tuple(item.event_id for item in retried.editor_worklist) == (7, 8)
+    assert all(
+        item.status is EditorWorkItemStatusV1.PENDING
+        for item in retried.editor_worklist
+    )
+    for invalid in ((7, 7), (7, 999), ()):
+        with pytest.raises(ValueError):
+            store.retry_editor_items(event_ids=invalid)
+
+
 def test_legacy_project_derives_worklist_and_stale_running_recovers(
     tmp_path, monkeypatch
 ):

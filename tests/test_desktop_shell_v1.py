@@ -199,6 +199,9 @@ def test_structural_entrypoint_creates_one_root_controller_and_view(monkeypatch)
         def bind_editor_action(self, *, callback):
             calls.append(("bind-editor", callback))
 
+        def bind_editor_retry_action(self, *, callback):
+            calls.append(("bind-editor-retry", callback))
+
         def bind_report_action(self, *, callback):
             calls.append(("bind-report", callback))
 
@@ -299,6 +302,14 @@ def test_withdrawn_tk_window_has_exact_structural_root_and_initial_state():
         assert view._editor_button.cget("foreground") == "#e31919"
         assert view._editor_button.cget("font") == "TkDefaultFont 11 bold"
         assert view._editor_button.master.cget("background") == "#e31919"
+        assert int(view._editor_retry_button.cget("width")) < int(
+            view._editor_button.cget("width")
+        )
+        generate_grid = view._editor_button.master.grid_info()
+        retry_grid = view._editor_retry_button.grid_info()
+        assert retry_grid["column"] == generate_grid["column"] == 0
+        assert retry_grid["columnspan"] == generate_grid["columnspan"] == 2
+        assert retry_grid["row"] == generate_grid["row"] + 2
         assert view._chief_save_button.cget("text") == "Salveaza"
         assert view._chief_save_button.cget("foreground") == "#e31919"
         assert view._chief_save_button.cget("font") == "TkDefaultFont 11 bold"
@@ -315,7 +326,11 @@ def test_withdrawn_tk_window_has_exact_structural_root_and_initial_state():
         )
         assert str(view._report_button.cget("state")) == "disabled"
         editor_actions = []
+        retry_actions = []
         view.bind_editor_action(callback=lambda **kwargs: editor_actions.append(kwargs))
+        view.bind_editor_retry_action(
+            callback=lambda **kwargs: retry_actions.append(kwargs)
+        )
         view.publish_editor_worklist(
             items=(
                 (7, "Prima stire", "pending"),
@@ -354,18 +369,23 @@ def test_withdrawn_tk_window_has_exact_structural_root_and_initial_state():
         view._editor_worklist.focus("8")
         view._editor_worklist_changed(None)
         assert view._active_project.get() == "A doua stire"
-        assert str(view._editor_button.cget("state")) == "disabled"
+        assert str(view._editor_button.cget("state")) == "normal"
+        view._editor()
+        assert editor_actions[-1]["input"].event_ids == (7, 8)
         view._editor_worklist.selection_set("8")
         view._editor_worklist_changed(None)
         assert str(view._editor_button.cget("state")) == "normal"
         view._editor()
-        assert editor_actions[-1]["input"].event_id == 8
+        assert editor_actions[-1]["input"].event_ids == (8,)
         view.publish_editor_worklist(
             items=((7, "Prima stire", "running"), (8, "A doua stire", "failed")),
         )
         assert view._editor_worklist.item("7", "values")[1] == "In procesare"
         assert view._editor_worklist.item("8", "values")[1] == "Eroare"
         assert str(view._editor_button.cget("state")) == "disabled"
+        assert str(view._editor_retry_button.cget("state")) == "normal"
+        view._editor_retry()
+        assert retry_actions == [{"input": (8,)}]
         view.publish_editor_worklist(items=())
         assert view._editor_worklist.get_children("") == ()
         assert view._active_project.get() == ""
@@ -389,7 +409,7 @@ def test_editor_slice2_generation_selection_is_safely_bounded():
     assert not _editor_selection_supported(
         selected_event_ids=(), eligible_event_ids=eligible
     )
-    assert not _editor_selection_supported(
+    assert _editor_selection_supported(
         selected_event_ids=(7, 8), eligible_event_ids=eligible
     )
     assert not _editor_selection_supported(
@@ -411,7 +431,6 @@ def test_editor_slice2_generation_selection_is_safely_bounded():
         {"callback_bound": False},
         {"configuration_ready": False},
         {"selected_event_ids": ()},
-        {"selected_event_ids": (7, 8)},
         {"selected_event_ids": (9,)},
     ):
         assert not _editor_action_enabled(**(baseline | changed))
@@ -463,7 +482,7 @@ def test_action_inputs_are_redacted_and_exact():
     scout = _DesktopScoutActionInputV1("7", "all")
     assert "7" not in repr(scout)
     editor = _DesktopEditorActionInputV1(
-        event_id=7,
+        event_ids=(7,),
         scout_input_path="a",
         selection_profile_path="b",
         episode_context_path="c",

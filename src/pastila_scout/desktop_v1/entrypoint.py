@@ -53,6 +53,7 @@ from pastila_scout.windows_state_v1.settings import (
 )
 
 from .controller import _DesktopTaskControllerV1
+from .editor_batch import _run_editor_batch_v1
 from .errors import _DesktopShellConfigurationError, _DesktopShellExecutionError
 from .first_run import _complete_desktop_setup_v1, _inspect_desktop_readiness_v1
 from .integrated_editor import _integrated_editor_request_v1
@@ -193,6 +194,7 @@ def main() -> int:
         def publish_snapshot(*, snapshot) -> None:
             cells["view"].publish_snapshot(snapshot=snapshot)  # type: ignore[attr-defined]
             if snapshot.application_state is _DesktopTaskStateV1.FAILED:
+                cells["editor_batch_polling"] = False
                 failed_project = project_store.load_runtime_state()
                 if failed_project is not None:
                     cells["project"] = failed_project
@@ -227,70 +229,115 @@ def main() -> int:
 
         def run_editor(*, input) -> None:
             selected = _reconstruct_desktop_editor_action_input_v1(input)
-            event_id = selected.event_id
-            project = project_store.mark_editor_item_running(event_id=event_id)
-            cells["project"] = project
-            _publish_editor_worklist(view, project)
-            execution: dict[str, Path] = {}
+            event_ids = selected.event_ids
+            project = cells.get("project")
+            if project is None:
+                raise _DesktopShellConfigurationError() from None
+            event_order = {
+                event_id: index for index, event_id in enumerate(event_ids, 1)
+            }
+            event_titles = {
+                event.event_id: event.canonical_title
+                for event in project.scout_input.ranked_events
+            }
+            cells["editor_batch_polling"] = True
+
+            def poll_editor_batch() -> None:
+                if not cells.get("editor_batch_polling") or closed:
+                    return
+                current = project_store.load_runtime_state()
+                if current is not None:
+                    cells["project"] = current
+                    _publish_editor_worklist(view, current)
+                    running = tuple(
+                        item.event_id
+                        for item in current.editor_worklist
+                        if item.status.value == "running"
+                        and item.event_id in event_order
+                    )
+                    if running:
+                        event_id = running[0]
+                        view.publish_editor_result(
+                            status=(
+                                f"Se proceseaza {event_order[event_id]} din "
+                                f"{len(event_ids)}: {event_titles[event_id]}"
+                            )
+                        )
+                root.after(100, poll_editor_batch)
+
+            root.after(0, poll_editor_batch)
 
             def task():
-                try:
+                def execute(event_id: int) -> tuple[Path, str]:
                     request = _integrated_editor_request_v1(
                         project=project,
                         settings=cells["settings"],
                         event_id=event_id,
                     )
-                    execution["output_path"] = request.destination.path
-                    return facade.run_editor(
+                    result = facade.run_editor(
                         request=EditorDesktopRequestV1(application_request=request),
                         progress_sink=_DesktopStartupProgressSinkV1(),
                     )
-                except BaseException:
-                    project_store.mark_editor_item_failed(event_id=event_id)
-                    raise
-
-            def on_completed(*, result) -> None:
-                try:
-                    _publish_editor_result(view, result)
                     application_result = reconstruct_editor_desktop_result(
                         result
                     ).application_result
                     if not (
                         application_result.handoff_permitted
-                        and application_result.output_path is not None
+                        and application_result.output_path == request.destination.path
                         and application_result.payload_sha256 is not None
-                        and application_result.output_path
-                        == execution.get("output_path")
                     ):
                         raise _DesktopShellExecutionError() from None
-                    project_store.record_editor_output_for_event(
-                        event_id=event_id,
-                        output_path=application_result.output_path,
-                        payload_sha256=application_result.payload_sha256,
+                    return (
+                        application_result.output_path,
+                        application_result.payload_sha256,
                     )
-                    cells["project"] = project_store.mark_editor_item_completed(
-                        event_id=event_id
-                    )
-                except BaseException:
-                    cells["project"] = project_store.mark_editor_item_failed(
-                        event_id=event_id
-                    )
-                    _publish_editor_worklist(view, cells["project"])
-                    raise
+
+                return _run_editor_batch_v1(
+                    store=project_store, event_ids=event_ids, execute=execute
+                )
+
+            def on_completed(*, result) -> None:
+                cells["editor_batch_polling"] = False
+                cells["project"] = project_store.load_runtime_state()
                 _publish_editor_worklist(view, cells["project"])
                 _publish_chief_editor(view, cells["project"])
-
-            try:
-                controller.submit_application(task=task, on_completed=on_completed)
-            except BaseException:
-                cells["project"] = project_store.mark_editor_item_failed(
-                    event_id=event_id
+                view.publish_editor_result(
+                    status=(
+                        f"{len(result.attempted_event_ids)} procesate: "
+                        f"{len(result.completed_event_ids)} generate, "
+                        f"{len(result.failed_event_ids)} erori"
+                    )
                 )
-                _publish_editor_worklist(view, cells["project"])
-                raise
+
+            controller.submit_application(task=task, on_completed=on_completed)
 
         def open_report(*, reference: str) -> None:
             facade.open_report(reference=reference)
+
+        def retry_editor(*, input: tuple[int, ...]) -> None:
+            event_ids = input
+            current = project_store.load_runtime_state()
+            selected = set(event_ids)
+            ordered = tuple(
+                item.event_id
+                for item in current.editor_worklist
+                if item.event_id in selected
+            )
+            failed = {
+                item.event_id
+                for item in current.editor_worklist
+                if item.status.value == "failed"
+            }
+            if (
+                type(event_ids) is not tuple
+                or not event_ids
+                or len(ordered) != len(event_ids)
+                or not selected.issubset(failed)
+            ):
+                raise _DesktopShellConfigurationError() from None
+            project = project_store.retry_editor_items(event_ids=ordered)
+            cells["project"] = project
+            _publish_editor_worklist(view, project)
 
         def handoff(*, input) -> None:
             _complete_handoff(
@@ -368,6 +415,7 @@ def main() -> int:
 
         view.bind_scout_action(callback=run_scout)
         view.bind_editor_action(callback=run_editor)
+        view.bind_editor_retry_action(callback=retry_editor)
         view.bind_report_action(callback=open_report)
         view.bind_handoff_action(callback=handoff)
         view.bind_chief_editor_actions(

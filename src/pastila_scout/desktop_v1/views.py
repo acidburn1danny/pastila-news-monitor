@@ -102,7 +102,9 @@ def _editor_configuration_ready(
 def _editor_selection_supported(
     *, selected_event_ids: tuple[int, ...], eligible_event_ids: frozenset[int]
 ) -> bool:
-    return len(selected_event_ids) == 1 and selected_event_ids[0] in eligible_event_ids
+    return bool(selected_event_ids) and set(selected_event_ids).issubset(
+        eligible_event_ids
+    )
 
 
 def _editor_action_enabled(
@@ -427,6 +429,7 @@ class _DesktopMainWindowV1:
         self._editor_worklist.grid(row=2, column=0, columnspan=2, sticky="nsew", pady=8)
         self._editor_worklist.bind("<<TreeviewSelect>>", self._editor_worklist_changed)
         self._editor_eligible_event_ids: frozenset[int] = frozenset()
+        self._editor_failed_event_ids: frozenset[int] = frozenset()
         self._editor_idle = True
         self._active_project = tkinter.StringVar(value="")
         ttk.Label(
@@ -486,6 +489,14 @@ class _DesktopMainWindowV1:
             command=self._editor,
         )
         self._editor_button.master.grid(row=row + 2, column=0, columnspan=2)
+        self._editor_retry_button = ttk.Button(
+            page,
+            text=_text_v1(key="editor.retry"),
+            state="disabled",
+            command=self._editor_retry,
+            width=12,
+        )
+        self._editor_retry_button.grid(row=row + 4, column=0, columnspan=2)
 
     def _build_chief_editor(self) -> None:
         page = ttk.Frame(self._content)
@@ -651,6 +662,10 @@ class _DesktopMainWindowV1:
             )
         self._sync_editor_action()
 
+    def bind_editor_retry_action(self, *, callback) -> None:
+        self._bind("editor_retry", callback)
+        self._sync_editor_action()
+
     def bind_report_action(self, *, callback) -> None:
         self._bind("report", callback)
         self._sync_report()
@@ -742,12 +757,17 @@ class _DesktopMainWindowV1:
             self._invoke("handoff", input=ordered)
 
     def _editor(self) -> None:
-        selected = self._editor_worklist.selection()
-        if len(selected) != 1:
+        selected = set(self._editor_worklist.selection())
+        ordered = tuple(
+            int(iid)
+            for iid in self._editor_worklist.get_children("")
+            if iid in selected
+        )
+        if not ordered:
             raise _DesktopShellConfigurationError() from None
         values = {name: value.get() for name, value in self._editor_values.items()}
         values.update(
-            event_id=int(selected[0]),
+            event_ids=ordered,
             provider=self._provider.get(),
             no_replace=bool(self._no_replace.get()),
         )
@@ -763,6 +783,17 @@ class _DesktopMainWindowV1:
         title = self._editor_worklist.set(focused, "story") if focused else ""
         self._active_project.set(title)
         self._sync_editor_action()
+
+    def _editor_retry(self) -> None:
+        selected = set(self._editor_worklist.selection())
+        ordered = tuple(
+            int(iid)
+            for iid in self._editor_worklist.get_children("")
+            if iid in selected
+        )
+        if not ordered:
+            raise _DesktopShellConfigurationError() from None
+        self._invoke("editor_retry", input=ordered)
 
     def _report(self) -> None:
         self._invoke("report", reference=self._report_reference)
@@ -875,6 +906,9 @@ class _DesktopMainWindowV1:
             self._editor_worklist.focus(focused)
         self._editor_eligible_event_ids = frozenset(
             event_id for event_id, _, status in items if status == "pending"
+        )
+        self._editor_failed_event_ids = frozenset(
+            event_id for event_id, _, status in items if status == "failed"
         )
         self._editor_worklist_changed(None)
 
@@ -991,6 +1025,7 @@ class _DesktopMainWindowV1:
             self._navigation.configure(selectmode="none")
             self._scout_button.configure(state="disabled")
             self._editor_button.configure(state="disabled")
+            self._editor_retry_button.configure(state="disabled")
             self._handoff_button.configure(state="disabled")
             self._report_button.configure(state="disabled")
 
@@ -1009,6 +1044,15 @@ class _DesktopMainWindowV1:
             eligible_event_ids=self._editor_eligible_event_ids,
         )
         self._editor_button.configure(state="normal" if enabled else "disabled")
+        retry_enabled = (
+            self._editor_idle
+            and "editor_retry" in self._bindings
+            and bool(selected)
+            and set(selected).issubset(self._editor_failed_event_ids)
+        )
+        self._editor_retry_button.configure(
+            state="normal" if retry_enabled else "disabled"
+        )
 
     def __repr__(self) -> str:
         return "_DesktopMainWindowV1(<redacted>)"

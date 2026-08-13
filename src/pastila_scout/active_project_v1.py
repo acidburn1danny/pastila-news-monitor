@@ -375,11 +375,44 @@ class ActiveProjectStoreV1:
         )
 
     def retry_editor_item(self, *, event_id: int) -> ActiveProjectV1:
-        return self._transition_editor_item(
-            event_id=event_id,
-            allowed=(EditorWorkItemStatusV1.FAILED,),
-            target=EditorWorkItemStatusV1.PENDING,
+        return self.retry_editor_items(event_ids=(event_id,))
+
+    def retry_editor_items(self, *, event_ids: tuple[int, ...]) -> ActiveProjectV1:
+        project = self._required()
+        if (
+            type(event_ids) is not tuple
+            or not event_ids
+            or any(type(value) is not int or value <= 0 for value in event_ids)
+            or len(event_ids) != len(set(event_ids))
+        ):
+            raise ValueError("Tranzitie Editor invalida")
+        selected = set(event_ids)
+        matches = tuple(
+            item for item in project.editor_worklist if item.event_id in selected
         )
+        if len(matches) != len(event_ids) or any(
+            item.status is not EditorWorkItemStatusV1.FAILED for item in matches
+        ):
+            raise ValueError("Tranzitie Editor invalida")
+        worklist = tuple(
+            EditorWorkItemV1(item.event_id, EditorWorkItemStatusV1.PENDING)
+            if item.event_id in selected
+            else item
+            for item in project.editor_worklist
+        )
+        updated = ActiveProjectV1(
+            project.project_id,
+            project.title,
+            project.handed_off_at,
+            project.scout_input,
+            project.editor_materials,
+            project.chief_editor_items,
+            project.chief_editor_title,
+            project.chief_editor_updated_at,
+            worklist,
+        )
+        self._write(updated)
+        return updated
 
     def _transition_editor_item(
         self,

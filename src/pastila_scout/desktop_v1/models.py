@@ -218,7 +218,7 @@ class _DesktopScoutActionInputV1(_ActionInputBase):
 
 @dataclass(frozen=True, slots=True, init=False, repr=False, eq=False)
 class _DesktopEditorActionInputV1(_ActionInputBase):
-    event_id: int
+    event_ids: tuple[int, ...]
     scout_input_path: str
     selection_profile_path: str
     episode_context_path: str
@@ -231,7 +231,7 @@ class _DesktopEditorActionInputV1(_ActionInputBase):
 
     def __init__(self, *values, **kwargs) -> None:
         names = (
-            "event_id",
+            "event_ids",
             "scout_input_path",
             "selection_profile_path",
             "episode_context_path",
@@ -246,8 +246,10 @@ class _DesktopEditorActionInputV1(_ActionInputBase):
             _bad()
         ordered = tuple(kwargs[name] for name in names)
         if (
-            type(ordered[0]) is not int
-            or ordered[0] <= 0
+            type(ordered[0]) is not tuple
+            or not ordered[0]
+            or any(type(value) is not int or value <= 0 for value in ordered[0])
+            or len(ordered[0]) != len(set(ordered[0]))
             or any(type(value) is not str for value in ordered[1:-1])
             or type(ordered[-1]) is not bool
         ):
