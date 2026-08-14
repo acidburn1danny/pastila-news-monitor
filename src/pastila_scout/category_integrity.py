@@ -407,6 +407,8 @@ _FOREIGN_INSTITUTION_PHRASES = (
     "ministerul din",
     "ministerul de externe de la",
     "presedintele statului",
+    "statul major de la",
+    "statul major din",
     "autoritatile de la",
     "autoritatile din",
 )
@@ -416,6 +418,52 @@ _FOREIGN_EXACT_TOKENS = frozenset(
 _FOREIGN_PHRASES = ("nordul europei", "sudul europei")
 _ROMANIAN_CONTEXT_STEMS = frozenset(
     {"bucurest", "romania", "romanesc", "roman", "cotroceni"}
+)
+_ROMANIAN_INSTITUTION_PHRASES = (
+    "armata romana",
+    "armata romaniei",
+    "armatei romane",
+    "camera deputatilor",
+    "instanta suprema",
+    "institutul national de sanatate publica",
+    "ministra afacerilor externe",
+    "ministrul afacerilor externe",
+    "ministrul apararii",
+    "ministrul interimar al apararii",
+    "ministrului apararii",
+    "ministrului interimar al apararii",
+    "ministerul apararii",
+    "ministerului apararii",
+    "ministerul energiei",
+    "ministerul finantelor",
+    "ministerul justitiei",
+    "ministerul mediului",
+)
+_CONTEXTUAL_ROMANIAN_INSTITUTION_PHRASES = ("statul major", "statului major")
+_ROMANIAN_NAMED_INSTITUTION_TOKENS = frozenset({"insp", "mapn", "mae", "romsilva"})
+_INSTITUTIONAL_ACTION_STEMS = frozenset(
+    {
+        "acuz",
+        "anunt",
+        "aproba",
+        "avertiz",
+        "cer",
+        "confirma",
+        "convoc",
+        "decid",
+        "declar",
+        "emite",
+        "explic",
+        "inform",
+        "investig",
+        "num",
+        "reaction",
+        "solicit",
+        "spun",
+        "suspend",
+        "transmit",
+        "vot",
+    }
 )
 _FOREIGN_STEMS = frozenset(
     {
@@ -690,7 +738,13 @@ def article_category(
     summary_tokens = frozenset(tokens_in_order(summary or ""))
     summary_text = " ".join(tokens_in_order(summary or ""))
     foreign_title = _foreign_in_romanian(title_tokens, title_text)
-    domestic_context = _domestic_primary(title_tokens, title_text)
+    domestic_context = (
+        _domestic_primary(title_tokens, title_text)
+        or _hard_domestic_summary(summary_tokens, summary_text)
+        or _romanian_institutional_action(
+            title_tokens | summary_tokens, f"{title_text} {summary_text}"
+        )
+    )
     if foreign_title and not domestic_context:
         return "Externe"
     contextual = _contextual_category(
@@ -847,7 +901,13 @@ def _hard_domestic_primary(tokens: frozenset[str], title: str) -> bool:
         phrase in title for phrase in _FOREIGN_INSTITUTION_PHRASES
     ) and not _has_stem(tokens, _ROMANIAN_CONTEXT_STEMS):
         return False
-    if tokens & (_ROMANIAN_INSTITUTION_TOKENS | _DOMESTIC_SOCIAL_AUTHORITY_TOKENS):
+    if tokens & (
+        _ROMANIAN_INSTITUTION_TOKENS
+        | _ROMANIAN_NAMED_INSTITUTION_TOKENS
+        | _DOMESTIC_SOCIAL_AUTHORITY_TOKENS
+    ):
+        return True
+    if _romanian_public_system(tokens, title):
         return True
     return any(
         phrase in title
@@ -870,7 +930,9 @@ def _hard_domestic_primary(tokens: frozenset[str], title: str) -> bool:
 
 
 def _hard_domestic_summary(tokens: frozenset[str], title: str) -> bool:
-    if tokens & _ROMANIAN_INSTITUTION_TOKENS:
+    if tokens & (_ROMANIAN_INSTITUTION_TOKENS | _ROMANIAN_NAMED_INSTITUTION_TOKENS):
+        return True
+    if _romanian_public_system(tokens, title):
         return True
     return any(
         phrase in title
@@ -907,6 +969,8 @@ def _contextual_category(
     """Resolve narrow role/action cases without turning summary into a classifier."""
 
     evidence = _context_evidence(title_tokens, title, summary_tokens, summary)
+    all_tokens = title_tokens | summary_tokens
+    all_text = f"{title} {summary}"
     serious_social = _has_stem(title_tokens | summary_tokens, _SERIOUS_SOCIAL_STEMS)
     if serious_social and "Social" in domestic:
         if evidence.foreign_strength > evidence.domestic_strength:
@@ -914,6 +978,17 @@ def _contextual_category(
         return "Social"
     if evidence.action_family == "sports" and "Diverse" in domestic:
         return "Diverse"
+    if _romanian_institutional_action(all_tokens, all_text):
+        if _romanian_public_health(all_text) or (
+            _romanian_public_system(all_tokens, all_text)
+            and (
+                evidence.action_family == "social"
+                or _family_score(all_tokens, all_text, "Social")
+                > _family_score(all_tokens, all_text, "Politica")
+            )
+        ):
+            return "Social" if "Social" in domestic else None
+        return "Politica" if "Politica" in domestic else None
     if evidence.role_family == "political" and _has_stem(
         title_tokens | summary_tokens, _LIFESTYLE_STEMS
     ):
@@ -991,6 +1066,88 @@ def _context_evidence(
         domestic_strength=domestic_strength,
         foreign_strength=foreign_strength,
     )
+
+
+def _romanian_institutional_action(tokens: frozenset[str], text: str) -> bool:
+    institution = (
+        bool(tokens & _ROMANIAN_NAMED_INSTITUTION_TOKENS)
+        or any(phrase in text for phrase in _ROMANIAN_INSTITUTION_PHRASES)
+        or (
+            _explicit_romanian_context(tokens)
+            and any(
+                phrase in text for phrase in _CONTEXTUAL_ROMANIAN_INSTITUTION_PHRASES
+            )
+        )
+    )
+    if not institution:
+        return False
+    if any(phrase in text for phrase in _FOREIGN_INSTITUTION_PHRASES) and not tokens & (
+        _ROMANIAN_NAMED_INSTITUTION_TOKENS
+    ):
+        return False
+    if _foreign_in_romanian(tokens, text) and not (
+        tokens & _ROMANIAN_NAMED_INSTITUTION_TOKENS
+        or _explicit_romanian_context(tokens)
+    ):
+        return False
+    return _has_stem(tokens, _INSTITUTIONAL_ACTION_STEMS)
+
+
+def _romanian_public_system(tokens: frozenset[str], text: str) -> bool:
+    public_health = _romanian_public_health(text)
+    domestic_location = _explicit_domestic_location(tokens, text)
+    domestic_rescue = (
+        domestic_location
+        and (
+            _has_stem(tokens, _EMERGENCY_ROLE_STEMS)
+            or _has_stem(tokens, _DOMESTIC_SOCIAL_AUTHORITY_TOKENS)
+        )
+        and _has_stem(tokens, _SOCIAL_ACTION_STEMS)
+    )
+    domestic_authority = domestic_location and any(
+        token.startswith("autoritat") for token in tokens
+    )
+    return public_health or domestic_rescue or domestic_authority
+
+
+def _romanian_public_health(text: str) -> bool:
+    return "autoritatile din sanatate" in text or (
+        "institutul national de sanatate publica" in text
+    )
+
+
+def _explicit_romanian_context(tokens: frozenset[str]) -> bool:
+    return bool(
+        tokens
+        & {
+            "bucuresti",
+            "romania",
+            "romaniei",
+            "roman",
+            "romana",
+            "romane",
+            "romani",
+            "romanii",
+            "romanesc",
+            "romaneasca",
+            "romanesti",
+        }
+    )
+
+
+def _explicit_domestic_location(tokens: frozenset[str], text: str) -> bool:
+    return bool(
+        tokens
+        & {
+            "bucuresti",
+            "bucegi",
+            "carpati",
+            "costinesti",
+            "romania",
+            "romaniei",
+            "tulcea",
+        }
+    ) or any(phrase in text for phrase in ("in tara noastra", "pe teritoriul tarii"))
 
 
 def _role_family(tokens: frozenset[str]) -> str | None:

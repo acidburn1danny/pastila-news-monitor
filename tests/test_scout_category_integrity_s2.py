@@ -650,6 +650,106 @@ def test_s22_contextual_collision_and_precedence(
 
 
 @pytest.mark.parametrize(
+    ("title", "summary", "expected"),
+    (
+        (
+            "Romania va informa aliatii dupa dronele doborate",
+            "Ministrul Afacerilor Externe transmite concluziile anchetei privind spatiul aerian national.",
+            "Politica",
+        ),
+        (
+            "Seful Armatei Romane avertizeaza asupra incidentelor din Marea Neagra",
+            "Seful Statului Major al Apararii explica riscurile pentru Romania.",
+            "Politica",
+        ),
+        (
+            "Doua drone au fost doborate intr-un timp record",
+            "Ministrul spune ca Armata Romaniei face maximul posibil.",
+            "Politica",
+        ),
+        (
+            "O drona a fost doborata pe teritoriul Romaniei",
+            "MApN a anuntat masura luata de avioanele F-16 romanesti.",
+            "Politica",
+        ),
+        (
+            "Patru fosti judecatori ai instantei supreme au fost numiti notari",
+            "Ministerul Justitiei anunta decizia dupa votul Camerei Deputatilor.",
+            "Politica",
+        ),
+        (
+            "Acciza la motorina va fi redusa temporar",
+            "Ministerul Finantelor a anuntat si aprobat masura fiscala.",
+            "Politica",
+        ),
+        (
+            "Autoritatile din sanatate anunta cazuri de virus cu nume strain",
+            "Institutul National de Sanatate Publica a raportat cazurile din Romania.",
+            "Social",
+        ),
+        (
+            "Salvamontistii romani cauta un tanar britanic disparut in Carpati",
+            "Echipele reiau cautarea in muntii din Romania.",
+            "Social",
+        ),
+        (
+            "Turistii au fost evacuati de pe plaja din Costinesti din cauza unei drone",
+            "Autoritatile din Romania au evacuat plaja si au intervenit la fata locului.",
+            "Social",
+        ),
+        (
+            "Un oficial din Ministerul Energiei infirma informatii despre Ucraina",
+            "Secretarul de stat a explicat masura luata de Romania.",
+            "Politica",
+        ),
+        (
+            "Ministerul de Externe de la Teheran anunta masuri pentru Romania",
+            "Guvernul iranian a aprobat decizia la Teheran.",
+            "Externe",
+        ),
+        (
+            "Fregatele Rusiei au fost avariate de un atac ucrainean",
+            "Statul Major de la Kiev a confirmat loviturile.",
+            "Externe",
+        ),
+        (
+            "Romania analizeaza declaratia Ministerului Apararii din Ucraina",
+            "Ministerul de la Kiev a anuntat masura.",
+            "Externe",
+        ),
+        (
+            "Pompierii romani au ajuns in Franta pentru incendiile de vegetatie",
+            "Presedintele francez le-a multumit salvatorilor trimisi de Romania.",
+            "Externe",
+        ),
+        (
+            "O femeie explica operatiile estetice facute recent",
+            (
+                "Medicul estetician a oferit detalii despre operatii. "
+                "Articolul apare prima data in Romania TV."
+            ),
+            "Diverse",
+        ),
+        (
+            "Ministrul povesteste despre dieta si vacanta sa",
+            "Interviul nu priveste activitatea institutiei.",
+            "Diverse",
+        ),
+    ),
+)
+def test_s24_romanian_institution_and_public_system_precedence(
+    title: str, summary: str, expected: str
+) -> None:
+    article = _article(
+        1,
+        title,
+        ("Politica", "Social", "CanCan", "Diverse"),
+    ).model_copy(update={"summary": summary})
+
+    assert derive_categories((article,)) == (expected,)
+
+
+@pytest.mark.parametrize(
     "titles",
     (
         (
