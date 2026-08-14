@@ -101,7 +101,7 @@ def test_clean_plan_builds_coherent_multi_event_group_and_metadata() -> None:
     assert proposal.event_ids == (1, 2, 3)
     assert len(proposal.pairwise_similarities) == 3
     assert all(pair.score >= 0.72 for pair in proposal.pairwise_similarities)
-    assert proposal.proposed_categories == ("Social", "Politica", "Economie")
+    assert proposal.proposed_categories == ("Diverse",)
     assert proposal.surviving_event_id == 2
     assert proposal.canonical_selection.article_id == 2
     assert "priority-2 source=True" in proposal.canonical_selection.reason
@@ -353,7 +353,7 @@ def test_apply_preserves_articles_recalculates_counts_and_categories(
         assert event["canonical_selection_reason"]
         assert event["first_published_at"] == "2026-07-26T08:00:00+00:00"
         assert event["last_published_at"] == "2026-07-26T09:00:00+00:00"
-        assert event["category"] == "Social"
+        assert event["category"] == "Diverse"
         assert survivors == (second_event,)
         assert merged == (first_event,)
         assert [
@@ -361,7 +361,7 @@ def test_apply_preserves_articles_recalculates_counts_and_categories(
             for row in connection.execute(
                 "SELECT category FROM event_categories ORDER BY position"
             )
-        ] == ["Social", "Politica", "Economie"]
+        ] == ["Diverse"]
         assert (
             connection.execute("SELECT COUNT(*) FROM editorial_queue").fetchone()[0]
             == 2
@@ -373,6 +373,9 @@ def test_application_rolls_back_all_proposals_on_failure(tmp_path: Path) -> None
     _, _, first_event, _ = _database_with_matching_events(database)
     plan = _database_plan(database)
     with open_database(database) as connection:
+        categories_before = connection.execute(
+            "SELECT event_id, category, position FROM event_categories ORDER BY event_id"
+        ).fetchall()
         connection.execute(
             f"""CREATE TRIGGER reject_event_delete BEFORE DELETE ON events
                 WHEN OLD.id = {first_event}
@@ -386,7 +389,9 @@ def test_application_rolls_back_all_proposals_on_failure(tmp_path: Path) -> None
             "SELECT COUNT(DISTINCT event_id) FROM articles"
         ).fetchone()[0]
         assert memberships == 2
-        assert (
-            connection.execute("SELECT COUNT(*) FROM event_categories").fetchone()[0]
-            == 0
-        )
+        categories_after = connection.execute(
+            "SELECT event_id, category, position FROM event_categories ORDER BY event_id"
+        ).fetchall()
+        assert [tuple(row) for row in categories_after] == [
+            tuple(row) for row in categories_before
+        ]
