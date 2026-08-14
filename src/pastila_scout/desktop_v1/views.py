@@ -27,14 +27,12 @@ from .settings import (
 _SCOUT_PERIOD_CHOICES = ("1", "3", "7", "14", "30")
 _OPENAI_MODEL_CHOICES = ("gpt-4.1-mini",)
 _SCOUT_CATEGORY_CHOICES = (
-    "all",
+    "Toate",
     "Politica",
     "Social",
-    "Conspiratii",
-    "Economie",
     "CanCan",
-    "Externe",
     "Diverse",
+    "Externe",
 )
 _EDITOR_REQUIRED_CONFIGURATION = ("model", "timeout_seconds", "output_path")
 _BUTTON_STYLE = "TButton"
@@ -271,7 +269,9 @@ class _DesktopMainWindowV1:
     def _apply_settings(self) -> None:
         settings = self._settings
         self._period.set(str(settings.scout_period_days))
-        self._category.set(settings.scout_category)
+        self._category.set(
+            "Toate" if settings.scout_category == "all" else settings.scout_category
+        )
         self._scout_provider.set(settings.scout_provider)
         self._ollama_url.set(settings.ollama_base_url)
         self._ollama_model.set(settings.ollama_model)
@@ -802,7 +802,9 @@ class _DesktopMainWindowV1:
         self._invoke(
             "scout",
             input=_DesktopScoutActionInputV1(
-                self._period.get(), self._category.get(), self._targeted_query.get()
+                self._period.get(),
+                "all" if self._category.get() == "Toate" else self._category.get(),
+                self._targeted_query.get(),
             ),
         )
 

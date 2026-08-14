@@ -7,8 +7,8 @@ from datetime import UTC, datetime
 
 from pastila_scout.category_integrity import (
     CATEGORY_ORDER,
-    article_categories,
-    is_clearly_english_title,
+    DOMESTIC_TIE_ORDER,
+    article_category,
 )
 from pastila_scout.models import (
     ArticleProvenance,
@@ -31,14 +31,7 @@ def canonicalize_event(
         raise ValueError(f"Event {event.id} has no articles to canonicalize")
     ordered_articles = tuple(sorted(articles, key=lambda article: article.id))
     selected = select_canonical_article(ordered_articles)
-    categories = derive_categories(ordered_articles)
-    categories = _prioritize_canonical_title_category(
-        categories, selected=selected, articles=ordered_articles
-    )
-    if not categories:
-        categories = tuple(
-            category for category in event.categories if category in _CATEGORY_ORDER
-        )[:3]
+    categories = derive_categories(ordered_articles) or ("Diverse",)
     summary = selected.summary
     if (
         event.canonical_article_id == selected.id
@@ -96,21 +89,51 @@ def select_canonical_article(
 
 
 def derive_categories(articles: Sequence[ArticleProvenance]) -> tuple[str, ...]:
-    """Derive up to three categories by article frequency and vocabulary order."""
+    """Resolve exactly one event category from per-article semantic votes."""
 
     counts: Counter[str] = Counter()
     for article in articles:
-        candidates = article_categories(
+        candidate = article_category(
             article.title,
-            set(article.source_categories) | _raw_categories(article.raw_payload),
+            (*article.source_categories, *sorted(_raw_categories(article.raw_payload))),
+            source_id=article.source_id,
+            source_is_externe="Externe" in article.source_categories,
         )
-        counts.update(
-            category for category in candidates if category in _CATEGORY_ORDER
-        )
+        if candidate is not None:
+            counts[candidate] += 1
+    if not counts:
+        return ()
+    external = counts["Externe"]
+    if external and external >= sum(counts.values()) - external:
+        return ("Externe",)
+    domestic_order = {
+        category: index for index, category in enumerate(DOMESTIC_TIE_ORDER)
+    }
     ranked = sorted(
-        counts, key=lambda category: (-counts[category], _CATEGORY_ORDER[category])
+        counts,
+        key=lambda category: (
+            -counts[category],
+            domestic_order.get(category, len(domestic_order)),
+            category.casefold(),
+            category,
+        ),
     )
-    return tuple(ranked[:3])
+    if len(ranked) > 1 and counts[ranked[0]] == counts[ranked[1]]:
+        semantic = {
+            article_category(
+                article.title,
+                (
+                    *article.source_categories,
+                    *sorted(_raw_categories(article.raw_payload)),
+                ),
+                source_is_externe="Externe" in article.source_categories,
+            )
+            for article in articles
+        }
+        if len(semantic) == 1 and None not in semantic and "Diverse" not in semantic:
+            return (semantic.pop(),)
+        return ("Diverse",)
+    return (ranked[0],)
 
 
 def canonical_selection_reason(article: ArticleProvenance) -> str:
@@ -122,25 +145,6 @@ def canonical_selection_reason(article: ArticleProvenance) -> str:
         f"{article.source_priority == 2}; completeness={completeness}; "
         f"publication={article.published_at or 'unknown'}; deterministic ID fallback"
     )
-
-
-def _prioritize_canonical_title_category(
-    categories: tuple[str, ...],
-    *,
-    selected: ArticleProvenance,
-    articles: Sequence[ArticleProvenance],
-) -> tuple[str, ...]:
-    """Keep an English canonical title external absent a domestic majority."""
-
-    if not is_clearly_english_title(selected.title):
-        return categories
-    english_articles = sum(is_clearly_english_title(item.title) for item in articles)
-    if english_articles < len(articles) - english_articles:
-        return categories
-    return (
-        "Externe",
-        *(category for category in categories if category != "Externe"),
-    )[:3]
 
 
 def _raw_categories(raw_payload: str | None) -> set[str]:

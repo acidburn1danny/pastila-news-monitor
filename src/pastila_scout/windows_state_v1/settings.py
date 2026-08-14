@@ -231,6 +231,11 @@ def _read_settings(path: Path) -> WindowsSettingsV1:
 
 
 def _validate(values: dict[str, object]) -> dict[str, object]:
+    values["scout_category"] = {
+        "Economie": "Diverse",
+        "Conspiratii": "CanCan",
+        "Toate": "all",
+    }.get(values.get("scout_category"), values.get("scout_category"))
     if (
         values["schema"] != "pastila-scout-settings"
         or type(values["schema"]) is not str
@@ -245,8 +250,6 @@ def _validate(values: dict[str, object]) -> dict[str, object]:
     if type(values["scout_category"]) is not str or values["scout_category"] not in {
         "Politica",
         "Social",
-        "Conspiratii",
-        "Economie",
         "CanCan",
         "Externe",
         "Diverse",

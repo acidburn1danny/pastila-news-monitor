@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import inspect
+import json
 import sqlite3
 from pathlib import Path
 
@@ -16,6 +17,7 @@ from pastila_scout.desktop_v1.views import (
     _PRIMARY_ACTION_BUTTON_OPTIONS,
     _PRIMARY_ACTION_COLOR,
     _PRIMARY_LABEL_STYLE,
+    _SCOUT_CATEGORY_CHOICES,
     _SCOUT_STATUS_STYLE,
     _SEARCH_ACTION_COLUMN,
     _SEARCH_ENTRY_COLUMN,
@@ -26,6 +28,7 @@ from pastila_scout.desktop_v1.views import (
     _primary_action_button,
     _restored_candidate_summary,
 )
+from pastila_scout.windows_state_v1.settings import _read_settings
 
 
 def _events(path: Path) -> None:
@@ -261,3 +264,30 @@ def test_failed_source_summary_uses_authoritative_collection_count(
 def test_restored_news_summary_has_dynamic_romanian_number_agreement(count, expected):
     assert _restored_candidate_summary(current="0", count=count) == expected
     assert "candidat" not in expected
+
+
+def test_scout_category_dropdown_uses_final_filter_contract() -> None:
+    assert _SCOUT_CATEGORY_CHOICES == (
+        "Toate",
+        "Politica",
+        "Social",
+        "CanCan",
+        "Diverse",
+        "Externe",
+    )
+
+
+@pytest.mark.parametrize(
+    ("saved", "expected"),
+    (("Economie", "Diverse"), ("Conspiratii", "CanCan"), ("Toate", "all")),
+)
+def test_saved_legacy_scout_category_migrates_to_final_filter_contract(
+    tmp_path: Path, saved: str, expected: str
+) -> None:
+    defaults = Path("src/pastila_scout/desktop_v1/default-settings-v1.json")
+    payload = json.loads(defaults.read_text(encoding="utf-8"))
+    payload["scout_category"] = saved
+    path = tmp_path / "settings.json"
+    path.write_text(json.dumps(payload), encoding="utf-8")
+
+    assert _read_settings(path).scout_category == expected

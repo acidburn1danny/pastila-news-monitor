@@ -13,8 +13,7 @@ from enum import StrEnum
 from pathlib import Path
 
 from pastila_scout import __version__
-from pastila_scout.category_integrity import CATEGORY_ORDER
-from pastila_scout.contracts.common import ALLOWED_CATEGORIES
+from pastila_scout.category_integrity import CATEGORY_ORDER, normalize_category
 from pastila_scout.contracts.identity import (
     assign_scout_input_identity,
     verify_scout_input_identity,
@@ -112,18 +111,17 @@ class ActiveProjectStoreV1:
             rows = connection.execute(
                 f"""SELECT id, canonical_title, summary, category, source_count,
                            article_count
-                    FROM (
-                        SELECT id, canonical_title, summary, category, source_count,
-                               article_count, last_seen_at
-                        FROM events
-                        WHERE TRIM(canonical_title) <> ''
-                          AND TRIM(COALESCE(summary, '')) <> ''
-                        ORDER BY last_seen_at DESC, id DESC
-                        LIMIT ?
-                    ) AS recent_candidates
-                   ORDER BY CASE category {category_order} ELSE {len(CATEGORY_ORDER)} END,
-                            source_count DESC, last_seen_at DESC, id ASC""",
-                (limit, *CATEGORY_ORDER),
+                    FROM events
+                    WHERE TRIM(canonical_title) <> ''
+                      AND TRIM(COALESCE(summary, '')) <> ''
+                   ORDER BY CASE CASE category
+                                WHEN 'Economie' THEN 'Diverse'
+                                WHEN 'Conspiratii' THEN 'CanCan'
+                                ELSE category END
+                            {category_order} ELSE {len(CATEGORY_ORDER)} END,
+                            source_count DESC, last_seen_at DESC, id ASC
+                    LIMIT ?""",
+                (*CATEGORY_ORDER, limit),
             ).fetchall()
         return tuple(
             ScoutCandidateV1(
@@ -910,8 +908,7 @@ def move_chief_editor_item(
 
 
 def _category(value: object) -> str:
-    text = str(value or "Diverse")
-    return text if text in ALLOWED_CATEGORIES else "Diverse"
+    return normalize_category(value) or "Diverse"
 
 
 def _scout_input(database_path: Path, event_id: int) -> ScoutEditorInputV1:

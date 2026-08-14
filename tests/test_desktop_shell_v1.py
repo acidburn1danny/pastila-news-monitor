@@ -573,14 +573,12 @@ def test_daily_scout_choices_and_restored_candidate_summary_are_truthful():
     assert _OPENAI_MODEL_CHOICES == ("gpt-4.1-mini",)
     assert _SCOUT_PERIOD_CHOICES == ("1", "3", "7", "14", "30")
     assert _SCOUT_CATEGORY_CHOICES == (
-        "all",
+        "Toate",
         "Politica",
         "Social",
-        "Conspiratii",
-        "Economie",
         "CanCan",
-        "Externe",
         "Diverse",
+        "Externe",
     )
     assert _restored_candidate_summary(current="0", count=3) == "3 stiri restaurate"
     assert _restored_candidate_summary(current="Surse: 14", count=3) == "Surse: 14"

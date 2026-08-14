@@ -5,6 +5,7 @@ import sqlite3
 from datetime import UTC, datetime
 from pathlib import Path
 
+from pastila_scout.category_integrity import normalize_category
 from pastila_scout.models import (
     ArticleProvenance,
     AuditArticle,
@@ -796,12 +797,13 @@ def load_event_snapshot(
     if canonical_article_id is None or not reason:
         raise ValueError(f"Event {event_id} has incomplete canonical metadata")
     categories = tuple(
-        str(row["category"])
+        normalized
         for row in connection.execute(
             "SELECT category FROM event_categories WHERE event_id = ? ORDER BY position",
             (event_id,),
         )
-    )
+        if (normalized := normalize_category(row["category"])) is not None
+    )[:1]
     metadata = source_metadata or {}
     articles: list[ArticleProvenance] = []
     for row in connection.execute(

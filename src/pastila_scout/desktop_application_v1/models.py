@@ -59,8 +59,6 @@ class DesktopProgressStageV1(StrEnum):
 class ScoutDesktopCategoryV1(StrEnum):
     POLITICA = "Politica"
     SOCIAL = "Social"
-    CONSPIRATII = "Conspiratii"
-    ECONOMIE = "Economie"
     CANCAN = "CanCan"
     EXTERNE = "Externe"
     DIVERSE = "Diverse"

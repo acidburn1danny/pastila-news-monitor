@@ -57,8 +57,7 @@ def test_category_derivation_frequency_order_limit_and_unresolved() -> None:
         _article(2, "two", categories=("Social", "Economie", "Diverse")),
     )
 
-    assert derive_categories(articles) == ("Social", "Diverse", "Politica")
-    assert len(derive_categories(articles)) == 3
+    assert derive_categories(articles) == ("Diverse",)
     assert derive_categories((_article(3, "none"),)) == ()
 
 
@@ -163,8 +162,8 @@ def test_metadata_updates_after_article_attachment_and_event_snapshot_is_complet
 
     assert snapshot.canonical_article_id == second
     assert snapshot.canonical_title == "A doua știre canonică"
-    assert snapshot.categories == ("Social", "Politica", "Economie")
-    assert scalar_category == "Social"
+    assert snapshot.categories == ("Diverse",)
+    assert scalar_category == "Diverse"
     assert snapshot.first_publication_at == "2026-07-26T08:00:00+00:00"
     assert snapshot.last_publication_at == "2026-07-26T09:00:00+00:00"
     assert snapshot.article_count == 2
@@ -172,6 +171,20 @@ def test_metadata_updates_after_article_attachment_and_event_snapshot_is_complet
     assert len(snapshot.sources) == 2
     assert len(snapshot.articles) == 2
     assert snapshot.canonical_selection_reason
+
+
+def test_snapshot_loader_exposes_only_legacy_primary_category(tmp_path: Path) -> None:
+    database = tmp_path / "legacy-categories.db"
+    event_id = _configured_database(database)
+    with open_database(database) as connection:
+        connection.execute(
+            "INSERT INTO event_categories (event_id, category, position) VALUES (?, ?, ?)",
+            (event_id, "Politica", 1),
+        )
+        connection.commit()
+        snapshot = load_event_snapshot(connection, event_id)
+
+    assert snapshot.categories == ("Diverse",)
 
 
 def _config(path: Path) -> Path:
@@ -323,7 +336,7 @@ def test_historical_backfill_changes_then_leaves_event_unchanged(
         second = canonicalize_all_events(connection, **arguments)
 
         assert first.events_changed == 1
-        assert first.categories_added == 2
+        assert first.categories_added == 1
         assert first.unresolved_categories == 0
         assert second.events_changed == 0
         assert second.unchanged_events == 1

@@ -9,7 +9,7 @@ sources:
     url: https://www.digi24.ro/rss
     enabled: true
     prioritate: 1
-    source_category: [Politica, Social, Economie, Diverse]
+    source_category: [Politica, Social, Diverse]
     max_articles_per_poll: 60
 
   - id: hotnews
@@ -18,7 +18,7 @@ sources:
     url: https://hotnews.ro/feed
     enabled: true
     prioritate: 1
-    source_category: [Politica, Social, Economie, Diverse]
+    source_category: [Politica, Social, Diverse]
 
   - id: g4media
     name: G4Media
@@ -26,7 +26,7 @@ sources:
     url: https://www.g4media.ro/feed
     enabled: true
     prioritate: 1
-    source_category: [Politica, Social, Economie, Diverse]
+    source_category: [Politica, Social, Diverse]
 
   - id: antena3
     name: Antena 3 CNN
@@ -34,7 +34,7 @@ sources:
     url: https://www.antena3.ro/rss
     enabled: true
     prioritate: 1
-    source_category: [Politica, Social, Conspiratii, Economie, Diverse]
+    source_category: [Politica, Social, CanCan, Diverse]
 
   - id: libertatea
     name: Libertatea
@@ -50,7 +50,7 @@ sources:
     url: https://www.rfi.fr/ro/rss
     enabled: true
     prioritate: 1
-    source_category: [Politica, Social, Economie, Diverse]
+    source_category: [Politica, Social, Diverse]
 
   - id: recorder
     name: Recorder
@@ -58,7 +58,7 @@ sources:
     url: https://recorder.ro/feed/
     enabled: true
     prioritate: 1
-    source_category: [Politica, Social, Economie, Diverse]
+    source_category: [Politica, Social, Diverse]
 
   - id: economica
     name: Economica.net
@@ -66,7 +66,7 @@ sources:
     url: https://www.economica.net/feed
     enabled: true
     prioritate: 1
-    source_category: [Economie, Social, Diverse]
+    source_category: [Social, Diverse]
 
   # Romania - Secondary
   - id: adevarul
@@ -75,7 +75,7 @@ sources:
     url: https://adevarul.ro/rss/index
     enabled: true
     prioritate: 1
-    source_category: [Politica, Social, Economie, CanCan, Diverse]
+    source_category: [Politica, Social, CanCan, Diverse]
 
   - id: observatornews
     name: Observator News
@@ -91,7 +91,7 @@ sources:
     url: https://context.ro/feed
     enabled: true
     prioritate: 1
-    source_category: [Politica, Social, Economie, Diverse]
+    source_category: [Politica, Social, Diverse]
 
   - id: romaniatv
     name: RomaniaTV.net
@@ -99,7 +99,7 @@ sources:
     url: https://www.romaniatv.net/feed
     enabled: true
     prioritate: 1
-    source_category: [Politica, Social, Conspiratii, Diverse]
+    source_category: [Politica, Social, CanCan, Diverse]
     max_articles_per_poll: 50
 
   - id: cancan
@@ -209,7 +209,7 @@ sources:
     url: https://techcrunch.com/feed
     enabled: true
     prioritate: 1
-    source_category: [Externe, Economie, Diverse]
+    source_category: [Externe, Diverse]
     max_articles_per_poll: 50
 
   - id: e_news
