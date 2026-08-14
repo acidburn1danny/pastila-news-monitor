@@ -113,6 +113,31 @@ def test_handoff_preserves_candidate_and_is_deterministic_across_reload(tmp_path
     verify_scout_input_identity(restored.scout_input)
 
 
+def test_episode_recommendation_is_transient_and_does_not_change_candidate_pool(
+    tmp_path,
+):
+    database = tmp_path / "scout.db"
+    project_path = tmp_path / "active-project-v1.json"
+    _database(database)
+    with sqlite3.connect(database) as connection:
+        connection.execute(
+            "UPDATE events SET summary = ? WHERE id = 7",
+            ("Autoritatile sunt criticate intr-un scandal cu impact social.",),
+        )
+    _additional_event(database, 8, "Anunt tehnic fara miza editoriala")
+    store = ActiveProjectStoreV1(database_path=database, project_path=project_path)
+    before = store.list_candidates()
+
+    result = store.recommend_episode()
+
+    assert tuple(item.event_id for item in result.recommendations) == (7,)
+    assert store.list_candidates() == before
+    assert project_path.exists() is False
+
+    project = store.handoff(event_id=8)
+    assert project.candidate.event_id == 8
+
+
 def test_handoff_rejects_missing_candidate_without_replacing_project(tmp_path):
     database = tmp_path / "scout.db"
     project_path = tmp_path / "active-project-v1.json"

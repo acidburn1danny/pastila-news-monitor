@@ -19,6 +19,11 @@ from pastila_scout.contracts.identity import (
     verify_scout_input_identity,
 )
 from pastila_scout.contracts.scout_editor import ScoutEditorInputV1
+from pastila_scout.editorial_recommendation_v1 import (
+    EditorialCandidateV1,
+    EpisodeRecommendationV1,
+    recommend_episode_v1,
+)
 from pastila_scout.episode_draft_v1 import (
     EpisodeDraftExcludedFailureV1,
     EpisodeDraftPersistenceError,
@@ -183,6 +188,33 @@ class ActiveProjectStoreV1:
             )
             for event_id in event_ids
             if (row := by_id.get(event_id)) is not None
+        )
+
+    def recommend_episode(self) -> EpisodeRecommendationV1:
+        """Derive a transient advisory slate from the canonical complete pool."""
+
+        candidates = self.list_candidates()
+        if not candidates:
+            return recommend_episode_v1(())
+        placeholders = ",".join("?" for _ in candidates)
+        with sqlite3.connect(self.database_path) as connection:
+            rows = connection.execute(
+                f"SELECT id, last_seen_at FROM events WHERE id IN ({placeholders})",
+                tuple(item.event_id for item in candidates),
+            ).fetchall()
+        seen_at = {int(row[0]): datetime.fromisoformat(str(row[1])) for row in rows}
+        return recommend_episode_v1(
+            tuple(
+                EditorialCandidateV1(
+                    event_id=item.event_id,
+                    title=item.title,
+                    summary=item.summary,
+                    category=item.category,
+                    source_count=item.source_count,
+                    last_seen_at=seen_at[item.event_id],
+                )
+                for item in candidates
+            )
         )
 
     def load_runtime_state(self) -> ActiveProjectV1 | None:
