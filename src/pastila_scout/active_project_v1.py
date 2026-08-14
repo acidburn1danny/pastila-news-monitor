@@ -24,6 +24,12 @@ from pastila_scout.editorial_recommendation_v1 import (
     EpisodeRecommendationV1,
     recommend_episode_v1,
 )
+from pastila_scout.editorial_recommendation_v1_1 import (
+    ContinuityContextV1_1,
+    EditorialCandidateV1_1,
+    EpisodeRecommendationV1_1,
+    recommend_episode_v1_1,
+)
 from pastila_scout.episode_draft_v1 import (
     EpisodeDraftExcludedFailureV1,
     EpisodeDraftPersistenceError,
@@ -215,6 +221,38 @@ class ActiveProjectStoreV1:
                 )
                 for item in candidates
             )
+        )
+
+    def recommend_episode_v1_1(
+        self,
+        *,
+        continuity_context: tuple[ContinuityContextV1_1, ...] = (),
+    ) -> EpisodeRecommendationV1_1:
+        """Derive an explicit transient V1.1 slate for A/B review."""
+
+        candidates = self.list_candidates()
+        if not candidates:
+            return recommend_episode_v1_1((), continuity_context=continuity_context)
+        placeholders = ",".join("?" for _ in candidates)
+        with sqlite3.connect(self.database_path) as connection:
+            rows = connection.execute(
+                f"SELECT id, last_seen_at FROM events WHERE id IN ({placeholders})",
+                tuple(item.event_id for item in candidates),
+            ).fetchall()
+        seen_at = {int(row[0]): datetime.fromisoformat(str(row[1])) for row in rows}
+        return recommend_episode_v1_1(
+            tuple(
+                EditorialCandidateV1_1(
+                    event_id=item.event_id,
+                    title=item.title,
+                    summary=item.summary,
+                    category=item.category,
+                    source_count=item.source_count,
+                    last_seen_at=seen_at[item.event_id],
+                )
+                for item in candidates
+            ),
+            continuity_context=continuity_context,
         )
 
     def load_runtime_state(self) -> ActiveProjectV1 | None:

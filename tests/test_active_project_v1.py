@@ -138,6 +138,31 @@ def test_episode_recommendation_is_transient_and_does_not_change_candidate_pool(
     assert project.candidate.event_id == 8
 
 
+def test_episode_recommendation_v1_1_is_explicit_transient_and_preserves_v1(tmp_path):
+    database = tmp_path / "scout.db"
+    project_path = tmp_path / "active-project-v1.json"
+    _database(database)
+    with sqlite3.connect(database) as connection:
+        connection.execute(
+            "UPDATE events SET summary = ? WHERE id = 7",
+            ("Un elev a murit, iar scolile cer cursuri de prim ajutor.",),
+        )
+    _additional_event(database, 8, "Anunt tehnic fara miza editoriala")
+    store = ActiveProjectStoreV1(database_path=database, project_path=project_path)
+    before = store.list_candidates()
+
+    frozen_v1 = store.recommend_episode()
+    v1_1 = store.recommend_episode_v1_1()
+
+    assert tuple(item.event_id for item in v1_1.recommendations) == (7,)
+    assert v1_1.recommendations[0].human_value == 2
+    assert frozen_v1.recommendations
+    assert store.list_candidates() == before
+    assert project_path.exists() is False
+
+    assert store.handoff(event_id=8).candidate.event_id == 8
+
+
 def test_handoff_rejects_missing_candidate_without_replacing_project(tmp_path):
     database = tmp_path / "scout.db"
     project_path = tmp_path / "active-project-v1.json"
