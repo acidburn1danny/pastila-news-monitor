@@ -57,7 +57,8 @@ class _IsolationStore:
         self.global_calls = 0
         self.scoped_calls = []
 
-    def list_candidates(self):
+    def list_candidates(self, *, category=None):
+        del category
         self.global_calls += 1
         raise AssertionError("targeted completion used global restoration")
 
@@ -107,11 +108,54 @@ def test_normal_projection_keeps_global_restoration_path():
     view = _View()
 
     class Store:
-        def list_candidates(self):
+        def list_candidates(self, *, category=None):
+            assert category is None
             return ()
 
     entrypoint._publish_candidates(view, Store())
 
+    assert view.candidates == ()
+
+
+def test_restored_projection_uses_the_persisted_category():
+    view = _View()
+
+    class Store:
+        def __init__(self):
+            self.categories = []
+
+        def list_candidates(self, *, category=None):
+            self.categories.append(category)
+            return ()
+
+    store = Store()
+
+    entrypoint._publish_candidates(view, store, "Externe")
+
+    assert store.categories == ["Externe"]
+    assert view.candidates == ()
+
+
+def test_normal_completion_projects_only_the_executed_category():
+    view = _View()
+
+    class Store:
+        def __init__(self):
+            self.categories = []
+
+        def list_candidates(self, *, category=None):
+            self.categories.append(category)
+            return ()
+
+    store = Store()
+    result = scout_result(
+        targeted_candidate_ids=None,
+        executed_category=ScoutDesktopCategoryV1.SOCIAL,
+    )
+
+    entrypoint._publish_scout_completion(view, store, result)
+
+    assert store.categories == ["Social"]
     assert view.candidates == ()
 
 

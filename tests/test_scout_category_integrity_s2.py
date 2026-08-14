@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import sqlite3
+from collections import Counter
 from pathlib import Path
 
 import pytest
@@ -1043,12 +1044,168 @@ def test_normal_candidates_group_by_category_then_sources_and_stable_ties(
     candidates = store.list_candidates()
     repeated = store.list_candidates()
 
-    assert [item.event_id for item in candidates] == [2, 4, 5, 8, 91, 3, 7, 6, 10]
+    assert [item.event_id for item in candidates] == [2, 4, 5, 8, 91, 3, 7]
     assert [item.source_count for item in candidates[:5]] == [8, 5, 5, 5, 2]
     assert repeated == candidates
 
     limited = store.list_candidates(limit=2)
     assert [item.event_id for item in limited] == [2, 4]
+
+    social = store.list_candidates(category="Social")
+    externe = store.list_candidates(category="Externe")
+    assert [item.event_id for item in social] == [3]
+    assert [item.event_id for item in externe] == [7]
+
+
+def test_competitive_fill_uses_global_rank_and_scarcity_does_not_fabricate(
+    tmp_path: Path,
+) -> None:
+    database = tmp_path / "competitive.db"
+    _candidate_database(database)
+    store = ActiveProjectStoreV1(
+        database_path=database, project_path=tmp_path / "project.json"
+    )
+
+    candidates = store.list_candidates(limit=6)
+    scarce = store.list_candidates()
+
+    assert [item.event_id for item in candidates] == [2, 4, 5, 8, 91, 7]
+    assert [item.event_id for item in scarce] == [2, 4, 5, 8, 91, 3, 7]
+    assert len(scarce) == len({item.event_id for item in scarce}) == 7
+
+
+def _episode_pool_database(path: Path, *, politica: int = 60, cancan: int = 8) -> None:
+    categories = (
+        ("Politica", politica),
+        ("Social", 20),
+        ("CanCan", cancan),
+        ("Diverse", 20),
+        ("Externe", 20),
+    )
+    with sqlite3.connect(path) as connection:
+        connection.row_factory = sqlite3.Row
+        initialize_database(connection)
+        rows = []
+        event_id = 1
+        for category, count in categories:
+            for index in range(count):
+                source_count = 9 - index % 9
+                seen = f"2026-08-{14 - index % 7:02d}T{23 - index % 12:02d}:00:00+00:00"
+                rows.append(
+                    (
+                        event_id,
+                        "Titlu duplicat" if index < 2 else f"{category} {index}",
+                        category,
+                        source_count,
+                        seen,
+                    )
+                )
+                event_id += 1
+        connection.executemany(
+            """INSERT INTO events
+               (id, canonical_title, normalized_title, summary, category,
+                first_seen_at, last_seen_at, article_count, source_count,
+                created_at, updated_at)
+               VALUES (?, ?, LOWER(?), 'Rezumat', ?, ?, ?, ?, ?, ?, ?)""",
+            (
+                (
+                    event_id,
+                    title,
+                    title,
+                    category,
+                    seen,
+                    seen,
+                    source_count,
+                    source_count,
+                    seen,
+                    seen,
+                )
+                for event_id, title, category, source_count, seen in rows
+            ),
+        )
+
+
+def test_episode_equivalent_pool_prevents_starvation_and_respects_caps(
+    tmp_path: Path,
+) -> None:
+    database = tmp_path / "pool.db"
+    _episode_pool_database(database)
+    store = ActiveProjectStoreV1(
+        database_path=database, project_path=tmp_path / "project.json"
+    )
+
+    candidates = store.list_candidates()
+    counts = Counter(item.category for item in candidates)
+
+    assert len(candidates) == len({item.event_id for item in candidates}) == 50
+    assert counts["Politica"] == 10
+    assert counts["CanCan"] == 5
+    assert counts["Social"] <= 15
+    assert counts["Diverse"] <= 15
+    assert counts["Externe"] <= 10
+    assert all(counts[category] for category in CATEGORY_ORDER)
+    assert [item.category for item in candidates] == sorted(
+        (item.category for item in candidates), key=CATEGORY_ORDER.index
+    )
+    for category in CATEGORY_ORDER:
+        source_counts = [
+            item.source_count for item in candidates if item.category == category
+        ]
+        assert source_counts == sorted(source_counts, reverse=True)
+
+
+def test_explicit_category_projection_is_not_limited_by_pool_allocation(
+    tmp_path: Path,
+) -> None:
+    database = tmp_path / "filtered.db"
+    _episode_pool_database(database)
+    store = ActiveProjectStoreV1(
+        database_path=database, project_path=tmp_path / "project.json"
+    )
+
+    expected = {
+        "Politica": 50,
+        "Social": 20,
+        "CanCan": 8,
+        "Diverse": 20,
+        "Externe": 20,
+    }
+    for category, count in expected.items():
+        candidates = store.list_candidates(category=category)
+        assert len(candidates) == count
+        assert {item.category for item in candidates} == {category}
+
+
+@pytest.mark.parametrize("available", (0, 1, 9, 10, 14))
+def test_politica_protected_intake_respects_supply_and_cap(
+    tmp_path: Path, available: int
+) -> None:
+    database = tmp_path / f"politica-{available}.db"
+    _episode_pool_database(database, politica=available)
+    store = ActiveProjectStoreV1(
+        database_path=database, project_path=tmp_path / "project.json"
+    )
+
+    candidates = store.list_candidates()
+
+    assert Counter(item.category for item in candidates)["Politica"] == min(
+        available, 10
+    )
+
+
+@pytest.mark.parametrize("available", (0, 1, 4, 5, 9))
+def test_cancan_protected_intake_respects_supply_and_cap(
+    tmp_path: Path, available: int
+) -> None:
+    database = tmp_path / f"cancan-{available}.db"
+    _episode_pool_database(database, cancan=available)
+    store = ActiveProjectStoreV1(
+        database_path=database, project_path=tmp_path / "project.json"
+    )
+
+    candidates = store.list_candidates()
+
+    assert Counter(item.category for item in candidates)["CanCan"] == min(available, 5)
 
 
 def test_targeted_candidate_ids_preserve_relevance_order(tmp_path: Path) -> None:

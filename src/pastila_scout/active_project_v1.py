@@ -99,30 +99,43 @@ class ActiveProjectStoreV1:
         self.database_path = database_path
         self.project_path = project_path
 
-    def list_candidates(self, *, limit: int = 50) -> tuple[ScoutCandidateV1, ...]:
+    def list_candidates(
+        self, *, limit: int = 50, category: str | None = None
+    ) -> tuple[ScoutCandidateV1, ...]:
+        if type(limit) is not int or limit <= 0:
+            raise ValueError("Limita Scout invalida")
         if not self.database_path.is_file():
             return ()
+        selected_category = _candidate_category(category)
         with sqlite3.connect(self.database_path) as connection:
             connection.row_factory = sqlite3.Row
-            category_order = " ".join(
-                f"WHEN ? THEN {position}"
-                for position, _category_name in enumerate(CATEGORY_ORDER)
-            )
-            rows = connection.execute(
-                f"""SELECT id, canonical_title, summary, category, source_count,
-                           article_count
-                    FROM events
-                    WHERE TRIM(canonical_title) <> ''
-                      AND TRIM(COALESCE(summary, '')) <> ''
-                   ORDER BY CASE CASE category
-                                WHEN 'Economie' THEN 'Diverse'
-                                WHEN 'Conspiratii' THEN 'CanCan'
-                                ELSE category END
-                            {category_order} ELSE {len(CATEGORY_ORDER)} END,
-                            source_count DESC, last_seen_at DESC, id ASC
-                    LIMIT ?""",
-                (*CATEGORY_ORDER, limit),
-            ).fetchall()
+            if selected_category is not None:
+                rows = _ranked_candidate_rows(
+                    connection, category=selected_category, limit=limit
+                )
+            else:
+                effective_limit = min(limit, 50)
+                protected = [
+                    *_ranked_candidate_rows(connection, category="Politica", limit=10),
+                    *_ranked_candidate_rows(connection, category="CanCan", limit=5),
+                ]
+                competitive = [
+                    row
+                    for candidate_category, capacity in (
+                        ("Social", 15),
+                        ("Diverse", 15),
+                        ("Externe", 10),
+                    )
+                    for row in _ranked_candidate_rows(
+                        connection, category=candidate_category, limit=capacity
+                    )
+                ]
+                _sort_candidate_rows(competitive)
+                rows = protected[:effective_limit]
+                rows.extend(competitive[: max(0, effective_limit - len(rows))])
+                rows.sort(
+                    key=lambda row: CATEGORY_ORDER.index(_category(row["category"]))
+                )
         return tuple(
             ScoutCandidateV1(
                 event_id=int(row["id"]),
@@ -909,6 +922,43 @@ def move_chief_editor_item(
 
 def _category(value: object) -> str:
     return normalize_category(value) or "Diverse"
+
+
+def _candidate_category(value: str | None) -> str | None:
+    if value is None or value in {"all", "Toate"}:
+        return None
+    category = normalize_category(value)
+    if category is None:
+        raise ValueError("Categorie Scout invalida")
+    return category
+
+
+def _ranked_candidate_rows(
+    connection: sqlite3.Connection, *, category: str, limit: int
+) -> list[sqlite3.Row]:
+    return list(
+        connection.execute(
+            """SELECT id, canonical_title, summary, category, source_count,
+                      article_count, last_seen_at
+               FROM events
+               WHERE TRIM(canonical_title) <> ''
+                 AND TRIM(COALESCE(summary, '')) <> ''
+                 AND CASE category
+                         WHEN 'Economie' THEN 'Diverse'
+                         WHEN 'Conspiratii' THEN 'CanCan'
+                         ELSE category
+                     END = ?
+               ORDER BY source_count DESC, last_seen_at DESC, id ASC
+               LIMIT ?""",
+            (category, limit),
+        ).fetchall()
+    )
+
+
+def _sort_candidate_rows(rows: list[sqlite3.Row]) -> None:
+    rows.sort(key=lambda row: int(row["id"]))
+    rows.sort(key=lambda row: str(row["last_seen_at"]), reverse=True)
+    rows.sort(key=lambda row: int(row["source_count"]), reverse=True)
 
 
 def _scout_input(database_path: Path, event_id: int) -> ScoutEditorInputV1:

@@ -425,7 +425,9 @@ def main() -> int:
         )
         if hasattr(view, "bind_scout_source_action"):
             view.bind_scout_source_action(callback=save_scout_source)
-        _publish_candidates(view, project_store)
+        _publish_candidates(
+            view, project_store, getattr(settings, "scout_category", None)
+        )
         if active_project is not None:
             view.publish_active_project(
                 title=active_project.title,
@@ -576,8 +578,10 @@ def _run_editor(
     )
 
 
-def _publish_candidates(view: object, store: ActiveProjectStoreV1) -> None:
-    candidates = store.list_candidates()
+def _publish_candidates(
+    view: object, store: ActiveProjectStoreV1, category: str | None = None
+) -> None:
+    candidates = store.list_candidates(category=category)
     view.publish_candidates(  # type: ignore[attr-defined]
         candidates=tuple(
             (item.event_id, item.title, item.category, item.source_count)
@@ -593,7 +597,13 @@ def _publish_scout_completion(
     _publish_scout_result(view, result)
     scoped_ids = result.targeted_candidate_ids
     if scoped_ids is None:
-        _publish_candidates(view, store)
+        _publish_candidates(
+            view,
+            store,
+            None
+            if result.executed_category is ScoutDesktopCategoryV1.ALL
+            else result.executed_category.value,
+        )
     else:
         _publish_scoped_candidates(view, store, scoped_ids)
 
