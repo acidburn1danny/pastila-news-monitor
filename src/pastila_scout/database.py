@@ -774,7 +774,7 @@ def refresh_event_canonical_metadata(
 def _decode_categories(value: str | None) -> tuple[str, ...]:
     try:
         decoded = json.loads(value or "[]")
-    except (TypeError, ValueError):
+    except TypeError, ValueError:
         return ()
     return tuple(str(item) for item in decoded) if isinstance(decoded, list) else ()
 

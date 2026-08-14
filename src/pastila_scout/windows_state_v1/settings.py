@@ -71,7 +71,7 @@ class WindowsSettingsV1:
             if tuple(values) != _NAMES:
                 raise TypeError
             checked = _validate(values)
-        except (KeyboardInterrupt, SystemExit, GeneratorExit, MemoryError):
+        except KeyboardInterrupt, SystemExit, GeneratorExit, MemoryError:
             raise
         except Exception:  # noqa: BLE001 - fixed safe settings boundary
             invalid = True
@@ -116,7 +116,7 @@ def _reconstruct_windows_settings_v1(value: object) -> WindowsSettingsV1:
                 for item in fields(type(value))
             }
         )
-    except (KeyboardInterrupt, SystemExit, GeneratorExit, MemoryError):
+    except KeyboardInterrupt, SystemExit, GeneratorExit, MemoryError:
         raise
     except Exception:  # noqa: BLE001 - copied-invalid state boundary
         invalid = True
@@ -134,7 +134,7 @@ def _load_windows_settings_v1(*, path: Path, defaults_path: Path) -> WindowsSett
         if not path.exists():
             return _default_windows_settings_v1(defaults_path=defaults_path)
         return _read_settings(path)
-    except (KeyboardInterrupt, SystemExit, GeneratorExit, MemoryError):
+    except KeyboardInterrupt, SystemExit, GeneratorExit, MemoryError:
         raise
     except _WindowsStateSettingsError:
         raise
@@ -175,7 +175,7 @@ def _save_windows_settings_v1(*, path: Path, settings: WindowsSettingsV1) -> Non
             if backup_published:
                 os.replace(backup, path)
             raise
-    except (KeyboardInterrupt, SystemExit, GeneratorExit, MemoryError):
+    except KeyboardInterrupt, SystemExit, GeneratorExit, MemoryError:
         if temporary is not None:
             temporary.unlink(missing_ok=True)
         raise
@@ -220,7 +220,7 @@ def _read_settings(path: Path) -> WindowsSettingsV1:
             )
             values = {name: values[name] for name in _NAMES}
         return WindowsSettingsV1(**values)
-    except (KeyboardInterrupt, SystemExit, GeneratorExit, MemoryError):
+    except KeyboardInterrupt, SystemExit, GeneratorExit, MemoryError:
         raise
     except Exception:  # noqa: BLE001 - fixed safe parser boundary
         invalid = True
@@ -265,9 +265,10 @@ def _validate(values: dict[str, object]) -> dict[str, object]:
         "ollama_base_url"
     ].startswith(("http://", "https://")):
         raise TypeError
-    if type(values["ollama_model"]) is not str or not 1 <= len(
-        values["ollama_model"].encode("utf-8")
-    ) <= 200:
+    if (
+        type(values["ollama_model"]) is not str
+        or not 1 <= len(values["ollama_model"].encode("utf-8")) <= 200
+    ):
         raise TypeError
     scout_timeout = values["scout_ai_timeout_seconds"]
     if (
