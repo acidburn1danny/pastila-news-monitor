@@ -301,6 +301,22 @@ def test_startup_failure_resource_is_exact_and_finite() -> None:
     )
 
 
+def test_frozen_canonical_sources_use_local_appdata_install_root(
+    tmp_path, monkeypatch
+) -> None:
+    local_app_data = tmp_path / "Local"
+    unrelated_working_directory = tmp_path / "Desktop"
+    unrelated_working_directory.mkdir()
+    monkeypatch.chdir(unrelated_working_directory)
+    assert entrypoint._canonical_scout_sources_path_v1(
+        frozen=True,
+        development_root=None,
+        environment={"LOCALAPPDATA": str(local_app_data)},
+    ) == (
+        local_app_data / "Programs" / "PastilaScout" / "app" / "config" / "sources.yaml"
+    )
+
+
 def test_scout_request_is_exact_and_rejects_equivalent_text(monkeypatch) -> None:
     monkeypatch.setattr(
         entrypoint.uuid, "uuid4", lambda: type("U", (), {"hex": "a" * 32})()

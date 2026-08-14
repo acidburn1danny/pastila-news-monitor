@@ -11,6 +11,7 @@ import sys
 import tkinter
 import unicodedata
 import uuid
+from collections.abc import Mapping
 from datetime import UTC, datetime
 from pathlib import Path
 from tkinter import filedialog, messagebox, ttk
@@ -125,9 +126,10 @@ def main() -> int:
             )
             return plan if accepted else None
 
+        environment = dict(os.environ)
         state = _compose_state_bound_desktop_application_v1(
             frozen=frozen,
-            environment=dict(os.environ),
+            environment=environment,
             development_root=development_root,
             migration_consent=migration_consent,
         )
@@ -137,15 +139,10 @@ def main() -> int:
             project_path=state.active_project_path,
         )
         source_override = state.settings_path.parent / "sources.override.yaml"
-        canonical_sources = (
-            development_root / "config" / "sources.yaml"
-            if development_root is not None
-            else state.database_path.parent.parent
-            / "Programs"
-            / "PastilaScout"
-            / "app"
-            / "config"
-            / "sources.yaml"
+        canonical_sources = _canonical_scout_sources_path_v1(
+            frozen=frozen,
+            development_root=development_root,
+            environment=environment,
         )
         sources_path = _rebase_scout_sources_override_v1(
             canonical_path=canonical_sources,
@@ -467,6 +464,26 @@ def main() -> int:
                 root.destroy()
             except BaseException:
                 pass
+
+
+def _canonical_scout_sources_path_v1(
+    *,
+    frozen: bool,
+    development_root: Path | None,
+    environment: Mapping[str, str],
+) -> Path:
+    if frozen:
+        return (
+            Path(environment["LOCALAPPDATA"])
+            / "Programs"
+            / "PastilaScout"
+            / "app"
+            / "config"
+            / "sources.yaml"
+        )
+    if development_root is None:
+        raise TypeError("Development root is required")
+    return development_root / "config" / "sources.yaml"
 
 
 def _scout_request(value: object) -> ScoutDesktopRequestV1:
