@@ -581,7 +581,15 @@ def _run_editor(
 def _publish_candidates(
     view: object, store: ActiveProjectStoreV1, category: str | None = None
 ) -> None:
-    candidates = store.list_candidates(category=category)
+    if category is None or category in {"all", "Toate"}:
+        useful_loader = getattr(store, "list_useful_candidates_v1_2", None)
+        candidates = (
+            useful_loader()
+            if useful_loader is not None
+            else store.list_candidates(category=category)
+        )
+    else:
+        candidates = store.list_candidates(category=category)
     view.publish_candidates(  # type: ignore[attr-defined]
         candidates=tuple(
             (item.event_id, item.title, item.category, item.source_count)

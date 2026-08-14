@@ -30,6 +30,14 @@ from pastila_scout.editorial_recommendation_v1_1 import (
     EpisodeRecommendationV1_1,
     recommend_episode_v1_1,
 )
+from pastila_scout.editorial_talkworthiness_v1_2 import (
+    DiscussionBridgeContextV1_2,
+    EditorialCandidateV1_2,
+    EpisodeRecommendationV1_2,
+    MaterialContinuityContextV1_2,
+    pool_utility_v1_2,
+    recommend_episode_v1_2,
+)
 from pastila_scout.episode_draft_v1 import (
     EpisodeDraftExcludedFailureV1,
     EpisodeDraftPersistenceError,
@@ -196,6 +204,53 @@ class ActiveProjectStoreV1:
             if (row := by_id.get(event_id)) is not None
         )
 
+    def list_useful_candidates_v1_2(
+        self, *, limit: int = 50, category: str | None = None
+    ) -> tuple[ScoutCandidateV1, ...]:
+        """Return the explicit V1.2 human-browsable pool without filler padding.
+
+        Normal ``Toate`` applies the utility filter before the established
+        category intake capacities. Explicit category views remain pure views.
+        """
+
+        if type(limit) is not int or limit <= 0:
+            raise ValueError("Limita Scout invalida")
+        selected_category = _candidate_category(category)
+        if selected_category is not None:
+            return self.list_candidates(limit=limit, category=selected_category)
+        if not self.database_path.is_file():
+            return ()
+        effective_limit = min(limit, 50)
+        with sqlite3.connect(self.database_path) as connection:
+            connection.row_factory = sqlite3.Row
+            useful_by_category: dict[str, list[sqlite3.Row]] = {}
+            for candidate_category, capacity in (
+                ("Politica", 10),
+                ("CanCan", 5),
+                ("Social", 15),
+                ("Diverse", 15),
+                ("Externe", 10),
+            ):
+                scanned = _ranked_candidate_rows(
+                    connection, category=candidate_category, limit=capacity * 4
+                )
+                useful_by_category[candidate_category] = [
+                    row
+                    for row in scanned
+                    if pool_utility_v1_2(_editorial_candidate_v1_2(row)).useful
+                ][:capacity]
+        protected = [*useful_by_category["Politica"], *useful_by_category["CanCan"]]
+        competitive = [
+            *useful_by_category["Social"],
+            *useful_by_category["Diverse"],
+            *useful_by_category["Externe"],
+        ]
+        _sort_candidate_rows(competitive)
+        rows = protected[:effective_limit]
+        rows.extend(competitive[: max(0, effective_limit - len(rows))])
+        rows.sort(key=lambda row: CATEGORY_ORDER.index(_category(row["category"])))
+        return tuple(_scout_candidate(row) for row in rows)
+
     def recommend_episode(self) -> EpisodeRecommendationV1:
         """Derive a transient advisory slate from the canonical complete pool."""
 
@@ -252,6 +307,44 @@ class ActiveProjectStoreV1:
                 )
                 for item in candidates
             ),
+            continuity_context=continuity_context,
+        )
+
+    def recommend_episode_v1_2(
+        self,
+        *,
+        discussion_bridges: tuple[DiscussionBridgeContextV1_2, ...] = (),
+        continuity_context: tuple[MaterialContinuityContextV1_2, ...] = (),
+    ) -> EpisodeRecommendationV1_2:
+        """Derive an explicit transient V1.2 slate for deterministic A/B review."""
+
+        candidates = self.list_useful_candidates_v1_2()
+        if not candidates:
+            return recommend_episode_v1_2(
+                (),
+                discussion_bridges=discussion_bridges,
+                continuity_context=continuity_context,
+            )
+        placeholders = ",".join("?" for _ in candidates)
+        with sqlite3.connect(self.database_path) as connection:
+            rows = connection.execute(
+                f"SELECT id, last_seen_at FROM events WHERE id IN ({placeholders})",
+                tuple(item.event_id for item in candidates),
+            ).fetchall()
+        seen_at = {int(row[0]): datetime.fromisoformat(str(row[1])) for row in rows}
+        return recommend_episode_v1_2(
+            tuple(
+                EditorialCandidateV1_2(
+                    event_id=item.event_id,
+                    title=item.title,
+                    summary=item.summary,
+                    category=item.category,
+                    source_count=item.source_count,
+                    last_seen_at=seen_at[item.event_id],
+                )
+                for item in candidates
+            ),
+            discussion_bridges=discussion_bridges,
             continuity_context=continuity_context,
         )
 
@@ -992,6 +1085,28 @@ def move_chief_editor_item(
 
 def _category(value: object) -> str:
     return normalize_category(value) or "Diverse"
+
+
+def _scout_candidate(row: sqlite3.Row) -> ScoutCandidateV1:
+    return ScoutCandidateV1(
+        event_id=int(row["id"]),
+        title=str(row["canonical_title"]),
+        summary=str(row["summary"]),
+        category=_category(row["category"]),
+        source_count=int(row["source_count"]),
+        article_count=int(row["article_count"]),
+    )
+
+
+def _editorial_candidate_v1_2(row: sqlite3.Row) -> EditorialCandidateV1_2:
+    return EditorialCandidateV1_2(
+        event_id=int(row["id"]),
+        title=str(row["canonical_title"]),
+        summary=str(row["summary"]),
+        category=_category(row["category"]),
+        source_count=int(row["source_count"]),
+        last_seen_at=datetime.fromisoformat(str(row["last_seen_at"])),
+    )
 
 
 def _candidate_category(value: str | None) -> str | None:
