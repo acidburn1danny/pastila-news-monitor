@@ -242,12 +242,6 @@ def recommend_episode_v1(
     ranked = sorted((item for item in evaluated if item.eligible), key=_rank_key)
     selected: list[EditorialEvidenceV1] = []
     counts = {category: 0 for category in _CAPS}
-    for category, target in (("Politica", 2), ("CanCan", 1)):
-        for item in (value for value in ranked if value.category == category):
-            if counts[category] == target:
-                break
-            selected.append(item)
-            counts[category] += 1
     for item in ranked:
         if len(selected) == 10:
             break

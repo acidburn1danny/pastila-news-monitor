@@ -106,7 +106,7 @@ def test_lottery_context_does_not_confuse_joker_film_award() -> None:
     assert scandal_evidence.eligible is True
 
 
-def test_protected_politica_and_cancan_targets_are_bounded_by_eligibility() -> None:
+def test_politica_and_cancan_caps_are_bounded_by_eligibility() -> None:
     items = tuple(
         candidate(i, "Politica", sources=10 - i) for i in range(1, 5)
     ) + tuple(
@@ -184,14 +184,110 @@ def test_zero_one_two_and_more_externe_are_not_forced_and_never_exceed_two() -> 
     assert recommended_ids(weak) == ()
 
 
-@pytest.mark.parametrize("category,cap", (("Politica", 2), ("CanCan", 1)))
+@pytest.mark.parametrize(
+    "category,cap",
+    (("Politica", 2), ("Social", 3), ("CanCan", 1), ("Diverse", 3), ("Externe", 2)),
+)
 @pytest.mark.parametrize("available", (0, 1, 2, 4))
-def test_protected_targets_select_only_available_eligible_items(
+def test_category_caps_select_only_available_eligible_items(
     category: str, cap: int, available: int
 ) -> None:
     items = tuple(candidate(i + 1, category, sources=5 - i) for i in range(available))
     result = recommend_episode_v1(items)
     assert len(result.recommendations) == min(available, cap)
+
+
+def test_no_politica_is_valid_when_none_is_eligible() -> None:
+    weak_politics = EditorialCandidateV1(
+        100,
+        "Horoscop zilnic",
+        "Previziuni astrale.",
+        "Politica",
+        5,
+        NOW,
+    )
+    others = (
+        *(candidate(i, "Social", sources=8) for i in range(1, 4)),
+        candidate(4, "CanCan", "Nunta surpriza provoaca scandal", sources=8),
+        *(candidate(i, "Diverse", sources=8) for i in range(5, 8)),
+        *(candidate(i, "Externe", sources=8) for i in range(8, 10)),
+    )
+    result = recommend_episode_v1((weak_politics, *others))
+    assert len(result.recommendations) == 9
+    assert all(item.category != "Politica" for item in result.recommendations)
+
+
+def test_only_one_politica_enters_when_second_is_below_global_cutoff() -> None:
+    strong_politics = candidate(1, "Politica", sources=8)
+    weak_politics = EditorialCandidateV1(
+        2, "Declaratie politica obisnuita", "Detalii generale.", "Politica", 2, NOW
+    )
+    others = (
+        *(candidate(i, "Social", sources=8) for i in range(3, 6)),
+        candidate(6, "CanCan", "Nunta surpriza provoaca scandal", sources=8),
+        *(candidate(i, "Diverse", sources=8) for i in range(7, 10)),
+        *(candidate(i, "Externe", sources=8) for i in range(10, 12)),
+    )
+    result = recommend_episode_v1((strong_politics, weak_politics, *others))
+    assert sum(item.category == "Politica" for item in result.recommendations) == 1
+    weak = next(item for item in result.evaluations if item.event_id == 2)
+    assert weak.disposition == "eligible_but_below_episode_cutoff"
+
+
+def test_eligible_cancan_is_not_reserved_against_stronger_global_candidates() -> None:
+    strong = (
+        *(candidate(i, "Politica", sources=8) for i in range(1, 3)),
+        *(candidate(i, "Social", sources=8) for i in range(3, 6)),
+        *(candidate(i, "Diverse", sources=8) for i in range(6, 9)),
+        *(candidate(i, "Externe", sources=8) for i in range(9, 11)),
+    )
+    weak_cancan = EditorialCandidateV1(
+        20, "Relatie mondena", "Detalii despre relatie.", "CanCan", 1, NOW
+    )
+    result = recommend_episode_v1((*strong, weak_cancan))
+    assert all(item.category != "CanCan" for item in result.recommendations)
+    evidence = next(item for item in result.evaluations if item.event_id == 20)
+    assert evidence.disposition == "eligible_but_below_episode_cutoff"
+
+
+def test_politica_cap_skips_third_and_accepts_next_ranked_other_category() -> None:
+    politics = tuple(candidate(i, "Politica", sources=11 - i) for i in range(1, 4))
+    others = (
+        *(candidate(i, "Social", sources=4) for i in range(4, 7)),
+        *(candidate(i, "Diverse", sources=4) for i in range(7, 10)),
+        *(candidate(i, "Externe", sources=4) for i in range(10, 12)),
+    )
+    result = recommend_episode_v1((*politics, *others))
+    recommended = {item.event_id for item in result.recommendations}
+    assert len(recommended) == 10
+    assert 3 not in recommended
+    assert set(range(4, 12)) <= recommended
+    third = next(item for item in result.evaluations if item.event_id == 3)
+    assert third.disposition == "eligible_but_category_cap_reached"
+
+
+@pytest.mark.parametrize(
+    "category,cap,fallback_category",
+    (
+        ("Politica", 2, "Social"),
+        ("Social", 3, "Diverse"),
+        ("CanCan", 1, "Social"),
+        ("Diverse", 3, "Externe"),
+        ("Externe", 2, "Diverse"),
+    ),
+)
+def test_each_category_cap_skips_overflow_and_considers_next_global_candidate(
+    category: str, cap: int, fallback_category: str
+) -> None:
+    overflowing = tuple(
+        candidate(i, category, sources=10 - i) for i in range(1, cap + 2)
+    )
+    fallback = candidate(100, fallback_category, sources=1)
+    result = recommend_episode_v1((*overflowing, fallback))
+    recommended = {item.event_id for item in result.recommendations}
+    assert recommended == {*range(1, cap + 1), 100}
+    overflow = next(item for item in result.evaluations if item.event_id == cap + 1)
+    assert overflow.disposition == "eligible_but_category_cap_reached"
 
 
 def test_all_caps_and_total_are_enforced_by_competitive_rank() -> None:
@@ -226,9 +322,9 @@ def test_competitive_eleventh_candidate_loses_by_rank_not_category_order() -> No
     )
     result = recommend_episode_v1(tuple(items))
     assert len(result.recommendations) == 10
-    assert 11 not in recommended_ids(*items)
+    assert 2 not in recommended_ids(*items)
     assert (
-        next(x for x in result.evaluations if x.event_id == 11).disposition
+        next(x for x in result.evaluations if x.event_id == 2).disposition
         == "eligible_but_below_episode_cutoff"
     )
 
@@ -296,7 +392,9 @@ def test_recommendation_is_independent_of_input_order_and_signals_are_not_double
     items = tuple(candidate(i, "Diverse", sources=5 - i) for i in range(1, 4))
     forward = recommend_episode_v1(items)
     reverse = recommend_episode_v1(tuple(reversed(items)))
+    repeated = recommend_episode_v1(items)
     assert forward == reverse
+    assert forward == repeated
 
     controversy_only = EditorialCandidateV1(
         20,
