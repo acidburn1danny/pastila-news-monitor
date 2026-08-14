@@ -5,7 +5,8 @@ param(
     [Parameter(Mandatory=$true)][string]$WorkRoot,
     [Parameter(Mandatory=$true)][string]$OutputRoot,
     [Parameter(Mandatory=$true)][string]$IsccExecutable,
-    [Parameter(Mandatory=$true)][string]$SourceHead,
+    [Parameter(Mandatory=$true)][string]$ApplicationPayloadSourceHead,
+    [Parameter(Mandatory=$true)][string]$InstallerSourceHead,
     [Parameter(Mandatory=$true)][string]$ReceiptPath,
     [switch]$PlanOnly
 )
@@ -22,7 +23,8 @@ $arguments = @(
     '--output-root', $OutputRoot,
     '--iscc', $IsccExecutable,
     '--app-version', '0.1.0',
-    '--source-head', $SourceHead,
+    '--application-payload-source-head', $ApplicationPayloadSourceHead,
+    '--installer-source-head', $InstallerSourceHead,
     '--receipt', $ReceiptPath,
     '--python-version', (& $PythonExecutable --version).Replace('Python ', ''),
     '--pyinstaller-version', $pyInstallerVersion,

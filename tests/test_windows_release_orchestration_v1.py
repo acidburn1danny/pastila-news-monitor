@@ -14,7 +14,7 @@ from pastila_scout.windows_release_orchestration_v1 import (
 )
 
 
-def _bundle(root: Path) -> Path:
+def _bundle(root: Path, source_ref: str = "HEAD") -> Path:
     bundle = root / "bundle"
     for relative in (
         "PastilaScout.exe",
@@ -29,19 +29,19 @@ def _bundle(root: Path) -> Path:
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(relative.encode())
     (bundle / "config" / "sources.yaml").write_bytes(
-        subprocess.check_output(["git", "show", "HEAD:config/sources.yaml"])
+        subprocess.check_output(["git", "show", f"{source_ref}:config/sources.yaml"])
     )
     wheel = root / "wheelhouse" / "pastila_news_monitor-0.1.0-py3-none-any.whl"
     wheel.parent.mkdir(parents=True, exist_ok=True)
     tracked = subprocess.check_output(
-        ["git", "ls-tree", "-r", "--name-only", "HEAD"], text=True
+        ["git", "ls-tree", "-r", "--name-only", source_ref], text=True
     ).splitlines()
     with zipfile.ZipFile(wheel, "w") as archive:
         for path in tracked:
             if path.startswith("src/pastila_scout/") and path.endswith(".py"):
                 archive.writestr(
                     path.removeprefix("src/"),
-                    Path(path).read_bytes(),
+                    subprocess.check_output(["git", "show", f"{source_ref}:{path}"]),
                 )
     digest = __import__("hashlib").sha256(wheel.read_bytes()).hexdigest()
     direct = bundle / "pastila_news_monitor-0.1.0.dist-info" / "direct_url.json"
@@ -58,7 +58,14 @@ def _bundle(root: Path) -> Path:
     return bundle
 
 
-def _plan(tmp_path: Path, monkeypatch, bundle: Path | None = None):
+def _plan(
+    tmp_path: Path,
+    monkeypatch,
+    bundle: Path | None = None,
+    *,
+    clean_tree: bool = True,
+    application_payload_source_head: str | None = None,
+):
     monkeypatch.setattr(
         "pastila_scout.windows_release_orchestration_v1._safe_external",
         lambda path, _repository: path.resolve(),
@@ -69,6 +76,19 @@ def _plan(tmp_path: Path, monkeypatch, bundle: Path | None = None):
         .check_output(["git", "rev-parse", "HEAD"], text=True)
         .strip()
     )
+    if clean_tree:
+        real_git = __import__(
+            "pastila_scout.windows_release_orchestration_v1", fromlist=["_git"]
+        )._git
+
+        def clean(repository: Path, *arguments: str) -> str:
+            if arguments == ("status", "--porcelain", "--untracked-files=no"):
+                return ""
+            return real_git(repository, *arguments)
+
+        monkeypatch.setattr(
+            "pastila_scout.windows_release_orchestration_v1._git", clean
+        )
     iscc = tmp_path / "ISCC.exe"
     iscc.parent.mkdir(parents=True, exist_ok=True)
     iscc.write_bytes(b"compiler")
@@ -79,7 +99,8 @@ def _plan(tmp_path: Path, monkeypatch, bundle: Path | None = None):
         output_root=tmp_path / "output",
         iscc=iscc,
         app_version="0.1.0",
-        source_head=head,
+        application_payload_source_head=application_payload_source_head or head,
+        installer_source_head=head,
         python_version="3.14.3",
         pyinstaller_version="6.22.0",
     )
@@ -126,6 +147,7 @@ def test_release_plan_rejects_missing_launcher_and_wrong_head(
 
     bundle = _bundle(tmp_path / "head")
     repository = Path.cwd().resolve()
+    head = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
     iscc = tmp_path / "head" / "ISCC.exe"
     iscc.write_bytes(b"compiler")
     monkeypatch.setattr(
@@ -140,7 +162,8 @@ def test_release_plan_rejects_missing_launcher_and_wrong_head(
             output_root=tmp_path / "head-output",
             iscc=iscc,
             app_version="0.1.0",
-            source_head="0" * 40,
+            application_payload_source_head=head,
+            installer_source_head="0" * 40,
         )
 
 
@@ -160,8 +183,36 @@ def test_release_plan_rejects_bundle_built_from_different_source(
     value = json.loads(direct.read_text(encoding="utf-8"))
     value["archive_info"]["hashes"]["sha256"] = digest
     direct.write_text(json.dumps(value), encoding="utf-8")
-    with pytest.raises(ReleaseOrchestrationError, match="do not match HEAD"):
+    with pytest.raises(ReleaseOrchestrationError, match="do not match payload source"):
         _plan(tmp_path / "plan", monkeypatch, bundle)
+
+
+def test_release_plan_records_distinct_payload_and_installer_sources(
+    tmp_path: Path, monkeypatch
+) -> None:
+    plan = _plan(tmp_path, monkeypatch)
+    head = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
+    assert plan["application_payload_source_head"] == head
+    assert plan["installer_source_head"] == head
+    assert "source_head" not in plan
+
+
+def test_release_plan_accepts_verified_older_payload_source(
+    tmp_path: Path, monkeypatch
+) -> None:
+    payload_head = "e70d61e24a7c0a998d9cc46fb5469a636999b6b0"
+    bundle = _bundle(tmp_path / "payload", payload_head)
+    plan = _plan(
+        tmp_path / "plan",
+        monkeypatch,
+        bundle,
+        application_payload_source_head=payload_head,
+    )
+    assert plan["application_payload_source_head"] == payload_head
+    assert (
+        plan["installer_source_head"]
+        == subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
+    )
 
 
 def test_release_plan_rejects_tracked_or_staged_changes(
@@ -178,7 +229,7 @@ def test_release_plan_rejects_tracked_or_staged_changes(
 
     monkeypatch.setattr("pastila_scout.windows_release_orchestration_v1._git", dirty)
     with pytest.raises(ReleaseOrchestrationError, match="tracked tree"):
-        _plan(tmp_path, monkeypatch)
+        _plan(tmp_path, monkeypatch, clean_tree=False)
 
 
 def test_qualification_wrapper_remains_frozen() -> None:
@@ -195,4 +246,6 @@ def test_normal_release_wrapper_is_separate_and_records_tool_versions() -> None:
     assert "build-installer.ps1" not in wrapper
     assert "--pyinstaller-version" in wrapper
     assert "--inno-setup-version" in wrapper
+    assert "--application-payload-source-head" in wrapper
+    assert "--installer-source-head" in wrapper
     assert "if ($PlanOnly)" in wrapper

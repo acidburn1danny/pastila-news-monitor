@@ -109,13 +109,25 @@ def _bundle_source_wheel(bundle: Path) -> tuple[Path, str]:
     return wheel, expected
 
 
-def _verify_bundle_source(repository: Path, bundle: Path) -> dict[str, object]:
-    """Bind the packaged application wheel byte-for-byte to accepted HEAD."""
+def _verify_bundle_source(
+    repository: Path, bundle: Path, application_payload_source_head: str
+) -> dict[str, object]:
+    """Bind the packaged application wheel to its explicit source commit."""
     wheel, wheel_sha = _bundle_source_wheel(bundle)
+    if (
+        len(application_payload_source_head) != 40
+        or _git(repository, "cat-file", "-t", application_payload_source_head)
+        != "commit"
+    ):
+        raise ReleaseOrchestrationError("application payload source is not a commit")
     tracked = tuple(
         path
         for path in _git(
-            repository, "ls-tree", "-r", "--name-only", "HEAD"
+            repository,
+            "ls-tree",
+            "-r",
+            "--name-only",
+            application_payload_source_head,
         ).splitlines()
         if path.startswith("src/pastila_scout/") and path.endswith(".py")
     )
@@ -130,19 +142,40 @@ def _verify_bundle_source(repository: Path, bundle: Path) -> dict[str, object]:
     except (OSError, zipfile.BadZipFile) as error:
         raise ReleaseOrchestrationError("bundle source wheel is unreadable") from error
     if set(actual) != set(expected):
-        raise ReleaseOrchestrationError("bundle application sources do not match HEAD")
+        raise ReleaseOrchestrationError(
+            "bundle application sources do not match payload source"
+        )
     for archive_path, repository_path in expected.items():
-        if (repository / repository_path).read_bytes() != actual[archive_path]:
+        expected_bytes = subprocess.run(
+            (
+                "git",
+                "-C",
+                str(repository),
+                "show",
+                f"{application_payload_source_head}:{repository_path}",
+            ),
+            check=True,
+            capture_output=True,
+        ).stdout
+        if expected_bytes != actual[archive_path]:
             raise ReleaseOrchestrationError(
-                "bundle application sources do not match HEAD"
+                "bundle application sources do not match payload source"
             )
     bundled_sources = bundle / "config" / "sources.yaml"
-    if (
-        bundled_sources.read_bytes()
-        != (repository / "config" / "sources.yaml").read_bytes()
-    ):
+    expected_sources = subprocess.run(
+        (
+            "git",
+            "-C",
+            str(repository),
+            "show",
+            f"{application_payload_source_head}:config/sources.yaml",
+        ),
+        check=True,
+        capture_output=True,
+    ).stdout
+    if bundled_sources.read_bytes() != expected_sources:
         raise ReleaseOrchestrationError(
-            "bundle source configuration does not match HEAD"
+            "bundle source configuration does not match payload source"
         )
     return {"application_wheel_path": str(wheel), "application_wheel_sha256": wheel_sha}
 
@@ -229,7 +262,8 @@ def create_release_plan(
     output_root: Path,
     iscc: Path,
     app_version: str,
-    source_head: str,
+    application_payload_source_head: str,
+    installer_source_head: str,
     python_version: str | None = None,
     pyinstaller_version: str | None = None,
     inno_setup_version: str | None = None,
@@ -244,8 +278,8 @@ def create_release_plan(
     if work_root.exists() or (output_root.exists() and any(output_root.iterdir())):
         raise ReleaseOrchestrationError("work must be absent and output empty")
     actual_head = _git(repository, "rev-parse", "HEAD")
-    if source_head != actual_head:
-        raise ReleaseOrchestrationError("source HEAD mismatch")
+    if installer_source_head != actual_head:
+        raise ReleaseOrchestrationError("installer source HEAD mismatch")
     tracked = _git(repository, "status", "--porcelain", "--untracked-files=no")
     if tracked:
         raise ReleaseOrchestrationError("tracked tree must be clean")
@@ -262,7 +296,9 @@ def create_release_plan(
     )
     if not all(item.is_file() for item in required):
         raise ReleaseOrchestrationError("required payload resource is missing")
-    provenance = _verify_bundle_source(repository, bundle)
+    provenance = _verify_bundle_source(
+        repository, bundle, application_payload_source_head
+    )
     entries = _inventory(bundle)
     work_root.mkdir(parents=True)
     output_root.mkdir(parents=True, exist_ok=True)
@@ -295,8 +331,18 @@ def create_release_plan(
         "schema": "pastila-scout-release-orchestration",
         "schema_version": 1,
         "source_branch": _git(repository, "branch", "--show-current"),
-        "source_head": actual_head,
-        "source_subject": _git(repository, "show", "-s", "--format=%s", "HEAD"),
+        "application_payload_source_head": application_payload_source_head,
+        "application_payload_source_subject": _git(
+            repository,
+            "show",
+            "-s",
+            "--format=%s",
+            application_payload_source_head,
+        ),
+        "installer_source_head": actual_head,
+        "installer_source_subject": _git(
+            repository, "show", "-s", "--format=%s", "HEAD"
+        ),
         "tracked_tree_status": "clean",
         "excluded_untracked_paths": _git(
             repository, "status", "--porcelain", "--untracked-files=all"
@@ -334,7 +380,8 @@ def main() -> int:
     for name in ("repository", "bundle", "work-root", "output-root", "iscc"):
         parser.add_argument(f"--{name}", type=Path, required=True)
     parser.add_argument("--app-version", required=True)
-    parser.add_argument("--source-head", required=True)
+    parser.add_argument("--application-payload-source-head", required=True)
+    parser.add_argument("--installer-source-head", required=True)
     parser.add_argument("--receipt", type=Path, required=True)
     parser.add_argument("--python-version")
     parser.add_argument("--pyinstaller-version")
@@ -349,7 +396,8 @@ def main() -> int:
         output_root=args.output_root,
         iscc=args.iscc,
         app_version=args.app_version,
-        source_head=args.source_head,
+        application_payload_source_head=args.application_payload_source_head,
+        installer_source_head=args.installer_source_head,
         python_version=args.python_version or os.sys.version.split()[0],
         pyinstaller_version=args.pyinstaller_version,
         inno_setup_version=args.inno_setup_version,
@@ -357,7 +405,7 @@ def main() -> int:
     if not args.plan_only:
         bundle = Path(str(plan["packaged_bundle_root"]))
         if _git(Path(args.repository).resolve(), "rev-parse", "HEAD") != plan[
-            "source_head"
+            "installer_source_head"
         ] or _git(
             Path(args.repository).resolve(),
             "status",
