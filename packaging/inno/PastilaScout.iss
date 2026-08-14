@@ -1350,7 +1350,7 @@ begin
       Log('Phase 5.6B removing newly created installer surfaces after failed installation.');
       RemoveFailedActivationSurfaces();
     end;
-  end else if CurStep = ssPostInstall then begin
+  end else if CurStep = ssDone then begin
     ResolveTransaction();
     WriteFinalOperationResult();
   end;

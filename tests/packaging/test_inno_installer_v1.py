@@ -518,11 +518,14 @@ def test_r7_transaction_is_resolved_before_custom_exit_callback() -> None:
     deinitialize = _procedure(
         definition, "procedure DeinitializeSetup", "function InitializeUninstall"
     )
-    assert "CurStep = ssPostInstall" in steps
-    post_install = steps[steps.index("CurStep = ssPostInstall") :]
-    assert post_install.index("ResolveTransaction") < post_install.index(
-        "WriteFinalOperationResult"
-    )
+    post_install = steps[
+        steps.index("CurStep = ssPostInstall") : steps.index("CurStep = ssDone")
+    ]
+    assert "ResolveTransaction" not in post_install
+    assert "DisposeTransactionSnapshot" not in post_install
+    assert "CurStep = ssDone" in steps
+    done = steps[steps.index("CurStep = ssDone") :]
+    assert done.index("ResolveTransaction") < done.index("WriteFinalOperationResult")
     assert "RestorePriorPublicationSurfaces" in deinitialize
     assert "ResolveTransaction" in deinitialize
     assert "TransactionResolved" in definition
