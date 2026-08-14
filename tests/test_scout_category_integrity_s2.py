@@ -151,7 +151,7 @@ def test_externe_source_authority_is_independent_of_title_language(title: str) -
         ),
     ),
 )
-def test_specialized_source_authority(
+def test_cancan_source_prior_preserves_supported_semantics(
     source_id: str,
     categories: tuple[str, ...],
     title: str,
@@ -170,7 +170,7 @@ def test_final_five_category_contract_and_legacy_mapping() -> None:
     assert normalize_category("all") is None
 
 
-def test_click_is_authoritative_cancan_but_english_still_wins() -> None:
+def test_click_prior_alone_is_insufficient_but_english_still_wins() -> None:
     romanian = _article(
         1, "Subiect local fara semnal semantic", ("CanCan", "Social", "Diverse")
     ).model_copy(update={"source_id": "click"})
@@ -178,8 +178,177 @@ def test_click_is_authoritative_cancan_but_english_still_wins() -> None:
         update={"title": "Celebrity reveals new relationship after wedding"}
     )
 
-    assert derive_categories((romanian,)) == ("CanCan",)
+    assert derive_categories((romanian,)) == ("Diverse",)
     assert derive_categories((english,)) == ("Externe",)
+
+
+@pytest.mark.parametrize(
+    ("source_id", "title", "summary", "expected"),
+    (
+        (
+            "cancan",
+            "Accident mortal pe un drum national",
+            "Politistii cerceteaza circumstantele tragediei.",
+            "Social",
+        ),
+        (
+            "click",
+            "Rusia ataca din nou Ucraina cu drone",
+            "Atacul a vizat infrastructura civila.",
+            "Externe",
+        ),
+        (
+            "cancan",
+            "FCSB castiga meciul si urca in clasament",
+            "Echipa s-a calificat in finala campionatului.",
+            "Diverse",
+        ),
+        (
+            "click",
+            "Guvernul aproba reforma fiscala",
+            "Ministrul a prezentat noua politica publica.",
+            "Politica",
+        ),
+        (
+            "cancan",
+            "Bianca reactioneaza dupa veste",
+            "Vedeta a vorbit despre relatia si nunta sa.",
+            "CanCan",
+        ),
+        (
+            "click",
+            "Sfaturi simple pentru o vacanta reusita",
+            "Ghidul prezinta destinatii si costuri orientative.",
+            "Diverse",
+        ),
+    ),
+)
+def test_s23_cancan_click_are_bounded_supporting_priors(
+    source_id: str, title: str, summary: str, expected: str
+) -> None:
+    article = _article(1, title, ("CanCan",)).model_copy(
+        update={"source_id": source_id, "summary": summary}
+    )
+
+    assert derive_categories((article,)) == (expected,)
+
+
+@pytest.mark.parametrize(
+    ("title", "expected"),
+    (
+        ("Artista anunta o noua performanta muzicala", "CanCan"),
+        ("Filmari Asia Express pe Drumul Matasii", "CanCan"),
+        ("Insula Iubirii: concurentii formeaza un cuplu", "CanCan"),
+        ("Tenorul publica imagini alaturi de familie", "CanCan"),
+        ("Filme si seriale noi pe platformele de streaming", "CanCan"),
+        ("Celebrele incaltari produse intr-un oras vechi", "Diverse"),
+    ),
+)
+def test_s23_entertainment_context_requires_real_semantic_support(
+    title: str, expected: str
+) -> None:
+    article = _article(1, title, ("Politica", "Social", "CanCan", "Diverse"))
+
+    assert derive_categories((article,)) == (expected,)
+
+
+@pytest.mark.parametrize(
+    ("title", "expected"),
+    (
+        ("Sfaturi despre alimentatia copiilor oferite de un medic", "Diverse"),
+        ("Un sofer explica de ce prefera masinile electrice", "Diverse"),
+        ("Copil internat de urgenta la Spitalul Marie Curie", "Social"),
+        ("Accident feroviar langa Brighton", "Externe"),
+        ("Explozie intr-o rafinarie din portul Rotterdam", "Externe"),
+        ("Guvernul Suediei adopta o lege noua", "Externe"),
+        ("Rebelii Houthi din Yemen ataca o rafinarie", "Externe"),
+        ("Hackeri chinezi ataca infrastructura din Taiwan", "Externe"),
+        ("Urs impuscat dupa ce a intrat intr-un hotel din Brasov", "Social"),
+        ("OCPI prelungeste programul dupa blocarea serviciului", "Social"),
+        ("Centrala nucleara de la Cernavoda a fost oprita", "Politica"),
+    ),
+)
+def test_s23_public_interest_and_foreign_context_require_strong_evidence(
+    title: str, expected: str
+) -> None:
+    article = _article(1, title, ("Politica", "Social", "CanCan", "Diverse"))
+
+    assert derive_categories((article,)) == (expected,)
+
+
+@pytest.mark.parametrize(
+    ("source_id", "source_is_externe", "title", "summary", "expected"),
+    (
+        (
+            "click",
+            False,
+            "Guvernul aproba bugetul si noua politica fiscala",
+            "O vedeta a comentat decizia intr-un interviu.",
+            "Politica",
+        ),
+        (
+            "cancan",
+            False,
+            "Sportiv retinut dupa un accident mortal",
+            "Atletul este cercetat de politie.",
+            "Social",
+        ),
+        (
+            "click",
+            False,
+            "Compania lanseaza un telefon nou",
+            "Un medic si un copil apar in reclama produsului.",
+            "Diverse",
+        ),
+        (
+            "domestic",
+            False,
+            "MApN raporteaza o drona in spatiul aerian al Romaniei",
+            "Incidentul este analizat impreuna cu aliatii straini.",
+            "Politica",
+        ),
+        (
+            "domestic",
+            False,
+            "Primarul povesteste despre dieta si vacanta sa",
+            "Interviul nu priveste activitatea institutiei.",
+            "Diverse",
+        ),
+        (
+            "cancan",
+            True,
+            "Vedeta confirma nunta si noua relatie",
+            "Material de divertisment.",
+            "Externe",
+        ),
+        (
+            "domestic",
+            False,
+            "Government announces a new policy after the election",
+            "Guvernul Romaniei a comentat stirea.",
+            "Externe",
+        ),
+    ),
+)
+def test_final_review_authority_context_and_summary_adversaries(
+    source_id: str,
+    source_is_externe: bool,
+    title: str,
+    summary: str,
+    expected: str,
+) -> None:
+    categories = (
+        ("Externe",)
+        if source_is_externe
+        else ("CanCan",)
+        if source_id in {"cancan", "click"}
+        else ("Politica", "Social", "CanCan", "Diverse")
+    )
+    article = _article(1, title, categories).model_copy(
+        update={"source_id": source_id, "summary": summary}
+    )
+
+    assert derive_categories((article,)) == (expected,)
 
 
 def test_feed_tag_does_not_impersonate_externe_source_authority() -> None:
@@ -225,6 +394,257 @@ def test_broad_domestic_scope_uses_title_semantics(title: str, expected: str) ->
         title,
         ("Politica", "Social", "Economie", "Conspiratii", "CanCan", "Diverse"),
     )
+
+    assert derive_categories((article,)) == (expected,)
+
+
+@pytest.mark.parametrize(
+    ("title", "expected"),
+    (
+        (
+            "18 drone au intrat in spatiul aerian al Romaniei. Bilantul MApN",
+            "Politica",
+        ),
+        ("Ambasadorul Rusiei, convocat la Ministerul Afacerilor Externe", "Politica"),
+        ("Ministrul roman informeaza aliatii dupa incident", "Politica"),
+        ("Liderii PSD, PNL, USR si AUR negociaza noua coalitie", "Politica"),
+        ("Oana Gheorghiu analizeaza companiile de stat", "Politica"),
+        ("Nicusor Dan anunta un protest diplomatic", "Politica"),
+        ("Eurodeputatul cere Comisiei Europene un raspuns pentru Romania", "Politica"),
+        ("Instantele romanesti aplica decizia CJUE", "Politica"),
+        ("Un nou mesaj RO-Alert in nordul judetului Tulcea", "Social"),
+        ("Record de inscrieri la universitate pentru examenul de admitere", "Social"),
+        ("ANM anunta Cod galben de vijelii", "Social"),
+        ("Salvamont intervine pentru salvarea a doi turisti", "Social"),
+        ("Pompierii cauta doi marinari disparuti pe mare", "Social"),
+        ("Politistii intervin dupa un accident grav", "Social"),
+        ("Cum se calculeaza pensia si contributia CASS", "Social"),
+        ("Furnizorul de electricitate a inselat consumatorii", "Social"),
+        ("Pacientii primesc un tratament nou in spital", "Social"),
+        ("CFR repara linia de cale ferata dupa accident", "Social"),
+        ("Actrita Ioana Blaj revine dupa o pauza", "CanCan"),
+        ("Prezentatoarea TV Adina Halas povesteste despre vacanta", "CanCan"),
+        ("Cerere in casatorie inedita in centrul orasului", "CanCan"),
+        ("Vedeta confirma relatia si vacanta de lux", "CanCan"),
+        ("Rusia a atacat din nou Ucraina cu drone si rachete", "Externe"),
+        ("Evacuari din cauza incendiilor din Franta si Spania", "Externe"),
+        ("Iranul raspunde dupa atacul ucrainean asupra unei nave", "Externe"),
+        ("Noul premier al Marii Britanii il critica pe Trump", "Externe"),
+        ("MAE il convoaca pe ambasadorul Rusiei", "Politica"),
+        ("MApN raporteaza o drona in spatiul aerian al Romaniei", "Politica"),
+        ("Guvernul Romaniei reactioneaza la atacul din Ucraina", "Politica"),
+        ("BVB creste dupa rezultatele raportate de companii", "Diverse"),
+        ("Horoscop saptamanal pentru toate zodiile", "Diverse"),
+        ("Echipa castiga meciul si urca in clasament", "Diverse"),
+        ("Compania lanseaza un produs software pentru firme", "Diverse"),
+    ),
+)
+def test_s21_real_semantic_families(title: str, expected: str) -> None:
+    article = _article(
+        1,
+        title,
+        ("Politica", "Social", "CanCan", "Diverse"),
+    )
+
+    assert derive_categories((article,)) == (expected,)
+
+
+@pytest.mark.parametrize(
+    ("title", "expected"),
+    (
+        ("Ministerul anunta reforma administratiei publice", "Politica"),
+        ("Parlamentarii si senatorii voteaza proiectul de lege", "Politica"),
+        ("Primaria modifica taxele locale", "Politica"),
+        ("Pompierii intervin la incendiul unei case", "Social"),
+        ("Pacientii din spitale primesc tratamente noi", "Social"),
+        ("Politistii cerceteaza disparitia unui elev", "Social"),
+        ("Actrita si cantareata confirma logodna", "CanCan"),
+    ),
+)
+def test_s21_bounded_romanian_morphology(title: str, expected: str) -> None:
+    article = _article(
+        1,
+        title,
+        ("Politica", "Social", "CanCan", "Diverse"),
+    )
+
+    assert derive_categories((article,)) == (expected,)
+
+
+@pytest.mark.parametrize(
+    "title",
+    (
+        "Romania participa la un festival de film",
+        "Compania Romania Software raporteaza profit",
+        "Actorul depune marturie intr-un proces penal",
+        "Ministrul britanic viziteaza Romania pentru un concert",
+    ),
+)
+def test_s21_context_tokens_do_not_create_automatic_categories(title: str) -> None:
+    article = _article(
+        1,
+        title,
+        ("Politica", "Social", "CanCan", "Diverse"),
+    )
+
+    assert len(derive_categories((article,))) == 1
+
+
+@pytest.mark.parametrize(
+    ("title", "expected"),
+    (
+        ("Prima tara care lanseaza un serviciu de taxi aerian", "Diverse"),
+        ("Iubitorii de literatura descopera o librarie veche", "Diverse"),
+        ("Buget de vacante pentru o iesire la gratar", "Diverse"),
+        ("FCSB si CFR Cluj joaca in cupele europene", "Diverse"),
+        ("Noul premier al Braziliei anunta alegeri", "Externe"),
+        ("Accident grav la Berlin, anchetat de politie", "Externe"),
+        ("Grecia inscrie Muntele Olimp in patrimoniul UNESCO", "Externe"),
+        ("Jandarmii au ajutat un tanar care a cerut-o de sotie", "CanCan"),
+        ("Salvamont Maramures salveaza doi ucraineni epuizati", "Social"),
+        ("Mesajul sefului Statului Major despre drona doborata", "Politica"),
+        ("Industria militara schimba viitorul apararii Romaniei", "Politica"),
+        ("Copii asteapta un pat la spitalul Marie Curie", "Social"),
+        ("Patru cutremure in Romania in mai putin de 24 de ore", "Social"),
+        ("Medalie de aur pentru Romania la campionatul mondial", "Diverse"),
+        ("Oamenii pot folosi noul serviciu de transport", "Diverse"),
+        ("Partidul AUR anunta un candidat la alegeri", "Politica"),
+        ("Copiii unei familii au fugit din Coreea de Nord", "Externe"),
+        ("Antrenorul Universitatii Craiova va interveni dupa meci", "Diverse"),
+        ("Deficitul bugetar al Romaniei a scazut in primul semestru", "Politica"),
+        ("Politistii au retinut suspectii dupa un jaf", "Social"),
+        ("Peste 300000 de varstnici sunt izolati in orase", "Social"),
+        ("Imagini de la nunta artistei", "CanCan"),
+        ("Incendiile afecteaza sudul Europei", "Externe"),
+    ),
+)
+def test_s21_collision_and_foreign_precision_regressions(
+    title: str, expected: str
+) -> None:
+    article = _article(
+        1,
+        title,
+        ("Politica", "Social", "CanCan", "Diverse"),
+    )
+
+    assert derive_categories((article,)) == (expected,)
+
+
+def test_s21_summary_is_bounded_secondary_evidence() -> None:
+    political = _article(
+        1,
+        "Oana Gheorghiu prezinta concluziile analizei",
+        ("Politica", "Social", "CanCan", "Diverse"),
+    ).model_copy(
+        update={
+            "summary": "Vicepremierul explica reforma companiilor de stat si modificarile legislative."
+        }
+    )
+    generic = _article(
+        2,
+        "Un produs nou ajunge pe piata",
+        ("Politica", "Social", "CanCan", "Diverse"),
+    ).model_copy(update={"summary": "Compania prezinta produsul intr-un comunicat."})
+
+    assert derive_categories((political,)) == ("Politica",)
+    assert derive_categories((generic,)) == ("Diverse",)
+
+
+@pytest.mark.parametrize(
+    ("title", "summary", "expected"),
+    (
+        (
+            "Andrei Popescu reactioneaza dupa sedinta",
+            "Vicepremierul Romaniei a explicat reforma pregatita de Guvern.",
+            "Politica",
+        ),
+        (
+            "Nadia Kovar face un anunt important",
+            "Presedintele statului Nembala a anuntat noua politica a guvernului.",
+            "Externe",
+        ),
+        (
+            "Ioana Popa revine cu o declaratie",
+            "Actrita a vorbit intr-un interviu despre noul film.",
+            "CanCan",
+        ),
+        (
+            "Mihai Ionescu se pregateste pentru ziua decisiva",
+            "Sportivul roman va concura in finala campionatului.",
+            "Diverse",
+        ),
+        (
+            "Autoritatile au intervenit in cursul noptii",
+            "Salvamont Maramures a salvat doi cetateni ucraineni.",
+            "Social",
+        ),
+        (
+            "Un anunt venit de la Orania",
+            "Guvernul de la Orania a aprobat o noua politica externa.",
+            "Externe",
+        ),
+        (
+            "Ion Popescu este mentionat in comunicat",
+            "Ministerul de externe de la Teheran a anuntat decizia.",
+            "Externe",
+        ),
+        (
+            "Radu Matei prezinta concluziile",
+            "Directorul companiei a explicat rezultatele trimestriale.",
+            "Diverse",
+        ),
+    ),
+)
+def test_s22_contextual_role_and_subject_resolution(
+    title: str, summary: str, expected: str
+) -> None:
+    article = _article(
+        1,
+        title,
+        ("Politica", "Social", "CanCan", "Diverse"),
+    ).model_copy(update={"summary": summary})
+
+    assert derive_categories((article,)) == (expected,)
+
+
+@pytest.mark.parametrize(
+    ("title", "summary", "expected"),
+    (
+        (
+            "Actor cunoscut, retinut dupa o agresiune",
+            "Politistii cerceteaza cazul penal.",
+            "Social",
+        ),
+        (
+            "Ministrul povesteste despre vacanta si dieta sa",
+            "Interviul descrie exclusiv obiceiurile sale personale.",
+            "Diverse",
+        ),
+        (
+            "Alex Pop castiga finala",
+            "Atletul a obtinut primul loc in campionat.",
+            "Diverse",
+        ),
+        (
+            "MApN raporteaza un incident la Teheran",
+            "Institutia romana monitorizeaza situatia.",
+            "Politica",
+        ),
+        (
+            "Ministerul de Externe de la Teheran anunta masuri",
+            "Un cetatean roman este mentionat in comunicat.",
+            "Externe",
+        ),
+    ),
+)
+def test_s22_contextual_collision_and_precedence(
+    title: str, summary: str, expected: str
+) -> None:
+    article = _article(
+        1,
+        title,
+        ("Politica", "Social", "CanCan", "Diverse"),
+    ).model_copy(update={"summary": summary})
 
     assert derive_categories((article,)) == (expected,)
 

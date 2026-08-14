@@ -98,6 +98,7 @@ def derive_categories(articles: Sequence[ArticleProvenance]) -> tuple[str, ...]:
             (*article.source_categories, *sorted(_raw_categories(article.raw_payload))),
             source_id=article.source_id,
             source_is_externe="Externe" in article.source_categories,
+            summary=article.summary,
         )
         if candidate is not None:
             counts[candidate] += 1
@@ -126,7 +127,9 @@ def derive_categories(articles: Sequence[ArticleProvenance]) -> tuple[str, ...]:
                     *article.source_categories,
                     *sorted(_raw_categories(article.raw_payload)),
                 ),
+                source_id=article.source_id,
                 source_is_externe="Externe" in article.source_categories,
+                summary=article.summary,
             )
             for article in articles
         }

@@ -17,7 +17,13 @@ from pastila_scout.database import (
 from pastila_scout.event_matcher import match_event, title_similarity
 
 
-def _source(connection: sqlite3.Connection, source_id: str, name: str) -> None:
+def _source(
+    connection: sqlite3.Connection,
+    source_id: str,
+    name: str,
+    *,
+    categories: tuple[str, ...] = (),
+) -> None:
     upsert_source(
         connection,
         source_id=source_id,
@@ -25,17 +31,24 @@ def _source(connection: sqlite3.Connection, source_id: str, name: str) -> None:
         source_type="rss",
         url=f"https://example.com/{source_id}",
         enabled=True,
+        categories=categories,
     )
 
 
-def _article(connection: sqlite3.Connection, source_id: str, suffix: str) -> int:
+def _article(
+    connection: sqlite3.Connection,
+    source_id: str,
+    suffix: str,
+    *,
+    title: str = "Railway theft at Sadu",
+) -> int:
     article_id = insert_article(
         connection,
         source_id=source_id,
         url=f"https://example.com/{suffix}",
         normalized_url=f"https://example.com/{suffix}",
-        title="Railway theft at Sadu",
-        normalized_title="railway theft at sadu",
+        title=title,
+        normalized_title=title.casefold(),
     )
     assert article_id is not None
     return article_id
@@ -164,19 +177,20 @@ def test_events_cli_filters_and_displays_source_provenance(
     now = datetime.now(UTC).isoformat()
     with open_database(database) as connection:
         initialize_database(connection)
-        _source(connection, "digi", "Digi24")
-        _source(connection, "hotnews", "HotNews")
+        _source(connection, "digi", "Digi24", categories=("Social",))
+        _source(connection, "hotnews", "HotNews", categories=("Social",))
+        social_title = "Furt pe calea ferata la Sadu"
         event_id = create_event(
             connection,
-            article_id=_article(connection, "digi", "cli-one"),
-            canonical_title="Railway theft at Sadu",
-            normalized_title="railway theft at sadu",
+            article_id=_article(connection, "digi", "cli-one", title=social_title),
+            canonical_title=social_title,
+            normalized_title=social_title.casefold(),
             category="Social",
             seen_at=now,
         )
         attach_article_to_event(
             connection,
-            article_id=_article(connection, "hotnews", "cli-two"),
+            article_id=_article(connection, "hotnews", "cli-two", title=social_title),
             event_id=event_id,
             seen_at=now,
         )
@@ -208,7 +222,7 @@ def test_events_cli_filters_and_displays_source_provenance(
         == 0
     )
     output = capsys.readouterr().out
-    assert "Railway theft at Sadu" in output
+    assert social_title in output
     assert "Sources: 2 | Articles: 2" in output
     assert "- Digi24" in output and "- HotNews" in output
     assert "Other event" not in output
