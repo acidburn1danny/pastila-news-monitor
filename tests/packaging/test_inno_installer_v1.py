@@ -274,7 +274,9 @@ def test_vm07b_retention_failure_preserves_native_exit_ten() -> None:
     exit_ten = invalid.index("ExitProcess(10)")
     generic_denial = invalid.index("else if ResultWriteFailed then")
     exit_one = invalid.index("ExitProcess(1);")
-    assert write < retention_class < retention_stage < exit_ten < generic_denial < exit_one
+    assert (
+        write < retention_class < retention_stage < exit_ten < generic_denial < exit_one
+    )
 
 
 def test_vm07a_successful_result_creation_retains_destination_exit_seven() -> None:
@@ -286,8 +288,13 @@ def test_vm07a_successful_result_creation_retains_destination_exit_seven() -> No
         definition, "function GetCustomSetupExitCode", "function GetProjectResultCode"
     )
     assert "if FailureStage = 'destination' then Result := 7" in custom_exit
-    assert "Result := 'The canonical per-user installation root is unavailable.';" in prepare
-    assert "CaptureTransactionSnapshot" not in prepare
+    assert (
+        "Result := 'The canonical per-user installation root is unavailable.';"
+        in prepare
+    )
+    assert prepare.index("IsCanonicalInstallRoot") < prepare.index(
+        "CaptureTransactionSnapshot"
+    )
     assert "ActivateStagedPayload" not in prepare
 
 
@@ -357,9 +364,9 @@ def test_r7_failed_new_state_is_removed_before_prior_state_restoration() -> None
     )
     removal = restore.index("RemoveKeyAndVerify(Key)")
     payload_restore = restore.index("RenameFile(OldPath, AppPath)")
-    arp_restore = restore.index("RegWriteStringValue(HKCU64, Key, 'DisplayName'")
-    dacl_restore = restore.index("RestoreRegistrySecurity")
-    assert removal < payload_restore < arp_restore < dacl_restore
+    arp_restore = restore.index("RestoreRegistryData")
+    arp_verify = restore.index("VerifyRegistryDataSnapshot")
+    assert removal < payload_restore < arp_restore < arp_verify
 
 
 def test_r7_clean_install_rollback_verifies_aggregate_absence() -> None:
@@ -406,18 +413,71 @@ def test_r6_result_precedence_and_structured_initiating_failure() -> None:
 
 def test_r7_snapshot_is_before_install_mutation_and_msg_is_not_synthesized() -> None:
     definition = text(ISS)
+    prepare = _procedure(
+        definition, "function PrepareToInstall", "function SnapshotFile"
+    )
     steps = _procedure(
         definition, "procedure CurStepChanged", "procedure DeinitializeSetup"
     )
-    assert "CurStep = ssInstall" in steps
-    assert steps.index("CaptureTransactionSnapshot") < steps.index("ssPostInstall")
+    assert "CaptureTransactionSnapshot" in prepare
+    assert "CaptureTransactionSnapshot" not in steps
     assert "unins000.msg" not in definition
+
+
+def test_repair_does_not_mutate_inherited_product_key_acl() -> None:
+    definition = text(ISS)
+    assert "Get-Acl" not in definition
+    assert "Set-Acl" not in definition
+    assert "GetAccessControl" not in definition
+    assert "SetAccessControl" not in definition
+    assert '"security_policy":"inherited_hkcu_product_key_not_mutated"' in definition
+
+
+def test_repair_arp_snapshot_preserves_all_values_types_and_subkeys() -> None:
+    definition = text(ISS)
+    snapshot = _procedure(
+        definition, "function SnapshotRegistryData", "function RestoreRegistryData"
+    )
+    restore = _procedure(
+        definition,
+        "function RestoreRegistryData",
+        "function VerifyRegistryDataSnapshot",
+    )
+    verify = _procedure(
+        definition,
+        "function VerifyRegistryDataSnapshot",
+        "function ShortcutMatches",
+    )
+    transaction = _procedure(
+        definition,
+        "function CaptureTransactionSnapshot",
+        "function VerifyMandatoryPublicationSurfaces",
+    )
+    rollback = _procedure(
+        definition, "function RestorePriorState", "procedure ResolveTransaction"
+    )
+    assert "ExportRegistryData(TransactionSnapshotRoot + '\\arp.reg')" in snapshot
+    assert "reg.exe" in restore and "/reg:64" in restore
+    assert "arp-restored.reg" in verify and "GetSHA256OfFile" in verify
+    assert "SnapshotRegistryData" in transaction
+    assert "RestoreRegistryData" in rollback
+    assert "VerifyRegistryDataSnapshot" in rollback
+
+
+def test_repair_car_failure_hooks_are_compile_time_only() -> None:
+    definition = text(ISS)
+    assert "#ifdef PASTILA_INSTALLER_REPAIR_CAR_FORCE_PUBLICATION_FAILURE" in definition
+    assert "#ifdef PASTILA_INSTALLER_REPAIR_CAR_FORCE_ROLLBACK_FAILURE" in definition
+    assert "Result := False;" in definition
+    assert "DeleteFile(TransactionSnapshotRoot + '\\arp.reg')" in definition
 
 
 def test_vm06a_clean_install_probes_preexisting_arp_publication_rights() -> None:
     definition = text(ISS)
     snapshot = _procedure(
-        definition, "function CaptureTransactionSnapshot", "function VerifyMandatoryPublicationSurfaces"
+        definition,
+        "function CaptureTransactionSnapshot",
+        "function VerifyMandatoryPublicationSurfaces",
     )
     assert "(not PriorPayloadExisted) and PriorArpExisted" in snapshot
     assert "Phase56BPublicationWriteProbe" in snapshot
@@ -433,20 +493,21 @@ def test_vm06a_snapshot_publication_failure_uses_native_install_exit_four() -> N
     custom_exit = _procedure(
         definition, "function GetCustomSetupExitCode", "function GetProjectResultCode"
     )
-    step = _procedure(
-        definition, "procedure CurStepChanged", "procedure DeinitializeSetup"
+    prepare = _procedure(
+        definition, "function PrepareToInstall", "function SnapshotFile"
     )
-    publication_failure = step[
-        step.index("if PublicationFailed then begin") : step.index(
-            "RaiseException('Unable to capture the transactional installation baseline.')"
+    publication_start = prepare.index("if PublicationFailed then begin")
+    publication_failure = prepare[
+        publication_start : prepare.index(
+            "FailureClass := 'preflight_failure'", publication_start
         )
     ]
     assert "else if PublicationFailed then Result := 4" in custom_exit
     assert "WriteFinalOperationResult();" in publication_failure
     assert "ExitProcess(GetCustomSetupExitCode);" in publication_failure
-    assert publication_failure.index("WriteFinalOperationResult();") < publication_failure.index(
-        "ExitProcess(GetCustomSetupExitCode);"
-    )
+    assert publication_failure.index(
+        "WriteFinalOperationResult();"
+    ) < publication_failure.index("ExitProcess(GetCustomSetupExitCode);")
 
 
 def test_r7_transaction_is_resolved_before_custom_exit_callback() -> None:
@@ -462,8 +523,32 @@ def test_r7_transaction_is_resolved_before_custom_exit_callback() -> None:
     assert post_install.index("ResolveTransaction") < post_install.index(
         "WriteFinalOperationResult"
     )
-    assert "ResolveTransaction" in deinitialize  # fatal-publication fallback
+    assert "RestorePriorPublicationSurfaces" in deinitialize
+    assert "ResolveTransaction" in deinitialize
     assert "TransactionResolved" in definition
+
+
+def test_failed_activation_restores_exact_prior_publication_surfaces() -> None:
+    definition = text(ISS)
+    restore = _procedure(
+        definition,
+        "function RestorePriorPublicationSurfaces",
+        "function BooleanText",
+    )
+    deinitialize = _procedure(
+        definition, "procedure DeinitializeSetup", "function InitializeUninstall"
+    )
+    for operation in (
+        "RemoveKeyAndVerify",
+        "RestoreFileAndVerify",
+        "RestoreRegistryData",
+        "VerifyRegistryDataSnapshot",
+        "ShortcutMatches",
+    ):
+        assert operation in restore
+    assert "not ActivationComplete" in deinitialize
+    assert "PriorPayloadExisted" in deinitialize
+    assert "DisposeTransactionSnapshot" in deinitialize
 
 
 def test_r7_prior_payload_uses_complete_deterministic_inventory() -> None:
@@ -471,7 +556,7 @@ def test_r7_prior_payload_uses_complete_deterministic_inventory() -> None:
     inventory = _procedure(
         definition,
         "function WritePayloadInventory",
-        "function SnapshotRegistrySecurity",
+        "function ExportRegistryData",
     )
     restore = _procedure(
         definition, "function RestorePriorState", "procedure ResolveTransaction"
@@ -491,18 +576,23 @@ def test_r7_powershell_paths_are_single_quote_escaped() -> None:
     )
     assert "StringChangeEx(Result, '''', '''''', True)" in quoting
     assert "PowerShellSingleQuoted(OutputPath)" in definition
-    assert "PowerShellSingleQuoted(SddlPath)" in definition
 
 
-def test_r7_arp_values_are_reverified_after_dacl_restore() -> None:
+def test_r7_arp_values_are_reverified_after_complete_data_restore() -> None:
     definition = text(ISS)
     restore = _procedure(
         definition, "function RestorePriorState", "procedure ResolveTransaction"
     )
-    dacl = restore.index("RestoreRegistrySecurity")
-    assert restore.index("RegQueryStringValue(HKCU64, Key, 'DisplayName'", dacl) > dacl
+    verification = restore.index("VerifyRegistryDataSnapshot")
     assert (
-        restore.index("RegQueryStringValue(HKCU64, Key, 'UninstallString'", dacl) > dacl
+        restore.index("RegQueryStringValue(HKCU64, Key, 'DisplayName'", verification)
+        > verification
+    )
+    assert (
+        restore.index(
+            "RegQueryStringValue(HKCU64, Key, 'UninstallString'", verification
+        )
+        > verification
     )
 
 

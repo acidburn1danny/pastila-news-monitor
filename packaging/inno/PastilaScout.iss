@@ -854,6 +854,8 @@ begin
   Result := True;
 end;
 
+function CaptureTransactionSnapshot(): Boolean; forward;
+
 function PrepareToInstall(var NeedsRestart: Boolean): String;
 begin
   Result := '';
@@ -867,6 +869,15 @@ begin
     else if ResultWriteFailed then
       ExitProcess(1);
     Result := 'The canonical per-user installation root is unavailable.';
+  end else if not CaptureTransactionSnapshot then begin
+    if PublicationFailed then begin
+      WriteFinalOperationResult();
+      ExitProcess(GetCustomSetupExitCode);
+    end;
+    FailureClass := 'preflight_failure';
+    FailureStage := 'transaction_snapshot';
+    WriteFinalOperationResult();
+    Result := 'Unable to capture the transactional installation baseline.';
   end;
 end;
 
@@ -902,39 +913,39 @@ begin
       '', SW_HIDE, ewWaitUntilTerminated, ExitCode) and (ExitCode = 0) and FileExists(OutputPath);
 end;
 
-function SnapshotRegistrySecurity(): Boolean;
+function ExportRegistryData(const OutputPath: String): Boolean;
 var
-  ScriptPath, OutputPath, Script: String;
   ExitCode: Integer;
 begin
-  ScriptPath := TransactionSnapshotRoot + '\capture-arp-sddl.ps1';
-  OutputPath := TransactionSnapshotRoot + '\arp.sddl';
-  Script := '$ErrorActionPreference=''Stop'';' +
-    '$p=''Registry::HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Uninstall\PastilaScout_is1'';' +
-    '[IO.File]::WriteAllText(' + PowerShellSingleQuoted(OutputPath) + ',(Get-Acl -LiteralPath $p).Sddl,[Text.UTF8Encoding]::new($false))';
-  Result := SaveStringToFile(ScriptPath, Script, False) and
-    Exec(ExpandConstant('{sys}\WindowsPowerShell\v1.0\powershell.exe'),
-      '-NoProfile -NonInteractive -ExecutionPolicy Bypass -File "' + ScriptPath + '"',
-      '', SW_HIDE, ewWaitUntilTerminated, ExitCode) and (ExitCode = 0) and
+  Result := Exec(ExpandConstant('{sys}\reg.exe'),
+    'export "HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\PastilaScout_is1" "' +
+      OutputPath + '" /y /reg:64',
+    '', SW_HIDE, ewWaitUntilTerminated, ExitCode) and (ExitCode = 0) and
     FileExists(OutputPath);
 end;
 
-function RestoreRegistrySecurity(): Boolean;
+function SnapshotRegistryData(): Boolean;
+begin
+  Result := ExportRegistryData(TransactionSnapshotRoot + '\arp.reg');
+end;
+
+function RestoreRegistryData(): Boolean;
 var
-  ScriptPath, SddlPath, Script: String;
   ExitCode: Integer;
 begin
-  ScriptPath := TransactionSnapshotRoot + '\restore-arp-sddl.ps1';
-  SddlPath := TransactionSnapshotRoot + '\arp.sddl';
-  Script := '$ErrorActionPreference=''Stop'';' +
-    '$p=''Registry::HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Uninstall\PastilaScout_is1'';' +
-    '$s=[IO.File]::ReadAllText(' + PowerShellSingleQuoted(SddlPath) + ');$a=Get-Acl -LiteralPath $p;' +
-    '$a.SetSecurityDescriptorSddlForm($s);Set-Acl -LiteralPath $p -AclObject $a;' +
-    'if((Get-Acl -LiteralPath $p).Sddl-ne$s){throw ''SDDL mismatch''}';
-  Result := SaveStringToFile(ScriptPath, Script, False) and
-    Exec(ExpandConstant('{sys}\WindowsPowerShell\v1.0\powershell.exe'),
-      '-NoProfile -NonInteractive -ExecutionPolicy Bypass -File "' + ScriptPath + '"',
-      '', SW_HIDE, ewWaitUntilTerminated, ExitCode) and (ExitCode = 0);
+  Result := Exec(ExpandConstant('{sys}\reg.exe'),
+    'import "' + TransactionSnapshotRoot + '\arp.reg" /reg:64',
+    '', SW_HIDE, ewWaitUntilTerminated, ExitCode) and (ExitCode = 0);
+end;
+
+function VerifyRegistryDataSnapshot(): Boolean;
+var
+  RestoredPath: String;
+begin
+  RestoredPath := TransactionSnapshotRoot + '\arp-restored.reg';
+  Result := ExportRegistryData(RestoredPath) and
+    (CompareText(GetSHA256OfFile(TransactionSnapshotRoot + '\arp.reg'),
+      GetSHA256OfFile(RestoredPath)) = 0);
 end;
 
 function ShortcutMatches(const Path, Target, Arguments, WorkingDirectory: String): Boolean;
@@ -994,7 +1005,7 @@ begin
        not RegQueryStringValue(HKCU64, Key, 'InstallLocation', PriorArpInstallLocation) or
        not RegQueryStringValue(HKCU64, Key, 'DisplayIcon', PriorArpDisplayIcon) or
        not RegQueryStringValue(HKCU64, Key, 'UninstallString', PriorArpUninstallString) or
-       not SnapshotRegistrySecurity then exit;
+       not SnapshotRegistryData then exit;
   end;
   if not SnapshotFile(Root + '\unins000.exe', 'unins000.exe', PriorUninstallerExeExisted) or
      not SnapshotFile(Root + '\unins000.dat', 'unins000.dat', PriorUninstallerDatExisted) or
@@ -1027,6 +1038,9 @@ begin
     FileExists(Root + '\unins000.exe') and FileExists(Root + '\unins000.dat') and
     ShortcutMatches(ExpandConstant('{userprograms}\Pastila Scout.lnk'),
       Root + '\app\PastilaScout.exe', '', Root);
+#ifdef PASTILA_INSTALLER_REPAIR_CAR_FORCE_PUBLICATION_FAILURE
+  Result := False;
+#endif
 end;
 
 function RemoveFileAndVerify(const Path: String): Boolean;
@@ -1076,17 +1090,16 @@ begin
       (CompareText(GetSHA256OfFile(TransactionSnapshotRoot + '\payload.inventory'),
         GetSHA256OfFile(RestoredInventory)) = 0);
     if not Result then exit;
-    Result := RegWriteStringValue(HKCU64, Key, 'DisplayName', PriorArpDisplayName) and
-      RegWriteStringValue(HKCU64, Key, 'DisplayVersion', PriorArpDisplayVersion) and
-      RegWriteStringValue(HKCU64, Key, 'InstallLocation', PriorArpInstallLocation) and
-      RegWriteStringValue(HKCU64, Key, 'DisplayIcon', PriorArpDisplayIcon) and
-      RegWriteStringValue(HKCU64, Key, 'UninstallString', PriorArpUninstallString) and
+#ifdef PASTILA_INSTALLER_REPAIR_CAR_FORCE_ROLLBACK_FAILURE
+    DeleteFile(TransactionSnapshotRoot + '\arp.reg');
+#endif
+    Result := RestoreRegistryData and
       RegQueryStringValue(HKCU64, Key, 'DisplayName', Value) and (Value = PriorArpDisplayName) and
       RegQueryStringValue(HKCU64, Key, 'DisplayVersion', Value) and (Value = PriorArpDisplayVersion) and
       RegQueryStringValue(HKCU64, Key, 'InstallLocation', Value) and (Value = PriorArpInstallLocation) and
       RegQueryStringValue(HKCU64, Key, 'DisplayIcon', Value) and (Value = PriorArpDisplayIcon) and
       RegQueryStringValue(HKCU64, Key, 'UninstallString', Value) and (Value = PriorArpUninstallString) and
-      RestoreRegistrySecurity and
+      VerifyRegistryDataSnapshot and
       RegQueryStringValue(HKCU64, Key, 'DisplayName', Value) and (Value = PriorArpDisplayName) and
       RegQueryStringValue(HKCU64, Key, 'DisplayVersion', Value) and (Value = PriorArpDisplayVersion) and
       RegQueryStringValue(HKCU64, Key, 'InstallLocation', Value) and (Value = PriorArpInstallLocation) and
@@ -1103,6 +1116,27 @@ begin
   end;
 end;
 
+function RestorePriorPublicationSurfaces(): Boolean;
+var
+  Root, Key, ShortcutPath: String;
+begin
+  Root := ExpandConstant('{app}');
+  Key := 'Software\Microsoft\Windows\CurrentVersion\Uninstall\PastilaScout_is1';
+  ShortcutPath := ExpandConstant('{userprograms}\Pastila Scout.lnk');
+  Result := RemoveKeyAndVerify(Key) and
+    RemoveFileAndVerify(Root + '\unins000.exe') and
+    RemoveFileAndVerify(Root + '\unins000.dat') and
+    RemoveFileAndVerify(ShortcutPath) and
+    RestoreFileAndVerify(TransactionSnapshotRoot + '\unins000.exe',
+      Root + '\unins000.exe', PriorUninstallerExeExisted) and
+    RestoreFileAndVerify(TransactionSnapshotRoot + '\unins000.dat',
+      Root + '\unins000.dat', PriorUninstallerDatExisted) and
+    RestoreFileAndVerify(TransactionSnapshotRoot + '\Pastila Scout.lnk',
+      ShortcutPath, PriorShortcutExisted) and RestoreRegistryData and
+    VerifyRegistryDataSnapshot and
+    ShortcutMatches(ShortcutPath, Root + '\app\PastilaScout.exe', '', Root);
+end;
+
 function BooleanText(const Value: Boolean): String;
 begin
   if Value then Result := 'true' else Result := 'false';
@@ -1112,7 +1146,7 @@ function SealRestorationEvidence(): Boolean;
 var
   Root, Path, Key, ShortcutPath, PayloadPriorHash, PayloadRestoredHash,
     ExePriorHash, ExeRestoredHash, DatPriorHash, DatRestoredHash,
-    ShortcutPriorHash, ShortcutRestoredHash, SddlHash, Topology: String;
+  ShortcutPriorHash, ShortcutRestoredHash, ArpDataHash, Topology: String;
   Body: AnsiString;
 begin
   Result := False;
@@ -1123,10 +1157,10 @@ begin
     Topology := 'upgrade';
     if not FileExists(TransactionSnapshotRoot + '\payload.inventory') or
        not FileExists(TransactionSnapshotRoot + '\payload-restored.inventory') or
-       not FileExists(TransactionSnapshotRoot + '\arp.sddl') then exit;
+       not FileExists(TransactionSnapshotRoot + '\arp.reg') then exit;
     PayloadPriorHash := GetSHA256OfFile(TransactionSnapshotRoot + '\payload.inventory');
     PayloadRestoredHash := GetSHA256OfFile(TransactionSnapshotRoot + '\payload-restored.inventory');
-    SddlHash := GetSHA256OfFile(TransactionSnapshotRoot + '\arp.sddl');
+    ArpDataHash := GetSHA256OfFile(TransactionSnapshotRoot + '\arp.reg');
     if PriorUninstallerExeExisted then begin
       ExePriorHash := GetSHA256OfFile(TransactionSnapshotRoot + '\unins000.exe');
       ExeRestoredHash := GetSHA256OfFile(ExpandConstant('{app}\unins000.exe'));
@@ -1154,8 +1188,9 @@ begin
       ',"restored_inventory_sha256":' + JsonString(PayloadRestoredHash) +
       ',"verified":true},' +
     '"arp":{"prior_present":' + BooleanText(PriorArpExisted) +
-      ',"governed_values_verified":true,"saved_sddl_sha256":' + JsonString(SddlHash) +
-      ',"final_sddl_verified":true},' +
+      ',"complete_registry_data_sha256":' + JsonString(ArpDataHash) +
+      ',"values_types_subkeys_verified":true,' +
+      '"security_policy":"inherited_hkcu_product_key_not_mutated"},' +
     '"unins000_exe":{"prior_present":' + BooleanText(PriorUninstallerExeExisted) +
       ',"prior_sha256":' + JsonString(ExePriorHash) + ',"restored_sha256":' +
       JsonString(ExeRestoredHash) + ',"verified":true},' +
@@ -1308,15 +1343,7 @@ end;
 
 procedure CurStepChanged(CurStep: TSetupStep);
 begin
-  if CurStep = ssInstall then begin
-    if not CaptureTransactionSnapshot then begin
-      if PublicationFailed then begin
-        WriteFinalOperationResult();
-        ExitProcess(GetCustomSetupExitCode);
-      end;
-      RaiseException('Unable to capture the transactional installation baseline.');
-    end;
-  end else if (CurStep = ssPostInstall) and not ActivationComplete then begin
+  if (CurStep = ssPostInstall) and not ActivationComplete then begin
     if ExistingSurfacesAtStart then
       Log('Phase 5.6B preserving pre-existing installer surfaces after failed repair.')
     else begin
@@ -1331,7 +1358,22 @@ end;
 
 procedure DeinitializeSetup();
 begin
-  ResolveTransaction();
+  if SetupInitialized and TransactionSnapshotTaken and not ActivationComplete and
+     PriorPayloadExisted then begin
+    AggregateCleanupSucceeded := RestorePriorPublicationSurfaces;
+    if AggregateCleanupSucceeded then begin
+      RestorationStatus := 'restored';
+      AggregateCleanupSucceeded := DisposeTransactionSnapshot;
+    end;
+    if not AggregateCleanupSucceeded then begin
+      FailureClass := 'cleanup_failure';
+      FailureStage := 'cleanup';
+      RestorationStatus := 'failed';
+      StageCleanupStatus := 'failed';
+      ResidualPath := TransactionSnapshotRoot;
+    end;
+  end else
+    ResolveTransaction();
   WriteFinalOperationResult();
 end;
 
