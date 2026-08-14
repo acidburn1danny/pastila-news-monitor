@@ -138,12 +138,20 @@ def load_reconciliation_snapshot(
     )
     articles: list[ReconciliationArticle] = []
     for row in connection.execute(
-        """SELECT a.*, s.name AS source_name FROM articles AS a
+        """SELECT a.*, s.name AS source_name, s.categories AS stored_categories,
+                  s.priority AS stored_priority
+           FROM articles AS a
            LEFT JOIN sources AS s ON s.id = a.source_id
            WHERE a.event_id IS NOT NULL ORDER BY a.id"""
     ):
         source_id = str(row["source_id"])
-        source_categories, priority = metadata.get(source_id, ((), 1))
+        if source_id in metadata:
+            source_categories, priority = metadata[source_id]
+        else:
+            source_categories = _decode_categories(row["stored_categories"])
+            priority = (
+                int(row["stored_priority"]) if row["stored_priority"] is not None else 1
+            )
         articles.append(
             ReconciliationArticle(
                 id=int(row["id"]),

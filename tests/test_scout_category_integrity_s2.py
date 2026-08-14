@@ -698,6 +698,31 @@ def test_s22_contextual_collision_and_precedence(
             "Social",
         ),
         (
+            "Panica la Costinesti. Turistii spun: Plecam in Bulgaria",
+            "Autoritatile au evacuat plaja, iar Garda de Coasta a intervenit.",
+            "Social",
+        ),
+        (
+            "Turisti evacuati de pe o plaja din Bulgaria din cauza unei drone",
+            "Autoritatile bulgare si Garda de Coasta din Varna au intervenit.",
+            "Externe",
+        ),
+        (
+            "Garda de Coasta recupereaza o drona pe litoralul Romaniei",
+            "Autoritatile au intervenit si au evacuat turistii de pe plaja.",
+            "Social",
+        ),
+        (
+            "Garda de Coasta bulgara intervine la Varna",
+            "Autoritatile bulgare au evacuat turistii de pe plaja.",
+            "Externe",
+        ),
+        (
+            "Ministerul bulgar anunta evacuari in apropiere de Sofia",
+            "Guvernul Bulgariei coordoneaza operatiunea.",
+            "Externe",
+        ),
+        (
             "Un oficial din Ministerul Energiei infirma informatii despre Ucraina",
             "Secretarul de stat a explicat masura luata de Romania.",
             "Politica",

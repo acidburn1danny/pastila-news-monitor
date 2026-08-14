@@ -11,6 +11,7 @@ from pastila_scout.database import (
     get_event_sources,
     initialize_database,
     insert_article,
+    load_reconciliation_snapshot,
     open_database,
     upsert_source,
 )
@@ -95,6 +96,75 @@ def test_event_creation_attachment_and_distinct_source_counts(tmp_path: Path) ->
             "G4Media",
             "HotNews",
         ]
+
+
+def test_reconciliation_uses_stored_metadata_for_removed_source(
+    tmp_path: Path,
+) -> None:
+    with open_database(tmp_path / "historical-source.db") as connection:
+        initialize_database(connection)
+        upsert_source(
+            connection,
+            source_id="historical",
+            name="Historical Source",
+            source_type="rss",
+            url="https://example.com/historical",
+            enabled=False,
+            categories=("Politica", "Social", "Diverse"),
+            priority=2,
+        )
+        article_id = _article(connection, "historical", "archived")
+        create_event(
+            connection,
+            article_id=article_id,
+            canonical_title="Railway theft at Sadu",
+            normalized_title="railway theft at sadu",
+            category="Social",
+        )
+
+        historical = load_reconciliation_snapshot(connection).articles[0]
+        connection.execute(
+            "UPDATE sources SET categories = 'not-json', priority = 3 "
+            "WHERE id = 'historical'"
+        )
+        malformed = load_reconciliation_snapshot(connection).articles[0]
+        current = load_reconciliation_snapshot(
+            connection,
+            {"historical": (("Externe",), 1)},
+        ).articles[0]
+
+    assert historical.source_categories == ("Politica", "Social", "Diverse")
+    assert historical.source_priority == 2
+    assert malformed.source_categories == ()
+    assert malformed.source_priority == 3
+    assert current.source_categories == ("Externe",)
+    assert current.source_priority == 1
+
+
+def test_reconciliation_uses_neutral_metadata_when_source_row_is_missing(
+    tmp_path: Path,
+) -> None:
+    with open_database(tmp_path / "missing-source.db") as connection:
+        initialize_database(connection)
+        _source(connection, "removed", "Removed Source")
+        article_id = _article(connection, "removed", "orphaned")
+        create_event(
+            connection,
+            article_id=article_id,
+            canonical_title="Railway theft at Sadu",
+            normalized_title="railway theft at sadu",
+            category="Social",
+        )
+        connection.execute("PRAGMA foreign_keys = OFF")
+        connection.execute("DELETE FROM sources WHERE id = 'removed'")
+        connection.commit()
+
+        article = load_reconciliation_snapshot(connection).articles[0]
+
+    assert article.source_id == "removed"
+    assert article.source_name == "removed"
+    assert article.source_categories == ()
+    assert article.source_priority == 1
 
 
 def test_initialization_migrates_and_backfills_legacy_articles(tmp_path: Path) -> None:

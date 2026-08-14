@@ -477,6 +477,7 @@ _FOREIGN_STEMS = frozenset(
         "bremen",
         "brighton",
         "britani",
+        "bulgar",
         "bulgaria",
         "china",
         "crimeea",
@@ -744,6 +745,12 @@ def article_category(
         or _romanian_institutional_action(
             title_tokens | summary_tokens, f"{title_text} {summary_text}"
         )
+        or _domestic_public_response(
+            title_tokens,
+            title_text,
+            title_tokens | summary_tokens,
+            f"{title_text} {summary_text}",
+        )
     )
     if foreign_title and not domestic_context:
         return "Externe"
@@ -971,6 +978,11 @@ def _contextual_category(
     evidence = _context_evidence(title_tokens, title, summary_tokens, summary)
     all_tokens = title_tokens | summary_tokens
     all_text = f"{title} {summary}"
+    domestic_public_response = _domestic_public_response(
+        title_tokens, title, all_tokens, all_text
+    )
+    if domestic_public_response and "Social" in domestic:
+        return "Social"
     serious_social = _has_stem(title_tokens | summary_tokens, _SERIOUS_SOCIAL_STEMS)
     if serious_social and "Social" in domestic:
         if evidence.foreign_strength > evidence.domestic_strength:
@@ -1108,6 +1120,27 @@ def _romanian_public_system(tokens: frozenset[str], text: str) -> bool:
         token.startswith("autoritat") for token in tokens
     )
     return public_health or domestic_rescue or domestic_authority
+
+
+def _domestic_public_response(
+    title_tokens: frozenset[str],
+    title: str,
+    all_tokens: frozenset[str],
+    all_text: str,
+) -> bool:
+    return (
+        _explicit_domestic_site(title_tokens, title)
+        and _romanian_public_system(all_tokens, all_text)
+        and _action_family(all_tokens) == "social"
+    )
+
+
+def _explicit_domestic_site(tokens: frozenset[str], text: str) -> bool:
+    return bool(
+        tokens & {"bucuresti", "bucegi", "carpati", "costinesti", "tulcea"}
+    ) or any(
+        phrase in text for phrase in ("litoralul romaniei", "pe litoralul romanesc")
+    )
 
 
 def _romanian_public_health(text: str) -> bool:
