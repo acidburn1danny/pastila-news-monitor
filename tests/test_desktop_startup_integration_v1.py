@@ -9,7 +9,7 @@ from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
-from test_desktop_application_v1 import cancelled_editor_result, scout_result
+from test_desktop_application_v1 import scout_result
 from test_editor_application_contracts_v1 import request as application_request
 
 from pastila_scout.desktop_application_v1 import (
@@ -17,7 +17,6 @@ from pastila_scout.desktop_application_v1 import (
     DesktopProgressEventV1,
     DesktopProgressStageV1,
     EditorDesktopRequestV1,
-    EditorDesktopResultV1,
     ScoutDesktopCategoryV1,
 )
 from pastila_scout.desktop_v1 import entrypoint
@@ -127,8 +126,49 @@ class _View:
     def bind_editor_action(self, *, callback):
         self._bind("editor", callback)
 
+    def bind_editor_retry_action(self, *, callback):
+        self._bind("editor-retry", callback)
+
     def bind_report_action(self, *, callback):
         self._bind("report", callback)
+
+    def bind_handoff_action(self, *, callback):
+        self._bind("handoff", callback)
+
+    def bind_chief_editor_actions(self, *, save_callback, export_callback):
+        self._bind("chief-save", save_callback)
+        self._bind("chief-export", export_callback)
+
+    def bind_episode_draft_action(self, *, callback):
+        self._bind("episode-draft", callback)
+
+    def bind_episode_draft_export_action(self, *, callback):
+        self._bind("episode-export", callback)
+
+    def bind_episode_draft_approval_action(self, *, callback):
+        self._bind("episode-approval", callback)
+
+    def bind_episode_draft_final_action(self, *, callback):
+        self._bind("episode-final", callback)
+
+    def bind_scout_provider_actions(self, *, save_callback, test_callback):
+        self._bind("provider-save", save_callback)
+        self._bind("provider-test", test_callback)
+
+    def bind_scout_source_action(self, *, callback):
+        self._bind("source", callback)
+
+    def publish_candidates(self, *, candidates):
+        self.events.append(("publish-candidates", candidates))
+
+    def publish_active_project(self, **kwargs):
+        self.published.append(("active-project", kwargs))
+
+    def publish_editor_worklist(self, **kwargs):
+        self.published.append(("editor-worklist", kwargs))
+
+    def publish_chief_editor(self, **kwargs):
+        self.published.append(("chief-editor", kwargs))
 
     def publish_scout_result(self, **kwargs):
         self.published.append(("scout", kwargs))
@@ -154,7 +194,7 @@ class _Facade:
         self.calls.append(("report", reference))
 
 
-def _startup(monkeypatch, *, failure=None):
+def _startup(monkeypatch, *, failure=None, active_project=None):
     events = []
     root = _Root(events, fail=failure)
     facade = _Facade(events)
@@ -170,7 +210,13 @@ def _startup(monkeypatch, *, failure=None):
         events.append("compose")
         if failure == "composition":
             raise RuntimeError("secret-composition")
-        return SimpleNamespace(facade=facade, settings=object())
+        return SimpleNamespace(
+            facade=facade,
+            settings=object(),
+            database_path=ROOT / ".startup-integration-never-created.db",
+            active_project_path=ROOT / ".startup-integration-never-created.json",
+            settings_path=ROOT / ".startup-integration-settings-never-created.json",
+        )
 
     def controller(**kwargs):
         value = _Controller(events, fail=failure, **kwargs)
@@ -182,6 +228,23 @@ def _startup(monkeypatch, *, failure=None):
         captured["view"] = value
         return value
 
+    class Store:
+        def __init__(self, **kwargs):
+            del kwargs
+
+        def load(self):
+            return active_project
+
+        def load_runtime_state(self):
+            return active_project
+
+        def list_useful_candidates_v1_2(self):
+            return ()
+
+        def list_candidates(self, *, category=None):
+            del category
+            return ()
+
     messages = []
     monkeypatch.setattr(entrypoint.sys, "platform", "test")
     monkeypatch.setattr(entrypoint.tkinter, "Tk", lambda: root)
@@ -190,6 +253,7 @@ def _startup(monkeypatch, *, failure=None):
     )
     monkeypatch.setattr(entrypoint, "_DesktopTaskControllerV1", controller)
     monkeypatch.setattr(entrypoint, "_DesktopMainWindowV1", view)
+    monkeypatch.setattr(entrypoint, "ActiveProjectStoreV1", Store)
     monkeypatch.setattr(
         entrypoint.messagebox,
         "showerror",
@@ -211,7 +275,19 @@ def test_exact_success_order_and_one_shared_facade(monkeypatch) -> None:
         "view",
         "bind-scout",
         "bind-editor",
+        "bind-editor-retry",
         "bind-report",
+        "bind-handoff",
+        "bind-chief-save",
+        "bind-chief-export",
+        "bind-episode-draft",
+        "bind-episode-export",
+        "bind-episode-approval",
+        "bind-episode-final",
+        "bind-provider-save",
+        "bind-provider-test",
+        "bind-source",
+        ("publish-candidates", ()),
         ("protocol", "WM_DELETE_WINDOW"),
         "start",
         "deiconify",
@@ -297,7 +373,7 @@ def test_outer_process_control_policy_is_preserved(monkeypatch, failure) -> None
 
 def test_startup_failure_resource_is_exact_and_finite() -> None:
     assert entrypoint._text_v1(key="startup.error") == (
-        "Aplicația nu a putut fi configurată."
+        "Aplicatia nu a putut fi configurata."
     )
 
 
@@ -436,10 +512,8 @@ def test_scout_binding_submits_through_controller_and_projects_result(
         (
             "scout",
             {
-                "summary": (
-                    "Surse: 2; reușite: 2; nereușite: 0; articole: 5; "
-                    "noi: 3; duplicate: 2."
-                ),
+                "summary": "5 articole - 3 noi - duplicate: 2",
+                "sources_available": 2,
                 "failed_sources": (),
                 "footer": "completed",
                 "report_reference": "report-1",
@@ -451,8 +525,23 @@ def test_scout_binding_submits_through_controller_and_projects_result(
 def test_editor_binding_submits_through_controller_and_projects_result(
     monkeypatch,
 ) -> None:
-    _, _, facade, captured, _ = _startup(monkeypatch)
+    active_project = SimpleNamespace(
+        title="Proiect activ",
+        scout_input=SimpleNamespace(
+            ranked_events=(
+                SimpleNamespace(event_id=44, canonical_title="Stire activa"),
+            )
+        ),
+        editor_worklist=(
+            SimpleNamespace(event_id=44, status=SimpleNamespace(value="pending")),
+        ),
+        editor_materials=(),
+        chief_editor_items=(),
+        chief_editor_title="",
+    )
+    _, _, _, captured, _ = _startup(monkeypatch, active_project=active_project)
     view = captured["view"]
+    view.published.clear()
     raw = _DesktopEditorActionInputV1(
         event_ids=(44,),
         scout_input_path="scout.json",
@@ -465,15 +554,15 @@ def test_editor_binding_submits_through_controller_and_projects_result(
         output_path="output.json",
         no_replace=True,
     )
-    captured_values = []
-    expected = EditorDesktopResultV1(
-        application_result=cancelled_editor_result("editor-operation")
+    captured_batch = []
+    expected = SimpleNamespace(
+        attempted_event_ids=(44,), completed_event_ids=(), failed_event_ids=(44,)
     )
     monkeypatch.setattr(
         entrypoint,
-        "_run_editor",
-        lambda actual_facade, values: (
-            captured_values.append((actual_facade, values)) or expected
+        "_run_editor_batch_v1",
+        lambda *, store, event_ids, execute: (
+            captured_batch.append((store, event_ids, execute)) or expected
         ),
     )
     view.bindings["editor"](input=raw)
@@ -481,9 +570,12 @@ def test_editor_binding_submits_through_controller_and_projects_result(
     task, on_completed = captured["controller"].submissions[0]
     result = task()
     on_completed(result=result)
-    assert captured_values[0][0] is facade
-    assert captured_values[0][1][4:7] == ("openai", "model", 30.0)
-    assert view.published == [("editor", {"status": "cancelled"})]
+    assert captured_batch[0][1] == (44,)
+    assert callable(captured_batch[0][2])
+    assert view.published[-1] == (
+        "editor",
+        {"status": "1 procesate: 0 generate, 1 erori"},
+    )
 
 
 def test_import_is_passive_and_ownership_exclusions_are_static() -> None:

@@ -307,7 +307,10 @@ def test_withdrawn_tk_window_has_exact_structural_root_and_initial_state():
         assert save_grid["column"] == 2
         assert not view._targeted_query_widget.master.grid_slaves(row=0, column=2)
         assert int(view._source_save_button.cget("width")) == 16
-        assert str(save_grid["padx"]) == "8 0"
+        assert tuple(int(value) for value in root.tk.splitlist(save_grid["padx"])) == (
+            8,
+            0,
+        )
         style = ttk.Style(root)
         assert style.lookup("PastilaLatest.TLabel", "foreground") == "#e31919"
         assert style.lookup("PastilaSource.TLabel", "foreground") == "#2563b8"
@@ -336,7 +339,7 @@ def test_withdrawn_tk_window_has_exact_structural_root_and_initial_state():
             child
             for child in scout_descendants
             if hasattr(child, "cget")
-            and "text" in child
+            and "text" in set(child.keys())
             and child.cget("text") == "Cauta"
         ]
         assert scout_buttons == [view._scout_button]
@@ -466,10 +469,16 @@ def test_withdrawn_tk_window_has_exact_structural_root_and_initial_state():
         assert str(view._report_button.cget("state")) == "normal"
         editor_actions = []
         retry_actions = []
-        view.bind_editor_action(callback=lambda **kwargs: editor_actions.append(kwargs))
-        view.bind_editor_retry_action(
-            callback=lambda **kwargs: retry_actions.append(kwargs)
+        view.bind_editor_action(
+            callback=lambda *, input: editor_actions.append({"input": input})
         )
+        view.bind_editor_retry_action(
+            callback=lambda *, input: retry_actions.append({"input": input})
+        )
+        view._provider.set("ollama")
+        view._editor_values["model"].set("qwen3:14b")
+        view._editor_values["timeout_seconds"].set("120")
+        view._editor_values["output_path"].set("editor-output.json")
         view.publish_editor_worklist(
             items=(
                 (7, "Prima stire", "pending"),
