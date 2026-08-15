@@ -62,6 +62,7 @@ _PRIMARY_ACTION_BUTTON_OPTIONS = {
     "relief": "flat",
     "width": 16,
 }
+_EPISODE_DRAFT_INSPECTION_ACTION_WIDTH = 24
 
 
 def _configure_desktop_styles(root: object) -> None:
@@ -107,7 +108,12 @@ def _configure_desktop_styles(root: object) -> None:
 
 
 def _primary_action_button(
-    parent: tkinter.Misc, *, text: str, command: object, state: str = "normal"
+    parent: tkinter.Misc,
+    *,
+    text: str,
+    command: object,
+    state: str = "normal",
+    width: int = _PRIMARY_ACTION_BUTTON_OPTIONS["width"],
 ) -> tkinter.Button:
     border = tkinter.Frame(parent, background=_PRIMARY_ACTION_COLOR, padx=1, pady=1)
     button = tkinter.Button(
@@ -115,7 +121,7 @@ def _primary_action_button(
         text=text,
         state=state,
         command=command,
-        **_PRIMARY_ACTION_BUTTON_OPTIONS,
+        **{**_PRIMARY_ACTION_BUTTON_OPTIONS, "width": width},
     )
     button.pack()
     return button
@@ -1328,6 +1334,7 @@ class _DesktopMainWindowV1:
             child,
             text=_text_v1(key="episode_draft.export"),
             command=lambda: self._episode_draft_export_action(revision),
+            width=_EPISODE_DRAFT_INSPECTION_ACTION_WIDTH,
             state=(
                 "normal"
                 if "episode_draft_export" in self._bindings
@@ -1340,6 +1347,7 @@ class _DesktopMainWindowV1:
             child,
             text=_text_v1(key="episode_draft.approval"),
             command=lambda: self._episode_draft_approval_action(revision),
+            width=_EPISODE_DRAFT_INSPECTION_ACTION_WIDTH,
             state=(
                 "normal"
                 if self._episode_draft_can_submit_approval
@@ -1355,6 +1363,7 @@ class _DesktopMainWindowV1:
             child,
             text=_text_v1(key="episode_draft.final_approve"),
             command=lambda: self._episode_draft_final_action(revision),
+            width=_EPISODE_DRAFT_INSPECTION_ACTION_WIDTH,
             state=(
                 "normal"
                 if self._episode_draft_can_approve

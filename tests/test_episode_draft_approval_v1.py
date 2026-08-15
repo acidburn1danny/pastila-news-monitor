@@ -22,7 +22,11 @@ from pastila_scout.desktop_v1.episode_draft import (
 from pastila_scout.desktop_v1.episode_draft_export import (
     _export_current_episode_draft_v1,
 )
-from pastila_scout.desktop_v1.views import _DesktopMainWindowV1
+from pastila_scout.desktop_v1.resources import _text_v1
+from pastila_scout.desktop_v1.views import (
+    _EPISODE_DRAFT_INSPECTION_ACTION_WIDTH,
+    _DesktopMainWindowV1,
+)
 
 
 def _published(tmp_path: Path, monkeypatch):
@@ -211,6 +215,19 @@ def test_desktop_has_exactly_one_guarded_approval_action() -> None:
     assert '"episode_draft_approval" in self._bindings' in inspection
     assert "_editor_idle" in inspection
     assert "if self._episode_draft_approval_running" in action
+
+
+def test_inspection_actions_share_width_that_fits_approval_label() -> None:
+    inspection = inspect.getsource(_DesktopMainWindowV1._episode_draft_inspect)
+    labels = (
+        _text_v1(key="episode_draft.export"),
+        _text_v1(key="episode_draft.approval"),
+        _text_v1(key="episode_draft.final_approve"),
+    )
+
+    assert _text_v1(key="episode_draft.approval") == "Trimite pentru aprobare"
+    assert _EPISODE_DRAFT_INSPECTION_ACTION_WIDTH >= max(map(len, labels))
+    assert inspection.count("width=_EPISODE_DRAFT_INSPECTION_ACTION_WIDTH") == 3
 
 
 def test_approval_path_has_no_provider_or_revision_editing_dependency() -> None:
