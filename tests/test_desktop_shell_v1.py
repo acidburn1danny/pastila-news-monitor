@@ -326,9 +326,15 @@ def test_withdrawn_tk_window_has_exact_structural_root_and_initial_state():
                 nested for child in children for nested in descendants(child)
             )
 
+        scout_descendants = descendants(view._pages[_DesktopPageV1.SCOUT])
+        assert not any(
+            isinstance(child, ttk.Label)
+            and str(child.cget("textvariable")) == str(view._footer)
+            for child in scout_descendants
+        )
         scout_buttons = [
             child
-            for child in descendants(view._pages[_DesktopPageV1.SCOUT])
+            for child in scout_descendants
             if hasattr(child, "cget")
             and "text" in child
             and child.cget("text") == "Cauta"
@@ -388,12 +394,35 @@ def test_withdrawn_tk_window_has_exact_structural_root_and_initial_state():
         assert view._failed.get() == "0"
         assert view._available.get() == "14"
         assert int(view._progress.cget("value")) == 100
-        assert view._progress_completion.cget("text") == "Cautare finalizata"
-        assert view._progress_completion.cget("foreground") == "#ffffff"
+        assert isinstance(view._progress_completion, tkinter.Canvas)
+        assert view._progress_completion.find_all() == (
+            view._progress_completion_rectangle,
+            view._progress_completion_text,
+        )
+        assert (
+            view._progress_completion.itemcget(
+                view._progress_completion_rectangle, "fill"
+            )
+            == "#17843b"
+        )
+        assert (
+            view._progress_completion.itemcget(view._progress_completion_text, "text")
+            == "Cautare finalizata"
+        )
+        assert (
+            view._progress_completion.itemcget(view._progress_completion_text, "fill")
+            == "#ffffff"
+        )
+        assert (
+            view._progress_completion.itemcget(view._progress_completion_text, "anchor")
+            == "center"
+        )
         assert view._progress_completion.winfo_manager() == "place"
+        assert not view._progress.winfo_manager()
         view._set_scout_progress_running()
         assert str(view._progress.cget("mode")) == "indeterminate"
         assert not view._progress_completion.winfo_manager()
+        assert view._progress.winfo_manager() == "place"
         view._set_scout_progress_completed()
         assert str(view._report_button.cget("state")) == "disabled"
         view.publish_scout_result(
@@ -425,6 +454,7 @@ def test_withdrawn_tk_window_has_exact_structural_root_and_initial_state():
         )
         assert int(view._progress.cget("value")) == 0
         assert not view._progress_completion.winfo_manager()
+        assert view._progress.winfo_manager() == "place"
         view.publish_scout_result(
             summary="summary",
             sources_available=14,

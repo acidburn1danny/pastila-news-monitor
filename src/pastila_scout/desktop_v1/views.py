@@ -436,12 +436,25 @@ class _DesktopMainWindowV1:
             style=_SCOUT_PROGRESS_STYLE,
         )
         self._progress.place(relx=0.5, rely=0.5, anchor="center", width=320, height=18)
-        self._progress_completion = tkinter.Label(
+        self._progress_completion = tkinter.Canvas(
             self._progress_frame,
+            width=320,
+            height=18,
+            borderwidth=0,
+            highlightthickness=0,
+        )
+        self._progress_completion_rectangle = (
+            self._progress_completion.create_rectangle(
+                0, 0, 320, 18, fill=_SCOUT_PROGRESS_COLOR, outline=_SCOUT_PROGRESS_COLOR
+            )
+        )
+        self._progress_completion_text = self._progress_completion.create_text(
+            160,
+            9,
             text="Cautare finalizata",
-            foreground="#ffffff",
-            background=_SCOUT_PROGRESS_COLOR,
+            fill="#ffffff",
             font=("TkDefaultFont", 9, "bold"),
+            anchor="center",
         )
         self._scout_progress_active = False
         self._status = tkinter.StringVar(value=_text_v1(key="scout.intro"))
@@ -513,9 +526,6 @@ class _DesktopMainWindowV1:
         )
         self._handoff_button.grid(row=14, column=0, columnspan=2)
         self._footer = tkinter.StringVar(value="")
-        ttk.Label(page, textvariable=self._footer).grid(
-            row=15, column=0, columnspan=2, sticky="w"
-        )
 
     def _build_editor(self) -> None:
         page = ttk.Frame(self._content)
@@ -1182,19 +1192,22 @@ class _DesktopMainWindowV1:
         self._progress.stop()
         self._progress.configure(mode="indeterminate", value=0)
         self._progress_completion.place_forget()
+        self._progress.place(relx=0.5, rely=0.5, anchor="center", width=320, height=18)
         self._progress.start(12)
 
     def _set_scout_progress_completed(self) -> None:
         self._progress.stop()
         self._progress.configure(mode="determinate", value=100)
+        self._progress.place_forget()
         self._progress_completion.place(
-            relx=0.5, rely=0.5, anchor="center", width=150, height=18
+            relx=0.5, rely=0.5, anchor="center", width=320, height=18
         )
 
     def _set_scout_progress_failed(self) -> None:
         self._progress.stop()
         self._progress.configure(mode="determinate", value=0)
         self._progress_completion.place_forget()
+        self._progress.place(relx=0.5, rely=0.5, anchor="center", width=320, height=18)
 
     def _sync_editor_action(self) -> None:
         try:
