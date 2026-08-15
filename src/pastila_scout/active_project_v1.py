@@ -80,6 +80,43 @@ class EditorWorkItemStatusV1(StrEnum):
     FAILED = "failed"
 
 
+class EpisodeDraftApprovalStatusV1(StrEnum):
+    PENDING_APPROVAL = "pending_approval"
+
+
+class EpisodeDraftApprovalPersistenceError(ValueError):
+    """Finite approval-state persistence failure exposed to the desktop boundary."""
+
+    def __init__(self, code: str) -> None:
+        self.code = code
+        super().__init__(code)
+
+
+@dataclass(frozen=True, slots=True)
+class EpisodeDraftApprovalV1:
+    project_id: str
+    revision_id: str
+    artifact_sha256: str
+    status: EpisodeDraftApprovalStatusV1 = EpisodeDraftApprovalStatusV1.PENDING_APPROVAL
+
+    def __post_init__(self) -> None:
+        if (
+            type(self.project_id) is not str
+            or not self.project_id.strip()
+            or type(self.revision_id) is not str
+            or not self.revision_id.strip()
+            or type(self.artifact_sha256) is not str
+            or not self.artifact_sha256.startswith("sha256:")
+            or len(self.artifact_sha256) != 71
+            or any(
+                character not in "0123456789abcdef"
+                for character in self.artifact_sha256[7:]
+            )
+            or type(self.status) is not EpisodeDraftApprovalStatusV1
+        ):
+            raise ValueError("Stare aprobare Episode Draft invalida")
+
+
 @dataclass(frozen=True, slots=True)
 class EditorWorkItemV1:
     event_id: int
@@ -105,6 +142,7 @@ class ActiveProjectV1:
     editor_worklist: tuple[EditorWorkItemV1, ...] = ()
     current_episode_draft_revision: EpisodeDraftRevisionRefV1 | None = None
     editor_terminal_failures: tuple[EpisodeDraftExcludedFailureV1, ...] = ()
+    episode_draft_approval: EpisodeDraftApprovalV1 | None = None
 
     @property
     def candidate(self):
@@ -387,6 +425,9 @@ class ActiveProjectStoreV1:
             editor_terminal_failures=(
                 () if existing is None else existing.editor_terminal_failures
             ),
+            episode_draft_approval=(
+                None if existing is None else existing.episode_draft_approval
+            ),
         )
         self._write(project)
         return project
@@ -460,6 +501,9 @@ class ActiveProjectStoreV1:
             ),
             editor_terminal_failures=(
                 () if existing is None else existing.editor_terminal_failures
+            ),
+            episode_draft_approval=(
+                None if existing is None else existing.episode_draft_approval
             ),
         )
         self._write(project)
@@ -546,6 +590,7 @@ class ActiveProjectStoreV1:
             project.editor_worklist,
             project.current_episode_draft_revision,
             project.editor_terminal_failures,
+            project.episode_draft_approval,
         )
         self._write(updated)
         return updated
@@ -578,6 +623,7 @@ class ActiveProjectStoreV1:
             project.editor_worklist,
             project.current_episode_draft_revision,
             project.editor_terminal_failures,
+            project.episode_draft_approval,
         )
         self._write(updated)
         return updated
@@ -660,6 +706,7 @@ class ActiveProjectStoreV1:
             worklist,
             project.current_episode_draft_revision,
             project.editor_terminal_failures,
+            project.episode_draft_approval,
         )
         self._write(updated)
         return updated
@@ -695,6 +742,7 @@ class ActiveProjectStoreV1:
             worklist,
             project.current_episode_draft_revision,
             project.editor_terminal_failures,
+            project.episode_draft_approval,
         )
         self._write(updated)
         return updated
@@ -792,6 +840,7 @@ class ActiveProjectStoreV1:
             project.editor_worklist,
             reference,
             project.editor_terminal_failures,
+            project.episode_draft_approval,
         )
         self._write(updated)
         return updated
@@ -821,6 +870,56 @@ class ActiveProjectStoreV1:
         ):
             raise EpisodeDraftPersistenceError("referenced revision identity mismatch")
         return revision
+
+    def mark_episode_draft_pending_approval(
+        self, *, expected_project: ActiveProjectV1
+    ) -> ActiveProjectV1:
+        """Atomically bind pending approval to the exact installed revision."""
+
+        project = self._required()
+        if type(expected_project) is not ActiveProjectV1 or project != expected_project:
+            raise ValueError("Starea proiectului s-a schimbat")
+        reference = project.current_episode_draft_revision
+        revision = self.load_episode_draft_revision()
+        if reference is None or revision is None or self._required() != project:
+            raise ValueError("Revizie Episode Draft invalida")
+        approval = EpisodeDraftApprovalV1(
+            project_id=project.project_id,
+            revision_id=revision.revision_id,
+            artifact_sha256=reference.artifact_sha256,
+        )
+        if project.episode_draft_approval == approval:
+            return project
+        updated = ActiveProjectV1(
+            project.project_id,
+            project.title,
+            project.handed_off_at,
+            project.scout_input,
+            project.editor_materials,
+            project.chief_editor_items,
+            project.chief_editor_title,
+            project.chief_editor_updated_at,
+            project.editor_worklist,
+            project.current_episode_draft_revision,
+            project.editor_terminal_failures,
+            approval,
+        )
+        try:
+            self._write(updated)
+        except OSError as exc:
+            raise EpisodeDraftApprovalPersistenceError("write_failed") from exc
+        try:
+            if self._required() != updated:
+                raise ValueError
+        except Exception as exc:
+            try:
+                self._write(project)
+                restored = self._required() == project
+            except OSError, TypeError, ValueError:
+                restored = False
+            code = "verification_failed" if restored else "rollback_failed"
+            raise EpisodeDraftApprovalPersistenceError(code) from exc
+        return updated
 
     def record_terminal_editor_failure(
         self, *, evidence: EpisodeDraftExcludedFailureV1
@@ -866,6 +965,7 @@ class ActiveProjectStoreV1:
             project.editor_worklist,
             project.current_episode_draft_revision,
             (*project.editor_terminal_failures, evidence),
+            project.episode_draft_approval,
         )
         self._write(updated)
         return updated
@@ -911,6 +1011,16 @@ class ActiveProjectStoreV1:
                 item.model_dump(mode="json")
                 for item in project.editor_terminal_failures
             ],
+            "episode_draft_approval": (
+                None
+                if project.episode_draft_approval is None
+                else {
+                    "project_id": project.episode_draft_approval.project_id,
+                    "revision_id": project.episode_draft_approval.revision_id,
+                    "artifact_sha256": project.episode_draft_approval.artifact_sha256,
+                    "status": project.episode_draft_approval.status.value,
+                }
+            ),
             "chief_editor": {
                 "title": project.chief_editor_title,
                 "updated_at": (
@@ -974,6 +1084,17 @@ class ActiveProjectStoreV1:
             )
             for item in data.get("editor_terminal_failures", ())
         )
+        raw_approval = data.get("episode_draft_approval")
+        approval = (
+            None
+            if raw_approval is None
+            else EpisodeDraftApprovalV1(
+                project_id=raw_approval["project_id"],
+                revision_id=raw_approval["revision_id"],
+                artifact_sha256=raw_approval["artifact_sha256"],
+                status=EpisodeDraftApprovalStatusV1(raw_approval["status"]),
+            )
+        )
         draft_reference = (
             None
             if raw_draft_reference is None
@@ -1020,10 +1141,15 @@ class ActiveProjectStoreV1:
             editor_worklist=worklist,
             current_episode_draft_revision=draft_reference,
             editor_terminal_failures=terminal_failures,
+            episode_draft_approval=approval,
         )
         if (
             not source.ranked_events
             or project.title != project.candidate.canonical_title
+            or (
+                project.episode_draft_approval is not None
+                and project.episode_draft_approval.project_id != project.project_id
+            )
         ):
             raise ValueError("Invalid active project")
         if recovered_running:

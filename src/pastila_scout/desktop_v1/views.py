@@ -713,6 +713,9 @@ class _DesktopMainWindowV1:
         self._episode_publish_available = False
         self._episode_draft_current = False
         self._episode_draft_export_running = False
+        self._episode_draft_approval_running = False
+        self._episode_draft_can_submit_approval = False
+        self._episode_approval_button = None
         self._episode_draft_details = ("", "", (), (), "")
         self._episode_draft_button = _primary_action_button(
             page,
@@ -887,6 +890,10 @@ class _DesktopMainWindowV1:
 
     def bind_episode_draft_export_action(self, *, callback) -> None:
         self._bind("episode_draft_export", callback)
+        self._sync_episode_draft_actions()
+
+    def bind_episode_draft_approval_action(self, *, callback) -> None:
+        self._bind("episode_draft_approval", callback)
         self._sync_episode_draft_actions()
 
     def publish_episode_draft_export_status(self, *, status: str) -> None:
@@ -1135,6 +1142,8 @@ class _DesktopMainWindowV1:
         included: tuple[tuple[int, str, str], ...],
         excluded: tuple[tuple[int, str, str], ...],
         assembled_text: str,
+        approval_pending: bool = False,
+        can_submit_approval: bool = False,
     ) -> None:
         self._check()
         self._episode_draft_status.set(status)
@@ -1146,6 +1155,10 @@ class _DesktopMainWindowV1:
             excluded,
             assembled_text,
         )
+        self._episode_draft_can_submit_approval = (
+            can_submit_approval and not approval_pending
+        )
+        self._episode_draft_approval_running = False
         self._sync_episode_draft_actions()
 
     def _chief_editor_add(self) -> None:
@@ -1219,6 +1232,21 @@ class _DesktopMainWindowV1:
         self._episode_inspect_button.configure(
             state="normal" if self._episode_draft_current else "disabled"
         )
+        approval_button = getattr(self, "_episode_approval_button", None)
+        if approval_button is not None:
+            try:
+                approval_button.configure(
+                    state=(
+                        "normal"
+                        if idle
+                        and self._episode_draft_can_submit_approval
+                        and not self._episode_draft_approval_running
+                        and "episode_draft_approval" in self._bindings
+                        else "disabled"
+                    )
+                )
+            except tkinter.TclError:
+                self._episode_approval_button = None
 
     def _episode_draft_inspect(self) -> None:
         if not self._episode_draft_current:
@@ -1282,8 +1310,23 @@ class _DesktopMainWindowV1:
             ),
         )
         export_button.master.grid(row=8, column=0, pady=(0, 8))
+        approval_button = _primary_action_button(
+            child,
+            text=_text_v1(key="episode_draft.approval"),
+            command=lambda: self._episode_draft_approval_action(revision),
+            state=(
+                "normal"
+                if self._episode_draft_can_submit_approval
+                and "episode_draft_approval" in self._bindings
+                and not self._episode_draft_approval_running
+                and getattr(self, "_editor_idle", True)
+                else "disabled"
+            ),
+        )
+        self._episode_approval_button = approval_button
+        approval_button.master.grid(row=9, column=0, pady=(0, 8))
         ttk.Label(child, textvariable=self._episode_draft_status).grid(
-            row=9, column=0, sticky="w", padx=8, pady=(0, 8)
+            row=10, column=0, sticky="w", padx=8, pady=(0, 8)
         )
 
     def _episode_draft_export_action(self, revision_id: str) -> None:
@@ -1299,6 +1342,22 @@ class _DesktopMainWindowV1:
                     "Draftul nu a putut fi exportat la destinatia aleasa."
                 )
             self._episode_draft_export_running = False
+            self._sync_episode_draft_actions()
+
+    def _episode_draft_approval_action(self, revision_id: str) -> None:
+        if self._episode_draft_approval_running:
+            return
+        self._episode_draft_approval_running = True
+        self._episode_draft_status.set("Trimitere pentru aprobare in curs...")
+        self._sync_episode_draft_actions()
+        try:
+            self._invoke("episode_draft_approval", input=revision_id)
+        finally:
+            if self._episode_draft_approval_running:
+                self._episode_draft_status.set(
+                    "Draftul nu a putut fi trimis pentru aprobare."
+                )
+            self._episode_draft_approval_running = False
             self._sync_episode_draft_actions()
 
     def _sync_handoff(self) -> None:
