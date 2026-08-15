@@ -5,7 +5,11 @@ from __future__ import annotations
 from dataclasses import dataclass, replace
 from pathlib import Path
 
-from pastila_scout.active_project_v1 import EpisodeDraftApprovalPersistenceError
+from pastila_scout.active_project_v1 import (
+    EpisodeDraftApprovalPersistenceError,
+    EpisodeDraftApprovalStatusV1,
+    EpisodeDraftApprovalTransitionError,
+)
 from pastila_scout.episode_draft_assembly_v1 import (
     EpisodeDraftAssemblyErrorCodeV1,
     EpisodeDraftAssemblyErrorV1,
@@ -32,7 +36,10 @@ class _EpisodeDraftDesktopProjectionV1:
     assembled_text: str = ""
     stale: bool = False
     approval_pending: bool = False
+    approval_approved: bool = False
+    approval_mismatch: bool = False
     can_submit_approval: bool = False
+    can_approve: bool = False
 
 
 def _publish_episode_draft_v1(
@@ -127,6 +134,7 @@ def _recover_episode_draft_v1(*, store) -> _EpisodeDraftDesktopProjectionV1:
         ),
         stale=True,
         can_submit_approval=False,
+        can_approve=False,
     )
 
 
@@ -147,21 +155,32 @@ def _project_current(store, *, status: str) -> _EpisodeDraftDesktopProjectionV1:
     included = tuple(included_values)
     reference = project.current_episode_draft_revision
     approval = project.episode_draft_approval
-    approval_pending = bool(
+    approval_matches = bool(
         reference is not None
         and approval is not None
         and approval.project_id == project.project_id
         and approval.revision_id == reference.revision_id
         and approval.artifact_sha256 == reference.artifact_sha256
     )
-    approval_mismatch = approval is not None and not approval_pending
+    approval_pending = bool(
+        approval_matches
+        and approval.status is EpisodeDraftApprovalStatusV1.PENDING_APPROVAL
+    )
+    approval_approved = bool(
+        approval_matches and approval.status is EpisodeDraftApprovalStatusV1.APPROVED
+    )
+    approval_mismatch = approval is not None and not approval_matches
     approval_status = (
-        " Pentru aprobare."
-        if approval_pending
+        " Aprobat."
+        if approval_approved
         else (
-            " Aprobarea salvata apartine altei revizii."
-            if approval_mismatch
-            else " Nu a fost trimis pentru aprobare."
+            " Pentru aprobare."
+            if approval_pending
+            else (
+                " Aprobarea salvata apartine altei revizii."
+                if approval_mismatch
+                else " Nu a fost trimis pentru aprobare."
+            )
         )
     )
     return _EpisodeDraftDesktopProjectionV1(
@@ -179,7 +198,10 @@ def _project_current(store, *, status: str) -> _EpisodeDraftDesktopProjectionV1:
         ),
         assembled_text=revision.episode_draft.assembled_text,
         approval_pending=approval_pending,
-        can_submit_approval=not approval_pending,
+        approval_approved=approval_approved,
+        approval_mismatch=approval_mismatch,
+        can_submit_approval=not approval_pending and not approval_approved,
+        can_approve=approval_pending,
     )
 
 
@@ -189,7 +211,12 @@ def _handoff_episode_draft_for_approval_v1(
     """Atomically mark only the exact current, non-stale revision as pending."""
 
     projection = _recover_episode_draft_v1(store=store)
-    if not projection.current or projection.stale or projection.approval_pending:
+    if (
+        not projection.current
+        or projection.stale
+        or projection.approval_pending
+        or projection.approval_approved
+    ):
         return projection
     try:
         before = store.load_runtime_state()
@@ -207,6 +234,7 @@ def _handoff_episode_draft_for_approval_v1(
                 status="Draftul nu mai este curent si nu poate fi trimis.",
                 stale=True,
                 can_submit_approval=False,
+                can_approve=False,
             )
         updated = store.mark_episode_draft_pending_approval(expected_project=before)
         after = store.load_runtime_state()
@@ -230,6 +258,73 @@ def _handoff_episode_draft_for_approval_v1(
         ValueError,
     ):
         return _error("Draftul nu a putut fi trimis pentru aprobare.")
+
+
+def _approve_episode_draft_v1(*, store) -> _EpisodeDraftDesktopProjectionV1:
+    """Approve only the exact current, non-stale pending revision."""
+
+    projection = _recover_episode_draft_v1(store=store)
+    if (
+        not projection.current
+        or projection.stale
+        or projection.approval_approved
+        or projection.approval_mismatch
+    ):
+        return projection
+    if not projection.approval_pending:
+        return replace(
+            projection,
+            status="Draftul nu este in starea Pentru aprobare.",
+            can_approve=False,
+        )
+    try:
+        before = store.load_runtime_state()
+        if before is None:
+            return _error("Nu exista un draft de episod pentru aprobare.")
+        revision = store.load_episode_draft_revision()
+        prepared = EpisodeDraftAssemblyPreparerV1(store=store).prepare()
+        if (
+            revision is None
+            or _state_reference(prepared) not in revision.provenance_references
+            or store.load_runtime_state() != before
+        ):
+            return replace(
+                projection,
+                status="Draftul nu mai este curent si nu poate fi aprobat.",
+                stale=True,
+                can_approve=False,
+            )
+        updated = store.approve_episode_draft(expected_project=before)
+        after = store.load_runtime_state()
+        if after != updated:
+            return _error("Starea aprobarii nu a putut fi verificata.")
+        result = _recover_episode_draft_v1(store=store)
+        if not result.approval_approved:
+            return _error("Starea aprobarii nu a putut fi verificata.")
+        return replace(result, status="Aprobat.")
+    except EpisodeDraftApprovalPersistenceError as exc:
+        return _error(
+            "Starea aprobarii nu a putut fi scrisa."
+            if exc.code == "write_failed"
+            else "Starea aprobarii nu a putut fi verificata."
+        )
+    except EpisodeDraftApprovalTransitionError as exc:
+        messages = {
+            "approval_missing": "Draftul nu este in starea Pentru aprobare.",
+            "approval_mismatch": "Aprobarea apartine altei revizii.",
+            "project_changed": "Starea proiectului s-a schimbat.",
+            "not_pending": "Draftul nu este in starea Pentru aprobare.",
+            "invalid_revision": "Revizia draftului nu a putut fi verificata.",
+        }
+        return _error(messages.get(exc.code, "Draftul nu a putut fi aprobat."))
+    except (
+        EpisodeDraftAssemblyErrorV1,
+        EpisodeDraftPersistenceError,
+        OSError,
+        TypeError,
+        ValueError,
+    ):
+        return _error("Draftul nu a putut fi aprobat.")
 
 
 def _error(status: str) -> _EpisodeDraftDesktopProjectionV1:

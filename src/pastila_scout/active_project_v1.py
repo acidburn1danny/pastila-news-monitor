@@ -82,10 +82,19 @@ class EditorWorkItemStatusV1(StrEnum):
 
 class EpisodeDraftApprovalStatusV1(StrEnum):
     PENDING_APPROVAL = "pending_approval"
+    APPROVED = "approved"
 
 
 class EpisodeDraftApprovalPersistenceError(ValueError):
     """Finite approval-state persistence failure exposed to the desktop boundary."""
+
+    def __init__(self, code: str) -> None:
+        self.code = code
+        super().__init__(code)
+
+
+class EpisodeDraftApprovalTransitionError(ValueError):
+    """Finite invalid final-approval transition."""
 
     def __init__(self, code: str) -> None:
         self.code = code
@@ -888,7 +897,13 @@ class ActiveProjectStoreV1:
             revision_id=revision.revision_id,
             artifact_sha256=reference.artifact_sha256,
         )
-        if project.episode_draft_approval == approval:
+        existing_approval = project.episode_draft_approval
+        if (
+            existing_approval is not None
+            and existing_approval.project_id == approval.project_id
+            and existing_approval.revision_id == approval.revision_id
+            and existing_approval.artifact_sha256 == approval.artifact_sha256
+        ):
             return project
         updated = ActiveProjectV1(
             project.project_id,
@@ -904,6 +919,58 @@ class ActiveProjectStoreV1:
             project.editor_terminal_failures,
             approval,
         )
+        return self._persist_episode_draft_approval(previous=project, updated=updated)
+
+    def approve_episode_draft(
+        self, *, expected_project: ActiveProjectV1
+    ) -> ActiveProjectV1:
+        """Atomically approve the exact current pending immutable revision."""
+
+        project = self._required()
+        if type(expected_project) is not ActiveProjectV1 or project != expected_project:
+            raise EpisodeDraftApprovalTransitionError("project_changed")
+        reference = project.current_episode_draft_revision
+        revision = self.load_episode_draft_revision()
+        approval = project.episode_draft_approval
+        if reference is None or revision is None or self._required() != project:
+            raise EpisodeDraftApprovalTransitionError("invalid_revision")
+        if approval is None:
+            raise EpisodeDraftApprovalTransitionError("approval_missing")
+        if (
+            approval.project_id != project.project_id
+            or approval.revision_id != revision.revision_id
+            or approval.artifact_sha256 != reference.artifact_sha256
+        ):
+            raise EpisodeDraftApprovalTransitionError("approval_mismatch")
+        if approval.status is EpisodeDraftApprovalStatusV1.APPROVED:
+            return project
+        if approval.status is not EpisodeDraftApprovalStatusV1.PENDING_APPROVAL:
+            raise EpisodeDraftApprovalTransitionError("not_pending")
+        approved = EpisodeDraftApprovalV1(
+            project_id=approval.project_id,
+            revision_id=approval.revision_id,
+            artifact_sha256=approval.artifact_sha256,
+            status=EpisodeDraftApprovalStatusV1.APPROVED,
+        )
+        updated = ActiveProjectV1(
+            project.project_id,
+            project.title,
+            project.handed_off_at,
+            project.scout_input,
+            project.editor_materials,
+            project.chief_editor_items,
+            project.chief_editor_title,
+            project.chief_editor_updated_at,
+            project.editor_worklist,
+            project.current_episode_draft_revision,
+            project.editor_terminal_failures,
+            approved,
+        )
+        return self._persist_episode_draft_approval(previous=project, updated=updated)
+
+    def _persist_episode_draft_approval(
+        self, *, previous: ActiveProjectV1, updated: ActiveProjectV1
+    ) -> ActiveProjectV1:
         try:
             self._write(updated)
         except OSError as exc:
@@ -911,10 +978,10 @@ class ActiveProjectStoreV1:
         try:
             if self._required() != updated:
                 raise ValueError
-        except Exception as exc:
+        except (OSError, TypeError, ValueError) as exc:
             try:
-                self._write(project)
-                restored = self._required() == project
+                self._write(previous)
+                restored = self._required() == previous
             except OSError, TypeError, ValueError:
                 restored = False
             code = "verification_failed" if restored else "rollback_failed"

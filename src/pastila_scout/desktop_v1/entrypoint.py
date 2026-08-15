@@ -56,6 +56,7 @@ from pastila_scout.windows_state_v1.settings import (
 from .controller import _DesktopTaskControllerV1
 from .editor_batch import _run_editor_batch_v1
 from .episode_draft import (
+    _approve_episode_draft_v1,
     _handoff_episode_draft_for_approval_v1,
     _publish_episode_draft_v1,
     _recover_episode_draft_v1,
@@ -420,6 +421,14 @@ def main() -> int:
                 cells["project"] = current
             _publish_episode_draft_projection(view, result)
 
+        def finalize_episode_draft(*, input) -> None:
+            del input
+            result = _approve_episode_draft_v1(store=project_store)
+            current = project_store.load_runtime_state()
+            if current is not None:
+                cells["project"] = current
+            _publish_episode_draft_projection(view, result)
+
         def save_scout_provider(*, input) -> None:
             settings = _save_scout_provider_settings(
                 path=state.settings_path,
@@ -481,6 +490,8 @@ def main() -> int:
             view.bind_episode_draft_export_action(callback=export_episode_draft)
         if hasattr(view, "bind_episode_draft_approval_action"):
             view.bind_episode_draft_approval_action(callback=approve_episode_draft)
+        if hasattr(view, "bind_episode_draft_final_action"):
+            view.bind_episode_draft_final_action(callback=finalize_episode_draft)
         view.bind_scout_provider_actions(
             save_callback=save_scout_provider, test_callback=test_scout_provider
         )
@@ -814,6 +825,8 @@ def _publish_episode_draft_projection(view: object, projection: object) -> None:
         assembled_text=projection.assembled_text,
         approval_pending=projection.approval_pending,
         can_submit_approval=projection.can_submit_approval,
+        approval_approved=projection.approval_approved,
+        can_approve=projection.can_approve,
     )
 
 

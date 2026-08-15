@@ -90,6 +90,7 @@ _TEXT_V1 = (
     ("episode_draft.inspect", "Inspecteaza draft"),
     ("episode_draft.export", "Exporta draft"),
     ("episode_draft.approval", "Trimite pentru aprobare"),
+    ("episode_draft.final_approve", "Aproba draft"),
     ("episode_draft.none", "Nu exista un draft de episod publicat."),
     ("episode_draft.inspection", "Draft episod curent"),
     ("episode_draft.revision", "Revizie"),
