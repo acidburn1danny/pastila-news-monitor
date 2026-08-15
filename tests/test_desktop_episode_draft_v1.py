@@ -10,6 +10,7 @@ from test_episode_draft_assembly_v1 import Loader, _ready
 from pastila_scout.desktop_v1 import entrypoint
 from pastila_scout.desktop_v1 import episode_draft as desktop_episode
 from pastila_scout.desktop_v1.episode_draft import (
+    _episode_draft_readiness_v1,
     _publish_episode_draft_v1,
     _recover_episode_draft_v1,
 )
@@ -157,6 +158,34 @@ def test_preparation_failures_are_safe_romanian_statuses(
     assert projection.current is False
     assert expected in projection.status
     assert not (tmp_path / "drafts").exists()
+
+
+@pytest.mark.parametrize(
+    ("code", "expected"),
+    (
+        (
+            EpisodeDraftAssemblyErrorCodeV1.TERMINAL_EVIDENCE_MISSING,
+            "trebuie reincercata",
+        ),
+        (EpisodeDraftAssemblyErrorCodeV1.UNRESOLVED_ITEM, "in curs"),
+        (EpisodeDraftAssemblyErrorCodeV1.MINIMUM_STORIES, "disponibile: 3"),
+    ),
+)
+def test_readiness_uses_authoritative_preparation_and_precise_status(
+    monkeypatch, code, expected
+) -> None:
+    class Failing:
+        def __init__(self, *, store):
+            del store
+
+        def prepare(self):
+            raise EpisodeDraftAssemblyErrorV1(code, available=3)
+
+    monkeypatch.setattr(desktop_episode, "EpisodeDraftAssemblyPreparerV1", Failing)
+
+    ready, status = _episode_draft_readiness_v1(store=object())
+    assert ready is False
+    assert expected in status
 
 
 @pytest.mark.parametrize(

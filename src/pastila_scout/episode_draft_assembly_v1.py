@@ -105,13 +105,13 @@ class EpisodeDraftAssemblyPreparerV1:
         if project is None:
             _raise(EpisodeDraftAssemblyErrorCodeV1.INVALID_PROJECT)
         worklist = project.editor_worklist
-        requested = tuple(item.event_id for item in worklist)
+        worklist_ids = tuple(item.event_id for item in worklist)
         scout_ids = tuple(item.event_id for item in project.scout_input.ranked_events)
         if (
-            not requested
-            or requested != scout_ids
-            or any(type(value) is not int or value <= 0 for value in requested)
-            or len(requested) != len(set(requested))
+            not worklist_ids
+            or worklist_ids != scout_ids
+            or any(type(value) is not int or value <= 0 for value in worklist_ids)
+            or len(worklist_ids) != len(set(worklist_ids))
         ):
             _raise(EpisodeDraftAssemblyErrorCodeV1.INVALID_PROJECT)
         if (
@@ -122,14 +122,15 @@ class EpisodeDraftAssemblyPreparerV1:
             or len({item.payload_sha256 for item in project.editor_materials})
             != len(project.editor_materials)
             or any(
-                item.event_id not in set(requested) for item in project.editor_materials
+                item.event_id not in set(worklist_ids)
+                for item in project.editor_materials
             )
         ):
             _raise(EpisodeDraftAssemblyErrorCodeV1.INVALID_MATERIAL)
         materials = {item.event_id: item for item in project.editor_materials}
         failures = {item.event_id: item for item in project.editor_terminal_failures}
         if len(failures) != len(project.editor_terminal_failures) or any(
-            event_id not in set(requested) for event_id in failures
+            event_id not in set(worklist_ids) for event_id in failures
         ):
             _raise(EpisodeDraftAssemblyErrorCodeV1.UNRESOLVED_ITEM)
         stories = []
@@ -172,8 +173,9 @@ class EpisodeDraftAssemblyPreparerV1:
                 if material is not None:
                     _raise(EpisodeDraftAssemblyErrorCodeV1.UNRESOLVED_ITEM)
                 excluded_evidence.append(failure)
-            else:
+            elif item.status is EditorWorkItemStatusV1.RUNNING:
                 _raise(EpisodeDraftAssemblyErrorCodeV1.UNRESOLVED_ITEM)
+            # Pending work is not part of this immutable publication request.
         if len(stories) < 5:
             raise EpisodeDraftAssemblyErrorV1(
                 EpisodeDraftAssemblyErrorCodeV1.MINIMUM_STORIES,
@@ -181,6 +183,12 @@ class EpisodeDraftAssemblyPreparerV1:
             )
         included = tuple(item.story_id for item in stories)
         excluded = tuple(item.event_id for item in excluded_evidence)
+        requested = tuple(
+            item.event_id
+            for item in worklist
+            if item.status
+            in (EditorWorkItemStatusV1.COMPLETED, EditorWorkItemStatusV1.FAILED)
+        )
         values = {
             "project_id": project.project_id,
             "draft_id": (

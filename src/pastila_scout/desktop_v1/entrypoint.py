@@ -57,6 +57,7 @@ from .controller import _DesktopTaskControllerV1
 from .editor_batch import _run_editor_batch_v1
 from .episode_draft import (
     _approve_episode_draft_v1,
+    _episode_draft_readiness_v1,
     _handoff_episode_draft_for_approval_v1,
     _publish_episode_draft_v1,
     _recover_episode_draft_v1,
@@ -306,7 +307,7 @@ def main() -> int:
                 cells["editor_batch_polling"] = False
                 cells["project"] = project_store.load_runtime_state()
                 _publish_editor_worklist(view, cells["project"])
-                _publish_chief_editor(view, cells["project"])
+                _publish_chief_editor(view, cells["project"], store=project_store)
                 if hasattr(view, "publish_episode_draft"):
                     _publish_episode_draft_projection(
                         view, _recover_episode_draft_v1(store=project_store)
@@ -361,7 +362,9 @@ def main() -> int:
         def save_chief_editor(*, input) -> None:
             project = _save_chief_editor(project_store, input)
             cells["project"] = project
-            _publish_chief_editor(view, project, _text_v1(key="chief_editor.saved"))
+            _publish_chief_editor(
+                view, project, _text_v1(key="chief_editor.saved"), store=project_store
+            )
             _publish_episode_draft_projection(
                 view, _recover_episode_draft_v1(store=project_store)
             )
@@ -377,7 +380,9 @@ def main() -> int:
             if selected:
                 project_store.export_chief_editor(destination=Path(selected))
             cells["project"] = project
-            _publish_chief_editor(view, project, _text_v1(key="chief_editor.saved"))
+            _publish_chief_editor(
+                view, project, _text_v1(key="chief_editor.saved"), store=project_store
+            )
             _publish_episode_draft_projection(
                 view, _recover_episode_draft_v1(store=project_store)
             )
@@ -506,7 +511,7 @@ def main() -> int:
                 message=_text_v1(key="scout.handoff_success"),
             )
             _publish_editor_worklist(view, active_project)
-            _publish_chief_editor(view, active_project)
+            _publish_chief_editor(view, active_project, store=project_store)
             if hasattr(view, "publish_episode_draft"):
                 _publish_episode_draft_projection(
                     view, _recover_episode_draft_v1(store=project_store)
@@ -789,8 +794,13 @@ def _save_chief_editor(store: ActiveProjectStoreV1, value: object):
         raise _DesktopShellConfigurationError() from None
 
 
-def _publish_chief_editor(view: object, project: object, status: str = "") -> None:
+def _publish_chief_editor(
+    view: object, project: object, status: str = "", *, store=None
+) -> None:
     materials = {item.reference: item for item in project.editor_materials}
+    can_publish, readiness_status = (
+        _episode_draft_readiness_v1(store=store) if store is not None else (False, "")
+    )
     view.publish_chief_editor(  # type: ignore[attr-defined]
         title=project.chief_editor_title or project.title,
         available=tuple(
@@ -806,11 +816,8 @@ def _publish_chief_editor(view: object, project: object, status: str = "") -> No
             for item in project.chief_editor_items
             if item.material_reference in materials
         ),
-        status=status,
-        can_publish_episode_draft=(
-            sum(item.status.value == "completed" for item in project.editor_worklist)
-            >= 5
-        ),
+        status=status or readiness_status,
+        can_publish_episode_draft=can_publish,
     )
 
 
@@ -835,7 +842,7 @@ def _queue_episode_draft_publication_v1(
 ) -> None:
     project = _save_chief_editor(store, input)
     cells["project"] = project
-    _publish_chief_editor(view, project)
+    _publish_chief_editor(view, project, store=store)
 
     def task():
         return _publish_episode_draft_v1(
@@ -847,7 +854,7 @@ def _queue_episode_draft_publication_v1(
         current = store.load_runtime_state()
         if current is not None:
             cells["project"] = current
-            _publish_chief_editor(view, current)
+            _publish_chief_editor(view, current, store=store)
         _publish_episode_draft_projection(view, result)
 
     controller.submit_application(task=task, on_completed=on_completed)

@@ -42,6 +42,34 @@ class _EpisodeDraftDesktopProjectionV1:
     can_approve: bool = False
 
 
+def _episode_draft_readiness_v1(*, store) -> tuple[bool, str]:
+    """Project authoritative preparation readiness without changing state."""
+
+    try:
+        EpisodeDraftAssemblyPreparerV1(store=store).prepare()
+        return True, ""
+    except EpisodeDraftAssemblyErrorV1 as exc:
+        if exc.code is EpisodeDraftAssemblyErrorCodeV1.MINIMUM_STORIES:
+            return (
+                False,
+                "Sunt necesare cel putin 5 stiri generate; disponibile: "
+                + f"{exc.available}.",
+            )
+        messages = {
+            EpisodeDraftAssemblyErrorCodeV1.TERMINAL_EVIDENCE_MISSING: (
+                "O stire cu eroare trebuie reincercata in Editor."
+            ),
+            EpisodeDraftAssemblyErrorCodeV1.UNRESOLVED_ITEM: (
+                "O stire este inca in curs de procesare in Editor."
+            ),
+        }
+        return False, messages.get(
+            exc.code, "Materialele Editor nu sunt pregatite pentru draft."
+        )
+    except AttributeError, OSError, TypeError, ValueError:
+        return False, "Materialele Editor nu sunt pregatite pentru draft."
+
+
 def _publish_episode_draft_v1(
     *, store, revision_root: Path
 ) -> _EpisodeDraftDesktopProjectionV1:
@@ -69,6 +97,10 @@ def _publish_episode_draft_v1(
             )
         if exc.code is EpisodeDraftAssemblyErrorCodeV1.STALE_PROJECT:
             return _error("Starea Chief Editor s-a schimbat. Incercati din nou.")
+        if exc.code is EpisodeDraftAssemblyErrorCodeV1.TERMINAL_EVIDENCE_MISSING:
+            return _error("O stire cu eroare trebuie reincercata in Editor.")
+        if exc.code is EpisodeDraftAssemblyErrorCodeV1.UNRESOLVED_ITEM:
+            return _error("O stire este inca in curs de procesare in Editor.")
         return _error("Starea Chief Editor nu este pregatita pentru draft.")
     except EpisodeDraftExecutionErrorV1 as exc:
         messages = {

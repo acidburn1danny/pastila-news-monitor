@@ -13,13 +13,22 @@ class _Store:
     def __init__(self, event_ids):
         self.status = {event_id: "pending" for event_id in event_ids}
         self.materials = []
+        self.failures = []
 
     def load_runtime_state(self):
         return SimpleNamespace(
             editor_worklist=tuple(
                 SimpleNamespace(event_id=event_id, status=SimpleNamespace(value=status))
                 for event_id, status in self.status.items()
-            )
+            ),
+            scout_input=SimpleNamespace(
+                ranked_events=tuple(
+                    SimpleNamespace(
+                        event_id=event_id, canonical_title=f"Event {event_id}"
+                    )
+                    for event_id in self.status
+                )
+            ),
         )
 
     def mark_editor_item_running(self, *, event_id):
@@ -37,6 +46,9 @@ class _Store:
     def mark_editor_item_failed(self, *, event_id):
         assert self.status[event_id] == "running"
         self.status[event_id] = "failed"
+
+    def record_terminal_editor_failure(self, *, evidence):
+        self.failures.append(evidence)
 
 
 def test_batch_executes_each_selected_event_once_in_authoritative_order(tmp_path):
@@ -77,6 +89,8 @@ def test_batch_preserves_success_and_continues_after_item_failure(
     assert result.completed_event_ids == expected_completed
     assert result.failed_event_ids == (failed_event_id,)
     assert store.status[failed_event_id] == "failed"
+    assert tuple(item.event_id for item in store.failures) == (failed_event_id,)
+    assert store.failures[0].sanitized_reason == "Generarea Editor a esuat."
     assert all(store.status[value] == "completed" for value in expected_completed)
 
 

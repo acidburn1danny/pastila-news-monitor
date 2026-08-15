@@ -783,17 +783,23 @@ class ActiveProjectStoreV1:
                 or reference.created_at != revision.created_at
             ):
                 raise ValueError
-            if tuple(item.event_id for item in project.editor_worklist) != (
-                revision.requested_event_ids
+            worklist_ids = tuple(item.event_id for item in project.editor_worklist)
+            requested = revision.requested_event_ids
+            if requested != tuple(
+                event_id for event_id in worklist_ids if event_id in set(requested)
             ):
                 raise ValueError
             statuses = {item.event_id: item.status for item in project.editor_worklist}
-            if any(
-                statuses[event_id] is not EditorWorkItemStatusV1.COMPLETED
-                for event_id in revision.included_event_ids
-            ) or any(
-                statuses[event_id] is not EditorWorkItemStatusV1.FAILED
-                for event_id in revision.excluded_failed_event_ids
+            if (
+                any(event_id not in statuses for event_id in requested)
+                or any(
+                    statuses[event_id] is not EditorWorkItemStatusV1.COMPLETED
+                    for event_id in revision.included_event_ids
+                )
+                or any(
+                    statuses[event_id] is not EditorWorkItemStatusV1.FAILED
+                    for event_id in revision.excluded_failed_event_ids
+                )
             ):
                 raise ValueError
             if len({item.event_id for item in project.editor_materials}) != len(

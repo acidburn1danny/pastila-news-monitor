@@ -131,21 +131,42 @@ def test_preparation_model_rejects_boolean_or_nonpositive_lineage(
             EpisodeDraftAssemblyInputV1.model_validate(changed)
 
 
-@pytest.mark.parametrize(
-    "status",
-    (EditorWorkItemStatusV1.PENDING, EditorWorkItemStatusV1.RUNNING),
-)
-def test_pending_or_running_item_is_unresolved(tmp_path: Path, status) -> None:
+def test_running_item_is_unresolved(tmp_path: Path) -> None:
     store, project = _ready(tmp_path)
     store._write(
         replace(
             project,
-            editor_worklist=(EditorWorkItemV1(7, status), *project.editor_worklist[1:]),
+            editor_worklist=(
+                EditorWorkItemV1(7, EditorWorkItemStatusV1.RUNNING),
+                *project.editor_worklist[1:],
+            ),
         )
     )
     with pytest.raises(EpisodeDraftAssemblyErrorV1) as captured:
         EpisodeDraftAssemblyPreparerV1(store=store, artifact_loader=Loader()).prepare()
     assert captured.value.code is EpisodeDraftAssemblyErrorCodeV1.UNRESOLVED_ITEM
+
+
+def test_pending_item_is_excluded_from_publication_request(tmp_path: Path) -> None:
+    store, project = _ready(tmp_path)
+    store._write(
+        replace(
+            project,
+            editor_worklist=(
+                *project.editor_worklist[:5],
+                EditorWorkItemV1(12, EditorWorkItemStatusV1.PENDING),
+            ),
+            editor_terminal_failures=(),
+        )
+    )
+
+    prepared = EpisodeDraftAssemblyPreparerV1(
+        store=store, artifact_loader=Loader()
+    ).prepare()
+
+    assert prepared.requested_event_ids == (7, 8, 9, 10, 11)
+    assert prepared.included_event_ids == (7, 8, 9, 10, 11)
+    assert prepared.excluded_failed_event_ids == ()
 
 
 def test_failed_without_terminal_evidence_is_unresolved(tmp_path: Path) -> None:
