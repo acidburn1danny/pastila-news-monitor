@@ -241,9 +241,9 @@ def test_primary_actions_have_isolated_red_bold_large_presentation():
 @pytest.mark.parametrize(
     ("failed_sources", "expected"),
     (
-        ((), "Surse cu erori: 0"),
-        (("one",), "Surse cu erori: 1"),
-        (("a", "b", "c"), "Surse cu erori: 3"),
+        ((), "0"),
+        (("one",), "1"),
+        (("a", "b", "c"), "3"),
     ),
 )
 def test_failed_source_summary_uses_authoritative_collection_count(

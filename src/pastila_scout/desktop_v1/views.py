@@ -41,6 +41,8 @@ _PRIMARY_ACTION_COLOR = "#e31919"
 _LATEST_LABEL_STYLE = "PastilaLatest.TLabel"
 _SOURCE_LABEL_STYLE = "PastilaSource.TLabel"
 _SCOUT_STATUS_STYLE = "PastilaScoutStatus.TLabel"
+_SCOUT_PROGRESS_STYLE = "PastilaScout.Horizontal.TProgressbar"
+_SCOUT_PROGRESS_COLOR = "#17843b"
 _SOURCE_LABEL_COLOR = "#2563b8"
 _SEARCH_LABEL_COLUMN = 0
 _SEARCH_ENTRY_COLUMN = 1
@@ -89,7 +91,19 @@ def _configure_desktop_styles(root: object) -> None:
         font=("TkDefaultFont", 9, "bold"),
         foreground=_SOURCE_LABEL_COLOR,
     )
-    style.configure(_SCOUT_STATUS_STYLE, foreground=_PRIMARY_ACTION_COLOR)
+    style.configure(
+        _SCOUT_STATUS_STYLE,
+        foreground=_PRIMARY_ACTION_COLOR,
+        font=("TkDefaultFont", 9, "bold"),
+    )
+    style.configure(
+        _SCOUT_PROGRESS_STYLE,
+        background=_SCOUT_PROGRESS_COLOR,
+        troughcolor="#e5e7eb",
+        borderwidth=0,
+        lightcolor=_SCOUT_PROGRESS_COLOR,
+        darkcolor=_SCOUT_PROGRESS_COLOR,
+    )
 
 
 def _primary_action_button(
@@ -155,7 +169,7 @@ def _failed_sources_summary(failed_sources: tuple[str, ...]) -> str:
         type(value) is not str for value in failed_sources
     ):
         raise _DesktopShellConfigurationError() from None
-    return f"{_text_v1(key='scout.failed_sources')} {len(failed_sources)}"
+    return str(len(failed_sources))
 
 
 def _handoff_label(count: int) -> str:
@@ -410,22 +424,64 @@ class _DesktopMainWindowV1:
             command=self._scout,
         )
         self._scout_button.master.grid(row=7, column=0, columnspan=2, pady=8)
-        self._progress = ttk.Progressbar(page, mode="determinate", value=0)
-        self._progress.grid(row=8, column=0, columnspan=2, sticky="ew")
+        self._progress_frame = ttk.Frame(page, width=340, height=22)
+        self._progress_frame.grid(row=8, column=0, columnspan=2, pady=(0, 6))
+        self._progress_frame.grid_propagate(False)
+        self._progress = ttk.Progressbar(
+            self._progress_frame,
+            mode="determinate",
+            maximum=100,
+            value=0,
+            length=320,
+            style=_SCOUT_PROGRESS_STYLE,
+        )
+        self._progress.place(relx=0.5, rely=0.5, anchor="center", width=320, height=18)
+        self._progress_completion = tkinter.Label(
+            self._progress_frame,
+            text="Cautare finalizata",
+            foreground="#ffffff",
+            background=_SCOUT_PROGRESS_COLOR,
+            font=("TkDefaultFont", 9, "bold"),
+        )
+        self._scout_progress_active = False
         self._status = tkinter.StringVar(value=_text_v1(key="scout.intro"))
         ttk.Label(page, textvariable=self._status).grid(
             row=9, column=0, columnspan=2, sticky="w"
         )
-        ttk.Label(page, text=_text_v1(key="scout.results")).grid(
-            row=10, column=0, sticky="w"
-        )
-        self._summary = tkinter.StringVar(value="0")
-        ttk.Label(page, textvariable=self._summary, style=_SCOUT_STATUS_STYLE).grid(
-            row=10, column=1, sticky="w"
+        statistics = ttk.Frame(page)
+        statistics.grid(row=10, column=0, columnspan=2, sticky="ew", pady=(4, 2))
+        statistics.columnconfigure(1, weight=1)
+        statistics.columnconfigure(2, weight=1)
+        source_statistics = ttk.Frame(statistics)
+        source_statistics.grid(row=0, column=0, sticky="w")
+        ttk.Label(
+            source_statistics,
+            text=f"{_text_v1(key='scout.sources_available')}:",
+            style=_SCOUT_STATUS_STYLE,
+        ).grid(row=0, column=0, sticky="w")
+        self._available = tkinter.StringVar(value="0")
+        ttk.Label(source_statistics, textvariable=self._available).grid(
+            row=0, column=1, sticky="w", padx=(4, 0)
         )
         self._failed = tkinter.StringVar(value=_failed_sources_summary(()))
-        ttk.Label(page, textvariable=self._failed, style=_SCOUT_STATUS_STYLE).grid(
-            row=11, column=0, columnspan=2, sticky="w"
+        ttk.Label(
+            source_statistics,
+            text=f"{_text_v1(key='scout.failed_sources')}:",
+            style=_SCOUT_STATUS_STYLE,
+        ).grid(row=1, column=0, sticky="w")
+        ttk.Label(source_statistics, textvariable=self._failed).grid(
+            row=1, column=1, sticky="w", padx=(4, 0)
+        )
+        result_statistics = ttk.Frame(statistics)
+        result_statistics.grid(row=0, column=2, sticky="e")
+        ttk.Label(
+            result_statistics,
+            text=f"{_text_v1(key='scout.results')}:",
+            style=_SCOUT_STATUS_STYLE,
+        ).pack(side="left")
+        self._summary = tkinter.StringVar(value="0 articole - 0 noi - duplicate: 0")
+        ttk.Label(result_statistics, textvariable=self._summary).pack(
+            side="left", padx=(4, 0)
         )
         self._report_button = ttk.Button(
             page,
@@ -799,6 +855,8 @@ class _DesktopMainWindowV1:
         self._bindings[name] = callback
 
     def _scout(self) -> None:
+        self._scout_progress_active = True
+        self._set_scout_progress_running()
         self._invoke(
             "scout",
             input=_DesktopScoutActionInputV1(
@@ -875,11 +933,15 @@ class _DesktopMainWindowV1:
             callback(**kwargs)  # type: ignore[operator]
         except BaseException:
             self._status.set(_text_v1(key="error.internal"))
+            if name == "scout":
+                self._scout_progress_active = False
+                self._set_scout_progress_failed()
 
     def publish_scout_result(
         self,
         *,
         summary: str,
+        sources_available: int,
         failed_sources: tuple[str, ...],
         footer: str,
         report_reference: str | None,
@@ -887,6 +949,8 @@ class _DesktopMainWindowV1:
         self._check()
         if (
             type(summary) is not str
+            or type(sources_available) is not int
+            or sources_available < 0
             or type(failed_sources) is not tuple
             or any(type(x) is not str for x in failed_sources)
             or type(footer) is not str
@@ -897,8 +961,14 @@ class _DesktopMainWindowV1:
         ):
             raise _DesktopShellConfigurationError() from None
         self._summary.set(summary)
+        self._available.set(str(sources_available))
         self._failed.set(_failed_sources_summary(failed_sources))
         self._footer.set(footer)
+        if footer in {"completed", "partial"}:
+            self._set_scout_progress_completed()
+        else:
+            self._set_scout_progress_failed()
+        self._scout_progress_active = False
         self._report_reference = report_reference
         self._sync_report()
 
@@ -1080,6 +1150,17 @@ class _DesktopMainWindowV1:
         self._raise_page(snapshot.selected_page)
         self._navigation.selection_set(snapshot.selected_page.value)
         idle = snapshot.application_state is _DesktopTaskStateV1.IDLE
+        if self._scout_progress_active and snapshot.application_state in {
+            _DesktopTaskStateV1.SUBMITTED,
+            _DesktopTaskStateV1.RUNNING,
+        }:
+            self._set_scout_progress_running()
+        elif self._scout_progress_active and snapshot.application_state in {
+            _DesktopTaskStateV1.FAILED,
+            _DesktopTaskStateV1.CANCELLED,
+        }:
+            self._scout_progress_active = False
+            self._set_scout_progress_failed()
         self._scout_button.configure(
             state="normal" if idle and "scout" in self._bindings else "disabled"
         )
@@ -1096,6 +1177,24 @@ class _DesktopMainWindowV1:
             self._editor_retry_button.configure(state="disabled")
             self._handoff_button.configure(state="disabled")
             self._report_button.configure(state="disabled")
+
+    def _set_scout_progress_running(self) -> None:
+        self._progress.stop()
+        self._progress.configure(mode="indeterminate", value=0)
+        self._progress_completion.place_forget()
+        self._progress.start(12)
+
+    def _set_scout_progress_completed(self) -> None:
+        self._progress.stop()
+        self._progress.configure(mode="determinate", value=100)
+        self._progress_completion.place(
+            relx=0.5, rely=0.5, anchor="center", width=150, height=18
+        )
+
+    def _set_scout_progress_failed(self) -> None:
+        self._progress.stop()
+        self._progress.configure(mode="determinate", value=0)
+        self._progress_completion.place_forget()
 
     def _sync_editor_action(self) -> None:
         try:

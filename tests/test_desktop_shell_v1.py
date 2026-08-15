@@ -312,6 +312,11 @@ def test_withdrawn_tk_window_has_exact_structural_root_and_initial_state():
         assert style.lookup("PastilaLatest.TLabel", "foreground") == "#e31919"
         assert style.lookup("PastilaSource.TLabel", "foreground") == "#2563b8"
         assert style.lookup("PastilaScoutStatus.TLabel", "foreground") == "#e31919"
+        assert "bold" in str(style.lookup("PastilaScoutStatus.TLabel", "font"))
+        assert (
+            style.lookup("PastilaScout.Horizontal.TProgressbar", "background")
+            == "#17843b"
+        )
         assert "bold" in str(style.lookup("PastilaLatest.TLabel", "font"))
         assert "bold" in str(style.lookup("PastilaSource.TLabel", "font"))
 
@@ -358,7 +363,16 @@ def test_withdrawn_tk_window_has_exact_structural_root_and_initial_state():
             "height"
         )
         assert str(view._report_button.cget("state")) == "disabled"
-        assert view._failed.get() == "Surse cu erori: 0"
+        assert view._failed.get() == "0"
+        assert view._available.get() == "0"
+        assert view._summary.get() == "0 articole - 0 noi - duplicate: 0"
+        assert int(view._progress.cget("value")) == 0
+        assert not view._progress_completion.winfo_manager()
+        progress_grid = view._progress_frame.grid_info()
+        assert progress_grid["columnspan"] == 2
+        assert not str(progress_grid["sticky"])
+        assert int(view._progress_frame.cget("width")) == 340
+        assert int(view._progress.cget("length")) == 320
 
         def open_report(*, reference):
             del reference
@@ -366,35 +380,59 @@ def test_withdrawn_tk_window_has_exact_structural_root_and_initial_state():
         view.bind_report_action(callback=open_report)
         view.publish_scout_result(
             summary="summary",
+            sources_available=14,
             failed_sources=(),
             footer="completed",
             report_reference=None,
         )
-        assert view._failed.get() == "Surse cu erori: 0"
+        assert view._failed.get() == "0"
+        assert view._available.get() == "14"
+        assert int(view._progress.cget("value")) == 100
+        assert view._progress_completion.cget("text") == "Cautare finalizata"
+        assert view._progress_completion.cget("foreground") == "#ffffff"
+        assert view._progress_completion.winfo_manager() == "place"
+        view._set_scout_progress_running()
+        assert str(view._progress.cget("mode")) == "indeterminate"
+        assert not view._progress_completion.winfo_manager()
+        view._set_scout_progress_completed()
         assert str(view._report_button.cget("state")) == "disabled"
         view.publish_scout_result(
             summary="summary",
+            sources_available=14,
             failed_sources=(),
             footer="completed",
             report_reference="zero-error-report",
         )
-        assert view._failed.get() == "Surse cu erori: 0"
+        assert view._failed.get() == "0"
         assert str(view._report_button.cget("state")) == "normal"
         view.publish_scout_result(
             summary="summary",
+            sources_available=14,
             failed_sources=("one",),
             footer="partial",
             report_reference=None,
         )
-        assert view._failed.get() == "Surse cu erori: 1"
+        assert view._failed.get() == "1"
+        assert int(view._progress.cget("value")) == 100
+        assert view._progress_completion.winfo_manager() == "place"
         assert str(view._report_button.cget("state")) == "disabled"
         view.publish_scout_result(
             summary="summary",
+            sources_available=14,
+            failed_sources=("one",),
+            footer="failed",
+            report_reference=None,
+        )
+        assert int(view._progress.cget("value")) == 0
+        assert not view._progress_completion.winfo_manager()
+        view.publish_scout_result(
+            summary="summary",
+            sources_available=14,
             failed_sources=("one", "two", "three"),
             footer="partial",
             report_reference="report-reference",
         )
-        assert view._failed.get() == "Surse cu erori: 3"
+        assert view._failed.get() == "3"
         assert str(view._report_button.cget("state")) == "normal"
         editor_actions = []
         retry_actions = []
@@ -614,12 +652,13 @@ def test_resources_are_exact_unique_nfc_and_unknown_is_safe():
     assert _text_v1(key="scout.period") == "Perioada"
     assert _text_v1(key="scout.category") == "Categorie"
     assert _text_v1(key="scout.run") == "Cauta"
-    assert _text_v1(key="scout.results") == "Rezultate"
+    assert _text_v1(key="scout.sources_available") == "Surse disponibile"
+    assert _text_v1(key="scout.results") == "Rezultate cautare"
     assert _text_v1(key="scout.latest") == "Ultima Ora"
     assert _text_v1(key="scout.intro") == (
         "Selectati optiunile dorite, apoi apasati Cauta."
     )
-    assert _text_v1(key="scout.failed_sources") == "Surse cu erori:"
+    assert _text_v1(key="scout.failed_sources") == "Surse cu erori"
     assert not any(value == "REZULTATE" for _, value in _TEXT_V1)
     assert not any("candidat" in value.casefold() for _, value in _TEXT_V1)
     assert not any("Surse nereusite" in value for _, value in _TEXT_V1)

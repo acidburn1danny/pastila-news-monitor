@@ -765,10 +765,10 @@ def _publish_scout_result(view: object, value: object) -> None:
     report = result.report_reference
     view.publish_scout_result(  # type: ignore[attr-defined]
         summary=(
-            f"Surse: {result.sources_checked}; reusite: {result.sources_succeeded}; "
-            f"nereusite: {result.sources_failed}; articole: {result.articles_found}; "
-            f"noi: {result.articles_inserted}; duplicate: {result.duplicates_skipped}."
+            f"{result.articles_found} articole - {result.articles_inserted} noi - "
+            f"duplicate: {result.duplicates_skipped}"
         ),
+        sources_available=result.sources_checked,
         failed_sources=result.failed_source_ids,
         footer=result.status.value,
         report_reference=None if report is None else report.report_reference,
