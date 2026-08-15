@@ -55,6 +55,10 @@ from pastila_scout.windows_state_v1.settings import (
 
 from .controller import _DesktopTaskControllerV1
 from .editor_batch import _run_editor_batch_v1
+from .episode_draft import (
+    _publish_episode_draft_v1,
+    _recover_episode_draft_v1,
+)
 from .errors import _DesktopShellConfigurationError, _DesktopShellExecutionError
 from .first_run import _complete_desktop_setup_v1, _inspect_desktop_readiness_v1
 from .integrated_editor import _integrated_editor_request_v1
@@ -297,6 +301,10 @@ def main() -> int:
                 cells["project"] = project_store.load_runtime_state()
                 _publish_editor_worklist(view, cells["project"])
                 _publish_chief_editor(view, cells["project"])
+                if hasattr(view, "publish_episode_draft"):
+                    _publish_episode_draft_projection(
+                        view, _recover_episode_draft_v1(store=project_store)
+                    )
                 view.publish_editor_result(
                     status=(
                         f"{len(result.attempted_event_ids)} procesate: "
@@ -348,6 +356,9 @@ def main() -> int:
             project = _save_chief_editor(project_store, input)
             cells["project"] = project
             _publish_chief_editor(view, project, _text_v1(key="chief_editor.saved"))
+            _publish_episode_draft_projection(
+                view, _recover_episode_draft_v1(store=project_store)
+            )
 
         def export_chief_editor(*, input) -> None:
             project = _save_chief_editor(project_store, input)
@@ -361,6 +372,19 @@ def main() -> int:
                 project_store.export_chief_editor(destination=Path(selected))
             cells["project"] = project
             _publish_chief_editor(view, project, _text_v1(key="chief_editor.saved"))
+            _publish_episode_draft_projection(
+                view, _recover_episode_draft_v1(store=project_store)
+            )
+
+        def publish_episode_draft(*, input) -> None:
+            _queue_episode_draft_publication_v1(
+                store=project_store,
+                view=view,
+                controller=controller,
+                cells=cells,
+                input=input,
+                revision_root=state.database_path.parent / "episode-drafts",
+            )
 
         def save_scout_provider(*, input) -> None:
             settings = _save_scout_provider_settings(
@@ -417,6 +441,8 @@ def main() -> int:
         view.bind_chief_editor_actions(
             save_callback=save_chief_editor, export_callback=export_chief_editor
         )
+        if hasattr(view, "bind_episode_draft_action"):
+            view.bind_episode_draft_action(callback=publish_episode_draft)
         view.bind_scout_provider_actions(
             save_callback=save_scout_provider, test_callback=test_scout_provider
         )
@@ -432,6 +458,10 @@ def main() -> int:
             )
             _publish_editor_worklist(view, active_project)
             _publish_chief_editor(view, active_project)
+            if hasattr(view, "publish_episode_draft"):
+                _publish_episode_draft_projection(
+                    view, _recover_episode_draft_v1(store=project_store)
+                )
             controller.select_page(
                 page=(
                     _DesktopPageV1.CHIEF_EDITOR
@@ -674,6 +704,8 @@ def _complete_handoff(
         message += _text_v1(key="scout.handoff_duplicates").format(count=skipped)
     view.publish_active_project(title=project.title, message=message)
     _publish_editor_worklist(view, project)
+    if hasattr(view, "publish_episode_draft"):
+        _publish_episode_draft_projection(view, _recover_episode_draft_v1(store=store))
     controller.select_page(page=_DesktopPageV1.EDITOR)
     return True
 
@@ -726,7 +758,46 @@ def _publish_chief_editor(view: object, project: object, status: str = "") -> No
             if item.material_reference in materials
         ),
         status=status,
+        can_publish_episode_draft=(
+            sum(item.status.value == "completed" for item in project.editor_worklist)
+            >= 5
+        ),
     )
+
+
+def _publish_episode_draft_projection(view: object, projection: object) -> None:
+    view.publish_episode_draft(  # type: ignore[attr-defined]
+        status=projection.status,
+        current=projection.current,
+        revision_id=projection.revision_id,
+        parent_revision_id=projection.parent_revision_id,
+        included=projection.included,
+        excluded=projection.excluded,
+        assembled_text=projection.assembled_text,
+    )
+
+
+def _queue_episode_draft_publication_v1(
+    *, store, view, controller, cells: dict[str, object], input, revision_root: Path
+) -> None:
+    project = _save_chief_editor(store, input)
+    cells["project"] = project
+    _publish_chief_editor(view, project)
+
+    def task():
+        return _publish_episode_draft_v1(
+            store=store,
+            revision_root=revision_root,
+        )
+
+    def on_completed(*, result) -> None:
+        current = store.load_runtime_state()
+        if current is not None:
+            cells["project"] = current
+            _publish_chief_editor(view, current)
+        _publish_episode_draft_projection(view, result)
+
+    controller.submit_application(task=task, on_completed=on_completed)
 
 
 def _scout_provider_values(value: object) -> tuple[str, str, str]:

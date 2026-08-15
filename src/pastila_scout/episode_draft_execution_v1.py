@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import json
 from collections.abc import Callable
 from datetime import UTC, datetime
 from enum import StrEnum
@@ -168,6 +169,33 @@ class EpisodeDraftExecutorV1:
         if project is None or project.project_id != prepared.project_id:
             _fail(EpisodeDraftExecutionErrorCodeV1.STALE_INPUT)
         current = project.current_episode_draft_revision
+        if current is not None and prepared.parent_revision_id == current.revision_id:
+            try:
+                current_revision = self.store.load_episode_draft_revision()
+            except Exception as exc:
+                raise EpisodeDraftExecutionErrorV1(
+                    EpisodeDraftExecutionErrorCodeV1.INVALID_PARENT,
+                    stage=EpisodeDraftExecutionStageV1.PRECONDITION,
+                ) from exc
+            if (
+                current_revision is not None
+                and _state_reference(prepared) in current_revision.provenance_references
+                and _same_revision_content(
+                    current_revision,
+                    _revision(
+                        prepared,
+                        current_revision.created_at,
+                        "episode-draft-comparison-v1:"
+                        + prepared.preparation_fingerprint.removeprefix("sha256:"),
+                    ),
+                )
+            ):
+                return _result(
+                    prepared,
+                    current,
+                    EpisodeDraftPublicationStatusV1.ALREADY_PUBLISHED,
+                    EpisodeDraftActivationStatusV1.ALREADY_CURRENT,
+                )
         if (current is None) != (prepared.parent_revision_id is None):
             _fail(EpisodeDraftExecutionErrorCodeV1.INVALID_PARENT)
         if current is not None:
@@ -313,8 +341,9 @@ def _revision(
         included_materials=prepared.included_materials,
         excluded_failures=prepared.excluded_failures,
         episode_draft=draft,
-        provenance_references=tuple(
-            item.material_reference for item in prepared.included_materials
+        provenance_references=(
+            _state_reference(prepared),
+            *(item.material_reference for item in prepared.included_materials),
         ),
     )
 
@@ -337,6 +366,33 @@ def _same_revision(left: EpisodeDraftRevisionV1, right: EpisodeDraftRevisionV1) 
     )
 
 
+def _same_revision_content(
+    left: EpisodeDraftRevisionV1, right: EpisodeDraftRevisionV1
+) -> bool:
+    excluded = {
+        "revision_id",
+        "parent_revision_id",
+        "created_at",
+        "provenance_references",
+        "payload_sha256",
+    }
+    return left.model_dump(exclude=excluded) == right.model_dump(exclude=excluded)
+
+
+def _state_reference(prepared: EpisodeDraftAssemblyInputV1) -> str:
+    values = prepared.model_dump(
+        mode="json", exclude={"parent_revision_id", "preparation_fingerprint"}
+    )
+    payload = json.dumps(
+        values,
+        ensure_ascii=False,
+        allow_nan=False,
+        separators=(",", ":"),
+        sort_keys=True,
+    ).encode("utf-8")
+    return "episode-draft-state-v1:" + hashlib.sha256(payload).hexdigest()
+
+
 def _same_preparation_state(
     left: EpisodeDraftAssemblyInputV1, right: EpisodeDraftAssemblyInputV1
 ) -> bool:
@@ -348,7 +404,7 @@ def _result(prepared, reference, publication_status, activation_status):
     return EpisodeDraftExecutionResultV1(
         project_id=prepared.project_id,
         reference=reference,
-        parent_revision_id=prepared.parent_revision_id,
+        parent_revision_id=reference.parent_revision_id,
         included_count=len(prepared.included_event_ids),
         excluded_failure_count=len(prepared.excluded_failed_event_ids),
         publication_status=publication_status,

@@ -254,6 +254,10 @@ def test_existing_path_collision_is_not_overwritten(tmp_path: Path) -> None:
 def test_child_revision_has_valid_parent_and_distinct_identity(tmp_path: Path) -> None:
     store, _before, prepared, _preparer, executor = _fixture(tmp_path)
     first = executor.execute(prepared=prepared)
+    current = store.load_runtime_state()
+    store.save_chief_editor(
+        title="Structura revizuita", items=current.chief_editor_items
+    )
     child_preparer = EpisodeDraftAssemblyPreparerV1(
         store=store, artifact_loader=Loader()
     )

@@ -710,6 +710,29 @@ class _DesktopMainWindowV1:
         ttk.Label(page, textvariable=self._chief_status).grid(
             row=7, column=0, columnspan=2, sticky="w"
         )
+        self._episode_publish_available = False
+        self._episode_draft_current = False
+        self._episode_draft_details = ("", "", (), (), "")
+        self._episode_draft_button = _primary_action_button(
+            page,
+            text=_text_v1(key="episode_draft.publish"),
+            command=self._episode_draft_publish_action,
+            state="disabled",
+        )
+        self._episode_draft_button.master.grid(row=8, column=0, pady=(8, 0))
+        self._episode_inspect_button = ttk.Button(
+            page,
+            text=_text_v1(key="episode_draft.inspect"),
+            command=self._episode_draft_inspect,
+            state="disabled",
+        )
+        self._episode_inspect_button.grid(row=8, column=1, pady=(8, 0))
+        self._episode_draft_status = tkinter.StringVar(
+            value=_text_v1(key="episode_draft.none")
+        )
+        ttk.Label(page, textvariable=self._episode_draft_status).grid(
+            row=9, column=0, columnspan=2, sticky="w"
+        )
 
     def _build_menu(self) -> None:
         menu = tkinter.Menu(self._root)
@@ -856,6 +879,10 @@ class _DesktopMainWindowV1:
     def bind_chief_editor_actions(self, *, save_callback, export_callback) -> None:
         self._bind("chief_editor_save", save_callback)
         self._bind("chief_editor_export", export_callback)
+
+    def bind_episode_draft_action(self, *, callback) -> None:
+        self._bind("episode_draft_publish", callback)
+        self._sync_episode_draft_actions()
 
     def _bind(self, name: str, callback: object) -> None:
         self._check()
@@ -1067,6 +1094,7 @@ class _DesktopMainWindowV1:
         available: tuple[tuple[str, str], ...],
         items: tuple[tuple[str, str, str, str], ...],
         status: str = "",
+        can_publish_episode_draft: bool = False,
     ) -> None:
         self._check()
         self._chief_title.set(title)
@@ -1083,6 +1111,31 @@ class _DesktopMainWindowV1:
         self._chief_status.set(
             status or (_text_v1(key="chief_editor.empty") if not items else "")
         )
+        self._episode_publish_available = can_publish_episode_draft
+        self._sync_episode_draft_actions()
+
+    def publish_episode_draft(
+        self,
+        *,
+        status: str,
+        current: bool,
+        revision_id: str,
+        parent_revision_id: str,
+        included: tuple[tuple[int, str, str], ...],
+        excluded: tuple[tuple[int, str, str], ...],
+        assembled_text: str,
+    ) -> None:
+        self._check()
+        self._episode_draft_status.set(status)
+        self._episode_draft_current = current
+        self._episode_draft_details = (
+            revision_id,
+            parent_revision_id,
+            included,
+            excluded,
+            assembled_text,
+        )
+        self._sync_episode_draft_actions()
 
     def _chief_editor_add(self) -> None:
         selected = self._chief_available.selection()
@@ -1140,6 +1193,73 @@ class _DesktopMainWindowV1:
     def _chief_editor_export_action(self) -> None:
         self._invoke("chief_editor_export", input=self._chief_editor_payload())
 
+    def _episode_draft_publish_action(self) -> None:
+        self._episode_draft_status.set("Publicare draft episod in curs...")
+        self._invoke("episode_draft_publish", input=self._chief_editor_payload())
+
+    def _sync_episode_draft_actions(self) -> None:
+        idle = getattr(self, "_editor_idle", True)
+        publish = (
+            idle
+            and self._episode_publish_available
+            and "episode_draft_publish" in self._bindings
+        )
+        self._episode_draft_button.configure(state="normal" if publish else "disabled")
+        self._episode_inspect_button.configure(
+            state="normal" if self._episode_draft_current else "disabled"
+        )
+
+    def _episode_draft_inspect(self) -> None:
+        if not self._episode_draft_current:
+            return
+        revision, parent, included, excluded, assembled = self._episode_draft_details
+        child = tkinter.Toplevel(self._root)
+        child.title(_text_v1(key="episode_draft.inspection"))
+        child.transient(self._root)
+        child.columnconfigure(0, weight=1)
+        child.rowconfigure(7, weight=1)
+        ttk.Label(
+            child,
+            text=f"{_text_v1(key='episode_draft.revision')}: {revision}",
+        ).grid(row=0, column=0, sticky="w", padx=8, pady=(8, 2))
+        ttk.Label(
+            child,
+            text=(f"{_text_v1(key='episode_draft.parent')}: {parent or '-'}"),
+        ).grid(row=1, column=0, sticky="w", padx=8, pady=2)
+        ttk.Label(child, text=_text_v1(key="episode_draft.included")).grid(
+            row=2, column=0, sticky="w", padx=8
+        )
+        included_view = ttk.Treeview(
+            child, columns=("story", "material"), show="headings", height=5
+        )
+        included_view.heading("story", text="Stire")
+        included_view.heading("material", text="Material sursa")
+        for event_id, title, material in included:
+            included_view.insert(
+                "", "end", iid=f"included:{event_id}", values=(title, material)
+            )
+        included_view.grid(row=3, column=0, sticky="ew", padx=8)
+        ttk.Label(child, text=_text_v1(key="episode_draft.excluded")).grid(
+            row=4, column=0, sticky="w", padx=8, pady=(6, 0)
+        )
+        excluded_view = ttk.Treeview(
+            child, columns=("story", "reason"), show="headings", height=3
+        )
+        excluded_view.heading("story", text="Stire")
+        excluded_view.heading("reason", text="Motiv")
+        for event_id, title, reason in excluded:
+            excluded_view.insert(
+                "", "end", iid=f"excluded:{event_id}", values=(title, reason)
+            )
+        excluded_view.grid(row=5, column=0, sticky="nsew", padx=8)
+        ttk.Label(child, text=_text_v1(key="episode_draft.preview")).grid(
+            row=6, column=0, sticky="w", padx=8, pady=(6, 0)
+        )
+        preview = tkinter.Text(child, height=10, wrap="word")
+        preview.insert("1.0", assembled)
+        preview.configure(state="disabled")
+        preview.grid(row=7, column=0, sticky="nsew", padx=8, pady=(0, 8))
+
     def _sync_handoff(self) -> None:
         count = len(self._candidates.selection())
         state = "normal" if "handoff" in self._bindings and count else "disabled"
@@ -1176,6 +1296,7 @@ class _DesktopMainWindowV1:
         )
         self._editor_idle = idle
         self._sync_editor_action()
+        self._sync_episode_draft_actions()
         if not idle:
             self._handoff_button.configure(state="disabled")
         else:
@@ -1187,6 +1308,8 @@ class _DesktopMainWindowV1:
             self._editor_retry_button.configure(state="disabled")
             self._handoff_button.configure(state="disabled")
             self._report_button.configure(state="disabled")
+            self._episode_draft_button.configure(state="disabled")
+            self._episode_inspect_button.configure(state="disabled")
 
     def _set_scout_progress_running(self) -> None:
         self._progress.stop()
