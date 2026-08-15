@@ -45,6 +45,15 @@ from pastila_scout.episode_draft_v1 import (
     EpisodeDraftRevisionRepositoryV1,
 )
 
+NORMAL_SCOUT_RESULT_LIMIT = 60
+_NORMAL_SCOUT_BASE_CATEGORY_CAPACITIES = (
+    ("Politica", 10),
+    ("CanCan", 5),
+    ("Social", 15),
+    ("Diverse", 15),
+    ("Externe", 10),
+)
+
 
 @dataclass(frozen=True, slots=True)
 class ScoutCandidateV1:
@@ -166,7 +175,7 @@ class ActiveProjectStoreV1:
         self.project_path = project_path
 
     def list_candidates(
-        self, *, limit: int = 50, category: str | None = None
+        self, *, limit: int = NORMAL_SCOUT_RESULT_LIMIT, category: str | None = None
     ) -> tuple[ScoutCandidateV1, ...]:
         if type(limit) is not int or limit <= 0:
             raise ValueError("Limita Scout invalida")
@@ -180,7 +189,7 @@ class ActiveProjectStoreV1:
                     connection, category=selected_category, limit=limit
                 )
             else:
-                effective_limit = min(limit, 50)
+                effective_limit = min(limit, NORMAL_SCOUT_RESULT_LIMIT)
                 protected = [
                     *_ranked_candidate_rows(connection, category="Politica", limit=10),
                     *_ranked_candidate_rows(connection, category="CanCan", limit=5),
@@ -188,9 +197,7 @@ class ActiveProjectStoreV1:
                 competitive = [
                     row
                     for candidate_category, capacity in (
-                        ("Social", 15),
-                        ("Diverse", 15),
-                        ("Externe", 10),
+                        _NORMAL_SCOUT_BASE_CATEGORY_CAPACITIES[2:]
                     )
                     for row in _ranked_candidate_rows(
                         connection, category=candidate_category, limit=capacity
@@ -198,7 +205,23 @@ class ActiveProjectStoreV1:
                 ]
                 _sort_candidate_rows(competitive)
                 rows = protected[:effective_limit]
-                rows.extend(competitive[: max(0, effective_limit - len(rows))])
+                rows.extend(competitive[: max(0, min(50, effective_limit) - len(rows))])
+                if effective_limit > 50:
+                    selected_ids = {int(row["id"]) for row in rows}
+                    extension = [
+                        row
+                        for candidate_category, capacity in (
+                            _NORMAL_SCOUT_BASE_CATEGORY_CAPACITIES[2:]
+                        )
+                        for row in _ranked_candidate_rows(
+                            connection,
+                            category=candidate_category,
+                            limit=capacity + 10,
+                        )
+                        if int(row["id"]) not in selected_ids
+                    ]
+                    _sort_candidate_rows(extension)
+                    rows.extend(extension[: effective_limit - len(rows)])
                 rows.sort(
                     key=lambda row: CATEGORY_ORDER.index(_category(row["category"]))
                 )
@@ -252,7 +275,7 @@ class ActiveProjectStoreV1:
         )
 
     def list_useful_candidates_v1_2(
-        self, *, limit: int = 50, category: str | None = None
+        self, *, limit: int = NORMAL_SCOUT_RESULT_LIMIT, category: str | None = None
     ) -> tuple[ScoutCandidateV1, ...]:
         """Return the explicit V1.2 human-browsable pool without filler padding.
 
@@ -267,34 +290,41 @@ class ActiveProjectStoreV1:
             return self.list_candidates(limit=limit, category=selected_category)
         if not self.database_path.is_file():
             return ()
-        effective_limit = min(limit, 50)
+        effective_limit = min(limit, NORMAL_SCOUT_RESULT_LIMIT)
         with sqlite3.connect(self.database_path) as connection:
             connection.row_factory = sqlite3.Row
             useful_by_category: dict[str, list[sqlite3.Row]] = {}
-            for candidate_category, capacity in (
-                ("Politica", 10),
-                ("CanCan", 5),
-                ("Social", 15),
-                ("Diverse", 15),
-                ("Externe", 10),
-            ):
+            for candidate_category, capacity in _NORMAL_SCOUT_BASE_CATEGORY_CAPACITIES:
                 scanned = _ranked_candidate_rows(
-                    connection, category=candidate_category, limit=capacity * 4
+                    connection, category=candidate_category, limit=(capacity + 10) * 4
                 )
                 useful_by_category[candidate_category] = [
                     row
                     for row in scanned
                     if pool_utility_v1_2(_editorial_candidate_v1_2(row)).useful
-                ][:capacity]
-        protected = [*useful_by_category["Politica"], *useful_by_category["CanCan"]]
+                ]
+        protected = [
+            *useful_by_category["Politica"][:10],
+            *useful_by_category["CanCan"][:5],
+        ]
         competitive = [
-            *useful_by_category["Social"],
-            *useful_by_category["Diverse"],
-            *useful_by_category["Externe"],
+            *useful_by_category["Social"][:15],
+            *useful_by_category["Diverse"][:15],
+            *useful_by_category["Externe"][:10],
         ]
         _sort_candidate_rows(competitive)
         rows = protected[:effective_limit]
-        rows.extend(competitive[: max(0, effective_limit - len(rows))])
+        rows.extend(competitive[: max(0, min(50, effective_limit) - len(rows))])
+        if effective_limit > 50:
+            selected_ids = {int(row["id"]) for row in rows}
+            extension = [
+                row
+                for candidate_category in ("Social", "Diverse", "Externe")
+                for row in useful_by_category[candidate_category]
+                if int(row["id"]) not in selected_ids
+            ]
+            _sort_candidate_rows(extension)
+            rows.extend(extension[: effective_limit - len(rows)])
         rows.sort(key=lambda row: CATEGORY_ORDER.index(_category(row["category"])))
         return tuple(_scout_candidate(row) for row in rows)
 

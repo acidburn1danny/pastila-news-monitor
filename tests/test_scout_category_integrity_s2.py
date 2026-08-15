@@ -6,7 +6,10 @@ from pathlib import Path
 
 import pytest
 
-from pastila_scout.active_project_v1 import ActiveProjectStoreV1
+from pastila_scout.active_project_v1 import (
+    NORMAL_SCOUT_RESULT_LIMIT,
+    ActiveProjectStoreV1,
+)
 from pastila_scout.category_integrity import (
     CATEGORY_ORDER,
     is_clearly_english_title,
@@ -1137,12 +1140,16 @@ def test_episode_equivalent_pool_prevents_starvation_and_respects_caps(
     candidates = store.list_candidates()
     counts = Counter(item.category for item in candidates)
 
-    assert len(candidates) == len({item.event_id for item in candidates}) == 50
+    assert (
+        len(candidates)
+        == len({item.event_id for item in candidates})
+        == NORMAL_SCOUT_RESULT_LIMIT
+    )
     assert counts["Politica"] == 10
     assert counts["CanCan"] == 5
     assert counts["Social"] <= 15
     assert counts["Diverse"] <= 15
-    assert counts["Externe"] <= 10
+    assert counts["Externe"] <= 20
     assert all(counts[category] for category in CATEGORY_ORDER)
     assert [item.category for item in candidates] == sorted(
         (item.category for item in candidates), key=CATEGORY_ORDER.index
@@ -1152,6 +1159,47 @@ def test_episode_equivalent_pool_prevents_starvation_and_respects_caps(
             item.source_count for item in candidates if item.category == category
         ]
         assert source_counts == sorted(source_counts, reverse=True)
+
+
+@pytest.mark.parametrize("limit", (49, 50, 51, 59, 60, 61))
+def test_normal_scout_projection_has_deterministic_sixty_event_boundary(
+    tmp_path: Path, limit: int
+) -> None:
+    database = tmp_path / f"pool-{limit}.db"
+    _episode_pool_database(database)
+    store = ActiveProjectStoreV1(
+        database_path=database, project_path=tmp_path / "project.json"
+    )
+
+    projected = store.list_candidates(limit=limit)
+    repeated = store.list_candidates(limit=limit)
+
+    assert len(projected) == min(limit, NORMAL_SCOUT_RESULT_LIMIT)
+    assert projected == repeated
+    assert len({item.event_id for item in projected}) == len(projected)
+    assert [item.category for item in projected] == sorted(
+        (item.category for item in projected), key=CATEGORY_ORDER.index
+    )
+
+
+def test_sixty_event_extension_preserves_the_established_first_fifty_projection(
+    tmp_path: Path,
+) -> None:
+    database = tmp_path / "pool-preservation.db"
+    _episode_pool_database(database)
+    store = ActiveProjectStoreV1(
+        database_path=database, project_path=tmp_path / "project.json"
+    )
+
+    established = store.list_candidates(limit=50)
+    expanded = store.list_candidates(limit=60)
+    established_ids = {item.event_id for item in established}
+
+    assert (
+        tuple(item for item in expanded if item.event_id in established_ids)
+        == established
+    )
+    assert len(expanded) - len(established) == 10
 
 
 def test_explicit_category_projection_is_not_limited_by_pool_allocation(
@@ -1164,7 +1212,7 @@ def test_explicit_category_projection_is_not_limited_by_pool_allocation(
     )
 
     expected = {
-        "Politica": 50,
+        "Politica": 60,
         "Social": 20,
         "CanCan": 8,
         "Diverse": 20,

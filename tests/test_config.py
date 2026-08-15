@@ -195,7 +195,7 @@ def test_rss_source_remains_valid_without_html_fields() -> None:
 def test_checked_in_config_contains_approved_operational_rss_source_set() -> None:
     config = load_config(Path("config/sources.yaml"))
 
-    assert len(config.sources) == 25
+    assert len(config.sources) == 38
     assert len({source.id for source in config.sources}) == len(config.sources)
     assert len({source.url for source in config.sources}) == len(config.sources)
     assert all(source.categories for source in config.sources)
@@ -214,6 +214,16 @@ def test_checked_in_config_contains_approved_operational_rss_source_set() -> Non
         "romaniatv",
         "cancan",
         "click",
+        "buletin_bucuresti",
+        "monitorul_cluj",
+        "pressalert",
+        "reporteris",
+        "bizbrasov",
+        "ctnews",
+        "info_sud_est",
+        "gds",
+        "oradea_indirect",
+        "turnul_sfatului",
         "bbc_world",
         "politico_europe",
         "guardian_world",
@@ -225,6 +235,9 @@ def test_checked_in_config_contains_approved_operational_rss_source_set() -> Non
         "ars_technica",
         "techcrunch",
         "e_news",
+        "nyt",
+        "independent",
+        "tmz",
     }
     assert all("example.com" not in source.url for source in config.sources)
     assert config.polling.max_article_age_hours == 168
@@ -248,8 +261,46 @@ def test_checked_in_config_contains_approved_operational_rss_source_set() -> Non
         "ars_technica",
         "techcrunch",
         "e_news",
+        "nyt",
+        "independent",
+        "tmz",
     }
     assert all(source.max_articles_per_poll == 50 for source in international.values())
+    assert {
+        source.id
+        for source in config.sources
+        if SourceCategory.EXTERNE not in source.categories
+    } == {
+        "digi24",
+        "hotnews",
+        "g4media",
+        "adevarul",
+        "libertatea",
+        "observatornews",
+        "antena3",
+        "rfi",
+        "recorder",
+        "economica",
+        "context",
+        "romaniatv",
+        "cancan",
+        "click",
+        "buletin_bucuresti",
+        "monitorul_cluj",
+        "pressalert",
+        "reporteris",
+        "bizbrasov",
+        "ctnews",
+        "info_sud_est",
+        "gds",
+        "oradea_indirect",
+        "turnul_sfatului",
+    }
+    assert all(
+        source.categories == (SourceCategory.EXTERNE,)
+        for source in config.sources
+        if source.id in {"nyt", "independent", "tmz"}
+    )
     assert all(source.enabled for source in config.sources)
     assert not any(source.disabled_reason for source in config.sources)
 

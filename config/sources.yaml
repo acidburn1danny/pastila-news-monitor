@@ -120,6 +120,97 @@ sources:
     source_category: [CanCan, Social, Diverse]
     max_articles_per_poll: 50
 
+  # Romania - Regional / Local
+  - id: buletin_bucuresti
+    name: Buletin de Bucuresti
+    adapter: rss
+    url: https://buletin.de/bucuresti/feed/
+    enabled: true
+    prioritate: 1
+    source_category: [Politica, Social, Diverse]
+    max_articles_per_poll: 50
+
+  - id: monitorul_cluj
+    name: Monitorul de Cluj
+    adapter: rss
+    url: https://www.monitorulcj.ro/rss/
+    enabled: true
+    prioritate: 1
+    source_category: [Politica, Social, Diverse]
+    max_articles_per_poll: 50
+
+  - id: pressalert
+    name: PRESSALERT.ro
+    adapter: rss
+    url: https://www.pressalert.ro/feed/
+    enabled: true
+    prioritate: 1
+    source_category: [Politica, Social, Diverse]
+    max_articles_per_poll: 50
+
+  - id: reporteris
+    name: ReporterIS
+    adapter: rss
+    url: https://reporteris.ro/feed/
+    enabled: true
+    prioritate: 1
+    source_category: [Politica, Social, Diverse]
+    max_articles_per_poll: 50
+
+  - id: bizbrasov
+    name: Biz Brasov
+    adapter: rss
+    url: https://bizbrasov.ro/feed/
+    enabled: true
+    prioritate: 1
+    source_category: [Politica, Social, Diverse]
+    max_articles_per_poll: 50
+
+  - id: ctnews
+    name: Constanta NEWS
+    adapter: rss
+    url: https://www.ctnews.ro/feed/
+    enabled: true
+    prioritate: 1
+    source_category: [Politica, Social, Diverse]
+    max_articles_per_poll: 50
+
+  - id: info_sud_est
+    name: Info Sud-Est
+    adapter: rss
+    url: https://www.info-sud-est.ro/feed/
+    enabled: true
+    prioritate: 1
+    source_category: [Politica, Social, Diverse]
+    max_articles_per_poll: 50
+
+  - id: gds
+    name: Gazeta de Sud
+    adapter: rss
+    url: https://www.gds.ro/feed/
+    enabled: true
+    prioritate: 1
+    source_category: [Politica, Social, Diverse]
+    max_articles_per_poll: 50
+
+  - id: oradea_indirect
+    name: Oradea in direct
+    adapter: rss
+    url: https://oradeaindirect.ro/feed/
+    enabled: true
+    prioritate: 1
+    source_category: [Politica, Social, Diverse]
+    max_articles_per_poll: 50
+
+  - id: turnul_sfatului
+    name: Turnul Sfatului
+    adapter: rss
+    url: https://www.turnulsfatului.ro/feed/
+    enabled: true
+    prioritate: 1
+    source_category: [Politica, Social, Diverse]
+    max_articles_per_poll: 50
+
   # International - Core
   - id: bbc_world
     name: BBC News World
@@ -219,4 +310,31 @@ sources:
     enabled: true
     prioritate: 1
     source_category: [Externe, CanCan]
+    max_articles_per_poll: 50
+
+  - id: nyt
+    name: The New York Times
+    adapter: rss
+    url: https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml
+    enabled: true
+    prioritate: 1
+    source_category: [Externe]
+    max_articles_per_poll: 50
+
+  - id: independent
+    name: The Independent
+    adapter: rss
+    url: https://www.independent.co.uk/rss
+    enabled: true
+    prioritate: 1
+    source_category: [Externe]
+    max_articles_per_poll: 50
+
+  - id: tmz
+    name: TMZ
+    adapter: rss
+    url: https://www.tmz.com/rss.xml
+    enabled: true
+    prioritate: 1
+    source_category: [Externe]
     max_articles_per_poll: 50

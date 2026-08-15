@@ -259,6 +259,7 @@ def test_failed_source_summary_uses_authoritative_collection_count(
         (1, "1 stire restaurata"),
         (2, "2 stiri restaurate"),
         (50, "50 stiri restaurate"),
+        (60, "60 stiri restaurate"),
     ),
 )
 def test_restored_news_summary_has_dynamic_romanian_number_agreement(count, expected):

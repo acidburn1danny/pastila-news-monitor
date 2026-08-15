@@ -200,14 +200,21 @@ def test_ranking_is_relevance_then_sources_then_recency_then_event_id(tmp_path):
     )
 
 
-def test_result_cap_is_ten_and_never_pads_sparse_results(tmp_path):
+@pytest.mark.parametrize(("available", "expected"), ((9, 9), (10, 10), (11, 10)))
+def test_result_cap_remains_ten_at_independent_boundaries(
+    tmp_path, available, expected
+):
     many = [
         _article(index, 100 + index, f"Donald Trump disaster Iran report {index}")
-        for index in range(1, 13)
+        for index in range(1, available + 1)
     ]
+
+    assert len(_project(tmp_path, "Donald Trump disaster Iran", many)) == expected
+
+
+def test_result_cap_never_pads_sparse_results(tmp_path):
     sparse = [_article(1, 201, "Donald Trump disaster Iran")]
 
-    assert len(_project(tmp_path / "many", "Donald Trump disaster Iran", many)) == 10
     assert _project(tmp_path / "sparse", "Donald Trump disaster Iran", sparse) == (201,)
 
 
