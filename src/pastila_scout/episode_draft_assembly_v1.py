@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import hashlib
 import json
+from dataclasses import asdict, is_dataclass
+from datetime import datetime
 from enum import StrEnum
 from pathlib import Path
 
@@ -56,6 +58,7 @@ class EpisodeDraftAssemblyInputV1(BaseModel):
     included_materials: tuple[EpisodeDraftIncludedMaterialV1, ...] = Field(min_length=5)
     excluded_failures: tuple[EpisodeDraftExcludedFailureV1, ...]
     scout_input_fingerprint: str = Field(min_length=1)
+    chief_editor_fingerprint: str = Field(pattern=r"^sha256:[0-9a-f]{64}$")
     preparation_fingerprint: str = Field(pattern=r"^sha256:[0-9a-f]{64}$")
 
     @model_validator(mode="after")
@@ -197,6 +200,13 @@ class EpisodeDraftAssemblyPreparerV1:
             "included_materials": tuple(included_lineage),
             "excluded_failures": tuple(excluded_evidence),
             "scout_input_fingerprint": project.scout_input.content_fingerprint,
+            "chief_editor_fingerprint": _fingerprint(
+                {
+                    "title": project.chief_editor_title,
+                    "updated_at": project.chief_editor_updated_at,
+                    "items": project.chief_editor_items,
+                }
+            ),
         }
         values["preparation_fingerprint"] = _fingerprint(values)
         prepared = EpisodeDraftAssemblyInputV1(**values)
@@ -212,9 +222,19 @@ def _fingerprint(value: object) -> str:
         allow_nan=False,
         separators=(",", ":"),
         sort_keys=True,
-        default=lambda item: item.model_dump(mode="json"),
+        default=_json_value,
     ).encode("utf-8")
     return "sha256:" + hashlib.sha256(payload).hexdigest()
+
+
+def _json_value(item):
+    if hasattr(item, "model_dump"):
+        return item.model_dump(mode="json")
+    if isinstance(item, datetime):
+        return item.isoformat()
+    if is_dataclass(item):
+        return asdict(item)
+    raise TypeError(f"unsupported fingerprint value: {type(item).__name__}")
 
 
 def _raise(code: EpisodeDraftAssemblyErrorCodeV1):
