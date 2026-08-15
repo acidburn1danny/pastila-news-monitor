@@ -712,6 +712,7 @@ class _DesktopMainWindowV1:
         )
         self._episode_publish_available = False
         self._episode_draft_current = False
+        self._episode_draft_export_running = False
         self._episode_draft_details = ("", "", (), (), "")
         self._episode_draft_button = _primary_action_button(
             page,
@@ -882,6 +883,16 @@ class _DesktopMainWindowV1:
 
     def bind_episode_draft_action(self, *, callback) -> None:
         self._bind("episode_draft_publish", callback)
+        self._sync_episode_draft_actions()
+
+    def bind_episode_draft_export_action(self, *, callback) -> None:
+        self._bind("episode_draft_export", callback)
+        self._sync_episode_draft_actions()
+
+    def publish_episode_draft_export_status(self, *, status: str) -> None:
+        self._check()
+        self._episode_draft_status.set(status)
+        self._episode_draft_export_running = False
         self._sync_episode_draft_actions()
 
     def _bind(self, name: str, callback: object) -> None:
@@ -1259,6 +1270,36 @@ class _DesktopMainWindowV1:
         preview.insert("1.0", assembled)
         preview.configure(state="disabled")
         preview.grid(row=7, column=0, sticky="nsew", padx=8, pady=(0, 8))
+        export_button = _primary_action_button(
+            child,
+            text=_text_v1(key="episode_draft.export"),
+            command=lambda: self._episode_draft_export_action(revision),
+            state=(
+                "normal"
+                if "episode_draft_export" in self._bindings
+                and not self._episode_draft_export_running
+                else "disabled"
+            ),
+        )
+        export_button.master.grid(row=8, column=0, pady=(0, 8))
+        ttk.Label(child, textvariable=self._episode_draft_status).grid(
+            row=9, column=0, sticky="w", padx=8, pady=(0, 8)
+        )
+
+    def _episode_draft_export_action(self, revision_id: str) -> None:
+        if self._episode_draft_export_running:
+            return
+        self._episode_draft_export_running = True
+        self._episode_draft_status.set("Export draft in curs...")
+        try:
+            self._invoke("episode_draft_export", input=revision_id)
+        finally:
+            if self._episode_draft_export_running:
+                self._episode_draft_status.set(
+                    "Draftul nu a putut fi exportat la destinatia aleasa."
+                )
+            self._episode_draft_export_running = False
+            self._sync_episode_draft_actions()
 
     def _sync_handoff(self) -> None:
         count = len(self._candidates.selection())

@@ -59,6 +59,10 @@ from .episode_draft import (
     _publish_episode_draft_v1,
     _recover_episode_draft_v1,
 )
+from .episode_draft_export import (
+    _episode_draft_default_filename_v1,
+    _export_current_episode_draft_v1,
+)
 from .errors import _DesktopShellConfigurationError, _DesktopShellExecutionError
 from .first_run import _complete_desktop_setup_v1, _inspect_desktop_readiness_v1
 from .integrated_editor import _integrated_editor_request_v1
@@ -386,6 +390,27 @@ def main() -> int:
                 revision_root=state.database_path.parent / "episode-drafts",
             )
 
+        def export_episode_draft(*, input) -> None:
+            del input
+            projection = _recover_episode_draft_v1(store=project_store)
+            if not projection.current:
+                view.publish_episode_draft_export_status(status=projection.status)
+                return
+            selected = filedialog.asksaveasfilename(
+                parent=root,
+                defaultextension=".md",
+                filetypes=(("Markdown", "*.md"),),
+                initialfile=_episode_draft_default_filename_v1(projection.revision_id),
+                confirmoverwrite=False,
+            )
+            if not selected:
+                view.publish_episode_draft_export_status(status="Export anulat.")
+                return
+            result = _export_current_episode_draft_v1(
+                store=project_store, destination=Path(selected)
+            )
+            view.publish_episode_draft_export_status(status=result.status)
+
         def save_scout_provider(*, input) -> None:
             settings = _save_scout_provider_settings(
                 path=state.settings_path,
@@ -443,6 +468,8 @@ def main() -> int:
         )
         if hasattr(view, "bind_episode_draft_action"):
             view.bind_episode_draft_action(callback=publish_episode_draft)
+        if hasattr(view, "bind_episode_draft_export_action"):
+            view.bind_episode_draft_export_action(callback=export_episode_draft)
         view.bind_scout_provider_actions(
             save_callback=save_scout_provider, test_callback=test_scout_provider
         )

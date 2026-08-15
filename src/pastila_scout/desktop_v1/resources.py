@@ -88,6 +88,7 @@ _TEXT_V1 = (
     ("chief_editor.saved", "Structura Chief Editor a fost salvata."),
     ("episode_draft.publish", "Creeaza draft episod"),
     ("episode_draft.inspect", "Inspecteaza draft"),
+    ("episode_draft.export", "Exporta draft"),
     ("episode_draft.none", "Nu exista un draft de episod publicat."),
     ("episode_draft.inspection", "Draft episod curent"),
     ("episode_draft.revision", "Revizie"),
