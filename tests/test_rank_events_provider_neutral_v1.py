@@ -16,7 +16,7 @@ from test_event_scoring import _decision, _event
 from pastila_scout.ai.cache import FileJSONCache
 from pastila_scout.ai.editorial_scoring import (
     EditorialEventScorer,
-    _provider_request,
+    build_editorial_scoring_task,
 )
 from pastila_scout.ai.provider import (
     ProviderError,
@@ -100,7 +100,7 @@ def _task() -> StructuredAIRequest:
             event, scoring, now=datetime(2026, 7, 26, 12, tzinfo=UTC)
         ),
     )
-    return _provider_request(request, scoring)
+    return build_editorial_scoring_task(request, scoring)
 
 
 @pytest.mark.parametrize("choice", tuple(ProviderChoiceV1))
