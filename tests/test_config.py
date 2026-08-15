@@ -195,7 +195,7 @@ def test_rss_source_remains_valid_without_html_fields() -> None:
 def test_checked_in_config_contains_approved_operational_rss_source_set() -> None:
     config = load_config(Path("config/sources.yaml"))
 
-    assert len(config.sources) == 38
+    assert len(config.sources) == 39
     assert len({source.id for source in config.sources}) == len(config.sources)
     assert len({source.url for source in config.sources}) == len(config.sources)
     assert all(source.categories for source in config.sources)
@@ -212,6 +212,7 @@ def test_checked_in_config_contains_approved_operational_rss_source_set() -> Non
         "economica",
         "context",
         "romaniatv",
+        "stirile_protv",
         "cancan",
         "click",
         "buletin_bucuresti",
@@ -283,6 +284,7 @@ def test_checked_in_config_contains_approved_operational_rss_source_set() -> Non
         "economica",
         "context",
         "romaniatv",
+        "stirile_protv",
         "cancan",
         "click",
         "buletin_bucuresti",
@@ -301,6 +303,18 @@ def test_checked_in_config_contains_approved_operational_rss_source_set() -> Non
         for source in config.sources
         if source.id in {"nyt", "independent", "tmz"}
     )
+    stirile_protv = next(
+        source for source in config.sources if source.id == "stirile_protv"
+    )
+    assert stirile_protv.name == "Stirile ProTV"
+    assert stirile_protv.url == "https://rss.stirileprotv.ro/"
+    assert stirile_protv.categories == (
+        SourceCategory.POLITICA,
+        SourceCategory.SOCIAL,
+        SourceCategory.CANCAN,
+        SourceCategory.DIVERSE,
+    )
+    assert SourceCategory.EXTERNE not in stirile_protv.categories
     assert all(source.enabled for source in config.sources)
     assert not any(source.disabled_reason for source in config.sources)
 

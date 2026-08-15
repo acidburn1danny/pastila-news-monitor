@@ -102,6 +102,15 @@ sources:
     source_category: [Politica, Social, CanCan, Diverse]
     max_articles_per_poll: 50
 
+  - id: stirile_protv
+    name: Stirile ProTV
+    adapter: rss
+    url: https://rss.stirileprotv.ro/
+    enabled: true
+    prioritate: 1
+    source_category: [Politica, Social, CanCan, Diverse]
+    max_articles_per_poll: 50
+
   - id: cancan
     name: CanCan.ro
     adapter: rss
