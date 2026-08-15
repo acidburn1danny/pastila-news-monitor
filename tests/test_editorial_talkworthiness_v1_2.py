@@ -4,6 +4,8 @@ import sqlite3
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
+import pytest
+
 from pastila_scout.active_project_v1 import ActiveProjectStoreV1
 from pastila_scout.database import initialize_database
 from pastila_scout.desktop_v1.entrypoint import _publish_candidates
@@ -264,6 +266,99 @@ def test_historical_style_leverage_families_and_holdout_remain_individual_eviden
         ).talkworthiness
         is TalkworthinessTierV1_2.NONE
     )
+
+
+@pytest.mark.parametrize(
+    ("family", "text", "expected"),
+    (
+        (
+            "accountability_system",
+            "Regia judeteana a acordat contracte fara licitatie, iar conducerea da explicatii.",
+            True,
+        ),
+        (
+            "accountability_system",
+            "Centrala electrica a rechemat pensionari ca sa reporneasca grupul 2.",
+            True,
+        ),
+        (
+            "accountability_system",
+            "Regia a publicat lista contractelor atribuite prin licitatie.",
+            False,
+        ),
+        (
+            "accountability_system",
+            "Pensionarii au vizitat centrala electrica la aniversare.",
+            False,
+        ),
+        (
+            "contradiction",
+            "Fabrica ofera salariu mare, transport si cazare, dar nu se inghesuie candidatii.",
+            True,
+        ),
+        (
+            "contradiction",
+            "Ministrul a anuntat interdictia, apoi a spus ca glumea.",
+            True,
+        ),
+        (
+            "contradiction",
+            "Fabrica ofera salarii bune si a angajat cincizeci de candidati.",
+            False,
+        ),
+        (
+            "contradiction",
+            "Un actor a glumit despre o interdictie imaginara.",
+            False,
+        ),
+        (
+            "unusual_pattern",
+            "La 72 de ani, candidatul a amanat ultima proba a examenului pentru sesiunea urmatoare.",
+            True,
+        ),
+        (
+            "unusual_pattern",
+            "Zidarii au descoperit un tezaur, dar proprietarul si recompensa sunt incerte.",
+            True,
+        ),
+        (
+            "unusual_pattern",
+            "La 72 de ani, absolventul a primit diploma dupa examen.",
+            False,
+        ),
+        (
+            "unusual_pattern",
+            "Muzeul a expus tezaurul al carui proprietar este cunoscut.",
+            False,
+        ),
+        (
+            "cultural_discourse",
+            "Curtea a anulat legea care limita platformele de socializare pentru adolescenti.",
+            True,
+        ),
+        (
+            "cultural_discourse",
+            "O profesoara a dezvaluit diagnosticul de ADHD si a explicat experienta public.",
+            True,
+        ),
+        (
+            "cultural_discourse",
+            "Parlamentul a adoptat legea raportarii fiscale online.",
+            False,
+        ),
+        (
+            "cultural_discourse",
+            "Actrita a dezvaluit ca s-a operat la genunchi.",
+            False,
+        ),
+    ),
+)
+def test_romanian_leverage_recognizers_generalize_without_single_word_triggers(
+    family, text, expected
+):
+    result = evaluation(candidate(100, text))
+
+    assert (getattr(result, family) > 0) is expected
 
 
 def test_continuity_requires_explicit_material_development():

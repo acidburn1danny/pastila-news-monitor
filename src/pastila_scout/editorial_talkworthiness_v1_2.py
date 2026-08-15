@@ -261,11 +261,20 @@ def _evaluate(candidate, bridge, continuity) -> EditorialEvidenceV1_2:
     strong_codes = {
         "preventable_system_failure",
         "institutional_accountability",
+        "opaque_public_contracting",
+        "critical_system_emergency_workaround",
         "explicit_two_sided_contradiction",
+        "high_benefit_low_uptake",
+        "official_claim_reversal",
         "prestige_immediate_failure",
+        "security_everyday_collision",
+        "age_context_mismatch",
+        "high_value_discovery_uncertain_ownership",
+        "heritage_emergency_relocation",
         "expanding_victim_pattern",
         "explicit_romanian_discussion_bridge",
         "meaningful_public_discourse",
+        "contested_youth_digital_policy",
         "explicit_material_development",
     }
     strengths = {
@@ -344,7 +353,7 @@ def _accountability(text: str) -> tuple[str, ...]:
         (
             "autoritat",
             "institut",
-            "minister",
+            "ministr",
             "mapn",
             "sistem",
             "spital",
@@ -368,6 +377,41 @@ def _accountability(text: str) -> tuple[str, ...]:
     responsibility = _has_stem(text, ("raspund", "responsab", "anchet")) or _has(
         text, ("explica", "a explicat", "cer explicatii", "sa explice")
     )
+    public_actor = actor or _has_stem(
+        text, ("regia", "regie", "companie public", "administratie public")
+    )
+    public_contract = _has_stem(text, ("contract", "achizit"))
+    opacity = _has(
+        text,
+        (
+            "fara publicare",
+            "fara licitatie",
+            "procedura netransparenta",
+            "proceduri netransparente",
+        ),
+    )
+    critical_system = _has_stem(
+        text,
+        (
+            "centrala electr",
+            "centrala nuclear",
+            "reactor",
+            "grup energetic",
+            "grupul energetic",
+            "retea electr",
+            "sistem energetic",
+        ),
+    ) or bool(re.search(r"(?<!\w)grupul?\s+\d+(?!\w)", text))
+    recalled_experts = _has_stem(text, ("pensionar", "specialist")) and _has_stem(
+        text, ("chemat", "rechemat", "reven", "reporn")
+    )
+    physical_workaround = _has_stem(text, ("scufund", "barj")) and _has_stem(
+        text, ("mentin", "evit", "function", "opr")
+    )
+    if public_actor and public_contract and opacity:
+        return ("opaque_public_contracting",)
+    if critical_system and (recalled_experts or physical_workaround):
+        return ("critical_system_emergency_workaround",)
     if actor and failure:
         return ("preventable_system_failure",)
     if actor and responsibility:
@@ -376,6 +420,31 @@ def _accountability(text: str) -> tuple[str, ...]:
 
 
 def _contradiction(text: str) -> tuple[str, ...]:
+    material_benefit = _has_stem(
+        text,
+        ("salari", "bonus", "cazare", "transport plat", "masa", "prime"),
+    )
+    low_uptake = _has(
+        text,
+        (
+            "nimeni nu vrea",
+            "nimeni nu mai vrea",
+            "nu se inghesuie",
+            "nu-l vrea nimeni",
+            "nu o vrea nimeni",
+        ),
+    ) or (
+        _has_stem(text, ("numarul", "candidat", "angajat"))
+        and _has_stem(text, ("scade", "putin", "lips"))
+    )
+    official_claim = _has_stem(
+        text, ("presedinte", "premier", "ministr", "autoritat")
+    ) and _has_stem(text, ("declar", "anunt", "sustin"))
+    reversal = _has_stem(text, ("glum", "retract", "revenit asupra", "a negat apoi"))
+    if material_benefit and low_uptake:
+        return ("high_benefit_low_uptake",)
+    if official_claim and reversal:
+        return ("official_claim_reversal",)
     direct_inversion = _has(text, ("dar in realitate", "in loc sa"))
     two_sided_marker = _has(text, ("desi", "in timp ce"))
     mismatched_outcome = _has_stem(
@@ -434,6 +503,42 @@ def _comic_roast(text: str) -> tuple[str, ...]:
 
 
 def _unusual_pattern(text: str) -> tuple[str, ...]:
+    security_object = _has_stem(text, ("drona", "racheta", "munitie"))
+    everyday_place = _has_stem(
+        text, ("plaja", "turist", "scoala", "loc de joaca", "piata")
+    )
+    public_disruption = _has_stem(text, ("evacuat", "inchis", "izolat", "alert"))
+    advanced_age = bool(
+        re.search(r"(?<!\d)(?:6[5-9]|[7-9]\d|1\d{2})\s+(?:de\s+)?ani(?!\w)", text)
+    )
+    examination = _has_stem(text, ("examen", "bacalaureat", "proba", "permis"))
+    delayed_step = _has_stem(
+        text, ("anul viitor", "aman", "pregat", "mai tarziu", "urmatoarea sesiune")
+    )
+    valuable_find = _has_stem(text, ("gasit", "descoper")) and _has_stem(
+        text, ("aur", "lingou", "comoara", "tezaur")
+    )
+    ownership_question = _has_stem(
+        text, ("recompens", "proprietar", "apartine", "revendic")
+    )
+    heritage_remains = _has_stem(
+        text, ("ramasite", "oseminte", "mormant", "sarcofag")
+    ) and _has_stem(text, ("regi", "domnitor", "istoric", "medieval"))
+    emergency_move = _has_stem(
+        text, ("evacuat", "mutat", "relocat", "salvat")
+    ) and _has_stem(text, ("incend", "inund", "cutremur", "prabus"))
+    celestial_event = _has_stem(text, ("eclips", "luna plina", "mercur retrograd"))
+    personal_effect = _has_stem(text, ("afectat", "provocat", "influentat"))
+    if security_object and everyday_place and public_disruption:
+        return ("security_everyday_collision",)
+    if advanced_age and examination and delayed_step:
+        return ("age_context_mismatch",)
+    if valuable_find and ownership_question:
+        return ("high_value_discovery_uncertain_ownership",)
+    if heritage_remains and emergency_move:
+        return ("heritage_emergency_relocation",)
+    if celestial_event and personal_effect:
+        return ("celestial_personal_causation",)
     unusual_method = _has_stem(text, ("otrav", "metoda neobisn", "mecanism rar"))
     multiple = _has_stem(text, ("doi", "doua", "mai multi", "multiple")) and _has_stem(
         text, ("victim", "barbat", "femei", "oameni")
@@ -454,6 +559,29 @@ def _unusual_pattern(text: str) -> tuple[str, ...]:
 
 
 def _cultural_discourse(text: str) -> tuple[str, ...]:
+    youth = _has_stem(text, ("minor", "copil", "adolescent", "sub 15 ani"))
+    digital_medium = (
+        _has_stem(text, ("retea", "retel", "platform"))
+        and _has_stem(text, ("socializare",))
+    ) or _has(text, ("social media",))
+    digital_policy = digital_medium and _has_stem(
+        text, ("lege", "interzic", "reglement", "limit")
+    )
+    contested = _has_stem(text, ("respins", "anulat", "neconstitutional", "contestat"))
+    neurodiversity = _has_stem(text, ("autism", "adhd", "tourette"))
+    public_disclosure = _has_stem(
+        text, ("diagnostic", "dezvaluit", "vorbit", "explica")
+    )
+    regional_infrastructure = _has_stem(
+        text, ("autostrada", "coridor", "cale ferata", "interconect")
+    ) and _has_stem(text, ("transfrontalier", "regional", "romania"))
+    connection = _has_stem(text, ("conect", "lega", "construct", "traseu"))
+    if youth and digital_policy and contested:
+        return ("contested_youth_digital_policy",)
+    if neurodiversity and public_disclosure:
+        return ("public_neurodiversity_disclosure",)
+    if regional_infrastructure and connection:
+        return ("cross_border_infrastructure_discussion",)
     topic = _has_stem(
         text, ("dezinform", "propaganda", "controvers", "dezbatere", "reactii online")
     )
