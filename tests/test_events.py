@@ -2,6 +2,8 @@ import sqlite3
 from datetime import UTC, datetime
 from pathlib import Path
 
+import pytest
+
 from pastila_scout.cli import main
 from pastila_scout.database import (
     attach_article_to_event,
@@ -13,6 +15,7 @@ from pastila_scout.database import (
     insert_article,
     load_reconciliation_snapshot,
     open_database,
+    refresh_event_canonical_metadata,
     upsert_source,
 )
 from pastila_scout.event_matcher import match_event, title_similarity
@@ -96,6 +99,74 @@ def test_event_creation_attachment_and_distinct_source_counts(tmp_path: Path) ->
             "G4Media",
             "HotNews",
         ]
+
+
+def test_scalar_category_mirror_is_idempotent_and_repairs_missing_row(
+    tmp_path: Path,
+) -> None:
+    with open_database(tmp_path / "category-mirror.db") as connection:
+        initialize_database(connection)
+        _source(connection, "social", "Social", categories=("Social",))
+        article_id = _article(connection, "social", "one")
+        event_id = create_event(
+            connection,
+            article_id=article_id,
+            canonical_title="Railway theft at Sadu",
+            normalized_title="railway theft at sadu",
+            category="Social",
+        )
+
+        refresh_event_canonical_metadata(connection, event_id)
+        assert [
+            tuple(row)
+            for row in connection.execute(
+                "SELECT category, position FROM event_categories WHERE event_id = ?",
+                (event_id,),
+            )
+        ] == [("Social", 0)]
+
+        connection.execute(
+            "DELETE FROM event_categories WHERE event_id = ?", (event_id,)
+        )
+        refresh_event_canonical_metadata(connection, event_id)
+        assert [
+            tuple(row)
+            for row in connection.execute(
+                "SELECT category, position FROM event_categories WHERE event_id = ?",
+                (event_id,),
+            )
+        ] == [("Social", 0)]
+
+
+def test_category_mirror_failure_rolls_back_event_creation(tmp_path: Path) -> None:
+    with open_database(tmp_path / "category-atomicity.db") as connection:
+        initialize_database(connection)
+        _source(connection, "social", "Social", categories=("Social",))
+        article_id = _article(connection, "social", "one")
+        connection.execute(
+            """CREATE TRIGGER reject_category_mirror
+               BEFORE INSERT ON event_categories
+               BEGIN SELECT RAISE(ABORT, 'injected category mirror failure'); END"""
+        )
+
+        with pytest.raises(
+            sqlite3.IntegrityError, match="injected category mirror failure"
+        ):
+            create_event(
+                connection,
+                article_id=article_id,
+                canonical_title="Railway theft at Sadu",
+                normalized_title="railway theft at sadu",
+                category="Social",
+            )
+
+        assert connection.execute("SELECT COUNT(*) FROM events").fetchone()[0] == 0
+        assert (
+            connection.execute(
+                "SELECT event_id FROM articles WHERE id = ?", (article_id,)
+            ).fetchone()[0]
+            is None
+        )
 
 
 def test_reconciliation_uses_stored_metadata_for_removed_source(

@@ -673,7 +673,7 @@ def refresh_event_canonical_metadata(
     ).fetchone()
     if event_row is None:
         raise ValueError(f"Event {event_id} does not exist")
-    existing_categories = tuple(
+    persisted_categories = tuple(
         str(row["category"])
         for row in connection.execute(
             """SELECT category FROM event_categories
@@ -681,6 +681,7 @@ def refresh_event_canonical_metadata(
             (event_id,),
         )
     )
+    existing_categories = persisted_categories
     if not existing_categories and event_row["category"]:
         existing_categories = (str(event_row["category"]),)
     metadata = source_metadata or {}
@@ -766,7 +767,7 @@ def refresh_event_canonical_metadata(
                canonical_selection_reason = ?, updated_at = ? WHERE id = ?""",
             (*desired, utc_now(), event_id),
         )
-    if existing_categories != snapshot.categories:
+    if persisted_categories != snapshot.categories:
         connection.execute(
             "DELETE FROM event_categories WHERE event_id = ?", (event_id,)
         )

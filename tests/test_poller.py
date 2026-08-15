@@ -906,6 +906,40 @@ def test_category_filtering_and_zero_match_run(
     assert no_match.category == "Conspiratii"
 
 
+def test_category_filtered_poll_persists_single_category_mirror(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    config = write_config(
+        tmp_path / "sources.yaml",
+        """  - id: news
+    name: Social
+    type: rss
+    url: https://example.com/social
+    enabled: true
+    categories: [Social]
+""",
+    )
+    install_client(monkeypatch, {})
+    now = datetime(2026, 8, 14, 23, 28, 40, tzinfo=UTC)
+    monkeypatch.setattr(
+        "pastila_scout.poller.get_adapter",
+        lambda source_type: CandidateAdapter([candidate("social-story", now)]),
+    )
+    database = tmp_path / "social.db"
+
+    result = poll_once(config, database, category="Social", now=now)
+
+    assert result.articles_inserted == 1
+    with open_database(database) as connection:
+        event = connection.execute("SELECT id, category FROM events").fetchone()
+        categories = connection.execute(
+            "SELECT category, position FROM event_categories WHERE event_id = ?",
+            (event["id"],),
+        ).fetchall()
+    assert event["category"] == "Social"
+    assert [tuple(row) for row in categories] == [("Social", 0)]
+
+
 @pytest.mark.parametrize(
     ("category", "expected_ids"),
     [
