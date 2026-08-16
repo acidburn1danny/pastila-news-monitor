@@ -115,6 +115,7 @@ class StoryGenerationContext(FrozenModel):
     editorial_plan: dict[str, Any]
     conversation_plan: dict[str, Any]
     voice_plan: dict[str, Any]
+    optional_editorial_toolkit: dict[str, Any] = Field(default_factory=dict)
     word_budget: int = Field(gt=0)
     runtime_budget: int = Field(gt=0)
     protected_targets: tuple[str, ...]

@@ -49,6 +49,10 @@ from pastila_scout.editor.generation.validation import (
     validate_story,
     validate_transition,
 )
+from pastila_scout.expression_retrieval_v1.editor_adapter import (
+    build_story_voice_palette_for_editor_v1,
+    serialize_story_voice_palette_v1,
+)
 
 
 class ControlledGenerationError(RuntimeError):
@@ -452,6 +456,12 @@ class ControlledGenerator:
 
 
 def _story_context(event, position, editorial, commentary, voice):
+    palette = build_story_voice_palette_for_editor_v1(
+        event=event,
+        episode_position=position,
+        commentary=commentary,
+        voice=voice,
+    )
     facts = (
         ApprovedFact(
             fact_id=f"event-{event.event_id}-title",
@@ -485,6 +495,7 @@ def _story_context(event, position, editorial, commentary, voice):
             "intent_id": f"voice:{event.event_id}",
             **voice.model_dump(mode="json"),
         },
+        optional_editorial_toolkit=serialize_story_voice_palette_v1(palette),
         word_budget=max(80, int(getattr(event, "final_score", 50) * 3)),
         runtime_budget=120,
         protected_targets=tuple(item.value for item in commentary.protected_targets),
