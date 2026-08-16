@@ -1,0 +1,3751 @@
+{
+  "corpus_schema_version": 1,
+  "editorial_calibration_version": 1,
+  "device_catalog_version": 1,
+  "bundle_version": 1,
+  "generated_from_manifest_sha256": "7f8afc480a99ac43de80cdda6cd779d10b7b6cef9acbd7d8e77db30ce44a3dfe",
+  "source_authority_ids": [
+    "frozen-prior-reviewed-authority",
+    "modern-street-v1:0221ebcccfebf67b5ba2",
+    "modern-street-v1:029fcf352aa2c735098c",
+    "modern-street-v1:0b53bcc3a1c5c70eea5a",
+    "modern-street-v1:132fed3ef1ea941f0ddf",
+    "modern-street-v1:13e48e2f4ca4055db642",
+    "modern-street-v1:14012cd1b375ede06f63",
+    "modern-street-v1:1d481cba663145789d81",
+    "modern-street-v1:1dc6d662ac7d2d083803",
+    "modern-street-v1:1dd1b76807205b989a5f",
+    "modern-street-v1:20a2d0068129a6209272",
+    "modern-street-v1:2efa6b74aa4cd521fffa",
+    "modern-street-v1:37de36ebac7404112efd",
+    "modern-street-v1:387cff167794e69ec409",
+    "modern-street-v1:3bb2441d7c04229878e1",
+    "modern-street-v1:3c72d419af19e7522721",
+    "modern-street-v1:3de2e251abe395786022",
+    "modern-street-v1:40dcb0d8750696704e26",
+    "modern-street-v1:4b249d64d0f826695cb2",
+    "modern-street-v1:4e8e5b942393680e3d9f",
+    "modern-street-v1:58016788ed686da84809",
+    "modern-street-v1:5888317dec90c9d7cb64",
+    "modern-street-v1:5fd4abc4babfd74f60a0",
+    "modern-street-v1:60035501feffe814952a",
+    "modern-street-v1:63693b3ef1aa910c3a20",
+    "modern-street-v1:666041d5c00d1cf9d4c7",
+    "modern-street-v1:690e031f390ff7d34017",
+    "modern-street-v1:6d0fd2b791c8c7877850",
+    "modern-street-v1:707321436c2906c53453",
+    "modern-street-v1:74a1b8f981cb31109093",
+    "modern-street-v1:808df9c2f99d0370909a",
+    "modern-street-v1:8520a90f69ec721103cb",
+    "modern-street-v1:8d3aff69a506cd98ebc4",
+    "modern-street-v1:a1c5c1fe31144d1e364a",
+    "modern-street-v1:a5631fdf9953d869d7b8",
+    "modern-street-v1:b3bbddd0865e2b16da83",
+    "modern-street-v1:b408e94ddd29c60d2b50",
+    "modern-street-v1:b70a1b0bf2ccfebc7a9d",
+    "modern-street-v1:bcb29f7eb5b9ad6b546a",
+    "modern-street-v1:c518ff195aac1e005ae6",
+    "modern-street-v1:dca54ce2f135e3f9e6d5",
+    "modern-street-v1:dfa486005e3285bb49df",
+    "modern-street-v1:dfb881abf9d45adb5fbf",
+    "modern-street-v1:f1c67176c87fac4d0e61",
+    "modern-street-v1:f3dd8a7ae40e184e37d1",
+    "modern-street-v1:f8d45d620d3886675735",
+    "modern-street-v1:f98e134a16e3917d0675",
+    "modern371-review-row:52",
+    "modern371-review-row:54",
+    "modern371-review-row:57",
+    "ro-expression-v1:fd75f40659d177a3a038"
+  ],
+  "expressions": [
+    {
+      "expression_id": "ro-expression-v1:7a7cb37228c5608408c6",
+      "text": "A ajunge cuțitul la os",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "A ajunge într-o situație critică, în care nu mai poate amâna o reacție.",
+      "semantic_families": [
+        "limită critică"
+      ],
+      "keywords": [
+        "ajunge",
+        "amâna",
+        "care",
+        "critică",
+        "cuțitul",
+        "mai",
+        "poate",
+        "reacție",
+        "situație",
+        "într-o"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 2,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:746823d11b1460dac265",
+      "text": "A bate apa-n piuă",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "A repeta inutil același lucru, fără rezultat sau progres.",
+      "semantic_families": [
+        "repetiție fără progres"
+      ],
+      "keywords": [
+        "același",
+        "apa-n",
+        "bate",
+        "fără",
+        "inutil",
+        "lucru",
+        "piuă",
+        "progres",
+        "repeta",
+        "rezultat",
+        "sau"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 5,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:5d8d914aa7485bd00357",
+      "text": "A băga mâna în foc",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "A garanta cu deplină convingere pentru cineva sau ceva.",
+      "semantic_families": [
+        "garanție riscantă"
+      ],
+      "keywords": [
+        "băga",
+        "ceva",
+        "cineva",
+        "convingere",
+        "deplină",
+        "foc",
+        "garanta",
+        "mâna",
+        "pentru",
+        "sau"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 2,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:a128853989c1ea8dbc10",
+      "text": "A călca pe bec",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "A face o greșeală ori a încălca o regulă și a suporta consecințele.",
+      "semantic_families": [
+        "încălcarea regulilor"
+      ],
+      "keywords": [
+        "bec",
+        "consecințele",
+        "călca",
+        "face",
+        "greșeală",
+        "ori",
+        "regulă",
+        "suporta",
+        "încălca"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 0,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:291dc70a3335d6c5a326",
+      "text": "A da apă la moară",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "A alimenta sau a încuraja o situație, un argument ori un comportament.",
+      "semantic_families": [
+        "contextual_traditional"
+      ],
+      "keywords": [
+        "alimenta",
+        "apă",
+        "argument",
+        "comportament",
+        "moară",
+        "ori",
+        "sau",
+        "situație",
+        "încuraja"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 0,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:9061edfa9121f3caa7c6",
+      "text": "A despica firul în patru",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "A analiza exagerat de minuțios un lucru simplu.",
+      "semantic_families": [
+        "analiză excesivă"
+      ],
+      "keywords": [
+        "analiza",
+        "despica",
+        "exagerat",
+        "firul",
+        "lucru",
+        "minuțios",
+        "patru",
+        "simplu"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 2,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:2096b05354ae43cfdb3d",
+      "text": "A duce cu preșul",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "A păcăli sau a manipula pe cineva prin promisiuni și explicații înșelătoare.",
+      "semantic_families": [
+        "păcălire"
+      ],
+      "keywords": [
+        "cineva",
+        "duce",
+        "explicații",
+        "manipula",
+        "preșul",
+        "prin",
+        "promisiuni",
+        "păcăli",
+        "sau",
+        "înșelătoare"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 0,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:499847b2e206c615cb3f",
+      "text": "A fi prins cu mâța-n sac",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "A fi surprins în timp ce ascunde o faptă sau o intenție necinstită.",
+      "semantic_families": [
+        "demascare"
+      ],
+      "keywords": [
+        "ascunde",
+        "faptă",
+        "intenție",
+        "mâța-n",
+        "necinstită",
+        "prins",
+        "sac",
+        "sau",
+        "surprins",
+        "timp"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 5,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:54fd265c035e484f1d1f",
+      "text": "A freca menta",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "A pierde vremea fără să facă ceva util.",
+      "semantic_families": [
+        "inactivitate"
+      ],
+      "keywords": [
+        "ceva",
+        "facă",
+        "freca",
+        "fără",
+        "menta",
+        "pierde",
+        "util",
+        "vremea"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 0,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:ee71f9fb9de0fe424b4c",
+      "text": "A ieși basma curată",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "A scăpa fără consecințe dintr-o situație în care exista răspundere.",
+      "semantic_families": [
+        "evitarea răspunderii"
+      ],
+      "keywords": [
+        "basma",
+        "care",
+        "consecințe",
+        "curată",
+        "dintr-o",
+        "exista",
+        "fără",
+        "ieși",
+        "răspundere",
+        "scăpa",
+        "situație"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 2,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:1068794b4bf34c8914dc",
+      "text": "A o face de oaie",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "A greși într-un mod evident, stânjenitor sau ridicol.",
+      "semantic_families": [
+        "eșec ridicol"
+      ],
+      "keywords": [
+        "evident",
+        "face",
+        "greși",
+        "mod",
+        "oaie",
+        "ridicol",
+        "sau",
+        "stânjenitor",
+        "într-un"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 0,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:8f0a99de5e7619725b47",
+      "text": "A se ascunde după deget",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "A încerca să ascundă ori să nege ceva evident.",
+      "semantic_families": [
+        "contextual_traditional"
+      ],
+      "keywords": [
+        "ascunde",
+        "ascundă",
+        "ceva",
+        "deget",
+        "după",
+        "evident",
+        "nege",
+        "ori",
+        "încerca"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 0,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:a9e17c99f111b2f1dd08",
+      "text": "A se sparge în figuri",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "A se da în spectacol sau a poza ostentativ pentru a impresiona.",
+      "semantic_families": [
+        "contextual_traditional"
+      ],
+      "keywords": [
+        "figuri",
+        "impresiona",
+        "ostentativ",
+        "pentru",
+        "poza",
+        "sau",
+        "sparge",
+        "spectacol"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 0,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:84d5810d1ddaebc3712e",
+      "text": "A spăla putina",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "A pleca repede, de obicei pentru a evita o situație neplăcută.",
+      "semantic_families": [
+        "contextual_traditional"
+      ],
+      "keywords": [
+        "evita",
+        "neplăcută",
+        "obicei",
+        "pentru",
+        "pleca",
+        "putina",
+        "repede",
+        "situație",
+        "spăla"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 0,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:8877636a65a41d36f468",
+      "text": "A veni pe nepusă masă",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "A apărea pe neașteptate și fără să fi fost invitat sau anunțat.",
+      "semantic_families": [
+        "contextual_traditional"
+      ],
+      "keywords": [
+        "anunțat",
+        "apărea",
+        "fost",
+        "fără",
+        "invitat",
+        "masă",
+        "neașteptate",
+        "nepusă",
+        "sau",
+        "veni"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 0,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:b207eac504d2d90fe1a2",
+      "text": "A-i pica fisa",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "A înțelege brusc sau a realiza, în sfârșit, ceva.",
+      "semantic_families": [
+        "contextual_traditional"
+      ],
+      "keywords": [
+        "a-i",
+        "brusc",
+        "ceva",
+        "fisa",
+        "pica",
+        "realiza",
+        "sau",
+        "sfârșit",
+        "înțelege"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 0,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:2ae8cdb574c10fbc2328",
+      "text": "A-l scoate din pepeni",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "A enerva puternic pe cineva.",
+      "semantic_families": [
+        "enervare"
+      ],
+      "keywords": [
+        "a-l",
+        "cineva",
+        "din",
+        "enerva",
+        "pepeni",
+        "puternic",
+        "scoate"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 0,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:0e6562965022d3dd391f",
+      "text": "I-a sărit muștarul",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "A se enerva brusc și a izbucni.",
+      "semantic_families": [
+        "izbucnire"
+      ],
+      "keywords": [
+        "brusc",
+        "enerva",
+        "i-a",
+        "izbucni",
+        "muștarul",
+        "sărit"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 0,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:2369af056b072cd06fce",
+      "text": "A ajunge la sapă de lemn",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "A sărăci complet sau a ajunge într-o situație materială foarte grea.",
+      "semantic_families": [
+        "contextual_traditional"
+      ],
+      "keywords": [
+        "ajunge",
+        "complet",
+        "foarte",
+        "grea",
+        "lemn",
+        "materială",
+        "sapă",
+        "sau",
+        "situație",
+        "sărăci",
+        "într-o"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 5,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:ec97974e0b719f4937e9",
+      "text": "A avea o piatră pe inimă",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "A purta o grijă apăsătoare sau o neliniște sufletească.",
+      "semantic_families": [
+        "contextual_traditional"
+      ],
+      "keywords": [
+        "apăsătoare",
+        "avea",
+        "grijă",
+        "inimă",
+        "neliniște",
+        "piatră",
+        "purta",
+        "sau",
+        "sufletească"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 5,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:65f9b0c32e8e886b8d0f",
+      "text": "A da cu oiștea-n gard",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "A face o gafă mare sau a acționa nepotrivit.",
+      "semantic_families": [
+        "gafă"
+      ],
+      "keywords": [
+        "acționa",
+        "face",
+        "gafă",
+        "gard",
+        "mare",
+        "nepotrivit",
+        "oiștea-n",
+        "sau"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 5,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:a7a17ad39c142ab438fc",
+      "text": "A face cu ou și cu oțet",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "A certa sau a critica foarte aspru pe cineva.",
+      "semantic_families": [
+        "contextual_traditional"
+      ],
+      "keywords": [
+        "aspru",
+        "certa",
+        "cineva",
+        "critica",
+        "face",
+        "foarte",
+        "oțet",
+        "sau"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 5,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:fd75f40659d177a3a038",
+      "text": "A face haz de necaz",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "A răspunde unei situații grele prin umor.",
+      "semantic_families": [
+        "umor defensiv"
+      ],
+      "keywords": [
+        "face",
+        "grele",
+        "haz",
+        "necaz",
+        "prin",
+        "răspunde",
+        "situații",
+        "umor",
+        "unei"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 5,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:2aaa6fa3011f6a2ea8f0",
+      "text": "A pune batista pe țambal",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "A mușamaliza un subiect sau a opri discutarea lui.",
+      "semantic_families": [
+        "mușamalizare"
+      ],
+      "keywords": [
+        "batista",
+        "discutarea",
+        "lui",
+        "mușamaliza",
+        "opri",
+        "pune",
+        "sau",
+        "subiect",
+        "țambal"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 5,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:b0a0a8d4b652a2f82b4e",
+      "text": "A pune cu botul pe labe",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "A tempera, a disciplina sau a obliga pe cineva să renunțe la atitudinea sa.",
+      "semantic_families": [
+        "disciplinare"
+      ],
+      "keywords": [
+        "atitudinea",
+        "botul",
+        "cineva",
+        "disciplina",
+        "labe",
+        "obliga",
+        "pune",
+        "renunțe",
+        "sa",
+        "sau",
+        "tempera"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 5,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:34d94191a3c600bc4f26",
+      "text": "A se duce pe Apa Sâmbetei",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "A se pierde, a se risipi ori a fi compromis fără folos.",
+      "semantic_families": [
+        "pierdere"
+      ],
+      "keywords": [
+        "apa",
+        "compromis",
+        "duce",
+        "folos",
+        "fără",
+        "ori",
+        "pierde",
+        "risipi",
+        "sâmbetei"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 5,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:3df48761977436d385be",
+      "text": "A se lupta cu morile de vânt",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "A lupta zadarnic împotriva unor obstacole imaginare sau imposibil de învins.",
+      "semantic_families": [
+        "luptă zadarnică"
+      ],
+      "keywords": [
+        "imaginare",
+        "imposibil",
+        "lupta",
+        "morile",
+        "obstacole",
+        "sau",
+        "unor",
+        "vânt",
+        "zadarnic",
+        "împotriva",
+        "învins"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 5,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:91c74f03aee271316fb2",
+      "text": "A se uita ca vițelul la poarta nouă",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "A privi complet nedumerit, fără să înțeleagă ce se întâmplă.",
+      "semantic_families": [
+        "nedumerire"
+      ],
+      "keywords": [
+        "complet",
+        "fără",
+        "nedumerit",
+        "nouă",
+        "poarta",
+        "privi",
+        "uita",
+        "vițelul",
+        "întâmplă",
+        "înțeleagă"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 5,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:3a82fd45455563aedb33",
+      "text": "A sta de șase",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "A supraveghea și a avertiza asupra unui pericol sau a unei apariții.",
+      "semantic_families": [
+        "pază"
+      ],
+      "keywords": [
+        "apariții",
+        "asupra",
+        "avertiza",
+        "pericol",
+        "sau",
+        "sta",
+        "supraveghea",
+        "unei",
+        "unui",
+        "șase"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 2,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:cb128a3e07f2dbd87808",
+      "text": "A umbla cu cioara vopsită",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "A încerca să prezinte drept autentic ceva fals sau deghizat.",
+      "semantic_families": [
+        "înșelătorie"
+      ],
+      "keywords": [
+        "autentic",
+        "ceva",
+        "cioara",
+        "deghizat",
+        "drept",
+        "fals",
+        "prezinte",
+        "sau",
+        "umbla",
+        "vopsită",
+        "încerca"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 5,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:bec7ace8b2861e0dd12a",
+      "text": "A umbla teleleu",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "A umbla fără rost, de colo-colo, pierzând vremea.",
+      "semantic_families": [
+        "contextual_traditional"
+      ],
+      "keywords": [
+        "colo-colo",
+        "fără",
+        "pierzând",
+        "rost",
+        "teleleu",
+        "umbla",
+        "vremea"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 2,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:e9c624855a4d33760669",
+      "text": "A vinde pielea ursului din pădure",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "A conta dinainte pe un câștig încă nesigur.",
+      "semantic_families": [
+        "prematuritate"
+      ],
+      "keywords": [
+        "conta",
+        "câștig",
+        "din",
+        "dinainte",
+        "nesigur",
+        "pielea",
+        "pădure",
+        "ursului",
+        "vinde",
+        "încă"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 5,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:8d0bd9f296916f0e0c60",
+      "text": "A-i face capul calendar",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "A obosi sau a zăpăci pe cineva prin prea multe vorbe și insistențe.",
+      "semantic_families": [
+        "contextual_traditional"
+      ],
+      "keywords": [
+        "a-i",
+        "calendar",
+        "capul",
+        "cineva",
+        "face",
+        "insistențe",
+        "multe",
+        "obosi",
+        "prea",
+        "prin",
+        "sau",
+        "vorbe",
+        "zăpăci"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 5,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:612da0a95c5ff2c2cd03",
+      "text": "A-și lua nasul la purtare",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "A deveni obraznic, arogant sau prea îndrăzneț.",
+      "semantic_families": [
+        "contextual_traditional"
+      ],
+      "keywords": [
+        "a-și",
+        "arogant",
+        "deveni",
+        "lua",
+        "nasul",
+        "obraznic",
+        "prea",
+        "purtare",
+        "sau",
+        "îndrăzneț"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 5,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:741a112a615fd83b70c7",
+      "text": "A-și pune cenușă pe cap",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "A-și recunoaște public greșeala și a manifesta regret.",
+      "semantic_families": [
+        "regret public"
+      ],
+      "keywords": [
+        "a-și",
+        "cap",
+        "cenușă",
+        "greșeala",
+        "manifesta",
+        "public",
+        "pune",
+        "recunoaște",
+        "regret"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 5,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:0370b1335db3e38710f8",
+      "text": "A lua boii de la bicicletă",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "A rămâne fără mijloace, argumente sau posibilitatea de a continua.",
+      "semantic_families": [
+        "contextual_traditional"
+      ],
+      "keywords": [
+        "argumente",
+        "bicicletă",
+        "boii",
+        "continua",
+        "fără",
+        "lua",
+        "mijloace",
+        "posibilitatea",
+        "rămâne",
+        "sau"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 2,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:2e5417acdb78ee504d4b",
+      "text": "A aduce apă după ce s-a stins focul",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "A interveni prea târziu, după ce problema sau paguba s-a produs.",
+      "semantic_families": [
+        "contextual_traditional"
+      ],
+      "keywords": [
+        "aduce",
+        "apă",
+        "după",
+        "focul",
+        "interveni",
+        "paguba",
+        "prea",
+        "problema",
+        "produs",
+        "s-a",
+        "sau",
+        "stins",
+        "târziu"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 2,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:aeac40b9e45c91f11486",
+      "text": "Mare ți-e grădina, Doamne",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "Exclamație ironică despre absurditatea sau varietatea comportamentului omenesc.",
+      "semantic_families": [
+        "contextual_traditional"
+      ],
+      "keywords": [
+        "absurditatea",
+        "comportamentului",
+        "despre",
+        "doamne",
+        "exclamație",
+        "grădina",
+        "ironică",
+        "mare",
+        "omenesc",
+        "sau",
+        "varietatea",
+        "ți-e"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 5,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:b7ee55696e3b4a82d547",
+      "text": "Las-o jos, că măcăie",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "A respinge o afirmație evident falsă ori o încercare stângace de păcălire.",
+      "semantic_families": [
+        "contextual_traditional"
+      ],
+      "keywords": [
+        "afirmație",
+        "evident",
+        "falsă",
+        "jos",
+        "las-o",
+        "măcăie",
+        "ori",
+        "păcălire",
+        "respinge",
+        "stângace",
+        "încercare"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 5,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:ca5290ee745cf4640e80",
+      "text": "Ne furăm căciula unul altuia",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "A ne înșela reciproc sau a ne sabota unii pe alții.",
+      "semantic_families": [
+        "contextual_traditional"
+      ],
+      "keywords": [
+        "altuia",
+        "alții",
+        "căciula",
+        "furăm",
+        "reciproc",
+        "sabota",
+        "sau",
+        "unii",
+        "unul",
+        "înșela"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 2,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:11169a512ab3ad9b642e",
+      "text": "L-a făcut ca pe dracu’",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "A certa, a umili sau a critica foarte aspru pe cineva.",
+      "semantic_families": [
+        "traditional_contextual"
+      ],
+      "keywords": [
+        "aspru",
+        "certa",
+        "cineva",
+        "critica",
+        "dracu’",
+        "foarte",
+        "făcut",
+        "l-a",
+        "sau",
+        "umili"
+      ],
+      "risk_tags": [
+        "historical_only_unverified_modernity",
+        "meaning_requires_human_review",
+        "earthy"
+      ],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 5,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:2dfa34d4d6ce82dd732e",
+      "text": "A da cu mucii în fasole",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "A face o gafă evidentă și stânjenitoare.",
+      "semantic_families": [
+        "gafă evidentă"
+      ],
+      "keywords": [
+        "evidentă",
+        "face",
+        "fasole",
+        "gafă",
+        "mucii",
+        "stânjenitoare"
+      ],
+      "risk_tags": [
+        "human_review_required",
+        "vulgar_or_sensitive"
+      ],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 5,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:95298ef76a0c9c015529",
+      "text": "Fuge ca dracul de tămîie",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "A evita cu hotărâre pe cineva sau ceva.",
+      "semantic_families": [
+        "traditional_contextual"
+      ],
+      "keywords": [
+        "ceva",
+        "cineva",
+        "dracul",
+        "evita",
+        "fuge",
+        "hotărâre",
+        "sau",
+        "tămîie"
+      ],
+      "risk_tags": [
+        "historical_only_unverified_modernity",
+        "meaning_requires_human_review",
+        "earthy"
+      ],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 2,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:993a3b3354ec1705d963",
+      "text": "Nici dracului nu-i da în gînd să o facă asta",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "A descrie o faptă atât de absurdă încât nici nu ar fi putut fi imaginată.",
+      "semantic_families": [
+        "traditional_contextual"
+      ],
+      "keywords": [
+        "absurdă",
+        "asta",
+        "atât",
+        "descrie",
+        "dracului",
+        "facă",
+        "faptă",
+        "gînd",
+        "imaginată",
+        "nici",
+        "nu-i",
+        "putut",
+        "încât"
+      ],
+      "risk_tags": [
+        "historical_only_unverified_modernity",
+        "meaning_requires_human_review",
+        "vulgar_contextual"
+      ],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 5,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:9994516730134f5ebf52",
+      "text": "A face din rahat bici",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "A obține un rezultat valoros din mijloace foarte slabe sau improprii.",
+      "semantic_families": [
+        "contextual_traditional"
+      ],
+      "keywords": [
+        "bici",
+        "din",
+        "face",
+        "foarte",
+        "improprii",
+        "mijloace",
+        "obține",
+        "rahat",
+        "rezultat",
+        "sau",
+        "slabe",
+        "valoros"
+      ],
+      "risk_tags": [
+        "human_review_required",
+        "vulgar_or_sensitive"
+      ],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 5,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:d23eba4746088e96408d",
+      "text": "A avea ac de cojocul cuiva",
+      "owner_class": "SPECIAL_USE",
+      "semantic_gloss": "A avea mijlocul potrivit pentru a-i răspunde sau a-i veni de hac cuiva.",
+      "semantic_families": [
+        "contextual_traditional"
+      ],
+      "keywords": [
+        "a-i",
+        "avea",
+        "cojocul",
+        "cuiva",
+        "hac",
+        "mijlocul",
+        "pentru",
+        "potrivit",
+        "răspunde",
+        "sau",
+        "veni"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 5,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:ac8522d12c251fe3cdfa",
+      "text": "A bate șaua ca să priceapă iapa",
+      "owner_class": "SPECIAL_USE",
+      "semantic_gloss": "A transmite indirect un reproș sau un mesaj celui vizat.",
+      "semantic_families": [
+        "contextual_traditional"
+      ],
+      "keywords": [
+        "bate",
+        "celui",
+        "iapa",
+        "indirect",
+        "mesaj",
+        "priceapă",
+        "reproș",
+        "sau",
+        "transmite",
+        "vizat",
+        "șaua"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 5,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:323ac3602aa13e71e940",
+      "text": "A da colțul",
+      "owner_class": "SPECIAL_USE",
+      "semantic_gloss": "A muri; formulare familiară și abruptă.",
+      "semantic_families": [
+        "contextual_traditional"
+      ],
+      "keywords": [
+        "abruptă",
+        "colțul",
+        "familiară",
+        "formulare",
+        "muri"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 5,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:b2f7d709d9790414ef0d",
+      "text": "A da la rațe",
+      "owner_class": "SPECIAL_USE",
+      "semantic_gloss": "A vomita; formulare familiară.",
+      "semantic_families": [
+        "contextual_traditional"
+      ],
+      "keywords": [
+        "familiară",
+        "formulare",
+        "rațe",
+        "vomita"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 5,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:e42cd4b8a0a128c6d018",
+      "text": "A face felul cuiva",
+      "owner_class": "SPECIAL_USE",
+      "semantic_gloss": "A pedepsi, a învinge ori a înlătura pe cineva, după context.",
+      "semantic_families": [
+        "contextual_traditional"
+      ],
+      "keywords": [
+        "cineva",
+        "context",
+        "cuiva",
+        "după",
+        "face",
+        "felul",
+        "ori",
+        "pedepsi",
+        "înlătura",
+        "învinge"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 5,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:2b65e40f861c797989a7",
+      "text": "A o întoarce ca la Ploiești",
+      "owner_class": "SPECIAL_USE",
+      "semantic_gloss": "A schimba brusc versiunea, sensul ori poziția într-un mod derutant.",
+      "semantic_families": [
+        "contextual_traditional"
+      ],
+      "keywords": [
+        "brusc",
+        "derutant",
+        "mod",
+        "ori",
+        "ploiești",
+        "poziția",
+        "schimba",
+        "sensul",
+        "versiunea",
+        "întoarce",
+        "într-un"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 5,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:41136a4e8443b1239535",
+      "text": "A vinde castraveți grădinarului",
+      "owner_class": "SPECIAL_USE",
+      "semantic_gloss": "A încerca să învețe sau să păcălească pe cineva care cunoaște deja foarte bine subiectul.",
+      "semantic_families": [
+        "înșelarea cunoscătorului"
+      ],
+      "keywords": [
+        "bine",
+        "care",
+        "castraveți",
+        "cineva",
+        "cunoaște",
+        "deja",
+        "foarte",
+        "grădinarului",
+        "păcălească",
+        "sau",
+        "subiectul",
+        "vinde",
+        "încerca",
+        "învețe"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 5,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:75e058ed370d2a57d828",
+      "text": "A-i lipsi o doagă",
+      "owner_class": "SPECIAL_USE",
+      "semantic_gloss": "A se comporta irațional sau a părea lipsit de judecată.",
+      "semantic_families": [
+        "contextual_traditional"
+      ],
+      "keywords": [
+        "a-i",
+        "comporta",
+        "doagă",
+        "irațional",
+        "judecată",
+        "lipsi",
+        "lipsit",
+        "părea",
+        "sau"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 5,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:8c165e82d1f7002717ed",
+      "text": "Calul de dar nu se caută la dinți",
+      "owner_class": "SPECIAL_USE",
+      "semantic_gloss": "A nu critica un dar sau un avantaj primit gratuit.",
+      "semantic_families": [
+        "cadou și oportunism"
+      ],
+      "keywords": [
+        "avantaj",
+        "calul",
+        "caută",
+        "critica",
+        "dar",
+        "dinți",
+        "gratuit",
+        "primit",
+        "sau"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 5,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:3d2245f7a88aeab17d0c",
+      "text": "A râde pe sub mustață",
+      "owner_class": "SPECIAL_USE",
+      "semantic_gloss": "A râde discret și cu satisfacție ascunsă.",
+      "semantic_families": [
+        "contextual_traditional"
+      ],
+      "keywords": [
+        "ascunsă",
+        "discret",
+        "mustață",
+        "râde",
+        "satisfacție",
+        "sub"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 5,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:b37979ce96f5d03deda3",
+      "text": "A se termina în coadă de pește",
+      "owner_class": "SPECIAL_USE",
+      "semantic_gloss": "A rămâne fără o încheiere clară sau fără rezultat.",
+      "semantic_families": [
+        "contextual_traditional"
+      ],
+      "keywords": [
+        "clară",
+        "coadă",
+        "fără",
+        "pește",
+        "rezultat",
+        "rămâne",
+        "sau",
+        "termina",
+        "încheiere"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 5,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:5776aafb838dfc69111f",
+      "text": "A trece ca gâsca prin apă",
+      "owner_class": "SPECIAL_USE",
+      "semantic_gloss": "A trece printr-o experiență fără să învețe sau să rețină nimic.",
+      "semantic_families": [
+        "contextual_traditional"
+      ],
+      "keywords": [
+        "apă",
+        "experiență",
+        "fără",
+        "gâsca",
+        "nimic",
+        "prin",
+        "printr-o",
+        "rețină",
+        "sau",
+        "trece",
+        "învețe"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 10,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:6265b5bcf2f7a41cf9cc",
+      "text": "Cine se aseamănă se adună",
+      "owner_class": "SPECIAL_USE",
+      "semantic_gloss": "Oamenii cu trăsături sau interese asemănătoare tind să se asocieze.",
+      "semantic_families": [
+        "asociere între asemănători"
+      ],
+      "keywords": [
+        "adună",
+        "aseamănă",
+        "asemănătoare",
+        "asocieze",
+        "cine",
+        "interese",
+        "oamenii",
+        "sau",
+        "tind",
+        "trăsături"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 10,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:3b342d8ccaa830375ca3",
+      "text": "Cum îți vei așterne, așa vei dormi",
+      "owner_class": "SPECIAL_USE",
+      "semantic_gloss": "Consecințele depind de propriile alegeri și acțiuni.",
+      "semantic_families": [
+        "contextual_traditional"
+      ],
+      "keywords": [
+        "acțiuni",
+        "alegeri",
+        "așa",
+        "așterne",
+        "consecințele",
+        "cum",
+        "depind",
+        "dormi",
+        "propriile",
+        "vei",
+        "îți"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 10,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:a932575dfe8f1ed9134b",
+      "text": "La pomul lăudat să nu te duci cu sacul",
+      "owner_class": "SPECIAL_USE",
+      "semantic_gloss": "Așteptările create de laude exagerate duc adesea la dezamăgire.",
+      "semantic_families": [
+        "așteptări exagerate"
+      ],
+      "keywords": [
+        "adesea",
+        "așteptările",
+        "create",
+        "dezamăgire",
+        "duc",
+        "duci",
+        "exagerate",
+        "laude",
+        "lăudat",
+        "pomul",
+        "sacul"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 10,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:f18039d1d7fe253d2d5f",
+      "text": "Minciuna are picioare scurte",
+      "owner_class": "SPECIAL_USE",
+      "semantic_gloss": "O minciună este descoperită, de regulă, în cele din urmă.",
+      "semantic_families": [
+        "adevăr care iese la iveală"
+      ],
+      "keywords": [
+        "are",
+        "cele",
+        "descoperită",
+        "din",
+        "este",
+        "minciuna",
+        "minciună",
+        "picioare",
+        "regulă",
+        "scurte",
+        "urmă"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 10,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:f81d682283f914be3847",
+      "text": "N-aduce anul ce aduce ceasul",
+      "owner_class": "SPECIAL_USE",
+      "semantic_gloss": "Un moment poate aduce schimbări mai mari decât o perioadă îndelungată.",
+      "semantic_families": [
+        "contextual_traditional"
+      ],
+      "keywords": [
+        "aduce",
+        "anul",
+        "ceasul",
+        "decât",
+        "mai",
+        "mari",
+        "moment",
+        "n-aduce",
+        "perioadă",
+        "poate",
+        "schimbări",
+        "îndelungată"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 10,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:7ad0710287d639d1402e",
+      "text": "Pisica blândă zgârie rău",
+      "owner_class": "SPECIAL_USE",
+      "semantic_gloss": "O aparență blândă poate ascunde un caracter agresiv sau periculos.",
+      "semantic_families": [
+        "contextual_traditional"
+      ],
+      "keywords": [
+        "agresiv",
+        "aparență",
+        "ascunde",
+        "blândă",
+        "caracter",
+        "periculos",
+        "pisica",
+        "poate",
+        "rău",
+        "sau",
+        "zgârie"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 10,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:e183fce71813ecf9d7f6",
+      "text": "Prietenul la nevoie se cunoaște",
+      "owner_class": "SPECIAL_USE",
+      "semantic_gloss": "Loialitatea unui prieten se dovedește în situații dificile.",
+      "semantic_families": [
+        "contextual_traditional"
+      ],
+      "keywords": [
+        "cunoaște",
+        "dificile",
+        "dovedește",
+        "loialitatea",
+        "nevoie",
+        "prieten",
+        "prietenul",
+        "situații",
+        "unui"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 10,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:dcc5f5d3641876cb4079",
+      "text": "Ziua bună dimineața se cunoaște",
+      "owner_class": "SPECIAL_USE",
+      "semantic_gloss": "Calitatea sau evoluția unui lucru poate fi intuită de la început.",
+      "semantic_families": [
+        "semn timpuriu"
+      ],
+      "keywords": [
+        "bună",
+        "calitatea",
+        "cunoaște",
+        "dimineața",
+        "evoluția",
+        "intuită",
+        "lucru",
+        "poate",
+        "sau",
+        "unui",
+        "ziua",
+        "început"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 10,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:299cb94f2960a13b35d1",
+      "text": "Obrazul subțire cu mare cheltuială se ține",
+      "owner_class": "SPECIAL_USE",
+      "semantic_gloss": "Un statut rafinat sau pretențios presupune cheltuieli mari.",
+      "semantic_families": [
+        "contextual_traditional"
+      ],
+      "keywords": [
+        "cheltuială",
+        "cheltuieli",
+        "mare",
+        "mari",
+        "obrazul",
+        "presupune",
+        "pretențios",
+        "rafinat",
+        "sau",
+        "statut",
+        "subțire",
+        "ține"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 10,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:63934f4901bcbe0b280a",
+      "text": "La omul sărac, nici boii nu trag",
+      "owner_class": "SPECIAL_USE",
+      "semantic_gloss": "Necazurile tind să se adune tocmai asupra celui deja lipsit de resurse.",
+      "semantic_families": [
+        "contextual_traditional"
+      ],
+      "keywords": [
+        "adune",
+        "asupra",
+        "boii",
+        "celui",
+        "deja",
+        "lipsit",
+        "necazurile",
+        "nici",
+        "omul",
+        "resurse",
+        "sărac",
+        "tind",
+        "tocmai",
+        "trag"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 10,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:74233ceb050c177d0760",
+      "text": "A da ortul popii",
+      "owner_class": "SPECIAL_USE",
+      "semantic_gloss": "A muri; formulare familiară și ironică.",
+      "semantic_families": [
+        "contextual_traditional"
+      ],
+      "keywords": [
+        "familiară",
+        "formulare",
+        "ironică",
+        "muri",
+        "ortul",
+        "popii"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 5,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:d11446dbe214a9eb9b60",
+      "text": "Brânză bună în burduf de câine",
+      "owner_class": "SPECIAL_USE",
+      "semantic_gloss": "O calitate reală este compromisă de forma, mediul sau prezentarea nepotrivită.",
+      "semantic_families": [
+        "contextual_traditional"
+      ],
+      "keywords": [
+        "brânză",
+        "bună",
+        "burduf",
+        "calitate",
+        "compromisă",
+        "câine",
+        "este",
+        "forma",
+        "mediul",
+        "nepotrivită",
+        "prezentarea",
+        "reală",
+        "sau"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 5,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:11282597cf0c34ec7824",
+      "text": "Umblă pe unde a-nțărcat dracii copiii",
+      "owner_class": "SPECIAL_USE",
+      "semantic_gloss": "A umbla într-un loc foarte îndepărtat, izolat sau greu accesibil.",
+      "semantic_families": [
+        "traditional_contextual"
+      ],
+      "keywords": [
+        "a-nțărcat",
+        "accesibil",
+        "copiii",
+        "dracii",
+        "foarte",
+        "greu",
+        "izolat",
+        "loc",
+        "sau",
+        "umbla",
+        "umblă",
+        "unde",
+        "îndepărtat",
+        "într-un"
+      ],
+      "risk_tags": [
+        "historical_only_unverified_modernity",
+        "meaning_requires_human_review",
+        "earthy"
+      ],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 10,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:31b52a8d00d83b20aea1",
+      "text": "Unul și-altul tot un drac Amîndoi un ban nu fac",
+      "owner_class": "SPECIAL_USE",
+      "semantic_gloss": "Două persoane sunt la fel de rele sau de lipsite de valoare.",
+      "semantic_families": [
+        "traditional_contextual"
+      ],
+      "keywords": [
+        "amîndoi",
+        "ban",
+        "două",
+        "drac",
+        "fac",
+        "fel",
+        "lipsite",
+        "persoane",
+        "rele",
+        "sau",
+        "sunt",
+        "tot",
+        "unul",
+        "valoare",
+        "și-altul"
+      ],
+      "risk_tags": [
+        "historical_only_unverified_modernity",
+        "meaning_requires_human_review",
+        "earthy"
+      ],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 5,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:66d1d78d40e64ed231e6",
+      "text": "Cu o vorbă bună și pe dracu’ îmblînzești",
+      "owner_class": "SPECIAL_USE",
+      "semantic_gloss": "Bunăvoința și vorba calmă pot îmblânzi chiar și un adversar dificil.",
+      "semantic_families": [
+        "traditional_contextual"
+      ],
+      "keywords": [
+        "adversar",
+        "bună",
+        "bunăvoința",
+        "calmă",
+        "chiar",
+        "dificil",
+        "dracu’",
+        "pot",
+        "vorba",
+        "vorbă",
+        "îmblânzi",
+        "îmblînzești"
+      ],
+      "risk_tags": [
+        "historical_only_unverified_modernity",
+        "meaning_requires_human_review",
+        "earthy"
+      ],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 10,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:b1baae8e467fc5e3bf7f",
+      "text": "A dat peste dracu’",
+      "owner_class": "SPECIAL_USE",
+      "semantic_gloss": "A ajunge într-o situație foarte grea sau în fața unei persoane redutabile.",
+      "semantic_families": [
+        "traditional_contextual"
+      ],
+      "keywords": [
+        "ajunge",
+        "dat",
+        "dracu’",
+        "fața",
+        "foarte",
+        "grea",
+        "persoane",
+        "peste",
+        "redutabile",
+        "sau",
+        "situație",
+        "unei",
+        "într-o"
+      ],
+      "risk_tags": [
+        "historical_only_unverified_modernity",
+        "meaning_requires_human_review",
+        "earthy"
+      ],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 5,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:badb86181a38c5a5eac4",
+      "text": "Banul e ochiul dracului",
+      "owner_class": "SPECIAL_USE",
+      "semantic_gloss": "Banii pot corupe, ispiti sau provoca rău.",
+      "semantic_families": [
+        "traditional_contextual"
+      ],
+      "keywords": [
+        "banii",
+        "banul",
+        "corupe",
+        "dracului",
+        "ispiti",
+        "ochiul",
+        "pot",
+        "provoca",
+        "rău",
+        "sau"
+      ],
+      "risk_tags": [
+        "historical_only_unverified_modernity",
+        "meaning_requires_human_review",
+        "vulgar_contextual"
+      ],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 10,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:cfd807f99cc538ad2e49",
+      "text": "A scăpa de un drac și a da într-un lac",
+      "owner_class": "SPECIAL_USE",
+      "semantic_gloss": "A ieși dintr-un necaz și a intra imediat în altul.",
+      "semantic_families": [
+        "traditional_contextual"
+      ],
+      "keywords": [
+        "altul",
+        "dintr-un",
+        "drac",
+        "ieși",
+        "imediat",
+        "intra",
+        "lac",
+        "necaz",
+        "scăpa",
+        "într-un"
+      ],
+      "risk_tags": [
+        "historical_only_unverified_modernity",
+        "meaning_requires_human_review",
+        "earthy"
+      ],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 5,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:e92eb3b6813d55e1227a",
+      "text": "Fă-te frate cu dracul Pînă treci cu el lacul",
+      "owner_class": "SPECIAL_USE",
+      "semantic_gloss": "A accepta temporar o alianță neplăcută pentru a depăși un obstacol.",
+      "semantic_families": [
+        "traditional_contextual"
+      ],
+      "keywords": [
+        "accepta",
+        "alianță",
+        "depăși",
+        "dracul",
+        "frate",
+        "fă-te",
+        "lacul",
+        "neplăcută",
+        "obstacol",
+        "pentru",
+        "pînă",
+        "temporar",
+        "treci"
+      ],
+      "risk_tags": [
+        "historical_only_unverified_modernity",
+        "meaning_requires_human_review",
+        "earthy"
+      ],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 10,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:eb6f13dbf0a9062d1603",
+      "text": "Se uită la el ca dracu’ la popa",
+      "owner_class": "SPECIAL_USE",
+      "semantic_gloss": "A privi pe cineva cu ostilitate, teamă sau profundă neîncredere.",
+      "semantic_families": [
+        "traditional_contextual"
+      ],
+      "keywords": [
+        "cineva",
+        "dracu’",
+        "neîncredere",
+        "ostilitate",
+        "popa",
+        "privi",
+        "profundă",
+        "sau",
+        "teamă",
+        "uită"
+      ],
+      "risk_tags": [
+        "historical_only_unverified_modernity",
+        "meaning_requires_human_review",
+        "earthy"
+      ],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 5,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:757c3d391d6f850a15fb",
+      "text": "a da peste nas",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "A pune pe cineva la punct sau a-i tempera aroganța.",
+      "semantic_families": [
+        "humiliation_insult"
+      ],
+      "keywords": [
+        "a-i",
+        "aroganța",
+        "cineva",
+        "nas",
+        "peste",
+        "punct",
+        "pune",
+        "sau",
+        "tempera"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 1,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:1fa26a04b2b591e7fa90",
+      "text": "a unge la suflet",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "A produce o satisfacție emoțională puternică.",
+      "semantic_families": [
+        "miscellaneous_candidate"
+      ],
+      "keywords": [
+        "emoțională",
+        "produce",
+        "puternică",
+        "satisfacție",
+        "suflet",
+        "unge"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 1,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:a6fe1e11a0b58b2852be",
+      "text": "absolut cinema",
+      "owner_class": "SPECIAL_MEME",
+      "semantic_gloss": "Etichetă-memă pentru o situație spectaculoasă ca un film.",
+      "semantic_families": [
+        "cultural_meme"
+      ],
+      "keywords": [
+        "absolut",
+        "cinema",
+        "etichetă-memă",
+        "film",
+        "pentru",
+        "situație",
+        "spectaculoasă"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": true,
+      "max_per_episode": 1,
+      "cooldown_episodes": 1,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:3309114af87d84110faa",
+      "text": "aiurea",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "Evaluare familiară pentru ceva absurd, nepotrivit sau fără sens.",
+      "semantic_families": [
+        "disbelief_reaction"
+      ],
+      "keywords": [
+        "absurd",
+        "aiurea",
+        "ceva",
+        "evaluare",
+        "familiară",
+        "fără",
+        "nepotrivit",
+        "pentru",
+        "sau",
+        "sens"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 1,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:2dec009d84be310b6018",
+      "text": "belea",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "Situație intensă, spectaculoasă sau dificilă, evaluată familiar.",
+      "semantic_families": [
+        "evaluation_praise"
+      ],
+      "keywords": [
+        "belea",
+        "dificilă",
+        "evaluată",
+        "familiar",
+        "intensă",
+        "sau",
+        "situație",
+        "spectaculoasă"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 1,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:8d52fc2af6fc701d3123",
+      "text": "bombă",
+      "owner_class": "SPECIAL_USE",
+      "semantic_gloss": "Ceva spectaculos sau cu efect puternic.",
+      "semantic_families": [
+        "evaluation_praise"
+      ],
+      "keywords": [
+        "bombă",
+        "ceva",
+        "efect",
+        "puternic",
+        "sau",
+        "spectaculos"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 1,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:f4188829286b65102a85",
+      "text": "bătut în cap",
+      "owner_class": "SPECIAL_USE",
+      "semantic_gloss": "Insultă pentru lipsă evidentă de judecată.",
+      "semantic_families": [
+        "humiliation_insult"
+      ],
+      "keywords": [
+        "bătut",
+        "cap",
+        "evidentă",
+        "insultă",
+        "judecată",
+        "lipsă",
+        "pentru"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 1,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:844dedd262d2b832d6ee",
+      "text": "cec în alb",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "Acord nelimitat ori promisiune fără condiții.",
+      "semantic_families": [
+        "money_status"
+      ],
+      "keywords": [
+        "acord",
+        "alb",
+        "cec",
+        "condiții",
+        "fără",
+        "nelimitat",
+        "ori",
+        "promisiune"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 1,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:217bf65abc9265d87e80",
+      "text": "ciordeală",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "Furt sau manevră necinstită, exprimată colocvial.",
+      "semantic_families": [
+        "corruption_politics"
+      ],
+      "keywords": [
+        "ciordeală",
+        "colocvial",
+        "exprimată",
+        "furt",
+        "manevră",
+        "necinstită",
+        "sau"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 1,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:0c404c5c4391940f3592",
+      "text": "ditamai",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "Marcator familiar pentru dimensiune sau intensitate neobișnuită.",
+      "semantic_families": [
+        "miscellaneous_candidate"
+      ],
+      "keywords": [
+        "dimensiune",
+        "ditamai",
+        "familiar",
+        "intensitate",
+        "marcator",
+        "neobișnuită",
+        "pentru",
+        "sau"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 1,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:f1f212ff3af55366e517",
+      "text": "duș rece",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "Experiență care corectează brusc așteptările.",
+      "semantic_families": [
+        "disbelief_reaction"
+      ],
+      "keywords": [
+        "așteptările",
+        "brusc",
+        "care",
+        "corectează",
+        "duș",
+        "experiență",
+        "rece"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 1,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:aac51d63e345ad160798",
+      "text": "fain",
+      "owner_class": "SPECIAL_USE",
+      "semantic_gloss": "Apreciere românească naturală pentru ceva bun sau plăcut.",
+      "semantic_families": [
+        "evaluation_praise"
+      ],
+      "keywords": [
+        "apreciere",
+        "bun",
+        "ceva",
+        "fain",
+        "naturală",
+        "pentru",
+        "plăcut",
+        "românească",
+        "sau"
+      ],
+      "risk_tags": [],
+      "regionalism": true,
+      "regions": [
+        "Ardeal",
+        "Transylvania"
+      ],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 1,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:5ebbdc2c1879c61b7287",
+      "text": "frate",
+      "owner_class": "SPECIAL_USE",
+      "semantic_gloss": "Adresare familiară care creează apropiere sau reproș.",
+      "semantic_families": [
+        "relationship_social"
+      ],
+      "keywords": [
+        "adresare",
+        "apropiere",
+        "care",
+        "creează",
+        "familiară",
+        "frate",
+        "reproș",
+        "sau"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 1,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:2cc72717cc08bd8d8463",
+      "text": "fript",
+      "owner_class": "SPECIAL_USE",
+      "semantic_gloss": "Persoană prinsă, epuizată sau aflată într-o situație proastă.",
+      "semantic_families": [
+        "improvisation_incompetence"
+      ],
+      "keywords": [
+        "aflată",
+        "epuizată",
+        "fript",
+        "persoană",
+        "prinsă",
+        "proastă",
+        "sau",
+        "situație",
+        "într-o"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 1,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:33ef7319b4ac17499e2c",
+      "text": "hater",
+      "owner_class": "SPECIAL_USE",
+      "semantic_gloss": "Persoană care atacă sau disprețuiește constant, mai ales online.",
+      "semantic_families": [
+        "social_media_digital"
+      ],
+      "keywords": [
+        "ales",
+        "atacă",
+        "care",
+        "constant",
+        "disprețuiește",
+        "hater",
+        "mai",
+        "online",
+        "persoană",
+        "sau"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 1,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:b4fa9c61375f1aa365b9",
+      "text": "jackpot",
+      "owner_class": "SPECIAL_USE",
+      "semantic_gloss": "Câștig neașteptat ori lovitură foarte norocoasă.",
+      "semantic_families": [
+        "money_status"
+      ],
+      "keywords": [
+        "câștig",
+        "foarte",
+        "jackpot",
+        "lovitură",
+        "neașteptat",
+        "norocoasă",
+        "ori"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 1,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:6106d423abb825423ecd",
+      "text": "la mâna cuiva",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "A depinde de puterea ori decizia altcuiva.",
+      "semantic_families": [
+        "relationship_social"
+      ],
+      "keywords": [
+        "altcuiva",
+        "cuiva",
+        "decizia",
+        "depinde",
+        "mâna",
+        "ori",
+        "puterea"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 1,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:8151698d006d613c0007",
+      "text": "m-a rupt",
+      "owner_class": "SPECIAL_USE",
+      "semantic_gloss": "Ceva care a impresionat, epuizat ori amuzat foarte tare.",
+      "semantic_families": [
+        "disbelief_reaction"
+      ],
+      "keywords": [
+        "amuzat",
+        "care",
+        "ceva",
+        "epuizat",
+        "foarte",
+        "impresionat",
+        "m-a",
+        "ori",
+        "rupt",
+        "tare"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 1,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:612289a73aa2511865f9",
+      "text": "nervi de otel",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "Autocontrol puternic în condiții tensionate.",
+      "semantic_families": [
+        "miscellaneous_candidate"
+      ],
+      "keywords": [
+        "autocontrol",
+        "condiții",
+        "nervi",
+        "otel",
+        "puternic",
+        "tensionate"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 1,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:fe70e367e0e9074ffff4",
+      "text": "orgasm auditiv",
+      "owner_class": "SPECIAL_RAW",
+      "semantic_gloss": "Experiență sonoră extrem de plăcută, formulată hiperbolic.",
+      "semantic_families": [
+        "miscellaneous_candidate"
+      ],
+      "keywords": [
+        "auditiv",
+        "experiență",
+        "extrem",
+        "formulată",
+        "hiperbolic",
+        "orgasm",
+        "plăcută",
+        "sonoră"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": true,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 1,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:07b0578cd62b1147b207",
+      "text": "piele de găină",
+      "owner_class": "KEEP_DEFAULT",
+      "semantic_gloss": "Reacție corporală la emoție, teamă sau intensitate.",
+      "semantic_families": [
+        "miscellaneous_candidate"
+      ],
+      "keywords": [
+        "corporală",
+        "emoție",
+        "găină",
+        "intensitate",
+        "piele",
+        "reacție",
+        "sau",
+        "teamă"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 1,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:4b2313d6aca63aeae0b1",
+      "text": "pârlit",
+      "owner_class": "SPECIAL_USE",
+      "semantic_gloss": "Sărac, neglijat ori într-o stare proastă.",
+      "semantic_families": [
+        "miscellaneous_candidate"
+      ],
+      "keywords": [
+        "neglijat",
+        "ori",
+        "proastă",
+        "pârlit",
+        "stare",
+        "sărac",
+        "într-o"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 1,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:0c3e015009e5155c2c7c",
+      "text": "respect",
+      "owner_class": "SPECIAL_USE",
+      "semantic_gloss": "Formulă scurtă de apreciere sau recunoaștere.",
+      "semantic_families": [
+        "evaluation_praise"
+      ],
+      "keywords": [
+        "apreciere",
+        "formulă",
+        "recunoaștere",
+        "respect",
+        "sau",
+        "scurtă"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 1,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:84af6945b7c0f6bf9c13",
+      "text": "tupeu",
+      "owner_class": "SPECIAL_USE",
+      "semantic_gloss": "Îndrăzneală excesivă sau obrăznicie.",
+      "semantic_families": [
+        "miscellaneous_candidate"
+      ],
+      "keywords": [
+        "excesivă",
+        "obrăznicie",
+        "sau",
+        "tupeu",
+        "îndrăzneală"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 1,
+      "enabled": true
+    },
+    {
+      "expression_id": "ro-expression-v1:a8ca0b31a85a22dbda0d",
+      "text": "turbat",
+      "owner_class": "SPECIAL_USE",
+      "semantic_gloss": "Extrem de agitat, furios ori intens.",
+      "semantic_families": [
+        "absurdity_escalation"
+      ],
+      "keywords": [
+        "agitat",
+        "extrem",
+        "furios",
+        "intens",
+        "ori",
+        "turbat"
+      ],
+      "risk_tags": [],
+      "regionalism": false,
+      "regions": [],
+      "raw": false,
+      "meme": false,
+      "max_per_episode": 1,
+      "cooldown_episodes": 1,
+      "enabled": true
+    }
+  ],
+  "preferred_surfaces": [
+    {
+      "surface_id": "surface-v1:01",
+      "source_expression_id": "modern-street-v1:dca54ce2f135e3f9e6d5",
+      "surface": "a arde la buzunar",
+      "relation_type": "productive_family_realization"
+    },
+    {
+      "surface_id": "surface-v1:02",
+      "source_expression_id": "modern-street-v1:60035501feffe814952a",
+      "surface": "a lăsa cu ochii în soare",
+      "relation_type": "preferred_spoken_realization"
+    },
+    {
+      "surface_id": "surface-v1:03",
+      "source_expression_id": "modern371-review-row:54",
+      "surface": "șmecher / șmecherie",
+      "relation_type": "preferred_spoken_realization"
+    },
+    {
+      "surface_id": "surface-v1:04",
+      "source_expression_id": "modern-street-v1:4b249d64d0f826695cb2",
+      "surface": "a face toți banii",
+      "relation_type": "preferred_spoken_realization"
+    },
+    {
+      "surface_id": "surface-v1:05",
+      "source_expression_id": "modern-street-v1:dca54ce2f135e3f9e6d5",
+      "surface": "wow",
+      "relation_type": "preferred_spoken_realization"
+    },
+    {
+      "surface_id": "surface-v1:06",
+      "source_expression_id": "modern371-review-row:57",
+      "surface": "tare",
+      "relation_type": "preferred_spoken_realization"
+    },
+    {
+      "surface_id": "surface-v1:07",
+      "source_expression_id": "ro-expression-v1:fd75f40659d177a3a038",
+      "surface": "a face haz de necaz",
+      "relation_type": "preferred_spoken_realization"
+    },
+    {
+      "surface_id": "surface-v1:08",
+      "source_expression_id": "modern371-review-row:52",
+      "surface": "mare sculă pe basculă",
+      "relation_type": "preferred_spoken_realization"
+    },
+    {
+      "surface_id": "surface-v1:09",
+      "source_expression_id": "modern-street-v1:dca54ce2f135e3f9e6d5",
+      "surface": "țăndări",
+      "relation_type": "preferred_spoken_realization"
+    },
+    {
+      "surface_id": "surface-v1:10",
+      "source_expression_id": "frozen-prior-reviewed-authority",
+      "surface": "a face țândări",
+      "relation_type": "valid variant"
+    },
+    {
+      "surface_id": "surface-v1:11",
+      "source_expression_id": "frozen-prior-reviewed-authority",
+      "surface": "a se face țândări",
+      "relation_type": "related distinct"
+    }
+  ],
+  "productive_families": [
+    {
+      "family_id": "promotion-v2:family:smecher-smecherie",
+      "members": [
+        "șmecher",
+        "șmecherie"
+      ]
+    },
+    {
+      "family_id": "promotion-v2:family:a-mangli-manglit",
+      "members": [
+        "a mangli",
+        "manglit"
+      ]
+    },
+    {
+      "family_id": "promotion-v2:family:bubui-bubuie-bubuiala",
+      "members": [
+        "bubui",
+        "bubuie",
+        "bubuială"
+      ]
+    },
+    {
+      "family_id": "promotion-v2:family:pesediza-pesedizat-pesedizare",
+      "members": [
+        "pesediza",
+        "pesedizat",
+        "pesedizare"
+      ]
+    }
+  ],
+  "controlled_terms": [
+    {
+      "term_id": "promotion-v2:controlled:fake-news",
+      "term": "fake news",
+      "domains": [
+        "disinformation",
+        "conspiracy",
+        "explicit_denial_label"
+      ],
+      "triggers": [
+        "explicit false-information dynamics",
+        "conspiracy dynamics",
+        "explicit denial-label dynamics"
+      ],
+      "factual_constraints": [
+        "not a generic synonym for every false statement",
+        "do not label a claim false without story evidence"
+      ],
+      "risk_tags": [
+        "factual-label-risk"
+      ],
+      "temporal_sensitivity": "medium",
+      "max_per_episode": 1,
+      "cooldown_episodes": 1,
+      "enabled": true
+    },
+    {
+      "term_id": "promotion-v2:controlled:pesedaurii",
+      "term": "pesedaurii",
+      "domains": [
+        "politics"
+      ],
+      "triggers": [
+        "PSD/AUR blend materially relevant to story"
+      ],
+      "factual_constraints": [
+        "satirical label must not replace factual party identification"
+      ],
+      "risk_tags": [
+        "satirical-political-label"
+      ],
+      "temporal_sensitivity": "high",
+      "max_per_episode": 1,
+      "cooldown_episodes": 2,
+      "enabled": true
+    },
+    {
+      "term_id": "promotion-v2:controlled:pesedizat",
+      "term": "pesedizat",
+      "domains": [
+        "politics"
+      ],
+      "triggers": [
+        "supported party influence or practice context"
+      ],
+      "factual_constraints": [
+        "do not infer party control without evidence"
+      ],
+      "risk_tags": [
+        "political-attribution"
+      ],
+      "temporal_sensitivity": "high",
+      "max_per_episode": 1,
+      "cooldown_episodes": 2,
+      "enabled": true
+    },
+    {
+      "term_id": "promotion-v2:controlled:sinecura",
+      "term": "sinecură",
+      "domains": [
+        "politics",
+        "patronage",
+        "clientelism",
+        "appointments"
+      ],
+      "triggers": [
+        "pile",
+        "relații",
+        "cunoștințe",
+        "clientelism",
+        "numiri politice"
+      ],
+      "factual_constraints": [
+        "patronage or disproportionate benefit must be supported",
+        "use rarely"
+      ],
+      "risk_tags": [
+        "political-attribution",
+        "use-rarely"
+      ],
+      "temporal_sensitivity": "low",
+      "max_per_episode": 1,
+      "cooldown_episodes": 3,
+      "enabled": true
+    },
+    {
+      "term_id": "promotion-v2:controlled:suveranist",
+      "term": "suveranist",
+      "domains": [
+        "politics"
+      ],
+      "triggers": [
+        "actor/story uses or factually supports the label"
+      ],
+      "factual_constraints": [
+        "never encode or infer suveranist == extremă dreapta",
+        "ideological characterization must come from factual story context"
+      ],
+      "risk_tags": [
+        "political-label",
+        "ideology-inference-risk"
+      ],
+      "temporal_sensitivity": "high",
+      "max_per_episode": 1,
+      "cooldown_episodes": 1,
+      "enabled": true
+    },
+    {
+      "term_id": "promotion-v2:controlled:vibe-ul",
+      "term": "vibe-ul",
+      "domains": [
+        "social_media",
+        "culture",
+        "generational_language"
+      ],
+      "triggers": [
+        "atmosphere/impression is the point",
+        "generational register fits"
+      ],
+      "factual_constraints": [
+        "not ordinary Default voice",
+        "do not replace precise factual description"
+      ],
+      "risk_tags": [
+        "generational-marker"
+      ],
+      "temporal_sensitivity": "medium",
+      "max_per_episode": 1,
+      "cooldown_episodes": 1,
+      "enabled": true
+    }
+  ],
+  "comedy_devices": [
+    {
+      "device_id": "promotion-v2:device:absolute-cinema",
+      "device_type": "closing_tag",
+      "family": "absolute-cinema",
+      "structure": "Absolut {cadru/eveniment}.",
+      "semantic_affordances": [
+        "entertainment",
+        "meme"
+      ],
+      "best_for": [
+        "entertainment",
+        "meme"
+      ],
+      "bad_for": [
+        "victim_sensitive",
+        "tragedy_sensitive"
+      ],
+      "replaceable_slots": [
+        "descriptor slot"
+      ],
+      "forbidden_transforms": [
+        "claiming authentic quotation"
+      ],
+      "source_expression_ids": [
+        "modern-street-v1:5fd4abc4babfd74f60a0"
+      ],
+      "callback_capable": true,
+      "signature_capable": false,
+      "compound_capable": false,
+      "max_per_episode": 1,
+      "recurrence_mode": "ordinary",
+      "risk_tags": []
+    },
+    {
+      "device_id": "promotion-v2:device:stinge-lumina",
+      "device_type": "adaptation_template",
+      "family": "stinge-lumina",
+      "structure": "{SUBIECT} stinge lumina tuturor.",
+      "semantic_affordances": [
+        "bureaucracy",
+        "absurdity",
+        "improvisation"
+      ],
+      "best_for": [
+        "bureaucracy",
+        "absurdity",
+        "improvisation"
+      ],
+      "bad_for": [
+        "victim_sensitive",
+        "tragedy_sensitive"
+      ],
+      "replaceable_slots": [
+        "subject"
+      ],
+      "forbidden_transforms": [
+        "unsupported factual superlative"
+      ],
+      "source_expression_ids": [
+        "modern-street-v1:f3dd8a7ae40e184e37d1"
+      ],
+      "callback_capable": true,
+      "signature_capable": false,
+      "compound_capable": false,
+      "max_per_episode": 1,
+      "recurrence_mode": "ordinary",
+      "risk_tags": []
+    },
+    {
+      "device_id": "promotion-v2:device:legenda-spune",
+      "device_type": "signature_setup",
+      "family": "legenda-spune",
+      "structure": "Legenda spune că {CLAUZĂ}.",
+      "semantic_affordances": [
+        "unfinished_project",
+        "bureaucracy"
+      ],
+      "best_for": [
+        "unfinished_project",
+        "bureaucracy"
+      ],
+      "bad_for": [
+        "victim_sensitive",
+        "tragedy_sensitive"
+      ],
+      "replaceable_slots": [
+        "claim clause"
+      ],
+      "forbidden_transforms": [
+        "presenting invention as sourced fact"
+      ],
+      "source_expression_ids": [
+        "modern-street-v1:1dd1b76807205b989a5f"
+      ],
+      "callback_capable": true,
+      "signature_capable": false,
+      "compound_capable": false,
+      "max_per_episode": 1,
+      "recurrence_mode": "ordinary",
+      "risk_tags": []
+    },
+    {
+      "device_id": "promotion-v2:device:ne-ai-facut-o",
+      "device_type": "reaction_tag",
+      "family": "ne-ai-facut-o",
+      "structure": "{ACTOR}, ne-ai făcut-o.",
+      "semantic_affordances": [
+        "entertainment",
+        "reaction"
+      ],
+      "best_for": [
+        "entertainment",
+        "reaction"
+      ],
+      "bad_for": [
+        "victim_sensitive",
+        "tragedy_sensitive"
+      ],
+      "replaceable_slots": [
+        "actor"
+      ],
+      "forbidden_transforms": [
+        "harassment target substitution"
+      ],
+      "source_expression_ids": [
+        "modern-street-v1:b408e94ddd29c60d2b50"
+      ],
+      "callback_capable": true,
+      "signature_capable": false,
+      "compound_capable": false,
+      "max_per_episode": 1,
+      "recurrence_mode": "ordinary",
+      "risk_tags": [
+        "roast",
+        "victim_targeting"
+      ]
+    },
+    {
+      "device_id": "promotion-v2:device:jos-palaria",
+      "device_type": "ironic_reversal",
+      "family": "jos-palaria",
+      "structure": "Jos pălăria... {REVERSAL}.",
+      "semantic_affordances": [
+        "politics",
+        "contradiction",
+        "arrogance"
+      ],
+      "best_for": [
+        "politics",
+        "contradiction",
+        "arrogance"
+      ],
+      "bad_for": [
+        "victim_sensitive",
+        "tragedy_sensitive"
+      ],
+      "replaceable_slots": [
+        "reversal"
+      ],
+      "forbidden_transforms": [
+        "forced praise without reversal"
+      ],
+      "source_expression_ids": [
+        "modern-street-v1:1d481cba663145789d81"
+      ],
+      "callback_capable": true,
+      "signature_capable": false,
+      "compound_capable": false,
+      "max_per_episode": 1,
+      "recurrence_mode": "ordinary",
+      "risk_tags": []
+    },
+    {
+      "device_id": "promotion-v2:device:poveste-fara-sfarsit",
+      "device_type": "callback_seed",
+      "family": "poveste-fara-sfarsit",
+      "structure": "Povestea fără sfârșit.",
+      "semantic_affordances": [
+        "unfinished_project",
+        "bureaucracy"
+      ],
+      "best_for": [
+        "unfinished_project",
+        "bureaucracy"
+      ],
+      "bad_for": [
+        "victim_sensitive",
+        "tragedy_sensitive"
+      ],
+      "replaceable_slots": [
+        "callback target"
+      ],
+      "forbidden_transforms": [
+        "invented source attribution"
+      ],
+      "source_expression_ids": [
+        "modern-street-v1:132fed3ef1ea941f0ddf"
+      ],
+      "callback_capable": true,
+      "signature_capable": false,
+      "compound_capable": false,
+      "max_per_episode": 1,
+      "recurrence_mode": "ordinary",
+      "risk_tags": []
+    },
+    {
+      "device_id": "promotion-v2:device:s-a-terminat",
+      "device_type": "closing_tag",
+      "family": "s-a-terminat",
+      "structure": "S-a terminat.",
+      "semantic_affordances": [
+        "entertainment",
+        "closing"
+      ],
+      "best_for": [
+        "entertainment",
+        "closing"
+      ],
+      "bad_for": [
+        "victim_sensitive",
+        "tragedy_sensitive"
+      ],
+      "replaceable_slots": [
+        "preceding setup"
+      ],
+      "forbidden_transforms": [
+        "false factual closure"
+      ],
+      "source_expression_ids": [
+        "modern-street-v1:c518ff195aac1e005ae6"
+      ],
+      "callback_capable": true,
+      "signature_capable": false,
+      "compound_capable": false,
+      "max_per_episode": 1,
+      "recurrence_mode": "ordinary",
+      "risk_tags": []
+    },
+    {
+      "device_id": "promotion-v2:device:rupe-fasul",
+      "device_type": "adaptation_template",
+      "family": "rupe-fasul",
+      "structure": "{SUBIECT} rupe fâșul.",
+      "semantic_affordances": [
+        "absurdity",
+        "escalation"
+      ],
+      "best_for": [
+        "absurdity",
+        "escalation"
+      ],
+      "bad_for": [
+        "victim_sensitive",
+        "tragedy_sensitive"
+      ],
+      "replaceable_slots": [
+        "subject"
+      ],
+      "forbidden_transforms": [
+        "literal violence inference"
+      ],
+      "source_expression_ids": [
+        "modern-street-v1:707321436c2906c53453"
+      ],
+      "callback_capable": true,
+      "signature_capable": false,
+      "compound_capable": false,
+      "max_per_episode": 1,
+      "recurrence_mode": "ordinary",
+      "risk_tags": [
+        "roast",
+        "victim_targeting"
+      ]
+    },
+    {
+      "device_id": "promotion-v2:device:toti-banii",
+      "device_type": "closing_tag",
+      "family": "toti-banii",
+      "structure": "{DETALIU} face toți banii.",
+      "semantic_affordances": [
+        "detail",
+        "closing"
+      ],
+      "best_for": [
+        "detail",
+        "closing"
+      ],
+      "bad_for": [
+        "victim_sensitive",
+        "tragedy_sensitive"
+      ],
+      "replaceable_slots": [
+        "detail"
+      ],
+      "forbidden_transforms": [
+        "commercial endorsement implication"
+      ],
+      "source_expression_ids": [
+        "modern-street-v1:4b249d64d0f826695cb2"
+      ],
+      "callback_capable": true,
+      "signature_capable": false,
+      "compound_capable": false,
+      "max_per_episode": 1,
+      "recurrence_mode": "ordinary",
+      "risk_tags": []
+    },
+    {
+      "device_id": "promotion-v2:device:dus-rece",
+      "device_type": "contrast_template",
+      "family": "dus-rece",
+      "structure": "{AȘTEPTARE}; realitatea: duș rece.",
+      "semantic_affordances": [
+        "international",
+        "failed_project",
+        "contrast"
+      ],
+      "best_for": [
+        "international",
+        "failed_project",
+        "contrast"
+      ],
+      "bad_for": [
+        "victim_sensitive",
+        "tragedy_sensitive"
+      ],
+      "replaceable_slots": [
+        "expectation"
+      ],
+      "forbidden_transforms": [
+        "medical/literal conflation"
+      ],
+      "source_expression_ids": [
+        "modern-street-v1:dfb881abf9d45adb5fbf"
+      ],
+      "callback_capable": true,
+      "signature_capable": false,
+      "compound_capable": false,
+      "max_per_episode": 1,
+      "recurrence_mode": "ordinary",
+      "risk_tags": []
+    },
+    {
+      "device_id": "promotion-v2:device:ai-n-ai",
+      "device_type": "cultural_device",
+      "family": "hagism",
+      "structure": "Ai, n-ai {X}, {Y}.",
+      "semantic_affordances": [
+        "bureaucracy",
+        "improvisation"
+      ],
+      "best_for": [
+        "bureaucracy",
+        "improvisation"
+      ],
+      "bad_for": [
+        "victim_sensitive",
+        "tragedy_sensitive"
+      ],
+      "replaceable_slots": [],
+      "forbidden_transforms": [],
+      "source_expression_ids": [],
+      "callback_capable": false,
+      "signature_capable": false,
+      "compound_capable": false,
+      "max_per_episode": 1,
+      "recurrence_mode": "ordinary",
+      "risk_tags": []
+    },
+    {
+      "device_id": "promotion-v2:device:sa-fie-bine",
+      "device_type": "cultural_device",
+      "family": "hagism",
+      "structure": "Să fie bine, să nu fie rău.",
+      "semantic_affordances": [
+        "bureaucracy",
+        "absurdity"
+      ],
+      "best_for": [
+        "bureaucracy",
+        "absurdity"
+      ],
+      "bad_for": [
+        "victim_sensitive",
+        "tragedy_sensitive"
+      ],
+      "replaceable_slots": [],
+      "forbidden_transforms": [],
+      "source_expression_ids": [],
+      "callback_capable": false,
+      "signature_capable": false,
+      "compound_capable": false,
+      "max_per_episode": 1,
+      "recurrence_mode": "ordinary",
+      "risk_tags": []
+    },
+    {
+      "device_id": "promotion-v2:device:hagism-compound",
+      "device_type": "cultural_device",
+      "family": "hagism",
+      "structure": "approved Hagism compound callback",
+      "semantic_affordances": [
+        "bureaucracy",
+        "improvisation"
+      ],
+      "best_for": [
+        "bureaucracy",
+        "improvisation"
+      ],
+      "bad_for": [
+        "victim_sensitive",
+        "tragedy_sensitive"
+      ],
+      "replaceable_slots": [],
+      "forbidden_transforms": [],
+      "source_expression_ids": [],
+      "callback_capable": false,
+      "signature_capable": false,
+      "compound_capable": true,
+      "max_per_episode": 1,
+      "recurrence_mode": "ordinary",
+      "risk_tags": []
+    },
+    {
+      "device_id": "promotion-v2:device:mare-clasic",
+      "device_type": "cultural_device",
+      "family": "hagism",
+      "structure": "Cum zicea un mare clasic în viață...",
+      "semantic_affordances": [
+        "signature_context"
+      ],
+      "best_for": [
+        "signature_context"
+      ],
+      "bad_for": [
+        "victim_sensitive",
+        "tragedy_sensitive"
+      ],
+      "replaceable_slots": [],
+      "forbidden_transforms": [],
+      "source_expression_ids": [],
+      "callback_capable": false,
+      "signature_capable": true,
+      "compound_capable": false,
+      "max_per_episode": 1,
+      "recurrence_mode": "signature",
+      "risk_tags": []
+    }
+  ],
+  "signature_devices": [
+    {
+      "signature_id": "signature-v1:mare-clasic",
+      "device_id": "promotion-v2:device:mare-clasic",
+      "family": "hagism",
+      "recurrence_mode": "signature",
+      "max_per_episode": 1,
+      "hard_cooldown": 0,
+      "preferred_spacing_episodes": 2,
+      "canonical_signature": true
+    },
+    {
+      "signature_id": "signature-v1:legenda-spune",
+      "device_id": "promotion-v2:device:legenda-spune",
+      "family": "legend_callback",
+      "recurrence_mode": "candidate",
+      "max_per_episode": 1,
+      "hard_cooldown": 0,
+      "preferred_spacing_episodes": 0,
+      "canonical_signature": false
+    },
+    {
+      "signature_id": "signature-v1:hagism-compound",
+      "device_id": "promotion-v2:device:hagism-compound",
+      "family": "hagism",
+      "recurrence_mode": "compound",
+      "max_per_episode": 1,
+      "hard_cooldown": 0,
+      "preferred_spacing_episodes": 0,
+      "canonical_signature": false
+    }
+  ],
+  "counts": {
+    "expressions": 102,
+    "preferred_surfaces": 11,
+    "productive_families": 4,
+    "controlled_terms": 6,
+    "comedy_devices": 14,
+    "signature_devices": 3
+  },
+  "excluded_counts": {
+    "deferred": 3,
+    "rejected": 30
+  },
+  "bundle_content_sha256": "d045363587e846ec3afebbfda62f3ee11585b58b8e7b61ee761c930d12c8a84e"
+}
