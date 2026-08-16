@@ -58,6 +58,26 @@ datas = [
         ),
         "pastila_scout/resources/expression_retrieval_v1",
     ),
+    (
+        str(
+            resource_root
+            / "pastila_scout"
+            / "resources"
+            / "branding"
+            / "pastila-scout-investigator.png"
+        ),
+        "pastila_scout/resources/branding",
+    ),
+    (
+        str(
+            resource_root
+            / "pastila_scout"
+            / "resources"
+            / "branding"
+            / "pastila-scout-investigator-sidebar.png"
+        ),
+        "pastila_scout/resources/branding",
+    ),
     (str(resource_root / "resources" / "THIRD-PARTY-NOTICES.txt"), "."),
 ] + copy_metadata("pastila-news-monitor") + collect_data_files("certifi")
 

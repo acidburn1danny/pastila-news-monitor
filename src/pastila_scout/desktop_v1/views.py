@@ -8,6 +8,7 @@ import inspect
 import threading
 import tkinter
 import types
+from importlib import resources
 from tkinter import ttk
 
 from .errors import _DesktopShellConfigurationError
@@ -70,10 +71,11 @@ _INITIAL_WINDOW_HEIGHT = 660
 _INITIAL_WINDOW_SCREEN_MARGIN_X = 40
 _INITIAL_WINDOW_SCREEN_MARGIN_Y = 80
 _NAVIGATION_BADGE_WIDTH = 18
-_NAVIGATION_BADGE_HEIGHT = 2
-_NAVIGATION_BADGE_PADX = 8
-_NAVIGATION_BADGE_PADY = 4
-_NAVIGATION_FONT_SIZE = 11
+_NAVIGATION_BADGE_HEIGHT = 1
+_NAVIGATION_BADGE_PADX = 6
+_NAVIGATION_BADGE_PADY = 2
+_NAVIGATION_FONT_SIZE = 10
+_NAVIGATION_FONT_STYLE = "bold italic"
 _NAVIGATION_NORMAL_BORDER = 1
 _NAVIGATION_ACTIVE_BORDER = 3
 _NAVIGATION_STYLES = {
@@ -81,6 +83,11 @@ _NAVIGATION_STYLES = {
     _DesktopPageV1.EDITOR: ("#f4c430", "#000000"),
     _DesktopPageV1.CHIEF_EDITOR: ("#1565c0", "#ffffff"),
 }
+_NAVIGATION_MASCOT_PACKAGE = "pastila_scout.resources.branding"
+_NAVIGATION_MASCOT_RESOURCE = "pastila-scout-investigator-sidebar.png"
+_NAVIGATION_MASCOT_SOURCE_SIZE = (1024, 1536)
+_NAVIGATION_MASCOT_DISPLAY_SIZE = (118, 177)
+_NAVIGATION_MASCOT_TOP_SPACING = 22
 
 
 def _initial_window_geometry(root: object) -> str:
@@ -97,6 +104,16 @@ def _initial_window_geometry(root: object) -> str:
     left = max(0, (int(root.winfo_screenwidth()) - width) // 2)
     top = max(0, (int(root.winfo_screenheight()) - height) // 2)
     return f"{width}x{height}+{left}+{top}"
+
+
+def _load_navigation_mascot(parent: tkinter.Misc) -> tkinter.PhotoImage | None:
+    try:
+        source = resources.files(_NAVIGATION_MASCOT_PACKAGE).joinpath(
+            _NAVIGATION_MASCOT_RESOURCE
+        )
+        return tkinter.PhotoImage(master=parent, file=str(source))
+    except Exception:
+        return None
 
 
 def _configure_desktop_styles(root: object) -> None:
@@ -304,7 +321,7 @@ class _DesktopMainWindowV1:
                 text=_text_v1(key=f"navigation.{page.value}").upper(),
                 background=background,
                 foreground=foreground,
-                font=("TkDefaultFont", _NAVIGATION_FONT_SIZE, "normal"),
+                font=("TkDefaultFont", _NAVIGATION_FONT_SIZE, _NAVIGATION_FONT_STYLE),
                 width=_NAVIGATION_BADGE_WIDTH,
                 height=_NAVIGATION_BADGE_HEIGHT,
                 padx=_NAVIGATION_BADGE_PADX,
@@ -318,6 +335,21 @@ class _DesktopMainWindowV1:
                 "<Button-1>", lambda _event, selected=page: self._select(selected)
             )
             self._navigation_badges[page] = badge
+        self._navigation_mascot_image = _load_navigation_mascot(self._navigation)
+        self._navigation_mascot = None
+        if self._navigation_mascot_image is not None:
+            self._navigation_mascot = tkinter.Label(
+                self._navigation,
+                image=self._navigation_mascot_image,
+                background=self._navigation.cget("background"),
+                borderwidth=0,
+                highlightthickness=0,
+            )
+            self._navigation_mascot.grid(
+                row=len(_DesktopPageV1),
+                column=0,
+                pady=(_NAVIGATION_MASCOT_TOP_SPACING, 0),
+            )
         self._navigation.grid(row=0, column=0, sticky="ns", padx=(8, 4), pady=8)
         self._set_navigation_page(_DesktopPageV1.SCOUT)
         self._content = ttk.Frame(self._main)
@@ -834,11 +866,7 @@ class _DesktopMainWindowV1:
         for candidate, badge in self._navigation_badges.items():
             active = candidate is page
             badge.configure(
-                font=(
-                    "TkDefaultFont",
-                    _NAVIGATION_FONT_SIZE,
-                    "bold" if active else "normal",
-                ),
+                font=("TkDefaultFont", _NAVIGATION_FONT_SIZE, _NAVIGATION_FONT_STYLE),
                 highlightthickness=(
                     _NAVIGATION_ACTIVE_BORDER if active else _NAVIGATION_NORMAL_BORDER
                 ),

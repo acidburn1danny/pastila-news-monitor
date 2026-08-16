@@ -259,6 +259,7 @@ def test_environment_and_wheel_metadata_are_fail_closed() -> None:
     assert "-c $isolationCheck" not in text
     assert text.count("ConvertFrom-Json | ForEach-Object { $_ }") == 2
     assert "(Join-Path $ResourceRoot 'resources\\trust')" in text
+    assert "(Join-Path $ResourceRoot 'pastila_scout\\resources\\branding')" in text
     assert (
         "(Join-Path $ResourceRoot "
         "'pastila_scout\\resources\\expression_retrieval_v1')" in text

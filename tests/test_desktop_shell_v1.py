@@ -7,6 +7,7 @@ import importlib
 import pickle
 import subprocess
 import threading
+from importlib import resources as package_resources
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -42,6 +43,12 @@ from pastila_scout.desktop_v1.views import (
     _NAVIGATION_BADGE_PADY,
     _NAVIGATION_BADGE_WIDTH,
     _NAVIGATION_FONT_SIZE,
+    _NAVIGATION_FONT_STYLE,
+    _NAVIGATION_MASCOT_DISPLAY_SIZE,
+    _NAVIGATION_MASCOT_PACKAGE,
+    _NAVIGATION_MASCOT_RESOURCE,
+    _NAVIGATION_MASCOT_SOURCE_SIZE,
+    _NAVIGATION_MASCOT_TOP_SPACING,
     _NAVIGATION_NORMAL_BORDER,
     _NAVIGATION_STYLES,
     _OPENAI_MODEL_CHOICES,
@@ -91,10 +98,35 @@ def test_navigation_badges_share_structure_and_have_approved_contrast() -> None:
         _DesktopPageV1.EDITOR: ("#f4c430", "#000000"),
         _DesktopPageV1.CHIEF_EDITOR: ("#1565c0", "#ffffff"),
     }
-    assert (_NAVIGATION_BADGE_WIDTH, _NAVIGATION_BADGE_HEIGHT) == (18, 2)
-    assert (_NAVIGATION_BADGE_PADX, _NAVIGATION_BADGE_PADY) == (8, 4)
-    assert _NAVIGATION_FONT_SIZE == 11
+    assert (_NAVIGATION_BADGE_WIDTH, _NAVIGATION_BADGE_HEIGHT) == (18, 1)
+    assert (_NAVIGATION_BADGE_PADX, _NAVIGATION_BADGE_PADY) == (6, 2)
+    assert _NAVIGATION_FONT_SIZE == 10
+    assert _NAVIGATION_FONT_STYLE == "bold italic"
     assert _NAVIGATION_ACTIVE_BORDER > _NAVIGATION_NORMAL_BORDER
+
+
+def test_navigation_mascot_is_a_stable_proportional_package_resource() -> None:
+    assert _NAVIGATION_MASCOT_PACKAGE == "pastila_scout.resources.branding"
+    assert _NAVIGATION_MASCOT_RESOURCE == "pastila-scout-investigator-sidebar.png"
+    package = package_resources.files(_NAVIGATION_MASCOT_PACKAGE)
+    master_content = package.joinpath("pastila-scout-investigator.png").read_bytes()
+    content = package.joinpath(_NAVIGATION_MASCOT_RESOURCE).read_bytes()
+    assert hashlib.sha256(master_content).hexdigest() == (
+        "c2f7e44df550e331b673aeb47cb8c197fc1a50d29f1413d3e09956418997179c"
+    )
+    assert content.startswith(b"\x89PNG\r\n\x1a\n")
+    assert hashlib.sha256(content).hexdigest() == (
+        "84b42d1c341db3ff444ccdf88dc5f4fca1e3d1a4815c9a229b57edcad96155e0"
+    )
+    width = int.from_bytes(content[16:20], "big")
+    height = int.from_bytes(content[20:24], "big")
+    assert content[25] == 6  # PNG RGBA color type
+    assert _NAVIGATION_MASCOT_SOURCE_SIZE == (1024, 1536)
+    assert (width, height) == _NAVIGATION_MASCOT_DISPLAY_SIZE == (118, 177)
+    assert width * _NAVIGATION_MASCOT_SOURCE_SIZE[1] == (
+        height * _NAVIGATION_MASCOT_SOURCE_SIZE[0]
+    )
+    assert 20 <= _NAVIGATION_MASCOT_TOP_SPACING <= 24
 
 
 class _Future:
@@ -352,6 +384,10 @@ def test_withdrawn_tk_window_has_exact_structural_root_and_initial_state():
             assert int(badge.cget("height")) == _NAVIGATION_BADGE_HEIGHT
             assert int(badge.cget("padx")) == _NAVIGATION_BADGE_PADX
             assert int(badge.cget("pady")) == _NAVIGATION_BADGE_PADY
+            badge_font = str(badge.cget("font"))
+            assert "TkDefaultFont" in badge_font
+            assert "10" in badge_font
+            assert "bold" in badge_font and "italic" in badge_font
             assert (
                 badge.cget("text") == _text_v1(key=f"navigation.{page.value}").upper()
             )
@@ -370,6 +406,18 @@ def test_withdrawn_tk_window_has_exact_structural_root_and_initial_state():
             )
             == _NAVIGATION_NORMAL_BORDER
         )
+        assert view._navigation_mascot is not None
+        assert view._navigation_mascot_image is not None
+        assert (
+            view._navigation_mascot_image.width(),
+            view._navigation_mascot_image.height(),
+        ) == _NAVIGATION_MASCOT_DISPLAY_SIZE
+        assert view._navigation_mascot.grid_info()["row"] == len(_DesktopPageV1)
+        mascot_pady = tuple(
+            int(value)
+            for value in root.tk.splitlist(view._navigation_mascot.grid_info()["pady"])
+        )
+        assert mascot_pady == (_NAVIGATION_MASCOT_TOP_SPACING, 0)
         assert str(view._scout_button.cget("state")) == "disabled"
         assert view._scout_button.cget("text") == "Cauta"
         assert view._scout_button.cget("foreground") == "#e31919"

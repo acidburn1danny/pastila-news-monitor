@@ -135,6 +135,9 @@ def test_spec_resource_and_provider_inventories_are_closed() -> None:
     assert "THIRD-PARTY-NOTICES.txt" in text
     assert text.count('"catalog.json"') == 1
     assert '"pastila_scout/resources/expression_retrieval_v1"' in text
+    assert text.count('"pastila-scout-investigator.png"') == 1
+    assert text.count('"pastila-scout-investigator-sidebar.png"') == 1
+    assert '"pastila_scout/resources/branding"' in text
     assert 'collect_data_files("certifi")' in text
     assert 'copy_metadata("pastila-news-monitor")' in text
     assert "provider_execution_ollama_v1" in text
@@ -213,6 +216,44 @@ def test_expression_catalog_is_staged_from_production_authority_only() -> None:
     assert build.count(destination) == 2
     assert "PastilaScout-Diagnostics" not in build
     assert "PastilaScout-Diagnostics" not in SPEC.read_text(encoding="utf-8")
+
+
+def test_investigator_branding_is_staged_from_package_authority_only() -> None:
+    build = BUILD.read_text(encoding="utf-8")
+    branding = ROOT / "src" / "pastila_scout" / "resources" / "branding"
+    master = branding / "pastila-scout-investigator.png"
+    derivative = branding / "pastila-scout-investigator-sidebar.png"
+    assert hashlib.sha256(master.read_bytes()).hexdigest() == (
+        "c2f7e44df550e331b673aeb47cb8c197fc1a50d29f1413d3e09956418997179c"
+    )
+    assert hashlib.sha256(derivative.read_bytes()).hexdigest() == (
+        "84b42d1c341db3ff444ccdf88dc5f4fca1e3d1a4815c9a229b57edcad96155e0"
+    )
+    for name in (
+        "pastila-scout-investigator.png",
+        "pastila-scout-investigator-sidebar.png",
+    ):
+        source = f"src\\pastila_scout\\resources\\branding\\{name}"
+        destination = f"pastila_scout\\resources\\branding\\{name}"
+        assert build.count(source) == 1
+        assert build.count(destination) == 2
+    production = "\n".join(
+        path.read_text(encoding="utf-8", errors="ignore")
+        for path in (
+            ROOT / "pyproject.toml",
+            ROOT / "packaging" / "pyinstaller" / "PastilaScout.spec",
+            ROOT / "packaging" / "pyinstaller" / "build.ps1",
+            ROOT / "src" / "pastila_scout" / "desktop_v1" / "views.py",
+        )
+    )
+    assert "/mnt/data" not in production
+    assert "Downloads" not in production
+    assert "PastilaScout-Diagnostics" not in production
+    views = (ROOT / "src" / "pastila_scout" / "desktop_v1" / "views.py").read_text(
+        encoding="utf-8"
+    )
+    assert ".subsample(" not in views
+    assert ".zoom(" not in views
 
 
 def test_each_launcher_has_its_own_rendered_version_identity() -> None:

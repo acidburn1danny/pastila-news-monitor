@@ -33,7 +33,11 @@ build-backend = "setuptools.build_meta"
 where = ["src"]
 
 [tool.setuptools.package-data]
-pastila_scout = ["resources/expression_retrieval_v1/catalog.json"]
+pastila_scout = [
+    "resources/branding/pastila-scout-investigator.png",
+    "resources/branding/pastila-scout-investigator-sidebar.png",
+    "resources/expression_retrieval_v1/catalog.json",
+]
 
 [tool.pytest.ini_options]
 addopts = "-ra"
