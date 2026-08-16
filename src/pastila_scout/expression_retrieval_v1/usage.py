@@ -126,20 +126,15 @@ def _template_used(template: str, text: str) -> bool:
     text = _normalized(text)
     if template == "s-a terminat.":
         return text.rstrip().endswith("s-a terminat.")
-    literals = tuple(
-        value.strip(" .,;:!?")
-        for value in _SLOT.split(template)
-        if value.strip(" .,;:!?")
-    )
-    if not literals:
-        return False
-    position = 0
-    for literal in literals:
-        found = text.find(literal, position)
-        if found < 0:
-            return False
-        position = found + len(literal)
-    return "{reversal}" not in template or position < len(text.rstrip(" ."))
+    parts = _SLOT.split(template)
+    slots = _SLOT.findall(template)
+    if not slots:
+        return template in text
+    pattern = re.escape(parts[0])
+    for slot, tail in zip(slots, parts[1:], strict=True):
+        del slot
+        pattern += r"\S(?:.*?\S)?" + re.escape(tail)
+    return re.search(pattern, text) is not None
 
 
 def detect_usage_receipt_v1(

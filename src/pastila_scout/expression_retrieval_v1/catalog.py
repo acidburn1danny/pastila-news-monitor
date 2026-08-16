@@ -162,6 +162,9 @@ def _parse_catalog(data: Any, digest: str) -> ExpressionCatalogV1:
                 callback_capable=bool(item.get("callback_capable", False)),
                 signature_capable=bool(item.get("signature_capable", False)),
                 compound_capable=bool(item.get("compound_capable", False)),
+                compound_component_device_ids=_tuple(
+                    item, "compound_component_device_ids"
+                ),
                 max_per_episode=int(item.get("max_per_episode", 1)),
                 recurrence_mode=item.get("recurrence_mode", "ordinary"),
                 risk_tags=_tuple(item, "risk_tags"),
@@ -208,6 +211,12 @@ def _parse_catalog(data: Any, digest: str) -> ExpressionCatalogV1:
         raise ExpressionCatalogErrorV1("device has unknown expression source")
     if any(signature.device_id not in device_ids for signature in signatures):
         raise ExpressionCatalogErrorV1("signature has unknown device link")
+    if any(
+        component not in device_ids
+        for device in devices
+        for component in device.compound_component_device_ids
+    ):
+        raise ExpressionCatalogErrorV1("compound device has unknown component link")
     expected = data.get("counts")
     actual = {
         "expressions": len(expressions),

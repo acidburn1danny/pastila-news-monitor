@@ -70,6 +70,7 @@ class ComedyDeviceRecordV1:
     callback_capable: bool = False
     signature_capable: bool = False
     compound_capable: bool = False
+    compound_component_device_ids: tuple[str, ...] = ()
     max_per_episode: int = 1
     recurrence_mode: str = "ordinary"
     risk_tags: tuple[str, ...] = ()

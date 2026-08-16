@@ -5,20 +5,13 @@ from __future__ import annotations
 import logging
 import re
 from collections.abc import Callable
+from typing import TYPE_CHECKING
 
 from pastila_scout.contracts.scout_editor import RankedEditorialEvent
-from pastila_scout.editor.commentary_models import (
-    HumorSensitivity,
-    ProtectedTarget,
-    SatireTarget,
-    StoryCommentaryBlueprint,
-)
-from pastila_scout.editor.voice_models import (
-    DirectLanguageLevel,
-    HumorIntensity,
-    RoastEligibility,
-    StoryVoicePlan,
-)
+
+if TYPE_CHECKING:
+    from pastila_scout.editor.commentary_models import StoryCommentaryBlueprint
+    from pastila_scout.editor.voice_models import StoryVoicePlan
 
 from .catalog import load_catalog_v1
 from .errors import ExpressionCatalogErrorV1
@@ -92,35 +85,35 @@ def build_editorial_retrieval_context_v1(
     international = "Externe" in categories
     entertainment = "CanCan" in categories
     protected = tuple(item.value for item in voice.protected_dimensions)
-    protected_targets = set(commentary.protected_targets)
+    protected_targets = {item.value for item in commentary.protected_targets}
     victim_sensitive = bool(
         protected_targets
         & {
-            ProtectedTarget.VICTIMS,
-            ProtectedTarget.VULNERABLE_PEOPLE,
-            ProtectedTarget.CHILDREN,
-            ProtectedTarget.PATIENTS,
-            ProtectedTarget.BEREAVED_PEOPLE,
+            "victims",
+            "vulnerable_people",
+            "children",
+            "patients",
+            "bereaved_people",
         }
     )
-    tragedy = commentary.empathy.humor_sensitivity in {
-        HumorSensitivity.RESTRICTED,
-        HumorSensitivity.PROHIBITED,
+    tragedy = commentary.empathy.humor_sensitivity.value in {
+        "restricted",
+        "prohibited",
     } and _contains(text, _TRAGEDY)
     humor = {
-        HumorIntensity.NONE: 0,
-        HumorIntensity.LIGHT: 1,
-        HumorIntensity.MODERATE: 2,
-        HumorIntensity.STRONG: 3,
-        HumorIntensity.ROAST: 4,
-    }[voice.humor_intensity]
+        "none": 0,
+        "light": 1,
+        "moderate": 2,
+        "strong": 3,
+        "roast": 4,
+    }[voice.humor_intensity.value]
     profanity = {
-        DirectLanguageLevel.CLEAN: 0,
-        DirectLanguageLevel.INFORMAL: 1,
-        DirectLanguageLevel.EDGY: 2,
-        DirectLanguageLevel.PROFANE_LIGHT: 3,
-        DirectLanguageLevel.PROFANE_DIRECT: 4,
-    }[voice.profanity_ceiling]
+        "clean": 0,
+        "informal": 1,
+        "edgy": 2,
+        "profane_light": 3,
+        "profane_direct": 4,
+    }[voice.profanity_ceiling.value]
     satire = {item.value for item in commentary.satire_targets}
     topic_tags = tuple(sorted(satire))
     return EditorialRetrievalContextV1(
@@ -136,17 +129,15 @@ def build_editorial_retrieval_context_v1(
         topic_tags=topic_tags,
         protected_dimensions=protected,
         humor_intensity=humor,
-        roast_eligible=voice.roast_eligibility is not RoastEligibility.PROHIBITED,
+        roast_eligible=voice.roast_eligibility.value != "prohibited",
         profanity_ceiling=profanity,
         raw_eligible=profanity >= 2 and not victim_sensitive and not tragedy,
         victim_sensitive=victim_sensitive,
         tragedy_sensitive=tragedy,
-        bureaucracy=_contains(text, _BUREAUCRACY)
-        or SatireTarget.ABSURD_BUREAUCRACY.value in satire,
+        bureaucracy=_contains(text, _BUREAUCRACY) or "absurd_bureaucracy" in satire,
         patronage=_contains(text, _PATRONAGE),
         unfinished_project=_contains(text, _UNFINISHED),
-        disinformation=_contains(text, _DISINFORMATION)
-        or SatireTarget.PROPAGANDA.value in satire,
+        disinformation=_contains(text, _DISINFORMATION) or "propaganda" in satire,
         entertainment=entertainment,
         international=international,
         region=_region(source_ids),

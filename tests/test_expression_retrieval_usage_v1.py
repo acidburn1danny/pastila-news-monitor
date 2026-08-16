@@ -149,6 +149,56 @@ def test_device_and_signature_templates_are_local_and_conservative() -> None:
     assert signature.device_id in exact.signature_device_ids_used
 
 
+def test_required_device_families_roundtrip_through_local_detection() -> None:
+    catalog = load_catalog_v1()
+    examples = {
+        "jos-palaria": "Jos pălăria... ați reușit să pierdeți și dosarul.",
+        "legenda-spune": "Legenda spune că autorizația chiar există.",
+        "ai-n-ai": "Ai, n-ai autorizația, ridici blocul.",
+        "sa-fie-bine": "Să fie bine, să nu fie rău.",
+        "hagism-compound": (
+            "Ai, n-ai autorizația, ridici blocul. Să fie bine, să nu fie rău."
+        ),
+        "absolute-cinema": "Absolut spectacol.",
+        "ne-ai-facut-o": "Primărie, ne-ai făcut-o.",
+        "poveste-fara-sfarsit": "Povestea fără sfârșit.",
+        "s-a-terminat": "Aici se încheie. S-a terminat.",
+        "toti-banii": "Dosarul pierdut face toți banii.",
+        "dus-rece": "Promiteau inaugurarea; realitatea: duș rece.",
+    }
+    for suffix, text in examples.items():
+        device = next(
+            item for item in catalog.comedy_devices if item.device_id.endswith(suffix)
+        )
+        palette = StoryVoicePaletteV1(
+            "devices",
+            comedy_devices=(_item(device.device_id, device.structure, device.family),),
+        )
+        receipt = detect_usage_receipt_v1(
+            catalog=catalog, palette=palette, validated_story_text=text
+        )
+        assert receipt.device_ids_used == (device.device_id,), suffix
+
+
+def test_compound_hagism_requires_both_authorized_components() -> None:
+    catalog = load_catalog_v1()
+    device = next(item for item in catalog.comedy_devices if item.compound_capable)
+    assert device.compound_component_device_ids == (
+        "promotion-v2:device:ai-n-ai",
+        "promotion-v2:device:sa-fie-bine",
+    )
+    palette = StoryVoicePaletteV1(
+        "compound",
+        comedy_devices=(_item(device.device_id, device.structure, device.family),),
+    )
+    partial = detect_usage_receipt_v1(
+        catalog=catalog,
+        palette=palette,
+        validated_story_text="Ai, n-ai autorizația, ridici blocul.",
+    )
+    assert partial.device_ids_used == ()
+
+
 def test_raw_meme_and_regional_counts_require_verified_use() -> None:
     catalog = load_catalog_v1()
     records = (

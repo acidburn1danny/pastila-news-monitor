@@ -186,16 +186,32 @@ def compile_catalog(*, diagnostics: Path, output: Path) -> dict[str, Any]:
                 if suffix
                 in {"ai-n-ai", "sa-fie-bine", "hagism-compound", "mare-clasic"}
                 else suffix,
-                "structure": item["preferred_surface"],
+                "structure": (
+                    "Ai, n-ai {X}, {Y}. Să fie bine, să nu fie rău."
+                    if suffix == "hagism-compound"
+                    else item["preferred_surface"]
+                ),
                 "semantic_affordances": affordances[suffix],
                 "best_for": affordances[suffix],
                 "bad_for": ["victim_sensitive", "tragedy_sensitive"],
-                "replaceable_slots": source.get("replaceable_slots", []),
+                "replaceable_slots": (
+                    ["X", "Y"]
+                    if suffix == "hagism-compound"
+                    else source.get("replaceable_slots", [])
+                ),
                 "forbidden_transforms": source.get("forbidden_transformations", []),
                 "source_expression_ids": source.get("source_expression_ids", []),
                 "callback_capable": bool(source.get("callback_capable", False)),
                 "signature_capable": suffix == "mare-clasic",
                 "compound_capable": suffix == "hagism-compound",
+                "compound_component_device_ids": (
+                    [
+                        "promotion-v2:device:ai-n-ai",
+                        "promotion-v2:device:sa-fie-bine",
+                    ]
+                    if suffix == "hagism-compound"
+                    else []
+                ),
                 "max_per_episode": 1,
                 "recurrence_mode": "signature"
                 if suffix == "mare-clasic"

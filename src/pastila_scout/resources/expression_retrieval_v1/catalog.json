@@ -3283,6 +3283,7 @@
       "callback_capable": true,
       "signature_capable": false,
       "compound_capable": false,
+      "compound_component_device_ids": [],
       "max_per_episode": 1,
       "recurrence_mode": "ordinary",
       "risk_tags": []
@@ -3318,6 +3319,7 @@
       "callback_capable": true,
       "signature_capable": false,
       "compound_capable": false,
+      "compound_component_device_ids": [],
       "max_per_episode": 1,
       "recurrence_mode": "ordinary",
       "risk_tags": []
@@ -3351,6 +3353,7 @@
       "callback_capable": true,
       "signature_capable": false,
       "compound_capable": false,
+      "compound_component_device_ids": [],
       "max_per_episode": 1,
       "recurrence_mode": "ordinary",
       "risk_tags": []
@@ -3384,6 +3387,7 @@
       "callback_capable": true,
       "signature_capable": false,
       "compound_capable": false,
+      "compound_component_device_ids": [],
       "max_per_episode": 1,
       "recurrence_mode": "ordinary",
       "risk_tags": [
@@ -3422,6 +3426,7 @@
       "callback_capable": true,
       "signature_capable": false,
       "compound_capable": false,
+      "compound_component_device_ids": [],
       "max_per_episode": 1,
       "recurrence_mode": "ordinary",
       "risk_tags": []
@@ -3455,6 +3460,7 @@
       "callback_capable": true,
       "signature_capable": false,
       "compound_capable": false,
+      "compound_component_device_ids": [],
       "max_per_episode": 1,
       "recurrence_mode": "ordinary",
       "risk_tags": []
@@ -3488,6 +3494,7 @@
       "callback_capable": true,
       "signature_capable": false,
       "compound_capable": false,
+      "compound_component_device_ids": [],
       "max_per_episode": 1,
       "recurrence_mode": "ordinary",
       "risk_tags": []
@@ -3521,6 +3528,7 @@
       "callback_capable": true,
       "signature_capable": false,
       "compound_capable": false,
+      "compound_component_device_ids": [],
       "max_per_episode": 1,
       "recurrence_mode": "ordinary",
       "risk_tags": [
@@ -3557,6 +3565,7 @@
       "callback_capable": true,
       "signature_capable": false,
       "compound_capable": false,
+      "compound_component_device_ids": [],
       "max_per_episode": 1,
       "recurrence_mode": "ordinary",
       "risk_tags": []
@@ -3592,6 +3601,7 @@
       "callback_capable": true,
       "signature_capable": false,
       "compound_capable": false,
+      "compound_component_device_ids": [],
       "max_per_episode": 1,
       "recurrence_mode": "ordinary",
       "risk_tags": []
@@ -3619,6 +3629,7 @@
       "callback_capable": false,
       "signature_capable": false,
       "compound_capable": false,
+      "compound_component_device_ids": [],
       "max_per_episode": 1,
       "recurrence_mode": "ordinary",
       "risk_tags": []
@@ -3646,6 +3657,7 @@
       "callback_capable": false,
       "signature_capable": false,
       "compound_capable": false,
+      "compound_component_device_ids": [],
       "max_per_episode": 1,
       "recurrence_mode": "ordinary",
       "risk_tags": []
@@ -3654,7 +3666,7 @@
       "device_id": "promotion-v2:device:hagism-compound",
       "device_type": "cultural_device",
       "family": "hagism",
-      "structure": "approved Hagism compound callback",
+      "structure": "Ai, n-ai {X}, {Y}. Să fie bine, să nu fie rău.",
       "semantic_affordances": [
         "bureaucracy",
         "improvisation"
@@ -3667,12 +3679,19 @@
         "victim_sensitive",
         "tragedy_sensitive"
       ],
-      "replaceable_slots": [],
+      "replaceable_slots": [
+        "X",
+        "Y"
+      ],
       "forbidden_transforms": [],
       "source_expression_ids": [],
       "callback_capable": false,
       "signature_capable": false,
       "compound_capable": true,
+      "compound_component_device_ids": [
+        "promotion-v2:device:ai-n-ai",
+        "promotion-v2:device:sa-fie-bine"
+      ],
       "max_per_episode": 1,
       "recurrence_mode": "ordinary",
       "risk_tags": []
@@ -3698,6 +3717,7 @@
       "callback_capable": false,
       "signature_capable": true,
       "compound_capable": false,
+      "compound_component_device_ids": [],
       "max_per_episode": 1,
       "recurrence_mode": "signature",
       "risk_tags": []
@@ -3747,5 +3767,5 @@
     "deferred": 3,
     "rejected": 30
   },
-  "bundle_content_sha256": "d045363587e846ec3afebbfda62f3ee11585b58b8e7b61ee761c930d12c8a84e"
+  "bundle_content_sha256": "9f893847827a33e4d17e1ff7fae41fb9ad62405abd9213fa8b5acf0f13ab32cc"
 }
