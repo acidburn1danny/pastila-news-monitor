@@ -292,3 +292,4 @@ def test_normal_release_wrapper_is_separate_and_records_tool_versions() -> None:
     assert "if ($PlanOnly)" in wrapper
     assert "pyproject.toml" in wrapper
     assert "'--app-version', '0.1.0'" not in wrapper
+    assert "encoding='utf-8'" in wrapper

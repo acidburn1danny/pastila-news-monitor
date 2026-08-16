@@ -15,7 +15,7 @@ $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 $repository = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
 $pyInstallerVersion = (& $PythonExecutable -I -c 'import PyInstaller; print(PyInstaller.__version__)')
-$appVersion = (& $PythonExecutable -I -c 'import pathlib,sys,tomllib; print(tomllib.loads(pathlib.Path(sys.argv[1]).read_text(encoding="utf-8"))["project"]["version"])' (Join-Path $repository 'pyproject.toml'))
+$appVersion = (& $PythonExecutable -I -c "import pathlib,sys,tomllib; print(tomllib.loads(pathlib.Path(sys.argv[1]).read_text(encoding='utf-8'))['project']['version'])" (Join-Path $repository 'pyproject.toml'))
 if ($LASTEXITCODE -ne 0 -or $appVersion -notmatch '^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$') {
     throw 'Canonical product version could not be resolved.'
 }
