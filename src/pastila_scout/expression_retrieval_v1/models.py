@@ -130,6 +130,7 @@ class EditorialRetrievalContextV1:
     region: str | None = None
     political_context: bool = False
     meme_context: bool = False
+    comedy_disabled: bool = False
 
 
 @dataclass(frozen=True, slots=True)

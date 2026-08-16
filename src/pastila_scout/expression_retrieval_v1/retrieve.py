@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import UTC, datetime
+from enum import StrEnum
 
 from .models import (
     ComedyDeviceRecordV1,
@@ -16,6 +17,51 @@ from .models import (
     StoryVoicePaletteV1,
 )
 from .normalize import diacritic_insensitive_tokens_v1, retrieval_tokens_v1
+
+
+class StoryComedyBudgetV1(StrEnum):
+    DISABLED = "COMEDY_DISABLED"
+    LOW = "COMEDY_LOW"
+    NORMAL = "COMEDY_NORMAL"
+    HIGH = "COMEDY_HIGH"
+
+
+class ControlledTermUsageRoleV1(StrEnum):
+    FACTUAL_CONTEXT = "factual_context"
+    DECORATIVE_CONTEXT = "decorative_context"
+
+
+def controlled_term_usage_role_v1(
+    record: ControlledTermRecordV1,
+) -> ControlledTermUsageRoleV1:
+    if (
+        "generational_language" in record.domains
+        or "generational-marker" in record.risk_tags
+    ):
+        return ControlledTermUsageRoleV1.DECORATIVE_CONTEXT
+    return ControlledTermUsageRoleV1.FACTUAL_CONTEXT
+
+
+def story_comedy_budget_v1(
+    context: EditorialRetrievalContextV1,
+) -> StoryComedyBudgetV1:
+    if context.comedy_disabled or context.victim_sensitive or context.tragedy_sensitive:
+        return StoryComedyBudgetV1.DISABLED
+    if context.humor_intensity <= 1:
+        return StoryComedyBudgetV1.LOW
+    if context.humor_intensity >= 3:
+        return StoryComedyBudgetV1.HIGH
+    return StoryComedyBudgetV1.NORMAL
+
+
+def _strong_thresholds(budget: StoryComedyBudgetV1) -> tuple[int, int]:
+    if budget is StoryComedyBudgetV1.LOW:
+        return 6, 6
+    if budget is StoryComedyBudgetV1.NORMAL:
+        return 6, 6
+    if budget is StoryComedyBudgetV1.HIGH:
+        return 6, 6
+    return 100, 100
 
 
 def _context_tags(context: EditorialRetrievalContextV1) -> frozenset[str]:
@@ -62,6 +108,8 @@ def _expression_score(
         record.enabled, record.active_from, record.active_until, now
     ):
         return None, ("hard_gate",), ()
+    if context.victim_sensitive or context.tragedy_sensitive:
+        return None, ("humor_safety_gate",), ()
     if record.raw and (
         not context.raw_eligible
         or context.victim_sensitive
@@ -96,6 +144,10 @@ def _expression_score(
         record.text, record.semantic_gloss, *record.keywords, *record.semantic_families
     )
     overlap = len(context_tokens & record_tokens)
+    explicit_text_match = (
+        record.text.casefold()
+        in " ".join((context.title, context.summary, *context.keywords)).casefold()
+    )
     if not overlap:
         overlap = min(1, len(context_ascii & record_ascii))
     tag_overlap = len(
@@ -126,6 +178,8 @@ def _expression_score(
     reasons = ["owner_class", "stable_tiebreak"]
     if overlap:
         reasons.append("keyword_match")
+    if explicit_text_match:
+        reasons.append("explicit_text_match")
     if tag_overlap:
         reasons.append("semantic_family_match")
     if record.regionalism:
@@ -204,6 +258,8 @@ def retrieve_story_voice_palette_with_trace_v1(
     now: datetime | None = None,
 ) -> tuple[StoryVoicePaletteV1, RetrievalTraceV1]:
     moment = now or datetime.now(UTC)
+    budget = story_comedy_budget_v1(context)
+    expression_threshold, device_threshold = _strong_thresholds(budget)
     trace: list[RetrievalTraceItemV1] = []
     expression_scores: list[tuple[int, str, PaletteItemV1]] = []
     surfaces = {
@@ -217,7 +273,16 @@ def retrieve_story_voice_palette_with_trace_v1(
         trace.append(
             RetrievalTraceItemV1(record.expression_id, selected, reasons, score)
         )
-        if selected and score is not None:
+        if (
+            selected
+            and score is not None
+            and (
+                "explicit_text_match" in reasons
+                or (
+                    score >= expression_threshold and "semantic_family_match" in reasons
+                )
+            )
+        ):
             expression_scores.append(
                 (
                     -score,
@@ -235,8 +300,6 @@ def retrieve_story_voice_palette_with_trace_v1(
                 )
             )
     expression_scores.sort(key=lambda item: (item[0], item[1]))
-    expressions = tuple(item[2] for item in expression_scores[:3])
-
     tools: list[tuple[int, str, str, PaletteItemV1]] = []
     for record in catalog.controlled_terms:
         score, reasons = _controlled_gate(record, context, episode_state, moment)
@@ -264,7 +327,7 @@ def retrieve_story_voice_palette_with_trace_v1(
         trace.append(
             RetrievalTraceItemV1(record.device_id, score is not None, reasons, score)
         )
-        if score is not None:
+        if score is not None and score >= device_threshold:
             section = "signature" if record.signature_capable else "device"
             tools.append(
                 (
@@ -281,14 +344,50 @@ def retrieve_story_voice_palette_with_trace_v1(
                     ),
                 )
             )
-    tools.sort(key=lambda item: (item[0], item[1]))
-    chosen = tools[:2]
+    controlled_candidates = sorted(
+        (item for item in tools if item[2] == "controlled"),
+        key=lambda item: (item[0], item[1]),
+    )
+    comedy = [(*item[:2], "expression", item[2]) for item in expression_scores] + [
+        (item[0] - 2, item[1], item[2], item[3])
+        for item in tools
+        if item[2] != "controlled"
+    ]
+    comedy.sort(key=lambda item: (item[0], item[1]))
+    primary = comedy[:1] if budget is not StoryComedyBudgetV1.DISABLED else []
+    term_records = {item.term_id: item for item in catalog.controlled_terms}
+    suppressed_decorative_ids = {
+        item[1]
+        for item in controlled_candidates
+        if primary
+        and controlled_term_usage_role_v1(term_records[item[1]])
+        is ControlledTermUsageRoleV1.DECORATIVE_CONTEXT
+    }
+    controlled = [
+        item
+        for item in controlled_candidates
+        if item[1] not in suppressed_decorative_ids
+    ][:1]
+    if suppressed_decorative_ids:
+        trace = [
+            (
+                RetrievalTraceItemV1(
+                    item.authority_id,
+                    False,
+                    ("decorative_controlled_term_mutually_exclusive_with_comedy_tool",),
+                    item.score,
+                )
+                if item.authority_id in suppressed_decorative_ids
+                else item
+            )
+            for item in trace
+        ]
     palette = StoryVoicePaletteV1(
         event_id=context.event_id,
-        expressions=expressions,
-        controlled_terms=tuple(item[3] for item in chosen if item[2] == "controlled"),
-        comedy_devices=tuple(item[3] for item in chosen if item[2] == "device"),
-        signature_devices=tuple(item[3] for item in chosen if item[2] == "signature"),
+        expressions=tuple(item[3] for item in primary if item[2] == "expression"),
+        controlled_terms=tuple(item[3] for item in controlled),
+        comedy_devices=tuple(item[3] for item in primary if item[2] == "device"),
+        signature_devices=tuple(item[3] for item in primary if item[2] == "signature"),
     )
     return palette, RetrievalTraceV1(tuple(trace))
 
@@ -307,3 +406,13 @@ def retrieve_story_voice_palette_v1(
         now=now,
     )
     return palette
+
+
+__all__ = (
+    "ControlledTermUsageRoleV1",
+    "StoryComedyBudgetV1",
+    "controlled_term_usage_role_v1",
+    "retrieve_story_voice_palette_v1",
+    "retrieve_story_voice_palette_with_trace_v1",
+    "story_comedy_budget_v1",
+)

@@ -11,15 +11,20 @@ from pathlib import Path
 import pytest
 
 from pastila_scout.expression_retrieval_v1 import (
+    ControlledTermUsageRoleV1,
     EditorialRetrievalContextV1,
     EpisodeVoiceStateV1,
     ExpressionCatalogErrorV1,
+    StoryComedyBudgetV1,
+    controlled_term_usage_role_v1,
     load_catalog_v1,
     reset_catalog_cache_v1,
     retrieve_story_voice_palette_v1,
     retrieve_story_voice_palette_with_trace_v1,
+    story_comedy_budget_v1,
 )
 from pastila_scout.expression_retrieval_v1.models import ExpressionCatalogV1
+from pastila_scout.expression_retrieval_v1.usage import detect_usage_receipt_v1
 
 CATALOG_PATH = (
     Path(__file__).parents[1]
@@ -63,6 +68,227 @@ def _ids(palette: object) -> set[str]:
         )
         for item in section
     }
+
+
+@pytest.mark.parametrize(
+    ("changes", "expected"),
+    [
+        ({"comedy_disabled": True}, StoryComedyBudgetV1.DISABLED),
+        ({"victim_sensitive": True}, StoryComedyBudgetV1.DISABLED),
+        ({"humor_intensity": 1}, StoryComedyBudgetV1.LOW),
+        ({"humor_intensity": 2}, StoryComedyBudgetV1.NORMAL),
+        ({"humor_intensity": 3}, StoryComedyBudgetV1.HIGH),
+    ],
+)
+def test_story_comedy_budget_is_derived_from_authoritative_context(
+    changes: dict[str, object], expected: StoryComedyBudgetV1
+) -> None:
+    assert story_comedy_budget_v1(_context(**changes)) is expected
+
+
+def test_sparse_policy_returns_no_weak_match_and_one_strong_primary() -> None:
+    catalog = load_catalog_v1()
+    weak = retrieve_story_voice_palette_v1(
+        catalog=catalog,
+        context=_context(
+            title="Biblioteca prelungeste programul de weekend",
+            summary="Programul creste cu doua ore.",
+            humor_intensity=1,
+        ),
+        episode_state=EpisodeVoiceStateV1(),
+    )
+    strong_record = next(
+        item for item in catalog.expressions if not item.raw and not item.regionalism
+    )
+    strong = retrieve_story_voice_palette_v1(
+        catalog=catalog,
+        context=_context(title=strong_record.text, humor_intensity=2),
+        episode_state=EpisodeVoiceStateV1(),
+    )
+
+    assert weak.total_count == 0
+    assert len(strong.expressions) == 1
+    assert strong.total_count == 1
+
+
+def test_disabled_budget_hides_comedy_but_keeps_factual_controlled_term() -> None:
+    catalog = load_catalog_v1()
+    palette = retrieve_story_voice_palette_v1(
+        catalog=catalog,
+        context=_context(
+            title="Autoritatea dezminte fake news",
+            disinformation=True,
+            comedy_disabled=True,
+        ),
+        episode_state=EpisodeVoiceStateV1(),
+    )
+
+    assert palette.expressions == ()
+    assert palette.comedy_devices == ()
+    assert palette.signature_devices == ()
+    assert tuple(item.display_text for item in palette.controlled_terms) == (
+        "fake news",
+    )
+
+
+def test_only_primary_comedy_tool_is_visible_and_alternates_remain_in_trace() -> None:
+    catalog = load_catalog_v1()
+    context = _context(
+        title="Santier neterminat, o poveste fara sfarsit",
+        topic_tags=("unfinished_project", "bureaucracy"),
+        unfinished_project=True,
+        humor_intensity=3,
+    )
+    palette, trace = retrieve_story_voice_palette_with_trace_v1(
+        catalog=catalog,
+        context=context,
+        episode_state=EpisodeVoiceStateV1(),
+    )
+    visible_comedy = (
+        *palette.expressions,
+        *palette.comedy_devices,
+        *palette.signature_devices,
+    )
+
+    assert len(visible_comedy) == 1
+    assert len(tuple(item for item in trace.items if item.selected)) > 1
+
+
+def test_controlled_term_roles_derive_from_frozen_metadata() -> None:
+    catalog = load_catalog_v1()
+    roles = {
+        item.term: controlled_term_usage_role_v1(item)
+        for item in catalog.controlled_terms
+    }
+
+    assert roles["vibe-ul"] is ControlledTermUsageRoleV1.DECORATIVE_CONTEXT
+    assert roles["sinecură"] is ControlledTermUsageRoleV1.FACTUAL_CONTEXT
+    assert roles["fake news"] is ControlledTermUsageRoleV1.FACTUAL_CONTEXT
+    assert all(
+        roles[term] is ControlledTermUsageRoleV1.FACTUAL_CONTEXT
+        for term in ("suveranist", "pesedaurii", "pesedizat")
+    )
+
+
+def test_entertainment_device_suppresses_decorative_vibe_from_visible_palette() -> None:
+    catalog = load_catalog_v1()
+    palette, trace = retrieve_story_voice_palette_with_trace_v1(
+        catalog=catalog,
+        context=_context(
+            title="Influencerul transforma despartirea in promovare",
+            categories=("CanCan",),
+            entertainment=True,
+            meme_context=True,
+            humor_intensity=3,
+        ),
+        episode_state=EpisodeVoiceStateV1(),
+    )
+
+    assert tuple(item.display_text for item in palette.comedy_devices) == (
+        "Absolut {cadru/eveniment}.",
+    )
+    assert palette.controlled_terms == ()
+    vibe_trace = next(
+        item for item in trace.items if item.authority_id.endswith("vibe-ul")
+    )
+    assert vibe_trace.selected is False
+    assert vibe_trace.reason_codes == (
+        "decorative_controlled_term_mutually_exclusive_with_comedy_tool",
+    )
+
+
+def test_decorative_vibe_is_visible_alone_but_suppressed_by_expression_or_signature() -> (
+    None
+):
+    catalog = load_catalog_v1()
+    vibe_only_catalog = replace(catalog, comedy_devices=(), signature_devices=())
+    vibe_only = retrieve_story_voice_palette_v1(
+        catalog=vibe_only_catalog,
+        context=_context(title="vibe-ul", meme_context=True, humor_intensity=1),
+        episode_state=EpisodeVoiceStateV1(),
+    )
+    expression = next(
+        item for item in catalog.expressions if not item.raw and not item.regionalism
+    )
+    expression_catalog = replace(catalog, comedy_devices=(), signature_devices=())
+    with_expression = retrieve_story_voice_palette_v1(
+        catalog=expression_catalog,
+        context=_context(
+            title=f"{expression.text} vibe-ul",
+            meme_context=True,
+            humor_intensity=2,
+        ),
+        episode_state=EpisodeVoiceStateV1(),
+    )
+    signature = next(item for item in catalog.comedy_devices if item.signature_capable)
+    signature_catalog = replace(catalog, comedy_devices=(signature,))
+    with_signature = retrieve_story_voice_palette_v1(
+        catalog=signature_catalog,
+        context=_context(
+            title="vibe-ul",
+            topic_tags=("signature_context",),
+            meme_context=True,
+            humor_intensity=2,
+        ),
+        episode_state=EpisodeVoiceStateV1(),
+    )
+
+    assert tuple(item.display_text for item in vibe_only.controlled_terms) == (
+        "vibe-ul",
+    )
+    assert len(with_expression.expressions) == 1
+    assert with_expression.controlled_terms == ()
+    assert len(with_signature.signature_devices) == 1
+    assert with_signature.controlled_terms == ()
+
+
+@pytest.mark.parametrize(
+    ("term", "changes"),
+    [
+        ("fake news", {"disinformation": True}),
+        ("sinecură", {"patronage": True}),
+    ],
+)
+def test_factual_controlled_term_may_coexist_with_comedy_device(
+    term: str, changes: dict[str, object]
+) -> None:
+    catalog = load_catalog_v1()
+    palette = retrieve_story_voice_palette_v1(
+        catalog=catalog,
+        context=_context(
+            title=term,
+            topic_tags=("unfinished_project",),
+            unfinished_project=True,
+            humor_intensity=3,
+            **changes,
+        ),
+        episode_state=EpisodeVoiceStateV1(),
+    )
+
+    assert len(palette.comedy_devices) == 1
+    assert tuple(item.display_text for item in palette.controlled_terms) == (term,)
+
+
+def test_suppressed_decorative_term_is_not_offered_or_receipted() -> None:
+    catalog = load_catalog_v1()
+    palette = retrieve_story_voice_palette_v1(
+        catalog=catalog,
+        context=_context(
+            title="Influencerul are vibe-ul unei reclame",
+            entertainment=True,
+            meme_context=True,
+            humor_intensity=3,
+        ),
+        episode_state=EpisodeVoiceStateV1(),
+    )
+    receipt = detect_usage_receipt_v1(
+        catalog=catalog,
+        palette=palette,
+        validated_story_text="Vibe-ul exista doar coincidental in text.",
+    )
+
+    assert palette.controlled_terms == ()
+    assert receipt.controlled_term_ids_used == ()
 
 
 def test_catalog_loads_as_packaged_resource_and_is_cached() -> None:
@@ -233,6 +459,23 @@ def test_raw_gate_and_victim_suppression() -> None:
     assert raw.expression_id not in _ids(blocked)
 
 
+def test_victim_tragedy_context_suppresses_all_expressions() -> None:
+    catalog = load_catalog_v1()
+    tragedy = retrieve_story_voice_palette_v1(
+        catalog=catalog,
+        context=_context(
+            title="Victime dupa prabusirea unei pasarele",
+            summary="Ancheta verifica responsabilitatea institutionala.",
+            humor_intensity=3,
+            victim_sensitive=True,
+            tragedy_sensitive=True,
+        ),
+        episode_state=EpisodeVoiceStateV1(),
+    )
+
+    assert tragedy.expressions == ()
+
+
 @pytest.mark.parametrize(
     ("term", "blocked_context", "allowed_context"),
     [
@@ -249,6 +492,8 @@ def test_controlled_term_context_gates(
 ) -> None:
     catalog = load_catalog_v1()
     record = next(item for item in catalog.controlled_terms if item.term == term)
+    if term == "vibe-ul":
+        catalog = replace(catalog, comedy_devices=(), signature_devices=())
     blocked = retrieve_story_voice_palette_v1(
         catalog=catalog,
         context=_context(title=term, **blocked_context),

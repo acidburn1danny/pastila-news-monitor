@@ -1,8 +1,13 @@
 """Immediate constraint validation for generated component results."""
 
+import re
+import unicodedata
 from dataclasses import dataclass
 
 from pastila_scout.editor.generation.models import RetryReason
+
+_UNRESOLVED_TEMPLATE = re.compile(r"\{[^{}]+\}")
+_TEMPLATE_SLOT = re.compile(r"\{[^{}]+\}")
 
 
 @dataclass(frozen=True)
@@ -41,6 +46,16 @@ def validate_story(result, context, state):
             )
         ).split()
     )
+    if any(
+        _UNRESOLVED_TEMPLATE.search(value)
+        for value in (
+            result.factual_summary,
+            *(block.text for block in result.commentary_blocks),
+            result.ending,
+        )
+    ):
+        errors.append("unresolved_template_placeholder")
+    errors.extend(_duplicate_offered_tool_errors(result, context))
     if words > context.word_budget:
         errors.append("word_budget_exceeded")
     if words / 2.5 > context.runtime_budget:
@@ -75,6 +90,76 @@ def validate_story(result, context, state):
     if any(set(usage).difference({expected}) for usage, expected in required):
         errors.append("unknown_intent_reference")
     return _outcome(errors)
+
+
+def _story_text(result) -> str:
+    return "\n".join(
+        (
+            result.factual_summary,
+            *(block.text for block in result.commentary_blocks),
+            result.ending,
+        )
+    )
+
+
+def _normalized(value: str) -> str:
+    return " ".join(unicodedata.normalize("NFC", value).casefold().split())
+
+
+def _literal_occurrences(surface: str, text: str) -> int:
+    surface = _normalized(surface)
+    text = _normalized(text)
+    if not surface:
+        return 0
+    pattern = rf"(?<!\w){re.escape(surface)}(?!\w)"
+    return sum(1 for _ in re.finditer(pattern, text))
+
+
+def _template_occurrences(template: str, text: str) -> int:
+    template = _normalized(template)
+    text = _normalized(text)
+    parts = _TEMPLATE_SLOT.split(template)
+    slots = _TEMPLATE_SLOT.findall(template)
+    if not slots:
+        return _literal_occurrences(template, text)
+    pattern = re.escape(parts[0])
+    for tail in parts[1:]:
+        pattern += r"[^.!?\n{}]+?" + re.escape(tail)
+    return sum(1 for _ in re.finditer(pattern, text))
+
+
+def _duplicate_offered_tool_errors(result, context) -> tuple[str, ...]:
+    toolkit = context.optional_editorial_toolkit
+    if not isinstance(toolkit, dict):
+        return ()
+    text = _story_text(result)
+    errors = []
+    for section in (
+        "expressions",
+        "controlled_terms",
+        "comedy_devices",
+        "signature_devices",
+    ):
+        items = toolkit.get(section, ())
+        if not isinstance(items, (list, tuple)):
+            continue
+        for item in items:
+            if not isinstance(item, dict):
+                continue
+            identity = item.get("id")
+            surface = item.get("text")
+            if not isinstance(identity, str) or not isinstance(surface, str):
+                continue
+            occurrences = (
+                _template_occurrences(surface, text)
+                if section in {"comedy_devices", "signature_devices"}
+                else _literal_occurrences(surface, text)
+            )
+            if occurrences >= 2:
+                errors.append(
+                    f"duplicate_offered_tool_usage:{section}:{identity}:{occurrences}"
+                )
+    return tuple(errors)
 
 
 def validate_transition(result, context, state):
@@ -131,5 +216,5 @@ def _outcome(errors):
             "protected_payoff_disclosed",
         }
         for item in errors
-    )
+    ) or any(item.startswith("duplicate_offered_tool_usage:") for item in errors)
     return ValidationOutcome(errors=errors, retry_reason=reason, fatal=fatal)

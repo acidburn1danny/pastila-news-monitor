@@ -143,6 +143,10 @@ def build_editorial_retrieval_context_v1(
         region=_region(source_ids),
         political_context=political,
         meme_context=entertainment,
+        comedy_disabled=(
+            voice.humor_intensity.value == "none"
+            and voice.roast_eligibility.value == "prohibited"
+        ),
     )
 
 
@@ -199,6 +203,13 @@ def serialize_story_voice_palette_v1(palette: StoryVoicePaletteV1) -> dict[str, 
             "optional": True,
             "may_use_none": True,
             "never_force": True,
+            "maximum_comedy_tools": 1,
+            "never_chain_tools": True,
+            "use_each_offered_tool_at_most_once": True,
+            "integrate_naturally_without_introduction_or_quotation": True,
+            "controlled_terms_are_optional_contextual_vocabulary": True,
+            "unresolved_placeholders_forbidden": True,
+            "skip_template_if_it_cannot_be_filled_naturally": True,
             "preserve_facts": True,
             "do_not_invent_attribution": True,
             "do_not_target_victims_or_tragedy": True,

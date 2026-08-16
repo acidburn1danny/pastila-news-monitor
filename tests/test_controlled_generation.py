@@ -29,6 +29,7 @@ from pastila_scout.editor.generation.models import (
 )
 from pastila_scout.editor.generation.prompt import PromptLayer
 from pastila_scout.editor.generation.provider import ProviderTimeoutError
+from pastila_scout.editor.generation.validation import validate_story
 
 
 def config():
@@ -151,6 +152,210 @@ def test_prompt_layers_fingerprint_retry_and_minimal_safe_are_deterministic() ->
     assert first.prompt_fingerprint != retry.prompt_fingerprint
     assert "2.4 km" in first.text
     assert "raw_payload" not in first.text
+
+
+def test_story_validation_rejects_unresolved_template_placeholder() -> None:
+    context = StoryGenerationContext(
+        story_id=1,
+        flow_position=1,
+        approved_facts=(
+            ApprovedFact(fact_id="event-1-title", field="title", value="Titlu"),
+        ),
+        editorial_plan={"intent_id": "editorial:1"},
+        conversation_plan={"intent_id": "conversation:1"},
+        voice_plan={
+            "intent_id": "voice:1",
+            "vocatives": {"maximum_per_story": 0},
+            "profanity_ceiling": "clean",
+        },
+        word_budget=100,
+        runtime_budget=60,
+        protected_targets=(),
+        allowed_satire_targets=("systemic_failure",),
+        forbidden_claims=(),
+    )
+    valid = StoryGenerationResult.model_validate(story_result(1, 1))
+    unresolved = valid.model_copy(update={"ending": "Absolut {cadru/eveniment}."})
+
+    assert validate_story(valid, context, EpisodeGenerationState()).accepted
+    outcome = validate_story(unresolved, context, EpisodeGenerationState())
+    assert outcome.errors == ("unresolved_template_placeholder",)
+
+
+def _toolkit_context(section: str, identity: str, text: str) -> StoryGenerationContext:
+    return StoryGenerationContext(
+        story_id=1,
+        flow_position=1,
+        approved_facts=(
+            ApprovedFact(fact_id="event-1-title", field="title", value="Titlu"),
+        ),
+        editorial_plan={"intent_id": "editorial:1"},
+        conversation_plan={"intent_id": "conversation:1"},
+        voice_plan={
+            "intent_id": "voice:1",
+            "vocatives": {"maximum_per_story": 0},
+            "profanity_ceiling": "clean",
+        },
+        optional_editorial_toolkit={
+            section: ({"id": identity, "text": text, "affordance": "test"},)
+        },
+        word_budget=100,
+        runtime_budget=60,
+        protected_targets=(),
+        allowed_satire_targets=("systemic_failure",),
+        forbidden_claims=(),
+    )
+
+
+def _result_with_text(text: str) -> StoryGenerationResult:
+    result = StoryGenerationResult.model_validate(story_result(1, 1))
+    block = result.commentary_blocks[0].model_copy(update={"text": text})
+    return result.model_copy(update={"commentary_blocks": (block,)})
+
+
+@pytest.mark.parametrize(
+    ("section", "surface", "single", "duplicate"),
+    [
+        (
+            "expressions",
+            "a face toți banii",
+            "Detaliul poate a face toți banii.",
+            "Asta poate a face toți banii. Și finalul poate a face toți banii.",
+        ),
+        (
+            "controlled_terms",
+            "vibe-ul",
+            "Vibe-ul este comercial.",
+            "Vibe-ul este comercial, iar vibe-ul rămâne calculat.",
+        ),
+        (
+            "comedy_devices",
+            "Absolut {cadru/eveniment}.",
+            "Absolut cinema.",
+            "Absolut cinema. Absolut spectacol.",
+        ),
+        (
+            "comedy_devices",
+            "Legenda spune că {CLAUZĂ}.",
+            "Legenda spune că proiectul va fi gata.",
+            "Legenda spune că vine. Legenda spune că pleacă.",
+        ),
+        (
+            "signature_devices",
+            "Cum zicea un mare clasic în viață... {CLAUZĂ}.",
+            "Cum zicea un mare clasic în viață... treaba merge.",
+            "Cum zicea un mare clasic în viață... vine. Cum zicea un mare clasic în viață... pleacă.",
+        ),
+    ],
+)
+def test_duplicate_offered_tool_validation(
+    section: str, surface: str, single: str, duplicate: str
+) -> None:
+    context = _toolkit_context(section, "tool-id", surface)
+    state = EpisodeGenerationState()
+
+    assert validate_story(_result_with_text(single), context, state).accepted
+    outcome = validate_story(_result_with_text(duplicate), context, state)
+    assert outcome.errors == (f"duplicate_offered_tool_usage:{section}:tool-id:2",)
+    assert outcome.fatal is True
+
+
+def test_duplicate_validator_undercounts_ambiguous_and_unoffered_text() -> None:
+    expression_context = _toolkit_context(
+        "expressions", "expression-id", "a face toți banii"
+    )
+    empty_context = _toolkit_context("expressions", "other-id", "altă expresie")
+
+    assert validate_story(
+        _result_with_text("Banii vin, iar banii pleacă."),
+        expression_context,
+        EpisodeGenerationState(),
+    ).accepted
+    assert validate_story(
+        _result_with_text("Vibe-ul vine, iar vibe-ul pleacă."),
+        empty_context,
+        EpisodeGenerationState(),
+    ).accepted
+
+
+def test_device_prefix_is_not_a_complete_duplicate_and_compound_counts_as_one() -> None:
+    device = _toolkit_context("comedy_devices", "legend", "Legenda spune că {CLAUZĂ}.")
+    compound = _toolkit_context(
+        "comedy_devices",
+        "compound",
+        "Ai, n-ai {X}, {Y}. Să fie bine, să nu fie rău.",
+    )
+
+    assert validate_story(
+        _result_with_text("Legenda spune, dar nimeni nu termină formula."),
+        device,
+        EpisodeGenerationState(),
+    ).accepted
+    assert validate_story(
+        _result_with_text(
+            "Ai, n-ai autorizație, ridici blocul. Să fie bine, să nu fie rău."
+        ),
+        compound,
+        EpisodeGenerationState(),
+    ).accepted
+
+
+def test_duplicate_failure_retries_clean_output_without_mutating_input_state() -> None:
+    context = _toolkit_context(
+        "comedy_devices", "absolute", "Absolut {cadru/eveniment}."
+    )
+    duplicate = story_result(1, 1)
+    duplicate["commentary_blocks"][0]["text"] = "Absolut cinema. Absolut spectacol."
+    clean = story_result(1, 1)
+    clean["commentary_blocks"][0]["text"] = "Absolut cinema."
+    provider = ScriptedLanguageModelProvider((duplicate, clean))
+    generator = ControlledGenerator(provider, config=config())
+    state = EpisodeGenerationState()
+
+    result, traces, status = generator._component(
+        item_id="story-01",
+        component_type=GenerationComponentType.STORY,
+        target_id="1",
+        episode_context={"episode_id": "test"},
+        component_context=context,
+        output_schema=StoryGenerationResult,
+        validator=lambda value: validate_story(value, context, state),
+        state=state,
+    )
+
+    assert result.commentary_blocks[0].text == "Absolut cinema."
+    assert status is ManifestItemStatus.COMPLETED
+    assert len(provider.prompts) == 2
+    assert traces[0].acceptance_status is ManifestItemStatus.RETRYING
+    assert traces[1].acceptance_status is ManifestItemStatus.COMPLETED
+    assert state.revision == 0
+
+
+def test_three_duplicate_attempts_end_terminal_failed_without_state_change() -> None:
+    context = _toolkit_context(
+        "comedy_devices", "absolute", "Absolut {cadru/eveniment}."
+    )
+    duplicate = story_result(1, 1)
+    duplicate["commentary_blocks"][0]["text"] = "Absolut cinema. Absolut spectacol."
+    provider = ScriptedLanguageModelProvider((duplicate, duplicate, duplicate))
+    generator = ControlledGenerator(provider, config=config())
+    state = EpisodeGenerationState()
+
+    _, traces, status = generator._component(
+        item_id="story-01",
+        component_type=GenerationComponentType.STORY,
+        target_id="1",
+        episode_context={"episode_id": "test"},
+        component_context=context,
+        output_schema=StoryGenerationResult,
+        validator=lambda value: validate_story(value, context, state),
+        state=state,
+    )
+
+    assert status is ManifestItemStatus.FAILED
+    assert len(provider.prompts) == 3
+    assert traces[-1].acceptance_status is ManifestItemStatus.FAILED
+    assert state.revision == 0
 
 
 def test_scripted_provider_records_calls_and_retries_timeout_without_editorial_attempt() -> (
