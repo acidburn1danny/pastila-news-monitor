@@ -134,13 +134,13 @@ def test_plan_only_generates_deterministic_manifest_and_no_installer(
         "config/settings.json" in item for item in plan["excluded_untracked_paths"]
     )
     assert plan["application_wheel_sha256"]
-    assert plan["app_version"] == PROJECT_VERSION == "1.1.0"
+    assert plan["app_version"] == PROJECT_VERSION == "1.1.1"
     assert plan["windows_release_revision"] == "r3"
     assert plan["output_installer_path"].endswith(
         f"PastilaScout-{PROJECT_VERSION}-Setup.exe"
     )
     assert plan["intended_release_receipt_filename"] == (
-        "PastilaScout-1.1.0-Windows-r3-release-receipt.json"
+        "PastilaScout-1.1.1-Windows-r3-release-receipt.json"
     )
 
 
@@ -197,7 +197,7 @@ def test_release_plan_rejects_bundle_with_stale_product_metadata(
 ) -> None:
     bundle = _bundle(tmp_path)
     metadata = bundle / f"pastila_news_monitor-{PROJECT_VERSION}.dist-info"
-    metadata.rename(bundle / "pastila_news_monitor-0.1.0.dist-info")
+    metadata.rename(bundle / "pastila_news_monitor-1.1.0.dist-info")
     with pytest.raises(ReleaseOrchestrationError, match="bundle product version"):
         _plan(tmp_path / "plan", monkeypatch, bundle=bundle)
 

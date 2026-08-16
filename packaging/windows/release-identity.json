@@ -16,6 +16,20 @@
     "architecture": "x64compatible",
     "install_directory": "{localappdata}\\Programs\\PastilaScout"
   },
+  "failed_clean_pc_candidate": {
+    "product_version": "1.1.0",
+    "windows_release_revision": "r3",
+    "status": "FAILED_CLEAN_PC_INSTALLATION_ACCEPTANCE",
+    "installer_sha256": "b3c15f8e563bd07446dc1a062031a1eb348272cc36ec46bcb87ddb9e30f3bdfe",
+    "defects": [
+      "automatic development repository chooser",
+      "provider-unavailable onboarding deadlock"
+    ]
+  },
+  "current_candidate": {
+    "status": "PENDING_REBUILD_AND_CLEAN_PC_ACCEPTANCE",
+    "remediation_source_commit": "ae04a40566fc0e7033c2a96e86c3b5b08d2d2aca"
+  },
   "historical_parent": {
     "tag": "packaged-owner-v0.1.0-r2-episode-draft-v1-verified",
     "commit": "5364286c8c40ae3294474066f6c3a4895c50c9c1"
