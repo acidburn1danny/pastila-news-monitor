@@ -48,6 +48,16 @@ datas = [
         str(resource_root / "resources" / "trust" / "bootstrap-root-v1.json"),
         "resources/trust",
     ),
+    (
+        str(
+            resource_root
+            / "pastila_scout"
+            / "resources"
+            / "expression_retrieval_v1"
+            / "catalog.json"
+        ),
+        "pastila_scout/resources/expression_retrieval_v1",
+    ),
     (str(resource_root / "resources" / "THIRD-PARTY-NOTICES.txt"), "."),
 ] + copy_metadata("pastila-news-monitor") + collect_data_files("certifi")
 

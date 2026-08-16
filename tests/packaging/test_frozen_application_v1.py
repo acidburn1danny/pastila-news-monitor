@@ -25,14 +25,12 @@ OWNERSHIP_AUTHORITY = (
     ROOT
     / "docs"
     / "windows-application"
-    / "phase-5.6b-r7-r8-installer-test-ownership-refresh-r2.json"
+    / "installer-repair-test-ownership-refresh-r3.json"
 )
 OWNERSHIP_AUTHORITY_SHA256 = (
-    "63E8E773C5F049C224D1E0C51C7F36E36E5232A7AD6219FE2F3F18AFE1F32933"
+    "3670BEAF6992D5933182C729AA66036FE31D7853F38917F781E6211BC51E0D73"
 )
-OWNERSHIP_AUTHORITY_SCHEMA = (
-    "pastila-scout-phase-5.6b-installer-test-ownership-refresh-v2"
-)
+OWNERSHIP_AUTHORITY_SCHEMA = "pastila-scout-installer-repair-test-ownership-refresh-r3"
 
 
 def external_ownership(authority: Path = OWNERSHIP_AUTHORITY) -> dict[str, str]:
@@ -42,8 +40,8 @@ def external_ownership(authority: Path = OWNERSHIP_AUTHORITY) -> dict[str, str]:
     record = json.loads(raw)
     if (
         record.get("schema") != OWNERSHIP_AUTHORITY_SCHEMA
-        or record.get("status") != "CANDIDATE_READY_FOR_SEPARATE_FORMAL_FREEZE"
-        or record.get("decision") != "R7_R8_TEST_OWNERSHIP_SCOPE_VALID"
+        or record.get("status") != "VERIFIED_OWNER_PACKAGED_BASELINE"
+        or record.get("decision") != "INSTALLER_REPAIR_TEST_OWNERSHIP_REBOUND"
     ):
         raise ValueError("installer-test ownership authority is malformed")
     binding = record.get("ownership_binding")
@@ -51,7 +49,7 @@ def external_ownership(authority: Path = OWNERSHIP_AUTHORITY) -> dict[str, str]:
     if not isinstance(binding, dict) or not isinstance(candidates, dict):
         raise TypeError("installer-test ownership binding is absent")
     path = binding.get("path")
-    expected = binding.get("refreshed_sha256")
+    expected = binding.get("sha256")
     if (
         path != "tests/packaging/test_inno_installer_v1.py"
         or not isinstance(expected, str)
@@ -135,6 +133,8 @@ def test_spec_resource_and_provider_inventories_are_closed() -> None:
     assert text.count("pastila-root-1.pub") == 1
     assert text.count("bootstrap-root-v1.json") == 1
     assert "THIRD-PARTY-NOTICES.txt" in text
+    assert text.count('"catalog.json"') == 1
+    assert '"pastila_scout/resources/expression_retrieval_v1"' in text
     assert 'collect_data_files("certifi")' in text
     assert 'copy_metadata("pastila-news-monitor")' in text
     assert "provider_execution_ollama_v1" in text
@@ -203,6 +203,16 @@ def test_build_script_governs_exact_wrapper_bytes_and_tool_hash() -> None:
     assert "pth_external" in text
     assert "bad_origins" in text
     assert 'for name in ("pastila_scout", "openai", "httpx")' in text
+
+
+def test_expression_catalog_is_staged_from_production_authority_only() -> None:
+    build = BUILD.read_text(encoding="utf-8")
+    source = "src\\pastila_scout\\resources\\expression_retrieval_v1\\catalog.json"
+    destination = "pastila_scout\\resources\\expression_retrieval_v1\\catalog.json"
+    assert build.count(source) == 1
+    assert build.count(destination) == 2
+    assert "PastilaScout-Diagnostics" not in build
+    assert "PastilaScout-Diagnostics" not in SPEC.read_text(encoding="utf-8")
 
 
 def test_each_launcher_has_its_own_rendered_version_identity() -> None:
@@ -289,10 +299,10 @@ def test_external_ownership_does_not_hide_similar_or_arbitrary_paths(
     }
 
 
-def test_external_ownership_consumes_exact_frozen_r2_authority() -> None:
+def test_external_ownership_consumes_owner_verified_repair_authority() -> None:
     assert external_ownership() == {
         "tests/packaging/test_inno_installer_v1.py": (
-            "831B730ABD0F8C876C48D50FB0D29DF0E47A4568B6A35C9C6F7E4599272F99CE"
+            "E019CD139DC219D7015E726A2DFBABD58144282243956A0D6B65AEF901FE55F5"
         )
     }
 
@@ -309,14 +319,14 @@ def test_external_ownership_authority_fails_closed(tmp_path: Path) -> None:
         b"{}",
         b"not json",
         OWNERSHIP_AUTHORITY.read_bytes().replace(
+            b"E019CD139DC219D7015E726A2DFBABD58144282243956A0D6B65AEF901FE55F5",
             b"831B730ABD0F8C876C48D50FB0D29DF0E47A4568B6A35C9C6F7E4599272F99CE",
-            b"39BD76109D598D1295E2E9E3611D221FD433A30EC8D8442E66F29CF1FFD8E89F",
         ),
     ):
         authority.write_bytes(raw)
         try:
             external_ownership(authority)
-        except (ValueError, json.JSONDecodeError):
+        except ValueError, json.JSONDecodeError:
             pass
         else:
             raise AssertionError("invalid ownership authority was accepted")

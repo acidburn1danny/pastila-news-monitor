@@ -1,0 +1,38 @@
+{
+  "schema": "pastila-scout-installer-repair-test-ownership-refresh-r3",
+  "formal_name": "Installer Repair Test Ownership Refresh R3",
+  "status": "VERIFIED_OWNER_PACKAGED_BASELINE",
+  "decision": "INSTALLER_REPAIR_TEST_OWNERSHIP_REBOUND",
+  "repository_head_at_review": "b5ef6e84e31896382ce90f76de3220de24ca39fa",
+  "supersedes_for_current_packaging_only": {
+    "path": "docs/windows-application/phase-5.6b-r7-r8-installer-test-ownership-refresh-r2.json",
+    "sha256": "63E8E773C5F049C224D1E0C51C7F36E36E5232A7AD6219FE2F3F18AFE1F32933",
+    "reason": "Two later installer repair checkpoints changed the installer and its regression authority before owner-verified packaged releases."
+  },
+  "authority_chain": {
+    "repair_commit": "2ec0d17376fb3df21528141ef7d645f3ab88c868",
+    "setup_completion_commit": "558bafcedad03861b74617c16ae091b407c2b7a1",
+    "packaged_r1_tag": "packaged-owner-v0.1.0-r1-verified",
+    "packaged_r1_commit": "c4024968bb6e9ee350bd4718cab941bfbcbb757c",
+    "packaged_r2_tag": "packaged-owner-v0.1.0-r2-episode-draft-v1-verified",
+    "packaged_r2_commit": "5364286c8c40ae3294474066f6c3a4895c50c9c1"
+  },
+  "ownership_binding": {
+    "path": "tests/packaging/test_inno_installer_v1.py",
+    "sha256": "E019CD139DC219D7015E726A2DFBABD58144282243956A0D6B65AEF901FE55F5",
+    "production_path": "packaging/inno/PastilaScout.iss",
+    "production_sha256": "0807BE18F22C1DEF7DA6DC854560468560EA2CAD4EF65207A99B047223DE16F0"
+  },
+  "candidate_set": {
+    "packaging/inno/PastilaScout.iss": "0807BE18F22C1DEF7DA6DC854560468560EA2CAD4EF65207A99B047223DE16F0",
+    "packaging/inno/build-installer.ps1": "DC4FAD25289A3EB4528D51CBA6452DFEB3F12580C978EEC75931F694BC9F5720",
+    "tests/packaging/test_inno_installer_v1.py": "E019CD139DC219D7015E726A2DFBABD58144282243956A0D6B65AEF901FE55F5"
+  },
+  "safety": {
+    "installer_privilege_model_changed": false,
+    "acl_or_broker_authority_changed": false,
+    "installer_bytes_changed_by_this_refresh": false,
+    "historical_authority_rewritten": false,
+    "owner_verified_release_tags_moved": false
+  }
+}

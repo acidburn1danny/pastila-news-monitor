@@ -378,12 +378,14 @@ print(metadata.version("pastila-news-monitor"))
 
     $ResourceRoot = Join-Path $WorkRoot 'resources'
     New-Item -ItemType Directory -Path (Join-Path $ResourceRoot 'config'), (Join-Path $ResourceRoot 'desktop_v1'),
-        (Join-Path $ResourceRoot 'resources\trust') | Out-Null
+        (Join-Path $ResourceRoot 'resources\trust'),
+        (Join-Path $ResourceRoot 'pastila_scout\resources\expression_retrieval_v1') | Out-Null
     Copy-Item -LiteralPath (Join-Path $RepositoryRoot 'config\config.yaml') -Destination (Join-Path $ResourceRoot 'config\config.yaml')
     Copy-Item -LiteralPath (Join-Path $RepositoryRoot 'config\sources.yaml') -Destination (Join-Path $ResourceRoot 'config\sources.yaml')
     Copy-Item -LiteralPath (Join-Path $RepositoryRoot 'src\pastila_scout\desktop_v1\default-settings-v1.json') -Destination (Join-Path $ResourceRoot 'desktop_v1\default-settings-v1.json')
     Copy-Item -LiteralPath (Join-Path $RepositoryRoot 'resources\trust\pastila-root-1.pub') -Destination (Join-Path $ResourceRoot 'resources\trust\pastila-root-1.pub')
     Copy-Item -LiteralPath (Join-Path $RepositoryRoot 'resources\trust\bootstrap-root-v1.json') -Destination (Join-Path $ResourceRoot 'resources\trust\bootstrap-root-v1.json')
+    Copy-Item -LiteralPath (Join-Path $RepositoryRoot 'src\pastila_scout\resources\expression_retrieval_v1\catalog.json') -Destination (Join-Path $ResourceRoot 'pastila_scout\resources\expression_retrieval_v1\catalog.json')
     Copy-Item -LiteralPath $Notices -Destination (Join-Path $ResourceRoot 'resources\THIRD-PARTY-NOTICES.txt')
 
     $env:PASTILA_SPEC_GUI_WRAPPER = $GuiWrapper

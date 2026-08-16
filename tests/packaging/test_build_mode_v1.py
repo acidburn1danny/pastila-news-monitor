@@ -258,7 +258,11 @@ def test_environment_and_wheel_metadata_are_fail_closed() -> None:
     assert "-c $wheelAudit" not in text
     assert "-c $isolationCheck" not in text
     assert text.count("ConvertFrom-Json | ForEach-Object { $_ }") == 2
-    assert "(Join-Path $ResourceRoot 'resources\\trust') | Out-Null" in text
+    assert "(Join-Path $ResourceRoot 'resources\\trust')" in text
+    assert (
+        "(Join-Path $ResourceRoot "
+        "'pastila_scout\\resources\\expression_retrieval_v1')" in text
+    )
     assert text.count("-m pip --isolated") == 6
     assert "duplicate normalized distribution identity" in text
     assert "direct URL requirement is forbidden" in text
