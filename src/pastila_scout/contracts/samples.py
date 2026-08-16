@@ -4,6 +4,7 @@ import json
 from datetime import UTC, datetime
 from pathlib import Path
 
+from pastila_scout import __version__
 from pastila_scout.contracts.editor_output import EditorAgentOutputV1
 from pastila_scout.contracts.episode_context import EpisodeContextV1
 from pastila_scout.contracts.identity import (
@@ -36,7 +37,7 @@ def sample_scout_input(*, ai_enabled: bool = True) -> ScoutEditorInputV1:
         "generated_at": datetime(2026, 7, 26, 18, 0, tzinfo=UTC),
         "report_id": "",
         "content_fingerprint": "",
-        "scout_version": "0.1.0",
+        "scout_version": __version__,
         "ranking_schema_version": "event-ranking-v1",
         "source_run_id": f"snapshot:sha256:{'1' * 64}",
         "ranking_parameters": {

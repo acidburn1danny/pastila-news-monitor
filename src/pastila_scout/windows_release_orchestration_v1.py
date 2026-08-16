@@ -6,8 +6,10 @@ import argparse
 import hashlib
 import json
 import os
+import re
 import subprocess
 import sys
+import tomllib
 import zipfile
 from datetime import UTC, datetime
 from pathlib import Path
@@ -16,6 +18,70 @@ from urllib.parse import unquote, urlparse
 
 class ReleaseOrchestrationError(ValueError):
     """A normal-release input or output boundary is invalid."""
+
+
+def _release_identity(repository: Path) -> dict[str, object]:
+    try:
+        project = tomllib.loads(
+            (repository / "pyproject.toml").read_text(encoding="utf-8")
+        )["project"]
+        authority_path = repository / "packaging" / "windows" / "release-identity.json"
+        authority = json.loads(authority_path.read_text(encoding="utf-8"))
+        version = project["version"]
+        revision = authority["windows_release_revision"]
+        names = authority["artifact_names"]
+    except (
+        KeyError,
+        TypeError,
+        OSError,
+        tomllib.TOMLDecodeError,
+        json.JSONDecodeError,
+    ) as error:
+        raise ReleaseOrchestrationError(
+            "release identity authority is invalid"
+        ) from error
+    if (
+        authority.get("schema") != "pastila-scout-windows-release-identity-v1"
+        or authority.get("product_version_authority")
+        != "pyproject.toml:project.version"
+        or not isinstance(version, str)
+        or not re.fullmatch(r"(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)", version)
+        or not isinstance(revision, str)
+        or not re.fullmatch(r"r[1-9]\d*", revision)
+        or not isinstance(names, dict)
+    ):
+        raise ReleaseOrchestrationError("release identity authority is invalid")
+    try:
+        resolved_names = {
+            key: str(names[key]).format(
+                product_version=version,
+                windows_release_revision=revision,
+            )
+            for key in (
+                "application_directory",
+                "gui_executable",
+                "cli_executable",
+                "installer",
+                "release_receipt",
+                "sha256_receipt",
+            )
+        }
+    except (KeyError, ValueError) as error:
+        raise ReleaseOrchestrationError("release artifact names are invalid") from error
+    if any(
+        not value
+        or not value.isascii()
+        or Path(value).name != value
+        or value in {".", ".."}
+        for value in resolved_names.values()
+    ):
+        raise ReleaseOrchestrationError("release artifact names are invalid")
+    return {
+        "product_version": version,
+        "windows_release_revision": revision,
+        "artifact_names": resolved_names,
+        "authority_path": authority_path,
+    }
 
 
 def _hash(path: Path) -> str:
@@ -107,6 +173,19 @@ def _bundle_source_wheel(bundle: Path) -> tuple[Path, str]:
     if not wheel.is_file() or _hash(wheel) != expected:
         raise ReleaseOrchestrationError("bundle source wheel identity is invalid")
     return wheel, expected
+
+
+def _bundle_product_version(bundle: Path) -> str:
+    metadata = tuple(bundle.glob("pastila_news_monitor-*.dist-info"))
+    if len(metadata) != 1:
+        raise ReleaseOrchestrationError("bundle product metadata is missing")
+    match = re.fullmatch(
+        r"pastila_news_monitor-((0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*))\.dist-info",
+        metadata[0].name,
+    )
+    if match is None:
+        raise ReleaseOrchestrationError("bundle product metadata is invalid")
+    return match.group(1)
 
 
 def _verify_bundle_source(
@@ -283,8 +362,15 @@ def create_release_plan(
     tracked = _git(repository, "status", "--porcelain", "--untracked-files=no")
     if tracked:
         raise ReleaseOrchestrationError("tracked tree must be clean")
-    if app_version != "0.1.0":
-        raise ReleaseOrchestrationError("owner rebuild version must remain 0.1.0")
+    release_identity = _release_identity(repository)
+    if app_version != release_identity["product_version"]:
+        raise ReleaseOrchestrationError(
+            "app version does not match canonical authority"
+        )
+    if _bundle_product_version(bundle) != app_version:
+        raise ReleaseOrchestrationError(
+            "bundle product version does not match canonical authority"
+        )
     required = (
         bundle / "PastilaScout.exe",
         bundle / "pastila-scout.exe",
@@ -348,6 +434,9 @@ def create_release_plan(
             repository, "status", "--porcelain", "--untracked-files=all"
         ).splitlines(),
         "app_version": app_version,
+        "product_version_authority": "pyproject.toml:project.version",
+        "windows_release_revision": release_identity["windows_release_revision"],
+        "release_identity_sha256": _hash(release_identity["authority_path"]),
         "python_version": python_version,
         "pyinstaller_version": pyinstaller_version,
         "inno_setup_version": inno_setup_version,
@@ -365,8 +454,14 @@ def create_release_plan(
         **provenance,
         "exact_iscc_command": list(command),
         "output_installer_path": str(
-            output_root / f"PastilaScout-{app_version}-Setup.exe"
+            output_root / release_identity["artifact_names"]["installer"]
         ),
+        "intended_release_receipt_filename": release_identity["artifact_names"][
+            "release_receipt"
+        ],
+        "intended_sha256_receipt_filename": release_identity["artifact_names"][
+            "sha256_receipt"
+        ],
         "installer_sha256": None,
         "installer_size": None,
         "authenticode_state": None,

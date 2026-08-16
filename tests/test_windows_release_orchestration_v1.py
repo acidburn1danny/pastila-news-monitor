@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import shutil
 import subprocess
+import tomllib
 import zipfile
 from pathlib import Path
 
@@ -12,6 +13,10 @@ from pastila_scout.windows_release_orchestration_v1 import (
     ReleaseOrchestrationError,
     create_release_plan,
 )
+
+PROJECT_VERSION = tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))[
+    "project"
+]["version"]
 
 
 def _bundle(root: Path, source_ref: str = "HEAD") -> Path:
@@ -31,7 +36,9 @@ def _bundle(root: Path, source_ref: str = "HEAD") -> Path:
     (bundle / "config" / "sources.yaml").write_bytes(
         subprocess.check_output(["git", "show", f"{source_ref}:config/sources.yaml"])
     )
-    wheel = root / "wheelhouse" / "pastila_news_monitor-0.1.0-py3-none-any.whl"
+    wheel = (
+        root / "wheelhouse" / f"pastila_news_monitor-{PROJECT_VERSION}-py3-none-any.whl"
+    )
     wheel.parent.mkdir(parents=True, exist_ok=True)
     tracked = subprocess.check_output(
         ["git", "ls-tree", "-r", "--name-only", source_ref], text=True
@@ -44,7 +51,9 @@ def _bundle(root: Path, source_ref: str = "HEAD") -> Path:
                     subprocess.check_output(["git", "show", f"{source_ref}:{path}"]),
                 )
     digest = __import__("hashlib").sha256(wheel.read_bytes()).hexdigest()
-    direct = bundle / "pastila_news_monitor-0.1.0.dist-info" / "direct_url.json"
+    direct = (
+        bundle / f"pastila_news_monitor-{PROJECT_VERSION}.dist-info" / "direct_url.json"
+    )
     direct.parent.mkdir()
     direct.write_text(
         json.dumps(
@@ -65,6 +74,7 @@ def _plan(
     *,
     clean_tree: bool = True,
     application_payload_source_head: str | None = None,
+    app_version: str = PROJECT_VERSION,
 ):
     monkeypatch.setattr(
         "pastila_scout.windows_release_orchestration_v1._safe_external",
@@ -98,7 +108,7 @@ def _plan(
         work_root=tmp_path / "work",
         output_root=tmp_path / "output",
         iscc=iscc,
-        app_version="0.1.0",
+        app_version=app_version,
         application_payload_source_head=application_payload_source_head or head,
         installer_source_head=head,
         python_version="3.14.3",
@@ -124,6 +134,14 @@ def test_plan_only_generates_deterministic_manifest_and_no_installer(
         "config/settings.json" in item for item in plan["excluded_untracked_paths"]
     )
     assert plan["application_wheel_sha256"]
+    assert plan["app_version"] == PROJECT_VERSION == "1.1.0"
+    assert plan["windows_release_revision"] == "r3"
+    assert plan["output_installer_path"].endswith(
+        f"PastilaScout-{PROJECT_VERSION}-Setup.exe"
+    )
+    assert plan["intended_release_receipt_filename"] == (
+        "PastilaScout-1.1.0-Windows-r3-release-receipt.json"
+    )
 
 
 def test_manifest_is_reproducible_across_external_roots(
@@ -161,17 +179,38 @@ def test_release_plan_rejects_missing_launcher_and_wrong_head(
             work_root=tmp_path / "head-work",
             output_root=tmp_path / "head-output",
             iscc=iscc,
-            app_version="0.1.0",
+            app_version=PROJECT_VERSION,
             application_payload_source_head=head,
             installer_source_head="0" * 40,
         )
+
+
+def test_release_plan_rejects_noncanonical_product_version(
+    tmp_path: Path, monkeypatch
+) -> None:
+    with pytest.raises(ReleaseOrchestrationError, match="canonical authority"):
+        _plan(tmp_path, monkeypatch, app_version="1.0.0")
+
+
+def test_release_plan_rejects_bundle_with_stale_product_metadata(
+    tmp_path: Path, monkeypatch
+) -> None:
+    bundle = _bundle(tmp_path)
+    metadata = bundle / f"pastila_news_monitor-{PROJECT_VERSION}.dist-info"
+    metadata.rename(bundle / "pastila_news_monitor-0.1.0.dist-info")
+    with pytest.raises(ReleaseOrchestrationError, match="bundle product version"):
+        _plan(tmp_path / "plan", monkeypatch, bundle=bundle)
 
 
 def test_release_plan_rejects_bundle_built_from_different_source(
     tmp_path: Path, monkeypatch
 ) -> None:
     bundle = _bundle(tmp_path)
-    wheel = tmp_path / "wheelhouse" / "pastila_news_monitor-0.1.0-py3-none-any.whl"
+    wheel = (
+        tmp_path
+        / "wheelhouse"
+        / f"pastila_news_monitor-{PROJECT_VERSION}-py3-none-any.whl"
+    )
     with zipfile.ZipFile(wheel) as archive:
         entries = {name: archive.read(name) for name in archive.namelist()}
     entries["pastila_scout/__init__.py"] = b"different"
@@ -179,7 +218,9 @@ def test_release_plan_rejects_bundle_built_from_different_source(
         for name, payload in entries.items():
             archive.writestr(name, payload)
     digest = __import__("hashlib").sha256(wheel.read_bytes()).hexdigest()
-    direct = bundle / "pastila_news_monitor-0.1.0.dist-info" / "direct_url.json"
+    direct = (
+        bundle / f"pastila_news_monitor-{PROJECT_VERSION}.dist-info" / "direct_url.json"
+    )
     value = json.loads(direct.read_text(encoding="utf-8"))
     value["archive_info"]["hashes"]["sha256"] = digest
     direct.write_text(json.dumps(value), encoding="utf-8")
@@ -249,3 +290,5 @@ def test_normal_release_wrapper_is_separate_and_records_tool_versions() -> None:
     assert "--application-payload-source-head" in wrapper
     assert "--installer-source-head" in wrapper
     assert "if ($PlanOnly)" in wrapper
+    assert "pyproject.toml" in wrapper
+    assert "'--app-version', '0.1.0'" not in wrapper

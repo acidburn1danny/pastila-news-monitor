@@ -1,0 +1,23 @@
+{
+  "schema": "pastila-scout-windows-release-identity-v1",
+  "product_version_authority": "pyproject.toml:project.version",
+  "windows_release_revision": "r3",
+  "artifact_names": {
+    "application_directory": "app",
+    "gui_executable": "PastilaScout.exe",
+    "cli_executable": "pastila-scout.exe",
+    "installer": "PastilaScout-{product_version}-Setup.exe",
+    "release_receipt": "PastilaScout-{product_version}-Windows-{windows_release_revision}-release-receipt.json",
+    "sha256_receipt": "PastilaScout-{product_version}-Windows-{windows_release_revision}-sha256.json"
+  },
+  "installer_identity": {
+    "app_id": "PastilaScout",
+    "display_name": "Pastila Scout",
+    "architecture": "x64compatible",
+    "install_directory": "{localappdata}\\Programs\\PastilaScout"
+  },
+  "historical_parent": {
+    "tag": "packaged-owner-v0.1.0-r2-episode-draft-v1-verified",
+    "commit": "5364286c8c40ae3294474066f6c3a4895c50c9c1"
+  }
+}
