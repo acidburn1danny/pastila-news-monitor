@@ -49,9 +49,14 @@ from pastila_scout.editor.generation.validation import (
     validate_story,
     validate_transition,
 )
+from pastila_scout.expression_retrieval_v1 import load_catalog_v1
 from pastila_scout.expression_retrieval_v1.editor_adapter import (
     build_story_voice_palette_for_editor_v1,
     serialize_story_voice_palette_v1,
+)
+from pastila_scout.expression_retrieval_v1.usage import (
+    derive_episode_voice_state_v1,
+    detect_usage_receipt_v1,
 )
 
 
@@ -112,6 +117,10 @@ class ControlledGenerator:
             maximum_attempts=self.policy.max_attempts_per_component,
         )
         state = EpisodeGenerationState()
+        usage_receipts = []
+        episode_voice_state = derive_episode_voice_state_v1(
+            episode_context.extensions.get("pastila.expression_usage_receipts_v1", ())
+        )
         traces = []
         story_results = []
         event_map = {event.event_id: event for event in scout_input.ranked_events}
@@ -120,12 +129,13 @@ class ControlledGenerator:
         voice_map = {item.event_id: item for item in voice_plan.stories}
         for position, story_id in enumerate(order, 1):
             event = event_map[story_id]
-            story_context = _story_context(
+            story_context, palette = _story_context_and_palette(
                 event,
                 position,
                 editorial_map[story_id],
                 commentary_map[story_id],
                 voice_map[story_id],
+                episode_voice_state,
             )
             result, component_traces, status = self._component(
                 item_id=f"story-{position:02d}",
@@ -143,6 +153,28 @@ class ControlledGenerator:
             if status is ManifestItemStatus.FAILED:
                 raise ControlledGenerationError(f"story {story_id} failed generation")
             state = state.accept_story(f"story-{position:02d}", result)
+            validated_text = "\n\n".join(
+                (
+                    result.factual_summary,
+                    *(block.text for block in result.commentary_blocks),
+                    result.ending,
+                )
+            )
+            usage_receipts.append(
+                detect_usage_receipt_v1(
+                    catalog=load_catalog_v1(),
+                    palette=palette,
+                    validated_story_text=validated_text,
+                )
+            )
+            episode_voice_state = derive_episode_voice_state_v1(
+                (
+                    *episode_context.extensions.get(
+                        "pastila.expression_usage_receipts_v1", ()
+                    ),
+                    *usage_receipts,
+                )
+            )
             story_results.append(result)
         transition_results = []
         transition_map = {
@@ -294,6 +326,7 @@ class ControlledGenerator:
             draft.assembled_text, global_context.teleprompter_profile
         )
         draft = draft.model_copy(update={"teleprompter_text": formatted})
+        draft = draft.model_copy(update={"usage_receipts": tuple(usage_receipts)})
         formatting_before = state.revision
         state = state.accept_component("teleprompter-formatting")
         traces.append(
@@ -456,11 +489,26 @@ class ControlledGenerator:
 
 
 def _story_context(event, position, editorial, commentary, voice):
+    context, _ = _story_context_and_palette(
+        event,
+        commentary=commentary,
+        editorial=editorial,
+        position=position,
+        voice=voice,
+        episode_voice_state=None,
+    )
+    return context
+
+
+def _story_context_and_palette(
+    event, position, editorial, commentary, voice, episode_voice_state
+):
     palette = build_story_voice_palette_for_editor_v1(
         event=event,
         episode_position=position,
         commentary=commentary,
         voice=voice,
+        episode_state=episode_voice_state,
     )
     facts = (
         ApprovedFact(
@@ -501,7 +549,7 @@ def _story_context(event, position, editorial, commentary, voice):
         protected_targets=tuple(item.value for item in commentary.protected_targets),
         allowed_satire_targets=tuple(item.value for item in commentary.satire_targets),
         forbidden_claims=commentary.factual_summary.prohibited_unsupported_claims,
-    )
+    ), palette
 
 
 def _trace(

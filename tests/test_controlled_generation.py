@@ -328,6 +328,9 @@ def test_full_offline_generation_uses_separate_calls_and_required_order() -> Non
         item.state_revision_after >= item.state_revision_before
         for item in result.trace.attempts
     )
+    assert tuple(item.event_id for item in result.draft.usage_receipts) == tuple(
+        str(item) for item in order
+    )
 
 
 def test_corrective_retry_then_success_does_not_mutate_failed_attempt_state() -> None:
@@ -369,6 +372,7 @@ def test_corrective_retry_then_success_does_not_mutate_failed_attempt_state() ->
     assert PromptLayer.VALIDATION_FAILURES in {
         section.layer for section in provider.prompts[1].sections
     }
+    assert len(result.draft.usage_receipts) == 1
 
 
 def profile_from_pipeline(scout):

@@ -277,7 +277,7 @@ def main() -> int:
             def task():
                 def execute(event_id: int) -> tuple[Path, str]:
                     request = _integrated_editor_request_v1(
-                        project=project,
+                        project=project_store.load_runtime_state(),
                         settings=cells["settings"],
                         event_id=event_id,
                     )

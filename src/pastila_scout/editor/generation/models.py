@@ -6,6 +6,8 @@ from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
+from pastila_scout.expression_retrieval_v1.usage import UsageReceiptV1
+
 
 class FrozenModel(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
@@ -364,6 +366,7 @@ class EpisodeDraft(FrozenModel):
     cta: CallToActionDraft | None
     assembled_text: str
     teleprompter_text: str
+    usage_receipts: tuple[UsageReceiptV1, ...] = ()
 
     @model_validator(mode="after")
     def validate_derived_text(self) -> EpisodeDraft:

@@ -20,6 +20,7 @@ from pastila_scout.editor_application_v1 import (
     EditorOutputDestinationV1,
     EditorOverwritePolicyV1,
 )
+from pastila_scout.expression_retrieval_v1.usage import load_committed_usage_receipts_v1
 from pastila_scout.provider_execution_v2 import CancellationTokenV2
 from pastila_scout.provider_selection_v1 import ProviderChoiceV1
 
@@ -77,6 +78,16 @@ def _integrated_editor_request_v1(
             "mandatory_event_ids": (event_id,),
             "avoid_recent_event_ids": (),
             "previous_episode_reference": None,
+            "extensions": {
+                "pastila.expression_usage_receipts_v1": tuple(
+                    receipt.model_dump(mode="python")
+                    for receipt in load_committed_usage_receipts_v1(
+                        (material.output_path, material.payload_sha256)
+                        for material in getattr(project, "editor_materials", ())
+                        if material.event_id != event_id
+                    )
+                )
+            },
         }
     )
     profile = sample_selection_profile().model_copy(
