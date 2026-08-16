@@ -7,6 +7,8 @@ import unicodedata
 from pathlib import Path
 from typing import Any
 
+_RETIRED_CONTROLLED_TERM_IDS = frozenset({"promotion-v2:controlled:sinecura"})
+
 
 def _load(path: Path) -> Any:
     return json.loads(path.read_text(encoding="utf-8"))
@@ -141,7 +143,11 @@ def compile_catalog(*, diagnostics: Path, output: Path) -> dict[str, Any]:
         {"family_id": item["authority_id"], "members": item["members"]}
         for item in families
     ]
-    terms = _load(promotion / "controlled-term-promotion-v2.json")["promotions"]
+    terms = [
+        item
+        for item in _load(promotion / "controlled-term-promotion-v2.json")["promotions"]
+        if item["authority_id"] not in _RETIRED_CONTROLLED_TERM_IDS
+    ]
     controlled_terms = [
         {
             "term_id": item["authority_id"],

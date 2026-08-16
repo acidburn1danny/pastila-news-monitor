@@ -266,6 +266,23 @@ def test_state_fold_deduplicates_and_skips_malformed_legacy_values() -> None:
     assert state.controlled_term_usage == (("term:a", 1),)
 
 
+def test_retired_controlled_term_receipt_remains_loadable_without_resurrection() -> (
+    None
+):
+    retired_id = "promotion-v2:controlled:sinecura"
+    receipt = _receipt(controlled_term_ids_used=(retired_id,))
+
+    reloaded = UsageReceiptV1.model_validate_json(
+        receipt.model_dump_json(), strict=True
+    )
+    state = derive_episode_voice_state_v1((reloaded,))
+
+    assert state.controlled_term_usage == ((retired_id, 1),)
+    assert retired_id not in {
+        item.term_id for item in load_catalog_v1().controlled_terms
+    }
+
+
 def test_six_story_episode_state_evolves_only_after_committed_receipts() -> None:
     receipts = tuple(
         _receipt(

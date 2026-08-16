@@ -32,10 +32,10 @@ def test_eight_story_offline_composition_chain_and_state_evolution() -> None:
         ),
         EditorialRetrievalContextV1(
             event_id="2",
-            title="O sinecură obținută prin clientelism",
+            title="O funcție obținută prin clientelism",
             patronage=True,
             political_context=True,
-            keywords=("sinecură", "clientelism"),
+            keywords=("patronaj", "clientelism"),
         ),
         EditorialRetrievalContextV1(
             event_id="3",

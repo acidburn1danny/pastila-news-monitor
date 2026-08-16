@@ -162,7 +162,6 @@ def test_controlled_term_roles_derive_from_frozen_metadata() -> None:
     }
 
     assert roles["vibe-ul"] is ControlledTermUsageRoleV1.DECORATIVE_CONTEXT
-    assert roles["sinecură"] is ControlledTermUsageRoleV1.FACTUAL_CONTEXT
     assert roles["fake news"] is ControlledTermUsageRoleV1.FACTUAL_CONTEXT
     assert all(
         roles[term] is ControlledTermUsageRoleV1.FACTUAL_CONTEXT
@@ -246,7 +245,6 @@ def test_decorative_vibe_is_visible_alone_but_suppressed_by_expression_or_signat
     ("term", "changes"),
     [
         ("fake news", {"disinformation": True}),
-        ("sinecură", {"patronage": True}),
     ],
 )
 def test_factual_controlled_term_may_coexist_with_comedy_device(
@@ -299,7 +297,7 @@ def test_catalog_loads_as_packaged_resource_and_is_cached() -> None:
     assert len(first.expressions) == 102
     assert len(first.preferred_surfaces) == 11
     assert len(first.productive_families) == 4
-    assert len(first.controlled_terms) == 6
+    assert len(first.controlled_terms) == 5
     assert len(first.comedy_devices) == 14
     assert len(first.signature_devices) == 3
 
@@ -480,7 +478,6 @@ def test_victim_tragedy_context_suppresses_all_expressions() -> None:
     ("term", "blocked_context", "allowed_context"),
     [
         ("fake news", {}, {"disinformation": True}),
-        ("sinecură", {"political_context": True}, {"patronage": True}),
         ("suveranist", {}, {"political_context": True}),
         ("pesedaurii", {}, {"political_context": True}),
         ("pesedizat", {}, {"political_context": True}),
@@ -506,6 +503,28 @@ def test_controlled_term_context_gates(
     )
     assert record.term_id not in _ids(blocked)
     assert record.term_id in _ids(allowed)
+
+
+def test_retired_sinecura_family_is_absent_and_patronage_is_not_padded() -> None:
+    catalog = load_catalog_v1()
+    serialized = json.dumps(_catalog_json(), ensure_ascii=False).casefold()
+    assert "promotion-v2:controlled:sinecura" not in serialized
+    assert all(
+        form not in serialized for form in ("sinecură", "sinecuri", "sinecurele")
+    )
+
+    palette = retrieve_story_voice_palette_v1(
+        catalog=catalog,
+        context=_context(
+            title="Numire prin clientelism",
+            summary="O funcție obținută prin pile și patronaj politic.",
+            patronage=True,
+            political_context=True,
+        ),
+        episode_state=EpisodeVoiceStateV1(),
+    )
+    assert palette.controlled_terms == ()
+    assert palette.total_count == 0
 
 
 def test_temporal_disabled_term_is_suppressed() -> None:

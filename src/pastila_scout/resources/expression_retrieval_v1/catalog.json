@@ -3178,35 +3178,6 @@
       "enabled": true
     },
     {
-      "term_id": "promotion-v2:controlled:sinecura",
-      "term": "sinecură",
-      "domains": [
-        "politics",
-        "patronage",
-        "clientelism",
-        "appointments"
-      ],
-      "triggers": [
-        "pile",
-        "relații",
-        "cunoștințe",
-        "clientelism",
-        "numiri politice"
-      ],
-      "factual_constraints": [
-        "patronage or disproportionate benefit must be supported",
-        "use rarely"
-      ],
-      "risk_tags": [
-        "political-attribution",
-        "use-rarely"
-      ],
-      "temporal_sensitivity": "low",
-      "max_per_episode": 1,
-      "cooldown_episodes": 3,
-      "enabled": true
-    },
-    {
       "term_id": "promotion-v2:controlled:suveranist",
       "term": "suveranist",
       "domains": [
@@ -3759,7 +3730,7 @@
     "expressions": 102,
     "preferred_surfaces": 11,
     "productive_families": 4,
-    "controlled_terms": 6,
+    "controlled_terms": 5,
     "comedy_devices": 14,
     "signature_devices": 3
   },
@@ -3767,5 +3738,5 @@
     "deferred": 3,
     "rejected": 30
   },
-  "bundle_content_sha256": "9f893847827a33e4d17e1ff7fae41fb9ad62405abd9213fa8b5acf0f13ab32cc"
+  "bundle_content_sha256": "029910c66de82a894c847aa64e418849fc6477d748baa7d46271386d6d6f7a61"
 }

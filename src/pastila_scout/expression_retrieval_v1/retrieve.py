@@ -209,8 +209,6 @@ def _controlled_gate(
         eligible = context.disinformation or bool(
             tags & {"conspiracy", "explicit_denial"}
         )
-    elif term == "sinecură":
-        eligible = context.patronage or bool(tags & {"appointments", "clientelism"})
     elif term in {"suveranist", "pesedaurii", "pesedizat"}:
         story_tokens = retrieval_tokens_v1(
             context.title, context.summary, *context.keywords

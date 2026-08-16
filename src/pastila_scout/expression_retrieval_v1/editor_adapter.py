@@ -37,7 +37,7 @@ _REGIONAL_SOURCE_REGIONS = {
 _BUREAUCRACY = frozenset(
     {"aviz", "autorizatie", "birocratie", "dosar", "ghiseu", "permis"}
 )
-_PATRONAGE = frozenset({"clientelism", "numire", "numiri", "pile", "sinecura"})
+_PATRONAGE = frozenset({"clientelism", "numire", "numiri", "pile"})
 _UNFINISHED = frozenset({"abandonat", "neterminat", "nefinalizat", "santier"})
 _DISINFORMATION = frozenset({"dezinformare", "fake news", "negationism", "conspiratie"})
 _TRAGEDY = frozenset(
