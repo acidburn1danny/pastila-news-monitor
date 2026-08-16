@@ -63,6 +63,40 @@ _PRIMARY_ACTION_BUTTON_OPTIONS = {
     "width": 16,
 }
 _EPISODE_DRAFT_INSPECTION_ACTION_WIDTH = 24
+_INITIAL_WINDOW_BASE_WIDTH = 900
+_INITIAL_WINDOW_BASE_HEIGHT = 600
+_INITIAL_WINDOW_WIDTH = 990
+_INITIAL_WINDOW_HEIGHT = 660
+_INITIAL_WINDOW_SCREEN_MARGIN_X = 40
+_INITIAL_WINDOW_SCREEN_MARGIN_Y = 80
+_NAVIGATION_BADGE_WIDTH = 18
+_NAVIGATION_BADGE_HEIGHT = 2
+_NAVIGATION_BADGE_PADX = 8
+_NAVIGATION_BADGE_PADY = 4
+_NAVIGATION_FONT_SIZE = 11
+_NAVIGATION_NORMAL_BORDER = 1
+_NAVIGATION_ACTIVE_BORDER = 3
+_NAVIGATION_STYLES = {
+    _DesktopPageV1.SCOUT: ("#d71920", "#ffffff"),
+    _DesktopPageV1.EDITOR: ("#f4c430", "#000000"),
+    _DesktopPageV1.CHIEF_EDITOR: ("#1565c0", "#ffffff"),
+}
+
+
+def _initial_window_geometry(root: object) -> str:
+    available_width = max(
+        _INITIAL_WINDOW_BASE_WIDTH,
+        int(root.winfo_screenwidth()) - _INITIAL_WINDOW_SCREEN_MARGIN_X,
+    )
+    available_height = max(
+        _INITIAL_WINDOW_BASE_HEIGHT,
+        int(root.winfo_screenheight()) - _INITIAL_WINDOW_SCREEN_MARGIN_Y,
+    )
+    width = min(_INITIAL_WINDOW_WIDTH, available_width)
+    height = min(_INITIAL_WINDOW_HEIGHT, available_height)
+    left = max(0, (int(root.winfo_screenwidth()) - width) // 2)
+    top = max(0, (int(root.winfo_screenheight()) - height) // 2)
+    return f"{width}x{height}+{left}+{top}"
 
 
 def _configure_desktop_styles(root: object) -> None:
@@ -251,7 +285,9 @@ class _DesktopMainWindowV1:
         self._settings = _reconstruct_desktop_settings_projection_v1(settings)
         _configure_desktop_styles(root)
         root.title(_text_v1(key="app.title"))
-        root.minsize(900, 600)
+        root.geometry(_initial_window_geometry(root))
+        root.minsize(_INITIAL_WINDOW_BASE_WIDTH, _INITIAL_WINDOW_BASE_HEIGHT)
+        root.resizable(True, True)
         root.columnconfigure(0, weight=1)
         root.rowconfigure(0, weight=1)
 
@@ -259,21 +295,31 @@ class _DesktopMainWindowV1:
         self._main.grid(row=0, column=0, sticky="nsew")
         self._main.columnconfigure(1, weight=1)
         self._main.rowconfigure(0, weight=1)
-        self._navigation = ttk.Treeview(
-            self._main, show="tree", selectmode="browse", height=2
-        )
-        self._navigation.insert(
-            "", "end", iid="scout", text=_text_v1(key="navigation.scout")
-        )
-        self._navigation.insert(
-            "", "end", iid="editor", text=_text_v1(key="navigation.editor")
-        )
-        self._navigation.insert(
-            "", "end", iid="chief_editor", text=_text_v1(key="navigation.chief_editor")
-        )
-        self._navigation.selection_set("scout")
+        self._navigation = tkinter.Frame(self._main)
+        self._navigation_badges: dict[_DesktopPageV1, tkinter.Label] = {}
+        for row, page in enumerate(_DesktopPageV1):
+            background, foreground = _NAVIGATION_STYLES[page]
+            badge = tkinter.Label(
+                self._navigation,
+                text=_text_v1(key=f"navigation.{page.value}").upper(),
+                background=background,
+                foreground=foreground,
+                font=("TkDefaultFont", _NAVIGATION_FONT_SIZE, "normal"),
+                width=_NAVIGATION_BADGE_WIDTH,
+                height=_NAVIGATION_BADGE_HEIGHT,
+                padx=_NAVIGATION_BADGE_PADX,
+                pady=_NAVIGATION_BADGE_PADY,
+                highlightbackground="#000000",
+                highlightcolor="#000000",
+                highlightthickness=_NAVIGATION_NORMAL_BORDER,
+            )
+            badge.grid(row=row, column=0, pady=(0, 6), sticky="ew")
+            badge.bind(
+                "<Button-1>", lambda _event, selected=page: self._select(selected)
+            )
+            self._navigation_badges[page] = badge
         self._navigation.grid(row=0, column=0, sticky="ns", padx=(8, 4), pady=8)
-        self._navigation.bind("<<TreeviewSelect>>", self._navigation_changed)
+        self._set_navigation_page(_DesktopPageV1.SCOUT)
         self._content = ttk.Frame(self._main)
         self._content.grid(row=0, column=1, sticky="nsew", padx=(4, 8), pady=8)
         self._content.columnconfigure(0, weight=1)
@@ -781,15 +827,22 @@ class _DesktopMainWindowV1:
 
     def _select(self, page: _DesktopPageV1) -> None:
         self._check()
-        self._navigation.selection_set(page.value)
+        self._set_navigation_page(page)
         self._on_select_page(page=page)
 
-    def _navigation_changed(self, event: object) -> None:
-        del event
-        self._check()
-        selected = self._navigation.selection()
-        if selected and selected[0] in {"scout", "editor", "chief_editor"}:
-            self._on_select_page(page=_DesktopPageV1(selected[0]))
+    def _set_navigation_page(self, page: _DesktopPageV1) -> None:
+        for candidate, badge in self._navigation_badges.items():
+            active = candidate is page
+            badge.configure(
+                font=(
+                    "TkDefaultFont",
+                    _NAVIGATION_FONT_SIZE,
+                    "bold" if active else "normal",
+                ),
+                highlightthickness=(
+                    _NAVIGATION_ACTIVE_BORDER if active else _NAVIGATION_NORMAL_BORDER
+                ),
+            )
 
     def _raise_page(self, page: _DesktopPageV1) -> None:
         self._pages[page].tkraise()
@@ -1442,7 +1495,7 @@ class _DesktopMainWindowV1:
         if type(snapshot) is not _DesktopShellSnapshotV1:
             raise _DesktopShellConfigurationError() from None
         self._raise_page(snapshot.selected_page)
-        self._navigation.selection_set(snapshot.selected_page.value)
+        self._set_navigation_page(snapshot.selected_page)
         idle = snapshot.application_state is _DesktopTaskStateV1.IDLE
         if self._scout_progress_active and snapshot.application_state in {
             _DesktopTaskStateV1.SUBMITTED,
@@ -1466,7 +1519,8 @@ class _DesktopMainWindowV1:
         else:
             self._sync_handoff()
         if snapshot.is_closed:
-            self._navigation.configure(selectmode="none")
+            for badge in self._navigation_badges.values():
+                badge.unbind("<Button-1>")
             self._scout_button.configure(state="disabled")
             self._editor_button.configure(state="disabled")
             self._editor_retry_button.configure(state="disabled")

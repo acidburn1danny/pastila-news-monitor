@@ -32,6 +32,18 @@ from pastila_scout.desktop_v1.models import (
 from pastila_scout.desktop_v1.resources import _TEXT_V1, _text_v1
 from pastila_scout.desktop_v1.views import (
     _EDITOR_REQUIRED_CONFIGURATION,
+    _INITIAL_WINDOW_BASE_HEIGHT,
+    _INITIAL_WINDOW_BASE_WIDTH,
+    _INITIAL_WINDOW_HEIGHT,
+    _INITIAL_WINDOW_WIDTH,
+    _NAVIGATION_ACTIVE_BORDER,
+    _NAVIGATION_BADGE_HEIGHT,
+    _NAVIGATION_BADGE_PADX,
+    _NAVIGATION_BADGE_PADY,
+    _NAVIGATION_BADGE_WIDTH,
+    _NAVIGATION_FONT_SIZE,
+    _NAVIGATION_NORMAL_BORDER,
+    _NAVIGATION_STYLES,
     _OPENAI_MODEL_CHOICES,
     _SCOUT_CATEGORY_CHOICES,
     _SCOUT_PERIOD_CHOICES,
@@ -39,10 +51,50 @@ from pastila_scout.desktop_v1.views import (
     _editor_configuration_ready,
     _editor_selection_supported,
     _handoff_label,
+    _initial_window_geometry,
     _restored_candidate_summary,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def test_initial_geometry_is_exact_ten_percent_growth_with_safe_screen_bound() -> None:
+    assert _INITIAL_WINDOW_WIDTH == round(_INITIAL_WINDOW_BASE_WIDTH * 1.10)
+    assert _INITIAL_WINDOW_HEIGHT == round(_INITIAL_WINDOW_BASE_HEIGHT * 1.10)
+
+    class Root:
+        @staticmethod
+        def winfo_screenwidth():
+            return 1920
+
+        @staticmethod
+        def winfo_screenheight():
+            return 1080
+
+    assert _initial_window_geometry(Root()) == "990x660+465+210"
+
+    class SmallRoot:
+        @staticmethod
+        def winfo_screenwidth():
+            return 920
+
+        @staticmethod
+        def winfo_screenheight():
+            return 650
+
+    assert _initial_window_geometry(SmallRoot()) == "900x600+10+25"
+
+
+def test_navigation_badges_share_structure_and_have_approved_contrast() -> None:
+    assert _NAVIGATION_STYLES == {
+        _DesktopPageV1.SCOUT: ("#d71920", "#ffffff"),
+        _DesktopPageV1.EDITOR: ("#f4c430", "#000000"),
+        _DesktopPageV1.CHIEF_EDITOR: ("#1565c0", "#ffffff"),
+    }
+    assert (_NAVIGATION_BADGE_WIDTH, _NAVIGATION_BADGE_HEIGHT) == (18, 2)
+    assert (_NAVIGATION_BADGE_PADX, _NAVIGATION_BADGE_PADY) == (8, 4)
+    assert _NAVIGATION_FONT_SIZE == 11
+    assert _NAVIGATION_ACTIVE_BORDER > _NAVIGATION_NORMAL_BORDER
 
 
 class _Future:
@@ -289,7 +341,35 @@ def test_withdrawn_tk_window_has_exact_structural_root_and_initial_state():
         )
         assert root.title() == "Pastila Scout"
         assert tuple(root.minsize()) == (900, 600)
-        assert view._navigation.get_children("") == ("scout", "editor", "chief_editor")
+        assert tuple(root.resizable()) == (1, 1)
+        assert tuple(view._navigation_badges) == tuple(_DesktopPageV1)
+        for page, badge in view._navigation_badges.items():
+            background, foreground = _NAVIGATION_STYLES[page]
+            assert badge.cget("background") == background
+            assert badge.cget("foreground") == foreground
+            assert badge.cget("highlightbackground") == "#000000"
+            assert int(badge.cget("width")) == _NAVIGATION_BADGE_WIDTH
+            assert int(badge.cget("height")) == _NAVIGATION_BADGE_HEIGHT
+            assert int(badge.cget("padx")) == _NAVIGATION_BADGE_PADX
+            assert int(badge.cget("pady")) == _NAVIGATION_BADGE_PADY
+            assert (
+                badge.cget("text") == _text_v1(key=f"navigation.{page.value}").upper()
+            )
+        assert "bold" in str(view._navigation_badges[_DesktopPageV1.SCOUT].cget("font"))
+        assert (
+            int(
+                view._navigation_badges[_DesktopPageV1.SCOUT].cget("highlightthickness")
+            )
+            == _NAVIGATION_ACTIVE_BORDER
+        )
+        assert (
+            int(
+                view._navigation_badges[_DesktopPageV1.EDITOR].cget(
+                    "highlightthickness"
+                )
+            )
+            == _NAVIGATION_NORMAL_BORDER
+        )
         assert str(view._scout_button.cget("state")) == "disabled"
         assert view._scout_button.cget("text") == "Cauta"
         assert view._scout_button.cget("foreground") == "#e31919"
