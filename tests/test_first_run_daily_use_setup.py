@@ -69,7 +69,7 @@ def test_completion_persists_and_valid_settings_skip_setup(tmp_path, monkeypatch
     assert completed.editor_output_directory.is_dir()
 
 
-def test_openai_status_is_local_and_missing_key_requires_setup(tmp_path, monkeypatch):
+def test_unavailable_provider_does_not_reopen_completed_setup(tmp_path, monkeypatch):
     settings = _default_windows_settings_v1(defaults_path=DEFAULTS)
     completed = first_run._complete_desktop_setup_v1(
         settings=settings,
@@ -87,7 +87,9 @@ def test_openai_status_is_local_and_missing_key_requires_setup(tmp_path, monkeyp
         default_output_directory=tmp_path / "reports",
         project_store=_ProjectStore(),
     )
-    assert result.setup_required and not result.provider_ready
+    assert not result.setup_required
+    assert not result.provider_ready
+    assert completed.scout_provider == completed.editor_provider == "openai"
 
 
 def test_project_recovery_and_invalid_project_safe_warning(tmp_path, monkeypatch):

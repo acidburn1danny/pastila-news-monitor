@@ -208,6 +208,7 @@ def _startup(monkeypatch, *, failure=None, active_project=None):
             "migration_consent",
         }
         events.append("compose")
+        captured["migration_consent"] = kwargs["migration_consent"]
         if failure == "composition":
             raise RuntimeError("secret-composition")
         return SimpleNamespace(
@@ -298,6 +299,20 @@ def test_exact_success_order_and_one_shared_facade(monkeypatch) -> None:
     view = captured["view"]
     for name in ("scout", "editor", "report"):
         assert facade in inspect.getclosurevars(view.bindings[name]).nonlocals.values()
+
+
+def test_packaged_startup_never_requests_a_development_path(monkeypatch) -> None:
+    prompts = []
+    monkeypatch.setattr(
+        entrypoint.filedialog,
+        "askdirectory",
+        lambda **kwargs: prompts.append(kwargs),
+    )
+    code, _, _, captured, messages = _startup(monkeypatch)
+    assert code == 0
+    assert captured["migration_consent"](object()) is None
+    assert prompts == []
+    assert messages == []
 
 
 @pytest.mark.parametrize(

@@ -51,7 +51,6 @@ def _inspect_desktop_readiness_v1(
         warning = "Proiectul activ nu poate fi deschis. Fisierul a fost pastrat."
     return _DesktopReadinessV1(
         not settings_path.is_file()
-        or not provider_ready
         or not sources
         or settings.editor_output_directory is None,  # type: ignore[attr-defined]
         provider_ready,

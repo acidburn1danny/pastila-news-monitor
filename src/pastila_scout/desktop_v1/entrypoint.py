@@ -20,7 +20,6 @@ from typing import NoReturn
 import httpx
 
 from pastila_scout.active_project_v1 import ActiveProjectStoreV1, ChiefEditorItemV1
-from pastila_scout.ai.provider import resolve_openai_api_key
 from pastila_scout.contracts.identity import verify_scout_input_identity
 from pastila_scout.contracts.io import load_contract
 from pastila_scout.contracts.scout_editor import ScoutEditorInputV1
@@ -45,9 +44,6 @@ from pastila_scout.editor_application_v1 import (
 )
 from pastila_scout.provider_execution_ollama_v1 import OllamaHttpClientV1
 from pastila_scout.provider_execution_v2 import CancellationTokenV2
-from pastila_scout.windows_state_v1.migrations import (
-    _inspect_development_state_migration_v1,
-)
 from pastila_scout.windows_state_v1.settings import (
     WindowsSettingsV1,
     _save_windows_settings_v1,
@@ -117,25 +113,7 @@ def main() -> int:
         development_root = None if frozen else Path(__file__).resolve().parents[3]
 
         def migration_consent(paths):
-            messagebox.showinfo(
-                title=_text_v1(key="migration.title"),
-                message=_text_v1(key="migration.prompt"),
-                parent=root,
-            )
-            selected = filedialog.askdirectory(parent=root, mustexist=True)
-            if not selected:
-                return None
-            plan = _inspect_development_state_migration_v1(
-                development_root=Path(selected), destination=paths
-            )
-            if plan.status != "ready":
-                return None
-            accepted = messagebox.askyesno(
-                title=_text_v1(key="migration.title"),
-                message=_text_v1(key="migration.confirm"),
-                parent=root,
-            )
-            return plan if accepted else None
+            del paths
 
         environment = dict(os.environ)
         state = _compose_state_bound_desktop_application_v1(
@@ -984,7 +962,6 @@ def _show_first_run_setup(root: object, state: object, readiness: object):
         window, text=f"Iesire: {readiness.output_directory}", wraplength=520
     ).grid(row=5, column=0, columnspan=2, padx=16, sticky="w")
     status = tkinter.StringVar(value="")
-    ollama_verified = [False]
     ttk.Label(window, textvariable=status).grid(row=6, column=0, columnspan=2, padx=16)
 
     def test_ollama() -> None:
@@ -1010,19 +987,12 @@ def _show_first_run_setup(root: object, state: object, readiness: object):
                     timeout=state.settings.scout_ai_timeout_seconds,
                 )
             status.set(_text_v1(key="scout.ollama_ready"))
-            ollama_verified[0] = True
         except Exception:
             status.set(_text_v1(key="scout.ollama_unavailable"))
 
     def finish() -> None:
         if not readiness.enabled_sources:
             status.set(_text_v1(key="setup.no_sources"))
-            return
-        if provider.get() == "openai" and not resolve_openai_api_key():
-            status.set(_text_v1(key="setup.openai_missing"))
-            return
-        if provider.get() == "ollama" and not ollama_verified[0]:
-            status.set(_text_v1(key="setup.ollama_test_required"))
             return
         try:
             completed = _complete_desktop_setup_v1(
