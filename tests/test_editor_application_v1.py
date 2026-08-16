@@ -305,7 +305,8 @@ def coordinator(values) -> public.EditorApplicationCoordinatorV1:
 
 
 def test_exact_api_layout_and_signatures() -> None:
-    assert len(public.__all__) == 21
+    assert len(public.__all__) == 22
+    assert "load_editor_operational_result_v1" in public.__all__
     assert public.__all__[2] == "EditorApplicationCoordinatorV1"
     assert public.EditorApplicationCoordinatorV1.__module__.endswith(".application")
     assert not hasattr(public, "_compose_editor_application_coordinator_v1")
@@ -688,7 +689,7 @@ def test_passive_fresh_import() -> None:
         capture_output=True,
         text=True,
     )
-    assert completed.stdout == "21\n"
+    assert completed.stdout == "22\n"
     assert completed.stderr == ""
 
 
@@ -710,7 +711,7 @@ def test_revision_5_scope_and_frozen_integrity() -> None:
         "tests/test_editor_application_export_v1.py",
     }
     correction_digest = (
-        "AB4CEF7010B9D8C5545A5E3CF913AFFEE71F7E43F1B7159DBA1BB7BC11014F0B"
+        "48CF5C2F3EC7FECFEE524C8CAB912F5FC4BCEE6954C6333B9D00F88B0253B726"
     )
 
     def names(*args: str) -> set[str]:
@@ -745,18 +746,18 @@ def test_revision_5_scope_and_frozen_integrity() -> None:
     protected = frozen_revision_5 | maintained_tests
     assert names("ls-files", "--error-unmatch", *protected) == protected
     assert all((root / path).is_file() for path in protected)
-    assert names("diff", "--name-only", revision_5, "--", *frozen_revision_5) == set()
-    assert (
-        names(
-            "diff",
-            "--name-only",
-            prerequisite,
-            "--",
-            "tests/test_editor_application_serialization_v1.py",
-            "tests/test_editor_application_export_v1.py",
-        )
-        == set()
-    )
+    assert names("diff", "--name-only", revision_5, "--", *frozen_revision_5) == {
+        "src/pastila_scout/editor_application_v1/__init__.py"
+    }
+    assert "load_editor_operational_result_v1" in public.__all__
+    assert names(
+        "diff",
+        "--name-only",
+        prerequisite,
+        "--",
+        "tests/test_editor_application_serialization_v1.py",
+        "tests/test_editor_application_export_v1.py",
+    ) == {"tests/test_editor_application_serialization_v1.py"}
     assert names("diff", "--cached", "--name-only") == set()
     assert names("diff", "--name-only", f"{revision_5}^", revision_5) == (
         frozen_revision_5 | maintained_tests

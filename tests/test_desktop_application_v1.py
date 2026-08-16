@@ -305,8 +305,6 @@ def test_closed_enum_vocabularies_copy_and_pickle() -> None:
         ScoutDesktopCategoryV1: (
             "Politica",
             "Social",
-            "Conspiratii",
-            "Economie",
             "CanCan",
             "Externe",
             "Diverse",
@@ -784,7 +782,8 @@ def test_dynamic_attribute_hooks_missing_methods_and_invalid_sink_are_rejected()
     scout = ScoutOperation()
     with pytest.raises(DesktopApplicationConfigurationError):
         facade(scout).run_scout(
-            request=scout_request(), progress_sink=InvalidSink()  # type: ignore[arg-type]
+            request=scout_request(),
+            progress_sink=InvalidSink(),  # type: ignore[arg-type]
         )
     assert scout.calls == []
 

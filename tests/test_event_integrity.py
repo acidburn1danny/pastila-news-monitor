@@ -200,11 +200,11 @@ def test_audit_cli_default_is_compact_and_writes_utf8_report(
     assert "Articles checked: 1" in output
     assert "Events checked: 1" in output
     assert "Structural errors: 0" in output
-    assert "warning/missing_event_category: 1" in output
+    assert "warning/single_article_event: 1" in output
     assert "Historical match proposals: 0" in output
     assert "Exit code: 0" in output
     assert "Detailed report: reports" in output
-    assert "has no category" not in output
+    assert "contains one article" not in output
     reports = list((tmp_path / "reports").glob("event_audit_*.txt"))
     assert len(reports) == 1
     report_text = reports[0].read_text(encoding="utf-8")
@@ -237,11 +237,11 @@ def test_audit_cli_details_and_limit_affect_console_only(
 
     output = capsys.readouterr().out
     assert exit_code == 0
-    assert "missing_event_category (2):" in output
+    assert "single_article_event (2):" in output
     assert "... 1 more in detailed report" in output
-    assert output.count("has no category") == 1
+    assert output.count("contains one article") == 1
     report_text = report_path.read_text(encoding="utf-8")
-    assert report_text.count("has no category") == 2
+    assert report_text.count("contains one article") == 2
     assert "Detailed report: " + str(report_path) in output
 
 
