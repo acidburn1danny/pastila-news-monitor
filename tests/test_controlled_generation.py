@@ -243,6 +243,31 @@ def test_story_validation_rejects_unresolved_template_placeholder() -> None:
     assert outcome.errors == ("unresolved_template_placeholder",)
 
 
+def test_corrective_prompt_does_not_reinforce_unresolved_placeholder() -> None:
+    context = _toolkit_context(
+        "comedy_devices",
+        "device:test",
+        "{AȘTEPTARE}; realitatea: duș rece.",
+    )
+    prompt = PromptBuilder().build(
+        component_type=GenerationComponentType.STORY,
+        episode_context=None,
+        component_context=context,
+        state=EpisodeGenerationState(),
+        output_schema=StoryAuthoredContentResult,
+        mode=GenerationMode.CONSTRAINED,
+        failures=("unresolved_template_placeholder",),
+    )
+
+    corrective = next(
+        json.loads(section.content)
+        for section in prompt.sections
+        if section.layer is PromptLayer.CORRECTIVE_INSTRUCTIONS
+    )
+    assert "{AȘTEPTARE}" not in corrective["template_resolution_repair"]
+    assert "omit that optional tool" in corrective["template_resolution_repair"]
+
+
 def _toolkit_context(section: str, identity: str, text: str) -> StoryGenerationContext:
     return StoryGenerationContext(
         story_id=1,

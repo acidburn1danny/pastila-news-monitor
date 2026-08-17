@@ -229,6 +229,12 @@ def _corrective_constraints(*, component_context, failures, minimal_safe):
             constraints["minimum_words_to_remove"] = max(
                 0, actual - constraints["maximum_content_words"]
             )
+    if "unresolved_template_placeholder" in errors:
+        constraints["template_resolution_repair"] = (
+            "Do not copy slot names or placeholder notation. Fill every offered "
+            "template slot with concrete story-specific wording, or omit that "
+            "optional tool."
+        )
     return constraints
 
 
@@ -424,7 +430,17 @@ def _compact_toolkit(toolkit: dict[str, Any]) -> dict[str, Any]:
         values = toolkit.get(section, ())
         if values:
             compact[section] = tuple(
-                {key: item[key] for key in ("text", "affordance") if key in item}
+                {
+                    key: item[key]
+                    for key in (
+                        "text",
+                        "affordance",
+                        "template_parts",
+                        "slots",
+                        "rendering_instruction",
+                    )
+                    if key in item
+                }
                 for item in values
             )
     rules = toolkit.get("usage_instruction", {})

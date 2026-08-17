@@ -25,6 +25,7 @@ from .models import (
 from .retrieve import retrieve_story_voice_palette_v1
 
 _LOG = logging.getLogger(__name__)
+_TEMPLATE_SLOT = re.compile(r"\{([^{}]+)\}")
 _TOKEN = re.compile(r"[0-9A-Za-zĂÂÎȘȚăâîșț]+", re.UNICODE)
 
 _REGIONAL_SOURCE_REGIONS = {
@@ -184,21 +185,36 @@ def build_story_voice_palette_for_editor_v1(
 def serialize_story_voice_palette_v1(palette: StoryVoicePaletteV1) -> dict[str, object]:
     """Return the compact structured toolkit included in the story prompt."""
 
-    def items(values: tuple[PaletteItemV1, ...]) -> tuple[dict[str, object], ...]:
-        return tuple(
-            {
-                "id": item.authority_id,
-                "text": item.display_text,
-                "affordance": item.family,
-            }
-            for item in values
+    def item(value: PaletteItemV1, *, templates: bool) -> dict[str, object]:
+        projected: dict[str, object] = {
+            "id": value.authority_id,
+            "affordance": value.family,
+        }
+        slots = _TEMPLATE_SLOT.findall(value.display_text) if templates else []
+        if not slots:
+            projected["text"] = value.display_text
+            return projected
+        projected.update(
+            template_parts=tuple(_TEMPLATE_SLOT.split(value.display_text)[::2]),
+            slots=tuple(slots),
+            rendering_instruction=(
+                "Fill every slot with concrete story-specific wording, join the "
+                "parts in order, and output neither slot names nor placeholder "
+                "notation. Omit this optional tool if it cannot be filled naturally."
+            ),
         )
+        return projected
+
+    def items(
+        values: tuple[PaletteItemV1, ...], *, templates: bool = False
+    ) -> tuple[dict[str, object], ...]:
+        return tuple(item(value, templates=templates) for value in values)
 
     return {
         "expressions": items(palette.expressions),
         "controlled_terms": items(palette.controlled_terms),
-        "comedy_devices": items(palette.comedy_devices),
-        "signature_devices": items(palette.signature_devices),
+        "comedy_devices": items(palette.comedy_devices, templates=True),
+        "signature_devices": items(palette.signature_devices, templates=True),
         "usage_instruction": {
             "optional": True,
             "may_use_none": True,

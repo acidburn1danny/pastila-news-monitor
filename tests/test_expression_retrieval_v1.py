@@ -23,7 +23,15 @@ from pastila_scout.expression_retrieval_v1 import (
     retrieve_story_voice_palette_with_trace_v1,
     story_comedy_budget_v1,
 )
-from pastila_scout.expression_retrieval_v1.models import ExpressionCatalogV1
+from pastila_scout.expression_retrieval_v1.editor_adapter import (
+    serialize_story_voice_palette_v1,
+)
+from pastila_scout.expression_retrieval_v1.models import (
+    ExpressionCatalogV1,
+    PaletteItemReasonV1,
+    PaletteItemV1,
+    StoryVoicePaletteV1,
+)
 from pastila_scout.expression_retrieval_v1.usage import detect_usage_receipt_v1
 
 CATALOG_PATH = (
@@ -68,6 +76,33 @@ def _ids(palette: object) -> set[str]:
         )
         for item in section
     }
+
+
+def test_template_device_projection_exposes_semantics_without_brace_placeholder() -> (
+    None
+):
+    reason = PaletteItemReasonV1((), (), 0)
+    palette = StoryVoicePaletteV1(
+        event_id="event-1",
+        comedy_devices=(
+            PaletteItemV1(
+                "promotion-v2:device:dus-rece",
+                "{AȘTEPTARE}; realitatea: duș rece.",
+                "dus-rece",
+                reason,
+            ),
+        ),
+    )
+
+    projected = serialize_story_voice_palette_v1(palette)
+    device = projected["comedy_devices"][0]
+
+    assert "text" not in device
+    assert device["template_parts"] == ("", "; realitatea: duș rece.")
+    assert device["slots"] == ("AȘTEPTARE",)
+    assert "{AȘTEPTARE}" not in json.dumps(device, ensure_ascii=False)
+    assert all("{" not in part and "}" not in part for part in device["template_parts"])
+    assert device["affordance"] == "dus-rece"
 
 
 @pytest.mark.parametrize(
