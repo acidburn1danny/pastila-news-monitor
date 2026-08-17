@@ -23,6 +23,7 @@ from pastila_scout.editor.generation.controlled_generator import (
 )
 from pastila_scout.editor.generation.models import (
     STANDARD_STORY_WORD_BUDGET_V1,
+    STANDARD_STORY_WORD_BUDGET_V2,
     ApprovedFact,
     CommentaryBlockResult,
     DraftStory,
@@ -647,11 +648,11 @@ def test_full_offline_generation_uses_separate_calls_and_required_order() -> Non
     )
     assert "event_id" not in voice_guidance and "intent_id" not in voice_guidance
     local = story_sections[PromptLayer.COMPONENT_CONTEXT]
-    assert sum(local["provisional_word_budget_plan"].values()) == 150
+    assert sum(local["provisional_word_budget_plan"].values()) == 190
     assert local["word_budget"] == {
         "profile": "STANDARD",
-        "target": 150,
-        "hard_max": 170,
+        "target": 190,
+        "hard_max": 210,
     }
     toolkit = local["optional_editorial_toolkit"]
     assert "rules" in toolkit and "preserve_facts" in toolkit["rules"]
@@ -714,7 +715,7 @@ def test_retry_feedback_names_exact_mechanical_budget_repairs_only():
         editorial_plan={"intent_id": "editorial:7"},
         conversation_plan={"intent_id": "conversation:7"},
         voice_plan={"intent_id": "voice:7"},
-        word_budget_authority=STANDARD_STORY_WORD_BUDGET_V1,
+        word_budget_authority=STANDARD_STORY_WORD_BUDGET_V2,
         runtime_budget=120,
         protected_targets=(),
         allowed_satire_targets=("systemic_failure",),
@@ -729,7 +730,7 @@ def test_retry_feedback_names_exact_mechanical_budget_repairs_only():
         mode=GenerationMode.MINIMAL_SAFE,
         failures=(
             "word_budget_exceeded",
-            "word_budget_actual:184",
+            "word_budget_actual:228",
         ),
     )
     corrective = next(
@@ -737,38 +738,108 @@ def test_retry_feedback_names_exact_mechanical_budget_repairs_only():
         for section in prompt.sections
         if section.layer is PromptLayer.CORRECTIVE_INSTRUCTIONS
     )
-    assert '"maximum_content_words":170' in corrective.content
-    assert '"previous_content_words":184' in corrective.content
-    assert '"minimum_words_to_remove":14' in corrective.content
-    assert '"maximum_content_words":150' not in corrective.content
+    assert '"maximum_content_words":210' in corrective.content
+    assert '"previous_content_words":228' in corrective.content
+    assert '"minimum_words_to_remove":18' in corrective.content
+    assert '"maximum_content_words":190' not in corrective.content
     assert "intent_id" not in corrective.content
 
 
 def test_provisional_budget_plan_is_deterministic_and_preserves_total():
-    assert _provisional_story_word_budget_plan(150) == {
-        "factual_summary": 37,
-        "commentary_blocks_total": 85,
-        "ending": 28,
+    assert _provisional_story_word_budget_plan(190) == {
+        "factual_summary": 47,
+        "commentary_blocks_total": 108,
+        "ending": 35,
     }
     assert sum(_provisional_story_word_budget_plan(81).values()) == 81
 
 
 def test_standard_story_budget_is_versioned_fixed_product_authority():
-    authority = STANDARD_STORY_WORD_BUDGET_V1
+    authority = STANDARD_STORY_WORD_BUDGET_V2
 
-    assert authority.authority_version == "story-word-budget-v1"
+    assert authority.authority_version == "story-word-budget-v2"
     assert authority.profile.value == "STANDARD"
-    assert authority.target_words == 150
-    assert authority.hard_max_words == 170
+    assert authority.target_words == 190
+    assert authority.hard_max_words == 210
     with pytest.raises(ValidationError):
-        type(authority)(target_words=149)
+        type(authority)(target_words=189)
     with pytest.raises(ValidationError):
-        type(authority)(hard_max_words=171)
+        type(authority)(hard_max_words=211)
+
+
+def test_compact_v2_prompt_footprint_matches_v1_shape() -> None:
+    context = StoryGenerationContext(
+        story_id=7,
+        flow_position=1,
+        approved_facts=(
+            ApprovedFact(fact_id="event-7-title", field="title", value="Titlu"),
+        ),
+        editorial_plan={"intent_id": "editorial:7"},
+        conversation_plan={"intent_id": "conversation:7"},
+        voice_plan={"intent_id": "voice:7"},
+        word_budget_authority=STANDARD_STORY_WORD_BUDGET_V2,
+        provisional_word_budget_plan=_provisional_story_word_budget_plan(190),
+        runtime_budget=120,
+        protected_targets=(),
+        allowed_satire_targets=("systemic_failure",),
+        forbidden_claims=(),
+    )
+    v2 = PromptBuilder().build(
+        component_type=GenerationComponentType.STORY,
+        episode_context={},
+        component_context=context,
+        state=EpisodeGenerationState(),
+        output_schema=StoryGenerationResult,
+    )
+    v1 = PromptBuilder().build(
+        component_type=GenerationComponentType.STORY,
+        episode_context={},
+        component_context=context.model_copy(
+            update={
+                "word_budget_authority": STANDARD_STORY_WORD_BUDGET_V1,
+                "provisional_word_budget_plan": _provisional_story_word_budget_plan(
+                    150
+                ),
+            }
+        ),
+        state=EpisodeGenerationState(),
+        output_schema=StoryGenerationResult,
+    )
+
+    assert len(v2.text.encode("utf-8")) - len(v1.text.encode("utf-8")) == 1
+    assert '"target":190' in v2.text and '"hard_max":210' in v2.text
+    assert '"target":150' not in v2.text and '"hard_max":170' not in v2.text
+
+
+def test_historical_v1_story_budget_remains_readable_and_distinguishable():
+    authority = type(STANDARD_STORY_WORD_BUDGET_V1).model_validate(
+        {
+            "authority_version": "story-word-budget-v1",
+            "profile": "STANDARD",
+            "target_words": 150,
+            "hard_max_words": 170,
+        }
+    )
+
+    assert authority == STANDARD_STORY_WORD_BUDGET_V1
+    assert (
+        authority.authority_version != STANDARD_STORY_WORD_BUDGET_V2.authority_version
+    )
 
 
 @pytest.mark.parametrize(
     ("word_count", "accepted"),
-    ((149, True), (150, True), (158, True), (169, True), (170, True), (171, False)),
+    (
+        (150, True),
+        (170, True),
+        (182, True),
+        (189, True),
+        (190, True),
+        (197, True),
+        (205, True),
+        (210, True),
+        (211, False),
+    ),
 )
 def test_story_validation_uses_hard_max_not_target(word_count, accepted):
     context = StoryGenerationContext(
@@ -784,8 +855,8 @@ def test_story_validation_uses_hard_max_not_target(word_count, accepted):
             "vocatives": {"maximum_per_story": 0},
             "profanity_ceiling": "clean",
         },
-        word_budget_authority=STANDARD_STORY_WORD_BUDGET_V1,
-        provisional_word_budget_plan=_provisional_story_word_budget_plan(150),
+        word_budget_authority=STANDARD_STORY_WORD_BUDGET_V2,
+        provisional_word_budget_plan=_provisional_story_word_budget_plan(190),
         runtime_budget=120,
         protected_targets=(),
         allowed_satire_targets=("systemic_failure",),
@@ -826,7 +897,9 @@ def test_story_budget_does_not_depend_on_score_or_source_count():
         voice_story,
     )
     high_multi = _story_context(
-        base.model_copy(update={"final_score": 100.0, "source_count": 12}),
+        base.model_copy(
+            update={"final_score": 100.0, "source_count": 12, "article_count": 12}
+        ),
         1,
         editorial,
         conversation,
@@ -834,7 +907,7 @@ def test_story_budget_does_not_depend_on_score_or_source_count():
     )
 
     assert low.word_budget_authority == high_multi.word_budget_authority
-    assert low.word_budget_authority == STANDARD_STORY_WORD_BUDGET_V1
+    assert low.word_budget_authority == STANDARD_STORY_WORD_BUDGET_V2
     assert low.provisional_word_budget_plan == high_multi.provisional_word_budget_plan
     assert low.approved_facts == high_multi.approved_facts
 

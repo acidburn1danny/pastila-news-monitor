@@ -10,7 +10,7 @@ from pastila_scout.editor.generation.assembly import (
 )
 from pastila_scout.editor.generation.manifest import GenerationManifest
 from pastila_scout.editor.generation.models import (
-    STANDARD_STORY_WORD_BUDGET_V1,
+    STANDARD_STORY_WORD_BUDGET_V2,
     ApprovedFact,
     CallToActionDraft,
     CallToActionGenerationResult,
@@ -512,7 +512,7 @@ def _story_context(event, position, editorial, commentary, voice):
 def _story_context_and_palette(
     event, position, editorial, commentary, voice, episode_voice_state
 ):
-    story_word_budget = STANDARD_STORY_WORD_BUDGET_V1
+    story_word_budget = STANDARD_STORY_WORD_BUDGET_V2
     palette = build_story_voice_palette_for_editor_v1(
         event=event,
         episode_position=position,

@@ -33,6 +33,26 @@ class StoryWordBudgetV1(FrozenModel):
 STANDARD_STORY_WORD_BUDGET_V1 = StoryWordBudgetV1()
 
 
+class StoryWordBudgetProfileV2(StrEnum):
+    """Supported V2 editorial length profiles."""
+
+    STANDARD = "STANDARD"
+
+
+class StoryWordBudgetV2(FrozenModel):
+    """Current versioned target and hard ceiling for one generated story."""
+
+    authority_version: Literal["story-word-budget-v2"] = "story-word-budget-v2"
+    profile: StoryWordBudgetProfileV2 = Field(
+        default=StoryWordBudgetProfileV2.STANDARD, frozen=True
+    )
+    target_words: Literal[190] = 190
+    hard_max_words: Literal[210] = 210
+
+
+STANDARD_STORY_WORD_BUDGET_V2 = StoryWordBudgetV2()
+
+
 class GenerationMode(StrEnum):
     STANDARD = "standard"
     CONSTRAINED = "constrained"
@@ -138,7 +158,7 @@ class StoryGenerationContext(FrozenModel):
     conversation_plan: dict[str, Any]
     voice_plan: dict[str, Any]
     optional_editorial_toolkit: dict[str, Any] = Field(default_factory=dict)
-    word_budget_authority: StoryWordBudgetV1
+    word_budget_authority: StoryWordBudgetV1 | StoryWordBudgetV2
     provisional_word_budget_plan: dict[str, int] = Field(default_factory=dict)
     runtime_budget: int = Field(gt=0)
     protected_targets: tuple[str, ...]
