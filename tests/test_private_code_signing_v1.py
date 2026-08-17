@@ -86,7 +86,8 @@ def test_inno_signs_installer_and_uninstaller_through_one_external_signer() -> N
         in orchestration
     )
     assert "/SPastilaAcidaAuthenticodeV1=" in orchestration
-    assert '-File "{signer}" -Operation Sign -Path $f' in orchestration
+    assert 'f"-File $q{signer}$q -Operation Sign -Path $f "' in orchestration
+    assert 'f"-SignToolPath $q{signtool.resolve()}$q"' in orchestration
 
 
 def test_installer_is_verified_before_final_hash_and_receipt_completion() -> None:

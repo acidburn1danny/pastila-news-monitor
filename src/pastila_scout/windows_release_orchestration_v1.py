@@ -502,8 +502,8 @@ def create_release_plan(
         )
         inno_signer = (
             f"powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass "
-            f'-File "{signer}" -Operation Sign -Path $f '
-            f'-SignToolPath "{signtool.resolve()}"'
+            f"-File $q{signer}$q -Operation Sign -Path $f "
+            f"-SignToolPath $q{signtool.resolve()}$q"
         )
         command += (
             f"/DAuthenticodeSetupInclude={authenticode_include}",
