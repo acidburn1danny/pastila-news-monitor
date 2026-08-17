@@ -29,6 +29,7 @@ from pastila_scout.editor.generation.models import (
     OpeningGenerationContext,
     OpeningGenerationResult,
     RetryReason,
+    StoryAuthoredContentResult,
     StoryGenerationContext,
     StoryGenerationResult,
     TeleprompterProfile,
@@ -143,15 +144,20 @@ class ControlledGenerator:
                 target_id=str(story_id),
                 episode_context=global_context,
                 component_context=story_context,
-                output_schema=StoryGenerationResult,
+                output_schema=StoryAuthoredContentResult,
+                normalize=lambda value, c=story_context: _bind_story_authority(
+                    value, c
+                ),
                 validator=lambda value, c=story_context, s=state: validate_story(
                     value, c, s
                 ),
                 state=state,
             )
             traces.extend(component_traces)
-            if status is ManifestItemStatus.FAILED:
-                raise ControlledGenerationError(f"story {story_id} failed generation")
+            if status is not ManifestItemStatus.COMPLETED:
+                raise ControlledGenerationError(
+                    f"story {story_id} did not produce a handoff-valid result"
+                )
             state = state.accept_story(f"story-{position:02d}", result)
             validated_text = "\n\n".join(
                 (
@@ -365,6 +371,7 @@ class ControlledGenerator:
         output_schema,
         validator,
         state,
+        normalize=lambda value: value,
     ):
         traces = []
         failures = ()
@@ -417,6 +424,7 @@ class ControlledGenerator:
                 )
                 return None, tuple(traces), ManifestItemStatus.FAILED
             if result is not None:
+                result = normalize(result)
                 outcome = validator(result)
                 last_result = result
             if outcome.accepted:
@@ -503,6 +511,7 @@ def _story_context(event, position, editorial, commentary, voice):
 def _story_context_and_palette(
     event, position, editorial, commentary, voice, episode_voice_state
 ):
+    story_word_budget = max(80, int(getattr(event, "final_score", 50) * 3))
     palette = build_story_voice_palette_for_editor_v1(
         event=event,
         episode_position=position,
@@ -544,12 +553,46 @@ def _story_context_and_palette(
             **voice.model_dump(mode="json"),
         },
         optional_editorial_toolkit=serialize_story_voice_palette_v1(palette),
-        word_budget=max(80, int(getattr(event, "final_score", 50) * 3)),
+        word_budget=story_word_budget,
+        provisional_word_budget_plan=_provisional_story_word_budget_plan(
+            story_word_budget
+        ),
         runtime_budget=120,
         protected_targets=tuple(item.value for item in commentary.protected_targets),
         allowed_satire_targets=tuple(item.value for item in commentary.satire_targets),
         forbidden_claims=commentary.factual_summary.prohibited_unsupported_claims,
     ), palette
+
+
+def _provisional_story_word_budget_plan(total_words: int) -> dict[str, int]:
+    """Project a deterministic drafting aid without creating component policy."""
+    factual = total_words // 4
+    ending = (total_words * 3) // 16
+    return {
+        "factual_summary": factual,
+        "commentary_blocks_total": total_words - factual - ending,
+        "ending": ending,
+    }
+
+
+def _bind_story_authority(result, context):
+    editorial_id = context.editorial_plan["intent_id"]
+    conversation_id = context.conversation_plan["intent_id"]
+    voice_id = context.voice_plan["intent_id"]
+    values = result.model_dump(mode="python")
+    values["story_id"] = context.story_id
+    values["commentary_blocks"] = tuple(
+        {
+            **block.model_dump(mode="python"),
+            "blueprint_intent_ids": (editorial_id,),
+            "voice_plan_ids": (voice_id,),
+        }
+        for block in result.commentary_blocks
+    )
+    values["declared_editorial_intent_usage"] = (editorial_id,)
+    values["declared_conversation_intent_usage"] = (conversation_id,)
+    values["declared_voice_intent_usage"] = (voice_id,)
+    return StoryGenerationResult.model_validate(values)
 
 
 def _trace(

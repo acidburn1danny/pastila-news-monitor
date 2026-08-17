@@ -30,7 +30,7 @@ class OllamaHttpClientV1:
         try:
             response = self._client.post(
                 f"{base_url}/api/chat",
-                json=request.model_dump(mode="json"),
+                json=request.model_dump(mode="json", exclude_none=True),
                 timeout=timeout,
             )
         except httpx.TimeoutException:
@@ -92,8 +92,10 @@ class OllamaHttpClientV1:
                 or type(models) is not list
             ):
                 raise TypeError
-        except (TypeError, KeyError, ValueError):
-            raise _isolated(OllamaMalformedResponseError("Ollama returned invalid discovery data"))
+        except TypeError, KeyError, ValueError:
+            raise _isolated(
+                OllamaMalformedResponseError("Ollama returned invalid discovery data")
+            )
         if model not in names:
             raise _isolated(OllamaModelUnavailableError("Ollama model is unavailable"))
 
@@ -117,7 +119,7 @@ class OllamaHttpClientV1:
             if type(models) is not list:
                 raise TypeError
             return names
-        except (TypeError, KeyError, ValueError):
+        except TypeError, KeyError, ValueError:
             raise _isolated(
                 OllamaMalformedResponseError("Ollama returned invalid discovery data")
             )

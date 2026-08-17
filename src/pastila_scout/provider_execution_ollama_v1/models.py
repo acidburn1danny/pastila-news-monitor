@@ -101,6 +101,7 @@ class OllamaChatRequestV1(_OllamaModel):
     model: StrictStr
     messages: tuple[OllamaChatMessageV1, ...] = Field(min_length=1)
     stream: bool = False
+    format: dict[str, object] | None = None
     options: dict[str, object] = Field(default_factory=dict)
 
 

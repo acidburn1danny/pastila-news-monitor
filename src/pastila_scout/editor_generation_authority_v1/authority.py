@@ -52,13 +52,30 @@ class EditorGenerationRequestAuthorityV1:
                     source.cancellation,
                 )
             )
+            lower = lower.model_copy(
+                update={
+                    "context": lower.context.model_copy(
+                        update={
+                            "metadata": (
+                                (
+                                    "output_schema_canonical_json",
+                                    source.output_schema_canonical_json,
+                                ),
+                                (
+                                    "output_schema_fingerprint",
+                                    source.output_schema_fingerprint,
+                                ),
+                            )
+                        }
+                    )
+                }
+            )
             rebuilt = ProviderExecutionRequestV2.model_validate(
                 lower.model_dump(mode="python", warnings=False), strict=True
             )
             message = rebuilt.request_intent.request_units[0].messages[0]
-            if (
-                message.role != "generation"
-                or message.content != unicodedata.normalize("NFC", source.prompt)
+            if message.role != "generation" or message.content != unicodedata.normalize(
+                "NFC", source.prompt
             ):
                 _raise_invalid()
             return rebuilt

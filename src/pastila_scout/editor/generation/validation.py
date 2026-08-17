@@ -58,6 +58,7 @@ def validate_story(result, context, state):
     errors.extend(_duplicate_offered_tool_errors(result, context))
     if words > context.word_budget:
         errors.append("word_budget_exceeded")
+        errors.append(f"word_budget_actual:{words}")
     if words / 2.5 > context.runtime_budget:
         errors.append("runtime_budget_exceeded")
     if (

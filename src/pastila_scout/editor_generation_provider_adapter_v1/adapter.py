@@ -19,6 +19,7 @@ from pastila_scout.editor.generation.models import (
     ClosingGenerationResult,
     LanguageGenerationConfig,
     OpeningGenerationResult,
+    StoryAuthoredContentResult,
     StoryGenerationResult,
     TransitionGenerationResult,
 )
@@ -65,6 +66,7 @@ _PROVIDER = "Provider execution failed."
 _TIMEOUT = "Provider execution timed out."
 _CANCELLED = "Provider execution was cancelled."
 _ALLOWED = (
+    StoryAuthoredContentResult,
     StoryGenerationResult,
     TransitionGenerationResult,
     OpeningGenerationResult,

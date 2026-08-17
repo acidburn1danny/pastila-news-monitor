@@ -139,11 +139,11 @@ class PromptBuilder:
                     (
                         PromptLayer.CORRECTIVE_INSTRUCTIONS,
                         "Corrective constraints",
-                        {
-                            "correct_only_failures": True,
-                            "preserve_valid_sections": True,
-                            "minimal_safe": mode is GenerationMode.MINIMAL_SAFE,
-                        },
+                        _corrective_constraints(
+                            component_context=component_context,
+                            failures=failures,
+                            minimal_safe=mode is GenerationMode.MINIMAL_SAFE,
+                        ),
                     ),
                 )
             )
@@ -176,6 +176,43 @@ def _canonical(value: Any) -> str:
         separators=(",", ":"),
         allow_nan=False,
     )
+
+
+def _corrective_constraints(*, component_context, failures, minimal_safe):
+    errors = set(failures)
+    constraints = {
+        "correct_only_failures": True,
+        "preserve_valid_sections": True,
+        "minimal_safe": minimal_safe,
+    }
+    if any("malformed structured output" in item.casefold() for item in errors):
+        constraints["structured_output_repair"] = (
+            "Return exactly one JSON object matching the supplied schema; "
+            "no markdown fences or prose outside JSON."
+        )
+    if "word_budget_exceeded" in errors:
+        constraints["maximum_content_words"] = getattr(
+            component_context, "word_budget", None
+        )
+        constraints["counted_content_fields"] = (
+            "factual_summary",
+            "commentary_blocks[].text",
+            "ending",
+        )
+        actual = next(
+            (
+                int(item.rsplit(":", 1)[1])
+                for item in errors
+                if item.startswith("word_budget_actual:")
+            ),
+            None,
+        )
+        if actual is not None:
+            constraints["previous_content_words"] = actual
+            constraints["minimum_words_to_remove"] = max(
+                0, actual - constraints["maximum_content_words"]
+            )
+    return constraints
 
 
 def canonicalize(value: Any) -> Any:

@@ -14,6 +14,7 @@ from pastila_scout.provider_execution_ollama_v1 import (
     build_ollama_request,
 )
 from pastila_scout.provider_execution_ollama_v1.errors import (
+    OllamaInvalidRequestError,
     OllamaModelUnavailableError,
 )
 from pastila_scout.provider_execution_v2 import (
@@ -114,6 +115,45 @@ def test_request_mapping_preserves_messages_and_generation_controls() -> None:
         "num_predict": 321,
         "stop": ["STOP"],
     }
+
+
+def test_editor_schema_metadata_maps_to_native_ollama_format():
+    import hashlib
+    import json
+
+    schema = {"type": "object", "properties": {"value": {"type": "string"}}}
+    canonical = json.dumps(schema, sort_keys=True, separators=(",", ":"))
+    fingerprint = hashlib.sha256(canonical.encode()).hexdigest()
+    request = _request().model_copy(
+        update={
+            "context": _request().context.model_copy(
+                update={
+                    "metadata": (
+                        ("output_schema_canonical_json", canonical),
+                        ("output_schema_fingerprint", fingerprint),
+                    )
+                }
+            )
+        }
+    )
+    assert build_ollama_request(request, _config()).format == schema
+
+
+def test_invalid_structured_output_metadata_is_rejected():
+    request = _request().model_copy(
+        update={
+            "context": _request().context.model_copy(
+                update={
+                    "metadata": (
+                        ("output_schema_canonical_json", '{"type":"object"}'),
+                        ("output_schema_fingerprint", "0" * 64),
+                    )
+                }
+            )
+        }
+    )
+    with pytest.raises(OllamaInvalidRequestError):
+        build_ollama_request(request, _config())
 
 
 def test_configuration_and_client_dependencies_are_authoritatively_validated() -> None:
@@ -347,7 +387,11 @@ def test_discovery_verifies_health_and_exact_configured_model() -> None:
 
 def test_discovery_missing_model_is_explicit() -> None:
     def handler(request):
-        payload = {"version": "0.11.0"} if request.url.path == "/api/version" else {"models": []}
+        payload = (
+            {"version": "0.11.0"}
+            if request.url.path == "/api/version"
+            else {"models": []}
+        )
         return httpx.Response(200, json=payload)
 
     with (

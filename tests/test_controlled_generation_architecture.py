@@ -8,10 +8,10 @@ import sys
 import pytest
 from pydantic import ValidationError
 from test_controlled_generation import (
+    authored_story_result,
     config,
     context_from_pipeline,
     profile_from_pipeline,
-    story_result,
 )
 from test_voice_model import voice_pipeline
 
@@ -253,7 +253,8 @@ def test_static_cta_is_absent_from_all_provider_data_including_closing_retry() -
     )
     order = commentary.blueprint.flow_order
     responses = [
-        story_result(story_id, position) for position, story_id in enumerate(order, 1)
+        authored_story_result(story_id, position)
+        for position, story_id in enumerate(order, 1)
     ]
     responses.extend(
         [
@@ -323,7 +324,7 @@ def test_disabled_cta_does_not_inject_static_content() -> None:
     story_id = commentary.blueprint.flow_order[0]
     provider = ScriptedLanguageModelProvider(
         [
-            story_result(story_id, 1),
+            authored_story_result(story_id, 1),
             {
                 "text": "Deschidere.",
                 "referenced_story_ids": [story_id],

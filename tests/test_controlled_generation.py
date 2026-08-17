@@ -5,6 +5,7 @@ from pydantic import ValidationError
 from test_voice_model import voice_pipeline
 
 from pastila_scout.editor.generation import (
+    ControlledGenerationError,
     ControlledGenerator,
     DraftAssembler,
     EpisodeGenerationState,
@@ -12,6 +13,10 @@ from pastila_scout.editor.generation import (
     PromptBuilder,
     ScriptedLanguageModelProvider,
     TeleprompterFormatter,
+)
+from pastila_scout.editor.generation.controlled_generator import (
+    _bind_story_authority,
+    _provisional_story_word_budget_plan,
 )
 from pastila_scout.editor.generation.models import (
     ApprovedFact,
@@ -23,6 +28,7 @@ from pastila_scout.editor.generation.models import (
     GenerationPolicy,
     LanguageGenerationConfig,
     ManifestItemStatus,
+    StoryAuthoredContentResult,
     StoryGenerationContext,
     StoryGenerationResult,
     TeleprompterProfile,
@@ -60,6 +66,57 @@ def story_result(story_id: int, position: int) -> dict:
         "declared_conversation_intent_usage": [f"conversation:{story_id}"],
         "declared_voice_intent_usage": [f"voice:{story_id}"],
     }
+
+
+def authored_story_result(story_id: int, position: int) -> dict:
+    value = story_result(story_id, position)
+    del value["story_id"]
+    del value["declared_editorial_intent_usage"]
+    del value["declared_conversation_intent_usage"]
+    del value["declared_voice_intent_usage"]
+    for block in value["commentary_blocks"]:
+        del block["blueprint_intent_ids"]
+        del block["voice_plan_ids"]
+    return value
+
+
+def test_application_binds_story_and_intent_authority_outside_model_output():
+    authored = StoryAuthoredContentResult.model_validate(authored_story_result(7, 1))
+    context = StoryGenerationContext(
+        story_id=7,
+        flow_position=1,
+        approved_facts=(
+            ApprovedFact(fact_id="event-7-title", field="title", value="Titlu"),
+        ),
+        editorial_plan={"intent_id": "editorial:7"},
+        conversation_plan={"intent_id": "conversation:7"},
+        voice_plan={"intent_id": "voice:7"},
+        word_budget=80,
+        provisional_word_budget_plan={
+            "factual_summary": 20,
+            "commentary_blocks_total": 45,
+            "ending": 15,
+        },
+        runtime_budget=120,
+        protected_targets=(),
+        allowed_satire_targets=("systemic_failure",),
+        forbidden_claims=(),
+    )
+    bound = _bind_story_authority(authored, context)
+    assert bound.story_id == 7
+    assert bound.declared_editorial_intent_usage == ("editorial:7",)
+    assert bound.declared_conversation_intent_usage == ("conversation:7",)
+    assert bound.declared_voice_intent_usage == ("voice:7",)
+    assert bound.commentary_blocks[0].blueprint_intent_ids == ("editorial:7",)
+    assert bound.commentary_blocks[0].voice_plan_ids == ("voice:7",)
+
+
+def test_authored_schema_rejects_model_attempt_to_supply_application_authority():
+    forged = authored_story_result(7, 1)
+    forged["story_id"] = 99
+    forged["declared_editorial_intent_usage"] = ["editorial:99"]
+    with pytest.raises(ValidationError):
+        StoryAuthoredContentResult.model_validate(forged)
 
 
 def test_policy_config_and_contexts_are_frozen() -> None:
@@ -474,7 +531,8 @@ def test_full_offline_generation_uses_separate_calls_and_required_order() -> Non
     )
     order = commentary.blueprint.flow_order
     responses = [
-        story_result(story_id, position) for position, story_id in enumerate(order, 1)
+        authored_story_result(story_id, position)
+        for position, story_id in enumerate(order, 1)
     ]
     responses.extend(
         [
@@ -541,11 +599,11 @@ def test_full_offline_generation_uses_separate_calls_and_required_order() -> Non
 def test_corrective_retry_then_success_does_not_mutate_failed_attempt_state() -> None:
     scout, flow, generic, commentary, voice = voice_pipeline([{"event_id": 1}])
     story_id = commentary.blueprint.flow_order[0]
-    invalid = story_result(story_id, 1)
+    invalid = authored_story_result(story_id, 1)
     invalid["declared_fact_usage"] = ["unknown-fact"]
     responses = [
         invalid,
-        story_result(story_id, 1),
+        authored_story_result(story_id, 1),
         {
             "text": "Deschidere.",
             "referenced_story_ids": [story_id],
@@ -578,6 +636,74 @@ def test_corrective_retry_then_success_does_not_mutate_failed_attempt_state() ->
         section.layer for section in provider.prompts[1].sections
     }
     assert len(result.draft.usage_receipts) == 1
+
+
+def test_retry_feedback_names_exact_mechanical_budget_repairs_only():
+    context = StoryGenerationContext(
+        story_id=7,
+        flow_position=1,
+        approved_facts=(ApprovedFact(fact_id="fact:7", field="title", value="Titlu"),),
+        editorial_plan={"intent_id": "editorial:7"},
+        conversation_plan={"intent_id": "conversation:7"},
+        voice_plan={"intent_id": "voice:7"},
+        word_budget=80,
+        runtime_budget=120,
+        protected_targets=(),
+        allowed_satire_targets=("systemic_failure",),
+        forbidden_claims=(),
+    )
+    prompt = PromptBuilder().build(
+        component_type=GenerationComponentType.STORY,
+        episode_context={},
+        component_context=context,
+        state=EpisodeGenerationState(),
+        output_schema=StoryGenerationResult,
+        mode=GenerationMode.MINIMAL_SAFE,
+        failures=(
+            "word_budget_exceeded",
+            "word_budget_actual:107",
+        ),
+    )
+    corrective = next(
+        section
+        for section in prompt.sections
+        if section.layer is PromptLayer.CORRECTIVE_INSTRUCTIONS
+    )
+    assert '"maximum_content_words":80' in corrective.content
+    assert '"previous_content_words":107' in corrective.content
+    assert '"minimum_words_to_remove":27' in corrective.content
+    assert "intent_id" not in corrective.content
+
+
+def test_provisional_budget_plan_is_deterministic_and_preserves_total():
+    assert _provisional_story_word_budget_plan(80) == {
+        "factual_summary": 20,
+        "commentary_blocks_total": 45,
+        "ending": 15,
+    }
+    assert sum(_provisional_story_word_budget_plan(81).values()) == 81
+
+
+def test_requires_review_story_stops_before_opening_and_closing():
+    scout, flow, generic, commentary, voice = voice_pipeline([{"event_id": 1}])
+    invalid = authored_story_result(1, 1)
+    invalid["ending"] = " ".join(("prea-lung",) * 1_000)
+    provider = ScriptedLanguageModelProvider([invalid, invalid, invalid])
+    with pytest.raises(ControlledGenerationError, match="handoff-valid"):
+        ControlledGenerator(provider, config=config()).generate(
+            scout_input=scout,
+            selection_profile=profile_from_pipeline(scout),
+            episode_context=context_from_pipeline(scout),
+            flow_result=flow,
+            editorial_blueprint=generic.blueprint,
+            commentary_blueprint=commentary.blueprint,
+            voice_plan=voice.plan,
+        )
+    assert len(provider.prompts) == 3
+    assert all(
+        prompt.component_type is GenerationComponentType.STORY
+        for prompt in provider.prompts
+    )
 
 
 def profile_from_pipeline(scout):

@@ -119,6 +119,7 @@ class StoryGenerationContext(FrozenModel):
     voice_plan: dict[str, Any]
     optional_editorial_toolkit: dict[str, Any] = Field(default_factory=dict)
     word_budget: int = Field(gt=0)
+    provisional_word_budget_plan: dict[str, int] = Field(default_factory=dict)
     runtime_budget: int = Field(gt=0)
     protected_targets: tuple[str, ...]
     allowed_satire_targets: tuple[str, ...]
@@ -177,6 +178,18 @@ class CommentaryBlockResult(FrozenModel):
     requires_qa: bool = False
 
 
+class AuthoredCommentaryBlockResult(FrozenModel):
+    """Only fields whose values can genuinely vary with generated content."""
+
+    block_type: str
+    text: str = Field(min_length=1)
+    sequence: int = Field(gt=0)
+    source_fact_ids: tuple[str, ...]
+    satire_target_ids: tuple[str, ...]
+    protected_target_ids: tuple[str, ...]
+    requires_qa: bool = False
+
+
 class GeneratedCallbackAnchor(FrozenModel):
     callback_id: str
     source_story_id: int
@@ -196,6 +209,25 @@ class StoryGenerationResult(FrozenModel):
     declared_editorial_intent_usage: tuple[str, ...]
     declared_conversation_intent_usage: tuple[str, ...]
     declared_voice_intent_usage: tuple[str, ...]
+    generated_callback_anchors: tuple[GeneratedCallbackAnchor, ...] = ()
+    used_callbacks: tuple[str, ...] = ()
+    used_humor_mechanisms: tuple[str, ...] = ()
+    used_expression_families: tuple[str, ...] = ()
+    used_reference_families: tuple[str, ...] = ()
+    used_vocatives: int = Field(default=0, ge=0)
+    profanity_usage: int = Field(default=0, ge=0)
+    rhetorical_question_functions: tuple[str, ...] = ()
+    warnings: tuple[str, ...] = ()
+
+
+class StoryAuthoredContentResult(FrozenModel):
+    """Provider-authored story content without application-owned identity echoes."""
+
+    factual_summary: str = Field(min_length=1)
+    commentary_blocks: tuple[AuthoredCommentaryBlockResult, ...] = Field(min_length=1)
+    ending: str = Field(min_length=1)
+    ending_type: str = Field(min_length=1)
+    declared_fact_usage: tuple[str, ...]
     generated_callback_anchors: tuple[GeneratedCallbackAnchor, ...] = ()
     used_callbacks: tuple[str, ...] = ()
     used_humor_mechanisms: tuple[str, ...] = ()

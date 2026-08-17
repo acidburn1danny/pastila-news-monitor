@@ -1,5 +1,8 @@
 """Pure mappings between verified V2 authority and Ollama DTOs."""
 
+import hashlib
+import json
+
 from pydantic import ValidationError
 
 from pastila_scout.provider_adapters_v2.ollama import OllamaProviderAdapter
@@ -38,6 +41,7 @@ def build_ollama_request(
     if config.stop_sequences:
         options["stop"] = list(config.stop_sequences)
     unit = request.request_envelope.request_units[0]
+    output_format = _structured_output_format(request)
     invalid_mapping = False
     try:
         mapped = OllamaChatRequestV1(
@@ -46,14 +50,38 @@ def build_ollama_request(
                 OllamaChatMessageV1(role=_ROLES[item.role], content=item.content)
                 for item in unit.messages
             ),
+            format=output_format,
             options=options,
         )
-    except (KeyError, TypeError, ValueError, ValidationError):
+    except KeyError, TypeError, ValueError, ValidationError:
         invalid_mapping = True
         mapped = None
     if invalid_mapping:
         raise _isolated_mapping_error("invalid Ollama request mapping")
     return mapped
+
+
+def _structured_output_format(request: ProviderExecutionRequestV2):
+    metadata = dict(request.context.metadata)
+    raw = metadata.get("output_schema_canonical_json")
+    fingerprint = metadata.get("output_schema_fingerprint")
+    if raw is None and fingerprint is None:
+        return None
+    try:
+        parsed = json.loads(raw)
+        canonical = json.dumps(
+            parsed,
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+            allow_nan=False,
+        )
+        expected = hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+        if type(parsed) is not dict or canonical != raw or fingerprint != expected:
+            raise ValueError
+        return parsed
+    except TypeError, ValueError:
+        raise _isolated_mapping_error("invalid structured-output metadata") from None
 
 
 def map_ollama_response(
