@@ -1,5 +1,7 @@
 """Offline tests for M6C.4D controlled component generation."""
 
+import json
+
 import pytest
 from pydantic import ValidationError
 from test_voice_model import voice_pipeline
@@ -594,6 +596,38 @@ def test_full_offline_generation_uses_separate_calls_and_required_order() -> Non
     assert tuple(item.event_id for item in result.draft.usage_receipts) == tuple(
         str(item) for item in order
     )
+
+    story_sections = {
+        section.layer: json.loads(section.content)
+        for section in provider.prompts[0].sections
+    }
+    assert {fact["field"] for fact in story_sections[PromptLayer.APPROVED_FACTS]} == {
+        "canonical_title",
+        "canonical_summary",
+        "categories",
+    }
+    editorial = story_sections[PromptLayer.EDITORIAL_INTENTIONS]
+    assert {"intent", "angles", "narrative_function", "levels"} <= set(editorial)
+    assert "event_id" not in editorial and "intent_id" not in editorial
+    conversation = story_sections[PromptLayer.CONVERSATION_INTENTIONS]
+    assert {"audience_strategy", "beats", "punchline", "why_it_matters"} <= set(
+        conversation
+    )
+    assert "event_id" not in conversation and "intent_id" not in conversation
+    voice_guidance = story_sections[PromptLayer.VOICE_INTENTIONS]
+    assert {"orality", "sentence_rhythm", "prohibited_voice_modes"} <= set(
+        voice_guidance
+    )
+    assert "event_id" not in voice_guidance and "intent_id" not in voice_guidance
+    local = story_sections[PromptLayer.COMPONENT_CONTEXT]
+    assert sum(local["provisional_word_budget_plan"].values()) == local["word_budget"]
+    toolkit = local["optional_editorial_toolkit"]
+    assert "rules" in toolkit and "preserve_facts" in toolkit["rules"]
+    schema_hint = story_sections[PromptLayer.OUTPUT_SCHEMA]
+    assert schema_hint == {
+        "native_schema": "StoryAuthoredContentResult",
+        "return_only_structured_result": True,
+    }
 
 
 def test_corrective_retry_then_success_does_not_mutate_failed_attempt_state() -> None:

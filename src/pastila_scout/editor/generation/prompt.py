@@ -101,7 +101,11 @@ class PromptBuilder:
                     "minimal_safe": mode is GenerationMode.MINIMAL_SAFE,
                 },
             ),
-            (PromptLayer.EPISODE_CONTEXT, "Episode context", episode_context),
+            (
+                PromptLayer.EPISODE_CONTEXT,
+                "Episode context",
+                _episode_prompt_context(episode_context),
+            ),
             (
                 PromptLayer.COMPONENT_CONTEXT,
                 "Local context",
@@ -109,18 +113,29 @@ class PromptBuilder:
             ),
             (PromptLayer.APPROVED_FACTS, "Approved facts", facts),
             (PromptLayer.FORBIDDEN_CLAIMS, "Forbidden claims", forbidden),
-            (PromptLayer.EDITORIAL_INTENTIONS, "Editorial intentions", editorial),
+            (
+                PromptLayer.EDITORIAL_INTENTIONS,
+                "Editorial intentions",
+                _semantic_projection(editorial, _EDITORIAL_FIELDS),
+            ),
             (
                 PromptLayer.CONVERSATION_INTENTIONS,
                 "Conversation intentions",
-                conversation,
+                _conversation_prompt_intent(conversation),
             ),
-            (PromptLayer.VOICE_INTENTIONS, "Voice ceilings", voice),
-            (PromptLayer.EPISODE_STATE, "Accepted state", state),
+            (
+                PromptLayer.VOICE_INTENTIONS,
+                "Voice ceilings",
+                _without_application_identity(voice),
+            ),
+            (PromptLayer.EPISODE_STATE, "Accepted state", _active_state(state)),
             (
                 PromptLayer.OUTPUT_SCHEMA,
                 "Structured output schema",
-                output_schema.model_json_schema(),
+                {
+                    "native_schema": output_schema.__name__,
+                    "return_only_structured_result": True,
+                },
             ),
             (
                 PromptLayer.GENERATION_TASK,
@@ -287,7 +302,7 @@ def _unordered(values: Any) -> tuple[Any, ...]:
 def _component_local_context(value: Any) -> Any:
     if not hasattr(value, "model_dump"):
         return value
-    return value.model_dump(
+    projected = value.model_dump(
         mode="python",
         exclude={
             "approved_facts",
@@ -296,5 +311,114 @@ def _component_local_context(value: Any) -> Any:
             "conversation_plan",
             "voice_plan",
             "voice_profile",
+            "flow_position",
+            "runtime_budget",
+            "story_id",
         },
     )
+    toolkit = projected.get("optional_editorial_toolkit")
+    if isinstance(toolkit, dict):
+        projected["optional_editorial_toolkit"] = _compact_toolkit(toolkit)
+    return projected
+
+
+_EDITORIAL_FIELDS = (
+    "angles",
+    "intent",
+    "levels",
+    "mandatory",
+    "narrative_function",
+    "recent_episode_reference",
+)
+
+
+def _episode_prompt_context(value: Any) -> Any:
+    if not hasattr(value, "model_dump"):
+        return value
+    data = value.model_dump(mode="python")
+    voice = data.get("episode_voice_profile", {})
+    return {
+        "audience_relationship": data.get("audience_relationship"),
+        "episode_theme": data.get("episode_theme"),
+        "episode_voice": _semantic_projection(
+            voice,
+            (
+                "audience_respect_invariants",
+                "dominant_register",
+                "emotional_arc",
+                "ending_register",
+                "global_humor_ceiling",
+                "profanity_ceiling",
+            ),
+        ),
+        "global_budgets": data.get("global_budgets", {}),
+    }
+
+
+def _conversation_prompt_intent(value: Any) -> Any:
+    data = canonicalize(value)
+    if not isinstance(data, dict):
+        return data
+    projected = _without_application_identity(data)
+    summary = projected.get("factual_summary")
+    if isinstance(summary, dict):
+        projected["factual_summary"] = {
+            key: item
+            for key, item in summary.items()
+            if key
+            not in {
+                "central_event_id",
+                "evidence_references",
+                "prohibited_unsupported_claims",
+            }
+        }
+    return projected
+
+
+def _without_application_identity(value: Any) -> Any:
+    data = canonicalize(value)
+    if not isinstance(data, dict):
+        return data
+    return {
+        key: item
+        for key, item in data.items()
+        if key not in {"event_id", "intent_id", "position", "source_report_id"}
+    }
+
+
+def _semantic_projection(value: Any, fields: tuple[str, ...]) -> Any:
+    data = canonicalize(value)
+    if not isinstance(data, dict):
+        return data
+    return {key: data[key] for key in fields if key in data}
+
+
+def _active_state(value: Any) -> Any:
+    data = canonicalize(value)
+    if not isinstance(data, dict):
+        return data
+    return {
+        key: item
+        for key, item in data.items()
+        if item is not None and item not in (0, False, "", [], {})
+    }
+
+
+def _compact_toolkit(toolkit: dict[str, Any]) -> dict[str, Any]:
+    compact = {}
+    for section in (
+        "expressions",
+        "controlled_terms",
+        "comedy_devices",
+        "signature_devices",
+    ):
+        values = toolkit.get(section, ())
+        if values:
+            compact[section] = tuple(
+                {key: item[key] for key in ("text", "affordance") if key in item}
+                for item in values
+            )
+    rules = toolkit.get("usage_instruction", {})
+    if isinstance(rules, dict):
+        compact["rules"] = tuple(key for key, enabled in rules.items() if enabled)
+    return compact
