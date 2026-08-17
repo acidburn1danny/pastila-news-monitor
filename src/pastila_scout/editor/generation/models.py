@@ -2,7 +2,7 @@
 
 from enum import StrEnum
 from itertools import pairwise
-from typing import Any
+from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
@@ -11,6 +11,26 @@ from pastila_scout.expression_retrieval_v1.usage import UsageReceiptV1
 
 class FrozenModel(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
+
+
+class StoryWordBudgetProfileV1(StrEnum):
+    """Supported V1 editorial length profiles."""
+
+    STANDARD = "STANDARD"
+
+
+class StoryWordBudgetV1(FrozenModel):
+    """Versioned target and hard ceiling for one generated story."""
+
+    authority_version: Literal["story-word-budget-v1"] = "story-word-budget-v1"
+    profile: StoryWordBudgetProfileV1 = Field(
+        default=StoryWordBudgetProfileV1.STANDARD, frozen=True
+    )
+    target_words: Literal[150] = 150
+    hard_max_words: Literal[170] = 170
+
+
+STANDARD_STORY_WORD_BUDGET_V1 = StoryWordBudgetV1()
 
 
 class GenerationMode(StrEnum):
@@ -118,7 +138,7 @@ class StoryGenerationContext(FrozenModel):
     conversation_plan: dict[str, Any]
     voice_plan: dict[str, Any]
     optional_editorial_toolkit: dict[str, Any] = Field(default_factory=dict)
-    word_budget: int = Field(gt=0)
+    word_budget_authority: StoryWordBudgetV1
     provisional_word_budget_plan: dict[str, int] = Field(default_factory=dict)
     runtime_budget: int = Field(gt=0)
     protected_targets: tuple[str, ...]

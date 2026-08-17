@@ -207,7 +207,9 @@ def _corrective_constraints(*, component_context, failures, minimal_safe):
         )
     if "word_budget_exceeded" in errors:
         constraints["maximum_content_words"] = getattr(
-            component_context, "word_budget", None
+            getattr(component_context, "word_budget_authority", None),
+            "hard_max_words",
+            None,
         )
         constraints["counted_content_fields"] = (
             "factual_summary",
@@ -319,6 +321,13 @@ def _component_local_context(value: Any) -> Any:
     toolkit = projected.get("optional_editorial_toolkit")
     if isinstance(toolkit, dict):
         projected["optional_editorial_toolkit"] = _compact_toolkit(toolkit)
+    authority = projected.pop("word_budget_authority", None)
+    if isinstance(authority, dict):
+        projected["word_budget"] = {
+            "profile": authority.get("profile"),
+            "target": authority.get("target_words"),
+            "hard_max": authority.get("hard_max_words"),
+        }
     return projected
 
 

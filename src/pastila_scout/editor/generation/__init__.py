@@ -27,6 +27,7 @@ from pastila_scout.editor.generation.provider import (
 from pastila_scout.editor.generation.state import EpisodeGenerationState
 
 __all__ = [
+    "STANDARD_STORY_WORD_BUDGET_V1",
     "ControlledGenerationError",
     "ControlledGenerator",
     "DraftAssembler",
@@ -39,6 +40,8 @@ __all__ = [
     "PromptLayer",
     "PromptSection",
     "ScriptedLanguageModelProvider",
+    "StoryWordBudgetProfileV1",
+    "StoryWordBudgetV1",
     "TeleprompterFormatter",
     "plan_cta",
 ]

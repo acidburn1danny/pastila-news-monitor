@@ -23,6 +23,7 @@ from pastila_scout.editor.generation import (
     ScriptedLanguageModelProvider,
 )
 from pastila_scout.editor.generation.models import (
+    STANDARD_STORY_WORD_BUDGET_V1,
     ApprovedFact,
     CommentaryBlockResult,
     DraftStory,
@@ -60,7 +61,7 @@ def prompt_context(*, reverse: bool = False) -> StoryGenerationContext:
         editorial_plan={"z": 2, "a": 1} if reverse else {"a": 1, "z": 2},
         conversation_plan={"peer": True},
         voice_plan={"profanity_ceiling": "clean"},
-        word_budget=100,
+        word_budget_authority=STANDARD_STORY_WORD_BUDGET_V1,
         runtime_budget=60,
         protected_targets=(),
         allowed_satire_targets=("systemic_failure",),

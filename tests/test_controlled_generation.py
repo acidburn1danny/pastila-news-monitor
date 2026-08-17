@@ -19,8 +19,10 @@ from pastila_scout.editor.generation import (
 from pastila_scout.editor.generation.controlled_generator import (
     _bind_story_authority,
     _provisional_story_word_budget_plan,
+    _story_context,
 )
 from pastila_scout.editor.generation.models import (
+    STANDARD_STORY_WORD_BUDGET_V1,
     ApprovedFact,
     CommentaryBlockResult,
     DraftStory,
@@ -93,11 +95,11 @@ def test_application_binds_story_and_intent_authority_outside_model_output():
         editorial_plan={"intent_id": "editorial:7"},
         conversation_plan={"intent_id": "conversation:7"},
         voice_plan={"intent_id": "voice:7"},
-        word_budget=80,
+        word_budget_authority=STANDARD_STORY_WORD_BUDGET_V1,
         provisional_word_budget_plan={
-            "factual_summary": 20,
-            "commentary_blocks_total": 45,
-            "ending": 15,
+            "factual_summary": 37,
+            "commentary_blocks_total": 85,
+            "ending": 28,
         },
         runtime_budget=120,
         protected_targets=(),
@@ -169,7 +171,7 @@ def test_prompt_layers_fingerprint_retry_and_minimal_safe_are_deterministic() ->
         editorial_plan={"b": 2, "a": 1},
         conversation_plan={"intent": "peer"},
         voice_plan={"ceiling": "clean"},
-        word_budget=100,
+        word_budget_authority=STANDARD_STORY_WORD_BUDGET_V1,
         runtime_budget=60,
         protected_targets=(),
         allowed_satire_targets=("systemic_failure",),
@@ -227,7 +229,7 @@ def test_story_validation_rejects_unresolved_template_placeholder() -> None:
             "vocatives": {"maximum_per_story": 0},
             "profanity_ceiling": "clean",
         },
-        word_budget=100,
+        word_budget_authority=STANDARD_STORY_WORD_BUDGET_V1,
         runtime_budget=60,
         protected_targets=(),
         allowed_satire_targets=("systemic_failure",),
@@ -258,7 +260,7 @@ def _toolkit_context(section: str, identity: str, text: str) -> StoryGenerationC
         optional_editorial_toolkit={
             section: ({"id": identity, "text": text, "affordance": "test"},)
         },
-        word_budget=100,
+        word_budget_authority=STANDARD_STORY_WORD_BUDGET_V1,
         runtime_budget=60,
         protected_targets=(),
         allowed_satire_targets=("systemic_failure",),
@@ -435,7 +437,7 @@ def test_scripted_provider_records_calls_and_retries_timeout_without_editorial_a
             "vocatives": {"maximum_per_story": 0},
             "profanity_ceiling": "clean",
         },
-        word_budget=100,
+        word_budget_authority=STANDARD_STORY_WORD_BUDGET_V1,
         runtime_budget=60,
         protected_targets=(),
         allowed_satire_targets=("systemic_failure",),
@@ -620,7 +622,12 @@ def test_full_offline_generation_uses_separate_calls_and_required_order() -> Non
     )
     assert "event_id" not in voice_guidance and "intent_id" not in voice_guidance
     local = story_sections[PromptLayer.COMPONENT_CONTEXT]
-    assert sum(local["provisional_word_budget_plan"].values()) == local["word_budget"]
+    assert sum(local["provisional_word_budget_plan"].values()) == 150
+    assert local["word_budget"] == {
+        "profile": "STANDARD",
+        "target": 150,
+        "hard_max": 170,
+    }
     toolkit = local["optional_editorial_toolkit"]
     assert "rules" in toolkit and "preserve_facts" in toolkit["rules"]
     schema_hint = story_sections[PromptLayer.OUTPUT_SCHEMA]
@@ -676,11 +683,13 @@ def test_retry_feedback_names_exact_mechanical_budget_repairs_only():
     context = StoryGenerationContext(
         story_id=7,
         flow_position=1,
-        approved_facts=(ApprovedFact(fact_id="fact:7", field="title", value="Titlu"),),
+        approved_facts=(
+            ApprovedFact(fact_id="event-7-title", field="title", value="Titlu"),
+        ),
         editorial_plan={"intent_id": "editorial:7"},
         conversation_plan={"intent_id": "conversation:7"},
         voice_plan={"intent_id": "voice:7"},
-        word_budget=80,
+        word_budget_authority=STANDARD_STORY_WORD_BUDGET_V1,
         runtime_budget=120,
         protected_targets=(),
         allowed_satire_targets=("systemic_failure",),
@@ -695,7 +704,7 @@ def test_retry_feedback_names_exact_mechanical_budget_repairs_only():
         mode=GenerationMode.MINIMAL_SAFE,
         failures=(
             "word_budget_exceeded",
-            "word_budget_actual:107",
+            "word_budget_actual:184",
         ),
     )
     corrective = next(
@@ -703,19 +712,106 @@ def test_retry_feedback_names_exact_mechanical_budget_repairs_only():
         for section in prompt.sections
         if section.layer is PromptLayer.CORRECTIVE_INSTRUCTIONS
     )
-    assert '"maximum_content_words":80' in corrective.content
-    assert '"previous_content_words":107' in corrective.content
-    assert '"minimum_words_to_remove":27' in corrective.content
+    assert '"maximum_content_words":170' in corrective.content
+    assert '"previous_content_words":184' in corrective.content
+    assert '"minimum_words_to_remove":14' in corrective.content
+    assert '"maximum_content_words":150' not in corrective.content
     assert "intent_id" not in corrective.content
 
 
 def test_provisional_budget_plan_is_deterministic_and_preserves_total():
-    assert _provisional_story_word_budget_plan(80) == {
-        "factual_summary": 20,
-        "commentary_blocks_total": 45,
-        "ending": 15,
+    assert _provisional_story_word_budget_plan(150) == {
+        "factual_summary": 37,
+        "commentary_blocks_total": 85,
+        "ending": 28,
     }
     assert sum(_provisional_story_word_budget_plan(81).values()) == 81
+
+
+def test_standard_story_budget_is_versioned_fixed_product_authority():
+    authority = STANDARD_STORY_WORD_BUDGET_V1
+
+    assert authority.authority_version == "story-word-budget-v1"
+    assert authority.profile.value == "STANDARD"
+    assert authority.target_words == 150
+    assert authority.hard_max_words == 170
+    with pytest.raises(ValidationError):
+        type(authority)(target_words=149)
+    with pytest.raises(ValidationError):
+        type(authority)(hard_max_words=171)
+
+
+@pytest.mark.parametrize(
+    ("word_count", "accepted"),
+    ((149, True), (150, True), (158, True), (169, True), (170, True), (171, False)),
+)
+def test_story_validation_uses_hard_max_not_target(word_count, accepted):
+    context = StoryGenerationContext(
+        story_id=7,
+        flow_position=1,
+        approved_facts=(
+            ApprovedFact(fact_id="event-7-title", field="title", value="Titlu"),
+        ),
+        editorial_plan={"intent_id": "editorial:7"},
+        conversation_plan={"intent_id": "conversation:7"},
+        voice_plan={
+            "intent_id": "voice:7",
+            "vocatives": {"maximum_per_story": 0},
+            "profanity_ceiling": "clean",
+        },
+        word_budget_authority=STANDARD_STORY_WORD_BUDGET_V1,
+        provisional_word_budget_plan=_provisional_story_word_budget_plan(150),
+        runtime_budget=120,
+        protected_targets=(),
+        allowed_satire_targets=("systemic_failure",),
+        forbidden_claims=(),
+    )
+    authored = authored_story_result(7, 1)
+    fixed_words = len(
+        " ".join(
+            (
+                *(block["text"] for block in authored["commentary_blocks"]),
+                authored["ending"],
+            )
+        ).split()
+    )
+    authored["factual_summary"] = " ".join(("cuvant",) * (word_count - fixed_words))
+    result = _bind_story_authority(
+        StoryAuthoredContentResult.model_validate(authored), context
+    )
+
+    outcome = validate_story(result, context, EpisodeGenerationState())
+
+    assert outcome.accepted is accepted
+    assert ("word_budget_exceeded" in outcome.errors) is (not accepted)
+    assert (f"word_budget_actual:{word_count}" in outcome.errors) is (not accepted)
+
+
+def test_story_budget_does_not_depend_on_score_or_source_count():
+    scout, _, generic, commentary, voice = voice_pipeline([{"event_id": 7}])
+    base = scout.ranked_events[0]
+    editorial = generic.blueprint.segments[0]
+    conversation = commentary.blueprint.stories[0]
+    voice_story = voice.plan.stories[0]
+    low = _story_context(
+        base.model_copy(update={"final_score": 0.0, "source_count": 1}),
+        1,
+        editorial,
+        conversation,
+        voice_story,
+    )
+    high_multi = _story_context(
+        base.model_copy(update={"final_score": 100.0, "source_count": 12}),
+        1,
+        editorial,
+        conversation,
+        voice_story,
+    )
+
+    assert low.word_budget_authority == high_multi.word_budget_authority
+    assert low.word_budget_authority == STANDARD_STORY_WORD_BUDGET_V1
+    assert low.provisional_word_budget_plan == high_multi.provisional_word_budget_plan
+    assert low.approved_facts == high_multi.approved_facts
 
 
 def test_requires_review_story_stops_before_opening_and_closing():
