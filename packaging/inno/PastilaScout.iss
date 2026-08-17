@@ -48,6 +48,9 @@ OutputBaseFilename=PastilaScout-{#AppVersion}-Setup
 Compression=lzma2/ultra64
 SolidCompression=yes
 WizardStyle=modern
+#ifdef AuthenticodeSetupInclude
+#include AuthenticodeSetupInclude
+#endif
 RestartApplications=no
 CloseApplications=yes
 CloseApplicationsFilter=PastilaScout.exe,pastila-scout.exe

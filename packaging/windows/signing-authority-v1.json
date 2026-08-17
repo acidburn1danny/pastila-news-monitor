@@ -1,0 +1,40 @@
+{
+  "schema": "pastilaacida-authenticode-signing-authority-v1",
+  "signing_mode": "private_signing_required",
+  "certificate": {
+    "subject": "CN=PastilaAcida Private Code Signing V1",
+    "friendly_name": "PastilaAcida Private Code Signing V1",
+    "thumbprint": "604635DF3EB4CAF406D977987B1A6AA764D83612",
+    "public_certificate": "packaging/signing/PastilaAcida-Private-Code-Signing-V1.cer",
+    "public_certificate_sha256": "759ca1bacd902a29d4bee25087a867d79e80dbe9c8ff7cb63ec0975a373ce01b",
+    "store": "Cert:\\CurrentUser\\My",
+    "private_key_export_policy": "NON_EXPORTABLE"
+  },
+  "file_digest_algorithm": "SHA256",
+  "timestamp": {
+    "status": "NOT_CONFIGURED_PRIVATE_V1",
+    "rfc3161_url": null,
+    "future_configuration_required_for_public_signing": true
+  },
+  "required_artifacts": [
+    "PastilaScout.exe",
+    "pastila-scout.exe",
+    "installer"
+  ],
+  "inno": {
+    "sign_tool_name": "PastilaAcidaAuthenticodeV1",
+    "require_signed_uninstaller": true
+  },
+  "verification": {
+    "require_exact_thumbprint": true,
+    "require_code_signing_eku": true,
+    "distinguish_signature_chain_and_timestamp": true,
+    "allow_private_chain_untrusted": true
+  },
+  "supported_modes": [
+    "signing_disabled",
+    "private_signing_required",
+    "public_signing_required"
+  ],
+  "commercial_replacement": "Replace the private provider with a commercial public certificate or managed signer while preserving artifact selection, signing order, verification, receipts, and fail-closed behavior."
+}

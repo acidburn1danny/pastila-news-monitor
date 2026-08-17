@@ -99,6 +99,40 @@ def _atomic_json(path: Path, value: object) -> None:
     os.replace(temporary, path)
 
 
+def _authenticode(
+    repository: Path, path: Path, signtool: Path, operation: str = "Verify"
+) -> dict[str, object]:
+    signer = repository / "packaging" / "signing" / "invoke-authenticode-v1.ps1"
+    completed = subprocess.run(
+        (
+            "powershell.exe",
+            "-NoProfile",
+            "-NonInteractive",
+            "-ExecutionPolicy",
+            "Bypass",
+            "-File",
+            str(signer),
+            "-Operation",
+            operation,
+            "-Path",
+            str(path),
+            "-SignToolPath",
+            str(signtool),
+        ),
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if completed.returncode:
+        raise ReleaseOrchestrationError(
+            f"Authenticode {operation.lower()} failed for {path.name}"
+        )
+    try:
+        return json.loads(completed.stdout.splitlines()[-1])
+    except (IndexError, json.JSONDecodeError) as error:
+        raise ReleaseOrchestrationError("AuthentiCode metadata is invalid") from error
+
+
 def _safe_external(path: Path, repository: Path) -> Path:
     value = path.resolve()
     if (
@@ -346,6 +380,9 @@ def create_release_plan(
     python_version: str | None = None,
     pyinstaller_version: str | None = None,
     inno_setup_version: str | None = None,
+    signing_mode: str = "signing_disabled",
+    signtool: Path | None = None,
+    verify_signed_payload: bool = True,
 ) -> dict[str, object]:
     repository = repository.resolve()
     bundle = _safe_external(bundle, repository)
@@ -382,6 +419,50 @@ def create_release_plan(
     )
     if not all(item.is_file() for item in required):
         raise ReleaseOrchestrationError("required payload resource is missing")
+    if signing_mode not in {
+        "signing_disabled",
+        "private_signing_required",
+        "public_signing_required",
+    }:
+        raise ReleaseOrchestrationError("signing mode is invalid")
+    if signing_mode == "public_signing_required":
+        raise ReleaseOrchestrationError("public signing provider is not configured")
+    signing: dict[str, object] = {
+        "mode": signing_mode,
+        "status": "DISABLED" if signing_mode == "signing_disabled" else "PLANNED",
+        "signer_subject": None,
+        "signer_thumbprint": None,
+        "public_certificate_sha256": None,
+        "file_digest_algorithm": None,
+        "timestamp_status": None,
+        "trust_scope": None,
+        "artifacts": {},
+    }
+    if signing_mode == "private_signing_required":
+        if signtool is None or not signtool.resolve().is_file():
+            raise ReleaseOrchestrationError("SignTool is required")
+        authority = json.loads(
+            (repository / "packaging/windows/signing-authority-v1.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        signing.update(
+            {
+                "signer_subject": authority["certificate"]["subject"],
+                "signer_thumbprint": authority["certificate"]["thumbprint"],
+                "public_certificate_sha256": authority["certificate"][
+                    "public_certificate_sha256"
+                ],
+                "file_digest_algorithm": authority["file_digest_algorithm"],
+                "timestamp_status": authority["timestamp"]["status"],
+                "trust_scope": "OWNER_CONTROLLED_CURRENT_USER",
+            }
+        )
+        if verify_signed_payload:
+            signing["artifacts"] = {
+                item.name: _authenticode(repository, item, signtool)
+                for item in required[:2]
+            }
     provenance = _verify_bundle_source(
         repository, bundle, application_payload_source_head
     )
@@ -411,8 +492,24 @@ def create_release_plan(
         f"/DAppVersion={app_version}",
         f"/DOutputDir={output_root}",
         f"/DFrozenIcon={icon}",
-        str(definition),
     )
+    if signing_mode == "private_signing_required":
+        signer = repository / "packaging/signing/invoke-authenticode-v1.ps1"
+        authenticode_include = work_root / "authenticode-setup.generated.iss"
+        authenticode_include.write_text(
+            "SignTool=PastilaAcidaAuthenticodeV1 $f\nSignedUninstaller=yes\n",
+            encoding="utf-8",
+        )
+        inno_signer = (
+            f"powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass "
+            f'-File "{signer}" -Operation Sign -Path $f '
+            f'-SignToolPath "{signtool.resolve()}"'
+        )
+        command += (
+            f"/DAuthenticodeSetupInclude={authenticode_include}",
+            f"/SPastilaAcidaAuthenticodeV1={inno_signer}",
+        )
+    command += (str(definition),)
     return {
         "schema": "pastila-scout-release-orchestration",
         "schema_version": 1,
@@ -450,6 +547,11 @@ def create_release_plan(
         "cli_exe_sha256": _hash(required[1]),
         "sources_yaml_sha256": _hash(required[2]),
         "inno_definition_sha256": _hash(definition),
+        "authenticode_setup_include_sha256": (
+            _hash(authenticode_include)
+            if signing_mode == "private_signing_required"
+            else None
+        ),
         "icon_sha256": _hash(icon),
         **provenance,
         "exact_iscc_command": list(command),
@@ -465,6 +567,7 @@ def create_release_plan(
         "installer_sha256": None,
         "installer_size": None,
         "authenticode_state": None,
+        "signing": signing,
         "timestamp": datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "orchestration_result": "planned",
     }
@@ -481,6 +584,17 @@ def main() -> int:
     parser.add_argument("--python-version")
     parser.add_argument("--pyinstaller-version")
     parser.add_argument("--inno-setup-version")
+    parser.add_argument(
+        "--signing-mode",
+        choices=(
+            "signing_disabled",
+            "private_signing_required",
+            "public_signing_required",
+        ),
+        default="signing_disabled",
+    )
+    parser.add_argument("--signtool", type=Path)
+    parser.add_argument("--skip-signed-payload-verification", action="store_true")
     parser.add_argument("--plan-only", action="store_true")
     args = parser.parse_args()
     receipt = _safe_external(args.receipt, args.repository.resolve())
@@ -496,6 +610,9 @@ def main() -> int:
         python_version=args.python_version or os.sys.version.split()[0],
         pyinstaller_version=args.pyinstaller_version,
         inno_setup_version=args.inno_setup_version,
+        signing_mode=args.signing_mode,
+        signtool=args.signtool,
+        verify_signed_payload=not args.skip_signed_payload_verification,
     )
     if not args.plan_only:
         bundle = Path(str(plan["packaged_bundle_root"]))
@@ -516,6 +633,12 @@ def main() -> int:
         ):
             if _hash(work / filename) != plan[field]:
                 raise ReleaseOrchestrationError("generated release input changed")
+        if (
+            args.signing_mode == "private_signing_required"
+            and _hash(work / "authenticode-setup.generated.iss")
+            != plan["authenticode_setup_include_sha256"]
+        ):
+            raise ReleaseOrchestrationError("generated signing input changed")
         before_compile = _inventory(bundle)
         manifest_value = json.loads(
             (Path(args.work_root) / "payload-manifest-v1.json").read_text(
@@ -532,6 +655,12 @@ def main() -> int:
             raise ReleaseOrchestrationError("expected installer was not produced")
         if _inventory(bundle) != before_compile:
             raise ReleaseOrchestrationError("payload changed during compilation")
+        if args.signing_mode == "private_signing_required":
+            metadata = _authenticode(
+                Path(args.repository).resolve(), installer, args.signtool
+            )
+            plan["signing"]["artifacts"][installer.name] = metadata
+            plan["signing"]["status"] = "VERIFIED"
         plan["installer_sha256"] = _hash(installer)
         plan["installer_size"] = installer.stat().st_size
         signature = subprocess.run(
