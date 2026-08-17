@@ -790,6 +790,12 @@ class _DesktopMainWindowV1:
             command=self._chief_editor_export_action,
         )
         self._chief_export_button.master.grid(row=6, column=1)
+        self._editorial_evidence_button = ttk.Button(
+            page,
+            text=_text_v1(key="editorial_evidence.open"),
+            command=self._editorial_evidence_open_action,
+        )
+        self._editorial_evidence_button.grid(row=6, column=2)
         self._chief_status = tkinter.StringVar(value=_text_v1(key="chief_editor.empty"))
         ttk.Label(page, textvariable=self._chief_status).grid(
             row=7, column=0, columnspan=2, sticky="w"
@@ -973,6 +979,13 @@ class _DesktopMainWindowV1:
     def bind_chief_editor_actions(self, *, save_callback, export_callback) -> None:
         self._bind("chief_editor_save", save_callback)
         self._bind("chief_editor_export", export_callback)
+
+    def bind_editorial_evidence_actions(
+        self, *, inspect_callback, finalize_callback, classify_callback
+    ) -> None:
+        self._bind("editorial_evidence_inspect", inspect_callback)
+        self._bind("editorial_evidence_finalize", finalize_callback)
+        self._bind("editorial_evidence_classify", classify_callback)
 
     def bind_episode_draft_action(self, *, callback) -> None:
         self._bind("episode_draft_publish", callback)
@@ -1314,6 +1327,124 @@ class _DesktopMainWindowV1:
 
     def _chief_editor_export_action(self) -> None:
         self._invoke("chief_editor_export", input=self._chief_editor_payload())
+
+    def _editorial_evidence_open_action(self) -> None:
+        selected = self._chief_items.selection()
+        if selected:
+            self._invoke("editorial_evidence_inspect", input=selected[0])
+
+    def publish_editorial_evidence(
+        self,
+        *,
+        capture_id: str,
+        generated_text: str,
+        final_text: str | None,
+        diff_rows: tuple[tuple[int, str, str, str], ...],
+        kpi_summary: str,
+    ) -> None:
+        self._check()
+        child = tkinter.Toplevel(self._root)
+        child.title(_text_v1(key="editorial_evidence.title"))
+        child.transient(self._root)
+        child.columnconfigure(0, weight=1)
+        ttk.Label(child, text="Textul generat initial").grid(
+            row=0, column=0, sticky="w", padx=8, pady=(8, 2)
+        )
+        baseline = tkinter.Text(child, height=8, wrap="word")
+        baseline.insert("1.0", generated_text)
+        baseline.configure(state="disabled")
+        baseline.grid(row=1, column=0, columnspan=3, sticky="nsew", padx=8)
+        ttk.Label(child, text="Versiunea finala a proprietarului").grid(
+            row=2, column=0, sticky="w", padx=8, pady=(8, 2)
+        )
+        owner_final = tkinter.Text(child, height=8, wrap="word")
+        owner_final.insert(
+            "1.0", final_text if final_text is not None else generated_text
+        )
+        owner_final.configure(state="disabled" if final_text is not None else "normal")
+        owner_final.grid(row=3, column=0, columnspan=3, sticky="nsew", padx=8)
+
+        def finalize() -> None:
+            self._invoke(
+                "editorial_evidence_finalize",
+                input={
+                    "capture_id": capture_id,
+                    "final_text": owner_final.get("1.0", "end-1c"),
+                },
+            )
+            child.destroy()
+
+        ttk.Button(
+            child,
+            text=_text_v1(key="editorial_evidence.finalize"),
+            state="disabled" if final_text is not None else "normal",
+            command=finalize,
+        ).grid(row=4, column=0, sticky="w", padx=8, pady=8)
+        ttk.Label(child, text=kpi_summary).grid(
+            row=4, column=1, columnspan=2, sticky="w", padx=8
+        )
+        differences = ttk.Treeview(
+            child,
+            columns=("operation", "severity", "class"),
+            show="headings",
+            height=6,
+        )
+        for name, label in (
+            ("operation", "Operatie"),
+            ("severity", "Severitate"),
+            ("class", "Clasa propusa"),
+        ):
+            differences.heading(name, text=label)
+        for index, operation, severity, proposed in diff_rows:
+            differences.insert(
+                "", "end", iid=str(index), values=(operation, severity, proposed)
+            )
+        differences.grid(row=5, column=0, columnspan=3, sticky="nsew", padx=8)
+        edit_class = tkinter.StringVar(value="UNKNOWN")
+        learnability = tkinter.StringVar(value="UNKNOWN")
+        ttk.Combobox(
+            child,
+            textvariable=edit_class,
+            state="readonly",
+            values=(
+                "FACT_CORRECTION",
+                "REMOVE_HALLUCINATION",
+                "STYLE_OR_VOICE",
+                "STRUCTURE",
+                "EXPRESSION_OR_WORDING",
+                "MECHANISM_OR_JOKE",
+                "REDUNDANCY",
+                "TRANSITION",
+                "UNKNOWN",
+            ),
+        ).grid(row=6, column=0, padx=8, pady=8)
+        ttk.Combobox(
+            child,
+            textvariable=learnability,
+            state="readonly",
+            values=("STYLE_CANDIDATE", "FACT_ONLY", "ONE_OFF", "UNKNOWN"),
+        ).grid(row=6, column=1, padx=8, pady=8)
+
+        def classify() -> None:
+            selected = differences.selection()
+            if selected:
+                self._invoke(
+                    "editorial_evidence_classify",
+                    input={
+                        "capture_id": capture_id,
+                        "diff_index": int(selected[0]),
+                        "edit_class": edit_class.get(),
+                        "learnability": learnability.get(),
+                    },
+                )
+                child.destroy()
+
+        ttk.Button(
+            child,
+            text=_text_v1(key="editorial_evidence.classify"),
+            state="normal" if final_text is not None else "disabled",
+            command=classify,
+        ).grid(row=6, column=2, padx=8, pady=8)
 
     def _episode_draft_publish_action(self) -> None:
         self._episode_draft_status.set("Publicare draft episod in curs...")

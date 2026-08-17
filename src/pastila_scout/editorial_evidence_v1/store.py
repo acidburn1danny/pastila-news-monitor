@@ -298,6 +298,17 @@ class EditorialEvidenceStoreV1:
                 continue
         return tuple(result)
 
+    def latest_for_event(
+        self, *, project_id: str, event_id: int
+    ) -> EditorialObservationV1 | None:
+        matches = tuple(
+            value
+            for value in self.list_valid()
+            if value.metadata.project_id == project_id
+            and value.metadata.event_id == event_id
+        )
+        return max(matches, key=lambda value: value.generated.captured_at, default=None)
+
     def delete(self, capture_id: str) -> bool:
         path = self._path(capture_id)
         if not path.exists():

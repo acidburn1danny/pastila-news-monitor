@@ -42,6 +42,12 @@ from pastila_scout.editor_application_v1 import (
     EditorOverwritePolicyV1,
     EditorSelectionProfileAuthorityV1,
 )
+from pastila_scout.editorial_evidence_v1 import (
+    EditClassV1,
+    EditorialEvidenceStoreV1,
+    LearnabilityV1,
+    OwnerClassificationV1,
+)
 from pastila_scout.provider_execution_ollama_v1 import OllamaHttpClientV1
 from pastila_scout.provider_execution_v2 import CancellationTokenV2
 from pastila_scout.windows_state_v1.settings import (
@@ -126,6 +132,9 @@ def main() -> int:
         project_store = ActiveProjectStoreV1(
             database_path=state.database_path,
             project_path=state.active_project_path,
+        )
+        editorial_evidence_store = EditorialEvidenceStoreV1(
+            state.active_project_path.parent / "editorial-evidence-v1"
         )
         source_override = state.settings_path.parent / "sources.override.yaml"
         canonical_sources = _canonical_scout_sources_path_v1(
@@ -347,6 +356,87 @@ def main() -> int:
                 view, _recover_episode_draft_v1(store=project_store)
             )
 
+        def publish_editorial_observation(observation) -> None:
+            kpi = observation.kpi
+            summary = (
+                "KPI indisponibil pana la finalizare."
+                if kpi is None
+                else (
+                    f"KPI partial: {kpi.score} | completitudine "
+                    f"{kpi.completeness} | {kpi.confidence}"
+                )
+            )
+            view.publish_editorial_evidence(
+                capture_id=observation.capture_id,
+                generated_text=observation.generated.text,
+                final_text=(
+                    None if observation.final is None else observation.final.text
+                ),
+                diff_rows=tuple(
+                    (
+                        index,
+                        item.operation.value,
+                        item.severity,
+                        item.proposed_class.value,
+                    )
+                    for index, item in enumerate(observation.diff)
+                    if item.operation.value != "RETAINED"
+                ),
+                kpi_summary=summary,
+            )
+
+        def inspect_editorial_evidence(*, input) -> None:
+            project = project_store.load_runtime_state()
+            material = next(
+                (
+                    item
+                    for item in (() if project is None else project.editor_materials)
+                    if item.reference == input
+                ),
+                None,
+            )
+            observation = (
+                None
+                if project is None or material is None
+                else editorial_evidence_store.latest_for_event(
+                    project_id=project.project_id, event_id=material.event_id
+                )
+            )
+            if observation is None:
+                messagebox.showwarning(
+                    title=_text_v1(key="editorial_evidence.title"),
+                    message=_text_v1(key="editorial_evidence.missing"),
+                    parent=root,
+                )
+                return
+            publish_editorial_observation(observation)
+
+        def finalize_editorial_evidence(*, input) -> None:
+            observation = editorial_evidence_store.finalize(
+                input["capture_id"],
+                final_text=input["final_text"],
+                finalization_source="desktop_owner_explicit_finalize",
+            )
+            publish_editorial_observation(observation)
+
+        def classify_editorial_evidence(*, input) -> None:
+            current = editorial_evidence_store.require(input["capture_id"])
+            correction = OwnerClassificationV1(
+                diff_index=input["diff_index"],
+                edit_class=EditClassV1(input["edit_class"]),
+                learnability=LearnabilityV1(input["learnability"]),
+            )
+            classifications = tuple(
+                item
+                for item in current.classifications
+                if item.diff_index != correction.diff_index
+            ) + (correction,)
+            observation = editorial_evidence_store.correct_classifications(
+                current.capture_id,
+                tuple(sorted(classifications, key=lambda item: item.diff_index)),
+            )
+            publish_editorial_observation(observation)
+
         def export_chief_editor(*, input) -> None:
             project = _save_chief_editor(project_store, input)
             selected = filedialog.asksaveasfilename(
@@ -467,6 +557,12 @@ def main() -> int:
         view.bind_chief_editor_actions(
             save_callback=save_chief_editor, export_callback=export_chief_editor
         )
+        if hasattr(view, "bind_editorial_evidence_actions"):
+            view.bind_editorial_evidence_actions(
+                inspect_callback=inspect_editorial_evidence,
+                finalize_callback=finalize_editorial_evidence,
+                classify_callback=classify_editorial_evidence,
+            )
         if hasattr(view, "bind_episode_draft_action"):
             view.bind_episode_draft_action(callback=publish_episode_draft)
         if hasattr(view, "bind_episode_draft_export_action"):

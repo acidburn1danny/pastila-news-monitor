@@ -275,3 +275,37 @@ def test_representative_romanian_analysis_is_bounded():
     diff, kpi = analyze_pair_v1(generated, final)
     assert len(diff) == 120 and kpi.score is not None
     assert time.perf_counter() - started < 1.0
+
+
+def test_latest_event_capture_is_project_scoped_and_deterministic(tmp_path):
+    store = EditorialEvidenceStoreV1(tmp_path)
+    first = store.capture_generated(
+        metadata=metadata(),
+        text="Prima generație.",
+        captured_at=datetime(2026, 8, 17, 10, tzinfo=UTC),
+    )
+    second = store.capture_generated(
+        metadata=metadata(),
+        text="A doua generație.",
+        captured_at=datetime(2026, 8, 17, 11, tzinfo=UTC),
+    )
+    assert (
+        store.latest_for_event(project_id=metadata().project_id, event_id=29) == second
+    )
+    assert first.capture_id != second.capture_id
+    assert store.latest_for_event(project_id="foreign", event_id=29) is None
+
+
+def test_daily_use_wiring_is_explicit_and_does_not_touch_generation_authority():
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parents[1]
+    entrypoint = (root / "src/pastila_scout/desktop_v1/entrypoint.py").read_text(
+        encoding="utf-8"
+    )
+    views = (root / "src/pastila_scout/desktop_v1/views.py").read_text(encoding="utf-8")
+    assert "desktop_owner_explicit_finalize" in entrypoint
+    assert "bind_editorial_evidence_actions" in entrypoint
+    assert "publish_editorial_evidence" in views
+    assert "editorial_evidence_finalize" in views
+    assert "preference" not in entrypoint.casefold()
