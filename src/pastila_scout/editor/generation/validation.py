@@ -8,6 +8,11 @@ from pastila_scout.editor.generation.models import RetryReason
 
 _UNRESOLVED_TEMPLATE = re.compile(r"\{[^{}]+\}")
 _TEMPLATE_SLOT = re.compile(r"\{[^{}]+\}")
+_SENTENCE = re.compile(r"[^.!?\n]+(?:[.!?]+|$)", re.UNICODE)
+
+
+def _sentence_count(value: str) -> int:
+    return sum(bool(item.strip()) for item in _SENTENCE.findall(value))
 
 
 @dataclass(frozen=True)
@@ -24,6 +29,8 @@ class ValidationOutcome:
 
 def validate_story(result, context, state):
     errors = []
+    if _sentence_count(result.factual_summary) > 2:
+        errors.append("factual_setup_sentence_limit_exceeded")
     known_facts = {fact.fact_id for fact in context.approved_facts}
     used_facts = set(result.declared_fact_usage)
     if not used_facts:
@@ -165,6 +172,8 @@ def _duplicate_offered_tool_errors(result, context) -> tuple[str, ...]:
 
 def validate_transition(result, context, state):
     errors = []
+    if _sentence_count(result.text) > 2:
+        errors.append("transition_sentence_limit_exceeded")
     if (result.from_story_id, result.to_story_id) != (
         context.from_story_id,
         context.to_story_id,

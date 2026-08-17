@@ -38,6 +38,22 @@ class LearnabilityV1(StrEnum):
     UNKNOWN = "UNKNOWN"
 
 
+class EditorialMechanicV1(StrEnum):
+    FACTUAL_SETUP = "FACTUAL_SETUP"
+    ACID_ESCALATION = "ACID_ESCALATION"
+    ANALOGY = "ANALOGY"
+    EXPECTATION_INVERSION = "EXPECTATION_INVERSION"
+    CALLBACK = "CALLBACK"
+    RHETORICAL_QUESTION = "RHETORICAL_QUESTION"
+    ABSURD_LOGICAL_EXTENSION = "ABSURD_LOGICAL_EXTENSION"
+    SERIOUS_RESET = "SERIOUS_RESET"
+    PUNCHLINE_ENDING = "PUNCHLINE_ENDING"
+    PUNCHLINE_TRANSITION = "PUNCHLINE_TRANSITION"
+    SEMANTIC_BRIDGE = "SEMANTIC_BRIDGE"
+    CONTRAST_BRIDGE = "CONTRAST_BRIDGE"
+    WORDPLAY_BRIDGE = "WORDPLAY_BRIDGE"
+
+
 class SnapshotV1(FrozenModel):
     captured_at: str
     sha256: str = Field(pattern=r"^sha256:[0-9a-f]{64}$")
@@ -54,6 +70,7 @@ class CaptureMetadataV1(FrozenModel):
     policy_identity: str | None = None
     catalog_identity: str | None = None
     mechanism_identity: str | None = None
+    mechanic_identities: tuple[EditorialMechanicV1, ...] = ()
     retrieved_tool_ids: tuple[str, ...] = ()
     generation_attempt: int | None = Field(default=None, gt=0)
 

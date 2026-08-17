@@ -37,10 +37,34 @@ from pastila_scout.editor.generation.models import (
     StoryGenerationContext,
     StoryGenerationResult,
     TeleprompterProfile,
+    TransitionGenerationContext,
+    TransitionGenerationResult,
 )
 from pastila_scout.editor.generation.prompt import PromptLayer
 from pastila_scout.editor.generation.provider import ProviderTimeoutError
-from pastila_scout.editor.generation.validation import validate_story
+from pastila_scout.editor.generation.validation import (
+    validate_story,
+    validate_transition,
+)
+
+
+def _story_context_for_mechanics() -> StoryGenerationContext:
+    return StoryGenerationContext(
+        story_id=1,
+        flow_position=1,
+        approved_facts=(
+            ApprovedFact(fact_id="event-1-title", field="title", value="Fapt"),
+        ),
+        editorial_plan={"intent_id": "editorial:1"},
+        conversation_plan={"intent_id": "conversation:1"},
+        voice_plan={"intent_id": "voice:1"},
+        word_budget_authority=STANDARD_STORY_WORD_BUDGET_V2,
+        provisional_word_budget_plan=_provisional_story_word_budget_plan(190),
+        runtime_budget=210,
+        protected_targets=(),
+        allowed_satire_targets=("systemic_failure",),
+        forbidden_claims=(),
+    )
 
 
 def config():
@@ -71,6 +95,103 @@ def story_result(story_id: int, position: int) -> dict:
         "declared_conversation_intent_usage": [f"conversation:{story_id}"],
         "declared_voice_intent_usage": [f"voice:{story_id}"],
     }
+
+
+def test_editorial_mechanics_are_compact_model_visible_product_authority() -> None:
+    context = _story_context_for_mechanics()
+    prompt = PromptBuilder().build(
+        component_type=GenerationComponentType.STORY,
+        episode_context={"episode_id": "mechanics"},
+        component_context=context,
+        state=EpisodeGenerationState(),
+        output_schema=StoryGenerationResult,
+    )
+    assert '"max_sentences":2' in prompt.text
+    assert '"purpose":"orient_and_setup"' in prompt.text
+    assert '"role":"primary_editorial_body"' in prompt.text
+    assert '"role":"editorial_landing"' in prompt.text
+    assert '"serious_reset_allowed":true' in prompt.text
+    assert _provisional_story_word_budget_plan(190) == {
+        "factual_summary": 47,
+        "commentary_blocks_total": 108,
+        "ending": 35,
+    }
+    assert 108 > 190 / 2
+
+
+@pytest.mark.parametrize(
+    ("summary", "expected_valid"),
+    (
+        ("Un fapt.", True),
+        ("Un fapt. Context necesar.", True),
+        ("Unu. Doi. Trei.", False),
+    ),
+)
+def test_factual_setup_sentence_contract(summary: str, expected_valid: bool) -> None:
+    context = _story_context_for_mechanics()
+    result = StoryGenerationResult.model_validate(
+        story_result(1, 1) | {"factual_summary": summary}
+    )
+    outcome = validate_story(result, context, EpisodeGenerationState())
+    assert outcome.accepted is expected_valid
+    assert (
+        "factual_setup_sentence_limit_exceeded" in outcome.errors
+    ) is not expected_valid
+
+
+def test_component_plans_are_guidance_not_component_word_ceilings() -> None:
+    context = _story_context_for_mechanics().model_copy(
+        update={
+            "provisional_word_budget_plan": {
+                "factual_summary": 1,
+                "commentary_blocks_total": 188,
+                "ending": 1,
+            }
+        }
+    )
+    result = StoryGenerationResult.model_validate(story_result(1, 1))
+    assert validate_story(result, context, EpisodeGenerationState()).accepted
+
+
+def test_transition_is_separate_compact_punchline_bridge_with_sentence_ceiling() -> (
+    None
+):
+    context = TransitionGenerationContext(
+        from_story_id=1,
+        to_story_id=2,
+        previous_story_ending_summary="Final unu",
+        next_story_factual_summary="Fapt doi",
+        transition_plan={"intent": "bridge"},
+        voice_profile={"cadence": "oral"},
+        callback_context=(),
+        word_budget=50,
+    )
+    prompt = PromptBuilder().build(
+        component_type=GenerationComponentType.TRANSITION,
+        episode_context={"episode_id": "mechanics"},
+        component_context=context,
+        state=EpisodeGenerationState(),
+        output_schema=TransitionGenerationResult,
+    )
+    assert '"role":"punchline_bridge"' in prompt.text
+    assert '"avoid":"mechanical_newsreader"' in prompt.text
+    assert context.word_budget == 50
+    for text, valid in (
+        ("O punte.", True),
+        ("Închide unu. Deschide doi.", True),
+        ("Unu. Doi. Trei.", False),
+    ):
+        result = TransitionGenerationResult(
+            from_story_id=1,
+            to_story_id=2,
+            text=text,
+            transition_type="semantic_bridge",
+            declared_plan_references=("bridge",),
+        )
+        assert (
+            validate_transition(result, context, EpisodeGenerationState()).accepted
+            is valid
+        )
 
 
 def authored_story_result(story_id: int, position: int) -> dict:

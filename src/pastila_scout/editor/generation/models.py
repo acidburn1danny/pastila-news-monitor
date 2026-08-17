@@ -150,6 +150,40 @@ class EpisodeGenerationContext(FrozenModel):
     language_generation_config: LanguageGenerationConfig
 
 
+class FactualSetupMechanicsV1(FrozenModel):
+    max_sentences: Literal[2] = 2
+    prefer_one: Literal[True] = True
+    purpose: Literal["orient_and_setup"] = "orient_and_setup"
+
+
+class CommentaryMechanicsV1(FrozenModel):
+    role: Literal["primary_editorial_body"] = "primary_editorial_body"
+
+
+class EndingMechanicsV1(FrozenModel):
+    role: Literal["editorial_landing"] = "editorial_landing"
+    serious_reset_allowed: Literal[True] = True
+
+
+class StoryEditorialMechanicsV1(FrozenModel):
+    authority_version: Literal["editorial-mechanics-v1"] = "editorial-mechanics-v1"
+    factual_setup: FactualSetupMechanicsV1 = FactualSetupMechanicsV1()
+    commentary: CommentaryMechanicsV1 = CommentaryMechanicsV1()
+    ending: EndingMechanicsV1 = EndingMechanicsV1()
+
+
+class TransitionEditorialMechanicsV1(FrozenModel):
+    authority_version: Literal["editorial-mechanics-v1"] = "editorial-mechanics-v1"
+    max_sentences: Literal[2] = 2
+    prefer_one: Literal[True] = True
+    role: Literal["punchline_bridge"] = "punchline_bridge"
+    avoid: Literal["mechanical_newsreader"] = "mechanical_newsreader"
+
+
+STORY_EDITORIAL_MECHANICS_V1 = StoryEditorialMechanicsV1()
+TRANSITION_EDITORIAL_MECHANICS_V1 = TransitionEditorialMechanicsV1()
+
+
 class StoryGenerationContext(FrozenModel):
     story_id: int = Field(gt=0)
     flow_position: int = Field(gt=0)
@@ -158,6 +192,7 @@ class StoryGenerationContext(FrozenModel):
     conversation_plan: dict[str, Any]
     voice_plan: dict[str, Any]
     optional_editorial_toolkit: dict[str, Any] = Field(default_factory=dict)
+    editorial_mechanics: StoryEditorialMechanicsV1 = STORY_EDITORIAL_MECHANICS_V1
     word_budget_authority: StoryWordBudgetV1 | StoryWordBudgetV2
     provisional_word_budget_plan: dict[str, int] = Field(default_factory=dict)
     runtime_budget: int = Field(gt=0)
@@ -175,6 +210,9 @@ class TransitionGenerationContext(FrozenModel):
     voice_profile: dict[str, Any]
     callback_context: tuple[str, ...]
     word_budget: int = Field(gt=0)
+    editorial_mechanics: TransitionEditorialMechanicsV1 = (
+        TRANSITION_EDITORIAL_MECHANICS_V1
+    )
 
 
 class OpeningGenerationContext(FrozenModel):

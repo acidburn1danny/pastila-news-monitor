@@ -11,6 +11,7 @@ import pytest
 from pastila_scout.editorial_evidence_v1 import (
     EditClassV1,
     EditorialEvidenceStoreV1,
+    EditorialMechanicV1,
     EvidenceStoreErrorV1,
     LearnabilityV1,
     OwnerClassificationV1,
@@ -35,6 +36,23 @@ def metadata() -> CaptureMetadataV1:
         retrieved_tool_ids=(),
         generation_attempt=1,
     )
+
+
+def test_mechanics_are_observable_without_preference_promotion() -> None:
+    observed = metadata().model_copy(
+        update={
+            "mechanic_identities": (
+                EditorialMechanicV1.FACTUAL_SETUP,
+                EditorialMechanicV1.PUNCHLINE_ENDING,
+            )
+        }
+    )
+    assert observed.mechanic_identities == (
+        EditorialMechanicV1.FACTUAL_SETUP,
+        EditorialMechanicV1.PUNCHLINE_ENDING,
+    )
+    assert metadata().mechanic_identities == ()
+    assert "preference" not in observed.model_dump(mode="json")
 
 
 def test_generated_snapshot_is_idempotent_immutable_and_finalization_is_explicit(
