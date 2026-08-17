@@ -19,6 +19,7 @@ from pastila_scout.contracts.identity import (
     verify_scout_input_identity,
 )
 from pastila_scout.contracts.scout_editor import ScoutEditorInputV1
+from pastila_scout.editorial_evidence_v1 import EditorialEvidenceStoreV1
 from pastila_scout.editorial_recommendation_v1 import (
     EditorialCandidateV1,
     EpisodeRecommendationV1,
@@ -632,6 +633,19 @@ class ActiveProjectStoreV1:
             project.episode_draft_approval,
         )
         self._write(updated)
+        # Observation-only and failure-isolated: evidence can never block a
+        # successful Editor material or alter its generation path.
+        try:
+            EditorialEvidenceStoreV1(
+                self.project_path.parent / "editorial-evidence-v1"
+            ).capture_editor_output(
+                path=output_path,
+                expected_payload_sha256=payload_sha256,
+                project_id=project.project_id,
+                event_id=event_id,
+            )
+        except OSError, ValueError:
+            pass
         return updated
 
     def save_chief_editor(
