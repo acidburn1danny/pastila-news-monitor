@@ -195,7 +195,7 @@ def test_rss_source_remains_valid_without_html_fields() -> None:
 def test_checked_in_config_contains_approved_operational_rss_source_set() -> None:
     config = load_config(Path("config/sources.yaml"))
 
-    assert len(config.sources) == 39
+    assert len(config.sources) == 54
     assert len({source.id for source in config.sources}) == len(config.sources)
     assert len({source.url for source in config.sources}) == len(config.sources)
     assert all(source.categories for source in config.sources)
@@ -225,12 +225,27 @@ def test_checked_in_config_contains_approved_operational_rss_source_set() -> Non
         "gds",
         "oradea_indirect",
         "turnul_sfatului",
+        "oficiul_de_stiri",
+        "republica",
+        "b1tv",
+        "ordinea",
+        "ziare_com",
+        "marturie_athonita",
+        "tvr_info",
+        "cfr_sa",
+        "amccrs_pmb",
         "bbc_world",
         "politico_europe",
         "guardian_world",
         "aljazeera",
         "cbs_news",
         "abc_news",
+        "los_angeles_times",
+        "the_conversation",
+        "deutsche_welle",
+        "yahoo_news",
+        "fox_news",
+        "fbi_news",
         "msnow",
         "cbs_entertainment",
         "ars_technica",
@@ -257,6 +272,12 @@ def test_checked_in_config_contains_approved_operational_rss_source_set() -> Non
         "aljazeera",
         "cbs_news",
         "abc_news",
+        "los_angeles_times",
+        "the_conversation",
+        "deutsche_welle",
+        "yahoo_news",
+        "fox_news",
+        "fbi_news",
         "msnow",
         "cbs_entertainment",
         "ars_technica",
@@ -297,6 +318,15 @@ def test_checked_in_config_contains_approved_operational_rss_source_set() -> Non
         "gds",
         "oradea_indirect",
         "turnul_sfatului",
+        "oficiul_de_stiri",
+        "republica",
+        "b1tv",
+        "ordinea",
+        "ziare_com",
+        "marturie_athonita",
+        "tvr_info",
+        "cfr_sa",
+        "amccrs_pmb",
     }
     assert all(
         source.categories == (SourceCategory.EXTERNE,)

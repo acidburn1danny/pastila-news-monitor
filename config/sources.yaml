@@ -220,6 +220,89 @@ sources:
     source_category: [Politica, Social, Diverse]
     max_articles_per_poll: 50
 
+  # Romania - Expansion V1
+  - id: oficiul_de_stiri
+    name: Oficiul de Stiri
+    adapter: rss
+    url: https://oficiuldestiri.ro/feed
+    enabled: true
+    prioritate: 1
+    source_category: [Politica, Social, CanCan, Diverse]
+    max_articles_per_poll: 50
+
+  - id: republica
+    name: Republica
+    adapter: rss
+    url: https://republica.ro/rss
+    enabled: true
+    prioritate: 1
+    source_category: [Politica, Social, Diverse]
+    max_articles_per_poll: 50
+
+  - id: b1tv
+    name: B1TV
+    adapter: rss
+    url: https://www.b1tv.ro/feed/
+    enabled: true
+    prioritate: 1
+    source_category: [Politica, Social, CanCan, Diverse]
+    max_articles_per_poll: 50
+
+  - id: ordinea
+    name: Ordinea
+    adapter: rss
+    url: https://www.ordinea.ro/feed/
+    enabled: true
+    prioritate: 1
+    source_category: [Politica, Social, Diverse]
+    max_articles_per_poll: 50
+
+  - id: ziare_com
+    name: Ziare.com
+    adapter: rss
+    url: https://ziare.com/rss/breaking_news.xml
+    enabled: true
+    prioritate: 1
+    source_category: [Politica, Social, CanCan, Diverse]
+    max_articles_per_poll: 50
+
+  - id: marturie_athonita
+    name: Marturie Athonita
+    adapter: rss
+    url: https://marturieathonita.ro/feed.xml
+    enabled: true
+    prioritate: 1
+    source_category: [Social, Diverse]
+    max_articles_per_poll: 50
+
+  - id: tvr_info
+    name: TVR Info
+    adapter: rss
+    url: https://tvrinfo.ro/feed/
+    enabled: true
+    prioritate: 1
+    source_category: [Politica, Social, Diverse]
+    max_articles_per_poll: 50
+
+  # Romania - Specialized official authorities
+  - id: cfr_sa
+    name: CFR SA
+    adapter: rss
+    url: https://cfr.ro/feed/
+    enabled: true
+    prioritate: 1
+    source_category: [Social, Diverse]
+    max_articles_per_poll: 50
+
+  - id: amccrs_pmb
+    name: AMCCRS PMB
+    adapter: rss
+    url: https://amccrs-pmb.ro/feed/
+    enabled: true
+    prioritate: 1
+    source_category: [Social, Diverse]
+    max_articles_per_poll: 50
+
   # International - Core
   - id: bbc_world
     name: BBC News World
@@ -270,6 +353,60 @@ sources:
     name: ABC News
     adapter: rss
     url: https://feeds.abcnews.com/abcnews/topstories
+    enabled: true
+    prioritate: 1
+    source_category: [Externe]
+    max_articles_per_poll: 50
+
+  - id: los_angeles_times
+    name: Los Angeles Times
+    adapter: rss
+    url: https://www.latimes.com/index.rss
+    enabled: true
+    prioritate: 1
+    source_category: [Externe]
+    max_articles_per_poll: 50
+
+  - id: the_conversation
+    name: The Conversation
+    adapter: rss
+    url: https://theconversation.com/global/articles.atom
+    enabled: true
+    prioritate: 1
+    source_category: [Externe]
+    max_articles_per_poll: 50
+
+  - id: deutsche_welle
+    name: Deutsche Welle
+    adapter: rss
+    url: https://rss.dw.com/rdf/rss-en-top
+    enabled: true
+    prioritate: 1
+    source_category: [Externe]
+    max_articles_per_poll: 50
+
+  - id: yahoo_news
+    name: Yahoo News
+    adapter: rss
+    url: https://news.yahoo.com/rss/
+    enabled: true
+    prioritate: 1
+    source_category: [Externe]
+    max_articles_per_poll: 50
+
+  - id: fox_news
+    name: Fox News
+    adapter: rss
+    url: https://moxie.foxnews.com/google-publisher/latest.xml
+    enabled: true
+    prioritate: 1
+    source_category: [Externe]
+    max_articles_per_poll: 50
+
+  - id: fbi_news
+    name: FBI News
+    adapter: rss
+    url: https://www.fbi.gov/feeds/fbi-in-the-news/rss.xml
     enabled: true
     prioritate: 1
     source_category: [Externe]
