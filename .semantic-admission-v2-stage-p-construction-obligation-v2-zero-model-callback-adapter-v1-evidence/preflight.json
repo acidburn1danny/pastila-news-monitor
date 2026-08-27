@@ -1,0 +1,12 @@
+{
+  "candidate_identity": "458a2bddbd7f0435ff97b6a74ddaebcd5732b319752a1c639b9ecc26e9db3dc8",
+  "adapter_identity": "b1d4a4932fb5365ede3a60d258046bd6523ed4e9029acbfe6a4ca99dac863c71",
+  "focused_tests_passed": 14,
+  "synthetic_projection_calls": 8,
+  "tokenizer_or_model_loads": 0,
+  "runner_executor_wsl_calls": 0,
+  "generation_or_inference_calls": 0,
+  "retries_repairs_selections_fallbacks": 0,
+  "probe_or_stage_c_calls": 0,
+  "runtime_or_production_activations": 0
+}

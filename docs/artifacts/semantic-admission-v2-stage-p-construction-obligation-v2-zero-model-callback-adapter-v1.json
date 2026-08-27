@@ -1,0 +1,24 @@
+{
+  "artifact_type": "ZERO_MODEL_TOKEN_CALLBACK_ADAPTER",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_ZERO_MODEL_CALLBACK_ADAPTER_V1",
+  "canonical_identity": "458a2bddbd7f0435ff97b6a74ddaebcd5732b319752a1c639b9ecc26e9db3dc8",
+  "adapter_identity": "b1d4a4932fb5365ede3a60d258046bd6523ed4e9029acbfe6a4ca99dac863c71",
+  "identity_derivation": {"algorithm": "sha256", "separator": "LF", "ordered_utf8_fields": [
+    "STAGE_P_CONSTRUCTION_OBLIGATION_V2_ZERO_MODEL_CALLBACK_ADAPTER_V1",
+    "b1d4a4932fb5365ede3a60d258046bd6523ed4e9029acbfe6a4ca99dac863c71",
+    "cb9f14284353fafba05094b005f3a97793dbb079e5bed81abacddaafb7d155bf",
+    "7a0964d0adad47071079fbcad9a58eb4439a9048a588ffaa767b573238590c43",
+    "f8637746e1e9e67a98046e362d2a23eb47f666336a939b81a8961b839135f1ca",
+    "SYNTHETIC_ONLY", "ZERO_EXECUTION"]},
+  "implementation_sha256": "7a0964d0adad47071079fbcad9a58eb4439a9048a588ffaa767b573238590c43",
+  "focused_test_sha256": "f8637746e1e9e67a98046e362d2a23eb47f666336a939b81a8961b839135f1ca",
+  "runner_protocol_identity": "cb9f14284353fafba05094b005f3a97793dbb079e5bed81abacddaafb7d155bf",
+  "verification": {"incremental_full_rebuild_equivalence": true, "request_isolation": true,
+    "terminal_eos_only": true, "identity_bound_no_legal_token_receipt": true,
+    "nonincremental_prefix_rejected": true, "invalid_decode_fail_closed": true},
+  "authority": {"synthetic_token_projection": true, "receipt_construction": true,
+    "transformers_callback": false, "tokenizer_or_model_loading": false,
+    "runner_executor_or_wsl": false, "generation_or_inference": false,
+    "retry_repair_selection_or_fallback": false, "probe_or_stage_c": false,
+    "runtime_or_production": false}
+}
