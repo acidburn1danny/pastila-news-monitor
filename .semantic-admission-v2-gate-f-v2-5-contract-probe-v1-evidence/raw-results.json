@@ -1,0 +1,28 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-gate-f-v2-5-two-case-results",
+  "schema_version": "1.0.0",
+  "probe_id": "SAV2_GATE_F_V25_TWO_CASE_PROBE_V1",
+  "candidate_bundle_identity": "68ea125b3f2e41f106eade918e1bb2e4acfa66e2e99e84c268b17a4661ed797e",
+  "provider_call_count": 2,
+  "evaluations": [
+    {
+      "case_id": "HMCV1-SASC-01",
+      "request_sha256": "a25336179b3ff8503b3083af23456f8fe1fbe3de3b4836c773a4d3f913443937",
+      "adapter_accepted_raw": "{\"gate_id\":\"FACTUAL_SEMANTIC\",\"decision\":\"PASS\",\"reason_records\":[]}",
+      "adapter_exception": null
+    },
+    {
+      "case_id": "HMCV1-SASC-10",
+      "request_sha256": "bf76c53708f8716819f62f68e16ea727803a017636179ac2a2f0f45bf955dd2a",
+      "adapter_accepted_raw": "{\"gate_id\":\"FACTUAL_SEMANTIC\",\"decision\":\"PASS\",\"reason_records\":[]}",
+      "adapter_exception": null
+    }
+  ],
+  "retry_count": 0,
+  "repair_count": 0,
+  "selection_count": 0,
+  "gate_s_included": false,
+  "current_runtime_affected": false,
+  "runtime_authority": false,
+  "training_authority": false
+}
