@@ -1,0 +1,21 @@
+{
+  "result": "PASS",
+  "runner_calls": 0,
+  "tokenizer_loads": 0,
+  "model_loads": 0,
+  "model_calls": 0,
+  "provider_calls": 0,
+  "inference_calls": 0,
+  "case01_blocked": true,
+  "probe_bound": false,
+  "windows_import_and_construction_tests": "PASS",
+  "wsl_import_only_preflight": "PASS",
+  "wsl_types": [
+    "StagePScopeGraphConstraintStateV1_2",
+    "StagePDiagnosticTokenTrieProjectorV1",
+    "StagePScopeGraphDiagnosticCallbackControllerV1",
+    "AppendOnlyLifecycleV1"
+  ],
+  "transformers_loaded": false,
+  "peft_loaded": false
+}

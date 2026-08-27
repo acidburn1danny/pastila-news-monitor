@@ -1,0 +1,29 @@
+{
+  "artifact_id": "STAGE_P_BASELINE_LANGUAGE_RUNNER_EXECUTOR_BINDING_V1",
+  "binding_identity": "aa01960320b1d98b2e7be7a7943bccc36f4c854662f75c660d20391267259b42",
+  "approved_adapter_identity": "57dad182098a4d92db6a4c61cef2e585a5e1534c7c3e0496d9d29d6cab0d3c7e",
+  "identities": {
+    "runner_sha256": "8d5e78da8ad7b3cdbddd3c53f018a3a2c0562f7ebce4389bb5cee5215c4a3e6f",
+    "executor_sha256": "2e12d9e79608b32e691f1d08ede25dfb3f7de087390212134166dfc6c4e3d9c1",
+    "diagnostic_projector_sha256": "08cf7a6ba607ab6813e8d253df4eefe539669f3fb8c8147250cbe63af115428e",
+    "diagnostic_controller_sha256": "ab8c6a700e96d425065c4494cd04b8ac11fe34ec6839944f7ed3b0845bf92e1c"
+  },
+  "binding": {
+    "constraint_state": "StagePScopeGraphConstraintStateV1_2",
+    "projector": "StagePDiagnosticTokenTrieProjectorV1",
+    "callback_controller": "StagePScopeGraphDiagnosticCallbackControllerV1",
+    "lifecycle": "AppendOnlyLifecycleV1",
+    "timeout_seconds": 240,
+    "liveness_failure_receipt": "HOST_CONSTRAINT_LIVENESS_FAILURE_CLASSIFIED"
+  },
+  "authority": {
+    "zero_inference_verification": true,
+    "case01": false,
+    "probe": false,
+    "stage_c": false,
+    "runtime": false,
+    "production": false,
+    "training": false
+  },
+  "status": "OWNER_REVIEW_REQUIRED"
+}
