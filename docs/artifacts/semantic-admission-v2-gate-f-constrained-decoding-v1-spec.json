@@ -1,0 +1,84 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-gate-f-constrained-decoding-spec",
+  "schema_version": "1.0.0",
+  "scope": "DESIGN_AND_ZERO_INFERENCE_FEASIBILITY_ONLY",
+  "gate_id": "FACTUAL_SEMANTIC",
+  "problem": "The frozen local model deterministically emits a Markdown envelope around governed-shape Gate-F JSON despite prompt-only remediation.",
+  "selected_design": {
+    "integration_point": "transformers.generate(prefix_allowed_tokens_fn=...) in the evaluation-only Core V1.2 runner",
+    "dependency_strategy": "USE_EXISTING_TRANSFORMERS_5_15_NATIVE_PREFIX_CONSTRAINT; ADD_NO_RUNTIME_DEPENDENCY",
+    "constraint_engine": "CUSTOM_DETERMINISTIC_CHARACTER_DFA_WITH_TOKEN_PREFIX_PROJECTION",
+    "allowed_root": "EXACTLY_ONE_JSON_OBJECT",
+    "first_character": "{",
+    "terminal_condition": "A schema-complete object followed only by EOS",
+    "field_order": ["gate_id", "decision", "reason_records"],
+    "gate_id_value": "FACTUAL_SEMANTIC",
+    "decision_values": ["PASS", "FAIL", "INDETERMINATE"],
+    "pass_constraint": "reason_records must be empty",
+    "nonpass_constraint": "one or more reason records and at least one DECISIVE record",
+    "reason_field_order": ["code", "status", "candidate_span", "authority_support", "unsupported_proposition", "confidence"],
+    "reason_codes": [
+      "FSEM_UNSUPPORTED_BIOGRAPHY_OR_HISTORY",
+      "FSEM_UNSUPPORTED_MOTIVE_OR_INTENT",
+      "FSEM_UNSUPPORTED_CAUSALITY",
+      "FSEM_UNSUPPORTED_OUTCOME_OR_STATUS",
+      "FSEM_UNSUPPORTED_EMOTION_OR_REACTION",
+      "FSEM_UNSUPPORTED_CAPACITY",
+      "FSEM_CERTAINTY_MUTATION",
+      "FSEM_TIMING_MUTATION",
+      "FSEM_UNSUPPORTED_LIFE_STAKES",
+      "FSEM_INVENTED_SPEECH_OR_ROLE_KNOWLEDGE",
+      "FSEM_UNSUPPORTED_PREMISE_TO_DIRECTIVE",
+      "FSEM_FICTION_RETURN_TO_FACT",
+      "ADMISSION_INDETERMINATE"
+    ],
+    "status_values": ["DECISIVE", "SUPPORTING", "DEFENSE_IN_DEPTH_ONLY"],
+    "nullable_string_fields": ["candidate_span", "authority_support", "unsupported_proposition"],
+    "confidence_constraint": "JSON number in inclusive range 0 through 1",
+    "string_constraint": "Valid JSON string escapes; reject unescaped controls",
+    "maximum_reason_records": 8,
+    "maximum_generated_characters": 8000
+  },
+  "token_projection": {
+    "method": "For each DFA state and decoded partial-token suffix, admit only vocabulary tokens whose decoded bytes keep the character stream extendable to at least one valid terminal object.",
+    "cache": "Cache allowed token IDs by immutable DFA state plus partial literal/string state.",
+    "special_tokens": "Disallow all special tokens except EOS; allow EOS only in a valid terminal state.",
+    "empty_allowed_set": "Abort evaluation and emit ADMISSION_EVALUATOR_FAILURE receipt; never relax the grammar.",
+    "token_decode_ambiguity": "Validate the concatenated decoded token stream, not isolated token labels. Fail closed on non-round-tripping token pieces."
+  },
+  "independent_postconditions": [
+    "Decode generated tokens without stripping, trimming, or repair.",
+    "Require the first decoded byte to be left brace and the last to be right brace.",
+    "Apply the unchanged GateResponseV2 strict parser.",
+    "Require exact Gate-F decision/reason namespace invariants.",
+    "Record raw token IDs, raw decoded bytes, constraint identity, parser receipt, and failures."
+  ],
+  "prohibited": [
+    "MARKDOWN_FENCE_STRIPPING",
+    "OUTPUT_REPAIR",
+    "SILENT_RETRY",
+    "BEST_OF_SELECTION",
+    "PARSER_RELAXATION",
+    "FALLBACK_TO_UNCONSTRAINED_DECODING",
+    "CURRICULUM_EXPOSURE",
+    "RUNTIME_OR_TRAINING_AUTHORITY"
+  ],
+  "implementation_stages": [
+    "Implement the DFA and token projection in an evaluation-only module with no production import edge.",
+    "Property-test valid and invalid prefixes, schema invariants, EOS behavior, Unicode/escape handling, and empty-set failure.",
+    "Run tokenizer-only exhaustive vocabulary projection checks without loading model weights.",
+    "Perform a zero-inference runner preflight with a forbidden model executor.",
+    "Only under separate owner authority, execute one unchanged-payload Gate-F constrained contract probe.",
+    "Do not authorize Run 3 until the constrained probe passes and its evidence is owner-reviewed."
+  ],
+  "acceptance_contract": {
+    "must_accept": ["Canonical PASS", "Canonical FAIL with one decisive governed reason", "Canonical INDETERMINATE"],
+    "must_make_impossible": ["Markdown fences", "Prose prefix/suffix", "Unknown keys", "Unknown codes", "Wrong gate_id", "PASS with reasons", "Nonpass without decisive reason", "Premature EOS"],
+    "performance_preflight": "Allowed-token projection must complete within the existing per-gate timeout budget with bounded cache growth."
+  },
+  "model_calls": 0,
+  "provider_calls": 0,
+  "run3_authorized": false,
+  "runtime_authority": false,
+  "training_authority": false
+}

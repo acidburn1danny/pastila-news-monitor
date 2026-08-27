@@ -1,0 +1,32 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-gate-f-constrained-decoding-v1-manifest",
+  "schema_version": "1.0.0",
+  "lifecycle": "FROZEN_DESIGN_AND_ZERO_INFERENCE_FEASIBILITY_COMPLETE",
+  "source_gate_f_v2_3_probe_identity": "104b3f13e1303c2a75a3e44eb4f23d4416053018c918ff7cb85d94aee5af1770",
+  "selected_approach": "TRANSFORMERS_NATIVE_PREFIX_CONSTRAINT_PLUS_CUSTOM_GATE_F_DFA",
+  "runtime_dependency_added": false,
+  "artifact_hashes_sha256": {
+    "specification": "14e7ed1f4b7a873d37f823afbba38535221b194d644368dc929dd16ceb626036",
+    "tokenizer-feasibility.json": "fff8e63ba37051209075e0d809c687baf066f48cb5b7e2f5c08c70b3b5d1799b",
+    "report.md": "a27ff535737f5e419c6a51c10fc846fa522d51f9be25bc1603a3e140bc235507",
+    "feasibility_runner": "adaf963793542392912a3ff9973d2d32aa9cbe82dbc7a7c3edd92444f28458f6",
+    "tests": "d1f18ca4c966d1733ea3eab204d5ba792c3045833b7724c4bf3160d5128093b3",
+    "test-attempt1-failure.json": "4020b3a5e5cbf50c74a4bca128068918aff8842af805efe2f51d8aa283249001"
+  },
+  "transformers_version": "5.15.0",
+  "native_prefix_constraint_available": true,
+  "vocabulary_size": 131072,
+  "opening_brace_token_count": 107,
+  "fence_token_count": 6,
+  "first_step_fence_exclusion_feasible": true,
+  "canonical_schema_round_trip": true,
+  "tokenizer_regex_warning_preserved": true,
+  "dfa_implemented": false,
+  "runtime_performance_verified": false,
+  "model_calls": 0,
+  "provider_calls": 0,
+  "run3_authorized": false,
+  "runtime_authority": false,
+  "training_authority": false,
+  "canonical_identity": "91f3de68f02b1b203f816c9939ff49241d3a9c6243f1cc3800a964b9b0e5b0f1"
+}

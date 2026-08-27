@@ -1,0 +1,11 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-gate-f-constraint-test-failure",
+  "schema_version": "1.0.0",
+  "attempt": 1,
+  "boundary": "TEST_INPUT_INTERFACE",
+  "failure": "model_validate(value, strict=True) rejected JSON-shaped Python strings/lists before raw-JSON parsing",
+  "remediation": "Exercise the actual unchanged response boundary with model_validate_json(raw, strict=True)",
+  "model_calls": 0,
+  "provider_calls": 0,
+  "runtime_affected": false
+}
