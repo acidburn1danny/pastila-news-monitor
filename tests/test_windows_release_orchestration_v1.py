@@ -94,6 +94,8 @@ def _plan(
         def clean(repository: Path, *arguments: str) -> str:
             if arguments == ("status", "--porcelain", "--untracked-files=no"):
                 return ""
+            if arguments == ("status", "--porcelain", "--untracked-files=all"):
+                return "?? config/settings.json\n"
             return real_git(repository, *arguments)
 
         monkeypatch.setattr(
@@ -142,6 +144,10 @@ def test_plan_only_generates_deterministic_manifest_and_no_installer(
     assert plan["intended_release_receipt_filename"] == (
         "PastilaScout-1.1.1-Windows-r3-release-receipt.json"
     )
+    verify = (tmp_path / "work" / "payload-verify.generated.iss").read_text(
+        encoding="utf-8"
+    )
+    assert "if not FileExists(Path) then begin" in verify
 
 
 def test_manifest_is_reproducible_across_external_roots(
