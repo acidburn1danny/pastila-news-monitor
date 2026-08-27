@@ -1,0 +1,54 @@
+{
+  "artifact_id": "STAGE_P_CREATIVE_TARGET_CASE01_PROBE_BINDING_V1",
+  "binding_identity": "b39e2b2b14e19ba48db4122768712c1675120849f37607e11453132353e0e90c",
+  "approved_evaluator_binding_identity": "a6bba6cf229e5cf75352c2a0333b186841528e767e9a6638f7b7bef1e11e6ace",
+  "lifecycle": "EXCLUSIVE_ONE_SHOT_BOUND_NOT_EXECUTED_CASE01_BLOCKED",
+  "case_id": "HMCV1-SASC-01",
+  "pack_sha256": "4163307ccb8cfa8997b520a1cea04cddacd347e9b1ffde498db925ffccac6c2d",
+  "probe_runner_sha256": "77919893fd68699a97cc41f57456c4d88373c70a8741e3c0d9c05195ce95f0b8",
+  "identities": {
+    "evaluator_identity": "9f8f441ffc01cd964e562c3aef64ccaa91d8f1c091d01e6296dd4d2a7dc58c03",
+    "request_candidate_identity": "79b27bb6d7e35dfa9153cafb724e82d5689973b49605a9ea09a4b6462f01d9cc",
+    "prompt_identity": "sha256:a7a1fb35b356889b8465d767c5111f3b1b9aed2a449417a2089f694ba73a8824",
+    "schema_identity": "sha256:3dccbf050677900fed11899295ed5724f638270116b72ebcda26a26255586569",
+    "constraint_identity": "sha256:e64ab5b70479399f13e9ce9ba299d61dfbd044276109ff7ff98f1e2b29078380",
+    "grammar_identity": "sha256:d81f9588383bf93e46a1c57a5e5ab9b284af38d13e43223f7a29a656f1415adf",
+    "tokenizer_identity": "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c",
+    "model_identity": "pastila-editor-core-v1.2-experimental"
+  },
+  "execution_boundaries": {
+    "exclusive_new_evidence_root": true,
+    "maximum_provider_calls": 1,
+    "retry_count": 0,
+    "repair_count": 0,
+    "selection_count": 0,
+    "constraint_liveness_reason": "STAGE_P_CONSTRAINT_LIVENESS_FAILURE",
+    "ordinary_transport_reason": "STAGE_P_PROVIDER_OR_TRANSPORT_FAILURE",
+    "stage_c_constructed": false,
+    "stage_c_called": false
+  },
+  "zero_inference_verification": {
+    "case01_selection": "PASS",
+    "pack_identity": "PASS",
+    "evaluator_binding": "PASS",
+    "exclusive_evidence_root": "PASS",
+    "single_call_site": "PASS",
+    "subprocess_launch_forbidden": "PASS",
+    "runner_calls": 0,
+    "tokenizer_loads": 0,
+    "model_loads": 0,
+    "provider_calls": 0,
+    "inference_calls": 0
+  },
+  "authority": {
+    "case01_execution": false,
+    "probe_execution": false,
+    "stage_c": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  },
+  "status": "OWNER_REVIEW_REQUIRED",
+  "recommended_next_step": "Owner-review this binding, then separately authorize exactly one evaluation-only Stage-P-only Creative Target Case 01 execution. Stop afterward without retry, repair, selection, Stage C, or another case."
+}
