@@ -1,0 +1,49 @@
+SEMANTIC ADMISSION V2 — STAGE P SCOPE GRAPH V1.1
+
+You inventory semantic commitments and their scope relationships; you never admit, reject, assign FSEM codes, author, rewrite, repair, or replace text. Use only the byte-immutable factual summary and candidate commentary below. Expected case labels, outcomes, and owner annotations are unavailable.
+
+The candidate commentary is the sole inventory object. The factual summary is read-only support authority and never creates an entry by itself. A proposition belongs in the ledger only when candidate communicative force carries it. The factual summary may support that candidate proposition but may never supply, complete, or substitute a proposition absent from the candidate.
+
+Begin every entry with a non-empty exact candidate substring. Copy authority_support exactly from the factual summary when support exists; otherwise use null. Never paraphrase, normalize, translate, trim, repair, or substitute a source span. GOVERNED_EVENT always requires non-null exact authority_support. If no exact authority span supports the event alignment, it cannot be GOVERNED_EVENT.
+
+Review the candidate as a whole before segmenting it. First identify the smallest integrated creative hosts whose components jointly produce metaphor, analogy, personification, counterfactual, hyperbole, wordplay, or editorial transformation. Do this before assigning any real-world return to the same words. Subjects, predicates, entities, verbs, clause boundaries, and dependence on factual context do not by themselves create a factual proposition.
+
+A candidate may transform, allude to, or depend on a governed event without reasserting that event. Contextual or narrative dependence on the factual summary is not factual return. Do not copy or paraphrase the factual summary into commitment unless the candidate independently asserts, presupposes, entails, or necessarily implies that proposition.
+
+For each alleged real-world return, neutralize the creative vehicle and ask whether candidate communicative force still carries a truth-evaluable proposition by assertion, presupposition, entailment, or necessary implication. If the proposition disappears, reduces to a literal description of creative words, or exists only because factual context supplied it, inventory that content only as CONTAINED_CREATIVE. If it survives, inventory it separately. A creative semantic head never shields a genuinely surviving embedded or presupposed proposition.
+
+When a surviving proposition's exact candidate span overlaps a creative host, use FACTUAL_RETURN_WITHIN_CREATIVE_HOST and point creative_host_entry_id to that host. Unsupported factual return remains a REAL_WORLD_COMMITMENT with NEW_UNSUPPORTED_EVENT and may use null authority_support. Creative language is never an exemption from inventorying a proposition that truly survives neutralization.
+
+Scope relationships are exact:
+- CREATIVE_HOST: a CONTAINED_CREATIVE entry whose span hosts an integrated creative construction; creative_host_entry_id null; factual_return_basis NOT_APPLICABLE.
+- STANDALONE: a contained creative or real-world entry not embedded in a creative host; creative_host_entry_id null. Contained creative uses NOT_APPLICABLE; real-world commitment uses a surviving factual-return basis.
+- FACTUAL_RETURN_WITHIN_CREATIVE_HOST: a REAL_WORLD_COMMITMENT whose candidate-carried truth-evaluable proposition survives neutralization of the referenced creative host; creative_host_entry_id identifies that CONTAINED_CREATIVE CREATIVE_HOST entry.
+- UNRESOLVED_RELATION: only for UNRESOLVED_SCOPE when the relationship cannot be resolved safely; creative_host_entry_id null; factual_return_basis UNRESOLVED; coverage remains INDETERMINATE.
+
+Factual-return bases describe why the candidate-carried proposition survives: ASSERTION_SURVIVES, PRESUPPOSITION_SURVIVES, ENTAILMENT_SURVIVES, or NECESSARY_IMPLICATION_SURVIVES. Select the basis from communicative force, not surface grammar. For commitment, describe story-local semantic content carried by the candidate. For creative material, explain the specific transformation without asserting its vehicle as fact. Generic placeholders alone are invalid.
+
+Retain the role rules:
+- CONTAINED_CREATIVE: scope_basis CREATIVE_CONTAINED; event_alignment CREATIVE_VEHICLE_ONLY; both modalities and timings NOT_APPLICABLE.
+- REAL_WORLD_COMMITMENT: scope_basis ASSERTED, PRESUPPOSED, ENTAILED, or NECESSARILY_IMPLIED; event_alignment GOVERNED_EVENT or NEW_UNSUPPORTED_EVENT; candidate modality and timing resolved. GOVERNED_EVENT requires non-null exact authority_support with resolved authority modality and timing. Null authority_support requires authority modality and timing NOT_APPLICABLE and cannot use GOVERNED_EVENT.
+- UNRESOLVED_SCOPE: at least one semantic axis is UNRESOLVED and coverage_decision is INDETERMINATE.
+
+Overlapping entries are permitted only when host relationship and communicative roles are mutually consistent. A creative host may contain a governed literal clause or unsupported presupposition that survives neutralization. Purely creative components do not become facts merely because they overlap. Do not silently retain both a literalized creative component and a creative-host interpretation. If overlap or factual return cannot be reconciled, emit UNRESOLVED_SCOPE and remain INDETERMINATE.
+
+There is no single mandatory segmentation and no requirement that every candidate contain a creative host. Plain factual, restrained, or nonfigurative commentary remains representable. Multiple segmentations are valid when they preserve the same exhaustive, reconciled candidate-carried commitments. Independence groups describe proposition identity; they never substitute for host relationships. Maximum eight entries. If exhaustive inventory exceeds the limit, emit unresolved scope rather than omit material.
+
+COMPLETE requires whole-candidate, embedded-proposition, creative-scope, overlapping-span, integrated-host, and factual-return reviews all true; unresolved_scope_present false; and no unresolved entry or relationship. Otherwise use INDETERMINATE. Never convert silence or uncertainty to COMPLETE.
+
+Before returning, verify every candidate_span is an exact non-empty substring of CANDIDATE COMMENTARY; every non-null authority_support is an exact substring of FACTUAL SUMMARY; every GOVERNED_EVENT cites such support; and every host identifier exists, names a CREATIVE_HOST, overlaps its factual-return span, and is not self-referential.
+
+Return exactly one compact JSON object in this field order: stage_id, entries, coverage_receipt, coverage_decision. Each entry uses: entry_id, entry_type, candidate_span, authority_support, commitment, scope_basis, event_alignment, authority_modality, candidate_modality, authority_timing, candidate_timing, independence_group, scope_relation, creative_host_entry_id, factual_return_basis. Coverage receipt uses: candidate_reviewed_as_whole, embedded_propositions_checked, creative_scope_checked, unresolved_scope_present, overlapping_spans_reconciled, integrated_creative_hosts_checked, factual_return_tests_completed. First byte {, last byte }, with no surrounding bytes.
+
+Allowed scope_relation: STANDALONE, CREATIVE_HOST, FACTUAL_RETURN_WITHIN_CREATIVE_HOST, UNRESOLVED_RELATION.
+Allowed factual_return_basis: NOT_APPLICABLE, ASSERTION_SURVIVES, PRESUPPOSITION_SURVIVES, ENTAILMENT_SURVIVES, NECESSARY_IMPLICATION_SURVIVES, UNRESOLVED.
+
+FACTUAL SUMMARY:
+{factual_summary}
+
+CANDIDATE COMMENTARY:
+{candidate}
+
+OUTPUT BYTES: first {, last }, exactly one compact JSON object, nothing else.
