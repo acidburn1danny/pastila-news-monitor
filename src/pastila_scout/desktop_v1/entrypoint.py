@@ -179,7 +179,7 @@ def main() -> int:
             "voice_v2": compose_voice_v2_production(
                 project_path=state.active_project_path,
                 project_identity=(
-                    active_project.project_id
+                    getattr(active_project, "project_id", "unbound-active-project-v1")
                     if active_project is not None
                     else "unbound-active-project-v1"
                 ),
