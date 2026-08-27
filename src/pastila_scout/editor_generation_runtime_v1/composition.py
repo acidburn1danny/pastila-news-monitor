@@ -7,13 +7,19 @@ import hashlib
 import inspect
 import json
 import math
+import sys
 import unicodedata
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from importlib import import_module
+from pathlib import Path
 from types import FunctionType
 from typing import TYPE_CHECKING, NoReturn, get_type_hints
 
+from pastila_scout.editor_core_identities_v1 import (
+    CORE_V1_1_MODEL_ID,
+    CORE_V1_2_MODEL_ID,
+)
 if TYPE_CHECKING:
     import httpx
 
@@ -978,6 +984,29 @@ class _OllamaRuntimeSessionFactoryV1(_PrivateStatelessV1):
         try:
             if type(options) is not EditorGenerationRuntimeOptionsV1:
                 _raise()
+            if options.model_identifier == CORE_V1_2_MODEL_ID:
+                experimental_v1_2 = import_module(
+                    "pastila_scout.experimental_core_v1_2"
+                )
+                project_root = Path(
+                    getattr(sys, "_MEIPASS", Path(__file__).resolve().parents[3])
+                )
+                executor = experimental_v1_2.ExperimentalCoreV12Executor(
+                    project_root=project_root,
+                    max_output_tokens=options.max_output_tokens,
+                )
+                client = _httpx_client_type()()
+                lifecycle = _OllamaRuntimeLifecycleV1(client)
+                return EditorOllamaRuntimeHandleV1(executor, lifecycle)
+            if options.model_identifier == CORE_V1_1_MODEL_ID:
+                experimental = import_module("pastila_scout.experimental_core_v1_1")
+                project_root = Path(__file__).resolve().parents[3]
+                executor = experimental.ExperimentalCoreV11Executor(
+                    project_root=project_root
+                )
+                client = _httpx_client_type()()
+                lifecycle = _OllamaRuntimeLifecycleV1(client)
+                return EditorOllamaRuntimeHandleV1(executor, lifecycle)
             ollama = import_module("pastila_scout.provider_execution_ollama_v1")
             client = _httpx_client_type()()
             executor = ollama.OllamaProviderExecutorV1(

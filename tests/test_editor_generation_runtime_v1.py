@@ -26,6 +26,11 @@ from pastila_scout.editor_generation_runtime_v1 import (
 from pastila_scout.editor_generation_runtime_v1.composition import (
     _EditorScoutWorkflowFactoryV1,
     _NonOperationalProviderExecutorV2,
+    _OllamaRuntimeSessionFactoryV1,
+)
+from pastila_scout.editor_core_identities_v1 import (
+    CORE_V1_1_MODEL_ID,
+    CORE_V1_2_MODEL_ID,
 )
 from pastila_scout.editor_generation_runtime_v1.models import (
     EditorAdapterDependenciesV1,
@@ -217,6 +222,21 @@ def _options() -> EditorGenerationRuntimeOptionsV1:
     )
 
 
+def _options_for_model(model_identifier: str) -> EditorGenerationRuntimeOptionsV1:
+    return EditorGenerationRuntimeOptionsV1(
+        ProviderChoiceV1.OLLAMA,
+        model_identifier,
+        None,
+        0.3,
+        1,
+        128,
+        None,
+        (),
+        True,
+        TimeoutPolicyV2(timeout_seconds=30),
+    )
+
+
 def test_exact_public_api_and_layout():
     import pastila_scout.editor_generation_runtime_v1 as runtime
 
@@ -301,6 +321,119 @@ def test_ollama_open_builds_one_inert_path_and_no_execution():
     with pytest.raises(EditorGenerationRuntimeCompositionError, match="already closed"):
         session.close()
     assert _Lifecycle.closes == 1
+
+
+def test_ordinary_ollama_routing_does_not_import_experimental_executors(monkeypatch):
+    from pastila_scout.editor_generation_runtime_v1 import composition
+
+    imported = []
+    original = composition.import_module
+
+    def observed(name):
+        imported.append(name)
+        assert not name.startswith("pastila_scout.experimental_core_v1_")
+        return original(name)
+
+    monkeypatch.setattr(composition, "import_module", observed)
+    handle = _OllamaRuntimeSessionFactoryV1().open(_options())
+    handle.lifecycle.close()
+
+    assert "pastila_scout.provider_execution_ollama_v1" in imported
+
+
+@pytest.mark.parametrize(
+    ("model_identifier", "module_name", "expected_tokens"),
+    (
+        (CORE_V1_1_MODEL_ID, "pastila_scout.experimental_core_v1_1", None),
+        (CORE_V1_2_MODEL_ID, "pastila_scout.experimental_core_v1_2", 128),
+    ),
+)
+def test_experimental_routing_imports_only_exact_selected_executor(
+    monkeypatch, model_identifier, module_name, expected_tokens
+):
+    from pastila_scout.editor_generation_runtime_v1 import composition
+
+    constructed = []
+
+    class FakeExecutor:
+        def __init__(self, **kwargs):
+            constructed.append(kwargs)
+
+        def execute(self, request):
+            raise AssertionError("construction must not execute")
+
+    fake_module = type(
+        "ExperimentalModule",
+        (),
+        {
+            "ExperimentalCoreV11Executor": FakeExecutor,
+            "ExperimentalCoreV12Executor": FakeExecutor,
+        },
+    )
+    imported = []
+    original = composition.import_module
+
+    def selected(name):
+        imported.append(name)
+        if name == module_name:
+            return fake_module
+        assert not name.startswith("pastila_scout.experimental_core_v1_")
+        return original(name)
+
+    monkeypatch.setattr(composition, "import_module", selected)
+    handle = _OllamaRuntimeSessionFactoryV1().open(
+        _options_for_model(model_identifier)
+    )
+    handle.lifecycle.close()
+
+    assert imported.count(module_name) == 1
+    assert len(constructed) == 1
+    assert constructed[0].get("max_output_tokens") == expected_tokens
+
+
+def test_experimental_routing_closes_client_on_late_construction_failure(monkeypatch):
+    from pastila_scout.editor_generation_runtime_v1 import composition
+
+    class FakeExecutor:
+        def __init__(self, **kwargs):
+            del kwargs
+
+        def execute(self, request):
+            raise AssertionError("construction must not execute")
+
+    class FakeClient:
+        instances = []
+
+        def __init__(self):
+            self.closed = False
+            type(self).instances.append(self)
+
+        def close(self):
+            self.closed = True
+
+    fake_module = type(
+        "ExperimentalModule", (), {"ExperimentalCoreV12Executor": FakeExecutor}
+    )
+    original = composition.import_module
+    monkeypatch.setattr(
+        composition,
+        "import_module",
+        lambda name: fake_module
+        if name == "pastila_scout.experimental_core_v1_2"
+        else original(name),
+    )
+    monkeypatch.setattr(composition, "_httpx_client_type", lambda: FakeClient)
+    monkeypatch.setattr(
+        composition,
+        "_OllamaRuntimeLifecycleV1",
+        lambda client: (_ for _ in ()).throw(RuntimeError("late failure")),
+    )
+
+    with pytest.raises(EditorGenerationRuntimeCompositionError):
+        _OllamaRuntimeSessionFactoryV1().open(_options_for_model(CORE_V1_2_MODEL_ID))
+
+    assert len(FakeClient.instances) == 1
+    assert FakeClient.instances[0].closed is True
 
 
 def test_private_workflow_and_inert_executor_are_passive():
