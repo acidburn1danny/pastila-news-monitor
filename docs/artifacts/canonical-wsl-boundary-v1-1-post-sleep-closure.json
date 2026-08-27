@@ -1,0 +1,50 @@
+{
+  "artifact_type": "POST_SLEEP_INSTALLED_TRANSPORT_CLOSURE_RECEIPT",
+  "canonical_name": "PASTILA_CANONICAL_WSL_BOUNDARY_V1_1_POST_SLEEP_CLOSURE",
+  "schema_version": "1.0.0",
+  "canonical_identity": "03fa4b93f360ebd584f903203daf8aa42d923925b0cb039b7e5af45d593b8fac",
+  "identity_derivation": {
+    "algorithm": "SHA-256",
+    "encoding": "UTF-8",
+    "separator": "LF",
+    "ordered_fields": [
+      "PASTILA_CANONICAL_WSL_BOUNDARY_V1_1_POST_SLEEP_CLOSURE",
+      "1.0.0",
+      "70b5a5c67cbc66f528a7fcfc815e14d7ba11b797789c4afde9c98b9c0cb59104",
+      "2026-08-27T02:20:58+03:00",
+      "847c02d75996c42a867aaeedfea0bc691056ae5b6a1b447d1393ffca4b8622f7",
+      "02a2d49cc301de4aa9f15e44a3881bae04d32ccafd5fb941b245a04776501c67",
+      "PASTILA_INSTALLED_WSL_V1_1_OK",
+      "PASS_COMPLETE"
+    ]
+  },
+  "predecessor_rebinding_identity": "70b5a5c67cbc66f528a7fcfc815e14d7ba11b797789c4afde9c98b9c0cb59104",
+  "resume_evidence": {
+    "provider": "Microsoft-Windows-Power-Troubleshooter",
+    "system_event_id": 1,
+    "time_created": "2026-08-27T02:20:58+03:00",
+    "description": "The system returned from a low power state.",
+    "predates_transport_execution": true,
+    "postdates_v1_1_installation": true
+  },
+  "single_execution": {
+    "packaged_smoke_sha256": "847c02d75996c42a867aaeedfea0bc691056ae5b6a1b447d1393ffca4b8622f7",
+    "command_identity": "02a2d49cc301de4aa9f15e44a3881bae04d32ccafd5fb941b245a04776501c67",
+    "return_code": 0,
+    "stdout": "PASTILA_INSTALLED_WSL_V1_1_OK",
+    "failure_code": null,
+    "timed_out": false,
+    "attempt_count": 1,
+    "retry_count": 0,
+    "model_loads": 0,
+    "inference_calls": 0,
+    "temporary_smoke_executable_removed_after_capture": true
+  },
+  "governance": {
+    "grandfathered_launchers_migrated": 0,
+    "grandfathered_launchers_preserved": 16,
+    "prompt_model_semantic_or_eligibility_authority_changed": false
+  },
+  "overall_disposition": "PASS_COMPLETE",
+  "status": "OWNER_REVIEW_REQUIRED"
+}
