@@ -37,6 +37,115 @@
       "title": "DeterministicScoreBreakdown",
       "type": "object"
     },
+    "EventAuthorityBundleV1": {
+      "additionalProperties": false,
+      "description": "Cumulative but non-flattened factual authority for one event.",
+      "properties": {
+        "authority_version": {
+          "pattern": "^event-authority-bundle-v1$",
+          "title": "Authority Version",
+          "type": "string"
+        },
+        "event_id": {
+          "exclusiveMinimum": 0,
+          "title": "Event Id",
+          "type": "integer"
+        },
+        "omitted_source_ids": {
+          "default": [],
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Omitted Source Ids",
+          "type": "array"
+        },
+        "segments": {
+          "items": {
+            "$ref": "#/$defs/EventAuthoritySegmentV1"
+          },
+          "minItems": 1,
+          "title": "Segments",
+          "type": "array"
+        }
+      },
+      "required": [
+        "authority_version",
+        "event_id",
+        "segments"
+      ],
+      "title": "EventAuthorityBundleV1",
+      "type": "object"
+    },
+    "EventAuthoritySegmentV1": {
+      "additionalProperties": false,
+      "description": "One source-attributed, locally persisted same-event authority segment.",
+      "properties": {
+        "article_id": {
+          "exclusiveMinimum": 0,
+          "title": "Article Id",
+          "type": "integer"
+        },
+        "canonical": {
+          "title": "Canonical",
+          "type": "boolean"
+        },
+        "published_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Published At"
+        },
+        "source_id": {
+          "minLength": 1,
+          "title": "Source Id",
+          "type": "string"
+        },
+        "source_name": {
+          "minLength": 1,
+          "title": "Source Name",
+          "type": "string"
+        },
+        "summary": {
+          "minLength": 1,
+          "title": "Summary",
+          "type": "string"
+        },
+        "title": {
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "truncated": {
+          "title": "Truncated",
+          "type": "boolean"
+        },
+        "url": {
+          "minLength": 1,
+          "title": "Url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "article_id",
+        "source_id",
+        "source_name",
+        "url",
+        "title",
+        "summary",
+        "canonical",
+        "truncated"
+      ],
+      "title": "EventAuthoritySegmentV1",
+      "type": "object"
+    },
     "EventCounts": {
       "additionalProperties": false,
       "properties": {
@@ -290,6 +399,17 @@
           "maxItems": 20,
           "title": "Editorial Risks",
           "type": "array"
+        },
+        "event_authority_bundle": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EventAuthorityBundleV1"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
         },
         "event_id": {
           "exclusiveMinimum": 0,

@@ -93,12 +93,49 @@ class PublicationBounds(ContractModel):
         return self
 
 
+class EventAuthoritySegmentV1(ContractModel):
+    """One source-attributed, locally persisted same-event authority segment."""
+
+    article_id: int = Field(gt=0)
+    source_id: NonEmptyText
+    source_name: NonEmptyText
+    url: NonEmptyText
+    title: NonEmptyText
+    summary: NonEmptyText
+    published_at: datetime | None = None
+    canonical: bool
+    truncated: bool
+
+
+class EventAuthorityBundleV1(ContractModel):
+    """Cumulative but non-flattened factual authority for one event."""
+
+    authority_version: str = Field(pattern="^event-authority-bundle-v1$")
+    event_id: int = Field(gt=0)
+    segments: tuple[EventAuthoritySegmentV1, ...] = Field(min_length=1)
+    omitted_source_ids: tuple[NonEmptyText, ...] = ()
+
+    @model_validator(mode="after")
+    def validate_segments(self) -> EventAuthorityBundleV1:
+        if sum(item.canonical for item in self.segments) != 1:
+            raise ValueError("event authority requires exactly one canonical segment")
+        if not self.segments[0].canonical:
+            raise ValueError("canonical event authority segment must be first")
+        source_ids = tuple(item.source_id for item in self.segments)
+        if len(source_ids) != len(set(source_ids)):
+            raise ValueError("event authority sources must be unique")
+        if set(source_ids) & set(self.omitted_source_ids):
+            raise ValueError("included and omitted authority sources must be disjoint")
+        return self
+
+
 class RankedEditorialEvent(ExtensibleContractModel):
     rank: int = Field(gt=0)
     score_rank: int = Field(gt=0)
     event_id: int = Field(gt=0)
     canonical_title: NonEmptyText
     canonical_summary: NonEmptyText
+    event_authority_bundle: EventAuthorityBundleV1 | None = None
     publication_bounds: PublicationBounds
     categories: tuple[str, ...] = Field(min_length=1, max_length=3)
     source_count: int = Field(gt=0)
@@ -131,6 +168,11 @@ class RankedEditorialEvent(ExtensibleContractModel):
             self.article_count > len(self.source_provenance)
         ):
             raise ValueError("provenance_truncated does not match article_count")
+        if (
+            self.event_authority_bundle is not None
+            and self.event_authority_bundle.event_id != self.event_id
+        ):
+            raise ValueError("event authority identity does not match event")
         return self
 
 
