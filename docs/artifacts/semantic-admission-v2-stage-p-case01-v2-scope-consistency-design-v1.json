@@ -1,0 +1,161 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-case01-v2-scope-consistency-design",
+  "schema_version": "1.0.0-design.1",
+  "lifecycle": "DESIGN_ONLY_READY_FOR_OWNER_REVIEW",
+  "source_probe_identity": "bd1ee45ed047f8aababc88586f2ee5d5aa98243f9d9638d996f6abeae442da1f",
+  "scope": "Analyze overlap, decomposition, and factual-return consistency in the single frozen V2 Case 01 ledger; specify the narrowest safe next candidate without implementing it.",
+  "observed_ledger": {
+    "coverage_decision": "COMPLETE",
+    "entries": 4,
+    "component_real_world_entries": ["P1", "P2", "P3"],
+    "whole_construction_creative_entry": "P4",
+    "component_relationship": "P1-P3 partition the same sentence whose complete span is P4.",
+    "contradiction": "P1-P3 call the figurative components new unsupported real-world commitments while P4 says the integrated construction carries no real-world commitment.",
+    "case01_acceptance": "FAIL"
+  },
+  "root_cause_findings": [
+    {
+      "id": "SCOPE-01-SURFACE-LITERALIZATION",
+      "status": "DEMONSTRATED",
+      "finding": "The model converted figurative predicates into candidate propositions by near-literal paraphrase: hidden money, exposed employees, and a hotel needing transparency.",
+      "distinction": "A grammatical subject-predicate surface is not sufficient evidence of real-world commitment."
+    },
+    {
+      "id": "SCOPE-02-INTEGRATED-CONSTRUCTION-DECOMPOSITION",
+      "status": "DEMONSTRATED",
+      "finding": "The money/shadow, employees/light, and room/transparency relations were classified separately before their shared contrast and wordplay were recognized as one creative host.",
+      "impact": "Decomposition destroyed the pragmatic force that determines whether the components return to factual assertion."
+    },
+    {
+      "id": "SCOPE-03-OVERLAP-NOT-REPRESENTED",
+      "status": "DEMONSTRATED_CONTRACT_GAP",
+      "finding": "The ledger has spans and independence groups but no explicit host/embedded relationship or consistency receipt for overlapping entries.",
+      "impact": "A COMPLETE ledger can contain mutually incompatible interpretations of the same words."
+    },
+    {
+      "id": "SCOPE-04-INDEPENDENCE-GROUP-MISUSE",
+      "status": "DEMONSTRATED",
+      "finding": "P1-P3 share G1 despite expressing three purported propositions, while the creative host uses G2. The current contract cannot distinguish dimensions of one proposition from components of one construction."
+    },
+    {
+      "id": "SCOPE-05-AUTHORITY-ALIGNMENT-OMITTED",
+      "status": "SECONDARY_FINDING",
+      "finding": "All component entries use null authority support even though the governed summary supplies the story event transformed by the metaphor.",
+      "boundary": "Semantic correspondence does not by itself turn a creative vehicle into a factual assertion; authority alignment and communicative role are separate decisions."
+    }
+  ],
+  "governing_principles": [
+    "Overlap is not inherently invalid. A creative host may contain a genuinely asserted, presupposed, entailed, or necessarily implied real-world proposition.",
+    "Literalizing a metaphor, analogy, personification, hyperbole, counterfactual, wordplay, or editorial vehicle does not create a factual-return proposition.",
+    "A component becomes a REAL_WORLD_COMMITMENT only when its real-world proposition survives removal or neutralization of the creative vehicle and remains truth-evaluable from the commentary's communicative force.",
+    "A governed factual reference inside creative language is not unsupported merely because it reuses story entities or concepts. It must align to exact factual authority when support is claimed.",
+    "A COMPLETE ledger must reconcile every overlapping interpretation; contradictory role assignments cannot coexist silently."
+  ],
+  "factual_return_test": {
+    "sequence": [
+      "Identify the smallest integrated creative host whose components jointly produce the transformation.",
+      "State the alleged real-world proposition without treating the creative vehicle as literal.",
+      "Ask whether the candidate still asserts, presupposes, entails, or necessarily implies that proposition after the vehicle is neutralized.",
+      "If the proposition disappears or reduces to a description of the vehicle, keep only CONTAINED_CREATIVE for that content.",
+      "If the proposition survives, inventory it separately and record its relationship to the creative host.",
+      "Align any claimed support to the immutable authority; unsupported return remains a real-world entry, not a creative exemption."
+    ],
+    "case01_application": {
+      "creative_host": "The complete shadow/light/room/transparency construction.",
+      "component_results": {
+        "money_hidden": "NO_INDEPENDENT_FACTUAL_RETURN; metaphorical presentation of the governed off-books-payment event.",
+        "employees_in_light": "NO_INDEPENDENT_FACTUAL_RETURN; contrastive vehicle, not an assertion of physical exposure or a new employee status.",
+        "hotel_needs_transparency_room": "NO_INDEPENDENT_FACTUAL_RETURN; personified wordplay and editorial judgment, not a literal hotel need or event."
+      },
+      "required_shape": "One or more contained-creative entries may describe the integrated transformation; zero unsupported REAL_WORLD_COMMITMENT entries; COMPLETE review."
+    }
+  },
+  "legitimate_overlap_examples": [
+    {
+      "class": "GOVERNED_LITERAL_CLAUSE_INSIDE_CREATIVE_HOST",
+      "example": "Compania, care a concediat 40 de oameni ieri, și-a pus empatia la păstrare.",
+      "analysis": "The dismissal clause remains factual when the empathy metaphor is removed. It may be a governed REAL_WORLD_COMMITMENT nested within a creative host."
+    },
+    {
+      "class": "UNSUPPORTED_PRESUPPOSITION_INSIDE_CREATIVE_HOST",
+      "example": "Primarul, supărat că a pierdut alegerile, și-a descoperit brusc modestia.",
+      "analysis": "The attributed emotion and election outcome survive removal of the editorial framing and must be inventoried if unsupported."
+    },
+    {
+      "class": "PURE_CREATIVE_COMPONENTS",
+      "example": "Bugetul intră pe ușă și transparența iese pe geam.",
+      "analysis": "Door/window components are not separately real-world events merely because they have verbs."
+    }
+  ],
+  "recommended_contract_candidate": {
+    "name": "STAGE_P_SCOPE_GRAPH_V1",
+    "entry_additions": [
+      "scope_relation: STANDALONE, CREATIVE_HOST, FACTUAL_RETURN_WITHIN_CREATIVE_HOST, UNRESOLVED_RELATION",
+      "creative_host_entry_id: null or P1-P8; required for FACTUAL_RETURN_WITHIN_CREATIVE_HOST",
+      "factual_return_basis: NOT_APPLICABLE, ASSERTION_SURVIVES, PRESUPPOSITION_SURVIVES, ENTAILMENT_SURVIVES, NECESSARY_IMPLICATION_SURVIVES, UNRESOLVED"
+    ],
+    "coverage_receipt_additions": [
+      "overlapping_spans_reconciled",
+      "integrated_creative_hosts_checked",
+      "factual_return_tests_completed"
+    ],
+    "deterministic_invariants": [
+      "Every creative_host_entry_id refers to an existing CONTAINED_CREATIVE entry.",
+      "The referenced creative host span contains or overlaps the factual-return span.",
+      "FACTUAL_RETURN_WITHIN_CREATIVE_HOST cannot use factual_return_basis NOT_APPLICABLE or UNRESOLVED in a COMPLETE ledger.",
+      "CONTAINED_CREATIVE uses scope_relation CREATIVE_HOST or STANDALONE and factual_return_basis NOT_APPLICABLE.",
+      "UNRESOLVED_RELATION or unresolved factual-return basis forces INDETERMINATE.",
+      "COMPLETE requires all three new scope receipts true.",
+      "Entry identifiers and host references are acyclic; an entry cannot host itself.",
+      "Independence groups cannot be used as a substitute for host/component relations."
+    ],
+    "semantic_requirements": [
+      "The commitment text for a factual return states a truth-evaluable real-world proposition, not a literal paraphrase of the creative words.",
+      "The stated factual-return basis must survive creative-vehicle neutralization.",
+      "A whole creative host and overlapping real-world entry may coexist only when the real-world entry passes that test.",
+      "Stage C must later audit these claims against original inputs and may not trust the scope graph as authority."
+    ],
+    "fail_closed": "Unreconciled overlap, unresolved host relation, missing host, cyclic host reference, or uncertain factual return yields INDETERMINATE and prevents Stage C invocation under current precedence."
+  },
+  "rejected_shortcuts": [
+    {
+      "shortcut": "Ban all overlapping creative and real-world spans",
+      "reason": "Would hide genuine factual clauses and unsupported presuppositions embedded in creative language."
+    },
+    {
+      "shortcut": "Deterministically delete component entries when a whole creative span exists",
+      "reason": "Would silently repair model evidence and could erase unsafe embedded propositions."
+    },
+    {
+      "shortcut": "Treat authority correspondence as proof of factual assertion",
+      "reason": "A metaphor can transform governed facts without reasserting its vehicle literally."
+    },
+    {
+      "shortcut": "Solve with lexical rules for metaphor words",
+      "reason": "The capability is pragmatic scope reasoning, not vocabulary routing."
+    }
+  ],
+  "verification_requirements": [
+    "Frozen Case 01 fixture reaches its required contained-creative shape without component literalization.",
+    "Governed literal clause embedded in a creative host remains representable and source-aligned.",
+    "Unsupported presupposition embedded in a creative host remains representable and cannot be hidden.",
+    "Pure creative components with verbs do not require real-world entries.",
+    "Unresolved overlap abstains.",
+    "Missing, self, cyclic, non-creative, and non-overlapping host references fail deterministically.",
+    "Multiple valid segmentations remain allowed when they produce the same reconciled scope graph.",
+    "Expected labels and cases remain hidden from the generation path."
+  ],
+  "bounded_next_step_if_authorized": "Implement an evaluation-only Stage P Scope Graph V1 schema and construction fixtures only. Perform zero-inference schema/invariant feasibility and constrained-grammar design; do not modify the prompt or bind a model runner until owner review of the schema evidence.",
+  "authority": {
+    "schema_implementation": false,
+    "grammar_implementation": false,
+    "prompt_modification": false,
+    "runner_binding": false,
+    "model_probe": false,
+    "stage_c": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  }
+}
