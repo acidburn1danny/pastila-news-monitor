@@ -1,0 +1,46 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-scope-graph-v1-1-runner-binding-candidate",
+  "schema_version": "1.1.0-evaluation.1",
+  "lifecycle": "ZERO_INFERENCE_RUNNER_SOURCE_BOUND_NOT_EXECUTED",
+  "approved_request_candidate_identity": "2fee4188906353caed6effa393e877b523e4cede4a567702e06a7f9d9094ba5e",
+  "candidate_identity": "57891ab6d928cde37a7d388e2f97a3da87d130e8debc1ab29b90bec850dc288a",
+  "schema_identity": "sha256:a61f16046045ca015dd2001393ab58e7ab7c94f50cbfc49f7df959bd45b3338c",
+  "grammar_identity": "sha256:28539234a7c6a7815fbf47d506855a3d17cd236b5a8c7d3a37fd2c3abc7cb393",
+  "tokenizer_identity": "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c",
+  "runner_binding": {
+    "runner_path": "src/pastila_scout/experimental_core_v1_2_stage_p_scope_graph_runner_v1_1.py",
+    "runner_sha256": "45161010431b5b8404c456d8044a79c616bc8a2b05019da2ad584ab563dfbfe0",
+    "durable_base_runner_sha256": "617ee34bd05c6a32de81714b0b07bedb2f10464f0e43213258cdf8886e0c57db",
+    "constraint_sha256": "09035ac1c285feb8c6a3c8ddb1972bf34b769fe04123f25a28e689255571b044",
+    "trie_projector_sha256": "8cc6f68f1ff9751ab983306e9fb39efa0ae55c52cbe8a0471a2e5e98bfc54529",
+    "incremental_tracker_sha256": "8223b77836c0f9249a417fd506b2ed209c0a7929539426ce8bd20bd10f063b5e",
+    "callback_controller_sha256": "c68066c122beac6f9cc1ca9af351113a6fa7006b7f7fd589441539911601d6d9",
+    "append_only_lifecycle_sha256": "74ad3892060f3e98ae1a5fc2b243c5100891259518b67bdb3e37f586bc4635a3",
+    "binding_behavior": "The wrapper replaces only the durable base runner type factory with the approved V1.1 DFA, trie projector, V1.1 tracker/controller, and append-only lifecycle.",
+    "execution_status": "NOT_EXECUTED"
+  },
+  "zero_inference_result": {
+    "synthetic_terminal_eos": "PASS",
+    "incremental_tracking": "PASS",
+    "divergent_prefix_rebuild": "PASS",
+    "exact_v1_1_type_substitution": "PASS",
+    "import_time_execution_absence": "PASS",
+    "focused_tests": "20_PASS",
+    "runner_calls": 0,
+    "model_loads": 0,
+    "model_calls": 0,
+    "provider_calls": 0
+  },
+  "bounded_next_step_if_authorized": "Implement and zero-inference verify a V1.1 durable host executor and one-shot frozen HMCV1-SASC-01 probe binding for these exact identities. Stop before executing it.",
+  "authority": {
+    "host_executor_implementation": false,
+    "one_shot_probe_binding": false,
+    "runner_execution": false,
+    "probe_execution": false,
+    "stage_c": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  }
+}
