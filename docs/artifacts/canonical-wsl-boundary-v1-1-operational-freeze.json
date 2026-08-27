@@ -1,0 +1,41 @@
+{
+  "artifact_type": "OWNER_APPROVAL_FREEZE_RECEIPT",
+  "canonical_name": "PASTILA_CANONICAL_WSL_BOUNDARY_V1_1_OPERATIONAL_FREEZE",
+  "canonical_identity": "99de2f0179143f831cb4b8591aa6eda59ac3c087fbda96b0b44db484ab528d2c",
+  "identity_derivation": {
+    "algorithm": "SHA-256",
+    "encoding": "UTF-8",
+    "separator": "LF",
+    "ordered_fields": [
+      "PASTILA_CANONICAL_WSL_BOUNDARY_V1_1_OPERATIONAL_FREEZE",
+      "03fa4b93f360ebd584f903203daf8aa42d923925b0cb039b7e5af45d593b8fac",
+      "70b5a5c67cbc66f528a7fcfc815e14d7ba11b797789c4afde9c98b9c0cb59104",
+      "OWNER_APPROVED_FROZEN",
+      "ZERO_INFERENCE_OPERATIONAL_ACCEPTANCE_COMPLETE",
+      "FROZEN_EVALUATION_LAUNCHERS_REMAIN_SEPARATELY_GATED"
+    ]
+  },
+  "frozen_post_sleep_closure_identity": "03fa4b93f360ebd584f903203daf8aa42d923925b0cb039b7e5af45d593b8fac",
+  "frozen_core_rebinding_identity": "70b5a5c67cbc66f528a7fcfc815e14d7ba11b797789c4afde9c98b9c0cb59104",
+  "owner_disposition": "APPROVED_AND_FROZEN",
+  "operational_acceptance": {
+    "installed_transport_smoke": "PASS",
+    "genuine_post_sleep_transport_smoke": "PASS",
+    "model_loads": 0,
+    "inference_calls": 0
+  },
+  "preservation": {
+    "active_core_v1_1_and_v1_2_bound_to_boundary_v1_1": true,
+    "command_and_command_identity_equivalence_preserved": true,
+    "grandfathered_frozen_evaluation_launchers": 16,
+    "grandfathered_launchers_migrated": 0,
+    "historical_artifacts_rewritten": false
+  },
+  "authority": {
+    "prompt_model_or_tokenizer_authority_changed": false,
+    "semantic_or_eligibility_authority_changed": false,
+    "additional_probe_migration_authorized": false,
+    "training_or_curriculum_authority_granted": false
+  },
+  "status": "FROZEN"
+}
