@@ -1,0 +1,76 @@
+{
+  "artifact_type": "TOKEN_PROJECTOR_CANDIDATE",
+  "artifact_version": "1.0.0-evaluation.1",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_TOKEN_PROJECTOR_V1_CANDIDATE",
+  "canonical_identity": "ab308048582a1a22afadb881110e7ba83f8ac0e15bc44c3f6379e71942397ce7",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_TOKEN_PROJECTOR_V1_CANDIDATE",
+      "4a89f9337396b54c94ec4c1c3c2729a01e08b46b8ae426c29e11c6f126a69789",
+      "aca5b7e3e2fed823139a57d51d8f512ea6716a1d8b498e393f605b09aa4e6c58",
+      "6c766eda141d122b049e2f09dbd5bdc22c3cfee41744644e04e1eaa51757c22a",
+      "0fdd777f5c2f9305279a8a3a8cb69cfcae86b818e403abe43b495dbe43503221",
+      "c46eb1e6c2b0b1a8bfbefe77b54ebd05e1f4c472b8ee63fe23037dfdf812bfe4",
+      "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c",
+      "ZERO_INFERENCE_EQUIVALENT_NOT_BOUND"
+    ],
+    "separator": "LF"
+  },
+  "approved_feasibility_design_identity": "4a89f9337396b54c94ec4c1c3c2729a01e08b46b8ae426c29e11c6f126a69789",
+  "frozen_audit_receipt_identity": "aca5b7e3e2fed823139a57d51d8f512ea6716a1d8b498e393f605b09aa4e6c58",
+  "approved_character_controller_identity": "6c766eda141d122b049e2f09dbd5bdc22c3cfee41744644e04e1eaa51757c22a",
+  "implementation_sha256": "0fdd777f5c2f9305279a8a3a8cb69cfcae86b818e403abe43b495dbe43503221",
+  "zero_inference_harness_sha256": "c46eb1e6c2b0b1a8bfbefe77b54ebd05e1f4c472b8ee63fe23037dfdf812bfe4",
+  "behavior": {
+    "complete_multi_character_simulation": true,
+    "empty_token_exclusion": true,
+    "non_eos_special_token_exclusion": true,
+    "eos_only_at_terminal": true,
+    "typed_token_liveness_receipts": true,
+    "exact_state_cache": true,
+    "string_state_canonicalization": false,
+    "prefix_sensitive_oracle_preserved": true
+  },
+  "cache_binding": [
+    "tokenizer identity", "decoder identity", "request context identity",
+    "exclusion-policy identity", "decoded-prefix SHA-256", "exact DFA state"
+  ],
+  "synthetic_verification": {
+    "all_fixture_characters_projectable": "PASS",
+    "terminal_only_eos": "PASS",
+    "complete_multi_character_rejection": "PASS",
+    "cache_and_receipt_identity_binding": "PASS",
+    "decoder_mismatch_fail_closed": "PASS"
+  },
+  "real_tokenizer_zero_inference": {
+    "result": "PASS",
+    "vocabulary_size": 131072,
+    "state_count": 7,
+    "all_allowed_sets_equal_frozen_oracle": true,
+    "trie_node_count": 221961,
+    "cache_size_after_matrix": 7,
+    "largest_allowed_set": 128166,
+    "maximum_candidate_callback_seconds": 4.959959,
+    "terminal_receipt": "TOKENIZATION_TERMINAL_EOS_ALLOWED",
+    "model_loads": 0,
+    "model_calls": 0,
+    "provider_calls": 0,
+    "inference_calls": 0,
+    "evaluator_objects": 0,
+    "runner_objects": 0,
+    "probe_constructions": 0,
+    "probe_executions": 0
+  },
+  "authority": {
+    "evaluator_binding": false,
+    "runner_binding": false,
+    "durable_executor_binding": false,
+    "probe_construction_or_execution": false,
+    "runtime_integration": false,
+    "production": false,
+    "training": false
+  },
+  "status": "OWNER_REVIEW_REQUIRED",
+  "recommended_next_step": "Owner-review the candidate. If approved, authorize only separately versioned evaluator/runner interface design and zero-inference binding verification; do not construct or execute a probe."
+}

@@ -1,0 +1,19 @@
+{
+  "artifact_type": "OWNER_FREEZE_RECEIPT",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_TOKENIZER_AUDIT_FREEZE_V1",
+  "canonical_identity": "aca5b7e3e2fed823139a57d51d8f512ea6716a1d8b498e393f605b09aa4e6c58",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_V2_TOKENIZER_AUDIT_FREEZE_V1",
+      "82bdf788a54a21d0be00b4c0e1dfda30da28ad52a92153af2cee9c63267e0dab",
+      "e6921378e98981c7d2aa8ffa0711b8905ef0d1abc8fbd7b3bd5318f7331ef02d",
+      "OWNER_APPROVED_FROZEN"
+    ],
+    "separator": "LF"
+  },
+  "frozen_dependency_bridge_identity": "82bdf788a54a21d0be00b4c0e1dfda30da28ad52a92153af2cee9c63267e0dab",
+  "frozen_tokenizer_dfa_audit_identity": "e6921378e98981c7d2aa8ffa0711b8905ef0d1abc8fbd7b3bd5318f7331ef02d",
+  "status": "OWNER_APPROVED_FROZEN",
+  "authority_expansion": false
+}
