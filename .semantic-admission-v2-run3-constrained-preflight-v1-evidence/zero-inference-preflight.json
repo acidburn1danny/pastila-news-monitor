@@ -1,0 +1,148 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-run3-constrained-preflight",
+  "schema_version": "1.0.0",
+  "checked_at": "2026-08-25T22:30:44.207478+00:00",
+  "plan_identity": "269996e0c7fb6a268bc44a358cdac137aa1fd2ab0cd88dbe0c05a97020ca7ac1",
+  "runner_sha256": "545448aa1a83bffa79503006db4870e7311398400a9392b7f2b8c0df30c48fa3",
+  "constrained_probe_identity": "aaac9542ddafe5fbf2d880760e226d439702a72d7bcc700db0d8d6c8e07c41f6",
+  "gate_f_evaluator_identity": "242fe5c18f83c68fe1267ae5cc9ee65cd77157f5e9329bad26ffffee0c8892e5",
+  "gate_s_evaluator_identity": "313c6817c7c2ddf75c736dd2c823e25f8ceaf7ac295e09625415f23f32a66b51",
+  "gate_f_prompt_identity": "sha256:92a95381b7f75b09aba6cd4580f3617a7df2a6a1520b0ee22c52db6e9886dcc1",
+  "gate_s_prompt_identity": "sha256:db09a481768e6d1c021b8eacac23be8449288993bec7eaa5ea4ad96866e8b2dc",
+  "case_count": 10,
+  "planned_provider_calls": 20,
+  "prompt_bindings": [
+    {
+      "case_id": "HMCV1-SASC-01",
+      "gate_f_request_sha256": "a25336179b3ff8503b3083af23456f8fe1fbe3de3b4836c773a4d3f913443937",
+      "gate_f_prompt_sha256": "7c51b0d202c5cb02b1317c00b58931aadfbd51f3cb54b8961ee38335d23992b4",
+      "gate_s_request_sha256": "3c08afd5d09f93720a67ad23624e1b74c6c1cf6763dc5ad4c55ccc57dd6c84f3",
+      "gate_s_prompt_sha256": "7dbd769cfef063078e3672771c7e6078ceed1b8eeeb2aba5896fe64e36f72460",
+      "control_case_ids": [
+        "HMCV1-SASC-04",
+        "HMCV1-SASC-10"
+      ]
+    },
+    {
+      "case_id": "HMCV1-SASC-02",
+      "gate_f_request_sha256": "da2f64fb6142abbcdfda6319b2ad5271be309394416c10c633d2961356e08bf4",
+      "gate_f_prompt_sha256": "378515906646b5f0b514b5c0350a879c1566dbf3bdfdefffd82e0cf596cd4ca9",
+      "gate_s_request_sha256": "034fccaf1b8bff22a3421649c2279b3162af205d56eb4a7f8336f770317e5495",
+      "gate_s_prompt_sha256": "1f0cb09e39e4aa1d8e461399b1865922a006657bedb298fabe89ba6c193048a5",
+      "control_case_ids": [
+        "HMCV1-SASC-03",
+        "HMCV1-SASC-08"
+      ]
+    },
+    {
+      "case_id": "HMCV1-SASC-03",
+      "gate_f_request_sha256": "4e536adb80edd7910f4091d4b062bb10e822202c03b7e807bfd367691cdbc1f3",
+      "gate_f_prompt_sha256": "626073ea406177181cbea31caf358e718c7651465707cdc636c4ea6c9b950529",
+      "gate_s_request_sha256": "34ac0d41ebd68ccb92baf008a4a932bf988538acecac64e1dc10fd3f8989ce64",
+      "gate_s_prompt_sha256": "22482b718391f2d0dea044078e9f755dec7a95d9150150079f75bc507e477d07",
+      "control_case_ids": [
+        "HMCV1-SASC-04",
+        "HMCV1-SASC-07"
+      ]
+    },
+    {
+      "case_id": "HMCV1-SASC-04",
+      "gate_f_request_sha256": "21d24ee135a2e07396b7b86af8cc9f102f77a526f2261f2aa71c1c27f53acc41",
+      "gate_f_prompt_sha256": "20ea13fb3fdc835b2cf2a640c1be6c15c84476b657e50de08e5f6797ded8a87b",
+      "gate_s_request_sha256": "a0ce4111414e7a2a77e540c025ad7e950a1fae96e42f280921e563179c15bc6f",
+      "gate_s_prompt_sha256": "54420aabd79c56947dc19b3dc6387554f3055a4bf73abcfb40bd3d9cd1da850d",
+      "control_case_ids": [
+        "HMCV1-SASC-01",
+        "HMCV1-SASC-10"
+      ]
+    },
+    {
+      "case_id": "HMCV1-SASC-05",
+      "gate_f_request_sha256": "69d9028cc2741ac21b5947c2a6f60e1a82f269c1011b02456eda9156d505ec7c",
+      "gate_f_prompt_sha256": "fa0c0d20313e60891c9bf13e9a8c3cc21b5e71728acd7cf7edc97c0bd18bbae8",
+      "gate_s_request_sha256": "9791eaf44ead943dbd2c7a782c224533d87c82ca89a8b9f6672aae8b1b60b009",
+      "gate_s_prompt_sha256": "9dc77339a27657eab34a3bfc4980638f5b6eb8c1b483ef9ff13854819cd9000e",
+      "control_case_ids": [
+        "HMCV1-SASC-02",
+        "HMCV1-SASC-09"
+      ]
+    },
+    {
+      "case_id": "HMCV1-SASC-06",
+      "gate_f_request_sha256": "228bdaf1ac5a44c528d553026bc9f1a95eb6cb5a3267a20f7ad6b2b40d1c6215",
+      "gate_f_prompt_sha256": "4bf48c5aee221cbf6e359b9eb1c5672d391830721c5856b951f79b1809911c20",
+      "gate_s_request_sha256": "247d3cae543474446020ac1311e2fdbeb88036dd793cc6183f279a16c5974654",
+      "gate_s_prompt_sha256": "dda26ce12183f150e3489208e545e1c61a1f04b36cb346d7643bfdc4bd9d1753",
+      "control_case_ids": [
+        "HMCV1-SASC-04",
+        "HMCV1-SASC-08"
+      ]
+    },
+    {
+      "case_id": "HMCV1-SASC-07",
+      "gate_f_request_sha256": "66353262bebb1eb892c31ea284348135d72c685db21de0115bb2477773d42293",
+      "gate_f_prompt_sha256": "b370049bb41c2e90bdeb3ea2b97fbfe3cbef9c0c5093ab2752500b56f5183a33",
+      "gate_s_request_sha256": "f501d3bacdd3ad713b2cf4bd169af3620ca1977dd51e17e08c53172246e28030",
+      "gate_s_prompt_sha256": "d8e81735fe90972a9d2131d643cd13c6c1f28144befedbf5208b25fa1608666b",
+      "control_case_ids": [
+        "HMCV1-SASC-03",
+        "HMCV1-SASC-05"
+      ]
+    },
+    {
+      "case_id": "HMCV1-SASC-08",
+      "gate_f_request_sha256": "bcc186fb290bfd38c84a72064251213fb27f09c10a1e171634f20d4f04eabb45",
+      "gate_f_prompt_sha256": "b21ce0f088d168535f208aa8d9a2e20925c5b5cd2e3b188211a6191073f13fcc",
+      "gate_s_request_sha256": "fe387f8eed56f79973a25aab9cba0f070c5d5402d0fdc785596012cbccfaac9d",
+      "gate_s_prompt_sha256": "7fd8f47167f900cd7091305bb6d88c943950fcaaec74efbdc8b1cf7ff0aedd58",
+      "control_case_ids": [
+        "HMCV1-SASC-02",
+        "HMCV1-SASC-06"
+      ]
+    },
+    {
+      "case_id": "HMCV1-SASC-09",
+      "gate_f_request_sha256": "acf7f87fff01c167ec8157074196a8b7bcd334b2b61e9bb5203c9a3343e47cad",
+      "gate_f_prompt_sha256": "bcff94c39ddddec17b39534a0d185564cdd925990e53539c08e1beb246566607",
+      "gate_s_request_sha256": "fd9ec371ed176f4b5563a028944f961a095894fe6fa1e0e8d52a96bc123949bc",
+      "gate_s_prompt_sha256": "28b7f86da5d12e388a2d45455ae6fb59add77639108dcc8ffed498cf80f6ab5f",
+      "control_case_ids": [
+        "HMCV1-SASC-05",
+        "HMCV1-SASC-10"
+      ]
+    },
+    {
+      "case_id": "HMCV1-SASC-10",
+      "gate_f_request_sha256": "bf76c53708f8716819f62f68e16ea727803a017636179ac2a2f0f45bf955dd2a",
+      "gate_f_prompt_sha256": "96f65e5a3361324ef25584fc88a1dfe1fe3f86fb9a44448f1c205b26ea8bb3b0",
+      "gate_s_request_sha256": "3908e5bdf8c08e78ca36af5a492e8c4de6007f9409db70bf97ae95d1f7a7fbec",
+      "gate_s_prompt_sha256": "79dfc511fe58d0a8a3de08443206fefd61d26c3061dd64e92eabd4b5ba8a86ae",
+      "control_case_ids": [
+        "HMCV1-SASC-01",
+        "HMCV1-SASC-09"
+      ]
+    }
+  ],
+  "forbidden_executor_calls": 0,
+  "constrained_executor_constructed": "ConstrainedGateFCoreV12ExecutorV1",
+  "ordinary_executor_constructed": "ExperimentalCoreV12Executor",
+  "executors_invoked": false,
+  "hidden_expected_annotations_loaded": false,
+  "raw_durability": "PER_CALL_LEDGER_BEFORE_PROPAGATION",
+  "precedence": [
+    "GATE_F_INDETERMINATE_ABSTAIN",
+    "GATE_F_FAIL_REJECT_FACTUAL",
+    "GATE_S_INDETERMINATE_ABSTAIN",
+    "GATE_S_NONPASS_REJECT_OWNER_QUALITY",
+    "BOTH_PASS_ADMIT"
+  ],
+  "targets_empty": true,
+  "model_calls": 0,
+  "provider_calls": 0,
+  "inference_authority_issued": false,
+  "run3_authorized": false,
+  "runtime_authority": false,
+  "training_authority": false,
+  "result": "PASS",
+  "preflight_identity": "bd3f729fe983b826df5490823b9478ddd79c4ebbd5d10b2ff06acf8ff1231687"
+}

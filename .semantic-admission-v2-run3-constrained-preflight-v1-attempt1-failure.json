@@ -1,0 +1,13 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-run3-constrained-preflight-launch-failure",
+  "schema_version": "1.0.0",
+  "attempt": 1,
+  "boundary": "DIRECT_SCRIPT_IMPORT_RESOLUTION",
+  "exception_type": "ModuleNotFoundError",
+  "missing_module": "scripts",
+  "executor_constructed": false,
+  "model_calls": 0,
+  "provider_calls": 0,
+  "inference_authority_issued": false,
+  "remediation": "Use direct-script fallback import from the scripts directory"
+}

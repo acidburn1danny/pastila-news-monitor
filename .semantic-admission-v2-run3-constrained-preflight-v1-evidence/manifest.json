@@ -1,0 +1,50 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-run3-constrained-preflight-bundle",
+  "schema_version": "1.0.0",
+  "canonical_identity": "0205308263dc59033c1c50f3970de5781cf433d76a8d4135c6048bb0fd679184",
+  "identity_method": "sha256 of the ordered lowercase artifact SHA-256 values joined by LF",
+  "lifecycle": "FROZEN_DESIGN_AND_ZERO_INFERENCE_PREFLIGHT_COMPLETE",
+  "plan_identity": "269996e0c7fb6a268bc44a358cdac137aa1fd2ab0cd88dbe0c05a97020ca7ac1",
+  "preflight_identity": "bd3f729fe983b826df5490823b9478ddd79c4ebbd5d10b2ff06acf8ff1231687",
+  "result": "PASS",
+  "case_count": 10,
+  "planned_provider_call_ceiling": 20,
+  "provider_calls_performed": 0,
+  "model_calls_performed": 0,
+  "run3_authorized": false,
+  "inference_authority": false,
+  "runtime_authority": false,
+  "training_authority": false,
+  "curriculum_exposure": false,
+  "artifacts": [
+    {
+      "path": "docs/artifacts/semantic-admission-v2-run3-constrained-plan.json",
+      "sha256": "45a8e610d4cec7c9112a7dfd132c45215d140401b78e0ec5b18ee092be79d7f2"
+    },
+    {
+      "path": "scripts/run_semantic_admission_v2_ten_case_conformance_run3_constrained_v1.py",
+      "sha256": "545448aa1a83bffa79503006db4870e7311398400a9392b7f2b8c0df30c48fa3"
+    },
+    {
+      "path": "tests/test_semantic_admission_v2_run3_constrained_plan.py",
+      "sha256": "fe1e97f784166128c2550d43a0542a9b1b870ff3a733342d26abebe08b9db363"
+    },
+    {
+      "path": "scripts/preflight_semantic_admission_v2_run3_constrained_v1.py",
+      "sha256": "aaf5e78707917dd2f722a6d2feae99d3d17d35227b055a4c604fa6dcaf73bc80"
+    },
+    {
+      "path": ".semantic-admission-v2-run3-constrained-preflight-v1-attempt1-failure.json",
+      "sha256": "8c6e0251448cd8bd4807787e618b553732aea910fd2400bc678486155938a281"
+    },
+    {
+      "path": ".semantic-admission-v2-run3-constrained-preflight-v1-evidence/zero-inference-preflight.json",
+      "sha256": "02eb4bb9b18a3c15bb2c8b2103d60dd046d4e547ef883772bb92ef84ae9cccc6"
+    },
+    {
+      "path": ".semantic-admission-v2-run3-constrained-preflight-v1-evidence/report.md",
+      "sha256": "96ac015524e9ad0b900e97b86638c349c1d1638eaec2dc615c42b3b949cd74e5"
+    }
+  ],
+  "next_step_requires_separate_owner_authorization": true
+}
