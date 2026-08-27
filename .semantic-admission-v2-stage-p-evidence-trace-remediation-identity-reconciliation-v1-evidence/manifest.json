@@ -1,0 +1,32 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-evidence-trace-remediation-identity-reconciliation-bundle",
+  "schema_version": "1.0.0",
+  "canonical_identity": "82e77041aa13f1b0878c0790b90e6a6cfc64f1c67f7dd64bcf7556ba4c9571eb",
+  "identity_method": "sha256 of ordered lowercase artifact SHA-256 values joined by LF",
+  "lifecycle": "SUPERSEDING_IDENTITY_RECONCILIATION_READY_FOR_OWNER_REVIEW",
+  "historical_bundle_identity": "5024d765392e904855cba46b1861c15b23e98a33e72228998457c47cb96e71b3",
+  "reconciliation_identity": "dad634d2af1e1290a37146d0e1a311517d93c4bb30ee95e8076851e0cf37b671",
+  "artifacts": [
+    {
+      "path": "docs/artifacts/semantic-admission-v2-stage-p-evidence-trace-remediation-identity-reconciliation-v1.json",
+      "sha256": "4f1cec5290c74c08a896358c1e301a76ee1ecf3ff83d4e6a3fe87624f01a9522"
+    },
+    {
+      "path": "tests/test_semantic_admission_v2_stage_p_evidence_trace_remediation_identity_reconciliation_v1.py",
+      "sha256": "b7548f47154434c730451ea1430e42e0264ac276065847038ede863faa18bb85"
+    },
+    {
+      "path": ".semantic-admission-v2-stage-p-evidence-trace-remediation-identity-reconciliation-v1-evidence/report.md",
+      "sha256": "8824f379293f3aba23431634a656bedf118fd6f495a0571fedacdd4e206fb41a"
+    }
+  ],
+  "byte_equivalence_claimed": false,
+  "semantic_equivalence_claimed": false,
+  "provider_calls": 0,
+  "model_calls": 0,
+  "probe_authority": false,
+  "stage_c_authority": false,
+  "inference_authority": false,
+  "runtime_authority": false,
+  "production_authority": false
+}

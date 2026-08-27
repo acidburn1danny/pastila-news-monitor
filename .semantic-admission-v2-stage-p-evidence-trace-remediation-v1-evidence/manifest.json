@@ -1,0 +1,23 @@
+{
+  "schema_name":"pastila-semantic-admission-v2-stage-p-evidence-trace-remediation-manifest",
+  "schema_version":"1.0.0",
+  "canonical_identity":"5024d765392e904855cba46b1861c15b23e98a33e72228998457c47cb96e71b3",
+  "identity_method":"sha256 of the ordered source-design identity and lowercase artifact SHA-256 values joined by LF with no trailing LF",
+  "lifecycle":"ZERO_INFERENCE_IMPLEMENTATION_READY_FOR_OWNER_REVIEW",
+  "source_design_identity":"d3fec23265dd28c88e347dcc38f7e6474b3f3b60dc38079eddea6533e16d3426",
+  "artifacts":[
+    {"path":"docs/artifacts/semantic-admission-v2-stage-p-evidence-trace-remediation-v1-candidate.json","sha256":"fde988ad60cdd9dc91fe4a01167af2ed0fd93c68ea71d114b1a4e85ea55d84fa"},
+    {"path":"src/pastila_scout/semantic_admission_v2/stage_p_phase_receipt_v2.py","sha256":"85f6c3ed3fd69a941eb620b0db016cad933a76d08996d737f5b2805daa8f8c51"},
+    {"path":"src/pastila_scout/semantic_admission_v2/durable_lifecycle_reconciliation_v1.py","sha256":"aae76d0a4a53e0b9987038f3f9ae105f23585b77fa089dc0fc6d5d31b2901df5"},
+    {"path":"src/pastila_scout/semantic_admission_v2/stage_p_durable_executor_v4.py","sha256":"9bdb3d46ed07a59c216d200d90dd6d03ae6d65164cf0acc8e74552caac63e746"},
+    {"path":"tests/test_semantic_admission_v2_stage_p_phase_receipt_v2.py","sha256":"c2f305c68e2aadc5ab18aff1d613e3fb4de4684a4875691af561aa95bd6f52ef"},
+    {"path":"tests/test_semantic_admission_v2_durable_lifecycle_reconciliation_v1.py","sha256":"f3cf9e64dab56d177a96a552484dec08fd85111970f5a44105009554bcabbf77"},
+    {"path":"tests/test_semantic_admission_v2_stage_p_durable_executor_v4.py","sha256":"3631b3d992930eb56feaf2f30c025fe183ac7b17672d9c1bb860e5a1bb5cbf5f"},
+    {"path":"tests/test_semantic_admission_v2_stage_p_evidence_trace_remediation_v1.py","sha256":"ef2acc049c2a400d83413ccf939d6c086e5f8ff3e210a73fdc56c0883c438da8"},
+    {"path":".semantic-admission-v2-stage-p-evidence-trace-remediation-v1-evidence/case01-phase-receipt-v2.json","sha256":"9ac110c364ca307359a2feaa951b6a3e4277d59913b9e9d5dc988b432961aba2"},
+    {"path":".semantic-admission-v2-stage-p-evidence-trace-remediation-v1-evidence/case01-lifecycle-reconciliation-v1.json","sha256":"90513f227639b4ad7f315e3fced98c9bc8b88a437e2e3f64c4946406f81cf675"},
+    {"path":".semantic-admission-v2-stage-p-evidence-trace-remediation-v1-evidence/report.md","sha256":"92d1b990a145f721f51021517830ec0b907eda979e2ccd593edf46ad718db01c"}
+  ],
+  "verification":{"result":"PASS","tests_passed":16,"tests_failed":0,"model_calls":0,"provider_calls":0,"inference":false},
+  "authority":{"prompt_change":false,"source_bound_decoder":false,"model_probe":false,"stage_c":false,"proof_rerun":false,"runtime":false,"production":false,"curriculum":false,"training":false}
+}

@@ -1,0 +1,26 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-evidence-trace-remediation-candidate",
+  "schema_version": "1.0.0-evaluation.1",
+  "lifecycle": "ZERO_INFERENCE_IMPLEMENTATION_READY_FOR_OWNER_REVIEW",
+  "source_design_identity": "d3fec23265dd28c88e347dcc38f7e6474b3f3b60dc38079eddea6533e16d3426",
+  "implemented_tracks": ["TRACK_B_EVIDENCE_RECEIPT_SEPARATION", "TRACK_C_TRACE_LIFECYCLE_RECONCILIATION"],
+  "track_b": {
+    "component": "StagePPhaseReceiptV2",
+    "phases": ["transport", "raw_persistence", "schema_validation", "source_membership"],
+    "single_call_capture_persists_before_validation": true,
+    "case01_reconstruction": {"transport":"SUCCESS","raw_persistence":"SUCCESS","schema_validation":"SUCCESS","source_membership":"FAIL","reason_code":"STAGE_P_CANDIDATE_SPAN_SOURCE_MEMBERSHIP_FAILURE","raw_bytes":1462,"raw_sha256":"f37ed5f2c30a72fad91953f3a1f87f590685c0e4987c7efb3957cfac23ed8be8","final_decision":"ABSTAIN_FAIL_CLOSED"}
+  },
+  "track_c": {
+    "component": "DurableLifecycleReconciliationV1",
+    "executor_candidate": "DurableConstrainedStagePCoreV12ExecutorV4",
+    "frozen_v3_modified": false,
+    "statuses": ["OBSERVED", "NOT_OBSERVED_BEFORE_TERMINAL_EVENT", "LIFECYCLE_UNAVAILABLE", "NOT_APPLICABLE"],
+    "validates": ["actor and contiguous per-actor sequence", "filename actor/sequence binding", "runner and dependency identities", "phase order", "ordered lifecycle tree identity"],
+    "case01_reconstruction": {"file_count":46,"model_load":"OBSERVED","generation":"OBSERVED","terminal_eos":"OBSERVED","response_persisted":"OBSERVED","host_timeout":"NOT_OBSERVED_BEFORE_TERMINAL_EVENT"}
+  },
+  "verification": {"focused_tests_passed":16,"focused_tests_failed":0,"captured_provider_calls":0,"new_model_calls":0,"inference":false},
+  "preserved_boundaries": ["No original Case 01 receipt or raw bytes modified.", "No Stage P prompt or schema change.", "No source-substring decoder implementation.", "No Stage C construction or call.", "No Case 10 or proof rerun."],
+  "limitations": ["V4 has construction and synthetic reconciliation evidence only; it has not executed a model.", "The source-role prompt candidate and optional source-bound substring projector remain separate, unauthorized work."],
+  "next_bounded_recommendation": "Create the separately versioned Stage P source-role prompt candidate and a separate zero-inference source-bound substring-projector feasibility prototype. Do not execute either with a model; stop for owner choice between prompt-only and prompt-plus-decoding defense.",
+  "authority": {"prompt_change":false,"source_bound_decoder":false,"model_probe":false,"stage_c":false,"proof_rerun":false,"runtime":false,"production":false,"curriculum":false,"training":false}
+}
