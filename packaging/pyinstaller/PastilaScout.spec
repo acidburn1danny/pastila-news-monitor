@@ -34,6 +34,10 @@ hidden_imports = [
     "pastila_scout.provider_runtime_openai_bridged_v2",
     "pastila_scout.provider_runtime_openai_bridged_v2.composition",
     "pastila_scout.provider_runtime_openai_v2.production",
+    "pastila_scout.wsl_execution_v1",
+    "pastila_scout.wsl_execution_v1.boundary",
+    "pastila_scout.wsl_execution_v1_1",
+    "pastila_scout.wsl_execution_v1_1.boundary",
 ]
 
 datas = [
@@ -87,6 +91,23 @@ datas = [
             / "pastila-scout-investigator-sidebar.png"
         ),
         "pastila_scout/resources/branding",
+    ),
+    (
+        str(
+            Path(SPECPATH).parents[1]
+            / "src"
+            / "pastila_scout"
+            / "experimental_core_v1_2_runner.py"
+        ),
+        "src/pastila_scout",
+    ),
+    (
+        str(
+            Path(SPECPATH).parents[1]
+            / ".experimental-0-3-core-v1-2-journalistic-deontology-prime-directive-v1-evidence"
+            / "PASTILAACIDA_EDITOR_CORE_SYSTEM_PROMPT_V1_2.txt"
+        ),
+        ".experimental-0-3-core-v1-2-journalistic-deontology-prime-directive-v1-evidence",
     ),
     (str(resource_root / "resources" / "THIRD-PARTY-NOTICES.txt"), "."),
 ] + copy_metadata("pastila-news-monitor") + collect_data_files("certifi")

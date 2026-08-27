@@ -1,0 +1,79 @@
+{
+  "artifact_type": "ZERO_INFERENCE_CORE_REBINDING_AND_INSTALLED_TRANSPORT_EVIDENCE",
+  "canonical_name": "PASTILA_CANONICAL_WSL_BOUNDARY_V1_1_CORE_REBINDING",
+  "schema_version": "1.0.0",
+  "canonical_identity": "70b5a5c67cbc66f528a7fcfc815e14d7ba11b797789c4afde9c98b9c0cb59104",
+  "identity_derivation": {
+    "algorithm": "SHA-256",
+    "encoding": "UTF-8",
+    "separator": "LF",
+    "ordered_fields": [
+      "PASTILA_CANONICAL_WSL_BOUNDARY_V1_1_CORE_REBINDING",
+      "1.0.0",
+      "77c5ea50a5d3cc7ed1e148037c543a84e41fb3b038a189901479b306dc3389a4",
+      "87ef25d65a92b65e8dbd3730258c6d0b0fc6ee8950130c69e2b623ff0190127e",
+      "850452d2ccd26cc67eee1903d490755034cd6e5468821a60e99fdcdf927c89d7",
+      "8fe9e740b3263f2988a653a0343334b502fddf0d3cb2be36746de4646242bed5",
+      "6491a61a845de2f3af6b516f0bace1aebd3e427f89233c455d236f2e4848f0a8",
+      "a9741693588e9ad9bf28c36968b6374d0f95b339509180419931ed4f7591af95",
+      "02a2d49cc301de4aa9f15e44a3881bae04d32ccafd5fb941b245a04776501c67",
+      "PASS_POST_SLEEP_OBSERVATION_PENDING"
+    ]
+  },
+  "approved_predecessor": {
+    "operational_acceptance_identity": "77c5ea50a5d3cc7ed1e148037c543a84e41fb3b038a189901479b306dc3389a4",
+    "frozen_v1_core_v1_1_sha256": "bf42bc9026f021cca64c08ad2d373361db169e782c8e0c3e0b011da5cb79056a",
+    "frozen_v1_core_v1_2_sha256": "ff5b0d5242ca5edcd7ee7074e7ac33aa101fc9dd606aab8c0f0b1cd9ef139d9e"
+  },
+  "binding": {
+    "boundary_v1_1_sha256": "87ef25d65a92b65e8dbd3730258c6d0b0fc6ee8950130c69e2b623ff0190127e",
+    "core_v1_1_sha256": "850452d2ccd26cc67eee1903d490755034cd6e5468821a60e99fdcdf927c89d7",
+    "core_v1_2_sha256": "8fe9e740b3263f2988a653a0343334b502fddf0d3cb2be36746de4646242bed5",
+    "command_bytes_equivalent_to_v1": true,
+    "command_identity_equivalent_to_v1": true,
+    "profile_model_prompt_and_request_contracts_changed": false,
+    "model_loads": 0,
+    "inference_calls": 0
+  },
+  "packaging": {
+    "spec_sha256": "6491a61a845de2f3af6b516f0bace1aebd3e427f89233c455d236f2e4848f0a8",
+    "application_wheel_sha256": "a9741693588e9ad9bf28c36968b6374d0f95b339509180419931ed4f7591af95",
+    "first_build_disposition": "REJECTED_STALE_APPLICATION_WHEEL_MISSING_BOUNDARY_MODULES",
+    "corrected_build": "PASS_NO_MISSING_BOUNDARY_IMPORTS",
+    "installed_gui_sha256": "9a3342438eb3d175579e4bfcb61ac0531862572e6ee9e213866694d4ff1ce742",
+    "installed_cli_sha256": "1ae0813a4ca5ebbd19fa2c27fd4ae95ecf199232e6dee775eae5851c1a380716",
+    "installation_method": "RECOVERABLE_SAME_VERSION_APP_DIRECTORY_REPLACEMENT",
+    "backup_path": "C:/Users/black/AppData/Local/Programs/PastilaScout/app.pre-wsl-v1-1-20260827",
+    "uninstaller_metadata_changed": false
+  },
+  "installed_transport_smoke": {
+    "packaged_smoke_sha256": "847c02d75996c42a867aaeedfea0bc691056ae5b6a1b447d1393ffca4b8622f7",
+    "command_identity": "02a2d49cc301de4aa9f15e44a3881bae04d32ccafd5fb941b245a04776501c67",
+    "return_code": 0,
+    "stdout": "PASTILA_INSTALLED_WSL_V1_1_OK",
+    "failure_code": null,
+    "timed_out": false,
+    "temporary_smoke_executable_removed_after_capture": true,
+    "model_loads": 0,
+    "inference_calls": 0
+  },
+  "post_sleep_observation": {
+    "status": "PENDING_GENUINE_POST_INSTALL_RESUME",
+    "latest_observed_windows_resume": "2026-08-26T10:37:24+03:00",
+    "reason_not_claimed": "The latest Windows resume predates this installation; historical wake evidence is not post-install proof."
+  },
+  "governance": {
+    "grandfathered_launchers_migrated": 0,
+    "grandfathered_launchers_preserved": 16,
+    "semantic_authority_changed": false,
+    "prompt_or_model_authority_changed": false,
+    "runtime_generation_executed": false
+  },
+  "verification": {
+    "focused_rebinding_tests": "43 passed",
+    "aggregate_rebinding_pack_before_historical-test_migration": "123 passed, 1 expected historical-path assertion failure",
+    "pytest_cache_warning": "Pre-existing malformed .pytest_cache path; outcomes unaffected."
+  },
+  "overall_disposition": "PASS_POST_SLEEP_OBSERVATION_PENDING",
+  "status": "OWNER_APPROVED_BINDING_IMPLEMENTED_AWAITING_POST_SLEEP_CAPTURE"
+}
