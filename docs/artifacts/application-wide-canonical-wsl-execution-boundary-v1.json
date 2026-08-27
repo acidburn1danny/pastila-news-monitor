@@ -1,0 +1,123 @@
+{
+  "artifact_type": "ARCHITECTURE_FEASIBILITY_MIGRATION_AND_VERIFICATION_EVIDENCE",
+  "artifact_version": "1.0.0-candidate.1",
+  "canonical_name": "PASTILA_APPLICATION_WIDE_CANONICAL_WSL_EXECUTION_BOUNDARY_V1",
+  "canonical_identity": "14a2b544fd55f590c2ee019a65c4af30a5df80eb9344fede612ba41a61925b7d",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "separator": "LF",
+    "ordered_utf8_fields": [
+      "PASTILA_APPLICATION_WIDE_CANONICAL_WSL_EXECUTION_BOUNDARY_V1",
+      "089274ad1d9eb3f0db1891c5be65a97a6fd71f9fac5bdd32cf5c07dd5a2833ca",
+      "a715f035039bcdd60ca1671ce6ad48cf226fcb1af482dcc053bf735dc859b10a",
+      "ff5b0d5242ca5edcd7ee7074e7ac33aa101fc9dd606aab8c0f0b1cd9ef139d9e",
+      "bf42bc9026f021cca64c08ad2d373361db169e782c8e0c3e0b011da5cb79056a",
+      "GO_STAGED_COMPATIBILITY_MIGRATION",
+      "TRANSPORT_ONLY_NO_SEMANTIC_OR_AUTHORITY_OWNERSHIP",
+      "FROZEN_EVALUATION_LAUNCHERS_DEFERRED"
+    ]
+  },
+  "feasibility_decision": {
+    "verdict": "GO_STAGED_COMPATIBILITY_MIGRATION",
+    "flag_day_migration": "REJECTED_HIGH_BLAST_RADIUS",
+    "reason": "Transport duplication is removable without changing semantic contracts, but frozen evaluation executors require individual versioned rebinding.",
+    "architecture": "SHARED_VERSIONED_TRANSPORT_INFRASTRUCTURE_NOT_COMPONENT_OWNED"
+  },
+  "inventory": {
+    "direct_host_wsl_launchers_before_migration": 18,
+    "active_application_consumers_migrated": [
+      "Editor Core V1.2",
+      "legacy Editor Core V1.1"
+    ],
+    "grandfathered_frozen_evaluation_launchers": 16,
+    "scout_direct_wsl_consumer": false,
+    "chief_editor_direct_wsl_consumer": false,
+    "ollama_or_openai_rerouted": false,
+    "future_direct_launch_bypass": "TEST_FORBIDDEN"
+  },
+  "implementation": {
+    "boundary_path": "src/pastila_scout/wsl_execution_v1/boundary.py",
+    "boundary_sha256": "089274ad1d9eb3f0db1891c5be65a97a6fd71f9fac5bdd32cf5c07dd5a2833ca",
+    "package_path": "src/pastila_scout/wsl_execution_v1/__init__.py",
+    "package_sha256": "80c16ba7f05c8a62dded8723fd003c27d00dd1beb69fe97eebab589f274b4b7a",
+    "architecture_path": "docs/architecture/canonical-wsl-execution-boundary-v1.md",
+    "architecture_sha256": "a715f035039bcdd60ca1671ce6ad48cf226fcb1af482dcc053bf735dc859b10a",
+    "core_v1_2_sha256": "ff5b0d5242ca5edcd7ee7074e7ac33aa101fc9dd606aab8c0f0b1cd9ef139d9e",
+    "core_v1_1_sha256": "bf42bc9026f021cca64c08ad2d373361db169e782c8e0c3e0b011da5cb79056a"
+  },
+  "transport_contract": {
+    "canonical_distribution": "Ubuntu-24.04",
+    "canonical_python": "/home/pastila/PastilaAcida-Model-Lab/experimental-0.1/.venv/bin/python",
+    "no_shell": true,
+    "no_retry": true,
+    "no_output_selection_or_repair": true,
+    "pure_windows_path_mapping": true,
+    "hidden_windows_process": true,
+    "utf8_replace_transport_decoding": true,
+    "typed_timeout_and_wsl_failures": true,
+    "one_shot_and_caller_owned_durable_spawn": true,
+    "receipt_excludes_argv_environment_and_output_text": true
+  },
+  "authority_separation": {
+    "boundary_owns_prompt": false,
+    "boundary_owns_model_adapter_or_tokenizer": false,
+    "boundary_owns_schema_or_grammar": false,
+    "boundary_makes_semantic_or_eligibility_decisions": false,
+    "boundary_authorizes_execution": false,
+    "consumer_authority_reference_is_opaque": true,
+    "retry_cancellation_heartbeat_and_lifecycle_remain_consumer_owned": true
+  },
+  "risk_summary": {
+    "highest_inherent_risks": [
+      "flag-day blast radius",
+      "authority contamination",
+      "frozen evidence invalidation"
+    ],
+    "residual_medium_risks": [
+      "explicit pydantic bridge dependency",
+      "sleep/reboot/cold-start WSL availability",
+      "GPU and model resource contention",
+      "durable-process orphan handling remains consumer-specific"
+    ],
+    "details": "docs/architecture/canonical-wsl-execution-boundary-v1.md"
+  },
+  "packaging": {
+    "pyinstaller_hidden_imports_added": true,
+    "spec_sha256": "7da0527e9c1384aff46bb2e1328e66133246259d4168f344d092ceea82dba547",
+    "installer_installs_or_modifies_wsl": false,
+    "installer_bundles_distro_models_adapters_or_linux_python": false,
+    "existing_frozen_installer_authority_weakened": false,
+    "frozen_application_tests": "PASS_16"
+  },
+  "operational_preflight": {
+    "result": "PASS_ZERO_MODEL",
+    "distribution": "Ubuntu-24.04",
+    "python_version": "3.12",
+    "profile_identity": "89d41dda4fbc1999e8aaf8f6ec62eabbdb7672535303337d37d3eb8c168d4afd",
+    "command_identity": "8f6f6391b70fbad4e8b1664bd7e56c747673fc5c7735b9751acdb501c963b8e4",
+    "model_loads": 0,
+    "inference_calls": 0
+  },
+  "testing": {
+    "boundary_test_sha256": "29d17ce9160342d315bdd636d1da7103ec4ba33e44876ccb3f810bc983e3c7c",
+    "governance_test_sha256": "93d481e4a7e19b218945b46a10b13bdbbec6c20e169e1ceb5b866f0e84164ac5",
+    "targeted_application_packaging_tests_passed": 128,
+    "targeted_tests_skipped": 1,
+    "skip_reason": "Tk unavailable",
+    "cache_warning": "Pre-existing malformed .pytest_cache path; test outcomes unaffected.",
+    "full_suite_attempt": {
+      "disposition": "STOPPED_AFTER_LONG_RUNNING_PARTIAL_SUITE_AND_CHARACTERIZED_WITH_FAIL_FAST",
+      "first_failure_after_115_passes": "tests/test_ai_provider_adapter_runtime.py::test_success_preserves_invocation_and_exact_call_counts",
+      "failure_class": "UNRELATED_PRE_EXISTING_DIRTY_WORKTREE_LINEAGE_FIXTURE_FAILURE",
+      "failure_detail": "A legacy planning fixture produced integration_result.generation_result=None before any WSL boundary path was involved.",
+      "boundary_regression": false
+    }
+  },
+  "frozen_evidence_policy": {
+    "historical_artifacts_rewritten": false,
+    "historical_execution_claims_rebound": false,
+    "legacy_launcher_bytes_modified": false,
+    "migration_requirement": "Each frozen launcher family requires new command-equivalence, lifecycle, timeout, and zero-inference construction evidence before its caller is changed."
+  },
+  "status": "IMPLEMENTED_BOUNDED_MIGRATION_OWNER_REVIEW_REQUIRED"
+}
