@@ -20,6 +20,7 @@ from pastila_scout.editor.generation.controlled_generator import (
     _bind_story_authority,
     _provisional_story_word_budget_plan,
     _story_context,
+    _with_v1_2_numeric_consistency,
 )
 from pastila_scout.editor.generation.models import (
     STANDARD_STORY_WORD_BUDGET_V1,
@@ -43,9 +44,59 @@ from pastila_scout.editor.generation.models import (
 from pastila_scout.editor.generation.prompt import PromptLayer
 from pastila_scout.editor.generation.provider import ProviderTimeoutError
 from pastila_scout.editor.generation.validation import (
+    ValidationOutcome,
     validate_story,
     validate_transition,
+    validate_v1_2_numeric_factual_consistency,
 )
+
+
+@pytest.mark.parametrize(
+    "surface",
+    (
+        "Fermierii oferă peste 8.000 de lei pe zi.",
+        "Fermierii oferă peste 8.000 de lei pe masă.",
+        "Fermierii oferă peste 8.000 de lei pe mesă pe zi.",
+    ),
+)
+def test_v1_2_numeric_gate_rejects_event_1406_mutations(surface: str) -> None:
+    support = (
+        "Fermierii din Serbia oferă peste 8.000 de lei pe lună la culesul de zmeură.",
+    )
+
+    errors = validate_v1_2_numeric_factual_consistency(surface, support)
+
+    assert any("v1_2_unsupported_numeric_expression" in item for item in errors)
+
+
+@pytest.mark.parametrize(
+    "surface",
+    (
+        "În Serbia, plata depășește 8.000 de lei pe lună.",
+        "Peste 8.000 de lei pe lună este plata oferită în Serbia.",
+    ),
+)
+def test_v1_2_numeric_gate_accepts_paraphrase_with_preserved_expression(
+    surface: str,
+) -> None:
+    support = (
+        "Fermierii din Serbia oferă peste 8.000 de lei pe lună la culesul de zmeură.",
+    )
+
+    assert validate_v1_2_numeric_factual_consistency(surface, support) == ()
+
+
+def test_numeric_gate_is_not_applied_to_non_v1_2_generation() -> None:
+    original = ValidationOutcome()
+
+    result = _with_v1_2_numeric_consistency(
+        original,
+        text="Fermierii oferă 8.000 de lei pe zi.",
+        supported_surfaces=("Fermierii oferă 8.000 de lei pe lună.",),
+        enabled=False,
+    )
+
+    assert result is original
 
 
 def _story_context_for_mechanics() -> StoryGenerationContext:
@@ -753,7 +804,6 @@ def test_full_offline_generation_uses_separate_calls_and_required_order() -> Non
     assert {fact["field"] for fact in story_sections[PromptLayer.APPROVED_FACTS]} == {
         "canonical_title",
         "canonical_summary",
-        "categories",
     }
     editorial = story_sections[PromptLayer.EDITORIAL_INTENTIONS]
     assert {"intent", "angles", "narrative_function", "levels"} <= set(editorial)
@@ -1038,7 +1088,7 @@ def test_requires_review_story_stops_before_opening_and_closing():
     invalid = authored_story_result(1, 1)
     invalid["ending"] = " ".join(("prea-lung",) * 1_000)
     provider = ScriptedLanguageModelProvider([invalid, invalid, invalid])
-    with pytest.raises(ControlledGenerationError, match="handoff-valid"):
+    with pytest.raises(ControlledGenerationError, match="handoff-valid") as caught:
         ControlledGenerator(provider, config=config()).generate(
             scout_input=scout,
             selection_profile=profile_from_pipeline(scout),
@@ -1049,6 +1099,17 @@ def test_requires_review_story_stops_before_opening_and_closing():
             voice_plan=voice.plan,
         )
     assert len(provider.prompts) == 3
+    diagnostics = caught.value.attempt_diagnostics
+    assert len(diagnostics) == 3
+    assert all(
+        item["failure_class"] == "DOMAIN_VALIDATION_FAILED"
+        and item["expected_schema"] == "StoryAuthoredContentResult"
+        and item["schema_parse_succeeded"] is True
+        and item["domain_validation_reached"] is True
+        and item["domain_validation_passed"] is False
+        for item in diagnostics
+    )
+    assert "prea-lung prea-lung" not in str(caught.value)
     assert all(
         prompt.component_type is GenerationComponentType.STORY
         for prompt in provider.prompts

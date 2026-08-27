@@ -1,6 +1,7 @@
 """Sequential provider-independent controlled generation orchestration."""
 
 import hashlib
+import json
 from itertools import pairwise
 
 from pastila_scout.editor.generation.assembly import (
@@ -50,7 +51,10 @@ from pastila_scout.editor.generation.validation import (
     validate_opening,
     validate_story,
     validate_transition,
+    validate_v1_2_numeric_factual_consistency,
 )
+from pastila_scout.editor_core_identities_v1 import CORE_V1_2_MODEL_ID
+from pastila_scout.event_authority_v1 import render_authority_segment
 from pastila_scout.expression_retrieval_v1 import load_catalog_v1
 from pastila_scout.expression_retrieval_v1.editor_adapter import (
     build_story_voice_palette_for_editor_v1,
@@ -64,6 +68,33 @@ from pastila_scout.expression_retrieval_v1.usage import (
 
 class ControlledGenerationError(RuntimeError):
     """Raised when a required component cannot be generated safely."""
+
+    def __init__(self, message: str = "", *, attempt_diagnostics=()) -> None:
+        self.attempt_diagnostics = tuple(attempt_diagnostics)
+        suffix = (
+            f"; attempt_diagnostics={json.dumps(self.attempt_diagnostics, ensure_ascii=False, separators=(',', ':'))}"
+            if self.attempt_diagnostics
+            else ""
+        )
+        super().__init__(f"{message}{suffix}"[:4000])
+
+
+def _with_v1_2_numeric_consistency(
+    outcome, *, text, supported_surfaces, enabled
+):
+    if not enabled:
+        return outcome
+    numeric_errors = validate_v1_2_numeric_factual_consistency(
+        text, supported_surfaces
+    )
+    if not numeric_errors:
+        return outcome
+    return ValidationOutcome(
+        errors=tuple(dict.fromkeys((*outcome.errors, *numeric_errors))),
+        warnings=outcome.warnings,
+        retry_reason=outcome.retry_reason or RetryReason.CEILING_EXCEEDED,
+        fatal=outcome.fatal,
+    )
 
 
 class ControlledGenerator:
@@ -88,6 +119,27 @@ class ControlledGenerator:
         static_cta_content="",
         teleprompter_profile=None,
     ):
+        if self.config.model_identifier == CORE_V1_2_MODEL_ID:
+            from pastila_scout.editor.generation.core_only_v2_generator import (
+                CoreOnlyV2Generator,
+            )
+
+            return CoreOnlyV2Generator(
+                self.provider,
+                config=self.config,
+                policy=self.policy,
+                prompt_builder=self.prompt_builder,
+            ).generate(
+                scout_input=scout_input,
+                selection_profile=selection_profile,
+                episode_context=episode_context,
+                flow_result=flow_result,
+                editorial_blueprint=editorial_blueprint,
+                commentary_blueprint=commentary_blueprint,
+                voice_plan=voice_plan,
+                static_cta_content=static_cta_content,
+                teleprompter_profile=teleprompter_profile,
+            )
         order = commentary_blueprint.flow_order
         if order != editorial_blueprint.flow_order or order != voice_plan.flow_order:
             raise ControlledGenerationError("upstream deterministic orders disagree")
@@ -125,6 +177,7 @@ class ControlledGenerator:
         )
         traces = []
         story_results = []
+        numeric_support_surfaces = []
         event_map = {event.event_id: event for event in scout_input.ranked_events}
         editorial_map = {item.event_id: item for item in editorial_blueprint.segments}
         commentary_map = {item.event_id: item for item in commentary_blueprint.stories}
@@ -138,6 +191,9 @@ class ControlledGenerator:
                 commentary_map[story_id],
                 voice_map[story_id],
                 episode_voice_state,
+            )
+            numeric_support_surfaces.extend(
+                fact.value for fact in story_context.approved_facts
             )
             result, component_traces, status = self._component(
                 item_id=f"story-{position:02d}",
@@ -157,7 +213,11 @@ class ControlledGenerator:
             traces.extend(component_traces)
             if status is not ManifestItemStatus.COMPLETED:
                 raise ControlledGenerationError(
-                    f"story {story_id} did not produce a handoff-valid result"
+                    f"story {story_id} did not produce a handoff-valid result",
+                    attempt_diagnostics=_attempt_diagnostics(
+                        component_traces,
+                        expected_schema=StoryAuthoredContentResult.__name__,
+                    ),
                 )
             state = state.accept_story(f"story-{position:02d}", result)
             validated_text = "\n\n".join(
@@ -183,6 +243,7 @@ class ControlledGenerator:
                 )
             )
             story_results.append(result)
+            numeric_support_surfaces.append(validated_text)
         transition_results = []
         transition_map = {
             item.from_event_id: item for item in editorial_blueprint.transitions
@@ -237,7 +298,12 @@ class ControlledGenerator:
             episode_context=global_context,
             component_context=opening_context,
             output_schema=OpeningGenerationResult,
-            validator=lambda value: validate_opening(value, opening_context),
+            validator=lambda value: _with_v1_2_numeric_consistency(
+                validate_opening(value, opening_context),
+                text=value.text,
+                supported_surfaces=tuple(numeric_support_surfaces),
+                enabled=self.config.model_identifier == CORE_V1_2_MODEL_ID,
+            ),
             state=state,
         )
         traces.extend(item_traces)
@@ -260,7 +326,12 @@ class ControlledGenerator:
             episode_context=global_context,
             component_context=closing_context,
             output_schema=ClosingGenerationResult,
-            validator=lambda value: validate_closing(value, closing_context, state),
+            validator=lambda value: _with_v1_2_numeric_consistency(
+                validate_closing(value, closing_context, state),
+                text=value.text,
+                supported_surfaces=tuple(numeric_support_surfaces),
+                enabled=self.config.model_identifier == CORE_V1_2_MODEL_ID,
+            ),
             state=state,
         )
         traces.extend(item_traces)
@@ -497,6 +568,46 @@ class ControlledGenerator:
             )
 
 
+def _attempt_diagnostics(traces, *, expected_schema):
+    diagnostics = []
+    for trace in traces:
+        errors = tuple(str(item)[:300] for item in trace.validation_errors)
+        structured = next(
+            (
+                item.split(":", 1)[0]
+                for item in errors
+                if item.startswith(("MALFORMED_JSON:", "SCHEMA_VALIDATION_FAILED:"))
+            ),
+            None,
+        )
+        provider_failed = any(item == "Provider execution failed." for item in errors)
+        failure_class = (
+            structured
+            or ("PROVIDER_EXECUTION_FAILED" if provider_failed else None)
+            or "DOMAIN_VALIDATION_FAILED"
+        )
+        schema_succeeded = None if provider_failed else structured is None
+        domain_reached = None if provider_failed else structured is None
+        diagnostics.append(
+            {
+                "attempt_number": trace.attempt_number,
+                "component_id": trace.manifest_item_id,
+                "target_id": trace.target_id,
+                "provider": trace.provider_identifier,
+                "model_id": trace.model_identifier,
+                "expected_schema": expected_schema,
+                "failure_class": failure_class,
+                "error": " | ".join(errors)[:600],
+                "schema_parse_succeeded": schema_succeeded,
+                "domain_validation_reached": domain_reached,
+                "domain_validation_passed": (
+                    False if domain_reached is True else None
+                ),
+            }
+        )
+    return tuple(diagnostics)
+
+
 def _story_context(event, position, editorial, commentary, voice):
     context, _ = _story_context_and_palette(
         event,
@@ -507,6 +618,32 @@ def _story_context(event, position, editorial, commentary, voice):
         episode_voice_state=None,
     )
     return context
+
+
+def _event_approved_facts(event):
+    bundle = event.event_authority_bundle
+    if bundle is not None:
+        return tuple(
+            ApprovedFact(
+                fact_id=f"event-{event.event_id}-source-{segment.article_id}",
+                field="event_source_authority",
+                value=render_authority_segment(segment),
+            )
+            for segment in bundle.segments
+        )
+    # Historical handoffs predate EventAuthorityBundle and remain executable.
+    return (
+        ApprovedFact(
+            fact_id=f"event-{event.event_id}-title",
+            field="canonical_title",
+            value=event.canonical_title,
+        ),
+        ApprovedFact(
+            fact_id=f"event-{event.event_id}-summary",
+            field="canonical_summary",
+            value=event.canonical_summary,
+        ),
+    )
 
 
 def _story_context_and_palette(
@@ -520,23 +657,7 @@ def _story_context_and_palette(
         voice=voice,
         episode_state=episode_voice_state,
     )
-    facts = (
-        ApprovedFact(
-            fact_id=f"event-{event.event_id}-title",
-            field="canonical_title",
-            value=event.canonical_title,
-        ),
-        ApprovedFact(
-            fact_id=f"event-{event.event_id}-summary",
-            field="canonical_summary",
-            value=event.canonical_summary,
-        ),
-        ApprovedFact(
-            fact_id=f"event-{event.event_id}-categories",
-            field="categories",
-            value=", ".join(event.categories),
-        ),
-    )
+    facts = _event_approved_facts(event)
     return StoryGenerationContext(
         story_id=event.event_id,
         flow_position=position,

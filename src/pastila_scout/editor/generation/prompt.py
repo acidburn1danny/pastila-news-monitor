@@ -88,6 +88,7 @@ class PromptBuilder:
             "voice_plan",
             getattr(component_context, "voice_profile", {}),
         )
+        commentary_only = output_schema.__name__ == "AcidCommentaryGenerationResultV2"
         values = [
             (
                 PromptLayer.IMMUTABLE_RULES,
@@ -99,6 +100,9 @@ class PromptBuilder:
                     "no_cross_story_facts": True,
                     "mode": mode.value,
                     "minimal_safe": mode is GenerationMode.MINIMAL_SAFE,
+                    "commentary_only": commentary_only,
+                    "never_generate_facts_or_factual_paraphrases": commentary_only,
+                    "commentary_must_contain_no_digits_dates_amounts_or_quotes": commentary_only,
                 },
             ),
             (
@@ -140,7 +144,17 @@ class PromptBuilder:
             (
                 PromptLayer.GENERATION_TASK,
                 "Local task",
-                {"component": component_type.value},
+                {
+                    "component": component_type.value,
+                    "instruction": (
+                        "Return only one short Romanian acid observation or metaphor. "
+                        "Do not repeat, summarize, paraphrase, or add any fact. Use no "
+                        "digits, dates, amounts, quotations, proper names, institutions, "
+                        "program names, or factual assertions."
+                        if commentary_only
+                        else None
+                    ),
+                },
             ),
         ]
         if failures:

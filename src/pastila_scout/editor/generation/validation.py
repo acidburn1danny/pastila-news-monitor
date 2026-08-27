@@ -9,6 +9,45 @@ from pastila_scout.editor.generation.models import RetryReason
 _UNRESOLVED_TEMPLATE = re.compile(r"\{[^{}]+\}")
 _TEMPLATE_SLOT = re.compile(r"\{[^{}]+\}")
 _SENTENCE = re.compile(r"[^.!?\n]+(?:[.!?]+|$)", re.UNICODE)
+_NUMERIC_TOKEN = re.compile(r"\d+(?:[.,]\d+)*|%|[^\W\d_]+", re.UNICODE)
+_MALFORMED_NUMERIC_BASIS = re.compile(r"\bpe\s+mes[ăa]\s+pe\s+zi\b", re.IGNORECASE)
+
+_UNITS = {
+    "%": "percent",
+    "procent": "percent",
+    "procente": "percent",
+    "leu": "ron",
+    "lei": "ron",
+    "ron": "ron",
+    "euro": "eur",
+    "eur": "eur",
+    "dolar": "usd",
+    "dolari": "usd",
+    "usd": "usd",
+    "metru": "metre",
+    "metri": "metre",
+    "kilometru": "kilometre",
+    "kilometri": "kilometre",
+    "kg": "kilogram",
+    "kilogram": "kilogram",
+    "kilograme": "kilogram",
+}
+_TIME_BASES = {
+    "zi": "day",
+    "zile": "day",
+    "lună": "month",
+    "luna": "month",
+    "luni": "month",
+    "an": "year",
+    "ani": "year",
+    "oră": "hour",
+    "ora": "hour",
+    "ore": "hour",
+    "săptămână": "week",
+    "saptamana": "week",
+    "săptămâni": "week",
+    "saptamani": "week",
+}
 
 
 def _sentence_count(value: str) -> int:
@@ -25,6 +64,72 @@ class ValidationOutcome:
     @property
     def accepted(self):
         return not self.errors
+
+
+def validate_v1_2_numeric_factual_consistency(text, supported_surfaces):
+    """Reject mutated numeric/unit/basis facts without rewriting generated prose."""
+    errors = []
+    if _MALFORMED_NUMERIC_BASIS.search(text):
+        errors.append("v1_2_malformed_numeric_basis:pe mesă pe zi")
+    supported = {
+        signature
+        for surface in supported_surfaces
+        for signature in _numeric_signatures(surface)
+    }
+    for signature, expression in _numeric_signatures(text, include_surface=True):
+        if signature not in supported:
+            errors.append(f"v1_2_unsupported_numeric_expression:{expression}")
+    return tuple(dict.fromkeys(errors))
+
+
+def _numeric_signatures(value, *, include_surface=False):
+    tokens = _NUMERIC_TOKEN.findall(value.casefold())
+    results = []
+    for index, token in enumerate(tokens):
+        if not token[0].isdigit():
+            continue
+        number = _normalized_number(token)
+        following = tokens[index + 1 : index + 9]
+        preceding = tokens[max(0, index - 3) : index]
+        unit = next((_UNITS[item] for item in following[:5] if item in _UNITS), None)
+        basis = None
+        for offset, item in enumerate(following[:-1]):
+            if item in {"pe", "per"} and following[offset + 1] in _TIME_BASES:
+                basis = _TIME_BASES[following[offset + 1]]
+                break
+        qualifier = _numeric_qualifier(preceding)
+        signature = (number, unit, basis, qualifier)
+        if include_surface:
+            surface = " ".join(tokens[index : index + min(9, len(tokens) - index)])
+            results.append((signature, surface))
+        else:
+            results.append(signature)
+    return tuple(results)
+
+
+def _normalized_number(value):
+    if re.fullmatch(r"\d{1,3}(?:\.\d{3})+", value):
+        return value.replace(".", "")
+    return value.replace(",", ".")
+
+
+def _numeric_qualifier(tokens):
+    joined = " ".join(tokens)
+    if "cel puțin" in joined or "minimum" in tokens:
+        return "at_least"
+    if (
+        "mai mult de" in joined
+        or "mai mare de" in joined
+        or "peste" in tokens
+        or "depășește" in tokens
+        or "depaseste" in tokens
+    ):
+        return "over"
+    if "aproximativ" in tokens or "aproape" in tokens:
+        return "approximately"
+    if "maximum" in tokens or "cel mult" in joined:
+        return "at_most"
+    return None
 
 
 def validate_story(result, context, state):
@@ -199,7 +304,32 @@ def validate_closing(result, context, state):
     errors = []
     if not set(result.callback_executions) <= set(context.available_callback_anchors):
         errors.append("callback_violation")
+    closing = _normalized_words(result.text)
+    for story_id in state.generated_story_ids:
+        stitched = _normalized_words(
+            f"{state.factual_summary(story_id)} {state.ending_summary(story_id)}"
+        )
+        if closing == stitched:
+            errors.append("closing_mechanical_story_stitch")
+            break
+    if _mechanically_repeats(result.text):
+        errors.append("closing_mechanical_repetition")
     return _outcome(errors)
+
+
+def _normalized_words(value):
+    return " ".join(value.casefold().split()).strip(" .!?")
+
+
+def _mechanically_repeats(value):
+    words = _normalized_words(value).split()
+    for width in range(4, len(words) // 2 + 1):
+        for start in range(len(words) - (2 * width) + 1):
+            if words[start : start + width] == words[
+                start + width : start + (2 * width)
+            ]:
+                return True
+    return False
 
 
 def _outcome(errors):
