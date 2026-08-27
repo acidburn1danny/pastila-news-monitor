@@ -8,6 +8,7 @@ from .models import (
     EditorOperationalGenerationLifecycleStateV1,
     EditorOperationalGenerationStatusV1,
     EditorOperationalResultV1,
+    replace_completed_draft_v1,
 )
 
 __all__ = (
@@ -18,4 +19,5 @@ __all__ = (
     "EditorOperationalGenerationLifecycleStateV1",
     "EditorOperationalGenerationStatusV1",
     "EditorOperationalResultV1",
+    "replace_completed_draft_v1",
 )

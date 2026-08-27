@@ -10,6 +10,9 @@ from typing import NoReturn
 
 from pastila_scout.editor.generation.manifest import GenerationManifest
 from pastila_scout.editor.generation.models import EpisodeDraft, GenerationTrace
+from pastila_scout.editor.generation.semantic_draft_v2 import (
+    PastilaEditorSemanticDraftV2,
+)
 from pastila_scout.editor_generation_authority_v1.canonical import (
     canonical_value,
     semantic_fingerprint,
@@ -172,7 +175,7 @@ class EditorOperationalResultV1:
     execution_request_fingerprint: str
     status: EditorOperationalGenerationStatusV1
     lifecycle: tuple[EditorOperationalGenerationLifecycleStateV1, ...]
-    draft: EpisodeDraft | None
+    draft: EpisodeDraft | PastilaEditorSemanticDraftV2 | None
     generation_trace: GenerationTrace | None
     generation_manifest: GenerationManifest | None
     final_state_revision: int | None
@@ -193,7 +196,7 @@ class EditorOperationalResultV1:
         execution_request_fingerprint: str,
         status: EditorOperationalGenerationStatusV1,
         lifecycle: tuple[EditorOperationalGenerationLifecycleStateV1, ...],
-        draft: EpisodeDraft | None,
+        draft: EpisodeDraft | PastilaEditorSemanticDraftV2 | None,
         generation_trace: GenerationTrace | None,
         generation_manifest: GenerationManifest | None,
         final_state_revision: int | None,
@@ -336,7 +339,7 @@ def _validate_result(values):
     if completed:
         if (
             lifecycle != COMPLETED_LIFECYCLE
-            or type(draft) is not EpisodeDraft
+            or type(draft) not in {EpisodeDraft, PastilaEditorSemanticDraftV2}
             or type(trace) is not GenerationTrace
             or type(manifest) is not GenerationManifest
             or type(final_revision) is not int
@@ -348,7 +351,8 @@ def _validate_result(values):
         ):
             _invalid()
         try:
-            draft = EpisodeDraft.model_validate(
+            draft_model = type(draft)
+            draft = draft_model.model_validate(
                 draft.model_dump(mode="python", warnings=False), strict=True
             )
             trace = GenerationTrace.model_validate(
@@ -560,10 +564,45 @@ CONTROLLED_RESULT_FAILURE_LIFECYCLE = (
 )
 
 
+def replace_completed_draft_v1(
+    result: EditorOperationalResultV1,
+    draft: PastilaEditorSemanticDraftV2,
+) -> EditorOperationalResultV1:
+    """Derive a completed operational result with only its V2 draft replaced."""
+
+    rebuilt = reconstruct_result(result)
+    if (
+        rebuilt.status is not EditorOperationalGenerationStatusV1.COMPLETED
+        or type(draft) is not PastilaEditorSemanticDraftV2
+    ):
+        _invalid()
+    prefix = (
+        rebuilt.source_report_id,
+        rebuilt.source_report_fingerprint,
+        rebuilt.preparation_result_fingerprint,
+        rebuilt.execution_request_reference,
+        rebuilt.execution_request_fingerprint,
+        rebuilt.status,
+        rebuilt.lifecycle,
+        draft,
+        rebuilt.generation_trace,
+        rebuilt.generation_manifest,
+        rebuilt.final_state_revision,
+        rebuilt.attempts,
+        rebuilt.attempt_count,
+        rebuilt.timeout_retry_count,
+        rebuilt.failure,
+        rebuilt.cleanup_failed,
+    )
+    fingerprint = semantic_fingerprint((*prefix[:-2], None, prefix[-1]))
+    return EditorOperationalResultV1(*prefix, fingerprint)
+
+
 __all__ = (
     "EditorOperationalGenerationFailureCodeV1",
     "EditorOperationalGenerationFailureV1",
     "EditorOperationalGenerationLifecycleStateV1",
     "EditorOperationalGenerationStatusV1",
     "EditorOperationalResultV1",
+    "replace_completed_draft_v1",
 )

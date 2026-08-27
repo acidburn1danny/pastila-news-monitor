@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import copy
 import inspect
+import logging
 from dataclasses import dataclass
 from itertools import pairwise
 from types import FunctionType
@@ -22,6 +23,11 @@ from pastila_scout.editor.generation.models import (
     LanguageGenerationConfig,
 )
 from pastila_scout.editor.generation.provider import LanguageModelProvider
+from pastila_scout.editor.generation.semantic_draft_v2 import (
+    ControlledSemanticGenerationResultV2,
+    PastilaEditorSemanticDraftV2,
+    SemanticGenerationStateV2,
+)
 from pastila_scout.editor.generation.state import EpisodeGenerationState
 from pastila_scout.editor_generation_authority_v1.canonical import (
     canonical_value,
@@ -58,6 +64,8 @@ from .models import (
     result_fingerprint,
 )
 from .protocols import _EditorControlledGeneratorFactoryV1
+
+_LOGGER = logging.getLogger(__name__)
 
 
 def _raise_configuration() -> NoReturn:
@@ -197,8 +205,12 @@ def _execute(request, session_factory, generator_factory):
             static_cta_content="",
             teleprompter_profile=None,
         )
-    except ControlledGenerationError:
-        terminal_error = "controlled"
+    except ControlledGenerationError as exc:
+        terminal_error = str(exc)[:4000]
+        _LOGGER.error(
+            "Editor controlled generation failed: %s",
+            terminal_error,
+        )
     except Exception:  # noqa: BLE001 - injected failure becomes neutral status
         dependency_failed = True
     try:
@@ -269,7 +281,7 @@ def _classify(request, generated, terminal_error, attempts, valid):
             EditorOperationalGenerationFailureCodeV1.PROVIDER_FAILED,
             attempts=attempts,
         )
-    if terminal_error == "controlled":
+    if terminal_error is not None:
         return _failure_result(
             request,
             EditorOperationalGenerationFailureCodeV1.CONTROLLED_GENERATION_FAILED,
@@ -329,7 +341,7 @@ def _validate_provenance(snapshot, provider, generated, terminal_error):
         if (
             last
             and terminal is ExecutionOutcomeV2.TIMEOUT
-            and terminal_error != "controlled"
+            and terminal_error is None
         ):
             raise TypeError
     if generated is not None and not values:
@@ -377,16 +389,23 @@ def _validate_trace(trace, attempts, provider):
 
 
 def _reconstruct_controlled(value):
-    if type(value) is not ControlledGenerationResult:
+    result_type = type(value)
+    if result_type is ControlledGenerationResult:
+        draft_model = EpisodeDraft
+        state_model = EpisodeGenerationState
+    elif result_type is ControlledSemanticGenerationResultV2:
+        draft_model = PastilaEditorSemanticDraftV2
+        state_model = SemanticGenerationStateV2
+    else:
         raise TypeError
     if (
-        type(value.draft) is not EpisodeDraft
+        type(value.draft) is not draft_model
         or type(value.trace) is not GenerationTrace
         or type(value.manifest) is not GenerationManifest
-        or type(value.final_state) is not EpisodeGenerationState
+        or type(value.final_state) is not state_model
     ):
         raise TypeError
-    draft = EpisodeDraft.model_validate(
+    draft = draft_model.model_validate(
         value.draft.model_dump(mode="python", warnings=False), strict=True
     )
     trace = GenerationTrace.model_validate(
@@ -395,10 +414,10 @@ def _reconstruct_controlled(value):
     manifest = GenerationManifest.model_validate(
         value.manifest.model_dump(mode="python", warnings=False), strict=True
     )
-    final_state = EpisodeGenerationState.model_validate(
+    final_state = state_model.model_validate(
         value.final_state.model_dump(mode="python", warnings=False), strict=True
     )
-    return ControlledGenerationResult(
+    return result_type(
         draft=draft,
         trace=trace,
         manifest=manifest,

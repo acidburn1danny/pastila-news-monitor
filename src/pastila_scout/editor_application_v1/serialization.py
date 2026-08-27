@@ -17,6 +17,11 @@ from pydantic import BaseModel
 
 from pastila_scout.editor.generation.manifest import GenerationManifest
 from pastila_scout.editor.generation.models import EpisodeDraft, GenerationTrace
+from pastila_scout.editor.generation.semantic_draft_v2 import (
+    SEMANTIC_DRAFT_V2_SCHEMA_NAME,
+    SEMANTIC_DRAFT_V2_SCHEMA_VERSION,
+    PastilaEditorSemanticDraftV2,
+)
 from pastila_scout.editor_generation_provider_adapter_v1 import (
     EditorGenerationAttemptObservationV1,
 )
@@ -390,7 +395,7 @@ def _reconstruct_projected_operational(
         value["execution_request_fingerprint"],
         EditorOperationalGenerationStatusV1(value["status"]),
         rebuilt_lifecycle,
-        _model_from_projection(value["draft"], EpisodeDraft),
+        _draft_from_projection(value["draft"]),
         _model_from_projection(value["generation_trace"], GenerationTrace),
         _model_from_projection(value["generation_manifest"], GenerationManifest),
         value["final_state_revision"],
@@ -412,6 +417,25 @@ def _model_from_projection(value: object, model: type[BaseModel]) -> BaseModel:
         sort_keys=True,
     ).encode("utf-8")
     return model.model_validate_json(encoded, strict=True)
+
+
+def _draft_from_projection(
+    value: object,
+) -> EpisodeDraft | PastilaEditorSemanticDraftV2:
+    """Discriminate legacy V1 drafts from schema-bearing semantic V2 drafts."""
+
+    if type(value) is not dict:
+        raise TypeError
+    schema_name = value.get("schema_name")
+    schema_version = value.get("schema_version")
+    if schema_name is None and schema_version is None:
+        return _model_from_projection(value, EpisodeDraft)
+    if (
+        schema_name == SEMANTIC_DRAFT_V2_SCHEMA_NAME
+        and schema_version == SEMANTIC_DRAFT_V2_SCHEMA_VERSION
+    ):
+        return _model_from_projection(value, PastilaEditorSemanticDraftV2)
+    raise TypeError
 
 
 def _reconstruct_projected_attempt(
@@ -496,7 +520,7 @@ def _operational_projection(result: EditorOperationalResultV1) -> dict[str, obje
         "execution_request_fingerprint": _string(result.execution_request_fingerprint),
         "status": _enum(result.status),
         "lifecycle": [_enum(item) for item in result.lifecycle],
-        "draft": _model(result.draft, EpisodeDraft),
+        "draft": _draft_projection(result.draft),
         "generation_trace": _model(result.generation_trace, GenerationTrace),
         "generation_manifest": _model(result.generation_manifest, GenerationManifest),
         "final_state_revision": _value(result.final_state_revision),
@@ -521,6 +545,14 @@ def _model(value: object, model: type[BaseModel]) -> object:
     if type(value) is not model:
         raise TypeError
     return _value(value.model_dump(mode="json", warnings="error"))
+
+
+def _draft_projection(value: object) -> object:
+    if type(value) is EpisodeDraft:
+        return _model(value, EpisodeDraft)
+    if type(value) is PastilaEditorSemanticDraftV2:
+        return _model(value, PastilaEditorSemanticDraftV2)
+    raise TypeError
 
 
 def _value(value: object) -> object:

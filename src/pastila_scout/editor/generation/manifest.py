@@ -132,6 +132,69 @@ class GenerationManifest(FrozenModel):
         )
         return cls(items=tuple(items))
 
+    @classmethod
+    def build_semantic_v2(
+        cls,
+        story_ids: tuple[int, ...],
+        *,
+        include_transitions: bool,
+        maximum_attempts: int,
+    ) -> GenerationManifest:
+        """Build the V2 Core-only graph without opening or closing nodes."""
+
+        items = []
+        story_items = []
+        for index, story_id in enumerate(story_ids, 1):
+            item_id = f"story-{index:02d}"
+            story_items.append(item_id)
+            items.append(
+                _item(
+                    item_id,
+                    GenerationComponentType.STORY,
+                    str(story_id),
+                    len(items),
+                    (),
+                    maximum_attempts,
+                )
+            )
+        transition_items = []
+        if include_transitions:
+            for index, (left, right) in enumerate(pairwise(story_ids), 1):
+                item_id = f"transition-{index:02d}-{index + 1:02d}"
+                transition_items.append(item_id)
+                items.append(
+                    _item(
+                        item_id,
+                        GenerationComponentType.TRANSITION,
+                        f"{left}:{right}",
+                        len(items),
+                        (story_items[index - 1], story_items[index]),
+                        maximum_attempts,
+                        optional=True,
+                    )
+                )
+        items.append(
+            _item(
+                "assembly",
+                GenerationComponentType.ASSEMBLY,
+                "episode",
+                len(items),
+                (*story_items, *transition_items),
+                1,
+            )
+        )
+        items.append(
+            _item(
+                "teleprompter-formatting",
+                GenerationComponentType.TELEPROMPTER_FORMATTING,
+                "episode",
+                len(items),
+                ("assembly",),
+                1,
+            )
+        )
+        return cls(items=tuple(items))
+
 
 def _item(item_id, component, target, sequence, dependencies, attempts, optional=False):
     return GenerationManifestItem(
