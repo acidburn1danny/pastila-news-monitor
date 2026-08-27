@@ -17,7 +17,7 @@ def test_product_version_and_windows_revision_have_separate_authorities() -> Non
     authority = json.loads(RELEASE_IDENTITY.read_text(encoding="utf-8"))
     resolved = _release_identity(ROOT)
 
-    assert project["version"] == resolved["product_version"] == "1.1.1"
+    assert project["version"] == resolved["product_version"] == "1.1.8"
     assert authority["product_version_authority"] == ("pyproject.toml:project.version")
     assert "product_version" not in authority
     assert authority["windows_release_revision"] == "r3"
@@ -53,10 +53,10 @@ def test_executable_and_installer_metadata_derive_the_canonical_version() -> Non
         .replace("{PRODUCT_VERSION}", numeric)
         .replace("{CANONICAL_VERSION}", version)
     )
-    assert "filevers=(1, 1, 1, 0)" in rendered
-    assert "prodvers=(1, 1, 1, 0)" in rendered
-    assert "StringStruct('FileVersion', '1.1.1')" in rendered
-    assert "StringStruct('ProductVersion', '1.1.1')" in rendered
+    assert "filevers=(1, 1, 8, 0)" in rendered
+    assert "prodvers=(1, 1, 8, 0)" in rendered
+    assert "StringStruct('FileVersion', '1.1.8')" in rendered
+    assert "StringStruct('ProductVersion', '1.1.8')" in rendered
 
 
 def test_release_artifact_names_and_stable_installer_identity_are_governed() -> None:
@@ -64,20 +64,20 @@ def test_release_artifact_names_and_stable_installer_identity_are_governed() -> 
     names = authority["artifact_names"]
     identity = authority["installer_identity"]
 
-    assert names["installer"].format(product_version="1.1.1") == (
-        "PastilaScout-1.1.1-Setup.exe"
+    assert names["installer"].format(product_version="1.1.8") == (
+        "PastilaScout-1.1.8-Setup.exe"
     )
     assert (
         names["release_receipt"].format(
-            product_version="1.1.1", windows_release_revision="r3"
+            product_version="1.1.8", windows_release_revision="r3"
         )
-        == "PastilaScout-1.1.1-Windows-r3-release-receipt.json"
+        == "PastilaScout-1.1.8-Windows-r3-release-receipt.json"
     )
     assert (
         names["sha256_receipt"].format(
-            product_version="1.1.1", windows_release_revision="r3"
+            product_version="1.1.8", windows_release_revision="r3"
         )
-        == "PastilaScout-1.1.1-Windows-r3-sha256.json"
+        == "PastilaScout-1.1.8-Windows-r3-sha256.json"
     )
     assert identity == {
         "app_id": "PastilaScout",

@@ -136,13 +136,13 @@ def test_plan_only_generates_deterministic_manifest_and_no_installer(
         "config/settings.json" in item for item in plan["excluded_untracked_paths"]
     )
     assert plan["application_wheel_sha256"]
-    assert plan["app_version"] == PROJECT_VERSION == "1.1.1"
+    assert plan["app_version"] == PROJECT_VERSION == "1.1.8"
     assert plan["windows_release_revision"] == "r3"
     assert plan["output_installer_path"].endswith(
         f"PastilaScout-{PROJECT_VERSION}-Setup.exe"
     )
     assert plan["intended_release_receipt_filename"] == (
-        "PastilaScout-1.1.1-Windows-r3-release-receipt.json"
+        "PastilaScout-1.1.8-Windows-r3-release-receipt.json"
     )
     verify = (tmp_path / "work" / "payload-verify.generated.iss").read_text(
         encoding="utf-8"
