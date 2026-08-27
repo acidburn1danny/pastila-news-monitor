@@ -1,0 +1,102 @@
+{
+  "artifact_type": "ZERO_EXECUTION_MODEL_ADAPTER_IMMUTABLE_MANIFEST",
+  "artifact_version": "1.0.0",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_MODEL_ADAPTER_IMMUTABLE_MANIFEST_V1",
+  "canonical_identity": "bb5a4767bb2eca6d2a71e0aacc2cbaaeab6e01a5baa693cb1330474385e5b6f9",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "separator": "LF",
+    "ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_V2_MODEL_ADAPTER_IMMUTABLE_MANIFEST_V1",
+      "bd0f84711c825a2c213b458a0e2c41d189914ad5ac4bdf283c91a38daab0c090",
+      "312d6f8cb7c14c769742901c4c80042c104f5a60ba2f80b2913487af22d67ae2",
+      "transformers==5.15.0",
+      "torch==2.13.0+cu130",
+      "peft==0.20.0",
+      "accelerate==1.14.0",
+      "bitsandbytes==0.50.1",
+      "ZERO_EXECUTION"
+    ]
+  },
+  "base_snapshot": {
+    "revision": "3cea74c1ebaf5ce5f5a2553de470e2ceab825142",
+    "path": "/home/pastila/PastilaAcida-Model-Lab/experimental-0.1/model-cache/huggingface/models--mistralai--Ministral-3-14B-Instruct-2512-BF16/snapshots/3cea74c1ebaf5ce5f5a2553de470e2ceab825142",
+    "file_count": 17,
+    "total_file_bytes": 27924394330,
+    "manifest_sha256": "bd0f84711c825a2c213b458a0e2c41d189914ad5ac4bdf283c91a38daab0c090",
+    "files": [
+      {"path":"SYSTEM_PROMPT.txt","size":2407,"sha256":"df30b6d8d0124f1f905c030be0c820a4720d7361d7c3b18d6542e58a5c0c0446"},
+      {"path":"chat_template.jinja","size":11913,"sha256":"2f545122222db8bb43ca0ea0c49e9185320a8670f7d35575b0da0eb48b1e8970"},
+      {"path":"config.json","size":1550,"sha256":"b1897778395bb1795489a048ebde2e6d216eee21014ce9c18193d15f097454a6"},
+      {"path":"generation_config.json","size":131,"sha256":"e0923390059f84a9180b00e5501778acc45ea9856cd7f2fd68208b360927c677"},
+      {"path":"model-00001-of-00006.safetensors","size":4925537056,"sha256":"a381935aa826a6960e752ab889f51b26870fa4ae34580dc5d33bba3b616a1e3b"},
+      {"path":"model-00002-of-00006.safetensors","size":4865565920,"sha256":"f71f44e7d6408e2933ecf1fe007be40993c1ce2f5a6dec4a73ac85d8d6d4de0b"},
+      {"path":"model-00003-of-00006.safetensors","size":4865565968,"sha256":"4d680c111fee9689b2c170ef058ead26887b88816f05b7701363754e23caa771"},
+      {"path":"model-00004-of-00006.safetensors","size":4865565968,"sha256":"e7d394bc2e748439194f5ccbea3900e31987f5e740cfdef24c94a3ada1097290"},
+      {"path":"model-00005-of-00006.safetensors","size":4865565968,"sha256":"727054c31319d016cce95822b67d0dfee7b67793f59c9d1fd171931692bee12c"},
+      {"path":"model-00006-of-00006.safetensors","size":3502340328,"sha256":"56eb280079466b136fd33638f1b3095cfa9fdb84006a23b36c8944dc7156fdb7"},
+      {"path":"model.safetensors.index.json","size":57944,"sha256":"50d07948f11d89b5eddc5fb21485484555376c0627a9537b37f3f17cc9f5a103"},
+      {"path":"params.json","size":1101,"sha256":"b2fc120fee26653d0aa07052122793f86750db9c12b6e11bcf7dfb36440da077"},
+      {"path":"processor_config.json","size":976,"sha256":"ece2373c2ae391bce18785a1810543bc6173a1f28b6767cffab2c35dbea5f002"},
+      {"path":"special_tokens_map.json","size":147094,"sha256":"0a5c981e8c5c6f8886ee007a6d4543a0be6b221cb9ca32a8709384a4c6fc8cbb"},
+      {"path":"tekken.json","size":16753784,"sha256":"600bb27946565481ecf51ba8aee252e49b9a68507866080ac9c30185bb312843"},
+      {"path":"tokenizer.json","size":17078128,"sha256":"d5f6046775b112f0e2d456ee9dba450684ab964fe5c4e231599bdc6773028135"},
+      {"path":"tokenizer_config.json","size":198094,"sha256":"f59f7294e4f26383d0ea93840fe21cf197784be0842a8301a0343e8c34ed0d6d"}
+    ]
+  },
+  "adapter": {
+    "path": "/home/pastila/PastilaAcida-Model-Lab/experimental-0.3/runs/pastila-editor-core-v1-2-deontology-20260820-003/checkpoint-final/adapter",
+    "file_count": 3,
+    "total_file_bytes": 243884513,
+    "manifest_sha256": "312d6f8cb7c14c769742901c4c80042c104f5a60ba2f80b2913487af22d67ae2",
+    "files": [
+      {"path":"README.md","size":5518,"sha256":"e6f7b3272c92867c4681cf1b8b851ab199ccff1a1fad0084223a29d4f68f3dba"},
+      {"path":"adapter_config.json","size":1315,"sha256":"7e75a4f0aa2b70cf29f491808fdfd7b1d93d89cb2befd6cee6cf3f7153bb996f"},
+      {"path":"adapter_model.safetensors","size":243877680,"sha256":"ec780f63a5c838121f573b6bce987f1f6f5070b256b9db8480b2a95b131ec01f"}
+    ],
+    "configuration": {
+      "base_snapshot_path_exact": true,
+      "peft_type": "LORA",
+      "task_type": "CAUSAL_LM",
+      "inference_mode": true,
+      "rank": 16,
+      "lora_alpha": 32,
+      "peft_version": "0.20.0"
+    }
+  },
+  "runtime_packages": {
+    "transformers": "5.15.0",
+    "torch": "2.13.0+cu130",
+    "peft": "0.20.0",
+    "accelerate": "1.14.0",
+    "bitsandbytes": "0.50.1"
+  },
+  "unresolved_load_policy": {
+    "base_declared_transformers_version": "5.0.0.dev0",
+    "runtime_transformers_version": "5.15.0",
+    "model_load_compatibility_demonstrated": false,
+    "four_bit_nf4_authorized": false,
+    "double_quantization_authorized": false,
+    "vision_component_removal_authorized": false,
+    "gpu_memory_ceiling_defined": false,
+    "model_load_started_authorized": false
+  },
+  "activity": {
+    "filesystem_hash_passes": 2,
+    "tokenizer_loads": 0,
+    "model_or_adapter_loads": 0,
+    "generation_or_inference_calls": 0,
+    "runner_executor_or_probe_calls": 0,
+    "stage_c_entries": 0
+  },
+  "authority": {
+    "immutable_manifest_normalization": true,
+    "tokenizer_loading": false,
+    "model_or_adapter_loading": false,
+    "quantization_or_runtime_transformation": false,
+    "generation_or_inference": false,
+    "runner_executor_or_probe": false,
+    "stage_c": false,
+    "runtime_or_production": false
+  }
+}
