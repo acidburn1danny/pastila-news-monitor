@@ -1,0 +1,57 @@
+{
+  "artifact_type": "ZERO_INFERENCE_TOKEN_PROJECTOR_CANDIDATE",
+  "artifact_version": "1.0.0",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_TOKEN_PROJECTOR_V1",
+  "canonical_identity": "0e296bdcfdad5a643cb4f7c832f56bf68b411470685e45ad7653eeb15a1dc155",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_V2_TOKEN_PROJECTOR_V1",
+      "4a89f9337396b54c94ec4c1c3c2729a01e08b46b8ae426c29e11c6f126a69789",
+      "ecb0173aaa928278aa1aebe1029c2dd685140a8068967b9967f92c16bfabf2c6",
+      "9e246f901fd95f11ba3fe4a791875c5f82878b0e8a615f3815aea0dffba15bac",
+      "b500937c210a4a5b84b4aaf77bf354fb37bead96b7285c84c54e40eb1cc0f2a0",
+      "ZERO_INFERENCE"
+    ],
+    "separator": "LF"
+  },
+  "approved_feasibility_identity": "4a89f9337396b54c94ec4c1c3c2729a01e08b46b8ae426c29e11c6f126a69789",
+  "tokenizer_revalidation_identity": "ecb0173aaa928278aa1aebe1029c2dd685140a8068967b9967f92c16bfabf2c6",
+  "implementation_sha256": "9e246f901fd95f11ba3fe4a791875c5f82878b0e8a615f3815aea0dffba15bac",
+  "focused_test_sha256": "b500937c210a4a5b84b4aaf77bf354fb37bead96b7285c84c54e40eb1cc0f2a0",
+  "strategy": "AUDIT_PROVEN_CONTEXT_FREE_TOKEN_PIECES",
+  "bindings": [
+    "exact request/source-context identity",
+    "exact tokenizer identity",
+    "exact decoder identity",
+    "exact character-controller state"
+  ],
+  "receipts": [
+    "TOKENIZATION_CONTINUABLE",
+    "TOKENIZATION_TERMINAL_EOS_ALLOWED",
+    "TOKENIZATION_DEAD_NO_VALID_TOKEN",
+    "FAIL_CLOSED"
+  ],
+  "verification": {
+    "deterministic_synthetic_tests": true,
+    "incremental_full_rebuild_equivalence": true,
+    "unicode_romanian_punctuation_json_escape_coverage": true,
+    "request_bound_reference_coverage": true,
+    "terminal_prefix_dead_state_coverage": true,
+    "cache_identity_isolation": true,
+    "malformed_stale_conflicting_unbound_fail_closed": true,
+    "focused_tests": 17,
+    "focused_tests_passed": 17
+  },
+  "semantic_boundary": "Syntactic token projection only; schema and semantic validation remain independent fail-closed postconditions.",
+  "historical_evidence_modified": false,
+  "authority": {
+    "tokenizer_loading": false,
+    "model_or_adapter_loading": false,
+    "provider_or_inference": false,
+    "runner_executor_or_probe": false,
+    "stage_c": false,
+    "runtime_or_production": false,
+    "training_or_curriculum": false
+  }
+}

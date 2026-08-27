@@ -1,0 +1,17 @@
+{
+  "candidate_identity": "0e296bdcfdad5a643cb4f7c832f56bf68b411470685e45ad7653eeb15a1dc155",
+  "verification_mode": "GIT_OBJECT_ONLY_REQUIRED_BEFORE_COMMIT",
+  "focused_tests_passed": 17,
+  "focused_tests_failed": 0,
+  "tokenizer_loads": 0,
+  "model_loads": 0,
+  "model_calls": 0,
+  "provider_calls": 0,
+  "inference_calls": 0,
+  "runner_executions": 0,
+  "executor_executions": 0,
+  "probe_constructions": 0,
+  "probe_executions": 0,
+  "stage_c_entries": 0,
+  "retry_repair_selection_fallback": 0
+}
