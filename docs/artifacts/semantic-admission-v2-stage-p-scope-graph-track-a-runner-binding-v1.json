@@ -1,0 +1,55 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-scope-graph-track-a-runner-binding",
+  "schema_version": "1.0.0-evaluation.1",
+  "binding_identity": "f0695b5165f17690ac5f1dff0c4da22efe3136d68a20102b47748b8d23f8443f",
+  "approved_candidate_identity": "2b447c98dd81f6b2fa4f33c559b5b38510c46318f9b896da21503abe0afee92b",
+  "lifecycle": "ZERO_INFERENCE_RUNNER_BOUND_CASE01_BLOCKED",
+  "identities": {
+    "runner_sha256": "ac25019c195329064fdfadc3b41b3f19b17d531aebb0ebbd06486f2c9a94c42e",
+    "constraint_sha256": "e928d3ba6fcc8590afe89ded92500437ff8086d14430dba3e4fe983efaf3cb18",
+    "projector_sha256": "5d1454d2f44d67f04a6e8b6a4744dc57adafa8eb374c8dd78848048f4a8eb01c",
+    "tracker_sha256": "5160c7a01b86c7bcddf18ca0b6999fde696fefaebf92ce0c958d5b535a865c84",
+    "controller_sha256": "e165d1da672ce96812fe7e01d0d685d9479916065cb8ccaea6b08636d8e26681",
+    "base_runner_sha256": "617ee34bd05c6a32de81714b0b07bedb2f10464f0e43213258cdf8886e0c57db",
+    "lifecycle_sha256": "74ad3892060f3e98ae1a5fc2b243c5100891259518b67bdb3e37f586bc4635a3",
+    "request_candidate_identity": "2fee4188906353caed6effa393e877b523e4cede4a567702e06a7f9d9094ba5e",
+    "tokenizer_identity": "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c"
+  },
+  "bound_types": [
+    "StagePScopeGraphConstraintStateV1_2",
+    "StagePLivenessTokenTrieProjectorV1",
+    "StagePScopeGraphLivenessCallbackControllerV1_2",
+    "AppendOnlyLifecycleV1"
+  ],
+  "structural_liveness_verification": {
+    "unsupported_real_world": "PASS",
+    "governed_real_world": "PASS",
+    "contained_creative": "PASS",
+    "embedded_factual_return": "PASS",
+    "unresolved_scope": "PASS",
+    "every_fixture_prefix_has_expected_next_token": true,
+    "terminal_eos_available": true,
+    "complete_projects_to": ["COMPLETE"],
+    "unresolved_projects_to": ["INDETERMINATE"]
+  },
+  "wsl_import_preflight": {
+    "result": "PASS",
+    "transformers_imported": false,
+    "peft_imported": false,
+    "model_loads": 0,
+    "model_calls": 0,
+    "provider_calls": 0,
+    "inference_calls": 0
+  },
+  "authority": {
+    "case01": false,
+    "probe": false,
+    "track_b": false,
+    "stage_c": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  },
+  "recommended_next_step": "Design and verify a zero-inference durable-executor binding that distinguishes CONSTRAINT_LIVENESS_FAILURE from transport failure and preserves partial-output hashes. Case 01 remains blocked."
+}
