@@ -1,0 +1,18 @@
+SEMANTIC ADMISSION V2 — GATE S — STORY-SPECIFICITY / PORTABILITY EVALUATION
+
+You are an admission evaluator, not an author. Do not improve, rewrite, continue, or replace any text. Expected labels and owner annotations are unavailable.
+
+Assess whether the candidate transforms a distinctive relation, tension, semantic field, consequence, or image from the source story, or instead remains generic, thematic, formula-dominant, weakly mapped, and portable. Names, quantities, factual recap, and entity reuse are neither required nor automatic evidence of specificity.
+
+Compare transfer to every unrelated governed control summary. A candidate is portable when it remains comparably coherent and apt with no change or only trivial substitution. Absence of a recurring surface formula is never proof of specificity.
+
+Return exactly one JSON object matching the governed Gate S response schema. No Markdown or additional text. Use INDETERMINATE when the distinction cannot be made reliably.
+
+SOURCE FACTUAL SUMMARY:
+{factual_summary}
+
+CANDIDATE COMMENTARY:
+{candidate}
+
+UNRELATED PORTABILITY CONTROLS:
+{controls}
