@@ -1,0 +1,131 @@
+{
+  "artifact_type": "ZERO_INFERENCE_TOKENIZER_COMPATIBILITY_PLAN",
+  "artifact_version": "1.0.0",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_ZERO_INFERENCE_TOKENIZER_COMPATIBILITY_PLAN_V1",
+  "canonical_identity": "94879e032a47beedd2e5035dccf36f2b3922b093aaff67be014f408db6c9006a",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_V2_ZERO_INFERENCE_TOKENIZER_COMPATIBILITY_PLAN_V1",
+      "4a89f9337396b54c94ec4c1c3c2729a01e08b46b8ae426c29e11c6f126a69789",
+      "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c",
+      "131072",
+      "NO_TOKENIZER_LOAD_PLAN_ONLY"
+    ],
+    "separator": "LF"
+  },
+  "feasibility_design_identity": "4a89f9337396b54c94ec4c1c3c2729a01e08b46b8ae426c29e11c6f126a69789",
+  "declared_not_reverified_tokenizer": {
+    "canonical_identity": "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c",
+    "vocabulary_size": 131072,
+    "status": "HISTORICAL_DECLARATION_ONLY_TOKENIZER_NOT_LOADED_IN_THIS_STEP"
+  },
+  "execution_status": "PLAN_ONLY_ZERO_TOKENIZER_LOADS_ZERO_MODEL_CALLS",
+  "separately_gated_future_phases": [
+    {
+      "phase": 0,
+      "name": "IDENTITY_AND_DEPENDENCY_PREFLIGHT",
+      "checks": [
+        "Resolve exact tokenizer files and compute their identities before use.",
+        "Require exact match to the approved tokenizer identity or stop fail-closed.",
+        "Record library, tokenizer implementation, platform, and decoding configuration identities."
+      ]
+    },
+    {
+      "phase": 1,
+      "name": "TOKENIZER_INVENTORY",
+      "checks": [
+        "Enumerate vocabulary size, added tokens, BOS, EOS, PAD, UNK, and every special/control token.",
+        "Record normalization, pre-tokenization, byte-fallback, cleanup, and decoder behavior.",
+        "Classify empty, control-bearing, replacement-character, and otherwise non-text token decodings."
+      ]
+    },
+    {
+      "phase": 2,
+      "name": "STANDALONE_DECODE_MAP",
+      "checks": [
+        "Decode each vocabulary token without generation or model invocation.",
+        "Record byte and Unicode behavior without treating standalone decoding as compositional proof.",
+        "Identify collisions where distinct token IDs have the same standalone decoding."
+      ]
+    },
+    {
+      "phase": 3,
+      "name": "CONTEXTUAL_COMPOSITIONALITY_MATRIX",
+      "checks": [
+        "Compare decode(prefix plus candidate) with decode(prefix) across valid prefixes in every character-controller mode.",
+        "Cover literals, enums, punctuation, SHA-256 references, decimal offsets, JSON strings, escapes, Unicode, closing transitions, and terminal states.",
+        "Classify whether the candidate contributes a stable suffix, rewrites prior decoded text, or depends on decoder context."
+      ]
+    },
+    {
+      "phase": 4,
+      "name": "BYTE_FALLBACK_AND_INCOMPLETE_SEQUENCE_AUDIT",
+      "checks": [
+        "Exercise incomplete and completed multibyte sequences across token boundaries.",
+        "Detect replacement-character or cleanup behavior that can make incremental decoded text unstable.",
+        "Require prefix-sensitive full decode for every unstable class."
+      ]
+    },
+    {
+      "phase": 5,
+      "name": "FULL_VOCABULARY_ONE_STEP_ADMISSION",
+      "checks": [
+        "At representative request-bound states, compare every token's complete decoded effect with a fresh full character-controller rebuild.",
+        "Verify token-level liveness separately from character-level liveness.",
+        "Verify EOS only at terminal and exclusion of every other special token."
+      ]
+    },
+    {
+      "phase": 6,
+      "name": "STRATEGY_EQUIVALENCE_DECISION",
+      "checks": [
+        "Compare the complete allowed-token sets from the context-free trie candidate and prefix-sensitive full-decode oracle.",
+        "Permit context-free projection only for classes with exact equality and no unstable decoding.",
+        "Otherwise select the prefix-sensitive design; mixed strategies require explicit class boundaries and receipts."
+      ]
+    },
+    {
+      "phase": 7,
+      "name": "ZERO_INFERENCE_RESOURCE_CHARACTERIZATION",
+      "checks": [
+        "Measure deterministic latency, memory, cache hit isolation, and rebuild cost without model loading or inference.",
+        "Confirm cache identities prevent cross-request and cross-decoder reuse.",
+        "Produce a recommendation only; do not implement or bind a production projector."
+      ]
+    }
+  ],
+  "acceptance_criteria": {
+    "false_accepted_tokens_against_full_rebuild_oracle": 0,
+    "false_rejected_tokens_for_any_declared_equivalent_strategy": 0,
+    "eos_or_special_token_policy_disagreements": 0,
+    "unclassified_context_sensitive_decode_classes": 0,
+    "cache_identity_isolation_failures": 0,
+    "model_calls": 0,
+    "generation_calls": 0
+  },
+  "stop_conditions": [
+    "Tokenizer identity mismatch or unresolved dependency identity.",
+    "Any context-sensitive decoding not safely handled by the evaluated strategy.",
+    "Any false acceptance, EOS leak, special-token leak, or cache isolation failure.",
+    "Any step requiring model inference, evaluator/runner binding, or probe construction."
+  ],
+  "current_step_receipt": {
+    "tokenizer_loads": 0,
+    "tokenizer_calls": 0,
+    "projector_implementations": 0,
+    "model_calls": 0,
+    "probe_bindings": 0,
+    "probe_executions": 0
+  },
+  "authority": {
+    "execute_this_plan": false,
+    "tokenizer_loading": false,
+    "projector_implementation": false,
+    "evaluator_or_runner_binding": false,
+    "probe_construction_or_execution": false,
+    "runtime_integration": false,
+    "training": false
+  },
+  "recommended_separately_authorized_next_step": "Load only the identity-bound tokenizer and execute Phases 0-7 as a zero-inference compatibility audit; stop with evidence and a strategy recommendation before projector implementation."
+}

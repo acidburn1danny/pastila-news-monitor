@@ -1,0 +1,84 @@
+{
+  "artifact_type": "TOKEN_PROJECTOR_FEASIBILITY_DESIGN",
+  "artifact_version": "1.0.0",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_TOKEN_PROJECTOR_FEASIBILITY_DESIGN_V1",
+  "canonical_identity": "4a89f9337396b54c94ec4c1c3c2729a01e08b46b8ae426c29e11c6f126a69789",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_V2_TOKEN_PROJECTOR_FEASIBILITY_DESIGN_V1",
+      "6c766eda141d122b049e2f09dbd5bdc22c3cfee41744644e04e1eaa51757c22a",
+      "CONTEXT_FREE_TRIE_ONLY_IF_PROVEN_ELSE_PREFIX_SENSITIVE_FULL_DECODE",
+      "EOS_ONLY_AT_TERMINAL",
+      "DESIGN_ONLY"
+    ],
+    "separator": "LF"
+  },
+  "approved_character_controller_candidate_identity": "6c766eda141d122b049e2f09dbd5bdc22c3cfee41744644e04e1eaa51757c22a",
+  "reviewed_source_evidence": {
+    "src/pastila_scout/semantic_admission_v2/gate_f_trie_projector_v1.py": "c7e90dd1f6bc52c754425c84d6af7fb0cee059dacd64dfaa8bc66e609d859f55",
+    "src/pastila_scout/semantic_admission_v2/stage_p_trie_projector_v1.py": "8cc6f68f1ff9751ab983306e9fb39efa0ae55c52cbe8a0471a2e5e98bfc54529",
+    "src/pastila_scout/semantic_admission_v2/stage_p_liveness_trie_projector_v1.py": "5d1454d2f44d67f04a6e8b6a4744dc57adafa8eb374c8dd78848048f4a8eb01c",
+    "src/pastila_scout/semantic_admission_v2/stage_p_construction_obligation_character_controller_v1.py": "7bd33b6ed6004addd264574b545308ddd00f8913c623a4d9dce7eff6d33522fe"
+  },
+  "feasibility_result": "FEASIBLE_PENDING_ZERO_INFERENCE_TOKENIZER_COMPATIBILITY_AUDIT",
+  "projection_strategies": {
+    "strategy_a_context_free_trie": {
+      "status": "CONDITIONALLY_FEASIBLE",
+      "permission_condition": "A later tokenizer audit proves exact decoded-suffix compositionality for every admitted token and every relevant decoder context.",
+      "prohibited_assumption": "A token's standalone decoded piece is always the suffix produced after an arbitrary token prefix.",
+      "operation": "Traverse token-piece characters through the approved character controller and admit the token only after the entire piece is accepted."
+    },
+    "strategy_b_prefix_sensitive_full_decode": {
+      "status": "SAFE_FALLBACK_DESIGN",
+      "trigger": "Use whenever suffix compositionality is unproven or false for any relevant tokenizer or decoder class.",
+      "operation": "Decode the complete candidate token prefix, derive or rebuild the complete character-controller state from its decoded bytes/text, and admit only an exact valid prefix.",
+      "cache_constraint": "No state-only or standalone-token-piece cache may be used where decoding is prefix-sensitive."
+    }
+  },
+  "token_admission_contract": {
+    "complete_piece_simulation": true,
+    "rule": "A candidate token is allowed only when its complete decoded effect leaves the request-bound V2 ledger language at a valid prefix and preserves a terminal or continuable path.",
+    "finite_modes": "Literal, enum, punctuation, reference-hash, and numeric modes may use trie pruning, but acceptance still requires simulation of the complete decoded effect.",
+    "json_string_body": "Structured JSON-string modes may prune impossible first characters, but must process every decoded character, including escapes and string-closing transitions.",
+    "eos": "EOS is allowed only when the character controller is terminal and all construction obligations are discharged.",
+    "special_tokens": "All non-EOS special/control tokens are excluded unless a later audited tokenizer contract assigns an explicit harmless decoding and the design is separately amended.",
+    "empty_decoding": "Empty-decoding tokens are excluded by default because they do not advance character-language liveness.",
+    "semantic_boundary": "Projection proves syntactic construction obligations only. Schema and semantic validation remain independent fail-closed checks."
+  },
+  "cache_identity_requirements": [
+    "tokenizer canonical identity",
+    "decoder and normalization configuration identity",
+    "special/excluded token-set identity",
+    "request and immutable-input identity",
+    "exact character-controller state including reference substate and offsets",
+    "decoded-prefix or token-prefix identity whenever decoding is context-sensitive"
+  ],
+  "cache_prohibitions": [
+    "Do not canonicalize away source hashes, reference offsets, numeric ranges, or construction-obligation state.",
+    "Do not reuse generic JSON-string caches across request identities when reference legality depends on immutable input bytes.",
+    "Do not cache a context-free token suffix until the compatibility audit has proven that class context-free."
+  ],
+  "liveness_receipts": {
+    "preserve_character_receipt": true,
+    "required_token_receipts": [
+      "TOKENIZATION_CONTINUABLE",
+      "TOKENIZATION_TERMINAL_EOS_ALLOWED",
+      "TOKENIZATION_DEAD_NO_VALID_TOKEN"
+    ],
+    "distinction": "A character-language state may be live while the tokenizer has no token whose complete decoded effect follows a live edge; receipts must distinguish these conditions."
+  },
+  "known_nonblocking_residual": {
+    "issue": "Some free semantic strings are bounded by the ledger schema more tightly than the character controller's global length ceiling.",
+    "disposition": "The schema remains a fail-closed postcondition. Projector-level mirroring of every field bound requires separate authorization and is not granted by this design."
+  },
+  "authority": {
+    "tokenizer_loading": false,
+    "projector_implementation": false,
+    "tracker_controller_or_projector_rebinding": false,
+    "evaluator_or_runner_binding": false,
+    "probe_construction_or_execution": false,
+    "model_inference": false,
+    "runtime_or_training_authority": false
+  }
+}
