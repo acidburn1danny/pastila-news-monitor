@@ -1,0 +1,30 @@
+{
+  "schema_name":"pastila-semantic-admission-v2-staged-gate-f-coordinator-candidate",
+  "schema_version":"1.0.0-evaluation.1",
+  "lifecycle":"EVALUATION_ONLY_READY_FOR_OWNER_REVIEW",
+  "source_stage_p_constraint_identity":"47ea608e9d6a76e31eeba1ab96d269f5199c080b67657d429c5fa1669fd76186",
+  "source_staged_contract_identity":"8a25b1508565a3c1554028ade8ac2b2ba96009647c065b2200e18316bb7187da",
+  "execution_order":["STAGE_P_CALL","RAW_CAPTURE","STRICT_LEDGER_AND_SOURCE_VALIDATION","EARLY_TERMINAL_CHECK","STAGE_C_CALL_IF_ELIGIBLE","RAW_CAPTURE","STRICT_GATE_AND_SOURCE_VALIDATION","PRECEDENCE","AGGREGATE_RECEIPT_CAPTURE"],
+  "call_policy":{"maximum_per_candidate":2,"retry_calls":0,"repair_calls":0,"selection_calls":0,"stage_p_terminal_maximum":1},
+  "durability":{
+    "case_directory_append_only":true,
+    "request_bytes_persisted_before_call":true,
+    "provider_raw_bytes_persisted_before_validation":true,
+    "provider_exception_type_persisted":true,
+    "validation_receipts_separate":true,
+    "aggregate_receipt_persisted":true,
+    "overwrite":false
+  },
+  "identity_bindings":["evaluator_identity","prompt_identity","grammar_identity","model_identity","request_sha256","raw_sha256","factual_summary_sha256","candidate_sha256"],
+  "early_abstention":["STAGE_P_PROVIDER_OR_TRANSPORT_FAILURE","STAGE_P_SCHEMA_OR_SOURCE_VALIDATION_FAILURE","STAGE_P_INDETERMINATE"],
+  "stage_c_outcomes":["PASS_GATE_F","REJECT_FACTUAL_SEMANTIC","ABSTAIN"],
+  "eligibility":"QUARANTINED_EVALUATION_ONLY",
+  "model_calls":0,
+  "provider_calls":0,
+  "probe_authority":false,
+  "runtime_authority":false,
+  "production_authority":false,
+  "curriculum_authority":false,
+  "training_authority":false,
+  "gate_s_changed":false
+}
