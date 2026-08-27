@@ -1,0 +1,130 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-case01-failure-remediation-design",
+  "schema_version": "1.0.0-design.1",
+  "scope": "DESIGN_ONLY_NO_PROMPT_CONTRACT_RUNNER_RUNTIME_OR_MODEL_CHANGE",
+  "source_probe_identity": "ae450b09f4a63c8fc8c342d13039d609466a813fc69b80f016c1bd7b2c6a7dc1",
+  "source_runner_candidate_identity": "eca2516db3a77f065666a6eb95804c88d239a57f11b1362c9e388be66b07247f",
+  "observed_facts": [
+    "Exactly one HMCV1-SASC-01 Stage P call completed with terminal EOS; Stage C was neither constructed nor called.",
+    "The WSL process returned zero and persisted 1462 raw UTF-8 bytes with SHA-256 f37ed5f2c30a72fad91953f3a1f87f590685c0e4987c7efb3957cfac23ed8be8.",
+    "The ledger passed the frozen strict schema and selected INDETERMINATE.",
+    "P1 candidate_span copied the factual summary and was not an exact substring of the commentary candidate.",
+    "P2 candidate_span and all non-null authority_support values satisfied exact membership.",
+    "The post-provider exact source-membership boundary rejected the ledger fail closed.",
+    "The original probe receipt reported no raw output because provider invocation and post-provider validation shared one exception handler, despite stage-p-raw.bin already being durable.",
+    "The generic Core trace retained initial false phase flags while the append-only lifecycle proved tokenizer, trie, model, generation, terminal EOS, and response-persistence events."
+  ],
+  "not_established": [
+    "That the Stage P prompt generally causes source-role confusion outside this single case.",
+    "That a prompt-only clarification is sufficient to prevent equivalent failures.",
+    "That dynamic substring-constrained decoding is necessary, compatible, or preferable before a zero-inference prototype.",
+    "Any Stage C semantic decision for Case 01.",
+    "Any capability result for Case 10 or the full two-case proof."
+  ],
+  "track_a_source_role_and_membership": {
+    "problem": "The model treated the factual authority as proposition text to inventory, although Stage P inventories propositions carried by the candidate and uses factual authority only to populate support.",
+    "required_semantic_invariant": "Every ledger entry must be anchored in at least one exact non-empty candidate substring. The factual summary may supply authority_support only; it must never independently create an entry or populate candidate_span.",
+    "prompt_candidate_requirements": [
+      "State that the candidate commentary is the sole object whose carried propositions and creative material are inventoried.",
+      "State that the factual summary is read-only support lookup material and is never itself inventoried.",
+      "Require candidate_span to be copied from candidate commentary before classifying the entry.",
+      "Prohibit an entry that exists only because the factual summary contains a proposition absent from the commentary.",
+      "Require a final exact-substring self-check for every candidate_span and every non-null authority_support without normalizing, translating, paraphrasing, or repairing bytes.",
+      "Preserve INDETERMINATE when a candidate-carried proposition cannot be anchored or scoped; do not copy authority text into candidate_span to complete the ledger."
+    ],
+    "defense_in_depth_candidate": {
+      "status": "DESIGN_OPTION_REQUIRING_SEPARATE_ZERO_INFERENCE_PROTOTYPE",
+      "concept": "During candidate_span and non-null authority_support string states only, intersect the JSON/DFA token set with token continuations capable of completing an exact substring of the correct immutable source.",
+      "candidate_span_source": "candidate commentary only",
+      "authority_support_source": "factual summary only, with null still available",
+      "must_preserve": [
+        "All exact non-empty substrings rather than only names, quantities, sentences, words, or preselected spans.",
+        "Romanian Unicode and JSON escaping byte semantics.",
+        "Multiple valid ledgers and INDETERMINATE.",
+        "The existing post-generation exact membership validator as the authoritative fail-closed boundary.",
+        "No factual restatement requirement and no mechanism-routing behavior."
+      ],
+      "must_not_do": [
+        "Do not silently substitute, trim, normalize, select, repair, or snap an invalid generated span to a source span.",
+        "Do not permit factual-summary bytes in candidate_span merely because those bytes are governed.",
+        "Do not use approximate, semantic, case-folded, or accent-insensitive membership."
+      ]
+    },
+    "reason_codes": [
+      "STAGE_P_CANDIDATE_SPAN_SOURCE_MEMBERSHIP_FAILURE",
+      "STAGE_P_AUTHORITY_SUPPORT_SOURCE_MEMBERSHIP_FAILURE",
+      "STAGE_P_SOURCE_ROLE_INDETERMINATE"
+    ]
+  },
+  "track_b_evidence_receipt_separation": {
+    "problem": "One catch block collapses provider/transport, raw persistence, schema validation, and source-membership validation into one failure receipt.",
+    "required_phase_model": [
+      "REQUEST_BOUND",
+      "PROVIDER_CALLED",
+      "TRANSPORT_COMPLETED_OR_FAILED",
+      "RAW_PERSISTED_OR_ABSENT",
+      "SCHEMA_VALIDATED_OR_FAILED_OR_NOT_RUN",
+      "SOURCE_MEMBERSHIP_VALIDATED_OR_FAILED_OR_NOT_RUN",
+      "TERMINAL_CLASSIFICATION_PERSISTED"
+    ],
+    "receipt_rules": [
+      "Once raw bytes are durably persisted, later validation failure must retain raw_path, raw_sha256, and raw_bytes.",
+      "Provider or transport failure may be emitted only when no valid provider result was returned through the executor boundary.",
+      "Schema and source-membership failures receive distinct stable reason codes and never rewrite raw evidence.",
+      "Receipt writing remains exclusive and append-only; a later analysis receipt may supersede interpretation but not mutate the original receipt.",
+      "The final decision remains fail closed for every validation failure."
+    ],
+    "required_case01_classification": {
+      "transport": "SUCCESS",
+      "raw_persistence": "SUCCESS",
+      "schema_validation": "PASS",
+      "source_membership": "FAIL",
+      "reason_code": "STAGE_P_CANDIDATE_SPAN_SOURCE_MEMBERSHIP_FAILURE",
+      "final": "ABSTAIN_FAIL_CLOSED"
+    }
+  },
+  "track_c_trace_lifecycle_reconciliation": {
+    "problem": "Legacy generic-trace booleans remain at initialization values because V3 phase evidence is owned by an external append-only lifecycle.",
+    "authority_rule": "The append-only durable lifecycle remains authoritative. A generic trace is a derived index/summary and must bind the lifecycle root and identity rather than compete with it.",
+    "required_status_values": ["OBSERVED", "NOT_OBSERVED_BEFORE_TERMINAL_EVENT", "LIFECYCLE_UNAVAILABLE", "NOT_APPLICABLE"],
+    "requirements": [
+      "After process exit, timeout, or runner exception, enumerate only identity-valid append-only events from the case-bound lifecycle directory.",
+      "Bind lifecycle relative path, event count, ordered tree identity, last valid event, and reconciliation status into the generic trace.",
+      "Derive tokenizer/model/generation/terminal/response statuses from named events; absence must not be represented as a definitive false when lifecycle evidence is unavailable or incomplete.",
+      "Preserve timeout and termination events and never infer successful completion from a heartbeat or partial output.",
+      "Reject duplicate sequence numbers, actor drift, event-order violations, and identity mismatch from derived phase claims.",
+      "Do not copy quarantined partial or raw model text into the generic trace."
+    ],
+    "case01_required_reconciliation": {
+      "model_load": "OBSERVED",
+      "generation": "OBSERVED",
+      "terminal_eos": "OBSERVED",
+      "response_persisted": "OBSERVED",
+      "host_timeout": "NOT_OBSERVED_BEFORE_TERMINAL_EVENT"
+    }
+  },
+  "bounded_implementation_sequence_recommendation": [
+    "First implement Track B receipt separation and Track C trace reconciliation only; verify both entirely with captured Case 01 bytes and synthetic lifecycle fixtures, with zero model/provider calls.",
+    "Then create a separately versioned Stage P prompt candidate implementing Track A semantic clarifications; bind exact unpadded bytes and perform request-construction and identity tests without inference.",
+    "In parallel with that prompt candidate, prototype the optional source-bound substring projector only in zero-inference tests. Compare its allowed sets against exhaustive small-source references and real tokenizer prefixes, including Unicode, JSON escapes, overlapping substrings, null authority support, and invalid cross-source spans.",
+    "Stop for owner review and choose prompt-only versus prompt-plus-decoding defense based on false-block and compatibility evidence.",
+    "Only after separate inference authority, rerun Stage-P-only Case 01 exactly once. Require terminal raw output, strict schema, exact source membership, accurate phase-separated receipt, and reconciled lifecycle trace before considering Case 10 or Stage C."
+  ],
+  "acceptance_contract": {
+    "frozen_positive_reference": "The original P2 commentary span remains a valid candidate_span and must not be blocked.",
+    "frozen_negative_reference": "The original P1 factual-summary text remains invalid as candidate_span even though it is governed and valid as authority_support.",
+    "membership_false_acceptance": 0,
+    "raw_evidence_loss_after_persistence": 0,
+    "provider_failure_misclassification_after_terminal_response": 0,
+    "unsupported_phase_claims_from_missing_lifecycle": 0,
+    "stage_c_calls": 0,
+    "model_or_provider_calls_during_implementation_preflight": 0
+  },
+  "explicit_non_goals": [
+    "No Stage C or Gate S work.",
+    "No Case 10 execution or two-case proof rerun.",
+    "No change to factual authority, ledger taxonomy, reason-code semantics beyond receipt specificity, model, tokenizer, quantization, sampling, token ceiling, or timeout.",
+    "No curriculum exposure, prompt enrichment unrelated to source roles, runtime integration, production authority, or training."
+  ],
+  "authority": {"implementation": false, "prompt_change": false, "contract_change": false, "runner_change": false, "runtime": false, "inference": false, "stage_c": false, "proof_rerun": false, "curriculum": false, "training": false}
+}

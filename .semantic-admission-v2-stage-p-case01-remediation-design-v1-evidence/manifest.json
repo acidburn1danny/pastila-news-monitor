@@ -1,0 +1,15 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-case01-remediation-design-manifest",
+  "schema_version": "1.0.0",
+  "canonical_identity": "d3fec23265dd28c88e347dcc38f7e6474b3f3b60dc38079eddea6533e16d3426",
+  "identity_method": "sha256 of the ordered source-probe identity and lowercase artifact SHA-256 values joined by LF with no trailing LF",
+  "lifecycle": "DESIGN_READY_FOR_OWNER_REVIEW",
+  "source_probe_identity": "ae450b09f4a63c8fc8c342d13039d609466a813fc69b80f016c1bd7b2c6a7dc1",
+  "artifacts": [
+    {"path":"docs/artifacts/semantic-admission-v2-stage-p-case01-failure-remediation-design-v1.json","sha256":"2464722dda4324b728ae8bb5548460a5ecd7f86071bcac4a8588d8bc5629077f"},
+    {"path":".semantic-admission-v2-stage-p-case01-remediation-design-v1-evidence/report.md","sha256":"89aa24c9e6cd721a497d74317044416f3badecf8b7da9d11413808bd519bda2d"},
+    {"path":"tests/test_semantic_admission_v2_stage_p_case01_remediation_design_v1.py","sha256":"16f1c133d4e29c08905c339d808d6222e2736585e6def8769dde9a480eeecf1e"}
+  ],
+  "verification": {"result":"PASS","tests_passed":8,"tests_failed":0,"model_calls":0,"provider_calls":0,"inference":false},
+  "authority": {"implementation":false,"prompt_change":false,"contract_change":false,"runner_change":false,"runtime":false,"inference":false,"stage_c":false,"proof_rerun":false,"curriculum":false,"training":false}
+}
