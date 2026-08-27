@@ -1,0 +1,152 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-scope-graph-case01-failure-analysis-v1",
+  "schema_version": "1.0.0-design.1",
+  "lifecycle": "DESIGN_ONLY_READY_FOR_OWNER_REVIEW",
+  "source_result_identity": "3bf7ae2fa4fb2e5568ec3d9b01aff9db12a218dcc48e1beea22e04311b6fb1d5",
+  "design_identity": "a0c6f105cfb61ce069aab612d0d1d8f9874adb389bcd26228e86bbc97088b843",
+  "scope": "Explain the single frozen Case 01 semantic failure and specify the narrowest safe remediation candidate without changing any implementation or executing another call.",
+  "observed_output": {
+    "entry_count": 1,
+    "candidate_span": "ENTIRE_COMMENTARY",
+    "entry_type": "REAL_WORLD_COMMITMENT",
+    "scope_relation": "STANDALONE",
+    "scope_basis": "PRESUPPOSED",
+    "event_alignment": "GOVERNED_EVENT",
+    "authority_support": null,
+    "commitment_source": "BYTE_EQUIVALENT_TO_COMPLETE_FACTUAL_SUMMARY",
+    "factual_return_basis": "PRESUPPOSITION_SURVIVES",
+    "coverage_decision": "COMPLETE"
+  },
+  "acceptance_result": {
+    "transport_and_constrained_structure": "PASS",
+    "source_substring_membership": "PASS",
+    "case01_scope_semantics": "FAIL",
+    "required_shape": "At least one integrated CONTAINED_CREATIVE CREATIVE_HOST entry covering the transformation, no REAL_WORLD_COMMITMENT produced by literalizing or importing the governed event, and COMPLETE reconciled review.",
+    "stage_c": "NOT_INVOKED"
+  },
+  "demonstrated_failures": [
+    {
+      "id": "SGF-01-WHOLE-CONSTRUCTION-FACTUAL-COLLAPSE",
+      "finding": "The entire integrated shadow/light/room/transparency construction was assigned one standalone factual role.",
+      "why_wrong": "Neutralizing the creative vehicle removes the alleged proposition from the commentary; the governed event supplies context for the transformation but is not independently restated by the creative wording.",
+      "layer": "SEMANTIC_REALIZATION"
+    },
+    {
+      "id": "SGF-02-AUTHORITY-TO-INVENTORY-LEAKAGE",
+      "finding": "The commitment field reproduces the factual summary rather than describing a proposition independently carried by the candidate.",
+      "why_wrong": "The factual summary is support authority, not an inventory source. Narrative dependence on a governed event is not itself a candidate factual return.",
+      "layer": "PROMPT_SEMANTICS_AND_MODEL_COMPLIANCE"
+    },
+    {
+      "id": "SGF-03-GOVERNED-EVENT-WITHOUT-SUPPORT",
+      "finding": "The entry claims GOVERNED_EVENT while authority_support is null.",
+      "why_wrong": "A governed alignment asserts that factual authority supports the event; the contract currently fails to require an exact support citation for that claim.",
+      "layer": "DETERMINISTIC_CONTRACT_GAP"
+    },
+    {
+      "id": "SGF-04-SELF-ATTESTED-COMPLETE",
+      "finding": "All scope receipts are true even though the sole classification contradicts the intended factual-return test.",
+      "why_wrong": "Coverage receipts prove declared process completion, not semantic correctness; they cannot independently validate the model's pragmatic judgment.",
+      "layer": "KNOWN_LIMIT_OF_SELF_REPORTED_RECEIPTS"
+    }
+  ],
+  "contributing_factors": [
+    {
+      "id": "SGH-01-FACTUAL-INVENTORY-PRIOR",
+      "status": "PLAUSIBLE_NOT_PROVEN",
+      "finding": "The prompt discusses real-world proposition inventory before requiring creative-host construction, which may reinforce a factual-first decomposition prior."
+    },
+    {
+      "id": "SGH-02-CONSTRAINT-CHOICE-PRIOR",
+      "status": "POSSIBLE_NOT_DEMONSTRATED",
+      "finding": "REAL_WORLD_COMMITMENT and STANDALONE are available early constrained choices. The grammar enforces legality but cannot determine pragmatic role; no claim is made that enum ordering caused the selected tokens."
+    },
+    {
+      "id": "SGH-03-ONE-SHOT-EVIDENCE-LIMIT",
+      "status": "CERTAIN",
+      "finding": "One output demonstrates a failure mode but cannot estimate its frequency or isolate prompt wording from model disposition."
+    }
+  ],
+  "narrowest_recommended_remediation": {
+    "name": "STAGE_P_SCOPE_GRAPH_V1_1_SEMANTIC_AND_SUPPORT_COHERENCE_CANDIDATE",
+    "deterministic_contract_delta": [
+      "Require every REAL_WORLD_COMMITMENT with event_alignment GOVERNED_EVENT to have non-null authority_support.",
+      "Continue requiring each non-null authority_support to be an exact factual-summary substring and its authority modality/timing to be resolved.",
+      "Reject a COMPLETE ledger when the governed-event support requirement is violated.",
+      "Do not prohibit non-null partial support for NEW_UNSUPPORTED_EVENT; a proposition may contain supported and unsupported semantic components.",
+      "Do not use exact commitment-equals-summary rejection as the primary semantic rule; it is bypassable by paraphrase and would be only a narrow defense-in-depth check."
+    ],
+    "prompt_delta": [
+      "Require creative-host identification and integrated-construction neutralization before emitting any real-world return for the same span.",
+      "State explicitly that a candidate may transform, allude to, or depend on a governed event without reasserting that event; contextual dependence is not factual return.",
+      "Require commitment to describe a proposition carried by candidate communicative force. The factual summary may support that proposition but may never supply it to the inventory.",
+      "Require GOVERNED_EVENT to cite exact non-null authority_support; otherwise alignment cannot be GOVERNED_EVENT.",
+      "Preserve multiple valid segmentations and avoid examples or wording that disclose Case 01 or prescribe one universal creative-first output shape."
+    ],
+    "unchanged": [
+      "Existing field and reason-code namespaces",
+      "Immutable factual authority",
+      "Maximum eight entries",
+      "Constrained JSON grammar except for the governed-support invariant",
+      "Fail-closed unresolved scope",
+      "No Stage C or admission decision in Stage P"
+    ]
+  },
+  "why_not_schema_expansion_yet": [
+    "The existing host and factual-return fields can represent the required Case 01 result.",
+    "Adding another self-reported neutralization explanation would increase output burden without independently proving semantic correctness.",
+    "The demonstrated deterministic gap can be closed with one cross-field invariant; the creative-collapse gap requires clearer semantic sequencing rather than more taxonomy."
+  ],
+  "zero_inference_acceptance_contract": [
+    "Observed probe output is rejected because GOVERNED_EVENT has null authority_support.",
+    "Case 01 required contained-creative host fixture remains valid and COMPLETE.",
+    "A governed literal clause nested in a creative host remains valid when it cites exact authority support.",
+    "An unsupported presupposition nested in a creative host remains valid as NEW_UNSUPPORTED_EVENT with null support.",
+    "A standalone noncreative governed proposition remains valid with exact support.",
+    "A standalone unsupported proposition remains representable as NEW_UNSUPPORTED_EVENT.",
+    "Pure creative components are not forced into real-world entries.",
+    "Unresolved neutralization or overlap remains INDETERMINATE.",
+    "Prompt bytes, schema, grammar, tokenizer, request, runner, and lifecycle identities are rebound and verified before any future probe."
+  ],
+  "future_single_probe_acceptance_if_separately_authorized": {
+    "case_id": "HMCV1-SASC-01",
+    "required_semantics": "Integrated contained-creative host; zero real-world commitments derived from the governed summary or literalized creative components; COMPLETE reconciled review.",
+    "execution_controls": "Exactly one call; no retry, repair, selection, Case 10, Stage C, or proof rerun.",
+    "note": "A deterministic rejection of the old output is necessary but not sufficient; the future output must also meet the positive semantic shape."
+  },
+  "rejected_shortcuts": [
+    {
+      "shortcut": "Force every whole-candidate figurative span to CONTAINED_CREATIVE",
+      "reason": "Would shield genuine embedded or presupposed factual returns."
+    },
+    {
+      "shortcut": "Ban standalone REAL_WORLD_COMMITMENT",
+      "reason": "Would make nonfigurative factual commentary unrepresentable."
+    },
+    {
+      "shortcut": "Require every candidate to contain a creative host",
+      "reason": "Stage P must also represent plain factual, restrained, or abstaining commentary."
+    },
+    {
+      "shortcut": "Treat exact entity or factual-summary reuse as inherently unsafe",
+      "reason": "Legitimate governed references must remain permitted when their communicative role is factual and support is cited."
+    },
+    {
+      "shortcut": "Rerun unchanged to see whether sampling varies",
+      "reason": "Decoding is deterministic and another unchanged call would add cost without closing either demonstrated gap."
+    }
+  ],
+  "bounded_next_step_if_authorized": "Implement evaluation-only Scope Graph V1.1 contract/prompt candidates and focused zero-inference fixtures for the stated acceptance contract. Rebind identities and stop before request construction, runner changes, or inference.",
+  "authority": {
+    "contract_modification": false,
+    "prompt_modification": false,
+    "grammar_modification": false,
+    "request_or_runner_modification": false,
+    "probe_execution": false,
+    "stage_c": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  }
+}
