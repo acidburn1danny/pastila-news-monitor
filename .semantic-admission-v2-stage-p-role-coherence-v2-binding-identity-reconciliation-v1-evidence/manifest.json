@@ -1,0 +1,32 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-role-coherence-v2-binding-identity-reconciliation-bundle",
+  "schema_version": "1.0.0",
+  "canonical_identity": "8f04086ae21fefd2e8f840081d33eb3e7734dd88a4792e79798efa25e81ddcaa",
+  "identity_method": "sha256 of ordered lowercase artifact SHA-256 values joined by LF",
+  "lifecycle": "SUPERSEDING_IDENTITY_RECONCILIATION_READY_FOR_OWNER_REVIEW",
+  "historical_bundle_identity": "c00901f681153fc6b4529d1d4600629628615baac58da8310fa76f4c3353d94d",
+  "reconciliation_identity": "f85ad017f6f589955ec3d654dc72fd28b4240d0bb935eea5febf379359a37272",
+  "artifacts": [
+    {
+      "path": "docs/artifacts/semantic-admission-v2-stage-p-role-coherence-v2-binding-identity-reconciliation-v1.json",
+      "sha256": "d815d017a65942b52968dd9b26d0e55cb6debc03ad09109ee152dcf2b5b4c475"
+    },
+    {
+      "path": "tests/test_semantic_admission_v2_stage_p_role_coherence_v2_binding_identity_reconciliation_v1.py",
+      "sha256": "48a46e395ff21c785343ffe13f51f8646c648f8a5a90101883020e953cc937c4"
+    },
+    {
+      "path": ".semantic-admission-v2-stage-p-role-coherence-v2-binding-identity-reconciliation-v1-evidence/report.md",
+      "sha256": "02dbd786a6931bc6667108d7257e593a83f1338814353999cf84edae7ca10562"
+    }
+  ],
+  "byte_equivalence_claimed": false,
+  "semantic_equivalence_claimed": false,
+  "provider_calls": 0,
+  "model_calls": 0,
+  "probe_authority": false,
+  "stage_c_authority": false,
+  "inference_authority": false,
+  "runtime_authority": false,
+  "production_authority": false
+}

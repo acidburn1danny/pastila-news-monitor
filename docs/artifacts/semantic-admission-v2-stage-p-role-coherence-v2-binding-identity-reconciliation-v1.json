@@ -1,0 +1,69 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-role-coherence-v2-binding-identity-reconciliation",
+  "schema_version": "1.0.0",
+  "lifecycle": "SUPERSEDING_IDENTITY_RECONCILIATION_READY_FOR_OWNER_REVIEW",
+  "reconciliation_identity": "sha256:f85ad017f6f589955ec3d654dc72fd28b4240d0bb935eea5febf379359a37272",
+  "historical_bundle": {
+    "manifest_path": ".semantic-admission-v2-stage-p-role-coherence-v2-binding-evidence/manifest.json",
+    "canonical_identity": "c00901f681153fc6b4529d1d4600629628615baac58da8310fa76f4c3353d94d",
+    "source_projection_identity": "0803578fe9e120d784040d20457033e265de3e624026578ada502aead80ff8de",
+    "manifest_immutable": true,
+    "classification": "HISTORICAL_ZERO_INFERENCE_BINDING_WITH_THREE_UNAVAILABLE_SOURCE_VERSIONS"
+  },
+  "unavailable_historical_sources": [
+    {
+      "path": "docs/artifacts/semantic-admission-v2-stage-p-role-coherence-v2-binding-candidate.json",
+      "expected_sha256": "16542f83694ec998168a67d0bc51b76800ebac14a0d39157950755abd4fbb400",
+      "expected_bytes_available_from_git": false,
+      "expected_bytes_available_from_repository_content": false,
+      "current_provenance_commit": "fb3b265264ef973aaf15b84fde27eaf87797bd6f",
+      "current_git_blob_oid": "634869b69fff33d610cd9aa0721e5905ec16b677",
+      "current_sha256": "6115af47f74adecee4e0083f1b8336c091b1a3d02f08f3ba0dd1416fb7909737"
+    },
+    {
+      "path": "src/pastila_scout/semantic_admission_v2/stage_p_role_coherence_candidate_v2.py",
+      "expected_sha256": "f52b3d093ae4975ab53b9477e12b72137fa4284eaa9eb60f2167f32b15357008",
+      "expected_bytes_available_from_git": false,
+      "expected_bytes_available_from_repository_content": false,
+      "current_provenance_commit": "fb3b265264ef973aaf15b84fde27eaf87797bd6f",
+      "current_git_blob_oid": "c259f7d38100db57fca2c44962af36b805292410",
+      "current_sha256": "e83876a21b6a4ccac2c2a5f54e6149616c61e1eac2edf4a362e33aeb6786e637"
+    },
+    {
+      "path": "tests/test_semantic_admission_v2_stage_p_role_coherence_v2_binding.py",
+      "expected_sha256": "0aa36492e01af9b23fee70a20f235fdd356c137d9aba86f7b4435c3aa6107bf1",
+      "expected_bytes_available_from_git": false,
+      "expected_bytes_available_from_repository_content": false,
+      "current_provenance_commit": "fb3b265264ef973aaf15b84fde27eaf87797bd6f",
+      "current_git_blob_oid": "5bac1661ee559931264b8b22cbc5054e62378923",
+      "current_sha256": "cd6fdf220c2d8fc7330f2b4008055e12714111dc87b54bd1d01d76c794aef821"
+    }
+  ],
+  "availability_audit": {
+    "search_scope": "ALL_REACHABLE_GIT_VERSIONS_OF_THE_THREE_PATHS_AND_18529_CURRENT_REPOSITORY_FILES",
+    "reconstruction_or_fabrication_permitted": false
+  },
+  "historical_artifact_verification": {
+    "matching_artifact_count": 6,
+    "mismatching_artifact_count": 3,
+    "mismatches_are_exactly_the_three_unavailable_sources": true
+  },
+  "identity_distinction": {
+    "historical_bundle_identity_is_current_reproducible_identity": false,
+    "byte_equivalence_claimed": false,
+    "semantic_equivalence_claimed": false,
+    "silent_hash_rebinding": false
+  },
+  "normalization_disposition": "CURRENT_PROVIDER_NEUTRAL_LINEAGE_REQUIRES_THIS_SUPERSEDING_RECONCILIATION",
+  "authority": {
+    "probe_execution_authority": false,
+    "additional_probe_authority": false,
+    "provider_authority": false,
+    "model_authority": false,
+    "projector_authority": false,
+    "stage_c_authority": false,
+    "inference_authority": false,
+    "runtime_authority": false,
+    "production_authority": false
+  }
+}
