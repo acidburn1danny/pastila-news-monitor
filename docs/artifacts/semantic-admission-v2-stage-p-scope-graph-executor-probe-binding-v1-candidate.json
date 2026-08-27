@@ -1,0 +1,58 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-scope-graph-executor-probe-binding-v1-candidate",
+  "schema_version": "1.0.0-evaluation.1",
+  "lifecycle": "ZERO_INFERENCE_ONE_SHOT_PROBE_BOUND_NOT_EXECUTED",
+  "approved_runner_binding_identity": "50ff74856f6c12719dfb3b452e940a09b8c920b46fc78f63fa2e71667191019c",
+  "candidate_identity": "dfd9f564312052070fd2a2f5f1e49c1a53d51cb1b2d66a41aacdf9a7f6246249",
+  "case_id": "HMCV1-SASC-01",
+  "pack_sha256": "4163307ccb8cfa8997b520a1cea04cddacd347e9b1ffde498db925ffccac6c2d",
+  "factual_summary_sha256": "e2add20c2ac06fdc90a2f7e1960d5672b8e91a9f7a82b895203dfb43f7f9d196",
+  "candidate_sha256": "52a54bad5c68d16bd326c9dac8c544b5c4b0a45b9129262a0da139167362682b",
+  "request_candidate_identity": "229595d7220e0121257f40d15dcdcd8d6fb40e4943b660b48e17450554354ada",
+  "prompt_identity": "sha256:89b8cf92733a33ed0bb37353c918b56071295ca9d4388aa826fcb8c643fb233d",
+  "schema_identity": "sha256:be5dd5a7ec69f4340ed79a18c782db9070207c8b16927fa7f6c8ff7b58e66c29",
+  "grammar_identity": "sha256:95d16d95cef7163dbad0e149c7607400e531f8a086c92d6aa41209783d4edc59",
+  "tokenizer_identity": "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c",
+  "model_identity": "pastila-editor-core-v1.2-experimental",
+  "implementation_identities": {
+    "executor_sha256": "55c86b151af6eea63b13e317d6e5e6da8515fa97dc1e22b780fe5084fd3600b7",
+    "evaluator_sha256": "fee2b4223f2ae952c358b2d6a1763dc359420a4668d6ac0e17dac5e68e402842",
+    "probe_runner_sha256": "a5d399d87fad9312e445b13691d85bd3e24d79665c3b59c445505c1bb7ffbda8"
+  },
+  "execution_boundaries": {
+    "wsl_distribution": "Ubuntu-24.04",
+    "venv_python": "/home/pastila/PastilaAcida-Model-Lab/experimental-0.1/.venv/bin/python3",
+    "maximum_provider_calls": 1,
+    "retry_count": 0,
+    "repair_count": 0,
+    "selection_count": 0,
+    "case10_edge": false,
+    "stage_c_constructed": false,
+    "stage_c_called": false
+  },
+  "zero_inference_result": {
+    "executor_identity_preflight": "PASS",
+    "case_selection": "PASS",
+    "request_render": "PASS",
+    "empty_lifecycle_before_execution": "PASS",
+    "single_capture_path": "PASS",
+    "focused_regression_tests": "24_PASS",
+    "durable_lifecycle_events": 0,
+    "wsl_calls": 0,
+    "runner_calls": 0,
+    "model_loads": 0,
+    "model_calls": 0,
+    "provider_calls": 0
+  },
+  "bounded_next_step_if_authorized": "Execute exactly one evaluation-only Stage-P-only HMCV1-SASC-01 probe with durable lifecycle receipts, then stop before Stage C, Case 10, retry, repair, selection, or any proof rerun.",
+  "authority": {
+    "probe_execution": false,
+    "stage_c": false,
+    "case10": false,
+    "proof_rerun": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  }
+}

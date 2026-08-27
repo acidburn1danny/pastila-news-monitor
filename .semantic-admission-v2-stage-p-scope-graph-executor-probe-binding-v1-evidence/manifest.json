@@ -1,0 +1,8 @@
+{
+  "artifact": "docs/artifacts/semantic-admission-v2-stage-p-scope-graph-executor-probe-binding-v1-candidate.json",
+  "candidate_identity": "dfd9f564312052070fd2a2f5f1e49c1a53d51cb1b2d66a41aacdf9a7f6246249",
+  "approved_runner_binding_identity": "50ff74856f6c12719dfb3b452e940a09b8c920b46fc78f63fa2e71667191019c",
+  "evidence_files": ["preflight.json", "report.md"],
+  "runner_calls": 0,
+  "model_calls": 0
+}
