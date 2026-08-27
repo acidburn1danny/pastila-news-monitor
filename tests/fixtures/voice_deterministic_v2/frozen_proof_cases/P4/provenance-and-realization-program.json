@@ -1,0 +1,47 @@
+{
+  "schema_version": "PASTILAACIDA_VOICE_V2_PROOF_REALIZATION_PROGRAM_V1_1",
+  "ir_contract": "ACID_COMMENTARY_IR_V1_1",
+  "proof_id": "P4",
+  "source_record_id": "story-v1:33:05",
+  "target_path": "story-v1_33_05-owner-realization.txt",
+  "primary_mechanic": "BACKGROUND_CAPABILITY_EVENT_CONTRAST_V1",
+  "program_id": "RP_P4_BACKGROUND_CAPABILITY_EVENT_CONTRAST_OWNER_V1_1",
+  "authorized_event_atoms": [
+    "Minnesota water systems were affected by a cyberattack, including low pressure.",
+    "Some utilities moved to manual or offline control.",
+    "Attacks were confirmed in at least seven states.",
+    "Iranian involvement remains a suspicion and the FBI has not officially attributed the attacks."
+  ],
+  "authorized_background_atoms": [
+    "The United States has the NSA.",
+    "The United States has U.S. Cyber Command.",
+    "The U.S. Space Force operates capability that tracks artificial objects in Earth orbit."
+  ],
+  "character_provenance": {
+    "indexing": "ONE_BASED_UNICODE_LINE_AND_CHARACTER; LINE_ENDINGS_AND_BLANK_LINES_ARE_DETERMINISTIC_FORMATTING",
+    "line_defaults": [
+      {"lines": [1, 3, 4, 5], "class": "AUTHORIZED_BACKGROUND_FACT_ATOM"},
+      {"lines": [7, 9, 10, 12], "class": "NONFACTUAL_COMIC_SURFACE", "frame": "EXPLICIT_PARCA_VAD_SCENA"},
+      {"lines": [14], "class": "AUTHORIZED_BACKGROUND_FACT_ATOM"},
+      {"lines": [16, 18, 19], "class": "AUTHORIZED_EVENT_FACT_ATOM"},
+      {"lines": [21], "class": "DETERMINISTIC_RHETORICAL_OPERATOR"},
+      {"lines": [23], "class": "NONLITERAL_SUPPORTED_FACT_PARAPHRASE", "source": "MANUAL_OFFLINE_FALLBACK", "mapping": "SCOATE_L_DIN_INTERNET_APPROVED"},
+      {"lines": [25, 29, 31], "class": "AUTHORIZED_EVENT_FACT_ATOM"},
+      {"lines": [27], "class": "NONFACTUAL_COMIC_SURFACE", "frame": "INTERNET_GEOPOLITICAL_MAP_METAPHOR"}
+    ],
+    "blank_lines_and_line_endings": "DETERMINISTIC_FORMATTING",
+    "coverage_percent": 100
+  },
+  "validation": {
+    "unsupported_real_event_claims": 0,
+    "unsupported_background_claims": 0,
+    "factual_mutations": 0,
+    "epistemic_boundary_violations": 0,
+    "nonliteral_mapping_violations": 0,
+    "result": "PASS"
+  },
+  "owner_text_modified": false,
+  "renderer_implemented": false,
+  "model_generation_performed": false,
+  "training_performed": false
+}

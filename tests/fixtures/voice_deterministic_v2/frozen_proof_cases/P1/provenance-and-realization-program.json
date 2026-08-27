@@ -1,0 +1,55 @@
+{
+  "schema_version": "PASTILAACIDA_VOICE_V2_PROOF_REALIZATION_PROGRAM_V1",
+  "proof_id": "P1",
+  "source_record_id": "story-v1:30:07",
+  "target_path": "story-v1_30_07-owner-realization.txt",
+  "target_sha256": "f398e2c4ae8aec87a645a0b2b8915b0420272873116d96d68dd4e84a02921dbc",
+  "outer_ascii_quotes_included": false,
+  "primary_mechanic": "NUMERIC_EXPECTATION_LADDER_V1",
+  "program_id": "RP_P1_NUMERIC_EXPECTATION_LADDER_OWNER_V1",
+  "program_steps": [
+    "AUTHORIZED_CATEGORY_AND_COMPLETE_APPROXIMATE_QUANTITY_ANCHOR",
+    "OWNER_AUTHORED_NONFACTUAL_CATEGORY_EXPECTATION",
+    "OWNER_AUTHORED_EXPLICITLY_IMAGINARY_HOSPITALITY_ESCALATION",
+    "AUTHORIZED_ATTRIBUTED_PROJECT_PURPOSE",
+    "OWNER_AUTHORED_NONFACTUAL_EDUCATIONAL_AND_AMENITY_ESCALATION",
+    "EXPLICIT_NO_PRICE_JUDGMENT_BOUNDARY",
+    "FINITE_OWNER_AUTHORED_TERMINAL_PUNCHLINE"
+  ],
+  "authorized_atoms": {
+    "P1-EF-01": "Municipiul Buzău a achiziționat un coteț mobil pentru păsări.",
+    "P1-EF-02": "Valoarea raportată a achiziției este de aproximativ 37.000 de euro.",
+    "P1-EF-03": "Autoritatea locală l-a prezentat drept un proiect educațional pentru agricultură urbană și activități destinate copiilor și comunității."
+  },
+  "character_provenance": {
+    "indexing": "ONE_BASED_UNICODE_LINE_AND_CHARACTER; LINE_ENDINGS_ARE_DETERMINISTIC_FORMATTING",
+    "blank_lines": "DETERMINISTIC_FORMATTING",
+    "line_endings": "DETERMINISTIC_FORMATTING",
+    "line_defaults": [
+      {"lines": [1], "class": "AUTHORIZED_EVENT_FACT_ATOM", "source": "P1-EF-02"},
+      {"lines": [2], "class": "AUTHORIZED_EVENT_FACT_ATOM", "source": "P1-EF-01"},
+      {"lines": [4, 5, 7, 9, 10, 12, 13, 15, 17, 19, 21, 22, 23, 27, 29, 30, 32, 33, 35, 36], "class": "NONFACTUAL_COMIC_SURFACE", "source": "OWNER_P1"},
+      {"lines": [25], "class": "AUTHORIZED_EVENT_FACT_ATOM", "source": "P1-EF-03"},
+      {"lines": [38], "class": "OWNER_APPROVED_FACTUAL_BOUNDARY_OPERATOR", "source": "P1_NO_PRICE_JUDGMENT"},
+      {"lines": [40, 42, 44, 46, 48, 49], "class": "NONFACTUAL_COMIC_SURFACE", "source": "OWNER_P1"}
+    ],
+    "inline_overrides": [
+      {"line": 9, "exact_surface": "aproximativ 37.000 de euro", "occurrence": 1, "class": "AUTHORIZED_EVENT_FACT_ATOM", "source": "P1-EF-02"},
+      {"line": 33, "exact_surface": "cam 37.000 de euro", "occurrence": 1, "class": "AUTHORIZED_EVENT_FACT_ATOM", "source": "P1-EF-02", "operator_note": "cam preserves approximation"},
+      {"line": 40, "exact_surface": "aproximativ 37.000 de euro", "occurrence": 1, "class": "AUTHORIZED_EVENT_FACT_ATOM", "source": "P1-EF-02"}
+    ],
+    "coverage_requirement": "EVERY_CHARACTER_EXACTLY_ONE_CLASS_AFTER_INLINE_OVERRIDE_REPLACEMENT",
+    "coverage_result": "PASS_1163_OF_1163_NON_NEWLINE_CHARACTERS_CLASSIFIED; ALL_BLANK_LINES_AND_LINE_ENDINGS_DETERMINISTIC_FORMATTING"
+  },
+  "audit": {
+    "unsupported_real_world_factual_claims": 0,
+    "factual_mutations": 0,
+    "epistemic_or_causal_violations": 0,
+    "unsupported_actor_motive_action_reaction_or_consequence": 0,
+    "comic_invention_reasonably_interpretable_as_event_fact": 0,
+    "finite_terminal_completion": true,
+    "owner_text_byte_preserved": true,
+    "status": "PASS_OWNER_FROZEN"
+  },
+  "anti_repetition_identity": "NUMERIC_EXPECTATION_LADDER/MONETARY_VALUE/MOBILE_POULTRY_COOP/P1_HOSPITALITY_EDUCATION_AMENITY_ESCALATION/STAGGERED_LADDER"
+}

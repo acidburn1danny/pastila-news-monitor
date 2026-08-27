@@ -1,0 +1,76 @@
+{
+  "schema_version": "PASTILAACIDA_VOICE_V2_PROOF_REALIZATION_PROGRAM_V1_1",
+  "ir_contract": "ACID_COMMENTARY_IR_V1_1",
+  "proof_id": "P3",
+  "source_record_id": "story-v1:29:06",
+  "target_path": "story-v1_29_06-owner-realization.txt",
+  "target_sha256": "d4b542b8925b4734492f400820539dfc87951ca00618deedd521b7851af58cfc",
+  "primary_mechanic": "SUPPORTED_ROLE_REVERSAL_V1",
+  "program_id": "RP_P3_SUPPORTED_ROLE_REVERSAL_OWNER_V1_1",
+  "authorized_atoms": {
+    "P3-EF-01": "Doi procurori din Constanța au fost arestați preventiv într-un dosar DNA de corupție.",
+    "P3-EF-02": "Anchetatorii îi acuză că ar fi primit bani pentru a aranja situații din dosare.",
+    "P3-EF-03": "Arestarea preventivă nu înseamnă vinovăție; acuzațiile retain their alleged status.",
+    "P3-PDP-03": "În România, înaintea audierii unui suspect sau inculpat reținut, organul de cercetare penală ori procurorul comunică dreptul la avocat, dreptul la tăcere și avertizarea că declarațiile pot fi folosite împotriva persoanei.",
+    "Q9-CALLBACK-SCHIMB-DE-MAME-ROLE-EXCHANGE-V1": "Owner-approved nonliteral role-exchange callback; no real procedural exchange or guilt implication."
+  },
+  "fictional_roleplay_actors": [
+    {
+      "fictional_actor_id": "P3-FRA-01-GENERIC-PROSECUTOR",
+      "fictional_role": "GENERIC_ROMANIAN_PROSECUTOR",
+      "frame_kind": "EXPLICIT_SECOND_PERSON_ROLEPLAY",
+      "explicit_frame_span": {"start_line": 16, "end_line": 42},
+      "identity_isolation_from_event_actors": ["P3-REAL-PROSECUTOR-01", "P3-REAL-PROSECUTOR-02"],
+      "allowed_invented_dialogue": true,
+      "allowed_invented_internal_state": true,
+      "allowed_invented_fictional_history": true,
+      "professional_domain_premise_atom_ids": ["P3-PDP-03"],
+      "frame_termination_span": {"start_line": 44, "end_line": 47},
+      "nested_fictional_actor_ids": ["P3-FRA-01-JUDICIAL-INTERLOCUTOR", "P3-FRA-01-DRIVER", "P3-FRA-01-POLICE-OFFICER"]
+    },
+    {
+      "fictional_actor_id": "P3-FRA-02-GENERIC-PROSECUTOR",
+      "fictional_role": "GENERIC_ROMANIAN_PROSECUTOR",
+      "frame_kind": "EXPLICIT_IMAGINARY_DIALOGUE",
+      "explicit_frame_span": {"start_line": 49, "end_line": 55},
+      "identity_isolation_from_event_actors": ["P3-REAL-PROSECUTOR-01", "P3-REAL-PROSECUTOR-02"],
+      "allowed_invented_dialogue": true,
+      "allowed_invented_internal_state": true,
+      "allowed_invented_fictional_history": false,
+      "professional_domain_premise_atom_ids": [],
+      "frame_termination_span": {"kind": "END_OF_COMMENTARY"},
+      "nested_fictional_actor_ids": []
+    }
+  ],
+  "character_provenance": {
+    "indexing": "ONE_BASED_UNICODE_LINE_AND_CHARACTER; LINE_ENDINGS_AND_BLANK_LINES_ARE_DETERMINISTIC_FORMATTING",
+    "line_defaults": [
+      {"lines": [1], "class": "AUTHORIZED_EVENT_FACT_ATOM", "source": "P3-EF-01"},
+      {"lines": [2], "class": "NONLITERAL_SUPPORTED_FACT_PARAPHRASE", "source": "P3-EF-01", "mapping": "ROLE_POSITION_CHANGED_BY_PREVENTIVE_ARREST"},
+      {"lines": [4], "class": "AUTHORIZED_EVENT_FACT_ATOM", "source": "P3-EF-01"},
+      {"lines": [6, 7, 9, 10], "class": "AUTHORIZED_EVENT_FACT_ATOM", "source": "P3-EF-02/P3-EF-03"},
+      {"lines": [12, 14, 16, 18, 19], "class": "NONFACTUAL_COMIC_SURFACE", "source": "OWNER_P3/P3-FRA-01-GENERIC-PROSECUTOR"},
+      {"lines": [21, 25, 29], "class": "AUTHORIZED_BACKGROUND_FACT_ATOM", "source": "P3-PDP-03", "speaker_scope": "P3-FRA-01-JUDICIAL-INTERLOCUTOR"},
+      {"lines": [23, 27, 31], "class": "NONFACTUAL_COMIC_SURFACE", "source": "OWNER_P3/P3-FRA-01-GENERIC-PROSECUTOR"},
+      {"lines": [33, 34], "class": "NONFACTUAL_COMIC_SURFACE", "source": "Q9-CALLBACK-SCHIMB-DE-MAME-ROLE-EXCHANGE-V1"},
+      {"lines": [36, 37, 38, 40, 42], "class": "NONFACTUAL_COMIC_SURFACE", "source": "OWNER_P3/EXPLICIT_ANALOGY"},
+      {"lines": [44, 45, 47], "class": "AUTHORIZED_EVENT_FACT_ATOM", "source": "P3-EF-02"},
+      {"lines": [49, 50, 52, 54, 55], "class": "NONFACTUAL_COMIC_SURFACE", "source": "OWNER_P3/P3-FRA-02-GENERIC-PROSECUTOR"}
+    ],
+    "blank_lines_and_line_endings": "DETERMINISTIC_FORMATTING",
+    "coverage_percent": 100
+  },
+  "validation": {
+    "unsupported_real_event_claims": 0,
+    "factual_mutations": 0,
+    "epistemic_boundary_violations": 0,
+    "fictional_actor_projection_to_real_actor": 0,
+    "incorrect_domain_premise_rescued_by_fiction": 0,
+    "approved_callback_scope_violations": 0,
+    "result": "PASS"
+  },
+  "owner_text_modified": false,
+  "renderer_implemented": false,
+  "model_generation_performed": false,
+  "training_performed": false
+}

@@ -1,0 +1,26 @@
+{
+  "schema_version": "PASTILAACIDA_VOICE_V2_PROOF_REALIZATION_MANIFEST_V1",
+  "proof_id": "P1",
+  "source_record_id": "story-v1:30:07",
+  "status": "OWNER_FROZEN_PASS",
+  "target": {
+    "path": "story-v1_30_07-owner-realization.txt",
+    "sha256": "f398e2c4ae8aec87a645a0b2b8915b0420272873116d96d68dd4e84a02921dbc",
+    "outer_ascii_quotes_included": false
+  },
+  "realization_program": {
+    "path": "provenance-and-realization-program.json",
+    "program_id": "RP_P1_NUMERIC_EXPECTATION_LADDER_OWNER_V1",
+    "sha256": "cb229d2dbd275cabac0e2b4a5cd8750b912a9444faa286967f12ca14ee843433"
+  },
+  "provenance": {
+    "non_newline_characters_classified": 1163,
+    "non_newline_characters_total": 1163,
+    "blank_lines_and_line_endings": "DETERMINISTIC_FORMATTING",
+    "coverage_percent": 100
+  },
+  "owner_text_modified": false,
+  "renderer_implemented": false,
+  "model_generation_performed": false,
+  "training_performed": false
+}

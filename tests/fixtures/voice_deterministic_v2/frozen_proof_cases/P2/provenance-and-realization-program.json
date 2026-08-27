@@ -1,0 +1,66 @@
+{
+  "schema_version": "PASTILAACIDA_VOICE_V2_PROOF_REALIZATION_PROGRAM_V1",
+  "proof_id": "P2",
+  "source_record_id": "story-v1:31:04",
+  "target_path": "story-v1_31_04-owner-realization.txt",
+  "target_sha256": "f52d37acf269324407441e9ffa670f48c1586eca7a5ac71f02a298d36a05ff8e",
+  "primary_mechanic": "UNCERTAINTY_SANDWICHED_FICTION_V1",
+  "approved_callback_used": "CALLBACK_CU_ATENTIE_SI_INGRIJORARE_V1",
+  "program_id": "RP_P2_UNCERTAINTY_SANDWICHED_FICTION_OWNER_V1",
+  "program_steps": [
+    "AUTHORIZED_ACCIDENT_TEST_AND_MEDICAL_ANCHOR",
+    "MANDATORY_MEDICAL_CAUSALITY_NOT_ESTABLISHED_BOUNDARY",
+    "AUTHORIZED_RECORDED_OFFICER_INTERVENTION_ANCHOR",
+    "EXPLICIT_SCENA_DE_FILM_NONFACTUAL_FRAME",
+    "OWNER_AUTHORED_NONFACTUAL_FIRST_AID_AND_FIGHTING_GAME_SCENE",
+    "MANDATORY_UNKNOWN_PRE_FILM_AND_OFFICER_REASON_RESET",
+    "AUTHORIZED_ANALYSIS_STATUS_WITH_APPROVED_CULTURAL_CALLBACK",
+    "FINITE_CONDITIONAL_NONFACTUAL_TERMINAL_PUNCHLINE"
+  ],
+  "authorized_atoms": {
+    "P2-EF-01": "Un șofer de camion a lovit un autobuz și mai multe mașini în Constanța.",
+    "P2-EF-02": "Un polițist local a fost filmat lovindu-l cu piciorul.",
+    "P2-EF-03": "În intervenție a fost folosit spray iritant.",
+    "P2-EF-04": "Testele de alcool și droguri ale șoferului au fost negative.",
+    "P2-EF-05": "Medicii au constatat hipoglicemie severă, compatibilă cu o criză diabetică.",
+    "P2-EF-06": "Intervenția este analizată.",
+    "P2-EF-07": "Nu este stabilit că hipoglicemia a provocat accidentul."
+  },
+  "character_provenance": {
+    "indexing": "ONE_BASED_UNICODE_LINE_AND_CHARACTER; LINE_ENDINGS_ARE_DETERMINISTIC_FORMATTING",
+    "blank_lines": "DETERMINISTIC_FORMATTING",
+    "line_endings": "DETERMINISTIC_FORMATTING",
+    "line_defaults": [
+      {"lines": [1, 2, 3], "class": "AUTHORIZED_EVENT_FACT_ATOM", "source": "P2-EF-01"},
+      {"lines": [5, 7, 8], "class": "AUTHORIZED_EVENT_FACT_ATOM", "source": "P2-EF-04"},
+      {"lines": [10, 11, 12], "class": "AUTHORIZED_EVENT_FACT_ATOM", "source": "P2-EF-05"},
+      {"lines": [14], "class": "OWNER_APPROVED_FACTUAL_BOUNDARY_OPERATOR", "source": "P2_CAUSALITY_WARNING"},
+      {"lines": [15], "class": "AUTHORIZED_EVENT_FACT_ATOM", "source": "P2-EF-07"},
+      {"lines": [17, 18, 23, 24, 29, 31, 33, 34, 36, 37, 39, 41, 47, 48, 50, 51], "class": "NONFACTUAL_COMIC_SURFACE", "source": "OWNER_P2"},
+      {"lines": [19], "class": "AUTHORIZED_EVENT_FACT_ATOM", "source": "P2-EF-02"},
+      {"lines": [21], "class": "NONLITERAL_SUPPORTED_FACT_PARAPHRASE", "source": "P2_PROOF_SPECIFIC_KICK_PARAPHRASE_BOUND_TO_P2-EF-02"},
+      {"lines": [26], "class": "AUTHORIZED_EVENT_FACT_ATOM", "source": "P2-EF-01"},
+      {"lines": [27], "class": "AUTHORIZED_EVENT_FACT_ATOM", "source": "P2-EF-05"},
+      {"lines": [43, 44, 45], "class": "OWNER_APPROVED_FACTUAL_BOUNDARY_OPERATOR", "source": "P2_UNKNOWN_PRE_FILM_AND_OFFICER_REASON_RESET"}
+    ],
+    "inline_overrides": [
+      {"line": 3, "exact_surface": "ca bonus.", "occurrence": 1, "class": "NONFACTUAL_COMIC_SURFACE", "source": "OWNER_P2"},
+      {"line": 45, "exact_surface": "intervenția e analizată", "occurrence": 1, "class": "AUTHORIZED_EVENT_FACT_ATOM", "source": "P2-EF-06"},
+      {"line": 45, "exact_surface": "cu atentie si ingrijorare", "occurrence": 1, "class": "APPROVED_CULTURAL_CALLBACK", "source": "CALLBACK_CU_ATENTIE_SI_INGRIJORARE_V1"}
+    ],
+    "coverage_requirement": "EVERY_CHARACTER_EXACTLY_ONE_CLASS_AFTER_INLINE_OVERRIDE_REPLACEMENT",
+    "coverage_result": "PASS_930_OF_930_NON_NEWLINE_CHARACTERS_CLASSIFIED; ALL_BLANK_LINES_AND_LINE_ENDINGS_DETERMINISTIC_FORMATTING"
+  },
+  "audit": {
+    "unsupported_real_world_factual_claims": 0,
+    "factual_mutations": 0,
+    "epistemic_or_causal_violations": 0,
+    "unsupported_actor_motive_action_reaction_or_consequence": 0,
+    "comic_invention_reasonably_interpretable_as_event_fact": 0,
+    "mandatory_post_fiction_boundary_present": true,
+    "finite_terminal_completion": true,
+    "owner_text_byte_preserved": true,
+    "status": "PASS_OWNER_FROZEN"
+  },
+  "anti_repetition_identity": "UNCERTAINTY_SANDWICHED_FICTION/MEDICAL_CAUSALITY_AND_OFFICER_REASON_UNRESOLVED/P2_SCENA_DE_FILM_FIRST_AID_FIGHTING_GAME/MANDATORY_POST_FICTION_RESET+CALLBACK_CU_ATENTIE_SI_INGRIJORARE"
+}

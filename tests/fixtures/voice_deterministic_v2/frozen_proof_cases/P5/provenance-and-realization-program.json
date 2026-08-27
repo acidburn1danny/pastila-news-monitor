@@ -1,0 +1,31 @@
+{
+  "schema_version": "PASTILAACIDA_VOICE_V2_PROOF_REALIZATION_PROGRAM_V1_1",
+  "proof_id": "P5",
+  "source_record_id": "candidate-story-v2:25:02",
+  "target_path": "candidate-story-v2_25_02-owner-realization.txt",
+  "primary_mechanic": "FICTIONAL_INTAKE_OR_INTERFACE_V1",
+  "program_id": "RP_P5_FICTIONAL_INTERFACE_OWNER_V1_1",
+  "character_provenance": {
+    "indexing": "ONE_BASED_UNICODE_LINE_AND_CHARACTER; LINE_ENDINGS_AND_BLANK_LINES_ARE_DETERMINISTIC_FORMATTING",
+    "line_defaults": [
+      {"lines": [1], "class": "AUTHORIZED_EVENT_FACT_ATOM", "source": "COURIER_METHOD"},
+      {"lines": [3, 5, 7, 9, 11, 13], "class": "NONFACTUAL_COMIC_SURFACE", "frame": "EXPLICIT_PARCA_VAD_MENIUL"},
+      {"lines": [15, 16, 17], "class": "AUTHORIZED_EVENT_FACT_ATOM", "source": "INVESTIGATOR_ATTRIBUTED_FIVE_PERSONS_133_TRANSACTIONS"},
+      {"lines": [19, 20], "class": "AUTHORIZED_EVENT_FACT_ATOM", "source": "REPORTED_APPROXIMATELY_RON_170000"},
+      {"lines": [22, 24, 25], "class": "NONFACTUAL_COMIC_SURFACE", "source": "OWNER_P5_TERMINAL_REVERSAL"}
+    ],
+    "blank_lines_and_line_endings": "DETERMINISTIC_FORMATTING",
+    "coverage_percent": 100
+  },
+  "validation": {
+    "unsupported_real_event_claims": 0,
+    "factual_mutations": 0,
+    "epistemic_boundary_violations": 0,
+    "fictional_interface_leakage": 0,
+    "result": "PASS"
+  },
+  "owner_text_modified": false,
+  "renderer_implemented": false,
+  "model_generation_performed": false,
+  "training_performed": false
+}
