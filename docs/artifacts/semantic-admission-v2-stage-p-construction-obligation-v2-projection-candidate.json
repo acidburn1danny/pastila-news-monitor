@@ -1,0 +1,58 @@
+{
+  "artifact_id": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_PROJECTION_CANDIDATE",
+  "candidate_identity": "e85eb040667208ee6ee4e697e64c46e5d61502602240dff113dd64c3c45e2c46",
+  "supersedes_candidate_identity": "888f13fa7249e196ae964d47a45ad85c855ec0bf2fa785111f147ff911090cd5",
+  "ledger_schema_version": "2.0.0-evaluation.1",
+  "projection_receipt_schema_version": "1.0.0-evaluation.1",
+  "approved_migration_design_identity": "ef9eab9dedcc2ba625d2e17a884ff4b75c44708dcb635e7ce5753a8e9160b1f0",
+  "approved_reference_candidate_identity": "b127e9e321f1378d012ff65fb9c5718709c2bc84eb898130f405abd61c9fa0ae",
+  "implementation_sha256": "dd81716dcf00260e7d5c651eaaddd65ed3f0d489263ec8ba5d2a0774d5c0f5d4",
+  "ledger_json_schema_sha256": "1a4d0dbac3dd56d9b18de678b0044143473c916eaad1f68451b97e7928a50838",
+  "projection_receipt_json_schema_sha256": "1291f0022eb4f40d3ad1a2ac8f8fe88db12d492d42c949517e4bd483fb3f110d",
+  "contract_boundaries": {
+    "breaking_v2_no_v1_union": true,
+    "explicit_raw_schema_identity_required": true,
+    "copyless_provenance_fields": 4,
+    "model_authored_analysis_fields_are_not_evidence": true,
+    "raw_response_mutation": false,
+    "fuzzy_projection": false,
+    "partial_projection_admission": false,
+    "projection_implies_semantic_pass": false
+  },
+  "fixture_verification": {
+    "captured_case01_sources_sha_bound": true,
+    "case01_v2_ledger_origin": "HAND_CONSTRUCTED_NON_GENERATED_CONTRACT_FIXTURE",
+    "expected_reference_projections": 5,
+    "all_valid_projection": "PASS",
+    "single_identity_drift": "WHOLE_RECEIPT_FAIL_WITH_FOUR_SIBLING_RESULTS_PRESERVED",
+    "deterministic_canonical_receipt_bytes": "PASS",
+    "projected_text_absent_from_receipt": "PASS",
+    "raw_and_source_immutability": "PASS",
+    "v1_field_rejection": "PASS"
+  },
+  "zero_inference_verification": {
+    "subprocess_launches": 0,
+    "evaluator_constructions": 0,
+    "runner_constructions": 0,
+    "grammar_constructions": 0,
+    "provider_calls": 0,
+    "model_loads": 0,
+    "inference_calls": 0,
+    "probe_constructed": false
+  },
+  "authority": {
+    "evaluator_rebinding": false,
+    "runner_rebinding": false,
+    "grammar_change": false,
+    "prompt_change": false,
+    "probe_construction": false,
+    "probe_execution": false,
+    "stage_c": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  },
+  "status": "OWNER_REVIEW_REQUIRED",
+  "recommended_next_step": "Owner-review the frozen V2 models and pure projection receipt builder. If approved, authorize only a separately versioned constrained-grammar feasibility design and zero-inference compatibility analysis; do not rebind an evaluator or construct a probe."
+}

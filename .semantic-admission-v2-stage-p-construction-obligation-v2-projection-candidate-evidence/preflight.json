@@ -1,0 +1,20 @@
+{
+  "result": "PASS",
+  "candidate_identity": "e85eb040667208ee6ee4e697e64c46e5d61502602240dff113dd64c3c45e2c46",
+  "supersedes_candidate_identity": "888f13fa7249e196ae964d47a45ad85c855ec0bf2fa785111f147ff911090cd5",
+  "implementation_sha256": "dd81716dcf00260e7d5c651eaaddd65ed3f0d489263ec8ba5d2a0774d5c0f5d4",
+  "ledger_json_schema_sha256": "1a4d0dbac3dd56d9b18de678b0044143473c916eaad1f68451b97e7928a50838",
+  "projection_receipt_json_schema_sha256": "1291f0022eb4f40d3ad1a2ac8f8fe88db12d492d42c949517e4bd483fb3f110d",
+  "focused_tests_passed_before_evidence_binding": 20,
+  "explicit_raw_schema_identity_required": true,
+  "captured_source_fixture_cases": 1,
+  "hand_constructed_v2_ledgers": 2,
+  "subprocess_launches": 0,
+  "evaluator_constructions": 0,
+  "runner_constructions": 0,
+  "grammar_constructions": 0,
+  "provider_calls": 0,
+  "model_loads": 0,
+  "inference_calls": 0,
+  "probe_constructed": false
+}
