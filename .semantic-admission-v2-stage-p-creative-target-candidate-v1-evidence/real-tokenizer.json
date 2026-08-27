@@ -1,0 +1,25 @@
+{
+  "result": "PASS",
+  "state_count": 7,
+  "matrix_seconds": 0.270505,
+  "vocabulary_size": 131072,
+  "trie_node_count": 221961,
+  "states": [
+    {"prefix_bytes": 0, "allowed_count": 2, "can_eos": false, "seconds": 0.030879},
+    {"prefix_bytes": 75, "allowed_count": 7, "can_eos": false, "seconds": 0.032615},
+    {"prefix_bytes": 570, "allowed_count": 2, "can_eos": false, "seconds": 0.031642},
+    {"prefix_bytes": 700, "allowed_count": 7, "can_eos": false, "seconds": 0.033835},
+    {"prefix_bytes": 752, "allowed_count": 2, "can_eos": false, "seconds": 0.032954},
+    {"prefix_bytes": 1236, "allowed_count": 3, "can_eos": false, "seconds": 0.033425},
+    {"prefix_bytes": 1246, "allowed_count": 1, "can_eos": true, "seconds": 0.000002}
+  ],
+  "transformers_loaded_for_tokenizer_only": true,
+  "peft_loaded": false,
+  "existing_tokenizer_regex_warning_preserved": true,
+  "model_loads": 0,
+  "model_calls": 0,
+  "provider_calls": 0,
+  "inference_calls": 0,
+  "case01_executed": false,
+  "stage_c_calls": 0
+}

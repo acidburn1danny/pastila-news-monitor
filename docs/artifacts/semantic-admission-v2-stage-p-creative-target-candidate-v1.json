@@ -1,0 +1,71 @@
+{
+  "artifact_id": "STAGE_P_CREATIVE_TARGET_CANDIDATE_V1",
+  "artifact_identity": "8dd10faf8cb47cd6a8faa9b4a7a0c535b0a8e22a903c5acd1b536cb992655448",
+  "approved_design_identity": "efac1d65039546bd50dfa5079be9ae5d5e11e36ba731ab76ea4cac1e4b8ceda3",
+  "lifecycle": "EVALUATION_ONLY_IMPLEMENTED_ZERO_INFERENCE_VERIFIED_NOT_EXECUTED",
+  "identities": {
+    "contract_source_sha256": "a17663d59d7d5abdacfd2c7f2ec88f5f7ab1a8e37828edb747f522509a9f10e0",
+    "constraint_source_sha256": "e64ab5b70479399f13e9ce9ba299d61dfbd044276109ff7ff98f1e2b29078380",
+    "prompt_file_sha256": "9fe70803b57e261558ddcf48974e1a894485f4b89decc632c94c3c18d957e1e7",
+    "prompt_contract_sha256": "b530cd614401be0e2db6a37047b0f8f85213d2d082ce6dad04ab290f45dedfd8",
+    "request_candidate_sha256": "f085b765f7048f134e415cc9cd519356cb0a35ebbb7793027a05814a97f5a7dd",
+    "zero_inference_verifier_sha256": "a2498d042b820682bd77771b34e07a558c779365ffe5b44c51c6ac1746afb32a",
+    "prompt_identity": "sha256:a7a1fb35b356889b8465d767c5111f3b1b9aed2a449417a2089f694ba73a8824",
+    "schema_identity": "sha256:3dccbf050677900fed11899295ed5724f638270116b72ebcda26a26255586569",
+    "constraint_identity": "sha256:e64ab5b70479399f13e9ce9ba299d61dfbd044276109ff7ff98f1e2b29078380",
+    "grammar_identity": "sha256:d81f9588383bf93e46a1c57a5e5ab9b284af38d13e43223f7a29a656f1415adf",
+    "tokenizer_identity": "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c",
+    "request_candidate_identity": "79b27bb6d7e35dfa9153cafb724e82d5689973b49605a9ea09a4b6462f01d9cc"
+  },
+  "implemented_components": {
+    "typed_contract": "CreativeTargetLedgerV1",
+    "constrained_dfa": "StagePCreativeTargetConstraintStateV1",
+    "prompt_contract": "StagePCreativeTargetPromptContractV1",
+    "request_candidate": "StagePCreativeTargetRequestCandidateV1",
+    "root_field_order": ["stage_id", "entries", "creative_target_audits", "coverage_receipt", "coverage_decision"],
+    "maximum_proposition_entries": 8,
+    "maximum_target_audits": 16,
+    "timeout_seconds": 240.0
+  },
+  "preserved_invariants": [
+    "Scope Graph V1.1 entry and graph validation",
+    "Scope Graph V1.2 early coherent coverage projection",
+    "exact candidate and authority source membership",
+    "governed-event support coherence",
+    "unsupported proposition representability",
+    "creative-host overlap and backlink coherence",
+    "unresolved target requires unresolved entry and INDETERMINATE",
+    "candidate-first immutable factual authority",
+    "no fixed segmentation or mechanism routing"
+  ],
+  "zero_inference_result": {
+    "local_tests": 16,
+    "local_result": "PASS",
+    "real_tokenizer_result": "PASS",
+    "real_tokenizer_states": 7,
+    "real_tokenizer_matrix_seconds": 0.270505,
+    "tokenizer_vocabulary_size": 131072,
+    "trie_node_count": 221961,
+    "existing_tokenizer_regex_warning_preserved": true,
+    "initial_import_attempts_stopped_before_tokenizer": 2,
+    "model_loads": 0,
+    "model_calls": 0,
+    "provider_calls": 0,
+    "inference_calls": 0,
+    "case01_rerun": false,
+    "stage_c_calls": 0
+  },
+  "authority": {
+    "runner_binding": false,
+    "executor_binding": false,
+    "model_probe": false,
+    "case01_rerun": false,
+    "stage_c": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  },
+  "status": "OWNER_REVIEW_REQUIRED",
+  "recommended_next_step": "Owner-review this candidate and zero-inference evidence, then authorize a separate zero-inference runner and durable-executor binding. Do not construct or execute a Case 01 probe yet."
+}

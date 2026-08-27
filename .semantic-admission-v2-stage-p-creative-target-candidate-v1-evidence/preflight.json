@@ -1,0 +1,23 @@
+{
+  "result": "PASS",
+  "artifact_identity": "8dd10faf8cb47cd6a8faa9b4a7a0c535b0a8e22a903c5acd1b536cb992655448",
+  "local_tests": 16,
+  "prompt_padding": "PASS",
+  "candidate_first_rendering": "PASS",
+  "application_request_construction": "PASS",
+  "typed_contract_fixtures": "PASS",
+  "constrained_dfa_fixtures": "PASS",
+  "synthetic_trie_projection": "PASS",
+  "real_tokenizer_projection": "PASS",
+  "initial_import_attempts": [
+    {"result": "STOPPED_BEFORE_TOKENIZER", "reason": "WSL_SRC_PATH_ABSENT"},
+    {"result": "STOPPED_BEFORE_TOKENIZER", "reason": "PACKAGE_INIT_HOST_DEPENDENCY_ABSENT"},
+    {"result": "PASS", "reason": "IMPORT_ISOLATED_TOKENIZER_ONLY"}
+  ],
+  "model_loads": 0,
+  "model_calls": 0,
+  "provider_calls": 0,
+  "inference_calls": 0,
+  "case01_rerun": false,
+  "stage_c_calls": 0
+}
