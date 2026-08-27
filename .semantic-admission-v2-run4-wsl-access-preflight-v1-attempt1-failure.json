@@ -1,0 +1,19 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-run4-wsl-access-preflight-failed-attempt",
+  "schema_version": "1.0.0",
+  "attempt": 1,
+  "result": "STOPPED_BEFORE_CONSTRAINED_LIFECYCLE",
+  "exception_type": "FileNotFoundError",
+  "failure": "Temporary lifecycle output conversion required the not-yet-created output file to exist.",
+  "completed_checks_before_stop": [
+    "WSL_SERVICE_ACCESS",
+    "EXACT_RUNNER_PATH_READABILITY",
+    "ORDINARY_RUNNER_COMPILE"
+  ],
+  "model_load_started": false,
+  "inference_started": false,
+  "model_calls": 0,
+  "provider_calls": 0,
+  "run4_execution_authorized": false,
+  "superseded_by": "corrected zero-inference preflight attempt"
+}

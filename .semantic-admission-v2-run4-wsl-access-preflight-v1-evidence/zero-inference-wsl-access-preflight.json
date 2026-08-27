@@ -1,0 +1,93 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-run4-wsl-access-preflight",
+  "schema_version": "1.0.0",
+  "checked_at": "2026-08-25T22:43:31.780541+00:00",
+  "source_run3_identity": "d567adaddd889063ae48d65d647c8676b6a4ea87f9f9cc047ed80888af12ee07",
+  "distro": "Ubuntu-24.04",
+  "constrained_runner": {
+    "path": "src\\pastila_scout\\experimental_core_v1_2_gate_f_constrained_runner.py",
+    "sha256": "17a1669d5ec145bfc2ef746890e4d6534670e94b069a3a7d6307bb8127bd2ac9"
+  },
+  "ordinary_runner": {
+    "path": "src\\pastila_scout\\experimental_core_v1_2_runner.py",
+    "sha256": "51c7ff37731c5f4a9cacda7ee3a9d1966e51bb80098ce2ea6503a34345ee06a9"
+  },
+  "checks": [
+    {
+      "arguments": [
+        "/bin/true"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "/usr/bin/test",
+        "-r",
+        "/mnt/c/Projects/pastila-news-monitor/src/pastila_scout/experimental_core_v1_2_gate_f_constrained_runner.py",
+        "-a",
+        "-r",
+        "/mnt/c/Projects/pastila-news-monitor/src/pastila_scout/experimental_core_v1_2_runner.py"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "/home/pastila/PastilaAcida-Model-Lab/experimental-0.1/.venv/bin/python",
+        "-c",
+        "import pathlib; compile(pathlib.Path(__import__('sys').argv[1]).read_text('utf-8'), __import__('sys').argv[1], 'exec')",
+        "/mnt/c/Projects/pastila-news-monitor/src/pastila_scout/experimental_core_v1_2_runner.py"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "arguments": [
+        "/home/pastila/PastilaAcida-Model-Lab/experimental-0.1/.venv/bin/python",
+        "/mnt/c/Projects/pastila-news-monitor/src/pastila_scout/experimental_core_v1_2_gate_f_constrained_runner.py",
+        "--preflight-only",
+        "/mnt/c/Users/black/AppData/Local/Temp/sav2-run4-wsl-preflight-98okqwgw/constrained-lifecycle.json"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "[transformers] The tokenizer you are loading from '/home/pastila/PastilaAcida-Model-Lab/experimental-0.1/model-cache/huggingface/models--mistralai--Ministral-3-14B-Instruct-2512-BF16/snapshots/3cea74c1ebaf5ce5f5a2553de470e2ceab825142' with an incorrect regex pattern: https://huggingface.co/mistralai/Mistral-Small-3.1-24B-Instruct-2503/discussions/84#69121093e8b480e709447d5e. This will lead to incorrect tokenization. You should set the `fix_mistral_regex=True` flag when loading this tokenizer to fix this issue.\n"
+    }
+  ],
+  "constrained_lifecycle": {
+    "schema_name": "pastila-semantic-admission-v2-gate-f-constrained-runner-preflight",
+    "schema_version": "1.0.0",
+    "tokenizer_load_started": true,
+    "tokenizer_load_succeeded": true,
+    "trie_build_succeeded": true,
+    "prewarm_succeeded": true,
+    "model_imported": false,
+    "model_load_started": false,
+    "model_loaded": false,
+    "generation_started": false,
+    "model_calls": 0,
+    "provider_calls": 0,
+    "native_prefix_constraint_available": true,
+    "trie_node_count": 221961,
+    "prewarm_seconds": 2.229491,
+    "canonical_streams_terminal": true,
+    "root_fence_impossible": true,
+    "terminal_only_eos": true,
+    "result": "PASS"
+  },
+  "wsl_service_accessible": true,
+  "runner_paths_readable": true,
+  "ordinary_runner_compiles": true,
+  "constrained_lifecycle_safe": true,
+  "model_load_started": false,
+  "inference_started": false,
+  "model_calls": 0,
+  "provider_calls": 0,
+  "run4_execution_authorized": false,
+  "runtime_authority": false,
+  "training_authority": false,
+  "result": "PASS"
+}

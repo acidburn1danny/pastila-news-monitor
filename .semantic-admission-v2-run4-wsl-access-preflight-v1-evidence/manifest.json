@@ -1,0 +1,27 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-run4-wsl-access-preflight-bundle",
+  "schema_version": "1.0.0",
+  "canonical_identity": "8a251fd00eca9bc5474bbdc87c444308c211b3321d587c873a277e728b48d983",
+  "identity_method": "sha256 of ordered lowercase artifact SHA-256 values joined by LF",
+  "lifecycle": "FROZEN_ZERO_INFERENCE_PREFLIGHT_PASS_WITH_TOKENIZER_WARNING",
+  "source_run3_identity": "d567adaddd889063ae48d65d647c8676b6a4ea87f9f9cc047ed80888af12ee07",
+  "result": "PASS",
+  "artifacts": [
+    {"path": "scripts/preflight_semantic_admission_v2_run4_wsl_access_v1.py", "sha256": "293f339424b30345c693a37cfa5a78c5587cb716de15f1abbcee320e20e08518"},
+    {"path": "tests/test_semantic_admission_v2_run4_wsl_access_preflight.py", "sha256": "6e89909fff48c0a9bf78b7c9b3b04a19ab11b1bbf1eed4a4e32a5d32b0b0356f"},
+    {"path": ".semantic-admission-v2-run4-wsl-access-preflight-v1-attempt1-failure.json", "sha256": "5b729b2fd195bdff8713778a734f21dfc7acab076ca4aab69124391c5fabf6d6"},
+    {"path": ".semantic-admission-v2-run4-wsl-access-preflight-v1-evidence/zero-inference-wsl-access-preflight.json", "sha256": "c97e549d6a7a0eee9a99190098c0bda0286ac0dd434e6f3278884244ae2f3e2c"},
+    {"path": ".semantic-admission-v2-run4-wsl-access-preflight-v1-evidence/report.md", "sha256": "75c937c5df43dd9f25c7332697d182afcd10cd7d53059a27b583bc450fa8b239"}
+  ],
+  "wsl_service_accessible": true,
+  "exact_runner_paths_ready": true,
+  "constrained_lifecycle_safe": true,
+  "model_load_started": false,
+  "inference_started": false,
+  "model_calls": 0,
+  "provider_calls": 0,
+  "tokenizer_regex_warning_open": true,
+  "run4_execution_authorized": false,
+  "runtime_authority": false,
+  "training_authority": false
+}
