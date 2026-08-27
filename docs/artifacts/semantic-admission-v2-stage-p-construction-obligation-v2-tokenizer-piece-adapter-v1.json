@@ -1,0 +1,33 @@
+{
+  "artifact_type": "ZERO_EXECUTION_TOKENIZER_PIECE_ADAPTER_BINDING",
+  "artifact_version": "1.0.0",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_TOKENIZER_PIECE_ADAPTER_V1",
+  "bindings": {
+    "projector_freeze_identity": "974d5e6257256d7397cb68f90952c66809a536cf5525cbef58b3bbfce6791587",
+    "tokenizer_identity": "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c",
+    "decoder_identity": "ministral-tokenizer-decode-skip-special-cleanup-false-v1",
+    "transformers_version": "5.15.0",
+    "tokenizer_implementation": "TokenizersBackend",
+    "vocabulary_size": 131072,
+    "eos_token_id": 2,
+    "special_token_ids": [0, 1, 2, 11]
+  },
+  "policy": {
+    "injected_tokenizer_only": true,
+    "identity_validation_precedes_decode": true,
+    "skip_special_tokens": true,
+    "clean_up_tokenization_spaces": false,
+    "empty_non_eos_and_non_eos_special_tokens_excluded": true,
+    "malformed_decoding_fails_closed": true,
+    "piece_mapping_immutable": true,
+    "fix_mistral_regex": false
+  },
+  "authority": {
+    "tokenizer_loading": false,
+    "model_or_provider": false,
+    "runner_executor_or_probe": false,
+    "inference_or_generation": false,
+    "stage_c": false,
+    "runtime_or_production": false
+  }
+}
