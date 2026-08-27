@@ -1,0 +1,46 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-scope-graph-v1-1-tokenizer-candidate",
+  "schema_version": "1.1.0-evaluation.1",
+  "lifecycle": "ZERO_INFERENCE_REAL_TOKENIZER_COMPATIBLE",
+  "approved_constraint_candidate_identity": "90505c23a205e12199224eaa430fd42729f5a0e7985795fa42620229c5b7fe81",
+  "candidate_identity": "fc32a8d1bc40df96bb3a4921f993d7ebfbc31570b3c306f28e4046d5e028f1f2",
+  "schema_identity": "sha256:a61f16046045ca015dd2001393ab58e7ab7c94f50cbfc49f7df959bd45b3338c",
+  "grammar_identity": "sha256:28539234a7c6a7815fbf47d506855a3d17cd236b5a8c7d3a37fd2c3abc7cb393",
+  "tokenizer_identity": "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c",
+  "tokenizer_snapshot_revision": "3cea74c1ebaf5ce5f5a2553de470e2ceab825142",
+  "preflight_source_identity": "sha256:3bffe06e1e9a4fd8bc2dff233af9a1dbb09a2705db1f593d7f427e66e3532508",
+  "compatibility_result": {
+    "result": "PASS",
+    "valid_streams": 5,
+    "token_transitions_checked": 1406,
+    "invalid_next_token_indices": 0,
+    "decoded_exact": true,
+    "terminal_eos_only": true,
+    "invalid_null_support_governed_blocked_token_index": 75,
+    "trie_nodes": 221961,
+    "trie_cache_size": 1042
+  },
+  "known_warning": "Frozen tokenizer emitted the existing Mistral regex warning; no repair flag was applied because it would alter the frozen tokenizer identity.",
+  "zero_inference_receipt": {
+    "wsl_calls": 1,
+    "tokenizer_loads": 1,
+    "torch_imported_transitively": true,
+    "model_imported": false,
+    "model_load_started": false,
+    "inference_started": false,
+    "model_calls": 0,
+    "provider_calls": 0,
+    "runner_calls": 0
+  },
+  "bounded_next_step_if_authorized": "Construct and zero-inference verify an identity-bound V1.1 application-request candidate for the approved prompt/schema/grammar/tokenizer tuple; stop before runner changes or inference.",
+  "authority": {
+    "request_construction": false,
+    "runner_modification": false,
+    "probe_execution": false,
+    "stage_c": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  }
+}

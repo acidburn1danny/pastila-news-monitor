@@ -1,0 +1,12 @@
+{
+  "artifact": "docs/artifacts/semantic-admission-v2-stage-p-scope-graph-v1-1-tokenizer-candidate.json",
+  "candidate_identity": "fc32a8d1bc40df96bb3a4921f993d7ebfbc31570b3c306f28e4046d5e028f1f2",
+  "approved_constraint_candidate_identity": "90505c23a205e12199224eaa430fd42729f5a0e7985795fa42620229c5b7fe81",
+  "schema_identity": "sha256:a61f16046045ca015dd2001393ab58e7ab7c94f50cbfc49f7df959bd45b3338c",
+  "grammar_identity": "sha256:28539234a7c6a7815fbf47d506855a3d17cd236b5a8c7d3a37fd2c3abc7cb393",
+  "tokenizer_identity": "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c",
+  "preflight_source_identity": "sha256:3bffe06e1e9a4fd8bc2dff233af9a1dbb09a2705db1f593d7f427e66e3532508",
+  "evidence_files": ["real-tokenizer-preflight.json", "report.md"],
+  "model_calls": 0,
+  "runner_calls": 0
+}
