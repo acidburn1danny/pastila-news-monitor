@@ -1,0 +1,15 @@
+{
+  "result": "PASS",
+  "candidate_identity": "aae3212858b87ae7e3876c497fb9b554d5c606426fa692d6df9f26982c9d7b08",
+  "captured_fixture_tests": {"passed": 7, "failed": 0},
+  "source_case01_bytes_modified": false,
+  "shared_executor_modified": false,
+  "runner_modified": false,
+  "prompt_schema_constraint_modified": false,
+  "wsl_calls": 0,
+  "model_calls": 0,
+  "provider_calls": 0,
+  "inference_calls": 0,
+  "case01_reruns": 0,
+  "stage_c_calls": 0
+}

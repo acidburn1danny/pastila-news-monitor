@@ -1,0 +1,59 @@
+{
+  "artifact_id": "STAGE_P_CONSTRUCTION_ROLE_RECEIPT_PROPAGATION_CANDIDATE_V1",
+  "candidate_identity": "aae3212858b87ae7e3876c497fb9b554d5c606426fa692d6df9f26982c9d7b08",
+  "lifecycle": "EVALUATION_ONLY_IMPLEMENTED_CAPTURED_FIXTURES_ZERO_INFERENCE_NOT_BOUND_TO_PROBE",
+  "approved_failure_review_identity": "730b2e3ac7a067a51852edbcc57ba2fe9810264a85e35b090395b1a2a4bcff9a",
+  "source_evaluator_binding_identity": "78a54899160921698fef98f9ac672d83015d08642a36aa67e3e559d6972eb9d6",
+  "identities": {
+    "propagation_module_sha256": "56eb530bdcbd80245dfa3fa888b7d5cf10f9a6fd79033a646f202c1755a0a0c9",
+    "evaluator_v1_1_sha256": "ea993a48fdb5f0c143112ab9fa420c2b3dc21f223adb9a3b40a356e6e5dfcc21",
+    "evaluator_v1_1_identity": "7924fa7331b0284c68f1bf35a28651ad9a7de9f8f996d2fb1774873b92c1af5a",
+    "request_candidate_identity": "46633da94538451e04643adf4f291bc30033749d8768e36c8a6be5eb13621734",
+    "model_identity": "pastila-editor-core-v1.2-experimental"
+  },
+  "implementation": {
+    "shared_executor_modified": false,
+    "durable_executor_modified": false,
+    "runner_modified": false,
+    "prompt_schema_constraint_modified": false,
+    "new_evaluator": "StagePConstructionRoleEvaluatorV1_1",
+    "propagation_rule": "For INTERNAL_EXECUTION_FAILURE only, derive the request lifecycle directory, validate exact runner and host constraint-liveness receipts, and re-raise the existing typed StagePConstraintLivenessExecutionErrorV1 before generic evaluator failure handling.",
+    "unknown_failure_rule": "Absence of a validated liveness pair returns no typed classification; the existing generic fail-closed evaluator path remains active.",
+    "mismatch_rule": "A host-only receipt, duplicate host receipts, malformed runner receipt, or runner/host field mismatch raises a validation failure and never becomes asserted liveness authority.",
+    "transport_rule": "Missing response or missing lifecycle evidence alone is not classified as constraint liveness.",
+    "timeout_rule": "Non-INTERNAL_EXECUTION_FAILURE outcomes are not reclassified by this candidate."
+  },
+  "captured_fixture_verification": {
+    "frozen_case01_runner_host_pair": "PASS",
+    "typed_internal_failure_recovery": "PASS",
+    "transport_only_absence_remains_unclassified": "PASS",
+    "timeout_remains_distinct": "PASS",
+    "runner_host_mismatch_fails_validation": "PASS",
+    "evaluator_raises_typed_liveness_once": "PASS",
+    "executor_calls_in_evaluator_fixture": 1,
+    "wsl_calls": 0,
+    "model_calls": 0,
+    "provider_calls": 0,
+    "inference_calls": 0
+  },
+  "preserved_boundaries": [
+    "The original Case 01 request, phase receipt, diagnostic trace, and durable lifecycle remain byte-immutable.",
+    "The shared ExperimentalCoreV12Executor isolation boundary is unchanged.",
+    "Unknown failures remain generic and fail closed.",
+    "No stderr substring becomes classification authority.",
+    "No prompt, schema, DFA, model, runner, or Stage C behavior changed.",
+    "No Case 01 or other probe was constructed or executed."
+  ],
+  "authority": {
+    "probe_binding": false,
+    "probe_execution": false,
+    "case01_rerun": false,
+    "stage_c": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  },
+  "status": "OWNER_REVIEW_REQUIRED",
+  "recommended_next_step": "Owner-review this candidate. If approved, separately bind Evaluator V1.1 to a new exclusive Case 01 probe wrapper and perform zero-inference construction verification only. Do not execute Case 01 or Stage C in that step."
+}
