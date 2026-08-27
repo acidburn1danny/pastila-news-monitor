@@ -1,0 +1,58 @@
+{
+  "schema_name":"pastila-semantic-admission-v2-stage-p-lifecycle-characterization-candidate",
+  "schema_version":"1.0.0-evaluation.1",
+  "lifecycle":"ZERO_INFERENCE_CANDIDATE_READY_FOR_OWNER_REVIEW",
+  "source_design_identity":"62cd1f8c27f90782be1da6cc7c342659a004cc81d820165ae17904b4eb541518",
+  "durable_lifecycle":{
+    "append_only_exclusive_fsync_events":true,
+    "host_pid_launch_timeout_and_termination_events":true,
+    "runner_phase_events":true,
+    "generation_heartbeat_every_tokens_or_seconds":[16,10],
+    "partial_output_quarantined_in_heartbeat":true,
+    "lifecycle_root_outside_temporary_directory":true,
+    "synthetic_forced_timeout_verified":true
+  },
+  "tokenizer_characterization":{
+    "tokenizer_vocabulary_size":131072,
+    "trie_node_count":221961,
+    "ledger_shapes":["1_SHORT","1_MAX_BOUNDED","4_SHORT","4_MAX_BOUNDED","8_SHORT","8_MAX_BOUNDED"],
+    "prefix_sampling":"9_EVEN_DETERMINISTIC_CHECKPOINTS_PER_SHAPE",
+    "valid_prefix_comparisons":54,
+    "invalid_classes":["WRONG_ROOT","INVALID_ENUM","TRAILING_BYTES"],
+    "allowed_set_divergences":0,
+    "invalid_failure_divergences":0,
+    "terminal_failures":0,
+    "full_replay_seconds_total":2.160827,
+    "incremental_tracking_seconds_total":0.499653,
+    "token_projection_seconds_total":65.110097,
+    "full_replayed_characters":95399,
+    "incremental_fed_characters":21048,
+    "incremental_character_reduction_ratio":4.532443,
+    "projection_share_of_measured_callback_seconds":0.960738,
+    "peak_traced_bytes":92739750,
+    "result":"PASS"
+  },
+  "diagnostic_revision":{
+    "prior_primary_hypothesis":"FULL_PREFIX_DFA_REPLAY_DOMINATES",
+    "current_conclusion":"TOKEN_TRIE_PROJECTION_CACHE_MISSES_DOMINATE_MEASURED_CALLBACK_COST",
+    "incremental_tracking":"CORRECT_AND_USEFUL_BUT_UNLIKELY_SUFFICIENT_ALONE",
+    "specific_cache_risk":"Stage P string_characters varies for every free-string length even though allowed continuations depend only on empty versus nonempty state, preventing safe cache reuse unless canonically normalized with equivalence proof.",
+    "timeout_increase_recommended":false
+  },
+  "attempt_history":[
+    "Attempt 1 was terminated after the assistant misinterpreted a prior host sleep as current; no result promoted.",
+    "Attempt 2 exhaustive profiling exceeded 240 seconds; no result promoted.",
+    "Attempt 3 with 129 checkpoints per shape exceeded 600 seconds; no result promoted.",
+    "Attempt 4 with nine stratified checkpoints per shape completed and is the only accepted characterization result."
+  ],
+  "next_bounded_recommendation":"Design and implement a Stage-P-specific trie-cache canonicalization candidate, beginning with proof that STRING string_characters may normalize to zero-versus-nonzero without changing any allowed-token set. Combine it with the already-equivalent incremental tracker, run randomized and real-tokenizer zero-inference equivalence/performance tests, and stop before any model call.",
+  "model_imported":false,
+  "model_load_started":false,
+  "inference_started":false,
+  "provider_calls":0,
+  "proof_rerun_authority":false,
+  "runtime_authority":false,
+  "production_authority":false,
+  "training_authority":false,
+  "gate_s_changed":false
+}

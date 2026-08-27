@@ -1,0 +1,13 @@
+{
+  "attempt":2,
+  "scope":"ZERO_INFERENCE_TOKENIZER_ONLY_EXHAUSTIVE_PREFIX_COMPARISON",
+  "result":"STOPPED_AS_PROFILER_COST_FAILURE",
+  "reason":"EXHAUSTIVE_ALL_PREFIX_CHARACTERIZATION_EXCEEDED_240_SECONDS_WITHOUT_COMPLETION",
+  "evidence_value":"The verification method itself reproduced an impractical full-prefix cost; no equivalence result was inferred from the incomplete run.",
+  "output_evidence_produced":false,
+  "model_imported":false,
+  "model_load_started":false,
+  "inference_started":false,
+  "provider_calls":0,
+  "eligibility":"QUARANTINED_PERFORMANCE_DIAGNOSTIC_ONLY"
+}

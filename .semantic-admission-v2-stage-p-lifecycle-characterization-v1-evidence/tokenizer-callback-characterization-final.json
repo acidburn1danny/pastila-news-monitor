@@ -1,0 +1,159 @@
+{
+  "model_imported": false,
+  "model_load_started": false,
+  "inference_started": false,
+  "model_calls": 0,
+  "provider_calls": 0,
+  "schema_name": "pastila-semantic-admission-v2-stage-p-callback-characterization",
+  "schema_version": "1.0.0",
+  "tokenizer_vocabulary_size": 131072,
+  "trie_node_count": 221961,
+  "setup_seconds": 2.68602,
+  "profiles": [
+    {
+      "entries": 1,
+      "free_string_class": "SHORT",
+      "utf8_bytes": 612,
+      "tokens": 173,
+      "prefix_sampling": "9_EVEN_DETERMINISTIC_CHECKPOINTS",
+      "total_possible_prefixes": 174,
+      "prefixes_compared": 9,
+      "full_replay_seconds": 0.06732,
+      "incremental_tracking_seconds": 0.017586,
+      "token_projection_seconds": 0.414099,
+      "full_replayed_characters": 2758,
+      "incremental_fed_characters": 612,
+      "tracker_rebuilds": 0,
+      "tracker_incremental_steps": 9,
+      "terminal_eos": true
+    },
+    {
+      "entries": 1,
+      "free_string_class": "MAX_BOUNDED",
+      "utf8_bytes": 1364,
+      "tokens": 289,
+      "prefix_sampling": "9_EVEN_DETERMINISTIC_CHECKPOINTS",
+      "total_possible_prefixes": 290,
+      "prefixes_compared": 9,
+      "full_replay_seconds": 0.146266,
+      "incremental_tracking_seconds": 0.033614,
+      "token_projection_seconds": 10.828896,
+      "full_replayed_characters": 6494,
+      "incremental_fed_characters": 1364,
+      "tracker_rebuilds": 0,
+      "tracker_incremental_steps": 9,
+      "terminal_eos": true
+    },
+    {
+      "entries": 4,
+      "free_string_class": "SHORT",
+      "utf8_bytes": 1752,
+      "tokens": 497,
+      "prefix_sampling": "9_EVEN_DETERMINISTIC_CHECKPOINTS",
+      "total_possible_prefixes": 498,
+      "prefixes_compared": 9,
+      "full_replay_seconds": 0.183105,
+      "incremental_tracking_seconds": 0.043731,
+      "token_projection_seconds": 10.765146,
+      "full_replayed_characters": 7894,
+      "incremental_fed_characters": 1752,
+      "tracker_rebuilds": 0,
+      "tracker_incremental_steps": 9,
+      "terminal_eos": true
+    },
+    {
+      "entries": 4,
+      "free_string_class": "MAX_BOUNDED",
+      "utf8_bytes": 4760,
+      "tokens": 961,
+      "prefix_sampling": "9_EVEN_DETERMINISTIC_CHECKPOINTS",
+      "total_possible_prefixes": 962,
+      "prefixes_compared": 9,
+      "full_replay_seconds": 0.484994,
+      "incremental_tracking_seconds": 0.109012,
+      "token_projection_seconds": 26.689081,
+      "full_replayed_characters": 21775,
+      "incremental_fed_characters": 4760,
+      "tracker_rebuilds": 0,
+      "tracker_incremental_steps": 9,
+      "terminal_eos": true
+    },
+    {
+      "entries": 8,
+      "free_string_class": "SHORT",
+      "utf8_bytes": 3272,
+      "tokens": 929,
+      "prefix_sampling": "9_EVEN_DETERMINISTIC_CHECKPOINTS",
+      "total_possible_prefixes": 930,
+      "prefixes_compared": 9,
+      "full_replay_seconds": 0.339712,
+      "incremental_tracking_seconds": 0.080912,
+      "token_projection_seconds": 5.576925,
+      "full_replayed_characters": 14689,
+      "incremental_fed_characters": 3272,
+      "tracker_rebuilds": 0,
+      "tracker_incremental_steps": 9,
+      "terminal_eos": true
+    },
+    {
+      "entries": 8,
+      "free_string_class": "MAX_BOUNDED",
+      "utf8_bytes": 9288,
+      "tokens": 1857,
+      "prefix_sampling": "9_EVEN_DETERMINISTIC_CHECKPOINTS",
+      "total_possible_prefixes": 1858,
+      "prefixes_compared": 9,
+      "full_replay_seconds": 0.93943,
+      "incremental_tracking_seconds": 0.214798,
+      "token_projection_seconds": 10.83595,
+      "full_replayed_characters": 41789,
+      "incremental_fed_characters": 9288,
+      "tracker_rebuilds": 0,
+      "tracker_incremental_steps": 9,
+      "terminal_eos": true
+    }
+  ],
+  "invalid_profiles": [
+    {
+      "class": "WRONG_ROOT",
+      "full_failure": {
+        "prefix": 2,
+        "code": "LITERAL_MISMATCH"
+      },
+      "incremental_failure": {
+        "prefix": 2,
+        "code": "LITERAL_MISMATCH"
+      },
+      "same_failure": true
+    },
+    {
+      "class": "INVALID_ENUM",
+      "full_failure": {
+        "prefix": 70,
+        "code": "ENUM_MISMATCH"
+      },
+      "incremental_failure": {
+        "prefix": 70,
+        "code": "ENUM_MISMATCH"
+      },
+      "same_failure": true
+    },
+    {
+      "class": "TRAILING_BYTES",
+      "full_failure": {
+        "prefix": 174,
+        "code": "TRAILING_BYTES"
+      },
+      "incremental_failure": {
+        "prefix": 174,
+        "code": "TRAILING_BYTES"
+      },
+      "same_failure": true
+    }
+  ],
+  "allowed_set_divergences": 0,
+  "peak_traced_bytes": 92739750,
+  "all_terminal": true,
+  "all_invalid_failures_identical": true,
+  "result": "PASS"
+}

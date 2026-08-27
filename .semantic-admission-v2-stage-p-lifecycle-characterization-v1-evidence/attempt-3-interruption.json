@@ -1,0 +1,13 @@
+{
+  "attempt":3,
+  "scope":"ZERO_INFERENCE_TOKENIZER_ONLY_129_CHECKPOINT_COMPARISON",
+  "result":"STOPPED_AS_PROFILER_COST_FAILURE",
+  "reason":"SIX_SHAPE_129_CHECKPOINT_CHARACTERIZATION_EXCEEDED_600_SECONDS_WITHOUT_COMPLETION",
+  "evidence_value":"Real-tokenizer trie projection across hundreds of distinct DFA states is independently too expensive for routine verification; no incomplete equivalence result was promoted.",
+  "output_evidence_produced":false,
+  "model_imported":false,
+  "model_load_started":false,
+  "inference_started":false,
+  "provider_calls":0,
+  "eligibility":"QUARANTINED_PERFORMANCE_DIAGNOSTIC_ONLY"
+}

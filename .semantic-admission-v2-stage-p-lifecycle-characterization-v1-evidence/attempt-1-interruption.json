@@ -1,0 +1,14 @@
+{
+  "attempt":1,
+  "scope":"ZERO_INFERENCE_TOKENIZER_ONLY",
+  "result":"INTERRUPTED_AND_TIMING_INELIGIBLE",
+  "reason":"ASSISTANT_MISINTERPRETED_PRIOR_HOST_SLEEP_AS_CURRENT_AND_TERMINATED_THE_RUN",
+  "operator_clarified_sleep_predated_characterization":true,
+  "terminated_by_assistant":true,
+  "output_evidence_produced":false,
+  "model_imported":false,
+  "model_load_started":false,
+  "inference_started":false,
+  "provider_calls":0,
+  "eligibility":"QUARANTINED_DIAGNOSTIC_ONLY"
+}
