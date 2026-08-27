@@ -1,0 +1,25 @@
+{
+  "result": "PASS",
+  "repair_identity": "f05da4001300c7b44f0e1f6ac29132ea357067529e149682fc9420fe13344673",
+  "focused_tests": 24,
+  "clean_host_import": {
+    "type": "StagePCreativeTargetConstraintStateV1",
+    "pydantic_loaded": false
+  },
+  "wsl_import_audit": {
+    "pydantic_available": false,
+    "pydantic_loaded": false,
+    "types": [
+      "GateFConstraintStateV1",
+      "StagePScopeGraphConstraintStateV1_2",
+      "StagePCreativeTargetConstraintStateV1"
+    ]
+  },
+  "transformers_loaded": false,
+  "tokenizer_loads": 0,
+  "model_loads": 0,
+  "provider_calls": 0,
+  "inference_calls": 0,
+  "case01_rerun": false,
+  "stage_c_calls": 0
+}

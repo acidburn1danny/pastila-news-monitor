@@ -1,0 +1,62 @@
+{
+  "artifact_id": "SEMANTIC_ADMISSION_V2_WSL_DEPENDENCY_BOUNDARY_REPAIR_V1",
+  "repair_identity": "f05da4001300c7b44f0e1f6ac29132ea357067529e149682fc9420fe13344673",
+  "lifecycle": "IMPLEMENTED_ZERO_INFERENCE_VERIFIED",
+  "root_cause": {
+    "finding": "Importing any semantic_admission_v2 submodule executed an eager package initializer that imported the host coordinator, models, and their pydantic dependency.",
+    "why_recurrent": "Lightweight tokenizer and DFA preflights using ordinary Python package imports crossed the host/application dependency boundary before reaching their requested submodule.",
+    "why_not_install_pydantic": "The WSL environment executes model and constraint code, not the host application. Installing pydantic would mask package-boundary leakage and permit additional host dependencies to enter silently."
+  },
+  "repair": {
+    "strategy": "LAZY_PUBLIC_API",
+    "initializer_sha256": "620d8a6f36f41cef4525d2f602299728bed16b117a1b9710f8886095eb2ad0c1",
+    "behavior": [
+      "Importing lightweight semantic_admission_v2 submodules no longer imports coordinator, core adapter, models, or pydantic.",
+      "Existing package-level public names remain available through __getattr__ lazy resolution.",
+      "Unknown public names still raise AttributeError.",
+      "dir() and __all__ continue exposing the documented public API.",
+      "Host-side typed contracts continue using the project pydantic dependency normally."
+    ]
+  },
+  "environment_policy": {
+    "host_application": "Owns pydantic and performs typed schema validation.",
+    "wsl_model_environment": "Owns tokenizer/model and dependency-light DFA/trie execution; pydantic is neither required nor installed by this repair.",
+    "runner_rule": "A WSL runner may import dependency-light submodules normally. Importing host contracts/coordinators in WSL requires an explicit separately reviewed dependency change.",
+    "preflight_rule": "Every new WSL runner binding must prove its ordinary import closure before tokenizer or model loading and record loaded forbidden modules."
+  },
+  "verification": {
+    "focused_tests": 24,
+    "focused_result": "PASS",
+    "clean_host_process_pydantic_loaded": false,
+    "wsl_pydantic_available": false,
+    "wsl_pydantic_loaded": false,
+    "ordinary_wsl_imports": [
+      "GateFConstraintStateV1",
+      "StagePScopeGraphConstraintStateV1_2",
+      "StagePCreativeTargetConstraintStateV1"
+    ],
+    "ordinary_wsl_import_result": "PASS",
+    "transformers_loaded": false,
+    "tokenizer_loads": 0,
+    "model_loads": 0,
+    "provider_calls": 0,
+    "inference_calls": 0
+  },
+  "non_changes": [
+    "No WSL package installation",
+    "No pydantic version change",
+    "No model or tokenizer change",
+    "No prompt, schema, grammar, admission, or runtime behavior change",
+    "No Case 01 rerun or Stage C call"
+  ],
+  "authority": {
+    "model_probe": false,
+    "case01_rerun": false,
+    "stage_c": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  },
+  "recommended_next_step": "Owner-review and freeze this dependency-boundary repair, then resume the approved Creative Target candidate sequence with a separate zero-inference runner/durable-executor binding."
+}
