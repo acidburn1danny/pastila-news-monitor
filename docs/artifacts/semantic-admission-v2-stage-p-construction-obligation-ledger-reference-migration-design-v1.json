@@ -1,0 +1,184 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-construction-obligation-ledger-reference-migration-design",
+  "schema_version": "1.0.0-design.1",
+  "artifact_id": "STAGE_P_CONSTRUCTION_OBLIGATION_LEDGER_REFERENCE_MIGRATION_DESIGN_V1",
+  "design_identity": "ef9eab9dedcc2ba625d2e17a884ff4b75c44708dcb635e7ce5753a8e9160b1f0",
+  "scope": "DESIGN_ONLY_NO_LIVE_SCHEMA_GRAMMAR_PROMPT_EVALUATOR_RUNNER_OR_RUNTIME_CHANGE",
+  "approved_reference_candidate_identity": "b127e9e321f1378d012ff65fb9c5718709c2bc84eb898130f405abd61c9fa0ae",
+  "migration_strategy": {
+    "kind": "BREAKING_VERSIONED_V2_CONTRACT",
+    "rule": "Every field whose value claims byte provenance becomes a SourceSpanReferenceV1. V1 strings and V2 references are never accepted through a union in the same schema.",
+    "v1_status": "Frozen historical/evaluation evidence remains validated and interpreted under its original V1 contract.",
+    "v2_status": "Future candidate only; no authority exists until separately implemented, verified, rebound, and approved.",
+    "automatic_v1_rewrite": false,
+    "backfill_frozen_raw": false
+  },
+  "field_migration_matrix": [
+    {
+      "record": "ConstructionRecord",
+      "v1_json_pointer_pattern": "/construction_role_audit/construction_records/*/candidate_span",
+      "v2_field": "candidate_span_ref",
+      "v2_type": "SourceSpanReferenceV1",
+      "required_source_role": "CANDIDATE",
+      "nullable": false,
+      "reason": "Defines the exact construction extent used for host/return overlap checks."
+    },
+    {
+      "record": "ScopeGraphEntry",
+      "v1_json_pointer_pattern": "/entries/*/candidate_span",
+      "v2_field": "candidate_span_ref",
+      "v2_type": "SourceSpanReferenceV1",
+      "required_source_role": "CANDIDATE",
+      "nullable": false,
+      "reason": "Anchors every classified proposition or contained-creative entry in immutable commentary bytes."
+    },
+    {
+      "record": "ScopeGraphEntry",
+      "v1_json_pointer_pattern": "/entries/*/authority_support",
+      "v2_field": "authority_support_ref",
+      "v2_type": "SourceSpanReferenceV1 | null",
+      "required_source_role": "FACTUAL_AUTHORITY",
+      "nullable": true,
+      "reason": "Cites governed support without permitting authority bytes to populate candidate evidence."
+    },
+    {
+      "record": "CreativeTargetAudit",
+      "v1_json_pointer_pattern": "/creative_target_audits/*/vehicle_span",
+      "v2_field": "vehicle_span_ref",
+      "v2_type": "SourceSpanReferenceV1",
+      "required_source_role": "CANDIDATE",
+      "nullable": false,
+      "reason": "Anchors the exact creative vehicle used for host and target reconciliation."
+    }
+  ],
+  "fields_that_remain_model_authored_analysis": [
+    {
+      "field": "ScopeGraphEntry.commitment",
+      "purpose": "Normalized proposition description used for semantic classification.",
+      "boundary": "It is not a source quotation, membership proof, or factual authority even when wording overlaps a source."
+    },
+    {
+      "field": "CreativeTargetAudit.semantic_target",
+      "purpose": "Model-authored description of what a creative vehicle targets.",
+      "boundary": "A REAL_WORLD_PROPOSITION target still requires reconciliation to a proposition entry and cannot acquire support from this text."
+    },
+    {
+      "field": "ConstructionRecord.role_basis",
+      "purpose": "Concise explanation for the construction-role classification.",
+      "boundary": "Quoted or paraphrased fragments inside the explanation carry no provenance; machine checks use references only."
+    },
+    {
+      "field": "ConstructionRoleAudit.literal_path_basis",
+      "purpose": "Explanation when no material creative construction is found.",
+      "boundary": "It cannot stand in for a candidate reference or create a ledger entry."
+    }
+  ],
+  "v2_shape_rules": [
+    "The four V1 provenance field names are absent from the V2 model; their reference-field replacements are mandatory except nullable authority_support_ref.",
+    "A reference source_sha256 must equal the case-bound identity for its required source role.",
+    "No free-text fallback, ENTIRE_COMMENTARY sentinel, normalized offset, character offset, token offset, or inferred source role is accepted.",
+    "A whole-commentary span is represented by CANDIDATE byte offsets [0, candidate_byte_length).",
+    "IDs and all existing semantic enums, graph links, cardinality limits, coverage receipts, and coherence rules remain conceptually unchanged.",
+    "Overlap is computed from resolved half-open byte intervals in the same source, never by searching copied text.",
+    "Cross-source intervals never overlap and cannot satisfy host/return, vehicle/host, or construction/entry reconciliation.",
+    "Repeated identical text remains occurrence-specific because coordinates, not substring search, define position."
+  ],
+  "projection_pipeline_design": {
+    "inputs": [
+      "Exact raw V2 model-response bytes and SHA-256.",
+      "Exact case-bound candidate and factual-authority bytes, roles, lengths, and SHA-256 identities.",
+      "Approved SourceSpanReferenceV1 schema identity and pure resolver identity."
+    ],
+    "ordered_phases": [
+      "Persist raw response exclusively before parsing or projection.",
+      "Validate the strict V2 reference-bearing JSON schema without altering raw bytes.",
+      "Resolve every reference independently against its required immutable source role.",
+      "Persist one projection receipt that binds the raw response, both sources, resolver, and every field projection.",
+      "Run graph overlap, source-role, semantic coherence, and coverage validation over resolved coordinates and model-authored classifications.",
+      "Persist a separate semantic receipt and then a terminal phase receipt using fail-closed precedence."
+    ],
+    "no_partial_admission": "Every required reference must resolve. One projection failure makes projection FAIL for the ledger; successfully resolved siblings remain recorded as evidence but grant no partial admission.",
+    "determinism": "The same raw response bytes, source bytes, schema, and resolver identities must produce the same ordered projection receipt bytes."
+  },
+  "projection_receipt_v1_design": {
+    "receipt_is_not_model_output": true,
+    "receipt_fields": [
+      "receipt schema name and version",
+      "raw model-response SHA-256 and byte length",
+      "candidate source SHA-256 and byte length",
+      "factual-authority source SHA-256 and byte length",
+      "reference schema identity and resolver identity",
+      "ordered projection records sorted by canonical JSON pointer",
+      "terminal projection status and stable reason code"
+    ],
+    "per_projection_record": [
+      "canonical JSON pointer to the reference field",
+      "required and observed source roles",
+      "source SHA-256",
+      "start_utf8 and end_utf8",
+      "projected byte length and SHA-256",
+      "resolution status and reason code"
+    ],
+    "projected_text_policy": "Do not duplicate projected text in the canonical receipt. Human-readable tools may render it on demand from the immutable source and recorded coordinates.",
+    "materialized_legacy_view": "Not part of V2 authority. If separately needed for diagnostics, it must be derived, separately hashed, clearly labeled non-raw, and never passed off as the model response or used to mutate frozen V1 evidence.",
+    "append_only_rule": "The receipt is exclusively created beside raw output. It never overwrites, repairs, or normalizes the raw response or source files."
+  },
+  "receipt_coexistence_and_precedence": {
+    "raw_receipt": "Authoritative record of exactly what the model returned; success means persistence only.",
+    "schema_receipt": "Reports strict V2 parsing independently from transport and persistence.",
+    "projection_receipt": "Reports whether all references deterministically resolve to correct immutable sources.",
+    "semantic_receipt": "Reports graph, scope, event-alignment, target, construction, and coverage judgments after projection.",
+    "terminal_precedence": [
+      "TRANSPORT_OR_RAW_PERSISTENCE_FAILURE",
+      "SCHEMA_FAILURE",
+      "SOURCE_PROJECTION_FAILURE",
+      "SEMANTIC_OR_COVERAGE_FAILURE",
+      "PASS"
+    ],
+    "preservation_rule": "A later failure never rewrites an earlier success. For example, Case 01 may retain transport SUCCESS, raw SUCCESS, schema SUCCESS, projection SUCCESS, and semantic FAIL as separate facts."
+  },
+  "stable_projection_reason_codes": [
+    "STAGE_P_SOURCE_REFERENCE_IDENTITY_DRIFT",
+    "STAGE_P_SOURCE_REFERENCE_ROLE_MISMATCH",
+    "STAGE_P_SOURCE_REFERENCE_RANGE_INVALID",
+    "STAGE_P_SOURCE_REFERENCE_UTF8_BOUNDARY_INVALID",
+    "STAGE_P_SOURCE_REFERENCE_EMPTY",
+    "STAGE_P_SOURCE_PROJECTION_FAILURE"
+  ],
+  "case01_design_acceptance_contract": [
+    "The full commentary can be referenced independently by construction C1, entries P1 and P2, and target T1 without copying any commentary bytes into those fields.",
+    "All four references may share identical CANDIDATE coordinates; overlap reconciliation uses coordinates and succeeds deterministically.",
+    "The model-authored angazații approximation cannot become projected evidence because no provenance-bearing text field exists in V2.",
+    "An authority_support_ref, when non-null, resolves only against FACTUAL_AUTHORITY; it cannot populate candidate_span_ref or vehicle_span_ref.",
+    "Projection success does not alter or excuse the observed semantic event_alignment issue; NEW_UNSUPPORTED_EVENT versus GOVERNED_EVENT remains an independent semantic decision.",
+    "The frozen V1 raw output and its membership-failure receipt remain unchanged and are never retroactively reclassified through V2."
+  ],
+  "bounded_future_sequence_recommendation": [
+    "If separately authorized, implement only frozen V2 ledger models plus a pure ledger projector/receipt builder over captured fixtures; do not bind an evaluator or grammar.",
+    "Verify JSON-pointer completeness: every provenance-bearing field is projected exactly once and no free-text analysis field is projected as evidence.",
+    "Verify deterministic receipt bytes, field-role rejection, repeated-span coordinates, all-or-nothing projection status, and preservation of frozen raw bytes.",
+    "Use a hand-constructed reference-bearing Case 01 fixture for contract verification only; do not convert or repair the frozen model output and do not claim it as a generated result.",
+    "Stop for owner review before any constrained grammar/projector, prompt migration, evaluator/runner rebinding, probe construction, or inference."
+  ],
+  "explicit_non_goals": [
+    "No implementation of V2 ledger models, projection receipts, adapters, grammar, prompt, evaluator, runner, or runtime path in this design step.",
+    "No conversion, repair, replacement, or re-adjudication of frozen V1 raw evidence.",
+    "No probe, retry, model call, Stage C, curriculum exposure, production authority, or training."
+  ],
+  "authority": {
+    "implementation": false,
+    "live_schema_change": false,
+    "grammar_change": false,
+    "prompt_change": false,
+    "evaluator_rebinding": false,
+    "runner_rebinding": false,
+    "probe_construction": false,
+    "probe_execution": false,
+    "stage_c": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  },
+  "status": "OWNER_REVIEW_REQUIRED"
+}
