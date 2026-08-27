@@ -29,6 +29,8 @@ class TokenizersBackend:
         assert skip_special_tokens is True
         assert clean_up_tokenization_spaces is False
         token_id = token_ids[0]
+        if token_id == 12:
+            return "\x00"
         return "" if token_id in SPECIAL_TOKEN_IDS else chr(0x20 + token_id % 90)
 
 
@@ -63,6 +65,7 @@ def test_extracts_complete_immutable_piece_bundle():
     bundle = extract_identity_bound_token_pieces_v1(tokenizer=tokenizer, identity=identity())
     assert tokenizer.decode_calls == VOCABULARY_SIZE
     assert len(bundle.token_pieces) == VOCABULARY_SIZE
+    assert bundle.token_pieces[12] == "\x00"
     assert bundle.excluded_token_ids == frozenset((0, 1, 11))
     assert bundle.eos_token_id == 2
     assert bundle.tokenizer_identity == TOKENIZER_IDENTITY

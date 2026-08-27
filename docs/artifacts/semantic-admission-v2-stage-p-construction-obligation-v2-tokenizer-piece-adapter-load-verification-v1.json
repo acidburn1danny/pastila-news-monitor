@@ -1,0 +1,60 @@
+{
+  "artifact_type": "TOKENIZER_LOAD_ONLY_ADAPTER_VERIFICATION_RECEIPT",
+  "artifact_version": "1.0.0",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_TOKENIZER_PIECE_ADAPTER_LOAD_VERIFICATION_V1",
+  "canonical_identity": "807ab62dc6e8435e1f507b9a4e718575a208f4c921c8b6e2a5029104fbb3a57f",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "separator": "LF",
+    "ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_V2_TOKENIZER_PIECE_ADAPTER_LOAD_VERIFICATION_V1",
+      "974d5e6257256d7397cb68f90952c66809a536cf5525cbef58b3bbfce6791587",
+      "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c",
+      "272516fe4ca74a094ce0d5ccf57e0539924155b4a475412e5b24bd1726418bdf",
+      "PASS_TOKENIZER_LOAD_ONLY"
+    ]
+  },
+  "bindings": {
+    "projector_freeze_identity": "974d5e6257256d7397cb68f90952c66809a536cf5525cbef58b3bbfce6791587",
+    "tokenizer_identity": "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c",
+    "decoder_identity": "ministral-tokenizer-decode-skip-special-cleanup-false-v1",
+    "transformers_version": "5.15.0",
+    "tokenizer_implementation": "TokenizersBackend",
+    "vocabulary_size": 131072,
+    "eos_token_id": 2,
+    "special_token_ids": [0, 1, 2, 11],
+    "adapter_source_sha256": "703d95805f4a4a261deb27e3f61f0df5830b0a16f53912c1f9a3035438ce723f",
+    "verification_harness_sha256": "3b9597d5a9fb9a360bad6621cbc2035c233a4bf5b8037590c8610d5f38661bb4"
+  },
+  "result": {
+    "status": "PASS_TOKENIZER_LOAD_ONLY",
+    "token_piece_sha256": "272516fe4ca74a094ce0d5ccf57e0539924155b4a475412e5b24bd1726418bdf",
+    "excluded_non_eos_token_count": 999,
+    "fix_mistral_regex": false,
+    "regex_warning": "PRESERVED_UNCHANGED"
+  },
+  "bounded_remediation": {
+    "first_attempt": "FAILED_CLOSED_ON_CONTROL_BEARING_TOKEN_PIECE",
+    "cause": "ADAPTER_REJECTED_NUL_DESPITE_FROZEN_AUDIT_CHARACTERIZING_CONTROL_BEARING_PIECES",
+    "change": "REMOVED_EXTRA_NUL_REJECTION_ONLY",
+    "historical_exclusion_policy_preserved": "SPECIAL_AND_EMPTY_NON_EOS_ONLY",
+    "semantic_or_identity_change": false
+  },
+  "activity": {
+    "tokenizer_load_attempts": 2,
+    "successful_verifications": 1,
+    "model_loads": 0,
+    "provider_calls": 0,
+    "generation_or_inference_calls": 0,
+    "runner_executor_or_probe_calls": 0,
+    "stage_c_entries": 0
+  },
+  "authority": {
+    "future_tokenizer_loading": false,
+    "model_or_provider": false,
+    "inference_or_generation": false,
+    "runner_executor_or_probe": false,
+    "stage_c": false,
+    "runtime_or_production": false
+  }
+}

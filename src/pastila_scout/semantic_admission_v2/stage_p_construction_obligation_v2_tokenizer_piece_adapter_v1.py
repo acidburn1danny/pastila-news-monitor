@@ -79,7 +79,7 @@ def extract_identity_bound_token_pieces_v1(
             [token_id], skip_special_tokens=True,
             clean_up_tokenization_spaces=False,
         )
-        if type(piece) is not str or "\x00" in piece or any(
+        if type(piece) is not str or any(
             0xD800 <= ord(character) <= 0xDFFF for character in piece
         ):
             raise ValueError("CONSTRUCTION_OBLIGATION_V2_TOKENIZER_DECODE_INVALID")
