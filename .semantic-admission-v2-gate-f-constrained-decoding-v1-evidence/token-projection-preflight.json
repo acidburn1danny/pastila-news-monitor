@@ -1,0 +1,82 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-gate-f-token-projection-preflight",
+  "schema_version": "1.0.0",
+  "tokenizer_revision": "3cea74c1ebaf5ce5f5a2553de470e2ceab825142",
+  "vocabulary_size": 131072,
+  "representative_states": [
+    {
+      "state": "root",
+      "prefix_token_count": 0,
+      "allowed_token_count": 2,
+      "elapsed_seconds": 0.669075,
+      "tokens_per_second": 195900.281,
+      "eos_allowed": false,
+      "fence_start_allowed": false,
+      "allowed_ids_sha256": "e17dcbbef043e7145d2839186b6f7eab2cb813b0a8a4b721a5db51d5298e55d1"
+    },
+    {
+      "state": "decision",
+      "prefix_token_count": 15,
+      "allowed_token_count": 7,
+      "elapsed_seconds": 0.988307,
+      "tokens_per_second": 132622.707,
+      "eos_allowed": false,
+      "fence_start_allowed": false,
+      "allowed_ids_sha256": "6540a8f103b3b56eac24cce1433c4a177a0c020e0f0cd9d2a912f785d010c945"
+    },
+    {
+      "state": "reason_code",
+      "prefix_token_count": 24,
+      "allowed_token_count": 4,
+      "elapsed_seconds": 1.177975,
+      "tokens_per_second": 111268.912,
+      "eos_allowed": false,
+      "fence_start_allowed": false,
+      "allowed_ids_sha256": "3f6208b2a47f13fb1f8b0e0d2a99ab14196b7446c2e3e4701c21b37e1c7e6be3"
+    },
+    {
+      "state": "free_string",
+      "prefix_token_count": 49,
+      "allowed_token_count": 128169,
+      "elapsed_seconds": 3.055936,
+      "tokens_per_second": 42890.945,
+      "eos_allowed": false,
+      "fence_start_allowed": true,
+      "allowed_ids_sha256": "e37d3028ce7966dd04403308c56ff3e3eacd557203eeb21029c271fb178744ea"
+    },
+    {
+      "state": "confidence",
+      "prefix_token_count": 68,
+      "allowed_token_count": 2,
+      "elapsed_seconds": 1.852255,
+      "tokens_per_second": 70763.494,
+      "eos_allowed": false,
+      "fence_start_allowed": false,
+      "allowed_ids_sha256": "f94c016e99f31144f1707e53e9b8b93521ec362a17914f4b2abae1c3499aab5c"
+    }
+  ],
+  "canonical_streams": {
+    "pass": {
+      "token_count": 23,
+      "decoded_exact": true,
+      "terminal": true
+    },
+    "fail": {
+      "token_count": 79,
+      "decoded_exact": true,
+      "terminal": true
+    }
+  },
+  "terminal_only_eos": true,
+  "all_representative_states_exclude_eos": true,
+  "all_representative_states_exclude_fence_start": false,
+  "maximum_projection_seconds": 3.055936,
+  "performance_acceptance_seconds_per_step": 0.25,
+  "performance_acceptance_met": false,
+  "implementation_role": "CORRECTNESS_ORACLE_ONLY",
+  "runner_integration_eligible": false,
+  "model_loaded": false,
+  "model_calls": 0,
+  "provider_calls": 0,
+  "result": "FAIL_PERFORMANCE"
+}

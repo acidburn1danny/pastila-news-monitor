@@ -1,0 +1,13 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-gate-f-token-projection-failure",
+  "schema_version": "1.0.0",
+  "attempt": 1,
+  "boundary": "WSL_PACKAGE_IMPORT_GRAPH",
+  "exception_type": "ModuleNotFoundError",
+  "missing_module": "pydantic",
+  "tokenizer_loaded": false,
+  "model_loaded": false,
+  "model_calls": 0,
+  "provider_calls": 0,
+  "remediation": "Make constraint module standard-library-only and load the frozen file directly in the inference environment"
+}

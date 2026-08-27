@@ -1,0 +1,31 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-gate-f-constraint-implementation-v1-manifest",
+  "schema_version": "1.0.0",
+  "lifecycle": "FROZEN_IMPLEMENTATION_CORRECTNESS_COMPLETE_PERFORMANCE_BLOCKED",
+  "design_identity": "91f3de68f02b1b203f816c9939ff49241d3a9c6243f1cc3800a964b9b0e5b0f1",
+  "implementation_role": "EVALUATION_ONLY_CORRECTNESS_ORACLE",
+  "artifact_hashes_sha256": {
+    "constraint_module": "3f9ab479f8f1ffe924ea7511dd75b32fb17b867e0ff9e0874d507c19d807fbde",
+    "implementation_tests": "4928110770c5c4ffc9b09c1b1af90f3dbb24d0ffefa8b1336fab42fe4c92edeb",
+    "projection_preflight_runner": "1f4c4419f96eb4c506593b3f5769105b334ed0e2d6818c1b2d7b0d7095252e83",
+    "token-projection-preflight.json": "68d35c317a1f4211cdcd204d0feaf430ce53f9b9e162d9effd0a3248efd3de65",
+    "token-projection-attempt1-failure.json": "0565b1d522efa9f62e97126a2f29ac830c9a42a433dc65c7b32a961156e34c37",
+    "report.md": "2877d8f4b33d94bfd503bd718a5697d54ee5f8f36e8239dd0711b040ec3556e7"
+  },
+  "property_and_regression_tests_passed": 37,
+  "vocabulary_ids_exhaustively_projected_per_state": 131072,
+  "representative_states": 5,
+  "maximum_projection_seconds": 3.055936,
+  "performance_acceptance_seconds_per_step": 0.25,
+  "correctness_preflight": "PASS",
+  "performance_preflight": "FAIL",
+  "runner_integration_eligible": false,
+  "production_import_edge": false,
+  "model_calls": 0,
+  "provider_calls": 0,
+  "inference_authority": false,
+  "run3_authorized": false,
+  "runtime_authority": false,
+  "training_authority": false,
+  "canonical_identity": "af5c6c74d11e5964cd8bd4c703ecfbf158b421b37fc3c33ea75aa37406848176"
+}
