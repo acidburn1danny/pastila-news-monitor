@@ -1,0 +1,22 @@
+{
+  "schema_name":"pastila-semantic-admission-v2-stage-p-role-coherence-v2-binding-candidate",
+  "schema_version":"1.0.0-evaluation.1",
+  "lifecycle":"ZERO_INFERENCE_ONE_SHOT_CASE01_V2_PATH_READY_FOR_OWNER_REVIEW",
+  "source_projection_identity":"0803578fe9e120d784040d20457033e265de3e624026578ada502aead80ff8de",
+  "case_id":"HMCV1-SASC-01",
+  "candidate_identity":"0f51ac154a178ae65bc208969f53f3e4a7a2438950c170cb2e700247db68b3e3",
+  "prompt_identity":"sha256:dd9f26782347ea2a8901135fc8bb671587d020a794798de404dc274e699fa4f8",
+  "schema_identity":"sha256:a47603e257ee5e315b77993891f0079e30e6c63a150b6b04e6889a98a4613ac9",
+  "constraint_identity":"sha256:5011b85a8b8bc12b871ceb0c8c1ba74cd453b5e4c6ff5f9ece2ace56704502fa",
+  "grammar_identity":"sha256:0d55e1d47054251c380901d9c8ac4f4be4f76355c3fc1a9fbc80cc16387f2429",
+  "model_identity":"pastila-editor-core-v1.2-experimental",
+  "runner_sha256":"31f3e22e22ea3528b422277878c65cbd3758ecf0569f9dddc1c435cce7892b41",
+  "candidate_source_sha256":"e83876a21b6a4ccac2c2a5f54e6149616c61e1eac2edf4a362e33aeb6786e637",
+  "evaluator_sha256":"649a53bfbc23d3979b5e272ca4c495b6a95738be239435d7829780fc5e44cd41",
+  "executor_sha256":"a41d90701f757b04d524ff051c5bdc84bb561de83462f50ab1972b3717ef9705",
+  "probe_sha256":"841fd3f5e7681e63031b51af1ae6d634a7bbcb58b9bf6167f31eeab3117f9c2a",
+  "request":{"rendered_prompt_sha256":"33c6040fd9dedb15fac39242e9af1188e81b63f763e509ebb8b2758ea4adfa58","request_id":"application-request-v1:d61f28b8bb50dcd930b14c30607efcd436fba1ac242bb22751a99e24b8f59036","envelope_identity":"scout:provider-request-envelope-v2:d27599e7f398ffa5698008a5ca37ebdc05a6065ffd2a4ddcb3e4a8752c722f9f","request_units":1,"timeout_seconds":240.0,"maximum_provider_calls":1,"retry_count":0,"repair_count":0,"selection_count":0},
+  "boundaries":{"raw_before_validation":true,"durable_lifecycle":true,"projector":false,"stage_c":false,"case10":false,"proof_rerun":false},
+  "bounded_next_step_if_authorized":"Execute exactly one evaluation-only Stage-P HMCV1-SASC-01 V2 probe, with no retry, repair, selection, projector, Stage C, Case 10, or proof rerun; stop after durable evidence and semantic evaluation.",
+  "authority":{"probe_execution":false,"additional_probe":false,"projector":false,"stage_c":false,"case10":false,"proof_rerun":false,"runtime":false,"production":false,"curriculum":false,"training":false}
+}
