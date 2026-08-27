@@ -1,0 +1,11 @@
+{
+  "result": "FROZEN",
+  "canonical_identity": "cdd5ad4c483582784c3aff8bea6a9ef4eaa547e79c1d99e30206dd3e12d6cff6",
+  "receipt_propagation_proof": "PASS",
+  "source_evidence_modified": false,
+  "model_calls": 0,
+  "provider_calls": 0,
+  "inference_calls": 0,
+  "reruns": 0,
+  "stage_c_calls": 0
+}

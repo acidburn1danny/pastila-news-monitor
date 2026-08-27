@@ -1,0 +1,64 @@
+{
+  "artifact_id": "STAGE_P_CONSTRUCTION_ROLE_CASE01_RECEIPT_V1_1_RUN_V1_FREEZE",
+  "canonical_identity": "cdd5ad4c483582784c3aff8bea6a9ef4eaa547e79c1d99e30206dd3e12d6cff6",
+  "lifecycle": "OWNER_FROZEN_QUARANTINED_EVALUATION_EVIDENCE",
+  "source_probe_binding_identity": "fde6829ff64649c404f85b0f1bbc032bf7b692ccded80d986587b188041fc09f",
+  "case_id": "HMCV1-SASC-01",
+  "immutable_evidence": {
+    "phase_receipt_sha256": "2d6b209bb372b155cd6b1eab1c71215d5f0a1a53dd81d3ee37b89f111efd7319",
+    "typed_liveness_receipt_sha256": "a361d54f0ad4ab2881ff50b8d7cc927c9f16ad79d9e493d8338e2e1b13ebb011",
+    "identity_binding_sha256": "6c455be2e3699b95344cf285792f966e20ea3dd790529278a83713e95df563a9",
+    "request_sha256": "b6e0fd27797998d9b447e9cb938b3ceaa173ee008dd8965a43dd5bf39f5a710d",
+    "diagnostic_trace_sha256": "6f1e987d6bb718bd13921fa77b348d63af120ea44bac455f28fae53169a241ba",
+    "host_liveness_event_sha256": "d57d03fbd58c3ada202f447ce49152821f7e88eadf77e28635420815e0e21661",
+    "runner_exception_sha256": "fb631969dcf6609eed0b5b61b714d6fc302047fdaf3eb1ce024650fabc2f613d",
+    "durable_tree_identity": "0501c959ceadbe654106da587d5a5fb6508cbc00acd21976635ee26dd8a532c6",
+    "durable_lifecycle_relative_path": "3cb718e4eff5a83053075290cdbfba7cfdea44464a5368cf71f4326ac5a26b51"
+  },
+  "execution_receipt": {
+    "provider_call_count": 1,
+    "reason_code": "STAGE_P_CONSTRAINT_LIVENESS_FAILURE",
+    "final_decision": "ABSTAIN_FAIL_CLOSED",
+    "eligibility": "QUARANTINED_EVALUATION_ONLY",
+    "raw_terminal_output": false,
+    "schema_validation": "NOT_RUN",
+    "source_membership": "NOT_RUN",
+    "retry_count": 0,
+    "repair_count": 0,
+    "selection_count": 0,
+    "stage_c_calls": 0
+  },
+  "receipt_propagation_proof": {
+    "result": "PASS",
+    "runner_classification": "CONSTRAINT_LIVENESS_FAILURE",
+    "host_classification": "CONSTRAINT_LIVENESS_FAILURE",
+    "typed_receipt_code": "CONSTRAINT_LIVENESS_FAILURE",
+    "outer_phase_reason": "STAGE_P_CONSTRAINT_LIVENESS_FAILURE",
+    "previous_generic_misclassification_absent": true,
+    "statement": "Evaluator V1.1 preserved the validated durable constraint-liveness classification through the outer phase receipt."
+  },
+  "repeated_semantic_failure": {
+    "class": "CONSTRUCTION_TO_LEDGER_RECONCILIATION_FAILURE_RECURRED",
+    "decoded_partial_sha256": "1a11286cad937c5faf19021f1cada98077867cb63aeae7e2923a489219be1a4a",
+    "decoded_partial_utf8_bytes": 2911,
+    "dfa_mode": "LITERAL",
+    "dfa_next_step": "COVERAGE",
+    "entry_count": 2,
+    "matches_prior_run_partial_sha256": true,
+    "interpretation": "The deterministic candidate again declared a mixed construction mapped to P1 while emitting no compatible CONTAINED_CREATIVE P1 host. The DFA correctly denied a terminal coverage decision.",
+    "boundary": "This repeated partial path is failure-diagnostic evidence only, not a completed ledger and not authority for curriculum, training, runtime, or Stage C."
+  },
+  "authority": {
+    "receipt_propagation_proof": true,
+    "completed_semantic_ledger": false,
+    "semantic_remediation": false,
+    "rerun": false,
+    "stage_c": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  },
+  "status": "FROZEN",
+  "recommended_next_step": "Perform an owner-review design decision on the repeated construction-to-ledger reconciliation failure before authorizing any semantic remediation. This freeze grants no rerun or Stage C authority."
+}
