@@ -1,0 +1,23 @@
+{
+  "schema_name":"pastila-semantic-admission-v2-staged-gate-f-feasibility-design-bundle",
+  "schema_version":"1.0.0",
+  "canonical_identity":"57212b8426c7937a006541d4bca832d5655072fe11ce26c659b7a78d81ec8344",
+  "identity_method":"sha256 of ordered lowercase artifact SHA-256 values joined by LF",
+  "lifecycle":"FROZEN_DESIGN_ONLY_READY_FOR_OWNER_REVIEW",
+  "source_capability_analysis_identity":"3b289f52d6301acb57ef73b03010b64419707028ea68cdabca82f3c05d86e47c",
+  "artifacts":[
+    {"path":"docs/artifacts/semantic-admission-v2-staged-gate-f-feasibility-design-v1.json","sha256":"cfa986f140453184851f1614d2b3554d9f67ae6428d133f9380d7f95c64aa5af"},
+    {"path":"tests/test_semantic_admission_v2_staged_gate_f_feasibility_design_v1.py","sha256":"c0a80c042fe9aa929374a8788a37c1f8c50a7fccb6a056abc5d4c6b122706da9"},
+    {"path":".semantic-admission-v2-staged-gate-f-feasibility-design-v1-evidence/report.md","sha256":"26061eec8d56904e4063bd102cbbaba4c7521014518d4c823e118ad13272ec13"}
+  ],
+  "architecture":"STAGED_PROPOSITION_LEDGER_THEN_CLASSIFICATION",
+  "maximum_model_calls_per_candidate":2,
+  "proof_cases":["HMCV1-SASC-01","HMCV1-SASC-10"],
+  "model_probe_authority":false,
+  "implementation_authority":false,
+  "runtime_authority":false,
+  "production_authority":false,
+  "curriculum_authority":false,
+  "training_authority":false,
+  "gate_s_authority":false
+}

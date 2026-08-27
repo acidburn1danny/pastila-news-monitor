@@ -1,0 +1,162 @@
+{
+  "schema_name":"pastila-semantic-admission-v2-staged-gate-f-feasibility-design",
+  "schema_version":"1.0.0-design.1",
+  "scope":"DESIGN_ONLY_NO_SCHEMA_PROMPT_IMPLEMENTATION_OR_INFERENCE",
+  "source_capability_analysis_identity":"3b289f52d6301acb57ef73b03010b64419707028ea68cdabca82f3c05d86e47c",
+  "objective":"Separate proposition discovery/alignment from governed classification without treating model silence, ledger omission, or creative framing as proof of safety.",
+  "non_objectives":[
+    "No commentary generation or factual-summary generation.",
+    "No replacement of immutable factual authority.",
+    "No lexical routing or deterministic semantic inference.",
+    "No Gate S, Core/Voice generation, curriculum, runtime, production, or training change."
+  ],
+  "architecture":{
+    "calls_per_candidate":2,
+    "retry_count":0,
+    "stage_order":["STAGE_P_PROPOSITION_LEDGER","DETERMINISTIC_LEDGER_VALIDATION","STAGE_C_CLASSIFICATION"],
+    "stage_p_model":"UNCHANGED_CORE_V1_2_EVALUATION_ONLY",
+    "stage_c_model":"UNCHANGED_CORE_V1_2_EVALUATION_ONLY",
+    "stage_p_grammar":"NEW_SEPARATELY_VERSIONED_EVALUATION_ONLY_CONSTRAINED_GRAMMAR_REQUIRED",
+    "stage_c_grammar":"EXISTING_GATE_F_CONSTRAINED_RESPONSE_GRAMMAR_IF_ZERO_INFERENCE_COMPATIBILITY_PASSES",
+    "shared_inputs":["byte-immutable factual summary","candidate commentary"],
+    "stage_c_additional_input":"Validated but untrusted Stage P ledger",
+    "independence_rule":"Stage C receives original authority and candidate and must audit ledger completeness; it may not treat the ledger as factual authority."
+  },
+  "stage_p":{
+    "task":"Inventory and align every real-world proposition carried by assertion, presupposition, entailment, or necessary implication, while marking contained creative material and unresolved scope. Do not decide admission and do not emit FSEM codes.",
+    "root_fields":["stage_id","coverage_decision","entries","coverage_receipt"],
+    "stage_id":"PROPOSITION_LEDGER",
+    "coverage_decisions":["COMPLETE","INDETERMINATE"],
+    "entry_limit":8,
+    "entry_fields":[
+      "entry_id",
+      "entry_type",
+      "candidate_span",
+      "authority_support",
+      "commitment",
+      "scope_basis",
+      "event_alignment",
+      "authority_modality",
+      "candidate_modality",
+      "authority_timing",
+      "candidate_timing",
+      "independence_group"
+    ],
+    "entry_types":["REAL_WORLD_COMMITMENT","CONTAINED_CREATIVE","UNRESOLVED_SCOPE"],
+    "scope_basis_values":["ASSERTED","PRESUPPOSED","ENTAILED","NECESSARILY_IMPLIED","CREATIVE_CONTAINED","UNRESOLVED"],
+    "modality_values":["NOT_APPLICABLE","POSSIBLE","CONDITIONAL","PROPOSED","EXPECTED","CERTAIN_OR_ACTUAL","UNRESOLVED"],
+    "timing_values":["NOT_APPLICABLE","PAST","PRESENT","ONGOING","FUTURE","COMPLETED","UNDATED","UNRESOLVED"],
+    "event_alignment_values":["GOVERNED_EVENT","NEW_UNSUPPORTED_EVENT","CREATIVE_VEHICLE_ONLY","UNRESOLVED"],
+    "coverage_receipt_fields":["candidate_reviewed_as_whole","embedded_propositions_checked","creative_scope_checked","unresolved_scope_present"],
+    "complete_invariants":[
+      "coverage_decision COMPLETE requires all coverage receipt booleans except unresolved_scope_present to be true and unresolved_scope_present false.",
+      "COMPLETE is invalid when any entry is UNRESOLVED_SCOPE or contains an UNRESOLVED enum.",
+      "An empty entries array cannot be COMPLETE; fact-safe commentary must still ledger the contained creative or editorial material that explains why no real-world commitment was extracted.",
+      "Every material real-world commitment must have its own entry or share an explicit independence_group with other dimensions of the same proposition.",
+      "Stage P must not select Gate F decision or reason codes."
+    ],
+    "case_01_expected_shape":"At least one CONTAINED_CREATIVE entry grounding the hotel/room/transparency transformation, no unsupported REAL_WORLD_COMMITMENT, COMPLETE coverage.",
+    "case_10_expected_shape":"REAL_WORLD_COMMITMENT entries or grouped dimensions for rules changed during the event and the test deciding young people's future, aligned against possible future rules, COMPLETE coverage."
+  },
+  "deterministic_ledger_validation":{
+    "allowed_checks":[
+      "Strict schema and field-order validation.",
+      "Exact enum and maximum-entry validation.",
+      "Unique entry_id and valid independence_group references.",
+      "Every non-null candidate_span is a byte-exact contiguous candidate substring.",
+      "Every non-null authority_support is a byte-exact contiguous factual-summary substring.",
+      "COMPLETE and INDETERMINATE structural invariants.",
+      "Input, prompt, raw-output, and ledger identity binding."
+    ],
+    "prohibited_checks":[
+      "No inference that an omitted proposition does or does not exist.",
+      "No automatic FSEM mapping from modality/timing enums.",
+      "No semantic correction, span repair, normalization, entry insertion, deletion, merging, or relabeling.",
+      "No conversion of model silence to COMPLETE."
+    ],
+    "failure":"Any violation produces STAGE_P_VALIDATION_FAILURE and final fail-closed abstention; Stage C is not called."
+  },
+  "stage_c":{
+    "task":"Audit Stage P completeness against the original authority and candidate, then classify every unsupported real-world proposition using governed FSEM codes and decisive/supporting status.",
+    "ledger_trust":"UNTRUSTED_ASSISTIVE_EVIDENCE_ONLY",
+    "required_internal_sequence":[
+      "Re-read original candidate and authority, including presupposition, entailment, and necessary implication.",
+      "Check whether Stage P omitted, mis-scoped, or misaligned any material proposition.",
+      "If ledger completeness cannot be affirmed, return INDETERMINATE with ADMISSION_INDETERMINATE; do not repair the ledger.",
+      "For complete ledgers, compare matched event axes before open-class labels.",
+      "Group dimensions of one proposition and assign the minimal core contradiction DECISIVE; material additional dimensions SUPPORTING.",
+      "PASS only after explicit completeness audit and no unsupported real-world proposition."
+    ],
+    "output":"Existing strict Gate F decision/reason schema, subject to zero-inference compatibility and source-span validation.",
+    "omission_rule":"Stage P omission is never evidence of safety. A detected or suspected omission yields INDETERMINATE rather than PASS.",
+    "new_finding_rule":"Stage C may reject based on a proposition visible in the originals even if omitted by Stage P, but must mark ledger completeness failure in a separate evaluation receipt; it may not silently amend Stage P evidence.",
+    "pass_requirements":[
+      "Stage P is structurally COMPLETE.",
+      "Stage C independently affirms completeness.",
+      "All contained creative entries remain nonfactual after factual-return review.",
+      "No unsupported real-world proposition remains.",
+      "All reason spans, if any, pass source-membership validation."
+    ]
+  },
+  "fail_closed_precedence":[
+    "STAGE_P_PROVIDER_OR_TRANSPORT_FAILURE -> ABSTAIN",
+    "STAGE_P_SCHEMA_OR_SOURCE_VALIDATION_FAILURE -> ABSTAIN_WITHOUT_STAGE_C_CALL",
+    "STAGE_P_INDETERMINATE -> ABSTAIN_WITHOUT_STAGE_C_CALL",
+    "STAGE_C_PROVIDER_OR_TRANSPORT_FAILURE -> ABSTAIN",
+    "STAGE_C_SCHEMA_OR_SOURCE_VALIDATION_FAILURE -> ABSTAIN",
+    "STAGE_C_INDETERMINATE_OR_COMPLETENESS_UNRESOLVED -> ABSTAIN",
+    "STAGE_C_FAIL -> REJECT_FACTUAL_SEMANTIC",
+    "STAGE_P_COMPLETE_AND_STAGE_C_PASS -> PASS_GATE_F"
+  ],
+  "call_ceiling":{
+    "normal_candidate_maximum":2,
+    "stage_p_failure_or_indeterminate_maximum":1,
+    "two_case_probe_maximum":4,
+    "retry_or_repair_calls":0,
+    "unused_call_budget":"Never consumed after an earlier terminal abstention."
+  },
+  "durability_and_receipts":{
+    "provider_boundary":"Persist each raw provider response or exception before schema or semantic validation.",
+    "stage_p_receipt":"Bind input hashes, prompt/model/grammar identities, raw bytes, parse result, source checks, coverage decision, and validation failures.",
+    "stage_c_receipt":"Bind original inputs, Stage P raw and validated identities, prompt/model/grammar identities, raw bytes, completeness audit, decision, reason records, source checks, and failures.",
+    "aggregate_receipt":"Bind precedence path, calls consumed, unused budget, final Gate F decision, and quarantine status.",
+    "overwrite":false,
+    "silent_retry":false,
+    "repair":false,
+    "selection":false
+  },
+  "bounded_proof_contract":{
+    "case_ids":["HMCV1-SASC-01","HMCV1-SASC-10"],
+    "maximum_provider_calls":4,
+    "expected_annotations_hidden_from_both_stages":true,
+    "case_01":{
+      "stage_p":"COMPLETE with grounded CONTAINED_CREATIVE coverage and no unsupported real-world commitment.",
+      "stage_c":"PASS with no reasons after independent completeness audit."
+    },
+    "case_10":{
+      "stage_p":"COMPLETE ledger carrying certainty/timing mutation and life-stakes commitments with source-valid spans and correct grouping.",
+      "stage_c":"FAIL: certainty DECISIVE; timing and life-stakes SUPPORTING; no causality or motive; source-valid spans."
+    },
+    "acceptance":"Both stages and final outcomes must match exactly for both cases; any abstention, unsafe pass, false rejection, wrong reason/status, omission, invalid span, transport failure, or extra call fails the proof.",
+    "full_ten_case_eligibility":"Requires separate owner adjudication and authority after exact two-case proof success."
+  },
+  "risks_and_controls":[
+    {"risk":"Stage P omission creates false safety.","control":"Stage C independent completeness audit; omission cannot imply PASS; unresolved completeness abstains."},
+    {"risk":"Stage P paraphrase becomes pseudo-authority.","control":"Ledger remains untrusted; Stage C receives originals; deterministic validation checks source spans only."},
+    {"risk":"Two calls amplify false positives.","control":"Stage P cannot decide or emit FSEM codes; Stage C owns classification; exact positive anchor required."},
+    {"risk":"Pipeline repairs evidence between stages.","control":"Immutable raw capture, no mutation, explicit identities, fail-closed validation."},
+    {"risk":"Known-case overfitting.","control":"No case labels or expected reasons in prompts; later hidden paired near-miss extension required before runtime consideration."},
+    {"risk":"Latency and resource cost.","control":"Hard two-call maximum and one-call early abstention; measure timing during separately authorized proof."
+    }
+  ],
+  "implementation_sequence_if_separately_authorized":[
+    "Freeze Stage P schema, grammar, prompt, and identities.",
+    "Freeze Stage C staged-input contract and prompt identity; preserve existing Gate F output grammar if compatible.",
+    "Implement evaluation-only provider-boundary raw capture and deterministic ledger validation with no production import edge.",
+    "Add property and regression tests for completeness invariants, source membership, grouping references, early abstention, call ceiling, and no-repair behavior.",
+    "Perform zero-inference construction and tokenizer/trie feasibility only.",
+    "Stop for owner review before any four-call proof."
+  ],
+  "gate_s_separate":{"included":false,"preserved_defects":["Case 02 portability false pass","Case 04 template-versus-generic subtype error"]},
+  "authority":{"schema_or_prompt_implementation":false,"executor_or_validator_implementation":false,"inference":false,"runtime":false,"training":false,"gate_s":false,"curriculum_exposure":false}
+}
