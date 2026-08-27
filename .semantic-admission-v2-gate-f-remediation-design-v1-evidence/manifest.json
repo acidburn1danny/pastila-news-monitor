@@ -1,0 +1,22 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-gate-f-remediation-design-bundle",
+  "schema_version": "1.0.0",
+  "canonical_identity": "f2d16c10290e852715b23d0b3d3bcb20ac4bdba586ed3c1dd358d0d2bd7077a0",
+  "identity_method": "sha256 of ordered lowercase artifact SHA-256 values joined by LF",
+  "lifecycle": "FROZEN_APPROVED_DESIGN_WITH_REQUIRED_CLARIFICATION_READY_FOR_OWNER_REVIEW",
+  "supersedes_preclarification_identity": "b569daa9420b11bb547603850326c9aa95296d984d435e33ee5f98f2178ac302",
+  "source_run4_identity": "5c7938c0029df9a0da46ff9235d40e351f2e7c0862e5da94de97789de265ed6e",
+  "artifacts": [
+    {"path": "docs/artifacts/semantic-admission-v2-gate-f-remediation-design-v1.json", "sha256": "ff7698ad5d97ba9fc9233a1f9b0faaaee146ffaabdfbdf70f8b9b63bd88bbf69"},
+    {"path": "tests/test_semantic_admission_v2_gate_f_remediation_design_v1.py", "sha256": "1dadfd5ea7156fd4fe781b2fd1359251d035f322506db18083bc03cb694da28b"},
+    {"path": ".semantic-admission-v2-gate-f-remediation-design-v1-evidence/report.md", "sha256": "d3e29cc75d092a23465afb7a7df549006c218d1bd0ae61a964ad137bfb350447"}
+  ],
+  "run4_case_contract_count": 10,
+  "gate_s_included": false,
+  "implementation_authority": false,
+  "inference_authority": false,
+  "prompt_or_model_change_authority": false,
+  "runtime_authority": false,
+  "training_authority": false,
+  "curriculum_exposure": false
+}
