@@ -1,0 +1,31 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-case01-v3-probe-analysis",
+  "schema_version": "1.0.0",
+  "lifecycle": "QUARANTINED_EVALUATION_EVIDENCE_READY_FOR_OWNER_REVIEW",
+  "case_id": "HMCV1-SASC-01",
+  "execution_classification": "INFRASTRUCTURE_SUCCESS_SEMANTIC_CONTRACT_FAILURE",
+  "provider_call_count": 1,
+  "retry_count": 0,
+  "repair_count": 0,
+  "selection_count": 0,
+  "stage_c_constructed": false,
+  "stage_c_called": false,
+  "transport": {"process_returncode": 0, "response_persisted": true, "response_validated_by_executor": true, "terminal_eos": true},
+  "timing_seconds": {"host_elapsed": 77.699088, "tokenizer_load": 5.493433, "trie_build": 0.659109, "prewarm": 0.017850, "model_load": 14.425958, "generation_to_terminal_eos": 52.660412},
+  "generation": {"prompt_tokens": 1091, "generated_tokens": 460, "heartbeat_count": 28, "last_heartbeat_generated_tokens": 447, "tracker_rebuilds": 0, "tracker_path": "INCREMENTAL", "last_heartbeat_trie_cache_size": 279},
+  "raw_output": {"present": true, "bytes": 1462, "sha256": "f37ed5f2c30a72fad91953f3a1f87f590685c0e4987c7efb3957cfac23ed8be8", "schema_validation": "PASS", "coverage_decision": "INDETERMINATE"},
+  "source_membership_validation": {
+    "result": "FAIL",
+    "reason_code": "CANDIDATE_SPAN_NOT_IN_CANDIDATE",
+    "failing_entry_id": "P1",
+    "finding": "P1 candidate_span copied the governed factual summary rather than an exact span from the commentary candidate.",
+    "p2_candidate_membership": "PASS",
+    "authority_support_membership": "PASS"
+  },
+  "final_result": "FAIL_CLOSED_STAGE_P_SOURCE_MEMBERSHIP",
+  "durable_lifecycle": {"file_count": 46, "tree_identity": "aaa436fd36e1535cba51e726e17f11e3729350188315f1749eea9b87d4d139d5"},
+  "evidence_harness_observation": "probe-result.json conflates provider and post-provider validation failure and reports no raw output, although stage-p-raw.bin was durably written before validation. The original receipt is preserved unchanged; this analysis records the byte-evidenced distinction.",
+  "host_trace_observation": "The generic Core diagnostic trace retained initial false phase flags because V3 phase truth is carried by the external append-only lifecycle. Durable lifecycle receipts are the authoritative phase evidence for this probe.",
+  "eligibility": "QUARANTINED_EVALUATION_ONLY",
+  "authority": {"stage_c": false, "proof_rerun": false, "runtime": false, "production": false, "curriculum": false, "training": false}
+}

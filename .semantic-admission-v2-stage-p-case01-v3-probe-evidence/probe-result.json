@@ -1,0 +1,1 @@
+{"elapsed_ms":77711.172,"eligibility":"QUARANTINED_EVALUATION_ONLY","exception_type":"ValueError","provider_call_count":1,"raw_bytes":0,"raw_sha256":null,"result":"STAGE_P_PROVIDER_OR_VALIDATION_FAILURE","stage_c_called":false,"stage_c_constructed":false,"terminal_output_captured":false}

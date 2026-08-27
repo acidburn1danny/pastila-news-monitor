@@ -1,0 +1,22 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-case01-v3-probe-manifest",
+  "schema_version": "1.0.0",
+  "canonical_identity": "ae450b09f4a63c8fc8c342d13039d609466a813fc69b80f016c1bd7b2c6a7dc1",
+  "identity_method": "sha256 of the ordered source-candidate identity, artifact SHA-256 values, and durable lifecycle tree identity joined by LF with no trailing LF",
+  "lifecycle": "QUARANTINED_EVALUATION_EVIDENCE_READY_FOR_OWNER_REVIEW",
+  "source_runner_candidate_identity": "eca2516db3a77f065666a6eb95804c88d239a57f11b1362c9e388be66b07247f",
+  "bindings": [
+    {"path":"src/pastila_scout/semantic_admission_v2/run_stage_p_case01_v3_probe.py","sha256":"316169a1deda2dfcad6d3268ae513ed43b2412bf3c149869d766f80a186d79aa"},
+    {"path":"tests/test_semantic_admission_v2_stage_p_case01_v3_probe_boundary.py","sha256":"d09e4a93ae8053c56f913419b448cc4ad491d7833c8f82e825ccffdc7897cff0"},
+    {"path":"tests/test_semantic_admission_v2_stage_p_case01_v3_probe_evidence.py","sha256":"00869f8cd483df5af2388f38d0d8a4186770e8aec93f346785f0ae5dd353a4a1"},
+    {"path":".semantic-admission-v2-stage-p-case01-v3-probe-evidence/stage-p-request.json","sha256":"523b37b44c12b53a50dccc1e379b267dae9ab6a7f85ef0f81cfd5b7c916dc4b7"},
+    {"path":".semantic-admission-v2-stage-p-case01-v3-probe-evidence/identity-binding.json","sha256":"0d9a2cbab35e484a0bfc60b6e366370e87c9d34ce3b91240860d249773a840cb"},
+    {"path":".semantic-admission-v2-stage-p-case01-v3-probe-evidence/probe-result.json","sha256":"88674849a720ce66f0a31ea17751398c45c6b84ab750ddd086c6f8dc3651aa7d"},
+    {"path":".semantic-admission-v2-stage-p-case01-v3-probe-evidence/stage-p-raw.bin","sha256":"f37ed5f2c30a72fad91953f3a1f87f590685c0e4987c7efb3957cfac23ed8be8"},
+    {"path":".semantic-admission-v2-stage-p-case01-v3-probe-evidence/validated-analysis.json","sha256":"57790df8aa397ee7d718c14f3b7c63c77f6ff1d577f74e06f15fccf939c8b9a4"},
+    {"path":".semantic-admission-v2-stage-p-case01-v3-probe-evidence/report.md","sha256":"86465ce78a6cac5b7a93490b90410f87b0ab4b761f71ae0e0de29b32ee29117a"}
+  ],
+  "durable_lifecycle": {"relative_path":".semantic-admission-v2-stage-p-case01-v3-probe-evidence/durable-lifecycle","file_count":46,"tree_identity_method":"sha256 of ordered relative-path TAB file-sha256 lines joined by LF with no trailing LF","tree_identity":"aaa436fd36e1535cba51e726e17f11e3729350188315f1749eea9b87d4d139d5"},
+  "result": {"provider_call_count":1,"terminal_eos":true,"strict_schema":"PASS","source_membership":"FAIL","final":"FAIL_CLOSED_STAGE_P_SOURCE_MEMBERSHIP","stage_c_constructed":false,"stage_c_called":false},
+  "authority": {"stage_c":false,"proof_rerun":false,"runtime":false,"production":false,"curriculum":false,"training":false}
+}
