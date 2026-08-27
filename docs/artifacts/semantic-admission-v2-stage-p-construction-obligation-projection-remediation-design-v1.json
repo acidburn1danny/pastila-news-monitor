@@ -1,0 +1,157 @@
+{
+  "artifact_id": "STAGE_P_CONSTRUCTION_OBLIGATION_PROJECTION_REMEDIATION_DESIGN_V1",
+  "design_identity": "7159aef77bee7c402bee9d6477bccacfba118296e99acec6d2e9635cdf5f0859",
+  "lifecycle": "DESIGN_ONLY_NOT_IMPLEMENTED_NOT_EXECUTED",
+  "source_failure_review_identity": "730b2e3ac7a067a51852edbcc57ba2fe9810264a85e35b090395b1a2a4bcff9a",
+  "source_frozen_run_identity": "cdd5ad4c483582784c3aff8bea6a9ef4eaa547e79c1d99e30206dd3e12d6cff6",
+  "failure_class": "CONSTRUCTION_TO_LEDGER_RECONCILIATION_FAILURE_RECURRED",
+  "decision": "REMEDIATE_WITH_FORWARD_OBLIGATION_PROJECTION_BEFORE_ANY_FURTHER_PROBE",
+  "problem_analysis": {
+    "contract_order": "Construction records precede proposition entries and therefore create forward references to future entry identifiers.",
+    "current_constraint_behavior": "The DFA records construction host and return identifiers, but inherited entry-type, scope-relation, and host choices remain independent of those commitments while entries are emitted.",
+    "late_detection": "The declared construction mapping is checked only when coverage is projected or terminal graph validation runs.",
+    "observed_failure": "The model declared MIXED_CREATIVE_AND_REAL_WORLD with P1 as host and P2 as return, then emitted P1 and P2 as standalone REAL_WORLD_COMMITMENT entries. No P1 creative host existed, so coverage had no legal continuation.",
+    "repetition": "Both authorized deterministic runs reached byte-identical 2911-byte partial output and the same COVERAGE liveness failure.",
+    "root_cause": "A structurally binding forward declaration is represented as retrospective validation rather than as an obligation projected into later constrained choices.",
+    "not_root_cause": [
+      "Transport or WSL failure",
+      "Receipt propagation after Evaluator V1.1",
+      "Insufficient output-token budget",
+      "A need to force every candidate into a creative construction",
+      "Absence of a Case 01-specific mechanism or expected answer in the prompt"
+    ]
+  },
+  "secondary_latent_findings": [
+    {
+      "finding": "The partial candidate_span contains spelling variation relative to the immutable candidate.",
+      "status": "NOT_DECISIVE_IN_THIS_RUN",
+      "boundary": "Exact source-membership validation was never reached; this may become a later failure but must not be silently repaired or folded into the current causal class."
+    },
+    {
+      "finding": "The partial commitments appear to import detailed authority facts rather than neutralize only candidate-carried propositions.",
+      "status": "NOT_ADJUDICATED_FROM_NONTERMINAL_LEDGER",
+      "boundary": "Preserve as a future evaluation concern. Do not expand this remediation into source-role or semantic-correctness repair."
+    }
+  ],
+  "remediation_candidate": {
+    "name": "STAGE_P_CONSTRUCTION_OBLIGATION_PROJECTION_V1",
+    "scope": "A separately versioned evaluation-only DFA/contract-coherence layer. Prompt semantics and schema field order remain unchanged unless later zero-inference feasibility proves a minimal clarification necessary.",
+    "derived_obligations": {
+      "creative_host_ids": "Every creative_host_entry_id from MATERIAL_CREATIVE_OR_EDITORIAL or MIXED_CREATIVE_AND_REAL_WORLD records maps to required entry type CONTAINED_CREATIVE and required scope relation CREATIVE_HOST.",
+      "mixed_return_ids": "Every literal_or_return_entry_id from a MIXED record maps to required entry type REAL_WORLD_COMMITMENT, required scope relation FACTUAL_RETURN_WITHIN_CREATIVE_HOST, and the exact host declared by that record.",
+      "literal_entry_ids": "Every linked identifier from a LITERAL_ONLY record maps to REAL_WORLD_COMMITMENT with a non-creative standalone relation unless another valid construction record gives it a stricter compatible role.",
+      "unresolved_requirement": "UNRESOLVED_CONSTRUCTION_ROLE requires at least one UNRESOLVED_SCOPE entry and INDETERMINATE coverage, without prescribing its identifier or wording.",
+      "unbound_ids": "Entry identifiers not referenced by construction records retain the existing role-coherent choice space."
+    },
+    "projection_points": [
+      {
+        "point": "END_OF_CONSTRUCTION_AUDIT",
+        "rule": "Compile immutable host, return, literal, and unresolved obligations before the first proposition entry is emitted. Reject conflicting obligations immediately."
+      },
+      {
+        "point": "ENTRY_ID",
+        "rule": "Exclude already-emitted identifiers and retain flexible entry order. A referenced identifier remains available until its obligation is discharged."
+      },
+      {
+        "point": "ENTRY_TYPE",
+        "rule": "Condition choices on the selected identifier: declared hosts can only be CONTAINED_CREATIVE; declared returns/literal entries can only be REAL_WORLD_COMMITMENT; unbound identifiers retain existing choices."
+      },
+      {
+        "point": "SCOPE_RELATION",
+        "rule": "Condition declared hosts to CREATIVE_HOST, mixed returns to FACTUAL_RETURN_WITHIN_CREATIVE_HOST, and literal-only links to their compatible non-creative relation."
+      },
+      {
+        "point": "CREATIVE_HOST_ENTRY_ID",
+        "rule": "For a declared mixed return, emit only the exact host identifier from its construction record."
+      },
+      {
+        "point": "ENTRY_COLLECTION_CLOSE",
+        "rule": "Do not permit closing the entry array while any required host/return/literal obligation is missing or while an unresolved construction lacks an unresolved entry. Representation exhaustion fails closed with a specific obligation-liveness receipt."
+      },
+      {
+        "point": "COVERAGE",
+        "rule": "Retain full retrospective graph validation as defense-in-depth; it must no longer be the first point at which construction commitments affect legal output."
+      }
+    ],
+    "conflict_rules": [
+      "One identifier cannot be both a creative host and a real-world return/literal entry.",
+      "One return identifier cannot point to two different hosts.",
+      "A material construction cannot omit its host obligation.",
+      "A mixed construction cannot omit all return obligations.",
+      "Duplicate construction records may share a host only when their role obligations are compatible.",
+      "Any unresolved or unrepresentable conflict fails closed before entry emission."
+    ],
+    "semantic_boundary": "Projection enforces coherence of identifiers and roles already chosen by the model. It does not decide whether a span is genuinely creative, whether a real-world proposition is supported, or whether the chosen segmentation is owner-correct.",
+    "freedom_boundary": "No lexical cue, entity, mechanism, Case 01 wording, expected label, fixed entry count, or fixed segmentation selects a creative path. The model may choose NO_MATERIAL_CREATIVE_CONSTRUCTION, material, mixed, rhetorical-color, or unresolved according to the candidate.",
+    "literal_path": "NO_MATERIAL_CREATIVE_CONSTRUCTION remains a first-class valid path. It creates no creative-host obligation and can complete with literal real-world entries and empty creative-target audits.",
+    "fail_closed_boundary": "Conflicts, missing required entries, representation limits, unresolved roles, and malformed forward references cannot be converted into COMPLETE by omission."
+  },
+  "acceptance_contract": {
+    "paired_zero_inference_fixtures": [
+      "Literal-only record with linked P1 permits P1 REAL_WORLD_COMMITMENT and no creative host.",
+      "Material record declaring P1 host forces P1 CONTAINED_CREATIVE plus CREATIVE_HOST.",
+      "Mixed record declaring P1 host and P2 return forces the exact P1/P2 role-relation-host tuple.",
+      "The repeated invalid Case 01-shaped P1/P2 tuple becomes impossible before coverage.",
+      "Entry order P2 then P1 remains valid when forward host reference is coherently discharged before collection close.",
+      "Missing declared P1 or P2 prevents entry-array closure.",
+      "Conflicting host/return use of P1 fails before entry emission.",
+      "Two compatible records may share one creative host.",
+      "Unbound entries retain existing legal role choices.",
+      "Unresolved construction requires an unresolved entry and INDETERMINATE coverage."
+    ],
+    "regressions": [
+      "All existing Construction Role contract and source-membership fixtures remain valid unless they encode a previously accepted incoherent forward mapping.",
+      "The frozen Case 01 run receipts and partial bytes remain unchanged.",
+      "Receipt-propagation V1.1 remains independently valid and unchanged.",
+      "Literal candidates are not forced to emit creative hosts or target audits.",
+      "No source-span spelling repair, semantic adjudication, or authority-fact import is performed by this layer."
+    ]
+  },
+  "rejected_options": [
+    {
+      "option": "Keep retrospective validation only and rerun",
+      "reason": "Two byte-identical deterministic failures demonstrate that another unchanged call has negligible diagnostic value."
+    },
+    {
+      "option": "Relax graph validation at coverage",
+      "reason": "This would permit construction records to claim hosts that do not exist and recreate false-complete behavior."
+    },
+    {
+      "option": "Force P1 to be creative for Case 01 by prompt wording",
+      "reason": "Case-specific expected outcomes and lexical routing are prohibited and would not generalize."
+    },
+    {
+      "option": "Require at least one creative host in every ledger",
+      "reason": "This destroys the legitimate literal and abstaining paths."
+    },
+    {
+      "option": "Silently rewrite construction identifiers after generation",
+      "reason": "Repair or selection would erase raw model behavior and weaken auditability."
+    },
+    {
+      "option": "Bundle source-span and authority-import repair now",
+      "reason": "Those are latent, independently adjudicable failures not causally necessary to resolve the observed reconciliation liveness failure."
+    }
+  ],
+  "bounded_next_step_if_approved": [
+    "Implement a separately versioned evaluation-only obligation-projection DFA candidate without modifying the frozen V1 constraint.",
+    "Add only deterministic contract/DFA fixtures and captured-output regression tests.",
+    "Perform identity, schema-order, source-boundary, callback, synthetic-trie, and real-tokenizer zero-inference verification.",
+    "Do not bind a runner or probe until the candidate and evidence are separately owner-approved.",
+    "Do not rerun Case 01 or construct Stage C."
+  ],
+  "authority": {
+    "implementation": false,
+    "prompt_change": false,
+    "schema_change": false,
+    "runner_binding": false,
+    "probe_binding": false,
+    "rerun": false,
+    "stage_c": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  },
+  "recommended_next_step": "Owner-review this design. If approved, authorize only the separately versioned evaluation-only obligation-projection DFA candidate and zero-inference verification described above."
+}

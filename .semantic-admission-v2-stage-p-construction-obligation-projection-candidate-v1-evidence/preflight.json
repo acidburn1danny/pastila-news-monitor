@@ -1,0 +1,23 @@
+{
+  "result": "PASS",
+  "candidate_identity": "ba5e7096afda282b09be2e7e9bd83b2d46ef50904a07ba0b8783cad02a5a314f",
+  "deterministic_tests": {"passed": 6, "failed": 0},
+  "real_tokenizer": {
+    "result": "PASS",
+    "state_count": 9,
+    "matrix_seconds": 0.545994,
+    "vocabulary_size": 131072,
+    "trie_node_count": 221961,
+    "terminal_can_eos": true,
+    "terminal_allowed_count": 1
+  },
+  "schema_modified": false,
+  "prompt_modified": false,
+  "runner_or_probe_bound": false,
+  "model_loads": 0,
+  "model_calls": 0,
+  "provider_calls": 0,
+  "inference_calls": 0,
+  "case01_reruns": 0,
+  "stage_c_calls": 0
+}

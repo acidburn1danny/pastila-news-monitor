@@ -1,0 +1,83 @@
+{
+  "artifact_id": "STAGE_P_CONSTRUCTION_OBLIGATION_PROJECTION_CANDIDATE_V1",
+  "candidate_identity": "ba5e7096afda282b09be2e7e9bd83b2d46ef50904a07ba0b8783cad02a5a314f",
+  "lifecycle": "EVALUATION_ONLY_DFA_IMPLEMENTED_ZERO_INFERENCE_VERIFIED_NOT_BOUND",
+  "approved_design_identity": "7159aef77bee7c402bee9d6477bccacfba118296e99acec6d2e9635cdf5f0859",
+  "source_failure_review_identity": "730b2e3ac7a067a51852edbcc57ba2fe9810264a85e35b090395b1a2a4bcff9a",
+  "source_frozen_run_identity": "cdd5ad4c483582784c3aff8bea6a9ef4eaa547e79c1d99e30206dd3e12d6cff6",
+  "identities": {
+    "constraint_identity": "sha256:a5db3847530e1208fbc96f5a4af6e577b248ec2507c9045280b648420d0ad935",
+    "grammar_identity": "sha256:340daf4cb25aadd9fa759cb16b7e388529c4a79caf79a1a18a407b8cab4037cc",
+    "unchanged_schema_identity": "sha256:1b9e2a289aaade5e79c1be2f81000103dd7787b068576b9d8923789a237c6854",
+    "unchanged_prompt_identity": "sha256:2fe034826fb19b28c4686fd4640325fd31a1f739140322b5a83412515f62e6bd",
+    "unchanged_tokenizer_identity": "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c"
+  },
+  "implementation": {
+    "base_constraint_modified": false,
+    "schema_modified": false,
+    "prompt_modified": false,
+    "new_constraint_state": "StagePConstructionObligationConstraintStateV1",
+    "construction_audit_compilation": "Host, mixed-return, literal-link, and unresolved obligations are compiled before entry emission.",
+    "entry_identifier_projection": "Already emitted IDs are excluded. When remaining capacity equals outstanding required obligations, only required IDs remain legal.",
+    "entry_type_projection": "Declared hosts require CONTAINED_CREATIVE; declared returns and literal links require REAL_WORLD_COMMITMENT.",
+    "relation_projection": "Declared hosts require CREATIVE_HOST; mixed returns require FACTUAL_RETURN_WITHIN_CREATIVE_HOST; literal links require STANDALONE.",
+    "host_projection": "Each mixed return is constrained to the exact host declared in its construction record.",
+    "closure_projection": "The entries array cannot close until every required ID and unresolved requirement is discharged.",
+    "conflict_projection": "Host/return/literal role conflicts and multi-host return conflicts fail before entries.",
+    "defense_in_depth": "The frozen retrospective construction and graph validators remain active at coverage and terminal EOS."
+  },
+  "choice_boundaries": {
+    "literal_path": "NO_MATERIAL_CREATIVE_CONSTRUCTION remains valid with no creative host or target audit.",
+    "entry_order": "Required returns may precede their declared hosts as long as all obligations are discharged before array closure.",
+    "unbound_identifiers": "Unbound IDs retain every globally coherent role not requiring a missing construction declaration. An undeclared CONTAINED_CREATIVE entry is excluded because the frozen contract requires every creative host to be construction-mapped.",
+    "segmentation": "No fixed IDs, entry order, entry count, span, mechanism, entity, or Case 01 outcome is prescribed.",
+    "semantic_authority": "Projection enforces structural coherence only; it does not decide whether the model chose the correct construction role or whether factual propositions are supported."
+  },
+  "deterministic_verification": {
+    "literal_path": "PASS",
+    "mixed_host_and_return": "PASS",
+    "return_before_host": "PASS",
+    "repeated_invalid_case01_shape_blocked_at_entry_type": "PASS",
+    "missing_required_return_blocks_array_close": "PASS",
+    "conflicting_forward_roles_fail_before_entries": "PASS",
+    "synthetic_trie_terminal_eos": "PASS"
+  },
+  "real_tokenizer_zero_inference": {
+    "result": "PASS",
+    "state_count": 9,
+    "matrix_seconds": 0.545994,
+    "vocabulary_size": 131072,
+    "trie_node_count": 221961,
+    "terminal_can_eos": true,
+    "terminal_allowed_token_count": 1,
+    "model_loads": 0,
+    "model_calls": 0,
+    "provider_calls": 0,
+    "inference_calls": 0,
+    "case01_executed": false,
+    "stage_c_calls": 0,
+    "environment_note": "Transformers emitted the existing Mistral tokenizer regex advisory. The frozen tokenizer identity and behavior were intentionally unchanged."
+  },
+  "preserved_boundaries": [
+    "No source-span spelling repair.",
+    "No authority-import or semantic-correctness repair.",
+    "No Humor Mechanics curriculum exposure.",
+    "No runner, evaluator, durable executor, or probe binding.",
+    "No Case 01 or other execution.",
+    "No Stage C construction or execution."
+  ],
+  "authority": {
+    "runner_binding": false,
+    "evaluator_binding": false,
+    "probe_binding": false,
+    "probe_execution": false,
+    "rerun": false,
+    "stage_c": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  },
+  "status": "OWNER_REVIEW_REQUIRED",
+  "recommended_next_step": "Owner-review this DFA candidate and its zero-inference evidence. If approved, separately authorize evaluation-only tracker/controller/runner/durable-executor/evaluator rebinding with zero-inference verification. Do not construct a Case 01 probe in that step."
+}
