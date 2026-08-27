@@ -1,0 +1,137 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-case01-v4-failure-analysis-remediation-design",
+  "schema_version": "1.0.0-design.1",
+  "lifecycle": "DESIGN_ONLY_READY_FOR_OWNER_REVIEW",
+  "source_probe_identity": "d6e0cb249b54ff188cf70995a7e7d848819ccc6eef3257a1bef1528005e17859",
+  "scope": "Bounded analysis of the single Prompt V2 / V4 Stage P Case 01 output and the smallest contract-level remediation justified by that evidence.",
+  "observed_result": {
+    "transport_schema_and_membership": "PASS",
+    "coverage_decision": "INDETERMINATE",
+    "entries": 3,
+    "entry_shape": "Every exact figurative/editorial span was labeled REAL_WORLD_COMMITMENT while all semantic dimensions were UNRESOLVED.",
+    "coverage_receipt": {
+      "candidate_reviewed_as_whole": false,
+      "embedded_propositions_checked": false,
+      "creative_scope_checked": false,
+      "unresolved_scope_present": true
+    },
+    "contained_creative_entries": 0,
+    "case01_acceptance": "NOT_DEMONSTRATED"
+  },
+  "findings": [
+    {
+      "id": "P3F-01-AUTOREGRESSIVE_PRECOMMITMENT",
+      "status": "DEMONSTRATED_CONTRACT_RISK",
+      "evidence": "The constrained field order requires coverage_decision before entries and the coverage receipt. The model selected INDETERMINATE first and then produced a fully unresolved ledger consistent with that early choice.",
+      "boundary": "The single run proves the sequence occurred; it does not alone prove causality or frequency."
+    },
+    {
+      "id": "P3F-02-INCOHERENT_TUPLES_ALLOWED",
+      "status": "DEMONSTRATED",
+      "evidence": "Schema and grammar accepted REAL_WORLD_COMMITMENT combined with unresolved scope, event alignment, modalities, and timing. Only COMPLETE has cross-field invariants.",
+      "impact": "A syntactically valid ledger can avoid the source-role decision while appearing structurally usable."
+    },
+    {
+      "id": "P3F-03-CREATIVE_FRAGMENTATION",
+      "status": "DEMONSTRATED",
+      "evidence": "One integrated money/shadow, employees/light, hotel/room/transparency transformation was split into three surface clauses and each clause was treated as a literal commitment candidate.",
+      "impact": "Clause splitting erased the relationship that makes the construction contained and editorial."
+    },
+    {
+      "id": "P3F-04-FACTUAL_RETURN_TEST_UNDERSPECIFIED",
+      "status": "SUPPORTED_DESIGN_INFERENCE",
+      "evidence": "Prompt V2 names contained creative material and embedded propositions but gives no operational test for deciding whether a figurative vehicle necessarily returns a proposition about the real world.",
+      "boundary": "This is a design inference from prompt and output, not a claim about hidden model reasoning."
+    },
+    {
+      "id": "P3F-05-COMMITMENT_FIELD_ATTRACTOR",
+      "status": "PLAUSIBLE_SECONDARY_RISK",
+      "evidence": "Every entry, including CONTAINED_CREATIVE, must fill a field named commitment. The model instead filled that field with the enum-like value UNRESOLVED.",
+      "boundary": "Do not rename the field in the first remediation candidate; test whether stronger role coherence resolves the issue before widening schema churn."
+    },
+    {
+      "id": "P3F-06-NOT_A_SOURCE_BINDING_FAILURE",
+      "status": "DEMONSTRATED",
+      "evidence": "All candidate spans are exact candidate substrings and source-membership validation passed. The optional source-bound projector would not correct the semantic role error.",
+      "impact": "Projector integration is not part of this remediation."
+    }
+  ],
+  "remediation_candidate": {
+    "name": "STAGE_P_ROLE_COHERENCE_V1",
+    "principle": "Make source role and whole-construction review unavoidable before coverage is declared, while retaining fail-closed uncertainty.",
+    "contract_delta": [
+      "Version a Stage P schema/grammar candidate whose root order is stage_id, entries, coverage_receipt, coverage_decision. Coverage is therefore emitted only after the ledger and explicit review receipts.",
+      "Preserve the existing entry limit, enum namespace, immutable sources, exact-substring validation, no-FSEM boundary, and no-repair rule.",
+      "Add deterministic cross-field coherence. CONTAINED_CREATIVE requires scope_basis CREATIVE_CONTAINED, event_alignment CREATIVE_VEHICLE_ONLY, authority/candidate modality NOT_APPLICABLE, and authority/candidate timing NOT_APPLICABLE.",
+      "REAL_WORLD_COMMITMENT requires a non-UNRESOLVED scope basis from ASSERTED, PRESUPPOSED, ENTAILED, or NECESSARILY_IMPLIED; a non-UNRESOLVED event alignment; and resolved candidate modality and timing. Authority modality/timing may be NOT_APPLICABLE only when authority_support is null.",
+      "UNRESOLVED_SCOPE is the only entry type permitted to carry unresolved scope, event alignment, or candidate modality/timing. Any unresolved semantic axis must use this type and force INDETERMINATE.",
+      "COMPLETE retains the existing exhaustive receipt requirements and additionally requires every entry tuple to be role-coherent. INDETERMINATE remains valid and fail-closed, but cannot disguise unresolved entries as REAL_WORLD_COMMITMENT.",
+      "Clarify span granularity: treat an integrated figurative construction as one unit unless a subspan independently carries a separable real-world proposition. Do not literalize components merely because they have clause boundaries.",
+      "Define the factual-return test: after identifying the creative vehicle, ask whether the candidate necessarily commits the reader to a real-world proposition beyond the governed authority. If no, classify the vehicle as CONTAINED_CREATIVE. If yes, ledger that proposition separately even when embedded in metaphor, analogy, personification, counterfactual, hyperbole, wordplay, or editorial language.",
+      "Require a short story-local semantic description in commitment for CONTAINED_CREATIVE; generic tokens such as UNRESOLVED, figurative, joke, or commentary alone do not satisfy that pedagogical/semantic field requirement. This is evaluated in fixtures, not repaired post-generation."
+    ],
+    "case01_required_shape": {
+      "coverage_decision": "COMPLETE",
+      "minimum_contained_creative_entries": 1,
+      "unsupported_real_world_commitments": 0,
+      "required_receipt": {
+        "candidate_reviewed_as_whole": true,
+        "embedded_propositions_checked": true,
+        "creative_scope_checked": true,
+        "unresolved_scope_present": false
+      },
+      "note": "No single wording, span segmentation, entry count, or commitment paraphrase is prescribed."
+    },
+    "embedded_proposition_safety": "A CONTAINED_CREATIVE entry never immunizes its span. When the same or overlapping construction presupposes, entails, or necessarily implies an unsupported real-world proposition, emit a separate REAL_WORLD_COMMITMENT entry or UNRESOLVED_SCOPE and do not return COMPLETE unless every material proposition is resolved.",
+    "abstention": "Any contract violation, unresolved role, incomplete whole-candidate review, or maximum-entry overflow abstains before Stage C.",
+    "stage_c_interaction": "Unchanged and unexecuted. Only a structurally COMPLETE, role-coherent ledger can become eligible for a separately authorized Stage C evaluation."
+  },
+  "rejected_or_deferred_options": [
+    {
+      "option": "Prompt wording change only",
+      "decision": "REJECT_FOR_FIRST_CANDIDATE",
+      "reason": "It would leave early coverage precommitment and incoherent tuples mechanically valid."
+    },
+    {
+      "option": "Bind the existing source substring projector",
+      "decision": "OUT_OF_SCOPE_AND_NONREMEDIAL",
+      "reason": "The failed output already used valid source spans; the defect is semantic role assignment."
+    },
+    {
+      "option": "Rename commitment or introduce tagged entry objects",
+      "decision": "DEFER",
+      "reason": "Potentially cleaner, but broader than necessary before testing reordered coverage and role-coherence invariants."
+    },
+    {
+      "option": "Call Stage C on the INDETERMINATE ledger",
+      "decision": "PROHIBITED",
+      "reason": "Frozen precedence requires Stage P INDETERMINATE to abstain without Stage C."
+    }
+  ],
+  "zero_inference_verification_contract": [
+    "Canonical schema identity, grammar identity, prompt identity, exact padding, request identity, and model identity are recorded before execution authority is considered.",
+    "Schema and grammar accept a COMPLETE Case 01-shaped CONTAINED_CREATIVE ledger.",
+    "Schema and grammar reject REAL_WORLD_COMMITMENT with any unresolved candidate semantic axis.",
+    "Schema and grammar reject CONTAINED_CREATIVE with real-world scope/event/modality/timing combinations.",
+    "Schema and grammar accept UNRESOLVED_SCOPE only with INDETERMINATE and unresolved_scope_present true.",
+    "Coverage fields cannot be emitted before entries and review receipt.",
+    "Exact candidate and authority substring validation remains unchanged.",
+    "Mixed fixtures prove that a creative head cannot shield an embedded unsupported proposition.",
+    "Fixtures cover pure contained creative material, governed literal reference, unsupported embedded proposition, mixed creative-plus-real-world content, and genuinely ambiguous scope.",
+    "No source-bound projector, Stage C, provider, WSL, model, or inference edge exists in the candidate preflight."
+  ],
+  "bounded_next_step_if_authorized": "Implement the separately versioned evaluation-only Stage P role-coherence schema/grammar/prompt candidate and run only zero-inference construction, invariant, padding, request, and constrained-trie compatibility tests. Stop before any model probe.",
+  "authority": {
+    "implementation": false,
+    "prompt_or_schema_modification": false,
+    "model_probe": false,
+    "projector": false,
+    "stage_c": false,
+    "case10": false,
+    "proof_rerun": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  }
+}

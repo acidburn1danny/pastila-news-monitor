@@ -1,0 +1,41 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-case01-v4-failure-design-manifest",
+  "schema_version": "1.0.0",
+  "canonical_identity": "cf6b33b185137150388010d087a6f9a3801e06180755ce7247e9867bb3ee0059",
+  "identity_method": "sha256 of the ordered source probe identity and artifact SHA-256 values joined by LF with no trailing LF",
+  "source_probe_identity": "d6e0cb249b54ff188cf70995a7e7d848819ccc6eef3257a1bef1528005e17859",
+  "lifecycle": "DESIGN_ONLY_READY_FOR_OWNER_REVIEW",
+  "bindings": [
+    {
+      "path": "docs/artifacts/semantic-admission-v2-stage-p-case01-v4-failure-analysis-remediation-design-v1.json",
+      "sha256": "13bfe022bd6500a862dde3a9a9f6d4ffc4d8fca2ccba0f3e4c0bc3f064ec939a"
+    },
+    {
+      "path": "tests/test_semantic_admission_v2_stage_p_case01_v4_failure_design_v1.py",
+      "sha256": "66a189f80dfe108b50b6fe15909cd798df6be44aab45d584bffa488c533618c2"
+    },
+    {
+      "path": ".semantic-admission-v2-stage-p-case01-v4-failure-design-v1-evidence/report.md",
+      "sha256": "87d2e4ceb47221a45f5ac1cd815b0f1868eb05a852094d2d03169bbf4417f496"
+    }
+  ],
+  "result": {
+    "failure_class": "STAGE_P_SOURCE_ROLE_REALIZATION",
+    "transport_or_membership_failure": false,
+    "recommended_remediation": "STAGE_P_ROLE_COHERENCE_V1",
+    "next_phase": "SEPARATELY_AUTHORIZED_ZERO_INFERENCE_IMPLEMENTATION_AND_VERIFICATION"
+  },
+  "authority": {
+    "implementation": false,
+    "prompt_or_schema_modification": false,
+    "model_probe": false,
+    "projector": false,
+    "stage_c": false,
+    "case10": false,
+    "proof_rerun": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  }
+}
