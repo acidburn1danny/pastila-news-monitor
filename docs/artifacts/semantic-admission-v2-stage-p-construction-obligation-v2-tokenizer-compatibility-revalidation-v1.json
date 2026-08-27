@@ -1,0 +1,88 @@
+{
+  "artifact_type": "ZERO_INFERENCE_TOKENIZER_COMPATIBILITY_REVALIDATION_RECEIPT",
+  "artifact_version": "1.0.0",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_TOKENIZER_COMPATIBILITY_REVALIDATION_V1",
+  "canonical_identity": "ecb0173aaa928278aa1aebe1029c2dd685140a8068967b9967f92c16bfabf2c6",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_V2_TOKENIZER_COMPATIBILITY_REVALIDATION_V1",
+      "aca5b7e3e2fed823139a57d51d8f512ea6716a1d8b498e393f605b09aa4e6c58",
+      "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c",
+      "PASS_PHASES_0_THROUGH_7",
+      "ZERO_INFERENCE"
+    ],
+    "separator": "LF"
+  },
+  "bindings": {
+    "frozen_audit_identity": "aca5b7e3e2fed823139a57d51d8f512ea6716a1d8b498e393f605b09aa4e6c58",
+    "tokenizer_identity": "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c",
+    "tokenizer_package": "transformers==5.15.0",
+    "tokenizer_implementation": "TokenizersBackend",
+    "decoder_identity": "bound by canonical tokenizer identity",
+    "vocabulary_size": 131072,
+    "compatibility_harness_sha256": "81b8c4089356cd129cda292ae6068e0c7034a661a43b2e109399b00b7cb99d30",
+    "dfa_harness_sha256": "7a1070e9b64aeea890c7ac78d184734b8dbd6c58dce1c2c6914e71d14327b4a4",
+    "historical_compatibility_artifact_sha256": "e004dca861c7e1e40ef496d40d0f220453a44a4de44af73a88d9fc500270a4e3",
+    "historical_dfa_artifact_sha256": "3469a37ca78c5aa6bb6a1e2ddca3e78a522adba36cd4db01b4d9d21c55b6c53e"
+  },
+  "phase_results": {
+    "phases_executed": [0, 1, 2, 3, 4, 5, 6, 7],
+    "prefix_classes": 10,
+    "prefix_token_checks": 1310720,
+    "contextual_piece_rewrites": 0,
+    "standalone_suffix_mismatches": 0,
+    "state_count": 7,
+    "allowed_token_counts": [2, 1, 7, 128166, 2, 2, 1],
+    "false_accepts": 0,
+    "false_rejects": 0,
+    "contextual_suffix_mismatches": 0,
+    "eos_only_at_terminal": true,
+    "special_and_empty_tokens_excluded": true,
+    "result": "PASS_PHASES_0_THROUGH_7"
+  },
+  "coverage": {
+    "romanian_diacritics_and_unicode": true,
+    "punctuation_and_json_escaping": true,
+    "request_bound_source_references": true,
+    "terminal_prefix_and_dead_states": true,
+    "incremental_full_rebuild_equivalence": true,
+    "stale_cross_request_malformed_conflicting_unbound_rejection": true,
+    "cache_identity_dimensions_audited": [
+      "request_identity",
+      "source_context_identity",
+      "tokenizer_identity",
+      "decoder_identity"
+    ]
+  },
+  "known_warning": {
+    "code": "TOKENIZER_REGEX_WARNING_PRESERVED",
+    "disposition": "No fix flag was enabled because doing so would alter the audited bound tokenizer behavior."
+  },
+  "historical_evidence": {
+    "immutable": true,
+    "reinterpreted": false,
+    "timings_identity_bearing": false
+  },
+  "activity": {
+    "tokenizer_loads_per_harness": 1,
+    "model_loads": 0,
+    "model_calls": 0,
+    "provider_calls": 0,
+    "inference_calls": 0,
+    "runner_executions": 0,
+    "executor_executions": 0,
+    "probe_constructions": 0,
+    "probe_executions": 0,
+    "stage_c_entries": 0
+  },
+  "authority": {
+    "token_projection_candidate_development": true,
+    "model_or_provider": false,
+    "inference": false,
+    "runner_executor_or_probe": false,
+    "stage_c": false,
+    "runtime_or_production": false,
+    "training_or_curriculum": false
+  }
+}
