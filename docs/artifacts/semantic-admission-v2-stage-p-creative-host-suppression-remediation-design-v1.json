@@ -1,0 +1,220 @@
+{
+  "artifact_id": "STAGE_P_CREATIVE_HOST_SUPPRESSION_REMEDIATION_DESIGN_V1",
+  "design_identity": "c7208203932f6b9a31dd4245c66e81837241bbd53b0d50772fa86ddf9088093a",
+  "schema_version": "1.0.0-design.1",
+  "lifecycle": "DESIGN_ONLY_NOT_IMPLEMENTED_NOT_EXECUTED",
+  "source_owner_review_identity": "7ca38d874095832b30e2bd5e8bdf19942ab84f3daf558be1f76445015b01995b",
+  "objective": "Prevent materially creative or mixed candidate language from bypassing creative-target decomposition through wholesale REAL_WORLD_COMMITMENT classification, while preserving a valid literal-only path and avoiding mandatory creativity.",
+  "problem_model": {
+    "circular_trigger": "Creative target audits currently exist only when the model first emits a CONTAINED_CREATIVE entry. Suppressing that entry disables the audit obligation.",
+    "escape_path": "The model may label figurative spans only REAL_WORLD_COMMITMENT, emit no creative host, leave creative_target_audits empty, and mechanically claim COMPLETE.",
+    "secondary_failure": "A copied candidate span can occupy commitment without stating the smallest neutralized proposition, leaving semantic-head analysis unobservable.",
+    "non_goal": "The design must not require every candidate, metaphor-like word, entity reference, evaluative statement, or rhetorical flourish to become a creative host."
+  },
+  "bounded_candidate_design": {
+    "name": "STAGE_P_CONSTRUCTION_ROLE_AUDIT_V1",
+    "principle": "Construction-role review occurs before and independently of proposition-role selection; proposition labels cannot disable it.",
+    "proposed_root_order": [
+      "stage_id",
+      "construction_role_audit",
+      "entries",
+      "creative_target_audits",
+      "coverage_receipt",
+      "coverage_decision"
+    ],
+    "construction_role_audit": {
+      "fields": [
+        {
+          "name": "candidate_reviewed_as_construction",
+          "type": "boolean",
+          "complete_requirement": true
+        },
+        {
+          "name": "overall_disposition",
+          "enum": [
+            "NO_MATERIAL_CREATIVE_CONSTRUCTION",
+            "ONE_OR_MORE_MATERIAL_CONSTRUCTIONS",
+            "UNRESOLVED_CONSTRUCTION_ROLE"
+          ]
+        },
+        {
+          "name": "construction_records",
+          "type": "zero to eight records"
+        },
+        {
+          "name": "literal_path_basis",
+          "type": "specific explanation or null"
+        }
+      ],
+      "record_fields": [
+        {
+          "name": "construction_id",
+          "type": "C1 through C8"
+        },
+        {
+          "name": "candidate_span",
+          "type": "exact non-empty candidate substring"
+        },
+        {
+          "name": "construction_role",
+          "enum": [
+            "LITERAL_ONLY",
+            "MATERIAL_CREATIVE_OR_EDITORIAL",
+            "MIXED_CREATIVE_AND_REAL_WORLD",
+            "NON_MATERIAL_RHETORICAL_COLOR",
+            "UNRESOLVED"
+          ]
+        },
+        {
+          "name": "role_basis",
+          "type": "story-local explanation of how wording functions, without authority-supplied facts"
+        },
+        {
+          "name": "creative_host_entry_id",
+          "type": "CONTAINED_CREATIVE entry identifier or null"
+        },
+        {
+          "name": "literal_or_return_entry_ids",
+          "type": "zero to eight REAL_WORLD_COMMITMENT identifiers"
+        },
+        {
+          "name": "resolution",
+          "enum": [
+            "LITERAL_PATH_RETAINED",
+            "CREATIVE_HOST_REQUIRED",
+            "MIXED_HOST_AND_RETURNS_REQUIRED",
+            "RHETORICAL_COLOR_RETAINED",
+            "FAIL_CLOSED_UNRESOLVED"
+          ]
+        }
+      ]
+    }
+  },
+  "semantic_role_tests": {
+    "material_creative": "Would a competent reader need to preserve an invented frame, vehicle, double meaning, analogy, personification, counterfactual world, wordplay relation, or editorial transformation to explain what the span is doing? If yes, the construction is materially creative even if it also carries facts.",
+    "literal_only": "Can the span's communicative work be exhaustively represented as direct truth-evaluable propositions without losing an editorial vehicle, secondary frame, or meaning relation? If yes, the literal path is available.",
+    "non_material_color": "Does expressive wording affect tone but add no distinct semantic vehicle or target requiring decomposition? If yes, it may remain rhetorical color without a host.",
+    "mixed": "Does one integrated span both require a creative vehicle for part of its meaning and carry one or more surviving real-world propositions? If yes, emit a host plus linked returns rather than selecting only one role.",
+    "unresolved": "If literal, creative, mixed, or non-material status cannot be resolved safely, remain unresolved and INDETERMINATE."
+  },
+  "deterministic_coherence_requirements": [
+    "ONE_OR_MORE_MATERIAL_CONSTRUCTIONS requires at least one MATERIAL_CREATIVE_OR_EDITORIAL or MIXED_CREATIVE_AND_REAL_WORLD record.",
+    "NO_MATERIAL_CREATIVE_CONSTRUCTION prohibits material or mixed records, requires no creative host solely for this audit, and requires a nonempty literal_path_basis.",
+    "UNRESOLVED_CONSTRUCTION_ROLE requires an UNRESOLVED record, unresolved_scope_present true, an unresolved ledger entry, and INDETERMINATE coverage.",
+    "MATERIAL_CREATIVE_OR_EDITORIAL requires CREATIVE_HOST_REQUIRED and a non-null existing CONTAINED_CREATIVE host whose span overlaps the construction span.",
+    "MIXED_CREATIVE_AND_REAL_WORLD requires MIXED_HOST_AND_RETURNS_REQUIRED, a creative host, and at least one overlapping REAL_WORLD_COMMITMENT linked back to that host.",
+    "LITERAL_ONLY requires LITERAL_PATH_RETAINED, null creative host, and at least one corresponding standalone real-world entry unless the span is explicitly retained only as non-propositional connective material.",
+    "NON_MATERIAL_RHETORICAL_COLOR requires RHETORICAL_COLOR_RETAINED and does not independently force either creative or factual entries.",
+    "Every referenced entry exists; every creative-host and return link has the required type and overlap; duplicate construction IDs are rejected.",
+    "Every emitted CONTAINED_CREATIVE entry is referenced by at least one material or mixed construction record and retains its Creative Target audits.",
+    "Every material or mixed construction record maps to a creative host; proposition-role selection cannot disable the mapping.",
+    "COMPLETE requires candidate_reviewed_as_construction true and complete reconciliation among construction records, proposition entries, creative hosts, and creative target audits.",
+    "Record or entry limits cause INDETERMINATE rather than silent omission."
+  ],
+  "commitment_semantic_head_requirements": [
+    "A REAL_WORLD_COMMITMENT states the smallest neutralized truth-evaluable proposition alleged to survive; it does not merely repeat a figurative or editorial span.",
+    "The proposition description identifies a real-world semantic head such as concealment, payment, intent, outcome, status, timing, capacity, or emotion, rather than preserving only vehicle wording.",
+    "Exact candidate wording remains available in candidate_span; commitment is an analysis field and must make the alleged proposition auditable without adding authority-only content.",
+    "Literal candidate wording may be retained when it is already the smallest unambiguous proposition; exact string inequality is not a universal deterministic rule.",
+    "When neutralization cannot yield a stable proposition, use a creative role or unresolved scope instead of manufacturing one."
+  ],
+  "case01_hidden_acceptance_contract": {
+    "generation_path_exposure": false,
+    "requirements": [
+      "The integrated shadow/light/room/transparency wording cannot receive NO_MATERIAL_CREATIVE_CONSTRUCTION.",
+      "At least one material or mixed construction record covers the integrated editorial transformation and maps to a creative host.",
+      "Financial concealment or nontransparency is separately adjudicated as governed return, nonfactual target, or unresolved based on candidate communicative force.",
+      "The transparency assessment is separately adjudicated without converting its full wordplay span into an unsupported event.",
+      "The employees/light component is not assigned invented forced-visibility content.",
+      "Neither a host-only ledger nor a real-world-only ledger may claim COMPLETE while material semantic roles remain unreconciled.",
+      "No single span segmentation, entry count, commitment wording, or mechanism label is required."
+    ]
+  },
+  "paired_zero_inference_fixture_matrix": [
+    {
+      "pair": "LITERAL_REPORT_VS_METAPHORICAL_REPORT",
+      "purpose": "Prove the literal path remains valid while a materially transformed version requires host review."
+    },
+    {
+      "pair": "RHETORICAL_COLOR_VS_MATERIAL_WORDPLAY",
+      "purpose": "Prevent harmless tone markers from attracting hosts while preserving meaning-bearing wordplay."
+    },
+    {
+      "pair": "PURE_CREATIVE_VS_MIXED_CREATIVE_WITH_GOVERNED_RETURN",
+      "purpose": "Distinguish retained nonfactual transformation from a host containing a supported proposition."
+    },
+    {
+      "pair": "MIXED_SUPPORTED_VS_MIXED_UNSUPPORTED_RETURN",
+      "purpose": "Preserve unsupported return detection without suppressing the common creative host."
+    },
+    {
+      "pair": "NORMATIVE_ASSESSMENT_VS_DESCRIPTIVE_PRESUPPOSITION",
+      "purpose": "Separate editorial judgment from any independently surviving factual presupposition."
+    },
+    {
+      "pair": "CLEAR_ROLE_VS_AMBIGUOUS_ROLE",
+      "purpose": "Require fail-closed unresolved coverage where construction role cannot be decided safely."
+    },
+    {
+      "pair": "VALID_LITERAL_COMMITMENT_VS_FIGURATIVE_SPAN_COPY",
+      "purpose": "Distinguish a smallest literal proposition from commitment text that merely repeats an unneutralized vehicle."
+    }
+  ],
+  "false_positive_controls": [
+    "No lexical list of metaphor words, conditional openers, hotel terms, transparency terms, or Case 01 phrases may force a creative host.",
+    "A candidate with only literal governed facts may use NO_MATERIAL_CREATIVE_CONSTRUCTION and an empty creative-target audit collection.",
+    "Entity reuse and story specificity remain insufficient for a creative role.",
+    "Non-material rhetorical color remains representable without a host.",
+    "A real-world proposition may be standalone when it is not embedded in a material creative construction.",
+    "Multiple valid construction segmentations remain acceptable when role coverage is equivalent."
+  ],
+  "fail_closed_and_precedence": {
+    "construction_before_proposition": "Construction role is emitted before proposition entries and therefore cannot be inferred retroactively from chosen entry types.",
+    "unresolved_precedence": "Any unresolved material construction role prevents COMPLETE and blocks Stage C.",
+    "schema_validity_not_semantic_authority": "Deterministic coherence proves structural reconciliation only; owner/evaluation review remains required before Stage C evidence authority.",
+    "stage_c": "Unchanged, unconstructed, and unauthorized."
+  },
+  "rejected_options": [
+    {
+      "option": "Require at least one CONTAINED_CREATIVE entry in every ledger",
+      "reason": "Would force creativity into literal candidates and create systematic false positives."
+    },
+    {
+      "option": "Use a lexical figurative-language detector as the admission rule",
+      "reason": "Surface markers cannot determine semantic materiality and would recreate proxy-based failure."
+    },
+    {
+      "option": "Forbid empty creative_target_audits globally",
+      "reason": "Literal-only candidates legitimately require no creative target audits."
+    },
+    {
+      "option": "Reject every commitment equal to candidate_span",
+      "reason": "A short literal sentence may already be the smallest valid proposition; the defect is unneutralized figurative copying, not equality itself."
+    },
+    {
+      "option": "Repair after generation by inserting a host",
+      "reason": "Would silently alter model evidence and violate no-repair evaluation boundaries."
+    }
+  ],
+  "verification_sequence_if_separately_authorized": [
+    "Implement a versioned evaluation-only construction-role schema, grammar, and prompt candidate without changing the current approved artifacts.",
+    "Prove all deterministic tuple, link, overlap, unresolved, limit, and coverage invariants with paired fixtures.",
+    "Verify candidate-first prompt ordering, exact padding, hidden acceptance annotations, request construction, and dependency identities.",
+    "Verify constrained-trie liveness with synthetic and real-tokenizer zero-inference checks.",
+    "Bind runner, executor, evaluator, and probe only through separately approved zero-inference stages.",
+    "Execute no Case 01 rerun or Stage C call without separate authorization."
+  ],
+  "authority": {
+    "implementation": false,
+    "schema_or_prompt_change": false,
+    "runner_or_executor_change": false,
+    "model_probe": false,
+    "case01_rerun": false,
+    "stage_c": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  },
+  "recommended_next_step": "Owner-review this design, then authorize evaluation-only implementation of Construction Role Audit V1 with zero-inference verification only."
+}

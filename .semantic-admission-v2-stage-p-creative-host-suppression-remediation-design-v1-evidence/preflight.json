@@ -1,0 +1,12 @@
+{
+  "result": "DESIGN_COMPLETE",
+  "design_identity": "c7208203932f6b9a31dd4245c66e81837241bbd53b0d50772fa86ddf9088093a",
+  "source_owner_review_identity": "7ca38d874095832b30e2bd5e8bdf19942ab84f3daf558be1f76445015b01995b",
+  "implementation": false,
+  "schema_or_prompt_change": false,
+  "model_calls": 0,
+  "provider_calls": 0,
+  "inference_calls": 0,
+  "case01_reruns": 0,
+  "stage_c_calls": 0
+}
