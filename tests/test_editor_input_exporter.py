@@ -200,6 +200,26 @@ def test_real_internal_report_exports_exact_scores_recommendation_and_ranks() ->
     verify_scout_input_identity(exported)
 
 
+def test_export_projects_attributed_same_event_authority_bundle() -> None:
+    exported = export_editor_input(internal_report(), export_context())
+    authority = exported.ranked_events[0].event_authority_bundle
+
+    assert authority is not None
+    assert authority.authority_version == "event-authority-bundle-v1"
+    assert authority.event_id == 44
+    assert tuple(segment.source_id for segment in authority.segments) == (
+        "alpha",
+        "bravo",
+        "charlie",
+        "delta",
+    )
+    assert authority.segments[0].article_id == 101
+    assert authority.segments[0].canonical is True
+    assert authority.segments[0].summary == "Rezumat confirmat 101"
+    assert all(segment.canonical is False for segment in authority.segments[1:])
+    assert authority.omitted_source_ids == ()
+
+
 def test_export_requires_explicit_valid_source_run_identity() -> None:
     with pytest.raises(ValueError):
         EditorInputExportContext(

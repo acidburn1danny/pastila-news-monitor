@@ -23,15 +23,15 @@ def write_json_schemas(output_directory: Path) -> tuple[Path, ...]:
     paths: list[Path] = []
     for filename, model in SCHEMA_MODELS.items():
         path = output_directory / filename
-        path.write_text(
+        rendered = (
             json.dumps(
                 model.model_json_schema(),
                 ensure_ascii=False,
                 sort_keys=True,
                 indent=2,
             )
-            + "\n",
-            encoding="utf-8",
+            + "\n"
         )
+        path.write_bytes(rendered.encode("utf-8"))
         paths.append(path)
     return tuple(paths)

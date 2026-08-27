@@ -8,6 +8,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from pastila_scout.contracts.identity import assign_scout_input_identity
 from pastila_scout.contracts.scout_editor import ScoutEditorInputV1
+from pastila_scout.event_authority_v1 import build_event_authority_bundle
 from pastila_scout.models import ArticleProvenance, EventRankingReport
 
 COMPONENT_NAMES = (
@@ -195,6 +196,11 @@ def _export_ranked_event(item: object, *, rank: int) -> dict[str, object]:
         "event_id": event.id,
         "canonical_title": event.canonical_title,
         "canonical_summary": event.canonical_summary,
+        "event_authority_bundle": build_event_authority_bundle(
+            event_id=event.id,
+            canonical_article_id=event.canonical_article_id,
+            articles=event.articles,
+        ).model_dump(mode="json"),
         "publication_bounds": {
             "first_published_at": event.first_publication_at,
             "last_published_at": event.last_publication_at,
