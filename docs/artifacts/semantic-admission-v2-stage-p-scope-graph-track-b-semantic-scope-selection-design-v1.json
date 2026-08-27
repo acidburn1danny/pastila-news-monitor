@@ -1,0 +1,182 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-scope-graph-track-b-semantic-scope-selection-design",
+  "schema_version": "1.0.0-design.1",
+  "design_identity": "021690adb065887b6bd5c388a4beb5288629963a12fe7b09b94984a5f69dc05d",
+  "source_failure_analysis_identity": "734a7f291998588ea577216c137696ac5bce742140661131b3c05cd410e5b19c",
+  "track_a_durable_binding_identity": "4830238a46d1ecf25defcb00e5b7e75128c8a9fd9aff19cf14ab63037605bf2a",
+  "lifecycle": "DESIGN_ONLY_NOT_IMPLEMENTED_NOT_EXECUTED_CASE01_BLOCKED",
+  "objective": "Inventory only propositions carried by candidate communicative force while preserving genuine unsupported propositions embedded in creative constructions.",
+  "governing_principles": [
+    {
+      "id": "TB-P1",
+      "name": "CANDIDATE_FIRST_AUTHORITY_SECOND",
+      "rule": "Determine candidate-carried semantic content before consulting factual authority for alignment. Authority may resolve referents and corroborate a candidate proposition, but may not create, complete, or substitute one."
+    },
+    {
+      "id": "TB-P2",
+      "name": "AUTHORITY_IS_SUPPORT_NOT_SEMANTIC_SOURCE",
+      "rule": "commitment must describe information independently asserted, presupposed, entailed, or necessarily implied by candidate communicative force. authority_support cites governed corroboration only."
+    },
+    {
+      "id": "TB-P3",
+      "name": "NEUTRALIZATION_SURVIVAL",
+      "rule": "A REAL_WORLD_COMMITMENT exists only when the smallest truth-evaluable proposition survives neutralization of the creative vehicle without importing predicate, event, quantity, timing, motive, outcome, or history from factual authority."
+    },
+    {
+      "id": "TB-P4",
+      "name": "CONTEXT_DEPENDENCE_IS_NOT_REASSERTION",
+      "rule": "Using a governed entity or event as the target, occasion, or anchor of a transformation does not itself reassert the governed event. Entity reuse is permitted and is not sufficient for a factual entry."
+    },
+    {
+      "id": "TB-P5",
+      "name": "CREATIVE_HEAD_DOES_NOT_SHIELD_FACTUAL_RETURN",
+      "rule": "A surviving unsupported presupposition, entailment, or necessary implication remains a REAL_WORLD_COMMITMENT even when hosted by metaphor, analogy, personification, counterfactual, or editorial framing."
+    },
+    {
+      "id": "TB-P6",
+      "name": "MINIMAL_PROPOSITION_AND_HOST_SPANS",
+      "rule": "Use the smallest exact candidate span sufficient for each surviving proposition or integrated creative host. Do not literalize a whole creative sentence merely because it contains factual referents."
+    },
+    {
+      "id": "TB-P7",
+      "name": "NO_FORCED_CREATIVITY_OR_SINGLE_SEGMENTATION",
+      "rule": "Plain factual, restrained, mixed, and purely creative candidates remain representable. Host consideration is an analysis precedence, not a requirement to emit a host and not a fixed output order."
+    }
+  ],
+  "bounded_internal_decision_protocol": [
+    {
+      "order": 1,
+      "name": "candidate_only_inventory",
+      "instruction": "Read candidate communicative force as the inventory object. Identify possible integrated creative hosts and candidate-carried truth-evaluable propositions without borrowing factual-summary predicates."
+    },
+    {
+      "order": 2,
+      "name": "smallest_host_check",
+      "instruction": "For each integrated construction, identify its smallest sufficient host. Do not split vehicle components into literal facts merely because words resemble governed entities or events."
+    },
+    {
+      "order": 3,
+      "name": "neutralization_test",
+      "instruction": "Neutralize each creative vehicle. Retain only propositions still communicated as real-world commitments by the candidate itself. If content disappears or can be recovered only from authority, it is not factual return."
+    },
+    {
+      "order": 4,
+      "name": "authority_alignment",
+      "instruction": "Only after the candidate inventory is stable, use immutable authority to classify a surviving proposition as governed or unsupported and to select exact authority support where available."
+    },
+    {
+      "order": 5,
+      "name": "provenance_audit",
+      "instruction": "For every commitment, verify that its informational content is recoverable from candidate communicative force. Reject any commitment whose unique event, predicate, quantity, timing, intent, history, outcome, or status came only from authority."
+    },
+    {
+      "order": 6,
+      "name": "overlap_and_uncertainty",
+      "instruction": "Reconcile overlaps through host relationships. If survival or provenance cannot be resolved, emit UNRESOLVED_SCOPE and INDETERMINATE rather than silently choosing factual or creative scope."
+    }
+  ],
+  "important_boundary": "The protocol governs semantic evaluation inside Stage P. It is not a Humor Mechanics routing rule, generation template, single mandatory segmentation, or authorization to reveal chain-of-thought. Only the compact governed ledger is returned.",
+  "prohibited_shortcuts": [
+    "Treating a whole sentence as factual because it mentions governed entities.",
+    "Copying or paraphrasing the factual summary into commitment when the candidate does not independently carry that proposition.",
+    "Using authority_support as permission to expand candidate meaning.",
+    "Assuming every conditional, comparison, metaphor, or personification is contained creative.",
+    "Assuming every grammatically declarative clause is a real-world commitment.",
+    "Forcing CONTAINED_CREATIVE for all commentary or forcing REAL_WORLD_COMMITMENT for all story-specific commentary.",
+    "Encoding expected Case 01 labels, wording, owner outcome, or humor mechanism in the generation path."
+  ],
+  "contrastive_acceptance_matrix": [
+    {
+      "class": "INTEGRATED_CREATIVE_ONLY",
+      "required_capability": "Represent the smallest integrated host without inventing a factual return from contextual authority.",
+      "expected_semantics": "CONTAINED_CREATIVE; no authority-derived commitment.",
+      "case01_relevance": "Primary acceptance class."
+    },
+    {
+      "class": "PLAIN_GOVERNED_REASSERTION",
+      "required_capability": "Recognize an independently candidate-asserted governed proposition.",
+      "expected_semantics": "REAL_WORLD_COMMITMENT with GOVERNED_EVENT and exact non-null authority support."
+    },
+    {
+      "class": "UNSUPPORTED_SURVIVING_PROPOSITION",
+      "required_capability": "Preserve unsupported biography, intent, causality, outcome, emotion, capacity, timing, certainty, stakes, speech, or role knowledge that survives neutralization.",
+      "expected_semantics": "REAL_WORLD_COMMITMENT with NEW_UNSUPPORTED_EVENT and null or non-governing partial support as permitted by the frozen contract."
+    },
+    {
+      "class": "MIXED_CREATIVE_AND_GOVERNED_RETURN",
+      "required_capability": "Separate an integrated host from a genuinely surviving governed proposition.",
+      "expected_semantics": "CREATIVE_HOST plus FACTUAL_RETURN_WITHIN_CREATIVE_HOST with exact support."
+    },
+    {
+      "class": "MIXED_CREATIVE_AND_UNSUPPORTED_RETURN",
+      "required_capability": "Prevent a creative head from shielding a surviving unsupported proposition.",
+      "expected_semantics": "CREATIVE_HOST plus unsupported FACTUAL_RETURN_WITHIN_CREATIVE_HOST."
+    },
+    {
+      "class": "PLAIN_NONFACTUAL_EDITORIAL",
+      "required_capability": "Represent nonfigurative evaluation without manufacturing a factual event.",
+      "expected_semantics": "Contained nonfactual/editorial representation allowed by the existing role contract, or unresolved when the current schema cannot represent it safely."
+    },
+    {
+      "class": "GENUINELY_AMBIGUOUS_SCOPE",
+      "required_capability": "Abstain from forced scope assignment.",
+      "expected_semantics": "UNRESOLVED_SCOPE and INDETERMINATE."
+    }
+  ],
+  "case01_acceptance_contract": {
+    "immutable_case_id": "HMCV1-SASC-01",
+    "request_sha256": "b6e0fd27797998d9b447e9cb938b3ceaa173ee008dd8965a43dd5bf39f5a710d",
+    "required": [
+      "The integrated hiding/light/transparency construction is representable as contained creative material.",
+      "No real-world commitment may be created solely by copying or paraphrasing the factual summary.",
+      "Mere reference to money, employees, or the hotel does not force a factual entry.",
+      "The ledger may use any semantically equivalent valid segmentation; no exact wording or single entry count is required.",
+      "If the evaluator cannot resolve a candidate-carried factual return, fail closed as unresolved rather than manufacture one."
+    ],
+    "forbidden": [
+      "A standalone unsupported commitment whose semantic content is the factual summary rather than candidate communicative force.",
+      "An expected owner label, mechanism name, or Case 01-specific answer embedded in the prompt."
+    ]
+  },
+  "evaluation_dimensions": [
+    "candidate_proposition_recall",
+    "authority_leakage_rate",
+    "creative_host_literalization_rate",
+    "unsupported_return_recall",
+    "governed_return_precision",
+    "minimal_span_quality",
+    "overlap_coherence",
+    "unresolved_scope_calibration"
+  ],
+  "auditable_evaluation_reason_codes": [
+    "TB_AUTHORITY_LEAKAGE_INTO_COMMITMENT",
+    "TB_CONTEXT_DEPENDENCE_MISREAD_AS_FACTUAL_RETURN",
+    "TB_WHOLE_HOST_LITERALIZATION",
+    "TB_NONMINIMAL_REAL_WORLD_SPAN",
+    "TB_UNSUPPORTED_RETURN_OMITTED",
+    "TB_GOVERNED_RETURN_OMITTED",
+    "TB_CREATIVE_HEAD_SHIELDED_FACTUAL_RETURN",
+    "TB_UNRESOLVED_SCOPE_REQUIRED",
+    "TB_SCOPE_SELECTION_ACCEPTABLE"
+  ],
+  "candidate_development_sequence_if_approved": [
+    "Create a versioned evaluation-only prompt candidate with candidate text presented before factual authority and the same immutable bytes.",
+    "Keep schema, field order, constrained JSON grammar, model, reason-code namespace, Track-A runner/executor, and all fail-closed boundaries unchanged.",
+    "Create hidden expected annotations for structurally diverse contrast fixtures before any model execution.",
+    "Perform zero-inference prompt padding, identity, request-construction, schema, tokenizer/trie, runner, and durable-executor compatibility checks.",
+    "Stop for owner review before any Case 01 or other model probe."
+  ],
+  "out_of_scope": [
+    "prompt implementation",
+    "schema or constraint modification",
+    "runner or executor modification",
+    "model modification",
+    "inference",
+    "Case 01 execution",
+    "Stage C",
+    "runtime or production integration",
+    "curriculum exposure",
+    "training"
+  ],
+  "recommended_next_step": "Owner-review and freeze this Track-B design, then authorize an evaluation-only prompt/contract candidate and zero-inference verification. Case 01 remains blocked."
+}
