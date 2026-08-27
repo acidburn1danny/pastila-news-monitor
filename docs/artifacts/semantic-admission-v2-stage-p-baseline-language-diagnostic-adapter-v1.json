@@ -1,0 +1,63 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-baseline-language-diagnostic-adapter",
+  "schema_version": "1.0.0-evaluation.1",
+  "candidate_identity": "57dad182098a4d92db6a4c61cef2e585a5e1534c7c3e0496d9d29d6cab0d3c7e",
+  "approved_performance_design_identity": "279105274090570154078653bc6366e886237eca8e905e9d84e73b2fffd822e7",
+  "lifecycle": "EVALUATION_ONLY_ZERO_INFERENCE_NOT_RUNNER_BOUND_CASE01_BLOCKED",
+  "identities": {
+    "diagnostic_projector_sha256": "08cf7a6ba607ab6813e8d253df4eefe539669f3fb8c8147250cbe63af115428e",
+    "diagnostic_controller_sha256": "ab8c6a700e96d425065c4494cd04b8ac11fe34ec6839944f7ed3b0845bf92e1c",
+    "zero_inference_profiler_sha256": "fcf968d86150579adbf1fec0f69c6d8f9e00cbee69db6ba2341630787ad929c4",
+    "baseline_projector": "StagePTokenTrieProjectorV1",
+    "constraint": "StagePScopeGraphConstraintStateV1_2",
+    "tokenizer_identity": "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c"
+  },
+  "behavior": {
+    "allowed_token_override": false,
+    "baseline_allowed_set_exact": true,
+    "recursive_or_per_terminal_lookahead": false,
+    "liveness_receipt_diagnostic_only": true,
+    "constraint_liveness_reason": "CONSTRAINT_LIVENESS_FAILURE",
+    "v1_2_early_coverage_preserved": true
+  },
+  "real_tokenizer_verification": {
+    "result": "PASS",
+    "state_count": 11,
+    "allowed_set_equivalence": true,
+    "baseline_matrix_seconds": 10.515043,
+    "candidate_matrix_seconds": 10.544207,
+    "maximum_candidate_cold_seconds": 2.619099,
+    "candidate_to_baseline_median_ratio": 0.995577,
+    "warm_p95_seconds": 0.000014,
+    "tokenizer_vocabulary_size": 131072,
+    "trie_node_count": 221961,
+    "cold_callback_budget": "PASS",
+    "matrix_budget": "PASS",
+    "warm_callback_budget": "PASS",
+    "relative_budget": "PASS",
+    "existing_tokenizer_warning_preserved": true,
+    "model_loads": 0,
+    "model_calls": 0,
+    "provider_calls": 0,
+    "inference_calls": 0,
+    "case01_executed": false
+  },
+  "structural_verification": {
+    "synthetic_prefix_equivalence": "PASS",
+    "terminal_eos_equivalence": "PASS",
+    "synthetic_liveness_receipt": "PASS",
+    "adapter_does_not_override_allowed_token_ids": "PASS"
+  },
+  "authority": {
+    "runner_binding": false,
+    "executor_binding": false,
+    "probe_construction": false,
+    "case01_execution": false,
+    "stage_c": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  },
+  "recommended_next_step": "Owner-review this adapter, then authorize zero-inference runner and durable-executor rebinding to the baseline-language diagnostic adapter. Case 01 remains blocked."
+}
