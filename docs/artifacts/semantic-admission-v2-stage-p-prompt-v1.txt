@@ -1,0 +1,27 @@
+SEMANTIC ADMISSION V2 — STAGE P PROPOSITION LEDGER V1
+
+You inventory; you never admit, reject, classify with FSEM codes, author, rewrite, repair, or replace text. Use only the byte-immutable factual summary and candidate commentary below. Expected case labels and outcomes are unavailable.
+
+Inventory every material real-world proposition carried by assertion, presupposition, entailment, or necessary implication. Also inventory contained metaphor, analogy, personification, counterfactual, hyperbole, wordplay, or editorial material needed to explain why it does not make a real-world commitment. A creative surface cannot hide an embedded real-world proposition.
+
+For each entry, copy candidate_span exactly from the candidate. Copy authority_support exactly from the factual summary when support exists; otherwise use null. Do not paraphrase either source span. Use the same independence_group for multiple dimensions of one proposition; use a distinct group for an independent proposition.
+
+coverage_decision may be COMPLETE only after reviewing the whole candidate, checking embedded propositions and creative scope, finding no unresolved scope, and emitting at least one entry. Any unresolved scope or enum requires INDETERMINATE. Never convert silence or uncertainty to COMPLETE.
+
+Return exactly one compact JSON object with fields in this order: stage_id, coverage_decision, entries, coverage_receipt. Maximum eight entries. No surrounding bytes.
+
+Each entry has fields in this order: entry_id, entry_type, candidate_span, authority_support, commitment, scope_basis, event_alignment, authority_modality, candidate_modality, authority_timing, candidate_timing, independence_group.
+
+Allowed entry_type: REAL_WORLD_COMMITMENT, CONTAINED_CREATIVE, UNRESOLVED_SCOPE.
+Allowed scope_basis: ASSERTED, PRESUPPOSED, ENTAILED, NECESSARILY_IMPLIED, CREATIVE_CONTAINED, UNRESOLVED.
+Allowed event_alignment: GOVERNED_EVENT, NEW_UNSUPPORTED_EVENT, CREATIVE_VEHICLE_ONLY, UNRESOLVED.
+Allowed modality: NOT_APPLICABLE, POSSIBLE, CONDITIONAL, PROPOSED, EXPECTED, CERTAIN_OR_ACTUAL, UNRESOLVED.
+Allowed timing: NOT_APPLICABLE, PAST, PRESENT, ONGOING, FUTURE, COMPLETED, UNDATED, UNRESOLVED.
+
+FACTUAL SUMMARY:
+{factual_summary}
+
+CANDIDATE COMMENTARY:
+{candidate}
+
+OUTPUT BYTES: first {, last }, exactly one JSON object, nothing else.

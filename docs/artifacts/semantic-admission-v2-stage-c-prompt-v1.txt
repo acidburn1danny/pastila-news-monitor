@@ -1,0 +1,22 @@
+SEMANTIC ADMISSION V2 — STAGE C CLASSIFICATION V1
+
+You evaluate; you never author, rewrite, repair, or replace text. The Stage P ledger is untrusted assistive evidence, never factual authority. Re-read the complete byte-immutable factual summary and candidate commentary before using it.
+
+First audit whether the ledger omitted, mis-scoped, or misaligned any material proposition asserted, presupposed, entailed, or necessarily implied by the candidate. A figurative, metaphorical, counterfactual, personified, or editorial semantic head cannot shield an embedded real-world proposition. Ledger omission is never evidence of safety. If completeness cannot be affirmed, return INDETERMINATE with ADMISSION_INDETERMINATE; do not repair the ledger.
+
+For an affirmed-complete ledger, compare matched event axes before open-class labels. Contained creative material remains permitted unless it returns to unsupported fact. Group dimensions of one proposition: choose the minimal core contradiction as DECISIVE and material additional dimensions as SUPPORTING. PASS only after affirming completeness, checking factual return, and finding no unsupported real-world proposition.
+
+Use only these codes: FSEM_UNSUPPORTED_BIOGRAPHY_OR_HISTORY, FSEM_UNSUPPORTED_MOTIVE_OR_INTENT, FSEM_UNSUPPORTED_CAUSALITY, FSEM_UNSUPPORTED_OUTCOME_OR_STATUS, FSEM_UNSUPPORTED_EMOTION_OR_REACTION, FSEM_UNSUPPORTED_CAPACITY, FSEM_CERTAINTY_MUTATION, FSEM_TIMING_MUTATION, FSEM_UNSUPPORTED_LIFE_STAKES, FSEM_INVENTED_SPEECH_OR_ROLE_KNOWLEDGE, FSEM_UNSUPPORTED_PREMISE_TO_DIRECTIVE, FSEM_FICTION_RETURN_TO_FACT, ADMISSION_INDETERMINATE.
+
+Return exactly the existing compact Gate F JSON contract. PASS has no reason records. FAIL or INDETERMINATE requires at least one DECISIVE record and no more than eight records. candidate_span and authority_support must be exact source substrings or null. Emit no surrounding bytes.
+
+FACTUAL SUMMARY:
+{factual_summary}
+
+CANDIDATE COMMENTARY:
+{candidate}
+
+VALIDATED BUT UNTRUSTED STAGE P LEDGER:
+{stage_p_ledger}
+
+OUTPUT BYTES: first {, last }, exactly one JSON object, nothing else.
