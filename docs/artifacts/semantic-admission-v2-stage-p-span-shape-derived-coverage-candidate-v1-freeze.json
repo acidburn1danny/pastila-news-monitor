@@ -1,0 +1,33 @@
+{
+  "artifact_type": "OWNER_APPROVAL_FREEZE_RECEIPT",
+  "canonical_name": "STAGE_P_SPAN_SHAPE_AND_DERIVED_COVERAGE_CANDIDATE_V1_FREEZE",
+  "canonical_identity": "d7e2188aef2d4efd4bb2d4cf2ca9cf9d7eb93449c7c6ecca10d1f89262c32676",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "separator": "LF",
+    "ordered_utf8_fields": [
+      "STAGE_P_SPAN_SHAPE_AND_DERIVED_COVERAGE_CANDIDATE_V1_FREEZE",
+      "961b2eede98e31ee7b4e7ed4d786e66bae9c4c558d3cd11d964e1c16199d9aa9",
+      "OWNER_APPROVED_FROZEN",
+      "ZERO_INFERENCE_EVALUATION_ONLY",
+      "NO_PHASE_2"
+    ]
+  },
+  "frozen_candidate_identity": "961b2eede98e31ee7b4e7ed4d786e66bae9c4c558d3cd11d964e1c16199d9aa9",
+  "owner_disposition": "APPROVED_AND_FROZEN",
+  "preservation": {
+    "candidate_artifact_modified": false,
+    "implementation_modified": false,
+    "captured_run_evidence_modified": false,
+    "zero_inference_evaluation_only": true
+  },
+  "authority": {
+    "phase_2": false,
+    "evaluator_or_runner_binding": false,
+    "probe_construction_or_execution": false,
+    "stage_c": false,
+    "runtime_or_production": false,
+    "training": false
+  },
+  "status": "FROZEN"
+}

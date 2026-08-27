@@ -1,0 +1,93 @@
+{
+  "artifact_type": "ZERO_INFERENCE_EVALUATION_CANDIDATE_EVIDENCE",
+  "artifact_version": "1.0.0-evaluation.1",
+  "canonical_name": "STAGE_P_SPAN_SHAPE_AND_DERIVED_COVERAGE_CANDIDATE_V1",
+  "canonical_identity": "961b2eede98e31ee7b4e7ed4d786e66bae9c4c558d3cd11d964e1c16199d9aa9",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "separator": "LF",
+    "ordered_utf8_fields": [
+      "STAGE_P_SPAN_SHAPE_AND_DERIVED_COVERAGE_CANDIDATE_V1",
+      "4e91633d9d04d1776804d1fae039846cdb1597644261366d6e945ec8c9e69834",
+      "4b60e9389eb4060b5c353d77d6f0640367f0631354515739b1bce369117523fa",
+      "656f7495bdf3e30842df6ecdf4164b4e055037c97e1368ee3ae28e5786236c13",
+      "529d0c5d12b06ccff61964295ff58dd5237311c990226a0241f1888e800f1daa",
+      "ZERO_INFERENCE_NO_BINDING"
+    ]
+  },
+  "approved_design_identity": "4e91633d9d04d1776804d1fae039846cdb1597644261366d6e945ec8c9e69834",
+  "implementation": {
+    "path": "src/pastila_scout/semantic_admission_v2/stage_p_span_shape_coverage_v1.py",
+    "sha256": "4b60e9389eb4060b5c353d77d6f0640367f0631354515739b1bce369117523fa",
+    "pure": true,
+    "filesystem_io": false,
+    "model_dependency": false,
+    "tokenizer_dependency": false
+  },
+  "span_shape_candidate": {
+    "checks": [
+      "Unicode lexical endpoints",
+      "Repeated punctuation-run endpoints",
+      "Construction containment of linked host and returns",
+      "Creative vehicle containment within host",
+      "Mixed-return containment and host intersection"
+    ],
+    "semantic_boundary": "Shape PASS is necessary but not sufficient. It grants no proposition, authority-support, factual-safety, or admission decision."
+  },
+  "derived_coverage_candidate": {
+    "required_phase_count": 7,
+    "fixed_precedence": true,
+    "model_authored_complete_has_terminal_authority": false,
+    "missing_phase_behavior": "BLOCKED",
+    "failed_phase_behavior": "BLOCKED_AT_FIRST_PRECEDENCE_FAILURE",
+    "complete_behavior": "AVAILABLE_ONLY_WHEN_ALL_REQUIRED_RECEIPTS_PASS"
+  },
+  "captured_case01_verification": {
+    "source_run_receipt_identity": "540b6db29a332d8320a460720d325cb45e8b7564f5f65f6809fd4e430066c22f",
+    "span_shape_receipt_sha256": "656f7495bdf3e30842df6ecdf4164b4e055037c97e1368ee3ae28e5786236c13",
+    "status": "FAIL",
+    "reason_code": "STAGE_P_SPAN_END_NOT_LINGUISTIC_BOUNDARY",
+    "audited_reference_count": 4,
+    "failed_reference_count": 4,
+    "raw_output_modified": false
+  },
+  "hand_constructed_fixture_verification": {
+    "whole_candidate_coordinates": "PASS",
+    "graph_geometry": "PASS",
+    "mid_word_coordinates": "FAIL",
+    "missing_commitment_audit": "BLOCKED",
+    "span_failure_precedes_missing_semantic_receipt": "PASS",
+    "all_pass_fixture_can_derive_complete": "PASS"
+  },
+  "phase1_coverage_evidence": {
+    "receipt_sha256": "529d0c5d12b06ccff61964295ff58dd5237311c990226a0241f1888e800f1daa",
+    "disposition": "BLOCKED",
+    "blocking_phase": "INDEPENDENT_COMMITMENT_SPAN_AUDIT",
+    "reason_code": "STAGE_P_REQUIRED_PHASE_NOT_EVALUATED"
+  },
+  "verification": {
+    "tests_passed": 4,
+    "runner_launches": 0,
+    "tokenizer_loads": 0,
+    "model_loads": 0,
+    "inference_calls": 0,
+    "probe_constructions": 0,
+    "probe_executions": 0
+  },
+  "blocker_repair": {
+    "encountered": "Strict frozen Pydantic models correctly rejected a Python dict fixture at the noncanonical boundary.",
+    "repair": "Fixture validation was moved to model_validate_json; production strictness was preserved.",
+    "scope_expanded": false
+  },
+  "authority": {
+    "evaluator_or_runner_binding": false,
+    "prompt_or_grammar_change": false,
+    "probe_construction_or_execution": false,
+    "stage_c": false,
+    "runtime_or_production": false,
+    "curriculum": false,
+    "training": false
+  },
+  "status": "OWNER_REVIEW_REQUIRED",
+  "recommended_next_step": "Owner-review this Phase 1 candidate. If approved, freeze it and authorize only Phase 2 design: separately versioned commitment-span and authority-reconciliation receipt schemas/prompts plus zero-inference constrained-grammar and request compatibility analysis."
+}
