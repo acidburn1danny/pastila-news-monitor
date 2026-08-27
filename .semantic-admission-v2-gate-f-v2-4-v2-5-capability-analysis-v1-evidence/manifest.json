@@ -1,0 +1,23 @@
+{
+  "schema_name":"pastila-semantic-admission-v2-gate-f-capability-analysis-bundle",
+  "schema_version":"1.0.0",
+  "canonical_identity":"3b289f52d6301acb57ef73b03010b64419707028ea68cdabca82f3c05d86e47c",
+  "identity_method":"sha256 of ordered lowercase artifact SHA-256 values joined by LF",
+  "lifecycle":"FROZEN_ANALYSIS_ONLY_READY_FOR_OWNER_REVIEW",
+  "source_v2_4_probe_identity":"d6d49bb869ce6ecf60c3210a2fda0434db1531f4d9a6e1dfc454cd5229d53dee",
+  "source_v2_5_probe_identity":"b978f49ca408ae62c98b625f38ea9bae426f5121f0f1a8cb0c91af64143ff57c",
+  "artifacts":[
+    {"path":"docs/artifacts/semantic-admission-v2-gate-f-v2-4-v2-5-capability-analysis-v1.json","sha256":"e2332cc4b314e9430f1fc4bef0c64062cb5b7cc1f5bb4e6b25e008d804eeda8e"},
+    {"path":"tests/test_semantic_admission_v2_gate_f_capability_analysis_v1.py","sha256":"cbbb408f0c61e02610a901923c5bc2b1941ca2457209a7aabcb5f30f65e74f2c"},
+    {"path":".semantic-admission-v2-gate-f-v2-4-v2-5-capability-analysis-v1-evidence/report.md","sha256":"8cbf5efa9f8cdf6cd3fc8cf54a4c5f56125c356d88e90a600c110c73db0e32f2"}
+  ],
+  "v2_5_execution_stopped":true,
+  "v2_4_runtime_eligible":false,
+  "preferred_direction":"STAGED_PROPOSITION_LEDGER_THEN_CLASSIFICATION",
+  "staged_design_authority":false,
+  "candidate_implementation_authority":false,
+  "inference_authority":false,
+  "runtime_authority":false,
+  "training_authority":false,
+  "gate_s_authority":false
+}

@@ -1,0 +1,129 @@
+{
+  "schema_name":"pastila-semantic-admission-v2-gate-f-v2-4-v2-5-capability-analysis",
+  "schema_version":"1.0.0-design.1",
+  "scope":"DESIGN_ONLY_NO_CANDIDATE_OR_INFERENCE",
+  "evidence":{
+    "v2_4_candidate_identity":"763ff7b715e856092a84d316b9eddc8af896b20c44433223b14a6b849cec5b23",
+    "v2_4_probe_identity":"d6d49bb869ce6ecf60c3210a2fda0434db1531f4d9a6e1dfc454cd5229d53dee",
+    "v2_5_candidate_identity":"68ea125b3f2e41f106eade918e1bb2e4acfa66e2e99e84c268b17a4661ed797e",
+    "v2_5_probe_identity":"b978f49ca408ae62c98b625f38ea9bae426f5121f0f1a8cb0c91af64143ff57c",
+    "same_model":true,
+    "same_case_inputs":true,
+    "same_constrained_grammar":true,
+    "same_reason_namespace":true,
+    "case_10_rendered_prompt_bytes":{"v2_4":6443,"v2_5":8920,"increase_bytes":2477,"increase_percent":38.44}
+  },
+  "proven_observations":[
+    "Case 01 passed exactly under both V2.4 and V2.5.",
+    "Case 10 changed from a safe rejection with wrong reasons under V2.4 to an unsafe PASS under V2.5.",
+    "The V2.5 span validator is post-generation and therefore did not cause the model's PASS; it also had no reason spans to validate.",
+    "Both probes returned schema-valid constrained JSON without executor failure.",
+    "The V2.5 prompt change is causally upstream of the changed model output, but existing evidence cannot isolate prompt length from instruction content or interaction."
+  ],
+  "not_proven":[
+    "Prompt length alone caused the unsafe PASS.",
+    "The model cannot recognize certainty or timing mutation under any decomposition.",
+    "Negative-evidence instructions are always unsafe.",
+    "A shorter single-pass prompt would generalize beyond Cases 01 and 10.",
+    "The two-case results establish general Gate F performance."
+  ],
+  "failure_hypotheses_ranked":[
+    {
+      "rank":1,
+      "hypothesis":"SINGLE_PASS_INSTRUCTION_COMPETITION",
+      "support":"V2.5 simultaneously asks for protected creative scope, exhaustive proposition discovery, delta matching, negative evidence, grouping, status ranking, and source-grounded output. Suppression rules for spurious motive/causality may have dominated positive detection of certainty/timing.",
+      "confidence":"MODERATE_HIGH"
+    },
+    {
+      "rank":2,
+      "hypothesis":"TASK_OVERLOAD_FOR_CURRENT_MODEL",
+      "support":"V2.4 recognized unsafety but misclassified it; V2.5 added more dependent reasoning operations and lost the safety decision entirely.",
+      "confidence":"MODERATE"
+    },
+    {
+      "rank":3,
+      "hypothesis":"PROMPT_LENGTH_ATTENTION_DILUTION",
+      "support":"The Case 10 rendered prompt grew 38.44 percent. This correlates with regression but is not independently identified as the cause.",
+      "confidence":"MODERATE_LOW"
+    },
+    {
+      "rank":4,
+      "hypothesis":"FUNDAMENTAL_MODEL_CAPABILITY_LIMIT",
+      "support":"Neither candidate produced the required certainty/timing structure. Two prompts and one hard case are insufficient to establish a hard limit.",
+      "confidence":"LOW_UNRESOLVED"
+    }
+  ],
+  "candidate_dispositions":{
+    "v2_4":"SAFER_EMPIRICAL_REFERENCE_ONLY_NOT_RUNTIME_ELIGIBLE",
+    "v2_5":"STOP_UNSAFE_FALSE_PASS_NO_FURTHER_EXECUTION",
+    "reason":"V2.4 rejects the unsafe case but violates reason and positive-case conformance in the wider Run 4 evidence; V2.5 admits the unsafe case. Neither is deployable."
+  },
+  "architecture_options":[
+    {
+      "option":"MORE_SINGLE_PASS_PROMPT_PATCHING",
+      "recommendation":"REJECT_AS_NEXT_STEP",
+      "reason":"High overfitting and instruction-interference risk after V2.5; another additive prompt would provide little diagnostic isolation."
+    },
+    {
+      "option":"COMPRESSED_SINGLE_PASS_REWRITE",
+      "recommendation":"KEEP_AS_CONTROL_ONLY",
+      "reason":"Lower implementation cost, but success on two known cases would not reveal whether the model actually decomposed propositions or memorized a narrower decision boundary."
+    },
+    {
+      "option":"STAGED_PROPOSITION_LEDGER_THEN_CLASSIFICATION",
+      "recommendation":"PREFERRED_DESIGN_DIRECTION",
+      "reason":"Separates proposition discovery/alignment from governed classification and makes omissions, source grounding, and axis deltas independently auditable."
+    },
+    {
+      "option":"PARALLEL_SPECIALIST_CLASSIFIERS",
+      "recommendation":"DEFER",
+      "reason":"Could reduce per-call complexity but multiplies calls and false-positive aggregation before proposition extraction capability is established."
+    },
+    {
+      "option":"LEXICAL_OR_DETERMINISTIC_SEMANTIC_ROUTING",
+      "recommendation":"PROHIBIT",
+      "reason":"Would reproduce the proxy failure class and cannot safely capture presupposition, entailment, or necessary implication."
+    }
+  ],
+  "preferred_staged_design":{
+    "stage_p_proposition_ledger":{
+      "task":"Extract source-grounded real-world commitments and align each to governed event axes without deciding admission or selecting FSEM codes.",
+      "required_fields":["candidate_span","authority_support","commitment","scope","event_alignment","authority_modality","candidate_modality","authority_timing","candidate_timing","independence_group"],
+      "contained_creative_result":"No unsupported real-world commitment, not an automatic admission decision.",
+      "failure":"Any invalid span, malformed ledger, unresolved scope, or extraction uncertainty yields INDETERMINATE and fail-closed abstention."
+    },
+    "deterministic_boundary":{
+      "task":"Validate exact source membership, schema, event-group references, and permitted enum values only.",
+      "prohibited":"No semantic inference, missing-proposition fabrication, repair, relabeling, or automatic FSEM mapping."
+    },
+    "stage_c_classification":{
+      "task":"Classify validated ledger commitments against original immutable authority and candidate; assign governed codes and decisive/supporting status.",
+      "inputs":"Original authority and candidate plus the untrusted-but-validated Stage P ledger.",
+      "safety_rule":"Stage C must not treat ledger omission as proof of safety; unresolved completeness yields INDETERMINATE.",
+      "output":"Existing strict Gate F response grammar if feasible; otherwise a separately versioned grammar requiring owner review."
+    },
+    "call_cost":"Two model calls per Gate F evaluation before any retry; retries remain prohibited.",
+    "precedence":"Any stage failure or indeterminate result abstains. FAIL from classified unsupported propositions rejects. PASS requires both explicit no-unsupported-proposition conclusion and completeness confidence under a separately frozen contract."
+  },
+  "minimum_next_evidence":{
+    "step":"DESIGN_ONLY_STAGED_GATE_F_FEASIBILITY_SPECIFICATION",
+    "must_resolve":[
+      "How Stage P represents contained creative scope without converting imagery into propositions.",
+      "How completeness is expressed without treating model silence as safety.",
+      "How independent propositions versus multiple dimensions of one proposition are grouped.",
+      "Whether existing constrained grammar can represent Stage P or requires a separate evaluation-only grammar.",
+      "How raw outputs from both calls are durably captured before validation.",
+      "Exact fail-closed precedence and call ceiling."
+    ],
+    "future_empirical_comparison_if_separately_authorized":"A bounded four-call bakeoff on Cases 01 and 10: two calls per case, no Gate S, compared with frozen V2.4/V2.5 evidence."
+  },
+  "preserved_boundaries":[
+    "Immutable factual authority remains separate and byte-exact.",
+    "Generated factual claims and factual paraphrases remain prohibited in commentary.",
+    "Gate S remains separate.",
+    "No Humor Mechanics curriculum exposure.",
+    "No Core/Voice generation, runtime, production, or training modification.",
+    "No retries, repair, output selection, or proxy routing."
+  ],
+  "authority":{"staged_design":false,"candidate_implementation":false,"inference":false,"runtime":false,"training":false,"gate_s":false}
+}
