@@ -1,0 +1,33 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-staged-gate-f-coordinator-identity-reconciliation-bundle",
+  "schema_version": "1.0.0",
+  "canonical_identity": "4ceab1af313124bca903f95211c7cd47a73e109421123c54489668e961cda742",
+  "identity_method": "sha256 of ordered lowercase artifact SHA-256 values joined by LF",
+  "lifecycle": "SUPERSEDING_IDENTITY_RECONCILIATION_READY_FOR_OWNER_REVIEW",
+  "historical_bundle_identity": "9d2f55be9771f0da0ab6a547217e8fc450167d30651bd12d7898fd36830a47bc",
+  "reconciliation_identity": "547eeb3fb753b123a4e4c4b9163604738f106ef316cf1b30e5468a11e6e70504",
+  "artifacts": [
+    {
+      "path": "docs/artifacts/semantic-admission-v2-staged-gate-f-coordinator-identity-reconciliation-v1.json",
+      "sha256": "6fb35edf84d46df0963c35a51b609f35673e8e573827c9346a52a2af3a207fb2"
+    },
+    {
+      "path": "tests/test_semantic_admission_v2_staged_gate_f_coordinator_identity_reconciliation_v1.py",
+      "sha256": "b75f2408cc7db0762f1ea6b1db04c8433c273bf9f1ac4276d8abaf0cef6d5ac3"
+    },
+    {
+      "path": ".semantic-admission-v2-staged-gate-f-coordinator-identity-reconciliation-v1-evidence/report.md",
+      "sha256": "c94d47ec1eae56648ede3cbb7940335c67f623885f7113d2a4824aaa97e9c059"
+    }
+  ],
+  "byte_equivalence_claimed": false,
+  "semantic_equivalence_claimed": false,
+  "provider_calls": 0,
+  "model_calls": 0,
+  "stage_c_authority": false,
+  "runner_authority": false,
+  "probe_authority": false,
+  "inference_authority": false,
+  "runtime_authority": false,
+  "production_authority": false
+}

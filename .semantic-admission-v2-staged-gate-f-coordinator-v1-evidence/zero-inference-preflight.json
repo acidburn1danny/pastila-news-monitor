@@ -1,0 +1,22 @@
+{
+  "schema_name":"pastila-semantic-admission-v2-staged-gate-f-coordinator-zero-inference-preflight",
+  "schema_version":"1.0.0",
+  "checks":{
+    "construction_does_not_invoke_evaluator":true,
+    "complete_pass_path_exactly_two_scripted_calls":true,
+    "stage_p_indeterminate_exactly_one_scripted_call":true,
+    "invalid_stage_p_raw_durable_before_validation":true,
+    "stage_p_provider_exception_stops_before_stage_c":true,
+    "stage_c_fail_and_invalid_span_precedence":true,
+    "case_directory_append_only":true,
+    "request_raw_validation_and_aggregate_evidence_persisted":true,
+    "stage_model_prompt_grammar_evaluator_identities_bound":true,
+    "no_retry_repair_selection_or_gate_s_edge":true
+  },
+  "scripted_test_calls_are_not_model_or_provider_calls":true,
+  "model_load_started":false,
+  "generation_started":false,
+  "model_calls":0,
+  "provider_calls":0,
+  "result":"PASS"
+}
