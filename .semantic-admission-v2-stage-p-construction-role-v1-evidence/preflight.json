@@ -1,0 +1,24 @@
+{
+  "result": "PASS",
+  "candidate_identity": "46633da94538451e04643adf4f291bc30033749d8768e36c8a6be5eb13621734",
+  "approved_design_identity": "c7208203932f6b9a31dd4245c66e81837241bbd53b0d50772fa86ddf9088093a",
+  "local_focused_tests": {"passed": 14, "failed": 0},
+  "real_tokenizer": {
+    "distribution": "Ubuntu-24.04",
+    "result": "PASS",
+    "state_count": 8,
+    "matrix_seconds": 0.387335,
+    "vocabulary_size": 131072,
+    "trie_node_count": 221961,
+    "terminal_can_eos": true,
+    "terminal_allowed_count": 1
+  },
+  "model_loads": 0,
+  "model_calls": 0,
+  "provider_calls": 0,
+  "inference_calls": 0,
+  "case01_executed": false,
+  "stage_c_calls": 0,
+  "runtime_modified": false,
+  "curriculum_exposed": false
+}
