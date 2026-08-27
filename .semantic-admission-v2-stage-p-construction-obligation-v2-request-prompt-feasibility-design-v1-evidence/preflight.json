@@ -1,0 +1,16 @@
+{
+  "design_identity": "93f5005c74dd9f4d553c2a193e924e891d1e29a78d5dc793766b840d30e892cc",
+  "prompt_files_created": 0,
+  "request_candidates_created": 0,
+  "application_requests_created": 0,
+  "provider_calls": 0,
+  "tokenizer_loads": 0,
+  "model_or_adapter_loads": 0,
+  "inference_calls": 0,
+  "runner_objects": 0,
+  "executor_objects": 0,
+  "probe_constructions": 0,
+  "probe_executions": 0,
+  "subprocess_launches": 0,
+  "stage_c_entries": 0
+}

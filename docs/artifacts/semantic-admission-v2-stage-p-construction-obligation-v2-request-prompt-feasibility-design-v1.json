@@ -1,0 +1,85 @@
+{
+  "artifact_type": "ZERO_EXECUTION_REQUEST_PROMPT_FEASIBILITY_DESIGN",
+  "artifact_version": "1.0.0",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_REQUEST_PROMPT_FEASIBILITY_DESIGN_V1",
+  "canonical_identity": "93f5005c74dd9f4d553c2a193e924e891d1e29a78d5dc793766b840d30e892cc",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_V2_REQUEST_PROMPT_FEASIBILITY_DESIGN_V1",
+      "974d5e6257256d7397cb68f90952c66809a536cf5525cbef58b3bbfce6791587",
+      "d55694074ea2023b0e93e06be9e260c11495cdc9fdbc23181c85e36c9921f7cd",
+      "sha256:1a4d0dbac3dd56d9b18de678b0044143473c916eaad1f68451b97e7928a50838",
+      "e52c595d3de43e6c34a83ef0e340d3bd0f318d17e80d6e8be70fa9d8af8e0d5b",
+      "NEW_V2_LINEAGE_REQUIRED",
+      "DESIGN_ONLY_ZERO_EXECUTION"
+    ],
+    "separator": "LF"
+  },
+  "bindings": {
+    "projector_freeze_identity": "974d5e6257256d7397cb68f90952c66809a536cf5525cbef58b3bbfce6791587",
+    "static_projector_binding_identity": "9993395df612550e221efd2c4419a9f87f7382ef184d6e3d66b931340cd767f3",
+    "static_evaluator_identity": "ffb7316fd0dfd783d93337345208fb912ccb7bd6accd5065dd065ce937617d4c",
+    "static_payload_identity": "d55694074ea2023b0e93e06be9e260c11495cdc9fdbc23181c85e36c9921f7cd",
+    "v2_contract_source_sha256": "dd81716dcf00260e7d5c651eaaddd65ed3f0d489263ec8ba5d2a0774d5c0f5d4",
+    "v2_schema_identity": "sha256:1a4d0dbac3dd56d9b18de678b0044143473c916eaad1f68451b97e7928a50838",
+    "tokenizer_identity": "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c",
+    "decoder_identity": "ministral-tokenizer-decode-skip-special-cleanup-false-v1"
+  },
+  "legacy_non_equivalence": {
+    "v1_request_candidate_sha256": "e52c595d3de43e6c34a83ef0e340d3bd0f318d17e80d6e8be70fa9d8af8e0d5b",
+    "v1_prompt_source_sha256": "319cc3f9ec5a793bf82624380150d38e6094817fabe55034831de6fef05b2f70",
+    "v1_contract_source_sha256": "bf839e9dca1d11e6de1190a5b64fd399f85fcb77c55b75b056d5efcb3d3f2f19",
+    "v1_schema_identity": "sha256:1b9e2a289aaade5e79c1be2f81000103dd7787b068576b9d8923789a237c6854",
+    "v1_prompt_identity": "sha256:2fe034826fb19b28c4686fd4640325fd31a1f739140322b5a83412515f62e6bd",
+    "disposition": "PROHIBITED_AS_V2_PROMPT_OR_REQUEST_IDENTITY",
+    "reason": "The V1 request and prompt target ConstructionRoleLedgerV1 and the legacy constraint/grammar rather than the frozen ConstructionObligationLedgerV2 language."
+  },
+  "selected_architecture": {
+    "lineage": "SEPARATELY_VERSIONED_CONSTRUCTION_OBLIGATION_V2_REQUEST_AND_PROMPT",
+    "prompt_bytes_status": "NOT_YET_AUTHORED_OR_FROZEN",
+    "request_candidate_status": "NOT_YET_IMPLEMENTED",
+    "application_or_provider_request_status": "OUT_OF_SCOPE",
+    "rendering": "A future pure renderer may concatenate immutable V2 instruction bytes with one canonical static-payload JSON value inside explicit data delimiters.",
+    "output_contract": "Exactly one ConstructionObligationLedgerV2 JSON value; no prose, copied source text outside bound references, repair wrapper, or alternate candidate.",
+    "input_authority": "Only source bytes and identities already present in the canonical static payload.",
+    "semantic_postcondition": "Strict V2 schema validation and the existing source-projection receipt remain independent fail-closed postconditions."
+  },
+  "future_prompt_obligations": [
+    "preserve candidate-first and source-authority ordering",
+    "require copyless immutable source-span references and request-bound offsets",
+    "preserve construction-role, creative-target, Scope-Graph, and ledger reconciliation semantics",
+    "require complete coverage and fail closed on ambiguity or unresolved reconciliation",
+    "forbid partial-output inference, semantic relaxation, retry, repair, selection, and fallback",
+    "state that Stage C is not entered or authorized"
+  ],
+  "future_request_identity_fields": [
+    "new V2 prompt SHA-256",
+    "V2 schema identity",
+    "projector freeze identity",
+    "static payload identity",
+    "exact canonical static-payload SHA-256",
+    "rendered prompt SHA-256"
+  ],
+  "verification_requirements": [
+    "deterministic rendering from synthetic canonical payloads",
+    "request/source-context isolation",
+    "prompt and schema identity drift rejection",
+    "quoted-data delimiter injection resistance",
+    "Unicode and Romanian diacritic preservation",
+    "launch-forbidden import and activity checks",
+    "Git-object-only clean-checkout verification"
+  ],
+  "authority": {
+    "design_selection": true,
+    "prompt_authoring_or_freeze": false,
+    "request_candidate_implementation": false,
+    "application_or_provider_request": false,
+    "tokenizer_or_model_loading": false,
+    "inference": false,
+    "runner_executor_or_probe": false,
+    "stage_c": false,
+    "runtime_or_production": false
+  },
+  "result": "FEASIBLE_NEW_V2_LINEAGE_REQUIRED"
+}
