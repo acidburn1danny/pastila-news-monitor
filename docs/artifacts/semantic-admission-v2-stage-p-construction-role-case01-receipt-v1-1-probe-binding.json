@@ -1,0 +1,59 @@
+{
+  "artifact_id": "STAGE_P_CONSTRUCTION_ROLE_CASE01_RECEIPT_V1_1_PROBE_BINDING",
+  "binding_identity": "fde6829ff64649c404f85b0f1bbc032bf7b692ccded80d986587b188041fc09f",
+  "approved_receipt_propagation_candidate_identity": "aae3212858b87ae7e3876c497fb9b554d5c606426fa692d6df9f26982c9d7b08",
+  "evaluator_v1_1_identity": "7924fa7331b0284c68f1bf35a28651ad9a7de9f8f996d2fb1774873b92c1af5a",
+  "lifecycle": "EXCLUSIVE_ONE_SHOT_BOUND_ZERO_INFERENCE_NOT_EXECUTED",
+  "case_id": "HMCV1-SASC-01",
+  "pack_sha256": "4163307ccb8cfa8997b520a1cea04cddacd347e9b1ffde498db925ffccac6c2d",
+  "factual_summary_sha256": "e2add20c2ac06fdc90a2f7e1960d5672b8e91a9f7a82b895203dfb43f7f9d196",
+  "candidate_sha256": "52a54bad5c68d16bd326c9dac8c544b5c4b0a45b9129262a0da139167362682b",
+  "probe_wrapper_sha256": "6249c5b1851bfcaecfde7d8450a6892d24d26f02970dabea0407f7207a9025cd",
+  "identities": {
+    "request_candidate_identity": "46633da94538451e04643adf4f291bc30033749d8768e36c8a6be5eb13621734",
+    "prompt_identity": "sha256:2fe034826fb19b28c4686fd4640325fd31a1f739140322b5a83412515f62e6bd",
+    "schema_identity": "sha256:1b9e2a289aaade5e79c1be2f81000103dd7787b068576b9d8923789a237c6854",
+    "constraint_identity": "sha256:a920d2e2c659246791ef250fb49d7d9a28c504b331224c6006df2b8f6866aac9",
+    "grammar_identity": "sha256:09afda7fcb31374491d6e7238f57d7409cd2d4134218e4919fd0939965cf0ae3",
+    "tokenizer_identity": "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c",
+    "model_identity": "pastila-editor-core-v1.2-experimental"
+  },
+  "execution_boundaries": {
+    "fresh_exclusive_evidence_root": true,
+    "maximum_provider_calls": 1,
+    "retry_count": 0,
+    "repair_count": 0,
+    "selection_count": 0,
+    "typed_liveness_reason": "STAGE_P_CONSTRAINT_LIVENESS_FAILURE",
+    "generic_failure_reason": "STAGE_P_PROVIDER_OR_TRANSPORT_FAILURE",
+    "stage_c_constructed": false,
+    "stage_c_called": false
+  },
+  "zero_inference_verification": {
+    "case01_selection": "PASS",
+    "pack_and_case_hashes": "PASS",
+    "evaluator_v1_1_identity": "PASS",
+    "receipt_candidate_identity": "PASS",
+    "single_evaluator_call_site": "PASS",
+    "typed_liveness_branch": "PASS",
+    "exclusive_root_guard": "PASS",
+    "subprocess_launch_forbidden": "PASS",
+    "wsl_calls": 0,
+    "model_calls": 0,
+    "provider_calls": 0,
+    "inference_calls": 0,
+    "case01_executed": false,
+    "stage_c_calls": 0
+  },
+  "authority": {
+    "probe_execution": false,
+    "case01_rerun": false,
+    "stage_c": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  },
+  "status": "OWNER_REVIEW_REQUIRED",
+  "recommended_next_step": "Owner-review this binding. Any actual Case 01 execution requires separate explicit authorization and must stop after exactly one Stage-P-only call regardless of outcome, without retry, repair, selection, another case, or Stage C."
+}

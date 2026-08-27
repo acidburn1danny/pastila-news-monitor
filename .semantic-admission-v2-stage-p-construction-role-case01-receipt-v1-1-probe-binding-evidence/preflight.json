@@ -1,0 +1,14 @@
+{
+  "result": "PASS",
+  "binding_identity": "fde6829ff64649c404f85b0f1bbc032bf7b692ccded80d986587b188041fc09f",
+  "focused_tests": {"passed": 9, "failed": 0},
+  "subprocess_launch_forbidden": true,
+  "single_evaluator_call_site": true,
+  "typed_liveness_branch": true,
+  "wsl_calls": 0,
+  "model_calls": 0,
+  "provider_calls": 0,
+  "inference_calls": 0,
+  "case01_executed": false,
+  "stage_c_calls": 0
+}
