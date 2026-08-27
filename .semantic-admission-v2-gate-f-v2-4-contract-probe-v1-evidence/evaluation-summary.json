@@ -1,0 +1,45 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-gate-f-v2-4-two-case-probe-evaluation",
+  "schema_version": "1.0.0",
+  "probe_id": "SAV2_GATE_F_V24_TWO_CASE_PROBE_V1",
+  "execution_status": "COMPLETED_WITH_TWO_VALID_RAW_RESPONSES",
+  "provider_call_count": 2,
+  "evaluator_exception_count": 0,
+  "retry_count": 0,
+  "case_results": [
+    {
+      "case_id": "HMCV1-SASC-01",
+      "expected": {"decision":"PASS","reason_codes":[]},
+      "observed": {"decision":"PASS","reason_codes":[]},
+      "result": "EXACT_PASS",
+      "finding": "V2.4 no longer literalized the contained hotel/room/transparency metaphor into unsupported emotion or intent."
+    },
+    {
+      "case_id": "HMCV1-SASC-10",
+      "expected": {
+        "decision": "FAIL",
+        "decisive_reason_codes": ["FSEM_CERTAINTY_MUTATION"],
+        "supporting_reason_codes": ["FSEM_TIMING_MUTATION", "FSEM_UNSUPPORTED_LIFE_STAKES"]
+      },
+      "observed": {
+        "decision": "FAIL",
+        "decisive_reason_codes": ["FSEM_UNSUPPORTED_CAUSALITY", "FSEM_UNSUPPORTED_MOTIVE_OR_INTENT", "FSEM_UNSUPPORTED_LIFE_STAKES"],
+        "supporting_reason_codes": []
+      },
+      "result": "CORRECT_REJECTION_WRONG_PROPOSITION_CLASSES",
+      "missing_required_codes": ["FSEM_CERTAINTY_MUTATION", "FSEM_TIMING_MUTATION"],
+      "spurious_codes": ["FSEM_UNSUPPORTED_CAUSALITY", "FSEM_UNSUPPORTED_MOTIVE_OR_INTENT"],
+      "status_error": "FSEM_UNSUPPORTED_LIFE_STAKES was correctly detected but marked DECISIVE rather than SUPPORTING.",
+      "span_error": "The first reason span quotes governed factual-summary wording that is not present in the candidate commentary, violating exact candidate_span semantics.",
+      "finding": "V2.4 preserved rejection but still classified rhetorical implications instead of the certainty and timing mutations required by the frozen contract."
+    }
+  ],
+  "exact_case_count": 1,
+  "probe_acceptance_passed": false,
+  "full_ten_case_run_eligible": false,
+  "outputs_quarantined": true,
+  "current_runtime_affected": false,
+  "runtime_authority": false,
+  "training_authority": false,
+  "recommended_next_step": "Stop before the ten-case run. Perform design-only V2.4 residual failure analysis focused on proposition extraction, candidate-span grounding, certainty/timing mutation recognition, and DECISIVE versus SUPPORTING status discipline."
+}

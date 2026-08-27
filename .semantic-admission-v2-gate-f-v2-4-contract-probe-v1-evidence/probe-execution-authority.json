@@ -1,0 +1,18 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-gate-f-v2-4-two-case-probe-authority",
+  "schema_version": "1.0.0",
+  "probe_id": "SAV2_GATE_F_V24_TWO_CASE_PROBE_V1",
+  "plan_identity": "68b38997ec6d55409b19cd113f763cd1e00e9eba0765a1546dda133f2de0699f",
+  "runner_identity": "a8b3a58198293440226e2ff30751ecdb7739c2ebb8733dee410cf34c3e3b29a4",
+  "candidate_bundle_identity": "763ff7b715e856092a84d316b9eddc8af896b20c44433223b14a6b849cec5b23",
+  "inference_authorized": true,
+  "maximum_provider_calls": 2,
+  "attempts_per_case": 1,
+  "gate_s_included": false,
+  "silent_retry": false,
+  "repair": false,
+  "selection": false,
+  "runtime_authority": false,
+  "training_authority": false,
+  "owner_authorization": "authorized two-call Gate F-only probe"
+}

@@ -1,0 +1,30 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-gate-f-v2-4-two-case-raw-ledger",
+  "schema_version": "1.0.0",
+  "probe_id": "SAV2_GATE_F_V24_TWO_CASE_PROBE_V1",
+  "maximum_provider_calls": 2,
+  "calls": [
+    {
+      "ordinal": 1,
+      "case_id": "HMCV1-SASC-01",
+      "gate_id": "FACTUAL_SEMANTIC",
+      "request_sha256": "a25336179b3ff8503b3083af23456f8fe1fbe3de3b4836c773a4d3f913443937",
+      "started_at": "2026-08-25T23:19:26.813316+00:00",
+      "completed_at": "2026-08-25T23:19:55.486661+00:00",
+      "raw_response": "{\"gate_id\":\"FACTUAL_SEMANTIC\",\"decision\":\"PASS\",\"reason_records\":[]}",
+      "raw_response_sha256": "cf5f2dbb22966432884903ab3368d106b0ef84eb7bbad082addbf89330f264c5",
+      "exception_type": null
+    },
+    {
+      "ordinal": 2,
+      "case_id": "HMCV1-SASC-10",
+      "gate_id": "FACTUAL_SEMANTIC",
+      "request_sha256": "bf76c53708f8716819f62f68e16ea727803a017636179ac2a2f0f45bf955dd2a",
+      "started_at": "2026-08-25T23:19:55.487133+00:00",
+      "completed_at": "2026-08-25T23:20:40.335313+00:00",
+      "raw_response": "{\"gate_id\":\"FACTUAL_SEMANTIC\",\"decision\":\"FAIL\",\"reason_records\":[{\"code\":\"FSEM_UNSUPPORTED_CAUSALITY\",\"status\":\"DECISIVE\",\"candidate_span\":\"ar putea avea parte de noi reguli privind verificarea lucrărilor și soluționarea contestațiilor\",\"authority_support\":null,\"unsupported_proposition\":\"noi reguli vor decide viitorul unor tineri\",\"confidence\":0.90},{\"code\":\"FSEM_UNSUPPORTED_MOTIVE_OR_INTENT\",\"status\":\"DECISIVE\",\"candidate_span\":\"ar fi ca și cum ar fi schimbat regulile jocului în timpul meciului\",\"authority_support\":null,\"unsupported_proposition\":\"schimbarea regulilor este intenționată și are scopul de a afecta rezultatul probei\",\"confidence\":0.90},{\"code\":\"FSEM_UNSUPPORTED_LIFE_STAKES\",\"status\":\"DECISIVE\",\"candidate_span\":\"o probă care decide viitorul unor tineri\",\"authority_support\":null,\"unsupported_proposition\":\"Evaluarea Națională sau Bacalaureatul decid viitorul tinerilor\",\"confidence\":0.90}]}",
+      "raw_response_sha256": "2a9750ec7a3f0e184dec28734d495a223660344c188fcc0574238471cb6148cf",
+      "exception_type": null
+    }
+  ]
+}

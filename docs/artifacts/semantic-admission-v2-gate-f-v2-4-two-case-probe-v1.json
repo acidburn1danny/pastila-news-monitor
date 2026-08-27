@@ -1,0 +1,21 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-gate-f-v2-4-two-case-probe",
+  "schema_version": "1.0.0",
+  "probe_id": "SAV2_GATE_F_V24_TWO_CASE_PROBE_V1",
+  "candidate_bundle_identity": "763ff7b715e856092a84d316b9eddc8af896b20c44433223b14a6b849cec5b23",
+  "evaluator_identity": "abc7441d98b387d76de3b176068a4a93235f0f46be6dad30b7873dc0e26b1bba",
+  "prompt_identity": "sha256:aed34f51c1c56c53b01347074daae234271b820fe35abc20db2d4af9618f0861",
+  "case_ids": ["HMCV1-SASC-01", "HMCV1-SASC-10"],
+  "gate_id": "FACTUAL_SEMANTIC",
+  "maximum_provider_calls": 2,
+  "attempts_per_case": 1,
+  "hidden_expected_annotations_loaded": false,
+  "silent_retry": false,
+  "repair": false,
+  "selection": false,
+  "overwrite": false,
+  "gate_s_included": false,
+  "curriculum_exposure": false,
+  "runtime_authority": false,
+  "training_authority": false
+}

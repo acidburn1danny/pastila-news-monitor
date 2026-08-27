@@ -1,0 +1,27 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-gate-f-v2-4-two-case-probe-bundle",
+  "schema_version": "1.0.0",
+  "canonical_identity": "d6d49bb869ce6ecf60c3210a2fda0434db1531f4d9a6e1dfc454cd5229d53dee",
+  "identity_method": "sha256 of ordered lowercase artifact SHA-256 values joined by LF",
+  "lifecycle": "FROZEN_COMPLETED_PROBE_ACCEPTANCE_FAILED",
+  "candidate_bundle_identity": "763ff7b715e856092a84d316b9eddc8af896b20c44433223b14a6b849cec5b23",
+  "artifacts": [
+    {"path": "docs/artifacts/semantic-admission-v2-gate-f-v2-4-two-case-probe-v1.json", "sha256": "68b38997ec6d55409b19cd113f763cd1e00e9eba0765a1546dda133f2de0699f"},
+    {"path": "scripts/run_semantic_admission_v2_gate_f_v2_4_two_case_probe_v1.py", "sha256": "a8b3a58198293440226e2ff30751ecdb7739c2ebb8733dee410cf34c3e3b29a4"},
+    {"path": "tests/test_semantic_admission_v2_gate_f_v2_4_two_case_probe.py", "sha256": "71330b39c415b3d09bfca663780f609432c3186f4c11be62345d0518d85b0f31"},
+    {"path": ".semantic-admission-v2-gate-f-v2-4-contract-probe-v1-evidence/probe-execution-authority.json", "sha256": "ca378b350c932086e57a8cb06e66254e86a2557793da5281afc53c46e3754437"},
+    {"path": ".semantic-admission-v2-gate-f-v2-4-contract-probe-v1-evidence/raw-call-ledger.json", "sha256": "0a28270faa2327cd4b6dc57e963b89de9735a15a57c746aa450d72e466c11203"},
+    {"path": ".semantic-admission-v2-gate-f-v2-4-contract-probe-v1-evidence/raw-results.json", "sha256": "d3517bc77edef49cd3290d70e81e9c4e32a7967ed9f749ca247674fbacee68ea"},
+    {"path": ".semantic-admission-v2-gate-f-v2-4-contract-probe-v1-evidence/evaluation-summary.json", "sha256": "2cd49b2a8441a078df741d7e9d6e9b32dbf6547d7729b9a44320dd3a04ebc918"},
+    {"path": ".semantic-admission-v2-gate-f-v2-4-contract-probe-v1-evidence/report.md", "sha256": "dec975426f2102cb3c981324d177b0ebc32be3759ac057291db360fcd355aaed"}
+  ],
+  "provider_call_count": 2,
+  "evaluator_exception_count": 0,
+  "case_01_exact_pass": true,
+  "case_10_exact_pass": false,
+  "probe_acceptance_passed": false,
+  "full_ten_case_run_eligible": false,
+  "outputs_quarantined": true,
+  "runtime_authority": false,
+  "training_authority": false
+}
