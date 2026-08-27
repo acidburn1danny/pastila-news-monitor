@@ -1,0 +1,54 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-role-coherence-v1-identity-reconciliation",
+  "schema_version": "1.0.0",
+  "lifecycle": "SUPERSEDING_IDENTITY_RECONCILIATION_READY_FOR_OWNER_REVIEW",
+  "reconciliation_identity": "sha256:597e1bedf600adc4738a981c00c7da53ecfe36b6f77853b2c1f7a4d24facfbba",
+  "historical_bundle": {
+    "manifest_path": ".semantic-admission-v2-stage-p-role-coherence-v1-evidence/manifest.json",
+    "canonical_identity": "03012d7a499634d884581aa4885bf951ff0f815176cbf04f457537ac621c9d4e",
+    "source_design_identity": "cf6b33b185137150388010d087a6f9a3801e06180755ce7247e9867bb3ee0059",
+    "expected_candidate_source_sha256": "88b506b48ca2ed96399ea5cf4e3a745c6e9c54e3736e84fb758e847243934fd1",
+    "manifest_immutable": true,
+    "classification": "HISTORICAL_ZERO_INFERENCE_EVIDENCE_WITH_UNAVAILABLE_CANDIDATE_SOURCE_VERSION"
+  },
+  "legacy_source_availability": {
+    "expected_bytes_available_from_git": false,
+    "expected_bytes_available_from_repository_content": false,
+    "search_scope": "ALL_REACHABLE_GIT_VERSIONS_OF_THE_PATH_AND_18519_CURRENT_REPOSITORY_FILES",
+    "reconstruction_or_fabrication_permitted": false
+  },
+  "current_source": {
+    "path": "src/pastila_scout/semantic_admission_v2/stage_p_role_coherence_candidate_v1.py",
+    "provenance_commit": "d34ab6a4ea6a1f2bfd588558892fc3f108c672a9",
+    "provenance_commit_subject": "Add provider-neutral Stage P identities",
+    "git_blob_oid": "3ee41290117eda5aa933ec96abc4f377ce205778",
+    "sha256": "3ea430789466c53f0565320c5ce5ccec15677e4797392502b893269bdb580e98",
+    "normalization": "PROVIDER_NEUTRAL_IDENTITY_BINDING",
+    "reproducible_from_current_git": true
+  },
+  "historical_artifact_verification": {
+    "matching_artifact_count": 9,
+    "mismatching_artifact_count": 1,
+    "mismatch_is_exactly_the_unavailable_candidate_source": true
+  },
+  "identity_distinction": {
+    "historical_bundle_identity_is_current_source_identity": false,
+    "historical_expected_source_is_current_source": false,
+    "byte_equivalence_claimed": false,
+    "semantic_equivalence_claimed": false,
+    "silent_hash_rebinding": false
+  },
+  "normalization_disposition": "CURRENT_PROVIDER_NEUTRAL_SOURCE_LINEAGE_REPRODUCIBLE_ONLY_THROUGH_THIS_SUPERSEDING_RECONCILIATION",
+  "authority": {
+    "real_tokenizer_execution_authority": false,
+    "runner_binding_authority": false,
+    "provider_authority": false,
+    "model_authority": false,
+    "probe_authority": false,
+    "projector_authority": false,
+    "stage_c_authority": false,
+    "inference_authority": false,
+    "runtime_authority": false,
+    "production_authority": false
+  }
+}

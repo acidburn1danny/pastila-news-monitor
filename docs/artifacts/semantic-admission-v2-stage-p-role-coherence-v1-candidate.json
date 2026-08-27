@@ -1,0 +1,61 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-role-coherence-candidate",
+  "schema_version": "1.0.0-evaluation.1",
+  "lifecycle": "ZERO_INFERENCE_CANDIDATE_READY_FOR_OWNER_REVIEW",
+  "source_design_identity": "cf6b33b185137150388010d087a6f9a3801e06180755ce7247e9867bb3ee0059",
+  "candidate_identity": "384925cb1ca1d4dcfcfa63b82dee810451ae713506c484da24768f63d3169c9b",
+  "prompt_identity": "sha256:dd9f26782347ea2a8901135fc8bb671587d020a794798de404dc274e699fa4f8",
+  "schema_identity": "sha256:a47603e257ee5e315b77993891f0079e30e6c63a150b6b04e6889a98a4613ac9",
+  "constraint_source_identity": "sha256:0cf522bf94dac4ad480b3e28c5b17ae78e372ddce91ffa75ba70e657a79b57b2",
+  "grammar_identity": "sha256:69a6a49a2a7f5e350063dcce73d95a402a06f89eabfdbfe53671a7463ca5f6d6",
+  "model_identity": "pastila-editor-core-v1.2-experimental",
+  "structural_delta": [
+    "Root order is stage_id, entries, coverage_receipt, coverage_decision.",
+    "Entry-type field combinations are enforced by both strict schema and character constraint.",
+    "Only UNRESOLVED_SCOPE may carry unresolved candidate semantic axes.",
+    "INDETERMINATE requires an unresolved entry and unresolved_scope_present true.",
+    "COMPLETE requires all review receipts true, no unresolved entry, and unresolved_scope_present false."
+  ],
+  "prompt_delta": [
+    "Defines the factual-return test without exposing expected case labels.",
+    "Requires integrated creative constructions to remain units unless subspans carry independent propositions.",
+    "Preserves exhaustive embedded, presupposed, entailed, and necessarily implied proposition review.",
+    "Requires story-local semantic descriptions rather than generic commitment placeholders."
+  ],
+  "preserved_boundaries": [
+    "Byte-immutable factual authority",
+    "Candidate-only inventory source",
+    "Exact source-substring validation",
+    "Maximum eight entries",
+    "Existing enum namespace",
+    "No FSEM or admission decision in Stage P",
+    "No repair, retry, selection, or replacement",
+    "Fail-closed unresolved scope"
+  ],
+  "zero_inference_result": {
+    "case01_complete_contained_creative_fixture": "PASS",
+    "real_world_unresolved_axis_rejection": "PASS",
+    "contained_creative_real_world_axis_rejection": "PASS",
+    "explicit_indeterminate_fixture": "PASS",
+    "mixed_creative_and_embedded_proposition_fixture": "PASS",
+    "coverage_field_order": "PASS",
+    "prompt_padding_unicode_and_request_construction": "PASS",
+    "synthetic_character_trie_terminal_eos": "PASS",
+    "execution_edge_absence": "PASS",
+    "real_model_tokenizer_profile": "NOT_EXECUTED"
+  },
+  "bounded_next_step_if_authorized": "Perform a zero-inference real-tokenizer trie/profile check against the frozen local tokenizer, without loading model weights. If compatible, bind a one-shot evaluation runner and stop again before inference.",
+  "authority": {
+    "real_tokenizer_execution": false,
+    "runner_binding": false,
+    "model_probe": false,
+    "projector": false,
+    "stage_c": false,
+    "case10": false,
+    "proof_rerun": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  }
+}

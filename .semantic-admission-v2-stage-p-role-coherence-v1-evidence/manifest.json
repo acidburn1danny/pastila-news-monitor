@@ -1,0 +1,42 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-role-coherence-v1-manifest",
+  "schema_version": "1.0.0",
+  "canonical_identity": "03012d7a499634d884581aa4885bf951ff0f815176cbf04f457537ac621c9d4e",
+  "identity_method": "sha256 of the ordered source design identity and artifact SHA-256 values joined by LF with no trailing LF",
+  "source_design_identity": "cf6b33b185137150388010d087a6f9a3801e06180755ce7247e9867bb3ee0059",
+  "lifecycle": "ZERO_INFERENCE_CANDIDATE_READY_FOR_OWNER_REVIEW",
+  "bindings": [
+    {"path":"docs/artifacts/semantic-admission-v2-stage-p-role-coherence-v1-candidate.json","sha256":"ef0d3b6d071346871a0b03d86c911e93e6ac79e236d69731d1e9ac6e8db28de2"},
+    {"path":"docs/artifacts/semantic-admission-v2-stage-p-role-coherence-prompt-v1.txt","sha256":"932440eea2deb68887a0809688cb460362a5916c4cfdba32f2f196b86c38890c"},
+    {"path":"src/pastila_scout/semantic_admission_v2/stage_p_role_coherence_contract_v1.py","sha256":"fca3e48393d544d5fb2f5a9597116699cd6f35553bfd1b5a8ac5b563597e34d0"},
+    {"path":"src/pastila_scout/semantic_admission_v2/stage_p_role_coherence_constraint_v1.py","sha256":"0cf522bf94dac4ad480b3e28c5b17ae78e372ddce91ffa75ba70e657a79b57b2"},
+    {"path":"src/pastila_scout/semantic_admission_v2/stage_p_role_coherence_prompt_v1.py","sha256":"5b304a8c22e87c4575a94912750390269ac22679600155e82fd1cb5520b3b6f2"},
+    {"path":"src/pastila_scout/semantic_admission_v2/stage_p_role_coherence_candidate_v1.py","sha256":"88b506b48ca2ed96399ea5cf4e3a745c6e9c54e3736e84fb758e847243934fd1"},
+    {"path":"tests/test_semantic_admission_v2_stage_p_role_coherence_v1.py","sha256":"638db262b5f8bf930685405c99305161e7108cef453af1e6e20949e4f3595192"},
+    {"path":"tests/test_semantic_admission_v2_stage_p_role_coherence_v1_evidence.py","sha256":"5cb63315ad8704101b35e40fd72e3026daf88bc2c8a65acd2b812131ab1b2d8f"},
+    {"path":".semantic-admission-v2-stage-p-role-coherence-v1-evidence/preflight.json","sha256":"2007687ec06f8a6651d3a9bba5bd5dfe7283af4c60914943e3e8fa72c58e5824"},
+    {"path":".semantic-admission-v2-stage-p-role-coherence-v1-evidence/report.md","sha256":"0e15154bfbedfe27a9fa672d4d5fb1287bd19ff1b0ef5786ef9dd4a4fa7a5648"}
+  ],
+  "result": {
+    "zero_inference_tests": 30,
+    "schema_role_coherence": "PASS",
+    "constraint_role_coherence": "PASS",
+    "prompt_and_request_identity": "PASS",
+    "synthetic_trie_compatibility": "PASS",
+    "real_tokenizer_compatibility": "NOT_EXECUTED",
+    "model_or_provider_calls": 0
+  },
+  "authority": {
+    "real_tokenizer_execution": false,
+    "runner_binding": false,
+    "model_probe": false,
+    "projector": false,
+    "stage_c": false,
+    "case10": false,
+    "proof_rerun": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  }
+}
