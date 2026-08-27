@@ -1,0 +1,71 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-role-coherence-case01-probe-analysis",
+  "schema_version": "1.0.0",
+  "case_id": "HMCV1-SASC-01",
+  "source_binding_identity": "362fa8d009507ede145c248e209c4fa872b7f91c7d9b849afdf8774fa927c89d",
+  "execution": {
+    "provider_call_count": 1,
+    "retry_count": 0,
+    "repair_count": 0,
+    "selection_count": 0,
+    "host_elapsed_seconds": 48.08591,
+    "model_load_completed": true,
+    "generation_started": true,
+    "terminal_eos": false,
+    "raw_response_persisted": false
+  },
+  "phase_receipt": {
+    "transport": "FAIL",
+    "raw_persistence": "NOT_RUN",
+    "schema_validation": "NOT_RUN",
+    "source_membership": "NOT_RUN",
+    "reason_code": "STAGE_P_PROVIDER_OR_TRANSPORT_FAILURE",
+    "final_decision": "ABSTAIN_FAIL_CLOSED"
+  },
+  "durable_evidence": {
+    "file_count": 25,
+    "tree_identity": "94286847c70948d36074fcafb1e539cb4cf65bcfb54466af0f8c21b3a99a982a",
+    "heartbeat_count": 9,
+    "last_generated_tokens": 143,
+    "tracker_rebuilds": 0,
+    "runner_exception": "EMPTY_ALLOWED_TOKEN_SET"
+  },
+  "failure_analysis": {
+    "failure_class": "ROLE_COHERENCE_LATE_DEAD_END",
+    "observed_prefix": {
+      "entry_type": "REAL_WORLD_COMMITMENT",
+      "scope_basis": "PRESUPPOSED",
+      "event_alignment": "NEW_UNSUPPORTED_EVENT",
+      "authority_support": null,
+      "authority_modality": "NOT_APPLICABLE",
+      "candidate_modality": "UNRESOLVED",
+      "authority_timing": "NOT_APPLICABLE",
+      "candidate_timing": "UNRESOLVED"
+    },
+    "mechanism": "The grammar allowed locally valid enum tokens that formed a globally incoherent REAL_WORLD_COMMITMENT tuple. Coherence was checked only at entry closure, where all continuations became illegal and the trie raised EMPTY_ALLOWED_TOKEN_SET.",
+    "semantic_result": "NOT_OBTAINED",
+    "case01_acceptance": "NOT_DEMONSTRATED",
+    "not_a_tokenizer_compatibility_failure": true,
+    "not_a_source_membership_failure": true,
+    "not_a_timeout": true
+  },
+  "required_remediation_direction": {
+    "scope": "ZERO_INFERENCE_CONSTRAINT_PROJECTION_ONLY",
+    "requirement": "Project role-conditioned legal enum sets at each field, not only at entry closure. Once entry_type is REAL_WORLD_COMMITMENT, unresolved candidate axes and creative-only axes must never be offered; analogous fixed projections apply to CONTAINED_CREATIVE. UNRESOLVED_SCOPE retains unresolved choices.",
+    "preserve": "Keep strict schema validation and final tuple checks as defense-in-depth; do not repair or relabel generated evidence.",
+    "no_prompt_change_demonstrated_necessary": true
+  },
+  "boundaries": {
+    "additional_probe": false,
+    "projector_bound": false,
+    "stage_c_constructed": false,
+    "stage_c_called": false,
+    "case10_called": false,
+    "proof_rerun": false,
+    "eligibility": "QUARANTINED_EVALUATION_ONLY",
+    "runtime_authority": false,
+    "production_authority": false,
+    "curriculum_authority": false,
+    "training_authority": false
+  }
+}

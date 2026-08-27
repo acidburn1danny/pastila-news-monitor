@@ -1,0 +1,47 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-role-coherence-case01-probe-manifest",
+  "schema_version": "1.0.0",
+  "canonical_identity": "7357722352c676770d6b1c36d64a13b93e6e078e8046cb8ff05d57fc67d3b188",
+  "identity_method": "sha256 of the ordered source binding identity, artifact SHA-256 values, and durable lifecycle tree identity joined by LF with no trailing LF",
+  "source_binding_identity": "362fa8d009507ede145c248e209c4fa872b7f91c7d9b849afdf8774fa927c89d",
+  "lifecycle": "QUARANTINED_EVALUATION_EVIDENCE_READY_FOR_OWNER_REVIEW",
+  "bindings": [
+    {"path":"src/pastila_scout/semantic_admission_v2/run_stage_p_role_coherence_case01_probe_v1.py","sha256":"c2428a21bdf02475ee95b32dff37892989a03098a79586aabf969d9ced3858c4"},
+    {"path":".semantic-admission-v2-stage-p-role-coherence-case01-probe-v1-evidence/stage-p-request.json","sha256":"b6e0fd27797998d9b447e9cb938b3ceaa173ee008dd8965a43dd5bf39f5a710d"},
+    {"path":".semantic-admission-v2-stage-p-role-coherence-case01-probe-v1-evidence/identity-binding.json","sha256":"aaffb78a8e64863529b8c701d957a9cd8d8e66d1c555ddf703786627bff60ad6"},
+    {"path":".semantic-admission-v2-stage-p-role-coherence-case01-probe-v1-evidence/stage-p-phase-receipt-v2.json","sha256":"774196cddc6028bc9c56fceeb1cd9c98d50e108193dae6f80a2c63539228cee2"},
+    {"path":".semantic-admission-v2-stage-p-role-coherence-case01-probe-v1-evidence/validated-analysis.json","sha256":"61572d9f73579c3ef117b6b4b1cfe205a1c7715d8a3ab83c7e22fcfe52d400b9"},
+    {"path":".semantic-admission-v2-stage-p-role-coherence-case01-probe-v1-evidence/report.md","sha256":"10795ffa3d7cf67edb4b9e7610ac1efa9ec97f596c7dd3e64a1e0d87420e6b90"}
+  ],
+  "durable_lifecycle": {
+    "relative_path": ".semantic-admission-v2-stage-p-role-coherence-case01-probe-v1-evidence/durable-lifecycle",
+    "file_count": 25,
+    "tree_identity_method": "sha256 of ordered relative-path TAB file-sha256 lines joined by LF with no trailing LF",
+    "tree_identity": "94286847c70948d36074fcafb1e539cb4cf65bcfb54466af0f8c21b3a99a982a"
+  },
+  "result": {
+    "provider_call_count": 1,
+    "retry_count": 0,
+    "terminal_eos": false,
+    "raw_response": "NOT_PRODUCED",
+    "transport": "FAIL",
+    "final": "ABSTAIN_FAIL_CLOSED",
+    "failure_class": "ROLE_COHERENCE_LATE_DEAD_END",
+    "runner_exception": "EMPTY_ALLOWED_TOKEN_SET",
+    "case01_acceptance": "NOT_DEMONSTRATED",
+    "stage_c_constructed": false,
+    "stage_c_called": false
+  },
+  "authority": {
+    "additional_probe": false,
+    "constraint_remediation": false,
+    "projector": false,
+    "stage_c": false,
+    "case10": false,
+    "proof_rerun": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  }
+}
