@@ -1,0 +1,40 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-role-coherence-real-tokenizer-preflight",
+  "schema_version": "1.0.0",
+  "result": "PASS",
+  "tokenizer_path": "/home/pastila/PastilaAcida-Model-Lab/experimental-0.1/model-cache/huggingface/models--mistralai--Ministral-3-14B-Instruct-2512-BF16/snapshots/3cea74c1ebaf5ce5f5a2553de470e2ceab825142",
+  "tokenizer_vocabulary_size": 131072,
+  "tokenizer_seconds": 0.756,
+  "trie_nodes": 221961,
+  "trie_build_seconds": 0.425705,
+  "trie_cache_size": 333,
+  "streams": [
+    {
+      "label": "COMPLETE_CONTAINED_CREATIVE",
+      "raw_sha256": "0a7834604baeb7690291c294312ba92c024254217185ed37c06410334864a4d2",
+      "tokens": 199,
+      "decoded_exact": true,
+      "invalid_next_token_indices": [],
+      "terminal_state": true,
+      "eos_only_after_terminal": true
+    },
+    {
+      "label": "INDETERMINATE_UNRESOLVED",
+      "raw_sha256": "4bb6e9a9f4f38ff4efc3446de7fc2a0a2a927a7252d84e33df8467af0b679c4f",
+      "tokens": 192,
+      "decoded_exact": true,
+      "invalid_next_token_indices": [],
+      "terminal_state": true,
+      "eos_only_after_terminal": true
+    }
+  ],
+  "elapsed_seconds": 28.028098,
+  "known_tokenizer_warning_preserved": true,
+  "torch_imported": true,
+  "model_imported": false,
+  "model_load_started": false,
+  "adapter_load_started": false,
+  "inference_started": false,
+  "model_calls": 0,
+  "provider_calls": 0
+}

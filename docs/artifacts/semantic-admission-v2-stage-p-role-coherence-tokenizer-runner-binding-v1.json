@@ -1,0 +1,62 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-role-coherence-tokenizer-runner-binding",
+  "schema_version": "1.0.0-evaluation.1",
+  "lifecycle": "ZERO_INFERENCE_REAL_TOKENIZER_COMPATIBLE_RUNNER_SOURCE_BOUND",
+  "source_candidate_identity": "03012d7a499634d884581aa4885bf951ff0f815176cbf04f457537ac621c9d4e",
+  "real_tokenizer_result": {
+    "result": "PASS",
+    "tokenizer_vocabulary_size": 131072,
+    "trie_nodes": 221961,
+    "complete_contained_creative_tokens": 199,
+    "indeterminate_unresolved_tokens": 192,
+    "token_transitions_checked": 391,
+    "invalid_next_token_indices": 0,
+    "decoded_exact": true,
+    "terminal_eos_only": true,
+    "tokenizer_seconds": 0.756,
+    "trie_build_seconds": 0.425705,
+    "elapsed_seconds": 28.028098,
+    "known_warning": "Frozen tokenizer emitted the existing Mistral regex warning; fix_mistral_regex remains unchanged."
+  },
+  "runner_binding": {
+    "runner_path": "src/pastila_scout/experimental_core_v1_2_stage_p_role_coherence_runner_v1.py",
+    "runner_sha256": "61e5daafa07262ecf913441cd0121dfc6976891ef80f7f9fc3f55e4a0b2cfbd2",
+    "durable_base_runner_sha256": "617ee34bd05c6a32de81714b0b07bedb2f10464f0e43213258cdf8886e0c57db",
+    "constraint_sha256": "0cf522bf94dac4ad480b3e28c5b17ae78e372ddce91ffa75ba70e657a79b57b2",
+    "trie_projector_sha256": "8cc6f68f1ff9751ab983306e9fb39efa0ae55c52cbe8a0471a2e5e98bfc54529",
+    "incremental_tracker_sha256": "ee8ffe3420edff80026795d8e33fa014fe0a35ba57befdd0c24b49679839f53b",
+    "callback_controller_sha256": "240b87e079b0dec825d96e300a6de1c31be9e7d3ff9e7067f7acd80dceb3dd4f",
+    "append_only_lifecycle_sha256": "74ad3892060f3e98ae1a5fc2b243c5100891259518b67bdb3e37f586bc4635a3",
+    "binding_behavior": "The wrapper replaces only the durable base runner type factory with the role-coherence DFA, tracker, and controller before delegating to the existing durable lifecycle run function.",
+    "execution_status": "NOT_EXECUTED"
+  },
+  "zero_inference_receipt": {
+    "wsl_calls": 1,
+    "tokenizer_loads": 1,
+    "torch_imported_transitively_by_transformers": true,
+    "model_imported": false,
+    "model_load_started": false,
+    "adapter_load_started": false,
+    "inference_started": false,
+    "model_calls": 0,
+    "provider_calls": 0,
+    "runner_calls": 0,
+    "stage_c_constructed": false,
+    "stage_c_called": false
+  },
+  "bounded_next_step_if_authorized": "Implement and zero-inference verify a durable host executor plus one-shot HMCV1-SASC-01 probe binding for this exact runner and candidate identities. Stop before inference; do not execute the probe in the same authorization.",
+  "authority": {
+    "host_executor_implementation": false,
+    "one_shot_probe_binding": false,
+    "runner_execution": false,
+    "model_probe": false,
+    "projector": false,
+    "stage_c": false,
+    "case10": false,
+    "proof_rerun": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  }
+}

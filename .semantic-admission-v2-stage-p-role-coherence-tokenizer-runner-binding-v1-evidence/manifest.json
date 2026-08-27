@@ -1,0 +1,41 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-role-coherence-tokenizer-runner-binding-manifest",
+  "schema_version": "1.0.0",
+  "canonical_identity": "ea5ddc6b0621a0329b5178d4d479b3f08f48f24a63a0fc9f7d479d46a8fbbb42",
+  "identity_method": "sha256 of the ordered source candidate identity and artifact SHA-256 values joined by LF with no trailing LF",
+  "source_candidate_identity": "03012d7a499634d884581aa4885bf951ff0f815176cbf04f457537ac621c9d4e",
+  "lifecycle": "ZERO_INFERENCE_REAL_TOKENIZER_COMPATIBLE_RUNNER_SOURCE_BOUND",
+  "bindings": [
+    {"path":"docs/artifacts/semantic-admission-v2-stage-p-role-coherence-tokenizer-runner-binding-v1.json","sha256":"e5043ed83316b5dd16836efd919ba3a845dbd43117bafef5b3d50a84e2f7df06"},
+    {"path":"src/pastila_scout/experimental_core_v1_2_stage_p_role_coherence_tokenizer_preflight.py","sha256":"883b4ce7fb64f94fc69247c86b5972c1db6bee04a9cc66be9121be6af8b2a058"},
+    {"path":"src/pastila_scout/semantic_admission_v2/stage_p_role_coherence_incremental_tracker_v1.py","sha256":"ee8ffe3420edff80026795d8e33fa014fe0a35ba57befdd0c24b49679839f53b"},
+    {"path":"src/pastila_scout/semantic_admission_v2/stage_p_role_coherence_callback_controller_v1.py","sha256":"240b87e079b0dec825d96e300a6de1c31be9e7d3ff9e7067f7acd80dceb3dd4f"},
+    {"path":"src/pastila_scout/experimental_core_v1_2_stage_p_role_coherence_runner_v1.py","sha256":"61e5daafa07262ecf913441cd0121dfc6976891ef80f7f9fc3f55e4a0b2cfbd2"},
+    {"path":"tests/test_semantic_admission_v2_stage_p_role_coherence_runner_binding_v1.py","sha256":"ad665f5fdb4a168328c7fb883cc336519257e3f3d159e7765f95bcafdf5e10c7"},
+    {"path":"tests/test_semantic_admission_v2_stage_p_role_coherence_tokenizer_runner_evidence_v1.py","sha256":"f30e877ab2a422647f03ef7598c0cfaaed40928cc8476d1e2caaea8cad05f178"},
+    {"path":".semantic-admission-v2-stage-p-role-coherence-tokenizer-runner-binding-v1-evidence/real-tokenizer-preflight.json","sha256":"b44cec11393c4ee537a06e8a32d4bfd0c90b5470503e2bf541209d7c2b9d29e8"},
+    {"path":".semantic-admission-v2-stage-p-role-coherence-tokenizer-runner-binding-v1-evidence/report.md","sha256":"b28c86004f3aaf684daacd17e80232f232e251d02b53aaac42a278916f0d1f5f"}
+  ],
+  "result": {
+    "real_tokenizer_compatibility": "PASS",
+    "token_transitions_checked": 391,
+    "runner_source_binding": "PASS",
+    "tests": 21,
+    "model_or_provider_calls": 0,
+    "runner_calls": 0
+  },
+  "authority": {
+    "host_executor_implementation": false,
+    "one_shot_probe_binding": false,
+    "runner_execution": false,
+    "model_probe": false,
+    "projector": false,
+    "stage_c": false,
+    "case10": false,
+    "proof_rerun": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  }
+}
