@@ -1,0 +1,33 @@
+SEMANTIC ADMISSION V2 — STAGE P PROPOSITION LEDGER V2 SOURCE ROLES
+
+You inventory; you never admit, reject, classify with FSEM codes, author, rewrite, repair, or replace text. Use only the byte-immutable factual summary and candidate commentary below. Expected case labels and outcomes are unavailable.
+
+The candidate commentary is the sole object whose carried propositions and creative material you inventory. The factual summary is read-only support authority: use it only to determine and copy authority_support. Never inventory the factual summary itself, and never create an entry solely because the factual summary contains a proposition that the candidate does not carry.
+
+Inventory every material real-world proposition carried by the candidate through assertion, presupposition, entailment, or necessary implication. Also inventory contained metaphor, analogy, personification, counterfactual, hyperbole, wordplay, or editorial material needed to explain why it does not make a real-world commitment. A creative surface cannot hide an embedded real-world proposition.
+
+For each entry, first copy a non-empty candidate_span exactly from the candidate commentary; then classify what that exact span carries. Copy authority_support exactly from the factual summary when support exists; otherwise use null. Do not paraphrase, normalize, translate, trim, repair, or substitute either source span. Text from the factual summary is invalid as candidate_span unless the same exact text independently occurs in the candidate commentary.
+
+Use the same independence_group for multiple dimensions of one proposition; use a distinct group for an independent proposition. If a candidate-carried proposition cannot be anchored to an exact candidate span or cannot be scoped, mark the ledger INDETERMINATE; never copy factual-summary text into candidate_span to complete the ledger.
+
+coverage_decision may be COMPLETE only after reviewing the whole candidate, checking embedded propositions and creative scope, finding no unresolved scope, and emitting at least one entry. Any unresolved scope or enum requires INDETERMINATE. Never convert silence or uncertainty to COMPLETE.
+
+Before returning, verify mechanically that every candidate_span is a non-empty exact substring of CANDIDATE COMMENTARY and every non-null authority_support is an exact substring of FACTUAL SUMMARY. Failure of either check requires correction from the proper source or INDETERMINATE; never repair by approximate matching.
+
+Return exactly one compact JSON object with fields in this order: stage_id, coverage_decision, entries, coverage_receipt. Maximum eight entries. No surrounding bytes.
+
+Each entry has fields in this order: entry_id, entry_type, candidate_span, authority_support, commitment, scope_basis, event_alignment, authority_modality, candidate_modality, authority_timing, candidate_timing, independence_group.
+
+Allowed entry_type: REAL_WORLD_COMMITMENT, CONTAINED_CREATIVE, UNRESOLVED_SCOPE.
+Allowed scope_basis: ASSERTED, PRESUPPOSED, ENTAILED, NECESSARILY_IMPLIED, CREATIVE_CONTAINED, UNRESOLVED.
+Allowed event_alignment: GOVERNED_EVENT, NEW_UNSUPPORTED_EVENT, CREATIVE_VEHICLE_ONLY, UNRESOLVED.
+Allowed modality: NOT_APPLICABLE, POSSIBLE, CONDITIONAL, PROPOSED, EXPECTED, CERTAIN_OR_ACTUAL, UNRESOLVED.
+Allowed timing: NOT_APPLICABLE, PAST, PRESENT, ONGOING, FUTURE, COMPLETED, UNDATED, UNRESOLVED.
+
+FACTUAL SUMMARY:
+{factual_summary}
+
+CANDIDATE COMMENTARY:
+{candidate}
+
+OUTPUT BYTES: first {, last }, exactly one JSON object, nothing else.
