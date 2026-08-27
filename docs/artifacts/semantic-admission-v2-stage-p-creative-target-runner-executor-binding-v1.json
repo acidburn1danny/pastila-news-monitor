@@ -1,0 +1,51 @@
+{
+  "artifact_id": "STAGE_P_CREATIVE_TARGET_RUNNER_EXECUTOR_BINDING_V1",
+  "binding_identity": "c1fcd8ae5a9e95f08f09f6cc5f2d7c90c63eeebd7148b706885282514b35fa56",
+  "approved_candidate_identity": "8dd10faf8cb47cd6a8faa9b4a7a0c535b0a8e22a903c5acd1b536cb992655448",
+  "approved_dependency_repair_identity": "f05da4001300c7b44f0e1f6ac29132ea357067529e149682fc9420fe13344673",
+  "lifecycle": "ZERO_INFERENCE_RUNNER_EXECUTOR_BOUND_CASE01_BLOCKED",
+  "identities": {
+    "runner_sha256": "ac95ac1caf3f76bfff032e4e1ccda01175040a8e01d95ba8df3215f2de8bb9b0",
+    "executor_sha256": "d162eddfc94218a0c2a8e0752cfbb67f02f03b9691ddbb63c2891b4ffaf1f529",
+    "tracker_sha256": "9491279a6466cf257c07f565f8fab4d8c86c7d06368afd8215ba2ba59ffb8f13",
+    "controller_sha256": "dc204d5d2ef85f36f559fcdd98606d242a7620a32fd4d0d1c9146cf95e60437b",
+    "request_candidate_identity": "79b27bb6d7e35dfa9153cafb724e82d5689973b49605a9ea09a4b6462f01d9cc",
+    "tokenizer_identity": "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c"
+  },
+  "binding": {
+    "constraint_state": "StagePCreativeTargetConstraintStateV1",
+    "projector": "StagePDiagnosticTokenTrieProjectorV1",
+    "incremental_tracker": "StagePCreativeTargetIncrementalTrackerV1",
+    "callback_controller": "StagePCreativeTargetCallbackControllerV1",
+    "lifecycle": "AppendOnlyLifecycleV1",
+    "maximum_output_tokens": 2400,
+    "timeout_seconds": 240.0,
+    "constraint_liveness_receipt": "HOST_CONSTRAINT_LIVENESS_FAILURE_CLASSIFIED"
+  },
+  "zero_inference_verification": {
+    "windows_exact_dependency_checks": "PASS",
+    "windows_executor_construction_with_launch_forbidden": "PASS",
+    "wsl_import_only": "PASS",
+    "pydantic_loaded": false,
+    "transformers_loaded": false,
+    "peft_loaded": false,
+    "tokenizer_loads": 0,
+    "model_loads": 0,
+    "provider_calls": 0,
+    "inference_calls": 0,
+    "case01_executed": false,
+    "stage_c_calls": 0
+  },
+  "authority": {
+    "evaluator_binding": false,
+    "probe_construction": false,
+    "case01_execution": false,
+    "stage_c": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  },
+  "status": "OWNER_REVIEW_REQUIRED",
+  "recommended_next_step": "Owner-review this runner/executor binding, then authorize a separate zero-inference evaluator binding to the approved Creative Target request candidate. Do not construct or execute a Case 01 probe yet."
+}

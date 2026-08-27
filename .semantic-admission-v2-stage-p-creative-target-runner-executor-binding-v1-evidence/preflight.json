@@ -1,0 +1,24 @@
+{
+  "result": "PASS",
+  "binding_identity": "c1fcd8ae5a9e95f08f09f6cc5f2d7c90c63eeebd7148b706885282514b35fa56",
+  "bound_types": [
+    "StagePCreativeTargetConstraintStateV1",
+    "StagePDiagnosticTokenTrieProjectorV1",
+    "StagePCreativeTargetCallbackControllerV1",
+    "AppendOnlyLifecycleV1"
+  ],
+  "exact_dependency_checks": "PASS",
+  "executor_construction": "PASS",
+  "subprocess_launch_forbidden": "PASS",
+  "wsl_import_only": "PASS",
+  "pydantic_loaded": false,
+  "transformers_loaded": false,
+  "peft_loaded": false,
+  "runner_calls": 0,
+  "tokenizer_loads": 0,
+  "model_loads": 0,
+  "provider_calls": 0,
+  "inference_calls": 0,
+  "case01_executed": false,
+  "stage_c_calls": 0
+}
