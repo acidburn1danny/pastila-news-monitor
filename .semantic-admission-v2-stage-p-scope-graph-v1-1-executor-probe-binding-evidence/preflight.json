@@ -1,0 +1,16 @@
+{
+  "result": "PASS",
+  "mode": "ZERO_INFERENCE_EXECUTOR_AND_ONE_SHOT_PROBE_BINDING",
+  "candidate_identity": "7335f67d3de1a2335e8557f28d532359ea67fe9c4d73022804240476a696458e",
+  "case_id": "HMCV1-SASC-01",
+  "maximum_provider_calls": 1,
+  "durable_lifecycle_events": 0,
+  "wsl_calls": 0,
+  "runner_calls": 0,
+  "tokenizer_loads": 0,
+  "model_loads": 0,
+  "model_calls": 0,
+  "provider_calls": 0,
+  "inference_executed": false,
+  "tests": {"passed": 18, "failed": 0}
+}

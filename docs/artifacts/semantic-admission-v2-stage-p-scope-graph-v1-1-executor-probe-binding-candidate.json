@@ -1,0 +1,50 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-scope-graph-v1-1-executor-probe-binding-candidate",
+  "schema_version": "1.1.0-evaluation.1",
+  "lifecycle": "ZERO_INFERENCE_ONE_SHOT_PROBE_BOUND_NOT_EXECUTED",
+  "approved_runner_binding_identity": "57891ab6d928cde37a7d388e2f97a3da87d130e8debc1ab29b90bec850dc288a",
+  "candidate_identity": "7335f67d3de1a2335e8557f28d532359ea67fe9c4d73022804240476a696458e",
+  "case_id": "HMCV1-SASC-01",
+  "pack_sha256": "4163307ccb8cfa8997b520a1cea04cddacd347e9b1ffde498db925ffccac6c2d",
+  "request_candidate_identity": "2fee4188906353caed6effa393e877b523e4cede4a567702e06a7f9d9094ba5e",
+  "implementation_identities": {
+    "executor_sha256": "a47b04e824d44d7efd5e808eeb5756a5fcbec78c6f211cee6e91334981611c2d",
+    "evaluator_sha256": "f898f9c34ec2042a18c1a4617b047eef0089774c7f72b4f2fae19e2a2116b25b",
+    "probe_runner_sha256": "d85e6fea201d13679702c87320aa3b010d6acb36877792f90f848fb3a6def3c8"
+  },
+  "execution_boundaries": {
+    "wsl_distribution": "Ubuntu-24.04",
+    "venv_python": "/home/pastila/PastilaAcida-Model-Lab/experimental-0.1/.venv/bin/python3",
+    "maximum_provider_calls": 1,
+    "retry_count": 0,
+    "repair_count": 0,
+    "selection_count": 0,
+    "case10_edge": false,
+    "stage_c_constructed": false,
+    "stage_c_called": false
+  },
+  "zero_inference_result": {
+    "executor_identity_preflight": "PASS",
+    "case01_selection": "PASS",
+    "v1_1_request_render": "PASS",
+    "empty_lifecycle": "PASS",
+    "single_capture_path": "PASS",
+    "focused_tests": "18_PASS",
+    "wsl_calls": 0,
+    "runner_calls": 0,
+    "model_loads": 0,
+    "model_calls": 0,
+    "provider_calls": 0
+  },
+  "bounded_next_step_if_authorized": "Execute exactly one evaluation-only Stage-P-only V1.1 HMCV1-SASC-01 probe with durable receipts, then stop before Stage C, Case 10, retry, repair, selection, or proof rerun.",
+  "authority": {
+    "probe_execution": false,
+    "stage_c": false,
+    "case10": false,
+    "proof_rerun": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  }
+}
