@@ -29,6 +29,10 @@ from pastila_scout.editor.generation.provider import (
     ProviderStructuredOutputError,
     ProviderTimeoutError,
 )
+from pastila_scout.editor.generation.semantic_draft_v2 import (
+    AcidCommentaryGenerationResultV2,
+    CoreFactualSummaryGenerationResultV2,
+)
 from pastila_scout.editor_generation_authority_v1 import (
     EditorGenerationRequestAuthorityV1,
     EditorGenerationRuntimeAuthorityV1,
@@ -72,6 +76,8 @@ _ALLOWED = (
     OpeningGenerationResult,
     ClosingGenerationResult,
     CallToActionGenerationResult,
+    CoreFactualSummaryGenerationResultV2,
+    AcidCommentaryGenerationResultV2,
 )
 
 
@@ -427,6 +433,60 @@ def _generate(adapter, prompt, schema, config):
         ):
             return "internal", None
         generated_text = output.generated_text
+        if (
+            config.model_identifier == "pastila-editor-core-v1.2-experimental"
+            and schema is AcidCommentaryGenerationResultV2
+        ):
+            text = generated_text.strip()
+            if not text:
+                return "structured", ProviderStructuredOutputError(
+                    "CORE_V1_2_COMMENTARY_PROSE_INVALID: commentary is unavailable."
+                )
+            return "success", AcidCommentaryGenerationResultV2(text=text)
+        if (
+            config.model_identifier == "pastila-editor-core-v1.2-experimental"
+            and schema is CoreFactualSummaryGenerationResultV2
+        ):
+            try:
+                from pastila_scout.experimental_core_v1_2_structured_adapter import (
+                    adapt_core_v1_2_factual_summary_v2_prose,
+                )
+
+                return "success", adapt_core_v1_2_factual_summary_v2_prose(
+                    generated_text
+                )
+            except Exception:  # noqa: BLE001 - V2 prose boundary fails closed
+                return "structured", ProviderStructuredOutputError(
+                    "CORE_V1_2_V2_FACTUAL_PROSE_INVALID: factual prose is unavailable."
+                )
+        if (
+            config.model_identifier == "pastila-editor-core-v1.2-experimental"
+            and schema
+            in {
+                StoryAuthoredContentResult,
+                TransitionGenerationResult,
+                OpeningGenerationResult,
+                ClosingGenerationResult,
+            }
+        ):
+            from pastila_scout.experimental_core_v1_2_structured_adapter import (
+                adapt_core_v1_2_non_story_prose,
+                adapt_core_v1_2_story_prose,
+            )
+
+            try:
+                model = (
+                    adapt_core_v1_2_story_prose(generated_text, prompt)
+                    if schema is StoryAuthoredContentResult
+                    else adapt_core_v1_2_non_story_prose(
+                        generated_text, prompt, schema
+                    )
+                )
+            except Exception:  # noqa: BLE001 - deterministic adapter fails closed
+                return "structured", ProviderStructuredOutputError(
+                    "CORE_V1_2_PROSE_ADAPTATION_FAILED: deterministic STORY mapping failed."
+                )
+            return "success", model
         try:
             model = validate_generated_model(generated_text, schema)
         except ProviderStructuredOutputError as error:

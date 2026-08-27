@@ -385,6 +385,29 @@ def test_strict_json_error_classification_no_repair(text, message):
     assert len(selected.calls) == 1
 
 
+@pytest.mark.parametrize(
+    ("text", "failure_class"),
+    [
+        ('{"bridge_text":', "MALFORMED_JSON"),
+        ("[]", "SCHEMA_VALIDATION_FAILED"),
+    ],
+)
+def test_structured_failure_exposes_bounded_class_without_generated_text(
+    text, failure_class
+):
+    value, _, _, _, _ = adapter(selected=Executor(text=text))
+    with pytest.raises(ProviderStructuredOutputError) as caught:
+        value.generate_structured(
+            prompt=prompt(),
+            output_schema=CallToActionGenerationResult,
+            config=config(ProviderChoiceV1.OPENAI),
+        )
+    diagnostic = str(caught.value)
+    assert diagnostic.startswith(failure_class)
+    assert text not in diagnostic
+    assert len(diagnostic) <= 600
+
+
 def frozen_models():
     block = CommentaryBlockResult(
         block_type="commentary",
