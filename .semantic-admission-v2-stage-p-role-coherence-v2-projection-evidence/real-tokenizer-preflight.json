@@ -1,0 +1,22 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-role-coherence-v2-real-tokenizer-preflight",
+  "schema_version": "1.0.0",
+  "result": "PASS",
+  "vocabulary_size": 131072,
+  "trie_nodes": 221961,
+  "streams": [
+    {"label":"CONTAINED","tokens":190,"raw_sha256":"8822f4df88a26f5d6ef97aba2913a1658f1865e6de85cea0b2ae590ab8382116","decoded_exact":true,"invalid_next_token_indices":[],"terminal":true,"eos_only":true},
+    {"label":"REAL_NULL","tokens":186,"raw_sha256":"639ac925bbbc0f4db7b27ba87f47a488cc6345f43750f7949ae27814ae337b8d","decoded_exact":true,"invalid_next_token_indices":[],"terminal":true,"eos_only":true},
+    {"label":"REAL_SUPPORTED","tokens":184,"raw_sha256":"d4a12956a10c19de301870aeb25371f5b2ecca0c5766086bfe89b9fd3ba29476","decoded_exact":true,"invalid_next_token_indices":[],"terminal":true,"eos_only":true},
+    {"label":"UNRESOLVED","tokens":187,"raw_sha256":"3d81a6875fe7f02f028a018a091bfbe7bd9f4707ef7b5300f171abc9b5419f4f","decoded_exact":true,"invalid_next_token_indices":[],"terminal":true,"eos_only":true}
+  ],
+  "observed_invalid_real_first_blocked_token_index": 97,
+  "elapsed_seconds": 52.240186,
+  "known_tokenizer_warning_preserved": true,
+  "torch_imported": true,
+  "model_imported": false,
+  "model_load_started": false,
+  "inference_started": false,
+  "model_calls": 0,
+  "provider_calls": 0
+}

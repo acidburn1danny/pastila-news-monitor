@@ -1,0 +1,64 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-role-coherence-v2-projection-candidate",
+  "schema_version": "1.0.0-evaluation.1",
+  "lifecycle": "ZERO_INFERENCE_ROLE_CONDITIONED_PROJECTION_READY_FOR_OWNER_REVIEW",
+  "source_failed_probe_identity": "7357722352c676770d6b1c36d64a13b93e6e078e8046cb8ff05d57fc67d3b188",
+  "candidate_identity": "0f51ac154a178ae65bc208969f53f3e4a7a2438950c170cb2e700247db68b3e3",
+  "prompt_identity": "sha256:dd9f26782347ea2a8901135fc8bb671587d020a794798de404dc274e699fa4f8",
+  "schema_identity": "sha256:a47603e257ee5e315b77993891f0079e30e6c63a150b6b04e6889a98a4613ac9",
+  "constraint_identity": "sha256:5011b85a8b8bc12b871ceb0c8c1ba74cd453b5e4c6ff5f9ece2ace56704502fa",
+  "grammar_identity": "sha256:0d55e1d47054251c380901d9c8ac4f4be4f76355c3fc1a9fbc80cc16387f2429",
+  "model_identity": "pastila-editor-core-v1.2-experimental",
+  "delta": [
+    "After CONTAINED_CREATIVE, each semantic axis is projected to its single coherent creative value.",
+    "After REAL_WORLD_COMMITMENT, scope, event, candidate modality, and candidate timing exclude creative, not-applicable, and unresolved values.",
+    "Real-world authority modality and timing are forced to NOT_APPLICABLE for null support and to resolved values for non-null support.",
+    "UNRESOLVED_SCOPE retains uncertainty, but candidate timing is forced to UNRESOLVED if no earlier candidate semantic axis recorded uncertainty.",
+    "Final tuple validation and strict schema validation remain unchanged defense-in-depth controls."
+  ],
+  "observed_failure_regression": {
+    "bad_combination": "REAL_WORLD_COMMITMENT with candidate_modality UNRESOLVED",
+    "v1_behavior": "Allowed locally, then EMPTY_ALLOWED_TOKEN_SET at entry closure.",
+    "v2_behavior": "UNRESOLVED continuation rejected at the candidate_modality enum.",
+    "real_tokenizer_first_blocked_token_index": 97,
+    "late_dead_end_eliminated": true
+  },
+  "real_tokenizer_evidence": {
+    "result": "PASS",
+    "vocabulary_size": 131072,
+    "trie_nodes": 221961,
+    "legal_streams": 4,
+    "legal_token_transitions": 747,
+    "decoded_exact": true,
+    "terminal_eos_only": true,
+    "model_imported": false,
+    "model_load_started": false,
+    "inference_started": false,
+    "model_calls": 0,
+    "provider_calls": 0,
+    "known_warning": "Existing frozen Mistral tokenizer regex warning preserved; tokenizer configuration unchanged."
+  },
+  "preserved": [
+    "Prompt bytes and identity",
+    "Role-coherent strict schema and identity",
+    "Immutable factual authority and exact source membership",
+    "Fail-closed unresolved scope",
+    "Maximum eight entries",
+    "No repair, retry, selection, FSEM, or admission decision"
+  ],
+  "bounded_next_step_if_authorized": "Bind a separately versioned V2 runner, durable executor, and one-shot HMCV1-SASC-01 request to these exact identities; perform zero-inference construction verification and stop before another probe.",
+  "authority": {
+    "runner_binding": false,
+    "executor_binding": false,
+    "probe_binding": false,
+    "model_probe": false,
+    "projector": false,
+    "stage_c": false,
+    "case10": false,
+    "proof_rerun": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  }
+}

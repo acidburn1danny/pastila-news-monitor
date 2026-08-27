@@ -1,0 +1,42 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-role-coherence-v2-projection-manifest",
+  "schema_version": "1.0.0",
+  "canonical_identity": "0803578fe9e120d784040d20457033e265de3e624026578ada502aead80ff8de",
+  "identity_method": "sha256 of the ordered failed-probe identity and artifact SHA-256 values joined by LF with no trailing LF",
+  "source_failed_probe_identity": "7357722352c676770d6b1c36d64a13b93e6e078e8046cb8ff05d57fc67d3b188",
+  "lifecycle": "ZERO_INFERENCE_ROLE_CONDITIONED_PROJECTION_READY_FOR_OWNER_REVIEW",
+  "bindings": [
+    {"path":"docs/artifacts/semantic-admission-v2-stage-p-role-coherence-v2-projection-candidate.json","sha256":"511129e827ca9c52b3d05429276f432fde4ed605ce7ea0ecc0f0ef7e0eab89b5"},
+    {"path":"src/pastila_scout/semantic_admission_v2/stage_p_role_coherence_constraint_v2.py","sha256":"5011b85a8b8bc12b871ceb0c8c1ba74cd453b5e4c6ff5f9ece2ace56704502fa"},
+    {"path":"src/pastila_scout/semantic_admission_v2/stage_p_role_coherence_incremental_tracker_v2.py","sha256":"1b17239401c2bd00ef34067aa6022443385e9515a002a71a9f836f159f962048"},
+    {"path":"src/pastila_scout/semantic_admission_v2/stage_p_role_coherence_callback_controller_v2.py","sha256":"d47ae9a2c2207736d9b6be608085906c386127bd709138e6af56ee5e7a73761d"},
+    {"path":"src/pastila_scout/experimental_core_v1_2_stage_p_role_coherence_v2_tokenizer_preflight.py","sha256":"812855683f08007fe748ce0eafb447803b5e6e78ad8e64aa608ff1b9ad53ef3c"},
+    {"path":"tests/test_semantic_admission_v2_stage_p_role_coherence_constraint_v2.py","sha256":"26a331d31c2f346cbf49faa63d8165c00698c09224e5aca4a4da25fba699aa98"},
+    {"path":"tests/test_semantic_admission_v2_stage_p_role_coherence_v2_projection_evidence.py","sha256":"9b6a591b2521b25ab7cea93796b4bcb2dac81ec49903dc2fafa4963fb60c23da"},
+    {"path":".semantic-admission-v2-stage-p-role-coherence-v2-projection-evidence/real-tokenizer-preflight.json","sha256":"5d01f1b3ed39d834022fc8580c0546da19f10ca1df772e74dc5a11e384468aff"},
+    {"path":".semantic-admission-v2-stage-p-role-coherence-v2-projection-evidence/report.md","sha256":"a48b6e3c4e7a4109f267be91d4cc1fa54ce0cedf13369c6d4e57ec47be45fbd9"}
+  ],
+  "result": {
+    "local_tests": 37,
+    "real_tokenizer_compatibility": "PASS",
+    "legal_token_transitions": 747,
+    "observed_bad_path_blocked_at_token": 97,
+    "late_dead_end_eliminated": true,
+    "model_or_provider_calls": 0,
+    "inference_executed": false
+  },
+  "authority": {
+    "runner_binding": false,
+    "executor_binding": false,
+    "probe_binding": false,
+    "model_probe": false,
+    "projector": false,
+    "stage_c": false,
+    "case10": false,
+    "proof_rerun": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  }
+}
