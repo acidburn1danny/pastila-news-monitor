@@ -1,0 +1,57 @@
+{
+  "artifact_type": "STATIC_PROVIDER_EXECUTION_REQUEST_BINDING_CANDIDATE",
+  "artifact_version": "1.0.0",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_PROVIDER_EXECUTION_REQUEST_BINDING_V1",
+  "canonical_identity": "8871f9605b0eec308946fc884c9e25568b8444d7712de922a7ae866b07d05e5f",
+  "binding_identity": "02ab80de6c994bede334dc87faaa20a30302d445a8ac162494428789df1b6cc5",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "separator": "LF",
+    "ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_V2_PROVIDER_EXECUTION_REQUEST_BINDING_V1",
+      "02ab80de6c994bede334dc87faaa20a30302d445a8ac162494428789df1b6cc5",
+      "974d5e6257256d7397cb68f90952c66809a536cf5525cbef58b3bbfce6791587",
+      "b245de18f8864edb4be73ee12c04eb3c47f0a05cc3a3859bc49dd7fbd9cecd89",
+      "61523b3dc1e0a5af9b17863efb8163746235f6ba4f3fdea0c32dea4e0eb696e4",
+      "011192c8b5bc78303098200c59cb679c53bcca74d08dcda0859cc46453cc8ba2",
+      "scout:provider-descriptor-v2:72aec3ff060fbedee82a8264c15e2033f07bd99ea84cdb0152c637cf4aa0f159",
+      "137f2e1dc7b5840c31a88b1ff664ff6e915c8f233d6b9e1dc4c7e221cdf8a507",
+      "scout:provider-adapter-v2:de70e253f535e82f8443680cc8e0a0dc041c50d918ec4a81df1445aa8bb73ce9",
+      "3571b49e6f8c848ab0b220fd139dfdfe1d7c8d9d103bc6b027ef88560916cd2c",
+      "27b46b10521ee134d2f129556b749bb698c66af7215d8811300b3ad89eeff02d",
+      "STATIC_PROVIDER_EXECUTION_REQUEST_CONSTRUCTION",
+      "ZERO_EXECUTION"
+    ]
+  },
+  "projector_freeze_identity": "974d5e6257256d7397cb68f90952c66809a536cf5525cbef58b3bbfce6791587",
+  "application_request_candidate_identity": "b245de18f8864edb4be73ee12c04eb3c47f0a05cc3a3859bc49dd7fbd9cecd89",
+  "application_request_authority_sha256": "61523b3dc1e0a5af9b17863efb8163746235f6ba4f3fdea0c32dea4e0eb696e4",
+  "provider_execution_models_sha256": "011192c8b5bc78303098200c59cb679c53bcca74d08dcda0859cc46453cc8ba2",
+  "implementation_sha256": "3571b49e6f8c848ab0b220fd139dfdfe1d7c8d9d103bc6b027ef88560916cd2c",
+  "focused_test_sha256": "27b46b10521ee134d2f129556b749bb698c66af7215d8811300b3ad89eeff02d",
+  "ollama_descriptor": {
+    "provider_id": "ollama",
+    "capabilities": ["metadata"],
+    "identity": "scout:provider-descriptor-v2:72aec3ff060fbedee82a8264c15e2033f07bd99ea84cdb0152c637cf4aa0f159",
+    "fingerprint": "137f2e1dc7b5840c31a88b1ff664ff6e915c8f233d6b9e1dc4c7e221cdf8a507",
+    "adapter_identity": "scout:provider-adapter-v2:de70e253f535e82f8443680cc8e0a0dc041c50d918ec4a81df1445aa8bb73ce9"
+  },
+  "verification": {
+    "upstream_candidate_identity_rederived_before_authority_build": true,
+    "strict_provider_execution_request_reconstruction": true,
+    "deterministic_and_request_isolated": true,
+    "launch_forbidden": true,
+    "runtime_imports_absent": true
+  },
+  "authority": {
+    "application_provider_request_construction": true,
+    "provider_descriptor_resolution": true,
+    "provider_execution_request_construction": true,
+    "provider_or_model_execution": false,
+    "tokenizer_loading_or_characterization": false,
+    "runner_executor_or_probe": false,
+    "retry_repair_selection_or_fallback": false,
+    "stage_c": false,
+    "runtime_or_production": false
+  }
+}

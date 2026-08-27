@@ -1,0 +1,12 @@
+{
+  "candidate_identity": "8871f9605b0eec308946fc884c9e25568b8444d7712de922a7ae866b07d05e5f",
+  "binding_identity": "02ab80de6c994bede334dc87faaa20a30302d445a8ac162494428789df1b6cc5",
+  "focused_tests_passed": 40,
+  "synthetic_provider_execution_requests": 3,
+  "provider_or_model_executions": 0,
+  "tokenizer_loads": 0,
+  "runner_executor_probe_calls": 0,
+  "retries_repairs_selections_fallbacks": 0,
+  "stage_c_operations": 0,
+  "runtime_or_production_activations": 0
+}
