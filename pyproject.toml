@@ -37,6 +37,7 @@ pastila_scout = [
     "resources/branding/pastila-scout-investigator.png",
     "resources/branding/pastila-scout-investigator-sidebar.png",
     "resources/expression_retrieval_v1/catalog.json",
+    "resources/expression_catalog_v2/catalog-overlay.json",
 ]
 
 [tool.pytest.ini_options]

@@ -63,6 +63,16 @@ datas = [
             resource_root
             / "pastila_scout"
             / "resources"
+            / "expression_catalog_v2"
+            / "catalog-overlay.json"
+        ),
+        "pastila_scout/resources/expression_catalog_v2",
+    ),
+    (
+        str(
+            resource_root
+            / "pastila_scout"
+            / "resources"
             / "branding"
             / "pastila-scout-investigator.png"
         ),

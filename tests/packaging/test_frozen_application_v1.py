@@ -371,3 +371,17 @@ def test_external_ownership_authority_fails_closed(tmp_path: Path) -> None:
             pass
         else:
             raise AssertionError("invalid ownership authority was accepted")
+
+
+def test_voice_v2_expression_overlay_is_staged_for_frozen_runtime() -> None:
+    spec = (ROOT / "packaging/pyinstaller/PastilaScout.spec").read_text(
+        encoding="utf-8"
+    )
+    build = (ROOT / "packaging/pyinstaller/build.ps1").read_text(encoding="utf-8")
+
+    assert "expression_catalog_v2" in spec
+    assert "catalog-overlay.json" in spec
+    assert "expression_catalog_v2" in build
+    assert "catalog-overlay.json" in build
+    project = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
+    assert '"resources/expression_catalog_v2/catalog-overlay.json"' in project

@@ -380,7 +380,8 @@ print(metadata.version("pastila-news-monitor"))
     New-Item -ItemType Directory -Path (Join-Path $ResourceRoot 'config'), (Join-Path $ResourceRoot 'desktop_v1'),
         (Join-Path $ResourceRoot 'resources\trust'),
         (Join-Path $ResourceRoot 'pastila_scout\resources\branding'),
-        (Join-Path $ResourceRoot 'pastila_scout\resources\expression_retrieval_v1') | Out-Null
+        (Join-Path $ResourceRoot 'pastila_scout\resources\expression_retrieval_v1'),
+        (Join-Path $ResourceRoot 'pastila_scout\resources\expression_catalog_v2') | Out-Null
     Copy-Item -LiteralPath (Join-Path $RepositoryRoot 'config\config.yaml') -Destination (Join-Path $ResourceRoot 'config\config.yaml')
     Copy-Item -LiteralPath (Join-Path $RepositoryRoot 'config\sources.yaml') -Destination (Join-Path $ResourceRoot 'config\sources.yaml')
     Copy-Item -LiteralPath (Join-Path $RepositoryRoot 'src\pastila_scout\desktop_v1\default-settings-v1.json') -Destination (Join-Path $ResourceRoot 'desktop_v1\default-settings-v1.json')
@@ -389,6 +390,7 @@ print(metadata.version("pastila-news-monitor"))
     Copy-Item -LiteralPath (Join-Path $RepositoryRoot 'src\pastila_scout\resources\branding\pastila-scout-investigator.png') -Destination (Join-Path $ResourceRoot 'pastila_scout\resources\branding\pastila-scout-investigator.png')
     Copy-Item -LiteralPath (Join-Path $RepositoryRoot 'src\pastila_scout\resources\branding\pastila-scout-investigator-sidebar.png') -Destination (Join-Path $ResourceRoot 'pastila_scout\resources\branding\pastila-scout-investigator-sidebar.png')
     Copy-Item -LiteralPath (Join-Path $RepositoryRoot 'src\pastila_scout\resources\expression_retrieval_v1\catalog.json') -Destination (Join-Path $ResourceRoot 'pastila_scout\resources\expression_retrieval_v1\catalog.json')
+    Copy-Item -LiteralPath (Join-Path $RepositoryRoot 'src\pastila_scout\resources\expression_catalog_v2\catalog-overlay.json') -Destination (Join-Path $ResourceRoot 'pastila_scout\resources\expression_catalog_v2\catalog-overlay.json')
     Copy-Item -LiteralPath $Notices -Destination (Join-Path $ResourceRoot 'resources\THIRD-PARTY-NOTICES.txt')
 
     $env:PASTILA_SPEC_GUI_WRAPPER = $GuiWrapper
