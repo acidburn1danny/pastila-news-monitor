@@ -1,0 +1,52 @@
+{
+  "artifact_type": "APPLICATION_PROVIDER_REQUEST_CONSTRUCTION_CANDIDATE",
+  "artifact_version": "1.0.0",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_APPLICATION_REQUEST_V1",
+  "canonical_identity": "b245de18f8864edb4be73ee12c04eb3c47f0a05cc3a3859bc49dd7fbd9cecd89",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_V2_APPLICATION_REQUEST_V1",
+      "42ea37912ec99d52c3ee0d7624f1daae442141a6ccf48f1fe527515851ea0c3f",
+      "eb378b14eb6bc101b7cbf4af59759f3c428d0f8ae5115ee833ae59bf1c7e341d",
+      "pastila-editor-core-v1.2-experimental",
+      "ollama",
+      "240.0",
+      "07fd2990e538e37066e681fcc0b6086ab7a6ac2dd681c413dc4ccfcf5623cbd2",
+      "ead9d62fdc7af7d0e6f100ea796e744b7a490aa5a4abd30ca8a04ef293158397",
+      "APPLICATION_REQUEST_ONLY",
+      "ZERO_EXECUTION"
+    ],
+    "separator": "LF"
+  },
+  "policy_identity": "42ea37912ec99d52c3ee0d7624f1daae442141a6ccf48f1fe527515851ea0c3f",
+  "prompt_renderer_identity": "eb378b14eb6bc101b7cbf4af59759f3c428d0f8ae5115ee833ae59bf1c7e341d",
+  "model_identity": "pastila-editor-core-v1.2-experimental",
+  "provider_choice": "ollama",
+  "timeout_seconds": 240.0,
+  "cancellation_requested": false,
+  "implementation_sha256": "07fd2990e538e37066e681fcc0b6086ab7a6ac2dd681c413dc4ccfcf5623cbd2",
+  "focused_test_sha256": "ead9d62fdc7af7d0e6f100ea796e744b7a490aa5a4abd30ca8a04ef293158397",
+  "construction_contract": {
+    "rendered_request_type": "exact ConstructionObligationV2RenderedRequestV1",
+    "requested_at": "explicit injected timezone-aware datetime",
+    "request_reference": "deterministic rendered-request identity prefix",
+    "rendered_prompt": "byte and identity verified, including embedded canonical static payload",
+    "result": "exact immutable ApplicationProviderRequestV1"
+  },
+  "import_graph_note": {
+    "condition": "The existing application_request_authority_v1 package initializer exports both ApplicationProviderRequestV1 and ApplicationRequestAuthorityV1.",
+    "disposition": "The authority module namespace is transitively imported, but this candidate contains no authority-builder reference or call and constructs no authority object. The shared initializer is unchanged."
+  },
+  "authority": {
+    "application_provider_request_construction": true,
+    "application_request_authority_object_or_build": false,
+    "provider_adapter_descriptor_resolution": false,
+    "provider_execution_request": false,
+    "provider_or_model_execution": false,
+    "tokenizer_loading": false,
+    "runner_executor_or_probe": false,
+    "stage_c": false,
+    "runtime_or_production": false
+  }
+}
