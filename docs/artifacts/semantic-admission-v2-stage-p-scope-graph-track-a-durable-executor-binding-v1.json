@@ -1,0 +1,52 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-scope-graph-track-a-durable-executor-binding",
+  "schema_version": "1.0.0-evaluation.1",
+  "binding_identity": "4830238a46d1ecf25defcb00e5b7e75128c8a9fd9aff19cf14ab63037605bf2a",
+  "approved_runner_binding_identity": "f0695b5165f17690ac5f1dff0c4da22efe3136d68a20102b47748b8d23f8443f",
+  "lifecycle": "ZERO_INFERENCE_DURABLE_EXECUTOR_BOUND_CASE01_BLOCKED",
+  "identities": {
+    "executor_sha256": "96083f303b0971579a786368b1a5808e09e0ef02188021ef4bf1add686e432e1",
+    "runner_sha256": "ac25019c195329064fdfadc3b41b3f19b17d531aebb0ebbd06486f2c9a94c42e",
+    "reconciliation_sha256": "aae76d0a4a53e0b9987038f3f9ae105f23585b77fa089dc0fc6d5d31b2901df5",
+    "append_only_lifecycle_sha256": "74ad3892060f3e98ae1a5fc2b243c5100891259518b67bdb3e37f586bc4635a3"
+  },
+  "failure_classification_contract": {
+    "constraint_liveness": "CONSTRAINT_LIVENESS_FAILURE",
+    "ordinary_transport": "PROVIDER_OR_TRANSPORT_FAILURE",
+    "malformed_liveness_receipt": "FAIL_CLOSED",
+    "required_liveness_fields": [
+      "code",
+      "decoded_utf8_bytes",
+      "decoded_sha256",
+      "dfa_mode",
+      "dfa_next_step",
+      "entry_count"
+    ],
+    "host_event": "HOST_CONSTRAINT_LIVENESS_FAILURE_CLASSIFIED",
+    "trace_field": "failure_classification"
+  },
+  "zero_inference_verification": {
+    "source_identity_checks": "PASS",
+    "synthetic_liveness_receipt_parse": "PASS",
+    "transport_separation": "PASS",
+    "malformed_receipt_rejection": "PASS",
+    "constructor_no_launch": "PASS",
+    "runner_calls": 0,
+    "tokenizer_loads": 0,
+    "model_loads": 0,
+    "model_calls": 0,
+    "provider_calls": 0,
+    "inference_calls": 0
+  },
+  "authority": {
+    "case01": false,
+    "probe": false,
+    "track_b": false,
+    "stage_c": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  },
+  "recommended_next_step": "Owner-review this binding, then perform a design-only decision on whether Track B semantic scope-selection remediation should precede any further Case 01 probe. Case 01 remains blocked by this artifact."
+}
