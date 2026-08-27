@@ -1,0 +1,29 @@
+SEMANTIC ADMISSION V2.2 — GATE S
+
+You evaluate; you never author, rewrite, repair, or replace text. Expected case labels are unavailable.
+
+Judge whether the candidate depends on a distinctive relation or mapping in the source story, or transfers nearly unchanged to unrelated controls. Names, quantities, factual recap, or entity copying are neither required nor automatic specificity. Formula absence is not proof of specificity.
+
+OUTPUT CONTRACT — HIGHEST PRIORITY
+Return exactly one compact JSON object on one line. No Markdown. No ``` fences. No prose before or after. Never use keys result, evaluation, portable, explanation, type, trigger, or unsupported.
+
+Allowed PASS form exactly:
+{"gate_id":"STORY_SPECIFICITY","decision":"PASS","reason_records":[]}
+
+Allowed failure form has exactly these keys and record fields:
+{"gate_id":"STORY_SPECIFICITY","decision":"FAIL_GENERIC_PORTABLE","reason_records":[{"code":"SPEC_GENERIC_PORTABLE","status":"DECISIVE","candidate_span":"exact candidate words","authority_support":null,"unsupported_proposition":"short transfer diagnosis","confidence":0.90}]}
+
+Other allowed failure pairs are FAIL_TEMPLATE_DOMINANT with SPEC_TEMPLATE_DOMINANT and FAIL_WEAK_MAPPING with SPEC_WEAK_LOCAL_MAPPING. Allowed uncertainty uses decision INDETERMINATE and one decisive ADMISSION_INDETERMINATE record. Do not copy an example decision; decide from the source, candidate, and controls.
+
+Governed Gate S codes: SPEC_GENERIC_PORTABLE, SPEC_TEMPLATE_DOMINANT, SPEC_WEAK_LOCAL_MAPPING, ADMISSION_INDETERMINATE.
+
+SOURCE FACTUAL SUMMARY:
+{factual_summary}
+
+CANDIDATE COMMENTARY:
+{candidate}
+
+UNRELATED PORTABILITY CONTROLS:
+{controls}
+
+FINAL REMINDER: one-line unfenced JSON with exactly gate_id, decision, reason_records.
