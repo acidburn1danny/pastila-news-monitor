@@ -1,0 +1,102 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-scope-graph-track-a-lookahead-performance-failure-design",
+  "schema_version": "1.0.0-design.1",
+  "design_identity": "279105274090570154078653bc6366e886237eca8e905e9d84e73b2fffd822e7",
+  "source_probe_binding_identity": "2351f419517582543d018b620087adacb630b94134f26ff3dcd0acb2437afb81",
+  "source_run_evidence": {
+    "identity_binding_sha256": "60e1acbb4bac4734b9393939dac490873f7da8da67471b55fa90edc49bdb54af",
+    "phase_receipt_sha256": "774196cddc6028bc9c56fceeb1cd9c98d50e108193dae6f80a2c63539228cee2",
+    "provider_call_count": 1,
+    "durable_terminal": "HOST_TIMEOUT",
+    "termination": "TERMINATED",
+    "last_heartbeat_generated_tokens": 31,
+    "last_heartbeat_generation_elapsed_seconds": 7.430468,
+    "last_heartbeat_dfa_mode": "LITERAL",
+    "last_heartbeat_trie_cache_size": 32,
+    "last_partial_output_sha256": "0a09678b7cfbf69b33688fad9c122ff60909d9dde5dce031f5fa285853be6f90",
+    "last_partial_semantic_selection": "P1 entry_type began CONTAINED_CREATIVE",
+    "raw_output_persisted": false
+  },
+  "lifecycle": "DESIGN_ONLY_NOT_IMPLEMENTED_NOT_EXECUTED_CASE01_BLOCKED",
+  "finding": {
+    "classification": "CONSTRAINED_CALLBACK_PERFORMANCE_REGRESSION",
+    "causal_confidence": "HIGH_INFERENCE_NOT_DIRECTLY_INSTRUMENTED",
+    "evidence": [
+      "Model load completed and generation produced 31 tokens in 7.43 seconds.",
+      "No later heartbeat, terminal EOS, runner exception, or response appeared before the 240-second host timeout.",
+      "The next schema region approaches candidate_span, where an open JSON string exposes a very broad token set.",
+      "StagePLivenessTokenTrieProjectorV1 invokes a second trie search for every reached token terminal; at broad string states this multiplies work across a 131072-token vocabulary and 221961-node trie.",
+      "The earlier Run 2 defect was subsequently localized to late coverage-decision projection, not the co token or a general need for recursive token lookahead."
+    ],
+    "limitation": "The terminated process did not emit a callback-start receipt for the stalled token, so the exact callback state is inferred from the last durable heartbeat and implementation complexity. A zero-inference profiler must confirm it before rebinding."
+  },
+  "semantic_observation_boundary": {
+    "observation": "The incomplete partial path selected CONTAINED_CREATIVE rather than the prior whole-sentence REAL_WORLD_COMMITMENT.",
+    "status": "PROMISING_BUT_NOT_ADJUDICABLE",
+    "reason": "No complete ledger, raw output, schema validation, source-membership validation, or owner-quality decision exists."
+  },
+  "required_remediation": {
+    "remove": [
+      "Broad per-terminal one-token viability lookahead from the generation projector.",
+      "Any nested trie traversal whose cost scales with each terminal in an open-string state."
+    ],
+    "preserve": [
+      "StagePScopeGraphConstraintStateV1_2 early COMPLETE versus INDETERMINATE projection.",
+      "The baseline StagePTokenTrieProjectorV1 character-language and cache behavior.",
+      "All governed-support, source-membership, graph, receipt, terminal, and fail-closed invariants.",
+      "Distinct CONSTRAINT_LIVENESS_FAILURE receipts with decoded hash/length and DFA position.",
+      "Distinct HOST_TIMEOUT lifecycle evidence and graceful termination.",
+      "Track B prompt, request, schema, model, tokenizer, and immutable Case 01 identities."
+    ],
+    "replace_with": "A diagnostic projector/controller adapter that delegates allowed-token computation exactly to StagePTokenTrieProjectorV1 and adds liveness receipt construction only when that baseline projector returns EMPTY_ALLOWED_TOKEN_SET. Receipt generation must not alter the allowed set."
+  },
+  "explicit_non_remediations": [
+    "Do not increase the 240-second timeout to conceal callback cost.",
+    "Do not reduce ledger completeness, maximum output tokens, schema fields, or semantic checks.",
+    "Do not relax constraints or admit a partial ledger.",
+    "Do not treat the partial CONTAINED_CREATIVE selection as a pass.",
+    "Do not retry Case 01 during remediation.",
+    "Do not change tokenizer regex behavior or tokenizer identity in this track."
+  ],
+  "zero_inference_verification_matrix": [
+    "Initial literal state.",
+    "Entry-type choice state.",
+    "candidate_span STRING_START state.",
+    "Empty candidate_span STRING state.",
+    "Nonempty STRING states at 1, 64, and 256 characters.",
+    "Authority nullable-string state.",
+    "Coverage-decision COMPLETE-only state.",
+    "Coverage-decision INDETERMINATE-only state.",
+    "Exact last durable Track B heartbeat prefix and its next schema transitions."
+  ],
+  "acceptance_requirements": {
+    "allowed_set_equivalence": "For every verification state and structural fixture, the remediation allowed-token set must equal the baseline StagePTokenTrieProjectorV1 set exactly.",
+    "structural_liveness": "Unsupported, governed, contained-creative, embedded-return, and unresolved ledgers retain a valid next token at every prefix and EOS at terminal.",
+    "cold_callback_budget": "No post-trie-build verification callback may exceed 5 seconds on the bound host.",
+    "matrix_budget": "The complete real-tokenizer verification matrix must finish within 30 seconds after trie construction.",
+    "warm_callback_budget": "Warm-cache p95 must not exceed 0.25 seconds.",
+    "relative_budget": "Median remediation callback time must not exceed 1.25 times the baseline median for the same states.",
+    "receipts": "Synthetic baseline EMPTY_ALLOWED_TOKEN_SET produces a distinct hashed CONSTRAINT_LIVENESS_FAILURE receipt; ordinary transport and timeout remain separate.",
+    "identity": "Any implementation change receives a new projector/controller/runner/executor binding identity.",
+    "authority": "No probe, runtime, production, curriculum, or training authority is granted."
+  },
+  "staged_candidate_sequence_if_approved": [
+    "Implement an evaluation-only baseline-language diagnostic projector/controller adapter; do not modify the approved baseline projector.",
+    "Run synthetic allowed-set equivalence and structural fixtures.",
+    "Run the bounded real-tokenizer timing matrix with no model import or inference.",
+    "Bind new runner and durable-executor identities only after all equivalence and timing thresholds pass.",
+    "Stop for owner review before constructing or executing another Case 01 probe."
+  ],
+  "out_of_scope": [
+    "implementation",
+    "runner or executor rebinding",
+    "prompt, schema, model, or tokenizer modification",
+    "inference",
+    "Case 01 rerun",
+    "Stage C",
+    "runtime or production integration",
+    "curriculum exposure",
+    "training"
+  ],
+  "recommended_next_step": "Owner-review and freeze this performance-remediation design, then authorize the evaluation-only baseline-language diagnostic adapter and zero-inference timing/equivalence verification. Case 01 remains blocked."
+}
