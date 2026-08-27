@@ -40,6 +40,27 @@ def scout_input_identity(value: ScoutEditorInputV1 | dict[str, Any]) -> tuple[st
     return f"scout-editor-input-v1:sha256:{digest}", f"sha256:{digest}"
 
 
+def _legacy_scout_input_identity_without_event_authority(
+    value: ScoutEditorInputV1,
+) -> tuple[str, str] | None:
+    """Project the exact pre-1.1.5 contract when the new field was absent.
+
+    Pydantic retains which input fields were supplied.  That lets historical
+    payloads be distinguished from current payloads that explicitly bind an
+    authority bundle (including an explicit ``null`` fallback).
+    """
+
+    if not value.ranked_events or any(
+        "event_authority_bundle" in event.model_fields_set
+        for event in value.ranked_events
+    ):
+        return None
+    projection = value.model_dump(mode="json")
+    for event in projection["ranked_events"]:
+        event.pop("event_authority_bundle")
+    return scout_input_identity(projection)
+
+
 def assign_scout_input_identity(data: dict[str, Any]) -> ScoutEditorInputV1:
     """Validate data after calculating its stable public identity."""
 
@@ -59,5 +80,12 @@ def verify_scout_input_identity(value: ScoutEditorInputV1) -> None:
     """Reject a valid-looking contract whose content was changed after export."""
 
     report_id, fingerprint = scout_input_identity(value)
-    if value.report_id != report_id or value.content_fingerprint != fingerprint:
-        raise ValueError("Scout contract identity does not match its content")
+    if value.report_id == report_id and value.content_fingerprint == fingerprint:
+        return
+    legacy_identity = _legacy_scout_input_identity_without_event_authority(value)
+    if legacy_identity is not None and (
+        value.report_id,
+        value.content_fingerprint,
+    ) == legacy_identity:
+        return
+    raise ValueError("Scout contract identity does not match its content")

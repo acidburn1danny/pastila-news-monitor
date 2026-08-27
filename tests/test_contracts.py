@@ -198,6 +198,51 @@ def test_scout_identity_detects_tampering() -> None:
         verify_scout_input_identity(tampered)
 
 
+def test_scout_identity_accepts_exact_historical_projection_without_authority() -> None:
+    current = sample_scout_input()
+    historical = current.model_dump(mode="json")
+    for event in historical["ranked_events"]:
+        event.pop("event_authority_bundle")
+    report_id, fingerprint = scout_input_identity(historical)
+    historical["report_id"] = report_id
+    historical["content_fingerprint"] = fingerprint
+
+    restored = ScoutEditorInputV1.model_validate_json(
+        json.dumps(historical, ensure_ascii=False)
+    )
+
+    assert "event_authority_bundle" not in restored.ranked_events[0].model_fields_set
+    verify_scout_input_identity(restored)
+
+
+def test_historical_scout_identity_compatibility_still_rejects_tampering() -> None:
+    current = sample_scout_input()
+    historical = current.model_dump(mode="json")
+    for event in historical["ranked_events"]:
+        event.pop("event_authority_bundle")
+    report_id, fingerprint = scout_input_identity(historical)
+    historical["report_id"] = report_id
+    historical["content_fingerprint"] = fingerprint
+    historical["ranked_events"][0]["canonical_title"] = "Titlu schimbat"
+    restored = ScoutEditorInputV1.model_validate_json(
+        json.dumps(historical, ensure_ascii=False)
+    )
+
+    with pytest.raises(ValueError, match="identity"):
+        verify_scout_input_identity(restored)
+
+
+def test_explicit_null_authority_uses_current_identity_projection() -> None:
+    current = sample_scout_input().model_dump(mode="json")
+    current["report_id"] = f"scout-editor-input-v1:sha256:{'0' * 64}"
+    current["content_fingerprint"] = f"sha256:{'0' * 64}"
+
+    restored = assign_scout_input_identity(current)
+
+    assert "event_authority_bundle" in restored.ranked_events[0].model_fields_set
+    verify_scout_input_identity(restored)
+
+
 def test_deterministic_only_scout_input_is_supported() -> None:
     source = sample_scout_input()
     event = source.ranked_events[0]
