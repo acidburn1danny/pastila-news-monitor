@@ -1,0 +1,55 @@
+{
+  "artifact_type": "ZERO_EXECUTION_RUNNER_PROTOCOL_CONTRACT",
+  "artifact_version": "1.0.0",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_RUNNER_PROTOCOL_CONTRACT_V1",
+  "canonical_identity": "68068d4282143c6a8c67355ce0c17fca3db298b70f9a1621593a625b9a982e09",
+  "runner_protocol_identity": "cb9f14284353fafba05094b005f3a97793dbb079e5bed81abacddaafb7d155bf",
+  "identity_derivation": {
+    "algorithm": "sha256", "separator": "LF",
+    "ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_V2_RUNNER_PROTOCOL_CONTRACT_V1",
+      "cb9f14284353fafba05094b005f3a97793dbb079e5bed81abacddaafb7d155bf",
+      "2bc235721f8a1fba8b3dfa463b1274d2fc224e3b038030198d50aa38a8416364",
+      "7420b98ef7f612d545b42d173ffecddc036e35caf0e420ce6c442ecb4fd6632a",
+      "d33a32cbab641e96af8d0d746e07a497c935600fb4302c4f5cd3d4f6366182a2",
+      "2f182ad053393c6318c489d5aa485719da78a2e1b2a01360b643d6ae76fc5406",
+      "c7953f90063d1e78987f314846aa9279651a9fd2896074862d2d606db03d55a5",
+      "dc19071532f3f07a2f4b4817da3ebea36f035adbb0b880ff6d10d6c38a2be11b",
+      "SCHEMA_ONLY", "ZERO_EXECUTION"
+    ]
+  },
+  "schema_identities": {
+    "request": "2bc235721f8a1fba8b3dfa463b1274d2fc224e3b038030198d50aa38a8416364",
+    "result": "7420b98ef7f612d545b42d173ffecddc036e35caf0e420ce6c442ecb4fd6632a",
+    "lifecycle": "d33a32cbab641e96af8d0d746e07a497c935600fb4302c4f5cd3d4f6366182a2",
+    "no_legal_token": "2f182ad053393c6318c489d5aa485719da78a2e1b2a01360b643d6ae76fc5406"
+  },
+  "implementation_sha256": "c7953f90063d1e78987f314846aa9279651a9fd2896074862d2d606db03d55a5",
+  "focused_test_sha256": "dc19071532f3f07a2f4b4817da3ebea36f035adbb0b880ff6d10d6c38a2be11b",
+  "bindings": {
+    "host_payload_contract_identity": "1dc94cda37c270fda49bca7b430bbad4970b3afadf2d0e348cfc3479161e1a49",
+    "static_executor_binding_identity": "46265e64cfac4217493529020f7517d6af1f10d93f14a3fed2abd2cc6e8c4572",
+    "projector_freeze_identity": "974d5e6257256d7397cb68f90952c66809a536cf5525cbef58b3bbfce6791587",
+    "tokenizer_identity": "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c",
+    "decoder_identity": "ministral-tokenizer-decode-skip-special-cleanup-false-v1"
+  },
+  "semantic_separation": {
+    "terminal_output": "requires output bytes/hash and terminal EOS",
+    "constraint_liveness_failure": "requires an identity-bound no-legal-token receipt and forbids partial output",
+    "execution_failure": "requires an execution failure code, forbids a no-legal-token receipt, and carries no output",
+    "lifecycle": "append-only sequence with previous-event and event identities"
+  },
+  "authority": {
+    "schema_contract_implementation": true,
+    "canonical_schema_projection": true,
+    "request_or_result_runtime_parsing": false,
+    "callback_or_runner_implementation": false,
+    "executor_or_wsl_invocation": false,
+    "tokenizer_or_model_loading": false,
+    "generation_or_inference": false,
+    "retry_repair_selection_or_fallback": false,
+    "probe_or_historical_rerun": false,
+    "stage_c": false,
+    "runtime_or_production": false
+  }
+}
