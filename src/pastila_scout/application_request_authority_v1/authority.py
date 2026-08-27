@@ -17,7 +17,6 @@ from pastila_scout.provider_v2 import (
 )
 
 from ..provider_adapters_v2.ollama import OllamaProviderAdapter
-from ..provider_adapters_v2.openai import OpenAIProviderAdapter
 from .canonical import application_request_seals, canonical_application_prompt
 from .errors import ApplicationRequestAuthorityError
 from .models import ApplicationProviderRequestV1
@@ -56,6 +55,13 @@ class ApplicationRequestAuthorityV1:
 
 def _descriptor(choice: ProviderChoiceV1):
     if choice is ProviderChoiceV1.OPENAI:
+        # The OpenAI compatibility adapter imports legacy Editor validation
+        # modules. Loading that graph while this authority package is only
+        # partially initialized creates a cycle through Editor generation
+        # authority. Keep the compatibility graph outside the Ollama path and
+        # defer it until an OpenAI descriptor is actually requested.
+        from ..provider_adapters_v2.openai import OpenAIProviderAdapter
+
         return OpenAIProviderAdapter.descriptor
     if choice is ProviderChoiceV1.OLLAMA:
         return OllamaProviderAdapter.descriptor

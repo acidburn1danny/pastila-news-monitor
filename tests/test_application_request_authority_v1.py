@@ -258,6 +258,26 @@ print(json.dumps({'request_id':r.context.request_id,'plan':r.request_intent.exec
     assert json.loads(outputs[0])["request_id"].startswith("application-request-v1:")
 
 
+def test_isolated_ollama_authority_import_does_not_load_editor_cycle() -> None:
+    script = """
+from datetime import UTC, datetime
+from pastila_scout.application_request_authority_v1 import ApplicationProviderRequestV1, ApplicationRequestAuthorityV1
+from pastila_scout.provider_execution_v2 import CancellationTokenV2, TimeoutPolicyV2
+from pastila_scout.provider_selection_v1 import ProviderChoiceV1
+r=ApplicationRequestAuthorityV1().build(ApplicationProviderRequestV1(ProviderChoiceV1.OLLAMA,'bounded voice prompt','voice-governed-realization:test',datetime(2026,8,25,18,0,tzinfo=UTC),TimeoutPolicyV2(timeout_seconds=120),CancellationTokenV2(cancellation_requested=False)))
+print(r.provider.provider_id)
+"""
+    completed = subprocess.run(
+        [sys.executable, "-c", script],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+        timeout=10,
+    )
+    assert completed.stdout.strip() == "ollama"
+
+
 @pytest.mark.parametrize(
     "provider",
     ("openai", "ollama", "OPENAI", "OLLAMA", "auto", None, object()),
