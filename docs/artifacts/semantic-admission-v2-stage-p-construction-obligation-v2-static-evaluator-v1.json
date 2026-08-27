@@ -1,0 +1,46 @@
+{
+  "artifact_type": "INJECTED_RESULT_STATIC_EVALUATOR_CANDIDATE",
+  "artifact_version": "1.0.0",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_STATIC_EVALUATOR_V1",
+  "canonical_identity": "ffb7316fd0dfd783d93337345208fb912ccb7bd6accd5065dd065ce937617d4c",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_V2_STATIC_EVALUATOR_V1",
+      "9993395df612550e221efd2c4419a9f87f7382ef184d6e3d66b931340cd767f3",
+      "974d5e6257256d7397cb68f90952c66809a536cf5525cbef58b3bbfce6791587",
+      "dd81716dcf00260e7d5c651eaaddd65ed3f0d489263ec8ba5d2a0774d5c0f5d4",
+      "5b48b1cadf90f0883c3fe610e3b24fe7edc0f0f6551ca93b8fa7ced10fa78ded",
+      "d02845bc45dda6901f8a3a35b9c38464c5de5730c4e59977febc010bcff3447d",
+      "INJECTED_RESULTS_ONLY",
+      "ZERO_EXECUTION"
+    ],
+    "separator": "LF"
+  },
+  "static_projector_binding_identity": "9993395df612550e221efd2c4419a9f87f7382ef184d6e3d66b931340cd767f3",
+  "projector_freeze_identity": "974d5e6257256d7397cb68f90952c66809a536cf5525cbef58b3bbfce6791587",
+  "v2_contract_sha256": "dd81716dcf00260e7d5c651eaaddd65ed3f0d489263ec8ba5d2a0774d5c0f5d4",
+  "implementation_sha256": "5b48b1cadf90f0883c3fe610e3b24fe7edc0f0f6551ca93b8fa7ced10fa78ded",
+  "focused_test_sha256": "d02845bc45dda6901f8a3a35b9c38464c5de5730c4e59977febc010bcff3447d",
+  "evaluation_semantics": {
+    "input": "already-produced injected raw bytes plus frozen static source binding",
+    "schema_validation": "ConstructionObligationLedgerV2.model_validate_json(strict=True)",
+    "source_projection": "existing build_source_projection_receipt_v1",
+    "validation_errors": "propagated unchanged",
+    "projection_failures": "returned as existing SourceProjectionReceiptV1 FAIL receipts",
+    "new_failure_classification": false,
+    "partial_output_inference": false,
+    "retry_repair_selection_fallback": false
+  },
+  "authority": {
+    "injected_result_static_validation": true,
+    "prompt_or_request_construction": false,
+    "tokenizer_loading_or_characterization": false,
+    "model_adapter_or_provider": false,
+    "inference": false,
+    "transport_or_liveness_classification": false,
+    "runner_executor_or_probe": false,
+    "stage_c": false,
+    "runtime_or_production": false
+  }
+}
