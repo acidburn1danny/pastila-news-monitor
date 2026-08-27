@@ -1,0 +1,12 @@
+{
+  "result": "DESIGN_COMPLETE",
+  "design_identity": "efac1d65039546bd50dfa5079be9ae5d5e11e36ba731ab76ea4cac1e4b8ceda3",
+  "source_failure_analysis_identity": "9aadcca9cdd2e48aeb9a50d21d323132b68e0c952e4fe2829c226c8f7fd9a873",
+  "schema_or_prompt_created": false,
+  "request_or_runner_modified": false,
+  "model_calls": 0,
+  "provider_calls": 0,
+  "inference_calls": 0,
+  "case01_rerun": false,
+  "stage_c_calls": 0
+}

@@ -1,0 +1,208 @@
+{
+  "artifact_id": "STAGE_P_CREATIVE_TARGET_DECOMPOSITION_V1_DESIGN",
+  "design_identity": "efac1d65039546bd50dfa5079be9ae5d5e11e36ba731ab76ea4cac1e4b8ceda3",
+  "schema_version": "1.0.0-design.1",
+  "lifecycle": "DESIGN_ONLY_NOT_IMPLEMENTED_NOT_EXECUTED",
+  "source_failure_analysis_identity": "9aadcca9cdd2e48aeb9a50d21d323132b68e0c952e4fe2829c226c8f7fd9a873",
+  "objective": "Make the semantic targets of integrated creative constructions explicit and auditable before Stage P may claim exhaustive coverage, without converting every editorial transformation into a factual proposition.",
+  "preserved_authority_and_architecture": [
+    "The factual summary remains byte-immutable, read-only support authority.",
+    "Candidate-first proposition inventory and authority-later alignment remain mandatory.",
+    "Scope Graph V1.1 entry roles, source membership, governed-support coherence, graph acyclicity, and maximum-eight proposition entries remain unchanged.",
+    "Unsupported real-world commitments remain representable; null authority support is not prohibited.",
+    "Entity reuse, story specificity, figurative language, and dependence on factual context do not independently create factual return.",
+    "A creative semantic head cannot shield assertion, presupposition, entailment, or necessary implication.",
+    "Stage P remains inventory-only: it does not admit, reject, assign FSEM reasons, rewrite, repair, or generate commentary.",
+    "Gate precedence, fail-closed abstention, model identity, tokenizer identity, constrained decoding, and Stage C separation remain unchanged."
+  ],
+  "candidate_contract_delta": {
+    "root_field_order": [
+      "stage_id",
+      "entries",
+      "creative_target_audits",
+      "coverage_receipt",
+      "coverage_decision"
+    ],
+    "new_collection": {
+      "field": "creative_target_audits",
+      "cardinality": "One or more audit records for every emitted CONTAINED_CREATIVE entry; empty only when the ledger has no contained-creative entry.",
+      "maximum_records": 16,
+      "purpose": "Expose each materially distinct story-local meaning used to interpret a creative host and reconcile it with the proposition ledger."
+    },
+    "audit_record_fields": [
+      {
+        "name": "audit_id",
+        "type": "stable local identifier T1 through T16"
+      },
+      {
+        "name": "creative_host_entry_id",
+        "type": "existing CONTAINED_CREATIVE entry identifier",
+        "constraint": "The referenced entry exists and uses CREATIVE_HOST or STANDALONE consistently with any overlapping return."
+      },
+      {
+        "name": "vehicle_span",
+        "type": "exact non-empty candidate substring",
+        "constraint": "It overlaps the referenced creative host span."
+      },
+      {
+        "name": "semantic_target",
+        "type": "specific story-local description",
+        "constraint": "It describes meaning supplied by candidate communicative force and must not copy authority-only information. Generic labels such as metaphor, joke, criticism, or wordplay are insufficient."
+      },
+      {
+        "name": "target_class",
+        "enum": [
+          "NONFACTUAL_EDITORIAL_OR_CREATIVE",
+          "REAL_WORLD_PROPOSITION",
+          "UNRESOLVED_TARGET"
+        ]
+      },
+      {
+        "name": "survival_basis",
+        "enum": [
+          "DOES_NOT_SURVIVE_AS_FACT",
+          "ASSERTION_SURVIVES",
+          "PRESUPPOSITION_SURVIVES",
+          "ENTAILMENT_SURVIVES",
+          "NECESSARY_IMPLICATION_SURVIVES",
+          "UNRESOLVED"
+        ]
+      },
+      {
+        "name": "proposition_entry_id",
+        "type": "REAL_WORLD_COMMITMENT entry identifier or null"
+      },
+      {
+        "name": "resolution",
+        "enum": [
+          "RETAINED_NONFACTUAL",
+          "RECONCILED_TO_LEDGER",
+          "FAIL_CLOSED_UNRESOLVED"
+        ]
+      }
+    ],
+    "coverage_receipt_additions": [
+      "creative_targets_enumerated",
+      "target_classes_reviewed",
+      "target_to_ledger_reconciled"
+    ]
+  },
+  "deterministic_coherence_rules": [
+    "Every CONTAINED_CREATIVE entry has at least one creative_target_audits record; every audit references exactly one existing contained-creative entry.",
+    "Every audit vehicle_span is an exact candidate substring and overlaps its referenced creative entry span.",
+    "REAL_WORLD_PROPOSITION requires a surviving factual-return basis, resolution RECONCILED_TO_LEDGER, and a non-null proposition_entry_id naming an existing REAL_WORLD_COMMITMENT.",
+    "The referenced REAL_WORLD_COMMITMENT overlaps the creative host, uses FACTUAL_RETURN_WITHIN_CREATIVE_HOST, and points back to that host.",
+    "NONFACTUAL_EDITORIAL_OR_CREATIVE requires DOES_NOT_SURVIVE_AS_FACT, RETAINED_NONFACTUAL, and null proposition_entry_id.",
+    "UNRESOLVED_TARGET requires UNRESOLVED, FAIL_CLOSED_UNRESOLVED, a corresponding UNRESOLVED_SCOPE entry, unresolved_scope_present true, and coverage_decision INDETERMINATE.",
+    "A proposition entry cannot reconcile targets from incompatible hosts or unrelated candidate spans.",
+    "COMPLETE requires all three new coverage receipts true, no unresolved target, and every target reconciled to either retained nonfactual material or an emitted proposition entry.",
+    "If the maximum audit-record limit cannot represent exhaustive material targets, coverage is INDETERMINATE rather than truncated.",
+    "Schema coherence never upgrades a semantic judgment: semantic completeness remains evaluation evidence subject to owner review."
+  ],
+  "prompt_candidate_requirements": [
+    "Identify the smallest integrated creative hosts before analyzing their targets, but do not stop after identifying the host.",
+    "For each host, state every materially distinct meaning needed to explain what the candidate communicates without consulting authority except to resolve governed referents.",
+    "For each semantic target, remove only the vehicle wording—not the target meaning—and ask whether candidate communicative force still carries a truth-evaluable real-world proposition.",
+    "Distinguish descriptive factual targets from value judgments, normative criticism, advice, aesthetic stance, absurdity, and purely comic association.",
+    "Do not label a target nonfactual merely because it is hedged, humorous, metaphorical, counterfactual, personified, or embedded in an editorial sentence.",
+    "Do not label a target factual merely because authority corroborates it, because it is story-specific, or because a governed entity appears.",
+    "When a factual target survives, emit and link the smallest candidate-carried proposition; then align it to exact authority support if available.",
+    "When target class or survival cannot be resolved safely, emit unresolved scope and remain INDETERMINATE.",
+    "Do not expose expected case labels, owner annotations, mechanism names, or fixture outcomes in the generation path.",
+    "Do not prescribe a fixed number of targets, entries, spans, or a single correct segmentation."
+  ],
+  "case01_hidden_acceptance_contract": {
+    "purpose": "Evaluation only; none of these expectations enter the prompt.",
+    "requirements": [
+      "The integrated shadow/light/room/transparency construction is represented as creative material.",
+      "The money-concealment or financial-nontransparency target is explicitly audited and cannot disappear inside the creative gloss.",
+      "The greater-transparency assessment is explicitly classified as factual return, nonfactual editorial judgment, or unresolved with a defensible receipt.",
+      "Forced employee visibility is not invented as a factual proposition merely because the prior raw gloss used that phrase.",
+      "No unsupported real-world proposition is silently admitted.",
+      "COMPLETE is permitted only if every material target is resolved and reconciled.",
+      "Multiple proposition segmentations and commitment wording remain acceptable when semantically equivalent."
+    ],
+    "prohibited_shortcut": "A single whole-sentence CONTAINED_CREATIVE entry with factual-sounding target glosses and no target audits is a false complete."
+  },
+  "zero_inference_fixture_matrix": [
+    {
+      "class": "PURE_CONTAINED_CREATIVE",
+      "required_capability": "Retain a story-specific editorial or comic target as nonfactual without manufacturing a real-world commitment."
+    },
+    {
+      "class": "GOVERNED_EMBEDDED_RETURN",
+      "required_capability": "Link a candidate-carried factual target to an overlapping governed REAL_WORLD_COMMITMENT with exact support."
+    },
+    {
+      "class": "UNSUPPORTED_EMBEDDED_RETURN",
+      "required_capability": "Inventory a surviving unsupported target with null support rather than hiding it under the creative host."
+    },
+    {
+      "class": "NORMATIVE_OR_EVALUATIVE_TARGET",
+      "required_capability": "Distinguish criticism or recommendation from a descriptive factual proposition while checking embedded presuppositions independently."
+    },
+    {
+      "class": "AMBIGUOUS_MIXED_SCOPE",
+      "required_capability": "Fail closed with an unresolved target and INDETERMINATE coverage."
+    },
+    {
+      "class": "ENTITY_REUSE_WITHOUT_RETURN",
+      "required_capability": "Preserve legitimate story-specific reference without creating a proposition solely from authority."
+    },
+    {
+      "class": "MULTIPLE_TARGETS_ONE_HOST",
+      "required_capability": "Reconcile factual, nonfactual, and unresolved targets independently rather than assigning one label to the whole host."
+    },
+    {
+      "class": "TARGET_GLOSS_LEAK",
+      "required_capability": "Reject COMPLETE when a creative semantic_target or commitment names a truth-evaluable predicate with no proposition or unresolved reconciliation."
+    }
+  ],
+  "zero_inference_verification_requirements": [
+    "Version and hash the proposed schema, grammar, prompt bytes, padding, request constructor, and all dependency identities before any model probe.",
+    "Prove valid construction for each fixture class and deterministic rejection of every incoherent target-class, survival-basis, resolution, and proposition-link tuple.",
+    "Verify exact candidate/authority source membership and creative-host overlap for both audit and proposition spans.",
+    "Verify COMPLETE cannot be emitted before entries, target audits, and all expanded coverage receipts.",
+    "Verify constrained-trie compatibility and liveness without relaxing semantic or graph invariants.",
+    "Verify no Stage C, provider, WSL, tokenizer, model, inference, runtime, curriculum, or training edge exists in preflight."
+  ],
+  "rejected_or_deferred_options": [
+    {
+      "option": "Prompt-only reminder to check embedded propositions",
+      "decision": "REJECTED",
+      "reason": "The failed prompt already contains that reminder; it leaves target reconciliation invisible and self-attested."
+    },
+    {
+      "option": "Treat every metaphor interpretation as factual return",
+      "decision": "REJECTED",
+      "reason": "It would destroy legitimate nonfactual editorial transformation and create false positives."
+    },
+    {
+      "option": "Ban whole-sentence creative hosts",
+      "decision": "REJECTED",
+      "reason": "Integrated constructions often require whole-sentence scope; the defect is missing target decomposition, not span size."
+    },
+    {
+      "option": "Change the diagnostic trie adapter",
+      "decision": "OUT_OF_SCOPE_AND_NONREMEDIAL",
+      "reason": "The adapter preserved baseline allowed-token behavior and the failed output completed without liveness error."
+    },
+    {
+      "option": "Proceed to Stage C and let it compensate",
+      "decision": "PROHIBITED",
+      "reason": "Stage precedence requires exhaustive Stage P evidence before Stage C."
+    }
+  ],
+  "implementation_boundary": {
+    "schema_or_prompt_created": false,
+    "request_or_runner_modified": false,
+    "model_probe": false,
+    "case01_rerun": false,
+    "stage_c": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  },
+  "recommended_next_step": "Owner-review this design, then authorize an evaluation-only implementation phase for the versioned target-audit schema, constrained grammar, and prompt candidate with zero-inference verification only."
+}
