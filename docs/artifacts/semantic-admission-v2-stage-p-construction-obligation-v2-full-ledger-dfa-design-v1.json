@@ -1,0 +1,43 @@
+{
+  "artifact_id": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_FULL_LEDGER_DFA_DESIGN_V1",
+  "design_identity": "0c3d94d7d93360259af4f1088bb8747731c70d99b23b492261a865a08d26a0af",
+  "schema_version": "1.0.0-design.1",
+  "source_v2_candidate_identity": "e85eb040667208ee6ee4e697e64c46e5d61502602240dff113dd64c3c45e2c46",
+  "approved_reference_dfa_identity": "54dea23d0f9d595715e39e8a31f1a08e603c10c021cd76e2f209265276f4a6b3",
+  "composition": {
+    "base": "StagePConstructionObligationConstraintStateV1 semantic and graph-obligation state",
+    "top_level_change": "Force explicit V2 schema_name and schema_version before stage_id.",
+    "replaced_transitions": [
+      "ConstructionRecord.candidate_span -> candidate_span_ref",
+      "ScopeGraphEntry.candidate_span -> candidate_span_ref",
+      "ScopeGraphEntry.authority_support -> authority_support_ref",
+      "CreativeTargetAudit.vehicle_span -> vehicle_span_ref"
+    ],
+    "reference_language": "Compose the approved request-bound reference DFA as a nested character substate.",
+    "authority_null": "Only authority_support_ref may complete as null; completion propagates the existing authority-axis obligation.",
+    "semantic_preservation": "Construction host/return obligations, entry/target links, enum conditioning, counts, coverage, and fail-closed decisions remain inherited and active."
+  },
+  "phase_boundary": "Character acceptance is structural defense only. Strict V2 schema validation and pure source projection remain independently mandatory; later semantic receipts remain authoritative.",
+  "non_goals": [
+    "No tracker, callback controller, token-trie projector, prompt, evaluator, runner, provider, or probe binding.",
+    "No tokenizer/model load, inference, Stage C, runtime authority, production authority, curriculum exposure, or training."
+  ],
+  "authority": {
+    "tracker_implementation": false,
+    "controller_implementation": false,
+    "projector_implementation": false,
+    "prompt_change": false,
+    "evaluator_rebinding": false,
+    "runner_rebinding": false,
+    "probe_construction": false,
+    "probe_execution": false,
+    "tokenizer_load": false,
+    "model_load": false,
+    "inference": false,
+    "stage_c": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  }
+}

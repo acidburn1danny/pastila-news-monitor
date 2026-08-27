@@ -1,0 +1,22 @@
+{
+  "result": "PASS",
+  "candidate_identity": "d371a508631095719e4c09b2d9155fef74f0e3c76147966240e575924ccf9b56",
+  "implementation_sha256": "b9d1e78ed1a2c0861d671159e2aba89c2d0d80e9df277ad71bb177f8eeb4e520",
+  "case01_context_identity": "2ba2c7dcb5c8e19350a3acf37ed9d9c9daf6d058fc38811d06d3460825e9b610",
+  "focused_tests_passed_before_evidence_binding": 8,
+  "strict_schema_passes": 1,
+  "projection_passes": 1,
+  "projection_records_passed": 5,
+  "negative_character_cases": 6,
+  "tracker_objects": 0,
+  "controller_objects": 0,
+  "projector_objects": 0,
+  "evaluator_objects": 0,
+  "runner_objects": 0,
+  "subprocess_launches": 0,
+  "tokenizer_loads": 0,
+  "model_loads": 0,
+  "provider_calls": 0,
+  "inference_calls": 0,
+  "probe_constructed": false
+}
