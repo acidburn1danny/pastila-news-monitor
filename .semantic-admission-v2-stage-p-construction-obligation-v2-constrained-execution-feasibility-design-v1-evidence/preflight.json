@@ -1,0 +1,12 @@
+{
+  "design_identity": "31a82ff316f69f98f7ba5df0e53bf5c6262fad5068fb3580430b967e5930658f",
+  "executor_constructions": 0,
+  "wsl_invocations": 0,
+  "tokenizer_loads": 0,
+  "model_loads": 0,
+  "generation_or_inference_calls": 0,
+  "runner_executor_probe_calls": 0,
+  "retries_repairs_selections_fallbacks": 0,
+  "stage_c_operations": 0,
+  "runtime_or_production_activations": 0
+}

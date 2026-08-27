@@ -1,0 +1,124 @@
+{
+  "artifact_type": "ZERO_EXECUTION_CONSTRAINED_EXECUTION_FEASIBILITY_DESIGN",
+  "artifact_version": "1.0.0",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_CONSTRAINED_EXECUTION_FEASIBILITY_DESIGN_V1",
+  "canonical_identity": "31a82ff316f69f98f7ba5df0e53bf5c6262fad5068fb3580430b967e5930658f",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "separator": "LF",
+    "ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_V2_CONSTRAINED_EXECUTION_FEASIBILITY_DESIGN_V1",
+      "974d5e6257256d7397cb68f90952c66809a536cf5525cbef58b3bbfce6791587",
+      "d55694074ea2023b0e93e06be9e260c11495cdc9fdbc23181c85e36c9921f7cd",
+      "02ab80de6c994bede334dc87faaa20a30302d445a8ac162494428789df1b6cc5",
+      "pastila-editor-core-v1.2-experimental",
+      "111bc2734343c67aab4e1a04003199b98d4955fe9579e445cd7b5d6805a9da17",
+      "8fe9e740b3263f2988a653a0343334b502fddf0d3cb2be36746de4646242bed5",
+      "51c7ff37731c5f4a9cacda7ee3a9d1966e51bb80098ce2ea6503a34345ee06a9",
+      "089274ad1d9eb3f0db1891c5be65a97a6fd71f9fac5bdd32cf5c07dd5a2833ca",
+      "87ef25d65a92b65e8dbd3730258c6d0b0fc6ee8950130c69e2b623ff0190127e",
+      "1669926e3e69ba6bbf1c7c7368edfbb7a8485fa14458d0bcae50a3272c6ffe17",
+      "71f659ce72bbf9d545d5926a64b078bbbfbe302272193e96a969d8f22eaef972",
+      "e168b84af70385053bab46abf4b2b87d66f9d55d24dc48f26156a5eac3a5c383",
+      "e4957f02a575fb986a382efc6e7562cd98f48ccce91a2cc7b11709b89e1ddfe2",
+      "b0899e8f9bc5937457544ebcd14f2eea1d6d6a1e7354826a05c7063e3d76e74b",
+      "NEW_V2_CONSTRAINED_EXECUTION_LINEAGE_REQUIRED",
+      "DESIGN_ONLY_ZERO_EXECUTION"
+    ]
+  },
+  "committed_bindings": {
+    "projector_freeze_identity": "974d5e6257256d7397cb68f90952c66809a536cf5525cbef58b3bbfce6791587",
+    "static_payload_identity": "d55694074ea2023b0e93e06be9e260c11495cdc9fdbc23181c85e36c9921f7cd",
+    "provider_execution_request_binding_identity": "02ab80de6c994bede334dc87faaa20a30302d445a8ac162494428789df1b6cc5",
+    "model_identity": "pastila-editor-core-v1.2-experimental",
+    "system_prompt_sha256": "111bc2734343c67aab4e1a04003199b98d4955fe9579e445cd7b5d6805a9da17",
+    "core_executor_sha256": "8fe9e740b3263f2988a653a0343334b502fddf0d3cb2be36746de4646242bed5",
+    "unconstrained_runner_sha256": "51c7ff37731c5f4a9cacda7ee3a9d1966e51bb80098ce2ea6503a34345ee06a9",
+    "wsl_boundary_v1_sha256": "089274ad1d9eb3f0db1891c5be65a97a6fd71f9fac5bdd32cf5c07dd5a2833ca",
+    "wsl_boundary_v1_1_sha256": "87ef25d65a92b65e8dbd3730258c6d0b0fc6ee8950130c69e2b623ff0190127e"
+  },
+  "execution_identity": {
+    "base_model_path": "/home/pastila/PastilaAcida-Model-Lab/experimental-0.1/model-cache/huggingface/models--mistralai--Ministral-3-14B-Instruct-2512-BF16/snapshots/3cea74c1ebaf5ce5f5a2553de470e2ceab825142",
+    "adapter_path": "/home/pastila/PastilaAcida-Model-Lab/experimental-0.3/runs/pastila-editor-core-v1-2-deontology-20260820-003/checkpoint-final/adapter",
+    "tokenizer_identity": "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c",
+    "decoder_identity": "ministral-tokenizer-decode-skip-special-cleanup-false-v1"
+  },
+  "current_boundary_failure": {
+    "code": "FROZEN_PROJECTOR_NOT_PROPAGATED_TO_EXECUTION_PROTOCOL",
+    "host_payload_fields": ["prompt", "max_new_tokens"],
+    "runner_behavior": "unconstrained model.generate",
+    "missing": [
+      "canonical static-payload bytes and SHA-256",
+      "projector freeze identity",
+      "request/source-context identity",
+      "tokenizer and decoder identities",
+      "request-bound token projection callback",
+      "fail-closed no-legal-token receipt"
+    ]
+  },
+  "selected_architecture": {
+    "lineage": "SEPARATELY_VERSIONED_CONSTRUCTION_OBLIGATION_V2_CONSTRAINED_EXECUTION",
+    "host_payload": [
+      "provider execution request identity",
+      "rendered prompt SHA-256",
+      "canonical static-payload UTF-8 bytes and SHA-256",
+      "projector freeze identity",
+      "request/source-context identity",
+      "tokenizer identity",
+      "decoder identity",
+      "maximum output-token ceiling"
+    ],
+    "runner_preflight": "Validate every identity and byte hash before tokenizer or model loading; otherwise emit a terminal fail-closed receipt and grant no legal continuation.",
+    "projection_callback": "Construct the frozen request-bound projector only after exact tokenizer/decoder validation and pass its allowed-token projection as the sole generation prefix callback.",
+    "terminal_behavior": "Admit EOS only at a terminal character state; a nonterminal state with no legal token emits the canonical no-legal-token receipt and stops without retry, repair, selection, or fallback.",
+    "cache_scope": "Exact request/context/tokenizer/decoder/projector identity tuple only.",
+    "host_reconciliation": "Validate runner, dependency, request, projector, lifecycle, and result identities before classifying completion or constraint-liveness failure.",
+    "construction_test": "Use an injected launch-forbidden WSL boundary; construct no real invocation and call neither build_invocation nor execute."
+  },
+  "failure_receipts": [
+    "IDENTITY_OR_HASH_MISMATCH",
+    "MALFORMED_OR_UNBOUND_STATIC_PAYLOAD",
+    "STALE_OR_CROSS_REQUEST_CONTEXT",
+    "TOKENIZER_OR_DECODER_IDENTITY_MISMATCH",
+    "NO_LEGAL_TOKEN_NONTERMINAL",
+    "NONTERMINAL_EOS_REJECTED",
+    "LIFECYCLE_OR_RESULT_RECONCILIATION_FAILURE",
+    "PROVIDER_OR_TRANSPORT_FAILURE"
+  ],
+  "failure_separation": {
+    "constraint_liveness": "Only an identity-bound projector receipt may establish a constraint-liveness failure.",
+    "transport": "Launch, WSL, process, model-load, and provider failures remain transport/execution failures.",
+    "partial_output": "Carries no semantic inference and cannot establish a successful ledger.",
+    "retry_repair_selection_fallback": 0
+  },
+  "legacy_non_equivalence": {
+    "committed_v1_runner_sha256": "1669926e3e69ba6bbf1c7c7368edfbb7a8485fa14458d0bcae50a3272c6ffe17",
+    "committed_v1_dfa_identity_prefix": "ba5e7096",
+    "untracked_runner_v2_sha256": "71f659ce72bbf9d545d5926a64b078bbbfbe302272193e96a969d8f22eaef972",
+    "untracked_runner_v3_sha256": "e168b84af70385053bab46abf4b2b87d66f9d55d24dc48f26156a5eac3a5c383",
+    "untracked_executor_v2_sha256": "e4957f02a575fb986a382efc6e7562cd98f48ccce91a2cc7b11709b89e1ddfe2",
+    "untracked_executor_v3_sha256": "b0899e8f9bc5937457544ebcd14f2eea1d6d6a1e7354826a05c7063e3d76e74b",
+    "disposition": "PRESERVE_BUT_PROHIBIT_AS_CURRENT_V2_IMPLEMENTATION",
+    "reason": "These lineages do not bind the current frozen projector and provider-execution-request identities."
+  },
+  "future_dependency_order": [
+    "canonical host-to-WSL payload contract",
+    "launch-forbidden static executor binding",
+    "runner protocol and identity freeze",
+    "zero-model callback adapter tests with synthetic token pieces",
+    "separate execution-authority review"
+  ],
+  "authority": {
+    "design_selection": true,
+    "payload_or_protocol_implementation": false,
+    "executor_or_runner_implementation": false,
+    "executor_construction": false,
+    "wsl_invocation": false,
+    "tokenizer_or_model_loading": false,
+    "generation_or_inference": false,
+    "probe_or_historical_rerun": false,
+    "stage_c": false,
+    "runtime_or_production": false
+  },
+  "result": "FEASIBLE_NEW_V2_CONSTRAINED_EXECUTION_LINEAGE_REQUIRED"
+}
