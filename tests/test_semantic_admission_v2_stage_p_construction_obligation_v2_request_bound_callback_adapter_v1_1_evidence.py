@@ -1,0 +1,7 @@
+import hashlib,json
+from pathlib import Path
+R=Path(__file__).resolve().parents[1];S=R/"src/pastila_scout/semantic_admission_v2/stage_p_construction_obligation_v2_request_bound_callback_adapter_v1_1.py";T=R/"tests/test_semantic_admission_v2_stage_p_construction_obligation_v2_request_bound_callback_adapter_v1_1.py";A=R/"docs/artifacts/semantic-admission-v2-stage-p-construction-obligation-v2-request-bound-callback-adapter-v1-1.json";P=R/".semantic-admission-v2-stage-p-construction-obligation-v2-request-bound-callback-adapter-v1-1-evidence/preflight.json"
+def test_evidence_reproduces():
+ a=json.loads(A.read_bytes());assert hashlib.sha256("\n".join(a["identity_derivation"]["ordered_utf8_fields"]).encode()).hexdigest()==a["canonical_identity"];assert hashlib.sha256(S.read_bytes()).hexdigest()==a["implementation_sha256"];assert hashlib.sha256(T.read_bytes()).hexdigest()==a["focused_test_sha256"];assert json.loads(P.read_bytes())["candidate_identity"]==a["canonical_identity"]
+def test_zero_execution_ceiling():
+ a=json.loads(A.read_bytes())["authority"];assert a["synthetic_projection"] and a["actual_request_receipt_binding"];assert all(not v for k,v in a.items() if k not in {"synthetic_projection","actual_request_receipt_binding"});p=json.loads(P.read_bytes());assert all(v==0 for k,v in p.items() if k not in {"candidate_identity","adapter_identity","focused_tests_passed","synthetic_calls"})
