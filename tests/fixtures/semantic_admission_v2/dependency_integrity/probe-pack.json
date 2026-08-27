@@ -1,0 +1,1 @@
+{"probes":[{"probe_id":"P-F","source_case_id":"C1","gate_id":"FACTUAL_SEMANTIC","control_case_ids":[]},{"probe_id":"P-S","source_case_id":"C2","gate_id":"STORY_SPECIFICITY","control_case_ids":["C1","C3"]}]}

@@ -1,0 +1,20 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-dependency-integrity-manifest",
+  "schema_version": "1.0.0",
+  "scope": "ZERO_INFERENCE_V2_2_PROBE_DEPENDENCIES",
+  "dependencies": [
+    {"id":"contract_manifest","path":".semantic-admission-v2-contract-remediation-v2-2-evidence/manifest.json","sha256":"699347d7edfe29333520200faada41c263dd4e7a097846f9bb8bd05f737c0004","format":"json","required_keys":["canonical_identity","gate_f_evaluator_identity","gate_s_evaluator_identity"],"required_values":{"canonical_identity":"487fb51846ac896293e74d90038eed87526db1d0a25e1bd85c93cad1c7bfd72f"}},
+    {"id":"probe_pack","path":"docs/artifacts/semantic-admission-v2-contract-v2-2-probe-pack.json","sha256":"be4ee38480db50456c1b3cf3def47dc8d7b7ddb4403eadd29182cb695dc5ca25","format":"json","required_keys":["source_pack_identity","probes","run3_authorized"],"required_values":{"source_pack_identity":"18a817d3a994d02062a726f27c087913ad812e5c605050ab5552ba251ab8831e","run3_authorized":false}},
+    {"id":"generation_pack","path":".humor-mechanics-curriculum-v1-semantic-admission-specificity-contrast-pack-v1-evidence/generation-pack.json","sha256":"572e0aa2d19ce65c9529f88167b874f8d498ef49e3b9135e005a661fe11ba9d5","format":"json","required_keys":["cases","annotations_excluded_from_generation"]},
+    {"id":"raw_run_results","path":".humor-mechanics-curriculum-v1-semantic-admission-specificity-contrast-pack-v1-evidence/raw-run-results.json","sha256":"0650e30c70550f87af4add0fff1341b21745ce57d73c40114a08cd5f4d85e7e3","format":"json","required_keys":["attempts","run_identity"]},
+    {"id":"gate_f_prompt","path":"docs/artifacts/semantic-admission-v2-gate-f-contract-v2-2-prompt.txt","sha256":"baabb0f4830bad3d9d1c06adc1c074131d517ebb7715257dd6aa157fd5bc61b3"},
+    {"id":"gate_s_prompt","path":"docs/artifacts/semantic-admission-v2-gate-s-contract-v2-2-prompt.txt","sha256":"43dbbd21e77a49bfbfca42d585a986d7f012aeb754ad5a96a23eaaca97f001e8"},
+    {"id":"evaluator_settings","path":"docs/artifacts/semantic-admission-v2-evaluator-settings.json","sha256":"283a42dcceb8c2946deae816c287c6470c23bfc4194ca6c29694ba21983969b8","format":"json","required_keys":["model_identity","production_authority"],"required_values":{"production_authority":false}},
+    {"id":"response_schema","path":"docs/artifacts/semantic-admission-v2-gate-response.schema.json","sha256":"a2fac35d4477cda750e071785312945e4c8af7ccb3a0bd40a1f558784b9dac66","format":"json","required_keys":["$schema","required","properties"]},
+    {"id":"portability_controls","path":"docs/artifacts/semantic-admission-v2-portability-controls.json","sha256":"68d767609de8954ed9ad12c5700c93e97f5dc30865dd92401c6e30a578654ff5","format":"json","required_keys":["mapping","runtime_authority"],"required_values":{"runtime_authority":false}}
+  ],
+  "payload_construction": "TWO_PROBES_WITHOUT_EXECUTOR",
+  "inference_authority": "NONE",
+  "run3_authorized": false,
+  "canonical_identity": "ecb6ec1ff6eabdfb0c53e849206093abf9430817dbdc57cca70bc133bca4e32d"
+}

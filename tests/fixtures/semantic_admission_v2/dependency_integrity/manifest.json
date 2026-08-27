@@ -1,0 +1,14 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-dependency-integrity-manifest",
+  "schema_version": "1.0.0-synthetic.1",
+  "scope": "ZERO_INFERENCE_SYNTHETIC_DEPENDENCIES",
+  "dependencies": [
+    {"id":"probe_pack","path":"tests/fixtures/semantic_admission_v2/dependency_integrity/probe-pack.json","sha256":"c1cc83fc3caf02c70cfc2a6d6bbc27cc6480147b4648b98e5401d3953b5bcf42","format":"json","required_keys":["probes"]},
+    {"id":"generation_pack","path":"tests/fixtures/semantic_admission_v2/dependency_integrity/generation-pack.json","sha256":"4097c3eac27fade098bf7eafa66af939dea13666a77abbad6ee6c9efd8cbf907","format":"json","required_keys":["cases","annotations_excluded_from_generation"],"required_values":{"annotations_excluded_from_generation":true}},
+    {"id":"raw_run_results","path":"tests/fixtures/semantic_admission_v2/dependency_integrity/raw-results.json","sha256":"0a5d4cea5d8fd8c53a657f40d8985fefa7538b235ff41dc16ad980ff432544bb","format":"json","required_keys":["attempts","run_identity"],"required_values":{"run_identity":"synthetic-zero-inference"}}
+  ],
+  "payload_construction": "TWO_PROBES_WITHOUT_EXECUTOR",
+  "inference_authority": "NONE",
+  "run3_authorized": false,
+  "canonical_identity": "df1948a16b37955eae869f7758d47b2d492b0917a4f3d4a69b33bdfa98c47984"
+}
