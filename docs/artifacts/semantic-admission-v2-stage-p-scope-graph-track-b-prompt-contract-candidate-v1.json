@@ -1,0 +1,59 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-scope-graph-track-b-prompt-contract-candidate",
+  "schema_version": "1.0.0-evaluation.1",
+  "candidate_identity": "c6ab0e2f7721710af208c70ad96d31a412596b9ce69ee8f7f485caba5b620f08",
+  "approved_design_identity": "021690adb065887b6bd5c388a4beb5288629963a12fe7b09b94984a5f69dc05d",
+  "track_a_durable_binding_identity": "4830238a46d1ecf25defcb00e5b7e75128c8a9fd9aff19cf14ab63037605bf2a",
+  "lifecycle": "ZERO_INFERENCE_PROMPT_CONTRACT_CANDIDATE_CASE01_BLOCKED",
+  "identities": {
+    "prompt_execution_identity": "sha256:35081f4840bce62317842cca75c42c143a62e04688867cbc1ae64b2e0db75cfc",
+    "prompt_file_sha256": "3fc5d0ca77bcf43bc59f329b6bd66daf134fe0ce022edeb53577cf3173f34901",
+    "prompt_contract_sha256": "6c66fe3be085bd8d8ff365e5b5f28a5e65a6be1576e9b8e85d4c2cdc69e54d7b",
+    "request_candidate_sha256": "0d5f6904f44f3f8e9c2cdb2ed912a0753dc04523283f7d253f379caeb802d73f",
+    "zero_inference_preflight_sha256": "b1644b9e059637be8ea139db8144542dd0ee1d50cd0f658f28e4c57c89d463d8",
+    "schema_identity": "sha256:a61f16046045ca015dd2001393ab58e7ab7c94f50cbfc49f7df959bd45b3338c",
+    "constraint_identity": "sha256:e928d3ba6fcc8590afe89ded92500437ff8086d14430dba3e4fe983efaf3cb18",
+    "grammar_identity": "sha256:3c7914c3ac0316b4596754ca4011c1fad728539232d7d524fac92b8689861e3d",
+    "tokenizer_identity": "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c"
+  },
+  "candidate_properties": {
+    "candidate_presented_before_authority": true,
+    "candidate_only_inventory_precedes_alignment": true,
+    "authority_is_support_not_semantic_source": true,
+    "neutralization_survival_required": true,
+    "unsupported_surviving_propositions_preserved": true,
+    "multiple_valid_segmentations_preserved": true,
+    "unresolved_scope_preserved": true,
+    "case_labels_exposed": false,
+    "owner_annotations_exposed": false,
+    "humor_mechanisms_exposed": false
+  },
+  "zero_inference_verification": {
+    "prompt_padding": "PASS",
+    "placeholder_cardinality": "PASS",
+    "candidate_first_render": "PASS",
+    "byte_exact_case_sources": "PASS",
+    "application_authority_construction": "PASS",
+    "schema_constraint_grammar_identity": "PASS",
+    "real_tokenizer_trie_compatibility": "PASS",
+    "prompt_tokens": 2334,
+    "tokenizer_vocabulary_size": 131072,
+    "trie_node_count": 221961,
+    "initial_allowed_token_count": 2,
+    "tokenizer_warning": "EXISTING_FROZEN_MISTRAL_REGEX_WARNING_PRESERVED",
+    "model_loads": 0,
+    "model_calls": 0,
+    "provider_calls": 0,
+    "inference_calls": 0
+  },
+  "authority": {
+    "case01": false,
+    "probe": false,
+    "stage_c": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  },
+  "recommended_next_step": "Owner-review the Track-B prompt/contract candidate. If approved, bind it to an evaluation-only evaluator/executor request path and perform zero-inference dependency verification; do not execute Case 01 yet."
+}
