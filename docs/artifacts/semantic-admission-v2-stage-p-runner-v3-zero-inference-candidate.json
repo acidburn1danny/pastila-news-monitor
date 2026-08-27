@@ -1,0 +1,40 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-runner-v3-zero-inference-candidate",
+  "schema_version": "1.0.0-evaluation.1",
+  "lifecycle": "ZERO_INFERENCE_RUNNER_CANDIDATE_READY_FOR_OWNER_REVIEW",
+  "source_cache_candidate_identity": "3c0cbb850a391c173e40538583e81205f2a26737cb6fea67efb137672e45070d",
+  "runner": {
+    "version": "V3",
+    "sha256": "617ee34bd05c6a32de81714b0b07bedb2f10464f0e43213258cdf8886e0c57db",
+    "controller": "StagePCallbackControllerV1",
+    "cache_projector": "StagePTokenTrieProjectorV1",
+    "incremental_tracker": "StagePIncrementalPrefixTrackerV1"
+  },
+  "dependency_loading": {
+    "policy": "load only exact Stage P modules under an isolated minimal package namespace",
+    "discovery": "The first tokenizer-only attempt exposed an unauthorized transitive package dependency on pydantic before model loading.",
+    "remediation": "The runner and preflight now load only the bound DFA, trie, tracker, controller, and lifecycle modules.",
+    "semantic_change": false
+  },
+  "real_tokenizer_preflight": {
+    "result": "PASS",
+    "vocabulary_size": 131072,
+    "trie_nodes": 221961,
+    "streams": ["short story-specific string", "400-character maximum-bound string"],
+    "checkpoint_policy": "nine evenly spaced deterministic prefixes per stream",
+    "prefixes_compared": 18,
+    "allowed_set_divergences": 0,
+    "tracker_paths": ["INCREMENTAL"]
+  },
+  "durable_lifecycle_preflight": {
+    "result": "PASS",
+    "host_events_preserved": ["HOST_LAUNCH", "HOST_PROCESS_STARTED", "HOST_TIMEOUT", "HOST_TERMINATION_OBSERVED", "HOST_PROCESS_EXITED", "HOST_RESPONSE_VALIDATED"],
+    "runner_events_preserved": ["RUNNER_STARTED", "REQUEST_VALIDATED", "TOKENIZER_LOAD_STARTED", "TOKENIZER_LOAD_COMPLETED", "TRIE_BUILD_STARTED", "TRIE_BUILD_COMPLETED", "PREWARM_STARTED", "PREWARM_COMPLETED", "MODEL_LOAD_STARTED", "MODEL_LOAD_COMPLETED", "PROMPT_TOKENIZED", "GENERATION_STARTED", "GENERATION_HEARTBEAT", "TERMINAL_EOS", "RESPONSE_PERSISTED", "RUNNER_EXCEPTION"],
+    "heartbeat_additions": ["tracking_path", "tracker_rebuilds", "tracker_incremental_steps"],
+    "execution_performed": false
+  },
+  "known_tokenizer_warning": "The existing tokenizer reports the known Mistral regex warning; fix_mistral_regex was not changed because tokenizer identity/behavior modification is outside this candidate.",
+  "verification": {"focused_tests_passed": 18, "focused_tests_failed": 0, "model_imported": false, "model_load_started": false, "inference_started": false, "model_calls": 0, "provider_calls": 0},
+  "authority": {"model_probe": false, "proof_rerun": false, "production": false, "runtime_integration": false, "curriculum": false, "training": false},
+  "next_bounded_recommendation": "After owner approval, execute exactly one evaluation-only Stage-P-only Case 01 probe with the V3 runner and durable lifecycle receipts; stop before Stage C or any two-case proof rerun."
+}

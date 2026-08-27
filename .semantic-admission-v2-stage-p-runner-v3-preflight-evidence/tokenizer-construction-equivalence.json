@@ -1,0 +1,19 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-runner-v3-zero-inference-preflight",
+  "schema_version": "1.0.0",
+  "runner_sha256": "617ee34bd05c6a32de81714b0b07bedb2f10464f0e43213258cdf8886e0c57db",
+  "tokenizer_vocabulary_size": 131072,
+  "candidate_trie_nodes": 221961,
+  "prefixes_compared": 18,
+  "checkpoint_policy": "nine evenly spaced deterministic prefixes per stream",
+  "allowed_set_divergences": 0,
+  "tracker_paths": [
+    "INCREMENTAL"
+  ],
+  "model_imported": false,
+  "model_load_started": false,
+  "inference_started": false,
+  "model_calls": 0,
+  "provider_calls": 0,
+  "result": "PASS"
+}

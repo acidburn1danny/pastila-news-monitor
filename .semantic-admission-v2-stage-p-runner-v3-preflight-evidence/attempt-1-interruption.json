@@ -1,0 +1,11 @@
+{
+  "attempt": 1,
+  "lifecycle": "QUARANTINED_INCOMPLETE_PREFLIGHT",
+  "reason": "The initial harness compared the expensive baseline at every token rather than bounded deterministic checkpoints and was manually terminated.",
+  "promoted_evidence": false,
+  "model_imported": false,
+  "model_load_started": false,
+  "inference_started": false,
+  "model_calls": 0,
+  "provider_calls": 0
+}

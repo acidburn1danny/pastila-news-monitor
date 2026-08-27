@@ -1,0 +1,24 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-runner-v3-zero-inference-manifest",
+  "schema_version": "1.0.0",
+  "canonical_identity": "eca2516db3a77f065666a6eb95804c88d239a57f11b1362c9e388be66b07247f",
+  "identity_method": "sha256 of the ordered lowercase artifact SHA-256 values joined by LF, with no trailing LF",
+  "lifecycle": "ZERO_INFERENCE_RUNNER_CANDIDATE_READY_FOR_OWNER_REVIEW",
+  "source_cache_candidate_identity": "3c0cbb850a391c173e40538583e81205f2a26737cb6fea67efb137672e45070d",
+  "artifacts": [
+    {"path":"docs/artifacts/semantic-admission-v2-stage-p-runner-v3-zero-inference-candidate.json","sha256":"1fbebe545790b9e115e04c420b271f19e253db39f0860edb4a23e76acc7809bc"},
+    {"path":"src/pastila_scout/experimental_core_v1_2_stage_p_constrained_runner_v3.py","sha256":"617ee34bd05c6a32de81714b0b07bedb2f10464f0e43213258cdf8886e0c57db"},
+    {"path":"src/pastila_scout/semantic_admission_v2/stage_p_durable_executor_v3.py","sha256":"2c7f7415c219693765c9933aedc510a86b922e2c7178b4f22c331d0996a8dea1"},
+    {"path":"src/pastila_scout/experimental_core_v1_2_stage_p_runner_v3_preflight.py","sha256":"c189cd6db43ccc3767c0c313326c66492bf08a26065e879978837c6324122039"},
+    {"path":"src/pastila_scout/semantic_admission_v2/stage_p_trie_projector_v1.py","sha256":"8cc6f68f1ff9751ab983306e9fb39efa0ae55c52cbe8a0471a2e5e98bfc54529"},
+    {"path":"src/pastila_scout/semantic_admission_v2/stage_p_callback_controller_v1.py","sha256":"33f1d8fc18684e97c499b98877f3bae8682c70d7295a6e4c755d42b0ce629b37"},
+    {"path":"src/pastila_scout/semantic_admission_v2/stage_p_incremental_tracker_v1.py","sha256":"03a332934b1e778168c200bd5c4aad24adaf33cd7eb69a5f51c8ae535887205e"},
+    {"path":"tests/test_semantic_admission_v2_stage_p_runner_v3_preflight.py","sha256":"a85300fe11b304e5d4ae8ebff4da7cf3e94b68476c530a2fae2baadaad0fb0e8"},
+    {"path":"tests/test_semantic_admission_v2_stage_p_runner_v3_evidence.py","sha256":"50194afee552100a325bbdd9abb7c1a02a7e11b002045592ac570dea9e769115"},
+    {"path":".semantic-admission-v2-stage-p-runner-v3-preflight-evidence/tokenizer-construction-equivalence.json","sha256":"6cec624d0683c7093e3b9dac8d401995201bea622aaf1afc8e87a14af5034952"},
+    {"path":".semantic-admission-v2-stage-p-runner-v3-preflight-evidence/attempt-1-interruption.json","sha256":"d084237dee15cac1c616a5fdd2793402c4517be8dea6fae8cedbdd65a1716f29"},
+    {"path":".semantic-admission-v2-stage-p-runner-v3-preflight-evidence/report.md","sha256":"fa7a49c32d68c7b5b666256b20b19afc423d6257645091d996da9bbe355ac984"}
+  ],
+  "verification": {"focused_tests":{"result":"PASS","passed":18,"failed":0},"real_tokenizer_allowed_set_divergences":0,"model_imported":false,"model_load_started":false,"inference_executed":false,"model_calls":0,"provider_calls":0},
+  "authority": {"model_probe":false,"proof_rerun":false,"production":false,"runtime_integration":false,"curriculum":false,"training":false}
+}
