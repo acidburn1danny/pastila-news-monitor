@@ -1,0 +1,55 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-scope-graph-track-b-case01-probe-binding",
+  "schema_version": "1.0.0-evaluation.1",
+  "binding_identity": "2351f419517582543d018b620087adacb630b94134f26ff3dcd0acb2437afb81",
+  "approved_evaluator_binding_identity": "c94bcf9ffed5d33223d31d9b2d1014b0595b15422af86cfb3581c8022b85e4a7",
+  "lifecycle": "EXCLUSIVE_ONE_SHOT_BOUND_NOT_EXECUTED_CASE01_BLOCKED",
+  "case_id": "HMCV1-SASC-01",
+  "pack_sha256": "4163307ccb8cfa8997b520a1cea04cddacd347e9b1ffde498db925ffccac6c2d",
+  "probe_runner_sha256": "4b131f1ec7ea0c38526edc66a98b59d44798fac4fbb402dd4a6e32bd8940153b",
+  "identities": {
+    "request_candidate_identity": "c6ab0e2f7721710af208c70ad96d31a412596b9ce69ee8f7f485caba5b620f08",
+    "prompt_identity": "sha256:35081f4840bce62317842cca75c42c143a62e04688867cbc1ae64b2e0db75cfc",
+    "schema_identity": "sha256:a61f16046045ca015dd2001393ab58e7ab7c94f50cbfc49f7df959bd45b3338c",
+    "constraint_identity": "sha256:e928d3ba6fcc8590afe89ded92500437ff8086d14430dba3e4fe983efaf3cb18",
+    "grammar_identity": "sha256:3c7914c3ac0316b4596754ca4011c1fad728539232d7d524fac92b8689861e3d",
+    "tokenizer_identity": "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c",
+    "model_identity": "pastila-editor-core-v1.2-experimental"
+  },
+  "execution_boundaries": {
+    "exclusive_new_evidence_root": true,
+    "maximum_provider_calls": 1,
+    "retry_count": 0,
+    "repair_count": 0,
+    "selection_count": 0,
+    "constraint_liveness_reason": "STAGE_P_CONSTRAINT_LIVENESS_FAILURE",
+    "ordinary_transport_reason": "STAGE_P_PROVIDER_OR_TRANSPORT_FAILURE",
+    "stage_c_constructed": false,
+    "stage_c_called": false
+  },
+  "zero_inference_result": {
+    "case01_selection": "PASS",
+    "pack_identity": "PASS",
+    "evaluator_binding": "PASS",
+    "exclusive_evidence_root": "PASS",
+    "single_call_site": "PASS",
+    "subprocess_launch_forbidden": "PASS",
+    "wsl_calls": 0,
+    "runner_calls": 0,
+    "tokenizer_loads": 0,
+    "model_loads": 0,
+    "model_calls": 0,
+    "provider_calls": 0,
+    "inference_calls": 0
+  },
+  "authority": {
+    "case01_execution": false,
+    "probe_execution": false,
+    "stage_c": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  },
+  "bounded_next_step_if_authorized": "Execute exactly one evaluation-only Stage-P-only Track-B HMCV1-SASC-01 probe in the approved host context, preserve durable receipts, then stop before retry, repair, selection, Case 10, Stage C, or proof rerun."
+}
