@@ -1,0 +1,56 @@
+{
+  "artifact_id": "STAGE_P_CONSTRUCTION_OBLIGATION_EVALUATOR_BINDING_V1",
+  "binding_identity": "b946e638d0f760360e0a9ab55bf83817ade310b3257d3e801159c977a5e5df20",
+  "approved_dfa_candidate_identity": "ba5e7096afda282b09be2e7e9bd83b2d46ef50904a07ba0b8783cad02a5a314f",
+  "approved_runner_executor_binding_identity": "689cfc7770e284b7364f143b05d2f0e6c6a5bc1a5c6358845fcea8f8d06ab930",
+  "receipt_propagation_candidate_identity": "aae3212858b87ae7e3876c497fb9b554d5c606426fa692d6df9f26982c9d7b08",
+  "lifecycle": "ZERO_INFERENCE_EVALUATOR_BOUND_NO_PROBE",
+  "identities": {
+    "request_module_sha256": "e52c595d3de43e6c34a83ef0e340d3bd0f318d17e80d6e8be70fa9d8af8e0d5b",
+    "evaluator_sha256": "3acfde762dad2487f04541480f7bbf9b56d8642a176ec45fefe6dc59f3e333b8",
+    "executor_sha256": "36bb0081f95d260141e45b57926b49474cb349143eb8957691c2ee4fe7564002",
+    "request_candidate_identity": "e1dbb1f70e9e5c83e23b5e29dbf868d1a3ad7c01ebd4d6d2c82aaa192bb00f31",
+    "evaluator_identity": "72424234b8c3bada280edd1a8ca8b4d0bda6d619b12f45b7e5a60416792fca25",
+    "prompt_identity": "sha256:2fe034826fb19b28c4686fd4640325fd31a1f739140322b5a83412515f62e6bd",
+    "schema_identity": "sha256:1b9e2a289aaade5e79c1be2f81000103dd7787b068576b9d8923789a237c6854",
+    "constraint_identity": "sha256:a5db3847530e1208fbc96f5a4af6e577b248ec2507c9045280b648420d0ad935",
+    "grammar_identity": "sha256:340daf4cb25aadd9fa759cb16b7e388529c4a79caf79a1a18a407b8cab4037cc",
+    "tokenizer_identity": "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c",
+    "model_identity": "pastila-editor-core-v1.2-experimental"
+  },
+  "binding_properties": {
+    "exact_executor_type_required": true,
+    "projected_request_identity_required": true,
+    "typed_liveness_propagation_preserved": true,
+    "exact_rendered_prompt_preserved": true,
+    "synthetic_non_case_request_construction": true,
+    "subprocess_launch_forbidden": true,
+    "probe_wrapper_created": false,
+    "case01_request_constructed": false,
+    "stage_c_edge": false
+  },
+  "zero_inference_verification": {
+    "constructor_binding": "PASS",
+    "synthetic_request_render": "PASS",
+    "application_authority": "PASS",
+    "runner_calls": 0,
+    "tokenizer_loads": 0,
+    "model_loads": 0,
+    "provider_calls": 0,
+    "inference_calls": 0,
+    "case01_executed": false,
+    "stage_c_calls": 0
+  },
+  "authority": {
+    "probe_construction": false,
+    "probe_execution": false,
+    "case01_rerun": false,
+    "stage_c": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  },
+  "status": "OWNER_REVIEW_REQUIRED",
+  "recommended_next_step": "Owner-review both obligation-projection bindings. If approved, separately authorize construction and zero-inference verification of a new exclusive one-shot Case 01 probe binding. Actual execution remains separately gated."
+}

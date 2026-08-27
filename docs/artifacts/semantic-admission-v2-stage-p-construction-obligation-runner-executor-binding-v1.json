@@ -1,0 +1,52 @@
+{
+  "artifact_id": "STAGE_P_CONSTRUCTION_OBLIGATION_RUNNER_EXECUTOR_BINDING_V1",
+  "binding_identity": "689cfc7770e284b7364f143b05d2f0e6c6a5bc1a5c6358845fcea8f8d06ab930",
+  "approved_dfa_candidate_identity": "ba5e7096afda282b09be2e7e9bd83b2d46ef50904a07ba0b8783cad02a5a314f",
+  "lifecycle": "ZERO_INFERENCE_RUNNER_EXECUTOR_BOUND_NO_PROBE",
+  "identities": {
+    "runner_sha256": "1669926e3e69ba6bbf1c7c7368edfbb7a8485fa14458d0bcae50a3272c6ffe17",
+    "executor_sha256": "36bb0081f95d260141e45b57926b49474cb349143eb8957691c2ee4fe7564002",
+    "tracker_sha256": "259f1c06d8aa81bf027484bab64fcb532f109a8ee6821637ec5519c3b5b77e9a",
+    "controller_sha256": "2d62132520164cdacf277e2b68975688a02bb294e301811a71e16afa74f21178",
+    "constraint_identity": "sha256:a5db3847530e1208fbc96f5a4af6e577b248ec2507c9045280b648420d0ad935",
+    "tokenizer_identity": "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c"
+  },
+  "binding": {
+    "constraint_state": "StagePConstructionObligationConstraintStateV1",
+    "projector": "StagePDiagnosticTokenTrieProjectorV1",
+    "incremental_tracker": "StagePConstructionObligationIncrementalTrackerV1",
+    "callback_controller": "StagePConstructionObligationCallbackControllerV1",
+    "lifecycle": "AppendOnlyLifecycleV1",
+    "maximum_output_tokens": 3200,
+    "timeout_seconds": 240.0,
+    "wsl_distribution": "Ubuntu-24.04",
+    "constraint_liveness_receipt": "HOST_CONSTRAINT_LIVENESS_FAILURE_CLASSIFIED"
+  },
+  "zero_inference_verification": {
+    "exact_dependency_checks": "PASS",
+    "executor_construction_with_launch_forbidden": "PASS",
+    "tracker_incremental_and_rebuild": "PASS",
+    "wsl_import_only": "PASS",
+    "pydantic_loaded": false,
+    "transformers_loaded": false,
+    "peft_loaded": false,
+    "tokenizer_loads": 0,
+    "model_loads": 0,
+    "provider_calls": 0,
+    "inference_calls": 0,
+    "case01_request_constructed": false,
+    "probe_constructed": false,
+    "stage_c_calls": 0
+  },
+  "authority": {
+    "probe_construction": false,
+    "probe_execution": false,
+    "case01_rerun": false,
+    "stage_c": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  },
+  "status": "OWNER_REVIEW_REQUIRED"
+}
