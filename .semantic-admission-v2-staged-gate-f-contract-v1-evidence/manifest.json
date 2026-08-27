@@ -1,0 +1,27 @@
+{
+  "schema_name":"pastila-semantic-admission-v2-staged-gate-f-contract-bundle",
+  "schema_version":"1.0.0",
+  "canonical_identity":"8a25b1508565a3c1554028ade8ac2b2ba96009647c065b2200e18316bb7187da",
+  "identity_method":"sha256 of ordered lowercase artifact SHA-256 values joined by LF",
+  "lifecycle":"EVALUATION_ONLY_CANDIDATE_READY_FOR_OWNER_REVIEW",
+  "source_design_identity":"57212b8426c7937a006541d4bca832d5655072fe11ce26c659b7a78d81ec8344",
+  "artifacts":[
+    {"path":"docs/artifacts/semantic-admission-v2-staged-gate-f-contract-v1-candidate.json","sha256":"6541c929b5d2692d1e0c6150faf24695f611feeafeffcf76f5a050af627032de"},
+    {"path":"docs/artifacts/semantic-admission-v2-stage-p-prompt-v1.txt","sha256":"0663994b3ba4335d9051f7b49dcfbfb60bb8366f9e87adc4e01a3d08a3ed512a"},
+    {"path":"docs/artifacts/semantic-admission-v2-stage-c-prompt-v1.txt","sha256":"99f197fd988fbd7b11f0a79e2b3d6649de30f1eea35b63c8eab60408f4facd07"},
+    {"path":"docs/schemas/semantic-admission-v2-stage-p-ledger-v1.schema.json","sha256":"52619048d0266778003516af408d2cfe4d0b048beed1de6d0cd1774a4c82f262"},
+    {"path":"docs/schemas/semantic-admission-v2-stage-c-gate-f-v1.schema.json","sha256":"652fffcfd8384a53f72bee29c0f1ca9b56e0753db8f1087973cdb22ca1baaad7"},
+    {"path":"src/pastila_scout/semantic_admission_v2/staged_gate_f_contract_v1.py","sha256":"1124a351971910d3e5df835a11478a50086ed34f0e9b27ef53ffa98b74f51d03"},
+    {"path":"tests/test_semantic_admission_v2_staged_gate_f_contract_v1.py","sha256":"3f3e7014fcb00a0d633effe7ec124f18a2c4350bccc8cd3fd0175717483da390"},
+    {"path":".semantic-admission-v2-staged-gate-f-contract-v1-evidence/zero-inference-preflight.json","sha256":"9ff7bc45a90911eb45fe82733311f451b24cbf3e1beb980c2d0d41e77f2f9c65"},
+    {"path":".semantic-admission-v2-staged-gate-f-contract-v1-evidence/report.md","sha256":"6e92d65ef16fab372fb9de67eec94939b156f67a6ceebc063c6ddb8652b3db8d"}
+  ],
+  "provider_calls":0,
+  "model_calls":0,
+  "inference_authority":false,
+  "probe_authority":false,
+  "runtime_authority":false,
+  "production_authority":false,
+  "training_authority":false,
+  "gate_s_authority":false
+}

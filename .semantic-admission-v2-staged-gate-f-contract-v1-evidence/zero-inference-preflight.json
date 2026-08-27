@@ -1,0 +1,27 @@
+{
+  "schema_name":"pastila-semantic-admission-v2-staged-gate-f-zero-inference-preflight",
+  "schema_version":"1.0.0",
+  "source_design_identity":"57212b8426c7937a006541d4bca832d5655072fe11ce26c659b7a78d81ec8344",
+  "stage_p_prompt_identity":"sha256:35e84ef1132eb9d768b846ea41978515750472aa92a54ca91404c0a15d0f7525",
+  "stage_c_prompt_identity":"sha256:6e1d1f9ca992a054fcf1f1446193970e3c9fd39687ea94b5bfb8d48dbed52721",
+  "checks":{
+    "utf8_and_exact_unpadded_execution_bytes":true,
+    "placeholder_construction":true,
+    "distinct_prompt_identities":true,
+    "stage_p_persisted_schema_valid":true,
+    "stage_p_runtime_model_valid":true,
+    "stage_p_complete_invariants":true,
+    "stage_p_exact_source_membership_no_repair":true,
+    "stage_c_existing_response_model_compatible":true,
+    "stage_c_existing_character_constraint_compatible":true,
+    "contract_has_no_provider_or_executor_import_edge":true,
+    "gate_s_unchanged":true
+  },
+  "stage_p_constrained_decoder_projector":"NOT_IMPLEMENTED_OR_INVOKED",
+  "stage_c_constrained_decoder":"CONSTRUCTION_COMPATIBLE_NOT_INVOKED",
+  "provider_calls":0,
+  "model_calls":0,
+  "model_load_started":false,
+  "inference_started":false,
+  "result":"PASS_WITH_STAGE_P_PROJECTOR_REQUIRED_BEFORE_ANY_PROBE"
+}
