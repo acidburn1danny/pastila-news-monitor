@@ -1,0 +1,76 @@
+{
+  "artifact_type": "ZERO_INFERENCE_TOKENIZER_DFA_AUDIT_EVIDENCE",
+  "artifact_version": "1.0.0-evaluation.1",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_TOKENIZER_DFA_AUDIT_V1",
+  "canonical_identity": "e6921378e98981c7d2aa8ffa0711b8905ef0d1abc8fbd7b3bd5318f7331ef02d",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_V2_TOKENIZER_DFA_AUDIT_V1",
+      "94879e032a47beedd2e5035dccf36f2b3922b093aaff67be014f408db6c9006a",
+      "82bdf788a54a21d0be00b4c0e1dfda30da28ad52a92153af2cee9c63267e0dab",
+      "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c",
+      "7a1070e9b64aeea890c7ac78d184734b8dbd6c58dce1c2c6914e71d14327b4a4",
+      "PASS_CONTEXT_FREE_TOKEN_PIECES_EQUIVALENT_FOR_FROZEN_MATRIX",
+      "ZERO_INFERENCE"
+    ],
+    "separator": "LF"
+  },
+  "plan_identity": "94879e032a47beedd2e5035dccf36f2b3922b093aaff67be014f408db6c9006a",
+  "dependency_bridge_identity": "82bdf788a54a21d0be00b4c0e1dfda30da28ad52a92153af2cee9c63267e0dab",
+  "audit_harness_sha256": "7a1070e9b64aeea890c7ac78d184734b8dbd6c58dce1c2c6914e71d14327b4a4",
+  "result": "PASS_CONTEXT_FREE_TOKEN_PIECES_EQUIVALENT_FOR_FROZEN_MATRIX",
+  "phases_executed": [5, 6, 7],
+  "tokenizer_identity": "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c",
+  "vocabulary_size": 131072,
+  "state_matrix": {
+    "state_count": 7,
+    "states": [
+      {"state": "INITIAL", "dfa_mode": "LITERAL", "allowed_token_count": 2, "eos_allowed": false, "sets_equal": true},
+      {"state": "LITERAL", "dfa_mode": "LITERAL", "allowed_token_count": 1, "eos_allowed": false, "sets_equal": true},
+      {"state": "CHOICE", "dfa_mode": "CHOICE", "allowed_token_count": 7, "eos_allowed": false, "sets_equal": true},
+      {"state": "STRING", "dfa_mode": "STRING", "allowed_token_count": 128166, "eos_allowed": false, "sets_equal": true},
+      {"state": "V2_REFERENCE", "dfa_mode": "V2_REFERENCE", "allowed_token_count": 2, "eos_allowed": false, "sets_equal": true},
+      {"state": "AFTER_ENTRY", "dfa_mode": "AFTER_ENTRY", "allowed_token_count": 2, "eos_allowed": false, "sets_equal": true},
+      {"state": "TERMINAL", "dfa_mode": "TERMINAL", "allowed_token_count": 1, "eos_allowed": true, "sets_equal": true}
+    ],
+    "false_accepts": 0,
+    "false_rejects": 0,
+    "contextual_suffix_mismatches": 0,
+    "eos_only_at_terminal": true,
+    "special_and_empty_tokens_excluded": true
+  },
+  "resource_characterization": {
+    "elapsed_seconds": 87.05438,
+    "maximum_state_matrix_seconds": 34.174445,
+    "median_state_matrix_seconds": 4.840856,
+    "projector_or_cache_created": false,
+    "cache_isolation_disposition": "REMAINS_IMPLEMENTATION_VERIFICATION_OBLIGATION"
+  },
+  "strategy_recommendation": {
+    "context_free_token_piece_projection": "FEASIBLE_FOR_THE_FROZEN_TOKENIZER_AND_AUDITED_DFA_STATE_CLASSES",
+    "prefix_sensitive_full_decode": "RETAIN_AS_FAIL_CLOSED_ORACLE_AND_FALLBACK",
+    "implementation_authorized": false,
+    "required_future_proof": "A projector candidate must reproduce these exact allowed sets, preserve exclusion/EOS policy, bind caches to tokenizer/request/controller identities, and fall back fail-closed on any decoder drift."
+  },
+  "preserved_warning": "Transformers emitted the existing incorrect Mistral regex warning; fix_mistral_regex was not enabled because that would alter the bound tokenizer behavior.",
+  "execution_receipt": {
+    "tokenizer_loads": 1,
+    "model_loads": 0,
+    "model_calls": 0,
+    "provider_calls": 0,
+    "inference_calls": 0,
+    "projector_objects": 0,
+    "probe_constructions": 0,
+    "probe_executions": 0
+  },
+  "authority": {
+    "projector_implementation": false,
+    "evaluator_or_runner_binding": false,
+    "probe_construction_or_execution": false,
+    "runtime_integration": false,
+    "production": false,
+    "training": false
+  },
+  "recommended_next_step": "Owner-review and freeze the bridge/audit evidence. If approved, authorize only a separately versioned token-projector candidate with deterministic synthetic tests and zero-inference equivalence against this frozen matrix; keep evaluator/runner binding and probes separately gated."
+}

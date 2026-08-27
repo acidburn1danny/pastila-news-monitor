@@ -1,0 +1,49 @@
+{
+  "artifact_type": "ZERO_INFERENCE_DEPENDENCY_BRIDGE",
+  "artifact_version": "1.0.0-evaluation.1",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_ZERO_INFERENCE_DEPENDENCY_BRIDGE_V1",
+  "canonical_identity": "82bdf788a54a21d0be00b4c0e1dfda30da28ad52a92153af2cee9c63267e0dab",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_V2_ZERO_INFERENCE_DEPENDENCY_BRIDGE_V1",
+      "b93d0d910b79a3474fe0ad5bae419959531357c90b3ff86321d054f34d2c1835",
+      "pydantic==2.13.4",
+      "pydantic-core==2.46.4",
+      "ISOLATED_WORKSPACE_TARGET",
+      "ZERO_INFERENCE"
+    ],
+    "separator": "LF"
+  },
+  "installation": {
+    "kind": "PIP_TARGET_ISOLATED_WORKSPACE_DIRECTORY",
+    "git_ignored": true,
+    "existing_tokenizer_environment_modified": false,
+    "existing_application_environment_modified": false,
+    "packages": {
+      "pydantic": "2.13.4",
+      "pydantic-core": "2.46.4",
+      "annotated-types": "0.8.0",
+      "typing-extensions": "4.16.0",
+      "typing-inspection": "0.4.4"
+    },
+    "record_manifest_identity": "b93d0d910b79a3474fe0ad5bae419959531357c90b3ff86321d054f34d2c1835"
+  },
+  "preflight": {
+    "pydantic_import": "PASS",
+    "pydantic_core_import": "PASS",
+    "frozen_dfa_import": "PASS",
+    "tokenizer_loaded": false,
+    "model_loaded": false,
+    "inference_calls": 0
+  },
+  "authority": {
+    "runtime_dependency": false,
+    "production_dependency": false,
+    "packaging_change": false,
+    "projector_implementation": false,
+    "evaluator_or_runner_binding": false,
+    "probe_construction_or_execution": false,
+    "training": false
+  }
+}
