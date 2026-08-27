@@ -1,0 +1,23 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-portability-controls",
+  "schema_version": "1.0.0",
+  "source_pack_identity": "18a817d3a994d02062a726f27c087913ad812e5c605050ab5552ba251ab8831e",
+  "selection_version": "SAV2_PORTABILITY_CONTROLS_V1",
+  "controls_per_case": 2,
+  "controls_are_governed_existing_cases": true,
+  "generation_path_access": "PROHIBITED",
+  "mapping": {
+    "HMCV1-SASC-01": ["HMCV1-SASC-04", "HMCV1-SASC-10"],
+    "HMCV1-SASC-02": ["HMCV1-SASC-03", "HMCV1-SASC-08"],
+    "HMCV1-SASC-03": ["HMCV1-SASC-04", "HMCV1-SASC-07"],
+    "HMCV1-SASC-04": ["HMCV1-SASC-01", "HMCV1-SASC-10"],
+    "HMCV1-SASC-05": ["HMCV1-SASC-02", "HMCV1-SASC-09"],
+    "HMCV1-SASC-06": ["HMCV1-SASC-04", "HMCV1-SASC-08"],
+    "HMCV1-SASC-07": ["HMCV1-SASC-03", "HMCV1-SASC-05"],
+    "HMCV1-SASC-08": ["HMCV1-SASC-02", "HMCV1-SASC-06"],
+    "HMCV1-SASC-09": ["HMCV1-SASC-05", "HMCV1-SASC-10"],
+    "HMCV1-SASC-10": ["HMCV1-SASC-01", "HMCV1-SASC-09"]
+  },
+  "expected_annotations_included": false,
+  "runtime_authority": false
+}

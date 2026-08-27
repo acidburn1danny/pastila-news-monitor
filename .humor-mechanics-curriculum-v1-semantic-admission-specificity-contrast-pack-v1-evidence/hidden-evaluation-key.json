@@ -1,0 +1,244 @@
+{
+  "schema_name": "pastila-semantic-admission-specificity-contrast-hidden-key",
+  "schema_version": "1.0.0",
+  "generation_path_access": "PROHIBITED",
+  "frozen_before_execution": true,
+  "contrast_classes": {
+    "A": "story-specific nonfactual transformation",
+    "B": "fact-safe but portable/generic commentary",
+    "C": "unsupported factual or life-history inference disguised as commentary"
+  },
+  "paired_contrasts": [
+    {
+      "cases": [
+        "HMCV1-SASC-01",
+        "HMCV1-SASC-02"
+      ],
+      "purpose": "story-specific transformation versus portable thematic language"
+    },
+    {
+      "cases": [
+        "HMCV1-SASC-02",
+        "HMCV1-SASC-03"
+      ],
+      "purpose": "generic-but-fact-safe versus unsupported inference"
+    },
+    {
+      "cases": [
+        "HMCV1-SASC-07",
+        "HMCV1-SASC-09"
+      ],
+      "purpose": "story-local detail versus unsupported life-history inference"
+    },
+    {
+      "cases": [
+        "HMCV1-SASC-08",
+        "HMCV1-SASC-10"
+      ],
+      "purpose": "marked fiction risk versus unsupported future/policy inference"
+    }
+  ],
+  "cases": [
+    {
+      "case_id": "HMCV1-SASC-01",
+      "source_case_id": "HMCV1-B1-DIAG-08",
+      "evaluation_dimensions": [
+        "SPECIFICITY",
+        "PORTABILITY",
+        "UNSUPPORTED_INFERENCE",
+        "FACTUAL_SAFETY",
+        "ADMISSION_RESULT",
+        "OWNER_QUALITY"
+      ],
+      "multiple_valid_realizations": true,
+      "single_correct_mechanism_or_wording": false,
+      "diagnostic_profile": [
+        "STORY_SPECIFIC_NONFACTUAL_TRANSFORMATION"
+      ],
+      "frozen_run5_anchor": {
+        "contrast_class": "A",
+        "class_label": "STORY_SPECIFIC_NONFACTUAL_TRANSFORMATION",
+        "owner_disposition": "OWNER_QUALITY_CANDIDATE",
+        "raw_output": "{\"decision\":\"commentary\",\"commentary\":\"Când banii se ascund în umbră, iar angajații rămân la lumină, pare că și hotelul ar avea nevoie de o cameră cu mai multă transparență.\"}",
+        "raw_output_sha256": "45e07c776bd1846d4eb2a4bbc826b338fa7623f939329e6d070ddd72495a8f25",
+        "accepted_commentary": "Când banii se ascund în umbră, iar angajații rămân la lumină, pare că și hotelul ar avea nevoie de o cameră cu mai multă transparență."
+      }
+    },
+    {
+      "case_id": "HMCV1-SASC-02",
+      "source_case_id": "HMCV1-B1-DIAG-09",
+      "evaluation_dimensions": [
+        "SPECIFICITY",
+        "PORTABILITY",
+        "UNSUPPORTED_INFERENCE",
+        "FACTUAL_SAFETY",
+        "ADMISSION_RESULT",
+        "OWNER_QUALITY"
+      ],
+      "multiple_valid_realizations": true,
+      "single_correct_mechanism_or_wording": false,
+      "diagnostic_profile": [
+        "FACT_SAFE_BUT_PORTABLE_GENERIC"
+      ],
+      "frozen_run5_anchor": {
+        "contrast_class": "B",
+        "class_label": "FACT_SAFE_BUT_PORTABLE_GENERIC",
+        "owner_disposition": "REJECT_GENERIC_PORTABLE",
+        "raw_output": "{\"decision\":\"commentary\",\"commentary\":\"Când lumile se sting, chiar și cele mai bine pregătite planuri rămân la fel de întunecate.\"}",
+        "raw_output_sha256": "405faf99d8199febd9f0b614b69aa036456fe391f711250abcfef748778d97f3",
+        "accepted_commentary": "Când lumile se sting, chiar și cele mai bine pregătite planuri rămân la fel de întunecate."
+      }
+    },
+    {
+      "case_id": "HMCV1-SASC-03",
+      "source_case_id": "HMCV1-B1-DIAG-10",
+      "evaluation_dimensions": [
+        "SPECIFICITY",
+        "PORTABILITY",
+        "UNSUPPORTED_INFERENCE",
+        "FACTUAL_SAFETY",
+        "ADMISSION_RESULT",
+        "OWNER_QUALITY"
+      ],
+      "multiple_valid_realizations": true,
+      "single_correct_mechanism_or_wording": false,
+      "diagnostic_profile": [
+        "UNSUPPORTED_LIFE_HISTORY_INFERENCE"
+      ],
+      "frozen_run5_anchor": {
+        "contrast_class": "C",
+        "class_label": "UNSUPPORTED_LIFE_HISTORY_INFERENCE",
+        "owner_disposition": "REJECT_UNSUPPORTED_INFERENCE",
+        "raw_output": "{\"decision\":\"commentary\",\"commentary\":\"Când îți dai seama că ai petrecut viața în așteptarea unui bacalaureat, poate că e mai bine să-l dai și să nu mai aștepți.\"}",
+        "raw_output_sha256": "517a4e146296b75c642fbfa60d50385889cb0a5fe22f44964104c752b533d979",
+        "accepted_commentary": "Când îți dai seama că ai petrecut viața în așteptarea unui bacalaureat, poate că e mai bine să-l dai și să nu mai aștepți."
+      }
+    },
+    {
+      "case_id": "HMCV1-SASC-04",
+      "source_case_id": "HMCV1-B1-DIAG-02",
+      "evaluation_dimensions": [
+        "SPECIFICITY",
+        "PORTABILITY",
+        "UNSUPPORTED_INFERENCE",
+        "FACTUAL_SAFETY",
+        "ADMISSION_RESULT",
+        "OWNER_QUALITY"
+      ],
+      "multiple_valid_realizations": true,
+      "single_correct_mechanism_or_wording": false,
+      "diagnostic_profile": [
+        "PORTABLE_ENVIRONMENTAL_ANALOGY",
+        "STORY_SPECIFICITY"
+      ]
+    },
+    {
+      "case_id": "HMCV1-SASC-05",
+      "source_case_id": "HMCV1-B1-DIAG-03",
+      "evaluation_dimensions": [
+        "SPECIFICITY",
+        "PORTABILITY",
+        "UNSUPPORTED_INFERENCE",
+        "FACTUAL_SAFETY",
+        "ADMISSION_RESULT",
+        "OWNER_QUALITY"
+      ],
+      "multiple_valid_realizations": true,
+      "single_correct_mechanism_or_wording": false,
+      "diagnostic_profile": [
+        "UNSUPPORTED_POLICY_INTENT",
+        "FACTUAL_SAFETY"
+      ]
+    },
+    {
+      "case_id": "HMCV1-SASC-06",
+      "source_case_id": "HMCV1-B1-DIAG-06",
+      "evaluation_dimensions": [
+        "SPECIFICITY",
+        "PORTABILITY",
+        "UNSUPPORTED_INFERENCE",
+        "FACTUAL_SAFETY",
+        "ADMISSION_RESULT",
+        "OWNER_QUALITY"
+      ],
+      "multiple_valid_realizations": true,
+      "single_correct_mechanism_or_wording": false,
+      "diagnostic_profile": [
+        "POLICY_RECOMMENDATION_AS_COMMENTARY",
+        "PORTABILITY"
+      ]
+    },
+    {
+      "case_id": "HMCV1-SASC-07",
+      "source_case_id": "HMCV1-B1-DIAG-07",
+      "evaluation_dimensions": [
+        "SPECIFICITY",
+        "PORTABILITY",
+        "UNSUPPORTED_INFERENCE",
+        "FACTUAL_SAFETY",
+        "ADMISSION_RESULT",
+        "OWNER_QUALITY"
+      ],
+      "multiple_valid_realizations": true,
+      "single_correct_mechanism_or_wording": false,
+      "diagnostic_profile": [
+        "ENTITY_REUSE",
+        "STORY_LOCAL_TRANSFORMATION"
+      ]
+    },
+    {
+      "case_id": "HMCV1-SASC-08",
+      "source_case_id": "HMCV1-B1-DIAG-11",
+      "evaluation_dimensions": [
+        "SPECIFICITY",
+        "PORTABILITY",
+        "UNSUPPORTED_INFERENCE",
+        "FACTUAL_SAFETY",
+        "ADMISSION_RESULT",
+        "OWNER_QUALITY"
+      ],
+      "multiple_valid_realizations": true,
+      "single_correct_mechanism_or_wording": false,
+      "diagnostic_profile": [
+        "FICTION_RETURNING_AS_FACT",
+        "STORY_SPECIFICITY"
+      ]
+    },
+    {
+      "case_id": "HMCV1-SASC-09",
+      "source_case_id": "HMCV1-B1-DIAG-12",
+      "evaluation_dimensions": [
+        "SPECIFICITY",
+        "PORTABILITY",
+        "UNSUPPORTED_INFERENCE",
+        "FACTUAL_SAFETY",
+        "ADMISSION_RESULT",
+        "OWNER_QUALITY"
+      ],
+      "multiple_valid_realizations": true,
+      "single_correct_mechanism_or_wording": false,
+      "diagnostic_profile": [
+        "UNSUPPORTED_LIFE_HISTORY",
+        "FACTUAL_SAFETY"
+      ]
+    },
+    {
+      "case_id": "HMCV1-SASC-10",
+      "source_case_id": "HMCV1-B1-DIAG-18",
+      "evaluation_dimensions": [
+        "SPECIFICITY",
+        "PORTABILITY",
+        "UNSUPPORTED_INFERENCE",
+        "FACTUAL_SAFETY",
+        "ADMISSION_RESULT",
+        "OWNER_QUALITY"
+      ],
+      "multiple_valid_realizations": true,
+      "single_correct_mechanism_or_wording": false,
+      "diagnostic_profile": [
+        "UNSUPPORTED_FUTURE_OR_POLICY_INFERENCE",
+        "PORTABILITY"
+      ]
+    }
+  ]
+}

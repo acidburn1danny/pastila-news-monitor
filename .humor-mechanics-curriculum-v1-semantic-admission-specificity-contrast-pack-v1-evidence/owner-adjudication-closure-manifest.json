@@ -1,0 +1,13 @@
+{
+  "schema_name": "pastila-semantic-admission-specificity-adjudication-closure-manifest",
+  "schema_version": "1.0.0",
+  "pack_identity": "18a817d3a994d02062a726f27c087913ad812e5c605050ab5552ba251ab8831e",
+  "source_final_evidence_identity": "385f0dfd856488e8c13b37fe0f052590c0718237d2f2238db8fff289395542d5",
+  "owner_adjudicated_baseline_sha256": "3c6e2451039b427be8490354496cd4c467de5377e2874f8cb68bfe54732757cc",
+  "decision_count": 10,
+  "pending_decision_count": 0,
+  "curriculum_authority": false,
+  "training_authority": false,
+  "runtime_authority": false,
+  "canonical_identity": "e9550fa201b9e6627cb63e3bdfa2afa1f24755cff61ffed6f9c47efd1ede8d7c"
+}

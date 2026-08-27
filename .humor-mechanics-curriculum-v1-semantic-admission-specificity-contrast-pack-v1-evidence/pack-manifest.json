@@ -1,0 +1,17 @@
+{
+  "schema_name": "pastila-semantic-admission-specificity-contrast-manifest",
+  "schema_version": "1.0.0",
+  "pack_id": "HMCV1_SEMANTIC_ADMISSION_SPECIFICITY_CONTRAST_V1",
+  "lifecycle": "FROZEN_PRE_EXECUTION",
+  "case_count": 10,
+  "source_diagnostic_pack_identity": "76bf644b3bb0eed88cbe3af6deef1a257acd27e026ce59073ae8014c4ced4153",
+  "source_run5_identity": "3f8d66e74ab9132931159a749a973bf880b0e682b3229f3039b5d67a9083d2f7",
+  "generation_pack_sha256": "572e0aa2d19ce65c9529f88167b874f8d498ef49e3b9135e005a661fe11ba9d5",
+  "hidden_evaluation_key_sha256": "429a2c792a3ccfaff94c2963081b56634d4bda6f54b5512d6081f39b739b65c8",
+  "builder_script_sha256": "5344190b1a8fa8fa9e704fe72ad4178156392afe0a48f6c8d8acb72d5616b782",
+  "execution_count": 0,
+  "curriculum_exposure": false,
+  "training_authority": false,
+  "runtime_modification": false,
+  "canonical_identity": "18a817d3a994d02062a726f27c087913ad812e5c605050ab5552ba251ab8831e"
+}

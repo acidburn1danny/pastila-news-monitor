@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "pastila://schemas/semantic-admission-v2-gate-response/1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["gate_id", "decision", "reason_records"],
+  "properties": {
+    "gate_id": {"enum": ["FACTUAL_SEMANTIC", "STORY_SPECIFICITY"]},
+    "decision": {"enum": ["PASS", "FAIL", "FAIL_GENERIC_PORTABLE", "FAIL_TEMPLATE_DOMINANT", "FAIL_WEAK_MAPPING", "INDETERMINATE"]},
+    "reason_records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["code", "status", "candidate_span", "authority_support", "unsupported_proposition", "confidence"],
+        "properties": {
+          "code": {"enum": ["FSEM_UNSUPPORTED_BIOGRAPHY_OR_HISTORY","FSEM_UNSUPPORTED_MOTIVE_OR_INTENT","FSEM_UNSUPPORTED_CAUSALITY","FSEM_UNSUPPORTED_OUTCOME_OR_STATUS","FSEM_UNSUPPORTED_EMOTION_OR_REACTION","FSEM_UNSUPPORTED_CAPACITY","FSEM_CERTAINTY_MUTATION","FSEM_TIMING_MUTATION","FSEM_UNSUPPORTED_LIFE_STAKES","FSEM_INVENTED_SPEECH_OR_ROLE_KNOWLEDGE","FSEM_UNSUPPORTED_PREMISE_TO_DIRECTIVE","FSEM_FICTION_RETURN_TO_FACT","SPEC_GENERIC_PORTABLE","SPEC_TEMPLATE_DOMINANT","SPEC_WEAK_LOCAL_MAPPING","ADMISSION_AUTHORITY_FAILURE","ADMISSION_EVALUATOR_FAILURE","ADMISSION_INDETERMINATE"]},
+          "status": {"enum": ["DECISIVE", "SUPPORTING"]},
+          "candidate_span": {"type": ["string", "null"]},
+          "authority_support": {"type": ["string", "null"]},
+          "unsupported_proposition": {"type": ["string", "null"]},
+          "confidence": {"type": "number", "minimum": 0, "maximum": 1}
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage0-1-preflight",
+  "schema_version": "1.0.0",
+  "checked_at": "2026-08-25T19:57:57.742384+00:00",
+  "design_identity": "e56c973078b4d28095490b6d09c015b3a5bb624abcea43ffd8287151f6484e88",
+  "pack_identity": "18a817d3a994d02062a726f27c087913ad812e5c605050ab5552ba251ab8831e",
+  "owner_adjudication_closure_identity": "e9550fa201b9e6627cb63e3bdfa2afa1f24755cff61ffed6f9c47efd1ede8d7c",
+  "zero_inference": true,
+  "model_calls": 0,
+  "production_import_edge": false,
+  "case_count": 10,
+  "control_mapping_count": 10,
+  "artifact_hashes": {
+    "semantic-admission-v2-gate-f-prompt.txt": "1d0017a3058ee46c9774f9fa2138d5ea1bad50beb068d07f75a0de2699c192a4",
+    "semantic-admission-v2-gate-s-prompt.txt": "ecd038c4bf430c38e18b5bc1c33ead418d856fb3fbbeeaf365e5a60c7319e82f",
+    "semantic-admission-v2-gate-request.schema.json": "3cf98a3a0e5028657e4e072cb67d0205255e8062c1d611ad23e4b9c4eb745144",
+    "semantic-admission-v2-gate-response.schema.json": "a2fac35d4477cda750e071785312945e4c8af7ccb3a0bd40a1f558784b9dac66",
+    "semantic-admission-v2-evaluator-settings.json": "283a42dcceb8c2946deae816c287c6470c23bfc4194ca6c29694ba21983969b8",
+    "semantic-admission-v2-portability-controls.json": "68d767609de8954ed9ad12c5700c93e97f5dc30865dd92401c6e30a578654ff5",
+    "semantic-admission-v2-ten-case-run-contract.json": "c23b0403164cfc1e56ad7624b14e3a9676e74baddcb3f3ec0926d5a1ed331af7"
+  },
+  "result": "PASS",
+  "preflight_identity": "aac696b535b5516b6e8a29848cb7bcd270269c6c41fe1c7cf3eea5f6696162cc"
+}

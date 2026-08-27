@@ -1,0 +1,19 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-ten-case-run-contract",
+  "schema_version": "1.0.0",
+  "run_id": "SAV2_TEN_CASE_CONFORMANCE_RUN_V1",
+  "pack_identity": "18a817d3a994d02062a726f27c087913ad812e5c605050ab5552ba251ab8831e",
+  "owner_adjudication_closure_identity": "e9550fa201b9e6627cb63e3bdfa2afa1f24755cff61ffed6f9c47efd1ede8d7c",
+  "case_ids": ["HMCV1-SASC-01","HMCV1-SASC-02","HMCV1-SASC-03","HMCV1-SASC-04","HMCV1-SASC-05","HMCV1-SASC-06","HMCV1-SASC-07","HMCV1-SASC-08","HMCV1-SASC-09","HMCV1-SASC-10"],
+  "gate_order": ["FACTUAL_SEMANTIC","STORY_SPECIFICITY"],
+  "attempts_per_case_per_gate": 1,
+  "execute_both_gates_diagnostically": true,
+  "silent_retry": false,
+  "repair": false,
+  "selection": false,
+  "overwrite_prior_run": false,
+  "hidden_expected_annotations_loaded_by_runner": false,
+  "eligibility": "QUARANTINED_EVALUATION_ONLY",
+  "inference_authorized_by_this_contract": false,
+  "runner_status": "NOT_IMPLEMENTED_STAGE_1_NO_INFERENCE"
+}

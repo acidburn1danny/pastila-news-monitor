@@ -1,0 +1,19 @@
+{
+  "schema_name": "pastila-semantic-admission-specificity-contrast-preflight",
+  "schema_version": "1.0.0",
+  "checked_at": "2026-08-25T18:57:39.194682+00:00",
+  "pack_identity": "18a817d3a994d02062a726f27c087913ad812e5c605050ab5552ba251ab8831e",
+  "case_count": 10,
+  "voice_prompt_identity": "sha256:be8078cf1d4e2f173f0cc09136dbe996c22f82e8f36276bd1cd6d46d6608577e",
+  "zero_inference": true,
+  "hidden_evaluation_key_loaded": false,
+  "checks": [
+    "PACK_HASH",
+    "PROMPT_IDENTITY",
+    "ANNOTATION_ISOLATION",
+    "FACTUAL_BYTES",
+    "SOURCE_ARTIFACT_HASHES"
+  ],
+  "result": "PASS",
+  "preflight_identity": "05e6493c9eb9916d7ea38c36b96bf7c8d27dba075f33d33612872e11f7ebdda4"
+}

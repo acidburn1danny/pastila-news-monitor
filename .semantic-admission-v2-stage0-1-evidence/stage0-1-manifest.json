@@ -1,0 +1,20 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage0-1-manifest",
+  "schema_version": "1.0.0",
+  "bound_design_identity": "e56c973078b4d28095490b6d09c015b3a5bb624abcea43ffd8287151f6484e88",
+  "bound_plan_identity": "1dd80398aa9b006a8cdc16b847369a60db0728235e2d68a1592e7274cd803164",
+  "lifecycle": "STAGES_0_1_COMPLETE_ZERO_INFERENCE",
+  "gate_f_evaluator_identity": "c0ec849703ac71d9f9b76186ba56b1b238a19e7df5877f11a03ce51f8311960f",
+  "gate_s_evaluator_identity": "96d6239ef316bd2cb4742017ce804f1b1b17356a95ad646dbbdbc209958aad8d",
+  "preflight_identity": "aac696b535b5516b6e8a29848cb7bcd270269c6c41fe1c7cf3eea5f6696162cc",
+  "artifact_hashes_sha256": "f7598dc26455b8ce4b284354d5ae0674d1bc3dfb15213b372000028150f5dc24",
+  "report_sha256": "14be7f6738ac0c7297ded11d8f59630f6c1afc14225ae69c3c2565ae1823e9b3",
+  "focused_regression_count": 55,
+  "model_calls": 0,
+  "inference_authorized": false,
+  "production_import_edge": false,
+  "current_runtime_admission_affected": false,
+  "curriculum_exposure": false,
+  "training_authority": false,
+  "canonical_identity": "160e62594ca30b15f69a35a8003b6f2c46edc8e4faf07a497857c69b40a58c32"
+}

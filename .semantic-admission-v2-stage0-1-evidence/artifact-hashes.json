@@ -1,0 +1,19 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage0-1-artifact-hashes",
+  "schema_version": "1.0.0",
+  "artifacts": {
+    "docs/artifacts/semantic-admission-v2-gate-f-prompt.txt": "1d0017a3058ee46c9774f9fa2138d5ea1bad50beb068d07f75a0de2699c192a4",
+    "docs/artifacts/semantic-admission-v2-gate-s-prompt.txt": "ecd038c4bf430c38e18b5bc1c33ead418d856fb3fbbeeaf365e5a60c7319e82f",
+    "docs/artifacts/semantic-admission-v2-gate-request.schema.json": "3cf98a3a0e5028657e4e072cb67d0205255e8062c1d611ad23e4b9c4eb745144",
+    "docs/artifacts/semantic-admission-v2-gate-response.schema.json": "a2fac35d4477cda750e071785312945e4c8af7ccb3a0bd40a1f558784b9dac66",
+    "docs/artifacts/semantic-admission-v2-evaluator-settings.json": "283a42dcceb8c2946deae816c287c6470c23bfc4194ca6c29694ba21983969b8",
+    "docs/artifacts/semantic-admission-v2-portability-controls.json": "68d767609de8954ed9ad12c5700c93e97f5dc30865dd92401c6e30a578654ff5",
+    "docs/artifacts/semantic-admission-v2-ten-case-run-contract.json": "c23b0403164cfc1e56ad7624b14e3a9676e74baddcb3f3ec0926d5a1ed331af7",
+    "src/pastila_scout/semantic_admission_v2/__init__.py": "24914810706d00e6de05f4ea0571ad5e065670c5b70dd77508fcfaea19633f8b",
+    "src/pastila_scout/semantic_admission_v2/models.py": "d51238dd4262358083fef78c3154eecfe5d93702075a414832102007c33e3927",
+    "src/pastila_scout/semantic_admission_v2/coordinator.py": "5af46da72afb3e89cdf2a28c905c442b6b9e257e24025a7294dd2219ac08a07d",
+    "scripts/preflight_semantic_admission_v2_stage0_v1.py": "c3535a442a37803ca95c963a9574c78343fcfdd024829d7f39ac7b9d78fe5dcd",
+    "tests/test_semantic_admission_v2.py": "ef510ed4a48081fdce80d9a362d1705dc32e16e08ae429819b9ab278616cf071",
+    ".semantic-admission-v2-stage0-1-evidence/zero-inference-preflight.json": "d5ed4942221ec46849b7e81a7714e9d80e0506608babbe4080d2553d96f32dab"
+  }
+}

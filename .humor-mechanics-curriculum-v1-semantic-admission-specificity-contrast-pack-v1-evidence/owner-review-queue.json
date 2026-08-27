@@ -1,0 +1,149 @@
+{
+  "schema_name": "pastila-semantic-admission-specificity-owner-review-queue",
+  "schema_version": "1.0.0",
+  "pack_identity": "18a817d3a994d02062a726f27c087913ad812e5c605050ab5552ba251ab8831e",
+  "decision_count": 10,
+  "decisions": [
+    {
+      "decision_id": "SASC-01",
+      "case_id": "HMCV1-SASC-01",
+      "recommended_decision": "OWNER_QUALITY_CANDIDATE",
+      "evidence": {
+        "specificity": "HIGH",
+        "portability": "LOW",
+        "unsupported_inference": "NONE_DETECTED",
+        "factual_safety": "PASS",
+        "admission_result": "ADMITTED",
+        "rationale": "Dominant story-local hotel/black-pay/transparency transformation; preserves the Run 5 positive anchor."
+      },
+      "owner_status": "PENDING"
+    },
+    {
+      "decision_id": "SASC-02",
+      "case_id": "HMCV1-SASC-02",
+      "recommended_decision": "REJECT_GENERIC_PORTABLE",
+      "evidence": {
+        "specificity": "LOW",
+        "portability": "HIGH",
+        "unsupported_inference": "NONE_DETECTED",
+        "factual_safety": "PASS",
+        "admission_result": "ADMITTED",
+        "rationale": "Darkness and plans can move across many outage or failure stories; preserves the Run 5 generic anchor."
+      },
+      "owner_status": "PENDING"
+    },
+    {
+      "decision_id": "SASC-03",
+      "case_id": "HMCV1-SASC-03",
+      "recommended_decision": "REJECT_UNSUPPORTED_INFERENCE",
+      "evidence": {
+        "specificity": "MEDIUM",
+        "portability": "MEDIUM",
+        "unsupported_inference": "UNSUPPORTED_LIFE_HISTORY_AND_DIRECTIVE",
+        "factual_safety": "FAIL",
+        "admission_result": "ADMITTED",
+        "rationale": "Invents a lifetime spent waiting and adds advice; preserves the Run 5 inference anchor."
+      },
+      "owner_status": "PENDING"
+    },
+    {
+      "decision_id": "SASC-04",
+      "case_id": "HMCV1-SASC-04",
+      "recommended_decision": "REJECT_LOW_QUALITY_TEMPLATE_ATTRACTOR",
+      "evidence": {
+        "specificity": "MEDIUM",
+        "portability": "MEDIUM",
+        "unsupported_inference": "NONE_DETECTED_MARKED_COUNTERFACTUAL",
+        "factual_safety": "PASS",
+        "admission_result": "REJECTED",
+        "rationale": "The river/day-off fiction is marked, but the reusable hypothetical opening and loose analogy dominate."
+      },
+      "owner_status": "PENDING"
+    },
+    {
+      "decision_id": "SASC-05",
+      "case_id": "HMCV1-SASC-05",
+      "recommended_decision": "REJECT_UNSUPPORTED_INFERENCE",
+      "evidence": {
+        "specificity": "MEDIUM",
+        "portability": "MEDIUM",
+        "unsupported_inference": "UNSUPPORTED_INSTITUTIONAL_INTENT",
+        "factual_safety": "FAIL",
+        "admission_result": "REJECTED",
+        "rationale": "Attributes a protective intention to the law and adds a child/hat scenario not licensed as factual meaning."
+      },
+      "owner_status": "PENDING"
+    },
+    {
+      "decision_id": "SASC-06",
+      "case_id": "HMCV1-SASC-06",
+      "recommended_decision": "REJECT_UNSUPPORTED_INFERENCE",
+      "evidence": {
+        "specificity": "MEDIUM",
+        "portability": "MEDIUM",
+        "unsupported_inference": "UNSUPPORTED_HISTORY_AND_EDITORIAL_DIRECTIVE",
+        "factual_safety": "FAIL",
+        "admission_result": "REJECTED",
+        "rationale": "Adds that the place already has a history and recommends against the proposed change."
+      },
+      "owner_status": "PENDING"
+    },
+    {
+      "decision_id": "SASC-07",
+      "case_id": "HMCV1-SASC-07",
+      "recommended_decision": "REJECT_UNSUPPORTED_INFERENCE",
+      "evidence": {
+        "specificity": "HIGH",
+        "portability": "LOW",
+        "unsupported_inference": "UNSUPPORTED_AUDIENCE_EMOTION",
+        "factual_safety": "FAIL",
+        "admission_result": "REJECTED",
+        "rationale": "Uses the half-open motorway specifically, but invents collective hope and frustration as factual emotional status."
+      },
+      "owner_status": "PENDING"
+    },
+    {
+      "decision_id": "SASC-08",
+      "case_id": "HMCV1-SASC-08",
+      "recommended_decision": "REJECT_UNSUPPORTED_INFERENCE",
+      "evidence": {
+        "specificity": "HIGH",
+        "portability": "LOW",
+        "unsupported_inference": "UNSUPPORTED_OUTCOME_OR_STATUS",
+        "factual_safety": "FAIL",
+        "admission_result": "REJECTED",
+        "rationale": "The polar-bear surface is specific, but claims the bear was lucky not to wake although the summary gives no outcome."
+      },
+      "owner_status": "PENDING"
+    },
+    {
+      "decision_id": "SASC-09",
+      "case_id": "HMCV1-SASC-09",
+      "recommended_decision": "REJECT_UNSUPPORTED_LIFE_HISTORY",
+      "evidence": {
+        "specificity": "MEDIUM",
+        "portability": "MEDIUM",
+        "unsupported_inference": "UNSUPPORTED_WORK_HISTORY_AND_PHYSICAL_CAPACITY",
+        "factual_safety": "FAIL",
+        "admission_result": "REJECTED",
+        "rationale": "Invents forty years of work and speculates about physical ability."
+      },
+      "owner_status": "PENDING"
+    },
+    {
+      "decision_id": "SASC-10",
+      "case_id": "HMCV1-SASC-10",
+      "recommended_decision": "REJECT_UNSUPPORTED_INFERENCE",
+      "evidence": {
+        "specificity": "MEDIUM",
+        "portability": "HIGH",
+        "unsupported_inference": "UNSUPPORTED_RULE_CHANGE_AND_LIFE_STAKES",
+        "factual_safety": "FAIL",
+        "admission_result": "REJECTED",
+        "rationale": "Turns a possible future rule into changed rules and asserts broad life consequences."
+      },
+      "owner_status": "PENDING"
+    }
+  ],
+  "approval_scope": "EVALUATION_EVIDENCE_ONLY"
+}

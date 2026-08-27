@@ -1,0 +1,20 @@
+{
+  "schema_name": "pastila-semantic-admission-specificity-contrast-final-manifest",
+  "schema_version": "1.0.0",
+  "pack_identity": "18a817d3a994d02062a726f27c087913ad812e5c605050ab5552ba251ab8831e",
+  "run_identity": "c5f0b9be76e8b75607e2171adf8038f21f59e4be8cb3efb777b8323bf4b392ca",
+  "case_count": 10,
+  "generation_pack_sha256": "572e0aa2d19ce65c9529f88167b874f8d498ef49e3b9135e005a661fe11ba9d5",
+  "hidden_evaluation_key_sha256": "429a2c792a3ccfaff94c2963081b56634d4bda6f54b5512d6081f39b739b65c8",
+  "preflight_sha256": "c680abb52267f39bef5c8cef73f31ced8b53540f0395d6eaaa18568ebd377415",
+  "raw_run_results_sha256": "0650e30c70550f87af4add0fff1341b21745ce57d73c40114a08cd5f4d85e7e3",
+  "evaluation_results_sha256": "47ae1c4b126485ea817ee0909a947a386c015487b1b0d31572b649cf40f47560",
+  "owner_review_queue_sha256": "b4d88d5220f08dae03942f4a84f2b1a26b2d3aa6944bd0beccd2e7fef8641a44",
+  "report_sha256": "a773e856edd84d677adeaed3dea6a2a2c8ffb9356d592017282b7c660fc44c86",
+  "execution_count": 1,
+  "attempts_per_case": 1,
+  "curriculum_exposure": false,
+  "training_authority": false,
+  "runtime_modification": false,
+  "canonical_identity": "385f0dfd856488e8c13b37fe0f052590c0718237d2f2238db8fff289395542d5"
+}
