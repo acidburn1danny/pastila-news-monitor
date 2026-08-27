@@ -1,0 +1,45 @@
+{
+  "artifact_type": "STATIC_NON_EXECUTING_PAYLOAD_BINDING_CANDIDATE",
+  "artifact_version": "1.0.0",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_STATIC_PAYLOAD_BINDING_V1",
+  "canonical_identity": "d55694074ea2023b0e93e06be9e260c11495cdc9fdbc23181c85e36c9921f7cd",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_V2_STATIC_PAYLOAD_BINDING_V1",
+      "9993395df612550e221efd2c4419a9f87f7382ef184d6e3d66b931340cd767f3",
+      "ffb7316fd0dfd783d93337345208fb912ccb7bd6accd5065dd065ce937617d4c",
+      "974d5e6257256d7397cb68f90952c66809a536cf5525cbef58b3bbfce6791587",
+      "5d39a45aec3eee3fc4aee471d3c3ae76980e49518b149dca92b30f2cbdbad33e",
+      "aa361e7528c10c88515c2c868e071df0089a184bf4436ff28f200774d1303f55",
+      "INJECTED_DATA_ONLY",
+      "ZERO_EXECUTION"
+    ],
+    "separator": "LF"
+  },
+  "static_projector_binding_identity": "9993395df612550e221efd2c4419a9f87f7382ef184d6e3d66b931340cd767f3",
+  "static_evaluator_identity": "ffb7316fd0dfd783d93337345208fb912ccb7bd6accd5065dd065ce937617d4c",
+  "projector_freeze_identity": "974d5e6257256d7397cb68f90952c66809a536cf5525cbef58b3bbfce6791587",
+  "implementation_sha256": "5d39a45aec3eee3fc4aee471d3c3ae76980e49518b149dca92b30f2cbdbad33e",
+  "focused_test_sha256": "aa361e7528c10c88515c2c868e071df0089a184bf4436ff28f200774d1303f55",
+  "payload_surface": {
+    "canonical_static_source_binding": true,
+    "injected_token_pieces": "supplied only to the explicit local bind method",
+    "injected_result_bytes": "supplied only to the explicit local evaluate method",
+    "prompt": false,
+    "command": false,
+    "timeout_or_token_budget": false,
+    "model_or_provider_identity": false,
+    "request_timestamp": false
+  },
+  "authority": {
+    "static_payload_build_parse_and_local_injected_operations": true,
+    "tokenizer_loading_or_characterization": false,
+    "model_adapter_or_provider": false,
+    "inference": false,
+    "transport_or_liveness_classification": false,
+    "runner_executor_or_probe": false,
+    "stage_c": false,
+    "runtime_or_production": false
+  }
+}
