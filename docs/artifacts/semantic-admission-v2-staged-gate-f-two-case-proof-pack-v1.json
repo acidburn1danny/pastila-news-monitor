@@ -1,0 +1,28 @@
+{
+  "schema_name":"pastila-semantic-admission-v2-staged-gate-f-two-case-proof-pack",
+  "schema_version":"1.0.0",
+  "case_count":2,
+  "expected_annotations_present":false,
+  "cases":[
+    {
+      "case_id":"HMCV1-SASC-01",
+      "factual_summary":"Un complex turistic din Vâlcea a plătit la negru salariile celor 70 de angajați, în ultimii 3 ani, cu 4,3 milioane de lei.",
+      "factual_summary_sha256":"e2add20c2ac06fdc90a2f7e1960d5672b8e91a9f7a82b895203dfb43f7f9d196",
+      "candidate":"Când banii se ascund în umbră, iar angajații rămân la lumină, pare că și hotelul ar avea nevoie de o cameră cu mai multă transparență.",
+      "candidate_sha256":"52a54bad5c68d16bd326c9dac8c544b5c4b0a45b9129262a0da139167362682b"
+    },
+    {
+      "case_id":"HMCV1-SASC-10",
+      "factual_summary":"Elevii care vor susține Evaluarea Națională sau Bacalaureatul în 2027 ar putea avea parte de noi reguli privind verificarea lucrărilor și soluționarea contestațiilor.",
+      "factual_summary_sha256":"7d839472e08fba97c72d04df99a747bbca21bb2d3bd37d463f0e1143f7125caf",
+      "candidate":"Dacă ar fi o competiție de rezolvare de probleme, ar fi ca și cum ar fi schimbat regulile jocului în timpul meciului, doar că aici nu e vorba de un meci, ci de o probă care decide viitorul unor tineri.",
+      "candidate_sha256":"05a5975adbf01703c74aaea8e5848a63e27d2e430c65c67092cc049b007c2cab"
+    }
+  ],
+  "maximum_provider_calls":4,
+  "retry_count":0,
+  "repair_count":0,
+  "selection_count":0,
+  "gate_s_included":false,
+  "eligibility":"QUARANTINED_EVALUATION_ONLY"
+}

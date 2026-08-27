@@ -1,0 +1,41 @@
+{
+  "schema_name":"pastila-semantic-admission-v2-staged-gate-f-two-case-proof-evaluation",
+  "schema_version":"1.0.0",
+  "proof_result":"FAIL",
+  "acceptance_contract_met":false,
+  "provider_calls_consumed":2,
+  "maximum_authorized_calls":4,
+  "unused_calls":2,
+  "retry_count":0,
+  "repair_count":0,
+  "selection_count":0,
+  "stage_c_calls":0,
+  "cases":[
+    {
+      "case_id":"HMCV1-SASC-01",
+      "observed":"ABSTAIN",
+      "precedence_reason":"STAGE_P_PROVIDER_OR_TRANSPORT_FAILURE",
+      "stage_p_elapsed_ms":240017.765,
+      "required":"Stage P COMPLETE with contained creative coverage; Stage C exact PASS with no reasons.",
+      "acceptance":"FAIL"
+    },
+    {
+      "case_id":"HMCV1-SASC-10",
+      "observed":"ABSTAIN",
+      "precedence_reason":"STAGE_P_PROVIDER_OR_TRANSPORT_FAILURE",
+      "stage_p_elapsed_ms":240026.322,
+      "required":"Stage P COMPLETE with certainty/timing/life-stakes coverage; Stage C FAIL with certainty DECISIVE and timing/life-stakes SUPPORTING.",
+      "acceptance":"FAIL"
+    }
+  ],
+  "shared_failure":"Both Stage P subprocesses reached the configured 240-second timeout without returning provider output.",
+  "semantic_result":"NOT_OBSERVED",
+  "runner_inference_state":"UNKNOWN_AFTER_TIMEOUT_BECAUSE_RUNNER_LIFECYCLE_WAS_STORED_INSIDE_THE_DELETED_TEMP_DIRECTORY",
+  "host_trace_initial_inference_started_false_is_not_PROOF_OF_NO_RUNNER_INFERENCE":true,
+  "fail_closed_behavior":"PASS",
+  "call_ceiling_behavior":"PASS",
+  "raw_evidence_durability":"PARTIAL_REQUEST_EXCEPTION_AND_AGGREGATE_RECEIPTS_DURABLE_NO_PROVIDER_RAW_EXISTED",
+  "eligibility":"QUARANTINED_EVALUATION_ONLY",
+  "runtime_authority":false,
+  "training_authority":false
+}

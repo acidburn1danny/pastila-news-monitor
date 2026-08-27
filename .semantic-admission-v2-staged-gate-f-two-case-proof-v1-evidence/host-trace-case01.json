@@ -1,0 +1,18 @@
+{
+  "constraint_active": true,
+  "exception_message": "Command '['wsl.exe', '-d', 'Ubuntu-24.04', '--', '/home/pastila/PastilaAcida-Model-Lab/experimental-0.1/.venv/bin/python', '/mnt/c/Projects/pastila-news-monitor/src/pastila_scout/experimental_core_v1_2_stage_p_constrained_runner.py', '/mnt/c/Users/black/AppData/Local/Temp/pastila-stage-p-constrained-_vzmjzs_/request.json', '/mnt/c/Users/black/AppData/Local/Temp/pastila-stage-p-constrained-_vzmjzs_/response.json', '/mnt/c/Projects/pastila-news-monitor/.experimental-0-3-core-v1-2-journalistic-deontology-prime-directive-v1-evidence/PASTILAACIDA_EDITOR_CORE_SYSTEM_PROMPT_V1_2.txt', '/mnt/c/Users/black/AppData/Local/Temp/pastila-stage-p-constrained-_vzmjzs_/runner-lifecycle.json']' timed out after 240.0 seconds",
+  "exception_type": "TimeoutExpired",
+  "executor_invoked": true,
+  "executor_type": "ConstrainedStagePCoreV12ExecutorV1",
+  "inference_started": false,
+  "inference_succeeded": false,
+  "model_load_started": false,
+  "model_load_succeeded": false,
+  "response_received": false,
+  "response_validation_passed": false,
+  "runner_launch_attempted": true,
+  "runner_path": "/mnt/c/Projects/pastila-news-monitor/src/pastila_scout/experimental_core_v1_2_stage_p_constrained_runner.py",
+  "stage": "PROPOSITION_LEDGER",
+  "stderr_tail": "",
+  "stdout_tail": ""
+}
