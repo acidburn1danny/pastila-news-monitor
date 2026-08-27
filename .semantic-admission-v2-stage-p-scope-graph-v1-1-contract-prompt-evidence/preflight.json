@@ -1,0 +1,16 @@
+{
+  "result": "PASS",
+  "mode": "ZERO_INFERENCE_CONTRACT_AND_PROMPT",
+  "contract_source_identity": "sha256:5478fdf7a92c00304ebd8c2652ae84ef8fc71b519f9233216bdd85ef1baf5968",
+  "schema_identity": "sha256:a61f16046045ca015dd2001393ab58e7ab7c94f50cbfc49f7df959bd45b3338c",
+  "prompt_contract_identity": "sha256:a35843aba22f42bb369570f0ecaf48eedeac96c8e6663a4df3634f74586d3fef",
+  "prompt_identity": "sha256:202e42e727f80d161a6fde451982b7efbd2be41ab6bab6df53b0812b648ce083",
+  "tests": {"passed": 40, "failed": 0},
+  "grammar_changes": 0,
+  "tokenizer_loads": 0,
+  "model_loads": 0,
+  "model_calls": 0,
+  "provider_calls": 0,
+  "runner_calls": 0,
+  "inference_executed": false
+}

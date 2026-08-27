@@ -1,0 +1,9 @@
+{
+  "artifact": "docs/artifacts/semantic-admission-v2-stage-p-scope-graph-v1-1-contract-prompt-candidate.json",
+  "candidate_identity": "62f875ba4a2ac65603b4c3d48531f252b15185d2a6a37562e40410f553ef0d3a",
+  "source_design_identity": "a0c6f105cfb61ce069aab612d0d1d8f9874adb389bcd26228e86bbc97088b843",
+  "evidence_files": ["preflight.json", "report.md"],
+  "grammar_changes": 0,
+  "model_calls": 0,
+  "runner_calls": 0
+}

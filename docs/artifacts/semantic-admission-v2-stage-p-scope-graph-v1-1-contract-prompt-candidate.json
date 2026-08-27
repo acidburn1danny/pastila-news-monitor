@@ -1,0 +1,62 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-scope-graph-v1-1-contract-prompt-candidate",
+  "schema_version": "1.1.0-evaluation.1",
+  "lifecycle": "ZERO_INFERENCE_CONTRACT_PROMPT_READY_FOR_OWNER_REVIEW",
+  "source_design_identity": "a0c6f105cfb61ce069aab612d0d1d8f9874adb389bcd26228e86bbc97088b843",
+  "candidate_identity": "62f875ba4a2ac65603b4c3d48531f252b15185d2a6a37562e40410f553ef0d3a",
+  "contract_source_identity": "sha256:5478fdf7a92c00304ebd8c2652ae84ef8fc71b519f9233216bdd85ef1baf5968",
+  "schema_identity": "sha256:a61f16046045ca015dd2001393ab58e7ab7c94f50cbfc49f7df959bd45b3338c",
+  "prompt_contract_identity": "sha256:a35843aba22f42bb369570f0ecaf48eedeac96c8e6663a4df3634f74586d3fef",
+  "prompt_identity": "sha256:202e42e727f80d161a6fde451982b7efbd2be41ab6bab6df53b0812b648ce083",
+  "contract_delta": [
+    "GOVERNED_EVENT now requires non-null authority_support.",
+    "Existing exact authority-substring and resolved authority-axis requirements remain active.",
+    "NEW_UNSUPPORTED_EVENT may still carry partial exact support when only part of its proposition is governed."
+  ],
+  "prompt_delta": [
+    "Candidate communicative force is explicitly the only proposition source.",
+    "Creative-host identification precedes real-world-return assignment for the same words.",
+    "Contextual dependence, transformation, or allusion to governed facts is explicitly not factual return.",
+    "Neutralization tests whether the candidate still carries the alleged proposition without factual-summary supplementation.",
+    "GOVERNED_EVENT requires an exact cited authority span.",
+    "Plain factual and nonfigurative candidates remain representable; creative hosts are not mandatory."
+  ],
+  "acceptance_fixture_result": {
+    "frozen_case01_failed_output": "REJECTED_GOVERNED_EVENT_REQUIRES_AUTHORITY_SUPPORT",
+    "case01_integrated_contained_creative": "PASS",
+    "governed_literal_nested_in_creative_host": "PASS_WITH_EXACT_SUPPORT",
+    "unsupported_presupposition_nested_in_creative_host": "PASS_NEW_UNSUPPORTED",
+    "standalone_noncreative_governed_proposition": "PASS_WITH_EXACT_SUPPORT",
+    "standalone_unsupported_proposition": "PASS_NEW_UNSUPPORTED",
+    "new_unsupported_with_partial_support": "PASS",
+    "combined_v1_and_v1_1_regressions": "40_PASS"
+  },
+  "preserved_boundaries": [
+    "No exact commitment-equals-summary proxy was introduced",
+    "No blanket creative-host requirement",
+    "No ban on standalone real-world commitments",
+    "No ban on supported entities inside creative language",
+    "Multiple valid segmentations and fail-closed unresolved scope preserved",
+    "No admission decision or Stage C behavior in Stage P"
+  ],
+  "compatibility_status": {
+    "v1_1_contract_and_prompt": "VERIFIED_ZERO_INFERENCE",
+    "existing_v1_grammar": "UNCHANGED_AND_NOT_CLAIMED_V1_1_COMPLETE",
+    "v1_1_grammar_candidate": "NOT_IMPLEMENTED",
+    "tokenizer_profile": "NOT_EXECUTED_FOR_V1_1",
+    "request_or_runner_binding": "NOT_IMPLEMENTED",
+    "model_probe": "NOT_EXECUTED"
+  },
+  "bounded_next_step_if_authorized": "Implement and zero-inference verify a Scope Graph V1.1 constrained-grammar candidate that projects out GOVERNED_EVENT with null authority_support before closure. Stop before tokenizer profiling, request construction, runner changes, or inference.",
+  "authority": {
+    "grammar_modification": false,
+    "tokenizer_execution": false,
+    "request_or_runner_modification": false,
+    "probe_execution": false,
+    "stage_c": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  }
+}
