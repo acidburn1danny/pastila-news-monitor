@@ -1,0 +1,70 @@
+{
+  "artifact_type": "ZERO_INFERENCE_CHARACTER_CONTROLLER_AND_LIVENESS_RECEIPT_CANDIDATE",
+  "artifact_version": "1.0.0-evaluation.1",
+  "canonical_name": "STAGE_P_PHASE2_CHARACTER_CONTROLLER_AND_LIVENESS_RECEIPT_V1",
+  "canonical_identity": "3a021f72aff9e1ba8caa95d7cd57b788a219a8bc0a27ef59289c3e71dacd2577",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "separator": "LF",
+    "ordered_utf8_fields": [
+      "STAGE_P_PHASE2_CHARACTER_CONTROLLER_AND_LIVENESS_RECEIPT_V1",
+      "095f294c109c1eb309b9bba1bcfcdac580d71c518474c76381afdc42ee2a499a",
+      "e9851fe45a4ba645afa08418da9935e8e331c8d082f4d2e75f6fdd6319dc5060",
+      "f9d8719c670979775de7fededfc906dc702022665ee0ae9855a594151906abc5",
+      "aed01c02435b2003fa9182a41422e637bac9f2a37adba7f0b6a8813f12a90640",
+      "REQUEST_AND_DECODER_IDENTITY_BOUND",
+      "TYPED_FAIL_CLOSED_LIVENESS_RECEIPT",
+      "ZERO_INFERENCE_NO_TOKENIZER"
+    ]
+  },
+  "frozen_grammar_receipts": {
+    "commitment_span": "095f294c109c1eb309b9bba1bcfcdac580d71c518474c76381afdc42ee2a499a",
+    "authority_reconciliation": "e9851fe45a4ba645afa08418da9935e8e331c8d082f4d2e75f6fdd6319dc5060"
+  },
+  "implementation": {
+    "path": "src/pastila_scout/semantic_admission_v2/stage_p_phase2_character_controller_v1.py",
+    "sha256": "f9d8719c670979775de7fededfc906dc702022665ee0ae9855a594151906abc5",
+    "controller": "Phase2CharacterControllerV1",
+    "receipt_schema": "pastila-semantic-admission-v2-stage-p-phase2-character-liveness-receipt",
+    "receipt_version": "1.0.0-evaluation-candidate.1"
+  },
+  "interface_guarantees": [
+    "The audit lane selects exactly one frozen DFA identity.",
+    "Commitment requests reject a source context; authority requests require one.",
+    "The request context identity binds lane, grammar, exact ordered entry IDs, and source binding where applicable.",
+    "The decoder identity must be a lowercase SHA-256 identity but no decoder or tokenizer is loaded by this candidate.",
+    "Finite, JSON-string-body, and terminal character allowance kinds are explicit.",
+    "Unknown or empty nonterminal allowances produce a typed fail-closed liveness receipt.",
+    "Canonical receipts preserve incremental versus full-rebuild path evidence."
+  ],
+  "verification": {
+    "controller_and_dfa_tests_passed": 86,
+    "adjacent_phase2_tests_passed": 98,
+    "canonical_commitment_path_character_complete": true,
+    "canonical_authority_supported_path_character_complete": true,
+    "canonical_authority_unsupported_finding_path_character_complete": true,
+    "incremental_path_receipt": "PASS",
+    "full_rebuild_path_receipt": "PASS",
+    "typed_empty_allowance_failure": "PASS",
+    "canonical_receipt_serialization": "PASS",
+    "tokenizer_loads": 0,
+    "token_projection_calls": 0,
+    "model_or_provider_calls": 0,
+    "inference_calls": 0
+  },
+  "blocker_disposition": {
+    "functional_blockers": [],
+    "nonfunctional_warning": "Pytest could not write its cache nodeids because the existing .pytest_cache path is malformed; all selected tests completed successfully.",
+    "scope_expanded": false
+  },
+  "authority": {
+    "tokenizer_loading": false,
+    "token_projection": false,
+    "application_authority": false,
+    "evaluator_or_runner_binding": false,
+    "probe_construction_or_execution": false,
+    "runtime_or_production": false
+  },
+  "status": "OWNER_REVIEW_REQUIRED",
+  "recommended_next_step": "Owner-review and freeze this candidate. If approved, authorize only a separately versioned token-projector feasibility design and zero-inference tokenizer compatibility plan; keep tokenizer loading and projector implementation separately gated."
+}

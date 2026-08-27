@@ -1,0 +1,131 @@
+{
+  "artifact_type": "ZERO_INFERENCE_TOKENIZER_COMPATIBILITY_PLAN",
+  "artifact_version": "1.0.0-evaluation.1",
+  "canonical_name": "STAGE_P_PHASE2_ZERO_INFERENCE_TOKENIZER_COMPATIBILITY_PLAN_V1",
+  "canonical_identity": "2cab0e835997349c010ef87b9f3682adb4b4f38b103b8a227d8a29ed8388ed67",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "separator": "LF",
+    "ordered_utf8_fields": [
+      "STAGE_P_PHASE2_ZERO_INFERENCE_TOKENIZER_COMPATIBILITY_PLAN_V1",
+      "22eb502b82a563ea55c174161ea4d86ad1b0fa4bee8c07ffe494e12ec8063cc6",
+      "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c",
+      "131072",
+      "NO_TOKENIZER_LOAD_PLAN_ONLY"
+    ]
+  },
+  "feasibility_design_identity": "22eb502b82a563ea55c174161ea4d86ad1b0fa4bee8c07ffe494e12ec8063cc6",
+  "declared_not_reverified_tokenizer": {
+    "canonical_identity": "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c",
+    "vocabulary_size": 131072,
+    "status": "EXISTING_PHASE2_DESIGN_BINDING_ONLY_TOKENIZER_NOT_LOADED_IN_THIS_STEP"
+  },
+  "separately_gated_future_phases": [
+    {
+      "phase": 0,
+      "name": "IDENTITY_AND_DEPENDENCY_PREFLIGHT",
+      "checks": [
+        "Resolve exact tokenizer assets and require byte identities matching the approved identity.",
+        "Record tokenizer library, implementation, platform, decoder, cleanup, and normalization identities.",
+        "Stop before inventory on any mismatch or unresolved dependency."
+      ]
+    },
+    {
+      "phase": 1,
+      "name": "TOKENIZER_INVENTORY",
+      "checks": [
+        "Enumerate vocabulary, BOS, EOS, PAD, UNK, added, special, and control tokens.",
+        "Classify empty, invalid, replacement-character, cleanup-sensitive, and control-bearing decodings."
+      ]
+    },
+    {
+      "phase": 2,
+      "name": "STANDALONE_DECODE_MAP",
+      "checks": [
+        "Decode every token without model loading or generation.",
+        "Record collisions and byte/Unicode behavior without treating standalone pieces as compositional proof."
+      ]
+    },
+    {
+      "phase": 3,
+      "name": "CONTEXTUAL_COMPOSITIONALITY_MATRIX",
+      "checks": [
+        "Compare decode(prefix plus token) with decode(prefix) across representative states of both Phase 2 lanes.",
+        "Include literal, enum, JSON string, escape, Unicode, source hash, numeric boundary, finding-link, decisive-finding, and terminal states.",
+        "Classify stable suffix, prior-text rewrite, incomplete-byte completion, and cleanup-sensitive behavior."
+      ]
+    },
+    {
+      "phase": 4,
+      "name": "REQUEST_BOUND_REFERENCE_AND_GRAPH_STRESS",
+      "checks": [
+        "Cover shortest and longest legal UTF-8 coordinates, shared decimal prefixes, source hashes, and illegal cross-boundary values.",
+        "Cover sequential finding IDs, variable finding counts, and the forced final decisive transition.",
+        "Compare every result with fresh character-controller rebuild."
+      ]
+    },
+    {
+      "phase": 5,
+      "name": "FULL_VOCABULARY_ONE_STEP_ADMISSION",
+      "checks": [
+        "At a bounded representative matrix, compare all token decisions with the prefix-sensitive full-decode oracle.",
+        "Verify EOS only at terminal and exclude all other special tokens.",
+        "Record character-live but token-dead states distinctly."
+      ]
+    },
+    {
+      "phase": 6,
+      "name": "STRATEGY_EQUIVALENCE_DECISION",
+      "checks": [
+        "Compare allowed-token-set hashes for context-free, mixed, and oracle strategies.",
+        "Authorize no optimization class unless false acceptance and false rejection are both zero.",
+        "Select full decode for every unproven class."
+      ]
+    },
+    {
+      "phase": 7,
+      "name": "ZERO_INFERENCE_RESOURCE_CHARACTERIZATION",
+      "checks": [
+        "Measure deterministic latency, memory, rebuild cost, and cache isolation without model loading.",
+        "Recommend a strategy only; do not implement or bind a projector."
+      ]
+    }
+  ],
+  "acceptance_criteria": {
+    "identity_or_dependency_mismatches": 0,
+    "false_accepted_tokens_against_full_decode_oracle": 0,
+    "false_rejected_tokens_for_any_claimed_equivalent_strategy": 0,
+    "eos_or_special_token_policy_disagreements": 0,
+    "unclassified_context_sensitive_classes": 0,
+    "request_or_cache_identity_isolation_failures": 0,
+    "model_calls": 0,
+    "generation_calls": 0
+  },
+  "stop_conditions": [
+    "Tokenizer or dependency identity mismatch.",
+    "Any decoding class cannot be compared exactly with the full-decode oracle.",
+    "Any false acceptance, EOS leak, special-token leak, or cache isolation failure.",
+    "Any requirement for model loading, generation, evaluator/runner binding, application authority, or probe construction."
+  ],
+  "current_step_receipt": {
+    "tokenizer_loads": 0,
+    "tokenizer_calls": 0,
+    "projector_implementations": 0,
+    "model_loads": 0,
+    "model_calls": 0,
+    "probe_bindings": 0,
+    "probe_executions": 0
+  },
+  "authority": {
+    "execute_plan": false,
+    "tokenizer_loading": false,
+    "projector_implementation": false,
+    "evaluator_or_runner_binding": false,
+    "application_authority": false,
+    "probe_construction_or_execution": false,
+    "runtime_integration": false,
+    "training": false
+  },
+  "status": "OWNER_REVIEW_REQUIRED",
+  "recommended_separately_authorized_next_step": "Owner-review and freeze the design and plan. If approved, load only the identity-bound tokenizer and execute Phases 0-7 as a zero-inference compatibility audit, stopping before projector implementation."
+}

@@ -1,0 +1,27 @@
+{
+  "artifact_type": "OWNER_APPROVAL_FREEZE_RECEIPT",
+  "canonical_name": "STAGE_P_PHASE2_CHARACTER_CONTROLLER_AND_LIVENESS_RECEIPT_V1_FREEZE",
+  "canonical_identity": "efbb7f4745aea9b76685521647c3c80124c506f19f31a938aa6b1ff001054a4a",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "separator": "LF",
+    "ordered_utf8_fields": [
+      "STAGE_P_PHASE2_CHARACTER_CONTROLLER_AND_LIVENESS_RECEIPT_V1_FREEZE",
+      "3a021f72aff9e1ba8caa95d7cd57b788a219a8bc0a27ef59289c3e71dacd2577",
+      "OWNER_APPROVED_FROZEN",
+      "ZERO_INFERENCE_CHARACTER_CONTROLLER_ONLY",
+      "NO_TOKENIZER_PROJECTOR_RUNTIME_OR_PROBE_AUTHORITY"
+    ]
+  },
+  "frozen_candidate_identity": "3a021f72aff9e1ba8caa95d7cd57b788a219a8bc0a27ef59289c3e71dacd2577",
+  "owner_disposition": "APPROVED_AND_FROZEN",
+  "authority": {
+    "tokenizer_loading": false,
+    "token_projection": false,
+    "application_authority": false,
+    "evaluator_or_runner_binding": false,
+    "probe_construction_or_execution": false,
+    "runtime_or_production": false
+  },
+  "status": "FROZEN"
+}

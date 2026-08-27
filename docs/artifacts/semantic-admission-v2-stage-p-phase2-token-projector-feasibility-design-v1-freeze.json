@@ -1,0 +1,25 @@
+{
+  "artifact_type": "OWNER_APPROVAL_FREEZE_RECEIPT",
+  "canonical_name": "STAGE_P_PHASE2_TOKEN_PROJECTOR_FEASIBILITY_DESIGN_V1_FREEZE",
+  "canonical_identity": "d8608705b1ee6497740c4e322ac349dc093b9fcec51871f1653abfa31a19ab09",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "separator": "LF",
+    "ordered_utf8_fields": [
+      "STAGE_P_PHASE2_TOKEN_PROJECTOR_FEASIBILITY_DESIGN_V1_FREEZE",
+      "22eb502b82a563ea55c174161ea4d86ad1b0fa4bee8c07ffe494e12ec8063cc6",
+      "OWNER_APPROVED_FROZEN",
+      "DESIGN_ONLY",
+      "NO_PROJECTOR_OR_RUNTIME_AUTHORITY"
+    ]
+  },
+  "frozen_candidate_identity": "22eb502b82a563ea55c174161ea4d86ad1b0fa4bee8c07ffe494e12ec8063cc6",
+  "owner_disposition": "APPROVED_AND_FROZEN",
+  "authority": {
+    "projector_implementation": false,
+    "evaluator_or_runner_binding": false,
+    "probe_construction_or_execution": false,
+    "runtime_or_production": false
+  },
+  "status": "FROZEN"
+}

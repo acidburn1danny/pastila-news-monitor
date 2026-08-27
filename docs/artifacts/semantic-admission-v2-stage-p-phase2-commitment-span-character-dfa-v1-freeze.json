@@ -1,0 +1,26 @@
+{
+  "artifact_type": "OWNER_APPROVAL_FREEZE_RECEIPT",
+  "canonical_name": "STAGE_P_PHASE2_COMMITMENT_SPAN_CHARACTER_DFA_V1_FREEZE",
+  "canonical_identity": "095f294c109c1eb309b9bba1bcfcdac580d71c518474c76381afdc42ee2a499a",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "separator": "LF",
+    "ordered_utf8_fields": [
+      "STAGE_P_PHASE2_COMMITMENT_SPAN_CHARACTER_DFA_V1_FREEZE",
+      "2a214b08788ca4fc9f868ef9b3ef5fe1debecd8b79a08692c859fe0de79d64ce",
+      "OWNER_APPROVED_FROZEN",
+      "ZERO_INFERENCE_CHARACTER_LANGUAGE_ONLY",
+      "NO_TOKENIZER_PROJECTOR_RUNTIME_OR_PROBE_AUTHORITY"
+    ]
+  },
+  "frozen_candidate_identity": "2a214b08788ca4fc9f868ef9b3ef5fe1debecd8b79a08692c859fe0de79d64ce",
+  "owner_disposition": "APPROVED_AND_FROZEN",
+  "authority": {
+    "tokenizer_or_token_projection": false,
+    "application_authority": false,
+    "evaluator_or_runner_binding": false,
+    "probe_construction_or_execution": false,
+    "runtime_or_production": false
+  },
+  "status": "FROZEN"
+}

@@ -1,0 +1,109 @@
+{
+  "artifact_type": "TOKEN_PROJECTOR_FEASIBILITY_DESIGN",
+  "artifact_version": "1.0.0-evaluation.1",
+  "canonical_name": "STAGE_P_PHASE2_TOKEN_PROJECTOR_FEASIBILITY_DESIGN_V1",
+  "canonical_identity": "22eb502b82a563ea55c174161ea4d86ad1b0fa4bee8c07ffe494e12ec8063cc6",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "separator": "LF",
+    "ordered_utf8_fields": [
+      "STAGE_P_PHASE2_TOKEN_PROJECTOR_FEASIBILITY_DESIGN_V1",
+      "efbb7f4745aea9b76685521647c3c80124c506f19f31a938aa6b1ff001054a4a",
+      "f9d8719c670979775de7fededfc906dc702022665ee0ae9855a594151906abc5",
+      "PREFIX_SENSITIVE_FULL_DECODE_ORACLE_REQUIRED",
+      "CONTEXT_FREE_ONLY_IF_EXACTLY_PROVEN",
+      "EOS_ONLY_AT_TERMINAL",
+      "DESIGN_ONLY"
+    ]
+  },
+  "frozen_character_controller_receipt": "efbb7f4745aea9b76685521647c3c80124c506f19f31a938aa6b1ff001054a4a",
+  "reviewed_source_evidence": {
+    "src/pastila_scout/semantic_admission_v2/stage_p_phase2_character_controller_v1.py": "f9d8719c670979775de7fededfc906dc702022665ee0ae9855a594151906abc5",
+    "src/pastila_scout/semantic_admission_v2/stage_p_phase2_character_dfa_v1.py": "967468fbf159de3731ba6189df66f1e47e976355ec455ec992efed2190d185a2",
+    "src/pastila_scout/semantic_admission_v2/stage_p_source_reference_constraint_v1.py": "e8760b8a46910aeaf834b677af462883c56c159c1ae8005067a5668cdd532f3a",
+    "src/pastila_scout/semantic_admission_v2/stage_p_construction_obligation_token_projector_v2.py": "5c5758948422f6134724e4e64fa7540ef6f8c022a85aafac1d70511ff8b0907e"
+  },
+  "feasibility_result": "FEASIBLE_PENDING_IDENTITY_BOUND_ZERO_INFERENCE_TOKENIZER_AUDIT",
+  "projection_strategies": {
+    "prefix_sensitive_full_decode": {
+      "status": "REQUIRED_REFERENCE_ORACLE",
+      "operation": "For each candidate token, decode the complete proposed token prefix, rebuild or increment the frozen character controller from the exact decoded text, and admit only a live exact prefix.",
+      "reason": "No standalone token-piece or context-free suffix assumption is accepted without tokenizer-specific proof."
+    },
+    "context_free_piece_trie": {
+      "status": "CONDITIONALLY_FEASIBLE",
+      "permission_condition": "The compatibility audit proves exact allowed-token-set equality with the prefix-sensitive oracle for every declared state and decoding class in both audit lanes.",
+      "fallback": "Any mismatch or unclassified context sensitivity selects the prefix-sensitive full-decode strategy fail-closed."
+    },
+    "mixed_class_strategy": {
+      "status": "SEPARATELY_JUSTIFIED_ONLY",
+      "permission_condition": "Every context-free class has a deterministic classifier and equality proof; all remaining classes use the oracle.",
+      "receipt_requirement": "Record the strategy class used for every token-admission computation."
+    }
+  },
+  "phase2_language_coverage": {
+    "common": [
+      "fixed JSON literals and punctuation",
+      "overlapping enum prefixes",
+      "bounded required JSON strings, escapes, Unicode, and closing transitions",
+      "terminal versus nonterminal EOS"
+    ],
+    "commitment_span": [
+      "exact ordered request entry IDs",
+      "five decision/reason tuples",
+      "four forced scope-check booleans",
+      "12000-character fail-closed ceiling"
+    ],
+    "authority_reconciliation": [
+      "request-bound source roles and SHA-256 literals",
+      "UTF-8-boundary-constrained decimal reference coordinates",
+      "decision/support/axis tuple combinations",
+      "variable sequential finding links and exact finding graph",
+      "required decisive-finding transition",
+      "16000-character fail-closed ceiling"
+    ]
+  },
+  "token_admission_contract": {
+    "complete_decoded_effect": true,
+    "rule": "A token is admitted only if its entire contextual decoded effect is accepted by the frozen request-bound character controller and ends at a live or terminal state.",
+    "empty_decoding": "Excluded by default because it does not advance liveness.",
+    "special_tokens": "Exclude every non-EOS special/control token unless a later separately approved contract proves a harmless exact decoding.",
+    "eos": "Admit EOS only for a terminal character state; reject it at every live nonterminal state.",
+    "invalid_unicode_or_cleanup": "Reject or route through the full-decode oracle; never repair decoded text.",
+    "semantic_boundary": "Projection establishes only membership in the frozen syntactic response language. Pydantic parsing, source projection, controller receipts, and semantic adjudication remain independent fail-closed layers."
+  },
+  "cache_identity_requirements": [
+    "tokenizer canonical identity and tokenizer file hashes",
+    "decoder, normalization, cleanup, and special-token configuration identity",
+    "audit lane and frozen grammar identity",
+    "request context identity including ordered entries and authority source binding",
+    "exact character state including reference and finding substates",
+    "complete decoded-prefix or token-prefix identity for prefix-sensitive classes"
+  ],
+  "liveness_receipts": {
+    "preserve_character_receipt": true,
+    "required_token_states": [
+      "TOKENIZATION_CONTINUABLE",
+      "TOKENIZATION_TERMINAL_EOS_ALLOWED",
+      "TOKENIZATION_DEAD_NO_VALID_TOKEN"
+    ],
+    "required_fields": [
+      "tokenizer_identity",
+      "request_context_identity",
+      "character_receipt_hash",
+      "strategy_class",
+      "allowed_token_set_hash",
+      "eos_disposition"
+    ]
+  },
+  "authority": {
+    "tokenizer_loading": false,
+    "projector_implementation": false,
+    "controller_or_runner_rebinding": false,
+    "application_authority": false,
+    "probe_construction_or_execution": false,
+    "model_inference": false,
+    "runtime_or_training": false
+  },
+  "status": "OWNER_REVIEW_REQUIRED"
+}

@@ -1,0 +1,354 @@
+{
+  "artifact_type": "PHASE_2_DESIGN_AND_ZERO_INFERENCE_COMPATIBILITY_ANALYSIS",
+  "schema_version": "1.0.0-design.1",
+  "canonical_name": "STAGE_P_COMMITMENT_SPAN_AUTHORITY_RECONCILIATION_PHASE2_DESIGN_V1",
+  "canonical_identity": "e46f0d0572d655c3e1a92b796da9795543d9cbe8a49917b8c29bfac6fe768db9",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "separator": "LF",
+    "ordered_utf8_fields": [
+      "STAGE_P_COMMITMENT_SPAN_AUTHORITY_RECONCILIATION_PHASE2_DESIGN_V1",
+      "d7e2188aef2d4efd4bb2d4cf2ca9cf9d7eb93449c7c6ecca10d1f89262c32676",
+      "dc0bede64944419bfbdf806af159659d918ec22f8677c2a4a2888e64d87026a8",
+      "379b4f8db641906a57b0f4c86a09ab119fc1fae30a2d7c29fed893901f02d6ed",
+      "COMMITMENT_SPAN_AUDIT_V1",
+      "AUTHORITY_RECONCILIATION_AUDIT_V1",
+      "ZERO_INFERENCE_DESIGN_ONLY"
+    ]
+  },
+  "frozen_phase1_identity": "d7e2188aef2d4efd4bb2d4cf2ca9cf9d7eb93449c7c6ecca10d1f89262c32676",
+  "lifecycle": "DESIGN_ONLY_NOT_IMPLEMENTED_NOT_EXECUTED",
+  "architecture": {
+    "ordered_phases": [
+      "FROZEN_PHASE1_DETERMINISTIC_CHECKS",
+      "COMMITMENT_SPAN_AUDIT",
+      "AUTHORITY_RECONCILIATION_AUDIT_OR_DETERMINISTIC_NOT_APPLICABLE",
+      "FROZEN_CONTROLLER_DERIVED_COVERAGE"
+    ],
+    "maximum_new_model_calls": 2,
+    "retry_repair_selection_calls": 0,
+    "early_stop": "Any failed, unresolved, malformed, or non-exhaustive commitment/span audit blocks authority reconciliation and terminal completion.",
+    "independence": "Neither audit receives owner annotations, expected Case 01 classifications, Humor Mechanics curriculum, or Stage C decisions. Authority reconciliation receives the commitment/span receipt as untrusted audit evidence, not factual authority.",
+    "raw_preservation": "Every raw response or exception is persisted before parsing. Controller receipts are append-only and never repair raw output."
+  },
+  "commitment_span_audit_v1": {
+    "model_response_schema": {
+      "schema_name": "pastila-semantic-admission-v2-stage-p-commitment-span-audit-response",
+      "schema_version": "1.0.0-evaluation-candidate.1",
+      "canonical_field_order": ["schema_name", "schema_version", "audit_kind", "records"],
+      "audit_kind_literal": "COMMITMENT_SPAN_AUDIT",
+      "records": {
+        "cardinality": "Exactly one record for every frozen ledger entry, in request order; one through eight records.",
+        "field_order": [
+          "entry_id",
+          "decision",
+          "assertion_checked",
+          "presupposition_checked",
+          "entailment_checked",
+          "necessary_implication_checked",
+          "reason_code",
+          "basis"
+        ],
+        "request_bound_fields": ["entry_id"],
+        "true_literals_required": [
+          "assertion_checked",
+          "presupposition_checked",
+          "entailment_checked",
+          "necessary_implication_checked"
+        ],
+        "decisions": [
+          "SPAN_SUPPORTS_COMPLETE_COMMITMENT",
+          "COMMITMENT_EXCEEDS_SPAN",
+          "SPAN_CONTAINS_MATERIAL_UNRECONCILED_MEANING",
+          "ENTRY_ROLE_MISCLASSIFIED",
+          "UNRESOLVED_FAIL_CLOSED"
+        ],
+        "reason_codes": [
+          "CSPAN_COMMITMENT_EXCEEDS_PROJECTED_SPAN",
+          "CSPAN_MATERIAL_MEANING_UNRECONCILED",
+          "CSPAN_ENTRY_ROLE_MISCLASSIFIED",
+          "CSPAN_SCOPE_OR_SUPPORT_UNRESOLVED"
+        ],
+        "tuple_rules": [
+          "SPAN_SUPPORTS_COMPLETE_COMMITMENT requires reason_code null.",
+          "Each non-pass decision requires its corresponding reason code.",
+          "basis is model-authored analysis, one through 500 Unicode characters, and never source evidence."
+        ]
+      }
+    },
+    "request_contract": {
+      "schema_name": "pastila-semantic-admission-v2-stage-p-commitment-span-audit-request",
+      "schema_version": "1.0.0-evaluation-candidate.1",
+      "fields": [
+        "candidate_utf8_base64",
+        "candidate_sha256",
+        "frozen_ledger_utf8_base64",
+        "frozen_ledger_sha256",
+        "source_projection_receipt_identity",
+        "span_shape_receipt_identity",
+        "graph_obligation_receipt_identity",
+        "ordered_entry_bindings",
+        "prompt_identity"
+      ],
+      "ordered_entry_binding": [
+        "entry_id",
+        "entry_type",
+        "candidate_span_ref",
+        "projected_candidate_span_utf8_base64",
+        "projected_candidate_span_sha256"
+      ],
+      "validation": [
+        "Decode base64 strictly and rehash all immutable bytes.",
+        "Require all upstream receipts PASS and bound to the same ledger and sources.",
+        "Derive ordered_entry_bindings from the frozen ledger and pure projection; caller-authored bindings are rejected.",
+        "Require exact set equality between ledger entries and response records."
+      ]
+    },
+    "controller_receipt_schema": {
+      "schema_name": "pastila-semantic-admission-v2-stage-p-commitment-span-audit-receipt",
+      "schema_version": "1.0.0-evaluation.1",
+      "fields": [
+        "request_identity",
+        "prompt_identity",
+        "model_identity",
+        "grammar_identity",
+        "raw_response_sha256",
+        "parse_status",
+        "record_coverage_status",
+        "records",
+        "derived_status",
+        "derived_reason_code",
+        "elapsed_ms",
+        "error_code"
+      ],
+      "derived_status": {
+        "PASS": "Every entry has SPAN_SUPPORTS_COMPLETE_COMMITMENT and the schema, source, identity, and coverage checks pass.",
+        "FAIL": "At least one entry has a non-pass, non-unresolved decision or a deterministic validation failure.",
+        "INDETERMINATE": "At least one entry is UNRESOLVED_FAIL_CLOSED or provider/semantic completion is unresolved."
+      },
+      "model_cannot_emit": ["derived_status", "derived_reason_code", "record_coverage_status"]
+    },
+    "prompt": {
+      "path": "docs/artifacts/semantic-admission-v2-stage-p-commitment-span-audit-prompt-v1-design.txt",
+      "sha256": "dc0bede64944419bfbdf806af159659d918ec22f8677c2a4a2888e64d87026a8",
+      "bytes": 2304,
+      "padding_policy": "Exact unpadded UTF-8 instruction bytes; rendered request data follows a separately hashed canonical envelope."
+    }
+  },
+  "authority_reconciliation_audit_v1": {
+    "execution_precondition": "Commitment/span receipt derived_status PASS. Otherwise this audit is not called.",
+    "no_real_world_commitments": "When the passed ledger contains zero REAL_WORLD_COMMITMENT entries, create a deterministic NO_REAL_WORLD_COMMITMENTS receipt with zero model calls; do not ask a model to confirm an empty set.",
+    "model_response_schema": {
+      "schema_name": "pastila-semantic-admission-v2-stage-p-authority-reconciliation-audit-response",
+      "schema_version": "1.0.0-evaluation-candidate.1",
+      "canonical_field_order": ["schema_name", "schema_version", "audit_kind", "records", "unsupported_findings"],
+      "audit_kind_literal": "AUTHORITY_RECONCILIATION_AUDIT",
+      "records": {
+        "cardinality": "Exactly one record for every REAL_WORLD_COMMITMENT, in request order; zero through eight records.",
+        "field_order": [
+          "entry_id",
+          "full_authority_compared",
+          "decision",
+          "authority_support_ref",
+          "event_axis",
+          "modality_axis",
+          "timing_axis",
+          "unsupported_finding_ids",
+          "basis"
+        ],
+        "request_bound_fields": ["entry_id", "authority_support_ref"],
+        "full_authority_compared_literal": true,
+        "decisions": [
+          "GOVERNED_SUPPORTED",
+          "UNSUPPORTED_NEW_OR_MUTATED_PROPOSITION",
+          "NOT_A_REAL_WORLD_COMMITMENT",
+          "UNRESOLVED_FAIL_CLOSED"
+        ],
+        "axis_values": ["MATCH", "MUTATION", "NOT_APPLICABLE", "UNRESOLVED"],
+        "tuple_rules": [
+          "GOVERNED_SUPPORTED requires a non-null request-bound FACTUAL_AUTHORITY reference, MATCH on event/modality/timing, and no unsupported findings.",
+          "UNSUPPORTED_NEW_OR_MUTATED_PROPOSITION requires authority_support_ref null and at least one linked unsupported finding.",
+          "NOT_A_REAL_WORLD_COMMITMENT requires authority_support_ref null, NOT_APPLICABLE axes, and no unsupported findings; it makes the upstream ledger inadmissible rather than repairing it.",
+          "UNRESOLVED_FAIL_CLOSED requires authority_support_ref null and at least one UNRESOLVED axis."
+        ]
+      },
+      "unsupported_findings": {
+        "cardinality": "Zero through sixteen records; identifiers F1 through F16 are unique and ordered.",
+        "field_order": [
+          "finding_id",
+          "entry_id",
+          "candidate_proposition_ref",
+          "reason_code",
+          "reason_status",
+          "basis"
+        ],
+        "request_bound_fields": ["entry_id", "candidate_proposition_ref"],
+        "reason_status": ["DECISIVE", "SUPPORTING"],
+        "reason_codes": [
+          "FSEM_UNSUPPORTED_BIOGRAPHY_OR_HISTORY",
+          "FSEM_UNSUPPORTED_MOTIVE_OR_INTENT",
+          "FSEM_UNSUPPORTED_CAUSALITY",
+          "FSEM_UNSUPPORTED_OUTCOME_OR_STATUS",
+          "FSEM_UNSUPPORTED_EMOTION_OR_REACTION",
+          "FSEM_UNSUPPORTED_CAPACITY",
+          "FSEM_CERTAINTY_MUTATION",
+          "FSEM_TIMING_MUTATION",
+          "FSEM_UNSUPPORTED_LIFE_STAKES",
+          "FSEM_INVENTED_SPEECH_OR_ROLE_KNOWLEDGE",
+          "FSEM_UNSUPPORTED_PREMISE_TO_DIRECTIVE",
+          "FSEM_FICTION_RETURN_TO_FACT",
+          "AREC_UNSUPPORTED_OTHER_REAL_WORLD_PROPOSITION"
+        ]
+      }
+    },
+    "request_contract": {
+      "schema_name": "pastila-semantic-admission-v2-stage-p-authority-reconciliation-audit-request",
+      "schema_version": "1.0.0-evaluation-candidate.1",
+      "fields": [
+        "factual_authority_utf8_base64",
+        "factual_authority_sha256",
+        "candidate_utf8_base64",
+        "candidate_sha256",
+        "frozen_ledger_utf8_base64",
+        "frozen_ledger_sha256",
+        "commitment_span_receipt_identity",
+        "ordered_real_world_entry_bindings",
+        "prompt_identity"
+      ],
+      "ordered_real_world_entry_binding": [
+        "entry_id",
+        "candidate_span_ref",
+        "projected_candidate_span_utf8_base64",
+        "candidate_commitment_analysis",
+        "ledger_event_alignment",
+        "ledger_modality_axes",
+        "ledger_timing_axes"
+      ],
+      "validation": [
+        "Decode and hash immutable authority, candidate, and ledger bytes.",
+        "Require the commitment/span receipt PASS and exact identity/source binding.",
+        "Derive the real-world entry set from the frozen ledger; caller omission or insertion is rejected.",
+        "Constrain authority_support_ref and candidate_proposition_ref with the frozen request-bound character-reference primitive.",
+        "Require exact response coverage of every real-world entry and finding link."
+      ]
+    },
+    "controller_receipt_schema": {
+      "schema_name": "pastila-semantic-admission-v2-stage-p-authority-reconciliation-audit-receipt",
+      "schema_version": "1.0.0-evaluation.1",
+      "fields": [
+        "request_identity",
+        "prompt_identity",
+        "model_identity",
+        "grammar_identity",
+        "raw_response_sha256",
+        "parse_status",
+        "record_coverage_status",
+        "source_projection_status",
+        "records",
+        "unsupported_findings",
+        "derived_status",
+        "derived_reason_code",
+        "elapsed_ms",
+        "error_code"
+      ],
+      "derived_status": {
+        "PASS": "Every real-world entry is GOVERNED_SUPPORTED and all tuple, source, identity, and coverage checks pass; or the deterministic zero-entry path applies.",
+        "FAIL": "Any entry is unsupported, not a real-world commitment, structurally invalid, or source-invalid.",
+        "INDETERMINATE": "Any entry or support axis is unresolved, or provider completion is unresolved."
+      },
+      "model_cannot_emit": ["derived_status", "derived_reason_code", "record_coverage_status", "source_projection_status"]
+    },
+    "prompt": {
+      "path": "docs/artifacts/semantic-admission-v2-stage-p-authority-reconciliation-audit-prompt-v1-design.txt",
+      "sha256": "379b4f8db641906a57b0f4c86a09ab119fc1fae30a2d7c29fed893901f02d6ed",
+      "bytes": 2879,
+      "padding_policy": "Exact unpadded UTF-8 instruction bytes; rendered request data follows a separately hashed canonical envelope."
+    }
+  },
+  "fail_closed_precedence": [
+    "PHASE1_NOT_PASS -> BLOCK_NO_PHASE2_CALL",
+    "COMMITMENT_PROVIDER_OR_RAW_FAILURE -> BLOCK",
+    "COMMITMENT_SCHEMA_IDENTITY_SOURCE_OR_COVERAGE_FAILURE -> BLOCK",
+    "COMMITMENT_FAIL_OR_INDETERMINATE -> BLOCK_NO_AUTHORITY_CALL",
+    "NO_REAL_WORLD_COMMITMENTS -> DETERMINISTIC_AUTHORITY_NOT_APPLICABLE_RECEIPT",
+    "AUTHORITY_PROVIDER_OR_RAW_FAILURE -> BLOCK",
+    "AUTHORITY_SCHEMA_IDENTITY_SOURCE_OR_COVERAGE_FAILURE -> BLOCK",
+    "AUTHORITY_FAIL_OR_INDETERMINATE -> BLOCK",
+    "ALL_REQUIRED_CONTROLLER_RECEIPTS_PASS -> DERIVED_COMPLETE"
+  ],
+  "zero_inference_constrained_grammar_analysis": {
+    "result": "FEASIBLE_WITH_SEPARATELY_VERSIONED_REQUEST_BOUND_CHARACTER_DFAS",
+    "not_a_reuse_claim": "The frozen full-ledger DFA cannot validate these different response shapes. Only its approved request-bound source-reference primitive and proven character/token projection strategy are reusable dependencies after separate binding.",
+    "known_compatible_foundations": {
+      "source_reference_candidate_identity": "b127e9e321f1378d012ff65fb9c5718709c2bc84eb898130f405abd61c9fa0ae",
+      "full_ledger_character_dfa_identity": "d371a508631095719e4c09b2d9155fef74f0e3c76147966240e575924ccf9b56",
+      "tokenizer_dfa_audit_identity": "e6921378e98981c7d2aa8ffa0711b8905ef0d1abc8fbd7b3bd5318f7331ef02d",
+      "tokenizer_identity": "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c"
+    },
+    "finite_shape": [
+      "All root fields and enum choices are finite and canonically ordered.",
+      "Commitment records are bounded at eight and authority findings at sixteen.",
+      "Entry identifiers and response cardinality are request-bound.",
+      "Source hashes and references can use exact literal/request-bound branches.",
+      "Free analysis basis strings use the previously characterized bounded JSON STRING mode but carry no evidence authority.",
+      "EOS is legal only after the final canonical object byte."
+    ],
+    "required_future_checks": [
+      "DFA exhaustive-small-fixture acceptance and rejection",
+      "incremental/full-rebuild equivalence",
+      "request-specific entry-set and cardinality liveness",
+      "null versus request-bound reference tuple liveness",
+      "finding-link closure before array close",
+      "Unicode escaping and maximum basis length",
+      "real-tokenizer allowed-set equivalence and EOS policy",
+      "cache isolation by tokenizer, prompt, schema, request, and source identities"
+    ],
+    "tokenizer_or_model_loaded_in_this_analysis": false
+  },
+  "zero_inference_request_compatibility_analysis": {
+    "result": "DESIGN_COMPATIBLE_PENDING_IMPLEMENTED_CONSTRUCTION_PROOF",
+    "application_request_boundary": "Each future audit request uses a distinct versioned application identity and exact unpadded prompt bytes. No production Core/Voice request identity is reused or modified.",
+    "canonical_envelope": "JSON UTF-8, sorted keys for identity, no NaN, strict base64 decoding, byte hashes verified before rendering, and prompt/request identities persisted independently.",
+    "instruction_data_separation": "Static prompt precedes labeled canonical data; candidate, authority, ledger, and prior receipts are explicitly untrusted quoted data and cannot supply instructions.",
+    "context_control": "Future construction must reject a rendered request exceeding the identity-bound model context before provider launch; truncation is prohibited.",
+    "call_and_retry_control": "At most one call per audit, no retry, repair, selection, or unused-budget consumption after failure.",
+    "compatibility_blockers_found": [],
+    "claims_not_made": [
+      "No concrete Pydantic schema has been implemented.",
+      "No character or token grammar has been constructed.",
+      "No ApplicationProviderRequestV1 has been instantiated.",
+      "No tokenizer, model, evaluator, runner, subprocess, or probe has been loaded or launched."
+    ]
+  },
+  "case01_design_contract": [
+    "The frozen Run 3 commitment/span audit must fail before authority reconciliation because its cited spans do not carry the complete claimed meanings.",
+    "A future shape-correct ledger may pass commitment/span auditing through more than one valid segmentation.",
+    "If a shape-correct ledger emits an off-books-payment factual return, authority reconciliation must compare it with and cite the immutable summary before GOVERNED_SUPPORTED.",
+    "If shadow/light/transparency language has no independently surviving real-world proposition, it may remain contained creative; it must not be literalized into NEW_UNSUPPORTED_EVENT by explanatory gloss.",
+    "No Case 01 label, expected decision, phrase, or owner annotation appears in either prompt."
+  ],
+  "blocker_analysis": {
+    "resolved_design_issue": "Allowing model-emitted COMPLETE or audit coverage booleans would recreate circular self-attestation.",
+    "resolution": "Prompts emit only per-entry analysis records; controllers derive record coverage and terminal status from immutable request sets and tuple validation.",
+    "remaining_implementation_risks": [
+      "Semantic audit capability may remain insufficient even with a valid grammar.",
+      "Dynamic request-bound cardinality and nested finding links require liveness proof.",
+      "Context size must be proven using constructed requests rather than assumed."
+    ]
+  },
+  "authority": {
+    "schema_implementation": false,
+    "prompt_runtime_binding": false,
+    "character_or_token_grammar_implementation": false,
+    "tokenizer_or_model_load": false,
+    "application_request_construction": false,
+    "evaluator_or_runner_binding": false,
+    "probe_construction_or_execution": false,
+    "stage_c": false,
+    "runtime_or_production": false,
+    "curriculum": false,
+    "training": false
+  },
+  "status": "OWNER_REVIEW_REQUIRED",
+  "recommended_next_step": "Owner-review this Phase 2 design. If approved, authorize only separately versioned strict Pydantic contract candidates and pure controller receipt builders for both audits, tested against captured and hand-constructed fixtures; keep prompt rendering, constrained grammar implementation, request construction, tokenizer/model loading, evaluator/runner binding, and probes separately gated."
+}

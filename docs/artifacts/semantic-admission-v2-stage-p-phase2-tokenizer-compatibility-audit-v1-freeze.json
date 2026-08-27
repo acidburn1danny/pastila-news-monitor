@@ -1,0 +1,28 @@
+{
+  "artifact_type": "OWNER_APPROVAL_FREEZE_RECEIPT",
+  "canonical_name": "STAGE_P_PHASE2_TOKENIZER_COMPATIBILITY_AUDIT_V1_FREEZE",
+  "canonical_identity": "3dad47751d4941f0dadb9cf64a4effaee1d16279e9aefd9cbe11ae84502b39e1",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "separator": "LF",
+    "ordered_utf8_fields": [
+      "STAGE_P_PHASE2_TOKENIZER_COMPATIBILITY_AUDIT_V1_FREEZE",
+      "8254a909afe0024a1cd0aa357e60684d190607b4049eb4ffc742fc25b9fc8b56",
+      "OWNER_APPROVED_FROZEN",
+      "ZERO_INFERENCE_TOKENIZER_AUDIT_ONLY",
+      "NO_PROJECTOR_RUNTIME_OR_PROBE_AUTHORITY"
+    ]
+  },
+  "frozen_candidate_identity": "8254a909afe0024a1cd0aa357e60684d190607b4049eb4ffc742fc25b9fc8b56",
+  "owner_disposition": "APPROVED_AND_FROZEN",
+  "preserved_result": "PASS_CONTEXT_FREE_PIECES_EQUIVALENT_FOR_FROZEN_PHASE2_MATRIX",
+  "authority": {
+    "projector_implementation": false,
+    "evaluator_or_runner_binding": false,
+    "application_authority": false,
+    "probe_construction_or_execution": false,
+    "runtime_or_production": false,
+    "training": false
+  },
+  "status": "FROZEN"
+}

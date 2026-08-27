@@ -1,0 +1,93 @@
+{
+  "artifact_type": "ZERO_INFERENCE_CONTRACT_AND_PURE_BUILDER_CANDIDATE",
+  "artifact_version": "1.0.0-evaluation.1",
+  "canonical_name": "STAGE_P_PHASE2_AUDIT_CONTRACTS_AND_CONTROLLER_BUILDERS_V1",
+  "canonical_identity": "c95613900cc94d168cc3c924ffb4a0a316bccf37c5008f117e7c99152290f828",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "separator": "LF",
+    "ordered_utf8_fields": [
+      "STAGE_P_PHASE2_AUDIT_CONTRACTS_AND_CONTROLLER_BUILDERS_V1",
+      "e46f0d0572d655c3e1a92b796da9795543d9cbe8a49917b8c29bfac6fe768db9",
+      "cd196c7d17d6c2ebb66fe5f67d89d0b804d07cf6b547aff1542dba8923e466ca",
+      "f9dedb41552c30d04f9cd277fe28a30c76ddaf21761759b0823a4bfbae3457cb",
+      "128b19cd40dbe58427415a31a881c7c6e39b3647e58576f5170d74e50689b1ac",
+      "5f46752e77206cde162738cb4ce698ba9b7f1ed490e7d2281ac766dbba5f8ca1",
+      "271caade410995e1035c4608320cbf10c0956ed965f1811d52025f1c718eb6a4",
+      "ZERO_INFERENCE_UNBOUND"
+    ]
+  },
+  "approved_design_identity": "e46f0d0572d655c3e1a92b796da9795543d9cbe8a49917b8c29bfac6fe768db9",
+  "implementation": {
+    "path": "src/pastila_scout/semantic_admission_v2/stage_p_phase2_audit_contracts_v1.py",
+    "sha256": "cd196c7d17d6c2ebb66fe5f67d89d0b804d07cf6b547aff1542dba8923e466ca",
+    "pure": true,
+    "filesystem_io": false,
+    "prompt_rendering": false,
+    "grammar_dependency": false,
+    "provider_or_model_dependency": false
+  },
+  "schema_identities": {
+    "commitment_response": "f9dedb41552c30d04f9cd277fe28a30c76ddaf21761759b0823a4bfbae3457cb",
+    "commitment_controller_receipt": "128b19cd40dbe58427415a31a881c7c6e39b3647e58576f5170d74e50689b1ac",
+    "authority_response": "5f46752e77206cde162738cb4ce698ba9b7f1ed490e7d2281ac766dbba5f8ca1",
+    "authority_controller_receipt": "271caade410995e1035c4608320cbf10c0956ed965f1811d52025f1c718eb6a4",
+    "derivation": "SHA-256 of canonical sorted compact model_json_schema JSON bytes"
+  },
+  "contract_guarantees": [
+    "Strict frozen Pydantic models with extra fields forbidden.",
+    "Every commitment decision has exactly one coherent nullable reason tuple.",
+    "Every authority decision has coherent support-reference, axis, and finding requirements.",
+    "Unsupported authority decisions require at least one linked DECISIVE governed finding.",
+    "Findings cannot be missing, orphaned, reused, or linked to another entry.",
+    "Candidate proposition references and authority support references enforce distinct source roles.",
+    "Controller receipt models independently reject direct state-bypass construction.",
+    "Controller builders preserve raw response hashes and never repair responses."
+  ],
+  "fixture_results": {
+    "captured_run3_shaped_commitment_excess": "FAIL_CSPAN_COMMITMENT_EXCEEDS_PROJECTED_SPAN",
+    "all_commitments_supported": "PASS",
+    "commitment_unresolved": "INDETERMINATE",
+    "commitment_record_order_or_coverage_mismatch": "FAIL",
+    "commitment_parse_failure": "FAIL",
+    "authority_governed_supported": "PASS",
+    "authority_unsupported_with_decisive_finding": "FAIL",
+    "authority_supporting_only_finding": "SCHEMA_REJECT",
+    "authority_record_coverage_mismatch": "FAIL",
+    "authority_source_projection_failure": "FAIL",
+    "zero_real_world_entries": "DETERMINISTIC_PASS_WITHOUT_MODEL_EVIDENCE",
+    "zero_entry_path_with_raw_model_bytes": "REJECT"
+  },
+  "blocker_repair": {
+    "identified": "Receipt classes initially relied on builders for some state coherence, permitting inconsistent direct model construction by another caller.",
+    "repair": "Added strict receipt-level validators for expected-entry identity, parse state, record coverage, source state, error state, and deterministic zero-entry invariants.",
+    "runtime_or_scope_expansion": false
+  },
+  "verification": {
+    "tests_passed": 8,
+    "prompt_renders": 0,
+    "grammar_objects": 0,
+    "application_requests": 0,
+    "tokenizer_loads": 0,
+    "model_loads": 0,
+    "provider_calls": 0,
+    "inference_calls": 0,
+    "evaluator_or_runner_bindings": 0,
+    "probe_constructions": 0,
+    "probe_executions": 0
+  },
+  "authority": {
+    "prompt_rendering": false,
+    "grammar_implementation": false,
+    "request_construction": false,
+    "tokenizer_or_model_load": false,
+    "evaluator_or_runner_binding": false,
+    "probe_construction_or_execution": false,
+    "stage_c": false,
+    "runtime_or_production": false,
+    "curriculum": false,
+    "training": false
+  },
+  "status": "OWNER_REVIEW_REQUIRED",
+  "recommended_next_step": "Owner-review this candidate. If approved, freeze it and authorize only exact prompt-rendering and request-envelope candidates for both audits with zero-inference identity, padding, injection-boundary, source-binding, context-budget, and ApplicationProviderRequestV1 construction verification. Keep constrained grammar implementation, tokenizer/model loading, evaluator/runner binding, and probes separately gated."
+}

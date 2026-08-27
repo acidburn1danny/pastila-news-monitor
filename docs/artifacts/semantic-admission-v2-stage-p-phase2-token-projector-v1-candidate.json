@@ -1,0 +1,83 @@
+{
+  "artifact_type": "DUAL_AUDIT_TOKEN_PROJECTOR_CANDIDATE",
+  "artifact_version": "1.0.0-evaluation-candidate.1",
+  "canonical_name": "STAGE_P_PHASE2_DUAL_AUDIT_TOKEN_PROJECTOR_V1_CANDIDATE",
+  "canonical_identity": "2823e4a16052ccaafee839dd38df4a8f67840eef1a61963e7fa916278c1d2188",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "separator": "LF",
+    "ordered_utf8_fields": [
+      "STAGE_P_PHASE2_DUAL_AUDIT_TOKEN_PROJECTOR_V1_CANDIDATE",
+      "7aea3a0f25ae58ee42cec41f3f2036df833ef4bde02e03ad82a6db71b59887bc",
+      "8254a909afe0024a1cd0aa357e60684d190607b4049eb4ffc742fc25b9fc8b56",
+      "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c",
+      "CONTEXT_FREE_COMPLETE_TOKEN_PIECE_TRIE_V1",
+      "ZERO_INFERENCE",
+      "OWNER_REVIEW_REQUIRED"
+    ]
+  },
+  "candidate_source": {
+    "path": "src/pastila_scout/semantic_admission_v2/stage_p_phase2_token_projector_v1.py",
+    "sha256": "7aea3a0f25ae58ee42cec41f3f2036df833ef4bde02e03ad82a6db71b59887bc"
+  },
+  "frozen_inputs": {
+    "tokenizer_compatibility_audit_identity": "8254a909afe0024a1cd0aa357e60684d190607b4049eb4ffc742fc25b9fc8b56",
+    "tokenizer_identity": "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c",
+    "commitment_span_dfa_identity": "2a214b08788ca4fc9f868ef9b3ef5fe1debecd8b79a08692c859fe0de79d64ce",
+    "authority_reconciliation_dfa_identity": "9fb7ba85fe422f89f80640865ad823b325e9a4026f543f03555e84bf0a69e4de",
+    "schemas_prompts_requests_dfas_controllers_tokenizer_modified": false
+  },
+  "implementation": {
+    "strategy": "CONTEXT_FREE_COMPLETE_TOKEN_PIECE_TRIE_V1",
+    "token_admission": "A nonexcluded token is admitted only after every Unicode scalar in its complete predecoded piece is accepted by a cloned frozen character state.",
+    "identity_binding": [
+      "tokenizer_identity",
+      "decoder_identity",
+      "grammar_identity",
+      "request_context_identity",
+      "exclusion_policy_identity",
+      "character_receipt_sha256"
+    ],
+    "special_empty_invalid_policy": "EOS is separately governed; configured exclusions, empty pieces, replacement-character pieces, and surrogate pieces are rejected.",
+    "eos_policy": "EOS is the sole admitted token at terminal character states and is rejected at every nonterminal state.",
+    "cache_objects": 0
+  },
+  "deterministic_synthetic_evidence": {
+    "test_path": "tests/test_semantic_admission_v2_stage_p_phase2_token_projector_v1.py",
+    "test_sha256": "ce79557874c5fea081d3fbf43415c4ee480146aac58eb1a06740651f3adb9afd",
+    "audit_lanes": ["COMMITMENT_SPAN", "AUTHORITY_RECONCILIATION"],
+    "exhaustive_valid_prefixes_checked": 1007,
+    "full_terminal_states_checked": 2,
+    "incremental_full_rebuild_allowed_set_equivalence": true,
+    "complete_piece_full_rebuild_oracle_equivalence": true,
+    "overlapping_terminal_and_prefix_pieces_checked": true,
+    "unicode_scalar_and_json_escape_coverage": true,
+    "request_bound_utf8_reference_coverage": true,
+    "request_context_isolation": true,
+    "fail_closed_no_legal_token_receipt_checked": true,
+    "frozen_character_regression_tests_in_verification": 86
+  },
+  "zero_inference_activity": {
+    "identity_bound_tokenizer_loads_new_run": 0,
+    "reason_no_new_load": "The frozen compatibility audit already loaded and exhaustively checked all 2490368 declared tokenizer/state pairs; candidate verification consumes its identity and immutable allowed-set evidence without reloading or mutating the tokenizer.",
+    "model_loads": 0,
+    "model_calls": 0,
+    "generation_calls": 0,
+    "inference_calls": 0,
+    "evaluator_or_runner_bindings": 0,
+    "probe_constructions": 0,
+    "probe_executions": 0,
+    "stage_c_entries": 0,
+    "wsl_launcher_migrations": 0
+  },
+  "authority": {
+    "candidate_only": true,
+    "application_or_production_authority": false,
+    "evaluator_or_runner_binding": false,
+    "probe_construction_or_execution": false,
+    "stage_c": false,
+    "grandfathered_wsl_launcher_migration": false
+  },
+  "status": "OWNER_REVIEW_REQUIRED",
+  "recommended_next_step": "Owner-review the separately versioned candidate and zero-inference evidence. Do not bind an evaluator or runner, construct or execute a probe, enter Stage C, or migrate a grandfathered WSL launcher without separate authorization."
+}

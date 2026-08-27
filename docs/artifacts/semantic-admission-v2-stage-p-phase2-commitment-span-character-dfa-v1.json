@@ -1,0 +1,53 @@
+{
+  "artifact_type": "REQUEST_BOUND_CHARACTER_DFA_CANDIDATE",
+  "artifact_version": "1.0.0-evaluation.1",
+  "canonical_name": "STAGE_P_PHASE2_COMMITMENT_SPAN_REQUEST_BOUND_CHARACTER_DFA_V1",
+  "canonical_identity": "2a214b08788ca4fc9f868ef9b3ef5fe1debecd8b79a08692c859fe0de79d64ce",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "separator": "LF",
+    "ordered_utf8_fields": [
+      "STAGE_P_PHASE2_COMMITMENT_SPAN_REQUEST_BOUND_CHARACTER_DFA_V1",
+      "57a23e50670deae55efd8e2d3c245314dfa4c205e4fc1a1e6de1d969ec25c698",
+      "f9dedb41552c30d04f9cd277fe28a30c76ddaf21761759b0823a4bfbae3457cb",
+      "967468fbf159de3731ba6189df66f1e47e976355ec455ec992efed2190d185a2",
+      "c5727f2340d2fe48b7169e5a12a70ba93106f53942b27cb21abe0b71d124f7bc",
+      "REQUEST_BOUND_EXACT_ENTRY_ORDER",
+      "EXHAUSTIVE_SMALL_FIXTURE_ZERO_INFERENCE",
+      "INCREMENTAL_FULL_REBUILD_EQUIVALENT"
+    ]
+  },
+  "frozen_prompt_request_identity": "57a23e50670deae55efd8e2d3c245314dfa4c205e4fc1a1e6de1d969ec25c698",
+  "response_schema_identity": "f9dedb41552c30d04f9cd277fe28a30c76ddaf21761759b0823a4bfbae3457cb",
+  "implementation": {
+    "path": "src/pastila_scout/semantic_admission_v2/stage_p_phase2_character_dfa_v1.py",
+    "sha256": "967468fbf159de3731ba6189df66f1e47e976355ec455ec992efed2190d185a2",
+    "class": "CommitmentSpanAuditCharacterDfaV1",
+    "character_limit": 12000
+  },
+  "request_binding": {
+    "exact_entry_set_and_order": true,
+    "all_four_scope_checks_forced_true": true,
+    "decision_reason_tuple_constrained": true,
+    "record_count_exact": true,
+    "trailing_bytes_rejected": true
+  },
+  "verification": {
+    "focused_suite_tests_passed": 78,
+    "adjacent_phase2_suite_tests_passed": 90,
+    "all_five_decisions_accepted": true,
+    "incremental_full_rebuild_equivalence": "PASS",
+    "tokenizer_loads": 0,
+    "token_projection_calls": 0,
+    "model_or_provider_calls": 0,
+    "inference_calls": 0
+  },
+  "authority": {
+    "tokenizer_or_token_projection": false,
+    "application_authority": false,
+    "evaluator_or_runner_binding": false,
+    "probe_construction_or_execution": false,
+    "runtime_or_production": false
+  },
+  "status": "OWNER_REVIEW_REQUIRED"
+}

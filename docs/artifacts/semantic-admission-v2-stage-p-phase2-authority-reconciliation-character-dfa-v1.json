@@ -1,0 +1,65 @@
+{
+  "artifact_type": "REQUEST_BOUND_CHARACTER_DFA_CANDIDATE",
+  "artifact_version": "1.0.0-evaluation.1",
+  "canonical_name": "STAGE_P_PHASE2_AUTHORITY_RECONCILIATION_REQUEST_BOUND_CHARACTER_DFA_V1",
+  "canonical_identity": "9fb7ba85fe422f89f80640865ad823b325e9a4026f543f03555e84bf0a69e4de",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "separator": "LF",
+    "ordered_utf8_fields": [
+      "STAGE_P_PHASE2_AUTHORITY_RECONCILIATION_REQUEST_BOUND_CHARACTER_DFA_V1",
+      "57a23e50670deae55efd8e2d3c245314dfa4c205e4fc1a1e6de1d969ec25c698",
+      "5f46752e77206cde162738cb4ce698ba9b7f1ed490e7d2281ac766dbba5f8ca1",
+      "967468fbf159de3731ba6189df66f1e47e976355ec455ec992efed2190d185a2",
+      "e8760b8a46910aeaf834b677af462883c56c159c1ae8005067a5668cdd532f3a",
+      "c5727f2340d2fe48b7169e5a12a70ba93106f53942b27cb21abe0b71d124f7bc",
+      "REQUEST_BOUND_ENTRY_SOURCE_AND_FINDING_GRAPH",
+      "EXHAUSTIVE_SMALL_FIXTURE_ZERO_INFERENCE",
+      "INCREMENTAL_FULL_REBUILD_EQUIVALENT"
+    ]
+  },
+  "frozen_prompt_request_identity": "57a23e50670deae55efd8e2d3c245314dfa4c205e4fc1a1e6de1d969ec25c698",
+  "response_schema_identity": "5f46752e77206cde162738cb4ce698ba9b7f1ed490e7d2281ac766dbba5f8ca1",
+  "implementation": {
+    "path": "src/pastila_scout/semantic_admission_v2/stage_p_phase2_character_dfa_v1.py",
+    "sha256": "967468fbf159de3731ba6189df66f1e47e976355ec455ec992efed2190d185a2",
+    "class": "AuthorityReconciliationCharacterDfaV1",
+    "character_limit": 16000,
+    "source_reference_primitive_sha256": "e8760b8a46910aeaf834b677af462883c56c159c1ae8005067a5668cdd532f3a"
+  },
+  "request_binding": {
+    "exact_entry_set_and_order": true,
+    "candidate_and_authority_source_hashes_and_utf8_boundaries": true,
+    "decision_axis_support_tuple_constrained": true,
+    "finding_ids_sequential_and_links_exact": true,
+    "at_least_one_decisive_finding_per_unsupported_entry": true,
+    "record_and_finding_limits_fail_closed": true,
+    "trailing_bytes_rejected": true
+  },
+  "verification": {
+    "focused_suite_tests_passed": 78,
+    "adjacent_phase2_suite_tests_passed": 90,
+    "unsupported_axis_tuples_exhausted": 27,
+    "unresolved_axis_tuples_exhausted": 37,
+    "fixed_supported_and_non_real_world_tuples_checked": 2,
+    "small_utf8_reference_ranges_exhausted": true,
+    "incremental_full_rebuild_equivalence": "PASS",
+    "tokenizer_loads": 0,
+    "token_projection_calls": 0,
+    "model_or_provider_calls": 0,
+    "inference_calls": 0
+  },
+  "blocker_repair": {
+    "identified": "The first draft declared a 20000-character authority limit while the inherited engine enforced 16000.",
+    "repair": "The candidate now declares the actual inherited 16000-character fail-closed ceiling.",
+    "scope_expanded": false
+  },
+  "authority": {
+    "tokenizer_or_token_projection": false,
+    "application_authority": false,
+    "evaluator_or_runner_binding": false,
+    "probe_construction_or_execution": false,
+    "runtime_or_production": false
+  },
+  "status": "OWNER_REVIEW_REQUIRED"
+}

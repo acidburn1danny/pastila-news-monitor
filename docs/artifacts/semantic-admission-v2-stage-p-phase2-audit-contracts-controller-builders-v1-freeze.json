@@ -1,0 +1,34 @@
+{
+  "artifact_type": "OWNER_APPROVAL_FREEZE_RECEIPT",
+  "canonical_name": "STAGE_P_PHASE2_AUDIT_CONTRACTS_AND_CONTROLLER_BUILDERS_V1_FREEZE",
+  "canonical_identity": "ec1df39a8f668d586693401dde83e66cbf81b1d2ff261428567a917b9407ce2a",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "separator": "LF",
+    "ordered_utf8_fields": [
+      "STAGE_P_PHASE2_AUDIT_CONTRACTS_AND_CONTROLLER_BUILDERS_V1_FREEZE",
+      "c95613900cc94d168cc3c924ffb4a0a316bccf37c5008f117e7c99152290f828",
+      "OWNER_APPROVED_FROZEN",
+      "ZERO_INFERENCE_EVALUATION_ONLY",
+      "NO_REQUEST_OR_GRAMMAR_AUTHORITY"
+    ]
+  },
+  "frozen_candidate_identity": "c95613900cc94d168cc3c924ffb4a0a316bccf37c5008f117e7c99152290f828",
+  "owner_disposition": "APPROVED_AND_FROZEN",
+  "preservation": {
+    "candidate_artifact_modified": false,
+    "contract_implementation_modified": false,
+    "fixture_evidence_modified": false
+  },
+  "authority": {
+    "request_or_prompt_runtime_binding": false,
+    "grammar_implementation": false,
+    "tokenizer_or_model_load": false,
+    "evaluator_or_runner_binding": false,
+    "probe_construction_or_execution": false,
+    "stage_c": false,
+    "runtime_or_production": false,
+    "training": false
+  },
+  "status": "FROZEN"
+}

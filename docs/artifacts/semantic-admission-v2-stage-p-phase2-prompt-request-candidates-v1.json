@@ -1,0 +1,110 @@
+{
+  "artifact_type": "ZERO_INFERENCE_PROMPT_AND_APPLICATION_REQUEST_CANDIDATE",
+  "artifact_version": "1.0.0-evaluation.1",
+  "canonical_name": "STAGE_P_PHASE2_PROMPT_AND_REQUEST_CANDIDATES_V1",
+  "canonical_identity": "57a23e50670deae55efd8e2d3c245314dfa4c205e4fc1a1e6de1d969ec25c698",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "separator": "LF",
+    "ordered_utf8_fields": [
+      "STAGE_P_PHASE2_PROMPT_AND_REQUEST_CANDIDATES_V1",
+      "ec1df39a8f668d586693401dde83e66cbf81b1d2ff261428567a917b9407ce2a",
+      "3542981b92d94895357e95aab441aa972657e6c412ec0ff23fd0066ab8d498ee",
+      "9f54b8a59b311a905a3d751b72e5e1bf4fa9c0729b61225caed55cdd8ef4b4ba",
+      "23e042d1dd2891deb0d5b97700f393d5833e81bdf68c8a094fe25c46712a98db",
+      "a57c45cfc7d38041154dfbab45aad60772663224edd1dbb7f89583cff1d7641f",
+      "dcf4138951e0bd11793bf28262bc7234ad10f5077fba83885310652709dc31d5",
+      "47c913369e42e1187017176729d9efbe4607fb0eaaf3ebafb7089d3b0a23c10d",
+      "ZERO_INFERENCE_APPLICATION_CONSTRUCTION_ONLY"
+    ]
+  },
+  "frozen_contracts_identity": "ec1df39a8f668d586693401dde83e66cbf81b1d2ff261428567a917b9407ce2a",
+  "implementation": {
+    "path": "src/pastila_scout/semantic_admission_v2/stage_p_phase2_request_candidates_v1.py",
+    "sha256": "3542981b92d94895357e95aab441aa972657e6c412ec0ff23fd0066ab8d498ee",
+    "provider_execution_edge": false,
+    "authority_build_edge": false,
+    "grammar_tokenizer_or_model_dependency": false
+  },
+  "prompt_identities": {
+    "commitment_span": "dc0bede64944419bfbdf806af159659d918ec22f8677c2a4a2888e64d87026a8",
+    "authority_reconciliation": "379b4f8db641906a57b0f4c86a09ab119fc1fae30a2d7c29fed893901f02d6ed",
+    "policy": "Exact approved UTF-8 instruction bytes are preserved as the rendered prompt prefix; no strip, padding, or normalization is applied."
+  },
+  "envelope_schema_identities": {
+    "commitment_span": "9f54b8a59b311a905a3d751b72e5e1bf4fa9c0729b61225caed55cdd8ef4b4ba",
+    "authority_reconciliation": "23e042d1dd2891deb0d5b97700f393d5833e81bdf68c8a094fe25c46712a98db"
+  },
+  "request_candidate_identity_240_seconds": "a57c45cfc7d38041154dfbab45aad60772663224edd1dbb7f89583cff1d7641f",
+  "captured_case01_rendering": {
+    "commitment_prompt_sha256": "dcf4138951e0bd11793bf28262bc7234ad10f5077fba83885310652709dc31d5",
+    "commitment_characters": 9348,
+    "commitment_utf8_bytes": 9352,
+    "authority_prompt_sha256": "47c913369e42e1187017176729d9efbe4607fb0eaaf3ebafb7089d3b0a23c10d",
+    "authority_characters": 9933,
+    "authority_utf8_bytes": 9937
+  },
+  "source_binding": {
+    "candidate_authority_and_ledger_base64_are_strict": true,
+    "all_decoded_utf8_and_sha256_are_verified": true,
+    "ledger_is_strictly_parsed": true,
+    "entry_set_order_role_axes_and_references_are_reconciled_to_ledger": true,
+    "projected_candidate_bytes_are_recomputed_from_source_coordinates": true,
+    "commitment_analysis_is_base64_bound_to_exact_ledger_text": true
+  },
+  "injection_boundary": {
+    "static_instruction_before_data": true,
+    "untrusted_open_text_in_rendered_json": false,
+    "untrusted_text_transport": "STRICT_BASE64_ONLY",
+    "canonical_data_markers": ["BEGIN_CANONICAL_QUOTED_DATA_V1", "END_CANONICAL_QUOTED_DATA_V1"],
+    "embedded_end_marker_fixture": "REMAINS_BASE64_DATA_AND_CANNOT_CLOSE_ENVELOPE"
+  },
+  "context_budget": {
+    "maximum_rendered_characters": 64000,
+    "maximum_rendered_utf8_bytes": 96000,
+    "failure_precedence": "FAIL_BEFORE_APPLICATION_REQUEST_CONSTRUCTION",
+    "exact_token_context_proof": "PENDING_SEPARATE_IDENTITY_BOUND_TOKENIZER_AUTHORITY",
+    "claim_boundary": "The conservative host limit is not represented as tokenizer-level context proof."
+  },
+  "application_request_verification": {
+    "commitment_span": "PASS",
+    "authority_reconciliation": "PASS",
+    "provider": "OLLAMA",
+    "timeout_seconds": 240.0,
+    "cancellation_requested": false,
+    "request_references_are_lane_and_render_hash_bound": true,
+    "application_authority_built": false,
+    "provider_called": false
+  },
+  "blocker_disposition": {
+    "identified": "Exact token-context measurement would require tokenizer loading outside this authorization.",
+    "resolution": "Enforce conservative host byte/character ceilings and preserve TOKEN_CONTEXT_PROOF_PENDING as an explicit future obligation.",
+    "scope_expanded": false
+  },
+  "verification": {
+    "tests_passed": 4,
+    "application_requests_constructed": 2,
+    "application_authorities_built": 0,
+    "grammar_objects": 0,
+    "tokenizer_loads": 0,
+    "model_loads": 0,
+    "provider_calls": 0,
+    "inference_calls": 0,
+    "evaluator_or_runner_bindings": 0,
+    "probe_constructions": 0,
+    "probe_executions": 0
+  },
+  "authority": {
+    "grammar_implementation": false,
+    "tokenizer_or_model_load": false,
+    "application_authority_or_provider_execution": false,
+    "evaluator_or_runner_binding": false,
+    "probe_construction_or_execution": false,
+    "stage_c": false,
+    "runtime_or_production": false,
+    "curriculum": false,
+    "training": false
+  },
+  "status": "OWNER_REVIEW_REQUIRED",
+  "recommended_next_step": "Owner-review this candidate. If approved, freeze it and authorize only separately versioned request-bound character-DFA candidates for the commitment/span and authority-reconciliation response schemas with deterministic exhaustive-small-fixture and incremental/full-rebuild zero-inference verification. Keep tokenizer loading, token projection, application authority, evaluator/runner binding, and probes separately gated."
+}

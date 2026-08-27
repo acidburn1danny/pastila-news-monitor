@@ -1,0 +1,120 @@
+{
+  "artifact_type": "ZERO_INFERENCE_TOKENIZER_COMPATIBILITY_AUDIT_EVIDENCE",
+  "artifact_version": "1.0.0-evaluation.1",
+  "canonical_name": "STAGE_P_PHASE2_TOKENIZER_COMPATIBILITY_AUDIT_V1",
+  "canonical_identity": "8254a909afe0024a1cd0aa357e60684d190607b4049eb4ffc742fc25b9fc8b56",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "separator": "LF",
+    "ordered_utf8_fields": [
+      "STAGE_P_PHASE2_TOKENIZER_COMPATIBILITY_AUDIT_V1",
+      "8b9707057e4ed1740c2b3546573c2d839d6bdfb02924cdb03f0e42c410bdc05d",
+      "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c",
+      "cddb7a7af1a71e2a7be71cf5d8b79b9eaf0aae9acf0e5c4e478d84cf136f896a",
+      "96e6f0cabffb5fa1b83203a6c8831e5cbaccee76724a3f93c44d3294e46f3235",
+      "PASS_CONTEXT_FREE_PIECES_EQUIVALENT_FOR_FROZEN_PHASE2_MATRIX",
+      "ZERO_INFERENCE"
+    ]
+  },
+  "frozen_plan_receipt": "8b9707057e4ed1740c2b3546573c2d839d6bdfb02924cdb03f0e42c410bdc05d",
+  "audit_harness": {
+    "path": "src/pastila_scout/semantic_admission_v2/stage_p_phase2_tokenizer_compatibility_audit_v1.py",
+    "sha256": "cddb7a7af1a71e2a7be71cf5d8b79b9eaf0aae9acf0e5c4e478d84cf136f896a"
+  },
+  "preliminary_run": {
+    "disposition": "PRESERVED_SUPERSEDED_FOR_FROZEN_PLAN_COVERAGE_ONLY",
+    "result": "PASS_ON_16_STATE_MATRIX",
+    "candidate_checks": 2097152,
+    "false_accepts": 0,
+    "false_rejects": 0,
+    "reason_superseded": "Post-run reconciliation found missing explicit END_NUMBER and two-finding supporting-to-decisive fixtures.",
+    "model_or_inference_calls": 0
+  },
+  "authoritative_run": {
+    "completed_phases": [0, 1, 2, 3, 4, 5, 6, 7],
+    "result": "PASS_CONTEXT_FREE_PIECES_EQUIVALENT_FOR_FROZEN_PHASE2_MATRIX",
+    "strategy_recommendation": "CONTEXT_FREE_PIECE_PROJECTION_FEASIBLE_FOR_FROZEN_MATRIX",
+    "state_count": 19,
+    "candidate_checks": 2490368,
+    "false_accepts": 0,
+    "false_rejects": 0,
+    "contextual_prefix_rewrites": 0,
+    "standalone_suffix_mismatches": 0,
+    "eos_only_at_terminal": true,
+    "special_and_empty_tokens_excluded": true,
+    "shortest_start_and_longest_end_reference_covered": true,
+    "two_finding_supporting_to_decisive_transition_covered": true,
+    "request_context_identity_isolation": true,
+    "allowed_token_set_sequence_sha256": "96e6f0cabffb5fa1b83203a6c8831e5cbaccee76724a3f93c44d3294e46f3235",
+    "elapsed_seconds": 117.342374,
+    "maximum_state_seconds": 14.101091,
+    "median_state_seconds": 5.565138
+  },
+  "state_evidence": [
+    {"state":"COMMITMENT_INITIAL","mode":"LITERAL","allowed":2,"set_sha256":"26769180daf66a668774b1ec0c53d89d3f1ec0b5a2f0d77fdee90f33b5c1c889"},
+    {"state":"COMMITMENT_LITERAL","mode":"LITERAL","allowed":1,"set_sha256":"6719009a76851c4bed2fcdea10b635c1bd58bf12af0c1fea3a470a87d3ee6995"},
+    {"state":"COMMITMENT_DECISION","mode":"CHOICE","allowed":12,"set_sha256":"8b20a37fcc0a6d7aafb12427eeadc27df54c2a167305b893cde38e9dde9ae191"},
+    {"state":"COMMITMENT_STRING_EMPTY","mode":"STRING","allowed":128147,"set_sha256":"736a1b9dbb93ba1d7bdff0312347b434675eb1cc14d4533fb6f893426f7a54b4"},
+    {"state":"COMMITMENT_STRING_UNICODE","mode":"STRING","allowed":128149,"set_sha256":"dcb4993071a282b92a43874eb8c97bf766270d1a45f0eb738c44f2add0a13aa8"},
+    {"state":"COMMITMENT_TERMINAL","mode":"TERMINAL","allowed":1,"set_sha256":"d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35"},
+    {"state":"AUTHORITY_INITIAL","mode":"LITERAL","allowed":2,"set_sha256":"26769180daf66a668774b1ec0c53d89d3f1ec0b5a2f0d77fdee90f33b5c1c889"},
+    {"state":"AUTHORITY_DECISION","mode":"CHOICE","allowed":7,"set_sha256":"a4fe41f476d21186a53e55730a5a51b0e9ae7da64c6dfd2fe8da7e5b610a983a"},
+    {"state":"AUTHORITY_REFERENCE_START","mode":"REFERENCE_INITIAL","allowed":4,"set_sha256":"ba28145ea81b44b5e20350335866320bcc78f3bacf15d0161621f27663c2607c"},
+    {"state":"AUTHORITY_REFERENCE_HASH","mode":"REFERENCE_LITERAL","allowed":1,"set_sha256":"285b71922aaa01d870483d3b4f59e4a61c2057e1476854a810f387a1d2317806"},
+    {"state":"AUTHORITY_REFERENCE_START_NUMBER","mode":"REFERENCE_START_NUMBER","allowed":10,"set_sha256":"c11e03d60dc54a2d3bb28f50125d6c4ff51d3e8f0a94c1d8b268ce468d739f1c"},
+    {"state":"AUTHORITY_REFERENCE_END_NUMBER","mode":"REFERENCE_END_NUMBER","allowed":9,"set_sha256":"3fb9552bc46f9eb5f10536815e67d7064ca050224d2d5dec7504c9b9f0887de0"},
+    {"state":"AUTHORITY_AXIS","mode":"CHOICE","allowed":2,"set_sha256":"04fd7f00fdd7aa5ad06cd1a0cb32100b827ef9f1f7fe767864ce8af3b78ae29e"},
+    {"state":"AUTHORITY_FINDING_LINK_SEPARATOR","mode":"FINDING_LINK_SEPARATOR","allowed":4,"set_sha256":"b7d9314fe581d835582606d0e95f6199e05b914ba1013f0e8ee8c64f86cdc226"},
+    {"state":"AUTHORITY_FINDING_REASON","mode":"CHOICE","allowed":5,"set_sha256":"eff09f1caefce9c371b8e856f104bd70312a371e9f4097883255dbdbad235bf2"},
+    {"state":"AUTHORITY_FINDING_STATUS","mode":"CHOICE","allowed":2,"set_sha256":"21c9df8f64281ef55b8d158b03fecfd499972494b796ffd56deab7fd49b5b699"},
+    {"state":"AUTHORITY_FIRST_FINDING_SUPPORTING_STATUS","mode":"CHOICE","allowed":4,"set_sha256":"f63843d53eb09acef7dda4213859b6dc4130c2b333c81c231b138fbeec0a00e6"},
+    {"state":"AUTHORITY_FINAL_FINDING_DECISIVE_STATUS","mode":"CHOICE","allowed":2,"set_sha256":"21c9df8f64281ef55b8d158b03fecfd499972494b796ffd56deab7fd49b5b699"},
+    {"state":"AUTHORITY_TERMINAL","mode":"TERMINAL","allowed":1,"set_sha256":"d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35"}
+  ],
+  "tokenizer": {
+    "identity": "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c",
+    "implementation": "TokenizersBackend",
+    "transformers_version": "5.15.0",
+    "vocabulary_size": 131072,
+    "bos_token_id": 1,
+    "eos_token_id": 2,
+    "pad_token_id": 11,
+    "unk_token_id": 0,
+    "special_token_ids": [0, 1, 2, 11],
+    "empty_decoding_count": 1000,
+    "replacement_character_count": 1437,
+    "control_decoding_count": 29
+  },
+  "dependency_bridge": {
+    "pydantic_version": "2.13.4",
+    "transformers_version": "5.15.0",
+    "dependency_install_or_environment_change": false,
+    "disposition": "EXISTING_APPROVED_ZERO_INFERENCE_BRIDGE_REUSED"
+  },
+  "warning": {
+    "reason_code": "EXISTING_MISTRAL_TOKENIZER_REGEX_WARNING",
+    "disposition": "PRESERVED_NOT_REPAIRED",
+    "reason": "Changing fix_mistral_regex would alter the identity-bound tokenizer contract."
+  },
+  "activity": {
+    "tokenizer_loads_authoritative_run": 1,
+    "model_loads": 0,
+    "model_calls": 0,
+    "generation_calls": 0,
+    "inference_calls": 0,
+    "projector_objects": 0,
+    "evaluator_or_runner_bindings": 0,
+    "probe_constructions": 0,
+    "probe_executions": 0
+  },
+  "authority": {
+    "projector_implementation": false,
+    "evaluator_or_runner_binding": false,
+    "application_authority": false,
+    "probe_construction_or_execution": false,
+    "runtime_or_production": false,
+    "training": false
+  },
+  "status": "OWNER_REVIEW_REQUIRED",
+  "recommended_next_step": "Owner-review and freeze this audit. If approved, authorize only a separately versioned token-projector candidate using the proven context-free piece strategy, synthetic deterministic tests, and zero-inference equivalence against this frozen matrix."
+}

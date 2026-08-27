@@ -1,0 +1,27 @@
+{
+  "artifact_type": "OWNER_APPROVAL_FREEZE_RECEIPT",
+  "canonical_name": "STAGE_P_PHASE2_ZERO_INFERENCE_TOKENIZER_COMPATIBILITY_PLAN_V1_FREEZE",
+  "canonical_identity": "8b9707057e4ed1740c2b3546573c2d839d6bdfb02924cdb03f0e42c410bdc05d",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "separator": "LF",
+    "ordered_utf8_fields": [
+      "STAGE_P_PHASE2_ZERO_INFERENCE_TOKENIZER_COMPATIBILITY_PLAN_V1_FREEZE",
+      "2cab0e835997349c010ef87b9f3682adb4b4f38b103b8a227d8a29ed8388ed67",
+      "OWNER_APPROVED_FROZEN",
+      "PLAN_ONLY",
+      "TOKENIZER_AUDIT_SEPARATELY_AUTHORIZED"
+    ]
+  },
+  "frozen_candidate_identity": "2cab0e835997349c010ef87b9f3682adb4b4f38b103b8a227d8a29ed8388ed67",
+  "owner_disposition": "APPROVED_AND_FROZEN",
+  "authority": {
+    "tokenizer_compatibility_audit": true,
+    "model_loading_or_inference": false,
+    "projector_implementation": false,
+    "evaluator_or_runner_binding": false,
+    "probe_construction_or_execution": false,
+    "runtime_or_production": false
+  },
+  "status": "FROZEN"
+}

@@ -1,0 +1,37 @@
+{
+  "artifact_type": "OWNER_APPROVAL_FREEZE_RECEIPT",
+  "canonical_name": "STAGE_P_PHASE2_DUAL_AUDIT_TOKEN_PROJECTOR_V1_FREEZE",
+  "canonical_identity": "5297d9d743d259cd958eeb4989047c89efed6d25b00ce12ce3cd1fc7b5446886",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "separator": "LF",
+    "ordered_utf8_fields": [
+      "STAGE_P_PHASE2_DUAL_AUDIT_TOKEN_PROJECTOR_V1_FREEZE",
+      "2823e4a16052ccaafee839dd38df4a8f67840eef1a61963e7fa916278c1d2188",
+      "0d943f5c50af2ff14c8ecd13cefdf39ce4e9e799a430cb1514566076a7305ac9",
+      "OWNER_APPROVED_FROZEN",
+      "ZERO_INFERENCE_CANDIDATE_ONLY",
+      "NO_EVALUATOR_RUNNER_PROBE_STAGE_C_OR_WSL_MIGRATION_AUTHORITY"
+    ]
+  },
+  "frozen_candidate": {
+    "path": "docs/artifacts/semantic-admission-v2-stage-p-phase2-token-projector-v1-candidate.json",
+    "canonical_identity": "2823e4a16052ccaafee839dd38df4a8f67840eef1a61963e7fa916278c1d2188",
+    "sha256": "0d943f5c50af2ff14c8ecd13cefdf39ce4e9e799a430cb1514566076a7305ac9"
+  },
+  "owner_disposition": "APPROVED_AND_FROZEN",
+  "approved_scope": "SEPARATELY_VERSIONED_ZERO_INFERENCE_DUAL_AUDIT_TOKEN_PROJECTOR_CANDIDATE_ONLY",
+  "authority": {
+    "application_or_production_authority": false,
+    "evaluator_or_runner_binding": false,
+    "probe_construction_or_execution": false,
+    "stage_c": false,
+    "grandfathered_wsl_launcher_migration": false,
+    "model_loading_or_inference": false
+  },
+  "preservation": {
+    "schemas_prompts_requests_dfas_controllers_tokenizer_identity_modified": false,
+    "authority_boundaries_expanded": false
+  },
+  "status": "FROZEN"
+}
