@@ -1,0 +1,66 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-case01-v4-prompt-v2-probe-analysis",
+  "schema_version": "1.0.0",
+  "case_id": "HMCV1-SASC-01",
+  "execution": {
+    "provider_call_count": 1,
+    "retry_count": 0,
+    "repair_count": 0,
+    "selection_count": 0,
+    "terminal_eos": true,
+    "raw_sha256": "0ba124657f280f6e35b7d350da67688022671b88c87a2cc472d19673314e64ad",
+    "raw_bytes": 1431
+  },
+  "transport_and_contract": {
+    "transport": "SUCCESS",
+    "raw_persistence": "SUCCESS",
+    "strict_schema": "PASS",
+    "exact_source_membership": "PASS",
+    "phase_receipt_decision": "PASS_TO_NEXT_STAGE"
+  },
+  "semantic_observation": {
+    "coverage_decision": "INDETERMINATE",
+    "entry_count": 3,
+    "entry_types": [
+      "REAL_WORLD_COMMITMENT",
+      "REAL_WORLD_COMMITMENT",
+      "REAL_WORLD_COMMITMENT"
+    ],
+    "all_entries_unresolved": true,
+    "candidate_reviewed_as_whole": false,
+    "embedded_propositions_checked": false,
+    "creative_scope_checked": false,
+    "unresolved_scope_present": true,
+    "contained_creative_entries": 0
+  },
+  "evaluation": {
+    "infrastructure_result": "PASS",
+    "source_role_realization_result": "FAIL",
+    "finding": "The model preserved exact source spans but treated all three figurative/editorial spans as unresolved real-world commitments and did not complete whole-candidate, embedded-proposition, or creative-scope review.",
+    "case01_acceptance_status": "NOT_DEMONSTRATED",
+    "stage_c_eligible": false,
+    "reason": "The technical phase receipt permits a next stage after valid schema and membership, but this bounded evaluation found no reliable contained-creative versus factual-return classification to pass onward."
+  },
+  "durable_lifecycle": {
+    "file_count": 46,
+    "tree_identity": "c1fcd31d3b05b10a63435370c0c44f2ac9b09fb33022d77845ae1bdfae3c0fd2",
+    "host_elapsed_seconds": 80.169668,
+    "model_load_seconds": 12.371322,
+    "generation_elapsed_seconds": 57.034804,
+    "generated_tokens": 454,
+    "heartbeat_count": 28,
+    "tracker_rebuilds": 0
+  },
+  "boundaries": {
+    "stage_c_constructed": false,
+    "stage_c_called": false,
+    "source_bound_projector_bound": false,
+    "case10_called": false,
+    "proof_rerun": false,
+    "eligibility": "QUARANTINED_EVALUATION_ONLY",
+    "runtime_authority": false,
+    "production_authority": false,
+    "curriculum_authority": false,
+    "training_authority": false
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-case01-v4-prompt-v2-probe-manifest",
+  "schema_version": "1.0.0",
+  "canonical_identity": "d6e0cb249b54ff188cf70995a7e7d848819ccc6eef3257a1bef1528005e17859",
+  "identity_method": "sha256 of the ordered source binding identity, artifact SHA-256 values, and durable lifecycle tree identity joined by LF with no trailing LF",
+  "lifecycle": "QUARANTINED_EVALUATION_EVIDENCE_READY_FOR_OWNER_REVIEW",
+  "source_binding_identity": "8066934252d94c1bf2097340798546131145c2f322a4959d2e46bccf363391f5",
+  "bindings": [
+    {"path":"src/pastila_scout/semantic_admission_v2/run_stage_p_case01_v4_prompt_v2_probe.py","sha256":"6fc1bb202aa86e45e6bfe5e5b2e3024ef4218b1ad4c0e43cb8bb37d7aed9ccdf"},
+    {"path":".semantic-admission-v2-stage-p-case01-v4-prompt-v2-probe-evidence/stage-p-request.json","sha256":"b6e0fd27797998d9b447e9cb938b3ceaa173ee008dd8965a43dd5bf39f5a710d"},
+    {"path":".semantic-admission-v2-stage-p-case01-v4-prompt-v2-probe-evidence/identity-binding.json","sha256":"23456f97809874ffe97792939fb395276aa6ef6cf5aec66ac850df9c53b691b9"},
+    {"path":".semantic-admission-v2-stage-p-case01-v4-prompt-v2-probe-evidence/stage-p-raw.bin","sha256":"0ba124657f280f6e35b7d350da67688022671b88c87a2cc472d19673314e64ad"},
+    {"path":".semantic-admission-v2-stage-p-case01-v4-prompt-v2-probe-evidence/stage-p-phase-receipt-v2.json","sha256":"f137b68d93fb3511a24b17ebdb9915ec816b43b0ad222229d350ed6c36431176"},
+    {"path":".semantic-admission-v2-stage-p-case01-v4-prompt-v2-probe-evidence/validated-analysis.json","sha256":"8c51d96e6e922b4253bd36998ba7de811df1bf866a56d93ec7eceef437b3617a"},
+    {"path":".semantic-admission-v2-stage-p-case01-v4-prompt-v2-probe-evidence/report.md","sha256":"7b3ea150307eed852e2b8ea54029c3ca925ffcf4a20220f980642e76025692be"}
+  ],
+  "durable_lifecycle": {
+    "relative_path": ".semantic-admission-v2-stage-p-case01-v4-prompt-v2-probe-evidence/durable-lifecycle",
+    "file_count": 46,
+    "tree_identity_method": "sha256 of ordered relative-path TAB file-sha256 lines joined by LF with no trailing LF",
+    "tree_identity": "c1fcd31d3b05b10a63435370c0c44f2ac9b09fb33022d77845ae1bdfae3c0fd2"
+  },
+  "result": {
+    "provider_call_count": 1,
+    "terminal_eos": true,
+    "strict_schema": "PASS",
+    "source_membership": "PASS",
+    "infrastructure": "PASS",
+    "source_role_realization": "FAIL",
+    "case01_acceptance": "NOT_DEMONSTRATED",
+    "final": "STOPPED_AFTER_SINGLE_STAGE_P_CASE01_PROBE",
+    "stage_c_constructed": false,
+    "stage_c_called": false
+  },
+  "authority": {
+    "additional_probe": false,
+    "projector": false,
+    "stage_c": false,
+    "case10": false,
+    "proof_rerun": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  }
+}
