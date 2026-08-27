@@ -1,0 +1,120 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-immutable-source-span-reference-design",
+  "schema_version": "1.0.0-design.1",
+  "artifact_id": "IMMUTABLE_SOURCE_SPAN_REFERENCE_DESIGN_V1",
+  "design_identity": "d80599655520bd70c2ad7ee972f33850d0ed0deee2ccfe571cc94c1fc2d6985e",
+  "scope": "DESIGN_ONLY_NO_SCHEMA_PROMPT_RUNNER_MODEL_RUNTIME_OR_INFERENCE_CHANGE",
+  "source_result_identity": "fb103372d3734152465b38fe6475aa1c801fd2533703e47e1dd43a0fa9b7dccb",
+  "problem_statement": "A model-authored evidence string can be semantically intended as a source span yet differ by one character from immutable authority. Schema validity cannot make that approximation evidence, and post-hoc fuzzy repair would silently replace model output.",
+  "governing_invariants": [
+    "The factual summary and commentary candidate remain byte-immutable, separately identified sources.",
+    "The model may select a span but must never author, normalize, translate, paraphrase, trim, or repair the bytes that constitute evidence.",
+    "Candidate span references may resolve only against candidate bytes; authority-support references may resolve only against factual-summary bytes.",
+    "Resolution is deterministic and total: a valid reference yields exactly one source slice; an invalid or ambiguous reference fails closed.",
+    "Rendered source text is derived evidence and never substituted back into the raw model response.",
+    "Semantic classification, source membership, and owner-quality evaluation remain distinct receipts."
+  ],
+  "recommended_contract": {
+    "name": "COPYLESS_UTF8_HALF_OPEN_SOURCE_REFERENCE",
+    "model_emits": {
+      "source_role": ["CANDIDATE", "FACTUAL_AUTHORITY"],
+      "source_sha256": "prebound immutable source identity selected from an exact finite set",
+      "start_utf8": "zero-based inclusive byte boundary",
+      "end_utf8": "zero-based exclusive byte boundary"
+    },
+    "field_role_rules": {
+      "candidate_span_ref": "source_role must be CANDIDATE",
+      "vehicle_span_ref": "source_role must be CANDIDATE",
+      "authority_support_ref": "source_role must be FACTUAL_AUTHORITY or the field may be null"
+    },
+    "deterministic_resolver": [
+      "Verify the referenced source SHA-256 equals the case-bound source identity.",
+      "Require 0 <= start_utf8 < end_utf8 <= source byte length.",
+      "Require both offsets to be UTF-8 code-point boundaries and the slice to decode strictly as UTF-8.",
+      "Return the exact byte slice and bind its SHA-256, offsets, source role, and source identity in a separate projection receipt.",
+      "Reject cross-source roles, empty spans, invalid boundaries, out-of-range offsets, identity drift, and any schema/reference mismatch.",
+      "Run existing semantic membership and cross-record reconciliation over resolved bytes; successful projection does not imply semantic correctness."
+    ],
+    "why_offsets_over_model_copied_text": [
+      "All non-empty contiguous source spans remain expressible without an O(n-squared) registry embedded in the prompt.",
+      "Romanian diacritics and repeated substrings are unambiguous because source identity and byte coordinates are explicit.",
+      "The model cannot introduce the observed angajații-to-angazații mutation into evidence bytes.",
+      "No nearest-match heuristic or editorial repair is needed."
+    ]
+  },
+  "alternatives_assessed": [
+    {
+      "option": "DYNAMIC_EXACT_SUBSTRING_TOKEN_PROJECTOR",
+      "disposition": "VIABLE_DEFENSE_IN_DEPTH_NOT_PRIMARY",
+      "benefit": "Preserves human-readable copied spans in raw output while constraining them to exact source substrings.",
+      "costs": ["large prefix state space", "JSON escaping and tokenizer-boundary complexity", "cross-source field-state coupling", "continued duplication of evidence text"],
+      "boundary": "If prototyped later, it must constrain the correct source per field and retain post-generation exact validation."
+    },
+    {
+      "option": "PREENUMERATED_SPAN_IDS",
+      "disposition": "OPTIONAL_FOR_SMALL_FIXED_ANCHOR_SETS",
+      "benefit": "Simplest finite constrained choice and inherently exact.",
+      "costs": ["coverage depends on an upstream span enumerator", "may suppress valid unenumerated spans", "can accidentally turn extraction policy into semantic routing"]
+    },
+    {
+      "option": "FUZZY_MATCH_OR_NEAREST_SOURCE_SNAPPING",
+      "disposition": "PROHIBITED",
+      "reason": "It silently repairs model-authored evidence, can select the wrong repeated or semantically different span, and destroys auditability of the actual response."
+    },
+    {
+      "option": "NORMALIZED_TEXT_MEMBERSHIP",
+      "disposition": "PROHIBITED_AS_AUTHORITY",
+      "reason": "Case folding, accent folding, whitespace normalization, or spelling tolerance weakens byte-immutable provenance. Normalized forms may be diagnostic metadata only."
+    }
+  ],
+  "receipt_separation": {
+    "raw_model_receipt": "Preserves the exact reference-bearing JSON bytes.",
+    "projection_receipt": "Records source identity, role, offsets, exact projected-byte hash, and success/failure reason without rewriting raw output.",
+    "semantic_receipt": "Classifies the projected ledger and may still reject unsupported inference, wrong event alignment, incomplete coverage, or bad reconciliation.",
+    "terminal_receipt": "Applies fail-closed precedence and preserves every prior phase result."
+  },
+  "fail_closed_reason_codes": [
+    "STAGE_P_SOURCE_REFERENCE_IDENTITY_DRIFT",
+    "STAGE_P_SOURCE_REFERENCE_ROLE_MISMATCH",
+    "STAGE_P_SOURCE_REFERENCE_RANGE_INVALID",
+    "STAGE_P_SOURCE_REFERENCE_UTF8_BOUNDARY_INVALID",
+    "STAGE_P_SOURCE_REFERENCE_EMPTY",
+    "STAGE_P_SOURCE_PROJECTION_FAILURE",
+    "STAGE_P_CANDIDATE_SPAN_SOURCE_MEMBERSHIP_FAILURE",
+    "STAGE_P_AUTHORITY_SUPPORT_SOURCE_MEMBERSHIP_FAILURE"
+  ],
+  "case01_acceptance_requirements": [
+    "The exact full candidate commentary can be selected with CANDIDATE source identity and [0, byte_length) without copying its text.",
+    "Every resolved candidate or vehicle span must contain immutable angajații bytes; the observed angazații approximation is structurally impossible as projected evidence.",
+    "The factual-summary support slice remains independently bound to FACTUAL_AUTHORITY and cannot populate a candidate field.",
+    "A projection pass does not cure the ledger's separate semantic concern: its P2 event_alignment marked a governed event as NEW_UNSUPPORTED_EVENT; that remains for owner/evaluator review.",
+    "Case 01 execution, Stage C, and any inference remain separately gated."
+  ],
+  "bounded_future_verification_recommendation": [
+    "If separately authorized, first define a versioned reference schema and pure resolver only; do not alter the approved evaluator or construct a probe.",
+    "Verify the resolver with captured Case 01 bytes and exhaustive small UTF-8 fixtures covering diacritics, repeated text, emoji, combining sequences, JSON escaping, empty/out-of-range/mid-codepoint offsets, wrong source roles, and identity drift.",
+    "Property-test that every accepted projection equals exactly source_bytes[start_utf8:end_utf8] and that no rejected reference produces bytes.",
+    "Add captured-ledger conversion tests only as non-authoritative fixtures; never mutate the frozen raw ledger.",
+    "Stop for owner review before choosing offset references versus an exact-substring decoding projector, before evaluator rebinding, and before any probe."
+  ],
+  "explicit_non_goals": [
+    "No repair or reinterpretation of the frozen Case 01 output.",
+    "No prompt, schema, grammar, constraint, controller, tracker, runner, evaluator, model, runtime, or Stage C change.",
+    "No new inference, retry, other case, curriculum exposure, enrichment, production authority, or training."
+  ],
+  "authority": {
+    "implementation": false,
+    "schema_change": false,
+    "prompt_change": false,
+    "constraint_change": false,
+    "runner_change": false,
+    "evaluator_change": false,
+    "probe": false,
+    "inference": false,
+    "stage_c": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  }
+}
