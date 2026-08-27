@@ -1,0 +1,63 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-scope-graph-case01-probe-v1-result",
+  "schema_version": "1.0.0-evaluation.1",
+  "lifecycle": "SINGLE_EVALUATION_CALL_COMPLETE_OWNER_REVIEW_REQUIRED",
+  "source_binding_identity": "dfd9f564312052070fd2a2f5f1e49c1a53d51cb1b2d66a41aacdf9a7f6246249",
+  "result_identity": "3bf7ae2fa4fb2e5568ec3d9b01aff9db12a218dcc48e1beea22e04311b6fb1d5",
+  "case_id": "HMCV1-SASC-01",
+  "execution_receipt": {
+    "provider_call_count": 1,
+    "transport": "SUCCESS",
+    "raw_persistence": "SUCCESS",
+    "raw_sha256": "61d97230adb65d1848c1ce719036e7957cdc3fd2eb99ed73f6d0110c7dc421a6",
+    "raw_bytes": 1066,
+    "schema_validation": "SUCCESS",
+    "source_membership": "SUCCESS",
+    "terminal_eos": true,
+    "prompt_tokens": 1919,
+    "generated_tokens": 326,
+    "durable_lifecycle_events": 38,
+    "durable_lifecycle_identity": "a5992fe160edac2a5853c67d246db8c98fc67d83a8cfd7b5c5f574bcd2375a4f",
+    "eligibility": "QUARANTINED_EVALUATION_ONLY"
+  },
+  "output_shape": {
+    "coverage_decision": "COMPLETE",
+    "entry_count": 1,
+    "entry_type": "REAL_WORLD_COMMITMENT",
+    "scope_relation": "STANDALONE",
+    "scope_basis": "PRESUPPOSED",
+    "factual_return_basis": "PRESUPPOSITION_SURVIVES",
+    "candidate_span": "ENTIRE_COMMENTARY",
+    "authority_support": null,
+    "commitment_reproduces_governed_summary": true
+  },
+  "acceptance_assessment": {
+    "transport_contract": "PASS",
+    "schema_and_source_membership": "PASS",
+    "scope_graph_semantic_acceptance": "FAIL",
+    "case01_required_shape": "Integrated contained-creative host with no literalized component or unsupported real-world return.",
+    "observed_failure": "The model classified the whole integrated creative construction as a standalone presupposed real-world commitment instead of recognizing its creative host.",
+    "secondary_inconsistency": "The commitment reproduces the governed factual summary while authority_support remains null, so the semantic support instruction was not followed even though deterministic substring validation passed.",
+    "stage_c_eligibility": "NOT_AUTHORIZED_AND_NOT_INVOKED"
+  },
+  "call_controls": {
+    "retry_count": 0,
+    "repair_count": 0,
+    "selection_count": 0,
+    "case10_calls": 0,
+    "stage_c_calls": 0,
+    "proof_reruns": 0
+  },
+  "recommended_next_step": "Perform design-only failure analysis for the whole-construction-to-standalone-factual collapse and the null-support inconsistency. Do not rerun or modify the prompt/runtime until that analysis is owner-approved.",
+  "authority": {
+    "rerun": false,
+    "prompt_modification": false,
+    "runner_modification": false,
+    "stage_c": false,
+    "case10": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  }
+}

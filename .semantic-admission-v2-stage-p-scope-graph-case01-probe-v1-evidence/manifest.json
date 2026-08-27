@@ -1,0 +1,11 @@
+{
+  "artifact": "docs/artifacts/semantic-admission-v2-stage-p-scope-graph-case01-probe-v1-result.json",
+  "result_identity": "3bf7ae2fa4fb2e5568ec3d9b01aff9db12a218dcc48e1beea22e04311b6fb1d5",
+  "source_binding_identity": "dfd9f564312052070fd2a2f5f1e49c1a53d51cb1b2d66a41aacdf9a7f6246249",
+  "raw_sha256": "61d97230adb65d1848c1ce719036e7957cdc3fd2eb99ed73f6d0110c7dc421a6",
+  "durable_lifecycle_identity": "a5992fe160edac2a5853c67d246db8c98fc67d83a8cfd7b5c5f574bcd2375a4f",
+  "provider_call_count": 1,
+  "retry_count": 0,
+  "stage_c_calls": 0,
+  "eligibility": "QUARANTINED_EVALUATION_ONLY"
+}
