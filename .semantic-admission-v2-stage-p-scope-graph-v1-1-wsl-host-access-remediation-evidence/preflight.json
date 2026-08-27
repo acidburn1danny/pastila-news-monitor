@@ -1,0 +1,43 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-wsl-host-access-remediation-evidence",
+  "schema_version": "1.0.0-evaluation.1",
+  "recorded_at": "2026-08-26T14:00:00Z",
+  "result": "PASS",
+  "mode": "ZERO_INFERENCE_HOST_ACCESS_PREFLIGHT",
+  "preserved_failed_probe": ".semantic-admission-v2-stage-p-scope-graph-v1-1-case01-probe-run-v1-evidence",
+  "failure_diagnosis": {
+    "recorded_error": "Wsl/Service/E_ACCESSDENIED",
+    "classification": "CALLER_EXECUTION_CONTEXT_RESTRICTION",
+    "distribution_corruption": false,
+    "repository_runtime_defect_found": false
+  },
+  "host_checks": {
+    "wsl_version": "2.7.11.0",
+    "default_distribution": "Ubuntu-24.04",
+    "distribution_version": 2,
+    "distribution_registered": true,
+    "noop_launch": "PASS",
+    "bound_python": "/home/pastila/PastilaAcida-Model-Lab/experimental-0.1/.venv/bin/python3",
+    "bound_python_version": "3.12.3",
+    "bound_python_executable": "PASS",
+    "mounted_runner_readable": "PASS"
+  },
+  "execution_counts": {
+    "runner_calls": 0,
+    "tokenizer_loads": 0,
+    "model_loads": 0,
+    "model_calls": 0,
+    "provider_calls": 0,
+    "inference_calls": 0
+  },
+  "remediation": "Run any separately authorized WSL-bound evaluation probe in the approved host execution context; do not alter the governed runner or model binding.",
+  "authority": {
+    "probe_rerun": false,
+    "stage_c": false,
+    "case10": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  }
+}
