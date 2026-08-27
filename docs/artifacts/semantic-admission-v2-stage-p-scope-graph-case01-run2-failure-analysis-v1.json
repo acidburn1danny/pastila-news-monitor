@@ -1,0 +1,82 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-scope-graph-case01-run2-failure-analysis",
+  "schema_version": "1.0.0-design.1",
+  "design_identity": "734a7f291998588ea577216c137696ac5bce742140661131b3c05cd410e5b19c",
+  "lifecycle": "DESIGN_ONLY_NOT_IMPLEMENTED_NOT_EXECUTED",
+  "bound_evidence": {
+    "case_id": "HMCV1-SASC-01",
+    "runner_binding_identity": "57891ab6d928cde37a7d388e2f97a3da87d130e8debc1ab29b90bec850dc288a",
+    "executor_probe_binding_identity": "7335f67d3de1a2335e8557f28d532359ea67fe9c4d73022804240476a696458e",
+    "identity_binding_sha256": "0c02b768ba81606ae66b9d0b086418fce62df9e7096e4ca5f690307b9e51a7f7",
+    "request_sha256": "b6e0fd27797998d9b447e9cb938b3ceaa173ee008dd8965a43dd5bf39f5a710d",
+    "phase_receipt_sha256": "774196cddc6028bc9c56fceeb1cd9c98d50e108193dae6f80a2c63539228cee2",
+    "provider_call_count": 1,
+    "terminal_exception": "EMPTY_ALLOWED_TOKEN_SET"
+  },
+  "observed_failure_chain": [
+    {
+      "order": 1,
+      "class": "SEMANTIC_SCOPE_SELECTION_MISS",
+      "finding": "The model treated the complete integrated figurative sentence as one standalone REAL_WORLD_COMMITMENT rather than inventorying its creative host.",
+      "effect": "Case 01 could not reach its expected contained-creative interpretation."
+    },
+    {
+      "order": 2,
+      "class": "AUTHORITY_PROVENANCE_MISMATCH",
+      "finding": "The entry used null authority_support while its commitment copied the governed factual summary rather than a proposition independently carried by the candidate.",
+      "effect": "The ledger path contradicted the prompt's candidate-carried proposition rule, although that semantic rule is not expressible by the existing character DFA."
+    },
+    {
+      "order": 3,
+      "class": "CONSTRAINED_DECODING_LIVENESS_FAILURE",
+      "finding": "After 320 generated tokens and a structurally representable unsupported-real-world entry, the token projector returned no legal token while beginning the coverage_decision field.",
+      "effect": "The runner raised EMPTY_ALLOWED_TOKEN_SET and the host receipt collapsed the result into a provider/transport failure without raw partial-output persistence."
+    }
+  ],
+  "critical_non_remediation": {
+    "rule": "DO_NOT_GLOBALLY_PROHIBIT_REAL_WORLD_COMMITMENT_WITH_NULL_AUTHORITY_SUPPORT",
+    "reason": "That tuple is required to inventory genuinely unsupported propositions in negative cases. Removing it would weaken factual-semantic detection and violate the frozen Gate F acceptance contract.",
+    "governed_event_rule_unchanged": "GOVERNED_EVENT still requires non-null exact authority_support."
+  },
+  "bounded_candidate_design": {
+    "track_a_constraint_liveness": [
+      "Add a construction-time totality check proving that every reachable nonterminal DFA/trie state used by the frozen schema has at least one token continuation or EOS where legal.",
+      "Bind an exact regression fixture to the last valid Run 2 decoded prefix and require a non-empty continuation through coverage_decision and terminal closure.",
+      "Keep all invalid semantic tuples projected out; liveness repair must not relax schema, source-membership, governed-support, graph, or COMPLETE invariants.",
+      "On any future empty allowed set, preserve the exact partial bytes and emit a distinct CONSTRAINT_LIVENESS_FAILURE receipt rather than misclassifying it as generic transport failure."
+    ],
+    "track_b_semantic_scope_selection": [
+      "Retain unsupported REAL_WORLD_COMMITMENT as a valid representational path.",
+      "Create an evaluation-only prompt/contract candidate that makes the neutralization test an explicit entry-admission prerequisite: a real-world entry is permitted only for the smallest candidate-carried proposition that survives removal of the creative vehicle.",
+      "Explicitly prohibit using factual-summary text as commitment content when authority_support is null and the alleged proposition is not independently carried by candidate communicative force.",
+      "Require integrated-host consideration before whole-sentence standalone classification, without mandating that every candidate be creative or prescribing the expected Case 01 label.",
+      "Do not encode Case 01 wording, expected outcome, mechanism, or owner annotation in the generation path."
+    ]
+  },
+  "verification_sequence": [
+    "Zero-inference exact-prefix liveness regression and exhaustive reachable-state totality checks.",
+    "Zero-inference schema, trie, tokenizer, prompt-padding, identity, source-membership, and request-construction verification.",
+    "Focused synthetic structural fixtures only: supported governed return, unsupported surviving proposition, contained creative host, embedded factual return, and unresolved scope. These fixtures test representation and never gain curriculum authority.",
+    "Only after separate owner approval, exactly one evaluation-only Case 01 probe; no retry, repair, selection, Case 10, or Stage C."
+  ],
+  "acceptance_requirements": {
+    "safety": "Unsupported propositions remain representable and governed events without cited authority remain impossible.",
+    "liveness": "The exact Run 2 prefix and every tested reachable state have a legal completion or an explicit early governed rejection; no EMPTY_ALLOWED_TOKEN_SET.",
+    "case01_semantics": "Case 01 must be able to complete as contained creative material without manufacturing a real-world proposition, but the constraint must not force that owner label.",
+    "receipts": "Constraint-liveness, transport, schema, membership, and semantic evaluation failures remain independently auditable.",
+    "authority": "All resulting evidence remains quarantined evaluation evidence only."
+  },
+  "out_of_scope": [
+    "implementation",
+    "prompt modification",
+    "schema or model modification",
+    "runtime integration",
+    "curriculum exposure",
+    "training",
+    "inference",
+    "Stage C",
+    "Case 10",
+    "proof rerun"
+  ],
+  "recommended_next_step": "Owner-review this analysis, then authorize Track A only as a zero-inference constraint-liveness candidate before any Track B prompt candidate or model probe."
+}
