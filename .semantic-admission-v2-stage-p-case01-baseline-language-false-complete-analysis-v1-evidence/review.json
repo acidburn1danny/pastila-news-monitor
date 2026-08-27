@@ -1,0 +1,15 @@
+{
+  "result": "FAIL_FALSE_COMPLETE",
+  "case_id": "HMCV1-SASC-01",
+  "design_identity": "9aadcca9cdd2e48aeb9a50d21d323132b68e0c952e4fe2829c226c8f7fd9a873",
+  "raw_sha256": "942d9392bc2844b23ae8d6174a40e3df0f98f38e13e57db3e3babb47d4baefc0",
+  "schema_valid": true,
+  "source_membership_valid": true,
+  "semantic_exhaustiveness_valid": false,
+  "false_complete": true,
+  "stage_c_eligible": false,
+  "model_calls_during_review": 0,
+  "provider_calls_during_review": 0,
+  "inference_calls_during_review": 0,
+  "stage_c_calls": 0
+}

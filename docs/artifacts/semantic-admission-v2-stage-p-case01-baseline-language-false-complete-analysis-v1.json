@@ -1,0 +1,104 @@
+{
+  "artifact_id": "STAGE_P_CASE01_BASELINE_LANGUAGE_FALSE_COMPLETE_ANALYSIS_V1",
+  "design_identity": "9aadcca9cdd2e48aeb9a50d21d323132b68e0c952e4fe2829c226c8f7fd9a873",
+  "lifecycle": "DESIGN_ONLY_FROZEN_EVIDENCE_NO_STAGE_C",
+  "bound_evidence": {
+    "case_id": "HMCV1-SASC-01",
+    "probe_binding_identity": "7b063f617f0dd3c0aa262f5f2cdef81fe9ca1fa670eba68d5cebce98bcb41884",
+    "request_sha256": "b6e0fd27797998d9b447e9cb938b3ceaa173ee008dd8965a43dd5bf39f5a710d",
+    "raw_sha256": "942d9392bc2844b23ae8d6174a40e3df0f98f38e13e57db3e3babb47d4baefc0",
+    "phase_receipt_sha256": "554cc4941d3026efdf4bc626c0e35583dff2d2f06639a15d22dff03224774e39",
+    "identity_binding_sha256": "2b106054b097d4811064377463a631e3173660e6e0e48b58738d96b805f477a0",
+    "provider_call_count": 1,
+    "contract_result": "STAGE_P_VALID",
+    "contract_decision": "PASS_TO_NEXT_STAGE",
+    "eligibility": "QUARANTINED_EVALUATION_ONLY"
+  },
+  "owner_evaluation": {
+    "decision": "FAIL_FALSE_COMPLETE",
+    "stage_c_eligible": false,
+    "dominant_failure": "CONTAINED_CREATIVE_OVER_COLLAPSE",
+    "summary": "The ledger is schema-valid but its single whole-sentence CONTAINED_CREATIVE entry does not exhaustively inventory candidate-carried real-world semantic targets.",
+    "minimum_missing_commitment": "The money-hiding wording survives vehicle neutralization as financial concealment or nontransparency and is independently carried by the candidate.",
+    "secondary_required_adjudication": "The hedged need for greater transparency may carry a story-local assessment of insufficient transparency and cannot be silently absorbed without an explicit return-or-editorial determination.",
+    "non_commitment_boundary": "The employees-in-light component remains creative unless a distinct surviving proposition is demonstrated; the generated gloss of forced visibility is not itself evidence.",
+    "coverage_receipt_finding": "COMPLETE and the affirmative embedded/factual-return receipts are not semantically supported by the emitted entries."
+  },
+  "failure_analysis": [
+    {
+      "id": "BLFC-01-INTEGRATED_HOST_BECAME_TERMINAL_CLASSIFICATION",
+      "status": "DEMONSTRATED",
+      "evidence": "The model correctly found an integrated creative construction but emitted that whole construction as one STANDALONE entry and stopped decomposition.",
+      "impact": "Integrated-host precedence became an endpoint rather than the start of an embedded-return audit."
+    },
+    {
+      "id": "BLFC-02-COMMITMENT_GLOSS_CONTAINS_UNLEDGERED_TARGETS",
+      "status": "DEMONSTRATED",
+      "evidence": "The creative commitment gloss explicitly names financial opacity, forced visibility, and a need for accounting clarity while emitting no REAL_WORLD_COMMITMENT or UNRESOLVED_SCOPE entry.",
+      "impact": "Free-text semantic interpretation can acknowledge truth-evaluable targets without making them auditable ledger propositions."
+    },
+    {
+      "id": "BLFC-03-SELF_ATTESTED_EXHAUSTIVENESS",
+      "status": "DEMONSTRATED_CONTRACT_LIMIT",
+      "evidence": "Schema and source-membership validators prove field coherence and exact spans, but the coverage booleans are model assertions and cannot prove that every surviving proposition was emitted.",
+      "impact": "A one-entry creative ledger can mechanically claim COMPLETE after semantic omission."
+    },
+    {
+      "id": "BLFC-04-NEUTRALIZATION_TARGET_AMBIGUITY",
+      "status": "SUPPORTED_DESIGN_INFERENCE",
+      "evidence": "The prompt requires vehicle neutralization but does not mechanically separate vehicle wording, editorial evaluation, and the story-local truth-evaluable target acknowledged in the creative gloss.",
+      "impact": "The model may treat the target interpretation as merely an explanation of the metaphor rather than a proposition requiring separate adjudication."
+    },
+    {
+      "id": "BLFC-05-NOT_A_TRIE_OR_ADAPTER_LIVENESS_FAILURE",
+      "status": "DEMONSTRATED",
+      "evidence": "Transport, constrained decoding, persistence, schema validation, and source membership all succeeded. The diagnostic adapter preserved the baseline allowed-token set exactly.",
+      "impact": "Projector performance or liveness changes would not remediate this semantic false negative."
+    }
+  ],
+  "bounded_remediation_design": {
+    "name": "STAGE_P_CREATIVE_TARGET_DECOMPOSITION_V1",
+    "principle": "Finding an integrated creative host starts, rather than ends, a target-by-target factual-return audit.",
+    "requirements": [
+      "For every CONTAINED_CREATIVE host, identify each story-local semantic target used to explain the transformation before declaring coverage complete.",
+      "For each target, apply the existing assertion, presupposition, entailment, and necessary-implication survival tests independently of the figurative vehicle.",
+      "Emit a separate overlapping REAL_WORLD_COMMITMENT when a truth-evaluable target survives; cite exact governed support when available and preserve unsupported returns when not.",
+      "Keep evaluative stance, advice, normative judgment, and purely comic vehicle material distinct from factual propositions; do not force every metaphorical target into REAL_WORLD_COMMITMENT.",
+      "If the target cannot be resolved confidently as factual return versus contained editorial evaluation, emit UNRESOLVED_SCOPE and INDETERMINATE rather than COMPLETE.",
+      "A CONTAINED_CREATIVE commitment description must not introduce a truth-evaluable real-world predicate that is absent from a separate return entry or an explicit unresolved entry.",
+      "Whole-sentence creative spans remain allowed, but COMPLETE requires target-decomposition evidence for each material predicate named in the creative gloss.",
+      "Preserve multiple valid segmentations; require proposition coverage, not prescribed spans, wording, entry counts, or a Case 01 label."
+    ],
+    "case01_acceptance_contract": {
+      "creative_host_required": true,
+      "financial_concealment_target_must_be_adjudicated": true,
+      "transparency_assessment_must_be_adjudicated": true,
+      "forced_employee_visibility_must_not_be_invented": true,
+      "unsupported_real_world_commitments": 0,
+      "single_correct_segmentation": false,
+      "complete_allowed_only_after_all_targets_resolved": true
+    },
+    "negative_controls": [
+      "A purely fanciful vehicle whose target is only evaluative or comic remains representable as contained creative without a manufactured fact.",
+      "An unsupported factual target embedded in figurative wording remains representable and must be inventoried even without lexical markers.",
+      "A governed literal or implied target cites exact authority support rather than copying authority into a candidate-absent commitment.",
+      "An ambiguous mixed target yields UNRESOLVED_SCOPE and INDETERMINATE.",
+      "Entity reuse alone does not create a factual return."
+    ],
+    "verification_sequence_if_separately_authorized": [
+      "Design an evaluation-only prompt/contract candidate with explicit creative-target decomposition receipts or equivalent auditable structure.",
+      "Perform zero-inference schema, grammar, padding, identity, request-construction, and constrained-trie compatibility verification.",
+      "Use structural fixtures covering pure creative, governed embedded return, unsupported embedded return, normative evaluation, and unresolved mixed scope.",
+      "Only after separate approval, run one Case 01 probe with no retry, repair, selection, Stage C, or additional case."
+    ]
+  },
+  "boundaries": {
+    "current_case01_stage_c": false,
+    "rerun": false,
+    "prompt_or_contract_implementation": false,
+    "model_or_runtime_change": false,
+    "curriculum": false,
+    "training": false
+  },
+  "recommended_next_step": "Owner-review this frozen failure analysis, then authorize design-only construction of the Stage P Creative Target Decomposition V1 prompt/contract candidate before any implementation or inference."
+}
