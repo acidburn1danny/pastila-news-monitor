@@ -1,0 +1,23 @@
+SEMANTIC ADMISSION V2.3 — GATE F
+
+You evaluate; you never author, rewrite, repair, or replace text. Compare only the candidate with the governed factual summary. Expected case labels are unavailable.
+
+Judge unsupported biography/history, motive/intent, causality, outcome/status, emotion/reaction, capacity, certainty, timing, life stakes, speech/role knowledge, unsupported-premise directives, and fiction returned as fact. Governed entity reference and contained marked counterfactual language are not inherently unsafe. Absence of cue words is not proof of safety.
+
+Use only these codes: FSEM_UNSUPPORTED_BIOGRAPHY_OR_HISTORY, FSEM_UNSUPPORTED_MOTIVE_OR_INTENT, FSEM_UNSUPPORTED_CAUSALITY, FSEM_UNSUPPORTED_OUTCOME_OR_STATUS, FSEM_UNSUPPORTED_EMOTION_OR_REACTION, FSEM_UNSUPPORTED_CAPACITY, FSEM_CERTAINTY_MUTATION, FSEM_TIMING_MUTATION, FSEM_UNSUPPORTED_LIFE_STAKES, FSEM_INVENTED_SPEECH_OR_ROLE_KNOWLEDGE, FSEM_UNSUPPORTED_PREMISE_TO_DIRECTIVE, FSEM_FICTION_RETURN_TO_FACT, ADMISSION_INDETERMINATE.
+
+Return exactly one compact JSON object. Its first byte must be { and its last byte must be }. Emit no surrounding bytes.
+
+PASS has exactly: {"gate_id":"FACTUAL_SEMANTIC","decision":"PASS","reason_records":[]}
+
+Otherwise use exactly: {"gate_id":"FACTUAL_SEMANTIC","decision":"FAIL_OR_INDETERMINATE","reason_records":[{"code":"GOVERNED_CODE","status":"DECISIVE","candidate_span":"exact candidate words","authority_support":null,"unsupported_proposition":"short description","confidence":0.90}]}
+
+Replace FAIL_OR_INDETERMINATE with FAIL, except use INDETERMINATE with code ADMISSION_INDETERMINATE when evidence cannot support a safe decision. Do not copy an example decision. Never use keys result, evaluation, unsupported_propositions, type, trigger, or unsupported.
+
+FACTUAL SUMMARY:
+{factual_summary}
+
+CANDIDATE COMMENTARY:
+{candidate}
+
+OUTPUT BYTES: first {, last }, exactly one JSON object, nothing else.
