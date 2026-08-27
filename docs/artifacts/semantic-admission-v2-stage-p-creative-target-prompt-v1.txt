@@ -1,0 +1,37 @@
+SEMANTIC ADMISSION V2 — STAGE P CREATIVE TARGET DECOMPOSITION V1
+
+Inventory candidate-carried semantic commitments and creative-target relationships only. Never admit, reject, assign FSEM codes, author, rewrite, repair, or replace commentary. Expected labels, outcomes, owner annotations, and humor mechanisms are unavailable. Return only the governed compact JSON ledger.
+
+Work candidate-first. The factual summary is byte-immutable read-only support authority. It may resolve governed referents and corroborate a proposition already carried by the candidate; it may never create, complete, expand, or substitute one. Entity reuse, story specificity, grammatical declaration, or dependence on factual context does not by itself establish factual return.
+
+First inventory proposition entries using the existing Scope Graph rules. Find the smallest integrated hosts whose components jointly create metaphor, analogy, personification, counterfactual, hyperbole, wordplay, or another editorial transformation. Whole-sentence hosts are allowed. Finding a creative host starts rather than ends decomposition.
+
+For every CONTAINED_CREATIVE entry, enumerate every materially distinct story-local semantic target needed to explain what the candidate communicates. A target is candidate-carried meaning, not a label such as metaphor, joke, criticism, or wordplay and not information copied from factual authority.
+
+For each target, remove only the creative vehicle wording, not the target meaning. Decide independently whether candidate communicative force still carries a truth-evaluable real-world proposition through assertion, presupposition, entailment, or necessary implication.
+
+Use NONFACTUAL_EDITORIAL_OR_CREATIVE when the target is evaluative stance, normative criticism, advice, aesthetic judgment, absurd association, or other editorial meaning that does not survive as a descriptive fact. Use REAL_WORLD_PROPOSITION when a truth-evaluable proposition survives. Use UNRESOLVED_TARGET when the distinction cannot be resolved safely.
+
+Humor, hedging, metaphor, counterfactual form, personification, or editorial framing cannot shield a surviving proposition. Conversely, factual authority, entity reuse, story specificity, or a factual-sounding noun cannot manufacture a candidate-absent proposition. Check embedded presuppositions inside normative or evaluative targets separately.
+
+Every REAL_WORLD_PROPOSITION target links to the smallest overlapping REAL_WORLD_COMMITMENT entry inside its creative host. Align that proposition to an exact factual-authority substring only after candidate meaning is stable. Governed events require non-null exact authority support. Unsupported propositions remain real-world entries with null support and NEW_UNSUPPORTED_EVENT.
+
+Every NONFACTUAL_EDITORIAL_OR_CREATIVE target uses DOES_NOT_SURVIVE_AS_FACT, null proposition_entry_id, and RETAINED_NONFACTUAL. Every REAL_WORLD_PROPOSITION target uses its actual surviving basis, a proposition entry, and RECONCILED_TO_LEDGER. Every UNRESOLVED_TARGET uses UNRESOLVED, null proposition_entry_id, FAIL_CLOSED_UNRESOLVED, a corresponding unresolved proposition entry, unresolved_scope_present true, and INDETERMINATE coverage.
+
+A creative commitment or semantic_target must not name a truth-evaluable real-world predicate while omitting both a corresponding proposition entry and unresolved record. Do not turn every metaphor interpretation into a fact. Do not invent propositions from explanatory glosses. Preserve multiple valid segmentations; no fixed number of entries, targets, spans, or mechanisms is required.
+
+Scope Graph entry rules remain exact. CREATIVE_HOST identifies integrated contained creativity that hosts overlapping returns. FACTUAL_RETURN_WITHIN_CREATIVE_HOST identifies only a surviving real-world proposition and points to its host. STANDALONE remains valid for creative or real-world material without an embedded relation. UNRESOLVED_RELATION remains fail-closed.
+
+COMPLETE requires exhaustive whole-candidate, embedded-proposition, creative-scope, overlap, host, factual-return, target-enumeration, target-class, and target-to-ledger reconciliation reviews; all corresponding receipts true; and no unresolved entry or target. Otherwise use INDETERMINATE. If eight proposition entries or sixteen target audits cannot represent exhaustive content, remain INDETERMINATE rather than omit material.
+
+Return exactly one compact JSON object in this root order: stage_id, entries, creative_target_audits, coverage_receipt, coverage_decision. Preserve the established Scope Graph entry field order. Each target audit uses: audit_id, creative_host_entry_id, vehicle_span, semantic_target, target_class, survival_basis, proposition_entry_id, resolution. Coverage receipt appends creative_targets_enumerated, target_classes_reviewed, target_to_ledger_reconciled after the existing Scope Graph receipts.
+
+Before returning, verify every candidate_span and vehicle_span is an exact non-empty candidate substring; every non-null authority_support is an exact factual-authority substring; every target host and proposition identifier exists; each audit vehicle overlaps its host; each reconciled proposition overlaps and points back to its creative host; and every material target is represented exactly once or explicitly reconciled as the same target.
+
+CANDIDATE COMMENTARY — INVENTORY FIRST:
+{candidate}
+
+FACTUAL AUTHORITY — CONSULT ONLY AFTER CANDIDATE INVENTORY:
+{factual_summary}
+
+OUTPUT BYTES: first {, last }, exactly one compact JSON object, nothing else.
