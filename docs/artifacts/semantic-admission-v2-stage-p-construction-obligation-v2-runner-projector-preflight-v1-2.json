@@ -1,0 +1,37 @@
+{
+  "artifact_type": "ZERO_EXECUTION_RUNNER_PROJECTOR_PREFLIGHT_BINDING",
+  "artifact_version": "1.2.0",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_RUNNER_PROJECTOR_PREFLIGHT_V1_2",
+  "canonical_identity": "83074527007e585be686caac6a6951df000e3de0052ff104e45bdc529ce44908",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "separator": "LF",
+    "ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_V2_RUNNER_PROJECTOR_PREFLIGHT_V1_2",
+      "7a8ad4379362debbbf72425d3c2328bc9bed778b45fe083a42d47f8407428b52",
+      "1dc94cda37c270fda49bca7b430bbad4970b3afadf2d0e348cfc3479161e1a49",
+      "9993395df612550e221efd2c4419a9f87f7382ef184d6e3d66b931340cd767f3",
+      "974d5e6257256d7397cb68f90952c66809a536cf5525cbef58b3bbfce6791587",
+      "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c",
+      "ministral-tokenizer-decode-skip-special-cleanup-false-v1",
+      "ZERO_EXECUTION"
+    ]
+  },
+  "behavior": {
+    "canonical_host_payload_reparsed": true,
+    "canonical_static_payload_reparsed": true,
+    "request_host_static_context_hashes_cross_bound": true,
+    "immutable_token_piece_bundle_consumed": true,
+    "request_bound_projector_constructed": true,
+    "stale_or_conflicting_input": "FAIL_CLOSED"
+  },
+  "authority": {
+    "tokenizer_loading": false,
+    "model_or_adapter_loading": false,
+    "provider_or_inference": false,
+    "runner_or_executor_invocation": false,
+    "probe": false,
+    "stage_c": false,
+    "runtime_or_production": false
+  }
+}
