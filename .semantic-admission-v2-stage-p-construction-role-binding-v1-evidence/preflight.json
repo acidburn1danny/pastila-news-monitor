@@ -1,0 +1,26 @@
+{
+  "result": "PASS",
+  "runner_executor_binding_identity": "142e61df3c38c88011c2437f2c430c59263e74cb258e43d535ee2ebad552c72c",
+  "evaluator_binding_identity": "78a54899160921698fef98f9ac672d83015d08642a36aa67e3e559d6972eb9d6",
+  "focused_tests": {"passed": 10, "failed": 0},
+  "wsl_import_only": {
+    "result": "PASS",
+    "types": [
+      "StagePConstructionRoleConstraintStateV1",
+      "StagePDiagnosticTokenTrieProjectorV1",
+      "StagePConstructionRoleCallbackControllerV1",
+      "AppendOnlyLifecycleV1"
+    ],
+    "pydantic_loaded": false,
+    "transformers_loaded": false,
+    "peft_loaded": false
+  },
+  "runner_calls": 0,
+  "tokenizer_loads": 0,
+  "model_loads": 0,
+  "provider_calls": 0,
+  "inference_calls": 0,
+  "case01_request_constructed": false,
+  "case01_executed": false,
+  "stage_c_calls": 0
+}

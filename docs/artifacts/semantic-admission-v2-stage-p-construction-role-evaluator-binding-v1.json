@@ -1,0 +1,52 @@
+{
+  "artifact_id": "STAGE_P_CONSTRUCTION_ROLE_EVALUATOR_BINDING_V1",
+  "binding_identity": "78a54899160921698fef98f9ac672d83015d08642a36aa67e3e559d6972eb9d6",
+  "approved_request_candidate_identity": "46633da94538451e04643adf4f291bc30033749d8768e36c8a6be5eb13621734",
+  "approved_runner_executor_binding_identity": "142e61df3c38c88011c2437f2c430c59263e74cb258e43d535ee2ebad552c72c",
+  "lifecycle": "ZERO_INFERENCE_EVALUATOR_BOUND_CASE01_BLOCKED_NO_PROBE",
+  "identities": {
+    "evaluator_sha256": "d2261a936879e7277dff2f2134da0070ac887e2601eecb0895972fee2e820c76",
+    "executor_sha256": "4a49aa4de73a21308d898756bfbe11e1a18eebac149197b2538ab869def8ea94",
+    "evaluator_identity": "5e43b91c93d34e0570f0c08f02e4c46c75df3d2410e440232a312109d394f5e4",
+    "model_identity": "pastila-editor-core-v1.2-experimental",
+    "prompt_identity": "sha256:2fe034826fb19b28c4686fd4640325fd31a1f739140322b5a83412515f62e6bd",
+    "schema_identity": "sha256:1b9e2a289aaade5e79c1be2f81000103dd7787b068576b9d8923789a237c6854",
+    "constraint_identity": "sha256:a920d2e2c659246791ef250fb49d7d9a28c504b331224c6006df2b8f6866aac9",
+    "grammar_identity": "sha256:09afda7fcb31374491d6e7238f57d7409cd2d4134218e4919fd0939965cf0ae3",
+    "tokenizer_identity": "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c"
+  },
+  "binding_properties": {
+    "exact_executor_type_required": true,
+    "exact_request_candidate_required": true,
+    "exact_rendered_prompt_preserved": true,
+    "application_authority_constructed_with_synthetic_non_case_input": true,
+    "timeout_seconds": 240.0,
+    "subprocess_launch_forbidden": true,
+    "probe_wrapper_created": false,
+    "stage_c_edge": false
+  },
+  "zero_inference_verification": {
+    "constructor_binding": "PASS",
+    "synthetic_request_render": "PASS",
+    "application_authority": "PASS",
+    "runner_calls": 0,
+    "tokenizer_loads": 0,
+    "model_loads": 0,
+    "provider_calls": 0,
+    "inference_calls": 0,
+    "case01_request_constructed": false,
+    "case01_executed": false,
+    "stage_c_calls": 0
+  },
+  "authority": {
+    "probe_construction": false,
+    "case01_execution": false,
+    "stage_c": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  },
+  "status": "OWNER_REVIEW_REQUIRED",
+  "recommended_next_step": "Owner-review both bindings. If approved, separately authorize construction and zero-inference verification of one exclusive one-shot Construction Role Case 01 probe binding. Actual Case 01 execution and Stage C remain separately gated."
+}
