@@ -1,0 +1,7 @@
+import hashlib,json
+from pathlib import Path
+ROOT=Path(__file__).resolve().parents[1];SOURCE=ROOT/"src/pastila_scout/semantic_admission_v2/stage_p_construction_obligation_v2_runner_protocol_codec_v1.py";TEST=ROOT/"tests/test_semantic_admission_v2_stage_p_construction_obligation_v2_runner_protocol_codec_v1.py";ARTIFACT=ROOT/"docs/artifacts/semantic-admission-v2-stage-p-construction-obligation-v2-runner-protocol-codec-v1.json";PREFLIGHT=ROOT/".semantic-admission-v2-stage-p-construction-obligation-v2-runner-protocol-codec-v1-evidence/preflight.json"
+def test_codec_evidence_reproduces():
+ a=json.loads(ARTIFACT.read_bytes());assert hashlib.sha256("\n".join(a["identity_derivation"]["ordered_utf8_fields"]).encode()).hexdigest()==a["canonical_identity"];assert hashlib.sha256(SOURCE.read_bytes()).hexdigest()==a["implementation_sha256"];assert hashlib.sha256(TEST.read_bytes()).hexdigest()==a["focused_test_sha256"];assert json.loads(PREFLIGHT.read_bytes())["candidate_identity"]==a["canonical_identity"]
+def test_codec_evidence_is_zero_execution():
+ a=json.loads(ARTIFACT.read_bytes())["authority"];assert a["canonical_codec"] and a["synthetic_receipts"];assert all(not v for k,v in a.items() if k not in {"canonical_codec","synthetic_receipts"});p=json.loads(PREFLIGHT.read_bytes());assert all(v==0 for k,v in p.items() if k not in {"candidate_identity","codec_identity","focused_tests_passed","synthetic_codec_operations"})
