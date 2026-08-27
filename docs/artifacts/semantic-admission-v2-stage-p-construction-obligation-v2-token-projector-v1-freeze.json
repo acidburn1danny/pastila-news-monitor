@@ -1,0 +1,48 @@
+{
+  "artifact_type": "OWNER_AUTHORIZED_ZERO_INFERENCE_FREEZE_RECEIPT",
+  "artifact_version": "1.0.0",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_TOKEN_PROJECTOR_V1_FREEZE",
+  "canonical_identity": "974d5e6257256d7397cb68f90952c66809a536cf5525cbef58b3bbfce6791587",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_V2_TOKEN_PROJECTOR_V1_FREEZE",
+      "0e296bdcfdad5a643cb4f7c832f56bf68b411470685e45ad7653eeb15a1dc155",
+      "ecb0173aaa928278aa1aebe1029c2dd685140a8068967b9967f92c16bfabf2c6",
+      "NO_RUNTIME_AUTHORITY",
+      "OWNER_AUTHORIZED_FREEZE"
+    ],
+    "separator": "LF"
+  },
+  "frozen_candidate_identity": "0e296bdcfdad5a643cb4f7c832f56bf68b411470685e45ad7653eeb15a1dc155",
+  "frozen_tokenizer_revalidation_identity": "ecb0173aaa928278aa1aebe1029c2dd685140a8068967b9967f92c16bfabf2c6",
+  "bound_files": {
+    "src/pastila_scout/semantic_admission_v2/stage_p_construction_obligation_v2_token_projector_v1.py": "9e246f901fd95f11ba3fe4a791875c5f82878b0e8a615f3815aea0dffba15bac",
+    "docs/artifacts/semantic-admission-v2-stage-p-construction-obligation-v2-token-projector-v1-candidate.json": "de7b4ae8dd982616392bd6ce65df071993a6ae48fd0cb3680a7a9284aeaee23a",
+    "docs/artifacts/semantic-admission-v2-stage-p-construction-obligation-v2-tokenizer-compatibility-revalidation-v1.json": "10f3a7e24470020b516e0740752965a6b6f6474760d37fd017328a11ba39d164"
+  },
+  "frozen_properties": [
+    "request-bound character-language projection",
+    "audit-proven context-free token pieces",
+    "exact request/context/tokenizer/decoder/cache identity binding",
+    "terminal-only EOS",
+    "canonical fail-closed no-legal-token receipts",
+    "zero retry repair selection fallback or semantic relaxation"
+  ],
+  "historical_evidence": {
+    "modified": false,
+    "reinterpreted": false
+  },
+  "authority": {
+    "source_normalization": true,
+    "tokenizer_loading": false,
+    "model_or_adapter_loading": false,
+    "provider_or_inference": false,
+    "evaluator_binding": false,
+    "runner_executor_or_probe": false,
+    "stage_c": false,
+    "runtime_or_production": false,
+    "training_or_curriculum": false
+  },
+  "status": "OWNER_AUTHORIZED_FROZEN_ZERO_INFERENCE_CANDIDATE"
+}
