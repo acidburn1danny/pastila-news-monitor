@@ -1,0 +1,66 @@
+{
+  "artifact_type": "CANONICAL_PROMPT_AND_PURE_REQUEST_RENDERER_CANDIDATE",
+  "artifact_version": "1.0.0",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_PROMPT_REQUEST_RENDERER_V1",
+  "canonical_identity": "eb378b14eb6bc101b7cbf4af59759f3c428d0f8ae5115ee833ae59bf1c7e341d",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_V2_PROMPT_REQUEST_RENDERER_V1",
+      "93f5005c74dd9f4d553c2a193e924e891d1e29a78d5dc793766b840d30e892cc",
+      "3d68b53abe5af8fa01689c65c8909513096ee6d294e54666c839bf9a100b5ecc",
+      "sha256:1a4d0dbac3dd56d9b18de678b0044143473c916eaad1f68451b97e7928a50838",
+      "d55694074ea2023b0e93e06be9e260c11495cdc9fdbc23181c85e36c9921f7cd",
+      "80abbf335451380f12962740b103fbe3aef9e1658a3d1e50cd08b3031816436b",
+      "73d36d0b844af7775aadafceb4841a83a0c99180adda95def9c9b768a498b970",
+      "PURE_RENDERING_ONLY",
+      "ZERO_EXECUTION"
+    ],
+    "separator": "LF"
+  },
+  "feasibility_design_identity": "93f5005c74dd9f4d553c2a193e924e891d1e29a78d5dc793766b840d30e892cc",
+  "prompt_sha256": "3d68b53abe5af8fa01689c65c8909513096ee6d294e54666c839bf9a100b5ecc",
+  "v2_schema_identity": "sha256:1a4d0dbac3dd56d9b18de678b0044143473c916eaad1f68451b97e7928a50838",
+  "projector_freeze_identity": "974d5e6257256d7397cb68f90952c66809a536cf5525cbef58b3bbfce6791587",
+  "static_payload_identity": "d55694074ea2023b0e93e06be9e260c11495cdc9fdbc23181c85e36c9921f7cd",
+  "renderer_implementation_sha256": "80abbf335451380f12962740b103fbe3aef9e1658a3d1e50cd08b3031816436b",
+  "focused_test_sha256": "73d36d0b844af7775aadafceb4841a83a0c99180adda95def9c9b768a498b970",
+  "rendering_contract": {
+    "instruction_bytes": "immutable UTF-8 prompt ending in LF",
+    "data_transport": "one prevalidated canonical static-payload JSON value",
+    "data_delimiters": [
+      "BEGIN_CANONICAL_CONSTRUCTION_OBLIGATION_V2_STATIC_PAYLOAD",
+      "END_CANONICAL_CONSTRUCTION_OBLIGATION_V2_STATIC_PAYLOAD"
+    ],
+    "maximum_rendered_utf8_bytes": 192000,
+    "source_text_transport": "base64 inside canonical payload; never interpolated as prompt instructions",
+    "request_identity_fields": [
+      "request schema and version",
+      "feasibility design identity",
+      "projector freeze identity",
+      "static payload identity",
+      "V2 schema identity",
+      "prompt SHA-256",
+      "canonical payload SHA-256",
+      "rendered prompt SHA-256"
+    ]
+  },
+  "preserved_semantics": [
+    "candidate-first and factual-authority ordering",
+    "copyless request-bound immutable source references",
+    "Construction-Role, Creative-Target, Scope-Graph, and ledger reconciliation",
+    "complete coverage and unresolved fail-closed states",
+    "zero retry repair selection fallback or semantic relaxation",
+    "Stage P and Stage C separation"
+  ],
+  "authority": {
+    "prompt_bytes_and_pure_rendering": true,
+    "application_or_provider_request": false,
+    "provider_selection": false,
+    "tokenizer_or_model_loading": false,
+    "inference": false,
+    "runner_executor_or_probe": false,
+    "stage_c": false,
+    "runtime_or_production": false
+  }
+}
