@@ -1,0 +1,57 @@
+{
+  "artifact_id": "STAGE_P_CONSTRUCTION_ROLE_CASE01_PROBE_BINDING_V1",
+  "binding_identity": "88ea330d428960f03e6dae213e5f1ce2326c06789e9f5b92d9a738a1fcf08c5e",
+  "approved_evaluator_binding_identity": "78a54899160921698fef98f9ac672d83015d08642a36aa67e3e559d6972eb9d6",
+  "lifecycle": "EXCLUSIVE_ONE_SHOT_BOUND_NOT_EXECUTED_CASE01_BLOCKED",
+  "case_id": "HMCV1-SASC-01",
+  "pack_sha256": "4163307ccb8cfa8997b520a1cea04cddacd347e9b1ffde498db925ffccac6c2d",
+  "factual_summary_sha256": "e2add20c2ac06fdc90a2f7e1960d5672b8e91a9f7a82b895203dfb43f7f9d196",
+  "candidate_sha256": "52a54bad5c68d16bd326c9dac8c544b5c4b0a45b9129262a0da139167362682b",
+  "probe_runner_sha256": "8dd60be43a425fdc16570183ce46035770bb7e0f685b952a7b9ecb73c582ed8b",
+  "identities": {
+    "evaluator_identity": "5e43b91c93d34e0570f0c08f02e4c46c75df3d2410e440232a312109d394f5e4",
+    "request_candidate_identity": "46633da94538451e04643adf4f291bc30033749d8768e36c8a6be5eb13621734",
+    "prompt_identity": "sha256:2fe034826fb19b28c4686fd4640325fd31a1f739140322b5a83412515f62e6bd",
+    "schema_identity": "sha256:1b9e2a289aaade5e79c1be2f81000103dd7787b068576b9d8923789a237c6854",
+    "constraint_identity": "sha256:a920d2e2c659246791ef250fb49d7d9a28c504b331224c6006df2b8f6866aac9",
+    "grammar_identity": "sha256:09afda7fcb31374491d6e7238f57d7409cd2d4134218e4919fd0939965cf0ae3",
+    "tokenizer_identity": "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c",
+    "model_identity": "pastila-editor-core-v1.2-experimental"
+  },
+  "execution_boundaries": {
+    "exclusive_new_evidence_root": true,
+    "maximum_provider_calls": 1,
+    "retry_count": 0,
+    "repair_count": 0,
+    "selection_count": 0,
+    "constraint_liveness_reason": "STAGE_P_CONSTRAINT_LIVENESS_FAILURE",
+    "ordinary_transport_reason": "STAGE_P_PROVIDER_OR_TRANSPORT_FAILURE",
+    "stage_c_constructed": false,
+    "stage_c_called": false
+  },
+  "zero_inference_verification": {
+    "case01_selection": "PASS",
+    "pack_identity": "PASS",
+    "case_byte_hashes": "PASS",
+    "evaluator_binding": "PASS",
+    "exclusive_evidence_root": "PASS",
+    "single_call_site": "PASS",
+    "subprocess_launch_forbidden": "PASS",
+    "runner_calls": 0,
+    "tokenizer_loads": 0,
+    "model_loads": 0,
+    "provider_calls": 0,
+    "inference_calls": 0
+  },
+  "authority": {
+    "case01_execution": false,
+    "probe_execution": false,
+    "stage_c": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  },
+  "status": "OWNER_REVIEW_REQUIRED",
+  "recommended_next_step": "Owner-review this binding, then separately authorize exactly one evaluation-only Stage-P-only Construction Role Case 01 execution. Stop afterward without retry, repair, selection, Stage C, or another case."
+}

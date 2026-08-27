@@ -1,0 +1,20 @@
+{
+  "result": "PASS",
+  "binding_identity": "88ea330d428960f03e6dae213e5f1ce2326c06789e9f5b92d9a738a1fcf08c5e",
+  "case_id": "HMCV1-SASC-01",
+  "pack_sha256": "4163307ccb8cfa8997b520a1cea04cddacd347e9b1ffde498db925ffccac6c2d",
+  "factual_summary_sha256": "e2add20c2ac06fdc90a2f7e1960d5672b8e91a9f7a82b895203dfb43f7f9d196",
+  "candidate_sha256": "52a54bad5c68d16bd326c9dac8c544b5c4b0a45b9129262a0da139167362682b",
+  "probe_runner_sha256": "8dd60be43a425fdc16570183ce46035770bb7e0f685b952a7b9ecb73c582ed8b",
+  "focused_tests": {"passed": 8, "failed": 0},
+  "single_evaluator_call_site": true,
+  "fresh_evidence_root_required": true,
+  "subprocess_launch_forbidden": true,
+  "runner_calls": 0,
+  "tokenizer_loads": 0,
+  "model_loads": 0,
+  "provider_calls": 0,
+  "inference_calls": 0,
+  "case01_executed": false,
+  "stage_c_calls": 0
+}
