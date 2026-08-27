@@ -1,0 +1,30 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-tokenizer-regex-impact-bundle",
+  "schema_version": "1.0.0",
+  "canonical_identity": "e3e5084d9fe559ab8a13cc1c7d797a7a801a987eeac56d9ec0da7a940d01e45e",
+  "identity_method": "sha256 of ordered lowercase artifact SHA-256 values joined by LF",
+  "lifecycle": "FROZEN_BOUNDED_ZERO_INFERENCE_ASSESSMENT_COMPLETE",
+  "source_preflight_identity": "8a251fd00eca9bc5474bbdc87c444308c211b3321d587c873a277e728b48d983",
+  "result": "PASS",
+  "artifacts": [
+    {"path": "scripts/assess_semantic_admission_v2_tokenizer_regex_impact_v1.py", "sha256": "87a4db7ac6b1567f846db21b3b03971930f2eb4a89fa93e5be0ac9735b4946b6"},
+    {"path": "scripts/tokenizer_regex_impact_worker_v1.py", "sha256": "bec93daebea540df35ddc5d87cd6be9bde1768529c03f7f2b3ba448a030225ce"},
+    {"path": "tests/test_semantic_admission_v2_tokenizer_regex_impact_v1.py", "sha256": "0a8a6863b32e7eaeca942fd4edbb3788a463feb62786eeeef730bc222608c108"},
+    {"path": ".semantic-admission-v2-tokenizer-regex-impact-v1-attempt1-failure.json", "sha256": "2e7aae89169df2752cc597d2f8cfd3f946af12ab1c05cb9a040d169ae4e7199e"},
+    {"path": ".semantic-admission-v2-tokenizer-regex-impact-v1-evidence/impact-assessment.json", "sha256": "7c4d63d97c023aaa4db7f42769ccac091538d0c992f73aa5ba370334f943555f"},
+    {"path": ".semantic-admission-v2-tokenizer-regex-impact-v1-evidence/report.md", "sha256": "2a4b53afb500de530928625f8f294461b9ed2e323477627b0c950780f887fabd"}
+  ],
+  "sample_count": 15,
+  "exact_gate_f_prompt_count": 10,
+  "different_token_sequence_count": 0,
+  "bounded_run4_contract_impact": "NONE_OBSERVED",
+  "global_tokenizer_equivalence_claimed": false,
+  "runner_modified": false,
+  "model_load_started": false,
+  "inference_started": false,
+  "model_calls": 0,
+  "provider_calls": 0,
+  "run4_execution_authorized": false,
+  "runtime_authority": false,
+  "training_authority": false
+}

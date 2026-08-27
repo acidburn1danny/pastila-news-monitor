@@ -1,0 +1,15 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-tokenizer-regex-impact-failed-attempt",
+  "schema_version": "1.0.0",
+  "attempt": 1,
+  "result": "STOPPED_BEFORE_WSL_OR_TOKENIZER_LOAD",
+  "exception_type": "ModuleNotFoundError",
+  "failure": "Direct script execution could not resolve the scripts namespace.",
+  "tokenizer_load_started": false,
+  "model_load_started": false,
+  "inference_started": false,
+  "model_calls": 0,
+  "provider_calls": 0,
+  "run4_execution_authorized": false,
+  "superseded_by": "direct-launch-compatible assessment attempt"
+}

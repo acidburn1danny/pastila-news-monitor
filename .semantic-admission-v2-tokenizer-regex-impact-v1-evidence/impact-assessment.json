@@ -1,0 +1,164 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-tokenizer-regex-impact",
+  "schema_version": "1.0.0",
+  "checked_at": "2026-08-25T22:46:48.435631+00:00",
+  "source_preflight_identity": "8a251fd00eca9bc5474bbdc87c444308c211b3321d587c873a277e728b48d983",
+  "sample_count": 15,
+  "exact_gate_f_prompt_count": 10,
+  "worker_sha256": "bec93daebea540df35ddc5d87cd6be9bde1768529c03f7f2b3ba448a030225ce",
+  "returncode": 0,
+  "stdout": "",
+  "stderr": "[transformers] The tokenizer you are loading from '/home/pastila/PastilaAcida-Model-Lab/experimental-0.1/model-cache/huggingface/models--mistralai--Ministral-3-14B-Instruct-2512-BF16/snapshots/3cea74c1ebaf5ce5f5a2553de470e2ceab825142' with an incorrect regex pattern: https://huggingface.co/mistralai/Mistral-Small-3.1-24B-Instruct-2503/discussions/84#69121093e8b480e709447d5e. This will lead to incorrect tokenization. You should set the `fix_mistral_regex=True` flag when loading this tokenizer to fix this issue.\n",
+  "comparison": {
+    "legacy_class": "TokenizersBackend",
+    "fixed_class": "TokenizersBackend",
+    "different_count": 0,
+    "different_ids": [],
+    "records": [
+      {
+        "id": "prompt:HMCV1-SASC-01",
+        "legacy_count": 607,
+        "fixed_count": 607,
+        "identical_token_ids": true,
+        "legacy_sha256": "6a6bfc89eb576dd40e50031c0c3a30f0854fdb473323476f56ffe58296e62836",
+        "fixed_sha256": "6a6bfc89eb576dd40e50031c0c3a30f0854fdb473323476f56ffe58296e62836",
+        "first_difference": null
+      },
+      {
+        "id": "prompt:HMCV1-SASC-02",
+        "legacy_count": 586,
+        "fixed_count": 586,
+        "identical_token_ids": true,
+        "legacy_sha256": "5924c3569be482bd74816c8c3c46b85a7052e4e22c9594991ec4e8d54ed26e9d",
+        "fixed_sha256": "5924c3569be482bd74816c8c3c46b85a7052e4e22c9594991ec4e8d54ed26e9d",
+        "first_difference": null
+      },
+      {
+        "id": "prompt:HMCV1-SASC-03",
+        "legacy_count": 614,
+        "fixed_count": 614,
+        "identical_token_ids": true,
+        "legacy_sha256": "2f7be15add9301f86633b20308d8e11167b68772ca6ee0b8e7cb3d1dca63a042",
+        "fixed_sha256": "2f7be15add9301f86633b20308d8e11167b68772ca6ee0b8e7cb3d1dca63a042",
+        "first_difference": null
+      },
+      {
+        "id": "prompt:HMCV1-SASC-04",
+        "legacy_count": 651,
+        "fixed_count": 651,
+        "identical_token_ids": true,
+        "legacy_sha256": "e5f3fd81dd642446aca7960d50c46d842b15955c651386ba593666f343ef09df",
+        "fixed_sha256": "e5f3fd81dd642446aca7960d50c46d842b15955c651386ba593666f343ef09df",
+        "first_difference": null
+      },
+      {
+        "id": "prompt:HMCV1-SASC-05",
+        "legacy_count": 649,
+        "fixed_count": 649,
+        "identical_token_ids": true,
+        "legacy_sha256": "86a1f0653dfac29ea1ffa2fed580ab4ad9423e13d1d2dcce48dd0f9b5942c874",
+        "fixed_sha256": "86a1f0653dfac29ea1ffa2fed580ab4ad9423e13d1d2dcce48dd0f9b5942c874",
+        "first_difference": null
+      },
+      {
+        "id": "prompt:HMCV1-SASC-06",
+        "legacy_count": 645,
+        "fixed_count": 645,
+        "identical_token_ids": true,
+        "legacy_sha256": "484445873258d1cffb2e0d949daab73c5a40239bff1e21d9254956992fbcc03c",
+        "fixed_sha256": "484445873258d1cffb2e0d949daab73c5a40239bff1e21d9254956992fbcc03c",
+        "first_difference": null
+      },
+      {
+        "id": "prompt:HMCV1-SASC-07",
+        "legacy_count": 634,
+        "fixed_count": 634,
+        "identical_token_ids": true,
+        "legacy_sha256": "13d2d65c1f40654b066e0b86bb9173a4c897cf121cfc35211091ac37064440e2",
+        "fixed_sha256": "13d2d65c1f40654b066e0b86bb9173a4c897cf121cfc35211091ac37064440e2",
+        "first_difference": null
+      },
+      {
+        "id": "prompt:HMCV1-SASC-08",
+        "legacy_count": 612,
+        "fixed_count": 612,
+        "identical_token_ids": true,
+        "legacy_sha256": "656aeaf4e05ff49ded8e029daa74c8fe6655e956972205cd05d879d0aa232356",
+        "fixed_sha256": "656aeaf4e05ff49ded8e029daa74c8fe6655e956972205cd05d879d0aa232356",
+        "first_difference": null
+      },
+      {
+        "id": "prompt:HMCV1-SASC-09",
+        "legacy_count": 601,
+        "fixed_count": 601,
+        "identical_token_ids": true,
+        "legacy_sha256": "362c2297502cdddb1f0277fa417dd5869fd6da1f883231876305975af347b197",
+        "fixed_sha256": "362c2297502cdddb1f0277fa417dd5869fd6da1f883231876305975af347b197",
+        "first_difference": null
+      },
+      {
+        "id": "prompt:HMCV1-SASC-10",
+        "legacy_count": 628,
+        "fixed_count": 628,
+        "identical_token_ids": true,
+        "legacy_sha256": "025eb2fe8b25ee49e69869f7d8f35795422685aa457aa72fd6b281b82e041fa9",
+        "fixed_sha256": "025eb2fe8b25ee49e69869f7d8f35795422685aa457aa72fd6b281b82e041fa9",
+        "first_difference": null
+      },
+      {
+        "id": "canonical:pass",
+        "legacy_count": 23,
+        "fixed_count": 23,
+        "identical_token_ids": true,
+        "legacy_sha256": "7ef898218caab24f477a0d054d118438734aed2dc54b57be18b9dfea4d49c70d",
+        "fixed_sha256": "7ef898218caab24f477a0d054d118438734aed2dc54b57be18b9dfea4d49c70d",
+        "first_difference": null
+      },
+      {
+        "id": "canonical:indeterminate",
+        "legacy_count": 69,
+        "fixed_count": 69,
+        "identical_token_ids": true,
+        "legacy_sha256": "5927a1297d03490a678fb19efba8425a9fe7a177f88b964f4642b4795b2c7060",
+        "fixed_sha256": "5927a1297d03490a678fb19efba8425a9fe7a177f88b964f4642b4795b2c7060",
+        "first_difference": null
+      },
+      {
+        "id": "prefix:fail-span",
+        "legacy_count": 48,
+        "fixed_count": 48,
+        "identical_token_ids": true,
+        "legacy_sha256": "1da60e5602184df5e2d9daba5a82dedd599c4345e82dca076399f8caf3278c50",
+        "fixed_sha256": "1da60e5602184df5e2d9daba5a82dedd599c4345e82dca076399f8caf3278c50",
+        "first_difference": null
+      },
+      {
+        "id": "prefix:fail-support",
+        "legacy_count": 54,
+        "fixed_count": 54,
+        "identical_token_ids": true,
+        "legacy_sha256": "a7749cbf49cb0a25e5fc1945617c0869fb7e034a84dd1de34d7f7498f077f559",
+        "fixed_sha256": "a7749cbf49cb0a25e5fc1945617c0869fb7e034a84dd1de34d7f7498f077f559",
+        "first_difference": null
+      },
+      {
+        "id": "romanian:diacritics-punctuation",
+        "legacy_count": 33,
+        "fixed_count": 33,
+        "identical_token_ids": true,
+        "legacy_sha256": "f276f6a7249a5f1937d706e650f9f637dc72fec23db2b3f2637e5cf7e9072817",
+        "fixed_sha256": "f276f6a7249a5f1937d706e650f9f637dc72fec23db2b3f2637e5cf7e9072817",
+        "first_difference": null
+      }
+    ]
+  },
+  "model_load_started": false,
+  "inference_started": false,
+  "model_calls": 0,
+  "provider_calls": 0,
+  "runner_modified": false,
+  "run4_execution_authorized": false,
+  "runtime_authority": false,
+  "training_authority": false,
+  "result": "PASS"
+}
