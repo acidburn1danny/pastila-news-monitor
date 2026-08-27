@@ -392,15 +392,31 @@ def test_bulk_handoff_creates_ordered_persistent_editor_worklist(tmp_path):
     _publish_editor_worklist(View(), appended)
     assert projection == [
         (
-            (8, "Al doilea material", "failed"),
-            (7, "Titlu ales", "pending"),
             (9, "Al treilea material", "pending"),
         )
     ]
+    assert tuple(item.event_id for item in appended.editor_worklist) == (8, 7, 9)
+    assert appended.latest_handoff_event_ids == (9,)
     assert (
         ActiveProjectStoreV1(database_path=database, project_path=project_path).load()
         == appended
     )
+
+
+def test_latest_handoff_view_changes_projection_without_deleting_history(tmp_path):
+    database = tmp_path / "scout.db"
+    project_path = tmp_path / "active-project-v1.json"
+    _database(database)
+    _additional_event(database, 8, "Al doilea material")
+    store = ActiveProjectStoreV1(database_path=database, project_path=project_path)
+    project, _ = store.handoff_many(event_ids=(7, 8))
+
+    projected = store.record_latest_handoff_view(event_ids=(8,))
+
+    assert projected.editor_worklist == project.editor_worklist
+    assert projected.scout_input == project.scout_input
+    assert projected.latest_handoff_event_ids == (8,)
+    assert store.load_runtime_state() == projected
 
 
 def test_editor_worklist_transitions_persist_and_reject_invalid_changes(tmp_path):

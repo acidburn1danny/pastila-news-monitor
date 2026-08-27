@@ -56,7 +56,10 @@ from pastila_scout.windows_state_v1.settings import (
 )
 
 from .controller import _DesktopTaskControllerV1
-from .editor_batch import _run_editor_batch_v1
+from .editor_batch import (
+    _persist_application_result_diagnostic,
+    _run_editor_batch_v1,
+)
 from .episode_draft import (
     _approve_episode_draft_v1,
     _episode_draft_readiness_v1,
@@ -88,6 +91,7 @@ from .state_composition import (
     _DesktopStateConsumptionError,
 )
 from .views import _PRIMARY_LABEL_STYLE, _configure_desktop_styles, _DesktopMainWindowV1
+from .voice_v2_composition import compose_voice_v2_production
 
 
 class _DesktopStartupProgressSinkV1:
@@ -172,6 +176,16 @@ def main() -> int:
             "facade": facade,
             "project": active_project,
             "settings": settings,
+            "voice_v2": compose_voice_v2_production(
+                project_path=state.active_project_path,
+                project_identity=(
+                    active_project.project_id
+                    if active_project is not None
+                    else "unbound-active-project-v1"
+                ),
+                project_store=project_store,
+                settings=settings,
+            ),
         }
         closed = False
 
@@ -190,6 +204,14 @@ def main() -> int:
             cells["view"].publish_snapshot(snapshot=snapshot)  # type: ignore[attr-defined]
             if snapshot.application_state is _DesktopTaskStateV1.FAILED:
                 cells["editor_batch_polling"] = False
+                if cells.pop("acid_commentary_running", False):
+                    view.publish_acid_commentary_status(
+                        status=(
+                            "Comentariu acid: generarea locală a eșuat în siguranță; "
+                            "rezumatul factual nu a fost modificat."
+                        ),
+                        running=False,
+                    )
                 failed_project = project_store.load_runtime_state()
                 if failed_project is not None:
                     cells["project"] = failed_project
@@ -207,6 +229,15 @@ def main() -> int:
             settings=settings,
         )
         cells.update(controller=controller, view=view)
+        voice_composition = cells["voice_v2"]
+        voice_desktop = voice_composition.desktop_workflow  # type: ignore[attr-defined]
+        cells["voice_v2_desktop"] = voice_desktop
+
+        def run_voice_v2(*, input) -> None:
+            active_voice_desktop = cells["voice_v2_desktop"]
+            view.publish_voice_v2(
+                presentation=active_voice_desktop.dispatch(input)  # type: ignore[attr-defined]
+            )
 
         def run_scout(*, input) -> None:
             request = _scout_request(input)
@@ -267,6 +298,8 @@ def main() -> int:
                         project=project_store.load_runtime_state(),
                         settings=cells["settings"],
                         event_id=event_id,
+                        provider_override=selected.provider,
+                        model_override=selected.model,
                     )
                     result = facade.run_editor(
                         request=EditorDesktopRequestV1(application_request=request),
@@ -280,12 +313,35 @@ def main() -> int:
                         and application_result.output_path == request.destination.path
                         and application_result.payload_sha256 is not None
                     ):
+                        output_directory = getattr(
+                            cells["settings"], "editor_output_directory", None
+                        )
+                        _persist_application_result_diagnostic(
+                            event_id=event_id,
+                            application_result=application_result,
+                            provider_id=selected.provider,
+                            model_id=selected.model,
+                            diagnostics_directory=(
+                                None
+                                if output_directory is None
+                                else Path(output_directory) / "editor-diagnostics"
+                            ),
+                        )
                         raise _DesktopShellExecutionError() from None
                     return (
                         application_result.output_path,
                         application_result.payload_sha256,
                     )
 
+                execute._diagnostic_provider_id = selected.provider  # type: ignore[attr-defined]
+                execute._diagnostic_model_id = selected.model  # type: ignore[attr-defined]
+                output_directory = getattr(
+                    cells["settings"], "editor_output_directory", None
+                )
+                if output_directory is not None:
+                    execute._diagnostics_directory = (  # type: ignore[attr-defined]
+                        Path(output_directory) / "editor-diagnostics"
+                    )
                 return _run_editor_batch_v1(
                     store=project_store, event_ids=event_ids, execute=execute
                 )
@@ -305,6 +361,62 @@ def main() -> int:
                         f"{len(result.completed_event_ids)} generate, "
                         f"{len(result.failed_event_ids)} erori"
                     )
+                )
+
+            controller.submit_application(task=task, on_completed=on_completed)
+
+        def generate_acid_commentary(*, input: int) -> None:
+            if type(input) is not int or input <= 0:
+                raise _DesktopShellConfigurationError() from None
+            project = project_store.load_runtime_state()
+            if project is None or input not in {
+                item.event_id for item in project.editor_materials
+            }:
+                raise _DesktopShellConfigurationError() from None
+            view.publish_acid_commentary_status(
+                status="Comentariul acid se generează local…", running=True
+            )
+            cells["acid_commentary_running"] = True
+
+            def task():
+                current = project_store.load_runtime_state()
+                request = _integrated_editor_request_v1(
+                    project=current,
+                    settings=cells["settings"],
+                    event_id=input,
+                    model_override=cells["settings"].editor_default_model,
+                    governed_factual_material=True,
+                )
+                result = facade.run_editor(
+                    request=EditorDesktopRequestV1(application_request=request),
+                    progress_sink=_DesktopStartupProgressSinkV1(),
+                )
+                application_result = reconstruct_editor_desktop_result(
+                    result
+                ).application_result
+                if not (
+                    application_result.handoff_permitted
+                    and application_result.output_path == request.destination.path
+                    and application_result.payload_sha256 is not None
+                ):
+                    raise _DesktopShellExecutionError() from None
+                return (
+                    application_result.output_path,
+                    application_result.payload_sha256,
+                )
+
+            def on_completed(*, result) -> None:
+                cells["acid_commentary_running"] = False
+                output_path, payload_sha256 = result
+                cells["project"] = project_store.record_regenerated_editor_output_for_event(
+                    event_id=input,
+                    output_path=output_path,
+                    payload_sha256=payload_sha256,
+                )
+                _publish_editor_worklist(view, cells["project"])
+                _publish_chief_editor(view, cells["project"], store=project_store)
+                view.publish_acid_commentary_status(
+                    status="Comentariu acid: generat de modelul local.", running=False
                 )
 
             controller.submit_application(task=task, on_completed=on_completed)
@@ -552,6 +664,10 @@ def main() -> int:
         view.bind_scout_action(callback=run_scout)
         view.bind_editor_action(callback=run_editor)
         view.bind_editor_retry_action(callback=retry_editor)
+        if hasattr(view, "bind_voice_v2_action"):
+            view.bind_voice_v2_action(callback=run_voice_v2)
+        if hasattr(view, "bind_acid_commentary_action"):
+            view.bind_acid_commentary_action(callback=generate_acid_commentary)
         view.bind_report_action(callback=open_report)
         view.bind_handoff_action(callback=handoff)
         view.bind_chief_editor_actions(
@@ -822,6 +938,14 @@ def _complete_handoff(
         )
         return False
     cells["project"] = project
+    voice_composition = compose_voice_v2_production(
+        project_path=store.project_path,
+        project_identity=project.project_id,
+        project_store=store,
+        settings=cells.get("settings"),
+    )
+    cells["voice_v2"] = voice_composition
+    cells["voice_v2_desktop"] = voice_composition.desktop_workflow
     added = len(event_ids) - skipped
     message = (
         _text_v1(key="scout.handoff_success")
@@ -840,6 +964,10 @@ def _complete_handoff(
 
 def _publish_editor_worklist(view: object, project: object) -> None:
     events = {item.event_id: item for item in project.scout_input.ranked_events}
+    latest = set(
+        getattr(project, "latest_handoff_event_ids", ())
+        or tuple(item.event_id for item in project.editor_worklist)
+    )
     view.publish_editor_worklist(  # type: ignore[attr-defined]
         items=tuple(
             (
@@ -848,8 +976,25 @@ def _publish_editor_worklist(view: object, project: object) -> None:
                 item.status.value,
             )
             for item in project.editor_worklist
+            if item.event_id in latest
         ),
     )
+    if hasattr(view, "publish_editor_material_presentations"):
+        from .editor_material_presentation_v2 import (
+            load_editor_material_presentation_v2,
+        )
+
+        presentations = []
+        for material in project.editor_materials:
+            try:
+                presentations.append(
+                    load_editor_material_presentation_v2(material=material)
+                )
+            except OSError, TypeError, ValueError:
+                continue
+        view.publish_editor_material_presentations(  # type: ignore[attr-defined]
+            items=tuple(presentations)
+        )
 
 
 def _save_chief_editor(store: ActiveProjectStoreV1, value: object):
@@ -871,10 +1016,92 @@ def _save_chief_editor(store: ActiveProjectStoreV1, value: object):
 def _publish_chief_editor(
     view: object, project: object, status: str = "", *, store=None
 ) -> None:
+    from pastila_scout.chief_editor_transition_v2 import (
+        ChiefEditorTransitionWorkflowStoreV1,
+        PublicTransitionStateV1,
+        chief_story_reference_identity,
+        reconcile_transition_workflow,
+        transition_sidecar_path,
+    )
+    from pastila_scout.chief_editor_v2_handoff import (
+        render_resolved_chief_editor_v2_story,
+        resolve_chief_editor_v2_story_reference,
+    )
+
     materials = {item.reference: item for item in project.editor_materials}
+    v2_presentations = []
+    integrity_failure = False
+    transition_slots = {}
+    if store is not None and hasattr(store, "project_path"):
+        transition_path = transition_sidecar_path(store.project_path)
+        try:
+            persisted_transitions = (
+                ChiefEditorTransitionWorkflowStoreV1(transition_path).load()
+                if transition_path.is_file()
+                else None
+            )
+            expected_transitions = reconcile_transition_workflow(
+                references_and_intents=tuple(
+                    (item.v2_story_reference, item.material_reference, item.note)
+                    for item in project.chief_editor_items
+                ),
+                existing=persisted_transitions,
+                now=(
+                    datetime.now(UTC)
+                    if persisted_transitions is None
+                    else persisted_transitions.updated_at
+                ),
+            )
+            if persisted_transitions is not None and (
+                persisted_transitions.ordered_chief_story_identities
+                != expected_transitions.ordered_chief_story_identities
+                or persisted_transitions.active_slots
+                != expected_transitions.active_slots
+            ):
+                raise ValueError("stale transition workflow")
+            transition_slots = {
+                item.from_story.chief_story_reference_identity: item
+                for item in expected_transitions.active_slots
+            }
+        except OSError, TypeError, ValueError:
+            integrity_failure = True
+    for item in project.chief_editor_items:
+        if item.v2_story_reference is None:
+            continue
+        try:
+            resolved = resolve_chief_editor_v2_story_reference(item.v2_story_reference)
+            rendered = render_resolved_chief_editor_v2_story(resolved)
+            slot = transition_slots.get(
+                chief_story_reference_identity(item.v2_story_reference)
+            )
+            if slot is not None:
+                transition_labels = {
+                    PublicTransitionStateV1.UNAVAILABLE: "Indisponibilă",
+                    PublicTransitionStateV1.UNGENERATED: "Negenerată",
+                    PublicTransitionStateV1.FAILED: "Eșuată",
+                }
+                transition_text = (
+                    slot.accepted_transition.text
+                    if slot.accepted_transition is not None
+                    else transition_labels[slot.state]
+                )
+                rendered += "\n\nTranziție către următoarea știre\n" + transition_text
+            v2_presentations.append(
+                (
+                    item.material_reference,
+                    rendered,
+                )
+            )
+        except OSError, TypeError, ValueError:
+            integrity_failure = True
     can_publish, readiness_status = (
         _episode_draft_readiness_v1(store=store) if store is not None else (False, "")
     )
+    if integrity_failure:
+        can_publish = False
+        readiness_status = (
+            "Referința Semantic Draft V2 nu mai corespunde materialului persistat."
+        )
     view.publish_chief_editor(  # type: ignore[attr-defined]
         title=project.chief_editor_title or project.title,
         available=tuple(
@@ -892,6 +1119,7 @@ def _publish_chief_editor(
         ),
         status=status or readiness_status,
         can_publish_episode_draft=can_publish,
+        v2_presentations=tuple(v2_presentations),
     )
 
 
@@ -957,8 +1185,6 @@ def _save_scout_provider_settings(*, path: Path, current: object, value: object)
         scout_provider=provider,
         ollama_base_url=base_url,
         ollama_model=model,
-        editor_provider=provider,
-        editor_model=model,
     )
     settings = WindowsSettingsV1(**values)
     _save_windows_settings_v1(path=path, settings=settings)
