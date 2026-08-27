@@ -1,0 +1,31 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-run4-constrained-evidence-bundle",
+  "schema_version": "1.0.0",
+  "canonical_identity": "5c7938c0029df9a0da46ff9235d40e351f2e7c0862e5da94de97789de265ed6e",
+  "identity_method": "sha256 of ordered lowercase artifact SHA-256 values joined by LF",
+  "lifecycle": "FROZEN_COMPLETED_SEMANTIC_NONCONFORMANCE",
+  "run_id": "SAV2_TEN_CASE_CONFORMANCE_RUN_4_CONSTRAINED_V1",
+  "artifacts": [
+    {"path": "docs/artifacts/semantic-admission-v2-run4-constrained-plan.json", "sha256": "8bf809ed73757bf76ef735922f81713f4d0e2eda36abffb64c0c25453bbe69ac"},
+    {"path": "scripts/run_semantic_admission_v2_ten_case_conformance_run4_constrained_v1.py", "sha256": "6f957996ad1e626635f69678ba5d1ba242ded8edddec2c818a4862cd8711e3fc"},
+    {"path": "tests/test_semantic_admission_v2_run4_constrained_plan.py", "sha256": "7eaa9ff4c8aed419fc28252487ae7108942b0f87312d577694ccdac9cf65e279"},
+    {"path": ".semantic-admission-v2-ten-case-conformance-run-v4-evidence/run4-execution-authority.json", "sha256": "a06de65dbc75cc0ce6ff7c2fa5a1f7b5e9758b6e7725bfdea4c2f9f5ab80244f"},
+    {"path": ".semantic-admission-v2-ten-case-conformance-run-v4-evidence/raw-call-ledger.json", "sha256": "8a14a80fc5f13d675ebff6bfa18329d1dd55647ef2cd89c097a2e624f222b66e"},
+    {"path": ".semantic-admission-v2-ten-case-conformance-run-v4-evidence/raw-results.json", "sha256": "77d0336d6f07e42be5f761e2e73718a5aee6cf634efb5fc4ba0b8b49371cb723"},
+    {"path": ".semantic-admission-v2-ten-case-conformance-run-v4-evidence/evaluation-summary.json", "sha256": "9fc9540ec044536f7ff430059f5189370cb7352141f6b40645d56952b19ebe70"},
+    {"path": ".semantic-admission-v2-ten-case-conformance-run-v4-evidence/report.md", "sha256": "cb48200e9a4de810f248fa689900662023f6beeaa732f93cd23321b8ba660ac2"}
+  ],
+  "case_count": 10,
+  "provider_call_count": 20,
+  "evaluator_exception_count": 0,
+  "retry_count": 0,
+  "gate_f_false_positive_rejection_count": 3,
+  "gate_f_wrong_reason_count_among_negatives": 6,
+  "mandatory_positive_anchor_passed": false,
+  "minimum_conformance_thresholds_passed": false,
+  "outputs_quarantined": true,
+  "current_runtime_admission_affected": false,
+  "curriculum_authority": false,
+  "training_authority": false,
+  "runtime_authority": false
+}

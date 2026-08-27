@@ -1,0 +1,208 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-run3-raw-call-ledger",
+  "schema_version": "1.0.0",
+  "run_id": "SAV2_TEN_CASE_CONFORMANCE_RUN_4_CONSTRAINED_V1",
+  "maximum_provider_calls": 20,
+  "calls": [
+    {
+      "ordinal": 1,
+      "case_id": "HMCV1-SASC-01",
+      "gate_id": "FACTUAL_SEMANTIC",
+      "started_at": "2026-08-25T22:50:06.037167+00:00",
+      "completed_at": "2026-08-25T22:50:45.306241+00:00",
+      "raw_response": "{\"gate_id\":\"FACTUAL_SEMANTIC\",\"decision\":\"FAIL\",\"reason_records\":[{\"code\":\"FSEM_UNSUPPORTED_EMOTION_OR_REACTION\",\"status\":\"DECISIVE\",\"candidate_span\":\"Când banii se ascund în umbră, iar angajații rămân la lumină, pare că și hotelul ar avea nevoie de o cameră cu mai multă transparență.\",\"authority_support\":null,\"unsupported_proposition\":\"emotive framing ('pare că', 'ar avea nevoie') and metaphorical language ('cameră cu mai multă transparență') unsupported by factual summary\",\"confidence\":0.90}]}",
+      "raw_response_sha256": "3050b0be2f893f645f068271e3a5f916dbe57523db1f41bfe68025a857967ea2",
+      "exception_type": null
+    },
+    {
+      "ordinal": 2,
+      "case_id": "HMCV1-SASC-01",
+      "gate_id": "STORY_SPECIFICITY",
+      "started_at": "2026-08-25T22:50:45.306815+00:00",
+      "completed_at": "2026-08-25T22:51:03.023462+00:00",
+      "raw_response": "{\"gate_id\":\"STORY_SPECIFICITY\",\"decision\":\"PASS\",\"reason_records\":[]}",
+      "raw_response_sha256": "a5c03f65db8fd8a0067f9785ae1b35e8102b0091ab9646e47629b2751e92d281",
+      "exception_type": null
+    },
+    {
+      "ordinal": 3,
+      "case_id": "HMCV1-SASC-02",
+      "gate_id": "FACTUAL_SEMANTIC",
+      "started_at": "2026-08-25T22:51:03.024521+00:00",
+      "completed_at": "2026-08-25T22:51:32.222316+00:00",
+      "raw_response": "{\"gate_id\":\"FACTUAL_SEMANTIC\",\"decision\":\"FAIL\",\"reason_records\":[{\"code\":\"FSEM_UNSUPPORTED_EMOTION_OR_REACTION\",\"status\":\"DECISIVE\",\"candidate_span\":\"Când lumile se sting, chiar și cele mai bine pregătite planuri rămân la fel de întunecate.\",\"authority_support\":null,\"unsupported_proposition\":\"emotive interpretation of the power outage's impact\",\"confidence\":0.90}]}",
+      "raw_response_sha256": "893711b3548316b9f888b2c8e556fa0069b6afa24c80dac5f5fd9c2de76ea469",
+      "exception_type": null
+    },
+    {
+      "ordinal": 4,
+      "case_id": "HMCV1-SASC-02",
+      "gate_id": "STORY_SPECIFICITY",
+      "started_at": "2026-08-25T22:51:32.222742+00:00",
+      "completed_at": "2026-08-25T22:51:50.356584+00:00",
+      "raw_response": "{\"gate_id\":\"STORY_SPECIFICITY\",\"decision\":\"PASS\",\"reason_records\":[]}",
+      "raw_response_sha256": "a5c03f65db8fd8a0067f9785ae1b35e8102b0091ab9646e47629b2751e92d281",
+      "exception_type": null
+    },
+    {
+      "ordinal": 5,
+      "case_id": "HMCV1-SASC-03",
+      "gate_id": "FACTUAL_SEMANTIC",
+      "started_at": "2026-08-25T22:51:50.357596+00:00",
+      "completed_at": "2026-08-25T22:52:23.426524+00:00",
+      "raw_response": "{\"gate_id\":\"FACTUAL_SEMANTIC\",\"decision\":\"FAIL\",\"reason_records\":[{\"code\":\"FSEM_UNSUPPORTED_MOTIVE_OR_INTENT\",\"status\":\"DECISIVE\",\"candidate_span\":\"Când îți dai seama că ai petrecut viața în așteptarea unui bacalaureat, poate că e mai bine să-l dai și să nu mai aștepți.\",\"authority_support\":null,\"unsupported_proposition\":\"Motivul sau intenția bărbatului de a susține bacalaureatul la 69 de ani este prezentat ca o concluzie a unei reflecții personale, fără a fi susținută de fapte.\",\"confidence\":0.90}]}",
+      "raw_response_sha256": "696141de0817ab4d5de99491f46a2021472a9d6200c9eef14d3c4d017ffb45bd",
+      "exception_type": null
+    },
+    {
+      "ordinal": 6,
+      "case_id": "HMCV1-SASC-03",
+      "gate_id": "STORY_SPECIFICITY",
+      "started_at": "2026-08-25T22:52:23.426991+00:00",
+      "completed_at": "2026-08-25T22:52:41.309355+00:00",
+      "raw_response": "{\"gate_id\":\"STORY_SPECIFICITY\",\"decision\":\"PASS\",\"reason_records\":[]}",
+      "raw_response_sha256": "a5c03f65db8fd8a0067f9785ae1b35e8102b0091ab9646e47629b2751e92d281",
+      "exception_type": null
+    },
+    {
+      "ordinal": 7,
+      "case_id": "HMCV1-SASC-04",
+      "gate_id": "FACTUAL_SEMANTIC",
+      "started_at": "2026-08-25T22:52:41.310411+00:00",
+      "completed_at": "2026-08-25T22:53:20.013313+00:00",
+      "raw_response": "{\"gate_id\":\"FACTUAL_SEMANTIC\",\"decision\":\"FAIL\",\"reason_records\":[{\"code\":\"FSEM_UNSUPPORTED_MOTIVE_OR_INTENT\",\"status\":\"DECISIVE\",\"candidate_span\":\"Dacă ar fi vorba de un râu care se gândește să facă o pauză de vară\",\"authority_support\":null,\"unsupported_proposition\":\"atribuirea unei intenții sau gândirii unui râu\",\"confidence\":0.90},{\"code\":\"FSEM_UNSUPPORTED_EMOTION_OR_REACTION\",\"status\":\"DECISIVE\",\"candidate_span\":\"să-și ia o zi liberă și să se lase purtată de curent, fără să se grăbească prea mult\",\"authority_support\":null,\"unsupported_proposition\":\"atribuirea unei reacții sau stări emoționale unui râu\",\"confidence\":0.90}]}",
+      "raw_response_sha256": "6d2f1782dca84399c3a56367468f51285609b8873a87ad9c7f8ae61a3e140a97",
+      "exception_type": null
+    },
+    {
+      "ordinal": 8,
+      "case_id": "HMCV1-SASC-04",
+      "gate_id": "STORY_SPECIFICITY",
+      "started_at": "2026-08-25T22:53:20.013694+00:00",
+      "completed_at": "2026-08-25T22:53:53.041944+00:00",
+      "raw_response": "{\"gate_id\":\"STORY_SPECIFICITY\",\"decision\":\"FAIL_GENERIC_PORTABLE\",\"reason_records\":[{\"code\":\"SPEC_GENERIC_PORTABLE\",\"status\":\"DECISIVE\",\"candidate_span\":\"Dacă ar fi vorba de un râu care se gândește să facă o pauză de vară, Dunărea ar fi cel mai probabil să-și ia o zi liberă și să se lase purtată de curent, fără să se grăbească prea mult.\",\"authority_support\":null,\"unsupported_proposition\":\"Metfora despre un râu care 'se gândește' și 'se lasă purtat' este o generalizare stilistică fără legătură cu datele factuale despre debitul Dunării (1400 m³/s, scădere la 1300 m³/s). Această formulare ar putea fi aplicată oricărui râu sau context hidrologic, fără specificitate.\", \"confidence\":0.90}]}",
+      "raw_response_sha256": "47ec75d0462a9dfcd24f4f63f8cac0515325c5bd50802c38a97cf3a6e5a71bbd",
+      "exception_type": null
+    },
+    {
+      "ordinal": 9,
+      "case_id": "HMCV1-SASC-05",
+      "gate_id": "FACTUAL_SEMANTIC",
+      "started_at": "2026-08-25T22:53:53.043187+00:00",
+      "completed_at": "2026-08-25T22:54:27.886534+00:00",
+      "raw_response": "{\"gate_id\":\"FACTUAL_SEMANTIC\",\"decision\":\"FAIL\",\"reason_records\":[{\"code\":\"FSEM_UNSUPPORTED_EMOTION_OR_REACTION\",\"status\":\"DECISIVE\",\"candidate_span\":\"Când legea vrea să te protejeze, dar se lovește de propriile limite, e ca și cum ai încerca să-i dai un copil o pălărie de securitate la plajă — nu se potrivește, iar cel care rămâne fără pălărie e copilul.\",\"authority_support\":null,\"unsupported_proposition\":\"Compararea legii cu o pălărie de securitate și descrierea emoției/reației (protecție inadecvată)\",\"confidence\":0.90}]}",
+      "raw_response_sha256": "0d6e4523ca1c3931d68082463cb8dbdbabca67229ee376188e37d8e919bb38ed",
+      "exception_type": null
+    },
+    {
+      "ordinal": 10,
+      "case_id": "HMCV1-SASC-05",
+      "gate_id": "STORY_SPECIFICITY",
+      "started_at": "2026-08-25T22:54:27.887074+00:00",
+      "completed_at": "2026-08-25T22:54:57.468936+00:00",
+      "raw_response": "{\"gate_id\":\"STORY_SPECIFICITY\",\"decision\":\"FAIL_GENERIC_PORTABLE\",\"reason_records\":[{\"code\":\"SPEC_GENERIC_PORTABLE\",\"status\":\"DECISIVE\",\"candidate_span\":\"Când legea vrea să te protejeze, dar se lovește de propriile limite, e ca și cum ai încerca să-i dai un copil o pălărie de securitate la plajă — nu se potrivește, iar cel care rămâne fără pălărie e copilul.\",\"authority_support\":null,\"unsupported_proposition\":\"Metaphorul generic despre limitările legilor nu este specific deciziei Consiliului Constituțional privind interzicerea accesului minorilor la rețelele sociale.\",\"confidence\":0.90}]}",
+      "raw_response_sha256": "06d8c885911e9450a76656e80b9fb8af57990c04046bfe81786a03641a8a9e78",
+      "exception_type": null
+    },
+    {
+      "ordinal": 11,
+      "case_id": "HMCV1-SASC-06",
+      "gate_id": "FACTUAL_SEMANTIC",
+      "started_at": "2026-08-25T22:54:57.470106+00:00",
+      "completed_at": "2026-08-25T22:55:31.029186+00:00",
+      "raw_response": "{\"gate_id\":\"FACTUAL_SEMANTIC\",\"decision\":\"FAIL\",\"reason_records\":[{\"code\":\"FSEM_UNSUPPORTED_MOTIVE_OR_INTENT\",\"status\":\"DECISIVE\",\"candidate_span\":\"Dacă ar fi vorba de un parc de jucării, ar fi mai ușor să alegi un nume, dar aici e vorba de un loc unde oamenii se plimbă și se gândesc, așa că poate că e mai bine să nu schimbi ceva care are deja un nume și o istorie.\",\"authority_support\":null,\"unsupported_proposition\":\"Motivul sau intenția de a nu schimba numele parcului\",\"confidence\":0.90}]}",
+      "raw_response_sha256": "feb1c148437de434ae6d446f4cd6695b6cf06b31117c27a73c45e76de343fee7",
+      "exception_type": null
+    },
+    {
+      "ordinal": 12,
+      "case_id": "HMCV1-SASC-06",
+      "gate_id": "STORY_SPECIFICITY",
+      "started_at": "2026-08-25T22:55:31.029635+00:00",
+      "completed_at": "2026-08-25T22:56:01.671728+00:00",
+      "raw_response": "{\"gate_id\":\"STORY_SPECIFICITY\",\"decision\":\"FAIL_GENERIC_PORTABLE\",\"reason_records\":[{\"code\":\"SPEC_GENERIC_PORTABLE\",\"status\":\"DECISIVE\",\"candidate_span\":\"Dacă ar fi vorba de un parc de jucării, ar fi mai ușor să alegi un nume, dar aici e vorba de un loc unde oamenii se plimbă și se gândesc, așa că poate că e mai bine să nu schimbi ceva care are deja un nume și o istorie.\",\"authority_support\":null,\"unsupported_proposition\":\"Opinia generică despre schimbarea numelui unui parc, fără legătură directă cu evenimentul specific (Nadia Comăneci, Parcul Izvor) sau cu autoritatea furnizată.\",\"confidence\":0.90}]}",
+      "raw_response_sha256": "db2c5149bc2d3ceefdf2d1384ff3d41947085672e241173fc1f53be1f7973372",
+      "exception_type": null
+    },
+    {
+      "ordinal": 13,
+      "case_id": "HMCV1-SASC-07",
+      "gate_id": "FACTUAL_SEMANTIC",
+      "started_at": "2026-08-25T22:56:01.672993+00:00",
+      "completed_at": "2026-08-25T22:56:35.186080+00:00",
+      "raw_response": "{\"gate_id\":\"FACTUAL_SEMANTIC\",\"decision\":\"FAIL\",\"reason_records\":[{\"code\":\"FSEM_UNSUPPORTED_EMOTION_OR_REACTION\",\"status\":\"DECISIVE\",\"candidate_span\":\"Când ai o autostradă care se deschide ca o floare de colț, dar doar pe jumătate, e ca și cum ai avea un telefon nou cu jumătate din tastele blocate — ai speranță, dar și frustrare.\",\"authority_support\":null,\"unsupported_proposition\":\"Compararea deschiderii parțiale a autostrăzii cu un telefon cu taste blocate și atribuirea emoțiilor (speranță, frustrare)\",\"confidence\":0.90}]}",
+      "raw_response_sha256": "18493563db5947ba8f1666ddbc909d4f52dcbd71020fff805cca250074af5740",
+      "exception_type": null
+    },
+    {
+      "ordinal": 14,
+      "case_id": "HMCV1-SASC-07",
+      "gate_id": "STORY_SPECIFICITY",
+      "started_at": "2026-08-25T22:56:35.186594+00:00",
+      "completed_at": "2026-08-25T22:57:02.437026+00:00",
+      "raw_response": "{\"gate_id\":\"STORY_SPECIFICITY\",\"decision\":\"FAIL_GENERIC_PORTABLE\",\"reason_records\":[{\"code\":\"SPEC_GENERIC_PORTABLE\",\"status\":\"DECISIVE\",\"candidate_span\":\"Când ai o autostradă care se deschide ca o floare de colț, dar doar pe jumătate, e ca și cum ai avea un telefon nou cu jumătate din tastele blocate — ai speranță, dar și frustrare.\",\"authority_support\":null,\"unsupported_proposition\":\"Metaphoric comparison of partial infrastructure completion to a partially functional device is a generic transfer, not a story-specific mapping.\",\"confidence\":0.90}]}",
+      "raw_response_sha256": "50cbf13f4acaecdc55a3d8992b487a69204180cf9dd60e547a2e84405f8955b7",
+      "exception_type": null
+    },
+    {
+      "ordinal": 15,
+      "case_id": "HMCV1-SASC-08",
+      "gate_id": "FACTUAL_SEMANTIC",
+      "started_at": "2026-08-25T22:57:02.438414+00:00",
+      "completed_at": "2026-08-25T22:57:31.048738+00:00",
+      "raw_response": "{\"gate_id\":\"FACTUAL_SEMANTIC\",\"decision\":\"FAIL\",\"reason_records\":[{\"code\":\"FSEM_UNSUPPORTED_EMOTION_OR_REACTION\",\"status\":\"DECISIVE\",\"candidate_span\":\"a avut norocul să nu se trezească prea devreme\",\"authority_support\":null,\"unsupported_proposition\":\"ursul polar a avut o reacție sau sentiment (noroc) legat de trezire\",\"confidence\":0.90}]}",
+      "raw_response_sha256": "66ffa10333fe0d6786c0ddb394d757e04cb8ba03dbcbdaf79102095a7040df88",
+      "exception_type": null
+    },
+    {
+      "ordinal": 16,
+      "case_id": "HMCV1-SASC-08",
+      "gate_id": "STORY_SPECIFICITY",
+      "started_at": "2026-08-25T22:57:31.049232+00:00",
+      "completed_at": "2026-08-25T22:57:48.970406+00:00",
+      "raw_response": "{\"gate_id\":\"STORY_SPECIFICITY\",\"decision\":\"PASS\",\"reason_records\":[]}",
+      "raw_response_sha256": "a5c03f65db8fd8a0067f9785ae1b35e8102b0091ab9646e47629b2751e92d281",
+      "exception_type": null
+    },
+    {
+      "ordinal": 17,
+      "case_id": "HMCV1-SASC-09",
+      "gate_id": "FACTUAL_SEMANTIC",
+      "started_at": "2026-08-25T22:57:48.971760+00:00",
+      "completed_at": "2026-08-25T22:58:21.866642+00:00",
+      "raw_response": "{\"gate_id\":\"FACTUAL_SEMANTIC\",\"decision\":\"FAIL\",\"reason_records\":[{\"code\":\"FSEM_UNSUPPORTED_MOTIVE_OR_INTENT\",\"status\":\"DECISIVE\",\"candidate_span\":\"Când te cheamă la muncă după 40 de ani, nu mai e vorba de o pensie, ci de o invitație la o nouă aventură—dacă ai încă puterea să o poți ridica.\",\"authority_support\":null,\"unsupported_proposition\":\"Interpretarea subiectivă a motivului sau intenției pensionarilor chemați la muncă\",\"confidence\":0.90}]}",
+      "raw_response_sha256": "949cff3e296fc490be14060388cd3d27cd92452b330010c4d1d0d22aa1649302",
+      "exception_type": null
+    },
+    {
+      "ordinal": 18,
+      "case_id": "HMCV1-SASC-09",
+      "gate_id": "STORY_SPECIFICITY",
+      "started_at": "2026-08-25T22:58:21.867129+00:00",
+      "completed_at": "2026-08-25T22:58:50.518009+00:00",
+      "raw_response": "{\"gate_id\":\"STORY_SPECIFICITY\",\"decision\":\"FAIL_GENERIC_PORTABLE\",\"reason_records\":[{\"code\":\"SPEC_GENERIC_PORTABLE\",\"status\":\"DECISIVE\",\"candidate_span\":\"Când te cheamă la muncă după 40 de ani, nu mai e vorba de o pensie, ci de o invitație la o nouă aventură—dacă ai încă puterea să o poți ridica.\",\"authority_support\":null,\"unsupported_proposition\":\"Transferul comentariului metaforic despre revenirea la muncă după pensie este generic și nu se bazează pe fapte specifice din sursa furnizată (repornirea Grupului 4 de la Rovinari).\",\"confidence\":0.90}]}",
+      "raw_response_sha256": "9ca03c50ff57ccecae025b3aaaf1db281c774ef97593f12c991f1f5f664ac633",
+      "exception_type": null
+    },
+    {
+      "ordinal": 19,
+      "case_id": "HMCV1-SASC-10",
+      "gate_id": "FACTUAL_SEMANTIC",
+      "started_at": "2026-08-25T22:58:50.519228+00:00",
+      "completed_at": "2026-08-25T22:59:22.776476+00:00",
+      "raw_response": "{\"gate_id\":\"FACTUAL_SEMANTIC\",\"decision\":\"FAIL\",\"reason_records\":[{\"code\":\"FSEM_UNSUPPORTED_MOTIVE_OR_INTENT\",\"status\":\"DECISIVE\",\"candidate_span\":\"ar fi ca și cum ar fi schimbat regulile jocului în timpul meciului, doar că aici nu e vorba de un meci, ci de o probă care decide viitorul unor tineri\",\"authority_support\":null,\"unsupported_proposition\":\"implicarea că schimbarea regulilor ar fi o acțiune intenționată sau malefică, precum și că aceasta ar decide viitorul tinerilor\",\"confidence\":0.90}]}",
+      "raw_response_sha256": "d31fcd1dafbf1ad2f3daa2792afed0f09e46bbe827169e1633f5a56e2df45594",
+      "exception_type": null
+    },
+    {
+      "ordinal": 20,
+      "case_id": "HMCV1-SASC-10",
+      "gate_id": "STORY_SPECIFICITY",
+      "started_at": "2026-08-25T22:59:22.776958+00:00",
+      "completed_at": "2026-08-25T22:59:40.821933+00:00",
+      "raw_response": "{\"gate_id\":\"STORY_SPECIFICITY\",\"decision\":\"PASS\",\"reason_records\":[]}",
+      "raw_response_sha256": "a5c03f65db8fd8a0067f9785ae1b35e8102b0091ab9646e47629b2751e92d281",
+      "exception_type": null
+    }
+  ]
+}

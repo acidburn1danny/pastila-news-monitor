@@ -1,0 +1,46 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-run4-constrained-evaluation-summary",
+  "schema_version": "1.0.0",
+  "run_id": "SAV2_TEN_CASE_CONFORMANCE_RUN_4_CONSTRAINED_V1",
+  "plan_identity": "8bf809ed73757bf76ef735922f81713f4d0e2eda36abffb64c0c25453bbe69ac",
+  "execution_status": "COMPLETED_WITH_ALL_RAW_RESPONSES",
+  "case_count": 10,
+  "provider_call_count": 20,
+  "evaluator_exception_count": 0,
+  "retry_count": 0,
+  "repair_count": 0,
+  "selection_count": 0,
+  "gate_f": {
+    "expected_pass_count": 3,
+    "observed_pass_count": 0,
+    "false_positive_rejection_count": 3,
+    "false_negative_admission_count": 0,
+    "exact_expected_decisive_reason_count_among_seven_negatives": 1,
+    "wrong_decisive_reason_count_among_seven_negatives": 6,
+    "exact_case_ids": ["HMCV1-SASC-07"],
+    "false_positive_rejection_case_ids": ["HMCV1-SASC-01", "HMCV1-SASC-02", "HMCV1-SASC-04"],
+    "wrong_reason_case_ids": ["HMCV1-SASC-03", "HMCV1-SASC-05", "HMCV1-SASC-06", "HMCV1-SASC-08", "HMCV1-SASC-09", "HMCV1-SASC-10"],
+    "dominant_failure": "NONFACTUAL_METAPHOR_PERSONIFICATION_OR_EDITORIAL_FRAMING_MISREAD_AS_FACTUAL_EMOTION_OR_INTENT"
+  },
+  "gate_s_scored_contract_cases": {
+    "case_ids": ["HMCV1-SASC-01", "HMCV1-SASC-02", "HMCV1-SASC-04"],
+    "exact_count": 1,
+    "exact_case_ids": ["HMCV1-SASC-01"],
+    "case_02": "FALSE_PASS_OF_GENERIC_PORTABLE_COMMENTARY",
+    "case_04": "REJECTED_BUT_WRONG_SUBTYPE_GENERIC_PORTABLE_INSTEAD_OF_TEMPLATE_DOMINANT"
+  },
+  "final_disposition": {
+    "exact_count": 7,
+    "exact_case_ids": ["HMCV1-SASC-03", "HMCV1-SASC-05", "HMCV1-SASC-06", "HMCV1-SASC-07", "HMCV1-SASC-08", "HMCV1-SASC-09", "HMCV1-SASC-10"],
+    "nonconformant_case_ids": ["HMCV1-SASC-01", "HMCV1-SASC-02", "HMCV1-SASC-04"],
+    "owner_quality_rejections_preempted_by_false_factual_rejection": ["HMCV1-SASC-02", "HMCV1-SASC-04"]
+  },
+  "minimum_conformance_thresholds_passed": false,
+  "semantic_admission_v2_ready_for_runtime": false,
+  "outputs_quarantined": true,
+  "current_runtime_admission_affected": false,
+  "curriculum_authority": false,
+  "training_authority": false,
+  "runtime_authority": false,
+  "recommended_next_step": "Design-only failure analysis and bounded Gate F semantic-boundary remediation specification, centered on distinguishing permitted nonfactual figurative transformation from unsupported factual propositions. Preserve Gate S as independently deficient on Cases 02 and 04."
+}

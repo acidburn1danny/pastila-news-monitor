@@ -1,0 +1,20 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-run4-constrained-execution-authority",
+  "schema_version": "1.0.0",
+  "run_id": "SAV2_TEN_CASE_CONFORMANCE_RUN_4_CONSTRAINED_V1",
+  "plan_identity": "8bf809ed73757bf76ef735922f81713f4d0e2eda36abffb64c0c25453bbe69ac",
+  "runner_identity": "6f957996ad1e626635f69678ba5d1ba242ded8edddec2c818a4862cd8711e3fc",
+  "wsl_preflight_identity": "8a251fd00eca9bc5474bbdc87c444308c211b3321d587c873a277e728b48d983",
+  "tokenizer_impact_identity": "e3e5084d9fe559ab8a13cc1c7d797a7a801a987eeac56d9ec0da7a940d01e45e",
+  "inference_authorized": true,
+  "maximum_provider_calls": 20,
+  "attempts_per_case_per_gate": 1,
+  "unrestricted_wsl_context_required": true,
+  "silent_retry": false,
+  "repair": false,
+  "selection": false,
+  "curriculum_exposure": false,
+  "runtime_authority": false,
+  "training_authority": false,
+  "owner_authorization": "authorized, proceed"
+}
