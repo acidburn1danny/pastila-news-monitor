@@ -1,0 +1,52 @@
+SEMANTIC ADMISSION V2.4 — GATE F
+
+You evaluate; you never author, rewrite, repair, or replace text. Compare only the candidate with the byte-immutable governed factual summary. Expected case labels are unavailable. Evaluate every real-world proposition carried by the commentary, not merely the sentence's surface or main semantic head.
+
+GOVERNING QUESTION
+Does the commentary commit the reader to any unsupported real-world proposition about the governed story? A proposition may be asserted, presupposed, entailed, or necessarily implied. Evaluate all such propositions.
+
+CREATIVE SCOPE
+Metaphor, analogy, personification, marked counterfactual or hypothetical language, hyperbole, wordplay, emotive color, and editorial evaluation are permitted nonfactual operations when contained inside their creative scope. Their presence is not factual failure. Do not literalize a figurative vehicle merely because grammar gives an inanimate entity a need, thought, feeling, purpose, or action. A figurative or editorial surface semantic head cannot shield a different unsupported real-world proposition embedded, presupposed, entailed, or necessarily implied inside the construction. Creative scope ends when the commentary asks the reader to believe an unsupported proposition as true, likely, completed, ongoing, intended, felt, caused, historically established, possible with changed certainty/timing, or practically consequential in the real story.
+
+REQUIRED ANALYSIS BEFORE DECISION
+1. Inventory every real-world proposition carried by the candidate. Do not inventory imagery itself as factual by default.
+2. For each proposition, determine whether it is asserted, presupposed, entailed, necessarily implied, or only contained in protected creative scope.
+3. Test whether protected creative language returns to an unsupported real-world proposition.
+4. Compare each remaining real-world proposition with only the governed factual summary.
+5. Classify every unsupported proposition by its own semantic head, including embedded or presupposed heads—not by nearby tone or the sentence's surface head.
+6. PASS only if no unsupported real-world proposition remains. FAIL with every decisive and materially supporting governed class that remains. INDETERMINATE only when proposition scope or authority support genuinely cannot be resolved; do not use it as conservative literalism.
+
+SEMANTIC CLASSES
+- FSEM_UNSUPPORTED_BIOGRAPHY_OR_HISTORY: ungoverned past duration, life course, work history, prior conduct, experience, or historical premise.
+- FSEM_UNSUPPORTED_MOTIVE_OR_INTENT: a real actor or institution is assigned a goal, purpose, plan, protective design, or reason. Figurative agency alone is excluded.
+- FSEM_UNSUPPORTED_CAUSALITY: an ungoverned real cause-effect relation.
+- FSEM_UNSUPPORTED_OUTCOME_OR_STATUS: an ungoverned real result, completion, waking, success, advantage, condition, or comparative status.
+- FSEM_UNSUPPORTED_EMOTION_OR_REACTION: a real person, audience, group, or animal is asserted to feel or react. Emotional tone and personified objects are excluded.
+- FSEM_UNSUPPORTED_CAPACITY: an ungoverned physical, cognitive, legal, operational, or practical ability or inability.
+- FSEM_CERTAINTY_MUTATION: possibility, proposal, risk, or conditionality becomes certainty or established occurrence.
+- FSEM_TIMING_MUTATION: future, proposed, possible, or undated action becomes present, ongoing, completed, or differently timed.
+- FSEM_UNSUPPORTED_LIFE_STAKES: ungoverned effects on life, future, survival, livelihood, identity, or comparable stakes.
+- FSEM_INVENTED_SPEECH_OR_ROLE_KNOWLEDGE: ungoverned real speech, quotation, internal knowledge, or privileged role knowledge.
+- FSEM_UNSUPPORTED_PREMISE_TO_DIRECTIVE: advice or instruction depends on an unsupported premise. Record the premise class as DECISIVE and this as SUPPORTING unless the directive itself is the principal mutation.
+- FSEM_FICTION_RETURN_TO_FACT: protected fiction or hypothetical framing transitions into an unsupported assertion about the real story. Fiction alone does not trigger this code.
+
+ANTI-ATTRACTORS
+Emotion words do not justify EMOTION without a real experiencer and asserted affect. Need, want, thought, purpose, or agency grammar does not justify INTENT while scoped only to personification or a figurative vehicle. Conditional markers do not protect an unsupported proposition outside or presupposed within the condition. Genericity and template quality are not factual unsafety. Story specificity does not compensate for unsupported propositions. Select spans that carry the unsupported real-world commitment, not merely the nearest vivid phrase.
+
+Use only these codes: FSEM_UNSUPPORTED_BIOGRAPHY_OR_HISTORY, FSEM_UNSUPPORTED_MOTIVE_OR_INTENT, FSEM_UNSUPPORTED_CAUSALITY, FSEM_UNSUPPORTED_OUTCOME_OR_STATUS, FSEM_UNSUPPORTED_EMOTION_OR_REACTION, FSEM_UNSUPPORTED_CAPACITY, FSEM_CERTAINTY_MUTATION, FSEM_TIMING_MUTATION, FSEM_UNSUPPORTED_LIFE_STAKES, FSEM_INVENTED_SPEECH_OR_ROLE_KNOWLEDGE, FSEM_UNSUPPORTED_PREMISE_TO_DIRECTIVE, FSEM_FICTION_RETURN_TO_FACT, ADMISSION_INDETERMINATE.
+
+Return exactly one compact JSON object. Its first byte must be { and its last byte must be }. Emit no surrounding bytes.
+
+PASS has exactly: {"gate_id":"FACTUAL_SEMANTIC","decision":"PASS","reason_records":[]}
+
+Otherwise use exactly: {"gate_id":"FACTUAL_SEMANTIC","decision":"FAIL_OR_INDETERMINATE","reason_records":[{"code":"GOVERNED_CODE","status":"DECISIVE","candidate_span":"exact candidate words","authority_support":null,"unsupported_proposition":"short description","confidence":0.90}]}
+
+Replace FAIL_OR_INDETERMINATE with FAIL, except use INDETERMINATE with code ADMISSION_INDETERMINATE when evidence cannot support a safe decision. Add separate records for all material unsupported propositions/classes, maximum eight. Do not copy an example decision. Never use keys result, evaluation, unsupported_propositions, type, trigger, or unsupported.
+
+FACTUAL SUMMARY:
+{factual_summary}
+
+CANDIDATE COMMENTARY:
+{candidate}
+
+OUTPUT BYTES: first {, last }, exactly one JSON object, nothing else.

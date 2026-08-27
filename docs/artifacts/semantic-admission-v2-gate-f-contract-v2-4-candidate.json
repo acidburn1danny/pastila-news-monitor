@@ -1,0 +1,51 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-gate-f-contract-candidate",
+  "schema_version": "2.4.0-evaluation-candidate.1",
+  "gate_id": "FACTUAL_SEMANTIC",
+  "source_design_identity": "f2d16c10290e852715b23d0b3d3bcb20ac4bdba586ed3c1dd358d0d2bd7077a0",
+  "source_run4_identity": "5c7938c0029df9a0da46ff9235d40e351f2e7c0862e5da94de97789de265ed6e",
+  "candidate_scope": "EVALUATION_ONLY_ZERO_INFERENCE",
+  "semantic_delta": [
+    "PROPOSITION_INVENTORY_BEFORE_CLASSIFICATION",
+    "ASSERTION_PRESUPPOSITION_ENTAILMENT_NECESSARY_IMPLICATION_COVERAGE",
+    "PROTECTED_CREATIVE_SCOPE",
+    "FICTION_RETURN_TO_REAL_WORLD_TEST",
+    "EMBEDDED_PROPOSITION_NOT_SHIELDED_BY_SURFACE_HEAD",
+    "SEMANTIC_HEAD_REASON_SELECTION_PER_UNSUPPORTED_PROPOSITION",
+    "EXHAUSTIVE_MATERIAL_REASON_RECORDS"
+  ],
+  "preserved": {
+    "model_identity": "pastila-editor-core-v1.2-experimental",
+    "constrained_runner_sha256": "17a1669d5ec145bfc2ef746890e4d6534670e94b069a3a7d6307bb8127bd2ac9",
+    "constraint_identity": "3c022a83b78ddf82b545ada6b77855f4b53fc07bf0028b3c2db899fff72096f2",
+    "strict_response_schema": "docs/artifacts/semantic-admission-v2-gate-response.schema.json",
+    "reason_code_namespace": "UNCHANGED",
+    "immutable_factual_authority": true,
+    "gate_precedence": "UNCHANGED",
+    "gate_s": "UNCHANGED_AND_SEPARATE",
+    "fail_closed": true
+  },
+  "acceptance_contract": {
+    "exact_pass_case_ids": ["HMCV1-SASC-01", "HMCV1-SASC-02", "HMCV1-SASC-04"],
+    "exact_negative_case_ids": ["HMCV1-SASC-03", "HMCV1-SASC-05", "HMCV1-SASC-06", "HMCV1-SASC-07", "HMCV1-SASC-08", "HMCV1-SASC-09", "HMCV1-SASC-10"],
+    "wrong_reason_is_nonconformant": true,
+    "all_material_embedded_propositions_required": true,
+    "hidden_from_generation_path": true
+  },
+  "prohibited": [
+    "MODEL_PROBE_BEFORE_SEPARATE_AUTHORITY",
+    "GATE_S_CHANGE",
+    "CORE_OR_VOICE_GENERATION_CHANGE",
+    "LEXICAL_ROUTING",
+    "AUTOMATIC_METAPHOR_PASS",
+    "OUTPUT_REPAIR",
+    "SILENT_RETRY",
+    "BEST_OF_SELECTION",
+    "CURRICULUM_EXPOSURE",
+    "RUNTIME_OR_TRAINING_AUTHORITY"
+  ],
+  "implementation_authority": "EVALUATION_CANDIDATE_FILES_AND_ZERO_INFERENCE_TESTS_ONLY",
+  "inference_authority": false,
+  "runtime_authority": false,
+  "training_authority": false
+}

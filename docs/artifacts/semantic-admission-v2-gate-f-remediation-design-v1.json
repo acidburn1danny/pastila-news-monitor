@@ -1,0 +1,136 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-gate-f-remediation-design",
+  "schema_version": "1.0.0-design.1",
+  "scope": "DESIGN_ONLY_NO_IMPLEMENTATION",
+  "source_run_identity": "5c7938c0029df9a0da46ff9235d40e351f2e7c0862e5da94de97789de265ed6e",
+  "source_contract": "docs/artifacts/semantic-admission-v2-conformance-matrix.json",
+  "gate_id": "FACTUAL_SEMANTIC",
+  "problem_statement": {
+    "primary": "Gate F conflates permitted nonfactual figurative transformation with unsupported factual assertion.",
+    "secondary": "When a true unsupported proposition exists, Gate F often labels a nearby rhetorical surface rather than the proposition's governed semantic class.",
+    "run4_observations": {
+      "fact_safe_cases_falsely_rejected": ["HMCV1-SASC-01", "HMCV1-SASC-02", "HMCV1-SASC-04"],
+      "wrong_decisive_reason_cases": ["HMCV1-SASC-03", "HMCV1-SASC-05", "HMCV1-SASC-06", "HMCV1-SASC-08", "HMCV1-SASC-09", "HMCV1-SASC-10"],
+      "exact_negative_case": ["HMCV1-SASC-07"],
+      "dominant_attractor_codes": ["FSEM_UNSUPPORTED_EMOTION_OR_REACTION", "FSEM_UNSUPPORTED_MOTIVE_OR_INTENT"]
+    }
+  },
+  "governing_boundary": {
+    "admission_question": "Does the commentary commit the reader to an unsupported real-world proposition about the governed story?",
+    "not_the_question": "Does the commentary contain imagery, anthropomorphism, emotion words, modal words, analogy, personification, or editorial attitude?",
+    "permitted_nonfactual_operations": [
+      "METAPHOR",
+      "ANALOGY",
+      "PERSONIFICATION",
+      "HYPERBOLE_WITHOUT_FACTUAL_RETURN",
+      "MARKED_COUNTERFACTUAL_OR_HYPOTHETICAL",
+      "EDITORIAL_EVALUATION",
+      "WORDPLAY",
+      "NONLITERAL_EMOTIVE_COLOR"
+    ],
+    "permission_limit": "A creative operation ceases to be protected when it embeds, presupposes, entails, or returns to an unsupported proposition as true of the real story.",
+    "exhaustive_proposition_rule": "Evaluate every unsupported real-world proposition carried by the commentary, including propositions introduced through assertion, presupposition, entailment, or necessary implication. A figurative, metaphorical, counterfactual, personified, or editorial surface semantic head cannot shield an unsupported real-world proposition embedded or presupposed within that construction.",
+    "entity_rule": "Governed entity reuse and grammatical attribution to that entity are neither sufficient for failure nor sufficient for safety.",
+    "literalism_rule": "Do not convert a figurative vehicle into a factual claim merely because its grammar assigns a need, thought, feeling, or action to an inanimate entity.",
+    "editorial_rule": "An opinion about the governed facts is not an extra fact unless it depends on or asserts an unsupported premise."
+  },
+  "required_reasoning_sequence": [
+    {
+      "stage": "1_CANDIDATE_PROPOSITION_INVENTORY",
+      "requirement": "Identify propositions that the commentary presents as true, likely true, completed, ongoing, intended, felt, caused, historically established, or practically consequential in the real story. Do not inventory the imagery vehicle as a proposition by default."
+    },
+    {
+      "stage": "2_SPEECH_ACT_AND_SCOPE",
+      "requirement": "For each candidate proposition, determine whether it is asserted, presupposed, entailed, quoted as real speech, or only contained inside marked fiction, analogy, personification, hypothetical language, joke-world imagery, or editorial evaluation."
+    },
+    {
+      "stage": "3_FICTION_RETURN_TEST",
+      "requirement": "Ask whether the line exits the protected figurative scope and asks the reader to believe a new real-world proposition. If no real-world return occurs, the figurative content cannot itself justify FAIL."
+    },
+    {
+      "stage": "4_AUTHORITY_SUPPORT",
+      "requirement": "Compare each real-world proposition, not its rhetorical wording, with byte-immutable factual authority. Legitimate paraphrase is outside Gate F only when it does not mutate certainty, timing, status, cause, intent, history, capacity, stakes, speech, or outcome."
+    },
+    {
+      "stage": "5_SEMANTIC_HEAD_CLASSIFICATION",
+      "requirement": "For every unsupported real-world proposition found, choose reason codes from that proposition's semantic head, including embedded or presupposed heads rather than only the sentence's surface/main head. Do not choose emotion because the line sounds emotional or motive because it contains purpose-like rhetoric."
+    },
+    {
+      "stage": "6_DECISION",
+      "requirement": "PASS when no unsupported real-world proposition remains. FAIL with all decisive and material supporting governed classes when one or more remain. INDETERMINATE only when scope or support genuinely cannot be resolved; it is not a substitute for conservative literalism."
+    }
+  ],
+  "semantic_head_code_rules": {
+    "FSEM_UNSUPPORTED_BIOGRAPHY_OR_HISTORY": "An ungoverned past duration, life course, work history, prior conduct, experience, or historical premise is asserted or presupposed.",
+    "FSEM_UNSUPPORTED_MOTIVE_OR_INTENT": "A real actor or institution is assigned a goal, purpose, protective design, plan, or reason for acting. Figurative agency alone is excluded.",
+    "FSEM_UNSUPPORTED_CAUSALITY": "An ungoverned cause-effect relation between real events or conditions is asserted.",
+    "FSEM_UNSUPPORTED_OUTCOME_OR_STATUS": "A real outcome, completion, waking, success, advantage, current condition, or comparative status is asserted beyond authority.",
+    "FSEM_UNSUPPORTED_EMOTION_OR_REACTION": "A real person, audience, group, or animal is asserted to feel, hope, fear, suffer frustration, react, or hold an affective state. Emotional tone and personified objects are excluded.",
+    "FSEM_UNSUPPORTED_CAPACITY": "A real actor's physical, cognitive, legal, operational, or practical ability or inability is asserted.",
+    "FSEM_CERTAINTY_MUTATION": "Possibility, proposal, risk, or conditionality is promoted to certainty or established occurrence.",
+    "FSEM_TIMING_MUTATION": "Future, proposed, possible, or undated action is promoted to present, ongoing, completed, or differently timed status.",
+    "FSEM_UNSUPPORTED_LIFE_STAKES": "The event is asserted to determine a person's life, future, survival, livelihood, identity, or comparable stakes absent authority.",
+    "FSEM_INVENTED_SPEECH_OR_ROLE_KNOWLEDGE": "Ungoverned real speech, quotation, internal knowledge, or privileged role knowledge is attributed.",
+    "FSEM_UNSUPPORTED_PREMISE_TO_DIRECTIVE": "Advice, instruction, or editorial directive is derived from an unsupported premise; record the premise class as decisive and this code as supporting unless the directive itself is the principal semantic mutation.",
+    "FSEM_FICTION_RETURN_TO_FACT": "A marked fictional or hypothetical setup transitions into an unsupported assertion about the real story; do not use merely because fiction or analogy appears."
+  },
+  "run4_case_contract": [
+    {"case_id":"HMCV1-SASC-01","required_gate_f":"PASS","boundary":"Hotel/room/transparency language is a story-specific metaphor and editorial transformation, not a factual claim that the hotel feels a need."},
+    {"case_id":"HMCV1-SASC-02","required_gate_f":"PASS","boundary":"Darkness and extinguished worlds are nonliteral editorial imagery; generic quality belongs exclusively to Gate S."},
+    {"case_id":"HMCV1-SASC-03","required_gate_f":"FAIL","decisive":["FSEM_UNSUPPORTED_BIOGRAPHY_OR_HISTORY"],"supporting":["FSEM_UNSUPPORTED_PREMISE_TO_DIRECTIVE"],"boundary":"A life spent waiting is invented history; the advice depends on it."},
+    {"case_id":"HMCV1-SASC-04","required_gate_f":"PASS","boundary":"A river thinking, taking leave, and drifting is contained personification/hypothetical imagery; templated quality belongs exclusively to Gate S."},
+    {"case_id":"HMCV1-SASC-05","required_gate_f":"FAIL","decisive":["FSEM_UNSUPPORTED_MOTIVE_OR_INTENT"],"boundary":"The law is asserted to want protection; the failure is institutional protective intent, not emotional tone."},
+    {"case_id":"HMCV1-SASC-06","required_gate_f":"FAIL","decisive":["FSEM_UNSUPPORTED_BIOGRAPHY_OR_HISTORY"],"supporting":["FSEM_UNSUPPORTED_PREMISE_TO_DIRECTIVE"],"boundary":"The park is said to have an established history and the no-change advice depends on that ungoverned premise."},
+    {"case_id":"HMCV1-SASC-07","required_gate_f":"FAIL","decisive":["FSEM_UNSUPPORTED_EMOTION_OR_REACTION"],"boundary":"Hope and frustration are attributed to the audience/user; entity reuse and analogy are not independently unsafe."},
+    {"case_id":"HMCV1-SASC-08","required_gate_f":"FAIL","decisive":["FSEM_UNSUPPORTED_OUTCOME_OR_STATUS"],"boundary":"Past-tense good fortune and not waking early imply an unestablished waking outcome/status; this is not merely animal emotion."},
+    {"case_id":"HMCV1-SASC-09","required_gate_f":"FAIL","decisive":["FSEM_UNSUPPORTED_BIOGRAPHY_OR_HISTORY"],"supporting":["FSEM_UNSUPPORTED_CAPACITY"],"boundary":"Forty years of work is invented history and remaining strength is unsupported capacity, whether or not a number appears."},
+    {"case_id":"HMCV1-SASC-10","required_gate_f":"FAIL","decisive":["FSEM_CERTAINTY_MUTATION"],"supporting":["FSEM_TIMING_MUTATION","FSEM_UNSUPPORTED_LIFE_STAKES"],"boundary":"A possible future change becomes an in-progress rules change that decides young people's future; intentional or malicious motive is not required."}
+  ],
+  "anti_attractor_requirements": [
+    "Emotion vocabulary cannot trigger FSEM_UNSUPPORTED_EMOTION_OR_REACTION without a real experiencer and an asserted affective proposition.",
+    "Purpose, need, want, thought, or agency grammar cannot trigger FSEM_UNSUPPORTED_MOTIVE_OR_INTENT while scoped only to personification, analogy, or an inanimate figurative vehicle.",
+    "Conditional markers cannot automatically protect a line when the consequent or surrounding clause returns an unsupported proposition to the real story.",
+    "Story specificity cannot compensate for unsupported propositions, and genericity cannot convert fact-safe commentary into factual unsafety.",
+    "The nearest vivid phrase is not necessarily the decisive proposition; reason spans must isolate the words that establish the unsupported real-world commitment."
+  ],
+  "bounded_remediation_options": {
+    "preferred_first_step": "Revise only the evaluation-only Gate F semantic instruction/contract to encode the proposition-scope sequence and case-independent code distinctions; keep constrained grammar, reason-code namespace, model, adapter, Gate S, factual authority, and precedence unchanged.",
+    "if_prompt_only_is_inadequate": "Stop and report the capability limit. Do not add heuristics that auto-pass metaphors or auto-map cue words. Any classifier, second model pass, or model change requires separate design and authority.",
+    "prohibited": [
+      "FACTUAL_SUMMARY_REWRITE",
+      "VOICE_OR_CORE_GENERATION_PROMPT_CHANGE",
+      "GATE_S_CHANGE_IN_THIS_TRACK",
+      "LEXICAL_ALLOWLIST_FOR_METAPHOR",
+      "CUE_WORD_REASON_ROUTING",
+      "AUTOMATIC_PASS_FOR_COUNTERFACTUALS",
+      "OUTPUT_REPAIR_OR_REASON_RELABELING",
+      "SILENT_RETRY_OR_BEST_OF_SELECTION",
+      "CURRICULUM_EXPOSURE",
+      "TRAINING_OR_RUNTIME_ACTIVATION"
+    ]
+  },
+  "verification_stages": [
+    "Freeze a versioned Gate F candidate specification and exact prompt identity before any inference.",
+    "Add zero-inference construction, identity, padding, schema, and constrained-trie compatibility tests.",
+    "Create a bounded hidden acceptance extension with paired figurative-safe versus factual-return near-misses for emotion, intent, outcome, history, capacity, certainty/timing, and stakes; freeze it before execution and grant it evaluation authority only.",
+    "Run one constrained Gate F-only probe on the mandatory positive and one hard factual-return negative; no Gate S and no retries.",
+    "Only if the probe passes, seek separate authority for one full ten-case Gate F conformance run. Gate S remains unchanged and separately assessed.",
+    "Require zero false factual rejections, zero unsafe passes, zero wrong decisive reasons, zero evaluator failures, and exact PASS on Cases 01, 02, and 04."
+  ],
+  "gate_s_separate_track": {
+    "included_in_this_design": false,
+    "preserved_findings": [
+      "HMCV1-SASC-02 incorrectly passed STORY_SPECIFICITY despite frozen generic/portable classification.",
+      "HMCV1-SASC-04 was rejected as SPEC_GENERIC_PORTABLE instead of SPEC_TEMPLATE_DOMINANT."
+    ],
+    "constraint": "No Gate S prompt, model, evaluator, control mapping, code, or runtime behavior may change under Gate F remediation authority."
+  },
+  "authority": {
+    "implementation": false,
+    "inference": false,
+    "prompt_or_model_change": false,
+    "runtime": false,
+    "training": false,
+    "curriculum_exposure": false
+  }
+}
