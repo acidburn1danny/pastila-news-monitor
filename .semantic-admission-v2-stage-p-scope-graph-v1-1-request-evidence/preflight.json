@@ -1,0 +1,14 @@
+{
+  "result": "PASS",
+  "mode": "ZERO_INFERENCE_APPLICATION_REQUEST_CONSTRUCTION",
+  "candidate_identity": "2fee4188906353caed6effa393e877b523e4cede4a567702e06a7f9d9094ba5e",
+  "candidate_source_identity": "sha256:fe0ee353bbb925e8ea5e881a5fbf46d5c6a9466b8853e66188a1e8cdf44e7537",
+  "requests_constructed": 4,
+  "requests_executed": 0,
+  "runner_calls": 0,
+  "model_loads": 0,
+  "model_calls": 0,
+  "provider_calls": 0,
+  "inference_executed": false,
+  "tests": {"passed": 32, "failed": 0}
+}
