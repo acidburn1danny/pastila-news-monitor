@@ -1,0 +1,62 @@
+{
+  "artifact_id": "STAGE_P_CONSTRUCTION_OBLIGATION_CASE01_EXECUTION_EVIDENCE_RECONCILIATION_V1",
+  "canonical_identity": "06ca25c75dc26bf735feee376220a99cd3f9ff753aa35fbe5c7baec7ec107240",
+  "lifecycle": "HISTORICAL_EVIDENCE_RECONCILED_ZERO_EXECUTION",
+  "legacy_result_identity": "fb103372d3734152465b38fe6475aa1c801fd2533703e47e1dd43a0fa9b7dccb",
+  "legacy_result_artifact_sha256": "4219c12f50c2ab58f90709a9e02633e9932f842647816a012b69637994ee0dba",
+  "legacy_recorded_retry_tree_identity": "20ea858ed42bb4f5f04ec6e3b6de8440e5fffd5c8918b3618f4402e01df02bb0",
+  "legacy_tree_identity_status": "NOT_REPRODUCIBLE_BY_COMMITTED_RECONCILIATION_ALGORITHM",
+  "attempts": [
+    {
+      "historical_path": ".semantic-admission-v2-stage-p-construction-obligation-case01-probe-v1-execution",
+      "classification": "PRE_RUN_WSL_LAUNCH_FAILURE",
+      "event_file_count": 3,
+      "reproduced_tree_identity": "dd2435925857b3aee5b3e3d02fc3fc5e4dfd72c6a344f7a681453a59fa4ffe8f",
+      "phase_receipt_sha256": "774196cddc6028bc9c56fceeb1cd9c98d50e108193dae6f80a2c63539228cee2",
+      "observed_runner_events": 0,
+      "observed_generation_events": 0,
+      "observed_provider_generations": 0,
+      "failure": "Wsl/Service/E_ACCESSDENIED",
+      "accounting_note": "The historical phase receipt records provider_call_count=1 as invocation accounting, but durable evidence contains no runner start, model load, generation start, or provider generation."
+    },
+    {
+      "historical_path": ".semantic-admission-v2-stage-p-construction-obligation-case01-probe-v1-retry-01",
+      "classification": "SECOND_INVOCATION_SOLE_OBSERVED_GENERATION",
+      "event_file_count": 85,
+      "reproduced_tree_identity": "ffdff3fc8723f327e3f95d70e8b56bfb8fd28b2d52be278f160d2b92f9600c6d",
+      "phase_receipt_sha256": "37322780052ac70b600697a4a46cbd8bc6a343079a703703462b8ab64f9a5c29",
+      "raw_sha256": "15cbf8697b1de97adf4180d9d505a0f99860d176c5ea6468619b546f2864c87b",
+      "raw_bytes": 3321,
+      "observed_runner_events": 81,
+      "observed_generation_events": 1,
+      "observed_provider_generations": 1,
+      "schema_validation": "SUCCESS",
+      "source_membership": "FAIL",
+      "reason_code": "STAGE_P_CANDIDATE_SPAN_SOURCE_MEMBERSHIP_FAILURE",
+      "final_decision": "ABSTAIN_FAIL_CLOSED"
+    }
+  ],
+  "call_reconciliation": {
+    "filesystem_invocations": 2,
+    "pre_run_launch_failures": 1,
+    "observed_provider_generations": 1,
+    "internal_retry_count_per_invocation": 0,
+    "repair_count": 0,
+    "selection_count": 0,
+    "stage_c_calls": 0,
+    "historical_retry_authority": "NOT_INDEPENDENTLY_BOUND_BY_REPOSITORY_AUTHORITY_RECEIPT"
+  },
+  "identity_boundary": "This receipt supersedes only lifecycle-tree and call-accounting interpretation. It does not modify or reuse the legacy result identity and does not claim the two identities are byte-equivalent.",
+  "authority": {
+    "historical_retry_authorization_proven": false,
+    "rerun": false,
+    "repair": false,
+    "selection": false,
+    "stage_c": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  },
+  "status": "RECONCILED_FOR_OWNER_REVIEW"
+}

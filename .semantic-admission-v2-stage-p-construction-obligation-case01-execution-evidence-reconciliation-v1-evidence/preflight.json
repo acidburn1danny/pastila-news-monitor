@@ -1,0 +1,14 @@
+{
+  "result": "PASS",
+  "canonical_identity": "06ca25c75dc26bf735feee376220a99cd3f9ff753aa35fbe5c7baec7ec107240",
+  "historical_files_modified": false,
+  "legacy_tree_identity_reproduced": false,
+  "initial_event_files": 3,
+  "retry_event_files": 85,
+  "observed_provider_generations": 1,
+  "model_calls": 0,
+  "provider_calls": 0,
+  "inference_calls": 0,
+  "reruns": 0,
+  "stage_c_calls": 0
+}

@@ -1,0 +1,64 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-construction-obligation-case01-execution-result",
+  "schema_version": "1.0.0-evaluation.1",
+  "artifact_id": "STAGE_P_CONSTRUCTION_OBLIGATION_CASE01_EXECUTION_RESULT_V1",
+  "result_identity": "fb103372d3734152465b38fe6475aa1c801fd2533703e47e1dd43a0fa9b7dccb",
+  "source_binding_identity": "910229e527cd2123593cc81c6f213a6c9628f04325208c1f43383c3360d1f82d",
+  "lifecycle": "FROZEN_SINGLE_RETRY_COMPLETE_OWNER_REVIEW_REQUIRED",
+  "case_id": "HMCV1-SASC-01",
+  "attempts": [
+    {
+      "attempt": "INITIAL_AUTHORIZED_EXECUTION",
+      "provider_call_count": 1,
+      "transport": "FAIL",
+      "reason_code": "STAGE_P_PROVIDER_OR_TRANSPORT_FAILURE",
+      "environment_failure": "Wsl/Service/E_ACCESSDENIED",
+      "raw_bytes": 0,
+      "phase_receipt_sha256": "774196cddc6028bc9c56fceeb1cd9c98d50e108193dae6f80a2c63539228cee2",
+      "final_decision": "ABSTAIN_FAIL_CLOSED"
+    },
+    {
+      "attempt": "SINGLE_AUTHORIZED_RETRY_AFTER_WSL_ACCESS_REMEDIATION",
+      "provider_call_count": 1,
+      "transport": "SUCCESS",
+      "raw_persistence": "SUCCESS",
+      "raw_sha256": "15cbf8697b1de97adf4180d9d505a0f99860d176c5ea6468619b546f2864c87b",
+      "raw_bytes": 3321,
+      "schema_validation": "SUCCESS",
+      "source_membership": "FAIL",
+      "reason_code": "STAGE_P_CANDIDATE_SPAN_SOURCE_MEMBERSHIP_FAILURE",
+      "phase_receipt_sha256": "37322780052ac70b600697a4a46cbd8bc6a343079a703703462b8ab64f9a5c29",
+      "durable_lifecycle_event_files": 85,
+      "durable_lifecycle_tree_identity": "20ea858ed42bb4f5f04ec6e3b6de8440e5fffd5c8918b3618f4402e01df02bb0",
+      "final_decision": "ABSTAIN_FAIL_CLOSED",
+      "eligibility": "QUARANTINED_EVALUATION_ONLY"
+    }
+  ],
+  "observed_membership_failure": {
+    "immutable_candidate_form": "angajații",
+    "model_authored_form": "angazații",
+    "affected_fields": ["entries.P1.candidate_span", "entries.P2.candidate_span", "creative_target_audits.T1.vehicle_span"],
+    "classification": "MODEL_AUTHORED_SOURCE_POINTER_APPROXIMATION",
+    "semantic_structure_was_not_admitted": true
+  },
+  "call_controls": {
+    "authorized_retry_count": 1,
+    "completed_retry_count": 1,
+    "repair_count": 0,
+    "selection_count": 0,
+    "further_probe_calls": 0,
+    "stage_c_calls": 0
+  },
+  "authority": {
+    "rerun": false,
+    "repair": false,
+    "prompt_change": false,
+    "schema_change": false,
+    "runner_change": false,
+    "stage_c": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  }
+}
