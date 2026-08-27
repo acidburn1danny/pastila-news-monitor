@@ -1,0 +1,21 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-gate-f-v2-4-residual-design-bundle",
+  "schema_version": "1.0.0",
+  "canonical_identity": "df54c2c763d5f2f79e68e3088f2192bf102467ef661964d01a40db461e82660f",
+  "identity_method": "sha256 of ordered lowercase artifact SHA-256 values joined by LF",
+  "lifecycle": "FROZEN_DESIGN_ONLY_READY_FOR_OWNER_REVIEW",
+  "source_candidate_identity": "763ff7b715e856092a84d316b9eddc8af896b20c44433223b14a6b849cec5b23",
+  "source_probe_identity": "d6d49bb869ce6ecf60c3210a2fda0434db1531f4d9a6e1dfc454cd5229d53dee",
+  "artifacts": [
+    {"path": "docs/artifacts/semantic-admission-v2-gate-f-v2-4-residual-failure-design-v1.json", "sha256": "fd92ba7ff4dbe75f81171ce5efe4e18c86023fe25941ccc1c35371e167b8948e"},
+    {"path": "tests/test_semantic_admission_v2_gate_f_v2_4_residual_design.py", "sha256": "8c11c2a43ad69462da78cfacd5872140f5a585f14ac0cd02e7865590337ebf2f"},
+    {"path": ".semantic-admission-v2-gate-f-v2-4-residual-failure-design-v1-evidence/report.md", "sha256": "0a3c612dd12aebb81aa165388e18836a9760fdedc1975b4e6a613373726c2d25"}
+  ],
+  "case_01_success_preserved": true,
+  "case_10_residual_classified": true,
+  "candidate_implementation_authority": false,
+  "inference_authority": false,
+  "gate_s_authority": false,
+  "runtime_authority": false,
+  "training_authority": false
+}

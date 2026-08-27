@@ -1,0 +1,129 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-gate-f-v2-4-residual-failure-design",
+  "schema_version": "1.0.0-design.1",
+  "scope": "DESIGN_ONLY_NO_CANDIDATE_OR_INFERENCE",
+  "source_candidate_identity": "763ff7b715e856092a84d316b9eddc8af896b20c44433223b14a6b849cec5b23",
+  "source_probe_identity": "d6d49bb869ce6ecf60c3210a2fda0434db1531f4d9a6e1dfc454cd5229d53dee",
+  "preserve_success": {
+    "case_id": "HMCV1-SASC-01",
+    "result": "EXACT_PASS",
+    "invariant": "Contained figurative transformation with no unsupported real-world return must continue to pass."
+  },
+  "residual_case": {
+    "case_id": "HMCV1-SASC-10",
+    "authority_modality": "POSSIBLE",
+    "authority_timing": "FUTURE_2027",
+    "candidate_real_world_commitments": [
+      "The possible rule change is reframed as rules changed during the relevant contest/test.",
+      "The test is asserted to decide young people's future."
+    ],
+    "required_classification": {
+      "decisive": ["FSEM_CERTAINTY_MUTATION"],
+      "supporting": ["FSEM_TIMING_MUTATION", "FSEM_UNSUPPORTED_LIFE_STAKES"]
+    },
+    "observed_classification": {
+      "decisive": ["FSEM_UNSUPPORTED_CAUSALITY", "FSEM_UNSUPPORTED_MOTIVE_OR_INTENT", "FSEM_UNSUPPORTED_LIFE_STAKES"],
+      "supporting": []
+    }
+  },
+  "root_causes": [
+    {
+      "id": "R1_NO_EXPLICIT_AUTHORITY_TO_CANDIDATE_DELTA_TABLE",
+      "finding": "V2.4 inventories propositions but does not require an explicit comparison of modality, certainty, and time for the same governed event before open-class semantic labeling.",
+      "effect": "The model notices an unsafe factual return but misses possibility-to-actuality and future-to-during-event mutations."
+    },
+    {
+      "id": "R2_ANALOGY_RELATION_OVERREAD",
+      "finding": "The model treats 'as if rules changed during the match' as proof of real causality and actor intent, although the construction supplies neither a real cause-effect link nor a real actor's purpose.",
+      "effect": "Causality and motive become spurious attractor classes."
+    },
+    {
+      "id": "R3_PROPOSITION_DIMENSIONS_NOT_GROUPED",
+      "finding": "V2.4 asks for all material classes but does not distinguish one core unsupported proposition expressed across multiple authority axes from independent unsupported propositions.",
+      "effect": "Every detected class is promoted to DECISIVE instead of assigning certainty as the core contradiction and timing/stakes as supporting dimensions."
+    },
+    {
+      "id": "R4_SPAN_SOURCE_CONFUSION",
+      "finding": "The first reason's candidate_span copied the factual summary's possible-future wording, which is absent from the candidate.",
+      "effect": "The receipt is not auditable and the purported trigger does not ground the observed class."
+    }
+  ],
+  "bounded_remediation_requirements": {
+    "delta_first_analysis": [
+      "Extract the governed event, its modality/certainty, and its time/status from factual authority.",
+      "Extract the corresponding event commitment, modality/certainty, and time/status carried by the candidate, including presupposition, entailment, and necessary implication.",
+      "Compare matched event axes before considering open-class motive, causality, emotion, or outcome labels.",
+      "When authority says possible/future and commentary commits to changed/ongoing/completed reality, record certainty and timing mutation even if the commitment appears inside analogy or counterfactual framing."
+    ],
+    "negative_evidence_for_open_classes": [
+      "Do not emit FSEM_UNSUPPORTED_MOTIVE_OR_INTENT unless the candidate commits to a real actor or institution plus a real goal, purpose, plan, protective design, or reason for acting.",
+      "Do not emit FSEM_UNSUPPORTED_CAUSALITY unless the candidate commits to two real propositions joined by an unsupported cause-effect relation.",
+      "Analogy between a real event and a game does not itself supply real intent or causality."
+    ],
+    "proposition_grouping_and_status": [
+      "Group reason classes that describe different authority-axis mutations of the same core real-world proposition.",
+      "Mark DECISIVE the minimal core contradiction sufficient to reject the grouped proposition.",
+      "Mark additional dimensions of that same proposition SUPPORTING unless independently sufficient and independently grounded.",
+      "For possibility-to-changed-reality with future-to-during-event shift, certainty is DECISIVE and timing is SUPPORTING.",
+      "A separate unsupported life-stakes proposition remains SUPPORTING when the core authority mutation already decides rejection."
+    ],
+    "span_grounding": [
+      "Every non-null candidate_span must be a byte-exact contiguous substring of candidate commentary and must carry the proposition or mutation named by that record.",
+      "Every non-null authority_support must be a byte-exact contiguous substring of the governed factual summary.",
+      "Candidate and authority source fields are not interchangeable.",
+      "A deterministic post-parse source-membership check should fail closed on a non-member span; it must not repair, replace, or relabel the model output."
+    ]
+  },
+  "case_10_grounding_contract": {
+    "certainty_and_timing_candidate_span": "ar fi schimbat regulile jocului în timpul meciului",
+    "life_stakes_candidate_span": "o probă care decide viitorul unor tineri",
+    "authority_support_contains": ["în 2027", "ar putea avea parte de noi reguli"],
+    "prohibited_as_candidate_span": "Elevii care vor susține Evaluarea Națională sau Bacalaureatul în 2027 ar putea avea parte de noi reguli privind verificarea lucrărilor și soluționarea contestațiilor."
+  },
+  "acceptance_and_regression": {
+    "case_01": "Exact PASS with no reasons remains mandatory.",
+    "case_10": "FAIL with certainty DECISIVE, timing SUPPORTING, and life-stakes SUPPORTING; no causality or motive; every span source-valid.",
+    "wrong_reason_is_nonconformant": true,
+    "correct_rejection_is_not_sufficient": true,
+    "span_membership_failure_is_nonconformant": true
+  },
+  "recommended_next_candidate_scope": {
+    "version": "GATE_F_V2_5_EVALUATION_ONLY",
+    "allowed_changes": [
+      "Gate F evaluation prompt/contract instructions for delta-first comparison, open-class negative evidence, proposition grouping, and status discipline.",
+      "Evaluation-only deterministic candidate_span and authority_support membership validation after strict parse."
+    ],
+    "unchanged": [
+      "Core V1.2 model",
+      "constrained JSON grammar and reason-code namespace",
+      "immutable factual authority",
+      "gate precedence and fail-closed behavior",
+      "Gate S",
+      "Core/Voice generation",
+      "curriculum and training"
+    ],
+    "verification_sequence": [
+      "Freeze V2.5 candidate identity before inference.",
+      "Zero-inference prompt, request, schema, constraint, and source-membership-validator tests.",
+      "Separately authorize the same two-case Gate F-only probe once.",
+      "Require exact Case 01 and Case 10 results before any ten-case run."
+    ]
+  },
+  "prohibited": [
+    "POST_HOC_REASON_RELABELING",
+    "SPAN_REPAIR_OR_SUBSTITUTION",
+    "CUE_WORD_REASON_ROUTING",
+    "AUTOMATIC_COUNTERFACTUAL_FAILURE",
+    "GATE_S_CHANGE",
+    "MODEL_OR_RUNTIME_CHANGE",
+    "SILENT_RETRY_OR_SELECTION",
+    "CURRICULUM_EXPOSURE_OR_TRAINING"
+  ],
+  "authority": {
+    "candidate_implementation": false,
+    "inference": false,
+    "runtime": false,
+    "training": false,
+    "gate_s": false
+  }
+}
