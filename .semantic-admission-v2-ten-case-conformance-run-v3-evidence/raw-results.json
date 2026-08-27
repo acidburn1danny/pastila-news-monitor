@@ -1,0 +1,957 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-run3-constrained",
+  "schema_version": "1.0.0",
+  "started_at": "2026-08-25T22:33:54.081953+00:00",
+  "plan_identity": "269996e0c7fb6a268bc44a358cdac137aa1fd2ab0cd88dbe0c05a97020ca7ac1",
+  "runtime": {
+    "application_version": "0.1.0",
+    "model_identity": "pastila-editor-core-v1.2-experimental",
+    "call_ceiling": 20,
+    "silent_retry": false,
+    "repair": false,
+    "selection": false,
+    "curriculum_exposure": false
+  },
+  "evaluations": [
+    {
+      "schema_name": "pastila-semantic-admission-v2-captured-evaluation",
+      "schema_version": "2.1.0-evaluation.1",
+      "receipt": {
+        "schema_name": "pastila-semantic-admission-v2-evaluation-receipt",
+        "schema_version": "2.0.0-evaluation.1",
+        "case_id": "HMCV1-SASC-01",
+        "authority": {
+          "factual_summary": "Un complex turistic din Vâlcea a plătit la negru salariile celor 70 de angajați, în ultimii 3 ani, cu 4,3 milioane de lei.",
+          "factual_summary_sha256": "e2add20c2ac06fdc90a2f7e1960d5672b8e91a9f7a82b895203dfb43f7f9d196",
+          "authority_identity": "812aea3508c2e2cbe1379e858adf8829afd2298cb1a0b1d181d42cdf7a2d6e52",
+          "byte_immutable": true
+        },
+        "candidate": {
+          "commentary": "Când banii se ascund în umbră, iar angajații rămân la lumină, pare că și hotelul ar avea nevoie de o cameră cu mai multă transparență.",
+          "candidate_sha256": "52a54bad5c68d16bd326c9dac8c544b5c4b0a45b9129262a0da139167362682b",
+          "raw_response_sha256": "45e07c776bd1846d4eb2a4bbc826b338fa7623f939329e6d070ddd72495a8f25"
+        },
+        "runtime": {
+          "application_identity": "0.1.0",
+          "core_identity": "pastila-editor-core-v1.2-experimental",
+          "voice_identity": "pastilaacida-voice:governed-nonfactual-realizer:v1",
+          "prompt_identity": "sha256:be8078cf1d4e2f173f0cc09136dbe996c22f82e8f36276bd1cd6d46d6608577e",
+          "model_identity": "pastila-editor-core-v1.2-experimental"
+        },
+        "surface_findings": [],
+        "gate_f": {
+          "gate_id": "FACTUAL_SEMANTIC",
+          "evaluator_identity": "242fe5c18f83c68fe1267ae5cc9ee65cd77157f5e9329bad26ffffee0c8892e5",
+          "prompt_identity": "sha256:92a95381b7f75b09aba6cd4580f3617a7df2a6a1520b0ee22c52db6e9886dcc1",
+          "request_sha256": "a25336179b3ff8503b3083af23456f8fe1fbe3de3b4836c773a4d3f913443937",
+          "raw_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "decision": "INDETERMINATE",
+          "reason_records": [
+            {
+              "code": "ADMISSION_EVALUATOR_FAILURE",
+              "status": "DECISIVE",
+              "candidate_span": null,
+              "authority_support": null,
+              "unsupported_proposition": "Evaluator output unavailable or invalid.",
+              "confidence": 0.0
+            }
+          ],
+          "elapsed_ms": 45.901,
+          "error_code": "ADMISSION_EVALUATOR_FAILURE"
+        },
+        "gate_s": {
+          "gate_id": "STORY_SPECIFICITY",
+          "evaluator_identity": "313c6817c7c2ddf75c736dd2c823e25f8ceaf7ac295e09625415f23f32a66b51",
+          "prompt_identity": "sha256:db09a481768e6d1c021b8eacac23be8449288993bec7eaa5ea4ad96866e8b2dc",
+          "request_sha256": "3c08afd5d09f93720a67ad23624e1b74c6c1cf6763dc5ad4c55ccc57dd6c84f3",
+          "raw_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "decision": "INDETERMINATE",
+          "reason_records": [
+            {
+              "code": "ADMISSION_EVALUATOR_FAILURE",
+              "status": "DECISIVE",
+              "candidate_span": null,
+              "authority_support": null,
+              "unsupported_proposition": "Evaluator output unavailable or invalid.",
+              "confidence": 0.0
+            }
+          ],
+          "elapsed_ms": 43.914,
+          "error_code": "ADMISSION_EVALUATOR_FAILURE"
+        },
+        "final_decision": "ADMISSION_ABSTAINED",
+        "precedence_reason": "ADMISSION_EVALUATOR_FAILURE",
+        "eligibility": "QUARANTINED_EVALUATION_ONLY",
+        "current_runtime_admission_affected": false,
+        "receipt_identity": "sha256:4d681b89218ff3b4fa37e1b0200e1bc5d04245aa20b8935d65f78597a26e6b82"
+      },
+      "gate_f_evidence": {
+        "gate_id": "FACTUAL_SEMANTIC",
+        "raw_response": null,
+        "raw_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "diagnostic": "EVALUATOR_EXCEPTION",
+        "evaluator_exception_type": "RuntimeError"
+      },
+      "gate_s_evidence": {
+        "gate_id": "STORY_SPECIFICITY",
+        "raw_response": null,
+        "raw_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "diagnostic": "EVALUATOR_EXCEPTION",
+        "evaluator_exception_type": "RuntimeError"
+      },
+      "eligibility": "QUARANTINED_EVALUATION_ONLY",
+      "current_runtime_admission_affected": false
+    },
+    {
+      "schema_name": "pastila-semantic-admission-v2-captured-evaluation",
+      "schema_version": "2.1.0-evaluation.1",
+      "receipt": {
+        "schema_name": "pastila-semantic-admission-v2-evaluation-receipt",
+        "schema_version": "2.0.0-evaluation.1",
+        "case_id": "HMCV1-SASC-02",
+        "authority": {
+          "factual_summary": "O pană de curent a afectat Bucureștiul, întrerupând alimentarea cu energie electrică în mai multe zone, inclusiv la Aeroportul Otopeni.",
+          "factual_summary_sha256": "1e206ef2abe5a9ad2beffb448d15eea2165242e37d8c676ba9a19c8fb292e7d8",
+          "authority_identity": "2d6db363384eb075acc3574edd4e43cd91d4caf1851b88dfde8b33b525573feb",
+          "byte_immutable": true
+        },
+        "candidate": {
+          "commentary": "Când lumile se sting, chiar și cele mai bine pregătite planuri rămân la fel de întunecate.",
+          "candidate_sha256": "ee49813ee68ebbbfa237ebec88e9829b625dea5b9d7514a43866f5380487f508",
+          "raw_response_sha256": "405faf99d8199febd9f0b614b69aa036456fe391f711250abcfef748778d97f3"
+        },
+        "runtime": {
+          "application_identity": "0.1.0",
+          "core_identity": "pastila-editor-core-v1.2-experimental",
+          "voice_identity": "pastilaacida-voice:governed-nonfactual-realizer:v1",
+          "prompt_identity": "sha256:be8078cf1d4e2f173f0cc09136dbe996c22f82e8f36276bd1cd6d46d6608577e",
+          "model_identity": "pastila-editor-core-v1.2-experimental"
+        },
+        "surface_findings": [],
+        "gate_f": {
+          "gate_id": "FACTUAL_SEMANTIC",
+          "evaluator_identity": "242fe5c18f83c68fe1267ae5cc9ee65cd77157f5e9329bad26ffffee0c8892e5",
+          "prompt_identity": "sha256:92a95381b7f75b09aba6cd4580f3617a7df2a6a1520b0ee22c52db6e9886dcc1",
+          "request_sha256": "da2f64fb6142abbcdfda6319b2ad5271be309394416c10c633d2961356e08bf4",
+          "raw_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "decision": "INDETERMINATE",
+          "reason_records": [
+            {
+              "code": "ADMISSION_EVALUATOR_FAILURE",
+              "status": "DECISIVE",
+              "candidate_span": null,
+              "authority_support": null,
+              "unsupported_proposition": "Evaluator output unavailable or invalid.",
+              "confidence": 0.0
+            }
+          ],
+          "elapsed_ms": 42.8,
+          "error_code": "ADMISSION_EVALUATOR_FAILURE"
+        },
+        "gate_s": {
+          "gate_id": "STORY_SPECIFICITY",
+          "evaluator_identity": "313c6817c7c2ddf75c736dd2c823e25f8ceaf7ac295e09625415f23f32a66b51",
+          "prompt_identity": "sha256:db09a481768e6d1c021b8eacac23be8449288993bec7eaa5ea4ad96866e8b2dc",
+          "request_sha256": "034fccaf1b8bff22a3421649c2279b3162af205d56eb4a7f8336f770317e5495",
+          "raw_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "decision": "INDETERMINATE",
+          "reason_records": [
+            {
+              "code": "ADMISSION_EVALUATOR_FAILURE",
+              "status": "DECISIVE",
+              "candidate_span": null,
+              "authority_support": null,
+              "unsupported_proposition": "Evaluator output unavailable or invalid.",
+              "confidence": 0.0
+            }
+          ],
+          "elapsed_ms": 43.448,
+          "error_code": "ADMISSION_EVALUATOR_FAILURE"
+        },
+        "final_decision": "ADMISSION_ABSTAINED",
+        "precedence_reason": "ADMISSION_EVALUATOR_FAILURE",
+        "eligibility": "QUARANTINED_EVALUATION_ONLY",
+        "current_runtime_admission_affected": false,
+        "receipt_identity": "sha256:3fc9189d2ab1a7b19a9dfdc6974561e86cf6c7d7b9fb25d0066b5bacf6d8f57b"
+      },
+      "gate_f_evidence": {
+        "gate_id": "FACTUAL_SEMANTIC",
+        "raw_response": null,
+        "raw_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "diagnostic": "EVALUATOR_EXCEPTION",
+        "evaluator_exception_type": "RuntimeError"
+      },
+      "gate_s_evidence": {
+        "gate_id": "STORY_SPECIFICITY",
+        "raw_response": null,
+        "raw_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "diagnostic": "EVALUATOR_EXCEPTION",
+        "evaluator_exception_type": "RuntimeError"
+      },
+      "eligibility": "QUARANTINED_EVALUATION_ONLY",
+      "current_runtime_admission_affected": false
+    },
+    {
+      "schema_name": "pastila-semantic-admission-v2-captured-evaluation",
+      "schema_version": "2.1.0-evaluation.1",
+      "receipt": {
+        "schema_name": "pastila-semantic-admission-v2-evaluation-receipt",
+        "schema_version": "2.0.0-evaluation.1",
+        "case_id": "HMCV1-SASC-03",
+        "authority": {
+          "factual_summary": "Un bărbat din Botoșani a susținut bacalaureatul la 69 de ani. A dat examenele la limba română și matematică, iar proba la logică o va da anul viitor.",
+          "factual_summary_sha256": "311879326055812e5107047b483dd0e01ee9bb59abd863998cc07be41ecbb520",
+          "authority_identity": "1597f970c4d901f6b853d99741dba9da393fd1b8c922cb99accf06fb9b02a1f2",
+          "byte_immutable": true
+        },
+        "candidate": {
+          "commentary": "Când îți dai seama că ai petrecut viața în așteptarea unui bacalaureat, poate că e mai bine să-l dai și să nu mai aștepți.",
+          "candidate_sha256": "54905a9c1b35a1c973496c1ed6c4c192357f8991bda499941b297fcce528de95",
+          "raw_response_sha256": "517a4e146296b75c642fbfa60d50385889cb0a5fe22f44964104c752b533d979"
+        },
+        "runtime": {
+          "application_identity": "0.1.0",
+          "core_identity": "pastila-editor-core-v1.2-experimental",
+          "voice_identity": "pastilaacida-voice:governed-nonfactual-realizer:v1",
+          "prompt_identity": "sha256:be8078cf1d4e2f173f0cc09136dbe996c22f82e8f36276bd1cd6d46d6608577e",
+          "model_identity": "pastila-editor-core-v1.2-experimental"
+        },
+        "surface_findings": [],
+        "gate_f": {
+          "gate_id": "FACTUAL_SEMANTIC",
+          "evaluator_identity": "242fe5c18f83c68fe1267ae5cc9ee65cd77157f5e9329bad26ffffee0c8892e5",
+          "prompt_identity": "sha256:92a95381b7f75b09aba6cd4580f3617a7df2a6a1520b0ee22c52db6e9886dcc1",
+          "request_sha256": "4e536adb80edd7910f4091d4b062bb10e822202c03b7e807bfd367691cdbc1f3",
+          "raw_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "decision": "INDETERMINATE",
+          "reason_records": [
+            {
+              "code": "ADMISSION_EVALUATOR_FAILURE",
+              "status": "DECISIVE",
+              "candidate_span": null,
+              "authority_support": null,
+              "unsupported_proposition": "Evaluator output unavailable or invalid.",
+              "confidence": 0.0
+            }
+          ],
+          "elapsed_ms": 41.747,
+          "error_code": "ADMISSION_EVALUATOR_FAILURE"
+        },
+        "gate_s": {
+          "gate_id": "STORY_SPECIFICITY",
+          "evaluator_identity": "313c6817c7c2ddf75c736dd2c823e25f8ceaf7ac295e09625415f23f32a66b51",
+          "prompt_identity": "sha256:db09a481768e6d1c021b8eacac23be8449288993bec7eaa5ea4ad96866e8b2dc",
+          "request_sha256": "34ac0d41ebd68ccb92baf008a4a932bf988538acecac64e1dc10fd3f8989ce64",
+          "raw_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "decision": "INDETERMINATE",
+          "reason_records": [
+            {
+              "code": "ADMISSION_EVALUATOR_FAILURE",
+              "status": "DECISIVE",
+              "candidate_span": null,
+              "authority_support": null,
+              "unsupported_proposition": "Evaluator output unavailable or invalid.",
+              "confidence": 0.0
+            }
+          ],
+          "elapsed_ms": 41.474,
+          "error_code": "ADMISSION_EVALUATOR_FAILURE"
+        },
+        "final_decision": "ADMISSION_ABSTAINED",
+        "precedence_reason": "ADMISSION_EVALUATOR_FAILURE",
+        "eligibility": "QUARANTINED_EVALUATION_ONLY",
+        "current_runtime_admission_affected": false,
+        "receipt_identity": "sha256:1c4f84dd10e59b1e8bad78aae2315d3c03ecf24984951908ade95d84f2c33f52"
+      },
+      "gate_f_evidence": {
+        "gate_id": "FACTUAL_SEMANTIC",
+        "raw_response": null,
+        "raw_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "diagnostic": "EVALUATOR_EXCEPTION",
+        "evaluator_exception_type": "RuntimeError"
+      },
+      "gate_s_evidence": {
+        "gate_id": "STORY_SPECIFICITY",
+        "raw_response": null,
+        "raw_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "diagnostic": "EVALUATOR_EXCEPTION",
+        "evaluator_exception_type": "RuntimeError"
+      },
+      "eligibility": "QUARANTINED_EVALUATION_ONLY",
+      "current_runtime_admission_affected": false
+    },
+    {
+      "schema_name": "pastila-semantic-admission-v2-captured-evaluation",
+      "schema_version": "2.1.0-evaluation.1",
+      "receipt": {
+        "schema_name": "pastila-semantic-admission-v2-evaluation-receipt",
+        "schema_version": "2.0.0-evaluation.1",
+        "case_id": "HMCV1-SASC-04",
+        "authority": {
+          "factual_summary": "Debitul Dunării la intrarea în țară (secțiunea Baziaș) va fi relativ staționar la 1400 m3/s vineri și sâmbătă, apoi în scădere ușoară până la 1300 m3/s în 21 august.",
+          "factual_summary_sha256": "6b774ce80f90d56ca78c0fe7a824cb0c6a3fb806bc84cb643ccc0d87763bc967",
+          "authority_identity": "88a2af83165c6c0503f464850e7d9069518de19715ff818133a72c61a6881954",
+          "byte_immutable": true
+        },
+        "candidate": {
+          "commentary": "Dacă ar fi vorba de un râu care se gândește să facă o pauză de vară, Dunărea ar fi cel mai probabil să-și ia o zi liberă și să se lase purtată de curent, fără să se grăbească prea mult.",
+          "candidate_sha256": "1b7d7223a80aa64ba8917e15a2bcb5ff90b31f87420aeb8a0e9f6d9b069aab3d",
+          "raw_response_sha256": "df7652f35cd86bbd0cdc013cf33a449a22139f8be597cce60184c47ee7eb550d"
+        },
+        "runtime": {
+          "application_identity": "0.1.0",
+          "core_identity": "pastila-editor-core-v1.2-experimental",
+          "voice_identity": "pastilaacida-voice:governed-nonfactual-realizer:v1",
+          "prompt_identity": "sha256:be8078cf1d4e2f173f0cc09136dbe996c22f82e8f36276bd1cd6d46d6608577e",
+          "model_identity": "pastila-editor-core-v1.2-experimental"
+        },
+        "surface_findings": [
+          {
+            "code": "repeated_opening_attractor",
+            "role": "DEFENSE_IN_DEPTH_ONLY"
+          }
+        ],
+        "gate_f": {
+          "gate_id": "FACTUAL_SEMANTIC",
+          "evaluator_identity": "242fe5c18f83c68fe1267ae5cc9ee65cd77157f5e9329bad26ffffee0c8892e5",
+          "prompt_identity": "sha256:92a95381b7f75b09aba6cd4580f3617a7df2a6a1520b0ee22c52db6e9886dcc1",
+          "request_sha256": "21d24ee135a2e07396b7b86af8cc9f102f77a526f2261f2aa71c1c27f53acc41",
+          "raw_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "decision": "INDETERMINATE",
+          "reason_records": [
+            {
+              "code": "ADMISSION_EVALUATOR_FAILURE",
+              "status": "DECISIVE",
+              "candidate_span": null,
+              "authority_support": null,
+              "unsupported_proposition": "Evaluator output unavailable or invalid.",
+              "confidence": 0.0
+            }
+          ],
+          "elapsed_ms": 42.808,
+          "error_code": "ADMISSION_EVALUATOR_FAILURE"
+        },
+        "gate_s": {
+          "gate_id": "STORY_SPECIFICITY",
+          "evaluator_identity": "313c6817c7c2ddf75c736dd2c823e25f8ceaf7ac295e09625415f23f32a66b51",
+          "prompt_identity": "sha256:db09a481768e6d1c021b8eacac23be8449288993bec7eaa5ea4ad96866e8b2dc",
+          "request_sha256": "a0ce4111414e7a2a77e540c025ad7e950a1fae96e42f280921e563179c15bc6f",
+          "raw_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "decision": "INDETERMINATE",
+          "reason_records": [
+            {
+              "code": "ADMISSION_EVALUATOR_FAILURE",
+              "status": "DECISIVE",
+              "candidate_span": null,
+              "authority_support": null,
+              "unsupported_proposition": "Evaluator output unavailable or invalid.",
+              "confidence": 0.0
+            }
+          ],
+          "elapsed_ms": 41.737,
+          "error_code": "ADMISSION_EVALUATOR_FAILURE"
+        },
+        "final_decision": "ADMISSION_ABSTAINED",
+        "precedence_reason": "ADMISSION_EVALUATOR_FAILURE",
+        "eligibility": "QUARANTINED_EVALUATION_ONLY",
+        "current_runtime_admission_affected": false,
+        "receipt_identity": "sha256:b1782d4c558511a7d4c731ef3bed71b88b8a084ab96488568583e600b2830b92"
+      },
+      "gate_f_evidence": {
+        "gate_id": "FACTUAL_SEMANTIC",
+        "raw_response": null,
+        "raw_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "diagnostic": "EVALUATOR_EXCEPTION",
+        "evaluator_exception_type": "RuntimeError"
+      },
+      "gate_s_evidence": {
+        "gate_id": "STORY_SPECIFICITY",
+        "raw_response": null,
+        "raw_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "diagnostic": "EVALUATOR_EXCEPTION",
+        "evaluator_exception_type": "RuntimeError"
+      },
+      "eligibility": "QUARANTINED_EVALUATION_ONLY",
+      "current_runtime_admission_affected": false
+    },
+    {
+      "schema_name": "pastila-semantic-admission-v2-captured-evaluation",
+      "schema_version": "2.1.0-evaluation.1",
+      "receipt": {
+        "schema_name": "pastila-semantic-admission-v2-evaluation-receipt",
+        "schema_version": "2.0.0-evaluation.1",
+        "case_id": "HMCV1-SASC-05",
+        "authority": {
+          "factual_summary": "Consiliul Constituțional al Franței a blocat o lege care interzicea accesul minorilor sub 15 ani la rețelele sociale, considerând că măsura aduce o atingere disproporționată libertății de exprimare și comunicare.",
+          "factual_summary_sha256": "94b53db272ab7065ef3d937592d2d3ef095dfb10258ad6b703c16b70ea08e108",
+          "authority_identity": "f5525e8e27a1844a2adfce9226f0dda40d158b67b6ec184600816cd8cd3f210a",
+          "byte_immutable": true
+        },
+        "candidate": {
+          "commentary": "Când legea vrea să te protejeze, dar se lovește de propriile limite, e ca și cum ai încerca să-i dai un copil o pălărie de securitate la plajă — nu se potrivește, iar cel care rămâne fără pălărie e copilul.",
+          "candidate_sha256": "9f6cf4d83e599dc387b7cc7f3ae80a1e51762d7eaefd1e44762f7535dc3e673d",
+          "raw_response_sha256": "31316f14496c77164122babd563564aa8319d99deb5e1f346de2215ec084efa3"
+        },
+        "runtime": {
+          "application_identity": "0.1.0",
+          "core_identity": "pastila-editor-core-v1.2-experimental",
+          "voice_identity": "pastilaacida-voice:governed-nonfactual-realizer:v1",
+          "prompt_identity": "sha256:be8078cf1d4e2f173f0cc09136dbe996c22f82e8f36276bd1cd6d46d6608577e",
+          "model_identity": "pastila-editor-core-v1.2-experimental"
+        },
+        "surface_findings": [
+          {
+            "code": "unsupported_causality_intent_or_status",
+            "role": "DEFENSE_IN_DEPTH_ONLY"
+          }
+        ],
+        "gate_f": {
+          "gate_id": "FACTUAL_SEMANTIC",
+          "evaluator_identity": "242fe5c18f83c68fe1267ae5cc9ee65cd77157f5e9329bad26ffffee0c8892e5",
+          "prompt_identity": "sha256:92a95381b7f75b09aba6cd4580f3617a7df2a6a1520b0ee22c52db6e9886dcc1",
+          "request_sha256": "69d9028cc2741ac21b5947c2a6f60e1a82f269c1011b02456eda9156d505ec7c",
+          "raw_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "decision": "INDETERMINATE",
+          "reason_records": [
+            {
+              "code": "ADMISSION_EVALUATOR_FAILURE",
+              "status": "DECISIVE",
+              "candidate_span": null,
+              "authority_support": null,
+              "unsupported_proposition": "Evaluator output unavailable or invalid.",
+              "confidence": 0.0
+            }
+          ],
+          "elapsed_ms": 43.147,
+          "error_code": "ADMISSION_EVALUATOR_FAILURE"
+        },
+        "gate_s": {
+          "gate_id": "STORY_SPECIFICITY",
+          "evaluator_identity": "313c6817c7c2ddf75c736dd2c823e25f8ceaf7ac295e09625415f23f32a66b51",
+          "prompt_identity": "sha256:db09a481768e6d1c021b8eacac23be8449288993bec7eaa5ea4ad96866e8b2dc",
+          "request_sha256": "9791eaf44ead943dbd2c7a782c224533d87c82ca89a8b9f6672aae8b1b60b009",
+          "raw_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "decision": "INDETERMINATE",
+          "reason_records": [
+            {
+              "code": "ADMISSION_EVALUATOR_FAILURE",
+              "status": "DECISIVE",
+              "candidate_span": null,
+              "authority_support": null,
+              "unsupported_proposition": "Evaluator output unavailable or invalid.",
+              "confidence": 0.0
+            }
+          ],
+          "elapsed_ms": 41.163,
+          "error_code": "ADMISSION_EVALUATOR_FAILURE"
+        },
+        "final_decision": "ADMISSION_ABSTAINED",
+        "precedence_reason": "ADMISSION_EVALUATOR_FAILURE",
+        "eligibility": "QUARANTINED_EVALUATION_ONLY",
+        "current_runtime_admission_affected": false,
+        "receipt_identity": "sha256:9648765083beebcc72cbdb22aee49acab67251babbdfa7440c62ba4f0bd2047b"
+      },
+      "gate_f_evidence": {
+        "gate_id": "FACTUAL_SEMANTIC",
+        "raw_response": null,
+        "raw_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "diagnostic": "EVALUATOR_EXCEPTION",
+        "evaluator_exception_type": "RuntimeError"
+      },
+      "gate_s_evidence": {
+        "gate_id": "STORY_SPECIFICITY",
+        "raw_response": null,
+        "raw_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "diagnostic": "EVALUATOR_EXCEPTION",
+        "evaluator_exception_type": "RuntimeError"
+      },
+      "eligibility": "QUARANTINED_EVALUATION_ONLY",
+      "current_runtime_admission_affected": false
+    },
+    {
+      "schema_name": "pastila-semantic-admission-v2-captured-evaluation",
+      "schema_version": "2.1.0-evaluation.1",
+      "receipt": {
+        "schema_name": "pastila-semantic-admission-v2-evaluation-receipt",
+        "schema_version": "2.0.0-evaluation.1",
+        "case_id": "HMCV1-SASC-06",
+        "authority": {
+          "factual_summary": "Primarul Capitalei, Ciprian Ciucu, le-a propus consilierilor generali să analizeze oportunitatea modificării numelui Parcului Izvor în Parcul „Nadia Comăneci”.",
+          "factual_summary_sha256": "1ccab74894dad4c874b30647e78af797f1fc28ab2d0071170ec184009074c55c",
+          "authority_identity": "b882847a3c028775be6ec7773df1d64e64d350a30e59173ded6f71af367dc048",
+          "byte_immutable": true
+        },
+        "candidate": {
+          "commentary": "Dacă ar fi vorba de un parc de jucării, ar fi mai ușor să alegi un nume, dar aici e vorba de un loc unde oamenii se plimbă și se gândesc, așa că poate că e mai bine să nu schimbi ceva care are deja un nume și o istorie.",
+          "candidate_sha256": "ca81191da0a4a2ffd2455595bb07d5541d1b3f217d083be88d3131e30e33f28b",
+          "raw_response_sha256": "d1dc9575a6b368f9ffa958ed880c730873442bdf11b47ac888f6882691896829"
+        },
+        "runtime": {
+          "application_identity": "0.1.0",
+          "core_identity": "pastila-editor-core-v1.2-experimental",
+          "voice_identity": "pastilaacida-voice:governed-nonfactual-realizer:v1",
+          "prompt_identity": "sha256:be8078cf1d4e2f173f0cc09136dbe996c22f82e8f36276bd1cd6d46d6608577e",
+          "model_identity": "pastila-editor-core-v1.2-experimental"
+        },
+        "surface_findings": [
+          {
+            "code": "fiction_returns_as_unsupported_fact",
+            "role": "DEFENSE_IN_DEPTH_ONLY"
+          },
+          {
+            "code": "repeated_opening_attractor",
+            "role": "DEFENSE_IN_DEPTH_ONLY"
+          }
+        ],
+        "gate_f": {
+          "gate_id": "FACTUAL_SEMANTIC",
+          "evaluator_identity": "242fe5c18f83c68fe1267ae5cc9ee65cd77157f5e9329bad26ffffee0c8892e5",
+          "prompt_identity": "sha256:92a95381b7f75b09aba6cd4580f3617a7df2a6a1520b0ee22c52db6e9886dcc1",
+          "request_sha256": "228bdaf1ac5a44c528d553026bc9f1a95eb6cb5a3267a20f7ad6b2b40d1c6215",
+          "raw_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "decision": "INDETERMINATE",
+          "reason_records": [
+            {
+              "code": "ADMISSION_EVALUATOR_FAILURE",
+              "status": "DECISIVE",
+              "candidate_span": null,
+              "authority_support": null,
+              "unsupported_proposition": "Evaluator output unavailable or invalid.",
+              "confidence": 0.0
+            }
+          ],
+          "elapsed_ms": 42.957,
+          "error_code": "ADMISSION_EVALUATOR_FAILURE"
+        },
+        "gate_s": {
+          "gate_id": "STORY_SPECIFICITY",
+          "evaluator_identity": "313c6817c7c2ddf75c736dd2c823e25f8ceaf7ac295e09625415f23f32a66b51",
+          "prompt_identity": "sha256:db09a481768e6d1c021b8eacac23be8449288993bec7eaa5ea4ad96866e8b2dc",
+          "request_sha256": "247d3cae543474446020ac1311e2fdbeb88036dd793cc6183f279a16c5974654",
+          "raw_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "decision": "INDETERMINATE",
+          "reason_records": [
+            {
+              "code": "ADMISSION_EVALUATOR_FAILURE",
+              "status": "DECISIVE",
+              "candidate_span": null,
+              "authority_support": null,
+              "unsupported_proposition": "Evaluator output unavailable or invalid.",
+              "confidence": 0.0
+            }
+          ],
+          "elapsed_ms": 42.733,
+          "error_code": "ADMISSION_EVALUATOR_FAILURE"
+        },
+        "final_decision": "ADMISSION_ABSTAINED",
+        "precedence_reason": "ADMISSION_EVALUATOR_FAILURE",
+        "eligibility": "QUARANTINED_EVALUATION_ONLY",
+        "current_runtime_admission_affected": false,
+        "receipt_identity": "sha256:0670b225fad638da0c969b30fe14652cdc89993894b3a8d5e5c80982be103e30"
+      },
+      "gate_f_evidence": {
+        "gate_id": "FACTUAL_SEMANTIC",
+        "raw_response": null,
+        "raw_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "diagnostic": "EVALUATOR_EXCEPTION",
+        "evaluator_exception_type": "RuntimeError"
+      },
+      "gate_s_evidence": {
+        "gate_id": "STORY_SPECIFICITY",
+        "raw_response": null,
+        "raw_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "diagnostic": "EVALUATOR_EXCEPTION",
+        "evaluator_exception_type": "RuntimeError"
+      },
+      "eligibility": "QUARANTINED_EVALUATION_ONLY",
+      "current_runtime_admission_affected": false
+    },
+    {
+      "schema_name": "pastila-semantic-admission-v2-captured-evaluation",
+      "schema_version": "2.1.0-evaluation.1",
+      "receipt": {
+        "schema_name": "pastila-semantic-admission-v2-evaluation-receipt",
+        "schema_version": "2.0.0-evaluation.1",
+        "case_id": "HMCV1-SASC-07",
+        "authority": {
+          "factual_summary": "Autostrada Moldovei A7 are aproape jumătate din cei 453 de kilometri deschiși circulației. CNAIR a desemnat câștigătorul contractului pentru două benzinării pe A7, lângă Milcovul.",
+          "factual_summary_sha256": "900a07278a49241a4e6265d58d5540d0a90d54a4e7deaf566722416e6caca884",
+          "authority_identity": "d9c82ec28132acb26dad175e8fc440447db10fb4918d55542815e77fccd83029",
+          "byte_immutable": true
+        },
+        "candidate": {
+          "commentary": "Când ai o autostradă care se deschide ca o floare de colț, dar doar pe jumătate, e ca și cum ai avea un telefon nou cu jumătate din tastele blocate — ai speranță, dar și frustrare.",
+          "candidate_sha256": "0d354bf19432d286ac70059d6706ba4fa02e7d3bb84f92b09029c800e5abee6b",
+          "raw_response_sha256": "6405bc17d651530a762f72fe90279f186d134c9e6ccf4821bfc21baf2cf60d7c"
+        },
+        "runtime": {
+          "application_identity": "0.1.0",
+          "core_identity": "pastila-editor-core-v1.2-experimental",
+          "voice_identity": "pastilaacida-voice:governed-nonfactual-realizer:v1",
+          "prompt_identity": "sha256:be8078cf1d4e2f173f0cc09136dbe996c22f82e8f36276bd1cd6d46d6608577e",
+          "model_identity": "pastila-editor-core-v1.2-experimental"
+        },
+        "surface_findings": [
+          {
+            "code": "factual_entity_reuse",
+            "role": "DEFENSE_IN_DEPTH_ONLY"
+          }
+        ],
+        "gate_f": {
+          "gate_id": "FACTUAL_SEMANTIC",
+          "evaluator_identity": "242fe5c18f83c68fe1267ae5cc9ee65cd77157f5e9329bad26ffffee0c8892e5",
+          "prompt_identity": "sha256:92a95381b7f75b09aba6cd4580f3617a7df2a6a1520b0ee22c52db6e9886dcc1",
+          "request_sha256": "66353262bebb1eb892c31ea284348135d72c685db21de0115bb2477773d42293",
+          "raw_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "decision": "INDETERMINATE",
+          "reason_records": [
+            {
+              "code": "ADMISSION_EVALUATOR_FAILURE",
+              "status": "DECISIVE",
+              "candidate_span": null,
+              "authority_support": null,
+              "unsupported_proposition": "Evaluator output unavailable or invalid.",
+              "confidence": 0.0
+            }
+          ],
+          "elapsed_ms": 51.236,
+          "error_code": "ADMISSION_EVALUATOR_FAILURE"
+        },
+        "gate_s": {
+          "gate_id": "STORY_SPECIFICITY",
+          "evaluator_identity": "313c6817c7c2ddf75c736dd2c823e25f8ceaf7ac295e09625415f23f32a66b51",
+          "prompt_identity": "sha256:db09a481768e6d1c021b8eacac23be8449288993bec7eaa5ea4ad96866e8b2dc",
+          "request_sha256": "f501d3bacdd3ad713b2cf4bd169af3620ca1977dd51e17e08c53172246e28030",
+          "raw_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "decision": "INDETERMINATE",
+          "reason_records": [
+            {
+              "code": "ADMISSION_EVALUATOR_FAILURE",
+              "status": "DECISIVE",
+              "candidate_span": null,
+              "authority_support": null,
+              "unsupported_proposition": "Evaluator output unavailable or invalid.",
+              "confidence": 0.0
+            }
+          ],
+          "elapsed_ms": 42.091,
+          "error_code": "ADMISSION_EVALUATOR_FAILURE"
+        },
+        "final_decision": "ADMISSION_ABSTAINED",
+        "precedence_reason": "ADMISSION_EVALUATOR_FAILURE",
+        "eligibility": "QUARANTINED_EVALUATION_ONLY",
+        "current_runtime_admission_affected": false,
+        "receipt_identity": "sha256:69b219a416fa454db1c322349a202032fed443ce4377f23f3cb1eb7f50c832aa"
+      },
+      "gate_f_evidence": {
+        "gate_id": "FACTUAL_SEMANTIC",
+        "raw_response": null,
+        "raw_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "diagnostic": "EVALUATOR_EXCEPTION",
+        "evaluator_exception_type": "RuntimeError"
+      },
+      "gate_s_evidence": {
+        "gate_id": "STORY_SPECIFICITY",
+        "raw_response": null,
+        "raw_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "diagnostic": "EVALUATOR_EXCEPTION",
+        "evaluator_exception_type": "RuntimeError"
+      },
+      "eligibility": "QUARANTINED_EVALUATION_ONLY",
+      "current_runtime_admission_affected": false
+    },
+    {
+      "schema_name": "pastila-semantic-admission-v2-captured-evaluation",
+      "schema_version": "2.1.0-evaluation.1",
+      "receipt": {
+        "schema_name": "pastila-semantic-admission-v2-evaluation-receipt",
+        "schema_version": "2.0.0-evaluation.1",
+        "case_id": "HMCV1-SASC-08",
+        "authority": {
+          "factual_summary": "O persoană a fost amendată de peste 4.000 de euro pentru că a folosit o sirenă de ceață pentru a trezi un urs polar care dormea în Norvegia.",
+          "factual_summary_sha256": "6b225d0e8c3a5d46b05f6918a7ae5edd0494cdf77df1a0b26f5c94bf0fb5a955",
+          "authority_identity": "3d8367f11b457c567694b4c9dadfea3f80eac1a04633c123644488f708740e77",
+          "byte_immutable": true
+        },
+        "candidate": {
+          "commentary": "Dacă ar fi vorba de un film, asta ar fi un scenariu de comedie, dar aici e vorba de un urs polar care a avut norocul să nu se trezească prea devreme.",
+          "candidate_sha256": "25aa9c76de0bfaaed57f361ca94d239e1900028a2437a3e02b88bd1de639d1e2",
+          "raw_response_sha256": "8d2e140069de872fb8a52cbfe7d7e12a12aca20892e0264f76a33b1fe5169fbb"
+        },
+        "runtime": {
+          "application_identity": "0.1.0",
+          "core_identity": "pastila-editor-core-v1.2-experimental",
+          "voice_identity": "pastilaacida-voice:governed-nonfactual-realizer:v1",
+          "prompt_identity": "sha256:be8078cf1d4e2f173f0cc09136dbe996c22f82e8f36276bd1cd6d46d6608577e",
+          "model_identity": "pastila-editor-core-v1.2-experimental"
+        },
+        "surface_findings": [
+          {
+            "code": "fiction_returns_as_unsupported_fact",
+            "role": "DEFENSE_IN_DEPTH_ONLY"
+          },
+          {
+            "code": "repeated_opening_attractor",
+            "role": "DEFENSE_IN_DEPTH_ONLY"
+          }
+        ],
+        "gate_f": {
+          "gate_id": "FACTUAL_SEMANTIC",
+          "evaluator_identity": "242fe5c18f83c68fe1267ae5cc9ee65cd77157f5e9329bad26ffffee0c8892e5",
+          "prompt_identity": "sha256:92a95381b7f75b09aba6cd4580f3617a7df2a6a1520b0ee22c52db6e9886dcc1",
+          "request_sha256": "bcc186fb290bfd38c84a72064251213fb27f09c10a1e171634f20d4f04eabb45",
+          "raw_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "decision": "INDETERMINATE",
+          "reason_records": [
+            {
+              "code": "ADMISSION_EVALUATOR_FAILURE",
+              "status": "DECISIVE",
+              "candidate_span": null,
+              "authority_support": null,
+              "unsupported_proposition": "Evaluator output unavailable or invalid.",
+              "confidence": 0.0
+            }
+          ],
+          "elapsed_ms": 43.803,
+          "error_code": "ADMISSION_EVALUATOR_FAILURE"
+        },
+        "gate_s": {
+          "gate_id": "STORY_SPECIFICITY",
+          "evaluator_identity": "313c6817c7c2ddf75c736dd2c823e25f8ceaf7ac295e09625415f23f32a66b51",
+          "prompt_identity": "sha256:db09a481768e6d1c021b8eacac23be8449288993bec7eaa5ea4ad96866e8b2dc",
+          "request_sha256": "fe387f8eed56f79973a25aab9cba0f070c5d5402d0fdc785596012cbccfaac9d",
+          "raw_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "decision": "INDETERMINATE",
+          "reason_records": [
+            {
+              "code": "ADMISSION_EVALUATOR_FAILURE",
+              "status": "DECISIVE",
+              "candidate_span": null,
+              "authority_support": null,
+              "unsupported_proposition": "Evaluator output unavailable or invalid.",
+              "confidence": 0.0
+            }
+          ],
+          "elapsed_ms": 42.905,
+          "error_code": "ADMISSION_EVALUATOR_FAILURE"
+        },
+        "final_decision": "ADMISSION_ABSTAINED",
+        "precedence_reason": "ADMISSION_EVALUATOR_FAILURE",
+        "eligibility": "QUARANTINED_EVALUATION_ONLY",
+        "current_runtime_admission_affected": false,
+        "receipt_identity": "sha256:27ce824a566c34e05773efffe228032c6232bf7ca0942e7770ad0ee1085aa87b"
+      },
+      "gate_f_evidence": {
+        "gate_id": "FACTUAL_SEMANTIC",
+        "raw_response": null,
+        "raw_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "diagnostic": "EVALUATOR_EXCEPTION",
+        "evaluator_exception_type": "RuntimeError"
+      },
+      "gate_s_evidence": {
+        "gate_id": "STORY_SPECIFICITY",
+        "raw_response": null,
+        "raw_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "diagnostic": "EVALUATOR_EXCEPTION",
+        "evaluator_exception_type": "RuntimeError"
+      },
+      "eligibility": "QUARANTINED_EVALUATION_ONLY",
+      "current_runtime_admission_affected": false
+    },
+    {
+      "schema_name": "pastila-semantic-admission-v2-captured-evaluation",
+      "schema_version": "2.1.0-evaluation.1",
+      "receipt": {
+        "schema_name": "pastila-semantic-admission-v2-evaluation-receipt",
+        "schema_version": "2.0.0-evaluation.1",
+        "case_id": "HMCV1-SASC-09",
+        "authority": {
+          "factual_summary": "Trei pensionari au fost chemați de acasă pentru repornirea Grupului 4 de la Rovinari.",
+          "factual_summary_sha256": "25ceec8a6f5e855c9320541de6af25e27923d14aae42aa57be5cdb53b48da480",
+          "authority_identity": "40a90af6f07e101d38d52afd1ee03b9aa84b5a13252448a326ed41b9b91c352c",
+          "byte_immutable": true
+        },
+        "candidate": {
+          "commentary": "Când te cheamă la muncă după 40 de ani, nu mai e vorba de o pensie, ci de o invitație la o nouă aventură—dacă ai încă puterea să o poți ridica.",
+          "candidate_sha256": "4b4249f5acffd6723886eec9bd7ef9395eb93f9e2a3dc76f5bd3bad884458aab",
+          "raw_response_sha256": "7459b29bd0f2749fa08c042213541c2d64c41cd3611b922acfc0f35deadd9526"
+        },
+        "runtime": {
+          "application_identity": "0.1.0",
+          "core_identity": "pastila-editor-core-v1.2-experimental",
+          "voice_identity": "pastilaacida-voice:governed-nonfactual-realizer:v1",
+          "prompt_identity": "sha256:be8078cf1d4e2f173f0cc09136dbe996c22f82e8f36276bd1cd6d46d6608577e",
+          "model_identity": "pastila-editor-core-v1.2-experimental"
+        },
+        "surface_findings": [
+          {
+            "code": "factual_quantity_or_currency",
+            "role": "DEFENSE_IN_DEPTH_ONLY"
+          }
+        ],
+        "gate_f": {
+          "gate_id": "FACTUAL_SEMANTIC",
+          "evaluator_identity": "242fe5c18f83c68fe1267ae5cc9ee65cd77157f5e9329bad26ffffee0c8892e5",
+          "prompt_identity": "sha256:92a95381b7f75b09aba6cd4580f3617a7df2a6a1520b0ee22c52db6e9886dcc1",
+          "request_sha256": "acf7f87fff01c167ec8157074196a8b7bcd334b2b61e9bb5203c9a3343e47cad",
+          "raw_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "decision": "INDETERMINATE",
+          "reason_records": [
+            {
+              "code": "ADMISSION_EVALUATOR_FAILURE",
+              "status": "DECISIVE",
+              "candidate_span": null,
+              "authority_support": null,
+              "unsupported_proposition": "Evaluator output unavailable or invalid.",
+              "confidence": 0.0
+            }
+          ],
+          "elapsed_ms": 40.905,
+          "error_code": "ADMISSION_EVALUATOR_FAILURE"
+        },
+        "gate_s": {
+          "gate_id": "STORY_SPECIFICITY",
+          "evaluator_identity": "313c6817c7c2ddf75c736dd2c823e25f8ceaf7ac295e09625415f23f32a66b51",
+          "prompt_identity": "sha256:db09a481768e6d1c021b8eacac23be8449288993bec7eaa5ea4ad96866e8b2dc",
+          "request_sha256": "fd9ec371ed176f4b5563a028944f961a095894fe6fa1e0e8d52a96bc123949bc",
+          "raw_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "decision": "INDETERMINATE",
+          "reason_records": [
+            {
+              "code": "ADMISSION_EVALUATOR_FAILURE",
+              "status": "DECISIVE",
+              "candidate_span": null,
+              "authority_support": null,
+              "unsupported_proposition": "Evaluator output unavailable or invalid.",
+              "confidence": 0.0
+            }
+          ],
+          "elapsed_ms": 44.022,
+          "error_code": "ADMISSION_EVALUATOR_FAILURE"
+        },
+        "final_decision": "ADMISSION_ABSTAINED",
+        "precedence_reason": "ADMISSION_EVALUATOR_FAILURE",
+        "eligibility": "QUARANTINED_EVALUATION_ONLY",
+        "current_runtime_admission_affected": false,
+        "receipt_identity": "sha256:d86a5a5e4d4025fbced2d1d7ded5d9bb29e01ce85a40eece053ea775b41dea51"
+      },
+      "gate_f_evidence": {
+        "gate_id": "FACTUAL_SEMANTIC",
+        "raw_response": null,
+        "raw_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "diagnostic": "EVALUATOR_EXCEPTION",
+        "evaluator_exception_type": "RuntimeError"
+      },
+      "gate_s_evidence": {
+        "gate_id": "STORY_SPECIFICITY",
+        "raw_response": null,
+        "raw_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "diagnostic": "EVALUATOR_EXCEPTION",
+        "evaluator_exception_type": "RuntimeError"
+      },
+      "eligibility": "QUARANTINED_EVALUATION_ONLY",
+      "current_runtime_admission_affected": false
+    },
+    {
+      "schema_name": "pastila-semantic-admission-v2-captured-evaluation",
+      "schema_version": "2.1.0-evaluation.1",
+      "receipt": {
+        "schema_name": "pastila-semantic-admission-v2-evaluation-receipt",
+        "schema_version": "2.0.0-evaluation.1",
+        "case_id": "HMCV1-SASC-10",
+        "authority": {
+          "factual_summary": "Elevii care vor susține Evaluarea Națională sau Bacalaureatul în 2027 ar putea avea parte de noi reguli privind verificarea lucrărilor și soluționarea contestațiilor.",
+          "factual_summary_sha256": "7d839472e08fba97c72d04df99a747bbca21bb2d3bd37d463f0e1143f7125caf",
+          "authority_identity": "4c33a96729a40b82bc255f55c0d73cc42a39df3fddb9040d662db97d807a81c8",
+          "byte_immutable": true
+        },
+        "candidate": {
+          "commentary": "Dacă ar fi o competiție de rezolvare de probleme, ar fi ca și cum ar fi schimbat regulile jocului în timpul meciului, doar că aici nu e vorba de un meci, ci de o probă care decide viitorul unor tineri.",
+          "candidate_sha256": "05a5975adbf01703c74aaea8e5848a63e27d2e430c65c67092cc049b007c2cab",
+          "raw_response_sha256": "2c2e496475b7a60e68c4ca3ad9617970ba39eca02c68d7465503376fdcbb3b7a"
+        },
+        "runtime": {
+          "application_identity": "0.1.0",
+          "core_identity": "pastila-editor-core-v1.2-experimental",
+          "voice_identity": "pastilaacida-voice:governed-nonfactual-realizer:v1",
+          "prompt_identity": "sha256:be8078cf1d4e2f173f0cc09136dbe996c22f82e8f36276bd1cd6d46d6608577e",
+          "model_identity": "pastila-editor-core-v1.2-experimental"
+        },
+        "surface_findings": [
+          {
+            "code": "fiction_returns_as_unsupported_fact",
+            "role": "DEFENSE_IN_DEPTH_ONLY"
+          },
+          {
+            "code": "repeated_opening_attractor",
+            "role": "DEFENSE_IN_DEPTH_ONLY"
+          }
+        ],
+        "gate_f": {
+          "gate_id": "FACTUAL_SEMANTIC",
+          "evaluator_identity": "242fe5c18f83c68fe1267ae5cc9ee65cd77157f5e9329bad26ffffee0c8892e5",
+          "prompt_identity": "sha256:92a95381b7f75b09aba6cd4580f3617a7df2a6a1520b0ee22c52db6e9886dcc1",
+          "request_sha256": "bf76c53708f8716819f62f68e16ea727803a017636179ac2a2f0f45bf955dd2a",
+          "raw_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "decision": "INDETERMINATE",
+          "reason_records": [
+            {
+              "code": "ADMISSION_EVALUATOR_FAILURE",
+              "status": "DECISIVE",
+              "candidate_span": null,
+              "authority_support": null,
+              "unsupported_proposition": "Evaluator output unavailable or invalid.",
+              "confidence": 0.0
+            }
+          ],
+          "elapsed_ms": 42.296,
+          "error_code": "ADMISSION_EVALUATOR_FAILURE"
+        },
+        "gate_s": {
+          "gate_id": "STORY_SPECIFICITY",
+          "evaluator_identity": "313c6817c7c2ddf75c736dd2c823e25f8ceaf7ac295e09625415f23f32a66b51",
+          "prompt_identity": "sha256:db09a481768e6d1c021b8eacac23be8449288993bec7eaa5ea4ad96866e8b2dc",
+          "request_sha256": "3908e5bdf8c08e78ca36af5a492e8c4de6007f9409db70bf97ae95d1f7a7fbec",
+          "raw_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "decision": "INDETERMINATE",
+          "reason_records": [
+            {
+              "code": "ADMISSION_EVALUATOR_FAILURE",
+              "status": "DECISIVE",
+              "candidate_span": null,
+              "authority_support": null,
+              "unsupported_proposition": "Evaluator output unavailable or invalid.",
+              "confidence": 0.0
+            }
+          ],
+          "elapsed_ms": 40.568,
+          "error_code": "ADMISSION_EVALUATOR_FAILURE"
+        },
+        "final_decision": "ADMISSION_ABSTAINED",
+        "precedence_reason": "ADMISSION_EVALUATOR_FAILURE",
+        "eligibility": "QUARANTINED_EVALUATION_ONLY",
+        "current_runtime_admission_affected": false,
+        "receipt_identity": "sha256:74016908d109d0ae3e16de3b562956ef63bfed99517ec263b3992c5fe7bdbedc"
+      },
+      "gate_f_evidence": {
+        "gate_id": "FACTUAL_SEMANTIC",
+        "raw_response": null,
+        "raw_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "diagnostic": "EVALUATOR_EXCEPTION",
+        "evaluator_exception_type": "RuntimeError"
+      },
+      "gate_s_evidence": {
+        "gate_id": "STORY_SPECIFICITY",
+        "raw_response": null,
+        "raw_response_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "diagnostic": "EVALUATOR_EXCEPTION",
+        "evaluator_exception_type": "RuntimeError"
+      },
+      "eligibility": "QUARANTINED_EVALUATION_ONLY",
+      "current_runtime_admission_affected": false
+    }
+  ],
+  "completed_at": "2026-08-25T22:33:54.959620+00:00",
+  "evaluation_count": 10,
+  "provider_call_count": 20
+}

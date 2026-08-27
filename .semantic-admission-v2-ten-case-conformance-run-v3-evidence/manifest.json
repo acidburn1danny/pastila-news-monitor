@@ -1,0 +1,44 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-run3-constrained-evidence-bundle",
+  "schema_version": "1.0.0",
+  "canonical_identity": "d567adaddd889063ae48d65d647c8676b6a4ea87f9f9cc047ed80888af12ee07",
+  "identity_method": "sha256 of the ordered lowercase main artifact SHA-256 values plus diagnostic_trace_set_identity, joined by LF",
+  "lifecycle": "FROZEN_COMPLETED_FAIL_CLOSED_INFRASTRUCTURE_FAILURE",
+  "run_id": "SAV2_TEN_CASE_CONFORMANCE_RUN_3_CONSTRAINED_V1",
+  "plan_identity": "269996e0c7fb6a268bc44a358cdac137aa1fd2ab0cd88dbe0c05a97020ca7ac1",
+  "preflight_bundle_identity": "0205308263dc59033c1c50f3970de5781cf433d76a8d4135c6048bb0fd679184",
+  "main_artifacts": [
+    {
+      "path": ".semantic-admission-v2-ten-case-conformance-run-v3-evidence/run3-execution-authority.json",
+      "sha256": "0475c3e1d1c9832b95eedd26bb935270b0319087aeb92906565713a03aafdf7b"
+    },
+    {
+      "path": ".semantic-admission-v2-ten-case-conformance-run-v3-evidence/raw-call-ledger.json",
+      "sha256": "74b552df283e517602ef6c16ab4bf7c32fc6430571b5268aa714c100108747ea"
+    },
+    {
+      "path": ".semantic-admission-v2-ten-case-conformance-run-v3-evidence/raw-results.json",
+      "sha256": "448e0a406170069a1c2a458b53228495e16fdad497bae52df18fdb8d6f837c11"
+    },
+    {
+      "path": ".semantic-admission-v2-ten-case-conformance-run-v3-evidence/evaluation-summary.json",
+      "sha256": "4a30d9fa31536a8b855c3576ae20fa76261f0b16f2b267ea83c236057552dee9"
+    },
+    {
+      "path": ".semantic-admission-v2-ten-case-conformance-run-v3-evidence/report.md",
+      "sha256": "21a6251076dcdea96c8d3d0b8b19401c05ff710b2e6bdd0248277fb449c906b1"
+    }
+  ],
+  "diagnostic_trace_count": 20,
+  "diagnostic_trace_set_identity": "7307a93575bf126d30655928d9f985faa3d46752f28ab8bfb7fd379e0fac9ba5",
+  "case_count": 10,
+  "evaluator_attempt_count": 20,
+  "model_inference_started_count": 0,
+  "final_abstention_count": 10,
+  "admission_count": 0,
+  "semantic_acceptance_contract_measured": false,
+  "run3_retry_authorized": false,
+  "curriculum_authority": false,
+  "training_authority": false,
+  "runtime_authority": false
+}
