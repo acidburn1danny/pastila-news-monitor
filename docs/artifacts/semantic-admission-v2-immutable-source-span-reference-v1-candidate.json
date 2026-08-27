@@ -1,0 +1,56 @@
+{
+  "artifact_id": "IMMUTABLE_SOURCE_SPAN_REFERENCE_V1_CANDIDATE",
+  "schema_version": "1.0.0-evaluation.1",
+  "candidate_identity": "b127e9e321f1378d012ff65fb9c5718709c2bc84eb898130f405abd61c9fa0ae",
+  "approved_design_identity": "d80599655520bd70c2ad7ee972f33850d0ed0deee2ccfe571cc94c1fc2d6985e",
+  "implementation_sha256": "e193b22e5fcfcc63fa15cef2084878f8c89d403737715e93a6ff28b91ef89fc8",
+  "json_schema_sha256": "e804f09875310ed5920604bad84fa9a6b1c754c0c5e707ea4512936daedfe305",
+  "contract": {
+    "schema_name": "pastila-semantic-admission-v2-source-span-reference",
+    "source_roles": ["CANDIDATE", "FACTUAL_AUTHORITY"],
+    "coordinates": "ZERO_BASED_HALF_OPEN_UTF8_BYTES",
+    "source_identity": "LOWERCASE_SHA256",
+    "empty_spans": "REJECT",
+    "unknown_fields": "REJECT",
+    "mutation": "FROZEN_MODELS_AND_IMMUTABLE_BYTE_COPIES"
+  },
+  "resolver": {
+    "kind": "PURE_DETERMINISTIC_NO_IO",
+    "result": "EXACT_CALLER_SUPPLIED_SOURCE_SLICE",
+    "fuzzy_matching": false,
+    "normalization": false,
+    "repair": false,
+    "fallback": false,
+    "cross_source_projection": false
+  },
+  "zero_inference_verification": {
+    "targeted_fixture_tests": "PASS",
+    "randomized_exact_slice_iterations": 500,
+    "case01_diacritic_fixture": "PASS",
+    "repeated_text_coordinates": "PASS",
+    "emoji_and_combining_sequences": "PASS",
+    "mid_codepoint_rejection": "PASS",
+    "role_identity_range_and_missing_source_rejection": "PASS",
+    "invalid_utf8_source_rejection": "PASS",
+    "subprocess_launches": 0,
+    "evaluator_constructions": 0,
+    "runner_constructions": 0,
+    "provider_calls": 0,
+    "model_loads": 0,
+    "inference_calls": 0
+  },
+  "authority": {
+    "evaluator_rebinding": false,
+    "runner_rebinding": false,
+    "probe_construction": false,
+    "probe_execution": false,
+    "prompt_change": false,
+    "runtime": false,
+    "production": false,
+    "stage_c": false,
+    "curriculum": false,
+    "training": false
+  },
+  "status": "OWNER_REVIEW_REQUIRED",
+  "recommended_next_step": "Owner-review the schema and pure resolver. If approved, separately authorize a design-only ledger reference migration contract before any evaluator rebinding, constrained grammar work, probe construction, or inference."
+}
