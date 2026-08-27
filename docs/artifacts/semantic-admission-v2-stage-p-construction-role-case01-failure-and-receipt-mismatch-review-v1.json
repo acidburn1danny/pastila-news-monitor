@@ -1,0 +1,104 @@
+{
+  "artifact_id": "STAGE_P_CONSTRUCTION_ROLE_CASE01_FAILURE_AND_RECEIPT_MISMATCH_REVIEW_V1",
+  "canonical_identity": "730b2e3ac7a067a51852edbcc57ba2fe9810264a85e35b090395b1a2a4bcff9a",
+  "lifecycle": "FROZEN_OWNER_REVIEW_DESIGN_ONLY_NO_REMEDIATION",
+  "source_binding_identity": "88ea330d428960f03e6dae213e5f1ce2326c06789e9f5b92d9a738a1fcf08c5e",
+  "case_id": "HMCV1-SASC-01",
+  "source_evidence": {
+    "phase_receipt_sha256": "774196cddc6028bc9c56fceeb1cd9c98d50e108193dae6f80a2c63539228cee2",
+    "identity_binding_sha256": "16714518a4d6dfbae51c79c8f2a6214f9fa6e8ea3f0d3cf6b6d489405aae1a7b",
+    "request_sha256": "b6e0fd27797998d9b447e9cb938b3ceaa173ee008dd8965a43dd5bf39f5a710d",
+    "diagnostic_trace_sha256": "cbf74c311ce3ce85868d709b21ba88a4e4dcac823f94a407f58e7c0820be5c1b",
+    "durable_tree_identity": "f85a2895c029675f71bd472ee274e19d38c79115ce152583c1a06b72b46768a5",
+    "runner_exception_sha256": "b85ba711f502df5e735f5cf89e12acd03ac745ca81e6ddf69250468c07010097",
+    "host_liveness_receipt_sha256": "562e90ed0a5bf7f719b9fa046ac9b55c3f1191d8228be3f42e15abf7360e58c5",
+    "decoded_partial_sha256": "1a11286cad937c5faf19021f1cada98077867cb63aeae7e2923a489219be1a4a",
+    "decoded_partial_utf8_bytes": 2911,
+    "provider_call_count": 1,
+    "raw_terminal_output_persisted": false,
+    "stage_c_calls": 0
+  },
+  "frozen_result": {
+    "semantic_failure_class": "CONSTRUCTION_TO_LEDGER_RECONCILIATION_FAILURE",
+    "execution_failure_class": "CONSTRAINT_LIVENESS_FAILURE",
+    "outer_receipt_class": "STAGE_P_PROVIDER_OR_TRANSPORT_FAILURE",
+    "final_decision": "ABSTAIN_FAIL_CLOSED",
+    "eligibility": "QUARANTINED_EVALUATION_ONLY",
+    "training_authority": false,
+    "runtime_authority": false
+  },
+  "semantic_failure_analysis": {
+    "decision_point": {"dfa_mode": "LITERAL", "dfa_next_step": "COVERAGE", "entry_count": 2},
+    "observed_construction_record": "The partial ledger classified the whole candidate as MIXED_CREATIVE_AND_REAL_WORLD, declared P1 as its creative host, and linked P2 as its return.",
+    "observed_ledger_conflict": "The same partial ledger emitted P1 and P2 as REAL_WORLD_COMMITMENT entries with STANDALONE scope; no CONTAINED_CREATIVE P1 host existed.",
+    "deterministic_consequence": "Construction-role reconciliation required the declared host identifier to resolve to a CONTAINED_CREATIVE entry. The graph was therefore incoherent and no legal coverage-decision token remained.",
+    "guard_result": "The constrained DFA correctly prevented a false COMPLETE or INDETERMINATE terminal ledger.",
+    "evidentiary_limit": "The 2911-byte content is durable partial-output evidence from generation heartbeats, not a terminal raw ledger. It may diagnose the failed path but receives no completed-ledger, curriculum, training, or runtime authority.",
+    "not_adjudicated": [
+      "Whether a different unconstrained continuation would have repaired the graph.",
+      "Whether the model would succeed on another call.",
+      "Any Stage C factual-semantic decision.",
+      "Production fitness of Construction Role Audit V1."
+    ]
+  },
+  "receipt_classification_mismatch": {
+    "class": "CONSTRAINT_LIVENESS_MISCLASSIFIED_AS_PROVIDER_OR_TRANSPORT_FAILURE",
+    "durable_truth": {
+      "runner_event": "RUNNER_EXCEPTION",
+      "runner_exception_type": "StagePConstraintLivenessErrorV1",
+      "host_event": "HOST_CONSTRAINT_LIVENESS_FAILURE_CLASSIFIED",
+      "executor_exception_type": "StagePConstraintLivenessExecutionErrorV1",
+      "diagnostic_failure_code": "CONSTRAINT_LIVENESS_FAILURE"
+    },
+    "outer_receipt": {
+      "transport": "FAIL",
+      "reason_code": "STAGE_P_PROVIDER_OR_TRANSPORT_FAILURE",
+      "raw_persistence": "NOT_RUN"
+    },
+    "causal_chain": [
+      "The runner raised StagePConstraintLivenessErrorV1 after the constrained trie returned an empty allowed-token set.",
+      "The durable executor read the runner receipt, emitted HOST_CONSTRAINT_LIVENESS_FAILURE_CLASSIFIED, reconciled the lifecycle, and raised StagePConstraintLivenessExecutionErrorV1.",
+      "ExperimentalCoreV12Executor.execute caught that typed exception in its broad exception boundary and returned a generic INTERNAL_EXECUTION_FAILURE result.",
+      "StagePConstructionRoleEvaluatorV1 observed a non-completed result and raised a generic RuntimeError without the liveness receipt.",
+      "The probe could not enter its typed StagePConstraintLivenessExecutionErrorV1 branch and classified the generic exception as provider/transport failure."
+    ],
+    "impact": "Fail-closed admission behavior was preserved, but the phase receipt lost the more precise causal classification. Transport did start and generation was observed, so transport failure is materially misleading for diagnosis and evaluation accounting."
+  },
+  "design_only_remediation_specification": {
+    "objective": "Carry an already-durable constraint-liveness classification across executor, evaluator, and phase-receipt boundaries without weakening the shared executor isolation boundary.",
+    "requirements": [
+      "Preserve the generic exception-isolation behavior for unknown local failures.",
+      "Represent known constraint-liveness failure as a typed, auditable execution result or preserved typed cause rather than collapsing it into the generic local-execution failure code.",
+      "Bind the liveness receipt fields code, decoded_utf8_bytes, decoded_sha256, dfa_mode, dfa_next_step, and entry_count to the outer phase receipt or a referenced immutable receipt.",
+      "The evaluator must not replace a known classified failure with an untyped RuntimeError.",
+      "The probe must classify known liveness as STAGE_P_CONSTRAINT_LIVENESS_FAILURE and ABSTAIN_FAIL_CLOSED while keeping raw persistence and schema/source validation NOT_RUN.",
+      "Ordinary provider/transport failures must remain distinct and must not be inferred merely from absence of a response file.",
+      "Classification must be derived from validated durable evidence, never stderr substring matching alone.",
+      "Receipt propagation must not authorize retry, repair, selection, Stage C, or runtime admission."
+    ],
+    "bounded_verification_if_later_authorized": [
+      "Use captured immutable lifecycle fixtures only; perform no model or provider call.",
+      "Prove a valid liveness fixture produces STAGE_P_CONSTRAINT_LIVENESS_FAILURE at the phase boundary.",
+      "Prove transport-only, timeout, malformed-liveness, and unknown-exception fixtures retain distinct fail-closed classifications.",
+      "Prove the existing Case 01 receipt and durable files remain byte-identical.",
+      "Perform zero-inference construction and identity tests before considering any new probe."
+    ],
+    "rejected_designs": [
+      "Parsing stderr text in the probe as semantic authority.",
+      "Treating every missing response as constraint liveness.",
+      "Letting known liveness exceptions escape without a durable phase receipt.",
+      "Changing the DFA to permit the incoherent graph.",
+      "Rerunning Case 01 to replace or hide this result."
+    ]
+  },
+  "authority": {
+    "remediation_implementation": false,
+    "rerun": false,
+    "stage_c": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  },
+  "recommended_next_step": "Owner-review and freeze this analysis. If approved, separately authorize a zero-inference-only receipt-propagation remediation candidate using captured fixtures. Do not rerun Case 01 or construct Stage C."
+}

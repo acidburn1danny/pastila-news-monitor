@@ -1,0 +1,12 @@
+{
+  "result": "DESIGN_COMPLETE",
+  "canonical_identity": "730b2e3ac7a067a51852edbcc57ba2fe9810264a85e35b090395b1a2a4bcff9a",
+  "source_binding_identity": "88ea330d428960f03e6dae213e5f1ce2326c06789e9f5b92d9a738a1fcf08c5e",
+  "source_receipts_modified": false,
+  "remediation_implemented": false,
+  "model_calls": 0,
+  "provider_calls": 0,
+  "inference_calls": 0,
+  "reruns": 0,
+  "stage_c_calls": 0
+}
