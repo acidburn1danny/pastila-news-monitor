@@ -1,0 +1,40 @@
+SEMANTIC ADMISSION V2 — STAGE P ROLE-COHERENT PROPOSITION LEDGER V1
+
+You inventory; you never admit, reject, classify with FSEM codes, author, rewrite, repair, or replace text. Use only the byte-immutable factual summary and candidate commentary below. Expected case labels and outcomes are unavailable.
+
+The candidate commentary is the sole inventory object. The factual summary is read-only support authority and never creates an entry by itself. Begin every entry with a non-empty exact candidate substring. Copy authority_support exactly from the factual summary when support exists; otherwise use null. Never paraphrase, normalize, translate, trim, repair, or substitute a source span.
+
+Review the candidate as a whole before deciding coverage. Inventory every material real-world proposition carried by assertion, presupposition, entailment, or necessary implication. Also inventory contained metaphor, analogy, personification, counterfactual, hyperbole, wordplay, or editorial material needed to explain why it does not make a real-world commitment. Creative language never shields an embedded real-world proposition.
+
+Apply the factual-return test. Identify the creative vehicle, then ask whether the candidate necessarily commits the reader to a real-world proposition beyond the factual authority. If no, use CONTAINED_CREATIVE. If yes, ledger that real-world proposition separately even when it is embedded inside creative language. If the role cannot be resolved, use UNRESOLVED_SCOPE and INDETERMINATE.
+
+Treat one integrated figurative construction as one unit unless a subspan independently carries a separable real-world proposition. Do not literalize money/shadow, people/light, room/transparency, or comparable linked components merely because they cross clause boundaries. Examples name relationships only; they do not prescribe wording or a result for the supplied case.
+
+Role combinations are exact:
+- CONTAINED_CREATIVE: scope_basis CREATIVE_CONTAINED; event_alignment CREATIVE_VEHICLE_ONLY; both modalities and both timings NOT_APPLICABLE.
+- REAL_WORLD_COMMITMENT: scope_basis ASSERTED, PRESUPPOSED, ENTAILED, or NECESSARILY_IMPLIED; event_alignment GOVERNED_EVENT or NEW_UNSUPPORTED_EVENT; candidate modality and timing resolved and not NOT_APPLICABLE. With null authority_support, authority modality and timing are NOT_APPLICABLE; with support, both are resolved.
+- UNRESOLVED_SCOPE: at least one of scope_basis, event_alignment, candidate_modality, or candidate_timing is UNRESOLVED. It forces unresolved_scope_present true and coverage_decision INDETERMINATE.
+
+For commitment, describe the story-local semantic content. For contained creative material, explain the specific creative relationship without asserting it as fact. Generic placeholders such as “UNRESOLVED”, “figurative”, “joke”, or “commentary” alone are invalid.
+
+Use one independence_group for multiple dimensions of one proposition and distinct groups for independent propositions. Maximum eight entries. If the candidate cannot be exhaustively inventoried within the limit, emit an UNRESOLVED_SCOPE entry and remain INDETERMINATE; never omit material to claim completeness.
+
+After the entries, set the coverage receipt. COMPLETE requires whole-candidate review, embedded-proposition review, and creative-scope review all true; unresolved_scope_present false; and no unresolved entry. Otherwise use INDETERMINATE. Never convert silence or uncertainty to COMPLETE.
+
+Before returning, verify every candidate_span is an exact non-empty substring of CANDIDATE COMMENTARY and every non-null authority_support is an exact substring of FACTUAL SUMMARY.
+
+Return exactly one compact JSON object in this field order: stage_id, entries, coverage_receipt, coverage_decision. Each entry uses: entry_id, entry_type, candidate_span, authority_support, commitment, scope_basis, event_alignment, authority_modality, candidate_modality, authority_timing, candidate_timing, independence_group. First byte {, last byte }, no surrounding bytes.
+
+Allowed entry_type: REAL_WORLD_COMMITMENT, CONTAINED_CREATIVE, UNRESOLVED_SCOPE.
+Allowed scope_basis: ASSERTED, PRESUPPOSED, ENTAILED, NECESSARILY_IMPLIED, CREATIVE_CONTAINED, UNRESOLVED.
+Allowed event_alignment: GOVERNED_EVENT, NEW_UNSUPPORTED_EVENT, CREATIVE_VEHICLE_ONLY, UNRESOLVED.
+Allowed modality: NOT_APPLICABLE, POSSIBLE, CONDITIONAL, PROPOSED, EXPECTED, CERTAIN_OR_ACTUAL, UNRESOLVED.
+Allowed timing: NOT_APPLICABLE, PAST, PRESENT, ONGOING, FUTURE, COMPLETED, UNDATED, UNRESOLVED.
+
+FACTUAL SUMMARY:
+{factual_summary}
+
+CANDIDATE COMMENTARY:
+{candidate}
+
+OUTPUT BYTES: first {, last }, exactly one JSON object, nothing else.
