@@ -1,0 +1,53 @@
+{
+  "schema_name":"pastila-semantic-admission-v2-stage-p-cache-canonicalization-candidate",
+  "schema_version":"1.0.0-evaluation.1",
+  "lifecycle":"ZERO_INFERENCE_CANDIDATE_READY_FOR_OWNER_REVIEW",
+  "source_characterization_identity":"6ae17479dc2301cd884a8cdf96ebd6f93f6f87abb9104abef1e94d3c100cf9e6",
+  "semantic_change":false,
+  "canonicalization_rule":"When and only when DFA mode is STRING, normalize string_characters greater than zero to one in the trie cache key; preserve zero exactly.",
+  "preserved_state_dimensions":["mode","next_step","string_escape","unicode_remaining","entry_count","coverage","unresolved_seen","receipt values","all remaining DFA state"],
+  "composition":"StagePCallbackControllerV1 combines StagePIncrementalPrefixTrackerV1 with StagePTokenTrieProjectorV1.",
+  "synthetic_evidence":{
+    "seeded_valid_ledgers":30,
+    "prefix_coverage":"EVERY_CHARACTER_PREFIX",
+    "invalid_classes":["WRONG_ROOT","INVALID_ENUM","TRAILING_BYTES"],
+    "allowed_set_divergences":0,
+    "terminal_divergences":0
+  },
+  "real_tokenizer_evidence":{
+    "vocabulary_size":131072,
+    "trie_nodes_each":221961,
+    "six_shape_prefix_comparisons":54,
+    "targeted_string_states":[0,1,2,8,64,256,400],
+    "allowed_set_divergences":0,
+    "baseline_six_shape_projection_seconds":81.236051,
+    "candidate_six_shape_projection_seconds":44.092913,
+    "six_shape_speedup":1.842427,
+    "targeted_nonempty_baseline_seconds":31.561109,
+    "targeted_nonempty_candidate_seconds":0.000399,
+    "targeted_nonempty_speedup":79100.52381,
+    "baseline_cache_size":50,
+    "candidate_cache_size":37,
+    "peak_traced_bytes":173208662,
+    "tokenizer_regex_warning_preserved":true,
+    "fix_mistral_regex_enabled":false
+  },
+  "limitations":[
+    "The six-shape speedup remains workload- and cache-order-specific and is not a predicted end-to-end generation speedup.",
+    "The candidate has not been connected to the WSL Stage P runner.",
+    "No model-load, generation, terminal-ledger, semantic, or timeout result is established.",
+    "Non-string and first nonempty-string cache misses remain materially expensive."
+  ],
+  "next_bounded_recommendation":"Integrate the frozen callback controller into a separately versioned instrumented Stage P runner, bind all identities, and perform zero-inference real-tokenizer callback construction/equivalence plus durable-lifecycle preflight. Stop before any model call. Only after owner review should one Stage-P-only Case 01 diagnostic be considered.",
+  "model_imported":false,
+  "model_load_started":false,
+  "inference_started":false,
+  "model_calls":0,
+  "provider_calls":0,
+  "runner_integration_authority":false,
+  "proof_rerun_authority":false,
+  "runtime_authority":false,
+  "production_authority":false,
+  "training_authority":false,
+  "gate_s_changed":false
+}

@@ -1,0 +1,119 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-cache-characterization",
+  "schema_version": "1.0.0",
+  "candidate_source_sha256": "8cc6f68f1ff9751ab983306e9fb39efa0ae55c52cbe8a0471a2e5e98bfc54529",
+  "model_imported": false,
+  "model_load_started": false,
+  "inference_started": false,
+  "model_calls": 0,
+  "provider_calls": 0,
+  "tokenizer_vocabulary_size": 131072,
+  "trie_node_count_baseline": 221961,
+  "trie_node_count_candidate": 221961,
+  "setup_seconds": 3.470801,
+  "profiles": [
+    {
+      "entries": 1,
+      "free_string_class": "SHORT",
+      "tokens": 176,
+      "prefixes": 9,
+      "baseline_projection_seconds": 5.487702,
+      "candidate_projection_seconds": 5.449331,
+      "speedup": 1.007041
+    },
+    {
+      "entries": 1,
+      "free_string_class": "MAX_BOUNDED",
+      "tokens": 342,
+      "prefixes": 9,
+      "baseline_projection_seconds": 21.857868,
+      "candidate_projection_seconds": 5.805502,
+      "speedup": 3.765026
+    },
+    {
+      "entries": 4,
+      "free_string_class": "SHORT",
+      "tokens": 509,
+      "prefixes": 9,
+      "baseline_projection_seconds": 10.741646,
+      "candidate_projection_seconds": 5.636021,
+      "speedup": 1.905892
+    },
+    {
+      "entries": 4,
+      "free_string_class": "MAX_BOUNDED",
+      "tokens": 1173,
+      "prefixes": 9,
+      "baseline_projection_seconds": 26.979578,
+      "candidate_projection_seconds": 16.280767,
+      "speedup": 1.657144
+    },
+    {
+      "entries": 8,
+      "free_string_class": "SHORT",
+      "tokens": 953,
+      "prefixes": 9,
+      "baseline_projection_seconds": 5.513358,
+      "candidate_projection_seconds": 5.490999,
+      "speedup": 1.004072
+    },
+    {
+      "entries": 8,
+      "free_string_class": "MAX_BOUNDED",
+      "tokens": 2281,
+      "prefixes": 9,
+      "baseline_projection_seconds": 10.655899,
+      "candidate_projection_seconds": 5.430293,
+      "speedup": 1.962307
+    }
+  ],
+  "targeted_string_states": [
+    {
+      "string_characters": 0,
+      "baseline_seconds": 5.161844,
+      "candidate_seconds": 5.166244,
+      "same": true
+    },
+    {
+      "string_characters": 1,
+      "baseline_seconds": 5.149355,
+      "candidate_seconds": 5.9e-05,
+      "same": true
+    },
+    {
+      "string_characters": 2,
+      "baseline_seconds": 5.178876,
+      "candidate_seconds": 6.4e-05,
+      "same": true
+    },
+    {
+      "string_characters": 8,
+      "baseline_seconds": 5.139622,
+      "candidate_seconds": 5.8e-05,
+      "same": true
+    },
+    {
+      "string_characters": 64,
+      "baseline_seconds": 5.150443,
+      "candidate_seconds": 5.6e-05,
+      "same": true
+    },
+    {
+      "string_characters": 256,
+      "baseline_seconds": 5.482611,
+      "candidate_seconds": 0.000105,
+      "same": true
+    },
+    {
+      "string_characters": 400,
+      "baseline_seconds": 5.460202,
+      "candidate_seconds": 5.7e-05,
+      "same": true
+    }
+  ],
+  "allowed_set_divergences": 0,
+  "baseline_cache_size": 50,
+  "candidate_cache_size": 37,
+  "peak_traced_bytes": 173208662,
+  "result": "PASS"
+}

@@ -1,0 +1,36 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-cache-canonicalization-evidence-manifest",
+  "schema_version": "1.0.0",
+  "canonical_identity": "3c0cbb850a391c173e40538583e81205f2a26737cb6fea67efb137672e45070d",
+  "identity_method": "sha256 of the ordered lowercase artifact SHA-256 values joined by LF, with no trailing LF",
+  "lifecycle": "ZERO_INFERENCE_CANDIDATE_READY_FOR_OWNER_REVIEW",
+  "source_characterization_identity": "6ae17479dc2301cd884a8cdf96ebd6f93f6f87abb9104abef1e94d3c100cf9e6",
+  "artifacts": [
+    {"path": "docs/artifacts/semantic-admission-v2-stage-p-cache-canonicalization-v1-candidate.json", "sha256": "3618eeed606d7d424baa90bdf4c61dfeee05c8e2c2cc652bcb29e0e8deeeee87"},
+    {"path": "src/pastila_scout/semantic_admission_v2/stage_p_trie_projector_v1.py", "sha256": "8cc6f68f1ff9751ab983306e9fb39efa0ae55c52cbe8a0471a2e5e98bfc54529"},
+    {"path": "src/pastila_scout/semantic_admission_v2/stage_p_callback_controller_v1.py", "sha256": "33f1d8fc18684e97c499b98877f3bae8682c70d7295a6e4c755d42b0ce629b37"},
+    {"path": "src/pastila_scout/experimental_core_v1_2_stage_p_cache_profiler.py", "sha256": "989ff485b1cea7b2db3e4a99e500e3c745b5cfd4999c7aded1ddeb62ca202b8e"},
+    {"path": "tests/test_semantic_admission_v2_stage_p_trie_projector_v1.py", "sha256": "13e8cfdcc56f91572f621a19327cedcca99b9bd6c38cb11fd40db2e24d2479f3"},
+    {"path": "tests/test_semantic_admission_v2_stage_p_callback_controller_v1.py", "sha256": "4d70a18c2e88b3fd7f607b0749de426d154e189e3079a464d07a2cecb9a8cf84"},
+    {"path": "tests/test_semantic_admission_v2_stage_p_cache_profiler_boundary_v1.py", "sha256": "632dd9ee082f5af6e5c3ff8296ee2f8cbe168b5b8a2a6ded32631abc18b4f4f6"},
+    {"path": "tests/test_semantic_admission_v2_stage_p_cache_canonicalization_evidence_v1.py", "sha256": "533696549932eb343bbe640f6d104e967ddc298b1ed3461bd9401cdfebc78c2b"},
+    {"path": ".semantic-admission-v2-stage-p-cache-canonicalization-v1-evidence/real-tokenizer-cache-characterization.json", "sha256": "f0a28d3c527138e5c097b743c8ceb4dbc227c8860081e3d519050b02f9d49201"},
+    {"path": ".semantic-admission-v2-stage-p-cache-canonicalization-v1-evidence/report.md", "sha256": "ad856da664c0c8a364c8f908524d31103d738e8057f6b98d3c98c92959e0a2e6"}
+  ],
+  "verification": {
+    "focused_tests": {"result": "PASS", "passed": 13, "failed": 0},
+    "synthetic_allowed_set_divergences": 0,
+    "real_tokenizer_allowed_set_divergences": 0,
+    "model_loaded": false,
+    "provider_called": false,
+    "inference_executed": false
+  },
+  "authority": {
+    "production": false,
+    "runtime_integration": false,
+    "model_probe": false,
+    "proof_rerun": false,
+    "curriculum": false,
+    "training": false
+  }
+}
