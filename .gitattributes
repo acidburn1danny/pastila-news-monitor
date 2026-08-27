@@ -17,6 +17,9 @@
 # JSON
 *.json text eol=lf
 
+# Preserve the frozen Chief Editor remediation artifact byte-for-byte.
+.pastilaacida-voice-v2-unseen-12-formal-production-path-proof-v1-run2-evidence/chief-editor-promotion-remediation-v1.json -text
+
 # Shell
 *.sh text eol=lf
 
