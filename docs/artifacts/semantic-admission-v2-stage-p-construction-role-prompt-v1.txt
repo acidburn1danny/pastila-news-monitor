@@ -1,0 +1,33 @@
+SEMANTIC ADMISSION V2 — STAGE P CONSTRUCTION ROLE AUDIT V1
+
+Inventory candidate-carried construction roles, semantic commitments, and creative-target relationships only. Never admit, reject, assign FSEM codes, author, rewrite, repair, or replace commentary. Expected labels, outcomes, owner annotations, and humor mechanisms are unavailable. Return only the governed compact JSON ledger.
+
+Work candidate-first. The factual summary is byte-immutable read-only support authority. It may resolve governed referents and corroborate a proposition already carried by the candidate; it may never create, complete, expand, or substitute one.
+
+Before emitting proposition entries, audit the complete candidate as a construction. Classify every materially relevant span as LITERAL_ONLY, MATERIAL_CREATIVE_OR_EDITORIAL, MIXED_CREATIVE_AND_REAL_WORLD, NON_MATERIAL_RHETORICAL_COLOR, or UNRESOLVED. This audit is mandatory even when the candidate is entirely literal.
+
+Use NO_MATERIAL_CREATIVE_CONSTRUCTION only when no materially creative or mixed construction is present. Explain the story-local literal-path basis. Literal factual or restrained editorial text may validly take this path, with no creative hosts or target audits. Do not force metaphor, humor, or creativity into literal text. Decorative emphasis, rhythm, or ordinary phrasing that does not change the communicated semantic operation may be NON_MATERIAL_RHETORICAL_COLOR and does not by itself require a creative host.
+
+Use ONE_OR_MORE_MATERIAL_CONSTRUCTIONS when candidate meaning materially depends on metaphor, analogy, personification, counterfactual, hyperbole, wordplay, evaluative reframing, or another editorial transformation. Every MATERIAL_CREATIVE_OR_EDITORIAL or MIXED_CREATIVE_AND_REAL_WORLD record must map to an overlapping CONTAINED_CREATIVE host. Every emitted creative host must be mapped by at least one construction record. Proposition-role selection cannot disable or replace this mapping.
+
+Use MIXED_CREATIVE_AND_REAL_WORLD when an integrated construction contains both a creative host and one or more real-world propositions that survive removal of the vehicle. Link every such factual return to its overlapping REAL_WORLD_COMMITMENT entry inside that host. Use UNRESOLVED when the construction role cannot be decided safely; emit a corresponding unresolved entry, set unresolved_scope_present true, and return INDETERMINATE.
+
+A REAL_WORLD_COMMITMENT is the smallest neutralized truth-evaluable proposition carried by the candidate. Identify its semantic head; do not merely copy a figurative span and relabel the whole construction factual. Candidate_span preserves exact wording, while commitment states only candidate-carried meaning and must not import authority-only content. Exact equality between span and commitment remains possible for genuinely literal propositions. If neutralization or semantic-head selection cannot be resolved safely, use UNRESOLVED_SCOPE.
+
+After the construction audit, apply all Creative Target Decomposition V1 rules. For every creative host, enumerate each materially distinct story-local semantic target. Remove only creative vehicle wording and test whether a real-world proposition survives through assertion, presupposition, entailment, or necessary implication. Figurative, metaphorical, counterfactual, personified, or editorial framing cannot shield a surviving proposition. Conversely, factual authority, entity reuse, story specificity, or factual-sounding nouns cannot manufacture a candidate-absent proposition.
+
+Use NONFACTUAL_EDITORIAL_OR_CREATIVE for evaluative stance, normative criticism, advice, aesthetic judgment, absurd association, or other editorial meaning that does not survive as a descriptive fact. Use REAL_WORLD_PROPOSITION for a surviving truth-evaluable proposition and reconcile it to the smallest overlapping factual-return entry. Use UNRESOLVED_TARGET when the distinction cannot be resolved safely.
+
+COMPLETE requires exhaustive whole-candidate, construction-role, proposition, embedded-proposition, creative-scope, overlap, host, factual-return, target-enumeration, target-class, target-to-ledger, and construction-to-ledger reconciliation; all corresponding receipts true; and no unresolved role, entry, or target. Otherwise use INDETERMINATE. If representation limits prevent exhaustive coverage, remain INDETERMINATE rather than omit material.
+
+Return exactly one compact JSON object in this root order: stage_id, construction_role_audit, entries, creative_target_audits, coverage_receipt, coverage_decision. Construction_role_audit field order is candidate_reviewed_as_construction, overall_disposition, construction_records, literal_path_basis. Each construction record uses construction_id, candidate_span, construction_role, role_basis, creative_host_entry_id, literal_or_return_entry_ids, resolution. Preserve the established proposition-entry and creative-target field orders. Coverage receipt appends construction_roles_reviewed and construction_to_ledger_reconciled after the Creative Target receipts.
+
+Before returning, verify every candidate and vehicle span is an exact non-empty candidate substring; every non-null authority_support is an exact factual-authority substring; all identifiers exist and are unique; every required host and return overlaps its construction span; every creative host is construction-mapped and target-audited; all material meanings are reconciled; and no proposition label has suppressed a material construction host.
+
+CANDIDATE COMMENTARY — INVENTORY FIRST:
+{candidate}
+
+FACTUAL AUTHORITY — CONSULT ONLY AFTER CANDIDATE INVENTORY:
+{factual_summary}
+
+OUTPUT BYTES: first {, last }, exactly one compact JSON object, nothing else.
