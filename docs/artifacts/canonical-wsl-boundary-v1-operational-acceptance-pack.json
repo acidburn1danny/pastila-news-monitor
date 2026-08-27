@@ -1,0 +1,105 @@
+{
+  "artifact_type": "INFRASTRUCTURE_ONLY_OPERATIONAL_ACCEPTANCE_PACK",
+  "canonical_name": "PASTILA_CANONICAL_WSL_BOUNDARY_V1_OPERATIONAL_ACCEPTANCE_PACK",
+  "schema_version": "1.0.0",
+  "canonical_identity": "77c5ea50a5d3cc7ed1e148037c543a84e41fb3b038a189901479b306dc3389a4",
+  "identity_derivation": {
+    "algorithm": "SHA-256",
+    "encoding": "UTF-8",
+    "separator": "LF",
+    "ordered_fields": [
+      "PASTILA_CANONICAL_WSL_BOUNDARY_V1_OPERATIONAL_ACCEPTANCE_PACK",
+      "1.0.0",
+      "14a2b544fd55f590c2ee019a65c4af30a5df80eb9344fede612ba41a61925b7d",
+      "4c3851d932372af7a0afd124b1cbb85a2575e2c2269394b364f448c2a781e5ef",
+      "38e003af8cdd33c09bd86d8cb570ec5822d9c9b9bfde343fd7aaa4f263e11380",
+      "8e8e2a7a779827fa7a856573044b0714aa0287f5b654aee45befd3646c3e813a",
+      "87ef25d65a92b65e8dbd3730258c6d0b0fc6ee8950130c69e2b623ff0190127e",
+      "PASS_WITH_V1_1_CANDIDATE_PENDING_BINDING"
+    ]
+  },
+  "frozen_authority": {
+    "boundary_candidate_identity": "14a2b544fd55f590c2ee019a65c4af30a5df80eb9344fede612ba41a61925b7d",
+    "freeze_receipt_identity": "4c3851d932372af7a0afd124b1cbb85a2575e2c2269394b364f448c2a781e5ef",
+    "boundary_sha256_after_pack": "089274ad1d9eb3f0db1891c5be65a97a6fd71f9fac5bdd32cf5c07dd5a2833ca",
+    "frozen_v1_bytes_unchanged": true
+  },
+  "scope": {
+    "model_loaded": false,
+    "model_generation": false,
+    "tokenizer_loaded": false,
+    "prompt_or_semantic_change": false,
+    "authority_or_eligibility_change": false,
+    "grandfathered_launchers_migrated": 0,
+    "grandfathered_launchers_preserved": 16
+  },
+  "environment": {
+    "application_version": "1.1.8",
+    "windows_version": "10.0.26200.9168",
+    "wsl_version": "2.7.11.0",
+    "wsl_kernel": "6.18.33.2-2",
+    "distribution": "Ubuntu-24.04",
+    "live_linux_kernel": "Linux 6.18.33.2-microsoft-standard-WSL2 x86_64 GNU/Linux",
+    "transport_python": "3.12.3"
+  },
+  "deterministic_evidence": {
+    "test_path": "tests/test_canonical_wsl_boundary_v1_operational_acceptance.py",
+    "test_sha256": "38e003af8cdd33c09bd86d8cb570ec5822d9c9b9bfde343fd7aaa4f263e11380",
+    "boundary_and_acceptance_tests": "31 passed",
+    "packaging_tests": "86 passed",
+    "pytest_cache_warning": "Pre-existing malformed .pytest_cache path; results unaffected.",
+    "covered": [
+      "stateless cold-start/post-resume construction",
+      "unavailable and unhealthy WSL classification",
+      "missing distribution and executable",
+      "space and Romanian-Unicode path/argument preservation",
+      "hidden execution",
+      "timeout and no retry",
+      "caller-owned durable cancellation",
+      "concurrency isolation",
+      "deterministic transport receipts",
+      "source/packaging import parity",
+      "grandfathered-launcher governance"
+    ]
+  },
+  "live_transport_evidence": {
+    "script_path": "scripts/run_canonical_wsl_operational_acceptance_v1.py",
+    "script_sha256": "8e8e2a7a779827fa7a856573044b0714aa0287f5b654aee45befd3646c3e813a",
+    "final_exit_code": 0,
+    "transport_unicode": "PASS",
+    "four_way_concurrency": "PASS",
+    "missing_distribution_typed_by_v1_1": "PASS",
+    "missing_executable_typed_by_v1_1": "PASS",
+    "timeout_typed": "PASS",
+    "delayed_timeout_orphan_marker_observed": false,
+    "model_inference_calls": 0
+  },
+  "discovered_defect": {
+    "class": "WSL_SERVICE_DIAGNOSTIC_STREAM_AND_ENCODING_VARIANCE",
+    "finding": "Windows WSL service failures can be UTF-16/NUL-interleaved and can be emitted on stdout; frozen V1 classifies stderr only.",
+    "effect": "A specific distribution or access failure can degrade to WSL_PROCESS_NONZERO_EXIT; successful execution and semantic outputs are unaffected.",
+    "frozen_v1_modified": false
+  },
+  "remediation_candidate": {
+    "module": "pastila_scout.wsl_execution_v1_1",
+    "implementation_path": "src/pastila_scout/wsl_execution_v1_1/boundary.py",
+    "implementation_sha256": "87ef25d65a92b65e8dbd3730258c6d0b0fc6ee8950130c69e2b623ff0190127e",
+    "behavior_change": "Classification-only normalization of recognized nonzero WSL diagnostics across stdout and stderr; raw outputs and receipt hashes remain unchanged.",
+    "active_consumer_binding": false,
+    "packaging_binding": false,
+    "status": "CANDIDATE_OWNER_REVIEW_REQUIRED"
+  },
+  "not_physically_executed": {
+    "forced_windows_reboot": "Not performed; would exceed a bounded diagnostic run.",
+    "forced_sleep_resume": "Not performed; stateless construction is proven but a real post-resume observation remains outstanding.",
+    "installed_binary_live_launch": "No dist artifact was present; packaging contract and 86 packaging tests passed, but installed-binary WSL execution remains outstanding.",
+    "forced_wsl_shutdown": "Not performed to avoid disrupting unrelated WSL work."
+  },
+  "owner_review_queue": [
+    "Approve or reject the V1.1 diagnostic-only remediation candidate.",
+    "If approved, authorize packaging collection and zero-inference active Core V1.1/V1.2 command-equivalence rebinding only.",
+    "After that binding, execute one installed-build transport smoke and capture one naturally occurring post-sleep transport check before declaring full operational acceptance."
+  ],
+  "overall_disposition": "PASS_WITH_V1_1_CANDIDATE_PENDING_BINDING",
+  "status": "FROZEN_ACCEPTANCE_EVIDENCE_OWNER_REVIEW_REQUIRED"
+}
