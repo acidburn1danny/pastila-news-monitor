@@ -1,0 +1,60 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-gate-f-constrained-runner-identity-reconciliation",
+  "schema_version": "1.0.0",
+  "lifecycle": "SUPERSEDING_IDENTITY_RECONCILIATION_READY_FOR_OWNER_REVIEW",
+  "reconciliation_identity": "sha256:0858fefd9c15c08dc7b763cb4989c326ef1c0a54cdf74ef2df5d64df51d0108a",
+  "historical_bundle": {
+    "manifest_path": ".semantic-admission-v2-gate-f-constrained-runner-v1-evidence/manifest.json",
+    "canonical_identity": "56954793dafaec12845efa57b8432eede593f8dc3bef9e09e46a5d9e34bdb5ac",
+    "expected_host_executor_sha256": "c27ec5bd143783e84a39ac93ed6352c0b4b67425f63308bc1c9f0a270ac03b4c",
+    "expected_test_sha256": "1dc52df165fa8ca55450b08aeeee3fce2f6b5724c85012c523a15871f5d2c951",
+    "manifest_immutable": true,
+    "classification": "HISTORICAL_EVIDENCE_WITH_TWO_UNAVAILABLE_ARTIFACT_BYTE_SEQUENCES"
+  },
+  "legacy_artifact_availability": {
+    "expected_executor_bytes_available_from_git": false,
+    "expected_test_bytes_available_from_git": false,
+    "expected_executor_bytes_available_from_repository_content": false,
+    "expected_test_bytes_available_from_repository_content": false,
+    "search_scope": "ALL_REACHABLE_GIT_VERSIONS_OF_EACH_PATH_AND_CURRENT_REPOSITORY_CONTENT",
+    "reconstruction_or_fabrication_permitted": false
+  },
+  "normalization_provenance": {
+    "commit": "14bf5fa3084b4a5907c7ffe549f6cf7a219b6dcb",
+    "commit_subject": "Normalize Gate F constrained runner binding",
+    "host_executor": {
+      "path": "src/pastila_scout/semantic_admission_v2/constrained_core_executor_v1.py",
+      "git_blob_oid": "03a8cf71297f1e6d326c19e865feede4b0a58c98",
+      "sha256": "3219da2e76540ea39d6e7f636eb141744e15f3eb1ff8e329c5fd5202423ecb89"
+    },
+    "focused_test": {
+      "path": "tests/test_semantic_admission_v2_gate_f_constrained_runner_v1.py",
+      "git_blob_oid": "92ef1e56ac3a8c565e7f8d4ed5c2b4aebb5a8d5e",
+      "sha256": "ad00af9a63dcdb7c9e1bfdcdc8aa2e04680e684051e257963dd53ae4e78b60d6"
+    },
+    "current_artifacts_reproducible_from_git": true
+  },
+  "historical_artifact_verification": {
+    "host_executor": "EXPECTED_HASH_MISMATCH_CURRENT_GIT_ARTIFACT",
+    "focused_test": "EXPECTED_HASH_MISMATCH_CURRENT_GIT_ARTIFACT",
+    "all_six_other_recorded_artifacts": "MATCH_RECORDED_SHA256"
+  },
+  "identity_distinction": {
+    "historical_bundle_identity_is_current_binding_identity": false,
+    "historical_expected_artifacts_are_current_artifacts": false,
+    "byte_equivalence_claimed": false,
+    "semantic_equivalence_claimed": false,
+    "silent_hash_rebinding": false
+  },
+  "normalization_disposition": "CURRENT_STATIC_BINDING_REPRODUCIBLE_ONLY_THROUGH_THIS_SUPERSEDING_RECONCILIATION",
+  "authority": {
+    "wsl_execution_authority": false,
+    "runner_execution_authority": false,
+    "provider_authority": false,
+    "model_authority": false,
+    "probe_authority": false,
+    "inference_authority": false,
+    "runtime_authority": false,
+    "production_authority": false
+  }
+}

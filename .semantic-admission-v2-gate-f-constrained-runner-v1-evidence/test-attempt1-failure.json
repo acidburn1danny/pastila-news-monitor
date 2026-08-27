@@ -1,0 +1,13 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-gate-f-constrained-runner-test-failure",
+  "schema_version": "1.0.0",
+  "attempt": 1,
+  "boundary": "PRODUCTION_RUNNER_EXPECTED_HASH_FIXTURE",
+  "expected_hash_in_test": "1e3703c7d6f2e567505278350ff40eec28ad9f5bef4987bce2ce3a2b834892ef",
+  "observed_byte_hash": "51c7ff37731c5f4a9cacda7ee3a9d1966e51bb80098ce2ea6503a34345ee06a9",
+  "constraint_import_present": false,
+  "prefix_constraint_present": false,
+  "source_modified_by_remediation": false,
+  "model_calls": 0,
+  "provider_calls": 0
+}

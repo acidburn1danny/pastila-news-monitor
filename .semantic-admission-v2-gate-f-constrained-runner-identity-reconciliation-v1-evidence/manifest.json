@@ -1,0 +1,33 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-gate-f-constrained-runner-identity-reconciliation-bundle",
+  "schema_version": "1.0.0",
+  "canonical_identity": "b406f646d54bc2664422ffc3fddea7b556aae7e230c26536cefd3ea7000fdae6",
+  "identity_method": "sha256 of ordered lowercase artifact SHA-256 values joined by LF",
+  "lifecycle": "SUPERSEDING_IDENTITY_RECONCILIATION_READY_FOR_OWNER_REVIEW",
+  "historical_bundle_identity": "56954793dafaec12845efa57b8432eede593f8dc3bef9e09e46a5d9e34bdb5ac",
+  "reconciliation_identity": "0858fefd9c15c08dc7b763cb4989c326ef1c0a54cdf74ef2df5d64df51d0108a",
+  "artifacts": [
+    {
+      "path": "docs/artifacts/semantic-admission-v2-gate-f-constrained-runner-identity-reconciliation-v1.json",
+      "sha256": "dafc0e0f5682a77b44b879dcf51645e53c5aee198e3f84adc6e1c6322291237f"
+    },
+    {
+      "path": "tests/test_semantic_admission_v2_gate_f_constrained_runner_identity_reconciliation_v1.py",
+      "sha256": "68d18b43b9a4ec5c0c44d71d5859fe4bab7cb4bcf669382f542d253b1cfb8bbb"
+    },
+    {
+      "path": ".semantic-admission-v2-gate-f-constrained-runner-identity-reconciliation-v1-evidence/report.md",
+      "sha256": "3b869ac83f81e460e84d2b740a1d98e735c50f4b94a82a6ec87939c7a5c8ab74"
+    }
+  ],
+  "byte_equivalence_claimed": false,
+  "semantic_equivalence_claimed": false,
+  "wsl_execution_authority": false,
+  "runner_execution_authority": false,
+  "provider_calls": 0,
+  "model_calls": 0,
+  "probe_authority": false,
+  "inference_authority": false,
+  "runtime_authority": false,
+  "production_authority": false
+}

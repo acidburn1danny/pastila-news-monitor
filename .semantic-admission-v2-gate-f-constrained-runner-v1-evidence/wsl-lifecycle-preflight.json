@@ -1,0 +1,21 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-gate-f-constrained-runner-preflight",
+  "schema_version": "1.0.0",
+  "tokenizer_load_started": true,
+  "tokenizer_load_succeeded": true,
+  "trie_build_succeeded": true,
+  "prewarm_succeeded": true,
+  "model_imported": false,
+  "model_load_started": false,
+  "model_loaded": false,
+  "generation_started": false,
+  "model_calls": 0,
+  "provider_calls": 0,
+  "native_prefix_constraint_available": true,
+  "trie_node_count": 221961,
+  "prewarm_seconds": 2.094703,
+  "canonical_streams_terminal": true,
+  "root_fence_impossible": true,
+  "terminal_only_eos": true,
+  "result": "PASS"
+}

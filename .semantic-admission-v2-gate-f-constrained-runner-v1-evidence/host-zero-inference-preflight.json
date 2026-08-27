@@ -1,0 +1,31 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-gate-f-constrained-runner-host-preflight",
+  "schema_version": "1.0.0",
+  "checked_at": "2026-08-25T22:13:11.392905+00:00",
+  "trie_projection_identity": "3c022a83b78ddf82b545ada6b77855f4b53fc07bf0028b3c2db899fff72096f2",
+  "v23_contract_identity": "94bac72f6be55f2cd1c7decaeaf1381456f804cc4d2852833712fc1ce2d46d5c",
+  "dependency_manifest_identity": "ecb6ec1ff6eabdfb0c53e849206093abf9430817dbdc57cca70bc133bca4e32d",
+  "runner_sha256": "17a1669d5ec145bfc2ef746890e4d6534670e94b069a3a7d6307bb8127bd2ac9",
+  "runner_expected_sha256": "17a1669d5ec145bfc2ef746890e4d6534670e94b069a3a7d6307bb8127bd2ac9",
+  "production_runner_sha256": "51c7ff37731c5f4a9cacda7ee3a9d1966e51bb80098ce2ea6503a34345ee06a9",
+  "prompt_sha256": "7c51b0d202c5cb02b1317c00b58931aadfbd51f3cb54b8961ee38335d23992b4",
+  "payload_sha256": "a25336179b3ff8503b3083af23456f8fe1fbe3de3b4836c773a4d3f913443937",
+  "wsl_lifecycle_preflight_sha256": "40102143051196c14cc1e6c11d60d7c1d2c1fe966067b6d748350b2b45aa32a1",
+  "executor_constructed": "ConstrainedGateFCoreV12ExecutorV1",
+  "executor_invoked": false,
+  "forbidden_executor_calls": 0,
+  "model_calls": 0,
+  "provider_calls": 0,
+  "future_output_targets": [
+    ".semantic-admission-v2-gate-f-constrained-contract-probe-v1-evidence\\raw-results.json",
+    ".semantic-admission-v2-gate-f-constrained-contract-probe-v1-evidence\\one-shot-journal.json"
+  ],
+  "future_output_targets_empty": true,
+  "production_runner_modified": false,
+  "inference_authority_issued": false,
+  "run3_authorized": false,
+  "runtime_authority": false,
+  "training_authority": false,
+  "result": "PASS",
+  "preflight_identity": "335a1d7f3b1c9a237f2eca05f29a6615ad2b67e5b19f0b302d45ae9734bcde72"
+}
