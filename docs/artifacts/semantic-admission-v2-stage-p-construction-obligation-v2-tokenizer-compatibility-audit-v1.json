@@ -1,0 +1,98 @@
+{
+  "artifact_type": "ZERO_INFERENCE_TOKENIZER_COMPATIBILITY_AUDIT_EVIDENCE",
+  "artifact_version": "1.0.0-evaluation.1",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_TOKENIZER_COMPATIBILITY_AUDIT_V1",
+  "canonical_identity": "0f35556c61958d613985928e252f92e767ad699211af3e560f4f61a0d6f8a2da",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_V2_TOKENIZER_COMPATIBILITY_AUDIT_V1",
+      "94879e032a47beedd2e5035dccf36f2b3922b093aaff67be014f408db6c9006a",
+      "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c",
+      "81b8c4089356cd129cda292ae6068e0c7034a661a43b2e109399b00b7cb99d30",
+      "PARTIAL_COMPLETE_DFA_PHASE_BLOCKED",
+      "ZERO_INFERENCE"
+    ],
+    "separator": "LF"
+  },
+  "plan_identity": "94879e032a47beedd2e5035dccf36f2b3922b093aaff67be014f408db6c9006a",
+  "audit_harness_sha256": "81b8c4089356cd129cda292ae6068e0c7034a661a43b2e109399b00b7cb99d30",
+  "result": "PARTIAL_COMPLETE_DFA_PHASE_BLOCKED",
+  "completed_phases": [0, 1, 2, 3, 4],
+  "tokenizer": {
+    "identity": "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c",
+    "implementation": "TokenizersBackend",
+    "transformers_version": "5.15.0",
+    "vocabulary_size": 131072,
+    "bos_token_id": 1,
+    "eos_token_id": 2,
+    "pad_token_id": 11,
+    "unk_token_id": 0,
+    "special_token_ids": [0, 1, 2, 11],
+    "empty_decoding_count": 1000,
+    "replacement_character_decoding_count": 1437,
+    "control_bearing_decoding_count": 29,
+    "byte_fallback_token_count_by_token_name": 0
+  },
+  "tokenizer_native_matrix": {
+    "vocabulary_exhaustive_per_prefix": true,
+    "prefix_classes": [
+      "INITIAL", "LITERAL", "CHOICE", "STRING_EMPTY", "STRING_ROMANIAN",
+      "STRING_ESCAPE", "REFERENCE_SHA", "REFERENCE_NUMBER", "AFTER_ENTRY",
+      "TERMINAL_SHAPE"
+    ],
+    "candidate_checks": 1310720,
+    "contextual_prefix_rewrites": 0,
+    "standalone_suffix_mismatches": 0,
+    "suffix_compositionality_result": "PASS_FOR_AUDITED_TOKENIZER_NATIVE_PREFIX_MATRIX"
+  },
+  "warnings": [
+    {
+      "reason_code": "EXISTING_MISTRAL_TOKENIZER_REGEX_WARNING",
+      "disposition": "PRESERVED_NOT_REPAIRED",
+      "effect": "Transformers reports that the tokenizer regex is incorrect and recommends fix_mistral_regex=True. Changing that behavior would change the bound tokenizer contract and was not authorized."
+    },
+    {
+      "reason_code": "EMPTY_REPLACEMENT_OR_CONTROL_DECODINGS_REQUIRE_EXCLUSION_OR_CONTEXT_AUDIT",
+      "disposition": "PROJECTOR_POLICY_NOT_IMPLEMENTED"
+    }
+  ],
+  "blocked_phase": {
+    "phase": 5,
+    "reason_code": "TOKENIZER_ENVIRONMENT_MISSING_APPLICATION_PYDANTIC",
+    "detail": "The identity-bound tokenizer environment contains transformers but not pydantic. The Windows application environment contains pydantic but not transformers. No dependency was installed or environment modified under the load-only authorization.",
+    "not_executed": [
+      "request-bound full-vocabulary one-step DFA admission",
+      "context-free versus prefix-sensitive allowed-token-set equivalence",
+      "resource and cache-isolation characterization"
+    ]
+  },
+  "strategy_disposition": {
+    "context_free_projector_equivalence": "UNPROVEN",
+    "current_safe_default": "PREFIX_SENSITIVE_FULL_DECODE",
+    "context_free_trie_authorized": false,
+    "projector_implementation_authorized": false
+  },
+  "execution_receipt": {
+    "tokenizer_loads": 1,
+    "model_loads": 0,
+    "model_calls": 0,
+    "provider_calls": 0,
+    "inference_calls": 0,
+    "projector_objects": 0,
+    "probe_constructions": 0,
+    "probe_executions": 0,
+    "elapsed_seconds": 9.599949,
+    "python_version": "3.12.3",
+    "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.39"
+  },
+  "authority": {
+    "dependency_install_or_environment_change": false,
+    "projector_implementation": false,
+    "evaluator_or_runner_binding": false,
+    "probe_construction_or_execution": false,
+    "runtime_integration": false,
+    "training": false
+  },
+  "recommended_next_step": "Owner-review this partial audit. If approved, authorize only a bounded zero-inference dependency bridge that makes the frozen request-bound DFA importable beside the identity-bound tokenizer, then execute Phases 5-7 without implementing a projector."
+}
