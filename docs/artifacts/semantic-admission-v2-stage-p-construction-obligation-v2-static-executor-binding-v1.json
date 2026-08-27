@@ -1,0 +1,54 @@
+{
+  "artifact_type": "LAUNCH_FORBIDDEN_STATIC_EXECUTOR_BINDING",
+  "artifact_version": "1.0.0",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_STATIC_EXECUTOR_BINDING_V1",
+  "canonical_identity": "261c58c77774344c8e375752e662f94770d0679f723a7a3ee71fca9c6aaec836",
+  "static_binding_identity": "46265e64cfac4217493529020f7517d6af1f10d93f14a3fed2abd2cc6e8c4572",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "separator": "LF",
+    "ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_V2_STATIC_EXECUTOR_BINDING_V1",
+      "46265e64cfac4217493529020f7517d6af1f10d93f14a3fed2abd2cc6e8c4572",
+      "1dc94cda37c270fda49bca7b430bbad4970b3afadf2d0e348cfc3479161e1a49",
+      "31a82ff316f69f98f7ba5df0e53bf5c6262fad5068fb3580430b967e5930658f",
+      "89d41dda4fbc1999e8aaf8f6ec62eabbdb7672535303337d37d3eb8c168d4afd",
+      "56c4e95957e4bf65af4fceaa2a1714cbfd163d4367b7ec7433e60242718a29ca",
+      "10618fccde73cc888f2f9239ef0b7f961dc1fe1b11e40885e9a82f42daf232d1",
+      "INJECTED_WSL_BOUNDARY",
+      "LAUNCH_FORBIDDEN",
+      "ZERO_EXECUTION"
+    ]
+  },
+  "implementation_sha256": "56c4e95957e4bf65af4fceaa2a1714cbfd163d4367b7ec7433e60242718a29ca",
+  "focused_test_sha256": "10618fccde73cc888f2f9239ef0b7f961dc1fe1b11e40885e9a82f42daf232d1",
+  "bindings": {
+    "host_payload_contract_identity": "1dc94cda37c270fda49bca7b430bbad4970b3afadf2d0e348cfc3479161e1a49",
+    "feasibility_design_identity": "31a82ff316f69f98f7ba5df0e53bf5c6262fad5068fb3580430b967e5930658f",
+    "model_identity": "pastila-editor-core-v1.2-experimental",
+    "system_prompt_identity": "PASTILAACIDA_EDITOR_CORE_SYSTEM_PROMPT_V1_2",
+    "system_prompt_sha256": "111bc2734343c67aab4e1a04003199b98d4955fe9579e445cd7b5d6805a9da17",
+    "canonical_wsl_profile_identity": "89d41dda4fbc1999e8aaf8f6ec62eabbdb7672535303337d37d3eb8c168d4afd"
+  },
+  "construction_contract": {
+    "transport": "exact injected WslExecutionBoundaryV1_1 with canonical model profile",
+    "host_payload": "strictly parsed canonical payload bytes",
+    "dependency_sources": "Core V1.2, unconstrained runner, system prompt, and WSL V1/V1.1 sources verified by SHA-256",
+    "instance_identity": "request-isolated binding of payload, request, source context, model, prompt, base, adapter, profile, and token ceiling",
+    "capability_use": "none during construction"
+  },
+  "authority": {
+    "static_binding_construction": true,
+    "dependency_and_profile_validation": true,
+    "core_executor_construction": false,
+    "wsl_invocation_construction": false,
+    "wsl_execution_or_process_launch": false,
+    "runner_implementation_or_execution": false,
+    "tokenizer_or_model_loading": false,
+    "generation_or_inference": false,
+    "retry_repair_selection_or_fallback": false,
+    "probe_or_historical_rerun": false,
+    "stage_c": false,
+    "runtime_or_production": false
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "candidate_identity": "261c58c77774344c8e375752e662f94770d0679f723a7a3ee71fca9c6aaec836",
+  "static_binding_identity": "46265e64cfac4217493529020f7517d6af1f10d93f14a3fed2abd2cc6e8c4572",
+  "focused_tests_passed": 12,
+  "synthetic_static_bindings": 4,
+  "core_executor_constructions": 0,
+  "wsl_invocation_constructions": 0,
+  "wsl_execution_or_process_launches": 0,
+  "runner_calls": 0,
+  "tokenizer_or_model_loads": 0,
+  "generation_or_inference_calls": 0,
+  "retries_repairs_selections_fallbacks": 0,
+  "stage_c_operations": 0,
+  "runtime_or_production_activations": 0
+}
