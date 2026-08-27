@@ -1,0 +1,1 @@
+{"authority":"packaging/windows/signing-authority-v1.json","matching_certificate_count":0,"public_certificate_can_replace_private_key":false,"public_certificate_present":true,"required_private_key":true,"required_store":"Cert:\\CurrentUser\\My","required_thumbprint":"604635DF3EB4CAF406D977987B1A6AA764D83612","verdict":"PRIVATE_SIGNING_KEY_UNAVAILABLE"}
