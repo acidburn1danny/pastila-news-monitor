@@ -1,0 +1,33 @@
+{
+  "artifact_type": "OWNER_APPROVAL_FREEZE_RECEIPT",
+  "canonical_name": "PASTILA_APPLICATION_WIDE_CANONICAL_WSL_EXECUTION_BOUNDARY_V1_FREEZE",
+  "canonical_identity": "4c3851d932372af7a0afd124b1cbb85a2575e2c2269394b364f448c2a781e5ef",
+  "identity_derivation": {
+    "algorithm": "SHA-256",
+    "encoding": "UTF-8",
+    "separator": "LF",
+    "ordered_fields": [
+      "PASTILA_APPLICATION_WIDE_CANONICAL_WSL_EXECUTION_BOUNDARY_V1_FREEZE",
+      "14a2b544fd55f590c2ee019a65c4af30a5df80eb9344fede612ba41a61925b7d",
+      "OWNER_APPROVED_FROZEN",
+      "STAGED_TRANSPORT_ONLY_MIGRATION",
+      "FROZEN_EVALUATION_LAUNCHERS_REMAIN_SEPARATELY_GATED"
+    ]
+  },
+  "frozen_candidate_identity": "14a2b544fd55f590c2ee019a65c4af30a5df80eb9344fede612ba41a61925b7d",
+  "owner_disposition": "APPROVED_AND_FROZEN",
+  "preservation": {
+    "transport_only": true,
+    "active_core_v1_2_and_v1_1_migration": true,
+    "grandfathered_frozen_evaluation_launchers": 16,
+    "historical_artifacts_rewritten": false
+  },
+  "authority": {
+    "boundary_semantic_authority": false,
+    "boundary_model_or_prompt_authority": false,
+    "evaluator_runner_rebinding": false,
+    "additional_probe_migration": false,
+    "runtime_expansion_beyond_approved_consumers": false
+  },
+  "status": "FROZEN"
+}
