@@ -1,0 +1,1 @@
+{"attempt":1,"lifecycle":"QUARANTINED_ZERO_CALL_PREPARATION_FAILURE","reason":"Evidence target directory did not exist.","request_constructed":true,"executor_called":false,"wsl_launched":false,"model_imported":false,"model_load_started":false,"inference_started":false,"model_calls":0,"provider_calls":0,"promoted_evidence":false}

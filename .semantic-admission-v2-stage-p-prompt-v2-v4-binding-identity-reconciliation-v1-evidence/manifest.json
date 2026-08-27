@@ -1,0 +1,32 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-prompt-v2-v4-binding-identity-reconciliation-bundle",
+  "schema_version": "1.0.0",
+  "canonical_identity": "120f6b65c759d6179bb5b902f55867ce8a3ca540c352438d7d5f6ca42a75c0eb",
+  "identity_method": "sha256 of ordered lowercase artifact SHA-256 values joined by LF",
+  "lifecycle": "SUPERSEDING_IDENTITY_RECONCILIATION_READY_FOR_OWNER_REVIEW",
+  "historical_bundle_identity": "8066934252d94c1bf2097340798546131145c2f322a4959d2e46bccf363391f5",
+  "reconciliation_identity": "4a2fdc0e46745e2f9c65e2aac96c53979658f83bcd51ef89d742d4bddbf81a03",
+  "artifacts": [
+    {
+      "path": "docs/artifacts/semantic-admission-v2-stage-p-prompt-v2-v4-binding-identity-reconciliation-v1.json",
+      "sha256": "8ab59dd06b7aa1c34a6256e96379b9ba753e1b51b53b1928f8f1ef62781e256a"
+    },
+    {
+      "path": "tests/test_semantic_admission_v2_stage_p_prompt_v2_v4_binding_identity_reconciliation_v1.py",
+      "sha256": "b445eec8818d035f0dcbf85a93430e9f44ff6e7e7864380e668f62cdd6a7f645"
+    },
+    {
+      "path": ".semantic-admission-v2-stage-p-prompt-v2-v4-binding-identity-reconciliation-v1-evidence/report.md",
+      "sha256": "b1ef9b1775d468bf3860e6fc32aa8a183bd23f6b4c6f0b60e48c4eef7c145983"
+    }
+  ],
+  "byte_equivalence_claimed": false,
+  "semantic_equivalence_claimed": false,
+  "provider_calls": 0,
+  "model_calls": 0,
+  "probe_authority": false,
+  "stage_c_authority": false,
+  "inference_authority": false,
+  "runtime_authority": false,
+  "production_authority": false
+}

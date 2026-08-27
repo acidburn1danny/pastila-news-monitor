@@ -1,0 +1,73 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-prompt-v2-v4-binding-identity-reconciliation",
+  "schema_version": "1.0.0",
+  "lifecycle": "SUPERSEDING_IDENTITY_RECONCILIATION_READY_FOR_OWNER_REVIEW",
+  "reconciliation_identity": "sha256:4a2fdc0e46745e2f9c65e2aac96c53979658f83bcd51ef89d742d4bddbf81a03",
+  "historical_bundle": {
+    "manifest_path": ".semantic-admission-v2-stage-p-prompt-v2-v4-binding-evidence/manifest.json",
+    "canonical_identity": "8066934252d94c1bf2097340798546131145c2f322a4959d2e46bccf363391f5",
+    "source_identities": [
+      "ab97e71909c2d0056092a3d1fd3c58ef4ee5eb341b199e32a91a951e52a50eba",
+      "5024d765392e904855cba46b1861c15b23e98a33e72228998457c47cb96e71b3"
+    ],
+    "manifest_immutable": true,
+    "classification": "HISTORICAL_ZERO_CALL_EVIDENCE_WITH_THREE_UNAVAILABLE_SOURCE_VERSIONS"
+  },
+  "unavailable_historical_sources": [
+    {
+      "path": "docs/artifacts/semantic-admission-v2-stage-p-prompt-v2-v4-binding-candidate.json",
+      "expected_sha256": "a82963bbf771769ef7591cafc18ab99b8cc3219950a3ee8c8e129cadfb535eb8",
+      "expected_bytes_available_from_git": false,
+      "expected_bytes_available_from_repository_content": false,
+      "current_provenance_commit": "6aa84195a876c0e891160bd009da7db43e09b07d",
+      "current_git_blob_oid": "5f0a66b20252a114d1905a362e38a176be097282",
+      "current_sha256": "702f3350803ca586c2a57519244b9bf9913359b6c4a78a35fb3465d1093709eb"
+    },
+    {
+      "path": "src/pastila_scout/semantic_admission_v2/stage_p_source_role_evaluator_v2.py",
+      "expected_sha256": "3b43e706f00236ae677aba2d7da9a73e56cc15b8a649e0cd1ac1cfc6234e451d",
+      "expected_bytes_available_from_git": false,
+      "expected_bytes_available_from_repository_content": false,
+      "current_provenance_commit": "6aa84195a876c0e891160bd009da7db43e09b07d",
+      "current_git_blob_oid": "5f68d716fff57e9d18b0e02623bd0aaee0017ba5",
+      "current_sha256": "a043da0475715565bda429b08476cf07587600e5f4553a5b2fcae4e8b4e6ff8f"
+    },
+    {
+      "path": "tests/test_semantic_admission_v2_stage_p_prompt_v2_v4_binding.py",
+      "expected_sha256": "0008f8d285784b94ba09b4c4b481465d8ecdbe1fbfef8c473b1a18a05b5dcd89",
+      "expected_bytes_available_from_git": false,
+      "expected_bytes_available_from_repository_content": false,
+      "current_provenance_commit": "6aa84195a876c0e891160bd009da7db43e09b07d",
+      "current_git_blob_oid": "5d48ed3517dfa159a4f69f02cfa2b29e06626339",
+      "current_sha256": "5323c6da3946d5a173502df5f9ad1480a5fe17df500a04ec2124cc8cd9fabf39"
+    }
+  ],
+  "availability_audit": {
+    "search_scope": "ALL_REACHABLE_GIT_VERSIONS_OF_THE_THREE_PATHS_AND_18509_CURRENT_REPOSITORY_FILES",
+    "reconstruction_or_fabrication_permitted": false
+  },
+  "historical_artifact_verification": {
+    "matching_artifact_count": 9,
+    "mismatching_artifact_count": 3,
+    "mismatches_are_exactly_the_three_unavailable_sources": true,
+    "historical_construction_receipt_preserved": true
+  },
+  "identity_distinction": {
+    "historical_bundle_identity_is_current_reproducible_identity": false,
+    "byte_equivalence_claimed": false,
+    "semantic_equivalence_claimed": false,
+    "silent_hash_rebinding": false
+  },
+  "normalization_disposition": "CURRENT_PROVIDER_NEUTRAL_LINEAGE_REQUIRES_THIS_SUPERSEDING_RECONCILIATION",
+  "authority": {
+    "provider_authority": false,
+    "model_authority": false,
+    "probe_authority": false,
+    "wsl_launch_authority": false,
+    "projector_integration_authority": false,
+    "stage_c_authority": false,
+    "inference_authority": false,
+    "runtime_authority": false,
+    "production_authority": false
+  }
+}
