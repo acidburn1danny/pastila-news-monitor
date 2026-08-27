@@ -23,6 +23,10 @@ def test_resource_is_the_defaults_authority() -> None:
     assert settings.schema == "pastila-scout-settings"
     assert settings.scout_period_days == 7
     assert settings.editor_timeout_seconds == 120.0
+    assert settings.ollama_model == "qwen3:14b"
+    assert settings.editor_default_model == (
+        "pastila-editor-core-v1.2-experimental"
+    )
 
 
 def test_absent_mutable_settings_load_defaults(tmp_path: Path) -> None:
@@ -37,6 +41,21 @@ def test_save_is_canonical_and_round_trips(tmp_path: Path) -> None:
     _save_windows_settings_v1(path=path, settings=settings)
     assert path.read_bytes() == DEFAULTS.read_bytes()
     assert _load_windows_settings_v1(path=path, defaults_path=DEFAULTS) == settings
+
+
+def test_pre_editor_default_settings_migrate_and_persist(tmp_path: Path) -> None:
+    path = (tmp_path / "settings.json").resolve()
+    payload = json.loads(DEFAULTS.read_text(encoding="utf-8"))
+    del payload["editor_default_model"]
+    path.write_text(json.dumps(payload), encoding="utf-8")
+    loaded = _load_windows_settings_v1(path=path, defaults_path=DEFAULTS)
+    assert loaded.editor_default_model == (
+        "pastila-editor-core-v1.2-experimental"
+    )
+    _save_windows_settings_v1(path=path, settings=loaded)
+    assert json.loads(path.read_text("utf-8"))["editor_default_model"] == (
+        "pastila-editor-core-v1.2-experimental"
+    )
 
 
 def test_save_retains_one_backup(tmp_path: Path) -> None:

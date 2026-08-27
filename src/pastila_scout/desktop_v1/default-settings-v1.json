@@ -13,6 +13,7 @@
   "editor_generation_path": null,
   "editor_provider": "openai",
   "editor_model": "gpt-4.1-mini",
+  "editor_default_model": "pastila-editor-core-v1.2-experimental",
   "editor_timeout_seconds": 120.0,
   "editor_output_directory": null,
   "updates_enabled": true

@@ -35,6 +35,7 @@ class _DesktopSettingsProjectionV1:
     editor_generation_path: Path | None
     editor_provider: str
     editor_model: str
+    editor_default_model: str
     editor_timeout_seconds: float
     editor_output_directory: Path | None
     updates_enabled: bool

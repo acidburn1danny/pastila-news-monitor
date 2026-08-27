@@ -28,6 +28,7 @@ _NAMES = (
     "editor_generation_path",
     "editor_provider",
     "editor_model",
+    "editor_default_model",
     "editor_timeout_seconds",
     "editor_output_directory",
     "updates_enabled",
@@ -38,7 +39,12 @@ _SCOUT_PROVIDER_NAMES = (
     "ollama_model",
     "scout_ai_timeout_seconds",
 )
-_LEGACY_NAMES = tuple(name for name in _NAMES if name not in _SCOUT_PROVIDER_NAMES)
+_PRE_EDITOR_DEFAULT_NAMES = tuple(
+    name for name in _NAMES if name != "editor_default_model"
+)
+_LEGACY_NAMES = tuple(
+    name for name in _PRE_EDITOR_DEFAULT_NAMES if name not in _SCOUT_PROVIDER_NAMES
+)
 
 
 @dataclass(frozen=True, slots=True, init=False, repr=False)
@@ -57,6 +63,7 @@ class WindowsSettingsV1:
     editor_generation_path: Path | None
     editor_provider: str
     editor_model: str
+    editor_default_model: str
     editor_timeout_seconds: float
     editor_output_directory: Path | None
     updates_enabled: bool
@@ -208,7 +215,9 @@ def _read_settings(path: Path) -> WindowsSettingsV1:
         if type(pairs) is not list or any(type(item) is not tuple for item in pairs):
             raise ValueError
         names = tuple(name for name, _ in pairs)
-        if names not in {_NAMES, _LEGACY_NAMES} or len(set(names)) != len(names):
+        if names not in {_NAMES, _PRE_EDITOR_DEFAULT_NAMES, _LEGACY_NAMES} or len(
+            set(names)
+        ) != len(names):
             raise ValueError
         values = dict(pairs)
         if names == _LEGACY_NAMES:
@@ -217,6 +226,10 @@ def _read_settings(path: Path) -> WindowsSettingsV1:
                 ollama_base_url="http://localhost:11434",
                 ollama_model="qwen3:14b",
                 scout_ai_timeout_seconds=120.0,
+            )
+        if names != _NAMES:
+            values["editor_default_model"] = (
+                "pastila-editor-core-v1.2-experimental"
             )
             values = {name: values[name] for name in _NAMES}
         return WindowsSettingsV1(**values)
@@ -287,6 +300,12 @@ def _validate(values: dict[str, object]) -> dict[str, object]:
         raise TypeError
     model = values["editor_model"]
     if type(model) is not str or not 1 <= len(model.encode("utf-8")) <= 128:
+        raise TypeError
+    editor_default_model = values["editor_default_model"]
+    if (
+        type(editor_default_model) is not str
+        or not 1 <= len(editor_default_model.encode("utf-8")) <= 200
+    ):
         raise TypeError
     timeout = values["editor_timeout_seconds"]
     if (
