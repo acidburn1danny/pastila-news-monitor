@@ -20,6 +20,11 @@
 # Preserve the frozen Chief Editor remediation artifact byte-for-byte.
 .pastilaacida-voice-v2-unseen-12-formal-production-path-proof-v1-run2-evidence/chief-editor-promotion-remediation-v1.json -text
 
+# Preserve frozen staged Gate F two-case proof evidence byte-for-byte.
+.semantic-admission-v2-staged-gate-f-two-case-proof-v1-evidence/host-trace-case01.json -text
+.semantic-admission-v2-staged-gate-f-two-case-proof-v1-evidence/host-trace-case10.json -text
+.semantic-admission-v2-staged-gate-f-two-case-proof-v1-evidence/raw-run-receipts.json -text
+
 # Shell
 *.sh text eol=lf
 
