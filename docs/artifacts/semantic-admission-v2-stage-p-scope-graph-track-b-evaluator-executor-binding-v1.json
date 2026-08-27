@@ -1,0 +1,52 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-scope-graph-track-b-evaluator-executor-binding",
+  "schema_version": "1.0.0-evaluation.1",
+  "binding_identity": "c94bcf9ffed5d33223d31d9b2d1014b0595b15422af86cfb3581c8022b85e4a7",
+  "approved_request_candidate_identity": "c6ab0e2f7721710af208c70ad96d31a412596b9ce69ee8f7f485caba5b620f08",
+  "approved_track_a_executor_binding_identity": "4830238a46d1ecf25defcb00e5b7e75128c8a9fd9aff19cf14ab63037605bf2a",
+  "lifecycle": "ZERO_INFERENCE_EVALUATOR_EXECUTOR_BOUND_CASE01_BLOCKED",
+  "identities": {
+    "evaluator_sha256": "ce58c24db37a0e280b602283227be6310d5e3c1349e5de01b4625d6ff0bcb0b6",
+    "executor_sha256": "96083f303b0971579a786368b1a5808e09e0ef02188021ef4bf1add686e432e1",
+    "request_candidate_sha256": "0d5f6904f44f3f8e9c2cdb2ed912a0753dc04523283f7d253f379caeb802d73f",
+    "model_identity": "pastila-editor-core-v1.2-experimental",
+    "prompt_identity": "sha256:35081f4840bce62317842cca75c42c143a62e04688867cbc1ae64b2e0db75cfc",
+    "schema_identity": "sha256:a61f16046045ca015dd2001393ab58e7ab7c94f50cbfc49f7df959bd45b3338c",
+    "constraint_identity": "sha256:e928d3ba6fcc8590afe89ded92500437ff8086d14430dba3e4fe983efaf3cb18",
+    "grammar_identity": "sha256:3c7914c3ac0316b4596754ca4011c1fad728539232d7d524fac92b8689861e3d",
+    "tokenizer_identity": "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c"
+  },
+  "binding_properties": {
+    "exact_executor_type_required": true,
+    "exact_request_candidate_required": true,
+    "exact_rendered_prompt_preserved": true,
+    "application_authority_constructed": true,
+    "constraint_liveness_failure_distinct": true,
+    "transport_failure_distinct": true,
+    "stage_c_edge": false,
+    "probe_wrapper_created": false
+  },
+  "zero_inference_verification": {
+    "constructor_binding": "PASS",
+    "request_render": "PASS",
+    "application_authority": "PASS",
+    "subprocess_launch_forbidden": "PASS",
+    "wsl_calls": 0,
+    "runner_calls": 0,
+    "tokenizer_loads": 0,
+    "model_loads": 0,
+    "model_calls": 0,
+    "provider_calls": 0,
+    "inference_calls": 0
+  },
+  "authority": {
+    "case01": false,
+    "probe": false,
+    "stage_c": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  },
+  "recommended_next_step": "Owner-review this binding, then authorize construction and zero-inference verification of an exclusive one-shot Case 01 probe binding. Do not execute it until separately authorized afterward."
+}
