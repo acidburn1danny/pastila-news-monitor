@@ -1,0 +1,17 @@
+{
+  "policy_identity": "42ea37912ec99d52c3ee0d7624f1daae442141a6ccf48f1fe527515851ea0c3f",
+  "application_request_objects": 0,
+  "application_authority_objects": 0,
+  "provider_adapter_descriptors_resolved": 0,
+  "provider_execution_requests": 0,
+  "provider_calls": 0,
+  "tokenizer_loads": 0,
+  "model_or_adapter_loads": 0,
+  "inference_calls": 0,
+  "runner_objects": 0,
+  "executor_objects": 0,
+  "probe_constructions": 0,
+  "probe_executions": 0,
+  "subprocess_launches": 0,
+  "stage_c_entries": 0
+}

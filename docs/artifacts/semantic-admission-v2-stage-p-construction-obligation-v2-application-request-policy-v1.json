@@ -1,0 +1,70 @@
+{
+  "artifact_type": "APPLICATION_REQUEST_POLICY_DESIGN",
+  "artifact_version": "1.0.0",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_APPLICATION_REQUEST_POLICY_V1",
+  "canonical_identity": "42ea37912ec99d52c3ee0d7624f1daae442141a6ccf48f1fe527515851ea0c3f",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_V2_APPLICATION_REQUEST_POLICY_V1",
+      "eb378b14eb6bc101b7cbf4af59759f3c428d0f8ae5115ee833ae59bf1c7e341d",
+      "pastila-editor-core-v1.2-experimental",
+      "ollama",
+      "240.0",
+      "CANCELLATION_FALSE",
+      "APPLICATION_PROVIDER_REQUEST_ONLY",
+      "ZERO_EXECUTION"
+    ],
+    "separator": "LF"
+  },
+  "prompt_renderer_identity": "eb378b14eb6bc101b7cbf4af59759f3c428d0f8ae5115ee833ae59bf1c7e341d",
+  "static_payload_identity": "d55694074ea2023b0e93e06be9e260c11495cdc9fdbc23181c85e36c9921f7cd",
+  "projector_freeze_identity": "974d5e6257256d7397cb68f90952c66809a536cf5525cbef58b3bbfce6791587",
+  "bound_dependencies": {
+    "src/pastila_scout/semantic_admission_v2/stage_p_provider_identity_v1.py": "785ed51de1251426c4eafcbc08b236a8a42e82741068e75d7306d4e8a28bba9c",
+    "src/pastila_scout/application_request_authority_v1/models.py": "d9674e524cfb361b2842066a3843cb33ad1d6969c5080072a50a5ae070548b3a",
+    "src/pastila_scout/provider_selection_v1/models.py": "52e555b744cf517cbc8e63f271dc94a6dcfcf97783921190f71d015a7968d988",
+    "src/pastila_scout/provider_execution_v2/models.py": "011192c8b5bc78303098200c59cb679c53bcca74d08dcda0859cc46453cc8ba2"
+  },
+  "policy": {
+    "model_identity": "pastila-editor-core-v1.2-experimental",
+    "provider_choice": "ollama",
+    "provider_choice_scope": "Application-layer descriptor selection only; no provider call or runtime availability claim.",
+    "timeout_seconds": 240.0,
+    "timeout_scope": "Declarative ApplicationProviderRequestV1 policy only; no timer is started.",
+    "cancellation_requested": false,
+    "requested_at": "Required injected timezone-aware datetime; never generated implicitly by the builder.",
+    "request_reference": "Deterministically derived from the rendered V2 request identity.",
+    "authority_ceiling": "APPLICATION_PROVIDER_REQUEST_V1_CONSTRUCTION_ONLY"
+  },
+  "future_builder_requirements": [
+    "accept only the exact ConstructionObligationV2RenderedRequestV1 type",
+    "verify prompt-renderer, projector-freeze, static-payload, schema, prompt, payload, and rendered-prompt identities",
+    "require an explicitly injected timezone-aware requested_at value",
+    "construct exactly one immutable ApplicationProviderRequestV1",
+    "derive the request reference deterministically from the rendered request identity",
+    "preserve rendered prompt bytes exactly",
+    "construct no ProviderExecutionRequestV2 and resolve no provider adapter descriptor",
+    "perform no provider, model, tokenizer, runner, executor, probe, or Stage C operation"
+  ],
+  "separated_future_authority": {
+    "application_request_authority_build": "NOT_AUTHORIZED",
+    "provider_execution_request": "NOT_AUTHORIZED",
+    "executor_or_runner_binding": "NOT_AUTHORIZED",
+    "provider_or_model_execution": "NOT_AUTHORIZED",
+    "probe_or_historical_rerun": "NOT_AUTHORIZED",
+    "stage_c": "NOT_AUTHORIZED",
+    "runtime_or_production": "NOT_AUTHORIZED"
+  },
+  "authority": {
+    "policy_design_and_future_application_request_construction": true,
+    "application_request_object_constructed_by_this_design": false,
+    "provider_adapter_resolution": false,
+    "provider_execution_request": false,
+    "provider_or_model_execution": false,
+    "runner_executor_or_probe": false,
+    "stage_c": false,
+    "runtime_or_production": false
+  },
+  "result": "APPLICATION_REQUEST_CONSTRUCTION_FEASIBLE_WITH_EXECUTION_AUTHORITY_SEPARATED"
+}
