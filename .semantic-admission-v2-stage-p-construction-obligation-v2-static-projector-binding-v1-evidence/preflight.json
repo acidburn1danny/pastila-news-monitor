@@ -1,0 +1,19 @@
+{
+  "candidate_identity": "9993395df612550e221efd2c4419a9f87f7382ef184d6e3d66b931340cd767f3",
+  "focused_tests_passed": 15,
+  "focused_tests_failed": 0,
+  "projector_objects_constructed_from_synthetic_token_pieces": 2,
+  "tokenizer_loads": 0,
+  "tokenizer_characterizations": 0,
+  "model_or_adapter_loads": 0,
+  "provider_calls": 0,
+  "inference_calls": 0,
+  "evaluator_objects": 0,
+  "runner_objects": 0,
+  "executor_objects": 0,
+  "probe_constructions": 0,
+  "probe_executions": 0,
+  "subprocess_launches": 0,
+  "stage_c_entries": 0,
+  "retry_repair_selection_fallback": 0
+}
