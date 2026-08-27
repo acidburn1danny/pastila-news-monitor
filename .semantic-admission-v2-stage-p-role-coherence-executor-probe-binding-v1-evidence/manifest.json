@@ -1,0 +1,38 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-role-coherence-executor-probe-binding-manifest",
+  "schema_version": "1.0.0",
+  "canonical_identity": "362fa8d009507ede145c248e209c4fa872b7f91c7d9b849afdf8774fa927c89d",
+  "identity_method": "sha256 of the ordered source tokenizer-runner identity and artifact SHA-256 values joined by LF with no trailing LF",
+  "source_tokenizer_runner_identity": "ea5ddc6b0621a0329b5178d4d479b3f08f48f24a63a0fc9f7d479d46a8fbbb42",
+  "lifecycle": "ZERO_INFERENCE_ONE_SHOT_CASE01_PATH_READY_FOR_OWNER_REVIEW",
+  "bindings": [
+    {"path":"docs/artifacts/semantic-admission-v2-stage-p-role-coherence-executor-probe-binding-v1.json","sha256":"90e95b81d5f562df95b6307df9328169a17b2e6fa9231b112dcb4098d328e50f"},
+    {"path":"src/pastila_scout/semantic_admission_v2/stage_p_role_coherence_durable_executor_v1.py","sha256":"70b18cfa2c26639a96255b77fedd179fe342d01932486b0fd651eec95ce1c727"},
+    {"path":"src/pastila_scout/semantic_admission_v2/stage_p_role_coherence_evaluator_v1.py","sha256":"26ab391f6eadb9fa137174cc1d440022cd54fb1f26e671ead766c32721ec8f5c"},
+    {"path":"src/pastila_scout/semantic_admission_v2/run_stage_p_role_coherence_case01_probe_v1.py","sha256":"c2428a21bdf02475ee95b32dff37892989a03098a79586aabf969d9ced3858c4"},
+    {"path":"tests/test_semantic_admission_v2_stage_p_role_coherence_probe_binding_v1.py","sha256":"724311417d3eb3ebac50229c0ad298d212d25fb6da6d9f1556b30e3e7e84aeee"},
+    {"path":"tests/test_semantic_admission_v2_stage_p_role_coherence_executor_probe_evidence_v1.py","sha256":"ffaa4a3715341364d130ec77899c9823154e9749aaf2f98143e080ad96fc957b"},
+    {"path":".semantic-admission-v2-stage-p-role-coherence-executor-probe-binding-v1-evidence/preflight.json","sha256":"b871564027b736df6b575fb36e5f6b5ab9073c3f2e7740b7d9139ef4557adf62"},
+    {"path":".semantic-admission-v2-stage-p-role-coherence-executor-probe-binding-v1-evidence/report.md","sha256":"38abb2062d1cf43b6467b1d1f2681220fb79f909d52e2ee76c73ed6bff787694"}
+  ],
+  "result": {
+    "construction": "PASS",
+    "tests": 25,
+    "maximum_provider_calls": 1,
+    "durable_lifecycle_events": 0,
+    "wsl_model_provider_or_runner_calls": 0,
+    "inference_executed": false
+  },
+  "authority": {
+    "probe_execution": false,
+    "additional_probe": false,
+    "projector": false,
+    "stage_c": false,
+    "case10": false,
+    "proof_rerun": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  }
+}

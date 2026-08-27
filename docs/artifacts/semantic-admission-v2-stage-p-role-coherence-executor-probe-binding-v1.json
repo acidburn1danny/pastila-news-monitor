@@ -1,0 +1,60 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-role-coherence-executor-probe-binding",
+  "schema_version": "1.0.0-evaluation.1",
+  "lifecycle": "ZERO_INFERENCE_ONE_SHOT_CASE01_PATH_READY_FOR_OWNER_REVIEW",
+  "source_tokenizer_runner_identity": "ea5ddc6b0621a0329b5178d4d479b3f08f48f24a63a0fc9f7d479d46a8fbbb42",
+  "case_id": "HMCV1-SASC-01",
+  "candidate_identity": "384925cb1ca1d4dcfcfa63b82dee810451ae713506c484da24768f63d3169c9b",
+  "prompt_identity": "sha256:dd9f26782347ea2a8901135fc8bb671587d020a794798de404dc274e699fa4f8",
+  "schema_identity": "sha256:a47603e257ee5e315b77993891f0079e30e6c63a150b6b04e6889a98a4613ac9",
+  "grammar_identity": "sha256:69a6a49a2a7f5e350063dcce73d95a402a06f89eabfdbfe53671a7463ca5f6d6",
+  "model_identity": "pastila-editor-core-v1.2-experimental",
+  "executor_sha256": "70b18cfa2c26639a96255b77fedd179fe342d01932486b0fd651eec95ce1c727",
+  "evaluator_sha256": "26ab391f6eadb9fa137174cc1d440022cd54fb1f26e671ead766c32721ec8f5c",
+  "probe_runner_sha256": "c2428a21bdf02475ee95b32dff37892989a03098a79586aabf969d9ced3858c4",
+  "request_binding": {
+    "pack_sha256": "4163307ccb8cfa8997b520a1cea04cddacd347e9b1ffde498db925ffccac6c2d",
+    "rendered_prompt_sha256": "33c6040fd9dedb15fac39242e9af1188e81b63f763e509ebb8b2758ea4adfa58",
+    "rendered_prompt_characters": 4877,
+    "request_id": "application-request-v1:ba838d31af899be34ec0a7913844abb5a5735c2fad86b0bea53adc7b077287f8",
+    "envelope_identity": "scout:provider-request-envelope-v2:62ebf30c45dbbae9830dde036fbf1f998918de2616fff985c24087ac30df04bc",
+    "request_units": 1,
+    "timeout_seconds": 240.0,
+    "maximum_provider_calls": 1,
+    "retry_count": 0,
+    "repair_count": 0,
+    "selection_count": 0
+  },
+  "execution_boundaries": {
+    "raw_persisted_before_validation": true,
+    "strict_role_coherent_schema_validation": true,
+    "exact_source_membership_validation": true,
+    "durable_lifecycle_reconciliation": true,
+    "projector_bound": false,
+    "stage_c_constructed": false,
+    "stage_c_called": false,
+    "case10_edge": false
+  },
+  "zero_inference_receipt": {
+    "durable_lifecycle_events": 0,
+    "wsl_calls": 0,
+    "model_loads": 0,
+    "model_calls": 0,
+    "provider_calls": 0,
+    "runner_calls": 0,
+    "inference_executed": false
+  },
+  "bounded_next_step_if_authorized": "Execute exactly one evaluation-only Stage-P HMCV1-SASC-01 probe through this frozen path. No retry, repair, selection, projector, Stage C, Case 10, or proof rerun. Stop after durable raw evidence and semantic evaluation.",
+  "authority": {
+    "probe_execution": false,
+    "additional_probe": false,
+    "projector": false,
+    "stage_c": false,
+    "case10": false,
+    "proof_rerun": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  }
+}
