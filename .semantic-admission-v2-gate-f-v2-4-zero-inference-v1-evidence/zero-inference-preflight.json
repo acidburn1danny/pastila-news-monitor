@@ -1,0 +1,105 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-gate-f-v2-4-zero-inference-preflight",
+  "schema_version": "1.0.0",
+  "checked_at": "2026-08-25T23:15:35.565758+00:00",
+  "source_design_identity": "f2d16c10290e852715b23d0b3d3bcb20ac4bdba586ed3c1dd358d0d2bd7077a0",
+  "gate_f_evaluator_identity": "abc7441d98b387d76de3b176068a4a93235f0f46be6dad30b7873dc0e26b1bba",
+  "gate_f_prompt_identity": "sha256:aed34f51c1c56c53b01347074daae234271b820fe35abc20db2d4af9618f0861",
+  "gate_s_evaluator_identity_unchanged": "313c6817c7c2ddf75c736dd2c823e25f8ceaf7ac295e09625415f23f32a66b51",
+  "gate_s_prompt_identity_unchanged": "sha256:db09a481768e6d1c021b8eacac23be8449288993bec7eaa5ea4ad96866e8b2dc",
+  "request_count": 10,
+  "request_bindings": [
+    {
+      "case_id": "HMCV1-SASC-01",
+      "input_request_sha256": "a25336179b3ff8503b3083af23456f8fe1fbe3de3b4836c773a4d3f913443937",
+      "rendered_prompt_sha256": "9ea79cba662b048c81ff27fbd3d1c7fefcb68baf79824a224362e70f2c8068af",
+      "provider_request_envelope_identity": "scout:provider-request-envelope-v2:24d8f67442cdef9147e2eb48605b7116a46221a4e19129212272fccaa487c978"
+    },
+    {
+      "case_id": "HMCV1-SASC-02",
+      "input_request_sha256": "da2f64fb6142abbcdfda6319b2ad5271be309394416c10c633d2961356e08bf4",
+      "rendered_prompt_sha256": "5506a058f6005175b12d2c7ec513d1ffe654c7e057242cd0b704f7c25af2b8c8",
+      "provider_request_envelope_identity": "scout:provider-request-envelope-v2:850edcda4ddc8609a0b24b47d6169247b59253d0020d2f9443e9312907bd147d"
+    },
+    {
+      "case_id": "HMCV1-SASC-03",
+      "input_request_sha256": "4e536adb80edd7910f4091d4b062bb10e822202c03b7e807bfd367691cdbc1f3",
+      "rendered_prompt_sha256": "dbc3288f0bf24f4cdd5b43d5225d2bdab3b4d0d969c389b0e6b274a3b2f3c8cd",
+      "provider_request_envelope_identity": "scout:provider-request-envelope-v2:78af0f0170f76efe05e7cc0594f90083a6349956e27d4b4ef443111d92eb5c84"
+    },
+    {
+      "case_id": "HMCV1-SASC-04",
+      "input_request_sha256": "21d24ee135a2e07396b7b86af8cc9f102f77a526f2261f2aa71c1c27f53acc41",
+      "rendered_prompt_sha256": "01bf7719f45193876ff27009a086f630bb86be03217b27739e2ec0ddde2171d0",
+      "provider_request_envelope_identity": "scout:provider-request-envelope-v2:3c39f4be5c29d9a7290d2e35bd590bf5be74dd872e82527de94590b8211412f0"
+    },
+    {
+      "case_id": "HMCV1-SASC-05",
+      "input_request_sha256": "69d9028cc2741ac21b5947c2a6f60e1a82f269c1011b02456eda9156d505ec7c",
+      "rendered_prompt_sha256": "a9092610dd4f035c32fa9e056eee5300e22156fe1f7b4c88091990ee4444feb1",
+      "provider_request_envelope_identity": "scout:provider-request-envelope-v2:4c572060ad17f1d0f8a9f322fcb1997eb00d1ac41caf6363c9756c8b4ab6994c"
+    },
+    {
+      "case_id": "HMCV1-SASC-06",
+      "input_request_sha256": "228bdaf1ac5a44c528d553026bc9f1a95eb6cb5a3267a20f7ad6b2b40d1c6215",
+      "rendered_prompt_sha256": "805f75c92a9bf48df8b0c370005dc2512485fccb4f78d33a892a2c448832b28e",
+      "provider_request_envelope_identity": "scout:provider-request-envelope-v2:632f4c25234bcc92181d715089b9f39786d6a5ff7330eaa28833c886c315e902"
+    },
+    {
+      "case_id": "HMCV1-SASC-07",
+      "input_request_sha256": "66353262bebb1eb892c31ea284348135d72c685db21de0115bb2477773d42293",
+      "rendered_prompt_sha256": "3a6fdb6edf9cc5b303b716d2cd937997e40bb99b612e444fdb867ac296b82faf",
+      "provider_request_envelope_identity": "scout:provider-request-envelope-v2:fe82350ad035c1806f57d35da5d6d8c27aa0f0fbb514f07ea322ce5d4275d3d0"
+    },
+    {
+      "case_id": "HMCV1-SASC-08",
+      "input_request_sha256": "bcc186fb290bfd38c84a72064251213fb27f09c10a1e171634f20d4f04eabb45",
+      "rendered_prompt_sha256": "9e67ece3a818ed3e9eb3b1080dd87b81993cee4c190baef857bb2ba381311aea",
+      "provider_request_envelope_identity": "scout:provider-request-envelope-v2:8548fc43079226c4865070215377de22234716cab719655467dd4ed7fea6e6e0"
+    },
+    {
+      "case_id": "HMCV1-SASC-09",
+      "input_request_sha256": "acf7f87fff01c167ec8157074196a8b7bcd334b2b61e9bb5203c9a3343e47cad",
+      "rendered_prompt_sha256": "454ceed84fe2dd940c822b8c34a2415993aa44e980f2a0899879645e7e560759",
+      "provider_request_envelope_identity": "scout:provider-request-envelope-v2:b9f5b31ad898a87908f278bd796e0a5aec567bc042b4fe8a4c940125ca0d3215"
+    },
+    {
+      "case_id": "HMCV1-SASC-10",
+      "input_request_sha256": "bf76c53708f8716819f62f68e16ea727803a017636179ac2a2f0f45bf955dd2a",
+      "rendered_prompt_sha256": "cba0b231bd874676f2a02ce8a43a8c113b3ebfdd03f5327a25322cee410c46fe",
+      "provider_request_envelope_identity": "scout:provider-request-envelope-v2:bbd42c2b808b5774824697d71c8919445efa3e26f9754e40b192793528c310b1"
+    }
+  ],
+  "reason_code_namespace": [
+    "FSEM_CERTAINTY_MUTATION",
+    "FSEM_FICTION_RETURN_TO_FACT",
+    "FSEM_INVENTED_SPEECH_OR_ROLE_KNOWLEDGE",
+    "FSEM_TIMING_MUTATION",
+    "FSEM_UNSUPPORTED_BIOGRAPHY_OR_HISTORY",
+    "FSEM_UNSUPPORTED_CAPACITY",
+    "FSEM_UNSUPPORTED_CAUSALITY",
+    "FSEM_UNSUPPORTED_EMOTION_OR_REACTION",
+    "FSEM_UNSUPPORTED_LIFE_STAKES",
+    "FSEM_UNSUPPORTED_MOTIVE_OR_INTENT",
+    "FSEM_UNSUPPORTED_OUTCOME_OR_STATUS",
+    "FSEM_UNSUPPORTED_PREMISE_TO_DIRECTIVE",
+    "ADMISSION_INDETERMINATE"
+  ],
+  "reason_code_namespace_unchanged": true,
+  "canonical_constraint_forms_checked": 3,
+  "constrained_executor_constructed": "ConstrainedGateFCoreV12ExecutorV1",
+  "constrained_executor_invoked": false,
+  "forbidden_executor_calls": 0,
+  "hidden_expected_annotations_in_prompts": false,
+  "future_targets_empty": true,
+  "model_load_started": false,
+  "inference_started": false,
+  "model_calls": 0,
+  "provider_calls": 0,
+  "probe_authorized": false,
+  "runtime_authority": false,
+  "training_authority": false,
+  "curriculum_exposure": false,
+  "result": "PASS",
+  "preflight_identity": "7f88540cdc0b5e3406bd3fc08d87cd952892e65e6315a15e88fbe8201b7c2edb"
+}

@@ -1,0 +1,33 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-gate-f-v2-4-candidate-bundle",
+  "schema_version": "1.0.0",
+  "canonical_identity": "763ff7b715e856092a84d316b9eddc8af896b20c44433223b14a6b849cec5b23",
+  "identity_method": "sha256 of ordered lowercase artifact SHA-256 values joined by LF",
+  "lifecycle": "FROZEN_EVALUATION_CANDIDATE_ZERO_INFERENCE_PASS_READY_FOR_OWNER_REVIEW",
+  "source_design_identity": "f2d16c10290e852715b23d0b3d3bcb20ac4bdba586ed3c1dd358d0d2bd7077a0",
+  "gate_f_evaluator_identity": "abc7441d98b387d76de3b176068a4a93235f0f46be6dad30b7873dc0e26b1bba",
+  "gate_f_prompt_identity": "sha256:aed34f51c1c56c53b01347074daae234271b820fe35abc20db2d4af9618f0861",
+  "zero_inference_preflight_identity": "7f88540cdc0b5e3406bd3fc08d87cd952892e65e6315a15e88fbe8201b7c2edb",
+  "artifacts": [
+    {"path": "docs/artifacts/semantic-admission-v2-gate-f-contract-v2-4-prompt.txt", "sha256": "aa68b62c4ca6f1df3d3073898c1010446c8ccdce151293ad62cdeea11f161bc4"},
+    {"path": "docs/artifacts/semantic-admission-v2-gate-f-contract-v2-4-candidate.json", "sha256": "525d9cc9ca51159d284671383172e732956e0b1ad6357bb752440d68322d1524"},
+    {"path": "src/pastila_scout/semantic_admission_v2/core_adapter_v2_4.py", "sha256": "ea6fc1975cf2a6225523a09bec5989c436118e578af57f5efea3fe4da63a7c74"},
+    {"path": "tests/test_semantic_admission_v2_contract_v2_4.py", "sha256": "12c6da6b5a1e55dff7686e9f7a459ab4000879ed46906d81bc0c3e8df1640e24"},
+    {"path": "scripts/preflight_semantic_admission_v2_gate_f_contract_v2_4.py", "sha256": "ae8e007bae2560a2e41bff33a79632664506617b304b614feae3076de2a65b73"},
+    {"path": ".semantic-admission-v2-gate-f-v2-4-zero-inference-v1-evidence/zero-inference-preflight.json", "sha256": "a2bed5a15a0efe5f75577de08d610dff8a9e9c5685367fe73a46dfa60a359658"},
+    {"path": ".semantic-admission-v2-gate-f-v2-4-zero-inference-v1-evidence/report.md", "sha256": "a13a98079f1e33e4f81e0e8318c94b3d7e8927e8e4867d9a0594dd3a5ce7d140"}
+  ],
+  "request_count": 10,
+  "focused_and_constraint_tests_passed": 36,
+  "gate_s_unchanged": true,
+  "reason_code_namespace_unchanged": true,
+  "constrained_grammar_unchanged": true,
+  "model_load_started": false,
+  "inference_started": false,
+  "model_calls": 0,
+  "provider_calls": 0,
+  "probe_authorized": false,
+  "runtime_authority": false,
+  "training_authority": false,
+  "curriculum_exposure": false
+}
