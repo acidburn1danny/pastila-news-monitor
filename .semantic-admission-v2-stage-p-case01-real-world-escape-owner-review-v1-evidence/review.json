@@ -1,0 +1,17 @@
+{
+  "result": "FAIL_FALSE_COMPLETE",
+  "review_identity": "7ca38d874095832b30e2bd5e8bdf19942ab84f3daf558be1f76445015b01995b",
+  "case_id": "HMCV1-SASC-01",
+  "failure_class": "REAL_WORLD_COMMITMENT_ESCAPE_FROM_TARGET_AUDIT",
+  "raw_sha256": "5cf2c8a774f97cf561e9ddeb541a7300adbfa33a6c4b9d45f4f48587696aa8e0",
+  "schema_valid": true,
+  "source_membership_valid": true,
+  "semantic_exhaustiveness_valid": false,
+  "coverage_complete_credible": false,
+  "stage_c_eligible": false,
+  "model_calls_during_review": 0,
+  "provider_calls_during_review": 0,
+  "inference_calls_during_review": 0,
+  "case01_reruns": 0,
+  "stage_c_calls": 0
+}

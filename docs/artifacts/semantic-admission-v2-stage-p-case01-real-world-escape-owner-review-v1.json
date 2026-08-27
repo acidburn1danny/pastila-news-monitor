@@ -1,0 +1,83 @@
+{
+  "artifact_id": "STAGE_P_CASE01_REAL_WORLD_ESCAPE_OWNER_REVIEW_V1",
+  "review_identity": "7ca38d874095832b30e2bd5e8bdf19942ab84f3daf558be1f76445015b01995b",
+  "lifecycle": "OWNER_EVALUATION_ONLY_NO_REMEDIATION_NO_RERUN_NO_STAGE_C",
+  "bound_evidence": {
+    "case_id": "HMCV1-SASC-01",
+    "probe_binding_identity": "b39e2b2b14e19ba48db4122768712c1675120849f37607e11453132353e0e90c",
+    "request_sha256": "b6e0fd27797998d9b447e9cb938b3ceaa173ee008dd8965a43dd5bf39f5a710d",
+    "raw_sha256": "5cf2c8a774f97cf561e9ddeb541a7300adbfa33a6c4b9d45f4f48587696aa8e0",
+    "phase_receipt_sha256": "d238dbd8d88e3ad111962357571aba27f7195b6a6a6efcf72749b605265c899e",
+    "identity_binding_sha256": "7b3d72468d9cd395f74bb70cfe8890ed80d971e95e0626e2ae66be44d21976c1",
+    "provider_call_count": 1,
+    "contract_result": "STAGE_P_VALID",
+    "contract_decision": "PASS_TO_NEXT_STAGE",
+    "eligibility": "QUARANTINED_EVALUATION_ONLY"
+  },
+  "owner_decision": {
+    "decision": "FAIL_FALSE_COMPLETE",
+    "failure_class": "REAL_WORLD_COMMITMENT_ESCAPE_FROM_TARGET_AUDIT",
+    "semantic_exhaustiveness": "FAIL",
+    "stage_c_eligible": false,
+    "summary": "The ledger avoids creative-target decomposition by classifying both figurative/editorial spans as standalone real-world commitments, which mechanically permits an empty target-audit collection and COMPLETE coverage."
+  },
+  "entry_review": [
+    {
+      "entry_id": "P1",
+      "owner_result": "SEMANTICALLY_INVALID_AS_EMITTED",
+      "findings": [
+        "The combined shadow/light clause is an integrated figurative construction, not a neutralized smallest real-world proposition.",
+        "The commitment merely copies the candidate span and does not state the truth-evaluable proposition alleged to survive.",
+        "Financial concealment or nontransparency may survive and has governed support in the off-books salary fact, but the emitted entry uses null support and NEW_UNSUPPORTED_EVENT.",
+        "The employees-remain-in-light component is not independently adjudicated and cannot be converted into an unsupported real-world event by grouping it with the money metaphor.",
+        "Candidate modality PROPOSED does not resolve the actual communicative force of the conditional figurative clause."
+      ]
+    },
+    {
+      "entry_id": "P2",
+      "owner_result": "SEMANTICALLY_INVALID_AS_EMITTED",
+      "findings": [
+        "The hotel-room/transparency wording is wordplay carrying a hedged editorial or normative assessment, not itself a neutralized descriptive event.",
+        "The commitment again copies the candidate span rather than identifying a smallest surviving proposition.",
+        "Any presupposition of insufficient transparency requires independent adjudication; it cannot be labeled wholesale as a standalone NEW_UNSUPPORTED_EVENT.",
+        "The span is part of the same integrated construction as P1, yet the ledger provides no creative host or overlap relationship."
+      ]
+    }
+  ],
+  "coverage_review": {
+    "creative_target_audits_empty": true,
+    "empty_collection_schema_valid": true,
+    "empty_collection_semantically_valid_for_this_case": false,
+    "creative_scope_checked_receipt_credible": false,
+    "integrated_creative_hosts_checked_receipt_credible": false,
+    "creative_targets_enumerated_receipt_credible": false,
+    "target_classes_reviewed_receipt_credible": false,
+    "target_to_ledger_reconciled_receipt_credible": false,
+    "coverage_decision_complete_credible": false
+  },
+  "failure_class_definition": {
+    "name": "REAL_WORLD_COMMITMENT_ESCAPE_FROM_TARGET_AUDIT",
+    "definition": "A ledger bypasses mandatory decomposition of materially creative language by assigning its creative spans only REAL_WORLD_COMMITMENT or UNRESOLVED_SCOPE roles, leaving no CONTAINED_CREATIVE entry to trigger target audits, while still claiming exhaustive creative and target coverage.",
+    "distinction_from_prior_failure": "The prior false complete found a creative host but hid factual targets inside it. This output takes the opposite escape path: it suppresses the creative host itself so the target-audit collection may remain empty.",
+    "safety_effect": "Overclassification as unsupported facts can create false rejection pressure and destroys the intended separation between nonfactual editorial transformation and factual-semantic claims.",
+    "quality_effect": "Literal span copying into commitment fields provides no usable semantic decomposition despite mechanically valid records."
+  },
+  "contract_vs_owner_evaluation": {
+    "contract_validation_scope": "Field order, enum tuples, graph structure, source membership, and declared coverage coherence.",
+    "owner_evaluation_scope": "Whether emitted roles and commitments correctly and exhaustively represent candidate communicative force.",
+    "conclusion": "STAGE_P_VALID does not establish semantic correctness or eligibility for Stage C."
+  },
+  "boundaries": {
+    "remediation_design": false,
+    "implementation": false,
+    "prompt_or_schema_change": false,
+    "model_probe": false,
+    "case01_rerun": false,
+    "stage_c": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  },
+  "recommended_next_step": "Owner-review and freeze this classification, then separately authorize design-only failure analysis for preventing creative-host suppression without forcing every candidate or every figurative phrase into a creative role."
+}
