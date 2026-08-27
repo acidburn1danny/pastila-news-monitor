@@ -1,0 +1,22 @@
+{
+  "schema_name":"pastila-semantic-admission-v2-stage-p-timeout-lifecycle-remediation-design-bundle",
+  "schema_version":"1.0.0",
+  "canonical_identity":"62cd1f8c27f90782be1da6cc7c342659a004cc81d820165ae17904b4eb541518",
+  "identity_method":"sha256 of ordered lowercase artifact SHA-256 values joined by LF",
+  "lifecycle":"FROZEN_DESIGN_ONLY_READY_FOR_OWNER_REVIEW",
+  "source_failed_proof_identity":"8812b4b1ab485420cd48e1318612545ec0e1f547bde7b0110f7e593a1b1bc442",
+  "artifacts":[
+    {"path":"docs/artifacts/semantic-admission-v2-stage-p-timeout-lifecycle-remediation-design-v1.json","sha256":"5f7d416fe276858936184e4572e91eb93c2f6f2c45cb37b2648b931b6fb1d045"},
+    {"path":".semantic-admission-v2-stage-p-timeout-lifecycle-remediation-design-v1-evidence/report.md","sha256":"ce7d380409d405f0238d8aaa415e38e501cbdbe8c13f2126d95274baee1aa4e8"},
+    {"path":"tests/test_semantic_admission_v2_stage_p_timeout_lifecycle_design_v1.py","sha256":"d1148dcf21c5f47397a7e319077fb5fc9520a67d5e402c101c1e90f292529965"}
+  ],
+  "implementation_authority":false,
+  "model_calls":0,
+  "provider_calls":0,
+  "inference_authority":false,
+  "proof_rerun_authority":false,
+  "runtime_authority":false,
+  "production_authority":false,
+  "training_authority":false,
+  "gate_s_authority":false
+}
