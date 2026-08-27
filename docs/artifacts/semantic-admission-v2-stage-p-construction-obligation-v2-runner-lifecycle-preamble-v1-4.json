@@ -1,0 +1,41 @@
+{
+  "artifact_type": "ZERO_EXECUTION_RUNNER_LIFECYCLE_PREAMBLE_BINDING",
+  "artifact_version": "1.4.0",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_RUNNER_LIFECYCLE_PREAMBLE_V1_4",
+  "canonical_identity": "a4f958ac8b793da4e5c9d2d91145b8d49c2ca8624d209e9aed0670eced35f678",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "separator": "LF",
+    "ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_V2_RUNNER_LIFECYCLE_PREAMBLE_V1_4",
+      "f21bc27ccdbd1941783e2cfc893eede389e5a56207342a97d7fafc66b4506f91",
+      "09de75b7ecc52dedde19bf1f773c52ecf5a0a9da72da30a28113778b3867398f",
+      "cb9f14284353fafba05094b005f3a97793dbb079e5bed81abacddaafb7d155bf",
+      "REQUEST_VALIDATED",
+      "TOKENIZER_IDENTITY_VALIDATED",
+      "PROJECTOR_CONSTRUCTED",
+      "STOP_BEFORE_MODEL_LOAD_STARTED",
+      "ZERO_EXECUTION"
+    ]
+  },
+  "behavior": {
+    "events": [
+      "REQUEST_VALIDATED",
+      "TOKENIZER_IDENTITY_VALIDATED",
+      "PROJECTOR_CONSTRUCTED"
+    ],
+    "append_only_previous_identity_chain": true,
+    "event_details_identity_hashed": true,
+    "stop_before": "MODEL_LOAD_STARTED"
+  },
+  "authority": {
+    "tokenizer_loading": false,
+    "model_or_adapter_loading": false,
+    "generation_or_inference": false,
+    "provider": false,
+    "runner_or_executor_invocation": false,
+    "probe": false,
+    "stage_c": false,
+    "runtime_or_production": false
+  }
+}
