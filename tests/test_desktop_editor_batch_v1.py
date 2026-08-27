@@ -5,8 +5,11 @@ import pytest
 
 from pastila_scout.desktop_v1.editor_batch import (
     _EditorBatchResultV1,
+    _persist_application_result_diagnostic,
     _run_editor_batch_v1,
 )
+from pastila_scout.editor_application_v1 import EditorApplicationFailureCodeV1
+from pastila_scout.editor_application_v1.models import make_application_failure
 
 
 class _Store:
@@ -92,6 +95,102 @@ def test_batch_preserves_success_and_continues_after_item_failure(
     assert tuple(item.event_id for item in store.failures) == (failed_event_id,)
     assert store.failures[0].sanitized_reason == "Generarea Editor a esuat."
     assert all(store.status[value] == "completed" for value in expected_completed)
+
+
+def test_batch_persists_bounded_original_exception_and_route_metadata(tmp_path):
+    store = _Store((1922,))
+
+    def execute(event_id):
+        raise RuntimeError(f"runner boundary failed for {event_id}")
+
+    result = _run_editor_batch_v1(
+        store=store,
+        event_ids=(1922,),
+        execute=execute,
+        provider_id="ollama",
+        model_id="pastila-editor-core-v1.2-experimental",
+        diagnostics_directory=tmp_path,
+    )
+
+    assert result.failed_event_ids == (1922,)
+    evidence = store.failures[0]
+    assert evidence.sanitized_reason == "Generarea Editor a esuat."
+    assert evidence.failure_stage.value == "provider_execution"
+    assert evidence.provider_id == "ollama"
+    assert evidence.model_id == "pastila-editor-core-v1.2-experimental"
+    diagnostic = __import__("json").loads(Path(evidence.validation_path).read_text("utf-8"))
+    assert diagnostic == {
+        **diagnostic,
+        "attempt_number": 1,
+        "event_id": 1922,
+        "exception_message": "runner boundary failed for 1922",
+        "exception_type": "RuntimeError",
+        "model_id": "pastila-editor-core-v1.2-experimental",
+        "provider_id": "ollama",
+        "stage": "provider_execution",
+    }
+
+
+def test_non_handoff_application_result_detail_is_retained(tmp_path):
+    result = SimpleNamespace(
+        failure=make_application_failure(
+            EditorApplicationFailureCodeV1.OPERATIONAL_EXECUTION_FAILED
+        ),
+        handoff_permitted=False,
+        lifecycle=tuple(
+            SimpleNamespace(value=value)
+            for value in ("accepted", "validated", "prepared", "executed", "failed")
+        ),
+        output_path=None,
+        payload_sha256=None,
+        status=SimpleNamespace(value="failed"),
+    )
+
+    path = _persist_application_result_diagnostic(
+        event_id=1834,
+        application_result=result,
+        provider_id="ollama",
+        model_id="pastila-editor-core-v1.2-experimental",
+        diagnostics_directory=tmp_path,
+    )
+
+    diagnostic = __import__("json").loads(path.read_text("utf-8"))
+    assert diagnostic == {
+        **diagnostic,
+        "event_id": 1834,
+        "failure": {
+            "code": "operational_execution_failed",
+            "message": "Editor operational execution failed.",
+        },
+        "handoff_permitted": False,
+        "lifecycle": [
+            "accepted",
+            "validated",
+            "prepared",
+            "executed",
+            "failed",
+        ],
+        "model_id": "pastila-editor-core-v1.2-experimental",
+        "output_path": None,
+        "output_path_present": False,
+        "payload_sha256": None,
+        "payload_sha256_present": False,
+        "provider_id": "ollama",
+        "status": "failed",
+    }
+
+
+def test_application_result_diagnostic_is_inert_without_configured_directory():
+    assert (
+        _persist_application_result_diagnostic(
+            event_id=1834,
+            application_result=object(),
+            provider_id="ollama",
+            model_id="pastila-editor-core-v1.2-experimental",
+            diagnostics_directory=None,
+        )
+        is None
+    )
 
 
 def test_batch_does_not_swallow_coordinator_level_interrupt():
