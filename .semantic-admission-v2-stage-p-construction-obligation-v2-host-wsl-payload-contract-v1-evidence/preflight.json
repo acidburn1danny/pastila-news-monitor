@@ -1,0 +1,13 @@
+{
+  "candidate_identity": "8d16e0b8f065f5496a6d88020ff0ecd832dfcd2543223de7d793940ac36f4200",
+  "contract_identity": "1dc94cda37c270fda49bca7b430bbad4970b3afadf2d0e348cfc3479161e1a49",
+  "focused_tests_passed": 12,
+  "synthetic_payload_round_trips": 3,
+  "executor_or_runner_constructions": 0,
+  "wsl_invocations": 0,
+  "tokenizer_or_model_loads": 0,
+  "generation_or_inference_calls": 0,
+  "retries_repairs_selections_fallbacks": 0,
+  "stage_c_operations": 0,
+  "runtime_or_production_activations": 0
+}

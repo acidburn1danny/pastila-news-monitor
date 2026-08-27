@@ -1,0 +1,53 @@
+{
+  "artifact_type": "ZERO_EXECUTION_HOST_WSL_PAYLOAD_CONTRACT",
+  "artifact_version": "1.0.0",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_HOST_WSL_PAYLOAD_CONTRACT_V1",
+  "canonical_identity": "8d16e0b8f065f5496a6d88020ff0ecd832dfcd2543223de7d793940ac36f4200",
+  "contract_identity": "1dc94cda37c270fda49bca7b430bbad4970b3afadf2d0e348cfc3479161e1a49",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "separator": "LF",
+    "ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_V2_HOST_WSL_PAYLOAD_CONTRACT_V1",
+      "1dc94cda37c270fda49bca7b430bbad4970b3afadf2d0e348cfc3479161e1a49",
+      "31a82ff316f69f98f7ba5df0e53bf5c6262fad5068fb3580430b967e5930658f",
+      "974d5e6257256d7397cb68f90952c66809a536cf5525cbef58b3bbfce6791587",
+      "d55694074ea2023b0e93e06be9e260c11495cdc9fdbc23181c85e36c9921f7cd",
+      "02ab80de6c994bede334dc87faaa20a30302d445a8ac162494428789df1b6cc5",
+      "ab50e282ab0635bf621479715a8ab7b1960bad4b5f0ed5f2f92e41af5adb607a",
+      "739652cbd90d20885ec032fee112c7f787d23a6aebf7e078cf60d8cb712e0196",
+      "CANONICAL_PAYLOAD_ONLY",
+      "ZERO_EXECUTION"
+    ]
+  },
+  "implementation_sha256": "ab50e282ab0635bf621479715a8ab7b1960bad4b5f0ed5f2f92e41af5adb607a",
+  "focused_test_sha256": "739652cbd90d20885ec032fee112c7f787d23a6aebf7e078cf60d8cb712e0196",
+  "bindings": {
+    "feasibility_design_identity": "31a82ff316f69f98f7ba5df0e53bf5c6262fad5068fb3580430b967e5930658f",
+    "projector_freeze_identity": "974d5e6257256d7397cb68f90952c66809a536cf5525cbef58b3bbfce6791587",
+    "static_payload_identity": "d55694074ea2023b0e93e06be9e260c11495cdc9fdbc23181c85e36c9921f7cd",
+    "provider_execution_request_binding_identity": "02ab80de6c994bede334dc87faaa20a30302d445a8ac162494428789df1b6cc5",
+    "model_identity": "pastila-editor-core-v1.2-experimental",
+    "tokenizer_identity": "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c",
+    "decoder_identity": "ministral-tokenizer-decode-skip-special-cleanup-false-v1"
+  },
+  "contract": {
+    "encoding": "canonical JSON UTF-8 with LF terminator and base64-bound prompt/static-payload bytes",
+    "maximum_output_tokens": 3200,
+    "request_isolation": "provider request, application request, rendered request, execution plan, source context, and payload identities",
+    "validation_precedence": "exact types and ceilings, execution binding, canonical static payload, rendered hashes and embedding, execution prompt equality, canonical serialization",
+    "operations": ["build canonical payload bytes", "parse and validate canonical payload bytes"]
+  },
+  "authority": {
+    "payload_contract_implementation": true,
+    "payload_serialization_and_validation": true,
+    "executor_or_runner_construction": false,
+    "wsl_invocation": false,
+    "tokenizer_or_model_loading": false,
+    "generation_or_inference": false,
+    "retry_repair_selection_or_fallback": false,
+    "probe_or_historical_rerun": false,
+    "stage_c": false,
+    "runtime_or_production": false
+  }
+}
