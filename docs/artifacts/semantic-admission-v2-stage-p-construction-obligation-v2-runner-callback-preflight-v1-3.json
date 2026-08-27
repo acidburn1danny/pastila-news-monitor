@@ -1,0 +1,37 @@
+{
+  "artifact_type": "ZERO_EXECUTION_RUNNER_CALLBACK_PREFLIGHT_BINDING",
+  "artifact_version": "1.3.0",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_RUNNER_CALLBACK_PREFLIGHT_V1_3",
+  "canonical_identity": "f21bc27ccdbd1941783e2cfc893eede389e5a56207342a97d7fafc66b4506f91",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "separator": "LF",
+    "ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_V2_RUNNER_CALLBACK_PREFLIGHT_V1_3",
+      "83074527007e585be686caac6a6951df000e3de0052ff104e45bdc529ce44908",
+      "97d50000a06ac878c425e1b7be44ad67f934d6a31d10d0f9150d205673f6b647",
+      "cb9f14284353fafba05094b005f3a97793dbb079e5bed81abacddaafb7d155bf",
+      "974d5e6257256d7397cb68f90952c66809a536cf5525cbef58b3bbfce6791587",
+      "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c",
+      "ministral-tokenizer-decode-skip-special-cleanup-false-v1",
+      "ZERO_EXECUTION"
+    ]
+  },
+  "behavior": {
+    "prompt_prefix_sliced_before_projection": true,
+    "incremental_full_rebuild_equivalence_inherited_and_exercised": true,
+    "terminal_eos_policy_inherited": true,
+    "no_legal_token_receipt_validated_against_request": true,
+    "cross_request_context": "FAIL_CLOSED"
+  },
+  "authority": {
+    "tokenizer_loading": false,
+    "model_or_adapter_loading": false,
+    "generation_or_inference": false,
+    "provider": false,
+    "runner_or_executor_invocation": false,
+    "probe": false,
+    "stage_c": false,
+    "runtime_or_production": false
+  }
+}
