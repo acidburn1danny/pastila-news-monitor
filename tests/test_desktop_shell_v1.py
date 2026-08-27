@@ -33,8 +33,6 @@ from pastila_scout.desktop_v1.models import (
 from pastila_scout.desktop_v1.resources import _TEXT_V1, _text_v1
 from pastila_scout.desktop_v1.views import (
     _EDITOR_REQUIRED_CONFIGURATION,
-    _INITIAL_WINDOW_BASE_HEIGHT,
-    _INITIAL_WINDOW_BASE_WIDTH,
     _INITIAL_WINDOW_HEIGHT,
     _INITIAL_WINDOW_WIDTH,
     _NAVIGATION_ACTIVE_BORDER,
@@ -65,9 +63,9 @@ from pastila_scout.desktop_v1.views import (
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def test_initial_geometry_is_exact_ten_percent_growth_with_safe_screen_bound() -> None:
-    assert _INITIAL_WINDOW_WIDTH == round(_INITIAL_WINDOW_BASE_WIDTH * 1.10)
-    assert _INITIAL_WINDOW_HEIGHT == round(_INITIAL_WINDOW_BASE_HEIGHT * 1.10)
+def test_initial_geometry_exposes_complete_editor_controls_with_safe_screen_bound() -> None:
+    assert _INITIAL_WINDOW_WIDTH == 1320
+    assert _INITIAL_WINDOW_HEIGHT == 850
 
     class Root:
         @staticmethod
@@ -78,7 +76,7 @@ def test_initial_geometry_is_exact_ten_percent_growth_with_safe_screen_bound() -
         def winfo_screenheight():
             return 1080
 
-    assert _initial_window_geometry(Root()) == "990x660+465+210"
+    assert _initial_window_geometry(Root()) == "1320x850+300+115"
 
     class SmallRoot:
         @staticmethod
@@ -90,6 +88,84 @@ def test_initial_geometry_is_exact_ten_percent_growth_with_safe_screen_bound() -
             return 650
 
     assert _initial_window_geometry(SmallRoot()) == "900x600+10+25"
+
+
+def test_chief_editor_available_and_selected_material_lists_share_height() -> None:
+    source = (ROOT / "src/pastila_scout/desktop_v1/views.py").read_text(
+        encoding="utf-8"
+    )
+    assert 'page.rowconfigure(1, weight=1, uniform="chief_material_lists")' in source
+    assert 'page.rowconfigure(2, weight=1, uniform="chief_material_lists")' in source
+    assert 'self._chief_available.grid(row=1, column=0, columnspan=2, sticky="nsew")' in source
+
+
+def test_scout_results_list_is_tall_and_expands_with_the_window() -> None:
+    source = (ROOT / "src/pastila_scout/desktop_v1/views.py").read_text(
+        encoding="utf-8"
+    )
+    assert "page.rowconfigure(13, weight=1)" in source
+    assert "height=14" in source
+
+
+def test_selecting_an_editor_story_only_loads_voice_state() -> None:
+    source = (ROOT / "src/pastila_scout/desktop_v1/views.py").read_text(
+        encoding="utf-8"
+    )
+    assert 'self._voice_action("load")' in source
+
+
+def test_editor_draft_and_acid_commentary_share_vertical_space() -> None:
+    source = (ROOT / "src/pastila_scout/desktop_v1/views.py").read_text(
+        encoding="utf-8"
+    )
+    assert "page.rowconfigure(row + 5, weight=1)" in source
+    assert "page.rowconfigure(row + 6, weight=1)" in source
+    assert "voice.rowconfigure(8, weight=1)" in source
+    assert 'voice, height=12, wrap="word", state="disabled"' in source
+
+
+def test_acid_commentary_has_no_redundant_section_heading() -> None:
+    source = (ROOT / "src/pastila_scout/desktop_v1/views.py").read_text(
+        encoding="utf-8"
+    )
+    assert 'text="Comentariu acid"' not in source
+    assert 'voice_fields.grid(row=0, column=0, sticky="ew")' in source
+    assert 'ttk.LabelFrame(page, text="Comentariu acid")' not in source
+
+
+def test_voice_workflow_labels_reuse_primary_editor_label_style() -> None:
+    source = (ROOT / "src/pastila_scout/desktop_v1/views.py").read_text(
+        encoding="utf-8"
+    )
+    for label in (
+        "Construcție",
+        "Expresie opțională",
+        "Candidat factual",
+        "Mecanică editorială",
+    ):
+        start = source.index(f'text="{label}"')
+        assert "style=_PRIMARY_LABEL_STYLE" in source[start : start + 140]
+    status = source.index("textvariable=self._voice_status")
+    assert 'font=("TkDefaultFont", 10, "bold italic")' in source[status : status + 180]
+
+
+def test_normal_voice_workflow_is_one_action_with_advanced_controls_hidden() -> None:
+    source = (ROOT / "src/pastila_scout/desktop_v1/views.py").read_text(
+        encoding="utf-8"
+    )
+    assert 'text="Generează Comentariu Acid"' in source
+    assert 'font=("TkDefaultFont", 11, "bold")' in source
+    assert 'foreground="#d71920"' in source
+    assert 'highlightbackground="#000000"' in source
+    assert 'relief="solid"' in source
+    assert 'width=24' in source
+    assert 'height=1' in source
+    assert 'self._voice_refresh_button.pack(anchor="center"' in source
+    assert '"Selectează o știre pentru a genera comentariul acid"' in source
+    assert "self._voice_advanced_visible = tkinter.BooleanVar(value=False)" in source
+    assert 'label="Instrumente Voice avansate"' in source
+    assert "widget.grid_remove()" in source
+    assert "button.pack_forget()" in source
 
 
 def test_navigation_badges_share_structure_and_have_approved_contrast() -> None:

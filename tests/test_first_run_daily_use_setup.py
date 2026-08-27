@@ -1,7 +1,12 @@
 from pathlib import Path
 
 from pastila_scout.desktop_v1 import entrypoint, first_run
-from pastila_scout.desktop_v1.views import _editor_display_model
+from pastila_scout.desktop_v1.views import (
+    CORE_V1_2_DISPLAY_NAME,
+    _editor_default_selection,
+    _editor_display_model,
+    _editor_model_catalog,
+)
 from pastila_scout.windows_state_v1.settings import _default_windows_settings_v1
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -66,6 +71,9 @@ def test_completion_persists_and_valid_settings_skip_setup(tmp_path, monkeypatch
     assert not result.setup_required
     assert completed.scout_provider == completed.editor_provider == "ollama"
     assert completed.editor_model == "qwen3:14b"
+    assert completed.editor_default_model == (
+        "pastila-editor-core-v1.2-experimental"
+    )
     assert completed.editor_output_directory.is_dir()
 
 
@@ -90,6 +98,59 @@ def test_unavailable_provider_does_not_reopen_completed_setup(tmp_path, monkeypa
     assert not result.setup_required
     assert not result.provider_ready
     assert completed.scout_provider == completed.editor_provider == "openai"
+
+
+def test_editor_default_is_independent_and_has_visible_safe_fallback(tmp_path):
+    settings = _default_windows_settings_v1(defaults_path=DEFAULTS)
+    assert settings.ollama_model == "qwen3:14b"
+    assert _editor_default_selection(settings) == (
+        CORE_V1_2_DISPLAY_NAME,
+        "ollama",
+        None,
+    )
+    values = {
+        name: getattr(settings, name)
+        for name in settings.__dataclass_fields__
+    }
+    values["editor_default_model"] = "unavailable-editor-model"
+    unavailable = type(settings)(**values)
+    selected, provider, status = _editor_default_selection(unavailable)
+    assert selected == settings.editor_model
+    assert provider == settings.editor_provider
+    assert status is not None and "nu este disponibil" in status
+
+
+def test_editor_model_catalog_is_unique_and_retains_manual_choices():
+    settings = _default_windows_settings_v1(defaults_path=DEFAULTS)
+    catalog = _editor_model_catalog(settings)
+    assert catalog == (
+        "qwen3:14b",
+        "gpt-4.1-mini",
+        "PastilaAcida Editor Core V1.1 Experimental",
+        "PastilaAcida Editor Core V1.2 Experimental",
+    )
+    assert len(catalog) == len(set(catalog))
+    selected, _, _ = _editor_default_selection(settings)
+    assert selected == CORE_V1_2_DISPLAY_NAME
+    assert selected in catalog
+
+
+def test_scout_provider_save_does_not_mutate_editor_defaults(tmp_path):
+    settings = _default_windows_settings_v1(defaults_path=DEFAULTS)
+    path = (tmp_path / "settings.json").resolve()
+    result = entrypoint._save_scout_provider_settings(
+        path=path,
+        current=settings,
+        value={
+            "provider": "ollama",
+            "base_url": "http://localhost:11434",
+            "model": "another-scout-model",
+        },
+    )
+    assert result.ollama_model == "another-scout-model"
+    assert result.editor_provider == settings.editor_provider
+    assert result.editor_model == settings.editor_model
+    assert result.editor_default_model == settings.editor_default_model
 
 
 def test_project_recovery_and_invalid_project_safe_warning(tmp_path, monkeypatch):

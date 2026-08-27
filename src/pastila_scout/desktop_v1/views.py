@@ -4,12 +4,22 @@
 
 from __future__ import annotations
 
+import hashlib
 import inspect
+import re
 import threading
 import tkinter
 import types
+from datetime import UTC, datetime
 from importlib import resources
-from tkinter import ttk
+from tkinter import messagebox, simpledialog, ttk
+
+from pastila_scout.editor_core_identities_v1 import (
+    CORE_V1_1_DISPLAY_NAME,
+    CORE_V1_1_MODEL_ID,
+    CORE_V1_2_DISPLAY_NAME,
+    CORE_V1_2_MODEL_ID,
+)
 
 from .errors import _DesktopShellConfigurationError
 from .models import (
@@ -66,8 +76,8 @@ _PRIMARY_ACTION_BUTTON_OPTIONS = {
 _EPISODE_DRAFT_INSPECTION_ACTION_WIDTH = 24
 _INITIAL_WINDOW_BASE_WIDTH = 900
 _INITIAL_WINDOW_BASE_HEIGHT = 600
-_INITIAL_WINDOW_WIDTH = 990
-_INITIAL_WINDOW_HEIGHT = 660
+_INITIAL_WINDOW_WIDTH = 1320
+_INITIAL_WINDOW_HEIGHT = 850
 _INITIAL_WINDOW_SCREEN_MARGIN_X = 40
 _INITIAL_WINDOW_SCREEN_MARGIN_Y = 80
 _NAVIGATION_BADGE_WIDTH = 18
@@ -242,6 +252,43 @@ def _editor_display_model(settings: _DesktopSettingsProjectionV1) -> str:
     )
 
 
+def _editor_default_selection(
+    settings: _DesktopSettingsProjectionV1,
+) -> tuple[str, str, str | None]:
+    configured = settings.editor_default_model
+    experimental = {
+        CORE_V1_1_MODEL_ID: CORE_V1_1_DISPLAY_NAME,
+        CORE_V1_2_MODEL_ID: CORE_V1_2_DISPLAY_NAME,
+    }
+    if configured in experimental:
+        return experimental[configured], "ollama", None
+    if configured == settings.ollama_model:
+        return configured, "ollama", None
+    if configured == settings.editor_model:
+        return configured, settings.editor_provider, None
+    fallback = _editor_display_model(settings)
+    return (
+        fallback,
+        settings.editor_provider,
+        (
+            f"Modelul Editor implicit «{configured}» nu este disponibil; "
+            f"s-a selectat în siguranță «{fallback}»."
+        ),
+    )
+
+
+def _editor_model_catalog(
+    settings: _DesktopSettingsProjectionV1,
+) -> tuple[str, ...]:
+    candidates = (
+        settings.ollama_model,
+        settings.editor_model,
+        CORE_V1_1_DISPLAY_NAME,
+        CORE_V1_2_DISPLAY_NAME,
+    )
+    return tuple(dict.fromkeys(candidates))
+
+
 def _validate_binding(value: object, parameter: str) -> None:
     target = value
     drop_self = False
@@ -366,6 +413,9 @@ class _DesktopMainWindowV1:
 
     def _apply_settings(self) -> None:
         settings = self._settings
+        editor_model, editor_provider, fallback_status = _editor_default_selection(
+            settings
+        )
         self._period.set(str(settings.scout_period_days))
         self._category.set(
             "Toate" if settings.scout_category == "all" else settings.scout_category
@@ -384,13 +434,16 @@ class _DesktopMainWindowV1:
             "selection_profile_path": settings.editor_profile_path,
             "episode_context_path": settings.editor_context_path,
             "generation_config_path": settings.editor_generation_path,
-            "model": _editor_display_model(settings),
+            "model": editor_model,
             "timeout_seconds": settings.editor_timeout_seconds,
             "output_path": settings.editor_output_directory,
         }
         for name, value in projected.items():
             self._editor_values[name].set("" if value is None else str(value))
-        self._provider.set(settings.editor_provider)
+        self._editor_widgets[0].configure(values=_editor_model_catalog(settings))
+        self._provider.set(editor_provider)
+        if fallback_status is not None:
+            self._editor_status.set(fallback_status)
 
     def _check(self) -> None:
         if threading.get_ident() != self._thread or self._closed:
@@ -400,6 +453,8 @@ class _DesktopMainWindowV1:
         page = ttk.Frame(self._content)
         page.grid(row=0, column=0, sticky="nsew")
         page.columnconfigure(1, weight=1)
+        page.columnconfigure(2, weight=1)
+        page.rowconfigure(13, weight=1)
         self._pages[_DesktopPageV1.SCOUT] = page
         ttk.Label(
             page, text=_text_v1(key="scout.period"), style=_PRIMARY_LABEL_STYLE
@@ -592,7 +647,7 @@ class _DesktopMainWindowV1:
             columns=("title", "category", "sources"),
             show="headings",
             selectmode="extended",
-            height=8,
+            height=14,
         )
         self._candidates.heading("title", text="Titlu")
         self._candidates.heading("category", text="Categorie")
@@ -644,6 +699,7 @@ class _DesktopMainWindowV1:
         self._editor_worklist.bind("<<TreeviewSelect>>", self._editor_worklist_changed)
         self._editor_eligible_event_ids: frozenset[int] = frozenset()
         self._editor_failed_event_ids: frozenset[int] = frozenset()
+        self._editor_material_presentations: dict[int, object] = {}
         self._editor_idle = True
         self._active_project = tkinter.StringVar(value="")
         ttk.Label(
@@ -670,7 +726,16 @@ class _DesktopMainWindowV1:
                 row=row, column=0, sticky="w"
             )
             value = tkinter.StringVar(value="")
-            widget = ttk.Entry(page, textvariable=value, state="disabled")
+            widget = ttk.Combobox(
+                page,
+                textvariable=value,
+                values=(
+                    value.get(),
+                    CORE_V1_1_DISPLAY_NAME,
+                    CORE_V1_2_DISPLAY_NAME,
+                ),
+                state="disabled",
+            )
             widget.grid(row=row, column=1, sticky="ew")
             self._editor_values[name] = value
             self._editor_widgets.append(widget)
@@ -711,12 +776,180 @@ class _DesktopMainWindowV1:
             width=12,
         )
         self._editor_retry_button.grid(row=row + 4, column=0, columnspan=2)
+        page.rowconfigure(row + 5, weight=1)
+        page.rowconfigure(row + 6, weight=1)
+        self._editor_material_text = tkinter.Text(
+            page, height=12, wrap="word", state="disabled"
+        )
+        self._editor_material_text.grid(
+            row=row + 5, column=0, columnspan=2, sticky="nsew", pady=(8, 0)
+        )
+        self._voice_v2_event_id: int | None = None
+        voice = ttk.Frame(page)
+        voice.grid(row=row + 6, column=0, columnspan=2, sticky="nsew", pady=(8, 0))
+        voice.columnconfigure(0, weight=1)
+        voice.rowconfigure(8, weight=1)
+        voice_fields = ttk.Frame(voice)
+        voice_fields.grid(row=0, column=0, sticky="ew")
+        voice = voice_fields
+        voice.columnconfigure(1, weight=1)
+        self._voice_program = tkinter.StringVar(value="")
+        self._voice_program_ids: dict[str, str | None] = {}
+        ttk.Label(
+            voice, text="Construcție", style=_PRIMARY_LABEL_STYLE
+        ).grid(row=0, column=0, sticky="w")
+        self._voice_program_widget = ttk.Combobox(
+            voice, textvariable=self._voice_program, state="disabled"
+        )
+        self._voice_program_widget.grid(row=0, column=1, sticky="ew")
+        self._voice_program_widget.bind(
+            "<<ComboboxSelected>>", self._voice_program_selected
+        )
+        self._voice_expression = tkinter.StringVar(value="")
+        self._voice_expression_ids: dict[str, str | None] = {}
+        ttk.Label(
+            voice, text="Expresie opțională", style=_PRIMARY_LABEL_STYLE
+        ).grid(row=1, column=0, sticky="w")
+        self._voice_expression_widget = ttk.Combobox(
+            voice, textvariable=self._voice_expression, state="disabled"
+        )
+        self._voice_expression_widget.grid(row=1, column=1, sticky="ew")
+        self._voice_expression_widget.bind(
+            "<<ComboboxSelected>>", self._voice_expression_selected
+        )
+        self._voice_adjudication = None
+        self._voice_fact_candidate = tkinter.StringVar(value="")
+        self._voice_fact_candidate_ids: dict[str, str] = {}
+        ttk.Label(
+            voice, text="Candidat factual", style=_PRIMARY_LABEL_STYLE
+        ).grid(row=2, column=0, sticky="w")
+        self._voice_fact_candidate_widget = ttk.Combobox(
+            voice, textvariable=self._voice_fact_candidate, state="disabled"
+        )
+        self._voice_fact_candidate_widget.grid(row=2, column=1, sticky="ew")
+        fact_controls = ttk.Frame(voice)
+        fact_controls.grid(row=3, column=0, columnspan=2, sticky="w")
+        self._voice_fact_accept_button = ttk.Button(
+            fact_controls, text="Acceptă fapt tipizat", command=self._voice_accept_fact
+        )
+        self._voice_fact_reject_button = ttk.Button(
+            fact_controls, text="Respinge candidat", command=self._voice_reject_fact
+        )
+        self._voice_fact_qualify_button = ttk.Button(
+            fact_controls,
+            text="Necesită calificare",
+            command=self._voice_qualify_fact,
+        )
+        self._voice_finalize_facts_button = ttk.Button(
+            fact_controls,
+            text="Finalizează faptele",
+            command=self._voice_finalize_facts,
+        )
+        self._voice_no_claim_button = ttk.Button(
+            fact_controls, text="Fără construcție", command=self._voice_choose_no_claim
+        )
+        for button in (
+            self._voice_fact_accept_button,
+            self._voice_fact_reject_button,
+            self._voice_fact_qualify_button,
+            self._voice_finalize_facts_button,
+            self._voice_no_claim_button,
+        ):
+            button.pack(side="left", padx=(0, 4))
+        self._voice_mechanic = tkinter.StringVar(value="")
+        self._voice_mechanic_widget = ttk.Combobox(
+            voice, textvariable=self._voice_mechanic, state="disabled"
+        )
+        ttk.Label(
+            voice, text="Mecanică editorială", style=_PRIMARY_LABEL_STYLE
+        ).grid(row=4, column=0, sticky="w")
+        self._voice_mechanic_widget.grid(row=4, column=1, sticky="ew")
+        mechanic_controls = ttk.Frame(voice)
+        mechanic_controls.grid(row=5, column=0, columnspan=2, sticky="w")
+        self._voice_confirm_mechanic_button = ttk.Button(
+            mechanic_controls,
+            text="Confirmă mecanica",
+            command=self._voice_confirm_mechanic,
+        )
+        self._voice_finalize_claims_button = ttk.Button(
+            mechanic_controls,
+            text="Finalizează construcția",
+            command=self._voice_finalize_claims,
+        )
+        self._voice_confirm_mechanic_button.pack(side="left", padx=(0, 4))
+        self._voice_finalize_claims_button.pack(side="left", padx=(0, 4))
+        controls = ttk.Frame(voice)
+        controls.grid(row=6, column=0, columnspan=2, sticky="ew", pady=(4, 0))
+        self._voice_preview_button = ttk.Button(
+            controls,
+            text="Previzualizează",
+            command=lambda: self._voice_action("preview"),
+        )
+        self._voice_accept_button = ttk.Button(
+            controls, text="Acceptă", command=lambda: self._voice_action("accept")
+        )
+        self._voice_reject_button = ttk.Button(
+            controls, text="Respinge", command=lambda: self._voice_action("reject")
+        )
+        self._voice_refresh_button = tkinter.Button(
+            controls,
+            text="Generează Comentariu Acid",
+            command=self._generate_acid_commentary,
+            font=("TkDefaultFont", 11, "bold"),
+            foreground="#d71920",
+            background="#f4f4f4",
+            activeforeground="#d71920",
+            activebackground="#ffffff",
+            highlightbackground="#000000",
+            highlightcolor="#000000",
+            highlightthickness=1,
+            borderwidth=1,
+            relief="solid",
+            width=24,
+            height=1,
+        )
+        for button in (
+            self._voice_preview_button,
+            self._voice_accept_button,
+            self._voice_reject_button,
+            self._voice_refresh_button,
+        ):
+            button.pack(side="left", padx=(0, 4))
+        self._voice_status = tkinter.StringVar(value="")
+        ttk.Label(
+            voice,
+            textvariable=self._voice_status,
+            wraplength=700,
+            font=("TkDefaultFont", 10, "bold italic"),
+        ).grid(
+            row=7, column=0, columnspan=2, sticky="w", pady=(4, 0)
+        )
+        self._voice_preview_text = tkinter.Text(
+            voice, height=12, wrap="word", state="disabled"
+        )
+        self._voice_preview_text.grid(
+            row=8, column=0, columnspan=2, sticky="nsew", pady=(4, 0)
+        )
+        self._voice_advanced_visible = tkinter.BooleanVar(value=False)
+        self._voice_advanced_widgets = tuple(
+            widget
+            for advanced_row in range(6)
+            for widget in voice.grid_slaves(row=advanced_row)
+        )
+        self._voice_advanced_buttons = (
+            self._voice_preview_button,
+            self._voice_accept_button,
+            self._voice_reject_button,
+        )
+        self._set_voice_advanced_visibility()
+        self._clear_voice_v2_presentation()
 
     def _build_chief_editor(self) -> None:
         page = ttk.Frame(self._content)
         page.grid(row=0, column=0, sticky="nsew")
         page.columnconfigure(1, weight=1)
-        page.rowconfigure(2, weight=1)
+        page.rowconfigure(1, weight=1, uniform="chief_material_lists")
+        page.rowconfigure(2, weight=1, uniform="chief_material_lists")
         self._pages[_DesktopPageV1.CHIEF_EDITOR] = page
         ttk.Label(page, text=_text_v1(key="chief_editor.title")).grid(
             row=0, column=0, sticky="w"
@@ -729,7 +962,7 @@ class _DesktopMainWindowV1:
             page, columns=("title",), show="headings", selectmode="browse", height=4
         )
         self._chief_available.heading("title", text="Materiale disponibile")
-        self._chief_available.grid(row=1, column=0, columnspan=2, sticky="ew")
+        self._chief_available.grid(row=1, column=0, columnspan=2, sticky="nsew")
         ttk.Button(
             page, text=_text_v1(key="chief_editor.add"), command=self._chief_editor_add
         ).grid(row=1, column=2)
@@ -747,6 +980,13 @@ class _DesktopMainWindowV1:
             self._chief_items.heading(name, text=label)
         self._chief_items.grid(row=2, column=0, columnspan=2, sticky="nsew")
         self._chief_items.bind("<<TreeviewSelect>>", self._chief_editor_selected)
+        self._chief_v2_presentations: dict[str, str] = {}
+        self._chief_material_text = tkinter.Text(
+            page, width=42, wrap="word", state="disabled"
+        )
+        self._chief_material_text.grid(
+            row=2, column=2, rowspan=4, sticky="nsew", padx=(8, 0)
+        )
         controls = ttk.Frame(page)
         controls.grid(row=3, column=0, columnspan=2, sticky="ew")
         ttk.Button(
@@ -851,6 +1091,12 @@ class _DesktopMainWindowV1:
             label=_text_v1(key="navigation.chief_editor"),
             command=lambda: self._select(_DesktopPageV1.CHIEF_EDITOR),
         )
+        view_menu.add_separator()
+        view_menu.add_checkbutton(
+            label="Instrumente Voice avansate",
+            variable=self._voice_advanced_visible,
+            command=self._set_voice_advanced_visibility,
+        )
         menu.add_cascade(label=_text_v1(key="menu.view"), menu=view_menu)
         help_menu = tkinter.Menu(menu, tearoff=False)
         help_menu.add_command(
@@ -862,6 +1108,25 @@ class _DesktopMainWindowV1:
         menu.add_cascade(label=_text_v1(key="menu.help"), menu=help_menu)
         self._root.configure(menu=menu)
         self._menu = menu
+
+    def _set_voice_advanced_visibility(self) -> None:
+        advanced = self._voice_advanced_visible.get()
+        for widget in self._voice_advanced_widgets:
+            if advanced:
+                widget.grid()
+            else:
+                widget.grid_remove()
+        for button in (*self._voice_advanced_buttons, self._voice_refresh_button):
+            button.pack_forget()
+        if advanced:
+            for button in self._voice_advanced_buttons:
+                button.pack(side="left", padx=(0, 4))
+            self._voice_refresh_button.pack(side="left", padx=(0, 4))
+        else:
+            self._voice_refresh_button.pack(anchor="center", pady=(2, 4))
+        self._voice_refresh_button.configure(
+            text="Re-evaluează" if advanced else "Generează Comentariu Acid"
+        )
 
     def _select(self, page: _DesktopPageV1) -> None:
         self._check()
@@ -1054,6 +1319,13 @@ class _DesktopMainWindowV1:
         if not ordered:
             raise _DesktopShellConfigurationError() from None
         values = {name: value.get() for name, value in self._editor_values.items()}
+        experimental_models = {
+            CORE_V1_1_DISPLAY_NAME: CORE_V1_1_MODEL_ID,
+            CORE_V1_2_DISPLAY_NAME: CORE_V1_2_MODEL_ID,
+        }
+        if values["model"] in experimental_models:
+            values["model"] = experimental_models[values["model"]]
+            self._provider.set("ollama")
         values.update(
             event_ids=ordered,
             provider=self._provider.get(),
@@ -1070,7 +1342,33 @@ class _DesktopMainWindowV1:
             focused = selected[-1] if selected else ""
         title = self._editor_worklist.set(focused, "story") if focused else ""
         self._active_project.set(title)
+        self._render_editor_material_presentation()
+        if focused and "voice_v2" in self._bindings:
+            self._voice_v2_event_id = int(focused)
+            self._voice_action("load")
+        else:
+            self._clear_voice_v2_presentation()
         self._sync_editor_action()
+
+    def _render_editor_material_presentation(self) -> None:
+        from .editor_material_presentation_v2 import (
+            render_editor_material_presentation_v2,
+        )
+
+        focused = self._editor_worklist.focus()
+        presentation = (
+            self._editor_material_presentations.get(int(focused)) if focused else None
+        )
+        text = (
+            ""
+            if presentation is None
+            else render_editor_material_presentation_v2(presentation)
+        )
+        self._editor_material_text.configure(state="normal")
+        self._editor_material_text.delete("1.0", "end")
+        if text:
+            self._editor_material_text.insert("1.0", text)
+        self._editor_material_text.configure(state="disabled")
 
     def _editor_retry(self) -> None:
         selected = set(self._editor_worklist.selection())
@@ -1212,6 +1510,611 @@ class _DesktopMainWindowV1:
         )
         self._editor_worklist_changed(None)
 
+    def publish_editor_material_presentations(
+        self, *, items: tuple[object, ...]
+    ) -> None:
+        self._check()
+        from .editor_material_presentation_v2 import EditorMaterialPresentationV2
+
+        if type(items) is not tuple or any(
+            type(item) is not EditorMaterialPresentationV2 for item in items
+        ):
+            raise _DesktopShellConfigurationError() from None
+        self._editor_material_presentations = {item.event_id: item for item in items}
+        if len(self._editor_material_presentations) != len(items):
+            raise _DesktopShellConfigurationError() from None
+        self._render_editor_material_presentation()
+
+    def bind_voice_v2_action(self, *, callback) -> None:
+        self._bind("voice_v2", callback)
+
+    def bind_acid_commentary_action(self, *, callback) -> None:
+        self._bind("acid_commentary", callback)
+
+    def publish_acid_commentary_status(self, *, status: str, running: bool) -> None:
+        self._check()
+        self._voice_status.set(status)
+        self._voice_refresh_button.configure(state="disabled" if running else "normal")
+
+    def publish_voice_v2(self, *, presentation: object) -> None:
+        self._check()
+        from .voice_v2_interaction import VoiceDesktopPresentationV2
+
+        if type(presentation) is not VoiceDesktopPresentationV2:
+            raise _DesktopShellConfigurationError() from None
+        self._voice_v2_event_id = presentation.event_id
+        self._voice_adjudication = presentation.adjudication
+        self._set_voice_choices(
+            widget=self._voice_program_widget,
+            variable=self._voice_program,
+            mapping=self._voice_program_ids,
+            choices=presentation.program_choices,
+            selected=presentation.selected_program_identity,
+            selection_finalized=presentation.program_selection_finalized,
+            none_label="Fără comentariu",
+        )
+        self._set_voice_choices(
+            widget=self._voice_expression_widget,
+            variable=self._voice_expression,
+            mapping=self._voice_expression_ids,
+            choices=presentation.expression_choices,
+            selected=presentation.selected_expression_identity,
+            selection_finalized=presentation.expression_selection_finalized,
+            none_label="Fără expresie",
+        )
+        interaction = presentation.interaction
+        status = f"{interaction.title}\n{interaction.message}"
+        if interaction.diagnostic_code:
+            status += f"\nCod diagnostic: {interaction.diagnostic_code}"
+        self._voice_status.set(status)
+        self._voice_preview_text.configure(state="normal")
+        self._voice_preview_text.delete("1.0", "end")
+        if presentation.preview_text:
+            self._voice_preview_text.insert("1.0", presentation.preview_text)
+        self._voice_preview_text.configure(state="disabled")
+        bound = "voice_v2" in self._bindings
+        self._voice_preview_button.configure(
+            state="normal" if bound and presentation.preview_enabled else "disabled"
+        )
+        self._voice_accept_button.configure(
+            state="normal" if bound and presentation.accept_enabled else "disabled"
+        )
+        self._voice_reject_button.configure(
+            state="normal" if bound and presentation.reject_enabled else "disabled"
+        )
+        self._voice_refresh_button.configure(
+            state="normal" if bound and presentation.refresh_enabled else "disabled"
+        )
+        adjudication = presentation.adjudication
+        self._voice_fact_candidate_ids.clear()
+        candidate_labels = []
+        if adjudication is not None:
+            for item in adjudication.candidates:
+                if item.disposition != "undecided":
+                    continue
+                label = f"{item.exact_text} — {item.source_label}"
+                self._voice_fact_candidate_ids[label] = item.candidate_identity
+                candidate_labels.append(label)
+        self._voice_fact_candidate_widget.configure(
+            values=tuple(candidate_labels),
+            state="readonly"
+            if bound and adjudication is not None and adjudication.can_review_facts
+            else "disabled",
+        )
+        self._voice_fact_candidate.set(candidate_labels[0] if candidate_labels else "")
+        fact_review = bool(bound and adjudication and adjudication.can_review_facts)
+        for button in (
+            self._voice_fact_accept_button,
+            self._voice_fact_reject_button,
+            self._voice_fact_qualify_button,
+        ):
+            button.configure(state="normal" if fact_review else "disabled")
+        self._voice_finalize_facts_button.configure(
+            state="normal"
+            if bound and adjudication and adjudication.fact_finalization_enabled
+            else "disabled"
+        )
+        mechanic_review = bool(
+            bound and adjudication and adjudication.can_review_mechanics
+        )
+        mechanics = () if adjudication is None else adjudication.mechanic_choices
+        self._voice_mechanic_widget.configure(
+            values=mechanics,
+            state="readonly" if mechanic_review and mechanics else "disabled",
+        )
+        self._voice_mechanic.set(mechanics[0] if mechanics else "")
+        self._voice_confirm_mechanic_button.configure(
+            state="normal" if mechanic_review and mechanics else "disabled"
+        )
+        self._voice_finalize_claims_button.configure(
+            state="normal"
+            if bound and adjudication and adjudication.claim_finalization_enabled
+            else "disabled"
+        )
+        self._voice_no_claim_button.configure(
+            state="normal"
+            if bound and adjudication and adjudication.can_choose_no_claim
+            else "disabled"
+        )
+        material = self._editor_material_presentations.get(presentation.event_id)
+        generated_component = next(
+            (
+                component
+                for component in (() if material is None else material.components)
+                if component.availability == "generated"
+                and component.label == "Comentariu acid: generat de modelul local"
+            ),
+            None,
+        )
+        if generated_component is not None:
+            self._voice_status.set(
+                "Comentariu acid: generat de modelul local.\n"
+                "Rezumatul factual guvernat a ramas neschimbat."
+            )
+            self._voice_preview_text.configure(state="normal")
+            self._voice_preview_text.delete("1.0", "end")
+            self._voice_preview_text.insert("1.0", generated_component.text)
+            self._voice_preview_text.configure(state="disabled")
+
+    def _set_voice_choices(
+        self,
+        *,
+        widget,
+        variable,
+        mapping,
+        choices,
+        selected,
+        selection_finalized,
+        none_label,
+    ) -> None:
+        mapping.clear()
+        labels = []
+        for identity, label in choices:
+            if label in mapping:
+                raise _DesktopShellConfigurationError() from None
+            mapping[label] = None if identity == "NONE" else identity
+            labels.append(label)
+        widget.configure(
+            values=tuple(labels), state="readonly" if labels else "disabled"
+        )
+        selected_label = next(
+            (label for label, identity in mapping.items() if identity == selected), ""
+        )
+        if selection_finalized and selected is None and none_label in mapping:
+            selected_label = none_label
+        variable.set(selected_label)
+
+    def _clear_voice_v2_presentation(self) -> None:
+        self._voice_v2_event_id = None
+        self._voice_program_ids.clear()
+        self._voice_expression_ids.clear()
+        self._voice_program.set("")
+        self._voice_expression.set("")
+        self._voice_program_widget.configure(values=(), state="disabled")
+        self._voice_expression_widget.configure(values=(), state="disabled")
+        self._voice_adjudication = None
+        self._voice_fact_candidate_ids.clear()
+        self._voice_fact_candidate.set("")
+        self._voice_fact_candidate_widget.configure(values=(), state="disabled")
+        self._voice_mechanic.set("")
+        self._voice_mechanic_widget.configure(values=(), state="disabled")
+        self._voice_status.set(
+            "Selectează o știre pentru a genera comentariul acid"
+        )
+        self._voice_preview_text.configure(state="normal")
+        self._voice_preview_text.delete("1.0", "end")
+        self._voice_preview_text.configure(state="disabled")
+        for button in (
+            self._voice_preview_button,
+            self._voice_accept_button,
+            self._voice_reject_button,
+            self._voice_refresh_button,
+            self._voice_fact_accept_button,
+            self._voice_fact_reject_button,
+            self._voice_fact_qualify_button,
+            self._voice_finalize_facts_button,
+            self._voice_no_claim_button,
+            self._voice_confirm_mechanic_button,
+            self._voice_finalize_claims_button,
+        ):
+            button.configure(state="disabled")
+
+    def _selected_fact_candidate(self) -> str | None:
+        return self._voice_fact_candidate_ids.get(self._voice_fact_candidate.get())
+
+    @staticmethod
+    def _voice_ids(value: str | None) -> tuple[str, ...]:
+        return tuple(item.strip() for item in (value or "").split(",") if item.strip())
+
+    def _voice_adjudication_action(self, **values) -> None:
+        from .voice_adjudication_actions import VoiceDesktopAdjudicationActionV1
+
+        if self._voice_v2_event_id is None:
+            return
+        self._invoke(
+            "voice_v2",
+            input=VoiceDesktopAdjudicationActionV1(
+                event_id=self._voice_v2_event_id,
+                owner_identity="desktop-owner",
+                occurred_at=datetime.now(UTC),
+                **values,
+            ),
+        )
+
+    def _voice_reject_fact(self) -> None:
+        from pastila_scout.voice_adjudication_v2 import CandidateOwnerDispositionV1
+
+        candidate = self._selected_fact_candidate()
+        if candidate:
+            self._voice_adjudication_action(
+                action="decide_fact",
+                candidate_identity=candidate,
+                disposition=CandidateOwnerDispositionV1.REJECT,
+                decision_rationale=(
+                    "Editorul a respins fragmentul ca fapt independent utilizabil."
+                ),
+                supersession_reason=self._voice_supersession_reason(candidate),
+            )
+
+    def _voice_qualify_fact(self) -> None:
+        from pastila_scout.voice_adjudication_v2 import CandidateOwnerDispositionV1
+
+        candidate = self._selected_fact_candidate()
+        if candidate:
+            rationale = simpledialog.askstring(
+                "Motivare decizie",
+                "De ce necesită acest candidat calificare?",
+                parent=self._root,
+            )
+            if not rationale:
+                return
+            self._voice_adjudication_action(
+                action="decide_fact",
+                candidate_identity=candidate,
+                disposition=CandidateOwnerDispositionV1.REQUIRES_QUALIFICATION,
+                decision_rationale=rationale,
+                governed_object_or_scope=simpledialog.askstring(
+                    "Calificare factuală",
+                    "Ce obiect sau domeniu trebuie calificat?",
+                    parent=self._root,
+                ),
+                supersession_reason=self._voice_supersession_reason(candidate),
+            )
+
+    def _voice_accept_fact(self) -> None:
+        """Confirm one extracted fact without exposing storage/schema fields."""
+        from pastila_scout.voice_adjudication_v2 import CandidateOwnerDispositionV1
+        from pastila_scout.voice_fact_atoms_v2.models import (
+            AtomKind,
+            CompleteQuantityV1,
+        )
+
+        from .voice_adjudication_actions import VoiceDesktopFactAtomInputV1
+
+        candidate = self._selected_fact_candidate()
+        item = next(
+            (
+                value
+                for value in (
+                    self._voice_adjudication.candidates
+                    if self._voice_adjudication is not None
+                    else ()
+                )
+                if value.candidate_identity == candidate
+            ),
+            None,
+        )
+        if candidate is None or item is None:
+            return
+        kind = {
+            "exact_span": AtomKind.EVENT_PROPOSITION,
+            "named_entity": AtomKind.ACTOR_ENTITY,
+            "complete_quantity": AtomKind.COMPLETE_QUANTITY,
+            "attribution_marker": AtomKind.ATTRIBUTION,
+            "date_time": AtomKind.CHRONOLOGY,
+        }.get(item.candidate_kind)
+        if kind is None:
+            messagebox.showinfo(
+                "Necesită clarificare",
+                "Acest fragment are nevoie de context. Folosește «Necesită clarificare».",
+                parent=self._root,
+            )
+            return
+        quantity = None
+        governed_scope = item.exact_text
+        if kind is AtomKind.COMPLETE_QUANTITY:
+            governed_scope = (
+                simpledialog.askstring(
+                    "Confirmă valoarea",
+                    f"La ce se referă «{item.exact_text}»?",
+                    parent=self._root,
+                )
+                or ""
+            ).strip()
+            payload = self._daily_use_quantity(item.exact_text, governed_scope)
+            if payload is None:
+                return
+            quantity = CompleteQuantityV1(**payload)
+        atom_id = "editor-fact-" + hashlib.sha256(
+            candidate.encode("utf-8")
+        ).hexdigest()[:16]
+        self._voice_adjudication_action(
+            action="decide_fact",
+            candidate_identity=candidate,
+            disposition=CandidateOwnerDispositionV1.ACCEPT_TYPED_ATOM,
+            decision_rationale="Editorul a confirmat fragmentul ca fapt utilizabil.",
+            atom_input=VoiceDesktopFactAtomInputV1(
+                atom_id=atom_id,
+                atom_kind=kind,
+                quantity=quantity,
+            ),
+            governed_object_or_scope=governed_scope,
+            supersession_reason=self._voice_supersession_reason(candidate),
+        )
+
+    @staticmethod
+    def _daily_use_quantity(text: str, scope: str | None) -> dict | None:
+        scope = (scope or "").strip()
+        number = re.search(r"\d[\d. ,]*", text)
+        unit = re.search(
+            r"(?i)(%|lei|euro|dolari|persoane|oameni|ani|luni|zile|ore)", text
+        )
+        if not scope or number is None or unit is None:
+            return None
+        marker_match = re.search(
+            r"(?i)\b(aproximativ|circa|peste|cel puțin|maximum|minimum)\b", text
+        )
+        marker = None if marker_match is None else marker_match.group(1)
+        semantics = (
+            "lower_bound"
+            if marker in {"peste", "cel puțin"}
+            else "upper_bound"
+            if marker == "maximum"
+            else "approximate"
+            if marker in {"aproximativ", "circa"}
+            else "exact"
+        )
+        return {
+            "exact_surface": text,
+            "numeric_surface": number.group(0).strip(),
+            "approximation": marker,
+            "bound_semantics": semantics,
+            "unit_or_currency": unit.group(1),
+            "subject_scope": scope,
+        }
+
+    def _voice_accept_fact_advanced(self) -> None:
+        """Retained governed form for tests/internal tooling; not bound in daily use."""
+        from pastila_scout.voice_adjudication_v2 import CandidateOwnerDispositionV1
+        from pastila_scout.voice_fact_atoms_v2.models import (
+            AtomKind,
+            CompleteQuantityV1,
+        )
+
+        from .voice_adjudication_actions import VoiceDesktopFactAtomInputV1
+
+        candidate = self._selected_fact_candidate()
+        atom_id = simpledialog.askstring(
+            "Fapt tipizat", "ID unic atom:", parent=self._root
+        )
+        kind_value = simpledialog.askstring(
+            "Fapt tipizat",
+            "Tip atom (" + ", ".join(item.value for item in AtomKind) + "):",
+            parent=self._root,
+        )
+        if not candidate or not atom_id or not kind_value:
+            return
+        rationale = simpledialog.askstring(
+            "Motivare decizie",
+            "De ce este acceptat acest atom factual?",
+            parent=self._root,
+        )
+        if not rationale:
+            return
+        kind = AtomKind(kind_value)
+        quantity = None
+        if kind is AtomKind.COMPLETE_QUANTITY:
+            exact = simpledialog.askstring(
+                "Cantitate", "Suprafață cantitativă exactă:", parent=self._root
+            )
+            numeric = simpledialog.askstring(
+                "Cantitate", "Suprafață numerică:", parent=self._root
+            )
+            semantics = simpledialog.askstring(
+                "Cantitate",
+                "Semantică (exact/approximate/lower_bound/upper_bound):",
+                parent=self._root,
+            )
+            unit = simpledialog.askstring(
+                "Cantitate", "Unitate sau monedă:", parent=self._root
+            )
+            scope = simpledialog.askstring(
+                "Cantitate", "Domeniul cantității:", parent=self._root
+            )
+            if not all((exact, numeric, semantics, unit, scope)):
+                return
+            quantity = CompleteQuantityV1(
+                exact_surface=exact,
+                numeric_surface=numeric,
+                approximation=simpledialog.askstring(
+                    "Cantitate",
+                    "Marcaj aproximare (gol dacă nu există):",
+                    parent=self._root,
+                )
+                or None,
+                bound_semantics=semantics,
+                unit_or_currency=unit,
+                denominator=simpledialog.askstring(
+                    "Cantitate", "Numitor (opțional):", parent=self._root
+                )
+                or None,
+                period=simpledialog.askstring(
+                    "Cantitate", "Perioadă (opțional):", parent=self._root
+                )
+                or None,
+                subject_scope=scope,
+            )
+        targets = self._voice_ids(
+            simpledialog.askstring(
+                "Fapt tipizat",
+                "ID-uri țintă pentru calificare, separate prin virgulă:",
+                parent=self._root,
+            )
+        )
+        self._voice_adjudication_action(
+            action="decide_fact",
+            candidate_identity=candidate,
+            disposition=CandidateOwnerDispositionV1.ACCEPT_TYPED_ATOM,
+            decision_rationale=rationale,
+            atom_input=VoiceDesktopFactAtomInputV1(
+                atom_id=atom_id,
+                atom_kind=kind,
+                quantity=quantity,
+                qualification_target_atom_ids=targets,
+            ),
+            governed_object_or_scope=simpledialog.askstring(
+                "Fapt tipizat", "Obiect/domeniu guvernat:", parent=self._root
+            ),
+            actor_or_subject_atom_ids=self._voice_ids(
+                simpledialog.askstring(
+                    "Legături", "ID-uri actor/subiect:", parent=self._root
+                )
+            ),
+            chronology_atom_ids=self._voice_ids(
+                simpledialog.askstring(
+                    "Legături", "ID-uri cronologie:", parent=self._root
+                )
+            ),
+            uncertainty_target_atom_ids=self._voice_ids(
+                simpledialog.askstring(
+                    "Legături",
+                    "ID-uri țintă incertitudine/acuzație:",
+                    parent=self._root,
+                )
+            ),
+            attribution_atom_ids=self._voice_ids(
+                simpledialog.askstring(
+                    "Legături", "ID-uri atribuire:", parent=self._root
+                )
+            ),
+            supersession_reason=self._voice_supersession_reason(candidate),
+        )
+
+    def _voice_supersession_reason(self, candidate: str) -> str | None:
+        if self._voice_adjudication is None:
+            return None
+        item = next(
+            (
+                item
+                for item in self._voice_adjudication.candidates
+                if item.candidate_identity == candidate
+            ),
+            None,
+        )
+        if item is None or item.disposition == "undecided":
+            return None
+        return simpledialog.askstring(
+            "Revizuire", "Motivul înlocuirii deciziei anterioare:", parent=self._root
+        )
+
+    def _voice_finalize_facts(self) -> None:
+        self._voice_adjudication_action(action="finalize_facts")
+
+    def _voice_choose_no_claim(self) -> None:
+        reason = simpledialog.askstring(
+            "Fără construcție", "Motivul deciziei NO CLAIM:", parent=self._root
+        )
+        if reason:
+            self._voice_adjudication_action(
+                action="choose_no_claim", no_claim_reason=reason
+            )
+
+    def _voice_confirm_mechanic(self) -> None:
+        from pastila_scout.voice_deterministic_v2.models import MechanicIdV1
+        from pastila_scout.voice_eligibility_v2.models import AtomRoleBindingV1
+
+        mechanic = self._voice_mechanic.get()
+        if not mechanic:
+            return
+        count = simpledialog.askinteger(
+            "Legături mecanică",
+            "Număr de roluri (1-3):",
+            minvalue=1,
+            maxvalue=3,
+            parent=self._root,
+        )
+        if count is None:
+            return
+        roles = []
+        for index in range(1, count + 1):
+            role = simpledialog.askstring(
+                "Legături mecanică", f"Numele rolului {index}:", parent=self._root
+            )
+            atom_ids = self._voice_ids(
+                simpledialog.askstring(
+                    "Legături mecanică",
+                    f"ID-uri atom pentru rolul {index}:",
+                    parent=self._root,
+                )
+            )
+            if not role or not atom_ids:
+                return
+            roles.append(AtomRoleBindingV1(role=role, atom_ids=atom_ids))
+        boundaries = self._voice_ids(
+            simpledialog.askstring(
+                "Limite",
+                "Coduri epistemice/limită, separate prin virgulă:",
+                parent=self._root,
+            )
+        )
+        supersession_reason = simpledialog.askstring(
+            "Revizuire mecanică",
+            "Motivul revizuirii (lăsați gol pentru o confirmare nouă):",
+            parent=self._root,
+        )
+        self._voice_adjudication_action(
+            action="confirm_mechanic_claim",
+            mechanic_id=MechanicIdV1(mechanic),
+            atom_roles=tuple(roles),
+            satisfied_boundary_codes=boundaries,
+            supersession_reason=supersession_reason or None,
+        )
+
+    def _voice_finalize_claims(self) -> None:
+        self._voice_adjudication_action(action="finalize_claims")
+
+    def _voice_action(self, action: str, candidate_identity: str | None = None) -> None:
+        from .voice_v2_interaction import VoiceDesktopActionInputV2
+
+        if self._voice_v2_event_id is None:
+            return
+        self._invoke(
+            "voice_v2",
+            input=VoiceDesktopActionInputV2(
+                action=action,
+                event_id=self._voice_v2_event_id,
+                candidate_identity=candidate_identity,
+            ),
+        )
+
+    def _generate_acid_commentary(self) -> None:
+        if self._voice_v2_event_id is None:
+            return
+        self._voice_status.set("Cererea de generare locală a fost trimisă…")
+        self._invoke("acid_commentary", input=self._voice_v2_event_id)
+
+    def _voice_program_selected(self, event: object) -> None:
+        del event
+        label = self._voice_program.get()
+        if label in self._voice_program_ids:
+            self._voice_action("select_program", self._voice_program_ids[label])
+
+    def _voice_expression_selected(self, event: object) -> None:
+        del event
+        label = self._voice_expression.get()
+        if label in self._voice_expression_ids:
+            self._voice_action("select_expression", self._voice_expression_ids[label])
+
     def publish_chief_editor(
         self,
         *,
@@ -1220,6 +2123,7 @@ class _DesktopMainWindowV1:
         items: tuple[tuple[str, str, str, str], ...],
         status: str = "",
         can_publish_episode_draft: bool = False,
+        v2_presentations: tuple[tuple[str, str], ...] = (),
     ) -> None:
         self._check()
         self._chief_title.set(title)
@@ -1233,6 +2137,8 @@ class _DesktopMainWindowV1:
             self._chief_items.insert(
                 "", "end", iid=reference, values=(item_title, section, note)
             )
+        self._chief_v2_presentations = dict(v2_presentations)
+        self._render_chief_editor_material()
         self._chief_status.set(
             status or (_text_v1(key="chief_editor.empty") if not items else "")
         )
@@ -1288,6 +2194,16 @@ class _DesktopMainWindowV1:
             values = self._chief_items.item(selected[0], "values")
             self._chief_section.set(values[1])
             self._chief_note.set(values[2])
+        self._render_chief_editor_material()
+
+    def _render_chief_editor_material(self) -> None:
+        selected = self._chief_items.selection()
+        text = self._chief_v2_presentations.get(selected[0], "") if selected else ""
+        self._chief_material_text.configure(state="normal")
+        self._chief_material_text.delete("1.0", "end")
+        if text:
+            self._chief_material_text.insert("1.0", text)
+        self._chief_material_text.configure(state="disabled")
 
     def _chief_editor_apply_fields(self) -> None:
         selected = self._chief_items.selection()
@@ -1687,6 +2603,15 @@ class _DesktopMainWindowV1:
             self._report_button.configure(state="disabled")
             self._episode_draft_button.configure(state="disabled")
             self._episode_inspect_button.configure(state="disabled")
+            for button in (
+                self._voice_preview_button,
+                self._voice_accept_button,
+                self._voice_reject_button,
+                self._voice_refresh_button,
+            ):
+                button.configure(state="disabled")
+            self._voice_program_widget.configure(state="disabled")
+            self._voice_expression_widget.configure(state="disabled")
 
     def _set_scout_progress_running(self) -> None:
         self._progress.stop()
