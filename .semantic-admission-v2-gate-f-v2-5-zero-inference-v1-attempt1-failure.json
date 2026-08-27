@@ -1,0 +1,15 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-gate-f-v2-5-zero-inference-failed-attempt",
+  "schema_version": "1.0.0",
+  "attempt": 1,
+  "result": "STOPPED_ON_CASE_SENSITIVE_AUTHORITY_FIXTURE_MISMATCH",
+  "exception": "AUTHORITY_SUPPORT_NOT_IN_FACTUAL_SUMMARY:reason_records[1]",
+  "cause": "Fixture used lowercase 'în 2027' while governed fixture text contained uppercase 'În 2027'.",
+  "validator_failed_closed": true,
+  "executor_constructed": false,
+  "inference_started": false,
+  "model_calls": 0,
+  "provider_calls": 0,
+  "probe_authorized": false,
+  "superseded_by": "case-corrected zero-inference fixture"
+}
