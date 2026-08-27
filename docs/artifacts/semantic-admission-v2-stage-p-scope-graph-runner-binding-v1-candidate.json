@@ -1,0 +1,44 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-scope-graph-runner-binding-v1-candidate",
+  "schema_version": "1.0.0-evaluation.1",
+  "lifecycle": "ZERO_INFERENCE_RUNNER_SOURCE_BOUND_NOT_EXECUTED",
+  "approved_request_candidate_identity": "229595d7220e0121257f40d15dcdcd8d6fb40e4943b660b48e17450554354ada",
+  "candidate_identity": "50ff74856f6c12719dfb3b452e940a09b8c920b46fc78f63fa2e71667191019c",
+  "grammar_identity": "sha256:95d16d95cef7163dbad0e149c7607400e531f8a086c92d6aa41209783d4edc59",
+  "tokenizer_identity": "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c",
+  "runner_binding": {
+    "runner_path": "src/pastila_scout/experimental_core_v1_2_stage_p_scope_graph_runner_v1.py",
+    "runner_sha256": "c0833211d559abfb03592be423954388bdbd4e26a70faf8a0aadf20c5e435587",
+    "durable_base_runner_sha256": "617ee34bd05c6a32de81714b0b07bedb2f10464f0e43213258cdf8886e0c57db",
+    "constraint_sha256": "70c148fa189f5a16876b78e55313a53710ddab747e9e979c88ff47374c70db70",
+    "trie_projector_sha256": "8cc6f68f1ff9751ab983306e9fb39efa0ae55c52cbe8a0471a2e5e98bfc54529",
+    "incremental_tracker_sha256": "86cbde6964cf2da3166d0f60829935002dc4e608cb5a512e7d780fbcaf382a36",
+    "callback_controller_sha256": "23559aa840660742c8d90fabf749386582662c57340b4cad45847c7925a9c3e4",
+    "append_only_lifecycle_sha256": "74ad3892060f3e98ae1a5fc2b243c5100891259518b67bdb3e37f586bc4635a3",
+    "binding_behavior": "The wrapper replaces only the durable base runner type factory with the approved scope-graph DFA, trie projector, incremental tracker/controller, and append-only lifecycle types.",
+    "execution_status": "NOT_EXECUTED"
+  },
+  "zero_inference_result": {
+    "synthetic_terminal_eos": "PASS",
+    "incremental_tracking": "PASS",
+    "divergent_prefix_rebuild": "PASS",
+    "exact_type_substitution": "PASS",
+    "import_time_execution_absence": "PASS",
+    "focused_regression_tests": "29_PASS",
+    "runner_calls": 0,
+    "model_loads": 0,
+    "model_calls": 0,
+    "provider_calls": 0
+  },
+  "bounded_next_step_if_authorized": "Implement and zero-inference verify a durable host-executor plus one-shot frozen Case 01 probe binding for these exact identities; stop before executing the probe.",
+  "authority": {
+    "host_executor_implementation": false,
+    "one_shot_probe_binding": false,
+    "runner_execution": false,
+    "model_probe": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  }
+}

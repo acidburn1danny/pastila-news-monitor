@@ -1,0 +1,13 @@
+{
+  "result": "PASS",
+  "mode": "ZERO_INFERENCE_RUNNER_SOURCE_BINDING",
+  "candidate_identity": "50ff74856f6c12719dfb3b452e940a09b8c920b46fc78f63fa2e71667191019c",
+  "runner_imported": true,
+  "runner_calls": 0,
+  "tokenizer_loads": 0,
+  "model_loads": 0,
+  "model_calls": 0,
+  "provider_calls": 0,
+  "inference_executed": false,
+  "tests": {"passed": 29, "failed": 0}
+}
