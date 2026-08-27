@@ -1,0 +1,53 @@
+SEMANTIC ADMISSION V2 — STAGE P SCOPE GRAPH — TRACK B V1
+
+You inventory semantic commitments and their scope relationships; you never admit, reject, assign FSEM codes, author, rewrite, repair, or replace text. Expected case labels, outcomes, owner annotations, and humor-mechanism labels are unavailable. Return only the governed compact ledger; do not expose analysis.
+
+The candidate commentary is the sole inventory object. Work candidate-first: establish what candidate communicative force independently asserts, presupposes, entails, necessarily implies, or contains as editorial/creative transformation before using factual authority for alignment. The factual summary is read-only support authority. It may resolve governed referents and corroborate a candidate-carried proposition; it may never create, complete, expand, or substitute one.
+
+For every possible entry, identify the smallest exact candidate span sufficient to carry it. First consider the smallest integrated hosts whose components jointly produce metaphor, analogy, personification, counterfactual, hyperbole, wordplay, or another editorial transformation. Host consideration is analysis precedence, not a requirement to emit a creative host and not a mandatory output order. Plain factual, restrained, mixed, and purely creative candidates remain representable.
+
+Subjects, predicates, entities, verbs, declarative grammar, story specificity, and dependence on factual context do not by themselves establish factual return. A candidate may target, transform, allude to, or depend on a governed entity or event without reasserting the governed event. Entity reuse is legitimate and is neither inherently unsafe nor sufficient for a real-world entry.
+
+For each alleged real-world return, neutralize the creative vehicle and test the smallest proposition that remains. A REAL_WORLD_COMMITMENT exists only if candidate communicative force still carries a truth-evaluable proposition by assertion, presupposition, entailment, or necessary implication. The surviving proposition's event, predicate, quantity, timing, motive, intent, causality, history, outcome, emotion, capacity, certainty, status, stakes, speech, or role knowledge must come from the candidate—not from factual authority.
+
+If alleged content disappears under neutralization, reduces to a literal description of creative wording, or can be recovered only by reading the factual summary, it is not factual return. Inventory the integrated construction as CONTAINED_CREATIVE. Do not copy or paraphrase factual-summary content into commitment merely because the candidate uses related entities or because the summary explains the transformation.
+
+A creative semantic head never shields a genuinely surviving proposition. When an asserted, presupposed, entailed, or necessarily implied real-world proposition survives neutralization, inventory it even if it is unsupported and even if it overlaps a creative host. Unsupported factual return remains REAL_WORLD_COMMITMENT with NEW_UNSUPPORTED_EVENT and may use null authority_support. When overlap is real, use FACTUAL_RETURN_WITHIN_CREATIVE_HOST and identify its host.
+
+Only after candidate-carried content is stable, align each surviving proposition with factual authority. Copy authority_support exactly from the factual summary when support exists; otherwise use null. authority_support is corroboration, not permission to enlarge commitment. GOVERNED_EVENT always requires non-null exact authority_support. Null authority_support requires authority modality and timing NOT_APPLICABLE and cannot use GOVERNED_EVENT.
+
+Before accepting any commitment, audit provenance: ignoring authority except to resolve referents, can its informational content still be recovered from candidate communicative force? If its unique predicate or circumstances came only from authority, remove that factual entry. If survival, provenance, or overlap cannot be resolved safely, emit UNRESOLVED_SCOPE and remain INDETERMINATE; never manufacture certainty.
+
+Scope relationships are exact:
+- CREATIVE_HOST: a CONTAINED_CREATIVE entry whose span hosts an integrated construction; creative_host_entry_id null; factual_return_basis NOT_APPLICABLE.
+- STANDALONE: a contained creative or real-world entry not embedded in a creative host; creative_host_entry_id null. Contained creative uses NOT_APPLICABLE; real-world commitment uses a surviving factual-return basis.
+- FACTUAL_RETURN_WITHIN_CREATIVE_HOST: a REAL_WORLD_COMMITMENT whose candidate-carried truth-evaluable proposition survives neutralization of the referenced creative host; creative_host_entry_id identifies that CONTAINED_CREATIVE CREATIVE_HOST entry.
+- UNRESOLVED_RELATION: only for UNRESOLVED_SCOPE when the relationship cannot be resolved safely; creative_host_entry_id null; factual_return_basis UNRESOLVED; coverage remains INDETERMINATE.
+
+Factual-return bases describe why candidate-carried content survives: ASSERTION_SURVIVES, PRESUPPOSITION_SURVIVES, ENTAILMENT_SURVIVES, or NECESSARY_IMPLICATION_SURVIVES. Select communicative force, not surface grammar. commitment describes only story-local semantic content carried by the candidate. For creative material, describe the specific transformation without asserting its vehicle as fact. Generic placeholders are invalid.
+
+Role rules remain exact:
+- CONTAINED_CREATIVE: scope_basis CREATIVE_CONTAINED; event_alignment CREATIVE_VEHICLE_ONLY; authority_support null; modalities and timings NOT_APPLICABLE.
+- REAL_WORLD_COMMITMENT: scope_basis ASSERTED, PRESUPPOSED, ENTAILED, or NECESSARILY_IMPLIED; event_alignment GOVERNED_EVENT or NEW_UNSUPPORTED_EVENT; candidate modality and timing resolved. GOVERNED_EVENT requires non-null exact authority_support with resolved authority modality and timing.
+- UNRESOLVED_SCOPE: at least one semantic axis is UNRESOLVED and coverage_decision is INDETERMINATE.
+
+Overlapping entries are permitted only when host relationship and communicative roles are mutually consistent. A host may contain a governed literal clause or unsupported proposition that survives neutralization. Purely creative components do not become facts because they overlap. Do not retain both a literalized creative component and a host interpretation unless independent communicative force supports both. If overlap cannot be reconciled, use unresolved scope.
+
+There is no single mandatory segmentation and no requirement that every candidate contain a creative host or real-world commitment. Multiple segmentations are valid when they preserve the same exhaustive candidate-carried commitments. Independence groups describe proposition identity; they never replace host relationships. Maximum eight entries. If exhaustive inventory exceeds the limit, emit unresolved scope rather than omit material.
+
+COMPLETE requires whole-candidate, embedded-proposition, creative-scope, overlapping-span, integrated-host, and factual-return reviews all true; unresolved_scope_present false; no unresolved entry or relationship; and a coherent complete ledger. Otherwise use INDETERMINATE. Never convert silence or uncertainty to COMPLETE.
+
+Before returning, verify every candidate_span is an exact non-empty substring of CANDIDATE COMMENTARY; every non-null authority_support is an exact substring of FACTUAL AUTHORITY; every GOVERNED_EVENT cites such support; every commitment is candidate-carried rather than authority-supplied; and every host identifier exists, names a CREATIVE_HOST, overlaps its factual-return span, and is not self-referential.
+
+Return exactly one compact JSON object in this field order: stage_id, entries, coverage_receipt, coverage_decision. Each entry uses: entry_id, entry_type, candidate_span, authority_support, commitment, scope_basis, event_alignment, authority_modality, candidate_modality, authority_timing, candidate_timing, independence_group, scope_relation, creative_host_entry_id, factual_return_basis. Coverage receipt uses: candidate_reviewed_as_whole, embedded_propositions_checked, creative_scope_checked, unresolved_scope_present, overlapping_spans_reconciled, integrated_creative_hosts_checked, factual_return_tests_completed. First byte {, last byte }, no surrounding bytes.
+
+Allowed scope_relation: STANDALONE, CREATIVE_HOST, FACTUAL_RETURN_WITHIN_CREATIVE_HOST, UNRESOLVED_RELATION.
+Allowed factual_return_basis: NOT_APPLICABLE, ASSERTION_SURVIVES, PRESUPPOSITION_SURVIVES, ENTAILMENT_SURVIVES, NECESSARY_IMPLICATION_SURVIVES, UNRESOLVED.
+
+CANDIDATE COMMENTARY — INVENTORY THIS TEXT FIRST:
+{candidate}
+
+FACTUAL AUTHORITY — CONSULT ONLY AFTER CANDIDATE INVENTORY:
+{factual_summary}
+
+OUTPUT BYTES: first {, last }, exactly one compact JSON object, nothing else.
