@@ -1,0 +1,50 @@
+{
+  "artifact_id": "STAGE_P_CONSTRUCTION_ROLE_RUNNER_EXECUTOR_BINDING_V1",
+  "binding_identity": "142e61df3c38c88011c2437f2c430c59263e74cb258e43d535ee2ebad552c72c",
+  "approved_candidate_identity": "46633da94538451e04643adf4f291bc30033749d8768e36c8a6be5eb13621734",
+  "lifecycle": "ZERO_INFERENCE_RUNNER_EXECUTOR_BOUND_CASE01_BLOCKED",
+  "identities": {
+    "runner_sha256": "225168f07082edb9df6a841c9fc50bea8e1b92fa7d106242bc4986e83736a718",
+    "executor_sha256": "4a49aa4de73a21308d898756bfbe11e1a18eebac149197b2538ab869def8ea94",
+    "tracker_sha256": "3ef75f2fd7178df4c68dc81388605bec6152e5bf7a215a82772d3c7e2aa87a03",
+    "controller_sha256": "ee4fe113dfa01f71aef6bf99c635059b8ac60bc14c3516b96803b2feb3921347",
+    "request_candidate_identity": "46633da94538451e04643adf4f291bc30033749d8768e36c8a6be5eb13621734",
+    "tokenizer_identity": "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c"
+  },
+  "binding": {
+    "constraint_state": "StagePConstructionRoleConstraintStateV1",
+    "projector": "StagePDiagnosticTokenTrieProjectorV1",
+    "incremental_tracker": "StagePConstructionRoleIncrementalTrackerV1",
+    "callback_controller": "StagePConstructionRoleCallbackControllerV1",
+    "lifecycle": "AppendOnlyLifecycleV1",
+    "maximum_output_tokens": 3200,
+    "timeout_seconds": 240.0,
+    "wsl_distribution": "Ubuntu-24.04",
+    "constraint_liveness_receipt": "HOST_CONSTRAINT_LIVENESS_FAILURE_CLASSIFIED"
+  },
+  "zero_inference_verification": {
+    "windows_exact_dependency_checks": "PASS",
+    "windows_executor_construction_with_launch_forbidden": "PASS",
+    "wsl_import_only": "PASS",
+    "pydantic_loaded": false,
+    "transformers_loaded": false,
+    "peft_loaded": false,
+    "tokenizer_loads": 0,
+    "model_loads": 0,
+    "provider_calls": 0,
+    "inference_calls": 0,
+    "case01_request_constructed": false,
+    "case01_executed": false,
+    "stage_c_calls": 0
+  },
+  "authority": {
+    "probe_construction": false,
+    "case01_execution": false,
+    "stage_c": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  },
+  "status": "OWNER_REVIEW_REQUIRED"
+}
