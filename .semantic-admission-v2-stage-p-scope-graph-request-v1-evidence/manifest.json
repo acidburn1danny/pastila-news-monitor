@@ -1,0 +1,10 @@
+{
+  "artifact": "docs/artifacts/semantic-admission-v2-stage-p-scope-graph-request-v1-candidate.json",
+  "candidate_identity": "229595d7220e0121257f40d15dcdcd8d6fb40e4943b660b48e17450554354ada",
+  "candidate_source_identity": "sha256:f4f816ed8f093813a15a020f9cff50bb1ae3cd27eb0a1bfaa7fa596adb59edd7",
+  "approved_prompt_candidate_identity": "030da4350e6228edc3bd3a7c4da56fc05a8619d9bb996f775f34989bcfa307f6",
+  "evidence_files": ["preflight.json", "report.md"],
+  "requests_executed": 0,
+  "model_calls": 0,
+  "runner_calls": 0
+}

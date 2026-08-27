@@ -1,0 +1,49 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-scope-graph-request-v1-candidate",
+  "schema_version": "1.0.0-evaluation.1",
+  "lifecycle": "ZERO_INFERENCE_APPLICATION_REQUEST_CONSTRUCTED",
+  "approved_prompt_candidate_identity": "030da4350e6228edc3bd3a7c4da56fc05a8619d9bb996f775f34989bcfa307f6",
+  "candidate_identity": "229595d7220e0121257f40d15dcdcd8d6fb40e4943b660b48e17450554354ada",
+  "candidate_source_identity": "sha256:f4f816ed8f093813a15a020f9cff50bb1ae3cd27eb0a1bfaa7fa596adb59edd7",
+  "prompt_identity": "sha256:89b8cf92733a33ed0bb37353c918b56071295ca9d4388aa826fcb8c643fb233d",
+  "schema_identity": "sha256:be5dd5a7ec69f4340ed79a18c782db9070207c8b16927fa7f6c8ff7b58e66c29",
+  "grammar_identity": "sha256:95d16d95cef7163dbad0e149c7607400e531f8a086c92d6aa41209783d4edc59",
+  "tokenizer_identity": "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c",
+  "request_policy": {
+    "provider": "ollama",
+    "timeout_seconds": 240.0,
+    "cancellation_requested": false,
+    "request_reference_prefix": "semantic-admission-v2:stage-p-scope-graph-v1",
+    "prompt_hash_prefix_characters": 24
+  },
+  "fixed_construction_fixture": {
+    "requested_at": "2026-08-26T15:00:00+00:00",
+    "rendered_prompt_identity": "sha256:29fc6162529cd10f372210c63676674cecfed1bca696f9ff749a372bd7d5dcc6",
+    "request_id": "application-request-v1:640bdcc809aa041f22f4dde2ebf54e2f295004cb3ce8e43c737448b23c5a3b4e",
+    "request_envelope_identity": "scout:provider-request-envelope-v2:bd816bf96f7128a8a1b8f590c8fe6428911550e30e21b9f2e0bda2fc937fdc5a",
+    "unit_source_reference": "application-request-unit-v1:34e39a527d7c1f77bf1e31b9046f52e706e4aee717c2b1898177f73fd7600486"
+  },
+  "zero_inference_result": {
+    "exact_unpadded_prompt_reconstruction": "PASS",
+    "approved_dependency_tuple": "PASS",
+    "deterministic_request_identity": "PASS",
+    "source_sensitivity": "PASS",
+    "timeout_and_cancellation_binding": "PASS",
+    "invalid_input_rejection": "PASS",
+    "execution_surface_absence": "PASS",
+    "combined_regression_tests": "47_PASS",
+    "model_calls": 0,
+    "provider_calls": 0,
+    "runner_calls": 0
+  },
+  "bounded_next_step_if_authorized": "Design and zero-inference verify a runner binding for the exact approved request/schema/grammar/tokenizer identities, without executing it; stop before model or provider invocation.",
+  "authority": {
+    "runner_binding": false,
+    "runner_execution": false,
+    "model_probe": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  }
+}
