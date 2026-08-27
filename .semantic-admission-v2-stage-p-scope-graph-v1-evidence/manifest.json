@@ -1,0 +1,10 @@
+{
+  "artifact": "docs/artifacts/semantic-admission-v2-stage-p-scope-graph-v1-candidate.json",
+  "candidate_identity": "f27d6108829da9d4d16b501d30a32315391c18f171409bc0922435273694970d",
+  "contract": "src/pastila_scout/semantic_admission_v2/stage_p_scope_graph_contract_v1.py",
+  "contract_source_identity": "sha256:95aa019b258e9868705efaf1ac87ad14ebb8b2c381eec8069921c16a2d90db84",
+  "schema_identity": "sha256:be5dd5a7ec69f4340ed79a18c782db9070207c8b16927fa7f6c8ff7b58e66c29",
+  "source_design_identity": "53f4c0a3682c605e01a165972f2b3a339b31189c8510898db75ca582722b3e21",
+  "evidence_files": ["preflight.json", "report.md"],
+  "model_calls": 0
+}

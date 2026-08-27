@@ -1,0 +1,10 @@
+{
+  "result": "PASS",
+  "mode": "ZERO_INFERENCE",
+  "source_design_identity": "53f4c0a3682c605e01a165972f2b3a339b31189c8510898db75ca582722b3e21",
+  "contract_source_identity": "sha256:95aa019b258e9868705efaf1ac87ad14ebb8b2c381eec8069921c16a2d90db84",
+  "schema_identity": "sha256:be5dd5a7ec69f4340ed79a18c782db9070207c8b16927fa7f6c8ff7b58e66c29",
+  "tests": {"passed": 23, "failed": 0},
+  "model_calls": 0,
+  "execution_edges_added": []
+}

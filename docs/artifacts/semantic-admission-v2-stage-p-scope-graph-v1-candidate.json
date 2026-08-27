@@ -1,0 +1,53 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-scope-graph-v1-candidate",
+  "schema_version": "1.0.0-evaluation.1",
+  "lifecycle": "ZERO_INFERENCE_SCHEMA_CANDIDATE_READY_FOR_OWNER_REVIEW",
+  "source_design_identity": "53f4c0a3682c605e01a165972f2b3a339b31189c8510898db75ca582722b3e21",
+  "candidate_identity": "f27d6108829da9d4d16b501d30a32315391c18f171409bc0922435273694970d",
+  "schema_identity": "sha256:be5dd5a7ec69f4340ed79a18c782db9070207c8b16927fa7f6c8ff7b58e66c29",
+  "contract_source_identity": "sha256:95aa019b258e9868705efaf1ac87ad14ebb8b2c381eec8069921c16a2d90db84",
+  "implemented_capabilities": [
+    "Explicit STANDALONE, CREATIVE_HOST, FACTUAL_RETURN_WITHIN_CREATIVE_HOST, and UNRESOLVED_RELATION edges",
+    "Independent assertion, presupposition, entailment, and necessary-implication factual-return bases",
+    "Deterministic host existence, host type, self-reference, cycle, source-substring, and span-overlap validation",
+    "Coverage receipts for overlap reconciliation, integrated-host review, and factual-return testing",
+    "Fail-closed INDETERMINATE representation for unresolved scope"
+  ],
+  "construction_fixture_result": {
+    "case01_integrated_creative": "PASS",
+    "governed_literal_inside_creative_host": "PASS",
+    "unsupported_presupposition_inside_creative_host": "PASS",
+    "pure_creative_without_factual_return": "PASS",
+    "unresolved_scope_abstention": "PASS",
+    "invalid_host_graphs": "PASS_FAIL_CLOSED",
+    "nonoverlapping_factual_return": "PASS_FAIL_CLOSED",
+    "incomplete_coverage_receipts": "PASS_FAIL_CLOSED",
+    "multiple_valid_segmentations": "PASS"
+  },
+  "preserved_boundaries": [
+    "Byte-immutable factual authority",
+    "Candidate-only proposition inventory",
+    "Existing Stage P role-coherence semantics",
+    "No FSEM or admission decision in Stage P",
+    "No single mandatory segmentation",
+    "No prompt, grammar, tokenizer, runner, provider, model, or inference edge"
+  ],
+  "zero_inference_result": {
+    "scope_graph_and_inherited_contract_tests": "23_PASS",
+    "model_calls": 0,
+    "prompt_modified": false,
+    "grammar_built": false,
+    "runner_bound": false
+  },
+  "bounded_next_step_if_authorized": "After owner approval, build and verify a zero-inference constrained-grammar candidate for this schema; stop again before prompt modification, runner binding, or inference.",
+  "authority": {
+    "prompt_modification": false,
+    "grammar_or_tokenizer_execution": false,
+    "runner_binding": false,
+    "model_probe": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  }
+}
