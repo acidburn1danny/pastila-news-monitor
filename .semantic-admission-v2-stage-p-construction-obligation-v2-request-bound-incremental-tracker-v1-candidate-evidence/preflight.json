@@ -1,0 +1,19 @@
+{
+  "result": "PASS",
+  "candidate_identity": "d2fa8f3a809394a35d72f3822349638d87e0cb4bacf64db36a502685539f1cb9",
+  "implementation_sha256": "0a512731e39a8e7e872ae76ac99dd5370c8816387dfb3284d0af4b487e2e0b2d",
+  "case01_context_identity": "2ba2c7dcb5c8e19350a3acf37ed9d9c9daf6d058fc38811d06d3460825e9b610",
+  "focused_tests_passed_before_evidence_binding": 5,
+  "case01_fixture_characters": 3065,
+  "fake_token_prefixes_checked": 698,
+  "controller_objects": 0,
+  "projector_objects": 0,
+  "tokenizer_loads": 0,
+  "evaluator_objects": 0,
+  "runner_objects": 0,
+  "subprocess_launches": 0,
+  "model_loads": 0,
+  "provider_calls": 0,
+  "inference_calls": 0,
+  "probe_constructed": false
+}
