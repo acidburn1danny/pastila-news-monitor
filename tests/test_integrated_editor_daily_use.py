@@ -49,7 +49,9 @@ def test_recovered_project_builds_complete_ollama_editor_request(tmp_path):
     request = _integrated_editor_request_v1(project=project, settings=settings)
     assert request.scout_input == source
     assert request.generation_configuration.provider.value == "ollama"
-    assert request.generation_configuration.model_identifier == "qwen3:14b"
+    assert request.generation_configuration.model_identifier == (
+        "pastila-editor-core-v1.2-experimental"
+    )
     assert request.generation_configuration.max_output_tokens == 2000
     assert request.episode_context.mandatory_event_ids == (project.candidate.event_id,)
     assert request.selection_profile.minimum_source_diversity == (
@@ -120,6 +122,41 @@ def test_non_first_selected_event_has_explicit_request_and_output_identity(tmp_p
     assert tuple(
         event.event_id for event in last_request.scout_input.ranked_events
     ) == (46,)
+
+
+def test_request_caps_diversity_at_representative_provenance(tmp_path):
+    settings = _default_windows_settings_v1(defaults_path=DEFAULTS)
+    settings = _complete_desktop_setup_v1(
+        settings=settings,
+        settings_path=tmp_path / "settings.json",
+        provider="ollama",
+        base_url="http://localhost:11434",
+        model="qwen3:14b",
+        output_directory=tmp_path / "reports",
+    )
+    data = sample_scout_input().model_dump(mode="json")
+    event = data["ranked_events"][0]
+    third_source = dict(event["source_provenance"][0])
+    third_source.update(
+        source_id="rfi",
+        source_name="RFI Romania",
+        url="https://example.org/material",
+        title="A treia relatare despre același eveniment",
+    )
+    event["source_provenance"].append(third_source)
+    event.update(source_count=4, article_count=4, provenance_truncated=True)
+    source = assign_scout_input_identity(data)
+    project = SimpleNamespace(scout_input=source, candidate=source.ranked_events[0])
+
+    request = _integrated_editor_request_v1(project=project, settings=settings)
+    preparation = EditorOperationalCoordinatorV1(SelectionEngine()).prepare(
+        scout_input=request.scout_input,
+        selection_profile=request.selection_profile,
+        episode_context=request.episode_context,
+    )
+
+    assert request.selection_profile.minimum_source_diversity == 3
+    assert preparation.plan is not None
 
 
 def test_ollama_model_discovery_uses_tags_and_exact_names():
