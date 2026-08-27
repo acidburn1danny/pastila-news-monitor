@@ -1,0 +1,15 @@
+{
+  "result": "PASS",
+  "mode": "ZERO_INFERENCE_CHARACTER_CONSTRAINT",
+  "approved_schema_candidate_identity": "f27d6108829da9d4d16b501d30a32315391c18f171409bc0922435273694970d",
+  "schema_identity": "sha256:be5dd5a7ec69f4340ed79a18c782db9070207c8b16927fa7f6c8ff7b58e66c29",
+  "constraint_source_identity": "sha256:70c148fa189f5a16876b78e55313a53710ddab747e9e979c88ff47374c70db70",
+  "grammar_identity": "sha256:95d16d95cef7163dbad0e149c7607400e531f8a086c92d6aa41209783d4edc59",
+  "tests": {"passed": 39, "failed": 0},
+  "wsl_calls": 0,
+  "model_loads": 0,
+  "model_calls": 0,
+  "provider_calls": 0,
+  "tokenizer_loads": 0,
+  "inference_executed": false
+}

@@ -1,0 +1,48 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-scope-graph-constraint-v1-candidate",
+  "schema_version": "1.0.0-evaluation.1",
+  "lifecycle": "ZERO_INFERENCE_CONSTRAINT_CANDIDATE_READY_FOR_OWNER_REVIEW",
+  "approved_schema_candidate_identity": "f27d6108829da9d4d16b501d30a32315391c18f171409bc0922435273694970d",
+  "candidate_identity": "d436323d5966fb2eb911bb7cef4442cc7b161b00ff52e18529e3835515c60029",
+  "schema_identity": "sha256:be5dd5a7ec69f4340ed79a18c782db9070207c8b16927fa7f6c8ff7b58e66c29",
+  "constraint_source_identity": "sha256:70c148fa189f5a16876b78e55313a53710ddab747e9e979c88ff47374c70db70",
+  "grammar_identity": "sha256:95d16d95cef7163dbad0e149c7607400e531f8a086c92d6aa41209783d4edc59",
+  "constraint_properties": [
+    "Canonical compact-JSON field ordering",
+    "Role-conditioned scope-relation choices before emission",
+    "Role-conditioned factual-return-basis choices before emission",
+    "Non-null creative-host choice for embedded factual returns",
+    "Terminal validation of host existence, host role, relation, and duplicate identifiers",
+    "Complete coverage requires all three scope-graph receipts",
+    "Exact terminal EOS with trailing-byte rejection"
+  ],
+  "zero_inference_result": {
+    "valid_terminal_paths": "PASS",
+    "role_conditioning": "PASS",
+    "host_reference_validation": "PASS_FAIL_CLOSED",
+    "duplicate_identifier_validation": "PASS_FAIL_CLOSED",
+    "coverage_receipt_validation": "PASS_FAIL_CLOSED",
+    "terminal_eos": "PASS",
+    "combined_regression_tests": "39_PASS",
+    "model_calls": 0,
+    "real_tokenizer_profile": "NOT_EXECUTED"
+  },
+  "preserved_boundaries": [
+    "Approved Scope Graph V1 schema unchanged",
+    "Prompt unchanged",
+    "No tokenizer or model loading",
+    "No request construction, runner, provider, or inference edge",
+    "No runtime or production authority"
+  ],
+  "bounded_next_step_if_authorized": "Perform a zero-inference compatibility profile against the frozen local tokenizer and bind identities only; stop before runner construction or inference.",
+  "authority": {
+    "prompt_modification": false,
+    "tokenizer_execution": false,
+    "runner_binding": false,
+    "model_probe": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  }
+}
