@@ -1,0 +1,113 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-gate-f-trie-projection-preflight",
+  "schema_version": "1.0.0",
+  "tokenizer_revision": "3cea74c1ebaf5ce5f5a2553de470e2ceab825142",
+  "vocabulary_size": 131072,
+  "trie_node_count": 221961,
+  "trie_build_seconds": 0.403172,
+  "states": [
+    {
+      "state": "root",
+      "oracle_count": 2,
+      "trie_count": 2,
+      "missing_count": 0,
+      "extra_count": 0,
+      "equivalent": true,
+      "oracle_seconds": 0.64608,
+      "trie_cold_seconds": 0.01167,
+      "trie_warm_seconds": 1.0069e-05
+    },
+    {
+      "state": "decision",
+      "oracle_count": 7,
+      "trie_count": 7,
+      "missing_count": 0,
+      "extra_count": 0,
+      "equivalent": true,
+      "oracle_seconds": 0.967968,
+      "trie_cold_seconds": 0.013258,
+      "trie_warm_seconds": 8.937e-06
+    },
+    {
+      "state": "reason_code",
+      "oracle_count": 4,
+      "trie_count": 4,
+      "missing_count": 0,
+      "extra_count": 0,
+      "equivalent": true,
+      "oracle_seconds": 1.194148,
+      "trie_cold_seconds": 0.013682,
+      "trie_warm_seconds": 8.697e-06
+    },
+    {
+      "state": "free_string",
+      "oracle_count": 128169,
+      "trie_count": 128169,
+      "missing_count": 0,
+      "extra_count": 0,
+      "equivalent": true,
+      "oracle_seconds": 3.04161,
+      "trie_cold_seconds": 0.687749,
+      "trie_warm_seconds": 0.000982797
+    },
+    {
+      "state": "confidence",
+      "oracle_count": 2,
+      "trie_count": 2,
+      "missing_count": 0,
+      "extra_count": 0,
+      "equivalent": true,
+      "oracle_seconds": 1.83445,
+      "trie_cold_seconds": 0.010642,
+      "trie_warm_seconds": 0.000147938
+    }
+  ],
+  "cached_string_continuation": {
+    "oracle_count": 128169,
+    "trie_count": 128169,
+    "equivalent": true,
+    "seconds": 0.001003545,
+    "cache_reused": true
+  },
+  "varied_string_histories": [
+    {
+      "case": "ascii",
+      "equivalent": true,
+      "seconds": 0.001013545,
+      "cache_reused": true
+    },
+    {
+      "case": "spaces_unicode",
+      "equivalent": true,
+      "seconds": 0.001094838,
+      "cache_reused": true
+    },
+    {
+      "case": "embedded_backticks",
+      "equivalent": true,
+      "seconds": 0.001287112,
+      "cache_reused": true
+    },
+    {
+      "case": "escaped_newline",
+      "equivalent": true,
+      "seconds": 0.001114386,
+      "cache_reused": true
+    }
+  ],
+  "all_states_equivalent": true,
+  "maximum_cold_seconds": 0.687749,
+  "maximum_warm_seconds": 0.000982797,
+  "performance_threshold_seconds": 0.25,
+  "non_string_cold_performance_pass": true,
+  "string_prewarm_seconds": 0.687749,
+  "string_prewarm_budget_seconds": 2.0,
+  "string_prewarm_pass": true,
+  "cached_string_performance_pass": true,
+  "warm_performance_pass": true,
+  "cache_size": 5,
+  "model_loaded": false,
+  "model_calls": 0,
+  "provider_calls": 0,
+  "result": "PASS"
+}
