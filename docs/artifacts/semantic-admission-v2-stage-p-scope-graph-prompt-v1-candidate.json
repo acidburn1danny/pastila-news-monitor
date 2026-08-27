@@ -1,0 +1,54 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-scope-graph-prompt-v1-candidate",
+  "schema_version": "1.0.0-evaluation.1",
+  "lifecycle": "ZERO_INFERENCE_PROMPT_CONTRACT_READY_FOR_OWNER_REVIEW",
+  "approved_tokenizer_candidate_identity": "3cba9fc73cf0d6ca4a1f889d2c661c2ff09a26fa6bc57c6aa41c7e885cf0c8e5",
+  "candidate_identity": "030da4350e6228edc3bd3a7c4da56fc05a8619d9bb996f775f34989bcfa307f6",
+  "prompt_identity": "sha256:89b8cf92733a33ed0bb37353c918b56071295ca9d4388aa826fcb8c643fb233d",
+  "prompt_contract_identity": "sha256:6411b2748c20cabd7e5ef5c1db51ff10955a5782ad7a0a4bbe086176f9c37166",
+  "schema_identity": "sha256:be5dd5a7ec69f4340ed79a18c782db9070207c8b16927fa7f6c8ff7b58e66c29",
+  "grammar_identity": "sha256:95d16d95cef7163dbad0e149c7607400e531f8a086c92d6aa41209783d4edc59",
+  "tokenizer_identity": "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c",
+  "semantic_requirements": [
+    "Candidate commentary remains the sole proposition inventory source",
+    "All asserted, presupposed, entailed, and necessarily implied propositions remain reviewable",
+    "Creative semantic heads cannot shield embedded real-world propositions",
+    "Surface grammar alone cannot create a factual return",
+    "Factual return requires survival after neutralizing the creative vehicle",
+    "Unsupported surviving propositions remain real-world commitments",
+    "Overlapping creative and factual entries require explicit, consistent host relationships",
+    "Multiple valid segmentations remain permitted",
+    "Unresolved overlap or return forces INDETERMINATE"
+  ],
+  "zero_inference_result": {
+    "canonical_storage_newline": "PASS",
+    "execution_prompt_unpadded": "PASS",
+    "utf8_strict_decode": "PASS",
+    "source_placeholder_binding": "PASS",
+    "reserved_placeholder_rejection": "PASS",
+    "semantic_boundary_assertions": "PASS",
+    "field_order_and_enum_instructions": "PASS",
+    "execution_edge_absence": "PASS",
+    "combined_regression_tests": "37_PASS",
+    "model_calls": 0,
+    "provider_calls": 0,
+    "runner_calls": 0
+  },
+  "preserved_boundaries": [
+    "Byte-immutable factual authority",
+    "Expected outcomes hidden from generation path",
+    "No FSEM or admission decision in Stage P",
+    "Approved schema, grammar, and tokenizer identities unchanged",
+    "No request construction, runner, provider, model, or inference edge"
+  ],
+  "bounded_next_step_if_authorized": "Construct and zero-inference verify an identity-bound application request candidate for this exact prompt/schema/grammar/tokenizer tuple; stop before runner binding or inference.",
+  "authority": {
+    "request_construction": false,
+    "runner_binding": false,
+    "model_probe": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  }
+}
