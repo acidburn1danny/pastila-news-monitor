@@ -1,0 +1,111 @@
+{
+  "artifact_id": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_ZERO_INFERENCE_COMPATIBILITY_ANALYSIS_V1",
+  "analysis_identity": "992839a817fd6c71cbd8ff1c12469815b55d04c1a1bd0597e9042f10c18699c3",
+  "schema_version": "1.0.0-evaluation.1",
+  "source_v2_candidate_identity": "e85eb040667208ee6ee4e697e64c46e5d61502602240dff113dd64c3c45e2c46",
+  "result": "FEASIBLE_FOR_SEPARATE_ZERO_INFERENCE_CANDIDATE",
+  "execution": "ZERO_INFERENCE_STATIC_SCHEMA_AND_SOURCE_ANALYSIS_ONLY",
+  "inspected_existing_components": {
+    "constraint_sha256": "a5db3847530e1208fbc96f5a4af6e577b248ec2507c9045280b648420d0ad935",
+    "incremental_tracker_sha256": "259f1c06d8aa81bf027484bab64fcb532f109a8ee6821637ec5519c3b5b77e9a",
+    "callback_controller_sha256": "2d62132520164cdacf277e2b68975688a02bb294e301811a71e16afa74f21178",
+    "trie_projector_sha256": "8cc6f68f1ff9751ab983306e9fb39efa0ae55c52cbe8a0471a2e5e98bfc54529"
+  },
+  "compatibility_matrix": [
+    {
+      "component": "V1 character-DFA approach",
+      "status": "ARCHITECTURALLY_COMPATIBLE_NOT_BYTE_COMPATIBLE",
+      "finding": "Literal/choice/string state composition can express V2, but V1 emits copied provenance strings and cannot parse V2 reference objects unchanged."
+    },
+    {
+      "component": "Construction obligation semantic projection",
+      "status": "LOGIC_REUSABLE_WITH_FIELD_TRANSITION_REPLACEMENT",
+      "finding": "Construction/entry link obligations do not depend on copied span text and can remain conceptually intact."
+    },
+    {
+      "component": "Incremental tracker",
+      "status": "INCOMPATIBLE_UNCHANGED",
+      "finding": "It constructs a zero-argument V1 state on initialization and rebuild; V2 requires immutable request-bound source context."
+    },
+    {
+      "component": "Token-trie projector",
+      "status": "CONDITIONALLY_COMPATIBLE",
+      "finding": "Character-state projection remains viable, but generic STRING cache canonicalization is unsafe for hashes and conditional numeric boundary choices."
+    },
+    {
+      "component": "Callback controller",
+      "status": "INCOMPATIBLE_UNCHANGED",
+      "finding": "It creates the V1 tracker without source context and its receipts do not bind a source-context identity."
+    },
+    {
+      "component": "V2 Pydantic schema",
+      "status": "COMPATIBLE_AFTER_EXPLICIT_RAW_IDENTITY_HARDENING",
+      "finding": "Reference-bearing fields and graph validators are representable; top-level schema_name/schema_version are now mandatory raw fields."
+    }
+  ],
+  "case01_static_measurements": {
+    "reference_instances_in_hand_constructed_fixture": 5,
+    "candidate_utf8_bytes": 147,
+    "candidate_utf8_boundaries": 135,
+    "candidate_start_choices": 134,
+    "candidate_nonempty_boundary_pairs": 9045,
+    "factual_authority_utf8_bytes": 126,
+    "factual_authority_utf8_boundaries": 123,
+    "factual_authority_start_choices": 122,
+    "factual_authority_nonempty_boundary_pairs": 7503,
+    "maximum_decimal_digits": 3,
+    "interpretation": "Finite boundary choices are tractable at character-DFA design scale, but token-trie/cache liveness remains unproven until a separately authorized zero-inference candidate."
+  },
+  "schema_presence_findings": {
+    "ledger_required_fields": [
+      "schema_name",
+      "schema_version",
+      "stage_id",
+      "construction_role_audit",
+      "entries",
+      "creative_target_audits",
+      "coverage_receipt",
+      "coverage_decision"
+    ],
+    "ledger_identity_fields_missing_from_required": [],
+    "reference_required_fields": ["source_role", "source_sha256", "start_utf8", "end_utf8"],
+    "assessment": "PASS_EXPLICIT_TOP_LEVEL_RAW_IDENTITY_REQUIRED"
+  },
+  "tests_and_operations_performed": {
+    "source_hash_verification": true,
+    "json_schema_required_field_inspection": true,
+    "captured_case01_utf8_boundary_enumeration": true,
+    "character_choice_cardinality_analysis": true,
+    "grammar_objects_constructed": 0,
+    "tracker_objects_constructed": 0,
+    "controller_objects_constructed": 0,
+    "projector_objects_constructed": 0,
+    "evaluator_objects_constructed": 0,
+    "runner_objects_constructed": 0,
+    "tokenizer_loads": 0,
+    "model_loads": 0,
+    "provider_calls": 0,
+    "inference_calls": 0,
+    "probe_constructed": false
+  },
+  "recommended_next_step": "Owner-review this feasibility result and rebound V2 identity. If approved, authorize only a separately versioned request-bound character-DFA candidate with deterministic and zero-inference verification. Keep evaluator rebinding and probe construction blocked.",
+  "authority": {
+    "contract_change": false,
+    "grammar_implementation": false,
+    "tracker_change": false,
+    "controller_change": false,
+    "projector_change": false,
+    "evaluator_rebinding": false,
+    "runner_rebinding": false,
+    "probe_construction": false,
+    "probe_execution": false,
+    "tokenizer_load": false,
+    "model_load": false,
+    "inference": false,
+    "stage_c": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  }
+}

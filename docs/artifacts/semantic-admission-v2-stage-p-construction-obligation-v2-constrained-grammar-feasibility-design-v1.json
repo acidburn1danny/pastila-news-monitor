@@ -1,0 +1,104 @@
+{
+  "artifact_id": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_CONSTRAINED_GRAMMAR_FEASIBILITY_DESIGN_V1",
+  "design_identity": "2688f60ea81d129ec7f0c741e9c602ab7b557bf2cef722be53fb7c3f85b464d2",
+  "schema_version": "1.0.0-design.1",
+  "scope": "DESIGN_ONLY_NO_GRAMMAR_TRACKER_CONTROLLER_PROJECTOR_EVALUATOR_RUNNER_OR_RUNTIME_IMPLEMENTATION",
+  "source_v2_candidate_identity": "e85eb040667208ee6ee4e697e64c46e5d61502602240dff113dd64c3c45e2c46",
+  "feasibility_conclusion": "FEASIBLE_FOR_A_SEPARATELY_AUTHORIZED_ZERO_INFERENCE_GRAMMAR_CANDIDATE",
+  "raw_identity_hardening": {
+    "original_finding": "ConstructionObligationLedgerV2.schema_name and schema_version were const defaults but absent from JSON Schema required.",
+    "risk_resolved": "The rebound V2 candidate requires both fields in raw JSON; omission now fails strict schema validation.",
+    "remediated": true,
+    "projection_receipt_note": "The receipt is deterministic application output rather than model output; its builder already serializes identity fields. Receipt hardening may accompany the separate contract review but is not a grammar blocker.",
+    "nested_reference_note": "Nested SourceSpanReference defaults are bound by the enclosing ledger schema identity. The grammar may omit repeated nested schema labels; role, source SHA-256, and offsets remain mandatory raw fields."
+  },
+  "proposed_grammar_architecture": {
+    "kind": "NEW_REQUEST_BOUND_CHARACTER_DFA_WITH_TOKEN_TRIE_PROJECTION",
+    "not_a_generic_json_schema_compiler": true,
+    "request_context": [
+      "candidate source SHA-256, byte length, and ordered UTF-8 code-point boundary tuple",
+      "factual-authority SHA-256, byte length, and ordered UTF-8 code-point boundary tuple",
+      "case/source binding identity",
+      "frozen ledger and reference schema identities"
+    ],
+    "canonical_reference_object_order": [
+      "source_role",
+      "source_sha256",
+      "start_utf8",
+      "end_utf8"
+    ],
+    "field_contexts": {
+      "candidate_span_ref": "Force CANDIDATE role and candidate SHA-256.",
+      "vehicle_span_ref": "Force CANDIDATE role and candidate SHA-256.",
+      "authority_support_ref": "Permit null where semantically coherent; otherwise force FACTUAL_AUTHORITY role and authority SHA-256."
+    },
+    "offset_generation": [
+      "At start_utf8, offer only canonical base-10 strings for valid UTF-8 boundaries strictly before source byte length.",
+      "After selecting start_utf8, offer end_utf8 only from valid boundaries strictly greater than start_utf8.",
+      "No leading zero except the literal zero; no sign, fraction, exponent, whitespace, token offset, character offset, or out-of-range integer.",
+      "Boundary choices are request-derived finite literals, not free NUMBER mode.",
+      "The post-generation pure resolver and projection receipt remain authoritative defense-in-depth."
+    ],
+    "semantic_state": [
+      "Preserve current construction-to-entry obligation projection, graph-link conditioning, enum coherence, cardinality ceilings, and coverage fail-closed logic.",
+      "Replace provenance STRING states only; free-text commitment, semantic_target, role_basis, and literal_path_basis remain JSON string states without evidence authority.",
+      "Grammar acceptance never implies semantic admission; V2 Pydantic, projection, graph, and semantic receipts remain separately required."
+    ]
+  },
+  "state_and_cache_requirements": [
+    "The initial DFA state must be constructed from an immutable source constraint context; the current zero-argument tracker state is not reusable unchanged.",
+    "The incremental tracker must retain the identical context during extension and full rebuild paths.",
+    "Every projector cache key for reference modes must include case/source binding identity, field role, selected start boundary, and reference substate—or the projector cache must be strictly request-local with an asserted context identity.",
+    "No trie/cache object may be shared across different source identities unless those identities are part of the key.",
+    "Full rebuild must reconstruct from the same context and yield a state equal to incremental parsing for the same decoded prefix.",
+    "Liveness receipts must record source-context identity and current reference field/substate without copying source text."
+  ],
+  "complexity_and_liveness_boundaries": [
+    "A source with B UTF-8 boundaries has B-1 start choices and B(B-1)/2 valid non-empty start/end pairs.",
+    "Choices should be represented as prefix tries over decimal literals rather than materializing repeated token-vocabulary intersections per pair.",
+    "The existing general STRING cache canonicalization must not be used for offset or SHA literal states.",
+    "A bounded zero-inference performance candidate must prove construction, allowed-set, cache, and full-rebuild liveness before any model probe.",
+    "Maximum ledger instances can contain 8 construction refs, 8 candidate refs, up to 8 authority refs, and 16 vehicle refs; worst-case 40 reference objects must be tested independently of Case 01's five."
+  ],
+  "what_remains_post_generation_only": [
+    "Whether selected spans semantically anchor the claimed proposition or creative vehicle.",
+    "Whether commitment and semantic_target descriptions are accurate and exhaustive.",
+    "Overlap and reconciliation meaning beyond interval arithmetic.",
+    "Event alignment, modality, timing, factual support, target class, construction role, and coverage truth.",
+    "Owner quality and Gate S specificity/portability."
+  ],
+  "zero_inference_acceptance_requirements_for_future_candidate": [
+    "Every accepted reference prefix can complete to at least one exact non-empty source slice.",
+    "Every completed reference resolves successfully with the approved pure resolver.",
+    "Wrong role, wrong SHA-256, mid-codepoint, end<=start, out-of-range, leading-zero, and cross-source completions have zero accepted paths.",
+    "Incremental and full-rebuild states and allowed character sets are equivalent for exhaustive small fixtures and sampled captured prefixes.",
+    "Context/cache isolation holds across two cases with identical lengths but different SHA-256 identities.",
+    "Canonical V2 output validates strictly, projects completely, and retains semantic validation as a distinct later phase.",
+    "No tokenizer/model/provider/inference call is required to establish character-DFA correctness; tokenizer-trie compatibility, if later authorized, remains zero inference and separately receipted."
+  ],
+  "explicit_non_goals": [
+    "No grammar, DFA, tracker, controller, projector, prompt, evaluator, runner, or runtime code in this step.",
+    "No evaluator rebinding, probe construction, tokenizer load, model load, provider call, inference, or Stage C.",
+    "No weakening of the pure resolver, projection receipt, semantic validators, or frozen V1 evidence."
+  ],
+  "authority": {
+    "contract_hardening": false,
+    "grammar_implementation": false,
+    "tracker_change": false,
+    "controller_change": false,
+    "projector_change": false,
+    "prompt_change": false,
+    "evaluator_rebinding": false,
+    "runner_rebinding": false,
+    "probe_construction": false,
+    "probe_execution": false,
+    "tokenizer_load": false,
+    "model_load": false,
+    "inference": false,
+    "stage_c": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  }
+}
