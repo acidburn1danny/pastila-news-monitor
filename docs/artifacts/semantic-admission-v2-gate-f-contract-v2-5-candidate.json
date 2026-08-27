@@ -1,0 +1,55 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-gate-f-contract-candidate",
+  "schema_version": "2.5.0-evaluation-candidate.1",
+  "gate_id": "FACTUAL_SEMANTIC",
+  "source_v2_4_candidate_identity": "763ff7b715e856092a84d316b9eddc8af896b20c44433223b14a6b849cec5b23",
+  "source_residual_design_identity": "df54c2c763d5f2f79e68e3088f2192bf102467ef661964d01a40db461e82660f",
+  "prompt_composition": "Frozen V2.4 execution prompt plus frozen V2.5 residual-discipline addendum inserted immediately before FACTUAL SUMMARY.",
+  "semantic_delta": [
+    "DELTA_FIRST_MATCHED_EVENT_AXIS_COMPARISON",
+    "NEGATIVE_EVIDENCE_FOR_MOTIVE_AND_CAUSALITY",
+    "CORE_PROPOSITION_GROUPING",
+    "DECISIVE_SUPPORTING_STATUS_DISCIPLINE",
+    "SOURCE_GROUNDED_SPANS"
+  ],
+  "deterministic_post_parse_delta": {
+    "validator": "Evaluation-only exact source-membership validation",
+    "candidate_span_rule": "Every non-null candidate_span is an exact contiguous substring of candidate commentary.",
+    "authority_support_rule": "Every non-null authority_support is an exact contiguous substring of factual summary.",
+    "failure_behavior": "Fail closed without repair, substitution, trimming, relabeling, or retry.",
+    "semantic_span_sufficiency": "Remains model-evaluated; deterministic validation proves source membership only."
+  },
+  "preserved": {
+    "v2_4_figurative_scope_contract": true,
+    "model_identity": "pastila-editor-core-v1.2-experimental",
+    "constrained_runner_sha256": "17a1669d5ec145bfc2ef746890e4d6534670e94b069a3a7d6307bb8127bd2ac9",
+    "constraint_identity": "3c022a83b78ddf82b545ada6b77855f4b53fc07bf0028b3c2db899fff72096f2",
+    "reason_code_namespace": "UNCHANGED",
+    "strict_response_schema": "UNCHANGED",
+    "immutable_factual_authority": true,
+    "gate_precedence": "UNCHANGED",
+    "gate_s": "UNCHANGED_AND_SEPARATE",
+    "fail_closed": true
+  },
+  "acceptance_contract": {
+    "HMCV1-SASC-01": "Exact PASS with no reasons.",
+    "HMCV1-SASC-10": "FAIL with certainty DECISIVE, timing SUPPORTING, life-stakes SUPPORTING, no causality or motive, and source-valid spans.",
+    "wrong_reason_is_nonconformant": true,
+    "span_membership_failure_is_nonconformant": true,
+    "hidden_from_generation_path": true
+  },
+  "prohibited": [
+    "MODEL_PROBE_BEFORE_SEPARATE_AUTHORITY",
+    "SPAN_REPAIR_OR_SUBSTITUTION",
+    "POST_HOC_REASON_RELABELING",
+    "CUE_WORD_ROUTING",
+    "GATE_S_CHANGE",
+    "CORE_OR_VOICE_GENERATION_CHANGE",
+    "MODEL_OR_GRAMMAR_CHANGE",
+    "SILENT_RETRY_OR_SELECTION",
+    "CURRICULUM_EXPOSURE_OR_TRAINING"
+  ],
+  "inference_authority": false,
+  "runtime_authority": false,
+  "training_authority": false
+}

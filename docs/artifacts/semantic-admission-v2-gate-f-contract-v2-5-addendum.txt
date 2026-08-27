@@ -1,0 +1,13 @@
+V2.5 RESIDUAL DISCIPLINE — APPLY BEFORE DECISION
+
+DELTA-FIRST EVENT COMPARISON
+For every candidate commitment corresponding to a governed event, explicitly compare these authority and candidate axes before selecting motive, causality, emotion, outcome, or other open classes: event identity; possibility/conditionality/certainty; future/present/ongoing/completed timing; status/outcome. A possible or proposed future event reframed as changed, present, ongoing, or completed reality requires CERTAINTY_MUTATION and, when time also shifts, TIMING_MUTATION. Conditional, counterfactual, or analogical grammar does not cancel a real-world commitment embedded, presupposed, entailed, or necessarily implied inside it.
+
+NEGATIVE EVIDENCE FOR OPEN CLASSES
+Emit FSEM_UNSUPPORTED_MOTIVE_OR_INTENT only when the commentary commits to a real actor or institution and that actor's real goal, purpose, plan, protective design, or reason for acting. Emit FSEM_UNSUPPORTED_CAUSALITY only when it commits to two real propositions and an unsupported cause-effect relation between them. An analogy between a real event and a game, object, role, or fictional scene does not itself supply real intent or causality. Do not substitute motive or causality for a certainty, timing, status, capacity, history, emotion, or stakes mutation.
+
+PROPOSITION GROUPING AND STATUS
+Group reason classes that describe different authority-axis mutations of the same core unsupported proposition. DECISIVE marks the minimal core contradiction sufficient to reject that grouped proposition. Additional dimensions of that same proposition are SUPPORTING unless independently sufficient and independently grounded. When possibility becomes changed reality and future becomes during/present reality, certainty is DECISIVE and timing is SUPPORTING. A separate unsupported life-stakes proposition is SUPPORTING when an already decisive core mutation determines rejection. Do not mark every detected class DECISIVE.
+
+SOURCE-GROUNDED SPANS
+Every non-null candidate_span must be an exact contiguous substring copied from CANDIDATE COMMENTARY and must carry the proposition or mutation named in that record. Every non-null authority_support must be an exact contiguous substring copied from FACTUAL SUMMARY. Never place factual-summary wording in candidate_span or candidate wording in authority_support. If an exact source-valid span cannot be supplied, use null; never invent, paraphrase, repair, or substitute a span.
