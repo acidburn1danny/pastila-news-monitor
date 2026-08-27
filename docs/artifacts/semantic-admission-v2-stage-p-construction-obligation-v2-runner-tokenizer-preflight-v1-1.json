@@ -1,0 +1,44 @@
+{
+  "artifact_type": "ZERO_EXECUTION_RUNNER_TOKENIZER_PREFLIGHT_BINDING",
+  "artifact_version": "1.1.0",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_RUNNER_TOKENIZER_PREFLIGHT_V1_1",
+  "canonical_identity": "7a8ad4379362debbbf72425d3c2328bc9bed778b45fe083a42d47f8407428b52",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "separator": "LF",
+    "ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_V2_RUNNER_TOKENIZER_PREFLIGHT_V1_1",
+      "4f2c2b790b1e6f843e81fba418935f629867cf179fda3f548caac9f1306d03c2",
+      "cb9f14284353fafba05094b005f3a97793dbb079e5bed81abacddaafb7d155bf",
+      "807ab62dc6e8435e1f507b9a4e718575a208f4c921c8b6e2a5029104fbb3a57f",
+      "974d5e6257256d7397cb68f90952c66809a536cf5525cbef58b3bbfce6791587",
+      "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c",
+      "ministral-tokenizer-decode-skip-special-cleanup-false-v1",
+      "ZERO_EXECUTION"
+    ]
+  },
+  "bindings": {
+    "runner_preflight_v1_identity": "4f2c2b790b1e6f843e81fba418935f629867cf179fda3f548caac9f1306d03c2",
+    "runner_protocol_identity": "cb9f14284353fafba05094b005f3a97793dbb079e5bed81abacddaafb7d155bf",
+    "tokenizer_adapter_verification_identity": "807ab62dc6e8435e1f507b9a4e718575a208f4c921c8b6e2a5029104fbb3a57f",
+    "projector_freeze_identity": "974d5e6257256d7397cb68f90952c66809a536cf5525cbef58b3bbfce6791587",
+    "tokenizer_identity": "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c",
+    "decoder_identity": "ministral-tokenizer-decode-skip-special-cleanup-false-v1"
+  },
+  "behavior": {
+    "validated_request_exact_type_required": true,
+    "injected_tokenizer_only": true,
+    "full_identity_validation_before_decode": true,
+    "immutable_piece_bundle": true,
+    "malformed_or_unbound_input": "FAIL_CLOSED"
+  },
+  "authority": {
+    "tokenizer_loading": false,
+    "model_or_adapter_loading": false,
+    "provider_or_inference": false,
+    "runner_or_executor_invocation": false,
+    "probe": false,
+    "stage_c": false,
+    "runtime_or_production": false
+  }
+}
