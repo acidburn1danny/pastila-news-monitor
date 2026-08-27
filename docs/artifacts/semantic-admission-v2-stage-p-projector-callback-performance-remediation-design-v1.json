@@ -1,0 +1,16 @@
+{
+  "artifact_type":"CALLBACK_PERFORMANCE_AND_LIFECYCLE_REMEDIATION_DESIGN",
+  "canonical_name":"STAGE_P_PROJECTOR_CALLBACK_PERFORMANCE_REMEDIATION_DESIGN_V1",
+  "canonical_identity":"a09fb335985adc40f96776bac7d891d6fe5579ca039920bd88915b685213680e",
+  "identity_derivation":{"algorithm":"sha256","ordered_utf8_fields":[
+    "STAGE_P_PROJECTOR_CALLBACK_PERFORMANCE_REMEDIATION_DESIGN_V1",
+    "731900ee07e29f79d251b6c47c05c6e2f0e581785db8b2c60b62d9e93e55dfb7",
+    "ORDINARY_STRING_SPLIT_TRIE","EXACT_BOUNDARY_FALLBACK",
+    "INDEPENDENT_WAIT_AND_CALLBACK_RECEIPTS","ZERO_INFERENCE"],"separator":"LF"},
+  "run2_receipt_identity":"731900ee07e29f79d251b6c47c05c6e2f0e581785db8b2c60b62d9e93e55dfb7",
+  "diagnosis":"The V1 exact-state projector traverses the full 221,961-node trie for every new ordinary STRING prefix; cold callbacks measured approximately five seconds.",
+  "remediation":"Preclassify wholly ordinary JSON-string token pieces and admit them by exact character and remaining-length invariants. Traverse a 4,045-node boundary trie for quote, escape, control, and boundary-crossing pieces. Retain full exact traversal outside ordinary STRING states.",
+  "instrumentation":"A separate heartbeat actor emits generation-wait receipts even before the first callback; completed callbacks record duration, token count, allowed count, DFA mode, and decoded hash without raw text.",
+  "authority":{"runner_or_executor_rebinding":false,"probe_construction_or_execution":false,
+    "model_or_inference":false,"runtime_or_production":false,"training":false}
+}
