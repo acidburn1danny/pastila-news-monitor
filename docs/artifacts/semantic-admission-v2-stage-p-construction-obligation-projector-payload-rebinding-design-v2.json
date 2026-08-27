@@ -1,0 +1,34 @@
+{
+  "artifact_type": "DURABLE_EXECUTOR_RUNNER_PAYLOAD_REBINDING_DESIGN",
+  "artifact_version": "2.0.0-evaluation.1",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_PROJECTOR_PAYLOAD_REBINDING_DESIGN_V2",
+  "canonical_identity": "d72e06ec2a27a8842d7d0ff537e28a0667652faf2be3dfb41d596ea994bdc1dc",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_PROJECTOR_PAYLOAD_REBINDING_DESIGN_V2",
+      "56701585d482975842f712dee77aa5d775567c4a79d320c252a43d53a51df45b",
+      "EXPLICIT_PREPARATION_PLUS_SOURCE_ENVELOPE",
+      "STRICT_CANONICAL_PAYLOAD",
+      "NO_HIDDEN_EXECUTOR_STATE",
+      "DESIGN_ONLY"
+    ],
+    "separator": "LF"
+  },
+  "approved_interface_binding_identity": "56701585d482975842f712dee77aa5d775567c4a79d320c252a43d53a51df45b",
+  "host_contract": "Accept one exact evaluator preparation object and emit canonical UTF-8 JSON bytes containing the unchanged prompt, token ceiling, frozen identities, and immutable source-binding envelope.",
+  "runner_contract": "Strictly validate the complete payload shape and identities, reconstruct the envelope, then construct the request-bound projector only when separately supplied audited tokenizer pieces.",
+  "blocker_repairs": [
+    "Rejected hidden mutable executor envelope state in favor of an explicit preparation argument.",
+    "Lazy-loaded the host-only request/provider candidate so WSL runner imports do not traverse provider contracts under Python 3.12.",
+    "Rebound the interface implementation identity after that minimal separation."
+  ],
+  "authority": {
+    "executor_invoke_or_subprocess": false,
+    "tokenizer_or_model_load": false,
+    "generation": false,
+    "probe_construction_or_execution": false,
+    "runtime_or_production": false,
+    "training": false
+  }
+}

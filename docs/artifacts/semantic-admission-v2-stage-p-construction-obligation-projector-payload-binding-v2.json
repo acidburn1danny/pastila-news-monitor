@@ -1,0 +1,50 @@
+{
+  "artifact_type": "ZERO_INFERENCE_DURABLE_EXECUTOR_RUNNER_PAYLOAD_BINDING",
+  "artifact_version": "2.0.0-evaluation.1",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_PROJECTOR_PAYLOAD_BINDING_V2",
+  "canonical_identity": "d981d787102b3bda89d9965d12339fb5f1c10554d05195d13bf65efa23c77769",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_PROJECTOR_PAYLOAD_BINDING_V2",
+      "d72e06ec2a27a8842d7d0ff537e28a0667652faf2be3dfb41d596ea994bdc1dc",
+      "56701585d482975842f712dee77aa5d775567c4a79d320c252a43d53a51df45b",
+      "95ad2d53cbc5c1e79d3772b58c2d41b6888736b00010d118397715d9d00e81c8",
+      "WSL_IMPORT_NO_TOKENIZER_MODEL",
+      "ZERO_INFERENCE_NO_PROBE"
+    ],
+    "separator": "LF"
+  },
+  "approved_design_identity": "d72e06ec2a27a8842d7d0ff537e28a0667652faf2be3dfb41d596ea994bdc1dc",
+  "approved_interface_binding_identity": "56701585d482975842f712dee77aa5d775567c4a79d320c252a43d53a51df45b",
+  "implementation_sha256": "95ad2d53cbc5c1e79d3772b58c2d41b6888736b00010d118397715d9d00e81c8",
+  "verification": {
+    "dependency_identity_checks": "PASS",
+    "canonical_host_payload_repeatability": "PASS",
+    "strict_runner_payload_shape": "PASS",
+    "identity_and_extra_field_tamper_rejection": "PASS",
+    "runner_context_and_projector_construction": "PASS",
+    "wsl_import_only": "PASS",
+    "wsl_python_version": "3.12.3",
+    "transformers_imported": false,
+    "torch_imported": false,
+    "peft_imported": false,
+    "executor_invoke_calls": 0,
+    "subprocess_or_wsl_runner_launches": 0,
+    "tokenizer_loads": 0,
+    "model_loads": 0,
+    "inference_calls": 0,
+    "probe_constructions": 0,
+    "probe_executions": 0
+  },
+  "authority": {
+    "runner_main_binding": false,
+    "durable_executor_invoke_binding": false,
+    "probe_construction_or_execution": false,
+    "case_execution": false,
+    "runtime_or_production": false,
+    "training": false
+  },
+  "status": "OWNER_REVIEW_REQUIRED",
+  "recommended_next_step": "Owner-review this payload binding. If approved, authorize only a separately versioned runner-main and durable-executor invoke binding with launch-forbidden zero-inference construction verification; do not construct a probe."
+}
