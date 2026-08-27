@@ -1,0 +1,50 @@
+{
+  "artifact_type": "ZERO_INFERENCE_EVALUATOR_RUNNER_INTERFACE_BINDING",
+  "artifact_version": "1.0.0-evaluation.1",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_PROJECTOR_INTERFACE_BINDING_V1",
+  "canonical_identity": "56701585d482975842f712dee77aa5d775567c4a79d320c252a43d53a51df45b",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_PROJECTOR_INTERFACE_BINDING_V1",
+      "d7f832bab763c4e97e508257843b6f57f2c8d1630e9e5c0fd8adf165828418b1",
+      "79bff5c249b993d68b158d5d36ada9c8fc9b1d3a66052cc50ecd6cf3640102e9",
+      "8da4dbf3575cbdc93f8fe9474ef23902f0b0eab45263d260076b8e026a7bb501",
+      "1207a729dc24180b77f905fc91d362cce0d626d9540411522443fa5cacd5774b",
+      "ZERO_INFERENCE_NO_EXECUTOR_NO_PROBE"
+    ],
+    "separator": "LF"
+  },
+  "approved_design_identity": "d7f832bab763c4e97e508257843b6f57f2c8d1630e9e5c0fd8adf165828418b1",
+  "approved_projector_freeze_identity": "79bff5c249b993d68b158d5d36ada9c8fc9b1d3a66052cc50ecd6cf3640102e9",
+  "implementation_sha256": "8da4dbf3575cbdc93f8fe9474ef23902f0b0eab45263d260076b8e026a7bb501",
+  "synthetic_context_identity": "1207a729dc24180b77f905fc91d362cce0d626d9540411522443fa5cacd5774b",
+  "verification": {
+    "real_request_candidate_identity": "e1dbb1f70e9e5c83e23b5e29dbf868d1a3ad7c01ebd4d6d2c82aaa192bb00f31",
+    "governed_prompt_render": "PASS",
+    "distinct_source_envelope": "PASS",
+    "source_hash_tamper_rejection": "PASS",
+    "context_identity_tamper_rejection": "PASS",
+    "runner_context_reconstruction": "PASS",
+    "synthetic_projector_construction": "PASS",
+    "synthetic_initial_allowed_tokens": [0],
+    "executor_objects": 0,
+    "subprocess_or_wsl_launches": 0,
+    "tokenizer_loads": 0,
+    "model_loads": 0,
+    "provider_calls": 0,
+    "inference_calls": 0,
+    "probe_constructions": 0,
+    "probe_executions": 0
+  },
+  "authority": {
+    "executor_or_durable_runner_binding": false,
+    "probe_construction_or_execution": false,
+    "case_execution": false,
+    "stage_c": false,
+    "runtime_or_production": false,
+    "training": false
+  },
+  "status": "OWNER_REVIEW_REQUIRED",
+  "recommended_next_step": "Owner-review the interface design and binding. If approved, authorize only separately versioned durable-executor/runner payload rebinding with zero-inference dependency and construction verification; do not construct a probe."
+}

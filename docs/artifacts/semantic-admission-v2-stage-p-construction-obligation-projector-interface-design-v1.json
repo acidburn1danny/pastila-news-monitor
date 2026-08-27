@@ -1,0 +1,46 @@
+{
+  "artifact_type": "EVALUATOR_RUNNER_INTERFACE_DESIGN",
+  "artifact_version": "1.0.0-evaluation.1",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_PROJECTOR_INTERFACE_DESIGN_V1",
+  "canonical_identity": "d7f832bab763c4e97e508257843b6f57f2c8d1630e9e5c0fd8adf165828418b1",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_PROJECTOR_INTERFACE_DESIGN_V1",
+      "79bff5c249b993d68b158d5d36ada9c8fc9b1d3a66052cc50ecd6cf3640102e9",
+      "e1dbb1f70e9e5c83e23b5e29dbf868d1a3ad7c01ebd4d6d2c82aaa192bb00f31",
+      "SEPARATE_IMMUTABLE_SOURCE_BINDING_ENVELOPE",
+      "NO_PROMPT_PARSE",
+      "DESIGN_ONLY"
+    ],
+    "separator": "LF"
+  },
+  "approved_projector_freeze_identity": "79bff5c249b993d68b158d5d36ada9c8fc9b1d3a66052cc50ecd6cf3640102e9",
+  "unchanged_request_candidate_identity": "e1dbb1f70e9e5c83e23b5e29dbf868d1a3ad7c01ebd4d6d2c82aaa192bb00f31",
+  "blocker_and_resolution": {
+    "blocker": "The legacy runner receives only rendered prompt text and cannot construct the request-bound V2 source-reference context without unsafe prompt parsing.",
+    "resolution": "Evaluator preparation emits the unchanged governed prompt plus a separate immutable source-binding envelope. Runner binding reconstructs and verifies the context before constructing the projector.",
+    "legacy_execution_files_modified": false
+  },
+  "envelope_contract": {
+    "candidate_and_authority_encoding": "canonical UTF-8 bytes represented as strict base64",
+    "source_hashes": "SHA-256 verified before binding",
+    "context_identity": "recomputed and compared exactly",
+    "projector_tokenizer_decoder_identities": "exact frozen values",
+    "prompt_is_source_of_constraint_authority": false,
+    "prompt_parsing_permitted": false
+  },
+  "precedence": [
+    "schema and version identity", "projector/tokenizer/decoder identity",
+    "strict base64 decoding", "source SHA-256 verification",
+    "request-context identity verification", "projector construction"
+  ],
+  "authority": {
+    "executor_binding": false,
+    "subprocess_or_wsl_launch": false,
+    "tokenizer_or_model_loading": false,
+    "probe_construction_or_execution": false,
+    "runtime_or_production": false,
+    "training": false
+  }
+}

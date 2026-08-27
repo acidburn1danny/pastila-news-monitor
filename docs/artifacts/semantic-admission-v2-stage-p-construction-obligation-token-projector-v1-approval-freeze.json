@@ -1,0 +1,17 @@
+{
+  "artifact_type": "OWNER_FREEZE_RECEIPT",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_TOKEN_PROJECTOR_V1_APPROVAL_FREEZE",
+  "canonical_identity": "79bff5c249b993d68b158d5d36ada9c8fc9b1d3a66052cc50ecd6cf3640102e9",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_TOKEN_PROJECTOR_V1_APPROVAL_FREEZE",
+      "ab308048582a1a22afadb881110e7ba83f8ac0e15bc44c3f6379e71942397ce7",
+      "OWNER_APPROVED"
+    ],
+    "separator": "LF"
+  },
+  "approved_candidate_identity": "ab308048582a1a22afadb881110e7ba83f8ac0e15bc44c3f6379e71942397ce7",
+  "status": "OWNER_APPROVED_FROZEN",
+  "authority_expansion": false
+}
