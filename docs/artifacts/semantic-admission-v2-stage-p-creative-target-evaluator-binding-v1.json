@@ -1,0 +1,51 @@
+{
+  "artifact_id": "STAGE_P_CREATIVE_TARGET_EVALUATOR_BINDING_V1",
+  "binding_identity": "a6bba6cf229e5cf75352c2a0333b186841528e767e9a6638f7b7bef1e11e6ace",
+  "approved_request_candidate_identity": "79b27bb6d7e35dfa9153cafb724e82d5689973b49605a9ea09a4b6462f01d9cc",
+  "approved_runner_executor_binding_identity": "c1fcd8ae5a9e95f08f09f6cc5f2d7c90c63eeebd7148b706885282514b35fa56",
+  "lifecycle": "ZERO_INFERENCE_EVALUATOR_BOUND_CASE01_BLOCKED_NO_PROBE",
+  "identities": {
+    "evaluator_sha256": "ca243e0e6cbc6a1dbe44a28006a28846fe8752c34f1abac3b1a084bd1283ac0b",
+    "executor_sha256": "d162eddfc94218a0c2a8e0752cfbb67f02f03b9691ddbb63c2891b4ffaf1f529",
+    "evaluator_identity": "9f8f441ffc01cd964e562c3aef64ccaa91d8f1c091d01e6296dd4d2a7dc58c03",
+    "model_identity": "pastila-editor-core-v1.2-experimental",
+    "prompt_identity": "sha256:a7a1fb35b356889b8465d767c5111f3b1b9aed2a449417a2089f694ba73a8824",
+    "schema_identity": "sha256:3dccbf050677900fed11899295ed5724f638270116b72ebcda26a26255586569",
+    "constraint_identity": "sha256:e64ab5b70479399f13e9ce9ba299d61dfbd044276109ff7ff98f1e2b29078380",
+    "grammar_identity": "sha256:d81f9588383bf93e46a1c57a5e5ab9b284af38d13e43223f7a29a656f1415adf",
+    "tokenizer_identity": "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c"
+  },
+  "binding_properties": {
+    "exact_executor_type_required": true,
+    "exact_request_candidate_required": true,
+    "exact_rendered_prompt_preserved": true,
+    "application_authority_constructed": true,
+    "timeout_seconds": 240.0,
+    "subprocess_launch_forbidden": true,
+    "probe_wrapper_created": false,
+    "stage_c_edge": false
+  },
+  "zero_inference_verification": {
+    "constructor_binding": "PASS",
+    "frozen_case_request_render": "PASS",
+    "application_authority": "PASS",
+    "runner_calls": 0,
+    "tokenizer_loads": 0,
+    "model_loads": 0,
+    "provider_calls": 0,
+    "inference_calls": 0,
+    "case01_executed": false,
+    "stage_c_calls": 0
+  },
+  "authority": {
+    "probe_construction": false,
+    "case01_execution": false,
+    "stage_c": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  },
+  "status": "OWNER_REVIEW_REQUIRED",
+  "recommended_next_step": "Owner-review this evaluator binding, then authorize construction and zero-inference verification of a new exclusive one-shot Creative Target Case 01 probe binding. Actual execution remains separately gated."
+}

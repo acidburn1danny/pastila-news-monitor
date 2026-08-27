@@ -1,0 +1,18 @@
+{
+  "result": "PASS",
+  "binding_identity": "a6bba6cf229e5cf75352c2a0333b186841528e767e9a6638f7b7bef1e11e6ace",
+  "constructor_binding": "PASS",
+  "frozen_case_request_render": "PASS",
+  "application_authority": "PASS",
+  "subprocess_launch_forbidden": "PASS",
+  "timeout_seconds": 240.0,
+  "probe_wrapper_created": false,
+  "stage_c_edge": false,
+  "runner_calls": 0,
+  "tokenizer_loads": 0,
+  "model_loads": 0,
+  "provider_calls": 0,
+  "inference_calls": 0,
+  "case01_executed": false,
+  "stage_c_calls": 0
+}
