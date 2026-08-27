@@ -1,0 +1,14 @@
+{
+  "result": "PASS",
+  "mode": "ZERO_INFERENCE_CHARACTER_CONSTRAINT",
+  "schema_identity": "sha256:a61f16046045ca015dd2001393ab58e7ab7c94f50cbfc49f7df959bd45b3338c",
+  "constraint_source_identity": "sha256:09035ac1c285feb8c6a3c8ddb1972bf34b769fe04123f25a28e689255571b044",
+  "grammar_identity": "sha256:28539234a7c6a7815fbf47d506855a3d17cd236b5a8c7d3a37fd2c3abc7cb393",
+  "tests": {"passed": 22, "failed": 0},
+  "tokenizer_loads": 0,
+  "model_loads": 0,
+  "model_calls": 0,
+  "provider_calls": 0,
+  "runner_calls": 0,
+  "inference_executed": false
+}

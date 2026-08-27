@@ -1,0 +1,42 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-scope-graph-v1-1-constraint-candidate",
+  "schema_version": "1.1.0-evaluation.1",
+  "lifecycle": "ZERO_INFERENCE_CONSTRAINT_READY_FOR_OWNER_REVIEW",
+  "approved_contract_prompt_candidate_identity": "62f875ba4a2ac65603b4c3d48531f252b15185d2a6a37562e40410f553ef0d3a",
+  "candidate_identity": "90505c23a205e12199224eaa430fd42729f5a0e7985795fa42620229c5b7fe81",
+  "schema_identity": "sha256:a61f16046045ca015dd2001393ab58e7ab7c94f50cbfc49f7df959bd45b3338c",
+  "constraint_source_identity": "sha256:09035ac1c285feb8c6a3c8ddb1972bf34b769fe04123f25a28e689255571b044",
+  "grammar_identity": "sha256:28539234a7c6a7815fbf47d506855a3d17cd236b5a8c7d3a37fd2c3abc7cb393",
+  "grammar_delta": [
+    "REAL_WORLD_COMMITMENT with null authority_support exposes only NEW_UNSUPPORTED_EVENT.",
+    "REAL_WORLD_COMMITMENT with non-null authority_support retains GOVERNED_EVENT and NEW_UNSUPPORTED_EVENT.",
+    "The invalid null-support GOVERNED_EVENT path is rejected at the event enum, before entry or document closure."
+  ],
+  "terminal_path_result": {
+    "null_support_governed_event": "PROJECTED_OUT_BEFORE_EMISSION",
+    "null_support_new_unsupported": "PASS",
+    "supported_governed_event": "PASS",
+    "supported_new_unsupported_partial_support": "PASS",
+    "integrated_creative_with_governed_literal": "PASS",
+    "pure_integrated_creative": "PASS",
+    "combined_contract_and_constraint_tests": "22_PASS"
+  },
+  "preserved_boundaries": [
+    "V1.1 contract and prompt unchanged",
+    "Existing entry, relation, basis, and receipt namespaces unchanged",
+    "NEW_UNSUPPORTED_EVENT may retain partial support",
+    "No semantic proxy based on copied words, entities, quantities, or commitment equality",
+    "No tokenizer, request, runner, provider, model, or inference edge"
+  ],
+  "bounded_next_step_if_authorized": "Perform a zero-inference compatibility profile against the frozen local tokenizer for the exact V1.1 schema and grammar identities, then stop before request construction, runner changes, or inference.",
+  "authority": {
+    "tokenizer_execution": false,
+    "request_or_runner_modification": false,
+    "probe_execution": false,
+    "stage_c": false,
+    "runtime": false,
+    "production": false,
+    "curriculum": false,
+    "training": false
+  }
+}
