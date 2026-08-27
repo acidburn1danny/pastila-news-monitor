@@ -14,6 +14,16 @@ from pathlib import Path
 
 from pastila_scout import __version__
 from pastila_scout.category_integrity import CATEGORY_ORDER, normalize_category
+from pastila_scout.chief_editor_transition_v2 import (
+    ChiefEditorTransitionWorkflowStoreV1,
+    reconcile_transition_workflow,
+    transition_sidecar_path,
+)
+from pastila_scout.chief_editor_v2_handoff import (
+    ChiefEditorV2StoryReferenceV1,
+    create_chief_editor_v2_story_reference,
+    resolve_chief_editor_v2_story_reference,
+)
 from pastila_scout.contracts.identity import (
     assign_scout_input_identity,
     verify_scout_input_identity,
@@ -45,6 +55,7 @@ from pastila_scout.episode_draft_v1 import (
     EpisodeDraftRevisionRefV1,
     EpisodeDraftRevisionRepositoryV1,
 )
+from pastila_scout.event_authority_v1 import build_event_authority_bundle
 
 NORMAL_SCOUT_RESULT_LIMIT = 60
 _NORMAL_SCOUT_BASE_CATEGORY_CAPACITIES = (
@@ -81,6 +92,7 @@ class ChiefEditorItemV1:
     material_reference: str
     section: str = ""
     note: str = ""
+    v2_story_reference: ChiefEditorV2StoryReferenceV1 | None = None
 
 
 class EditorWorkItemStatusV1(StrEnum):
@@ -162,6 +174,7 @@ class ActiveProjectV1:
     current_episode_draft_revision: EpisodeDraftRevisionRefV1 | None = None
     editor_terminal_failures: tuple[EpisodeDraftExcludedFailureV1, ...] = ()
     episode_draft_approval: EpisodeDraftApprovalV1 | None = None
+    latest_handoff_event_ids: tuple[int, ...] = ()
 
     @property
     def candidate(self):
@@ -468,6 +481,7 @@ class ActiveProjectStoreV1:
             episode_draft_approval=(
                 None if existing is None else existing.episode_draft_approval
             ),
+            latest_handoff_event_ids=(event_id,),
         )
         self._write(project)
         return project
@@ -545,9 +559,41 @@ class ActiveProjectStoreV1:
             episode_draft_approval=(
                 None if existing is None else existing.episode_draft_approval
             ),
+            latest_handoff_event_ids=tuple(item.ranked_events[0].event_id for item in inputs),
         )
         self._write(project)
         return project, len(event_ids) - len(inputs)
+
+    def record_latest_handoff_view(
+        self, *, event_ids: tuple[int, ...]
+    ) -> ActiveProjectV1:
+        """Persist the latest handoff projection without deleting worklist history."""
+        project = self._required()
+        known = {item.event_id for item in project.editor_worklist}
+        if (
+            type(event_ids) is not tuple
+            or not event_ids
+            or any(type(item) is not int or item not in known for item in event_ids)
+            or len(event_ids) != len(set(event_ids))
+        ):
+            raise ValueError("Selectie Editor invalida")
+        updated = ActiveProjectV1(
+            project.project_id,
+            project.title,
+            project.handed_off_at,
+            project.scout_input,
+            project.editor_materials,
+            project.chief_editor_items,
+            project.chief_editor_title,
+            project.chief_editor_updated_at,
+            project.editor_worklist,
+            project.current_episode_draft_revision,
+            project.editor_terminal_failures,
+            project.episode_draft_approval,
+            event_ids,
+        )
+        self._write(updated)
+        return updated
 
     def record_editor_output(
         self, *, output_path: Path, payload_sha256: str
@@ -572,6 +618,18 @@ class ActiveProjectStoreV1:
             output_path=output_path,
             payload_sha256=payload_sha256,
             require_running=True,
+        )
+
+    def record_regenerated_editor_output_for_event(
+        self, *, event_id: int, output_path: Path, payload_sha256: str
+    ) -> ActiveProjectV1:
+        """Replace one generated material without changing its worklist lifecycle."""
+
+        return self._record_editor_output(
+            event_id=event_id,
+            output_path=output_path,
+            payload_sha256=payload_sha256,
+            require_running=False,
         )
 
     def _record_editor_output(
@@ -617,7 +675,17 @@ class ActiveProjectStoreV1:
         ) + (material,)
         chief = project.chief_editor_items
         if reference not in {item.material_reference for item in chief}:
-            chief += (ChiefEditorItemV1(reference),)
+            v2_reference = (
+                create_chief_editor_v2_story_reference(
+                    material_reference=reference,
+                    event_id=event_id,
+                    output_path=output_path,
+                    payload_sha256=payload_sha256,
+                )
+                if output_path.is_file()
+                else None
+            )
+            chief += (ChiefEditorItemV1(reference, v2_story_reference=v2_reference),)
         updated = ActiveProjectV1(
             project.project_id,
             project.title,
@@ -631,8 +699,10 @@ class ActiveProjectStoreV1:
             project.current_episode_draft_revision,
             project.editor_terminal_failures,
             project.episode_draft_approval,
+            project.latest_handoff_event_ids,
         )
         self._write(updated)
+        self._sync_chief_editor_transitions(updated)
         # Observation-only and failure-isolated: evidence can never block a
         # successful Editor material or alter its generation path.
         try:
@@ -664,21 +734,109 @@ class ActiveProjectStoreV1:
             or any(len(item.section) > 80 or len(item.note) > 500 for item in items)
         ):
             raise ValueError("Structură Chief Editor invalidă")
+        existing_by_reference = {
+            item.material_reference: item for item in project.chief_editor_items
+        }
+        preserved_items = tuple(
+            item
+            if item.v2_story_reference is not None
+            else ChiefEditorItemV1(
+                material_reference=item.material_reference,
+                section=item.section,
+                note=item.note,
+                v2_story_reference=(
+                    existing_by_reference[item.material_reference].v2_story_reference
+                    if item.material_reference in existing_by_reference
+                    else None
+                ),
+            )
+            for item in items
+        )
+        try:
+            for item in preserved_items:
+                if item.v2_story_reference is not None:
+                    resolve_chief_editor_v2_story_reference(item.v2_story_reference)
+        except (OSError, TypeError, ValueError) as error:
+            raise ValueError("Referință Chief Editor V2 invalidă") from error
         updated = ActiveProjectV1(
             project.project_id,
             project.title,
             project.handed_off_at,
             project.scout_input,
             project.editor_materials,
-            items,
+            preserved_items,
             title,
             datetime.now(UTC),
             project.editor_worklist,
             project.current_episode_draft_revision,
             project.editor_terminal_failures,
             project.episode_draft_approval,
+            project.latest_handoff_event_ids,
         )
         self._write(updated)
+        self._sync_chief_editor_transitions(updated)
+        return updated
+
+    def promote_editor_v2_revision(
+        self,
+        *,
+        event_id: int,
+        expected_reference: ChiefEditorV2StoryReferenceV1,
+        output_path: Path,
+        payload_sha256: str,
+    ) -> ActiveProjectV1:
+        """Atomically rebind one story to an explicitly derived exact V2 revision."""
+
+        project = self._required()
+        reference = f"editor-material-v1:event:{event_id}"
+        materials = tuple(item for item in project.editor_materials if item.reference == reference)
+        chief = tuple(item for item in project.chief_editor_items if item.material_reference == reference)
+        if len(materials) != 1 or len(chief) != 1 or chief[0].v2_story_reference is None:
+            raise ValueError("Promovare revizie Voice invalidă")
+        promoted_reference = create_chief_editor_v2_story_reference(
+            material_reference=reference,
+            event_id=event_id,
+            output_path=output_path,
+            payload_sha256=payload_sha256,
+        )
+        if promoted_reference is None:
+            raise ValueError("Promovare revizie Voice invalidă")
+        if chief[0].v2_story_reference == promoted_reference:
+            return project
+        if chief[0].v2_story_reference != expected_reference:
+            raise ValueError("Promovare revizie Voice învechită")
+        old_material = materials[0]
+        promoted_material = EditorMaterialV1(
+            reference=reference,
+            event_id=event_id,
+            title=old_material.title,
+            summary=old_material.summary,
+            output_path=str(output_path),
+            payload_sha256=payload_sha256,
+        )
+        promoted_item = ChiefEditorItemV1(
+            material_reference=reference,
+            section=chief[0].section,
+            note=chief[0].note,
+            v2_story_reference=promoted_reference,
+        )
+        updated = ActiveProjectV1(
+            project.project_id,
+            project.title,
+            project.handed_off_at,
+            project.scout_input,
+            tuple(promoted_material if item.reference == reference else item for item in project.editor_materials),
+            tuple(promoted_item if item.material_reference == reference else item for item in project.chief_editor_items),
+            project.chief_editor_title,
+            datetime.now(UTC),
+            project.editor_worklist,
+            project.current_episode_draft_revision,
+            project.editor_terminal_failures,
+            project.episode_draft_approval,
+            project.latest_handoff_event_ids,
+        )
+        self._write(updated)
+        self._sync_chief_editor_transitions(updated)
         return updated
 
     def export_chief_editor(self, *, destination: Path) -> str:
@@ -760,6 +918,7 @@ class ActiveProjectStoreV1:
             project.current_episode_draft_revision,
             project.editor_terminal_failures,
             project.episode_draft_approval,
+            project.latest_handoff_event_ids,
         )
         self._write(updated)
         return updated
@@ -796,6 +955,7 @@ class ActiveProjectStoreV1:
             project.current_episode_draft_revision,
             project.editor_terminal_failures,
             project.episode_draft_approval,
+            project.latest_handoff_event_ids,
         )
         self._write(updated)
         return updated
@@ -900,6 +1060,7 @@ class ActiveProjectStoreV1:
             reference,
             project.editor_terminal_failures,
             project.episode_draft_approval,
+            project.latest_handoff_event_ids,
         )
         self._write(updated)
         return updated
@@ -968,6 +1129,7 @@ class ActiveProjectStoreV1:
             project.current_episode_draft_revision,
             project.editor_terminal_failures,
             approval,
+            project.latest_handoff_event_ids,
         )
         return self._persist_episode_draft_approval(previous=project, updated=updated)
 
@@ -1015,6 +1177,7 @@ class ActiveProjectStoreV1:
             project.current_episode_draft_revision,
             project.editor_terminal_failures,
             approved,
+            project.latest_handoff_event_ids,
         )
         return self._persist_episode_draft_approval(previous=project, updated=updated)
 
@@ -1064,12 +1227,13 @@ class ActiveProjectStoreV1:
             or any(
                 item.event_id == evidence.event_id for item in project.editor_materials
             )
-            or any(
-                item.event_id == evidence.event_id
-                for item in project.editor_terminal_failures
-            )
         ):
             raise ValueError("Evidenta esec Editor invalida")
+        failures = tuple(
+            item
+            for item in project.editor_terminal_failures
+            if item.event_id != evidence.event_id
+        )
         updated = ActiveProjectV1(
             project.project_id,
             project.title,
@@ -1081,8 +1245,9 @@ class ActiveProjectStoreV1:
             project.chief_editor_updated_at,
             project.editor_worklist,
             project.current_episode_draft_revision,
-            (*project.editor_terminal_failures, evidence),
+            (*failures, evidence),
             project.episode_draft_approval,
+            project.latest_handoff_event_ids,
         )
         self._write(updated)
         return updated
@@ -1093,10 +1258,30 @@ class ActiveProjectStoreV1:
             raise ValueError("Nu există proiect activ")
         return project
 
+    def _sync_chief_editor_transitions(self, project: ActiveProjectV1) -> None:
+        path = transition_sidecar_path(self.project_path)
+        store = ChiefEditorTransitionWorkflowStoreV1(path)
+        existing = store.load() if path.is_file() else None
+        entries = tuple(
+            (item.v2_story_reference, item.material_reference, item.note)
+            for item in project.chief_editor_items
+        )
+        if existing is None and len(entries) < 2:
+            return
+        sidecar = reconcile_transition_workflow(
+            references_and_intents=entries,
+            existing=existing,
+            now=datetime.now(UTC),
+        )
+        store.save(sidecar)
+
     def _write(self, project: ActiveProjectV1) -> None:
         self.project_path.parent.mkdir(parents=True, exist_ok=True)
         worklist = _synchronize_editor_worklist(
             project.scout_input.ranked_events, project.editor_worklist
+        )
+        latest_handoff = project.latest_handoff_event_ids or tuple(
+            item.event_id for item in worklist
         )
         payload = {
             "version": "active-project-v1",
@@ -1119,6 +1304,7 @@ class ActiveProjectStoreV1:
                 {"event_id": item.event_id, "status": item.status.value}
                 for item in worklist
             ],
+            "latest_handoff_event_ids": list(latest_handoff),
             "current_episode_draft_revision": (
                 None
                 if project.current_episode_draft_revision is None
@@ -1150,6 +1336,15 @@ class ActiveProjectStoreV1:
                         "material_reference": item.material_reference,
                         "section": item.section,
                         "note": item.note,
+                        **(
+                            {}
+                            if item.v2_story_reference is None
+                            else {
+                                "v2_story_reference": item.v2_story_reference.model_dump(
+                                    mode="json"
+                                )
+                            }
+                        ),
                     }
                     for item in project.chief_editor_items
                 ],
@@ -1190,10 +1385,23 @@ class ActiveProjectStoreV1:
         )
         chief_data = data.get("chief_editor", {})
         chief_items = tuple(
-            ChiefEditorItemV1(**item) for item in chief_data.get("items", ())
+            ChiefEditorItemV1(
+                material_reference=item["material_reference"],
+                section=item.get("section", ""),
+                note=item.get("note", ""),
+                v2_story_reference=(
+                    None
+                    if item.get("v2_story_reference") is None
+                    else ChiefEditorV2StoryReferenceV1.model_validate(
+                        item["v2_story_reference"]
+                    )
+                ),
+            )
+            for item in chief_data.get("items", ())
         )
         updated_at = chief_data.get("updated_at")
         raw_worklist = data.get("editor_worklist")
+        raw_latest_handoff = data.get("latest_handoff_event_ids")
         raw_draft_reference = data.get("current_episode_draft_revision")
         terminal_failures = tuple(
             EpisodeDraftExcludedFailureV1.model_validate_json(
@@ -1259,6 +1467,11 @@ class ActiveProjectStoreV1:
             current_episode_draft_revision=draft_reference,
             editor_terminal_failures=terminal_failures,
             episode_draft_approval=approval,
+            latest_handoff_event_ids=(
+                tuple(item.event_id for item in worklist)
+                if raw_latest_handoff is None
+                else tuple(raw_latest_handoff)
+            ),
         )
         if (
             not source.ranked_events
@@ -1267,6 +1480,14 @@ class ActiveProjectStoreV1:
                 project.episode_draft_approval is not None
                 and project.episode_draft_approval.project_id != project.project_id
             )
+            or not project.latest_handoff_event_ids
+            or any(
+                type(event_id) is not int
+                or event_id not in {item.event_id for item in project.editor_worklist}
+                for event_id in project.latest_handoff_event_ids
+            )
+            or len(project.latest_handoff_event_ids)
+            != len(set(project.latest_handoff_event_ids))
         ):
             raise ValueError("Invalid active project")
         if recovered_running:
@@ -1401,15 +1622,26 @@ def _scout_input(database_path: Path, event_id: int) -> ScoutEditorInputV1:
             or not str(event["summary"] or "").strip()
         ):
             raise ValueError("Candidate incomplet")
-        articles = connection.execute(
-            """SELECT a.source_id, COALESCE(s.name, a.source_id) source_name,
-                      a.url, a.title, a.published_at
+        authority_articles = connection.execute(
+            """SELECT a.id, a.source_id, COALESCE(s.name, a.source_id) source_name,
+                      a.url, a.title, a.summary, a.published_at
                FROM articles a LEFT JOIN sources s ON s.id = a.source_id
-               WHERE a.event_id = ? ORDER BY a.id LIMIT 3""",
+               WHERE a.event_id = ? ORDER BY a.id""",
             (event_id,),
         ).fetchall()
-        if not articles:
+        if not authority_articles:
             raise ValueError("Candidate fără sursă")
+        articles = authority_articles[:3]
+        try:
+            authority_bundle = build_event_authority_bundle(
+                event_id=event_id,
+                canonical_article_id=int(
+                    event["canonical_article_id"] or authority_articles[0]["id"]
+                ),
+                articles=authority_articles,
+            )
+        except ValueError:
+            authority_bundle = None
         category = _category(event["category"])
         now = datetime.now(UTC)
         component = lambda name: {
@@ -1442,6 +1674,11 @@ def _scout_input(database_path: Path, event_id: int) -> ScoutEditorInputV1:
                     "event_id": event_id,
                     "canonical_title": str(event["canonical_title"]).strip(),
                     "canonical_summary": str(event["summary"]).strip(),
+                    "event_authority_bundle": (
+                        None
+                        if authority_bundle is None
+                        else authority_bundle.model_dump(mode="json")
+                    ),
                     "publication_bounds": {
                         "first_published_at": event["first_published_at"],
                         "last_published_at": event["last_published_at"],
@@ -1449,7 +1686,19 @@ def _scout_input(database_path: Path, event_id: int) -> ScoutEditorInputV1:
                     "categories": (category,),
                     "source_count": int(event["source_count"]),
                     "article_count": int(event["article_count"]),
-                    "source_provenance": tuple(dict(row) for row in articles),
+                    "source_provenance": tuple(
+                        {
+                            key: row[key]
+                            for key in (
+                                "source_id",
+                                "source_name",
+                                "url",
+                                "title",
+                                "published_at",
+                            )
+                        }
+                        for row in articles
+                    ),
                     "provenance_truncated": int(event["article_count"]) > len(articles),
                     "deterministic_score": {
                         "score": 0.0,
