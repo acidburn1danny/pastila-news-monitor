@@ -1,0 +1,48 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-stage-p-scope-graph-liveness-candidate",
+  "schema_version": "1.0.0-evaluation.1",
+  "candidate_identity": "2b447c98dd81f6b2fa4f33c559b5b38510c46318f9b896da21503abe0afee92b",
+  "approved_design_identity": "734a7f291998588ea577216c137696ac5bce742140661131b3c05cd410e5b19c",
+  "lifecycle": "ZERO_INFERENCE_CANDIDATE_NOT_RUNNER_BOUND",
+  "implementation_identities": {
+    "early_coverage_constraint_sha256": "e928d3ba6fcc8590afe89ded92500437ff8086d14430dba3e4fe983efaf3cb18",
+    "liveness_projector_sha256": "5d1454d2f44d67f04a6e8b6a4744dc57adafa8eb374c8dd78848048f4a8eb01c",
+    "liveness_controller_sha256": "c192abffb0d2b13c70d603cbacce645b52e607ee037b64826d1f046204057e94",
+    "zero_inference_characterizer_sha256": "c6e4f5acb57dcf15932396237174324d0d9521573bd6b179769f8dfbf98ade25"
+  },
+  "diagnosis": {
+    "co_token_dead_end_hypothesis": "FALSIFIED",
+    "late_coverage_validation_hypothesis": "SUPPORTED",
+    "v1_1_complete_receipt_choices": ["COMPLETE", "INDETERMINATE"],
+    "candidate_complete_receipt_choices": ["COMPLETE"]
+  },
+  "candidate_behavior": [
+    "Project COMPLETE versus INDETERMINATE from already-emitted ledger and receipt invariants before coverage-decision bytes are emitted.",
+    "Preserve REAL_WORLD_COMMITMENT with null authority_support for genuinely unsupported propositions.",
+    "Retain governed-support, source-membership, graph, receipt, and terminal invariants unchanged.",
+    "Prune tokenization-only dead ends one callback earlier as defense-in-depth.",
+    "Expose CONSTRAINT_LIVENESS_FAILURE with decoded byte count/hash and DFA state instead of collapsing it into generic transport failure."
+  ],
+  "real_tokenizer_evidence": {
+    "result": "PASS",
+    "run2_partial_sha256": "db31369f51a901ed7569032607f65b9014eacf76ac04099b3fd7bd1ba46986f2",
+    "tokenizer_vocabulary_size": 131072,
+    "model_module_imported": false,
+    "model_loads": 0,
+    "model_calls": 0,
+    "provider_calls": 0,
+    "inference_calls": 0
+  },
+  "boundaries": {
+    "runner_bound": false,
+    "prompt_changed": false,
+    "schema_changed": false,
+    "model_changed": false,
+    "track_b_started": false,
+    "probe_authorized": false,
+    "runtime_authority": false,
+    "production_authority": false,
+    "training_authority": false
+  },
+  "recommended_next_step": "Owner-review the Track-A candidate, then authorize zero-inference runner/identity binding and exhaustive structural liveness verification only; do not probe yet."
+}
