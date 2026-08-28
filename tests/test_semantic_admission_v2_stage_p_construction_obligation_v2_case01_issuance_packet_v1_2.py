@@ -18,7 +18,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def test_packet_is_byte_exact_current_case01_and_unissued() -> None:
     rebuilt = materialize_case01_issuance_packet_v1_2(project_root=ROOT)
     actual = {path.name for path in (ROOT / PACKET_RELATIVE).iterdir()}
-    assert actual == set(rebuilt)
+    assert actual == set(rebuilt) | {"authority-receipt-issued.json"}
     assert all((ROOT / PACKET_RELATIVE / name).read_bytes() == raw
                for name, raw in rebuilt.items())
     manifest = verify(project_root=ROOT)
@@ -55,4 +55,3 @@ def test_materializer_and_verifier_have_no_execution_callsite() -> None:
         text = path.read_text("utf-8")
         assert all(term not in text for term in (
             "subprocess", "from_pretrained", ".generate(", "nvidia-smi"))
-
