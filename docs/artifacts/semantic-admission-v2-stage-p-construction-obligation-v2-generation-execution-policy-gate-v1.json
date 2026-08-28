@@ -1,0 +1,77 @@
+{
+  "artifact_type": "SOURCE_ONLY_GENERATION_EXECUTION_POLICY_GATE",
+  "artifact_version": "1.0.0",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_GENERATION_EXECUTION_POLICY_GATE_V1",
+  "canonical_identity": "7a6e3629275e80d61b0af20d88393b158f2ac1154d6e9017f5bf3489f5d6b7d4",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "separator": "LF",
+    "ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_V2_GENERATION_EXECUTION_POLICY_GATE_V1",
+      "9410ef484986fc14534334ebf6a6912d381e2882b8fca948de4b215b2e7a8931",
+      "bb5a4767bb2eca6d2a71e0aacc2cbaaeab6e01a5baa693cb1330474385e5b6f9",
+      "66b89ee1b4d8f9832b86a59c9b83c07f8a2c0c3e1a9f25494ad50ed7c4b2ccdd",
+      "8ddafa5e60e892abf56a2b67d9ab646deb94a7b024e739ea8ea967c45e3ec39f",
+      "1dc94cda37c270fda49bca7b430bbad4970b3afadf2d0e348cfc3479161e1a49",
+      "cb9f14284353fafba05094b005f3a97793dbb079e5bed81abacddaafb7d155bf",
+      "09de75b7ecc52dedde19bf1f773c52ecf5a0a9da72da30a28113778b3867398f",
+      "4f2c2b790b1e6f843e81fba418935f629867cf179fda3f548caac9f1306d03c2",
+      "7a8ad4379362debbbf72425d3c2328bc9bed778b45fe083a42d47f8407428b52",
+      "83074527007e585be686caac6a6951df000e3de0052ff104e45bdc529ce44908",
+      "f21bc27ccdbd1941783e2cfc893eede389e5a56207342a97d7fafc66b4506f91",
+      "a4f958ac8b793da4e5c9d2d91145b8d49c2ca8624d209e9aed0670eced35f678",
+      "pastila-editor-core-v1.2-experimental",
+      "02ab80de6c994bede334dc87faaa20a30302d445a8ac162494428789df1b6cc5",
+      "scout:provider-descriptor-v2:72aec3ff060fbedee82a8264c15e2033f07bd99ea84cdb0152c637cf4aa0f159",
+      "LOCAL_MODEL_DIRECT_EXECUTION",
+      "OLLAMA_REQUEST_PROVENANCE_ONLY",
+      "PROMPT_TOKEN_CEILING=8192",
+      "OUTPUT_TOKEN_CEILING=3200",
+      "DETERMINISTIC_GREEDY_SINGLE_BATCH",
+      "DURABLE_RAW_OUTPUT_LIFECYCLE_RESULT_COMPATIBILITY_CLEANUP",
+      "NO_EXECUTION_AUTHORITY"
+    ]
+  },
+  "execution_reconciliation": {
+    "request_provider_role": "The frozen Ollama descriptor is retained only as application-request provenance.",
+    "request_provider_execution_authorized": false,
+    "selected_execution_mode": "LOCAL_MODEL_DIRECT_EXECUTION",
+    "selected_local_model_identity": "pastila-editor-core-v1.2-experimental",
+    "rule": "Neither request provenance nor local source normalization grants execution authority for the other."
+  },
+  "limits": {
+    "prompt_tokens_maximum": 8192,
+    "output_tokens_maximum": 3200,
+    "batch_size": 1,
+    "attempt_ceiling": 1
+  },
+  "decoding": {
+    "do_sample": false,
+    "num_beams": 1,
+    "repetition_penalty": 1.0,
+    "use_cache": true,
+    "retry_count": 0,
+    "fallback": false,
+    "repair": false,
+    "selection": false
+  },
+  "pre_generation_requirements": [
+    "exact host, source-context, tokenizer, decoder, projector, runner, model, adapter, and compatibility identities",
+    "actual tokenized prompt length no greater than 8192",
+    "requested output ceiling no greater than 3200",
+    "exact future one-shot owner authority receipt"
+  ],
+  "durability_requirements": [
+    "raw output", "append-only lifecycle", "typed result",
+    "adapter compatibility receipt", "cleanup receipt"
+  ],
+  "authority": {
+    "policy_validation": true,
+    "model_or_tokenizer_loading": false,
+    "generation_or_inference": false,
+    "runner_executor_or_probe": false,
+    "provider_execution": false,
+    "stage_c": false,
+    "runtime_or_production": false
+  }
+}
