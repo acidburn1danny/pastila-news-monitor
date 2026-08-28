@@ -1,0 +1,72 @@
+{
+  "artifact_type": "SOURCE_ONLY_MODEL_LOAD_POLICY_GATE",
+  "artifact_version": "1.0.0",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_MODEL_LOAD_POLICY_GATE_V1",
+  "canonical_identity": "9410ef484986fc14534334ebf6a6912d381e2882b8fca948de4b215b2e7a8931",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "separator": "LF",
+    "ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_V2_MODEL_LOAD_POLICY_GATE_V1",
+      "96078a0269e80e9ae356ed1032594c43e324bbdc81b66bfbc2c0196405f1d8e0",
+      "bb5a4767bb2eca6d2a71e0aacc2cbaaeab6e01a5baa693cb1330474385e5b6f9",
+      "bd0f84711c825a2c213b458a0e2c41d189914ad5ac4bdf283c91a38daab0c090",
+      "312d6f8cb7c14c769742901c4c80042c104f5a60ba2f80b2913487af22d67ae2",
+      "a4f958ac8b793da4e5c9d2d91145b8d49c2ca8624d209e9aed0670eced35f678",
+      "974d5e6257256d7397cb68f90952c66809a536cf5525cbef58b3bbfce6791587",
+      "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c",
+      "ministral-tokenizer-decode-skip-special-cleanup-false-v1",
+      "8fe9e740b3263f2988a653a0343334b502fddf0d3cb2be36746de4646242bed5",
+      "pastila-editor-core-v1.2-experimental",
+      "NF4_4BIT_DOUBLE_QUANT_BF16",
+      "PROMPT=8192_OUTPUT=3200_BATCH=1_CUDA=0",
+      "PRESERVE_VISION_LOCAL_ONLY_NO_OFFLOAD_NO_RETRY_NO_FALLBACK",
+      "SOURCE_ONLY"
+    ]
+  },
+  "policy": {
+    "quantization": "NF4_4BIT",
+    "double_quantization": true,
+    "compute_dtype": "BF16",
+    "prompt_token_ceiling": 8192,
+    "output_token_ceiling": 3200,
+    "batch_size": 1,
+    "cuda_device": 0,
+    "preserve_vision_components": true,
+    "local_files_only": true,
+    "cpu_offload": false,
+    "disk_offload": false,
+    "retry_count": 0,
+    "fallback_enabled": false
+  },
+  "package_identities": [
+    "transformers==5.15.0",
+    "torch==2.13.0+cu130",
+    "peft==0.20.0",
+    "accelerate==1.14.0",
+    "bitsandbytes==0.50.1"
+  ],
+  "compatibility": {
+    "model_declared_transformers_version": "5.0.0.dev0",
+    "runtime_transformers_version": "5.15.0",
+    "status": "EXACT_VERSION_PAIR_BOUND_NOT_LOAD_VERIFIED"
+  },
+  "gate_behavior": {
+    "all_fields_exact_match_required": true,
+    "mismatch": "FAIL_CLOSED_BEFORE_MODEL_LOAD_STARTED",
+    "canonical_success_receipt": true,
+    "success_authorizes_next_event": false
+  },
+  "authority": {
+    "policy_validation": true,
+    "model_or_adapter_loading": false,
+    "generation_or_inference": false,
+    "retry_or_fallback": false,
+    "cpu_or_disk_offload": false,
+    "alternative_configuration": false,
+    "provider_execution": false,
+    "runner_executor_or_probe": false,
+    "stage_c": false,
+    "runtime_or_production": false
+  }
+}
