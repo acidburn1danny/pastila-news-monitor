@@ -1,0 +1,33 @@
+{
+  "artifact_type": "V1_1_ONE_SHOT_MODEL_LOAD_ONLY_OWNER_AUTHORITY",
+  "artifact_version": "1.0.0",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_V1_1_ONE_SHOT_MODEL_LOAD_VALIDATION_AUTHORITY_V1",
+  "canonical_identity": "6cbaea08a7a958d2d670851d4bb432f8ce7f72c238e531ee4f083c9fe00a0192",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "separator": "LF",
+    "ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_V2_V1_1_ONE_SHOT_MODEL_LOAD_VALIDATION_AUTHORITY_V1",
+      "cc2b48bbaf79fdaade93ae3e6ba4881b109e0ec5",
+      "1b99443545789dc5eedb477e5ecfbc8e37d17b0038bbcceb52330c6260468aaa",
+      "66b89ee1b4d8f9832b86a59c9b83c07f8a2c0c3e1a9f25494ad50ed7c4b2ccdd",
+      "0aa5e785b3c06fc8acab6692da5088d74fc8649b71e16a2eaa9f2b29ca04d58b",
+      "MINIMUM_FREE_VRAM_MIB=14000",
+      "ATTEMPT_CEILING=1",
+      "LOAD_ONLY_COMPATIBILITY_VALIDATION",
+      "DURABLE_RAW_STDERR_REQUIRED",
+      "NO_GENERATION_NO_RETRY_NO_FALLBACK",
+      "OWNER_AUTHORIZED_2026-08-28"
+    ]
+  },
+  "authority_receipt_identity": "3e46f6992384abbd74219451478ead0b964a7499325caf728803bb357f3b050c",
+  "expected_adapter_compatibility_receipt_identity": "8ddafa5e60e892abf56a2b67d9ab646deb94a7b024e739ea8ea967c45e3ec39f",
+  "minimum_free_vram_mib": 14000,
+  "attempt_ceiling": 1,
+  "operation": "LOAD_ONLY",
+  "generation_authorized": false,
+  "retry_authorized": false,
+  "fallback_authorized": false,
+  "stage_c_authorized": false,
+  "runtime_or_production_authorized": false
+}
