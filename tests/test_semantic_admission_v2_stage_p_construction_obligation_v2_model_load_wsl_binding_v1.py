@@ -68,6 +68,7 @@ def test_wsl_binding_builds_canonical_no_shell_invocation_without_launch(tmp_pat
     command=prepared.invocation.command
     assert command[:5]==("wsl.exe","-d","Ubuntu-24.04","--","env")
     assert not any(item in {"bash","sh","-c","-lc"} for item in command)
+    assert "-m" in command and any(item.endswith("model_load_linux_supervisor_v1") for item in command)
     assert command[-3].endswith("/policy.json") and command[-2].endswith("/authority.json")
     assert prepared.invocation.authority_reference==prepared.authority_receipt_identity
 

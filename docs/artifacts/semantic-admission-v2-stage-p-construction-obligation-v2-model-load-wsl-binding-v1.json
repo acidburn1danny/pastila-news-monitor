@@ -3,7 +3,7 @@
   "artifact_version": "1.0.0",
   "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_MODEL_LOAD_WSL_BINDING_V1",
   "supervisor_identity": "8e228417a6644a8351da653560874295c7ead8ac23f4df7cfc8ff93d22895453",
-  "canonical_identity": "ffbcad26400ed75d45d543258aaae54bf46291cb539a1f424aa7ce5dd2bdcfca",
+  "canonical_identity": "47106a6ec272b835beebd9f9e2ff62ee57936e69a1bc4fe3a84f4b858c664d2a",
   "identity_derivation": {
     "algorithm": "sha256", "separator": "LF",
     "supervisor_ordered_utf8_fields": [
@@ -24,7 +24,7 @@
       "c4ad1c3397c48b40729561ad64e05cda6ba123d7f9ed90c8cbf7b77479b047b6",
       "0c75989a971d7170d7cd01b351b736a0664c5ee1516d5c612f8ee82150f0940c",
       "71f66b8bf20b3decb31cfe65d3d94720f9fd1d2c6500c9ef259197cbf94bc7f4",
-      "CANONICAL_WSL_V1_1_NO_SHELL", "LAUNCH_FORBIDDEN_SOURCE_ONLY"
+      "CANONICAL_WSL_V1_1_NO_SHELL_MODULE_ENTRYPOINT", "LAUNCH_FORBIDDEN_SOURCE_ONLY"
     ]
   },
   "bindings": {

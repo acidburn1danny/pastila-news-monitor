@@ -22,8 +22,9 @@ from .stage_p_construction_obligation_v2_model_load_policy_gate_v1 import (
 )
 
 
-WSL_BINDING_IDENTITY = "ffbcad26400ed75d45d543258aaae54bf46291cb539a1f424aa7ce5dd2bdcfca"
+WSL_BINDING_IDENTITY = "47106a6ec272b835beebd9f9e2ff62ee57936e69a1bc4fe3a84f4b858c664d2a"
 SUPERVISOR_RELATIVE = Path("src/pastila_scout/semantic_admission_v2/stage_p_construction_obligation_v2_model_load_linux_supervisor_v1.py")
+SUPERVISOR_MODULE = "pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_model_load_linux_supervisor_v1"
 SUPERVISOR_SOURCE_SHA256 = "4b118d5f74be59ea12f59cbad3c68f36a39c5fe6311e5895744d860bd9ae1531"
 
 
@@ -54,7 +55,7 @@ def build_load_only_wsl_invocation_v1(
     invocation = boundary.build_invocation(
         consumer_id="construction-obligation-v2-load-only-v1",
         authority_reference=authority.authority_receipt_identity,
-        arguments=(windows_path_to_wsl_v1(supervisor),
+        arguments=("-m", SUPERVISOR_MODULE,
                    windows_path_to_wsl_v1(policy_receipt_path.resolve(strict=True)),
                    windows_path_to_wsl_v1(authority_receipt_path.resolve(strict=True)),
                    windows_path_to_wsl_v1(lifecycle_root.resolve(strict=True))),
@@ -62,6 +63,6 @@ def build_load_only_wsl_invocation_v1(
     return PreparedLoadOnlyWslInvocationV1(invocation, authority.authority_receipt_identity)
 
 
-__all__ = ("PreparedLoadOnlyWslInvocationV1", "SUPERVISOR_RELATIVE",
+__all__ = ("PreparedLoadOnlyWslInvocationV1", "SUPERVISOR_MODULE", "SUPERVISOR_RELATIVE",
            "SUPERVISOR_SOURCE_SHA256",
            "WSL_BINDING_IDENTITY", "build_load_only_wsl_invocation_v1")
