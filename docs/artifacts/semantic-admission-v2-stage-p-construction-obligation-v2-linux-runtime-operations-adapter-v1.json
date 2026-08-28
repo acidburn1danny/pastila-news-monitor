@@ -1,0 +1,46 @@
+{
+  "artifact_type": "SOURCE_ONLY_LINUX_RUNTIME_OPERATIONS_ADAPTER",
+  "artifact_version": "1.0.0",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_LINUX_RUNTIME_OPERATIONS_ADAPTER_V1",
+  "canonical_identity": "757ebf033bc762a6fd95b5ee22f16bc19b8d21ab62c60c280ea3f55e1bba387c",
+  "identity_derivation": {
+    "algorithm": "sha256", "separator": "LF",
+    "ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_V2_LINUX_RUNTIME_OPERATIONS_ADAPTER_V1",
+      "cc97c93651f42998a0cd921a0e32ae3a78a04e4fe5580d06395232496b3b0483",
+      "612df8353538178ba8a0ea1ddcc54b9e815171b0976abcc4b6c58c8c9a1a0886",
+      "6a7e6ec0c920eb4e73c95e97836a37c120c6c95e557198bc12d3945b292465d5",
+      "66b89ee1b4d8f9832b86a59c9b83c07f8a2c0c3e1a9f25494ad50ed7c4b2ccdd",
+      "111bc2734343c67aab4e1a04003199b98d4955fe9579e445cd7b5d6805a9da17",
+      "NF4_DOUBLE_QUANT_BF16_CUDA_0",
+      "VISION_COMPONENTS_PRESERVED",
+      "DETERMINISTIC_CONSTRAINED_GENERATE",
+      "NO_MAIN_NO_PROCESS_NO_WSL"
+    ]
+  },
+  "runtime_mapping": {
+    "prepare_prompt": "Exact local tokenizer; frozen system prompt plus rendered Stage-P request; explicit input IDs and attention mask.",
+    "load_compatible": "Exact V1.1 NF4/double-quant/BF16/CUDA-0 model and adapter load with compatibility warning validation.",
+    "generate_once": "Greedy single-beam generation with the sole request-bound prefix callback and maximum 3200 output tokens.",
+    "cleanup": "Drop the model reference, collect Python objects, and empty the CUDA cache.",
+    "vision_components": "Preserved; no vision tower or projector mutation is present."
+  },
+  "deferred_behavior": {
+    "module_import_loads_runtime": false,
+    "preparation_call_loads_tokenizer": true,
+    "load_callable_loads_model_and_adapter": true,
+    "generation_callable_contains_generate_call": true,
+    "cleanup_callable_releases_resource": true
+  },
+  "authority": {
+    "source_normalization": true,
+    "authority_receipt_issued": false,
+    "module_import_execution": false,
+    "tokenizer_or_model_loading": false,
+    "generation_or_inference": false,
+    "process_or_wsl_launch": false,
+    "provider_execution": false,
+    "stage_c": false,
+    "runtime_or_production": false
+  }
+}
