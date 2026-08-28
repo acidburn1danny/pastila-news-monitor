@@ -1,0 +1,253 @@
+"""Deferred spawn-process adapter for Construction-Obligation V2 generation.
+
+The adapter maps the committed Linux runtime operations onto the injected
+supervisor process protocol.  Import and construction do not launch a process;
+the returned ``start`` callable is the sole execution-authority boundary.
+"""
+
+from __future__ import annotations
+
+import hashlib
+from collections.abc import Callable
+from dataclasses import dataclass
+
+from pastila_scout.experimental_core_v1_2_stage_p_construction_obligation_v2_runner_v1_1 import (
+    ConstructionObligationV2RunnerPreflightV1_1,
+)
+from pastila_scout.experimental_core_v1_2_stage_p_construction_obligation_v2_runner_v1_2 import (
+    bind_static_projector_preflight_v1_2,
+)
+from pastila_scout.experimental_core_v1_2_stage_p_construction_obligation_v2_runner_v1_3 import (
+    bind_static_callback_preflight_v1_3,
+)
+
+from .stage_p_construction_obligation_v2_generation_authority_contract_v1 import (
+    parse_generation_authority_v1,
+)
+from .stage_p_construction_obligation_v2_generation_execution_policy_gate_v1 import (
+    canonical_observed_generation_execution_policy_v1,
+    validate_generation_execution_policy_gate_v1,
+)
+from .stage_p_construction_obligation_v2_host_wsl_payload_contract_v1 import (
+    parse_construction_obligation_v2_host_wsl_payload_v1,
+)
+from .stage_p_construction_obligation_v2_injected_generation_supervisor_v1 import (
+    InjectedGenerationSupervisorResultV1,
+    supervise_injected_generation_v1,
+)
+from .stage_p_construction_obligation_v2_linux_generation_supervisor_candidate_v1 import (
+    SUPERVISOR_CANDIDATE_IDENTITY,
+    SYSTEM_PROMPT_SHA256,
+    InjectedChildProcessOperationsV1,
+    LinuxGenerationChildInvocationV1,
+)
+from .stage_p_construction_obligation_v2_linux_runtime_operations_adapter_v1 import (
+    prepare_linux_runtime_operations_v1,
+)
+from .stage_p_construction_obligation_v2_runner_protocol_codec_v1 import (
+    parse_runner_request_v1,
+)
+from .stage_p_construction_obligation_v2_runtime_operations_adapter_v1_1 import (
+    adapt_runtime_operations_v1_1,
+)
+
+LINUX_CHILD_PROCESS_ADAPTER_IDENTITY = (
+    "71d7259040a87956c5b27dd9f12f859b4017cc8ea9553687e49bbb895d17b9ff"
+)
+
+
+@dataclass(slots=True)
+class LinuxGenerationProcessHandleV1:
+    process: object
+    result_queue: object
+    result_collected: bool = False
+
+
+def build_linux_child_process_operations_v1(
+    *,
+    raw_policy_receipt: bytes,
+    raw_authority_receipt: bytes,
+    context_factory: Callable[[str], object] | None = None,
+) -> InjectedChildProcessOperationsV1:
+    """Construct deferred spawn operations; do not start a child."""
+    if (
+        type(raw_policy_receipt) is not bytes
+        or type(raw_authority_receipt) is not bytes
+    ):
+        raise TypeError(
+            "CONSTRUCTION_OBLIGATION_V2_CHILD_PROCESS_RECEIPTS_BYTES_REQUIRED"
+        )
+    expected_policy = validate_generation_execution_policy_gate_v1(
+        observed=canonical_observed_generation_execution_policy_v1()
+    )
+    if raw_policy_receipt != expected_policy:
+        raise ValueError(
+            "CONSTRUCTION_OBLIGATION_V2_GENERATION_POLICY_RECEIPT_MISMATCH"
+        )
+    if context_factory is None:
+        context_factory = _spawn_context
+    if not callable(context_factory):
+        raise TypeError("CONSTRUCTION_OBLIGATION_V2_PROCESS_CONTEXT_FACTORY_REQUIRED")
+    context = context_factory("spawn")
+    if context is None or not callable(getattr(context, "Process", None)):
+        raise TypeError("CONSTRUCTION_OBLIGATION_V2_SPAWN_CONTEXT_INVALID")
+    started = False
+
+    def start(
+        invocation: LinuxGenerationChildInvocationV1,
+    ) -> LinuxGenerationProcessHandleV1:
+        nonlocal started
+        if type(invocation) is not LinuxGenerationChildInvocationV1:
+            raise TypeError(
+                "CONSTRUCTION_OBLIGATION_V2_CHILD_INVOCATION_EXACT_TYPE_REQUIRED"
+            )
+        if started:
+            raise RuntimeError(
+                "CONSTRUCTION_OBLIGATION_V2_CHILD_START_CEILING_EXCEEDED"
+            )
+        request = parse_runner_request_v1(raw_request=invocation.raw_runner_request)
+        authority = parse_generation_authority_v1(
+            raw_receipt=raw_authority_receipt,
+            expected_generation_candidate_identity=SUPERVISOR_CANDIDATE_IDENTITY,
+            expected_host_payload_sha256=request.host_payload_sha256,
+            expected_provider_request_id=request.provider_request_id,
+            expected_source_context_identity=request.source_context_identity,
+        )
+        if (
+            authority.authority_receipt_identity
+            != invocation.authority_receipt_identity
+        ):
+            raise ValueError(
+                "CONSTRUCTION_OBLIGATION_V2_CHILD_AUTHORITY_IDENTITY_MISMATCH"
+            )
+        if (
+            type(invocation.system_prompt) is not str
+            or hashlib.sha256(invocation.system_prompt.encode("utf-8")).hexdigest()
+            != SYSTEM_PROMPT_SHA256
+        ):
+            raise ValueError(
+                "CONSTRUCTION_OBLIGATION_V2_SYSTEM_PROMPT_IDENTITY_MISMATCH"
+            )
+        started = True
+        result_queue = context.Queue(maxsize=1)
+        process = context.Process(
+            target=_run_linux_generation_child_v1,
+            kwargs={
+                "invocation": invocation,
+                "raw_policy_receipt": raw_policy_receipt,
+                "raw_authority_receipt": raw_authority_receipt,
+                "result_queue": result_queue,
+            },
+            daemon=False,
+        )
+        handle = LinuxGenerationProcessHandleV1(process, result_queue)
+        try:
+            process.start()
+        except Exception:
+            result_queue.close()
+            result_queue.join_thread()
+            raise
+        return handle
+
+    def join(handle: object, timeout: float) -> None:
+        _handle(handle).process.join(timeout)
+
+    def is_alive(handle: object) -> bool:
+        return bool(_handle(handle).process.is_alive())
+
+    def terminate(handle: object) -> None:
+        _handle(handle).process.terminate()
+
+    def kill(handle: object) -> None:
+        _handle(handle).process.kill()
+
+    def exit_code(handle: object) -> int | None:
+        observed = _handle(handle).process.exitcode
+        if observed is not None and type(observed) is not int:
+            raise TypeError("CONSTRUCTION_OBLIGATION_V2_CHILD_EXIT_CODE_INVALID")
+        return observed
+
+    def collect_result(handle: object) -> InjectedGenerationSupervisorResultV1 | None:
+        bound = _handle(handle)
+        if bound.process.is_alive():
+            raise RuntimeError(
+                "CONSTRUCTION_OBLIGATION_V2_CHILD_RESULT_REQUESTED_WHILE_ALIVE"
+            )
+        if bound.result_collected:
+            raise RuntimeError(
+                "CONSTRUCTION_OBLIGATION_V2_CHILD_RESULT_ALREADY_COLLECTED"
+            )
+        bound.result_collected = True
+        try:
+            result = bound.result_queue.get(block=True, timeout=1.0)
+        except Exception as exc:
+            if type(exc).__name__ != "Empty":
+                raise
+            result = None
+        finally:
+            bound.result_queue.close()
+            bound.result_queue.join_thread()
+        if (
+            result is not None
+            and type(result) is not InjectedGenerationSupervisorResultV1
+        ):
+            raise TypeError(
+                "CONSTRUCTION_OBLIGATION_V2_CHILD_RESULT_EXACT_TYPE_REQUIRED"
+            )
+        return result
+
+    return InjectedChildProcessOperationsV1(
+        start, join, is_alive, terminate, kill, exit_code, collect_result
+    )
+
+
+def _run_linux_generation_child_v1(
+    *,
+    invocation: LinuxGenerationChildInvocationV1,
+    raw_policy_receipt: bytes,
+    raw_authority_receipt: bytes,
+    result_queue: object,
+) -> None:
+    """Child-only runtime binding; called solely as the spawn target."""
+    request = parse_runner_request_v1(raw_request=invocation.raw_runner_request)
+    host = parse_construction_obligation_v2_host_wsl_payload_v1(
+        raw_payload=request.host_payload
+    )
+    prepared = prepare_linux_runtime_operations_v1(
+        rendered_prompt=host.rendered_prompt, system_prompt=invocation.system_prompt
+    )
+    base = ConstructionObligationV2RunnerPreflightV1_1(
+        request, prepared.token_piece_bundle
+    )
+    projector = bind_static_projector_preflight_v1_2(preflight=base)
+    callback = bind_static_callback_preflight_v1_3(projector_preflight=projector)
+    operations = adapt_runtime_operations_v1_1(
+        rendered_prompt=host.rendered_prompt, operations=prepared.operations
+    )
+    result = supervise_injected_generation_v1(
+        raw_policy_receipt=raw_policy_receipt,
+        raw_authority_receipt=raw_authority_receipt,
+        callback_preflight=callback,
+        rendered_prompt=host.rendered_prompt,
+        operations=operations,
+    )
+    result_queue.put(result, block=True, timeout=10.0)
+
+
+def _handle(value: object) -> LinuxGenerationProcessHandleV1:
+    if type(value) is not LinuxGenerationProcessHandleV1:
+        raise TypeError("CONSTRUCTION_OBLIGATION_V2_PROCESS_HANDLE_EXACT_TYPE_REQUIRED")
+    return value
+
+
+def _spawn_context(method: str) -> object:
+    import multiprocessing
+
+    return multiprocessing.get_context(method)
+
+
+__all__ = (
+    "LINUX_CHILD_PROCESS_ADAPTER_IDENTITY",
+    "LinuxGenerationProcessHandleV1",
+    "build_linux_child_process_operations_v1",
+)

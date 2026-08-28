@@ -1,0 +1,51 @@
+{
+  "artifact_type": "SOURCE_ONLY_LINUX_CHILD_PROCESS_ADAPTER",
+  "artifact_version": "1.0.0",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_LINUX_CHILD_PROCESS_ADAPTER_V1",
+  "canonical_identity": "71d7259040a87956c5b27dd9f12f859b4017cc8ea9553687e49bbb895d17b9ff",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "separator": "LF",
+    "ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_V2_LINUX_CHILD_PROCESS_ADAPTER_V1",
+      "ce43ed32836005bcd471da40f9003e3d9ba66e090e57fbf66cdf77d0c8b95391",
+      "3fa09e642eb256daeae03622e133b48fe717ec640e4b2dc52a74407de573f14e",
+      "757ebf033bc762a6fd95b5ee22f16bc19b8d21ab62c60c280ea3f55e1bba387c",
+      "612df8353538178ba8a0ea1ddcc54b9e815171b0976abcc4b6c58c8c9a1a0886",
+      "f21bc27ccdbd1941783e2cfc893eede389e5a56207342a97d7fafc66b4506f91",
+      "SPAWN_NON_DAEMON_SINGLE_CHILD",
+      "QUEUE_RESULT_ONLY_NO_PARTIAL_AUTHORITY",
+      "NO_MAIN_NO_WSL_NO_HOST_BINDING"
+    ]
+  },
+  "binding": {
+    "parent_pre_start": [
+      "generation policy receipt exact bytes",
+      "runner request and embedded host payload",
+      "request-bound generation authority receipt",
+      "invocation authority identity"
+    ],
+    "child": [
+      "committed Linux runtime operations adapter",
+      "request-bound projector and callback preflights",
+      "injected generation supervisor"
+    ],
+    "process": "one non-daemon spawn child and one capacity-1 typed-result queue",
+    "durable_sink": "separately injected into the parent supervisor"
+  },
+  "authority_boundary": {
+    "module_import": "no process construction or launch",
+    "adapter_construction": "no process launch, tokenizer load, model load, or generation",
+    "returned_start_callable": "actual child-process execution boundary requiring separate authority",
+    "child_target": "contains deferred tokenizer/model/generation binding requiring separate authority"
+  },
+  "authority": {
+    "source_normalization": true,
+    "process_or_wsl_launch_executed": false,
+    "tokenizer_or_model_loading_executed": false,
+    "generation_or_inference_executed": false,
+    "provider_execution": false,
+    "stage_c": false,
+    "runtime_or_production": false
+  }
+}
