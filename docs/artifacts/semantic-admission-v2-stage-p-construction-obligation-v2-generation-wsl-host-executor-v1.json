@@ -1,0 +1,19 @@
+{
+  "artifact_type":"SOURCE_ONLY_GENERATION_WSL_HOST_EXECUTOR",
+  "artifact_version":"1.0.0",
+  "canonical_name":"STAGE_P_CONSTRUCTION_OBLIGATION_V2_GENERATION_WSL_HOST_EXECUTOR_V1",
+  "canonical_identity":"7749b2b075c7db788927130505edbaafa1c7cfbd398b1132b01b396f94d97942",
+  "identity_derivation":{"algorithm":"sha256","separator":"LF","ordered_utf8_fields":[
+    "STAGE_P_CONSTRUCTION_OBLIGATION_V2_GENERATION_WSL_HOST_EXECUTOR_V1",
+    "c7a09557517e2a762d1d60738bc2c073be458533769bd0a968f25930fe3b6843",
+    "c52b5126add3f7975e3e630a618db81549dc74aeea2ab0b6756b6e0d8582e183",
+    "ce43ed32836005bcd471da40f9003e3d9ba66e090e57fbf66cdf77d0c8b95391",
+    "87ef25d65a92b65e8dbd3730258c6d0b0fc6ee8950130c69e2b623ff0190127e",
+    "OUTER_TIMEOUT_SECONDS=1260","EXCLUSIVE_ATOMIC_HOST_RECEIPTS",
+    "TRANSPORT_SEMANTIC_SEPARATION","NO_RETRY_NO_FALLBACK_NO_STAGE_C"]},
+  "receipt_boundary":["canonical WSL execution receipt","exact Linux supervisor receipt","host reconciliation receipt"],
+  "authority":{"source_normalization":true,"synthetic_filesystem_verification":true,
+    "wsl_execution_during_verification":false,"tokenizer_or_model_loading":false,
+    "generation_or_inference":false,"retry_fallback_repair_selection":false,
+    "stage_c":false,"runtime_or_production":false}
+}
