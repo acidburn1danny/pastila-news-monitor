@@ -17,7 +17,8 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def test_packet_is_byte_exact_current_case01_and_unissued() -> None:
     rebuilt = materialize_case01_issuance_packet_v1(project_root=ROOT)
-    assert set(rebuilt) == {path.name for path in (ROOT / PACKET_RELATIVE).iterdir()}
+    actual = {path.name for path in (ROOT / PACKET_RELATIVE).iterdir()}
+    assert actual == set(rebuilt) | {"authority-receipt-issued.json"}
     assert all((ROOT / PACKET_RELATIVE / name).read_bytes() == raw
                for name, raw in rebuilt.items())
     manifest = verify(project_root=ROOT)

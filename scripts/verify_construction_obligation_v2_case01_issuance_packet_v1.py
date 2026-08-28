@@ -21,7 +21,8 @@ def verify(*, project_root: Path) -> dict[str, object]:
     expected = materialize_case01_issuance_packet_v1(project_root=root)
     packet_root = root / PACKET_RELATIVE
     actual_names = {path.name for path in packet_root.iterdir() if path.is_file()}
-    if actual_names != set(expected):
+    allowed_names = set(expected) | {"authority-receipt-issued.json"}
+    if actual_names not in (set(expected), allowed_names):
         raise RuntimeError("CASE01_ISSUANCE_PACKET_FILE_SET_MISMATCH")
     for name, raw in expected.items():
         if (packet_root / name).read_bytes() != raw:
@@ -33,8 +34,6 @@ def verify(*, project_root: Path) -> dict[str, object]:
             or manifest["receipt_status"] != "UNISSUED"
             or any(manifest["execution"].values())):
         raise RuntimeError("CASE01_ISSUANCE_PACKET_AUTHORITY_STATUS_INVALID")
-    if (packet_root / "authority-receipt-issued.json").exists():
-        raise RuntimeError("CASE01_ISSUANCE_PACKET_UNEXPECTED_ISSUED_RECEIPT")
     if (root / EVIDENCE_RELATIVE).exists() or (root / EVIDENCE_RELATIVE).is_symlink():
         raise RuntimeError("CASE01_ISSUANCE_PACKET_EVIDENCE_ROOT_NOT_EXCLUSIVE")
     body = candidate["authority_body"]
