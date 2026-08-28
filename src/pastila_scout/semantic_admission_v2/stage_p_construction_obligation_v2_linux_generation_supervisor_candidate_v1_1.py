@@ -18,7 +18,7 @@ from .stage_p_construction_obligation_v2_generation_execution_policy_gate_v1 imp
     canonical_observed_generation_execution_policy_v1,
     validate_generation_execution_policy_gate_v1,
 )
-from .stage_p_construction_obligation_v2_injected_generation_supervisor_v1 import (
+from .stage_p_construction_obligation_v2_injected_generation_supervisor_v1_1 import (
     InjectedGenerationSupervisorResultV1,
 )
 from .stage_p_construction_obligation_v2_runner_protocol_cleanup_extension_v1_1 import (

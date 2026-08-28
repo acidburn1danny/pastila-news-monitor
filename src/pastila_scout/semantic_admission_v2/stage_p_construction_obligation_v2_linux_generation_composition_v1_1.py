@@ -1,6 +1,6 @@
 """Source-only composition of the frozen Linux generation components.
 
-Calling :func:`run_linux_generation_composition_v1` crosses the separately
+Calling :func:`run_linux_generation_composition_v1_1` crosses the separately
 authorized process/model/generation boundary.  Importing this module performs
 no filesystem, process, WSL, tokenizer, model, or generation operation.
 """
