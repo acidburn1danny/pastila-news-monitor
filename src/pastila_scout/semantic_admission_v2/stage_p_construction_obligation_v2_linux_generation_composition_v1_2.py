@@ -7,9 +7,9 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from .stage_p_construction_obligation_v2_durable_filesystem_sink_v1 import DurableArtifactReceiptV1, DurableEvidenceRootBindingV1, create_durable_filesystem_sink_v1
-from .stage_p_construction_obligation_v2_generation_authority_preload_v1_1 import parse_generation_authority_v1_1
+from .stage_p_construction_obligation_v2_generation_authority_preload_v1_2 import parse_generation_authority_v1_2
 from .stage_p_construction_obligation_v2_linux_child_process_adapter_v1_2 import build_linux_child_process_operations_v1_2
-from .stage_p_construction_obligation_v2_linux_generation_supervisor_candidate_v1_1 import SUPERVISOR_CANDIDATE_IDENTITY, InjectedDurableSinkV1, LinuxGenerationSupervisorOutcomeV1, supervise_linux_generation_candidate_v1_1
+from .stage_p_construction_obligation_v2_linux_generation_supervisor_candidate_v1_2 import SUPERVISOR_CANDIDATE_IDENTITY, InjectedDurableSinkV1, LinuxGenerationSupervisorOutcomeV1, supervise_linux_generation_candidate_v1_2
 from .stage_p_construction_obligation_v2_runner_protocol_codec_v1 import parse_runner_request_v1
 
 LINUX_GENERATION_COMPOSITION_IDENTITY_FIELDS = (
@@ -37,7 +37,7 @@ def run_linux_generation_composition_v1_2(
     timeout_seconds: float, context_factory=None,
 ) -> LinuxGenerationCompositionOutcomeV1_2:
     request = parse_runner_request_v1(raw_request=raw_runner_request)
-    authority = parse_generation_authority_v1_1(
+    authority = parse_generation_authority_v1_2(
         raw_receipt=raw_authority_receipt,
         expected_host_payload_sha256=request.host_payload_sha256,
         expected_runner_request_sha256=hashlib.sha256(raw_runner_request).hexdigest(),
@@ -67,7 +67,7 @@ def run_linux_generation_composition_v1_2(
             raw_authority_receipt=raw_authority_receipt,
             context_factory=context_factory,
         )
-        outcome = supervise_linux_generation_candidate_v1_1(
+        outcome = supervise_linux_generation_candidate_v1_2(
             raw_policy_receipt=raw_policy_receipt,
             raw_authority_receipt=raw_authority_receipt,
             raw_runner_request=raw_runner_request,

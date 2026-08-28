@@ -23,7 +23,7 @@ def test_composition_persists_bound_pre_model_failure(monkeypatch, tmp_path):
     authority = SimpleNamespace(authority_receipt_identity="c" * 64)
     persisted = []
     monkeypatch.setattr(composition, "parse_runner_request_v1", lambda **kw: request)
-    monkeypatch.setattr(composition, "parse_generation_authority_v1_1", lambda **kw: authority)
+    monkeypatch.setattr(composition, "parse_generation_authority_v1_2", lambda **kw: authority)
 
     class Sink:
         sink_instance_identity = "sink"

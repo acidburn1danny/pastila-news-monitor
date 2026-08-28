@@ -10,13 +10,13 @@ from pastila_scout.wsl_execution_v1_1 import WslExecutionBoundaryV1_1
 
 from .stage_p_construction_obligation_v2_generation_wsl_host_executor_v1_1 import (
     _canonical,
-    _linux_receipt,
     _publish,
 )
 from .stage_p_construction_obligation_v2_generation_wsl_invocation_binding_v1_1 import (
     OUTER_TIMEOUT_SECONDS,
     PreparedGenerationWslInvocationV1,
 )
+from .stage_p_construction_obligation_v2_linux_generation_supervisor_candidate_v1_2 import SUPERVISOR_CANDIDATE_IDENTITY
 
 GENERATION_WSL_HOST_EXECUTOR_IDENTITY_FIELDS = (
     "construction-obligation-v2-generation-wsl-host-executor-v1.2",
@@ -75,7 +75,7 @@ def execute_generation_wsl_host_v1_2(
     failure_type = None
     if result.succeeded:
         try:
-            linux_identity, linux_status = _linux_receipt(
+            linux_identity, linux_status = _linux_receipt_v1_2(
                 prepared.linux_evidence_root / "supervisor-receipt.json",
                 prepared.authority_receipt_identity,
             )
@@ -122,6 +122,27 @@ def _reconciliation(prepared, status, stdout_sha, stderr_sha, receipt_sha,
         key: item for key, item in value.items() if key != "reconciliation_identity"
     })).hexdigest()
     return _canonical(value)
+
+
+def _linux_receipt_v1_2(path, authority_identity):
+    raw = path.read_bytes()
+    value = json.loads(raw.decode("utf-8", errors="strict"))
+    required = {
+        "schema_name", "schema_version", "supervisor_candidate_identity",
+        "authority_receipt_identity", "status", "child_exit_code", "timed_out",
+        "termination", "persisted_artifacts", "retry_count", "receipt_identity",
+    }
+    if type(value) is not dict or set(value) != required:
+        raise ValueError("LINUX_SUPERVISOR_V1_2_RECEIPT_SHAPE_INVALID")
+    if (value["supervisor_candidate_identity"] != SUPERVISOR_CANDIDATE_IDENTITY
+            or value["authority_receipt_identity"] != authority_identity
+            or value["retry_count"] != 0):
+        raise ValueError("LINUX_SUPERVISOR_V1_2_RECEIPT_BINDING_INVALID")
+    body = {key: item for key, item in value.items() if key != "receipt_identity"}
+    expected = hashlib.sha256(_canonical(body)).hexdigest()
+    if value["receipt_identity"] != expected or raw != _canonical(value):
+        raise ValueError("LINUX_SUPERVISOR_V1_2_RECEIPT_SEAL_INVALID")
+    return expected, value["status"]
 
 
 __all__ = (

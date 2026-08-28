@@ -5,7 +5,9 @@ def test_identity_contract_is_import_isolated_and_exact():
     assert identity.WSL_BINDING_IDENTITY.startswith("f7ca486f")
     assert identity.HOST_EXECUTOR_IDENTITY.startswith("fc793d41")
     assert identity.WORKER_IDENTITY.startswith("b375367f")
-    assert identity.SUPERVISOR_IDENTITY.startswith("3f936eea")
+    assert identity.SUPERVISOR_IDENTITY.startswith("a4db4c26")
+    assert identity.INJECTED_SUPERVISOR_IDENTITY.startswith("3f936eea")
+    assert identity.SUPERVISOR_IDENTITY != identity.INJECTED_SUPERVISOR_IDENTITY
 
 
 def test_authority_gate_import_does_not_import_effectful_layers():
