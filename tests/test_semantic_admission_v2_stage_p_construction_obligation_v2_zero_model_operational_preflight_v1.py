@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 
 from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_zero_model_operational_preflight_v1 import (
+    MODULE_NAME,
     ZERO_MODEL_PREFLIGHT_IDENTITY,
 )
 
@@ -38,3 +39,5 @@ def test_identity_and_strict_zero_model_surface():
         assert forbidden not in source
     assert value["authority"]["tokenizer_loading"] is False
     assert value["authority"]["model_loading"] is False
+    assert MODULE_NAME.endswith("zero_model_operational_preflight_v1")
+    assert 'arguments=("-m", MODULE_NAME' in source

@@ -21,6 +21,10 @@ from pastila_scout.wsl_execution_v1_1 import WslExecutionBoundaryV1_1
 ZERO_MODEL_PREFLIGHT_IDENTITY = (
     "2dfef8ec30a914907fbb5b4201d14b532623c3d8ca42ebe0376c70c3840c8d84"
 )
+MODULE_NAME = (
+    "pastila_scout.semantic_admission_v2."
+    "stage_p_construction_obligation_v2_zero_model_operational_preflight_v1"
+)
 _PROOF_BYTES = b"PASTILA_CONSTRUCTION_OBLIGATION_V2_DRVFS_HARDLINK_PROOF_V1\n"
 
 
@@ -99,7 +103,7 @@ def run_zero_model_host_v1(*, project_root: Path, evidence_root: Path) -> bytes:
         consumer_id="construction-obligation-v2-zero-model-preflight-v1",
         authority_reference="zero-model-operational-preflight:"
         + ZERO_MODEL_PREFLIGHT_IDENTITY,
-        arguments=("-m", __name__, "worker", windows_path_to_wsl_v1(evidence_root)),
+        arguments=("-m", MODULE_NAME, "worker", windows_path_to_wsl_v1(evidence_root)),
     )
     result = boundary.execute(invocation, timeout_seconds=60.0)
     if not result.succeeded:
@@ -208,6 +212,7 @@ if __name__ == "__main__":
     raise SystemExit(main(sys.argv[1:]))
 
 __all__ = (
+    "MODULE_NAME",
     "ZERO_MODEL_PREFLIGHT_IDENTITY",
     "run_zero_model_host_v1",
     "run_zero_model_worker_v1",
