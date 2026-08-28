@@ -1,0 +1,31 @@
+{
+  "artifact_type": "SOURCE_ONLY_LINUX_GENERATION_RUNNER",
+  "artifact_version": "1.0.0",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_LINUX_GENERATION_RUNNER_V1",
+  "canonical_identity": "ed9303593dea53b9375913e3cb1640cdb11f2e347299435532f7e3935bf755da",
+  "identity_derivation": {
+    "algorithm": "sha256", "separator": "LF",
+    "ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_V2_LINUX_GENERATION_RUNNER_V1",
+      "c52b5126add3f7975e3e630a618db81549dc74aeea2ab0b6756b6e0d8582e183",
+      "111bc2734343c67aab4e1a04003199b98d4955fe9579e445cd7b5d6805a9da17",
+      "INNER_TIMEOUT_SECONDS=1200",
+      "FIVE_PATH_CANONICAL_INPUT_BOUNDARY",
+      "RECONCILED_STATUS_TRANSPORT_ZERO",
+      "NO_RETRY_NO_FALLBACK_NO_STAGE_C"
+    ]
+  },
+  "input_order": ["policy receipt", "generation authority receipt", "runner request", "frozen system prompt", "new Linux evidence root"],
+  "transport_status": "Any successfully reconciled typed composition outcome returns zero; semantic/execution status remains in durable receipts.",
+  "authority": {
+    "source_normalization": true,
+    "module_import_execution": false,
+    "runner_invoked_during_verification": false,
+    "filesystem_or_process_execution": false,
+    "tokenizer_or_model_loading": false,
+    "generation_or_inference": false,
+    "wsl_or_provider_execution": false,
+    "stage_c": false,
+    "runtime_or_production": false
+  }
+}
