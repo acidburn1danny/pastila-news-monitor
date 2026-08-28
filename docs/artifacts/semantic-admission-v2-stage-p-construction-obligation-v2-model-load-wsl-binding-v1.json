@@ -1,0 +1,58 @@
+{
+  "artifact_type": "SOURCE_ONLY_MODEL_LOAD_WSL_BINDING",
+  "artifact_version": "1.0.0",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_MODEL_LOAD_WSL_BINDING_V1",
+  "supervisor_identity": "8e228417a6644a8351da653560874295c7ead8ac23f4df7cfc8ff93d22895453",
+  "canonical_identity": "ffbcad26400ed75d45d543258aaae54bf46291cb539a1f424aa7ce5dd2bdcfca",
+  "identity_derivation": {
+    "algorithm": "sha256", "separator": "LF",
+    "supervisor_ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_V2_MODEL_LOAD_LINUX_SUPERVISOR_V1",
+      "0c75989a971d7170d7cd01b351b736a0664c5ee1516d5c612f8ee82150f0940c",
+      "0aa5e785b3c06fc8acab6692da5088d74fc8649b71e16a2eaa9f2b29ca04d58b",
+      "9410ef484986fc14534334ebf6a6912d381e2882b8fca948de4b215b2e7a8931",
+      "bb5a4767bb2eca6d2a71e0aacc2cbaaeab6e01a5baa693cb1330474385e5b6f9",
+      "a96745c2554c84bf43616a4f8184a1c1f6081167aea280f9cac0b48e3ca4a4cd",
+      "c4ad1c3397c48b40729561ad64e05cda6ba123d7f9ed90c8cbf7b77479b047b6",
+      "ONE_SPAWN_CHILD_TIMEOUT_900_TERMINATE_JOIN", "STREAMING_MANIFEST_PREFLIGHT",
+      "NO_RETRY_NO_FALLBACK_NO_GENERATION"
+    ],
+    "binding_ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_V2_MODEL_LOAD_WSL_BINDING_V1",
+      "8e228417a6644a8351da653560874295c7ead8ac23f4df7cfc8ff93d22895453",
+      "4b118d5f74be59ea12f59cbad3c68f36a39c5fe6311e5895744d860bd9ae1531",
+      "c4ad1c3397c48b40729561ad64e05cda6ba123d7f9ed90c8cbf7b77479b047b6",
+      "0c75989a971d7170d7cd01b351b736a0664c5ee1516d5c612f8ee82150f0940c",
+      "71f66b8bf20b3decb31cfe65d3d94720f9fd1d2c6500c9ef259197cbf94bc7f4",
+      "CANONICAL_WSL_V1_1_NO_SHELL", "LAUNCH_FORBIDDEN_SOURCE_ONLY"
+    ]
+  },
+  "bindings": {
+    "load_only_candidate_identity": "0c75989a971d7170d7cd01b351b736a0664c5ee1516d5c612f8ee82150f0940c",
+    "authority_contract_identity": "0aa5e785b3c06fc8acab6692da5088d74fc8649b71e16a2eaa9f2b29ca04d58b",
+    "policy_gate_identity": "9410ef484986fc14534334ebf6a6912d381e2882b8fca948de4b215b2e7a8931",
+    "canonical_wsl_profile_identity": "71f66b8bf20b3decb31cfe65d3d94720f9fd1d2c6500c9ef259197cbf94bc7f4"
+  },
+  "behavior": {
+    "linux_child_count": 1,
+    "timeout_seconds_maximum": 900,
+    "termination_join_required": true,
+    "manifest_hashing": "STREAMING_BEFORE_MODEL_LOAD_STARTED",
+    "runtime_package_imports": "CHILD_ONLY_AFTER_MODEL_LOAD_STARTED",
+    "vision_components_preserved": true,
+    "generation": false,
+    "retry": false,
+    "fallback": false,
+    "windows_binding_launch_forbidden": true
+  },
+  "authority": {
+    "source_normalization": true,
+    "real_owner_authority_receipt_issued": false,
+    "wsl_invocation": false,
+    "model_or_adapter_loading": false,
+    "generation_or_inference": false,
+    "runner_executor_or_probe": false,
+    "stage_c": false,
+    "runtime_or_production": false
+  }
+}
