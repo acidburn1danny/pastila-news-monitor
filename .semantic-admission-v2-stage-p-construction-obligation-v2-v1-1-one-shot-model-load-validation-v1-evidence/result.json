@@ -1,0 +1,33 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-construction-obligation-v2-v1-1-one-shot-model-load-validation-result",
+  "schema_version": "1.0.0",
+  "result_identity": "3fb50778db93e9310b6bea499190ff3011fb9aeb47573f24e4e8c93034c3dc26",
+  "attempts_authorized": 1,
+  "attempts_consumed": 1,
+  "status": "LOAD_ONLY_COMPLETED_COMPATIBILITY_VALIDATED_AND_RELEASED",
+  "minimum_free_vram_mib": 14000,
+  "wsl_return_code": 0,
+  "wsl_timed_out": false,
+  "elapsed_ms": 37559.20079999487,
+  "model_load_completed": true,
+  "adapter_compatibility_validated": true,
+  "adapter_compatibility_receipt_identity": "8ddafa5e60e892abf56a2b67d9ab646deb94a7b024e739ea8ea967c45e3ec39f",
+  "cleanup_completed": true,
+  "post_cleanup_gpu_free_mib": 15025,
+  "post_cleanup_gpu_used_mib": 953,
+  "raw_stdout_persisted": true,
+  "raw_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "raw_stderr_persisted": true,
+  "raw_stderr_sha256": "018b354fe036cfe9e18a53e9731a89f8bf167eaa0c1a338321715bf406bf8ffb",
+  "compatibility_observations": [
+    "TRANSFORMERS_TIED_WEIGHT_CONFIGURATION_WARNING",
+    "EXPECTED_PEFT_VISION_TARGET_OVERMATCH_CAUGHT_AND_VALIDATED_IN_CHILD"
+  ],
+  "generation_calls": 0,
+  "retry_calls": 0,
+  "fallback_calls": 0,
+  "probe_calls": 0,
+  "stage_c_entries": 0,
+  "generation_readiness": "NOT_GRANTED",
+  "runtime_or_production_authority": false
+}

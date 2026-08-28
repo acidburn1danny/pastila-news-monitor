@@ -1,0 +1,32 @@
+{
+  "artifact_type": "V1_1_ONE_SHOT_MODEL_LOAD_ONLY_VALIDATION_EVIDENCE_MANIFEST",
+  "artifact_version": "1.0.0",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_V1_1_ONE_SHOT_MODEL_LOAD_VALIDATION_RESULT_V1",
+  "canonical_identity": "3fb50778db93e9310b6bea499190ff3011fb9aeb47573f24e4e8c93034c3dc26",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "separator": "LF",
+    "ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_V2_V1_1_ONE_SHOT_MODEL_LOAD_VALIDATION_RESULT_V1",
+      "3e46f6992384abbd74219451478ead0b964a7499325caf728803bb357f3b050c",
+      "1b99443545789dc5eedb477e5ecfbc8e37d17b0038bbcceb52330c6260468aaa",
+      "66b89ee1b4d8f9832b86a59c9b83c07f8a2c0c3e1a9f25494ad50ed7c4b2ccdd",
+      "8ddafa5e60e892abf56a2b67d9ab646deb94a7b024e739ea8ea967c45e3ec39f",
+      "018b354fe036cfe9e18a53e9731a89f8bf167eaa0c1a338321715bf406bf8ffb",
+      "LOAD_ONLY_COMPLETED_COMPATIBILITY_VALIDATED_AND_RELEASED",
+      "DURABLE_RAW_STDERR",
+      "NO_GENERATION_NO_RETRY_NO_FALLBACK"
+    ]
+  },
+  "authority_receipt_identity": "3e46f6992384abbd74219451478ead0b964a7499325caf728803bb357f3b050c",
+  "adapter_compatibility_receipt_identity": "8ddafa5e60e892abf56a2b67d9ab646deb94a7b024e739ea8ea967c45e3ec39f",
+  "files": [
+    {"path":"lifecycle/model-load-supervisor-v1-1-00001-model-load-started.json","size":348,"sha256":"07caed362b8ea1bb8048ae74e6b66398ef8fe6c9246d993c12c7248425136283"},
+    {"path":"lifecycle/model-load-supervisor-v1-1-00002-model-load-completed.json","size":293,"sha256":"c70860371f90531f620cc7dfad2097f3ebc747d68e80a4239aa32c28814e89f0"},
+    {"path":"lifecycle/model-load-supervisor-v1-1-00003-model-load-cleanup-completed.json","size":193,"sha256":"41b765a484644f0223cc633fe6e273fb020358ea0ec45be09ba74ecf6b3201c5"},
+    {"path":"lifecycle/model-load-supervisor-v1-1-00004-model-load-supervisor-terminal.json","size":301,"sha256":"4ece20d03d3c2f286d56a47bae1fc95caf8140a30575381a3d25d8d901e96385"},
+    {"path":"raw-stderr.txt","size":3608,"sha256":"018b354fe036cfe9e18a53e9731a89f8bf167eaa0c1a338321715bf406bf8ffb"},
+    {"path":"raw-stdout.txt","size":0,"sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"},
+    {"path":"wsl-execution-receipt.json","size":677,"sha256":"08bbe9d6bb1037ddc10464634e553bb2c3e6a3382185836a9f62a525abbf5147"}
+  ]
+}

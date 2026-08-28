@@ -1,0 +1,1 @@
+{"actor":"model-load-supervisor-v1-1","adapter_compatibility_validated":true,"child_exitcode":0,"event":"MODEL_LOAD_SUPERVISOR_TERMINAL","monotonic_seconds":37.887458903,"recorded_at":"2026-08-28T08:55:43.212789+00:00","sequence":4,"status":"LOAD_ONLY_COMPLETED_COMPATIBILITY_VALIDATED_AND_RELEASED"}
