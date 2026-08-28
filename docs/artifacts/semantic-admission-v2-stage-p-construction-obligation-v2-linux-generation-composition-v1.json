@@ -1,0 +1,46 @@
+{
+  "artifact_type": "SOURCE_ONLY_LINUX_GENERATION_COMPOSITION",
+  "artifact_version": "1.0.0",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_LINUX_GENERATION_COMPOSITION_V1",
+  "canonical_identity": "c52b5126add3f7975e3e630a618db81549dc74aeea2ab0b6756b6e0d8582e183",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "separator": "LF",
+    "ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_V2_LINUX_GENERATION_COMPOSITION_V1",
+      "ce43ed32836005bcd471da40f9003e3d9ba66e090e57fbf66cdf77d0c8b95391",
+      "71d7259040a87956c5b27dd9f12f859b4017cc8ea9553687e49bbb895d17b9ff",
+      "3fa09e642eb256daeae03622e133b48fe717ec640e4b2dc52a74407de573f14e",
+      "d37a8a7ad5f0fed905654e74cb6111570b1abf19ac0629a3b3eee5ed5fa84844",
+      "09de75b7ecc52dedde19bf1f773c52ecf5a0a9da72da30a28113778b3867398f",
+      "VALIDATE_THEN_CREATE_ROOT_THEN_SINGLE_START",
+      "CAPTURE_EXACT_DURABLE_RECEIPTS",
+      "NO_MAIN_NO_HOST_NO_WSL"
+    ]
+  },
+  "ordered_boundary": [
+    "parse exact runner request",
+    "validate request-bound one-shot generation authority",
+    "construct deferred spawn child operations",
+    "create exclusive caller-bound durable evidence root",
+    "invoke the injected Linux generation supervisor exactly once",
+    "reconcile supervisor artifact hashes against durable sink receipts"
+  ],
+  "authority_boundary": {
+    "module_import": "zero execution",
+    "function_invocation": "actual filesystem, process, tokenizer, model, and generation authority boundary",
+    "host_or_wsl_launcher": "absent",
+    "authority_receipt_issuance": "absent"
+  },
+  "authority": {
+    "source_normalization": true,
+    "effectful_composition_invoked_during_verification": false,
+    "filesystem_persistence_executed": false,
+    "process_or_wsl_launch_executed": false,
+    "tokenizer_or_model_loading_executed": false,
+    "generation_or_inference_executed": false,
+    "provider_execution": false,
+    "stage_c": false,
+    "runtime_or_production": false
+  }
+}
