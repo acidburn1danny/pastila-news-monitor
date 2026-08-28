@@ -1,0 +1,49 @@
+{
+  "artifact_type": "SOURCE_ONLY_DURABLE_FILESYSTEM_SINK",
+  "artifact_version": "1.0.0",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_DURABLE_FILESYSTEM_SINK_V1",
+  "canonical_identity": "3fa09e642eb256daeae03622e133b48fe717ec640e4b2dc52a74407de573f14e",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "separator": "LF",
+    "ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_V2_DURABLE_FILESYSTEM_SINK_V1",
+      "ce43ed32836005bcd471da40f9003e3d9ba66e090e57fbf66cdf77d0c8b95391",
+      "4636f0937ebc620f3fe086e9ae69ee5e21884cbf6e73cbee69a90962dab1c136",
+      "EXCLUSIVE_NEW_CALLER_BOUND_ROOT",
+      "ATOMIC_EXCLUSIVE_LINK_PUBLICATION",
+      "NO_TRAVERSAL_SYMLINK_REPARSE_OVERWRITE",
+      "MAX_ARTIFACT_BYTES=4194304",
+      "MAX_ARTIFACT_COUNT=256",
+      "NO_PROCESS_NO_WSL_NO_RUNTIME"
+    ]
+  },
+  "root_policy": {
+    "creation": "new absolute root under an existing canonical non-reparse parent",
+    "binding": [
+      "provider_request_id",
+      "source_context_identity",
+      "authority_receipt_identity",
+      "supervisor_candidate_identity",
+      "canonical_absolute_root"
+    ],
+    "pre_existing_root": "fail closed"
+  },
+  "publication_policy": {
+    "mechanism": "fully flushed same-directory temporary file then exclusive hard-link",
+    "duplicate_or_existing_label": "fail closed without overwrite",
+    "maximum_artifact_bytes": 4194304,
+    "maximum_artifact_count": 256,
+    "receipt_fields": ["label", "byte_count", "sha256", "sink_instance_identity"]
+  },
+  "authority": {
+    "source_candidate_normalization": true,
+    "filesystem_persistence_when_called": true,
+    "process_or_wsl_execution": false,
+    "tokenizer_or_model_loading": false,
+    "generation_or_inference": false,
+    "runner_or_probe_execution": false,
+    "stage_c": false,
+    "runtime_or_production": false
+  }
+}
