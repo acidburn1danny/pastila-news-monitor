@@ -7,7 +7,7 @@ from __future__ import annotations
 
 import hashlib
 import json
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 
 from .stage_p_construction_obligation_v2_generation_authority_preload_v1_1 import (
     AUTHORITY_CONTRACT_V1_IDENTITY,
@@ -16,6 +16,7 @@ from .stage_p_construction_obligation_v2_generation_authority_preload_v1_1 impor
     SUPERVISOR_IDENTITY,
     WORKER_IDENTITY,
     WSL_PROFILE_IDENTITY,
+    GenerationPreloadObservationV1_1,
 )
 from .stage_p_construction_obligation_v2_generation_v1_2_identity_contract import (
     COMPOSITION_IDENTITY as LINUX_GENERATION_COMPOSITION_IDENTITY,
@@ -46,6 +47,43 @@ class GenerationAuthorityV1_2:
     source_context_identity: str
     required_free_vram_mib: int
     authority_receipt_identity: str
+
+
+def validate_generation_preload_v1_2(
+    *, authority: GenerationAuthorityV1_2,
+    observed: GenerationPreloadObservationV1_1,
+) -> bytes:
+    """Preserve the exact V1.1 capacity policy under V1.2 authority identity."""
+    if type(authority) is not GenerationAuthorityV1_2:
+        raise TypeError("GENERATION_AUTHORITY_V1_2_EXACT_TYPE_REQUIRED")
+    if type(observed) is not GenerationPreloadObservationV1_1:
+        raise TypeError("GENERATION_PRELOAD_V1_1_EXACT_TYPE_REQUIRED")
+    expected = GenerationPreloadObservationV1_1(
+        PACKAGE_IDENTITIES,
+        "bd0f84711c825a2c213b458a0e2c41d189914ad5ac4bdf283c91a38daab0c090",
+        "312d6f8cb7c14c769742901c4c80042c104f5a60ba2f80b2913487af22d67ae2",
+        "NVIDIA GeForce RTX 5080", 16303, observed.vram_free_mib, "12.0", 0,
+        "NF4_4BIT", True, "BF16",
+    )
+    if observed != expected or type(observed.vram_free_mib) is not int:
+        raise ValueError("GENERATION_PRELOAD_V1_2_ENVIRONMENT_MISMATCH")
+    if observed.vram_free_mib < authority.required_free_vram_mib:
+        raise ValueError("GENERATION_PRELOAD_V1_2_INSUFFICIENT_FREE_VRAM")
+    observation = asdict(observed)
+    observation["package_identities"] = list(observed.package_identities)
+    value = {
+        "schema_name": "pastila-semantic-admission-v2-generation-preload-admission",
+        "schema_version": "1.2.0",
+        "authority_preload_identity": AUTHORITY_PRELOAD_IDENTITY,
+        "authority_receipt_identity": authority.authority_receipt_identity,
+        "observation_sha256": hashlib.sha256(_canonical(observation)).hexdigest(),
+        "admission": "MODEL_LOAD_START_ADMITTED", "model_load_started": False,
+        "generation_started": False, "receipt_identity": "",
+    }
+    value["receipt_identity"] = hashlib.sha256(_canonical({
+        key: item for key, item in value.items() if key != "receipt_identity"
+    })).hexdigest()
+    return _canonical(value)
 
 
 def parse_generation_authority_v1_2(
@@ -118,5 +156,7 @@ def _canonical(value: dict[str, object]) -> bytes:
 
 __all__ = (
     "AUTHORITY_PRELOAD_IDENTITY", "AUTHORITY_PRELOAD_IDENTITY_FIELDS",
-    "GenerationAuthorityV1_2", "PACKAGE_IDENTITIES", "parse_generation_authority_v1_2",
+    "GenerationAuthorityV1_2", "GenerationPreloadObservationV1_1",
+    "PACKAGE_IDENTITIES", "parse_generation_authority_v1_2",
+    "validate_generation_preload_v1_2",
 )

@@ -65,3 +65,25 @@ def test_identity_derivation_is_deterministic():
     assert authority.AUTHORITY_PRELOAD_IDENTITY == hashlib.sha256(
         "\n".join(authority.AUTHORITY_PRELOAD_IDENTITY_FIELDS).encode()
     ).hexdigest()
+
+
+def test_preload_policy_is_exact_and_bound_to_v1_2_receipt():
+    value = _receipt()
+    parsed = authority.parse_generation_authority_v1_2(
+        raw_receipt=_canonical(value), expected_host_payload_sha256="a" * 64,
+        expected_runner_request_sha256="b" * 64, expected_provider_request_id="request",
+        expected_source_context_identity="c" * 64,
+    )
+    observed = authority.GenerationPreloadObservationV1_1(
+        authority.PACKAGE_IDENTITIES,
+        "bd0f84711c825a2c213b458a0e2c41d189914ad5ac4bdf283c91a38daab0c090",
+        "312d6f8cb7c14c769742901c4c80042c104f5a60ba2f80b2913487af22d67ae2",
+        "NVIDIA GeForce RTX 5080", 16303, 14000, "12.0", 0,
+        "NF4_4BIT", True, "BF16",
+    )
+    receipt = json.loads(authority.validate_generation_preload_v1_2(
+        authority=parsed, observed=observed
+    ))
+    assert receipt["schema_version"] == "1.2.0"
+    assert receipt["authority_receipt_identity"] == parsed.authority_receipt_identity
+    assert receipt["model_load_started"] is False
