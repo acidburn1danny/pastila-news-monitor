@@ -1,0 +1,66 @@
+{
+  "artifact_type": "ZERO_MODEL_OPERATIONAL_PREFLIGHT_EVIDENCE",
+  "artifact_version": "1.0.0",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_ZERO_MODEL_OPERATIONAL_PREFLIGHT_V1_EVIDENCE",
+  "canonical_identity": "c993a2f39008647268f15aa162235f027c91c5e18ae26977a1cff8e7886e3fbf",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "separator": "LF",
+    "ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_V2_ZERO_MODEL_OPERATIONAL_PREFLIGHT_V1_EVIDENCE",
+      "2dfef8ec30a914907fbb5b4201d14b532623c3d8ca42ebe0376c70c3840c8d84",
+      "601474e41c590b1eefbeb84c10590172562d293118ede970293d59b63ae6e0cc",
+      "ab851b6d37511a2a64e9b09c6e5d93dac683e98ea74d853c4362dacd03679a1f",
+      "5431211a52e3231f00191cafe5bc7938b129dd9d983d9b7e1f7d0f9cc04ac8b6",
+      "77bc0a21debd99e117a8a3f6e1fd0d80904716631e1d5f1af9abd7745d1ba623",
+      "DRVFS_HARDLINK_PASS",
+      "SYNTHETIC_CHILD_TERMINATED_REAPED_PROC_ABSENT",
+      "ZERO_TOKENIZER_ZERO_MODEL_ZERO_GENERATION",
+      "INITIAL_MODULE_BINDING_FAILURE_REMEDIATED"
+    ]
+  },
+  "source": {
+    "candidate_commit": "cbb04539eb029043c2ff43abbeabb4f6fbf19068",
+    "bounded_remediation_commit": "116b7bdd3c27d4e2fe6de2939788f057dae6826c",
+    "implementation_sha256": "601474e41c590b1eefbeb84c10590172562d293118ede970293d59b63ae6e0cc"
+  },
+  "first_attempt": {
+    "result": "FAILED_BEFORE_EVIDENCE_ROOT_CREATION",
+    "cause": "Host module execution supplied __main__ as the WSL worker module name.",
+    "model_or_tokenizer_loaded": false,
+    "synthetic_child_started": false,
+    "evidence_root_created": false,
+    "remediation": "Bound the canonical importable module name explicitly."
+  },
+  "verified_attempt": {
+    "command_identity": "04ba363cf8000185c565eb635753b94cfec01599888fe94f323f71dc3bcd452d",
+    "wsl_profile_identity": "71f66b8bf20b3decb31cfe65d3d94720f9fd1d2c6500c9ef259197cbf94bc7f4",
+    "wsl_return_code": 0,
+    "drvfs_hardlink_publication": "PASS",
+    "synthetic_child_pid": 361,
+    "termination": "TERMINATED",
+    "child_exit_code": -15,
+    "child_reaped": true,
+    "child_proc_absent_in_worker": true,
+    "child_proc_absent_post_run": true,
+    "tokenizer_loads": 0,
+    "model_loads": 0,
+    "generation_calls": 0
+  },
+  "files": {
+    "hardlink-proof.bin": "775d1508304a82d30895185388fb99e17e976c8884ca6880c67df02852add614",
+    "worker-report.json": "6fec99d1cd53200ef237c41ca0913227b9741aa4de4594e42648ee194c6d8879",
+    "wsl-execution-receipt.json": "5431211a52e3231f00191cafe5bc7938b129dd9d983d9b7e1f7d0f9cc04ac8b6",
+    "host-receipt.json": "98ff395ccb36b3169e8cc725546ac6034ab1e23563a0da6073d8b0992f35e1f7"
+  },
+  "authority": {
+    "zero_model_operational_preflight": true,
+    "generation_authority_receipt_issued": false,
+    "tokenizer_or_model_loading": false,
+    "generation_or_inference": false,
+    "provider_or_probe": false,
+    "stage_c": false,
+    "runtime_or_production": false
+  },
+  "verdict": "PASS"
+}
