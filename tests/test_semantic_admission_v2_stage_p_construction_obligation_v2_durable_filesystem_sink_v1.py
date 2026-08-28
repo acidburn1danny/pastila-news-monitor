@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import ast
 import hashlib
 import json
 import os
@@ -175,3 +176,7 @@ def test_artifact_identity_and_no_execution_surface():
         "if __name__",
     ):
         assert forbidden not in source
+
+
+def test_source_is_parseable_by_the_frozen_linux_python_3_12():
+    ast.parse(SOURCE.read_text("utf-8"), filename=str(SOURCE), feature_version=(3, 12))

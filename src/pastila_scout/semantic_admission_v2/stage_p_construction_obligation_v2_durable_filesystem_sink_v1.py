@@ -256,7 +256,7 @@ def _is_link_or_reparse(path: Path) -> bool:
         return True
     try:
         attributes = path.stat().st_file_attributes
-    except AttributeError, FileNotFoundError, OSError:
+    except (AttributeError, FileNotFoundError, OSError):
         return False
     return bool(attributes & getattr(stat, "FILE_ATTRIBUTE_REPARSE_POINT", 0))
 
