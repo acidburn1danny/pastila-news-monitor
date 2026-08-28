@@ -1,0 +1,33 @@
+{
+  "artifact_type": "SOURCE_ONLY_MODEL_LOAD_ADAPTER_COMPATIBILITY_BINDING",
+  "artifact_version": "1.1.0",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_MODEL_LOAD_COMPATIBILITY_BINDING_V1_1",
+  "canonical_identity": "1b99443545789dc5eedb477e5ecfbc8e37d17b0038bbcceb52330c6260468aaa",
+  "identity_derivation": {
+    "algorithm": "sha256", "separator": "LF",
+    "ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_V2_MODEL_LOAD_WSL_BINDING_V1_1",
+      "cb586b500b2cd0e23a8af86713153e36c0875170a6017e51cbea1ee8b45440ae",
+      "776ca751604876806c38ee29db4219b0e5881caa5117ad624e68c8d52cb746d7",
+      "c34bf8d854b1d873cdd320773d477b04e18a4f3d88475f2a5bcd2225813ca37c",
+      "66b89ee1b4d8f9832b86a59c9b83c07f8a2c0c3e1a9f25494ad50ed7c4b2ccdd",
+      "71f66b8bf20b3decb31cfe65d3d94720f9fd1d2c6500c9ef259197cbf94bc7f4",
+      "CANONICAL_WSL_V1_1_NO_SHELL_MODULE_ENTRYPOINT", "LAUNCH_FORBIDDEN_SOURCE_ONLY"
+    ]
+  },
+  "bindings": {
+    "worker_identity": "c34bf8d854b1d873cdd320773d477b04e18a4f3d88475f2a5bcd2225813ca37c",
+    "supervisor_identity": "cb586b500b2cd0e23a8af86713153e36c0875170a6017e51cbea1ee8b45440ae",
+    "adapter_compatibility_gate_identity": "66b89ee1b4d8f9832b86a59c9b83c07f8a2c0c3e1a9f25494ad50ed7c4b2ccdd"
+  },
+  "completion_rule": "EXACT_ADAPTER_HEADER_AND_336_KEY_PEFT_WARNING_MUST_VALIDATE_BEFORE_MODEL_LOAD_COMPLETED",
+  "authority": {
+    "model_or_adapter_loading": false,
+    "generation_or_inference": false,
+    "retry_or_fallback": false,
+    "wsl_invocation": false,
+    "runner_executor_or_probe": false,
+    "stage_c": false,
+    "runtime_or_production": false
+  }
+}
