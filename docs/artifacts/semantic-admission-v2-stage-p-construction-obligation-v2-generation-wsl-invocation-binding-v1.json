@@ -1,0 +1,19 @@
+{
+  "artifact_type": "BUILD_ONLY_GENERATION_WSL_INVOCATION_BINDING",
+  "artifact_version": "1.0.0",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_GENERATION_WSL_INVOCATION_BINDING_V1",
+  "canonical_identity": "c7a09557517e2a762d1d60738bc2c073be458533769bd0a968f25930fe3b6843",
+  "identity_derivation": {"algorithm":"sha256","separator":"LF","ordered_utf8_fields":[
+    "STAGE_P_CONSTRUCTION_OBLIGATION_V2_GENERATION_WSL_INVOCATION_BINDING_V1",
+    "ed9303593dea53b9375913e3cb1640cdb11f2e347299435532f7e3935bf755da",
+    "61c2381d0dade8fb318c9395a5a53ffeee71a3082732b3aee7051d06126abb6a",
+    "c52b5126add3f7975e3e630a618db81549dc74aeea2ab0b6756b6e0d8582e183",
+    "71f66b8bf20b3decb31cfe65d3d94720f9fd1d2c6500c9ef259197cbf94bc7f4",
+    "87ef25d65a92b65e8dbd3730258c6d0b0fc6ee8950130c69e2b623ff0190127e",
+    "OUTER_TIMEOUT_SECONDS=1260","CANONICAL_MODULE_INVOCATION_NO_SHELL","BUILD_ONLY_NO_EXECUTE"]},
+  "profile":"Canonical WSL V1.1 model Python with the frozen Pydantic bridge",
+  "evidence_layout":{"outer_root":"host-created only by the future executor","linux_generation":"exclusively created by the Linux durable sink"},
+  "authority":{"source_normalization":true,"invocation_construction":true,"wsl_execution":false,
+    "filesystem_persistence":false,"tokenizer_or_model_loading":false,"generation_or_inference":false,
+    "retry_fallback_repair_selection":false,"stage_c":false,"runtime_or_production":false}
+}
