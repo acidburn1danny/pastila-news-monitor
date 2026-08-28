@@ -1,0 +1,53 @@
+{
+  "artifact_type": "SOURCE_ONLY_MODEL_LOAD_ONLY_CANDIDATE",
+  "artifact_version": "1.5.0",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_MODEL_LOAD_ONLY_CANDIDATE_V1_5",
+  "authority_contract_identity": "0aa5e785b3c06fc8acab6692da5088d74fc8649b71e16a2eaa9f2b29ca04d58b",
+  "canonical_identity": "0c75989a971d7170d7cd01b351b736a0664c5ee1516d5c612f8ee82150f0940c",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "separator": "LF",
+    "authority_ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_V2_MODEL_LOAD_AUTHORITY_CONTRACT_V1",
+      "9410ef484986fc14534334ebf6a6912d381e2882b8fca948de4b215b2e7a8931",
+      "bb5a4767bb2eca6d2a71e0aacc2cbaaeab6e01a5baa693cb1330474385e5b6f9",
+      "transformers==5.15.0", "torch==2.13.0+cu130", "peft==0.20.0",
+      "accelerate==1.14.0", "bitsandbytes==0.50.1",
+      "LOAD_ONLY_ONE_ATTEMPT_OWNER_RECEIPT_REQUIRED"
+    ],
+    "candidate_ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_V2_MODEL_LOAD_ONLY_CANDIDATE_V1_5",
+      "0aa5e785b3c06fc8acab6692da5088d74fc8649b71e16a2eaa9f2b29ca04d58b",
+      "9410ef484986fc14534334ebf6a6912d381e2882b8fca948de4b215b2e7a8931",
+      "a4f958ac8b793da4e5c9d2d91145b8d49c2ca8624d209e9aed0670eced35f678",
+      "bb5a4767bb2eca6d2a71e0aacc2cbaaeab6e01a5baa693cb1330474385e5b6f9",
+      "974d5e6257256d7397cb68f90952c66809a536cf5525cbef58b3bbfce6791587",
+      "INJECTION_ONLY_ONE_ATTEMPT_EXACT_CLEANUP", "NO_RUNTIME_AUTHORITY"
+    ]
+  },
+  "bindings": {
+    "policy_gate_identity": "9410ef484986fc14534334ebf6a6912d381e2882b8fca948de4b215b2e7a8931",
+    "lifecycle_preamble_identity": "a4f958ac8b793da4e5c9d2d91145b8d49c2ca8624d209e9aed0670eced35f678",
+    "immutable_manifest_identity": "bb5a4767bb2eca6d2a71e0aacc2cbaaeab6e01a5baa693cb1330474385e5b6f9",
+    "projector_freeze_identity": "974d5e6257256d7397cb68f90952c66809a536cf5525cbef58b3bbfce6791587"
+  },
+  "behavior": {
+    "injection_only": true,
+    "attempt_ceiling": 1,
+    "events": ["MODEL_LOAD_STARTED", "MODEL_LOAD_COMPLETED", "MODEL_LOAD_FAILED", "MODEL_LOAD_CLEANUP_COMPLETED", "MODEL_LOAD_CLEANUP_FAILED"],
+    "partial_resource_cleanup": "EXACTLY_ONCE",
+    "retry": false,
+    "fallback": false,
+    "vision_components_preserved": true,
+    "capacity_threshold": "REQUIRED_BY_SEPARATELY_ISSUED_OWNER_AUTHORITY_RECEIPT"
+  },
+  "authority": {
+    "source_normalization": true,
+    "real_owner_authority_receipt_issued": false,
+    "model_or_adapter_loading": false,
+    "generation_or_inference": false,
+    "runner_executor_or_probe": false,
+    "stage_c": false,
+    "runtime_or_production": false
+  }
+}
