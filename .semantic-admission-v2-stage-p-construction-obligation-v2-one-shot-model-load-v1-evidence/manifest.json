@@ -1,0 +1,35 @@
+{
+  "artifact_type": "ONE_SHOT_MODEL_LOAD_ONLY_EVIDENCE_MANIFEST",
+  "artifact_version": "1.0.0",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_ONE_SHOT_MODEL_LOAD_RESULT_V1",
+  "canonical_identity": "49b74b00edb7fde2afea3c46cdc2ad53ad7910e1cec418e0ae686b9c87ae8134",
+  "identity_derivation": {
+    "algorithm": "sha256", "separator": "LF",
+    "ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_V2_ONE_SHOT_MODEL_LOAD_RESULT_V1",
+      "4fa3865ffc6fd10bdaa7ec969d5f630651d877bf631cc44f2bde9bfebddfb674",
+      "47106a6ec272b835beebd9f9e2ff62ee57936e69a1bc4fe3a84f4b858c664d2a",
+      "8e228417a6644a8351da653560874295c7ead8ac23f4df7cfc8ff93d22895453",
+      "6adddabcc0a3cd268325cb0f32a68fc4a47d9d2132985becd49e4ab08dcfa092",
+      "cd1c44b821cccf5465ce9f76ee8e473b1f67223b61a3c5f75d2e596aa46d5ca4",
+      "f3bcbbe5b20bf8736595f35f53ffa2aae5ed9903d61245b597fc59655925fe3c",
+      "6cce73664876382976c1c909f4ba662b62494da7893221774c37f2236b3d6862",
+      "baee3d79ccc6f98998600cb026a679b4d676be4edd47fefad404330f2a61241c",
+      "da22d9a825557c077cddf5066deb8f983959384946a00ffbccfb50da70c4994c",
+      "LOAD_ONLY_COMPLETED_AND_RELEASED", "PEFT_MISSING_VISION_ADAPTER_KEYS_WARNING",
+      "NO_GENERATION_AUTHORITY"
+    ]
+  },
+  "authority_receipt_identity": "4fa3865ffc6fd10bdaa7ec969d5f630651d877bf631cc44f2bde9bfebddfb674",
+  "files": [
+    {"path":"lifecycle/model-load-supervisor-00001-model-load-started.json","size":343,"sha256":"f3bcbbe5b20bf8736595f35f53ffa2aae5ed9903d61245b597fc59655925fe3c"},
+    {"path":"lifecycle/model-load-supervisor-00002-model-load-completed.json","size":180,"sha256":"6cce73664876382976c1c909f4ba662b62494da7893221774c37f2236b3d6862"},
+    {"path":"lifecycle/model-load-supervisor-00003-model-load-cleanup-completed.json","size":188,"sha256":"baee3d79ccc6f98998600cb026a679b4d676be4edd47fefad404330f2a61241c"},
+    {"path":"lifecycle/model-load-supervisor-00004-model-load-supervisor-terminal.json","size":233,"sha256":"da22d9a825557c077cddf5066deb8f983959384946a00ffbccfb50da70c4994c"}
+  ],
+  "raw_stderr": {
+    "persisted": false,
+    "sha256_from_transport_receipt": "cd1c44b821cccf5465ce9f76ee8e473b1f67223b61a3c5f75d2e596aa46d5ca4",
+    "disposition": "NOT_RECONSTRUCTED"
+  }
+}

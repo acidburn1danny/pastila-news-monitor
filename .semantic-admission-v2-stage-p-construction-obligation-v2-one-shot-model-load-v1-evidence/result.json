@@ -1,0 +1,29 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-construction-obligation-v2-one-shot-model-load-result",
+  "schema_version": "1.0.0",
+  "result_identity": "49b74b00edb7fde2afea3c46cdc2ad53ad7910e1cec418e0ae686b9c87ae8134",
+  "attempts_authorized": 1,
+  "attempts_consumed": 1,
+  "status": "LOAD_ONLY_COMPLETED_AND_RELEASED_WITH_COMPATIBILITY_WARNING",
+  "minimum_free_vram_mib": 14000,
+  "wsl_return_code": 0,
+  "wsl_timed_out": false,
+  "elapsed_ms": 38361.874299997,
+  "model_load_completed": true,
+  "adapter_attach_completed": true,
+  "cleanup_completed": true,
+  "post_cleanup_gpu_free_mib": 14954,
+  "post_cleanup_gpu_used_mib": 1024,
+  "compatibility_observations": [
+    "TRANSFORMERS_TIED_WEIGHT_CONFIGURATION_WARNING",
+    "PEFT_MISSING_VISION_TOWER_ADAPTER_KEYS_WARNING"
+  ],
+  "raw_stderr_persisted": false,
+  "raw_stderr_sha256": "cd1c44b821cccf5465ce9f76ee8e473b1f67223b61a3c5f75d2e596aa46d5ca4",
+  "generation_calls": 0,
+  "retry_calls": 0,
+  "fallback_calls": 0,
+  "stage_c_entries": 0,
+  "generation_readiness": "NOT_GRANTED",
+  "runtime_or_production_authority": false
+}
