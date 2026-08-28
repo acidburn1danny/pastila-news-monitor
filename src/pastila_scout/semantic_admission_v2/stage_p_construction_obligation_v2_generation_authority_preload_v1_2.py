@@ -17,10 +17,12 @@ from .stage_p_construction_obligation_v2_generation_authority_preload_v1_1 impor
     WORKER_IDENTITY,
     WSL_PROFILE_IDENTITY,
 )
-from .stage_p_construction_obligation_v2_generation_wsl_host_executor_v1_2 import GENERATION_WSL_HOST_EXECUTOR_IDENTITY
-from .stage_p_construction_obligation_v2_generation_wsl_invocation_binding_v1_2 import GENERATION_WSL_INVOCATION_BINDING_IDENTITY
-from .stage_p_construction_obligation_v2_linux_generation_composition_v1_2 import LINUX_GENERATION_COMPOSITION_IDENTITY
-from .stage_p_construction_obligation_v2_linux_generation_runner_v1_2 import LINUX_GENERATION_RUNNER_IDENTITY
+from .stage_p_construction_obligation_v2_generation_v1_2_identity_contract import (
+    COMPOSITION_IDENTITY as LINUX_GENERATION_COMPOSITION_IDENTITY,
+    HOST_EXECUTOR_IDENTITY as GENERATION_WSL_HOST_EXECUTOR_IDENTITY,
+    RUNNER_IDENTITY as LINUX_GENERATION_RUNNER_IDENTITY,
+    WSL_BINDING_IDENTITY as GENERATION_WSL_INVOCATION_BINDING_IDENTITY,
+)
 
 AUTHORITY_PRELOAD_IDENTITY_FIELDS = (
     "construction-obligation-v2-generation-authority-preload-v1.2",
