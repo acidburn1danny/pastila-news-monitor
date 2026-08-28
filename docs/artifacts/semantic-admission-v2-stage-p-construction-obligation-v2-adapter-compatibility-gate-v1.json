@@ -1,0 +1,38 @@
+{
+  "artifact_type": "SOURCE_ONLY_ADAPTER_COMPATIBILITY_GATE",
+  "artifact_version": "1.0.0",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_ADAPTER_COMPATIBILITY_GATE_V1",
+  "canonical_identity": "66b89ee1b4d8f9832b86a59c9b83c07f8a2c0c3e1a9f25494ad50ed7c4b2ccdd",
+  "identity_derivation": {
+    "algorithm": "sha256", "separator": "LF",
+    "ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_V2_ADAPTER_COMPATIBILITY_GATE_V1",
+      "7e75a4f0aa2b70cf29f491808fdfd7b1d93d89cb2befd6cee6cf3f7153bb996f",
+      "ec780f63a5c838121f573b6bce987f1f6f5070b256b9db8480b2a95b131ec01f",
+      "c07bf9545b3b17ea0363263b11fc25d0a2ebe814e3f8083da3fa08adaa824879",
+      "1ef4e7033ebd01c9c6fbf0fc3837695b75b795c54f8a837b7578e8dfba2251a4",
+      "49b74b00edb7fde2afea3c46cdc2ad53ad7910e1cec418e0ae686b9c87ae8134",
+      "LANGUAGE_LAYERS=40_TARGETS=7_TENSORS=560",
+      "VISION_LAYERS=24_TARGETS=7_EXPECTED_MISSING=336",
+      "PEFT_INIT_TRUE_LORA_B_ZERO",
+      "STRUCTURAL_NO_OP_VISION_TARGET_OVERMATCH",
+      "SOURCE_ONLY_NO_EXECUTION_AUTHORITY"
+    ]
+  },
+  "classification": {
+    "language_adapter_tensor_count": 560,
+    "expected_vision_missing_key_count": 336,
+    "unexpected_missing_or_extra_key_count": 0,
+    "vision_effect_at_initialization": "EXACT_ZERO_LORA_DELTA",
+    "disposition": "STRUCTURAL_NO_OP_VISION_TARGET_OVERMATCH"
+  },
+  "authority": {
+    "compatibility_validation": true,
+    "model_or_adapter_loading": false,
+    "generation_or_inference": false,
+    "retry_or_fallback": false,
+    "runner_executor_or_probe": false,
+    "stage_c": false,
+    "runtime_or_production": false
+  }
+}
