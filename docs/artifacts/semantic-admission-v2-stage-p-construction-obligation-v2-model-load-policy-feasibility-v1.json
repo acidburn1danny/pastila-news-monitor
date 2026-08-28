@@ -1,0 +1,109 @@
+{
+  "artifact_type": "ZERO_EXECUTION_MODEL_LOAD_POLICY_FEASIBILITY_RECEIPT",
+  "artifact_version": "1.0.0",
+  "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_MODEL_LOAD_POLICY_FEASIBILITY_V1",
+  "canonical_identity": "96078a0269e80e9ae356ed1032594c43e324bbdc81b66bfbc2c0196405f1d8e0",
+  "identity_derivation": {
+    "algorithm": "sha256",
+    "separator": "LF",
+    "ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_V2_MODEL_LOAD_POLICY_FEASIBILITY_V1",
+      "bb5a4767bb2eca6d2a71e0aacc2cbaaeab6e01a5baa693cb1330474385e5b6f9",
+      "bd0f84711c825a2c213b458a0e2c41d189914ad5ac4bdf283c91a38daab0c090",
+      "312d6f8cb7c14c769742901c4c80042c104f5a60ba2f80b2913487af22d67ae2",
+      "NVIDIA GeForce RTX 5080",
+      "VRAM_MIB=16303",
+      "COMPUTE_CAPABILITY=12.0",
+      "CANDIDATE_PROMPT_TOKENS=8192",
+      "CANDIDATE_OUTPUT_TOKENS=3200",
+      "ZERO_EXECUTION"
+    ]
+  },
+  "bindings": {
+    "immutable_manifest_identity": "bb5a4767bb2eca6d2a71e0aacc2cbaaeab6e01a5baa693cb1330474385e5b6f9",
+    "base_manifest_sha256": "bd0f84711c825a2c213b458a0e2c41d189914ad5ac4bdf283c91a38daab0c090",
+    "adapter_manifest_sha256": "312d6f8cb7c14c769742901c4c80042c104f5a60ba2f80b2913487af22d67ae2",
+    "runner_lifecycle_preamble_identity": "a4f958ac8b793da4e5c9d2d91145b8d49c2ca8624d209e9aed0670eced35f678",
+    "model_identity": "pastila-editor-core-v1.2-experimental"
+  },
+  "stable_hardware_observation": {
+    "gpu_name": "NVIDIA GeForce RTX 5080",
+    "vram_total_mib": 16303,
+    "compute_capability": "12.0"
+  },
+  "non_identity_bearing_observation": {
+    "driver_version": "610.47",
+    "vram_free_mib_at_audit": 14972,
+    "system_ram_bytes": 16562933760,
+    "swap_bytes": 4294967296
+  },
+  "safetensors_header_totals": {
+    "base_parameter_count": 13945031680,
+    "base_bf16_storage_bytes": 27890063360,
+    "base_tensor_count": 585,
+    "adapter_parameter_count": 60948480,
+    "adapter_fp32_storage_bytes": 243793920,
+    "adapter_tensor_count": 560,
+    "language_storage_bytes": 27012147200,
+    "vision_storage_bytes": 806610944,
+    "multimodal_projector_storage_bytes": 71305216
+  },
+  "candidate_policy": {
+    "status": "CANDIDATE_NOT_AUTHORIZED",
+    "batch_size": 1,
+    "maximum_prompt_tokens": 8192,
+    "maximum_output_tokens": 3200,
+    "maximum_combined_tokens": 11392,
+    "quantization": "NF4_4BIT",
+    "double_quantization": true,
+    "compute_dtype": "BF16",
+    "device": "CUDA_0",
+    "local_files_only": true,
+    "retry_repair_selection_fallback": 0
+  },
+  "kv_cache_lower_bound": {
+    "formula": "combined_tokens * layers * 2_KV * kv_heads * head_dim * bf16_bytes",
+    "layers": 40,
+    "kv_heads": 8,
+    "head_dim": 128,
+    "bytes_per_value": 2,
+    "bytes_per_token": 163840,
+    "candidate_combined_token_bytes": 1866465280,
+    "classification": "LOWER_BOUND_EXCLUDES_RUNTIME_OVERHEAD"
+  },
+  "feasibility_classification": {
+    "full_bf16_single_gpu": "INFEASIBLE",
+    "nf4_double_quant_single_gpu": "CREDIBLE_UNPROVEN",
+    "cpu_resident_full_bf16_without_disk_offload": "INFEASIBLE",
+    "actual_peak_memory": "UNMEASURED",
+    "model_load_compatibility": "UNPROVEN"
+  },
+  "owner_decisions_remaining": {
+    "authorize_nf4_double_quantization": false,
+    "authorize_prompt_token_ceiling": false,
+    "authorize_vision_component_removal": false,
+    "accept_transformers_version_compatibility_risk": false,
+    "define_measured_peak_memory_ceiling": false,
+    "authorize_model_load_started": false
+  },
+  "activity": {
+    "safetensors_header_reads": 7,
+    "tensor_allocations": 0,
+    "tokenizer_loads": 0,
+    "model_or_adapter_loads": 0,
+    "generation_or_inference_calls": 0,
+    "runner_executor_or_probe_calls": 0,
+    "stage_c_entries": 0
+  },
+  "authority": {
+    "feasibility_receipt_normalization": true,
+    "load_policy_approval": false,
+    "tokenizer_loading": false,
+    "model_or_adapter_loading": false,
+    "quantization_or_runtime_transformation": false,
+    "generation_or_inference": false,
+    "runner_executor_or_probe": false,
+    "stage_c": false,
+    "runtime_or_production": false
+  }
+}
