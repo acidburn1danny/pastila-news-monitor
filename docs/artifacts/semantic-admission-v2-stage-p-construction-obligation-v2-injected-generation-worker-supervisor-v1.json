@@ -1,0 +1,70 @@
+{
+  "artifact_type": "SOURCE_ONLY_INJECTED_GENERATION_WORKER_SUPERVISOR_CANDIDATE",
+  "artifact_version": "1.0.0",
+  "worker": {
+    "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_INJECTED_GENERATION_WORKER_V1",
+    "canonical_identity": "8f2b6e445375d2295583ee3eeec6c643dec57bb5f711bdcf2b12abf310e03489",
+    "identity_derivation": {
+      "algorithm": "sha256",
+      "separator": "LF",
+      "ordered_utf8_fields": [
+        "STAGE_P_CONSTRUCTION_OBLIGATION_V2_INJECTED_GENERATION_WORKER_V1",
+        "7a6e3629275e80d61b0af20d88393b158f2ac1154d6e9017f5bf3489f5d6b7d4",
+        "d37a8a7ad5f0fed905654e74cb6111570b1abf19ac0629a3b3eee5ed5fa84844",
+        "8ddafa5e60e892abf56a2b67d9ab646deb94a7b024e739ea8ea967c45e3ec39f",
+        "f21bc27ccdbd1941783e2cfc893eede389e5a56207342a97d7fafc66b4506f91",
+        "PROMPT_TOKEN_CEILING=8192",
+        "OUTPUT_TOKEN_CEILING=3200",
+        "SOLE_REQUEST_BOUND_CALLBACK",
+        "INJECTED_OPERATIONS_ONLY",
+        "NO_RUNTIME_AUTHORITY"
+      ]
+    }
+  },
+  "supervisor": {
+    "canonical_name": "STAGE_P_CONSTRUCTION_OBLIGATION_V2_INJECTED_GENERATION_SUPERVISOR_V1",
+    "canonical_identity": "7291139155c0e30c39733f28cb042541cb1e9c95f092f897828da71c2e9c34e3",
+    "identity_derivation": {
+      "algorithm": "sha256",
+      "separator": "LF",
+      "ordered_utf8_fields": [
+        "STAGE_P_CONSTRUCTION_OBLIGATION_V2_INJECTED_GENERATION_SUPERVISOR_V1",
+        "8f2b6e445375d2295583ee3eeec6c643dec57bb5f711bdcf2b12abf310e03489",
+        "cb9f14284353fafba05094b005f3a97793dbb079e5bed81abacddaafb7d155bf",
+        "09de75b7ecc52dedde19bf1f773c52ecf5a0a9da72da30a28113778b3867398f",
+        "DURABLE_BYTES_RETURNED_TO_CALLER",
+        "PARTIAL_OUTPUT_NO_SEMANTIC_AUTHORITY",
+        "CLEANUP_TERMINAL_FAIL_CLOSED",
+        "NO_LAUNCH_NO_ENTRYPOINT"
+      ]
+    }
+  },
+  "ordering": [
+    "policy and exact request-bound authority validation",
+    "actual prompt token count validation",
+    "model load through injected operation",
+    "exact compatibility receipt validation",
+    "GENERATION_STARTED",
+    "one injected generation call with sole request-bound callback",
+    "terminal result or typed failure",
+    "cleanup terminal receipt"
+  ],
+  "failure_rules": {
+    "pre_generation_mismatch": "fail before generation operation",
+    "no_legal_token": "constraint-liveness failure only with exact request-bound receipt",
+    "partial_output": "preserved separately and excluded from typed semantic output",
+    "transport_or_operation_failure": "execution failure, never liveness",
+    "cleanup_failure": "terminal execution failure even after candidate output",
+    "retry_repair_selection_fallback": 0
+  },
+  "authority": {
+    "source_candidate_normalization": true,
+    "authority_receipt_issued": false,
+    "tokenizer_or_model_loading": false,
+    "generation_or_inference": false,
+    "wsl_or_provider_execution": false,
+    "runner_executor_or_probe": false,
+    "stage_c": false,
+    "runtime_or_production": false
+  }
+}
