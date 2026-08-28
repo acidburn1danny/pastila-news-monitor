@@ -1,0 +1,36 @@
+{
+  "schema_name": "pastila-semantic-admission-v2-construction-obligation-v2-generation-authority-preload-freeze",
+  "schema_version": "1.1.0",
+  "canonical_identity": "54a5cfc079c0cde964328d9cd03033411b9b50c79b13683ad348ebfc0b93d0d1",
+  "identity_derivation": {
+    "algorithm": "sha256-lf-joined-ordered-utf8-fields",
+    "ordered_utf8_fields": [
+      "STAGE_P_CONSTRUCTION_OBLIGATION_V2_GENERATION_AUTHORITY_AND_PRELOAD_V1_1",
+      "ce43ed32836005bcd471da40f9003e3d9ba66e090e57fbf66cdf77d0c8b95391",
+      "8f2b6e445375d2295583ee3eeec6c643dec57bb5f711bdcf2b12abf310e03489",
+      "c52b5126add3f7975e3e630a618db81549dc74aeea2ab0b6756b6e0d8582e183",
+      "ed9303593dea53b9375913e3cb1640cdb11f2e347299435532f7e3935bf755da",
+      "c7a09557517e2a762d1d60738bc2c073be458533769bd0a968f25930fe3b6843",
+      "7749b2b075c7db788927130505edbaafa1c7cfbd398b1132b01b396f94d97942",
+      "71f66b8bf20b3decb31cfe65d3d94720f9fd1d2c6500c9ef259197cbf94bc7f4",
+      "MINIMUM_FREE_VRAM_MIB=14000",
+      "ATTEMPT_CEILING=1",
+      "PRELOAD_BEFORE_MODEL_LOAD_STARTED"
+    ]
+  },
+  "remediation": {
+    "dual_role_identity_binding": true,
+    "free_vram_enforced_before_injected_start": true,
+    "frozen_v1_contract_unchanged": true
+  },
+  "authority": {
+    "authority_receipt_issued": false,
+    "model_loaded": false,
+    "generation_executed": false,
+    "wsl_invoked": false,
+    "provider_invoked": false,
+    "probe_executed": false,
+    "stage_c_authorized": false,
+    "runtime_or_production_authority": false
+  }
+}
