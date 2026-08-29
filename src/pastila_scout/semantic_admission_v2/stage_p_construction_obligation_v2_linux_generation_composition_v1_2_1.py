@@ -6,7 +6,7 @@ import json
 from dataclasses import dataclass
 from pathlib import Path
 
-from .stage_p_construction_obligation_v2_durable_filesystem_sink_v1 import DurableArtifactReceiptV1, DurableEvidenceRootBindingV1, create_durable_filesystem_sink_v1
+from .stage_p_construction_obligation_v2_durable_filesystem_sink_v1 import DurableArtifactReceiptV1, DurableEvidenceRootBindingV1, create_durable_filesystem_sink_v1_2_1
 from .stage_p_construction_obligation_v2_generation_authority_preload_v1_2_1 import parse_generation_authority_v1_2_1
 from .stage_p_construction_obligation_v2_linux_child_process_adapter_v1_2_1 import LINUX_CHILD_PROCESS_ADAPTER_IDENTITY, build_linux_child_process_operations_v1_2_1
 from .stage_p_construction_obligation_v2_linux_generation_supervisor_candidate_v1_2_1 import SUPERVISOR_CANDIDATE_IDENTITY, InjectedDurableSinkV1, LinuxGenerationSupervisorOutcomeV1, supervise_linux_generation_candidate_v1_2_1
@@ -44,7 +44,7 @@ def run_linux_generation_composition_v1_2_1(
         expected_provider_request_id=request.provider_request_id,
         expected_source_context_identity=request.source_context_identity,
     )
-    sink = create_durable_filesystem_sink_v1(
+    sink = create_durable_filesystem_sink_v1_2_1(
         root=evidence_root,
         binding=DurableEvidenceRootBindingV1(
             request.provider_request_id, request.source_context_identity,

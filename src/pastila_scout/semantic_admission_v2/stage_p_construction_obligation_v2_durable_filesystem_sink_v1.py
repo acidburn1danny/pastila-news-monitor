@@ -21,6 +21,9 @@ DURABLE_FILESYSTEM_SINK_IDENTITY = (
 SUPERVISOR_CANDIDATE_IDENTITY = (
     "ce43ed32836005bcd471da40f9003e3d9ba66e090e57fbf66cdf77d0c8b95391"
 )
+SUPERVISOR_CANDIDATE_IDENTITY_V1_2_1 = (
+    "f1fd2e0e3fc530fa48ca6b8d9e64809f8e1f223603b66d725a10de799b2518e4"
+)
 CLEANUP_EXTENSION_IDENTITY = (
     "4636f0937ebc620f3fe086e9ae69ee5e21884cbf6e73cbee69a90962dab1c136"
 )
@@ -202,7 +205,38 @@ def create_durable_filesystem_sink_v1(
         raise TypeError(
             "CONSTRUCTION_OBLIGATION_V2_DURABLE_BINDING_EXACT_TYPE_REQUIRED"
         )
-    _validate_binding(binding)
+    return _create_durable_filesystem_sink(
+        root=root,
+        binding=binding,
+        expected_supervisor_candidate_identity=SUPERVISOR_CANDIDATE_IDENTITY,
+    )
+
+
+def create_durable_filesystem_sink_v1_2_1(
+    *,
+    root: Path,
+    binding: DurableEvidenceRootBindingV1,
+) -> DurableFilesystemSinkV1:
+    """Create a sink admitted only for the exact V1.2.1 supervisor."""
+    if not isinstance(root, Path):
+        raise TypeError("CONSTRUCTION_OBLIGATION_V2_DURABLE_ROOT_PATH_REQUIRED")
+    if type(binding) is not DurableEvidenceRootBindingV1:
+        raise TypeError("CONSTRUCTION_OBLIGATION_V2_DURABLE_BINDING_EXACT_TYPE_REQUIRED")
+    return _create_durable_filesystem_sink(
+        root=root,
+        binding=binding,
+        expected_supervisor_candidate_identity=SUPERVISOR_CANDIDATE_IDENTITY_V1_2_1,
+    )
+
+
+def _create_durable_filesystem_sink(
+    *, root: Path, binding: DurableEvidenceRootBindingV1,
+    expected_supervisor_candidate_identity: str,
+) -> DurableFilesystemSinkV1:
+    _validate_binding(
+        binding,
+        expected_supervisor_candidate_identity=expected_supervisor_candidate_identity,
+    )
     if not root.name or root.name in {".", ".."} or not root.is_absolute():
         raise ValueError("CONSTRUCTION_OBLIGATION_V2_DURABLE_ROOT_INVALID")
     if root.exists() or root.is_symlink():
@@ -233,7 +267,11 @@ def create_durable_filesystem_sink_v1(
     )
 
 
-def _validate_binding(binding: DurableEvidenceRootBindingV1) -> None:
+def _validate_binding(
+    binding: DurableEvidenceRootBindingV1,
+    *,
+    expected_supervisor_candidate_identity: str = SUPERVISOR_CANDIDATE_IDENTITY,
+) -> None:
     if (
         type(binding.provider_request_id) is not str
         or not binding.provider_request_id
@@ -245,7 +283,7 @@ def _validate_binding(binding: DurableEvidenceRootBindingV1) -> None:
         or _HEX_64.fullmatch(binding.authority_receipt_identity) is None
     ):
         raise ValueError("CONSTRUCTION_OBLIGATION_V2_DURABLE_BINDING_IDENTITY_INVALID")
-    if binding.supervisor_candidate_identity != SUPERVISOR_CANDIDATE_IDENTITY:
+    if binding.supervisor_candidate_identity != expected_supervisor_candidate_identity:
         raise ValueError(
             "CONSTRUCTION_OBLIGATION_V2_DURABLE_SUPERVISOR_IDENTITY_MISMATCH"
         )
@@ -267,8 +305,10 @@ __all__ = [
     "MAX_ARTIFACT_BYTES",
     "MAX_ARTIFACT_COUNT",
     "SUPERVISOR_CANDIDATE_IDENTITY",
+    "SUPERVISOR_CANDIDATE_IDENTITY_V1_2_1",
     "DurableArtifactReceiptV1",
     "DurableEvidenceRootBindingV1",
     "DurableFilesystemSinkV1",
     "create_durable_filesystem_sink_v1",
+    "create_durable_filesystem_sink_v1_2_1",
 ]
