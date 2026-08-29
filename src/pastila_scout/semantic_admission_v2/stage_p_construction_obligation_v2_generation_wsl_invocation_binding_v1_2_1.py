@@ -115,7 +115,7 @@ def build_generation_wsl_invocation_v1_2_1(
         arguments=arguments,
     )
     expected_evidence_identity = hashlib.sha256("\n".join((
-        "STAGE_P_CONSTRUCTION_OBLIGATION_V2_CASE01_V1_2_1_PROVIDER_SOURCE_BOUND_EVIDENCE_ROOT",
+        "STAGE_P_CONSTRUCTION_OBLIGATION_V2_CASE01_V1_2_1_APPLICATION_SOURCE_BOUND_EVIDENCE_ROOT",
         request.source_context_identity, invocation.command_identity, str(outer),
     )).encode()).hexdigest()
     if evidence_root_identity != expected_evidence_identity:

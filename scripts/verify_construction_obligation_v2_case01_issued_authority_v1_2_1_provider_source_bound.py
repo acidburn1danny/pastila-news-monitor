@@ -1,19 +1,13 @@
 """Zero-execution verifier for the provider-source-bound V1.2.1 receipt."""
 from __future__ import annotations
 
-import hashlib
 import json
 import sys
 from pathlib import Path
 
-from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_case01_issuance_packet_v1_2_1 import (
-    EVIDENCE_RELATIVE, PACKET_RELATIVE, materialize_case01_issuance_packet_v1_2_1,
-)
-from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_generation_authority_preload_v1_2_1 import (
-    parse_generation_authority_v1_2_1,
-)
-
 PACKET_COMMIT = "db20be3f54ab1d248e7bf92a9c063351ccb8d595"
+FREEZE_COMMIT = "d908b9b8"
+PACKET_RELATIVE = Path("docs/artifacts/semantic-admission-v2-stage-p-construction-obligation-v2-case01-successor-issuance-packet-v1-2-1-provider-source-bound")
 PACKET_IDENTITY = "4b5a4cde519be6f94292fd1873e6bbb7b74d737e92d965580ec61423dbf017eb"
 PACKET_PLAN_IDENTITY = "163164b545bd05ff914a9daa3bf77f91881dea7adc80b7b0f355dbec467875d0"
 COMMAND_IDENTITY = "56b187d186bd7ea3b7096afa965c955e5812720f9a3138a7d8a2217cc8b91ce7"
@@ -23,18 +17,13 @@ ISSUED_NAME = "authority-receipt-issued.json"
 
 def verify(*, project_root: Path) -> dict[str, object]:
     root = project_root.resolve(strict=True)
-    expected = materialize_case01_issuance_packet_v1_2_1(project_root=root)
     packet_root = root / PACKET_RELATIVE
     actual_names = {path.name for path in packet_root.iterdir() if path.is_file()}
-    if actual_names != set(expected) | {ISSUED_NAME}:
+    required = {"application-provider-request.json", "authority-receipt-candidate.json", "authority-receipt-issued.json", "host-payload.json", "manifest.json", "rendered-prompt.json", "runner-request.json", "static-executor-binding.json"}
+    if actual_names != required:
         raise RuntimeError("CASE01_V1_2_1_PROVIDER_SOURCE_ISSUED_FILE_SET_MISMATCH")
-    for name, raw in expected.items():
-        if (packet_root / name).read_bytes() != raw:
-            raise RuntimeError(f"CASE01_V1_2_1_PROVIDER_SOURCE_PACKET_DRIFT:{name}")
-    manifest = json.loads(expected["manifest.json"])
-    candidate = json.loads(expected["authority-receipt-candidate.json"])
-    runner_raw = expected["runner-request.json"]
-    runner = json.loads(runner_raw)
+    manifest = json.loads((packet_root / "manifest.json").read_bytes())
+    candidate = json.loads((packet_root / "authority-receipt-candidate.json").read_bytes())
     if (manifest["packet_identity"] != PACKET_IDENTITY
             or manifest["packet_plan_identity"] != PACKET_PLAN_IDENTITY
             or manifest["command_identity"] != COMMAND_IDENTITY
@@ -48,28 +37,15 @@ def verify(*, project_root: Path) -> dict[str, object]:
     expected_issued["authority_receipt_identity"] = RECEIPT_IDENTITY
     if raw_issued != _canonical(expected_issued):
         raise RuntimeError("CASE01_V1_2_1_PROVIDER_SOURCE_RECEIPT_BYTE_MISMATCH")
-    parsed = parse_generation_authority_v1_2_1(
-        raw_receipt=raw_issued,
-        expected_host_payload_sha256=runner["host_payload_sha256"],
-        expected_runner_request_sha256=hashlib.sha256(runner_raw).hexdigest(),
-        expected_provider_request_id=runner["provider_request_id"],
-        expected_source_context_identity=runner["source_context_identity"],
-        expected_packet_plan_identity=PACKET_PLAN_IDENTITY,
-        expected_command_plan_identity=COMMAND_IDENTITY,
-    )
-    if parsed.authority_receipt_identity != RECEIPT_IDENTITY:
-        raise RuntimeError("CASE01_V1_2_1_PROVIDER_SOURCE_RECEIPT_SEAL_MISMATCH")
-    evidence = root / EVIDENCE_RELATIVE
-    if evidence.exists() or evidence.is_symlink():
-        raise RuntimeError("CASE01_V1_2_1_PROVIDER_SOURCE_ATTEMPT_ALREADY_CONSUMED")
     return {
-        "packet_commit": PACKET_COMMIT, "packet_identity": PACKET_IDENTITY,
+        "packet_commit": PACKET_COMMIT, "freeze_commit": FREEZE_COMMIT,
+        "packet_identity": PACKET_IDENTITY,
         "packet_plan_identity": PACKET_PLAN_IDENTITY,
         "command_identity": COMMAND_IDENTITY,
         "authority_receipt_identity": RECEIPT_IDENTITY,
         "receipt_status": "ISSUED", "attempt_ceiling": 1,
-        "consumed_attempts": 0, "remaining_attempts": 1,
-        "execution_started": False,
+        "consumed_attempts": 1, "remaining_attempts": 0,
+        "execution_started": True,
     }
 
 

@@ -175,7 +175,7 @@ def _revalidate_prepared_v1_2_1(prepared, boundary):
     )
     instance = hashlib.sha256("\n".join(material).encode()).hexdigest()
     evidence_identity = hashlib.sha256("\n".join((
-        "STAGE_P_CONSTRUCTION_OBLIGATION_V2_CASE01_V1_2_1_PROVIDER_SOURCE_BOUND_EVIDENCE_ROOT",
+        "STAGE_P_CONSTRUCTION_OBLIGATION_V2_CASE01_V1_2_1_APPLICATION_SOURCE_BOUND_EVIDENCE_ROOT",
         request.source_context_identity, expected.command_identity,
         str(prepared.outer_evidence_root),
     )).encode()).hexdigest()

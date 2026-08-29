@@ -59,10 +59,18 @@ CANONICAL_PROVIDER_EXECUTION_SOURCE_SHA256 = (
 CANONICAL_PROVIDER_EXECUTION_REQUEST_TYPE = (
     "pastila_scout.provider_execution_v2.models.ProviderExecutionRequestV2"
 )
+CANONICAL_APPLICATION_REQUEST_SOURCE_SHA256 = (
+    "dbb2a3a2fc894a0fe83834891b92fed635570af5aededbe0ed08cbc19b090994"
+)
+CANONICAL_APPLICATION_PROVIDER_REQUEST_TYPE = (
+    "pastila_scout.application_request_authority_v1.models.ApplicationProviderRequestV1"
+)
 LINUX_CHILD_PROCESS_ADAPTER_IDENTITY_FIELDS = (
     "construction-obligation-v2-linux-child-process-adapter-v1.2.1",
     "provider-execution-source:" + CANONICAL_PROVIDER_EXECUTION_SOURCE_SHA256,
     "provider-request-type:" + CANONICAL_PROVIDER_EXECUTION_REQUEST_TYPE,
+    "application-request-source:" + CANONICAL_APPLICATION_REQUEST_SOURCE_SHA256,
+    "application-request-type:" + CANONICAL_APPLICATION_PROVIDER_REQUEST_TYPE,
     "deferred-spawn:sole-start-edge",
 )
 LINUX_CHILD_PROCESS_ADAPTER_IDENTITY = hashlib.sha256(
@@ -285,4 +293,3 @@ __all__ = (
     "LinuxGenerationProcessHandleV1",
     "build_linux_child_process_operations_v1_2_1",
 )
-
