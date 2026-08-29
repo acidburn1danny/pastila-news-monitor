@@ -5,7 +5,7 @@ import hashlib
 import json
 import re
 import unicodedata
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 
 from .immutable_source_span_reference_v1 import ImmutableUtf8SourceV1, SourceRoleV1
 from .stage_p_construction_obligation_contract_v2 import ConstructionObligationLedgerV2
@@ -51,6 +51,7 @@ class QualificationObligationV1:
     start_utf8: int
     end_utf8: int
     required_modality: Modality
+    required_proposition_entry_id: str | None
 
 
 @dataclass(frozen=True, slots=True)
@@ -88,44 +89,15 @@ class SemanticCompletenessPolicyV1:
             raise ValueError("SEMANTIC_COMPLETENESS_CANDIDATE_ROLE_INVALID")
         if factual_authority.role is not SourceRoleV1.FACTUAL_AUTHORITY:
             raise ValueError("SEMANTIC_COMPLETENESS_AUTHORITY_ROLE_INVALID")
-        qualifications = _qualification_obligations(candidate.data)
         case01 = (candidate.sha256 == CASE01_CANDIDATE_SHA256 and
                   factual_authority.sha256 == CASE01_AUTHORITY_SHA256)
-        value = {
-            "version": ADMISSION_VERSION,
-            "candidate_sha256": candidate.sha256,
-            "authority_sha256": factual_authority.sha256,
-            "candidate_bytes": len(candidate.data),
-            "authority_bytes": len(factual_authority.data),
-            "justified_gaps": [gap.__dict__ if hasattr(gap, "__dict__") else
-                               {"start_utf8": gap.start_utf8, "end_utf8": gap.end_utf8,
-                                "reason_code": gap.reason_code} for gap in justified_gaps],
-            "unresolved_justifications": [
-                {"start_utf8": item.start_utf8, "end_utf8": item.end_utf8,
-                 "reason_code": item.reason_code,
-                 "construction_ids": item.construction_ids,
-                 "entry_ids": item.entry_ids,
-                 "competing_interpretations": [
-                     {"label": interpretation.label,
-                      "source_sha256": interpretation.source_sha256,
-                      "start_utf8": interpretation.start_utf8,
-                      "end_utf8": interpretation.end_utf8}
-                     for interpretation in item.competing_interpretations]}
-                for item in unresolved_justifications],
-            "qualifications": [
-                {"start_utf8": item.start_utf8, "end_utf8": item.end_utf8,
-                 "required_modality": item.required_modality.value}
-                for item in qualifications],
-            "creative_target_analysis_required": case01,
-            "factual_authority_analysis_required": case01,
-        }
-        identity = hashlib.sha256((json.dumps(
-            value, ensure_ascii=True, sort_keys=True, separators=(",", ":")) + "\n").encode()).hexdigest()
+        qualifications = _qualification_obligations(candidate.data, case01=case01)
         boundaries = _utf8_boundaries(candidate.data)
-        return cls(candidate.sha256, factual_authority.sha256, len(candidate.data),
-                   len(factual_authority.data), boundaries,
-                   justified_gaps, unresolved_justifications, qualifications,
-                   case01, case01, identity)
+        provisional = cls(
+            candidate.sha256, factual_authority.sha256, len(candidate.data),
+            len(factual_authority.data), boundaries, justified_gaps,
+            unresolved_justifications, qualifications, case01, case01, "")
+        return seal_semantic_completeness_policy_v1(provisional)
 
 
 @dataclass(frozen=True, slots=True)
@@ -133,6 +105,9 @@ class SemanticCompletenessAdmissionV1:
     policy: SemanticCompletenessPolicyV1
 
     def validate_terminal(self, raw_json: str) -> ConstructionObligationLedgerV2:
+        if self.policy.identity != _policy_identity(self.policy):
+            raise SemanticCompletenessFailureV1(
+                "SEMANTIC_COMPLETENESS_POLICY_IDENTITY_MISMATCH")
         try:
             ledger = ConstructionObligationLedgerV2.model_validate_json(raw_json, strict=True)
         except Exception as exc:
@@ -202,13 +177,23 @@ class SemanticCompletenessAdmissionV1:
                for entry in ledger.entries
                if entry.entry_type is not EntryType.REAL_WORLD_COMMITMENT):
             self._fail("SEMANTIC_COMPLETENESS_AUTHORITY_ON_NONFACTUAL_ENTRY")
+        construction_return_ids = {
+            entry_id for record in ledger.construction_role_audit.construction_records
+            for entry_id in record.literal_or_return_entry_ids}
+        bound_returns = [
+            entry for entry in ledger.entries
+            if (entry.entry_id in construction_return_ids and
+                entry.entry_type is EntryType.REAL_WORLD_COMMITMENT)]
         if self.policy.factual_authority_analysis_required:
-            authority_references = [
-                entry.authority_support_ref for entry in ledger.entries
-                if (entry.entry_type is EntryType.REAL_WORLD_COMMITMENT and
-                    entry.authority_support_ref is not None)]
-            if not authority_references:
+            if not bound_returns or any(
+                    entry.authority_support_ref is None for entry in bound_returns):
                 self._fail("SEMANTIC_COMPLETENESS_FACTUAL_AUTHORITY_ANALYSIS_REQUIRED")
+            if any(entry.authority_support_ref is not None
+                   for entry in ledger.entries
+                   if entry.entry_id not in construction_return_ids):
+                self._fail("SEMANTIC_COMPLETENESS_AUTHORITY_ON_UNBOUND_ENTRY")
+            authority_references = [entry.authority_support_ref
+                                    for entry in bound_returns]
             authority_covered = set()
             for reference in authority_references:
                 if reference.source_sha256 != self.policy.authority_sha256:
@@ -223,6 +208,18 @@ class SemanticCompletenessAdmissionV1:
         unresolved.extend((record.construction_id, "construction", record.candidate_span_ref)
                           for record in ledger.construction_role_audit.construction_records
                           if record.construction_role.value == "UNRESOLVED")
+        observed_entries = {record_id for record_id, kind, _ in unresolved
+                            if kind == "entry"}
+        observed_constructions = {record_id for record_id, kind, _ in unresolved
+                                  if kind == "construction"}
+        declared_entries = {record_id for item in self.policy.unresolved_justifications
+                            for record_id in item.entry_ids}
+        declared_constructions = {
+            record_id for item in self.policy.unresolved_justifications
+            for record_id in item.construction_ids}
+        if (declared_entries != observed_entries or
+                declared_constructions != observed_constructions):
+            self._fail("SEMANTIC_COMPLETENESS_UNRESOLVED_ID_SET_MISMATCH")
         for record_id, record_kind, reference in unresolved:
             matches = [item for item in self.policy.unresolved_justifications
                        if (item.start_utf8, item.end_utf8) ==
@@ -285,7 +282,10 @@ class SemanticCompletenessAdmissionV1:
                       for entry_id in record.literal_or_return_entry_ids}
         matching = [entry for entry in ledger.entries
                     if entry.entry_id in return_ids and
+                    (obligation.required_proposition_entry_id is None or
+                     entry.entry_id == obligation.required_proposition_entry_id) and
                     entry.entry_type is EntryType.REAL_WORLD_COMMITMENT and
+                    entry.authority_support_ref is not None and
                     entry.candidate_span_ref.start_utf8 == obligation.start_utf8 and
                     entry.candidate_span_ref.end_utf8 >= obligation.end_utf8 and
                     entry.candidate_modality is obligation.required_modality]
@@ -305,7 +305,9 @@ class SemanticCompletenessAdmissionV1:
         raise SemanticCompletenessFailureV1(reason)
 
 
-def _qualification_obligations(candidate: bytes) -> tuple[QualificationObligationV1, ...]:
+def _qualification_obligations(
+    candidate: bytes, *, case01: bool,
+) -> tuple[QualificationObligationV1, ...]:
     text = candidate.decode("utf-8", errors="strict")
     obligations = []
     for cue, modality in (("pare că", Modality.POSSIBLE),):
@@ -316,7 +318,8 @@ def _qualification_obligations(candidate: bytes) -> tuple[QualificationObligatio
                 break
             start = len(text[:index].encode("utf-8"))
             end = start + len(cue.encode("utf-8"))
-            obligations.append(QualificationObligationV1(start, end, modality))
+            obligations.append(QualificationObligationV1(
+                start, end, modality, "P2" if case01 else None))
             offset = index + len(cue)
     return tuple(obligations)
 
@@ -344,10 +347,55 @@ def _normalize_value(value):
     return value
 
 
+def _policy_identity(policy: SemanticCompletenessPolicyV1) -> str:
+    value = {
+        "version": ADMISSION_VERSION,
+        "candidate_sha256": policy.candidate_sha256,
+        "authority_sha256": policy.authority_sha256,
+        "candidate_bytes": policy.candidate_bytes,
+        "authority_bytes": policy.authority_bytes,
+        "candidate_utf8_boundaries": policy.candidate_utf8_boundaries,
+        "justified_gaps": [
+            {"start_utf8": gap.start_utf8, "end_utf8": gap.end_utf8,
+             "reason_code": gap.reason_code} for gap in policy.justified_gaps],
+        "unresolved_justifications": [
+            {"start_utf8": item.start_utf8, "end_utf8": item.end_utf8,
+             "reason_code": item.reason_code,
+             "construction_ids": item.construction_ids,
+             "entry_ids": item.entry_ids,
+             "competing_interpretations": [
+                 {"label": interpretation.label,
+                  "source_sha256": interpretation.source_sha256,
+                  "start_utf8": interpretation.start_utf8,
+                  "end_utf8": interpretation.end_utf8}
+                 for interpretation in item.competing_interpretations]}
+            for item in policy.unresolved_justifications],
+        "qualifications": [
+            {"start_utf8": item.start_utf8, "end_utf8": item.end_utf8,
+             "required_modality": item.required_modality.value,
+             "required_proposition_entry_id": item.required_proposition_entry_id}
+            for item in policy.qualifications],
+        "creative_target_analysis_required": policy.creative_target_analysis_required,
+        "factual_authority_analysis_required": policy.factual_authority_analysis_required,
+    }
+    return hashlib.sha256((json.dumps(
+        value, ensure_ascii=True, sort_keys=True,
+        separators=(",", ":")) + "\n").encode()).hexdigest()
+
+
+def seal_semantic_completeness_policy_v1(
+    policy: SemanticCompletenessPolicyV1,
+) -> SemanticCompletenessPolicyV1:
+    if type(policy) is not SemanticCompletenessPolicyV1:
+        raise TypeError("SEMANTIC_COMPLETENESS_POLICY_EXACT_TYPE_REQUIRED")
+    return replace(policy, identity=_policy_identity(policy))
+
+
 __all__ = (
     "ADMISSION_VERSION", "CoverageGapJustificationV1",
     "QualificationObligationV1", "SemanticCompletenessAdmissionV1",
     "QualificationAuditV1", "SourceBoundInterpretationV1",
+    "seal_semantic_completeness_policy_v1",
     "SemanticCompletenessFailureV1", "SemanticCompletenessPolicyV1",
     "UnresolvedJustificationV1",
 )
