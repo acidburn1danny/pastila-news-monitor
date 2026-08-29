@@ -41,9 +41,9 @@ def test_exact_identity_propagation_and_single_prospective_edge():
     assert runner.LINUX_GENERATION_RUNNER_IDENTITY == identities.RUNNER_IDENTITY
     assert host.GENERATION_WSL_HOST_EXECUTOR_IDENTITY == identities.HOST_EXECUTOR_IDENTITY
     assert binding.GENERATION_WSL_INVOCATION_BINDING_IDENTITY == identities.WSL_BINDING_IDENTITY
-    assert "evidence-domain:durable-supervisor-current-bound" in (
+    assert "evidence-domain:source-context-reconstruction-bound" in (
         binding.GENERATION_WSL_INVOCATION_BINDING_IDENTITY_FIELDS)
-    assert "evidence-domain:durable-supervisor-current-bound" in (
+    assert "evidence-domain:source-context-reconstruction-bound" in (
         host.GENERATION_WSL_HOST_EXECUTOR_IDENTITY_FIELDS)
     tree = ast.parse((ROOT / "src/pastila_scout/semantic_admission_v2/stage_p_construction_obligation_v2_generation_wsl_host_executor_v1_2_1.py").read_text("utf-8"))
     calls = [n for n in ast.walk(tree) if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr == "execute"]
@@ -119,6 +119,39 @@ def test_optimized_projector_and_generated_suffix_contract_are_source_bound():
         (ROOT / "src/pastila_scout/semantic_admission_v2/"
          "stage_p_construction_obligation_v2_linux_runtime_operations_adapter_v1.py").read_bytes()
     ).hexdigest()
+
+
+def test_optimized_callback_reconstructs_context_from_canonical_source_binding():
+    from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_host_wsl_payload_contract_v1 import (
+        parse_construction_obligation_v2_host_wsl_payload_v1,
+    )
+    from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_request_bound_callback_adapter_v1_2_1 import (
+        ConstructionObligationV2RequestBoundCallbackAdapterV1_2_1,
+    )
+    from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_runner_protocol_codec_v1 import (
+        parse_runner_request_v1,
+    )
+    from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_static_payload_binding_v1 import (
+        parse_construction_obligation_v2_static_payload_v1,
+    )
+    from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_token_projector_v2 import (
+        StagePConstructionObligationV2TokenProjectorV2,
+    )
+
+    packet = ROOT / PACKET_RELATIVE
+    request = parse_runner_request_v1(
+        raw_request=(packet / "runner-request.json").read_bytes())
+    host_payload = parse_construction_obligation_v2_host_wsl_payload_v1(
+        raw_payload=request.host_payload)
+    static_payload = parse_construction_obligation_v2_static_payload_v1(
+        raw_payload=host_payload.static_payload)
+    callback = ConstructionObligationV2RequestBoundCallbackAdapterV1_2_1(
+        request=request, source_binding=static_payload.source_binding,
+        token_pieces={3: "{"}, eos_token_id=2,
+        excluded_token_ids=(0, 1, 11), authority_receipt_identity="a" * 64,
+        prompt_token_ids=(101, 102))
+    assert type(callback.projector) is StagePConstructionObligationV2TokenProjectorV2
+    assert callback.projector.request_context_identity == request.source_context_identity
     assert runner.CANONICAL_EXACT_OPERATIONS_ADAPTER_SOURCE_SHA256 == hashlib.sha256(
         (ROOT / "src/pastila_scout/semantic_admission_v2/"
          "stage_p_construction_obligation_v2_runtime_operations_adapter_v1_2_1.py").read_bytes()

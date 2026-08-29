@@ -19,11 +19,12 @@ from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_dura
 from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_linux_generation_supervisor_candidate_v1_2_1 import (
     SUPERVISOR_CANDIDATE_IDENTITY as CANONICAL_V1_2_1_SUPERVISOR_IDENTITY,
 )
+from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_case01_issuance_packet_v1_2_1 import (
+    PACKET_RELATIVE,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
-PACKET = ROOT / (
-    "docs/artifacts/semantic-admission-v2-stage-p-construction-obligation-v2-"
-    "case01-successor-issuance-packet-v1-2-1-durable-supervisor-current-bound")
+PACKET = ROOT / PACKET_RELATIVE
 
 
 def _binding(supervisor_identity: str) -> DurableEvidenceRootBindingV1:

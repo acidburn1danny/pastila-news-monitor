@@ -41,7 +41,7 @@ GENERATION_WSL_HOST_EXECUTOR_IDENTITY_FIELDS = (
     "pre-execute:independent-canonical-revalidation",
     "pre-execute:packet-manifest-and-file-set-revalidation",
     "pre-execute:authority-packet-command-plan-revalidation",
-    "evidence-domain:durable-supervisor-current-bound",
+    "evidence-domain:source-context-reconstruction-bound",
 )
 GENERATION_WSL_HOST_EXECUTOR_IDENTITY = hashlib.sha256(
     "\n".join(GENERATION_WSL_HOST_EXECUTOR_IDENTITY_FIELDS).encode()
@@ -177,7 +177,7 @@ def _revalidate_prepared_v1_2_1(prepared, boundary):
     )
     instance = hashlib.sha256("\n".join(material).encode()).hexdigest()
     evidence_identity = hashlib.sha256("\n".join((
-        "STAGE_P_CONSTRUCTION_OBLIGATION_V2_CASE01_V1_2_1_DURABLE_SUPERVISOR_CURRENT_BOUND_EVIDENCE_ROOT",
+        "STAGE_P_CONSTRUCTION_OBLIGATION_V2_CASE01_V1_2_1_SOURCE_CONTEXT_RECONSTRUCTION_BOUND_EVIDENCE_ROOT",
         request.source_context_identity, expected.command_identity,
         str(prepared.outer_evidence_root),
     )).encode()).hexdigest()

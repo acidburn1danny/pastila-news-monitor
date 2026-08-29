@@ -4,13 +4,12 @@ import hashlib
 import json
 from collections.abc import Mapping, Sequence
 
-from .stage_p_construction_obligation_character_controller_v1 import (
-    StagePConstructionObligationCharacterControllerV1)
 from .stage_p_construction_obligation_v2_generated_suffix_callback_v1 import (
     RequestBoundGeneratedSuffixCallbackV1)
 from .stage_p_construction_obligation_v2_projector_binding_v1 import (
     DECODER_IDENTITY, PROJECTOR_FREEZE_IDENTITY, TOKENIZER_IDENTITY,
-    ConstructionObligationV2ProjectorSourceBindingV1)
+    ConstructionObligationV2ProjectorSourceBindingV1,
+    bind_construction_obligation_v2_projector_v1)
 from .stage_p_construction_obligation_v2_runner_protocol_codec_v1 import RunnerRequestV1
 from .stage_p_construction_obligation_v2_runner_protocol_contract_v1 import (
     RUNNER_PROTOCOL_IDENTITY)
@@ -40,9 +39,10 @@ class ConstructionObligationV2RequestBoundCallbackAdapterV1_2_1:
             raise ValueError("CONSTRUCTION_OBLIGATION_V2_CALLBACK_AUTHORITY_IDENTITY_INVALID")
         self.request = request
         self.authority_receipt_identity = authority_receipt_identity
+        oracle = bind_construction_obligation_v2_projector_v1(
+            envelope=source_binding, token_pieces=token_pieces)
         self.projector = StagePConstructionObligationV2TokenProjectorV2(
-            controller=StagePConstructionObligationCharacterControllerV1(
-                context=source_binding.context, decoder_identity=DECODER_IDENTITY),
+            controller=oracle.controller,
             token_pieces=token_pieces, eos_token_id=eos_token_id,
             tokenizer_identity=TOKENIZER_IDENTITY, decoder_identity=DECODER_IDENTITY,
             request_context_identity=request.source_context_identity,
