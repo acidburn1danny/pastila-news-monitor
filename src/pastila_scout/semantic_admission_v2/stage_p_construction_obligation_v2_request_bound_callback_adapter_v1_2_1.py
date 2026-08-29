@@ -32,7 +32,8 @@ class ConstructionObligationV2RequestBoundCallbackAdapterV1_2_1:
                  source_binding: ConstructionObligationV2ProjectorSourceBindingV1,
                  token_pieces: Mapping[int, str], eos_token_id: int,
                  excluded_token_ids: Sequence[int], authority_receipt_identity: str,
-                 prompt_token_ids: Sequence[int]) -> None:
+                 prompt_token_ids: Sequence[int],
+                 initial_token_pieces: Mapping[int, str] | None = None) -> None:
         if type(request) is not RunnerRequestV1:
             raise TypeError("CONSTRUCTION_OBLIGATION_V2_RUNNER_REQUEST_EXACT_TYPE_REQUIRED")
         if type(source_binding) is not ConstructionObligationV2ProjectorSourceBindingV1:
@@ -61,6 +62,7 @@ class ConstructionObligationV2RequestBoundCallbackAdapterV1_2_1:
             request_context_identity=request.source_context_identity,
             request_authority_identity=authority_receipt_identity,
             excluded_token_ids=excluded_token_ids,
+            initial_token_pieces=initial_token_pieces,
             terminal_admission=completeness.validate_terminal,
             terminal_admission_identity=completeness.policy.identity)
         self._suffix = RequestBoundGeneratedSuffixCallbackV1(
@@ -101,7 +103,11 @@ def _decode(projector, generated: Sequence[int]) -> str:
     if pieces is None:
         raise RuntimeError("OPTIMIZED_PROJECTOR_TOKEN_PIECES_NOT_BOUND")
     try:
-        return "".join(pieces[item] for item in generated)
+        if not generated:
+            return ""
+        initial = getattr(projector, "_bound_initial_token_pieces", pieces)
+        return initial[generated[0]] + "".join(
+            pieces[item] for item in generated[1:])
     except KeyError as exc:
         raise ValueError("CONSTRUCTION_OBLIGATION_V2_GENERATED_TOKEN_UNKNOWN") from exc
 

@@ -28,10 +28,11 @@ class TokenizersBackend:
         self.decode_calls += 1
         assert skip_special_tokens is True
         assert clean_up_tokenization_spaces is False
-        token_id = token_ids[0]
-        if token_id == 12:
-            return "\x00"
-        return "" if token_id in SPECIAL_TOKEN_IDS else chr(0x20 + token_id % 90)
+        def piece(token_id):
+            if token_id == 12:
+                return "\x00"
+            return "" if token_id in SPECIAL_TOKEN_IDS else chr(0x20 + token_id % 90)
+        return "".join(piece(token_id) for token_id in token_ids)
 
 
 def identity() -> TokenizerRuntimeIdentityV1:
@@ -63,7 +64,7 @@ def test_identity_mismatch_fails_before_decode(field, value):
 def test_extracts_complete_immutable_piece_bundle():
     tokenizer = TokenizersBackend()
     bundle = extract_identity_bound_token_pieces_v1(tokenizer=tokenizer, identity=identity())
-    assert tokenizer.decode_calls == VOCABULARY_SIZE
+    assert tokenizer.decode_calls == 3 * VOCABULARY_SIZE
     assert len(bundle.token_pieces) == VOCABULARY_SIZE
     assert bundle.token_pieces[12] == "\x00"
     assert bundle.excluded_token_ids == frozenset((0, 1, 11))
@@ -71,6 +72,32 @@ def test_extracts_complete_immutable_piece_bundle():
     assert bundle.tokenizer_identity == TOKENIZER_IDENTITY
     with pytest.raises(TypeError):
         bundle.token_pieces[12] = "changed"
+
+
+def test_binds_distinct_initial_and_continuation_decoder_pieces():
+    class TokenizersBackend:
+        eos_token_id = EOS_TOKEN_ID
+        all_special_ids = tuple(sorted(SPECIAL_TOKEN_IDS))
+
+        def __init__(self):
+            self.decode_calls = 0
+
+        def __len__(self):
+            return VOCABULARY_SIZE
+
+        def decode(self, token_ids, **kwargs):
+            self.decode_calls += 1
+            pieces = ["word" if token_id == 12 else (
+                "" if token_id in SPECIAL_TOKEN_IDS else chr(0x20 + token_id % 90))
+                for token_id in token_ids]
+            return "".join(
+                piece if index == 0 else (" " + piece if piece == "word" else piece)
+                for index, piece in enumerate(pieces))
+
+    bundle = extract_identity_bound_token_pieces_v1(
+        tokenizer=TokenizersBackend(), identity=identity())
+    assert bundle.initial_token_pieces[12] == "word"
+    assert bundle.token_pieces[12] == " word"
 
 
 def test_module_is_launch_forbidden_and_has_no_runtime_imports():

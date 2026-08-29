@@ -5,6 +5,7 @@ import pytest
 from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_character_controller_v1 import StagePConstructionObligationCharacterControllerV1
 from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_token_projector_v1 import StagePConstructionObligationV2TokenProjectorV1, StagePTokenProjectionFailureV1
 from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_token_projector_v2 import StagePConstructionObligationV2TokenProjectorV2
+from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_request_bound_callback_adapter_v1_2_1 import _decode
 from test_semantic_admission_v2_stage_p_construction_obligation_constraint_v2 import _case_context, _valid_text
 
 TOKENIZER = "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c"
@@ -28,6 +29,13 @@ def _outcome(projector, ids, decode):
         return "OK", result.token_ids, result.receipt
     except StagePTokenProjectionFailureV1 as exc:
         return "FAIL", (), exc.receipt
+
+
+def test_generated_decode_uses_initial_piece_once_then_continuation_pieces():
+    context, _, _ = _case_context()
+    _, projector = _pair(context, {10: " word", 11: "!", 2: ""})
+    projector._bound_initial_token_pieces = {10: "word", 11: "!", 2: ""}
+    assert _decode(projector, (10, 10, 11)) == "word word!"
 
 def test_indexed_projection_matches_oracle_across_every_reachable_prefix():
     context, _, _ = _case_context(candidate_text="Țară, știre — «nouă»")

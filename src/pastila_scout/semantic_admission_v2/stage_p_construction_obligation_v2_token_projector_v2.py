@@ -41,6 +41,7 @@ class StagePConstructionObligationV2TokenProjectorV2:
         request_context_identity: str, request_authority_identity: str,
         grammar_identity: str = GRAMMAR_IDENTITY,
         excluded_token_ids: Sequence[int] = (),
+        initial_token_pieces: Mapping[int, str] | None = None,
         terminal_admission: Callable[[str], object] | None = None,
         terminal_admission_identity: str | None = None,
     ) -> None:
@@ -63,6 +64,14 @@ class StagePConstructionObligationV2TokenProjectorV2:
         self._terminal_admission = terminal_admission
         self.terminal_admission_identity = terminal_admission_identity
         self._bound_token_pieces = dict(token_pieces)
+        self._bound_initial_token_pieces = dict(
+            token_pieces if initial_token_pieces is None else initial_token_pieces)
+        if set(self._bound_initial_token_pieces) != set(self._bound_token_pieces):
+            raise ValueError("INITIAL_CONTINUATION_TOKEN_DOMAIN_MISMATCH")
+        piece_identity = hashlib.sha256("\n".join(
+            f"{token_id}:{self._bound_initial_token_pieces[token_id]!r}:"
+            f"{self._bound_token_pieces[token_id]!r}"
+            for token_id in sorted(self._bound_token_pieces)).encode()).hexdigest()
         self._children: list[dict[str, int]] = [{}]
         self._terminals: list[list[int]] = [[]]
         self._all_children: list[dict[str, int]] = [{}]
@@ -105,7 +114,8 @@ class StagePConstructionObligationV2TokenProjectorV2:
             (PROJECTOR_ALGORITHM_IDENTITY + "\n" + grammar_identity + "\n"
              + request_authority_identity + "\n" + request_context_identity + "\n"
              + tokenizer_identity + "\n" + decoder_identity + "\n"
-             + special_policy + "\n" + (terminal_admission_identity or "NONE")).encode()).hexdigest()
+             + special_policy + "\n" + piece_identity + "\n"
+             + (terminal_admission_identity or "NONE")).encode()).hexdigest()
         self._cache: dict[str, tuple[int, ...]] = {}
         self._hits = self._misses = self._visited = self._admitted = 0
 

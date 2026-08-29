@@ -45,6 +45,7 @@ class TokenPieceBundleV1:
     tokenizer_identity: str
     decoder_identity: str
     projector_freeze_identity: str
+    initial_token_pieces: Mapping[int, str] | None = None
 
 
 def extract_identity_bound_token_pieces_v1(
@@ -72,27 +73,52 @@ def extract_identity_bound_token_pieces_v1(
     if frozenset(tokenizer.all_special_ids) != SPECIAL_TOKEN_IDS:
         raise ValueError("CONSTRUCTION_OBLIGATION_V2_TOKENIZER_SPECIAL_IDS_MISMATCH")
 
-    pieces: dict[int, str] = {}
+    initial_pieces: dict[int, str] = {}
+    continuation_pieces: dict[int, str] = {}
     excluded = set(SPECIAL_TOKEN_IDS - {EOS_TOKEN_ID})
     for token_id in range(VOCABULARY_SIZE):
-        piece = tokenizer.decode(
+        initial = tokenizer.decode(
             [token_id], skip_special_tokens=True,
             clean_up_tokenization_spaces=False,
         )
-        if type(piece) is not str or any(
-            0xD800 <= ord(character) <= 0xDFFF for character in piece
-        ):
+        doubled = tokenizer.decode(
+            [token_id, token_id], skip_special_tokens=True,
+            clean_up_tokenization_spaces=False,
+        )
+        if (type(initial) is not str or type(doubled) is not str
+                or not doubled.startswith(initial)):
             raise ValueError("CONSTRUCTION_OBLIGATION_V2_TOKENIZER_DECODE_INVALID")
-        pieces[token_id] = piece
-        if not piece and token_id != EOS_TOKEN_ID:
+        continuation = doubled[len(initial):]
+        if any(0xD800 <= ord(character) <= 0xDFFF
+               for piece in (initial, continuation) for character in piece):
+            raise ValueError("CONSTRUCTION_OBLIGATION_V2_TOKENIZER_DECODE_INVALID")
+        initial_pieces[token_id] = initial
+        continuation_pieces[token_id] = continuation
+        if (not initial or not continuation) and token_id != EOS_TOKEN_ID:
             excluded.add(token_id)
+    anchors = [token_id for token_id in range(VOCABULARY_SIZE)
+               if token_id not in SPECIAL_TOKEN_IDS and initial_pieces[token_id]]
+    if not anchors:
+        raise ValueError("CONSTRUCTION_OBLIGATION_V2_TOKENIZER_CONTINUATION_ANCHOR_MISSING")
+    anchor_id = anchors[0]
+    anchor = initial_pieces[anchor_id]
+    for token_id in range(VOCABULARY_SIZE):
+        contextual = tokenizer.decode(
+            [anchor_id, token_id], skip_special_tokens=True,
+            clean_up_tokenization_spaces=False,
+        )
+        if (type(contextual) is not str or not contextual.startswith(anchor)
+                or contextual[len(anchor):] != continuation_pieces[token_id]):
+            raise ValueError(
+                "CONSTRUCTION_OBLIGATION_V2_TOKENIZER_CONTINUATION_NOT_CONTEXT_FREE")
     return TokenPieceBundleV1(
-        token_pieces=MappingProxyType(pieces),
+        token_pieces=MappingProxyType(continuation_pieces),
         excluded_token_ids=frozenset(excluded),
         eos_token_id=EOS_TOKEN_ID,
         tokenizer_identity=TOKENIZER_IDENTITY,
         decoder_identity=DECODER_IDENTITY,
         projector_freeze_identity=PROJECTOR_FREEZE_IDENTITY,
+        initial_token_pieces=MappingProxyType(initial_pieces),
     )
 
 
