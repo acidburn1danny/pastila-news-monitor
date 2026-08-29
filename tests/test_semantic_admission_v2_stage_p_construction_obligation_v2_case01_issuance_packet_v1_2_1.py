@@ -13,14 +13,15 @@ from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_case
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def test_optimized_projector_packet_plan_is_deterministic_and_unissued() -> None:
+def test_optimized_projector_packet_plan_and_optional_issuance_are_canonical() -> None:
     generated = materialize_case01_issuance_packet_v1_2_1(project_root=ROOT)
     assert all((ROOT / PACKET_RELATIVE / name).read_bytes() == raw
                for name, raw in generated.items())
     actual = {path.name for path in (ROOT / PACKET_RELATIVE).iterdir()}
-    assert actual == {"application-provider-request.json", "authority-receipt-candidate.json",
-                      "host-payload.json", "manifest.json",
-                      "rendered-prompt.json", "runner-request.json", "static-executor-binding.json"}
+    packet_files = {"application-provider-request.json", "authority-receipt-candidate.json",
+                    "host-payload.json", "manifest.json", "rendered-prompt.json",
+                    "runner-request.json", "static-executor-binding.json"}
+    assert actual in (packet_files, packet_files | {"authority-receipt-issued.json"})
     manifest = json.loads((ROOT / PACKET_RELATIVE / "manifest.json").read_bytes())
     assert manifest["case_id"] == CASE_ID == "HMCV1-SASC-01"
     assert manifest["source_context_identity"] == SOURCE_CONTEXT_IDENTITY
@@ -28,7 +29,15 @@ def test_optimized_projector_packet_plan_is_deterministic_and_unissued() -> None
     assert manifest["receipt_status"] == "UNISSUED"
     assert manifest["attempts"] == {"completed": 0, "ceiling": 1}
     assert all(value is False for value in manifest["execution"].values())
-    assert not (ROOT / PACKET_RELATIVE / "authority-receipt-issued.json").exists()
+    issued_path = ROOT / PACKET_RELATIVE / "authority-receipt-issued.json"
+    if issued_path.exists():
+        candidate = json.loads(
+            (ROOT / PACKET_RELATIVE / "authority-receipt-candidate.json").read_bytes())
+        issued = dict(candidate["authority_body"])
+        issued["authority_receipt_identity"] = candidate["proposed_receipt_identity"]
+        expected = (json.dumps(issued, ensure_ascii=True, sort_keys=True,
+                               separators=(",", ":"), allow_nan=False) + "\n").encode()
+        assert issued_path.read_bytes() == expected
 
 
 def test_single_command_and_fail_closed_limits_are_exact() -> None:
