@@ -1,0 +1,63 @@
+{
+  "activity": {
+    "adapter_loads": 0,
+    "inference_calls": 0,
+    "model_loads": 0,
+    "tokenizer_loads": 1,
+    "wsl_generation_calls": 0
+  },
+  "admission": {
+    "median_below_50_ms": true,
+    "p99_below_100_ms": true,
+    "safe_to_propagate": true,
+    "timeouts_changed": false,
+    "token_ceiling_changed": false
+  },
+  "benchmark": {
+    "callbacks": 512,
+    "callbacks_per_second": 439.42301499222583,
+    "projection_ns": {
+      "max": 65440510,
+      "median": 1382355,
+      "p95": 1879928,
+      "p99": 62149079
+    },
+    "projected_3200_callback_seconds": 7.2822767375,
+    "telemetry_publication_ns": {
+      "median": 15550,
+      "p99": 27161
+    },
+    "wrapper_ns": {
+      "median": 1401762,
+      "p99": 62379516
+    }
+  },
+  "differential": {
+    "divergences": 0,
+    "long_replay_comparisons": 512,
+    "long_replay_divergences": 0,
+    "oracle_replay_seconds": 753.0176796599994,
+    "targeted_state_comparisons": 7,
+    "total_comparisons": 519
+  },
+  "index": {
+    "admitted_terminal_tokens_across_replay": 898694,
+    "cache_hits": 0,
+    "cache_misses": 512,
+    "reference_vocabulary_scan_per_miss": 131072,
+    "retained_boundary_trie_nodes": 4045,
+    "visited_trie_nodes_across_replay": 9724
+  },
+  "result": "PASS",
+  "schema_name": "pastila-construction-obligation-v2-projector-performance-remediation",
+  "schema_version": "2.0.0",
+  "source_sha256": {
+    "audit": "dcbfb9ca219c96ad7b7d0f65205071365ee9825a4bbee273ab07eeece59585e5",
+    "generated_suffix_callback": "04ac89ccf747f90fd1cf5c877251d00d926faa9014d9877b0d92367cfd223d46",
+    "optimized_projector": "09d845fffd14fcea43cef38c71641d614959fb1854c5167fe9afde9a5f474a59"
+  },
+  "tokenizer": {
+    "identity": "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca0089876f98a1c",
+    "vocabulary_size": 131072
+  }
+}
