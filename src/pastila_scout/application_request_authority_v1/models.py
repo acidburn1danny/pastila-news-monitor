@@ -1,5 +1,7 @@
 """Strict immutable application input for one provider-neutral request."""
 
+from __future__ import annotations
+
 from dataclasses import dataclass
 from datetime import datetime
 from typing import NoReturn
