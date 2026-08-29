@@ -41,7 +41,7 @@ def _progress():
         ("MODEL_LOAD_STARTED", {"prompt_token_count": 8192}),
         ("MODEL_LOAD_COMPLETED", {"compatibility_receipt_identity": worker.COMPATIBILITY_RECEIPT_IDENTITY}),
         ("GENERATION_STARTED", {"maximum_output_tokens": 3200,
-                                "sole_callback": "REQUEST_BOUND_PROJECTOR_V1_3"}),
+                                "sole_callback": "REQUEST_BOUND_OPTIMIZED_PROJECTOR_V2_SUFFIX_V1"}),
     )):
         raw = worker._event(request.provider_request_id, sequence, event, detail, previous)
         previous = json.loads(raw)["event_identity"]
