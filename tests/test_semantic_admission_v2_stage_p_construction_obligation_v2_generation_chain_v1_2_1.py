@@ -319,7 +319,7 @@ def test_recomputed_instance_cannot_substitute_packet_identity(tmp_path, monkeyp
     calls = []
     monkeypatch.setattr(WslExecutionBoundaryV1_1, "execute",
                         lambda self, invocation, timeout_seconds: calls.append(invocation))
-    with pytest.raises(ValueError, match="PACKET_BINDING_MISMATCH"):
+    with pytest.raises(ValueError, match="EXECUTION_PLAN_DRIFT"):
         host.execute_generation_wsl_host_v1_2_1(prepared=forged, boundary=boundary)
     assert calls == []
 
