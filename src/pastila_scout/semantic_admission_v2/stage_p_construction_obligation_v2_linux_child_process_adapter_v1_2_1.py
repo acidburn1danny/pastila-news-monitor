@@ -49,8 +49,9 @@ from .stage_p_construction_obligation_v2_linux_runtime_operations_adapter_v1_1 i
 from .stage_p_construction_obligation_v2_runner_protocol_codec_v1 import (
     parse_runner_request_v1,
 )
-from .stage_p_construction_obligation_v2_runtime_operations_adapter_v1_2 import (
-    adapt_runtime_operations_v1_2,
+from .stage_p_construction_obligation_v2_runtime_operations_adapter_v1_2_1 import (
+    RUNTIME_OPERATIONS_ADAPTER_IDENTITY,
+    adapt_runtime_operations_v1_2_1,
 )
 
 CANONICAL_PROVIDER_EXECUTION_SOURCE_SHA256 = (
@@ -71,6 +72,7 @@ LINUX_CHILD_PROCESS_ADAPTER_IDENTITY_FIELDS = (
     "provider-request-type:" + CANONICAL_PROVIDER_EXECUTION_REQUEST_TYPE,
     "application-request-source:" + CANONICAL_APPLICATION_REQUEST_SOURCE_SHA256,
     "application-request-type:" + CANONICAL_APPLICATION_PROVIDER_REQUEST_TYPE,
+    "runtime-operations-adapter:" + RUNTIME_OPERATIONS_ADAPTER_IDENTITY,
     "deferred-spawn:sole-start-edge",
 )
 LINUX_CHILD_PROCESS_ADAPTER_IDENTITY = hashlib.sha256(
@@ -260,7 +262,7 @@ def _run_linux_generation_child_v1_2_1(
     )
     projector = bind_static_projector_preflight_v1_2(preflight=base)
     callback = bind_static_callback_preflight_v1_3(projector_preflight=projector)
-    operations = adapt_runtime_operations_v1_2(
+    operations = adapt_runtime_operations_v1_2_1(
         rendered_prompt=host.rendered_prompt, operations=prepared.operations
     )
     result = supervise_injected_generation_v1_2_1(
