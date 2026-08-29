@@ -24,6 +24,7 @@ GENERATION_WSL_INVOCATION_BINDING_IDENTITY_FIELDS = (
     "execution-plan:canonical-byte-bound",
     "packet-manifest:canonical-file-set-bound",
     "authority:non-circular-packet-command-plan-bound",
+    "evidence-domain:optimized-projector-host-domain-bound",
     "outer-timeout:1260",
 )
 GENERATION_WSL_INVOCATION_BINDING_IDENTITY = hashlib.sha256(
@@ -115,7 +116,7 @@ def build_generation_wsl_invocation_v1_2_1(
         arguments=arguments,
     )
     expected_evidence_identity = hashlib.sha256("\n".join((
-        "STAGE_P_CONSTRUCTION_OBLIGATION_V2_CASE01_V1_2_1_OPTIMIZED_PROJECTOR_BOUND_EVIDENCE_ROOT",
+        "STAGE_P_CONSTRUCTION_OBLIGATION_V2_CASE01_V1_2_1_OPTIMIZED_PROJECTOR_HOST_DOMAIN_BOUND_EVIDENCE_ROOT",
         request.source_context_identity, invocation.command_identity, str(outer),
     )).encode()).hexdigest()
     if evidence_root_identity != expected_evidence_identity:
