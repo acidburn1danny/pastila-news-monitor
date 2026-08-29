@@ -42,6 +42,10 @@ class FakeTensor:
         return self
 
 
+class FakeBatchEncoding(dict):
+    pass
+
+
 class TokenizersBackend:
     eos_token_id = 2
     pad_token_id = None
@@ -53,8 +57,10 @@ class TokenizersBackend:
         return self.text if 100 in ids else ""
     def apply_chat_template(self, messages, **kwargs):
         self.calls.append(("chat", messages, kwargs))
-        return {"input_ids": FakeTensor([[900, 901]]),
-                "attention_mask": FakeTensor([[1, 1]])}
+        return FakeBatchEncoding(
+            input_ids=FakeTensor([[900, 901]]),
+            attention_mask=FakeTensor([[1, 1]]),
+        )
 
 
 class FakeModel:
@@ -90,7 +96,7 @@ def _install_fake_runtime(monkeypatch, text):
         cuda=types.SimpleNamespace(empty_cache=lambda: calls.append("empty_cache")))
     transformers = types.SimpleNamespace(
         AutoTokenizer=AutoTokenizer, AutoModelForImageTextToText=AutoModel,
-        BitsAndBytesConfig=Bits)
+        BatchEncoding=FakeBatchEncoding, BitsAndBytesConfig=Bits)
     monkeypatch.setitem(sys.modules, "transformers", transformers)
     monkeypatch.setitem(sys.modules, "torch", torch)
     monkeypatch.setitem(sys.modules, "peft", types.SimpleNamespace(PeftModel=Peft))
@@ -157,6 +163,36 @@ def test_package_prompt_batch_and_output_mutations_fail_before_generation(monkey
     with pytest.raises(ValueError, match="SYSTEM_PROMPT_IDENTITY"):
         adapter.prepare_linux_runtime_operations_v1(
             rendered_prompt="runtime request", system_prompt=SYSTEM_PROMPT + "x")
+
+
+def test_prompt_tensor_container_requires_exact_batch_encoding(monkeypatch) -> None:
+    bound, text, _ = _terminal_fixture()
+    calls, tokenizer, _ = _install_fake_runtime(monkeypatch, text)
+    monkeypatch.setattr(adapter, "extract_identity_bound_token_pieces_v1",
+                        lambda **kwargs: bound.projector_preflight.preflight.token_piece_bundle)
+    tokenizer.apply_chat_template = lambda *args, **kwargs: {
+        "input_ids": FakeTensor([[900, 901]]),
+        "attention_mask": FakeTensor([[1, 1]]),
+    }
+    with pytest.raises(ValueError, match="RUNTIME_PROMPT_TENSOR_SHAPE_INVALID"):
+        adapter.prepare_linux_runtime_operations_v1(
+            rendered_prompt="runtime request", system_prompt=SYSTEM_PROMPT)
+    assert not any(isinstance(item, tuple) and item[0] == "model" for item in calls)
+
+
+def test_prompt_tensor_batch_dimension_remains_exactly_one(monkeypatch) -> None:
+    bound, text, _ = _terminal_fixture()
+    calls, tokenizer, _ = _install_fake_runtime(monkeypatch, text)
+    monkeypatch.setattr(adapter, "extract_identity_bound_token_pieces_v1",
+                        lambda **kwargs: bound.projector_preflight.preflight.token_piece_bundle)
+    tokenizer.apply_chat_template = lambda *args, **kwargs: FakeBatchEncoding(
+        input_ids=FakeTensor([[900], [901]]),
+        attention_mask=FakeTensor([[1], [1]]),
+    )
+    with pytest.raises(ValueError, match="RUNTIME_INPUT_IDS_BATCH_INVALID"):
+        adapter.prepare_linux_runtime_operations_v1(
+            rendered_prompt="runtime request", system_prompt=SYSTEM_PROMPT)
+    assert not any(isinstance(item, tuple) and item[0] == "model" for item in calls)
 
 
 def test_compatibility_failure_releases_pre_return_model(monkeypatch) -> None:

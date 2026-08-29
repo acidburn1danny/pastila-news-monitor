@@ -73,7 +73,7 @@ def prepare_linux_runtime_operations_v1(
     if (type(system_prompt) is not str
             or hashlib.sha256(system_prompt.encode("utf-8")).hexdigest() != SYSTEM_PROMPT_SHA256):
         raise ValueError("CONSTRUCTION_OBLIGATION_V2_SYSTEM_PROMPT_IDENTITY_MISMATCH")
-    from transformers import AutoTokenizer
+    from transformers import AutoTokenizer, BatchEncoding
 
     tokenizer = AutoTokenizer.from_pretrained(BASE_MODEL_PATH, local_files_only=True)
     identity = TokenizerRuntimeIdentityV1(
@@ -89,7 +89,8 @@ def prepare_linux_runtime_operations_v1(
         tokenize=True, add_generation_prompt=True,
         return_tensors="pt", return_dict=True,
     )
-    if type(encoded) is not dict or set(encoded) != {"input_ids", "attention_mask"}:
+    if (type(encoded) is not BatchEncoding
+            or set(encoded) != {"input_ids", "attention_mask"}):
         raise ValueError("CONSTRUCTION_OBLIGATION_V2_RUNTIME_PROMPT_TENSOR_SHAPE_INVALID")
     input_ids = _row(encoded["input_ids"], "INPUT_IDS")
     attention_mask = _row(encoded["attention_mask"], "ATTENTION_MASK")
