@@ -13,13 +13,13 @@ from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_case
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def test_durable_label_packet_plan_is_deterministic_after_issuance() -> None:
+def test_generation_telemetry_packet_plan_is_fresh_unissued_and_deterministic() -> None:
     generated = materialize_case01_issuance_packet_v1_2_1(project_root=ROOT)
     assert all((ROOT / PACKET_RELATIVE / name).read_bytes() == raw
                for name, raw in generated.items())
     actual = {path.name for path in (ROOT / PACKET_RELATIVE).iterdir()}
     assert actual == {"application-provider-request.json", "authority-receipt-candidate.json",
-                      "authority-receipt-issued.json", "host-payload.json", "manifest.json",
+                      "host-payload.json", "manifest.json",
                       "rendered-prompt.json", "runner-request.json", "static-executor-binding.json"}
     manifest = json.loads((ROOT / PACKET_RELATIVE / "manifest.json").read_bytes())
     assert manifest["case_id"] == CASE_ID == "HMCV1-SASC-01"
@@ -93,3 +93,6 @@ def test_v1_2_packet_and_issued_receipt_remain_byte_exact_and_distinct():
     exact_bound = ROOT / "docs/artifacts/semantic-admission-v2-stage-p-construction-obligation-v2-case01-successor-issuance-packet-v1-2-1-exact-operations-bound"
     assert json.loads((exact_bound / "manifest.json").read_bytes())["packet_identity"] == "329cbd127db807728f74928956b4868828de9f58373b9b45809d78763b890ff5"
     assert json.loads((exact_bound / "authority-receipt-issued.json").read_bytes())["authority_receipt_identity"] == "b9176dbe4d2d1d98eb43d6e13e20e9955010c5e5a30ee89f609197dcb35b24a9"
+    durable_label_bound = ROOT / "docs/artifacts/semantic-admission-v2-stage-p-construction-obligation-v2-case01-successor-issuance-packet-v1-2-1-durable-label-bound"
+    assert json.loads((durable_label_bound / "manifest.json").read_bytes())["packet_identity"] == "181a50a073ff1517700cff6c7a012ae9f259d53bcf6f2eeba870eda71f5aa257"
+    assert json.loads((durable_label_bound / "authority-receipt-issued.json").read_bytes())["authority_receipt_identity"] == "50ae8b93807b9749d0007887a33556344cc7e3382b2d5cf7ce8283fb9191e19e"
