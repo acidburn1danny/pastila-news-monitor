@@ -64,9 +64,9 @@ CASE_PACK_SHA256 = "4163307ccb8cfa8997b520a1cea04cddacd347e9b1ffde498db925ffccac
 REQUESTED_AT = datetime(2026, 8, 29, 10, 0, tzinfo=UTC)
 PACKET_RELATIVE = Path(
     "docs/artifacts/semantic-admission-v2-stage-p-construction-obligation-v2-"
-    "case01-successor-issuance-packet-v1-2-1")
+    "case01-successor-issuance-packet-v1-2-1-identity-isolated")
 EVIDENCE_RELATIVE = Path(
-    ".semantic-admission-v2-stage-p-construction-obligation-v2-case01-successor-v1-2-1-evidence")
+    ".semantic-admission-v2-stage-p-construction-obligation-v2-case01-successor-v1-2-1-identity-isolated-evidence")
 SYSTEM_PROMPT_RELATIVE = Path(
     ".experimental-0-3-core-v1-2-journalistic-deontology-prime-directive-v1-evidence/"
     "PASTILAACIDA_EDITOR_CORE_SYSTEM_PROMPT_V1_2.txt")
@@ -182,7 +182,7 @@ def materialize_case01_issuance_packet_v1_2_1(
     }
     file_hashes = {name: hashlib.sha256(raw).hexdigest() for name, raw in files.items()}
     evidence_root_identity = hashlib.sha256("\n".join((
-        "STAGE_P_CONSTRUCTION_OBLIGATION_V2_CASE01_V1_2_1_EVIDENCE_ROOT",
+        "STAGE_P_CONSTRUCTION_OBLIGATION_V2_CASE01_V1_2_1_IDENTITY_ISOLATED_EVIDENCE_ROOT",
         SOURCE_CONTEXT_IDENTITY, invocation.command_identity, str(evidence_root),
     )).encode()).hexdigest()
     manifest = {
@@ -190,6 +190,7 @@ def materialize_case01_issuance_packet_v1_2_1(
         "schema_version": "1.2.1", "case_id": CASE_ID,
         "source_context_identity": SOURCE_CONTEXT_IDENTITY,
         "historical_request_reused": False, "receipt_status": "UNISSUED",
+        "attempts": {"completed": 0, "ceiling": 1},
         "proposed_evidence_root": str(evidence_root),
         "evidence_root_identity": evidence_root_identity,
         "evidence_root_exclusive_at_materialization": True,
@@ -247,4 +248,3 @@ __all__ = (
     "CASE_ID", "EVIDENCE_RELATIVE", "PACKET_RELATIVE", "SOURCE_CONTEXT_IDENTITY",
     "materialize_case01_issuance_packet_v1_2_1",
 )
-

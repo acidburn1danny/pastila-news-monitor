@@ -13,9 +13,21 @@ from .stage_p_construction_obligation_v2_generation_wsl_host_executor_v1_1 impor
     _publish,
 )
 from .stage_p_construction_obligation_v2_generation_wsl_invocation_binding_v1_1 import (
-    OUTER_TIMEOUT_SECONDS,
-    PreparedGenerationWslInvocationV1,
+    OUTER_TIMEOUT_SECONDS, SYSTEM_PROMPT_SHA256, _file,
 )
+from .stage_p_construction_obligation_v2_generation_execution_policy_gate_v1 import (
+    canonical_observed_generation_execution_policy_v1,
+    validate_generation_execution_policy_gate_v1,
+)
+from .stage_p_construction_obligation_v2_generation_wsl_invocation_binding_v1_2_1 import (
+    GENERATION_WSL_INVOCATION_BINDING_IDENTITY, RUNNER_MODULE,
+    PreparedGenerationWslInvocationV1_2_1,
+)
+from .stage_p_construction_obligation_v2_generation_authority_preload_v1_2_1 import (
+    AUTHORITY_PRELOAD_IDENTITY, parse_generation_authority_v1_2_1,
+)
+from .stage_p_construction_obligation_v2_runner_protocol_codec_v1 import parse_runner_request_v1
+from pastila_scout.wsl_execution_v1 import windows_path_to_wsl_v1
 from .stage_p_construction_obligation_v2_linux_generation_supervisor_candidate_v1_2_1 import SUPERVISOR_CANDIDATE_IDENTITY
 
 GENERATION_WSL_HOST_EXECUTOR_IDENTITY_FIELDS = (
@@ -23,6 +35,8 @@ GENERATION_WSL_HOST_EXECUTOR_IDENTITY_FIELDS = (
     "transport-boundary:wsl-v1.1",
     "raw-streams:stdout-then-stderr-before-receipts",
     "retry-fallback-repair-selection:0",
+    "prepared-invocation:v1.2.1-exact-type",
+    "pre-execute:independent-canonical-revalidation",
 )
 GENERATION_WSL_HOST_EXECUTOR_IDENTITY = hashlib.sha256(
     "\n".join(GENERATION_WSL_HOST_EXECUTOR_IDENTITY_FIELDS).encode()
@@ -41,15 +55,14 @@ class GenerationWslHostExecutionOutcomeV1_2:
 
 
 def execute_generation_wsl_host_v1_2_1(
-    *, prepared: PreparedGenerationWslInvocationV1, boundary: WslExecutionBoundaryV1_1,
+    *, prepared: PreparedGenerationWslInvocationV1_2_1, boundary: WslExecutionBoundaryV1_1,
 ) -> GenerationWslHostExecutionOutcomeV1_2:
     """Execute once; persist both captured streams before derived receipts."""
-    if type(prepared) is not PreparedGenerationWslInvocationV1:
-        raise TypeError("CONSTRUCTION_OBLIGATION_V2_PREPARED_WSL_INVOCATION_REQUIRED")
+    if type(prepared) is not PreparedGenerationWslInvocationV1_2_1:
+        raise TypeError("CONSTRUCTION_OBLIGATION_V2_PREPARED_WSL_INVOCATION_V1_2_1_REQUIRED")
     if type(boundary) is not WslExecutionBoundaryV1_1:
         raise TypeError("CONSTRUCTION_OBLIGATION_V2_CANONICAL_WSL_V1_1_REQUIRED")
-    if prepared.invocation.profile_identity != boundary.profile.identity:
-        raise ValueError("CONSTRUCTION_OBLIGATION_V2_WSL_PROFILE_IDENTITY_MISMATCH")
+    _revalidate_prepared_v1_2_1(prepared, boundary)
     outer = prepared.outer_evidence_root
     if outer.exists() or outer.is_symlink():
         raise FileExistsError("CONSTRUCTION_OBLIGATION_V2_OUTER_ROOT_ALREADY_EXISTS")
@@ -97,6 +110,70 @@ def execute_generation_wsl_host_v1_2_1(
         status, result, stdout_sha, stderr_sha, receipt_sha,
         reconciliation_identity, linux_identity,
     )
+
+
+def _revalidate_prepared_v1_2_1(prepared, boundary):
+    if (prepared.binding_identity != GENERATION_WSL_INVOCATION_BINDING_IDENTITY
+            or prepared.wsl_binding_identity != GENERATION_WSL_INVOCATION_BINDING_IDENTITY
+            or prepared.authority_preload_identity != AUTHORITY_PRELOAD_IDENTITY
+            or prepared.timeout_seconds != OUTER_TIMEOUT_SECONDS):
+        raise ValueError("CONSTRUCTION_OBLIGATION_V2_V1_2_1_IDENTITY_MISMATCH")
+    policy = _file(prepared.policy_receipt_path, "POLICY")
+    authority_path = _file(prepared.authority_receipt_path, "AUTHORITY")
+    request_path = _file(prepared.runner_request_path, "RUNNER_REQUEST")
+    prompt = _file(prepared.system_prompt_path, "SYSTEM_PROMPT")
+    expected_policy = validate_generation_execution_policy_gate_v1(
+        observed=canonical_observed_generation_execution_policy_v1())
+    if policy.read_bytes() != expected_policy:
+        raise ValueError("CONSTRUCTION_OBLIGATION_V2_GENERATION_POLICY_RECEIPT_MISMATCH")
+    if hashlib.sha256(prompt.read_bytes()).hexdigest() != SYSTEM_PROMPT_SHA256:
+        raise ValueError("CONSTRUCTION_OBLIGATION_V2_SYSTEM_PROMPT_IDENTITY_MISMATCH")
+    raw_request = request_path.read_bytes()
+    request = parse_runner_request_v1(raw_request=raw_request)
+    request_sha = hashlib.sha256(raw_request).hexdigest()
+    authority = parse_generation_authority_v1_2_1(
+        raw_receipt=authority_path.read_bytes(),
+        expected_host_payload_sha256=request.host_payload_sha256,
+        expected_runner_request_sha256=request_sha,
+        expected_provider_request_id=request.provider_request_id,
+        expected_source_context_identity=request.source_context_identity,
+    )
+    expected = boundary.build_invocation(
+        consumer_id="construction-obligation-v2-generation-v1-2-1",
+        authority_reference=authority.authority_receipt_identity,
+        arguments=("-m", RUNNER_MODULE,
+                   windows_path_to_wsl_v1(prepared.policy_receipt_path),
+                   windows_path_to_wsl_v1(prepared.authority_receipt_path),
+                   windows_path_to_wsl_v1(prepared.runner_request_path),
+                   windows_path_to_wsl_v1(prepared.system_prompt_path),
+                   windows_path_to_wsl_v1(prepared.linux_evidence_root)),
+    )
+    material = (
+        "STAGE_P_CONSTRUCTION_OBLIGATION_V2_GENERATION_WSL_INVOCATION_INSTANCE_V1_2_1",
+        GENERATION_WSL_INVOCATION_BINDING_IDENTITY, expected.command_identity,
+        authority.authority_receipt_identity, request_sha, prepared.packet_identity,
+        request.provider_request_id, request.source_context_identity,
+        prepared.evidence_root_identity, str(prepared.outer_evidence_root),
+        str(prepared.policy_receipt_path), str(prepared.authority_receipt_path),
+        str(prepared.runner_request_path), str(prepared.system_prompt_path),
+        str(OUTER_TIMEOUT_SECONDS),
+    )
+    instance = hashlib.sha256("\n".join(material).encode()).hexdigest()
+    evidence_identity = hashlib.sha256("\n".join((
+        "STAGE_P_CONSTRUCTION_OBLIGATION_V2_CASE01_V1_2_1_IDENTITY_ISOLATED_EVIDENCE_ROOT",
+        request.source_context_identity, expected.command_identity,
+        str(prepared.outer_evidence_root),
+    )).encode()).hexdigest()
+    if (type(prepared.invocation) is not type(expected) or prepared.invocation != expected
+            or prepared.command_identity != expected.command_identity
+            or prepared.invocation_instance_identity != instance
+            or prepared.authority_receipt_identity != authority.authority_receipt_identity
+            or prepared.runner_request_sha256 != request_sha
+            or prepared.provider_request_id != request.provider_request_id
+            or prepared.source_context_identity != request.source_context_identity
+            or prepared.evidence_root_identity != evidence_identity
+            or prepared.linux_evidence_root != prepared.outer_evidence_root / "linux-generation"):
+        raise ValueError("CONSTRUCTION_OBLIGATION_V2_V1_2_1_EXECUTION_PLAN_DRIFT")
 
 
 def _reconciliation(prepared, status, stdout_sha, stderr_sha, receipt_sha,
@@ -151,4 +228,3 @@ __all__ = (
     "GenerationWslHostExecutionOutcomeV1_2",
     "execute_generation_wsl_host_v1_2_1",
 )
-

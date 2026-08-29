@@ -26,6 +26,7 @@ def test_packet_is_byte_exact_current_case01_and_unissued() -> None:
     assert manifest["source_context_identity"] == SOURCE_CONTEXT_IDENTITY
     assert manifest["historical_request_reused"] is False
     assert manifest["receipt_status"] == "UNISSUED"
+    assert manifest["attempts"] == {"completed": 0, "ceiling": 1}
     assert all(value is False for value in manifest["execution"].values())
 
 
@@ -65,4 +66,6 @@ def test_v1_2_packet_and_issued_receipt_remain_byte_exact_and_distinct():
     current = json.loads((ROOT / PACKET_RELATIVE / "manifest.json").read_bytes())
     assert current["packet_identity"] != "34cab9bfd4e0a339ba79fa1d6acba68ab8aec50856cbfc28fcd4866fb3a78202"
     assert current["authority_reference_if_issued"] != "e38035ec43e037c02d07597f6177763ee1e672cd462272c7da80fb50d1a86e06"
-
+    superseded = ROOT / "docs/artifacts/semantic-admission-v2-stage-p-construction-obligation-v2-case01-successor-issuance-packet-v1-2-1"
+    assert json.loads((superseded / "manifest.json").read_bytes())["packet_identity"] == "1e5af20116b8500488dd6a5fcb7ea8de05ada1f3d6c72103b4c80e5300fd86a9"
+    assert json.loads((superseded / "authority-receipt-candidate.json").read_bytes())["proposed_receipt_identity"] == "b092c6a7c5d8aeca4dcbe1300e67ee3ea10b311939105608e661f54a5cf86754"
