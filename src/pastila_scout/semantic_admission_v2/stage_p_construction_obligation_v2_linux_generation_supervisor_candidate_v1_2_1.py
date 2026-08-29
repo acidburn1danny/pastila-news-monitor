@@ -22,6 +22,7 @@ from .stage_p_construction_obligation_v2_injected_generation_supervisor_v1_2_1 i
     SUPERVISOR_IDENTITY, InjectedGenerationSupervisorResultV1,
 )
 from .stage_p_construction_obligation_v2_injected_generation_worker_v1_2_1 import (
+    COMPATIBILITY_RECEIPT_IDENTITY, WORKER_IDENTITY,
     validate_compatibility_receipt_v1_2_1,
 )
 from .stage_p_construction_obligation_v2_runner_protocol_cleanup_extension_v1_1 import (
@@ -174,14 +175,8 @@ def supervise_linux_generation_candidate_v1_2_1(
 def _reconcile_artifacts(*, request, child_result, failure_code, child_progress=()):
     artifacts: list[tuple[str, bytes]] = []
     if child_result is None:
-        lifecycle = tuple(raw for label, raw in child_progress if label == "lifecycle")
-        compatibility = tuple(raw for label, raw in child_progress if label == "compatibility")
-        if len(compatibility) > 1:
-            raise ValueError("CONSTRUCTION_OBLIGATION_V2_CHILD_COMPATIBILITY_DUPLICATE")
-        if compatibility:
-            validate_compatibility_receipt_v1_2_1(compatibility[0])
-        progress = _validated_progress(
-            lifecycle, request.provider_request_id)
+        progress, compatibility = _validated_timeout_progress(
+            child_progress, request.provider_request_id)
         for raw in progress:
             value = json.loads(raw)
             artifacts.append((
@@ -278,6 +273,7 @@ def _validate_child_cleanup_receipt(raw, terminal_identity):
 def _validated_progress(values, provider_request_id):
     previous = None
     result = []
+    observed_events = []
     for sequence, raw in enumerate(values):
         try:
             value = json.loads(raw.decode("utf-8", errors="strict"))
@@ -285,15 +281,103 @@ def _validated_progress(values, provider_request_id):
             raise ValueError("CONSTRUCTION_OBLIGATION_V2_CHILD_PROGRESS_INVALID") from exc
         body = {key: item for key, item in value.items() if key != "event_identity"}
         expected = hashlib.sha256(_canonical(body)).hexdigest()
+        event = value.get("event")
+        detail = value.get("detail")
         if (raw != _canonical(value)
+                or set(value) != {"schema_name", "schema_version", "worker_identity",
+                                  "provider_request_id", "sequence", "event", "detail",
+                                  "previous_event_identity", "event_identity"}
+                or value.get("schema_name") != "pastila-semantic-admission-v2-construction-obligation-v2-injected-generation-event"
+                or value.get("schema_version") != "1.0.0"
+                or value.get("worker_identity") != WORKER_IDENTITY
                 or value.get("provider_request_id") != provider_request_id
                 or value.get("sequence") != sequence
                 or value.get("previous_event_identity") != previous
-                or value.get("event_identity") != expected):
+                or value.get("event_identity") != expected
+                or not _valid_event_transition(tuple(observed_events), event)
+                or not _valid_event_detail(event, detail)):
             raise ValueError("CONSTRUCTION_OBLIGATION_V2_CHILD_PROGRESS_BINDING_INVALID")
         previous = expected
+        observed_events.append(event)
         result.append(raw)
     return tuple(result)
+
+
+def _validated_timeout_progress(child_progress, provider_request_id):
+    lifecycle = tuple(raw for label, raw in child_progress if label == "lifecycle")
+    compatibility = tuple(raw for label, raw in child_progress if label == "compatibility")
+    if len(compatibility) > 1:
+        raise ValueError("CONSTRUCTION_OBLIGATION_V2_CHILD_COMPATIBILITY_DUPLICATE")
+    progress = _validated_progress(lifecycle, provider_request_id)
+    expected_records = []
+    for raw in progress:
+        value = json.loads(raw)
+        if value["event"] == "MODEL_LOAD_COMPLETED":
+            if not compatibility:
+                raise ValueError("CONSTRUCTION_OBLIGATION_V2_CHILD_COMPATIBILITY_MISSING")
+            validate_compatibility_receipt_v1_2_1(compatibility[0])
+            if value["detail"]["compatibility_receipt_identity"] != json.loads(
+                    compatibility[0])["receipt_identity"]:
+                raise ValueError("CONSTRUCTION_OBLIGATION_V2_CHILD_COMPATIBILITY_BINDING_INVALID")
+            expected_records.append(("compatibility", compatibility[0]))
+        expected_records.append(("lifecycle", raw))
+    if tuple(expected_records) != child_progress:
+        raise ValueError("CONSTRUCTION_OBLIGATION_V2_CHILD_PROGRESS_ORDER_INVALID")
+    return progress, compatibility
+
+
+def _valid_event_transition(observed, event):
+    if not observed:
+        return event == "MODEL_LOAD_STARTED"
+    previous = observed[-1]
+    allowed = {
+        "MODEL_LOAD_STARTED": {"MODEL_LOAD_COMPLETED", "EXECUTION_FAILED"},
+        "MODEL_LOAD_COMPLETED": {"GENERATION_STARTED"},
+        "GENERATION_STARTED": {"TERMINAL_EOS", "NO_LEGAL_TOKEN", "EXECUTION_FAILED"},
+        "TERMINAL_EOS": {"CLEANUP_COMPLETED", "CLEANUP_FAILED"},
+        "NO_LEGAL_TOKEN": {"CLEANUP_COMPLETED", "CLEANUP_FAILED"},
+        "EXECUTION_FAILED": {"CLEANUP_COMPLETED", "CLEANUP_FAILED"},
+        "CLEANUP_COMPLETED": set(),
+        "CLEANUP_FAILED": set(),
+    }
+    return event in allowed.get(previous, set())
+
+
+def _valid_event_detail(event, detail):
+    if type(detail) is not dict:
+        return False
+    if event == "MODEL_LOAD_STARTED":
+        return (set(detail) == {"prompt_token_count"}
+                and type(detail["prompt_token_count"]) is int
+                and 0 < detail["prompt_token_count"] <= 8192)
+    if event == "MODEL_LOAD_COMPLETED":
+        return detail == {"compatibility_receipt_identity": COMPATIBILITY_RECEIPT_IDENTITY}
+    if event == "GENERATION_STARTED":
+        return (set(detail) == {"maximum_output_tokens", "sole_callback"}
+                and type(detail["maximum_output_tokens"]) is int
+                and 0 < detail["maximum_output_tokens"] <= 3200
+                and detail["sole_callback"] == "REQUEST_BOUND_PROJECTOR_V1_3")
+    if event == "TERMINAL_EOS":
+        return (set(detail) == {"generated_token_count", "output_sha256"}
+                and type(detail["generated_token_count"]) is int
+                and 0 < detail["generated_token_count"] <= 3200
+                and _sha256_identity(detail["output_sha256"]))
+    if event == "NO_LEGAL_TOKEN":
+        return set(detail) == {"receipt_identity"} and _sha256_identity(detail["receipt_identity"])
+    if event == "EXECUTION_FAILED":
+        return (set(detail) == {"failure_code"} and type(detail["failure_code"]) is str
+                and 0 < len(detail["failure_code"]) <= 200)
+    if event == "CLEANUP_COMPLETED":
+        return detail == {"failure_type": None}
+    if event == "CLEANUP_FAILED":
+        return (set(detail) == {"failure_type"}
+                and type(detail["failure_type"]) is str and bool(detail["failure_type"]))
+    return False
+
+
+def _sha256_identity(value):
+    return (type(value) is str and len(value) == 64
+            and all(character in "0123456789abcdef" for character in value))
 
 
 def _failure_event(provider_request_id, failure_code, sequence=0, previous=None):

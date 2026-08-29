@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import ast
+import hashlib
 import json
 from pathlib import Path
 
@@ -34,14 +35,15 @@ def _progress():
     previous = None
     events = []
     for sequence, (event, detail) in enumerate((
-        ("MODEL_LOAD_STARTED", {}),
+        ("MODEL_LOAD_STARTED", {"prompt_token_count": 8192}),
         ("MODEL_LOAD_COMPLETED", {"compatibility_receipt_identity": worker.COMPATIBILITY_RECEIPT_IDENTITY}),
-        ("GENERATION_STARTED", {"output_token_ceiling": 3200}),
+        ("GENERATION_STARTED", {"maximum_output_tokens": 3200,
+                                "sole_callback": "REQUEST_BOUND_PROJECTOR_V1_3"}),
     )):
         raw = worker._event(request.provider_request_id, sequence, event, detail, previous)
         previous = json.loads(raw)["event_identity"]
         events.append(("lifecycle", raw))
-    events.insert(2, ("compatibility", COMPATIBILITY.read_bytes()))
+    events.insert(1, ("compatibility", COMPATIBILITY.read_bytes()))
     return request, tuple(events)
 
 
@@ -79,6 +81,50 @@ def test_progress_and_compatibility_mutations_fail_closed():
         supervisor._reconcile_artifacts(
             request=request, child_result=None, failure_code="CHILD_TIMEOUT_TERMINATED",
             child_progress=((*progress[:-1], ("compatibility", b"{}\n"))))
+
+
+@pytest.mark.parametrize("mutation", ("schema", "worker", "event", "detail", "order"))
+def test_recomputed_semantic_progress_mutations_fail_closed(mutation):
+    request, progress = _progress()
+    records = list(progress)
+    index = 0 if mutation in {"schema", "worker", "event"} else 3
+    value = json.loads(records[index][1])
+    if mutation == "schema":
+        value["schema_name"] = "attacker-resealed-event"
+    elif mutation == "worker":
+        value["worker_identity"] = "0" * 64
+    elif mutation == "event":
+        value["event"] = "GENERATION_STARTED"
+    elif mutation == "detail":
+        value["detail"]["maximum_output_tokens"] = 999999
+    else:
+        records[1], records[2] = records[2], records[1]
+    if mutation != "order":
+        body = {key: item for key, item in value.items() if key != "event_identity"}
+        value["event_identity"] = hashlib.sha256(supervisor._canonical(body)).hexdigest()
+        records[index] = ("lifecycle", supervisor._canonical(value))
+    with pytest.raises(ValueError, match="CHILD_PROGRESS"):
+        supervisor._reconcile_artifacts(
+            request=request, child_result=None,
+            failure_code="CHILD_TIMEOUT_TERMINATED",
+            child_progress=tuple(records))
+
+
+def test_compatibility_requires_exact_corresponding_load_completed_event():
+    request, progress = _progress()
+    compatibility = next(record for record in progress if record[0] == "compatibility")
+    with pytest.raises(ValueError, match="CHILD_PROGRESS_ORDER_INVALID"):
+        supervisor._reconcile_artifacts(
+            request=request, child_result=None,
+            failure_code="CHILD_TIMEOUT_TERMINATED",
+            child_progress=(progress[0], compatibility))
+    without_compatibility = tuple(record for record in progress
+                                  if record[0] != "compatibility")
+    with pytest.raises(ValueError, match="CHILD_COMPATIBILITY_MISSING"):
+        supervisor._reconcile_artifacts(
+            request=request, child_result=None,
+            failure_code="CHILD_TIMEOUT_TERMINATED",
+            child_progress=without_compatibility)
 
 
 def test_timeout_remediation_import_surface_is_zero_execution():
