@@ -45,6 +45,8 @@ class GenerationAuthorityV1_2:
     runner_request_sha256: str
     provider_request_id: str
     source_context_identity: str
+    packet_plan_identity: str
+    command_plan_identity: str
     required_free_vram_mib: int
     authority_receipt_identity: str
 
@@ -90,6 +92,8 @@ def parse_generation_authority_v1_2_1(
     *, raw_receipt: bytes, expected_host_payload_sha256: str,
     expected_runner_request_sha256: str, expected_provider_request_id: str,
     expected_source_context_identity: str,
+    expected_packet_plan_identity: str | None = None,
+    expected_command_plan_identity: str | None = None,
 ) -> GenerationAuthorityV1_2:
     try:
         value = json.loads(raw_receipt.decode("utf-8", errors="strict"))
@@ -102,6 +106,7 @@ def parse_generation_authority_v1_2_1(
         "runner_identity", "wsl_binding_identity", "host_executor_identity",
         "wsl_profile_identity", "owner_authority_identity", "host_payload_sha256",
         "runner_request_sha256", "provider_request_id", "source_context_identity",
+        "packet_plan_identity", "command_plan_identity",
         "required_free_vram_mib", "attempt_ceiling", "operation",
         "model_load_authorized", "generation_authorized", "prompt_token_ceiling",
         "output_token_ceiling", "retry_authorized", "fallback_authorized",
@@ -137,8 +142,19 @@ def parse_generation_authority_v1_2_1(
     }
     if any(value[key] != item for key, item in bound.items()):
         raise ValueError("GENERATION_AUTHORITY_V1_2_REQUEST_BINDING_MISMATCH")
-    if any(type(value[key]) is not str or not value[key] for key in ("owner_authority_identity", *bound)):
+    if (expected_packet_plan_identity is not None
+            and value["packet_plan_identity"] != expected_packet_plan_identity):
+        raise ValueError("GENERATION_AUTHORITY_V1_2_PACKET_PLAN_MISMATCH")
+    if (expected_command_plan_identity is not None
+            and value["command_plan_identity"] != expected_command_plan_identity):
+        raise ValueError("GENERATION_AUTHORITY_V1_2_COMMAND_PLAN_MISMATCH")
+    if any(type(value[key]) is not str or not value[key] for key in (
+            "owner_authority_identity", *bound, "packet_plan_identity",
+            "command_plan_identity")):
         raise ValueError("GENERATION_AUTHORITY_V1_2_BINDING_INVALID")
+    if any(len(value[key]) != 64 or any(c not in "0123456789abcdef" for c in value[key])
+           for key in ("packet_plan_identity", "command_plan_identity")):
+        raise ValueError("GENERATION_AUTHORITY_V1_2_PLAN_IDENTITY_INVALID")
     body = {key: item for key, item in value.items() if key != "authority_receipt_identity"}
     identity = hashlib.sha256(_canonical(body)).hexdigest()
     if value["authority_receipt_identity"] != identity or raw_receipt != _canonical(value):
@@ -146,7 +162,8 @@ def parse_generation_authority_v1_2_1(
     return GenerationAuthorityV1_2(
         value["owner_authority_identity"], value["host_payload_sha256"],
         value["runner_request_sha256"], value["provider_request_id"],
-        value["source_context_identity"], value["required_free_vram_mib"], identity,
+        value["source_context_identity"], value["packet_plan_identity"],
+        value["command_plan_identity"], value["required_free_vram_mib"], identity,
     )
 
 
@@ -160,4 +177,3 @@ __all__ = (
     "PACKAGE_IDENTITIES", "parse_generation_authority_v1_2_1",
     "validate_generation_preload_v1_2_1",
 )
-

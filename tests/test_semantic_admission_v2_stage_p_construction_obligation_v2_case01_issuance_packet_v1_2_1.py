@@ -72,3 +72,6 @@ def test_v1_2_packet_and_issued_receipt_remain_byte_exact_and_distinct():
     isolated = ROOT / "docs/artifacts/semantic-admission-v2-stage-p-construction-obligation-v2-case01-successor-issuance-packet-v1-2-1-identity-isolated"
     assert json.loads((isolated / "manifest.json").read_bytes())["packet_identity"] == "34513d594d5e55dfd94c930de791c621da58b1db78d2b978518e2c4f4877772b"
     assert json.loads((isolated / "authority-receipt-candidate.json").read_bytes())["proposed_receipt_identity"] == "053336878603d8cbd8fea9cd0c3eee6cb307a002be632f22670932a55d3503a6"
+    packet_bound = ROOT / "docs/artifacts/semantic-admission-v2-stage-p-construction-obligation-v2-case01-successor-issuance-packet-v1-2-1-packet-bound"
+    assert json.loads((packet_bound / "manifest.json").read_bytes())["packet_identity"] == "38a3bf93c01b35b935089ddb7db576cc1f2438a7fea386f5e7678b1e01734720"
+    assert json.loads((packet_bound / "authority-receipt-candidate.json").read_bytes())["proposed_receipt_identity"] == "5eae2ad3c40b27ab5440c37d89cbf69a93cc028848fadc31f0326b5ff91fc69d"

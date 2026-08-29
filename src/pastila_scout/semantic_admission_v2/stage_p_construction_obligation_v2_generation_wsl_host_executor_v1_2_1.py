@@ -22,6 +22,7 @@ from .stage_p_construction_obligation_v2_generation_execution_policy_gate_v1 imp
 from .stage_p_construction_obligation_v2_generation_wsl_invocation_binding_v1_2_1 import (
     GENERATION_WSL_INVOCATION_BINDING_IDENTITY, RUNNER_MODULE,
     PreparedGenerationWslInvocationV1_2_1, _validate_packet_manifest_v1_2_1,
+    _derive_packet_plan_identity,
 )
 from .stage_p_construction_obligation_v2_generation_authority_preload_v1_2_1 import (
     AUTHORITY_PRELOAD_IDENTITY, parse_generation_authority_v1_2_1,
@@ -38,6 +39,7 @@ GENERATION_WSL_HOST_EXECUTOR_IDENTITY_FIELDS = (
     "prepared-invocation:v1.2.1-exact-type",
     "pre-execute:independent-canonical-revalidation",
     "pre-execute:packet-manifest-and-file-set-revalidation",
+    "pre-execute:authority-packet-command-plan-revalidation",
 )
 GENERATION_WSL_HOST_EXECUTOR_IDENTITY = hashlib.sha256(
     "\n".join(GENERATION_WSL_HOST_EXECUTOR_IDENTITY_FIELDS).encode()
@@ -132,22 +134,33 @@ def _revalidate_prepared_v1_2_1(prepared, boundary):
     raw_request = request_path.read_bytes()
     request = parse_runner_request_v1(raw_request=raw_request)
     request_sha = hashlib.sha256(raw_request).hexdigest()
+    arguments = ("-m", RUNNER_MODULE,
+                 windows_path_to_wsl_v1(prepared.policy_receipt_path),
+                 windows_path_to_wsl_v1(prepared.authority_receipt_path),
+                 windows_path_to_wsl_v1(prepared.runner_request_path),
+                 windows_path_to_wsl_v1(prepared.system_prompt_path),
+                 windows_path_to_wsl_v1(prepared.linux_evidence_root))
+    command_plan = boundary.build_invocation(
+        consumer_id="construction-obligation-v2-generation-v1-2-1",
+        authority_reference="0" * 64, arguments=arguments)
+    packet_plan_identity = _derive_packet_plan_identity(
+        manifest_path=_file(prepared.packet_manifest_path, "PACKET_MANIFEST"),
+        command_plan_identity=command_plan.command_identity,
+        source_context_identity=request.source_context_identity,
+        outer_evidence_root=prepared.outer_evidence_root)
     authority = parse_generation_authority_v1_2_1(
         raw_receipt=authority_path.read_bytes(),
         expected_host_payload_sha256=request.host_payload_sha256,
         expected_runner_request_sha256=request_sha,
         expected_provider_request_id=request.provider_request_id,
         expected_source_context_identity=request.source_context_identity,
+        expected_packet_plan_identity=packet_plan_identity,
+        expected_command_plan_identity=command_plan.command_identity,
     )
     expected = boundary.build_invocation(
         consumer_id="construction-obligation-v2-generation-v1-2-1",
         authority_reference=authority.authority_receipt_identity,
-        arguments=("-m", RUNNER_MODULE,
-                   windows_path_to_wsl_v1(prepared.policy_receipt_path),
-                   windows_path_to_wsl_v1(prepared.authority_receipt_path),
-                   windows_path_to_wsl_v1(prepared.runner_request_path),
-                   windows_path_to_wsl_v1(prepared.system_prompt_path),
-                   windows_path_to_wsl_v1(prepared.linux_evidence_root)),
+        arguments=arguments,
     )
     material = (
         "STAGE_P_CONSTRUCTION_OBLIGATION_V2_GENERATION_WSL_INVOCATION_INSTANCE_V1_2_1",
@@ -162,7 +175,7 @@ def _revalidate_prepared_v1_2_1(prepared, boundary):
     )
     instance = hashlib.sha256("\n".join(material).encode()).hexdigest()
     evidence_identity = hashlib.sha256("\n".join((
-        "STAGE_P_CONSTRUCTION_OBLIGATION_V2_CASE01_V1_2_1_PACKET_BOUND_EVIDENCE_ROOT",
+        "STAGE_P_CONSTRUCTION_OBLIGATION_V2_CASE01_V1_2_1_AUTHORITY_PLAN_BOUND_EVIDENCE_ROOT",
         request.source_context_identity, expected.command_identity,
         str(prepared.outer_evidence_root),
     )).encode()).hexdigest()
@@ -170,6 +183,8 @@ def _revalidate_prepared_v1_2_1(prepared, boundary):
         manifest_path=_file(prepared.packet_manifest_path, "PACKET_MANIFEST"),
         invocation=expected, authority_identity=authority.authority_receipt_identity,
         authority_path=authority_path, request_path=request_path,
+        packet_plan_identity=packet_plan_identity,
+        command_plan_identity=command_plan.command_identity,
         source_context_identity=request.source_context_identity,
         evidence_root_identity=evidence_identity,
         outer_evidence_root=prepared.outer_evidence_root,

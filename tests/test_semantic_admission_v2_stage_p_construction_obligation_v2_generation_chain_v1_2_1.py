@@ -19,7 +19,7 @@ from pastila_scout.semantic_admission_v2 import stage_p_construction_obligation_
 from pastila_scout.semantic_admission_v2 import stage_p_construction_obligation_v2_linux_generation_composition_v1_2_1 as composition
 from pastila_scout.semantic_admission_v2 import stage_p_construction_obligation_v2_linux_generation_runner_v1_2_1 as runner
 from pastila_scout.semantic_admission_v2 import stage_p_construction_obligation_v2_linux_generation_supervisor_candidate_v1_2_1 as supervisor
-from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_case01_issuance_packet_v1_2_1 import PACKET_RELATIVE, EVIDENCE_RELATIVE
+from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_case01_issuance_packet_v1_2_1 import PACKET_RELATIVE, EVIDENCE_RELATIVE, materialize_case01_issuance_packet_v1_2_1
 from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_generation_wsl_invocation_binding_v1_1 import PreparedGenerationWslInvocationV1
 from pastila_scout.wsl_execution_v1 import canonical_model_profile_v1, windows_path_to_wsl_v1
 from pastila_scout.wsl_execution_v1_1 import WslExecutionBoundaryV1_1
@@ -67,43 +67,41 @@ def test_runner_source_binding_is_exact_and_imports_are_inert():
 
 
 def _prepared(tmp_path: Path, monkeypatch=None):
-    source_packet = ROOT / PACKET_RELATIVE
-    packet = tmp_path / "packet"
-    shutil.copytree(source_packet, packet)
+    packet = tmp_path / PACKET_RELATIVE
+    packet.mkdir(parents=True)
+    generated = materialize_case01_issuance_packet_v1_2_1(
+        project_root=ROOT, deployment_root=tmp_path)
+    for name, raw in generated.items():
+        (packet / name).write_bytes(raw)
+    policy = tmp_path / "docs/artifacts/semantic-admission-v2-stage-p-construction-obligation-v2-generation-policy-validation-receipt-v1.json"
+    prompt = tmp_path / ".experimental-0-3-core-v1-2-journalistic-deontology-prime-directive-v1-evidence/PASTILAACIDA_EDITOR_CORE_SYSTEM_PROMPT_V1_2.txt"
+    policy.parent.mkdir(parents=True, exist_ok=True)
+    prompt.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(ROOT / policy.relative_to(tmp_path), policy)
+    shutil.copyfile(ROOT / prompt.relative_to(tmp_path), prompt)
     candidate = json.loads((packet / "authority-receipt-candidate.json").read_bytes())
     issued = dict(candidate["authority_body"])
     issued["authority_receipt_identity"] = candidate["proposed_receipt_identity"]
     receipt = packet / "authority-receipt-issued.json"
     receipt.write_bytes(_canonical(issued))
-    outer = tmp_path / "prospective-evidence"
+    manifest = json.loads((packet / "manifest.json").read_bytes())
+    outer = Path(manifest["proposed_evidence_root"])
     boundary = WslExecutionBoundaryV1_1(canonical_model_profile_v1(with_pydantic_bridge=True))
     invocation = boundary.build_invocation(
         consumer_id="construction-obligation-v2-generation-v1-2-1",
         authority_reference=candidate["proposed_receipt_identity"],
         arguments=("-m", binding.RUNNER_MODULE,
-                   windows_path_to_wsl_v1(ROOT / "docs/artifacts/semantic-admission-v2-stage-p-construction-obligation-v2-generation-policy-validation-receipt-v1.json"),
+                   windows_path_to_wsl_v1(policy),
                    windows_path_to_wsl_v1(receipt),
                    windows_path_to_wsl_v1(packet / "runner-request.json"),
-                   windows_path_to_wsl_v1(ROOT / ".experimental-0-3-core-v1-2-journalistic-deontology-prime-directive-v1-evidence/PASTILAACIDA_EDITOR_CORE_SYSTEM_PROMPT_V1_2.txt"),
+                   windows_path_to_wsl_v1(prompt),
                    windows_path_to_wsl_v1(outer / "linux-generation")))
-    evidence = hashlib.sha256("\n".join((
-        "STAGE_P_CONSTRUCTION_OBLIGATION_V2_CASE01_V1_2_1_PACKET_BOUND_EVIDENCE_ROOT",
-        json.loads((packet / "manifest.json").read_bytes())["source_context_identity"],
-        invocation.command_identity, str(outer))).encode()).hexdigest()
-    manifest = json.loads((packet / "manifest.json").read_bytes())
-    manifest["command"] = list(invocation.command)
-    manifest["command_identity"] = invocation.command_identity
-    manifest["proposed_evidence_root"] = str(outer)
-    manifest["evidence_root_identity"] = evidence
-    manifest["packet_identity"] = hashlib.sha256(_canonical({
-        key: value for key, value in manifest.items() if key != "packet_identity"
-    })).hexdigest()
-    (packet / "manifest.json").write_bytes(_canonical(manifest))
+    evidence = manifest["evidence_root_identity"]
     prepared = binding.build_generation_wsl_invocation_v1_2_1(
         project_root=ROOT,
-        policy_receipt_path=ROOT / "docs/artifacts/semantic-admission-v2-stage-p-construction-obligation-v2-generation-policy-validation-receipt-v1.json",
+        policy_receipt_path=policy,
         authority_receipt_path=receipt, runner_request_path=packet / "runner-request.json",
-        system_prompt_path=ROOT / ".experimental-0-3-core-v1-2-journalistic-deontology-prime-directive-v1-evidence/PASTILAACIDA_EDITOR_CORE_SYSTEM_PROMPT_V1_2.txt",
+        system_prompt_path=prompt,
         packet_manifest_path=packet / "manifest.json", outer_evidence_root=outer,
         evidence_root_identity=evidence, boundary=boundary)
     return prepared, boundary
@@ -182,5 +180,77 @@ def test_recomputed_instance_cannot_substitute_packet_identity(tmp_path, monkeyp
     monkeypatch.setattr(WslExecutionBoundaryV1_1, "execute",
                         lambda self, invocation, timeout_seconds: calls.append(invocation))
     with pytest.raises(ValueError, match="EXECUTION_PLAN_DRIFT"):
+        host.execute_generation_wsl_host_v1_2_1(prepared=forged, boundary=boundary)
+    assert calls == []
+
+
+def test_undeclared_packet_file_fails_before_execute(tmp_path, monkeypatch):
+    prepared, boundary = _prepared(tmp_path)
+    (prepared.packet_manifest_path.parent / "undeclared-extra.bin").write_bytes(b"extra")
+    calls = []
+    monkeypatch.setattr(WslExecutionBoundaryV1_1, "execute",
+                        lambda self, invocation, timeout_seconds: calls.append(invocation))
+    with pytest.raises(ValueError, match="DIRECTORY_FILE_SET"):
+        host.execute_generation_wsl_host_v1_2_1(prepared=prepared, boundary=boundary)
+    assert calls == []
+
+
+def test_resealed_relocated_packet_cannot_reuse_authority(tmp_path):
+    prepared, boundary = _prepared(tmp_path / "original")
+    relocated_root = tmp_path / "relocated"
+    relocated_packet = relocated_root / PACKET_RELATIVE
+    relocated_packet.parent.mkdir(parents=True)
+    shutil.copytree(prepared.packet_manifest_path.parent, relocated_packet)
+    relocated_outer = relocated_root / EVIDENCE_RELATIVE
+    manifest = json.loads((relocated_packet / "manifest.json").read_bytes())
+    manifest["proposed_evidence_root"] = str(relocated_outer)
+    manifest["packet_identity"] = hashlib.sha256(_canonical({
+        key: value for key, value in manifest.items() if key != "packet_identity"
+    })).hexdigest()
+    (relocated_packet / "manifest.json").write_bytes(_canonical(manifest))
+    with pytest.raises(ValueError, match="PACKET_PLAN"):
+        binding.build_generation_wsl_invocation_v1_2_1(
+            project_root=ROOT, policy_receipt_path=prepared.policy_receipt_path,
+            authority_receipt_path=relocated_packet / "authority-receipt-issued.json",
+            runner_request_path=relocated_packet / "runner-request.json",
+            packet_manifest_path=relocated_packet / "manifest.json",
+            system_prompt_path=prepared.system_prompt_path,
+            outer_evidence_root=relocated_outer,
+            evidence_root_identity=prepared.evidence_root_identity, boundary=boundary)
+
+
+def test_resealed_candidate_body_disagreement_fails_before_execute(tmp_path, monkeypatch):
+    prepared, boundary = _prepared(tmp_path)
+    packet = prepared.packet_manifest_path.parent
+    candidate_path = packet / "authority-receipt-candidate.json"
+    candidate = json.loads(candidate_path.read_bytes())
+    candidate["authority_body"]["owner_authority_identity"] = "forged-owner"
+    candidate_path.write_bytes(_canonical(candidate))
+    manifest = json.loads(prepared.packet_manifest_path.read_bytes())
+    manifest["file_sha256"]["authority-receipt-candidate.json"] = hashlib.sha256(
+        candidate_path.read_bytes()).hexdigest()
+    manifest["packet_identity"] = hashlib.sha256(_canonical({
+        key: value for key, value in manifest.items() if key != "packet_identity"
+    })).hexdigest()
+    prepared.packet_manifest_path.write_bytes(_canonical(manifest))
+    material = (
+        "STAGE_P_CONSTRUCTION_OBLIGATION_V2_GENERATION_WSL_INVOCATION_INSTANCE_V1_2_1",
+        binding.GENERATION_WSL_INVOCATION_BINDING_IDENTITY,
+        prepared.command_identity, prepared.authority_receipt_identity,
+        prepared.runner_request_sha256, manifest["packet_identity"],
+        prepared.provider_request_id, prepared.source_context_identity,
+        prepared.evidence_root_identity, str(prepared.outer_evidence_root),
+        str(prepared.policy_receipt_path), str(prepared.authority_receipt_path),
+        str(prepared.runner_request_path), str(prepared.packet_manifest_path),
+        str(prepared.system_prompt_path), str(binding.OUTER_TIMEOUT_SECONDS),
+    )
+    forged = replace(
+        prepared, packet_identity=manifest["packet_identity"],
+        invocation_instance_identity=hashlib.sha256(
+            "\n".join(material).encode()).hexdigest())
+    calls = []
+    monkeypatch.setattr(WslExecutionBoundaryV1_1, "execute",
+                        lambda self, invocation, timeout_seconds: calls.append(invocation))
+    with pytest.raises(ValueError, match="PACKET_BINDING"):
         host.execute_generation_wsl_host_v1_2_1(prepared=forged, boundary=boundary)
     assert calls == []
