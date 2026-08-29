@@ -64,6 +64,13 @@ def test_runner_source_binding_is_exact_and_imports_are_inert():
     assert hashlib.sha256(path.read_bytes()).hexdigest() == binding.RUNNER_SOURCE_SHA256
     for module in (worker, injected, supervisor, child, composition, runner, host, binding):
         assert module.__name__.endswith("v1_2_1")
+    from pastila_scout.provider_execution_v2.models import ProviderExecutionRequestV2
+    assert child.CANONICAL_PROVIDER_EXECUTION_SOURCE_SHA256 == hashlib.sha256(
+        (ROOT / "src/pastila_scout/provider_execution_v2/models.py").read_bytes()
+    ).hexdigest()
+    assert child.CANONICAL_PROVIDER_EXECUTION_REQUEST_TYPE == (
+        f"{ProviderExecutionRequestV2.__module__}.{ProviderExecutionRequestV2.__qualname__}"
+    )
 
 
 def _prepared(tmp_path: Path, monkeypatch=None):
@@ -135,6 +142,22 @@ def test_legacy_receipts_cannot_build_v1_2_1(tmp_path, legacy):
             packet_manifest_path=packet / "manifest.json",
             outer_evidence_root=tmp_path / "never",
             evidence_root_identity="1" * 64,
+            boundary=WslExecutionBoundaryV1_1(canonical_model_profile_v1(with_pydantic_bridge=True)))
+
+
+def test_consumed_pre_fix_v1_2_1_receipt_cannot_build_successor(tmp_path):
+    packet = ROOT / PACKET_RELATIVE
+    consumed = ROOT / "docs/artifacts/semantic-admission-v2-stage-p-construction-obligation-v2-case01-successor-issuance-packet-v1-2-1-authority-plan-bound/authority-receipt-issued.json"
+    with pytest.raises(ValueError):
+        binding.build_generation_wsl_invocation_v1_2_1(
+            project_root=ROOT,
+            policy_receipt_path=ROOT / "docs/artifacts/semantic-admission-v2-stage-p-construction-obligation-v2-generation-policy-validation-receipt-v1.json",
+            authority_receipt_path=consumed,
+            runner_request_path=packet / "runner-request.json",
+            packet_manifest_path=packet / "manifest.json",
+            system_prompt_path=ROOT / ".experimental-0-3-core-v1-2-journalistic-deontology-prime-directive-v1-evidence/PASTILAACIDA_EDITOR_CORE_SYSTEM_PROMPT_V1_2.txt",
+            outer_evidence_root=tmp_path / "never",
+            evidence_root_identity=json.loads((packet / "manifest.json").read_bytes())["evidence_root_identity"],
             boundary=WslExecutionBoundaryV1_1(canonical_model_profile_v1(with_pydantic_bridge=True)))
 
 

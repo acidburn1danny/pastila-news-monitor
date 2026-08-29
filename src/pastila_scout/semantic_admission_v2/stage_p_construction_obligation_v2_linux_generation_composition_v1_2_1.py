@@ -8,13 +8,13 @@ from pathlib import Path
 
 from .stage_p_construction_obligation_v2_durable_filesystem_sink_v1 import DurableArtifactReceiptV1, DurableEvidenceRootBindingV1, create_durable_filesystem_sink_v1
 from .stage_p_construction_obligation_v2_generation_authority_preload_v1_2_1 import parse_generation_authority_v1_2_1
-from .stage_p_construction_obligation_v2_linux_child_process_adapter_v1_2_1 import build_linux_child_process_operations_v1_2_1
+from .stage_p_construction_obligation_v2_linux_child_process_adapter_v1_2_1 import LINUX_CHILD_PROCESS_ADAPTER_IDENTITY, build_linux_child_process_operations_v1_2_1
 from .stage_p_construction_obligation_v2_linux_generation_supervisor_candidate_v1_2_1 import SUPERVISOR_CANDIDATE_IDENTITY, InjectedDurableSinkV1, LinuxGenerationSupervisorOutcomeV1, supervise_linux_generation_candidate_v1_2_1
 from .stage_p_construction_obligation_v2_runner_protocol_codec_v1 import parse_runner_request_v1
 
 LINUX_GENERATION_COMPOSITION_IDENTITY_FIELDS = (
     "construction-obligation-v2-linux-generation-composition-v1.2.1",
-    "child-adapter:v1.2.1",
+    "child-adapter:" + LINUX_CHILD_PROCESS_ADAPTER_IDENTITY,
     "supervisor:v1.1-frozen",
     "bound-pre-model-failure-receipt:required",
 )
@@ -111,4 +111,3 @@ __all__ = (
     "LinuxGenerationCompositionOutcomeV1_2",
     "run_linux_generation_composition_v1_2_1",
 )
-

@@ -18,7 +18,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def test_packet_is_byte_exact_current_case01_and_unissued() -> None:
     rebuilt = materialize_case01_issuance_packet_v1_2_1(project_root=ROOT)
     actual = {path.name for path in (ROOT / PACKET_RELATIVE).iterdir()}
-    assert actual == set(rebuilt) | {"authority-receipt-issued.json"}
+    assert actual == set(rebuilt)
     assert all((ROOT / PACKET_RELATIVE / name).read_bytes() == raw
                for name, raw in rebuilt.items())
     manifest = verify(project_root=ROOT)
@@ -75,3 +75,6 @@ def test_v1_2_packet_and_issued_receipt_remain_byte_exact_and_distinct():
     packet_bound = ROOT / "docs/artifacts/semantic-admission-v2-stage-p-construction-obligation-v2-case01-successor-issuance-packet-v1-2-1-packet-bound"
     assert json.loads((packet_bound / "manifest.json").read_bytes())["packet_identity"] == "38a3bf93c01b35b935089ddb7db576cc1f2438a7fea386f5e7678b1e01734720"
     assert json.loads((packet_bound / "authority-receipt-candidate.json").read_bytes())["proposed_receipt_identity"] == "5eae2ad3c40b27ab5440c37d89cbf69a93cc028848fadc31f0326b5ff91fc69d"
+    authority_bound = ROOT / "docs/artifacts/semantic-admission-v2-stage-p-construction-obligation-v2-case01-successor-issuance-packet-v1-2-1-authority-plan-bound"
+    assert json.loads((authority_bound / "manifest.json").read_bytes())["packet_identity"] == "047158aba98385606383d3432bd4b3cef7a6bf90e8014460257400f505694004"
+    assert json.loads((authority_bound / "authority-receipt-issued.json").read_bytes())["authority_receipt_identity"] == "d9d72feefa7015021ca79388dcee837c21103c87fef0733903b3d73f8e233da4"

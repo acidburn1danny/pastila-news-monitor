@@ -53,9 +53,21 @@ from .stage_p_construction_obligation_v2_runtime_operations_adapter_v1_2 import 
     adapt_runtime_operations_v1_2,
 )
 
-LINUX_CHILD_PROCESS_ADAPTER_IDENTITY = (
-    "aa18f7547b17e04eb7be0345723301f9de84b9019a6decc6b8e16b9c78fb66f6"
+CANONICAL_PROVIDER_EXECUTION_SOURCE_SHA256 = (
+    "8db391d93872c049b331c386767dcebfba8bc23112c3ed6f7319c6d63af7d2f7"
 )
+CANONICAL_PROVIDER_EXECUTION_REQUEST_TYPE = (
+    "pastila_scout.provider_execution_v2.models.ProviderExecutionRequestV2"
+)
+LINUX_CHILD_PROCESS_ADAPTER_IDENTITY_FIELDS = (
+    "construction-obligation-v2-linux-child-process-adapter-v1.2.1",
+    "provider-execution-source:" + CANONICAL_PROVIDER_EXECUTION_SOURCE_SHA256,
+    "provider-request-type:" + CANONICAL_PROVIDER_EXECUTION_REQUEST_TYPE,
+    "deferred-spawn:sole-start-edge",
+)
+LINUX_CHILD_PROCESS_ADAPTER_IDENTITY = hashlib.sha256(
+    "\n".join(LINUX_CHILD_PROCESS_ADAPTER_IDENTITY_FIELDS).encode()
+).hexdigest()
 
 
 @dataclass(slots=True)
@@ -273,5 +285,4 @@ __all__ = (
     "LinuxGenerationProcessHandleV1",
     "build_linux_child_process_operations_v1_2_1",
 )
-
 

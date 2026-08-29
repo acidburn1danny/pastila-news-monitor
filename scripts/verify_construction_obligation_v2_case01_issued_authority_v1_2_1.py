@@ -6,12 +6,8 @@ import json
 import sys
 from pathlib import Path
 
-from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_case01_issuance_packet_v1_2_1 import (
-    EVIDENCE_RELATIVE, PACKET_RELATIVE, materialize_case01_issuance_packet_v1_2_1,
-)
-from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_generation_authority_preload_v1_2_1 import (
-    parse_generation_authority_v1_2_1,
-)
+PACKET_RELATIVE = Path("docs/artifacts/semantic-admission-v2-stage-p-construction-obligation-v2-case01-successor-issuance-packet-v1-2-1-authority-plan-bound")
+EVIDENCE_RELATIVE = Path(".semantic-admission-v2-stage-p-construction-obligation-v2-case01-successor-v1-2-1-authority-plan-bound-evidence")
 
 PACKET_COMMIT = "2fbafa36b5937647498601095df1e5a2dc04b183"
 PACKET_IDENTITY = "047158aba98385606383d3432bd4b3cef7a6bf90e8014460257400f505694004"
@@ -23,18 +19,24 @@ ISSUED_NAME = "authority-receipt-issued.json"
 
 def verify(*, project_root: Path) -> dict[str, object]:
     root = project_root.resolve(strict=True)
-    expected = materialize_case01_issuance_packet_v1_2_1(project_root=root)
     packet_root = root / PACKET_RELATIVE
     actual_names = {path.name for path in packet_root.iterdir() if path.is_file()}
-    if actual_names != set(expected) | {ISSUED_NAME}:
+    expected_names = {
+        "application-provider-request.json", "authority-receipt-candidate.json",
+        "host-payload.json", "manifest.json", "rendered-prompt.json",
+        "runner-request.json", "static-executor-binding.json", ISSUED_NAME,
+    }
+    if actual_names != expected_names:
         raise RuntimeError("CASE01_V1_2_1_ISSUED_AUTHORITY_FILE_SET_MISMATCH")
-    for name, raw in expected.items():
-        if (packet_root / name).read_bytes() != raw:
-            raise RuntimeError(f"CASE01_V1_2_1_REVIEWED_PACKET_BYTE_DRIFT:{name}")
-    manifest = json.loads(expected["manifest.json"])
-    candidate = json.loads(expected["authority-receipt-candidate.json"])
-    runner_raw = expected["runner-request.json"]
-    runner = json.loads(runner_raw)
+    manifest_raw = (packet_root / "manifest.json").read_bytes()
+    manifest = json.loads(manifest_raw)
+    candidate_raw = (packet_root / "authority-receipt-candidate.json").read_bytes()
+    candidate = json.loads(candidate_raw)
+    if manifest_raw != _canonical(manifest) or candidate_raw != _canonical(candidate):
+        raise RuntimeError("CASE01_V1_2_1_HISTORICAL_PACKET_BYTES_INVALID")
+    for name, expected_sha in manifest["file_sha256"].items():
+        if hashlib.sha256((packet_root / name).read_bytes()).hexdigest() != expected_sha:
+            raise RuntimeError(f"CASE01_V1_2_1_HISTORICAL_PACKET_HASH_DRIFT:{name}")
     if (manifest["packet_identity"] != PACKET_IDENTITY
             or manifest["command_identity"] != COMMAND_IDENTITY
             or manifest["packet_plan_identity"] != PACKET_PLAN_IDENTITY
@@ -49,28 +51,19 @@ def verify(*, project_root: Path) -> dict[str, object]:
     expected_issued["authority_receipt_identity"] = RECEIPT_IDENTITY
     if raw_issued != _canonical(expected_issued):
         raise RuntimeError("CASE01_V1_2_1_ISSUED_AUTHORITY_BYTE_MISMATCH")
-    parsed = parse_generation_authority_v1_2_1(
-        raw_receipt=raw_issued,
-        expected_host_payload_sha256=runner["host_payload_sha256"],
-        expected_runner_request_sha256=hashlib.sha256(runner_raw).hexdigest(),
-        expected_provider_request_id=runner["provider_request_id"],
-        expected_source_context_identity=runner["source_context_identity"],
-        expected_packet_plan_identity=PACKET_PLAN_IDENTITY,
-        expected_command_plan_identity=COMMAND_IDENTITY,
-    )
-    if parsed.authority_receipt_identity != RECEIPT_IDENTITY:
+    if hashlib.sha256(_canonical(candidate["authority_body"])).hexdigest() != RECEIPT_IDENTITY:
         raise RuntimeError("CASE01_V1_2_1_ISSUED_AUTHORITY_SEAL_MISMATCH")
     evidence = root / EVIDENCE_RELATIVE
-    if evidence.exists() or evidence.is_symlink():
-        raise RuntimeError("CASE01_V1_2_1_ISSUED_AUTHORITY_ATTEMPT_ALREADY_CONSUMED")
+    if not evidence.exists() and not evidence.is_symlink():
+        raise RuntimeError("CASE01_V1_2_1_HISTORICAL_ATTEMPT_EVIDENCE_MISSING")
     return {
         "packet_commit": PACKET_COMMIT, "packet_identity": PACKET_IDENTITY,
         "packet_plan_identity": PACKET_PLAN_IDENTITY,
         "command_identity": COMMAND_IDENTITY,
         "authority_receipt_identity": RECEIPT_IDENTITY,
         "receipt_status": "ISSUED", "attempt_ceiling": 1,
-        "consumed_attempts": 0, "remaining_attempts": 1,
-        "execution_started": False,
+        "consumed_attempts": 1, "remaining_attempts": 0,
+        "execution_started": True,
     }
 
 
