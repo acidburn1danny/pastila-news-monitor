@@ -1,0 +1,19 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/mnt/c/Projects/pastila-news-monitor/src/pastila_scout/semantic_admission_v2/stage_p_construction_obligation_v2_linux_generation_runner_v1_2_1.py", line 84, in <module>
+    raise SystemExit(main(sys.argv[1:]))
+                     ^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Projects/pastila-news-monitor/src/pastila_scout/semantic_admission_v2/stage_p_construction_obligation_v2_linux_generation_runner_v1_2_1.py", line 54, in main
+    run_linux_generation_runner_v1_2_1(
+  File "/mnt/c/Projects/pastila-news-monitor/src/pastila_scout/semantic_admission_v2/stage_p_construction_obligation_v2_linux_generation_runner_v1_2_1.py", line 39, in run_linux_generation_runner_v1_2_1
+    outcome = composition(
+              ^^^^^^^^^^^^
+  File "/mnt/c/Projects/pastila-news-monitor/src/pastila_scout/semantic_admission_v2/stage_p_construction_obligation_v2_linux_generation_composition_v1_2_1.py", line 47, in run_linux_generation_composition_v1_2_1
+    sink = create_durable_filesystem_sink_v1(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Projects/pastila-news-monitor/src/pastila_scout/semantic_admission_v2/stage_p_construction_obligation_v2_durable_filesystem_sink_v1.py", line 205, in create_durable_filesystem_sink_v1
+    _validate_binding(binding)
+  File "/mnt/c/Projects/pastila-news-monitor/src/pastila_scout/semantic_admission_v2/stage_p_construction_obligation_v2_durable_filesystem_sink_v1.py", line 249, in _validate_binding
+    raise ValueError(
+ValueError: CONSTRUCTION_OBLIGATION_V2_DURABLE_SUPERVISOR_IDENTITY_MISMATCH
