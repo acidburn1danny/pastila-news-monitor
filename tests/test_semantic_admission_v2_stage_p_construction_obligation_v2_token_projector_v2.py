@@ -37,6 +37,43 @@ def test_generated_decode_uses_initial_piece_once_then_continuation_pieces():
     projector._bound_initial_token_pieces = {10: "word", 11: "!", 2: ""}
     assert _decode(projector, (10, 10, 11)) == "word word!"
 
+
+def test_initial_projection_uses_initial_trie_not_continuation_trie():
+    context, _, _ = _case_context()
+    projector = StagePConstructionObligationV2TokenProjectorV2(
+        controller=StagePConstructionObligationCharacterControllerV1(
+            context=context, decoder_identity=DECODER),
+        token_pieces={10: "{", 2: ""}, initial_token_pieces={10: "x", 2: ""},
+        eos_token_id=2, tokenizer_identity=TOKENIZER, decoder_identity=DECODER,
+        request_context_identity=context.binding_identity,
+        request_authority_identity="authority:test-case-01")
+    with pytest.raises(StagePTokenProjectionFailureV1):
+        projector.allowed_token_ids((), lambda _: "")
+
+
+def test_exact_decoder_recovery_overrides_context_piece_approximation():
+    context, _, _ = _case_context()
+    raw = _valid_text(context)
+    projector = StagePConstructionObligationV2TokenProjectorV2(
+        controller=StagePConstructionObligationCharacterControllerV1(
+            context=context, decoder_identity=DECODER),
+        token_pieces={10: "x", 11: raw[1], 2: ""},
+        initial_token_pieces={10: "x", 11: raw[1], 2: ""},
+        eos_token_id=2, tokenizer_identity=TOKENIZER, decoder_identity=DECODER,
+        request_context_identity=context.binding_identity,
+        request_authority_identity="authority:test-case-01",
+        exact_history_decoder=True)
+    result = projector.allowed_token_ids(
+        (), lambda ids: {(10,): raw[:1]}.get(tuple(ids), ""))
+    assert result.token_ids == (10,)
+    continuation = projector.allowed_token_ids(
+        (10,), lambda ids: {
+            (10,): raw[:1], (10, 11): raw[:2]
+        }.get(tuple(ids), ""))
+    assert continuation.token_ids == (11,)
+    assert any(":INITIAL:" in key for key in projector._cache)
+    assert any(":CONTINUATION:" in key for key in projector._cache)
+
 def test_indexed_projection_matches_oracle_across_every_reachable_prefix():
     context, _, _ = _case_context(candidate_text="Țară, știre — «nouă»")
     raw = _valid_text(context)

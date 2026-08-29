@@ -2,7 +2,7 @@
 from __future__ import annotations
 import hashlib
 import json
-from collections.abc import Mapping, Sequence
+from collections.abc import Callable, Mapping, Sequence
 
 from .stage_p_construction_obligation_v2_generated_suffix_callback_v1 import (
     RequestBoundGeneratedSuffixCallbackV1)
@@ -33,7 +33,8 @@ class ConstructionObligationV2RequestBoundCallbackAdapterV1_2_1:
                  token_pieces: Mapping[int, str], eos_token_id: int,
                  excluded_token_ids: Sequence[int], authority_receipt_identity: str,
                  prompt_token_ids: Sequence[int],
-                 initial_token_pieces: Mapping[int, str] | None = None) -> None:
+                 initial_token_pieces: Mapping[int, str] | None = None,
+                 decode_generated: Callable[[Sequence[int]], str] | None = None) -> None:
         if type(request) is not RunnerRequestV1:
             raise TypeError("CONSTRUCTION_OBLIGATION_V2_RUNNER_REQUEST_EXACT_TYPE_REQUIRED")
         if type(source_binding) is not ConstructionObligationV2ProjectorSourceBindingV1:
@@ -63,8 +64,10 @@ class ConstructionObligationV2RequestBoundCallbackAdapterV1_2_1:
             request_authority_identity=authority_receipt_identity,
             excluded_token_ids=excluded_token_ids,
             initial_token_pieces=initial_token_pieces,
+            exact_history_decoder=decode_generated is not None,
             terminal_admission=completeness.validate_terminal,
             terminal_admission_identity=completeness.policy.identity)
+        self._decode_generated = decode_generated
         self._suffix = RequestBoundGeneratedSuffixCallbackV1(
             request_identity=request.provider_request_id,
             prompt_token_ids=prompt_token_ids, project=self._project)
@@ -85,7 +88,7 @@ class ConstructionObligationV2RequestBoundCallbackAdapterV1_2_1:
     def _project(self, generated: Sequence[int]) -> ZeroModelCallbackDecisionV1:
         pieces = self.projector.token_pieces if hasattr(self.projector, "token_pieces") else None
         del pieces
-        decode = lambda ids: _decode(self.projector, ids)
+        decode = self._decode_generated or (lambda ids: _decode(self.projector, ids))
         try:
             projected = self.projector.allowed_token_ids(generated, decode)
             return ZeroModelCallbackDecisionV1(

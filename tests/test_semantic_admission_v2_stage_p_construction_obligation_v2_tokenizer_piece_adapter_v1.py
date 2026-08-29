@@ -64,7 +64,7 @@ def test_identity_mismatch_fails_before_decode(field, value):
 def test_extracts_complete_immutable_piece_bundle():
     tokenizer = TokenizersBackend()
     bundle = extract_identity_bound_token_pieces_v1(tokenizer=tokenizer, identity=identity())
-    assert tokenizer.decode_calls == 3 * VOCABULARY_SIZE
+    assert tokenizer.decode_calls == 2 * VOCABULARY_SIZE
     assert len(bundle.token_pieces) == VOCABULARY_SIZE
     assert bundle.token_pieces[12] == "\x00"
     assert bundle.excluded_token_ids == frozenset((0, 1, 11))
@@ -98,6 +98,38 @@ def test_binds_distinct_initial_and_continuation_decoder_pieces():
         tokenizer=TokenizersBackend(), identity=identity())
     assert bundle.initial_token_pieces[12] == "word"
     assert bundle.token_pieces[12] == " word"
+
+
+def test_bundle_retains_exact_history_decoder_for_context_dependent_tokens():
+    class TokenizersBackend:
+        eos_token_id = EOS_TOKEN_ID
+        all_special_ids = tuple(sorted(SPECIAL_TOKEN_IDS))
+
+        def __init__(self):
+            self.decode_calls = 0
+
+        def __len__(self):
+            return VOCABULARY_SIZE
+
+        def decode(self, token_ids, **kwargs):
+            self.decode_calls += 1
+            if tuple(token_ids) == (4, 13):
+                return "context-dependent"
+            return "".join(
+                "" if token_id in SPECIAL_TOKEN_IDS
+                else chr(0x20 + token_id % 90)
+                for token_id in token_ids
+            )
+
+    tokenizer = TokenizersBackend()
+    bundle = extract_identity_bound_token_pieces_v1(
+        tokenizer=tokenizer, identity=identity())
+    assert bundle.decode_token_ids is not None
+    assert bundle.decode_token_ids((4, 13)) == "context-dependent"
+    assert (
+        bundle.initial_token_pieces[4] + bundle.token_pieces[13]
+        != "context-dependent"
+    )
 
 
 def test_module_is_launch_forbidden_and_has_no_runtime_imports():

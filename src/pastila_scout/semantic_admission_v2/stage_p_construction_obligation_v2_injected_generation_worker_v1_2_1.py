@@ -135,6 +135,7 @@ def execute_injected_generation_worker_v1_2_1(
         request=request, source_binding=base.static_payload.source_binding,
         token_pieces=bundle.token_pieces, eos_token_id=bundle.eos_token_id,
         initial_token_pieces=bundle.initial_token_pieces,
+        decode_generated=bundle.decode_token_ids,
         excluded_token_ids=tuple(sorted(bundle.excluded_token_ids)),
         authority_receipt_identity=authority.authority_receipt_identity,
         prompt_token_ids=prompt_ids)

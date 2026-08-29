@@ -31,6 +31,45 @@ class IndexedProjectionStatisticsV2:
     admitted_terminal_tokens: int
 
 
+def _build_index(token_pieces, excluded):
+    children: list[dict[str, int]] = [{}]
+    terminals: list[list[int]] = [[]]
+    all_children: list[dict[str, int]] = [{}]
+    all_terminals: list[list[int]] = [[]]
+    ordinary: dict[int, list[int]] = {}
+    for token_id, piece in sorted(token_pieces.items()):
+        if type(token_id) is not int or type(piece) is not str:
+            raise ValueError("MALFORMED_TOKEN_PIECE")
+        if token_id in excluded or not piece or any(
+                0xD800 <= ord(character) <= 0xDFFF for character in piece):
+            continue
+        all_node = 0
+        for character in piece:
+            child = all_children[all_node].get(character)
+            if child is None:
+                child = len(all_children)
+                all_children[all_node][character] = child
+                all_children.append({})
+                all_terminals.append([])
+            all_node = child
+        all_terminals[all_node].append(token_id)
+        if all(ord(character) >= 0x20 and character not in {'"', "\\"}
+               for character in piece):
+            ordinary.setdefault(len(piece), []).append(token_id)
+            continue
+        node = 0
+        for character in piece:
+            child = children[node].get(character)
+            if child is None:
+                child = len(children)
+                children[node][character] = child
+                children.append({})
+                terminals.append([])
+            node = child
+        terminals[node].append(token_id)
+    return children, terminals, all_children, all_terminals, ordinary
+
+
 class StagePConstructionObligationV2TokenProjectorV2:
     """Traverse only DFA-compatible token-piece trie branches."""
 
@@ -42,6 +81,7 @@ class StagePConstructionObligationV2TokenProjectorV2:
         grammar_identity: str = GRAMMAR_IDENTITY,
         excluded_token_ids: Sequence[int] = (),
         initial_token_pieces: Mapping[int, str] | None = None,
+        exact_history_decoder: bool = False,
         terminal_admission: Callable[[str], object] | None = None,
         terminal_admission_identity: str | None = None,
     ) -> None:
@@ -63,6 +103,9 @@ class StagePConstructionObligationV2TokenProjectorV2:
         self.excluded_token_ids = excluded
         self._terminal_admission = terminal_admission
         self.terminal_admission_identity = terminal_admission_identity
+        if type(exact_history_decoder) is not bool:
+            raise TypeError("EXACT_HISTORY_DECODER_FLAG_BOOL_REQUIRED")
+        self.exact_history_decoder = exact_history_decoder
         self._bound_token_pieces = dict(token_pieces)
         self._bound_initial_token_pieces = dict(
             token_pieces if initial_token_pieces is None else initial_token_pieces)
@@ -72,49 +115,20 @@ class StagePConstructionObligationV2TokenProjectorV2:
             f"{token_id}:{self._bound_initial_token_pieces[token_id]!r}:"
             f"{self._bound_token_pieces[token_id]!r}"
             for token_id in sorted(self._bound_token_pieces)).encode()).hexdigest()
-        self._children: list[dict[str, int]] = [{}]
-        self._terminals: list[list[int]] = [[]]
-        self._all_children: list[dict[str, int]] = [{}]
-        self._all_terminals: list[list[int]] = [[]]
-        self._ordinary_string_tokens_by_length: dict[int, list[int]] = {}
-        for token_id, piece in sorted(token_pieces.items()):
-            if type(token_id) is not int or type(piece) is not str:
-                raise ValueError("MALFORMED_TOKEN_PIECE")
-            if token_id in excluded or not piece:
-                continue
-            if any(0xD800 <= ord(character) <= 0xDFFF for character in piece):
-                continue
-            all_node = 0
-            for character in piece:
-                all_child = self._all_children[all_node].get(character)
-                if all_child is None:
-                    all_child = len(self._all_children)
-                    self._all_children[all_node][character] = all_child
-                    self._all_children.append({})
-                    self._all_terminals.append([])
-                all_node = all_child
-            self._all_terminals[all_node].append(token_id)
-            if all(ord(character) >= 0x20 and character not in {'"', "\\"}
-                   for character in piece):
-                self._ordinary_string_tokens_by_length.setdefault(
-                    len(piece), []).append(token_id)
-                continue
-            node = 0
-            for character in piece:
-                child = self._children[node].get(character)
-                if child is None:
-                    child = len(self._children)
-                    self._children[node][character] = child
-                    self._children.append({})
-                    self._terminals.append([])
-                node = child
-            self._terminals[node].append(token_id)
+        (self._children, self._terminals, self._all_children,
+         self._all_terminals, self._ordinary_string_tokens_by_length) = (
+            _build_index(self._bound_token_pieces, excluded))
+        (self._initial_children, self._initial_terminals,
+         self._initial_all_children, self._initial_all_terminals,
+         self._initial_ordinary_string_tokens_by_length) = _build_index(
+            self._bound_initial_token_pieces, excluded)
         special_policy = ",".join(map(str, sorted(excluded)))
         self.cache_domain_identity = hashlib.sha256(
             (PROJECTOR_ALGORITHM_IDENTITY + "\n" + grammar_identity + "\n"
              + request_authority_identity + "\n" + request_context_identity + "\n"
              + tokenizer_identity + "\n" + decoder_identity + "\n"
              + special_policy + "\n" + piece_identity + "\n"
+             + f"exact-history-decoder:{exact_history_decoder}\n"
              + (terminal_admission_identity or "NONE")).encode()).hexdigest()
         self._cache: dict[str, tuple[int, ...]] = {}
         self._hits = self._misses = self._visited = self._admitted = 0
@@ -158,32 +172,50 @@ class StagePConstructionObligationV2TokenProjectorV2:
             allowed = (self.eos_token_id,)
         else:
             state_key = hashlib.sha256(repr(prefix.state).encode()).hexdigest()
-            key = self.cache_domain_identity + ":" + state_key
+            phase = "INITIAL" if not token_ids else "CONTINUATION"
+            key = self.cache_domain_identity + ":" + phase + ":" + state_key
             allowed = self._cache.get(key)
             if allowed is not None:
                 self._hits += 1
             else:
                 self._misses += 1
-                allowed = self._project(prefix.state, character.allowance)
+                allowed = self._project(
+                    prefix.state, character.allowance, initial=(phase == "INITIAL"))
                 self._cache[key] = allowed
+            if self.exact_history_decoder:
+                allowed = self._exact_candidates(
+                    token_ids, decode, prefix, allowed)
+                if not allowed:
+                    allowed = self._exact_candidates(
+                        token_ids, decode, prefix,
+                        tuple(sorted(
+                            set(self._bound_token_pieces) - self.excluded_token_ids)))
         if not allowed:
             receipt = self._receipt(prefix, (), False, "TOKENIZATION_DEAD_NO_VALID_TOKEN")
             raise StagePTokenProjectionFailureV1(receipt)
         return TokenProjectionResultV1(
             allowed, self._receipt(prefix, allowed, self.eos_token_id in allowed, None))
 
-    def _project(self, state, root_allowance) -> tuple[int, ...]:
+    def _project(self, state, root_allowance, *, initial: bool) -> tuple[int, ...]:
         admitted: list[int] = []
         ordinary_string = (
             state.mode == "STRING" and not state.string_escape
             and not state.unicode_remaining)
         if ordinary_string:
             remaining = 16000 - state.characters
-            for length, token_ids in self._ordinary_string_tokens_by_length.items():
+            ordinary = (self._initial_ordinary_string_tokens_by_length if initial
+                        else self._ordinary_string_tokens_by_length)
+            for length, token_ids in ordinary.items():
                 if length <= remaining:
                     admitted.extend(token_ids)
-        children = self._children if ordinary_string else self._all_children
-        terminals = self._terminals if ordinary_string else self._all_terminals
+        if initial:
+            children = (self._initial_children if ordinary_string
+                        else self._initial_all_children)
+            terminals = (self._initial_terminals if ordinary_string
+                         else self._initial_all_terminals)
+        else:
+            children = self._children if ordinary_string else self._all_children
+            terminals = self._terminals if ordinary_string else self._all_terminals
         stack = [(0, state, root_allowance)]
         visited = 0
         while stack:
@@ -203,6 +235,29 @@ class StagePConstructionObligationV2TokenProjectorV2:
         self._visited += visited
         self._admitted += len(result)
         return result
+
+    def _exact_candidates(self, token_ids, decode, prefix, candidates):
+        try:
+            base = decode(token_ids)
+        except (UnicodeError, ValueError, TypeError, KeyError):
+            return ()
+        if (type(base) is not str
+                or hashlib.sha256(base.encode()).hexdigest() != prefix.decoded_sha256):
+            return ()
+        admitted = []
+        history = tuple(token_ids)
+        for token_id in candidates:
+            try:
+                extended = decode(history + (token_id,))
+                if (type(extended) is not str or not extended.startswith(base)
+                        or len(extended) == len(base)):
+                    continue
+                prefix.state.feed(extended[len(base):])
+            except (StagePRoleCoherenceConstraintViolationV1, UnicodeError,
+                    ValueError, TypeError, KeyError):
+                continue
+            admitted.append(token_id)
+        return tuple(admitted)
 
     def _receipt(self, prefix, allowed, eos, reason):
         return TokenProjectionReceiptV1(

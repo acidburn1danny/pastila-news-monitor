@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from types import MappingProxyType
+from collections.abc import Callable
 from typing import Mapping, Protocol, Sequence
 
 
@@ -46,6 +47,7 @@ class TokenPieceBundleV1:
     decoder_identity: str
     projector_freeze_identity: str
     initial_token_pieces: Mapping[int, str] | None = None
+    decode_token_ids: Callable[[Sequence[int]], str] | None = None
 
 
 def extract_identity_bound_token_pieces_v1(
@@ -96,21 +98,14 @@ def extract_identity_bound_token_pieces_v1(
         continuation_pieces[token_id] = continuation
         if (not initial or not continuation) and token_id != EOS_TOKEN_ID:
             excluded.add(token_id)
-    anchors = [token_id for token_id in range(VOCABULARY_SIZE)
-               if token_id not in SPECIAL_TOKEN_IDS and initial_pieces[token_id]]
-    if not anchors:
-        raise ValueError("CONSTRUCTION_OBLIGATION_V2_TOKENIZER_CONTINUATION_ANCHOR_MISSING")
-    anchor_id = anchors[0]
-    anchor = initial_pieces[anchor_id]
-    for token_id in range(VOCABULARY_SIZE):
-        contextual = tokenizer.decode(
-            [anchor_id, token_id], skip_special_tokens=True,
-            clean_up_tokenization_spaces=False,
-        )
-        if (type(contextual) is not str or not contextual.startswith(anchor)
-                or contextual[len(anchor):] != continuation_pieces[token_id]):
-            raise ValueError(
-                "CONSTRUCTION_OBLIGATION_V2_TOKENIZER_CONTINUATION_NOT_CONTEXT_FREE")
+    def decode_token_ids(token_ids: Sequence[int]) -> str:
+        result = tokenizer.decode(
+            token_ids, skip_special_tokens=True,
+            clean_up_tokenization_spaces=False)
+        if type(result) is not str or any(
+                0xD800 <= ord(character) <= 0xDFFF for character in result):
+            raise ValueError("CONSTRUCTION_OBLIGATION_V2_TOKENIZER_DECODE_INVALID")
+        return result
     return TokenPieceBundleV1(
         token_pieces=MappingProxyType(continuation_pieces),
         excluded_token_ids=frozenset(excluded),
@@ -119,6 +114,7 @@ def extract_identity_bound_token_pieces_v1(
         decoder_identity=DECODER_IDENTITY,
         projector_freeze_identity=PROJECTOR_FREEZE_IDENTITY,
         initial_token_pieces=MappingProxyType(initial_pieces),
+        decode_token_ids=decode_token_ids,
     )
 
 
