@@ -86,6 +86,31 @@ def test_runner_source_binding_is_exact_and_imports_are_inert():
         (ROOT / "src/pastila_scout/semantic_admission_v2/"
          "stage_p_construction_obligation_v2_linux_generation_composition_v1_2_1.py").read_bytes()
     ).hexdigest()
+
+
+def test_optimized_projector_and_generated_suffix_contract_are_source_bound():
+    source_root = ROOT / "src/pastila_scout/semantic_admission_v2"
+    expected = {
+        "CANONICAL_OPTIMIZED_PROJECTOR_SOURCE_SHA256":
+            "stage_p_construction_obligation_v2_token_projector_v2.py",
+        "CANONICAL_GENERATED_SUFFIX_SOURCE_SHA256":
+            "stage_p_construction_obligation_v2_generated_suffix_callback_v1.py",
+        "CANONICAL_OPTIMIZED_CALLBACK_SOURCE_SHA256":
+            "stage_p_construction_obligation_v2_request_bound_callback_adapter_v1_2_1.py",
+    }
+    for constant, filename in expected.items():
+        assert getattr(runner, constant) == hashlib.sha256(
+            (source_root / filename).read_bytes()).hexdigest()
+    adapter_source = (source_root /
+        "stage_p_construction_obligation_v2_linux_runtime_operations_adapter_v1.py"
+    ).read_text("utf-8")
+    assert "input_token_ids[batch.prompt_token_count:]" in adapter_source
+    assert "allowed(tuple(generated_suffix.tolist()))" in adapter_source
+    callback_source = (source_root /
+        "stage_p_construction_obligation_v2_request_bound_callback_adapter_v1_2_1.py"
+    ).read_text("utf-8")
+    assert "StagePConstructionObligationV2TokenProjectorV2(" in callback_source
+    assert "RequestBoundGeneratedSuffixCallbackV1(" in callback_source
     assert runner.CANONICAL_RUNTIME_ADAPTER_SOURCE_SHA256 == hashlib.sha256(
         (ROOT / "src/pastila_scout/semantic_admission_v2/"
          "stage_p_construction_obligation_v2_linux_runtime_operations_adapter_v1.py").read_bytes()

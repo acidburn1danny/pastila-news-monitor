@@ -56,6 +56,7 @@ class StagePConstructionObligationV2TokenProjectorV2:
         self.request_context_identity = request_context_identity
         self.request_authority_identity = request_authority_identity
         self.excluded_token_ids = excluded
+        self._bound_token_pieces = dict(token_pieces)
         self._children: list[dict[str, int]] = [{}]
         self._terminals: list[list[int]] = [[]]
         self._all_children: list[dict[str, int]] = [{}]

@@ -515,7 +515,7 @@ def _valid_event_detail(event, detail):
         return (set(detail) == {"maximum_output_tokens", "sole_callback"}
                 and type(detail["maximum_output_tokens"]) is int
                 and 0 < detail["maximum_output_tokens"] <= 3200
-                and detail["sole_callback"] == "REQUEST_BOUND_PROJECTOR_V1_3")
+                and detail["sole_callback"] == "REQUEST_BOUND_OPTIMIZED_PROJECTOR_V2_SUFFIX_V1")
     if event == "TERMINAL_EOS":
         return (set(detail) == {"generated_token_count", "output_sha256"}
                 and type(detail["generated_token_count"]) is int

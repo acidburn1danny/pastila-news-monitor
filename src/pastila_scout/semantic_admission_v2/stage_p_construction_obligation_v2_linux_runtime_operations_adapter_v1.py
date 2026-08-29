@@ -165,7 +165,8 @@ def prepare_linux_runtime_operations_v1(
         def prefix_allowed_tokens(batch_id, input_token_ids):
             if type(batch_id) is not int or batch_id != 0:
                 raise ValueError("CONSTRUCTION_OBLIGATION_V2_LINUX_BATCH_ID_INVALID")
-            return list(allowed(tuple(input_token_ids.tolist())))
+            generated_suffix = input_token_ids[batch.prompt_token_count:]
+            return list(allowed(tuple(generated_suffix.tolist())))
 
         torch_runtime = resource.torch_runtime
         with torch_runtime.inference_mode():

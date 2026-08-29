@@ -24,6 +24,8 @@ RUNTIME_OPERATIONS_ADAPTER_IDENTITY_FIELDS = (
     "source-operations:v1.2-exact",
     "worker-types:v1.2.1-exact",
     "callbacks:identity-preserved",
+    "callbacks:generated-suffix-only",
+    "projector:request-bound-token-piece-trie-v2",
     "retry-fallback-repair-selection:0",
 )
 RUNTIME_OPERATIONS_ADAPTER_IDENTITY = hashlib.sha256(

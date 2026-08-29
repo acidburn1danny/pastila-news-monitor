@@ -24,6 +24,12 @@ from .stage_p_construction_obligation_v2_generation_execution_policy_gate_v1 imp
     canonical_observed_generation_execution_policy_v1,
     validate_generation_execution_policy_gate_v1,
 )
+from .stage_p_construction_obligation_v2_request_bound_callback_adapter_v1_2_1 import (
+    ConstructionObligationV2RequestBoundCallbackAdapterV1_2_1,
+)
+from .stage_p_construction_obligation_v2_runner_protocol_codec_v1 import (
+    validate_no_legal_token_receipt_v1,
+)
 
 WORKER_IDENTITY_FIELDS = (
     "construction-obligation-v2-injected-generation-worker-v1.2.1",
@@ -32,6 +38,8 @@ WORKER_IDENTITY_FIELDS = (
     "progress-sink:generation-aggregate-milestones-canonical-bytes",
     "progress-bound:first-two-and-powers-of-two:max-13",
     "generation-policy:unchanged",
+    "projector:request-bound-token-piece-trie-v2",
+    "callback:prompt-once-generated-suffix-v1",
 )
 WORKER_IDENTITY = hashlib.sha256("\n".join(WORKER_IDENTITY_FIELDS).encode()).hexdigest()
 COMPATIBILITY_RECEIPT_IDENTITY = "8ddafa5e60e892abf56a2b67d9ab646deb94a7b024e739ea8ea967c45e3ec39f"
@@ -121,6 +129,14 @@ def execute_injected_generation_worker_v1_2_1(
     prompt_ids = _token_ids(operations.tokenize_prompt(rendered_prompt), "PROMPT")
     if not prompt_ids or len(prompt_ids) > 8192:
         raise ValueError("CONSTRUCTION_OBLIGATION_V2_PROMPT_TOKEN_CEILING_EXCEEDED")
+    base = callback_preflight.projector_preflight
+    bundle = base.preflight.token_piece_bundle
+    optimized_callback = ConstructionObligationV2RequestBoundCallbackAdapterV1_2_1(
+        request=request, source_binding=base.static_payload.source_binding,
+        token_pieces=bundle.token_pieces, eos_token_id=bundle.eos_token_id,
+        excluded_token_ids=tuple(sorted(bundle.excluded_token_ids)),
+        authority_receipt_identity=authority.authority_receipt_identity,
+        prompt_token_ids=prompt_ids)
 
     events: list[bytes] = []
     previous: str | None = None
@@ -160,20 +176,16 @@ def execute_injected_generation_worker_v1_2_1(
             "compatibility_receipt_identity": COMPATIBILITY_RECEIPT_IDENTITY,
         })
 
-        def allowed(input_ids: Sequence[int]) -> tuple[int, ...]:
+        def allowed(generated_suffix_ids: Sequence[int]) -> tuple[int, ...]:
             nonlocal callback_count, last_terminal, last_eos_allowed
             nonlocal last_projected_generated_ids
             nonlocal progress_previous, progress_sequence
             callback_started_ns = time.monotonic_ns()
-            ids = _token_ids(input_ids, "GENERATION_INPUT")
-            decision = callback_preflight.project_input_ids(
-                input_token_ids=ids,
-                prompt_token_count=len(prompt_ids),
-                decode_generated=lambda generated: _decode_from_preflight(
-                    callback_preflight, generated),
-            )
+            ids = _token_ids(generated_suffix_ids, "GENERATED_SUFFIX")
+            decision = optimized_callback.project_generated_suffix(
+                generated_token_ids=ids)
             callback_count += 1
-            last_projected_generated_ids = ids[len(prompt_ids):]
+            last_projected_generated_ids = ids
             last_terminal = decision.projection_receipt.terminal
             last_eos_allowed = decision.projection_receipt.eos_allowed
             if generation_progress_sink is not None and _telemetry_milestone(callback_count):
@@ -195,6 +207,8 @@ def execute_injected_generation_worker_v1_2_1(
                 progress_sequence += 1
                 generation_progress_sink(raw_progress)
             if decision.no_legal_token_receipt is not None:
+                validate_no_legal_token_receipt_v1(
+                    raw_receipt=decision.no_legal_token_receipt, request=request)
                 raise ConstraintLivenessStopV1(decision.no_legal_token_receipt)
             if not decision.allowed_token_ids:
                 raise RuntimeError("EMPTY_ALLOWED_TOKEN_SET_WITHOUT_RECEIPT")
@@ -202,7 +216,7 @@ def execute_injected_generation_worker_v1_2_1(
 
         emit("GENERATION_STARTED", {
             "maximum_output_tokens": request.max_output_tokens,
-            "sole_callback": "REQUEST_BOUND_PROJECTOR_V1_3",
+            "sole_callback": "REQUEST_BOUND_OPTIMIZED_PROJECTOR_V2_SUFFIX_V1",
         })
         generation_started_ns = time.monotonic_ns()
         generated = operations.generate_once(
