@@ -75,6 +75,8 @@ def execute_injected_generation_worker_v1_2_1(
     preload_observation: GenerationPreloadObservationV1_1,
     callback_preflight: ConstructionObligationV2RunnerCallbackPreflightV1_3,
     rendered_prompt: str, operations: InjectedGenerationOperationsV1,
+    lifecycle_sink: Callable[[bytes], None] | None = None,
+    compatibility_sink: Callable[[bytes], None] | None = None,
 ) -> InjectedGenerationWorkerOutcomeV1:
     """Run one injected attempt after all identity and prompt checks pass."""
     if type(callback_preflight) is not ConstructionObligationV2RunnerCallbackPreflightV1_3:
@@ -83,6 +85,10 @@ def execute_injected_generation_worker_v1_2_1(
         raise TypeError("CONSTRUCTION_OBLIGATION_V2_GENERATION_OPERATIONS_EXACT_TYPE_REQUIRED")
     if type(rendered_prompt) is not str or not rendered_prompt:
         raise ValueError("CONSTRUCTION_OBLIGATION_V2_RENDERED_PROMPT_REQUIRED")
+    if lifecycle_sink is not None and not callable(lifecycle_sink):
+        raise TypeError("CONSTRUCTION_OBLIGATION_V2_LIFECYCLE_SINK_CALLABLE_REQUIRED")
+    if compatibility_sink is not None and not callable(compatibility_sink):
+        raise TypeError("CONSTRUCTION_OBLIGATION_V2_COMPATIBILITY_SINK_CALLABLE_REQUIRED")
     expected_policy = validate_generation_execution_policy_gate_v1(
         observed=canonical_observed_generation_execution_policy_v1())
     if raw_policy_receipt != expected_policy:
@@ -122,6 +128,8 @@ def execute_injected_generation_worker_v1_2_1(
         raw = _event(request.provider_request_id, len(events), event, detail, previous)
         previous = json.loads(raw)["event_identity"]
         events.append(raw)
+        if lifecycle_sink is not None:
+            lifecycle_sink(raw)
 
     try:
         emit("MODEL_LOAD_STARTED", {"prompt_token_count": len(prompt_ids)})
@@ -129,8 +137,10 @@ def execute_injected_generation_worker_v1_2_1(
         if type(loaded) is not InjectedCompatibleGenerationResourceV1 or loaded.resource is None:
             raise RuntimeError("COMPATIBLE_GENERATION_RESOURCE_MISSING")
         resource = loaded.resource
-        _validate_compatibility_receipt(loaded.compatibility_receipt)
+        validate_compatibility_receipt_v1_2_1(loaded.compatibility_receipt)
         compatibility = loaded.compatibility_receipt
+        if compatibility_sink is not None:
+            compatibility_sink(compatibility)
         emit("MODEL_LOAD_COMPLETED", {
             "compatibility_receipt_identity": COMPATIBILITY_RECEIPT_IDENTITY,
         })
@@ -221,7 +231,7 @@ def _decode_from_preflight(callback_preflight, generated: Sequence[int]) -> str:
         raise ValueError("CONSTRUCTION_OBLIGATION_V2_GENERATED_TOKEN_UNKNOWN") from exc
 
 
-def _validate_compatibility_receipt(raw: bytes) -> None:
+def validate_compatibility_receipt_v1_2_1(raw: bytes) -> None:
     try:
         value = json.loads(raw.decode("ascii", errors="strict"))
     except Exception as exc:
@@ -274,7 +284,5 @@ __all__ = (
     "InjectedGenerationOutputV1",
     "InjectedGenerationWorkerOutcomeV1",
     "execute_injected_generation_worker_v1_2_1",
+    "validate_compatibility_receipt_v1_2_1",
 )
-
-
-

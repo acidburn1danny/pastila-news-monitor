@@ -84,7 +84,9 @@ LINUX_CHILD_PROCESS_ADAPTER_IDENTITY = hashlib.sha256(
 class LinuxGenerationProcessHandleV1:
     process: object
     result_queue: object
+    progress_queue: object
     result_collected: bool = False
+    progress_collected: bool = False
 
 
 def build_linux_child_process_operations_v1_2_1(
@@ -155,6 +157,7 @@ def build_linux_child_process_operations_v1_2_1(
             )
         started = True
         result_queue = context.Queue(maxsize=1)
+        progress_queue = context.Queue(maxsize=32)
         process = context.Process(
             target=_run_linux_generation_child_v1_2_1,
             kwargs={
@@ -162,15 +165,18 @@ def build_linux_child_process_operations_v1_2_1(
                 "raw_policy_receipt": raw_policy_receipt,
                 "raw_authority_receipt": raw_authority_receipt,
                 "result_queue": result_queue,
+                "progress_queue": progress_queue,
             },
             daemon=False,
         )
-        handle = LinuxGenerationProcessHandleV1(process, result_queue)
+        handle = LinuxGenerationProcessHandleV1(process, result_queue, progress_queue)
         try:
             process.start()
         except Exception:
             result_queue.close()
             result_queue.join_thread()
+            progress_queue.close()
+            progress_queue.join_thread()
             raise
         return handle
 
@@ -221,8 +227,32 @@ def build_linux_child_process_operations_v1_2_1(
             )
         return result
 
+    def collect_progress(handle: object) -> tuple[tuple[str, bytes], ...]:
+        bound = _handle(handle)
+        if bound.process.is_alive():
+            raise RuntimeError("CONSTRUCTION_OBLIGATION_V2_CHILD_PROGRESS_REQUESTED_WHILE_ALIVE")
+        if bound.progress_collected:
+            raise RuntimeError("CONSTRUCTION_OBLIGATION_V2_CHILD_PROGRESS_ALREADY_COLLECTED")
+        bound.progress_collected = True
+        values = []
+        try:
+            while True:
+                values.append(bound.progress_queue.get(block=True, timeout=0.1))
+        except Exception as exc:
+            if type(exc).__name__ != "Empty":
+                raise
+        finally:
+            bound.progress_queue.close()
+            bound.progress_queue.join_thread()
+        if any(type(item) is not tuple or len(item) != 2
+               or item[0] not in {"lifecycle", "compatibility"}
+               or type(item[1]) is not bytes for item in values):
+            raise TypeError("CONSTRUCTION_OBLIGATION_V2_CHILD_PROGRESS_BYTES_REQUIRED")
+        return tuple(values)
+
     return InjectedChildProcessOperationsV1(
-        start, join, is_alive, terminate, kill, exit_code, collect_result
+        start, join, is_alive, terminate, kill, exit_code, collect_result,
+        collect_progress,
     )
 
 
@@ -232,6 +262,7 @@ def _run_linux_generation_child_v1_2_1(
     raw_policy_receipt: bytes,
     raw_authority_receipt: bytes,
     result_queue: object,
+    progress_queue: object,
 ) -> None:
     """Child-only runtime binding; called solely as the spawn target."""
     request = parse_runner_request_v1(raw_request=invocation.raw_runner_request)
@@ -274,6 +305,10 @@ def _run_linux_generation_child_v1_2_1(
         callback_preflight=callback,
         rendered_prompt=host.rendered_prompt,
         operations=operations,
+        lifecycle_sink=lambda raw: progress_queue.put(
+            ("lifecycle", raw), block=True, timeout=10.0),
+        compatibility_sink=lambda raw: progress_queue.put(
+            ("compatibility", raw), block=True, timeout=10.0),
     )
     result_queue.put(result, block=True, timeout=10.0)
 

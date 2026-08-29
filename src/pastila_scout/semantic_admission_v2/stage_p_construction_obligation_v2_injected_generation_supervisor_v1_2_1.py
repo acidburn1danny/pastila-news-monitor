@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+from collections.abc import Callable
 from dataclasses import dataclass
 
 from pastila_scout.experimental_core_v1_2_stage_p_construction_obligation_v2_runner_v1_3 import (
@@ -40,6 +41,8 @@ def supervise_injected_generation_v1_2_1(
     preload_observation: GenerationPreloadObservationV1_1,
     callback_preflight: ConstructionObligationV2RunnerCallbackPreflightV1_3,
     rendered_prompt: str, operations: InjectedGenerationOperationsV1,
+    lifecycle_sink: Callable[[bytes], None] | None = None,
+    compatibility_sink: Callable[[bytes], None] | None = None,
 ) -> InjectedGenerationSupervisorResultV1:
     """Return all durable bytes to the caller; persist or launch nothing."""
     outcome = execute_injected_generation_worker_v1_2_1(
@@ -50,6 +53,8 @@ def supervise_injected_generation_v1_2_1(
         callback_preflight=callback_preflight,
         rendered_prompt=rendered_prompt,
         operations=operations,
+        lifecycle_sink=lifecycle_sink,
+        compatibility_sink=compatibility_sink,
     )
     request = callback_preflight.projector_preflight.preflight.request
     terminal = json.loads(outcome.events[-1])
@@ -108,5 +113,3 @@ __all__ = (
     "InjectedGenerationSupervisorResultV1",
     "supervise_injected_generation_v1_2_1",
 )
-
-

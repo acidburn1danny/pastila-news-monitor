@@ -21,6 +21,9 @@ from .stage_p_construction_obligation_v2_generation_execution_policy_gate_v1 imp
 from .stage_p_construction_obligation_v2_injected_generation_supervisor_v1_2_1 import (
     InjectedGenerationSupervisorResultV1,
 )
+from .stage_p_construction_obligation_v2_injected_generation_worker_v1_2_1 import (
+    validate_compatibility_receipt_v1_2_1,
+)
 from .stage_p_construction_obligation_v2_runner_protocol_cleanup_extension_v1_1 import (
     build_cleanup_receipt_v1_1,
     build_result_envelope_v1_1,
@@ -50,6 +53,7 @@ class InjectedChildProcessOperationsV1:
     kill: Callable[[object], None]
     exit_code: Callable[[object], int | None]
     collect_result: Callable[[object], InjectedGenerationSupervisorResultV1 | None]
+    collect_progress: Callable[[object], tuple[tuple[str, bytes], ...]] = lambda handle: ()
 
 
 @dataclass(frozen=True, slots=True)
@@ -115,6 +119,12 @@ def supervise_linux_generation_candidate_v1_2_1(
 
     exit_code = child_operations.exit_code(handle)
     child_result = child_operations.collect_result(handle)
+    child_progress = child_operations.collect_progress(handle)
+    if (type(child_progress) is not tuple
+            or any(type(item) is not tuple or len(item) != 2
+                   or item[0] not in {"lifecycle", "compatibility"}
+                   or type(item[1]) is not bytes for item in child_progress)):
+        raise TypeError("CONSTRUCTION_OBLIGATION_V2_CHILD_PROGRESS_EXACT_TYPE_REQUIRED")
     if timed_out:
         child_result = None
         failure_code = "CHILD_TIMEOUT_" + (termination or "UNCONFIRMED")
@@ -125,7 +135,8 @@ def supervise_linux_generation_candidate_v1_2_1(
         failure_code = None
 
     artifacts = _reconcile_artifacts(
-        request=request, child_result=child_result, failure_code=failure_code)
+        request=request, child_result=child_result, failure_code=failure_code,
+        child_progress=child_progress)
     persisted: list[tuple[str, str]] = []
     for label, raw in artifacts:
         if any(existing == label for existing, _ in persisted):
@@ -152,10 +163,26 @@ def supervise_linux_generation_candidate_v1_2_1(
         status, authority.authority_receipt_identity, tuple(persisted), receipt)
 
 
-def _reconcile_artifacts(*, request, child_result, failure_code):
+def _reconcile_artifacts(*, request, child_result, failure_code, child_progress=()):
     artifacts: list[tuple[str, bytes]] = []
     if child_result is None:
-        terminal_event = _failure_event(request.provider_request_id, failure_code)
+        lifecycle = tuple(raw for label, raw in child_progress if label == "lifecycle")
+        compatibility = tuple(raw for label, raw in child_progress if label == "compatibility")
+        if len(compatibility) > 1:
+            raise ValueError("CONSTRUCTION_OBLIGATION_V2_CHILD_COMPATIBILITY_DUPLICATE")
+        if compatibility:
+            validate_compatibility_receipt_v1_2_1(compatibility[0])
+        progress = _validated_progress(
+            lifecycle, request.provider_request_id)
+        for raw in progress:
+            value = json.loads(raw)
+            artifacts.append((
+                f"lifecycle-{value['sequence'] + 1:05d}-{value['event'].lower()}.json",
+                raw,
+            ))
+        previous = json.loads(progress[-1])["event_identity"] if progress else None
+        terminal_event = _failure_event(
+            request.provider_request_id, failure_code, len(progress), previous)
         terminal_identity = json.loads(terminal_event)["event_identity"]
         base_result = build_runner_result_v1(
             request=request, status="EXECUTION_FAILURE",
@@ -170,8 +197,11 @@ def _reconcile_artifacts(*, request, child_result, failure_code):
         envelope = build_result_envelope_v1_1(
             raw_base_runner_result=base_result,
             raw_cleanup_receipt=cleanup, raw_partial_output=None)
+        if compatibility:
+            artifacts.append(("adapter-compatibility-receipt.json", compatibility[0]))
         return [
-            ("lifecycle-00001-execution-failed.json", terminal_event),
+            *artifacts,
+            (f"lifecycle-{len(progress) + 1:05d}-execution-failed.json", terminal_event),
             ("runner-result.json", base_result),
             ("cleanup-receipt-v1-1.json", cleanup),
             ("result-envelope-v1-1.json", envelope),
@@ -237,15 +267,38 @@ def _validate_child_cleanup_receipt(raw, terminal_identity):
     return value
 
 
-def _failure_event(provider_request_id, failure_code):
+def _validated_progress(values, provider_request_id):
+    previous = None
+    result = []
+    for sequence, raw in enumerate(values):
+        try:
+            value = json.loads(raw.decode("utf-8", errors="strict"))
+        except Exception as exc:
+            raise ValueError("CONSTRUCTION_OBLIGATION_V2_CHILD_PROGRESS_INVALID") from exc
+        body = {key: item for key, item in value.items() if key != "event_identity"}
+        expected = hashlib.sha256(_canonical(body)).hexdigest()
+        if (raw != _canonical(value)
+                or value.get("provider_request_id") != provider_request_id
+                or value.get("sequence") != sequence
+                or value.get("previous_event_identity") != previous
+                or value.get("event_identity") != expected):
+            raise ValueError("CONSTRUCTION_OBLIGATION_V2_CHILD_PROGRESS_BINDING_INVALID")
+        previous = expected
+        result.append(raw)
+    return tuple(result)
+
+
+def _failure_event(provider_request_id, failure_code, sequence=0, previous=None):
     value = {
         "schema_name": "pastila-semantic-admission-v2-construction-obligation-v2-linux-supervisor-event",
         "schema_version": "1.0.0",
         "supervisor_candidate_identity": SUPERVISOR_CANDIDATE_IDENTITY,
         "provider_request_id": provider_request_id,
-        "sequence": 0, "event": "EXECUTION_FAILED",
+        "sequence": sequence, "event": "EXECUTION_FAILED",
         "failure_code": failure_code, "event_identity": "",
     }
+    if previous is not None:
+        value["previous_event_identity"] = previous
     value["event_identity"] = hashlib.sha256(_canonical(
         {key: item for key, item in value.items() if key != "event_identity"}
     )).hexdigest()
@@ -284,7 +337,3 @@ __all__ = (
     "LinuxGenerationSupervisorOutcomeV1",
     "supervise_linux_generation_candidate_v1_2_1",
 )
-
-
-
-
