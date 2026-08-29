@@ -16,6 +16,9 @@ from pastila_scout.semantic_admission_v2 import (
 from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_runner_protocol_codec_v1 import (
     parse_runner_request_v1,
 )
+from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_durable_filesystem_sink_v1 import (
+    _LABEL,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -57,13 +60,13 @@ def test_timeout_preserves_observed_progress_and_chains_terminal_failure():
     ))
     assert "adapter-compatibility-receipt.json" in artifacts
     assert [json.loads(artifacts[f"lifecycle-{index:05d}-{name}.json"])["event"] for index, name in (
-        (1, "model_load_started"),
-        (2, "model_load_completed"),
-        (3, "generation_started"),
+        (1, "model-load-started"),
+        (2, "model-load-completed"),
+        (3, "generation-started"),
         (4, "execution-failed"),
     )] == ["MODEL_LOAD_STARTED", "MODEL_LOAD_COMPLETED", "GENERATION_STARTED", "EXECUTION_FAILED"]
     terminal = json.loads(artifacts["lifecycle-00004-execution-failed.json"])
-    started = json.loads(artifacts["lifecycle-00003-generation_started.json"])
+    started = json.loads(artifacts["lifecycle-00003-generation-started.json"])
     assert terminal["sequence"] == 3
     assert terminal["previous_event_identity"] == started["event_identity"]
     assert terminal["failure_code"] == "CHILD_TIMEOUT_TERMINATED"
@@ -138,3 +141,20 @@ def test_timeout_remediation_import_surface_is_zero_execution():
         }
         assert not (calls & forbidden_calls)
     assert not (PACKET.parent.parent / ".semantic-admission-v2-stage-p-construction-obligation-v2-case01-successor-v1-2-1-timeout-progress-bound-evidence").exists()
+
+
+def test_every_supervisor_artifact_label_is_accepted_by_durable_grammar():
+    events = (
+        "MODEL_LOAD_STARTED", "MODEL_LOAD_COMPLETED", "GENERATION_STARTED",
+        "TERMINAL_EOS", "NO_LEGAL_TOKEN", "EXECUTION_FAILED",
+        "CLEANUP_COMPLETED", "CLEANUP_FAILED",
+    )
+    dynamic = {supervisor._lifecycle_label(index, event)
+               for index, event in enumerate(events, 1)}
+    static = {
+        "adapter-compatibility-receipt.json", "runner-result.json",
+        "cleanup-receipt-v1-1.json", "result-envelope-v1-1.json",
+        "raw-output.bin", "raw-partial-output.bin",
+    }
+    assert all(_LABEL.fullmatch(label) for label in dynamic | static)
+    assert all("_" not in label for label in dynamic)

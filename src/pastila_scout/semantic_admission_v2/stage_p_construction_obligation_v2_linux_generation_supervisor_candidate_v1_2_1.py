@@ -182,7 +182,7 @@ def _reconcile_artifacts(*, request, child_result, failure_code, child_progress=
         for raw in progress:
             value = json.loads(raw)
             artifacts.append((
-                f"lifecycle-{value['sequence'] + 1:05d}-{value['event'].lower()}.json",
+                _lifecycle_label(value["sequence"] + 1, value["event"]),
                 raw,
             ))
         previous = json.loads(progress[-1])["event_identity"] if progress else None
@@ -218,7 +218,7 @@ def _reconcile_artifacts(*, request, child_result, failure_code, child_progress=
         value = json.loads(raw)
         if value.get("sequence") != sequence - 1:
             raise ValueError("CONSTRUCTION_OBLIGATION_V2_CHILD_LIFECYCLE_SEQUENCE_INVALID")
-        artifacts.append((f"lifecycle-{sequence:05d}-{value['event'].lower()}.json", raw))
+        artifacts.append((_lifecycle_label(sequence, value.get("event")), raw))
     terminal = json.loads(child_result.lifecycle_events[-1])
     base = json.loads(child_result.runner_result)
     if (
@@ -303,6 +303,17 @@ def _validated_progress(values, provider_request_id):
         observed_events.append(event)
         result.append(raw)
     return tuple(result)
+
+
+def _lifecycle_label(sequence, event):
+    allowed = {
+        "MODEL_LOAD_STARTED", "MODEL_LOAD_COMPLETED", "GENERATION_STARTED",
+        "TERMINAL_EOS", "NO_LEGAL_TOKEN", "EXECUTION_FAILED",
+        "CLEANUP_COMPLETED", "CLEANUP_FAILED",
+    }
+    if type(sequence) is not int or sequence < 1 or event not in allowed:
+        raise ValueError("CONSTRUCTION_OBLIGATION_V2_LIFECYCLE_LABEL_INPUT_INVALID")
+    return f"lifecycle-{sequence:05d}-{event.lower().replace('_', '-')}.json"
 
 
 def _validated_timeout_progress(child_progress, provider_request_id):
