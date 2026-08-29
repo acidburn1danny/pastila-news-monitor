@@ -41,6 +41,8 @@ class StagePConstructionObligationV2TokenProjectorV2:
         request_context_identity: str, request_authority_identity: str,
         grammar_identity: str = GRAMMAR_IDENTITY,
         excluded_token_ids: Sequence[int] = (),
+        terminal_admission: Callable[[str], object] | None = None,
+        terminal_admission_identity: str | None = None,
     ) -> None:
         if controller.tracker.context.binding_identity != request_context_identity:
             raise ValueError("REQUEST_CONTEXT_IDENTITY_MISMATCH")
@@ -48,6 +50,8 @@ class StagePConstructionObligationV2TokenProjectorV2:
             raise ValueError("DECODER_IDENTITY_MISMATCH")
         if not tokenizer_identity or not request_authority_identity or not grammar_identity:
             raise ValueError("PROJECTOR_SEMANTIC_IDENTITY_REQUIRED")
+        if (terminal_admission is None) != (terminal_admission_identity is None):
+            raise ValueError("TERMINAL_ADMISSION_BINDING_INCOMPLETE")
         excluded = frozenset(excluded_token_ids) | {eos_token_id}
         self.controller = controller
         self.eos_token_id = eos_token_id
@@ -56,6 +60,8 @@ class StagePConstructionObligationV2TokenProjectorV2:
         self.request_context_identity = request_context_identity
         self.request_authority_identity = request_authority_identity
         self.excluded_token_ids = excluded
+        self._terminal_admission = terminal_admission
+        self.terminal_admission_identity = terminal_admission_identity
         self._bound_token_pieces = dict(token_pieces)
         self._children: list[dict[str, int]] = [{}]
         self._terminals: list[list[int]] = [[]]
@@ -99,7 +105,7 @@ class StagePConstructionObligationV2TokenProjectorV2:
             (PROJECTOR_ALGORITHM_IDENTITY + "\n" + grammar_identity + "\n"
              + request_authority_identity + "\n" + request_context_identity + "\n"
              + tokenizer_identity + "\n" + decoder_identity + "\n"
-             + special_policy).encode()).hexdigest()
+             + special_policy + "\n" + (terminal_admission_identity or "NONE")).encode()).hexdigest()
         self._cache: dict[str, tuple[int, ...]] = {}
         self._hits = self._misses = self._visited = self._admitted = 0
 
@@ -132,6 +138,13 @@ class StagePConstructionObligationV2TokenProjectorV2:
         if prefix.decoder_identity != self.decoder_identity:
             raise ValueError("DECODER_IDENTITY_DRIFT")
         if character.allowance.kind is CharacterAllowanceKindV1.TERMINAL:
+            if self._terminal_admission is not None:
+                try:
+                    self._terminal_admission(decode(token_ids))
+                except (ValueError, TypeError) as exc:
+                    receipt = self._receipt(
+                        prefix, (), False, str(exc) or "SEMANTIC_COMPLETENESS_REJECTED")
+                    raise StagePTokenProjectionFailureV1(receipt) from exc
             allowed = (self.eos_token_id,)
         else:
             state_key = hashlib.sha256(repr(prefix.state).encode()).hexdigest()

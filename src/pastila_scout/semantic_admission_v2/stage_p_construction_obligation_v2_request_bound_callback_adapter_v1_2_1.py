@@ -17,6 +17,10 @@ from .stage_p_construction_obligation_v2_token_projector_v1 import (
     StagePTokenProjectionFailureV1)
 from .stage_p_construction_obligation_v2_token_projector_v2 import (
     StagePConstructionObligationV2TokenProjectorV2)
+from .stage_p_construction_obligation_semantic_completeness_v1 import (
+    SemanticCompletenessAdmissionV1, SemanticCompletenessPolicyV1)
+from .immutable_source_span_reference_v1 import SourceRoleV1
+from .stage_p_construction_obligation_v2_projector_binding_v1 import _decode_bound_source
 from .stage_p_construction_obligation_v2_zero_model_callback_adapter_v1 import (
     ZeroModelCallbackDecisionV1)
 
@@ -41,13 +45,24 @@ class ConstructionObligationV2RequestBoundCallbackAdapterV1_2_1:
         self.authority_receipt_identity = authority_receipt_identity
         oracle = bind_construction_obligation_v2_projector_v1(
             envelope=source_binding, token_pieces=token_pieces)
+        candidate = _decode_bound_source(
+            source_binding.candidate_utf8_base64, source_binding.candidate_sha256,
+            SourceRoleV1.CANDIDATE)
+        factual_authority = _decode_bound_source(
+            source_binding.factual_authority_utf8_base64,
+            source_binding.factual_authority_sha256, SourceRoleV1.FACTUAL_AUTHORITY)
+        completeness = SemanticCompletenessAdmissionV1(
+            SemanticCompletenessPolicyV1.bind(
+                candidate=candidate, factual_authority=factual_authority))
         self.projector = StagePConstructionObligationV2TokenProjectorV2(
             controller=oracle.controller,
             token_pieces=token_pieces, eos_token_id=eos_token_id,
             tokenizer_identity=TOKENIZER_IDENTITY, decoder_identity=DECODER_IDENTITY,
             request_context_identity=request.source_context_identity,
             request_authority_identity=authority_receipt_identity,
-            excluded_token_ids=excluded_token_ids)
+            excluded_token_ids=excluded_token_ids,
+            terminal_admission=completeness.validate_terminal,
+            terminal_admission_identity=completeness.policy.identity)
         self._suffix = RequestBoundGeneratedSuffixCallbackV1(
             request_identity=request.provider_request_id,
             prompt_token_ids=prompt_token_ids, project=self._project)
