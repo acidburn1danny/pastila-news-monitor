@@ -8,13 +8,13 @@ from scripts.verify_construction_obligation_v2_case01_issued_authority_v1_2_1_du
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def test_durable_source_bound_receipt_has_one_unconsumed_attempt():
+def test_durable_source_bound_receipt_is_frozen_as_consumed():
     result = verify(project_root=ROOT)
     assert result["authority_receipt_identity"] == "2ca3f66aa1f5ac86444151b376e36d884f3324a9986c228f01b9894f1b41ab99"
     assert result["receipt_status"] == "ISSUED"
-    assert result["consumed_attempts"] == 0
-    assert result["remaining_attempts"] == 1
-    assert result["execution_started"] is False
+    assert result["consumed_attempts"] == 1
+    assert result["remaining_attempts"] == 0
+    assert result["execution_started"] is True
 
 
 def test_durable_source_issuance_verifier_is_execution_free():
