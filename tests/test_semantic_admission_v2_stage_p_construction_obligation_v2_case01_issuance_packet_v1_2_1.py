@@ -13,13 +13,13 @@ from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_case
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def test_host_evidence_domain_packet_is_fresh_unissued_and_deterministic() -> None:
+def test_host_evidence_domain_packet_plan_is_deterministic_after_issuance() -> None:
     generated = materialize_case01_issuance_packet_v1_2_1(project_root=ROOT)
     assert all((ROOT / PACKET_RELATIVE / name).read_bytes() == raw
                for name, raw in generated.items())
     actual = {path.name for path in (ROOT / PACKET_RELATIVE).iterdir()}
     assert actual == {"application-provider-request.json", "authority-receipt-candidate.json",
-                      "host-payload.json", "manifest.json",
+                      "authority-receipt-issued.json", "host-payload.json", "manifest.json",
                       "rendered-prompt.json", "runner-request.json", "static-executor-binding.json"}
     manifest = json.loads((ROOT / PACKET_RELATIVE / "manifest.json").read_bytes())
     assert manifest["case_id"] == CASE_ID == "HMCV1-SASC-01"
