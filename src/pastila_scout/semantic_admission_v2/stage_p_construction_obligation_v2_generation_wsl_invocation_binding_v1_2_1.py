@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import hashlib
+import json
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -21,6 +22,7 @@ GENERATION_WSL_INVOCATION_BINDING_IDENTITY_FIELDS = (
     "prepared-invocation-type:v1.2.1",
     "authority-parser:v1.2.1-only",
     "execution-plan:canonical-byte-bound",
+    "packet-manifest:canonical-file-set-bound",
     "outer-timeout:1260",
 )
 GENERATION_WSL_INVOCATION_BINDING_IDENTITY = hashlib.sha256(
@@ -47,6 +49,7 @@ class PreparedGenerationWslInvocationV1_2_1:
     policy_receipt_path: Path
     authority_receipt_path: Path
     runner_request_path: Path
+    packet_manifest_path: Path
     system_prompt_path: Path
     outer_evidence_root: Path
     linux_evidence_root: Path
@@ -57,7 +60,8 @@ class PreparedGenerationWslInvocationV1_2_1:
 def build_generation_wsl_invocation_v1_2_1(
     *, project_root: Path, policy_receipt_path: Path, authority_receipt_path: Path,
     runner_request_path: Path, system_prompt_path: Path,
-    outer_evidence_root: Path, packet_identity: str, evidence_root_identity: str,
+    packet_manifest_path: Path, outer_evidence_root: Path,
+    evidence_root_identity: str,
     boundary: WslExecutionBoundaryV1_1,
 ) -> PreparedGenerationWslInvocationV1_2_1:
     if type(boundary) is not WslExecutionBoundaryV1_1:
@@ -72,6 +76,7 @@ def build_generation_wsl_invocation_v1_2_1(
     policy = _file(policy_receipt_path, "POLICY")
     authority_path = _file(authority_receipt_path, "AUTHORITY")
     request_path = _file(runner_request_path, "RUNNER_REQUEST")
+    manifest_path = _file(packet_manifest_path, "PACKET_MANIFEST")
     prompt = _file(system_prompt_path, "SYSTEM_PROMPT")
     expected = validate_generation_execution_policy_gate_v1(observed=canonical_observed_generation_execution_policy_v1())
     if policy.read_bytes() != expected:
@@ -80,8 +85,8 @@ def build_generation_wsl_invocation_v1_2_1(
         raise ValueError("CONSTRUCTION_OBLIGATION_V2_SYSTEM_PROMPT_IDENTITY_MISMATCH")
     raw_request = request_path.read_bytes()
     request = parse_runner_request_v1(raw_request=raw_request)
-    if not _identity(packet_identity) or not _identity(evidence_root_identity):
-        raise ValueError("CONSTRUCTION_OBLIGATION_V2_PACKET_OR_EVIDENCE_IDENTITY_INVALID")
+    if not _identity(evidence_root_identity):
+        raise ValueError("CONSTRUCTION_OBLIGATION_V2_EVIDENCE_IDENTITY_INVALID")
     authority = parse_generation_authority_v1_2_1(
         raw_receipt=authority_path.read_bytes(),
         expected_host_payload_sha256=request.host_payload_sha256,
@@ -99,18 +104,25 @@ def build_generation_wsl_invocation_v1_2_1(
                    windows_path_to_wsl_v1(prompt), windows_path_to_wsl_v1(linux)),
     )
     expected_evidence_identity = hashlib.sha256("\n".join((
-        "STAGE_P_CONSTRUCTION_OBLIGATION_V2_CASE01_V1_2_1_IDENTITY_ISOLATED_EVIDENCE_ROOT",
+        "STAGE_P_CONSTRUCTION_OBLIGATION_V2_CASE01_V1_2_1_PACKET_BOUND_EVIDENCE_ROOT",
         request.source_context_identity, invocation.command_identity, str(outer),
     )).encode()).hexdigest()
     if evidence_root_identity != expected_evidence_identity:
         raise ValueError("CONSTRUCTION_OBLIGATION_V2_EVIDENCE_ROOT_IDENTITY_MISMATCH")
+    packet_identity = _validate_packet_manifest_v1_2_1(
+        manifest_path=manifest_path, invocation=invocation,
+        authority_identity=authority.authority_receipt_identity,
+        authority_path=authority_path, request_path=request_path,
+        source_context_identity=request.source_context_identity,
+        evidence_root_identity=evidence_root_identity, outer_evidence_root=outer,
+    )
     material = (
         "STAGE_P_CONSTRUCTION_OBLIGATION_V2_GENERATION_WSL_INVOCATION_INSTANCE_V1_2_1",
         GENERATION_WSL_INVOCATION_BINDING_IDENTITY, invocation.command_identity,
         authority.authority_receipt_identity, hashlib.sha256(raw_request).hexdigest(),
         packet_identity, request.provider_request_id, request.source_context_identity,
         evidence_root_identity, str(outer), str(policy), str(authority_path),
-        str(request_path), str(prompt), str(OUTER_TIMEOUT_SECONDS),
+        str(request_path), str(manifest_path), str(prompt), str(OUTER_TIMEOUT_SECONDS),
     )
     instance_identity = hashlib.sha256("\n".join(material).encode()).hexdigest()
     return PreparedGenerationWslInvocationV1_2_1(
@@ -119,13 +131,80 @@ def build_generation_wsl_invocation_v1_2_1(
         authority.authority_receipt_identity, GENERATION_WSL_INVOCATION_BINDING_IDENTITY,
         invocation.command_identity, packet_identity, request.provider_request_id,
         request.source_context_identity, hashlib.sha256(raw_request).hexdigest(),
-        policy, authority_path, request_path, prompt, outer, linux,
+        policy, authority_path, request_path, manifest_path, prompt, outer, linux,
         evidence_root_identity, OUTER_TIMEOUT_SECONDS,
     )
 
 
 def _identity(value: object) -> bool:
     return type(value) is str and len(value) == 64 and all(c in "0123456789abcdef" for c in value)
+
+
+def _validate_packet_manifest_v1_2_1(
+    *, manifest_path: Path, invocation: WslInvocationV1, authority_identity: str,
+    authority_path: Path, request_path: Path, source_context_identity: str,
+    evidence_root_identity: str,
+    outer_evidence_root: Path,
+) -> str:
+    raw = manifest_path.read_bytes()
+    try:
+        value = json.loads(raw.decode("utf-8", errors="strict"))
+    except Exception as exc:
+        raise ValueError("CONSTRUCTION_OBLIGATION_V2_PACKET_MANIFEST_JSON_INVALID") from exc
+    required = {
+        "schema_name", "schema_version", "case_id", "source_context_identity",
+        "historical_request_reused", "receipt_status", "attempts",
+        "proposed_evidence_root", "evidence_root_identity",
+        "evidence_root_exclusive_at_materialization", "command", "command_identity",
+        "authority_reference_if_issued", "file_sha256", "limits", "execution",
+        "packet_identity",
+    }
+    if type(value) is not dict or set(value) != required or raw != _canonical(value):
+        raise ValueError("CONSTRUCTION_OBLIGATION_V2_PACKET_MANIFEST_SHAPE_OR_BYTES_INVALID")
+    body = {key: item for key, item in value.items() if key != "packet_identity"}
+    packet_identity = hashlib.sha256(_canonical(body)).hexdigest()
+    if value["packet_identity"] != packet_identity:
+        raise ValueError("CONSTRUCTION_OBLIGATION_V2_PACKET_MANIFEST_SEAL_INVALID")
+    expected_files = {
+        "application-provider-request.json", "authority-receipt-candidate.json",
+        "host-payload.json", "rendered-prompt.json", "runner-request.json",
+        "static-executor-binding.json",
+    }
+    hashes = value["file_sha256"]
+    if type(hashes) is not dict or set(hashes) != expected_files:
+        raise ValueError("CONSTRUCTION_OBLIGATION_V2_PACKET_FILE_SET_INVALID")
+    packet_root = manifest_path.parent
+    for name, expected_sha in hashes.items():
+        path = _file(packet_root / name, "PACKET_FILE")
+        if hashlib.sha256(path.read_bytes()).hexdigest() != expected_sha:
+            raise ValueError("CONSTRUCTION_OBLIGATION_V2_PACKET_FILE_HASH_MISMATCH")
+    candidate = json.loads((packet_root / "authority-receipt-candidate.json").read_bytes())
+    fixed = (
+        value["schema_name"] == "pastila-construction-obligation-v2-case01-issuance-packet"
+        and value["schema_version"] == "1.2.1" and value["case_id"] == "HMCV1-SASC-01"
+        and value["receipt_status"] == "UNISSUED"
+        and value["attempts"] == {"completed": 0, "ceiling": 1}
+        and all(flag is False for flag in value["execution"].values())
+        and value["command"] == list(invocation.command)
+        and value["command_identity"] == invocation.command_identity
+        and value["authority_reference_if_issued"] == authority_identity
+        and candidate.get("proposed_receipt_identity") == authority_identity
+        and candidate.get("receipt_status") == "UNISSUED"
+        and candidate.get("authority_receipt_identity") is None
+        and value["source_context_identity"] == source_context_identity
+        and value["evidence_root_identity"] == evidence_root_identity
+        and value["proposed_evidence_root"] == str(outer_evidence_root)
+        and authority_path == packet_root / "authority-receipt-issued.json"
+        and request_path == packet_root / "runner-request.json"
+    )
+    if not fixed:
+        raise ValueError("CONSTRUCTION_OBLIGATION_V2_PACKET_BINDING_MISMATCH")
+    return packet_identity
+
+
+def _canonical(value: dict[str, object]) -> bytes:
+    return (json.dumps(value, ensure_ascii=True, sort_keys=True,
+                       separators=(",", ":"), allow_nan=False) + "\n").encode()
 
 
 __all__ = (

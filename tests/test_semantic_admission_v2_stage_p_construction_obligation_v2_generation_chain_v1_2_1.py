@@ -3,6 +3,7 @@ from __future__ import annotations
 import ast
 import hashlib
 import json
+import shutil
 from dataclasses import replace
 from pathlib import Path
 
@@ -66,11 +67,13 @@ def test_runner_source_binding_is_exact_and_imports_are_inert():
 
 
 def _prepared(tmp_path: Path, monkeypatch=None):
-    packet = ROOT / PACKET_RELATIVE
+    source_packet = ROOT / PACKET_RELATIVE
+    packet = tmp_path / "packet"
+    shutil.copytree(source_packet, packet)
     candidate = json.loads((packet / "authority-receipt-candidate.json").read_bytes())
     issued = dict(candidate["authority_body"])
     issued["authority_receipt_identity"] = candidate["proposed_receipt_identity"]
-    receipt = tmp_path / "authority-receipt-issued.json"
+    receipt = packet / "authority-receipt-issued.json"
     receipt.write_bytes(_canonical(issued))
     outer = tmp_path / "prospective-evidence"
     boundary = WslExecutionBoundaryV1_1(canonical_model_profile_v1(with_pydantic_bridge=True))
@@ -84,16 +87,24 @@ def _prepared(tmp_path: Path, monkeypatch=None):
                    windows_path_to_wsl_v1(ROOT / ".experimental-0-3-core-v1-2-journalistic-deontology-prime-directive-v1-evidence/PASTILAACIDA_EDITOR_CORE_SYSTEM_PROMPT_V1_2.txt"),
                    windows_path_to_wsl_v1(outer / "linux-generation")))
     evidence = hashlib.sha256("\n".join((
-        "STAGE_P_CONSTRUCTION_OBLIGATION_V2_CASE01_V1_2_1_IDENTITY_ISOLATED_EVIDENCE_ROOT",
+        "STAGE_P_CONSTRUCTION_OBLIGATION_V2_CASE01_V1_2_1_PACKET_BOUND_EVIDENCE_ROOT",
         json.loads((packet / "manifest.json").read_bytes())["source_context_identity"],
         invocation.command_identity, str(outer))).encode()).hexdigest()
+    manifest = json.loads((packet / "manifest.json").read_bytes())
+    manifest["command"] = list(invocation.command)
+    manifest["command_identity"] = invocation.command_identity
+    manifest["proposed_evidence_root"] = str(outer)
+    manifest["evidence_root_identity"] = evidence
+    manifest["packet_identity"] = hashlib.sha256(_canonical({
+        key: value for key, value in manifest.items() if key != "packet_identity"
+    })).hexdigest()
+    (packet / "manifest.json").write_bytes(_canonical(manifest))
     prepared = binding.build_generation_wsl_invocation_v1_2_1(
         project_root=ROOT,
         policy_receipt_path=ROOT / "docs/artifacts/semantic-admission-v2-stage-p-construction-obligation-v2-generation-policy-validation-receipt-v1.json",
         authority_receipt_path=receipt, runner_request_path=packet / "runner-request.json",
         system_prompt_path=ROOT / ".experimental-0-3-core-v1-2-journalistic-deontology-prime-directive-v1-evidence/PASTILAACIDA_EDITOR_CORE_SYSTEM_PROMPT_V1_2.txt",
-        outer_evidence_root=outer,
-        packet_identity=json.loads((packet / "manifest.json").read_bytes())["packet_identity"],
+        packet_manifest_path=packet / "manifest.json", outer_evidence_root=outer,
         evidence_root_identity=evidence, boundary=boundary)
     return prepared, boundary
 
@@ -123,7 +134,8 @@ def test_legacy_receipts_cannot_build_v1_2_1(tmp_path, legacy):
             policy_receipt_path=ROOT / "docs/artifacts/semantic-admission-v2-stage-p-construction-obligation-v2-generation-policy-validation-receipt-v1.json",
             authority_receipt_path=old_receipt, runner_request_path=packet / "runner-request.json",
             system_prompt_path=ROOT / ".experimental-0-3-core-v1-2-journalistic-deontology-prime-directive-v1-evidence/PASTILAACIDA_EDITOR_CORE_SYSTEM_PROMPT_V1_2.txt",
-            outer_evidence_root=tmp_path / "never", packet_identity="0" * 64,
+            packet_manifest_path=packet / "manifest.json",
+            outer_evidence_root=tmp_path / "never",
             evidence_root_identity="1" * 64,
             boundary=WslExecutionBoundaryV1_1(canonical_model_profile_v1(with_pydantic_bridge=True)))
 
@@ -145,4 +157,30 @@ def test_legacy_type_and_mutations_fail_before_execute(tmp_path, monkeypatch):
                     replace(prepared, packet_identity="0" * 64)):
         with pytest.raises(ValueError):
             host.execute_generation_wsl_host_v1_2_1(prepared=mutated, boundary=boundary)
+    assert calls == []
+
+
+def test_recomputed_instance_cannot_substitute_packet_identity(tmp_path, monkeypatch):
+    prepared, boundary = _prepared(tmp_path)
+    forged_packet_identity = "0" * 64
+    material = (
+        "STAGE_P_CONSTRUCTION_OBLIGATION_V2_GENERATION_WSL_INVOCATION_INSTANCE_V1_2_1",
+        binding.GENERATION_WSL_INVOCATION_BINDING_IDENTITY,
+        prepared.command_identity, prepared.authority_receipt_identity,
+        prepared.runner_request_sha256, forged_packet_identity,
+        prepared.provider_request_id, prepared.source_context_identity,
+        prepared.evidence_root_identity, str(prepared.outer_evidence_root),
+        str(prepared.policy_receipt_path), str(prepared.authority_receipt_path),
+        str(prepared.runner_request_path), str(prepared.packet_manifest_path),
+        str(prepared.system_prompt_path), str(binding.OUTER_TIMEOUT_SECONDS),
+    )
+    forged = replace(
+        prepared, packet_identity=forged_packet_identity,
+        invocation_instance_identity=hashlib.sha256(
+            "\n".join(material).encode()).hexdigest())
+    calls = []
+    monkeypatch.setattr(WslExecutionBoundaryV1_1, "execute",
+                        lambda self, invocation, timeout_seconds: calls.append(invocation))
+    with pytest.raises(ValueError, match="EXECUTION_PLAN_DRIFT"):
+        host.execute_generation_wsl_host_v1_2_1(prepared=forged, boundary=boundary)
     assert calls == []

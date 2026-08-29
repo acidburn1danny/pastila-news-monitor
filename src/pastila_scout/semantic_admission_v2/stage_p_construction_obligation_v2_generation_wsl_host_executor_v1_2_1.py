@@ -21,7 +21,7 @@ from .stage_p_construction_obligation_v2_generation_execution_policy_gate_v1 imp
 )
 from .stage_p_construction_obligation_v2_generation_wsl_invocation_binding_v1_2_1 import (
     GENERATION_WSL_INVOCATION_BINDING_IDENTITY, RUNNER_MODULE,
-    PreparedGenerationWslInvocationV1_2_1,
+    PreparedGenerationWslInvocationV1_2_1, _validate_packet_manifest_v1_2_1,
 )
 from .stage_p_construction_obligation_v2_generation_authority_preload_v1_2_1 import (
     AUTHORITY_PRELOAD_IDENTITY, parse_generation_authority_v1_2_1,
@@ -37,6 +37,7 @@ GENERATION_WSL_HOST_EXECUTOR_IDENTITY_FIELDS = (
     "retry-fallback-repair-selection:0",
     "prepared-invocation:v1.2.1-exact-type",
     "pre-execute:independent-canonical-revalidation",
+    "pre-execute:packet-manifest-and-file-set-revalidation",
 )
 GENERATION_WSL_HOST_EXECUTOR_IDENTITY = hashlib.sha256(
     "\n".join(GENERATION_WSL_HOST_EXECUTOR_IDENTITY_FIELDS).encode()
@@ -155,15 +156,24 @@ def _revalidate_prepared_v1_2_1(prepared, boundary):
         request.provider_request_id, request.source_context_identity,
         prepared.evidence_root_identity, str(prepared.outer_evidence_root),
         str(prepared.policy_receipt_path), str(prepared.authority_receipt_path),
-        str(prepared.runner_request_path), str(prepared.system_prompt_path),
+        str(prepared.runner_request_path), str(prepared.packet_manifest_path),
+        str(prepared.system_prompt_path),
         str(OUTER_TIMEOUT_SECONDS),
     )
     instance = hashlib.sha256("\n".join(material).encode()).hexdigest()
     evidence_identity = hashlib.sha256("\n".join((
-        "STAGE_P_CONSTRUCTION_OBLIGATION_V2_CASE01_V1_2_1_IDENTITY_ISOLATED_EVIDENCE_ROOT",
+        "STAGE_P_CONSTRUCTION_OBLIGATION_V2_CASE01_V1_2_1_PACKET_BOUND_EVIDENCE_ROOT",
         request.source_context_identity, expected.command_identity,
         str(prepared.outer_evidence_root),
     )).encode()).hexdigest()
+    packet_identity = _validate_packet_manifest_v1_2_1(
+        manifest_path=_file(prepared.packet_manifest_path, "PACKET_MANIFEST"),
+        invocation=expected, authority_identity=authority.authority_receipt_identity,
+        authority_path=authority_path, request_path=request_path,
+        source_context_identity=request.source_context_identity,
+        evidence_root_identity=evidence_identity,
+        outer_evidence_root=prepared.outer_evidence_root,
+    )
     if (type(prepared.invocation) is not type(expected) or prepared.invocation != expected
             or prepared.command_identity != expected.command_identity
             or prepared.invocation_instance_identity != instance
@@ -171,6 +181,7 @@ def _revalidate_prepared_v1_2_1(prepared, boundary):
             or prepared.runner_request_sha256 != request_sha
             or prepared.provider_request_id != request.provider_request_id
             or prepared.source_context_identity != request.source_context_identity
+            or prepared.packet_identity != packet_identity
             or prepared.evidence_root_identity != evidence_identity
             or prepared.linux_evidence_root != prepared.outer_evidence_root / "linux-generation"):
         raise ValueError("CONSTRUCTION_OBLIGATION_V2_V1_2_1_EXECUTION_PLAN_DRIFT")
