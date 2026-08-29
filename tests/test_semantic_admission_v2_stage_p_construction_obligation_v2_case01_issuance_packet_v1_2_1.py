@@ -4,8 +4,6 @@ import ast
 import json
 from pathlib import Path
 
-import pytest
-
 from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_case01_issuance_packet_v1_2_1 import (
     CASE_ID,
     PACKET_RELATIVE,
@@ -15,15 +13,12 @@ from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_case
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def test_application_source_packet_is_frozen_after_attempt_consumption() -> None:
-    with pytest.raises(FileExistsError, match="EVIDENCE_ROOT_NOT_EXCLUSIVE"):
-        materialize_case01_issuance_packet_v1_2_1(project_root=ROOT)
+def test_durable_source_packet_is_byte_exact_current_and_unissued() -> None:
+    rebuilt = materialize_case01_issuance_packet_v1_2_1(project_root=ROOT)
     actual = {path.name for path in (ROOT / PACKET_RELATIVE).iterdir()}
-    assert actual == {
-        "application-provider-request.json", "authority-receipt-candidate.json",
-        "authority-receipt-issued.json", "host-payload.json", "manifest.json",
-        "rendered-prompt.json", "runner-request.json", "static-executor-binding.json",
-    }
+    assert actual == set(rebuilt)
+    assert all((ROOT / PACKET_RELATIVE / name).read_bytes() == raw
+               for name, raw in rebuilt.items())
     manifest = json.loads((ROOT / PACKET_RELATIVE / "manifest.json").read_bytes())
     assert manifest["case_id"] == CASE_ID == "HMCV1-SASC-01"
     assert manifest["source_context_identity"] == SOURCE_CONTEXT_IDENTITY
@@ -84,3 +79,6 @@ def test_v1_2_packet_and_issued_receipt_remain_byte_exact_and_distinct():
     provider_bound = ROOT / "docs/artifacts/semantic-admission-v2-stage-p-construction-obligation-v2-case01-successor-issuance-packet-v1-2-1-provider-source-bound"
     assert json.loads((provider_bound / "manifest.json").read_bytes())["packet_identity"] == "4b5a4cde519be6f94292fd1873e6bbb7b74d737e92d965580ec61423dbf017eb"
     assert json.loads((provider_bound / "authority-receipt-issued.json").read_bytes())["authority_receipt_identity"] == "9e79a1bec349d417d1a8cbbc79137385c92c994a57a2ed0ce5d528a2d73f9362"
+    application_bound = ROOT / "docs/artifacts/semantic-admission-v2-stage-p-construction-obligation-v2-case01-successor-issuance-packet-v1-2-1-application-source-bound"
+    assert json.loads((application_bound / "manifest.json").read_bytes())["packet_identity"] == "d38b515c38e159765a09fa42a281cd438691ace9066cf7d811953d3e28c129e3"
+    assert json.loads((application_bound / "authority-receipt-issued.json").read_bytes())["authority_receipt_identity"] == "215cd224e82240ce2d7d439b3904063ab3d808a059ea70d53140ce73af65eb3f"

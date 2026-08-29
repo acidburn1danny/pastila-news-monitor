@@ -8,10 +8,14 @@ from pathlib import Path
 
 from .stage_p_construction_obligation_v2_linux_generation_composition_v1_2_1 import LINUX_GENERATION_COMPOSITION_IDENTITY, LinuxGenerationCompositionOutcomeV1_2, run_linux_generation_composition_v1_2_1
 
+CANONICAL_DURABLE_SINK_SOURCE_SHA256 = "d544acda36c4024cdedc000bbf3c3e539251d14453fdddfcef07b7c366d95b29"
+CANONICAL_COMPOSITION_SOURCE_SHA256 = "56385253a4fb141e68e6b79c42a20b61c6c6efe5102ad2373b3b1fa9e56d2f7b"
 LINUX_GENERATION_RUNNER_IDENTITY_FIELDS = (
     "construction-obligation-v2-linux-generation-runner-v1.2.1",
     "five-canonical-paths",
     "composition:" + LINUX_GENERATION_COMPOSITION_IDENTITY,
+    "durable-sink-source:" + CANONICAL_DURABLE_SINK_SOURCE_SHA256,
+    "composition-source:" + CANONICAL_COMPOSITION_SOURCE_SHA256,
     "inner-timeout:1200",
 )
 LINUX_GENERATION_RUNNER_IDENTITY = hashlib.sha256(

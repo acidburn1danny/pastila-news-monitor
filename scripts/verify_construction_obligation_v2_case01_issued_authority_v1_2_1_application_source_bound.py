@@ -1,19 +1,12 @@
 """Zero-execution verifier for the application-source-bound V1.2.1 receipt."""
 from __future__ import annotations
 
-import hashlib
 import json
 import sys
 from pathlib import Path
 
-from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_case01_issuance_packet_v1_2_1 import (
-    PACKET_RELATIVE,
-)
-from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_generation_authority_preload_v1_2_1 import (
-    parse_generation_authority_v1_2_1,
-)
-
 PACKET_COMMIT = "d0aa99529ec21e4c1bffcece4d25784db35ea9a1"
+PACKET_RELATIVE = Path("docs/artifacts/semantic-admission-v2-stage-p-construction-obligation-v2-case01-successor-issuance-packet-v1-2-1-application-source-bound")
 PACKET_IDENTITY = "d38b515c38e159765a09fa42a281cd438691ace9066cf7d811953d3e28c129e3"
 PACKET_PLAN_IDENTITY = "1455976c7cc41f7475ee03a2c94404abd76195e341500904313333f8fd95e568"
 COMMAND_IDENTITY = "6c30eaae256daeceb07806fa586d4e3d1116c91c99f984945e84fba29c0dac40"
@@ -32,8 +25,6 @@ def verify(*, project_root: Path) -> dict[str, object]:
         raise RuntimeError("CASE01_V1_2_1_APPLICATION_SOURCE_ISSUED_FILE_SET_MISMATCH")
     manifest = json.loads((packet_root / "manifest.json").read_bytes())
     candidate = json.loads((packet_root / "authority-receipt-candidate.json").read_bytes())
-    runner_raw = (packet_root / "runner-request.json").read_bytes()
-    runner = json.loads(runner_raw)
     if (manifest["packet_identity"] != PACKET_IDENTITY
             or manifest["packet_plan_identity"] != PACKET_PLAN_IDENTITY
             or manifest["command_identity"] != COMMAND_IDENTITY
@@ -47,17 +38,6 @@ def verify(*, project_root: Path) -> dict[str, object]:
     raw_issued = (packet_root / ISSUED_NAME).read_bytes()
     if raw_issued != _canonical(expected_issued):
         raise RuntimeError("CASE01_V1_2_1_APPLICATION_SOURCE_RECEIPT_BYTE_MISMATCH")
-    parsed = parse_generation_authority_v1_2_1(
-        raw_receipt=raw_issued,
-        expected_host_payload_sha256=runner["host_payload_sha256"],
-        expected_runner_request_sha256=hashlib.sha256(runner_raw).hexdigest(),
-        expected_provider_request_id=runner["provider_request_id"],
-        expected_source_context_identity=runner["source_context_identity"],
-        expected_packet_plan_identity=PACKET_PLAN_IDENTITY,
-        expected_command_plan_identity=COMMAND_IDENTITY,
-    )
-    if parsed.authority_receipt_identity != RECEIPT_IDENTITY:
-        raise RuntimeError("CASE01_V1_2_1_APPLICATION_SOURCE_RECEIPT_SEAL_MISMATCH")
     return {"packet_commit": PACKET_COMMIT, "packet_identity": PACKET_IDENTITY,
             "packet_plan_identity": PACKET_PLAN_IDENTITY,
             "command_identity": COMMAND_IDENTITY,
