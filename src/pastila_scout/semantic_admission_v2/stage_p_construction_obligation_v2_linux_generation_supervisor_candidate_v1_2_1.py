@@ -37,8 +37,10 @@ from .stage_p_construction_obligation_v2_runner_protocol_codec_v1 import (
 SUPERVISOR_CANDIDATE_IDENTITY_FIELDS = (
     "construction-obligation-v2-linux-generation-supervisor-candidate-v1.2.1",
     "injected-supervisor:" + SUPERVISOR_IDENTITY,
-    "timeout-progress:canonical-lifecycle-and-compatibility",
+    "timeout-progress:canonical-lifecycle-compatibility-generation-aggregate",
     "timeout-progress:exact-worker-schema-state-machine",
+    "generation-progress:first-two-and-powers-of-two:max-13",
+    "forced-termination:supervisor-cleanup-observation",
     "compatibility:ordered-load-completion-identity-bound",
     "durable-labels:canonical-hyphenated-lifecycle-events",
     "timeout-terminal-event:chain-preserving",
@@ -134,7 +136,7 @@ def supervise_linux_generation_candidate_v1_2_1(
     child_progress = child_operations.collect_progress(handle)
     if (type(child_progress) is not tuple
             or any(type(item) is not tuple or len(item) != 2
-                   or item[0] not in {"lifecycle", "compatibility"}
+                   or item[0] not in {"lifecycle", "compatibility", "generation_progress"}
                    or type(item[1]) is not bytes for item in child_progress)):
         raise TypeError("CONSTRUCTION_OBLIGATION_V2_CHILD_PROGRESS_EXACT_TYPE_REQUIRED")
     if timed_out:
@@ -178,8 +180,9 @@ def supervise_linux_generation_candidate_v1_2_1(
 def _reconcile_artifacts(*, request, child_result, failure_code, child_progress=()):
     artifacts: list[tuple[str, bytes]] = []
     if child_result is None:
-        progress, compatibility = _validated_timeout_progress(
-            child_progress, request.provider_request_id)
+        progress, compatibility, generation_progress = _validated_timeout_progress(
+            child_progress, request.provider_request_id,
+            request.source_context_identity)
         for raw in progress:
             value = json.loads(raw)
             artifacts.append((
@@ -205,16 +208,33 @@ def _reconcile_artifacts(*, request, child_result, failure_code, child_progress=
             raw_cleanup_receipt=cleanup, raw_partial_output=None)
         if compatibility:
             artifacts.append(("adapter-compatibility-receipt.json", compatibility[0]))
+        for index, raw in enumerate(generation_progress, 1):
+            artifacts.append((f"generation-progress-{index:05d}.json", raw))
+        termination_cleanup = _termination_cleanup_observation(
+            request=request, terminal_identity=terminal_identity,
+            failure_code=failure_code)
         return [
             *artifacts,
             (f"lifecycle-{len(progress) + 1:05d}-execution-failed.json", terminal_event),
             ("runner-result.json", base_result),
             ("cleanup-receipt-v1-1.json", cleanup),
+            ("termination-cleanup-observation.json", termination_cleanup),
             ("result-envelope-v1-1.json", envelope),
         ]
 
     if not child_result.lifecycle_events:
         raise ValueError("CONSTRUCTION_OBLIGATION_V2_CHILD_LIFECYCLE_REQUIRED")
+    observed_progress, observed_compatibility, generation_progress = (
+        _validated_timeout_progress(
+            child_progress, request.provider_request_id,
+            request.source_context_identity))
+    if observed_progress != child_result.lifecycle_events:
+        raise ValueError("CONSTRUCTION_OBLIGATION_V2_CHILD_PROGRESS_RESULT_MISMATCH")
+    expected_compatibility = (
+        (child_result.compatibility_receipt,)
+        if child_result.compatibility_receipt is not None else ())
+    if observed_compatibility != expected_compatibility:
+        raise ValueError("CONSTRUCTION_OBLIGATION_V2_CHILD_COMPATIBILITY_RESULT_MISMATCH")
     for sequence, raw in enumerate(child_result.lifecycle_events, 1):
         value = json.loads(raw)
         if value.get("sequence") != sequence - 1:
@@ -247,6 +267,8 @@ def _reconcile_artifacts(*, request, child_result, failure_code, child_progress=
         artifacts.append(("raw-partial-output.bin", child_result.raw_partial_output))
     if child_result.compatibility_receipt is not None:
         artifacts.append(("adapter-compatibility-receipt.json", child_result.compatibility_receipt))
+    for index, raw in enumerate(generation_progress, 1):
+        artifacts.append((f"generation-progress-{index:05d}.json", raw))
     artifacts.extend((
         ("runner-result.json", child_result.runner_result),
         ("cleanup-receipt-v1-1.json", cleanup),
@@ -317,27 +339,144 @@ def _lifecycle_label(sequence, event):
     return f"lifecycle-{sequence:05d}-{event.lower().replace('_', '-')}.json"
 
 
-def _validated_timeout_progress(child_progress, provider_request_id):
+def _validated_timeout_progress(
+        child_progress, provider_request_id, source_context_identity):
     lifecycle = tuple(raw for label, raw in child_progress if label == "lifecycle")
     compatibility = tuple(raw for label, raw in child_progress if label == "compatibility")
+    generation_progress = tuple(
+        raw for label, raw in child_progress if label == "generation_progress")
     if len(compatibility) > 1:
         raise ValueError("CONSTRUCTION_OBLIGATION_V2_CHILD_COMPATIBILITY_DUPLICATE")
     progress = _validated_progress(lifecycle, provider_request_id)
-    expected_records = []
-    for raw in progress:
-        value = json.loads(raw)
-        if value["event"] == "MODEL_LOAD_COMPLETED":
-            if not compatibility:
-                raise ValueError("CONSTRUCTION_OBLIGATION_V2_CHILD_COMPATIBILITY_MISSING")
-            validate_compatibility_receipt_v1_2_1(compatibility[0])
-            if value["detail"]["compatibility_receipt_identity"] != json.loads(
-                    compatibility[0])["receipt_identity"]:
-                raise ValueError("CONSTRUCTION_OBLIGATION_V2_CHILD_COMPATIBILITY_BINDING_INVALID")
-            expected_records.append(("compatibility", compatibility[0]))
-        expected_records.append(("lifecycle", raw))
-    if tuple(expected_records) != child_progress:
+    load_completed = next((json.loads(raw) for raw in progress
+                           if json.loads(raw)["event"] == "MODEL_LOAD_COMPLETED"), None)
+    if load_completed is None and compatibility:
         raise ValueError("CONSTRUCTION_OBLIGATION_V2_CHILD_PROGRESS_ORDER_INVALID")
-    return progress, compatibility
+    if load_completed is not None:
+        if not compatibility:
+            raise ValueError("CONSTRUCTION_OBLIGATION_V2_CHILD_COMPATIBILITY_MISSING")
+        validate_compatibility_receipt_v1_2_1(compatibility[0])
+        if load_completed["detail"]["compatibility_receipt_identity"] != json.loads(
+                compatibility[0])["receipt_identity"]:
+            raise ValueError("CONSTRUCTION_OBLIGATION_V2_CHILD_COMPATIBILITY_BINDING_INVALID")
+    _validated_generation_progress(
+        generation_progress, provider_request_id, source_context_identity)
+    lifecycle_index = compatibility_index = generation_index = 0
+    generation_started = False
+    for label, raw in child_progress:
+        if label == "compatibility":
+            if compatibility_index or lifecycle_index == 0:
+                raise ValueError("CONSTRUCTION_OBLIGATION_V2_CHILD_PROGRESS_ORDER_INVALID")
+            compatibility_index += 1
+            continue
+        if label == "lifecycle":
+            if raw != progress[lifecycle_index]:
+                raise ValueError("CONSTRUCTION_OBLIGATION_V2_CHILD_PROGRESS_ORDER_INVALID")
+            event = json.loads(raw)["event"]
+            if event == "MODEL_LOAD_COMPLETED" and compatibility_index != 1:
+                raise ValueError("CONSTRUCTION_OBLIGATION_V2_CHILD_PROGRESS_ORDER_INVALID")
+            generation_started = generation_started or event == "GENERATION_STARTED"
+            lifecycle_index += 1
+            continue
+        if not generation_started or raw != generation_progress[generation_index]:
+            raise ValueError("CONSTRUCTION_OBLIGATION_V2_CHILD_PROGRESS_ORDER_INVALID")
+        generation_index += 1
+    if (lifecycle_index != len(progress)
+            or compatibility_index != len(compatibility)
+            or generation_index != len(generation_progress)):
+        raise ValueError("CONSTRUCTION_OBLIGATION_V2_CHILD_PROGRESS_ORDER_INVALID")
+    return progress, compatibility, generation_progress
+
+
+def _validated_generation_progress(raw_records, provider_request_id,
+                                   source_context_identity):
+    previous = None
+    previous_callback = 0
+    previous_generated = -1
+    previous_elapsed = -1
+    for sequence, raw in enumerate(raw_records):
+        try:
+            value = json.loads(raw.decode("ascii", errors="strict"))
+        except Exception as exc:
+            raise ValueError("CONSTRUCTION_OBLIGATION_V2_GENERATION_PROGRESS_INVALID") from exc
+        required = {
+            "schema_name", "schema_version", "worker_identity",
+            "provider_request_id", "source_context_identity", "sequence",
+            "callback_count", "generated_token_count", "callback_duration_ns",
+            "elapsed_since_generation_start_ns", "projector_state",
+            "progress_identity",
+        }
+        if previous is not None:
+            required.add("previous_progress_identity")
+        body = {key: item for key, item in value.items()
+                if key != "progress_identity"} if type(value) is dict else {}
+        expected = hashlib.sha256(_canonical(body)).hexdigest()
+        state = value.get("projector_state") if type(value) is dict else None
+        callback_count = value.get("callback_count") if type(value) is dict else None
+        generated = value.get("generated_token_count") if type(value) is dict else None
+        elapsed = value.get("elapsed_since_generation_start_ns") if type(value) is dict else None
+        duration = value.get("callback_duration_ns") if type(value) is dict else None
+        if (
+            type(value) is not dict or set(value) != required
+            or value.get("schema_name") != (
+                "pastila-semantic-admission-v2-construction-obligation-v2-"
+                "generation-progress")
+            or value.get("schema_version") != "1.2.1"
+            or value.get("worker_identity") != WORKER_IDENTITY
+            or value.get("provider_request_id") != provider_request_id
+            or value.get("source_context_identity") != source_context_identity
+            or value.get("sequence") != sequence
+            or value.get("previous_progress_identity") != previous
+            or value.get("progress_identity") != expected or raw != _canonical(value)
+            or type(callback_count) is not int
+            or not (callback_count <= 2 or callback_count & (callback_count - 1) == 0)
+            or callback_count <= previous_callback or callback_count > 4096
+            or type(generated) is not int or generated < previous_generated or generated > 3200
+            or type(duration) is not int or duration < 0
+            or type(elapsed) is not int or elapsed < previous_elapsed or elapsed < duration
+            or not _valid_projector_state(state)
+        ):
+            raise ValueError("CONSTRUCTION_OBLIGATION_V2_GENERATION_PROGRESS_BINDING_INVALID")
+        previous = expected
+        previous_callback = callback_count
+        previous_generated = generated
+        previous_elapsed = elapsed
+    return raw_records
+
+
+def _valid_projector_state(value):
+    return (
+        type(value) is dict
+        and set(value) == {"decoded_sha256", "dfa_mode", "terminal",
+                           "legal_token_count", "eos_allowed"}
+        and _sha256_identity(value["decoded_sha256"])
+        and type(value["dfa_mode"]) is str and bool(value["dfa_mode"])
+        and type(value["terminal"]) is bool
+        and type(value["legal_token_count"]) is int
+        and value["legal_token_count"] >= 0
+        and type(value["eos_allowed"]) is bool)
+
+
+def _termination_cleanup_observation(*, request, terminal_identity, failure_code):
+    value = {
+        "schema_name": (
+            "pastila-semantic-admission-v2-construction-obligation-v2-"
+            "termination-cleanup-observation"),
+        "schema_version": "1.2.1",
+        "supervisor_candidate_identity": SUPERVISOR_CANDIDATE_IDENTITY,
+        "provider_request_id": request.provider_request_id,
+        "source_context_identity": request.source_context_identity,
+        "terminal_event_identity": terminal_identity,
+        "failure_code": failure_code,
+        "child_process_terminal": True,
+        "child_cleanup_event_observed": False,
+        "gpu_cleanup_observed": False,
+        "observation_identity": "",
+    }
+    value["observation_identity"] = hashlib.sha256(_canonical({
+        key: item for key, item in value.items() if key != "observation_identity"
+    })).hexdigest()
+    return _canonical(value)
 
 
 def _valid_event_transition(observed, event):

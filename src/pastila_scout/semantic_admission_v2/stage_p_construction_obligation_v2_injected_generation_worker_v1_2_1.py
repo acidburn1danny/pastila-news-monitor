@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import time
 from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 
@@ -28,6 +29,8 @@ WORKER_IDENTITY_FIELDS = (
     "construction-obligation-v2-injected-generation-worker-v1.2.1",
     "progress-sink:lifecycle-canonical-bytes",
     "progress-sink:compatibility-canonical-bytes",
+    "progress-sink:generation-aggregate-milestones-canonical-bytes",
+    "progress-bound:first-two-and-powers-of-two:max-13",
     "generation-policy:unchanged",
 )
 WORKER_IDENTITY = hashlib.sha256("\n".join(WORKER_IDENTITY_FIELDS).encode()).hexdigest()
@@ -83,6 +86,7 @@ def execute_injected_generation_worker_v1_2_1(
     rendered_prompt: str, operations: InjectedGenerationOperationsV1,
     lifecycle_sink: Callable[[bytes], None] | None = None,
     compatibility_sink: Callable[[bytes], None] | None = None,
+    generation_progress_sink: Callable[[bytes], None] | None = None,
 ) -> InjectedGenerationWorkerOutcomeV1:
     """Run one injected attempt after all identity and prompt checks pass."""
     if type(callback_preflight) is not ConstructionObligationV2RunnerCallbackPreflightV1_3:
@@ -95,6 +99,8 @@ def execute_injected_generation_worker_v1_2_1(
         raise TypeError("CONSTRUCTION_OBLIGATION_V2_LIFECYCLE_SINK_CALLABLE_REQUIRED")
     if compatibility_sink is not None and not callable(compatibility_sink):
         raise TypeError("CONSTRUCTION_OBLIGATION_V2_COMPATIBILITY_SINK_CALLABLE_REQUIRED")
+    if generation_progress_sink is not None and not callable(generation_progress_sink):
+        raise TypeError("CONSTRUCTION_OBLIGATION_V2_GENERATION_PROGRESS_SINK_CALLABLE_REQUIRED")
     expected_policy = validate_generation_execution_policy_gate_v1(
         observed=canonical_observed_generation_execution_policy_v1())
     if raw_policy_receipt != expected_policy:
@@ -128,6 +134,9 @@ def execute_injected_generation_worker_v1_2_1(
     last_terminal = False
     last_eos_allowed = False
     last_projected_generated_ids: tuple[int, ...] = ()
+    generation_started_ns: int | None = None
+    progress_previous: str | None = None
+    progress_sequence = 0
 
     def emit(event: str, detail: dict[str, object]) -> None:
         nonlocal previous
@@ -154,6 +163,8 @@ def execute_injected_generation_worker_v1_2_1(
         def allowed(input_ids: Sequence[int]) -> tuple[int, ...]:
             nonlocal callback_count, last_terminal, last_eos_allowed
             nonlocal last_projected_generated_ids
+            nonlocal progress_previous, progress_sequence
+            callback_started_ns = time.monotonic_ns()
             ids = _token_ids(input_ids, "GENERATION_INPUT")
             decision = callback_preflight.project_input_ids(
                 input_token_ids=ids,
@@ -165,6 +176,24 @@ def execute_injected_generation_worker_v1_2_1(
             last_projected_generated_ids = ids[len(prompt_ids):]
             last_terminal = decision.projection_receipt.terminal
             last_eos_allowed = decision.projection_receipt.eos_allowed
+            if generation_progress_sink is not None and _telemetry_milestone(callback_count):
+                completed_ns = time.monotonic_ns()
+                raw_progress = _generation_progress(
+                    provider_request_id=request.provider_request_id,
+                    source_context_identity=request.source_context_identity,
+                    sequence=progress_sequence,
+                    previous_identity=progress_previous,
+                    callback_count=callback_count,
+                    generated_token_count=len(last_projected_generated_ids),
+                    callback_duration_ns=completed_ns - callback_started_ns,
+                    elapsed_since_generation_start_ns=(
+                        completed_ns - generation_started_ns
+                        if generation_started_ns is not None else 0),
+                    receipt=decision.projection_receipt,
+                )
+                progress_previous = json.loads(raw_progress)["progress_identity"]
+                progress_sequence += 1
+                generation_progress_sink(raw_progress)
             if decision.no_legal_token_receipt is not None:
                 raise ConstraintLivenessStopV1(decision.no_legal_token_receipt)
             if not decision.allowed_token_ids:
@@ -175,6 +204,7 @@ def execute_injected_generation_worker_v1_2_1(
             "maximum_output_tokens": request.max_output_tokens,
             "sole_callback": "REQUEST_BOUND_PROJECTOR_V1_3",
         })
+        generation_started_ns = time.monotonic_ns()
         generated = operations.generate_once(
             resource, prompt_ids, request.max_output_tokens, allowed)
         if type(generated) is not InjectedGenerationOutputV1:
@@ -292,4 +322,44 @@ __all__ = (
     "InjectedGenerationWorkerOutcomeV1",
     "execute_injected_generation_worker_v1_2_1",
     "validate_compatibility_receipt_v1_2_1",
-)
+    )
+
+
+def _telemetry_milestone(callback_count: int) -> bool:
+    return callback_count <= 2 or callback_count & (callback_count - 1) == 0
+
+
+def _generation_progress(
+    *, provider_request_id: str, source_context_identity: str,
+    sequence: int, previous_identity: str | None, callback_count: int,
+    generated_token_count: int, callback_duration_ns: int,
+    elapsed_since_generation_start_ns: int, receipt: object,
+) -> bytes:
+    value = {
+        "schema_name": (
+            "pastila-semantic-admission-v2-construction-obligation-v2-"
+            "generation-progress"),
+        "schema_version": "1.2.1",
+        "worker_identity": WORKER_IDENTITY,
+        "provider_request_id": provider_request_id,
+        "source_context_identity": source_context_identity,
+        "sequence": sequence,
+        "callback_count": callback_count,
+        "generated_token_count": generated_token_count,
+        "callback_duration_ns": callback_duration_ns,
+        "elapsed_since_generation_start_ns": elapsed_since_generation_start_ns,
+        "projector_state": {
+            "decoded_sha256": receipt.decoded_sha256,
+            "dfa_mode": receipt.dfa_mode,
+            "terminal": receipt.terminal,
+            "legal_token_count": receipt.legal_token_count,
+            "eos_allowed": receipt.eos_allowed,
+        },
+        "progress_identity": "",
+    }
+    if previous_identity is not None:
+        value["previous_progress_identity"] = previous_identity
+    value["progress_identity"] = hashlib.sha256(_canonical({
+        key: item for key, item in value.items() if key != "progress_identity"
+    })).hexdigest()
+    return _canonical(value)

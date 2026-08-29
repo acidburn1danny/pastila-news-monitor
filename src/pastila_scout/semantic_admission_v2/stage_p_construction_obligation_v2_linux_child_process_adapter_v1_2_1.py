@@ -74,7 +74,7 @@ LINUX_CHILD_PROCESS_ADAPTER_IDENTITY_FIELDS = (
     "application-request-type:" + CANONICAL_APPLICATION_PROVIDER_REQUEST_TYPE,
     "runtime-operations-adapter:" + RUNTIME_OPERATIONS_ADAPTER_IDENTITY,
     "injected-supervisor:" + SUPERVISOR_IDENTITY,
-    "progress-channel:bounded-lifecycle-and-compatibility",
+    "progress-channel:bounded-lifecycle-compatibility-and-generation-aggregate",
     "progress-collection:once-after-child-terminal",
     "deferred-spawn:sole-start-edge",
 )
@@ -248,7 +248,7 @@ def build_linux_child_process_operations_v1_2_1(
             bound.progress_queue.close()
             bound.progress_queue.join_thread()
         if any(type(item) is not tuple or len(item) != 2
-               or item[0] not in {"lifecycle", "compatibility"}
+                   or item[0] not in {"lifecycle", "compatibility", "generation_progress"}
                or type(item[1]) is not bytes for item in values):
             raise TypeError("CONSTRUCTION_OBLIGATION_V2_CHILD_PROGRESS_BYTES_REQUIRED")
         return tuple(values)
@@ -312,6 +312,8 @@ def _run_linux_generation_child_v1_2_1(
             ("lifecycle", raw), block=True, timeout=10.0),
         compatibility_sink=lambda raw: progress_queue.put(
             ("compatibility", raw), block=True, timeout=10.0),
+        generation_progress_sink=lambda raw: progress_queue.put(
+            ("generation_progress", raw), block=True, timeout=10.0),
     )
     result_queue.put(result, block=True, timeout=10.0)
 

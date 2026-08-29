@@ -31,7 +31,7 @@ GENERATION_WSL_INVOCATION_BINDING_IDENTITY = hashlib.sha256(
 ).hexdigest()
 RUNNER_RELATIVE = Path("src/pastila_scout/semantic_admission_v2/stage_p_construction_obligation_v2_linux_generation_runner_v1_2_1.py")
 RUNNER_MODULE = "pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_linux_generation_runner_v1_2_1"
-RUNNER_SOURCE_SHA256 = "ab2590f88fcb6f1f8b31f940db689bf2871c28742aebf6312fbce642cf485dd6"
+RUNNER_SOURCE_SHA256 = "b4e2a8c9d04fbf394c69b93276d16c34efae32c71ef58ae59dd5d97c2517e86f"
 
 
 @dataclass(frozen=True, slots=True)

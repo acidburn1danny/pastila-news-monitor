@@ -49,6 +49,7 @@ def supervise_injected_generation_v1_2_1(
     rendered_prompt: str, operations: InjectedGenerationOperationsV1,
     lifecycle_sink: Callable[[bytes], None] | None = None,
     compatibility_sink: Callable[[bytes], None] | None = None,
+    generation_progress_sink: Callable[[bytes], None] | None = None,
 ) -> InjectedGenerationSupervisorResultV1:
     """Return all durable bytes to the caller; persist or launch nothing."""
     outcome = execute_injected_generation_worker_v1_2_1(
@@ -61,6 +62,7 @@ def supervise_injected_generation_v1_2_1(
         operations=operations,
         lifecycle_sink=lifecycle_sink,
         compatibility_sink=compatibility_sink,
+        generation_progress_sink=generation_progress_sink,
     )
     request = callback_preflight.projector_preflight.preflight.request
     terminal = json.loads(outcome.events[-1])
