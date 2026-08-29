@@ -10,12 +10,14 @@ from .stage_p_construction_obligation_v2_linux_generation_composition_v1_2_1 imp
 
 CANONICAL_DURABLE_SINK_SOURCE_SHA256 = "d544acda36c4024cdedc000bbf3c3e539251d14453fdddfcef07b7c366d95b29"
 CANONICAL_COMPOSITION_SOURCE_SHA256 = "56385253a4fb141e68e6b79c42a20b61c6c6efe5102ad2373b3b1fa9e56d2f7b"
+CANONICAL_RUNTIME_ADAPTER_SOURCE_SHA256 = "8e3499105980a730339941252ffd47466cc9eb39a0dc50d59220b6f1dd666dde"
 LINUX_GENERATION_RUNNER_IDENTITY_FIELDS = (
     "construction-obligation-v2-linux-generation-runner-v1.2.1",
     "five-canonical-paths",
     "composition:" + LINUX_GENERATION_COMPOSITION_IDENTITY,
     "durable-sink-source:" + CANONICAL_DURABLE_SINK_SOURCE_SHA256,
     "composition-source:" + CANONICAL_COMPOSITION_SOURCE_SHA256,
+    "runtime-adapter-source:" + CANONICAL_RUNTIME_ADAPTER_SOURCE_SHA256,
     "inner-timeout:1200",
 )
 LINUX_GENERATION_RUNNER_IDENTITY = hashlib.sha256(

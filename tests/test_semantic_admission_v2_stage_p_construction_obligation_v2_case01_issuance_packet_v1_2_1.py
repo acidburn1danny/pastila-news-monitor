@@ -13,14 +13,12 @@ from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_case
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def test_durable_source_packet_is_frozen_after_attempt_consumption() -> None:
-    import pytest
-    with pytest.raises(FileExistsError, match="EVIDENCE_ROOT_NOT_EXCLUSIVE"):
-        materialize_case01_issuance_packet_v1_2_1(project_root=ROOT)
+def test_runtime_source_packet_is_byte_exact_current_and_unissued() -> None:
+    rebuilt = materialize_case01_issuance_packet_v1_2_1(project_root=ROOT)
     actual = {path.name for path in (ROOT / PACKET_RELATIVE).iterdir()}
-    assert actual == {"application-provider-request.json", "authority-receipt-candidate.json",
-                      "authority-receipt-issued.json", "host-payload.json", "manifest.json",
-                      "rendered-prompt.json", "runner-request.json", "static-executor-binding.json"}
+    assert actual == set(rebuilt)
+    assert all((ROOT / PACKET_RELATIVE / name).read_bytes() == raw
+               for name, raw in rebuilt.items())
     manifest = json.loads((ROOT / PACKET_RELATIVE / "manifest.json").read_bytes())
     assert manifest["case_id"] == CASE_ID == "HMCV1-SASC-01"
     assert manifest["source_context_identity"] == SOURCE_CONTEXT_IDENTITY
@@ -84,3 +82,6 @@ def test_v1_2_packet_and_issued_receipt_remain_byte_exact_and_distinct():
     application_bound = ROOT / "docs/artifacts/semantic-admission-v2-stage-p-construction-obligation-v2-case01-successor-issuance-packet-v1-2-1-application-source-bound"
     assert json.loads((application_bound / "manifest.json").read_bytes())["packet_identity"] == "d38b515c38e159765a09fa42a281cd438691ace9066cf7d811953d3e28c129e3"
     assert json.loads((application_bound / "authority-receipt-issued.json").read_bytes())["authority_receipt_identity"] == "215cd224e82240ce2d7d439b3904063ab3d808a059ea70d53140ce73af65eb3f"
+    durable_bound = ROOT / "docs/artifacts/semantic-admission-v2-stage-p-construction-obligation-v2-case01-successor-issuance-packet-v1-2-1-durable-source-bound"
+    assert json.loads((durable_bound / "manifest.json").read_bytes())["packet_identity"] == "211146a527ad73c67f414ce3da582049eb1a5053884abfd1726abae29bb7ec25"
+    assert json.loads((durable_bound / "authority-receipt-issued.json").read_bytes())["authority_receipt_identity"] == "2ca3f66aa1f5ac86444151b376e36d884f3324a9986c228f01b9894f1b41ab99"
