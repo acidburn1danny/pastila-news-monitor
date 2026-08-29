@@ -38,6 +38,8 @@ SUPERVISOR_CANDIDATE_IDENTITY_FIELDS = (
     "construction-obligation-v2-linux-generation-supervisor-candidate-v1.2.1",
     "injected-supervisor:" + SUPERVISOR_IDENTITY,
     "timeout-progress:canonical-lifecycle-and-compatibility",
+    "timeout-progress:exact-worker-schema-state-machine",
+    "compatibility:ordered-load-completion-identity-bound",
     "timeout-terminal-event:chain-preserving",
     "retry-fallback-repair-selection:0",
 )
