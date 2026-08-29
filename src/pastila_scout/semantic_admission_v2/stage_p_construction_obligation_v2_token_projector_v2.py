@@ -21,6 +21,7 @@ from .stage_p_role_coherence_constraint_v1 import StagePRoleCoherenceConstraintV
 
 PROJECTOR_ALGORITHM_IDENTITY = "REQUEST_BOUND_TOKEN_PIECE_TRIE_V2"
 GRAMMAR_IDENTITY = "CONSTRUCTION_OBLIGATION_DFA_V2"
+MAX_EXACT_CANDIDATES_PER_CALLBACK = 16_384
 
 
 @dataclass(frozen=True, slots=True)
@@ -184,12 +185,8 @@ class StagePConstructionObligationV2TokenProjectorV2:
                 self._cache[key] = allowed
             if self.exact_history_decoder:
                 allowed = self._exact_candidates(
-                    token_ids, decode, prefix, allowed)
-                if not allowed:
-                    allowed = self._exact_candidates(
-                        token_ids, decode, prefix,
-                        tuple(sorted(
-                            set(self._bound_token_pieces) - self.excluded_token_ids)))
+                    token_ids, decode, prefix, allowed,
+                    initial=(phase == "INITIAL"))
         if not allowed:
             receipt = self._receipt(prefix, (), False, "TOKENIZATION_DEAD_NO_VALID_TOKEN")
             raise StagePTokenProjectionFailureV1(receipt)
@@ -236,23 +233,35 @@ class StagePConstructionObligationV2TokenProjectorV2:
         self._admitted += len(result)
         return result
 
-    def _exact_candidates(self, token_ids, decode, prefix, candidates):
-        try:
-            base = decode(token_ids)
-        except (UnicodeError, ValueError, TypeError, KeyError):
-            return ()
-        if (type(base) is not str
-                or hashlib.sha256(base.encode()).hexdigest() != prefix.decoded_sha256):
+    def _exact_candidates(
+        self, token_ids, decode, prefix, candidates, *, initial: bool,
+    ):
+        if len(candidates) > MAX_EXACT_CANDIDATES_PER_CALLBACK:
             return ()
         admitted = []
-        history = tuple(token_ids)
+        predecessor = None
+        if not initial:
+            try:
+                predecessor = decode((token_ids[-1],))
+            except (UnicodeError, ValueError, TypeError, KeyError):
+                return ()
+            if type(predecessor) is not str:
+                return ()
         for token_id in candidates:
             try:
-                extended = decode(history + (token_id,))
-                if (type(extended) is not str or not extended.startswith(base)
-                        or len(extended) == len(base)):
+                if initial:
+                    piece = decode((token_id,))
+                else:
+                    extended = decode((token_ids[-1], token_id))
+                    if (type(extended) is not str
+                            or not extended.startswith(predecessor)):
+                        continue
+                    piece = extended[len(predecessor):]
+                expected = (self._bound_initial_token_pieces[token_id] if initial
+                            else self._bound_token_pieces[token_id])
+                if type(piece) is not str or not piece or piece != expected:
                     continue
-                prefix.state.feed(extended[len(base):])
+                prefix.state.feed(piece)
             except (StagePRoleCoherenceConstraintViolationV1, UnicodeError,
                     ValueError, TypeError, KeyError):
                 continue
