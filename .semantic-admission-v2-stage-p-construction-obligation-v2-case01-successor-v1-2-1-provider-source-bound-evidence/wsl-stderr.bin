@@ -1,0 +1,27 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/mnt/c/Projects/pastila-news-monitor/src/pastila_scout/semantic_admission_v2/stage_p_construction_obligation_v2_linux_generation_runner_v1_2_1.py", line 9, in <module>
+    from .stage_p_construction_obligation_v2_linux_generation_composition_v1_2_1 import LINUX_GENERATION_COMPOSITION_IDENTITY, LinuxGenerationCompositionOutcomeV1_2, run_linux_generation_composition_v1_2_1
+  File "/mnt/c/Projects/pastila-news-monitor/src/pastila_scout/semantic_admission_v2/stage_p_construction_obligation_v2_linux_generation_composition_v1_2_1.py", line 11, in <module>
+    from .stage_p_construction_obligation_v2_linux_child_process_adapter_v1_2_1 import LINUX_CHILD_PROCESS_ADAPTER_IDENTITY, build_linux_child_process_operations_v1_2_1
+  File "/mnt/c/Projects/pastila-news-monitor/src/pastila_scout/semantic_admission_v2/stage_p_construction_obligation_v2_linux_child_process_adapter_v1_2_1.py", line 14, in <module>
+    from pastila_scout.experimental_core_v1_2_stage_p_construction_obligation_v2_runner_v1_1 import (
+  File "/mnt/c/Projects/pastila-news-monitor/src/pastila_scout/experimental_core_v1_2_stage_p_construction_obligation_v2_runner_v1_1.py", line 6, in <module>
+    from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_runner_protocol_codec_v1 import (
+  File "/mnt/c/Projects/pastila-news-monitor/src/pastila_scout/semantic_admission_v2/stage_p_construction_obligation_v2_runner_protocol_codec_v1.py", line 10, in <module>
+    from .stage_p_construction_obligation_v2_host_wsl_payload_contract_v1 import (
+  File "/mnt/c/Projects/pastila-news-monitor/src/pastila_scout/semantic_admission_v2/stage_p_construction_obligation_v2_host_wsl_payload_contract_v1.py", line 14, in <module>
+    from .stage_p_construction_obligation_v2_provider_execution_request_binding_v1 import (
+  File "/mnt/c/Projects/pastila-news-monitor/src/pastila_scout/semantic_admission_v2/stage_p_construction_obligation_v2_provider_execution_request_binding_v1.py", line 7, in <module>
+    from pastila_scout.application_request_authority_v1 import (
+  File "/mnt/c/Projects/pastila-news-monitor/src/pastila_scout/application_request_authority_v1/__init__.py", line 3, in <module>
+    from .authority import ApplicationRequestAuthorityV1
+  File "/mnt/c/Projects/pastila-news-monitor/src/pastila_scout/application_request_authority_v1/authority.py", line 22, in <module>
+    from .models import ApplicationProviderRequestV1
+  File "/mnt/c/Projects/pastila-news-monitor/src/pastila_scout/application_request_authority_v1/models.py", line 17, in <module>
+    class ApplicationProviderRequestV1:
+  File "/mnt/c/Projects/pastila-news-monitor/src/pastila_scout/application_request_authority_v1/models.py", line 86, in ApplicationProviderRequestV1
+    def __copy__(self) -> ApplicationProviderRequestV1:
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'ApplicationProviderRequestV1' is not defined
