@@ -153,6 +153,16 @@ def test_builder_exercises_only_v1_2_1_parser(tmp_path, monkeypatch):
     assert "parse_generation_authority_v1_1" not in source
 
 
+def test_exact_prepared_invocation_passes_host_revalidation_without_execute(tmp_path, monkeypatch):
+    prepared, boundary = _prepared(tmp_path)
+    calls = []
+    monkeypatch.setattr(WslExecutionBoundaryV1_1, "execute",
+                        lambda self, invocation, timeout_seconds: calls.append(invocation))
+    host._revalidate_prepared_v1_2_1(prepared, boundary)
+    assert type(prepared) is binding.PreparedGenerationWslInvocationV1_2_1
+    assert calls == []
+
+
 @pytest.mark.parametrize("legacy", ("v1", "v1-2"))
 def test_legacy_receipts_cannot_build_v1_2_1(tmp_path, legacy):
     old_dir = ROOT / f"docs/artifacts/semantic-admission-v2-stage-p-construction-obligation-v2-case01-successor-issuance-packet-{legacy}"
