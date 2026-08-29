@@ -13,12 +13,14 @@ from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_case
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def test_runtime_source_packet_is_byte_exact_current_and_unissued() -> None:
-    rebuilt = materialize_case01_issuance_packet_v1_2_1(project_root=ROOT)
+def test_runtime_source_packet_is_frozen_after_attempt_consumption() -> None:
+    import pytest
+    with pytest.raises(FileExistsError, match="EVIDENCE_ROOT_NOT_EXCLUSIVE"):
+        materialize_case01_issuance_packet_v1_2_1(project_root=ROOT)
     actual = {path.name for path in (ROOT / PACKET_RELATIVE).iterdir()}
-    assert actual == set(rebuilt) | {"authority-receipt-issued.json"}
-    assert all((ROOT / PACKET_RELATIVE / name).read_bytes() == raw
-               for name, raw in rebuilt.items())
+    assert actual == {"application-provider-request.json", "authority-receipt-candidate.json",
+                      "authority-receipt-issued.json", "host-payload.json", "manifest.json",
+                      "rendered-prompt.json", "runner-request.json", "static-executor-binding.json"}
     manifest = json.loads((ROOT / PACKET_RELATIVE / "manifest.json").read_bytes())
     assert manifest["case_id"] == CASE_ID == "HMCV1-SASC-01"
     assert manifest["source_context_identity"] == SOURCE_CONTEXT_IDENTITY
