@@ -95,6 +95,54 @@ def test_stall_before_first_completed_callback_is_explicitly_no_progress():
         "CHILD_TIMEOUT_TERMINATED")
 
 
+@pytest.mark.parametrize("counts", ((2,), (1, 4), (1, 2, 8)))
+def test_recomputed_omitted_or_skipped_milestone_prefix_fails_closed(counts):
+    request, base = _progress()
+    with pytest.raises(ValueError, match="GENERATION_PROGRESS_BINDING_INVALID"):
+        supervisor._reconcile_artifacts(
+            request=request,
+            child_result=None,
+            failure_code="CHILD_TIMEOUT_TERMINATED",
+            child_progress=(*base, *_records(request, counts)),
+        )
+
+
+@pytest.mark.parametrize("terminal_event,detail", (
+    ("TERMINAL_EOS", {"generated_token_count": 1, "output_sha256": "2" * 64}),
+    ("NO_LEGAL_TOKEN", {"receipt_identity": "3" * 64}),
+    ("EXECUTION_FAILED", {"failure_code": "synthetic"}),
+))
+def test_recomputed_post_terminal_telemetry_fails_closed(terminal_event, detail):
+    request, base = _progress()
+    previous = json.loads(base[-1][1])["event_identity"]
+    terminal = worker._event(
+        request.provider_request_id, 3, terminal_event, detail, previous)
+    with pytest.raises(ValueError, match="PROGRESS_ORDER_INVALID"):
+        supervisor._validated_timeout_progress(
+            (*base, ("lifecycle", terminal), *_records(request, (1,))),
+            request.provider_request_id,
+            request.source_context_identity,
+        )
+
+
+def test_recomputed_post_cleanup_telemetry_fails_closed():
+    request, base = _progress()
+    previous = json.loads(base[-1][1])["event_identity"]
+    terminal = worker._event(
+        request.provider_request_id, 3, "EXECUTION_FAILED",
+        {"failure_code": "synthetic"}, previous)
+    cleanup = worker._event(
+        request.provider_request_id, 4, "CLEANUP_COMPLETED",
+        {"failure_type": None}, json.loads(terminal)["event_identity"])
+    with pytest.raises(ValueError, match="PROGRESS_ORDER_INVALID"):
+        supervisor._validated_timeout_progress(
+            (*base, ("lifecycle", terminal), ("lifecycle", cleanup),
+             *_records(request, (1,))),
+            request.provider_request_id,
+            request.source_context_identity,
+        )
+
+
 @pytest.mark.parametrize("mutation", (
     "cross_request", "cross_source", "worker", "replayed", "reordered",
     "callback", "generated", "elapsed", "projector",

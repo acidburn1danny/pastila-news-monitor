@@ -363,6 +363,7 @@ def _validated_timeout_progress(
         generation_progress, provider_request_id, source_context_identity)
     lifecycle_index = compatibility_index = generation_index = 0
     generation_started = False
+    telemetry_closed = False
     for label, raw in child_progress:
         if label == "compatibility":
             if compatibility_index or lifecycle_index == 0:
@@ -376,9 +377,14 @@ def _validated_timeout_progress(
             if event == "MODEL_LOAD_COMPLETED" and compatibility_index != 1:
                 raise ValueError("CONSTRUCTION_OBLIGATION_V2_CHILD_PROGRESS_ORDER_INVALID")
             generation_started = generation_started or event == "GENERATION_STARTED"
+            telemetry_closed = telemetry_closed or event in {
+                "TERMINAL_EOS", "NO_LEGAL_TOKEN", "EXECUTION_FAILED",
+                "CLEANUP_COMPLETED", "CLEANUP_FAILED",
+            }
             lifecycle_index += 1
             continue
-        if not generation_started or raw != generation_progress[generation_index]:
+        if (not generation_started or telemetry_closed
+                or raw != generation_progress[generation_index]):
             raise ValueError("CONSTRUCTION_OBLIGATION_V2_CHILD_PROGRESS_ORDER_INVALID")
         generation_index += 1
     if (lifecycle_index != len(progress)
@@ -429,7 +435,7 @@ def _validated_generation_progress(raw_records, provider_request_id,
             or value.get("previous_progress_identity") != previous
             or value.get("progress_identity") != expected or raw != _canonical(value)
             or type(callback_count) is not int
-            or not (callback_count <= 2 or callback_count & (callback_count - 1) == 0)
+            or callback_count != (1 if sequence == 0 else 2 ** sequence)
             or callback_count <= previous_callback or callback_count > 4096
             or type(generated) is not int or generated < previous_generated or generated > 3200
             or type(duration) is not int or duration < 0
