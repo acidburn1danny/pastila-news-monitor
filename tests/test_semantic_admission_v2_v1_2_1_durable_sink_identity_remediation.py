@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import ast
+import json
 from pathlib import Path
 
 import pytest
@@ -20,6 +21,9 @@ from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_linu
 )
 
 ROOT = Path(__file__).resolve().parents[1]
+PACKET = ROOT / (
+    "docs/artifacts/semantic-admission-v2-stage-p-construction-obligation-v2-"
+    "case01-successor-issuance-packet-v1-2-1-durable-supervisor-current-bound")
 
 
 def _binding(supervisor_identity: str) -> DurableEvidenceRootBindingV1:
@@ -58,3 +62,32 @@ def test_v1_2_1_composition_binds_versioned_sink_without_execution_surface() -> 
     assert all(term not in source for term in (
         "subprocess", "wsl.exe", "from_pretrained", ".generate(", "nvidia-smi",
     ))
+
+
+def test_real_composition_crosses_sink_binding_and_persists_injected_failure(
+        tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    candidate = json.loads((PACKET / "authority-receipt-candidate.json").read_bytes())
+    issued = dict(candidate["authority_body"])
+    issued["authority_receipt_identity"] = candidate["proposed_receipt_identity"]
+    canonical = lambda value: (json.dumps(
+        value, ensure_ascii=True, sort_keys=True, separators=(",", ":"),
+        allow_nan=False) + "\n").encode()
+    monkeypatch.setattr(
+        composition, "build_linux_child_process_operations_v1_2_1",
+        lambda **kwargs: (_ for _ in ()).throw(RuntimeError("INJECTED_AFTER_SINK")))
+    evidence = tmp_path / "linux-generation"
+    with pytest.raises(RuntimeError, match="INJECTED_AFTER_SINK"):
+        composition.run_linux_generation_composition_v1_2_1(
+            raw_policy_receipt=(ROOT / "docs/artifacts/semantic-admission-v2-stage-p-"
+                "construction-obligation-v2-generation-policy-validation-receipt-v1.json"
+            ).read_bytes(),
+            raw_authority_receipt=canonical(issued),
+            raw_runner_request=(PACKET / "runner-request.json").read_bytes(),
+            system_prompt="not consumed before injected failure",
+            evidence_root=evidence, timeout_seconds=1200.0)
+    persisted = evidence / "composition-pre-model-failure-v1-2.json"
+    assert persisted.is_file()
+    receipt = json.loads(persisted.read_bytes())
+    assert receipt["failure_type"] == "RuntimeError"
+    assert receipt["model_load_started"] is False
+    assert receipt["generation_started"] is False

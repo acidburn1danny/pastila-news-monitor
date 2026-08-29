@@ -41,9 +41,9 @@ def test_exact_identity_propagation_and_single_prospective_edge():
     assert runner.LINUX_GENERATION_RUNNER_IDENTITY == identities.RUNNER_IDENTITY
     assert host.GENERATION_WSL_HOST_EXECUTOR_IDENTITY == identities.HOST_EXECUTOR_IDENTITY
     assert binding.GENERATION_WSL_INVOCATION_BINDING_IDENTITY == identities.WSL_BINDING_IDENTITY
-    assert "evidence-domain:optimized-projector-host-domain-bound" in (
+    assert "evidence-domain:durable-supervisor-current-bound" in (
         binding.GENERATION_WSL_INVOCATION_BINDING_IDENTITY_FIELDS)
-    assert "evidence-domain:optimized-projector-host-domain-bound" in (
+    assert "evidence-domain:durable-supervisor-current-bound" in (
         host.GENERATION_WSL_HOST_EXECUTOR_IDENTITY_FIELDS)
     tree = ast.parse((ROOT / "src/pastila_scout/semantic_admission_v2/stage_p_construction_obligation_v2_generation_wsl_host_executor_v1_2_1.py").read_text("utf-8"))
     calls = [n for n in ast.walk(tree) if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr == "execute"]
@@ -227,11 +227,16 @@ def test_consumed_pre_fix_v1_2_1_receipt_cannot_build_successor(tmp_path):
             boundary=WslExecutionBoundaryV1_1(canonical_model_profile_v1(with_pydantic_bridge=True)))
 
 
-def test_superseded_optimized_projector_receipt_cannot_build_host_domain_successor(tmp_path):
+@pytest.mark.parametrize("packet_suffix", (
+    "optimized-projector-bound",
+    "optimized-projector-host-domain-bound",
+))
+def test_superseded_optimized_projector_receipt_cannot_build_durable_successor(
+        tmp_path, packet_suffix):
     packet = ROOT / PACKET_RELATIVE
     superseded = ROOT / (
         "docs/artifacts/semantic-admission-v2-stage-p-construction-obligation-v2-"
-        "case01-successor-issuance-packet-v1-2-1-optimized-projector-bound/"
+        f"case01-successor-issuance-packet-v1-2-1-{packet_suffix}/"
         "authority-receipt-issued.json")
     with pytest.raises(ValueError):
         binding.build_generation_wsl_invocation_v1_2_1(
