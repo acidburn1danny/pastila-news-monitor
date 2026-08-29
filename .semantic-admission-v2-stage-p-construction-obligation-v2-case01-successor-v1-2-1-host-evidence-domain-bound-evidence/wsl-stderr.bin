@@ -1,0 +1,102 @@
+[transformers] The tokenizer you are loading from '/home/pastila/PastilaAcida-Model-Lab/experimental-0.1/model-cache/huggingface/models--mistralai--Ministral-3-14B-Instruct-2512-BF16/snapshots/3cea74c1ebaf5ce5f5a2553de470e2ceab825142' with an incorrect regex pattern: https://huggingface.co/mistralai/Mistral-Small-3.1-24B-Instruct-2503/discussions/84#69121093e8b480e709447d5e. This will lead to incorrect tokenization. You should set the `fix_mistral_regex=True` flag when loading this tokenizer to fix this issue.
+
+Loading weights:   0%|          | 0/585 [00:00<?, ?it/s]
+Loading weights:   0%|          | 1/585 [00:00<05:22,  1.81it/s]
+Loading weights:   0%|          | 2/585 [00:01<05:20,  1.82it/s]
+Loading weights:   1%|          | 4/585 [00:01<02:27,  3.94it/s]
+Loading weights:   1%|          | 6/585 [00:01<01:36,  5.99it/s]
+Loading weights:   2%|▏         | 13/585 [00:01<00:34, 16.41it/s]
+Loading weights:   3%|▎         | 16/585 [00:01<00:32, 17.59it/s]
+Loading weights:   4%|▍         | 22/585 [00:01<00:22, 24.92it/s]
+Loading weights:   4%|▍         | 26/585 [00:01<00:21, 25.62it/s]
+Loading weights:   5%|▌         | 31/585 [00:02<00:18, 29.86it/s]
+Loading weights:   6%|▌         | 35/585 [00:02<00:18, 29.08it/s]
+Loading weights:   7%|▋         | 40/585 [00:02<00:17, 31.43it/s]
+Loading weights:   8%|▊         | 44/585 [00:02<00:18, 29.82it/s]
+Loading weights:   8%|▊         | 49/585 [00:02<00:16, 33.23it/s]
+Loading weights:   9%|▉         | 53/585 [00:02<00:17, 30.04it/s]
+Loading weights:  10%|▉         | 58/585 [00:02<00:16, 32.73it/s]
+Loading weights:  11%|█         | 62/585 [00:03<00:17, 30.47it/s]
+Loading weights:  11%|█▏        | 67/585 [00:03<00:15, 33.14it/s]
+Loading weights:  12%|█▏        | 71/585 [00:03<00:16, 30.68it/s]
+Loading weights:  13%|█▎        | 76/585 [00:03<00:15, 32.76it/s]
+Loading weights:  14%|█▎        | 80/585 [00:03<00:16, 30.06it/s]
+Loading weights:  15%|█▍        | 85/585 [00:03<00:15, 32.77it/s]
+Loading weights:  15%|█▌        | 89/585 [00:03<00:16, 29.89it/s]
+Loading weights:  16%|█▌        | 94/585 [00:04<00:15, 32.59it/s]
+Loading weights:  17%|█▋        | 98/585 [00:04<00:16, 30.02it/s]
+Loading weights:  18%|█▊        | 103/585 [00:04<00:14, 33.34it/s]
+Loading weights:  18%|█▊        | 107/585 [00:04<00:15, 30.52it/s]
+Loading weights:  19%|█▉        | 112/585 [00:04<00:14, 32.37it/s]
+Loading weights:  20%|█▉        | 116/585 [00:04<00:15, 29.81it/s]
+Loading weights:  21%|██        | 121/585 [00:04<00:14, 32.54it/s]
+Loading weights:  21%|██▏       | 125/585 [00:05<00:15, 29.96it/s]
+Loading weights:  22%|██▏       | 130/585 [00:05<00:13, 33.40it/s]
+Loading weights:  23%|██▎       | 134/585 [00:05<00:14, 30.92it/s]
+Loading weights:  24%|██▍       | 139/585 [00:05<00:13, 33.30it/s]
+Loading weights:  24%|██▍       | 143/585 [00:05<00:14, 30.60it/s]
+Loading weights:  25%|██▌       | 149/585 [00:05<00:12, 33.56it/s]
+Loading weights:  27%|██▋       | 157/585 [00:05<00:10, 40.26it/s]
+Loading weights:  28%|██▊       | 162/585 [00:06<00:10, 41.01it/s]
+Loading weights:  29%|██▊       | 167/585 [00:06<00:09, 42.14it/s]
+Loading weights:  30%|███       | 176/585 [00:06<00:08, 50.29it/s]
+Loading weights:  31%|███▏      | 184/585 [00:06<00:07, 56.79it/s]
+Loading weights:  33%|███▎      | 193/585 [00:06<00:06, 60.73it/s]
+Loading weights:  35%|███▍      | 202/585 [00:06<00:06, 63.40it/s]
+Loading weights:  36%|███▌      | 211/585 [00:06<00:05, 64.90it/s]
+Loading weights:  38%|███▊      | 220/585 [00:06<00:05, 66.65it/s]
+Loading weights:  39%|███▉      | 229/585 [00:07<00:05, 67.45it/s]
+Loading weights:  41%|████      | 238/585 [00:07<00:05, 68.63it/s]
+Loading weights:  42%|████▏     | 247/585 [00:07<00:04, 68.96it/s]
+Loading weights:  43%|████▎     | 254/585 [00:07<00:05, 57.15it/s]
+Loading weights:  44%|████▍     | 260/585 [00:07<00:07, 40.89it/s]
+Loading weights:  45%|████▌     | 266/585 [00:07<00:07, 43.16it/s]
+Loading weights:  47%|████▋     | 274/585 [00:07<00:06, 48.31it/s]
+Loading weights:  48%|████▊     | 280/585 [00:08<00:06, 47.80it/s]
+Loading weights:  49%|████▉     | 286/585 [00:08<00:07, 39.95it/s]
+Loading weights:  50%|████▉     | 292/585 [00:08<00:07, 41.23it/s]
+Loading weights:  51%|█████     | 297/585 [00:08<00:07, 38.33it/s]
+Loading weights:  52%|█████▏    | 302/585 [00:08<00:07, 37.86it/s]
+Loading weights:  53%|█████▎    | 311/585 [00:08<00:06, 44.78it/s]
+Loading weights:  55%|█████▍    | 319/585 [00:09<00:05, 49.65it/s]
+Loading weights:  56%|█████▌    | 325/585 [00:09<00:05, 47.57it/s]
+Loading weights:  56%|█████▋    | 330/585 [00:09<00:05, 46.10it/s]
+Loading weights:  58%|█████▊    | 339/585 [00:09<00:04, 52.96it/s]
+Loading weights:  59%|█████▉    | 346/585 [00:09<00:04, 57.04it/s]
+Loading weights:  60%|██████    | 352/585 [00:09<00:04, 55.06it/s]
+Loading weights:  61%|██████    | 358/585 [00:09<00:04, 50.76it/s]
+Loading weights:  68%|██████▊   | 397/585 [00:09<00:01, 133.73it/s]
+Loading weights:  81%|████████  | 474/585 [00:09<00:00, 297.11it/s]
+Loading weights:  92%|█████████▏| 541/585 [00:10<00:00, 397.65it/s]
+Loading weights: 100%|██████████| 585/585 [00:10<00:00, 57.82it/s] 
+[transformers] The tied weights mapping and config for this model specifies to tie model.language_model.embed_tokens.weight to lm_head.weight, but both are present in the checkpoints with different values, so we will NOT tie them. You should update the config with `tie_word_embeddings=False` to silence this warning.
+[transformers] Both `max_new_tokens` (=3200) and `max_length`(=262144) seem to have been set. `max_new_tokens` will take precedence. Please refer to the documentation for more information. (https://huggingface.co/docs/transformers/main/en/main_classes/text_generation)
+Traceback (most recent call last):
+  File "/mnt/c/Projects/pastila-news-monitor/src/pastila_scout/semantic_admission_v2/stage_p_construction_obligation_v2_linux_generation_supervisor_candidate_v1_2_1.py", line 156, in supervise_linux_generation_candidate_v1_2_1
+    durable_sink.persist(label, raw)
+  File "/mnt/c/Projects/pastila-news-monitor/src/pastila_scout/semantic_admission_v2/stage_p_construction_obligation_v2_linux_generation_composition_v1_2_1.py", line 57, in persist
+    receipt = sink.persist(label, raw)
+              ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Projects/pastila-news-monitor/src/pastila_scout/semantic_admission_v2/stage_p_construction_obligation_v2_durable_filesystem_sink_v1.py", line 98, in persist
+    raise ValueError("CONSTRUCTION_OBLIGATION_V2_DURABLE_LABEL_INVALID")
+ValueError: CONSTRUCTION_OBLIGATION_V2_DURABLE_LABEL_INVALID
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/mnt/c/Projects/pastila-news-monitor/src/pastila_scout/semantic_admission_v2/stage_p_construction_obligation_v2_linux_generation_runner_v1_2_1.py", line 100, in <module>
+    raise SystemExit(main(sys.argv[1:]))
+                     ^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Projects/pastila-news-monitor/src/pastila_scout/semantic_admission_v2/stage_p_construction_obligation_v2_linux_generation_runner_v1_2_1.py", line 70, in main
+    run_linux_generation_runner_v1_2_1(
+  File "/mnt/c/Projects/pastila-news-monitor/src/pastila_scout/semantic_admission_v2/stage_p_construction_obligation_v2_linux_generation_runner_v1_2_1.py", line 55, in run_linux_generation_runner_v1_2_1
+    outcome = composition(
+              ^^^^^^^^^^^^
+  File "/mnt/c/Projects/pastila-news-monitor/src/pastila_scout/semantic_admission_v2/stage_p_construction_obligation_v2_linux_generation_composition_v1_2_1.py", line 70, in run_linux_generation_composition_v1_2_1
+    outcome = supervise_linux_generation_candidate_v1_2_1(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Projects/pastila-news-monitor/src/pastila_scout/semantic_admission_v2/stage_p_construction_obligation_v2_linux_generation_supervisor_candidate_v1_2_1.py", line 158, in supervise_linux_generation_candidate_v1_2_1
+    raise RuntimeError("CONSTRUCTION_OBLIGATION_V2_DURABLE_PERSISTENCE_FAILED") from exc
+RuntimeError: CONSTRUCTION_OBLIGATION_V2_DURABLE_PERSISTENCE_FAILED
