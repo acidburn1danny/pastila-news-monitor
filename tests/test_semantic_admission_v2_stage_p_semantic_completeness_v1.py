@@ -13,7 +13,8 @@ from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_charact
     StagePConstructionObligationCharacterControllerV1,
 )
 from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_semantic_completeness_v1 import (
-    SemanticCompletenessAdmissionV1, SemanticCompletenessFailureV1,
+    CoverageGapJustificationV1, SemanticCompletenessAdmissionV1,
+    SemanticCompletenessFailureV1,
     SemanticCompletenessPolicyV1,
 )
 from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_token_projector_v1 import (
@@ -116,11 +117,16 @@ def _raw(value) -> str:
 
 
 def test_positive_case01_has_full_coverage_authority_creative_target_and_possible_modality():
-    ledger = SemanticCompletenessAdmissionV1(_policy()).validate_terminal(
-        _raw(_positive_value()))
+    admission = SemanticCompletenessAdmissionV1(_policy())
+    ledger = admission.validate_terminal(_raw(_positive_value()))
     assert ledger.entries[1].candidate_modality.value == "POSSIBLE"
     assert ledger.entries[1].authority_support_ref is not None
     assert ledger.creative_target_audits
+    audits = admission.qualification_audits(ledger)
+    assert len(audits) == 1
+    assert audits[0].proposition_entry_id == "P2"
+    assert audits[0].source_sha256 == _policy().candidate_sha256
+    assert len(audits[0].audit_identity) == 64
 
 
 def test_frozen_output_is_schema_valid_but_rejected_for_uncovered_bytes():
@@ -128,7 +134,7 @@ def test_frozen_output_is_schema_valid_but_rejected_for_uncovered_bytes():
     import hashlib
     assert hashlib.sha256(raw.encode()).hexdigest() == FROZEN_RAW_SHA256
     with pytest.raises(SemanticCompletenessFailureV1, match=
-                       "SEMANTIC_COMPLETENESS_CANDIDATE_COVERAGE_INCOMPLETE"):
+                       "SEMANTIC_COMPLETENESS_CONSTRUCTION_COVERAGE_INCOMPLETE"):
         SemanticCompletenessAdmissionV1(_policy()).validate_terminal(raw)
 
 
@@ -193,6 +199,50 @@ def test_case01_creative_target_analysis_is_required_independently_of_declared_r
         SemanticCompletenessAdmissionV1(_policy()).validate_terminal(_raw(value))
 
 
+def test_creative_vehicle_span_cannot_mask_construction_or_proposition_gap():
+    value = _positive_value()
+    for record in value["construction_role_audit"]["construction_records"]:
+        record["candidate_span_ref"]["end_utf8"] = 100
+    for entry in value["entries"]:
+        entry["candidate_span_ref"]["end_utf8"] = 100
+    with pytest.raises(SemanticCompletenessFailureV1, match=
+                       "SEMANTIC_COMPLETENESS_CONSTRUCTION_COVERAGE_INCOMPLETE"):
+        SemanticCompletenessAdmissionV1(_policy()).validate_terminal(_raw(value))
+
+
+def test_authority_cannot_move_from_factual_return_to_creative_host():
+    value = _positive_value()
+    value["entries"][0]["authority_support_ref"] = value["entries"][1]["authority_support_ref"]
+    value["entries"][1].update(
+        authority_support_ref=None, event_alignment="NEW_UNSUPPORTED_EVENT",
+        authority_modality="NOT_APPLICABLE", authority_timing="NOT_APPLICABLE")
+    with pytest.raises(SemanticCompletenessFailureV1, match=
+                       "SEMANTIC_COMPLETENESS_AUTHORITY_ON_NONFACTUAL_ENTRY"):
+        SemanticCompletenessAdmissionV1(_policy()).validate_terminal(_raw(value))
+
+
+def test_unrelated_possible_entry_cannot_discharge_qualification_audit():
+    value = _positive_value()
+    value["entries"][1]["candidate_modality"] = "CERTAIN_OR_ACTUAL"
+    extra = dict(value["entries"][1])
+    extra.update(entry_id="P3", commitment="unrelated qualifier carrier",
+                 candidate_modality="POSSIBLE")
+    value["entries"].append(extra)
+    with pytest.raises(SemanticCompletenessFailureV1, match=
+                       "SEMANTIC_COMPLETENESS_QUALIFICATION_MODALITY_REQUIRED"):
+        SemanticCompletenessAdmissionV1(_policy()).validate_terminal(_raw(value))
+
+
+def test_gap_partition_requires_utf8_boundaries_and_closed_reason_codes():
+    policy = _policy()
+    invalid = replace(policy, justified_gaps=(
+        CoverageGapJustificationV1(1, 2, "free text"),))
+    with pytest.raises(SemanticCompletenessFailureV1, match=
+                       "SEMANTIC_COMPLETENESS_GAP_JUSTIFICATION_INVALID"):
+        SemanticCompletenessAdmissionV1(invalid).validate_terminal(
+            _raw(_positive_value()))
+
+
 def test_projector_withholds_eos_for_schema_terminal_semantically_incomplete_output():
     candidate, authority = _sources()
     context = SourceReferenceConstraintContextV1.bind(
@@ -216,5 +266,5 @@ def test_projector_withholds_eos_for_schema_terminal_semantically_incomplete_out
     with pytest.raises(StagePTokenProjectionFailureV1) as failure:
         projector.allowed_token_ids(ids, decode)
     assert failure.value.receipt.reason_code == (
-        "SEMANTIC_COMPLETENESS_CANDIDATE_COVERAGE_INCOMPLETE")
+        "SEMANTIC_COMPLETENESS_CONSTRUCTION_COVERAGE_INCOMPLETE")
     assert not failure.value.receipt.eos_allowed

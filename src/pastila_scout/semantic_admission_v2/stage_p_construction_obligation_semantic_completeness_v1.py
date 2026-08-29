@@ -3,6 +3,8 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
+import unicodedata
 from dataclasses import dataclass
 
 from .immutable_source_span_reference_v1 import ImmutableUtf8SourceV1, SourceRoleV1
@@ -31,7 +33,17 @@ class UnresolvedJustificationV1:
     start_utf8: int
     end_utf8: int
     reason_code: str
-    competing_interpretations: tuple[str, ...]
+    construction_ids: tuple[str, ...]
+    entry_ids: tuple[str, ...]
+    competing_interpretations: tuple["SourceBoundInterpretationV1", ...]
+
+
+@dataclass(frozen=True, slots=True)
+class SourceBoundInterpretationV1:
+    label: str
+    source_sha256: str
+    start_utf8: int
+    end_utf8: int
 
 
 @dataclass(frozen=True, slots=True)
@@ -42,10 +54,22 @@ class QualificationObligationV1:
 
 
 @dataclass(frozen=True, slots=True)
+class QualificationAuditV1:
+    source_sha256: str
+    cue_start_utf8: int
+    cue_end_utf8: int
+    proposition_entry_id: str
+    observed_modality: Modality
+    audit_identity: str
+
+
+@dataclass(frozen=True, slots=True)
 class SemanticCompletenessPolicyV1:
     candidate_sha256: str
     authority_sha256: str
     candidate_bytes: int
+    authority_bytes: int
+    candidate_utf8_boundaries: tuple[int, ...]
     justified_gaps: tuple[CoverageGapJustificationV1, ...]
     unresolved_justifications: tuple[UnresolvedJustificationV1, ...]
     qualifications: tuple[QualificationObligationV1, ...]
@@ -72,13 +96,21 @@ class SemanticCompletenessPolicyV1:
             "candidate_sha256": candidate.sha256,
             "authority_sha256": factual_authority.sha256,
             "candidate_bytes": len(candidate.data),
+            "authority_bytes": len(factual_authority.data),
             "justified_gaps": [gap.__dict__ if hasattr(gap, "__dict__") else
                                {"start_utf8": gap.start_utf8, "end_utf8": gap.end_utf8,
                                 "reason_code": gap.reason_code} for gap in justified_gaps],
             "unresolved_justifications": [
                 {"start_utf8": item.start_utf8, "end_utf8": item.end_utf8,
                  "reason_code": item.reason_code,
-                 "competing_interpretations": item.competing_interpretations}
+                 "construction_ids": item.construction_ids,
+                 "entry_ids": item.entry_ids,
+                 "competing_interpretations": [
+                     {"label": interpretation.label,
+                      "source_sha256": interpretation.source_sha256,
+                      "start_utf8": interpretation.start_utf8,
+                      "end_utf8": interpretation.end_utf8}
+                     for interpretation in item.competing_interpretations]}
                 for item in unresolved_justifications],
             "qualifications": [
                 {"start_utf8": item.start_utf8, "end_utf8": item.end_utf8,
@@ -89,7 +121,9 @@ class SemanticCompletenessPolicyV1:
         }
         identity = hashlib.sha256((json.dumps(
             value, ensure_ascii=True, sort_keys=True, separators=(",", ":")) + "\n").encode()).hexdigest()
+        boundaries = _utf8_boundaries(candidate.data)
         return cls(candidate.sha256, factual_authority.sha256, len(candidate.data),
+                   len(factual_authority.data), boundaries,
                    justified_gaps, unresolved_justifications, qualifications,
                    case01, case01, identity)
 
@@ -107,33 +141,33 @@ class SemanticCompletenessAdmissionV1:
         self._validate(ledger)
         return ledger
 
+    def qualification_audits(
+        self, ledger: ConstructionObligationLedgerV2,
+    ) -> tuple[QualificationAuditV1, ...]:
+        return tuple(self._qualification_audit(ledger, obligation)
+                     for obligation in self.policy.qualifications)
+
     def _validate(self, ledger: ConstructionObligationLedgerV2) -> None:
-        references = [record.candidate_span_ref
-                      for record in ledger.construction_role_audit.construction_records]
-        references.extend(entry.candidate_span_ref for entry in ledger.entries)
-        references.extend(audit.vehicle_span_ref for audit in ledger.creative_target_audits)
-        for reference in references:
+        construction_references = [
+            record.candidate_span_ref
+            for record in ledger.construction_role_audit.construction_records]
+        proposition_references = [entry.candidate_span_ref for entry in ledger.entries]
+        for reference in construction_references + proposition_references:
             if reference.source_sha256 != self.policy.candidate_sha256:
                 self._fail("SEMANTIC_COMPLETENESS_CANDIDATE_IDENTITY_MISMATCH")
+        justified = self._validated_gap_partition()
+        self._require_coverage(construction_references, justified,
+                               "SEMANTIC_COMPLETENESS_CONSTRUCTION_COVERAGE_INCOMPLETE")
+        self._require_coverage(proposition_references, justified,
+                               "SEMANTIC_COMPLETENESS_PROPOSITION_COVERAGE_INCOMPLETE")
 
-        expected = set(range(self.policy.candidate_bytes))
-        covered: set[int] = set()
-        for reference in references:
-            covered.update(range(reference.start_utf8, reference.end_utf8))
-        justified: set[int] = set()
-        for gap in self.policy.justified_gaps:
-            if (not gap.reason_code or gap.start_utf8 < 0 or
-                    gap.end_utf8 <= gap.start_utf8 or gap.end_utf8 > self.policy.candidate_bytes):
-                self._fail("SEMANTIC_COMPLETENESS_GAP_JUSTIFICATION_INVALID")
-            justified.update(range(gap.start_utf8, gap.end_utf8))
-        if covered | justified != expected or covered & justified:
-            self._fail("SEMANTIC_COMPLETENESS_CANDIDATE_COVERAGE_INCOMPLETE")
-
+        host_bases = {entry.entry_id: self._entry_base(entry)
+                      for entry in ledger.entries}
         fingerprints: set[str] = set()
         for entry in ledger.entries:
-            value = entry.model_dump(mode="json")
-            for key in ("entry_id", "independence_group"):
-                value.pop(key)
+            value = self._entry_base(entry)
+            value["creative_host"] = (None if entry.creative_host_entry_id is None
+                                      else host_bases.get(entry.creative_host_entry_id))
             fingerprint = json.dumps(value, ensure_ascii=True, sort_keys=True,
                                      separators=(",", ":"))
             if fingerprint in fingerprints:
@@ -155,35 +189,116 @@ class SemanticCompletenessAdmissionV1:
             self._fail("SEMANTIC_COMPLETENESS_CONSTRUCTION_ANALYSIS_REQUIRED")
         if self.policy.creative_target_analysis_required and not ledger.creative_target_audits:
             self._fail("SEMANTIC_COMPLETENESS_CREATIVE_TARGET_ANALYSIS_REQUIRED")
-        if (self.policy.factual_authority_analysis_required and
-                not any(entry.authority_support_ref is not None for entry in ledger.entries)):
-            self._fail("SEMANTIC_COMPLETENESS_FACTUAL_AUTHORITY_ANALYSIS_REQUIRED")
+        construction_hosts = {
+            record.creative_host_entry_id: record.candidate_span_ref
+            for record in ledger.construction_role_audit.construction_records
+            if record.creative_host_entry_id is not None}
+        for audit in ledger.creative_target_audits:
+            construction_span = construction_hosts.get(audit.creative_host_entry_id)
+            if (construction_span is None or
+                    audit.vehicle_span_ref != construction_span):
+                self._fail("SEMANTIC_COMPLETENESS_CREATIVE_TARGET_BINDING_INVALID")
+        if any(entry.authority_support_ref is not None
+               for entry in ledger.entries
+               if entry.entry_type is not EntryType.REAL_WORLD_COMMITMENT):
+            self._fail("SEMANTIC_COMPLETENESS_AUTHORITY_ON_NONFACTUAL_ENTRY")
+        if self.policy.factual_authority_analysis_required:
+            authority_references = [
+                entry.authority_support_ref for entry in ledger.entries
+                if (entry.entry_type is EntryType.REAL_WORLD_COMMITMENT and
+                    entry.authority_support_ref is not None)]
+            if not authority_references:
+                self._fail("SEMANTIC_COMPLETENESS_FACTUAL_AUTHORITY_ANALYSIS_REQUIRED")
+            authority_covered = set()
+            for reference in authority_references:
+                if reference.source_sha256 != self.policy.authority_sha256:
+                    self._fail("SEMANTIC_COMPLETENESS_AUTHORITY_IDENTITY_MISMATCH")
+                authority_covered.update(range(reference.start_utf8, reference.end_utf8))
+            if authority_covered != set(range(self.policy.authority_bytes)):
+                self._fail("SEMANTIC_COMPLETENESS_AUTHORITY_COVERAGE_INCOMPLETE")
 
-        unresolved = [entry.candidate_span_ref for entry in ledger.entries
+        unresolved = [(entry.entry_id, "entry", entry.candidate_span_ref)
+                      for entry in ledger.entries
                       if entry.entry_type is EntryType.UNRESOLVED_SCOPE]
-        unresolved.extend(record.candidate_span_ref
+        unresolved.extend((record.construction_id, "construction", record.candidate_span_ref)
                           for record in ledger.construction_role_audit.construction_records
                           if record.construction_role.value == "UNRESOLVED")
-        for reference in unresolved:
+        for record_id, record_kind, reference in unresolved:
             matches = [item for item in self.policy.unresolved_justifications
                        if (item.start_utf8, item.end_utf8) ==
-                       (reference.start_utf8, reference.end_utf8)]
+                       (reference.start_utf8, reference.end_utf8) and
+                       record_id in (item.entry_ids if record_kind == "entry"
+                                     else item.construction_ids)]
             if len(matches) != 1:
                 self._fail("SEMANTIC_COMPLETENESS_UNRESOLVED_JUSTIFICATION_REQUIRED")
             item = matches[0]
-            if (not item.reason_code or len(item.competing_interpretations) < 2 or
-                    len(set(item.competing_interpretations)) != len(item.competing_interpretations) or
-                    any(not interpretation.strip() for interpretation in item.competing_interpretations)):
+            if record_kind == "construction":
+                record = next(value for value in
+                              ledger.construction_role_audit.construction_records
+                              if value.construction_id == record_id)
+                if record.role_basis != item.reason_code:
+                    self._fail("SEMANTIC_COMPLETENESS_UNRESOLVED_REASON_MISMATCH")
+            interpretations = item.competing_interpretations
+            if (item.reason_code not in {"LEXICAL_AMBIGUITY", "SCOPE_AMBIGUITY",
+                                         "CONSTRUCTION_ROLE_AMBIGUITY"} or
+                    len(interpretations) < 2 or
+                    len({_normalized_text(value.label) for value in interpretations}) !=
+                    len(interpretations) or any(
+                        value.source_sha256 != self.policy.candidate_sha256 or
+                        value.start_utf8 != item.start_utf8 or
+                        value.end_utf8 != item.end_utf8 or not value.label.strip()
+                        for value in interpretations)):
                 self._fail("SEMANTIC_COMPLETENESS_UNRESOLVED_JUSTIFICATION_INVALID")
+        self.qualification_audits(ledger)
 
-        for obligation in self.policy.qualifications:
-            matching = [entry for entry in ledger.entries
-                        if entry.entry_type is EntryType.REAL_WORLD_COMMITMENT and
-                        entry.candidate_span_ref.start_utf8 <= obligation.start_utf8 and
-                        entry.candidate_span_ref.end_utf8 >= obligation.end_utf8 and
-                        entry.candidate_modality is obligation.required_modality]
-            if not matching:
-                self._fail("SEMANTIC_COMPLETENESS_QUALIFICATION_MODALITY_REQUIRED")
+    def _validated_gap_partition(self) -> set[int]:
+        justified: set[int] = set()
+        previous_end = -1
+        boundaries = set(self.policy.candidate_utf8_boundaries)
+        for gap in self.policy.justified_gaps:
+            if (gap.reason_code not in {"NON_SEMANTIC_SEPARATOR", "OUT_OF_SCOPE_METADATA"} or
+                    gap.start_utf8 not in boundaries or gap.end_utf8 not in boundaries or
+                    gap.start_utf8 < previous_end or gap.end_utf8 <= gap.start_utf8):
+                self._fail("SEMANTIC_COMPLETENESS_GAP_JUSTIFICATION_INVALID")
+            previous_end = gap.end_utf8
+            justified.update(range(gap.start_utf8, gap.end_utf8))
+        return justified
+
+    def _require_coverage(self, references, justified: set[int], reason: str) -> None:
+        covered: set[int] = set()
+        for reference in references:
+            covered.update(range(reference.start_utf8, reference.end_utf8))
+        expected = set(range(self.policy.candidate_bytes))
+        if covered | justified != expected or covered & justified:
+            self._fail(reason)
+
+    @staticmethod
+    def _entry_base(entry) -> dict:
+        value = entry.model_dump(mode="json")
+        for key in ("entry_id", "independence_group", "creative_host_entry_id"):
+            value.pop(key)
+        return _normalize_value(value)
+
+    def _qualification_audit(self, ledger, obligation) -> QualificationAuditV1:
+        return_ids = {entry_id
+                      for record in ledger.construction_role_audit.construction_records
+                      for entry_id in record.literal_or_return_entry_ids}
+        matching = [entry for entry in ledger.entries
+                    if entry.entry_id in return_ids and
+                    entry.entry_type is EntryType.REAL_WORLD_COMMITMENT and
+                    entry.candidate_span_ref.start_utf8 == obligation.start_utf8 and
+                    entry.candidate_span_ref.end_utf8 >= obligation.end_utf8 and
+                    entry.candidate_modality is obligation.required_modality]
+        if len(matching) != 1:
+            self._fail("SEMANTIC_COMPLETENESS_QUALIFICATION_MODALITY_REQUIRED")
+        entry = matching[0]
+        fields = (self.policy.identity, self.policy.candidate_sha256,
+                  str(obligation.start_utf8), str(obligation.end_utf8),
+                  entry.entry_id, entry.candidate_modality.value)
+        identity = hashlib.sha256("\n".join(fields).encode()).hexdigest()
+        return QualificationAuditV1(
+            self.policy.candidate_sha256, obligation.start_utf8,
+            obligation.end_utf8, entry.entry_id, entry.candidate_modality, identity)
 
     @staticmethod
     def _fail(reason: str) -> None:
@@ -206,9 +321,33 @@ def _qualification_obligations(candidate: bytes) -> tuple[QualificationObligatio
     return tuple(obligations)
 
 
+def _utf8_boundaries(data: bytes) -> tuple[int, ...]:
+    boundaries = [0]
+    size = 0
+    for character in data.decode("utf-8", errors="strict"):
+        size += len(character.encode("utf-8"))
+        boundaries.append(size)
+    return tuple(boundaries)
+
+
+def _normalized_text(value: str) -> str:
+    return re.sub(r"\s+", " ", unicodedata.normalize("NFKC", value).casefold()).strip()
+
+
+def _normalize_value(value):
+    if isinstance(value, str):
+        return _normalized_text(value)
+    if isinstance(value, dict):
+        return {key: _normalize_value(item) for key, item in value.items()}
+    if isinstance(value, list):
+        return [_normalize_value(item) for item in value]
+    return value
+
+
 __all__ = (
     "ADMISSION_VERSION", "CoverageGapJustificationV1",
     "QualificationObligationV1", "SemanticCompletenessAdmissionV1",
+    "QualificationAuditV1", "SourceBoundInterpretationV1",
     "SemanticCompletenessFailureV1", "SemanticCompletenessPolicyV1",
     "UnresolvedJustificationV1",
 )
