@@ -240,6 +240,23 @@ def test_unbound_factual_carrier_cannot_satisfy_return_authority():
         SemanticCompletenessAdmissionV1(_policy()).validate_terminal(_raw(value))
 
 
+def test_required_p2_authority_cannot_be_split_across_expanded_returns():
+    value = _positive_value(); _, authority_source = _sources()
+    value["entries"][1]["authority_support_ref"]["end_utf8"] = 1
+    extra = dict(value["entries"][1])
+    extra.update(
+        entry_id="P3", commitment="synthetic authority remainder",
+        authority_support_ref=_reference(
+            "FACTUAL_AUTHORITY", authority_source.sha256, 1,
+            len(authority_source.data)))
+    value["entries"].append(extra)
+    value["construction_role_audit"]["construction_records"][0][
+        "literal_or_return_entry_ids"] = ["P2", "P3"]
+    with pytest.raises(SemanticCompletenessFailureV1, match=
+                       "SEMANTIC_COMPLETENESS_AUTHORITY_COVERAGE_INCOMPLETE"):
+        SemanticCompletenessAdmissionV1(_policy()).validate_terminal(_raw(value))
+
+
 def test_relinked_synthetic_return_cannot_replace_bound_qualification_entry():
     value = _positive_value()
     value["entries"][1].update(
@@ -253,7 +270,7 @@ def test_relinked_synthetic_return_cannot_replace_bound_qualification_entry():
     value["construction_role_audit"]["construction_records"][0][
         "literal_or_return_entry_ids"] = ["P3"]
     with pytest.raises(SemanticCompletenessFailureV1, match=
-                       "SEMANTIC_COMPLETENESS_QUALIFICATION_MODALITY_REQUIRED"):
+                       "SEMANTIC_COMPLETENESS_REQUIRED_AUTHORITY_RETURN_MISSING"):
         SemanticCompletenessAdmissionV1(_policy()).validate_terminal(_raw(value))
 
 
@@ -311,6 +328,47 @@ def test_unresolved_justification_ids_must_exactly_equal_observed_records():
         _policy(), creative_target_analysis_required=False,
         factual_authority_analysis_required=False, qualifications=(),
         unresolved_justifications=(justification,)))
+    with pytest.raises(SemanticCompletenessFailureV1, match=
+                       "SEMANTIC_COMPLETENESS_UNRESOLVED_ID_SET_MISMATCH"):
+        SemanticCompletenessAdmissionV1(policy).validate_terminal(_raw(value))
+
+
+@pytest.mark.parametrize("justifications", ["duplicates", "wrong_span"])
+def test_unresolved_justification_partition_rejects_duplicate_or_cross_span_ids(
+    justifications,
+):
+    value = _frozen_value(); candidate, _ = _sources()
+    span = _reference("CANDIDATE", candidate.sha256, 0, len(candidate.data))
+    value["construction_role_audit"]["construction_records"][0].update(
+        candidate_span_ref=span, role_basis="CONSTRUCTION_ROLE_AMBIGUITY")
+    value["entries"] = [{**value["entries"][0], "candidate_span_ref": span}]
+    for key in value["coverage_receipt"]:
+        value["coverage_receipt"][key] = True
+    interpretations = (
+        SourceBoundInterpretationV1(
+            "literal", candidate.sha256, 0, len(candidate.data)),
+        SourceBoundInterpretationV1(
+            "mixed", candidate.sha256, 0, len(candidate.data)))
+    canonical = UnresolvedJustificationV1(
+        0, len(candidate.data), "CONSTRUCTION_ROLE_AMBIGUITY",
+        ("C1",), ("P1",), interpretations)
+    if justifications == "duplicates":
+        selected = (replace(
+            canonical, construction_ids=("C1", "C1"),
+            entry_ids=("P1", "P1")),)
+    else:
+        wrong = UnresolvedJustificationV1(
+            1, len(candidate.data), "CONSTRUCTION_ROLE_AMBIGUITY",
+            ("C1",), ("P1",), (
+                SourceBoundInterpretationV1(
+                    "literal", candidate.sha256, 1, len(candidate.data)),
+                SourceBoundInterpretationV1(
+                    "mixed", candidate.sha256, 1, len(candidate.data))))
+        selected = (canonical, wrong)
+    policy = seal_semantic_completeness_policy_v1(replace(
+        _policy(), creative_target_analysis_required=False,
+        factual_authority_analysis_required=False, qualifications=(),
+        unresolved_justifications=selected))
     with pytest.raises(SemanticCompletenessFailureV1, match=
                        "SEMANTIC_COMPLETENESS_UNRESOLVED_ID_SET_MISMATCH"):
         SemanticCompletenessAdmissionV1(policy).validate_terminal(_raw(value))

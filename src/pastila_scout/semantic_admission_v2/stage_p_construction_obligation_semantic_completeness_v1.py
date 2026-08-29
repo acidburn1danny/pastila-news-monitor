@@ -192,15 +192,24 @@ class SemanticCompletenessAdmissionV1:
                    for entry in ledger.entries
                    if entry.entry_id not in construction_return_ids):
                 self._fail("SEMANTIC_COMPLETENESS_AUTHORITY_ON_UNBOUND_ENTRY")
-            authority_references = [entry.authority_support_ref
-                                    for entry in bound_returns]
-            authority_covered = set()
-            for reference in authority_references:
+            required_authority_ids = {
+                obligation.required_proposition_entry_id
+                for obligation in self.policy.qualifications
+                if obligation.required_proposition_entry_id is not None}
+            if not required_authority_ids:
+                required_authority_ids = {entry.entry_id for entry in bound_returns}
+            index = {entry.entry_id: entry for entry in bound_returns}
+            if not required_authority_ids.issubset(index):
+                self._fail("SEMANTIC_COMPLETENESS_REQUIRED_AUTHORITY_RETURN_MISSING")
+            for entry_id in sorted(required_authority_ids):
+                reference = index[entry_id].authority_support_ref
+                if reference is None:
+                    self._fail("SEMANTIC_COMPLETENESS_FACTUAL_AUTHORITY_ANALYSIS_REQUIRED")
                 if reference.source_sha256 != self.policy.authority_sha256:
                     self._fail("SEMANTIC_COMPLETENESS_AUTHORITY_IDENTITY_MISMATCH")
-                authority_covered.update(range(reference.start_utf8, reference.end_utf8))
-            if authority_covered != set(range(self.policy.authority_bytes)):
-                self._fail("SEMANTIC_COMPLETENESS_AUTHORITY_COVERAGE_INCOMPLETE")
+                if (reference.start_utf8 != 0 or
+                        reference.end_utf8 != self.policy.authority_bytes):
+                    self._fail("SEMANTIC_COMPLETENESS_AUTHORITY_COVERAGE_INCOMPLETE")
 
         unresolved = [(entry.entry_id, "entry", entry.candidate_span_ref)
                       for entry in ledger.entries
@@ -208,18 +217,27 @@ class SemanticCompletenessAdmissionV1:
         unresolved.extend((record.construction_id, "construction", record.candidate_span_ref)
                           for record in ledger.construction_role_audit.construction_records
                           if record.construction_role.value == "UNRESOLVED")
-        observed_entries = {record_id for record_id, kind, _ in unresolved
-                            if kind == "entry"}
-        observed_constructions = {record_id for record_id, kind, _ in unresolved
-                                  if kind == "construction"}
-        declared_entries = {record_id for item in self.policy.unresolved_justifications
-                            for record_id in item.entry_ids}
-        declared_constructions = {
-            record_id for item in self.policy.unresolved_justifications
-            for record_id in item.construction_ids}
-        if (declared_entries != observed_entries or
-                declared_constructions != observed_constructions):
+        observed_by_span: dict[tuple[int, int], dict[str, set[str]]] = {}
+        for record_id, kind, reference in unresolved:
+            group = observed_by_span.setdefault(
+                (reference.start_utf8, reference.end_utf8),
+                {"entry": set(), "construction": set()})
+            group[kind].add(record_id)
+        declared_by_span: dict[tuple[int, int], UnresolvedJustificationV1] = {}
+        for item in self.policy.unresolved_justifications:
+            span = (item.start_utf8, item.end_utf8)
+            if (span in declared_by_span or
+                    len(item.entry_ids) != len(set(item.entry_ids)) or
+                    len(item.construction_ids) != len(set(item.construction_ids))):
+                self._fail("SEMANTIC_COMPLETENESS_UNRESOLVED_ID_SET_MISMATCH")
+            declared_by_span[span] = item
+        if set(declared_by_span) != set(observed_by_span):
             self._fail("SEMANTIC_COMPLETENESS_UNRESOLVED_ID_SET_MISMATCH")
+        for span, observed_ids in observed_by_span.items():
+            item = declared_by_span[span]
+            if (set(item.entry_ids) != observed_ids["entry"] or
+                    set(item.construction_ids) != observed_ids["construction"]):
+                self._fail("SEMANTIC_COMPLETENESS_UNRESOLVED_ID_SET_MISMATCH")
         for record_id, record_kind, reference in unresolved:
             matches = [item for item in self.policy.unresolved_justifications
                        if (item.start_utf8, item.end_utf8) ==
