@@ -1,0 +1,63 @@
+{
+  "audited_commit": "bf8845cb6ab288ae46bf6ea8b3dd392b9d7f8a75",
+  "audited_tree": "5ac64d5b79352fd020aabdb8a6aa785277ed0231",
+  "boundary_audit": {
+    "character_counts": [15998, 15999, 16000],
+    "oracle_divergences": 0,
+    "result": "PASS"
+  },
+  "cache_and_callback_isolation": {
+    "cache_dimensions": [
+      "request_authority",
+      "source_context",
+      "tokenizer",
+      "decoder",
+      "grammar",
+      "projector_version",
+      "special_token_policy"
+    ],
+    "cache_isolation_violations": 0,
+    "cross_request_rejected": true,
+    "generated_backtracking_rejected": true,
+    "generated_prefix_mutation_rejected": true,
+    "prompt_substitution_rejected": true,
+    "stale_callback_rejected": true
+  },
+  "exact_tokenizer_replay": {
+    "callbacks": 512,
+    "callbacks_per_second": 434.51728600571056,
+    "divergences": 0,
+    "long_replay_comparisons": 512,
+    "oracle_replay_seconds": 767.7094795399995,
+    "projected_3200_callback_seconds": 7.364494125,
+    "projection_ns": {
+      "max": 66021827,
+      "median": 1394575,
+      "p95": 1903762,
+      "p99": 63041441
+    },
+    "targeted_comparisons": 7,
+    "telemetry_publication_ns": {
+      "median": 14805,
+      "p99": 26638
+    },
+    "total_comparisons": 519,
+    "wrapper_ns": {
+      "median": 1414953,
+      "p99": 63266675
+    }
+  },
+  "git_object_preflight": "PASS",
+  "import_side_effect_audit": {
+    "adapter_loads": 0,
+    "forbidden_runtime_modules_loaded": 0,
+    "inference_calls": 0,
+    "model_loads": 0,
+    "process_launches_on_import": 0
+  },
+  "result": "PASS",
+  "schema_name": "pastila-construction-obligation-v2-projector-v2-independent-audit",
+  "schema_version": "1.0.0",
+  "test_sha256": "4d0500cf41abec4ff1e5e3d26fd244bd6a03fdb5c952a96722b44fbb55971a97",
+  "verdict": "SAFE_FOR_SOURCE_ONLY_V1_2_1_LINEAGE_PROPAGATION"
+}
