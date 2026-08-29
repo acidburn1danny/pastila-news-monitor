@@ -170,7 +170,9 @@ def test_blanket_unresolved_requires_exact_reason_and_two_interpretations():
         value["coverage_receipt"][key] = key != "unresolved_scope_present" or True
     policy = seal_semantic_completeness_policy_v1(replace(
         _policy(), creative_target_analysis_required=False,
-        factual_authority_analysis_required=False, qualifications=()))
+        factual_authority_analysis_required=False, qualifications=(),
+        required_returns=(), required_topology=None,
+        required_constructions=(), required_creative=()))
     with pytest.raises(SemanticCompletenessFailureV1, match=
                        "SEMANTIC_COMPLETENESS_UNRESOLVED_ID_SET_MISMATCH"):
         SemanticCompletenessAdmissionV1(policy).validate_terminal(_raw(value))
@@ -182,7 +184,7 @@ def test_blanket_unresolved_requires_exact_reason_and_two_interpretations():
         authority_modality="NOT_APPLICABLE", authority_timing="NOT_APPLICABLE")),
      "SEMANTIC_COMPLETENESS_FACTUAL_AUTHORITY_ANALYSIS_REQUIRED"),
     (lambda value: value["entries"][1].update(candidate_modality="CERTAIN_OR_ACTUAL"),
-     "SEMANTIC_COMPLETENESS_QUALIFICATION_MODALITY_REQUIRED"),
+     "SEMANTIC_COMPLETENESS_REQUIRED_RETURN_SEMANTICS_MISMATCH"),
 ])
 def test_required_case01_analyses_fail_closed(mutation, reason):
     value = _positive_value(); mutation(value)
@@ -257,6 +259,35 @@ def test_required_p2_authority_cannot_be_split_across_expanded_returns():
         SemanticCompletenessAdmissionV1(_policy()).validate_terminal(_raw(value))
 
 
+def test_case01_c1_cannot_append_an_unjustified_additional_return():
+    value = _positive_value()
+    extra = dict(value["entries"][1])
+    extra.update(entry_id="P3", commitment="synthetic additional return")
+    value["entries"].append(extra)
+    value["construction_role_audit"]["construction_records"][0][
+        "literal_or_return_entry_ids"] = ["P2", "P3"]
+    with pytest.raises(SemanticCompletenessFailureV1, match=
+                       "SEMANTIC_COMPLETENESS_REQUIRED_RETURN_BINDING_MISMATCH"):
+        SemanticCompletenessAdmissionV1(_policy()).validate_terminal(_raw(value))
+
+
+def test_case01_cannot_tunnel_an_additional_return_through_synthetic_c2():
+    value = _positive_value()
+    extra_entry = dict(value["entries"][1])
+    extra_entry.update(entry_id="P3", commitment="synthetic return through C2")
+    value["entries"].append(extra_entry)
+    extra_construction = dict(
+        value["construction_role_audit"]["construction_records"][0])
+    extra_construction.update(
+        construction_id="C2", literal_or_return_entry_ids=["P3"],
+        role_basis="synthetic parallel construction")
+    value["construction_role_audit"]["construction_records"].append(
+        extra_construction)
+    with pytest.raises(SemanticCompletenessFailureV1, match=
+                       "SEMANTIC_COMPLETENESS_REQUIRED_TOPOLOGY_MISMATCH"):
+        SemanticCompletenessAdmissionV1(_policy()).validate_terminal(_raw(value))
+
+
 def test_relinked_synthetic_return_cannot_replace_bound_qualification_entry():
     value = _positive_value()
     value["entries"][1].update(
@@ -285,7 +316,7 @@ def test_unrelated_possible_entry_cannot_discharge_qualification_audit():
                  authority_timing="NOT_APPLICABLE")
     value["entries"].append(extra)
     with pytest.raises(SemanticCompletenessFailureV1, match=
-                       "SEMANTIC_COMPLETENESS_QUALIFICATION_MODALITY_REQUIRED"):
+                       "SEMANTIC_COMPLETENESS_REQUIRED_RETURN_SEMANTICS_MISMATCH"):
         SemanticCompletenessAdmissionV1(_policy()).validate_terminal(_raw(value))
 
 
@@ -326,7 +357,9 @@ def test_unresolved_justification_ids_must_exactly_equal_observed_records():
         ("C1", "C8"), ("P1", "P8"), interpretations)
     policy = seal_semantic_completeness_policy_v1(replace(
         _policy(), creative_target_analysis_required=False,
-        factual_authority_analysis_required=False, qualifications=(),
+        factual_authority_analysis_required=False, qualifications=(), required_returns=(),
+        required_topology=None,
+        required_constructions=(), required_creative=(),
         unresolved_justifications=(justification,)))
     with pytest.raises(SemanticCompletenessFailureV1, match=
                        "SEMANTIC_COMPLETENESS_UNRESOLVED_ID_SET_MISMATCH"):
@@ -367,11 +400,48 @@ def test_unresolved_justification_partition_rejects_duplicate_or_cross_span_ids(
         selected = (canonical, wrong)
     policy = seal_semantic_completeness_policy_v1(replace(
         _policy(), creative_target_analysis_required=False,
-        factual_authority_analysis_required=False, qualifications=(),
+        factual_authority_analysis_required=False, qualifications=(), required_returns=(),
+        required_topology=None,
+        required_constructions=(), required_creative=(),
         unresolved_justifications=selected))
     with pytest.raises(SemanticCompletenessFailureV1, match=
                        "SEMANTIC_COMPLETENESS_UNRESOLVED_ID_SET_MISMATCH"):
         SemanticCompletenessAdmissionV1(policy).validate_terminal(_raw(value))
+
+
+@pytest.mark.parametrize("mutation", [
+    lambda entry: entry.update(commitment="synthetic unrelated carrier"),
+    lambda entry: entry.update(event_alignment="NEW_UNSUPPORTED_EVENT"),
+    lambda entry: entry.update(scope_basis="ASSERTED"),
+    lambda entry: entry.update(factual_return_basis="ENTAILMENT_SURVIVES"),
+    lambda entry: entry.update(authority_modality="POSSIBLE"),
+    lambda entry: entry.update(authority_timing="PRESENT"),
+])
+def test_case01_p2_semantics_are_request_bound(mutation):
+    value = _positive_value(); mutation(value["entries"][1])
+    with pytest.raises(SemanticCompletenessFailureV1, match=
+                       "SEMANTIC_COMPLETENESS_REQUIRED_RETURN_SEMANTICS_MISMATCH"):
+        SemanticCompletenessAdmissionV1(_policy()).validate_terminal(_raw(value))
+
+
+@pytest.mark.parametrize("mutation", [
+    lambda value: value["construction_role_audit"]["construction_records"][0].update(
+        role_basis="synthetic unsupported construction basis"),
+    lambda value: value["entries"][0].update(
+        commitment="synthetic unrelated creative host"),
+    lambda value: value["creative_target_audits"][0].update(
+        semantic_target="synthetic unrelated target"),
+    lambda value: value["entries"][0]["candidate_span_ref"].update(
+        end_utf8=69),
+    lambda value: value["creative_target_audits"][0]["vehicle_span_ref"].update(
+        end_utf8=69),
+])
+def test_case01_construction_and_creative_semantics_are_request_bound(mutation):
+    value = _positive_value(); mutation(value)
+    with pytest.raises(SemanticCompletenessFailureV1, match=
+                       "SEMANTIC_COMPLETENESS_(?:.*_SEMANTICS_MISMATCH|"
+                       "CONSTRUCTION_COVERAGE_INCOMPLETE)"):
+        SemanticCompletenessAdmissionV1(_policy()).validate_terminal(_raw(value))
 
 
 def test_projector_withholds_eos_for_schema_terminal_semantically_incomplete_output():

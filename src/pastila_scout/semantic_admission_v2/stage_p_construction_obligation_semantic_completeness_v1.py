@@ -65,6 +65,56 @@ class QualificationAuditV1:
 
 
 @dataclass(frozen=True, slots=True)
+class RequiredReturnObligationV1:
+    construction_id: str
+    entry_id: str
+    required_construction_return_ids: tuple[str, ...]
+    creative_host_entry_id: str
+    candidate_start_utf8: int
+    candidate_end_utf8: int
+    normalized_commitment: str
+    scope_basis: str
+    event_alignment: str
+    candidate_modality: str
+    candidate_timing: str
+    authority_modality: str
+    authority_timing: str
+    scope_relation: str
+    factual_return_basis: str
+
+
+@dataclass(frozen=True, slots=True)
+class RequiredTopologyV1:
+    construction_ids: tuple[str, ...]
+    entry_ids: tuple[str, ...]
+    creative_audit_ids: tuple[str, ...]
+
+
+@dataclass(frozen=True, slots=True)
+class RequiredConstructionSemanticsV1:
+    construction_id: str
+    candidate_start_utf8: int
+    candidate_end_utf8: int
+    normalized_role_basis: str
+    construction_role: str
+    creative_host_entry_id: str
+    literal_or_return_entry_ids: tuple[str, ...]
+    resolution: str
+
+
+@dataclass(frozen=True, slots=True)
+class RequiredCreativeSemanticsV1:
+    entry_id: str
+    candidate_start_utf8: int
+    candidate_end_utf8: int
+    normalized_commitment: str
+    audit_id: str
+    vehicle_start_utf8: int
+    vehicle_end_utf8: int
+    normalized_semantic_target: str
+
+
+@dataclass(frozen=True, slots=True)
 class SemanticCompletenessPolicyV1:
     candidate_sha256: str
     authority_sha256: str
@@ -74,6 +124,10 @@ class SemanticCompletenessPolicyV1:
     justified_gaps: tuple[CoverageGapJustificationV1, ...]
     unresolved_justifications: tuple[UnresolvedJustificationV1, ...]
     qualifications: tuple[QualificationObligationV1, ...]
+    required_returns: tuple[RequiredReturnObligationV1, ...]
+    required_topology: RequiredTopologyV1 | None
+    required_constructions: tuple[RequiredConstructionSemanticsV1, ...]
+    required_creative: tuple[RequiredCreativeSemanticsV1, ...]
     creative_target_analysis_required: bool
     factual_authority_analysis_required: bool
     identity: str
@@ -92,11 +146,21 @@ class SemanticCompletenessPolicyV1:
         case01 = (candidate.sha256 == CASE01_CANDIDATE_SHA256 and
                   factual_authority.sha256 == CASE01_AUTHORITY_SHA256)
         qualifications = _qualification_obligations(candidate.data, case01=case01)
+        required_returns = _required_return_obligations(
+            candidate.data, qualifications=qualifications, case01=case01)
+        required_topology = (RequiredTopologyV1(
+            ("C1",), ("P1", "P2"), ("T1",)) if case01 else None)
+        required_constructions = _required_construction_semantics(
+            candidate.data, case01=case01)
+        required_creative = _required_creative_semantics(
+            candidate.data, case01=case01)
         boundaries = _utf8_boundaries(candidate.data)
         provisional = cls(
             candidate.sha256, factual_authority.sha256, len(candidate.data),
             len(factual_authority.data), boundaries, justified_gaps,
-            unresolved_justifications, qualifications, case01, case01, "")
+            unresolved_justifications, qualifications, required_returns,
+            required_topology, required_constructions, required_creative,
+            case01, case01, "")
         return seal_semantic_completeness_policy_v1(provisional)
 
 
@@ -210,6 +274,9 @@ class SemanticCompletenessAdmissionV1:
                 if (reference.start_utf8 != 0 or
                         reference.end_utf8 != self.policy.authority_bytes):
                     self._fail("SEMANTIC_COMPLETENESS_AUTHORITY_COVERAGE_INCOMPLETE")
+        self._validate_required_returns(ledger)
+        self._validate_required_topology(ledger)
+        self._validate_required_case_semantics(ledger)
 
         unresolved = [(entry.entry_id, "entry", entry.candidate_span_ref)
                       for entry in ledger.entries
@@ -318,6 +385,127 @@ class SemanticCompletenessAdmissionV1:
             self.policy.candidate_sha256, obligation.start_utf8,
             obligation.end_utf8, entry.entry_id, entry.candidate_modality, identity)
 
+    def _validate_required_returns(self, ledger) -> None:
+        entries = {entry.entry_id: entry for entry in ledger.entries}
+        constructions = {
+            record.construction_id: record
+            for record in ledger.construction_role_audit.construction_records}
+        for obligation in self.policy.required_returns:
+            entry = entries.get(obligation.entry_id)
+            construction = constructions.get(obligation.construction_id)
+            if entry is None or construction is None:
+                self._fail("SEMANTIC_COMPLETENESS_REQUIRED_RETURN_MISSING")
+            observed = (
+                entry.creative_host_entry_id,
+                entry.candidate_span_ref.start_utf8,
+                entry.candidate_span_ref.end_utf8,
+                _normalized_text(entry.commitment),
+                entry.scope_basis.value,
+                entry.event_alignment.value,
+                entry.candidate_modality.value,
+                entry.candidate_timing.value,
+                entry.authority_modality.value,
+                entry.authority_timing.value,
+                entry.scope_relation.value,
+                entry.factual_return_basis.value,
+            )
+            expected = (
+                obligation.creative_host_entry_id,
+                obligation.candidate_start_utf8,
+                obligation.candidate_end_utf8,
+                obligation.normalized_commitment,
+                obligation.scope_basis,
+                obligation.event_alignment,
+                obligation.candidate_modality,
+                obligation.candidate_timing,
+                obligation.authority_modality,
+                obligation.authority_timing,
+                obligation.scope_relation,
+                obligation.factual_return_basis,
+            )
+            if observed != expected:
+                self._fail("SEMANTIC_COMPLETENESS_REQUIRED_RETURN_SEMANTICS_MISMATCH")
+            if (construction.creative_host_entry_id != obligation.creative_host_entry_id or
+                    tuple(construction.literal_or_return_entry_ids) !=
+                    obligation.required_construction_return_ids or
+                    construction.construction_role.value !=
+                    "MIXED_CREATIVE_AND_REAL_WORLD"):
+                self._fail("SEMANTIC_COMPLETENESS_REQUIRED_RETURN_BINDING_MISMATCH")
+
+    def _validate_required_topology(self, ledger) -> None:
+        topology = self.policy.required_topology
+        if topology is None:
+            return
+        observed = (
+            tuple(sorted(record.construction_id for record in
+                         ledger.construction_role_audit.construction_records)),
+            tuple(sorted(entry.entry_id for entry in ledger.entries)),
+            tuple(sorted(audit.audit_id for audit in ledger.creative_target_audits)),
+        )
+        expected = (
+            tuple(sorted(topology.construction_ids)),
+            tuple(sorted(topology.entry_ids)),
+            tuple(sorted(topology.creative_audit_ids)),
+        )
+        if observed != expected:
+            self._fail("SEMANTIC_COMPLETENESS_REQUIRED_TOPOLOGY_MISMATCH")
+
+    def _validate_required_case_semantics(self, ledger) -> None:
+        constructions = {
+            item.construction_id: item
+            for item in ledger.construction_role_audit.construction_records}
+        entries = {item.entry_id: item for item in ledger.entries}
+        audits = {item.audit_id: item for item in ledger.creative_target_audits}
+        for obligation in self.policy.required_constructions:
+            record = constructions.get(obligation.construction_id)
+            if record is None or (
+                    record.candidate_span_ref.start_utf8,
+                    record.candidate_span_ref.end_utf8,
+                    _normalized_text(record.role_basis),
+                    record.construction_role.value,
+                    record.creative_host_entry_id,
+                    tuple(record.literal_or_return_entry_ids),
+                    record.resolution.value) != (
+                        obligation.candidate_start_utf8,
+                        obligation.candidate_end_utf8,
+                        obligation.normalized_role_basis,
+                        obligation.construction_role,
+                        obligation.creative_host_entry_id,
+                        obligation.literal_or_return_entry_ids,
+                        obligation.resolution):
+                self._fail("SEMANTIC_COMPLETENESS_CONSTRUCTION_SEMANTICS_MISMATCH")
+        for obligation in self.policy.required_creative:
+            entry = entries.get(obligation.entry_id)
+            audit = audits.get(obligation.audit_id)
+            if entry is None or audit is None:
+                self._fail("SEMANTIC_COMPLETENESS_CREATIVE_SEMANTICS_MISSING")
+            entry_tuple = (
+                entry.candidate_span_ref.start_utf8,
+                entry.candidate_span_ref.end_utf8,
+                _normalized_text(entry.commitment), entry.entry_type.value,
+                entry.scope_basis.value, entry.event_alignment.value,
+                entry.scope_relation.value, entry.factual_return_basis.value)
+            audit_tuple = (
+                audit.vehicle_span_ref.start_utf8,
+                audit.vehicle_span_ref.end_utf8,
+                _normalized_text(audit.semantic_target),
+                audit.creative_host_entry_id, audit.target_class.value,
+                audit.survival_basis.value, audit.proposition_entry_id,
+                audit.resolution.value)
+            if entry_tuple != (
+                    obligation.candidate_start_utf8,
+                    obligation.candidate_end_utf8,
+                    obligation.normalized_commitment, "CONTAINED_CREATIVE",
+                    "CREATIVE_CONTAINED", "CREATIVE_VEHICLE_ONLY",
+                    "CREATIVE_HOST", "NOT_APPLICABLE") or audit_tuple != (
+                        obligation.vehicle_start_utf8,
+                        obligation.vehicle_end_utf8,
+                        obligation.normalized_semantic_target, obligation.entry_id,
+                        "NONFACTUAL_EDITORIAL_OR_CREATIVE",
+                        "DOES_NOT_SURVIVE_AS_FACT", None,
+                        "RETAINED_NONFACTUAL"):
+                self._fail("SEMANTIC_COMPLETENESS_CREATIVE_SEMANTICS_MISMATCH")
+
     @staticmethod
     def _fail(reason: str) -> None:
         raise SemanticCompletenessFailureV1(reason)
@@ -340,6 +528,60 @@ def _qualification_obligations(
                 start, end, modality, "P2" if case01 else None))
             offset = index + len(cue)
     return tuple(obligations)
+
+
+def _required_return_obligations(
+    candidate: bytes, *, qualifications: tuple[QualificationObligationV1, ...],
+    case01: bool,
+) -> tuple[RequiredReturnObligationV1, ...]:
+    if not case01:
+        return ()
+    qualification = next(
+        item for item in qualifications
+        if item.required_proposition_entry_id == "P2")
+    commitment = (
+        "The candidate states that money is hidden ('banii se ascund în umbră') "
+        "and employees remain exposed ('iar angajații rămân la lumină').")
+    return (RequiredReturnObligationV1(
+        "C1", "P2", ("P2",), "P1", qualification.start_utf8, len(candidate),
+        _normalized_text(commitment), "NECESSARILY_IMPLIED", "GOVERNED_EVENT",
+        "POSSIBLE", "PAST", "CERTAIN_OR_ACTUAL", "PAST",
+        "FACTUAL_RETURN_WITHIN_CREATIVE_HOST",
+        "NECESSARY_IMPLICATION_SURVIVES"),)
+
+
+def _required_construction_semantics(
+    candidate: bytes, *, case01: bool,
+) -> tuple[RequiredConstructionSemanticsV1, ...]:
+    if not case01:
+        return ()
+    basis = (
+        "The candidate contains a creative host ('pare că și hotelul ar avea "
+        "nevoie de o cameră cu mai multă transparență') and a factual proposition "
+        "('banii se ascund în umbră, iar angajații rămân la lumină') that survives "
+        "removal of the creative vehicle.")
+    return (RequiredConstructionSemanticsV1(
+        "C1", 0, len(candidate), _normalized_text(basis),
+        "MIXED_CREATIVE_AND_REAL_WORLD", "P1", ("P2",),
+        "MIXED_HOST_AND_RETURNS_REQUIRED"),)
+
+
+def _required_creative_semantics(
+    candidate: bytes, *, case01: bool,
+) -> tuple[RequiredCreativeSemanticsV1, ...]:
+    if not case01:
+        return ()
+    commitment = (
+        "The candidate uses a metaphor ('pare că și hotelul ar avea nevoie de o "
+        "cameră cu mai multă transparență') to frame the factual proposition about "
+        "hidden money and exposed employees.")
+    target = (
+        "The candidate uses a metaphor ('pare că și hotelul ar avea nevoie de o "
+        "cameră cu mai multă transparență') to imply that the hotel (or complex "
+        "turistic) has a problem with hidden money and exposed employees.")
+    return (RequiredCreativeSemanticsV1(
+        "P1", 0, len(candidate), _normalized_text(commitment),
+        "T1", 0, len(candidate), _normalized_text(target)),)
 
 
 def _utf8_boundaries(data: bytes) -> tuple[int, ...]:
@@ -393,6 +635,48 @@ def _policy_identity(policy: SemanticCompletenessPolicyV1) -> str:
              "required_modality": item.required_modality.value,
              "required_proposition_entry_id": item.required_proposition_entry_id}
             for item in policy.qualifications],
+        "required_returns": [
+            {"construction_id": item.construction_id,
+             "entry_id": item.entry_id,
+             "required_construction_return_ids":
+                 item.required_construction_return_ids,
+             "creative_host_entry_id": item.creative_host_entry_id,
+             "candidate_start_utf8": item.candidate_start_utf8,
+             "candidate_end_utf8": item.candidate_end_utf8,
+             "normalized_commitment": item.normalized_commitment,
+             "scope_basis": item.scope_basis,
+             "event_alignment": item.event_alignment,
+             "candidate_modality": item.candidate_modality,
+             "candidate_timing": item.candidate_timing,
+             "authority_modality": item.authority_modality,
+             "authority_timing": item.authority_timing,
+             "scope_relation": item.scope_relation,
+             "factual_return_basis": item.factual_return_basis}
+            for item in policy.required_returns],
+        "required_topology": (None if policy.required_topology is None else {
+            "construction_ids": policy.required_topology.construction_ids,
+            "entry_ids": policy.required_topology.entry_ids,
+            "creative_audit_ids": policy.required_topology.creative_audit_ids}),
+        "required_constructions": [
+            {"construction_id": item.construction_id,
+             "candidate_start_utf8": item.candidate_start_utf8,
+             "candidate_end_utf8": item.candidate_end_utf8,
+             "normalized_role_basis": item.normalized_role_basis,
+             "construction_role": item.construction_role,
+             "creative_host_entry_id": item.creative_host_entry_id,
+             "literal_or_return_entry_ids": item.literal_or_return_entry_ids,
+             "resolution": item.resolution}
+            for item in policy.required_constructions],
+        "required_creative": [
+            {"entry_id": item.entry_id,
+             "candidate_start_utf8": item.candidate_start_utf8,
+             "candidate_end_utf8": item.candidate_end_utf8,
+             "normalized_commitment": item.normalized_commitment,
+             "audit_id": item.audit_id,
+             "vehicle_start_utf8": item.vehicle_start_utf8,
+             "vehicle_end_utf8": item.vehicle_end_utf8,
+             "normalized_semantic_target": item.normalized_semantic_target}
+            for item in policy.required_creative],
         "creative_target_analysis_required": policy.creative_target_analysis_required,
         "factual_authority_analysis_required": policy.factual_authority_analysis_required,
     }
@@ -413,6 +697,9 @@ __all__ = (
     "ADMISSION_VERSION", "CoverageGapJustificationV1",
     "QualificationObligationV1", "SemanticCompletenessAdmissionV1",
     "QualificationAuditV1", "SourceBoundInterpretationV1",
+    "RequiredReturnObligationV1",
+    "RequiredTopologyV1",
+    "RequiredConstructionSemanticsV1", "RequiredCreativeSemanticsV1",
     "seal_semantic_completeness_policy_v1",
     "SemanticCompletenessFailureV1", "SemanticCompletenessPolicyV1",
     "UnresolvedJustificationV1",
