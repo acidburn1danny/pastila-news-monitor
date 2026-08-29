@@ -31,7 +31,7 @@ GENERATION_WSL_INVOCATION_BINDING_IDENTITY = hashlib.sha256(
 ).hexdigest()
 RUNNER_RELATIVE = Path("src/pastila_scout/semantic_admission_v2/stage_p_construction_obligation_v2_linux_generation_runner_v1_2_1.py")
 RUNNER_MODULE = "pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_linux_generation_runner_v1_2_1"
-RUNNER_SOURCE_SHA256 = "d47b98c6bae88751131999361ea4ce2c7bf5180f817bdb6280e0a66ad0a79f49"
+RUNNER_SOURCE_SHA256 = "0616db5553de8c7dfd8e6826e92fdae7b9986923b456f6e9a7689fdc3b08c095"
 
 
 @dataclass(frozen=True, slots=True)
@@ -115,7 +115,7 @@ def build_generation_wsl_invocation_v1_2_1(
         arguments=arguments,
     )
     expected_evidence_identity = hashlib.sha256("\n".join((
-        "STAGE_P_CONSTRUCTION_OBLIGATION_V2_CASE01_V1_2_1_EXACT_OPERATIONS_BOUND_EVIDENCE_ROOT",
+        "STAGE_P_CONSTRUCTION_OBLIGATION_V2_CASE01_V1_2_1_TIMEOUT_PROGRESS_BOUND_EVIDENCE_ROOT",
         request.source_context_identity, invocation.command_identity, str(outer),
     )).encode()).hexdigest()
     if evidence_root_identity != expected_evidence_identity:

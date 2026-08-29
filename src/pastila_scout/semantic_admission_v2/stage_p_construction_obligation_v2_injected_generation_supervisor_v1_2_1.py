@@ -14,14 +14,20 @@ from .stage_p_construction_obligation_v2_generation_authority_preload_v1_1 impor
     GenerationPreloadObservationV1_1,
 )
 from .stage_p_construction_obligation_v2_injected_generation_worker_v1_2_1 import (
-    InjectedGenerationOperationsV1,
+    WORKER_IDENTITY, InjectedGenerationOperationsV1,
     execute_injected_generation_worker_v1_2_1,
 )
 from .stage_p_construction_obligation_v2_runner_protocol_codec_v1 import (
     build_runner_result_v1,
 )
 
-SUPERVISOR_IDENTITY = "4d5d89cfac5156cb33ff4e5afa8db1397701806cd5cc61c9a7d72bb53af22718"
+SUPERVISOR_IDENTITY_FIELDS = (
+    "construction-obligation-v2-injected-generation-supervisor-v1.2.1",
+    "worker:" + WORKER_IDENTITY,
+    "progress-sinks:pass-through-exact-bytes",
+)
+SUPERVISOR_IDENTITY = hashlib.sha256(
+    "\n".join(SUPERVISOR_IDENTITY_FIELDS).encode()).hexdigest()
 
 
 @dataclass(frozen=True, slots=True)

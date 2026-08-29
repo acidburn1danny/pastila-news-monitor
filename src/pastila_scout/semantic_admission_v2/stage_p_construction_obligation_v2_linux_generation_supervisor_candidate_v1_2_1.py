@@ -19,7 +19,7 @@ from .stage_p_construction_obligation_v2_generation_execution_policy_gate_v1 imp
     validate_generation_execution_policy_gate_v1,
 )
 from .stage_p_construction_obligation_v2_injected_generation_supervisor_v1_2_1 import (
-    InjectedGenerationSupervisorResultV1,
+    SUPERVISOR_IDENTITY, InjectedGenerationSupervisorResultV1,
 )
 from .stage_p_construction_obligation_v2_injected_generation_worker_v1_2_1 import (
     validate_compatibility_receipt_v1_2_1,
@@ -33,7 +33,15 @@ from .stage_p_construction_obligation_v2_runner_protocol_codec_v1 import (
     parse_runner_request_v1,
 )
 
-SUPERVISOR_CANDIDATE_IDENTITY = "f1fd2e0e3fc530fa48ca6b8d9e64809f8e1f223603b66d725a10de799b2518e4"
+SUPERVISOR_CANDIDATE_IDENTITY_FIELDS = (
+    "construction-obligation-v2-linux-generation-supervisor-candidate-v1.2.1",
+    "injected-supervisor:" + SUPERVISOR_IDENTITY,
+    "timeout-progress:canonical-lifecycle-and-compatibility",
+    "timeout-terminal-event:chain-preserving",
+    "retry-fallback-repair-selection:0",
+)
+SUPERVISOR_CANDIDATE_IDENTITY = hashlib.sha256(
+    "\n".join(SUPERVISOR_CANDIDATE_IDENTITY_FIELDS).encode()).hexdigest()
 SYSTEM_PROMPT_SHA256 = "111bc2734343c67aab4e1a04003199b98d4955fe9579e445cd7b5d6805a9da17"
 
 

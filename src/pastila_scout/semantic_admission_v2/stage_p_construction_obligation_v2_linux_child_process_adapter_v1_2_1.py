@@ -32,7 +32,7 @@ from .stage_p_construction_obligation_v2_host_wsl_payload_contract_v1 import (
     parse_construction_obligation_v2_host_wsl_payload_v1,
 )
 from .stage_p_construction_obligation_v2_injected_generation_supervisor_v1_2_1 import (
-    InjectedGenerationSupervisorResultV1,
+    SUPERVISOR_IDENTITY, InjectedGenerationSupervisorResultV1,
     supervise_injected_generation_v1_2_1,
 )
 from .stage_p_construction_obligation_v2_linux_generation_supervisor_candidate_v1_2_1 import (
@@ -73,6 +73,9 @@ LINUX_CHILD_PROCESS_ADAPTER_IDENTITY_FIELDS = (
     "application-request-source:" + CANONICAL_APPLICATION_REQUEST_SOURCE_SHA256,
     "application-request-type:" + CANONICAL_APPLICATION_PROVIDER_REQUEST_TYPE,
     "runtime-operations-adapter:" + RUNTIME_OPERATIONS_ADAPTER_IDENTITY,
+    "injected-supervisor:" + SUPERVISOR_IDENTITY,
+    "progress-channel:bounded-lifecycle-and-compatibility",
+    "progress-collection:once-after-child-terminal",
     "deferred-spawn:sole-start-edge",
 )
 LINUX_CHILD_PROCESS_ADAPTER_IDENTITY = hashlib.sha256(

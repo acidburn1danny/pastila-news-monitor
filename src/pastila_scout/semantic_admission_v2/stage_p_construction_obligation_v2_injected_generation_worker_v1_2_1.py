@@ -24,7 +24,13 @@ from .stage_p_construction_obligation_v2_generation_execution_policy_gate_v1 imp
     validate_generation_execution_policy_gate_v1,
 )
 
-WORKER_IDENTITY = "7521a39c852213b2188ec1801c57c8c26ff2d57ea2ed0b0a657a95ed69afa4ee"
+WORKER_IDENTITY_FIELDS = (
+    "construction-obligation-v2-injected-generation-worker-v1.2.1",
+    "progress-sink:lifecycle-canonical-bytes",
+    "progress-sink:compatibility-canonical-bytes",
+    "generation-policy:unchanged",
+)
+WORKER_IDENTITY = hashlib.sha256("\n".join(WORKER_IDENTITY_FIELDS).encode()).hexdigest()
 COMPATIBILITY_RECEIPT_IDENTITY = "8ddafa5e60e892abf56a2b67d9ab646deb94a7b024e739ea8ea967c45e3ec39f"
 
 
@@ -278,6 +284,7 @@ def _canonical(value: dict[str, object]) -> bytes:
 
 __all__ = (
     "WORKER_IDENTITY",
+    "WORKER_IDENTITY_FIELDS",
     "ConstraintLivenessStopV1",
     "InjectedCompatibleGenerationResourceV1",
     "InjectedGenerationOperationsV1",

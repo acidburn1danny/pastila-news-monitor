@@ -13,13 +13,13 @@ from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_case
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def test_exact_operations_packet_is_frozen_after_attempt_consumption() -> None:
-    import pytest
-    with pytest.raises(FileExistsError, match="EVIDENCE_ROOT_NOT_EXCLUSIVE"):
-        materialize_case01_issuance_packet_v1_2_1(project_root=ROOT)
+def test_timeout_progress_packet_is_fresh_unissued_and_deterministic() -> None:
+    generated = materialize_case01_issuance_packet_v1_2_1(project_root=ROOT)
+    assert all((ROOT / PACKET_RELATIVE / name).read_bytes() == raw
+               for name, raw in generated.items())
     actual = {path.name for path in (ROOT / PACKET_RELATIVE).iterdir()}
     assert actual == {"application-provider-request.json", "authority-receipt-candidate.json",
-                      "authority-receipt-issued.json", "host-payload.json", "manifest.json",
+                      "host-payload.json", "manifest.json",
                       "rendered-prompt.json", "runner-request.json", "static-executor-binding.json"}
     manifest = json.loads((ROOT / PACKET_RELATIVE / "manifest.json").read_bytes())
     assert manifest["case_id"] == CASE_ID == "HMCV1-SASC-01"
@@ -90,3 +90,6 @@ def test_v1_2_packet_and_issued_receipt_remain_byte_exact_and_distinct():
     runtime_bound = ROOT / "docs/artifacts/semantic-admission-v2-stage-p-construction-obligation-v2-case01-successor-issuance-packet-v1-2-1-runtime-source-bound"
     assert json.loads((runtime_bound / "manifest.json").read_bytes())["packet_identity"] == "8ecc76557f5d020655abf9ed2c8cd51b355d6131d3299d27704625b91710d510"
     assert json.loads((runtime_bound / "authority-receipt-issued.json").read_bytes())["authority_receipt_identity"] == "9ef49ce6b0b3992928a6904427497522b51eac03a7e5aa79297298b4b348c397"
+    exact_bound = ROOT / "docs/artifacts/semantic-admission-v2-stage-p-construction-obligation-v2-case01-successor-issuance-packet-v1-2-1-exact-operations-bound"
+    assert json.loads((exact_bound / "manifest.json").read_bytes())["packet_identity"] == "329cbd127db807728f74928956b4868828de9f58373b9b45809d78763b890ff5"
+    assert json.loads((exact_bound / "authority-receipt-issued.json").read_bytes())["authority_receipt_identity"] == "b9176dbe4d2d1d98eb43d6e13e20e9955010c5e5a30ee89f609197dcb35b24a9"

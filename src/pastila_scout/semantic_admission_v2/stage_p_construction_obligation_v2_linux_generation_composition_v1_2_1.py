@@ -15,7 +15,7 @@ from .stage_p_construction_obligation_v2_runner_protocol_codec_v1 import parse_r
 LINUX_GENERATION_COMPOSITION_IDENTITY_FIELDS = (
     "construction-obligation-v2-linux-generation-composition-v1.2.1",
     "child-adapter:" + LINUX_CHILD_PROCESS_ADAPTER_IDENTITY,
-    "supervisor:v1.1-frozen",
+    "supervisor:" + SUPERVISOR_CANDIDATE_IDENTITY,
     "bound-pre-model-failure-receipt:required",
 )
 LINUX_GENERATION_COMPOSITION_IDENTITY = hashlib.sha256(

@@ -252,6 +252,22 @@ def test_consumed_runtime_source_receipt_cannot_build_successor(tmp_path):
             boundary=WslExecutionBoundaryV1_1(canonical_model_profile_v1(with_pydantic_bridge=True)))
 
 
+def test_consumed_exact_operations_receipt_cannot_build_timeout_successor(tmp_path):
+    packet = ROOT / PACKET_RELATIVE
+    consumed = ROOT / "docs/artifacts/semantic-admission-v2-stage-p-construction-obligation-v2-case01-successor-issuance-packet-v1-2-1-exact-operations-bound/authority-receipt-issued.json"
+    with pytest.raises(ValueError):
+        binding.build_generation_wsl_invocation_v1_2_1(
+            project_root=ROOT,
+            policy_receipt_path=ROOT / "docs/artifacts/semantic-admission-v2-stage-p-construction-obligation-v2-generation-policy-validation-receipt-v1.json",
+            authority_receipt_path=consumed,
+            runner_request_path=packet / "runner-request.json",
+            packet_manifest_path=packet / "manifest.json",
+            system_prompt_path=ROOT / ".experimental-0-3-core-v1-2-journalistic-deontology-prime-directive-v1-evidence/PASTILAACIDA_EDITOR_CORE_SYSTEM_PROMPT_V1_2.txt",
+            outer_evidence_root=tmp_path / "never",
+            evidence_root_identity=json.loads((packet / "manifest.json").read_bytes())["evidence_root_identity"],
+            boundary=WslExecutionBoundaryV1_1(canonical_model_profile_v1(with_pydantic_bridge=True)))
+
+
 def test_legacy_type_and_mutations_fail_before_execute(tmp_path, monkeypatch):
     prepared, boundary = _prepared(tmp_path)
     calls = []
@@ -293,7 +309,7 @@ def test_recomputed_instance_cannot_substitute_packet_identity(tmp_path, monkeyp
     calls = []
     monkeypatch.setattr(WslExecutionBoundaryV1_1, "execute",
                         lambda self, invocation, timeout_seconds: calls.append(invocation))
-    with pytest.raises(ValueError, match="EXECUTION_PLAN_DRIFT"):
+    with pytest.raises(ValueError, match="PACKET_BINDING_MISMATCH"):
         host.execute_generation_wsl_host_v1_2_1(prepared=forged, boundary=boundary)
     assert calls == []
 
