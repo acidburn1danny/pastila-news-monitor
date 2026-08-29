@@ -40,6 +40,7 @@ SUPERVISOR_CANDIDATE_IDENTITY_FIELDS = (
     "timeout-progress:canonical-lifecycle-and-compatibility",
     "timeout-progress:exact-worker-schema-state-machine",
     "compatibility:ordered-load-completion-identity-bound",
+    "durable-labels:canonical-hyphenated-lifecycle-events",
     "timeout-terminal-event:chain-preserving",
     "retry-fallback-repair-selection:0",
 )
