@@ -1,5 +1,7 @@
 """Immutable provider-neutral execution contracts."""
 
+from __future__ import annotations
+
 import math
 from datetime import datetime
 from enum import StrEnum
