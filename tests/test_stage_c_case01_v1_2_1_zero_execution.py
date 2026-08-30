@@ -190,6 +190,23 @@ def test_git_object_packet_admission_is_mandatory(tmp_path, monkeypatch):
             boundary=boundary)
 
 
+def test_prepared_identity_changes_with_exact_issuance_commit(tmp_path, monkeypatch):
+    packet, evidence, _ = _packet(tmp_path)
+    _issue_for_test(packet)
+    boundary = WslExecutionBoundaryV1_1(canonical_model_profile_v1(with_pydantic_bridge=True))
+    first = prepare_stage_c_case01_wsl_invocation_v1_2_1(
+        project_root=ROOT, packet_root=packet.resolve(), evidence_root=evidence,
+        boundary=boundary)
+    monkeypatch.setattr(stage_c_wsl, "_verify_current_packet_git_objects",
+                        lambda *args: "e" * 40)
+    second = prepare_stage_c_case01_wsl_invocation_v1_2_1(
+        project_root=ROOT, packet_root=packet.resolve(), evidence_root=evidence,
+        boundary=boundary)
+    assert first.issuance_commit == "f" * 40
+    assert second.issuance_commit == "e" * 40
+    assert first.invocation_identity != second.invocation_identity
+
+
 def test_linux_supervisor_terminal_success_uses_real_durable_sink_without_model(tmp_path, monkeypatch):
     packet, evidence, _ = _packet(tmp_path)
     _issue_for_test(packet)

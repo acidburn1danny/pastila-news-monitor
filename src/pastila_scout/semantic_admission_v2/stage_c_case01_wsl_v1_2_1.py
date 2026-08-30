@@ -30,9 +30,9 @@ TIMEOUT_SECONDS = 1260.0
 CHILD_TIMEOUT_SECONDS = 1200.0
 PACKET_RELATIVE = Path(
     "docs/artifacts/semantic-admission-v2-stage-c-case01-successor-v1-2-1-"
-    "git-object-bound")
+    "issuance-commit-bound")
 EVIDENCE_RELATIVE = Path(
-    ".semantic-admission-v2-stage-c-case01-successor-v1-2-1-git-object-bound-evidence")
+    ".semantic-admission-v2-stage-c-case01-successor-v1-2-1-issuance-commit-bound-evidence")
 CASE_PACK_RELATIVE = Path("docs/artifacts/semantic-admission-v2-staged-gate-f-two-case-proof-pack-v1.json")
 RAW_LEDGER_RELATIVE = Path(
     ".semantic-admission-v2-stage-p-construction-obligation-v2-case01-successor-"
@@ -472,15 +472,28 @@ def _verify_current_packet_git_objects(
     project_root: Path, packet_root: Path, expected: set[str]
 ) -> str:
     """Require every admitted packet byte to be present in the current commit."""
-    try:
-        commit = subprocess.check_output(
-            ("git", "rev-parse", "HEAD^{commit}"), cwd=project_root,
-            stderr=subprocess.DEVNULL, text=True).strip()
-    except (OSError, subprocess.CalledProcessError) as exc:
-        raise ValueError("STAGE_C_ISSUANCE_COMMIT_UNAVAILABLE") from exc
     relative_root = packet_root.relative_to(project_root)
     if relative_root != PACKET_RELATIVE:
         raise ValueError("STAGE_C_PACKET_CANONICAL_PATH_REQUIRED")
+    receipt_relative = relative_root / "authority-receipt-issued.json"
+    try:
+        commits = subprocess.check_output(
+            ("git", "log", "--diff-filter=A", "--format=%H", "--",
+             receipt_relative.as_posix()), cwd=project_root,
+            stderr=subprocess.DEVNULL, text=True).splitlines()
+        if len(commits) != 1:
+            raise ValueError("STAGE_C_UNIQUE_ISSUANCE_COMMIT_REQUIRED")
+        commit = commits[0]
+        subprocess.check_call(
+            ("git", "merge-base", "--is-ancestor", commit, "HEAD"),
+            cwd=project_root, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        changed = subprocess.check_output(
+            ("git", "diff-tree", "--no-commit-id", "--name-status", "-r", commit),
+            cwd=project_root, stderr=subprocess.DEVNULL, text=True).splitlines()
+    except (OSError, subprocess.CalledProcessError) as exc:
+        raise ValueError("STAGE_C_ISSUANCE_COMMIT_UNAVAILABLE") from exc
+    if changed != [f"A\t{receipt_relative.as_posix()}"]:
+        raise ValueError("STAGE_C_ISSUANCE_COMMIT_SCOPE_INVALID")
     for name in sorted(expected):
         if _git_blob(project_root, commit, relative_root / name) != (packet_root / name).read_bytes():
             raise ValueError("STAGE_C_PACKET_GIT_OBJECT_MISMATCH")
