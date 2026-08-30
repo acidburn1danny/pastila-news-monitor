@@ -10,21 +10,13 @@ from pathlib import Path
 import pytest
 
 import pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_linux_runtime_operations_adapter_v1 as adapter
-from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_injected_generation_supervisor_v1 import (
-    supervise_injected_generation_v1,
-)
-from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_runtime_operations_adapter_v1_1 import (
-    adapt_runtime_operations_v1_1,
-)
-
-
 ROOT = Path(__file__).resolve().parents[1]
 ARTIFACT = ROOT / "docs/artifacts/semantic-admission-v2-stage-p-construction-obligation-v2-linux-runtime-operations-adapter-v1.json"
 SOURCE = ROOT / "src/pastila_scout/semantic_admission_v2/stage_p_construction_obligation_v2_linux_runtime_operations_adapter_v1.py"
 SYSTEM_PROMPT = (ROOT / ".experimental-0-3-core-v1-2-journalistic-deontology-prime-directive-v1-evidence/PASTILAACIDA_EDITOR_CORE_SYSTEM_PROMPT_V1_2.txt").read_text("utf-8")
 sys.path.insert(0, str(ROOT / "tests"))
 from test_semantic_admission_v2_stage_p_construction_obligation_v2_injected_generation_worker_supervisor_v1 import (  # noqa: E402
-    COMPATIBILITY, _authority, _policy, _terminal_fixture,
+    COMPATIBILITY, _terminal_fixture,
 )
 
 
@@ -94,15 +86,41 @@ def _install_fake_runtime(monkeypatch, text):
     torch = types.SimpleNamespace(
         bfloat16="bf16", inference_mode=lambda: nullcontext(),
         cuda=types.SimpleNamespace(empty_cache=lambda: calls.append("empty_cache")))
-    transformers = types.SimpleNamespace(
-        AutoTokenizer=AutoTokenizer, AutoModelForImageTextToText=AutoModel,
-        BatchEncoding=FakeBatchEncoding, BitsAndBytesConfig=Bits)
+    transformers = types.ModuleType("transformers")
+    transformers.__path__ = []
+    transformers.AutoTokenizer = AutoTokenizer
+    transformers.AutoModelForImageTextToText = AutoModel
+    transformers.BatchEncoding = FakeBatchEncoding
+    transformers.BitsAndBytesConfig = Bits
+    transformers_tokenizers = types.ModuleType(
+        "transformers.tokenization_utils_tokenizers")
+    transformers_tokenizers.TokenizersBackend = TokenizersBackend
+    transformers_tokenizers.__file__ = str(SOURCE)
+    tokenizers = types.ModuleType("tokenizers")
+    tokenizers.__path__ = []
+    tokenizers.__file__ = str(SOURCE)
+    tokenizers_decoders = types.ModuleType("tokenizers.decoders")
+    tokenizers_decoders.__file__ = str(SOURCE)
+    tokenizers_decoders.ByteLevel = type("ByteLevel", (), {})
+    tokenizers_native = types.ModuleType("tokenizers.tokenizers")
+    tokenizers_native.__file__ = str(SOURCE)
+    class FakeDistribution:
+        def locate_file(self, value):
+            return SOURCE.parent if str(value) == "." else SOURCE
     monkeypatch.setitem(sys.modules, "transformers", transformers)
+    monkeypatch.setitem(
+        sys.modules, "transformers.tokenization_utils_tokenizers",
+        transformers_tokenizers)
+    monkeypatch.setitem(sys.modules, "tokenizers", tokenizers)
+    monkeypatch.setitem(sys.modules, "tokenizers.decoders", tokenizers_decoders)
+    monkeypatch.setitem(sys.modules, "tokenizers.tokenizers", tokenizers_native)
     monkeypatch.setitem(sys.modules, "torch", torch)
     monkeypatch.setitem(sys.modules, "peft", types.SimpleNamespace(PeftModel=Peft))
+    monkeypatch.setattr(adapter, "distribution", lambda name: FakeDistribution())
     monkeypatch.setattr(adapter, "_package_version", lambda name: {
         "transformers": "5.15.0", "torch": "2.13.0+cu130", "peft": "0.20.0",
-        "accelerate": "1.14.0", "bitsandbytes": "0.50.1"}[name])
+        "accelerate": "1.14.0", "bitsandbytes": "0.50.1",
+        "tokenizers": "0.22.2"}[name])
     return calls, tokenizer, model
 
 
@@ -121,12 +139,14 @@ def test_fake_runtime_maps_exact_tokenize_load_generate_and_cleanup(monkeypatch)
     assert prepared.operations.prompt_batch.input_token_ids == (900, 901)
     assert prepared.operations.prompt_batch.attention_mask == (1, 1)
     assert json.loads(prepared.prompt_batch_receipt)["prompt_token_count"] == 2
-    result = supervise_injected_generation_v1(
-        raw_policy_receipt=_policy(), raw_authority_receipt=_authority(bound),
-        callback_preflight=bound, rendered_prompt="runtime request",
-        operations=adapt_runtime_operations_v1_1(
-            rendered_prompt="runtime request", operations=prepared.operations))
-    assert result.status == "TERMINAL_OUTPUT" and result.raw_output == text.encode()
+    loaded = prepared.operations.load_compatible()
+    observed_suffixes = []
+    result = prepared.operations.generate_once(
+        loaded.resource, prepared.operations.prompt_batch, 731,
+        lambda ids: (observed_suffixes.append(tuple(ids)) or (2,)))
+    assert result.output == text.encode() and result.terminal_eos is True
+    assert observed_suffixes == [(100,)]
+    prepared.operations.cleanup(loaded.resource)
     assert calls.count("empty_cache") == 1
     assert prepared.operations.load_compatible is not None
     assert model.vision_tower is not None and model.multi_modal_projector is not None

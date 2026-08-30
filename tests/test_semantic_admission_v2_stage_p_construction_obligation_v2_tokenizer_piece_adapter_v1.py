@@ -1,20 +1,45 @@
 from __future__ import annotations
 
 import ast
+import hashlib
+import json
 from dataclasses import replace
 from pathlib import Path
 
 import pytest
 
+import pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_tokenizer_piece_adapter_v1 as piece_adapter
+
 from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_tokenizer_piece_adapter_v1 import (
     DECODER_CONFIGURATION, DECODER_IDENTITY, DECODER_MECHANISM_IDENTITY, EOS_TOKEN_ID, PROJECTOR_FREEZE_IDENTITY,
     SPECIAL_TOKEN_IDS, TOKENIZER_IDENTITY, TOKENIZER_IMPLEMENTATION,
     TOKENIZERS_NATIVE_SHA256, TOKENIZERS_PYTHON_WRAPPER_IDENTITY,
-    TOKENIZERS_RECORD_SHA256, TOKENIZERS_VERSION,
-    TRANSFORMERS_RECORD_SHA256, TRANSFORMERS_WRAPPER_SHA256,
+    TOKENIZERS_VERSION, TRANSFORMERS_WRAPPER_SHA256,
     TRANSFORMERS_VERSION, VOCABULARY_SIZE, TokenizerRuntimeIdentityV1,
     extract_identity_bound_token_pieces_v1,
 )
+
+
+TOKENIZERS_RECORD_BYTES = b"tokenizers/canonical.py,sha256=tokenizers,1\n"
+TRANSFORMERS_RECORD_BYTES = b"transformers/canonical.py,sha256=transformers,1\n"
+
+
+def _rowset_identity(raw: bytes) -> str:
+    import csv
+    import io
+    rows = [tuple(row) for row in csv.reader(io.StringIO(raw.decode()))]
+    return hashlib.sha256(json.dumps(
+        sorted(rows), ensure_ascii=True, separators=(",", ":")).encode()).hexdigest()
+
+
+@pytest.fixture(autouse=True)
+def _test_record_rowsets(monkeypatch):
+    monkeypatch.setattr(
+        piece_adapter, "TOKENIZERS_RECORD_ROWSET_IDENTITY",
+        _rowset_identity(TOKENIZERS_RECORD_BYTES))
+    monkeypatch.setattr(
+        piece_adapter, "TRANSFORMERS_RECORD_ROWSET_IDENTITY",
+        _rowset_identity(TRANSFORMERS_RECORD_BYTES))
 
 
 class ByteLevel:
@@ -64,11 +89,11 @@ def extract(tokenizer, runtime_identity=None):
         native_extension_path="/runtime/tokenizers/tokenizers.abi3.so",
         native_extension_sha256=TOKENIZERS_NATIVE_SHA256,
         python_wrapper_identity=TOKENIZERS_PYTHON_WRAPPER_IDENTITY,
-        tokenizers_record_sha256=TOKENIZERS_RECORD_SHA256,
+        tokenizers_record_bytes=TOKENIZERS_RECORD_BYTES,
         common_distribution_root=True,
         transformers_wrapper_path="/runtime/transformers/tokenization_utils_tokenizers.py",
         transformers_wrapper_sha256=TRANSFORMERS_WRAPPER_SHA256,
-        transformers_record_sha256=TRANSFORMERS_RECORD_SHA256,
+        transformers_record_bytes=TRANSFORMERS_RECORD_BYTES,
         transformers_common_root=True)
 
 
@@ -184,11 +209,11 @@ def test_rejects_missing_or_mutated_native_decoder_before_piece_decode(state):
             native_extension_path="/runtime/tokenizers/tokenizers.abi3.so",
             native_extension_sha256=TOKENIZERS_NATIVE_SHA256,
             python_wrapper_identity=TOKENIZERS_PYTHON_WRAPPER_IDENTITY,
-            tokenizers_record_sha256=TOKENIZERS_RECORD_SHA256,
+            tokenizers_record_bytes=TOKENIZERS_RECORD_BYTES,
             common_distribution_root=True,
             transformers_wrapper_path="/runtime/transformers/tokenization_utils_tokenizers.py",
             transformers_wrapper_sha256=TRANSFORMERS_WRAPPER_SHA256,
-            transformers_record_sha256=TRANSFORMERS_RECORD_SHA256,
+            transformers_record_bytes=TRANSFORMERS_RECORD_BYTES,
             transformers_common_root=True)
     assert tokenizer.decode_calls == 0
 
@@ -208,11 +233,11 @@ def test_rejects_native_distribution_substitution_before_decode(version, path, d
             tokenizers_version=version, native_extension_path=path,
             native_extension_sha256=digest,
             python_wrapper_identity=TOKENIZERS_PYTHON_WRAPPER_IDENTITY,
-            tokenizers_record_sha256=TOKENIZERS_RECORD_SHA256,
+            tokenizers_record_bytes=TOKENIZERS_RECORD_BYTES,
             common_distribution_root=True,
             transformers_wrapper_path="/runtime/transformers/tokenization_utils_tokenizers.py",
             transformers_wrapper_sha256=TRANSFORMERS_WRAPPER_SHA256,
-            transformers_record_sha256=TRANSFORMERS_RECORD_SHA256,
+            transformers_record_bytes=TRANSFORMERS_RECORD_BYTES,
             transformers_common_root=True)
     assert tokenizer.decode_calls == 0
 
@@ -228,20 +253,20 @@ def test_rejects_python_wrapper_substitution_before_decode():
             native_extension_path="/runtime/tokenizers/tokenizers.abi3.so",
             native_extension_sha256=TOKENIZERS_NATIVE_SHA256,
             python_wrapper_identity="0" * 64,
-            tokenizers_record_sha256=TOKENIZERS_RECORD_SHA256,
+            tokenizers_record_bytes=TOKENIZERS_RECORD_BYTES,
             common_distribution_root=True,
             transformers_wrapper_path="/runtime/transformers/tokenization_utils_tokenizers.py",
             transformers_wrapper_sha256=TRANSFORMERS_WRAPPER_SHA256,
-            transformers_record_sha256=TRANSFORMERS_RECORD_SHA256,
+            transformers_record_bytes=TRANSFORMERS_RECORD_BYTES,
             transformers_common_root=True)
     assert tokenizer.decode_calls == 0
 
 
 @pytest.mark.parametrize("overrides,code", [
-    ({"tokenizers_record_sha256": "0" * 64}, "TOKENIZERS_RECORD_MISMATCH"),
+    ({"tokenizers_record_bytes": b"mutated,sha256=x,1\n"}, "RECORD_ROWSET_MISMATCH"),
     ({"common_distribution_root": False}, "TOKENIZERS_RECORD_MISMATCH"),
     ({"transformers_wrapper_sha256": "0" * 64}, "TRANSFORMERS_WRAPPER_MISMATCH"),
-    ({"transformers_record_sha256": "0" * 64}, "TRANSFORMERS_WRAPPER_MISMATCH"),
+    ({"transformers_record_bytes": b"mutated,sha256=x,1\n"}, "RECORD_ROWSET_MISMATCH"),
     ({"transformers_common_root": False}, "TRANSFORMERS_WRAPPER_MISMATCH"),
 ])
 def test_rejects_distribution_manifest_or_transformers_substitution(overrides, code):
@@ -254,15 +279,89 @@ def test_rejects_distribution_manifest_or_transformers_substitution(overrides, c
         native_extension_path="/runtime/tokenizers/tokenizers.abi3.so",
         native_extension_sha256=TOKENIZERS_NATIVE_SHA256,
         python_wrapper_identity=TOKENIZERS_PYTHON_WRAPPER_IDENTITY,
-        tokenizers_record_sha256=TOKENIZERS_RECORD_SHA256,
+        tokenizers_record_bytes=TOKENIZERS_RECORD_BYTES,
         common_distribution_root=True,
         transformers_wrapper_path="/runtime/transformers/tokenization_utils_tokenizers.py",
         transformers_wrapper_sha256=TRANSFORMERS_WRAPPER_SHA256,
-        transformers_record_sha256=TRANSFORMERS_RECORD_SHA256,
+        transformers_record_bytes=TRANSFORMERS_RECORD_BYTES,
         transformers_common_root=True)
     values.update(overrides)
     with pytest.raises(ValueError, match=code):
         extract_identity_bound_token_pieces_v1(**values)
+    assert tokenizer.decode_calls == 0
+
+
+def test_installed_record_accepts_only_closed_pip_extras(monkeypatch):
+    tokenizer = TokenizersBackend()
+    tokenizers = TOKENIZERS_RECORD_BYTES + (
+        b"tokenizers-0.22.2.dist-info/INSTALLER,sha256=installer,4\n"
+        b"tokenizers/__pycache__/__init__.cpython-312.pyc,,\n")
+    transformers = TRANSFORMERS_RECORD_BYTES + (
+        b"transformers-5.15.0.dist-info/INSTALLER,sha256=installer,4\n"
+        b"transformers-5.15.0.dist-info/REQUESTED,"
+        b"sha256=47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU,0\n"
+        b"../../../bin/transformers,sha256=script,12\n"
+        b"transformers/__pycache__/__init__.cpython-312.pyc,,\n")
+    bundle = extract_identity_bound_token_pieces_v1(
+        tokenizer=tokenizer, identity=identity(),
+        canonical_tokenizer_type=TokenizersBackend,
+        canonical_decoder_type=ByteLevel,
+        tokenizers_version=TOKENIZERS_VERSION,
+        native_extension_path="/runtime/tokenizers/tokenizers.abi3.so",
+        native_extension_sha256=TOKENIZERS_NATIVE_SHA256,
+        python_wrapper_identity=TOKENIZERS_PYTHON_WRAPPER_IDENTITY,
+        tokenizers_record_bytes=tokenizers, common_distribution_root=True,
+        transformers_wrapper_path=(
+            "/runtime/transformers/tokenization_utils_tokenizers.py"),
+        transformers_wrapper_sha256=TRANSFORMERS_WRAPPER_SHA256,
+        transformers_record_bytes=transformers, transformers_common_root=True)
+    assert bundle.decoder_mechanism_identity == DECODER_MECHANISM_IDENTITY
+
+
+@pytest.mark.parametrize("extra", [
+    b"tokenizers/unbound.py,sha256=extra,1\n",
+    b"tokenizers/__pycache__/bad.cpython-311.pyc,,\n",
+    b"tokenizers/__pycache__/bad.cpython-312.pyc,sha256=mutable,1\n",
+])
+def test_installed_record_rejects_open_or_malformed_extras(extra):
+    tokenizer = TokenizersBackend()
+    with pytest.raises(ValueError, match="RECORD_ROWSET_MISMATCH"):
+        extract_identity_bound_token_pieces_v1(
+            tokenizer=tokenizer, identity=identity(),
+            canonical_tokenizer_type=TokenizersBackend,
+            canonical_decoder_type=ByteLevel,
+            tokenizers_version=TOKENIZERS_VERSION,
+            native_extension_path="/runtime/tokenizers/tokenizers.abi3.so",
+            native_extension_sha256=TOKENIZERS_NATIVE_SHA256,
+            python_wrapper_identity=TOKENIZERS_PYTHON_WRAPPER_IDENTITY,
+            tokenizers_record_bytes=TOKENIZERS_RECORD_BYTES + extra,
+            common_distribution_root=True,
+            transformers_wrapper_path=(
+                "/runtime/transformers/tokenization_utils_tokenizers.py"),
+            transformers_wrapper_sha256=TRANSFORMERS_WRAPPER_SHA256,
+            transformers_record_bytes=TRANSFORMERS_RECORD_BYTES,
+            transformers_common_root=True)
+    assert tokenizer.decode_calls == 0
+
+
+def test_installed_record_rejects_duplicate_rows_before_decode():
+    tokenizer = TokenizersBackend()
+    with pytest.raises(ValueError, match="RECORD_INVALID"):
+        extract_identity_bound_token_pieces_v1(
+            tokenizer=tokenizer, identity=identity(),
+            canonical_tokenizer_type=TokenizersBackend,
+            canonical_decoder_type=ByteLevel,
+            tokenizers_version=TOKENIZERS_VERSION,
+            native_extension_path="/runtime/tokenizers/tokenizers.abi3.so",
+            native_extension_sha256=TOKENIZERS_NATIVE_SHA256,
+            python_wrapper_identity=TOKENIZERS_PYTHON_WRAPPER_IDENTITY,
+            tokenizers_record_bytes=TOKENIZERS_RECORD_BYTES * 2,
+            common_distribution_root=True,
+            transformers_wrapper_path=(
+                "/runtime/transformers/tokenization_utils_tokenizers.py"),
+            transformers_wrapper_sha256=TRANSFORMERS_WRAPPER_SHA256,
+            transformers_record_bytes=TRANSFORMERS_RECORD_BYTES,
+            transformers_common_root=True)
     assert tokenizer.decode_calls == 0
 
 

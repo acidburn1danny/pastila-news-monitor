@@ -10,12 +10,16 @@ wheel identity `369cc9fc…2c67`, import origin
 The installed `METADATA`, `WHEEL`, package initializer, and decoder initializer
 are also hashed into wrapper identity `a465a7f8…5b45`; runtime derives this
 identity from the imported distribution before accepting its class objects.
-The complete installed `tokenizers-0.22.2.dist-info/RECORD` is sealed as
-`d12cab93…e421`, and all tokenizers imports plus dist-info must resolve beneath
-one distribution root. The Transformers decode entrypoint is independently
-bound to wheel `d7f00773…b107`, RECORD `18faf105…b936`, and
-`tokenization_utils_tokenizers.py` SHA-256 `bf921a16…8de8`, with the wrapper and
-dist-info required beneath one Transformers distribution root.
+The canonical wheel `RECORD` is sealed as `d12cab93…e421`. Runtime admission
+requires every canonical row, unchanged, using order-independent row-set seal
+`2623b4cc…f27c`; it permits only closed pip extras (`INSTALLER` and empty-hash
+CPython 3.12 bytecode rows). All imported tokenizers artifacts and dist-info
+must share one distribution root. The Transformers entrypoint is independently
+bound to wheel `d7f00773…b107`, canonical `RECORD` `18faf105…b936`, row-set
+seal `435bcb53…01fc`, and `tokenization_utils_tokenizers.py` SHA-256
+`bf921a16…8de8`. Its installed manifest permits only the corresponding closed
+pip extras (`INSTALLER`, `REQUESTED`, console script, and empty-hash CPython
+3.12 bytecode rows).
 
 The ByteLevel decoder converts each vocabulary token's byte-alphabet symbols to
 bytes, concatenates those bytes, and performs one lossy UTF-8 decode. Therefore,

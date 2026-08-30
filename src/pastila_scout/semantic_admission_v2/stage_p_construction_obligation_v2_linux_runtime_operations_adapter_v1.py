@@ -122,15 +122,13 @@ def prepare_linux_runtime_operations_v1(
         native_extension_sha256=hashlib.sha256(
             native_path.read_bytes()).hexdigest(),
         python_wrapper_identity=wrapper_identity,
-        tokenizers_record_sha256=hashlib.sha256(
-            tokenizers_record.read_bytes()).hexdigest(),
+        tokenizers_record_bytes=tokenizers_record.read_bytes(),
         common_distribution_root=all(path.is_relative_to(tokenizers_root) for path in (
             tokenizers_record, native_path, package_path, decoders_path)),
         transformers_wrapper_path=str(transformers_wrapper),
         transformers_wrapper_sha256=hashlib.sha256(
             transformers_wrapper.read_bytes()).hexdigest(),
-        transformers_record_sha256=hashlib.sha256(
-            transformers_record.read_bytes()).hexdigest(),
+        transformers_record_bytes=transformers_record.read_bytes(),
         transformers_common_root=all(path.is_relative_to(transformers_root) for path in (
             transformers_record, transformers_wrapper)))
     encoded = tokenizer.apply_chat_template(
