@@ -23,6 +23,7 @@ CANONICAL_RUNNER_PROTOCOL_CODEC_SOURCE_SHA256 = "117e658ffa115f06c03771b8e6cdfca
 CANONICAL_TOKENIZER_PIECE_SOURCE_SHA256 = "abda08278e362b520c633a150e10aa98280d25efb952fbf81327bee229d551bf"
 CANONICAL_SEMANTIC_COMPLETENESS_SOURCE_SHA256 = "9230b1e5a1e936d095c4f29395d6a4a8902729ae4a925171558445491f28cdfa"
 CANONICAL_REQUEST_RENDERER_SOURCE_SHA256 = "e7c26bec5998f6bf41ec456b4332471efb0b5c3944d42434d53a6b771319d6e0"
+CANONICAL_CONSTRUCTION_ROLE_DFA_SOURCE_SHA256 = "3e0a1b9408cfe0392d0eaf042eb643f0df945f35ee4d1d615d5da675b813cf1f"
 CANONICAL_REQUEST_PROMPT_SHA256 = "33a6e62acf0f9ee9636dea1da3b9c62a345ecab61b835b2f86466d71526be0a2"
 LINUX_GENERATION_RUNNER_IDENTITY_FIELDS = (
     "construction-obligation-v2-linux-generation-runner-v1.2.1",
@@ -43,6 +44,7 @@ LINUX_GENERATION_RUNNER_IDENTITY_FIELDS = (
     "tokenizer-piece-source:" + CANONICAL_TOKENIZER_PIECE_SOURCE_SHA256,
     "semantic-completeness-source:" + CANONICAL_SEMANTIC_COMPLETENESS_SOURCE_SHA256,
     "request-renderer-source:" + CANONICAL_REQUEST_RENDERER_SOURCE_SHA256,
+    "construction-role-dfa-source:" + CANONICAL_CONSTRUCTION_ROLE_DFA_SOURCE_SHA256,
     "request-prompt:" + CANONICAL_REQUEST_PROMPT_SHA256,
     "inner-timeout:1200",
 )
@@ -60,6 +62,7 @@ def run_linux_generation_runner_v1_2_1(
 ) -> LinuxGenerationCompositionOutcomeV1_2:
     if not callable(composition):
         raise TypeError("CONSTRUCTION_OBLIGATION_V2_RUNNER_COMPOSITION_REQUIRED")
+    _validate_construction_role_dfa_source()
     policy = _input(policy_receipt_path, "POLICY_RECEIPT", 100_000)
     authority = _input(authority_receipt_path, "AUTHORITY_RECEIPT", 100_000)
     request = _input(runner_request_path, "RUNNER_REQUEST", 600_000)
@@ -78,6 +81,13 @@ def run_linux_generation_runner_v1_2_1(
     if type(outcome) is not LinuxGenerationCompositionOutcomeV1_2:
         raise TypeError("CONSTRUCTION_OBLIGATION_V2_RUNNER_V1_2_OUTCOME_EXACT_TYPE_REQUIRED")
     return outcome
+
+
+def _validate_construction_role_dfa_source() -> None:
+    source = Path(__file__).with_name("stage_p_construction_role_constraint_v1.py")
+    if (not source.is_file() or hashlib.sha256(source.read_bytes()).hexdigest()
+            != CANONICAL_CONSTRUCTION_ROLE_DFA_SOURCE_SHA256):
+        raise RuntimeError("CONSTRUCTION_OBLIGATION_V2_CONSTRUCTION_ROLE_DFA_SOURCE_IDENTITY_MISMATCH")
 
 
 def main(arguments: Sequence[str]) -> int:

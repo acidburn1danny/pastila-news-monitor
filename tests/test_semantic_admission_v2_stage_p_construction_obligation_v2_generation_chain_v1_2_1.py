@@ -109,6 +109,8 @@ def test_optimized_projector_and_generated_suffix_contract_are_source_bound():
             "stage_p_construction_obligation_v2_runner_protocol_codec_v1.py",
         "CANONICAL_REQUEST_RENDERER_SOURCE_SHA256":
             "stage_p_construction_obligation_v2_request_renderer_v1.py",
+        "CANONICAL_CONSTRUCTION_ROLE_DFA_SOURCE_SHA256":
+            "stage_p_construction_role_constraint_v1.py",
     }
     for constant, filename in expected.items():
         assert getattr(runner, constant) == hashlib.sha256(
@@ -130,6 +132,14 @@ def test_optimized_projector_and_generated_suffix_contract_are_source_bound():
         (ROOT / "src/pastila_scout/semantic_admission_v2/"
          "stage_p_construction_obligation_v2_linux_runtime_operations_adapter_v1.py").read_bytes()
     ).hexdigest()
+
+
+def test_runner_revalidates_bound_construction_role_dfa_source(monkeypatch):
+    runner._validate_construction_role_dfa_source()
+    monkeypatch.setattr(
+        runner, "CANONICAL_CONSTRUCTION_ROLE_DFA_SOURCE_SHA256", "0" * 64)
+    with pytest.raises(RuntimeError, match="CONSTRUCTION_ROLE_DFA_SOURCE_IDENTITY_MISMATCH"):
+        runner._validate_construction_role_dfa_source()
 
 
 def test_optimized_callback_reconstructs_context_from_canonical_source_binding():

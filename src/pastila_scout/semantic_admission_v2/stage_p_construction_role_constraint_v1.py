@@ -43,6 +43,8 @@ class StagePConstructionRoleConstraintStateV1(StagePCreativeTargetConstraintStat
                     self._fail("CONSTRUCTION_LIMIT")
                 return state._construction_start()
             if char == "]":
+                if not self._construction_collection_can_close():
+                    self._fail("CONSTRUCTION_DISPOSITION_REQUIREMENT_UNSATISFIED")
                 return replace(state, mode="LITERAL", remaining=',"literal_path_basis":',
                                next_step="LITERAL_PATH_BASIS")
             self._fail("CONSTRUCTION_SEPARATOR")
@@ -57,8 +59,12 @@ class StagePConstructionRoleConstraintStateV1(StagePCreativeTargetConstraintStat
         if self.mode == "CONSTRUCTION_NULLABLE_STRING_START":
             state = replace(self, characters=self.characters + 1)
             if char == "n":
+                if self.construction_disposition == "NO_MATERIAL_CREATIVE_CONSTRUCTION":
+                    self._fail("NO_MATERIAL_LITERAL_PATH_REQUIRED")
                 return replace(state, mode="LITERAL", remaining="ull", next_step="LITERAL_PATH_NULL")
             if char == '"':
+                if self.construction_disposition != "NO_MATERIAL_CREATIVE_CONSTRUCTION":
+                    self._fail("MATERIAL_OR_UNRESOLVED_LITERAL_PATH_MUST_BE_NULL")
                 return replace(state, mode="STRING", string_characters=0, string_escape=False,
                                unicode_remaining=0, next_step="LITERAL_PATH_STRING")
             self._fail("CONSTRUCTION_NULLABLE_STRING_START")
@@ -202,6 +208,20 @@ class StagePConstructionRoleConstraintStateV1(StagePCreativeTargetConstraintStat
                        remaining='{"construction_id":"', next_step="CONSTRUCTION_ID",
                        current_construction_id=None, current_construction_role=None,
                        current_construction_host=None, current_construction_links=())
+
+    def _construction_collection_can_close(self) -> bool:
+        """Do not leave the collection before its bound disposition is satisfiable."""
+        roles = {record[1] for record in self.construction_records}
+        material = bool(roles & {
+            "MATERIAL_CREATIVE_OR_EDITORIAL", "MIXED_CREATIVE_AND_REAL_WORLD"})
+        unresolved = "UNRESOLVED" in roles
+        if self.construction_disposition == "NO_MATERIAL_CREATIVE_CONSTRUCTION":
+            return not material and not unresolved
+        if self.construction_disposition == "ONE_OR_MORE_MATERIAL_CONSTRUCTIONS":
+            return material and not unresolved
+        if self.construction_disposition == "UNRESOLVED_CONSTRUCTION_ROLE":
+            return unresolved
+        return False
 
     def _validate_construction_graph(self):
         roles = {record[1] for record in self.construction_records}

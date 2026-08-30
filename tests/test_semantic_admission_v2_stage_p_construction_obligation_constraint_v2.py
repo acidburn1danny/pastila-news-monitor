@@ -133,3 +133,55 @@ def test_same_lengths_different_context_rejects_bound_output():
 def test_context_is_mandatory_and_no_zero_argument_state_exists():
     with pytest.raises(ValueError, match="SOURCE_REFERENCE_CONTEXT_REQUIRED"):
         StagePConstructionObligationConstraintStateV2()
+
+
+def test_unresolved_disposition_cannot_close_without_unresolved_record():
+    context, _, _ = _case_context()
+    prefix = _valid_text(context).split('"overall_disposition":"', 1)[0]
+    prefix += ('"overall_disposition":"UNRESOLVED_CONSTRUCTION_ROLE",'
+               '"construction_records":[{"construction_id":"C1",'
+               '"candidate_span_ref":' + canonical_reference_json_v1(
+                   context=context, field=ReferenceFieldV1.CANDIDATE_SPAN,
+                   start_utf8=0, end_utf8=context.candidate.byte_length) +
+               ',"construction_role":"')
+    suffix = _valid_text(context).split(',"construction_role":"', 1)[1]
+    material_record = 'MIXED_CREATIVE_AND_REAL_WORLD","' + suffix.split('","', 1)[1]
+    record_end = material_record.split('],"literal_path_basis":', 1)[0] + ']'
+    state = StagePConstructionObligationConstraintStateV2.for_context(context).feed(
+        prefix + record_end[:-1])
+    assert state.mode == "CONSTRUCTION_RECORD_SEPARATOR"
+    with pytest.raises(StagePRoleCoherenceConstraintViolationV1,
+                       match="CONSTRUCTION_DISPOSITION_REQUIREMENT_UNSATISFIED"):
+        state.feed("]")
+
+
+@pytest.mark.parametrize("disposition,next_character,error", [
+    ("NO_MATERIAL_CREATIVE_CONSTRUCTION", "n", "NO_MATERIAL_LITERAL_PATH_REQUIRED"),
+    ("ONE_OR_MORE_MATERIAL_CONSTRUCTIONS", '"',
+     "MATERIAL_OR_UNRESOLVED_LITERAL_PATH_MUST_BE_NULL"),
+    ("UNRESOLVED_CONSTRUCTION_ROLE", '"',
+     "MATERIAL_OR_UNRESOLVED_LITERAL_PATH_MUST_BE_NULL"),
+])
+def test_literal_path_form_is_pruned_by_bound_disposition(
+        disposition, next_character, error):
+    context, _, _ = _case_context()
+    raw = _valid_text(context)
+    if disposition == "NO_MATERIAL_CREATIVE_CONSTRUCTION":
+        prefix = raw.split('"overall_disposition":"', 1)[0]
+        prefix += ('"overall_disposition":"NO_MATERIAL_CREATIVE_CONSTRUCTION",'
+                   '"construction_records":[],"literal_path_basis":')
+    else:
+        prefix = raw.split('"literal_path_basis":', 1)[0]
+        prefix = prefix.replace("ONE_OR_MORE_MATERIAL_CONSTRUCTIONS", disposition, 1)
+        if disposition == "UNRESOLVED_CONSTRUCTION_ROLE":
+            prefix = prefix.replace("MIXED_CREATIVE_AND_REAL_WORLD", "UNRESOLVED", 1)
+            prefix = prefix.replace('"creative_host_entry_id":"P1"',
+                                    '"creative_host_entry_id":null', 1)
+            prefix = prefix.replace('"literal_or_return_entry_ids":["P2"]',
+                                    '"literal_or_return_entry_ids":[]', 1)
+            prefix = prefix.replace("MIXED_HOST_AND_RETURNS_REQUIRED",
+                                    "FAIL_CLOSED_UNRESOLVED", 1)
+        prefix += '"literal_path_basis":'
+    state = StagePConstructionObligationConstraintStateV2.for_context(context).feed(prefix)
+    with pytest.raises(StagePRoleCoherenceConstraintViolationV1, match=error):
+        state.feed(next_character)
