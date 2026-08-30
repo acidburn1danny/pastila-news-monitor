@@ -7,6 +7,9 @@ Admission also requires `tokenizers==0.22.2`, the canonical manylinux x86-64
 wheel identity `369cc9fc…2c67`, import origin
 `tokenizers/tokenizers.abi3.so`, and native-extension SHA-256
 `c116fcf1…1ccc`. The decoder-mechanism seal covers all four identities.
+The installed `METADATA`, `WHEEL`, package initializer, and decoder initializer
+are also hashed into wrapper identity `a465a7f8…5b45`; runtime derives this
+identity from the imported distribution before accepting its class objects.
 
 The ByteLevel decoder converts each vocabulary token's byte-alphabet symbols to
 bytes, concatenates those bytes, and performs one lossy UTF-8 decode. Therefore,

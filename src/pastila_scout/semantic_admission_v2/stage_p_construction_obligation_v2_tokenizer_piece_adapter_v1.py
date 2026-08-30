@@ -26,12 +26,14 @@ DECODER_CONFIGURATION_SHA256 = "1d64d97add535d9ad91561aabea254849cf7f2ea4b924cc6
 TOKENIZERS_VERSION = "0.22.2"
 TOKENIZERS_WHEEL_SHA256 = "369cc9fc8cc10cb24143873a0d95438bb8ee257bb80c71989e3ee290e8d72c67"
 TOKENIZERS_NATIVE_SHA256 = "c116fcf1e80d461ce0a35c332974f25949e8359416f50b3d53371810d2ce1ccc"
-DECODER_MECHANISM_IDENTITY = "6ea16458eabd6436ac886f63373fcdfb3c7f989d1039ae47ba285c7d8552374f"
+TOKENIZERS_PYTHON_WRAPPER_IDENTITY = "a465a7f8617d1d4ece64f1d833f98597c398efb8183b4e8b85fe92a52fe15b45"
+DECODER_MECHANISM_IDENTITY = "a0ce93ae38d6bd9ef5e0b6426199f5b23f3a15c288f758b8be22854477be3ae7"
 DECODER_MECHANISM_FIELDS = {
     "decoder_configuration_sha256": DECODER_CONFIGURATION_SHA256,
     "native_extension_sha256": TOKENIZERS_NATIVE_SHA256,
     "tokenizers_version": TOKENIZERS_VERSION,
     "wheel_sha256": TOKENIZERS_WHEEL_SHA256,
+    "python_wrapper_identity": TOKENIZERS_PYTHON_WRAPPER_IDENTITY,
 }
 DERIVED_DECODER_MECHANISM_IDENTITY = hashlib.sha256(json.dumps(
     DECODER_MECHANISM_FIELDS, sort_keys=True,
@@ -102,7 +104,7 @@ def extract_identity_bound_token_pieces_v1(
     *, tokenizer: InjectedTokenizerV1, identity: TokenizerRuntimeIdentityV1,
     canonical_tokenizer_type: type, canonical_decoder_type: type,
     tokenizers_version: str, native_extension_path: str,
-    native_extension_sha256: str,
+    native_extension_sha256: str, python_wrapper_identity: str,
 ) -> TokenPieceBundleV1:
     """Validate the entire frozen identity tuple before performing any decode."""
     expected = TokenizerRuntimeIdentityV1(
@@ -132,6 +134,8 @@ def extract_identity_bound_token_pieces_v1(
                 "/tokenizers/tokenizers.abi3.so")
             or native_extension_sha256 != TOKENIZERS_NATIVE_SHA256):
         raise ValueError("CONSTRUCTION_OBLIGATION_V2_NATIVE_DECODER_ARTIFACT_MISMATCH")
+    if python_wrapper_identity != TOKENIZERS_PYTHON_WRAPPER_IDENTITY:
+        raise ValueError("CONSTRUCTION_OBLIGATION_V2_TOKENIZERS_WRAPPER_MISMATCH")
     if len(tokenizer) != VOCABULARY_SIZE:
         raise ValueError("CONSTRUCTION_OBLIGATION_V2_TOKENIZER_VOCABULARY_MISMATCH")
     if tokenizer.eos_token_id != EOS_TOKEN_ID:

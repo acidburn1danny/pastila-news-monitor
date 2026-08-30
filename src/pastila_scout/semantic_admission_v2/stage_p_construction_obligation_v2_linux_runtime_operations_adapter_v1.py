@@ -8,9 +8,10 @@ from __future__ import annotations
 
 import gc
 import hashlib
+import json
 import warnings
 from dataclasses import dataclass
-from importlib.metadata import version as _package_version
+from importlib.metadata import distribution, version as _package_version
 from pathlib import Path
 from typing import Callable, Sequence
 
@@ -76,7 +77,23 @@ def prepare_linux_runtime_operations_v1(
     from transformers import AutoTokenizer, BatchEncoding
     from transformers.tokenization_utils_tokenizers import TokenizersBackend
     from tokenizers.decoders import ByteLevel
+    import tokenizers
+    import tokenizers.decoders as tokenizers_decoders
     import tokenizers.tokenizers as tokenizers_native
+    tokenizers_distribution = distribution("tokenizers")
+    wrapper_fields = {
+        "metadata": hashlib.sha256(Path(
+            tokenizers_distribution.locate_file(
+                "tokenizers-0.22.2.dist-info/METADATA")).read_bytes()).hexdigest(),
+        "wheel": hashlib.sha256(Path(
+            tokenizers_distribution.locate_file(
+                "tokenizers-0.22.2.dist-info/WHEEL")).read_bytes()).hexdigest(),
+        "package_init": hashlib.sha256(Path(tokenizers.__file__).read_bytes()).hexdigest(),
+        "decoders_init": hashlib.sha256(Path(
+            tokenizers_decoders.__file__).read_bytes()).hexdigest(),
+    }
+    wrapper_identity = hashlib.sha256(json.dumps(
+        wrapper_fields, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
 
     tokenizer = AutoTokenizer.from_pretrained(BASE_MODEL_PATH, local_files_only=True)
     identity = TokenizerRuntimeIdentityV1(
@@ -91,7 +108,8 @@ def prepare_linux_runtime_operations_v1(
         tokenizers_version=_package_version("tokenizers"),
         native_extension_path=tokenizers_native.__file__,
         native_extension_sha256=hashlib.sha256(
-            Path(tokenizers_native.__file__).read_bytes()).hexdigest())
+            Path(tokenizers_native.__file__).read_bytes()).hexdigest(),
+        python_wrapper_identity=wrapper_identity)
     encoded = tokenizer.apply_chat_template(
         [{"role": "system", "content": system_prompt},
          {"role": "user", "content": rendered_prompt}],
