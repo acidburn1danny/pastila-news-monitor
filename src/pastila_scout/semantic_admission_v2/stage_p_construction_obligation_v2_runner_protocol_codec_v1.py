@@ -90,19 +90,33 @@ def build_lifecycle_event_v1(*, request: RunnerRequestV1, sequence: int, event: 
 
 def validate_no_legal_token_receipt_v1(*, raw_receipt: bytes, request: RunnerRequestV1) -> str:
     value=_object(raw_receipt,"NO_LEGAL_TOKEN_RECEIPT")
-    required={"schema_name","schema_version","protocol_identity","projector_freeze_identity",
+    common={"schema_name","schema_version","protocol_identity","projector_freeze_identity",
       "tokenizer_identity","decoder_identity","provider_request_id","source_context_identity",
       "generated_prefix_sha256","generated_token_count","character_state_identity","dfa_mode",
       "terminal","allowed_token_count","failure_code","receipt_identity"}
-    if set(value)!=required or (value["schema_name"],value["schema_version"],value["protocol_identity"],
+    extended=common|{"projector_terminal","projector_reason_code"}
+    if set(value) not in (common,extended) or (value["schema_name"],value["protocol_identity"],
       value["projector_freeze_identity"],value["tokenizer_identity"],value["decoder_identity"]) != (
-      "pastila-semantic-admission-v2-construction-obligation-v2-no-legal-token-receipt",_VERSION,
+      "pastila-semantic-admission-v2-construction-obligation-v2-no-legal-token-receipt",
       RUNNER_PROTOCOL_IDENTITY,PROJECTOR_FREEZE_IDENTITY,TOKENIZER_IDENTITY,DECODER_IDENTITY):
         raise ValueError("CONSTRUCTION_OBLIGATION_V2_NO_LEGAL_TOKEN_IDENTITY_MISMATCH")
     if (value["provider_request_id"],value["source_context_identity"],value["terminal"],
-        value["allowed_token_count"],value["failure_code"]) != (request.provider_request_id,
-        request.source_context_identity,False,0,"NO_LEGAL_TOKEN_NONTERMINAL"):
+        value["allowed_token_count"]) != (request.provider_request_id,
+        request.source_context_identity,False,0):
         raise ValueError("CONSTRUCTION_OBLIGATION_V2_NO_LEGAL_TOKEN_BINDING_MISMATCH")
+    if set(value)==common:
+        if (value["schema_version"] != _VERSION
+                or value["failure_code"] != "NO_LEGAL_TOKEN_NONTERMINAL"):
+            raise ValueError("CONSTRUCTION_OBLIGATION_V2_NO_LEGAL_TOKEN_CLASSIFICATION_MISMATCH")
+    elif (value["schema_version"] != "1.2.1"
+            or type(value["projector_terminal"]) is not bool
+            or type(value["projector_reason_code"]) is not str
+            or not value["projector_reason_code"]
+            or value["failure_code"] != (
+                "SEMANTIC_COMPLETENESS_EOS_WITHHELD"
+                if value["projector_terminal"]
+                else "TOKENIZATION_DEAD_NO_VALID_TOKEN")):
+        raise ValueError("CONSTRUCTION_OBLIGATION_V2_NO_LEGAL_TOKEN_CLASSIFICATION_MISMATCH")
     expected=hashlib.sha256(_canonical({k:v for k,v in value.items() if k!="receipt_identity"})).hexdigest()
     if value["receipt_identity"]!=expected or raw_receipt!=_canonical(value):
         raise ValueError("CONSTRUCTION_OBLIGATION_V2_NO_LEGAL_TOKEN_SEAL_MISMATCH")

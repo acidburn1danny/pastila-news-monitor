@@ -107,7 +107,8 @@ def prepare_linux_runtime_operations_v1(
         "transformers-5.15.0.dist-info/RECORD")).resolve()
     transformers_wrapper = Path(transformers_tokenizer_module.__file__).resolve()
 
-    tokenizer = AutoTokenizer.from_pretrained(BASE_MODEL_PATH, local_files_only=True)
+    tokenizer = AutoTokenizer.from_pretrained(
+        BASE_MODEL_PATH, local_files_only=True, fix_mistral_regex=True)
     identity = TokenizerRuntimeIdentityV1(
         TOKENIZER_IDENTITY, DECODER_IDENTITY, TRANSFORMERS_VERSION,
         type(tokenizer).__name__, len(tokenizer), tokenizer.eos_token_id,

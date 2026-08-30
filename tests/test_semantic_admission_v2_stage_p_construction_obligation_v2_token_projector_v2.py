@@ -100,6 +100,24 @@ def test_exact_decoder_never_recovers_by_scanning_outside_trie_candidates():
     assert calls == [()]
 
 
+def test_structural_liveness_pruning_withholds_literal_token_with_no_successor():
+    context, _, _ = _case_context()
+    common = dict(
+        controller=StagePConstructionObligationCharacterControllerV1(
+            context=context, decoder_identity=DECODER),
+        token_pieces={10: "{", 2: ""}, initial_token_pieces={10: "{", 2: ""},
+        eos_token_id=2, tokenizer_identity=TOKENIZER, decoder_identity=DECODER,
+        request_context_identity=context.binding_identity,
+        request_authority_identity="authority:test-case-01")
+    unpruned = StagePConstructionObligationV2TokenProjectorV2(**common)
+    assert unpruned.allowed_token_ids((), lambda _: "").token_ids == (10,)
+    pruned = StagePConstructionObligationV2TokenProjectorV2(
+        **common, structural_liveness_pruning=True)
+    with pytest.raises(StagePTokenProjectionFailureV1) as caught:
+        pruned.allowed_token_ids((), lambda _: "")
+    assert caught.value.receipt.reason_code == "TOKENIZATION_DEAD_NO_VALID_TOKEN"
+
+
 def test_exact_decoder_rejects_multi_predecessor_context_disagreement():
     context, _, _ = _case_context()
     raw = _valid_text(context)

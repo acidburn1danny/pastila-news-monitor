@@ -32,6 +32,7 @@ from .stage_p_construction_obligation_v2_runner_protocol_cleanup_extension_v1_1 
 from .stage_p_construction_obligation_v2_runner_protocol_codec_v1 import (
     build_runner_result_v1,
     parse_runner_request_v1,
+    validate_no_legal_token_receipt_v1,
 )
 
 SUPERVISOR_CANDIDATE_IDENTITY_FIELDS = (
@@ -267,6 +268,15 @@ def _reconcile_artifacts(*, request, child_result, failure_code, child_progress=
         artifacts.append(("raw-partial-output.bin", child_result.raw_partial_output))
     if child_result.compatibility_receipt is not None:
         artifacts.append(("adapter-compatibility-receipt.json", child_result.compatibility_receipt))
+    if child_result.no_legal_token_receipt is not None:
+        no_legal_identity = validate_no_legal_token_receipt_v1(
+            raw_receipt=child_result.no_legal_token_receipt, request=request)
+        if base.get("no_legal_token_receipt_identity") != no_legal_identity:
+            raise ValueError("CONSTRUCTION_OBLIGATION_V2_NO_LEGAL_TOKEN_RESULT_MISMATCH")
+        artifacts.append(("no-legal-token-receipt.json",
+                          child_result.no_legal_token_receipt))
+    elif base.get("no_legal_token_receipt_identity") is not None:
+        raise ValueError("CONSTRUCTION_OBLIGATION_V2_NO_LEGAL_TOKEN_BYTES_MISSING")
     for index, raw in enumerate(generation_progress, 1):
         artifacts.append((f"generation-progress-{index:05d}.json", raw))
     artifacts.extend((

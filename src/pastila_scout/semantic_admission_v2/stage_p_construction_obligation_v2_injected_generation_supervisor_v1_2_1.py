@@ -39,6 +39,7 @@ class InjectedGenerationSupervisorResultV1:
     raw_partial_output: bytes | None
     compatibility_receipt: bytes | None
     cleanup_receipt: bytes
+    no_legal_token_receipt: bytes | None = None
 
 
 def supervise_injected_generation_v1_2_1(
@@ -95,6 +96,7 @@ def supervise_injected_generation_v1_2_1(
     return InjectedGenerationSupervisorResultV1(
         outcome.status, outcome.events, runner_result, outcome.raw_output,
         outcome.raw_partial_output, outcome.compatibility_receipt, cleanup_receipt,
+        outcome.no_legal_token_receipt,
     )
 
 

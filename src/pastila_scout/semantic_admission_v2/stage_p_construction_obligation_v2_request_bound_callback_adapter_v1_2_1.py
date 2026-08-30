@@ -72,7 +72,8 @@ class ConstructionObligationV2RequestBoundCallbackAdapterV1_2_1:
             exact_history_decoder=False,
             decoder_mechanism_identity=decoder_mechanism_identity,
             terminal_admission=completeness.validate_terminal,
-            terminal_admission_identity=completeness.policy.identity)
+            terminal_admission_identity=completeness.policy.identity,
+            structural_liveness_pruning=True)
         self._decode_generated = None
         self._suffix = RequestBoundGeneratedSuffixCallbackV1(
             request_identity=request.provider_request_id,
@@ -122,9 +123,10 @@ def _decode(projector, generated: Sequence[int]) -> str:
 
 
 def _no_legal_receipt(*, request, authority, generated, receipt) -> bytes:
+    semantic_eos_withheld = bool(receipt.terminal)
     value = {
         "schema_name": "pastila-semantic-admission-v2-construction-obligation-v2-no-legal-token-receipt",
-        "schema_version": "1.0.0-evaluation.1",
+        "schema_version": "1.2.1",
         "protocol_identity": RUNNER_PROTOCOL_IDENTITY,
         "projector_freeze_identity": PROJECTOR_FREEZE_IDENTITY,
         "tokenizer_identity": TOKENIZER_IDENTITY,
@@ -138,7 +140,12 @@ def _no_legal_receipt(*, request, authority, generated, receipt) -> bytes:
             authority, receipt.request_context_identity, receipt.decoded_sha256,
             receipt.dfa_mode, str(receipt.terminal))).encode()).hexdigest(),
         "dfa_mode": receipt.dfa_mode, "terminal": False,
-        "allowed_token_count": 0, "failure_code": "NO_LEGAL_TOKEN_NONTERMINAL",
+        "projector_terminal": semantic_eos_withheld,
+        "projector_reason_code": receipt.reason_code,
+        "allowed_token_count": 0,
+        "failure_code": (
+            "SEMANTIC_COMPLETENESS_EOS_WITHHELD" if semantic_eos_withheld
+            else "TOKENIZATION_DEAD_NO_VALID_TOKEN"),
         "receipt_identity": "",
     }
     value["receipt_identity"] = hashlib.sha256(_canonical(

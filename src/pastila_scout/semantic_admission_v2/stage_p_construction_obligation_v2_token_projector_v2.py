@@ -87,6 +87,7 @@ class StagePConstructionObligationV2TokenProjectorV2:
         decoder_mechanism_identity: str | None = None,
         terminal_admission: Callable[[str], object] | None = None,
         terminal_admission_identity: str | None = None,
+        structural_liveness_pruning: bool = False,
     ) -> None:
         if controller.tracker.context.binding_identity != request_context_identity:
             raise ValueError("REQUEST_CONTEXT_IDENTITY_MISMATCH")
@@ -106,6 +107,9 @@ class StagePConstructionObligationV2TokenProjectorV2:
         self.excluded_token_ids = excluded
         self._terminal_admission = terminal_admission
         self.terminal_admission_identity = terminal_admission_identity
+        if type(structural_liveness_pruning) is not bool:
+            raise TypeError("STRUCTURAL_LIVENESS_PRUNING_BOOL_REQUIRED")
+        self.structural_liveness_pruning = structural_liveness_pruning
         if type(exact_history_decoder) is not bool:
             raise TypeError("EXACT_HISTORY_DECODER_FLAG_BOOL_REQUIRED")
         self.exact_history_decoder = exact_history_decoder
@@ -133,8 +137,10 @@ class StagePConstructionObligationV2TokenProjectorV2:
              + special_policy + "\n" + piece_identity + "\n"
              + f"exact-history-decoder:{exact_history_decoder}\n"
              + f"decoder-mechanism:{decoder_mechanism_identity or 'NONE'}\n"
+             + f"structural-liveness-pruning:{structural_liveness_pruning}\n"
              + (terminal_admission_identity or "NONE")).encode()).hexdigest()
         self._cache: dict[str, tuple[int, ...]] = {}
+        self._structural_liveness_cache: dict[str, bool] = {}
         self._hits = self._misses = self._visited = self._admitted = 0
         self._exact_decode_token_work = 0
 
@@ -218,11 +224,16 @@ class StagePConstructionObligationV2TokenProjectorV2:
             children = self._children if ordinary_string else self._all_children
             terminals = self._terminals if ordinary_string else self._all_terminals
         stack = [(0, state, root_allowance)]
+        prune_literal_dead_ends = (
+            self.structural_liveness_pruning and state.mode == "LITERAL")
         visited = 0
         while stack:
             node, current, allowance = stack.pop()
             visited += 1
-            admitted.extend(terminals[node])
+            if terminals[node] and (
+                    not prune_literal_dead_ends or current.terminal
+                    or self._has_structural_successor(current)):
+                admitted.extend(terminals[node])
             for character, child in children[node].items():
                 if not allowance.permits(character):
                     continue
@@ -236,6 +247,35 @@ class StagePConstructionObligationV2TokenProjectorV2:
         self._visited += visited
         self._admitted += len(result)
         return result
+
+    def _has_structural_successor(self, state) -> bool:
+        """Reject a structurally valid token that creates an immediate trie dead end."""
+        key = hashlib.sha256(repr(state).encode()).hexdigest()
+        cached = self._structural_liveness_cache.get(key)
+        if cached is not None:
+            return cached
+        stack = [(0, state, _allowance_for_state(state))]
+        seen = set()
+        while stack:
+            node, current, allowance = stack.pop()
+            marker = (node, repr(current))
+            if marker in seen:
+                continue
+            seen.add(marker)
+            if self._all_terminals[node]:
+                self._structural_liveness_cache[key] = True
+                return True
+            for character, child in self._all_children[node].items():
+                if not allowance.permits(character):
+                    continue
+                try:
+                    advanced = current._feed_char(character)
+                except (StagePRoleCoherenceConstraintViolationV1, UnicodeError,
+                        ValueError, TypeError):
+                    continue
+                stack.append((child, advanced, _allowance_for_state(advanced)))
+        self._structural_liveness_cache[key] = False
+        return False
 
     def _exact_candidates(
         self, token_ids, decode, prefix, candidates, *, initial: bool,

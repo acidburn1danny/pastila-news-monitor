@@ -49,6 +49,26 @@ def test_identity_bound_no_legal_receipt_validation():
     value["provider_request_id"]="wrong"
     with pytest.raises(ValueError,match="BINDING_MISMATCH"):validate_no_legal_token_receipt_v1(raw_receipt=canonical(value),request=request)
 
+
+def test_v1_2_1_no_legal_receipt_preserves_terminal_semantic_classification():
+    from types import SimpleNamespace
+    from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_request_bound_callback_adapter_v1_2_1 import _no_legal_receipt
+    _, request = _fixture()
+    raw = _no_legal_receipt(
+        request=request, authority="a" * 64, generated=(10, 11),
+        receipt=SimpleNamespace(
+            request_context_identity=request.source_context_identity,
+            decoded_sha256="b" * 64, dfa_mode="TERMINAL", terminal=True,
+            reason_code="SEMANTIC_COMPLETENESS_AUTHORITY_COVERAGE_INCOMPLETE"))
+    value = json.loads(raw)
+    assert value["schema_version"] == "1.2.1"
+    assert value["projector_terminal"] is True
+    assert value["failure_code"] == "SEMANTIC_COMPLETENESS_EOS_WITHHELD"
+    assert value["projector_reason_code"] == (
+        "SEMANTIC_COMPLETENESS_AUTHORITY_COVERAGE_INCOMPLETE")
+    assert validate_no_legal_token_receipt_v1(
+        raw_receipt=raw, request=request) == value["receipt_identity"]
+
 def test_codec_has_no_runtime_imports():
     text=(ROOT/"src/pastila_scout/semantic_admission_v2/stage_p_construction_obligation_v2_runner_protocol_codec_v1.py").read_text("utf-8")
     for word in ("transformers","tokenizers","torch","subprocess","experimental_core",".execute(","build_invocation","generate("):assert word not in text

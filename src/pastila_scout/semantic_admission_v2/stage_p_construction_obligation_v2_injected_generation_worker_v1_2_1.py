@@ -247,9 +247,10 @@ def execute_injected_generation_worker_v1_2_1(
         status = "TERMINAL_OUTPUT"
     except ConstraintLivenessStopV1 as exc:
         no_legal = exc.receipt
-        failure = "NO_LEGAL_TOKEN_NONTERMINAL"
+        no_legal_value = json.loads(no_legal)
+        failure = no_legal_value["failure_code"]
         emit("NO_LEGAL_TOKEN", {
-            "receipt_identity": json.loads(no_legal)["receipt_identity"],
+            "receipt_identity": no_legal_value["receipt_identity"],
         })
         status = "CONSTRAINT_LIVENESS_FAILURE"
     except Exception as exc:  # noqa: BLE001 - execution failures become typed receipts

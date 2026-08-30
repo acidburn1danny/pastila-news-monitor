@@ -154,6 +154,11 @@ def test_fake_runtime_maps_exact_tokenize_load_generate_and_cleanup(monkeypatch)
     assert model_call[2]["device_map"] == {"": 0}
     assert "attn_implementation" not in model_call[2]
     assert tokenizer.pad_token_id is None
+    tokenizer_call = next(
+        item for item in calls
+        if isinstance(item, tuple) and item[0] == "tokenizer")
+    assert tokenizer_call[2] == {
+        "local_files_only": True, "fix_mistral_regex": True}
     quantization = next(item for item in calls if isinstance(item, tuple) and item[0] == "quantization")
     assert quantization[1] == {
         "load_in_4bit": True, "bnb_4bit_quant_type": "nf4",
