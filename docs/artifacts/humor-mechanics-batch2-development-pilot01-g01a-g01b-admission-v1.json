@@ -1,0 +1,103 @@
+{
+  "admission_identity": "553b091f112d8e3f827c49c28cb93c63f249b8bb9a98f5b877f7bd739d694baf",
+  "authority_matrix": {
+    "candidate_construction": false,
+    "creative_premise_assignment": false,
+    "generation": false,
+    "mechanism_assignment": false,
+    "model_exposure": false,
+    "operational_obligation_assignment": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "training": false
+  },
+  "eligibility_scope": "SEPARATE_OWNER_AUTHORIZATION_REQUIRED_NO_ASSIGNMENT_GRANTED",
+  "g01a": {
+    "correction_revocation_supersession": "CURRENT_V1_NO_SUCCESSOR_OR_REVOCATION",
+    "custodial_authority": "PASS_8_OF_8_CONSUMED",
+    "immutable_capture_and_version": "PASS",
+    "propositions": [
+      {
+        "modality_scope_attribution_boundaries": "PASS",
+        "proposition_id": "P1",
+        "qualification": "NONE_REQUIRED_BY_SOURCE",
+        "span_coordinate_hash": "PASS",
+        "time": "EXPLICIT_IF_BOUND_IN_OBJECT_OTHERWISE_UNSPECIFIED"
+      },
+      {
+        "modality_scope_attribution_boundaries": "PASS",
+        "proposition_id": "P2",
+        "qualification": "NONE_REQUIRED_BY_SOURCE",
+        "span_coordinate_hash": "PASS",
+        "time": "EXPLICIT_IF_BOUND_IN_OBJECT_OTHERWISE_UNSPECIFIED"
+      },
+      {
+        "modality_scope_attribution_boundaries": "PASS",
+        "proposition_id": "P3",
+        "qualification": "NONE_REQUIRED_BY_SOURCE",
+        "span_coordinate_hash": "PASS",
+        "time": "EXPLICIT_IF_BOUND_IN_OBJECT_OTHERWISE_UNSPECIFIED"
+      },
+      {
+        "modality_scope_attribution_boundaries": "PASS",
+        "proposition_id": "P4",
+        "qualification": "NONE_REQUIRED_BY_SOURCE",
+        "span_coordinate_hash": "PASS",
+        "time": "EXPLICIT_IF_BOUND_IN_OBJECT_OTHERWISE_UNSPECIFIED"
+      },
+      {
+        "modality_scope_attribution_boundaries": "PASS",
+        "proposition_id": "P5",
+        "qualification": "NONE_REQUIRED_BY_SOURCE",
+        "span_coordinate_hash": "PASS",
+        "time": "EXPLICIT_IF_BOUND_IN_OBJECT_OTHERWISE_UNSPECIFIED"
+      },
+      {
+        "modality_scope_attribution_boundaries": "PASS",
+        "proposition_id": "P6",
+        "qualification": "BOUND",
+        "span_coordinate_hash": "PASS",
+        "time": "EXPLICIT_IF_BOUND_IN_OBJECT_OTHERWISE_UNSPECIFIED"
+      }
+    ],
+    "rights_and_permitted_use": "PASS_WITH_STRICT_NON_INHERITANCE",
+    "source_git_object": "c3a3316a2fc6be4befa40c1f777c09ecc2b48b6f",
+    "source_sha256": "84261f1a6b97f951f70a1b86d42114da9703996607d43d2fc3779bffd7a97cb2",
+    "target_safety": "PASS_LOW_RISK_SYNTHETIC",
+    "third_party_material": "NONE_DECLARED_AND_NONE_OBSERVED",
+    "verdict": "PASS"
+  },
+  "g01b": {
+    "contamination_ledger_head": "86aa81e1ba197d0ff7b4fe19bc7fa90773e7ded7596839d7d76ee5cdd74ae254",
+    "contamination_state": "CLEAN_DEVELOPMENT_ONLY_NO_BLIND_EXPOSURE",
+    "creative_premise_family_id": "UNASSIGNED",
+    "downstream_exposure": {
+      "constructor": false,
+      "model": false,
+      "production": false,
+      "runtime": false,
+      "training": false
+    },
+    "family_closure": "PASS",
+    "family_identities": {
+      "authority_family": "9e9e829f602abcc23a7fb30a382422c63778f0bd217666bf3981f6aed249c754",
+      "creative_premise_family_id": "UNASSIGNED",
+      "event_family": "0070e9be578ef6554e67ce342e798ca06f07dd898f792ebfea7440544448a55a",
+      "family_closure": "fd2e4d5cac6a7ed1b3800cc382a6860f2b690bf652691c134b94692bf4bf1f84",
+      "revision_family": "2633ed0e140e4e64badea4e67fd848acf6807529b57fa369932c63ce6025b837",
+      "source_family": "0958b102a31ce3a3101ca584a552a60c767243bd3ea8cf0211a64598231b8f12",
+      "topic_entity_family": "2aad237873ea395239255e0f2fda5da0ec0220baca590aaa70bf06605216f4f4"
+    },
+    "mechanism_assignment": "ABSENT",
+    "partition": "DEVELOPMENT",
+    "partition_isolation": "PASS",
+    "relationship_state": "PILOT_GENERATION_1_NO_DUPLICATE_REVISION_OR_SAME_EVENT_RELATIVE",
+    "verdict": "PASS"
+  },
+  "ingestion_receipt_identity": "f14928b75efc873dae2ba6b1644e34017f2095e1a6c0869fb86b708b03444f7b",
+  "later_development_assignment_design_eligibility": true,
+  "reviewed_commit": "601ee4812d864301cb55620e3d239515163e9ef8",
+  "schema_name": "batch2-development-pilot01-g01a-g01b-admission-v1",
+  "schema_version": "1.0.0",
+  "source_package_identity": "8377969bb9974e1e884243072fb178c977bb7074e03083f03a9329e64589f9ec"
+}
