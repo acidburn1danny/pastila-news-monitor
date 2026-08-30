@@ -1,0 +1,21 @@
+{
+  "another_pilot01_attempt_allowed": false,
+  "candidate_identity": "f96e626487812b4a9ad32ef548d4ac715fae4ea9bb24590a73f942b0783f080f",
+  "candidate_modified": false,
+  "conformance_schema_identity": "11bb3e5bc2e6a3b3830c0f751539b5688693f37702d7e13943112a768966e44a",
+  "construction_invoked": false,
+  "disposition_identity": "f8e5efe963f0fc2bfdef975a2da4408cb3b91eb3268451f4e77576352948e3c8",
+  "expected_verdict": "FAIL",
+  "obligation_governance_identity": "0cfd22fd43e0be68b5a04f16e45e918ac7bae346c851334817a7af309bad63e5",
+  "observed_verdict": "FAIL",
+  "regression_identity": "627aabc7a40bca73f06f4a357ffcf52b267d5d10a51bb68de1ca6601840369cb",
+  "schema_name": "batch2-pilot01-successor-obligation-regression-v1",
+  "schema_version": "1.0.0",
+  "stable_reasons": [
+    "ABSTRACT_RULE_ASSIGNED_OCCUPATIONAL_AGENCY",
+    "EMPLOYMENT_TIMESHEET_DOMAIN_IMPORTED",
+    "IMPORTED_FRAME_SUPPLIES_PRIMARY_CONNECTION",
+    "P6_DERIVED_SAME_RELATION_CHAIN_NOT_DEMONSTRATED",
+    "STEP2_DEPENDS_ON_IMPORTED_FRAME_NOT_P6_RELATION"
+  ]
+}

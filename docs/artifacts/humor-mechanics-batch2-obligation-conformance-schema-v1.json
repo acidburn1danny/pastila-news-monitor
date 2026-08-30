@@ -1,0 +1,257 @@
+{
+  "$defs": {
+    "pair": {
+      "items": false,
+      "maxItems": 2,
+      "minItems": 2,
+      "prefixItems": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "minimum": 0,
+          "type": "integer"
+        }
+      ],
+      "type": "array"
+    },
+    "span": {
+      "additionalProperties": false,
+      "properties": {
+        "character_coordinates": {
+          "$ref": "#/$defs/pair"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "utf8_byte_coordinates": {
+          "$ref": "#/$defs/pair"
+        }
+      },
+      "required": [
+        "character_coordinates",
+        "utf8_byte_coordinates",
+        "sha256"
+      ],
+      "type": "object"
+    }
+  },
+  "$id": "urn:pastila:batch2:obligation-conformance-receipt:v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "conformance_schema_identity": "11bb3e5bc2e6a3b3830c0f751539b5688693f37702d7e13943112a768966e44a",
+  "fail_closed": true,
+  "properties": {
+    "candidate_identity": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "continued_relation": {
+      "additionalProperties": false,
+      "properties": {
+        "object_span": {
+          "$ref": "#/$defs/span"
+        },
+        "predicate_span": {
+          "$ref": "#/$defs/span"
+        },
+        "relation_fingerprint": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "subject_span": {
+          "$ref": "#/$defs/span"
+        }
+      },
+      "required": [
+        "subject_span",
+        "predicate_span",
+        "object_span",
+        "relation_fingerprint"
+      ],
+      "type": "object"
+    },
+    "dependency": {
+      "additionalProperties": false,
+      "properties": {
+        "removal_test": {
+          "const": "STEP2_STRUCTURALLY_UNAVAILABLE_WITHOUT_STEP1"
+        },
+        "step2_requires_step1": {
+          "const": true
+        },
+        "unrelated_replacement_possible": {
+          "const": false
+        }
+      },
+      "required": [
+        "step2_requires_step1",
+        "removal_test",
+        "unrelated_replacement_possible"
+      ],
+      "type": "object"
+    },
+    "entity_status": {
+      "additionalProperties": false,
+      "properties": {
+        "human_agency_supplies_connection": {
+          "const": false
+        },
+        "unauthorized_attribute_or_role_added": {
+          "const": false
+        }
+      },
+      "required": [
+        "unauthorized_attribute_or_role_added",
+        "human_agency_supplies_connection"
+      ],
+      "type": "object"
+    },
+    "imported_relation": {
+      "additionalProperties": false,
+      "properties": {
+        "present": {
+          "const": false
+        },
+        "primary_connector": {
+          "const": false
+        }
+      },
+      "required": [
+        "present",
+        "primary_connector"
+      ],
+      "type": "object"
+    },
+    "neighbor_substitution": {
+      "additionalProperties": false,
+      "properties": {
+        "comparison_or_domain_transfer": {
+          "const": false
+        },
+        "disconnected_surprise": {
+          "const": false
+        },
+        "enumeration": {
+          "const": false
+        },
+        "magnitude_only": {
+          "const": false
+        }
+      },
+      "required": [
+        "comparison_or_domain_transfer",
+        "magnitude_only",
+        "enumeration",
+        "disconnected_surprise"
+      ],
+      "type": "object"
+    },
+    "obligation_identity": {
+      "const": "0cfd22fd43e0be68b5a04f16e45e918ac7bae346c851334817a7af309bad63e5"
+    },
+    "selected_proposition": {
+      "additionalProperties": false,
+      "properties": {
+        "proposition_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "source_span": {
+          "$ref": "#/$defs/span"
+        }
+      },
+      "required": [
+        "proposition_id",
+        "source_span"
+      ],
+      "type": "object"
+    },
+    "steps": {
+      "items": false,
+      "maxItems": 2,
+      "minItems": 2,
+      "prefixItems": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "candidate_span": {
+              "$ref": "#/$defs/span"
+            },
+            "locally_understandable": {
+              "const": true
+            },
+            "ordinal": {
+              "const": 1
+            },
+            "same_relation_operates": {
+              "const": true
+            }
+          },
+          "required": [
+            "ordinal",
+            "candidate_span",
+            "same_relation_operates",
+            "locally_understandable"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "candidate_span": {
+              "$ref": "#/$defs/span"
+            },
+            "locally_understandable": {
+              "const": true
+            },
+            "ordinal": {
+              "const": 2
+            },
+            "same_relation_operates": {
+              "const": true
+            }
+          },
+          "required": [
+            "ordinal",
+            "candidate_span",
+            "same_relation_operates",
+            "locally_understandable"
+          ],
+          "type": "object"
+        }
+      ],
+      "type": "array"
+    },
+    "verdict": {
+      "const": "PASS"
+    }
+  },
+  "required": [
+    "candidate_identity",
+    "obligation_identity",
+    "selected_proposition",
+    "continued_relation",
+    "steps",
+    "dependency",
+    "imported_relation",
+    "entity_status",
+    "neighbor_substitution",
+    "verdict"
+  ],
+  "semantic_verification_rules": [
+    "EVERY_SPAN_NONEMPTY_ORDERED_AND_ON_UTF8_BOUNDARIES",
+    "CHARACTER_AND_UTF8_COORDINATES_RESOLVE_TO_IDENTICAL_TEXT",
+    "EVERY_SPAN_SHA256_REDERIVED_FROM_EXACT_BOUND_BYTES",
+    "SELECTED_PROPOSITION_AND_RELATION_SPANS_EQUAL_AUTHORITY_ENVELOPE_FIELDS",
+    "RELATION_FINGERPRINT_REDERIVED_FROM_PROPOSITION_ID_AND_SUBJECT_PREDICATE_OBJECT_SPANS",
+    "STEP_SPANS_DISTINCT_AND_ORDINALS_EXACTLY_1_THEN_2",
+    "REMOVAL_TEST_PERFORMED_BY_BLIND_REVIEWER_NOT_CANDIDATE_OR_CONSTRUCTOR",
+    "ANY_UNVERIFIABLE_OR_FREE_TEXT_ONLY_DEPENDENCY_CLAIM_FAILS_CLOSED"
+  ],
+  "title": "Mechanism-neutral post-construction obligation conformance receipt V1",
+  "type": "object",
+  "visibility": "REVIEWER_ONLY_NEVER_CONSTRUCTOR_VISIBLE"
+}

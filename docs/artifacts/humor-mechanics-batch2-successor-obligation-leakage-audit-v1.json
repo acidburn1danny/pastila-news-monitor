@@ -1,0 +1,32 @@
+{
+  "checks": {
+    "causal_connective_shortcut": "PASS_NO_REQUIRED_CONNECTIVE",
+    "definitional_paraphrase_leakage": "PASS_OPERATIONAL_DETAIL_NECESSARY_AND_NOT_MATERIALLY_GREATER_THAN_PREDECESSOR",
+    "fixed_two_sentence_or_clause_template": "PASS_TWO_CHANGES_BUT_SURFACE_SHAPE_UNCONSTRAINED",
+    "grammatical_form_shortcuts": "PASS_NO_REQUIRED_FORM",
+    "hidden_construction_authority": "PASS_ALL_OPERATIONAL_AUTHORITIES_FALSE",
+    "lexical_shortcuts": "PASS_NO_REQUIRED_LEXEME",
+    "neighbor_answer_leakage": "PASS_GENERIC_ENTITY_STATUS_RULE_AND_OPERATIONAL_EXCLUSIONS",
+    "receipt_field_leakage": "PASS_SCHEMA_REVIEWER_ONLY_AND_HASH_BOUND",
+    "register_or_punchline_repetition": "PASS_REGISTER_AND_LANDING_UNCONSTRAINED",
+    "source_shape_correlation": "PASS_FRESH_FAMILY_SELECTION_MUST_PRECEDE_TARGET_AND_IGNORE_TARGET_FRIENDLY_SHAPE",
+    "state_machine_signature": "PASS_NO_VISIBLE_STATE_TRANSITION_VOCABULARY",
+    "taxonomy_name_id_ordinal_leakage": "PASS_NONE_IN_CONSTRUCTOR_VISIBLE_BYTES"
+  },
+  "conformance_schema_identity": "11bb3e5bc2e6a3b3830c0f751539b5688693f37702d7e13943112a768966e44a",
+  "constructor_visible_schema_exposure": false,
+  "leakage_audit_identity": "3f4bd4c64b447340b0ab7af45af8b227740156f78eb1b9033a2a5c2cd9d2f693",
+  "obligation_governance_identity": "0cfd22fd43e0be68b5a04f16e45e918ac7bae346c851334817a7af309bad63e5",
+  "pilot01_surface_reused_for_construction": false,
+  "remediations": [
+    "PRESERVED_PRECONSTRUCTION_G02B_IN_GATE_ORDER",
+    "MOVED_TYPED_SPAN_DEPENDENCY_FIELDS_TO_REVIEWER_ONLY_SCHEMA",
+    "REPLACED_VISIBLE_HUMAN_CATEGORY_LIST_AS_PRIMARY_RULE_WITH_GENERIC_AUTHORIZED_ENTITY_STATUS_RULE",
+    "PROHIBITED_FIXED_SENTENCE_OR_CLAUSE_SHAPE",
+    "REQUIRED_EXACT_RELATION_AND_STEP_SPANS",
+    "REQUIRED_STRUCTURAL_REMOVAL_TEST"
+  ],
+  "schema_name": "batch2-successor-obligation-leakage-audit-v1",
+  "schema_version": "1.0.0",
+  "verdict": "PASS_AFTER_REMEDIATION"
+}

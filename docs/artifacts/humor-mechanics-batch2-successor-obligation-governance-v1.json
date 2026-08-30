@@ -1,0 +1,97 @@
+{
+  "authority_matrix": {
+    "candidate_construction": false,
+    "family_assignment": false,
+    "g03b": false,
+    "g03c": false,
+    "g04": false,
+    "generation": false,
+    "model_exposure": false,
+    "production_routing": false,
+    "repair": false,
+    "runtime_integration": false,
+    "source_acquisition": false,
+    "training": false
+  },
+  "constructor_must_not_receive": [
+    "CONFORMANCE_SCHEMA",
+    "DEPENDENCY_RECEIPT_SCHEMA",
+    "CONFORMANCE_FIELD_NAMES",
+    "REMOVAL_TEST",
+    "SEALED_TARGET_OR_MAPPING"
+  ],
+  "constructor_visible_obligation": {
+    "entity_status_rule": "Preserve every entity's authorized attributes, capabilities, agency status, and roles; do not add an attribute, capability, agency, or role absent from the factual-authority envelope.",
+    "factual_safety": [
+      "Every nonfactual change must be locally unmistakable as fictional.",
+      "No new factual premise, private knowledge, quotation, protected-target assertion, or pragmatic real-world implication."
+    ],
+    "forbidden_operations": [
+      "Do not import another domain or frame to provide the connection between changes.",
+      "Do not obtain the result only by comparison, increasing magnitude or intensity, enumeration, or a disconnected surprise.",
+      "Do not replace either change with an unrelated invented event."
+    ],
+    "obligation_version": "SUCCESSOR_FORMULATION_B_V1",
+    "surface_freedom": [
+      "No required catchphrase, connective, register, sentence count, clause pattern, or punchline form.",
+      "Do not expose dependency-receipt field names or reviewer-only tests in constructor-visible bytes."
+    ],
+    "transformation": [
+      "Preserve exactly one authorized proposition without altering its factual content or qualification.",
+      "Create a short, explicitly fictional continuation containing exactly two distinct changes; sentence and clause count are unconstrained.",
+      "Keep one relation from the selected proposition operative across both changes.",
+      "Make the second change unavailable unless the first change has occurred.",
+      "Keep each change locally understandable from the selected proposition and the immediately preceding change."
+    ]
+  },
+  "diagnostic_lineage": {
+    "disposition_commit": "82517cf7bc3dc97881f86151cff8eeff5e970596",
+    "disposition_identity": "f8e5efe963f0fc2bfdef975a2da4408cb3b91eb3268451f4e77576352948e3c8",
+    "g03_reconciliation": "AMBIGUOUS_MECHANISM",
+    "sealed_target": "ABSURD_LOGICAL_EXTENSION"
+  },
+  "failure_disposition": "DEVELOPMENT_NONPOSITIVE_OBLIGATION_NONCONFORMANT_DIAGNOSTIC",
+  "future_source_rule": {
+    "fresh_independently_acquired_and_admitted_development_family_required": true,
+    "prior_construction_exposure_allowed": false,
+    "prior_target_assignment_allowed": false,
+    "selection_by_target_friendly_topic_or_shape": false
+  },
+  "g02c_reviewer_prohibited": [
+    "MECHANISM_ID_NAME_ORDINAL",
+    "SEALED_ASSIGNMENT_MAPPING",
+    "TARGET_EVIDENCE_ROLE",
+    "G03_CHOICE_SET",
+    "HISTORICAL_LABELS_OR_EXAMPLES",
+    "OWNER_PREFERENCE",
+    "BLIND_EVALUATION_MATERIAL"
+  ],
+  "g02c_reviewer_visible": [
+    "IMMUTABLE_CANDIDATE_BYTES",
+    "EXACT_FACTUAL_AUTHORITY_ENVELOPE",
+    "EXACT_CONSTRUCTOR_VISIBLE_OBLIGATION",
+    "MECHANISM_NEUTRAL_CONFORMANCE_SCHEMA"
+  ],
+  "gate_sequence": [
+    "B2_G02B_PRECONSTRUCTION_BLINDING",
+    "CONSTRUCTION_SEPARATELY_AUTHORIZED_ONE_SHOT",
+    "B2_G02B_POSTCONSTRUCTION_EXPOSURE_RECONCILIATION",
+    "B2_G02_FACTUAL_AND_TARGET_BOUNDARY",
+    "B2_G02C_OBLIGATION_CONFORMANCE",
+    "B2_G03_BLIND_MECHANISM_RECOVERY"
+  ],
+  "governance_parent": {
+    "plan_commit": "c756135fa9b822dd945728a2df05f26f3b44fa63",
+    "plan_identity": "57419ff52730ccd20acf3c716c9502667d9f25e517570e18eeae7ec3d472da8a"
+  },
+  "obligation_governance_identity": "0cfd22fd43e0be68b5a04f16e45e918ac7bae346c851334817a7af309bad63e5",
+  "pilot01": {
+    "another_construction_attempt": false,
+    "candidate_rewrite_or_repair": false,
+    "regression_only": true
+  },
+  "repair_at_gate": false,
+  "schema_name": "batch2-successor-obligation-governance-v1",
+  "schema_version": "1.0.0",
+  "status": "FROZEN_SOURCE_ONLY_ZERO_CONSTRUCTION"
+}
