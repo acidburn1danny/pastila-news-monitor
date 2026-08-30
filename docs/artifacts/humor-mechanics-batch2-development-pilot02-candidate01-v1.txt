@@ -1,0 +1,1 @@
+În momentul încheierii testului nu este stabilit niciun sortiment câștigător. Într-o continuare explicit fictivă, lipsa câștigătorului suspendă mai întâi încheierea testului; fiindcă testul nu se mai poate încheia, momentul în care ar trebui stabilit câștigătorul încetează apoi să mai existe.
