@@ -1,0 +1,91 @@
+{
+  "schema_name": "pastila-humor-mechanics-curriculum-batch2-owner-freeze",
+  "schema_version": "1.0.0",
+  "case_id": "HMCV1-B02-M20-STORY-V1-32-01",
+  "status": "OWNER_FROZEN",
+  "canonical_identity": "9675e6bb1900b4f01b89d395f7d6f40c41a7c3304a1e6d063d2c91976795fa13",
+  "curriculum_identity": "39fd9ef64470464ba0a9245b82d3e3c4924506fc2338c69bb7cb47b9ed77f9dc",
+  "batch2_plan_identity": "9434b8958f0d0ecd1b210d0402ea3c507c8ef9eab670a1f4fcb1881c41936f37",
+  "source": {
+    "record_id": "story-v1:32:01",
+    "provenance_class": "OWNER_FINAL_HISTORICAL",
+    "source_ledger_sha256": "28879e78cb62a33e8adf54b6e59b90835eb8fa8e0851482ebb2bee039e93e065",
+    "source_artifact_identity": "966f90b79e9b3d1a580b8fbebbe70c4efa650c715239eefb6bddf811a7666f69",
+    "source_char_range": [1655, 2001],
+    "source_utf8_byte_range": [1791, 2176],
+    "source_sha256": "c0ed747474bdc9a4c0a4024eddee56415b36e40ba937f592983072d64699c276",
+    "byte_exact": true,
+    "edited": false,
+    "normalized": false
+  },
+  "gates": {
+    "B2-G01-SOURCE_ADMISSION": {
+      "verdict": "PASS",
+      "result": "SOURCE_CANDIDATE_ACCEPTED_FOR_FURTHER_REVIEW"
+    },
+    "B2-G02-FACTUAL_AND_TARGET_BOUNDARY": {
+      "verdict": "PASS",
+      "compatibility": "COMPATIBLE_ONLY_AS_NONFACTUAL_EXCERPT",
+      "qualification_retention": "PASS",
+      "fictional_marking": "PASS",
+      "private_knowledge_risk": "PASS_WITH_NONFACTUAL_SCOPE",
+      "protected_target_discipline": "PASS"
+    },
+    "B2-G03-MECHANISM_AND_CONTRAST": {
+      "verdict": "PASS",
+      "annotations": [
+        {
+          "mechanism_id": "HMCV1-B01-M05-FRAME_TRANSFER",
+          "role": "DOMINANT",
+          "disposition": "RETAIN_EXISTING_OWNER_APPROVED_HISTORICAL"
+        },
+        {
+          "mechanism_id": "HMCV1-B02-M10-ROLE_SIMULATION",
+          "role": "SUPPORTING",
+          "disposition": "OWNER_APPROVED_BATCH2_EVIDENCE"
+        },
+        {
+          "mechanism_id": "HMCV1-B01-M08-ESCALATION",
+          "role": "COMPOSITION",
+          "disposition": "RETAIN_EXISTING_OWNER_APPROVED_HISTORICAL"
+        }
+      ]
+    },
+    "B2-G04-ROMANIAN_NATURALNESS": {
+      "verdict": "PASS",
+      "state": "REVIEWER_ACCEPTED_NATURAL"
+    },
+    "B2-G05-OWNER_FREEZE": {
+      "verdict": "APPROVED",
+      "decision": "APPROVE M20 OWNER_FROZEN"
+    }
+  },
+  "authority": {
+    "example_construction_authorized": false,
+    "historical_recovery_authorized": false,
+    "synthetic_enrichment_authorized": false,
+    "model_exposure_authorized": false,
+    "generation_authorized": false,
+    "training_eligible": false,
+    "training_authorized": false,
+    "runtime_eligible": false,
+    "runtime_integration_authorized": false,
+    "production_routing_authorized": false,
+    "promotion_authorized": false
+  },
+  "remaining_batch2_gaps": {
+    "unresolved_mechanisms": [
+      "HMCV1-B02-M01-MISDIRECTION",
+      "HMCV1-B02-M02-LITERALIZATION",
+      "HMCV1-B02-M03-ABSURD_LOGICAL_EXTENSION",
+      "HMCV1-B02-M04-PERSONIFICATION",
+      "HMCV1-B02-M05-COMIC_RECLASSIFICATION_CATEGORY_ERROR",
+      "HMCV1-B02-M06-MOCK_PRAISE",
+      "HMCV1-B02-M07-FALSE_CONCESSION",
+      "HMCV1-B02-M08-RHETORICAL_QUESTION",
+      "HMCV1-B02-M09-DISCOURSE_FORM_PARODY"
+    ],
+    "m20_required_contrastive_negatives_complete": false,
+    "batch2_complete": false
+  }
+}
