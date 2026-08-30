@@ -1,0 +1,37 @@
+{
+  "assignment_commit": "2edbc5d8f9916508f31ded7a1453be3c021769da",
+  "blind_pass_commit": "0af2097ccdf0aa03dc0a9f6dcb3f58a67d7649f5",
+  "candidate_identity": "4cc6bceef84e29d07e19d60dbbb1992b33fcb8af67373647f5fb8fedfce1d98c",
+  "classification": "TARGET_RECOVERED_DOMINANT",
+  "contrast_pass": {
+    "all_close_alternatives_contrasted": true,
+    "confidence": "HIGH",
+    "pass_identity": "5980b6fa8d9a86b64204c113f9bb0c2114958155b3f5207801a12e4f101be14b",
+    "primary_choice": "Absurd Logical Extension",
+    "primary_role": "DOMINANT"
+  },
+  "mapping_revealed_after_blind_freeze": true,
+  "open_pass": {
+    "pass_identity": "13c18428dc201f2ca936cf264832a8e039cf7a99513efdc91bb8246a1113338a",
+    "posthoc_label_rewrite": false,
+    "structural_alignment_with_sealed_target": "PASS_PREMISE_CAUSE_CHAIN_TO_ABSURD_SELF_CANCELLATION",
+    "verbatim_primary": "paradox temporal autoanulant",
+    "verbatim_primary_role": "DOMINANT",
+    "verbatim_supporting": [
+      "cauzalitate circulară",
+      "escaladare logică absurdă",
+      "literalizarea unei condiții procedurale"
+    ]
+  },
+  "reconciliation_identity": "363b92a12412cc1cfedc553b4df3fafb9f7e026d26b92432fccb52d371cccd44",
+  "reconciliation_rationale": "OPEN_PASS_USES_A_MORE_SPECIFIC_NON_TAXONOMY_DESCRIPTION_OF_THE_SAME_PREMISE_TO_DEPENDENT_ABSURD_CONSEQUENCE_CHAIN;_CLOSED_PASS_RECOVERS_THE_EXACT_TARGET_DOMINANT",
+  "schema_name": "batch2-development-pilot02-g03-reconciliation-v1",
+  "schema_version": "1.0.0",
+  "sealed_assignment_identity": "833a7c9211691534edca6658b08fccf3e453f8733e13838782134bd36416a3b0",
+  "sealed_target": {
+    "frozen_plan_option": "M13_ABSURD_LOGICAL_EXTENSION",
+    "mechanism_id": "HMCV1-B02-M03-ABSURD_LOGICAL_EXTENSION",
+    "mechanism_name": "Absurd Logical Extension"
+  },
+  "substantive_disagreement": false
+}
