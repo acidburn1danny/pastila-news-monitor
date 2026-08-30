@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "pastila://schemas/humor-mechanics-curriculum-v1-batch2-acquisition-plan-v2",
+  "title": "Batch 2 label-blind acquisition governance plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_name", "schema_version", "plan_id", "status", "supersedes_prospective_governance_only",
+    "preserved_frozen_outcomes", "authority", "evidence_classes", "partitions", "family_identity_contract",
+    "roles_and_blinding", "contamination_ledger", "gates", "priority_mechanisms", "pool_acceptance",
+    "contradiction_resolutions", "next_separate_decision"
+  ],
+  "properties": {
+    "schema_name": {"const": "pastila-humor-mechanics-curriculum-batch2-acquisition-plan"},
+    "schema_version": {"const": "2.0.0"},
+    "plan_id": {"const": "HMCV1_BATCH2_ACQUISITION_PLAN_V2"},
+    "status": {"const": "FROZEN_SOURCE_PLAN_ONLY"},
+    "supersedes_prospective_governance_only": {"type": "object"},
+    "preserved_frozen_outcomes": {"type": "array", "minItems": 4},
+    "authority": {
+      "type": "object",
+      "additionalProperties": {"const": false},
+      "required": [
+        "source_acquisition_authorized", "candidate_construction_authorized", "surface_generation_authorized",
+        "model_exposure_authorized", "training_authorized", "runtime_integration_authorized",
+        "production_routing_authorized", "automatic_promotion_authorized", "rejected_candidate_repair_authorized"
+      ]
+    },
+    "evidence_classes": {"type": "array", "uniqueItems": true, "minItems": 6},
+    "evidence_class_rules": {"type": "object"},
+    "partitions": {"type": "object"},
+    "family_identity_contract": {"type": "object"},
+    "source_balance": {"type": "object"},
+    "roles_and_blinding": {"type": "object"},
+    "sealed_assignment_contract": {"type": "object"},
+    "proposition_authority_envelope": {"type": "object"},
+    "contamination_ledger": {"type": "object"},
+    "gates": {"type": "array", "minItems": 10},
+    "priority_mechanisms": {"type": "array", "minItems": 6, "maxItems": 6},
+    "pool_acceptance": {"type": "object"},
+    "contradiction_resolutions": {"type": "array", "minItems": 5},
+    "next_separate_decision": {"const": "OWNER_MAY_AUTHORIZE_BOUNDED_PARTITIONED_SOURCE_DISCOVERY_ONLY"}
+  }
+}

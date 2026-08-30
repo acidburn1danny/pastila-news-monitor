@@ -1,0 +1,60 @@
+{
+  "schema_name": "pastila-humor-mechanics-curriculum-batch2-acquisition-plan-audit",
+  "schema_version": "1.0.0",
+  "status": "PASS_CLEAN_ZERO_CONSTRUCTION",
+  "plan_id": "HMCV1_BATCH2_ACQUISITION_PLAN_V2",
+  "plan_canonical_json_sha256": "74e3ebbb2b4c400995ab5ebad6f7bf58ada19a0a1050f4d1577e6195151be567",
+  "schema_canonical_json_sha256": "490a19c5d37d66148a4712f7e7fd4956c91669661fc52e5c651efc8777606b16",
+  "audit_iterations": 2,
+  "deterministic_defects_found_and_fixed": [
+    {
+      "defect": "CLOSED_SCHEMA_OMITTED_FOUR_GOVERNED_PLAN_SECTIONS",
+      "fix": "ADDED_EVIDENCE_CLASS_SOURCE_BALANCE_ASSIGNMENT_AND_AUTHORITY_ENVELOPE_PROPERTIES"
+    },
+    {
+      "defect": "CONSTRUCTION_BLINDING_CHECK_WAS_NOT_EXPLICITLY_PRE_AND_POST_CONSTRUCTION",
+      "fix": "REQUIRED_PRE_CONSTRUCTION_INPUT_SEAL_AND_POST_CONSTRUCTION_EXPOSURE_RECONCILIATION"
+    },
+    {
+      "defect": "BLIND_EVALUATION_HAD_NO_SEPARATE_CUSTODIAL_LOCK_AND_COULD_HAVE_ENTERED_OWNER_PREFERENCE_REVIEW",
+      "fix": "LIMITED_G05_TO_DEVELOPMENT_AND_CURRICULUM_CANDIDATE_AND_ADDED_G06_BLIND_CUSTODIAL_LOCK"
+    },
+    {
+      "defect": "UNLABELED_OPERATIONAL_OBLIGATION_WORDING_COULD_ITSELF_ENCODE_THE_MECHANISM",
+      "fix": "PROHIBITED_TAXONOMY_IDS_NAMES_AND_MECHANISM_SPECIFIC_ANSWER_KEYS_AND_REQUIRED_CROSS_ASSIGNMENT_WORDING_AUDIT"
+    }
+  ],
+  "adversarial_results": {
+    "label_leakage": "PASS_SEALED_MAPPING_AND_DUAL_BLINDING",
+    "family_leakage": "PASS_TRANSITIVE_FAMILY_CLOSURE_IS_SPLIT_UNIT",
+    "holdout_contamination": "PASS_SEPARATE_CUSTODY_PERMANENT_INVALIDATION_AND_G06_LOCK",
+    "shortcut_learning": "PASS_CANDIDATE_AND_POOL_DIAGNOSTICS_REQUIRED",
+    "factual_authority_bypass": "PASS_PROPOSITION_LEVEL_ENTAILMENT_OR_EXPLICIT_NONFACTUAL_DOMAIN_REQUIRED",
+    "owner_selection_contamination": "PASS_OWNER_EXCLUDED_FROM_BLIND_PARTITION_AND_PREFERENCE_TUNING",
+    "hidden_construction_authority": "PASS_ALL_MUTATING_AND_MODEL_AUTHORITIES_FALSE",
+    "quota_pressure": "PASS_NO_NUMERIC_QUOTA_AND_GAPS_MAY_REMAIN",
+    "evidence_class_collapse": "PASS_SEVEN_PRIMARY_CLASSES_AND_NO_SILENT_PROMOTION",
+    "mechanism_specific_requirements": "PASS_M11_M12_M13_M17_M18_M19_BOUND"
+  },
+  "preservation_results": {
+    "m20_owner_frozen_supporting_unchanged": true,
+    "m12_case01_contrast_negative_unchanged": true,
+    "historical_g02_negative_freeze_unchanged": true,
+    "explicit_positive_gaps_unchanged": true,
+    "v1_completed_evidence_and_gate_outcomes_unchanged": true
+  },
+  "verification": {
+    "json_schema_draft": "2020-12",
+    "schema_validation": "PASS",
+    "closed_schema_validation": "PASS",
+    "all_authority_flags_false": true,
+    "required_gate_presence": "PASS",
+    "partition_exactness": "PASS",
+    "priority_mechanism_exactness": "PASS",
+    "no_construction_or_acquisition_performed": true,
+    "no_model_exposure_or_generation_performed": true,
+    "no_training_runtime_or_production_action_performed": true
+  },
+  "remaining_blockers": [],
+  "verdict": "PLAN_READY_FOR_SEPARATE_BOUNDED_PARTITIONED_SOURCE_DISCOVERY_DECISION"
+}

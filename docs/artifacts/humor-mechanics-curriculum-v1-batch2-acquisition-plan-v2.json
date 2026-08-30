@@ -1,0 +1,257 @@
+{
+  "schema_name": "pastila-humor-mechanics-curriculum-batch2-acquisition-plan",
+  "schema_version": "2.0.0",
+  "plan_id": "HMCV1_BATCH2_ACQUISITION_PLAN_V2",
+  "status": "FROZEN_SOURCE_PLAN_ONLY",
+  "supersedes_prospective_governance_only": {
+    "plan_commit": "43e11940cff90a96e7a610d540518d69f6d7b5b8",
+    "plan_path": "docs/artifacts/humor-mechanics-curriculum-v1-batch2-evidence-plan-v1.json",
+    "plan_git_object_sha256": "2de91c19330ef65ff3bacc59ba63f8872633c3d67eb2b3f6e767185aa4dc37d4",
+    "preserves_v1_evidence_and_completed_gate_outcomes": true
+  },
+  "preserved_frozen_outcomes": [
+    {
+      "name": "M20_OWNER_FROZEN_SUPPORTING",
+      "commit": "39840d5a12bd94fcadb10622bee25d0d89399f33",
+      "git_object_sha256": "a8fa6c7b73ca4f79f17b17a1edb3674d9af06dcd13d69b3b98ceae27052a5b53",
+      "role_unchanged": "SUPPORTING_ONLY"
+    },
+    {
+      "name": "M12_CASE01_CONTRAST_NEGATIVE",
+      "commit": "cfaffb46f64732d16cff18f90bf5c9a16fc4ed8b",
+      "git_object_sha256": "5e8742749bc84aeded53d5fce205f7b04c9537fdd0172796aed53c19c3c435de",
+      "role_unchanged": "CONTRAST_NEGATIVE_ONLY"
+    },
+    {
+      "name": "HISTORICAL_G02_NEGATIVE_FREEZE",
+      "commit": "109a591d8c1ecf573ef3dd571921925786520dd2",
+      "git_object_sha256": "430229f1498f617a590c4a752028b1b2c45b179c0cfe0003d1b7ed4f23fcf0ef",
+      "role_unchanged": "AUTHORITY_OR_MECHANISM_NEGATIVE_ONLY"
+    },
+    {
+      "name": "EXPLICIT_POSITIVE_GAPS",
+      "mechanisms": ["M11", "M12", "M13", "M17", "M18", "M19"],
+      "gap_status_unchanged": true,
+      "quota_fill_prohibited": true
+    }
+  ],
+  "authority": {
+    "source_acquisition_authorized": false,
+    "candidate_construction_authorized": false,
+    "surface_generation_authorized": false,
+    "model_exposure_authorized": false,
+    "training_authorized": false,
+    "runtime_integration_authorized": false,
+    "production_routing_authorized": false,
+    "automatic_promotion_authorized": false,
+    "rejected_candidate_repair_authorized": false
+  },
+  "evidence_classes": [
+    "POSITIVE_DOMINANT",
+    "POSITIVE_SUPPORTING",
+    "CONTRAST",
+    "MECHANISM_NEGATIVE",
+    "AUTHORITY_NEGATIVE",
+    "PROVENANCE_NEGATIVE",
+    "REJECTED"
+  ],
+  "evidence_class_rules": {
+    "priority_positive_coverage_requires": "OWNER_FROZEN_POSITIVE_DOMINANT",
+    "supporting_does_not_satisfy_positive_coverage": true,
+    "contrast_never_silently_promotes": true,
+    "authority_or_provenance_failure_cannot_measure_mechanism_absence": true,
+    "every_record_has_exactly_one_primary_evidence_class": true
+  },
+  "partitions": {
+    "assignment_before_construction_required": true,
+    "values": ["DEVELOPMENT", "CURRICULUM_CANDIDATE", "BLIND_EVALUATION"],
+    "family_level_isolation": true,
+    "blind_evaluation_prohibitions": [
+      "CONSTRUCTOR_ACCESS", "PROMPT_TUNING", "GATE_TUNING", "TEMPLATE_TUNING", "SELECTION_TUNING",
+      "OWNER_PREFERENCE_TUNING", "TRAINING_EXPOSURE", "MODEL_EXPOSURE", "NEGATIVE_MINING_FOR_CURRICULUM"
+    ],
+    "blind_evaluation_answer_keys_separately_custodied": true,
+    "partition_reassignment_after_surface_creation": false
+  },
+  "family_identity_contract": {
+    "required_before_construction": [
+      "SOURCE_ARTIFACT_FAMILY_ID", "EVENT_FAMILY_ID", "AUTHORITY_ENVELOPE_FAMILY_ID",
+      "CREATIVE_PREMISE_FAMILY_ID", "CONSTRUCTION_LINEAGE_FAMILY_ID", "REVISION_FAMILY_ID"
+    ],
+    "required_when_applicable": ["SYNDICATION_FAMILY_ID", "TEMPLATE_SKELETON_FAMILY_ID", "TOPIC_ENTITY_CLUSTER_ID"],
+    "split_unit": "TRANSITIVE_CLOSURE_OF_ALL_FAMILY_RELATIONS",
+    "descendants_and_revisions_must_share_partition": true,
+    "cross_partition_family_overlap": "HARD_FAIL"
+  },
+  "source_balance": {
+    "partially_crossed_design_required": true,
+    "same_source_may_support_multiple_mechanisms_only_when_independently_defensible": true,
+    "topic_publisher_length_authority_structure_and_target_class_concentration_audited": true,
+    "mechanism_must_not_be_predictable_from_source_shape": true
+  },
+  "roles_and_blinding": {
+    "authority_reviewer": {"sees": ["SOURCE", "AUTHORITY"], "must_not_see": ["TARGET_MECHANISM", "EXPECTED_ROLE"]},
+    "assignment_custodian": {"sees": ["FAMILY_IDENTITIES", "SEALED_ASSIGNMENT"], "may_construct": false, "may_adjudicate": false},
+    "constructor": {
+      "sees": ["CLOSED_AUTHORITY_ENVELOPE", "UNLABELED_OPERATIONAL_OBLIGATION"],
+      "must_not_see": ["MECHANISM_ID", "MECHANISM_NAME", "EXPECTED_LABEL", "EXPECTED_EVIDENCE_ROLE", "NEIGHBOR_ANSWER_KEY", "BLIND_EVALUATION_MATERIAL", "OWNER_PREFERENCE_HISTORY", "HISTORICAL_CANDIDATE_WORDING"]
+    },
+    "mechanism_reviewer": {"sees": ["IMMUTABLE_SURFACE", "SHUFFLED_LABEL_SET"], "must_not_see": ["REQUESTED_TARGET", "CONSTRUCTOR_PROMPT", "OWNER_PREFERENCE"]},
+    "romanian_reviewer": {"sees": ["IMMUTABLE_SURFACE"], "must_not_see": ["MECHANISM_LABEL", "EXPECTED_ROLE", "PROVENANCE_OUTCOME"]},
+    "voice_reviewer": {"sees": ["IMMUTABLE_SURFACE", "MECHANISM_INDEPENDENT_VOICE_RUBRIC"], "must_not_see": ["MECHANISM_LABEL", "EXPECTED_ROLE"]},
+    "owner": {"sees_only_prior_gate_survivors": true, "must_not_see": ["BLIND_EVALUATION_SOURCES", "BLIND_EVALUATION_SURFACES", "BLIND_EVALUATION_ANSWER_KEYS"], "may_edit_in_place": false},
+    "holdout_custodian": {"keeps_sources_surfaces_and_answer_keys_isolated": true}
+  },
+  "sealed_assignment_contract": {
+    "record_created_before_construction": true,
+    "contains": ["ASSIGNMENT_ID", "PARTITION", "FAMILY_CLOSURE_ID", "TAXONOMY_VERSION", "TARGET_MAPPING"],
+    "target_mapping_not_disclosed_to_constructor": true,
+    "unlabeled_obligation_must_not_contain_taxonomy_names_ids_or_mechanism_specific_answer_keys": true,
+    "obligation_wording_shortcut_audited_across_assignments": true,
+    "assignment_mutation_creates_new_identity_and_restarts_from_G01B": true
+  },
+  "proposition_authority_envelope": {
+    "required_fields_per_proposition": [
+      "PROPOSITION_ID", "SOURCE_UTF8_SPANS", "SUBJECT", "PREDICATE", "OBJECT", "MODALITY",
+      "TIME_SCOPE", "ENTITY_SCOPE", "ATTRIBUTION", "ASSERTION_PERMISSION"
+    ],
+    "required_sets": ["PERMITTED_ASSERTIONS", "REQUIRED_QUALIFICATIONS", "EXPLICIT_UNKNOWNS", "FORBIDDEN_INFERENCES", "PERMITTED_CREATIVE_TARGETS", "REQUIRED_CREATIVE_MARKERS", "PROTECTED_TARGET_RESTRICTIONS"],
+    "creative_domain_namespace_separate": true,
+    "constructor_may_add_factual_premises": false,
+    "hypothetical_may_not_pragmatically_imply_unknown_fact": true,
+    "surface_assertions_must_be_entailed_or_explicitly_nonfactual": true
+  },
+  "contamination_ledger": {
+    "required_from_G01B_forward": true,
+    "append_only": true,
+    "records": [
+      "ARTIFACT_OR_SOURCE_ID", "FAMILY_CLOSURE_ID", "PARTITION", "ACTOR_OR_TOOL_ID", "HUMAN_OR_MODEL",
+      "OPERATION", "PROMPT_OR_INSTRUCTION_IDENTITY", "INPUT_IDENTITIES", "OUTPUT_IDENTITIES", "TIMESTAMP", "PURPOSE"
+    ],
+    "unlogged_exposure": "HARD_FAIL",
+    "blind_material_exposure_outside_holdout_custody": "PERMANENT_HOLDOUT_INVALIDATION"
+  },
+  "gates": [
+    {
+      "gate": "B2-G00-TAXONOMY_AND_OPERATIONAL_OBLIGATION_FREEZE",
+      "requires": ["VERSIONED_NECESSARY_CONDITIONS", "DISQUALIFIERS", "PRECEDENCE_RULES", "MIXED_MECHANISM_RULES", "ABSTENTION_AND_DISAGREEMENT_RULES", "UNLABELED_CONSTRUCTOR_OBLIGATION"],
+      "output": "SEALED_TAXONOMY_AND_OPERATIONAL_OBLIGATIONS"
+    },
+    {
+      "gate": "B2-G01A-PROVENANCE_AND_AUTHORITY_ADMISSION",
+      "requires": ["BYTE_EXACT_SOURCE", "UTF8_SPANS", "SOURCE_VERSION_AND_CAPTURE_TIME", "LICENSE_OR_PERMITTED_USE", "PERSONAL_DATA_REVIEW", "SYNDICATION_DETECTION", "AUTHORITY_INDEPENDENCE"],
+      "output": "SOURCE_ADMITTED_OR_PROVENANCE_NEGATIVE"
+    },
+    {
+      "gate": "B2-G01B-FAMILY_PARTITION_AND_ASSIGNMENT_ADMISSION",
+      "requires": ["ALL_FAMILY_IDENTITIES", "TRANSITIVE_FAMILY_CLOSURE", "PARTITION_ASSIGNED", "NO_CROSS_PARTITION_OVERLAP", "SEALED_ASSIGNMENT", "PRIOR_EXPOSURE_CHECK"],
+      "output": "PARTITIONED_SOURCE_WITH_SEALED_ASSIGNMENT"
+    },
+    {
+      "gate": "B2-G02-FACTUAL_AND_TARGET_BOUNDARY",
+      "requires": ["PROPOSITION_AUTHORITY_ENVELOPE", "QUALIFICATION_RETENTION", "PROTECTED_TARGET_REVIEW", "CREATIVE_NAMESPACE", "ENTAILMENT_OR_NONFACTUAL_MARKING"],
+      "output": "AUTHORITY_ELIGIBLE_OR_AUTHORITY_NEGATIVE"
+    },
+    {
+      "gate": "B2-G02B-CONSTRUCTION_BLINDING_VERIFICATION",
+      "checkpoints": ["PRE_CONSTRUCTION_INPUT_SEAL", "POST_CONSTRUCTION_EXPOSURE_RECONCILIATION"],
+      "requires": ["CONSTRUCTOR_INPUT_MANIFEST", "NO_LABEL_OR_ANSWER_KEY", "NO_HOLDOUT_OR_OWNER_PREFERENCE_EXPOSURE", "NO_MECHANISM_SPECIFIC_OBLIGATION_WORDING_SHORTCUT", "CONTAMINATION_LEDGER_COMPLETE"],
+      "output": "BOTH_BLINDING_CHECKPOINTS_PASS_OR_CANDIDATE_INVALID"
+    },
+    {
+      "gate": "B2-G03-INDEPENDENT_MECHANISM_LABEL_RECOVERY",
+      "requires": ["OPEN_LABEL_RECOVERY", "SHUFFLED_TARGET_NEIGHBORS_NONE_AMBIGUOUS_CHOICE", "STRUCTURAL_RATIONALE", "DOMINANCE_TEST", "INDEPENDENT_DISAGREEMENT_RESOLUTION"],
+      "output": "POSITIVE_DOMINANT_OR_POSITIVE_SUPPORTING_OR_CONTRAST_OR_MECHANISM_NEGATIVE_OR_REJECTED"
+    },
+    {
+      "gate": "B2-G03B-CAUSAL_MINIMAL_INTERVENTION",
+      "requires": ["PREMISE_TRANSFORMATION_INCONGRUITY_PAYOFF_TRACE", "MECHANISM_REMOVAL_TEST", "TOPIC_FACT_LENGTH_AND_TONE_CONTROLLED_WHERE_PRACTICABLE"],
+      "output": "CAUSAL_MECHANISM_CONFIRMED_OR_REJECTED"
+    },
+    {
+      "gate": "B2-G03C-SHORTCUT_AND_CONTAMINATION_DIAGNOSTIC",
+      "requires": ["LEXICAL_FORMAT_POSITION_LENGTH_TOPIC_ENTITY_CONSTRUCTOR_TEMPLATE_AUDIT", "FAMILY_OVERLAP_AUDIT", "WEAK_NONSEMANTIC_CLASSIFIER_DIAGNOSTIC", "NO_BLIND_HOLDOUT_TUNING"],
+      "output": "CANDIDATE_SHORTCUT_PASS_AND_POOL_PENDING_OR_REJECTED"
+    },
+    {
+      "gate": "B2-G04A-ROMANIAN_NATURALNESS",
+      "requires": ["BLIND_ROMANIAN_REVIEW", "IDIOMATIC_WORD_ORDER_AND_REGISTER", "NO_CALQUE", "NATURAL_CREATIVE_MARKING", "NO_FORCED_WORDPLAY"],
+      "output": "ROMANIAN_NATURALNESS_PASS_OR_REJECTED"
+    },
+    {
+      "gate": "B2-G04A-VOICE_COMPATIBILITY",
+      "requires": ["SEPARATE_BLIND_REVIEW", "MECHANISM_INDEPENDENT_RUBRIC", "NO_HISTORICAL_WORDING_COPY", "NO_CANNED_OPENING_OR_LANDING"],
+      "output": "VOICE_PASS_OR_REJECTED"
+    },
+    {
+      "gate": "B2-G04B-CROSS_CANDIDATE_POOL_AUDIT",
+      "requires": ["FAMILY_SOURCE_TOPIC_ENTITY_FORM_AND_PAYOFF_DIVERSITY", "STRUCTURAL_REALIZATION_DIVERSITY", "POSITIVE_CONTRAST_DIFFICULTY", "NO_NONSEMANTIC_LABEL_PREDICTABILITY"],
+      "output": "POOL_PASS_OR_POOL_REBALANCING_REQUIRED_WITHOUT_QUOTA_FILL"
+    },
+    {
+      "gate": "B2-G05-OWNER_FREEZE",
+      "applies_to_partitions": ["DEVELOPMENT", "CURRICULUM_CANDIDATE"],
+      "requires": ["ALL_APPLICABLE_PRIOR_GATES_PASS", "EXPLICIT_EVIDENCE_CLASS", "PARTITION_AND_FAMILY_CONFIRMATION", "NO_IN_PLACE_EDIT", "MODEL_VISIBILITY_FALSE", "GAPS_EXPLICIT"],
+      "output": "OWNER_FROZEN_EVIDENCE_OR_REJECTION"
+    },
+    {
+      "gate": "B2-G06-BLIND_EVALUATION_CUSTODIAL_LOCK",
+      "applies_to_partitions": ["BLIND_EVALUATION"],
+      "requires": ["NO_OWNER_PREFERENCE_REVIEW", "NO_CONSTRUCTOR_OR_TUNING_EXPOSURE", "SEALED_ANSWER_KEYS", "FAMILY_ISOLATION_REVERIFIED", "CONTAMINATION_LEDGER_CLEAN", "ONE_TIME_EVALUATION_PROTOCOL_FROZEN"],
+      "output": "BLIND_EVALUATION_LOCKED_OR_HOLDOUT_INVALIDATED"
+    }
+  ],
+  "priority_mechanisms": [
+    {
+      "id": "M11_MISDIRECTION",
+      "requires": ["INITIALLY_LICENSED_INTERPRETATION", "LATER_ELEMENT_FORCES_REINTERPRETATION", "BOTH_READINGS_GROUNDED_IN_SAME_SURFACE", "EARLIER_MEANING_CHANGES"],
+      "excludes": ["DELAYED_INFORMATION_ONLY", "SURPRISE_WITHOUT_REINTERPRETATION", "AMBIGUITY_WITHOUT_RESOLUTION", "WITHHELD_AUTHORITY_AS_PUNCHLINE"]
+    },
+    {
+      "id": "M12_LITERALIZATION",
+      "requires": ["IDENTIFIABLE_NONLITERAL_EXPRESSION_OR_MAPPING", "LITERAL_ENACTMENT_OR_CONSEQUENCE_IN_CREATIVE_DOMAIN", "TRACEABLE_FIGURATIVE_TO_LITERAL_LINK"],
+      "excludes": ["METAPHOR_ONLY", "DOUBLE_MEANING_WITHOUT_ENACTMENT", "PHYSICAL_VOCABULARY_ONLY", "FRAME_TRANSFER_ONLY", "REPEATED_IDIOM_THEN_LITERAL_SCENE_TEMPLATE"]
+    },
+    {
+      "id": "M13_ABSURD_LOGICAL_EXTENSION",
+      "requires": ["AUTHORITY_BOUND_PREMISE", "RECOVERABLE_INFERENCE_CHAIN", "LOCALLY_UNDERSTANDABLE_STEPS", "ABSURDITY_DERIVED_FROM_EXTENSION"],
+      "excludes": ["HYPERBOLE_ONLY", "ANALOGY_ONLY", "NON_SEQUITUR", "UNRELATED_ABSURD_EVENT", "INVENTED_CAUSAL_PREMISE"]
+    },
+    {
+      "id": "M17_FALSE_CONCESSION",
+      "requires": ["GENUINE_TEMPORARY_CONCESSION", "SUBSEQUENT_REVERSAL_NARROWING_OR_WEAPONIZATION", "HUMOR_DEPENDS_ON_CONCESSION_STRUCTURE"],
+      "excludes": ["SINCERE_CONCESSION", "YES_BUT_CONTRADICTION_ONLY", "MOCK_PRAISE_WITHOUT_CONCESSION", "SARCASM_ONLY", "REPEATED_LEXICAL_CONCESSION_MARKER"]
+    },
+    {
+      "id": "M18_RHETORICAL_QUESTION",
+      "requires": ["INTERROGATIVE_FORM", "ANSWER_NOT_GENUINELY_REQUESTED", "PRAGMATIC_JUDGMENT_RECOVERABLE", "QUESTION_PERFORMS_COMIC_OR_CRITICAL_OPERATION"],
+      "excludes": ["INFORMATION_SEEKING", "QUIZ_SETUP", "QUESTION_WITH_UNRELATED_PAYOFF", "COSMETIC_QUESTION_MARK", "PUNCTUATION_ONLY_SHORTCUT"]
+    },
+    {
+      "id": "M19_DISCOURSE_FORM_PARODY",
+      "requires": ["RECOGNIZABLE_DISCOURSE_FORM", "MULTIPLE_STRUCTURAL_CONVENTIONS", "FORM_LOGIC_DRIVES_HUMOR", "NONFACTUAL_FORM_SIMULATION_MARKED_WHERE_REQUIRED"],
+      "excludes": ["SINGLE_BUREAUCRATIC_WORD", "FORMATTING_ONLY", "LIST_ONLY", "VOCABULARY_IMITATION_ONLY", "ROLE_SIMULATION_WITHOUT_FORM_LOGIC", "FORMAT_SHORTCUT"]
+    }
+  ],
+  "pool_acceptance": {
+    "numeric_quota": null,
+    "no_quota_fill": true,
+    "gaps_may_remain": true,
+    "priority_coverage_requires_dominant": true,
+    "supporting_evidence_reported_separately": true,
+    "sufficiency_basis": ["INDEPENDENT_FAMILY_VARIATION", "STRUCTURAL_DIVERSITY", "CONTRASTIVE_SEPARABILITY", "AUTHORITY_SAFETY", "BLIND_RECOVERABILITY"],
+    "weak_classifier_rule": "FAIL_IF_LABEL_IS_SUBSTANTIALLY_PREDICTABLE_FROM_NONSEMANTIC_ARTIFACTS",
+    "counterfactual_diagnostics_are_not_AUTOMATIC_TRAINING_EVIDENCE": true,
+    "blind_evaluation_used_once_for_final_measurement_not_ITERATIVE_TUNING": true
+  },
+  "contradiction_resolutions": [
+    "CONSTRUCTOR_RECEIVES_UNLABELED_OPERATIONAL_OBLIGATION_WHILE_ASSIGNMENT_CUSTODIAN_ALONE_RETAINS_TARGET_MAPPING",
+    "SOURCE_UNITS_ARE_AUTHORITY_BOUND_BUT_NEED_NOT_BE_FACT_DENSE_NEWS_PROPOSITIONS",
+    "SAME_SOURCE_CAN_SUPPORT_MULTIPLE_MECHANISMS_BUT_ALL_DERIVATIVES_REMAIN_IN_ONE_PARTITION",
+    "MINIMAL_INTERVENTIONS_ARE_DIAGNOSTIC_AND_DO_NOT_AUTOMATICALLY_BECOME_TRAINING_EXAMPLES",
+    "EXISTING_FROZEN_NEGATIVES_ARE_USED_ONLY_FOR_THE_DEFECT_CLASS_THEY_VALIDLY_EVIDENCE",
+    "OWNER_PREFERENCE_DOES_NOT_ENTER_BLIND_EVALUATION_AUTHORING_OR_ADJUDICATION",
+    "NO_FIXED_CANDIDATE_COUNT_OVERRIDES_QUALITY_OR_GAP_PRESERVATION"
+  ],
+  "next_separate_decision": "OWNER_MAY_AUTHORIZE_BOUNDED_PARTITIONED_SOURCE_DISCOVERY_ONLY"
+}
