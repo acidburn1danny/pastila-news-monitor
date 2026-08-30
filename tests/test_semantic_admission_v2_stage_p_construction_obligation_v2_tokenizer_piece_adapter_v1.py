@@ -22,6 +22,7 @@ class ByteLevel:
 
 
 class TokenizersBackend:
+    __module__ = "transformers.tokenization_utils_tokenizers"
     eos_token_id = EOS_TOKEN_ID
     all_special_ids = tuple(sorted(SPECIAL_TOKEN_IDS))
     decoder = ByteLevel()
@@ -85,6 +86,7 @@ def test_extracts_complete_immutable_piece_bundle():
 
 def test_binds_distinct_initial_and_continuation_decoder_pieces():
     class TokenizersBackend:
+        __module__ = "transformers.tokenization_utils_tokenizers"
         eos_token_id = EOS_TOKEN_ID
         all_special_ids = tuple(sorted(SPECIAL_TOKEN_IDS))
         decoder = ByteLevel()
@@ -112,6 +114,7 @@ def test_binds_distinct_initial_and_continuation_decoder_pieces():
 
 def test_excludes_noncompositional_utf8_replacement_tokens():
     class TokenizersBackend:
+        __module__ = "transformers.tokenization_utils_tokenizers"
         eos_token_id = EOS_TOKEN_ID
         all_special_ids = tuple(sorted(SPECIAL_TOKEN_IDS))
         decoder = ByteLevel()

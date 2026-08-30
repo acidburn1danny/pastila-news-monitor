@@ -14,6 +14,7 @@ TOKENIZER_IDENTITY = "sha256:a91ae3f74fbc3b81c29c29c5e1567c4b018169af288989d5fca
 DECODER_IDENTITY = "ministral-tokenizer-decode-skip-special-cleanup-false-v1"
 TRANSFORMERS_VERSION = "5.15.0"
 TOKENIZER_IMPLEMENTATION = "TokenizersBackend"
+TOKENIZER_IMPLEMENTATION_MODULE = "transformers.tokenization_utils_tokenizers"
 VOCABULARY_SIZE = 131_072
 EOS_TOKEN_ID = 2
 SPECIAL_TOKEN_IDS = frozenset((0, 1, 2, 11))
@@ -100,7 +101,8 @@ def extract_identity_bound_token_pieces_v1(
     )
     if type(identity) is not TokenizerRuntimeIdentityV1 or identity != expected:
         raise ValueError("CONSTRUCTION_OBLIGATION_V2_TOKENIZER_IDENTITY_MISMATCH")
-    if type(tokenizer).__name__ != TOKENIZER_IMPLEMENTATION:
+    if (type(tokenizer).__name__ != TOKENIZER_IMPLEMENTATION
+            or type(tokenizer).__module__ != TOKENIZER_IMPLEMENTATION_MODULE):
         raise ValueError("CONSTRUCTION_OBLIGATION_V2_TOKENIZER_IMPLEMENTATION_MISMATCH")
     if len(tokenizer) != VOCABULARY_SIZE:
         raise ValueError("CONSTRUCTION_OBLIGATION_V2_TOKENIZER_VOCABULARY_MISMATCH")
