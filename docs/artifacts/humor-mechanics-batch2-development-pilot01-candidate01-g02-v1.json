@@ -1,0 +1,83 @@
+{
+  "authority_binding": {
+    "factual_authority_envelope_identity": "7d0f1decc3e4908a03beedf4cec408cce096e07381b5e36f56c5e9dcb4975c65",
+    "ingestion_commit": "601ee4812d864301cb55620e3d239515163e9ef8",
+    "source_commitment": "c7a7c15444e5a21baebe7b90d0eb96522be6455fb0eaa763f3b2fbcdd71e98c2",
+    "source_sha256": "84261f1a6b97f951f70a1b86d42114da9703996607d43d2fc3779bffd7a97cb2",
+    "world_scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE"
+  },
+  "authority_matrix": {
+    "g03_mechanism_recovery": false,
+    "model_training": false,
+    "owner_review": false,
+    "production_routing": false,
+    "regeneration": false,
+    "repair": false,
+    "rewrite": false,
+    "romanian_naturalness_review": false,
+    "runtime_integration": false,
+    "selection": false,
+    "voice_review": false
+  },
+  "candidate_byte_length": 305,
+  "candidate_git_blob_oid_sha1": "ae17e17b44dd6bef0bd0cee514c4ce20d4299725",
+  "candidate_identity": "f96e626487812b4a9ad32ef548d4ac715fae4ea9bb24590a73f942b0783f080f",
+  "candidate_raw_sha256": "2f848e2bc9d87b113df95996a4d49d48fbe4334d6c204ef707664158e23caf9d",
+  "construction_evidence_identity": "7be7784614356ba423159369e7d31d06efa60ef8e087360d0fe0d413805efb2f",
+  "creative_nonfactual_separation_result": "PASS_EXPLICIT_IMAGINARY_AND_FICTITIOUS_MARKERS_WITH_REALITY_DISCLAIMER",
+  "creative_premise_family_id": "55f785b67f0d7f4103fc7c62bdc5826ee3bf3e7295cca6f8415f23e96decd1dc",
+  "eligibility": "ELIGIBLE_FOR_SEPARATELY_AUTHORIZED_BLIND_G03_DECISION",
+  "evidence_commit": "5c8f4226afd8c5ae4eede7b1fcb8e7ddee8ffec1",
+  "factual_assertion_trace": [
+    {
+      "authority_proposition_ids": [
+        "P6"
+      ],
+      "candidate_assertion": "EXACT_P6_SUPPORTING_SPAN",
+      "candidate_character_coordinates": [
+        0,
+        91
+      ],
+      "source_character_coordinates": [
+        240,
+        331
+      ],
+      "source_span_sha256": "ee03f83c96f8d1c2945f675769d84d2a9ac12ca7ebd2e3d5f770d75cbd76145d",
+      "source_utf8_byte_coordinates": [
+        248,
+        345
+      ],
+      "trace_result": "EXACT_SOURCE_BOUND_ASSERTION_WITH_QUALIFICATION"
+    },
+    {
+      "authority_proposition_ids": [
+        "P5"
+      ],
+      "candidate_assertion": "17:00_REFERENCE_INSIDE_EXPLICIT_FICTION",
+      "source_character_coordinates": [
+        173,
+        239
+      ],
+      "source_span_sha256": "f4ecfc5fad9ca18aab176da0dbc6131d0e47d6bff6724475236a4cf81dcc373a",
+      "source_utf8_byte_coordinates": [
+        178,
+        247
+      ],
+      "trace_result": "BOUND_TIME_REFERENCE_NONFACTUAL_USE_ONLY"
+    }
+  ],
+  "g02_receipt_identity": "bc6e7ce8975f94ad43de4cbc99b209099f6c330d8d53e85882fb356348d0d210",
+  "g02_verdict": "PASS",
+  "invented_quotation_or_private_knowledge_result": "PASS_NONE",
+  "mechanism_adjudication_performed": false,
+  "new_factual_premise_result": "PASS_NONE_THE_CONSEQUENCE_IS_EXPLICITLY_NONFACTUAL",
+  "partition": "DEVELOPMENT",
+  "post_construction_g02b_preserved": true,
+  "pragmatic_prohibited_conclusion_result": "PASS_REAL_WORLD_PERSONIFICATION_EXPRESSLY_DISCLAIMED",
+  "protected_target_result": "PASS_NO_PROTECTED_OR_SENSITIVE_TARGET",
+  "qualification_scope_result": "PASS_SYNTHETIC_UNIVERSE_QUALIFICATION_RETAINED_EXACTLY",
+  "schema_name": "batch2-development-pilot01-candidate-g02-v1",
+  "schema_version": "1.0.0",
+  "sealed_mapping_accessed": false,
+  "unsupported_inference_result": "PASS_NO_REAL_WORLD_INTENT_MOTIVE_PRIVATE_STATE_CAUSAL_PREVALENCE_CHRONOLOGY_OR_STATUS_ASSERTION"
+}
