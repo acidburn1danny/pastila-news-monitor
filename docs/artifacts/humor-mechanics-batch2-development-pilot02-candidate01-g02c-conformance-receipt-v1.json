@@ -1,0 +1,108 @@
+{
+  "candidate_identity": "4cc6bceef84e29d07e19d60dbbb1992b33fcb8af67373647f5fb8fedfce1d98c",
+  "continued_relation": {
+    "object_span": {
+      "character_coordinates": [
+        557,
+        568
+      ],
+      "sha256": "bd2d17f78eafe4ee2491798e14c03381401ffdb71807d966670b0ccc989f8b7e",
+      "utf8_byte_coordinates": [
+        577,
+        591
+      ]
+    },
+    "predicate_span": {
+      "character_coordinates": [
+        523,
+        539
+      ],
+      "sha256": "c7a3dad7844002a48b6e4073ffbdf396d2d68e2091d41f78dcde61e36b7fd278",
+      "utf8_byte_coordinates": [
+        543,
+        559
+      ]
+    },
+    "relation_fingerprint": "0452e7a0f50ae361ed65c73be2bfae52c14746cc588af8a7c7d9076bf7f0362f",
+    "subject_span": {
+      "character_coordinates": [
+        540,
+        556
+      ],
+      "sha256": "6107c3fd31c76609ed287770d9bc63d453452cddd0fb74c99d409820c64c661a",
+      "utf8_byte_coordinates": [
+        560,
+        576
+      ]
+    }
+  },
+  "dependency": {
+    "removal_test": "STEP2_STRUCTURALLY_UNAVAILABLE_WITHOUT_STEP1",
+    "step2_requires_step1": true,
+    "unrelated_replacement_possible": false
+  },
+  "entity_status": {
+    "human_agency_supplies_connection": false,
+    "unauthorized_attribute_or_role_added": false
+  },
+  "imported_relation": {
+    "present": false,
+    "primary_connector": false
+  },
+  "neighbor_substitution": {
+    "comparison_or_domain_transfer": false,
+    "disconnected_surprise": false,
+    "enumeration": false,
+    "magnitude_only": false
+  },
+  "obligation_identity": "0cfd22fd43e0be68b5a04f16e45e918ac7bae346c851334817a7af309bad63e5",
+  "selected_proposition": {
+    "proposition_id": "P7",
+    "source_span": {
+      "character_coordinates": [
+        491,
+        568
+      ],
+      "sha256": "8710c3f855aada73ea87c74f01881cd4cec5be3278bbf3123d3428084399bf61",
+      "utf8_byte_coordinates": [
+        509,
+        591
+      ]
+    }
+  },
+  "steps": [
+    {
+      "candidate_span": {
+        "character_coordinates": [
+          114,
+          173
+        ],
+        "sha256": "c88ae6b75a92a148306329bdf5c5f5bdfe840c2fff50d7743095c108e7b146f7",
+        "utf8_byte_coordinates": [
+          121,
+          187
+        ]
+      },
+      "locally_understandable": true,
+      "ordinal": 1,
+      "same_relation_operates": true
+    },
+    {
+      "candidate_span": {
+        "character_coordinates": [
+          175,
+          292
+        ],
+        "sha256": "ff71949813150ea769a87042a8d489a96657e472a4e0fe908d6bf56d4d7ef1be",
+        "utf8_byte_coordinates": [
+          189,
+          315
+        ]
+      },
+      "locally_understandable": true,
+      "ordinal": 2,
+      "same_relation_operates": true
+    }
+  ],
+  "verdict": "PASS"
+}
