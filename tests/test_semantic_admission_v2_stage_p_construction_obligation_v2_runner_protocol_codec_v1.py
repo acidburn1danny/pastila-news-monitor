@@ -57,6 +57,7 @@ def test_v1_2_1_no_legal_receipt_preserves_terminal_semantic_classification():
     terminal_candidate = b'{"observed":"terminal"}'
     raw = _no_legal_receipt(
         request=request, authority="a" * 64, generated=(10, 11),
+        decoded_prefix=terminal_candidate,
         terminal_candidate=terminal_candidate,
         receipt=SimpleNamespace(
             request_context_identity=request.source_context_identity,
@@ -82,6 +83,8 @@ def test_v1_2_1_no_legal_receipt_preserves_terminal_semantic_classification():
         {"projector_decoded_sha256": "0" * 64},
         {"authority_receipt_identity": "0" * 64},
         {"character_state_identity": "0" * 64},
+        {"generated_token_ids": [10, 12]},
+        {"decoded_prefix_utf8_base64": "Zm9yZ2Vk"},
     )
     for mutation in mutations:
         forged = {**value, **mutation}

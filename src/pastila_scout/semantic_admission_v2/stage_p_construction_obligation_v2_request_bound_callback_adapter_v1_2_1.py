@@ -75,7 +75,7 @@ class ConstructionObligationV2RequestBoundCallbackAdapterV1_2_1:
             terminal_admission=completeness.validate_terminal,
             terminal_admission_identity=completeness.policy.identity,
             structural_liveness_pruning=True)
-        self._decode_generated = None
+        self._observe_generated = decode_generated
         self._suffix = RequestBoundGeneratedSuffixCallbackV1(
             request_identity=request.provider_request_id,
             prompt_token_ids=prompt_token_ids, project=self._project)
@@ -96,18 +96,25 @@ class ConstructionObligationV2RequestBoundCallbackAdapterV1_2_1:
     def _project(self, generated: Sequence[int]) -> ZeroModelCallbackDecisionV1:
         pieces = self.projector.token_pieces if hasattr(self.projector, "token_pieces") else None
         del pieces
-        decode = self._decode_generated or (lambda ids: _decode(self.projector, ids))
+        decode = lambda ids: _decode(self.projector, ids)
         try:
             projected = self.projector.allowed_token_ids(generated, decode)
             return ZeroModelCallbackDecisionV1(
                 projected.token_ids, projected.receipt, None)
         except StagePTokenProjectionFailureV1 as exc:
-            terminal_candidate = (decode(generated).encode("utf-8")
-                                  if exc.receipt.terminal else None)
+            decoded_prefix = decode(generated).encode("utf-8")
+            if self._observe_generated is not None:
+                observed = self._observe_generated(generated)
+                if (type(observed) is not str
+                        or observed.encode("utf-8") != decoded_prefix):
+                    raise RuntimeError(
+                        "CONSTRUCTION_OBLIGATION_V2_DERIVED_DECODER_DIVERGENCE")
+            terminal_candidate = decoded_prefix if exc.receipt.terminal else None
             return ZeroModelCallbackDecisionV1(
                 (), exc.receipt, _no_legal_receipt(
                     request=self.request, authority=self.authority_receipt_identity,
                     generated=generated, receipt=exc.receipt,
+                    decoded_prefix=decoded_prefix,
                     terminal_candidate=terminal_candidate))
 
 
@@ -127,6 +134,7 @@ def _decode(projector, generated: Sequence[int]) -> str:
 
 
 def _no_legal_receipt(*, request, authority, generated, receipt,
+                      decoded_prefix: bytes,
                       terminal_candidate: bytes | None) -> bytes:
     semantic_eos_withheld = bool(receipt.terminal)
     value = {
@@ -141,6 +149,7 @@ def _no_legal_receipt(*, request, authority, generated, receipt,
         "generated_prefix_sha256": hashlib.sha256(
             json.dumps(tuple(generated), separators=(",", ":")).encode()).hexdigest(),
         "generated_token_count": len(tuple(generated)),
+        "generated_token_ids": list(generated),
         "character_state_identity": hashlib.sha256("\n".join((
             authority, receipt.request_context_identity, receipt.decoded_sha256,
             receipt.dfa_mode, str(receipt.terminal))).encode()).hexdigest(),
@@ -149,6 +158,9 @@ def _no_legal_receipt(*, request, authority, generated, receipt,
         "projector_reason_code": receipt.reason_code,
         "authority_receipt_identity": authority,
         "projector_decoded_sha256": receipt.decoded_sha256,
+        "decoded_prefix_utf8_base64": base64.b64encode(decoded_prefix).decode("ascii"),
+        "decoded_prefix_sha256": hashlib.sha256(decoded_prefix).hexdigest(),
+        "decoded_prefix_utf8_bytes": len(decoded_prefix),
         "terminal_candidate_utf8_base64": (
             base64.b64encode(terminal_candidate).decode("ascii")
             if terminal_candidate is not None else None),

@@ -100,7 +100,7 @@ def test_exact_decoder_never_recovers_by_scanning_outside_trie_candidates():
     assert calls == [()]
 
 
-def test_structural_liveness_pruning_withholds_literal_token_with_no_successor():
+def test_structural_liveness_pruning_cannot_fabricate_current_literal_dead_end():
     context, _, _ = _case_context()
     common = dict(
         controller=StagePConstructionObligationCharacterControllerV1(
@@ -113,12 +113,10 @@ def test_structural_liveness_pruning_withholds_literal_token_with_no_successor()
     assert unpruned.allowed_token_ids((), lambda _: "").token_ids == (10,)
     pruned = StagePConstructionObligationV2TokenProjectorV2(
         **common, structural_liveness_pruning=True)
-    with pytest.raises(StagePTokenProjectionFailureV1) as caught:
-        pruned.allowed_token_ids((), lambda _: "")
-    assert caught.value.receipt.reason_code == "TOKENIZATION_DEAD_NO_VALID_TOKEN"
+    assert pruned.allowed_token_ids((), lambda _: "").token_ids == (10,)
 
 
-def test_structural_liveness_pruning_rejects_multi_token_literal_dead_end():
+def test_structural_liveness_pruning_falls_back_to_immediate_valid_token():
     context, _, _ = _case_context()
     projector = StagePConstructionObligationV2TokenProjectorV2(
         controller=StagePConstructionObligationCharacterControllerV1(
@@ -129,8 +127,7 @@ def test_structural_liveness_pruning_rejects_multi_token_literal_dead_end():
         request_context_identity=context.binding_identity,
         request_authority_identity="authority:test-case-01",
         structural_liveness_pruning=True)
-    with pytest.raises(StagePTokenProjectionFailureV1):
-        projector.allowed_token_ids((), lambda _: "")
+    assert projector.allowed_token_ids((), lambda _: "").token_ids == (10,)
 
 
 def test_exact_decoder_rejects_multi_predecessor_context_disagreement():

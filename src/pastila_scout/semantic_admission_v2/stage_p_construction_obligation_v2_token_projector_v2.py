@@ -192,6 +192,16 @@ class StagePConstructionObligationV2TokenProjectorV2:
                 self._misses += 1
                 allowed = self._project(
                     prefix.state, character.allowance, initial=(phase == "INITIAL"))
+                # Recursive look-ahead is advisory.  It may rank every immediate
+                # grammar-valid token as eventually dead, but it must not create
+                # a false current-state no-token classification.  In that case
+                # retain the exact immediate DFA projection and let the next
+                # observed state classify any genuine dead end losslessly.
+                if (not allowed and self.structural_liveness_pruning
+                        and prefix.state.mode == "LITERAL"):
+                    allowed = self._project(
+                        prefix.state, character.allowance,
+                        initial=(phase == "INITIAL"), prune_literals=False)
                 self._cache[key] = allowed
             if self.exact_history_decoder:
                 allowed = self._exact_candidates(
@@ -203,7 +213,8 @@ class StagePConstructionObligationV2TokenProjectorV2:
         return TokenProjectionResultV1(
             allowed, self._receipt(prefix, allowed, self.eos_token_id in allowed, None))
 
-    def _project(self, state, root_allowance, *, initial: bool) -> tuple[int, ...]:
+    def _project(self, state, root_allowance, *, initial: bool,
+                 prune_literals: bool = True) -> tuple[int, ...]:
         admitted: list[int] = []
         ordinary_string = (
             state.mode == "STRING" and not state.string_escape
@@ -225,7 +236,8 @@ class StagePConstructionObligationV2TokenProjectorV2:
             terminals = self._terminals if ordinary_string else self._all_terminals
         stack = [(0, state, root_allowance)]
         prune_literal_dead_ends = (
-            self.structural_liveness_pruning and state.mode == "LITERAL")
+            prune_literals and self.structural_liveness_pruning
+            and state.mode == "LITERAL")
         visited = 0
         while stack:
             node, current, allowance = stack.pop()

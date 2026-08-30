@@ -96,6 +96,8 @@ def validate_no_legal_token_receipt_v1(*, raw_receipt: bytes, request: RunnerReq
       "terminal","allowed_token_count","failure_code","receipt_identity"}
     extended=common|{"projector_terminal","projector_reason_code",
       "authority_receipt_identity","projector_decoded_sha256",
+      "generated_token_ids","decoded_prefix_utf8_base64",
+      "decoded_prefix_sha256","decoded_prefix_utf8_bytes",
       "terminal_candidate_utf8_base64","terminal_candidate_sha256",
       "terminal_candidate_utf8_bytes"}
     if set(value) not in (common,extended) or (value["schema_name"],value["protocol_identity"],
@@ -132,6 +134,27 @@ def validate_no_legal_token_receipt_v1(*, raw_receipt: bytes, request: RunnerReq
             str(value["projector_terminal"]))).encode()).hexdigest()
         if value["character_state_identity"] != expected_character_state:
             raise ValueError("CONSTRUCTION_OBLIGATION_V2_NO_LEGAL_TOKEN_CHAIN_INVALID")
+        if (type(value["generated_token_ids"]) is not list
+                or any(type(item) is not int or item < 0
+                       for item in value["generated_token_ids"])
+                or len(value["generated_token_ids"]) != value["generated_token_count"]
+                or hashlib.sha256(json.dumps(
+                    tuple(value["generated_token_ids"]),
+                    separators=(",", ":")).encode()).hexdigest()
+                    != value["generated_prefix_sha256"]):
+            raise ValueError("CONSTRUCTION_OBLIGATION_V2_GENERATED_HISTORY_IDENTITY_MISMATCH")
+        if (type(value["decoded_prefix_utf8_base64"]) is not str
+                or type(value["decoded_prefix_sha256"]) is not str
+                or type(value["decoded_prefix_utf8_bytes"]) is not int):
+            raise ValueError("CONSTRUCTION_OBLIGATION_V2_DECODED_PREFIX_MISSING")
+        decoded_prefix=_b64(value["decoded_prefix_utf8_base64"],"DECODED_PREFIX")
+        try:decoded_prefix.decode("utf-8",errors="strict")
+        except UnicodeDecodeError as exc:
+            raise ValueError("CONSTRUCTION_OBLIGATION_V2_DECODED_PREFIX_UTF8_INVALID") from exc
+        if (len(decoded_prefix)!=value["decoded_prefix_utf8_bytes"]
+                or hashlib.sha256(decoded_prefix).hexdigest()!=value["decoded_prefix_sha256"]
+                or value["decoded_prefix_sha256"]!=value["projector_decoded_sha256"]):
+            raise ValueError("CONSTRUCTION_OBLIGATION_V2_DECODED_PREFIX_IDENTITY_MISMATCH")
         candidate_fields=(value["terminal_candidate_utf8_base64"],
                           value["terminal_candidate_sha256"],
                           value["terminal_candidate_utf8_bytes"])
