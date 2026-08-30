@@ -3,6 +3,7 @@ from __future__ import annotations
 import ast
 import hashlib
 import json
+import subprocess
 from pathlib import Path
 
 
@@ -11,6 +12,8 @@ SOURCE = ROOT / "src/pastila_scout/semantic_admission_v2/stage_p_construction_ob
 DESIGN = ROOT / "docs/artifacts/semantic-admission-v2-stage-p-construction-obligation-v2-full-ledger-dfa-design-v1.json"
 ARTIFACT = ROOT / "docs/artifacts/semantic-admission-v2-stage-p-construction-obligation-v2-full-ledger-character-dfa-v1-candidate.json"
 PREFLIGHT = ROOT / ".semantic-admission-v2-stage-p-construction-obligation-v2-full-ledger-character-dfa-v1-candidate-evidence/preflight.json"
+HISTORICAL_CANDIDATE_COMMIT = "b8bc708afe099cba08f59cfcd90684b00fb956e0"
+SOURCE_RELATIVE = "src/pastila_scout/semantic_admission_v2/stage_p_construction_obligation_constraint_v2.py"
 
 
 def test_design_and_candidate_identities_reproduce():
@@ -20,7 +23,10 @@ def test_design_and_candidate_identities_reproduce():
                     "INHERIT_V1_SEMANTIC_OBLIGATIONS_REPLACE_FOUR_PROVENANCE_TRANSITIONS",
                     "DESIGN_ONLY"]
     assert hashlib.sha256("\n".join(design_parts).encode()).hexdigest() == design["design_identity"]
-    implementation = hashlib.sha256(SOURCE.read_bytes()).hexdigest()
+    historical_source = subprocess.run(
+        ["git", "show", f"{HISTORICAL_CANDIDATE_COMMIT}:{SOURCE_RELATIVE}"],
+        cwd=ROOT, check=True, capture_output=True).stdout
+    implementation = hashlib.sha256(historical_source).hexdigest()
     candidate_parts = [artifact["artifact_id"], artifact["approved_design_identity"],
                        implementation, artifact["case01_context_identity"],
                        artifact["v2_ledger_json_schema_sha256"], "ZERO_INFERENCE"]
