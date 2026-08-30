@@ -1,0 +1,144 @@
+{
+  "entries": [
+    {
+      "batch_identity": "cec33e1efb5f493f34d1d9cf8a56f0bffd0f620c054477d32ce8292eb587ec3c",
+      "entry_hash": "4d6789825f0b190be1e02421ed23b0d886172657d30c5f59b1e57348a45637c6",
+      "entry_sequence": 8,
+      "event": "CONTENT_FREE_PREFLIGHT_OPERATION_VERIFIED",
+      "operation_ordinal": 0,
+      "operational_authority": false,
+      "previous_entry_hash": "b37cc702be9990638d4f196c1399f42dc3695ad1f271022759e114a3c559a00b",
+      "purpose": "RIGHTS_METADATA_ADMISSION_PREFLIGHT",
+      "schema_name": "batch2-custodial-access-ledger-entry-v1",
+      "schema_version": "1.0.0",
+      "signer_bindings": [
+        {
+          "fingerprint": "bd00e64dc48ff765d9fc1a5937be3541d5171535a90d3eb005354224760ca881",
+          "response_sha256": "20c0c28bd9b319a4682bfe48205d32b04f4ba762a5f15f7f25c5990f6193d795",
+          "role": "RIGHTS_CUSTODIAN"
+        }
+      ]
+    },
+    {
+      "batch_identity": "cec33e1efb5f493f34d1d9cf8a56f0bffd0f620c054477d32ce8292eb587ec3c",
+      "entry_hash": "b71eda37474bf759fbc9c3a4249481de9a12861c142880dbb96dcfff58dd2a3a",
+      "entry_sequence": 9,
+      "event": "CONTENT_FREE_PREFLIGHT_OPERATION_VERIFIED",
+      "operation_ordinal": 1,
+      "operational_authority": false,
+      "previous_entry_hash": "4d6789825f0b190be1e02421ed23b0d886172657d30c5f59b1e57348a45637c6",
+      "purpose": "ARCHIVE_ADMISSION_PREFLIGHT",
+      "schema_name": "batch2-custodial-access-ledger-entry-v1",
+      "schema_version": "1.0.0",
+      "signer_bindings": [
+        {
+          "fingerprint": "59374467214015dc63dce3875959c7583cb2ab677a292ed6e0a0dcf829318aaa",
+          "response_sha256": "0183c71f40311183bf1a439ca8a930fb9cf7883e9e86c8c580e736925c87178b",
+          "role": "ACQUISITION_CUSTODIAN"
+        },
+        {
+          "fingerprint": "bd00e64dc48ff765d9fc1a5937be3541d5171535a90d3eb005354224760ca881",
+          "response_sha256": "1921fb4e42ba19038750221e649f376c3bc8e8cddbddf0a11ab2516e52d4dc75",
+          "role": "RIGHTS_CUSTODIAN"
+        }
+      ]
+    },
+    {
+      "batch_identity": "cec33e1efb5f493f34d1d9cf8a56f0bffd0f620c054477d32ce8292eb587ec3c",
+      "entry_hash": "eb88ea7081d3a41e5171cdf97883360d2a6e3fe945e3db4ac64f5e94651677e6",
+      "entry_sequence": 10,
+      "event": "CONTENT_FREE_PREFLIGHT_OPERATION_VERIFIED",
+      "operation_ordinal": 2,
+      "operational_authority": false,
+      "previous_entry_hash": "b71eda37474bf759fbc9c3a4249481de9a12861c142880dbb96dcfff58dd2a3a",
+      "purpose": "FAMILY_CLOSURE_PREFLIGHT",
+      "schema_name": "batch2-custodial-access-ledger-entry-v1",
+      "schema_version": "1.0.0",
+      "signer_bindings": [
+        {
+          "fingerprint": "bc5b32b0c8a7b2f6b585d1f543ea7d39ee95767181c126cd16996e7c0300a8ed",
+          "response_sha256": "347af041f1167a384a70031bf0d6bd38922696825ec6694005cfc0836f6f9edb",
+          "role": "FAMILY_CUSTODIAN"
+        }
+      ]
+    },
+    {
+      "batch_identity": "cec33e1efb5f493f34d1d9cf8a56f0bffd0f620c054477d32ce8292eb587ec3c",
+      "entry_hash": "e53e7af2925618e45d07f78cb14327581f8c63a5f59bb5c4fd0a3817ea7399ff",
+      "entry_sequence": 11,
+      "event": "CONTENT_FREE_PREFLIGHT_OPERATION_VERIFIED",
+      "operation_ordinal": 3,
+      "operational_authority": false,
+      "previous_entry_hash": "eb88ea7081d3a41e5171cdf97883360d2a6e3fe945e3db4ac64f5e94651677e6",
+      "purpose": "PARTITION_SEAL_PREFLIGHT",
+      "schema_name": "batch2-custodial-access-ledger-entry-v1",
+      "schema_version": "1.0.0",
+      "signer_bindings": [
+        {
+          "fingerprint": "ceb4438e671860f3ae144fc8acabcfc7b2f7d648979ad5650fba1f5ce3254a9a",
+          "response_sha256": "d3f565fe9f765dd918bd8f3d167292db591378830805fb58459e5e9e4043ae84",
+          "role": "PARTITION_CUSTODIAN"
+        }
+      ]
+    },
+    {
+      "batch_identity": "cec33e1efb5f493f34d1d9cf8a56f0bffd0f620c054477d32ce8292eb587ec3c",
+      "entry_hash": "f41e863ef510d0b7fd8ec7d8ac5001756cfe557b10db6a9b4f1bb53a30eee07c",
+      "entry_sequence": 12,
+      "event": "CONTENT_FREE_PREFLIGHT_OPERATION_VERIFIED",
+      "operation_ordinal": 4,
+      "operational_authority": false,
+      "previous_entry_hash": "e53e7af2925618e45d07f78cb14327581f8c63a5f59bb5c4fd0a3817ea7399ff",
+      "purpose": "BLIND_ESCROW_ADMISSION_PREFLIGHT",
+      "schema_name": "batch2-custodial-access-ledger-entry-v1",
+      "schema_version": "1.0.0",
+      "signer_bindings": [
+        {
+          "fingerprint": "043a87c3741ed7937c7c9ab164d2322d8a0160a09920c17dbb2f7e8912f939da",
+          "response_sha256": "fb714322be449918de64d47350db263c4fc42ceb11be42476e507398f3a0d003",
+          "role": "BLIND_ESCROW_CUSTODIAN"
+        },
+        {
+          "fingerprint": "ceb4438e671860f3ae144fc8acabcfc7b2f7d648979ad5650fba1f5ce3254a9a",
+          "response_sha256": "1229df13a74a620fd4eb3ceff8fc808b1127d6204f1b39524f664e87139a80c2",
+          "role": "PARTITION_CUSTODIAN"
+        }
+      ]
+    },
+    {
+      "batch_identity": "cec33e1efb5f493f34d1d9cf8a56f0bffd0f620c054477d32ce8292eb587ec3c",
+      "entry_hash": "db09af250ff350aba7795c09abd5772cf2809e18bb3261eec939b7994285ebf8",
+      "entry_sequence": 13,
+      "event": "CONTENT_FREE_PREFLIGHT_OPERATION_VERIFIED",
+      "operation_ordinal": 5,
+      "operational_authority": false,
+      "previous_entry_hash": "f41e863ef510d0b7fd8ec7d8ac5001756cfe557b10db6a9b4f1bb53a30eee07c",
+      "purpose": "CONTAMINATION_AUDIT_PREFLIGHT",
+      "schema_name": "batch2-custodial-access-ledger-entry-v1",
+      "schema_version": "1.0.0",
+      "signer_bindings": [
+        {
+          "fingerprint": "ca5d89a72072e0117c1f7a288c12bbb6c91f96e7527525b28ca73e65d8841b87",
+          "response_sha256": "03db6fb40ead5c00ca0b0d4d257a8e8e9f49338cea63006529c54d01ea097a47",
+          "role": "CONTAMINATION_AUDITOR"
+        }
+      ]
+    },
+    {
+      "batch_identity": "cec33e1efb5f493f34d1d9cf8a56f0bffd0f620c054477d32ce8292eb587ec3c",
+      "entry_hash": "5b47822411f6e000bfb0e28bc9e7e2e74c54f95ac663bc740c34f71f7fe212c8",
+      "entry_sequence": 14,
+      "event": "CONTENT_FREE_ACTIVATION_READINESS_VERIFIED",
+      "operational_authority": false,
+      "previous_entry_hash": "db09af250ff350aba7795c09abd5772cf2809e18bb3261eec939b7994285ebf8",
+      "readiness_core_identity": "1cb3d386486e9e3cfef5fd5fb4fbb50f1b44f246a7e23b92f99061defadf7730",
+      "schema_name": "batch2-custodial-access-ledger-entry-v1",
+      "schema_version": "1.0.0"
+    }
+  ],
+  "final_ledger_head": "5b47822411f6e000bfb0e28bc9e7e2e74c54f95ac663bc740c34f71f7fe212c8",
+  "ledger_segment_identity": "6b2e0faafd40757cbe04c4659a7ac46f4238e0adad368c87f884a253c610fd23",
+  "previous_ledger_head": "b37cc702be9990638d4f196c1399f42dc3695ad1f271022759e114a3c559a00b",
+  "schema_name": "batch2-custodial-activation-preflight-ledger-segment-v1",
+  "schema_version": "1.0.0"
+}

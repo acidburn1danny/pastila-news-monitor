@@ -1,0 +1,202 @@
+{
+  "batch_identity": "cec33e1efb5f493f34d1d9cf8a56f0bffd0f620c054477d32ce8292eb587ec3c",
+  "evidence_identity": "ee1dfe6f214dffc13f8542969d4e15700ab7c898eb4300dbafbe6b25c399e2d0",
+  "mutation_results": {
+    "ALTERED_DOMAIN": true,
+    "ALTERED_NONCE": true,
+    "ALTERED_OBJECT_IDENTITY": true,
+    "ALTERED_PRIOR_LEDGER_HEAD": true,
+    "ALTERED_PURPOSE": true,
+    "DUPLICATE_KEY_SUBSTITUTION": true,
+    "MISSING_COUNTERSIGNATURE": true,
+    "REPLAY_PREVIOUS_VALID_EVENT": true,
+    "REUSED_NONCE": true,
+    "REUSED_SIGNATURE_CROSS_PURPOSE": true,
+    "REVOKED_OR_UNREGISTERED_KEY": true,
+    "SAME_ROLE_COUNTERSIGNATURE": true,
+    "UNAUTHORIZED_LEDGER_APPEND": true,
+    "WRONG_ROLE_SIGNER": true
+  },
+  "registration_commit": "cab04b6e43b13fefe6ab048b6ac8c7dbabe630b7",
+  "registration_identity": "01912e139471ec23cba5861c8f575f098a6248d39ebbe5ec2ee043493d392ebe",
+  "request_commit": "a1f78df7a3e06feb98d2e134e9819ec6cf1ff875",
+  "request_identity": "6758866887cf33c617407f22c6aca2ca939386ec98ca216ceaec3c72ddb78aa5",
+  "verified_responses": [
+    {
+      "algorithm": "ED25519",
+      "batch_identity": "cec33e1efb5f493f34d1d9cf8a56f0bffd0f620c054477d32ce8292eb587ec3c",
+      "canonical_challenge_sha256": "5472219a77766195407e44fb4d1884c493a91292c11ba20fdb1c9ec0ae7d6981",
+      "challenge_identity": "3d182cd6ff9b971f96e500923f7bbf2b7c307a3635753cf432fd7ec721c27c58",
+      "grants_operational_authority": false,
+      "operation_ordinal": 0,
+      "principal_identity": "35f8bee3260c2ff80aaaeb394d1446d273524cc51d1c4eda56715d49c2a77644",
+      "private_key_included": false,
+      "purpose": "RIGHTS_METADATA_ADMISSION_PREFLIGHT",
+      "registered_public_key_fingerprint": "bd00e64dc48ff765d9fc1a5937be3541d5171535a90d3eb005354224760ca881",
+      "request_identity": "6758866887cf33c617407f22c6aca2ca939386ec98ca216ceaec3c72ddb78aa5",
+      "response_sha256": "20c0c28bd9b319a4682bfe48205d32b04f4ba762a5f15f7f25c5990f6193d795",
+      "schema_name": "batch2-custodial-activation-preflight-signature-response-v1",
+      "schema_version": "1.0.0",
+      "signature": {
+        "encoding": "BASE64",
+        "value": "ZkvZToTtsWPTzrI9Pb9zucoVgVicCcZIxBqC7yABsskx2fAVPcaie8FLdFsukEBj6b6o8LbVgGoJI9Ke8YTmDA=="
+      },
+      "signature_verification": "VERIFIED",
+      "signer_role": "RIGHTS_CUSTODIAN"
+    },
+    {
+      "algorithm": "ED25519",
+      "batch_identity": "cec33e1efb5f493f34d1d9cf8a56f0bffd0f620c054477d32ce8292eb587ec3c",
+      "canonical_challenge_sha256": "8bb28bbc526900805531b784dcca8e24806393e620035d6e11e307e3bae224d0",
+      "challenge_identity": "0741f218eea9ad1f1f05ef702dcf608dc45b629e1222bc0a057068eb3b5557ae",
+      "grants_operational_authority": false,
+      "operation_ordinal": 1,
+      "principal_identity": "37c8c4010917cd87ad7d38591644a15a4640911522fea505b3273943af927bd7",
+      "private_key_included": false,
+      "purpose": "ARCHIVE_ADMISSION_PREFLIGHT",
+      "registered_public_key_fingerprint": "59374467214015dc63dce3875959c7583cb2ab677a292ed6e0a0dcf829318aaa",
+      "request_identity": "6758866887cf33c617407f22c6aca2ca939386ec98ca216ceaec3c72ddb78aa5",
+      "response_sha256": "0183c71f40311183bf1a439ca8a930fb9cf7883e9e86c8c580e736925c87178b",
+      "schema_name": "batch2-custodial-activation-preflight-signature-response-v1",
+      "schema_version": "1.0.0",
+      "signature": {
+        "encoding": "BASE64",
+        "value": "IC0fnhFnuyhGuQAk/MRsf/2X811W1Sa7Djq03X6jLGcs0mb+hRUoQqfv1tAlYMsgRu5Gubbx5Emg5WiX+ia3CQ=="
+      },
+      "signature_verification": "VERIFIED",
+      "signer_role": "ACQUISITION_CUSTODIAN"
+    },
+    {
+      "algorithm": "ED25519",
+      "batch_identity": "cec33e1efb5f493f34d1d9cf8a56f0bffd0f620c054477d32ce8292eb587ec3c",
+      "canonical_challenge_sha256": "5734476c0a66f48e8522a5f6b6d40fd9f466e73a067ddf6cb485bbd49431dd88",
+      "challenge_identity": "6d820a71e9ab8fe139af1d75b9bbc44d220bc4139f70d7dfbb0bc56190dcfa9a",
+      "grants_operational_authority": false,
+      "operation_ordinal": 1,
+      "principal_identity": "35f8bee3260c2ff80aaaeb394d1446d273524cc51d1c4eda56715d49c2a77644",
+      "private_key_included": false,
+      "purpose": "ARCHIVE_ADMISSION_PREFLIGHT",
+      "registered_public_key_fingerprint": "bd00e64dc48ff765d9fc1a5937be3541d5171535a90d3eb005354224760ca881",
+      "request_identity": "6758866887cf33c617407f22c6aca2ca939386ec98ca216ceaec3c72ddb78aa5",
+      "response_sha256": "1921fb4e42ba19038750221e649f376c3bc8e8cddbddf0a11ab2516e52d4dc75",
+      "schema_name": "batch2-custodial-activation-preflight-signature-response-v1",
+      "schema_version": "1.0.0",
+      "signature": {
+        "encoding": "BASE64",
+        "value": "va2PFlKYiy+y4BOgY3fsZls1TAuKLzzhNmKW77p6+zpQ4yCupsnYlpFkWgGU1v/o8zMK9QVemVjLadTeONNRCA=="
+      },
+      "signature_verification": "VERIFIED",
+      "signer_role": "RIGHTS_CUSTODIAN"
+    },
+    {
+      "algorithm": "ED25519",
+      "batch_identity": "cec33e1efb5f493f34d1d9cf8a56f0bffd0f620c054477d32ce8292eb587ec3c",
+      "canonical_challenge_sha256": "e0995e785e4178311d5fa5e167b1ae2ea5c8fc6d76d0599759833d22fa017a67",
+      "challenge_identity": "fb115d3c8739ff9962f7f775efc162295b3d5a55046632deefe250232ec166e8",
+      "grants_operational_authority": false,
+      "operation_ordinal": 2,
+      "principal_identity": "728eea0400e8aa123ffba1afbff1982d985afbfb0bc850972389fd31b2ba75fa",
+      "private_key_included": false,
+      "purpose": "FAMILY_CLOSURE_PREFLIGHT",
+      "registered_public_key_fingerprint": "bc5b32b0c8a7b2f6b585d1f543ea7d39ee95767181c126cd16996e7c0300a8ed",
+      "request_identity": "6758866887cf33c617407f22c6aca2ca939386ec98ca216ceaec3c72ddb78aa5",
+      "response_sha256": "347af041f1167a384a70031bf0d6bd38922696825ec6694005cfc0836f6f9edb",
+      "schema_name": "batch2-custodial-activation-preflight-signature-response-v1",
+      "schema_version": "1.0.0",
+      "signature": {
+        "encoding": "BASE64",
+        "value": "2sBGUYBLAmvLjMqqzq9MZL5UYt8fYunLrBJAno2HaahiIatVntMOLkrssZq+nIlgmFGbwy72FjSOE+RKxLeJBg=="
+      },
+      "signature_verification": "VERIFIED",
+      "signer_role": "FAMILY_CUSTODIAN"
+    },
+    {
+      "algorithm": "ED25519",
+      "batch_identity": "cec33e1efb5f493f34d1d9cf8a56f0bffd0f620c054477d32ce8292eb587ec3c",
+      "canonical_challenge_sha256": "a0ff9e7386254e1092311a787492c65e4039343008675b1a372e6571e9a23115",
+      "challenge_identity": "865a652c31e311f0de44e4a421968343fd42d933cd3fcb720b84373e05262045",
+      "grants_operational_authority": false,
+      "operation_ordinal": 3,
+      "principal_identity": "14f2d19b62ffc6b2a1a8ac5a426647962a03d2a81301410e7dbf16a27e4fb97d",
+      "private_key_included": false,
+      "purpose": "PARTITION_SEAL_PREFLIGHT",
+      "registered_public_key_fingerprint": "ceb4438e671860f3ae144fc8acabcfc7b2f7d648979ad5650fba1f5ce3254a9a",
+      "request_identity": "6758866887cf33c617407f22c6aca2ca939386ec98ca216ceaec3c72ddb78aa5",
+      "response_sha256": "d3f565fe9f765dd918bd8f3d167292db591378830805fb58459e5e9e4043ae84",
+      "schema_name": "batch2-custodial-activation-preflight-signature-response-v1",
+      "schema_version": "1.0.0",
+      "signature": {
+        "encoding": "BASE64",
+        "value": "GKlxRh+fkHEdlC4RgEnAcHebq3BjYxEaqklPJvdyQhia7gzbWK164r6C/AFNhqJlDIEfvMASPN6hHY+jnRg8Ag=="
+      },
+      "signature_verification": "VERIFIED",
+      "signer_role": "PARTITION_CUSTODIAN"
+    },
+    {
+      "algorithm": "ED25519",
+      "batch_identity": "cec33e1efb5f493f34d1d9cf8a56f0bffd0f620c054477d32ce8292eb587ec3c",
+      "canonical_challenge_sha256": "aac1acb2354881faa6ce1d66c489322613d0af5b8737fca24c0ee5784d223706",
+      "challenge_identity": "50544f94d17e71c799f6569bac1336d29f06be35d65a9440dd8460ce0fa24b23",
+      "grants_operational_authority": false,
+      "operation_ordinal": 4,
+      "principal_identity": "12e32e46bdb6acc1ac5a7556dcb021ee35a8b264e6b157a5572d801fa373619e",
+      "private_key_included": false,
+      "purpose": "BLIND_ESCROW_ADMISSION_PREFLIGHT",
+      "registered_public_key_fingerprint": "043a87c3741ed7937c7c9ab164d2322d8a0160a09920c17dbb2f7e8912f939da",
+      "request_identity": "6758866887cf33c617407f22c6aca2ca939386ec98ca216ceaec3c72ddb78aa5",
+      "response_sha256": "fb714322be449918de64d47350db263c4fc42ceb11be42476e507398f3a0d003",
+      "schema_name": "batch2-custodial-activation-preflight-signature-response-v1",
+      "schema_version": "1.0.0",
+      "signature": {
+        "encoding": "BASE64",
+        "value": "sQkd61ByZCqWBmMgZFdBT9MYmBtF9nNsVGGo8C04mhFiFEZ+wAyZUIN4OdbW0S0XK4pkZbP/bHw18vdmkLn9Cg=="
+      },
+      "signature_verification": "VERIFIED",
+      "signer_role": "BLIND_ESCROW_CUSTODIAN"
+    },
+    {
+      "algorithm": "ED25519",
+      "batch_identity": "cec33e1efb5f493f34d1d9cf8a56f0bffd0f620c054477d32ce8292eb587ec3c",
+      "canonical_challenge_sha256": "7f1ce5dd709245bde448b0c9a43af91890345fcfd47abb922e6515a4947cb24b",
+      "challenge_identity": "95fbd45217b54b4758ceab0c7fe7ccc938377f1f030a1eb81677dd39d6d248cc",
+      "grants_operational_authority": false,
+      "operation_ordinal": 4,
+      "principal_identity": "14f2d19b62ffc6b2a1a8ac5a426647962a03d2a81301410e7dbf16a27e4fb97d",
+      "private_key_included": false,
+      "purpose": "BLIND_ESCROW_ADMISSION_PREFLIGHT",
+      "registered_public_key_fingerprint": "ceb4438e671860f3ae144fc8acabcfc7b2f7d648979ad5650fba1f5ce3254a9a",
+      "request_identity": "6758866887cf33c617407f22c6aca2ca939386ec98ca216ceaec3c72ddb78aa5",
+      "response_sha256": "1229df13a74a620fd4eb3ceff8fc808b1127d6204f1b39524f664e87139a80c2",
+      "schema_name": "batch2-custodial-activation-preflight-signature-response-v1",
+      "schema_version": "1.0.0",
+      "signature": {
+        "encoding": "BASE64",
+        "value": "/WNIxWifwXv5X1i9OvV0EyMEY1MR0PDVzPe3C433EVNAJArXkub6YTT6Cq79ZqXFrNwJMHPv23jeOXiG0PZYAw=="
+      },
+      "signature_verification": "VERIFIED",
+      "signer_role": "PARTITION_CUSTODIAN"
+    },
+    {
+      "algorithm": "ED25519",
+      "batch_identity": "cec33e1efb5f493f34d1d9cf8a56f0bffd0f620c054477d32ce8292eb587ec3c",
+      "canonical_challenge_sha256": "5f02b1b5ad7418ebb5787844dd498b92acc2a448964bd5ed1f78e1a5e7fc7fd6",
+      "challenge_identity": "c4ecd0c6305b6e748a42b75ba053f2bbb000a492e6eae33ea85076e562e9921b",
+      "grants_operational_authority": false,
+      "operation_ordinal": 5,
+      "principal_identity": "1740c9f292a03dab6db10f497f3bcf6843b0e538c8f7ef1e1a359bb5af5c8144",
+      "private_key_included": false,
+      "purpose": "CONTAMINATION_AUDIT_PREFLIGHT",
+      "registered_public_key_fingerprint": "ca5d89a72072e0117c1f7a288c12bbb6c91f96e7527525b28ca73e65d8841b87",
+      "request_identity": "6758866887cf33c617407f22c6aca2ca939386ec98ca216ceaec3c72ddb78aa5",
+      "response_sha256": "03db6fb40ead5c00ca0b0d4d257a8e8e9f49338cea63006529c54d01ea097a47",
+      "schema_name": "batch2-custodial-activation-preflight-signature-response-v1",
+      "schema_version": "1.0.0",
+      "signature": {
+        "encoding": "BASE64",
+        "value": "DWp+hXPxE/11EitP8ahzEOhkW4c2MByBgnum7uGvsYtO4RUEjxUQuhZB1Zvq5oMG9uCKAjYYV1ADq7Oxihf9Cg=="
+      },
+      "signature_verification": "VERIFIED",
+      "signer_role": "CONTAMINATION_AUDITOR"
+    }
+  ]
+}

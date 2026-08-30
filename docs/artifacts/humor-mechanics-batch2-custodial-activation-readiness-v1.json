@@ -1,0 +1,111 @@
+{
+  "access_ledger_identity": "5b47822411f6e000bfb0e28bc9e7e2e74c54f95ac663bc740c34f71f7fe212c8",
+  "activation_readiness_identity": "c5db325a3355f75dfb0a2f7d6ef9318625697d7c5fa96bb3e1977f1b06c4943a",
+  "authority_matrix": {
+    "archive_write": false,
+    "candidate_construction": false,
+    "content_access": false,
+    "content_ingestion": false,
+    "mechanism_assignment": false,
+    "model_exposure": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "source_acquisition": false,
+    "surface_generation": false,
+    "training": false
+  },
+  "batch_identity": "cec33e1efb5f493f34d1d9cf8a56f0bffd0f620c054477d32ce8292eb587ec3c",
+  "evidence_identity": "ee1dfe6f214dffc13f8542969d4e15700ab7c898eb4300dbafbe6b25c399e2d0",
+  "ledger_segment_identity": "6b2e0faafd40757cbe04c4659a7ac46f4238e0adad368c87f884a253c610fd23",
+  "mutation_suite": "PASS",
+  "operation_results": [
+    {
+      "ordinal": 0,
+      "purpose": "RIGHTS_METADATA_ADMISSION_PREFLIGHT",
+      "required_signers": [
+        "RIGHTS_CUSTODIAN"
+      ],
+      "result": "VERIFIED"
+    },
+    {
+      "ordinal": 1,
+      "purpose": "ARCHIVE_ADMISSION_PREFLIGHT",
+      "required_signers": [
+        "RIGHTS_CUSTODIAN",
+        "ACQUISITION_CUSTODIAN"
+      ],
+      "result": "VERIFIED"
+    },
+    {
+      "ordinal": 2,
+      "purpose": "FAMILY_CLOSURE_PREFLIGHT",
+      "required_signers": [
+        "FAMILY_CUSTODIAN"
+      ],
+      "result": "VERIFIED"
+    },
+    {
+      "ordinal": 3,
+      "purpose": "PARTITION_SEAL_PREFLIGHT",
+      "required_signers": [
+        "PARTITION_CUSTODIAN"
+      ],
+      "result": "VERIFIED"
+    },
+    {
+      "ordinal": 4,
+      "purpose": "BLIND_ESCROW_ADMISSION_PREFLIGHT",
+      "required_signers": [
+        "PARTITION_CUSTODIAN",
+        "BLIND_ESCROW_CUSTODIAN"
+      ],
+      "result": "VERIFIED"
+    },
+    {
+      "ordinal": 5,
+      "purpose": "CONTAMINATION_AUDIT_PREFLIGHT",
+      "required_signers": [
+        "CONTAMINATION_AUDITOR"
+      ],
+      "result": "VERIFIED"
+    }
+  ],
+  "operational_content_access": false,
+  "readiness_core_identity": "1cb3d386486e9e3cfef5fd5fb4fbb50f1b44f246a7e23b92f99061defadf7730",
+  "role_results": [
+    {
+      "result": "VERIFIED",
+      "role": "RIGHTS_CUSTODIAN",
+      "signature_count": 2
+    },
+    {
+      "result": "VERIFIED",
+      "role": "ACQUISITION_CUSTODIAN",
+      "signature_count": 1
+    },
+    {
+      "result": "VERIFIED",
+      "role": "FAMILY_CUSTODIAN",
+      "signature_count": 1
+    },
+    {
+      "result": "VERIFIED",
+      "role": "PARTITION_CUSTODIAN",
+      "signature_count": 2
+    },
+    {
+      "result": "VERIFIED",
+      "role": "BLIND_ESCROW_CUSTODIAN",
+      "signature_count": 1
+    },
+    {
+      "result": "VERIFIED",
+      "role": "CONTAMINATION_AUDITOR",
+      "signature_count": 1
+    }
+  ],
+  "schema_name": "batch2-custodial-activation-readiness-v1",
+  "schema_version": "1.0.0",
+  "separation_of_duties": "VERIFIED",
+  "verdict": "READY_FOR_SEPARATELY_AUTHORIZED_METADATA_OPERATIONS_NOT_CONTENT_ACCESS"
+}

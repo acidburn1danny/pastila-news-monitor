@@ -1,0 +1,117 @@
+{
+  "access_ledger_identity": "5b47822411f6e000bfb0e28bc9e7e2e74c54f95ac663bc740c34f71f7fe212c8",
+  "activation_readiness_identity": "c5db325a3355f75dfb0a2f7d6ef9318625697d7c5fa96bb3e1977f1b06c4943a",
+  "countersigning": [
+    {
+      "ordinal": 0,
+      "purpose": "RIGHTS_METADATA_ADMISSION_PREFLIGHT",
+      "required_signers": [
+        "RIGHTS_CUSTODIAN"
+      ],
+      "result": "VERIFIED"
+    },
+    {
+      "ordinal": 1,
+      "purpose": "ARCHIVE_ADMISSION_PREFLIGHT",
+      "required_signers": [
+        "RIGHTS_CUSTODIAN",
+        "ACQUISITION_CUSTODIAN"
+      ],
+      "result": "VERIFIED"
+    },
+    {
+      "ordinal": 2,
+      "purpose": "FAMILY_CLOSURE_PREFLIGHT",
+      "required_signers": [
+        "FAMILY_CUSTODIAN"
+      ],
+      "result": "VERIFIED"
+    },
+    {
+      "ordinal": 3,
+      "purpose": "PARTITION_SEAL_PREFLIGHT",
+      "required_signers": [
+        "PARTITION_CUSTODIAN"
+      ],
+      "result": "VERIFIED"
+    },
+    {
+      "ordinal": 4,
+      "purpose": "BLIND_ESCROW_ADMISSION_PREFLIGHT",
+      "required_signers": [
+        "PARTITION_CUSTODIAN",
+        "BLIND_ESCROW_CUSTODIAN"
+      ],
+      "result": "VERIFIED"
+    },
+    {
+      "ordinal": 5,
+      "purpose": "CONTAMINATION_AUDIT_PREFLIGHT",
+      "required_signers": [
+        "CONTAMINATION_AUDITOR"
+      ],
+      "result": "VERIFIED"
+    }
+  ],
+  "deterministic_defects_remaining": [],
+  "evidence_sha256": "8489dcf0bc4f5ab0a4b423bd04055652a7ac4cf1b1f43461b0f402c1c61ce6e0",
+  "keys_generated": 0,
+  "ledger_sha256": "492faa2e322769b9a27ade5d4b828705b6e6c2ed035e944203e00682d9468f0d",
+  "mutation_results": {
+    "ALTERED_DOMAIN": true,
+    "ALTERED_NONCE": true,
+    "ALTERED_OBJECT_IDENTITY": true,
+    "ALTERED_PRIOR_LEDGER_HEAD": true,
+    "ALTERED_PURPOSE": true,
+    "DUPLICATE_KEY_SUBSTITUTION": true,
+    "MISSING_COUNTERSIGNATURE": true,
+    "REPLAY_PREVIOUS_VALID_EVENT": true,
+    "REUSED_NONCE": true,
+    "REUSED_SIGNATURE_CROSS_PURPOSE": true,
+    "REVOKED_OR_UNREGISTERED_KEY": true,
+    "SAME_ROLE_COUNTERSIGNATURE": true,
+    "UNAUTHORIZED_LEDGER_APPEND": true,
+    "WRONG_ROLE_SIGNER": true
+  },
+  "operational_content_access": false,
+  "private_keys_accessed": 0,
+  "readiness_sha256": "fe5acf4089d43a145401522ca38e2a3547726fefd671faa9b35d4a63b05fd708",
+  "real_content_accessed": 0,
+  "role_results": [
+    {
+      "result": "VERIFIED",
+      "role": "RIGHTS_CUSTODIAN",
+      "signature_count": 2
+    },
+    {
+      "result": "VERIFIED",
+      "role": "ACQUISITION_CUSTODIAN",
+      "signature_count": 1
+    },
+    {
+      "result": "VERIFIED",
+      "role": "FAMILY_CUSTODIAN",
+      "signature_count": 1
+    },
+    {
+      "result": "VERIFIED",
+      "role": "PARTITION_CUSTODIAN",
+      "signature_count": 2
+    },
+    {
+      "result": "VERIFIED",
+      "role": "BLIND_ESCROW_CUSTODIAN",
+      "signature_count": 1
+    },
+    {
+      "result": "VERIFIED",
+      "role": "CONTAMINATION_AUDITOR",
+      "signature_count": 1
+    }
+  ],
+  "schema_name": "batch2-custodial-activation-readiness-v1-audit",
+  "schema_version": "1.0.0",
+  "separation_of_duties": "VERIFIED",
+  "signatures_generated": 0,
+  "verdict": "READY_FOR_SEPARATELY_AUTHORIZED_METADATA_OPERATIONS_NOT_CONTENT_ACCESS"
+}
