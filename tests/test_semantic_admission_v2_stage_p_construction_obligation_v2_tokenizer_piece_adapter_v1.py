@@ -7,16 +7,23 @@ from pathlib import Path
 import pytest
 
 from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_tokenizer_piece_adapter_v1 import (
-    DECODER_IDENTITY, EOS_TOKEN_ID, PROJECTOR_FREEZE_IDENTITY,
+    DECODER_CONFIGURATION, DECODER_IDENTITY, DECODER_MECHANISM_IDENTITY, EOS_TOKEN_ID, PROJECTOR_FREEZE_IDENTITY,
     SPECIAL_TOKEN_IDS, TOKENIZER_IDENTITY, TOKENIZER_IMPLEMENTATION,
     TRANSFORMERS_VERSION, VOCABULARY_SIZE, TokenizerRuntimeIdentityV1,
     extract_identity_bound_token_pieces_v1,
 )
 
 
+class NativeDecoder:
+    def __getstate__(self):
+        import json
+        return json.dumps(DECODER_CONFIGURATION)
+
+
 class TokenizersBackend:
     eos_token_id = EOS_TOKEN_ID
     all_special_ids = tuple(sorted(SPECIAL_TOKEN_IDS))
+    decoder = NativeDecoder()
 
     def __init__(self) -> None:
         self.decode_calls = 0
@@ -70,6 +77,7 @@ def test_extracts_complete_immutable_piece_bundle():
     assert bundle.excluded_token_ids == frozenset((0, 1, 11))
     assert bundle.eos_token_id == 2
     assert bundle.tokenizer_identity == TOKENIZER_IDENTITY
+    assert bundle.decoder_mechanism_identity == DECODER_MECHANISM_IDENTITY
     with pytest.raises(TypeError):
         bundle.token_pieces[12] = "changed"
 
@@ -78,6 +86,7 @@ def test_binds_distinct_initial_and_continuation_decoder_pieces():
     class TokenizersBackend:
         eos_token_id = EOS_TOKEN_ID
         all_special_ids = tuple(sorted(SPECIAL_TOKEN_IDS))
+        decoder = NativeDecoder()
 
         def __init__(self):
             self.decode_calls = 0
@@ -104,6 +113,7 @@ def test_bundle_retains_exact_history_decoder_for_context_dependent_tokens():
     class TokenizersBackend:
         eos_token_id = EOS_TOKEN_ID
         all_special_ids = tuple(sorted(SPECIAL_TOKEN_IDS))
+        decoder = NativeDecoder()
 
         def __init__(self):
             self.decode_calls = 0
@@ -130,6 +140,28 @@ def test_bundle_retains_exact_history_decoder_for_context_dependent_tokens():
         bundle.initial_token_pieces[4] + bundle.token_pieces[13]
         != "context-dependent"
     )
+
+
+@pytest.mark.parametrize("state", [
+    None,
+    {"type": "ByteLevel", "add_prefix_space": False,
+     "trim_offsets": True, "use_regex": True},
+    {"type": "Sequence", "decoders": []},
+])
+def test_rejects_missing_or_mutated_native_decoder_before_piece_decode(state):
+    tokenizer = TokenizersBackend()
+    if state is None:
+        tokenizer.decoder = object()
+    else:
+        class Decoder:
+            def __getstate__(self):
+                import json
+                return json.dumps(state)
+        tokenizer.decoder = Decoder()
+    with pytest.raises(ValueError, match="NATIVE_DECODER"):
+        extract_identity_bound_token_pieces_v1(
+            tokenizer=tokenizer, identity=identity())
+    assert tokenizer.decode_calls == 0
 
 
 def test_module_is_launch_forbidden_and_has_no_runtime_imports():

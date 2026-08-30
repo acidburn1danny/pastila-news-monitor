@@ -141,6 +141,9 @@ def test_optimized_callback_reconstructs_context_from_canonical_source_binding()
     from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_token_projector_v2 import (
         StagePConstructionObligationV2TokenProjectorV2,
     )
+    from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_tokenizer_piece_adapter_v1 import (
+        DECODER_MECHANISM_IDENTITY,
+    )
 
     packet = ROOT / PACKET_RELATIVE
     request = parse_runner_request_v1(
@@ -153,7 +156,8 @@ def test_optimized_callback_reconstructs_context_from_canonical_source_binding()
         request=request, source_binding=static_payload.source_binding,
         token_pieces={3: "{"}, eos_token_id=2,
         excluded_token_ids=(0, 1, 11), authority_receipt_identity="a" * 64,
-        prompt_token_ids=(101, 102))
+        prompt_token_ids=(101, 102),
+        decoder_mechanism_identity=DECODER_MECHANISM_IDENTITY)
     assert type(callback.projector) is StagePConstructionObligationV2TokenProjectorV2
     assert callback.projector.request_context_identity == request.source_context_identity
     assert runner.CANONICAL_EXACT_OPERATIONS_ADAPTER_SOURCE_SHA256 == hashlib.sha256(

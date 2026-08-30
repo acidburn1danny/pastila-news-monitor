@@ -17,6 +17,8 @@ from .stage_p_construction_obligation_v2_token_projector_v1 import (
     StagePTokenProjectionFailureV1)
 from .stage_p_construction_obligation_v2_token_projector_v2 import (
     StagePConstructionObligationV2TokenProjectorV2)
+from .stage_p_construction_obligation_v2_tokenizer_piece_adapter_v1 import (
+    DECODER_MECHANISM_IDENTITY)
 from .stage_p_construction_obligation_semantic_completeness_v1 import (
     SemanticCompletenessAdmissionV1, SemanticCompletenessPolicyV1)
 from .immutable_source_span_reference_v1 import SourceRoleV1
@@ -34,11 +36,14 @@ class ConstructionObligationV2RequestBoundCallbackAdapterV1_2_1:
                  excluded_token_ids: Sequence[int], authority_receipt_identity: str,
                  prompt_token_ids: Sequence[int],
                  initial_token_pieces: Mapping[int, str] | None = None,
-                 decode_generated: Callable[[Sequence[int]], str] | None = None) -> None:
+                 decode_generated: Callable[[Sequence[int]], str] | None = None,
+                 decoder_mechanism_identity: str | None = None) -> None:
         if type(request) is not RunnerRequestV1:
             raise TypeError("CONSTRUCTION_OBLIGATION_V2_RUNNER_REQUEST_EXACT_TYPE_REQUIRED")
         if type(source_binding) is not ConstructionObligationV2ProjectorSourceBindingV1:
             raise TypeError("CONSTRUCTION_OBLIGATION_V2_SOURCE_BINDING_EXACT_TYPE_REQUIRED")
+        if decoder_mechanism_identity != DECODER_MECHANISM_IDENTITY:
+            raise ValueError("CONSTRUCTION_OBLIGATION_V2_NATIVE_DECODER_IDENTITY_MISMATCH")
         if request.source_context_identity != source_binding.source_context_identity:
             raise ValueError("CONSTRUCTION_OBLIGATION_V2_CALLBACK_REQUEST_CONTEXT_MISMATCH")
         if len(authority_receipt_identity) != 64:
@@ -64,10 +69,11 @@ class ConstructionObligationV2RequestBoundCallbackAdapterV1_2_1:
             request_authority_identity=authority_receipt_identity,
             excluded_token_ids=excluded_token_ids,
             initial_token_pieces=initial_token_pieces,
-            exact_history_decoder=decode_generated is not None,
+            exact_history_decoder=False,
+            decoder_mechanism_identity=decoder_mechanism_identity,
             terminal_admission=completeness.validate_terminal,
             terminal_admission_identity=completeness.policy.identity)
-        self._decode_generated = decode_generated
+        self._decode_generated = None
         self._suffix = RequestBoundGeneratedSuffixCallbackV1(
             request_identity=request.provider_request_id,
             prompt_token_ids=prompt_token_ids, project=self._project)

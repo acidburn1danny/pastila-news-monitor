@@ -4,6 +4,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from types import MappingProxyType
 from collections.abc import Callable
+import hashlib
+import json
 from typing import Mapping, Protocol, Sequence
 
 
@@ -15,6 +17,11 @@ TOKENIZER_IMPLEMENTATION = "TokenizersBackend"
 VOCABULARY_SIZE = 131_072
 EOS_TOKEN_ID = 2
 SPECIAL_TOKEN_IDS = frozenset((0, 1, 2, 11))
+DECODER_CONFIGURATION = {
+    "add_prefix_space": True, "trim_offsets": True,
+    "type": "ByteLevel", "use_regex": True,
+}
+DECODER_MECHANISM_IDENTITY = "1d64d97add535d9ad91561aabea254849cf7f2ea4b924cc61c17152f1dd6e672"
 
 
 class InjectedTokenizerV1(Protocol):
@@ -48,6 +55,29 @@ class TokenPieceBundleV1:
     projector_freeze_identity: str
     initial_token_pieces: Mapping[int, str] | None = None
     decode_token_ids: Callable[[Sequence[int]], str] | None = None
+    decoder_mechanism_identity: str | None = None
+
+
+def _validate_native_decoder(tokenizer: InjectedTokenizerV1) -> None:
+    decoder = getattr(tokenizer, "decoder", None)
+    state_method = getattr(decoder, "__getstate__", None)
+    if not callable(state_method):
+        raise ValueError("CONSTRUCTION_OBLIGATION_V2_NATIVE_DECODER_MISSING")
+    try:
+        state = state_method()
+        if isinstance(state, bytes):
+            state = state.decode("utf-8")
+        value = json.loads(state) if isinstance(state, str) else state
+        canonical = json.dumps(
+            value, sort_keys=True, separators=(",", ":"),
+            ensure_ascii=False).encode("utf-8")
+    except (UnicodeError, ValueError, TypeError, json.JSONDecodeError) as exc:
+        raise ValueError(
+            "CONSTRUCTION_OBLIGATION_V2_NATIVE_DECODER_INVALID") from exc
+    if (value != DECODER_CONFIGURATION
+            or hashlib.sha256(canonical).hexdigest()
+            != DECODER_MECHANISM_IDENTITY):
+        raise ValueError("CONSTRUCTION_OBLIGATION_V2_NATIVE_DECODER_IDENTITY_MISMATCH")
 
 
 def extract_identity_bound_token_pieces_v1(
@@ -74,6 +104,7 @@ def extract_identity_bound_token_pieces_v1(
         raise ValueError("CONSTRUCTION_OBLIGATION_V2_TOKENIZER_EOS_MISMATCH")
     if frozenset(tokenizer.all_special_ids) != SPECIAL_TOKEN_IDS:
         raise ValueError("CONSTRUCTION_OBLIGATION_V2_TOKENIZER_SPECIAL_IDS_MISMATCH")
+    _validate_native_decoder(tokenizer)
 
     initial_pieces: dict[int, str] = {}
     continuation_pieces: dict[int, str] = {}
@@ -115,13 +146,14 @@ def extract_identity_bound_token_pieces_v1(
         projector_freeze_identity=PROJECTOR_FREEZE_IDENTITY,
         initial_token_pieces=MappingProxyType(initial_pieces),
         decode_token_ids=decode_token_ids,
+        decoder_mechanism_identity=DECODER_MECHANISM_IDENTITY,
     )
 
 
 __all__ = (
     "DECODER_IDENTITY", "EOS_TOKEN_ID", "PROJECTOR_FREEZE_IDENTITY",
     "SPECIAL_TOKEN_IDS", "TOKENIZER_IDENTITY", "TRANSFORMERS_VERSION",
-    "TOKENIZER_IMPLEMENTATION", "TokenizerRuntimeIdentityV1",
+    "TOKENIZER_IMPLEMENTATION", "DECODER_MECHANISM_IDENTITY", "TokenizerRuntimeIdentityV1",
     "TokenPieceBundleV1", "VOCABULARY_SIZE",
     "extract_identity_bound_token_pieces_v1",
 )

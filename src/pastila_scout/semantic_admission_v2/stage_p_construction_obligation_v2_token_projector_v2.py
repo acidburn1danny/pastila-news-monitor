@@ -84,6 +84,7 @@ class StagePConstructionObligationV2TokenProjectorV2:
         excluded_token_ids: Sequence[int] = (),
         initial_token_pieces: Mapping[int, str] | None = None,
         exact_history_decoder: bool = False,
+        decoder_mechanism_identity: str | None = None,
         terminal_admission: Callable[[str], object] | None = None,
         terminal_admission_identity: str | None = None,
     ) -> None:
@@ -131,6 +132,7 @@ class StagePConstructionObligationV2TokenProjectorV2:
              + tokenizer_identity + "\n" + decoder_identity + "\n"
              + special_policy + "\n" + piece_identity + "\n"
              + f"exact-history-decoder:{exact_history_decoder}\n"
+             + f"decoder-mechanism:{decoder_mechanism_identity or 'NONE'}\n"
              + (terminal_admission_identity or "NONE")).encode()).hexdigest()
         self._cache: dict[str, tuple[int, ...]] = {}
         self._hits = self._misses = self._visited = self._admitted = 0
