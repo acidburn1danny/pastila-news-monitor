@@ -56,6 +56,7 @@ def test_v1_2_1_no_legal_receipt_preserves_terminal_semantic_classification():
     _, request = _fixture()
     raw = _no_legal_receipt(
         request=request, authority="a" * 64, generated=(10, 11),
+        terminal_candidate=b'{"observed":"terminal"}',
         receipt=SimpleNamespace(
             request_context_identity=request.source_context_identity,
             decoded_sha256="b" * 64, dfa_mode="TERMINAL", terminal=True,
@@ -66,6 +67,7 @@ def test_v1_2_1_no_legal_receipt_preserves_terminal_semantic_classification():
     assert value["failure_code"] == "SEMANTIC_COMPLETENESS_EOS_WITHHELD"
     assert value["projector_reason_code"] == (
         "SEMANTIC_COMPLETENESS_AUTHORITY_COVERAGE_INCOMPLETE")
+    assert value["terminal_candidate_utf8_bytes"] == 23
     assert validate_no_legal_token_receipt_v1(
         raw_receipt=raw, request=request) == value["receipt_identity"]
 

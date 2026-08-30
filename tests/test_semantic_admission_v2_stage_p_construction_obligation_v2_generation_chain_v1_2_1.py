@@ -107,10 +107,15 @@ def test_optimized_projector_and_generated_suffix_contract_are_source_bound():
             "stage_p_construction_obligation_v2_tokenizer_piece_adapter_v1.py",
         "CANONICAL_RUNNER_PROTOCOL_CODEC_SOURCE_SHA256":
             "stage_p_construction_obligation_v2_runner_protocol_codec_v1.py",
+        "CANONICAL_REQUEST_RENDERER_SOURCE_SHA256":
+            "stage_p_construction_obligation_v2_request_renderer_v1.py",
     }
     for constant, filename in expected.items():
         assert getattr(runner, constant) == hashlib.sha256(
             (source_root / filename).read_bytes()).hexdigest()
+    assert runner.CANONICAL_REQUEST_PROMPT_SHA256 == hashlib.sha256((
+        ROOT / "docs/artifacts/semantic-admission-v2-stage-p-construction-obligation-v2-prompt-v1.txt"
+    ).read_bytes()).hexdigest()
     adapter_source = (source_root /
         "stage_p_construction_obligation_v2_linux_runtime_operations_adapter_v1.py"
     ).read_text("utf-8")

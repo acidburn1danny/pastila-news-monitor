@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import ast
 import hashlib
+import json
 from pathlib import Path
 
 import pytest
@@ -10,6 +11,8 @@ from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_proj
 from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_request_renderer_v1 import (
     DATA_BEGIN,
     DATA_END,
+    POLICY_BEGIN,
+    POLICY_END,
     PROMPT_RELATIVE,
     PROMPT_SHA256,
     ConstructionObligationV2RequestRendererV1,
@@ -50,6 +53,8 @@ def test_render_is_deterministic_identity_bound_and_unicode_preserving() -> None
     assert len(first.request_identity) == 64
     assert DATA_BEGIN.decode() in first.rendered_prompt
     assert DATA_END.decode() in first.rendered_prompt
+    assert POLICY_BEGIN.decode() in first.rendered_prompt
+    assert POLICY_END.decode() in first.rendered_prompt
     assert "Țară" not in first.rendered_prompt
 
 
@@ -59,6 +64,25 @@ def test_request_and_source_contexts_are_isolated() -> None:
     second = renderer.render(canonical_static_payload=_payload("a doua cerere"))
     assert first.static_payload_sha256 != second.static_payload_sha256
     assert first.request_identity != second.request_identity
+
+
+def test_case01_request_exposes_the_exact_sealed_terminal_contract() -> None:
+    request = json.loads((ROOT / "tests/fixtures/semantic_admission_v2/phase2_case01_request.json").read_bytes())
+    binding = prepare_construction_obligation_v2_projector_binding_v1(
+        candidate_utf8=request["candidate"].encode(),
+        factual_authority_utf8=request["factual_summary"].encode())
+    rendered = ConstructionObligationV2RequestRendererV1(project_root=ROOT).render(
+        canonical_static_payload=build_construction_obligation_v2_static_payload_v1(
+            source_binding=binding))
+    policy_text = rendered.rendered_prompt.split(
+        POLICY_BEGIN.decode() + "\n", 1)[1].split(POLICY_END.decode(), 1)[0]
+    policy = json.loads(policy_text)
+    assert policy["required_constructions"][0]["candidate_start_utf8"] == 0
+    assert policy["required_constructions"][0]["candidate_end_utf8"] == len(
+        request["candidate"].encode())
+    assert policy["required_returns"][0]["entry_id"] == "P2"
+    assert policy["qualifications"][0]["required_modality"] == "POSSIBLE"
+    assert len(policy["identity"]) == 64
 
 
 def test_malformed_or_noncanonical_payload_fails_before_rendering() -> None:

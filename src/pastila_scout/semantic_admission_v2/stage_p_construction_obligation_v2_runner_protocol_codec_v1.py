@@ -94,7 +94,9 @@ def validate_no_legal_token_receipt_v1(*, raw_receipt: bytes, request: RunnerReq
       "tokenizer_identity","decoder_identity","provider_request_id","source_context_identity",
       "generated_prefix_sha256","generated_token_count","character_state_identity","dfa_mode",
       "terminal","allowed_token_count","failure_code","receipt_identity"}
-    extended=common|{"projector_terminal","projector_reason_code"}
+    extended=common|{"projector_terminal","projector_reason_code",
+      "terminal_candidate_utf8_base64","terminal_candidate_sha256",
+      "terminal_candidate_utf8_bytes"}
     if set(value) not in (common,extended) or (value["schema_name"],value["protocol_identity"],
       value["projector_freeze_identity"],value["tokenizer_identity"],value["decoder_identity"]) != (
       "pastila-semantic-admission-v2-construction-obligation-v2-no-legal-token-receipt",
@@ -117,6 +119,24 @@ def validate_no_legal_token_receipt_v1(*, raw_receipt: bytes, request: RunnerReq
                 if value["projector_terminal"]
                 else "TOKENIZATION_DEAD_NO_VALID_TOKEN")):
         raise ValueError("CONSTRUCTION_OBLIGATION_V2_NO_LEGAL_TOKEN_CLASSIFICATION_MISMATCH")
+    if set(value)==extended:
+        candidate_fields=(value["terminal_candidate_utf8_base64"],
+                          value["terminal_candidate_sha256"],
+                          value["terminal_candidate_utf8_bytes"])
+        if value["projector_terminal"]:
+            if (type(candidate_fields[0]) is not str
+                    or type(candidate_fields[1]) is not str
+                    or type(candidate_fields[2]) is not int):
+                raise ValueError("CONSTRUCTION_OBLIGATION_V2_TERMINAL_CANDIDATE_MISSING")
+            candidate=_b64(candidate_fields[0],"TERMINAL_CANDIDATE")
+            try:candidate.decode("utf-8",errors="strict")
+            except UnicodeDecodeError as exc:
+                raise ValueError("CONSTRUCTION_OBLIGATION_V2_TERMINAL_CANDIDATE_UTF8_INVALID") from exc
+            if (len(candidate)!=candidate_fields[2]
+                    or hashlib.sha256(candidate).hexdigest()!=candidate_fields[1]):
+                raise ValueError("CONSTRUCTION_OBLIGATION_V2_TERMINAL_CANDIDATE_IDENTITY_MISMATCH")
+        elif candidate_fields != (None,None,None):
+            raise ValueError("CONSTRUCTION_OBLIGATION_V2_NONTERMINAL_CANDIDATE_FORBIDDEN")
     expected=hashlib.sha256(_canonical({k:v for k,v in value.items() if k!="receipt_identity"})).hexdigest()
     if value["receipt_identity"]!=expected or raw_receipt!=_canonical(value):
         raise ValueError("CONSTRUCTION_OBLIGATION_V2_NO_LEGAL_TOKEN_SEAL_MISMATCH")

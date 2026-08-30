@@ -607,8 +607,13 @@ def _normalize_value(value):
     return value
 
 
-def _policy_identity(policy: SemanticCompletenessPolicyV1) -> str:
-    value = {
+def semantic_completeness_policy_contract_v1(
+    policy: SemanticCompletenessPolicyV1,
+) -> dict[str, object]:
+    """Return the canonical request-visible contract enforced at terminal EOS."""
+    if type(policy) is not SemanticCompletenessPolicyV1:
+        raise TypeError("SEMANTIC_COMPLETENESS_POLICY_EXACT_TYPE_REQUIRED")
+    value: dict[str, object] = {
         "version": ADMISSION_VERSION,
         "candidate_sha256": policy.candidate_sha256,
         "authority_sha256": policy.authority_sha256,
@@ -680,6 +685,16 @@ def _policy_identity(policy: SemanticCompletenessPolicyV1) -> str:
         "creative_target_analysis_required": policy.creative_target_analysis_required,
         "factual_authority_analysis_required": policy.factual_authority_analysis_required,
     }
+    value["identity"] = hashlib.sha256((json.dumps(
+        value, ensure_ascii=True, sort_keys=True,
+        separators=(",", ":")) + "\n").encode()).hexdigest()
+    return value
+
+
+def _policy_identity(policy: SemanticCompletenessPolicyV1) -> str:
+    value = semantic_completeness_policy_contract_v1(policy)
+    identity = value.pop("identity")
+    assert isinstance(identity, str)
     return hashlib.sha256((json.dumps(
         value, ensure_ascii=True, sort_keys=True,
         separators=(",", ":")) + "\n").encode()).hexdigest()
@@ -700,6 +715,7 @@ __all__ = (
     "RequiredReturnObligationV1",
     "RequiredTopologyV1",
     "RequiredConstructionSemanticsV1", "RequiredCreativeSemanticsV1",
+    "semantic_completeness_policy_contract_v1",
     "seal_semantic_completeness_policy_v1",
     "SemanticCompletenessFailureV1", "SemanticCompletenessPolicyV1",
     "UnresolvedJustificationV1",

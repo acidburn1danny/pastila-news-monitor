@@ -1,5 +1,6 @@
 """Authority-bound optimized V1.2.1 callback; V1 remains the static oracle."""
 from __future__ import annotations
+import base64
 import hashlib
 import json
 from collections.abc import Callable, Mapping, Sequence
@@ -101,10 +102,13 @@ class ConstructionObligationV2RequestBoundCallbackAdapterV1_2_1:
             return ZeroModelCallbackDecisionV1(
                 projected.token_ids, projected.receipt, None)
         except StagePTokenProjectionFailureV1 as exc:
+            terminal_candidate = (decode(generated).encode("utf-8")
+                                  if exc.receipt.terminal else None)
             return ZeroModelCallbackDecisionV1(
                 (), exc.receipt, _no_legal_receipt(
                     request=self.request, authority=self.authority_receipt_identity,
-                    generated=generated, receipt=exc.receipt))
+                    generated=generated, receipt=exc.receipt,
+                    terminal_candidate=terminal_candidate))
 
 
 def _decode(projector, generated: Sequence[int]) -> str:
@@ -122,7 +126,8 @@ def _decode(projector, generated: Sequence[int]) -> str:
         raise ValueError("CONSTRUCTION_OBLIGATION_V2_GENERATED_TOKEN_UNKNOWN") from exc
 
 
-def _no_legal_receipt(*, request, authority, generated, receipt) -> bytes:
+def _no_legal_receipt(*, request, authority, generated, receipt,
+                      terminal_candidate: bytes | None) -> bytes:
     semantic_eos_withheld = bool(receipt.terminal)
     value = {
         "schema_name": "pastila-semantic-admission-v2-construction-obligation-v2-no-legal-token-receipt",
@@ -142,6 +147,14 @@ def _no_legal_receipt(*, request, authority, generated, receipt) -> bytes:
         "dfa_mode": receipt.dfa_mode, "terminal": False,
         "projector_terminal": semantic_eos_withheld,
         "projector_reason_code": receipt.reason_code,
+        "terminal_candidate_utf8_base64": (
+            base64.b64encode(terminal_candidate).decode("ascii")
+            if terminal_candidate is not None else None),
+        "terminal_candidate_sha256": (
+            hashlib.sha256(terminal_candidate).hexdigest()
+            if terminal_candidate is not None else None),
+        "terminal_candidate_utf8_bytes": (
+            len(terminal_candidate) if terminal_candidate is not None else None),
         "allowed_token_count": 0,
         "failure_code": (
             "SEMANTIC_COMPLETENESS_EOS_WITHHELD" if semantic_eos_withheld
