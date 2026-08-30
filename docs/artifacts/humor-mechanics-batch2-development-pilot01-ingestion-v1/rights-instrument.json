@@ -1,0 +1,83 @@
+{
+    "schema_name":  "batch2-internally-owned-owner-input-v1",
+    "schema_version":  "1.0.0",
+    "pilot_id":  "BATCH2-INTERNALLY-OWNED-DEVELOPMENT-PILOT-01",
+    "source":  {
+                   "filename":  "owner-source-v1.txt",
+                   "declared_encoding":  "UTF-8",
+                   "bom":  false,
+                   "line_endings":  "LF",
+                   "terminal_lf_count":  1,
+                   "source_version":  "1.0.0",
+                   "capture_timestamp":  "2026-08-30T23:34:06+03:00",
+                   "acquisition_timestamp":  "2026-08-30T23:40:50+03:00",
+                   "acquisition_channel":  "INTERNALLY_OWNED_FACTUAL_AUTHORITY_BUNDLE",
+                   "intended_partition":  "DEVELOPMENT",
+                   "subject_class":  "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE",
+                   "authority_scope":  "Only the explicitly stated propositions and rules within the accompanying owner-authored synthetic test universe.",
+                   "world_scope":  "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE"
+               },
+    "contributor":  {
+                        "public_identity":  "urn:pastila:party:pastila-acida-owner-v1",
+                        "legal_identity":  "urn:pastila:party:pastila-acida-owner-v1",
+                        "legal_identity_verification_reference":  "owner-record:pastila-acida-owner-v1",
+                        "role":  "ORIGINAL_AUTHOR_AND_RIGHTS_HOLDER",
+                        "rights_holder_identity":  "urn:pastila:party:pastila-acida-owner-v1",
+                        "rights_holder_relationship":  "The contributor is the original author and rights holder.",
+                        "identity_disclosure_approved_for_commit":  false
+                    },
+    "ownership_declarations":  {
+                                   "original_authorship":  true,
+                                   "owns_or_controls_required_rights":  true,
+                                   "has_authority_to_make_each_selected_grant":  true,
+                                   "contains_undisclosed_third_party_material":  false,
+                                   "contains_private_or_confidential_information":  false,
+                                   "contains_personal_data":  false,
+                                   "contains_unlawfully_obtained_information":  false,
+                                   "contains_unattributed_quotation":  false,
+                                   "contains_reputation_sensitive_allegation":  false
+                               },
+    "independent_grants":  {
+                               "immutable_archival":  true,
+                               "factual_annotation_and_authority_binding":  true,
+                               "internal_discovery":  true,
+                               "construction_and_evaluation":  true,
+                               "model_exposure":  false,
+                               "training":  false,
+                               "runtime_integration":  false,
+                               "production_routing":  false
+                           },
+    "rights_terms":  {
+                         "territory":  "WORLDWIDE",
+                         "effective_at":  "2026-08-30T23:40:50+03:00",
+                         "expires_at":  "NO_EXPIRY",
+                         "attribution_requirement":  "INTERNAL_PROVENANCE_ONLY",
+                         "compensation_terms":  "NO_COMPENSATION",
+                         "revocation_terms":  "PROSPECTIVE_REVOCATION;COMPLETED_USES_RECORDED;NO_NEW_USE_AFTER_EFFECTIVE_REVOCATION",
+                         "correction_policy":  "NEW_IMMUTABLE_REVISION_ONLY",
+                         "supersession_policy":  "EXPLICIT_PREDECESSOR_SUCCESSOR_CHAIN",
+                         "survival_of_completed_uses":  "COMPLETED_IMMUTABLE_AUDIT_RECORDS_SURVIVE"
+                     },
+    "source_status_declarations":  {
+                                       "source_is_neutral_factual_authority":  true,
+                                       "source_was_not_selected_for_a_humor_mechanism":  true,
+                                       "source_contains_no_mechanism_assignment":  true,
+                                       "source_contains_no_creative_premise_assignment":  true,
+                                       "source_contains_no_constructed_humor_candidate":  true,
+                                       "known_boundaries_are_explicit":  true,
+                                       "unknown_boundaries_are_explicit":  true
+                                   },
+    "owner_instruction":  {
+                              "requested_action":  "ACQUIRE_AND_IMMUTABLY_INGEST_EXACTLY_ONE_DEVELOPMENT_PILOT",
+                              "permit_derived_hashes_and_coordinates":  true,
+                              "permit_registered_custodial_signing_requests":  true,
+                              "permit_git_object_archival":  true,
+                              "permit_partition_seal_for_development_only":  true,
+                              "operational_content_access_after_ingestion":  false
+                          },
+    "owner_confirmation":  {
+                               "owner_identity":  "PASTILA_ACIDA_OWNER_V1",
+                               "confirmed":  true,
+                               "confirmation_statement":  "I submit the accompanying byte-exact source as an internally owned factual-authority bundle and make only the independent grants explicitly selected in this declaration."
+                           }
+}

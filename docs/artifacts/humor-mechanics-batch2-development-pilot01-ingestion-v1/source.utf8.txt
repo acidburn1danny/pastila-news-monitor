@@ -1,0 +1,5 @@
+În camera de test se află trei dulapuri numerotate de la unu la trei.
+Dulapul unu conține două cutii albastre, iar dulapul doi conține o cutie verde.
+Dulapul trei este gol.
+Camera este verificată în fiecare zi la ora 09:00 și la ora 17:00.
+În acest univers de test, conținutul dulapurilor nu se modifică între cele două verificări.
