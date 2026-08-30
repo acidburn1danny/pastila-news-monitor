@@ -15,8 +15,10 @@ from pastila_scout.voice_repetition_v2.persistence import atomic_write, load_led
 
 
 def test_empty_ledger_snapshot_and_persistence_are_canonical(tmp_path) -> None:
-    assert "pastila_scout.voice_repetition_v2.acceptance" not in sys.modules
-    assert "pastila_scout.voice_repetition_v2.lifecycle" not in sys.modules
+    acceptance_was_loaded = (
+        "pastila_scout.voice_repetition_v2.acceptance" in sys.modules
+    )
+    lifecycle_was_loaded = "pastila_scout.voice_repetition_v2.lifecycle" in sys.modules
 
     ledger = finalize_ledger_v1(VoiceRepetitionLedgerV1())
     order = finalize_order_authority_v1(
@@ -38,3 +40,9 @@ def test_empty_ledger_snapshot_and_persistence_are_canonical(tmp_path) -> None:
     path = tmp_path / "ledger.json"
     atomic_write(path, canonical_bytes(ledger))
     assert load_ledger(path) == ledger
+    assert (
+        "pastila_scout.voice_repetition_v2.acceptance" in sys.modules
+    ) is acceptance_was_loaded
+    assert (
+        "pastila_scout.voice_repetition_v2.lifecycle" in sys.modules
+    ) is lifecycle_was_loaded

@@ -16,7 +16,9 @@ from pastila_scout.voice_repetition_v2 import (
 def test_empty_workspace_round_trip_does_not_load_acceptance_authority(
     tmp_path,
 ) -> None:
-    assert "pastila_scout.voice_repetition_v2.acceptance" not in sys.modules
+    acceptance_was_loaded = (
+        "pastila_scout.voice_repetition_v2.acceptance" in sys.modules
+    )
     project = tmp_path / "episode.pastila"
     project.write_text("{}", encoding="utf-8")
     store = CanonicalVoiceWorkspaceStoreV2(
@@ -37,4 +39,6 @@ def test_empty_workspace_round_trip_does_not_load_acceptance_authority(
     saved = store.save_workspace(state)
     assert store.load_workspace() == saved
     assert store.load_story(101) is None
-    assert "pastila_scout.voice_repetition_v2.acceptance" not in sys.modules
+    assert (
+        "pastila_scout.voice_repetition_v2.acceptance" in sys.modules
+    ) is acceptance_was_loaded

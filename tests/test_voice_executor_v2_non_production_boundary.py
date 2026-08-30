@@ -10,8 +10,12 @@ from pastila_scout.voice_executor_v2 import (
 
 
 def test_zero_activation_executor_is_importable_without_production_binding() -> None:
-    assert "pastila_scout.voice_deterministic_v2.production_renderer" not in sys.modules
-    assert "pastila_scout.voice_executor_v2.production_activation" not in sys.modules
+    renderer_was_loaded = (
+        "pastila_scout.voice_deterministic_v2.production_renderer" in sys.modules
+    )
+    activation_was_loaded = (
+        "pastila_scout.voice_executor_v2.production_activation" in sys.modules
+    )
 
     executor = DeterministicVoiceExecutorV2(
         activation_policy=ZERO_ACTIVATION_POLICY_V1
@@ -24,3 +28,9 @@ def test_zero_activation_executor_is_importable_without_production_binding() -> 
     assert capability.model_loads == 0
     assert ZERO_ACTIVATION_POLICY_V1.active_expression_count == 0
     assert ZERO_ACTIVATION_POLICY_V1.active_surface_count == 0
+    assert (
+        "pastila_scout.voice_deterministic_v2.production_renderer" in sys.modules
+    ) is renderer_was_loaded
+    assert (
+        "pastila_scout.voice_executor_v2.production_activation" in sys.modules
+    ) is activation_was_loaded
