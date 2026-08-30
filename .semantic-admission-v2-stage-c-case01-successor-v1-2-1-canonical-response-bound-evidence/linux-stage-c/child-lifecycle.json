@@ -1,0 +1,10 @@
+{
+  "constraint_active": true,
+  "constraint_prewarm_seconds": 2.0867319010000003,
+  "constraint_prewarm_succeeded": true,
+  "inference_started": true,
+  "inference_succeeded": true,
+  "model_load_started": true,
+  "model_load_succeeded": true,
+  "trie_node_count": 221961
+}
