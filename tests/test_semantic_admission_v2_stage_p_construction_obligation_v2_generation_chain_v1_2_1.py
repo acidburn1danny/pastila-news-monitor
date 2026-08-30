@@ -167,6 +167,13 @@ def test_optimized_callback_reconstructs_context_from_canonical_source_binding()
         decoder_mechanism_identity=DECODER_MECHANISM_IDENTITY)
     assert type(callback.projector) is StagePConstructionObligationV2TokenProjectorV2
     assert callback.projector.request_context_identity == request.source_context_identity
+    dead = callback.project_generated_suffix(generated_token_ids=(3,))
+    assert dead.allowed_token_ids == ()
+    from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_runner_protocol_codec_v1 import (
+        validate_no_legal_token_receipt_v1,
+    )
+    assert validate_no_legal_token_receipt_v1(
+        raw_receipt=dead.no_legal_token_receipt, request=request)
     assert runner.CANONICAL_EXACT_OPERATIONS_ADAPTER_SOURCE_SHA256 == hashlib.sha256(
         (ROOT / "src/pastila_scout/semantic_admission_v2/"
          "stage_p_construction_obligation_v2_runtime_operations_adapter_v1_2_1.py").read_bytes()

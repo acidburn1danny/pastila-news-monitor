@@ -197,6 +197,16 @@ def test_terminal_dead_malformed_and_cache_domain_isolation():
     _, other = _pair(second, {10: "{", 2: ""})
     assert indexed.cache_domain_identity != other.cache_domain_identity
 
+def test_character_failure_preserves_exact_decoded_prefix_identity():
+    context, _, _ = _case_context()
+    _, indexed = _pair(context, {10: "x", 2: ""})
+    malformed = "x"
+    with pytest.raises(StagePTokenProjectionFailureV1) as caught:
+        indexed.allowed_token_ids((10,), lambda _: malformed)
+    assert caught.value.receipt.decoded_sha256 == __import__(
+        "hashlib").sha256(malformed.encode("utf-8")).hexdigest()
+    assert caught.value.receipt.reason_code == "UNBOUND_OR_INVALID_CHARACTER_PREFIX"
+
 def test_equivalent_state_cache_ignores_history_but_rejects_decode_mutation():
     context, _, _ = _case_context(); raw = _valid_text(context)
     _, indexed = _pair(context, {10: "a", 12: "\\n", 13: '"', 2: ""})

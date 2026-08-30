@@ -157,15 +157,39 @@ class StagePConstructionObligationV2TokenProjectorV2:
         self, token_ids: Sequence[int], decode: Callable[[Sequence[int]], str],
     ) -> TokenProjectionResultV1:
         try:
-            character = self.controller.allowed(token_ids, decode)
-        except (StagePCharacterLivenessErrorV1, StagePRoleCoherenceConstraintViolationV1,
-                UnicodeError, ValueError, TypeError) as exc:
+            observed_decoded = decode(token_ids)
+            if type(observed_decoded) is not str:
+                raise TypeError("DECODE_OUTPUT_NOT_STRING")
+            observed_sha256 = hashlib.sha256(
+                observed_decoded.encode("utf-8")).hexdigest()
+        except (UnicodeError, ValueError, TypeError) as exc:
             digest = hashlib.sha256(type(exc).__name__.encode()).hexdigest()
             receipt = TokenProjectionReceiptV1(
                 "pastila-semantic-admission-v2-stage-p-construction-obligation-v2-token-projection-receipt",
                 "1.0.0-evaluation.1", self.request_context_identity,
                 self.tokenizer_identity, self.decoder_identity, digest, "INVALID",
                 False, 0, False, "FAIL_CLOSED", "UNBOUND_OR_INVALID_CHARACTER_PREFIX")
+            raise StagePTokenProjectionFailureV1(receipt) from exc
+        try:
+            character = self.controller.allowed(
+                token_ids, lambda _ids: observed_decoded)
+        except StagePCharacterLivenessErrorV1 as exc:
+            source = exc.receipt
+            receipt = TokenProjectionReceiptV1(
+                "pastila-semantic-admission-v2-stage-p-construction-obligation-v2-token-projection-receipt",
+                "1.0.0-evaluation.1", self.request_context_identity,
+                self.tokenizer_identity, self.decoder_identity,
+                source.decoded_sha256, source.dfa_mode, False, 0, False,
+                "FAIL_CLOSED", source.reason_code or "STAGE_P_CHARACTER_ALLOWED_SET_EMPTY")
+            raise StagePTokenProjectionFailureV1(receipt) from exc
+        except (StagePRoleCoherenceConstraintViolationV1,
+                UnicodeError, ValueError, TypeError) as exc:
+            receipt = TokenProjectionReceiptV1(
+                "pastila-semantic-admission-v2-stage-p-construction-obligation-v2-token-projection-receipt",
+                "1.0.0-evaluation.1", self.request_context_identity,
+                self.tokenizer_identity, self.decoder_identity,
+                observed_sha256, "INVALID", False, 0, False, "FAIL_CLOSED",
+                "UNBOUND_OR_INVALID_CHARACTER_PREFIX")
             raise StagePTokenProjectionFailureV1(receipt) from exc
         prefix = character.prefix
         if prefix.context_identity != self.request_context_identity:
