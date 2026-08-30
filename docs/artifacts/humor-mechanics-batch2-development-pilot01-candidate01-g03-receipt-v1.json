@@ -1,0 +1,31 @@
+{
+  "authority_matrix": {
+    "g03b_minimal_intervention": false,
+    "g03c_shortcut_pool_audit": false,
+    "owner_review": false,
+    "production_routing": false,
+    "regeneration": false,
+    "repair": false,
+    "romanian_naturalness_review": false,
+    "runtime_integration": false,
+    "selection": false,
+    "training": false,
+    "voice_review": false
+  },
+  "candidate_advanced": false,
+  "candidate_identity": "f96e626487812b4a9ad32ef548d4ac715fae4ea9bb24590a73f942b0783f080f",
+  "candidate_raw_sha256": "2f848e2bc9d87b113df95996a4d49d48fbe4334d6c204ef707664158e23caf9d",
+  "candidate_repaired_or_reinterpreted": false,
+  "choice_set_identity": "b3196737532254f49560682d3508b56499d1492e265edbd660124a9ee6b591df",
+  "g02_identity": "bc6e7ce8975f94ad43de4cbc99b209099f6c330d8d53e85882fb356348d0d210",
+  "g03_receipt_identity": "71c3ed0b4cc572c6988785ab9c4ce74d01a54bd71d14e89d48c8158a25f6d1cd",
+  "g03_validity": "VALID_BLIND_REVIEW",
+  "isolation_identity": "242623c0aadc9829f6453711407a00ec3d7a064c4001124bfd9582ef714e38f0",
+  "next_gate_eligible": false,
+  "pass_a_identity": "f42aaa19b452af5110e264ad12f1974dabb355861d3d5a7641fb969824f28512",
+  "pass_b_identity": "0cdec5cdd8ce1aa6490ac5df986983ffb4f87d388269e3cea1f903f7f23042df",
+  "reconciliation_classification": "AMBIGUOUS_MECHANISM",
+  "reconciliation_identity": "32f1e4478bd93a815ce07381db6e037f1809f774c3459a36f5416b8c8a3bc1ea",
+  "schema_name": "batch2-development-pilot01-g03-receipt-v1",
+  "schema_version": "1.0.0"
+}

@@ -1,0 +1,42 @@
+{
+  "candidate_identity": "f96e626487812b4a9ad32ef548d4ac715fae4ea9bb24590a73f942b0783f080f",
+  "canonical_member_set_sha256": "3a06750f633d8bfae9099857ba1645d7ea292c4a908c5ec00c9130df7377f730",
+  "choice_set_identity": "b3196737532254f49560682d3508b56499d1492e265edbd660124a9ee6b591df",
+  "choices": [
+    {
+      "choice": "NONE",
+      "definition": "No listed mechanism adequately describes the dominant operation.",
+      "display_ordinal": 1
+    },
+    {
+      "choice": "ESCALATION",
+      "definition": "Successive elements increase intensity, stakes, or comic force.",
+      "display_ordinal": 2
+    },
+    {
+      "choice": "ABSURD_ALTERNATIVES_WITHOUT_SELECTION",
+      "definition": "Multiple fictional absurd possibilities are offered without choosing or privileging one.",
+      "display_ordinal": 3
+    },
+    {
+      "choice": "AMBIGUOUS",
+      "definition": "The evidence does not support a unique choice among the listed mechanisms.",
+      "display_ordinal": 4
+    },
+    {
+      "choice": "HYPERBOLE",
+      "definition": "Deliberate exaggeration enlarges magnitude or degree for comic effect.",
+      "display_ordinal": 5
+    },
+    {
+      "choice": "ABSURD_LOGICAL_EXTENSION",
+      "definition": "A premise is extended through an internally logical chain to an absurd implication.",
+      "display_ordinal": 6
+    }
+  ],
+  "displayed_order_sha256": "ae7d02551ea2668cabc75f5a0593d072c2e0c12a005d83dac04f80cfe7e5d809",
+  "schema_name": "batch2-development-pilot01-g03-choice-set-v1",
+  "schema_version": "1.0.0",
+  "shuffle_derivation": "SHA256(PILOT01_G03_CHOICE_SET_V1 || candidate_identity)",
+  "target_status_disclosed": false
+}

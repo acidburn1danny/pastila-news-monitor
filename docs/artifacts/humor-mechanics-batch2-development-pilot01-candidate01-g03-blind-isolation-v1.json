@@ -1,0 +1,17 @@
+{
+  "assignment_constructor_owner_history_blind_material_exposure": false,
+  "candidate_identity": "f96e626487812b4a9ad32ef548d4ac715fae4ea9bb24590a73f942b0783f080f",
+  "choice_set_identity": "b3196737532254f49560682d3508b56499d1492e265edbd660124a9ee6b591df",
+  "evaluators_noncommunicating": true,
+  "isolation_identity": "242623c0aadc9829f6453711407a00ec3d7a064c4001124bfd9582ef714e38f0",
+  "pass_a_identity": "f42aaa19b452af5110e264ad12f1974dabb355861d3d5a7641fb969824f28512",
+  "pass_a_other_pass_accesses": 0,
+  "pass_a_target_accesses": 0,
+  "pass_b_identity": "0cdec5cdd8ce1aa6490ac5df986983ffb4f87d388269e3cea1f903f7f23042df",
+  "pass_b_other_pass_accesses": 0,
+  "pass_b_target_accesses": 0,
+  "passes_frozen_before_reconciliation": true,
+  "schema_name": "batch2-development-pilot01-g03-blind-isolation-v1",
+  "schema_version": "1.0.0",
+  "verdict": "PASS"
+}

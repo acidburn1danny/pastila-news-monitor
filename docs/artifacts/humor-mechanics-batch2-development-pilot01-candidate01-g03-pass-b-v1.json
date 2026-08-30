@@ -1,0 +1,37 @@
+{
+  "candidate_identity": "f96e626487812b4a9ad32ef548d4ac715fae4ea9bb24590a73f942b0783f080f",
+  "choice_set_identity": "b3196737532254f49560682d3508b56499d1492e265edbd660124a9ee6b591df",
+  "g02_identity": "bc6e7ce8975f94ad43de4cbc99b209099f6c330d8d53e85882fb356348d0d210",
+  "pass": "B_SHUFFLED_CONTRAST",
+  "pass_a_exposed": false,
+  "pass_b_identity": "0cdec5cdd8ce1aa6490ac5df986983ffb4f87d388269e3cea1f903f7f23042df",
+  "repository_access": false,
+  "result": {
+    "comparisons": {
+      "ABSURD_ALTERNATIVES_WITHOUT_SELECTION": "Textul dezvoltă o singură continuare imaginară, nu oferă mai multe alternative nealese.",
+      "AMBIGUOUS": "Lanțul explicit și coerent intern diferențiază suficient extensia logică absurdă de mecanismele concurente.",
+      "ESCALATION": "Succesiunea amplifică ușor comicul, dar funcția principală este deducția absurdă, nu simpla creștere de intensitate.",
+      "HYPERBOLE": "Nu este mărită o magnitudine sau un grad; absurdul provine din aplicarea logicii pontajului unor entități care nu muncesc.",
+      "NONE": "Există un mecanism listat care descrie precis operația dominantă."
+    },
+    "confidence": "HIGH",
+    "defining_operation": "Premisa verificărilor succesive este continuată ca un lanț birocratic coerent intern: regula «intră în tură», iar verificarea de la 17:00 îi «închide pontajul», producând implicația absurdă că regula sau mobilierul are program de muncă.",
+    "primary_choice": "ABSURD_LOGICAL_EXTENSION",
+    "primary_role": "DOMINANT",
+    "shortcut_dependence": {
+      "explanation": "Clasificarea rezultă din structura semantică și temporal-cauzală a continuării, nu din indicii de suprafață.",
+      "formatting": "NON_MATERIAL",
+      "lexical": "NON_MATERIAL",
+      "punctuation": "NON_MATERIAL",
+      "source_shape": "NON_MATERIAL",
+      "template": "NON_MATERIAL"
+    },
+    "structural_dependency": "Efectul depinde de relația cauzal-temporală dintre intrarea în tură și închiderea pontajului la verificarea ulterioară; fără acest lanț, rămâne doar o personificare izolată.",
+    "supporting_choices": [
+      "ESCALATION"
+    ]
+  },
+  "schema_name": "batch2-development-pilot01-g03-contrast-pass-b-v1",
+  "schema_version": "1.0.0",
+  "sealed_mapping_exposed": false
+}

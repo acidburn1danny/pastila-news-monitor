@@ -1,0 +1,16 @@
+{
+  "candidate_identity": "f96e626487812b4a9ad32ef548d4ac715fae4ea9bb24590a73f942b0783f080f",
+  "classification": "AMBIGUOUS_MECHANISM",
+  "pass_a_primary": "PERSONIFICATION",
+  "pass_a_target_recovered": false,
+  "pass_agreement": "DISAGREE_ON_DOMINANT_MECHANISM",
+  "pass_b_primary": "ABSURD_LOGICAL_EXTENSION",
+  "pass_b_target_recovered": true,
+  "passes_modified_after_reveal": false,
+  "reason": "Open recovery found PERSONIFICATION dominant while the closed contrast pass selected the target. A target recovered only after closed-set exposure cannot override the valid open-pass disagreement.",
+  "reconciliation_identity": "32f1e4478bd93a815ce07381db6e037f1809f774c3459a36f5416b8c8a3bc1ea",
+  "schema_name": "batch2-development-pilot01-g03-reconciliation-v1",
+  "schema_version": "1.0.0",
+  "sealed_assignment_identity": "9b5e3e0a51c1909dbdfb811eb930d2e23cbb13c3dbef783ea27a55f21c3ff75b",
+  "target_mechanism": "HMCV1-B02-M03-ABSURD_LOGICAL_EXTENSION"
+}
