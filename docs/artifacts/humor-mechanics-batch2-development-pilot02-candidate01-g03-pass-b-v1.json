@@ -1,0 +1,53 @@
+{
+  "candidate_identity": "4cc6bceef84e29d07e19d60dbbb1992b33fcb8af67373647f5fb8fedfce1d98c",
+  "candidate_raw_sha256": "5c50ca8e4ae5ea32301c02ec8ea4104482bbc9c8e3c7e8314516d09aeb591fd3",
+  "choice_set_identity": "40cda2da5ad786b5fa88648783bfdb9d7446543c0909d004a13c89450e2c6122",
+  "evaluator_identity": "INDEPENDENT_BLIND_EVALUATOR_PILOT02_CONTRAST",
+  "mapping_visible": false,
+  "pass_identity": "5980b6fa8d9a86b64204c113f9bb0c2114958155b3f5207801a12e4f101be14b",
+  "result": {
+    "comparisons": {
+      "AMBIGUOUS": "Lanțul cauzal absurd identifică mai precis mecanismul decât oricare alternativă concurentă.",
+      "Absurd Alternatives Without Selection": "Este prezentat un singur traseu consecvențial, nu mai multe posibilități absurde lăsate neselectate.",
+      "Escalation": "Pașii avansează logic, dar nu urmăresc în primul rând creșterea intensității ori a mizelor.",
+      "Frame Transfer": "Nu este importat un sistem coerent de relații sau convenții dintr-un domeniu separat.",
+      "Hyperbole": "Comicul nu provine din mărirea deliberată a unei magnitudini sau a unui grad.",
+      "NONE": "Există o operație dominantă clară din set: dezvoltarea inferențială a premisei până la o consecință absurdă.",
+      "Personification": "Testul și momentul nu primesc intenție, emoție, voce sau rol uman."
+    },
+    "confidence": "HIGH",
+    "defining_operation": "Premisa că nu există încă un câștigător este prelungită într-un lanț cauzal inteligibil, dar absurd: absența lui suspendă încheierea testului, iar imposibilitatea încheierii elimină însuși momentul stabilirii câștigătorului.",
+    "primary_choice": "Absurd Logical Extension",
+    "primary_role": "DOMINANT",
+    "shortcut_dependence": {
+      "formatting": {
+        "explanation": "Mecanismul persistă indiferent de prezentarea tipografică.",
+        "value": "NON_MATERIAL"
+      },
+      "lexical": {
+        "explanation": "Alegerea nu depinde de un cuvânt-semnal, ci de relațiile cauzale dintre propoziții.",
+        "value": "NON_MATERIAL"
+      },
+      "punctuation": {
+        "explanation": "Punctuația doar delimitează lanțul și nu determină mecanismul.",
+        "value": "NON_MATERIAL"
+      },
+      "source_shape": {
+        "explanation": "Clasificarea rezultă din operația semantică internă, nu din forma sau proveniența suprafeței.",
+        "value": "NON_MATERIAL"
+      },
+      "template": {
+        "explanation": "Nu este necesară recunoașterea unui șablon; lanțul inferențial este explicit în text.",
+        "value": "NON_MATERIAL"
+      }
+    },
+    "structural_dependency": "Efectul depinde de succesiunea inferențială premisă–consecință–consecință absurdă; fără această extensie logică, suprafața rămâne doar o constatare administrativă.",
+    "supporting_choices": []
+  },
+  "schema_name": "batch2-development-pilot02-g03-contrast-choice-pass-v1",
+  "schema_version": "1.0.0",
+  "visible_inputs": [
+    "IMMUTABLE_CANDIDATE_SURFACE",
+    "SHUFFLED_CLOSED_CHOICE_SET"
+  ]
+}

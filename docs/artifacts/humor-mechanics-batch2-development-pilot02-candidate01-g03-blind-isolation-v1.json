@@ -1,0 +1,20 @@
+{
+  "blind_evaluation_material_access": false,
+  "candidate_identity": "4cc6bceef84e29d07e19d60dbbb1992b33fcb8af67373647f5fb8fedfce1d98c",
+  "candidate_modified": false,
+  "constructor_packet_access": false,
+  "contrast_pass_identity": "5980b6fa8d9a86b64204c113f9bb0c2114958155b3f5207801a12e4f101be14b",
+  "g02c_commit": "015ceb5fc41d3f97c6884995394e31ad4e6b947a",
+  "g02c_reasoning_access": false,
+  "independent_evaluators": true,
+  "inter_evaluator_communication": false,
+  "isolation_identity": "17bff93878278b0a234c45790a9e1e73ee6ffd43e2e27eddba78b3d5b22b3e36",
+  "mapping_revealed": false,
+  "obligation_identity_access": false,
+  "open_pass_identity": "13c18428dc201f2ca936cf264832a8e039cf7a99513efdc91bb8246a1113338a",
+  "owner_history_access": false,
+  "schema_name": "batch2-development-pilot02-g03-blind-isolation-v1",
+  "schema_version": "1.0.0",
+  "sealed_mapping_access": false,
+  "status": "BLIND_PASSES_FROZEN_AWAITING_RECONCILIATION"
+}

@@ -1,0 +1,23 @@
+{
+  "candidate_identity": "4cc6bceef84e29d07e19d60dbbb1992b33fcb8af67373647f5fb8fedfce1d98c",
+  "choice_set_identity": "40cda2da5ad786b5fa88648783bfdb9d7446543c0909d004a13c89450e2c6122",
+  "contains_ambiguous": true,
+  "contains_none": true,
+  "displayed_order": [
+    "Personification",
+    "NONE",
+    "Hyperbole",
+    "Absurd Logical Extension",
+    "AMBIGUOUS",
+    "Frame Transfer",
+    "Escalation",
+    "Absurd Alternatives Without Selection"
+  ],
+  "displayed_order_sha256": "d59804e3160e365cda1fb477a8bd75018e2d282a3815533b8bbb65b7cd9d1a10",
+  "mapping_revealed": false,
+  "member_set_sha256": "4fd28526e67ecfc7f70273d542bfbbdb8b6cc3acd6c826626acf0639ad51a13a",
+  "schema_name": "batch2-development-pilot02-g03-choice-set-v1",
+  "schema_version": "1.0.0",
+  "shown_to_contrast_pass": true,
+  "shown_to_open_pass": false
+}
