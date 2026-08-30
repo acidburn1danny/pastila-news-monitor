@@ -1,0 +1,54 @@
+{
+  "actions_performed": {
+    "assignments_created": 0,
+    "blind_surfaces_inspected": 0,
+    "candidates_constructed": 0,
+    "content_ingested": 0,
+    "model_calls": 0,
+    "sources_acquired": 0
+  },
+  "adversarial_mutation_cases": {
+    "ANY_ACTION_AUTHORITY_FLIPPED_TRUE": "REJECTED",
+    "CONTENT_ACCESS_MOVED_BEFORE_BLIND_SEAL": "REJECTED",
+    "CREATIVE_PREMISE_ASSIGNED_DURING_G01": "REJECTED",
+    "FAMILY_MEMBER_MOVED_ACROSS_PARTITION": "REJECTED",
+    "INFERRED_RIGHTS_RELABELED_AFFIRMATIVE": "REJECTED",
+    "MECHANISM_TOKEN_OR_SIGNATURE_WORDING_IN_CONSTRUCTOR_PACKET": "REJECTED",
+    "MUTABLE_DATABASE_ROW_SUBSTITUTED_FOR_ARCHIVE_OBJECT": "REJECTED",
+    "OWNER_PREFERENCE_EXPOSED_TO_CONSTRUCTOR": "REJECTED",
+    "QUALIFICATION_TARGET_REMOVED_OR_REBOUND": "REJECTED",
+    "REVISION_MOVED_TO_NEW_PARTITION": "REJECTED",
+    "TRAINING_OR_PRODUCTION_INHERITED_FROM_EARLIER_GRANT": "REJECTED"
+  },
+  "authority_matrix": {
+    "candidate_construction": false,
+    "content_ingestion": false,
+    "mechanism_assignment": false,
+    "model_exposure": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "source_acquisition": false,
+    "surface_generation": false,
+    "training": false
+  },
+  "checks": {
+    "affirmative_rights_only": "PASS",
+    "blind_seal_before_content": "PASS",
+    "constructor_wording_leakage_controls": "PASS",
+    "family_partition_isolation": "PASS",
+    "hidden_construction_authority": "PASS",
+    "historical_preservation": "PASS",
+    "immutable_capture_unambiguous": "PASS",
+    "owner_preference_isolation": "PASS",
+    "proposition_qualification_drift": "PASS",
+    "revocation_supersession": "PASS",
+    "source_shape_mechanism_leakage_controls": "PASS",
+    "training_production_noninheritance": "PASS"
+  },
+  "deterministic_defects_remaining": [],
+  "protocol_identity": "c5ee6343adad61110f3c08b36b4e9d66e271889e9fe542044cba44ad6e926a09",
+  "protocol_sha256": "ee4ea50ba411b2ca607a798f452bb2f17176f22b707be286b3c346649b2574fd",
+  "schema_name": "batch2-owned-authority-acquisition-protocol-v1-audit",
+  "schema_version": "1.0.0",
+  "verdict": "PASS_SOURCE_ONLY_PROTOCOL_CLEAN"
+}

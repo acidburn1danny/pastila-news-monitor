@@ -1,0 +1,97 @@
+{
+  "approved_lane_templates": {
+    "AFFIRMATIVELY_LICENSED_EXTERNAL": [
+      "licensor_identity",
+      "license_text_sha256",
+      "affirmative_grant_scope",
+      "expiry",
+      "attribution"
+    ],
+    "INTERNALLY_OWNED": [
+      "owner_identity",
+      "authorship_declaration",
+      "rights_holder_signature",
+      "permitted_use_class_set",
+      "revocation_terms"
+    ],
+    "PUBLIC_DOMAIN_OR_OPEN_LICENSE": [
+      "legal_basis_or_spdx",
+      "jurisdiction",
+      "compatibility_review_identity",
+      "attribution"
+    ]
+  },
+  "closed_permitted_use_classes": {
+    "CONSTRUCTION_EVALUATION": {
+      "construction_evaluation": true,
+      "discovery": true,
+      "production": false,
+      "training": false
+    },
+    "DISCOVERY_ONLY": {
+      "construction_evaluation": false,
+      "discovery": true,
+      "production": false,
+      "training": false
+    },
+    "PRODUCTION": {
+      "construction_evaluation": false,
+      "discovery": true,
+      "production": true,
+      "training": false
+    },
+    "REJECTED_OR_UNRESOLVED": {
+      "construction_evaluation": false,
+      "discovery": false,
+      "production": false,
+      "training": false
+    },
+    "TRAINING": {
+      "construction_evaluation": false,
+      "discovery": true,
+      "production": false,
+      "training": true
+    }
+  },
+  "current_grants": {
+    "candidate_construction": false,
+    "content_ingestion": false,
+    "mechanism_assignment": false,
+    "model_exposure": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "source_acquisition": false,
+    "surface_generation": false,
+    "training": false
+  },
+  "fail_closed_rules": [
+    "PUBLIC_ACCESS_IS_NOT_PERMISSION",
+    "QUOTATION_RIGHT_IS_NOT_DERIVATIVE_OR_TRAINING_AUTHORITY",
+    "SILENCE_OR_AMBIGUITY_IS_REJECTED_OR_UNRESOLVED",
+    "GRANTS_ARE_ACTION_SPECIFIC",
+    "NO_PERMISSION_INHERITANCE_FROM_PRIOR_STAGE"
+  ],
+  "noninheritance": [
+    "DISCOVERY_DOES_NOT_GRANT_CONSTRUCTION_EVALUATION",
+    "CONSTRUCTION_EVALUATION_DOES_NOT_GRANT_TRAINING",
+    "TRAINING_DOES_NOT_GRANT_PRODUCTION",
+    "PRODUCTION_DOES_NOT_GRANT_TRAINING"
+  ],
+  "required_fields": [
+    "instrument_id",
+    "lane",
+    "rights_holder",
+    "source_family_commitment",
+    "grants",
+    "prohibitions",
+    "territory",
+    "effective_at",
+    "expires_at",
+    "revocation_terms",
+    "signature_or_owner_seal",
+    "instrument_sha256"
+  ],
+  "rights_template_identity": "8f0fd224a4463518cadc091847eb3c45cc03b54b004112a85e89d03687c16e17",
+  "schema_name": "batch2-owned-authority-rights-instrument-v1",
+  "schema_version": "1.0.0"
+}

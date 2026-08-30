@@ -1,0 +1,127 @@
+{
+  "access_log_required_fields": [
+    "sequence",
+    "actor_role",
+    "object_commitment",
+    "operation",
+    "purpose",
+    "authority_identity",
+    "timestamp",
+    "previous_entry_hash",
+    "entry_hash"
+  ],
+  "blind_rules": [
+    "NO_ATOM_OR_SURFACE_ACCESS_BEFORE_BLIND_SEAL",
+    "NO_BLIND_INPUT_TO_CONSTRUCTION_PROMPT_GATE_TEMPLATE_SELECTION_OWNER_PREFERENCE_OR_TRAINING_TUNING",
+    "BLIND_EVALUATION_ONLY_AFTER_DEVELOPMENT_SYSTEM_FREEZE",
+    "BLIND_RESULTS_DO_NOT_TUNE_THE_EVALUATED_CYCLE"
+  ],
+  "current_authority": {
+    "candidate_construction": false,
+    "content_ingestion": false,
+    "mechanism_assignment": false,
+    "model_exposure": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "source_acquisition": false,
+    "surface_generation": false,
+    "training": false
+  },
+  "escrow_spec_identity": "d5394b3b50e7746a8a5239c6c04d612b28dc703b3fe9c863b6fe6cb693935015",
+  "existing_reservations": {
+    "discovery_commit": "fe0df4152b3b9fcf39fbead1afb7c5c57f404b44",
+    "discovery_identity": "03f29a14a5fa5674046326d10016c509ec05dfa731e61f30716cfc653b9d09c8",
+    "status": "OPAQUE_RESERVATIONS_ONLY_NOT_PROMOTED_OR_INSPECTED"
+  },
+  "family_isolation": "ENTIRE_SOURCE_EVENT_AUTHORITY_TOPIC_REVISION_CLOSURE_ONE_PARTITION_ONLY",
+  "ordering": [
+    "RIGHTS_AND_METADATA_CAPTURE",
+    "FAMILY_CLOSURE",
+    "PARTITION_ASSIGNMENT",
+    "BLIND_SEAL",
+    "PARTITION_SPECIFIC_CONTENT_ACCESS"
+  ],
+  "permanent_contamination": {
+    "downstream_use": false,
+    "event_ids": [
+      1538,
+      2617
+    ],
+    "reassignment": false
+  },
+  "roles": {
+    "ACQUISITION_CUSTODIAN": {
+      "may_not": [
+        "mechanism_assignment",
+        "candidate",
+        "owner_preference"
+      ],
+      "may_see": [
+        "rights",
+        "source"
+      ]
+    },
+    "ASSIGNMENT_CUSTODIAN": {
+      "may_not": [
+        "owner_preference",
+        "blind_surface"
+      ],
+      "may_see": [
+        "admitted_nonblind_authority",
+        "operational_obligations"
+      ]
+    },
+    "BLIND_ESCROW": {
+      "may_not": [
+        "development_selection",
+        "training",
+        "prompt_tuning"
+      ],
+      "may_see": [
+        "blind_source",
+        "rights",
+        "partition_seal"
+      ]
+    },
+    "CONSTRUCTOR": {
+      "may_not": [
+        "mechanism_label",
+        "blind_family",
+        "mapping",
+        "owner_preference"
+      ],
+      "may_see": [
+        "sealed_nonblind_construction_packet"
+      ]
+    },
+    "EVALUATOR": {
+      "may_not": [
+        "constructor_identity",
+        "sealed_mapping_until_verdict"
+      ],
+      "may_see": [
+        "shuffled_target_neighbors_none_ambiguous"
+      ]
+    },
+    "OWNER_REVIEWER": {
+      "may_not": [
+        "blind_holdout_before_system_freeze"
+      ],
+      "may_see": [
+        "passed_gate_artifacts"
+      ]
+    },
+    "PARTITION_CUSTODIAN": {
+      "may_not": [
+        "blind_surface",
+        "mechanism_assignment"
+      ],
+      "may_see": [
+        "metadata",
+        "family_closure"
+      ]
+    }
+  },
+  "schema_name": "batch2-owned-authority-access-and-blind-escrow-v1",
+  "schema_version": "1.0.0"
+}

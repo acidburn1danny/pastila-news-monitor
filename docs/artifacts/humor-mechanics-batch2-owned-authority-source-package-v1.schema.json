@@ -1,0 +1,220 @@
+{
+  "$defs": {
+    "families": {
+      "additionalProperties": false,
+      "properties": {
+        "authority": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "creative_premise": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "event": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "family_closure": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "revision": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "source": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "topic_entity": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "source",
+        "event",
+        "authority",
+        "topic_entity",
+        "creative_premise",
+        "family_closure",
+        "revision"
+      ],
+      "type": "object"
+    },
+    "proposition": {
+      "additionalProperties": false,
+      "properties": {
+        "authority_scope": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "factual_status": {
+          "enum": [
+            "SUPPORTED",
+            "QUALIFIED",
+            "UNRESOLVED",
+            "NONFACTUAL"
+          ]
+        },
+        "modality": {
+          "enum": [
+            "ASSERTED",
+            "POSSIBLE",
+            "PROBABLE",
+            "REPORTED",
+            "UNKNOWN"
+          ]
+        },
+        "proposition_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "qualification_bindings": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "span": {
+          "$ref": "#/$defs/span"
+        }
+      },
+      "required": [
+        "proposition_id",
+        "span",
+        "authority_scope",
+        "modality",
+        "qualification_bindings",
+        "factual_status"
+      ],
+      "type": "object"
+    },
+    "span": {
+      "additionalProperties": false,
+      "properties": {
+        "character_end": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "character_start": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "span_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "utf8_byte_end": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "utf8_byte_start": {
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "character_start",
+        "character_end",
+        "utf8_byte_start",
+        "utf8_byte_end",
+        "span_sha256"
+      ],
+      "type": "object"
+    }
+  },
+  "$id": "urn:pastila:batch2:owned-authority-source-package:v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "construction_authority": false,
+  "properties": {
+    "archive_object_identity": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "byte_length": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "capture_time": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "contamination_ledger_head": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "encoding": {
+      "const": "UTF-8"
+    },
+    "family_identities": {
+      "$ref": "#/$defs/families"
+    },
+    "original_bytes_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "partition_seal": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "permitted_use_classes": {
+      "items": {
+        "enum": [
+          "DISCOVERY_ONLY",
+          "CONSTRUCTION_EVALUATION",
+          "TRAINING",
+          "PRODUCTION"
+        ]
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "propositions": {
+      "items": {
+        "$ref": "#/$defs/proposition"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "rights_instrument_id": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "source_package_id": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "source_version": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "supersedes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "source_package_id",
+    "original_bytes_sha256",
+    "byte_length",
+    "encoding",
+    "capture_time",
+    "source_version",
+    "rights_instrument_id",
+    "permitted_use_classes",
+    "propositions",
+    "family_identities",
+    "partition_seal",
+    "contamination_ledger_head",
+    "archive_object_identity",
+    "supersedes"
+  ],
+  "title": "Batch 2 Owned-Authority Immutable Source Package V1",
+  "type": "object"
+}

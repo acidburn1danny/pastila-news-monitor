@@ -1,0 +1,196 @@
+{
+  "approved_provenance_lanes": [
+    "INTERNALLY_OWNED_FACTUAL_AUTHORITY_BUNDLE",
+    "AFFIRMATIVELY_LICENSED_EXTERNAL_MATERIAL",
+    "COMPATIBLE_PUBLIC_DOMAIN_OR_OPEN_LICENSE_MATERIAL"
+  ],
+  "artifact_bindings": {
+    "escrow_sha256": "1905b80bcdc4e90e6930a0a2d3196d39cfbeb4422778ea98c98232d77d54f324",
+    "rights_sha256": "635fea0c26c47dd58e42cfb4ab24dd7fb322845b6c16e1ba63f6dd1f3f6f731a",
+    "source_schema_sha256": "4df378dcf46caf5e111f0a6bdc5373e59cf039ac667a8b54d41e380d831e60db"
+  },
+  "bases": {
+    "discovery_closure_commit": "fe0df4152b3b9fcf39fbead1afb7c5c57f404b44",
+    "discovery_closure_identity": "03f29a14a5fa5674046326d10016c509ec05dfa731e61f30716cfc653b9d09c8",
+    "v2_plan_commit": "c756135fa9b822dd945728a2df05f26f3b44fa63",
+    "v2_plan_identity": "57419ff52730ccd20acf3c716c9502667d9f25e517570e18eeae7ec3d472da8a"
+  },
+  "contamination_ledger": {
+    "append_only_hash_chain": true,
+    "records": [
+      "CONTENT_ACCESS",
+      "METADATA_ACCESS",
+      "CONSTRUCTOR_ACCESS",
+      "MODEL_ACCESS",
+      "OWNER_SELECTION",
+      "PROMPT_OR_GATE_TUNING",
+      "TRAINING",
+      "PRODUCTION"
+    ],
+    "unknown_history": "CONTAMINATED_FAIL_CLOSED"
+  },
+  "current_authority_matrix": {
+    "candidate_construction": false,
+    "content_ingestion": false,
+    "mechanism_assignment": false,
+    "model_exposure": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "source_acquisition": false,
+    "surface_generation": false,
+    "training": false
+  },
+  "family_derivation": {
+    "closure_edges": [
+      "DUPLICATE",
+      "SYNDICATED",
+      "SAME_EVENT",
+      "REVISION",
+      "DERIVATIVE"
+    ],
+    "identities": [
+      "SOURCE",
+      "EVENT",
+      "AUTHORITY",
+      "TOPIC_ENTITY",
+      "CREATIVE_PREMISE",
+      "FAMILY_CLOSURE",
+      "REVISION"
+    ],
+    "pre_assignment_rule": "CREATIVE_PREMISE_IDENTITY_MUST_BE_UNASSIGNED_THROUGH_G01B_AND_PARTITION_SEAL",
+    "rule": "CLOSURE_BEFORE_PARTITION_AND_ENTIRE_CLOSURE_ONE_PARTITION"
+  },
+  "gates": {
+    "G01A": [
+      "AFFIRMATIVE_RIGHTS",
+      "IMMUTABLE_CAPTURE",
+      "PROPOSITION_AUTHORITY",
+      "QUALIFICATION_SCOPE",
+      "TARGET_SAFETY",
+      "SOURCE_VERSION"
+    ],
+    "G01B": [
+      "FAMILY_CLOSURE",
+      "PARTITION_SEAL",
+      "CONTAMINATION_HEAD",
+      "NO_CROSS_PARTITION_RELATIVE",
+      "BLIND_ACCESS_COMPLIANCE",
+      "CREATIVE_PREMISE_UNASSIGNED"
+    ],
+    "G02B": [
+      "LABEL_TOKEN_SCAN",
+      "TAXONOMY_PARAPHRASE_SCAN",
+      "PACKET_SHAPE_BALANCE",
+      "CONSTRUCTOR_CANNOT_ACCESS_MAPPING",
+      "SOURCE_SHAPE_BALANCE"
+    ],
+    "G03": [
+      "INDEPENDENT_SHUFFLED_RECOVERY",
+      "TARGET_NEIGHBORS_NONE_AMBIGUOUS"
+    ],
+    "G03B": [
+      "MINIMAL_INTERVENTION",
+      "CAUSAL_REMOVAL_OR_LABEL_CHANGE"
+    ],
+    "G03C": [
+      "METADATA_TEMPLATE_TOPIC_AUTHORSHIP_LENGTH_SHORTCUT_AUDIT",
+      "FAMILY_LEVEL_POOL_AUDIT"
+    ],
+    "G04": [
+      "ROMANIAN_NATURALNESS_INDEPENDENT",
+      "VOICE_REVIEW_INDEPENDENT"
+    ],
+    "G05": [
+      "OWNER_FREEZE_AFTER_ALL_PRIOR_GATES",
+      "NO_RETROACTIVE_BLIND_TUNING"
+    ]
+  },
+  "historical_preservation": {
+    "blind_contaminated_1538_2617": "PERMANENTLY_EXCLUDED",
+    "blind_reservations": "OPAQUE_ONLY",
+    "historical_g02_negatives": "UNCHANGED",
+    "m12_case01_contrast_negative": "UNCHANGED",
+    "m20_owner_frozen": "UNCHANGED",
+    "rejected_and_provenance_negative": "UNCHANGED"
+  },
+  "ingestion": {
+    "immutable_capture": [
+      "ORIGINAL_BYTES_IN_GIT_OR_GIT_BOUND_CONTENT_ADDRESSED_ARCHIVE",
+      "SHA256_BYTE_LENGTH_UTF8_DECLARATION_CAPTURE_TIME_SOURCE_VERSION",
+      "INDEPENDENT_CHARACTER_AND_UTF8_BYTE_SPANS",
+      "NO_IN_PLACE_CORRECTION"
+    ],
+    "precondition": "SEPARATE_SOURCE_ACQUISITION_AUTHORITY",
+    "proposition_authority": [
+      "EXACT_SPAN",
+      "AUTHORITY_SCOPE",
+      "FACTUAL_STATUS",
+      "MODALITY",
+      "QUALIFICATION_TARGETS",
+      "FACTUAL_VS_NONFACTUAL_SCOPE"
+    ]
+  },
+  "mechanism_blind_assignment": {
+    "constructor_never_receives": [
+      "MECHANISM_ID",
+      "MECHANISM_NAME",
+      "TAXONOMY_DEFINITION",
+      "SEALED_MAPPING",
+      "OWNER_PREFERENCE",
+      "BLIND_FAMILY"
+    ],
+    "constructor_receives": [
+      "FACTUAL_ENVELOPE",
+      "ALLOWED_CREATIVE_SCOPE",
+      "TARGET_RESTRICTIONS",
+      "OPERATIONAL_EFFECT",
+      "FORBIDDEN_NEIGHBORS",
+      "LANGUAGE_CONSTRAINTS",
+      "SEALED_ASSIGNMENT_ID"
+    ],
+    "wording_controls": [
+      "MULTIPLE_INDEPENDENT_PHRASINGS",
+      "SHARED_CROSS_MECHANISM_CONSTRAINTS",
+      "NO_SIGNATURE_TEMPLATE",
+      "PACKET_LENGTH_AND_FIELD_BALANCE"
+    ]
+  },
+  "next_phase": "SEPARATELY_AUTHORIZED_ACQUISITION_CHANNEL_AND_RIGHTS_INSTRUMENT_QUALIFICATION_ONLY",
+  "partitioning": {
+    "blind": "ESCROW_ONLY_METADATA_COMMITMENTS_OUTSIDE_ESCROW",
+    "order": [
+      "METADATA_CAPTURE",
+      "FAMILY_CLOSURE",
+      "PARTITION_SEAL",
+      "CONTENT_ACCESS_IF_AUTHORIZED"
+    ],
+    "partitions": [
+      "DEVELOPMENT",
+      "CURRICULUM_CANDIDATE",
+      "BLIND_EVALUATION"
+    ]
+  },
+  "protocol_identity": "c5ee6343adad61110f3c08b36b4e9d66e271889e9fe542044cba44ad6e926a09",
+  "revocation_correction_supersession": {
+    "blind_rule": "REVOKED_OR_CORRECTED_BLIND_OBJECT_REMAINS_OPAQUE",
+    "correction": "NEW_IMMUTABLE_REVISION_NEVER_OVERWRITE",
+    "partition_rule": "SUCCESSOR_REMAINS_IN_PREDECESSOR_FAMILY_PARTITION",
+    "revocation": "FAIL_CLOSED_ALL_NOT_YET_CONSUMED_DOWNSTREAM_USES",
+    "supersession": "EXPLICIT_PREDECESSOR_SUCCESSOR_IDENTITY_AND_REASON"
+  },
+  "schema_name": "batch2-owned-authority-acquisition-protocol-v1",
+  "schema_version": "1.0.0",
+  "stop_conditions": [
+    "INFERRED_OR_AMBIGUOUS_RIGHTS",
+    "NONRETRIEVABLE_OR_MUTABLE_SOURCE_BYTES",
+    "CHARACTER_UTF8_COORDINATE_DISAGREEMENT",
+    "UNRESOLVED_FAMILY_CLOSURE",
+    "CONTENT_ACCESS_BEFORE_PARTITION_OR_BLIND_SEAL",
+    "CROSS_PARTITION_RELATIVE",
+    "SOURCE_OR_PACKET_SHAPE_REVEALS_MECHANISM",
+    "PROPOSITION_OR_QUALIFICATION_DRIFT",
+    "OWNER_PREFERENCE_REACHES_CONSTRUCTION",
+    "REVOCATION_OR_SUCCESSION_AMBIGUITY",
+    "ANY_UNAUTHORIZED_ACTION_OR_INHERITED_GRANT"
+  ]
+}
