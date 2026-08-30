@@ -1,0 +1,30 @@
+{
+  "candidate_surfaces_after_remediation": 0,
+  "constructor_facing_packet_identity": "879915bddbd93f74b8acb6b86215da65aa3a9d13a28a413d094afe0141f394b2",
+  "constructor_invocations_after_remediation": 0,
+  "creative_premise_family_id": "UNASSIGNED",
+  "decision_identity": "5b94e262ba10b56e89796614af0ffe995338cc020d2fc8ecfea5046179714d69",
+  "downstream_authority_granted": false,
+  "exact_source_binding": "PASS",
+  "fresh_attempt_state": "UNAUTHORIZED_0_OF_1_PENDING_SEPARATE_OWNER_DECISION",
+  "label_and_taxonomy_scan": "PASS_ZERO_HITS",
+  "mapping_and_blind_access": "DENIED",
+  "mutation_relocation_reseal": "REJECTED",
+  "operational_cue_minimization": "PASS_NO_NEW_OPERATIONAL_WORDING",
+  "packet_integrity": "PASS",
+  "path_and_sibling_isolation": "PASS_SINGLE_OBJECT_CAPABILITY",
+  "prior_attempt_reusable": false,
+  "prior_consumed_attempt_evidence_identity": "9e798bc83289a449d56978fe80d8ac24eed09b4fb05923e9795fdbb5cc405d1e",
+  "release_identity": "c7a275d89e74d3cdb08d8caef08a4ed7e65579d2211a408ffdfb8e36cf3fbd63",
+  "schema_name": "batch2-development-pilot01-g02b-source-bound-construction-decision-v1",
+  "schema_version": "1.0.0",
+  "source_binding": {
+    "byte_length": 346,
+    "encoding": "UTF-8",
+    "git_blob_oid_sha1": "c3a3316a2fc6be4befa40c1f777c09ecc2b48b6f",
+    "sha256": "84261f1a6b97f951f70a1b86d42114da9703996607d43d2fc3779bffd7a97cb2"
+  },
+  "source_shape_leakage": "PASS_SOURCE_IS_AUTHORITY_INPUT_NOT_SELECTION_RATIONALE",
+  "stale_prior_packet": "REJECTED",
+  "verdict": "READY_FOR_FRESH_BOUNDED_DEVELOPMENT_CONSTRUCTION_DECISION"
+}

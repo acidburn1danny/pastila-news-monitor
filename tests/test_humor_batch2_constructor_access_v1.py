@@ -12,7 +12,7 @@ from pastila_scout.humor_batch2_constructor_access_v1 import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
-RELEASE = ROOT / "docs/artifacts/humor-mechanics-batch2-development-pilot01-constructor-access-release-v1.json"
+RELEASE = ROOT / "docs/artifacts/humor-mechanics-batch2-development-pilot01-constructor-access-release-source-bound-v1.json"
 
 
 def prepared() -> PreparedDevelopmentConstructorAccessV1:
@@ -25,7 +25,11 @@ def test_exact_release_is_pathless_single_use_and_label_blind() -> None:
     packet = capability.read_constructor_packet()
     assert b"HMCV1-B02-M03" not in packet
     assert b"mapping_commitment" not in packet
-    assert json.loads(packet)["creative_premise_family_id"] == "UNASSIGNED"
+    value = json.loads(packet)
+    assert value["creative_premise_family_id"] == "UNASSIGNED"
+    source = value["source_object"]["source_text_utf8"].encode("utf-8")
+    assert len(source) == 346
+    assert __import__("hashlib").sha256(source).hexdigest() == "84261f1a6b97f951f70a1b86d42114da9703996607d43d2fc3779bffd7a97cb2"
     with pytest.raises(RuntimeError):
         capability.read_constructor_packet()
 
@@ -41,6 +45,7 @@ def test_mutation_stale_reseal_and_role_substitution_fail_closed() -> None:
         lambda x: x["constructor_packet"].update({"creative_premise_family_id": "MUTATED"}),
         lambda x: x["release_core"].update({"constructor_facing_packet_identity": "0" * 64}),
         lambda x: x["constructor_packet"].update({"mapping_commitment": "oracle"}),
+        lambda x: x["constructor_packet"]["source_object"].update({"source_text_utf8": "mutated"}),
     ):
         altered = json.loads(json.dumps(value))
         mutation(altered)

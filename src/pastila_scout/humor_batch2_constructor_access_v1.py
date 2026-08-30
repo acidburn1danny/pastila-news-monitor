@@ -63,7 +63,10 @@ def prepare_development_constructor_access_v1(*, release_bytes: bytes) -> Prepar
     packet_identity = packet_core.pop("constructor_facing_packet_identity")
     if packet_identity != release["release_core"]["constructor_facing_packet_identity"]:
         raise ValueError("release/packet identity")
-    if packet_identity != _seal("B2_DEVELOPMENT_PILOT01_CONSTRUCTOR_PACKET_G02B_V1", packet_core):
+    namespace = release["release_core"].get("packet_seal_namespace")
+    if namespace not in {"B2_DEVELOPMENT_PILOT01_CONSTRUCTOR_PACKET_G02B_SOURCE_BOUND_V1"}:
+        raise ValueError("packet seal namespace")
+    if packet_identity != _seal(namespace, packet_core):
         raise ValueError("packet seal")
     packet_bytes = _canonical(packet)
     forbidden = (b"HMCV1-B02-M03", b"M13", b"ABSURD_LOGICAL_EXTENSION",
@@ -72,6 +75,15 @@ def prepare_development_constructor_access_v1(*, release_bytes: bytes) -> Prepar
         raise ValueError("label or blind leakage")
     if packet["creative_premise_family_id"] != "UNASSIGNED":
         raise ValueError("creative premise assigned")
+    source = packet.get("source_object", {})
+    source_text = source.get("source_text_utf8")
+    if not isinstance(source_text, str):
+        raise ValueError("source text unavailable")
+    source_bytes = source_text.encode("utf-8")
+    if hashlib.sha256(source_bytes).hexdigest() != source.get("sha256"):
+        raise ValueError("source text hash")
+    if len(source_bytes) != source.get("byte_length") or source.get("encoding") != "UTF-8":
+        raise ValueError("source byte binding")
     if not all(value is False for value in packet["authority_matrix"].values()):
         raise ValueError("downstream authority")
     return PreparedDevelopmentConstructorAccessV1(
