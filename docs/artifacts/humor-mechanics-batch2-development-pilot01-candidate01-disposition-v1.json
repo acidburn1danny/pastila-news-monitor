@@ -1,0 +1,66 @@
+{
+  "authority_matrix": {
+    "g03b": false,
+    "g03c": false,
+    "g04": false,
+    "model_exposure": false,
+    "owner_positive_review": false,
+    "positive_m13_coverage": false,
+    "production_routing": false,
+    "regeneration": false,
+    "repair": false,
+    "replacement_construction": false,
+    "rewrite": false,
+    "runtime_integration": false,
+    "training": false,
+    "voice_review": false
+  },
+  "blind_passes_reinterpreted": false,
+  "blind_results": {
+    "pass_a": {
+      "confidence": "HIGH",
+      "dominant": "PERSONIFICATION",
+      "occupational_vocabulary_shortcut_finding": "MATERIAL",
+      "supporting": [
+        "ABSURDITY",
+        "EXTENDED_METAPHOR"
+      ]
+    },
+    "pass_b": {
+      "confidence": "HIGH",
+      "dominant": "ABSURD_LOGICAL_EXTENSION",
+      "lexical_shortcut_finding": "NON_MATERIAL",
+      "supporting": [
+        "ESCALATION"
+      ]
+    }
+  },
+  "candidate_bytes_modified": false,
+  "candidate_identity": "f96e626487812b4a9ad32ef548d4ac715fae4ea9bb24590a73f942b0783f080f",
+  "candidate_raw_sha256": "2f848e2bc9d87b113df95996a4d49d48fbe4334d6c204ef707664158e23caf9d",
+  "conflicting_shortcut_judgments": true,
+  "disposition": "DEVELOPMENT_NONPOSITIVE_AMBIGUOUS_CONFUSABLE_EVIDENCE",
+  "disposition_identity": "f8e5efe963f0fc2bfdef975a2da4408cb3b91eb3268451f4e77576352948e3c8",
+  "evidence_role": "NONPOSITIVE_AMBIGUOUS_CONFUSABLE",
+  "g02_identity": "bc6e7ce8975f94ad43de4cbc99b209099f6c330d8d53e85882fb356348d0d210",
+  "g02_verdict": "PASS",
+  "g03_commit": "6ef856dfabced08cb482500e463cd9b83f7d710c",
+  "g03_receipt_identity": "71c3ed0b4cc572c6988785ab9c4ce74d01a54bd71d14e89d48c8158a25f6d1cd",
+  "g03_reconciliation": "AMBIGUOUS_MECHANISM",
+  "g03_validity": "VALID_BLIND_REVIEW",
+  "partition": "DEVELOPMENT",
+  "permitted_future_development_diagnostics": [
+    "M13_VERSUS_PERSONIFICATION_SEPARABILITY",
+    "MIXED_MECHANISM_ANALYSIS",
+    "ASSIGNMENT_OBLIGATION_REDESIGN",
+    "SHORTCUT_DIAGNOSTICS",
+    "FUTURE_CONFUSABLE_SET_DESIGN"
+  ],
+  "positive_m13_coverage_eligible": false,
+  "schema_name": "batch2-development-pilot01-ambiguous-disposition-v1",
+  "schema_version": "1.0.0",
+  "sealed_target": "ABSURD_LOGICAL_EXTENSION",
+  "substantive_disagreement": "WHETHER_EMPLOYMENT_TIMESHEET_FRAMING_IS_THE_DOMINANT_OPERATION_OR_IMPLEMENTS_A_PREMISE_TO_ABSURD_CONSEQUENCE_CHAIN",
+  "target_dominant_recovery_established": false,
+  "visibility": "NON_MODEL_VISIBLE"
+}
