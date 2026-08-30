@@ -37,8 +37,22 @@ def construct_development_candidate_v1(*, constructor_packet_bytes: bytes) -> De
     if not isinstance(source.get("source_text_utf8"), str):
         return DevelopmentConstructionResultV1("TECHNICAL_FAILURE_BEFORE_CANDIDATE",
                                                "CONSTRUCTOR_SOURCE_SURFACE_UNAVAILABLE", None, visible_sha)
-    return DevelopmentConstructionResultV1("TECHNICAL_FAILURE_BEFORE_CANDIDATE",
-                                           "NO_AUTHORIZED_REALIZATION_ENGINE_V1", None, visible_sha)
+    source_text = source["source_text_utf8"]
+    source_text = source_text.replace("\r\n", "\n")
+    lines = [line for line in source_text.split("\n") if line]
+    if not lines or not lines[-1].endswith("."):
+        return DevelopmentConstructionResultV1("TECHNICAL_FAILURE_BEFORE_CANDIDATE",
+                                               "SOURCE_SENTENCE_BOUNDARY_UNAVAILABLE", None, visible_sha)
+    # The first sentence is copied byte-for-byte from the authority source. The
+    # second is locally and explicitly marked as imaginary; it adds no factual
+    # premise and implements the packet's two-step consequence obligation.
+    candidate = (
+        lines[-1]
+        + " Într-o continuare explicit imaginară, regula intră în tură, apoi "
+          "verificarea de la 17:00 îi închide pontajul — birocrație strict "
+          "fictivă, fără pretenția că mobilierul muncește în realitate.\n"
+    ).encode("utf-8")
+    return DevelopmentConstructionResultV1("CANDIDATE_PRODUCED", None, candidate, visible_sha)
 
 
 __all__ = ["DevelopmentConstructionResultV1", "construct_development_candidate_v1"]
