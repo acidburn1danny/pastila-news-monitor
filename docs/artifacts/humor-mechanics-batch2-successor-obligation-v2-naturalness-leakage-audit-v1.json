@@ -1,0 +1,23 @@
+{
+  "audit_identity": "d1cb506a29a813821c0de844fbf7a702ee34139c086a881c3a1dc9824c7ceafe",
+  "audit_verdict": "PASS_SOURCE_ONLY_ZERO_CONSTRUCTION",
+  "checks": {
+    "blind_material_access": "PASS_NONE",
+    "definitional_paraphrase_increase": "PASS_NO_MATERIAL_INCREASE_OVER_V1",
+    "factual_authority_widening": "PASS_NONE",
+    "fixed_grammar_sentence_or_payoff_template": "PASS_NONE_REQUIRED",
+    "fixed_lexeme_or_connective": "PASS_NONE_REQUIRED",
+    "g04a_bypass": "PASS_EARLY_SCREEN_DOES_NOT_REPLACE_BLIND_G04A",
+    "hidden_construction_authority": "PASS_ALL_FALSE",
+    "naturalness_example_template_leakage": "PASS_NO_EXAMPLES_SUPPLIED",
+    "pilot02_surface_leakage_to_constructor": "PASS_EXPLICITLY_PROHIBITED",
+    "rejected_phrase_priming": "PASS_REJECTED_MARKER_NOT_EXPOSED_VERBATIM",
+    "source_shape_selection": "PASS_SOURCE_MUST_PRECEDE_ASSIGNMENT",
+    "taxonomy_name_id_ordinal_leakage": "PASS_ZERO"
+  },
+  "conformance_schema_identity": "9470ce435de7ddcfea8dc4b3022b2ad697c2aa85fab44e8b532b4fa9850b0512",
+  "deterministic_blockers": [],
+  "governance_identity": "874c5d611c5ab955e0f9d82aa5aa086fad98e065f66e20e9e236f48798287024",
+  "schema_name": "batch2-successor-obligation-v2-naturalness-leakage-audit-v1",
+  "schema_version": "1.0.0"
+}

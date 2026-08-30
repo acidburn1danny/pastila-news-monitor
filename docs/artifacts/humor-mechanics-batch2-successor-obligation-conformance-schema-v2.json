@@ -1,0 +1,37 @@
+{
+  "conformance_schema_identity": "9470ce435de7ddcfea8dc4b3022b2ad697c2aa85fab44e8b532b4fa9850b0512",
+  "failure_disposition": "DEVELOPMENT_NONPOSITIVE_OBLIGATION_OR_NATURALNESS_NONCONFORMANT_DIAGNOSTIC",
+  "mechanism_neutral": true,
+  "naturalness_precheck": {
+    "does_not_replace_blind_g04a": true,
+    "fail_closed_on": [
+      "EDITORIAL_OR_GOVERNANCE_LABEL_AS_CREATIVE_MARKER",
+      "OBLIGATION_TERMINOLOGY_COPIED_OR_PARAPHRASED",
+      "MATERIALLY_PROCEDURAL_ABSTRACT_REGISTER",
+      "UNIDIOMATIC_CREATIVE_MARKING"
+    ],
+    "purpose": "Reject obvious instruction-to-surface transfer before costly blind mechanism review.",
+    "reviewer_must_not_receive": [
+      "MECHANISM_ID_NAME_ORDINAL",
+      "SEALED_ASSIGNMENT_MAPPING",
+      "TARGET_EVIDENCE_ROLE",
+      "HISTORICAL_EXAMPLES",
+      "BLIND_EVALUATION_MATERIAL"
+    ]
+  },
+  "required_predicates": [
+    "AUTHORIZED_PROPOSITION_PRESERVED",
+    "TWO_DISTINCT_NEW_SITUATIONS",
+    "RELATION_OPERATIVE_ACROSS_BOTH",
+    "SECOND_DEPENDS_ON_FIRST",
+    "LOCAL_INTELLIGIBILITY",
+    "NO_UNRELATED_EVENT",
+    "ENTITY_STATUS_PRESERVED",
+    "INTEGRATED_NARRATIVE_CREATIVE_MARKING",
+    "GOVERNANCE_LANGUAGE_ABSENT",
+    "PROCEDURAL_ABSTRACTION_NONMATERIAL",
+    "IDIOMATIC_ROMANIAN_PRECHECK_PASS"
+  ],
+  "schema_name": "batch2-successor-obligation-conformance-v2",
+  "schema_version": "2.0.0"
+}

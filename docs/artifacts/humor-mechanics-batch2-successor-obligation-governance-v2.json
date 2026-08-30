@@ -1,0 +1,84 @@
+{
+  "authority_matrix": {
+    "assignment": false,
+    "candidate_repair": false,
+    "candidate_rewrite": false,
+    "construction": false,
+    "generation": false,
+    "model_exposure": false,
+    "owner_positive_review": false,
+    "pilot03_acquisition": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "source_ingestion": false,
+    "training": false,
+    "voice_review": false
+  },
+  "conformance_schema_identity": "9470ce435de7ddcfea8dc4b3022b2ad697c2aa85fab44e8b532b4fa9850b0512",
+  "constructor_must_not_receive": [
+    "CONFORMANCE_SCHEMA",
+    "DEPENDENCY_RECEIPT_SCHEMA",
+    "CONFORMANCE_FIELD_NAMES",
+    "REMOVAL_TEST",
+    "SEALED_TARGET_OR_MAPPING",
+    "NATURALNESS_PRECHECK_FIELD_NAMES",
+    "PILOT02_REJECTED_SURFACE_OR_PHRASES"
+  ],
+  "constructor_visible_obligation": {
+    "entity_status_rule": "Păstrează atributele, capacitățile, agenția și rolurile autorizate; nu atribui uneia dintre entități o proprietate sau un rol absent din autoritatea factuală.",
+    "factual_safety": [
+      "Separă fără echivoc relatarea factuală de cadrul inventat prin formularea narativă însăși.",
+      "Nu adăuga fapte, cunoaștere privată, citate, afirmații despre ținte protejate sau concluzii pragmatice despre lumea reală."
+    ],
+    "forbidden_operations": [
+      "Nu importa alt domeniu sau cadru pentru a lega cele două situații.",
+      "Nu obține rezultatul numai prin comparație, intensificare, enumerare ori surpriză fără legătură.",
+      "Nu înlocui niciuna dintre situații cu un eveniment inventat fără legătură cu premisa."
+    ],
+    "naturalness": [
+      "Nu descrie în suprafață statutul editorial al textului, regulile urmate, clasificarea ori verificarea rezultatului.",
+      "Nu copia și nu parafraza limbajul procedural al obligației; exprimă situațiile prin verbe și stări potrivite universului sursă.",
+      "Marcajul inventat trebuie să fie integrat idiomatic și să nu funcționeze ca prefață tehnică ori avertisment editorial.",
+      "Nu este impus niciun conector, registru special, număr de propoziții, tipar de clauze sau formulă de poantă."
+    ],
+    "obligation_version": "SUCCESSOR_FORMULATION_C_NATURAL_ROMANIAN_V2",
+    "surface_freedom": [
+      "Sunt permise formulări, ritmuri și structuri diferite dacă toate limitele de mai sus rămân verificabile.",
+      "Câmpurile și testele folosite de evaluatori nu trebuie să apară în suprafață."
+    ],
+    "transformation": [
+      "Redă fără modificări de conținut sau calificare exact o propoziție autorizată.",
+      "Continuă scurt, în română firească, astfel încât desprinderea de relatarea factuală să rezulte firesc din construcția enunțului, fără prefață tehnică.",
+      "Păstrează aceeași relație din propoziția aleasă activă în două situații noi și distincte.",
+      "A doua situație trebuie să devină posibilă numai prin prima; fiecare trebuie să poată fi înțeleasă din premisă și din situația imediat anterioară."
+    ]
+  },
+  "future_source_rule": {
+    "pilot02_source_candidate_or_creative_family_reuse": false,
+    "pilot03_must_be_fresh_independently_acquired_and_admitted": true,
+    "source_must_not_be_selected_or_shaped_by_obligation": true
+  },
+  "gate_sequence": [
+    "B2_G02B_PRECONSTRUCTION_BLINDING",
+    "CONSTRUCTION_SEPARATELY_AUTHORIZED_ONE_SHOT",
+    "B2_G02B_POSTCONSTRUCTION_EXPOSURE_RECONCILIATION",
+    "B2_G02_FACTUAL_AND_TARGET_BOUNDARY",
+    "B2_G02C_OBLIGATION_CONFORMANCE_AND_EARLY_NATURALNESS_PRECHECK",
+    "B2_G03_BLIND_MECHANISM_RECOVERY",
+    "B2_G03B_CAUSAL_MINIMAL_INTERVENTION",
+    "B2_G03C_SHORTCUT_AND_CONTAMINATION",
+    "B2_G04A_BLIND_ROMANIAN_NATURALNESS_REMAINS_REQUIRED"
+  ],
+  "naturalness_analysis_identity": "60a22bd7759d17bce22695bfdd16459760c5f3b6fc940d8497baf35a6f9dbdd2",
+  "obligation_governance_identity": "874c5d611c5ab955e0f9d82aa5aa086fad98e065f66e20e9e236f48798287024",
+  "parent_governance_identity": "0cfd22fd43e0be68b5a04f16e45e918ac7bae346c851334817a7af309bad63e5",
+  "pilot02": {
+    "candidate_bytes_modified": false,
+    "candidate_repair_or_rewrite": false,
+    "disposition_identity": "6045d690a4405c935dfb754d772dc01d68adf2a57435f3a91a7294b13c706381",
+    "regression_only": true
+  },
+  "schema_name": "batch2-successor-obligation-governance-v2",
+  "schema_version": "2.0.0",
+  "status": "FROZEN_SOURCE_ONLY_ZERO_CONSTRUCTION"
+}

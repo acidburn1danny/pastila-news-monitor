@@ -1,0 +1,38 @@
+{
+  "analysis_identity": "60a22bd7759d17bce22695bfdd16459760c5f3b6fc940d8497baf35a6f9dbdd2",
+  "analysis_verdict": "ROOT_CAUSE_CONFIRMED_AT_OBLIGATION_GOVERNANCE_BOUNDARY",
+  "candidate_repair_required_or_authorized": false,
+  "causal_trace": [
+    {
+      "causal_classification": "DIRECT_WORDING_PRESSURE",
+      "defect": "The instruction required explicitness but did not distinguish an integrated Romanian narrative cue from a literal governance label.",
+      "governance_text": "Create a short, explicitly fictional continuation containing exactly two distinct changes.",
+      "surface_effect": "Într-o continuare explicit fictivă"
+    },
+    {
+      "causal_classification": "STRUCTURAL_WORDING_AND_MISSING_GUARD_INTERACTION",
+      "defect": "Reviewer-facing dependency language was exposed without a concrete-language or register guard, encouraging procedural abstraction.",
+      "governance_text": "Keep one relation operative; make the second change unavailable unless the first has occurred.",
+      "surface_effect": "suspendă ... încheierea testului; fiindcă ... încetează ... să mai existe"
+    },
+    {
+      "causal_classification": "MISSING_ENFORCEMENT",
+      "defect": "A declarative register field had no pre-G03 fail-closed conformance predicate and was therefore non-operative.",
+      "governance_text": "register = IDIOMATIC_NATURAL_ROMANIAN",
+      "surface_effect": "The output remained grammatical but materially bureaucratic."
+    }
+  ],
+  "constructor_choice_contributed": true,
+  "parent_obligation_governance_identity": "0cfd22fd43e0be68b5a04f16e45e918ac7bae346c851334817a7af309bad63e5",
+  "pilot02_candidate_identity": "4cc6bceef84e29d07e19d60dbbb1992b33fcb8af67373647f5fb8fedfce1d98c",
+  "pilot02_candidate_raw_sha256": "5c50ca8e4ae5ea32301c02ec8ea4104482bbc9c8e3c7e8314516d09aeb591fd3",
+  "pilot02_disposition_identity": "6045d690a4405c935dfb754d772dc01d68adf2a57435f3a91a7294b13c706381",
+  "root_cause": "CONSTRUCTOR_VISIBLE_GOVERNANCE_WORDING_PLUS_ABSENT_EARLY_NATURALNESS_ADMISSION",
+  "schema_name": "batch2-successor-obligation-naturalness-root-cause-analysis-v1",
+  "schema_version": "1.0.0",
+  "source_family_causal": false,
+  "stable_rejection_reasons": [
+    "UNNATURAL_GOVERNANCE_STYLE_CREATIVE_MARKER",
+    "PROCEDURAL_ABSTRACT_REGISTER"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "candidate_bytes_modified": false,
+  "earliest_rejection": "G02C_EARLY_NATURALNESS_PRECHECK_BEFORE_G03",
+  "evaluated_against_conformance_schema_identity": "9470ce435de7ddcfea8dc4b3022b2ad697c2aa85fab44e8b532b4fa9850b0512",
+  "pilot02_candidate_identity": "4cc6bceef84e29d07e19d60dbbb1992b33fcb8af67373647f5fb8fedfce1d98c",
+  "pilot02_candidate_raw_sha256": "5c50ca8e4ae5ea32301c02ec8ea4104482bbc9c8e3c7e8314516d09aeb591fd3",
+  "predicates": {
+    "GOVERNANCE_LANGUAGE_ABSENT": "FAIL",
+    "IDIOMATIC_ROMANIAN_PRECHECK_PASS": "FAIL",
+    "INTEGRATED_NARRATIVE_CREATIVE_MARKING": "FAIL",
+    "PROCEDURAL_ABSTRACTION_NONMATERIAL": "FAIL"
+  },
+  "regression_identity": "ef182b817856037ede57c177ef2336f7944d954541772e791fb350ab08273320",
+  "regression_verdict": "PASS_FROZEN_PILOT02_REJECTED_EARLIER_WITHOUT_REPAIR",
+  "schema_name": "batch2-successor-obligation-v2-pilot02-naturalness-regression-v1",
+  "schema_version": "1.0.0",
+  "stable_reasons": [
+    "UNNATURAL_GOVERNANCE_STYLE_CREATIVE_MARKER",
+    "PROCEDURAL_ABSTRACT_REGISTER"
+  ]
+}
