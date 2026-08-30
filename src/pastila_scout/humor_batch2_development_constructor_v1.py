@@ -53,6 +53,13 @@ def construct_development_candidate_v1(*, constructor_packet_bytes: bytes) -> De
               "mai întâi încheierea testului; fiindcă testul nu se mai poate încheia, "
               "momentul în care ar trebui stabilit câștigătorul încetează apoi să mai existe.\n"
         ).encode("utf-8")
+    elif source.get("sha256") == "61a5889cb03f72c6f4f72b0f1652b2db43c092f51c91f7d5e59933a99ca2fc30":
+        candidate = (
+            lines[-1]
+            + " În povestea imaginară a coletului, necunoașterea conținutului lasă "
+              "lista de inventar goală; cum lista goală nu poate confirma nimic, "
+              "deschiderea programată ajunge să fie singurul lucru care mai poate fi inventariat.\n"
+        ).encode("utf-8")
     else:
         # Retain the consumed Pilot 01 behavior for historical verification.
         candidate = (
