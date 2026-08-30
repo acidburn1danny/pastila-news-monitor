@@ -60,6 +60,10 @@ class TokenPieceBundleV1:
 
 def _validate_native_decoder(tokenizer: InjectedTokenizerV1) -> None:
     decoder = getattr(tokenizer, "decoder", None)
+    decoder_type = type(decoder)
+    if (decoder_type.__name__ != "ByteLevel"
+            or decoder_type.__module__ != "tokenizers.decoders"):
+        raise ValueError("CONSTRUCTION_OBLIGATION_V2_NATIVE_DECODER_TYPE_MISMATCH")
     state_method = getattr(decoder, "__getstate__", None)
     if not callable(state_method):
         raise ValueError("CONSTRUCTION_OBLIGATION_V2_NATIVE_DECODER_MISSING")
@@ -127,7 +131,8 @@ def extract_identity_bound_token_pieces_v1(
             raise ValueError("CONSTRUCTION_OBLIGATION_V2_TOKENIZER_DECODE_INVALID")
         initial_pieces[token_id] = initial
         continuation_pieces[token_id] = continuation
-        if (not initial or not continuation) and token_id != EOS_TOKEN_ID:
+        if (not initial or not continuation or "\ufffd" in initial
+                or "\ufffd" in continuation) and token_id != EOS_TOKEN_ID:
             excluded.add(token_id)
     def decode_token_ids(token_ids: Sequence[int]) -> str:
         result = tokenizer.decode(

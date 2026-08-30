@@ -14,7 +14,8 @@ from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_toke
 )
 
 
-class NativeDecoder:
+class ByteLevel:
+    __module__ = "tokenizers.decoders"
     def __getstate__(self):
         import json
         return json.dumps(DECODER_CONFIGURATION)
@@ -23,7 +24,7 @@ class NativeDecoder:
 class TokenizersBackend:
     eos_token_id = EOS_TOKEN_ID
     all_special_ids = tuple(sorted(SPECIAL_TOKEN_IDS))
-    decoder = NativeDecoder()
+    decoder = ByteLevel()
 
     def __init__(self) -> None:
         self.decode_calls = 0
@@ -86,7 +87,7 @@ def test_binds_distinct_initial_and_continuation_decoder_pieces():
     class TokenizersBackend:
         eos_token_id = EOS_TOKEN_ID
         all_special_ids = tuple(sorted(SPECIAL_TOKEN_IDS))
-        decoder = NativeDecoder()
+        decoder = ByteLevel()
 
         def __init__(self):
             self.decode_calls = 0
@@ -109,11 +110,11 @@ def test_binds_distinct_initial_and_continuation_decoder_pieces():
     assert bundle.token_pieces[12] == " word"
 
 
-def test_bundle_retains_exact_history_decoder_for_context_dependent_tokens():
+def test_excludes_noncompositional_utf8_replacement_tokens():
     class TokenizersBackend:
         eos_token_id = EOS_TOKEN_ID
         all_special_ids = tuple(sorted(SPECIAL_TOKEN_IDS))
-        decoder = NativeDecoder()
+        decoder = ByteLevel()
 
         def __init__(self):
             self.decode_calls = 0
@@ -123,8 +124,8 @@ def test_bundle_retains_exact_history_decoder_for_context_dependent_tokens():
 
         def decode(self, token_ids, **kwargs):
             self.decode_calls += 1
-            if tuple(token_ids) == (4, 13):
-                return "context-dependent"
+            if 13 in token_ids:
+                return "\ufffd" * token_ids.count(13)
             return "".join(
                 "" if token_id in SPECIAL_TOKEN_IDS
                 else chr(0x20 + token_id % 90)
@@ -134,12 +135,7 @@ def test_bundle_retains_exact_history_decoder_for_context_dependent_tokens():
     tokenizer = TokenizersBackend()
     bundle = extract_identity_bound_token_pieces_v1(
         tokenizer=tokenizer, identity=identity())
-    assert bundle.decode_token_ids is not None
-    assert bundle.decode_token_ids((4, 13)) == "context-dependent"
-    assert (
-        bundle.initial_token_pieces[4] + bundle.token_pieces[13]
-        != "context-dependent"
-    )
+    assert 13 in bundle.excluded_token_ids
 
 
 @pytest.mark.parametrize("state", [
@@ -153,11 +149,12 @@ def test_rejects_missing_or_mutated_native_decoder_before_piece_decode(state):
     if state is None:
         tokenizer.decoder = object()
     else:
-        class Decoder:
-            def __getstate__(self):
-                import json
-                return json.dumps(state)
-        tokenizer.decoder = Decoder()
+        import json
+        decoder_type = type("ByteLevel", (), {
+            "__module__": "tokenizers.decoders",
+            "__getstate__": lambda self: json.dumps(state),
+        })
+        tokenizer.decoder = decoder_type()
     with pytest.raises(ValueError, match="NATIVE_DECODER"):
         extract_identity_bound_token_pieces_v1(
             tokenizer=tokenizer, identity=identity())
