@@ -236,16 +236,21 @@ def extract_identity_bound_token_pieces_v1(
             [token_id, token_id], skip_special_tokens=True,
             clean_up_tokenization_spaces=False,
         )
-        if (type(initial) is not str or type(doubled) is not str
-                or not doubled.startswith(initial)):
+        if type(initial) is not str or type(doubled) is not str:
             raise ValueError("CONSTRUCTION_OBLIGATION_V2_TOKENIZER_DECODE_INVALID")
-        continuation = doubled[len(initial):]
+        # ByteLevel vocabularies include raw UTF-8 byte fragments.  Decoding one
+        # such token can yield U+FFFD while decoding two fragments can form a
+        # different valid sequence, so compositional prefix subtraction is not
+        # defined for that token.  It is not a global decoder failure: exclude
+        # the token from both tries and retain an empty continuation sentinel.
+        compositional = doubled.startswith(initial)
+        continuation = doubled[len(initial):] if compositional else ""
         if any(0xD800 <= ord(character) <= 0xDFFF
                for piece in (initial, continuation) for character in piece):
             raise ValueError("CONSTRUCTION_OBLIGATION_V2_TOKENIZER_DECODE_INVALID")
         initial_pieces[token_id] = initial
         continuation_pieces[token_id] = continuation
-        if (not initial or not continuation or "\ufffd" in initial
+        if (not compositional or not initial or not continuation or "\ufffd" in initial
                 or "\ufffd" in continuation) and token_id != EOS_TOKEN_ID:
             excluded.add(token_id)
     def decode_token_ids(token_ids: Sequence[int]) -> str:

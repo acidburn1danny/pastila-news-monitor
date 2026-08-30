@@ -54,10 +54,10 @@ from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_runn
     parse_runner_request_v1,
 )
 from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_tokenizer_piece_adapter_v1 import (
-    DECODER_IDENTITY, EOS_TOKEN_ID, PROJECTOR_FREEZE_IDENTITY, TOKENIZER_IDENTITY,
-    TokenPieceBundleV1,
+    DECODER_IDENTITY, DECODER_MECHANISM_IDENTITY, EOS_TOKEN_ID,
+    PROJECTOR_FREEZE_IDENTITY, TOKENIZER_IDENTITY, TokenPieceBundleV1,
 )
-from test_semantic_admission_v2_stage_p_construction_obligation_constraint_v2 import _valid_text
+from test_semantic_admission_v2_stage_p_semantic_completeness_v1 import _positive_value
 
 ROOT = Path(__file__).resolve().parents[1]
 PACKET = ROOT / PACKET_RELATIVE
@@ -177,14 +177,17 @@ def test_exact_current_fake_runtime_reaches_terminal_output_through_real_sink(
         request, TokenPieceBundleV1(
             MappingProxyType({EOS_TOKEN_ID: ""}), frozenset((0, 1, 11)),
             EOS_TOKEN_ID, TOKENIZER_IDENTITY, DECODER_IDENTITY,
-            PROJECTOR_FREEZE_IDENTITY))
+            PROJECTOR_FREEZE_IDENTITY,
+            decoder_mechanism_identity=DECODER_MECHANISM_IDENTITY))
     context = bind_static_projector_preflight_v1_2(
         preflight=seed).projector.controller.tracker.context
-    terminal_text = _valid_text(context)
+    terminal_text = json.dumps(
+        _positive_value(), ensure_ascii=False, separators=(",", ":"))
     bundle = TokenPieceBundleV1(
         MappingProxyType({100: terminal_text, EOS_TOKEN_ID: ""}),
         frozenset((0, 1, 11)), EOS_TOKEN_ID, TOKENIZER_IDENTITY,
-        DECODER_IDENTITY, PROJECTOR_FREEZE_IDENTITY)
+        DECODER_IDENTITY, PROJECTOR_FREEZE_IDENTITY,
+        decoder_mechanism_identity=DECODER_MECHANISM_IDENTITY)
     callback = bind_static_callback_preflight_v1_3(
         projector_preflight=bind_static_projector_preflight_v1_2(
             preflight=ConstructionObligationV2RunnerPreflightV1_1(request, bundle)))

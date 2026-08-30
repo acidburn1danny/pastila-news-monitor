@@ -183,6 +183,33 @@ def test_excludes_noncompositional_utf8_replacement_tokens():
     assert 13 in bundle.excluded_token_ids
 
 
+def test_excludes_byte_fragment_whose_repeated_decode_is_not_prefix_compositional():
+    class TokenizersBackend:
+        __module__ = "transformers.tokenization_utils_tokenizers"
+        eos_token_id = EOS_TOKEN_ID
+        all_special_ids = tuple(sorted(SPECIAL_TOKEN_IDS))
+        decoder = ByteLevel()
+
+        def __len__(self):
+            return VOCABULARY_SIZE
+
+        def decode(self, token_ids, **kwargs):
+            if token_ids == [13]:
+                return "\ufffd"
+            if token_ids == [13, 13]:
+                return "\u07ff"
+            return "".join(
+                "" if token_id in SPECIAL_TOKEN_IDS
+                else chr(0x20 + token_id % 90)
+                for token_id in token_ids
+            )
+
+    bundle = extract(TokenizersBackend())
+    assert bundle.initial_token_pieces[13] == "\ufffd"
+    assert bundle.token_pieces[13] == ""
+    assert 13 in bundle.excluded_token_ids
+
+
 @pytest.mark.parametrize("state", [
     None,
     {"type": "ByteLevel", "add_prefix_space": False,
