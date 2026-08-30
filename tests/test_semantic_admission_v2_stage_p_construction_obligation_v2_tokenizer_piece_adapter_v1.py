@@ -52,6 +52,13 @@ def identity() -> TokenizerRuntimeIdentityV1:
     )
 
 
+def extract(tokenizer, runtime_identity=None):
+    return extract_identity_bound_token_pieces_v1(
+        tokenizer=tokenizer, identity=runtime_identity or identity(),
+        canonical_tokenizer_type=type(tokenizer),
+        canonical_decoder_type=type(tokenizer.decoder))
+
+
 @pytest.mark.parametrize("field,value", [
     ("tokenizer_identity", "sha256:" + "0" * 64),
     ("decoder_identity", "different"),
@@ -65,14 +72,13 @@ def identity() -> TokenizerRuntimeIdentityV1:
 def test_identity_mismatch_fails_before_decode(field, value):
     tokenizer = TokenizersBackend()
     with pytest.raises(ValueError, match="IDENTITY_MISMATCH"):
-        extract_identity_bound_token_pieces_v1(
-            tokenizer=tokenizer, identity=replace(identity(), **{field: value}))
+        extract(tokenizer, replace(identity(), **{field: value}))
     assert tokenizer.decode_calls == 0
 
 
 def test_extracts_complete_immutable_piece_bundle():
     tokenizer = TokenizersBackend()
-    bundle = extract_identity_bound_token_pieces_v1(tokenizer=tokenizer, identity=identity())
+    bundle = extract(tokenizer)
     assert tokenizer.decode_calls == 2 * VOCABULARY_SIZE
     assert len(bundle.token_pieces) == VOCABULARY_SIZE
     assert bundle.token_pieces[12] == "\x00"
@@ -106,8 +112,7 @@ def test_binds_distinct_initial_and_continuation_decoder_pieces():
                 piece if index == 0 else (" " + piece if piece == "word" else piece)
                 for index, piece in enumerate(pieces))
 
-    bundle = extract_identity_bound_token_pieces_v1(
-        tokenizer=TokenizersBackend(), identity=identity())
+    bundle = extract(TokenizersBackend())
     assert bundle.initial_token_pieces[12] == "word"
     assert bundle.token_pieces[12] == " word"
 
@@ -136,8 +141,7 @@ def test_excludes_noncompositional_utf8_replacement_tokens():
             )
 
     tokenizer = TokenizersBackend()
-    bundle = extract_identity_bound_token_pieces_v1(
-        tokenizer=tokenizer, identity=identity())
+    bundle = extract(tokenizer)
     assert 13 in bundle.excluded_token_ids
 
 
@@ -160,7 +164,9 @@ def test_rejects_missing_or_mutated_native_decoder_before_piece_decode(state):
         tokenizer.decoder = decoder_type()
     with pytest.raises(ValueError, match="NATIVE_DECODER"):
         extract_identity_bound_token_pieces_v1(
-            tokenizer=tokenizer, identity=identity())
+            tokenizer=tokenizer, identity=identity(),
+            canonical_tokenizer_type=TokenizersBackend,
+            canonical_decoder_type=ByteLevel)
     assert tokenizer.decode_calls == 0
 
 

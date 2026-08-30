@@ -87,6 +87,7 @@ def _validate_native_decoder(tokenizer: InjectedTokenizerV1) -> None:
 
 def extract_identity_bound_token_pieces_v1(
     *, tokenizer: InjectedTokenizerV1, identity: TokenizerRuntimeIdentityV1,
+    canonical_tokenizer_type: type, canonical_decoder_type: type,
 ) -> TokenPieceBundleV1:
     """Validate the entire frozen identity tuple before performing any decode."""
     expected = TokenizerRuntimeIdentityV1(
@@ -101,9 +102,14 @@ def extract_identity_bound_token_pieces_v1(
     )
     if type(identity) is not TokenizerRuntimeIdentityV1 or identity != expected:
         raise ValueError("CONSTRUCTION_OBLIGATION_V2_TOKENIZER_IDENTITY_MISMATCH")
-    if (type(tokenizer).__name__ != TOKENIZER_IMPLEMENTATION
-            or type(tokenizer).__module__ != TOKENIZER_IMPLEMENTATION_MODULE):
+    if (type(tokenizer) is not canonical_tokenizer_type
+            or canonical_tokenizer_type.__name__ != TOKENIZER_IMPLEMENTATION
+            or canonical_tokenizer_type.__module__ != TOKENIZER_IMPLEMENTATION_MODULE):
         raise ValueError("CONSTRUCTION_OBLIGATION_V2_TOKENIZER_IMPLEMENTATION_MISMATCH")
+    if (type(tokenizer.decoder) is not canonical_decoder_type
+            or canonical_decoder_type.__name__ != "ByteLevel"
+            or canonical_decoder_type.__module__ != "tokenizers.decoders"):
+        raise ValueError("CONSTRUCTION_OBLIGATION_V2_NATIVE_DECODER_TYPE_MISMATCH")
     if len(tokenizer) != VOCABULARY_SIZE:
         raise ValueError("CONSTRUCTION_OBLIGATION_V2_TOKENIZER_VOCABULARY_MISMATCH")
     if tokenizer.eos_token_id != EOS_TOKEN_ID:

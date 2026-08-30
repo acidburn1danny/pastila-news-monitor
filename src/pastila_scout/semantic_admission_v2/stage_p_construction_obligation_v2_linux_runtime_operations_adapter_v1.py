@@ -74,6 +74,8 @@ def prepare_linux_runtime_operations_v1(
             or hashlib.sha256(system_prompt.encode("utf-8")).hexdigest() != SYSTEM_PROMPT_SHA256):
         raise ValueError("CONSTRUCTION_OBLIGATION_V2_SYSTEM_PROMPT_IDENTITY_MISMATCH")
     from transformers import AutoTokenizer, BatchEncoding
+    from transformers.tokenization_utils_tokenizers import TokenizersBackend
+    from tokenizers.decoders import ByteLevel
 
     tokenizer = AutoTokenizer.from_pretrained(BASE_MODEL_PATH, local_files_only=True)
     identity = TokenizerRuntimeIdentityV1(
@@ -82,7 +84,9 @@ def prepare_linux_runtime_operations_v1(
         tuple(sorted(tokenizer.all_special_ids)), PROJECTOR_FREEZE_IDENTITY,
     )
     pieces = extract_identity_bound_token_pieces_v1(
-        tokenizer=tokenizer, identity=identity)
+        tokenizer=tokenizer, identity=identity,
+        canonical_tokenizer_type=TokenizersBackend,
+        canonical_decoder_type=ByteLevel)
     encoded = tokenizer.apply_chat_template(
         [{"role": "system", "content": system_prompt},
          {"role": "user", "content": rendered_prompt}],
