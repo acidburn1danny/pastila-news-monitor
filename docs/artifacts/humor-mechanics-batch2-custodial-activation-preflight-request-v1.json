@@ -1,0 +1,314 @@
+{
+  "activation_readiness": "NOT_YET_ESTABLISHED",
+  "authority_matrix": {
+    "archive_write": false,
+    "candidate_construction": false,
+    "content_access": false,
+    "content_ingestion": false,
+    "mechanism_assignment": false,
+    "model_exposure": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "source_acquisition": false,
+    "surface_generation": false,
+    "training": false
+  },
+  "batch_core": {
+    "atomic": true,
+    "operations": [
+      {
+        "distinct_signers_required": false,
+        "object_identity": "c279fa046ee00c140552555913a4a6701a12e185e757f740bd719016f451fe16",
+        "ordinal": 0,
+        "purpose": "RIGHTS_METADATA_ADMISSION_PREFLIGHT",
+        "required_signer_roles": [
+          "RIGHTS_CUSTODIAN"
+        ],
+        "structural_object": {
+          "contains_source_content": false,
+          "grants_operational_authority": false,
+          "object_kind": "NONCONTENT_METADATA_ONLY_PLACEHOLDER",
+          "ordinal": 0,
+          "placeholder_commitment": "6ab99178226ca5d48cf90bb957a4106bc2b6e9afd212024f6dd74f6ab00e4b13",
+          "purpose": "RIGHTS_METADATA_ADMISSION_PREFLIGHT"
+        }
+      },
+      {
+        "distinct_signers_required": true,
+        "object_identity": "e0746edeb8aaacc90324315ae539e5afefb45a9ae4751e861e5506cd24d1b54f",
+        "ordinal": 1,
+        "purpose": "ARCHIVE_ADMISSION_PREFLIGHT",
+        "required_signer_roles": [
+          "RIGHTS_CUSTODIAN",
+          "ACQUISITION_CUSTODIAN"
+        ],
+        "structural_object": {
+          "contains_source_content": false,
+          "grants_operational_authority": false,
+          "object_kind": "NONCONTENT_METADATA_ONLY_PLACEHOLDER",
+          "ordinal": 1,
+          "placeholder_commitment": "defcc759c74b1e8bcd1b71adbb1d21daa1cc6d4274980e7577087819b6a2cc10",
+          "purpose": "ARCHIVE_ADMISSION_PREFLIGHT"
+        }
+      },
+      {
+        "distinct_signers_required": false,
+        "object_identity": "6bc7b07c2914672c52c95e70ac03f5a5713abb508b9b012719ce07dd76dbafb3",
+        "ordinal": 2,
+        "purpose": "FAMILY_CLOSURE_PREFLIGHT",
+        "required_signer_roles": [
+          "FAMILY_CUSTODIAN"
+        ],
+        "structural_object": {
+          "contains_source_content": false,
+          "grants_operational_authority": false,
+          "object_kind": "NONCONTENT_METADATA_ONLY_PLACEHOLDER",
+          "ordinal": 2,
+          "placeholder_commitment": "ab269eb448534895d32b0853ea8a91bb06c6a6b9b14fd638b39e5f03040a4a52",
+          "purpose": "FAMILY_CLOSURE_PREFLIGHT"
+        }
+      },
+      {
+        "distinct_signers_required": false,
+        "object_identity": "f736fb3b7759966bc07f47732438c5ad41439e63bf1e3a7d32b3a4c16e163b31",
+        "ordinal": 3,
+        "purpose": "PARTITION_SEAL_PREFLIGHT",
+        "required_signer_roles": [
+          "PARTITION_CUSTODIAN"
+        ],
+        "structural_object": {
+          "contains_source_content": false,
+          "grants_operational_authority": false,
+          "object_kind": "NONCONTENT_METADATA_ONLY_PLACEHOLDER",
+          "ordinal": 3,
+          "placeholder_commitment": "29e6e50d916612a554af04d6037b815544b8c5afcb2756213700ffb1617543b6",
+          "purpose": "PARTITION_SEAL_PREFLIGHT"
+        }
+      },
+      {
+        "distinct_signers_required": true,
+        "object_identity": "56d4a75dc0a8414491d3e4ecf1ad3cad65969788c94c56571a6f0a54b2256a70",
+        "ordinal": 4,
+        "purpose": "BLIND_ESCROW_ADMISSION_PREFLIGHT",
+        "required_signer_roles": [
+          "PARTITION_CUSTODIAN",
+          "BLIND_ESCROW_CUSTODIAN"
+        ],
+        "structural_object": {
+          "contains_source_content": false,
+          "grants_operational_authority": false,
+          "object_kind": "NONCONTENT_METADATA_ONLY_PLACEHOLDER",
+          "ordinal": 4,
+          "placeholder_commitment": "eb201ba8094574c2ee77b6b7ef3eb1fdbf1f6c988a3dd2f389f272ec1234e63f",
+          "purpose": "BLIND_ESCROW_ADMISSION_PREFLIGHT"
+        }
+      },
+      {
+        "distinct_signers_required": false,
+        "object_identity": "866fff46da08155f1dfb45b2e17760019f64590d627f0c7f70234add5e1ed212",
+        "ordinal": 5,
+        "purpose": "CONTAMINATION_AUDIT_PREFLIGHT",
+        "required_signer_roles": [
+          "CONTAMINATION_AUDITOR"
+        ],
+        "structural_object": {
+          "contains_source_content": false,
+          "grants_operational_authority": false,
+          "object_kind": "NONCONTENT_METADATA_ONLY_PLACEHOLDER",
+          "ordinal": 5,
+          "placeholder_commitment": "c34830aec62128409cb3bbf3fe0f2fd29e2b58ca5f1a44d0890ff61f2f404fe8",
+          "purpose": "CONTAMINATION_AUDIT_PREFLIGHT"
+        }
+      }
+    ],
+    "prior_ledger_head": "b37cc702be9990638d4f196c1399f42dc3695ad1f271022759e114a3c559a00b",
+    "registration_commit": "cab04b6e43b13fefe6ab048b6ac8c7dbabe630b7",
+    "registration_identity": "01912e139471ec23cba5861c8f575f098a6248d39ebbe5ec2ee043493d392ebe"
+  },
+  "batch_identity": "cec33e1efb5f493f34d1d9cf8a56f0bffd0f620c054477d32ce8292eb587ec3c",
+  "fail_closed_mutations": [
+    "WRONG_ROLE_SIGNER",
+    "REUSED_SIGNATURE",
+    "REUSED_NONCE",
+    "STALE_LEDGER_HEAD",
+    "ALTERED_OBJECT_IDENTITY",
+    "ALTERED_PURPOSE",
+    "ALTERED_DOMAIN",
+    "MISSING_COUNTERSIGNATURE",
+    "SAME_ROLE_COUNTERSIGNATURE",
+    "DUPLICATE_KEY_SUBSTITUTION",
+    "REVOKED_OR_UNREGISTERED_KEY",
+    "UNAUTHORIZED_LEDGER_APPEND",
+    "REPLAY_PREVIOUS_VALID_PREFLIGHT_EVENT",
+    "CROSS_PURPOSE_SIGNATURE_REUSE"
+  ],
+  "ledger_events_appended": 0,
+  "operational_content_access": false,
+  "request_identity": "6758866887cf33c617407f22c6aca2ca939386ec98ca216ceaec3c72ddb78aa5",
+  "required_signature_count": 8,
+  "schema_name": "batch2-custodial-activation-preflight-request-v1",
+  "schema_version": "1.0.0",
+  "signature_requests": [
+    {
+      "challenge": {
+        "batch_identity": "cec33e1efb5f493f34d1d9cf8a56f0bffd0f620c054477d32ce8292eb587ec3c",
+        "challenge_identity": "3d182cd6ff9b971f96e500923f7bbf2b7c307a3635753cf432fd7ec721c27c58",
+        "domain": "PASTILA_BATCH2_CUSTODIAL_ACTIVATION_PREFLIGHT_V1",
+        "grants_operational_authority": false,
+        "nonce": "bb56d6c49471da1b091a3c54fbcd8f4ce437a39ff27acb8179854d83f2ddcf3e",
+        "object_identity": "c279fa046ee00c140552555913a4a6701a12e185e757f740bd719016f451fe16",
+        "operation_ordinal": 0,
+        "principal_identity": "35f8bee3260c2ff80aaaeb394d1446d273524cc51d1c4eda56715d49c2a77644",
+        "prior_ledger_head": "b37cc702be9990638d4f196c1399f42dc3695ad1f271022759e114a3c559a00b",
+        "purpose": "RIGHTS_METADATA_ADMISSION_PREFLIGHT",
+        "signer_role": "RIGHTS_CUSTODIAN"
+      },
+      "operation_ordinal": 0,
+      "principal_identity": "35f8bee3260c2ff80aaaeb394d1446d273524cc51d1c4eda56715d49c2a77644",
+      "purpose": "RIGHTS_METADATA_ADMISSION_PREFLIGHT",
+      "signature_status": "AWAITING_OWNER_SIGNATURE",
+      "signer_role": "RIGHTS_CUSTODIAN"
+    },
+    {
+      "challenge": {
+        "batch_identity": "cec33e1efb5f493f34d1d9cf8a56f0bffd0f620c054477d32ce8292eb587ec3c",
+        "challenge_identity": "6d820a71e9ab8fe139af1d75b9bbc44d220bc4139f70d7dfbb0bc56190dcfa9a",
+        "domain": "PASTILA_BATCH2_CUSTODIAL_ACTIVATION_PREFLIGHT_V1",
+        "grants_operational_authority": false,
+        "nonce": "4f1f441920c7fb7cca9da0d974ae608fafdabfff2417036991f6b6eadc73bfa1",
+        "object_identity": "e0746edeb8aaacc90324315ae539e5afefb45a9ae4751e861e5506cd24d1b54f",
+        "operation_ordinal": 1,
+        "principal_identity": "35f8bee3260c2ff80aaaeb394d1446d273524cc51d1c4eda56715d49c2a77644",
+        "prior_ledger_head": "b37cc702be9990638d4f196c1399f42dc3695ad1f271022759e114a3c559a00b",
+        "purpose": "ARCHIVE_ADMISSION_PREFLIGHT",
+        "signer_role": "RIGHTS_CUSTODIAN"
+      },
+      "operation_ordinal": 1,
+      "principal_identity": "35f8bee3260c2ff80aaaeb394d1446d273524cc51d1c4eda56715d49c2a77644",
+      "purpose": "ARCHIVE_ADMISSION_PREFLIGHT",
+      "signature_status": "AWAITING_OWNER_SIGNATURE",
+      "signer_role": "RIGHTS_CUSTODIAN"
+    },
+    {
+      "challenge": {
+        "batch_identity": "cec33e1efb5f493f34d1d9cf8a56f0bffd0f620c054477d32ce8292eb587ec3c",
+        "challenge_identity": "0741f218eea9ad1f1f05ef702dcf608dc45b629e1222bc0a057068eb3b5557ae",
+        "domain": "PASTILA_BATCH2_CUSTODIAL_ACTIVATION_PREFLIGHT_V1",
+        "grants_operational_authority": false,
+        "nonce": "2355c5ab663181c48bcd41a03b7f9e9d016a578d0457ff94834e870797844c82",
+        "object_identity": "e0746edeb8aaacc90324315ae539e5afefb45a9ae4751e861e5506cd24d1b54f",
+        "operation_ordinal": 1,
+        "principal_identity": "37c8c4010917cd87ad7d38591644a15a4640911522fea505b3273943af927bd7",
+        "prior_ledger_head": "b37cc702be9990638d4f196c1399f42dc3695ad1f271022759e114a3c559a00b",
+        "purpose": "ARCHIVE_ADMISSION_PREFLIGHT",
+        "signer_role": "ACQUISITION_CUSTODIAN"
+      },
+      "operation_ordinal": 1,
+      "principal_identity": "37c8c4010917cd87ad7d38591644a15a4640911522fea505b3273943af927bd7",
+      "purpose": "ARCHIVE_ADMISSION_PREFLIGHT",
+      "signature_status": "AWAITING_OWNER_SIGNATURE",
+      "signer_role": "ACQUISITION_CUSTODIAN"
+    },
+    {
+      "challenge": {
+        "batch_identity": "cec33e1efb5f493f34d1d9cf8a56f0bffd0f620c054477d32ce8292eb587ec3c",
+        "challenge_identity": "fb115d3c8739ff9962f7f775efc162295b3d5a55046632deefe250232ec166e8",
+        "domain": "PASTILA_BATCH2_CUSTODIAL_ACTIVATION_PREFLIGHT_V1",
+        "grants_operational_authority": false,
+        "nonce": "24de7cd93da4fa7b4bb152364adb470fc2fe93c991b51e1eafadd8bf24f2b5f6",
+        "object_identity": "6bc7b07c2914672c52c95e70ac03f5a5713abb508b9b012719ce07dd76dbafb3",
+        "operation_ordinal": 2,
+        "principal_identity": "728eea0400e8aa123ffba1afbff1982d985afbfb0bc850972389fd31b2ba75fa",
+        "prior_ledger_head": "b37cc702be9990638d4f196c1399f42dc3695ad1f271022759e114a3c559a00b",
+        "purpose": "FAMILY_CLOSURE_PREFLIGHT",
+        "signer_role": "FAMILY_CUSTODIAN"
+      },
+      "operation_ordinal": 2,
+      "principal_identity": "728eea0400e8aa123ffba1afbff1982d985afbfb0bc850972389fd31b2ba75fa",
+      "purpose": "FAMILY_CLOSURE_PREFLIGHT",
+      "signature_status": "AWAITING_OWNER_SIGNATURE",
+      "signer_role": "FAMILY_CUSTODIAN"
+    },
+    {
+      "challenge": {
+        "batch_identity": "cec33e1efb5f493f34d1d9cf8a56f0bffd0f620c054477d32ce8292eb587ec3c",
+        "challenge_identity": "865a652c31e311f0de44e4a421968343fd42d933cd3fcb720b84373e05262045",
+        "domain": "PASTILA_BATCH2_CUSTODIAL_ACTIVATION_PREFLIGHT_V1",
+        "grants_operational_authority": false,
+        "nonce": "20df5667df1d0d7a88ccf7e2eee4d286822ad22e5047c8c7bfd9cce33aff12aa",
+        "object_identity": "f736fb3b7759966bc07f47732438c5ad41439e63bf1e3a7d32b3a4c16e163b31",
+        "operation_ordinal": 3,
+        "principal_identity": "14f2d19b62ffc6b2a1a8ac5a426647962a03d2a81301410e7dbf16a27e4fb97d",
+        "prior_ledger_head": "b37cc702be9990638d4f196c1399f42dc3695ad1f271022759e114a3c559a00b",
+        "purpose": "PARTITION_SEAL_PREFLIGHT",
+        "signer_role": "PARTITION_CUSTODIAN"
+      },
+      "operation_ordinal": 3,
+      "principal_identity": "14f2d19b62ffc6b2a1a8ac5a426647962a03d2a81301410e7dbf16a27e4fb97d",
+      "purpose": "PARTITION_SEAL_PREFLIGHT",
+      "signature_status": "AWAITING_OWNER_SIGNATURE",
+      "signer_role": "PARTITION_CUSTODIAN"
+    },
+    {
+      "challenge": {
+        "batch_identity": "cec33e1efb5f493f34d1d9cf8a56f0bffd0f620c054477d32ce8292eb587ec3c",
+        "challenge_identity": "95fbd45217b54b4758ceab0c7fe7ccc938377f1f030a1eb81677dd39d6d248cc",
+        "domain": "PASTILA_BATCH2_CUSTODIAL_ACTIVATION_PREFLIGHT_V1",
+        "grants_operational_authority": false,
+        "nonce": "c34d7d2454a65bd9f50c2321a84b8f2c067bb17071c8db73b28044a3fee39615",
+        "object_identity": "56d4a75dc0a8414491d3e4ecf1ad3cad65969788c94c56571a6f0a54b2256a70",
+        "operation_ordinal": 4,
+        "principal_identity": "14f2d19b62ffc6b2a1a8ac5a426647962a03d2a81301410e7dbf16a27e4fb97d",
+        "prior_ledger_head": "b37cc702be9990638d4f196c1399f42dc3695ad1f271022759e114a3c559a00b",
+        "purpose": "BLIND_ESCROW_ADMISSION_PREFLIGHT",
+        "signer_role": "PARTITION_CUSTODIAN"
+      },
+      "operation_ordinal": 4,
+      "principal_identity": "14f2d19b62ffc6b2a1a8ac5a426647962a03d2a81301410e7dbf16a27e4fb97d",
+      "purpose": "BLIND_ESCROW_ADMISSION_PREFLIGHT",
+      "signature_status": "AWAITING_OWNER_SIGNATURE",
+      "signer_role": "PARTITION_CUSTODIAN"
+    },
+    {
+      "challenge": {
+        "batch_identity": "cec33e1efb5f493f34d1d9cf8a56f0bffd0f620c054477d32ce8292eb587ec3c",
+        "challenge_identity": "50544f94d17e71c799f6569bac1336d29f06be35d65a9440dd8460ce0fa24b23",
+        "domain": "PASTILA_BATCH2_CUSTODIAL_ACTIVATION_PREFLIGHT_V1",
+        "grants_operational_authority": false,
+        "nonce": "f5ccc31c906cb707d4e984d78227ca5cc50e5f357e3b0f28e26d653069280f89",
+        "object_identity": "56d4a75dc0a8414491d3e4ecf1ad3cad65969788c94c56571a6f0a54b2256a70",
+        "operation_ordinal": 4,
+        "principal_identity": "12e32e46bdb6acc1ac5a7556dcb021ee35a8b264e6b157a5572d801fa373619e",
+        "prior_ledger_head": "b37cc702be9990638d4f196c1399f42dc3695ad1f271022759e114a3c559a00b",
+        "purpose": "BLIND_ESCROW_ADMISSION_PREFLIGHT",
+        "signer_role": "BLIND_ESCROW_CUSTODIAN"
+      },
+      "operation_ordinal": 4,
+      "principal_identity": "12e32e46bdb6acc1ac5a7556dcb021ee35a8b264e6b157a5572d801fa373619e",
+      "purpose": "BLIND_ESCROW_ADMISSION_PREFLIGHT",
+      "signature_status": "AWAITING_OWNER_SIGNATURE",
+      "signer_role": "BLIND_ESCROW_CUSTODIAN"
+    },
+    {
+      "challenge": {
+        "batch_identity": "cec33e1efb5f493f34d1d9cf8a56f0bffd0f620c054477d32ce8292eb587ec3c",
+        "challenge_identity": "c4ecd0c6305b6e748a42b75ba053f2bbb000a492e6eae33ea85076e562e9921b",
+        "domain": "PASTILA_BATCH2_CUSTODIAL_ACTIVATION_PREFLIGHT_V1",
+        "grants_operational_authority": false,
+        "nonce": "1b7c24531671aa31686bf7216c987d4c98eb9cc327eba47166ddfcdd125efe89",
+        "object_identity": "866fff46da08155f1dfb45b2e17760019f64590d627f0c7f70234add5e1ed212",
+        "operation_ordinal": 5,
+        "principal_identity": "1740c9f292a03dab6db10f497f3bcf6843b0e538c8f7ef1e1a359bb5af5c8144",
+        "prior_ledger_head": "b37cc702be9990638d4f196c1399f42dc3695ad1f271022759e114a3c559a00b",
+        "purpose": "CONTAMINATION_AUDIT_PREFLIGHT",
+        "signer_role": "CONTAMINATION_AUDITOR"
+      },
+      "operation_ordinal": 5,
+      "principal_identity": "1740c9f292a03dab6db10f497f3bcf6843b0e538c8f7ef1e1a359bb5af5c8144",
+      "purpose": "CONTAMINATION_AUDIT_PREFLIGHT",
+      "signature_status": "AWAITING_OWNER_SIGNATURE",
+      "signer_role": "CONTAMINATION_AUDITOR"
+    }
+  ],
+  "status": "AWAITING_OWNER_CONTROLLED_PREFLIGHT_SIGNATURES"
+}
