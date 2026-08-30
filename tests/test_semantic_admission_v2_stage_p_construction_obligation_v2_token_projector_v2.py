@@ -99,6 +99,50 @@ def test_exact_decoder_never_recovers_by_scanning_outside_trie_candidates():
             "{" if tuple(ids) == (1009,) else ""))
     assert calls == [()]
 
+
+def test_exact_decoder_rejects_multi_predecessor_context_disagreement():
+    context, _, _ = _case_context()
+    raw = _valid_text(context)
+    projector = StagePConstructionObligationV2TokenProjectorV2(
+        controller=StagePConstructionObligationCharacterControllerV1(
+            context=context, decoder_identity=DECODER),
+        token_pieces={10: raw[0], 11: raw[1], 12: raw[2], 2: ""},
+        initial_token_pieces={10: raw[0], 11: raw[1], 12: raw[2], 2: ""},
+        eos_token_id=2, tokenizer_identity=TOKENIZER, decoder_identity=DECODER,
+        request_context_identity=context.binding_identity,
+        request_authority_identity="authority:test-case-01",
+        exact_history_decoder=True)
+    decoded = {
+        (10, 11): raw[:2],
+        (10, 11, 12): raw[:2] + "x",
+    }
+    with pytest.raises(StagePTokenProjectionFailureV1):
+        projector.allowed_token_ids(
+            (10, 11), lambda ids: decoded.get(tuple(ids), ""))
+
+
+def test_exact_decoder_has_request_lifetime_token_work_ceiling(monkeypatch):
+    import pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_token_projector_v2 as module
+    monkeypatch.setattr(module, "MAX_EXACT_DECODE_TOKEN_WORK_PER_REQUEST", 1)
+    context, _, _ = _case_context()
+    projector = StagePConstructionObligationV2TokenProjectorV2(
+        controller=StagePConstructionObligationCharacterControllerV1(
+            context=context, decoder_identity=DECODER),
+        token_pieces={10: "{", 11: '"', 2: ""},
+        initial_token_pieces={10: "{", 11: '"', 2: ""},
+        eos_token_id=2, tokenizer_identity=TOKENIZER, decoder_identity=DECODER,
+        request_context_identity=context.binding_identity,
+        request_authority_identity="authority:test-case-01",
+        exact_history_decoder=True)
+    assert projector.allowed_token_ids(
+        (), lambda ids: "{" if tuple(ids) == (10,) else "").token_ids == (10,)
+    with pytest.raises(StagePTokenProjectionFailureV1):
+        projector.allowed_token_ids(
+            (10,), lambda ids: {
+                (10,): "{", (10, 11): '{"'
+            }.get(tuple(ids), ""))
+    assert projector._exact_decode_token_work == 1
+
 def test_indexed_projection_matches_oracle_across_every_reachable_prefix():
     context, _, _ = _case_context(candidate_text="Țară, știre — «nouă»")
     raw = _valid_text(context)

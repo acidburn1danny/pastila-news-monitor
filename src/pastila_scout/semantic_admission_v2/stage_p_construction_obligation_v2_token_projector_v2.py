@@ -22,6 +22,7 @@ from .stage_p_role_coherence_constraint_v1 import StagePRoleCoherenceConstraintV
 PROJECTOR_ALGORITHM_IDENTITY = "REQUEST_BOUND_TOKEN_PIECE_TRIE_V2"
 GRAMMAR_IDENTITY = "CONSTRUCTION_OBLIGATION_DFA_V2"
 MAX_EXACT_CANDIDATES_PER_CALLBACK = 16_384
+MAX_EXACT_DECODE_TOKEN_WORK_PER_REQUEST = 64_000_000
 
 
 @dataclass(frozen=True, slots=True)
@@ -133,6 +134,7 @@ class StagePConstructionObligationV2TokenProjectorV2:
              + (terminal_admission_identity or "NONE")).encode()).hexdigest()
         self._cache: dict[str, tuple[int, ...]] = {}
         self._hits = self._misses = self._visited = self._admitted = 0
+        self._exact_decode_token_work = 0
 
     @property
     def trie_node_count(self) -> int:
@@ -239,24 +241,20 @@ class StagePConstructionObligationV2TokenProjectorV2:
         if len(candidates) > MAX_EXACT_CANDIDATES_PER_CALLBACK:
             return ()
         admitted = []
-        predecessor = None
-        if not initial:
-            try:
-                predecessor = decode((token_ids[-1],))
-            except (UnicodeError, ValueError, TypeError, KeyError):
-                return ()
-            if type(predecessor) is not str:
-                return ()
+        history = tuple(token_ids)
+        required_work = len(candidates) * (len(history) + 1)
+        if (self._exact_decode_token_work + required_work
+                > MAX_EXACT_DECODE_TOKEN_WORK_PER_REQUEST):
+            return ()
+        self._exact_decode_token_work += required_work
+        base = prefix.decoded
         for token_id in candidates:
             try:
-                if initial:
-                    piece = decode((token_id,))
-                else:
-                    extended = decode((token_ids[-1], token_id))
-                    if (type(extended) is not str
-                            or not extended.startswith(predecessor)):
-                        continue
-                    piece = extended[len(predecessor):]
+                extended = decode(history + (token_id,))
+                if (type(extended) is not str
+                        or not extended.startswith(base)):
+                    continue
+                piece = extended[len(base):]
                 expected = (self._bound_initial_token_pieces[token_id] if initial
                             else self._bound_token_pieces[token_id])
                 if type(piece) is not str or not piece or piece != expected:
