@@ -1,0 +1,139 @@
+{
+  "authority_matrix": {
+    "candidate_regeneration": false,
+    "candidate_repair": false,
+    "candidate_rewrite": false,
+    "curriculum_promotion": false,
+    "owner_review": false,
+    "production_routing": false,
+    "romanian_naturalness_review": false,
+    "runtime_integration": false,
+    "training": false,
+    "voice_review": false
+  },
+  "blind_holdout_content_accessed": false,
+  "candidate_bytes_modified": false,
+  "candidate_disposition_effect": "NOT_YET_ELIGIBLE_FOR_CURRICULUM_OR_OWNER_FREEZE_POOL_G03C_REMAINS_OPEN",
+  "candidate_identity": "4cc6bceef84e29d07e19d60dbbb1992b33fcb8af67373647f5fb8fedfce1d98c",
+  "candidate_level": {
+    "constructor_template": {
+      "finding": "PASS_FOR_THIS_CANDIDATE_G03B_ESTABLISHES_STRUCTURAL_NOT_TEMPLATE_DEPENDENCE",
+      "material": false,
+      "observed": "SUCCESSOR_OBLIGATION_REQUIRES_TWO_LOCALLY_DEPENDENT_CHANGES_WITHOUT_FIXED_LEXEME_OR_GRAMMAR"
+    },
+    "format": {
+      "finding": "PASS_GENERIC_AUTHORITY_SAFETY_SHAPE_NOT_TARGET_SPECIFIC",
+      "material": false,
+      "observed": "TWO_SENTENCES_FACTUAL_PREMISE_THEN_MARKED_CREATIVE_CONTINUATION"
+    },
+    "length": {
+      "finding": "PASS_NO_LENGTH_RULE_OR_TARGET_THRESHOLD",
+      "material": false,
+      "utf8_bytes": 317
+    },
+    "lexical": {
+      "finding": "PASS_NONDEFINING_AND_G03B_PARAPHRASE_INVARIANT",
+      "material": false,
+      "observed_cues": [
+        "continuare explicit fictivă",
+        "fiindcă",
+        "apoi",
+        "încetează"
+      ]
+    },
+    "metadata": {
+      "finding": "PASS_CANDIDATE_ARTIFACT_HAS_NO_MECHANISM_ID_NAME_ORDINAL_OR_ANSWER_KEY",
+      "material": false
+    },
+    "position": {
+      "finding": "PASS_COMMON_HUMOR_POSITION_NOT_DISCRIMINATIVE",
+      "material": false,
+      "observed": "PAYOFF_AT_END"
+    },
+    "topic_entity": {
+      "finding": "PASS_SOURCE_ACQUIRED_AND_PARTITIONED_BEFORE_ASSIGNMENT",
+      "material": false,
+      "observed": "NEUTRAL_SYNTHETIC_TASTING_TEST_NO_NAMED_PERSON_OR_PROTECTED_ENTITY"
+    },
+    "verdict": "CANDIDATE_SHORTCUT_PASS",
+    "weak_nonsemantic_classifier": {
+      "diagnostic": "NO_SINGLE_FEATURE_EXPLAINS_BOTH_BLIND_RECOVERY_AND_G03B_INVARIANCE",
+      "execution": "NOT_TRAINED_NO_MODEL_OR_STATISTICAL_FIT",
+      "feature_only_hypotheses": [
+        "lexeme",
+        "punctuation",
+        "length",
+        "topic",
+        "sentence position",
+        "packet format"
+      ],
+      "finding": "PASS_CANDIDATE_LEVEL"
+    }
+  },
+  "candidate_raw_sha256": "5c50ca8e4ae5ea32301c02ec8ea4104482bbc9c8e3c7e8314516d09aeb591fd3",
+  "contamination": {
+    "blind_family_or_metadata_access": false,
+    "blind_holdout_tuning": false,
+    "candidate_model_visibility": false,
+    "cross_partition_family_overlap": false,
+    "development_partition_only": true,
+    "historical_surface_tuning": false,
+    "owner_preference_tuning": false,
+    "pilot01_surface_or_construction_reuse": false,
+    "training_visibility": false,
+    "verdict": "PASS_CLEAN_DEVELOPMENT_DIAGNOSTIC"
+  },
+  "creative_premise_family_id": "ccb8ffaa1f8bd4f1cc40042854a76e73c3fb99d08f359da2e7ea952796bd7467",
+  "g03b_commit": "01f63d7c35814dd85e0f36f6301419956cc0d3d4",
+  "g03b_receipt_identity": "825d2b7f58a6b7b2c12487d8c26e1c65d431138b1ea516ff6140a94f37662009",
+  "g03b_review_identity": "cb8c00b8498b73f4c39eaa4d4da4a943fc5e6461ec3070ed844d175d6e3c6892",
+  "g03c_diagnostic_identity": "1e4646a370d36a3be7978acb0bbf0ac8964143098358924b0c7b0680477842d0",
+  "g03c_verdict": "CANDIDATE_SHORTCUT_PASS_AND_POOL_PENDING",
+  "performed": {
+    "candidate_regeneration": false,
+    "candidate_repair": false,
+    "candidate_rewrite": false,
+    "owner_review": false,
+    "production_routing": false,
+    "romanian_naturalness_review": false,
+    "runtime_integration": false,
+    "training": false,
+    "voice_review": false
+  },
+  "pool_level": {
+    "accessible_scope": "DEVELOPMENT_AND_FROZEN_NONBLIND_METADATA_ONLY",
+    "blind_reserve": "NOT_ACCESSED_NOT_TUNED",
+    "dominant_positive_family_count": 1,
+    "excluded_from_positive_count": [
+      "f96e626487812b4a9ad32ef548d4ac715fae4ea9bb24590a73f942b0783f080f"
+    ],
+    "family_overlap": {
+      "finding": "PASS_NO_DUPLICATE_REVISION_SIBLING_SAME_EVENT_OR_CREATIVE_FAMILY_OVERLAP",
+      "pilot01_candidate_identity": "f96e626487812b4a9ad32ef548d4ac715fae4ea9bb24590a73f942b0783f080f",
+      "pilot01_candidate_role": "NONPOSITIVE_AMBIGUOUS_CONFUSABLE",
+      "pilot01_positive_eligible": false,
+      "pilot02_creative_premise_family": "ccb8ffaa1f8bd4f1cc40042854a76e73c3fb99d08f359da2e7ea952796bd7467",
+      "pilot02_event_family": "d83ec1870ec3d927cbee90a7eb0230279d35b09d725b060f831d5de3dc5df52e",
+      "pilot02_source_family": "f75b690801066eb41484e39ba66bccbb3c6963b9721ccea2a96df79d50b38b8c",
+      "pilot02_topic_entity_family": "ab894f64a7d4a22908e8a520a6f44fa7cd826f11a6126a1c85ea9947d312dc1d"
+    },
+    "obligation_family_confound": "UNRESOLVED_SINGLE_POSITIVE_CANDIDATE_PERFECTLY_CONFOUNDS_TARGET_WITH_SUCCESSOR_OBLIGATION_FAMILY",
+    "required_to_close": [
+      "additional independently acquired and constructed dominant-positive source families",
+      "mechanism-confusable negatives with family isolation",
+      "cross-obligation and cross-topic balancing",
+      "pool audit before any curriculum visibility"
+    ],
+    "target_positive_candidates": [
+      "4cc6bceef84e29d07e19d60dbbb1992b33fcb8af67373647f5fb8fedfce1d98c"
+    ],
+    "verdict": "POOL_PENDING_INSUFFICIENT_INDEPENDENT_POSITIVE_FAMILIES",
+    "weak_nonsemantic_classifier": {
+      "reason": "A one-positive pool cannot distinguish semantic recovery from family/template correlation without leakage or overfitting.",
+      "status": "INSUFFICIENT_STATISTICAL_POWER",
+      "training_or_tuning_performed": false
+    }
+  },
+  "schema_name": "batch2-development-pilot02-candidate01-g03c-diagnostic-v1",
+  "schema_version": "1.0.0"
+}
