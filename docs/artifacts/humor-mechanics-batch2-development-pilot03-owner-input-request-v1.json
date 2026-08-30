@@ -1,0 +1,116 @@
+{
+  "authority_matrix": {
+    "archive_write": false,
+    "construction": false,
+    "content_ingestion": false,
+    "creative_premise_assignment": false,
+    "custodial_signing": false,
+    "family_seal": false,
+    "g01a_admission": false,
+    "g01b_admission": false,
+    "generation": false,
+    "model_exposure": false,
+    "obligation_assignment": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "source_acquisition": false,
+    "target_assignment": false,
+    "training": false
+  },
+  "content_accessed": false,
+  "content_free_exposure_record": {
+    "blind_material_accessed": false,
+    "candidate_or_source_surface_accessed": false,
+    "mechanism_reasoning_performed": false,
+    "operation": "PILOT03_OWNER_INPUT_TEMPLATE_PREPARATION",
+    "prior_candidate_surfaces_exposed_to_owner_package": false,
+    "source_or_family_identity": "NOT_YET_EXISTS"
+  },
+  "declaration_template_identity": "f40d81fa36f331703d73d09c475ba8951c6cb9c8ce180a0f871a401b8eb91a93",
+  "freshness_checks_after_submission": [
+    "SOURCE_SHA_AND_GIT_BLOB_DIFFER_FROM_PILOT01_AND_PILOT02",
+    "NO_SOURCE_EVENT_AUTHORITY_TOPIC_REVISION_SYNDICATION_OR_SAME_EVENT_FAMILY_RELATION_TO_PRIOR_PILOTS",
+    "NO_PRIOR_TARGET_OBLIGATION_OR_CREATIVE_PREMISE_ASSIGNMENT",
+    "NO_PRIOR_CONSTRUCTION_MODEL_TRAINING_RUNTIME_OR_PRODUCTION_EXPOSURE",
+    "NO_BLIND_FAMILY_ACCESS",
+    "CONTAMINATION_LEDGER_COMPLETE"
+  ],
+  "governance_v2": {
+    "commit": "618333a3db484da134904aea004a36e9cb0350d4",
+    "conformance_schema_identity": "9470ce435de7ddcfea8dc4b3022b2ad697c2aa85fab44e8b532b4fa9850b0512",
+    "leakage_audit_identity": "d1cb506a29a813821c0de844fbf7a702ee34139c086a881c3a1dc9824c7ceafe",
+    "obligation_governance_identity": "874c5d611c5ab955e0f9d82aa5aa086fad98e065f66e20e9e236f48798287024",
+    "pilot02_regression_identity": "ef182b817856037ede57c177ef2336f7944d954541772e791fb350ab08273320",
+    "root_cause_analysis_identity": "60a22bd7759d17bce22695bfdd16459760c5f3b6fc940d8497baf35a6f9dbdd2"
+  },
+  "identity_timing": {
+    "authority_envelope": "AFTER_PROPOSITION_BINDING",
+    "family_closure": "AFTER_DUPLICATE_REVISION_SYNDICATION_SAME_EVENT_AUDIT",
+    "partition_identity": "AFTER_G01B_AND_AUTHORIZED_CUSTODIAL_SEAL",
+    "rights_identity": "AFTER_COMPLETED_DECLARATION",
+    "source_commitment": "AFTER_EXACT_BYTES"
+  },
+  "owner_files_required": [
+    {
+      "content": "OWNER_AUTHORED_BYTE_EXACT_SOURCE",
+      "encoding": "UTF-8_NO_BOM",
+      "filename": "owner-source-pilot03-v1.txt",
+      "line_endings": "LF_ONLY",
+      "terminal_lf_count": 1
+    },
+    {
+      "canonical_requirement": "UTF8_JSON_NO_BOM_LF_ONE_TERMINAL_LF",
+      "content": "OWNER_COMPLETED_DECLARATION_FROM_TEMPLATE",
+      "filename": "owner-declaration-pilot03-v1.json"
+    }
+  ],
+  "owner_input_request_identity": "60aead240f7a075f8c7c4680a64b61cdc45d3b23cd7536810c0f5622b13cd3e0",
+  "preparation_verdict": "PASS_CONTENT_FREE_METADATA_FIRST_OWNER_PACKAGE",
+  "prospective_gate_path": [
+    "OWNER_SUBMISSION",
+    "STRICT_PREINGESTION_VALIDATION_SEPARATELY_AUTHORIZED",
+    "PROSPECTIVE_IDENTITIES_AND_UNSIGNED_SIGNING_PACKET_SEPARATELY_AUTHORIZED",
+    "CUSTODIAL_SIGNATURES_OWNER_OPERATED",
+    "ATOMIC_IMMUTABLE_INGESTION_SEPARATELY_AUTHORIZED",
+    "G01A_RIGHTS_PROVENANCE_AUTHORITY_SEPARATELY_AUTHORIZED",
+    "G01B_FAMILY_DEVELOPMENT_PARTITION_ADMISSION_SEPARATELY_AUTHORIZED"
+  ],
+  "schema_name": "batch2-development-pilot03-owner-input-request-v1",
+  "schema_version": "1.0.0",
+  "source_content_requirements": {
+    "minimum_independently_bindable_factual_propositions": 2,
+    "must_be_independent_new_event_and_family": true,
+    "must_be_neutral_nonhumorous": true,
+    "must_be_owner_authored": true,
+    "must_expose_scope_modality_time_and_known_unknown_boundaries_where_applicable": true,
+    "prohibited": [
+      "PILOT01_OR_PILOT02_WORDING_ENTITY_EVENT_CREATIVE_PREMISE_OR_CONSTRUCTION_REUSE",
+      "REVISION_SIBLING_SYNDICATION_OR_SAME_EVENT_RELATION_TO_PRIOR_PILOTS",
+      "HUMOR_OR_PUNCHLINE",
+      "RHETORICAL_QUESTION",
+      "PARODY",
+      "METAPHOR_HEAVY_OR_ANTHROPOMORPHIC_FRAMING",
+      "GOVERNANCE_OR_INSTRUCTION_STYLE_LANGUAGE",
+      "PRIVATE_PERSON_OR_PERSONAL_DATA",
+      "PROTECTED_OR_VULNERABLE_TARGET",
+      "ALLEGATION_OR_WRONGDOING",
+      "PRIVATE_OR_CONFIDENTIAL_KNOWLEDGE",
+      "SENSITIVE_ADVICE",
+      "THIRD_PARTY_COPYRIGHTED_SURFACE",
+      "MECHANISM_OBLIGATION_OR_CREATIVE_PREMISE_METADATA"
+    ],
+    "selection_must_not_use": [
+      "GOVERNANCE_V1_OR_V2_CONSTRUCTOR_VISIBLE_OBLIGATION",
+      "TARGET_MECHANISM_OR_BATCH2_GAP",
+      "PILOT01_OR_PILOT02_CANDIDATE_SURFACE_OR_DIAGNOSTIC",
+      "TARGET_FRIENDLY_TOPIC_GRAMMAR_PROPOSITION_TOPOLOGY_OR_SHAPE"
+    ]
+  },
+  "source_family_created": false,
+  "status": "BLOCKED_AWAITING_OWNER_INPUT",
+  "unassigned": {
+    "creative_premise_family_id": "UNASSIGNED",
+    "operational_obligation": true,
+    "target_mechanism": true
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "audit_identity": "78e5af7a74a6b625cb90bcb55ff7fa34fc9c69b757f524dd0b8433d00c8f907d",
+  "audit_verdict": "PASS_CONTENT_FREE_STOP_REQUIRED",
+  "checks": {
+    "all_operational_authorities_false": true,
+    "freshness_against_both_prior_pilots_required": true,
+    "governance_v2_exact": true,
+    "no_blind_access": true,
+    "no_family_identity_before_bytes": true,
+    "no_g01_verdict_before_validation": true,
+    "no_prior_candidate_surface_in_package": true,
+    "obligation_not_used_for_source_selection": true,
+    "owner_authority_not_fabricated": true,
+    "rights_grants_owner_selected_independently": true,
+    "source_content_not_authored_acquired_or_selected": true
+  },
+  "declaration_template_identity": "f40d81fa36f331703d73d09c475ba8951c6cb9c8ce180a0f871a401b8eb91a93",
+  "deterministic_blockers": [],
+  "external_input_blocker": "OWNER_AUTHORED_SOURCE_BYTES_AND_COMPLETED_DECLARATION_REQUIRED",
+  "owner_input_request_identity": "60aead240f7a075f8c7c4680a64b61cdc45d3b23cd7536810c0f5622b13cd3e0",
+  "schema_name": "batch2-development-pilot03-owner-input-request-audit-v1",
+  "schema_version": "1.0.0"
+}
