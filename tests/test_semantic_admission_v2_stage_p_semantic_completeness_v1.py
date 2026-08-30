@@ -107,6 +107,24 @@ def test_case01_policy_dfa_accepts_exact_topology_and_prunes_false_required_rece
         controller.allowed((1, 2), lambda _: encoded[:offset + 1].decode("utf-8"))
 
 
+def test_resealed_case01_topology_substitution_fails_at_controller_construction():
+    policy = _policy()
+    substituted = seal_semantic_completeness_policy_v1(replace(
+        policy,
+        required_topology=replace(policy.required_topology,
+                                  construction_ids=("C2",)),
+        identity=""))
+    assert substituted.identity != policy.identity
+    source, authority = _sources()
+    context = SourceReferenceConstraintContextV1.bind(
+        candidate=source, factual_authority=authority)
+    with pytest.raises(
+            ValueError, match="CASE01_CANONICAL_SEMANTIC_POLICY_IDENTITY_MISMATCH"):
+        StagePConstructionObligationCharacterControllerV1(
+            context=context, decoder_identity="resealed-policy-attack",
+            semantic_policy=substituted)
+
+
 def _reference(role: str, sha256: str, start: int, end: int):
     return {"source_role": role, "source_sha256": sha256,
             "start_utf8": start, "end_utf8": end}

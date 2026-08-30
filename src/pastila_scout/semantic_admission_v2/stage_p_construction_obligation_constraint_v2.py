@@ -12,7 +12,9 @@ from .stage_p_source_reference_constraint_v1 import (
     StagePSourceReferenceConstraintStateV1,
 )
 from .stage_p_construction_obligation_semantic_completeness_v1 import (
-    SemanticCompletenessPolicyV1, seal_semantic_completeness_policy_v1,
+    CASE01_AUTHORITY_SHA256, CASE01_CANDIDATE_SHA256,
+    CASE01_CANONICAL_POLICY_IDENTITY, SemanticCompletenessPolicyV1,
+    seal_semantic_completeness_policy_v1,
 )
 
 
@@ -51,6 +53,10 @@ class StagePConstructionObligationConstraintStateV2(
             if (semantic_policy.candidate_sha256 != context.candidate.sha256 or
                     semantic_policy.authority_sha256 != context.factual_authority.sha256):
                 raise ValueError("SEMANTIC_COMPLETENESS_POLICY_CONTEXT_MISMATCH")
+            if (context.candidate.sha256 == CASE01_CANDIDATE_SHA256 and
+                    context.factual_authority.sha256 == CASE01_AUTHORITY_SHA256 and
+                    semantic_policy.identity != CASE01_CANONICAL_POLICY_IDENTITY):
+                raise ValueError("CASE01_CANONICAL_SEMANTIC_POLICY_IDENTITY_MISMATCH")
         return cls(context=context, semantic_policy=semantic_policy)
 
     def _feed_char(self, char: str):

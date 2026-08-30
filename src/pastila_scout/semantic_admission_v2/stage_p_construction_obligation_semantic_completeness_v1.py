@@ -14,6 +14,7 @@ from .stage_p_role_coherence_contract_v1 import EntryType, Modality
 
 CASE01_CANDIDATE_SHA256 = "52a54bad5c68d16bd326c9dac8c544b5c4b0a45b9129262a0da139167362682b"
 CASE01_AUTHORITY_SHA256 = "e2add20c2ac06fdc90a2f7e1960d5672b8e91a9f7a82b895203dfb43f7f9d196"
+CASE01_CANONICAL_POLICY_IDENTITY = "90ea8252fb7a2b548ab75ef5e9f9116aeb4dc5babf5ab6588f9ea4c538eff7f4"
 ADMISSION_VERSION = "REQUEST_BOUND_SEMANTIC_COMPLETENESS_V1"
 
 
@@ -161,7 +162,10 @@ class SemanticCompletenessPolicyV1:
             unresolved_justifications, qualifications, required_returns,
             required_topology, required_constructions, required_creative,
             case01, case01, "")
-        return seal_semantic_completeness_policy_v1(provisional)
+        sealed = seal_semantic_completeness_policy_v1(provisional)
+        if case01 and sealed.identity != CASE01_CANONICAL_POLICY_IDENTITY:
+            raise ValueError("CASE01_CANONICAL_SEMANTIC_POLICY_IDENTITY_DRIFT")
+        return sealed
 
 
 @dataclass(frozen=True, slots=True)
