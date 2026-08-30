@@ -1,0 +1,43 @@
+{
+  "schema_name": "humor-mechanics-curriculum-v1-batch2-current-authority-discovery",
+  "schema_version": "1.0.0",
+  "status": "BOUNDED_DISCOVERY_COMPLETE",
+  "required_provenance_class": "CURRENT_OWNER_FINAL_FACTUAL_AUTHORITY_AND_EXPLICIT_CREATIVE_MARKING",
+  "priority_mechanisms": ["M11","M12","M13","M17","M18","M19"],
+  "admitted_lineages": [
+    {
+      "source_id": "HMCV1-SASC-01:terminal-output",
+      "evidence_commit": "2c5ce79396ecd14df16a452e8ce46ff65b394f54",
+      "raw_output_sha256": "e5ca27cf26a4752a23460187fe315b1e5eb5fe1822b194d21a5371cca232e19d",
+      "frozen_ledger_path": "docs/artifacts/semantic-admission-v2-stage-c-case01-successor-v1-2-1-canonical-response-bound/frozen-stage-p-ledger.json",
+      "frozen_ledger_sha256": "e5ca27cf26a4752a23460187fe315b1e5eb5fe1822b194d21a5371cca232e19d",
+      "semantic_evaluation_path": "docs/artifacts/semantic-admission-v2-case01-creative-semantics-pruning-bound-semantic-evaluation-v1.json",
+      "semantic_evaluation_sha256": "d86a309e2ee0741d49049a010e0ae50adf8ae7061dd768daadebb63e8e1b6096",
+      "semantic_verdict": "PASS",
+      "creative_marking": "EXPLICIT_CONTAINED_CREATIVE_HOST_WITH_BOUND_REAL_WORLD_RETURN",
+      "discovery_relevance": [{"mechanism":"M12","role":"POTENTIAL_CONTRAST_ONLY","basis":"METAPHORIC_CREATIVE_HOST_DOES_NOT_BY_ITSELF_ESTABLISH_LITERALIZATION"}],
+      "positive_status": "NOT_ESTABLISHED",
+      "next_gate": "SEPARATE_G01_BATCH2_SOURCE_ADMISSION_REQUIRED"
+    }
+  ],
+  "excluded_current_artifacts": [
+    {"class":"REUSABLE_PRODUCTION_EXPRESSION","reason":"NOT_BOUND_TO_A_SINGLE_FACTUAL_AUTHORITY_AND_CREATIVE_TARGET_SOURCE"},
+    {"class":"PROOF_ONLY_EVENT_OR_PROGRAM","reason":"NOT_OWNER_FINAL_PRODUCTION_PROVENANCE"},
+    {"class":"HISTORICAL_OWNER_ACCEPTED_COMMENTARY","reason":"POOL_CLOSED_FOR_POSITIVE_MINING_AFTER_G02_FAILURE_FREEZE"}
+  ],
+  "mechanism_inventory": [
+    {"mechanism":"M11","positive_candidates":[],"supporting_candidates":[],"contrast_candidates":[],"status":"GAP"},
+    {"mechanism":"M12","positive_candidates":[],"supporting_candidates":[],"contrast_candidates":["HMCV1-SASC-01:terminal-output"],"status":"POSITIVE_GAP"},
+    {"mechanism":"M13","positive_candidates":[],"supporting_candidates":[],"contrast_candidates":[],"status":"GAP"},
+    {"mechanism":"M17","positive_candidates":[],"supporting_candidates":[],"contrast_candidates":[],"status":"GAP"},
+    {"mechanism":"M18","positive_candidates":[],"supporting_candidates":[],"contrast_candidates":[],"status":"GAP"},
+    {"mechanism":"M19","positive_candidates":[],"supporting_candidates":[],"contrast_candidates":[],"status":"GAP"}
+  ],
+  "quota_fill_prohibited": true,
+  "surface_construction_performed": false,
+  "generation_performed": false,
+  "model_exposure_performed": false,
+  "promotion_performed": false,
+  "runtime_integration_performed": false,
+  "training_eligibility": false
+}

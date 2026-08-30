@@ -1,0 +1,38 @@
+{
+  "schema_name": "humor-mechanics-curriculum-v1-batch2-historical-g02-negative-freeze",
+  "schema_version": "1.0.0",
+  "status": "FROZEN_NON_MODEL_VISIBLE_NEGATIVE_CONFUSABLE_EVIDENCE",
+  "evidence_plan": {
+    "path": "docs/artifacts/humor-mechanics-curriculum-v1-batch2-evidence-plan-v1.json",
+    "sha256": "e93ce10605b8a6e5472adc3b0c4b2dc3ea8f0339d0ecb316e37f223ecd125755"
+  },
+  "records": [
+    {"record_id":"candidate-story-v2:22:04","g02_result":"FAIL","reason_code":"REJECTED_UNMARKED_INVENTED_QUOTATION_AND_UNSUPPORTED_INDIVIDUAL_INTENT_ATTRIBUTION","potential_mechanisms":["M14"],"evidence_role":"NEGATIVE_CONFUSABLE_ONLY"},
+    {"record_id":"candidate-story-v2:22:05","g02_result":"FAIL","reason_code":"REJECTED_QUALIFICATION_LOSS_AND_UNSUPPORTED_COLLECTIVE_INTENT_ATTRIBUTION","potential_mechanisms":["M15"],"evidence_role":"NEGATIVE_CONFUSABLE_ONLY"},
+    {"record_id":"candidate-story-v2:22:07","g02_result":"FAIL","reason_code":"REJECTED_SCOPE_EXPANSION_UNSUPPORTED_COLLECTIVE_INTENT_CAUSALITY_AND_PROTECTED_TARGET_GENERALIZATION","potential_mechanisms":["M15","M16","M18"],"evidence_role":"NEGATIVE_CONFUSABLE_ONLY"},
+    {"record_id":"candidate-story-v2:24:01","g02_result":"FAIL","reason_code":"REJECTED_UNSUPPORTED_NATIONAL_GENERALIZATION_AND_UNRELATED_FACTUAL_COMPARISON","potential_mechanisms":["M18"],"evidence_role":"NEGATIVE_CONFUSABLE_ONLY"},
+    {"record_id":"candidate-story-v2:24:03","g02_result":"FAIL","reason_code":"REJECTED_UNSUPPORTED_VICTIM_PSYCHOLOGY_CAUSAL_MECHANISM_AND_LOSS_OVERSTATEMENT","potential_mechanisms":["M15"],"evidence_role":"NEGATIVE_CONFUSABLE_ONLY"},
+    {"record_id":"candidate-story-v2:24:05","g02_result":"FAIL","reason_code":"REJECTED_SCOPE_EXPANSION_UNSUPPORTED_AUDIENCE_MOTIVE_AND_PLATFORM_BEHAVIOR_ATTRIBUTION","potential_mechanisms":["M14"],"evidence_role":"NEGATIVE_CONFUSABLE_ONLY"},
+    {"record_id":"candidate-story-v2:22:08","g02_result":"FAIL","reason_code":"REJECTED_PRIOR_INSPECTION_MISREPRESENTATION_INVENTED_OFFICIAL_QUOTATION_AND_UNSUPPORTED_INSTITUTIONAL_MOTIVE","potential_mechanisms":["M18"],"evidence_role":"NEGATIVE_CONFUSABLE_ONLY"},
+    {"record_id":"story-v1:29:05","g02_result":"FAIL","reason_code":"REJECTED_UNSUPPORTED_NATIONAL_CHARACTERIZATION_AND_INEXACT_ATTRIBUTED_QUOTATION","potential_mechanisms":["M12","M14"],"evidence_role":"NEGATIVE_CONFUSABLE_ONLY"},
+    {"record_id":"story-v1:30:02","g02_result":"FAIL","reason_code":"REJECTED_UNSUPPORTED_STUDENT_ATTRIBUTE_MINISTER_BOREDOM_AND_BOUND_EXPLANATION_DISPLACEMENT","potential_mechanisms":["M17","M18"],"evidence_role":"NEGATIVE_CONFUSABLE_ONLY"},
+    {"record_id":"story-v1:31:04","g02_result":"FAIL","reason_code":"REJECTED_UNSUPPORTED_PUBLIC_REACTION_POLICE_INTENT_ACTOR_EXPANSION_AND_SPRAY_RECLASSIFICATION","potential_mechanisms":["M16","M18"],"evidence_role":"NEGATIVE_CONFUSABLE_ONLY"},
+    {"record_id":"story-v1:31:05","g02_result":"FAIL","reason_code":"REJECTED_UNSUPPORTED_DELAY_DURATION_AND_ATTRIBUTED_COMPANY_COMMUNICATIONS","potential_mechanisms":["M12","M15"],"evidence_role":"NEGATIVE_CONFUSABLE_ONLY"},
+    {"record_id":"story-v1:31:06","g02_result":"FAIL","reason_code":"REJECTED_INVENTED_OFFICIAL_QUOTATION_AND_PROHIBITED_CONCEALMENT_INFERENCE","potential_mechanisms":["M17"],"evidence_role":"NEGATIVE_CONFUSABLE_ONLY"},
+    {"record_id":"story-v1:32:07","g02_result":"FAIL","reason_code":"REJECTED_REGIONAL_TO_NATIONAL_SCOPE_EXPANSION_AND_ROUTINE_CONDUCT_GENERALIZATION","potential_mechanisms":["M18"],"evidence_role":"NEGATIVE_CONFUSABLE_ONLY"},
+    {"record_id":"story-v1:33:05","g02_result":"FAIL","reason_code":"REJECTED_UNBOUND_INSTITUTIONAL_FACTS_INVENTED_QUOTATION_AND_IRANIAN_ATTRIBUTION_IMPLICATION","potential_mechanisms":["M19"],"evidence_role":"NEGATIVE_CONFUSABLE_ONLY"}
+  ],
+  "pool_disposition": "CLOSED_FOR_POSITIVE_MINING",
+  "prohibitions": {
+    "candidate_repair": true,
+    "g03_advancement": true,
+    "model_visibility": true,
+    "positive_evidence_use": true,
+    "promotion": true,
+    "runtime_integration": true,
+    "training_eligibility": true
+  },
+  "execution_authority": false,
+  "generation_authority": false,
+  "training_authority": false
+}
