@@ -1,0 +1,144 @@
+{
+  "authority_matrix": {
+    "candidate_regeneration": false,
+    "candidate_repair": false,
+    "candidate_rewrite": false,
+    "g03c": false,
+    "owner_review": false,
+    "production_routing": false,
+    "romanian_naturalness_review": false,
+    "runtime_integration": false,
+    "training": false,
+    "voice_review": false
+  },
+  "candidate_bytes_modified": false,
+  "candidate_disposition_effect": "ELIGIBLE_FOR_SEPARATELY_AUTHORIZED_G03C_ONLY",
+  "candidate_identity": "4cc6bceef84e29d07e19d60dbbb1992b33fcb8af67373647f5fb8fedfce1d98c",
+  "candidate_raw_sha256": "5c50ca8e4ae5ea32301c02ec8ea4104482bbc9c8e3c7e8314516d09aeb591fd3",
+  "causal_findings": {
+    "boundary_separation_test": "PASS_I05",
+    "invariance_test": "PASS_I04",
+    "necessary_structure": [
+      "factual premise",
+      "first premise-dependent consequence",
+      "second locally dependent consequence",
+      "self-cancelling temporal payoff"
+    ],
+    "not_necessary": [
+      "specific causal connective",
+      "specific vocabulary",
+      "punctuation",
+      "surface template"
+    ],
+    "removal_test": "PASS_I01_REDUCES_DOMINANCE_I02_REMOVES_I03_CHANGES_LABEL"
+  },
+  "causal_trace": {
+    "creative_marking": "continuare explicit fictivă",
+    "factual_premise": "La încheierea testului nu este stabilit niciun sortiment câștigător.",
+    "incongruity_payoff": "Consecința extinsă anulează cadrul temporal al premisei din care pornește.",
+    "local_dependency": "PREMISE_TO_STEP_1_TO_STEP_2_TO_SELF_CANCELLING_PAYOFF",
+    "transformation_step_1": "Lipsa câștigătorului suspendă încheierea testului.",
+    "transformation_step_2": "Neîncheierea testului elimină momentul în care câștigătorul trebuia stabilit.",
+    "verdict": "COMPLETE_RECOVERABLE_CAUSAL_CHAIN"
+  },
+  "controls": {
+    "creative_marking_separated_from_mechanism_causality": "PASS",
+    "factual_premise_control": "PASS",
+    "length_control": "PASS_WHERE_PRACTICABLE_DELTA_ONLY",
+    "lexical_keyword_dependence": "REJECTED_BY_I04",
+    "mere_absurdity_explanation": "REJECTED_BY_I03",
+    "tone_control": "PASS_WHERE_PRACTICABLE",
+    "topic_control": "PASS"
+  },
+  "counterfactuals_materialized_as_candidates": false,
+  "creative_premise_family_id": "ccb8ffaa1f8bd4f1cc40042854a76e73c3fb99d08f359da2e7ea952796bd7467",
+  "g03_commit": "1ab974a44973c0068ebc4c82a5037943bba407fb",
+  "g03_receipt_identity": "8692a66a02be0c843f87eae5ada3be7bb1a82aa6f45e44cbcc57b3b8e6fe2ce0",
+  "g03b_review_identity": "cb8c00b8498b73f4c39eaa4d4da4a943fc5e6461ec3070ed844d175d6e3c6892",
+  "g03b_verdict": "CAUSAL_MECHANISM_CONFIRMED",
+  "minimal_interventions": [
+    {
+      "causal_result": "DOMINANCE_REMOVED",
+      "delta_only": "Elimină pasul prin care neîncheierea testului face să dispară momentul stabilirii.",
+      "expected_observation": "Rămâne o consecință fictivă, dar se pierde autoanularea și lanțul extins distinctiv.",
+      "id": "G03B-I01-REMOVE-SECOND-INFERENCE",
+      "mechanism_after": "SUPPORTING_OR_WEAK_NOT_DOMINANT",
+      "preserved": [
+        "topic",
+        "factual premise",
+        "fictional marking",
+        "first consequence",
+        "tone"
+      ]
+    },
+    {
+      "causal_result": "MECHANISM_REMOVED",
+      "delta_only": "Înlocuiește suspendarea încheierii cu consecința neutră că rezultatul rămâne nedeterminat.",
+      "expected_observation": "Nu mai există trecerea necesară către dispariția momentului; operația-țintă nu se formează.",
+      "id": "G03B-I02-NEUTRALIZE-FIRST-HINGE",
+      "mechanism_after": "ABSENT",
+      "preserved": [
+        "topic",
+        "factual premise",
+        "result status",
+        "sentence count where practicable",
+        "register"
+      ]
+    },
+    {
+      "causal_result": "LABEL_CHANGE",
+      "delta_only": "Păstrează premisa, dar substituie lanțului o consecință absurdă fără dependență inferențială de ea.",
+      "expected_observation": "Absurdul poate rămâne, însă clasificarea se mută la absurditate fără legătură, nu la extensia logică a premisei.",
+      "id": "G03B-I03-SUBSTITUTE-UNRELATED-ABSURDITY",
+      "mechanism_after": "ABSENT_LABEL_CHANGES",
+      "preserved": [
+        "topic",
+        "factual premise",
+        "fictional status",
+        "absurd tone",
+        "approximate length"
+      ]
+    },
+    {
+      "causal_result": "INVARIANT_UNDER_SURFACE_PARAPHRASE",
+      "delta_only": "Schimbă doar formulările și conectorii, păstrând cele două dependențe și autoanularea temporală.",
+      "expected_observation": "Mecanismul rămâne dominant; nu depinde de un cuvânt-cheie sau de un conector fix.",
+      "id": "G03B-I04-PARAPHRASE-NONCAUSAL-CUES",
+      "mechanism_after": "DOMINANT",
+      "preserved": [
+        "all facts",
+        "dependency graph",
+        "fictional marking",
+        "payoff",
+        "topic"
+      ]
+    },
+    {
+      "causal_result": "MARKER_NOT_CAUSAL_TO_MECHANISM",
+      "delta_only": "Elimină numai marcajul explicit al continuării fictive.",
+      "expected_observation": "Operația mecanică rămâne detectabilă, dar candidatul ar încălca separat granița factuală G02.",
+      "id": "G03B-I05-REMOVE-CREATIVE-MARKER",
+      "mechanism_after": "DOMINANT_BUT_AUTHORITY_INVALID",
+      "preserved": [
+        "premise",
+        "dependency graph",
+        "payoff",
+        "topic",
+        "length approximately"
+      ]
+    }
+  ],
+  "performed": {
+    "candidate_regeneration": false,
+    "candidate_repair": false,
+    "candidate_rewrite": false,
+    "g03c": false,
+    "owner_review": false,
+    "romanian_naturalness_review": false,
+    "voice_review": false
+  },
+  "reconciliation_identity": "363b92a12412cc1cfedc553b4df3fafb9f7e026d26b92432fccb52d371cccd44",
+  "schema_name": "batch2-development-pilot02-candidate01-g03b-causal-review-v1",
+  "schema_version": "1.0.0",
+  "tested_mechanism": "Absurd Logical Extension"
+}
