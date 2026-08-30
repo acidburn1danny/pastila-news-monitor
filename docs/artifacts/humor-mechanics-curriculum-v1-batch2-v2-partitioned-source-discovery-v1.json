@@ -1,0 +1,192 @@
+{
+  "schema_name": "pastila-humor-mechanics-curriculum-batch2-v2-partitioned-source-discovery",
+  "schema_version": "1.0.0",
+  "status": "DISCOVERY_COMPLETE_NO_SOURCE_CONSTRUCTION_READY",
+  "governance": {
+    "plan_commit": "c756135fa9b822dd945728a2df05f26f3b44fa63",
+    "plan_git_object_sha256": "57419ff52730ccd20acf3c716c9502667d9f25e517570e18eeae7ec3d472da8a",
+    "discovery_script_worktree_sha256": "69bcb405ae08b7ed22395f1f63779419f846e91a2f8325ec79ce9602183f2899",
+    "database_snapshot_sha256": "d02adc9ef875627c04b3968b0edc5105546a8f20bef25c1e57fa26774df3ed00"
+  },
+  "partition_method": {
+    "input": "SHA256(PLAN_IDENTITY || EVENT_FAMILY_ID)",
+    "bucket": "FIRST_32_BITS_MOD_10",
+    "mapping": {"0-5": "DEVELOPMENT", "6-8": "CURRICULUM_CANDIDATE", "9": "BLIND_EVALUATION"},
+    "applied_before_second_pass_source_inspection": true,
+    "partition_reassignment_performed": false
+  },
+  "discovery_process_incident": {
+    "first_pass_result": "FAIL_CLOSED",
+    "defect": "ATOM_LOADING_PRECEDED_BLIND_BRANCH_ENFORCEMENT",
+    "affected_event_families": [1538, 2617],
+    "disposition": "BLIND_EVALUATION_PERMANENTLY_INVALIDATED",
+    "reassignment_prohibited": true,
+    "repair": "PARTITION_AND_BLIND_BRANCH_NOW_PRECEDE_ATOM_LOADING",
+    "second_pass_result": "PROCESS_ORDER_PASS"
+  },
+  "source_families": [
+    {
+      "event_id": 2096,
+      "partition": "DEVELOPMENT",
+      "source_family_id": "91745e69db0a756cdf82678568ad8646a02d811177a983e38073ae82a4d898b2",
+      "event_family_id": "c84261b85c8cd357bf522d4e02dcc82f85a2ad9b2666842340a6cc6ec857481f",
+      "authority_envelope_family_id": "acb2f7d6258a8846ba92a91df24b7e24266a19c166a1a92fefa0fb0e390d4b58",
+      "topic_entity_family_id": "457c16a3f340d288fe23c3c1b6374f15342fe823eec1113e139e8fdbf74a6aef",
+      "family_closure_id": "03ea0276b9d70a5fb50493d48bd10906aeccd0ce9759fc8410e8d27d06b2a646",
+      "same_event_relationship": {"article_ids": [2271, 2419], "sources": ["observatornews", "click"], "syndication_status": "MULTI_SOURCE_SAME_EVENT_NOT_PROVEN_SYNDICATED"},
+      "authority_status": "OWNER_FINAL_FACT_BUNDLE_PRESENT_BUT_AUTHORITY_IDENTITY_NOT_CARRIED_IN_ACCEPTANCE_LEDGER",
+      "span_status": "2_OF_5_MATCH_CURRENT_STORE",
+      "contamination_status": "KNOWN_PRIOR_VOICE_FACT_REVIEW_NOT_BLIND",
+      "coverage_prospects": ["M13_PREMISE_CONSEQUENCE_CHAIN", "M18_FACTUAL_INCONGRUITY_QUESTION"],
+      "weak_or_unsupported_prospects": ["M11", "M12", "M17", "M19"],
+      "disposition": "REJECTED_BEFORE_CONSTRUCTION_G01A_INCOMPLETE"
+    },
+    {
+      "event_id": 2472,
+      "partition": "DEVELOPMENT",
+      "source_family_id": "d6172181bef233bd30ef16f71bf7d70573ab52e7daac6f59df4469d95d9aa5c4",
+      "event_family_id": "e9ab040c109b7c4511c1d055a9537104cb10db713b53b0f718f917ebd1ea6a18",
+      "authority_envelope_family_id": "acb2f7d6258a8846ba92a91df24b7e24266a19c166a1a92fefa0fb0e390d4b58",
+      "topic_entity_family_id": "1ae879f606c67ab7b13259f0e3b669986106ad2b2fe3d5a69a59d51d1f858a02",
+      "family_closure_id": "b16380a9789c23045722ea02cb350e8502908254eb9812ffbf42afcf04a169ac",
+      "same_event_relationship": {"article_ids": [2747], "sources": ["tvr_info"], "syndication_status": "SINGLE_CAPTURE"},
+      "authority_status": "OWNER_FINAL_FACT_BUNDLE_PRESENT_BUT_AUTHORITY_IDENTITY_NOT_CARRIED_IN_ACCEPTANCE_LEDGER",
+      "span_status": "1_OF_4_MATCH_CURRENT_STORE",
+      "contamination_status": "KNOWN_PRIOR_VOICE_FACT_REVIEW_NOT_BLIND",
+      "coverage_prospects": ["M13_RULE_OR_EXPECTATION_EXTENSION", "M17_CONCESSION_THEN_FACTUAL_UNDERCUT", "M18_FACTUAL_INCONGRUITY_QUESTION"],
+      "weak_or_unsupported_prospects": ["M11", "M12", "M19"],
+      "disposition": "REJECTED_BEFORE_CONSTRUCTION_G01A_INCOMPLETE"
+    },
+    {
+      "event_id": 1538,
+      "partition": "BLIND_EVALUATION",
+      "source_family_id": "787ec4daa16cb4da33e5ce0c8dc028111e74a9e904bf319d179af82091431a0a",
+      "event_family_id": "3b23d000cfa17e14b7eac351c004c467800da70ad912b58ce5b0ed16ccdc44f3",
+      "family_closure_id": "1043c17805e28799856d2ce13d9116afdb7ce3c192a17651f40798c280550937",
+      "opaque_after_incident": true,
+      "coverage_prospects": "NOT_REPORTED",
+      "contamination_status": "BLIND_HOLDOUT_PERMANENTLY_INVALIDATED",
+      "disposition": "REJECTED_BEFORE_CONSTRUCTION_HOLDOUT_CONTAMINATION"
+    },
+    {
+      "event_id": 2111,
+      "partition": "DEVELOPMENT",
+      "source_family_id": "a7b25b33f795a32ffb0d2bcce28cac5ee596dfe07571e5cf12a2f1497ba299f1",
+      "event_family_id": "05a7bd8cc4c4f9554d7850ecea656fb9527e3729253a2b6e15a6722ed5d7ab09",
+      "family_closure_id": "b97fdcb13b5e4702e667bfb6c4eef2540741704d758c104c49ca840166061052",
+      "authority_status": "OWNER_FINAL_FACT_BUNDLE_PRESENT_ACCEPTED_LEDGER_LACKS_SOURCE_SPAN_LINKAGE",
+      "span_status": "NO_RECONSTRUCTIBLE_SOURCE_BINDING",
+      "contamination_status": "KNOWN_PRIOR_VOICE_FACT_AND_MECHANIC_REVIEW_NOT_BLIND",
+      "coverage_prospects": "WITHHELD_UNTIL_SOURCE_BINDING_EXISTS",
+      "disposition": "REJECTED_BEFORE_CONSTRUCTION_PROVENANCE_LINK_MISSING"
+    },
+    {
+      "event_id": 2360,
+      "partition": "CURRICULUM_CANDIDATE",
+      "source_family_id": "a871a8775185993cf4f96a8965633ecc162d6e81b4086129fad38561b13b5c72",
+      "event_family_id": "7b424b0331ca3959e4783f704b942f7665d0a430ca4b8f48eec0bb4bd966d3e8",
+      "family_closure_id": "388b55914ff20dba3eb9ad66989bd5d306ec048247492da33e0d3fb48e8b609d",
+      "authority_status": "OWNER_FINAL_FACT_BUNDLE_PRESENT_ACCEPTED_LEDGER_LACKS_SOURCE_SPAN_LINKAGE",
+      "span_status": "NO_RECONSTRUCTIBLE_SOURCE_BINDING",
+      "contamination_status": "KNOWN_PRIOR_VOICE_FACT_REVIEW_NOT_BLIND",
+      "coverage_prospects": "WITHHELD_UNTIL_SOURCE_BINDING_EXISTS",
+      "disposition": "REJECTED_BEFORE_CONSTRUCTION_PROVENANCE_LINK_MISSING"
+    },
+    {
+      "event_id": 2617,
+      "partition": "BLIND_EVALUATION",
+      "source_family_id": "45bd4751df5825d1aefb40e59a725a33cc91af894371b8812200abef75e3c223",
+      "event_family_id": "60f040dcf3f5e151a25ea95dbd52603b97321ec795209221fb0d58a3de5d0d15",
+      "family_closure_id": "6c9de059f6608ea91cba4268a16d95519f917ad23725dc45cc05c8fb69eb59f3",
+      "opaque_after_incident": true,
+      "coverage_prospects": "NOT_REPORTED",
+      "contamination_status": "BLIND_HOLDOUT_PERMANENTLY_INVALIDATED",
+      "disposition": "REJECTED_BEFORE_CONSTRUCTION_HOLDOUT_CONTAMINATION"
+    },
+    {
+      "event_id": 2365,
+      "partition": "DEVELOPMENT",
+      "source_family_id": "6dc1e0c24781b6a564cb2b62eee652fca17a99f0f2e793c3b520d4e1084b88c8",
+      "event_family_id": "02af9f6608c4ec032c997f38535fcf31809ff2c81e29a65d9c3b3ff80d5e8a57",
+      "authority_envelope_family_id": "f1557ab54363ec3968225afe71d0c8a735e22185b0a58010c9b52261e1559ae3",
+      "topic_entity_family_id": "77462aacc1393fd37fe437fa0c66717a77dc7dc6824def7bfede79cd5e97f312",
+      "family_closure_id": "c4f23b1a811e0a419dd41e7d41dd4d5b48ebc47a2932c062128001365290289e",
+      "same_event_relationship": {"article_ids": [2612], "sources": ["oficiul_de_stiri"], "syndication_status": "SINGLE_CAPTURE"},
+      "authority_status": "OWNER_FINAL_AUTHORITY_IDENTITY_PRESENT",
+      "span_status": "1_OF_3_MATCH_CURRENT_STORE",
+      "contamination_status": "KNOWN_PRIOR_VOICE_FACT_AND_MECHANIC_REVIEW_NOT_BLIND",
+      "coverage_prospects": ["M13_PROCEDURAL_LOGIC_EXTENSION", "M18_PROCEDURAL_INCONGRUITY_QUESTION", "M19_PROCEDURAL_FORM_SIMULATION"],
+      "weak_or_unsupported_prospects": ["M11", "M12", "M17"],
+      "disposition": "REJECTED_BEFORE_CONSTRUCTION_SOURCE_DIVERGENCE"
+    },
+    {
+      "event_id": 734,
+      "partition": "DEVELOPMENT",
+      "source_family_id": "63c8762cc99520b1d00518769fd309b6d9478f47a3568316f93cae71511d100f",
+      "event_family_id": "7695f78d30e4faf4a54cc7eabd3529b11c2df64a339d7cf4d4b2c16b3ab15e3b",
+      "authority_envelope_family_id": "99f67b61560a5db54cf3a55e9bd19a0983ede8086fcd1954b83fca8662a9afda",
+      "topic_entity_family_id": "85cde2d5d6ed876d9f8e400e8954eb375876b419b794374f107dbd7bfaa549b6",
+      "family_closure_id": "8f9b9e67269b1e2c028dec10d0a378d42c706b0eafd728411e4d19a2d83a725b",
+      "same_event_relationship": {"article_ids": [750], "sources": ["libertatea"], "syndication_status": "SINGLE_CAPTURE_WITH_EUROSPORT_ATTRIBUTION"},
+      "authority_status": "OWNER_FINAL_AUTHORITY_IDENTITY_PRESENT",
+      "span_status": "1_OF_3_MATCH_CURRENT_STORE",
+      "contamination_status": "KNOWN_PRIOR_VOICE_FACT_AND_MECHANIC_REVIEW_NOT_BLIND",
+      "coverage_prospects": ["M12_TERM_TO_LITERAL_DOMAIN_POSSIBILITY", "M13_RULE_CONSEQUENCE_EXTENSION", "M18_FACTUAL_INCONGRUITY_QUESTION", "M19_AWARD_OR_NOTICE_FORM_SIMULATION"],
+      "weak_or_unsupported_prospects": ["M11", "M17"],
+      "disposition": "REJECTED_BEFORE_CONSTRUCTION_SOURCE_DIVERGENCE"
+    }
+  ],
+  "common_g01a_blockers": [
+    "PERMITTED_USE_NOT_RECORDED",
+    "BATCH2_V2_SENSITIVE_AND_PROTECTED_TARGET_REVIEW_NOT_RECORDED",
+    "FACT_BUNDLE_AND_DATABASE_CAPTURE_NOT_GIT_OBJECT_BOUND",
+    "CREATIVE_PREMISE_CONSTRUCTION_AND_REVISION_FAMILY_IDS_NOT_YET_ASSIGNABLE_WITHOUT_CONSTRUCTION_SCOPE"
+  ],
+  "coverage_summary": [
+    {"mechanism": "M11", "prospect": "NO_DEFENSIBLE_SOURCE_PROSPECT", "positive_gap": true},
+    {"mechanism": "M12", "prospect": "ONE_REJECTED_DEVELOPMENT_FAMILY_734", "positive_gap": true},
+    {"mechanism": "M13", "prospect": "FOUR_REJECTED_DEVELOPMENT_FAMILIES_2096_2472_2365_734", "positive_gap": true},
+    {"mechanism": "M17", "prospect": "ONE_REJECTED_DEVELOPMENT_FAMILY_2472", "positive_gap": true},
+    {"mechanism": "M18", "prospect": "FOUR_REJECTED_DEVELOPMENT_FAMILIES_2096_2472_2365_734", "positive_gap": true},
+    {"mechanism": "M19", "prospect": "TWO_REJECTED_DEVELOPMENT_FAMILIES_2365_734", "positive_gap": true}
+  ],
+  "contamination_ledger": [
+    {
+      "operation": "FIRST_PASS_DISCOVERY_AUDIT",
+      "actor_or_tool": "CODEX_ROOT_AND_AUDIT_SCRIPT",
+      "input_classes": ["OWNER_FINAL_FACT_BUNDLES", "READ_ONLY_NEWS_DATABASE"],
+      "candidate_humor_surfaces_exposed": false,
+      "blind_source_families_exposed": [1538, 2617],
+      "result": "FAIL_CLOSED_AND_PERMANENT_HOLDOUT_INVALIDATION"
+    },
+    {
+      "operation": "CORRECTED_SECOND_PASS_DISCOVERY_AUDIT",
+      "actor_or_tool": "CODEX_ROOT_AND_AUDIT_SCRIPT",
+      "input_classes": ["NONBLIND_OWNER_FINAL_FACT_BUNDLES", "OPAQUE_BLIND_METADATA", "READ_ONLY_NEWS_DATABASE"],
+      "candidate_humor_surfaces_exposed": false,
+      "new_blind_source_content_exposed": false,
+      "model_calls": 0,
+      "result": "PASS"
+    }
+  ],
+  "preserved_outcomes": {
+    "m20_owner_frozen_supporting": "UNCHANGED",
+    "m12_case01_contrast_negative": "UNCHANGED",
+    "historical_g02_negative_freeze": "UNCHANGED",
+    "historical_rejections_and_provenance_negatives": "UNCHANGED",
+    "all_priority_positive_gaps": "UNCHANGED"
+  },
+  "authority": {
+    "source_acquisition_authorized": false,
+    "candidate_construction_authorized": false,
+    "construction_packet_authorized": false,
+    "operational_obligation_packet_authorized": false,
+    "surface_generation_authorized": false,
+    "model_exposure_authorized": false,
+    "training_authorized": false,
+    "runtime_integration_authorized": false,
+    "promotion_authorized": false,
+    "production_routing_authorized": false
+  },
+  "next_separate_decision": "SOURCE_ONLY_G01A_PROVENANCE_AND_PERMITTED_USE_CLOSURE_OR_NEW_SOURCE_CLASS_DISCOVERY"
+}
