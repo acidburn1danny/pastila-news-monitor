@@ -1,0 +1,15 @@
+{
+  "blind_content_present": false,
+  "entry_hash": "4d8cc1c7907523f44d611ea4fe8e38908b3e37e97f623d3511fd02b842634642",
+  "entry_sequence": 1,
+  "event": "KEY_ENROLLMENT_REQUEST_FROZEN",
+  "keys_registered": 0,
+  "object_identity": "c5439550d6a6d86a9a88893cbeb2f88712d6fdcc5fc7b05b08b981ef275c0e04",
+  "object_sha256": "5eb0c2c98b96671520f8dfd8dc56a524141bd4163d745245b18d2c8a98a77fb3",
+  "operational_authority": false,
+  "previous_entry_hash": "8afc9aa54bf66d385d8e89d84f18884e06e6838acc9c1e3cc4127d1450442ad1",
+  "proofs_verified": 0,
+  "schema_name": "batch2-custodial-access-ledger-entry-v1",
+  "schema_version": "1.0.0",
+  "source_content_present": false
+}

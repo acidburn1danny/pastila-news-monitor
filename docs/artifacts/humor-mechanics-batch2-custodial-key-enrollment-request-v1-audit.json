@@ -1,0 +1,34 @@
+{
+  "authority_matrix": {
+    "archive_write": false,
+    "candidate_construction": false,
+    "content_access": false,
+    "content_ingestion": false,
+    "mechanism_assignment": false,
+    "model_exposure": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "source_acquisition": false,
+    "surface_generation": false,
+    "training": false
+  },
+  "blocker": "NO_OWNER_SUPPLIED_PUBLIC_KEYS_OR_PROOF_SIGNATURES_AVAILABLE",
+  "checks": {
+    "all_action_authorities_false": "PASS",
+    "challenges_appointment_and_ledger_bound": "PASS",
+    "challenges_domain_separated": "PASS",
+    "no_key_discovery_or_reuse": "PASS",
+    "no_key_or_signature_invented": "PASS",
+    "no_private_key_requested": "PASS",
+    "no_shared_role_key_allowed": "PASS",
+    "registration_not_operation": "PASS",
+    "six_role_bound_challenges": "PASS"
+  },
+  "enrollment_request_identity": "c5439550d6a6d86a9a88893cbeb2f88712d6fdcc5fc7b05b08b981ef275c0e04",
+  "enrollment_request_sha256": "5eb0c2c98b96671520f8dfd8dc56a524141bd4163d745245b18d2c8a98a77fb3",
+  "ledger_entry_hash": "4d8cc1c7907523f44d611ea4fe8e38908b3e37e97f623d3511fd02b842634642",
+  "ledger_entry_sha256": "00fc11fe0a67b88eed64ebeb29aa2f0d3461de033c01a87970b678be4661f80c",
+  "schema_name": "batch2-custodial-key-enrollment-request-v1-audit",
+  "schema_version": "1.0.0",
+  "verdict": "BLOCKED_AWAITING_OWNER_PUBLIC_KEYS_AND_PROOFS"
+}

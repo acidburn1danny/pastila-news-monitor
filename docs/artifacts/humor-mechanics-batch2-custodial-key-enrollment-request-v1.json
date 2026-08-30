@@ -1,0 +1,185 @@
+{
+  "bindings": {
+    "appointment_registry_identity": "e5b4ebb9fe29244a8d760337dcd66253264a42edd9b3540bb3fd5a44f91206d5",
+    "previous_ledger_hash": "8afc9aa54bf66d385d8e89d84f18884e06e6838acc9c1e3cc4127d1450442ad1",
+    "readiness_commit": "51288dd277bdd300fa4d217935fee4fe7bcf7ce5",
+    "readiness_identity": "89e61c2d7f2dcbfd51e41d907e3ef27041985dc6caad5d1267d6824530462e1a"
+  },
+  "current_authority": {
+    "archive_write": false,
+    "candidate_construction": false,
+    "content_access": false,
+    "content_ingestion": false,
+    "mechanism_assignment": false,
+    "model_exposure": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "source_acquisition": false,
+    "surface_generation": false,
+    "training": false
+  },
+  "enrollment_request_identity": "c5439550d6a6d86a9a88893cbeb2f88712d6fdcc5fc7b05b08b981ef275c0e04",
+  "prohibitions": [
+    "NO_PRIVATE_KEY_SUBMISSION",
+    "NO_KEY_GENERATION_BY_REPOSITORY",
+    "NO_UNRELATED_GIT_OR_SSH_KEY_REUSE_WITHOUT_EXPLICIT_OWNER_BINDING",
+    "NO_SHARED_KEY_ACROSS_SEPARATION_OF_DUTY_ROLES",
+    "NO_OPERATIONAL_ACCESS_ON_REGISTRATION"
+  ],
+  "requests": [
+    {
+      "accepted_algorithms": [
+        "ED25519",
+        "ECDSA_P256_SHA256"
+      ],
+      "challenge": {
+        "appointment_registry_identity": "e5b4ebb9fe29244a8d760337dcd66253264a42edd9b3540bb3fd5a44f91206d5",
+        "challenge_identity": "47e7573a2378ed1a93481182aeefcc2f1feba42f2e9b774a6a5b08321e0c8db3",
+        "domain": "PASTILA_BATCH2_OWNED_AUTHORITY_KEY_ENROLLMENT_V1",
+        "generation": 1,
+        "previous_ledger_hash": "8afc9aa54bf66d385d8e89d84f18884e06e6838acc9c1e3cc4127d1450442ad1",
+        "principal_identity": "35f8bee3260c2ff80aaaeb394d1446d273524cc51d1c4eda56715d49c2a77644",
+        "purpose": "CUSTODIAL_PUBLIC_KEY_PROOF_OF_POSSESSION",
+        "role": "RIGHTS_CUSTODIAN",
+        "signing_readiness_identity": "89e61c2d7f2dcbfd51e41d907e3ef27041985dc6caad5d1267d6824530462e1a"
+      },
+      "owner_supplied_public_key": null,
+      "principal_identity": "35f8bee3260c2ff80aaaeb394d1446d273524cc51d1c4eda56715d49c2a77644",
+      "proof_signature": null,
+      "proof_status": "AWAITING_OWNER_INPUT",
+      "public_key_fingerprint": null,
+      "registration_status": "NOT_REGISTERED",
+      "role": "RIGHTS_CUSTODIAN"
+    },
+    {
+      "accepted_algorithms": [
+        "ED25519",
+        "ECDSA_P256_SHA256"
+      ],
+      "challenge": {
+        "appointment_registry_identity": "e5b4ebb9fe29244a8d760337dcd66253264a42edd9b3540bb3fd5a44f91206d5",
+        "challenge_identity": "ee5d8224428a39481ddbfd1d03edcc91bbc096eee258dbbc1937eb5c5c98aff1",
+        "domain": "PASTILA_BATCH2_OWNED_AUTHORITY_KEY_ENROLLMENT_V1",
+        "generation": 1,
+        "previous_ledger_hash": "8afc9aa54bf66d385d8e89d84f18884e06e6838acc9c1e3cc4127d1450442ad1",
+        "principal_identity": "37c8c4010917cd87ad7d38591644a15a4640911522fea505b3273943af927bd7",
+        "purpose": "CUSTODIAL_PUBLIC_KEY_PROOF_OF_POSSESSION",
+        "role": "ACQUISITION_CUSTODIAN",
+        "signing_readiness_identity": "89e61c2d7f2dcbfd51e41d907e3ef27041985dc6caad5d1267d6824530462e1a"
+      },
+      "owner_supplied_public_key": null,
+      "principal_identity": "37c8c4010917cd87ad7d38591644a15a4640911522fea505b3273943af927bd7",
+      "proof_signature": null,
+      "proof_status": "AWAITING_OWNER_INPUT",
+      "public_key_fingerprint": null,
+      "registration_status": "NOT_REGISTERED",
+      "role": "ACQUISITION_CUSTODIAN"
+    },
+    {
+      "accepted_algorithms": [
+        "ED25519",
+        "ECDSA_P256_SHA256"
+      ],
+      "challenge": {
+        "appointment_registry_identity": "e5b4ebb9fe29244a8d760337dcd66253264a42edd9b3540bb3fd5a44f91206d5",
+        "challenge_identity": "9da4ee8cd04f151ef9b2af46f175a804786d9920a58efbe24e964bac68b6e798",
+        "domain": "PASTILA_BATCH2_OWNED_AUTHORITY_KEY_ENROLLMENT_V1",
+        "generation": 1,
+        "previous_ledger_hash": "8afc9aa54bf66d385d8e89d84f18884e06e6838acc9c1e3cc4127d1450442ad1",
+        "principal_identity": "728eea0400e8aa123ffba1afbff1982d985afbfb0bc850972389fd31b2ba75fa",
+        "purpose": "CUSTODIAL_PUBLIC_KEY_PROOF_OF_POSSESSION",
+        "role": "FAMILY_CUSTODIAN",
+        "signing_readiness_identity": "89e61c2d7f2dcbfd51e41d907e3ef27041985dc6caad5d1267d6824530462e1a"
+      },
+      "owner_supplied_public_key": null,
+      "principal_identity": "728eea0400e8aa123ffba1afbff1982d985afbfb0bc850972389fd31b2ba75fa",
+      "proof_signature": null,
+      "proof_status": "AWAITING_OWNER_INPUT",
+      "public_key_fingerprint": null,
+      "registration_status": "NOT_REGISTERED",
+      "role": "FAMILY_CUSTODIAN"
+    },
+    {
+      "accepted_algorithms": [
+        "ED25519",
+        "ECDSA_P256_SHA256"
+      ],
+      "challenge": {
+        "appointment_registry_identity": "e5b4ebb9fe29244a8d760337dcd66253264a42edd9b3540bb3fd5a44f91206d5",
+        "challenge_identity": "61a6f2084cc697104c473013f7f7303ae1e97c56795b02084ab230834da9344d",
+        "domain": "PASTILA_BATCH2_OWNED_AUTHORITY_KEY_ENROLLMENT_V1",
+        "generation": 1,
+        "previous_ledger_hash": "8afc9aa54bf66d385d8e89d84f18884e06e6838acc9c1e3cc4127d1450442ad1",
+        "principal_identity": "14f2d19b62ffc6b2a1a8ac5a426647962a03d2a81301410e7dbf16a27e4fb97d",
+        "purpose": "CUSTODIAL_PUBLIC_KEY_PROOF_OF_POSSESSION",
+        "role": "PARTITION_CUSTODIAN",
+        "signing_readiness_identity": "89e61c2d7f2dcbfd51e41d907e3ef27041985dc6caad5d1267d6824530462e1a"
+      },
+      "owner_supplied_public_key": null,
+      "principal_identity": "14f2d19b62ffc6b2a1a8ac5a426647962a03d2a81301410e7dbf16a27e4fb97d",
+      "proof_signature": null,
+      "proof_status": "AWAITING_OWNER_INPUT",
+      "public_key_fingerprint": null,
+      "registration_status": "NOT_REGISTERED",
+      "role": "PARTITION_CUSTODIAN"
+    },
+    {
+      "accepted_algorithms": [
+        "ED25519",
+        "ECDSA_P256_SHA256"
+      ],
+      "challenge": {
+        "appointment_registry_identity": "e5b4ebb9fe29244a8d760337dcd66253264a42edd9b3540bb3fd5a44f91206d5",
+        "challenge_identity": "492fa73d502c9e800fc30ded327d4a7072f2c8161f3162ccf70a6a43eecbbeef",
+        "domain": "PASTILA_BATCH2_OWNED_AUTHORITY_KEY_ENROLLMENT_V1",
+        "generation": 1,
+        "previous_ledger_hash": "8afc9aa54bf66d385d8e89d84f18884e06e6838acc9c1e3cc4127d1450442ad1",
+        "principal_identity": "12e32e46bdb6acc1ac5a7556dcb021ee35a8b264e6b157a5572d801fa373619e",
+        "purpose": "CUSTODIAL_PUBLIC_KEY_PROOF_OF_POSSESSION",
+        "role": "BLIND_ESCROW_CUSTODIAN",
+        "signing_readiness_identity": "89e61c2d7f2dcbfd51e41d907e3ef27041985dc6caad5d1267d6824530462e1a"
+      },
+      "owner_supplied_public_key": null,
+      "principal_identity": "12e32e46bdb6acc1ac5a7556dcb021ee35a8b264e6b157a5572d801fa373619e",
+      "proof_signature": null,
+      "proof_status": "AWAITING_OWNER_INPUT",
+      "public_key_fingerprint": null,
+      "registration_status": "NOT_REGISTERED",
+      "role": "BLIND_ESCROW_CUSTODIAN"
+    },
+    {
+      "accepted_algorithms": [
+        "ED25519",
+        "ECDSA_P256_SHA256"
+      ],
+      "challenge": {
+        "appointment_registry_identity": "e5b4ebb9fe29244a8d760337dcd66253264a42edd9b3540bb3fd5a44f91206d5",
+        "challenge_identity": "70c5b7fd8ebbfda3bd392bd550f90c13eb3f6dc2ea264ba9fbd225108a7aa4f7",
+        "domain": "PASTILA_BATCH2_OWNED_AUTHORITY_KEY_ENROLLMENT_V1",
+        "generation": 1,
+        "previous_ledger_hash": "8afc9aa54bf66d385d8e89d84f18884e06e6838acc9c1e3cc4127d1450442ad1",
+        "principal_identity": "1740c9f292a03dab6db10f497f3bcf6843b0e538c8f7ef1e1a359bb5af5c8144",
+        "purpose": "CUSTODIAL_PUBLIC_KEY_PROOF_OF_POSSESSION",
+        "role": "CONTAMINATION_AUDITOR",
+        "signing_readiness_identity": "89e61c2d7f2dcbfd51e41d907e3ef27041985dc6caad5d1267d6824530462e1a"
+      },
+      "owner_supplied_public_key": null,
+      "principal_identity": "1740c9f292a03dab6db10f497f3bcf6843b0e538c8f7ef1e1a359bb5af5c8144",
+      "proof_signature": null,
+      "proof_status": "AWAITING_OWNER_INPUT",
+      "public_key_fingerprint": null,
+      "registration_status": "NOT_REGISTERED",
+      "role": "CONTAMINATION_AUDITOR"
+    }
+  ],
+  "schema_name": "batch2-custodial-key-enrollment-request-v1",
+  "schema_version": "1.0.0",
+  "status": "BLOCKED_AWAITING_OWNER_PUBLIC_KEYS_AND_PROOFS",
+  "submission_requirements": [
+    "PUBLIC_KEY_BYTES_OR_CANONICAL_JWK",
+    "ALGORITHM",
+    "KEY_FINGERPRINT",
+    "SIGNATURE_OVER_EXACT_CANONICAL_CHALLENGE",
+    "OWNER_ROLE_CONFIRMATION"
+  ]
+}
