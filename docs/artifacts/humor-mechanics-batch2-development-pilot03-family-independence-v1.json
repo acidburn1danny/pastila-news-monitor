@@ -1,0 +1,47 @@
+{
+  "blind_family_access": false,
+  "exact_prior_line_reuse": false,
+  "family_independence_identity": "f0e21a39f83564121803d606578cd2a1e5c844e8f39a8d432b9536d1792e5fa3",
+  "git_blob_distinct": true,
+  "pilot03_source_sha256": "61a5889cb03f72c6f4f72b0f1652b2db43c092f51c91f7d5e59933a99ca2fc30",
+  "pilot03_topology": [
+    "INTERNAL_PARCEL_RECEIPT",
+    "TIMESTAMPED_INTERNAL_REGISTRATION",
+    "RECORDED_TRANSPORT_WEIGHT",
+    "POST_REGISTRATION_TECHNICAL_TRANSFER",
+    "SCHEDULED_CONTROLLED_OPENING",
+    "CONTENT_UNKNOWN_AT_RECEIPT"
+  ],
+  "prior_construction_model_training_runtime_or_production_exposure": false,
+  "prior_family_identities": {
+    "pilot01": {
+      "authority_family": "9e9e829f602abcc23a7fb30a382422c63778f0bd217666bf3981f6aed249c754",
+      "creative_premise_family_id": "UNASSIGNED",
+      "event_family": "0070e9be578ef6554e67ce342e798ca06f07dd898f792ebfea7440544448a55a",
+      "family_closure": "fd2e4d5cac6a7ed1b3800cc382a6860f2b690bf652691c134b94692bf4bf1f84",
+      "revision_family": "2633ed0e140e4e64badea4e67fd848acf6807529b57fa369932c63ce6025b837",
+      "source_family": "0958b102a31ce3a3101ca584a552a60c767243bd3ea8cf0211a64598231b8f12",
+      "topic_entity_family": "2aad237873ea395239255e0f2fda5da0ec0220baca590aaa70bf06605216f4f4"
+    },
+    "pilot02": {
+      "authority_family": "3d312d29db34d3a4f8a2f2fc5b97af88e9b5ff1477040dd6697d7f6472dc9b62",
+      "creative_premise_family_id": "UNASSIGNED",
+      "event_family": "d83ec1870ec3d927cbee90a7eb0230279d35b09d725b060f831d5de3dc5df52e",
+      "family_closure": "ac076a1fd6ec4bc95138683590fca942bcfa322b3637a61b53b78484b12db005",
+      "revision_family": "e688e30d39d3ae465d92f8f13684776f9720fa8214813affe6958c076a01c08c",
+      "source_family": "f75b690801066eb41484e39ba66bccbb3c6963b9721ccea2a96df79d50b38b8c",
+      "topic_entity_family": "ab894f64a7d4a22908e8a520a6f44fa7cd826f11a6126a1c85ea9947d312dc1d"
+    }
+  },
+  "prior_source_sha256": [
+    "84261f1a6b97f951f70a1b86d42114da9703996607d43d2fc3779bffd7a97cb2",
+    "be9853603f82bc1fd11b2d0e06a692b3db4b83d1a7e20733c203c5aea1a04ea8"
+  ],
+  "prior_target_obligation_or_creative_premise_assignment": false,
+  "result": "PASS_FRESH_FAMILY_INDEPENDENCE",
+  "schema_name": "batch2-development-pilot03-family-independence-v1",
+  "schema_version": "1.0.0",
+  "selected_or_shaped_using_governance_obligation_target_gap_or_prior_candidate": false,
+  "source_event_topic_revision_sibling_syndication_same_event_relation": false,
+  "source_hash_distinct": true
+}
