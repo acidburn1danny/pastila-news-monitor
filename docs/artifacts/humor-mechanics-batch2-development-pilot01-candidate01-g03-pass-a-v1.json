@@ -1,0 +1,34 @@
+{
+  "candidate_identity": "f96e626487812b4a9ad32ef548d4ac715fae4ea9bb24590a73f942b0783f080f",
+  "candidate_raw_sha256": "2f848e2bc9d87b113df95996a4d49d48fbe4334d6c204ef707664158e23caf9d",
+  "choice_set_exposed": false,
+  "evaluator_view": "IMMUTABLE_CANDIDATE_SURFACE_ONLY",
+  "g02_identity": "bc6e7ce8975f94ad43de4cbc99b209099f6c330d8d53e85882fb356348d0d210",
+  "other_pass_exposed": false,
+  "pass": "A_OPEN_RECOVERY",
+  "pass_a_identity": "f42aaa19b452af5110e264ad12f1974dabb355861d3d5a7641fb969824f28512",
+  "repository_access": false,
+  "result": {
+    "alternative_comparison": "Metafora ocupațional-birocratică susține întregul pasaj, dar operația comică centrală este personificarea explicită a regulii și verificării ca participanți la muncă și pontaj.",
+    "confidence": "HIGH",
+    "defining_surface_operation": "O regulă abstractă este tratată ca un angajat: «intră în tură», iar verificarea de la 17:00 îi «închide pontajul».",
+    "primary_mechanism": "PERSONIFICATION",
+    "primary_role": "DOMINANT",
+    "shortcut_dependence": {
+      "explanation": "Lexicul ocupațional-birocratic aplicat regulii și verificării realizează personificarea; punctuația, formatarea și un șablon fix nu sunt necesare mecanismului.",
+      "formatting": "NON_MATERIAL",
+      "lexical": "MATERIAL",
+      "punctuation": "NON_MATERIAL",
+      "template": "NON_MATERIAL"
+    },
+    "strongest_alternative": "EXTENDED_METAPHOR",
+    "structural_dependency": "Efectul depinde de atribuirea coerentă a unui scenariu administrativ și ocupațional unor entități neînsuflețite sau abstracte; fără această transferare de agențialitate, rămâne doar o descriere neutră a două verificări.",
+    "supporting_mechanisms": [
+      "ABSURDITY",
+      "EXTENDED_METAPHOR"
+    ]
+  },
+  "schema_name": "batch2-development-pilot01-g03-open-recovery-pass-a-v1",
+  "schema_version": "1.0.0",
+  "sealed_mapping_exposed": false
+}
