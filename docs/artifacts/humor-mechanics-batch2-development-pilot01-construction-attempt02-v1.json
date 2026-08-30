@@ -1,0 +1,62 @@
+{
+  "authority_matrix": {
+    "mechanism_adjudication": false,
+    "model_training": false,
+    "owner_freeze": false,
+    "production_routing": false,
+    "runtime_integration": false
+  },
+  "candidate_identity": "f96e626487812b4a9ad32ef548d4ac715fae4ea9bb24590a73f942b0783f080f",
+  "candidate_partition": "DEVELOPMENT",
+  "candidate_surface_byte_length": 305,
+  "candidate_surface_present": true,
+  "candidate_surface_sha256": "2f848e2bc9d87b113df95996a4d49d48fbe4334d6c204ef707664158e23caf9d",
+  "capability": {
+    "constructor_visible_sha256": "5518c32f99f225bc2337576baa96d510c06b36034b2d4ca3efb3745e677796ca",
+    "consumed": true,
+    "reads": 1,
+    "single_use": true
+  },
+  "construction_provenance": {
+    "closed_authority_envelope_source_commitment": "c7a7c15444e5a21baebe7b90d0eb96522be6455fb0eaa763f3b2fbcdd71e98c2",
+    "operational_obligation_id": "c582df6b94a0b2c167264104ccb50b7ec2219f78e80e43d51489e03d7e983ed6",
+    "source_git_blob_oid_sha1": "c3a3316a2fc6be4befa40c1f777c09ecc2b48b6f",
+    "source_sha256": "84261f1a6b97f951f70a1b86d42114da9703996607d43d2fc3779bffd7a97cb2"
+  },
+  "constructor_exposure_reconciliation": {
+    "authorized_packet_only": true,
+    "blind_material_exposed": false,
+    "cache_or_temp_file_access": false,
+    "environment_or_cli_access": false,
+    "exact_source_bytes_only": true,
+    "hidden_mechanism_metadata_introduced": false,
+    "logs_or_telemetry_payload": false,
+    "process_handle_access": false,
+    "repository_or_filesystem_access": false,
+    "sealed_mapping_exposed": false,
+    "sibling_artifact_access": false
+  },
+  "constructor_facing_packet_identity": "879915bddbd93f74b8acb6b86215da65aa3a9d13a28a413d094afe0141f394b2",
+  "constructor_source_sha256": "5ad3cab4ec0a2ce0b975ea9866af41dff9454ed9b232d142e849ba2886106aa1",
+  "creative_premise_family_id": "55f785b67f0d7f4103fc7c62bdc5826ee3bf3e7295cca6f8415f23e96decd1dc",
+  "evidence_identity": "7be7784614356ba423159369e7d31d06efa60ef8e087360d0fe0d413805efb2f",
+  "execution_source_commit": "434323dc33e140c1b7695dd547e033df81b4ab42",
+  "failure_code": null,
+  "fresh_attempt": {
+    "authorized": 1,
+    "constructor_invocations": 1,
+    "consumed": 1,
+    "remaining": 0
+  },
+  "post_construction_g02b_verdict": "PASS",
+  "prior_attempt_evidence_identity": "9e798bc83289a449d56978fe80d8ac24eed09b4fb05923e9795fdbb5cc405d1e",
+  "prior_attempt_reused": false,
+  "release_commit": "21ab740fa8bbf91e005713b2195cbde2ba041a6c",
+  "release_identity": "c7a275d89e74d3cdb08d8caef08a4ed7e65579d2211a408ffdfb8e36cf3fbd63",
+  "repair_authority": false,
+  "retry_authority": false,
+  "schema_name": "batch2-development-pilot01-construction-attempt02-v1",
+  "schema_version": "1.0.0",
+  "selection_authority": false,
+  "terminal_classification": "CANDIDATE_PRODUCED_DEVELOPMENT_ONLY"
+}
