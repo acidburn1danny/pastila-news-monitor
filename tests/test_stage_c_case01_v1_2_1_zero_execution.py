@@ -289,3 +289,32 @@ def test_child_response_is_persisted_before_canonical_validation(tmp_path, monke
 def test_child_runner_uses_parent_canonical_response_contract():
     source = (ROOT / "src/pastila_scout/experimental_core_v1_2_gate_f_constrained_runner.py").read_text("utf-8")
     assert "response_path.write_bytes(_canonical(" in source
+
+
+def test_semantic_validation_failure_preserves_response_and_raw_output(tmp_path, monkeypatch):
+    packet, evidence, _ = _packet(tmp_path)
+    _issue_for_test(packet)
+    evidence.mkdir()
+    monkeypatch.setattr(linux_runner, "STAGE_C_PROMPT",
+                        ROOT / "docs/artifacts/semantic-admission-v2-stage-c-prompt-v1.txt")
+    monkeypatch.setattr(linux_runner, "SYSTEM_PROMPT",
+                        ROOT / "docs/artifacts/semantic-admission-v2-stage-c-prompt-v1.txt")
+    raw_output = '{"gate_id":"FACTUAL_SEMANTIC","decision":"PASS","reason_records":[]}'
+    response = _canonical({"output": raw_output, "terminal_eos": True,
+                           "constraint_active": True})
+    def fake_run(command, **kwargs):
+        Path(command[5]).write_bytes(response)
+        Path(command[7]).write_text("{}", encoding="utf-8")
+        return subprocess.CompletedProcess(command, 0, b"", b"")
+    monkeypatch.setattr(linux_runner.subprocess, "run", fake_run)
+    monkeypatch.setattr(linux_runner, "validate_reason_span_sources_v1",
+                        lambda **kwargs: (_ for _ in ()).throw(ValueError("test-only")))
+    status = linux_runner.supervise(
+        packet / "stage-c-request.json", packet / "authority-receipt-issued.json",
+        packet / "frozen-stage-p-ledger.json", evidence / "linux-stage-c")
+    assert status == 20
+    root = evidence / "linux-stage-c"
+    assert (root / "child-response.json").read_bytes() == response
+    assert (root / "raw-output.bin").read_bytes() == raw_output.encode()
+    failure = json.loads((root / "response-validation-failure.json").read_bytes())
+    assert failure["failure"] == "STAGE_C_RESPONSE_VALIDATION_FAILURE:ValueError"
