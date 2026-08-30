@@ -1,0 +1,48 @@
+{
+  "attempt": {
+    "authorized": 1,
+    "constructor_invocations": 1,
+    "consumed": 1,
+    "remaining": 0
+  },
+  "authority_matrix": {
+    "mechanism_adjudication": false,
+    "model_training": false,
+    "owner_freeze": false,
+    "production_routing": false,
+    "runtime_integration": false
+  },
+  "candidate_identity": null,
+  "candidate_surface_present": false,
+  "candidate_surface_sha256": null,
+  "capability": {
+    "constructor_visible_sha256": "47b9cba2ba845d818e4aca91dd3dc76e2a6c1d83d7071bc2c1d382a003293a20",
+    "consumed": true,
+    "reads": 1,
+    "single_use": true
+  },
+  "constructor_exposure_reconciliation": {
+    "authorized_packet_only": true,
+    "blind_material_exposed": false,
+    "cache_or_temp_file_access": false,
+    "environment_or_cli_access": false,
+    "hidden_mechanism_metadata_introduced": false,
+    "logs_or_telemetry_payload": false,
+    "process_handle_access": false,
+    "repository_or_filesystem_access": false,
+    "sealed_mapping_exposed": false,
+    "sibling_artifact_access": false
+  },
+  "constructor_facing_packet_identity": "c41a80dc3d6461a4c1bcc68c138aa64da5a3c3074e7768e1d3e8d31cb4367821",
+  "creative_premise_family_id": "UNASSIGNED",
+  "evidence_identity": "9e798bc83289a449d56978fe80d8ac24eed09b4fb05923e9795fdbb5cc405d1e",
+  "failure_code": "CONSTRUCTOR_SOURCE_SURFACE_UNAVAILABLE",
+  "g02b_commit": "81b6e690843b29139f6b199f3be8904a5e613b93",
+  "post_construction_g02b_verdict": "PASS_EXPOSURE_RECONCILIATION_TECHNICAL_FAILURE_NO_CANDIDATE",
+  "release_identity": "2d238fcace4a17138e0740b87c61f89a18f3298fb2212d70942add1099eff495",
+  "repair_authority": false,
+  "retry_authority": false,
+  "schema_name": "batch2-development-pilot01-construction-attempt-v1",
+  "schema_version": "1.0.0",
+  "terminal_classification": "TECHNICAL_FAILURE_BEFORE_CANDIDATE"
+}
