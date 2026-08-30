@@ -1,0 +1,29 @@
+{
+  "blind_family_access": false,
+  "family_independence_identity": "1c5fb4c3ad2046c8b2042e8b98d6f02307eb4f51f890ba32c14689372eef2d9a",
+  "git_blob_distinct": true,
+  "pilot01_source_sha256": "84261f1a6b97f951f70a1b86d42114da9703996607d43d2fc3779bffd7a97cb2",
+  "pilot01_topology": [
+    "LABELED_STORAGE_ENTITIES",
+    "INVENTORY_QUANTITIES",
+    "REPEATED_CHECKS",
+    "BETWEEN_CHECKS_INVARIANT"
+  ],
+  "pilot02_source_sha256": "be9853603f82bc1fd11b2d0e06a692b3db4b83d1a7e20733c203c5aea1a04ea8",
+  "pilot02_topology": [
+    "BOUNDED_TASTING_EVENT",
+    "PARTICIPANT_COUNT",
+    "STANDARDIZED_PREPARATION",
+    "MULTIDIMENSIONAL_OBSERVATIONS",
+    "DEFERRED_EVALUATION",
+    "NO_WINNER_AT_END"
+  ],
+  "prior_construction_or_model_exposure": false,
+  "prior_target_or_obligation_assignment": false,
+  "result": "PASS_FRESH_FAMILY_INDEPENDENCE",
+  "schema_name": "batch2-development-pilot02-family-independence-v1",
+  "schema_version": "1.0.0",
+  "selected_using_successor_obligation_or_target_friendly_shape": false,
+  "source_event_topic_revision_sibling_same_event_relation": false,
+  "source_hash_distinct": true
+}
