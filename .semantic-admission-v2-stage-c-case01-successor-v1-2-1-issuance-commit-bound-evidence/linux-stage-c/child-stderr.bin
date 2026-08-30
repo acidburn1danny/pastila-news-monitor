@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/mnt/c/Projects/pastila-news-monitor/src/pastila_scout/semantic_admission_v2/stage_c_case01_linux_runner_v1_2_1.py", line 13, in <module>
+    from .source_span_validation_v1 import validate_reason_span_sources_v1
+ImportError: attempted relative import with no known parent package
