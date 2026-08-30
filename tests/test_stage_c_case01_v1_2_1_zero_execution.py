@@ -216,7 +216,9 @@ def test_linux_supervisor_terminal_success_uses_real_durable_sink_without_model(
     monkeypatch.setattr(linux_runner, "SYSTEM_PROMPT",
                         ROOT / "docs/artifacts/semantic-admission-v2-stage-c-prompt-v1.txt")
     def fake_run(command, **kwargs):
-        response, lifecycle = Path(command[4]), Path(command[6])
+        assert command[:4] == (
+            linux_runner.sys.executable, "-m", linux_runner.CHILD_MODULE, "--child")
+        response, lifecycle = Path(command[5]), Path(command[7])
         response.write_bytes(_canonical({
             "output": '{"gate_id":"FACTUAL_SEMANTIC","decision":"PASS","reason_records":[]}',
             "terminal_eos": True, "constraint_active": True}))
@@ -243,6 +245,8 @@ def test_linux_supervisor_timeout_is_distinct_and_cleanup_is_durable(tmp_path, m
     monkeypatch.setattr(linux_runner, "SYSTEM_PROMPT",
                         ROOT / "docs/artifacts/semantic-admission-v2-stage-c-prompt-v1.txt")
     def timeout(command, **kwargs):
+        assert command[:4] == (
+            linux_runner.sys.executable, "-m", linux_runner.CHILD_MODULE, "--child")
         raise subprocess.TimeoutExpired(command, linux_runner.CHILD_TIMEOUT_SECONDS,
                                         output=b"partial", stderr=b"timed out")
     monkeypatch.setattr(linux_runner.subprocess, "run", timeout)

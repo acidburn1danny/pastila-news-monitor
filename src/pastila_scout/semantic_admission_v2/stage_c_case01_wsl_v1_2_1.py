@@ -30,9 +30,9 @@ TIMEOUT_SECONDS = 1260.0
 CHILD_TIMEOUT_SECONDS = 1200.0
 PACKET_RELATIVE = Path(
     "docs/artifacts/semantic-admission-v2-stage-c-case01-successor-v1-2-1-"
-    "issuance-commit-bound")
+    "module-child-bound")
 EVIDENCE_RELATIVE = Path(
-    ".semantic-admission-v2-stage-c-case01-successor-v1-2-1-issuance-commit-bound-evidence")
+    ".semantic-admission-v2-stage-c-case01-successor-v1-2-1-module-child-bound-evidence")
 CASE_PACK_RELATIVE = Path("docs/artifacts/semantic-admission-v2-staged-gate-f-two-case-proof-pack-v1.json")
 RAW_LEDGER_RELATIVE = Path(
     ".semantic-admission-v2-stage-p-construction-obligation-v2-case01-successor-"

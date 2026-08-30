@@ -31,6 +31,7 @@ SYSTEM_PROMPT = Path(
 STAGE_C_PROMPT = Path(
     "/mnt/c/Projects/pastila-news-monitor/docs/artifacts/"
     "semantic-admission-v2-stage-c-prompt-v1.txt")
+CHILD_MODULE = "pastila_scout.semantic_admission_v2.stage_c_case01_linux_runner_v1_2_1"
 
 
 def supervise(request_path: Path, authority_path: Path, ledger_path: Path,
@@ -92,7 +93,7 @@ def supervise(request_path: Path, authority_path: Path, ledger_path: Path,
         payload.write_bytes(_canonical({"prompt": prompt, "max_new_tokens": 1400}))
         persist("lifecycle-00002-model-process-started.json", {
             "event": "MODEL_PROCESS_STARTED", "elapsed_ms": 0})
-        command = (sys.executable, str(Path(__file__).resolve()), "--child",
+        command = (sys.executable, "-m", CHILD_MODULE, "--child",
                    str(payload), str(response), str(SYSTEM_PROMPT), str(lifecycle))
         try:
             completed = subprocess.run(command, check=False, capture_output=True,
