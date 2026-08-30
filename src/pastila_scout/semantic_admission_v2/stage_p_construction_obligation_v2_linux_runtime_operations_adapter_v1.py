@@ -76,11 +76,18 @@ def prepare_linux_runtime_operations_v1(
         raise ValueError("CONSTRUCTION_OBLIGATION_V2_SYSTEM_PROMPT_IDENTITY_MISMATCH")
     from transformers import AutoTokenizer, BatchEncoding
     from transformers.tokenization_utils_tokenizers import TokenizersBackend
+    import transformers.tokenization_utils_tokenizers as transformers_tokenizer_module
     from tokenizers.decoders import ByteLevel
     import tokenizers
     import tokenizers.decoders as tokenizers_decoders
     import tokenizers.tokenizers as tokenizers_native
     tokenizers_distribution = distribution("tokenizers")
+    tokenizers_root = Path(tokenizers_distribution.locate_file("")).resolve()
+    tokenizers_record = Path(tokenizers_distribution.locate_file(
+        "tokenizers-0.22.2.dist-info/RECORD")).resolve()
+    native_path = Path(tokenizers_native.__file__).resolve()
+    package_path = Path(tokenizers.__file__).resolve()
+    decoders_path = Path(tokenizers_decoders.__file__).resolve()
     wrapper_fields = {
         "metadata": hashlib.sha256(Path(
             tokenizers_distribution.locate_file(
@@ -94,6 +101,11 @@ def prepare_linux_runtime_operations_v1(
     }
     wrapper_identity = hashlib.sha256(json.dumps(
         wrapper_fields, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+    transformers_distribution = distribution("transformers")
+    transformers_root = Path(transformers_distribution.locate_file("")).resolve()
+    transformers_record = Path(transformers_distribution.locate_file(
+        "transformers-5.15.0.dist-info/RECORD")).resolve()
+    transformers_wrapper = Path(transformers_tokenizer_module.__file__).resolve()
 
     tokenizer = AutoTokenizer.from_pretrained(BASE_MODEL_PATH, local_files_only=True)
     identity = TokenizerRuntimeIdentityV1(
@@ -106,10 +118,21 @@ def prepare_linux_runtime_operations_v1(
         canonical_tokenizer_type=TokenizersBackend,
         canonical_decoder_type=ByteLevel,
         tokenizers_version=_package_version("tokenizers"),
-        native_extension_path=tokenizers_native.__file__,
+        native_extension_path=str(native_path),
         native_extension_sha256=hashlib.sha256(
-            Path(tokenizers_native.__file__).read_bytes()).hexdigest(),
-        python_wrapper_identity=wrapper_identity)
+            native_path.read_bytes()).hexdigest(),
+        python_wrapper_identity=wrapper_identity,
+        tokenizers_record_sha256=hashlib.sha256(
+            tokenizers_record.read_bytes()).hexdigest(),
+        common_distribution_root=all(path.is_relative_to(tokenizers_root) for path in (
+            tokenizers_record, native_path, package_path, decoders_path)),
+        transformers_wrapper_path=str(transformers_wrapper),
+        transformers_wrapper_sha256=hashlib.sha256(
+            transformers_wrapper.read_bytes()).hexdigest(),
+        transformers_record_sha256=hashlib.sha256(
+            transformers_record.read_bytes()).hexdigest(),
+        transformers_common_root=all(path.is_relative_to(transformers_root) for path in (
+            transformers_record, transformers_wrapper)))
     encoded = tokenizer.apply_chat_template(
         [{"role": "system", "content": system_prompt},
          {"role": "user", "content": rendered_prompt}],

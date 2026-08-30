@@ -10,7 +10,8 @@ from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_toke
     DECODER_CONFIGURATION, DECODER_IDENTITY, DECODER_MECHANISM_IDENTITY, EOS_TOKEN_ID, PROJECTOR_FREEZE_IDENTITY,
     SPECIAL_TOKEN_IDS, TOKENIZER_IDENTITY, TOKENIZER_IMPLEMENTATION,
     TOKENIZERS_NATIVE_SHA256, TOKENIZERS_PYTHON_WRAPPER_IDENTITY,
-    TOKENIZERS_VERSION,
+    TOKENIZERS_RECORD_SHA256, TOKENIZERS_VERSION,
+    TRANSFORMERS_RECORD_SHA256, TRANSFORMERS_WRAPPER_SHA256,
     TRANSFORMERS_VERSION, VOCABULARY_SIZE, TokenizerRuntimeIdentityV1,
     extract_identity_bound_token_pieces_v1,
 )
@@ -62,7 +63,13 @@ def extract(tokenizer, runtime_identity=None):
         tokenizers_version=TOKENIZERS_VERSION,
         native_extension_path="/runtime/tokenizers/tokenizers.abi3.so",
         native_extension_sha256=TOKENIZERS_NATIVE_SHA256,
-        python_wrapper_identity=TOKENIZERS_PYTHON_WRAPPER_IDENTITY)
+        python_wrapper_identity=TOKENIZERS_PYTHON_WRAPPER_IDENTITY,
+        tokenizers_record_sha256=TOKENIZERS_RECORD_SHA256,
+        common_distribution_root=True,
+        transformers_wrapper_path="/runtime/transformers/tokenization_utils_tokenizers.py",
+        transformers_wrapper_sha256=TRANSFORMERS_WRAPPER_SHA256,
+        transformers_record_sha256=TRANSFORMERS_RECORD_SHA256,
+        transformers_common_root=True)
 
 
 @pytest.mark.parametrize("field,value", [
@@ -176,7 +183,13 @@ def test_rejects_missing_or_mutated_native_decoder_before_piece_decode(state):
             tokenizers_version=TOKENIZERS_VERSION,
             native_extension_path="/runtime/tokenizers/tokenizers.abi3.so",
             native_extension_sha256=TOKENIZERS_NATIVE_SHA256,
-            python_wrapper_identity=TOKENIZERS_PYTHON_WRAPPER_IDENTITY)
+            python_wrapper_identity=TOKENIZERS_PYTHON_WRAPPER_IDENTITY,
+            tokenizers_record_sha256=TOKENIZERS_RECORD_SHA256,
+            common_distribution_root=True,
+            transformers_wrapper_path="/runtime/transformers/tokenization_utils_tokenizers.py",
+            transformers_wrapper_sha256=TRANSFORMERS_WRAPPER_SHA256,
+            transformers_record_sha256=TRANSFORMERS_RECORD_SHA256,
+            transformers_common_root=True)
     assert tokenizer.decode_calls == 0
 
 
@@ -194,7 +207,13 @@ def test_rejects_native_distribution_substitution_before_decode(version, path, d
             canonical_decoder_type=ByteLevel,
             tokenizers_version=version, native_extension_path=path,
             native_extension_sha256=digest,
-            python_wrapper_identity=TOKENIZERS_PYTHON_WRAPPER_IDENTITY)
+            python_wrapper_identity=TOKENIZERS_PYTHON_WRAPPER_IDENTITY,
+            tokenizers_record_sha256=TOKENIZERS_RECORD_SHA256,
+            common_distribution_root=True,
+            transformers_wrapper_path="/runtime/transformers/tokenization_utils_tokenizers.py",
+            transformers_wrapper_sha256=TRANSFORMERS_WRAPPER_SHA256,
+            transformers_record_sha256=TRANSFORMERS_RECORD_SHA256,
+            transformers_common_root=True)
     assert tokenizer.decode_calls == 0
 
 
@@ -208,7 +227,42 @@ def test_rejects_python_wrapper_substitution_before_decode():
             tokenizers_version=TOKENIZERS_VERSION,
             native_extension_path="/runtime/tokenizers/tokenizers.abi3.so",
             native_extension_sha256=TOKENIZERS_NATIVE_SHA256,
-            python_wrapper_identity="0" * 64)
+            python_wrapper_identity="0" * 64,
+            tokenizers_record_sha256=TOKENIZERS_RECORD_SHA256,
+            common_distribution_root=True,
+            transformers_wrapper_path="/runtime/transformers/tokenization_utils_tokenizers.py",
+            transformers_wrapper_sha256=TRANSFORMERS_WRAPPER_SHA256,
+            transformers_record_sha256=TRANSFORMERS_RECORD_SHA256,
+            transformers_common_root=True)
+    assert tokenizer.decode_calls == 0
+
+
+@pytest.mark.parametrize("overrides,code", [
+    ({"tokenizers_record_sha256": "0" * 64}, "TOKENIZERS_RECORD_MISMATCH"),
+    ({"common_distribution_root": False}, "TOKENIZERS_RECORD_MISMATCH"),
+    ({"transformers_wrapper_sha256": "0" * 64}, "TRANSFORMERS_WRAPPER_MISMATCH"),
+    ({"transformers_record_sha256": "0" * 64}, "TRANSFORMERS_WRAPPER_MISMATCH"),
+    ({"transformers_common_root": False}, "TRANSFORMERS_WRAPPER_MISMATCH"),
+])
+def test_rejects_distribution_manifest_or_transformers_substitution(overrides, code):
+    tokenizer = TokenizersBackend()
+    values = dict(
+        tokenizer=tokenizer, identity=identity(),
+        canonical_tokenizer_type=TokenizersBackend,
+        canonical_decoder_type=ByteLevel,
+        tokenizers_version=TOKENIZERS_VERSION,
+        native_extension_path="/runtime/tokenizers/tokenizers.abi3.so",
+        native_extension_sha256=TOKENIZERS_NATIVE_SHA256,
+        python_wrapper_identity=TOKENIZERS_PYTHON_WRAPPER_IDENTITY,
+        tokenizers_record_sha256=TOKENIZERS_RECORD_SHA256,
+        common_distribution_root=True,
+        transformers_wrapper_path="/runtime/transformers/tokenization_utils_tokenizers.py",
+        transformers_wrapper_sha256=TRANSFORMERS_WRAPPER_SHA256,
+        transformers_record_sha256=TRANSFORMERS_RECORD_SHA256,
+        transformers_common_root=True)
+    values.update(overrides)
+    with pytest.raises(ValueError, match=code):
+        extract_identity_bound_token_pieces_v1(**values)
     assert tokenizer.decode_calls == 0
 
 
