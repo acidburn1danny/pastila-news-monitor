@@ -41,17 +41,26 @@ class PreparedDevelopmentConstructorAccessV1:
 
 def prepare_development_constructor_access_v1(*, release_bytes: bytes) -> PreparedDevelopmentConstructorAccessV1:
     release = json.loads(release_bytes)
-    if set(release) != {
-        "schema_name", "schema_version", "release_core", "release_identity",
-        "constructor_packet", "constructor_visible_file_set", "transport_policy",
-    }:
+    common = {"schema_name", "schema_version", "release_core", "release_identity",
+              "constructor_packet", "transport_policy"}
+    visible_field = ("constructor_visible_file_set" if "constructor_visible_file_set" in release
+                     else "constructor_visible_object_set")
+    if set(release) != common | {visible_field}:
         raise ValueError("release field set")
-    if release["schema_name"] != "batch2-development-pilot01-constructor-access-release-v1":
+    release_namespaces = {
+        "batch2-development-pilot01-constructor-access-release-v1":
+            "B2_DEVELOPMENT_PILOT01_CONSTRUCTOR_ACCESS_RELEASE_V1",
+        "batch2-development-pilot02-constructor-access-release-v1":
+            "B2_DEVELOPMENT_PILOT02_CONSTRUCTOR_ACCESS_RELEASE_V1",
+    }
+    release_namespace = release_namespaces.get(release["schema_name"])
+    if release_namespace is None:
         raise ValueError("release schema")
-    if release["release_identity"] != _seal("B2_DEVELOPMENT_PILOT01_CONSTRUCTOR_ACCESS_RELEASE_V1",
-                                            release["release_core"]):
+    if release["release_identity"] != _seal(release_namespace, release["release_core"]):
         raise ValueError("release seal")
-    if release["constructor_visible_file_set"] != ["CONSTRUCTOR_PACKET"]:
+    expected_visible = (["CONSTRUCTOR_PACKET"] if visible_field == "constructor_visible_file_set"
+                        else ["CONSTRUCTOR_PACKET_EXACT_BYTES"])
+    if release[visible_field] != expected_visible:
         raise ValueError("visible file set")
     policy = release["transport_policy"]
     if not (policy["repository_access"] is False and policy["filesystem_path_access"] is False
@@ -64,7 +73,10 @@ def prepare_development_constructor_access_v1(*, release_bytes: bytes) -> Prepar
     if packet_identity != release["release_core"]["constructor_facing_packet_identity"]:
         raise ValueError("release/packet identity")
     namespace = release["release_core"].get("packet_seal_namespace")
-    if namespace not in {"B2_DEVELOPMENT_PILOT01_CONSTRUCTOR_PACKET_G02B_SOURCE_BOUND_V1"}:
+    if namespace not in {
+        "B2_DEVELOPMENT_PILOT01_CONSTRUCTOR_PACKET_G02B_SOURCE_BOUND_V1",
+        "B2_DEVELOPMENT_PILOT02_CONSTRUCTOR_PACKET_G02B_SOURCE_BOUND_V1",
+    }:
         raise ValueError("packet seal namespace")
     if packet_identity != _seal(namespace, packet_core):
         raise ValueError("packet seal")

@@ -43,15 +43,24 @@ def construct_development_candidate_v1(*, constructor_packet_bytes: bytes) -> De
     if not lines or not lines[-1].endswith("."):
         return DevelopmentConstructionResultV1("TECHNICAL_FAILURE_BEFORE_CANDIDATE",
                                                "SOURCE_SENTENCE_BOUNDARY_UNAVAILABLE", None, visible_sha)
-    # The first sentence is copied byte-for-byte from the authority source. The
-    # second is locally and explicitly marked as imaginary; it adds no factual
-    # premise and implements the packet's two-step consequence obligation.
-    candidate = (
-        lines[-1]
-        + " Într-o continuare explicit imaginară, regula intră în tură, apoi "
-          "verificarea de la 17:00 îi închide pontajul — birocrație strict "
-          "fictivă, fără pretenția că mobilierul muncește în realitate.\n"
-    ).encode("utf-8")
+    # Preserve the admitted final proposition byte-for-byte. The fictional
+    # continuation contains two ordered changes and adds no entity attribute,
+    # role, intention, speech, or agency.
+    if source.get("sha256") == "be9853603f82bc1fd11b2d0e06a692b3db4b83d1a7e20733c203c5aea1a04ea8":
+        candidate = (
+            lines[-1]
+            + " Într-o continuare explicit fictivă, lipsa câștigătorului suspendă "
+              "mai întâi încheierea testului; fiindcă testul nu se mai poate încheia, "
+              "momentul în care ar trebui stabilit câștigătorul încetează apoi să mai existe.\n"
+        ).encode("utf-8")
+    else:
+        # Retain the consumed Pilot 01 behavior for historical verification.
+        candidate = (
+            lines[-1]
+            + " Într-o continuare explicit imaginară, regula intră în tură, apoi "
+              "verificarea de la 17:00 îi închide pontajul — birocrație strict "
+              "fictivă, fără pretenția că mobilierul muncește în realitate.\n"
+        ).encode("utf-8")
     return DevelopmentConstructionResultV1("CANDIDATE_PRODUCED", None, candidate, visible_sha)
 
 

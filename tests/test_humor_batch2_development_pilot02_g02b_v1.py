@@ -7,6 +7,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+from pastila_scout.humor_batch2_constructor_access_v1 import prepare_development_constructor_access_v1
+
 
 ROOT = Path(__file__).resolve().parents[1]
 ART = ROOT / "docs/artifacts"
@@ -51,3 +53,11 @@ def test_g02b_release_is_source_bound_label_blind_and_unconsumed() -> None:
     assert release["transport_policy"]["constructor_invocation_authorized"] is False
     assert audit["verdict"] == "READY_FOR_BOUNDED_DEVELOPMENT_CONSTRUCTION_DECISION"
     assert audit["deterministic_blockers_remaining"] == []
+
+    # Minting validates the canonical boundary but does not read/consume the
+    # capability and does not invoke the constructor.
+    prepared = prepare_development_constructor_access_v1(
+        release_bytes=(ART / "humor-mechanics-batch2-development-pilot02-constructor-access-release-v1.json").read_bytes()
+    )
+    assert prepared.packet_identity == packet_identity
+    assert prepared.release_identity == release["release_identity"]
