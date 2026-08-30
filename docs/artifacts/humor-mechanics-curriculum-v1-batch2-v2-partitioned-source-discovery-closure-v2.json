@@ -1,0 +1,890 @@
+{
+  "authority": {
+    "construction": false,
+    "model_exposure": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "source_discovery": true,
+    "surface_generation": false,
+    "training": false
+  },
+  "canonical_inventory": {
+    "BLIND_CONTAMINATED": [
+      "27fd414b0b2e86cdfdaf546204b83d6f32be362f46a312cce720482c43217f9e",
+      "d6cdea38eac8cc8e7b402081a9cd5fc599d379dce02c5bf87c7a198e76d54de2"
+    ],
+    "BLIND_EVALUATION": [
+      "fc24457cfc3f7705cb02817fb26e7e899faeb342fe236bc2e6f9039066a765ad",
+      "afa1e5ab272dff1fdbc5052de5f37c1eab135fcf0a61a757ecc1769882b02c7c"
+    ],
+    "CURRICULUM_CANDIDATE": [
+      "aae2f44d90b103f62bf1b319da8f15a8dbe156bf8cafdf08078d85aa6d39f5d8"
+    ],
+    "DEVELOPMENT": [
+      "0b33e615dc860b665c37fc55007c83570d755bb4185f3e4520fcb6e2185247f5",
+      "7c93e44a6322ce59d145f88c35342e1e6d4e8c80605184f0861e9da9a615bf27",
+      "fc8dcd588cd2f3408db134f16afee9989337090ff146de19b36a96cb7ab1c166",
+      "3d449a6ce5ef1af0655144b947af21e2f1fe44445b3dc2388c62f34372eb7cb1",
+      "fba4de228c30f38c65a0f30cbabf98216e434c8e538e813a55f3951c0e9fa678"
+    ],
+    "PROVISIONAL": [
+      "0b33e615dc860b665c37fc55007c83570d755bb4185f3e4520fcb6e2185247f5",
+      "7c93e44a6322ce59d145f88c35342e1e6d4e8c80605184f0861e9da9a615bf27",
+      "fc8dcd588cd2f3408db134f16afee9989337090ff146de19b36a96cb7ab1c166",
+      "aae2f44d90b103f62bf1b319da8f15a8dbe156bf8cafdf08078d85aa6d39f5d8",
+      "3d449a6ce5ef1af0655144b947af21e2f1fe44445b3dc2388c62f34372eb7cb1",
+      "fba4de228c30f38c65a0f30cbabf98216e434c8e538e813a55f3951c0e9fa678"
+    ],
+    "REJECTED": []
+  },
+  "contamination_exposure_ledger": [
+    {
+      "batch2_constructor_exposure": false,
+      "classification": "KNOWN_NONBLIND_PRIOR_EXPOSURE",
+      "event_id": 2096,
+      "model_exposure": false,
+      "owner_fact_review": true
+    },
+    {
+      "batch2_constructor_exposure": false,
+      "classification": "KNOWN_NONBLIND_PRIOR_EXPOSURE",
+      "event_id": 2472,
+      "model_exposure": false,
+      "owner_fact_review": true
+    },
+    {
+      "cause": "PRE_SEAL_ATOM_ACCESS_IN_SUPERSEDED_DISCOVERY_PASS",
+      "classification": "BLIND_CONTAMINATED_PERMANENT",
+      "downstream_use_prohibited": true,
+      "event_id_commitment": "0f8e631d28e2a339b435ea55da61c718da28902056ed719e576ff1c1b4cb2baf",
+      "first_recorded_commit": "bf2ed9a6b927170740576917315bc4c5d1c69290",
+      "reassignment_prohibited": true
+    },
+    {
+      "batch2_constructor_exposure": false,
+      "classification": "KNOWN_NONBLIND_PRIOR_EXPOSURE",
+      "event_id": 2111,
+      "model_exposure": false,
+      "owner_fact_review": true
+    },
+    {
+      "batch2_constructor_exposure": false,
+      "classification": "KNOWN_NONBLIND_PRIOR_EXPOSURE",
+      "event_id": 2360,
+      "model_exposure": false,
+      "owner_fact_review": true
+    },
+    {
+      "cause": "PRE_SEAL_ATOM_ACCESS_IN_SUPERSEDED_DISCOVERY_PASS",
+      "classification": "BLIND_CONTAMINATED_PERMANENT",
+      "downstream_use_prohibited": true,
+      "event_id_commitment": "13d61412db18277db74db4337a034d6972da028bdcf41c2286c07f452753fc8f",
+      "first_recorded_commit": "bf2ed9a6b927170740576917315bc4c5d1c69290",
+      "reassignment_prohibited": true
+    },
+    {
+      "batch2_constructor_exposure": false,
+      "classification": "KNOWN_NONBLIND_PRIOR_EXPOSURE",
+      "event_id": 2365,
+      "model_exposure": false,
+      "owner_fact_review": true
+    },
+    {
+      "batch2_constructor_exposure": false,
+      "classification": "KNOWN_NONBLIND_PRIOR_EXPOSURE",
+      "event_id": 734,
+      "model_exposure": false,
+      "owner_fact_review": true
+    },
+    {
+      "atom_exposure": false,
+      "classification": "PRISTINE_BLIND_EVALUATION_RESERVED_METADATA_ONLY",
+      "constructor_exposure": false,
+      "content_exposure": false,
+      "event_id_commitment": "4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce",
+      "family_closure_id": "fc24457cfc3f7705cb02817fb26e7e899faeb342fe236bc2e6f9039066a765ad",
+      "model_exposure": false
+    },
+    {
+      "atom_exposure": false,
+      "classification": "PRISTINE_BLIND_EVALUATION_RESERVED_METADATA_ONLY",
+      "constructor_exposure": false,
+      "content_exposure": false,
+      "event_id_commitment": "5ef6fdf32513aa7cd11f72beccf132b9224d33f271471fff402742887a171edf",
+      "family_closure_id": "afa1e5ab272dff1fdbc5052de5f37c1eab135fcf0a61a757ecc1769882b02c7c",
+      "model_exposure": false
+    }
+  ],
+  "database_sha256": "d02adc9ef875627c04b3968b0edc5105546a8f20bef25c1e57fa26774df3ed00",
+  "eligibility": {
+    "later_construction_decision": [],
+    "priority_mechanism_positive_gaps": [
+      "M11",
+      "M12",
+      "M13",
+      "M17",
+      "M18",
+      "M19"
+    ],
+    "reason": "NO_FAMILY_CLOSES_PERMITTED_USE_AND_IMMUTABLE_CAPTURE"
+  },
+  "execution": {
+    "blind_atom_reads": 0,
+    "blind_content_queries": 0,
+    "candidate_surfaces_created": 0,
+    "database_mode": "READ_ONLY",
+    "model_calls": 0
+  },
+  "families": [
+    {
+      "accepted_atom_count": 5,
+      "authority_envelope_family_id": "b4d02284fcc4534be20519916a9605497bb26782e0bb081c9e5032f62601c020",
+      "construction_blockers": [
+        "NO_AFFIRMATIVE_PERMITTED_USE",
+        "HASH_BOUND_BUT_SOURCE_BYTES_NOT_ARCHIVED_IN_GIT",
+        "PRIOR_OWNER_FACT_REVIEW_EXPOSURE",
+        "G01B_NOT_AUTHORIZED"
+      ],
+      "construction_eligible": false,
+      "construction_lineage_family_id": "UNASSIGNED",
+      "coordinate_validation": "CHARACTER_AND_UTF8_BYTE_INDEPENDENT",
+      "creative_premise_family_id": "UNASSIGNED",
+      "event_family_id": "c84261b85c8cd357bf522d4e02dcc82f85a2ad9b2666842340a6cc6ec857481f",
+      "event_id": 2096,
+      "exact_target_bytes_uniquely_recoverable": false,
+      "fact_bundle_identity": "sha256:1013ea681a12d27d64fe0ea83decdcd3cd56e0424b3616d69fc0f89b798b659d",
+      "family_closure_id": "0b33e615dc860b665c37fc55007c83570d755bb4185f3e4520fcb6e2185247f5",
+      "immutable_capture_status": "HASH_BOUND_BUT_SOURCE_BYTES_NOT_ARCHIVED_IN_GIT",
+      "manifest_sha256": "8bdc9dfb9a1d463e4b24be68ecea55c9048cad780b622b35cc6345ebd2506afd",
+      "metadata_articles": [
+        {
+          "article_id": 2271,
+          "database_event_id": 2096,
+          "discovered_at": "2026-08-20T18:25:29.240425+00:00",
+          "normalized_url_sha256": "d0b14d36278b47ea081a00e9be3f750cbbad7a49a985f2ea90bff9e271cbe80d",
+          "published_at": "2026-08-20T16:14:00+00:00",
+          "source_id": "observatornews"
+        },
+        {
+          "article_id": 2419,
+          "database_event_id": 2096,
+          "discovered_at": "2026-08-20T18:26:59.178475+00:00",
+          "normalized_url_sha256": "f2ff6a2959348c8bf22ac32dbe05ca4e674bed10a1aff417532b09b8e4cbe32a",
+          "published_at": "2026-08-20T17:10:17+00:00",
+          "source_id": "click"
+        }
+      ],
+      "original_partition": "DEVELOPMENT",
+      "partition": "DEVELOPMENT",
+      "partition_score": 5,
+      "permitted_use_reviews": [
+        {
+          "source_id": "click",
+          "status": "WRITTEN_PERMISSION_REQUIRED_NOT_PRESENT",
+          "terms_url": "https://click.ro/termeni-si-conditii"
+        },
+        {
+          "source_id": "observatornews",
+          "status": "WRITTEN_PERMISSION_REQUIRED_NOT_PRESENT",
+          "terms_url": "https://observatornews.ro/termeni-si-conditii.html"
+        }
+      ],
+      "revision_family_id": "UNASSIGNED",
+      "source_family_id": "3bb0096aba627a02d73184f5b3f72bfd9fba1cacbc26fd4db95acf401955d53c",
+      "span_checks": [
+        {
+          "atom_id": "C01",
+          "canonical_character_coordinates": [
+            0,
+            164
+          ],
+          "canonical_utf8_byte_coordinates": [
+            0,
+            176
+          ],
+          "passage_sha256": "a838724965078985f55546f1b910337d74eff585a05ac3a5b1d6f958c2d7981e",
+          "qualification_binding_present": true,
+          "recorded_character_coordinates_valid": true,
+          "recorded_source_identity_sha256": "0703e871d8eee348e4d5a76a8efeec5145942700fa2e7b06b04edd180261894d",
+          "recorded_utf8_boundaries_valid": true,
+          "recorded_utf8_byte_coordinates_valid": false,
+          "status": "RECORDED_CHARACTER_COORDINATES_VALID",
+          "unique_exact_match": true
+        },
+        {
+          "atom_id": "C02",
+          "canonical_character_coordinates": null,
+          "canonical_utf8_byte_coordinates": null,
+          "passage_sha256": "57bcad9c4362f3193b2185eab83510a18e6ca0c935fba005f41a21123d92e07b",
+          "qualification_binding_present": true,
+          "recorded_character_coordinates_valid": false,
+          "recorded_source_identity_sha256": "07674f3fd3da850513da4240090c9afc5086b3a8310d5f99022077c9ea9f0f7f",
+          "recorded_utf8_boundaries_valid": true,
+          "recorded_utf8_byte_coordinates_valid": false,
+          "status": "TARGET_BYTES_ABSENT",
+          "unique_exact_match": false
+        },
+        {
+          "atom_id": "C03",
+          "canonical_character_coordinates": [
+            150,
+            237
+          ],
+          "canonical_utf8_byte_coordinates": [
+            157,
+            247
+          ],
+          "passage_sha256": "b1c844fa13442eaa0ee44a49a681fe4f4649cc86f98df650bd83da1674a09113",
+          "qualification_binding_present": true,
+          "recorded_character_coordinates_valid": false,
+          "recorded_source_identity_sha256": "07674f3fd3da850513da4240090c9afc5086b3a8310d5f99022077c9ea9f0f7f",
+          "recorded_utf8_boundaries_valid": true,
+          "recorded_utf8_byte_coordinates_valid": false,
+          "status": "STALE_COORDINATES_UNIQUE_BYTE_EXACT_RECOVERY",
+          "unique_exact_match": true
+        },
+        {
+          "atom_id": "C04",
+          "canonical_character_coordinates": [
+            165,
+            281
+          ],
+          "canonical_utf8_byte_coordinates": [
+            177,
+            300
+          ],
+          "passage_sha256": "61af07792e9fc275f5bb3ca5e278581f06c8d51a02673313314412a40f275ad5",
+          "qualification_binding_present": true,
+          "recorded_character_coordinates_valid": true,
+          "recorded_source_identity_sha256": "0703e871d8eee348e4d5a76a8efeec5145942700fa2e7b06b04edd180261894d",
+          "recorded_utf8_boundaries_valid": true,
+          "recorded_utf8_byte_coordinates_valid": false,
+          "status": "RECORDED_CHARACTER_COORDINATES_VALID",
+          "unique_exact_match": true
+        },
+        {
+          "atom_id": "C05",
+          "canonical_character_coordinates": null,
+          "canonical_utf8_byte_coordinates": null,
+          "passage_sha256": "1504e4bbcc7486c52bf2d2c3520e52f4dc8a878d0fb1058157a3a9634c9aafab",
+          "qualification_binding_present": true,
+          "recorded_character_coordinates_valid": false,
+          "recorded_source_identity_sha256": "07674f3fd3da850513da4240090c9afc5086b3a8310d5f99022077c9ea9f0f7f",
+          "recorded_utf8_boundaries_valid": true,
+          "recorded_utf8_byte_coordinates_valid": false,
+          "status": "TARGET_BYTES_ABSENT",
+          "unique_exact_match": false
+        }
+      ],
+      "status": "PROVISIONAL",
+      "topic_entity_family_id": "cd305b94204b34cb3b813f89fb64c986956f0a78f091e104f72a2ad189a43a5f"
+    },
+    {
+      "accepted_atom_count": 4,
+      "authority_envelope_family_id": "a4b38302f68aa4972e10f10bc05a286bc306bfaf1d36cc9e9761852ce1a9a6ec",
+      "construction_blockers": [
+        "NO_AFFIRMATIVE_PERMITTED_USE",
+        "HASH_BOUND_BUT_SOURCE_BYTES_NOT_ARCHIVED_IN_GIT",
+        "PRIOR_OWNER_FACT_REVIEW_EXPOSURE",
+        "G01B_NOT_AUTHORIZED"
+      ],
+      "construction_eligible": false,
+      "construction_lineage_family_id": "UNASSIGNED",
+      "coordinate_validation": "CHARACTER_AND_UTF8_BYTE_INDEPENDENT",
+      "creative_premise_family_id": "UNASSIGNED",
+      "event_family_id": "e9ab040c109b7c4511c1d055a9537104cb10db713b53b0f718f917ebd1ea6a18",
+      "event_id": 2472,
+      "exact_target_bytes_uniquely_recoverable": true,
+      "fact_bundle_identity": null,
+      "family_closure_id": "7c93e44a6322ce59d145f88c35342e1e6d4e8c80605184f0861e9da9a615bf27",
+      "immutable_capture_status": "HASH_BOUND_BUT_SOURCE_BYTES_NOT_ARCHIVED_IN_GIT",
+      "manifest_sha256": "e40aedf860fb315fcc09b1bf170ab655e570a39b3422d923a4c1bdc69b80b8a0",
+      "metadata_articles": [
+        {
+          "article_id": 2747,
+          "database_event_id": 2472,
+          "discovered_at": "2026-08-20T18:30:40.684166+00:00",
+          "normalized_url_sha256": "7746b1ceec00edd936faa579c1befe1c2d60118713613aa754ba7532e69a3208",
+          "published_at": "2026-08-20T16:05:09+00:00",
+          "source_id": "tvr_info"
+        }
+      ],
+      "original_partition": "DEVELOPMENT",
+      "partition": "DEVELOPMENT",
+      "partition_score": 4,
+      "permitted_use_reviews": [
+        {
+          "source_id": "tvr_info",
+          "status": "NO_EXPLICIT_CONSTRUCTION_PERMISSION_FOUND",
+          "terms_url": "https://tvrinfo.ro/p-biroul-juridic-lexoria-privind-drepturile-de-autor-asupra-continutului-de-pe-internet-este-posibil-sa-se-faca-text-sau-o-fotografie/"
+        }
+      ],
+      "revision_family_id": "UNASSIGNED",
+      "source_family_id": "1747fe5d26787a87b5b41bda5dee387f76476c36f202fced0d91701024a0fbcc",
+      "span_checks": [
+        {
+          "atom_id": "C01",
+          "canonical_character_coordinates": [
+            3,
+            68
+          ],
+          "canonical_utf8_byte_coordinates": [
+            3,
+            72
+          ],
+          "passage_sha256": "fc85b0fb55b4942ab70ac22ea2ebcd71876706ac18095e8b93c281753a6d9375",
+          "qualification_binding_present": false,
+          "recorded_character_coordinates_valid": false,
+          "recorded_source_identity_sha256": "ea15ad73e8b4c6edc62ef339715bcdca37898b8f79fc6dbece5880aeab22682e",
+          "recorded_utf8_boundaries_valid": true,
+          "recorded_utf8_byte_coordinates_valid": false,
+          "status": "STALE_COORDINATES_UNIQUE_BYTE_EXACT_RECOVERY",
+          "unique_exact_match": true
+        },
+        {
+          "atom_id": "C02",
+          "canonical_character_coordinates": [
+            69,
+            132
+          ],
+          "canonical_utf8_byte_coordinates": [
+            73,
+            141
+          ],
+          "passage_sha256": "18556720f21f8ba6f7f05b68e790324022c99752493a0a9aae28e0223e2775e8",
+          "qualification_binding_present": false,
+          "recorded_character_coordinates_valid": false,
+          "recorded_source_identity_sha256": "ea15ad73e8b4c6edc62ef339715bcdca37898b8f79fc6dbece5880aeab22682e",
+          "recorded_utf8_boundaries_valid": true,
+          "recorded_utf8_byte_coordinates_valid": false,
+          "status": "STALE_COORDINATES_UNIQUE_BYTE_EXACT_RECOVERY",
+          "unique_exact_match": true
+        },
+        {
+          "atom_id": "C03",
+          "canonical_character_coordinates": [
+            170,
+            267
+          ],
+          "canonical_utf8_byte_coordinates": [
+            182,
+            284
+          ],
+          "passage_sha256": "be3c4d9cfea3955e587ffe8675c1e49abef1d762676968bf7581e6ab55a9dcc6",
+          "qualification_binding_present": false,
+          "recorded_character_coordinates_valid": false,
+          "recorded_source_identity_sha256": "ea15ad73e8b4c6edc62ef339715bcdca37898b8f79fc6dbece5880aeab22682e",
+          "recorded_utf8_boundaries_valid": true,
+          "recorded_utf8_byte_coordinates_valid": false,
+          "status": "STALE_COORDINATES_UNIQUE_BYTE_EXACT_RECOVERY",
+          "unique_exact_match": true
+        },
+        {
+          "atom_id": "C04",
+          "canonical_character_coordinates": [
+            57,
+            104
+          ],
+          "canonical_utf8_byte_coordinates": [
+            60,
+            108
+          ],
+          "passage_sha256": "56f88cfd341d93c2faaa3706024762a6773441a11ca6f5fdbef0a291bc8757ba",
+          "qualification_binding_present": false,
+          "recorded_character_coordinates_valid": false,
+          "recorded_source_identity_sha256": "af8a8a089f580d750f34984490146f21dfd3bbca5d41b11f812d2ffc928abb72",
+          "recorded_utf8_boundaries_valid": true,
+          "recorded_utf8_byte_coordinates_valid": false,
+          "status": "STALE_COORDINATES_UNIQUE_BYTE_EXACT_RECOVERY",
+          "unique_exact_match": true
+        }
+      ],
+      "status": "PROVISIONAL",
+      "topic_entity_family_id": "3d41739bcc53ce2bbb09e160270a0e042cdc9c4bcc046be65f72d9dec33b3ef2"
+    },
+    {
+      "atom_reads_this_pass": 0,
+      "authority_envelope_family_id": "c6109b77c36ea3cc9bf522d865dd7165fa887a248f65a8840d5ba490044d1fa0",
+      "construction_eligible": false,
+      "content_queries_this_pass": 0,
+      "event_family_id": "3b23d000cfa17e14b7eac351c004c467800da70ad912b58ce5b0ed16ccdc44f3",
+      "event_id": 1538,
+      "event_id_commitment": "0f8e631d28e2a339b435ea55da61c718da28902056ed719e576ff1c1b4cb2baf",
+      "family_closure_id": "27fd414b0b2e86cdfdaf546204b83d6f32be362f46a312cce720482c43217f9e",
+      "immutable_capture_closure": "NOT_REOPENED_BLIND_CONTAMINATION_IS_DISPOSITIVE",
+      "opaque_holdout": true,
+      "original_partition": "BLIND_EVALUATION",
+      "partition": "BLIND_CONTAMINATED",
+      "partition_score": 9,
+      "permitted_use_closure": "NOT_REOPENED_BLIND_CONTAMINATION_IS_DISPOSITIVE",
+      "source_family_id": "8cd42be09455e60fcabdfa4c17a2df64ae37af289f22c2b4c59bcbd84f9ddad1",
+      "status": "PERMANENTLY_BLIND_CONTAMINATED_NO_REASSIGNMENT_NO_DOWNSTREAM_USE",
+      "topic_entity_family_id": "3aa377b62bcfa289e8fc62fbcb12cdcbfa1f27697544f754add5191d4890811f"
+    },
+    {
+      "accepted_atom_count": 3,
+      "authority_envelope_family_id": "a2d026bbe19f0627a93b3532221f319d2440471aa9dd8f3ca376dc53696da6e1",
+      "construction_blockers": [
+        "NO_AFFIRMATIVE_PERMITTED_USE",
+        "HASH_BOUND_BUT_SOURCE_BYTES_NOT_ARCHIVED_IN_GIT",
+        "PRIOR_OWNER_FACT_REVIEW_EXPOSURE",
+        "G01B_NOT_AUTHORIZED"
+      ],
+      "construction_eligible": false,
+      "construction_lineage_family_id": "UNASSIGNED",
+      "coordinate_validation": "CHARACTER_AND_UTF8_BYTE_INDEPENDENT",
+      "creative_premise_family_id": "UNASSIGNED",
+      "event_family_id": "05a7bd8cc4c4f9554d7850ecea656fb9527e3729253a2b6e15a6722ed5d7ab09",
+      "event_id": 2111,
+      "exact_target_bytes_uniquely_recoverable": false,
+      "fact_bundle_identity": "sha256:a0619a80e472e04e307008372870d2b44f45dae5853b1b050a85801aa5590762",
+      "family_closure_id": "fc8dcd588cd2f3408db134f16afee9989337090ff146de19b36a96cb7ab1c166",
+      "immutable_capture_status": "HASH_BOUND_BUT_SOURCE_BYTES_NOT_ARCHIVED_IN_GIT",
+      "manifest_sha256": "3ce189c2f97c970c9d09d545afdb4f5edb20d3ca7459afdbd06fe972cfd2e3fc",
+      "metadata_articles": [
+        {
+          "article_id": 2293,
+          "database_event_id": 2111,
+          "discovered_at": "2026-08-20T18:25:41.330722+00:00",
+          "normalized_url_sha256": "ef0741b205b906b4b0c4c02208fccadbadb1f84f0da18784f5ad44a42b550c67",
+          "published_at": "2026-08-20T12:09:00+00:00",
+          "source_id": "observatornews"
+        }
+      ],
+      "original_partition": "DEVELOPMENT",
+      "partition": "DEVELOPMENT",
+      "partition_score": 2,
+      "permitted_use_reviews": [
+        {
+          "source_id": "observatornews",
+          "status": "WRITTEN_PERMISSION_REQUIRED_NOT_PRESENT",
+          "terms_url": "https://observatornews.ro/termeni-si-conditii.html"
+        }
+      ],
+      "revision_family_id": "UNASSIGNED",
+      "source_family_id": "31f7598a9bce9d192c0b37e90212de358446e57029d113e973c9c2cfe06784ea",
+      "span_checks": [
+        {
+          "atom_id": "C01",
+          "canonical_character_coordinates": [
+            118,
+            232
+          ],
+          "canonical_utf8_byte_coordinates": [
+            129,
+            252
+          ],
+          "passage_sha256": "352585402b35f425341eed2736f6e9143d7d0974e54bdbae8e81b22828004372",
+          "qualification_binding_present": true,
+          "recorded_character_coordinates_valid": false,
+          "recorded_source_identity_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "recorded_utf8_boundaries_valid": true,
+          "recorded_utf8_byte_coordinates_valid": false,
+          "status": "UNBOUND_UNIQUE_BYTE_EXACT_RECOVERY",
+          "unique_exact_match": true
+        },
+        {
+          "atom_id": "C02",
+          "canonical_character_coordinates": null,
+          "canonical_utf8_byte_coordinates": null,
+          "passage_sha256": "ed8b72fb25138785f0d1938d026e18675d12e68040d3d93d756dc6815a6b9446",
+          "qualification_binding_present": true,
+          "recorded_character_coordinates_valid": false,
+          "recorded_source_identity_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "recorded_utf8_boundaries_valid": true,
+          "recorded_utf8_byte_coordinates_valid": false,
+          "status": "TARGET_BYTES_ABSENT",
+          "unique_exact_match": false
+        },
+        {
+          "atom_id": "C03",
+          "canonical_character_coordinates": null,
+          "canonical_utf8_byte_coordinates": null,
+          "passage_sha256": "30d995ca371cadcd04ee1e1bfcaf0b407e5b0d47415da010a9a3e12889e5d78d",
+          "qualification_binding_present": true,
+          "recorded_character_coordinates_valid": false,
+          "recorded_source_identity_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "recorded_utf8_boundaries_valid": true,
+          "recorded_utf8_byte_coordinates_valid": false,
+          "status": "TARGET_BYTES_ABSENT",
+          "unique_exact_match": false
+        }
+      ],
+      "status": "PROVISIONAL",
+      "topic_entity_family_id": "8269a81cc384b3750cd5e3e348cc9f85b8f3551fa6c84ae24ac2456bd39a0252"
+    },
+    {
+      "accepted_atom_count": 4,
+      "authority_envelope_family_id": "aa9ed8a04e75bf84aeb1f273bf0c73961a8aa770984263dfbd80e7c809ce8cad",
+      "construction_blockers": [
+        "NO_AFFIRMATIVE_PERMITTED_USE",
+        "HASH_BOUND_BUT_SOURCE_BYTES_NOT_ARCHIVED_IN_GIT",
+        "PRIOR_OWNER_FACT_REVIEW_EXPOSURE",
+        "G01B_NOT_AUTHORIZED"
+      ],
+      "construction_eligible": false,
+      "construction_lineage_family_id": "UNASSIGNED",
+      "coordinate_validation": "CHARACTER_AND_UTF8_BYTE_INDEPENDENT",
+      "creative_premise_family_id": "UNASSIGNED",
+      "event_family_id": "7b424b0331ca3959e4783f704b942f7665d0a430ca4b8f48eec0bb4bd966d3e8",
+      "event_id": 2360,
+      "exact_target_bytes_uniquely_recoverable": false,
+      "fact_bundle_identity": "sha256:80f7b42a9d89be93de650cab0db5248c327badf61d530aea9b9afb6d76aa072d",
+      "family_closure_id": "aae2f44d90b103f62bf1b319da8f15a8dbe156bf8cafdf08078d85aa6d39f5d8",
+      "immutable_capture_status": "HASH_BOUND_BUT_SOURCE_BYTES_NOT_ARCHIVED_IN_GIT",
+      "manifest_sha256": "de9724b37b8711c2f9f911335a270e18c062328ccd9cd5005c5d7c9e3da80890",
+      "metadata_articles": [
+        {
+          "article_id": 2606,
+          "database_event_id": 2360,
+          "discovered_at": "2026-08-20T18:28:55.898411+00:00",
+          "normalized_url_sha256": "063743d3c4b8b9f25caddd553473004885dacd2dbf2435ab7339c6675e369c37",
+          "published_at": "2026-08-20T14:44:33+00:00",
+          "source_id": "turnul_sfatului"
+        }
+      ],
+      "original_partition": "CURRICULUM_CANDIDATE",
+      "partition": "CURRICULUM_CANDIDATE",
+      "partition_score": 6,
+      "permitted_use_reviews": [
+        {
+          "source_id": "turnul_sfatului",
+          "status": "NO_TERMS_RECORD_FOUND",
+          "terms_url": null
+        }
+      ],
+      "revision_family_id": "UNASSIGNED",
+      "source_family_id": "7becbb0b0166497ae724b076bee6bcfdf4bf82b8066764e0438b98be98825ec7",
+      "span_checks": [
+        {
+          "atom_id": "C01",
+          "canonical_character_coordinates": null,
+          "canonical_utf8_byte_coordinates": null,
+          "passage_sha256": "9fe0858d66a93475ed5754f5e2bb117b2601ff0254aaa811db5028ca4404627e",
+          "qualification_binding_present": true,
+          "recorded_character_coordinates_valid": false,
+          "recorded_source_identity_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "recorded_utf8_boundaries_valid": true,
+          "recorded_utf8_byte_coordinates_valid": false,
+          "status": "AMBIGUOUS_BYTE_EXACT_MATCH",
+          "unique_exact_match": false
+        },
+        {
+          "atom_id": "C02",
+          "canonical_character_coordinates": null,
+          "canonical_utf8_byte_coordinates": null,
+          "passage_sha256": "5a56722fe36ed440262b5a0945e871bf1c4bfaad6d88a130c744bce757f35f24",
+          "qualification_binding_present": true,
+          "recorded_character_coordinates_valid": false,
+          "recorded_source_identity_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "recorded_utf8_boundaries_valid": true,
+          "recorded_utf8_byte_coordinates_valid": false,
+          "status": "AMBIGUOUS_BYTE_EXACT_MATCH",
+          "unique_exact_match": false
+        },
+        {
+          "atom_id": "C03",
+          "canonical_character_coordinates": [
+            3,
+            226
+          ],
+          "canonical_utf8_byte_coordinates": [
+            3,
+            245
+          ],
+          "passage_sha256": "ae094f7cbbd747229fe4e43f436e965d5ac373f570fb53bd9cd5972abc651ccd",
+          "qualification_binding_present": true,
+          "recorded_character_coordinates_valid": false,
+          "recorded_source_identity_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "recorded_utf8_boundaries_valid": true,
+          "recorded_utf8_byte_coordinates_valid": false,
+          "status": "UNBOUND_UNIQUE_BYTE_EXACT_RECOVERY",
+          "unique_exact_match": true
+        },
+        {
+          "atom_id": "C04",
+          "canonical_character_coordinates": [
+            227,
+            333
+          ],
+          "canonical_utf8_byte_coordinates": [
+            246,
+            359
+          ],
+          "passage_sha256": "2db384c7ed9480a967302b69e8e6a144436ad20812486e6d65b7b3efdef548c0",
+          "qualification_binding_present": true,
+          "recorded_character_coordinates_valid": false,
+          "recorded_source_identity_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "recorded_utf8_boundaries_valid": true,
+          "recorded_utf8_byte_coordinates_valid": false,
+          "status": "UNBOUND_UNIQUE_BYTE_EXACT_RECOVERY",
+          "unique_exact_match": true
+        }
+      ],
+      "status": "PROVISIONAL",
+      "topic_entity_family_id": "f7c81ccf5a5e42eccdc65960c5e9ade79caa936d11abbb7a1d268d93bb316eff"
+    },
+    {
+      "atom_reads_this_pass": 0,
+      "authority_envelope_family_id": "aa80e0c4311521ae409f4248b98dc531803d7b5f2ca2c8fec39608d32d43e960",
+      "construction_eligible": false,
+      "content_queries_this_pass": 0,
+      "event_family_id": "60f040dcf3f5e151a25ea95dbd52603b97321ec795209221fb0d58a3de5d0d15",
+      "event_id": 2617,
+      "event_id_commitment": "13d61412db18277db74db4337a034d6972da028bdcf41c2286c07f452753fc8f",
+      "family_closure_id": "d6cdea38eac8cc8e7b402081a9cd5fc599d379dce02c5bf87c7a198e76d54de2",
+      "immutable_capture_closure": "NOT_REOPENED_BLIND_CONTAMINATION_IS_DISPOSITIVE",
+      "opaque_holdout": true,
+      "original_partition": "BLIND_EVALUATION",
+      "partition": "BLIND_CONTAMINATED",
+      "partition_score": 9,
+      "permitted_use_closure": "NOT_REOPENED_BLIND_CONTAMINATION_IS_DISPOSITIVE",
+      "source_family_id": "667c54b8cf19968eb1961bba1b8c1c0d9162f3bf1936d529c39ace5c91c18e96",
+      "status": "PERMANENTLY_BLIND_CONTAMINATED_NO_REASSIGNMENT_NO_DOWNSTREAM_USE",
+      "topic_entity_family_id": "562c05e01fe0844d7b3c964118bc7401bfcac26aaf340ba42a9b308733ce4aba"
+    },
+    {
+      "accepted_atom_count": 3,
+      "authority_envelope_family_id": "935cf758c86ab5ad548cd349d34d2e67df65720f11527e582b4adbf90097ad1d",
+      "construction_blockers": [
+        "NO_AFFIRMATIVE_PERMITTED_USE",
+        "HASH_BOUND_BUT_SOURCE_BYTES_NOT_ARCHIVED_IN_GIT",
+        "PRIOR_OWNER_FACT_REVIEW_EXPOSURE",
+        "G01B_NOT_AUTHORIZED"
+      ],
+      "construction_eligible": false,
+      "construction_lineage_family_id": "UNASSIGNED",
+      "coordinate_validation": "CHARACTER_AND_UTF8_BYTE_INDEPENDENT",
+      "creative_premise_family_id": "UNASSIGNED",
+      "event_family_id": "02af9f6608c4ec032c997f38535fcf31809ff2c81e29a65d9c3b3ff80d5e8a57",
+      "event_id": 2365,
+      "exact_target_bytes_uniquely_recoverable": true,
+      "fact_bundle_identity": "sha256:f555b20764952dac4049eace60b627f07c04a309f9a0209969a6baea9587fa96",
+      "family_closure_id": "3d449a6ce5ef1af0655144b947af21e2f1fe44445b3dc2388c62f34372eb7cb1",
+      "immutable_capture_status": "HASH_BOUND_BUT_SOURCE_BYTES_NOT_ARCHIVED_IN_GIT",
+      "manifest_sha256": "08cb0676137f0798c6f81ea9f067083fba8f00aadea399e7f12d66e4f759ea28",
+      "metadata_articles": [
+        {
+          "article_id": 2612,
+          "database_event_id": 2365,
+          "discovered_at": "2026-08-20T18:28:59.140820+00:00",
+          "normalized_url_sha256": "0efc0c61e4240880c750b289e35263f042d85fc03bf616430ec9a30b41f260e1",
+          "published_at": "2026-08-20T17:34:20+00:00",
+          "source_id": "oficiul_de_stiri"
+        }
+      ],
+      "original_partition": "DEVELOPMENT",
+      "partition": "DEVELOPMENT",
+      "partition_score": 1,
+      "permitted_use_reviews": [
+        {
+          "source_id": "oficiul_de_stiri",
+          "status": "FUTURE_CONSTRUCTION_USE_UNRESOLVED",
+          "terms_url": "https://oficiuldestiri.ro/termeni-si-conditii"
+        }
+      ],
+      "revision_family_id": "UNASSIGNED",
+      "source_family_id": "1455a5861136ee9631719cbdd82c0a23396056d1397870ab9ab14a3aa414b729",
+      "span_checks": [
+        {
+          "atom_id": "C01",
+          "canonical_character_coordinates": [
+            0,
+            46
+          ],
+          "canonical_utf8_byte_coordinates": [
+            0,
+            48
+          ],
+          "passage_sha256": "6d3861985bb27ad0cb3136abf4b08b7336404fff7071d3f51d7741943120ab28",
+          "qualification_binding_present": false,
+          "recorded_character_coordinates_valid": true,
+          "recorded_source_identity_sha256": "4399cfd5af07ac5d1019484ca1220d9b5812d183d637bc5a0e48f8770ae00994",
+          "recorded_utf8_boundaries_valid": true,
+          "recorded_utf8_byte_coordinates_valid": false,
+          "status": "RECORDED_CHARACTER_COORDINATES_VALID",
+          "unique_exact_match": true
+        },
+        {
+          "atom_id": "C02",
+          "canonical_character_coordinates": [
+            497,
+            663
+          ],
+          "canonical_utf8_byte_coordinates": [
+            506,
+            676
+          ],
+          "passage_sha256": "1450d185b155c5611b5d43a5526e8d996762389a13f7aa01d13d421bc2bbc4be",
+          "qualification_binding_present": false,
+          "recorded_character_coordinates_valid": false,
+          "recorded_source_identity_sha256": "edb37bd8a17be24b90f0cda75c7eed484f27c50bccc0c3dcf7ef2a804163cecf",
+          "recorded_utf8_boundaries_valid": true,
+          "recorded_utf8_byte_coordinates_valid": false,
+          "status": "STALE_COORDINATES_UNIQUE_BYTE_EXACT_RECOVERY",
+          "unique_exact_match": true
+        },
+        {
+          "atom_id": "C03",
+          "canonical_character_coordinates": [
+            664,
+            818
+          ],
+          "canonical_utf8_byte_coordinates": [
+            677,
+            839
+          ],
+          "passage_sha256": "70f6e5d091fbe1fed546eb0aac9f78dfd4269d60812f4da9510178d6049d0e09",
+          "qualification_binding_present": false,
+          "recorded_character_coordinates_valid": false,
+          "recorded_source_identity_sha256": "edb37bd8a17be24b90f0cda75c7eed484f27c50bccc0c3dcf7ef2a804163cecf",
+          "recorded_utf8_boundaries_valid": true,
+          "recorded_utf8_byte_coordinates_valid": false,
+          "status": "STALE_COORDINATES_UNIQUE_BYTE_EXACT_RECOVERY",
+          "unique_exact_match": true
+        }
+      ],
+      "status": "PROVISIONAL",
+      "topic_entity_family_id": "fcdaf79033b526ffa616bccc37c50dc082f4e64de4260427d13be8092b67b055"
+    },
+    {
+      "accepted_atom_count": 3,
+      "authority_envelope_family_id": "a1f135be6f98239eadf7294063e567dbaf797c44f152ec3e88bb936406724e37",
+      "construction_blockers": [
+        "NO_AFFIRMATIVE_PERMITTED_USE",
+        "HASH_BOUND_BUT_SOURCE_BYTES_NOT_ARCHIVED_IN_GIT",
+        "PRIOR_OWNER_FACT_REVIEW_EXPOSURE",
+        "G01B_NOT_AUTHORIZED"
+      ],
+      "construction_eligible": false,
+      "construction_lineage_family_id": "UNASSIGNED",
+      "coordinate_validation": "CHARACTER_AND_UTF8_BYTE_INDEPENDENT",
+      "creative_premise_family_id": "UNASSIGNED",
+      "event_family_id": "7695f78d30e4faf4a54cc7eabd3529b11c2df64a339d7cf4d4b2c16b3ab15e3b",
+      "event_id": 734,
+      "exact_target_bytes_uniquely_recoverable": false,
+      "fact_bundle_identity": "sha256:8589d3b287913e3c24e4d44f7f856b5364decf5c7d5302bc565fff061cfcbcbe",
+      "family_closure_id": "fba4de228c30f38c65a0f30cbabf98216e434c8e538e813a55f3951c0e9fa678",
+      "immutable_capture_status": "HASH_BOUND_BUT_SOURCE_BYTES_NOT_ARCHIVED_IN_GIT",
+      "manifest_sha256": "f633f424aed4b7969395005a00d7452a3c2aeaa9f3ffdd6b87ac041d5ffdaf17",
+      "metadata_articles": [
+        {
+          "article_id": 750,
+          "database_event_id": 734,
+          "discovered_at": "2026-08-13T19:50:13.789512+00:00",
+          "normalized_url_sha256": "de16adcd413caa419db63db7eac499af78a459f07cc1bd4668ea1677f9a831c8",
+          "published_at": "2026-08-13T13:31:00+00:00",
+          "source_id": "libertatea"
+        }
+      ],
+      "original_partition": "DEVELOPMENT",
+      "partition": "DEVELOPMENT",
+      "partition_score": 4,
+      "permitted_use_reviews": [
+        {
+          "source_id": "libertatea",
+          "status": "NO_AFFIRMATIVE_CONSTRUCTION_PERMISSION_FOUND",
+          "terms_url": "https://www.libertatea.ro/confidentialitate"
+        }
+      ],
+      "revision_family_id": "UNASSIGNED",
+      "source_family_id": "e610b1dd7843938d2fdb3e4010b08e6b3f2962251740d804512ebd04486eaa8e",
+      "span_checks": [
+        {
+          "atom_id": "C01",
+          "canonical_character_coordinates": null,
+          "canonical_utf8_byte_coordinates": null,
+          "passage_sha256": "99469dab09102cd3b4d85c0c606e338e09a7204f6bcec46957c635752000b362",
+          "qualification_binding_present": false,
+          "recorded_character_coordinates_valid": false,
+          "recorded_source_identity_sha256": "b33f9a604daa61e3899b89c055ea95dec8e3e1562190f4920d53dac5088a2173",
+          "recorded_utf8_boundaries_valid": true,
+          "recorded_utf8_byte_coordinates_valid": false,
+          "status": "TARGET_BYTES_ABSENT",
+          "unique_exact_match": false
+        },
+        {
+          "atom_id": "C02",
+          "canonical_character_coordinates": null,
+          "canonical_utf8_byte_coordinates": null,
+          "passage_sha256": "c378a2e73798b8bcfa755a2af4a1b817d955f1520a986436797f50e33fa7d680",
+          "qualification_binding_present": false,
+          "recorded_character_coordinates_valid": false,
+          "recorded_source_identity_sha256": "b33f9a604daa61e3899b89c055ea95dec8e3e1562190f4920d53dac5088a2173",
+          "recorded_utf8_boundaries_valid": true,
+          "recorded_utf8_byte_coordinates_valid": false,
+          "status": "TARGET_BYTES_ABSENT",
+          "unique_exact_match": false
+        },
+        {
+          "atom_id": "C03",
+          "canonical_character_coordinates": [
+            0,
+            103
+          ],
+          "canonical_utf8_byte_coordinates": [
+            0,
+            104
+          ],
+          "passage_sha256": "a837e711c23620a4aec4f7d539b8240f21de1527c6f60f97441f3339292581b5",
+          "qualification_binding_present": false,
+          "recorded_character_coordinates_valid": true,
+          "recorded_source_identity_sha256": "5b945aeef8a020b4db1609fe7a14001bfce4cc6a196ed333acb26846f6673d7f",
+          "recorded_utf8_boundaries_valid": true,
+          "recorded_utf8_byte_coordinates_valid": false,
+          "status": "RECORDED_CHARACTER_COORDINATES_VALID",
+          "unique_exact_match": true
+        }
+      ],
+      "status": "PROVISIONAL",
+      "topic_entity_family_id": "66c5eb1d841fdcf2dde2f6d45a49cf9a7fd536e84e84abda8d6fd31f36bbf5b1"
+    }
+  ],
+  "pipeline_invariants": {
+    "blind_branch_precedes_atom_access": true,
+    "blind_replacement_selection_metadata_only": true,
+    "character_and_utf8_coordinates_independently_validated": true,
+    "internally_sealed_does_not_imply_construction_ready": true,
+    "metadata_family_seal_precedes_partition": true,
+    "partition_precedes_atom_access": true
+  },
+  "plan_commit": "c756135fa9b822dd945728a2df05f26f3b44fa63",
+  "plan_identity": "57419ff52730ccd20acf3c716c9502667d9f25e517570e18eeae7ec3d472da8a",
+  "replacement_blind_evaluation_families": [
+    {
+      "atom_reads": 0,
+      "authority_envelope_family_id": "07cee43a355cd44d5f58c760290c200f1f46ed7761b7f4938e656d0affaa5dc4",
+      "construction_eligible": false,
+      "content_queries": 0,
+      "event_family_id": "3839bec6647c4e4908f0748fa9619291a2af492e2ac976a690664a10ce991884",
+      "event_id_commitment": "4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce",
+      "family_closure_id": "fc24457cfc3f7705cb02817fb26e7e899faeb342fe236bc2e6f9039066a765ad",
+      "metadata_article_count": 1,
+      "opaque_holdout": true,
+      "partition": "BLIND_EVALUATION",
+      "partition_score": 9,
+      "source_family_id": "0eedbe3f98f7400a9cd330a2700c8dbd773a75e91e82949ac8043c5962ad9f5c",
+      "status": "PRISTINE_BLIND_EVALUATION_RESERVED_METADATA_ONLY",
+      "topic_entity_family_id": "51c0be9e7a9eb23daedd304b4ed8e060016495bd389be5062b72722290a188d0"
+    },
+    {
+      "atom_reads": 0,
+      "authority_envelope_family_id": "07cee43a355cd44d5f58c760290c200f1f46ed7761b7f4938e656d0affaa5dc4",
+      "construction_eligible": false,
+      "content_queries": 0,
+      "event_family_id": "1dd4e73818a643dea440299438a1c57e6748fbb007fb053a26780b8f5edf5c38",
+      "event_id_commitment": "5ef6fdf32513aa7cd11f72beccf132b9224d33f271471fff402742887a171edf",
+      "family_closure_id": "afa1e5ab272dff1fdbc5052de5f37c1eab135fcf0a61a757ecc1769882b02c7c",
+      "metadata_article_count": 1,
+      "opaque_holdout": true,
+      "partition": "BLIND_EVALUATION",
+      "partition_score": 9,
+      "source_family_id": "a009c6e311bc987a42c98fbc411fbea5052f8ddc9c5a9dddd4a8c8822c0106ce",
+      "status": "PRISTINE_BLIND_EVALUATION_RESERVED_METADATA_ONLY",
+      "topic_entity_family_id": "93b6d2cfce2231dd441b6b57a2c7e2dd25f4ed6613eba92d8dff46b9998fed23"
+    }
+  ],
+  "schema_name": "pastila-humor-mechanics-batch2-v2-source-discovery-closure",
+  "schema_version": "2.0.0",
+  "supersedes_inventory_commit": "bf2ed9a6b927170740576917315bc4c5d1c69290"
+}
