@@ -1,0 +1,31 @@
+{
+  "authority_matrix": {
+    "candidate_construction": false,
+    "content_ingestion": false,
+    "mechanism_assignment": false,
+    "model_exposure": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "source_acquisition": false,
+    "surface_generation": false,
+    "training": false
+  },
+  "checks": {
+    "appointments_nonoperational": "PASS",
+    "authority_does_not_activate": "PASS",
+    "countersignature_policy": "PASS",
+    "ledger_genesis_content_free": "PASS",
+    "logical_principals_distinct": "PASS",
+    "negative_fixtures_fail_closed": "PASS",
+    "no_fabricated_human_identity": "PASS",
+    "no_secret_or_public_key_invention": "PASS",
+    "replay_protection": "PASS",
+    "signature_domain_object_purpose_role_bound": "PASS"
+  },
+  "deterministic_defects_remaining": [],
+  "readiness_identity": "89e61c2d7f2dcbfd51e41d907e3ef27041985dc6caad5d1267d6824530462e1a",
+  "readiness_sha256": "72bbf2c7373ff566c821fdb6e7a4c13d51f9d004b177c2f5fe81a190a08440e4",
+  "schema_name": "batch2-custodial-appointment-signing-readiness-v1-audit",
+  "schema_version": "1.0.0",
+  "verdict": "PASS_CONTENT_FREE_CUSTODIAL_SIGNING_READINESS"
+}

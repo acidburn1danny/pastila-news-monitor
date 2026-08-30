@@ -1,0 +1,65 @@
+{
+  "algorithm_selection": "UNSELECTED_REQUIRES_PUBLIC_KEY_REGISTRATION",
+  "allowed_algorithm_policy": [
+    "ED25519",
+    "ECDSA_P256_SHA256"
+  ],
+  "canonicalization": "JCS_STYLE_UTF8_SORTED_KEYS_NO_INSIGNIFICANT_WHITESPACE",
+  "domain_separation": "PASTILA_BATCH2_OWNED_AUTHORITY_CUSTODIAL_V1",
+  "fail_closed": [
+    "UNKNOWN_KEY",
+    "REVOKED_KEY",
+    "ROLE_KEY_MISMATCH",
+    "ALGORITHM_MISMATCH",
+    "OBJECT_HASH_MISMATCH",
+    "PURPOSE_MISMATCH",
+    "NONCE_REPLAY",
+    "STALE_LEDGER_HEAD",
+    "MISSING_COUNTERSIGNATURE",
+    "UNSELECTED_RIGHTS_GRANT"
+  ],
+  "minimum_countersignatures": {
+    "ARCHIVE_ADMISSION": [
+      "RIGHTS_CUSTODIAN",
+      "ACQUISITION_CUSTODIAN"
+    ],
+    "BLIND_ESCROW_ADMISSION": [
+      "PARTITION_CUSTODIAN",
+      "BLIND_ESCROW_CUSTODIAN"
+    ],
+    "FAMILY_CLOSURE": [
+      "FAMILY_CUSTODIAN"
+    ],
+    "PARTITION_SEAL": [
+      "PARTITION_CUSTODIAN"
+    ],
+    "RIGHTS_INSTRUMENT": [
+      "RIGHTS_CUSTODIAN"
+    ]
+  },
+  "public_keys_registered": 0,
+  "replay_controls": [
+    "UNIQUE_NONCE",
+    "PURPOSE_BOUND",
+    "OBJECT_BOUND",
+    "LEDGER_HEAD_BOUND"
+  ],
+  "required_signed_fields": [
+    "envelope_version",
+    "purpose",
+    "object_identity",
+    "object_sha256",
+    "rights_instrument_identity",
+    "actor_role",
+    "principal_identity",
+    "public_key_fingerprint",
+    "signed_at",
+    "nonce",
+    "previous_ledger_hash"
+  ],
+  "schema_name": "batch2-custodial-signing-envelope-v1",
+  "schema_version": "1.0.0",
+  "secret_keys_created": 0,
+  "signing_enabled": false,
+  "signing_spec_identity": "43658476f37eb9f7e4f784300c4ea8c8e5b1d8ede7e898ea1a7a56854966afb9"
+}

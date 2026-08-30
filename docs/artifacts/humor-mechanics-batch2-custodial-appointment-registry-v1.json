@@ -1,0 +1,93 @@
+{
+  "activation_preconditions": [
+    "OWNER_APPROVES_NAMED_OR_SERVICE_PRINCIPAL",
+    "PUBLIC_KEY_REGISTERED",
+    "KEY_PROOF_OF_POSSESSION_VERIFIED",
+    "SEPARATION_OF_DUTIES_RECHECKED",
+    "ACCESS_LEDGER_WRITE_TEST_PASSED",
+    "SEPARATE_OPERATIONAL_AUTHORITY"
+  ],
+  "appointment_registry_identity": "e5b4ebb9fe29244a8d760337dcd66253264a42edd9b3540bb3fd5a44f91206d5",
+  "appointments": [
+    {
+      "appointment_status": "CONDITIONALLY_APPOINTED_NONOPERATIONAL",
+      "credential_status": "UNPROVISIONED",
+      "operational_access": false,
+      "principal_identity": "35f8bee3260c2ff80aaaeb394d1446d273524cc51d1c4eda56715d49c2a77644",
+      "principal_kind": "DISTINCT_OWNER_CONTROLLED_LOGICAL_CUSTODIAN",
+      "public_key_status": "UNREGISTERED",
+      "role": "RIGHTS_CUSTODIAN",
+      "source_or_content_access": false
+    },
+    {
+      "appointment_status": "CONDITIONALLY_APPOINTED_NONOPERATIONAL",
+      "credential_status": "UNPROVISIONED",
+      "operational_access": false,
+      "principal_identity": "37c8c4010917cd87ad7d38591644a15a4640911522fea505b3273943af927bd7",
+      "principal_kind": "DISTINCT_OWNER_CONTROLLED_LOGICAL_CUSTODIAN",
+      "public_key_status": "UNREGISTERED",
+      "role": "ACQUISITION_CUSTODIAN",
+      "source_or_content_access": false
+    },
+    {
+      "appointment_status": "CONDITIONALLY_APPOINTED_NONOPERATIONAL",
+      "credential_status": "UNPROVISIONED",
+      "operational_access": false,
+      "principal_identity": "728eea0400e8aa123ffba1afbff1982d985afbfb0bc850972389fd31b2ba75fa",
+      "principal_kind": "DISTINCT_OWNER_CONTROLLED_LOGICAL_CUSTODIAN",
+      "public_key_status": "UNREGISTERED",
+      "role": "FAMILY_CUSTODIAN",
+      "source_or_content_access": false
+    },
+    {
+      "appointment_status": "CONDITIONALLY_APPOINTED_NONOPERATIONAL",
+      "credential_status": "UNPROVISIONED",
+      "operational_access": false,
+      "principal_identity": "14f2d19b62ffc6b2a1a8ac5a426647962a03d2a81301410e7dbf16a27e4fb97d",
+      "principal_kind": "DISTINCT_OWNER_CONTROLLED_LOGICAL_CUSTODIAN",
+      "public_key_status": "UNREGISTERED",
+      "role": "PARTITION_CUSTODIAN",
+      "source_or_content_access": false
+    },
+    {
+      "appointment_status": "CONDITIONALLY_APPOINTED_NONOPERATIONAL",
+      "credential_status": "UNPROVISIONED",
+      "operational_access": false,
+      "principal_identity": "12e32e46bdb6acc1ac5a7556dcb021ee35a8b264e6b157a5572d801fa373619e",
+      "principal_kind": "DISTINCT_OWNER_CONTROLLED_LOGICAL_CUSTODIAN",
+      "public_key_status": "UNREGISTERED",
+      "role": "BLIND_ESCROW_CUSTODIAN",
+      "source_or_content_access": false
+    },
+    {
+      "appointment_status": "CONDITIONALLY_APPOINTED_NONOPERATIONAL",
+      "credential_status": "UNPROVISIONED",
+      "operational_access": false,
+      "principal_identity": "1740c9f292a03dab6db10f497f3bcf6843b0e538c8f7ef1e1a359bb5af5c8144",
+      "principal_kind": "DISTINCT_OWNER_CONTROLLED_LOGICAL_CUSTODIAN",
+      "public_key_status": "UNREGISTERED",
+      "role": "CONTAMINATION_AUDITOR",
+      "source_or_content_access": false
+    }
+  ],
+  "bindings": {
+    "channel_commit": "24ae982bce3a688fce9a193721d32e036a16b639",
+    "channel_registry_identity": "c7281b048318233c08bb5e8251dd08e19aceb1ac240c79fa8ef072d24f35b055",
+    "role_matrix_identity": "1bc390244d09ee63d9b851c6c014a2693060710947e89c1c41ee6293825fc0b1"
+  },
+  "current_authority": {
+    "candidate_construction": false,
+    "content_ingestion": false,
+    "mechanism_assignment": false,
+    "model_exposure": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "source_acquisition": false,
+    "surface_generation": false,
+    "training": false
+  },
+  "distinct_principal_required": true,
+  "human_or_service_identity_disclosure": "REQUIRED_BEFORE_ACTIVATION",
+  "schema_name": "batch2-custodial-appointment-registry-v1",
+  "schema_version": "1.0.0"
+}

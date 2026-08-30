@@ -1,0 +1,14 @@
+{
+  "appointment_registry_identity": "e5b4ebb9fe29244a8d760337dcd66253264a42edd9b3540bb3fd5a44f91206d5",
+  "blind_content_present": false,
+  "channel_registry_identity": "c7281b048318233c08bb5e8251dd08e19aceb1ac240c79fa8ef072d24f35b055",
+  "entry_hash": "8afc9aa54bf66d385d8e89d84f18884e06e6838acc9c1e3cc4127d1450442ad1",
+  "entry_sequence": 0,
+  "event": "CONTENT_FREE_LEDGER_GENESIS",
+  "object_commitments": [],
+  "operational_authority": false,
+  "previous_entry_hash": null,
+  "schema_name": "batch2-custodial-access-ledger-genesis-v1",
+  "schema_version": "1.0.0",
+  "source_content_present": false
+}

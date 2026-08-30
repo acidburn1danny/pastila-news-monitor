@@ -1,0 +1,32 @@
+{
+  "actions_performed": {
+    "content_ingested": 0,
+    "credentials_provisioned": 0,
+    "keys_generated": 0,
+    "model_calls": 0,
+    "signatures_created": 0,
+    "sources_acquired": 0
+  },
+  "fixture_identity": "e229e6c813286018735a0ec8bfea54db045ed8621b1ca3ae81146dfba9615b0d",
+  "metadata_only": true,
+  "real_keys_used": 0,
+  "real_signatures_created": 0,
+  "rejected_cases": [
+    "SAME_PRINCIPAL_FOR_INCOMPATIBLE_ROLES",
+    "MISSING_PRINCIPAL_DISCLOSURE",
+    "UNREGISTERED_KEY_USED",
+    "ROLE_KEY_MISMATCH",
+    "REVOKED_KEY_USED",
+    "OBJECT_HASH_MUTATION",
+    "RIGHTS_PURPOSE_SUBSTITUTION",
+    "NONCE_REPLAY",
+    "STALE_LEDGER_HEAD",
+    "MISSING_COUNTERSIGNATURE",
+    "UNSELECTED_GRANT",
+    "CONTENT_FIELD_IN_METADATA_FIXTURE",
+    "ACTIVATION_WITHOUT_SEPARATE_AUTHORITY"
+  ],
+  "schema_name": "batch2-custodial-signing-readiness-fixtures-v1",
+  "schema_version": "1.0.0",
+  "valid_shape_case": "PASS_STRUCTURE_ONLY_NOT_A_SIGNATURE_OR_GRANT"
+}
