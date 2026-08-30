@@ -64,10 +64,10 @@ CASE_PACK_SHA256 = "4163307ccb8cfa8997b520a1cea04cddacd347e9b1ffde498db925ffccac
 REQUESTED_AT = datetime(2026, 8, 29, 10, 0, tzinfo=UTC)
 PACKET_RELATIVE = Path(
     "docs/artifacts/semantic-admission-v2-stage-p-construction-obligation-v2-"
-    "case01-successor-issuance-packet-v1-2-1-construction-disposition-pruning-bound")
+    "case01-successor-issuance-packet-v1-2-1-semantic-policy-projection-bound")
 EVIDENCE_RELATIVE = Path(
     ".semantic-admission-v2-stage-p-construction-obligation-v2-case01-successor-"
-    "v1-2-1-construction-disposition-pruning-bound-evidence")
+    "v1-2-1-semantic-policy-projection-bound-evidence")
 SYSTEM_PROMPT_RELATIVE = Path(
     ".experimental-0-3-core-v1-2-journalistic-deontology-prime-directive-v1-evidence/"
     "PASTILAACIDA_EDITOR_CORE_SYSTEM_PROMPT_V1_2.txt")
