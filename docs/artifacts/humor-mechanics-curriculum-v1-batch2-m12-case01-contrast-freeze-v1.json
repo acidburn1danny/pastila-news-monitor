@@ -1,0 +1,64 @@
+{
+  "schema_name": "humor-mechanics-curriculum-v1-batch2-m12-contrast-freeze",
+  "schema_version": "1.0.0",
+  "status": "FROZEN_NON_MODEL_VISIBLE_CONTRAST_EVIDENCE",
+  "mechanism": "M12_LITERALIZATION",
+  "source_id": "HMCV1-SASC-01:terminal-output",
+  "gate_results": {
+    "B2-G01-SOURCE_ADMISSION": "PASS_WITH_PROVENANCE_LIMITATIONS",
+    "B2-G03-MECHANISM_AND_CONTRAST": "M12_CONTRAST_NEGATIVE_DEFENSIBLE"
+  },
+  "positive_m12_evidence": false,
+  "contrast_classification": "NEGATIVE_NEIGHBORING_MECHANISM_CONTRAST",
+  "findings": {
+    "literalization_observed": false,
+    "figurative_or_category_premise_made_literal": false,
+    "figurative_nonfactual_framing_preserved": true,
+    "primary_competing_mechanism": "M05_FRAME_TRANSFER",
+    "supporting_contrast_mechanisms": [
+      "DOUBLE_MEANING",
+      "ANALOGY_COMPARISON",
+      "METAPHOR",
+      "PERSONIFICATION"
+    ],
+    "contrast_utility": "DISTINGUISHES_FIGURATIVE_FRAME_TRANSFER_AND_WORDPLAY_FROM_ACTUAL_LITERAL_REALIZATION"
+  },
+  "provenance_bindings": {
+    "stage_p_evidence_commit": "2c5ce79396ecd14df16a452e8ce46ff65b394f54",
+    "semantic_evaluation_commit": "e0ca07356e507ab02b1e7e94908ff6cf00adbe71",
+    "closure_commit": "a95ab38c4b72776f41397292e97a7257d2832aaf",
+    "batch2_current_authority_discovery_commit": "109a591d8c1ecf573ef3dd571921925786520dd2",
+    "raw_output_sha256": "e5ca27cf26a4752a23460187fe315b1e5eb5fe1822b194d21a5371cca232e19d",
+    "candidate_sha256": "52a54bad5c68d16bd326c9dac8c544b5c4b0a45b9129262a0da139167362682b",
+    "factual_authority_sha256": "e2add20c2ac06fdc90a2f7e1960d5672b8e91a9f7a82b895203dfb43f7f9d196",
+    "source_context_identity": "2ba2c7dcb5c8e19350a3acf37ed9d9c9daf6d058fc38811d06d3460825e9b610",
+    "semantic_policy_identity": "90ea8252fb7a2b548ab75ef5e9f9116aeb4dc5babf5ab6588f9ea4c538eff7f4",
+    "semantic_evaluation_receipt_identity": "77cfab340bf4a4a490f34ae80642655d0127934f0c52fa852dd8e4154298ca4b",
+    "closure_receipt_identity": "5b772bd9e385d3f47a003cf7014f069f25d80147a99af953f920418018b060e7",
+    "archive_identity": "63cfd39d558be72638f9167440eeb656acf35d875f361edd3f32ded1d6eb7c0a"
+  },
+  "topology": {
+    "construction_ids": ["C1"],
+    "entry_ids": ["P1", "P2"],
+    "creative_target_ids": ["T1"]
+  },
+  "limitations": [
+    "THE_TERMINAL_OUTPUT_IS_AN_ANALYTIC_STAGE_P_LEDGER_NOT_AN_OWNER_AUTHORED_HUMOR_SURFACE",
+    "THE_ASSOCIATED_CANDIDATE_BYTES_REMAIN_SEPARATELY_BOUND",
+    "THIS_FREEZE ESTABLISHES_CONTRAST_ONLY_AND_CANNOT_ESTABLISH_POSITIVE_M12_EVIDENCE"
+  ],
+  "preservation": {
+    "source_bytes_modified": false,
+    "replacement_span_extracted": false,
+    "factual_authority_reinterpreted": false,
+    "construction_performed": false,
+    "normalization_performed": false,
+    "generation_performed": false,
+    "repair_performed": false,
+    "promotion_performed": false
+  },
+  "model_visibility": false,
+  "training_eligibility": false,
+  "runtime_eligibility": false,
+  "integration_authorized": false
+}
