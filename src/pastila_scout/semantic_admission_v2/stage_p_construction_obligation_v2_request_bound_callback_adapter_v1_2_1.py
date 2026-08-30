@@ -22,6 +22,8 @@ from .stage_p_construction_obligation_v2_tokenizer_piece_adapter_v1 import (
     DECODER_MECHANISM_IDENTITY)
 from .stage_p_construction_obligation_semantic_completeness_v1 import (
     SemanticCompletenessAdmissionV1, SemanticCompletenessPolicyV1)
+from .stage_p_construction_obligation_character_controller_v1 import (
+    StagePConstructionObligationCharacterControllerV1)
 from .immutable_source_span_reference_v1 import SourceRoleV1
 from .stage_p_construction_obligation_v2_projector_binding_v1 import _decode_bound_source
 from .stage_p_construction_obligation_v2_zero_model_callback_adapter_v1 import (
@@ -62,8 +64,12 @@ class ConstructionObligationV2RequestBoundCallbackAdapterV1_2_1:
         completeness = SemanticCompletenessAdmissionV1(
             SemanticCompletenessPolicyV1.bind(
                 candidate=candidate, factual_authority=factual_authority))
+        policy_controller = StagePConstructionObligationCharacterControllerV1(
+            context=oracle.controller.tracker.context,
+            decoder_identity=DECODER_IDENTITY,
+            semantic_policy=completeness.policy)
         self.projector = StagePConstructionObligationV2TokenProjectorV2(
-            controller=oracle.controller,
+            controller=policy_controller,
             token_pieces=token_pieces, eos_token_id=eos_token_id,
             tokenizer_identity=TOKENIZER_IDENTITY, decoder_identity=DECODER_IDENTITY,
             request_context_identity=request.source_context_identity,

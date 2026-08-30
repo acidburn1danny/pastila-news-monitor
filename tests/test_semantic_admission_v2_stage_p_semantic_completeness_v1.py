@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import json
+import base64
+import subprocess
 from dataclasses import replace
 from pathlib import Path
 
@@ -34,6 +36,11 @@ ROOT = Path(__file__).resolve().parents[1]
 REQUEST = ROOT / "tests/fixtures/semantic_admission_v2/phase2_case01_request.json"
 LEDGER = ROOT / "tests/fixtures/semantic_admission_v2/phase2_case01_ledger.json"
 FROZEN_RAW_SHA256 = "cc02c9fb69a516aca396256b9894b3e6fdb7b7cebafa1bd31f439b4066732935"
+TOKEN_1800_EVIDENCE_COMMIT = "3be841593638c03248ebeee2e3c90f796688dbf7"
+TOKEN_1800_RECEIPT_PATH = (
+    ".semantic-admission-v2-stage-p-construction-obligation-v2-case01-successor-"
+    "v1-2-1-construction-disposition-pruning-bound-evidence/linux-generation/"
+    "no-legal-token-receipt.json")
 
 
 def _sources():
@@ -50,6 +57,54 @@ def _policy():
     candidate, authority = _sources()
     return SemanticCompletenessPolicyV1.bind(
         candidate=candidate, factual_authority=authority)
+
+
+def test_exact_token_1800_candidate_is_pruned_at_first_policy_incompatible_choice():
+    frozen = subprocess.run(
+        ["git", "show", f"{TOKEN_1800_EVIDENCE_COMMIT}:{TOKEN_1800_RECEIPT_PATH}"],
+        cwd=ROOT, check=True, capture_output=True).stdout
+    receipt = json.loads(frozen)
+    candidate = base64.b64decode(receipt["terminal_candidate_utf8_base64"], validate=True)
+    assert receipt["generated_token_count"] == 1800
+    assert receipt["terminal_candidate_sha256"] == receipt["decoded_prefix_sha256"]
+
+    source, authority = _sources()
+    context = SourceReferenceConstraintContextV1.bind(
+        candidate=source, factual_authority=authority)
+    controller = StagePConstructionObligationCharacterControllerV1(
+        context=context, decoder_identity="token-1800-regression",
+        semantic_policy=_policy())
+    incompatible = b'"overall_disposition":"U'
+    offset = candidate.index(incompatible) + len(incompatible) - 1
+    prefix = candidate[:offset].decode("utf-8")
+    result = controller.allowed((1,), lambda _: prefix)
+    assert result.allowance.finite_characters == ("O",)
+    with pytest.raises(Exception, match="ENUM_MISMATCH"):
+        controller.allowed((1, 2), lambda _: candidate[:offset + 1].decode("utf-8"))
+
+
+def test_case01_policy_dfa_accepts_exact_topology_and_prunes_false_required_receipt():
+    source, authority = _sources()
+    context = SourceReferenceConstraintContextV1.bind(
+        candidate=source, factual_authority=authority)
+    raw = json.dumps(_positive_value(), ensure_ascii=False, separators=(",", ":"))
+    controller = StagePConstructionObligationCharacterControllerV1(
+        context=context, decoder_identity="case01-policy-positive",
+        semantic_policy=_policy())
+    result = controller.allowed((1,), lambda _: raw)
+    assert result.prefix.state.terminal is True
+
+    compatible = b'"overlapping_spans_reconciled":true'
+    incompatible = b'"overlapping_spans_reconciled":false'
+    encoded = raw.encode("utf-8").replace(compatible, incompatible)
+    offset = encoded.index(incompatible) + len(incompatible) - len(b"false")
+    controller = StagePConstructionObligationCharacterControllerV1(
+        context=context, decoder_identity="case01-policy-negative",
+        semantic_policy=_policy())
+    prefix = encoded[:offset].decode("utf-8")
+    assert controller.allowed((1,), lambda _: prefix).allowance.finite_characters == ("t",)
+    with pytest.raises(Exception, match="ENUM_MISMATCH"):
+        controller.allowed((1, 2), lambda _: encoded[:offset + 1].decode("utf-8"))
 
 
 def _reference(role: str, sha256: str, start: int, end: int):

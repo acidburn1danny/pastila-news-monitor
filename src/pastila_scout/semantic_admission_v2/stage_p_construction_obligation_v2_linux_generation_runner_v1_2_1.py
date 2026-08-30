@@ -18,7 +18,10 @@ CANONICAL_SUPERVISOR_CANDIDATE_SOURCE_SHA256 = "8e48b04295f3a35b8de49025a6c4820d
 CANONICAL_CHILD_ADAPTER_SOURCE_SHA256 = "9b3819fe207822c03c7a015705c8d3d112337a0b033e6bb9d650f10b47f0057c"
 CANONICAL_OPTIMIZED_PROJECTOR_SOURCE_SHA256 = "61e7c6c1f34703a533b6bc077aa3ce1205a865ae022fa78d28b1c787465ef383"
 CANONICAL_GENERATED_SUFFIX_SOURCE_SHA256 = "04ac89ccf747f90fd1cf5c877251d00d926faa9014d9877b0d92367cfd223d46"
-CANONICAL_OPTIMIZED_CALLBACK_SOURCE_SHA256 = "63150c99ecb94ed9b81c798bc10dcdf5cd337e22f3da38d2c9280342ca42b4b5"
+CANONICAL_OPTIMIZED_CALLBACK_SOURCE_SHA256 = "684ef8dada0b4d0c07dc9c3eb48d4c0603f7bc42bf9775fe2a1d0270734b3e41"
+CANONICAL_POLICY_DFA_SOURCE_SHA256 = "4f89cddb5b06a26b5eada497d648196707f28c1628dec2160b402daa21470b45"
+CANONICAL_POLICY_TRACKER_SOURCE_SHA256 = "37e8cec421097938b2d3292f760f808b74384f86403734eb86f133cd34e8e1a2"
+CANONICAL_POLICY_CONTROLLER_SOURCE_SHA256 = "cbcdb27310b5c4f2cd7d156ff93e296c8e5a158a6a7ed23b9e2a194b8010c43e"
 CANONICAL_RUNNER_PROTOCOL_CODEC_SOURCE_SHA256 = "117e658ffa115f06c03771b8e6cdfca86704a21ee1309d5c700d7789ddc23c6a"
 CANONICAL_TOKENIZER_PIECE_SOURCE_SHA256 = "abda08278e362b520c633a150e10aa98280d25efb952fbf81327bee229d551bf"
 CANONICAL_SEMANTIC_COMPLETENESS_SOURCE_SHA256 = "9230b1e5a1e936d095c4f29395d6a4a8902729ae4a925171558445491f28cdfa"
@@ -40,6 +43,9 @@ LINUX_GENERATION_RUNNER_IDENTITY_FIELDS = (
     "optimized-projector-source:" + CANONICAL_OPTIMIZED_PROJECTOR_SOURCE_SHA256,
     "generated-suffix-source:" + CANONICAL_GENERATED_SUFFIX_SOURCE_SHA256,
     "optimized-callback-source:" + CANONICAL_OPTIMIZED_CALLBACK_SOURCE_SHA256,
+    "policy-dfa-source:" + CANONICAL_POLICY_DFA_SOURCE_SHA256,
+    "policy-tracker-source:" + CANONICAL_POLICY_TRACKER_SOURCE_SHA256,
+    "policy-controller-source:" + CANONICAL_POLICY_CONTROLLER_SOURCE_SHA256,
     "runner-protocol-codec-source:" + CANONICAL_RUNNER_PROTOCOL_CODEC_SOURCE_SHA256,
     "tokenizer-piece-source:" + CANONICAL_TOKENIZER_PIECE_SOURCE_SHA256,
     "semantic-completeness-source:" + CANONICAL_SEMANTIC_COMPLETENESS_SOURCE_SHA256,
@@ -62,7 +68,7 @@ def run_linux_generation_runner_v1_2_1(
 ) -> LinuxGenerationCompositionOutcomeV1_2:
     if not callable(composition):
         raise TypeError("CONSTRUCTION_OBLIGATION_V2_RUNNER_COMPOSITION_REQUIRED")
-    _validate_construction_role_dfa_source()
+    _validate_bound_projection_sources()
     policy = _input(policy_receipt_path, "POLICY_RECEIPT", 100_000)
     authority = _input(authority_receipt_path, "AUTHORITY_RECEIPT", 100_000)
     request = _input(runner_request_path, "RUNNER_REQUEST", 600_000)
@@ -83,11 +89,30 @@ def run_linux_generation_runner_v1_2_1(
     return outcome
 
 
+def _validate_bound_projection_sources() -> None:
+    expected = {
+        "stage_p_construction_role_constraint_v1.py": CANONICAL_CONSTRUCTION_ROLE_DFA_SOURCE_SHA256,
+        "stage_p_construction_obligation_constraint_v2.py": CANONICAL_POLICY_DFA_SOURCE_SHA256,
+        "stage_p_construction_obligation_incremental_tracker_v2.py": CANONICAL_POLICY_TRACKER_SOURCE_SHA256,
+        "stage_p_construction_obligation_character_controller_v1.py": CANONICAL_POLICY_CONTROLLER_SOURCE_SHA256,
+        "stage_p_construction_obligation_v2_request_bound_callback_adapter_v1_2_1.py":
+            CANONICAL_OPTIMIZED_CALLBACK_SOURCE_SHA256,
+    }
+    for name, identity in expected.items():
+        source = Path(__file__).with_name(name)
+        if (not source.is_file() or
+                hashlib.sha256(source.read_bytes()).hexdigest() != identity):
+            raise RuntimeError(
+                "CONSTRUCTION_OBLIGATION_V2_POLICY_PROJECTION_SOURCE_IDENTITY_MISMATCH")
+
+
 def _validate_construction_role_dfa_source() -> None:
+    """Retain the historical focused check for callers and diagnostics."""
     source = Path(__file__).with_name("stage_p_construction_role_constraint_v1.py")
     if (not source.is_file() or hashlib.sha256(source.read_bytes()).hexdigest()
             != CANONICAL_CONSTRUCTION_ROLE_DFA_SOURCE_SHA256):
-        raise RuntimeError("CONSTRUCTION_OBLIGATION_V2_CONSTRUCTION_ROLE_DFA_SOURCE_IDENTITY_MISMATCH")
+        raise RuntimeError(
+            "CONSTRUCTION_OBLIGATION_V2_CONSTRUCTION_ROLE_DFA_SOURCE_IDENTITY_MISMATCH")
 
 
 def main(arguments: Sequence[str]) -> int:

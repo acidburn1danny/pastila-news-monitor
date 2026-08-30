@@ -14,6 +14,9 @@ from .stage_p_construction_obligation_incremental_tracker_v2 import (
 )
 from .stage_p_role_coherence_constraint_v1 import StagePRoleCoherenceConstraintViolationV1
 from .stage_p_source_reference_constraint_v1 import SourceReferenceConstraintContextV1
+from .stage_p_construction_obligation_semantic_completeness_v1 import (
+    SemanticCompletenessPolicyV1,
+)
 
 
 RECEIPT_SCHEMA_NAME = "pastila-semantic-admission-v2-stage-p-character-liveness-receipt"
@@ -91,9 +94,11 @@ class StagePCharacterLivenessErrorV1(RuntimeError):
 
 class StagePConstructionObligationCharacterControllerV1:
     def __init__(self, *, context: SourceReferenceConstraintContextV1,
-                 decoder_identity: str) -> None:
+                 decoder_identity: str,
+                 semantic_policy: SemanticCompletenessPolicyV1 | None = None) -> None:
         self.tracker = StagePConstructionObligationIncrementalTrackerV2(
-            context=context, decoder_identity=decoder_identity)
+            context=context, decoder_identity=decoder_identity,
+            semantic_policy=semantic_policy)
 
     def allowed(self, token_ids, decode) -> CharacterControllerResultV1:
         prefix = self.tracker.state_for(token_ids, decode)

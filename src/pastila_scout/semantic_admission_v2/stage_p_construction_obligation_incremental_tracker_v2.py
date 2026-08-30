@@ -9,6 +9,9 @@ from .stage_p_construction_obligation_constraint_v2 import (
     StagePConstructionObligationConstraintStateV2,
 )
 from .stage_p_source_reference_constraint_v1 import SourceReferenceConstraintContextV1
+from .stage_p_construction_obligation_semantic_completeness_v1 import (
+    SemanticCompletenessPolicyV1,
+)
 
 
 class StagePConstructionObligationTrackerViolationV2(ValueError):
@@ -31,14 +34,17 @@ class StagePConstructionObligationIncrementalTrackerV2:
     """Track one immutable context and one externally bound decoder identity."""
 
     def __init__(self, *, context: SourceReferenceConstraintContextV1,
-                 decoder_identity: str) -> None:
+                 decoder_identity: str,
+                 semantic_policy: SemanticCompletenessPolicyV1 | None = None) -> None:
         if not decoder_identity:
             raise ValueError("DECODER_IDENTITY_REQUIRED")
         self.context = context
         self.decoder_identity = decoder_identity
+        self.semantic_policy = semantic_policy
         self._last_ids: tuple[int, ...] = ()
         self._last_decoded = ""
-        self._last_state = StagePConstructionObligationConstraintStateV2.for_context(context)
+        self._last_state = StagePConstructionObligationConstraintStateV2.for_context(
+            context, semantic_policy)
         self.incremental_steps = 0
         self.rebuild_steps = 0
 
@@ -62,7 +68,7 @@ class StagePConstructionObligationIncrementalTrackerV2:
         else:
             suffix = decoded
             state = StagePConstructionObligationConstraintStateV2.for_context(
-                self.context).feed(decoded)
+                self.context, self.semantic_policy).feed(decoded)
             path = "FULL_REBUILD"
             self.rebuild_steps += 1
         self._last_ids = ids

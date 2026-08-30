@@ -11,6 +11,9 @@ from .stage_p_source_reference_constraint_v1 import (
     SourceReferenceConstraintContextV1,
     StagePSourceReferenceConstraintStateV1,
 )
+from .stage_p_construction_obligation_semantic_completeness_v1 import (
+    SemanticCompletenessPolicyV1, seal_semantic_completeness_policy_v1,
+)
 
 
 _INITIAL = (
@@ -30,16 +33,46 @@ class StagePConstructionObligationConstraintStateV2(
     reference_state: StagePSourceReferenceConstraintStateV1 | None = None
     reference_return_step: str | None = None
     reference_was_null: bool | None = None
+    semantic_policy: SemanticCompletenessPolicyV1 | None = None
 
     def __post_init__(self) -> None:
         if self.context is None:
             raise ValueError("SOURCE_REFERENCE_CONTEXT_REQUIRED")
 
     @classmethod
-    def for_context(cls, context: SourceReferenceConstraintContextV1):
-        return cls(context=context)
+    def for_context(cls, context: SourceReferenceConstraintContextV1,
+                    semantic_policy: SemanticCompletenessPolicyV1 | None = None):
+        if semantic_policy is not None:
+            if type(semantic_policy) is not SemanticCompletenessPolicyV1:
+                raise TypeError("SEMANTIC_COMPLETENESS_POLICY_EXACT_TYPE_REQUIRED")
+            if (semantic_policy.identity !=
+                    seal_semantic_completeness_policy_v1(semantic_policy).identity):
+                raise ValueError("SEMANTIC_COMPLETENESS_POLICY_IDENTITY_MISMATCH")
+            if (semantic_policy.candidate_sha256 != context.candidate.sha256 or
+                    semantic_policy.authority_sha256 != context.factual_authority.sha256):
+                raise ValueError("SEMANTIC_COMPLETENESS_POLICY_CONTEXT_MISMATCH")
+        return cls(context=context, semantic_policy=semantic_policy)
 
     def _feed_char(self, char: str):
+        topology = self.semantic_policy.required_topology if self.semantic_policy else None
+        if topology is not None and self.mode == "CONSTRUCTION_RECORD_SEPARATOR":
+            expected = len(topology.construction_ids)
+            if char == "," and self.construction_count >= expected:
+                self._fail("SEMANTIC_POLICY_EXTRA_CONSTRUCTION_FORBIDDEN")
+            if char == "]" and self.construction_count != expected:
+                self._fail("SEMANTIC_POLICY_CONSTRUCTION_TOPOLOGY_INCOMPLETE")
+        if topology is not None and self.mode == "AFTER_ENTRY":
+            expected = len(topology.entry_ids)
+            if char == "," and self.entry_count >= expected:
+                self._fail("SEMANTIC_POLICY_EXTRA_ENTRY_FORBIDDEN")
+            if char == "]" and self.entry_count != expected:
+                self._fail("SEMANTIC_POLICY_ENTRY_TOPOLOGY_INCOMPLETE")
+        if topology is not None and self.mode == "AFTER_AUDIT":
+            expected = len(topology.creative_audit_ids)
+            if char == "," and self.audit_count >= expected:
+                self._fail("SEMANTIC_POLICY_EXTRA_AUDIT_FORBIDDEN")
+            if char == "]" and self.audit_count != expected:
+                self._fail("SEMANTIC_POLICY_AUDIT_TOPOLOGY_INCOMPLETE")
         if self.mode != "V2_REFERENCE":
             return super()._feed_char(char)
         if self.terminal:
@@ -69,6 +102,68 @@ class StagePConstructionObligationConstraintStateV2(
                        reference_return_step=return_step, reference_was_null=None)
 
     def _advance(self, step: str, value: str | None = None):
+        policy = self.semantic_policy
+        topology = policy.required_topology if policy else None
+        if topology is not None:
+            if step == "CONSTRUCTION_DISPOSITION":
+                required_roles = {item.construction_role for item in policy.required_constructions}
+                disposition = ("UNRESOLVED_CONSTRUCTION_ROLE" if "UNRESOLVED" in required_roles
+                               else "ONE_OR_MORE_MATERIAL_CONSTRUCTIONS" if required_roles & {
+                                   "MATERIAL_CREATIVE_OR_EDITORIAL", "MIXED_CREATIVE_AND_REAL_WORLD"}
+                               else "NO_MATERIAL_CREATIVE_CONSTRUCTION")
+                return replace(self, mode="CHOICE", buffer="", choices=(disposition,),
+                               next_step="CONSTRUCTION_RECORDS_LITERAL")
+            if step == "CONSTRUCTION_ID":
+                index = self.construction_count - 1
+                if index >= len(topology.construction_ids):
+                    self._fail("SEMANTIC_POLICY_EXTRA_CONSTRUCTION_FORBIDDEN")
+                return replace(self, mode="CHOICE", buffer="",
+                               choices=(topology.construction_ids[index],),
+                               next_step="CONSTRUCTION_SPAN_LITERAL")
+            if step == "CONSTRUCTION_ROLE":
+                required = {item.construction_id: item.construction_role
+                            for item in policy.required_constructions}
+                role = required.get(self.current_construction_id)
+                if role is None:
+                    self._fail("SEMANTIC_POLICY_CONSTRUCTION_ROLE_UNBOUND")
+                return replace(self, mode="CHOICE", buffer="", choices=(role,),
+                               next_step="CONSTRUCTION_BASIS_LITERAL")
+            if step == "ENTRY_ID":
+                index = self.entry_count - 1
+                if index >= len(topology.entry_ids):
+                    self._fail("SEMANTIC_POLICY_EXTRA_ENTRY_FORBIDDEN")
+                return replace(self, mode="CHOICE", buffer="",
+                               choices=(topology.entry_ids[index],),
+                               next_step="ENTRY_TYPE_LITERAL")
+            if step == "ENTRY_TYPE":
+                entry_id = topology.entry_ids[self.entry_count - 1]
+                creative = {item.entry_id for item in policy.required_creative}
+                returns = {item.entry_id for item in policy.required_returns}
+                entry_type = ("CONTAINED_CREATIVE" if entry_id in creative
+                              else "REAL_WORLD_COMMITMENT" if entry_id in returns else None)
+                if entry_type is None:
+                    self._fail("SEMANTIC_POLICY_ENTRY_TYPE_UNBOUND")
+                return replace(self, mode="CHOICE", buffer="", choices=(entry_type,),
+                               next_step="CANDIDATE_LITERAL")
+            if step == "AUDIT_ID":
+                index = self.audit_count - 1
+                if index >= len(topology.creative_audit_ids):
+                    self._fail("SEMANTIC_POLICY_EXTRA_AUDIT_FORBIDDEN")
+                return replace(self, mode="CHOICE", buffer="",
+                               choices=(topology.creative_audit_ids[index] + '"',),
+                               next_step="AUDIT_HOST_LITERAL")
+            required_true = {
+                "WHOLE", "EMBEDDED", "CREATIVE", "OVERLAPS", "HOSTS", "RETURNS",
+                "TARGETS_ENUMERATED", "TARGET_CLASSES_REVIEWED", "TARGET_RECONCILED",
+                "CONSTRUCTION_ROLES_RECEIPT", "CONSTRUCTION_RECONCILED_RECEIPT",
+            }
+            if step in required_true:
+                return replace(self, mode="CHOICE", buffer="", choices=("true",),
+                               next_step=f"AFTER_{step}")
+            if step == "RECEIPT_UNRESOLVED":
+                observed = "true" if self.unresolved_seen else "false"
+                return replace(self, mode="CHOICE", buffer="", choices=(observed,),
+                               next_step="AFTER_RECEIPT_UNRESOLVED")
         if step == "CONSTRUCTION_SPAN_LITERAL":
             return replace(self, current_construction_id=value, mode="LITERAL",
                            remaining='","candidate_span_ref":', next_step="CONSTRUCTION_SPAN")
