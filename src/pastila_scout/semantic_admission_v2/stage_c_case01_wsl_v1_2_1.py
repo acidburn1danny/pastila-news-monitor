@@ -28,8 +28,11 @@ RUNNER_MODULE = "pastila_scout.semantic_admission_v2.stage_c_case01_linux_runner
 CONSUMER_ID = "semantic-admission-v2-stage-c-case01-v1-2-1"
 TIMEOUT_SECONDS = 1260.0
 CHILD_TIMEOUT_SECONDS = 1200.0
-PACKET_RELATIVE = Path("docs/artifacts/semantic-admission-v2-stage-c-case01-packet-v1-2-1")
-EVIDENCE_RELATIVE = Path(".semantic-admission-v2-stage-c-case01-v1-2-1-evidence")
+PACKET_RELATIVE = Path(
+    "docs/artifacts/semantic-admission-v2-stage-c-case01-successor-v1-2-1-"
+    "git-object-bound")
+EVIDENCE_RELATIVE = Path(
+    ".semantic-admission-v2-stage-c-case01-successor-v1-2-1-git-object-bound-evidence")
 CASE_PACK_RELATIVE = Path("docs/artifacts/semantic-admission-v2-staged-gate-f-two-case-proof-pack-v1.json")
 RAW_LEDGER_RELATIVE = Path(
     ".semantic-admission-v2-stage-p-construction-obligation-v2-case01-successor-"
@@ -72,6 +75,7 @@ class PreparedStageCCase01WslInvocationV1_2_1:
     authority_path: Path
     evidence_root: Path
     project_root: Path
+    issuance_commit: str
 
 
 @dataclass(frozen=True, slots=True)
@@ -242,7 +246,7 @@ def prepare_stage_c_case01_wsl_invocation_v1_2_1(
     if boundary.profile != canonical_model_profile_v1(with_pydantic_bridge=True):
         raise ValueError("STAGE_C_CANONICAL_WSL_PROFILE_REQUIRED")
     source_root = project_root.resolve(strict=True)
-    manifest, authority, request, frozen = _validate_issued_packet(
+    manifest, authority, request, frozen, issuance_commit = _validate_issued_packet(
         source_root, packet_root, evidence_root, boundary)
     args = ("-m", RUNNER_MODULE, windows_path_to_wsl_v1(packet_root / "stage-c-request.json"),
             windows_path_to_wsl_v1(packet_root / "authority-receipt-issued.json"),
@@ -268,6 +272,7 @@ def prepare_stage_c_case01_wsl_invocation_v1_2_1(
         "manifest_path": str(packet_root / "manifest.json"),
         "evidence_root": str(evidence_root),
         "project_root": str(source_root),
+        "issuance_commit": issuance_commit,
     }
     return PreparedStageCCase01WslInvocationV1_2_1(
         _sha(_canonical(material)), STAGE_C_WSL_BINDING_IDENTITY, invocation,
@@ -277,7 +282,7 @@ def prepare_stage_c_case01_wsl_invocation_v1_2_1(
         CASE01_CANONICAL_POLICY_IDENTITY, RAW_OUTPUT_SHA256,
         manifest["evidence_root_identity"], packet_root / "manifest.json",
         packet_root / "stage-c-request.json", packet_root / "authority-receipt-issued.json",
-        evidence_root, source_root)
+        evidence_root, source_root, issuance_commit)
 
 
 def execute_stage_c_case01_host_v1_2_1(
@@ -330,6 +335,7 @@ def _validate_issued_packet(project_root: Path, packet_root: Path, evidence_root
     for path in root.iterdir():
         if path.is_symlink() or not path.is_file():
             raise ValueError("STAGE_C_PACKET_REGULAR_FILES_REQUIRED")
+    issuance_commit = _verify_current_packet_git_objects(project_root, root, expected)
     manifest = _load_canonical(root / "manifest.json")
     if manifest.get("packet_identity") != _sha(_canonical(
             {key: value for key, value in manifest.items() if key != "packet_identity"})):
@@ -361,6 +367,34 @@ def _validate_issued_packet(project_root: Path, packet_root: Path, evidence_root
         factual_authority=base64.b64decode(request["factual_authority_utf8_base64"], validate=True),
         raw_evaluation_receipt=(root / "semantic-evaluation-receipt.json").read_bytes(),
         raw_closure_receipt=(root / "case01-closure-receipt.json").read_bytes())
+    expected_request = {
+        "schema_name": "pastila-semantic-admission-v2-stage-c-case01-request",
+        "schema_version": "1.2.1", "case_id": CASE_ID,
+        "operation": "EVALUATE_FROZEN_STAGE_P_LEDGER_ONCE",
+        "stage_p_calls_authorized": 0, "stage_c_calls_authorized": 1,
+        "frozen_input_identity": frozen.binding_identity,
+        "evidence_commit": EVIDENCE_COMMIT, "evaluation_commit": EVALUATION_COMMIT,
+        "closure_commit": CLOSURE_COMMIT, "raw_output_sha256": RAW_OUTPUT_SHA256,
+        "evaluation_receipt_identity": EVALUATION_RECEIPT_IDENTITY,
+        "closure_receipt_identity": CLOSURE_RECEIPT_IDENTITY,
+        "source_context_identity": SOURCE_CONTEXT_IDENTITY,
+        "semantic_policy_identity": CASE01_CANONICAL_POLICY_IDENTITY,
+        "topology": EXPECTED_TOPOLOGY,
+        "candidate_utf8_base64": request.get("candidate_utf8_base64"),
+        "factual_authority_utf8_base64": request.get("factual_authority_utf8_base64"),
+        "frozen_ledger_sha256": RAW_OUTPUT_SHA256,
+        "child_timeout_seconds": CHILD_TIMEOUT_SECONDS,
+        "retry": 0, "fallback": 0, "repair": 0, "selection": 0,
+    }
+    if request != expected_request:
+        raise ValueError("STAGE_C_REQUEST_AUTHORITY_BINDING_INVALID")
+    if ((root / "frozen-stage-p-ledger.json").read_bytes()
+            != _git_blob(project_root, EVIDENCE_COMMIT, RAW_LEDGER_RELATIVE)
+            or (root / "semantic-evaluation-receipt.json").read_bytes()
+            != _git_blob(project_root, EVALUATION_COMMIT, EVALUATION_RELATIVE)
+            or (root / "case01-closure-receipt.json").read_bytes()
+            != _git_blob(project_root, CLOSURE_COMMIT, CLOSURE_RELATIVE)):
+        raise ValueError("STAGE_C_FROZEN_COMMIT_BLOB_BINDING_INVALID")
     source_lineage = _source_lineage(project_root)
     if manifest.get("source_lineage_sha256") != source_lineage:
         raise ValueError("STAGE_C_SOURCE_LINEAGE_MISMATCH")
@@ -431,7 +465,26 @@ def _validate_issued_packet(project_root: Path, packet_root: Path, evidence_root
     )
     if not fixed:
         raise ValueError("STAGE_C_PACKET_BINDING_INVALID")
-    return manifest, authority, request, frozen
+    return manifest, authority, request, frozen, issuance_commit
+
+
+def _verify_current_packet_git_objects(
+    project_root: Path, packet_root: Path, expected: set[str]
+) -> str:
+    """Require every admitted packet byte to be present in the current commit."""
+    try:
+        commit = subprocess.check_output(
+            ("git", "rev-parse", "HEAD^{commit}"), cwd=project_root,
+            stderr=subprocess.DEVNULL, text=True).strip()
+    except (OSError, subprocess.CalledProcessError) as exc:
+        raise ValueError("STAGE_C_ISSUANCE_COMMIT_UNAVAILABLE") from exc
+    relative_root = packet_root.relative_to(project_root)
+    if relative_root != PACKET_RELATIVE:
+        raise ValueError("STAGE_C_PACKET_CANONICAL_PATH_REQUIRED")
+    for name in sorted(expected):
+        if _git_blob(project_root, commit, relative_root / name) != (packet_root / name).read_bytes():
+            raise ValueError("STAGE_C_PACKET_GIT_OBJECT_MISMATCH")
+    return commit
 
 
 def _source_lineage(root: Path) -> dict[str, str]:

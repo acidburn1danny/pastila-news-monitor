@@ -10,6 +10,7 @@ from pathlib import Path
 import pytest
 
 from pastila_scout.semantic_admission_v2 import stage_c_case01_linux_runner_v1_2_1 as linux_runner
+from pastila_scout.semantic_admission_v2 import stage_c_case01_wsl_v1_2_1 as stage_c_wsl
 
 from pastila_scout.semantic_admission_v2.stage_c_case01_frozen_input_v1_2_1 import (
     RAW_OUTPUT_SHA256, admit_frozen_stage_c_case01_input_v1_2_1,
@@ -25,6 +26,12 @@ from pastila_scout.wsl_execution_v1 import canonical_model_profile_v1
 from pastila_scout.wsl_execution_v1_1 import WslExecutionBoundaryV1_1
 
 ROOT = Path(__file__).parents[1]
+
+
+@pytest.fixture(autouse=True)
+def _admit_temporary_test_packets(monkeypatch):
+    monkeypatch.setattr(stage_c_wsl, "_verify_current_packet_git_objects",
+                        lambda project_root, packet_root, expected: "f" * 40)
 
 
 def _canonical(value: object) -> bytes:
@@ -98,6 +105,7 @@ def test_exact_prepared_type_and_mutation_fail_before_execute(tmp_path, monkeypa
         project_root=ROOT, packet_root=packet.resolve(), evidence_root=evidence,
         boundary=boundary)
     assert type(prepared) is PreparedStageCCase01WslInvocationV1_2_1
+    assert prepared.issuance_commit == "f" * 40
     calls = []
     monkeypatch.setattr(WslExecutionBoundaryV1_1, "execute",
                         lambda *args, **kwargs: calls.append((args, kwargs)))
@@ -154,6 +162,32 @@ def test_sole_prospective_execute_edge_and_imports_are_inert():
     runner = (ROOT / "src/pastila_scout/semantic_admission_v2/stage_c_case01_linux_runner_v1_2_1.py").read_text("utf-8")
     assert "AutoModel" not in runner
     assert "from transformers" not in runner
+
+
+def test_request_authority_fields_and_frozen_commit_blobs_fail_closed(tmp_path):
+    packet, evidence, _ = _packet(tmp_path)
+    _issue_for_test(packet)
+    boundary = WslExecutionBoundaryV1_1(canonical_model_profile_v1(with_pydantic_bridge=True))
+    request = json.loads((packet / "stage-c-request.json").read_bytes())
+    request["stage_p_calls_authorized"] = 1
+    (packet / "stage-c-request.json").write_bytes(_canonical(request))
+    with pytest.raises(ValueError):
+        prepare_stage_c_case01_wsl_invocation_v1_2_1(
+            project_root=ROOT, packet_root=packet.resolve(), evidence_root=evidence,
+            boundary=boundary)
+
+
+def test_git_object_packet_admission_is_mandatory(tmp_path, monkeypatch):
+    packet, evidence, _ = _packet(tmp_path)
+    _issue_for_test(packet)
+    boundary = WslExecutionBoundaryV1_1(canonical_model_profile_v1(with_pydantic_bridge=True))
+    monkeypatch.setattr(stage_c_wsl, "_verify_current_packet_git_objects",
+                        lambda *args: (_ for _ in ()).throw(
+                            ValueError("STAGE_C_PACKET_GIT_OBJECT_MISMATCH")))
+    with pytest.raises(ValueError, match="GIT_OBJECT"):
+        prepare_stage_c_case01_wsl_invocation_v1_2_1(
+            project_root=ROOT, packet_root=packet.resolve(), evidence_root=evidence,
+            boundary=boundary)
 
 
 def test_linux_supervisor_terminal_success_uses_real_durable_sink_without_model(tmp_path, monkeypatch):
