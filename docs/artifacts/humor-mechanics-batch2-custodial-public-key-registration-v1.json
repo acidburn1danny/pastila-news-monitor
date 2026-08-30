@@ -1,0 +1,197 @@
+{
+  "access_ledger_identity": "b37cc702be9990638d4f196c1399f42dc3695ad1f271022759e114a3c559a00b",
+  "authority_matrix": {
+    "archive_write": false,
+    "candidate_construction": false,
+    "content_access": false,
+    "content_ingestion": false,
+    "mechanism_assignment": false,
+    "model_exposure": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "source_acquisition": false,
+    "surface_generation": false,
+    "training": false
+  },
+  "enrollment_request_commit": "be9bd9ca812468b46cc0c0924cb5db5392ae98d4",
+  "enrollment_request_identity": "c5439550d6a6d86a9a88893cbeb2f88712d6fdcc5fc7b05b08b981ef275c0e04",
+  "ledger_segment_identity": "80b401837d00a11bd220716f16485416ded4ca5696ac14124d1da65ed1e11680",
+  "operational_access": false,
+  "previous_ledger_head": "4d8cc1c7907523f44d611ea4fe8e38908b3e37e97f623d3511fd02b842634642",
+  "registration_core_identity": "71691687e651709d139bb40ab7f8299a2f4e84b19e5cfa6b1fc586b24bc489c0",
+  "registration_identity": "01912e139471ec23cba5861c8f575f098a6248d39ebbe5ec2ee043493d392ebe",
+  "registration_status": "REGISTERED_POP_VERIFIED_NONOPERATIONAL",
+  "registrations": [
+    {
+      "algorithm": "ED25519",
+      "canonical_challenge_sha256": "30f6563fd2d1a9c49107071cb4f63bc30897c216633861a67b1aa1e3627659ce",
+      "challenge_identity": "47e7573a2378ed1a93481182aeefcc2f1feba42f2e9b774a6a5b08321e0c8db3",
+      "companion_public_pem_sha256": "761619ecee4b40bde84812495d9fac3b9f923867c52d497373f3aa7e23f5c317",
+      "operational_access": false,
+      "owner_confirmation": {
+        "confirmed": true,
+        "owner_identity": "PASTILA_ACIDA_OWNER_V1",
+        "principal_identity": "35f8bee3260c2ff80aaaeb394d1446d273524cc51d1c4eda56715d49c2a77644",
+        "public_key_fingerprint": "bd00e64dc48ff765d9fc1a5937be3541d5171535a90d3eb005354224760ca881",
+        "role": "RIGHTS_CUSTODIAN",
+        "statement": "I bind this public key exclusively to this custodial role and retain the private key outside the repository."
+      },
+      "principal_identity": "35f8bee3260c2ff80aaaeb394d1446d273524cc51d1c4eda56715d49c2a77644",
+      "proof_of_possession": "VERIFIED",
+      "proof_signature": {
+        "encoding": "BASE64",
+        "value": "osM45F40Z90TCFV/BYGzYvrYBnPQy1CQu9of7gotL5W4M0vkiX7DdwC0tujUBrXRs7vBmvvOPBiNBKYPe1ajDQ=="
+      },
+      "public_key": {
+        "format": "PEM_SPKI",
+        "value": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAK8XgLwpkS2Lmj/6KZpxYPNcn8qYZaZDWrH5W9jf/XEs=\n-----END PUBLIC KEY-----\n"
+      },
+      "public_key_fingerprint": "bd00e64dc48ff765d9fc1a5937be3541d5171535a90d3eb005354224760ca881",
+      "response_sha256": "3aabcbcfeffc2efe543a11605ab19b60dc92fd00c2a3403adc815f8c05c81f04",
+      "role": "RIGHTS_CUSTODIAN"
+    },
+    {
+      "algorithm": "ED25519",
+      "canonical_challenge_sha256": "76ebd10db36427d4f716c89970ea717fd4b21ff987a5171b740e488a77a41a2f",
+      "challenge_identity": "ee5d8224428a39481ddbfd1d03edcc91bbc096eee258dbbc1937eb5c5c98aff1",
+      "companion_public_pem_sha256": "399cdda8a68d4796455b6a6b19463c199cba6567fbf7b0eca000f1ad6a62be69",
+      "operational_access": false,
+      "owner_confirmation": {
+        "confirmed": true,
+        "owner_identity": "PASTILA_ACIDA_OWNER_V1",
+        "principal_identity": "37c8c4010917cd87ad7d38591644a15a4640911522fea505b3273943af927bd7",
+        "public_key_fingerprint": "59374467214015dc63dce3875959c7583cb2ab677a292ed6e0a0dcf829318aaa",
+        "role": "ACQUISITION_CUSTODIAN",
+        "statement": "I bind this public key exclusively to this custodial role and retain the private key outside the repository."
+      },
+      "principal_identity": "37c8c4010917cd87ad7d38591644a15a4640911522fea505b3273943af927bd7",
+      "proof_of_possession": "VERIFIED",
+      "proof_signature": {
+        "encoding": "BASE64",
+        "value": "YjnOcbh+XA/L7ihXmP8suSkMQ2Aj8tie96tXpw3z5mYjpT9xezzp4XyT3fETOpp7wAjzoAw+cK76hTP5RBuABQ=="
+      },
+      "public_key": {
+        "format": "PEM_SPKI",
+        "value": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEA7jWEPOHQbDkm9OW7Clh2Ubbln1f7972an82yHZ3Nw8g=\n-----END PUBLIC KEY-----\n"
+      },
+      "public_key_fingerprint": "59374467214015dc63dce3875959c7583cb2ab677a292ed6e0a0dcf829318aaa",
+      "response_sha256": "9b5fb1825d741fe172a6c42ce7669bd467525015872aa15f187abed055e9229d",
+      "role": "ACQUISITION_CUSTODIAN"
+    },
+    {
+      "algorithm": "ED25519",
+      "canonical_challenge_sha256": "4fdf479cd15da102947fc4b969486d8f7e46516bf0505a17c6d44df6851c26e9",
+      "challenge_identity": "9da4ee8cd04f151ef9b2af46f175a804786d9920a58efbe24e964bac68b6e798",
+      "companion_public_pem_sha256": "5489613fe59675809abb426146a8a1531211cd6abde0d1ab68e27e900d9c3b00",
+      "operational_access": false,
+      "owner_confirmation": {
+        "confirmed": true,
+        "owner_identity": "PASTILA_ACIDA_OWNER_V1",
+        "principal_identity": "728eea0400e8aa123ffba1afbff1982d985afbfb0bc850972389fd31b2ba75fa",
+        "public_key_fingerprint": "bc5b32b0c8a7b2f6b585d1f543ea7d39ee95767181c126cd16996e7c0300a8ed",
+        "role": "FAMILY_CUSTODIAN",
+        "statement": "I bind this public key exclusively to this custodial role and retain the private key outside the repository."
+      },
+      "principal_identity": "728eea0400e8aa123ffba1afbff1982d985afbfb0bc850972389fd31b2ba75fa",
+      "proof_of_possession": "VERIFIED",
+      "proof_signature": {
+        "encoding": "BASE64",
+        "value": "onckJHkypHS9bmF5OrCC2wrVKTQ6koh0Z8dbOM1RGUq04NbUxgRWfe2WZON4ZCjbdWrDozUuydLWooPUIbKTBw=="
+      },
+      "public_key": {
+        "format": "PEM_SPKI",
+        "value": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAkHDFWwO/jJAy8P/UG+EdHTeoLf82cPuo+q2LQux+wac=\n-----END PUBLIC KEY-----\n"
+      },
+      "public_key_fingerprint": "bc5b32b0c8a7b2f6b585d1f543ea7d39ee95767181c126cd16996e7c0300a8ed",
+      "response_sha256": "95281fed7c1cf2e61bb2894b6904cf1d5ffb15d5d7c522a5fdbdcda4c1151600",
+      "role": "FAMILY_CUSTODIAN"
+    },
+    {
+      "algorithm": "ED25519",
+      "canonical_challenge_sha256": "3302acd7c13b7e6033082d1f008f6f0c538d26aed0b7a8086e5d760fac234eaa",
+      "challenge_identity": "61a6f2084cc697104c473013f7f7303ae1e97c56795b02084ab230834da9344d",
+      "companion_public_pem_sha256": "0b3268fc485c5a7d204a01f1b2711ddc5fa1217c7d416fceb51dda827afbe8dd",
+      "operational_access": false,
+      "owner_confirmation": {
+        "confirmed": true,
+        "owner_identity": "PASTILA_ACIDA_OWNER_V1",
+        "principal_identity": "14f2d19b62ffc6b2a1a8ac5a426647962a03d2a81301410e7dbf16a27e4fb97d",
+        "public_key_fingerprint": "ceb4438e671860f3ae144fc8acabcfc7b2f7d648979ad5650fba1f5ce3254a9a",
+        "role": "PARTITION_CUSTODIAN",
+        "statement": "I bind this public key exclusively to this custodial role and retain the private key outside the repository."
+      },
+      "principal_identity": "14f2d19b62ffc6b2a1a8ac5a426647962a03d2a81301410e7dbf16a27e4fb97d",
+      "proof_of_possession": "VERIFIED",
+      "proof_signature": {
+        "encoding": "BASE64",
+        "value": "8WpjUyyTsK4KYLNPdqullKnFMZlPl39gomMRg53dvwfHtGMcuR+kvE9eJoHAtCT8jnYL4v0g7yvK2YZpsUMXAQ=="
+      },
+      "public_key": {
+        "format": "PEM_SPKI",
+        "value": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEA6tMsisDPRywc6YyfHCW+WnTa4+IyTmsWEK+fxpm2eDA=\n-----END PUBLIC KEY-----\n"
+      },
+      "public_key_fingerprint": "ceb4438e671860f3ae144fc8acabcfc7b2f7d648979ad5650fba1f5ce3254a9a",
+      "response_sha256": "e626aef19d5174a6a41d16abfdb3364e83eca13105c445be7ea91cdd83a8f94a",
+      "role": "PARTITION_CUSTODIAN"
+    },
+    {
+      "algorithm": "ED25519",
+      "canonical_challenge_sha256": "1fd0aaf9fdadcde8eb93e1ee2d712b20e94d6fdb5eb6760a976211b9ba4cb027",
+      "challenge_identity": "492fa73d502c9e800fc30ded327d4a7072f2c8161f3162ccf70a6a43eecbbeef",
+      "companion_public_pem_sha256": "018a25ab4b0aad39721ae6dd9038e4decea4a511a990b1799a43b1f5e4d81592",
+      "operational_access": false,
+      "owner_confirmation": {
+        "confirmed": true,
+        "owner_identity": "PASTILA_ACIDA_OWNER_V1",
+        "principal_identity": "12e32e46bdb6acc1ac5a7556dcb021ee35a8b264e6b157a5572d801fa373619e",
+        "public_key_fingerprint": "043a87c3741ed7937c7c9ab164d2322d8a0160a09920c17dbb2f7e8912f939da",
+        "role": "BLIND_ESCROW_CUSTODIAN",
+        "statement": "I bind this public key exclusively to this custodial role and retain the private key outside the repository."
+      },
+      "principal_identity": "12e32e46bdb6acc1ac5a7556dcb021ee35a8b264e6b157a5572d801fa373619e",
+      "proof_of_possession": "VERIFIED",
+      "proof_signature": {
+        "encoding": "BASE64",
+        "value": "ppv+ekD1ciKWVTYG5bOZ9FH4hsn18Z3qPGrG/F9oNl3ePVxYMhlTKMkyD2X+0xyRkeFdTMXQxWWyPLnIEguLBQ=="
+      },
+      "public_key": {
+        "format": "PEM_SPKI",
+        "value": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEATxYzjxTEj0NdNrGL8dxnT44J6ED8tzb5dvxim8VHwtg=\n-----END PUBLIC KEY-----\n"
+      },
+      "public_key_fingerprint": "043a87c3741ed7937c7c9ab164d2322d8a0160a09920c17dbb2f7e8912f939da",
+      "response_sha256": "5592048608c214d1318e9d94bd1830c3866d47a3ece39322f207fb0c06d6dc61",
+      "role": "BLIND_ESCROW_CUSTODIAN"
+    },
+    {
+      "algorithm": "ED25519",
+      "canonical_challenge_sha256": "c367be15380bf6a3fee01f41ee66e263f2b37bf1092edba4fbb6732a60221503",
+      "challenge_identity": "70c5b7fd8ebbfda3bd392bd550f90c13eb3f6dc2ea264ba9fbd225108a7aa4f7",
+      "companion_public_pem_sha256": "ff4adf84aa6b6c6c6cadfa8427b108fa8d4f7dac76e0454340df6738890a18f7",
+      "operational_access": false,
+      "owner_confirmation": {
+        "confirmed": true,
+        "owner_identity": "PASTILA_ACIDA_OWNER_V1",
+        "principal_identity": "1740c9f292a03dab6db10f497f3bcf6843b0e538c8f7ef1e1a359bb5af5c8144",
+        "public_key_fingerprint": "ca5d89a72072e0117c1f7a288c12bbb6c91f96e7527525b28ca73e65d8841b87",
+        "role": "CONTAMINATION_AUDITOR",
+        "statement": "I bind this public key exclusively to this custodial role and retain the private key outside the repository."
+      },
+      "principal_identity": "1740c9f292a03dab6db10f497f3bcf6843b0e538c8f7ef1e1a359bb5af5c8144",
+      "proof_of_possession": "VERIFIED",
+      "proof_signature": {
+        "encoding": "BASE64",
+        "value": "qZXMXiyZDchsovkRmeKQ0s0DVUjgtTB5g0hR1RE7UBM4O4p1YmZwyGpMxyqPnnsdlT1gPtQei/jHcDC5dxv9Cg=="
+      },
+      "public_key": {
+        "format": "PEM_SPKI",
+        "value": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEABMRqZl7kIWkr1NEJuvXWXgDCr5DavIgvcWkz5fwYzYs=\n-----END PUBLIC KEY-----\n"
+      },
+      "public_key_fingerprint": "ca5d89a72072e0117c1f7a288c12bbb6c91f96e7527525b28ca73e65d8841b87",
+      "response_sha256": "077152feef84a6565869c2effdd37e56a263a510835a7518661cf307e75c94c5",
+      "role": "CONTAMINATION_AUDITOR"
+    }
+  ],
+  "runbook_commit": "bad0c7311999b6401659d292f3ef69e7af65e53c",
+  "schema_name": "batch2-custodial-public-key-registration-v1",
+  "schema_version": "1.0.0"
+}

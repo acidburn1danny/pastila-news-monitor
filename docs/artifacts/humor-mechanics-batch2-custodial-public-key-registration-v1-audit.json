@@ -1,0 +1,47 @@
+{
+  "access_ledger_identity": "b37cc702be9990638d4f196c1399f42dc3695ad1f271022759e114a3c559a00b",
+  "bindings": [
+    {
+      "fingerprint": "bd00e64dc48ff765d9fc1a5937be3541d5171535a90d3eb005354224760ca881",
+      "proof_of_possession": "VERIFIED",
+      "role": "RIGHTS_CUSTODIAN"
+    },
+    {
+      "fingerprint": "59374467214015dc63dce3875959c7583cb2ab677a292ed6e0a0dcf829318aaa",
+      "proof_of_possession": "VERIFIED",
+      "role": "ACQUISITION_CUSTODIAN"
+    },
+    {
+      "fingerprint": "bc5b32b0c8a7b2f6b585d1f543ea7d39ee95767181c126cd16996e7c0300a8ed",
+      "proof_of_possession": "VERIFIED",
+      "role": "FAMILY_CUSTODIAN"
+    },
+    {
+      "fingerprint": "ceb4438e671860f3ae144fc8acabcfc7b2f7d648979ad5650fba1f5ce3254a9a",
+      "proof_of_possession": "VERIFIED",
+      "role": "PARTITION_CUSTODIAN"
+    },
+    {
+      "fingerprint": "043a87c3741ed7937c7c9ab164d2322d8a0160a09920c17dbb2f7e8912f939da",
+      "proof_of_possession": "VERIFIED",
+      "role": "BLIND_ESCROW_CUSTODIAN"
+    },
+    {
+      "fingerprint": "ca5d89a72072e0117c1f7a288c12bbb6c91f96e7527525b28ca73e65d8841b87",
+      "proof_of_possession": "VERIFIED",
+      "role": "CONTAMINATION_AUDITOR"
+    }
+  ],
+  "deterministic_defects_remaining": [],
+  "duplicate_keys": 0,
+  "keys_generated": 0,
+  "ledger_sha256": "c405665e1bfbf695a7c0432e2bbde53af1761d2bdcdd42fa96bc33464e9e382a",
+  "operational_access": false,
+  "private_keys_accessed": 0,
+  "registration_identity": "01912e139471ec23cba5861c8f575f098a6248d39ebbe5ec2ee043493d392ebe",
+  "registration_sha256": "bc6307158322d6eb779d436d458ef02472d6e8c75bf4ff296d8ae77ead7bef6c",
+  "schema_name": "batch2-custodial-public-key-registration-v1-audit",
+  "schema_version": "1.0.0",
+  "signatures_generated": 0,
+  "verdict": "PASS_SIX_PUBLIC_KEYS_REGISTERED_POP_VERIFIED_NONOPERATIONAL"
+}
