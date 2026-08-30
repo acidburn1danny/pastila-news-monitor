@@ -41,6 +41,11 @@ TOKEN_1800_RECEIPT_PATH = (
     ".semantic-admission-v2-stage-p-construction-obligation-v2-case01-successor-"
     "v1-2-1-construction-disposition-pruning-bound-evidence/linux-generation/"
     "no-legal-token-receipt.json")
+TOKEN_1400_EVIDENCE_COMMIT = "c42148b34beec6ac2993bc8ab4e838d4810c5f8d"
+TOKEN_1400_RECEIPT_PATH = (
+    ".semantic-admission-v2-stage-p-construction-obligation-v2-case01-successor-"
+    "v1-2-1-canonical-policy-identity-bound-evidence/linux-generation/"
+    "no-legal-token-receipt.json")
 
 
 def _sources():
@@ -515,6 +520,33 @@ def test_case01_construction_and_creative_semantics_are_request_bound(mutation):
                        "SEMANTIC_COMPLETENESS_(?:.*_SEMANTICS_MISMATCH|"
                        "CONSTRUCTION_COVERAGE_INCOMPLETE)"):
         SemanticCompletenessAdmissionV1(_policy()).validate_terminal(_raw(value))
+
+
+def test_frozen_token_1400_creative_mismatch_is_pruned_at_target_class():
+    """Regression for execution evidence c42148b: reject T1 before terminal EOS."""
+    frozen = subprocess.run(
+        ["git", "show", f"{TOKEN_1400_EVIDENCE_COMMIT}:{TOKEN_1400_RECEIPT_PATH}"],
+        cwd=ROOT, check=True, capture_output=True).stdout
+    receipt = json.loads(frozen)
+    raw = base64.b64decode(
+        receipt["decoded_prefix_utf8_base64"], validate=True).decode("utf-8")
+    assert receipt["generated_token_count"] == 1400
+    assert receipt["decoded_prefix_sha256"] == (
+        "0ccf9e8b10921dcfa52eb964f45af47ce8078fc6609d919965f5562a3db5949e")
+    with pytest.raises(SemanticCompletenessFailureV1, match=
+                       "SEMANTIC_COMPLETENESS_CREATIVE_SEMANTICS_MISMATCH"):
+        SemanticCompletenessAdmissionV1(_policy()).validate_terminal(raw)
+
+    source, authority = _sources()
+    context = SourceReferenceConstraintContextV1.bind(
+        candidate=source, factual_authority=authority)
+    target = '"target_class":"REAL_WORLD_PROPOSITION"'
+    irreversible = raw.index(target) + len('"target_class":"R')
+    with pytest.raises(Exception, match="ENUM_MISMATCH"):
+        StagePConstructionObligationCharacterControllerV1(
+            context=context, decoder_identity="token-1400-regression",
+            semantic_policy=_policy()).allowed(
+                (1,), lambda _: raw[:irreversible])
 
 
 def test_projector_withholds_eos_for_schema_terminal_semantically_incomplete_output():

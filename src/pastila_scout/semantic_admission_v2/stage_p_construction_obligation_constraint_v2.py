@@ -111,6 +111,14 @@ class StagePConstructionObligationConstraintStateV2(
         policy = self.semantic_policy
         topology = policy.required_topology if policy else None
         if topology is not None:
+            creative_by_entry = {
+                item.entry_id: item for item in policy.required_creative}
+            returns_by_entry = {
+                item.entry_id: item for item in policy.required_returns}
+            creative_by_audit = {
+                item.audit_id: item for item in policy.required_creative}
+            constructions = {
+                item.construction_id: item for item in policy.required_constructions}
             if step == "CONSTRUCTION_DISPOSITION":
                 required_roles = {item.construction_role for item in policy.required_constructions}
                 disposition = ("UNRESOLVED_CONSTRUCTION_ROLE" if "UNRESOLVED" in required_roles
@@ -127,13 +135,36 @@ class StagePConstructionObligationConstraintStateV2(
                                choices=(topology.construction_ids[index],),
                                next_step="CONSTRUCTION_SPAN_LITERAL")
             if step == "CONSTRUCTION_ROLE":
-                required = {item.construction_id: item.construction_role
-                            for item in policy.required_constructions}
-                role = required.get(self.current_construction_id)
+                obligation = constructions.get(self.current_construction_id)
+                role = obligation.construction_role if obligation else None
                 if role is None:
                     self._fail("SEMANTIC_POLICY_CONSTRUCTION_ROLE_UNBOUND")
                 return replace(self, mode="CHOICE", buffer="", choices=(role,),
                                next_step="CONSTRUCTION_BASIS_LITERAL")
+            if step == "CONSTRUCTION_HOST":
+                obligation = constructions.get(self.current_construction_id)
+                if obligation is None:
+                    self._fail("SEMANTIC_POLICY_CONSTRUCTION_HOST_UNBOUND")
+                return replace(self, mode="CHOICE", buffer="",
+                               choices=(f'"{obligation.creative_host_entry_id}"',),
+                               next_step="CONSTRUCTION_LINKS_LITERAL")
+            if step in {"CONSTRUCTION_LINK", "CONSTRUCTION_LINKS_CHOICE"}:
+                obligation = constructions.get(self.current_construction_id)
+                index = len(self.current_construction_links)
+                if obligation is None or index >= len(
+                        obligation.literal_or_return_entry_ids):
+                    self._fail("SEMANTIC_POLICY_CONSTRUCTION_RETURN_UNBOUND")
+                return replace(
+                    self, mode="CHOICE", buffer="",
+                    choices=(obligation.literal_or_return_entry_ids[index] + '"',),
+                    next_step="CONSTRUCTION_LINK_END")
+            if step == "CONSTRUCTION_RESOLUTION":
+                obligation = constructions.get(self.current_construction_id)
+                if obligation is None:
+                    self._fail("SEMANTIC_POLICY_CONSTRUCTION_RESOLUTION_UNBOUND")
+                return replace(self, mode="CHOICE", buffer="",
+                               choices=(obligation.resolution,),
+                               next_step="CONSTRUCTION_RECORD_END")
             if step == "ENTRY_ID":
                 index = self.entry_count - 1
                 if index >= len(topology.entry_ids):
@@ -143,14 +174,50 @@ class StagePConstructionObligationConstraintStateV2(
                                next_step="ENTRY_TYPE_LITERAL")
             if step == "ENTRY_TYPE":
                 entry_id = topology.entry_ids[self.entry_count - 1]
-                creative = {item.entry_id for item in policy.required_creative}
-                returns = {item.entry_id for item in policy.required_returns}
-                entry_type = ("CONTAINED_CREATIVE" if entry_id in creative
-                              else "REAL_WORLD_COMMITMENT" if entry_id in returns else None)
+                entry_type = ("CONTAINED_CREATIVE" if entry_id in creative_by_entry
+                              else "REAL_WORLD_COMMITMENT"
+                              if entry_id in returns_by_entry else None)
                 if entry_type is None:
                     self._fail("SEMANTIC_POLICY_ENTRY_TYPE_UNBOUND")
                 return replace(self, mode="CHOICE", buffer="", choices=(entry_type,),
                                next_step="CANDIDATE_LITERAL")
+            if step in {"SCOPE", "EVENT", "AUTH_MODALITY", "CAND_MODALITY",
+                        "AUTH_TIMING", "CAND_TIMING", "SCOPE_REL", "RETURN_BASIS"}:
+                if self.current_entry_id in creative_by_entry:
+                    expected = {
+                        "SCOPE": "CREATIVE_CONTAINED",
+                        "EVENT": "CREATIVE_VEHICLE_ONLY",
+                        "AUTH_MODALITY": "NOT_APPLICABLE",
+                        "CAND_MODALITY": "NOT_APPLICABLE",
+                        "AUTH_TIMING": "NOT_APPLICABLE",
+                        "CAND_TIMING": "NOT_APPLICABLE",
+                        "SCOPE_REL": "CREATIVE_HOST",
+                        "RETURN_BASIS": "NOT_APPLICABLE",
+                    }[step]
+                elif self.current_entry_id in returns_by_entry:
+                    obligation = returns_by_entry[self.current_entry_id]
+                    expected = {
+                        "SCOPE": obligation.scope_basis,
+                        "EVENT": obligation.event_alignment,
+                        "AUTH_MODALITY": obligation.authority_modality,
+                        "CAND_MODALITY": obligation.candidate_modality,
+                        "AUTH_TIMING": obligation.authority_timing,
+                        "CAND_TIMING": obligation.candidate_timing,
+                        "SCOPE_REL": obligation.scope_relation,
+                        "RETURN_BASIS": obligation.factual_return_basis,
+                    }[step]
+                else:
+                    self._fail("SEMANTIC_POLICY_ENTRY_SEMANTICS_UNBOUND")
+                next_step = {
+                    "SCOPE": "EVENT_LITERAL", "EVENT": "AUTH_MODALITY_LITERAL",
+                    "AUTH_MODALITY": "CAND_MODALITY_LITERAL",
+                    "CAND_MODALITY": "AUTH_TIMING_LITERAL",
+                    "AUTH_TIMING": "CAND_TIMING_LITERAL",
+                    "CAND_TIMING": "GROUP_LITERAL", "SCOPE_REL": "HOST_LITERAL",
+                    "RETURN_BASIS": "ENTRY_END_SCOPE",
+                }[step]
+                return replace(self, mode="CHOICE", buffer="", choices=(expected,),
+                               next_step=next_step)
             if step == "AUDIT_ID":
                 index = self.audit_count - 1
                 if index >= len(topology.creative_audit_ids):
@@ -158,6 +225,36 @@ class StagePConstructionObligationConstraintStateV2(
                 return replace(self, mode="CHOICE", buffer="",
                                choices=(topology.creative_audit_ids[index] + '"',),
                                next_step="AUDIT_HOST_LITERAL")
+            if step == "AUDIT_HOST":
+                obligation = creative_by_audit.get(self.current_audit_id)
+                if obligation is None:
+                    self._fail("SEMANTIC_POLICY_CREATIVE_AUDIT_UNBOUND")
+                return replace(self, mode="CHOICE", buffer="",
+                               choices=(obligation.entry_id,),
+                               next_step="VEHICLE_LITERAL")
+            if step == "TARGET_CLASS":
+                if self.current_audit_id not in creative_by_audit:
+                    self._fail("SEMANTIC_POLICY_CREATIVE_AUDIT_UNBOUND")
+                return replace(self, mode="CHOICE", buffer="",
+                               choices=("NONFACTUAL_EDITORIAL_OR_CREATIVE",),
+                               next_step="SURVIVAL_LITERAL")
+            if step == "SURVIVAL":
+                if self.current_audit_id not in creative_by_audit:
+                    self._fail("SEMANTIC_POLICY_CREATIVE_AUDIT_UNBOUND")
+                return replace(self, mode="CHOICE", buffer="",
+                               choices=("DOES_NOT_SURVIVE_AS_FACT",),
+                               next_step="PROPOSITION_LITERAL_TARGET")
+            if step == "PROPOSITION_TARGET":
+                if self.current_audit_id not in creative_by_audit:
+                    self._fail("SEMANTIC_POLICY_CREATIVE_AUDIT_UNBOUND")
+                return replace(self, mode="CHOICE", buffer="", choices=("null",),
+                               next_step="RESOLUTION_LITERAL")
+            if step == "RESOLUTION":
+                if self.current_audit_id not in creative_by_audit:
+                    self._fail("SEMANTIC_POLICY_CREATIVE_AUDIT_UNBOUND")
+                return replace(self, mode="CHOICE", buffer="",
+                               choices=("RETAINED_NONFACTUAL",),
+                               next_step="AUDIT_END")
             required_true = {
                 "WHOLE", "EMBEDDED", "CREATIVE", "OVERLAPS", "HOSTS", "RETURNS",
                 "TARGETS_ENUMERATED", "TARGET_CLASSES_REVIEWED", "TARGET_RECONCILED",
