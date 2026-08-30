@@ -262,7 +262,9 @@ class StagePConstructionObligationV2TokenProjectorV2:
             if marker in seen:
                 continue
             seen.add(marker)
-            if self._all_terminals[node]:
+            if self._all_terminals[node] and (
+                    current.terminal or current.mode != "LITERAL"
+                    or self._has_structural_successor(current)):
                 self._structural_liveness_cache[key] = True
                 return True
             for character, child in self._all_children[node].items():

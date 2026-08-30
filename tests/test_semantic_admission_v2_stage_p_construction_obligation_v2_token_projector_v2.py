@@ -118,6 +118,21 @@ def test_structural_liveness_pruning_withholds_literal_token_with_no_successor()
     assert caught.value.receipt.reason_code == "TOKENIZATION_DEAD_NO_VALID_TOKEN"
 
 
+def test_structural_liveness_pruning_rejects_multi_token_literal_dead_end():
+    context, _, _ = _case_context()
+    projector = StagePConstructionObligationV2TokenProjectorV2(
+        controller=StagePConstructionObligationCharacterControllerV1(
+            context=context, decoder_identity=DECODER),
+        token_pieces={10: "{", 11: '"', 2: ""},
+        initial_token_pieces={10: "{", 11: '"', 2: ""},
+        eos_token_id=2, tokenizer_identity=TOKENIZER, decoder_identity=DECODER,
+        request_context_identity=context.binding_identity,
+        request_authority_identity="authority:test-case-01",
+        structural_liveness_pruning=True)
+    with pytest.raises(StagePTokenProjectionFailureV1):
+        projector.allowed_token_ids((), lambda _: "")
+
+
 def test_exact_decoder_rejects_multi_predecessor_context_disagreement():
     context, _, _ = _case_context()
     raw = _valid_text(context)
