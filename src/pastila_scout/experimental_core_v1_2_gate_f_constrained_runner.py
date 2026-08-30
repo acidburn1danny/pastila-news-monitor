@@ -118,11 +118,20 @@ def run(request_path: Path, response_path: Path, prompt_path: Path, lifecycle_pa
         generated = model.generate(**batch, do_sample=False, num_beams=1, repetition_penalty=1.0, max_new_tokens=int(request["max_new_tokens"]), eos_token_id=tokenizer.eos_token_id, pad_token_id=tokenizer.pad_token_id, use_cache=True, prefix_allowed_tokens_fn=allowed)
     tokens = generated[0, prompt_tokens:].cpu()
     lifecycle["inference_succeeded"] = True; _write(lifecycle_path, lifecycle)
-    response_path.write_text(json.dumps({"output": tokenizer.decode(tokens, skip_special_tokens=True), "terminal_eos": bool(len(tokens) and int(tokens[-1]) == tokenizer.eos_token_id), "constraint_active": True}, ensure_ascii=False), "utf-8")
+    response_path.write_bytes(_canonical({
+        "output": tokenizer.decode(tokens, skip_special_tokens=True),
+        "terminal_eos": bool(len(tokens) and int(tokens[-1]) == tokenizer.eos_token_id),
+        "constraint_active": True,
+    }))
 
 
 def _write(path: Path, value: object) -> None:
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def _canonical(value: object) -> bytes:
+    return (json.dumps(value, ensure_ascii=True, sort_keys=True,
+                       separators=(",", ":"), allow_nan=False) + "\n").encode("utf-8")
 
 
 if __name__ == "__main__":

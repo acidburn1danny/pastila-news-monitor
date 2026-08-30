@@ -106,21 +106,33 @@ def supervise(request_path: Path, authority_path: Path, ledger_path: Path,
             if completed.returncode != 0 or not response.is_file():
                 failure = "STAGE_C_CHILD_EXECUTION_FAILURE"
             else:
-                response_value = _load(response)
-                raw_output = response_value.get("output")
-                if type(raw_output) is not str or response_value.get("terminal_eos") is not True:
-                    failure = "STAGE_C_TERMINAL_OUTPUT_INVALID"
-                else:
-                    raw_bytes = raw_output.encode("utf-8")
-                    persist("raw-output.bin", raw_bytes)
-                    validated = validate_reason_span_sources_v1(
-                        raw_response=raw_output,
-                        factual_summary=factual.decode("utf-8"),
-                        candidate=candidate.decode("utf-8"))
-                    status = "TERMINAL_OUTPUT"
-                    persist("lifecycle-00003-stage-c-terminal.json", {
-                        "event": "STAGE_C_TERMINAL", "raw_output_sha256": _sha(raw_bytes),
-                        "decision": validated.decision.value})
+                response_bytes = response.read_bytes()
+                persist("child-response.json", response_bytes)
+                try:
+                    response_value = _load(response)
+                    if set(response_value) != {"output", "terminal_eos", "constraint_active"}:
+                        raise ValueError("STAGE_C_CHILD_RESPONSE_SCHEMA_INVALID")
+                    raw_output = response_value["output"]
+                    if (type(raw_output) is not str
+                            or response_value["terminal_eos"] is not True
+                            or response_value["constraint_active"] is not True):
+                        failure = "STAGE_C_TERMINAL_OUTPUT_INVALID"
+                    else:
+                        raw_bytes = raw_output.encode("utf-8")
+                        persist("raw-output.bin", raw_bytes)
+                        validated = validate_reason_span_sources_v1(
+                            raw_response=raw_output,
+                            factual_summary=factual.decode("utf-8"),
+                            candidate=candidate.decode("utf-8"))
+                        status = "TERMINAL_OUTPUT"
+                        persist("lifecycle-00003-stage-c-terminal.json", {
+                            "event": "STAGE_C_TERMINAL", "raw_output_sha256": _sha(raw_bytes),
+                            "decision": validated.decision.value})
+                except Exception as exc:
+                    failure = "STAGE_C_RESPONSE_VALIDATION_FAILURE:" + type(exc).__name__
+                    persist("response-validation-failure.json", {
+                        "failure": failure, "exception_type": type(exc).__name__,
+                        "child_response_sha256": _sha(response_bytes)})
         except subprocess.TimeoutExpired as exc:
             child_stdout = bytes(exc.stdout or b"")
             child_stderr = bytes(exc.stderr or b"")

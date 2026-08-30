@@ -30,9 +30,9 @@ TIMEOUT_SECONDS = 1260.0
 CHILD_TIMEOUT_SECONDS = 1200.0
 PACKET_RELATIVE = Path(
     "docs/artifacts/semantic-admission-v2-stage-c-case01-successor-v1-2-1-"
-    "module-child-bound")
+    "canonical-response-bound")
 EVIDENCE_RELATIVE = Path(
-    ".semantic-admission-v2-stage-c-case01-successor-v1-2-1-module-child-bound-evidence")
+    ".semantic-admission-v2-stage-c-case01-successor-v1-2-1-canonical-response-bound-evidence")
 CASE_PACK_RELATIVE = Path("docs/artifacts/semantic-admission-v2-staged-gate-f-two-case-proof-pack-v1.json")
 RAW_LEDGER_RELATIVE = Path(
     ".semantic-admission-v2-stage-p-construction-obligation-v2-case01-successor-"
@@ -512,7 +512,10 @@ def _source_lineage(root: Path) -> dict[str, str]:
         "stage_c_case01_linux_runner_v1_2_1.py",
     )
     base = root / "src/pastila_scout/semantic_admission_v2"
-    return {name: _sha((base / name).read_bytes()) for name in names}
+    lineage = {name: _sha((base / name).read_bytes()) for name in names}
+    child_runner = root / "src/pastila_scout/experimental_core_v1_2_gate_f_constrained_runner.py"
+    lineage[child_runner.name] = _sha(child_runner.read_bytes())
+    return lineage
 
 
 def _git_blob(root: Path, commit: str, relative: Path) -> bytes:

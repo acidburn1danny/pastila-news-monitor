@@ -259,3 +259,33 @@ def test_linux_supervisor_timeout_is_distinct_and_cleanup_is_durable(tmp_path, m
     assert result["failure"] == "STAGE_C_CHILD_TIMEOUT"
     cleanup = json.loads((evidence / "linux-stage-c/cleanup-observation.json").read_bytes())
     assert cleanup["child_process_terminated"] is True
+
+
+def test_child_response_is_persisted_before_canonical_validation(tmp_path, monkeypatch):
+    packet, evidence, _ = _packet(tmp_path)
+    _issue_for_test(packet)
+    evidence.mkdir()
+    monkeypatch.setattr(linux_runner, "STAGE_C_PROMPT",
+                        ROOT / "docs/artifacts/semantic-admission-v2-stage-c-prompt-v1.txt")
+    monkeypatch.setattr(linux_runner, "SYSTEM_PROMPT",
+                        ROOT / "docs/artifacts/semantic-admission-v2-stage-c-prompt-v1.txt")
+    malformed = b'{"output":"x","terminal_eos":true,"constraint_active":true}'
+    def fake_run(command, **kwargs):
+        Path(command[5]).write_bytes(malformed)
+        Path(command[7]).write_text("{}", encoding="utf-8")
+        return subprocess.CompletedProcess(command, 0, b"", b"")
+    monkeypatch.setattr(linux_runner.subprocess, "run", fake_run)
+    status = linux_runner.supervise(
+        packet / "stage-c-request.json", packet / "authority-receipt-issued.json",
+        packet / "frozen-stage-p-ledger.json", evidence / "linux-stage-c")
+    assert status == 20
+    root = evidence / "linux-stage-c"
+    assert (root / "child-response.json").read_bytes() == malformed
+    failure = json.loads((root / "response-validation-failure.json").read_bytes())
+    assert failure["failure"] == "STAGE_C_RESPONSE_VALIDATION_FAILURE:ValueError"
+    assert failure["child_response_sha256"] == hashlib.sha256(malformed).hexdigest()
+
+
+def test_child_runner_uses_parent_canonical_response_contract():
+    source = (ROOT / "src/pastila_scout/experimental_core_v1_2_gate_f_constrained_runner.py").read_text("utf-8")
+    assert "response_path.write_bytes(_canonical(" in source
