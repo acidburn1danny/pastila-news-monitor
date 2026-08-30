@@ -1,0 +1,21 @@
+{
+  "audit_identity": "473b2d084c025c3a79b20847618f5ee21d27eadd48c09a0e21aa2ccfcd9ccd31",
+  "blind_evaluation_contamination": "ABSENT",
+  "candidate_surfaces_created": 0,
+  "construction_authority": "ABSENT",
+  "constructor_facing_packet_identity": "17b309940c21de8e3a9810b2dce5d5037f79c6af5a6e60a13dd503a1f1cca363",
+  "constructor_invocations": 0,
+  "creative_premise_assignment": "ABSENT_UNASSIGNED",
+  "deterministic_blockers": [],
+  "factual_authority_widening": "ABSENT_EXACT_ENVELOPE_EQUALITY",
+  "governance_v2": "PASS_EXACT_FROZEN_BODY",
+  "naturalness_remediation_binding": "PASS_FORMULATION_C_V2",
+  "operational_wording_leakage": "PASS_CUE_MINIMIZED_WITHOUT_TAXONOMY_TOKEN",
+  "pilot01_and_pilot02_contamination": "ABSENT_NO_SURFACE_CONSTRUCTION_OR_DIAGNOSTIC_REUSE",
+  "schema_name": "batch2-development-pilot03-assignment-design-leakage-audit-v1",
+  "schema_version": "1.0.0",
+  "sealed_assignment_identity": "dce3d5321e2008b7a4a4cf02b1632e23fcd11cc8f6932d95f4fc3c4eb6c642a4",
+  "source_shape_selection": "PASS_FRESH_SOURCE_ACQUIRED_AND_ADMITTED_BEFORE_ASSIGNMENT",
+  "taxonomy_label_token_scan": "PASS_ZERO_HITS",
+  "verdict": "PASS_ZERO_CONSTRUCTION"
+}
