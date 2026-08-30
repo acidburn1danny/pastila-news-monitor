@@ -105,6 +105,8 @@ def test_optimized_projector_and_generated_suffix_contract_are_source_bound():
             "stage_p_construction_obligation_semantic_completeness_v1.py",
         "CANONICAL_TOKENIZER_PIECE_SOURCE_SHA256":
             "stage_p_construction_obligation_v2_tokenizer_piece_adapter_v1.py",
+        "CANONICAL_RUNNER_PROTOCOL_CODEC_SOURCE_SHA256":
+            "stage_p_construction_obligation_v2_runner_protocol_codec_v1.py",
     }
     for constant, filename in expected.items():
         assert getattr(runner, constant) == hashlib.sha256(
