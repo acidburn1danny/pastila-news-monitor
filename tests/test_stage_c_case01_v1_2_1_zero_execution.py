@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import subprocess
+import shutil
 from dataclasses import replace
 from pathlib import Path
 
@@ -117,6 +118,28 @@ def test_packet_file_mutation_and_extra_file_fail_closed(tmp_path):
     with pytest.raises(ValueError, match="FILE_HASH"):
         prepare_stage_c_case01_wsl_invocation_v1_2_1(
             project_root=ROOT, packet_root=packet.resolve(), evidence_root=evidence,
+            boundary=boundary)
+
+
+def test_stale_receipt_and_packet_relocation_fail_closed(tmp_path):
+    packet, evidence, _ = _packet(tmp_path / "original")
+    boundary = WslExecutionBoundaryV1_1(canonical_model_profile_v1(with_pydantic_bridge=True))
+    (packet / "authority-receipt-issued.json").write_bytes(_canonical({
+        "schema_name": "pastila-semantic-admission-v2-construction-obligation-v2-generation-authority",
+        "schema_version": "1.2.1", "authority_receipt_identity": "0" * 64}))
+    with pytest.raises(ValueError, match="AUTHORITY_BINDING"):
+        prepare_stage_c_case01_wsl_invocation_v1_2_1(
+            project_root=ROOT, packet_root=packet.resolve(), evidence_root=evidence,
+            boundary=boundary)
+    (packet / "authority-receipt-issued.json").unlink()
+    _issue_for_test(packet)
+    relocated = tmp_path / "relocated" / PACKET_RELATIVE
+    relocated.parent.mkdir(parents=True)
+    shutil.copytree(packet, relocated)
+    with pytest.raises(ValueError):
+        prepare_stage_c_case01_wsl_invocation_v1_2_1(
+            project_root=ROOT, packet_root=relocated.resolve(),
+            evidence_root=tmp_path / "relocated" / EVIDENCE_RELATIVE,
             boundary=boundary)
     (packet / "extra.json").write_text("{}", encoding="utf-8")
     with pytest.raises(ValueError, match="FILE_SET"):
