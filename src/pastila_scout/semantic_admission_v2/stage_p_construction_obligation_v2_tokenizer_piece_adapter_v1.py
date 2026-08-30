@@ -22,7 +22,20 @@ DECODER_CONFIGURATION = {
     "add_prefix_space": True, "trim_offsets": True,
     "type": "ByteLevel", "use_regex": True,
 }
-DECODER_MECHANISM_IDENTITY = "1d64d97add535d9ad91561aabea254849cf7f2ea4b924cc61c17152f1dd6e672"
+DECODER_CONFIGURATION_SHA256 = "1d64d97add535d9ad91561aabea254849cf7f2ea4b924cc61c17152f1dd6e672"
+TOKENIZERS_VERSION = "0.22.2"
+TOKENIZERS_WHEEL_SHA256 = "369cc9fc8cc10cb24143873a0d95438bb8ee257bb80c71989e3ee290e8d72c67"
+TOKENIZERS_NATIVE_SHA256 = "c116fcf1e80d461ce0a35c332974f25949e8359416f50b3d53371810d2ce1ccc"
+DECODER_MECHANISM_IDENTITY = "6ea16458eabd6436ac886f63373fcdfb3c7f989d1039ae47ba285c7d8552374f"
+DECODER_MECHANISM_FIELDS = {
+    "decoder_configuration_sha256": DECODER_CONFIGURATION_SHA256,
+    "native_extension_sha256": TOKENIZERS_NATIVE_SHA256,
+    "tokenizers_version": TOKENIZERS_VERSION,
+    "wheel_sha256": TOKENIZERS_WHEEL_SHA256,
+}
+DERIVED_DECODER_MECHANISM_IDENTITY = hashlib.sha256(json.dumps(
+    DECODER_MECHANISM_FIELDS, sort_keys=True,
+    separators=(",", ":")).encode()).hexdigest()
 
 
 class InjectedTokenizerV1(Protocol):
@@ -81,13 +94,15 @@ def _validate_native_decoder(tokenizer: InjectedTokenizerV1) -> None:
             "CONSTRUCTION_OBLIGATION_V2_NATIVE_DECODER_INVALID") from exc
     if (value != DECODER_CONFIGURATION
             or hashlib.sha256(canonical).hexdigest()
-            != DECODER_MECHANISM_IDENTITY):
+            != DECODER_CONFIGURATION_SHA256):
         raise ValueError("CONSTRUCTION_OBLIGATION_V2_NATIVE_DECODER_IDENTITY_MISMATCH")
 
 
 def extract_identity_bound_token_pieces_v1(
     *, tokenizer: InjectedTokenizerV1, identity: TokenizerRuntimeIdentityV1,
     canonical_tokenizer_type: type, canonical_decoder_type: type,
+    tokenizers_version: str, native_extension_path: str,
+    native_extension_sha256: str,
 ) -> TokenPieceBundleV1:
     """Validate the entire frozen identity tuple before performing any decode."""
     expected = TokenizerRuntimeIdentityV1(
@@ -102,6 +117,8 @@ def extract_identity_bound_token_pieces_v1(
     )
     if type(identity) is not TokenizerRuntimeIdentityV1 or identity != expected:
         raise ValueError("CONSTRUCTION_OBLIGATION_V2_TOKENIZER_IDENTITY_MISMATCH")
+    if DERIVED_DECODER_MECHANISM_IDENTITY != DECODER_MECHANISM_IDENTITY:
+        raise ValueError("CONSTRUCTION_OBLIGATION_V2_DECODER_MECHANISM_SEAL_INVALID")
     if (type(tokenizer) is not canonical_tokenizer_type
             or canonical_tokenizer_type.__name__ != TOKENIZER_IMPLEMENTATION
             or canonical_tokenizer_type.__module__ != TOKENIZER_IMPLEMENTATION_MODULE):
@@ -110,6 +127,11 @@ def extract_identity_bound_token_pieces_v1(
             or canonical_decoder_type.__name__ != "ByteLevel"
             or canonical_decoder_type.__module__ != "tokenizers.decoders"):
         raise ValueError("CONSTRUCTION_OBLIGATION_V2_NATIVE_DECODER_TYPE_MISMATCH")
+    if (tokenizers_version != TOKENIZERS_VERSION
+            or not native_extension_path.replace("\\", "/").endswith(
+                "/tokenizers/tokenizers.abi3.so")
+            or native_extension_sha256 != TOKENIZERS_NATIVE_SHA256):
+        raise ValueError("CONSTRUCTION_OBLIGATION_V2_NATIVE_DECODER_ARTIFACT_MISMATCH")
     if len(tokenizer) != VOCABULARY_SIZE:
         raise ValueError("CONSTRUCTION_OBLIGATION_V2_TOKENIZER_VOCABULARY_MISMATCH")
     if tokenizer.eos_token_id != EOS_TOKEN_ID:

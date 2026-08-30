@@ -76,6 +76,7 @@ def prepare_linux_runtime_operations_v1(
     from transformers import AutoTokenizer, BatchEncoding
     from transformers.tokenization_utils_tokenizers import TokenizersBackend
     from tokenizers.decoders import ByteLevel
+    import tokenizers.tokenizers as tokenizers_native
 
     tokenizer = AutoTokenizer.from_pretrained(BASE_MODEL_PATH, local_files_only=True)
     identity = TokenizerRuntimeIdentityV1(
@@ -86,7 +87,11 @@ def prepare_linux_runtime_operations_v1(
     pieces = extract_identity_bound_token_pieces_v1(
         tokenizer=tokenizer, identity=identity,
         canonical_tokenizer_type=TokenizersBackend,
-        canonical_decoder_type=ByteLevel)
+        canonical_decoder_type=ByteLevel,
+        tokenizers_version=_package_version("tokenizers"),
+        native_extension_path=tokenizers_native.__file__,
+        native_extension_sha256=hashlib.sha256(
+            Path(tokenizers_native.__file__).read_bytes()).hexdigest())
     encoded = tokenizer.apply_chat_template(
         [{"role": "system", "content": system_prompt},
          {"role": "user", "content": rendered_prompt}],

@@ -3,6 +3,10 @@
 V1.2.1 token projection admits the frozen tokenizer only when its native decoder
 is the Rust-backed `tokenizers.decoders.ByteLevel` type and its canonical state
 is exactly `ByteLevel(add_prefix_space=true, trim_offsets=true, use_regex=true)`.
+Admission also requires `tokenizers==0.22.2`, the canonical manylinux x86-64
+wheel identity `369cc9fc…2c67`, import origin
+`tokenizers/tokenizers.abi3.so`, and native-extension SHA-256
+`c116fcf1…1ccc`. The decoder-mechanism seal covers all four identities.
 
 The ByteLevel decoder converts each vocabulary token's byte-alphabet symbols to
 bytes, concatenates those bytes, and performs one lossy UTF-8 decode. Therefore,

@@ -9,6 +9,7 @@ import pytest
 from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_tokenizer_piece_adapter_v1 import (
     DECODER_CONFIGURATION, DECODER_IDENTITY, DECODER_MECHANISM_IDENTITY, EOS_TOKEN_ID, PROJECTOR_FREEZE_IDENTITY,
     SPECIAL_TOKEN_IDS, TOKENIZER_IDENTITY, TOKENIZER_IMPLEMENTATION,
+    TOKENIZERS_NATIVE_SHA256, TOKENIZERS_VERSION,
     TRANSFORMERS_VERSION, VOCABULARY_SIZE, TokenizerRuntimeIdentityV1,
     extract_identity_bound_token_pieces_v1,
 )
@@ -56,7 +57,10 @@ def extract(tokenizer, runtime_identity=None):
     return extract_identity_bound_token_pieces_v1(
         tokenizer=tokenizer, identity=runtime_identity or identity(),
         canonical_tokenizer_type=type(tokenizer),
-        canonical_decoder_type=type(tokenizer.decoder))
+        canonical_decoder_type=type(tokenizer.decoder),
+        tokenizers_version=TOKENIZERS_VERSION,
+        native_extension_path="/runtime/tokenizers/tokenizers.abi3.so",
+        native_extension_sha256=TOKENIZERS_NATIVE_SHA256)
 
 
 @pytest.mark.parametrize("field,value", [
@@ -166,7 +170,27 @@ def test_rejects_missing_or_mutated_native_decoder_before_piece_decode(state):
         extract_identity_bound_token_pieces_v1(
             tokenizer=tokenizer, identity=identity(),
             canonical_tokenizer_type=TokenizersBackend,
-            canonical_decoder_type=ByteLevel)
+            canonical_decoder_type=ByteLevel,
+            tokenizers_version=TOKENIZERS_VERSION,
+            native_extension_path="/runtime/tokenizers/tokenizers.abi3.so",
+            native_extension_sha256=TOKENIZERS_NATIVE_SHA256)
+    assert tokenizer.decode_calls == 0
+
+
+@pytest.mark.parametrize("version,path,digest", [
+    ("0.22.1", "/runtime/tokenizers/tokenizers.abi3.so", TOKENIZERS_NATIVE_SHA256),
+    (TOKENIZERS_VERSION, "/tmp/substitute.so", TOKENIZERS_NATIVE_SHA256),
+    (TOKENIZERS_VERSION, "/runtime/tokenizers/tokenizers.abi3.so", "0" * 64),
+])
+def test_rejects_native_distribution_substitution_before_decode(version, path, digest):
+    tokenizer = TokenizersBackend()
+    with pytest.raises(ValueError, match="NATIVE_DECODER_ARTIFACT_MISMATCH"):
+        extract_identity_bound_token_pieces_v1(
+            tokenizer=tokenizer, identity=identity(),
+            canonical_tokenizer_type=TokenizersBackend,
+            canonical_decoder_type=ByteLevel,
+            tokenizers_version=version, native_extension_path=path,
+            native_extension_sha256=digest)
     assert tokenizer.decode_calls == 0
 
 
