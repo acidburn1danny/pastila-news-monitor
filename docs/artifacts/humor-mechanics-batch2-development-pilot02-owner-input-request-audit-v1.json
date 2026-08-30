@@ -1,0 +1,20 @@
+{
+  "audit_identity": "95715aee4985eb6469ae83a391840550b6d9fa4f565337a2a779e2b2704b9761",
+  "blocker": "OWNER_AUTHORED_SOURCE_BYTES_AND_COMPLETED_DECLARATION_REQUIRED",
+  "checks": {
+    "all_operational_authorities_false": true,
+    "no_blind_access": true,
+    "no_family_identity_before_bytes": true,
+    "no_g01_verdict_before_validation": true,
+    "owner_authority_not_fabricated": true,
+    "pilot01_not_reused": true,
+    "rights_grants_owner_selected_independently": true,
+    "source_content_not_authored_or_selected": true,
+    "successor_obligation_not_used_for_source_selection": true
+  },
+  "declaration_template_identity": "bcbad30067c01a5ad1a7ef836596edec42f804ed7e601cdffc9f9d487dd90718",
+  "owner_input_request_identity": "a6008243f5ee9bb83f855efea4c476df05d11452bb8bb0d5d2380f3d981cbdc6",
+  "schema_name": "batch2-development-pilot02-owner-input-request-audit-v1",
+  "schema_version": "1.0.0",
+  "verdict": "PASS_CONTENT_FREE_STOP_REQUIRED"
+}

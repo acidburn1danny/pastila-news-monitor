@@ -1,0 +1,113 @@
+{
+  "authority_matrix": {
+    "archive_write": false,
+    "construction": false,
+    "content_ingestion": false,
+    "creative_premise_assignment": false,
+    "custodial_signing": false,
+    "family_seal": false,
+    "g01a_admission": false,
+    "g01b_admission": false,
+    "g02": false,
+    "g02c": false,
+    "g03": false,
+    "generation": false,
+    "model_exposure": false,
+    "obligation_assignment": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "source_acquisition": false,
+    "target_assignment": false,
+    "training": false
+  },
+  "content_accessed": false,
+  "content_free_exposure_record": {
+    "blind_material_accessed": false,
+    "candidate_or_source_surface_accessed": false,
+    "mechanism_reasoning_performed": false,
+    "operation": "PILOT02_OWNER_INPUT_TEMPLATE_PREPARATION",
+    "source_or_family_identity": "NOT_YET_EXISTS"
+  },
+  "declaration_template_identity": "bcbad30067c01a5ad1a7ef836596edec42f804ed7e601cdffc9f9d487dd90718",
+  "freshness_checks_after_submission": [
+    "SOURCE_SHA_AND_GIT_BLOB_NOT_PILOT01",
+    "NO_SOURCE_EVENT_AUTHORITY_TOPIC_REVISION_SYNDICATION_OR_SAME_EVENT_FAMILY_RELATION_TO_PILOT01",
+    "NO_PRIOR_TARGET_OR_OBLIGATION_ASSIGNMENT",
+    "NO_PRIOR_CONSTRUCTION_OR_MODEL_EXPOSURE",
+    "NO_BLIND_FAMILY_ACCESS",
+    "CONTAMINATION_LEDGER_COMPLETE"
+  ],
+  "identity_timing": {
+    "authority_envelope": "AFTER_PROPOSITION_BINDING",
+    "family_closure": "AFTER_DUPLICATE_REVISION_SAME_EVENT_AUDIT",
+    "partition_identity": "AFTER_G01B_AND_AUTHORIZED_CUSTODIAL_SEAL",
+    "rights_identity": "AFTER_COMPLETED_DECLARATION",
+    "source_commitment": "AFTER_EXACT_BYTES"
+  },
+  "owner_files_required": [
+    {
+      "content": "OWNER_AUTHORED_BYTE_EXACT_SOURCE",
+      "encoding": "UTF-8_NO_BOM",
+      "filename": "owner-source-pilot02-v1.txt",
+      "line_endings": "LF_ONLY",
+      "terminal_lf_count": 1
+    },
+    {
+      "canonical_requirement": "UTF8_JSON_NO_BOM_LF_ONE_TERMINAL_LF",
+      "content": "OWNER_COMPLETED_DECLARATION_FROM_TEMPLATE",
+      "filename": "owner-declaration-pilot02-v1.json"
+    }
+  ],
+  "owner_input_request_identity": "a6008243f5ee9bb83f855efea4c476df05d11452bb8bb0d5d2380f3d981cbdc6",
+  "prospective_gate_path": [
+    "OWNER_SUBMISSION",
+    "STRICT_PREINGESTION_VALIDATION",
+    "G01A_RIGHTS_PROVENANCE_AUTHORITY",
+    "CUSTODIAL_SIGNATURES_SEPARATELY_AUTHORIZED",
+    "ATOMIC_IMMUTABLE_INGESTION_SEPARATELY_AUTHORIZED",
+    "G01B_FAMILY_PARTITION_ADMISSION",
+    "DEVELOPMENT_SEAL"
+  ],
+  "schema_name": "batch2-development-pilot02-owner-input-request-v1",
+  "schema_version": "1.0.0",
+  "source_content_requirements": {
+    "minimum_independently_bindable_factual_propositions": 2,
+    "must_be_neutral_nonhumorous": true,
+    "must_be_owner_authored": true,
+    "must_expose_scope_modality_time_and_known_unknown_boundaries_where_applicable": true,
+    "prohibited": [
+      "PILOT01_WORDING_ENTITY_EVENT_OR_STRUCTURE_REUSE",
+      "HUMOR_OR_PUNCHLINE",
+      "RHETORICAL_QUESTION",
+      "PARODY",
+      "METAPHOR_HEAVY_OR_ANTHROPOMORPHIC_FRAMING",
+      "PRIVATE_PERSON_OR_PERSONAL_DATA",
+      "PROTECTED_OR_VULNERABLE_TARGET",
+      "ALLEGATION_OR_WRONGDOING",
+      "PRIVATE_OR_CONFIDENTIAL_KNOWLEDGE",
+      "SENSITIVE_ADVICE",
+      "THIRD_PARTY_COPYRIGHTED_SURFACE",
+      "MECHANISM_OR_OBLIGATION_METADATA"
+    ],
+    "selection_must_not_use": [
+      "SUCCESSOR_OBLIGATION",
+      "TARGET_MECHANISM",
+      "BATCH2_GAP",
+      "TARGET_FRIENDLY_TOPIC_GRAMMAR_TOPOLOGY_OR_SHAPE"
+    ]
+  },
+  "source_family_created": false,
+  "status": "BLOCKED_AWAITING_OWNER_INPUT",
+  "successor_governance": {
+    "commit": "a444ace2e6eb8bfad006374f266c90269c665565",
+    "conformance_schema_identity": "11bb3e5bc2e6a3b3830c0f751539b5688693f37702d7e13943112a768966e44a",
+    "leakage_audit_identity": "3f4bd4c64b447340b0ab7af45af8b227740156f78eb1b9033a2a5c2cd9d2f693",
+    "obligation_governance_identity": "0cfd22fd43e0be68b5a04f16e45e918ac7bae346c851334817a7af309bad63e5",
+    "pilot01_regression_identity": "627aabc7a40bca73f06f4a357ffcf52b267d5d10a51bb68de1ca6601840369cb"
+  },
+  "unassigned": {
+    "creative_premise_family_id": "UNASSIGNED",
+    "operational_obligation": true,
+    "target_mechanism": true
+  }
+}
