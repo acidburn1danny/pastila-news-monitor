@@ -45,7 +45,8 @@ def test_ordinary_fast_path_is_exact_at_15998_15999_and_16000():
                 state.feed(piece); expected.append(token_id)
             except StagePRoleCoherenceConstraintViolationV1:
                 pass
-        observed = base._project(state, _allowance_for_state(state))
+        observed = base._project(
+            state, _allowance_for_state(state), initial=False)
         assert observed == tuple(sorted(expected))
 
 
