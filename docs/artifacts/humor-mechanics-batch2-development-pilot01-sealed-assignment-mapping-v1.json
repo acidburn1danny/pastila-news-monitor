@@ -1,0 +1,52 @@
+{
+  "admission_commit": "2e9314c18cd11b35c63d6242dfac1cb4bf5b21b8",
+  "admission_identity": "553b091f112d8e3f827c49c28cb93c63f249b8bb9a98f5b877f7bd739d694baf",
+  "candidate_surface": null,
+  "constructor_access": false,
+  "creative_premise_family_id": "UNASSIGNED",
+  "evaluator_access_before_independent_verdict": false,
+  "family_closure": "fd2e4d5cac6a7ed1b3800cc382a6860f2b690bf652691c134b94692bf4bf1f84",
+  "partition": "DEVELOPMENT",
+  "schema_name": "batch2-development-pilot01-sealed-assignment-mapping-v1",
+  "schema_version": "1.0.0",
+  "sealed_assignment_identity": "9b5e3e0a51c1909dbdfb811eb930d2e23cbb13c3dbef783ea27a55f21c3ff75b",
+  "selection_analysis": [
+    {
+      "opaque_option": "OBL-A",
+      "reason": "REQUIRES_AN_INITIAL_SOURCE_READING_THAT_THE_CLOSED_ENVELOPE_DOES_NOT_LICENSE",
+      "result": "UNSAFE"
+    },
+    {
+      "opaque_option": "OBL-B",
+      "reason": "REQUIRES_AN_IDENTIFIABLE_NONLITERAL_SOURCE_EXPRESSION_ABSENT_FROM_THE_ENVELOPE",
+      "result": "UNSAFE"
+    },
+    {
+      "opaque_option": "OBL-C",
+      "reason": "CAN_TRANSFORM_ONE_BOUND_PREMISE_WITHOUT_CHANGING_OR_WIDENING_IT",
+      "result": "SAFE"
+    },
+    {
+      "opaque_option": "OBL-D",
+      "reason": "REQUIRES_A_GENUINE_STANCE_OR_CONCESSION_TARGET_NOT_PRESENT_IN_THE_ENVELOPE",
+      "result": "UNSAFE"
+    },
+    {
+      "opaque_option": "OBL-E",
+      "reason": "MANDATORY_GRAMMATICAL_FORM_WOULD_TRIVIALLY_DISCLOSE_THE_TARGET_OPERATION",
+      "result": "UNSAFE"
+    },
+    {
+      "opaque_option": "OBL-F",
+      "reason": "REQUIRES_RECOGNIZABLE_SOURCE_FORM_CONVENTIONS_ABSENT_FROM_THE_ENVELOPE",
+      "result": "UNSAFE"
+    }
+  ],
+  "selection_basis": "NECESSARY_CONDITION_SATISFIABILITY_AND_AUTHORITY_SAFETY_NOT_TOPIC_OR_SURFACE_SIMILARITY",
+  "status": "SEALED_PROPOSAL_NOT_ACTIVATED",
+  "target_mapping": {
+    "frozen_plan_option": "M13_ABSURD_LOGICAL_EXTENSION",
+    "mechanism_id": "HMCV1-B02-M03-ABSURD_LOGICAL_EXTENSION",
+    "mechanism_name": "Absurd Logical Extension"
+  }
+}
