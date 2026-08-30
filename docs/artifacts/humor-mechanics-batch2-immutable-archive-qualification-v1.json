@@ -1,0 +1,52 @@
+{
+  "admission_order": [
+    "COMPLETED_RIGHTS_INSTRUMENT",
+    "METADATA_CAPTURE",
+    "ARCHIVE_WRITE",
+    "READBACK_VERIFICATION",
+    "SOURCE_PACKAGE_SEAL",
+    "FAMILY_CLOSURE",
+    "PARTITION_SEAL",
+    "PARTITION_SPECIFIC_ACCESS"
+  ],
+  "archive_receipt_fields": [
+    "archive_object_identity",
+    "original_bytes_sha256",
+    "byte_length",
+    "git_blob_or_store_object",
+    "capture_time",
+    "writer_role",
+    "rights_instrument_id",
+    "readback_sha256",
+    "previous_receipt_hash",
+    "receipt_hash"
+  ],
+  "archive_spec_identity": "de32fad401481e6d3d3bd1dec76e1797055323fd726f7f6c90716cc01f15cf22",
+  "archive_write_authorized": false,
+  "content_ingestion_authorized": false,
+  "metadata_only_test_backend": "REPOSITORY_GIT_OBJECT_DATABASE_READ_ONLY_EXISTING_GOVERNANCE_OBJECT",
+  "production_archive_selected": true,
+  "qualification_readback": {
+    "commit": "eb0c094e512ee934a8c54fc2a0087e1346bd7d29",
+    "expected_sha256": "ee4ea50ba411b2ca607a798f452bb2f17176f22b707be286b3c346649b2574fd",
+    "path": "docs/artifacts/humor-mechanics-batch2-owned-authority-acquisition-protocol-v1.json",
+    "source_content": false
+  },
+  "qualified_backend": "REPOSITORY_GIT_OBJECT_DATABASE",
+  "qualified_design": "GIT_OBJECT_OR_GIT_BOUND_CONTENT_ADDRESSED_ARCHIVE",
+  "requirements": [
+    "ORIGINAL_BYTES_RETRIEVABLE_BY_IDENTITY",
+    "SHA256_AND_BYTE_LENGTH",
+    "UTF8_ENCODING_DECLARATION",
+    "CAPTURE_TIMESTAMP",
+    "SOURCE_VERSION",
+    "INDEPENDENT_CHARACTER_AND_UTF8_BYTE_COORDINATES",
+    "ATOMIC_OBJECT_CREATION",
+    "READ_AFTER_WRITE_BYTE_VERIFICATION",
+    "NO_IN_PLACE_MUTATION",
+    "CORRECTION_CREATES_SUCCESSOR",
+    "REVOCATION_TOMBSTONE_DOES_NOT_DELETE_AUDIT_CHAIN"
+  ],
+  "schema_name": "batch2-owned-authority-immutable-archive-qualification-v1",
+  "schema_version": "1.0.0"
+}

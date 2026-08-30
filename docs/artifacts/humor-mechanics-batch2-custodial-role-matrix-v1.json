@@ -1,0 +1,90 @@
+{
+  "appointments": "UNASSIGNED_REQUIRES_SEPARATE_OWNER_APPOINTMENT",
+  "credentials_provisioned": false,
+  "operational_access_enabled": false,
+  "role_matrix_identity": "1bc390244d09ee63d9b851c6c014a2693060710947e89c1c41ee6293825fc0b1",
+  "roles": {
+    "ACQUISITION_CUSTODIAN": {
+      "may": [
+        "RECEIVE_AUTHORIZED_SOURCE",
+        "WRITE_ARCHIVE"
+      ],
+      "must_not": [
+        "ASSIGN_MECHANISM",
+        "SELECT_PARTITION_BY_CONTENT"
+      ]
+    },
+    "BLIND_ESCROW_CUSTODIAN": {
+      "may": [
+        "HOLD_BLIND_BYTES",
+        "AUDIT_RIGHTS"
+      ],
+      "must_not": [
+        "DISCLOSE_TO_CONSTRUCTOR",
+        "TUNE_SYSTEM",
+        "TRAIN"
+      ]
+    },
+    "CONTAMINATION_AUDITOR": {
+      "may": [
+        "READ_ACCESS_LOG_METADATA",
+        "FAIL_CLOSED"
+      ],
+      "must_not": [
+        "DISCLOSE_CONTENT",
+        "RECLASSIFY_CONTAMINATED"
+      ]
+    },
+    "FAMILY_CUSTODIAN": {
+      "may": [
+        "DEDUPE_METADATA",
+        "SEAL_FAMILY_CLOSURE"
+      ],
+      "must_not": [
+        "CONSTRUCT",
+        "MOVE_RELATIVE_ACROSS_PARTITIONS"
+      ]
+    },
+    "PARTITION_CUSTODIAN": {
+      "may": [
+        "APPLY_FROZEN_METADATA_RULE",
+        "SEAL_PARTITION"
+      ],
+      "must_not": [
+        "READ_BLIND_SURFACE",
+        "OVERRIDE_ASSIGNMENT"
+      ]
+    },
+    "RIGHTS_CUSTODIAN": {
+      "may": [
+        "VALIDATE_INSTRUMENT_METADATA",
+        "COUNTERSEAL"
+      ],
+      "must_not": [
+        "ASSIGN_MECHANISM",
+        "CONSTRUCT",
+        "SELECT_OUTPUT"
+      ]
+    }
+  },
+  "schema_name": "batch2-owned-authority-custodial-role-matrix-v1",
+  "schema_version": "1.0.0",
+  "separation_of_duties": [
+    [
+      "RIGHTS_CUSTODIAN",
+      "CONSTRUCTOR"
+    ],
+    [
+      "ACQUISITION_CUSTODIAN",
+      "ASSIGNMENT_CUSTODIAN"
+    ],
+    [
+      "BLIND_ESCROW_CUSTODIAN",
+      "CONSTRUCTOR"
+    ],
+    [
+      "CONTAMINATION_AUDITOR",
+      "OWNER_SELECTOR"
+    ]
+  ]
+}

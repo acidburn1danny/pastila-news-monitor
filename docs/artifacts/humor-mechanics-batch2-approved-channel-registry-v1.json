@@ -1,0 +1,43 @@
+{
+  "channels": {
+    "AFFIRMATIVELY_LICENSED_EXTERNAL_MATERIAL": {
+      "content_ingestion_enabled": false,
+      "qualification": "NOT_YET_QUALIFIED",
+      "source_acquisition_enabled": false
+    },
+    "COMPATIBLE_PUBLIC_DOMAIN_OR_OPEN_LICENSE_MATERIAL": {
+      "content_ingestion_enabled": false,
+      "qualification": "NOT_YET_QUALIFIED",
+      "source_acquisition_enabled": false
+    },
+    "INTERNALLY_OWNED_FACTUAL_AUTHORITY_BUNDLE": {
+      "content_ingestion_enabled": false,
+      "qualification": "QUALIFIED_PROTOCOL_DESIGN_ONLY",
+      "qualification_artifacts": {
+        "archive_spec_sha256": "6e7499a25a0a11d14abd1245e816ff8777f012f48a03f0820b9f136870647e04",
+        "declaration_template_sha256": "39b764b1c9c88c8c1ae343801e645283328e670b2055f5544fef8e77a20be900",
+        "metadata_fixture_sha256": "36e394ff2326a38b2768ab1bda2265ad4ab0dfb640cd828a0137a6d5f51d73e4",
+        "role_matrix_sha256": "f09fe18841c48101351d5b0338ce91d69b893f18fa502b75951b30b0c8c6be4d"
+      },
+      "reason_disabled": "REQUIRES_SEPARATE_SOURCE_ACQUISITION_AUTHORITY_AND_CUSTODIAN_APPOINTMENTS",
+      "source_acquisition_enabled": false
+    }
+  },
+  "current_authority": {
+    "candidate_construction": false,
+    "content_ingestion": false,
+    "mechanism_assignment": false,
+    "model_exposure": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "source_acquisition": false,
+    "surface_generation": false,
+    "training": false
+  },
+  "protocol_commit": "eb0c094e512ee934a8c54fc2a0087e1346bd7d29",
+  "protocol_identity": "c5ee6343adad61110f3c08b36b4e9d66e271889e9fe542044cba44ad6e926a09",
+  "protocol_sha256": "ee4ea50ba411b2ca607a798f452bb2f17176f22b707be286b3c346649b2574fd",
+  "registry_identity": "c7281b048318233c08bb5e8251dd08e19aceb1ac240c79fa8ef072d24f35b055",
+  "schema_name": "batch2-owned-authority-approved-channel-registry-v1",
+  "schema_version": "1.0.0"
+}

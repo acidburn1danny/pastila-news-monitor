@@ -1,0 +1,39 @@
+{
+  "authority_matrix": {
+    "candidate_construction": false,
+    "content_ingestion": false,
+    "mechanism_assignment": false,
+    "model_exposure": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "source_acquisition": false,
+    "surface_generation": false,
+    "training": false
+  },
+  "bindings": {
+    "archive_spec_identity": "de32fad401481e6d3d3bd1dec76e1797055323fd726f7f6c90716cc01f15cf22",
+    "declaration_template_identity": "83ac3aecfe4caa45934b3d31571f814fee0d22c02d1fe2dccd91b56d6a4d2fbc",
+    "fixture_suite_identity": "3716403c149366618c9a8128e91b3d8372209e13c34160d5a2ec638280ef0771",
+    "protocol_identity": "c5ee6343adad61110f3c08b36b4e9d66e271889e9fe542044cba44ad6e926a09",
+    "registry_identity": "c7281b048318233c08bb5e8251dd08e19aceb1ac240c79fa8ef072d24f35b055",
+    "registry_sha256": "15619320cb925dd9ef4e461206a08dab0adcb830a1791939b3beef414ec7b771",
+    "role_matrix_identity": "1bc390244d09ee63d9b851c6c014a2693060710947e89c1c41ee6293825fc0b1"
+  },
+  "checks": {
+    "all_action_authorities_false": "PASS",
+    "archive_design_content_addressed_and_immutable": "PASS",
+    "blind_access_fail_closed": "PASS",
+    "character_and_utf8_coordinates_independent": "PASS",
+    "external_and_open_lanes_remain_disabled": "PASS",
+    "metadata_fixtures_contain_no_source_content": "PASS",
+    "qualified_does_not_mean_operationally_enabled": "PASS",
+    "rights_action_specific_and_noninheriting": "PASS",
+    "roles_separated_and_unappointed": "PASS",
+    "template_cannot_act_as_unsigned_grant": "PASS"
+  },
+  "deterministic_defects_remaining": [],
+  "next_phase": "SEPARATE_CONTENT_FREE_CUSTODIAL_APPOINTMENT_AND_SIGNING_READINESS",
+  "schema_name": "batch2-internally-owned-channel-qualification-v1-audit",
+  "schema_version": "1.0.0",
+  "verdict": "PASS_CONTENT_FREE_CHANNEL_QUALIFICATION"
+}

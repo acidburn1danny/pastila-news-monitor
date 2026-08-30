@@ -1,0 +1,68 @@
+{
+  "current_grant": {
+    "candidate_construction": false,
+    "content_ingestion": false,
+    "mechanism_assignment": false,
+    "model_exposure": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "source_acquisition": false,
+    "surface_generation": false,
+    "training": false
+  },
+  "execution_requirements": [
+    "CONTRIBUTOR_SIGNATURE_OR_OWNER_SEAL",
+    "RIGHTS_CUSTODIAN_COUNTERSEAL",
+    "CANONICAL_BYTES_SHA256",
+    "SIGNATURE_TIME",
+    "NO_BLANK_REQUIRED_FIELD"
+  ],
+  "grant_noninheritance": true,
+  "independent_grants": {
+    "CONSTRUCTION_EVALUATION": {
+      "required_explicit_boolean": true,
+      "value": "UNSELECTED"
+    },
+    "DISCOVERY": {
+      "required_explicit_boolean": true,
+      "value": "UNSELECTED"
+    },
+    "PRODUCTION": {
+      "required_explicit_boolean": true,
+      "value": "UNSELECTED"
+    },
+    "TRAINING": {
+      "required_explicit_boolean": true,
+      "value": "UNSELECTED"
+    }
+  },
+  "not_a_grant_until_completed_and_sealed": true,
+  "required_declarations": [
+    "ORIGINAL_AUTHORSHIP_OR_DOCUMENTED_RIGHTS_OWNERSHIP",
+    "NO_UNDISCLOSED_THIRD_PARTY_MATERIAL",
+    "NO_CONFIDENTIAL_PRIVATE_OR_UNLAWFULLY_OBTAINED_INFORMATION",
+    "FACTUAL_PROPOSITIONS_AND_QUALIFICATIONS_IDENTIFIED_BY_CONTRIBUTOR",
+    "RIGHT_TO_MAKE_THE_SELECTED_ACTION_SPECIFIC_GRANTS"
+  ],
+  "required_identity_fields": [
+    "declaration_id",
+    "contributor_legal_identity",
+    "rights_holder_identity",
+    "contributor_role",
+    "source_family_commitment",
+    "effective_at"
+  ],
+  "required_terms": {
+    "attribution": "EXPLICIT_VALUE_REQUIRED",
+    "compensation": "EXPLICIT_VALUE_REQUIRED",
+    "correction": "NEW_IMMUTABLE_REVISION_ONLY",
+    "expiry": "EXPLICIT_VALUE_OR_NO_EXPIRY_REQUIRED",
+    "revocation": "PROSPECTIVE_FAIL_CLOSED_AND_CONSUMED_USE_ACCOUNTING_REQUIRED",
+    "supersession": "EXPLICIT_PREDECESSOR_SUCCESSOR_CHAIN",
+    "territory": "EXPLICIT_VALUE_REQUIRED"
+  },
+  "schema_name": "batch2-internally-owned-rights-declaration-template-v1",
+  "schema_version": "1.0.0",
+  "template_identity": "83ac3aecfe4caa45934b3d31571f814fee0d22c02d1fe2dccd91b56d6a4d2fbc",
+  "template_only": true
+}
