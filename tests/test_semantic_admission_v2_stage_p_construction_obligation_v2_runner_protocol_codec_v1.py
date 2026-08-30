@@ -54,12 +54,14 @@ def test_v1_2_1_no_legal_receipt_preserves_terminal_semantic_classification():
     from types import SimpleNamespace
     from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_request_bound_callback_adapter_v1_2_1 import _no_legal_receipt
     _, request = _fixture()
+    terminal_candidate = b'{"observed":"terminal"}'
     raw = _no_legal_receipt(
         request=request, authority="a" * 64, generated=(10, 11),
-        terminal_candidate=b'{"observed":"terminal"}',
+        terminal_candidate=terminal_candidate,
         receipt=SimpleNamespace(
             request_context_identity=request.source_context_identity,
-            decoded_sha256="b" * 64, dfa_mode="TERMINAL", terminal=True,
+            decoded_sha256=hashlib.sha256(terminal_candidate).hexdigest(),
+            dfa_mode="TERMINAL", terminal=True,
             reason_code="SEMANTIC_COMPLETENESS_AUTHORITY_COVERAGE_INCOMPLETE"))
     value = json.loads(raw)
     assert value["schema_version"] == "1.2.1"
@@ -70,6 +72,25 @@ def test_v1_2_1_no_legal_receipt_preserves_terminal_semantic_classification():
     assert value["terminal_candidate_utf8_bytes"] == 23
     assert validate_no_legal_token_receipt_v1(
         raw_receipt=raw, request=request) == value["receipt_identity"]
+
+    canonical = lambda item: (json.dumps(
+        item, ensure_ascii=True, sort_keys=True,
+        separators=(",", ":")) + "\n").encode()
+    mutations = (
+        {"terminal_candidate_utf8_base64": "Zm9yZ2Vk"},
+        {"terminal_candidate_sha256": "0" * 64},
+        {"projector_decoded_sha256": "0" * 64},
+        {"authority_receipt_identity": "0" * 64},
+        {"character_state_identity": "0" * 64},
+    )
+    for mutation in mutations:
+        forged = {**value, **mutation}
+        forged["receipt_identity"] = hashlib.sha256(canonical({
+            key: item for key, item in forged.items()
+            if key != "receipt_identity"})).hexdigest()
+        with pytest.raises(ValueError):
+            validate_no_legal_token_receipt_v1(
+                raw_receipt=canonical(forged), request=request)
 
 def test_codec_has_no_runtime_imports():
     text=(ROOT/"src/pastila_scout/semantic_admission_v2/stage_p_construction_obligation_v2_runner_protocol_codec_v1.py").read_text("utf-8")

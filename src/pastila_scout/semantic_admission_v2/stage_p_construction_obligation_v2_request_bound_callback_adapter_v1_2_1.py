@@ -147,6 +147,8 @@ def _no_legal_receipt(*, request, authority, generated, receipt,
         "dfa_mode": receipt.dfa_mode, "terminal": False,
         "projector_terminal": semantic_eos_withheld,
         "projector_reason_code": receipt.reason_code,
+        "authority_receipt_identity": authority,
+        "projector_decoded_sha256": receipt.decoded_sha256,
         "terminal_candidate_utf8_base64": (
             base64.b64encode(terminal_candidate).decode("ascii")
             if terminal_candidate is not None else None),

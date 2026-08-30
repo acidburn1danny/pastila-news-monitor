@@ -95,6 +95,7 @@ def validate_no_legal_token_receipt_v1(*, raw_receipt: bytes, request: RunnerReq
       "generated_prefix_sha256","generated_token_count","character_state_identity","dfa_mode",
       "terminal","allowed_token_count","failure_code","receipt_identity"}
     extended=common|{"projector_terminal","projector_reason_code",
+      "authority_receipt_identity","projector_decoded_sha256",
       "terminal_candidate_utf8_base64","terminal_candidate_sha256",
       "terminal_candidate_utf8_bytes"}
     if set(value) not in (common,extended) or (value["schema_name"],value["protocol_identity"],
@@ -120,6 +121,17 @@ def validate_no_legal_token_receipt_v1(*, raw_receipt: bytes, request: RunnerReq
                 else "TOKENIZATION_DEAD_NO_VALID_TOKEN")):
         raise ValueError("CONSTRUCTION_OBLIGATION_V2_NO_LEGAL_TOKEN_CLASSIFICATION_MISMATCH")
     if set(value)==extended:
+        if (type(value["authority_receipt_identity"]) is not str
+                or len(value["authority_receipt_identity"]) != 64
+                or type(value["projector_decoded_sha256"]) is not str
+                or len(value["projector_decoded_sha256"]) != 64):
+            raise ValueError("CONSTRUCTION_OBLIGATION_V2_NO_LEGAL_TOKEN_CHAIN_INVALID")
+        expected_character_state=hashlib.sha256("\n".join((
+            value["authority_receipt_identity"], value["source_context_identity"],
+            value["projector_decoded_sha256"], value["dfa_mode"],
+            str(value["projector_terminal"]))).encode()).hexdigest()
+        if value["character_state_identity"] != expected_character_state:
+            raise ValueError("CONSTRUCTION_OBLIGATION_V2_NO_LEGAL_TOKEN_CHAIN_INVALID")
         candidate_fields=(value["terminal_candidate_utf8_base64"],
                           value["terminal_candidate_sha256"],
                           value["terminal_candidate_utf8_bytes"])
@@ -133,7 +145,8 @@ def validate_no_legal_token_receipt_v1(*, raw_receipt: bytes, request: RunnerReq
             except UnicodeDecodeError as exc:
                 raise ValueError("CONSTRUCTION_OBLIGATION_V2_TERMINAL_CANDIDATE_UTF8_INVALID") from exc
             if (len(candidate)!=candidate_fields[2]
-                    or hashlib.sha256(candidate).hexdigest()!=candidate_fields[1]):
+                    or hashlib.sha256(candidate).hexdigest()!=candidate_fields[1]
+                    or candidate_fields[1] != value["projector_decoded_sha256"]):
                 raise ValueError("CONSTRUCTION_OBLIGATION_V2_TERMINAL_CANDIDATE_IDENTITY_MISMATCH")
         elif candidate_fields != (None,None,None):
             raise ValueError("CONSTRUCTION_OBLIGATION_V2_NONTERMINAL_CANDIDATE_FORBIDDEN")
