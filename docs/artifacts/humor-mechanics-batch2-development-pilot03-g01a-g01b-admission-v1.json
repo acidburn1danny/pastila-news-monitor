@@ -1,0 +1,103 @@
+{
+  "admission_identity": "ade1c0aeafa9daf04b1cb1fb7c6f8fdf06dc2a7bc3bf8fd247cc3261f56bd65a",
+  "authority_matrix": {
+    "candidate_construction": false,
+    "creative_premise_assignment": false,
+    "generation": false,
+    "mechanism_assignment": false,
+    "model_exposure": false,
+    "operational_obligation_assignment": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "training": false
+  },
+  "eligibility_scope": "SEPARATE_OWNER_AUTHORIZATION_REQUIRED_NO_ASSIGNMENT_GRANTED",
+  "g01a": {
+    "correction_revocation_supersession": "CURRENT_V1_NO_SUCCESSOR_OR_REVOCATION",
+    "custodial_authority": "PASS_8_OF_8_CONSUMED",
+    "immutable_capture_and_version": "PASS",
+    "propositions": [
+      {
+        "coordinates_and_hashes": "PASS",
+        "modality_scope_attribution_boundaries": "PASS",
+        "proposition_id": "P1",
+        "qualification": "NONE_REQUIRED"
+      },
+      {
+        "coordinates_and_hashes": "PASS",
+        "modality_scope_attribution_boundaries": "PASS",
+        "proposition_id": "P2",
+        "qualification": "BOUND"
+      },
+      {
+        "coordinates_and_hashes": "PASS",
+        "modality_scope_attribution_boundaries": "PASS",
+        "proposition_id": "P3",
+        "qualification": "NONE_REQUIRED"
+      },
+      {
+        "coordinates_and_hashes": "PASS",
+        "modality_scope_attribution_boundaries": "PASS",
+        "proposition_id": "P4",
+        "qualification": "NONE_REQUIRED"
+      },
+      {
+        "coordinates_and_hashes": "PASS",
+        "modality_scope_attribution_boundaries": "PASS",
+        "proposition_id": "P5",
+        "qualification": "BOUND"
+      },
+      {
+        "coordinates_and_hashes": "PASS",
+        "modality_scope_attribution_boundaries": "PASS",
+        "proposition_id": "P6",
+        "qualification": "BOUND"
+      },
+      {
+        "coordinates_and_hashes": "PASS",
+        "modality_scope_attribution_boundaries": "PASS",
+        "proposition_id": "P7",
+        "qualification": "BOUND"
+      }
+    ],
+    "rights_and_permitted_use": "PASS_WITH_STRICT_NON_INHERITANCE",
+    "source_git_object": "84d545881e9e701692731ae2d92892a18d58eb0a",
+    "source_sha256": "61a5889cb03f72c6f4f72b0f1652b2db43c092f51c91f7d5e59933a99ca2fc30",
+    "target_safety": "PASS_LOW_RISK_SYNTHETIC",
+    "third_party_material": "NONE_DECLARED_AND_NONE_OBSERVED",
+    "verdict": "PASS"
+  },
+  "g01b": {
+    "contamination_ledger_head": "81e65fd0e0a703fe388a0391fad9eb94331c734a8e37ca98f1dd07c0faf38b56",
+    "contamination_state": "CLEAN_DEVELOPMENT_ONLY_NO_BLIND_EXPOSURE",
+    "creative_premise_family_id": "UNASSIGNED",
+    "downstream_exposure": {
+      "constructor": false,
+      "model": false,
+      "production": false,
+      "runtime": false,
+      "training": false
+    },
+    "family_closure": "PASS",
+    "family_identities": {
+      "authority_family": "3b8ac6cc7c0833e50e20f537dd3b107b87753678064af4a9a16c54ed01b0e68f",
+      "creative_premise_family_id": "UNASSIGNED",
+      "event_family": "e6e856a2cbfd922994ffa49aac85f15356dc110e165c39c8fdf42a8b080dee32",
+      "family_closure": "72ba444c839d38109fcf46cbad176f6c929dc7155129178428f57bd4060beff5",
+      "revision_family": "471c1ffcef336effca84c8b707ee69df33dafed6bb5e4b5d76737fec900477cf",
+      "source_family": "4f61c0b3898d1adab00cf56b3e1e378c2b3a152ae820efa32102849e7013a093",
+      "topic_entity_family": "b7aafaa8a87f81a589d7b9aad899c08e7b4977df581a832b0289da5841b174be"
+    },
+    "mechanism_assignment": "ABSENT",
+    "partition": "DEVELOPMENT",
+    "partition_isolation": "PASS",
+    "relationship_state": "FRESH_INDEPENDENT_FAMILY_NO_DUPLICATE_REVISION_SIBLING_OR_SAME_EVENT_RELATIVE",
+    "verdict": "PASS"
+  },
+  "ingestion_receipt_identity": "9c0d65f28431b9209bfc31b08d49408f338ee21dd4021bd95e039b3444eb25d9",
+  "later_development_assignment_design_eligibility": true,
+  "reviewed_commit": "8aaeccbbca9d45fb9d522505f82d173e1090b3b6",
+  "schema_name": "batch2-development-pilot03-g01a-g01b-admission-v1",
+  "schema_version": "1.0.0",
+  "source_package_identity": "08fe16a0a8b003a661cac1238eec0f752be1ae5c11e417125e1d7031291abeb6"
+}
