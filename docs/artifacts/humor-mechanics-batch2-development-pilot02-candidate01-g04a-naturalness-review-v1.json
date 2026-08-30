@@ -1,0 +1,86 @@
+{
+  "authority_matrix": {
+    "candidate_regeneration": false,
+    "candidate_repair": false,
+    "candidate_rewrite": false,
+    "curriculum_promotion": false,
+    "owner_review": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "training": false,
+    "voice_review": false
+  },
+  "candidate_bytes_modified": false,
+  "candidate_identity": "4cc6bceef84e29d07e19d60dbbb1992b33fcb8af67373647f5fb8fedfce1d98c",
+  "candidate_raw_sha256": "5c50ca8e4ae5ea32301c02ec8ea4104482bbc9c8e3c7e8314516d09aeb591fd3",
+  "candidate_repair_attempted": false,
+  "disposition_effect": "STOP_BEFORE_VOICE_OR_OWNER_REVIEW_UNLESS_SEPARATELY_GOVERNED_AS_DIAGNOSTIC",
+  "evaluator_inaccessible": [
+    "sealed assignment mapping",
+    "mechanism identity/name/ordinal",
+    "constructor packet and prompt",
+    "owner preference history",
+    "historical examples",
+    "blind-evaluation material",
+    "Voice rubric and judgment"
+  ],
+  "evaluator_visible": {
+    "candidate_surface": "În momentul încheierii testului nu este stabilit niciun sortiment câștigător. Într-o continuare explicit fictivă, lipsa câștigătorului suspendă mai întâi încheierea testului; fiindcă testul nu se mai poate încheia, momentul în care ar trebui stabilit câștigătorul încetează apoi să mai existe.",
+    "rubric": [
+      "IDIOMATIC_WORD_ORDER_AND_REGISTER",
+      "NO_CALQUE",
+      "NATURAL_CREATIVE_MARKING",
+      "NO_FORCED_WORDPLAY"
+    ]
+  },
+  "findings": {
+    "basic_grammaticality": {
+      "finding": "Ambele enunțuri sunt inteligibile și nu conțin o eroare gramaticală decisivă.",
+      "verdict": "PASS"
+    },
+    "idiomatic_word_order_and_register": {
+      "finding": "Formularea este rigidă și procedurală; «suspendă ... încheierea testului» și acumularea pasiv-abstractă nu sună ca o continuare românească firească.",
+      "verdict": "FAIL"
+    },
+    "natural_creative_marking": {
+      "finding": "«Într-o continuare explicit fictivă» funcționează ca etichetă de guvernanță introdusă în suprafață, nu ca marcaj creativ natural integrat în română.",
+      "verdict": "FAIL"
+    },
+    "no_calque": {
+      "finding": "Nu este identificat un calc străin precis, dar nominalizarea și metadiscursul contribuie la senzația de text tradus sau administrativ.",
+      "verdict": "PASS_WITH_RESERVATION"
+    },
+    "no_forced_wordplay": {
+      "finding": "Nu există joc de cuvinte forțat; problema este registrul și integrarea marcajului fictiv.",
+      "verdict": "PASS"
+    },
+    "overall_naturalness": {
+      "finding": "Sensul este recuperabil, dar marcajul metadiscursiv și registrul procedural sunt material nenaturale.",
+      "verdict": "FAIL"
+    }
+  },
+  "g03c_commit": "5dea3424e8a3dabb5b81f1c7405da4eec272d1da",
+  "g03c_diagnostic_identity": "1e4646a370d36a3be7978acb0bbf0ac8964143098358924b0c7b0680477842d0",
+  "g03c_receipt_identity": "580e6a1ad9911e1e938f811c12c3ee3518fb990b4c7a892320b6ac44a272f58d",
+  "g04a_review_identity": "29010c18bfe5e5534a7827571f7b615ab7b4215b7f542078dfcad4c6c55d53f2",
+  "g04a_verdict": "ROMANIAN_NATURALNESS_REJECTED",
+  "mechanism_adjudication_performed": false,
+  "performed": {
+    "candidate_regeneration": false,
+    "candidate_repair": false,
+    "candidate_rewrite": false,
+    "owner_review": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "training": false,
+    "voice_review": false
+  },
+  "review_mode": "BLIND_ROMANIAN_SURFACE_ONLY",
+  "schema_name": "batch2-development-pilot02-candidate01-g04a-romanian-naturalness-review-v1",
+  "schema_version": "1.0.0",
+  "sealed_mapping_accessed": false,
+  "stable_rejection_reasons": [
+    "UNNATURAL_GOVERNANCE_STYLE_CREATIVE_MARKER",
+    "PROCEDURAL_ABSTRACT_REGISTER"
+  ]
+}

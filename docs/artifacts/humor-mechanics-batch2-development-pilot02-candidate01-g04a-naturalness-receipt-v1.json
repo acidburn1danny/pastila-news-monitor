@@ -1,0 +1,28 @@
+{
+  "authority_matrix": {
+    "candidate_regeneration": false,
+    "candidate_repair": false,
+    "candidate_rewrite": false,
+    "curriculum_promotion": false,
+    "owner_review": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "training": false,
+    "voice_review": false
+  },
+  "candidate_bytes_modified": false,
+  "candidate_identity": "4cc6bceef84e29d07e19d60dbbb1992b33fcb8af67373647f5fb8fedfce1d98c",
+  "candidate_raw_sha256": "5c50ca8e4ae5ea32301c02ec8ea4104482bbc9c8e3c7e8314516d09aeb591fd3",
+  "g03c_receipt_identity": "580e6a1ad9911e1e938f811c12c3ee3518fb990b4c7a892320b6ac44a272f58d",
+  "g04a_receipt_identity": "217dcefb73ef45ad0357f64f37739091657484a299b93e3fc01c9f7a4d5ebc71",
+  "g04a_review_identity": "29010c18bfe5e5534a7827571f7b615ab7b4215b7f542078dfcad4c6c55d53f2",
+  "g04a_verdict": "ROMANIAN_NATURALNESS_REJECTED",
+  "next_action": "FREEZE_DEVELOPMENT_NONPOSITIVE_NATURALNESS_REJECTION_OR_SEPARATELY_AUTHORIZE_DIAGNOSTIC_VOICE_REVIEW",
+  "schema_name": "batch2-development-pilot02-candidate01-g04a-romanian-naturalness-receipt-v1",
+  "schema_version": "1.0.0",
+  "stable_rejection_reasons": [
+    "UNNATURAL_GOVERNANCE_STYLE_CREATIVE_MARKER",
+    "PROCEDURAL_ABSTRACT_REGISTER"
+  ],
+  "voice_review_performed": false
+}
