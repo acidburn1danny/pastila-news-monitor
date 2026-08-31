@@ -1,0 +1,73 @@
+{
+  "authority_matrix": {
+    "candidate_regeneration": false,
+    "candidate_repair": false,
+    "candidate_rewrite": false,
+    "curriculum_promotion": false,
+    "g04b_pool_certification": false,
+    "model_exposure": false,
+    "owner_freeze": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "training": false
+  },
+  "bound_gate_results": {
+    "g02": "PASS",
+    "g02c": "PASS",
+    "g03_reconciliation": "TARGET_RECOVERED_DOMINANT",
+    "g03_validity": "VALID_BLIND_REVIEW",
+    "g03b": "CAUSAL_MECHANISM_CONFIRMED",
+    "g03c_candidate": "CANDIDATE_SHORTCUT_PASS",
+    "g03c_contamination": "PASS_CLEAN_DEVELOPMENT_DIAGNOSTIC",
+    "g03c_pool": "POOL_PENDING_PILOT04_QUALITY_GATES_AND_SEPARATE_G04B_CERTIFICATION",
+    "g04a": "ROMANIAN_NATURALNESS_PASS",
+    "voice": "VOICE_PASS"
+  },
+  "candidate_bytes_modified": false,
+  "candidate_identity": "cf34033fb7017ff29146524108d4cb3fcbf8229681d054d2085dbaba294436e1",
+  "candidate_raw_sha256": "e231a549685103da5c6e0e4f9b9e93459d86e7c7ae0247ad11f15d55a3426b0b",
+  "candidate_surface": "O acreditare expirată sau nerecunoscută nu permite accesul în zona B. În povestea expoziției, un participant cu o astfel de acreditare rămâne mai întâi în afara zonei B; neputând ajunge la demonstrație, ajunge apoi să demonstreze, chiar de la poartă, cât de bine funcționează interdicția.",
+  "closed_owner_decisions": [
+    "APPROVE PILOT04 OWNER_FROZEN DEVELOPMENT_ONLY G04B_PENDING",
+    "REJECT PILOT04 OWNER_FREEZE"
+  ],
+  "eligibility": {
+    "curriculum_eligible": false,
+    "model_visible": false,
+    "partition": "DEVELOPMENT",
+    "pool_certified": false,
+    "positive_candidate_status": "PROVISIONAL_PENDING_EXPLICIT_OWNER_DECISION_AND_POOL_CLOSURE",
+    "production_eligible": false,
+    "runtime_eligible": false,
+    "training_eligible": false
+  },
+  "g05_owner_review_request_identity": "79d25cd3ec1cd25566a487f14692f91e21b7658b7165e85fea273eed3210dc31",
+  "g05_verdict": "AWAITING_EXPLICIT_OWNER_DECISION",
+  "owner_decision": null,
+  "owner_decision_recorded": false,
+  "owner_must_explicitly_confirm_or_reject": {
+    "candidate_bytes_are_the_reviewed_surface": null,
+    "causal_mechanism_finding_is_accepted": null,
+    "development_only_status_is_accepted": null,
+    "dominant_target_recovery_is_accepted": null,
+    "g04b_pool_certification_pending_status_is_accepted": null,
+    "no_curriculum_training_runtime_or_production_eligibility_is_understood": null,
+    "romanian_naturalness_pass_with_minor_nonmaterial_reservation_is_accepted": null,
+    "voice_pass_is_accepted": null
+  },
+  "performed": {
+    "candidate_regeneration": false,
+    "candidate_repair": false,
+    "candidate_rewrite": false,
+    "owner_approval": false,
+    "owner_rejection": false,
+    "pool_certification": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "training": false
+  },
+  "schema_name": "batch2-development-pilot04-candidate01-g05-owner-review-request-v1",
+  "schema_version": "1.0.0",
+  "status": "AWAITING_EXPLICIT_OWNER_DECISION",
+  "voice_commit": "31c6a3bae013867c5a24165c403152dd0f7f442b"
+}

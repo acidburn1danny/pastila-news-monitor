@@ -1,0 +1,15 @@
+{
+  "audit_identity": "da7b3752a3ebf4e55a40a506fdaa7eac72a0fa6627f4348c7b3fd4dead8e85c1",
+  "authorization_treated_as_substantive_approval": false,
+  "candidate_bytes_modified": false,
+  "candidate_identity": "cf34033fb7017ff29146524108d4cb3fcbf8229681d054d2085dbaba294436e1",
+  "candidate_raw_sha256": "e231a549685103da5c6e0e4f9b9e93459d86e7c7ae0247ad11f15d55a3426b0b",
+  "development_only_preserved": true,
+  "downstream_authority_granted": false,
+  "explicit_owner_decision_present": false,
+  "g05_owner_review_request_identity": "79d25cd3ec1cd25566a487f14692f91e21b7658b7165e85fea273eed3210dc31",
+  "pool_pending_preserved": true,
+  "schema_name": "batch2-development-pilot04-candidate01-g05-owner-review-request-audit-v1",
+  "schema_version": "1.0.0",
+  "verdict": "PASS_FAIL_CLOSED_AWAITING_EXPLICIT_OWNER_DECISION"
+}
