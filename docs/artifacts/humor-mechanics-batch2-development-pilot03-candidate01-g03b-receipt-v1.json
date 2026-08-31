@@ -1,0 +1,25 @@
+{
+  "authority_matrix": {
+    "candidate_regeneration": false,
+    "candidate_repair": false,
+    "candidate_rewrite": false,
+    "g03c": false,
+    "owner_review": false,
+    "production_routing": false,
+    "romanian_naturalness_review": false,
+    "runtime_integration": false,
+    "training": false,
+    "voice_review": false
+  },
+  "candidate_bytes_modified": false,
+  "candidate_identity": "b4555cc43bf16a466734aed46e93baa83bd9bc37d52d3826976be3370ccef72d",
+  "candidate_raw_sha256": "86f058253be11227bf40a0de4842bf79ae7458b2a89f11c8fca033477e0a626d",
+  "counterfactual_candidate_created": false,
+  "g03_receipt_identity": "57a68d4712808bd472fc3572eb3a40947a802cbef9490c7ddef5326455561d55",
+  "g03b_receipt_identity": "8cb0cf70550545e6627b5a17b164d065509c1dcdbfbe5910ec01321e57d4b646",
+  "g03b_review_identity": "8b5319af8bb160b57af34035834b63f12c80d142613d25a689f40d9e164ebaa0",
+  "g03b_verdict": "CAUSAL_MECHANISM_CONFIRMED",
+  "next_gate_eligible": "G03C_SEPARATELY_AUTHORIZED_ONLY",
+  "schema_name": "batch2-development-pilot03-candidate01-g03b-receipt-v1",
+  "schema_version": "1.0.0"
+}

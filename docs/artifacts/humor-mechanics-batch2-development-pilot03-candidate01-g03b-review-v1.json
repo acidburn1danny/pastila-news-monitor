@@ -1,0 +1,157 @@
+{
+  "authority_matrix": {
+    "candidate_regeneration": false,
+    "candidate_repair": false,
+    "candidate_rewrite": false,
+    "g03c": false,
+    "owner_review": false,
+    "production_routing": false,
+    "romanian_naturalness_review": false,
+    "runtime_integration": false,
+    "training": false,
+    "voice_review": false
+  },
+  "candidate_bytes_modified": false,
+  "candidate_disposition_effect": "ELIGIBLE_FOR_SEPARATELY_AUTHORIZED_G03C_ONLY",
+  "candidate_identity": "b4555cc43bf16a466734aed46e93baa83bd9bc37d52d3826976be3370ccef72d",
+  "candidate_raw_sha256": "86f058253be11227bf40a0de4842bf79ae7458b2a89f11c8fca033477e0a626d",
+  "causal_findings": {
+    "boundary_separation_test": "PASS_I05",
+    "invariance_test": "PASS_I04",
+    "necessary_structure": [
+      "factual premise",
+      "first premise-dependent consequence",
+      "second locally dependent consequence",
+      "absurd categorial payoff"
+    ],
+    "not_necessary": [
+      "specific causal connective",
+      "specific vocabulary",
+      "punctuation",
+      "surface template"
+    ],
+    "removal_test": "PASS_I01_REDUCES_DOMINANCE_I02_REMOVES_I03_CHANGES_LABEL",
+    "supporting_mechanism_isolation": "PASS_I06"
+  },
+  "causal_trace": {
+    "creative_marking": "În povestea imaginară a coletului",
+    "factual_premise": "La momentul recepției nu este documentat conținutul exact al coletului.",
+    "incongruity_payoff": "Procesul necesar pentru a afla conținutul devine el însuși obiectul pe care inventarul îl poate conține.",
+    "local_dependency": "PREMISE_TO_EMPTY_LIST_TO_NO_CONFIRMATION_TO_OPENING_AS_INVENTORY_ITEM",
+    "transformation_step_1": "Necunoașterea conținutului lasă lista de inventar goală.",
+    "transformation_step_2": "Lipsa confirmării reclasifică deschiderea programată drept singurul lucru inventariabil.",
+    "verdict": "COMPLETE_RECOVERABLE_CAUSAL_CHAIN"
+  },
+  "controls": {
+    "creative_marking_separated_from_mechanism_causality": "PASS",
+    "factual_premise_control": "PASS",
+    "length_control": "PASS_WHERE_PRACTICABLE_DELTA_ONLY",
+    "lexical_keyword_dependence": "REJECTED_BY_I04",
+    "mere_absurdity_explanation": "REJECTED_BY_I03",
+    "supporting_reclassification_isolation": "PASS_I06",
+    "tone_control": "PASS_WHERE_PRACTICABLE",
+    "topic_control": "PASS"
+  },
+  "counterfactuals_materialized_as_candidates": false,
+  "creative_premise_family_id": "dd530bad539b8ce3e40d4a4b35eacb75a040e84ad44b051652c6266519b88bcf",
+  "g03_commit": "25c78502a7c794bc4642144e11e630ab4ac9ee3d",
+  "g03_receipt_identity": "57a68d4712808bd472fc3572eb3a40947a802cbef9490c7ddef5326455561d55",
+  "g03b_review_identity": "8b5319af8bb160b57af34035834b63f12c80d142613d25a689f40d9e164ebaa0",
+  "g03b_verdict": "CAUSAL_MECHANISM_CONFIRMED",
+  "minimal_interventions": [
+    {
+      "causal_result": "DOMINANCE_REMOVED",
+      "delta_only": "Elimină reîncadrarea deschiderii ca singur lucru inventariabil.",
+      "expected_observation": "Rămâne lista goală, dar se pierde consecința absurdă dependentă și dominanța lanțului extins.",
+      "id": "G03B-I01-REMOVE-SECOND-INFERENCE",
+      "mechanism_after": "SUPPORTING_OR_WEAK_NOT_DOMINANT",
+      "preserved": [
+        "factual premise",
+        "fictional marking",
+        "first consequence",
+        "topic",
+        "register"
+      ]
+    },
+    {
+      "causal_result": "MECHANISM_REMOVED",
+      "delta_only": "Înlocuiește lista goală cu constatarea neutră că inventarierea așteaptă deschiderea.",
+      "expected_observation": "Dispare lipsa confirmării care făcea posibilă reîncadrarea finală; lanțul-țintă nu se formează.",
+      "id": "G03B-I02-NEUTRALIZE-FIRST-HINGE",
+      "mechanism_after": "ABSENT",
+      "preserved": [
+        "factual premise",
+        "topic",
+        "statusul conținutului",
+        "register"
+      ]
+    },
+    {
+      "causal_result": "LABEL_CHANGE",
+      "delta_only": "Păstrează premisa și tonul imaginar, dar substituie o întâmplare absurdă fără dependență de conținutul necunoscut.",
+      "expected_observation": "Absurdul rămâne, însă clasificarea se mută la absurditate fără legătură.",
+      "id": "G03B-I03-SUBSTITUTE-UNRELATED-ABSURDITY",
+      "mechanism_after": "ABSENT_LABEL_CHANGES",
+      "preserved": [
+        "topic",
+        "factual premise",
+        "fictional status",
+        "absurd tone",
+        "approximate length"
+      ]
+    },
+    {
+      "causal_result": "INVARIANT_UNDER_SURFACE_PARAPHRASE",
+      "delta_only": "Schimbă vocabularul și punctuația, păstrând lista goală, lipsa confirmării și reîncadrarea dependentă.",
+      "expected_observation": "Mecanismul rămâne dominant și nu depinde de un cuvânt ori conector fix.",
+      "id": "G03B-I04-PARAPHRASE-NONCAUSAL-CUES",
+      "mechanism_after": "DOMINANT",
+      "preserved": [
+        "all facts",
+        "dependency graph",
+        "fictional marking",
+        "payoff",
+        "topic"
+      ]
+    },
+    {
+      "causal_result": "MARKER_NOT_CAUSAL_TO_MECHANISM",
+      "delta_only": "Elimină numai cadrul «povestea imaginară».",
+      "expected_observation": "Lanțul mecanic rămâne, dar candidatul devine nevalid separat la granița factuală G02.",
+      "id": "G03B-I05-REMOVE-CREATIVE-MARKER",
+      "mechanism_after": "DOMINANT_BUT_AUTHORITY_INVALID",
+      "preserved": [
+        "premise",
+        "dependency graph",
+        "payoff",
+        "topic"
+      ]
+    },
+    {
+      "causal_result": "SUPPORTING_RECLASSIFICATION_REMOVED",
+      "delta_only": "Păstrează cele două propoziții, dar înlocuiește obiectul inventariabil cu o consecință neutră.",
+      "expected_observation": "Componenta de reclasificare comică dispare, iar extensia logică rămâne doar slabă, confirmând rolul ei de suport în realizarea prezentă.",
+      "id": "G03B-I06-REMOVE-FINAL-RECLASSIFICATION-ONLY",
+      "mechanism_after": "WEAK_SUPPORTING",
+      "preserved": [
+        "factual premise",
+        "first hinge",
+        "dependency connector",
+        "topic"
+      ]
+    }
+  ],
+  "performed": {
+    "candidate_regeneration": false,
+    "candidate_repair": false,
+    "candidate_rewrite": false,
+    "g03c": false,
+    "owner_review": false,
+    "romanian_naturalness_review": false,
+    "voice_review": false
+  },
+  "reconciliation_identity": "bb183c23e45dd3b11beb03430697291f4da92052dd8fa030b99eac99d805047d",
+  "schema_name": "batch2-development-pilot03-candidate01-g03b-causal-review-v1",
+  "schema_version": "1.0.0",
+  "tested_mechanism": "Absurd Logical Extension"
+}
