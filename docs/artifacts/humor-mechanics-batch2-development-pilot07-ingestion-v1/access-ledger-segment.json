@@ -1,0 +1,212 @@
+{
+  "entries": [
+    {
+      "creative_premise_family_id": "UNASSIGNED",
+      "entry_hash": "1f9b4b735c2eeb7e1aee49ac03417606946c8e612c0df5385e8fbc0e8774850c",
+      "entry_sequence": 57,
+      "event": "DEVELOPMENT_PILOT07_ATOMIC_INGESTION_OPERATION_ADMITTED",
+      "object_identity": "bd78d0d65d1f6305a7be978005e4cf4413b92a78493499c4c67ce5c3ffd948f2",
+      "operation_ordinal": 0,
+      "operational_content_access": false,
+      "packet_identity": "a859db33f8f87d00dffaf4fcb8f64fdd35bb48ec5fbbf66c545463478416b7e1",
+      "partition": "DEVELOPMENT",
+      "previous_entry_hash": "a92ba489bc32a5b62d3adf48c655703c107dde2ebc241b93cfc95ad39a91548f",
+      "purpose": "RIGHTS_ADMISSION",
+      "schema_name": "batch2-custodial-access-ledger-entry-v1",
+      "schema_version": "1.0.0",
+      "signer_bindings": [
+        {
+          "challenge_identity": "862f5f47af1c4d478a2ee7d5aec3f8d1b19cc024ba38b0bc9c9cc32bb6fc265e",
+          "nonce": "2f600a3e8c6568e744c8a4355db9f08deea1119b7bb304d7dcd46783bbb89176",
+          "operation_ordinal": 0,
+          "principal_identity": "35f8bee3260c2ff80aaaeb394d1446d273524cc51d1c4eda56715d49c2a77644",
+          "public_key_fingerprint": "bd00e64dc48ff765d9fc1a5937be3541d5171535a90d3eb005354224760ca881",
+          "purpose": "RIGHTS_ADMISSION",
+          "response_sha256": "2bf3c2586410b5019c230221a127fbd8b898192154cffbc1946a7d704b313884",
+          "role": "RIGHTS_CUSTODIAN",
+          "signature_verification": "PASS"
+        }
+      ]
+    },
+    {
+      "creative_premise_family_id": "UNASSIGNED",
+      "entry_hash": "46a7c32a822d575845ba83d92ccc303a97a5d80940742055081ca024e2155d8c",
+      "entry_sequence": 58,
+      "event": "DEVELOPMENT_PILOT07_ATOMIC_INGESTION_OPERATION_ADMITTED",
+      "object_identity": "df520c49cbffe17284897895a6c4bcad3040b6dbaa5f7ac11d145248a65e52df",
+      "operation_ordinal": 1,
+      "operational_content_access": false,
+      "packet_identity": "a859db33f8f87d00dffaf4fcb8f64fdd35bb48ec5fbbf66c545463478416b7e1",
+      "partition": "DEVELOPMENT",
+      "previous_entry_hash": "1f9b4b735c2eeb7e1aee49ac03417606946c8e612c0df5385e8fbc0e8774850c",
+      "purpose": "ACQUISITION_ADMISSION",
+      "schema_name": "batch2-custodial-access-ledger-entry-v1",
+      "schema_version": "1.0.0",
+      "signer_bindings": [
+        {
+          "challenge_identity": "a109bfe2819f99ce4b35a03810b24f6c7911ffb531f41dd7440eb90a8631d144",
+          "nonce": "2331e2cab57acf3712e4fa846283150fbae58e7e4e19975d0f92c1214ca5f098",
+          "operation_ordinal": 1,
+          "principal_identity": "37c8c4010917cd87ad7d38591644a15a4640911522fea505b3273943af927bd7",
+          "public_key_fingerprint": "59374467214015dc63dce3875959c7583cb2ab677a292ed6e0a0dcf829318aaa",
+          "purpose": "ACQUISITION_ADMISSION",
+          "response_sha256": "fcb528587fe29fbb3a67a97cc298301dc99799369a6153b009cb43e74e2c9c3d",
+          "role": "ACQUISITION_CUSTODIAN",
+          "signature_verification": "PASS"
+        },
+        {
+          "challenge_identity": "335c5bc3f94ef0469ac5815278c1279df93913ffdf44ae080bf45047e05b46f0",
+          "nonce": "6fc8210bbbcfc2f1ac50e7fda0dc5e5a1a689ed93b648f0ee2d78ce2cbb0fc44",
+          "operation_ordinal": 1,
+          "principal_identity": "35f8bee3260c2ff80aaaeb394d1446d273524cc51d1c4eda56715d49c2a77644",
+          "public_key_fingerprint": "bd00e64dc48ff765d9fc1a5937be3541d5171535a90d3eb005354224760ca881",
+          "purpose": "ACQUISITION_ADMISSION",
+          "response_sha256": "31b87f1fe0c0eff2afef4f827e0c3d8337306c5385dfaea7e219f50b5df192a2",
+          "role": "RIGHTS_CUSTODIAN",
+          "signature_verification": "PASS"
+        }
+      ]
+    },
+    {
+      "creative_premise_family_id": "UNASSIGNED",
+      "entry_hash": "282d204ee93bbf97861fd212a99ffcdad47200c0c648d7a21859a3bb527e94b5",
+      "entry_sequence": 59,
+      "event": "DEVELOPMENT_PILOT07_ATOMIC_INGESTION_OPERATION_ADMITTED",
+      "object_identity": "24bcfa2f4c2e32b0030eabde18fe985344171de1b5d5bd6eec637cec387cca47",
+      "operation_ordinal": 2,
+      "operational_content_access": false,
+      "packet_identity": "a859db33f8f87d00dffaf4fcb8f64fdd35bb48ec5fbbf66c545463478416b7e1",
+      "partition": "DEVELOPMENT",
+      "previous_entry_hash": "46a7c32a822d575845ba83d92ccc303a97a5d80940742055081ca024e2155d8c",
+      "purpose": "IMMUTABLE_ARCHIVE_ADMISSION",
+      "schema_name": "batch2-custodial-access-ledger-entry-v1",
+      "schema_version": "1.0.0",
+      "signer_bindings": [
+        {
+          "challenge_identity": "4c47dcfb9b3c086dbb8559ae7f182c59e666caafaedd97a432faffecc483e413",
+          "nonce": "f936377b776ea307ce6c5c6a6f56799e846d3b2a0838b51cbffbe7b860d78aa2",
+          "operation_ordinal": 2,
+          "principal_identity": "37c8c4010917cd87ad7d38591644a15a4640911522fea505b3273943af927bd7",
+          "public_key_fingerprint": "59374467214015dc63dce3875959c7583cb2ab677a292ed6e0a0dcf829318aaa",
+          "purpose": "IMMUTABLE_ARCHIVE_ADMISSION",
+          "response_sha256": "0780884bb6bfaca3bb4adf861fb1d57d425fc502ca80d7417c749fd390532450",
+          "role": "ACQUISITION_CUSTODIAN",
+          "signature_verification": "PASS"
+        },
+        {
+          "challenge_identity": "d0e742dd4b042d7fabcbc8e594540f828c6b1afaf665249db2866c648d544496",
+          "nonce": "668282d97bfdf9903363a72152cb514bccaa0f92a5da806f9cb41162118eb8b1",
+          "operation_ordinal": 2,
+          "principal_identity": "35f8bee3260c2ff80aaaeb394d1446d273524cc51d1c4eda56715d49c2a77644",
+          "public_key_fingerprint": "bd00e64dc48ff765d9fc1a5937be3541d5171535a90d3eb005354224760ca881",
+          "purpose": "IMMUTABLE_ARCHIVE_ADMISSION",
+          "response_sha256": "8824b21a46d206728fe6516a49dcaae1e30e857254b25a14c0af2c5d54a15ec5",
+          "role": "RIGHTS_CUSTODIAN",
+          "signature_verification": "PASS"
+        }
+      ]
+    },
+    {
+      "creative_premise_family_id": "UNASSIGNED",
+      "entry_hash": "795a9263bf94cabccb3641628a7013d422857047a6890bfa6b88313c730bf162",
+      "entry_sequence": 60,
+      "event": "DEVELOPMENT_PILOT07_ATOMIC_INGESTION_OPERATION_ADMITTED",
+      "object_identity": "06b561f2f536cc97548ad480a0848ee12fb8359f245e30e03cbada7e75246486",
+      "operation_ordinal": 3,
+      "operational_content_access": false,
+      "packet_identity": "a859db33f8f87d00dffaf4fcb8f64fdd35bb48ec5fbbf66c545463478416b7e1",
+      "partition": "DEVELOPMENT",
+      "previous_entry_hash": "282d204ee93bbf97861fd212a99ffcdad47200c0c648d7a21859a3bb527e94b5",
+      "purpose": "FAMILY_CLOSURE",
+      "schema_name": "batch2-custodial-access-ledger-entry-v1",
+      "schema_version": "1.0.0",
+      "signer_bindings": [
+        {
+          "challenge_identity": "d5ae31132930dd06954d78d107e5ace8e2f248bf9ec37cd1f51a713679374d1a",
+          "nonce": "44cae09b302120912da6efa7784a92a827d78700df83b2308cc06381c8f5b912",
+          "operation_ordinal": 3,
+          "principal_identity": "728eea0400e8aa123ffba1afbff1982d985afbfb0bc850972389fd31b2ba75fa",
+          "public_key_fingerprint": "bc5b32b0c8a7b2f6b585d1f543ea7d39ee95767181c126cd16996e7c0300a8ed",
+          "purpose": "FAMILY_CLOSURE",
+          "response_sha256": "09bcbbf50ce485ba86f90e8d97edd5249703ea818008e44d299bbb1db235217d",
+          "role": "FAMILY_CUSTODIAN",
+          "signature_verification": "PASS"
+        }
+      ]
+    },
+    {
+      "creative_premise_family_id": "UNASSIGNED",
+      "entry_hash": "494ea19ec85d8f7f9408901fda7690c3554d1539eaf0f34a9f419b063283d914",
+      "entry_sequence": 61,
+      "event": "DEVELOPMENT_PILOT07_ATOMIC_INGESTION_OPERATION_ADMITTED",
+      "object_identity": "80b7c34479bd66ac55f8aafcc1bcad8105ce227db170e8bf19b6f330063f58f6",
+      "operation_ordinal": 4,
+      "operational_content_access": false,
+      "packet_identity": "a859db33f8f87d00dffaf4fcb8f64fdd35bb48ec5fbbf66c545463478416b7e1",
+      "partition": "DEVELOPMENT",
+      "previous_entry_hash": "795a9263bf94cabccb3641628a7013d422857047a6890bfa6b88313c730bf162",
+      "purpose": "DEVELOPMENT_PARTITION_SEAL",
+      "schema_name": "batch2-custodial-access-ledger-entry-v1",
+      "schema_version": "1.0.0",
+      "signer_bindings": [
+        {
+          "challenge_identity": "bf9dc13dc852c69a93578661a261b4b5f18b2567951539c5e77274ce972e9d43",
+          "nonce": "231d2bbac3f1ff54895ae44e01616553b9ee063b0a668c2598f8b8c18d672424",
+          "operation_ordinal": 4,
+          "principal_identity": "14f2d19b62ffc6b2a1a8ac5a426647962a03d2a81301410e7dbf16a27e4fb97d",
+          "public_key_fingerprint": "ceb4438e671860f3ae144fc8acabcfc7b2f7d648979ad5650fba1f5ce3254a9a",
+          "purpose": "DEVELOPMENT_PARTITION_SEAL",
+          "response_sha256": "a571f87b78a996b522d44f8d5c7c005740fcb5a6d1f6a4e9c4d2dca0a95c3fec",
+          "role": "PARTITION_CUSTODIAN",
+          "signature_verification": "PASS"
+        }
+      ]
+    },
+    {
+      "creative_premise_family_id": "UNASSIGNED",
+      "entry_hash": "b8d070d28b23a22d049413372740ff2131dd83bbf0a7188db4a26d9b566f6a29",
+      "entry_sequence": 62,
+      "event": "DEVELOPMENT_PILOT07_ATOMIC_INGESTION_OPERATION_ADMITTED",
+      "object_identity": "c97b26476cf056c332085d0dc97b155a9e7f8021d532556311141a2ba6a531bb",
+      "operation_ordinal": 5,
+      "operational_content_access": false,
+      "packet_identity": "a859db33f8f87d00dffaf4fcb8f64fdd35bb48ec5fbbf66c545463478416b7e1",
+      "partition": "DEVELOPMENT",
+      "previous_entry_hash": "494ea19ec85d8f7f9408901fda7690c3554d1539eaf0f34a9f419b063283d914",
+      "purpose": "CONTAMINATION_LEDGER_ADVANCEMENT",
+      "schema_name": "batch2-custodial-access-ledger-entry-v1",
+      "schema_version": "1.0.0",
+      "signer_bindings": [
+        {
+          "challenge_identity": "0b91f8ec05249cf8e4637119a8a302899d35a9a568d9396b8aad4aec832cb21e",
+          "nonce": "e23eb6bd0189dcea39745e39dad19357395db7f32fc995f9630a32b36060593a",
+          "operation_ordinal": 5,
+          "principal_identity": "1740c9f292a03dab6db10f497f3bcf6843b0e538c8f7ef1e1a359bb5af5c8144",
+          "public_key_fingerprint": "ca5d89a72072e0117c1f7a288c12bbb6c91f96e7527525b28ca73e65d8841b87",
+          "purpose": "CONTAMINATION_LEDGER_ADVANCEMENT",
+          "response_sha256": "93f63e7b66994113f0a522e3f3876ae99f81f3714c6c62a1568373f1a444bd7f",
+          "role": "CONTAMINATION_AUDITOR",
+          "signature_verification": "PASS"
+        }
+      ]
+    },
+    {
+      "entry_hash": "c065bb2c17c3d84e1c76ae25beb2f40934e911acc6653188ebc603ac642d5b98",
+      "entry_sequence": 63,
+      "event": "DEVELOPMENT_PILOT07_ATOMIC_INGESTION_COMPLETED",
+      "operational_content_access": false,
+      "packet_identity": "a859db33f8f87d00dffaf4fcb8f64fdd35bb48ec5fbbf66c545463478416b7e1",
+      "partition_identity": "80b7c34479bd66ac55f8aafcc1bcad8105ce227db170e8bf19b6f330063f58f6",
+      "previous_entry_hash": "b8d070d28b23a22d049413372740ff2131dd83bbf0a7188db4a26d9b566f6a29",
+      "response_set_identity": "1a98c5e0b798824fb33cb7eb5394cb91ee467785358d0f47f8a255f26e37c712",
+      "schema_name": "batch2-custodial-access-ledger-entry-v1",
+      "schema_version": "1.0.0",
+      "source_package_identity": "df520c49cbffe17284897895a6c4bcad3040b6dbaa5f7ac11d145248a65e52df"
+    }
+  ],
+  "final_ledger_head": "c065bb2c17c3d84e1c76ae25beb2f40934e911acc6653188ebc603ac642d5b98",
+  "ledger_segment_identity": "0e867d6dfc433f93de5dead7e232ee270b8a72d7753f9a521cff1e89cc3b3a49",
+  "previous_ledger_head": "a92ba489bc32a5b62d3adf48c655703c107dde2ebc241b93cfc95ad39a91548f",
+  "schema_name": "batch2-development-pilot07-access-ledger-segment-v1",
+  "schema_version": "1.0.0"
+}

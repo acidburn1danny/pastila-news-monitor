@@ -1,0 +1,112 @@
+{
+  "countersignatures": "PASS",
+  "nonces_consumed": [
+    "2f600a3e8c6568e744c8a4355db9f08deea1119b7bb304d7dcd46783bbb89176",
+    "2331e2cab57acf3712e4fa846283150fbae58e7e4e19975d0f92c1214ca5f098",
+    "6fc8210bbbcfc2f1ac50e7fda0dc5e5a1a689ed93b648f0ee2d78ce2cbb0fc44",
+    "f936377b776ea307ce6c5c6a6f56799e846d3b2a0838b51cbffbe7b860d78aa2",
+    "668282d97bfdf9903363a72152cb514bccaa0f92a5da806f9cb41162118eb8b1",
+    "44cae09b302120912da6efa7784a92a827d78700df83b2308cc06381c8f5b912",
+    "231d2bbac3f1ff54895ae44e01616553b9ee063b0a668c2598f8b8c18d672424",
+    "e23eb6bd0189dcea39745e39dad19357395db7f32fc995f9630a32b36060593a"
+  ],
+  "packet_consumed": true,
+  "packet_identity": "a859db33f8f87d00dffaf4fcb8f64fdd35bb48ec5fbbf66c545463478416b7e1",
+  "replay_check": "PASS",
+  "response_set_identity": "1a98c5e0b798824fb33cb7eb5394cb91ee467785358d0f47f8a255f26e37c712",
+  "schema_name": "batch2-development-pilot07-custodial-verification-v1",
+  "schema_version": "1.0.0",
+  "separation_of_duties": "PASS",
+  "verification_identity": "b0375ab47fe757c8ba91101be4e93514884c4947d5b9ebfcd01c6ad31b3c37d9",
+  "verification_result": "PASS_8_OF_8",
+  "verified_responses": [
+    {
+      "challenge_identity": "862f5f47af1c4d478a2ee7d5aec3f8d1b19cc024ba38b0bc9c9cc32bb6fc265e",
+      "nonce": "2f600a3e8c6568e744c8a4355db9f08deea1119b7bb304d7dcd46783bbb89176",
+      "operation_ordinal": 0,
+      "principal_identity": "35f8bee3260c2ff80aaaeb394d1446d273524cc51d1c4eda56715d49c2a77644",
+      "public_key_fingerprint": "bd00e64dc48ff765d9fc1a5937be3541d5171535a90d3eb005354224760ca881",
+      "purpose": "RIGHTS_ADMISSION",
+      "response_sha256": "2bf3c2586410b5019c230221a127fbd8b898192154cffbc1946a7d704b313884",
+      "role": "RIGHTS_CUSTODIAN",
+      "signature_verification": "PASS"
+    },
+    {
+      "challenge_identity": "a109bfe2819f99ce4b35a03810b24f6c7911ffb531f41dd7440eb90a8631d144",
+      "nonce": "2331e2cab57acf3712e4fa846283150fbae58e7e4e19975d0f92c1214ca5f098",
+      "operation_ordinal": 1,
+      "principal_identity": "37c8c4010917cd87ad7d38591644a15a4640911522fea505b3273943af927bd7",
+      "public_key_fingerprint": "59374467214015dc63dce3875959c7583cb2ab677a292ed6e0a0dcf829318aaa",
+      "purpose": "ACQUISITION_ADMISSION",
+      "response_sha256": "fcb528587fe29fbb3a67a97cc298301dc99799369a6153b009cb43e74e2c9c3d",
+      "role": "ACQUISITION_CUSTODIAN",
+      "signature_verification": "PASS"
+    },
+    {
+      "challenge_identity": "335c5bc3f94ef0469ac5815278c1279df93913ffdf44ae080bf45047e05b46f0",
+      "nonce": "6fc8210bbbcfc2f1ac50e7fda0dc5e5a1a689ed93b648f0ee2d78ce2cbb0fc44",
+      "operation_ordinal": 1,
+      "principal_identity": "35f8bee3260c2ff80aaaeb394d1446d273524cc51d1c4eda56715d49c2a77644",
+      "public_key_fingerprint": "bd00e64dc48ff765d9fc1a5937be3541d5171535a90d3eb005354224760ca881",
+      "purpose": "ACQUISITION_ADMISSION",
+      "response_sha256": "31b87f1fe0c0eff2afef4f827e0c3d8337306c5385dfaea7e219f50b5df192a2",
+      "role": "RIGHTS_CUSTODIAN",
+      "signature_verification": "PASS"
+    },
+    {
+      "challenge_identity": "4c47dcfb9b3c086dbb8559ae7f182c59e666caafaedd97a432faffecc483e413",
+      "nonce": "f936377b776ea307ce6c5c6a6f56799e846d3b2a0838b51cbffbe7b860d78aa2",
+      "operation_ordinal": 2,
+      "principal_identity": "37c8c4010917cd87ad7d38591644a15a4640911522fea505b3273943af927bd7",
+      "public_key_fingerprint": "59374467214015dc63dce3875959c7583cb2ab677a292ed6e0a0dcf829318aaa",
+      "purpose": "IMMUTABLE_ARCHIVE_ADMISSION",
+      "response_sha256": "0780884bb6bfaca3bb4adf861fb1d57d425fc502ca80d7417c749fd390532450",
+      "role": "ACQUISITION_CUSTODIAN",
+      "signature_verification": "PASS"
+    },
+    {
+      "challenge_identity": "d0e742dd4b042d7fabcbc8e594540f828c6b1afaf665249db2866c648d544496",
+      "nonce": "668282d97bfdf9903363a72152cb514bccaa0f92a5da806f9cb41162118eb8b1",
+      "operation_ordinal": 2,
+      "principal_identity": "35f8bee3260c2ff80aaaeb394d1446d273524cc51d1c4eda56715d49c2a77644",
+      "public_key_fingerprint": "bd00e64dc48ff765d9fc1a5937be3541d5171535a90d3eb005354224760ca881",
+      "purpose": "IMMUTABLE_ARCHIVE_ADMISSION",
+      "response_sha256": "8824b21a46d206728fe6516a49dcaae1e30e857254b25a14c0af2c5d54a15ec5",
+      "role": "RIGHTS_CUSTODIAN",
+      "signature_verification": "PASS"
+    },
+    {
+      "challenge_identity": "d5ae31132930dd06954d78d107e5ace8e2f248bf9ec37cd1f51a713679374d1a",
+      "nonce": "44cae09b302120912da6efa7784a92a827d78700df83b2308cc06381c8f5b912",
+      "operation_ordinal": 3,
+      "principal_identity": "728eea0400e8aa123ffba1afbff1982d985afbfb0bc850972389fd31b2ba75fa",
+      "public_key_fingerprint": "bc5b32b0c8a7b2f6b585d1f543ea7d39ee95767181c126cd16996e7c0300a8ed",
+      "purpose": "FAMILY_CLOSURE",
+      "response_sha256": "09bcbbf50ce485ba86f90e8d97edd5249703ea818008e44d299bbb1db235217d",
+      "role": "FAMILY_CUSTODIAN",
+      "signature_verification": "PASS"
+    },
+    {
+      "challenge_identity": "bf9dc13dc852c69a93578661a261b4b5f18b2567951539c5e77274ce972e9d43",
+      "nonce": "231d2bbac3f1ff54895ae44e01616553b9ee063b0a668c2598f8b8c18d672424",
+      "operation_ordinal": 4,
+      "principal_identity": "14f2d19b62ffc6b2a1a8ac5a426647962a03d2a81301410e7dbf16a27e4fb97d",
+      "public_key_fingerprint": "ceb4438e671860f3ae144fc8acabcfc7b2f7d648979ad5650fba1f5ce3254a9a",
+      "purpose": "DEVELOPMENT_PARTITION_SEAL",
+      "response_sha256": "a571f87b78a996b522d44f8d5c7c005740fcb5a6d1f6a4e9c4d2dca0a95c3fec",
+      "role": "PARTITION_CUSTODIAN",
+      "signature_verification": "PASS"
+    },
+    {
+      "challenge_identity": "0b91f8ec05249cf8e4637119a8a302899d35a9a568d9396b8aad4aec832cb21e",
+      "nonce": "e23eb6bd0189dcea39745e39dad19357395db7f32fc995f9630a32b36060593a",
+      "operation_ordinal": 5,
+      "principal_identity": "1740c9f292a03dab6db10f497f3bcf6843b0e538c8f7ef1e1a359bb5af5c8144",
+      "public_key_fingerprint": "ca5d89a72072e0117c1f7a288c12bbb6c91f96e7527525b28ca73e65d8841b87",
+      "purpose": "CONTAMINATION_LEDGER_ADVANCEMENT",
+      "response_sha256": "93f63e7b66994113f0a522e3f3876ae99f81f3714c6c62a1568373f1a444bd7f",
+      "role": "CONTAMINATION_AUDITOR",
+      "signature_verification": "PASS"
+    }
+  ]
+}
