@@ -1,0 +1,27 @@
+{
+  "access_ledger_identity": "a92ba489bc32a5b62d3adf48c655703c107dde2ebc241b93cfc95ad39a91548f",
+  "creative_premise_family_id": "UNASSIGNED",
+  "encoding": "UTF-8",
+  "factual_authority_envelope_identity": "847d37bb095d029758d1c8cce44e7685edf61016a151762f6ec7e12b7af2660c",
+  "family_identities": {
+    "authority_family": "3dd071625b8dfc6d4d9989b0cad831ec640685aafbea5431701fa9827da304f2",
+    "creative_premise_family_id": "UNASSIGNED",
+    "event_family": "16fb775884b176492524b3d80818a549bddd2ca347b44b642731262834dea404",
+    "family_closure": "dd5812610b0aa621f6d80e2873d865b867da7b4f3376e2d139eea787bfdaf086",
+    "revision_family": "c470d94ff129fbf10991bfe8fc5253c9eeed7fd849a0173571518aa2528c1bd5",
+    "source_family": "2772cf009b7e2c47c522e4283bbaa2a85293c128f0b25540b1b91b45328dd61e",
+    "topic_entity_family": "881c4de35f30f8999ef5ca0f8f7244ad8e2614219d5ce254f76cee312fbfa75e"
+  },
+  "immutable_archive_commitment": "66eeee66ee164e53253c58f959dd6ee824dd87d02515dede98c943b148c627f4",
+  "materialization_status": "INGESTED_IMMUTABLE",
+  "partition": "DEVELOPMENT",
+  "partition_identity": "a5416281eb2e653c926f58fa6fdb470cb3453439eb1d9c94588d946940050a23",
+  "prospective_git_blob_oid_sha1": "bbd1f4a8ee0ba35c70bb676b0a81177cdb7913cf",
+  "rights_instrument_identity": "5083c478a13ac3a637d6c7f373f036b9342b99aea7df7be40f53ad5488a0a4f8",
+  "schema_name": "batch2-owned-authority-source-package-materialization-v1",
+  "schema_version": "1.0.0",
+  "source_byte_length": 566,
+  "source_commitment": "cc8532bcc045be51ec1af2d5e83b7a1bcd96fc4f05fb2932b919d68cf6f82ac8",
+  "source_package_identity": "67f2744713981d08e5b460284cfec094a0e6be1029b8ce02b46c43e2a378082d",
+  "source_sha256": "eb97e6bdffc809d0902f90bb26b95c3c4a6047476b27eec7ac46b613dba030ad"
+}
