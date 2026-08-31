@@ -1,0 +1,60 @@
+{
+  "authority_matrix": {
+    "g03b": false,
+    "g03c": false,
+    "g04a": false,
+    "g04b_pool_certification": false,
+    "owner_review": false,
+    "production_routing": false,
+    "regeneration": false,
+    "repair": false,
+    "rewrite": false,
+    "runtime_integration": false,
+    "training": false,
+    "voice_review": false
+  },
+  "candidate_identity": "61b4c89e4ec65ac211debc034ed35f47f79a2757551266a90fadf5acde270773",
+  "candidate_modified": false,
+  "candidate_raw_sha256": "e00b1b83507ece1808445a3f6cfd07286ee20eecc6f4208d9aa4940ab2fbc1a9",
+  "contrast_recovery": {
+    "confidence": "HIGH",
+    "primary": "MISDIRECTION",
+    "role": "DOMINANT",
+    "supporting": [
+      "ABSURD_LOGICAL_EXTENSION"
+    ]
+  },
+  "eligibility": "NOT_ELIGIBLE_FOR_G03B_OR_POSITIVE_POOL_WITHOUT_SEPARATE_AMBIGUOUS_DISPOSITION_DECISION",
+  "g03_receipt_identity": "8b4bf0afeacf6875681106e722bcb56c3997e4a402d0f04ba69c5d7e8dbcbb55",
+  "g03_validity": "VALID_BLIND_REVIEW",
+  "g03b_performed": false,
+  "g03c_performed": false,
+  "open_recovery": {
+    "confidence": "HIGH",
+    "primary": "EXTINDERE_CAUZALA_ABSURDA_PRIN_LITERALIZAREA_INSCRIERII_UNEI_DATE",
+    "role": "DOMINANT",
+    "supporting": [
+      "REIFICAREA_DATEI_CA_OBIECT_TRANSFERABIL_SAU_ABSORBABIL",
+      "INCONGRUITATE_PROCEDURA_ADMINISTRATIVA_VS_CONSECINTA_IMPOSIBILA",
+      "METAFORA_ANIMATA_A_REGISTRULUI_CARE_ABSOARBE_DATA"
+    ]
+  },
+  "reconciliation_classification": "AMBIGUOUS_MECHANISM",
+  "reconciliation_identity": "778c28a69caaccf4cc75d8c6261a9075ba6b3c1f905e68a57758b9be1be92958",
+  "schema_name": "batch2-development-pilot06-g03-receipt-v1",
+  "schema_version": "1.0.0",
+  "shortcut_findings": {
+    "contrast": {
+      "lexical": "NON_MATERIAL",
+      "punctuation": "NON_MATERIAL",
+      "template": "NON_MATERIAL"
+    },
+    "open": {
+      "lexical": "NON_MATERIAL",
+      "overall": "LOW",
+      "punctuation": "NON_MATERIAL",
+      "source_order": "FACILITATES_RECOVERY_BUT_SEMANTIC_RELATION_REQUIRED",
+      "template": "LOW_BUT_RECOGNIZABLE_ADMINISTRATIVE_FACT_TO_IMAGINARY_LITERAL_CONSEQUENCE"
+    }
+  }
+}
