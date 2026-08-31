@@ -1,0 +1,33 @@
+{
+  "candidate_identity": "b4555cc43bf16a466734aed46e93baa83bd9bc37d52d3826976be3370ccef72d",
+  "candidate_raw_sha256": "86f058253be11227bf40a0de4842bf79ae7458b2a89f11c8fca033477e0a626d",
+  "choice_set_visible": false,
+  "evaluator_identity": "BLIND_REVIEW_CHANNEL_PILOT03_OPEN",
+  "mapping_visible": false,
+  "pass_identity": "7fbc1e14ff9c947e9b1f277eba65a5140c390c57061e1b11eeefcc8013290b08",
+  "result": {
+    "alternative_comparison": "Reclasificarea apare în consecința finală, dar efectul dominant cere întregul traseu premisă–consecință–consecință absurdă.",
+    "confidence": "HIGH",
+    "defining_surface_operation": "Necunoașterea conținutului produce o listă goală; incapacitatea listei de a confirma ceva face apoi ca însăși deschiderea să devină singurul lucru inventariabil.",
+    "primary_mechanism": "lanț inferențial absurd cu reîncadrare finală",
+    "primary_role": "DOMINANT",
+    "shortcut_dependence": {
+      "explanation": "Clasificarea rezultă din dependența semantică dintre cele două situații, nu dintr-un cuvânt, semn de punctuație ori format.",
+      "formatting": "NON_MATERIAL",
+      "lexical": "NON_MATERIAL",
+      "punctuation": "NON_MATERIAL",
+      "source_shape": "NON_MATERIAL",
+      "template": "NON_MATERIAL"
+    },
+    "strongest_alternative": "reclasificare comică",
+    "structural_dependency": "A doua situație există numai după prima: fără lista goală nu apare lipsa confirmării, iar fără aceasta deschiderea nu este reîncadrată ca element de inventar.",
+    "supporting_mechanisms": [
+      "reclasificarea deschiderii ca obiect inventariabil"
+    ]
+  },
+  "schema_name": "batch2-development-pilot03-g03-open-recovery-pass-v1",
+  "schema_version": "1.0.0",
+  "visible_inputs": [
+    "IMMUTABLE_CANDIDATE_SURFACE_ONLY"
+  ]
+}
