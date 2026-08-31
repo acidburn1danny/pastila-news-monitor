@@ -1,0 +1,129 @@
+{
+  "authority_matrix": {
+    "candidate_regeneration": false,
+    "candidate_repair": false,
+    "candidate_rewrite": false,
+    "curriculum_promotion": false,
+    "owner_review": false,
+    "production_routing": false,
+    "romanian_naturalness_review": false,
+    "runtime_integration": false,
+    "training": false,
+    "voice_review": false
+  },
+  "blind_holdout_content_or_metadata_accessed": false,
+  "candidate_bytes_modified": false,
+  "candidate_disposition_effect": "ELIGIBLE_FOR_SEPARATELY_AUTHORIZED_G04A_ONLY_POOL_G03C_REMAINS_OPEN",
+  "candidate_identity": "b4555cc43bf16a466734aed46e93baa83bd9bc37d52d3826976be3370ccef72d",
+  "candidate_level": {
+    "constructor_template": {
+      "finding": "PASS_G03B_CONFIRMS_DEPENDENCY_GRAPH_NOT_FIXED_LEXEME_OR_GRAMMAR",
+      "material": false
+    },
+    "format": {
+      "finding": "PASS_GENERIC_AUTHORITY_SAFETY_SHAPE_NOT_TARGET_SPECIFIC",
+      "material": false,
+      "observed": "FACTUAL_PREMISE_THEN_EXPLICITLY_MARKED_CREATIVE_CHAIN"
+    },
+    "length": {
+      "finding": "PASS_NO_TARGET_THRESHOLD",
+      "material": false,
+      "utf8_bytes": 299
+    },
+    "lexical": {
+      "finding": "PASS_NONDEFINING_AND_G03B_PARAPHRASE_INVARIANT",
+      "material": false,
+      "observed_cues": [
+        "povestea imaginară",
+        "cum",
+        "ajunge",
+        "inventariat"
+      ]
+    },
+    "metadata": {
+      "finding": "PASS_CANDIDATE_HAS_NO_LABEL_ID_ORDINAL_ROLE_OR_ANSWER_KEY",
+      "material": false
+    },
+    "position": {
+      "finding": "PASS_COMMON_HUMOR_POSITION",
+      "material": false,
+      "observed": "DEPENDENT_PAYOFF_AT_END"
+    },
+    "topic_entity": {
+      "finding": "PASS_SOURCE_ACQUIRED_AND_PARTITIONED_BEFORE_ASSIGNMENT",
+      "material": false,
+      "observed": "NEUTRAL_SYNTHETIC_PARCEL_INVENTORY_NO_PERSON_OR_PROTECTED_ENTITY"
+    },
+    "verdict": "CANDIDATE_SHORTCUT_PASS",
+    "weak_nonsemantic_classifier": {
+      "execution": "NOT_TRAINED_NO_MODEL_OR_STATISTICAL_FIT",
+      "feature_hypotheses": [
+        "lexeme",
+        "punctuation",
+        "length",
+        "topic",
+        "sentence position",
+        "packet format"
+      ],
+      "finding": "PASS_NO_SINGLE_FEATURE_EXPLAINS_BLIND_RECOVERY_AND_G03B_INVARIANCE"
+    }
+  },
+  "candidate_raw_sha256": "86f058253be11227bf40a0de4842bf79ae7458b2a89f11c8fca033477e0a626d",
+  "contamination": {
+    "blind_family_or_metadata_access": false,
+    "blind_holdout_tuning": false,
+    "candidate_model_visibility": false,
+    "cross_partition_family_overlap": false,
+    "development_partition_only": true,
+    "historical_surface_tuning": false,
+    "owner_preference_tuning": false,
+    "pilot01_or_pilot02_surface_reuse": false,
+    "training_visibility": false,
+    "verdict": "PASS_CLEAN_DEVELOPMENT_DIAGNOSTIC"
+  },
+  "creative_premise_family_id": "dd530bad539b8ce3e40d4a4b35eacb75a040e84ad44b051652c6266519b88bcf",
+  "g03b_commit": "709e332a2398488dd2e083ecb464efa79909b8dd",
+  "g03b_receipt_identity": "8cb0cf70550545e6627b5a17b164d065509c1dcdbfbe5910ec01321e57d4b646",
+  "g03b_review_identity": "8b5319af8bb160b57af34035834b63f12c80d142613d25a689f40d9e164ebaa0",
+  "g03c_diagnostic_identity": "b979f338a5df5c806b006c3cd797309dc98ade2937c955caa7aa9961f346b4e5",
+  "g03c_verdict": "CANDIDATE_SHORTCUT_PASS_AND_POOL_PENDING",
+  "performed": {
+    "candidate_regeneration": false,
+    "candidate_repair": false,
+    "candidate_rewrite": false,
+    "owner_review": false,
+    "production_routing": false,
+    "romanian_naturalness_review": false,
+    "runtime_integration": false,
+    "training": false,
+    "voice_review": false
+  },
+  "pool_level": {
+    "accessible_scope": "DEVELOPMENT_AND_FROZEN_NONBLIND_METADATA_ONLY",
+    "blind_reserve": "NOT_ACCESSED_NOT_TUNED",
+    "dominant_positive_family_count": 1,
+    "excluded_nonpositive_candidates": [
+      "f96e626487812b4a9ad32ef548d4ac715fae4ea9bb24590a73f942b0783f080f",
+      "4cc6bceef84e29d07e19d60dbbb1992b33fcb8af67373647f5fb8fedfce1d98c"
+    ],
+    "family_isolation": "PASS_PILOT03_FRESH_SOURCE_EVENT_TOPIC_AND_CREATIVE_FAMILIES",
+    "obligation_family_confound": "UNRESOLVED_SINGLE_POSITIVE_CANDIDATE_PERFECTLY_CONFOUNDS_TARGET_WITH_GOVERNANCE_V2_OBLIGATION_FAMILY",
+    "required_to_close": [
+      "additional independently acquired dominant-positive source families",
+      "family-isolated target confusables and mechanism negatives",
+      "cross-topic and cross-obligation balancing",
+      "repeat pool audit before curriculum or owner-positive freeze"
+    ],
+    "target_positive_candidates": [
+      "b4555cc43bf16a466734aed46e93baa83bd9bc37d52d3826976be3370ccef72d"
+    ],
+    "verdict": "POOL_PENDING_INSUFFICIENT_INDEPENDENT_POSITIVE_FAMILIES",
+    "weak_nonsemantic_classifier": {
+      "reason": "One eligible positive family cannot separate semantics from family, source, or obligation correlations.",
+      "status": "INSUFFICIENT_STATISTICAL_POWER",
+      "training_or_tuning_performed": false
+    }
+  },
+  "schema_name": "batch2-development-pilot03-candidate01-g03c-diagnostic-v1",
+  "schema_version": "1.0.0"
+}

@@ -1,0 +1,28 @@
+{
+  "authority_matrix": {
+    "candidate_regeneration": false,
+    "candidate_repair": false,
+    "candidate_rewrite": false,
+    "curriculum_promotion": false,
+    "owner_review": false,
+    "production_routing": false,
+    "romanian_naturalness_review": false,
+    "runtime_integration": false,
+    "training": false,
+    "voice_review": false
+  },
+  "blind_holdout_content_or_metadata_accessed": false,
+  "candidate_bytes_modified": false,
+  "candidate_identity": "b4555cc43bf16a466734aed46e93baa83bd9bc37d52d3826976be3370ccef72d",
+  "candidate_level_verdict": "CANDIDATE_SHORTCUT_PASS",
+  "candidate_raw_sha256": "86f058253be11227bf40a0de4842bf79ae7458b2a89f11c8fca033477e0a626d",
+  "contamination_verdict": "PASS_CLEAN_DEVELOPMENT_DIAGNOSTIC",
+  "g03b_receipt_identity": "8cb0cf70550545e6627b5a17b164d065509c1dcdbfbe5910ec01321e57d4b646",
+  "g03c_diagnostic_identity": "b979f338a5df5c806b006c3cd797309dc98ade2937c955caa7aa9961f346b4e5",
+  "g03c_receipt_identity": "ae9598814cf8a56c3a2ae4ff2a64c82cbcc4d82eeb376a3268fed8b8d74cde16",
+  "g03c_verdict": "CANDIDATE_SHORTCUT_PASS_AND_POOL_PENDING",
+  "next_gate_eligible": "G04A_ROMANIAN_NATURALNESS_SEPARATELY_AUTHORIZED_ONLY",
+  "pool_level_verdict": "POOL_PENDING_INSUFFICIENT_INDEPENDENT_POSITIVE_FAMILIES",
+  "schema_name": "batch2-development-pilot03-candidate01-g03c-receipt-v1",
+  "schema_version": "1.0.0"
+}
