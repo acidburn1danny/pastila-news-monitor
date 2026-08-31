@@ -1,0 +1,24 @@
+{
+  "defect": "DUPLICATED_04_SUFFIX_IN_TWO_SOURCE_STATUS_DECLARATION_KEYS",
+  "operational_authority_granted": false,
+  "owner_values_preserved": true,
+  "predecessor": {
+    "audit_identity": "4850ad69ae0a2f40a57649bbd56251a880d3a98347de55c76c5a50118a8b6396",
+    "owner_declaration_sha256": "acff7c3ffd4124c6c0d8921e3887811259f4192ef35e7fc40d51e8bcad7fe71c",
+    "request_identity": "ddf080ac6938162c067b475ad371b98e909b30cb77b4755d99828905cdab2ca5",
+    "template_identity": "0ec4d2d2b3b344d7c984d912483bf5a49374ed5d25789df0547945a0d6d3d426"
+  },
+  "repair_identity": "54e412a22821c79516fd28be823d6e5b64f94b1222797d3d76b9155b38e7de43",
+  "repair_verdict": "PASS_CANONICAL_DIRECTLY_SCOPED_REPAIR",
+  "rights_or_authority_changed": false,
+  "schema_name": "batch2-development-pilot05-template-schema-repair-v1",
+  "schema_version": "1.0.0",
+  "source_sha256_preserved": "e3404a694bf1203f8a11ceeed0e682511882237e4777bd0e092876994c4326cc",
+  "successor": {
+    "audit_identity": "2c1398fbb0933f7359896a006ae003c0cb48a50478e971a1d883ad8d3c1db5ac",
+    "canonical_declaration_identity": "f39da3241e013685da7e000533257af8d9ad6170d459bb60f546043f12b0819b",
+    "canonical_declaration_sha256": "69e207463fcb8d31e0ccaf99db46192bd577997dfb4b1d3658a5f955fb148e25",
+    "request_identity": "29cfd9b1ff06a4406978e4c145e672d7d28912e17d64ae34d997aaecb2e22ba3",
+    "template_identity": "7dbcbf484b6db52909231ba3a703f10c6b4a960ca552e6e24a62c9e8e8b34b69"
+  }
+}

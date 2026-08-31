@@ -74,11 +74,11 @@
   "source_status_declarations": {
     "known_and_unknown_boundaries_are_explicit": "OWNER_MUST_CHOOSE_BOOLEAN",
     "source_contains_no_mechanism_obligation_creative_premise_or_candidate": "OWNER_MUST_CHOOSE_BOOLEAN",
-    "source_does_not_reuse_pilots_01_02_03_04_04_wording_entities_events_or_creative_structures": "OWNER_MUST_CHOOSE_BOOLEAN",
-    "source_has_no_revision_sibling_same_event_or_syndication_relationship_with_pilots_01_02_03_04_04": "OWNER_MUST_CHOOSE_BOOLEAN",
+    "source_does_not_reuse_pilots_01_02_03_04_wording_entities_events_or_creative_structures": "OWNER_MUST_CHOOSE_BOOLEAN",
+    "source_has_no_revision_sibling_same_event_or_syndication_relationship_with_pilots_01_02_03_04": "OWNER_MUST_CHOOSE_BOOLEAN",
     "source_is_neutral_factual_authority": "OWNER_MUST_CHOOSE_BOOLEAN",
     "source_was_not_selected_for_a_humor_mechanism_or_pool_target": "OWNER_MUST_CHOOSE_BOOLEAN",
     "source_was_not_selected_or_shaped_using_any_operational_obligation": "OWNER_MUST_CHOOSE_BOOLEAN"
   },
-  "template_identity": "0ec4d2d2b3b344d7c984d912483bf5a49374ed5d25789df0547945a0d6d3d426"
+  "template_identity": "7dbcbf484b6db52909231ba3a703f10c6b4a960ca552e6e24a62c9e8e8b34b69"
 }

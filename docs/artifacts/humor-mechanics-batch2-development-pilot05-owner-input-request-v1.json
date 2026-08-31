@@ -20,7 +20,7 @@
   "bound_g04b_pool_audit_identity": "75b7644656e1e111f38998de07034aacca74c6eee0eccd813acbb201c0a433b7",
   "bound_g04b_receipt_identity": "17ef281ba9efab95268717dc0598db1b7f7ab052132f2cd18112908b07972e2b",
   "content_accessed": false,
-  "declaration_template_identity": "0ec4d2d2b3b344d7c984d912483bf5a49374ed5d25789df0547945a0d6d3d426",
+  "declaration_template_identity": "7dbcbf484b6db52909231ba3a703f10c6b4a960ca552e6e24a62c9e8e8b34b69",
   "freshness_checks_after_submission": [
     "BYTE_HASH_AND_GIT_BLOB_DISTINCT_FROM_PILOTS_01_02_03_04",
     "NO_TRANSITIVE_SOURCE_EVENT_AUTHORITY_TOPIC_REVISION_SYNDICATION_OR_CREATIVE_FAMILY_RELATION",
@@ -44,7 +44,7 @@
       "filename": "owner-declaration-pilot05-v1.json"
     }
   ],
-  "owner_input_request_identity": "ddf080ac6938162c067b475ad371b98e909b30cb77b4755d99828905cdab2ca5",
+  "owner_input_request_identity": "29cfd9b1ff06a4406978e4c145e672d7d28912e17d64ae34d997aaecb2e22ba3",
   "pool_status_preserved": "POOL_REBALANCING_REQUIRED_NO_CERTIFICATION",
   "post_g01_rebalancing_gate": {
     "construction_forbidden_on_failure": true,
@@ -93,6 +93,12 @@
   },
   "source_family_created": false,
   "status": "BLOCKED_AWAITING_OWNER_INPUT",
+  "template_repair": {
+    "owner_source_bytes_modified": false,
+    "owner_values_preserved": true,
+    "predecessor_template_identity": "0ec4d2d2b3b344d7c984d912483bf5a49374ed5d25789df0547945a0d6d3d426",
+    "repair": "REMOVE_DUPLICATED_04_SUFFIX_FROM_TWO_PRIOR_FAMILY_DECLARATION_KEYS"
+  },
   "unassigned": {
     "creative_premise_family_id": "UNASSIGNED",
     "operational_obligation": true,

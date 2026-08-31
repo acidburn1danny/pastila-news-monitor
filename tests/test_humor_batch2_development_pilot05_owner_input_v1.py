@@ -37,7 +37,10 @@ def test_pilot05_template_requires_owner_choices_and_prior_pilot_independence() 
     assert identity == seal("B2_DEVELOPMENT_PILOT05_OWNER_DECLARATION_TEMPLATE_V1", value)
     assert value["pilot_id"] == "BATCH2-INTERNALLY-OWNED-DEVELOPMENT-PILOT-05"
     assert all(item == "OWNER_MUST_CHOOSE_BOOLEAN_INDEPENDENTLY" for item in value["independent_grants"].values())
-    assert "pilots_01_02_03_04_04" in " ".join(value["source_status_declarations"]).lower()
+    keys = set(value["source_status_declarations"])
+    assert "source_does_not_reuse_pilots_01_02_03_04_wording_entities_events_or_creative_structures" in keys
+    assert "source_has_no_revision_sibling_same_event_or_syndication_relationship_with_pilots_01_02_03_04" in keys
+    assert not any("04_04" in key for key in keys)
 
 
 def test_pilot05_audit_stops_for_owner_input_without_g04b() -> None:
