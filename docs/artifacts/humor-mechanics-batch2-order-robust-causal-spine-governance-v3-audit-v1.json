@@ -1,0 +1,20 @@
+{
+  "analysis_identity": "1df2d8aea86db4b82fa32f9ee43aade127b9d4cddb90f4d8c362ee271d8a10f3",
+  "audit_identity": "284334b375206be7abb483e16cc0e64e5034bd7bbf30f379d4a002bf59770d66",
+  "candidate_or_source_created": false,
+  "definitional_paraphrase_risk": "PASS_OPERATIONAL_MINIMUM_NECESSARY",
+  "deterministic_blockers_remaining": [],
+  "factual_authority_bypass": "PASS_EXACT_CONTEXT_REQUIRED",
+  "fixed_template_risk": "PASS_ORDER_AND_SURFACE_FORM_NOT_FIXED",
+  "governance_identity": "4848bd025e43eff6652e4c2024072760d372ca4ac7427e5f21e1d2c4bcdb35dc",
+  "hidden_construction_authority": "ABSENT",
+  "label_and_taxonomy_leakage": "PASS_ZERO_HITS",
+  "neighbor_answer_leakage": "PASS_PROHIBITIONS_OPERATIONAL_ONLY",
+  "pilot06_regression": "PASS_EXPECTED_REJECTION",
+  "regression_identity": "5e2a00b38efa302a4ed8200f90c1b7cf37adee17398cce6499d57effa1b06c07",
+  "schema_identity": "28dfdab8dd9112d0148dad0b513155b5ae14445f5daee359b7a35d1bc5eb1c2c",
+  "schema_name": "batch2-order-robust-causal-spine-governance-v3-audit-v1",
+  "schema_version": "1.0.0",
+  "source_shape_leakage": "PASS_SOURCE_SELECTION_REMAINS_PRE_ASSIGNMENT",
+  "verdict": "PASS_SOURCE_ONLY_ZERO_CONSTRUCTION"
+}

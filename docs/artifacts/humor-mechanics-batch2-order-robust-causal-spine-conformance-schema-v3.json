@@ -1,0 +1,28 @@
+{
+  "allowed_verdicts": [
+    "PASS",
+    "FAIL_DELAYED_DISCLOSURE_DOMINANCE",
+    "FAIL_INCOMPLETE_CAUSAL_SPINE",
+    "FAIL_SINGLE_LITERAL_TRANSFER_DOMINANCE"
+  ],
+  "candidate_surface_creation_authority": false,
+  "governance_identity": "4848bd025e43eff6652e4c2024072760d372ca4ac7427e5f21e1d2c4bcdb35dc",
+  "mechanism_label_forbidden_in_constructor_view": true,
+  "order_neutral_test": {
+    "fail_condition": "DELAYED_DISCLOSURE_OR_RETROSPECTIVE_REORIENTATION_BECOMES_PRIMARY",
+    "pass_condition": "CLAIMED_PRIMARY_OPERATION_REMAINS_NECESSARY_WHEN_FACT_IS_NOT_DELAYED",
+    "structural_counterfactual_only": true,
+    "surface_rewrite_forbidden": true
+  },
+  "required_predicates": [
+    "COMPLETE_MULTI_LINK_CAUSAL_SPINE",
+    "EACH_LINK_NECESSARY_AND_NON_ARBITRARY",
+    "NO_DELAYED_FACT_DISCLOSURE_AS_PRIMARY_EFFECT",
+    "DOMINANCE_STABLE_UNDER_ORDER_NEUTRAL_STRUCTURAL_TEST",
+    "NO_SINGLE_LITERAL_TRANSFER_AS_SOLE_ENGINE",
+    "NO_INSTRUCTION_LANGUAGE_TRANSFER"
+  ],
+  "schema_identity": "28dfdab8dd9112d0148dad0b513155b5ae14445f5daee359b7a35d1bc5eb1c2c",
+  "schema_name": "batch2-order-robust-causal-spine-conformance-schema-v3",
+  "schema_version": "3.0.0"
+}

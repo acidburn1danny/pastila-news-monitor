@@ -1,0 +1,37 @@
+{
+  "analysis_identity": "1df2d8aea86db4b82fa32f9ee43aade127b9d4cddb90f4d8c362ee271d8a10f3",
+  "candidate_identity": "61b4c89e4ec65ac211debc034ed35f47f79a2757551266a90fadf5acde270773",
+  "candidate_modified": false,
+  "candidate_raw_sha256": "e00b1b83507ece1808445a3f6cfd07286ee20eecc6f4208d9aa4940ab2fbc1a9",
+  "counterfactual_findings": {
+    "candidate_rewrite_performed": false,
+    "fact_available_before_or_with_chain": "REMOVES_DELAYED_DISCLOSURE_AS_PRIMARY_ORGANIZING_EFFECT",
+    "remove_literal_absorption_transfer": "CURRENT_SURFACE_LOSES_ONE_LOCAL_ENGINE_BUT_GOVERNANCE_CAN_REQUIRE_A_MULTI_LINK_CAUSAL_SPINE",
+    "same_links_without_fact_last_reveal": "ABSURD_CAUSAL_RELATION_REMAINS_AVAILABLE"
+  },
+  "disposition_commit": "e666296e2dcea0df6b226543c578e8b88fa594c7",
+  "disposition_identity": "91540ab00c1384aeee6f5017179e4ea6815aaeede3d15ed91a7d21b4f7b667b7",
+  "observed_blind_disagreement": {
+    "both_confidence": "HIGH",
+    "contrast_pass": "MISDIRECTION_DOMINANT_TARGET_SUPPORTING",
+    "open_pass": "TARGET_OPERATION_DOMINANT",
+    "substantive": true
+  },
+  "responsibility": {
+    "blind_review": "VALID_DETECTION_NOT_CAUSAL",
+    "constructor_realization": "CONTRIBUTING",
+    "factual_authority": "NOT_CAUSAL",
+    "mandatory_obligation_order": "PRIMARY",
+    "source_proposition": "NOT_CAUSAL"
+  },
+  "root_causes": [
+    "MANDATORY_RESULT_FIRST_FACT_LAST_ORDER_CREATED_A_DELAYED_DISCLOSURE_ARCHITECTURE",
+    "FACTUAL_RELATION_FUNCTIONED_AS_RETROSPECTIVE_EXPLANATION_INSTEAD_OF_AN_EARLY_VISIBLE_CAUSAL_ANCHOR",
+    "COLON_AND_SECOND_SENTENCE_BOUNDARY_REINFORCED_SETUP_THEN_REVEAL_READING",
+    "SINGLE_REPRESENTATION_TO_PHYSICAL_TRANSFER_MADE_LITERALIZATION_A_SALIENT_LOCAL_ENGINE",
+    "V2_CONFORMANCE_PROVED_LINK_COMPLETENESS_BUT_DID_NOT_TEST_DOMINANCE_STABILITY_AGAINST_ORDER_CHANGE"
+  ],
+  "schema_name": "batch2-pilot06-order-dominance-root-cause-analysis-v1",
+  "schema_version": "1.0.0",
+  "verdict": "ROOT_CAUSE_CONFIRMED_AT_ORDER_AND_DOMINANCE_GOVERNANCE_BOUNDARY"
+}

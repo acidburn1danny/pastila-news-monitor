@@ -1,0 +1,23 @@
+{
+  "candidate_bytes_embedded": false,
+  "candidate_identity": "61b4c89e4ec65ac211debc034ed35f47f79a2757551266a90fadf5acde270773",
+  "candidate_modified": false,
+  "candidate_raw_sha256": "e00b1b83507ece1808445a3f6cfd07286ee20eecc6f4208d9aa4940ab2fbc1a9",
+  "expected_predicates": {
+    "COMPLETE_MULTI_LINK_CAUSAL_SPINE": true,
+    "DOMINANCE_STABLE_UNDER_ORDER_NEUTRAL_STRUCTURAL_TEST": false,
+    "EACH_LINK_NECESSARY_AND_NON_ARBITRARY": true,
+    "NO_DELAYED_FACT_DISCLOSURE_AS_PRIMARY_EFFECT": false,
+    "NO_INSTRUCTION_LANGUAGE_TRANSFER": true,
+    "NO_SINGLE_LITERAL_TRANSFER_AS_SOLE_ENGINE": false
+  },
+  "expected_verdict": "FAIL_DELAYED_DISCLOSURE_DOMINANCE",
+  "observed_blind_basis": {
+    "contrast": "MISDIRECTION_DOMINANT_TARGET_SUPPORTING_HIGH",
+    "open": "TARGET_OPERATION_DOMINANT_HIGH"
+  },
+  "positive_pool_eligibility": false,
+  "regression_identity": "5e2a00b38efa302a4ed8200f90c1b7cf37adee17398cce6499d57effa1b06c07",
+  "schema_name": "batch2-pilot06-order-dominance-regression-v1",
+  "schema_version": "1.0.0"
+}
