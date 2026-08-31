@@ -54,6 +54,8 @@ def prepare_development_constructor_access_v1(*, release_bytes: bytes) -> Prepar
             "B2_DEVELOPMENT_PILOT02_CONSTRUCTOR_ACCESS_RELEASE_V1",
         "batch2-development-pilot03-constructor-access-release-v1":
             "B2_DEVELOPMENT_PILOT03_CONSTRUCTOR_ACCESS_RELEASE_V1",
+        "batch2-development-pilot04-constructor-access-release-v1":
+            "B2_DEVELOPMENT_PILOT04_CONSTRUCTOR_ACCESS_RELEASE_V1",
     }
     release_namespace = release_namespaces.get(release["schema_name"])
     if release_namespace is None:
@@ -79,6 +81,7 @@ def prepare_development_constructor_access_v1(*, release_bytes: bytes) -> Prepar
         "B2_DEVELOPMENT_PILOT01_CONSTRUCTOR_PACKET_G02B_SOURCE_BOUND_V1",
         "B2_DEVELOPMENT_PILOT02_CONSTRUCTOR_PACKET_G02B_SOURCE_BOUND_V1",
         "B2_DEVELOPMENT_PILOT03_CONSTRUCTOR_PACKET_G02B_SOURCE_BOUND_V1",
+        "B2_DEVELOPMENT_PILOT04_CONSTRUCTOR_PACKET_G02B_SOURCE_BOUND_V1",
     }:
         raise ValueError("packet seal namespace")
     if packet_identity != _seal(namespace, packet_core):
