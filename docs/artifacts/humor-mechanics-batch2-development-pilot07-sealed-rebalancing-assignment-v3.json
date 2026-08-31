@@ -1,0 +1,37 @@
+{
+  "admission_identity": "2135ce27c3cc13342079365549139c4012d10307afc9d6125723bd4f5e85c637",
+  "authorized_visible_context_sha256": "37e92f7c6b55729e6efee58d6145b8184fc0ac98410ab0d412b51f54605a1899",
+  "candidate_surface": null,
+  "close_alternative_profile": {
+    "distinct_from_pilot03_pilot04": true,
+    "primary_neighbor": "LITERALIZATION",
+    "required_closed_choices": [
+      "TARGET",
+      "LITERALIZATION",
+      "MISDIRECTION",
+      "ESCALATION",
+      "NONE",
+      "AMBIGUOUS"
+    ],
+    "secondary_neighbors": [
+      "MISDIRECTION",
+      "ESCALATION"
+    ]
+  },
+  "constructor_access": false,
+  "creative_premise_family_id": "UNASSIGNED",
+  "obligation_family_identity": "59e0fd325f582aabcd3ec0cf587fc3ba0259c4ad242bd227c2724690ff7e5752",
+  "partition": "DEVELOPMENT",
+  "schema_name": "batch2-development-pilot07-sealed-rebalancing-assignment-v3",
+  "schema_version": "3.0.0",
+  "sealed_assignment_identity": "40e51c49f9f488aab87c044d107aff5f78be8d900ca3c5e33e07b7d06e2cce50",
+  "selected_proposition_id": "P5",
+  "selected_supporting_span_sha256": "37e92f7c6b55729e6efee58d6145b8184fc0ac98410ab0d412b51f54605a1899",
+  "status": "SEALED_PROPOSAL_NOT_RELEASED",
+  "sufficiency_receipt_identity": "a242e3019b6d204dc6b1673da1c235bbd182887c12bbfdbb19680e48392a9d04",
+  "target_mapping": {
+    "frozen_plan_option": "M13_ABSURD_LOGICAL_EXTENSION",
+    "mechanism_id": "HMCV1-B02-M03-ABSURD_LOGICAL_EXTENSION",
+    "mechanism_name": "Absurd Logical Extension"
+  }
+}
