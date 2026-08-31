@@ -1,0 +1,17 @@
+{
+  "audit_identity": "1ca78918da823e6b2ad77bc90a40b47a1569f7baf5466ae6038c5240394d02c5",
+  "candidate_surface_absent": true,
+  "deterministic_blockers": [],
+  "downstream_authority": false,
+  "exact_admission_binding": "PASS",
+  "exact_source_and_envelope_binding": "PASS",
+  "exactly_one_selected_proposition": "PASS_P3",
+  "git_object_only": true,
+  "mechanism_label_absent": true,
+  "positive_source_only_witness": "PASS_NONEMPTY_MECHANISM_NEUTRAL",
+  "receipt_identity": "240ee7a3eaf7ec8869235212c466aee8be0e0c8126a5bee80c560c36c8043b9a",
+  "schema_name": "batch2-pilot06-post-g01-proposition-sufficiency-audit-v1",
+  "schema_version": "1.0.0",
+  "six_proposition_spans_reverified": "PASS",
+  "verdict": "PASS_SOURCE_ONLY_NO_ASSIGNMENT_ZERO_CONSTRUCTION"
+}

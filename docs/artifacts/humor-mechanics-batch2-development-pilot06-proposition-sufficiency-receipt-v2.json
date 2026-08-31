@@ -1,0 +1,117 @@
+{
+  "abstract_adjacent_link_witness": {
+    "adjacent_links": [
+      "REGISTERED_CONTROL_DATE_IS_BOUND_TO_THE_VERIFICATION_EVENT",
+      "VERIFIED_STATUS_ENTRY_IS_BOUND_TO_THE_SAME_VERIFICATION_EVENT"
+    ],
+    "candidate_surface": null,
+    "humor": null,
+    "kind": "ABSTRACT_SOURCE_RELATION_ONLY",
+    "non_arbitrariness": "REMOVING_THE_VERIFICATION_EVENT_BREAKS_BOTH_RECORDED_COMPONENT_BINDINGS",
+    "relation": "VERIFICATION_EVENT_ENTAILS_REGISTER_ENTRY_WITH_VERIFIED_STATUS_AND_CONTROL_DATE"
+  },
+  "admission_commit": "b88b2f7431818c51d24fc307ca24743b3a868473",
+  "admission_identity": "9cf027e7bdf1c5e8370f8d384d1a775c2aa164703c7dbdbaacf3337d2311d41e",
+  "all_proposition_assessments": [
+    {
+      "abstract_adjacent_link_witness": null,
+      "operand_closure": "PASS_NO_UNBOUND_DERIVED_OPERAND",
+      "proposition_id": "P1",
+      "qualification_preservation": "PASS_BOUND_EXACTLY",
+      "reference_resolution": "PASS_NO_UNRESOLVED_REFERENCE",
+      "selection_status": "NOT_SELECTED_NO_POSITIVE_WITNESS_ASSERTED",
+      "standalone_semantic_closure": true,
+      "supporting_span_sha256": "96bd00ba6d3da77cc4004231ccf7c8607d55a93593be8f5a1940e6470449d524"
+    },
+    {
+      "abstract_adjacent_link_witness": null,
+      "operand_closure": "PASS_NO_UNBOUND_DERIVED_OPERAND",
+      "proposition_id": "P2",
+      "qualification_preservation": "PASS_NONE_REQUIRED",
+      "reference_resolution": "PASS_NO_UNRESOLVED_REFERENCE",
+      "selection_status": "NOT_SELECTED_NO_POSITIVE_WITNESS_ASSERTED",
+      "standalone_semantic_closure": true,
+      "supporting_span_sha256": "521d08dcf614b720afac1257c9f5d052609f13f0976e7437cf3e9508a598df62"
+    },
+    {
+      "abstract_adjacent_link_witness": {
+        "adjacent_links": [
+          "REGISTERED_CONTROL_DATE_IS_BOUND_TO_THE_VERIFICATION_EVENT",
+          "VERIFIED_STATUS_ENTRY_IS_BOUND_TO_THE_SAME_VERIFICATION_EVENT"
+        ],
+        "candidate_surface": null,
+        "humor": null,
+        "kind": "ABSTRACT_SOURCE_RELATION_ONLY",
+        "non_arbitrariness": "REMOVING_THE_VERIFICATION_EVENT_BREAKS_BOTH_RECORDED_COMPONENT_BINDINGS",
+        "relation": "VERIFICATION_EVENT_ENTAILS_REGISTER_ENTRY_WITH_VERIFIED_STATUS_AND_CONTROL_DATE"
+      },
+      "operand_closure": "PASS_NO_UNBOUND_DERIVED_OPERAND",
+      "proposition_id": "P3",
+      "qualification_preservation": "PASS_BOUND_EXACTLY",
+      "reference_resolution": "PASS_INTERNAL_TO_SELECTED_SPAN",
+      "selection_status": "SELECTED_SUFFICIENT",
+      "standalone_semantic_closure": true,
+      "supporting_span_sha256": "51d1891c346d6e7aa1f6b33da5a1d964cc99c2789d255ac7fd54999181a20dcd"
+    },
+    {
+      "abstract_adjacent_link_witness": null,
+      "operand_closure": "PASS_NO_UNBOUND_DERIVED_OPERAND",
+      "proposition_id": "P4",
+      "qualification_preservation": "PASS_NONE_REQUIRED",
+      "reference_resolution": "PASS_NO_UNRESOLVED_REFERENCE",
+      "selection_status": "NOT_SELECTED_NO_POSITIVE_WITNESS_ASSERTED",
+      "standalone_semantic_closure": true,
+      "supporting_span_sha256": "60b9b5fb836f30a545487f761c2200f4cda6472fa304b8517bb14ba6383b3ced"
+    },
+    {
+      "abstract_adjacent_link_witness": null,
+      "operand_closure": "PASS_NO_UNBOUND_DERIVED_OPERAND",
+      "proposition_id": "P5",
+      "qualification_preservation": "PASS_NONE_REQUIRED",
+      "reference_resolution": "PASS_NO_UNRESOLVED_REFERENCE",
+      "selection_status": "NOT_SELECTED_NO_POSITIVE_WITNESS_ASSERTED",
+      "standalone_semantic_closure": true,
+      "supporting_span_sha256": "a2fdf1a17f4f138b80fa5c237658ce18e9bb5313798577993140ed491a8431ee"
+    },
+    {
+      "abstract_adjacent_link_witness": null,
+      "operand_closure": "PASS_NO_UNBOUND_DERIVED_OPERAND",
+      "proposition_id": "P6",
+      "qualification_preservation": "PASS_BOUND_EXACTLY",
+      "reference_resolution": "PASS_NO_UNRESOLVED_REFERENCE",
+      "selection_status": "NOT_SELECTED_NO_POSITIVE_WITNESS_ASSERTED",
+      "standalone_semantic_closure": true,
+      "supporting_span_sha256": "4ae9ac149db17a3f2305d9357c94b5286169354a7bcceaf2da65963be4d18a7a"
+    }
+  ],
+  "authority_envelope_identity": "847d37bb095d029758d1c8cce44e7685edf61016a151762f6ec7e12b7af2660c",
+  "authority_matrix": {
+    "assignment": false,
+    "construction": false,
+    "constructor_release": false,
+    "g04b_pool_certification": false,
+    "model_exposure": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "training": false
+  },
+  "authorized_visible_context": "EXACT_SELECTED_SUPPORTING_SPAN_ONLY",
+  "authorized_visible_context_sha256": "51d1891c346d6e7aa1f6b33da5a1d964cc99c2789d255ac7fd54999181a20dcd",
+  "candidate_surface": null,
+  "creative_premise_family_id": "UNASSIGNED",
+  "governance_identity": "4b36fa7fbe4f13f8c69add229586fdcb1f571dcb8691601709b45073f4f51f83",
+  "mechanism_label_exposed": false,
+  "operand_closure": "PASS_NO_UNBOUND_DERIVED_OPERAND",
+  "qualification_preservation": "PASS_BOUND_EXACTLY",
+  "receipt_identity": "240ee7a3eaf7ec8869235212c466aee8be0e0c8126a5bee80c560c36c8043b9a",
+  "reference_resolution": "PASS_INTERNAL_TO_SELECTED_SPAN",
+  "schema_identity": "8e76fe9719e38580b364b3406908f358476f3dba1454695dd34b36d1f0dc92bd",
+  "schema_name": "batch2-reverse-disclosure-selected-proposition-sufficiency-receipt-v2",
+  "schema_version": "2.0.0",
+  "scope_time_modality_unknown_boundaries": "PASS_PRESERVED",
+  "selected_proposition_id": "P3",
+  "selected_supporting_span_sha256": "51d1891c346d6e7aa1f6b33da5a1d964cc99c2789d255ac7fd54999181a20dcd",
+  "source_package_identity": "67f2744713981d08e5b460284cfec094a0e6be1029b8ce02b46c43e2a378082d",
+  "standalone_semantic_closure": true,
+  "verdict": "PASS_SELECTED_PROPOSITION_SUFFICIENT"
+}
