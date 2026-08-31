@@ -1,0 +1,97 @@
+{
+  "admission_identity": "9cf027e7bdf1c5e8370f8d384d1a775c2aa164703c7dbdbaacf3337d2311d41e",
+  "authority_matrix": {
+    "assignment": false,
+    "construction": false,
+    "constructor_release": false,
+    "g04b_pool_certification": false,
+    "model_exposure": false,
+    "production_routing": false,
+    "proposition_sufficiency_evaluation": false,
+    "runtime_integration": false,
+    "training": false
+  },
+  "eligibility": "ELIGIBLE_FOR_SEPARATELY_AUTHORIZED_POST_G01_PROPOSITION_SUFFICIENCY_GATE_ONLY",
+  "g01a": {
+    "correction_revocation_supersession": "CURRENT_V1_NO_SUCCESSOR_OR_REVOCATION",
+    "custodial_authority": "PASS_8_OF_8_CONSUMED",
+    "immutable_capture_and_version": "PASS",
+    "propositions": [
+      {
+        "coordinates_and_hashes": "PASS",
+        "modality_scope_attribution_boundaries": "PASS",
+        "proposition_id": "P1",
+        "qualification": "BOUND"
+      },
+      {
+        "coordinates_and_hashes": "PASS",
+        "modality_scope_attribution_boundaries": "PASS",
+        "proposition_id": "P2",
+        "qualification": "NONE_REQUIRED"
+      },
+      {
+        "coordinates_and_hashes": "PASS",
+        "modality_scope_attribution_boundaries": "PASS",
+        "proposition_id": "P3",
+        "qualification": "BOUND"
+      },
+      {
+        "coordinates_and_hashes": "PASS",
+        "modality_scope_attribution_boundaries": "PASS",
+        "proposition_id": "P4",
+        "qualification": "NONE_REQUIRED"
+      },
+      {
+        "coordinates_and_hashes": "PASS",
+        "modality_scope_attribution_boundaries": "PASS",
+        "proposition_id": "P5",
+        "qualification": "NONE_REQUIRED"
+      },
+      {
+        "coordinates_and_hashes": "PASS",
+        "modality_scope_attribution_boundaries": "PASS",
+        "proposition_id": "P6",
+        "qualification": "BOUND"
+      }
+    ],
+    "rights_and_permitted_use": "PASS_WITH_STRICT_NON_INHERITANCE",
+    "source_git_object": "bbd1f4a8ee0ba35c70bb676b0a81177cdb7913cf",
+    "source_sha256": "eb97e6bdffc809d0902f90bb26b95c3c4a6047476b27eec7ac46b613dba030ad",
+    "target_safety": "PASS_LOW_RISK_SYNTHETIC",
+    "third_party_material": "NONE_DECLARED_AND_NONE_OBSERVED",
+    "verdict": "PASS"
+  },
+  "g01b": {
+    "contamination_ledger_head": "a92ba489bc32a5b62d3adf48c655703c107dde2ebc241b93cfc95ad39a91548f",
+    "contamination_state": "CLEAN_DEVELOPMENT_ONLY_NO_BLIND_EXPOSURE",
+    "creative_premise_family_id": "UNASSIGNED",
+    "downstream_exposure": {
+      "constructor": false,
+      "model": false,
+      "production": false,
+      "runtime": false,
+      "training": false
+    },
+    "family_closure": "PASS",
+    "family_identities": {
+      "authority_family": "3dd071625b8dfc6d4d9989b0cad831ec640685aafbea5431701fa9827da304f2",
+      "creative_premise_family_id": "UNASSIGNED",
+      "event_family": "16fb775884b176492524b3d80818a549bddd2ca347b44b642731262834dea404",
+      "family_closure": "dd5812610b0aa621f6d80e2873d865b867da7b4f3376e2d139eea787bfdaf086",
+      "revision_family": "c470d94ff129fbf10991bfe8fc5253c9eeed7fd849a0173571518aa2528c1bd5",
+      "source_family": "2772cf009b7e2c47c522e4283bbaa2a85293c128f0b25540b1b91b45328dd61e",
+      "topic_entity_family": "881c4de35f30f8999ef5ca0f8f7244ad8e2614219d5ce254f76cee312fbfa75e"
+    },
+    "mechanism_assignment": "ABSENT",
+    "partition": "DEVELOPMENT",
+    "partition_isolation": "PASS",
+    "relationship_state": "FRESH_INDEPENDENT_FAMILY_NO_DUPLICATE_REVISION_SIBLING_OR_SAME_EVENT_RELATIVE",
+    "verdict": "PASS"
+  },
+  "ingestion_receipt_identity": "09c9500580f5109bfc40f720b23abefa9da832b9b5f24e5755f828df31543bac",
+  "proposition_sufficiency_evaluated": false,
+  "reviewed_commit": "46fe5cd153f1aec8acb8af7722123c2f9f0142c2",
+  "schema_name": "batch2-development-pilot06-g01a-g01b-admission-v1",
+  "schema_version": "1.0.0",
+  "source_package_identity": "67f2744713981d08e5b460284cfec094a0e6be1029b8ce02b46c43e2a378082d"
+}
