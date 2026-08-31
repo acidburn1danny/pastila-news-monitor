@@ -1,0 +1,104 @@
+{
+  "authority_matrix": {
+    "candidate_regeneration": false,
+    "candidate_repair": false,
+    "candidate_rewrite": false,
+    "curriculum_promotion": false,
+    "owner_review": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "training": false
+  },
+  "candidate_bytes_modified": false,
+  "candidate_identity": "b4555cc43bf16a466734aed46e93baa83bd9bc37d52d3826976be3370ccef72d",
+  "candidate_raw_sha256": "86f058253be11227bf40a0de4842bf79ae7458b2a89f11c8fca033477e0a626d",
+  "candidate_repair_attempted": false,
+  "disposition_effect": "ELIGIBLE_FOR_SEPARATELY_AUTHORIZED_OWNER_REVIEW_SUBJECT_TO_POOL_PENDING_STATUS",
+  "evaluator_inaccessible": [
+    "sealed assignment mapping",
+    "mechanism identity/name/ordinal",
+    "G03 target reconciliation",
+    "constructor packet and prompt",
+    "owner preference history",
+    "historical positive or rejected surfaces",
+    "blind-evaluation material",
+    "future owner judgment"
+  ],
+  "evaluator_visible": {
+    "candidate_surface": "La momentul recepției nu este documentat conținutul exact al coletului. În povestea imaginară a coletului, necunoașterea conținutului lasă lista de inventar goală; cum lista goală nu poate confirma nimic, deschiderea programată ajunge să fie singurul lucru care mai poate fi inventariat.",
+    "rubric": [
+      "TONAL_COHERENCE",
+      "SENTENCE_MOVEMENT",
+      "PAYOFF_ECONOMY",
+      "VOICE_SPECIFICITY_WITHOUT_OVERWRITING",
+      "NO_CANNED_OPENING",
+      "NO_CANNED_LANDING",
+      "NO_HISTORICAL_WORDING_COPY",
+      "REGISTER_RESERVATION_MATERIALITY"
+    ]
+  },
+  "findings": {
+    "no_canned_landing": {
+      "finding": "Aterizarea depinde de inventar și de deschiderea coletului; nu este o concluzie interschimbabilă ori un slogan.",
+      "verdict": "PASS"
+    },
+    "no_canned_opening": {
+      "finding": "Deschiderea este o limită factuală legată direct de sursă, nu o formulă generică de introducere comică.",
+      "verdict": "PASS"
+    },
+    "no_historical_wording_copy": {
+      "finding": "Nu există reutilizare de suprafață istorică în linia de construcție; verificarea de expresie exactă găsește frazele doar în artefactele propriei linii Pilot 03.",
+      "verdict": "PASS"
+    },
+    "overall_voice_compatibility": {
+      "finding": "Candidatul are setup sobru, progresie lizibilă și payoff contextual, fără deschidere sau aterizare de șablon.",
+      "verdict": "PASS"
+    },
+    "payoff_economy": {
+      "finding": "Finalul «singurul lucru care mai poate fi inventariat» închide premisa fără explicație suplimentară după poantă.",
+      "verdict": "PASS"
+    },
+    "register_reservation_materiality": {
+      "finding": "Nominalizarea ușor abstractă observată la G04A nu încetinește decisiv ritmul și este compensată de verbul concret și aterizarea scurtă.",
+      "verdict": "NONMATERIAL"
+    },
+    "sentence_movement": {
+      "finding": "Prima frază fixează limita factuală; a doua avansează în două trepte clare și aterizează pe reclasificarea finală.",
+      "verdict": "PASS"
+    },
+    "tonal_coherence": {
+      "finding": "Tonul rămâne sec și controlat: constatarea neutră trece într-o logică imaginară fără schimbare bruscă de persoană sau atitudine.",
+      "verdict": "PASS"
+    },
+    "voice_specificity_without_overwriting": {
+      "finding": "Vocabularul de inventar este specific situației și suficient de sobru; nu adaugă ornamente sau o voce teatrală străină materialului.",
+      "verdict": "PASS"
+    }
+  },
+  "g04a_commit": "70a44fc5dca0508f7c112616f743dc47ec31a8a9",
+  "g04a_receipt_identity": "eed6c29e2ca003f892ddee1f98c475fd536053662f56049ef6c673ffb5bcfe51",
+  "g04a_reservations": [
+    "MINOR_ABSTRACT_NOMINALIZATION_NONMATERIAL"
+  ],
+  "g04a_review_identity": "3097dea8d17df534cb00bca92e2e771364da8db4637a9c90747bdb2aade81ef4",
+  "mechanism_adjudication_performed": false,
+  "owner_preference_accessed": false,
+  "performed": {
+    "candidate_regeneration": false,
+    "candidate_repair": false,
+    "candidate_rewrite": false,
+    "owner_review": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "training": false
+  },
+  "reservations": [
+    "MINOR_ABSTRACT_NOMINALIZATION_NONMATERIAL"
+  ],
+  "review_mode": "BLIND_MECHANISM_INDEPENDENT_VOICE_COMPATIBILITY",
+  "schema_name": "batch2-development-pilot03-candidate01-blind-voice-review-v1",
+  "schema_version": "1.0.0",
+  "sealed_mapping_accessed": false,
+  "voice_review_identity": "7c0436af16995fe07f1c6824ee196ce51982a758e63f0e3d9c40f9f9de971dfb",
+  "voice_verdict": "VOICE_PASS"
+}
