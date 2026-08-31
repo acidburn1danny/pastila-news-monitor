@@ -1,0 +1,30 @@
+{
+  "authority_matrix": {
+    "g03_mechanism_recovery": false,
+    "g04b_pool_certification": false,
+    "owner_review": false,
+    "production_routing": false,
+    "regeneration": false,
+    "repair": false,
+    "rewrite": false,
+    "runtime_integration": false,
+    "training": false
+  },
+  "candidate_identity": "a7414fa9f1c50a5b674d9c3b5d7c531c46e6f8b70472893697a92d0309dc30ac",
+  "candidate_modified": false,
+  "candidate_raw_sha256": "8030222614461de66246eb9f2a14d1230e271b327007092f30f216f55a0d7166",
+  "conformance_receipt_identity": "90d60b54f043f11efef7b3ca69b7ea1c3a1b8356003d4d1c95f4a57b0fe9201e",
+  "creative_premise_family_id": "5a9ec724df58f6d855b298028c6c95aad4940b2379483971b1c51ce6b4ab22d7",
+  "disposition": "G02C_REJECTED_STOP_NO_REPAIR",
+  "eligibility": "NOT_ELIGIBLE_FOR_G03_OR_POSITIVE_POOL",
+  "g02_commit": "9794f0e9ff7ca227d2eae6852f4b2f4d67fc6806",
+  "g02_receipt_identity": "02edafd3200d39fcf842e570a8ab3c824107e893cbbe5c01742d70e1f0cadab3",
+  "g02c_review_identity": "d2da8e5b1c79afbb32810c015df480f8647a25162fe12425852ad839ca331ef3",
+  "g02c_verdict": "FAIL_INCOMPLETE_RECOVERABLE_REVERSE_DEPENDENCY",
+  "g03_performed": false,
+  "mechanism_neutrality": "PASS_TARGET_MAPPING_NOT_ACCESSED",
+  "predicate_verification": "FAIL_THREE_REQUIRED_DEPENDENCY_PREDICATES",
+  "schema_name": "batch2-development-pilot05-candidate-g02c-review-v1",
+  "schema_version": "1.0.0",
+  "sealed_mapping_accessed": false
+}

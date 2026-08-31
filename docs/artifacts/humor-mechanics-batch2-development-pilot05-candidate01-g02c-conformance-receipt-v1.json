@@ -1,0 +1,78 @@
+{
+  "candidate_git_blob_oid_sha1": "9f9990aa29307ea2b0150b5f670c7bfa96299203",
+  "candidate_identity": "a7414fa9f1c50a5b674d9c3b5d7c531c46e6f8b70472893697a92d0309dc30ac",
+  "candidate_raw_sha256": "8030222614461de66246eb9f2a14d1230e271b327007092f30f216f55a0d7166",
+  "conformance_receipt_identity": "90d60b54f043f11efef7b3ca69b7ea1c3a1b8356003d4d1c95f4a57b0fe9201e",
+  "constructor_facing_packet_identity": "116febfa5e3953741e7afbbddc78eaecf09b33dbdad495d3f3019903b8a56b2a",
+  "failure": {
+    "candidate_repair_performed": false,
+    "classification": "INCOMPLETE_RECOVERABLE_REVERSE_DEPENDENCY",
+    "earliest_failed_link": "STEP2_TO_SELECTED_FACTUAL_RELATION",
+    "observed_gap": "The selected P3 relation supplies the 20.1-degree display and only 'the same reference'; it does not supply the reference's numeric value or another relation from which 0.1 is recoverable.",
+    "selected_proposition": "P3",
+    "why_arbitrary": "A different invented difference could replace 0.1 without contradicting or changing the selected P3 proposition."
+  },
+  "obligation_instance_identity": "5b876dc08d35f154196d00d4a5f73c6d68b268061c4144e2971f7aca32395228",
+  "obligation_version": "REVERSE_DISCLOSURE_DEPENDENCY_V1",
+  "required_predicates": {
+    "COMPLETE_REVERSE_DEPENDENCY_CHAIN": false,
+    "DIFFERENCE_STEP_RECOVERABLE_FROM_SELECTED_P3_RELATION": false,
+    "EACH_STEP_NON_ARBITRARY": false,
+    "EXACT_AUTHORIZED_PROPOSITION_PRESERVED": true,
+    "FORBIDDEN_PERSONIFICATION_RECLASSIFICATION_AND_META_LANGUAGE_ABSENT": true,
+    "INVENTED_RESULT_PRESENTED_FIRST": true,
+    "INVENTED_SEQUENCE_EXPLICITLY_NONFACTUAL": true,
+    "RESULT_DEPENDS_ON_IMMEDIATE_DIFFERENCE_STEP": true,
+    "TWO_CANDIDATE_REVERSE_STEPS_PRESENT": true
+  },
+  "schema_name": "batch2-development-pilot05-g02c-conformance-receipt-v1",
+  "schema_version": "1.0.0",
+  "selected_proposition_id": "P3",
+  "surface_components": {
+    "factual": {
+      "character_coordinates": [
+        217,
+        295
+      ],
+      "sha256": "28360169bf1e83a0a487fabb520866ae734337e1dd42652952b8af82b7101089",
+      "utf8_byte_coordinates": [
+        235,
+        318
+      ]
+    },
+    "result": {
+      "character_coordinates": [
+        29,
+        96
+      ],
+      "sha256": "ebcb926542d2d1dff07229fd7d5db07a8c43c94534cc408a6a2aa2ce341d6fd7",
+      "utf8_byte_coordinates": [
+        31,
+        105
+      ]
+    },
+    "step1": {
+      "character_coordinates": [
+        98,
+        143
+      ],
+      "sha256": "f98fbad033ccf95c100cc42c9897ce437c27544231f9aa198396929c99a3e5cb",
+      "utf8_byte_coordinates": [
+        107,
+        155
+      ]
+    },
+    "step2": {
+      "character_coordinates": [
+        149,
+        215
+      ],
+      "sha256": "784a2a4dacbb8b09e5102d00eebb47a951236a568ba1c8786362c1bede51952d",
+      "utf8_byte_coordinates": [
+        161,
+        233
+      ]
+    }
+  },
+  "verdict": "FAIL_INCOMPLETE_RECOVERABLE_REVERSE_DEPENDENCY"
+}
