@@ -1,0 +1,70 @@
+{
+  "admission_commit": "902d1d06f30924dc66e2190a81590c4359a4b1c7",
+  "admission_identity": "13b2c8bae8a5535de5321c82c9faee36fdb44a96f90ebafcb71a8c036a456ac9",
+  "candidate_surface": null,
+  "constructor_access": false,
+  "creative_premise_family_id": "UNASSIGNED",
+  "evaluator_access_before_independent_verdict": false,
+  "family_closure": "ab682e0762d486faa5218ed249cfffe43feaf65025f23b8fbb2b1b94a7fcb54e",
+  "partition": "DEVELOPMENT",
+  "schema_name": "batch2-development-pilot04-sealed-assignment-mapping-v1",
+  "schema_version": "1.0.0",
+  "sealed_assignment_identity": "689f57472f4c0147cb6613da5ea737639d74404fbf5e2d0d54ad24700b55f28c",
+  "selection_analysis": {
+    "all_seven_propositions_structurally_satisfiable": {
+      "P1": {
+        "closed_authority_available": true,
+        "human_agency_or_role_required": false,
+        "qualification_and_unknown_boundary_bound": true,
+        "two_step_dependency_not_precluded": true
+      },
+      "P2": {
+        "closed_authority_available": true,
+        "human_agency_or_role_required": false,
+        "qualification_and_unknown_boundary_bound": true,
+        "two_step_dependency_not_precluded": true
+      },
+      "P3": {
+        "closed_authority_available": true,
+        "human_agency_or_role_required": false,
+        "qualification_and_unknown_boundary_bound": true,
+        "two_step_dependency_not_precluded": true
+      },
+      "P4": {
+        "closed_authority_available": true,
+        "human_agency_or_role_required": false,
+        "qualification_and_unknown_boundary_bound": true,
+        "two_step_dependency_not_precluded": true
+      },
+      "P5": {
+        "closed_authority_available": true,
+        "human_agency_or_role_required": false,
+        "qualification_and_unknown_boundary_bound": true,
+        "two_step_dependency_not_precluded": true
+      },
+      "P6": {
+        "closed_authority_available": true,
+        "human_agency_or_role_required": false,
+        "qualification_and_unknown_boundary_bound": true,
+        "two_step_dependency_not_precluded": true
+      },
+      "P7": {
+        "closed_authority_available": true,
+        "human_agency_or_role_required": false,
+        "qualification_and_unknown_boundary_bound": true,
+        "two_step_dependency_not_precluded": true
+      }
+    },
+    "fresh_family_independent_of_pilots_01_02_and_03": true,
+    "selection_basis": "GOVERNANCE_V2_POST_ADMISSION_SATISFIABILITY_ONLY",
+    "source_acquired_and_admitted_before_target_decision": true,
+    "source_selected_or_shaped_using_target_or_obligation": false
+  },
+  "status": "SEALED_PROPOSAL_NOT_ACTIVATED",
+  "successor_obligation_governance_identity": "874c5d611c5ab955e0f9d82aa5aa086fad98e065f66e20e9e236f48798287024",
+  "target_mapping": {
+    "frozen_plan_option": "M13_ABSURD_LOGICAL_EXTENSION",
+    "mechanism_id": "HMCV1-B02-M03-ABSURD_LOGICAL_EXTENSION",
+    "mechanism_name": "Absurd Logical Extension"
+  }
+}
