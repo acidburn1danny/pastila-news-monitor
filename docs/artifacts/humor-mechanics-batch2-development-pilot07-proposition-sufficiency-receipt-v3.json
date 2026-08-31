@@ -1,0 +1,117 @@
+{
+  "abstract_adjacent_link_witness": {
+    "adjacent_links": [
+      "REGISTERED_CONTROL_DATE_IS_BOUND_TO_THE_VERIFICATION_EVENT",
+      "VERIFIED_STATUS_ENTRY_IS_BOUND_TO_THE_SAME_VERIFICATION_EVENT"
+    ],
+    "candidate_surface": null,
+    "humor": null,
+    "kind": "ABSTRACT_SOURCE_RELATION_ONLY",
+    "non_arbitrariness": "REMOVING_EITHER_OBSERVATION_OR_REPORT_ENTRY_BREAKS_THE_BOUND_PROCEDURAL_CHAIN",
+    "relation": "OBSERVED_TECHNICAL_ISSUE_ENTAILS_REPORT_ENTRY_FOR_LATER_ANALYSIS"
+  },
+  "admission_commit": "510a6a50402a017ee7c03ca13c64502dfb341c0b",
+  "admission_identity": "2135ce27c3cc13342079365549139c4012d10307afc9d6125723bd4f5e85c637",
+  "all_proposition_assessments": [
+    {
+      "abstract_adjacent_link_witness": null,
+      "operand_closure": "PASS_NO_UNBOUND_DERIVED_OPERAND",
+      "proposition_id": "P1",
+      "qualification_preservation": "PASS_BOUND_EXACTLY",
+      "reference_resolution": "PASS_NO_UNRESOLVED_REFERENCE",
+      "selection_status": "NOT_SELECTED_NO_POSITIVE_WITNESS_ASSERTED",
+      "standalone_semantic_closure": true,
+      "supporting_span_sha256": "b6627709a32db3743eee31e307aa0a580b215f594e5c682f1b29e89a7edf1354"
+    },
+    {
+      "abstract_adjacent_link_witness": null,
+      "operand_closure": "PASS_NO_UNBOUND_DERIVED_OPERAND",
+      "proposition_id": "P2",
+      "qualification_preservation": "PASS_BOUND_EXACTLY",
+      "reference_resolution": "PASS_NO_UNRESOLVED_REFERENCE",
+      "selection_status": "NOT_SELECTED_NO_POSITIVE_WITNESS_ASSERTED",
+      "standalone_semantic_closure": true,
+      "supporting_span_sha256": "3ab4d9db2a5a4bdf1f35561e82a5f1fe999904b5c516ebf00432a38e7e4eaee9"
+    },
+    {
+      "abstract_adjacent_link_witness": null,
+      "operand_closure": "PASS_NO_UNBOUND_DERIVED_OPERAND",
+      "proposition_id": "P3",
+      "qualification_preservation": "PASS_BOUND_EXACTLY",
+      "reference_resolution": "PASS_NO_UNRESOLVED_REFERENCE",
+      "selection_status": "NOT_SELECTED_NO_POSITIVE_WITNESS_ASSERTED",
+      "standalone_semantic_closure": true,
+      "supporting_span_sha256": "125756c2b1086ab19de32e8bb9e4f1bd38f8480d9fe574a9004d698c440793c0"
+    },
+    {
+      "abstract_adjacent_link_witness": null,
+      "operand_closure": "PASS_NO_UNBOUND_DERIVED_OPERAND",
+      "proposition_id": "P4",
+      "qualification_preservation": "PASS_NONE_REQUIRED",
+      "reference_resolution": "PASS_NO_UNRESOLVED_REFERENCE",
+      "selection_status": "NOT_SELECTED_NO_POSITIVE_WITNESS_ASSERTED",
+      "standalone_semantic_closure": true,
+      "supporting_span_sha256": "bdd24e5c61daa4a7d46b24fde29d4d16e5edc2c704494b4609da777399187760"
+    },
+    {
+      "abstract_adjacent_link_witness": {
+        "adjacent_links": [
+          "REGISTERED_CONTROL_DATE_IS_BOUND_TO_THE_VERIFICATION_EVENT",
+          "VERIFIED_STATUS_ENTRY_IS_BOUND_TO_THE_SAME_VERIFICATION_EVENT"
+        ],
+        "candidate_surface": null,
+        "humor": null,
+        "kind": "ABSTRACT_SOURCE_RELATION_ONLY",
+        "non_arbitrariness": "REMOVING_EITHER_OBSERVATION_OR_REPORT_ENTRY_BREAKS_THE_BOUND_PROCEDURAL_CHAIN",
+        "relation": "OBSERVED_TECHNICAL_ISSUE_ENTAILS_REPORT_ENTRY_FOR_LATER_ANALYSIS"
+      },
+      "operand_closure": "PASS_NO_UNBOUND_DERIVED_OPERAND",
+      "proposition_id": "P5",
+      "qualification_preservation": "PASS_BOUND_EXACTLY",
+      "reference_resolution": "PASS_INTERNAL_TO_SELECTED_SPAN",
+      "selection_status": "SELECTED_SUFFICIENT",
+      "standalone_semantic_closure": true,
+      "supporting_span_sha256": "37e92f7c6b55729e6efee58d6145b8184fc0ac98410ab0d412b51f54605a1899"
+    },
+    {
+      "abstract_adjacent_link_witness": null,
+      "operand_closure": "PASS_NO_UNBOUND_DERIVED_OPERAND",
+      "proposition_id": "P6",
+      "qualification_preservation": "PASS_NONE_REQUIRED",
+      "reference_resolution": "PASS_NO_UNRESOLVED_REFERENCE",
+      "selection_status": "NOT_SELECTED_NO_POSITIVE_WITNESS_ASSERTED",
+      "standalone_semantic_closure": true,
+      "supporting_span_sha256": "8e81fc42abc5bb3514d8da04567ad5d9d06dcc927ee3a73d94203ed5024060db"
+    }
+  ],
+  "authority_envelope_identity": "25f9ec7a698ce3e2060642f10f59cf511c29130f29b403066bb3e965c866f6d4",
+  "authority_matrix": {
+    "assignment": false,
+    "construction": false,
+    "constructor_release": false,
+    "g04b_pool_certification": false,
+    "model_exposure": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "training": false
+  },
+  "authorized_visible_context": "EXACT_SELECTED_SUPPORTING_SPAN_ONLY",
+  "authorized_visible_context_sha256": "37e92f7c6b55729e6efee58d6145b8184fc0ac98410ab0d412b51f54605a1899",
+  "candidate_surface": null,
+  "creative_premise_family_id": "UNASSIGNED",
+  "governance_identity": "4848bd025e43eff6652e4c2024072760d372ca4ac7427e5f21e1d2c4bcdb35dc",
+  "mechanism_label_exposed": false,
+  "operand_closure": "PASS_NO_UNBOUND_DERIVED_OPERAND",
+  "qualification_preservation": "PASS_BOUND_EXACTLY",
+  "receipt_identity": "820d12777ab5c7796115c1cbdca7e225ae70eabebb035bcdab8c407f6214a1ad",
+  "reference_resolution": "PASS_INTERNAL_TO_SELECTED_SPAN",
+  "schema_identity": "28dfdab8dd9112d0148dad0b513155b5ae14445f5daee359b7a35d1bc5eb1c2c",
+  "schema_name": "batch2-order-robust-causal-spine-conformance-schema-v3",
+  "schema_version": "3.0.0",
+  "scope_time_modality_unknown_boundaries": "PASS_PRESERVED",
+  "selected_proposition_id": "P5",
+  "selected_supporting_span_sha256": "37e92f7c6b55729e6efee58d6145b8184fc0ac98410ab0d412b51f54605a1899",
+  "source_package_identity": "df520c49cbffe17284897895a6c4bcad3040b6dbaa5f7ac11d145248a65e52df",
+  "standalone_semantic_closure": true,
+  "verdict": "PASS_SELECTED_PROPOSITION_SUFFICIENT"
+}
