@@ -1,0 +1,1 @@
+Într-o continuare imaginară, următoarea măsurătoare începe la 20,2 grade înainte să atingă aerul: dispozitivul păstrează diferența de 0,1 grade, iar diferența pornește din afișarea de 20,1 grade la aceeași referință. După calibrare, dispozitivul a afișat 20,1 grade Celsius la aceeași referință.
