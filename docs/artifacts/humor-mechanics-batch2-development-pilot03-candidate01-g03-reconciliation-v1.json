@@ -1,0 +1,38 @@
+{
+  "assignment_commit": "8564159133c0f87da98670f6cfffb2458d43f525",
+  "blind_pass_commit": "29c72d222ccf9805cf3fbf19e11685cab07d0710",
+  "candidate_identity": "b4555cc43bf16a466734aed46e93baa83bd9bc37d52d3826976be3370ccef72d",
+  "classification": "TARGET_RECOVERED_DOMINANT",
+  "contrast_pass": {
+    "all_close_alternatives_contrasted": true,
+    "confidence": "HIGH",
+    "pass_identity": "98cd820dd7222f38baabaec13007f26902df3bc176cd5da0bd44bee13d80b348",
+    "primary_choice": "Absurd Logical Extension",
+    "primary_role": "DOMINANT",
+    "supporting_choices": [
+      "Comic Reclassification"
+    ]
+  },
+  "mapping_revealed_after_blind_freeze": true,
+  "open_pass": {
+    "pass_identity": "7fbc1e14ff9c947e9b1f277eba65a5140c390c57061e1b11eeefcc8013290b08",
+    "posthoc_label_rewrite": false,
+    "structural_alignment_with_sealed_target": "PASS_DEPENDENT_PREMISE_TO_ABSURD_CONSEQUENCE_CHAIN",
+    "verbatim_primary": "lanț inferențial absurd cu reîncadrare finală",
+    "verbatim_primary_role": "DOMINANT",
+    "verbatim_supporting": [
+      "reclasificarea deschiderii ca obiect inventariabil"
+    ]
+  },
+  "reconciliation_identity": "bb183c23e45dd3b11beb03430697291f4da92052dd8fa030b99eac99d805047d",
+  "reconciliation_rationale": "OPEN_PASS_RECOVERS_THE_DEPENDENT_ABSURD_INFERENCE_CHAIN_WITHOUT_TAXONOMY_TERMS;_CLOSED_PASS_RECOVERS_THE_EXACT_TARGET_DOMINANT_AND_IDENTIFIES_RECLASSIFICATION_AS_SUPPORTING",
+  "schema_name": "batch2-development-pilot03-g03-reconciliation-v1",
+  "schema_version": "1.0.0",
+  "sealed_assignment_identity": "dce3d5321e2008b7a4a4cf02b1632e23fcd11cc8f6932d95f4fc3c4eb6c642a4",
+  "sealed_target": {
+    "frozen_plan_option": "M13_ABSURD_LOGICAL_EXTENSION",
+    "mechanism_id": "HMCV1-B02-M03-ABSURD_LOGICAL_EXTENSION",
+    "mechanism_name": "Absurd Logical Extension"
+  },
+  "substantive_disagreement": false
+}
