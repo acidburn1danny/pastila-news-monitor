@@ -1,0 +1,21 @@
+{
+  "audit_identity": "eaffd1c6aeeb4470cda6ed33aa75aa19e589f2cd995004ad438cc6a84bfaacea",
+  "authorized_span_binding": "PASS_EXACT",
+  "candidate_surfaces_created": 0,
+  "constructor_facing_packet_identity": "206645473d3dd479ea0cdadc88fff9f4f8d487e0ecdde50d9618d288c10cff86",
+  "constructor_invocations": 0,
+  "constructor_release": "NOT_PERFORMED",
+  "creative_premise_assignment": "ABSENT_UNASSIGNED",
+  "deterministic_blockers": [],
+  "downstream_authority": false,
+  "extra_proposition_context": "ABSENT",
+  "factual_authority_widening": "ABSENT",
+  "obligation_family_identity": "6384918ed5ee8548ddfdeb7cc33bf8d60639add88ee38f4b0a10056365c30064",
+  "schema_name": "batch2-development-pilot06-rebalancing-assignment-design-audit-v2",
+  "schema_version": "2.0.0",
+  "sealed_assignment_identity": "c45e19fd9416d50ac4776c1352c7afe5657501545f6405d9e2d4ba33f2b505a9",
+  "selected_proposition_binding": "PASS_EXACT_P3_ONLY",
+  "sufficiency_receipt_binding": "PASS_EXACT",
+  "taxonomy_and_alternative_label_scan": "PASS_ZERO_HITS",
+  "verdict": "PASS_SAFE_REBALANCING_ASSIGNMENT_ZERO_CONSTRUCTION_NO_RELEASE"
+}

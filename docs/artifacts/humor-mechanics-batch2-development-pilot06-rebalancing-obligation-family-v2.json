@@ -1,0 +1,34 @@
+{
+  "candidate_surface": null,
+  "construction_authority": false,
+  "constructor_visible_obligation": {
+    "factual_safety": [
+      "Separă fără echivoc cadrul inventat de relația factuală autorizată.",
+      "Nu adăuga fapte, citate, cunoaștere privată, concluzii despre lumea reală sau afirmații despre ținte protejate."
+    ],
+    "forbidden_operations": [
+      "Nu înlocui nicio legătură cu o valoare, comparație sau întâmplare arbitrară.",
+      "Nu folosi referințe deictice, comparative sau cantitative al căror reper nu apare în contextul autorizat.",
+      "Nu baza rezultatul pe redenumirea ori reclasificarea unei entități și nu atribui entităților nonumane roluri sau agenție umană.",
+      "Nu obține efectul numai prin intensificare, listă, joc lexical sau surpriză fără lanțul complet."
+    ],
+    "naturalness_and_surface_freedom": [
+      "Folosește română idiomatică, concretă și firească.",
+      "Nu transfera în text termenii acestei cerințe și nu folosi o formulă fixă de deschidere, legătură sau poantă.",
+      "Nu este impus un conector, registru, semn de punctuație ori număr fix de propoziții."
+    ],
+    "obligation_version": "REVERSE_DISCLOSURE_DEPENDENCY_V2",
+    "transformation": [
+      "Păstrează exact relația factuală furnizată, cu toate calificările și limitele ei.",
+      "Prezintă întâi un rezultat concret și clar inventat, apoi fă inteligibile, în ordine inversă, două legături succesive care conduc la relația factuală furnizată.",
+      "Fiecare legătură trebuie să depindă de următoarea și să poată fi urmărită fără a inventa un operand, o referință ori o relație intermediară.",
+      "Rezultatul și legăturile inventate trebuie marcate firesc drept nonfactuale, fără limbaj de instrucțiune sau verificare."
+    ]
+  },
+  "family_version": "REVERSE_DISCLOSURE_DEPENDENCY_V2",
+  "governance_identity": "4b36fa7fbe4f13f8c69add229586fdcb1f571dcb8691601709b45073f4f51f83",
+  "obligation_family_identity": "6384918ed5ee8548ddfdeb7cc33bf8d60639add88ee38f4b0a10056365c30064",
+  "schema_name": "batch2-development-pilot06-rebalancing-obligation-family-v2",
+  "schema_version": "2.0.0",
+  "sufficiency_schema_identity": "8e76fe9719e38580b364b3406908f358476f3dba1454695dd34b36d1f0dc92bd"
+}
