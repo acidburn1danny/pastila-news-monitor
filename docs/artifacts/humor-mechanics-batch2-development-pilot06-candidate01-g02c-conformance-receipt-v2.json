@@ -1,0 +1,92 @@
+{
+  "candidate_git_blob_oid_sha1": "4d0aa51522e56038826badd4ae180cdcfe4499e1",
+  "candidate_identity": "61b4c89e4ec65ac211debc034ed35f47f79a2757551266a90fadf5acde270773",
+  "candidate_raw_sha256": "e00b1b83507ece1808445a3f6cfd07286ee20eecc6f4208d9aa4940ab2fbc1a9",
+  "conformance_receipt_identity": "7b86096604a2c3513a963dec673e71cbf5520c1748b20a2056d9ee5035cc3a71",
+  "constructor_facing_packet_identity": "206645473d3dd479ea0cdadc88fff9f4f8d487e0ecdde50d9618d288c10cff86",
+  "dependency_trace": {
+    "arbitrary_substitution": false,
+    "ordered_chain": [
+      "FICTIONAL_MISSING_CALENDAR_DAY",
+      "FICTIONAL_DATE_ABSORBED_INTO_REGISTER",
+      "DATE_ADJACENT_TO_VERIFIED_STATUS",
+      "EXACT_P3_REGISTER_RELATION"
+    ],
+    "result_to_step1": "PASS_REMOVING_ABSORPTION_REMOVES_EXPLANATION_FOR_MISSING_DAY",
+    "step1_to_step2": "PASS_ABSORPTION_IS_LOCALLY_GROUNDED_BY_DATE_STATUS_COLOCATION",
+    "step2_to_selected_fact": "PASS_EXACT_P3_BINDS_VERIFIED_STATUS_AND_CONTROL_DATE_IN_REGISTER",
+    "unbound_operand_or_reference": false
+  },
+  "naturalness_precheck": {
+    "does_not_replace_blind_g04a": true,
+    "instruction_or_governance_language_transferred": false,
+    "materially_procedural_abstract_register": false
+  },
+  "obligation_instance_identity": "0c1f9e12d66d64294a1023e7da2707e397cc8c7714b09c04e84be8713f28e40a",
+  "obligation_version": "REVERSE_DISCLOSURE_DEPENDENCY_V2",
+  "required_predicates": {
+    "ABSORPTION_LINK_DEPENDS_ON_DATE_AND_STATUS_COLOCATION": true,
+    "ALL_REFERENCES_AND_OPERANDS_BOUND": true,
+    "COMPLETE_REVERSE_DEPENDENCY_CHAIN": true,
+    "EACH_STEP_NON_ARBITRARY": true,
+    "EXACT_SELECTED_PROPOSITION_PRESERVED": true,
+    "FINAL_LINK_RECOVERABLE_FROM_SELECTED_P3_RELATION": true,
+    "FORBIDDEN_RECLASSIFICATION_HUMAN_AGENCY_AND_META_LANGUAGE_ABSENT": true,
+    "INVENTED_RESULT_PRESENTED_FIRST": true,
+    "INVENTED_SEQUENCE_EXPLICITLY_NONFACTUAL": true,
+    "RESULT_DEPENDS_ON_IMMEDIATE_ABSORPTION_LINK": true,
+    "TWO_REVERSE_LINKS_PRESENT_IN_ORDER": true
+  },
+  "schema_name": "batch2-development-pilot06-g02c-conformance-receipt-v2",
+  "schema_version": "2.0.0",
+  "selected_proposition_id": "P3",
+  "selected_supporting_span_sha256": "51d1891c346d6e7aa1f6b33da5a1d964cc99c2789d255ac7fd54999181a20dcd",
+  "sufficiency_receipt_identity": "240ee7a3eaf7ec8869235212c466aee8be0e0c8126a5bee80c560c36c8043b9a",
+  "surface_components": {
+    "factual": {
+      "character_coordinates": [
+        149,
+        275
+      ],
+      "sha256": "51d1891c346d6e7aa1f6b33da5a1d964cc99c2789d255ac7fd54999181a20dcd",
+      "utf8_byte_coordinates": [
+        163,
+        301
+      ]
+    },
+    "result": {
+      "character_coordinates": [
+        29,
+        68
+      ],
+      "sha256": "a6a319e9aa3c035538ded2aa024ee44aafcfc22f3adeff5ff96bfda86b772421",
+      "utf8_byte_coordinates": [
+        31,
+        74
+      ]
+    },
+    "step1": {
+      "character_coordinates": [
+        70,
+        103
+      ],
+      "sha256": "136270aeb4842453372a9ffff5edb77443917f87eb7a754f7e240eccef8d70a7",
+      "utf8_byte_coordinates": [
+        76,
+        110
+      ]
+    },
+    "step2": {
+      "character_coordinates": [
+        105,
+        147
+      ],
+      "sha256": "d472c85c4249feb5627d67056a71acfa73dac57a7b5da505d30dc0e3f4763022",
+      "utf8_byte_coordinates": [
+        112,
+        161
+      ]
+    }
+  },
+  "verdict": "PASS"
+}

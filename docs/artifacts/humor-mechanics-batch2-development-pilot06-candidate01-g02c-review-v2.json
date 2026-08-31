@@ -1,0 +1,30 @@
+{
+  "authority_matrix": {
+    "g03_mechanism_recovery": false,
+    "g04b_pool_certification": false,
+    "owner_review": false,
+    "production_routing": false,
+    "regeneration": false,
+    "repair": false,
+    "rewrite": false,
+    "runtime_integration": false,
+    "training": false
+  },
+  "candidate_identity": "61b4c89e4ec65ac211debc034ed35f47f79a2757551266a90fadf5acde270773",
+  "candidate_modified": false,
+  "candidate_raw_sha256": "e00b1b83507ece1808445a3f6cfd07286ee20eecc6f4208d9aa4940ab2fbc1a9",
+  "conformance_receipt_identity": "7b86096604a2c3513a963dec673e71cbf5520c1748b20a2056d9ee5035cc3a71",
+  "creative_premise_family_id": "bc1ebc6a748fad7bcb3c8526b7568b5f30beefd15848db98aadc44f986c74994",
+  "eligibility": "ELIGIBLE_FOR_SEPARATELY_AUTHORIZED_BLIND_G03_MECHANISM_RECOVERY",
+  "g02_commit": "cc61efc4dc6d90016f72fbd1e92111eb83751424",
+  "g02_receipt_identity": "714cbc8caf038088f5770d67950bbe703689a462b0dcfcd23c9babdd28972909",
+  "g02c_review_identity": "9c00bdaf3273b24548c12e176f410f3167c8ae35e6bdf2abfdc2843d0ee093d2",
+  "g02c_verdict": "PASS",
+  "g03_performed": false,
+  "mechanism_neutrality": "PASS_TARGET_MAPPING_NOT_ACCESSED",
+  "naturalness_precheck": "PASS_NO_INSTRUCTION_TO_SURFACE_TRANSFER",
+  "predicate_verification": "PASS_ALL_REVERSE_DISCLOSURE_DEPENDENCY_V2_PREDICATES",
+  "schema_name": "batch2-development-pilot06-candidate-g02c-review-v2",
+  "schema_version": "2.0.0",
+  "sealed_mapping_accessed": false
+}
