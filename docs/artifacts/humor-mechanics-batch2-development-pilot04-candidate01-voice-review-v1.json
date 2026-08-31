@@ -1,0 +1,105 @@
+{
+  "authority_matrix": {
+    "candidate_regeneration": false,
+    "candidate_repair": false,
+    "candidate_rewrite": false,
+    "curriculum_promotion": false,
+    "g04b_pool_certification": false,
+    "owner_review": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "training": false
+  },
+  "candidate_bytes_modified": false,
+  "candidate_identity": "cf34033fb7017ff29146524108d4cb3fcbf8229681d054d2085dbaba294436e1",
+  "candidate_raw_sha256": "e231a549685103da5c6e0e4f9b9e93459d86e7c7ae0247ad11f15d55a3426b0b",
+  "candidate_repair_attempted": false,
+  "disposition_effect": "ELIGIBLE_FOR_SEPARATELY_AUTHORIZED_OWNER_REVIEW_SUBJECT_TO_POOL_PENDING_STATUS",
+  "evaluator_inaccessible": [
+    "sealed assignment mapping",
+    "mechanism identity/name/ordinal",
+    "G03 target reconciliation",
+    "constructor packet and prompt",
+    "owner preference history",
+    "historical positive or rejected surfaces",
+    "blind-evaluation material",
+    "future owner judgment"
+  ],
+  "evaluator_visible": {
+    "candidate_surface": "O acreditare expirată sau nerecunoscută nu permite accesul în zona B. În povestea expoziției, un participant cu o astfel de acreditare rămâne mai întâi în afara zonei B; neputând ajunge la demonstrație, ajunge apoi să demonstreze, chiar de la poartă, cât de bine funcționează interdicția.",
+    "rubric": [
+      "TONAL_COHERENCE",
+      "SENTENCE_MOVEMENT",
+      "PAYOFF_ECONOMY",
+      "VOICE_SPECIFICITY_WITHOUT_OVERWRITING",
+      "NO_CANNED_OPENING",
+      "NO_CANNED_LANDING",
+      "NO_HISTORICAL_WORDING_COPY",
+      "REGISTER_RESERVATION_MATERIALITY"
+    ]
+  },
+  "findings": {
+    "no_canned_landing": {
+      "finding": "Aterizarea depinde de poartă, demonstrație și interdicție; nu este o concluzie interschimbabilă ori un slogan.",
+      "verdict": "PASS"
+    },
+    "no_canned_opening": {
+      "finding": "Deschiderea este o limită factuală legată direct de sursă, nu o formulă generică de introducere comică.",
+      "verdict": "PASS"
+    },
+    "no_historical_wording_copy": {
+      "finding": "Nu există reutilizare de suprafață istorică; formularea este legată de familia independentă Pilot 04 și de propriile ei artefacte.",
+      "verdict": "PASS"
+    },
+    "overall_voice_compatibility": {
+      "finding": "Candidatul are setup sobru, progresie lizibilă și payoff contextual, fără deschidere sau aterizare de șablon.",
+      "verdict": "PASS"
+    },
+    "payoff_economy": {
+      "finding": "Finalul «cât de bine funcționează interdicția» închide premisa la poartă fără explicație suplimentară după poantă.",
+      "verdict": "PASS"
+    },
+    "register_reservation_materiality": {
+      "finding": "Repetiția «ajunge/ajunge să» observată la G04A este audibilă, dar susține pivotul semantic și nu încetinește decisiv ritmul.",
+      "verdict": "NONMATERIAL"
+    },
+    "sentence_movement": {
+      "finding": "Prima frază fixează limita factuală; a doua avansează de la poartă la demonstrația ratată și aterizează pe consecința autoreferențială.",
+      "verdict": "PASS"
+    },
+    "tonal_coherence": {
+      "finding": "Tonul rămâne sec și controlat: regula de acces trece într-o consecință imaginară fără schimbare bruscă de persoană sau atitudine.",
+      "verdict": "PASS"
+    },
+    "voice_specificity_without_overwriting": {
+      "finding": "Vocabularul de acces și demonstrație este specific expoziției și suficient de sobru; nu adaugă ornamente sau teatralitate.",
+      "verdict": "PASS"
+    }
+  },
+  "g04a_commit": "9f6a8e7a5cbcff829c183c9e976f6a9bc04d5ec0",
+  "g04a_receipt_identity": "623c32ceefc8cf504bdc8cffadd209b4ab998a39a52615189663edffc1ceb92a",
+  "g04a_reservations": [
+    "MINOR_FUNCTIONAL_AJUNGE_REPETITION_NONMATERIAL"
+  ],
+  "g04a_review_identity": "450055989f017bb9f10e352102977e5f6af2d82d091f15f91953b8fb61d5cd44",
+  "mechanism_adjudication_performed": false,
+  "owner_preference_accessed": false,
+  "performed": {
+    "candidate_regeneration": false,
+    "candidate_repair": false,
+    "candidate_rewrite": false,
+    "owner_review": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "training": false
+  },
+  "reservations": [
+    "MINOR_FUNCTIONAL_AJUNGE_REPETITION_NONMATERIAL"
+  ],
+  "review_mode": "BLIND_MECHANISM_INDEPENDENT_VOICE_COMPATIBILITY",
+  "schema_name": "batch2-development-pilot04-candidate01-blind-voice-review-v1",
+  "schema_version": "1.0.0",
+  "sealed_mapping_accessed": false,
+  "voice_review_identity": "9705e8455dd4a027dced4d3d6ec7dc26d04d8ce0f3d74c47b42a0a4f0177be06",
+  "voice_verdict": "VOICE_PASS"
+}

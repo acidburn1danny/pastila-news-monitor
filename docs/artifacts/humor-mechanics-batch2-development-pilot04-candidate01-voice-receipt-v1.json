@@ -1,0 +1,27 @@
+{
+  "authority_matrix": {
+    "candidate_regeneration": false,
+    "candidate_repair": false,
+    "candidate_rewrite": false,
+    "curriculum_promotion": false,
+    "g04b_pool_certification": false,
+    "owner_review": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "training": false
+  },
+  "candidate_bytes_modified": false,
+  "candidate_identity": "cf34033fb7017ff29146524108d4cb3fcbf8229681d054d2085dbaba294436e1",
+  "candidate_raw_sha256": "e231a549685103da5c6e0e4f9b9e93459d86e7c7ae0247ad11f15d55a3426b0b",
+  "g04a_receipt_identity": "623c32ceefc8cf504bdc8cffadd209b4ab998a39a52615189663edffc1ceb92a",
+  "next_gate_eligible": "OWNER_REVIEW_SEPARATELY_AUTHORIZED_WITH_POOL_PENDING_EXPLICIT",
+  "owner_review_performed": false,
+  "reservations": [
+    "MINOR_FUNCTIONAL_AJUNGE_REPETITION_NONMATERIAL"
+  ],
+  "schema_name": "batch2-development-pilot04-candidate01-blind-voice-receipt-v1",
+  "schema_version": "1.0.0",
+  "voice_receipt_identity": "497debe1b780c2a14f405012ccd857540fa8db06c655f5cc0ed3b0b67ea5eb72",
+  "voice_review_identity": "9705e8455dd4a027dced4d3d6ec7dc26d04d8ce0f3d74c47b42a0a4f0177be06",
+  "voice_verdict": "VOICE_PASS"
+}
