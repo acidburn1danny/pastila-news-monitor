@@ -1,0 +1,21 @@
+{
+  "analysis_identity": "d8fa6bfcd76d1cd008d25b314e5e087e2471eed6a650cd0c2464f93315c93276",
+  "audit_identity": "a79347b90d21bc2375cf5edb8dbfad40d96aca0c85bca513b5819a4cdd397889",
+  "blind_material_accessed": false,
+  "candidate_surface_created_or_modified": false,
+  "derived_operand_closure": "PASS",
+  "deterministic_blockers": [],
+  "g02b_binding_propagation": "PASS",
+  "g02c_fail_closed_predicates": "PASS",
+  "governance_identity": "4b36fa7fbe4f13f8c69add229586fdcb1f571dcb8691601709b45073f4f51f83",
+  "hidden_construction_authority": "PASS_NONE",
+  "mechanism_label_leakage": "PASS_NONE",
+  "positive_sufficiency_replaces_not_precluded": "PASS",
+  "regression_identity": "413195f3272fdaa60d1c58475a145ac3c6f9f0056354a15cc4f1ec031226b143",
+  "schema_identity": "8e76fe9719e38580b364b3406908f358476f3dba1454695dd34b36d1f0dc92bd",
+  "schema_name": "batch2-reverse-disclosure-governance-v2-audit-v1",
+  "schema_version": "1.0.0",
+  "selected_proposition_prebinding": "PASS",
+  "standalone_reference_closure": "PASS",
+  "verdict": "PASS_SOURCE_ONLY_ZERO_CONSTRUCTION"
+}

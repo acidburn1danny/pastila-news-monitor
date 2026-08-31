@@ -1,0 +1,21 @@
+{
+  "analysis_identity": "d8fa6bfcd76d1cd008d25b314e5e087e2471eed6a650cd0c2464f93315c93276",
+  "candidate_reexecution_performed": false,
+  "expected_preconstruction_result": "NO_SAFE_SELECTED_PROPOSITION",
+  "fixture": {
+    "attempted_derived_quantity": "0.1",
+    "available_numeric_operands": [
+      "20.1"
+    ],
+    "selected_proposition_id": "P3",
+    "selected_span_sha256": "28360169bf1e83a0a487fabb520866ae734337e1dd42652952b8af82b7101089",
+    "source_sha256": "e3404a694bf1203f8a11ceeed0e682511882237e4777bd0e092876994c4326cc",
+    "unresolved_reference": "aceeași referință"
+  },
+  "governance_identity": "4b36fa7fbe4f13f8c69add229586fdcb1f571dcb8691601709b45073f4f51f83",
+  "new_governance_result": "REJECTED_BEFORE_CONSTRUCTOR_RELEASE",
+  "old_governance_result": "INCORRECTLY_ADMITTED_AS_NOT_PRECLUDED",
+  "regression_identity": "413195f3272fdaa60d1c58475a145ac3c6f9f0056354a15cc4f1ec031226b143",
+  "schema_name": "batch2-pilot05-reverse-disclosure-regression-v1",
+  "schema_version": "1.0.0"
+}

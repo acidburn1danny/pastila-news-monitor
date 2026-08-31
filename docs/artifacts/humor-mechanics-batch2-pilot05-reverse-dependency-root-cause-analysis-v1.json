@@ -1,0 +1,33 @@
+{
+  "analysis_identity": "d8fa6bfcd76d1cd008d25b314e5e087e2471eed6a650cd0c2464f93315c93276",
+  "candidate_identity": "a7414fa9f1c50a5b674d9c3b5d7c531c46e6f8b70472893697a92d0309dc30ac",
+  "candidate_modified": false,
+  "constructor_contribution": "SELECTED_P3_AND_INVENTED_0_1_WITHOUT_A_CLOSED_ANCHOR",
+  "disposition_commit": "6662562b7034d08e73cdbc8b4db038636969c4ba",
+  "disposition_identity": "6214b4423ebe627d28b57ad816d14b446b66f6094806ca708d6db1eb38154f9f",
+  "governance_root_causes": [
+    "NEGATIVE_NOT_PRECLUDED_TEST_USED_IN_PLACE_OF_POSITIVE_SUFFICIENCY_PROOF",
+    "ALL_SEVEN_PROPOSITIONS_MARKED_SATISFIABLE_WITHOUT_PROPOSITION_SPECIFIC_WITNESSES",
+    "NO_STANDALONE_SEMANTIC_CLOSURE_CHECK_FOR_DEICTIC_OR_CROSS_PROPOSITION_REFERENCES",
+    "NO_OPERAND_CLOSURE_CHECK_FOR_DERIVED_QUANTITIES",
+    "SELECTED_PROPOSITION_NOT_BOUND_BEFORE_CONSTRUCTOR_RELEASE",
+    "G02B_DID_NOT_VERIFY_SELECTED_PROPOSITION_SUFFICIENCY_ARTIFACT"
+  ],
+  "observed_failure": {
+    "earliest_failed_link": "STEP2_TO_SELECTED_FACTUAL_RELATION",
+    "g02c_verdict": "FAIL_INCOMPLETE_RECOVERABLE_REVERSE_DEPENDENCY",
+    "missing_anchor": "NUMERIC_VALUE_OF_THE_SAME_REFERENCE",
+    "selected_proposition_id": "P3",
+    "unsupported_intermediate": "INVENTED_0_1_DIFFERENCE"
+  },
+  "primary_responsibility": "REBALANCING_ASSIGNMENT_GOVERNANCE_BOUNDARY",
+  "schema_name": "batch2-pilot05-reverse-dependency-root-cause-analysis-v1",
+  "schema_version": "1.0.0",
+  "selected_proposition_sufficiency": {
+    "candidate_could_substitute_another_difference_without_changing_p3": true,
+    "p3_numeric_operand_closure": "FAIL_ONLY_20_1_IS_PRESENT",
+    "p3_standalone_semantic_closure": "FAIL_UNRESOLVED_SAME_REFERENCE_OUTSIDE_SELECTED_SPAN",
+    "p3_supports_non_arbitrary_adjacent_reverse_link": false
+  },
+  "verdict": "ROOT_CAUSE_CONFIRMED_GOVERNANCE_ALLOWED_AN_UNPROVEN_PROPOSITION"
+}

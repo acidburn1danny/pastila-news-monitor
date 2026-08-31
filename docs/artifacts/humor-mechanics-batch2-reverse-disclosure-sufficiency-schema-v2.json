@@ -1,0 +1,28 @@
+{
+  "allowed_verdicts": [
+    "PASS_SELECTED_PROPOSITION_SUFFICIENT",
+    "NO_SAFE_SELECTED_PROPOSITION",
+    "NO_SAFE_REBALANCING_ASSIGNMENT"
+  ],
+  "candidate_surface_forbidden": true,
+  "construction_authority": false,
+  "governance_identity": "4b36fa7fbe4f13f8c69add229586fdcb1f571dcb8691601709b45073f4f51f83",
+  "mechanism_label_forbidden": true,
+  "pass_condition": "ALL_REQUIRED_CHECKS_TRUE_AND_WITNESS_NONEMPTY_AND_MECHANISM_NEUTRAL",
+  "required_fields": [
+    "source_package_identity",
+    "authority_envelope_identity",
+    "selected_proposition_id",
+    "selected_supporting_span_sha256",
+    "authorized_visible_context_sha256",
+    "standalone_semantic_closure",
+    "reference_resolution",
+    "operand_closure",
+    "abstract_adjacent_link_witness",
+    "qualification_preservation",
+    "verdict"
+  ],
+  "schema_identity": "8e76fe9719e38580b364b3406908f358476f3dba1454695dd34b36d1f0dc92bd",
+  "schema_name": "batch2-reverse-disclosure-selected-proposition-sufficiency-receipt-v2",
+  "schema_version": "2.0.0"
+}

@@ -1,0 +1,57 @@
+{
+  "assignment_binding_rules": {
+    "authorized_visible_context_bound_before_release": true,
+    "constructor_may_not_choose_an_unbound_proposition": true,
+    "multi_proposition_context_requires_separate_explicit_authorization_and_combined_envelope": true,
+    "selected_proposition_id_bound_before_release": true,
+    "selected_supporting_span_hash_bound_before_release": true,
+    "sufficiency_receipt_identity_bound_before_release": true,
+    "target_mechanism_mapping_remains_sealed": true
+  },
+  "construction_authority": false,
+  "family_version": "REVERSE_DISCLOSURE_DEPENDENCY_V2",
+  "g02b_additional_checks": [
+    "EXACT_SELECTED_PROPOSITION_AND_CONTEXT_EQUALITY",
+    "SUFFICIENCY_RECEIPT_SEAL_AND_STATUS_PASS",
+    "NO_EXTRA_PROPOSITION_OR_UNBOUND_CONTEXT",
+    "NO_LABEL_OR_TARGET_MAPPING_EXPOSURE"
+  ],
+  "g02c_additional_checks": [
+    "TRACE_EACH_REVERSE_LINK_TO_ITS_IMMEDIATE_SUCCESSOR",
+    "REJECT_ANY_LINK_REPLACEABLE_WITH_AN_ARBITRARY_VALUE_OR_EVENT",
+    "REJECT_DERIVED_QUANTITY_IF_ANY_OPERAND_IS_UNBOUND",
+    "REJECT_UNRESOLVED_DEICTIC_OR_CROSS_PROPOSITION_REFERENCE"
+  ],
+  "governance_identity": "4b36fa7fbe4f13f8c69add229586fdcb1f571dcb8691601709b45073f4f51f83",
+  "mandatory_pre_assignment_gate": {
+    "evaluation_order": "BEFORE_SEALED_ASSIGNMENT_AND_BEFORE_CONSTRUCTOR_PACKET",
+    "fail_closed_outcomes": [
+      "NO_SAFE_SELECTED_PROPOSITION",
+      "NO_SAFE_REBALANCING_ASSIGNMENT"
+    ],
+    "gate_name": "REVERSE_DISCLOSURE_SELECTED_PROPOSITION_SUFFICIENCY_V2",
+    "not_sufficient": [
+      "NOT_PRECLUDED",
+      "CLOSED_AUTHORITY_AVAILABLE",
+      "TOPIC_PLAUSIBILITY",
+      "CONSTRUCTOR_CAN_INVENT_A_LINK"
+    ],
+    "required_checks": [
+      "EXACTLY_ONE_SELECTED_PROPOSITION_BOUND",
+      "SELECTED_SUPPORTING_SPAN_STANDALONE_SEMANTICALLY_CLOSED",
+      "ALL_DEICTIC_PRONOMINAL_COMPARATIVE_AND_REFERENCE_DEPENDENCIES_RESOLVED_INSIDE_AUTHORIZED_VISIBLE_CONTEXT",
+      "ALL_OPERANDS_NEEDED_FOR_ANY_REQUIRED_DERIVED_QUANTITY_BOUND",
+      "AT_LEAST_ONE_NON_ARBITRARY_ADJACENT_LINK_FROM_SELECTED_FACTUAL_RELATION_HAS_A_SOURCE_ONLY_WITNESS",
+      "WITNESS_USES_ABSTRACT_RELATIONS_ONLY_AND_CONTAINS_NO_CANDIDATE_SURFACE_OR_HUMOR",
+      "QUALIFICATION_SCOPE_TIME_MODALITY_AND_UNKNOWN_BOUNDARIES_PRESERVED"
+    ]
+  },
+  "model_exposure_authority": false,
+  "production_authority": false,
+  "runtime_authority": false,
+  "schema_name": "batch2-reverse-disclosure-dependency-governance-v2",
+  "schema_version": "2.0.0",
+  "scope": "SOURCE_ONLY_ASSIGNMENT_AND_PRECONSTRUCTION_ADMISSION_GOVERNANCE",
+  "supersedes_obligation_family_identity": "8379c38c191ab850a6af30ee16a751fb750710554a957e6e57c3f89955de404a",
+  "training_authority": false
+}
