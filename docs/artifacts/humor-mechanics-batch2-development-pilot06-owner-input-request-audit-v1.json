@@ -1,0 +1,17 @@
+{
+  "assignment_or_construction_authority": false,
+  "audit_identity": "744a642042b2da567637fb0f4465d1cd5c912768e0563ab188c9f582daad0e3b",
+  "audit_verdict": "PASS_CONTENT_FREE_STOP_REQUIRED",
+  "blind_material_accessed": false,
+  "content_free": true,
+  "deterministic_blockers": [],
+  "external_input_blocker": "OWNER_AUTHORED_SOURCE_BYTES_AND_COMPLETED_DECLARATION_REQUIRED",
+  "mechanism_neutral": true,
+  "owner_input_request_identity": "607cc62af2313130dd30637e6854eedf0252f5e5f4bb83245e2f50873f74e02e",
+  "pilot05_preserved": true,
+  "proposition_sufficiency_performed": false,
+  "schema_name": "batch2-development-pilot06-owner-input-request-audit-v1",
+  "schema_version": "1.0.0",
+  "source_selection_uses_sufficiency_or_obligation": false,
+  "sufficiency_deferred_until_post_g01": true
+}
