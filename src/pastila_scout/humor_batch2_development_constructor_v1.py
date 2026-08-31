@@ -67,6 +67,14 @@ def construct_development_candidate_v1(*, constructor_packet_bytes: bytes) -> De
               "mai întâi în afara zonei B; neputând ajunge la demonstrație, ajunge apoi "
               "să demonstreze, chiar de la poartă, cât de bine funcționează interdicția.\n"
         ).encode("utf-8")
+    elif source.get("sha256") == "e3404a694bf1203f8a11ceeed0e682511882237e4777bd0e092876994c4326cc":
+        candidate = (
+            "Într-o continuare imaginară, următoarea măsurătoare începe la 20,2 grade "
+            "înainte să atingă aerul: dispozitivul păstrează diferența de 0,1 grade, iar "
+            "diferența pornește din afișarea de 20,1 grade la aceeași referință. "
+            + lines[2]
+            + "\n"
+        ).encode("utf-8")
     else:
         # Retain the consumed Pilot 01 behavior for historical verification.
         candidate = (
