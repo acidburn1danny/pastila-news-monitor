@@ -1,0 +1,6 @@
+Stația meteo internă Valea Mare folosește un senzor digital pentru măsurarea temperaturii aerului.
+Pe 10 septembrie 2026, senzorul a fost recalibrat folosind o referință de 20,0 grade Celsius.
+După calibrare, dispozitivul a afișat 20,1 grade Celsius la aceeași referință.
+Rezultatul a fost înregistrat în jurnalul tehnic al stației, iar senzorul a rămas disponibil pentru măsurători ulterioare.
+Procedura descrisă nu stabilește temperatura aerului exterior din ziua respectivă.
+Nu este specificată data următoarei recalibrări.
