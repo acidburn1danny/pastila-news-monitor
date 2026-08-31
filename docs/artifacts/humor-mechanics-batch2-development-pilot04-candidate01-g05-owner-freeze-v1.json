@@ -1,0 +1,64 @@
+{
+  "authority_matrix": {
+    "candidate_regeneration": false,
+    "candidate_repair": false,
+    "candidate_rewrite": false,
+    "curriculum_promotion": false,
+    "g04b_pool_certification": false,
+    "model_exposure": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "training": false
+  },
+  "bound_gate_results": {
+    "g02": "PASS",
+    "g02c": "PASS",
+    "g03_reconciliation": "TARGET_RECOVERED_DOMINANT",
+    "g03_validity": "VALID_BLIND_REVIEW",
+    "g03b": "CAUSAL_MECHANISM_CONFIRMED",
+    "g03c_candidate": "CANDIDATE_SHORTCUT_PASS",
+    "g03c_contamination": "PASS_CLEAN_DEVELOPMENT_DIAGNOSTIC",
+    "g03c_pool": "POOL_PENDING_PILOT04_QUALITY_GATES_AND_SEPARATE_G04B_CERTIFICATION",
+    "g04a": "ROMANIAN_NATURALNESS_PASS",
+    "voice": "VOICE_PASS"
+  },
+  "candidate_bytes_modified": false,
+  "candidate_identity": "cf34033fb7017ff29146524108d4cb3fcbf8229681d054d2085dbaba294436e1",
+  "candidate_raw_sha256": "e231a549685103da5c6e0e4f9b9e93459d86e7c7ae0247ad11f15d55a3426b0b",
+  "eligibility": {
+    "curriculum_eligible": false,
+    "model_visible": false,
+    "owner_frozen": true,
+    "partition": "DEVELOPMENT",
+    "pool_certified": false,
+    "pool_status": "G04B_PENDING_TWO_INDEPENDENT_OWNER_FROZEN_DEVELOPMENT_FAMILIES",
+    "positive_candidate_status": "PROVISIONAL_DOMINANT_POSITIVE_PENDING_G04B",
+    "production_eligible": false,
+    "runtime_eligible": false,
+    "training_eligible": false
+  },
+  "evidence_role": "OWNER_FROZEN_PROVISIONAL_DOMINANT_POSITIVE_DEVELOPMENT_ONLY_G04B_PENDING",
+  "g05_owner_freeze_identity": "9ccf9f8dc0dd4857e987cbc0dfc13a590573036d83d53d990d31566098d71cd8",
+  "g05_owner_review_request_commit": "c71d7ad103d382badd26782c3bb6dc87b584a193",
+  "g05_owner_review_request_identity": "79d25cd3ec1cd25566a487f14692f91e21b7658b7165e85fea273eed3210dc31",
+  "g05_verdict": "OWNER_APPROVED",
+  "owner_confirmations": {
+    "candidate_bytes_are_the_reviewed_surface": true,
+    "causal_mechanism_finding_is_accepted": true,
+    "development_only_status_is_accepted": true,
+    "dominant_target_recovery_is_accepted": true,
+    "g04b_pool_certification_pending_status_is_accepted": true,
+    "no_curriculum_training_runtime_or_production_eligibility_is_understood": true,
+    "romanian_naturalness_pass_with_minor_nonmaterial_reservation_is_accepted": true,
+    "voice_pass_is_accepted": true
+  },
+  "owner_decision": "APPROVE PILOT04 OWNER_FROZEN DEVELOPMENT_ONLY G04B_PENDING",
+  "owner_decision_explicit": true,
+  "remaining_requirements": [
+    "B2_G04B_CROSS_CANDIDATE_POOL_AUDIT",
+    "SEPARATE_CURRICULUM_OR_MODEL_VISIBILITY_AUTHORITY_IF_EVER_ELIGIBLE"
+  ],
+  "schema_name": "batch2-development-pilot04-candidate01-g05-owner-freeze-v1",
+  "schema_version": "1.0.0",
+  "status": "OWNER_FROZEN_DEVELOPMENT_ONLY_G04B_PENDING"
+}
