@@ -1,0 +1,528 @@
+{
+  "archive_write": false,
+  "authority_matrix": {
+    "archive_write": false,
+    "construction": false,
+    "creative_premise_assignment": false,
+    "custodial_signing": false,
+    "g01a_admission": false,
+    "g01b_admission": false,
+    "g04b_pool_certification": false,
+    "generation": false,
+    "immutable_ingestion": false,
+    "mechanism_assignment": false,
+    "model_exposure": false,
+    "obligation_assignment": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "training": false
+  },
+  "declaration_sha256": "69e207463fcb8d31e0ccaf99db46192bd577997dfb4b1d3658a5f955fb148e25",
+  "factual_authority_envelope": {
+    "authority_scope": "Only the explicitly stated calibration event, reference value, observed sensor result, recording status, operational status, interpretive boundary, and unknown future recalibration date within the accompanying owner-authored synthetic test universe.",
+    "creative_premise_family_id": "UNASSIGNED",
+    "propositions": [
+      {
+        "attribution": "OWNER_AUTHORED_SOURCE",
+        "known_boundary": "ONLY_THE_EXACT_BOUND_PROPOSITION",
+        "modality": "ASSERTED",
+        "object": {
+          "character_coordinates": [
+            42,
+            98
+          ],
+          "sha256": "94a987f33ea690bee7f9ddf6553172e4f8381643ced2e42d7f1e597b1cec086e",
+          "utf8_byte_coordinates": [
+            45,
+            102
+          ]
+        },
+        "predicate": {
+          "character_coordinates": [
+            32,
+            41
+          ],
+          "sha256": "12b8ba7d9a84c765e6e6d257e46db35638e9a73c96b8c050a225ed43ba77dcb1",
+          "utf8_byte_coordinates": [
+            34,
+            44
+          ]
+        },
+        "prohibited_inferences": [
+          "NO_REAL_WORLD_ASSERTION",
+          "NO_UNSTATED_CAUSAL_INFERENCE",
+          "NO_UNSTATED_PERSON_INTENT_OR_INTERNAL_STATE_INFERENCE",
+          "NO_UNSTATED_ATTENDANCE_OR_DEMAND_INFERENCE"
+        ],
+        "proposition_id": "P1",
+        "qualification": {
+          "character_coordinates": [
+            60,
+            98
+          ],
+          "sha256": "ecd15b114d5c54cab279dfec83d234d5035dc2dd833a7fba17e6219975a55f48",
+          "utf8_byte_coordinates": [
+            63,
+            102
+          ]
+        },
+        "quotation_status": "OWNER_AUTHORED_NOT_THIRD_PARTY_QUOTATION",
+        "scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE_ONLY",
+        "sensitive_protected_target_classification": "NONE_DECLARED_LOW_RISK_SYNTHETIC",
+        "subject": {
+          "character_coordinates": [
+            0,
+            31
+          ],
+          "sha256": "4d8ba0b0454174175e387ca419de6d56f7e15767c1065ea8ee78b64e2a65a854",
+          "utf8_byte_coordinates": [
+            0,
+            33
+          ]
+        },
+        "supporting_span": {
+          "character_coordinates": [
+            0,
+            98
+          ],
+          "span_sha256": "689529b94aa59e3ca94544501ba105cf7a94bc446c76e2a3417b0cff6fb4798c",
+          "utf8_byte_coordinates": [
+            0,
+            102
+          ]
+        },
+        "time": "UNSPECIFIED",
+        "unknown_boundary": "ALL_UNSTATED_PROPERTIES_CAUSES_RESULTS_AND_REAL_WORLD_APPLICABILITY"
+      },
+      {
+        "attribution": "OWNER_AUTHORED_SOURCE",
+        "known_boundary": "ONLY_THE_EXACT_BOUND_PROPOSITION",
+        "modality": "ASSERTED",
+        "object": {
+          "character_coordinates": [
+            149,
+            192
+          ],
+          "sha256": "07263584f7397ba1a63827d693c1dfaf74358d64bfa9f4a8307c9cac1af79276",
+          "utf8_byte_coordinates": [
+            153,
+            198
+          ]
+        },
+        "predicate": {
+          "character_coordinates": [
+            131,
+            148
+          ],
+          "sha256": "cc42b35dc8008d06926e89de1358e9493dbff18f551de699a54ec4a378617439",
+          "utf8_byte_coordinates": [
+            135,
+            152
+          ]
+        },
+        "prohibited_inferences": [
+          "NO_REAL_WORLD_ASSERTION",
+          "NO_UNSTATED_CAUSAL_INFERENCE",
+          "NO_UNSTATED_PERSON_INTENT_OR_INTERNAL_STATE_INFERENCE",
+          "NO_UNSTATED_ATTENDANCE_OR_DEMAND_INFERENCE"
+        ],
+        "proposition_id": "P2",
+        "qualification": {
+          "character_coordinates": [
+            99,
+            121
+          ],
+          "sha256": "025087e46b6fb1a2625593b02da07b041f405d9e09d7a499a1f4528aba8b9130",
+          "utf8_byte_coordinates": [
+            103,
+            125
+          ]
+        },
+        "quotation_status": "OWNER_AUTHORED_NOT_THIRD_PARTY_QUOTATION",
+        "scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE_ONLY",
+        "sensitive_protected_target_classification": "NONE_DECLARED_LOW_RISK_SYNTHETIC",
+        "subject": {
+          "character_coordinates": [
+            122,
+            130
+          ],
+          "sha256": "29117b8c5f120b0e3da218df39b3044cc82735bc1efd2635b79040c042134e1e",
+          "utf8_byte_coordinates": [
+            126,
+            134
+          ]
+        },
+        "supporting_span": {
+          "character_coordinates": [
+            99,
+            192
+          ],
+          "span_sha256": "5808b29acdeca06759f4c7763a48b0224917a5441f04c2cc0fc1cc7eda35e53d",
+          "utf8_byte_coordinates": [
+            103,
+            198
+          ]
+        },
+        "time": "EXPLICIT_2026_09_10",
+        "unknown_boundary": "ALL_UNSTATED_PROPERTIES_CAUSES_RESULTS_AND_REAL_WORLD_APPLICABILITY"
+      },
+      {
+        "attribution": "OWNER_AUTHORED_SOURCE",
+        "known_boundary": "ONLY_THE_EXACT_BOUND_PROPOSITION",
+        "modality": "ASSERTED",
+        "object": {
+          "character_coordinates": [
+            231,
+            249
+          ],
+          "sha256": "5cfaca86c6caee3e880dc467696281f95ac2409fedf4be1b133b803ff855b2fd",
+          "utf8_byte_coordinates": [
+            239,
+            257
+          ]
+        },
+        "predicate": {
+          "character_coordinates": [
+            222,
+            230
+          ],
+          "sha256": "460c93fb79d4d452ec98a9107c648cef3fafbe983fe863c47b3169e71998b487",
+          "utf8_byte_coordinates": [
+            229,
+            238
+          ]
+        },
+        "prohibited_inferences": [
+          "NO_REAL_WORLD_ASSERTION",
+          "NO_UNSTATED_CAUSAL_INFERENCE",
+          "NO_UNSTATED_PERSON_INTENT_OR_INTERNAL_STATE_INFERENCE",
+          "NO_UNSTATED_ATTENDANCE_OR_DEMAND_INFERENCE"
+        ],
+        "proposition_id": "P3",
+        "qualification": {
+          "character_coordinates": [
+            250,
+            271
+          ],
+          "sha256": "02ac05dcb6743f1a8d392d5787df05328f95c797167390a0e1d97ada56837593",
+          "utf8_byte_coordinates": [
+            258,
+            282
+          ]
+        },
+        "quotation_status": "OWNER_AUTHORED_NOT_THIRD_PARTY_QUOTATION",
+        "scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE_ONLY",
+        "sensitive_protected_target_classification": "NONE_DECLARED_LOW_RISK_SYNTHETIC",
+        "subject": {
+          "character_coordinates": [
+            209,
+            221
+          ],
+          "sha256": "d8ccdf112516b147e34d65c5366c9df09f85301f7a7b3aac55d0858927d66901",
+          "utf8_byte_coordinates": [
+            216,
+            228
+          ]
+        },
+        "supporting_span": {
+          "character_coordinates": [
+            193,
+            271
+          ],
+          "span_sha256": "28360169bf1e83a0a487fabb520866ae734337e1dd42652952b8af82b7101089",
+          "utf8_byte_coordinates": [
+            199,
+            282
+          ]
+        },
+        "time": "AFTER_THE_STATED_CALIBRATION",
+        "unknown_boundary": "ALL_UNSTATED_PROPERTIES_CAUSES_RESULTS_AND_REAL_WORLD_APPLICABILITY"
+      },
+      {
+        "attribution": "OWNER_AUTHORED_SOURCE",
+        "known_boundary": "ONLY_THE_EXACT_BOUND_PROPOSITION",
+        "modality": "ASSERTED",
+        "object": {
+          "character_coordinates": [
+            302,
+            332
+          ],
+          "sha256": "5a697288b4699ffe60e015da03d053d8a3fd1792cdac3a4f2fa6178ed2f88e07",
+          "utf8_byte_coordinates": [
+            314,
+            346
+          ]
+        },
+        "predicate": {
+          "character_coordinates": [
+            283,
+            301
+          ],
+          "sha256": "d238b312f1e7e14aacf89032f8a9d4e2642a0d85e998ff0437af44dcca2d277b",
+          "utf8_byte_coordinates": [
+            294,
+            313
+          ]
+        },
+        "prohibited_inferences": [
+          "NO_REAL_WORLD_ASSERTION",
+          "NO_UNSTATED_CAUSAL_INFERENCE",
+          "NO_UNSTATED_PERSON_INTENT_OR_INTERNAL_STATE_INFERENCE",
+          "NO_UNSTATED_ATTENDANCE_OR_DEMAND_INFERENCE"
+        ],
+        "proposition_id": "P4",
+        "qualification": null,
+        "quotation_status": "OWNER_AUTHORED_NOT_THIRD_PARTY_QUOTATION",
+        "scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE_ONLY",
+        "sensitive_protected_target_classification": "NONE_DECLARED_LOW_RISK_SYNTHETIC",
+        "subject": {
+          "character_coordinates": [
+            272,
+            282
+          ],
+          "sha256": "29fed31e7211270b674971a9874ace91b60513e9563e4903b376743dcee78e79",
+          "utf8_byte_coordinates": [
+            283,
+            293
+          ]
+        },
+        "supporting_span": {
+          "character_coordinates": [
+            272,
+            394
+          ],
+          "span_sha256": "993f81a8f5fc6838ba43cdd0c32653f19eb018442ae5250d953ab81e38f4e5f8",
+          "utf8_byte_coordinates": [
+            283,
+            411
+          ]
+        },
+        "time": "UNSPECIFIED",
+        "unknown_boundary": "ALL_UNSTATED_PROPERTIES_CAUSES_RESULTS_AND_REAL_WORLD_APPLICABILITY"
+      },
+      {
+        "attribution": "OWNER_AUTHORED_SOURCE",
+        "known_boundary": "ONLY_THE_EXACT_BOUND_PROPOSITION",
+        "modality": "ASSERTED",
+        "object": {
+          "character_coordinates": [
+            365,
+            394
+          ],
+          "sha256": "3316f5be8c08539b0c81713682688eec8aa36b1bbcc1080380c56ff58d8c3a05",
+          "utf8_byte_coordinates": [
+            380,
+            411
+          ]
+        },
+        "predicate": {
+          "character_coordinates": [
+            346,
+            364
+          ],
+          "sha256": "0e7b87c858206bf91d651639a3d0722864fc93f401313d2e858d3813f84a4964",
+          "utf8_byte_coordinates": [
+            360,
+            379
+          ]
+        },
+        "prohibited_inferences": [
+          "NO_REAL_WORLD_ASSERTION",
+          "NO_UNSTATED_CAUSAL_INFERENCE",
+          "NO_UNSTATED_PERSON_INTENT_OR_INTERNAL_STATE_INFERENCE",
+          "NO_UNSTATED_ATTENDANCE_OR_DEMAND_INFERENCE"
+        ],
+        "proposition_id": "P5",
+        "qualification": null,
+        "quotation_status": "OWNER_AUTHORED_NOT_THIRD_PARTY_QUOTATION",
+        "scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE_ONLY",
+        "sensitive_protected_target_classification": "NONE_DECLARED_LOW_RISK_SYNTHETIC",
+        "subject": {
+          "character_coordinates": [
+            337,
+            345
+          ],
+          "sha256": "29117b8c5f120b0e3da218df39b3044cc82735bc1efd2635b79040c042134e1e",
+          "utf8_byte_coordinates": [
+            351,
+            359
+          ]
+        },
+        "supporting_span": {
+          "character_coordinates": [
+            272,
+            394
+          ],
+          "span_sha256": "993f81a8f5fc6838ba43cdd0c32653f19eb018442ae5250d953ab81e38f4e5f8",
+          "utf8_byte_coordinates": [
+            283,
+            411
+          ]
+        },
+        "time": "UNSPECIFIED",
+        "unknown_boundary": "ALL_UNSTATED_PROPERTIES_CAUSES_RESULTS_AND_REAL_WORLD_APPLICABILITY"
+      },
+      {
+        "attribution": "OWNER_AUTHORED_SOURCE",
+        "known_boundary": "EXTERIOR_AIR_TEMPERATURE_NOT_ESTABLISHED",
+        "modality": "ASSERTED",
+        "object": {
+          "character_coordinates": [
+            428,
+            477
+          ],
+          "sha256": "3afcf425a5e1d9adbdb52a0e6389931cca08eca5ad19a5676f004fe2191d3738",
+          "utf8_byte_coordinates": [
+            447,
+            497
+          ]
+        },
+        "predicate": {
+          "character_coordinates": [
+            414,
+            427
+          ],
+          "sha256": "e712b362ca239b0e962bf762f160741d0e48f01440f38e8316646750fde2f06d",
+          "utf8_byte_coordinates": [
+            432,
+            446
+          ]
+        },
+        "prohibited_inferences": [
+          "NO_REAL_WORLD_ASSERTION",
+          "NO_UNSTATED_CAUSAL_INFERENCE",
+          "NO_UNSTATED_PERSON_INTENT_OR_INTERNAL_STATE_INFERENCE",
+          "NO_UNSTATED_ATTENDANCE_OR_DEMAND_INFERENCE"
+        ],
+        "proposition_id": "P6",
+        "qualification": null,
+        "quotation_status": "OWNER_AUTHORED_NOT_THIRD_PARTY_QUOTATION",
+        "scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE_ONLY",
+        "sensitive_protected_target_classification": "NONE_DECLARED_LOW_RISK_SYNTHETIC",
+        "subject": {
+          "character_coordinates": [
+            395,
+            413
+          ],
+          "sha256": "ff5900f0a064b3d85038938fb2c86eb5f864ebbf765d0a236e8bb8db725cb0f1",
+          "utf8_byte_coordinates": [
+            412,
+            431
+          ]
+        },
+        "supporting_span": {
+          "character_coordinates": [
+            395,
+            477
+          ],
+          "span_sha256": "9fd66da4f11b7dae5a9531cf9106b87bf9bb1bc49249a7996ae8feede5995842",
+          "utf8_byte_coordinates": [
+            412,
+            497
+          ]
+        },
+        "time": "THE_STATED_DAY",
+        "unknown_boundary": "EXTERIOR_TEMPERATURE_AND_ALL_UNSTATED_PROPERTIES_CAUSES_RESULTS_AND_REAL_WORLD_APPLICABILITY_UNKNOWN"
+      },
+      {
+        "attribution": "OWNER_AUTHORED_SOURCE",
+        "known_boundary": "NEXT_RECALIBRATION_DATE_NOT_SPECIFIED",
+        "modality": "ASSERTED",
+        "object": {
+          "character_coordinates": [
+            498,
+            526
+          ],
+          "sha256": "cc10e684c4bbc6fece69c8b6a982f8edbfa238f56b5908ba0e666b023be89fde",
+          "utf8_byte_coordinates": [
+            519,
+            549
+          ]
+        },
+        "predicate": {
+          "character_coordinates": [
+            478,
+            497
+          ],
+          "sha256": "516a0553679557bc22f8c075e379d12c9d47e0a6c1aec078459d5f5bfe97866d",
+          "utf8_byte_coordinates": [
+            498,
+            518
+          ]
+        },
+        "prohibited_inferences": [
+          "NO_REAL_WORLD_ASSERTION",
+          "NO_UNSTATED_CAUSAL_INFERENCE",
+          "NO_UNSTATED_PERSON_INTENT_OR_INTERNAL_STATE_INFERENCE",
+          "NO_UNSTATED_ATTENDANCE_OR_DEMAND_INFERENCE"
+        ],
+        "proposition_id": "P7",
+        "qualification": null,
+        "quotation_status": "OWNER_AUTHORED_NOT_THIRD_PARTY_QUOTATION",
+        "scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE_ONLY",
+        "sensitive_protected_target_classification": "NONE_DECLARED_LOW_RISK_SYNTHETIC",
+        "subject": {
+          "character_coordinates": [
+            498,
+            526
+          ],
+          "sha256": "cc10e684c4bbc6fece69c8b6a982f8edbfa238f56b5908ba0e666b023be89fde",
+          "utf8_byte_coordinates": [
+            519,
+            549
+          ]
+        },
+        "supporting_span": {
+          "character_coordinates": [
+            478,
+            526
+          ],
+          "span_sha256": "54052bc4fcaab4be82dca24605d19450d6b958f3233a0e49f1950f37c92b257a",
+          "utf8_byte_coordinates": [
+            498,
+            549
+          ]
+        },
+        "time": "FUTURE_RECALIBRATION",
+        "unknown_boundary": "NEXT_RECALIBRATION_DATE_AND_ALL_UNSTATED_PROPERTIES_CAUSES_RESULTS_AND_REAL_WORLD_APPLICABILITY_UNKNOWN"
+      }
+    ],
+    "source_commitment": "be434d8e94845f74089621d2aa8628991da39549e54253dfcdf241464ee00f98",
+    "source_sha256": "e3404a694bf1203f8a11ceeed0e682511882237e4777bd0e092876994c4326cc",
+    "world_scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE"
+  },
+  "factual_authority_envelope_identity": "d734ba6268619a67a41bcb9219f2d803d636f3507a95528c8ea0061a442bcebf",
+  "family_identities": {
+    "authority_family": "16e9b1f0a1df6d0966068af27f9fffd310a7186b689e8912d2d197b6e9417f64",
+    "creative_premise_family_id": "UNASSIGNED",
+    "event_family": "d3ddfb6e7a72f3ba7762055f47245505258146bb7250eb47b2168a31bdd7206b",
+    "family_closure": "e9f18ef2fca8ef8b00f72ae9ba34235242fdd43a96f7aad215d4fc803b1663cd",
+    "revision_family": "d4b7535ce011f9bff5d1b2333cff18f0783174764f80639c00c36600bcc105d8",
+    "source_family": "6c06ea44bcf2424c6ed79445c20b7d86825d3ff2bda334b30daa68812d0e8bff",
+    "topic_entity_family": "0a5ef69e012b76abe38f5aada58e44f8642a3a3a77574224ccd7838ff1e0d769"
+  },
+  "family_independence_identity": "fafea197cdadbeb524352c685f39431c01a7f11ae3ea9d8581b2fffcf6120aeb",
+  "g01a_admitted": false,
+  "g01b_admitted": false,
+  "g04b_pool_certification_performed": false,
+  "git_archival": false,
+  "immutable_archive_commitment": "0b74b606891477e797010af77c32bc8cb21610c7769b6682f675943b3cf477d3",
+  "ingested": false,
+  "operational_obligation": "UNASSIGNED",
+  "partition": "DEVELOPMENT",
+  "post_g01_rebalancing_assignment_gate": "REQUIRED_NOT_PERFORMED_DIFFERENT_OBLIGATION_FAMILY_AND_CLOSE_ALTERNATIVE_PROFILE",
+  "preingestion_identity": "0d081b19b0fec01bf7cb5026f8c505dd2b9715fc18f8599e2c7dab6d67928037",
+  "prospective_git_blob_oid_sha1": "62f76d5645edd0be0535f4611b43548491e6c6ea",
+  "prospective_partition_identity": "d069cd5711f956437d13f1c1212268337569192930d0812d0aaea930d7de9106",
+  "rights_instrument_identity": "985efb63dd1633a5134fe58b64412dc5d8f56766c2a507b15740f218547b86e9",
+  "schema_name": "batch2-development-pilot05-preingestion-v1",
+  "schema_version": "1.0.0",
+  "source_byte_length": 550,
+  "source_commitment": "be434d8e94845f74089621d2aa8628991da39549e54253dfcdf241464ee00f98",
+  "source_package_identity": "450c76fe0964eefd23c44eb098c5b40ff37a59aaccd107aecfb3b8669afdf8ce",
+  "source_sha256": "e3404a694bf1203f8a11ceeed0e682511882237e4777bd0e092876994c4326cc",
+  "status": "PROSPECTIVE_UNSIGNED_NOT_INGESTED_NOT_G01_ADMITTED",
+  "target_mechanism": "UNASSIGNED",
+  "validation_commit": "c48c97858a480a13a4064b85d67b7bb716e30b2d",
+  "validation_identity": "42845c8ad8560e47a91383e1f27a8ca92ce532ab74566540e437ea4911600d3e"
+}
