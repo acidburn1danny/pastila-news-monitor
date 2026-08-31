@@ -1,0 +1,38 @@
+{
+  "assignment_commit": "02ab072957e748cc5df0102487668e6ec1cc7b1d",
+  "blind_pass_commit": "e465603fcce0c89b6545ae0cc0f100df37b6a22b",
+  "candidate_identity": "cf34033fb7017ff29146524108d4cb3fcbf8229681d054d2085dbaba294436e1",
+  "classification": "TARGET_RECOVERED_DOMINANT",
+  "contrast_pass": {
+    "all_close_alternatives_contrasted": true,
+    "confidence": "HIGH",
+    "pass_identity": "48adec6a8c1b90dfec5e7cd6bf1d075ccfb6c23002db17fe7509dcd928361d15",
+    "primary_choice": "Absurd Logical Extension",
+    "primary_role": "DOMINANT",
+    "supporting_choices": [
+      "Comic Reclassification"
+    ]
+  },
+  "mapping_revealed_after_blind_freeze": true,
+  "open_pass": {
+    "pass_identity": "2a01454b2a55481abab5f32d1f76dde9d6ee002335716dde6f3c60e6df98addc",
+    "posthoc_label_rewrite": false,
+    "structural_alignment_with_sealed_target": "PASS_DEPENDENT_PREMISE_TO_ABSURD_CONSEQUENCE_CHAIN",
+    "verbatim_primary": "lanț inferențial absurd cu poantă autoreferențială",
+    "verbatim_primary_role": "DOMINANT",
+    "verbatim_supporting": [
+      "reclasificarea eșecului de acces ca demonstrație"
+    ]
+  },
+  "reconciliation_identity": "ad3abb9c0be7e15c8443a4e57dda0cd2040674e6bc60713eb6ea6260664da916",
+  "reconciliation_rationale": "OPEN_PASS_RECOVERS_THE_DEPENDENT_ABSURD_INFERENCE_CHAIN_WITHOUT_TAXONOMY_TERMS;_CLOSED_PASS_RECOVERS_THE_EXACT_TARGET_DOMINANT_AND_IDENTIFIES_RECLASSIFICATION_AS_SUPPORTING",
+  "schema_name": "batch2-development-pilot04-g03-reconciliation-v1",
+  "schema_version": "1.0.0",
+  "sealed_assignment_identity": "689f57472f4c0147cb6613da5ea737639d74404fbf5e2d0d54ad24700b55f28c",
+  "sealed_target": {
+    "frozen_plan_option": "M13_ABSURD_LOGICAL_EXTENSION",
+    "mechanism_id": "HMCV1-B02-M03-ABSURD_LOGICAL_EXTENSION",
+    "mechanism_name": "Absurd Logical Extension"
+  },
+  "substantive_disagreement": false
+}
