@@ -1,0 +1,104 @@
+{
+  "admission_identity": "13b2c8bae8a5535de5321c82c9faee36fdb44a96f90ebafcb71a8c036a456ac9",
+  "authority_matrix": {
+    "candidate_construction": false,
+    "creative_premise_assignment": false,
+    "g04b_pool_certification": false,
+    "generation": false,
+    "mechanism_assignment": false,
+    "model_exposure": false,
+    "operational_obligation_assignment": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "training": false
+  },
+  "eligibility_scope": "SEPARATE_OWNER_AUTHORIZATION_REQUIRED_NO_ASSIGNMENT_GRANTED",
+  "g01a": {
+    "correction_revocation_supersession": "CURRENT_V1_NO_SUCCESSOR_OR_REVOCATION",
+    "custodial_authority": "PASS_8_OF_8_CONSUMED",
+    "immutable_capture_and_version": "PASS",
+    "propositions": [
+      {
+        "coordinates_and_hashes": "PASS",
+        "modality_scope_attribution_boundaries": "PASS",
+        "proposition_id": "P1",
+        "qualification": "BOUND"
+      },
+      {
+        "coordinates_and_hashes": "PASS",
+        "modality_scope_attribution_boundaries": "PASS",
+        "proposition_id": "P2",
+        "qualification": "BOUND"
+      },
+      {
+        "coordinates_and_hashes": "PASS",
+        "modality_scope_attribution_boundaries": "PASS",
+        "proposition_id": "P3",
+        "qualification": "BOUND"
+      },
+      {
+        "coordinates_and_hashes": "PASS",
+        "modality_scope_attribution_boundaries": "PASS",
+        "proposition_id": "P4",
+        "qualification": "BOUND"
+      },
+      {
+        "coordinates_and_hashes": "PASS",
+        "modality_scope_attribution_boundaries": "PASS",
+        "proposition_id": "P5",
+        "qualification": "BOUND"
+      },
+      {
+        "coordinates_and_hashes": "PASS",
+        "modality_scope_attribution_boundaries": "PASS",
+        "proposition_id": "P6",
+        "qualification": "BOUND"
+      },
+      {
+        "coordinates_and_hashes": "PASS",
+        "modality_scope_attribution_boundaries": "PASS",
+        "proposition_id": "P7",
+        "qualification": "BOUND"
+      }
+    ],
+    "rights_and_permitted_use": "PASS_WITH_STRICT_NON_INHERITANCE",
+    "source_git_object": "342f171ed4dcf103a95dd49a6e974a2b246a8f8d",
+    "source_sha256": "db4d440d42596e2db5ca402afa23bc8f65dcf7a7ba23a06d3ebef9e2eb1aa480",
+    "target_safety": "PASS_LOW_RISK_SYNTHETIC",
+    "third_party_material": "NONE_DECLARED_AND_NONE_OBSERVED",
+    "verdict": "PASS"
+  },
+  "g01b": {
+    "contamination_ledger_head": "3a172491ec99d5f8c0ef2d4be075912b5518f6b42bb19641bd60ab9b20d26fd4",
+    "contamination_state": "CLEAN_DEVELOPMENT_ONLY_NO_BLIND_EXPOSURE",
+    "creative_premise_family_id": "UNASSIGNED",
+    "downstream_exposure": {
+      "constructor": false,
+      "model": false,
+      "production": false,
+      "runtime": false,
+      "training": false
+    },
+    "family_closure": "PASS",
+    "family_identities": {
+      "authority_family": "f8b6dbc61f0f79ed4e396fdfe5645fe66223493cca8606202e4c4cc3de211d23",
+      "creative_premise_family_id": "UNASSIGNED",
+      "event_family": "ea19c20788d4790ee4d6cc0544db7c5cac78730edefbcd0cc773e47bd128efad",
+      "family_closure": "ab682e0762d486faa5218ed249cfffe43feaf65025f23b8fbb2b1b94a7fcb54e",
+      "revision_family": "15662651198cb31d3fd4d49b631f4950c79cb38426c4579c7d009929483030e8",
+      "source_family": "dd1d5cb54f7b3b767b9950a44ee91115a9ccdad98cbd4f5566f454a0b5e94db0",
+      "topic_entity_family": "910dc9e2464b40fce33cef763bfb87fb53f715be61ee6259994da53261a6e875"
+    },
+    "mechanism_assignment": "ABSENT",
+    "partition": "DEVELOPMENT",
+    "partition_isolation": "PASS",
+    "relationship_state": "FRESH_INDEPENDENT_FAMILY_NO_DUPLICATE_REVISION_SIBLING_OR_SAME_EVENT_RELATIVE",
+    "verdict": "PASS"
+  },
+  "ingestion_receipt_identity": "8d0dc6bd92063d8c246c88dc1c58356eb30d0455e8c8b5137f76d545263f9e00",
+  "later_development_assignment_design_eligibility": true,
+  "reviewed_commit": "4e4afc730be7600fb0b6ce8abf822bce868b0565",
+  "schema_name": "batch2-development-pilot04-g01a-g01b-admission-v1",
+  "schema_version": "1.0.0",
+  "source_package_identity": "6fb31794566391bafa242fd8de1048ed3f3f234b9822b9d7f4a99307fbe1d72c"
+}
