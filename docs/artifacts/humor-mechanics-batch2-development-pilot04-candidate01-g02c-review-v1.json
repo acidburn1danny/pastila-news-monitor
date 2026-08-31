@@ -1,0 +1,32 @@
+{
+  "authority_matrix": {
+    "g03_mechanism_recovery": false,
+    "g04b_pool_certification": false,
+    "owner_review": false,
+    "production_routing": false,
+    "regeneration": false,
+    "repair": false,
+    "rewrite": false,
+    "runtime_integration": false,
+    "training": false
+  },
+  "candidate_identity": "cf34033fb7017ff29146524108d4cb3fcbf8229681d054d2085dbaba294436e1",
+  "candidate_modified": false,
+  "candidate_raw_sha256": "e231a549685103da5c6e0e4f9b9e93459d86e7c7ae0247ad11f15d55a3426b0b",
+  "conformance_receipt_identity": "35b73a375473c0d49ea671785e4db4d1b23d7568ea8c06d38fc5d0014ffd41f8",
+  "conformance_schema_identity": "9470ce435de7ddcfea8dc4b3022b2ad697c2aa85fab44e8b532b4fa9850b0512",
+  "creative_premise_family_id": "726eb45203c35592ea2781ac778b7147fd97794d907f0973861acbfa1e3bc6fc",
+  "eligibility": "ELIGIBLE_FOR_SEPARATELY_AUTHORIZED_BLIND_G03_MECHANISM_RECOVERY",
+  "g02_commit": "9504f5f5c4dee0bcd07db7d4b582630d21b871a1",
+  "g02_receipt_identity": "d1e339796733a75423b4255bc90fc440c5c572ada4628954258f92ecde963cd3",
+  "g02c_review_identity": "4934240e4b9e3b8332406e988ffeab1732ba749995e62602871b0a46d2986a05",
+  "g02c_verdict": "PASS",
+  "g03_performed": false,
+  "mechanism_neutrality": "PASS_TARGET_MAPPING_NOT_ACCESSED",
+  "naturalness_precheck": "PASS_NO_INSTRUCTION_TO_SURFACE_TRANSFER",
+  "obligation_governance_identity": "874c5d611c5ab955e0f9d82aa5aa086fad98e065f66e20e9e236f48798287024",
+  "predicate_verification": "PASS_ALL_GOVERNANCE_V2_REQUIRED_PREDICATES",
+  "schema_name": "batch2-development-pilot04-candidate-g02c-review-v1",
+  "schema_version": "2.0.0",
+  "sealed_mapping_accessed": false
+}

@@ -1,0 +1,80 @@
+{
+  "candidate_identity": "cf34033fb7017ff29146524108d4cb3fcbf8229681d054d2085dbaba294436e1",
+  "conformance_receipt_identity": "35b73a375473c0d49ea671785e4db4d1b23d7568ea8c06d38fc5d0014ffd41f8",
+  "conformance_schema_identity": "9470ce435de7ddcfea8dc4b3022b2ad697c2aa85fab44e8b532b4fa9850b0512",
+  "continued_relation_fingerprint": "e2aec481bb222527a9c286108a69a569b7b0ca356d899a92bfa7401ca7e94098",
+  "dependency": {
+    "step2_requires_step1": true,
+    "unrelated_replacement_possible": false
+  },
+  "naturalness_precheck": {
+    "does_not_replace_blind_g04a": true,
+    "editorial_or_governance_label_as_marker": false,
+    "materially_procedural_abstract_register": false,
+    "obligation_terminology_copied_or_paraphrased": false,
+    "unidiomatic_creative_marking": false
+  },
+  "obligation_governance_identity": "874c5d611c5ab955e0f9d82aa5aa086fad98e065f66e20e9e236f48798287024",
+  "required_predicates": {
+    "AUTHORIZED_PROPOSITION_PRESERVED": true,
+    "ENTITY_STATUS_PRESERVED": true,
+    "GOVERNANCE_LANGUAGE_ABSENT": true,
+    "IDIOMATIC_ROMANIAN_PRECHECK_PASS": true,
+    "INTEGRATED_NARRATIVE_CREATIVE_MARKING": true,
+    "LOCAL_INTELLIGIBILITY": true,
+    "NO_UNRELATED_EVENT": true,
+    "PROCEDURAL_ABSTRACTION_NONMATERIAL": true,
+    "RELATION_OPERATIVE_ACROSS_BOTH": true,
+    "SECOND_DEPENDS_ON_FIRST": true,
+    "TWO_DISTINCT_NEW_SITUATIONS": true
+  },
+  "schema_name": "batch2-development-pilot04-g02c-conformance-receipt-v1",
+  "schema_version": "2.0.0",
+  "selected_proposition": {
+    "proposition_id": "P5",
+    "source_span": {
+      "character_coordinates": [
+        312,
+        381
+      ],
+      "span_sha256": "1ec310e6f667f23401f2e80f45780ec56920f9dabbc278a5b26b1e035e0710cd",
+      "utf8_byte_coordinates": [
+        323,
+        395
+      ]
+    }
+  },
+  "situations": [
+    {
+      "candidate_span": {
+        "character_coordinates": [
+          94,
+          168
+        ],
+        "sha256": "e9ce4d7685f99c24943441afe74e13f6df2a619be58697a551518829bcbc2840",
+        "utf8_byte_coordinates": [
+          99,
+          178
+        ]
+      },
+      "locally_understandable": true,
+      "ordinal": 1
+    },
+    {
+      "candidate_span": {
+        "character_coordinates": [
+          170,
+          287
+        ],
+        "sha256": "759a8ade77dde48eef87b705177baf6e2d711eb59a7c294a47ea44793521e2dc",
+        "utf8_byte_coordinates": [
+          180,
+          305
+        ]
+      },
+      "locally_understandable": true,
+      "ordinal": 2
+    }
+  ],
+  "verdict": "PASS"
+}
