@@ -1,0 +1,16 @@
+{
+  "assignment_authority": false,
+  "audit_identity": "79438069c5d5747fe2d1dd92a83721b712bc4b7d7f8b3c270331c49fca57333f",
+  "authorized_visible_context_sha256": "37e92f7c6b55729e6efee58d6145b8184fc0ac98410ab0d412b51f54605a1899",
+  "candidate_surface_absent": true,
+  "construction_authority": false,
+  "corrected_receipt_identity": "a242e3019b6d204dc6b1673da1c235bbd182887c12bbfdbb19680e48392a9d04",
+  "deterministic_blockers": [],
+  "relation_and_adjacent_links_consistent": "PASS",
+  "schema_name": "batch2-pilot07-post-g01-proposition-sufficiency-remediation-audit-v3-1",
+  "schema_version": "3.0.1",
+  "selected_proposition": "P5",
+  "source_proposition_and_span_unchanged": true,
+  "superseded_receipt_identity": "820d12777ab5c7796115c1cbdca7e225ae70eabebb035bcdab8c407f6214a1ad",
+  "verdict": "PASS_SOURCE_ONLY_WITNESS_LABEL_REMEDIATION"
+}
