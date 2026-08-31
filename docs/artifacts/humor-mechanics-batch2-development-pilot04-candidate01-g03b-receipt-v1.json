@@ -1,0 +1,26 @@
+{
+  "authority_matrix": {
+    "candidate_regeneration": false,
+    "candidate_repair": false,
+    "candidate_rewrite": false,
+    "g03c": false,
+    "g04b_pool_certification": false,
+    "owner_review": false,
+    "production_routing": false,
+    "romanian_naturalness_review": false,
+    "runtime_integration": false,
+    "training": false,
+    "voice_review": false
+  },
+  "candidate_bytes_modified": false,
+  "candidate_identity": "cf34033fb7017ff29146524108d4cb3fcbf8229681d054d2085dbaba294436e1",
+  "candidate_raw_sha256": "e231a549685103da5c6e0e4f9b9e93459d86e7c7ae0247ad11f15d55a3426b0b",
+  "counterfactual_candidate_created": false,
+  "g03_receipt_identity": "a5fee6cd159f0be637d051371bc91d6c79c7b78ba93a778c44e4932750324667",
+  "g03b_receipt_identity": "f72c8f8b6ec9fce3006dde691ec7976991caf581acdf9add91a21c6ebbcf2a49",
+  "g03b_review_identity": "38fa73811d5f3dce1cbcb66d92dc82f5f5145355fe0b24ace820dbd926396d1e",
+  "g03b_verdict": "CAUSAL_MECHANISM_CONFIRMED",
+  "next_gate_eligible": "G03C_SEPARATELY_AUTHORIZED_ONLY",
+  "schema_name": "batch2-development-pilot04-candidate01-g03b-receipt-v1",
+  "schema_version": "1.0.0"
+}

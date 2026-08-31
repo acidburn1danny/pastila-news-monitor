@@ -1,0 +1,158 @@
+{
+  "authority_matrix": {
+    "candidate_regeneration": false,
+    "candidate_repair": false,
+    "candidate_rewrite": false,
+    "g03c": false,
+    "g04b_pool_certification": false,
+    "owner_review": false,
+    "production_routing": false,
+    "romanian_naturalness_review": false,
+    "runtime_integration": false,
+    "training": false,
+    "voice_review": false
+  },
+  "candidate_bytes_modified": false,
+  "candidate_disposition_effect": "ELIGIBLE_FOR_SEPARATELY_AUTHORIZED_G03C_ONLY",
+  "candidate_identity": "cf34033fb7017ff29146524108d4cb3fcbf8229681d054d2085dbaba294436e1",
+  "candidate_raw_sha256": "e231a549685103da5c6e0e4f9b9e93459d86e7c7ae0247ad11f15d55a3426b0b",
+  "causal_findings": {
+    "boundary_separation_test": "PASS_I05",
+    "invariance_test": "PASS_I04",
+    "necessary_structure": [
+      "factual premise",
+      "first premise-dependent consequence",
+      "second locally dependent consequence",
+      "absurd categorial payoff"
+    ],
+    "not_necessary": [
+      "specific causal connective",
+      "specific vocabulary",
+      "punctuation",
+      "surface template"
+    ],
+    "removal_test": "PASS_I01_REDUCES_DOMINANCE_I02_REMOVES_I03_CHANGES_LABEL",
+    "supporting_mechanism_isolation": "PASS_I06"
+  },
+  "causal_trace": {
+    "creative_marking": "În povestea expoziției",
+    "factual_premise": "O acreditare expirată sau nerecunoscută nu permite accesul în zona B.",
+    "incongruity_payoff": "Eșecul accesului devine chiar proba comică a regulii care l-a produs.",
+    "local_dependency": "INVALID_CREDENTIAL_TO_EXCLUSION_TO_NO_DEMONSTRATION_ACCESS_TO_EXCLUSION_AS_DEMONSTRATION",
+    "transformation_step_1": "Participantul cu o astfel de acreditare rămâne în afara zonei B.",
+    "transformation_step_2": "Imposibilitatea de a ajunge la demonstrație transformă excluderea într-o demonstrație a interdicției.",
+    "verdict": "COMPLETE_RECOVERABLE_CAUSAL_CHAIN"
+  },
+  "controls": {
+    "creative_marking_separated_from_mechanism_causality": "PASS",
+    "factual_premise_control": "PASS",
+    "length_control": "PASS_WHERE_PRACTICABLE_DELTA_ONLY",
+    "lexical_keyword_dependence": "REJECTED_BY_I04",
+    "mere_absurdity_explanation": "REJECTED_BY_I03",
+    "supporting_reclassification_isolation": "PASS_I06",
+    "tone_control": "PASS_WHERE_PRACTICABLE",
+    "topic_control": "PASS"
+  },
+  "counterfactuals_materialized_as_candidates": false,
+  "creative_premise_family_id": "726eb45203c35592ea2781ac778b7147fd97794d907f0973861acbfa1e3bc6fc",
+  "g03_commit": "0331ef381dc3a11d87fab4bf586db8f6d99d8b9d",
+  "g03_receipt_identity": "a5fee6cd159f0be637d051371bc91d6c79c7b78ba93a778c44e4932750324667",
+  "g03b_review_identity": "38fa73811d5f3dce1cbcb66d92dc82f5f5145355fe0b24ace820dbd926396d1e",
+  "g03b_verdict": "CAUSAL_MECHANISM_CONFIRMED",
+  "minimal_interventions": [
+    {
+      "causal_result": "DOMINANCE_REMOVED",
+      "delta_only": "Elimină transformarea excluderii în demonstrație a interdicției.",
+      "expected_observation": "Participantul rămâne afară, dar se pierde consecința absurdă dependentă și dominanța lanțului extins.",
+      "id": "G03B-I01-REMOVE-SECOND-INFERENCE",
+      "mechanism_after": "SUPPORTING_OR_WEAK_NOT_DOMINANT",
+      "preserved": [
+        "factual premise",
+        "fictional marking",
+        "first consequence",
+        "topic",
+        "register"
+      ]
+    },
+    {
+      "causal_result": "MECHANISM_REMOVED",
+      "delta_only": "Înlocuiește oprirea la poartă cu constatarea neutră că participantul așteaptă.",
+      "expected_observation": "Dispare excluderea care făcea posibilă demonstrația finală; lanțul-țintă nu se formează.",
+      "id": "G03B-I02-NEUTRALIZE-FIRST-HINGE",
+      "mechanism_after": "ABSENT",
+      "preserved": [
+        "factual premise",
+        "topic",
+        "statusul acreditării",
+        "register"
+      ]
+    },
+    {
+      "causal_result": "LABEL_CHANGE",
+      "delta_only": "Păstrează premisa și tonul imaginar, dar substituie o întâmplare absurdă fără dependență de refuzul accesului.",
+      "expected_observation": "Absurdul rămâne, însă clasificarea se mută la absurditate fără legătură.",
+      "id": "G03B-I03-SUBSTITUTE-UNRELATED-ABSURDITY",
+      "mechanism_after": "ABSENT_LABEL_CHANGES",
+      "preserved": [
+        "topic",
+        "factual premise",
+        "fictional status",
+        "absurd tone",
+        "approximate length"
+      ]
+    },
+    {
+      "causal_result": "INVARIANT_UNDER_SURFACE_PARAPHRASE",
+      "delta_only": "Schimbă vocabularul și punctuația, păstrând excluderea, imposibilitatea de a ajunge la demonstrație și poanta dependentă.",
+      "expected_observation": "Mecanismul rămâne dominant și nu depinde de un cuvânt ori conector fix.",
+      "id": "G03B-I04-PARAPHRASE-NONCAUSAL-CUES",
+      "mechanism_after": "DOMINANT",
+      "preserved": [
+        "all facts",
+        "dependency graph",
+        "fictional marking",
+        "payoff",
+        "topic"
+      ]
+    },
+    {
+      "causal_result": "MARKER_NOT_CAUSAL_TO_MECHANISM",
+      "delta_only": "Elimină numai cadrul «povestea expoziției».",
+      "expected_observation": "Lanțul mecanic rămâne, dar candidatul devine nevalid separat la granița factuală G02.",
+      "id": "G03B-I05-REMOVE-CREATIVE-MARKER",
+      "mechanism_after": "DOMINANT_BUT_AUTHORITY_INVALID",
+      "preserved": [
+        "premise",
+        "dependency graph",
+        "payoff",
+        "topic"
+      ]
+    },
+    {
+      "causal_result": "SUPPORTING_RECLASSIFICATION_REMOVED",
+      "delta_only": "Păstrează cele două situații, dar înlocuiește demonstrarea interdicției cu o consecință neutră.",
+      "expected_observation": "Componenta de reclasificare comică dispare, iar extensia logică rămâne doar slabă, confirmând rolul ei de suport în realizarea prezentă.",
+      "id": "G03B-I06-REMOVE-FINAL-RECLASSIFICATION-ONLY",
+      "mechanism_after": "WEAK_SUPPORTING",
+      "preserved": [
+        "factual premise",
+        "first hinge",
+        "dependency connector",
+        "topic"
+      ]
+    }
+  ],
+  "performed": {
+    "candidate_regeneration": false,
+    "candidate_repair": false,
+    "candidate_rewrite": false,
+    "g03c": false,
+    "owner_review": false,
+    "romanian_naturalness_review": false,
+    "voice_review": false
+  },
+  "reconciliation_identity": "ad3abb9c0be7e15c8443a4e57dda0cd2040674e6bc60713eb6ea6260664da916",
+  "schema_name": "batch2-development-pilot04-candidate01-g03b-causal-review-v1",
+  "schema_version": "1.0.0",
+  "tested_mechanism": "Absurd Logical Extension"
+}
