@@ -58,6 +58,8 @@ def prepare_development_constructor_access_v1(*, release_bytes: bytes) -> Prepar
             "B2_DEVELOPMENT_PILOT04_CONSTRUCTOR_ACCESS_RELEASE_V1",
         "batch2-development-pilot05-constructor-access-release-v1":
             "B2_DEVELOPMENT_PILOT05_CONSTRUCTOR_ACCESS_RELEASE_V1",
+        "batch2-development-pilot06-constructor-access-release-v2":
+            "B2_DEVELOPMENT_PILOT06_CONSTRUCTOR_ACCESS_RELEASE_V2",
     }
     release_namespace = release_namespaces.get(release["schema_name"])
     if release_namespace is None:
@@ -85,6 +87,7 @@ def prepare_development_constructor_access_v1(*, release_bytes: bytes) -> Prepar
         "B2_DEVELOPMENT_PILOT03_CONSTRUCTOR_PACKET_G02B_SOURCE_BOUND_V1",
         "B2_DEVELOPMENT_PILOT04_CONSTRUCTOR_PACKET_G02B_SOURCE_BOUND_V1",
         "B2_DEVELOPMENT_PILOT05_CONSTRUCTOR_PACKET_G02B_SOURCE_BOUND_V1",
+        "B2_DEVELOPMENT_PILOT06_CONSTRUCTOR_PACKET_G02B_V2",
     }:
         raise ValueError("packet seal namespace")
     if packet_identity != _seal(namespace, packet_core):
@@ -96,15 +99,25 @@ def prepare_development_constructor_access_v1(*, release_bytes: bytes) -> Prepar
         raise ValueError("label or blind leakage")
     if packet["creative_premise_family_id"] != "UNASSIGNED":
         raise ValueError("creative premise assigned")
-    source = packet.get("source_object", {})
-    source_text = source.get("source_text_utf8")
-    if not isinstance(source_text, str):
-        raise ValueError("source text unavailable")
-    source_bytes = source_text.encode("utf-8")
-    if hashlib.sha256(source_bytes).hexdigest() != source.get("sha256"):
-        raise ValueError("source text hash")
-    if len(source_bytes) != source.get("byte_length") or source.get("encoding") != "UTF-8":
-        raise ValueError("source byte binding")
+    if "exact_authorized_visible_context_utf8" in packet:
+        source_text = packet["exact_authorized_visible_context_utf8"]
+        if not isinstance(source_text, str):
+            raise ValueError("authorized context unavailable")
+        source_bytes = source_text.encode("utf-8")
+        if hashlib.sha256(source_bytes).hexdigest() != packet.get("authorized_visible_context_sha256"):
+            raise ValueError("authorized context hash")
+        if packet.get("selected_proposition_id") != "P3" or len(packet["closed_factual_authority_envelope"]["propositions"]) != 1:
+            raise ValueError("selected proposition boundary")
+    else:
+        source = packet.get("source_object", {})
+        source_text = source.get("source_text_utf8")
+        if not isinstance(source_text, str):
+            raise ValueError("source text unavailable")
+        source_bytes = source_text.encode("utf-8")
+        if hashlib.sha256(source_bytes).hexdigest() != source.get("sha256"):
+            raise ValueError("source text hash")
+        if len(source_bytes) != source.get("byte_length") or source.get("encoding") != "UTF-8":
+            raise ValueError("source byte binding")
     if not all(value is False for value in packet["authority_matrix"].values()):
         raise ValueError("downstream authority")
     return PreparedDevelopmentConstructorAccessV1(

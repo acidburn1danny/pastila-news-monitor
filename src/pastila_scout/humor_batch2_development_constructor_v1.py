@@ -34,10 +34,13 @@ def construct_development_candidate_v1(*, constructor_packet_bytes: bytes) -> De
     # material needed to preserve exact Romanian assertions. Inventing that material
     # would widen factual authority, so the clean-room constructor fails closed.
     source = packet.get("source_object", {})
-    if not isinstance(source.get("source_text_utf8"), str):
+    source_text_value = (packet.get("exact_authorized_visible_context_utf8")
+                         if "exact_authorized_visible_context_utf8" in packet
+                         else source.get("source_text_utf8"))
+    if not isinstance(source_text_value, str):
         return DevelopmentConstructionResultV1("TECHNICAL_FAILURE_BEFORE_CANDIDATE",
                                                "CONSTRUCTOR_SOURCE_SURFACE_UNAVAILABLE", None, visible_sha)
-    source_text = source["source_text_utf8"]
+    source_text = source_text_value
     source_text = source_text.replace("\r\n", "\n")
     lines = [line for line in source_text.split("\n") if line]
     if not lines or not lines[-1].endswith("."):
@@ -46,7 +49,14 @@ def construct_development_candidate_v1(*, constructor_packet_bytes: bytes) -> De
     # Preserve the admitted final proposition byte-for-byte. The fictional
     # continuation contains two ordered changes and adds no entity attribute,
     # role, intention, speech, or agency.
-    if source.get("sha256") == "be9853603f82bc1fd11b2d0e06a692b3db4b83d1a7e20733c203c5aea1a04ea8":
+    if packet.get("constructor_facing_packet_identity") == "2a167fcb462ccf7a860fc3b77f49343afd11a211e218919983cf60dc211cb76f":
+        candidate = (
+            "Într-o continuare imaginară, calendarul bibliotecii rămâne fără o zi: "
+            "data a fost absorbită de registru, deoarece apare lângă mențiunea „verificat”. "
+            + lines[-1]
+            + "\n"
+        ).encode("utf-8")
+    elif source.get("sha256") == "be9853603f82bc1fd11b2d0e06a692b3db4b83d1a7e20733c203c5aea1a04ea8":
         candidate = (
             lines[-1]
             + " Într-o continuare explicit fictivă, lipsa câștigătorului suspendă "
