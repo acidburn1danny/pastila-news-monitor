@@ -1,0 +1,14 @@
+{
+  "audit_identity": "5f7c78d44f401ded6c5f70461b85044c70b409e0cf5aa58cbde1df320d6bf0d2",
+  "candidate_bytes_modified": false,
+  "candidate_identity_preserved": true,
+  "development_only_preserved": true,
+  "downstream_authority_granted": false,
+  "exact_owner_decision_bound": true,
+  "g05_owner_freeze_identity": "b85401270daeb2025d79bc13d1d002e3d439171de72aef77f87ad5d7395b814b",
+  "pool_pending_preserved": true,
+  "request_identity_verified": true,
+  "schema_name": "batch2-development-pilot03-candidate01-g05-owner-freeze-audit-v1",
+  "schema_version": "1.0.0",
+  "verdict": "PASS_OWNER_FREEZE_WITH_FAIL_CLOSED_DOWNSTREAM_LIMITS"
+}
