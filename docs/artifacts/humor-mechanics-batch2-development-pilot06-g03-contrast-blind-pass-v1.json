@@ -1,0 +1,40 @@
+{
+  "alternative_findings": {
+    "ABSURD_LOGICAL_EXTENSION": "PRESENT_AS_SUPPORTING_LOCAL_INFERENCE_NOT_WHOLE_SURFACE_DOMINANT",
+    "AMBIGUOUS": "MISDIRECTION_JUDGED_MORE_SPECIFIC",
+    "ESCALATION": "NO_INCREASE_IN_INTENSITY_OR_STAKES",
+    "HYPERBOLE": "NOT_MAGNITUDE_AMPLIFICATION",
+    "NONE": "CLEAR_REORIENTATION_PRESENT"
+  },
+  "blind_pass_identity": "e6f3bccea52a747e0eb3ca9a03821fa10d05112efb63d3ceb1c44ea99f82ee15",
+  "candidate_identity": "61b4c89e4ec65ac211debc034ed35f47f79a2757551266a90fadf5acde270773",
+  "candidate_modified": false,
+  "candidate_raw_sha256": "e00b1b83507ece1808445a3f6cfd07286ee20eecc6f4208d9aa4940ab2fbc1a9",
+  "confidence": "HIGH",
+  "g02c_review_identity": "9c00bdaf3273b24548c12e176f410f3167c8ae35e6bdf2abfdc2843d0ee093d2",
+  "primary_choice": "MISDIRECTION",
+  "primary_role": "DOMINANT",
+  "reconciliation_performed": false,
+  "review_mode": "SHUFFLED_CLOSED_CHOICE",
+  "reviewer_independence": "INDEPENDENT_SURFACE_ONLY",
+  "schema_name": "batch2-development-pilot06-g03-contrast-blind-pass-v1",
+  "schema_version": "1.0.0",
+  "sealed_mapping_accessed": false,
+  "shortcut_assessment": {
+    "lexical": "NON_MATERIAL",
+    "punctuation": "NON_MATERIAL",
+    "template": "NON_MATERIAL"
+  },
+  "shuffled_choices": [
+    "HYPERBOLE",
+    "NONE",
+    "ABSURD_LOGICAL_EXTENSION",
+    "ESCALATION",
+    "MISDIRECTION",
+    "AMBIGUOUS"
+  ],
+  "structural_rationale": "ABSURD_INITIAL_EXPLANATION_PRECEDES_A_BANAL_ADMINISTRATIVE_DISCLOSURE_THAT_RETROSPECTIVELY_REORIENTS_THE_READING",
+  "supporting_choices": [
+    "ABSURD_LOGICAL_EXTENSION"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "blind_pass_identity": "65269d58fbd8bf5714f8f88c80a022b298e3ed2805c9a5e04b5f421ebf0b0b83",
+  "candidate_identity": "61b4c89e4ec65ac211debc034ed35f47f79a2757551266a90fadf5acde270773",
+  "candidate_modified": false,
+  "candidate_raw_sha256": "e00b1b83507ece1808445a3f6cfd07286ee20eecc6f4208d9aa4940ab2fbc1a9",
+  "confidence": "HIGH",
+  "g02c_review_identity": "9c00bdaf3273b24548c12e176f410f3167c8ae35e6bdf2abfdc2843d0ee093d2",
+  "primary_mechanism_description": "EXTINDERE_CAUZALA_ABSURDA_PRIN_LITERALIZAREA_INSCRIERII_UNEI_DATE",
+  "primary_role": "DOMINANT",
+  "reconciliation_performed": false,
+  "review_mode": "OPEN_RECOVERY_NO_CHOICE_LABELS",
+  "reviewer_independence": "INDEPENDENT_SURFACE_ONLY",
+  "schema_name": "batch2-development-pilot06-g03-open-blind-pass-v1",
+  "schema_version": "1.0.0",
+  "sealed_mapping_accessed": false,
+  "shortcut_assessment": {
+    "lexical": "NON_MATERIAL",
+    "overall": "LOW",
+    "punctuation": "NON_MATERIAL",
+    "source_order": "FACILITATES_RECOVERY_BUT_SEMANTIC_RELATION_REQUIRED",
+    "template": "LOW_BUT_RECOGNIZABLE_ADMINISTRATIVE_FACT_TO_IMAGINARY_LITERAL_CONSEQUENCE"
+  },
+  "structural_rationale": "RELATIA_REALISTA_DE_EVIDENTA_ESTE_LITERALIZATA_CA_TRANSFER_FIZIC_IAR_DISPARITIA_ZILEI_ESTE_DERIVATA_CA_URMARE_IMPOSIBILA",
+  "supporting_mechanisms": [
+    "REIFICAREA_DATEI_CA_OBIECT_TRANSFERABIL_SAU_ABSORBABIL",
+    "INCONGRUITATE_PROCEDURA_ADMINISTRATIVA_VS_CONSECINTA_IMPOSIBILA",
+    "METAFORA_ANIMATA_A_REGISTRULUI_CARE_ABSOARBE_DATA"
+  ]
+}
