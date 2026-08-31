@@ -1,0 +1,92 @@
+{
+  "authority_matrix": {
+    "candidate_regeneration": false,
+    "candidate_repair": false,
+    "candidate_rewrite": false,
+    "curriculum_promotion": false,
+    "g04b_pool_certification": false,
+    "owner_review": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "training": false,
+    "voice_review": false
+  },
+  "candidate_bytes_modified": false,
+  "candidate_identity": "cf34033fb7017ff29146524108d4cb3fcbf8229681d054d2085dbaba294436e1",
+  "candidate_raw_sha256": "e231a549685103da5c6e0e4f9b9e93459d86e7c7ae0247ad11f15d55a3426b0b",
+  "candidate_repair_attempted": false,
+  "disposition_effect": "ELIGIBLE_FOR_SEPARATELY_AUTHORIZED_VOICE_REVIEW_ONLY",
+  "evaluator_inaccessible": [
+    "sealed assignment mapping",
+    "mechanism identity/name/ordinal",
+    "constructor packet and prompt",
+    "owner preference history",
+    "historical examples",
+    "blind-evaluation material",
+    "Voice rubric and judgment"
+  ],
+  "evaluator_visible": {
+    "candidate_surface": "O acreditare expirată sau nerecunoscută nu permite accesul în zona B. În povestea expoziției, un participant cu o astfel de acreditare rămâne mai întâi în afara zonei B; neputând ajunge la demonstrație, ajunge apoi să demonstreze, chiar de la poartă, cât de bine funcționează interdicția.",
+    "rubric": [
+      "BASIC_GRAMMATICALITY",
+      "IDIOMATIC_WORD_ORDER_AND_REGISTER",
+      "NO_CALQUE",
+      "NATURAL_CREATIVE_MARKING",
+      "NO_FORCED_WORDPLAY",
+      "COHESION_AND_PUNCTUATION"
+    ]
+  },
+  "findings": {
+    "basic_grammaticality": {
+      "finding": "Ambele enunțuri sunt corecte gramatical și ușor de urmărit.",
+      "verdict": "PASS"
+    },
+    "cohesion_and_punctuation": {
+      "finding": "Punctul și virgula separă adecvat cele două trepte, iar gerunziul leagă inteligibil consecința locală de poantă.",
+      "verdict": "PASS"
+    },
+    "idiomatic_word_order_and_register": {
+      "finding": "Ordinea cuvintelor, gerunziul «neputând» și progresia de la poartă la demonstrație sunt firești în română.",
+      "verdict": "PASS"
+    },
+    "natural_creative_marking": {
+      "finding": "«În povestea expoziției» integrează planul nonfactual în enunț, fără avertisment editorial sau limbaj de guvernanță.",
+      "verdict": "PASS"
+    },
+    "no_calque": {
+      "finding": "Nu apare un calc identificabil sau o construcție sintactică străină de română.",
+      "verdict": "PASS"
+    },
+    "no_forced_wordplay": {
+      "finding": "Repetiția «ajunge/ajunge să» este perceptibilă, dar susține firesc pivotul dintre acces și demonstrație și nu inventează un sens lexical.",
+      "verdict": "PASS_WITH_RESERVATION"
+    },
+    "overall_naturalness": {
+      "finding": "Textul este idiomatic, coerent și oralizabil; repetiția funcțională este o rezervă minoră, nu o rigiditate materială.",
+      "verdict": "PASS"
+    }
+  },
+  "g03c_commit": "b05f474010556215ca6b7f274609f1ed4883d570",
+  "g03c_diagnostic_identity": "3ace56a63eced1ae336e0373bde0b97df663e86882760fe839682753e94d21c8",
+  "g03c_receipt_identity": "06b3edd39fff5cf71267fd4298ee5d6c2e154758b0d899b1cc4d204c65fdd06d",
+  "g04a_review_identity": "450055989f017bb9f10e352102977e5f6af2d82d091f15f91953b8fb61d5cd44",
+  "g04a_verdict": "ROMANIAN_NATURALNESS_PASS",
+  "mechanism_adjudication_performed": false,
+  "performed": {
+    "candidate_regeneration": false,
+    "candidate_repair": false,
+    "candidate_rewrite": false,
+    "owner_review": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "training": false,
+    "voice_review": false
+  },
+  "reservations": [
+    "MINOR_FUNCTIONAL_AJUNGE_REPETITION_NONMATERIAL"
+  ],
+  "review_mode": "BLIND_ROMANIAN_SURFACE_ONLY",
+  "schema_name": "batch2-development-pilot04-candidate01-g04a-romanian-naturalness-review-v1",
+  "schema_version": "1.0.0",
+  "sealed_mapping_accessed": false
+}
