@@ -1,0 +1,16 @@
+{
+  "audit_identity": "4850ad69ae0a2f40a57649bbd56251a880d3a98347de55c76c5a50118a8b6396",
+  "audit_verdict": "PASS_CONTENT_FREE_STOP_REQUIRED",
+  "blind_material_accessed": false,
+  "content_free": true,
+  "deterministic_blockers": [],
+  "external_input_blocker": "OWNER_AUTHORED_SOURCE_BYTES_AND_COMPLETED_DECLARATION_REQUIRED",
+  "g04b_performed": false,
+  "mechanism_neutral": true,
+  "owner_input_request_identity": "ddf080ac6938162c067b475ad371b98e909b30cb77b4755d99828905cdab2ca5",
+  "prior_pilots_preserved": true,
+  "rebalancing_requirement_deferred_until_post_g01": true,
+  "schema_name": "batch2-development-pilot05-owner-input-request-audit-v1",
+  "schema_version": "1.0.0",
+  "source_selection_uses_rebalancing_target": false
+}
