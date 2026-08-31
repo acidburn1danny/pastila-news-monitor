@@ -1,0 +1,76 @@
+{
+  "authority_binding": {
+    "factual_authority_envelope_identity": "d734ba6268619a67a41bcb9219f2d803d636f3507a95528c8ea0061a442bcebf",
+    "ingestion_commit": "585c986e0bd6b4717b3a1e90aad4aa5a7c8c0373",
+    "source_commitment": "be434d8e94845f74089621d2aa8628991da39549e54253dfcdf241464ee00f98",
+    "source_sha256": "e3404a694bf1203f8a11ceeed0e682511882237e4777bd0e092876994c4326cc",
+    "world_scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE"
+  },
+  "authority_matrix": {
+    "g02c_obligation_conformance": false,
+    "g03_mechanism_recovery": false,
+    "g04b_pool_certification": false,
+    "model_training": false,
+    "owner_review": false,
+    "production_routing": false,
+    "regeneration": false,
+    "repair": false,
+    "rewrite": false,
+    "romanian_naturalness_review": false,
+    "runtime_integration": false,
+    "selection": false,
+    "voice_review": false
+  },
+  "candidate_byte_length": 319,
+  "candidate_git_blob_oid_sha1": "9f9990aa29307ea2b0150b5f670c7bfa96299203",
+  "candidate_identity": "a7414fa9f1c50a5b674d9c3b5d7c531c46e6f8b70472893697a92d0309dc30ac",
+  "candidate_raw_sha256": "8030222614461de66246eb9f2a14d1230e271b327007092f30f216f55a0d7166",
+  "construction_evidence_identity": "90e832ebd25773ed8b2a602724ea47bab3f557bc0231c22d117c8a6c02641c08",
+  "creative_nonfactual_separation_result": "PASS_EXPLICIT_LOCAL_IMAGINARY_CONTINUATION_MARKER_COVERS_COMPLETE_CREATIVE_SEQUENCE",
+  "creative_premise_family_id": "5a9ec724df58f6d855b298028c6c95aad4940b2379483971b1c51ce6b4ab22d7",
+  "eligibility": "ELIGIBLE_FOR_SEPARATELY_AUTHORIZED_G02C_OBLIGATION_CONFORMANCE",
+  "evidence_commit": "f04cce6cc83c9f489cc5c841653b4095367aa96e",
+  "exposure_reconciliation_preserved": true,
+  "factual_assertion_trace": [
+    {
+      "authority_proposition_ids": [
+        "P3"
+      ],
+      "candidate_assertion": "EXACT_P3_SUPPORTING_SPAN",
+      "candidate_character_coordinates": [
+        217,
+        295
+      ],
+      "known_boundary": "ONLY_THE_EXACT_BOUND_PROPOSITION",
+      "modality": "ASSERTED",
+      "scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE_ONLY",
+      "source_character_coordinates": [
+        193,
+        271
+      ],
+      "source_span_sha256": "28360169bf1e83a0a487fabb520866ae734337e1dd42652952b8af82b7101089",
+      "source_utf8_byte_coordinates": [
+        199,
+        282
+      ],
+      "time": "AFTER_THE_STATED_CALIBRATION",
+      "trace_result": "EXACT_SOURCE_BOUND_ASSERTION_WITH_CALIBRATION_TIME_REFERENCE_AND_SYNTHETIC_SCOPE",
+      "unknown_boundary": "ALL_UNSTATED_PROPERTIES_CAUSES_RESULTS_AND_REAL_WORLD_APPLICABILITY"
+    }
+  ],
+  "g02_receipt_identity": "02edafd3200d39fcf842e570a8ab3c824107e893cbbe5c01742d70e1f0cadab3",
+  "g02_verdict": "PASS",
+  "g02c_obligation_conformance_performed": false,
+  "invented_quotation_or_private_knowledge_result": "PASS_NONE",
+  "mechanism_adjudication_performed": false,
+  "new_factual_premise_result": "PASS_NONE_CREATIVE_MEASUREMENT_AND_DIFFERENCE_REMAIN_EXPLICITLY_IMAGINARY",
+  "partition": "DEVELOPMENT",
+  "post_construction_g02b_preserved": true,
+  "pragmatic_prohibited_conclusion_result": "PASS_NO_EXTERIOR_TEMPERATURE_FUTURE_RECALIBRATION_OR_REAL_WORLD_CONCLUSION",
+  "protected_target_result": "PASS_NO_REAL_PERSON_PROTECTED_OR_SENSITIVE_TARGET",
+  "qualification_scope_result": "PASS_P3_CALIBRATION_TIME_REFERENCE_SYNTHETIC_SCOPE_AND_UNKNOWN_BOUNDARY_RETAINED",
+  "schema_name": "batch2-development-pilot05-candidate-g02-v1",
+  "schema_version": "1.0.0",
+  "sealed_mapping_accessed": false,
+  "unsupported_inference_result": "PASS_NO_REAL_WORLD_INTENT_MOTIVE_PRIVATE_STATE_CAUSAL_PREVALENCE_CHRONOLOGY_OR_STATUS_ASSERTION"
+}
