@@ -1,0 +1,93 @@
+{
+  "authority_matrix": {
+    "candidate_regeneration": false,
+    "candidate_repair": false,
+    "candidate_rewrite": false,
+    "construction": false,
+    "curriculum_promotion": false,
+    "model_exposure": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "source_acquisition": false,
+    "training": false
+  },
+  "bounded_pool": [
+    {
+      "candidate_identity": "b4555cc43bf16a466734aed46e93baa83bd9bc37d52d3826976be3370ccef72d",
+      "candidate_raw_sha256": "86f058253be11227bf40a0de4842bf79ae7458b2a89f11c8fca033477e0a626d",
+      "commit": "4395f3300ca2f59ce1f76b4e7abccd3ff0a587e9",
+      "owner_freeze_identity": "b85401270daeb2025d79bc13d1d002e3d439171de72aef77f87ad5d7395b814b",
+      "pilot": "PILOT03"
+    },
+    {
+      "candidate_identity": "cf34033fb7017ff29146524108d4cb3fcbf8229681d054d2085dbaba294436e1",
+      "candidate_raw_sha256": "e231a549685103da5c6e0e4f9b9e93459d86e7c7ae0247ad11f15d55a3426b0b",
+      "commit": "96f1632be005c3b85079c7bfca488fe903bc4966",
+      "owner_freeze_identity": "9ccf9f8dc0dd4857e987cbc0dfc13a590573036d83d53d990d31566098d71cd8",
+      "pilot": "PILOT04"
+    }
+  ],
+  "candidate_bytes_modified": false,
+  "certification_granted": false,
+  "contamination": {
+    "blind_reserve_accessed": false,
+    "candidate_or_owner_preference_tuning": false,
+    "cross_partition_overlap": false,
+    "development_only": true,
+    "model_or_training_visibility": false,
+    "verdict": "PASS_CLEAN_BOUNDED_DEVELOPMENT_POOL"
+  },
+  "family_source_topic_entity_payoff_diversity": {
+    "payoff_contrast": "OPENING_RECLASSIFIED_AS_INVENTORY_ITEM_VS_EXCLUSION_RECLASSIFIED_AS_RULE_DEMONSTRATION",
+    "source_event_authority_topic_revision_and_creative_families_distinct": true,
+    "topic_contrast": "PARCEL_CONTENT_AND_INVENTORY_VS_EXHIBITION_ACCESS_CONTROL",
+    "verdict": "PASS"
+  },
+  "g04b_pool_audit_identity": "75b7644656e1e111f38998de07034aacca74c6eee0eccd813acbb201c0a433b7",
+  "g04b_verdict": "POOL_REBALANCING_REQUIRED_NO_CERTIFICATION",
+  "no_nonsemantic_label_predictability": {
+    "reason": "With two positives sharing obligation, sentence shape, story marker, semicolon chain, and landing lexeme, semantics cannot be separated from construction-family cues.",
+    "verdict": "FAIL_NOT_ESTABLISHED",
+    "weak_classifier_training_performed": false
+  },
+  "positive_contrast_difficulty": {
+    "finding": "Both dominant positives use comic reclassification as the supporting payoff and provide no family-isolated positive realization with a different close-alternative profile.",
+    "shared_supporting_mechanism": "COMIC_RECLASSIFICATION",
+    "verdict": "FAIL_INSUFFICIENT_CROSS_FAMILY_CONTRAST"
+  },
+  "required_before_reaudit": [
+    "AT_LEAST_ONE_ADDITIONAL_INDEPENDENT_OWNER_FROZEN_DOMINANT_POSITIVE_FAMILY",
+    "DIFFERENT_LABEL_BLIND_REALIZATION_OR_OBLIGATION_FAMILY_WITHOUT_TARGET_LEAKAGE",
+    "DIFFERENT_CLOSE_ALTERNATIVE_AND_SUPPORTING_MECHANISM_PROFILE",
+    "FAMILY_ISOLATED_CONFUSABLE_OR_MECHANISM_NEGATIVE_EVIDENCE",
+    "REPEAT_G04B_WITHOUT_QUOTA_FILL"
+  ],
+  "schema_name": "batch2-g04b-pilot03-pilot04-cross-candidate-pool-audit-v1",
+  "schema_version": "1.0.0",
+  "structural_realization_diversity": {
+    "finding": "Both positives instantiate the same obligation family with a highly similar fact-then-story, semicolon, two-step, ajunge-landing shape.",
+    "shared_features": {
+      "ajunge_landing_lexeme": [
+        true,
+        true
+      ],
+      "integrated_story_marker": [
+        true,
+        true
+      ],
+      "same_governance_v2_obligation_family": [
+        true,
+        true
+      ],
+      "semicolon_two_step_realization": [
+        true,
+        true
+      ],
+      "two_sentence_fact_then_creative_chain": [
+        true,
+        true
+      ]
+    },
+    "verdict": "FAIL_INSUFFICIENT_DIVERSITY"
+  }
+}

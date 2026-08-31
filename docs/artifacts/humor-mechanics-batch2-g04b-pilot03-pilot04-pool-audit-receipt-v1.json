@@ -1,0 +1,23 @@
+{
+  "authority_matrix": {
+    "candidate_regeneration": false,
+    "candidate_repair": false,
+    "candidate_rewrite": false,
+    "construction": false,
+    "curriculum_promotion": false,
+    "model_exposure": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "source_acquisition": false,
+    "training": false
+  },
+  "candidate_bytes_modified": false,
+  "certification_granted": false,
+  "contamination_verdict": "PASS_CLEAN_BOUNDED_DEVELOPMENT_POOL",
+  "g04b_pool_audit_identity": "75b7644656e1e111f38998de07034aacca74c6eee0eccd813acbb201c0a433b7",
+  "g04b_receipt_identity": "17ef281ba9efab95268717dc0598db1b7f7ab052132f2cd18112908b07972e2b",
+  "g04b_verdict": "POOL_REBALANCING_REQUIRED_NO_CERTIFICATION",
+  "next_action_requires_separate_authority": true,
+  "schema_name": "batch2-g04b-pilot03-pilot04-pool-audit-receipt-v1",
+  "schema_version": "1.0.0"
+}
