@@ -1,0 +1,1 @@
+Într-o continuare imaginară, calendarul bibliotecii rămâne fără o zi: data a fost absorbită de registru, deoarece apare lângă mențiunea „verificat”. În timpul sesiunii, fiecare hartă verificată primește în registrul intern mențiunea „verificat”, împreună cu data controlului.

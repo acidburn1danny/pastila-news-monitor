@@ -1,0 +1,65 @@
+{
+  "attempt": {
+    "authorized": 1,
+    "constructor_invocations": 1,
+    "consumed": 1,
+    "remaining": 0
+  },
+  "authority_matrix": {
+    "g04b_pool_certification": false,
+    "mechanism_adjudication": false,
+    "model_training": false,
+    "owner_freeze": false,
+    "production_routing": false,
+    "runtime_integration": false
+  },
+  "candidate_identity": "61b4c89e4ec65ac211debc034ed35f47f79a2757551266a90fadf5acde270773",
+  "candidate_partition": "DEVELOPMENT",
+  "candidate_surface_byte_length": 302,
+  "candidate_surface_present": true,
+  "candidate_surface_sha256": "e00b1b83507ece1808445a3f6cfd07286ee20eecc6f4208d9aa4940ab2fbc1a9",
+  "capability": {
+    "constructor_visible_sha256": "2931833b9fcce239e0ff000b86cb46ae300f3814db415378ed6a0b21d6816a95",
+    "consumed": true,
+    "reads": 1,
+    "single_use": true
+  },
+  "construction_provenance": {
+    "authorized_visible_context_sha256": "51d1891c346d6e7aa1f6b33da5a1d964cc99c2789d255ac7fd54999181a20dcd",
+    "closed_authority_envelope_source_commitment": "cc8532bcc045be51ec1af2d5e83b7a1bcd96fc4f05fb2932b919d68cf6f82ac8",
+    "obligation_instance_identity": "0c1f9e12d66d64294a1023e7da2707e397cc8c7714b09c04e84be8713f28e40a"
+  },
+  "constructor_access_source_sha256": "45716af125e3bc63e7213119499fddfe6ac49bb5a24995a2d7b6a2c8d64205be",
+  "constructor_exposure_reconciliation": {
+    "authorized_packet_only": true,
+    "blind_material_exposed": false,
+    "cache_or_temp_file_access": false,
+    "environment_or_cli_access": false,
+    "exact_selected_source_span_only": true,
+    "hidden_mechanism_metadata_introduced": false,
+    "logs_or_telemetry_payload": false,
+    "network_access": false,
+    "process_handle_access": false,
+    "repository_or_filesystem_access": false,
+    "sealed_mapping_exposed": false,
+    "sibling_artifact_access": false
+  },
+  "constructor_facing_packet_identity": "2a167fcb462ccf7a860fc3b77f49343afd11a211e218919983cf60dc211cb76f",
+  "constructor_source_sha256": "598e4b9879252b8e4e3e94d8b22b869f164a876f933cab8ceeebb4f9f009d67e",
+  "creative_premise_family_id": "bc1ebc6a748fad7bcb3c8526b7568b5f30beefd15848db98aadc44f986c74994",
+  "evidence_identity": "3a5ba3a2acd2c59b429d2f482c1011d30dec96bddce741fc4a6c72fcaab61a93",
+  "execution_source_commit": "73f135f57a8ccd5797c2b2f4fcb843937f6ba70c",
+  "failure_code": null,
+  "post_construction_g02b_verdict": "PASS",
+  "release_commit": "26403a36e5817d269cfd56f880398200170868da",
+  "release_identity": "3412c9f6b7b0ec2ca459464967d7831d514b030668a5e5d780af54e9ba65bbe8",
+  "repair_authority": false,
+  "retry_authority": false,
+  "schema_name": "batch2-development-pilot06-construction-attempt01-v1",
+  "schema_version": "1.0.0",
+  "selected_proposition_id": "P3",
+  "selected_supporting_span_sha256": "51d1891c346d6e7aa1f6b33da5a1d964cc99c2789d255ac7fd54999181a20dcd",
+  "selection_authority": false,
+  "sufficiency_receipt_identity": "240ee7a3eaf7ec8869235212c466aee8be0e0c8126a5bee80c560c36c8043b9a",
+  "terminal_classification": "CANDIDATE_PRODUCED_DEVELOPMENT_ONLY"
+}
