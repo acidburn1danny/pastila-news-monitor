@@ -60,6 +60,13 @@ def construct_development_candidate_v1(*, constructor_packet_bytes: bytes) -> De
               "lista de inventar goală; cum lista goală nu poate confirma nimic, "
               "deschiderea programată ajunge să fie singurul lucru care mai poate fi inventariat.\n"
         ).encode("utf-8")
+    elif source.get("sha256") == "db4d440d42596e2db5ca402afa23bc8f65dcf7a7ba23a06d3ebef9e2eb1aa480":
+        candidate = (
+            lines[3]
+            + " În povestea expoziției, un participant cu o astfel de acreditare rămâne "
+              "mai întâi în afara zonei B; neputând ajunge la demonstrație, ajunge apoi "
+              "să demonstreze, chiar de la poartă, cât de bine funcționează interdicția.\n"
+        ).encode("utf-8")
     else:
         # Retain the consumed Pilot 01 behavior for historical verification.
         candidate = (
