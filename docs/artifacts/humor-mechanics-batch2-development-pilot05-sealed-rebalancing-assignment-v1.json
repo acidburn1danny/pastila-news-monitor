@@ -1,0 +1,86 @@
+{
+  "admission_commit": "eb920f7b4bcf5473d22733c22520087fdf20a571",
+  "admission_identity": "ff0d4ef7c263e30b6b944bde6d91b7d41e321678dd9fa7dc3bfc011312eafaee",
+  "candidate_surface": null,
+  "close_alternative_profile": {
+    "comic_reclassification_excluded_as_designed_support": true,
+    "difference_from_pilot03_pilot04": "PASS_DISTINCT_PRIMARY_NEIGHBOR_AND_NO_RECLASSIFICATION_PAYOFF",
+    "primary_neighbor": "MISDIRECTION",
+    "required_closed_choices": [
+      "TARGET",
+      "MISDIRECTION",
+      "ESCALATION",
+      "HYPERBOLE",
+      "NONE",
+      "AMBIGUOUS"
+    ],
+    "secondary_neighbors": [
+      "ESCALATION",
+      "HYPERBOLE"
+    ]
+  },
+  "constructor_access": false,
+  "creative_premise_family_id": "UNASSIGNED",
+  "evaluator_access_before_blind_verdict": false,
+  "family_closure": "e9f18ef2fca8ef8b00f72ae9ba34235242fdd43a96f7aad215d4fc803b1663cd",
+  "obligation_family_identity": "8379c38c191ab850a6af30ee16a751fb750710554a957e6e57c3f89955de404a",
+  "partition": "DEVELOPMENT",
+  "schema_name": "batch2-development-pilot05-sealed-rebalancing-assignment-mapping-v1",
+  "schema_version": "1.0.0",
+  "sealed_assignment_identity": "17fe47e507801352f5892d03e3fd4faa8fec9535202f05a90f1e337c87f89e75",
+  "selection_analysis": {
+    "all_seven_propositions_structurally_satisfiable": {
+      "P1": {
+        "closed_authority_available": true,
+        "qualification_and_unknown_boundary_bound": true,
+        "reclassification_or_human_agency_required": false,
+        "reverse_disclosure_dependency_not_precluded": true
+      },
+      "P2": {
+        "closed_authority_available": true,
+        "qualification_and_unknown_boundary_bound": true,
+        "reclassification_or_human_agency_required": false,
+        "reverse_disclosure_dependency_not_precluded": true
+      },
+      "P3": {
+        "closed_authority_available": true,
+        "qualification_and_unknown_boundary_bound": true,
+        "reclassification_or_human_agency_required": false,
+        "reverse_disclosure_dependency_not_precluded": true
+      },
+      "P4": {
+        "closed_authority_available": true,
+        "qualification_and_unknown_boundary_bound": true,
+        "reclassification_or_human_agency_required": false,
+        "reverse_disclosure_dependency_not_precluded": true
+      },
+      "P5": {
+        "closed_authority_available": true,
+        "qualification_and_unknown_boundary_bound": true,
+        "reclassification_or_human_agency_required": false,
+        "reverse_disclosure_dependency_not_precluded": true
+      },
+      "P6": {
+        "closed_authority_available": true,
+        "qualification_and_unknown_boundary_bound": true,
+        "reclassification_or_human_agency_required": false,
+        "reverse_disclosure_dependency_not_precluded": true
+      },
+      "P7": {
+        "closed_authority_available": true,
+        "qualification_and_unknown_boundary_bound": true,
+        "reclassification_or_human_agency_required": false,
+        "reverse_disclosure_dependency_not_precluded": true
+      }
+    },
+    "basis": "POST_G01_GOVERNANCE_SATISFIABILITY_AND_POOL_REBALANCING_ONLY",
+    "source_acquired_and_g01_admitted_before_assignment": true,
+    "source_selected_or_shaped_using_target_obligation_or_pool_need": false
+  },
+  "status": "SEALED_REBALANCING_PROPOSAL_NOT_ACTIVATED",
+  "target_mapping": {
+    "frozen_plan_option": "M13_ABSURD_LOGICAL_EXTENSION",
+    "mechanism_id": "HMCV1-B02-M03-ABSURD_LOGICAL_EXTENSION",
+    "mechanism_name": "Absurd Logical Extension"
+  }
+}

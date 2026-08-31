@@ -1,0 +1,21 @@
+{
+  "audit_identity": "c92287214e9291cca257543f105b71d7fdda17bb63b57a9ea8bd923362cb7732",
+  "blind_evaluation_contamination": "ABSENT",
+  "candidate_surfaces_created": 0,
+  "construction_authority": "ABSENT",
+  "constructor_facing_packet_identity": "116febfa5e3953741e7afbbddc78eaecf09b33dbdad495d3f3019903b8a56b2a",
+  "constructor_invocations": 0,
+  "creative_premise_assignment": "ABSENT_UNASSIGNED",
+  "deterministic_blockers": [],
+  "distinct_close_alternative_profile": "PASS_MISDIRECTION_PRIMARY_NO_COMIC_RECLASSIFICATION_SUPPORT_DESIGN",
+  "distinct_from_pilot03_pilot04_obligation_family": "PASS_REVERSE_DISCLOSURE_VS_FORWARD_CHAIN",
+  "factual_authority_widening": "ABSENT_EXACT_ENVELOPE_EQUALITY",
+  "g04b_certification_performed": false,
+  "obligation_family_identity": "8379c38c191ab850a6af30ee16a751fb750710554a957e6e57c3f89955de404a",
+  "schema_name": "batch2-development-pilot05-rebalancing-assignment-design-audit-v1",
+  "schema_version": "1.0.0",
+  "sealed_assignment_identity": "17fe47e507801352f5892d03e3fd4faa8fec9535202f05a90f1e337c87f89e75",
+  "source_shape_selection": "PASS_SOURCE_ACQUIRED_AND_G01_ADMITTED_BEFORE_REBALANCING_GATE",
+  "taxonomy_and_alternative_label_scan": "PASS_ZERO_HITS",
+  "verdict": "PASS_SAFE_REBALANCING_ASSIGNMENT_ZERO_CONSTRUCTION"
+}

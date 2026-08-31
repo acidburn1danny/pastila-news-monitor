@@ -1,0 +1,43 @@
+{
+  "bound_base_governance_identity": "874c5d611c5ab955e0f9d82aa5aa086fad98e065f66e20e9e236f48798287024",
+  "candidate_surface": null,
+  "construction_authority": false,
+  "constructor_visible_obligation": {
+    "factual_safety": [
+      "Separă fără echivoc relatarea factuală de cadrul inventat prin formularea narativă însăși.",
+      "Nu adăuga fapte, cunoaștere privată, citate, afirmații despre ținte protejate sau concluzii pragmatice despre lumea reală."
+    ],
+    "forbidden_operations": [
+      "Nu face ca poanta să depindă de atribuirea unei alte denumiri, categorii, definiții sau stări unei entități.",
+      "Nu atribui entităților nonumane vorbire, intenție, emoție, ocupație, rol social ori agenție umană neautorizată.",
+      "Nu obține rezultatul numai prin comparație, intensificare, listă, joc lexical sau surpriză fără dependența completă.",
+      "Nu folosi un eveniment inventat fără legătură cu propoziția factuală aleasă."
+    ],
+    "naturalness_and_surface_freedom": [
+      "Folosește română idiomatică și concretă; nu transfera în suprafață limbaj de guvernanță, verificare sau instrucțiune.",
+      "Nu este impus niciun conector, semn de punctuație, cuvânt de aterizare, registru, număr de propoziții sau formulă de poantă.",
+      "Nu folosi o prefață de tipul «în poveste» și nu începe cu relatarea factuală urmată de un lanț expus numai înainte."
+    ],
+    "obligation_version": "REVERSE_DISCLOSURE_DEPENDENCY_V1",
+    "transformation": [
+      "Păstrează fără schimbare de conținut sau calificare exact o propoziție autorizată, integrată firesc în text.",
+      "Prezintă mai întâi un rezultat concret și neechivoc inventat, apoi fă inteligibilă legătura lui cu relația factuală prin două trepte de dependență recuperabile în sens invers.",
+      "Fiecare treaptă trebuie să depindă de cea imediat următoare în explicație și să nu poată fi înlocuită cu o întâmplare arbitrară.",
+      "Rezultatul inventat și cele două trepte trebuie să rămână clar în afara autorității factuale, prin construcția idiomatică a enunțului."
+    ]
+  },
+  "family_version": "REVERSE_DISCLOSURE_DEPENDENCY_V1",
+  "obligation_family_identity": "8379c38c191ab850a6af30ee16a751fb750710554a957e6e57c3f89955de404a",
+  "schema_name": "batch2-development-pilot05-rebalancing-obligation-family-v1",
+  "schema_version": "1.0.0",
+  "source_selection_influence": false,
+  "structural_difference_from_pilot03_pilot04": {
+    "ajunge_or_other_landing_lexeme_required": false,
+    "prior_family": "SUCCESSOR_FORMULATION_C_NATURAL_ROMANIAN_V2",
+    "prior_order": "FACT_THEN_FORWARD_TWO_SITUATION_CHAIN",
+    "reclassification_payoff_prohibited": true,
+    "semicolon_required": false,
+    "story_preface_prohibited": true,
+    "successor_order": "FICTIONAL_CONSEQUENCE_THEN_REVERSE_DISCLOSED_TWO_LINK_DEPENDENCY"
+  }
+}
