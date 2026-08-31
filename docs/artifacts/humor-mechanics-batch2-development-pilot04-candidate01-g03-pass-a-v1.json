@@ -1,0 +1,33 @@
+{
+  "candidate_identity": "cf34033fb7017ff29146524108d4cb3fcbf8229681d054d2085dbaba294436e1",
+  "candidate_raw_sha256": "e231a549685103da5c6e0e4f9b9e93459d86e7c7ae0247ad11f15d55a3426b0b",
+  "choice_set_visible": false,
+  "evaluator_identity": "BLIND_REVIEW_CHANNEL_PILOT04_OPEN",
+  "mapping_visible": false,
+  "pass_identity": "2a01454b2a55481abab5f32d1f76dde9d6ee002335716dde6f3c60e6df98addc",
+  "result": {
+    "alternative_comparison": "Reclasificarea apare în consecința finală, dar efectul dominant cere întregul traseu acreditare nevalidă–excludere–demonstrarea absurdă a excluderii.",
+    "confidence": "HIGH",
+    "defining_surface_operation": "Acreditarea nevalidă ține participantul în afara zonei; imposibilitatea de a ajunge la demonstrație transformă apoi chiar excluderea lui într-o demonstrație a interdicției.",
+    "primary_mechanism": "lanț inferențial absurd cu poantă autoreferențială",
+    "primary_role": "DOMINANT",
+    "shortcut_dependence": {
+      "explanation": "Clasificarea rezultă din dependența semantică dintre cele două situații, nu dintr-un cuvânt, semn de punctuație ori format.",
+      "formatting": "NON_MATERIAL",
+      "lexical": "NON_MATERIAL",
+      "punctuation": "NON_MATERIAL",
+      "source_shape": "NON_MATERIAL",
+      "template": "NON_MATERIAL"
+    },
+    "strongest_alternative": "reclasificare comică",
+    "structural_dependency": "A doua situație există numai după prima: fără oprirea la poartă nu apare imposibilitatea de a ajunge la demonstrație, iar fără aceasta excluderea nu poate deveni poanta autoreferențială.",
+    "supporting_mechanisms": [
+      "reclasificarea eșecului de acces ca demonstrație"
+    ]
+  },
+  "schema_name": "batch2-development-pilot04-g03-open-recovery-pass-v1",
+  "schema_version": "1.0.0",
+  "visible_inputs": [
+    "IMMUTABLE_CANDIDATE_SURFACE_ONLY"
+  ]
+}

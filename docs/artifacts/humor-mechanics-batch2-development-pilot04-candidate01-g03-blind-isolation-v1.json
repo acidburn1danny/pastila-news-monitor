@@ -1,0 +1,20 @@
+{
+  "blind_evaluation_material_access": false,
+  "candidate_identity": "cf34033fb7017ff29146524108d4cb3fcbf8229681d054d2085dbaba294436e1",
+  "candidate_modified": false,
+  "constructor_packet_access": false,
+  "contrast_pass_identity": "48adec6a8c1b90dfec5e7cd6bf1d075ccfb6c23002db17fe7509dcd928361d15",
+  "cross_pass_result_access_before_freeze": false,
+  "g02c_commit": "06c19cd80c60c33e7a3eca767b34beb88ad0d9bd",
+  "g02c_reasoning_access": false,
+  "isolation_identity": "6aa4743daa5f26c0a405e2f1426be2260f7e59e111892caccce8355a6d3aea1c",
+  "mapping_revealed": false,
+  "obligation_identity_access": false,
+  "open_pass_identity": "2a01454b2a55481abab5f32d1f76dde9d6ee002335716dde6f3c60e6df98addc",
+  "owner_history_access": false,
+  "review_channels_separated": true,
+  "schema_name": "batch2-development-pilot04-g03-blind-isolation-v1",
+  "schema_version": "1.0.0",
+  "sealed_mapping_access": false,
+  "status": "BLIND_PASSES_FROZEN_AWAITING_RECONCILIATION"
+}

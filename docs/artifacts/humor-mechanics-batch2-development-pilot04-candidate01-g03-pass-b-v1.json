@@ -1,0 +1,55 @@
+{
+  "candidate_identity": "cf34033fb7017ff29146524108d4cb3fcbf8229681d054d2085dbaba294436e1",
+  "candidate_raw_sha256": "e231a549685103da5c6e0e4f9b9e93459d86e7c7ae0247ad11f15d55a3426b0b",
+  "choice_set_identity": "544fe8d5431d6289819c7ad533ac6c648ec4c97db2f471f730ca4a51ed876b3e",
+  "evaluator_identity": "BLIND_REVIEW_CHANNEL_PILOT04_CONTRAST",
+  "mapping_visible": false,
+  "pass_identity": "48adec6a8c1b90dfec5e7cd6bf1d075ccfb6c23002db17fe7509dcd928361d15",
+  "result": {
+    "comparisons": {
+      "AMBIGUOUS": "Lanțul dependent identifică o operație dominantă mai precis decât alternativa de reclasificare finală.",
+      "Comic Reclassification": "Excluderea este reclasificată drept demonstrație, dar numai ca rezultat al celor două consecințe dependente.",
+      "Escalation": "Consecințele avansează, dar efectul nu depinde în primul rând de creșterea intensității sau a mizei.",
+      "Frame Transfer": "Nu este importat un cadru relațional complet din alt domeniu; demonstrația și accesul aparțin deja universului expoziției.",
+      "Literalization": "Nicio noțiune figurată nu este realizată fizic; demonstrația finală este o consecință inferențială.",
+      "NONE": "Suprafața conține o operație structurală clară, nu doar o constatare factuală.",
+      "Personification": "Participantul rămâne uman, iar acreditarea, poarta și interdicția nu primesc emoție, intenție, voce sau rol uman."
+    },
+    "confidence": "HIGH",
+    "defining_operation": "Premisa despre acreditarea nevalidă este prelungită în două consecințe inteligibile local: participantul rămâne afară, apoi excluderea lui devine demonstrația funcționării interdicției.",
+    "primary_choice": "Absurd Logical Extension",
+    "primary_role": "DOMINANT",
+    "shortcut_dependence": {
+      "formatting": {
+        "explanation": "Alegerea depinde de relațiile semantice și persistă la parafrazare.",
+        "value": "NON_MATERIAL"
+      },
+      "lexical": {
+        "explanation": "Alegerea depinde de relațiile semantice și persistă la parafrazare.",
+        "value": "NON_MATERIAL"
+      },
+      "punctuation": {
+        "explanation": "Alegerea depinde de relațiile semantice și persistă la parafrazare.",
+        "value": "NON_MATERIAL"
+      },
+      "source_shape": {
+        "explanation": "Alegerea depinde de relațiile semantice și persistă la parafrazare.",
+        "value": "NON_MATERIAL"
+      },
+      "template": {
+        "explanation": "Alegerea depinde de relațiile semantice și persistă la parafrazare.",
+        "value": "NON_MATERIAL"
+      }
+    },
+    "structural_dependency": "Eliminarea primei consecințe rupe motivul pentru a doua; rezultatul absurd depinde de succesiunea inferențială completă.",
+    "supporting_choices": [
+      "Comic Reclassification"
+    ]
+  },
+  "schema_name": "batch2-development-pilot04-g03-contrast-choice-pass-v1",
+  "schema_version": "1.0.0",
+  "visible_inputs": [
+    "IMMUTABLE_CANDIDATE_SURFACE",
+    "SHUFFLED_CLOSED_CHOICE_SET"
+  ]
+}
