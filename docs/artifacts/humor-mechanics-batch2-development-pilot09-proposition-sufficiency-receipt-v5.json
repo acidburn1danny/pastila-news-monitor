@@ -1,0 +1,141 @@
+{
+  "abstract_adjacent_link_witness": {
+    "adjacent_links": [
+      "SENSOR_NONDETECTION_OR_SIGNAL_NONARRIVAL_IS_THE_EXPLICIT_DISJUNCTIVE_CONDITION",
+      "THE_EXPLICIT_CONSEQUENCE_IS_AUTOMATIC_BELT_NONSTART"
+    ],
+    "candidate_surface": null,
+    "humor": null,
+    "kind": "ABSTRACT_SOURCE_RELATION_ONLY",
+    "non_arbitrariness": "REMOVING_EITHER_THE_TRIGGER_CONDITION_OR_AUTOMATIC_NONSTART_BREAKS_THE_EXPLICIT_CONDITIONAL_RELATION",
+    "relation": "SENSOR_OR_SIGNAL_FAILURE_CONDITION_ENTAILS_AUTOMATIC_BELT_NONSTART"
+  },
+  "admission_commit": "f9d930f2e28f8f93f1831666ed60c4a795843f2d",
+  "admission_identity": "10c3b5e30247e95e3fe52208e3c292b8404535eee5b2895560efaefbf467d1ed",
+  "all_proposition_assessments": [
+    {
+      "abstract_adjacent_link_witness": null,
+      "operand_closure": "PASS_NO_UNBOUND_DERIVED_OPERAND",
+      "proposition_id": "P1",
+      "qualification_preservation": "PASS_BOUND_EXACTLY",
+      "reference_resolution": "PASS_NO_UNRESOLVED_REFERENCE",
+      "selection_status": "NOT_SELECTED_NO_POSITIVE_WITNESS_ASSERTED",
+      "standalone_semantic_closure": true,
+      "supporting_span_sha256": "7aec11c726b2b9318951220197a3b947ce1428c7375e0815769c8da0b19b087c"
+    },
+    {
+      "abstract_adjacent_link_witness": null,
+      "operand_closure": "PASS_NO_UNBOUND_DERIVED_OPERAND",
+      "proposition_id": "P2",
+      "qualification_preservation": "PASS_BOUND_EXACTLY",
+      "reference_resolution": "PASS_NO_UNRESOLVED_REFERENCE",
+      "selection_status": "NOT_SELECTED_NO_POSITIVE_WITNESS_ASSERTED",
+      "standalone_semantic_closure": true,
+      "supporting_span_sha256": "d3c2e5701f51ced9e7030a7455fdde647063d6269b589faec97d0d6343f26684"
+    },
+    {
+      "abstract_adjacent_link_witness": null,
+      "operand_closure": "PASS_NO_UNBOUND_DERIVED_OPERAND",
+      "proposition_id": "P3",
+      "qualification_preservation": "PASS_BOUND_EXACTLY",
+      "reference_resolution": "PASS_NO_UNRESOLVED_REFERENCE",
+      "selection_status": "NOT_SELECTED_NO_POSITIVE_WITNESS_ASSERTED",
+      "standalone_semantic_closure": true,
+      "supporting_span_sha256": "a0011996277097b063b515e3b751ec7b742da9d87b010d6d1bc8f92e4ea6ec75"
+    },
+    {
+      "abstract_adjacent_link_witness": null,
+      "operand_closure": "PASS_NO_UNBOUND_DERIVED_OPERAND",
+      "proposition_id": "P4",
+      "qualification_preservation": "PASS_BOUND_EXACTLY",
+      "reference_resolution": "PASS_NO_UNRESOLVED_REFERENCE",
+      "selection_status": "NOT_SELECTED_NO_POSITIVE_WITNESS_ASSERTED",
+      "standalone_semantic_closure": true,
+      "supporting_span_sha256": "b9b554af0aad6f68ecb4eadfcefa5bba4d8fa459a9831ec20d487ffc740711aa"
+    },
+    {
+      "abstract_adjacent_link_witness": {
+        "adjacent_links": [
+          "SENSOR_NONDETECTION_OR_SIGNAL_NONARRIVAL_IS_THE_EXPLICIT_DISJUNCTIVE_CONDITION",
+          "THE_EXPLICIT_CONSEQUENCE_IS_AUTOMATIC_BELT_NONSTART"
+        ],
+        "candidate_surface": null,
+        "humor": null,
+        "kind": "ABSTRACT_SOURCE_RELATION_ONLY",
+        "non_arbitrariness": "REMOVING_EITHER_THE_TRIGGER_CONDITION_OR_AUTOMATIC_NONSTART_BREAKS_THE_EXPLICIT_CONDITIONAL_RELATION",
+        "relation": "SENSOR_OR_SIGNAL_FAILURE_CONDITION_ENTAILS_AUTOMATIC_BELT_NONSTART"
+      },
+      "operand_closure": "PASS_NO_UNBOUND_DERIVED_OPERAND",
+      "proposition_id": "P5",
+      "qualification_preservation": "PASS_BOUND_EXACTLY",
+      "reference_resolution": "PASS_INTERNAL_TO_SELECTED_SPAN",
+      "selection_status": "SELECTED_SUFFICIENT",
+      "standalone_semantic_closure": true,
+      "supporting_span_sha256": "45c1e8c1f05aa1e88abc7e2818ef830c8ad9e4a789e5ce4ac5f99133d33f9f1c"
+    },
+    {
+      "abstract_adjacent_link_witness": null,
+      "operand_closure": "PASS_NO_UNBOUND_DERIVED_OPERAND",
+      "proposition_id": "P6",
+      "qualification_preservation": "PASS_BOUND_EXACTLY",
+      "reference_resolution": "PASS_NO_UNRESOLVED_REFERENCE",
+      "selection_status": "NOT_SELECTED_NO_POSITIVE_WITNESS_ASSERTED",
+      "standalone_semantic_closure": true,
+      "supporting_span_sha256": "a0d4d70a6a50ac9c56f776e9de8fc1105884c60d9bcf396a67048a197687fd40"
+    },
+    {
+      "abstract_adjacent_link_witness": null,
+      "operand_closure": "PASS_NO_UNBOUND_DERIVED_OPERAND",
+      "proposition_id": "P7",
+      "qualification_preservation": "PASS_BOUND_EXACTLY",
+      "reference_resolution": "PASS_NO_UNRESOLVED_REFERENCE",
+      "selection_status": "NOT_SELECTED_NO_POSITIVE_WITNESS_ASSERTED",
+      "standalone_semantic_closure": true,
+      "supporting_span_sha256": "21faf89055353409d4015a164698744ac9df8f2b6494ae39be68a4122a0eb5e2"
+    },
+    {
+      "abstract_adjacent_link_witness": null,
+      "operand_closure": "PASS_NO_UNBOUND_DERIVED_OPERAND",
+      "proposition_id": "P8",
+      "qualification_preservation": "PASS_BOUND_EXACTLY",
+      "reference_resolution": "PASS_NO_UNRESOLVED_REFERENCE",
+      "selection_status": "NOT_SELECTED_NO_POSITIVE_WITNESS_ASSERTED",
+      "standalone_semantic_closure": false,
+      "supporting_span_sha256": "82f0811a1e0b7d824bd49a9cf87d677513c2a81eebc315264622c5f8e0a47426"
+    }
+  ],
+  "authority_envelope_identity": "9e791c37ce2fca9b927e3c386ede1ae0c2c0019e1301261e5bb900c7ffaa39f9",
+  "authority_matrix": {
+    "assignment": false,
+    "construction": false,
+    "constructor_release": false,
+    "constructor_v5_source_compatibility_evaluation": false,
+    "g04b_pool_certification": false,
+    "model_exposure": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "training": false
+  },
+  "authorized_visible_context": "EXACT_SELECTED_SUPPORTING_SPAN_ONLY",
+  "authorized_visible_context_sha256": "45c1e8c1f05aa1e88abc7e2818ef830c8ad9e4a789e5ce4ac5f99133d33f9f1c",
+  "candidate_surface": null,
+  "constructor_v5_compatibility_evaluated": false,
+  "creative_premise_family_id": "UNASSIGNED",
+  "governance_identity": "e81ee4eff9044ee16180ef36a7508fe9f1e7c784fa6830299588cea16c2d3a3e",
+  "inherited_causal_spine_governance_identity": "4848bd025e43eff6652e4c2024072760d372ca4ac7427e5f21e1d2c4bcdb35dc",
+  "inherited_causal_spine_schema_identity": "28dfdab8dd9112d0148dad0b513155b5ae14445f5daee359b7a35d1bc5eb1c2c",
+  "mechanism_label_exposed": false,
+  "operand_closure": "PASS_NO_UNBOUND_DERIVED_OPERAND",
+  "qualification_preservation": "PASS_BOUND_EXACTLY",
+  "receipt_identity": "f197280f8069ed15635ab32d9811bed83a5e77c6e9be737844c757d2b2292566",
+  "reference_resolution": "PASS_INTERNAL_TO_SELECTED_SPAN",
+  "schema_identity": "29d7b0f97008ad38e64b8e966f398d829a66299ec805290ebbec3f92848efab6",
+  "schema_name": "batch2-pilot09-post-g01-proposition-sufficiency-receipt-v5",
+  "schema_version": "5.0.0",
+  "scope_time_modality_unknown_boundaries": "PASS_PRESERVED",
+  "selected_proposition_id": "P5",
+  "selected_supporting_span_sha256": "45c1e8c1f05aa1e88abc7e2818ef830c8ad9e4a789e5ce4ac5f99133d33f9f1c",
+  "source_package_identity": "e6b520958d949f673600366018572fb00da98125646ab75cdb4fc6e34d1da5f0",
+  "standalone_semantic_closure": true,
+  "verdict": "PASS_SELECTED_PROPOSITION_SUFFICIENT"
+}

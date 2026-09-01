@@ -1,0 +1,18 @@
+{
+  "audit_identity": "359197b1c5af6db59a3713df559fe32ccf965689fe1c7fd7244e0ff7c4643ef4",
+  "candidate_surface_absent": true,
+  "constructor_v5_compatibility_evaluated": false,
+  "deterministic_blockers": [],
+  "downstream_authority": false,
+  "eight_proposition_spans_reverified": "PASS",
+  "exact_admission_binding": "PASS",
+  "exact_source_and_envelope_binding": "PASS",
+  "exactly_one_selected_proposition": "PASS_P5",
+  "git_object_only": true,
+  "mechanism_label_absent": true,
+  "positive_source_only_witness": "PASS_NONEMPTY_MECHANISM_NEUTRAL",
+  "receipt_identity": "f197280f8069ed15635ab32d9811bed83a5e77c6e9be737844c757d2b2292566",
+  "schema_name": "batch2-pilot09-post-g01-proposition-sufficiency-audit-v5",
+  "schema_version": "1.0.0",
+  "verdict": "PASS_SOURCE_ONLY_NO_ASSIGNMENT_ZERO_CONSTRUCTION"
+}
