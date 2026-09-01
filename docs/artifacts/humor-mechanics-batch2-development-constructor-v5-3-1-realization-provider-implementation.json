@@ -1,0 +1,18 @@
+{
+  "alignment": "ACTUAL_CHARACTER_AND_UTF8_BYTE_COORDINATES_WITH_ENUMERATED_RULES_ONLY",
+  "alignment_implementation_identity": "7e06b630a3782d8d05b1b86765727cb86caddbaac5d56056e07e727fe0af42bb",
+  "candidate_surfaces_created_or_persisted": 0,
+  "constructor_invocations": 0,
+  "constructor_v5_3_preservation": "PASS_BYTE_EXACT",
+  "emitter_invocations": 0,
+  "entry_point": "realize_aligned_semantic_typed_plan",
+  "module_path": "src/pastila_scout/humor_batch2_development_constructor_v5_3_1_runtime.py",
+  "module_sha256": "57d5126ae059769105735e6240ab949dfab5eb31040a6b623925b63cc10fd408",
+  "provider_invocations": 0,
+  "realization_provider_identity": "2846406e03cea3fbbdca5531a7d0bf23fc39b116f7e0413a4bc73a65ea9b6992",
+  "release_authority": false,
+  "schema_name": "batch2-development-constructor-v5-3-1-realization-provider-implementation",
+  "schema_version": "5.3.1",
+  "successor_contract_identity": "c4af75cd962802d0035d9de39e6d014f715d5b5f5b60fd690ea3761f289d99fc",
+  "v5_3_semantic_guards": "PRESERVED_UNCHANGED"
+}
