@@ -1,0 +1,29 @@
+{
+  "authority_matrix": {
+    "candidate_regeneration": false,
+    "candidate_repair": false,
+    "candidate_rewrite": false,
+    "curriculum_promotion": false,
+    "g04b_pool_certification": false,
+    "owner_review": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "training": false,
+    "voice_review": false
+  },
+  "candidate_bytes_modified": false,
+  "candidate_identity": "44c76c090e226d0ef947e2fc07307fb862761e94950c4eb378b8b3d258427bc1",
+  "candidate_raw_sha256": "769228fc99006e0f665360f28805f31d4480419095de1f1fba5794319cc1bfa8",
+  "g03c_receipt_identity": "941d3108ff6c515eb556bca77b063a3c58a5b31b9ab18800a4b10915d87ab705",
+  "g04a_receipt_identity": "73c42b8de567adf59a68f4c7615bbdaae46f2e77d7b047fa6d7c230ed60e56eb",
+  "g04a_review_identity": "3b07ed9ad96564086c679ba47d2a4dd1659f09c3cd28e18a0018c74fec49011f",
+  "g04a_verdict": "ROMANIAN_NATURALNESS_PASS",
+  "next_gate_eligible": "VOICE_REVIEW_SEPARATELY_AUTHORIZED_ONLY",
+  "reservations": [
+    "MINOR_PROCEDURAL_NOMINAL_REPETITION_NONMATERIAL",
+    "MINOR_EDITORIAL_CREATIVE_MARKER_NONMATERIAL"
+  ],
+  "schema_name": "batch2-development-pilot07-candidate01-g04a-romanian-naturalness-receipt-v1",
+  "schema_version": "1.0.0",
+  "voice_review_performed": false
+}

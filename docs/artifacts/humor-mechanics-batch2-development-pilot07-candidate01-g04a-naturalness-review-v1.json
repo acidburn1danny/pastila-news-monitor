@@ -1,0 +1,89 @@
+{
+  "authority_matrix": {
+    "candidate_regeneration": false,
+    "candidate_repair": false,
+    "candidate_rewrite": false,
+    "curriculum_promotion": false,
+    "g04b_pool_certification": false,
+    "owner_review": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "training": false,
+    "voice_review": false
+  },
+  "candidate_bytes_modified": false,
+  "candidate_identity": "44c76c090e226d0ef947e2fc07307fb862761e94950c4eb378b8b3d258427bc1",
+  "candidate_raw_sha256": "769228fc99006e0f665360f28805f31d4480419095de1f1fba5794319cc1bfa8",
+  "candidate_repair_attempted": false,
+  "disposition_effect": "ELIGIBLE_FOR_SEPARATELY_AUTHORIZED_VOICE_REVIEW_ONLY",
+  "evaluator_inaccessible": [
+    "sealed assignment mapping",
+    "mechanism identity, name, or ordinal",
+    "constructor packet and prompt",
+    "G03 and G03B mechanism judgments",
+    "owner preference history",
+    "historical examples",
+    "blind-evaluation material",
+    "Voice rubric and judgment"
+  ],
+  "evaluator_visible": {
+    "candidate_surface": "Dacă este observată o problemă tehnică, aceasta este înscrisă în raportul de verificare pentru analiză ulterioară. Într-o continuare imaginară, înscrierea adaugă raportului o rubrică nouă; rubrica trebuie și ea analizată, iar analiza ei cere o nouă înscriere, astfel că ciclul se repetă până când raportul ajunge mai lung decât verificarea.",
+    "rubric": [
+      "BASIC_GRAMMATICALITY",
+      "IDIOMATIC_WORD_ORDER_AND_REGISTER",
+      "NO_CALQUE",
+      "NATURAL_CREATIVE_MARKING",
+      "NO_FORCED_WORDPLAY",
+      "COHESION_AND_PUNCTUATION",
+      "NO_INSTRUCTION_OR_GOVERNANCE_REGISTER_TRANSFER"
+    ]
+  },
+  "findings": {
+    "basic_grammaticality": {
+      "finding": "Cele două enunțuri sunt corecte gramatical; acordurile, timpurile și referințele pronominale sunt clare.",
+      "verdict": "PASS"
+    },
+    "cohesion_and_punctuation": {
+      "finding": "Punctul și virgula, coordonarea prin «iar» și consecința introdusă prin «astfel că» fac succesiunea ușor de urmărit.",
+      "verdict": "PASS"
+    },
+    "idiomatic_word_order_and_register": {
+      "finding": "Ordinea este firească pentru un registru procedural-comic. Repetarea substantivelor «rubrică», «analiză» și «înscriere» produce o ușoară densitate nominală, dar rămâne inteligibilă și motivată local.",
+      "verdict": "PASS_WITH_RESERVATION"
+    },
+    "instruction_or_governance_register_transfer": {
+      "finding": "Textul nu conține cerințe, etichete, metadate ori formule de audit; registrul procedural provine din situația relatată, nu din instrucțiuni de construcție.",
+      "verdict": "PASS"
+    },
+    "natural_creative_marking": {
+      "finding": "«Într-o continuare imaginară» marchează clar și corect planul nonfactual; formula este ușor editorială, însă nu sună ca o avertizare de conformitate și nu rupe lectura.",
+      "verdict": "PASS_WITH_RESERVATION"
+    },
+    "no_calque": {
+      "finding": "Nu apare un calc sintactic identificabil sau o ordine străină limbii române.",
+      "verdict": "PASS"
+    },
+    "no_forced_wordplay": {
+      "finding": "Comparația finală dintre lungimea raportului și verificare este deliberat incongruentă, dar formulată firesc și fără forțarea unui sens lexical.",
+      "verdict": "PASS"
+    },
+    "overall_naturalness": {
+      "finding": "Textul este idiomatic, coerent și oralizabil. Densitatea nominală și marcajul ușor editorial sunt rezerve minore, nemateriale.",
+      "verdict": "PASS"
+    }
+  },
+  "g03c_commit": "8691e0c8b77f36a8699ec75a76b33e1ca04d0407",
+  "g03c_diagnostic_identity": "34980657a581989c295bf4c1037f38210fe71832bb45e4a038b25d44caf5204e",
+  "g03c_receipt_identity": "941d3108ff6c515eb556bca77b063a3c58a5b31b9ab18800a4b10915d87ab705",
+  "g04a_review_identity": "3b07ed9ad96564086c679ba47d2a4dd1659f09c3cd28e18a0018c74fec49011f",
+  "g04a_verdict": "ROMANIAN_NATURALNESS_PASS",
+  "mechanism_adjudication_performed": false,
+  "reservations": [
+    "MINOR_PROCEDURAL_NOMINAL_REPETITION_NONMATERIAL",
+    "MINOR_EDITORIAL_CREATIVE_MARKER_NONMATERIAL"
+  ],
+  "review_mode": "BLIND_ROMANIAN_SURFACE_ONLY",
+  "schema_name": "batch2-development-pilot07-candidate01-g04a-romanian-naturalness-review-v1",
+  "schema_version": "1.0.0",
+  "sealed_mapping_accessed": false
+}
