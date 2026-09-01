@@ -1,0 +1,21 @@
+{
+  "candidate_surface": null,
+  "construction_authority": false,
+  "constructor_contract_identity": "9b647d33dfa40171040fe6acf08b8b6dca6081c41c0f1f4428f910bfdfaa8a6b",
+  "constructor_implementation_identity": "c7134743e6b0e7c3ed7637bff3203f774159f192fef7a7b712e15d4d44a6f419",
+  "constructor_v5_identity": "caf85ada6fcd296d3798b5d47838d7b8a39d029dac5f6ecae68ace58712b9d61",
+  "constructor_v5_status": "BYTE_EXACT_SUPERSEDED_NO_RELEASE",
+  "filesystem_environment_process_network_model_access": false,
+  "invocations": 0,
+  "module_path": "src/pastila_scout/humor_batch2_development_constructor_v5_1.py",
+  "module_sha256": "fffcfde753d46b7ffabb0028a51d3b60b34dee6365b97e0cb3488e372c97566d",
+  "proposition_plan_deriver": "derive_proposition_plan",
+  "public_entrypoint": "construct_development_candidate_v5_1",
+  "realizer": "_realize",
+  "release_authority": false,
+  "schema_name": "batch2-development-constructor-implementation-v5-1",
+  "schema_version": "5.1.0",
+  "source_shape_neutral_extractor": "extract_typed_operands",
+  "typed_plan_validator": "validate_typed_plan",
+  "validation_precedes_realization": true
+}

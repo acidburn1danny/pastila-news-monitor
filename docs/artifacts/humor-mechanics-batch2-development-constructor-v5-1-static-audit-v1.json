@@ -1,0 +1,32 @@
+{
+  "audit_identity": "7c304534fbe2ee6b526a4cc4582a243b685ab97f5694ef5524abdeb3e150de47",
+  "candidate_surfaces_created": 0,
+  "constructor_contract_identity": "9b647d33dfa40171040fe6acf08b8b6dca6081c41c0f1f4428f910bfdfaa8a6b",
+  "constructor_implementation_identity": "c7134743e6b0e7c3ed7637bff3203f774159f192fef7a7b712e15d4d44a6f419",
+  "constructor_invocations": 0,
+  "constructor_release": "NOT_PERFORMED",
+  "deterministic_blockers": [],
+  "frozen_v5_preservation": "PASS_BYTE_EXACT",
+  "identity_and_pilot_routing_scan": "PASS_ZERO_HITS",
+  "lexical_shape_dependencies_removed": "PASS",
+  "pathless_import_allowlist": "PASS",
+  "pilot08_source_shape_regression": {
+    "plan_nodes": 3,
+    "proposition_derived_plan_closure": "PASS",
+    "proposition_id": "P5",
+    "relation_id": "FACT_RELATION_EB6C3EFCE2B374A5",
+    "typed_operand_extraction": "PASS"
+  },
+  "pilot09_p5_source_compatibility": {
+    "plan_nodes": 3,
+    "proposition_derived_plan_closure": "PASS",
+    "proposition_id": "P5",
+    "relation_id": "FACT_RELATION_E1D5CAAB958C829B",
+    "typed_operand_extraction": "PASS"
+  },
+  "schema_name": "batch2-development-constructor-v5-1-static-audit-v1",
+  "schema_version": "1.0.0",
+  "unbound_operand_negative_test": "PASS_FAIL_CLOSED",
+  "validation_before_realization": "PASS",
+  "verdict": "PASS_SUCCESSOR_IMPLEMENTATION_STATIC_AUDIT_ZERO_CONSTRUCTION_NO_RELEASE"
+}

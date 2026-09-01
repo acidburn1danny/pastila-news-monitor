@@ -1,0 +1,26 @@
+{
+  "candidate_surface": null,
+  "construction_authority": false,
+  "constructor_contract_identity": "9b647d33dfa40171040fe6acf08b8b6dca6081c41c0f1f4428f910bfdfaa8a6b",
+  "constructor_release_authority": false,
+  "coordinate_and_hash_bound_roles_required": [
+    "SUBJECT",
+    "PREDICATE",
+    "OBJECT",
+    "QUALIFICATION_IF_PRESENT"
+  ],
+  "lexical_negation_location_requirement": null,
+  "lexical_object_preposition_requirement": null,
+  "proposition_derived_abstract_plan_required": true,
+  "remediates_compatibility_identity": "fabcee37d422ad7e941dd1168c63b9659e27b039831a187da05d7bc665bed5a7",
+  "schema_name": "batch2-development-constructor-contract-v5-1",
+  "schema_version": "5.1.0",
+  "source_shape_neutral_typed_operand_extraction": true,
+  "supersedes_contract_identity": "e42f4741ddab7a6acbdd16f34804cd55408ca5a5428433be3c55eb9b74163c5a",
+  "validation_order": [
+    "EXTRACT_TYPED_OPERANDS",
+    "DERIVE_PROPOSITION_PLAN",
+    "VALIDATE_TYPED_PLAN",
+    "REALIZE"
+  ]
+}
