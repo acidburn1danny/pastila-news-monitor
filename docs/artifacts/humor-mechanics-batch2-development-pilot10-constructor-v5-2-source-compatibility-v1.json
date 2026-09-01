@@ -1,0 +1,96 @@
+{
+  "abstract_plan_closure": "PASS_THREE_TYPED_NODES_TWO_EDGES_NO_UNBOUND_OPERANDS",
+  "authority_binding": "PASS_EXACT_P3_AND_AUTHORIZED_SUPPORTING_SPAN_ONLY",
+  "authority_matrix": {
+    "candidate_emission": false,
+    "constructor_invocation": false,
+    "emitter_invocation": false,
+    "fragment_collision_evaluation": false,
+    "g02": false,
+    "g02b_release": false,
+    "g02c": false,
+    "g03": false,
+    "g04b_pool_certification": false,
+    "model_exposure": false,
+    "post_realization_pre_emission_conformance": false,
+    "production_routing": false,
+    "provider_invocation": false,
+    "realization": false,
+    "runtime_integration": false,
+    "training": false
+  },
+  "candidate_emitter_identity": "e325bd20ba1f58bbc48a6e749dc7a505e5522e4ff11c798855e8d530dae113d4",
+  "candidate_surface": null,
+  "compatibility_identity": "fda3e7f2bea30b8429fb4f93415c85b81a3322595be6eae7542a367d5f0ad9ee",
+  "constructor_contract_identity": "69138467540b37cbfb8444596d9a37119f8b74d002e0c491c8ff599ce77cec77",
+  "constructor_facing_proposal_identity": "cf93852215e2214cf9a67eaf82aba747e4b88dc082d0fe935583d9d7af12a807",
+  "constructor_implementation_identity": "bdf48e9942f097f0259831c0f2f611e50644cdbe7179a2dc7d990bf9ab2b5493",
+  "constructor_invoked": false,
+  "constructor_release": false,
+  "constructor_static_audit_identity": "1171e1a53acbb733c530d2f2e4fa753284a9f4747ab905d9c2a57d7b22b3399d",
+  "emitter_invoked": false,
+  "factual_authority_widening": "ABSENT",
+  "proposition_derived_abstract_plan_compatibility": [
+    {
+      "actor_role": "RELATION_HEAD",
+      "bound_actor_id": "FACT_RELATION_EDFB9508ED58FB31",
+      "bound_patient_id": "FACT_QUALIFICATION",
+      "introduces_ids": [
+        "INVENTED_RELATION_1"
+      ],
+      "node_id": "L1",
+      "nonfactual_scope": true,
+      "predecessor_node_ids": [],
+      "predicate_id": "EXTEND_EDFB9508ED58FB31",
+      "source_provenance": "P3_COORDINATE_BOUND_RELATION"
+    },
+    {
+      "actor_role": "RELATION_HEAD",
+      "bound_actor_id": "INVENTED_RELATION_1",
+      "bound_patient_id": "FACT_OBJECT",
+      "introduces_ids": [
+        "INVENTED_RELATION_2"
+      ],
+      "node_id": "L2",
+      "nonfactual_scope": true,
+      "predecessor_node_ids": [
+        "L1"
+      ],
+      "predicate_id": "PROPAGATE_EDFB9508ED58FB31",
+      "source_provenance": "L1"
+    },
+    {
+      "actor_role": "RELATION_HEAD",
+      "bound_actor_id": "INVENTED_RELATION_2",
+      "bound_patient_id": "FACT_RELATION_EDFB9508ED58FB31",
+      "introduces_ids": [],
+      "node_id": "RESULT",
+      "nonfactual_scope": true,
+      "predecessor_node_ids": [
+        "L2"
+      ],
+      "predicate_id": "RESOLVE_EDFB9508ED58FB31",
+      "source_provenance": "L2"
+    }
+  ],
+  "provider_invoked": false,
+  "realization_or_surface_witnesses_created": false,
+  "realization_provider_identity": "36b3669acb5e7d2b772ad6d8a912f4cdbfea8f58e3c45e72cafcd206336afce8",
+  "reviewed_commit": "5a5780f5f829c32d7c807412dc06099ec0cac10d",
+  "schema_name": "batch2-development-pilot10-constructor-v5-2-source-compatibility-v1",
+  "schema_version": "1.0.0",
+  "sealed_assignment_identity": "c4677b0b8d148163d339cf72590078564f5a462a571d6272cbc8800d90ad4aab",
+  "selected_proposition_id": "P3",
+  "selected_span_sha256": "188742ebbe30a23349601ddb369b0bb962d87dc9c8efe3227e50a38b6f89d967",
+  "source_shape_neutrality": "PASS_NO_PILOT10_LEXICAL_CONSTANT_IN_IMPLEMENTATION",
+  "typed_operand_extraction": {
+    "object": "în zona de depozitare destinată materialelor horticole.",
+    "predicate": "este înregistrată cu eticheta APROBAT și este mutată",
+    "qualification_bound": true,
+    "relation_id": "FACT_RELATION_EDFB9508ED58FB31",
+    "subject": "lada",
+    "verdict": "PASS_SOURCE_SHAPE_NEUTRAL"
+  },
+  "v5_2_pre_emission_static_prerequisites": "PASS_N_OVER_N_E_OVER_E_OPERAND_CONTINUITY_EXACTLY_ONE_TERMINAL_FAIL_CLOSED",
+  "verdict": "PASS_SOURCE_COMPATIBLE_WITH_FROZEN_CONSTRUCTOR_V5_2_NO_RELEASE"
+}

@@ -1,0 +1,20 @@
+{
+  "audit_identity": "178b880eb29d58b5ce93145e160d4cb122c191cbe813f9da85c255e0dd1e42d8",
+  "candidate_surfaces_created": 0,
+  "compatibility_identity": "fda3e7f2bea30b8429fb4f93415c85b81a3322595be6eae7542a367d5f0ad9ee",
+  "constructor_invocations": 0,
+  "deterministic_blockers": [],
+  "emitter_invocations": 0,
+  "exact_contract_implementation_provider_emitter_static_audit_binding": "PASS",
+  "exact_p3_authority_binding": "PASS",
+  "g02b_release": "NOT_PERFORMED",
+  "git_object_only": true,
+  "pathless_import_allowlist": "PASS",
+  "pre_emission_static_prerequisites": "PASS",
+  "proposition_derived_plan_closure": "PASS",
+  "provider_invocations": 0,
+  "schema_name": "batch2-development-pilot10-constructor-v5-2-source-compatibility-audit-v1",
+  "schema_version": "1.0.0",
+  "source_shape_neutral_extraction": "PASS",
+  "verdict": "PASS_STATIC_VALIDATION_ZERO_REALIZATION_ZERO_CONSTRUCTION_NO_RELEASE"
+}
