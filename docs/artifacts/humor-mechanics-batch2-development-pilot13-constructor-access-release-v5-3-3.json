@@ -1,0 +1,414 @@
+{
+  "constructor_packet": {
+    "affordance_topology": null,
+    "authority_matrix": {
+      "candidate_emission": false,
+      "constructor_compatibility": false,
+      "constructor_invocation": false,
+      "constructor_release": false,
+      "emitter_invocation": false,
+      "fragment_collision": false,
+      "g02": false,
+      "g02c": false,
+      "g03": false,
+      "g03b": false,
+      "g03c": false,
+      "model_exposure": false,
+      "owner_review": false,
+      "production_routing": false,
+      "provider_invocation": false,
+      "realization": false,
+      "romanian_naturalness": false,
+      "runtime_integration": false,
+      "semantic_conformance": false,
+      "semantic_plan": false,
+      "semantic_role_or_affordance_planning": false,
+      "training": false,
+      "voice": false
+    },
+    "authority_partition_contract_identity": "99a6265e3dac8ab8ec3eb47456e0fc6927124636a08d5afb380c4e77042cb5b5",
+    "authorized_visible_context_sha256": "e1b854d2b88d4489a45f6e53ce937dff06e2e9fad3abe7258a940fb5bf4a4566",
+    "candidate_emitter_identity": "5bb1fae007fb8898f7e1a514622bb9bac99d992cc81189cd4ffd33b60fa76a8b",
+    "candidate_surface": null,
+    "class_a_closure": "PASS_ALL_DETERMINISTIC_CLOSURE_BEFORE_PROVIDER",
+    "class_a_closure_identity": "8b38a4c000963a2a2481ae614f739677d00287b9d44c041945b17a311f08e4ce",
+    "class_b_state": "NOT_CREATED_PRE_REALIZATION",
+    "closed_factual_authority_envelope": {
+      "authority_scope": "Only the explicitly stated acoustic-sensor preparation and installation event, sensor quantity, campaign and concert-hall scope, serial-number and assigned-position association, pre-installation verification procedure, individual installation and campaign-log recording, inability-to-install condition and resulting non-installation/logging outcome, operation-specific scope limitation, and explicitly unknown position-availability and non-installation outcomes within the accompanying owner-authored synthetic test universe.",
+      "propositions": [
+        {
+          "attribution": "OWNER_AUTHORED_SOURCE",
+          "known_boundary": "ACTUAL_POSITION_AND_INSTALLATION_TIME_LOGGING",
+          "modality": "ASSERTED",
+          "object": {
+            "character_coordinates": [
+              556,
+              577
+            ],
+            "sha256": "001069d8d1f9e4681f14eceedb3d02c128e417248b585c7558e3ff867c3a8bf2",
+            "utf8_byte_coordinates": [
+              594,
+              616
+            ]
+          },
+          "predicate": {
+            "character_coordinates": [
+              537,
+              555
+            ],
+            "sha256": "5ac309c6791d443bb0457c254c284c8c3879e9a182ca5641553f65498bc2346f",
+            "utf8_byte_coordinates": [
+              575,
+              593
+            ]
+          },
+          "prohibited_inferences": [
+            "NO_REAL_WORLD_ASSERTION",
+            "NO_UNSTATED_CAUSAL_INFERENCE",
+            "NO_UNSTATED_PERSON_INTENT_OR_INTERNAL_STATE_INFERENCE",
+            "NO_UNSTATED_SENSOR_POSITION_OR_INSTALLATION_OUTCOME_INFERENCE"
+          ],
+          "proposition_id": "P5",
+          "qualification": {
+            "character_coordinates": [
+              470,
+              482
+            ],
+            "sha256": "7406d81535b86046be5ffe4282473da9d9ca5ee784cd1d3e9dc0fe743005d66e",
+            "utf8_byte_coordinates": [
+              502,
+              515
+            ]
+          },
+          "quotation_status": "NO_QUOTATION",
+          "scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE_ONLY",
+          "sensitive_protected_target_classification": "NONE_DECLARED_LOW_RISK_SYNTHETIC",
+          "subject": {
+            "character_coordinates": [
+              484,
+              536
+            ],
+            "sha256": "2feb10bd8907329873a8f21635418d2d5d91e66269fe97d4cfec699c294e5471",
+            "utf8_byte_coordinates": [
+              517,
+              574
+            ]
+          },
+          "supporting_span": {
+            "character_coordinates": [
+              470,
+              578
+            ],
+            "sha256": "e1b854d2b88d4489a45f6e53ce937dff06e2e9fad3abe7258a940fb5bf4a4566",
+            "span_sha256": "e1b854d2b88d4489a45f6e53ce937dff06e2e9fad3abe7258a940fb5bf4a4566",
+            "utf8_byte_coordinates": [
+              502,
+              617
+            ]
+          },
+          "time": "AFTER_INSTALLATION",
+          "unknown_boundary": "NO_UNSTATED_LOG_CONTENT"
+        }
+      ],
+      "source_commitment": "8886fa5ee7f13af2ab7eca004c4838b9af83d0b31671f1df9a8d98426fdf7ff9",
+      "source_sha256": "9d79b45d06fba5b950f97e7d09f38450177b7ff7d5cbf962a9e4f7af452b6a76",
+      "world_scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE"
+    },
+    "construction_revision_family_id": "4968775c483d8f8240e71ee92a04fcadaabc42f6dae261b68bed01f06502b598",
+    "constructor_facing_packet_identity": "5824366b1f2f917b986574a9bcb184dc0d00cdcf457c594d8a00d3c694223f3e",
+    "constructor_invoked": false,
+    "constructor_source_compatibility_audit_identity": "1b1a0ce66e183558343bebce6d37dee253106be2a06e3f447f1def343d4422e2",
+    "constructor_source_compatibility_identity": "b8f0b874ce629de2c1e1d2f5b8744b4425178219de57e7f22631baecb54a01c0",
+    "creative_marker_family_id": "UNASSIGNED_UNTIL_POSTCONSTRUCTION",
+    "creative_premise_family_id": "UNASSIGNED",
+    "edge_necessity_witnesses": [
+      {
+        "consumed_position": "ACTOR",
+        "counterfactual_dependency": true,
+        "explicit_licensing_rule": "RULE_L1_RECORD_ELIGIBILITY_IS_REQUIRED_ACTOR_OF_L2",
+        "non_arbitrary": true,
+        "predecessor_node_id": "L1",
+        "produced_operand_id": "INVENTED_RELATION_1",
+        "successor_node_id": "L2"
+      },
+      {
+        "consumed_position": "ACTOR",
+        "counterfactual_dependency": true,
+        "explicit_licensing_rule": "RULE_L2_LOG_BOUND_STATE_IS_REQUIRED_ACTOR_OF_TERMINAL_RESULT",
+        "non_arbitrary": true,
+        "predecessor_node_id": "L2",
+        "produced_operand_id": "INVENTED_RELATION_2",
+        "successor_node_id": "RESULT"
+      }
+    ],
+    "emitter_requirement": "MATCHING_TRUSTED_CONFORMANCE_RECEIPT_ONLY",
+    "exact_authorized_visible_context_utf8": "După montare, poziția efectivă a fiecărui senzor și ora instalării au fost consemnate în jurnalul campaniei.",
+    "fragment_denyset_identity": "9e32c6d5f2e97202a0cff2e1f087fbce16100d72af96ad25e8a3d304e0458d8d",
+    "immutable_assignment_identity": "ee5f0743e5c2e52945a26b2fd2afe709d73d6865667bbca3826d1ede9a845954",
+    "mandatory_release_facing_path": [
+      "FROZEN_SEMANTICS",
+      "PRE_INVOCATION_CLOSURE",
+      "CLAUSE_ONLY_GENERATION",
+      "ACTUAL_UTF8_BYTES",
+      "TRUSTED_COORDINATE_BOUND_CLASS_B_OBSERVATION",
+      "SEMANTIC_CONFORMANCE",
+      "CONDITIONAL_EMITTER"
+    ],
+    "morphological_alignment_opportunity": null,
+    "operand_semantic_specs": [
+      {
+        "affordances": [
+          "LICENSE_LOCAL_NONFACTUAL_EXTENSION"
+        ],
+        "entity_identity": "P5_POST_INSTALLATION_POSITION_AND_TIME_RECORDING_RELATION",
+        "operand_id": "FACT_RELATION_EAEE0B73D5CB0E36",
+        "provenance_operand_ids": [],
+        "reclassification_only": false,
+        "semantic_roles": [
+          "POST_INSTALLATION_RECORDING_RELATION"
+        ]
+      },
+      {
+        "affordances": [
+          "QUALIFY_RECORDING_DISPOSITION"
+        ],
+        "entity_identity": "P5_POST_INSTALLATION_TEMPORAL_CONDITION",
+        "operand_id": "FACT_QUALIFICATION",
+        "provenance_operand_ids": [],
+        "reclassification_only": false,
+        "semantic_roles": [
+          "TEMPORAL_PRECONDITION"
+        ]
+      },
+      {
+        "affordances": [
+          "RECEIVE_POSITION_AND_TIME_RECORD"
+        ],
+        "entity_identity": "P5_CAMPAIGN_LOG_DESTINATION",
+        "operand_id": "FACT_OBJECT",
+        "provenance_operand_ids": [],
+        "reclassification_only": false,
+        "semantic_roles": [
+          "RECORD_DESTINATION"
+        ]
+      },
+      {
+        "affordances": [
+          "PROPAGATE_TO_BOUND_LOG"
+        ],
+        "entity_identity": "LOCAL_POST_INSTALLATION_RECORD_ELIGIBILITY_STATE",
+        "operand_id": "INVENTED_RELATION_1",
+        "provenance_operand_ids": [
+          "FACT_RELATION_EAEE0B73D5CB0E36",
+          "FACT_QUALIFICATION"
+        ],
+        "reclassification_only": false,
+        "semantic_roles": [
+          "LICENSED_RECORDING_STATE"
+        ]
+      },
+      {
+        "affordances": [
+          "RESOLVE_AGAINST_SOURCE_RECORDING_RELATION"
+        ],
+        "entity_identity": "LOG_BOUND_RECORD_STATE",
+        "operand_id": "INVENTED_RELATION_2",
+        "provenance_operand_ids": [
+          "INVENTED_RELATION_1",
+          "FACT_OBJECT"
+        ],
+        "reclassification_only": false,
+        "semantic_roles": [
+          "LOG_BOUND_RECORD_STATE"
+        ]
+      }
+    ],
+    "pilot_role": "LEGITIMATE_END_TO_END_MECHANISM_TRIAL",
+    "predicate_semantic_signatures": [
+      {
+        "predicate_id": "EXTEND_EAEE0B73D5CB0E36",
+        "required_actor_affordances": [
+          "LICENSE_LOCAL_NONFACTUAL_EXTENSION"
+        ],
+        "required_actor_roles": [
+          "POST_INSTALLATION_RECORDING_RELATION"
+        ],
+        "required_patient_affordances": [
+          "QUALIFY_RECORDING_DISPOSITION"
+        ],
+        "required_patient_roles": [
+          "TEMPORAL_PRECONDITION"
+        ]
+      },
+      {
+        "predicate_id": "PROPAGATE_EAEE0B73D5CB0E36",
+        "required_actor_affordances": [
+          "PROPAGATE_TO_BOUND_LOG"
+        ],
+        "required_actor_roles": [
+          "LICENSED_RECORDING_STATE"
+        ],
+        "required_patient_affordances": [
+          "RECEIVE_POSITION_AND_TIME_RECORD"
+        ],
+        "required_patient_roles": [
+          "RECORD_DESTINATION"
+        ]
+      },
+      {
+        "predicate_id": "RESOLVE_EAEE0B73D5CB0E36",
+        "required_actor_affordances": [
+          "RESOLVE_AGAINST_SOURCE_RECORDING_RELATION"
+        ],
+        "required_actor_roles": [
+          "LOG_BOUND_RECORD_STATE"
+        ],
+        "required_patient_affordances": [
+          "LICENSE_LOCAL_NONFACTUAL_EXTENSION"
+        ],
+        "required_patient_roles": [
+          "POST_INSTALLATION_RECORDING_RELATION"
+        ]
+      }
+    ],
+    "proposition_derived_typed_plan": [
+      {
+        "actor_role": "RELATION_HEAD",
+        "bound_actor_id": "FACT_RELATION_EAEE0B73D5CB0E36",
+        "bound_patient_id": "FACT_QUALIFICATION",
+        "introduces_ids": [
+          "INVENTED_RELATION_1"
+        ],
+        "node_id": "L1",
+        "nonfactual_scope": true,
+        "predecessor_node_ids": [],
+        "predicate_id": "EXTEND_EAEE0B73D5CB0E36",
+        "source_provenance": "P5_COORDINATE_BOUND_RELATION"
+      },
+      {
+        "actor_role": "RELATION_HEAD",
+        "bound_actor_id": "INVENTED_RELATION_1",
+        "bound_patient_id": "FACT_OBJECT",
+        "introduces_ids": [
+          "INVENTED_RELATION_2"
+        ],
+        "node_id": "L2",
+        "nonfactual_scope": true,
+        "predecessor_node_ids": [
+          "L1"
+        ],
+        "predicate_id": "PROPAGATE_EAEE0B73D5CB0E36",
+        "source_provenance": "L1"
+      },
+      {
+        "actor_role": "RELATION_HEAD",
+        "bound_actor_id": "INVENTED_RELATION_2",
+        "bound_patient_id": "FACT_RELATION_EAEE0B73D5CB0E36",
+        "introduces_ids": [],
+        "node_id": "RESULT",
+        "nonfactual_scope": true,
+        "predecessor_node_ids": [
+          "L2"
+        ],
+        "predicate_id": "RESOLVE_EAEE0B73D5CB0E36",
+        "source_provenance": "L2"
+      }
+    ],
+    "provider_payload_schema": [
+      "clause"
+    ],
+    "qualified_executable_implementation_identity": "3c7c353d488d032dd69f9d12a07a621bfc7bb95b668e76efc08494546f5d5362",
+    "realization_plan": null,
+    "realization_provider_identity": "865c1e9f7cedb5e78b5ecd7524781a8ed8a50816a9be76910c7ee76c375b81ea",
+    "schema_name": "batch2-development-pilot13-constructor-facing-assignment-proposal-v5-3-3",
+    "schema_version": "5.3.3",
+    "selected_proposition_id": "P5",
+    "selected_supporting_span_sha256": "e1b854d2b88d4489a45f6e53ce937dff06e2e9fad3abe7258a940fb5bf4a4566",
+    "semantic_plan_commitment": "dbf4d82c0ca397f6cb66720a956f7a2e4b720fec28347c9eccebba2913d9bb6e",
+    "semantic_role_signature": null,
+    "source_package_identity": "3acf18889454e8fdd8397e0a41f6f96216cd6be98f6ab2b54131acff1e7c31a0",
+    "status": "G02B_RELEASE_CANDIDATE_ZERO_CONSTRUCTION",
+    "sufficiency_receipt_identity": "32f44383ebaea7ccdc779f1b3c4c94af57e717e735185ebdfa0d601ad33076f6",
+    "unlabeled_operational_obligation": {
+      "creative_marking_constraints": [
+        "Premisa și marcajul creativ rămân neatribuite până la construcție.",
+        "Nu transfera în rezultat limbajul cerințelor, planului, controlului, guvernanței sau validării."
+      ],
+      "forbidden_operations": [
+        "Nu ascunde relația factuală până după rezultatul inventat și nu folosi dezvăluirea ei ca răsturnare principală.",
+        "Nu introduce un reper, operand, eveniment ori cauză care nu poate fi urmărită local până la contextul autorizat.",
+        "Nu baza rezultatul pe redenumire, reclasificare, personificare, intensificare, listă sau joc lexical.",
+        "Nu impune o formulă fixă, un conector, un semn de punctuație, un registru ori un număr fix de propoziții."
+      ],
+      "future_phase_constraints": [
+        "Orice plan viitor trebuie derivat numai din relația factuală P5 și din rezultate locale explicit produse.",
+        "Fiecare relație viitoare trebuie să păstreze identitatea operanzilor și să fie necesară, ne-arbitrară și închisă referențial.",
+        "Validarea semantică și a martorilor de suprafață aparține exclusiv fazelor ulterioare autorizate separat."
+      ],
+      "naturalness_and_safety": [
+        "Folosește română idiomatică și concretă; nu transfera în suprafață limbajul acestei cerințe.",
+        "Separă clar cadrul inventat de autoritatea factuală și nu adăuga fapte, citate, cunoaștere privată sau concluzii despre lumea reală."
+      ],
+      "obligation_instance_identity": "85b142a8988b99981d7a44c2c2665fce1b303a441663d3dc1b383e03ca773d3d",
+      "obligation_version": "DEVELOPMENT_TRANSFORMATION_V5_3_3_01",
+      "selected_source_relation": "După montare, poziția efectivă a fiecărui senzor și ora instalării sunt consemnate în jurnalul campaniei.",
+      "transformation": [
+        "Păstrează exact relația factuală furnizată, cu toate calificările și limitele ei, și fă-o disponibilă înainte ca textul să poată produce o schimbare retrospectivă de lectură.",
+        "Construiește o consecință inventată prin cel puțin două legături locale distincte, fiecare necesară și recuperabilă din relația precedentă.",
+        "Consecința trebuie să depindă de întregul lanț; simpla transformare a unui cuvânt, număr ori înscris într-un obiect fizic nu poate susține singură rezultatul.",
+        "Marcajul nonfactual trebuie integrat firesc și trebuie să acopere toate legăturile inventate."
+      ]
+    },
+    "unselected_proposition_or_fallback_authority": "ABSENT",
+    "witness_topology": null
+  },
+  "constructor_visible_object_set": [
+    "CONSTRUCTOR_PACKET_EXACT_BYTES"
+  ],
+  "release_core": {
+    "authority_partition_contract_identity": "99a6265e3dac8ab8ec3eb47456e0fc6927124636a08d5afb380c4e77042cb5b5",
+    "authorized_visible_context_sha256": "e1b854d2b88d4489a45f6e53ce937dff06e2e9fad3abe7258a940fb5bf4a4566",
+    "candidate_emitter_identity": "5bb1fae007fb8898f7e1a514622bb9bac99d992cc81189cd4ffd33b60fa76a8b",
+    "class_a_closure_identity": "8b38a4c000963a2a2481ae614f739677d00287b9d44c041945b17a311f08e4ce",
+    "constructor_facing_packet_identity": "5824366b1f2f917b986574a9bcb184dc0d00cdcf457c594d8a00d3c694223f3e",
+    "constructor_invocation_authorized": false,
+    "constructor_source_compatibility_audit_identity": "1b1a0ce66e183558343bebce6d37dee253106be2a06e3f447f1def343d4422e2",
+    "constructor_source_compatibility_identity": "b8f0b874ce629de2c1e1d2f5b8744b4425178219de57e7f22631baecb54a01c0",
+    "creative_premise_family_id": "UNASSIGNED",
+    "fragment_denyset_identity": "9e32c6d5f2e97202a0cff2e1f087fbce16100d72af96ad25e8a3d304e0458d8d",
+    "immutable_assignment_identity": "ee5f0743e5c2e52945a26b2fd2afe709d73d6865667bbca3826d1ede9a845954",
+    "packet_seal_namespace": "B2_DEVELOPMENT_PILOT13_CONSTRUCTOR_PACKET_G02B_V5_3_3",
+    "partition": "DEVELOPMENT",
+    "qualified_executable_implementation_identity": "3c7c353d488d032dd69f9d12a07a621bfc7bb95b668e76efc08494546f5d5362",
+    "realization_provider_identity": "865c1e9f7cedb5e78b5ecd7524781a8ed8a50816a9be76910c7ee76c375b81ea",
+    "release_mode": "PATHLESS_SINGLE_OBJECT_CAPABILITY_NOT_RELEASED_TO_CONSTRUCTOR",
+    "selected_proposition_id": "P5",
+    "selected_supporting_span_sha256": "e1b854d2b88d4489a45f6e53ce937dff06e2e9fad3abe7258a940fb5bf4a4566",
+    "semantic_plan_commitment": "dbf4d82c0ca397f6cb66720a956f7a2e4b720fec28347c9eccebba2913d9bb6e",
+    "single_use_state": "UNCONSUMED_0_OF_1_NOT_AUTHORIZED",
+    "sufficiency_receipt_identity": "32f44383ebaea7ccdc779f1b3c4c94af57e717e735185ebdfa0d601ad33076f6",
+    "unselected_proposition_or_fallback_authority": "ABSENT"
+  },
+  "release_identity": "a57cc5bc3245bd7b73f1c33eab29baded3867455605f955e13bfae8a215852ba",
+  "schema_name": "batch2-development-pilot13-constructor-access-release-v5-3-3",
+  "schema_version": "5.3.3",
+  "transport_policy": {
+    "cache_or_temp_file": false,
+    "command_line_payload": false,
+    "constructor_invocation_authorized": false,
+    "constructor_role": "CONSTRUCTOR",
+    "emitter_invocation_authorized": false,
+    "environment_inheritance": false,
+    "exceptions_contain_packet_or_mapping": false,
+    "filesystem_path_access": false,
+    "import_time_repository_access": false,
+    "logs_contain_packet_or_mapping": false,
+    "metadata_enumeration": false,
+    "network_access": false,
+    "packet_delivery": "IN_MEMORY_EXACT_BYTES_SINGLE_USE_PATHLESS_CAPABILITY",
+    "process_handle_inheritance": false,
+    "provider_invocation_authorized": false,
+    "repository_access": false,
+    "sibling_artifact_discovery": false
+  }
+}
