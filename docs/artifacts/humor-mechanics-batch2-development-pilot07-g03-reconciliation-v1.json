@@ -1,0 +1,25 @@
+{
+  "assignment_commit": "b63a4c0b321f15bf5af89fa44ed46a8c088f2f3b",
+  "blind_pass_freeze_commit": "5f63f7d095511981d9813965664690289d9d7bf9",
+  "candidate_identity": "44c76c090e226d0ef947e2fc07307fb862761e94950c4eb378b8b3d258427bc1",
+  "candidate_modified": false,
+  "candidate_raw_sha256": "769228fc99006e0f665360f28805f31d4480419095de1f1fba5794319cc1bfa8",
+  "candidate_reinterpreted_or_repaired": false,
+  "contrast_pass_alignment": "EXACT_TARGET_RECOVERED_DOMINANT",
+  "contrast_pass_identity": "15ce8df396b1c0e0dec5d04a98247851a46840989c0347da359846b49c49fa32",
+  "mapping_revealed_after_both_passes_frozen": true,
+  "open_pass_alignment": "TARGET_OPERATION_RECOVERED_DOMINANT_IN_NEUTRAL_DESCRIPTION",
+  "open_pass_identity": "b88888a711cb04adebc4215a9f2e976d67adad210cb762f8fdbbb1b6caecc9d5",
+  "reconciliation_classification": "TARGET_RECOVERED_DOMINANT",
+  "reconciliation_identity": "6cc80a45b8dd9109a1e6901e87f237755b21419c6e11d79f3cee20f648e64061",
+  "schema_name": "batch2-development-pilot07-g03-reconciliation-v1",
+  "schema_version": "1.0.0",
+  "sealed_assignment_identity": "40e51c49f9f488aab87c044d107aff5f78be8d900ca3c5e33e07b7d06e2cce50",
+  "sealed_target": {
+    "frozen_plan_option": "M13_ABSURD_LOGICAL_EXTENSION",
+    "mechanism_id": "HMCV1-B02-M03-ABSURD_LOGICAL_EXTENSION",
+    "mechanism_name": "Absurd Logical Extension"
+  },
+  "substantive_disagreement": false,
+  "target_dominant_recovery_established": true
+}

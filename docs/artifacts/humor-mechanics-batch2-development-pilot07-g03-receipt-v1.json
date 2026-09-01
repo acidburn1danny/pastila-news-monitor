@@ -1,0 +1,64 @@
+{
+  "authority_matrix": {
+    "g03b": false,
+    "g03c": false,
+    "g04a": false,
+    "g04b_pool_certification": false,
+    "owner_review": false,
+    "production_routing": false,
+    "regeneration": false,
+    "repair": false,
+    "rewrite": false,
+    "runtime_integration": false,
+    "training": false,
+    "voice_review": false
+  },
+  "candidate_identity": "44c76c090e226d0ef947e2fc07307fb862761e94950c4eb378b8b3d258427bc1",
+  "candidate_modified": false,
+  "candidate_raw_sha256": "769228fc99006e0f665360f28805f31d4480419095de1f1fba5794319cc1bfa8",
+  "contrast_recovery": {
+    "confidence": "HIGH",
+    "primary": "ABSURD_LOGICAL_EXTENSION",
+    "role": "DOMINANT",
+    "supporting": []
+  },
+  "creative_premise_family_id": "39db5384af4870785ef54b076c73afed4be48a82fedd5a899f576f97d0dac558",
+  "g02c_conformance_receipt_identity": "1b445cef4b9bf16a46fc3e74c5ee2d115f1f681fa6916d0dc88ce20c3d71eeb8",
+  "g03_receipt_identity": "bc30997ba763126f8ee0eda3d0a5375dbc9f6ba514e3394ada34cc086d9b5bf9",
+  "g03_validity_status": "VALID_BLIND_REVIEW",
+  "g03b_performed": false,
+  "g03c_performed": false,
+  "open_recovery": {
+    "confidence": "HIGH",
+    "primary": "PROCEDURA_BIROCRATICA_PRELUNGITA_INTR_O_BUCLA_AUTOREFERENTIALA_ABSURDA",
+    "role": "DOMINANT",
+    "supporting": [
+      "ESCALADARE_CUMULATIVA_PRIN_REPETAREA_CICLULUI",
+      "INCONGRUITATE_SCOP_EFICIENT_VS_PROLIFERAREA_RAPORTULUI",
+      "EXAGERARE_COMICA_A_LUNGIMII_RAPORTULUI"
+    ]
+  },
+  "owner_review_performed": false,
+  "reconciliation_classification": "TARGET_RECOVERED_DOMINANT",
+  "reconciliation_identity": "6cc80a45b8dd9109a1e6901e87f237755b21419c6e11d79f3cee20f648e64061",
+  "romanian_naturalness_review_performed": false,
+  "schema_name": "batch2-development-pilot07-g03-receipt-v1",
+  "schema_version": "1.0.0",
+  "shortcut_findings": {
+    "contrast": {
+      "lexical": "NON_MATERIAL",
+      "punctuation": "NON_MATERIAL",
+      "template": "NON_MATERIAL"
+    },
+    "open": {
+      "formatting": "NON_MATERIAL",
+      "lexical": "NON_MATERIAL",
+      "overall": "LOW_CONCERN",
+      "punctuation": "NON_MATERIAL",
+      "source_shape": "FACILITATES_READING_BUT_FULL_DEPENDENCY_REQUIRED",
+      "template": "LOW_REQUIRES_SPECIFIC_FIELD_ANALYSIS_ENTRY_LINKS"
+    }
+  },
+  "target_dominant_recovery_established": true,
+  "voice_review_performed": false
+}
