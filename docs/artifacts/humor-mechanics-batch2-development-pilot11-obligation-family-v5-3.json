@@ -1,0 +1,45 @@
+{
+  "affordance_topology": null,
+  "candidate_surface": null,
+  "conformance_schema_identity": "4b26df92539082f11b83c83f76b1d158c7c8f4c87304bdcdd8a6129644f532f3",
+  "construction_authority": false,
+  "constructor_release_authority": false,
+  "constructor_visible_obligation": {
+    "creative_marking_constraints": [
+      "Marcajul nonfactual trebuie ales local și firesc, fără formulă, tranziție, deschidere sau încheiere reutilizată.",
+      "Nu transfera în rezultat limbajul cerințelor, planului, controlului, guvernanței sau validării."
+    ],
+    "forbidden_operations": [
+      "Nu ascunde relația factuală până după rezultatul inventat și nu folosi dezvăluirea ei ca răsturnare principală.",
+      "Nu introduce un reper, operand, eveniment ori cauză care nu poate fi urmărită local până la contextul autorizat.",
+      "Nu baza rezultatul pe redenumire, reclasificare, personificare, intensificare, listă sau joc lexical.",
+      "Nu impune o formulă fixă, un conector, un semn de punctuație, un registru ori un număr fix de propoziții."
+    ],
+    "naturalness_and_safety": [
+      "Folosește română idiomatică și concretă; nu transfera în suprafață limbajul acestei cerințe.",
+      "Separă clar cadrul inventat de autoritatea factuală și nu adăuga fapte, citate, cunoaștere privată sau concluzii despre lumea reală."
+    ],
+    "obligation_version": "DEVELOPMENT_TRANSFORMATION_V5_3_01",
+    "transformation": [
+      "Păstrează exact relația factuală furnizată, cu toate calificările și limitele ei, și fă-o disponibilă înainte ca textul să poată produce o schimbare retrospectivă de lectură.",
+      "Construiește o consecință inventată prin cel puțin două legături locale distincte, fiecare necesară și recuperabilă din relația precedentă.",
+      "Consecința trebuie să depindă de întregul lanț; simpla transformare a unui cuvânt, număr ori înscris într-un obiect fizic nu poate susține singură rezultatul.",
+      "Marcajul nonfactual trebuie integrat firesc și trebuie să acopere toate legăturile inventate."
+    ],
+    "typed_semantic_future_constraints": [
+      "Într-o fază separată, înaintea oricărei realizări, fiecare operand și relație trebuie să primească o semnătură semantică derivată numai din propoziția selectată sau dintr-un rezultat local explicit.",
+      "O reclasificare nu poate crea singură agenție, autoritate, proprietate, permisiune, capacitate ori posibilitatea unei acțiuni.",
+      "Fiecare legătură, inclusiv cea terminală, trebuie să aibă compatibilitate locală și dependență contrafactuală explicită; simpla repetare lexicală nu este suficientă."
+    ]
+  },
+  "family_version": "SEMANTIC_EDGE_ROLE_CONTINUITY_V5_3_NO_CONCRETE_SEMANTIC_PLAN",
+  "governance_identity": "073d68d9d21c76974d12eb8e3f591f4172197377bfb36c2de2f85a5afe079dd6",
+  "inherited_operational_governance_identity": "4848bd025e43eff6652e4c2024072760d372ca4ac7427e5f21e1d2c4bcdb35dc",
+  "obligation_family_identity": "f789d41c36a63952a2fb9dbef432bc1429c1769958236c6295774a11e99c1703",
+  "realization_plan": null,
+  "schema_name": "batch2-development-pilot11-label-blind-obligation-family-v5-3",
+  "schema_version": "5.3.0",
+  "semantic_role_signature": null,
+  "sufficiency_receipt_identity": "2b2b2aeb07d7b2f36ce6c36b71e209ad255638079fc20851a2f6239ad2d46f79",
+  "witness_topology": null
+}

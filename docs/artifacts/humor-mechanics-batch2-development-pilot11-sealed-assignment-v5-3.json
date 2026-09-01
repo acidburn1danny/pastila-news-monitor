@@ -1,0 +1,28 @@
+{
+  "admission_identity": "d00cebe202d8e3bb24f2b220c7cbc24325eb4f666f629a4d4cbfc3541ba39ed5",
+  "affordance_topology": null,
+  "authorized_visible_context_sha256": "3e22d06f68274f2410e8d481a20e3099f338acadf578282acfd31f8c833676cd",
+  "candidate_surface": null,
+  "construction_revision_family_id": "e995cc48d07a63154d846c67d7ad3c20039a7d0e6335dad7d29d3841532dac62",
+  "constructor_access": false,
+  "creative_marker_family_id": "UNASSIGNED_UNTIL_POSTCONSTRUCTION",
+  "creative_premise_family_id": "UNASSIGNED",
+  "obligation_family_identity": "f789d41c36a63952a2fb9dbef432bc1429c1769958236c6295774a11e99c1703",
+  "partition": "DEVELOPMENT",
+  "pool_outcome": "INACCESSIBLE_NOT_EVALUATED",
+  "realization_plan": null,
+  "schema_name": "batch2-development-pilot11-sealed-assignment-v5-3",
+  "schema_version": "5.3.0",
+  "sealed_assignment_identity": "9778b0f7be4acb019cc112aacd34ea31bc7696db4ba82c0e41f9e3718511c57b",
+  "selected_proposition_id": "P3",
+  "selected_supporting_span_sha256": "3e22d06f68274f2410e8d481a20e3099f338acadf578282acfd31f8c833676cd",
+  "semantic_role_signature": null,
+  "status": "SEALED_PROPOSAL_NOT_RELEASED",
+  "sufficiency_receipt_identity": "2b2b2aeb07d7b2f36ce6c36b71e209ad255638079fc20851a2f6239ad2d46f79",
+  "target_mapping": {
+    "frozen_plan_option": "M13_ABSURD_LOGICAL_EXTENSION",
+    "mechanism_id": "HMCV1-B02-M03-ABSURD_LOGICAL_EXTENSION",
+    "mechanism_name": "Absurd Logical Extension"
+  },
+  "witness_topology": null
+}
