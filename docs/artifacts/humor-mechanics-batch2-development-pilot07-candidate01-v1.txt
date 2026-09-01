@@ -1,0 +1,1 @@
+Dacă este observată o problemă tehnică, aceasta este înscrisă în raportul de verificare pentru analiză ulterioară. Într-o continuare imaginară, înscrierea adaugă raportului o rubrică nouă; rubrica trebuie și ea analizată, iar analiza ei cere o nouă înscriere, astfel că ciclul se repetă până când raportul ajunge mai lung decât verificarea.
