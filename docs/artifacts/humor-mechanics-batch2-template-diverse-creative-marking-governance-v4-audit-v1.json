@@ -1,0 +1,22 @@
+{
+  "analysis_identity": "c9d0c04ba2217789f8a1b313f4b37b461511efce8f340ad15f3f89299caa2346",
+  "audit_identity": "6b731c0f525140a540d15ff7140cc9937265a651fd39006783317608ef25f6bb",
+  "blind_reserve_contamination": "PASS_NO_ACCESS",
+  "candidate_or_historical_constructor_modified": false,
+  "candidate_or_source_created": false,
+  "constructor_v1_future_release": "PASS_FAIL_CLOSED_HISTORICAL_ONLY",
+  "constructor_visible_label_or_taxonomy_leakage": "PASS_ZERO_HITS",
+  "cross_pilot_fragment_collision": "PASS_REQUIRED_BEFORE_G02",
+  "deterministic_blockers_remaining": [],
+  "governance_identity": "cc86204c6f199c80ef7c7bf87a58cf3c62d17acb1fe14bd2666bbf5ba86692f6",
+  "hidden_construction_or_acquisition_authority": "ABSENT",
+  "historical_surface_or_marker_leakage_to_future_packet": "PASS_PROHIBITED",
+  "identity_routed_surface_branching": "PASS_PROHIBITED_AND_PREFLIGHT_REQUIRED",
+  "naturalness_voice_gate_conflation": "PASS_SEPARATE_NONOVERRIDING_VERDICTS",
+  "pilot07_regression": "PASS_EXPECTED_REJECTION",
+  "regression_identity": "24a6136e52dc6d86b61fc2ff93bf72b8308bd86ba58f7a3372e855309a3a1f05",
+  "schema_identity": "12c96a72555a26181abd5d0e7fa033a425fdacafb3a7fb197a21b39358da1dbe",
+  "schema_name": "batch2-template-diverse-creative-marking-governance-v4-audit-v1",
+  "schema_version": "1.0.0",
+  "verdict": "PASS_SOURCE_ONLY_ZERO_CONSTRUCTION"
+}

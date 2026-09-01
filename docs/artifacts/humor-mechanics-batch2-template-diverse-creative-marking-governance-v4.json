@@ -1,0 +1,62 @@
+{
+  "construction_authority": false,
+  "construction_requirements": [
+    "NONFACTUAL_SCOPE_MUST_BE_CLEAR_WITHOUT_A_GLOBALLY_FIXED_PHRASE",
+    "CREATIVE_MARKING_MUST_BE_CONTEXT_INTEGRATED_AND_FAMILY_SPECIFIC",
+    "CREATIVE_MARKING_CHOICE_MUST_NOT_ENCODE_MECHANISM_LABEL_OR_TARGET_ANSWER",
+    "ONE_ATTEMPT_REMAINS_ONE_ATTEMPT_AND_COLLISION_FAILURE_IS_NOT_REPAIR_AUTHORITY"
+  ],
+  "constructor_boundary": {
+    "historical_v1_behavior_must_remain_byte_exact": true,
+    "historical_v1_status": "HISTORICAL_VERIFICATION_ONLY_NO_FUTURE_CONSTRUCTOR_RELEASE",
+    "implementation_must_not_embed_complete_candidate_surfaces_or_reusable_creative_markers": true,
+    "implementation_must_not_route_surface_text_by_source_packet_pilot_or_candidate_identity": true,
+    "implementation_static_audit_required_before_g02b_release": true,
+    "new_family_release_requires_separately_frozen_implementation_identity": true
+  },
+  "family_version": "TEMPLATE_DIVERSE_CREATIVE_MARKING_V4",
+  "g02b_preconstruction_requirements": [
+    "CONSTRUCTOR_IMPLEMENTATION_NOT_HISTORICAL_V1",
+    "CONSTRUCTOR_IMPLEMENTATION_IDENTITY_EXACTLY_BOUND",
+    "STATIC_SCAN_NO_IDENTITY_ROUTED_SURFACE_BRANCHES",
+    "STATIC_SCAN_NO_COMPLETE_CANDIDATE_SURFACE_LITERALS",
+    "STATIC_SCAN_NO_REUSABLE_CREATIVE_MARKER_LITERAL",
+    "PACKET_CONTAINS_NO_PLAINTEXT_HISTORICAL_SURFACE_OR_BLIND_METADATA",
+    "NO_FIXED_CREATIVE_MARKER_OR_SENTENCE_TEMPLATE_REQUIRED_BY_OBLIGATION"
+  ],
+  "g03c_additional_requirements": [
+    "CANDIDATE_LOCAL_NONSEMANTIC_CUE_AUDIT",
+    "CROSS_PILOT_NONBLIND_FRAGMENT_REUSE_AUDIT",
+    "CONSTRUCTION_REVISION_FAMILY_PREDICTABILITY_AUDIT",
+    "CREATIVE_MARKER_FAMILY_PREDICTABILITY_AUDIT",
+    "POOL_STATUS_REMAINS_SEPARATE_FROM_CANDIDATE_PASS"
+  ],
+  "g04a_voice_separation": {
+    "one_gate_must_not_silently_override_the_other": true,
+    "romanian_naturalness_may_pass_a_LOCALLY_NATURAL_MARKER": true,
+    "voice_must_reject_MATERIAL_CROSS_FAMILY_TEMPLATE_REUSE": true
+  },
+  "governance_identity": "cc86204c6f199c80ef7c7bf87a58cf3c62d17acb1fe14bd2666bbf5ba86692f6",
+  "metadata_first_requirements": [
+    "SOURCE_AND_PARTITION_FIXED_BEFORE_ANY_ASSIGNMENT",
+    "NO_SOURCE_SELECTION_BY_CREATIVE_MARKER_OR_SURFACE_TEMPLATE",
+    "CONSTRUCTION_REVISION_FAMILY_IDENTITY_ASSIGNED_AND_SEALED_BEFORE_RELEASE",
+    "NONBLIND_DEVELOPMENT_FRAGMENT_DENYSET_IDENTITY_FROZEN_WITHOUT_BLIND_RESERVE_ACCESS"
+  ],
+  "model_exposure_authority": false,
+  "postconstruction_requirements_before_g02": [
+    "EXACT_FRAGMENT_AND_NORMALIZED_NGRAM_COLLISION_CHECK_AGAINST_NONBLIND_DEVELOPMENT_DENYSET",
+    "CONSTRUCTION_REVISION_AND_CREATIVE_MARKER_FAMILY_IDENTITIES_DERIVED",
+    "COLLISION_FAILS_CLOSED_AS_NONPOSITIVE_WITHOUT_REWRITE_RETRY_OR_SELECTION",
+    "NO_BLIND_EVALUATION_CONTENT_METADATA_OR_FINGERPRINTS_ACCESSED"
+  ],
+  "preserves_v3_causal_spine_requirements": true,
+  "production_authority": false,
+  "root_cause_analysis_identity": "c9d0c04ba2217789f8a1b313f4b37b461511efce8f340ad15f3f89299caa2346",
+  "runtime_authority": false,
+  "schema_name": "batch2-template-diverse-creative-marking-governance-v4",
+  "schema_version": "4.0.0",
+  "source_acquisition_authority": false,
+  "supersedes_governance_identity": "4848bd025e43eff6652e4c2024072760d372ca4ac7427e5f21e1d2c4bcdb35dc",
+  "training_authority": false
+}

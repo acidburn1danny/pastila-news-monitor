@@ -1,0 +1,48 @@
+{
+  "analysis_identity": "c9d0c04ba2217789f8a1b313f4b37b461511efce8f340ad15f3f89299caa2346",
+  "candidate_git_blob_oid_sha1": "345829c569ae87d350a30158e026c52371e3c560",
+  "candidate_identity": "44c76c090e226d0ef947e2fc07307fb862761e94950c4eb378b8b3d258427bc1",
+  "candidate_modified": false,
+  "candidate_raw_sha256": "769228fc99006e0f665360f28805f31d4480419095de1f1fba5794319cc1bfa8",
+  "constructor_source_evidence": {
+    "historical_behavior_modified": false,
+    "implementation": "pastila_scout.humor_batch2_development_constructor_v1",
+    "literal_occurrence_count_at_least": 3,
+    "packet_or_source_identity_routing_present": true
+  },
+  "disposition_commit": "ca6eb9823404a0e31ec7d5ead76da93f721d6b1d",
+  "disposition_identity": "4822ba1eede928571f96cb44a70ba5805b24c2707e5153e6747f954bbf7f90ac",
+  "exact_fragment_evidence": {
+    "development_candidate_presence": {
+      "PILOT05": true,
+      "PILOT06": true,
+      "PILOT07": true
+    },
+    "distinct_candidate_family_count": 3,
+    "fragment_plaintext_in_analysis": false,
+    "fragment_sha256": "f7a07b90dfdd61a5aed9ce615fba6b46ad811662c806fa3322f58096a77a5ef7"
+  },
+  "responsibility": {
+    "candidate_local_g03c_scope": "CONTRIBUTING",
+    "constructor_implementation_boundary": "PRIMARY",
+    "factual_authority": "NOT_CAUSAL",
+    "g04a_naturalness_review": "VALID_SEPARATE_JUDGMENT_NOT_CAUSAL",
+    "postconstruction_template_collision_governance": "CONTRIBUTING",
+    "preconstruction_g02b_governance": "CONTRIBUTING",
+    "selected_proposition": "NOT_CAUSAL",
+    "source_family": "NOT_CAUSAL",
+    "voice_review": "VALID_DETECTION_NOT_CAUSAL"
+  },
+  "root_causes": [
+    "V3_PROHIBITED_FIXED_OBLIGATION_WORDING_BUT_DID_NOT_CONSTRAIN_CONSTRUCTOR_SOURCE_LITERALS",
+    "V1_CONSTRUCTOR_ROUTED_BY_PACKET_OR_SOURCE_IDENTITY_AND_EMBEDDED_COMPLETE_FAMILY_SPECIFIC_SURFACES",
+    "G02B_VERIFIED_VISIBLE_PACKET_ISOLATION_BUT_NOT_STATIC_CONSTRUCTOR_TEMPLATE_DIVERSITY",
+    "POST_CONSTRUCTION_G02B_RECONCILED_EXPOSURE_BUT_LACKED_CROSS_PILOT_EXACT_FRAGMENT_COLLISION_CHECK",
+    "G03C_CANDIDATE_LOCAL_SHORTCUT_TEST_DID_NOT_COMPARE_NONBLIND_DEVELOPMENT_CONSTRUCTION_FRAGMENTS",
+    "G04A_CORRECTLY_TREATED_THE_MARKER_AS_NATURALNESS_NONMATERIAL_BUT_VOICE_REUSE_MATERIALITY_REQUIRES_A_SEPARATE_POOL_AWARE_CHECK"
+  ],
+  "schema_name": "batch2-pilot07-cross-pilot-voice-template-root-cause-analysis-v1",
+  "schema_version": "1.0.0",
+  "stable_rejection_reason": "CANNED_CROSS_PILOT_CREATIVE_TRANSITION_REUSE",
+  "verdict": "ROOT_CAUSE_CONFIRMED_AT_CONSTRUCTOR_TEMPLATE_AND_CROSS_PILOT_COLLISION_GOVERNANCE_BOUNDARY"
+}

@@ -1,0 +1,19 @@
+{
+  "candidate_bytes_embedded": false,
+  "candidate_git_blob_oid_sha1": "345829c569ae87d350a30158e026c52371e3c560",
+  "candidate_identity": "44c76c090e226d0ef947e2fc07307fb862761e94950c4eb378b8b3d258427bc1",
+  "candidate_modified": false,
+  "candidate_raw_sha256": "769228fc99006e0f665360f28805f31d4480419095de1f1fba5794319cc1bfa8",
+  "expected_predicates": {
+    "CONSTRUCTOR_V1_ELIGIBLE_FOR_FUTURE_RELEASE": false,
+    "EXACT_CROSS_PILOT_CREATIVE_FRAGMENT_COLLISION_ABSENT": false,
+    "ROMANIAN_NATURALNESS_MAY_PASS": true,
+    "VOICE_TEMPLATE_REUSE_ABSENT": false
+  },
+  "expected_verdict": "FAIL_CROSS_PILOT_CREATIVE_FRAGMENT_COLLISION",
+  "historical_constructor_modified": false,
+  "positive_pool_eligibility": false,
+  "regression_identity": "24a6136e52dc6d86b61fc2ff93bf72b8308bd86ba58f7a3372e855309a3a1f05",
+  "schema_name": "batch2-pilot07-cross-pilot-voice-template-regression-v1",
+  "schema_version": "1.0.0"
+}
