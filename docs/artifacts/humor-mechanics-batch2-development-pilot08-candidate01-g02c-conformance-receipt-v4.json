@@ -1,0 +1,124 @@
+{
+  "candidate_git_blob_oid_sha1": "679ad8c85f55f002523657baf531587694f5f607",
+  "candidate_identity": "6f2aca6eafc4773576a00001d83d1a0e5c2bf5a2c53d1ae2930c2f3147457fb8",
+  "candidate_raw_sha256": "bc71da32026e9173440a494279fd4dca752cfc8c5547abcaa1ad922bdda0368a",
+  "conformance_receipt_identity": "60fa16dd8d530ab34a1de89413bf3b37a16cf9b2536d981df0735a7812b1e733",
+  "constructor_facing_packet_identity": "4e812e402c2d56f5b95f5aa60bd09630117de72377d2a6bb8da0e446ac2634ae",
+  "dependency_trace": {
+    "arbitrary_or_substitutable_link": true,
+    "control_return_to_rule_reapplication": "NOT_SUFFICIENT_TO_CURE_EARLIER_OPERAND_CLOSURE_FAILURE",
+    "fact_first_order": true,
+    "fact_to_repeated_relation": "FAIL_REPETITION_RESTATES_P5_WITHOUT_ESTABLISHING_A_DISTINCT_CONSEQUENCE",
+    "repeated_relation_to_control_return": "FAIL_PREPOSITIONAL_LOCATION_PURPORTEDLY_MOVES_CONTROL_WITHOUT_A_BOUND_ACTOR_OR_HEAD",
+    "rule_reapplication_to_result": "LOCALLY_STATED_BUT_NOT_CONNECTED_BY_A_COMPLETE_RECOVERABLE_CHAIN",
+    "selected_fact": "PASS_EXACT_P5_CONDITIONAL_RECORDING_AND_LATER_CHECK_RELATION",
+    "single_literal_transfer": false,
+    "unbound_operand_or_reference": true
+  },
+  "failure": {
+    "candidate_repair_performed": false,
+    "classification": "UNBOUND_OPERAND_AND_INCOMPLETE_MULTI_LINK_CAUSAL_SPINE",
+    "consequence": "The first distinct invented dependency is not locally recoverable, so later rule reapplication and self-verification cannot establish a complete necessary chain back to P5.",
+    "earliest_failed_link": "FIRST_INVENTED_RELATION_TO_CONTROL_RETURN",
+    "mechanism_label_required_for_failure": false,
+    "naturalness_adjudication_required_for_failure": false,
+    "observed_gap": "The phrase beginning 'în fișa de intervenție' is a prepositional location/purpose phrase, yet the surface makes it the apparent mover of 'controlul' without supplying a bound actor or grammatical head."
+  },
+  "fragment_collision_receipt_identity": "a2645ddfb3357f9a8ebd55c1e661db1197bf0e41bf4fe945c2b168c4ec16c89e",
+  "naturalness_precheck": {
+    "does_not_replace_separate_quality_gates": true,
+    "instruction_or_governance_language_transferred": false,
+    "romanian_naturalness_adjudicated": false,
+    "voice_adjudicated": false
+  },
+  "obligation_instance_identity": "d2d6ad3d20e577c5834f7534028eb21e22f378b330a1607d27eacaa86e2f8876",
+  "obligation_version": "DEVELOPMENT_TRANSFORMATION_V4_01",
+  "required_predicates": {
+    "ALL_REFERENCES_AND_OPERANDS_BOUND": false,
+    "AT_LEAST_TWO_DISTINCT_LOCALLY_RECOVERABLE_LINKS": false,
+    "COMPLETE_MULTI_LINK_CAUSAL_SPINE": false,
+    "CONSEQUENCE_DEPENDS_ON_COMPLETE_CHAIN": false,
+    "EACH_LINK_NECESSARY_AND_NON_ARBITRARY": false,
+    "EXACT_SELECTED_PROPOSITION_PRESERVED": true,
+    "FACT_AVAILABLE_BEFORE_RETROSPECTIVE_READING_CHANGE": true,
+    "FRAGMENT_COLLISION_GATE_PASSED": true,
+    "INVENTED_SEQUENCE_EXPLICITLY_NONFACTUAL": true,
+    "NO_DELAYED_FACT_DISCLOSURE_AS_PRIMARY_EFFECT": true,
+    "NO_INSTRUCTION_LANGUAGE_TRANSFER": true,
+    "NO_SINGLE_LITERAL_TRANSFER_AS_SOLE_ENGINE": true
+  },
+  "schema_name": "batch2-development-pilot08-g02c-conformance-receipt-v4",
+  "schema_version": "4.0.0",
+  "selected_proposition_id": "P5",
+  "selected_supporting_span_sha256": "6fd5aeac76fa3602374be0da17bf7bb82c8b878b6302b3ddd6789712d034f3db",
+  "sufficiency_receipt_identity": "be0f5cb5d2fa33a7163db4b59babf777d6cf004472cf6a6607206d82870edbe3",
+  "surface_components": {
+    "claimed_result": {
+      "character_coordinates": [
+        525,
+        567
+      ],
+      "sha256": "9abab208ea5871ec2734cddcaefb9c44cdf382df090817b2f6a130bfe52a2404",
+      "utf8_byte_coordinates": [
+        557,
+        601
+      ]
+    },
+    "creative_marker": {
+      "character_coordinates": [
+        152,
+        184
+      ],
+      "sha256": "249f55a98b1791fa1ac8a750f0b1095810a31ff02237f38e5e52ad77cec4848e",
+      "utf8_byte_coordinates": [
+        160,
+        196
+      ]
+    },
+    "factual": {
+      "character_coordinates": [
+        0,
+        151
+      ],
+      "sha256": "6fd5aeac76fa3602374be0da17bf7bb82c8b878b6302b3ddd6789712d034f3db",
+      "utf8_byte_coordinates": [
+        0,
+        159
+      ]
+    },
+    "first_claimed_link_with_unbound_actor": {
+      "character_coordinates": [
+        311,
+        433
+      ],
+      "sha256": "c65488e889942fe17b5a92dd04f51ca5b5cab6daa002c3dcb28c217cd947d47d",
+      "utf8_byte_coordinates": [
+        329,
+        457
+      ]
+    },
+    "later_claimed_link": {
+      "character_coordinates": [
+        488,
+        513
+      ],
+      "sha256": "0c08afb6965538b308ef69e92dcbf2881937698fcc324dcf52be0d68746fdf2d",
+      "utf8_byte_coordinates": [
+        515,
+        542
+      ]
+    },
+    "repeated_relation": {
+      "character_coordinates": [
+        186,
+        305
+      ],
+      "sha256": "b2afd94558332ec9b25786dbb75b5d96c88d01b8b650aaf5db0d963deff6fbae",
+      "utf8_byte_coordinates": [
+        198,
+        323
+      ]
+    }
+  },
+  "verdict": "FAIL_UNBOUND_OPERAND_AND_INCOMPLETE_MULTI_LINK_CAUSAL_SPINE"
+}
