@@ -5,6 +5,7 @@ import pytest
 from pastila_scout.humor_batch2_development_constructor_v5_4_semantic_licensing import (
     ProposedRelation, RuleOrigin, SemanticOperand, TrustedRuleRegistry,
     TrustedSemanticRule, assert_registry_is_external, validate_and_license_plan,
+    verify_rule_registry_partition,
 )
 
 
@@ -120,3 +121,28 @@ def test_counterfactual_is_validator_derived_for_each_chained_edge():
     ), registry=TrustedRuleRegistry((first, second)))
     assert plan.counterfactual_edges[0].removal_breaks_successor is True
     assert plan.counterfactual_edges[0].alternative_rule_count == 0
+
+
+def test_source_derived_rule_needs_independent_rule_identity_authority():
+    source_rule = TrustedSemanticRule("source-rule", RuleOrigin.SOURCE_DERIVED, "REPORT",
+        frozenset({"SENSOR"}), frozenset({"LOG"}), frozenset({"REPORTER"}),
+        frozenset({"RECORD"}), frozenset({"REPORT"}), frozenset({"RECEIVE"}),
+        "ENTRY", frozenset({"RESULT"}), frozenset(), frozenset({"P"}))
+    args = dict(authority_operands=(
+        operand("sensor", "SENSOR", {"REPORTER"}, {"REPORT"}),
+        operand("log", "LOG", {"RECORD"}, {"RECEIVE"}),
+    ), proposed_relations=(ProposedRelation("r", None, "REPORT", "sensor", "log", "entry",
+        "source-rule", True),), registry=TrustedRuleRegistry((source_rule,)))
+    with pytest.raises(ValueError, match="not independently authorized"):
+        validate_and_license_plan(**args)
+    assert validate_and_license_plan(**args, authorized_source_rule_ids=frozenset({"source-rule"}))
+
+
+@pytest.mark.parametrize("origin", [RuleOrigin.SOURCE_DERIVED, RuleOrigin.FROZEN_GENERIC_ONTOLOGY])
+def test_rule_cannot_claim_a_trust_domain_by_label_alone(origin):
+    candidate = TrustedSemanticRule("candidate", origin, "X", frozenset({"A"}), frozenset({"B"}),
+        frozenset(), frozenset(), frozenset(), frozenset(), "C", frozenset(), frozenset(),
+        frozenset({"P"}) if origin is RuleOrigin.SOURCE_DERIVED else frozenset())
+    with pytest.raises(ValueError, match="not in"):
+        verify_rule_registry_partition(rules=(candidate,), frozen_generic_rule_ids=frozenset(),
+                                       authorized_source_rule_ids=frozenset())

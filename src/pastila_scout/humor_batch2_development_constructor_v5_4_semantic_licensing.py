@@ -109,6 +109,7 @@ def validate_and_license_plan(
     authority_operands: tuple[SemanticOperand, ...],
     proposed_relations: tuple[ProposedRelation, ...],
     registry: TrustedRuleRegistry,
+    authorized_source_rule_ids: frozenset[str] = frozenset(),
 ) -> LicensedPlan:
     """Validate every relation, including the anchor and terminal relations.
 
@@ -151,6 +152,8 @@ def validate_and_license_plan(
         if len(compatible) != 1 or compatible[0].rule_id != rule.rule_id:
             raise ValueError("semantic consequence is absent or freely substitutable")
         if rule.origin is RuleOrigin.SOURCE_DERIVED:
+            if rule.rule_id not in authorized_source_rule_ids:
+                raise ValueError("source-derived rule identity is not independently authorized")
             if not rule.source_authority_ids or not rule.source_authority_ids.issubset(
                 actor.authority_ids | patient.authority_ids
             ):
@@ -201,8 +204,28 @@ def assert_registry_is_external(
         raise ValueError("trusted semantic rule registry is empty")
 
 
+def verify_rule_registry_partition(
+    *,
+    rules: tuple[TrustedSemanticRule, ...],
+    frozen_generic_rule_ids: frozenset[str],
+    authorized_source_rule_ids: frozenset[str],
+) -> None:
+    """Require every rule to belong to exactly one independently frozen trust domain."""
+    ids = {rule.rule_id for rule in rules}
+    if len(ids) != len(rules):
+        raise ValueError("duplicate rule identity")
+    if frozen_generic_rule_ids & authorized_source_rule_ids:
+        raise ValueError("semantic rule trust domains overlap")
+    for rule in rules:
+        if rule.origin is RuleOrigin.FROZEN_GENERIC_ONTOLOGY:
+            if rule.rule_id not in frozen_generic_rule_ids:
+                raise ValueError("generic rule is not in the frozen ontology")
+        elif rule.rule_id not in authorized_source_rule_ids:
+            raise ValueError("source-derived rule is not in the authority envelope")
+
+
 __all__ = [
     "CounterfactualEdgeResult", "LicensedPlan", "ProposedRelation", "RuleOrigin", "SemanticOperand",
     "TrustedRuleRegistry", "TrustedSemanticRule", "assert_registry_is_external",
-    "validate_and_license_plan",
+    "validate_and_license_plan", "verify_rule_registry_partition",
 ]
