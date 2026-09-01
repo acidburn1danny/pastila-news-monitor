@@ -1,0 +1,38 @@
+{
+  "alternative_findings": {
+    "AMBIGUOUS": "LANTUL_FAVORIZEAZA_UNIC_ALEGEREA",
+    "ESCALATION": "ACUMULARE_SUBORDONATA_LANTULUI_CAUZAL",
+    "LITERALIZATION": "NICIUN_FIGURAT_NU_DEVINE_REALITATE_LITERAL_DOMINANTA",
+    "MISDIRECTION": "FAPTUL_PRECEDE_CONTINUAREA_FARA_DEZVALUIRE_INTARZIATA",
+    "NONE": "MECANISM_CLAR_PREZENT"
+  },
+  "blind_pass_identity": "15ce8df396b1c0e0dec5d04a98247851a46840989c0347da359846b49c49fa32",
+  "candidate_identity": "44c76c090e226d0ef947e2fc07307fb862761e94950c4eb378b8b3d258427bc1",
+  "candidate_modified": false,
+  "candidate_raw_sha256": "769228fc99006e0f665360f28805f31d4480419095de1f1fba5794319cc1bfa8",
+  "confidence": "HIGH",
+  "g02c_review_identity": "6b12ee5efb9a08f46495e0c19724a967ae821273ca75584392d9a87168bb9d43",
+  "primary_choice": "ABSURD_LOGICAL_EXTENSION",
+  "primary_role": "DOMINANT",
+  "reconciliation_performed": false,
+  "review_mode": "SHUFFLED_CLOSED_CHOICE",
+  "reviewer_independence": "INDEPENDENT_SURFACE_ONLY",
+  "schema_name": "batch2-development-pilot07-g03-contrast-blind-pass-v1",
+  "schema_version": "1.0.0",
+  "sealed_mapping_accessed": false,
+  "shortcut_assessment": {
+    "lexical": "NON_MATERIAL",
+    "punctuation": "NON_MATERIAL",
+    "template": "NON_MATERIAL"
+  },
+  "shuffled_choices": [
+    "ESCALATION",
+    "NONE",
+    "LITERALIZATION",
+    "ABSURD_LOGICAL_EXTENSION",
+    "AMBIGUOUS",
+    "MISDIRECTION"
+  ],
+  "structural_rationale": "INSCRIEREA_FACTUALA_ESTE_EXTINSA_PRIN_LANTUL_RUBRICA_ANALIZA_INSCRIERE_REPETARE_PANA_LA_CONSECINTA_ABSURDA",
+  "supporting_choices": []
+}

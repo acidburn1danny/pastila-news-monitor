@@ -1,0 +1,30 @@
+{
+  "blind_pass_identity": "b88888a711cb04adebc4215a9f2e976d67adad210cb762f8fdbbb1b6caecc9d5",
+  "candidate_identity": "44c76c090e226d0ef947e2fc07307fb862761e94950c4eb378b8b3d258427bc1",
+  "candidate_modified": false,
+  "candidate_raw_sha256": "769228fc99006e0f665360f28805f31d4480419095de1f1fba5794319cc1bfa8",
+  "confidence": "HIGH",
+  "g02c_review_identity": "6b12ee5efb9a08f46495e0c19724a967ae821273ca75584392d9a87168bb9d43",
+  "primary_mechanism_description": "PROCEDURA_BIROCRATICA_PRELUNGITA_INTR_O_BUCLA_AUTOREFERENTIALA_ABSURDA",
+  "primary_role": "DOMINANT",
+  "reconciliation_performed": false,
+  "review_mode": "OPEN_RECOVERY_NO_CHOICE_LABELS",
+  "reviewer_independence": "INDEPENDENT_SURFACE_ONLY",
+  "schema_name": "batch2-development-pilot07-g03-open-blind-pass-v1",
+  "schema_version": "1.0.0",
+  "sealed_mapping_accessed": false,
+  "shortcut_assessment": {
+    "formatting": "NON_MATERIAL",
+    "lexical": "NON_MATERIAL",
+    "overall": "LOW_CONCERN",
+    "punctuation": "NON_MATERIAL",
+    "source_shape": "FACILITATES_READING_BUT_FULL_DEPENDENCY_REQUIRED",
+    "template": "LOW_REQUIRES_SPECIFIC_FIELD_ANALYSIS_ENTRY_LINKS"
+  },
+  "structural_rationale": "P5_STABILESTE_PROBLEMA_INSCRIERE_ANALIZA_IAR_CONTINUAREA_LEAGA_RUBRICA_ANALIZA_INSCRIERE_REPETARE_REZULTATUL_DEPINZAND_DE_RECURSIA_COMPLETA",
+  "supporting_mechanisms": [
+    "ESCALADARE_CUMULATIVA_PRIN_REPETAREA_CICLULUI",
+    "INCONGRUITATE_SCOP_EFICIENT_VS_PROLIFERAREA_RAPORTULUI",
+    "EXAGERARE_COMICA_A_LUNGIMII_RAPORTULUI"
+  ]
+}
