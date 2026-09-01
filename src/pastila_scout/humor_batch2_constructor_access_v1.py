@@ -62,6 +62,8 @@ def prepare_development_constructor_access_v1(*, release_bytes: bytes) -> Prepar
             "B2_DEVELOPMENT_PILOT06_CONSTRUCTOR_ACCESS_RELEASE_V2",
         "batch2-development-pilot07-constructor-access-release-v3":
             "B2_DEVELOPMENT_PILOT07_CONSTRUCTOR_ACCESS_RELEASE_V3",
+        "batch2-development-pilot08-constructor-access-release-v4":
+            "B2_DEVELOPMENT_PILOT08_CONSTRUCTOR_ACCESS_RELEASE_V4",
     }
     release_namespace = release_namespaces.get(release["schema_name"])
     if release_namespace is None:
@@ -91,6 +93,7 @@ def prepare_development_constructor_access_v1(*, release_bytes: bytes) -> Prepar
         "B2_DEVELOPMENT_PILOT05_CONSTRUCTOR_PACKET_G02B_SOURCE_BOUND_V1",
         "B2_DEVELOPMENT_PILOT06_CONSTRUCTOR_PACKET_G02B_V2",
         "B2_DEVELOPMENT_PILOT07_CONSTRUCTOR_PACKET_G02B_V3",
+        "B2_DEVELOPMENT_PILOT08_CONSTRUCTOR_PACKET_G02B_V4",
     }:
         raise ValueError("packet seal namespace")
     if packet_identity != _seal(namespace, packet_core):
@@ -112,10 +115,20 @@ def prepare_development_constructor_access_v1(*, release_bytes: bytes) -> Prepar
         allowed_selected_propositions = {
             "batch2-development-pilot06-constructor-access-release-v2": "P3",
             "batch2-development-pilot07-constructor-access-release-v3": "P5",
+            "batch2-development-pilot08-constructor-access-release-v4": "P5",
         }
         if (packet.get("selected_proposition_id") != allowed_selected_propositions.get(release["schema_name"])
                 or len(packet["closed_factual_authority_envelope"]["propositions"]) != 1):
             raise ValueError("selected proposition boundary")
+        if release["schema_name"] == "batch2-development-pilot08-constructor-access-release-v4":
+            if not (
+                packet.get("constructor_implementation_generation") == 4
+                and packet.get("constructor_implementation_identity")
+                == release["release_core"].get("constructor_implementation_identity")
+                and packet.get("fragment_denyset_identity")
+                == release["release_core"].get("fragment_denyset_identity")
+            ):
+                raise ValueError("V4 implementation or denyset binding")
     else:
         source = packet.get("source_object", {})
         source_text = source.get("source_text_utf8")
