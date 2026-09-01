@@ -1,0 +1,17 @@
+{
+  "audit_identity": "b05990a388ee7a29d91511315e38fcb2959ae3736a2d5753d501b87218742c2a",
+  "blind_reserve_access": "PASS_NONE",
+  "candidate_bytes_modified": false,
+  "candidate_identity_and_bytes": "PASS_EXACT_IMMUTABLE",
+  "constructor_invocations_added": 0,
+  "denyset_identity_and_seal": "PASS_EXACT_1617_HASHES",
+  "deterministic_blockers": [],
+  "exact_fragment_check": "PASS_ZERO_HITS",
+  "g02_review_performed": false,
+  "git_object_only": true,
+  "normalized_ngram_check": "PASS_ZERO_HITS",
+  "receipt_identity": "a2645ddfb3357f9a8ebd55c1e661db1197bf0e41bf4fe945c2b168c4ec16c89e",
+  "schema_name": "batch2-development-pilot08-postconstruction-fragment-collision-audit-v4",
+  "schema_version": "4.0.0",
+  "verdict": "PASS_SOURCE_ONLY_COLLISION_GATE_NO_DOWNSTREAM_REVIEW"
+}
