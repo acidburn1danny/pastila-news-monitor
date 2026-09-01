@@ -1,0 +1,7 @@
+În dimineața de 18 septembrie 2026, centrul logistic Nord verifică o bandă automată care transportă colete din zona de recepție către zona de sortare. Verificarea are loc înainte de începerea programului obișnuit de procesare a coletelor.
+
+La intrarea pe bandă, un senzor detectează prezența coletului și transmite un semnal către unitatea de control. După primirea semnalului, unitatea de control comandă pornirea benzii, iar coletul este transportat către punctul de sortare. Dacă senzorul nu detectează coletul sau semnalul nu ajunge la unitatea de control, banda nu pornește automat.
+
+În timpul verificării, tehnicianul consemnează separat răspunsul senzorului, comanda transmisă de unitatea de control și pornirea efectivă a benzii. Testul se referă numai la această linie de transport și nu stabilește starea celorlalte echipamente din centrul logistic.
+
+Înainte de verificare nu este cunoscut dacă sistemul va funcționa fără abatere și nici dacă va fi necesară o intervenție tehnică.
