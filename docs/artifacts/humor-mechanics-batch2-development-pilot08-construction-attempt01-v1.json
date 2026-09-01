@@ -1,0 +1,72 @@
+{
+  "attempt": {
+    "authorized": 1,
+    "constructor_invocations": 1,
+    "consumed": 1,
+    "remaining": 0
+  },
+  "authority_matrix": {
+    "fragment_collision_evaluation": false,
+    "g02": false,
+    "g02c": false,
+    "g03": false,
+    "g04b_pool_certification": false,
+    "model_exposure": false,
+    "owner_freeze": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "training": false
+  },
+  "candidate_identity": "6f2aca6eafc4773576a00001d83d1a0e5c2bf5a2c53d1ae2930c2f3147457fb8",
+  "candidate_partition": "DEVELOPMENT",
+  "candidate_surface_byte_length": 603,
+  "candidate_surface_present": true,
+  "candidate_surface_sha256": "bc71da32026e9173440a494279fd4dca752cfc8c5547abcaa1ad922bdda0368a",
+  "capability": {
+    "constructor_visible_sha256": "731b7c9eebfef17e279d7564d12c909d64e6b461519eb3f231e7bb8380e66055",
+    "consumed": true,
+    "reads": 1,
+    "single_use": true
+  },
+  "construction_provenance": {
+    "authorized_visible_context_sha256": "6fd5aeac76fa3602374be0da17bf7bb82c8b878b6302b3ddd6789712d034f3db",
+    "closed_authority_envelope_source_commitment": "d8c6d88489b6ceeade47629e72fc0f133d4b2e68a599e8eb08a8eb961ebb37ee",
+    "obligation_instance_identity": "d2d6ad3d20e577c5834f7534028eb21e22f378b330a1607d27eacaa86e2f8876"
+  },
+  "construction_revision_family_id": "0b70d24e2d85961dd075281da09adf2ac8b5cb35abc37774d0d247fcd11101ea",
+  "constructor_access_source_sha256": "4663c06075eb5bfe87e59b9530e834c26a35ac23670cd02a8b235f960282f72e",
+  "constructor_exposure_reconciliation": {
+    "authorized_packet_only": true,
+    "blind_material_exposed": false,
+    "environment_or_cli_access": false,
+    "exact_selected_source_span_only": true,
+    "hidden_mechanism_metadata_introduced": false,
+    "logs_cache_temp_or_process_access": false,
+    "network_or_model_access": false,
+    "repository_or_filesystem_access": false,
+    "sealed_mapping_exposed": false
+  },
+  "constructor_facing_packet_identity": "4e812e402c2d56f5b95f5aa60bd09630117de72377d2a6bb8da0e446ac2634ae",
+  "constructor_implementation_identity": "68101cd87711761c2c739dc989490c5dd05eaccc0fac03472b9aac180ce647e4",
+  "constructor_source_sha256": "f13136099e75c95033a54aabb447ded743c96a55479dc9a8b685f2a2b41c12d7",
+  "creative_marker_family_id": "758cbce681ac51bbf1608018e69b63cf132fafcb795d9527234c0e25665c108b",
+  "creative_premise_family_id": "d74623b0e85e24d1128523c00d85f03ccd4495c78f335ca92268369d4039777e",
+  "evidence_identity": "657a8ca2fb8023b9a34d51b0958c5cde9c9190f458b84da74c91a4895e56df88",
+  "execution_source_commit": "e273704cf85893ed683dc221b1db5c73fd59361a",
+  "failure_code": null,
+  "fragment_collision_evaluation": "NOT_PERFORMED_REQUIRES_SEPARATE_AUTHORIZATION_BEFORE_G02",
+  "fragment_denyset_identity": "d35beab3b093d118e52369239477f6dc835e764976e44336793f90704b38c844",
+  "g02_eligibility": false,
+  "post_construction_g02b_verdict": "PASS",
+  "release_commit": "c33e82cac589b0fdf036331f7bf6cec97fe75106",
+  "release_identity": "51c58df40ad779ed8b1e14207b69609980a08bc40f2db6de0b4d8398a9fe1b52",
+  "repair_authority": false,
+  "retry_authority": false,
+  "schema_name": "batch2-development-pilot08-construction-attempt01-v1",
+  "schema_version": "1.0.0",
+  "selected_proposition_id": "P5",
+  "selected_supporting_span_sha256": "6fd5aeac76fa3602374be0da17bf7bb82c8b878b6302b3ddd6789712d034f3db",
+  "selection_authority": false,
+  "sufficiency_receipt_identity": "be0f5cb5d2fa33a7163db4b59babf777d6cf004472cf6a6607206d82870edbe3",
+  "terminal_classification": "CANDIDATE_PRODUCED_DEVELOPMENT_ONLY_FRAGMENT_COLLISION_PENDING"
+}
