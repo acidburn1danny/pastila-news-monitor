@@ -1,0 +1,177 @@
+{
+  "constructor_packet": {
+    "authority_matrix": {
+      "construction": false,
+      "constructor_release": false,
+      "creative_premise_assignment": false,
+      "generation": false,
+      "model_exposure": false,
+      "production_routing": false,
+      "runtime_integration": false,
+      "training": false
+    },
+    "authorized_visible_context_sha256": "37e92f7c6b55729e6efee58d6145b8184fc0ac98410ab0d412b51f54605a1899",
+    "candidate_surface": null,
+    "closed_factual_authority_envelope": {
+      "authority_scope": "Only the explicitly stated technical inspection event, temporal scope, internal test material, subsystem checks, issue-recording procedure, and unknown intervention outcome within the accompanying owner-authored synthetic test universe.",
+      "propositions": [
+        {
+          "attribution": "OWNER_AUTHORED_SOURCE",
+          "known_boundary": "ISSUE_RECORDING_OCCURS_ONLY_IF_A_TECHNICAL_PROBLEM_IS_OBSERVED",
+          "modality": "ASSERTED",
+          "object": {
+            "character_coordinates": [
+              447,
+              499
+            ],
+            "sha256": "5eb8bebf53b4ca0d81e3d9491d83c93bc13661a4c1100c2762a6206cb618988e",
+            "utf8_byte_coordinates": [
+              467,
+              522
+            ]
+          },
+          "predicate": {
+            "character_coordinates": [
+              433,
+              446
+            ],
+            "sha256": "f52982070ff6730bea2141c39669951be1571b4da10cfbd6b84a2c821096b892",
+            "utf8_byte_coordinates": [
+              451,
+              466
+            ]
+          },
+          "prohibited_inferences": [
+            "NO_REAL_WORLD_ASSERTION",
+            "NO_UNSTATED_CAUSAL_INFERENCE",
+            "NO_UNSTATED_PERSON_INTENT_OR_INTERNAL_STATE_INFERENCE",
+            "NO_UNSTATED_ATTENDANCE_DEMAND_OR_INTERVENTION_INFERENCE"
+          ],
+          "proposition_id": "P5",
+          "qualification": {
+            "character_coordinates": [
+              385,
+              424
+            ],
+            "sha256": "dc607a42d402eebc97abab0634f3653564dad9cb96a851904da1fad223ea4f1f",
+            "utf8_byte_coordinates": [
+              399,
+              442
+            ]
+          },
+          "quotation_status": "NO_QUOTATION",
+          "scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE_ONLY",
+          "sensitive_protected_target_classification": "NONE_DECLARED_LOW_RISK_SYNTHETIC",
+          "subject": {
+            "character_coordinates": [
+              425,
+              432
+            ],
+            "sha256": "a520e05f546c9421da858d4513c9876eeb07947f439bf3343a413289c5788644",
+            "utf8_byte_coordinates": [
+              443,
+              450
+            ]
+          },
+          "supporting_span": {
+            "character_coordinates": [
+              385,
+              499
+            ],
+            "span_sha256": "37e92f7c6b55729e6efee58d6145b8184fc0ac98410ab0d412b51f54605a1899",
+            "utf8_byte_coordinates": [
+              399,
+              522
+            ]
+          },
+          "time": "CONDITIONAL_DURING_OR_AFTER_THE_STATED_TEST",
+          "unknown_boundary": "NO_ASSERTION_THAT_A_PROBLEM_WAS_OR_WILL_BE_OBSERVED_OR_THAT_INTERVENTION_IS_REQUIRED"
+        }
+      ],
+      "source_commitment": "ee14c946e4a957c13c59b99a3f5bafecd15c625c1bfb668eeddee9a0e0e7e1c1",
+      "source_sha256": "eaeb78b44b28cc399037892bd31cb82e914573e464ef938dd183736cd03247be",
+      "world_scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE"
+    },
+    "constructor_facing_packet_identity": "f52a1d542ddfb2ff10667dec1c22094132322500583ff39c07b80591e2dacdcf",
+    "constructor_invoked": false,
+    "creative_premise_family_id": "UNASSIGNED",
+    "exact_authorized_visible_context_utf8": "Dacă este observată o problemă tehnică, aceasta este înscrisă în raportul de verificare pentru analiză ulterioară.",
+    "immutable_assignment_identity": "40e51c49f9f488aab87c044d107aff5f78be8d900ca3c5e33e07b7d06e2cce50",
+    "output_constraints": {
+      "language": "ROMANIAN",
+      "length_profile": "COMMON_BATCH2_NEUTRAL_PROFILE_30_TO_90_WORDS_1_TO_3_SENTENCES",
+      "prohibited": [
+        "CANNED_OPENING",
+        "GOVERNANCE_META_LANGUAGE",
+        "PROCEDURAL_ABSTRACT_REGISTER",
+        "UNBOUND_REFERENCE",
+        "FACTUAL_WIDENING"
+      ],
+      "register": "IDIOMATIC_NATURAL_CONCRETE_ROMANIAN"
+    },
+    "schema_name": "batch2-development-pilot07-constructor-facing-rebalancing-assignment-proposal-v3",
+    "schema_version": "3.0.0",
+    "selected_proposition_id": "P5",
+    "selected_supporting_span_sha256": "37e92f7c6b55729e6efee58d6145b8184fc0ac98410ab0d412b51f54605a1899",
+    "source_package_identity": "df520c49cbffe17284897895a6c4bcad3040b6dbaa5f7ac11d145248a65e52df",
+    "status": "G02B_RELEASE_CANDIDATE_ZERO_CONSTRUCTION",
+    "sufficiency_receipt_identity": "a242e3019b6d204dc6b1673da1c235bbd182887c12bbfdbb19680e48392a9d04",
+    "unlabeled_operational_obligation": {
+      "forbidden_operations": [
+        "Nu ascunde relația factuală până după rezultatul inventat și nu folosi dezvăluirea ei ca răsturnare principală.",
+        "Nu introduce un reper, operand, eveniment ori cauză care nu poate fi urmărită local până la contextul autorizat.",
+        "Nu baza rezultatul pe redenumire, reclasificare, personificare, intensificare, listă sau joc lexical.",
+        "Nu impune o formulă fixă, un conector, un semn de punctuație, un registru ori un număr fix de propoziții."
+      ],
+      "naturalness_and_safety": [
+        "Folosește română idiomatică și concretă; nu transfera în suprafață limbajul acestei cerințe.",
+        "Separă clar cadrul inventat de autoritatea factuală și nu adăuga fapte, citate, cunoaștere privată sau concluzii despre lumea reală."
+      ],
+      "obligation_instance_identity": "5028eef88907251212d2457dee200cc97838026f90ed31ec853c9981e58fada5",
+      "obligation_version": "DEVELOPMENT_TRANSFORMATION_V3_01",
+      "transformation": [
+        "Păstrează exact relația factuală furnizată, cu toate calificările și limitele ei, și fă-o disponibilă înainte ca textul să poată produce o schimbare retrospectivă de lectură.",
+        "Construiește o consecință inventată prin cel puțin două legături locale distincte, fiecare necesară și recuperabilă din relația precedentă.",
+        "Consecința trebuie să depindă de întregul lanț; simpla transformare a unui cuvânt, număr ori înscris într-un obiect fizic nu poate susține singură rezultatul.",
+        "Marcajul nonfactual trebuie integrat firesc și trebuie să acopere toate legăturile inventate."
+      ]
+    }
+  },
+  "constructor_visible_object_set": [
+    "CONSTRUCTOR_PACKET_EXACT_BYTES"
+  ],
+  "release_core": {
+    "authorized_visible_context_sha256": "37e92f7c6b55729e6efee58d6145b8184fc0ac98410ab0d412b51f54605a1899",
+    "constructor_facing_packet_identity": "f52a1d542ddfb2ff10667dec1c22094132322500583ff39c07b80591e2dacdcf",
+    "constructor_invocation_authorized": false,
+    "creative_premise_family_id": "UNASSIGNED",
+    "immutable_assignment_identity": "40e51c49f9f488aab87c044d107aff5f78be8d900ca3c5e33e07b7d06e2cce50",
+    "packet_seal_namespace": "B2_DEVELOPMENT_PILOT07_CONSTRUCTOR_PACKET_G02B_V3",
+    "partition": "DEVELOPMENT",
+    "release_mode": "PATHLESS_SINGLE_OBJECT_CAPABILITY_NOT_RELEASED_TO_CONSTRUCTOR",
+    "selected_proposition_id": "P5",
+    "selected_supporting_span_sha256": "37e92f7c6b55729e6efee58d6145b8184fc0ac98410ab0d412b51f54605a1899",
+    "single_use_state": "UNCONSUMED_0_OF_1_NOT_AUTHORIZED",
+    "sufficiency_receipt_identity": "a242e3019b6d204dc6b1673da1c235bbd182887c12bbfdbb19680e48392a9d04"
+  },
+  "release_identity": "74c25b8c033c1c0d65a2c1196a92bccf0d556785d4754308d604d321ff78f8fe",
+  "schema_name": "batch2-development-pilot07-constructor-access-release-v3",
+  "schema_version": "3.0.0",
+  "transport_policy": {
+    "cache_or_temp_file": false,
+    "command_line_payload": false,
+    "constructor_invocation_authorized": false,
+    "constructor_role": "CONSTRUCTOR",
+    "environment_inheritance": false,
+    "exceptions_contain_packet_or_mapping": false,
+    "filesystem_path_access": false,
+    "import_time_repository_access": false,
+    "logs_contain_packet_or_mapping": false,
+    "metadata_enumeration": false,
+    "network_access": false,
+    "packet_delivery": "IN_MEMORY_EXACT_BYTES_SINGLE_USE_PATHLESS_CAPABILITY",
+    "process_handle_inheritance": false,
+    "repository_access": false,
+    "sibling_artifact_discovery": false
+  }
+}
