@@ -1,0 +1,35 @@
+{
+  "construction_authority": false,
+  "constructor_contract_identity": "69138467540b37cbfb8444596d9a37119f8b74d002e0c491c8ff599ce77cec77",
+  "constructor_implementation_authority": false,
+  "constructor_release_authority": false,
+  "coverage_requirements": {
+    "causal_edges": "E_OF_E",
+    "causal_nodes": "N_OF_N",
+    "terminal_results": "1_OF_1"
+  },
+  "governance_identity": "80bbf059956424ce6f20885de51ce900f6116b40a223a107a46a29d3b012efc6",
+  "instruction_language_transfer_detection_required": [
+    "STATIC_REALIZER_SCAN",
+    "REALIZATION_DRAFT_SCAN",
+    "POST_REALIZATION_WITNESS_VALIDATION"
+  ],
+  "meta_assertion_cannot_substitute_for_realization": true,
+  "model_exposure_authority": false,
+  "new_mandatory_boundary": "POST_REALIZATION_PRE_CANDIDATE_EMISSION_MECHANISM_NEUTRAL_CONFORMANCE",
+  "pilot09_regression_mandatory": true,
+  "production_authority": false,
+  "root_cause_analysis_identity": "f2a3ba34ff528ac80a1d731e0613d74584219ee640a2ef90637df8a817d94247",
+  "runtime_authority": false,
+  "schema_name": "batch2-plan-witnessed-realization-governance-v5-2",
+  "schema_version": "5.2.0",
+  "source_acquisition_authority": false,
+  "supersedes_governance_identity": "e81ee4eff9044ee16180ef36a7508fe9f1e7c784fa6830299588cea16c2d3a3e",
+  "training_authority": false,
+  "upstream_boundaries_unchanged": [
+    "SOURCE_PROPOSITION_SUFFICIENCY",
+    "ASSIGNMENT_SELECTION",
+    "TYPED_STATIC_PLAN",
+    "G02_FACTUAL_BOUNDARY"
+  ]
+}

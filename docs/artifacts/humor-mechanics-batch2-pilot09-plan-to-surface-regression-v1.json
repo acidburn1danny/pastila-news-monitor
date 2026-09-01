@@ -1,0 +1,17 @@
+{
+  "candidate_bytes_embedded": false,
+  "candidate_git_blob_oid_sha1": "fd1c7c024523faf63efe610849620364638a48b3",
+  "candidate_identity": "57fd9aa630aee874230759b83ee4cd11eaf99254cde43acf1b11e139824a58e1",
+  "candidate_modified": false,
+  "candidate_raw_sha256": "3249775af5b93a68f00ab1e8217652a1411db03d61a40dfbe1e1fa3f7cd7e307",
+  "expected_edge_coverage": "0_OF_2_EXPLICIT_WITNESSES",
+  "expected_node_coverage": "0_OF_3_EXPLICIT_WITNESSES",
+  "expected_terminal_result_coverage": "0_OF_1",
+  "expected_v5_2_result": "FAIL_META_ASSERTION_OR_PLACEHOLDER_SUBSTITUTION_BEFORE_CANDIDATE_EMISSION",
+  "failed_shape": "STATIC_PLAN_VALID_BUT_SURFACE_ONLY_ASSERTS_TWO_CONSEQUENCES_AND_COMPLETE_PATH",
+  "g02_eligibility": false,
+  "positive_pool_eligibility": false,
+  "regression_identity": "46555766257446703ef92cf4b3fe48716a55a1daf2c14ba5749890d028ae7f00",
+  "schema_name": "batch2-pilot09-plan-to-surface-regression-v1",
+  "schema_version": "1.0.0"
+}

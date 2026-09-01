@@ -1,0 +1,33 @@
+{
+  "candidate_surface": null,
+  "construction_authority": false,
+  "constructor_contract_identity": "69138467540b37cbfb8444596d9a37119f8b74d002e0c491c8ff599ce77cec77",
+  "constructor_release_authority": false,
+  "preserves_v5_1_typed_plan_requirements": true,
+  "realization_provider_identity": "UNASSIGNED_REQUIRES_SEPARATE_IMPLEMENTATION_AND_STATIC_AUDIT",
+  "required_pre_emission_validations": [
+    "EXPLICIT_N_OVER_N_CAUSAL_NODE_REALIZATION_COVERAGE",
+    "EXPLICIT_E_OVER_E_CAUSAL_EDGE_REALIZATION_COVERAGE",
+    "EVERY_TYPED_OPERAND_HAS_CONTINUOUS_EXPLICIT_SURFACE_PROVENANCE",
+    "EXACTLY_ONE_TERMINAL_RESULT_WITNESS_BINDS_THE_FINAL_PLAN_NODE",
+    "OMITTED_COLLAPSED_SUMMARIZED_PLACEHOLDER_OR_MERELY_ASSERTED_RELATIONS_FAIL_CLOSED",
+    "INSTRUCTION_GOVERNANCE_AND_PLAN_META_LANGUAGE_TRANSFER_FAILS_CLOSED",
+    "VALIDATION_PASSES_BEFORE_ANY_CANDIDATE_IDENTITY_PERSISTENCE_OR_G02_ELIGIBILITY"
+  ],
+  "required_realizer_input": [
+    "EXACT_SOURCE",
+    "TYPED_OPERANDS",
+    "VALIDATED_TYPED_PLAN"
+  ],
+  "required_realizer_output": [
+    "SURFACE_UTF8",
+    "NODE_WITNESS_MANIFEST",
+    "EDGE_WITNESS_MANIFEST",
+    "OPERAND_CONTINUITY_MANIFEST",
+    "TERMINAL_RESULT_WITNESS"
+  ],
+  "root_cause_analysis_identity": "f2a3ba34ff528ac80a1d731e0613d74584219ee640a2ef90637df8a817d94247",
+  "schema_name": "batch2-development-constructor-contract-v5-2",
+  "schema_version": "5.2.0",
+  "supersedes_contract_identity": "9b647d33dfa40171040fe6acf08b8b6dca6081c41c0f1f4428f910bfdfaa8a6b"
+}
