@@ -1,0 +1,33 @@
+{
+  "access_ledger_identity": "c7e343b25d667cea07499d2c78f6f1d7b54861e234baa17603873f6fd7b6e143",
+  "archive_receipt_identity": "feceb9b0fadfc62d60e301a803801619138329a4830e31d7805759c134206950",
+  "authority_matrix": {
+    "assignment": false,
+    "construction": false,
+    "constructor_release": false,
+    "g01_admission": false,
+    "g04b_pool_certification": false,
+    "model_exposure": false,
+    "production_routing": false,
+    "proposition_sufficiency_evaluation": false,
+    "runtime_integration": false,
+    "training": false
+  },
+  "creative_premise_family_id": "UNASSIGNED",
+  "factual_authority_envelope_identity": "9988272b9a99ca29fbd706abc4b6f57bbb6c87a62bf2fe4a79de0919a4051847",
+  "freeze_commit": "19b13b607beb1e867d143b820ddce085be310444",
+  "immutable_archive_commitment": "79067b7c995b94af9c8f2b96aadd6562dff00a157a9bfab65bc0754161b86115",
+  "ingestion_receipt_identity": "400a1e05a5f0760cf5985da6c10b368b08f8505a7a823e57304f03fcdf528a3d",
+  "ledger_segment_identity": "557b26fd3ee16caacd39d34402616d29b1905032846f498c4adc1f58215848fb",
+  "packet_identity": "952dff9de0b3334f1be75acebb6789c4155ff283fb03bbd69c3debb9019f678b",
+  "partition_identity": "202f09675a9a4f0901d917c2f3c293f5f455f0d3abe0d18e43847f58ff12a415",
+  "preingestion_identity": "99f325ac6bbd60dc0d456808e8f2ed2cfcc1ae75cec2f1ba46c801e99c4eadfe",
+  "proposition_sufficiency_evaluated": false,
+  "rights_instrument_identity": "9943429f3e235c41ba4e8fc11d677b646ed12823af6e24b8872296120469690c",
+  "schema_name": "batch2-development-pilot08-ingestion-receipt-v1",
+  "schema_version": "1.0.0",
+  "source_commitment": "d8c6d88489b6ceeade47629e72fc0f133d4b2e68a599e8eb08a8eb961ebb37ee",
+  "source_package_identity": "2fd6e1cee4fe69136d976bd988c004de354c5c3cfee553d92f6395ac464fe64f",
+  "terminal_verdict": "ATOMIC_IMMUTABLE_INGESTION_PASS",
+  "verification_identity": "80337d61e04c723c0ceefcaf46cc8954f9b4dfe6d60e3243b8e03c694ceb7a1e"
+}
