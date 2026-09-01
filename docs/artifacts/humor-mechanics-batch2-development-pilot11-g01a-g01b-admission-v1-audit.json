@@ -1,0 +1,18 @@
+{
+  "admission_identity": "d00cebe202d8e3bb24f2b220c7cbc24325eb4f666f629a4d4cbfc3541ba39ed5",
+  "audit_identity": "9ff020647be1b7c1655df6813b8b68fda4b6258aa238f28890b7bf51e4f98bb5",
+  "constructor_v5_3_compatibility_or_semantic_plan_evaluated": false,
+  "contamination_and_ledger_continuity": "PASS",
+  "deterministic_blockers": [],
+  "exact_committed_ingestion_file_set": "PASS_8_FILES",
+  "family_partition_isolation": "PASS",
+  "git_object_source_verification": "PASS",
+  "hidden_assignment_or_exposure": "ABSENT",
+  "identity_rederivation": "PASS",
+  "proposition_sufficiency_evaluated": false,
+  "reviewed_commit": "2a8f78214446c721edc9385e9a83bde91f6e4228",
+  "rights_non_inheritance": "PASS",
+  "schema_name": "batch2-development-pilot11-g01a-g01b-admission-audit-v1",
+  "schema_version": "1.0.0",
+  "span_coordinate_hash_verification": "PASS_7_PROPOSITIONS"
+}

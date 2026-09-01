@@ -1,0 +1,118 @@
+{
+  "admission_identity": "d00cebe202d8e3bb24f2b220c7cbc24325eb4f666f629a4d4cbfc3541ba39ed5",
+  "authority_matrix": {
+    "assignment": false,
+    "candidate_emission": false,
+    "constructor_invocation": false,
+    "constructor_release": false,
+    "constructor_v5_3_source_compatibility_evaluation": false,
+    "fragment_collision_evaluation": false,
+    "g02": false,
+    "g02c": false,
+    "g03": false,
+    "g04b_pool_certification": false,
+    "model_exposure": false,
+    "production_routing": false,
+    "proposition_sufficiency_evaluation": false,
+    "realization": false,
+    "runtime_integration": false,
+    "semantic_edge_validation": false,
+    "semantic_plan_evaluation": false,
+    "training": false
+  },
+  "constructor_v5_3_compatibility_or_semantic_plan_evaluated": false,
+  "eligibility": "ELIGIBLE_FOR_SEPARATELY_AUTHORIZED_POST_G01_PROPOSITION_SUFFICIENCY_GATE_ONLY",
+  "g01a": {
+    "correction_revocation_supersession": "CURRENT_V1_NO_SUCCESSOR_OR_REVOCATION",
+    "custodial_authority": "PASS_8_OF_8_CONSUMED",
+    "immutable_capture_and_version": "PASS",
+    "propositions": [
+      {
+        "coordinates_and_hashes": "PASS",
+        "modality_scope_attribution_boundaries": "PASS",
+        "proposition_id": "P1",
+        "qualification": "BOUND"
+      },
+      {
+        "coordinates_and_hashes": "PASS",
+        "modality_scope_attribution_boundaries": "PASS",
+        "proposition_id": "P2",
+        "qualification": "BOUND"
+      },
+      {
+        "coordinates_and_hashes": "PASS",
+        "modality_scope_attribution_boundaries": "PASS",
+        "proposition_id": "P3",
+        "qualification": "BOUND"
+      },
+      {
+        "coordinates_and_hashes": "PASS",
+        "modality_scope_attribution_boundaries": "PASS",
+        "proposition_id": "P4",
+        "qualification": "BOUND"
+      },
+      {
+        "coordinates_and_hashes": "PASS",
+        "modality_scope_attribution_boundaries": "PASS",
+        "proposition_id": "P5",
+        "qualification": "BOUND"
+      },
+      {
+        "coordinates_and_hashes": "PASS",
+        "modality_scope_attribution_boundaries": "PASS",
+        "proposition_id": "P6",
+        "qualification": "BOUND"
+      },
+      {
+        "coordinates_and_hashes": "PASS",
+        "modality_scope_attribution_boundaries": "PASS",
+        "proposition_id": "P7",
+        "qualification": "BOUND"
+      }
+    ],
+    "rights_and_permitted_use": "PASS_WITH_STRICT_NON_INHERITANCE",
+    "source_git_object": "219938213986d668a53490734510a016437bbad2",
+    "source_sha256": "cdf1901941057914cb7b22ac1233771773e2f15bd1671bcc47e2d17d123e2bd9",
+    "target_safety": "PASS_LOW_RISK_SYNTHETIC",
+    "third_party_material": "NONE_DECLARED_AND_NONE_OBSERVED",
+    "verdict": "PASS"
+  },
+  "g01b": {
+    "contamination_ledger_head": "1cc90a7a8a7ae0471411a75ad7a5d87c90c983c059fd27ae661d95bc894991b3",
+    "contamination_state": "CLEAN_DEVELOPMENT_ONLY_NO_BLIND_EXPOSURE",
+    "creative_premise_family_id": "UNASSIGNED",
+    "downstream_exposure": {
+      "candidate_emitter": false,
+      "constructor": false,
+      "model": false,
+      "production": false,
+      "realizer": false,
+      "runtime": false,
+      "training": false
+    },
+    "family_closure": "PASS",
+    "family_identities": {
+      "authority_family": "52a5b2138bd40d439cf65aea4d8eb2842efaea614e62352f8a7682f36a14d851",
+      "construction_revision_family_id": "UNASSIGNED",
+      "creative_marker_family_id": "UNASSIGNED",
+      "creative_premise_family_id": "UNASSIGNED",
+      "event_family": "c84fb1b2da238189c9de168f88af297b4473d6bd9d5f5384a3fd3777522cb1dc",
+      "family_closure": "a05bd9cf96214d6f2b86e35440e008acd1fc7c84b1d5aacc7b88500cfb6e40bb",
+      "revision_family": "f4e871ba13e7357c33935ed67ee332af12aaf9ee2d5ecf7b447d7b6a5df2acb0",
+      "source_family": "c823818d0700089d4046395fea8e04503e7146033ef0ce28ca159e1e0ba9bb99",
+      "topic_entity_family": "917643501067e6d07d7803fc7fc9e80832f23ca144cd2e5fb26ae5f698e4c0f6"
+    },
+    "mechanism_assignment": "ABSENT",
+    "operational_obligation_assignment": "ABSENT",
+    "partition": "DEVELOPMENT",
+    "partition_isolation": "PASS",
+    "relationship_state": "FRESH_INDEPENDENT_FAMILY_NO_DUPLICATE_REVISION_SIBLING_OR_SAME_EVENT_RELATIVE",
+    "verdict": "PASS"
+  },
+  "ingestion_receipt_identity": "7df4980d4d38fb1084d9b651035e98712e3494ab7deb87b7d1587078d6c07d54",
+  "proposition_sufficiency_evaluated": false,
+  "reviewed_commit": "2a8f78214446c721edc9385e9a83bde91f6e4228",
+  "schema_name": "batch2-development-pilot11-g01a-g01b-admission-v1",
+  "schema_version": "1.0.0",
+  "source_package_identity": "f69112cebbb6edb3f46427a923de82383b1065e4d497e19f885fbfb8e117dd1e"
+}
