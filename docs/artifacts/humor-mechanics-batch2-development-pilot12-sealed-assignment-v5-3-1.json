@@ -1,0 +1,33 @@
+{
+  "admission_identity": "609478db1fddfb59b9b62a1ab5648cda813ce0f1fb94b2e9ef22df6dac59a294",
+  "affordance_topology": null,
+  "authorized_visible_context_sha256": "095db5d0ce1ef70892963ff424457b91af2689be1d2c91c92bafa087593f216a",
+  "candidate_surface": null,
+  "construction_revision_family_id": "47b31a8e3408618333659f570ff3b02181c90ecfbf4b378fcb9778c79fd475a3",
+  "constructor_access": false,
+  "creative_marker_family_id": "UNASSIGNED_UNTIL_POSTCONSTRUCTION",
+  "creative_premise_family_id": "UNASSIGNED",
+  "eligible_but_unselected_propositions": [
+    "P6"
+  ],
+  "fallback_authority": "NONE",
+  "morphological_alignment_opportunity": null,
+  "obligation_family_identity": "28f806daec135bf8fdb6d49e7b98eda1941f81399f3fe33e747ae2cd5af348bf",
+  "partition": "DEVELOPMENT",
+  "pool_outcome": "INACCESSIBLE_NOT_EVALUATED",
+  "realization_plan": null,
+  "schema_name": "batch2-development-pilot12-sealed-assignment-v5-3-1",
+  "schema_version": "5.3.1",
+  "sealed_assignment_identity": "03f83dafe45d015bd00b31cf2454a88ecf057c4f37d7b4d0158557ac72258f1c",
+  "selected_proposition_id": "P5",
+  "selected_supporting_span_sha256": "095db5d0ce1ef70892963ff424457b91af2689be1d2c91c92bafa087593f216a",
+  "semantic_role_signature": null,
+  "status": "SEALED_PROPOSAL_NOT_RELEASED",
+  "sufficiency_receipt_identity": "f8f754e005fd50031c8a7a0daf180c325eb0b0d49c9eaea8dbcbcbf2ac45998c",
+  "target_mapping": {
+    "frozen_plan_option": "M13_ABSURD_LOGICAL_EXTENSION",
+    "mechanism_id": "HMCV1-B02-M03-ABSURD_LOGICAL_EXTENSION",
+    "mechanism_name": "Absurd Logical Extension"
+  },
+  "witness_topology": null
+}

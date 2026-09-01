@@ -1,0 +1,48 @@
+{
+  "affordance_topology": null,
+  "alignment_contract_identity": "c4af75cd962802d0035d9de39e6d014f715d5b5f5b60fd690ea3761f289d99fc",
+  "candidate_surface": null,
+  "conformance_schema_identity": "4b26df92539082f11b83c83f76b1d158c7c8f4c87304bdcdd8a6129644f532f3",
+  "construction_authority": false,
+  "constructor_release_authority": false,
+  "constructor_visible_obligation": {
+    "creative_marking_constraints": [
+      "Marcajul nonfactual trebuie ales local și firesc, fără formulă, tranziție, deschidere sau încheiere reutilizată.",
+      "Nu transfera în rezultat limbajul cerințelor, planului, controlului, guvernanței sau validării."
+    ],
+    "forbidden_operations": [
+      "Nu ascunde relația factuală până după rezultatul inventat și nu folosi dezvăluirea ei ca răsturnare principală.",
+      "Nu introduce un reper, operand, eveniment ori cauză care nu poate fi urmărită local până la contextul autorizat.",
+      "Nu baza rezultatul pe redenumire, reclasificare, personificare, intensificare, listă sau joc lexical.",
+      "Nu impune o formulă fixă, un conector, un semn de punctuație, un registru ori un număr fix de propoziții."
+    ],
+    "future_phase_constraints": [
+      "Într-o fază separată, înaintea realizării, fiecare operand și relație trebuie validate din propoziția selectată ori dintr-un rezultat local explicit.",
+      "O reclasificare nu poate crea singură agenție, autoritate, proprietate, permisiune, capacitate sau posibilitatea unei acțiuni.",
+      "Fiecare legătură, inclusiv cea terminală, trebuie să aibă compatibilitate locală și dependență contrafactuală explicită.",
+      "Orice martor de suprafață viitor trebuie legat de coordonate reale; numai alinierile morfologice românești explicit licențiate sunt admise."
+    ],
+    "naturalness_and_safety": [
+      "Folosește română idiomatică și concretă; nu transfera în suprafață limbajul acestei cerințe.",
+      "Separă clar cadrul inventat de autoritatea factuală și nu adăuga fapte, citate, cunoaștere privată sau concluzii despre lumea reală."
+    ],
+    "obligation_version": "DEVELOPMENT_TRANSFORMATION_V5_3_1_01",
+    "transformation": [
+      "Păstrează exact relația factuală furnizată, cu toate calificările și limitele ei, și fă-o disponibilă înainte ca textul să poată produce o schimbare retrospectivă de lectură.",
+      "Construiește o consecință inventată prin cel puțin două legături locale distincte, fiecare necesară și recuperabilă din relația precedentă.",
+      "Consecința trebuie să depindă de întregul lanț; simpla transformare a unui cuvânt, număr ori înscris într-un obiect fizic nu poate susține singură rezultatul.",
+      "Marcajul nonfactual trebuie integrat firesc și trebuie să acopere toate legăturile inventate."
+    ]
+  },
+  "family_version": "SEMANTIC_EDGE_ROLE_CONTINUITY_V5_3_1_NO_CONCRETE_SEMANTIC_PLAN",
+  "governance_identity": "073d68d9d21c76974d12eb8e3f591f4172197377bfb36c2de2f85a5afe079dd6",
+  "inherited_operational_governance_identity": "4848bd025e43eff6652e4c2024072760d372ca4ac7427e5f21e1d2c4bcdb35dc",
+  "morphological_alignment_opportunity": null,
+  "obligation_family_identity": "28f806daec135bf8fdb6d49e7b98eda1941f81399f3fe33e747ae2cd5af348bf",
+  "realization_plan": null,
+  "schema_name": "batch2-development-pilot12-label-blind-obligation-family-v5-3-1",
+  "schema_version": "5.3.1",
+  "semantic_role_signature": null,
+  "sufficiency_receipt_identity": "f8f754e005fd50031c8a7a0daf180c325eb0b0d49c9eaea8dbcbcbf2ac45998c",
+  "witness_topology": null
+}
