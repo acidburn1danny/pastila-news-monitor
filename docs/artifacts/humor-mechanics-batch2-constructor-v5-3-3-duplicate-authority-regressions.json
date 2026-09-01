@@ -1,0 +1,15 @@
+{
+  "covered_findings": [
+    "DUP_A_NODE_ID",
+    "DUP_A_ROLE_AFFORDANCE",
+    "DUP_A_CAUSAL_RULE",
+    "DUP_A_TERMINAL_AND_PRODUCED_IDS",
+    "DUP_A_ALIGNMENT_LABELS",
+    "B_COORDINATE_RECONSTRUCTION",
+    "C_SEMANTIC_DRIFT",
+    "LEGACY_REACHABILITY"
+  ],
+  "pilot12_regression": "2570e4c944c096011041582ed9196b26c9aa759803615cf2902d8f98eb3aaa12",
+  "regression_identity": "0ad2e9bb8ccdcbce91d2b2ebdbf994facc09bbe824756cbebeba4eefb6ef3fb2",
+  "schema_name": "constructor-v5-3-3-duplicate-authority-regressions"
+}

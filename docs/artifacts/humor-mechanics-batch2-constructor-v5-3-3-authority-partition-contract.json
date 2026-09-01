@@ -1,0 +1,19 @@
+{
+  "class_a_policy": "trusted derivation from frozen references only",
+  "class_b_policy": "trusted coordinate-bound observation from actual surface only",
+  "class_c_policy": "provider creative choice constrained by frozen plan",
+  "classes": [
+    "AUTHORITY_DERIVED_METADATA",
+    "SURFACE_OBSERVED_EVIDENCE",
+    "GENUINELY_GENERATIVE_CHOICES"
+  ],
+  "contract_identity": "34a269f0175354bb4a59a3e2e843a080626d2c27dc83414298a3dec97f88eefe",
+  "provider_schema_fields": [
+    "clause",
+    "actor_surface",
+    "predicate_surface",
+    "patient_surface",
+    "produced_operand_surfaces"
+  ],
+  "schema_name": "constructor-v5-3-3-authority-partition-contract"
+}

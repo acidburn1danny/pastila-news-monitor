@@ -1,0 +1,10 @@
+{
+  "audit_identity": "85d945ef899dcf9f4f54831dc081b49e2b8e9c6070766072de27a531b816cf8e",
+  "audit_verdict": "PASS_SOURCE_ONLY_FULL_AUTHORITY_PARTITION_REMEDIATION_ZERO_CONSTRUCTION_ZERO_RELEASE",
+  "contract_identity": "34a269f0175354bb4a59a3e2e843a080626d2c27dc83414298a3dec97f88eefe",
+  "emitter_identity": "354b4eaa7f4709783dbc2a863922ed9dba9e93f4718bd93d7c9c6b2a6fc5bd3d",
+  "execution_commit": "722d2f79549ca8187e862f15e93ecaba7862dd0d",
+  "implementation_identity": "67083067f28833a1686356b8e2b273176257172cd7c1dacc798b423fc5388238",
+  "provider_identity": "c97a709d96ec0cfa131782aec3835d08032fa074826b3d17e857d31f099607ea",
+  "regression_identity": "0ad2e9bb8ccdcbce91d2b2ebdbf994facc09bbe824756cbebeba4eefb6ef3fb2"
+}

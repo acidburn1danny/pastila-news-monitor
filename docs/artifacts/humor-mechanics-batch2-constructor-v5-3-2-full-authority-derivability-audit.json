@@ -1,0 +1,669 @@
+{
+  "audit_identity": "85d945ef899dcf9f4f54831dc081b49e2b8e9c6070766072de27a531b816cf8e",
+  "candidate_surfaces": 0,
+  "capability_consumption": {
+    "metadata_only_failures_currently_possible": true,
+    "must_remain_post_realization": [
+      "surface spans and UTF-8 coordinates",
+      "observed lexical forms",
+      "semantic role realization",
+      "edge materialization",
+      "causal necessity",
+      "terminal realization",
+      "meta-language and collision checks"
+    ],
+    "pilot12_was_metadata_only": true,
+    "successor_pre_invocation_checks": [
+      "plan/spec/signature/edge closure",
+      "provider creative tuple N/N coverage",
+      "produced surface arity",
+      "all Class A derivation",
+      "release and implementation binding",
+      "denyset binding"
+    ]
+  },
+  "duplicate_authority_findings": [
+    {
+      "classification": "PROVIDER_BOUNDARY_AUTHORITY_DUPLICATION",
+      "earliest": "PRE_INVOCATION",
+      "fields": [
+        "node_id"
+      ],
+      "id": "DUP_A_NODE_ID",
+      "remediation": "removed from provider schema; plan order binds node"
+    },
+    {
+      "classification": "PROVIDER_BOUNDARY_AUTHORITY_DUPLICATION",
+      "earliest": "PRE_INVOCATION",
+      "fields": [
+        "actor_semantic_roles",
+        "actor_affordances",
+        "patient_semantic_roles",
+        "patient_affordances"
+      ],
+      "id": "DUP_A_ROLE_AFFORDANCE",
+      "remediation": "derive from frozen operand specs"
+    },
+    {
+      "classification": "PRE_INVOCATION_DETERMINISTIC_BLOCKER",
+      "earliest": "PRE_INVOCATION",
+      "fields": [
+        "predecessor_causal_rule_ids"
+      ],
+      "id": "DUP_A_CAUSAL_RULE",
+      "remediation": "derive from frozen edge witnesses; Pilot 12 regression"
+    },
+    {
+      "classification": "PROVIDER_BOUNDARY_AUTHORITY_DUPLICATION",
+      "earliest": "PRE_INVOCATION",
+      "fields": [
+        "terminal_result",
+        "produced_operand_ids"
+      ],
+      "id": "DUP_A_TERMINAL_AND_PRODUCED_IDS",
+      "remediation": "derive from plan position and introduces_ids"
+    },
+    {
+      "classification": "PROVIDER_BOUNDARY_AUTHORITY_DUPLICATION",
+      "earliest": "PRE_INVOCATION_OR_TRUSTED_ALIGNMENT",
+      "fields": [
+        "canonical_form",
+        "alignment_rule"
+      ],
+      "id": "DUP_A_ALIGNMENT_LABELS",
+      "remediation": "provider cannot supply; trusted observer applies frozen licensed rules"
+    },
+    {
+      "classification": "POST_REALIZATION_SURFACE_EVIDENCE_DEFECT",
+      "earliest": "POST_REALIZATION_PRE_EMISSION",
+      "fields": [
+        "character_coordinates",
+        "utf8_byte_coordinates",
+        "observed_surface_forms"
+      ],
+      "id": "B_COORDINATE_RECONSTRUCTION",
+      "remediation": "derive exclusively from actual surface bytes"
+    },
+    {
+      "classification": "LEGITIMATE_GENERATIVE_FAILURE",
+      "earliest": "POST_REALIZATION_PRE_EMISSION",
+      "fields": [
+        "creative surface relations"
+      ],
+      "id": "C_SEMANTIC_DRIFT",
+      "remediation": "retain fail-closed semantic/causal validation"
+    },
+    {
+      "classification": "PRE_INVOCATION_DETERMINISTIC_BLOCKER",
+      "earliest": "PRE_INVOCATION",
+      "fields": [
+        "V5.1/V5.2/V5.3 mixed runtime structures"
+      ],
+      "id": "LEGACY_REACHABILITY",
+      "remediation": "successor entry point accepts only reduced Class C schema; legacy structures not provider-facing"
+    }
+  ],
+  "field_inventory": [
+    {
+      "authoritative_source": "frozen source/span",
+      "authority_class": "AUTHORITY_DERIVED_METADATA",
+      "current_or_successor_supplier": "trusted deterministic boundary",
+      "downstream_validation": "derive/reference integrity only",
+      "earliest_enforcement": "PRE_INVOCATION",
+      "field": "source.exact_authorized_utf8",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "frozen authority envelope",
+      "authority_class": "AUTHORITY_DERIVED_METADATA",
+      "current_or_successor_supplier": "trusted deterministic boundary",
+      "downstream_validation": "derive/reference integrity only",
+      "earliest_enforcement": "PRE_INVOCATION",
+      "field": "proposition.proposition_id",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "frozen authority envelope",
+      "authority_class": "AUTHORITY_DERIVED_METADATA",
+      "current_or_successor_supplier": "trusted deterministic boundary",
+      "downstream_validation": "derive/reference integrity only",
+      "earliest_enforcement": "PRE_INVOCATION",
+      "field": "proposition.supporting_span_sha256",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "frozen typed plan",
+      "authority_class": "AUTHORITY_DERIVED_METADATA",
+      "current_or_successor_supplier": "trusted deterministic boundary",
+      "downstream_validation": "derive/reference integrity only",
+      "earliest_enforcement": "PRE_INVOCATION",
+      "field": "plan.node_id",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "frozen typed plan",
+      "authority_class": "AUTHORITY_DERIVED_METADATA",
+      "current_or_successor_supplier": "trusted deterministic boundary",
+      "downstream_validation": "derive/reference integrity only",
+      "earliest_enforcement": "PRE_INVOCATION",
+      "field": "plan.actor_operand_id",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "frozen typed plan",
+      "authority_class": "AUTHORITY_DERIVED_METADATA",
+      "current_or_successor_supplier": "trusted deterministic boundary",
+      "downstream_validation": "derive/reference integrity only",
+      "earliest_enforcement": "PRE_INVOCATION",
+      "field": "plan.predicate_id",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "frozen typed plan",
+      "authority_class": "AUTHORITY_DERIVED_METADATA",
+      "current_or_successor_supplier": "trusted deterministic boundary",
+      "downstream_validation": "derive/reference integrity only",
+      "earliest_enforcement": "PRE_INVOCATION",
+      "field": "plan.patient_operand_id",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "frozen typed plan",
+      "authority_class": "AUTHORITY_DERIVED_METADATA",
+      "current_or_successor_supplier": "trusted deterministic boundary",
+      "downstream_validation": "derive/reference integrity only",
+      "earliest_enforcement": "PRE_INVOCATION",
+      "field": "plan.predecessor_node_ids",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "frozen typed plan",
+      "authority_class": "AUTHORITY_DERIVED_METADATA",
+      "current_or_successor_supplier": "trusted deterministic boundary",
+      "downstream_validation": "derive/reference integrity only",
+      "earliest_enforcement": "PRE_INVOCATION",
+      "field": "plan.introduced_operand_ids",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "frozen typed plan",
+      "authority_class": "AUTHORITY_DERIVED_METADATA",
+      "current_or_successor_supplier": "trusted deterministic boundary",
+      "downstream_validation": "derive/reference integrity only",
+      "earliest_enforcement": "PRE_INVOCATION",
+      "field": "plan.source_provenance",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "frozen typed plan",
+      "authority_class": "AUTHORITY_DERIVED_METADATA",
+      "current_or_successor_supplier": "trusted deterministic boundary",
+      "downstream_validation": "derive/reference integrity only",
+      "earliest_enforcement": "PRE_INVOCATION",
+      "field": "plan.nonfactual_scope",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "frozen operand specs",
+      "authority_class": "AUTHORITY_DERIVED_METADATA",
+      "current_or_successor_supplier": "trusted deterministic boundary",
+      "downstream_validation": "derive/reference integrity only",
+      "earliest_enforcement": "PRE_INVOCATION",
+      "field": "operand.entity_identity",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "frozen operand specs",
+      "authority_class": "AUTHORITY_DERIVED_METADATA",
+      "current_or_successor_supplier": "trusted deterministic boundary",
+      "downstream_validation": "derive/reference integrity only",
+      "earliest_enforcement": "PRE_INVOCATION",
+      "field": "operand.semantic_role_ids",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "frozen operand specs",
+      "authority_class": "AUTHORITY_DERIVED_METADATA",
+      "current_or_successor_supplier": "trusted deterministic boundary",
+      "downstream_validation": "derive/reference integrity only",
+      "earliest_enforcement": "PRE_INVOCATION",
+      "field": "operand.affordance_ids",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "frozen operand specs",
+      "authority_class": "AUTHORITY_DERIVED_METADATA",
+      "current_or_successor_supplier": "trusted deterministic boundary",
+      "downstream_validation": "derive/reference integrity only",
+      "earliest_enforcement": "PRE_INVOCATION",
+      "field": "operand.provenance_operand_ids",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "frozen operand specs",
+      "authority_class": "AUTHORITY_DERIVED_METADATA",
+      "current_or_successor_supplier": "trusted deterministic boundary",
+      "downstream_validation": "derive/reference integrity only",
+      "earliest_enforcement": "PRE_INVOCATION",
+      "field": "operand.reclassification_only",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "frozen predicate signature",
+      "authority_class": "AUTHORITY_DERIVED_METADATA",
+      "current_or_successor_supplier": "trusted deterministic boundary",
+      "downstream_validation": "derive/reference integrity only",
+      "earliest_enforcement": "PRE_INVOCATION",
+      "field": "predicate.required_actor_roles",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "frozen predicate signature",
+      "authority_class": "AUTHORITY_DERIVED_METADATA",
+      "current_or_successor_supplier": "trusted deterministic boundary",
+      "downstream_validation": "derive/reference integrity only",
+      "earliest_enforcement": "PRE_INVOCATION",
+      "field": "predicate.required_patient_roles",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "frozen predicate signature",
+      "authority_class": "AUTHORITY_DERIVED_METADATA",
+      "current_or_successor_supplier": "trusted deterministic boundary",
+      "downstream_validation": "derive/reference integrity only",
+      "earliest_enforcement": "PRE_INVOCATION",
+      "field": "predicate.required_actor_affordances",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "frozen predicate signature",
+      "authority_class": "AUTHORITY_DERIVED_METADATA",
+      "current_or_successor_supplier": "trusted deterministic boundary",
+      "downstream_validation": "derive/reference integrity only",
+      "earliest_enforcement": "PRE_INVOCATION",
+      "field": "predicate.required_patient_affordances",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "frozen edge witness",
+      "authority_class": "AUTHORITY_DERIVED_METADATA",
+      "current_or_successor_supplier": "trusted deterministic boundary",
+      "downstream_validation": "derive/reference integrity only",
+      "earliest_enforcement": "PRE_INVOCATION",
+      "field": "edge.predecessor_node_id",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "frozen edge witness",
+      "authority_class": "AUTHORITY_DERIVED_METADATA",
+      "current_or_successor_supplier": "trusted deterministic boundary",
+      "downstream_validation": "derive/reference integrity only",
+      "earliest_enforcement": "PRE_INVOCATION",
+      "field": "edge.successor_node_id",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "frozen edge witness",
+      "authority_class": "AUTHORITY_DERIVED_METADATA",
+      "current_or_successor_supplier": "trusted deterministic boundary",
+      "downstream_validation": "derive/reference integrity only",
+      "earliest_enforcement": "PRE_INVOCATION",
+      "field": "edge.produced_operand_id",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "frozen edge witness",
+      "authority_class": "AUTHORITY_DERIVED_METADATA",
+      "current_or_successor_supplier": "trusted deterministic boundary",
+      "downstream_validation": "derive/reference integrity only",
+      "earliest_enforcement": "PRE_INVOCATION",
+      "field": "edge.consumed_position",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "frozen edge witness",
+      "authority_class": "AUTHORITY_DERIVED_METADATA",
+      "current_or_successor_supplier": "trusted deterministic boundary",
+      "downstream_validation": "derive/reference integrity only",
+      "earliest_enforcement": "PRE_INVOCATION",
+      "field": "edge.explicit_licensing_rule",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "frozen edge witness",
+      "authority_class": "AUTHORITY_DERIVED_METADATA",
+      "current_or_successor_supplier": "trusted deterministic boundary",
+      "downstream_validation": "derive/reference integrity only",
+      "earliest_enforcement": "PRE_INVOCATION",
+      "field": "edge.counterfactual_dependency",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "frozen edge witness",
+      "authority_class": "AUTHORITY_DERIVED_METADATA",
+      "current_or_successor_supplier": "trusted deterministic boundary",
+      "downstream_validation": "derive/reference integrity only",
+      "earliest_enforcement": "PRE_INVOCATION",
+      "field": "edge.non_arbitrary",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "frozen typed plan",
+      "authority_class": "AUTHORITY_DERIVED_METADATA",
+      "current_or_successor_supplier": "trusted deterministic boundary",
+      "downstream_validation": "derive/reference integrity only",
+      "earliest_enforcement": "PRE_INVOCATION",
+      "field": "realization.node_order",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "last frozen plan node",
+      "authority_class": "AUTHORITY_DERIVED_METADATA",
+      "current_or_successor_supplier": "trusted deterministic boundary",
+      "downstream_validation": "derive/reference integrity only",
+      "earliest_enforcement": "PRE_INVOCATION",
+      "field": "realization.terminal_result_flag",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "frozen node introduces_ids",
+      "authority_class": "AUTHORITY_DERIVED_METADATA",
+      "current_or_successor_supplier": "trusted deterministic boundary",
+      "downstream_validation": "derive/reference integrity only",
+      "earliest_enforcement": "PRE_INVOCATION",
+      "field": "realization.produced_operand_ids",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "frozen actor operand spec",
+      "authority_class": "AUTHORITY_DERIVED_METADATA",
+      "current_or_successor_supplier": "trusted deterministic boundary",
+      "downstream_validation": "derive/reference integrity only",
+      "earliest_enforcement": "PRE_INVOCATION",
+      "field": "realization.actor_semantic_roles",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "frozen actor operand spec",
+      "authority_class": "AUTHORITY_DERIVED_METADATA",
+      "current_or_successor_supplier": "trusted deterministic boundary",
+      "downstream_validation": "derive/reference integrity only",
+      "earliest_enforcement": "PRE_INVOCATION",
+      "field": "realization.actor_affordances",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "frozen patient operand spec",
+      "authority_class": "AUTHORITY_DERIVED_METADATA",
+      "current_or_successor_supplier": "trusted deterministic boundary",
+      "downstream_validation": "derive/reference integrity only",
+      "earliest_enforcement": "PRE_INVOCATION",
+      "field": "realization.patient_semantic_roles",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "frozen patient operand spec",
+      "authority_class": "AUTHORITY_DERIVED_METADATA",
+      "current_or_successor_supplier": "trusted deterministic boundary",
+      "downstream_validation": "derive/reference integrity only",
+      "earliest_enforcement": "PRE_INVOCATION",
+      "field": "realization.patient_affordances",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "frozen edge witnesses",
+      "authority_class": "AUTHORITY_DERIVED_METADATA",
+      "current_or_successor_supplier": "trusted deterministic boundary",
+      "downstream_validation": "derive/reference integrity only",
+      "earliest_enforcement": "PRE_INVOCATION",
+      "field": "realization.predecessor_causal_rule_ids",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "frozen V5.3.1 contract",
+      "authority_class": "AUTHORITY_DERIVED_METADATA",
+      "current_or_successor_supplier": "trusted deterministic boundary",
+      "downstream_validation": "derive/reference integrity only",
+      "earliest_enforcement": "PRE_INVOCATION",
+      "field": "alignment.allowed_rule_set",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "frozen release",
+      "authority_class": "AUTHORITY_DERIVED_METADATA",
+      "current_or_successor_supplier": "trusted deterministic boundary",
+      "downstream_validation": "derive/reference integrity only",
+      "earliest_enforcement": "PRE_INVOCATION",
+      "field": "release.packet_identity",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "frozen release",
+      "authority_class": "AUTHORITY_DERIVED_METADATA",
+      "current_or_successor_supplier": "trusted deterministic boundary",
+      "downstream_validation": "derive/reference integrity only",
+      "earliest_enforcement": "PRE_INVOCATION",
+      "field": "release.implementation_identities",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "frozen release",
+      "authority_class": "AUTHORITY_DERIVED_METADATA",
+      "current_or_successor_supplier": "trusted deterministic boundary",
+      "downstream_validation": "derive/reference integrity only",
+      "earliest_enforcement": "PRE_INVOCATION",
+      "field": "release.fragment_denyset_identity",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "actual realized surface bytes",
+      "authority_class": "SURFACE_OBSERVED_EVIDENCE",
+      "current_or_successor_supplier": "trusted post-realization observer",
+      "downstream_validation": "coordinate-bound reproduction from bytes",
+      "earliest_enforcement": "POST_REALIZATION_PRE_EMISSION",
+      "field": "surface.complete_utf8_bytes",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "actual realized surface bytes",
+      "authority_class": "SURFACE_OBSERVED_EVIDENCE",
+      "current_or_successor_supplier": "trusted post-realization observer",
+      "downstream_validation": "coordinate-bound reproduction from bytes",
+      "earliest_enforcement": "POST_REALIZATION_PRE_EMISSION",
+      "field": "surface.node_clause_character_span",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "actual realized surface bytes",
+      "authority_class": "SURFACE_OBSERVED_EVIDENCE",
+      "current_or_successor_supplier": "trusted post-realization observer",
+      "downstream_validation": "coordinate-bound reproduction from bytes",
+      "earliest_enforcement": "POST_REALIZATION_PRE_EMISSION",
+      "field": "surface.node_clause_utf8_span",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "actual realized surface bytes",
+      "authority_class": "SURFACE_OBSERVED_EVIDENCE",
+      "current_or_successor_supplier": "trusted post-realization observer",
+      "downstream_validation": "coordinate-bound reproduction from bytes",
+      "earliest_enforcement": "POST_REALIZATION_PRE_EMISSION",
+      "field": "surface.actor_character_span",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "actual realized surface bytes",
+      "authority_class": "SURFACE_OBSERVED_EVIDENCE",
+      "current_or_successor_supplier": "trusted post-realization observer",
+      "downstream_validation": "coordinate-bound reproduction from bytes",
+      "earliest_enforcement": "POST_REALIZATION_PRE_EMISSION",
+      "field": "surface.actor_utf8_span",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "actual realized surface bytes",
+      "authority_class": "SURFACE_OBSERVED_EVIDENCE",
+      "current_or_successor_supplier": "trusted post-realization observer",
+      "downstream_validation": "coordinate-bound reproduction from bytes",
+      "earliest_enforcement": "POST_REALIZATION_PRE_EMISSION",
+      "field": "surface.predicate_character_span",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "actual realized surface bytes",
+      "authority_class": "SURFACE_OBSERVED_EVIDENCE",
+      "current_or_successor_supplier": "trusted post-realization observer",
+      "downstream_validation": "coordinate-bound reproduction from bytes",
+      "earliest_enforcement": "POST_REALIZATION_PRE_EMISSION",
+      "field": "surface.predicate_utf8_span",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "actual realized surface bytes",
+      "authority_class": "SURFACE_OBSERVED_EVIDENCE",
+      "current_or_successor_supplier": "trusted post-realization observer",
+      "downstream_validation": "coordinate-bound reproduction from bytes",
+      "earliest_enforcement": "POST_REALIZATION_PRE_EMISSION",
+      "field": "surface.patient_character_span",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "actual realized surface bytes",
+      "authority_class": "SURFACE_OBSERVED_EVIDENCE",
+      "current_or_successor_supplier": "trusted post-realization observer",
+      "downstream_validation": "coordinate-bound reproduction from bytes",
+      "earliest_enforcement": "POST_REALIZATION_PRE_EMISSION",
+      "field": "surface.patient_utf8_span",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "actual realized surface bytes",
+      "authority_class": "SURFACE_OBSERVED_EVIDENCE",
+      "current_or_successor_supplier": "trusted post-realization observer",
+      "downstream_validation": "coordinate-bound reproduction from bytes",
+      "earliest_enforcement": "POST_REALIZATION_PRE_EMISSION",
+      "field": "surface.produced_operand_spans",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "actual realized surface bytes",
+      "authority_class": "SURFACE_OBSERVED_EVIDENCE",
+      "current_or_successor_supplier": "trusted post-realization observer",
+      "downstream_validation": "coordinate-bound reproduction from bytes",
+      "earliest_enforcement": "POST_REALIZATION_PRE_EMISSION",
+      "field": "surface.terminal_result_span",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "actual realized surface bytes",
+      "authority_class": "SURFACE_OBSERVED_EVIDENCE",
+      "current_or_successor_supplier": "trusted post-realization observer",
+      "downstream_validation": "coordinate-bound reproduction from bytes",
+      "earliest_enforcement": "POST_REALIZATION_PRE_EMISSION",
+      "field": "surface.observed_actor_form",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "actual realized surface bytes",
+      "authority_class": "SURFACE_OBSERVED_EVIDENCE",
+      "current_or_successor_supplier": "trusted post-realization observer",
+      "downstream_validation": "coordinate-bound reproduction from bytes",
+      "earliest_enforcement": "POST_REALIZATION_PRE_EMISSION",
+      "field": "surface.observed_predicate_form",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "actual realized surface bytes",
+      "authority_class": "SURFACE_OBSERVED_EVIDENCE",
+      "current_or_successor_supplier": "trusted post-realization observer",
+      "downstream_validation": "coordinate-bound reproduction from bytes",
+      "earliest_enforcement": "POST_REALIZATION_PRE_EMISSION",
+      "field": "surface.observed_patient_form",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "actual realized surface bytes",
+      "authority_class": "SURFACE_OBSERVED_EVIDENCE",
+      "current_or_successor_supplier": "trusted post-realization observer",
+      "downstream_validation": "coordinate-bound reproduction from bytes",
+      "earliest_enforcement": "POST_REALIZATION_PRE_EMISSION",
+      "field": "surface.coordinate_alignment_result",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "actual realized surface bytes",
+      "authority_class": "SURFACE_OBSERVED_EVIDENCE",
+      "current_or_successor_supplier": "trusted post-realization observer",
+      "downstream_validation": "coordinate-bound reproduction from bytes",
+      "earliest_enforcement": "POST_REALIZATION_PRE_EMISSION",
+      "field": "surface.node_edge_materialization",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "actual realized surface bytes",
+      "authority_class": "SURFACE_OBSERVED_EVIDENCE",
+      "current_or_successor_supplier": "trusted post-realization observer",
+      "downstream_validation": "coordinate-bound reproduction from bytes",
+      "earliest_enforcement": "POST_REALIZATION_PRE_EMISSION",
+      "field": "surface.meta_language_scan_result",
+      "provider_discretion": false
+    },
+    {
+      "authoritative_source": "provider realization choice",
+      "authority_class": "GENUINELY_GENERATIVE_CHOICES",
+      "current_or_successor_supplier": "provider",
+      "downstream_validation": "constrained against frozen semantics and observed from bytes",
+      "earliest_enforcement": "POST_REALIZATION_PRE_EMISSION",
+      "field": "provider.clause_text",
+      "provider_discretion": true
+    },
+    {
+      "authoritative_source": "provider realization choice",
+      "authority_class": "GENUINELY_GENERATIVE_CHOICES",
+      "current_or_successor_supplier": "provider",
+      "downstream_validation": "constrained against frozen semantics and observed from bytes",
+      "earliest_enforcement": "POST_REALIZATION_PRE_EMISSION",
+      "field": "provider.actor_surface_choice",
+      "provider_discretion": true
+    },
+    {
+      "authoritative_source": "provider realization choice",
+      "authority_class": "GENUINELY_GENERATIVE_CHOICES",
+      "current_or_successor_supplier": "provider",
+      "downstream_validation": "constrained against frozen semantics and observed from bytes",
+      "earliest_enforcement": "POST_REALIZATION_PRE_EMISSION",
+      "field": "provider.predicate_surface_choice",
+      "provider_discretion": true
+    },
+    {
+      "authoritative_source": "provider realization choice",
+      "authority_class": "GENUINELY_GENERATIVE_CHOICES",
+      "current_or_successor_supplier": "provider",
+      "downstream_validation": "constrained against frozen semantics and observed from bytes",
+      "earliest_enforcement": "POST_REALIZATION_PRE_EMISSION",
+      "field": "provider.patient_surface_choice",
+      "provider_discretion": true
+    },
+    {
+      "authoritative_source": "provider realization choice",
+      "authority_class": "GENUINELY_GENERATIVE_CHOICES",
+      "current_or_successor_supplier": "provider",
+      "downstream_validation": "constrained against frozen semantics and observed from bytes",
+      "earliest_enforcement": "POST_REALIZATION_PRE_EMISSION",
+      "field": "provider.produced_operand_surface_choice",
+      "provider_discretion": true
+    }
+  ],
+  "inventory_counts": {
+    "AUTHORITY_DERIVED_METADATA": 39,
+    "GENUINELY_GENERATIVE_CHOICES": 5,
+    "SURFACE_OBSERVED_EVIDENCE": 17
+  },
+  "known_same_family_plumbing_failure_remaining_before_pilot13": false,
+  "overall_verdict": "DUPLICATED_AUTHORITY_ANTI_PATTERN_CONFIRMED_AND_NARROWLY_REMEDIATED",
+  "principle": "Frozen authority is derived once, surface evidence is observed once, and only genuinely creative realization choices belong to the provider.",
+  "provider_invocations": 0,
+  "schema_name": "constructor-v5-3-2-full-authority-derivability-audit",
+  "zero_construction": true,
+  "zero_release": true
+}
