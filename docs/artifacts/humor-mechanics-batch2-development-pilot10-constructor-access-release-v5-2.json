@@ -1,0 +1,267 @@
+{
+  "constructor_packet": {
+    "authority_matrix": {
+      "candidate_emission": false,
+      "constructor_invocation": false,
+      "constructor_release": false,
+      "constructor_v5_2_source_compatibility_evaluation": false,
+      "fragment_collision_evaluation": false,
+      "g02": false,
+      "g02c": false,
+      "g03": false,
+      "model_exposure": false,
+      "post_realization_pre_emission_conformance": false,
+      "production_routing": false,
+      "realization": false,
+      "realization_witness_planning": false,
+      "runtime_integration": false,
+      "training": false
+    },
+    "authorized_visible_context_sha256": "188742ebbe30a23349601ddb369b0bb962d87dc9c8efe3227e50a38b6f89d967",
+    "candidate_emitter_identity": "e325bd20ba1f58bbc48a6e749dc7a505e5522e4ff11c798855e8d530dae113d4",
+    "candidate_surface": null,
+    "closed_factual_authority_envelope": {
+      "authority_scope": "Only the explicitly stated delivery-reception event, quantity and material category, crate weighing and identifier-comparison procedure, approval and rejection conditions, resulting storage or reception disposition, discrepancy-recording procedure, delivery-specific scope limitation, and explicitly unknown discrepancy and additional-verification outcomes within the accompanying owner-authored synthetic test universe.",
+      "propositions": [
+        {
+          "attribution": "OWNER_AUTHORED_SOURCE",
+          "known_boundary": "CRATE_IS_APPROVED_AND_MOVED_TO_HORTICULTURAL_STORAGE",
+          "modality": "ASSERTED",
+          "object": {
+            "character_coordinates": [
+              437,
+              492
+            ],
+            "sha256": "2ec02262f5e5c346e7eb3b87624c606995425c075d6dc691e744db93ec0d090f",
+            "utf8_byte_coordinates": [
+              461,
+              518
+            ]
+          },
+          "predicate": {
+            "character_coordinates": [
+              384,
+              436
+            ],
+            "sha256": "f2178278603a3f1b0639b009cb2620f2f7b17e740f4437531541a8c549c26663",
+            "utf8_byte_coordinates": [
+              404,
+              460
+            ]
+          },
+          "prohibited_inferences": [
+            "NO_REAL_WORLD_ASSERTION",
+            "NO_UNSTATED_CAUSAL_INFERENCE",
+            "NO_UNSTATED_PERSON_INTENT_OR_INTERNAL_STATE_INFERENCE",
+            "NO_UNSTATED_DELIVERY_CRATE_MATERIAL_PROCEDURE_DISPOSITION_OR_OUTCOME_INFERENCE"
+          ],
+          "proposition_id": "P3",
+          "qualification": {
+            "character_coordinates": [
+              267,
+              378
+            ],
+            "sha256": "d41eba08c9442474f7228862ccf283256d25b0f673cb7b723b5ea4e7527d1e3c",
+            "utf8_byte_coordinates": [
+              281,
+              398
+            ]
+          },
+          "quotation_status": "NO_QUOTATION",
+          "scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE_ONLY",
+          "sensitive_protected_target_classification": "NONE_DECLARED_LOW_RISK_SYNTHETIC",
+          "subject": {
+            "character_coordinates": [
+              379,
+              383
+            ],
+            "sha256": "aaa02d586c78fdb9f68e4b08c179390f1e71f6b1094e4366b990aa336714253c",
+            "utf8_byte_coordinates": [
+              399,
+              403
+            ]
+          },
+          "supporting_span": {
+            "character_coordinates": [
+              267,
+              492
+            ],
+            "sha256": "188742ebbe30a23349601ddb369b0bb962d87dc9c8efe3227e50a38b6f89d967",
+            "span_sha256": "188742ebbe30a23349601ddb369b0bb962d87dc9c8efe3227e50a38b6f89d967",
+            "utf8_byte_coordinates": [
+              281,
+              518
+            ]
+          },
+          "time": "IF_BOTH_DOCUMENT_MATCH_CONDITIONS_HOLD",
+          "unknown_boundary": "NO_ASSERTION_THAT_ANY_CRATE_WILL_MEET_BOTH_CONDITIONS"
+        }
+      ],
+      "source_commitment": "6cf7bd08e9643efe7651a8bf8e917e90782d383fe5c9eebf58d1ae68740f24ce",
+      "source_sha256": "454a0c568c12a46224407f6c3b378f8197e3f4653cca6d897d1c03b8d94821d7",
+      "world_scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE"
+    },
+    "construction_revision_family_id": "d8fb4f341c6d31e7863a3bbd507fdaada62b8ce99d5e4f4ac2694d10df4396b4",
+    "constructor_contract_identity": "69138467540b37cbfb8444596d9a37119f8b74d002e0c491c8ff599ce77cec77",
+    "constructor_facing_packet_identity": "7d894969dfeed0703ee31f4fe3223ef9dfbdd3fbe873f2ac6d6e02054e8694aa",
+    "constructor_implementation_identity": "bdf48e9942f097f0259831c0f2f611e50644cdbe7179a2dc7d990bf9ab2b5493",
+    "constructor_invoked": false,
+    "constructor_source_compatibility_identity": "fda3e7f2bea30b8429fb4f93415c85b81a3322595be6eae7542a367d5f0ad9ee",
+    "constructor_static_audit_identity": "1171e1a53acbb733c530d2f2e4fa753284a9f4747ab905d9c2a57d7b22b3399d",
+    "creative_marker_family_id": "UNASSIGNED_UNTIL_POSTCONSTRUCTION",
+    "creative_premise_family_id": "UNASSIGNED",
+    "exact_authorized_visible_context_utf8": "Dacă greutatea corespunde valorii înscrise în document și numărul de pe etichetă corespunde celui din document, lada este înregistrată cu eticheta APROBAT și este mutată în zona de depozitare destinată materialelor horticole.",
+    "fragment_denyset_identity": "2cb28681d03998a0f0ae958639817aa96933648a215222f05b802c2e822efa05",
+    "immutable_assignment_identity": "c4677b0b8d148163d339cf72590078564f5a462a571d6272cbc8800d90ad4aab",
+    "output_constraints": {
+      "language": "ROMANIAN",
+      "length_profile": "COMMON_BATCH2_NEUTRAL_PROFILE_30_TO_90_WORDS_1_TO_3_SENTENCES",
+      "prohibited": [
+        "CANNED_OPENING_OR_TRANSITION",
+        "GOVERNANCE_OR_INSTRUCTION_META_LANGUAGE",
+        "PROCEDURAL_ABSTRACT_REGISTER",
+        "UNBOUND_REFERENCE_OR_OPERAND",
+        "FACTUAL_WIDENING"
+      ],
+      "register": "IDIOMATIC_NATURAL_CONCRETE_ROMANIAN"
+    },
+    "pre_emission_conformance_schema_identity": "084ddf4d8e9f215db3665370221260c351d3befe747c4dbb45ab35baac4c993b",
+    "pre_emission_enforcement_identity": "7a814e9bc583cf48f53cde88f1fc343708150470f088e0e320091e091054f036",
+    "pre_emission_governance_identity": "80bbf059956424ce6f20885de51ce900f6116b40a223a107a46a29d3b012efc6",
+    "proposition_derived_typed_plan": [
+      {
+        "actor_role": "RELATION_HEAD",
+        "bound_actor_id": "FACT_RELATION_EDFB9508ED58FB31",
+        "bound_patient_id": "FACT_QUALIFICATION",
+        "introduces_ids": [
+          "INVENTED_RELATION_1"
+        ],
+        "node_id": "L1",
+        "nonfactual_scope": true,
+        "predecessor_node_ids": [],
+        "predicate_id": "EXTEND_EDFB9508ED58FB31",
+        "source_provenance": "P3_COORDINATE_BOUND_RELATION"
+      },
+      {
+        "actor_role": "RELATION_HEAD",
+        "bound_actor_id": "INVENTED_RELATION_1",
+        "bound_patient_id": "FACT_OBJECT",
+        "introduces_ids": [
+          "INVENTED_RELATION_2"
+        ],
+        "node_id": "L2",
+        "nonfactual_scope": true,
+        "predecessor_node_ids": [
+          "L1"
+        ],
+        "predicate_id": "PROPAGATE_EDFB9508ED58FB31",
+        "source_provenance": "L1"
+      },
+      {
+        "actor_role": "RELATION_HEAD",
+        "bound_actor_id": "INVENTED_RELATION_2",
+        "bound_patient_id": "FACT_RELATION_EDFB9508ED58FB31",
+        "introduces_ids": [],
+        "node_id": "RESULT",
+        "nonfactual_scope": true,
+        "predecessor_node_ids": [
+          "L2"
+        ],
+        "predicate_id": "RESOLVE_EDFB9508ED58FB31",
+        "source_provenance": "L2"
+      }
+    ],
+    "realization_provider_identity": "36b3669acb5e7d2b772ad6d8a912f4cdbfea8f58e3c45e72cafcd206336afce8",
+    "schema_name": "batch2-development-pilot10-constructor-facing-assignment-proposal-v5-2",
+    "schema_version": "5.2.0",
+    "selected_proposition_id": "P3",
+    "selected_supporting_span_sha256": "188742ebbe30a23349601ddb369b0bb962d87dc9c8efe3227e50a38b6f89d967",
+    "source_package_identity": "cd1c968bb7d90416b5255ad14094410491e756ce58bc78512cca2e5297a044c1",
+    "status": "G02B_RELEASE_CANDIDATE_ZERO_CONSTRUCTION",
+    "sufficiency_receipt_identity": "a3ce7039e7e01af1f32d5063022b86a0eb463da72ed5e182c32882776b3d1b1f",
+    "typed_plan_commitment": "0bd5a77f4ee4d05784d9722fdb9991302e144c6e45511861063bdce8a382432e",
+    "unlabeled_operational_obligation": {
+      "creative_marking_constraints": [
+        "Marcajul nonfactual trebuie ales local, firesc și fără formulă, tranziție, deschidere sau aterizare reutilizată.",
+        "Nu transfera în rezultat limbajul cerințelor, al planului, al controlului, al guvernanței sau al validării."
+      ],
+      "forbidden_operations": [
+        "Nu ascunde relația factuală până după rezultatul inventat și nu folosi dezvăluirea ei ca răsturnare principală.",
+        "Nu introduce un reper, operand, eveniment ori cauză care nu poate fi urmărită local până la contextul autorizat.",
+        "Nu baza rezultatul pe redenumire, reclasificare, personificare, intensificare, listă sau joc lexical.",
+        "Nu impune o formulă fixă, un conector, un semn de punctuație, un registru ori un număr fix de propoziții."
+      ],
+      "future_pre_emission_constraints": [
+        "Orice viitoare realizare trebuie verificată mecanism-neutru înaintea emiterii, conform contractului V5.2 separat autorizat.",
+        "O afirmație că există o legătură ori un rezultat nu poate înlocui realizarea lor explicită."
+      ],
+      "naturalness_and_safety": [
+        "Folosește română idiomatică și concretă; nu transfera în suprafață limbajul acestei cerințe.",
+        "Separă clar cadrul inventat de autoritatea factuală și nu adăuga fapte, citate, cunoaștere privată sau concluzii despre lumea reală."
+      ],
+      "obligation_instance_identity": "6aad43d4814e56aa7df3f747caa79e5809ebed19328365542de4321c33ddd97d",
+      "obligation_version": "DEVELOPMENT_TRANSFORMATION_V5_2_01",
+      "transformation": [
+        "Păstrează exact relația factuală furnizată, cu toate calificările și limitele ei, și fă-o disponibilă înainte ca textul să poată produce o schimbare retrospectivă de lectură.",
+        "Construiește o consecință inventată prin cel puțin două legături locale distincte, fiecare necesară și recuperabilă din relația precedentă.",
+        "Consecința trebuie să depindă de întregul lanț; simpla transformare a unui cuvânt, număr ori înscris într-un obiect fizic nu poate susține singură rezultatul.",
+        "Marcajul nonfactual trebuie integrat firesc și trebuie să acopere toate legăturile inventate."
+      ],
+      "typed_operand_constraints": [
+        "Înaintea oricărei realizări, fiecare operand trebuie descris numai prin rol, tip, proveniența din relația factuală selectată sau din legătura precedentă și compatibilitatea sa locală.",
+        "Fiecare legătură inventată poate consuma numai operanzi expliciți ai relației selectate ori rezultate produse explicit de legătura precedentă.",
+        "Nu introduce actori, agenți, obiecte de control, referințe sau rezultate fără producător local și tip compatibil.",
+        "Orice neînchidere a operanzilor trebuie să oprească procesul înaintea unei suprafețe."
+      ]
+    }
+  },
+  "constructor_visible_object_set": [
+    "CONSTRUCTOR_PACKET_EXACT_BYTES"
+  ],
+  "release_core": {
+    "authorized_visible_context_sha256": "188742ebbe30a23349601ddb369b0bb962d87dc9c8efe3227e50a38b6f89d967",
+    "candidate_emitter_identity": "e325bd20ba1f58bbc48a6e749dc7a505e5522e4ff11c798855e8d530dae113d4",
+    "constructor_contract_identity": "69138467540b37cbfb8444596d9a37119f8b74d002e0c491c8ff599ce77cec77",
+    "constructor_facing_packet_identity": "7d894969dfeed0703ee31f4fe3223ef9dfbdd3fbe873f2ac6d6e02054e8694aa",
+    "constructor_implementation_identity": "bdf48e9942f097f0259831c0f2f611e50644cdbe7179a2dc7d990bf9ab2b5493",
+    "constructor_invocation_authorized": false,
+    "constructor_source_compatibility_identity": "fda3e7f2bea30b8429fb4f93415c85b81a3322595be6eae7542a367d5f0ad9ee",
+    "creative_premise_family_id": "UNASSIGNED",
+    "fragment_denyset_identity": "2cb28681d03998a0f0ae958639817aa96933648a215222f05b802c2e822efa05",
+    "immutable_assignment_identity": "c4677b0b8d148163d339cf72590078564f5a462a571d6272cbc8800d90ad4aab",
+    "packet_seal_namespace": "B2_DEVELOPMENT_PILOT10_CONSTRUCTOR_PACKET_G02B_V5_2",
+    "partition": "DEVELOPMENT",
+    "pre_emission_conformance_schema_identity": "084ddf4d8e9f215db3665370221260c351d3befe747c4dbb45ab35baac4c993b",
+    "pre_emission_enforcement_identity": "7a814e9bc583cf48f53cde88f1fc343708150470f088e0e320091e091054f036",
+    "pre_emission_governance_identity": "80bbf059956424ce6f20885de51ce900f6116b40a223a107a46a29d3b012efc6",
+    "realization_provider_identity": "36b3669acb5e7d2b772ad6d8a912f4cdbfea8f58e3c45e72cafcd206336afce8",
+    "release_mode": "PATHLESS_SINGLE_OBJECT_CAPABILITY_NOT_RELEASED_TO_CONSTRUCTOR",
+    "selected_proposition_id": "P3",
+    "selected_supporting_span_sha256": "188742ebbe30a23349601ddb369b0bb962d87dc9c8efe3227e50a38b6f89d967",
+    "single_use_state": "UNCONSUMED_0_OF_1_NOT_AUTHORIZED",
+    "sufficiency_receipt_identity": "a3ce7039e7e01af1f32d5063022b86a0eb463da72ed5e182c32882776b3d1b1f",
+    "typed_plan_commitment": "0bd5a77f4ee4d05784d9722fdb9991302e144c6e45511861063bdce8a382432e"
+  },
+  "release_identity": "746d3bc3c8af78b41a83a3e610d43cd89cc90d1163dac036d1af5ad8dca2fb89",
+  "schema_name": "batch2-development-pilot10-constructor-access-release-v5-2",
+  "schema_version": "5.2.0",
+  "transport_policy": {
+    "cache_or_temp_file": false,
+    "command_line_payload": false,
+    "constructor_invocation_authorized": false,
+    "constructor_role": "CONSTRUCTOR",
+    "emitter_invocation_authorized": false,
+    "environment_inheritance": false,
+    "exceptions_contain_packet_or_mapping": false,
+    "filesystem_path_access": false,
+    "import_time_repository_access": false,
+    "logs_contain_packet_or_mapping": false,
+    "metadata_enumeration": false,
+    "network_access": false,
+    "packet_delivery": "IN_MEMORY_EXACT_BYTES_SINGLE_USE_PATHLESS_CAPABILITY",
+    "process_handle_inheritance": false,
+    "provider_invocation_authorized": false,
+    "repository_access": false,
+    "sibling_artifact_discovery": false
+  }
+}
