@@ -1,0 +1,25 @@
+{
+  "actor_patient_predicate_roles_affordances": "PRESERVED",
+  "analysis_identity": "c14757f5bb1f7f847e867cf4d065828662b8003bd8b6eef3cef4a517682a5f43",
+  "classification": "GENUINE_PROVIDER_METADATA_DRIFT_NOT_EQUIVALENCE_ERROR",
+  "coordinate_alignment": "NOT_REACHED_AND_NON_CAUSAL",
+  "edge": "L2_TO_RESULT",
+  "exact_causal_boundary": "V5_3_1_PROVIDER_LEXICALIZATION_TO_SURFACE_SEMANTIC_WITNESS_CAUSAL_RULE_METADATA",
+  "first_divergence_trace": {
+    "first_failed_predicate": "RESULT.predecessor_causal_rule_ids == expected_rules",
+    "realized_surface_relation": "Statutul de transport confirmat closes the transport rule; actor/predicate/patient topology preserved",
+    "semantic_comparison": "exact tuple comparison against frozen edge-derived rule",
+    "validated_plan": "RESULT predecessor L2 requires RULE_L2_DESTINATION_BOUND_STATE_IS_REQUIRED_ACTOR_OF_TERMINAL_RESULT",
+    "witness_extraction": "RESULT roles and affordances preserved; provider supplied RULE_L2_OUTPUT_IS_REQUIRED_ACTOR_OF_TERMINAL_RESULT"
+  },
+  "first_divergent_node": "RESULT",
+  "pilot": 12,
+  "pilot12_evidence_identity": "a08ffd997e6304e4d405cc8a3a74d2210fcd46327e923b18ecbf0c8a8164727b",
+  "planned_rule": "RULE_L2_DESTINATION_BOUND_STATE_IS_REQUIRED_ACTOR_OF_TERMINAL_RESULT",
+  "realized_rule": "RULE_L2_OUTPUT_IS_REQUIRED_ACTOR_OF_TERMINAL_RESULT",
+  "romanian_syntax_or_morphology": "NON_CAUSAL",
+  "schema_name": "pilot12-v5-3-1-causal-rule-root-cause-v1",
+  "static_semantic_plan": "CORRECT_AND_NON_CAUSAL",
+  "surface_semantic_role": "NOT_CAUSAL",
+  "verdict": "ROOT_CAUSE_CONFIRMED_AT_PROVIDER_CAUSAL_RULE_WITNESS_BINDING_BOUNDARY"
+}

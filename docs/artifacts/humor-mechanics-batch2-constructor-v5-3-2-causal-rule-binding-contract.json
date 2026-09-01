@@ -1,0 +1,11 @@
+{
+  "base_contract": "c4af75cd962802d0035d9de39e6d014f715d5b5f5b60fd690ea3761f289d99fc",
+  "contract_identity": "6202af525c69b9fa2407cc86f4e8f4ffef245da6c5e6f910603de0a91c9471a3",
+  "requirements": [
+    "derive predecessor causal-rule IDs only from frozen edge witnesses",
+    "reject nonempty provider rule aliases that differ",
+    "preserve V5.3.1 coordinate and semantic enforcement",
+    "no fuzzy or semantic equivalence substitution"
+  ],
+  "schema_name": "constructor-v5-3-2-frozen-causal-rule-binding-contract"
+}

@@ -1,0 +1,12 @@
+{
+  "analysis_identity": "c14757f5bb1f7f847e867cf4d065828662b8003bd8b6eef3cef4a517682a5f43",
+  "audit_identity": "895eac454f0c1dda8774b4f6cf4b8e75205877015032ca7c4f765cb9a4ded903",
+  "candidate_created": false,
+  "capability_restored": false,
+  "constructor_invocations": 0,
+  "contract_identity": "6202af525c69b9fa2407cc86f4e8f4ffef245da6c5e6f910603de0a91c9471a3",
+  "implementation_identity": "d9e31296d2b47ebd7627ceaff9fbf997c8bc53a414d757bf90c806f35b42b9d8",
+  "regression_identity": "2570e4c944c096011041582ed9196b26c9aa759803615cf2902d8f98eb3aaa12",
+  "schema_name": "pilot12-v5-3-2-causal-rule-remediation-audit",
+  "verdict": "PASS_SOURCE_ONLY_FROZEN_EDGE_DERIVED_CAUSAL_RULE_BINDING_ZERO_CONSTRUCTION_NO_RELEASE"
+}
