@@ -1,0 +1,353 @@
+{
+  "alignment_contract_identity": "c4af75cd962802d0035d9de39e6d014f715d5b5f5b60fd690ea3761f289d99fc",
+  "authority_matrix": {
+    "candidate_emission": false,
+    "constructor_invocation": false,
+    "constructor_release": false,
+    "constructor_v5_3_1_source_compatibility_evaluation": false,
+    "coordinate_bound_semantic_conformance": false,
+    "fragment_collision_evaluation": false,
+    "g02": false,
+    "g02c": false,
+    "g03": false,
+    "model_exposure": false,
+    "production_routing": false,
+    "realization": false,
+    "runtime_integration": false,
+    "semantic_edge_validation": false,
+    "semantic_plan_evaluation": false,
+    "semantic_role_or_affordance_planning": false,
+    "training": false
+  },
+  "authorized_visible_context_sha256": "095db5d0ce1ef70892963ff424457b91af2689be1d2c91c92bafa087593f216a",
+  "base_constructor_contract_identity": "9d811b18c16e8770549c19c9d8be63ef6f04e030fa67b5a47167b5e7ddc1bef6",
+  "candidate_emitter_identity": "d08e74b2ccfaa5e157a86376e46b2ac70c7f4225261ecb1112c063a236804dd1",
+  "candidate_surface": null,
+  "closed_factual_authority_envelope": {
+    "authority_scope": "Only the explicitly stated university-library collection-transfer event, collection quantity and temporary-reading-room location, inventory-code and transfer-list association, destination-shelf identification procedure, box-placement procedure, same-destination transport condition, mixed-destination reverification condition, collection-specific scope limitation, and explicitly unknown destination-association and box-reverification outcomes within the accompanying owner-authored synthetic test universe.",
+    "propositions": [
+      {
+        "attribution": "OWNER_AUTHORED_SOURCE",
+        "known_boundary": "BOX_TRANSPORTED_TO_LIBRARY_STORAGE",
+        "modality": "ASSERTED",
+        "object": {
+          "character_coordinates": [
+            500,
+            524
+          ],
+          "sha256": "cd28494450e1b0b6d7f9ade2d6c3a97abddd2ec94a076329de86b095795f361d",
+          "utf8_byte_coordinates": [
+            523,
+            548
+          ]
+        },
+        "predicate": {
+          "character_coordinates": [
+            482,
+            499
+          ],
+          "sha256": "d237e86bb82e67bcdf4b6a88c105281f75f48c101d2b49d6aaee5dd98d628413",
+          "utf8_byte_coordinates": [
+            504,
+            522
+          ]
+        },
+        "prohibited_inferences": [
+          "NO_REAL_WORLD_ASSERTION",
+          "NO_UNSTATED_CAUSAL_INFERENCE",
+          "NO_UNSTATED_PERSON_INTENT_OR_INTERNAL_STATE_INFERENCE",
+          "NO_UNSTATED_LIBRARY_VOLUME_BOX_TRANSFER_DESTINATION_OR_OUTCOME_INFERENCE"
+        ],
+        "proposition_id": "P5",
+        "qualification": {
+          "character_coordinates": [
+            525,
+            597
+          ],
+          "sha256": "f2abec509e58dcf461dec11d68f8e34faad9fb10115bc89ba454e8e2ddb31a22",
+          "utf8_byte_coordinates": [
+            549,
+            625
+          ]
+        },
+        "quotation_status": "NO_QUOTATION",
+        "scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE_ONLY",
+        "sensitive_protected_target_classification": "NONE_DECLARED_LOW_RISK_SYNTHETIC",
+        "subject": {
+          "character_coordinates": [
+            474,
+            481
+          ],
+          "sha256": "24687d67b54014cac347847202719a2e83104b6cdf70574be080819dabd22953",
+          "utf8_byte_coordinates": [
+            496,
+            503
+          ]
+        },
+        "supporting_span": {
+          "character_coordinates": [
+            474,
+            597
+          ],
+          "sha256": "095db5d0ce1ef70892963ff424457b91af2689be1d2c91c92bafa087593f216a",
+          "span_sha256": "095db5d0ce1ef70892963ff424457b91af2689be1d2c91c92bafa087593f216a",
+          "utf8_byte_coordinates": [
+            496,
+            625
+          ]
+        },
+        "time": "ONLY_IF_ALL_BOXED_VOLUMES_SHARE_DESTINATION",
+        "unknown_boundary": "NO_ASSERTION_ANY_BOX_SATISFIES_CONDITION"
+      }
+    ],
+    "source_commitment": "fb35495f96a10daadfdd6ed305318276c6e34311e27486ca19462745663c85e1",
+    "source_sha256": "8b87cef6b320d45d7594bc48919bae63442f51f1f7937b599575d435df69ea27",
+    "world_scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE"
+  },
+  "construction_revision_family_id": "47b31a8e3408618333659f570ff3b02181c90ecfbf4b378fcb9778c79fd475a3",
+  "constructor_contract_identity": "9d811b18c16e8770549c19c9d8be63ef6f04e030fa67b5a47167b5e7ddc1bef6",
+  "constructor_facing_packet_identity": "1a48e61d25942ef6db2ee2c65588c801b78475755c07bf47c2c173543f2c92b0",
+  "constructor_implementation_identity": "a966e92c37d6f957cbd080a9d2961cf05b288633d0d6e9f309c7d6baec956894",
+  "constructor_invoked": false,
+  "constructor_source_compatibility_audit_identity": "4a64a029dbcb2cd8e6346f66ffdc1aeca02061a5ab320aa1a3bd24e5f94cae4f",
+  "constructor_source_compatibility_identity": "1a3ca6684d124cb036dc2c738fd4d1fa5d13985207b4f4d3189b4baf977f7721",
+  "creative_marker_family_id": "UNASSIGNED_UNTIL_POSTCONSTRUCTION",
+  "creative_premise_family_id": "UNASSIGNED",
+  "edge_necessity_witnesses": [
+    {
+      "consumed_position": "ACTOR",
+      "counterfactual_dependency": true,
+      "explicit_licensing_rule": "RULE_L1_TRANSPORT_ELIGIBILITY_IS_REQUIRED_ACTOR_OF_L2",
+      "non_arbitrary": true,
+      "predecessor_node_id": "L1",
+      "produced_operand_id": "INVENTED_RELATION_1",
+      "successor_node_id": "L2"
+    },
+    {
+      "consumed_position": "ACTOR",
+      "counterfactual_dependency": true,
+      "explicit_licensing_rule": "RULE_L2_DESTINATION_BOUND_STATE_IS_REQUIRED_ACTOR_OF_TERMINAL_RESULT",
+      "non_arbitrary": true,
+      "predecessor_node_id": "L2",
+      "produced_operand_id": "INVENTED_RELATION_2",
+      "successor_node_id": "RESULT"
+    }
+  ],
+  "exact_authorized_visible_context_utf8": "O cutie este transportată în depozitul bibliotecii numai dacă toate volumele introduse în ea au același raft de destinație.",
+  "fragment_denyset_identity": "9fd41788346ae5b40d3b2f8a877c3ec818f13dfe74b9dbfc257473eed8b4caf9",
+  "immutable_assignment_identity": "03f83dafe45d015bd00b31cf2454a88ecf057c4f37d7b4d0158557ac72258f1c",
+  "operand_semantic_specs": [
+    {
+      "affordances": [
+        "LICENSE_LOCAL_NONFACTUAL_EXTENSION"
+      ],
+      "entity_identity": "P5_CONDITIONED_BOX_TRANSPORT_DISPOSITION",
+      "operand_id": "FACT_RELATION_05B53E43783231A0",
+      "provenance_operand_ids": [],
+      "reclassification_only": false,
+      "semantic_roles": [
+        "CONDITIONED_TRANSPORT_RELATION"
+      ]
+    },
+    {
+      "affordances": [
+        "QUALIFY_TRANSPORT_DISPOSITION"
+      ],
+      "entity_identity": "P5_SAME_DESTINATION_SHELF_CONDITION",
+      "operand_id": "FACT_QUALIFICATION",
+      "provenance_operand_ids": [],
+      "reclassification_only": false,
+      "semantic_roles": [
+        "CONDITION_STATE"
+      ]
+    },
+    {
+      "affordances": [
+        "RECEIVE_BOX"
+      ],
+      "entity_identity": "P5_LIBRARY_STORAGE_DESTINATION",
+      "operand_id": "FACT_OBJECT",
+      "provenance_operand_ids": [],
+      "reclassification_only": false,
+      "semantic_roles": [
+        "TRANSFER_DESTINATION"
+      ]
+    },
+    {
+      "affordances": [
+        "PROPAGATE_TO_BOUND_DESTINATION"
+      ],
+      "entity_identity": "LOCAL_TRANSPORT_ELIGIBILITY_STATE",
+      "operand_id": "INVENTED_RELATION_1",
+      "provenance_operand_ids": [
+        "FACT_RELATION_05B53E43783231A0",
+        "FACT_QUALIFICATION"
+      ],
+      "reclassification_only": false,
+      "semantic_roles": [
+        "LICENSED_TRANSPORT_STATE"
+      ]
+    },
+    {
+      "affordances": [
+        "RESOLVE_AGAINST_SOURCE_TRANSPORT_RELATION"
+      ],
+      "entity_identity": "DESTINATION_BOUND_TRANSPORT_STATE",
+      "operand_id": "INVENTED_RELATION_2",
+      "provenance_operand_ids": [
+        "INVENTED_RELATION_1",
+        "FACT_OBJECT"
+      ],
+      "reclassification_only": false,
+      "semantic_roles": [
+        "DESTINATION_BOUND_TRANSPORT_STATE"
+      ]
+    }
+  ],
+  "output_constraints": {
+    "language": "ROMANIAN",
+    "length_profile": "COMMON_BATCH2_NEUTRAL_PROFILE_30_TO_90_WORDS_1_TO_3_SENTENCES",
+    "prohibited": [
+      "CANNED_OPENING_OR_TRANSITION",
+      "GOVERNANCE_OR_INSTRUCTION_META_LANGUAGE",
+      "PROCEDURAL_ABSTRACT_REGISTER",
+      "UNBOUND_REFERENCE_OR_OPERAND",
+      "FACTUAL_WIDENING"
+    ],
+    "register": "IDIOMATIC_NATURAL_CONCRETE_ROMANIAN"
+  },
+  "pre_emission_conformance_schema_identity": "4b26df92539082f11b83c83f76b1d158c7c8f4c87304bdcdd8a6129644f532f3",
+  "pre_emission_coordinate_alignment_identity": "7e06b630a3782d8d05b1b86765727cb86caddbaac5d56056e07e727fe0af42bb",
+  "pre_emission_governance_identity": "073d68d9d21c76974d12eb8e3f591f4172197377bfb36c2de2f85a5afe079dd6",
+  "pre_emission_semantic_enforcement_identity": "16e54e9a09ed95905fd1f308d77b7bd4f03084b3a1654f8161a6c78b62ce6983",
+  "predicate_semantic_signatures": [
+    {
+      "predicate_id": "EXTEND_05B53E43783231A0",
+      "required_actor_affordances": [
+        "LICENSE_LOCAL_NONFACTUAL_EXTENSION"
+      ],
+      "required_actor_roles": [
+        "CONDITIONED_TRANSPORT_RELATION"
+      ],
+      "required_patient_affordances": [
+        "QUALIFY_TRANSPORT_DISPOSITION"
+      ],
+      "required_patient_roles": [
+        "CONDITION_STATE"
+      ]
+    },
+    {
+      "predicate_id": "PROPAGATE_05B53E43783231A0",
+      "required_actor_affordances": [
+        "PROPAGATE_TO_BOUND_DESTINATION"
+      ],
+      "required_actor_roles": [
+        "LICENSED_TRANSPORT_STATE"
+      ],
+      "required_patient_affordances": [
+        "RECEIVE_BOX"
+      ],
+      "required_patient_roles": [
+        "TRANSFER_DESTINATION"
+      ]
+    },
+    {
+      "predicate_id": "RESOLVE_05B53E43783231A0",
+      "required_actor_affordances": [
+        "RESOLVE_AGAINST_SOURCE_TRANSPORT_RELATION"
+      ],
+      "required_actor_roles": [
+        "DESTINATION_BOUND_TRANSPORT_STATE"
+      ],
+      "required_patient_affordances": [
+        "LICENSE_LOCAL_NONFACTUAL_EXTENSION"
+      ],
+      "required_patient_roles": [
+        "CONDITIONED_TRANSPORT_RELATION"
+      ]
+    }
+  ],
+  "proposition_derived_typed_plan": [
+    {
+      "actor_role": "RELATION_HEAD",
+      "bound_actor_id": "FACT_RELATION_05B53E43783231A0",
+      "bound_patient_id": "FACT_QUALIFICATION",
+      "introduces_ids": [
+        "INVENTED_RELATION_1"
+      ],
+      "node_id": "L1",
+      "nonfactual_scope": true,
+      "predecessor_node_ids": [],
+      "predicate_id": "EXTEND_05B53E43783231A0",
+      "source_provenance": "P5_COORDINATE_BOUND_RELATION"
+    },
+    {
+      "actor_role": "RELATION_HEAD",
+      "bound_actor_id": "INVENTED_RELATION_1",
+      "bound_patient_id": "FACT_OBJECT",
+      "introduces_ids": [
+        "INVENTED_RELATION_2"
+      ],
+      "node_id": "L2",
+      "nonfactual_scope": true,
+      "predecessor_node_ids": [
+        "L1"
+      ],
+      "predicate_id": "PROPAGATE_05B53E43783231A0",
+      "source_provenance": "L1"
+    },
+    {
+      "actor_role": "RELATION_HEAD",
+      "bound_actor_id": "INVENTED_RELATION_2",
+      "bound_patient_id": "FACT_RELATION_05B53E43783231A0",
+      "introduces_ids": [],
+      "node_id": "RESULT",
+      "nonfactual_scope": true,
+      "predecessor_node_ids": [
+        "L2"
+      ],
+      "predicate_id": "RESOLVE_05B53E43783231A0",
+      "source_provenance": "L2"
+    }
+  ],
+  "realization_provider_identity": "2846406e03cea3fbbdca5531a7d0bf23fc39b116f7e0413a4bc73a65ea9b6992",
+  "schema_name": "batch2-development-pilot12-constructor-facing-assignment-proposal-v5-3-1",
+  "schema_version": "5.3.1",
+  "selected_proposition_id": "P5",
+  "selected_supporting_span_sha256": "095db5d0ce1ef70892963ff424457b91af2689be1d2c91c92bafa087593f216a",
+  "semantic_plan_commitment": "0bcefd60055a5cd497b0eeaab5d4a7c924285647a15c74449866da6af9bc5947",
+  "source_package_identity": "24e76e7f17c28a093cddb9c8be355c1298030a17f4cec0cf126210c4a529e3b6",
+  "status": "G02B_RELEASE_CANDIDATE_ZERO_CONSTRUCTION",
+  "sufficiency_receipt_identity": "f8f754e005fd50031c8a7a0daf180c325eb0b0d49c9eaea8dbcbcbf2ac45998c",
+  "unlabeled_operational_obligation": {
+    "creative_marking_constraints": [
+      "Marcajul nonfactual trebuie ales local și firesc, fără formulă, tranziție, deschidere sau încheiere reutilizată.",
+      "Nu transfera în rezultat limbajul cerințelor, planului, controlului, guvernanței sau validării."
+    ],
+    "forbidden_operations": [
+      "Nu ascunde relația factuală până după rezultatul inventat și nu folosi dezvăluirea ei ca răsturnare principală.",
+      "Nu introduce un reper, operand, eveniment ori cauză care nu poate fi urmărită local până la contextul autorizat.",
+      "Nu baza rezultatul pe redenumire, reclasificare, personificare, intensificare, listă sau joc lexical.",
+      "Nu impune o formulă fixă, un conector, un semn de punctuație, un registru ori un număr fix de propoziții."
+    ],
+    "future_phase_constraints": [
+      "Într-o fază separată, înaintea realizării, fiecare operand și relație trebuie validate din propoziția selectată ori dintr-un rezultat local explicit.",
+      "O reclasificare nu poate crea singură agenție, autoritate, proprietate, permisiune, capacitate sau posibilitatea unei acțiuni.",
+      "Fiecare legătură, inclusiv cea terminală, trebuie să aibă compatibilitate locală și dependență contrafactuală explicită.",
+      "Orice martor de suprafață viitor trebuie legat de coordonate reale; numai alinierile morfologice românești explicit licențiate sunt admise."
+    ],
+    "naturalness_and_safety": [
+      "Folosește română idiomatică și concretă; nu transfera în suprafață limbajul acestei cerințe.",
+      "Separă clar cadrul inventat de autoritatea factuală și nu adăuga fapte, citate, cunoaștere privată sau concluzii despre lumea reală."
+    ],
+    "obligation_instance_identity": "23419666734914cc7b8cdf4e18ae0f283720cb6bab8ea996434868ea6647005a",
+    "obligation_version": "DEVELOPMENT_TRANSFORMATION_V5_3_1_01",
+    "transformation": [
+      "Păstrează exact relația factuală furnizată, cu toate calificările și limitele ei, și fă-o disponibilă înainte ca textul să poată produce o schimbare retrospectivă de lectură.",
+      "Construiește o consecință inventată prin cel puțin două legături locale distincte, fiecare necesară și recuperabilă din relația precedentă.",
+      "Consecința trebuie să depindă de întregul lanț; simpla transformare a unui cuvânt, număr ori înscris într-un obiect fizic nu poate susține singură rezultatul.",
+      "Marcajul nonfactual trebuie integrat firesc și trebuie să acopere toate legăturile inventate."
+    ]
+  },
+  "unselected_proposition_or_fallback_authority": "ABSENT"
+}
