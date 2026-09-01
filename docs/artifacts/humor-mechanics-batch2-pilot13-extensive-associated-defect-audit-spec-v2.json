@@ -1,0 +1,14 @@
+{
+  "artifact_type": "pilot13_extensive_associated_defect_audit_specification",
+  "schema_version": "2.0",
+  "specification_sha256": "dbd411155020840fda00932cf11a0a5981c40bb39b37729515fccdf3ef6c3a10",
+  "specification_git_blob": "9a0d4dabc4ef2939bc1087f04dd4023afddde2e6",
+  "pilot13_disposition_identity": "a795882c8db00d9e1627808667285e60a70367075faa357c304f326dbed40228",
+  "pilot13_candidate_identity": "00dfb416e99d9d489c05cbf317a8b9654d51a5ecb0994220032c0cd68efe2fb6",
+  "maximum_remediation_iterations": 12,
+  "final_confirmation_pass_required": true,
+  "blind_access": false,
+  "construction_authorized": false,
+  "pilot14_preparation_authorized": false,
+  "status": "FROZEN_FOR_EXECUTION"
+}
