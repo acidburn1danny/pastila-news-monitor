@@ -1,0 +1,21 @@
+{
+  "assignment_performed": false,
+  "audit_identity": "e2be0e2716ab36fa34bef3eb4edc13d4d5e6092679d6082ecbcb87f93c5a030c",
+  "audit_verdict": "PASS_CONTENT_FREE_STOP_REQUIRED",
+  "blind_material_accessed": false,
+  "construction_authority": false,
+  "constructors_v5_2_and_v5_3_preserved": true,
+  "content_free": true,
+  "declaration_template_identity": "89a95d165794d10495427b64cfc4c5d3b2d150c5d8b6b3f6973a527133344305",
+  "deterministic_blockers": [],
+  "external_input_blocker": "OWNER_AUTHORED_SOURCE_BYTES_AND_COMPLETED_DECLARATION_REQUIRED",
+  "frozen_v5_3_identities_bound_but_not_released_or_invoked": true,
+  "mechanism_neutral": true,
+  "owner_input_request_identity": "1660842305c4569698e6cb53f390262c0f0c5981871e7bea03d438c84adef4a2",
+  "pilots01_through_10_preserved": true,
+  "proposition_evaluation_performed": false,
+  "release_authority": false,
+  "schema_name": "batch2-development-pilot11-owner-input-request-audit-v1",
+  "schema_version": "1.0.0",
+  "semantic_role_affordance_realization_and_witness_topology_unassigned": true
+}
