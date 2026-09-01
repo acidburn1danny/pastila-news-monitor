@@ -1,0 +1,399 @@
+{
+  "constructor_packet": {
+    "authority_matrix": {
+      "candidate_emission": false,
+      "constructor_invocation": false,
+      "constructor_release": false,
+      "constructor_v5_3_source_compatibility_evaluation": false,
+      "fragment_collision_evaluation": false,
+      "g02": false,
+      "g02c": false,
+      "g03": false,
+      "model_exposure": false,
+      "production_routing": false,
+      "realization": false,
+      "runtime_integration": false,
+      "semantic_edge_validation": false,
+      "semantic_plan_evaluation": false,
+      "semantic_role_or_affordance_planning": false,
+      "training": false
+    },
+    "authorized_visible_context_sha256": "3e22d06f68274f2410e8d481a20e3099f338acadf578282acfd31f8c833676cd",
+    "candidate_emitter_identity": "5a274ac6f140708066f587071e31f5376c0a985e5430d2537839c9627685ad5d",
+    "candidate_surface": null,
+    "closed_factual_authority_envelope": {
+      "authority_scope": "Only the explicitly stated glass-container inspection event, lot quantity and material, pre-filling temporal scope, surface-integrity and serial-number verification procedure, acceptance and rejection conditions, resulting filling-line or control-area disposition, rejection-recording procedure, lot-specific scope limitation, and explicitly unknown rejection and replacement outcomes within the accompanying owner-authored synthetic test universe.",
+      "propositions": [
+        {
+          "attribution": "OWNER_AUTHORED_SOURCE",
+          "known_boundary": "CONTAINER_RECORDED_ACCEPTED_AND_SENT_TO_FILLING_LINE",
+          "modality": "ASSERTED",
+          "object": {
+            "character_coordinates": [
+              392,
+              415
+            ],
+            "sha256": "c587657fca8d05fb6c796647fa3adfbc6ccad269f93a8699aa1cc4250e690980",
+            "utf8_byte_coordinates": [
+              411,
+              435
+            ]
+          },
+          "predicate": {
+            "character_coordinates": [
+              332,
+              391
+            ],
+            "sha256": "fdaba89c3fb6c9e3bc3d9e6a211e90470716f6d9e3f1842f56fc7f1fc598cbbc",
+            "utf8_byte_coordinates": [
+              349,
+              410
+            ]
+          },
+          "prohibited_inferences": [
+            "NO_REAL_WORLD_ASSERTION",
+            "NO_UNSTATED_CAUSAL_INFERENCE",
+            "NO_UNSTATED_PERSON_INTENT_OR_INTERNAL_STATE_INFERENCE",
+            "NO_UNSTATED_CONTAINER_MATERIAL_PROCEDURE_DISPOSITION_OR_OUTCOME_INFERENCE"
+          ],
+          "proposition_id": "P3",
+          "qualification": {
+            "character_coordinates": [
+              282,
+              319
+            ],
+            "sha256": "ac6ca4ac2558bb1d163abda49352b59db15685870524114d1e435e4262686300",
+            "utf8_byte_coordinates": [
+              297,
+              336
+            ]
+          },
+          "quotation_status": "NO_QUOTATION",
+          "scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE_ONLY",
+          "sensitive_protected_target_classification": "NONE_DECLARED_LOW_RISK_SYNTHETIC",
+          "subject": {
+            "character_coordinates": [
+              320,
+              331
+            ],
+            "sha256": "48dae4d6558eb8dac38d4b4f196e5a891718b1395c4e4ada5eaf05892472f6e0",
+            "utf8_byte_coordinates": [
+              337,
+              348
+            ]
+          },
+          "supporting_span": {
+            "character_coordinates": [
+              282,
+              415
+            ],
+            "sha256": "3e22d06f68274f2410e8d481a20e3099f338acadf578282acfd31f8c833676cd",
+            "span_sha256": "3e22d06f68274f2410e8d481a20e3099f338acadf578282acfd31f8c833676cd",
+            "utf8_byte_coordinates": [
+              297,
+              435
+            ]
+          },
+          "time": "IF_BOTH_CHECKS_CONFORM",
+          "unknown_boundary": "NO_ASSERTION_ANY_CONTAINER_WILL QUALIFY"
+        }
+      ],
+      "source_commitment": "674ec0659a372c80eadc4f78f539df5db40b8a0ecac899b7a508c9e59d72568c",
+      "source_sha256": "cdf1901941057914cb7b22ac1233771773e2f15bd1671bcc47e2d17d123e2bd9",
+      "world_scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE"
+    },
+    "construction_revision_family_id": "e995cc48d07a63154d846c67d7ad3c20039a7d0e6335dad7d29d3841532dac62",
+    "constructor_contract_identity": "9d811b18c16e8770549c19c9d8be63ef6f04e030fa67b5a47167b5e7ddc1bef6",
+    "constructor_facing_packet_identity": "0a594d3b19b0c386e6dbe5a8d87d1a983524656c504d832826b20f16c93545b9",
+    "constructor_implementation_identity": "18bd032218924cc8d2890301a1c92a376036918affddea335904a1491c807237",
+    "constructor_invoked": false,
+    "constructor_source_compatibility_audit_identity": "2a8ee424b9d3cab8b7040c8c36854a7bad0533a4c6e1caf6cc37721442c77793",
+    "constructor_source_compatibility_identity": "8c3cb36494d980cf74f08b96dbf2e60cdcefff45dfd3792d01375b740172a6d9",
+    "creative_marker_family_id": "UNASSIGNED_UNTIL_POSTCONSTRUCTION",
+    "creative_premise_family_id": "UNASSIGNED",
+    "edge_necessity_witnesses": [
+      {
+        "consumed_position": "ACTOR",
+        "counterfactual_dependency": true,
+        "explicit_licensing_rule": "RULE_L1_OUTPUT_IS_REQUIRED_ACTOR_OF_L2",
+        "non_arbitrary": true,
+        "predecessor_node_id": "L1",
+        "produced_operand_id": "INVENTED_RELATION_1",
+        "successor_node_id": "L2"
+      },
+      {
+        "consumed_position": "ACTOR",
+        "counterfactual_dependency": true,
+        "explicit_licensing_rule": "RULE_L2_OUTPUT_IS_REQUIRED_ACTOR_OF_TERMINAL_RESULT",
+        "non_arbitrary": true,
+        "predecessor_node_id": "L2",
+        "produced_operand_id": "INVENTED_RELATION_2",
+        "successor_node_id": "RESULT"
+      }
+    ],
+    "exact_authorized_visible_context_utf8": "Dacă ambele verificări sunt conforme, recipientul este trecut în registru cu statutul ACCEPTAT și este trimis către linia de umplere.",
+    "fragment_denyset_identity": "f7059aebc5944ff9f2ee0de4a8d20b26670e9a39408d26e682a8e8077f76f3b3",
+    "immutable_assignment_identity": "9778b0f7be4acb019cc112aacd34ea31bc7696db4ba82c0e41f9e3718511c57b",
+    "operand_semantic_specs": [
+      {
+        "affordances": [
+          "LICENSE_LOCAL_NONFACTUAL_EXTENSION"
+        ],
+        "entity_identity": "P3_CONDITIONED_CONTAINER_DISPOSITION",
+        "operand_id": "FACT_RELATION_497C40BB210DD296",
+        "provenance_operand_ids": [],
+        "reclassification_only": false,
+        "semantic_roles": [
+          "CONDITIONED_DISPOSITION_RELATION"
+        ]
+      },
+      {
+        "affordances": [
+          "QUALIFY_DISPOSITION"
+        ],
+        "entity_identity": "P3_CONFORMITY_CONDITION",
+        "operand_id": "FACT_QUALIFICATION",
+        "provenance_operand_ids": [],
+        "reclassification_only": false,
+        "semantic_roles": [
+          "CONDITION_STATE"
+        ]
+      },
+      {
+        "affordances": [
+          "RECEIVE_CONTAINER"
+        ],
+        "entity_identity": "P3_FILLING_LINE_DESTINATION",
+        "operand_id": "FACT_OBJECT",
+        "provenance_operand_ids": [],
+        "reclassification_only": false,
+        "semantic_roles": [
+          "TRANSFER_DESTINATION"
+        ]
+      },
+      {
+        "affordances": [
+          "PROPAGATE_TO_AUTHORIZED_DESTINATION"
+        ],
+        "entity_identity": "LOCAL_PROCESS_STATE_1",
+        "operand_id": "INVENTED_RELATION_1",
+        "provenance_operand_ids": [
+          "FACT_RELATION_497C40BB210DD296",
+          "FACT_QUALIFICATION"
+        ],
+        "reclassification_only": false,
+        "semantic_roles": [
+          "LICENSED_PROCESS_STATE"
+        ]
+      },
+      {
+        "affordances": [
+          "RESOLVE_AGAINST_SOURCE_RELATION"
+        ],
+        "entity_identity": "LOCAL_PROCESS_STATE_2",
+        "operand_id": "INVENTED_RELATION_2",
+        "provenance_operand_ids": [
+          "INVENTED_RELATION_1",
+          "FACT_OBJECT"
+        ],
+        "reclassification_only": false,
+        "semantic_roles": [
+          "DESTINATION_BOUND_PROCESS_STATE"
+        ]
+      }
+    ],
+    "output_constraints": {
+      "language": "ROMANIAN",
+      "length_profile": "COMMON_BATCH2_NEUTRAL_PROFILE_30_TO_90_WORDS_1_TO_3_SENTENCES",
+      "prohibited": [
+        "CANNED_OPENING_OR_TRANSITION",
+        "GOVERNANCE_OR_INSTRUCTION_META_LANGUAGE",
+        "PROCEDURAL_ABSTRACT_REGISTER",
+        "UNBOUND_REFERENCE_OR_OPERAND",
+        "FACTUAL_WIDENING"
+      ],
+      "register": "IDIOMATIC_NATURAL_CONCRETE_ROMANIAN"
+    },
+    "pre_emission_conformance_schema_identity": "4b26df92539082f11b83c83f76b1d158c7c8f4c87304bdcdd8a6129644f532f3",
+    "pre_emission_enforcement_identity": "16e54e9a09ed95905fd1f308d77b7bd4f03084b3a1654f8161a6c78b62ce6983",
+    "pre_emission_governance_identity": "073d68d9d21c76974d12eb8e3f591f4172197377bfb36c2de2f85a5afe079dd6",
+    "predicate_semantic_signatures": [
+      {
+        "predicate_id": "EXTEND_497C40BB210DD296",
+        "required_actor_affordances": [
+          "LICENSE_LOCAL_NONFACTUAL_EXTENSION"
+        ],
+        "required_actor_roles": [
+          "CONDITIONED_DISPOSITION_RELATION"
+        ],
+        "required_patient_affordances": [
+          "QUALIFY_DISPOSITION"
+        ],
+        "required_patient_roles": [
+          "CONDITION_STATE"
+        ]
+      },
+      {
+        "predicate_id": "PROPAGATE_497C40BB210DD296",
+        "required_actor_affordances": [
+          "PROPAGATE_TO_AUTHORIZED_DESTINATION"
+        ],
+        "required_actor_roles": [
+          "LICENSED_PROCESS_STATE"
+        ],
+        "required_patient_affordances": [
+          "RECEIVE_CONTAINER"
+        ],
+        "required_patient_roles": [
+          "TRANSFER_DESTINATION"
+        ]
+      },
+      {
+        "predicate_id": "RESOLVE_497C40BB210DD296",
+        "required_actor_affordances": [
+          "RESOLVE_AGAINST_SOURCE_RELATION"
+        ],
+        "required_actor_roles": [
+          "DESTINATION_BOUND_PROCESS_STATE"
+        ],
+        "required_patient_affordances": [
+          "LICENSE_LOCAL_NONFACTUAL_EXTENSION"
+        ],
+        "required_patient_roles": [
+          "CONDITIONED_DISPOSITION_RELATION"
+        ]
+      }
+    ],
+    "proposition_derived_typed_plan": [
+      {
+        "actor_role": "RELATION_HEAD",
+        "bound_actor_id": "FACT_RELATION_497C40BB210DD296",
+        "bound_patient_id": "FACT_QUALIFICATION",
+        "introduces_ids": [
+          "INVENTED_RELATION_1"
+        ],
+        "node_id": "L1",
+        "nonfactual_scope": true,
+        "predecessor_node_ids": [],
+        "predicate_id": "EXTEND_497C40BB210DD296",
+        "source_provenance": "P3_COORDINATE_BOUND_RELATION"
+      },
+      {
+        "actor_role": "RELATION_HEAD",
+        "bound_actor_id": "INVENTED_RELATION_1",
+        "bound_patient_id": "FACT_OBJECT",
+        "introduces_ids": [
+          "INVENTED_RELATION_2"
+        ],
+        "node_id": "L2",
+        "nonfactual_scope": true,
+        "predecessor_node_ids": [
+          "L1"
+        ],
+        "predicate_id": "PROPAGATE_497C40BB210DD296",
+        "source_provenance": "L1"
+      },
+      {
+        "actor_role": "RELATION_HEAD",
+        "bound_actor_id": "INVENTED_RELATION_2",
+        "bound_patient_id": "FACT_RELATION_497C40BB210DD296",
+        "introduces_ids": [],
+        "node_id": "RESULT",
+        "nonfactual_scope": true,
+        "predecessor_node_ids": [
+          "L2"
+        ],
+        "predicate_id": "RESOLVE_497C40BB210DD296",
+        "source_provenance": "L2"
+      }
+    ],
+    "realization_provider_identity": "c458ecb1c9fe64285f0b70db1ccb9be6ed3e48a4f461f72d22abc0a1f0714a93",
+    "schema_name": "batch2-development-pilot11-constructor-facing-assignment-proposal-v5-3",
+    "schema_version": "5.3.0",
+    "selected_proposition_id": "P3",
+    "selected_supporting_span_sha256": "3e22d06f68274f2410e8d481a20e3099f338acadf578282acfd31f8c833676cd",
+    "semantic_plan_commitment": "934f6c8bb0918b144807c2cc07d13a026b4fdd924801320e0e37548072125f2c",
+    "source_package_identity": "f69112cebbb6edb3f46427a923de82383b1065e4d497e19f885fbfb8e117dd1e",
+    "status": "G02B_RELEASE_CANDIDATE_ZERO_CONSTRUCTION",
+    "sufficiency_receipt_identity": "2b2b2aeb07d7b2f36ce6c36b71e209ad255638079fc20851a2f6239ad2d46f79",
+    "unlabeled_operational_obligation": {
+      "creative_marking_constraints": [
+        "Marcajul nonfactual trebuie ales local și firesc, fără formulă, tranziție, deschidere sau încheiere reutilizată.",
+        "Nu transfera în rezultat limbajul cerințelor, planului, controlului, guvernanței sau validării."
+      ],
+      "forbidden_operations": [
+        "Nu ascunde relația factuală până după rezultatul inventat și nu folosi dezvăluirea ei ca răsturnare principală.",
+        "Nu introduce un reper, operand, eveniment ori cauză care nu poate fi urmărită local până la contextul autorizat.",
+        "Nu baza rezultatul pe redenumire, reclasificare, personificare, intensificare, listă sau joc lexical.",
+        "Nu impune o formulă fixă, un conector, un semn de punctuație, un registru ori un număr fix de propoziții."
+      ],
+      "naturalness_and_safety": [
+        "Folosește română idiomatică și concretă; nu transfera în suprafață limbajul acestei cerințe.",
+        "Separă clar cadrul inventat de autoritatea factuală și nu adăuga fapte, citate, cunoaștere privată sau concluzii despre lumea reală."
+      ],
+      "obligation_instance_identity": "064ac73f610826555fc58f9949d926a3d80d0f8c6ad8ad903427adadf5e22a2d",
+      "obligation_version": "DEVELOPMENT_TRANSFORMATION_V5_3_01",
+      "transformation": [
+        "Păstrează exact relația factuală furnizată, cu toate calificările și limitele ei, și fă-o disponibilă înainte ca textul să poată produce o schimbare retrospectivă de lectură.",
+        "Construiește o consecință inventată prin cel puțin două legături locale distincte, fiecare necesară și recuperabilă din relația precedentă.",
+        "Consecința trebuie să depindă de întregul lanț; simpla transformare a unui cuvânt, număr ori înscris într-un obiect fizic nu poate susține singură rezultatul.",
+        "Marcajul nonfactual trebuie integrat firesc și trebuie să acopere toate legăturile inventate."
+      ],
+      "typed_semantic_future_constraints": [
+        "Într-o fază separată, înaintea oricărei realizări, fiecare operand și relație trebuie să primească o semnătură semantică derivată numai din propoziția selectată sau dintr-un rezultat local explicit.",
+        "O reclasificare nu poate crea singură agenție, autoritate, proprietate, permisiune, capacitate ori posibilitatea unei acțiuni.",
+        "Fiecare legătură, inclusiv cea terminală, trebuie să aibă compatibilitate locală și dependență contrafactuală explicită; simpla repetare lexicală nu este suficientă."
+      ]
+    }
+  },
+  "constructor_visible_object_set": [
+    "CONSTRUCTOR_PACKET_EXACT_BYTES"
+  ],
+  "release_core": {
+    "authorized_visible_context_sha256": "3e22d06f68274f2410e8d481a20e3099f338acadf578282acfd31f8c833676cd",
+    "candidate_emitter_identity": "5a274ac6f140708066f587071e31f5376c0a985e5430d2537839c9627685ad5d",
+    "constructor_contract_identity": "9d811b18c16e8770549c19c9d8be63ef6f04e030fa67b5a47167b5e7ddc1bef6",
+    "constructor_facing_packet_identity": "0a594d3b19b0c386e6dbe5a8d87d1a983524656c504d832826b20f16c93545b9",
+    "constructor_implementation_identity": "18bd032218924cc8d2890301a1c92a376036918affddea335904a1491c807237",
+    "constructor_invocation_authorized": false,
+    "constructor_source_compatibility_audit_identity": "2a8ee424b9d3cab8b7040c8c36854a7bad0533a4c6e1caf6cc37721442c77793",
+    "constructor_source_compatibility_identity": "8c3cb36494d980cf74f08b96dbf2e60cdcefff45dfd3792d01375b740172a6d9",
+    "creative_premise_family_id": "UNASSIGNED",
+    "fragment_denyset_identity": "f7059aebc5944ff9f2ee0de4a8d20b26670e9a39408d26e682a8e8077f76f3b3",
+    "immutable_assignment_identity": "9778b0f7be4acb019cc112aacd34ea31bc7696db4ba82c0e41f9e3718511c57b",
+    "packet_seal_namespace": "B2_DEVELOPMENT_PILOT11_CONSTRUCTOR_PACKET_G02B_V5_3",
+    "partition": "DEVELOPMENT",
+    "pre_emission_conformance_schema_identity": "4b26df92539082f11b83c83f76b1d158c7c8f4c87304bdcdd8a6129644f532f3",
+    "pre_emission_enforcement_identity": "16e54e9a09ed95905fd1f308d77b7bd4f03084b3a1654f8161a6c78b62ce6983",
+    "pre_emission_governance_identity": "073d68d9d21c76974d12eb8e3f591f4172197377bfb36c2de2f85a5afe079dd6",
+    "realization_provider_identity": "c458ecb1c9fe64285f0b70db1ccb9be6ed3e48a4f461f72d22abc0a1f0714a93",
+    "release_mode": "PATHLESS_SINGLE_OBJECT_CAPABILITY_NOT_RELEASED_TO_CONSTRUCTOR",
+    "selected_proposition_id": "P3",
+    "selected_supporting_span_sha256": "3e22d06f68274f2410e8d481a20e3099f338acadf578282acfd31f8c833676cd",
+    "semantic_plan_commitment": "934f6c8bb0918b144807c2cc07d13a026b4fdd924801320e0e37548072125f2c",
+    "single_use_state": "UNCONSUMED_0_OF_1_NOT_AUTHORIZED",
+    "sufficiency_receipt_identity": "2b2b2aeb07d7b2f36ce6c36b71e209ad255638079fc20851a2f6239ad2d46f79"
+  },
+  "release_identity": "377357f3e5dc85e044fc7a479d893c9643838cf599135cc52ea9c69467ae3fac",
+  "schema_name": "batch2-development-pilot11-constructor-access-release-v5-3",
+  "schema_version": "5.3.0",
+  "transport_policy": {
+    "cache_or_temp_file": false,
+    "command_line_payload": false,
+    "constructor_invocation_authorized": false,
+    "constructor_role": "CONSTRUCTOR",
+    "emitter_invocation_authorized": false,
+    "environment_inheritance": false,
+    "exceptions_contain_packet_or_mapping": false,
+    "filesystem_path_access": false,
+    "import_time_repository_access": false,
+    "logs_contain_packet_or_mapping": false,
+    "metadata_enumeration": false,
+    "network_access": false,
+    "packet_delivery": "IN_MEMORY_EXACT_BYTES_SINGLE_USE_PATHLESS_CAPABILITY",
+    "process_handle_inheritance": false,
+    "provider_invocation_authorized": false,
+    "repository_access": false,
+    "sibling_artifact_discovery": false
+  }
+}

@@ -68,6 +68,8 @@ def prepare_development_constructor_access_v1(*, release_bytes: bytes) -> Prepar
             "B2_DEVELOPMENT_PILOT09_CONSTRUCTOR_ACCESS_RELEASE_V5_1",
         "batch2-development-pilot10-constructor-access-release-v5-2":
             "B2_DEVELOPMENT_PILOT10_CONSTRUCTOR_ACCESS_RELEASE_V5_2",
+        "batch2-development-pilot11-constructor-access-release-v5-3":
+            "B2_DEVELOPMENT_PILOT11_CONSTRUCTOR_ACCESS_RELEASE_V5_3",
     }
     release_namespace = release_namespaces.get(release["schema_name"])
     if release_namespace is None:
@@ -100,6 +102,7 @@ def prepare_development_constructor_access_v1(*, release_bytes: bytes) -> Prepar
         "B2_DEVELOPMENT_PILOT08_CONSTRUCTOR_PACKET_G02B_V4",
         "B2_DEVELOPMENT_PILOT09_CONSTRUCTOR_PACKET_G02B_V5_1",
         "B2_DEVELOPMENT_PILOT10_CONSTRUCTOR_PACKET_G02B_V5_2",
+        "B2_DEVELOPMENT_PILOT11_CONSTRUCTOR_PACKET_G02B_V5_3",
     }:
         raise ValueError("packet seal namespace")
     if packet_identity != _seal(namespace, packet_core):
@@ -124,6 +127,7 @@ def prepare_development_constructor_access_v1(*, release_bytes: bytes) -> Prepar
             "batch2-development-pilot08-constructor-access-release-v4": "P5",
             "batch2-development-pilot09-constructor-access-release-v5-1": "P5",
             "batch2-development-pilot10-constructor-access-release-v5-2": "P3",
+            "batch2-development-pilot11-constructor-access-release-v5-3": "P3",
         }
         if (packet.get("selected_proposition_id") != allowed_selected_propositions.get(release["schema_name"])
                 or len(packet["closed_factual_authority_envelope"]["propositions"]) != 1):
@@ -177,6 +181,39 @@ def prepare_development_constructor_access_v1(*, release_bytes: bytes) -> Prepar
                 and sum(len(node.get("predecessor_node_ids", [])) for node in plan) == 2
             ):
                 raise ValueError("V5.2 implementation, plan, enforcement, compatibility, or denyset binding")
+        if release["schema_name"] == "batch2-development-pilot11-constructor-access-release-v5-3":
+            plan = packet.get("proposition_derived_typed_plan")
+            semantic_edges = packet.get("edge_necessity_witnesses")
+            if not (
+                packet.get("constructor_contract_identity")
+                == release["release_core"].get("constructor_contract_identity")
+                and packet.get("constructor_implementation_identity")
+                == release["release_core"].get("constructor_implementation_identity")
+                and packet.get("realization_provider_identity")
+                == release["release_core"].get("realization_provider_identity")
+                and packet.get("candidate_emitter_identity")
+                == release["release_core"].get("candidate_emitter_identity")
+                and packet.get("constructor_source_compatibility_identity")
+                == release["release_core"].get("constructor_source_compatibility_identity")
+                and packet.get("constructor_source_compatibility_audit_identity")
+                == release["release_core"].get("constructor_source_compatibility_audit_identity")
+                and packet.get("semantic_plan_commitment")
+                == release["release_core"].get("semantic_plan_commitment")
+                and packet.get("fragment_denyset_identity")
+                == release["release_core"].get("fragment_denyset_identity")
+                and packet.get("pre_emission_governance_identity")
+                == release["release_core"].get("pre_emission_governance_identity")
+                and packet.get("pre_emission_conformance_schema_identity")
+                == release["release_core"].get("pre_emission_conformance_schema_identity")
+                and packet.get("pre_emission_enforcement_identity")
+                == release["release_core"].get("pre_emission_enforcement_identity")
+                and isinstance(plan, list) and len(plan) == 3
+                and sum(len(node.get("predecessor_node_ids", [])) for node in plan) == 2
+                and isinstance(semantic_edges, list) and len(semantic_edges) == 2
+                and all(edge.get("counterfactual_dependency") is True
+                        and edge.get("non_arbitrary") is True for edge in semantic_edges)
+            ):
+                raise ValueError("V5.3 semantic plan, enforcement, compatibility, or denyset binding")
     else:
         source = packet.get("source_object", {})
         source_text = source.get("source_text_utf8")
