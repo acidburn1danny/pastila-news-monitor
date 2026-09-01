@@ -1,0 +1,49 @@
+{
+  "candidate_surface": null,
+  "conformance_schema_identity": "084ddf4d8e9f215db3665370221260c351d3befe747c4dbb45ab35baac4c993b",
+  "construction_authority": false,
+  "constructor_release_authority": false,
+  "constructor_visible_obligation": {
+    "creative_marking_constraints": [
+      "Marcajul nonfactual trebuie ales local, firesc și fără formulă, tranziție, deschidere sau aterizare reutilizată.",
+      "Nu transfera în rezultat limbajul cerințelor, al planului, al controlului, al guvernanței sau al validării."
+    ],
+    "forbidden_operations": [
+      "Nu ascunde relația factuală până după rezultatul inventat și nu folosi dezvăluirea ei ca răsturnare principală.",
+      "Nu introduce un reper, operand, eveniment ori cauză care nu poate fi urmărită local până la contextul autorizat.",
+      "Nu baza rezultatul pe redenumire, reclasificare, personificare, intensificare, listă sau joc lexical.",
+      "Nu impune o formulă fixă, un conector, un semn de punctuație, un registru ori un număr fix de propoziții."
+    ],
+    "future_pre_emission_constraints": [
+      "Orice viitoare realizare trebuie verificată mecanism-neutru înaintea emiterii, conform contractului V5.2 separat autorizat.",
+      "O afirmație că există o legătură ori un rezultat nu poate înlocui realizarea lor explicită."
+    ],
+    "naturalness_and_safety": [
+      "Folosește română idiomatică și concretă; nu transfera în suprafață limbajul acestei cerințe.",
+      "Separă clar cadrul inventat de autoritatea factuală și nu adăuga fapte, citate, cunoaștere privată sau concluzii despre lumea reală."
+    ],
+    "obligation_version": "DEVELOPMENT_TRANSFORMATION_V5_2_01",
+    "transformation": [
+      "Păstrează exact relația factuală furnizată, cu toate calificările și limitele ei, și fă-o disponibilă înainte ca textul să poată produce o schimbare retrospectivă de lectură.",
+      "Construiește o consecință inventată prin cel puțin două legături locale distincte, fiecare necesară și recuperabilă din relația precedentă.",
+      "Consecința trebuie să depindă de întregul lanț; simpla transformare a unui cuvânt, număr ori înscris într-un obiect fizic nu poate susține singură rezultatul.",
+      "Marcajul nonfactual trebuie integrat firesc și trebuie să acopere toate legăturile inventate."
+    ],
+    "typed_operand_constraints": [
+      "Înaintea oricărei realizări, fiecare operand trebuie descris numai prin rol, tip, proveniența din relația factuală selectată sau din legătura precedentă și compatibilitatea sa locală.",
+      "Fiecare legătură inventată poate consuma numai operanzi expliciți ai relației selectate ori rezultate produse explicit de legătura precedentă.",
+      "Nu introduce actori, agenți, obiecte de control, referințe sau rezultate fără producător local și tip compatibil.",
+      "Orice neînchidere a operanzilor trebuie să oprească procesul înaintea unei suprafețe."
+    ]
+  },
+  "family_version": "PLAN_WITNESSED_REALIZATION_V5_2_WITH_TYPED_OPERAND_CLOSURE_AND_TEMPLATE_DIVERSITY",
+  "governance_identity": "80bbf059956424ce6f20885de51ce900f6116b40a223a107a46a29d3b012efc6",
+  "inherited_operational_governance_identity": "4848bd025e43eff6652e4c2024072760d372ca4ac7427e5f21e1d2c4bcdb35dc",
+  "inherited_typed_operand_governance_identity": "e81ee4eff9044ee16180ef36a7508fe9f1e7c784fa6830299588cea16c2d3a3e",
+  "obligation_family_identity": "943261c4f1fe9622a71d5bd159fa8174b7a259323f491a81741b0b856a5284d6",
+  "realization_plan": null,
+  "schema_name": "batch2-development-pilot10-label-blind-obligation-family-v5-2",
+  "schema_version": "5.2.0",
+  "sufficiency_receipt_identity": "a3ce7039e7e01af1f32d5063022b86a0eb463da72ed5e182c32882776b3d1b1f",
+  "witness_topology": null
+}

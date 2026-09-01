@@ -1,0 +1,26 @@
+{
+  "admission_identity": "fd604ed8ab9ce4779d312c2308add3d78719f501f893536a4b77157fdc8132bc",
+  "authorized_visible_context_sha256": "188742ebbe30a23349601ddb369b0bb962d87dc9c8efe3227e50a38b6f89d967",
+  "candidate_surface": null,
+  "construction_revision_family_id": "d8fb4f341c6d31e7863a3bbd507fdaada62b8ce99d5e4f4ac2694d10df4396b4",
+  "constructor_access": false,
+  "creative_marker_family_id": "UNASSIGNED_UNTIL_POSTCONSTRUCTION",
+  "creative_premise_family_id": "UNASSIGNED",
+  "obligation_family_identity": "943261c4f1fe9622a71d5bd159fa8174b7a259323f491a81741b0b856a5284d6",
+  "partition": "DEVELOPMENT",
+  "pool_outcome": "INACCESSIBLE_NOT_EVALUATED",
+  "realization_plan": null,
+  "schema_name": "batch2-development-pilot10-sealed-assignment-v5-2",
+  "schema_version": "5.2.0",
+  "sealed_assignment_identity": "c4677b0b8d148163d339cf72590078564f5a462a571d6272cbc8800d90ad4aab",
+  "selected_proposition_id": "P3",
+  "selected_supporting_span_sha256": "188742ebbe30a23349601ddb369b0bb962d87dc9c8efe3227e50a38b6f89d967",
+  "status": "SEALED_PROPOSAL_NOT_RELEASED",
+  "sufficiency_receipt_identity": "a3ce7039e7e01af1f32d5063022b86a0eb463da72ed5e182c32882776b3d1b1f",
+  "target_mapping": {
+    "frozen_plan_option": "M13_ABSURD_LOGICAL_EXTENSION",
+    "mechanism_id": "HMCV1-B02-M03-ABSURD_LOGICAL_EXTENSION",
+    "mechanism_name": "Absurd Logical Extension"
+  },
+  "witness_topology": null
+}
