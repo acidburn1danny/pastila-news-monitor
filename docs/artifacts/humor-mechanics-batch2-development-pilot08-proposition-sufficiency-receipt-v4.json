@@ -1,0 +1,129 @@
+{
+  "abstract_adjacent_link_witness": {
+    "adjacent_links": [
+      "ZONE_NONRESPONSE_IS_THE_EXPLICIT_CONDITION_FOR_INTERVENTION_RECORDING",
+      "THE_INTERVENTION_RECORD_DIRECTS_A_LATER_CHECK_OF_THE_LISTED_COMPONENT_CLASSES"
+    ],
+    "candidate_surface": null,
+    "humor": null,
+    "kind": "ABSTRACT_SOURCE_RELATION_ONLY",
+    "non_arbitrariness": "REMOVING_NONRESPONSE_RECORDING_OR_LATER_CHECK_BREAKS_THE_EXPLICIT_CONDITIONAL_CHAIN",
+    "relation": "NONRESPONDING_ZONE_ENTAILS_INTERVENTION_RECORD_AND_LATER_COMPONENT_CHECK"
+  },
+  "admission_commit": "268f497f827c9045ac9dd15a07c6c6e66cae9b46",
+  "admission_identity": "8010b5510177b2805ef5e512f982e459a0f3b16c61ba34eb49ac4a62c40734ba",
+  "all_proposition_assessments": [
+    {
+      "abstract_adjacent_link_witness": null,
+      "operand_closure": "PASS_NO_UNBOUND_DERIVED_OPERAND",
+      "proposition_id": "P1",
+      "qualification_preservation": "PASS_BOUND_EXACTLY",
+      "reference_resolution": "PASS_NO_UNRESOLVED_REFERENCE",
+      "selection_status": "NOT_SELECTED_NO_POSITIVE_WITNESS_ASSERTED",
+      "standalone_semantic_closure": true,
+      "supporting_span_sha256": "99dbeeaa19dd557528d49443828a4096d58d64a5a36e8111e63dd2b4d77c9f28"
+    },
+    {
+      "abstract_adjacent_link_witness": null,
+      "operand_closure": "PASS_NO_UNBOUND_DERIVED_OPERAND",
+      "proposition_id": "P2",
+      "qualification_preservation": "PASS_BOUND_EXACTLY",
+      "reference_resolution": "PASS_NO_UNRESOLVED_REFERENCE",
+      "selection_status": "NOT_SELECTED_NO_POSITIVE_WITNESS_ASSERTED",
+      "standalone_semantic_closure": true,
+      "supporting_span_sha256": "215dacde1b89d93bc4a798287b687612c3db979d814a8fba9a0ddc19878e3e87"
+    },
+    {
+      "abstract_adjacent_link_witness": null,
+      "operand_closure": "PASS_NO_UNBOUND_DERIVED_OPERAND",
+      "proposition_id": "P3",
+      "qualification_preservation": "PASS_BOUND_EXACTLY",
+      "reference_resolution": "PASS_NO_UNRESOLVED_REFERENCE",
+      "selection_status": "NOT_SELECTED_NO_POSITIVE_WITNESS_ASSERTED",
+      "standalone_semantic_closure": true,
+      "supporting_span_sha256": "cfda7fa64af00078ec1db28677664d52c836a91d61942530996a7fa4883809f4"
+    },
+    {
+      "abstract_adjacent_link_witness": null,
+      "operand_closure": "PASS_NO_UNBOUND_DERIVED_OPERAND",
+      "proposition_id": "P4",
+      "qualification_preservation": "PASS_BOUND_EXACTLY",
+      "reference_resolution": "PASS_NO_UNRESOLVED_REFERENCE",
+      "selection_status": "NOT_SELECTED_NO_POSITIVE_WITNESS_ASSERTED",
+      "standalone_semantic_closure": true,
+      "supporting_span_sha256": "6288be2a894b0d72d94e8af875c351c84b277cdb1c630e8b2ee742374f9f06cb"
+    },
+    {
+      "abstract_adjacent_link_witness": {
+        "adjacent_links": [
+          "ZONE_NONRESPONSE_IS_THE_EXPLICIT_CONDITION_FOR_INTERVENTION_RECORDING",
+          "THE_INTERVENTION_RECORD_DIRECTS_A_LATER_CHECK_OF_THE_LISTED_COMPONENT_CLASSES"
+        ],
+        "candidate_surface": null,
+        "humor": null,
+        "kind": "ABSTRACT_SOURCE_RELATION_ONLY",
+        "non_arbitrariness": "REMOVING_NONRESPONSE_RECORDING_OR_LATER_CHECK_BREAKS_THE_EXPLICIT_CONDITIONAL_CHAIN",
+        "relation": "NONRESPONDING_ZONE_ENTAILS_INTERVENTION_RECORD_AND_LATER_COMPONENT_CHECK"
+      },
+      "operand_closure": "PASS_NO_UNBOUND_DERIVED_OPERAND",
+      "proposition_id": "P5",
+      "qualification_preservation": "PASS_BOUND_EXACTLY",
+      "reference_resolution": "PASS_INTERNAL_TO_SELECTED_SPAN",
+      "selection_status": "SELECTED_SUFFICIENT",
+      "standalone_semantic_closure": true,
+      "supporting_span_sha256": "6fd5aeac76fa3602374be0da17bf7bb82c8b878b6302b3ddd6789712d034f3db"
+    },
+    {
+      "abstract_adjacent_link_witness": null,
+      "operand_closure": "PASS_NO_UNBOUND_DERIVED_OPERAND",
+      "proposition_id": "P6",
+      "qualification_preservation": "PASS_BOUND_EXACTLY",
+      "reference_resolution": "PASS_NO_UNRESOLVED_REFERENCE",
+      "selection_status": "NOT_SELECTED_NO_POSITIVE_WITNESS_ASSERTED",
+      "standalone_semantic_closure": true,
+      "supporting_span_sha256": "74e66cf598ca17081b4009aa360cc93584bb21d6fa7aca34f4375aa7872568fb"
+    },
+    {
+      "abstract_adjacent_link_witness": null,
+      "operand_closure": "PASS_NO_UNBOUND_DERIVED_OPERAND",
+      "proposition_id": "P7",
+      "qualification_preservation": "PASS_BOUND_EXACTLY",
+      "reference_resolution": "PASS_NO_UNRESOLVED_REFERENCE",
+      "selection_status": "NOT_SELECTED_NO_POSITIVE_WITNESS_ASSERTED",
+      "standalone_semantic_closure": true,
+      "supporting_span_sha256": "af5b750649f6b913cd92ad0e6778df707bcc778d14f99ff11127f87e067e0262"
+    }
+  ],
+  "authority_envelope_identity": "9988272b9a99ca29fbd706abc4b6f57bbb6c87a62bf2fe4a79de0919a4051847",
+  "authority_matrix": {
+    "assignment": false,
+    "construction": false,
+    "constructor_release": false,
+    "g04b_pool_certification": false,
+    "model_exposure": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "training": false
+  },
+  "authorized_visible_context": "EXACT_SELECTED_SUPPORTING_SPAN_ONLY",
+  "authorized_visible_context_sha256": "6fd5aeac76fa3602374be0da17bf7bb82c8b878b6302b3ddd6789712d034f3db",
+  "candidate_surface": null,
+  "creative_premise_family_id": "UNASSIGNED",
+  "governance_identity": "cc86204c6f199c80ef7c7bf87a58cf3c62d17acb1fe14bd2666bbf5ba86692f6",
+  "inherited_causal_spine_governance_identity": "4848bd025e43eff6652e4c2024072760d372ca4ac7427e5f21e1d2c4bcdb35dc",
+  "inherited_causal_spine_schema_identity": "28dfdab8dd9112d0148dad0b513155b5ae14445f5daee359b7a35d1bc5eb1c2c",
+  "mechanism_label_exposed": false,
+  "operand_closure": "PASS_NO_UNBOUND_DERIVED_OPERAND",
+  "qualification_preservation": "PASS_BOUND_EXACTLY",
+  "receipt_identity": "be0f5cb5d2fa33a7163db4b59babf777d6cf004472cf6a6607206d82870edbe3",
+  "reference_resolution": "PASS_INTERNAL_TO_SELECTED_SPAN",
+  "schema_identity": "12c96a72555a26181abd5d0e7fa033a425fdacafb3a7fb197a21b39358da1dbe",
+  "schema_name": "batch2-pilot08-post-g01-proposition-sufficiency-receipt-v4",
+  "schema_version": "4.0.0",
+  "scope_time_modality_unknown_boundaries": "PASS_PRESERVED",
+  "selected_proposition_id": "P5",
+  "selected_supporting_span_sha256": "6fd5aeac76fa3602374be0da17bf7bb82c8b878b6302b3ddd6789712d034f3db",
+  "source_package_identity": "2fd6e1cee4fe69136d976bd988c004de354c5c3cfee553d92f6395ac464fe64f",
+  "standalone_semantic_closure": true,
+  "verdict": "PASS_SELECTED_PROPOSITION_SUFFICIENT"
+}
