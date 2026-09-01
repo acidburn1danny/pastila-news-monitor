@@ -1,0 +1,27 @@
+{
+  "candidate_surfaces_created": 0,
+  "conformance_schema_identity": "084ddf4d8e9f215db3665370221260c351d3befe747c4dbb45ab35baac4c993b",
+  "constructor_contract_identity": "69138467540b37cbfb8444596d9a37119f8b74d002e0c491c8ff599ce77cec77",
+  "enforcement_implementation_identity": "7a814e9bc583cf48f53cde88f1fc343708150470f088e0e320091e091054f036",
+  "entrypoint": "realize_typed_plan",
+  "governance_identity": "80bbf059956424ce6f20885de51ce900f6116b40a223a107a46a29d3b012efc6",
+  "hard_coded_candidate_template": false,
+  "invocations": 0,
+  "lexicalization_coverage": "EXACT_N_OF_N",
+  "module_path": "src/pastila_scout/humor_batch2_development_constructor_v5_2_runtime.py",
+  "module_sha256": "bde911af41fc95772590f5ab86c1fc0ac39ae98937366e6c312e0a709429f3e7",
+  "node_witness_fields_preserved": [
+    "NODE_ID",
+    "ACTOR_OPERAND",
+    "PREDICATE",
+    "PATIENT_OPERAND",
+    "PREDECESSOR_EDGES",
+    "PRODUCED_OPERANDS",
+    "TERMINAL_RESULT"
+  ],
+  "realization_provider_implementation_identity": "36b3669acb5e7d2b772ad6d8a912f4cdbfea8f58e3c45e72cafcd206336afce8",
+  "release_authority": false,
+  "schema_name": "batch2-development-constructor-v5-2-realization-provider-implementation",
+  "schema_version": "5.2.0",
+  "typed_plan_input_required": true
+}
