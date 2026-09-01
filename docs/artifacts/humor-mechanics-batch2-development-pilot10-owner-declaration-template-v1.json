@@ -1,0 +1,83 @@
+{
+  "contributor": {
+    "identity_disclosure_approved_for_commit": "OWNER_MUST_SUPPLY_OR_CHOOSE",
+    "legal_identity_commitment": "OWNER_MUST_SUPPLY_OR_CHOOSE",
+    "legal_identity_verification_reference": "OWNER_MUST_SUPPLY_OR_CHOOSE",
+    "public_identity": "OWNER_MUST_SUPPLY_OR_CHOOSE",
+    "rights_holder_identity": "OWNER_MUST_SUPPLY_OR_CHOOSE",
+    "rights_holder_relationship": "OWNER_MUST_SUPPLY_OR_CHOOSE",
+    "role": "OWNER_MUST_SUPPLY_OR_CHOOSE"
+  },
+  "independent_grants": {
+    "construction_and_evaluation": "OWNER_MUST_CHOOSE_BOOLEAN_INDEPENDENTLY",
+    "factual_annotation_and_authority_binding": "OWNER_MUST_CHOOSE_BOOLEAN_INDEPENDENTLY",
+    "immutable_archival": "OWNER_MUST_CHOOSE_BOOLEAN_INDEPENDENTLY",
+    "internal_discovery": "OWNER_MUST_CHOOSE_BOOLEAN_INDEPENDENTLY",
+    "model_exposure": "OWNER_MUST_CHOOSE_BOOLEAN_INDEPENDENTLY",
+    "production_routing": "OWNER_MUST_CHOOSE_BOOLEAN_INDEPENDENTLY",
+    "runtime_integration": "OWNER_MUST_CHOOSE_BOOLEAN_INDEPENDENTLY",
+    "training": "OWNER_MUST_CHOOSE_BOOLEAN_INDEPENDENTLY"
+  },
+  "owner_confirmation": {
+    "confirmation_statement": "OWNER_MUST_SUPPLY_EXPLICIT_STATEMENT",
+    "confirmed": "OWNER_MUST_CHOOSE_BOOLEAN",
+    "owner_identity": "OWNER_MUST_SUPPLY"
+  },
+  "owner_instruction": {
+    "operational_content_access_after_ingestion": "OWNER_MUST_CHOOSE_BOOLEAN",
+    "permit_derived_hashes_and_coordinates": "OWNER_MUST_CHOOSE_BOOLEAN",
+    "permit_development_partition_seal": "OWNER_MUST_CHOOSE_BOOLEAN",
+    "permit_git_object_archival": "OWNER_MUST_CHOOSE_BOOLEAN",
+    "permit_registered_custodial_signing_requests": "OWNER_MUST_CHOOSE_BOOLEAN",
+    "request_preingestion_validation_only": "OWNER_MUST_CHOOSE_BOOLEAN"
+  },
+  "ownership_declarations": {
+    "contains_personal_data": "OWNER_MUST_CHOOSE_BOOLEAN",
+    "contains_private_or_confidential_information": "OWNER_MUST_CHOOSE_BOOLEAN",
+    "contains_reputation_sensitive_allegation": "OWNER_MUST_CHOOSE_BOOLEAN",
+    "contains_unattributed_quotation": "OWNER_MUST_CHOOSE_BOOLEAN",
+    "contains_undisclosed_third_party_material": "OWNER_MUST_CHOOSE_BOOLEAN",
+    "contains_unlawfully_obtained_information": "OWNER_MUST_CHOOSE_BOOLEAN",
+    "has_authority_to_make_each_selected_grant": "OWNER_MUST_CHOOSE_BOOLEAN",
+    "original_authorship": "OWNER_MUST_CHOOSE_BOOLEAN",
+    "owns_or_controls_required_rights": "OWNER_MUST_CHOOSE_BOOLEAN"
+  },
+  "pilot_id": "BATCH2-INTERNALLY-OWNED-DEVELOPMENT-PILOT-10",
+  "rights_terms": {
+    "attribution_requirement": "OWNER_MUST_CHOOSE_OR_DECLARE",
+    "compensation_terms": "OWNER_MUST_CHOOSE_OR_DECLARE",
+    "correction_policy": "OWNER_MUST_CHOOSE_OR_DECLARE",
+    "effective_at": "OWNER_MUST_CHOOSE_OR_DECLARE",
+    "expires_at": "OWNER_MUST_CHOOSE_OR_DECLARE",
+    "revocation_terms": "OWNER_MUST_CHOOSE_OR_DECLARE",
+    "supersession_policy": "OWNER_MUST_CHOOSE_OR_DECLARE",
+    "survival_of_completed_uses": "OWNER_MUST_CHOOSE_OR_DECLARE",
+    "territory": "OWNER_MUST_CHOOSE_OR_DECLARE"
+  },
+  "schema_name": "batch2-internally-owned-owner-input-pilot10-v1",
+  "schema_version": "1.0.0",
+  "source": {
+    "acquisition_channel": "INTERNALLY_OWNED_FACTUAL_AUTHORITY_BUNDLE",
+    "acquisition_timestamp": "OWNER_MUST_SUPPLY_ISO8601_WITH_OFFSET",
+    "authority_scope": "OWNER_MUST_SUPPLY",
+    "bom": false,
+    "capture_timestamp": "OWNER_MUST_SUPPLY_ISO8601_WITH_OFFSET",
+    "declared_encoding": "UTF-8",
+    "filename": "owner-source-pilot10-v1.txt",
+    "intended_partition": "DEVELOPMENT",
+    "line_endings": "LF",
+    "source_version": "OWNER_MUST_SUPPLY_SEMVER",
+    "subject_class": "OWNER_MUST_SUPPLY",
+    "terminal_lf_count": 1,
+    "world_scope": "OWNER_MUST_SUPPLY"
+  },
+  "source_status_declarations": {
+    "known_and_unknown_boundaries_are_explicit": "OWNER_MUST_CHOOSE_BOOLEAN",
+    "source_contains_no_mechanism_obligation_creative_premise_candidate_constructor_test_witness_or_template_marker": "OWNER_MUST_CHOOSE_BOOLEAN",
+    "source_does_not_reuse_pilots_01_02_03_04_05_06_07_08_09_wording_entities_events_or_source_structures": "OWNER_MUST_CHOOSE_BOOLEAN",
+    "source_has_no_revision_sibling_same_event_or_syndication_relationship_with_pilots_01_02_03_04_05_06_07_08_09": "OWNER_MUST_CHOOSE_BOOLEAN",
+    "source_is_neutral_factual_authority": "OWNER_MUST_CHOOSE_BOOLEAN",
+    "source_was_not_selected_or_shaped_for_any_mechanism_pool_target_proposition_result_assignment_obligation_constructor_compatibility_realization_plan_witness_topology_creative_marker_or_expected_positive_outcome": "OWNER_MUST_CHOOSE_BOOLEAN"
+  },
+  "template_identity": "46209c6c15733e17bd15e92e2088b914df6883d6bdc0d31c88bfa204795e5ae5"
+}

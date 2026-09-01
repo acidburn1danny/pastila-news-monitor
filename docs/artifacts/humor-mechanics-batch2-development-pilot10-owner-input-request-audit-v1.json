@@ -1,0 +1,21 @@
+{
+  "assignment_performed": false,
+  "audit_identity": "c42bb6a3508da88f27f6b2a10a1f5b1c9908f1ad0ccd1a796797389886f0ddcc",
+  "audit_verdict": "PASS_CONTENT_FREE_STOP_REQUIRED",
+  "blind_material_accessed": false,
+  "construction_authority": false,
+  "constructor_compatibility_release_or_invocation_performed": false,
+  "content_free": true,
+  "declaration_template_identity": "46209c6c15733e17bd15e92e2088b914df6883d6bdc0d31c88bfa204795e5ae5",
+  "deterministic_blockers": [],
+  "external_input_blocker": "OWNER_AUTHORED_SOURCE_BYTES_AND_COMPLETED_DECLARATION_REQUIRED",
+  "frozen_v5_2_identities_bound_but_not_released_or_invoked": true,
+  "mechanism_neutral": true,
+  "owner_input_request_identity": "0fadef1e02839a570cd61ed128d26114d7ff5042f0dbfa309844a988adc23336",
+  "pilot09_and_constructor_v5_1_preserved": true,
+  "proposition_evaluation_performed": false,
+  "realization_plan_or_witness_topology_selected": false,
+  "schema_name": "batch2-development-pilot10-owner-input-request-audit-v1",
+  "schema_version": "1.0.0",
+  "source_selection_uses_downstream_gate_or_expected_result": false
+}
