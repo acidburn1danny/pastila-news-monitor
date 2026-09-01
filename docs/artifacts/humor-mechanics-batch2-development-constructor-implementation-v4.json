@@ -1,0 +1,21 @@
+{
+  "candidate_surface": null,
+  "complete_candidate_surface_literals": false,
+  "conformance_schema_identity": "12c96a72555a26181abd5d0e7fa033a425fdacafb3a7fb197a21b39358da1dbe",
+  "construction_revision_family_id": "0b70d24e2d85961dd075281da09adf2ac8b5cb35abc37774d0d247fcd11101ea",
+  "constructor_implementation_identity": "68101cd87711761c2c739dc989490c5dd05eaccc0fac03472b9aac180ce647e4",
+  "constructor_v1_sha256": "cad05554cae47782b6ced6c55a549bdb221de36035327fd9d82c2eaa02236eda",
+  "constructor_v1_status": "BYTE_EXACT_HISTORICAL_VERIFICATION_ONLY_NO_FUTURE_RELEASE",
+  "filesystem_environment_process_network_model_access": false,
+  "fragment_denyset_identity": "d35beab3b093d118e52369239477f6dc835e764976e44336793f90704b38c844",
+  "governance_identity": "cc86204c6f199c80ef7c7bf87a58cf3c62d17acb1fe14bd2666bbf5ba86692f6",
+  "identity_routed_surface_branches": false,
+  "invocations": 0,
+  "module_path": "src/pastila_scout/humor_batch2_development_constructor_v4.py",
+  "module_sha256": "f13136099e75c95033a54aabb447ded743c96a55479dc9a8b685f2a2b41c12d7",
+  "public_entrypoint": "construct_development_candidate_v4",
+  "release_authority": false,
+  "reusable_multiword_creative_marker_literals": false,
+  "schema_name": "batch2-development-constructor-implementation-v4",
+  "schema_version": "4.0.0"
+}

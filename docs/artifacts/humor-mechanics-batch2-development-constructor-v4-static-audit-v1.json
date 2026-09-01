@@ -1,0 +1,23 @@
+{
+  "assignment_identity": "87c2c2d9f5607e1bdcfcf4b2e01bda2039635e2f9c41c633338d4b42d627259a",
+  "audit_identity": "d25a8e97a4f7bb9e75506120a70f4f84ecef45b7f67e6601fa7c4d67c27a240b",
+  "blind_reserve_access": "PASS_NONE",
+  "candidate_surfaces_created": 0,
+  "complete_candidate_surface_literal_scan": "PASS_ZERO_HITS",
+  "constructor_facing_proposal_identity": "2ecb50bcca118b4c62f67d6ee05c685ce1073030d6ef8f26d5930185c87ce48c",
+  "constructor_implementation_identity": "68101cd87711761c2c739dc989490c5dd05eaccc0fac03472b9aac180ce647e4",
+  "constructor_invocations": 0,
+  "constructor_v1_byte_exact": "PASS",
+  "deterministic_blockers": [],
+  "downstream_authority": false,
+  "fragment_collision_evaluation": "NOT_PERFORMED_POSTCONSTRUCTION_ONLY",
+  "fragment_denyset_identity": "d35beab3b093d118e52369239477f6dc835e764976e44336793f90704b38c844",
+  "g02b_release": "NOT_PERFORMED",
+  "identity_routed_surface_branch_scan": "PASS_ZERO_HITS",
+  "nonblind_development_denyset": "PASS_7_FAMILIES_1617_UNIQUE_NGRAM_HASHES",
+  "pathless_import_allowlist": "PASS",
+  "reusable_creative_marker_literal_scan": "PASS_ZERO_HITS",
+  "schema_name": "batch2-development-constructor-v4-static-audit-v1",
+  "schema_version": "1.0.0",
+  "verdict": "PASS_IMPLEMENTATION_AND_STATIC_AUDIT_ZERO_CONSTRUCTION_NO_RELEASE"
+}
