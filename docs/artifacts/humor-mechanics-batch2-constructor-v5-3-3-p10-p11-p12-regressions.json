@@ -1,0 +1,22 @@
+{
+  "adversarial_cases": [
+    "CLASS_A_OVERRIDE_REJECTED",
+    "CLASS_B_COORDINATE_OR_FORM_REJECTED",
+    "SECOND_PROVIDER_FIELD_REJECTED",
+    "MISSING_AUTHORITY_CLOSURE_PRE_INVOCATION",
+    "STALE_CAUSAL_RULE_UNREPRESENTABLE",
+    "STALE_NODE_ROLE_AFFORDANCE_UNREPRESENTABLE",
+    "LEGACY_MIXED_TYPE_UNREACHABLE",
+    "LICENSED_ROMANIAN_ALIGNMENT_PRESERVED",
+    "MISSING_ROLE_FAILS_CLOSED",
+    "GENUINE_SEMANTIC_DRIFT_FAILS_CLOSED",
+    "PILOT05_12_PROTECTIONS_PRESERVED"
+  ],
+  "invariants": {
+    "P10_SEMANTIC_AUTHORITY": "Class A immutable; actual surface tested against frozen semantics",
+    "P11_SURFACE_EVIDENCE": "Class B from bytes/coordinates; licensed morphology aligns evidence without replacing it",
+    "P12_DETERMINISTIC_METADATA": "Class A derived once; provider cannot represent it"
+  },
+  "regression_identity": "cf71443bb6d5da0500da4c01a4c520ba38aa3624ae6ce76166742dd6fb8b4883",
+  "schema_name": "constructor-v5-3-3-p10-p11-p12-anti-loop-regressions"
+}

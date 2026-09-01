@@ -1,0 +1,58 @@
+{
+  "FIVE_FIELD_PROVIDER_SINGLE_SOURCE_OF_TRUTH_VERDICT": "FAIL_DUPLICATED_GENERATIVE_REPRESENTATION_REMEDIATED_TO_CLAUSE_ONLY_PROVIDER",
+  "P10_P11_P12_SHARED_BOUNDARY_VERDICT": "SHARED_EPISTEMIC_CLASS_DUPLICATION_AND_POST_HOC_RECONCILIATION_DEFECT_CONFIRMED_AND_REMOVED",
+  "additional_defect": "FIVE_FIELD_CREATIVE_SCHEMA_ALLOWED_CLAUSE_VERSUS_STRUCTURED_SURFACE_CONTRADICTION",
+  "candidate_surfaces": 0,
+  "constructor_invocations": 0,
+  "contract_identity": "99a6265e3dac8ab8ec3eb47456e0fc6927124636a08d5afb380c4e77042cb5b5",
+  "counts": {
+    "A": 39,
+    "B": 17,
+    "C": 1
+  },
+  "cross_product": {
+    "alignment_can_change_class_a_identity": false,
+    "class_a_overridden_by_c": false,
+    "class_a_reconstructed_from_c": false,
+    "class_b_fabricated_from_a": false,
+    "class_b_supplied_by_provider": false,
+    "class_c_can_undetectably_change_a": false,
+    "semantic_validation_compares_a_to_provider_metadata": false
+  },
+  "earliest_enforcement": {
+    "post_realization_pre_emission": [
+      "material nodes and edges",
+      "semantic continuity",
+      "character and UTF-8 coordinates",
+      "observed Romanian forms",
+      "licensed alignment",
+      "terminal realization",
+      "semantic drift",
+      "placeholder/meta/instruction transfer"
+    ],
+    "pre_invocation": [
+      "authority closure",
+      "implementation/release/capability binding",
+      "proposition/span",
+      "topology/arity",
+      "roles/signatures/affordances",
+      "edge rules and necessity",
+      "terminal edge",
+      "denyset",
+      "alignment policy"
+    ]
+  },
+  "emitter_identity": "36db1976f0ca66d5ef6e3b4247d9c6d7689bdec0c38876d74532f9f744a611f8",
+  "emitter_invocations": 0,
+  "implementation_identity": "2afc37a57f2acde397e35c229b45220c9eb79cc33d3b187600a2bb4f4ab95bac",
+  "known_blockers_before_next_family": [],
+  "legacy_reachability": "PASS_UNREACHABLE_FROM_V5_3_3_PROVIDER_PAYLOAD_DESERIALIZATION_AND_PUBLIC_API",
+  "provider_identity": "e78f84f14cb460193e87caf473acda9c78cf52b0d5f1afa692a466fac5efc35a",
+  "provider_invocations": 0,
+  "regression_identity": "cf71443bb6d5da0500da4c01a4c520ba38aa3624ae6ce76166742dd6fb8b4883",
+  "release_authority": false,
+  "remediation": "provider narrowed to clause only; structured forms and coordinates moved to Class B observation",
+  "schema_name": "constructor-v5-3-3-provider-emitter-integration-static-audit",
+  "static_audit_identity": "13d3aebd8b444bc7e07bb5076a93f1f946eea0389e6e7ff5d3e4cb3d453a8fde",
+  "verdict": "PASS_V5_3_3_SINGLE_SOURCE_PROVIDER_EMITTER_INTEGRATION_STATIC_AUDIT_ZERO_CONSTRUCTION_NO_RELEASE"
+}

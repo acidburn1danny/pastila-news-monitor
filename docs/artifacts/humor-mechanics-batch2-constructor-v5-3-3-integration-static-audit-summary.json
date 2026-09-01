@@ -1,0 +1,10 @@
+{
+  "anti_loop_regression_identity": "cf71443bb6d5da0500da4c01a4c520ba38aa3624ae6ce76166742dd6fb8b4883",
+  "combined_implementation_identity": "2afc37a57f2acde397e35c229b45220c9eb79cc33d3b187600a2bb4f4ab95bac",
+  "contract_identity": "99a6265e3dac8ab8ec3eb47456e0fc6927124636a08d5afb380c4e77042cb5b5",
+  "emitter_identity": "36db1976f0ca66d5ef6e3b4247d9c6d7689bdec0c38876d74532f9f744a611f8",
+  "execution_commit": "6188f4e06db53a4377121037769fbcb058a8c88e",
+  "provider_identity": "e78f84f14cb460193e87caf473acda9c78cf52b0d5f1afa692a466fac5efc35a",
+  "static_audit_identity": "13d3aebd8b444bc7e07bb5076a93f1f946eea0389e6e7ff5d3e4cb3d453a8fde",
+  "verdict": "PASS_V5_3_3_SINGLE_SOURCE_PROVIDER_EMITTER_INTEGRATION_STATIC_AUDIT_ZERO_CONSTRUCTION_NO_RELEASE"
+}

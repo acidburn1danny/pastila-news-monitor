@@ -1,0 +1,31 @@
+{
+  "authority_counts": {
+    "AUTHORITY_DERIVED_METADATA": 39,
+    "GENUINELY_GENERATIVE_CHOICES": 1,
+    "SURFACE_OBSERVED_EVIDENCE": 17
+  },
+  "class_a": "derived once from frozen authority before invocation",
+  "class_b": "observed once from actual surface bytes and coordinates",
+  "class_c": "clause text only",
+  "contract_identity": "99a6265e3dac8ab8ec3eb47456e0fc6927124636a08d5afb380c4e77042cb5b5",
+  "provider_prohibited_fields": [
+    "actor_surface",
+    "predicate_surface",
+    "patient_surface",
+    "produced_operand_surfaces",
+    "node_id",
+    "semantic_roles",
+    "affordances",
+    "causal_rule_ids",
+    "terminal_result",
+    "coordinates",
+    "observed_forms",
+    "canonical_form",
+    "alignment_rule"
+  ],
+  "provider_schema": [
+    "clause"
+  ],
+  "release_authority": false,
+  "schema_name": "constructor-v5-3-3-single-source-authority-partition-contract"
+}
