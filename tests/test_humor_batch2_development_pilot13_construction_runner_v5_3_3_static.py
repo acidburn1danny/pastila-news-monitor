@@ -18,6 +18,6 @@ def test_runner_is_one_shot_clause_only_and_stops_before_downstream_gates():
     )
 
 
-def test_runner_has_no_preexisting_attempt_outputs():
-    assert not (ROOT / "docs/artifacts/humor-mechanics-batch2-development-pilot13-candidate01-v1.txt").exists()
-    assert not (ROOT / "docs/artifacts/humor-mechanics-batch2-development-pilot13-construction-attempt01-v1.json").exists()
+def test_runner_materialized_exactly_one_atomic_attempt_pair():
+    assert (ROOT / "docs/artifacts/humor-mechanics-batch2-development-pilot13-candidate01-v1.txt").is_file()
+    assert (ROOT / "docs/artifacts/humor-mechanics-batch2-development-pilot13-construction-attempt01-v1.json").is_file()
