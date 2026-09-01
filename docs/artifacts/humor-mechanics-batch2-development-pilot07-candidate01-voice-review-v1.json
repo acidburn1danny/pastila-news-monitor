@@ -1,0 +1,110 @@
+{
+  "authority_matrix": {
+    "candidate_regeneration": false,
+    "candidate_repair": false,
+    "candidate_rewrite": false,
+    "curriculum_promotion": false,
+    "g04b_pool_certification": false,
+    "owner_review": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "training": false
+  },
+  "candidate_bytes_modified": false,
+  "candidate_identity": "44c76c090e226d0ef947e2fc07307fb862761e94950c4eb378b8b3d258427bc1",
+  "candidate_raw_sha256": "769228fc99006e0f665360f28805f31d4480419095de1f1fba5794319cc1bfa8",
+  "candidate_repair_attempted": false,
+  "disposition_effect": "ELIGIBLE_FOR_SEPARATELY_AUTHORIZED_NONPOSITIVE_VOICE_REJECTION_FREEZE_ONLY",
+  "evaluator_inaccessible": [
+    "sealed assignment mapping",
+    "mechanism identity, name, or ordinal",
+    "G03 target reconciliation",
+    "constructor packet and prompt",
+    "owner preference history",
+    "historical candidate surfaces",
+    "blind-evaluation material",
+    "future owner judgment"
+  ],
+  "evaluator_visible": {
+    "candidate_surface": "Dacă este observată o problemă tehnică, aceasta este înscrisă în raportul de verificare pentru analiză ulterioară. Într-o continuare imaginară, înscrierea adaugă raportului o rubrică nouă; rubrica trebuie și ea analizată, iar analiza ei cere o nouă înscriere, astfel că ciclul se repetă până când raportul ajunge mai lung decât verificarea.",
+    "mechanical_exact_match_result": {
+      "matched_phrase": "Într-o continuare imaginară",
+      "prior_development_candidate_ids": [
+        "PILOT05",
+        "PILOT06"
+      ],
+      "prior_surfaces_exposed": false
+    },
+    "rubric": [
+      "TONAL_COHERENCE",
+      "SENTENCE_MOVEMENT",
+      "PAYOFF_ECONOMY",
+      "VOICE_SPECIFICITY_WITHOUT_OVERWRITING",
+      "NO_CANNED_OPENING_OR_TRANSITION",
+      "NO_CANNED_LANDING",
+      "NO_HISTORICAL_WORDING_COPY",
+      "REGISTER_RESERVATION_MATERIALITY"
+    ]
+  },
+  "findings": {
+    "no_canned_landing": {
+      "finding": "Aterizarea depinde de raport, analiză și creșterea recursivă; nu este un slogan interschimbabil.",
+      "verdict": "PASS"
+    },
+    "no_canned_opening_or_transition": {
+      "finding": "Tranziția exactă «Într-o continuare imaginară» este reutilizată în candidații DEVELOPMENT Pilot 05 și Pilot 06; funcționează ca marcaj de construcție interschimbabil, nu ca alegere de voce specifică familiei.",
+      "verdict": "FAIL"
+    },
+    "no_historical_wording_copy": {
+      "finding": "Scanarea mecanică găsește aceeași tranziție în două familii DEVELOPMENT anterioare. Nu există dovadă de copiere a întregii suprafețe, însă fragmentul repetat este material pentru Voice și pentru rezistența la șabloane.",
+      "verdict": "FAIL_PARTIAL_EXACT_TEMPLATE_REUSE"
+    },
+    "overall_voice_compatibility": {
+      "finding": "Mișcarea și poanta sunt controlate, dar tranziția reutilizată introduce o amprentă de șablon incompatibilă cu cerința de Voice distinctă și robustă la shortcut-uri.",
+      "verdict": "FAIL"
+    },
+    "payoff_economy": {
+      "finding": "Finalul despre raportul mai lung decât verificarea închide progresia fără explicație post-poantă.",
+      "verdict": "PASS"
+    },
+    "register_reservation_materiality": {
+      "finding": "Repetiția nominală rămâne nematerială singură; marcajul editorial devine material când este pus în relație cu reutilizarea exactă între piloți.",
+      "verdict": "MIXED"
+    },
+    "sentence_movement": {
+      "finding": "Prima frază fixează situația; a doua înaintează lizibil prin rubrică, analiză, reinscriere și acumulare.",
+      "verdict": "PASS"
+    },
+    "tonal_coherence": {
+      "finding": "Tonul rămâne sec și controlat, de la constatarea factuală la ciclul imaginar.",
+      "verdict": "PASS"
+    },
+    "voice_specificity_without_overwriting": {
+      "finding": "Vocabularul raportului și al rubricii este contextual, dar densitatea nominală păstrează o ușoară rigiditate procedurală.",
+      "verdict": "PASS_WITH_RESERVATION"
+    }
+  },
+  "g04a_commit": "78c097e3d992d1986ef456d9773d9479f5ac32c8",
+  "g04a_receipt_identity": "73c42b8de567adf59a68f4c7615bbdaae46f2e77d7b047fa6d7c230ed60e56eb",
+  "g04a_reservations": [
+    "MINOR_PROCEDURAL_NOMINAL_REPETITION_NONMATERIAL",
+    "MINOR_EDITORIAL_CREATIVE_MARKER_NONMATERIAL"
+  ],
+  "g04a_review_identity": "3b07ed9ad96564086c679ba47d2a4dd1659f09c3cd28e18a0018c74fec49011f",
+  "historical_surfaces_exposed_to_evaluator": false,
+  "materialized_g04a_reservation": "MINOR_EDITORIAL_CREATIVE_MARKER_BECOMES_MATERIAL_UNDER_CROSS_PILOT_EXACT_REUSE",
+  "mechanism_adjudication_performed": false,
+  "owner_preference_accessed": false,
+  "preserved_nonmaterial_reservations": [
+    "MINOR_PROCEDURAL_NOMINAL_REPETITION_NONMATERIAL"
+  ],
+  "review_mode": "BLIND_MECHANISM_INDEPENDENT_VOICE_COMPATIBILITY",
+  "schema_name": "batch2-development-pilot07-candidate01-blind-voice-review-v1",
+  "schema_version": "1.0.0",
+  "sealed_mapping_accessed": false,
+  "stable_rejection_reasons": [
+    "CANNED_CROSS_PILOT_CREATIVE_TRANSITION_REUSE"
+  ],
+  "voice_review_identity": "e15a9b8168362bbc3573744592e31112a165fa60bd45e33b1fe3cba541db5168",
+  "voice_verdict": "VOICE_REJECTED"
+}
