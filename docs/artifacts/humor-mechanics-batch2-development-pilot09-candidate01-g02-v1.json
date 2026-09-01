@@ -1,0 +1,88 @@
+{
+  "authority_binding": {
+    "factual_authority_envelope_identity": "9e791c37ce2fca9b927e3c386ede1ae0c2c0019e1301261e5bb900c7ffaa39f9",
+    "ingestion_commit": "8991524fb136d29daa5f559ba8d9aef7386a2ac8",
+    "source_commitment": "c07226c1a0c8776f3306e895bff9ce7b21f28b6262d89e33085cfb6384478730",
+    "source_sha256": "608f26b4588c347707ae5eccb08194d498fb3b3e9e7a6402be63ad2bc7c77c77",
+    "world_scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE"
+  },
+  "authority_matrix": {
+    "g02c_obligation_conformance": false,
+    "g03_mechanism_recovery": false,
+    "g04a_romanian_naturalness": false,
+    "g04b_pool_certification": false,
+    "model_training": false,
+    "owner_review": false,
+    "production_routing": false,
+    "regeneration": false,
+    "repair": false,
+    "rewrite": false,
+    "runtime_integration": false,
+    "selection": false,
+    "voice_review": false
+  },
+  "candidate_byte_length": 246,
+  "candidate_git_blob_oid_sha1": "fd1c7c024523faf63efe610849620364638a48b3",
+  "candidate_identity": "57fd9aa630aee874230759b83ee4cd11eaf99254cde43acf1b11e139824a58e1",
+  "candidate_raw_sha256": "3249775af5b93a68f00ab1e8217652a1411db03d61a40dfbe1e1fa3f7cd7e307",
+  "construction_evidence_identity": "bc62a11a24443114113e0f109cd37f9b534980186f052d0dcb3757305eef9c61",
+  "creative_marker_family_id": "95d148ad11f5b3ae43e83a06dd1a8bc0dce15b57e31b16fdf32269335d90fdc2",
+  "creative_nonfactual_separation_result": "PASS_EXPLICIT_IMAGINARY_MARKER_SCOPES_COMPLETE_POST_P5_CONTINUATION",
+  "creative_premise_family_id": "b8271e5f4ac1facea81e8b6ebb5f8048fcc43353b777e478ea0626a9eb196a08",
+  "eligibility": "ELIGIBLE_FOR_SEPARATELY_AUTHORIZED_G02C_OBLIGATION_CONFORMANCE",
+  "evidence_commit": "6b39e6b2dc83662ad432235889b058d3a6b096aa",
+  "exposure_reconciliation_preserved": true,
+  "factual_assertion_trace": [
+    {
+      "authority_proposition_ids": [
+        "P5"
+      ],
+      "candidate_assertion": "EXACT_P5_SUPPORTING_SPAN_AT_CANDIDATE_START",
+      "candidate_character_coordinates": [
+        0,
+        109
+      ],
+      "known_boundary": "AUTOMATIC_NONSTART_OCCURS_IF_SENSOR_NONDETECTION_OR_SIGNAL_NONARRIVAL_CONDITION_HOLDS",
+      "modality": "ASSERTED",
+      "post_span_classification": "EXPLICITLY_MARKED_IMAGINARY_RELATIONAL_CONTINUATION_NOT_FACTUAL_AUTHORITY",
+      "scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE_ONLY",
+      "source_character_coordinates": [
+        478,
+        587
+      ],
+      "source_span_sha256": "45c1e8c1f05aa1e88abc7e2818ef830c8ad9e4a789e5ce4ac5f99133d33f9f1c",
+      "source_utf8_byte_coordinates": [
+        497,
+        609
+      ],
+      "time": "CONDITIONAL_DURING_STATED_VERIFICATION",
+      "trace_result": "EXACT_SOURCE_BOUND_CONDITIONAL_AUTOMATIC_NONSTART_ASSERTION_WITH_NONOCCURRENCE_AND_COMPONENT_DEFECT_UNKNOWNS_RETAINED",
+      "unknown_boundary": "NO_ASSERTION_THAT_EITHER_CONDITION_WILL_OCCUR_OR_THAT_ANY_COMPONENT_IS_DEFECTIVE"
+    }
+  ],
+  "fragment_collision_binding": {
+    "audit_identity": "50b754b4b8666af6dd1eb98bba23d6ad28011acb03f2212b79cd81487d1a1ed3",
+    "collision_count": 0,
+    "commit": "c06404215272d60549c09725915486c155fda0a4",
+    "denyset_binding": "PASS_EXACT_1952_HASHES",
+    "receipt_identity": "a2e0314bf023f416244645e8a79583ddae71a5007beeecbf29aba5dbdd480c76",
+    "verdict": "PASS_NO_CROSS_PILOT_FRAGMENT_COLLISION"
+  },
+  "g02_receipt_identity": "f0bbb5887872c91909cf9467677a13d970319dafdd1bc42f511b7e2bf71f0a66",
+  "g02_verdict": "PASS",
+  "g02c_obligation_conformance_performed": false,
+  "invented_quotation_or_private_knowledge_result": "PASS_NONE",
+  "mechanism_adjudication_performed": false,
+  "new_factual_premise_result": "PASS_NONE_POST_P5_LANGUAGE_DESCRIBES_ONLY_EXPLICITLY_IMAGINARY_RELATIONAL_STRUCTURE",
+  "partition": "DEVELOPMENT",
+  "post_construction_g02b_preserved": true,
+  "pragmatic_prohibited_conclusion_result": "PASS_NO_ACTUAL_CONDITION_OCCURRENCE_DEFECTIVE_COMPONENT_INTERVENTION_OR_REAL_WORLD_OUTCOME_CONCLUSION",
+  "protected_target_result": "PASS_NO_REAL_PERSON_PROTECTED_OR_SENSITIVE_TARGET",
+  "qualification_scope_result": "PASS_P5_DISJUNCTIVE_CONDITION_AUTOMATIC_NONSTART_SYNTHETIC_SCOPE_AND_UNKNOWN_OCCURRENCE_COMPONENT_DEFECT_BOUNDARIES_RETAINED",
+  "romanian_naturalness_review_performed": false,
+  "schema_name": "batch2-development-pilot09-candidate-g02-v1",
+  "schema_version": "1.0.0",
+  "sealed_mapping_accessed": false,
+  "unsupported_inference_result": "PASS_NO_REAL_WORLD_INTENT_MOTIVE_PRIVATE_STATE_CAUSAL_PREVALENCE_CHRONOLOGY_INTERVENTION_OR_COMPONENT_STATUS_ASSERTION",
+  "voice_review_performed": false
+}
