@@ -1,0 +1,15 @@
+{
+  "analysis_identity": "30b76ef19767a2c84f5b7cf9e39cc523a103fe741ea7bef2fc16c982799f2b6b",
+  "audit_identity": "fd1a5250b6120b76820951b8a0980dec26b43eaa543c2b60dbf8bb688da2962b",
+  "candidate_bytes_created": 0,
+  "capability_restored_or_replaced": false,
+  "constructor_invocations": 0,
+  "deterministic_blockers": [],
+  "implementation_identity": "7e06b630a3782d8d05b1b86765727cb86caddbaac5d56056e07e727fe0af42bb",
+  "pilot11_regression_identity": "605189ae7caa566cbf3b56adc498d13d5f33a8985ab64603d7660470a6aca060",
+  "schema_name": "batch2-development-pilot11-v5-3-surface-witness-remediation-audit-v1",
+  "schema_version": "1.0.0",
+  "successor_contract_identity": "c4af75cd962802d0035d9de39e6d014f715d5b5f5b60fd690ea3761f289d99fc",
+  "v5_3_semantic_enforcement_weakened": false,
+  "verdict": "PASS_SOURCE_ONLY_COORDINATE_BOUND_SEMANTIC_WITNESS_ALIGNMENT_REMEDIATION_ZERO_CONSTRUCTION_NO_RELEASE"
+}

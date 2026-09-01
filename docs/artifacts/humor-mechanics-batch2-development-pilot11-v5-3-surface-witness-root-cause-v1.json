@@ -1,0 +1,23 @@
+{
+  "actual_realized_form": "ambelor verificări conforme",
+  "analysis_identity": "30b76ef19767a2c84f5b7cf9e39cc523a103fe741ea7bef2fc16c982799f2b6b",
+  "candidate_identity": null,
+  "canonical_witness_form": "ambele verificări conforme",
+  "capability_state": "CONSUMED_1_OF_1_NO_RETRY",
+  "coordinate_derivation": "V5_2_CLAUSE_COORDINATES_EXIST_BUT_ROLE_SUBSPAN_COORDINATES_NOT_RECORDED",
+  "evidence_identity": "6315e06a6683cc88860356aebe520cce45c86fa0a9d5f468c1a5dec32ef66e2e",
+  "exact_failed_node": "L1",
+  "exact_failed_role": "PATIENT",
+  "failed_validator_boundary": "V5_2_VALIDATE_REALIZATION_DRAFT_EXACT_NORMALIZED_SUBSTRING_CHECK_BEFORE_V5_3_SURFACE_SEMANTIC_VALIDATION",
+  "missing_vs_mismatch_distinction": "FAIL_CONFLATED_GENUINELY_MISSING_WITH_SURFACE_FORM_MISMATCH",
+  "provider_lexicalization": "PASS_SEMANTIC_ROLE_PRESENT_WITH_REQUIRED_GENITIVE_AFTER_DATORITA",
+  "reviewed_commit": "7001d186d13bfdf7c98ac2896b0636c33db01371",
+  "root_cause_verdict": "ROOT_CAUSE_CONFIRMED_AT_V5_3_INHERITED_EXACT_LEXICAL_SURFACE_WITNESS_ALIGNMENT_BOUNDARY",
+  "schema_name": "batch2-development-pilot11-v5-3-surface-witness-root-cause-v1",
+  "schema_version": "1.0.0",
+  "static_semantic_plan": "PASS_REMAINS_CORRECT_AND_NONCAUSAL",
+  "surface_semantic_role_status": "PRESENT_BUT_UNRECOGNIZED_LEGITIMATE_ROMANIAN_CASE_INFLECTION",
+  "terminal_verdict": "FAIL_CLOSED_PRE_EMISSION_SEMANTIC_CONFORMANCE_NO_CANDIDATE",
+  "typed_operand_id": "FACT_QUALIFICATION",
+  "witness_extraction": "FAIL_EXACT_LEXICAL_IDENTITY_NOT_MORPHOLOGY_AWARE"
+}

@@ -1,0 +1,29 @@
+{
+  "allowed_alignment_rules": [
+    "EXACT_NFKC_CASEFOLD",
+    "ROMANIAN_AMBELE_AMBELOR_CASE_INFLECTION"
+  ],
+  "construction_or_release_authority": false,
+  "constructor_v5_3_preservation": "PASS_BYTE_EXACT",
+  "genuinely_missing_effect": "FAIL_CLOSED_BEFORE_EMISSION",
+  "independent_roles": [
+    "ACTOR",
+    "PREDICATE",
+    "PATIENT"
+  ],
+  "required_evidence": [
+    "ACTUAL_SURFACE_CHARACTER_COORDINATES",
+    "ACTUAL_SURFACE_UTF8_BYTE_COORDINATES",
+    "TYPED_ROLE_IDENTITY",
+    "CANONICAL_FORM",
+    "ACTUAL_SURFACE_FORM",
+    "LICENSED_ALIGNMENT_RULE"
+  ],
+  "root_cause_analysis_identity": "30b76ef19767a2c84f5b7cf9e39cc523a103fe741ea7bef2fc16c982799f2b6b",
+  "schema_name": "batch2-development-constructor-surface-witness-alignment-contract-v5-3-1",
+  "schema_version": "5.3.1",
+  "semantic_enforcement_strength": "UNCHANGED",
+  "successor_contract_identity": "c4af75cd962802d0035d9de39e6d014f715d5b5f5b60fd690ea3761f289d99fc",
+  "supersedes_witness_alignment_only": "V5_3_INHERITED_V5_2_EXACT_SUBSTRING_ALIGNMENT",
+  "unlicensed_variation_effect": "FAIL_CLOSED_BEFORE_EMISSION"
+}

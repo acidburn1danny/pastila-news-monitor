@@ -1,0 +1,11 @@
+{
+  "analysis_identity": "30b76ef19767a2c84f5b7cf9e39cc523a103fe741ea7bef2fc16c982799f2b6b",
+  "case_genuinely_missing": "PASS_FAIL_CLOSED",
+  "case_legitimate_surface_variation": "PASS_RECOGNIZED_ONLY_WITH_EXACT_COORDINATES_AND_LICENSED_INFLECTION",
+  "implementation_identity": "7e06b630a3782d8d05b1b86765727cb86caddbaac5d56056e07e727fe0af42bb",
+  "pilot11_reconstruction_or_retry": false,
+  "regression_identity": "605189ae7caa566cbf3b56adc498d13d5f33a8985ab64603d7660470a6aca060",
+  "schema_name": "batch2-development-pilot11-surface-witness-regression-v1",
+  "schema_version": "1.0.0",
+  "unlicensed_synonym_or_claimed_equivalence": "PASS_FAIL_CLOSED"
+}
