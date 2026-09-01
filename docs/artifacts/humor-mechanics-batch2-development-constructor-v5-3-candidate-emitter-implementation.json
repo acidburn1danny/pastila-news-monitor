@@ -1,0 +1,17 @@
+{
+  "candidate_emitter_implementation_identity": "5a274ac6f140708066f587071e31f5376c0a985e5430d2537839c9627685ad5d",
+  "candidate_surfaces_emitted": 0,
+  "conformance_schema_identity": "4b26df92539082f11b83c83f76b1d158c7c8f4c87304bdcdd8a6129644f532f3",
+  "constructor_contract_identity": "9d811b18c16e8770549c19c9d8be63ef6f04e030fa67b5a47167b5e7ddc1bef6",
+  "entrypoint": "emit_semantic_candidate_utf8",
+  "governance_identity": "073d68d9d21c76974d12eb8e3f591f4172197377bfb36c2de2f85a5afe079dd6",
+  "invocations": 0,
+  "module_path": "src/pastila_scout/humor_batch2_development_constructor_v5_3_runtime.py",
+  "module_sha256": "400997eea183e7d9cab1d57fc899a0f13a96453bc417cb4da4771a86779ffabf",
+  "realization_provider_implementation_identity": "c458ecb1c9fe64285f0b70db1ccb9be6ed3e48a4f461f72d22abc0a1f0714a93",
+  "release_authority": false,
+  "schema_name": "batch2-development-constructor-v5-3-candidate-emitter-implementation",
+  "schema_version": "5.3.0",
+  "semantic_enforcement_implementation_identity": "16e54e9a09ed95905fd1f308d77b7bd4f03084b3a1654f8161a6c78b62ce6983",
+  "semantic_validation_precedes_structural_emission": true
+}
