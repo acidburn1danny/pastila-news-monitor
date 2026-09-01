@@ -1,0 +1,169 @@
+{
+  "affordance_topology": null,
+  "authority_matrix": {
+    "candidate_emission": false,
+    "constructor_compatibility": false,
+    "constructor_invocation": false,
+    "constructor_release": false,
+    "emitter_invocation": false,
+    "fragment_collision": false,
+    "g02": false,
+    "g02c": false,
+    "g03": false,
+    "g03b": false,
+    "g03c": false,
+    "g04b": false,
+    "model_exposure": false,
+    "owner_review": false,
+    "production_routing": false,
+    "provider_invocation": false,
+    "realization": false,
+    "romanian_naturalness": false,
+    "runtime_integration": false,
+    "semantic_conformance": false,
+    "semantic_plan": false,
+    "semantic_role_or_affordance_planning": false,
+    "training": false,
+    "voice": false
+  },
+  "authority_partition_contract_identity": "99a6265e3dac8ab8ec3eb47456e0fc6927124636a08d5afb380c4e77042cb5b5",
+  "authorized_visible_context_sha256": "e1b854d2b88d4489a45f6e53ce937dff06e2e9fad3abe7258a940fb5bf4a4566",
+  "candidate_surface": null,
+  "closed_factual_authority_envelope": {
+    "authority_scope": "Only the explicitly stated acoustic-sensor preparation and installation event, sensor quantity, campaign and concert-hall scope, serial-number and assigned-position association, pre-installation verification procedure, individual installation and campaign-log recording, inability-to-install condition and resulting non-installation/logging outcome, operation-specific scope limitation, and explicitly unknown position-availability and non-installation outcomes within the accompanying owner-authored synthetic test universe.",
+    "propositions": [
+      {
+        "attribution": "OWNER_AUTHORED_SOURCE",
+        "known_boundary": "ACTUAL_POSITION_AND_INSTALLATION_TIME_LOGGING",
+        "modality": "ASSERTED",
+        "object": {
+          "character_coordinates": [
+            556,
+            577
+          ],
+          "sha256": "001069d8d1f9e4681f14eceedb3d02c128e417248b585c7558e3ff867c3a8bf2",
+          "utf8_byte_coordinates": [
+            594,
+            616
+          ]
+        },
+        "predicate": {
+          "character_coordinates": [
+            537,
+            555
+          ],
+          "sha256": "5ac309c6791d443bb0457c254c284c8c3879e9a182ca5641553f65498bc2346f",
+          "utf8_byte_coordinates": [
+            575,
+            593
+          ]
+        },
+        "prohibited_inferences": [
+          "NO_REAL_WORLD_ASSERTION",
+          "NO_UNSTATED_CAUSAL_INFERENCE",
+          "NO_UNSTATED_PERSON_INTENT_OR_INTERNAL_STATE_INFERENCE",
+          "NO_UNSTATED_SENSOR_POSITION_OR_INSTALLATION_OUTCOME_INFERENCE"
+        ],
+        "proposition_id": "P5",
+        "qualification": {
+          "character_coordinates": [
+            470,
+            482
+          ],
+          "sha256": "7406d81535b86046be5ffe4282473da9d9ca5ee784cd1d3e9dc0fe743005d66e",
+          "utf8_byte_coordinates": [
+            502,
+            515
+          ]
+        },
+        "quotation_status": "NO_QUOTATION",
+        "scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE_ONLY",
+        "sensitive_protected_target_classification": "NONE_DECLARED_LOW_RISK_SYNTHETIC",
+        "subject": {
+          "character_coordinates": [
+            484,
+            536
+          ],
+          "sha256": "2feb10bd8907329873a8f21635418d2d5d91e66269fe97d4cfec699c294e5471",
+          "utf8_byte_coordinates": [
+            517,
+            574
+          ]
+        },
+        "supporting_span": {
+          "character_coordinates": [
+            470,
+            578
+          ],
+          "sha256": "e1b854d2b88d4489a45f6e53ce937dff06e2e9fad3abe7258a940fb5bf4a4566",
+          "span_sha256": "e1b854d2b88d4489a45f6e53ce937dff06e2e9fad3abe7258a940fb5bf4a4566",
+          "utf8_byte_coordinates": [
+            502,
+            617
+          ]
+        },
+        "time": "AFTER_INSTALLATION",
+        "unknown_boundary": "NO_UNSTATED_LOG_CONTENT"
+      }
+    ],
+    "source_commitment": "8886fa5ee7f13af2ab7eca004c4838b9af83d0b31671f1df9a8d98426fdf7ff9",
+    "source_sha256": "9d79b45d06fba5b950f97e7d09f38450177b7ff7d5cbf962a9e4f7af452b6a76",
+    "world_scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE"
+  },
+  "construction_revision_family_id": "4968775c483d8f8240e71ee92a04fcadaabc42f6dae261b68bed01f06502b598",
+  "constructor_compatibility_evaluated": false,
+  "constructor_facing_packet_identity": "95a69db9e90f2383fae884b82ca572ef74990a23aa9da788b38312b3955f3aa4",
+  "constructor_invoked": false,
+  "creative_marker_family_id": "UNASSIGNED_UNTIL_POSTCONSTRUCTION",
+  "creative_premise_family_id": "UNASSIGNED",
+  "emitter_identity": "5bb1fae007fb8898f7e1a514622bb9bac99d992cc81189cd4ffd33b60fa76a8b",
+  "exact_authorized_visible_context_utf8": "După montare, poziția efectivă a fiecărui senzor și ora instalării au fost consemnate în jurnalul campaniei.",
+  "fragment_denyset_identity": "UNASSIGNED_REQUIRES_FREEZE_BEFORE_RELEASE",
+  "immutable_assignment_identity": "ee5f0743e5c2e52945a26b2fd2afe709d73d6865667bbca3826d1ede9a845954",
+  "mapping_commitment": "5a0506ec2c6fe9a8dd845c210626c028fa1492a4dd25521f4f906baecbbdbe9d",
+  "morphological_alignment_opportunity": null,
+  "pilot_role": "LEGITIMATE_END_TO_END_MECHANISM_TRIAL",
+  "provider_identity": "865c1e9f7cedb5e78b5ecd7524781a8ed8a50816a9be76910c7ee76c375b81ea",
+  "qualified_executable_implementation_identity": "3c7c353d488d032dd69f9d12a07a621bfc7bb95b668e76efc08494546f5d5362",
+  "realization_plan": null,
+  "schema_name": "batch2-development-pilot13-constructor-facing-assignment-proposal-v5-3-3",
+  "schema_version": "5.3.3",
+  "selected_proposition_id": "P5",
+  "selected_supporting_span_sha256": "e1b854d2b88d4489a45f6e53ce937dff06e2e9fad3abe7258a940fb5bf4a4566",
+  "semantic_role_signature": null,
+  "source_package_identity": "3acf18889454e8fdd8397e0a41f6f96216cd6be98f6ab2b54131acff1e7c31a0",
+  "status": "PROPOSAL_ZERO_CONSTRUCTION_NO_RELEASE_NO_SEMANTIC_PLANNING",
+  "sufficiency_receipt_identity": "32f44383ebaea7ccdc779f1b3c4c94af57e717e735185ebdfa0d601ad33076f6",
+  "unlabeled_operational_obligation": {
+    "creative_marking_constraints": [
+      "Premisa și marcajul creativ rămân neatribuite până la construcție.",
+      "Nu transfera în rezultat limbajul cerințelor, planului, controlului, guvernanței sau validării."
+    ],
+    "forbidden_operations": [
+      "Nu ascunde relația factuală până după rezultatul inventat și nu folosi dezvăluirea ei ca răsturnare principală.",
+      "Nu introduce un reper, operand, eveniment ori cauză care nu poate fi urmărită local până la contextul autorizat.",
+      "Nu baza rezultatul pe redenumire, reclasificare, personificare, intensificare, listă sau joc lexical.",
+      "Nu impune o formulă fixă, un conector, un semn de punctuație, un registru ori un număr fix de propoziții."
+    ],
+    "future_phase_constraints": [
+      "Orice plan viitor trebuie derivat numai din relația factuală P5 și din rezultate locale explicit produse.",
+      "Fiecare relație viitoare trebuie să păstreze identitatea operanzilor și să fie necesară, ne-arbitrară și închisă referențial.",
+      "Validarea semantică și a martorilor de suprafață aparține exclusiv fazelor ulterioare autorizate separat."
+    ],
+    "naturalness_and_safety": [
+      "Folosește română idiomatică și concretă; nu transfera în suprafață limbajul acestei cerințe.",
+      "Separă clar cadrul inventat de autoritatea factuală și nu adăuga fapte, citate, cunoaștere privată sau concluzii despre lumea reală."
+    ],
+    "obligation_instance_identity": "85b142a8988b99981d7a44c2c2665fce1b303a441663d3dc1b383e03ca773d3d",
+    "obligation_version": "DEVELOPMENT_TRANSFORMATION_V5_3_3_01",
+    "selected_source_relation": "După montare, poziția efectivă a fiecărui senzor și ora instalării sunt consemnate în jurnalul campaniei.",
+    "transformation": [
+      "Păstrează exact relația factuală furnizată, cu toate calificările și limitele ei, și fă-o disponibilă înainte ca textul să poată produce o schimbare retrospectivă de lectură.",
+      "Construiește o consecință inventată prin cel puțin două legături locale distincte, fiecare necesară și recuperabilă din relația precedentă.",
+      "Consecința trebuie să depindă de întregul lanț; simpla transformare a unui cuvânt, număr ori înscris într-un obiect fizic nu poate susține singură rezultatul.",
+      "Marcajul nonfactual trebuie integrat firesc și trebuie să acopere toate legăturile inventate."
+    ]
+  },
+  "unselected_proposition_or_fallback_authority": "ABSENT",
+  "witness_topology": null
+}
