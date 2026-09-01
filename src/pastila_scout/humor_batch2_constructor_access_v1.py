@@ -263,8 +263,65 @@ def prepare_development_constructor_access_v1(*, release_bytes: bytes) -> Prepar
         if release["schema_name"] == "batch2-development-pilot13-constructor-access-release-v5-3-3":
             plan = packet.get("proposition_derived_typed_plan")
             semantic_edges = packet.get("edge_necessity_witnesses")
+            expected_release_core_fields = {
+                "authority_partition_contract_identity", "authorized_visible_context_sha256",
+                "candidate_emitter_identity", "class_a_closure_identity", "constructor_facing_packet_identity",
+                "constructor_invocation_authorized", "constructor_source_compatibility_audit_identity",
+                "constructor_source_compatibility_identity", "creative_premise_family_id",
+                "fragment_denyset_identity", "immutable_assignment_identity", "packet_seal_namespace",
+                "partition", "qualified_executable_implementation_identity", "realization_provider_identity",
+                "release_mode", "selected_proposition_id", "selected_supporting_span_sha256",
+                "semantic_plan_commitment", "single_use_state", "sufficiency_receipt_identity",
+                "unselected_proposition_or_fallback_authority",
+            }
+            expected_packet_fields = {
+                "affordance_topology", "authority_matrix", "authority_partition_contract_identity",
+                "authorized_visible_context_sha256", "candidate_emitter_identity", "candidate_surface",
+                "class_a_closure", "class_a_closure_identity", "class_b_state",
+                "closed_factual_authority_envelope", "construction_revision_family_id",
+                "constructor_facing_packet_identity", "constructor_invoked",
+                "constructor_source_compatibility_audit_identity", "constructor_source_compatibility_identity",
+                "creative_marker_family_id", "creative_premise_family_id", "edge_necessity_witnesses",
+                "emitter_requirement", "exact_authorized_visible_context_utf8", "fragment_denyset_identity",
+                "immutable_assignment_identity", "mandatory_release_facing_path", "morphological_alignment_opportunity",
+                "operand_semantic_specs", "pilot_role", "predicate_semantic_signatures",
+                "proposition_derived_typed_plan", "provider_payload_schema",
+                "qualified_executable_implementation_identity", "realization_plan", "realization_provider_identity",
+                "schema_name", "schema_version", "selected_proposition_id", "selected_supporting_span_sha256",
+                "semantic_plan_commitment", "semantic_role_signature", "source_package_identity", "status",
+                "sufficiency_receipt_identity", "unlabeled_operational_obligation",
+                "unselected_proposition_or_fallback_authority", "witness_topology",
+            }
+            expected_bindings = {
+                "qualified_executable_implementation_identity": "3c7c353d488d032dd69f9d12a07a621bfc7bb95b668e76efc08494546f5d5362",
+                "realization_provider_identity": "865c1e9f7cedb5e78b5ecd7524781a8ed8a50816a9be76910c7ee76c375b81ea",
+                "candidate_emitter_identity": "5bb1fae007fb8898f7e1a514622bb9bac99d992cc81189cd4ffd33b60fa76a8b",
+                "authority_partition_contract_identity": "99a6265e3dac8ab8ec3eb47456e0fc6927124636a08d5afb380c4e77042cb5b5",
+                "constructor_source_compatibility_identity": "b8f0b874ce629de2c1e1d2f5b8744b4425178219de57e7f22631baecb54a01c0",
+                "constructor_source_compatibility_audit_identity": "1b1a0ce66e183558343bebce6d37dee253106be2a06e3f447f1def343d4422e2",
+                "fragment_denyset_identity": "9e32c6d5f2e97202a0cff2e1f087fbce16100d72af96ad25e8a3d304e0458d8d",
+                "selected_supporting_span_sha256": "e1b854d2b88d4489a45f6e53ce937dff06e2e9fad3abe7258a940fb5bf4a4566",
+                "authorized_visible_context_sha256": "e1b854d2b88d4489a45f6e53ce937dff06e2e9fad3abe7258a940fb5bf4a4566",
+                "semantic_plan_commitment": "dbf4d82c0ca397f6cb66720a956f7a2e4b720fec28347c9eccebba2913d9bb6e",
+                "class_a_closure_identity": "8b38a4c000963a2a2481ae614f739677d00287b9d44c041945b17a311f08e4ce",
+            }
+            expected_packet_only_bindings = {
+                "construction_revision_family_id": "4968775c483d8f8240e71ee92a04fcadaabc42f6dae261b68bed01f06502b598",
+                "immutable_assignment_identity": "ee5f0743e5c2e52945a26b2fd2afe709d73d6865667bbca3826d1ede9a845954",
+                "source_package_identity": "3acf18889454e8fdd8397e0a41f6f96216cd6be98f6ab2b54131acff1e7c31a0",
+                "sufficiency_receipt_identity": "32f44383ebaea7ccdc779f1b3c4c94af57e717e735185ebdfa0d601ad33076f6",
+                "pilot_role": "LEGITIMATE_END_TO_END_MECHANISM_TRIAL",
+            }
             if not (
-                packet.get("qualified_executable_implementation_identity")
+                release.get("schema_version") == "5.3.3"
+                and packet.get("schema_name") == "batch2-development-pilot13-constructor-facing-assignment-proposal-v5-3-3"
+                and packet.get("schema_version") == "5.3.3"
+                and set(release["release_core"]) == expected_release_core_fields
+                and set(packet) == expected_packet_fields
+                and all(packet.get(key) == value and release["release_core"].get(key) == value
+                        for key, value in expected_bindings.items())
+                and all(packet.get(key) == value for key, value in expected_packet_only_bindings.items())
+                and packet.get("qualified_executable_implementation_identity")
                 == release["release_core"].get("qualified_executable_implementation_identity")
                 and packet.get("realization_provider_identity")
                 == release["release_core"].get("realization_provider_identity")

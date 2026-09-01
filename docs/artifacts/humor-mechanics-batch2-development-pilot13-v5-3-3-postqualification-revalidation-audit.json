@@ -1,0 +1,13 @@
+{
+  "audit_identity": "8eba44d05094312f1776e245523ec4d93587d043ac5ce0de31116de5031b8479",
+  "blind_material_accessed": false,
+  "downstream_authority_exercised": false,
+  "frozen_pilot13_artifacts_modified": false,
+  "hydrator_implementation_identity": "8306f97929515a9917982a5dca7947ad6f1a3739f77a56b953d92bb8aad1e355",
+  "pilot13_release_or_capability_exercised": false,
+  "requalification_identity": "dbbb561a336fd721d0596e811518e550c14350e71dbebf9469e736628b3a9b6e",
+  "schema_identity": "3f4e3300f21e61d636bc719a14333fa4f31bbe574a0b963d7c3d5fff070a34d6",
+  "schema_name": "batch2-development-pilot13-v5-3-3-postqualification-revalidation-audit",
+  "synthetic_nonfamily_execution_only": true,
+  "verdict": "PASS_STABLE_TERMINAL_REQUALIFICATION"
+}

@@ -1,0 +1,10 @@
+{
+  "constructor_packet_fields": 44,
+  "family_and_frozen_binding_skew": "FAIL_CLOSED",
+  "release_core_fields": 22,
+  "release_schema": "batch2-development-pilot13-constructor-access-release-v5-3-3",
+  "schema_identity": "3f4e3300f21e61d636bc719a14333fa4f31bbe574a0b963d7c3d5fff070a34d6",
+  "schema_name": "pilot13-v5-3-3-exact-release-hydration-schema",
+  "stale_alias_or_version_skew": "FAIL_CLOSED",
+  "unknown_or_missing_fields": "FAIL_CLOSED"
+}
