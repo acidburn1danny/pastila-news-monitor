@@ -1,0 +1,1 @@
+Dacă senzorul nu detectează coletul sau semnalul nu ajunge la unitatea de control, banda nu pornește automat. Într-un cadru explicit imaginar, relația continuă prin două consecințe locale, iar ultima depinde de întregul traseu inventat.
