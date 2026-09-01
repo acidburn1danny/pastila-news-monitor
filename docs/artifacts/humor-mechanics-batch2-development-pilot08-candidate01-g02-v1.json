@@ -1,0 +1,88 @@
+{
+  "authority_binding": {
+    "factual_authority_envelope_identity": "9988272b9a99ca29fbd706abc4b6f57bbb6c87a62bf2fe4a79de0919a4051847",
+    "ingestion_commit": "784eaacbc12c574e9a4d16e9f0059ae60a32b396",
+    "source_commitment": "d8c6d88489b6ceeade47629e72fc0f133d4b2e68a599e8eb08a8eb961ebb37ee",
+    "source_sha256": "d2a71300c1d1832f68132e4b824714ec0bc51beecf26f750146befb00a26712a",
+    "world_scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE"
+  },
+  "authority_matrix": {
+    "g02c_obligation_conformance": false,
+    "g03_mechanism_recovery": false,
+    "g04a_romanian_naturalness": false,
+    "g04b_pool_certification": false,
+    "model_training": false,
+    "owner_review": false,
+    "production_routing": false,
+    "regeneration": false,
+    "repair": false,
+    "rewrite": false,
+    "runtime_integration": false,
+    "selection": false,
+    "voice_review": false
+  },
+  "candidate_byte_length": 603,
+  "candidate_git_blob_oid_sha1": "679ad8c85f55f002523657baf531587694f5f607",
+  "candidate_identity": "6f2aca6eafc4773576a00001d83d1a0e5c2bf5a2c53d1ae2930c2f3147457fb8",
+  "candidate_raw_sha256": "bc71da32026e9173440a494279fd4dca752cfc8c5547abcaa1ad922bdda0368a",
+  "construction_evidence_identity": "657a8ca2fb8023b9a34d51b0958c5cde9c9190f458b84da74c91a4895e56df88",
+  "creative_marker_family_id": "758cbce681ac51bbf1608018e69b63cf132fafcb795d9527234c0e25665c108b",
+  "creative_nonfactual_separation_result": "PASS_EXPLICIT_LOCAL_INVENTED_VARIANT_MARKER_SCOPES_COMPLETE_POST_P5_RECURSIVE_RULE_CONTROL_SEQUENCE",
+  "creative_premise_family_id": "d74623b0e85e24d1128523c00d85f03ccd4495c78f335ca92268369d4039777e",
+  "eligibility": "ELIGIBLE_FOR_SEPARATELY_AUTHORIZED_G02C_OBLIGATION_CONFORMANCE",
+  "evidence_commit": "d05643f2da3280a0bd88a5fe018c61c913186526",
+  "exposure_reconciliation_preserved": true,
+  "factual_assertion_trace": [
+    {
+      "authority_proposition_ids": [
+        "P5"
+      ],
+      "candidate_assertion": "EXACT_P5_SUPPORTING_SPAN_AT_CANDIDATE_START",
+      "candidate_character_coordinates": [
+        0,
+        151
+      ],
+      "known_boundary": "RECORDING_AND_LATER_CHECK_OCCUR_ONLY_IF_A_ZONE_DOES_NOT_RESPOND_CORRECTLY",
+      "modality": "ASSERTED",
+      "post_span_classification": "EXPLICITLY_MARKED_INVENTED_VARIANT_NOT_FACTUAL_AUTHORITY",
+      "scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE_ONLY",
+      "source_character_coordinates": [
+        526,
+        677
+      ],
+      "source_span_sha256": "6fd5aeac76fa3602374be0da17bf7bb82c8b878b6302b3ddd6789712d034f3db",
+      "source_utf8_byte_coordinates": [
+        559,
+        718
+      ],
+      "time": "CONDITIONAL_DURING_THE_STATED_VERIFICATION",
+      "trace_result": "EXACT_SOURCE_BOUND_CONDITIONAL_RECORDING_AND_LATER_CHECK_ASSERTION_WITH_UNKNOWN_FAILURE_AND_COMPONENT_OUTCOME_BOUNDARIES",
+      "unknown_boundary": "NO_ASSERTION_THAT_ANY_ZONE_WILL_FAIL_OR_WHICH_COMPONENT_IF_ANY_IS_DEFECTIVE"
+    }
+  ],
+  "fragment_collision_binding": {
+    "audit_identity": "b05990a388ee7a29d91511315e38fcb2959ae3736a2d5753d501b87218742c2a",
+    "collision_count": 0,
+    "commit": "25ec47cf225cf991c7ae6693401894bd317003b2",
+    "denyset_binding": "PASS_EXACT_1617_HASHES",
+    "receipt_identity": "a2645ddfb3357f9a8ebd55c1e661db1197bf0e41bf4fe945c2b168c4ec16c89e",
+    "verdict": "PASS_NO_CROSS_PILOT_FRAGMENT_COLLISION"
+  },
+  "g02_receipt_identity": "dc3151a1c6d9f8f41ef62f40a27d3e8c1bc764ad11456b187027b82f974bd4ae",
+  "g02_verdict": "PASS",
+  "g02c_obligation_conformance_performed": false,
+  "invented_quotation_or_private_knowledge_result": "PASS_NONE",
+  "mechanism_adjudication_performed": false,
+  "new_factual_premise_result": "PASS_NONE_REPEATED_P5_TERMS_AND_RECURSIVE_RULE_CONTROL_SEQUENCE_REMAIN_EXPLICITLY_INVENTED",
+  "partition": "DEVELOPMENT",
+  "post_construction_g02b_preserved": true,
+  "pragmatic_prohibited_conclusion_result": "PASS_NO_ACTUAL_ZONE_FAILURE_DEFECTIVE_COMPONENT_OR_REAL_WORLD_CONCLUSION",
+  "protected_target_result": "PASS_NO_REAL_PERSON_PROTECTED_OR_SENSITIVE_TARGET",
+  "qualification_scope_result": "PASS_P5_CONDITIONAL_TRIGGER_SYNTHETIC_SCOPE_AND_UNKNOWN_ZONE_FAILURE_COMPONENT_DEFECT_OUTCOMES_RETAINED",
+  "romanian_naturalness_review_performed": false,
+  "schema_name": "batch2-development-pilot08-candidate-g02-v1",
+  "schema_version": "1.0.0",
+  "sealed_mapping_accessed": false,
+  "unsupported_inference_result": "PASS_NO_REAL_WORLD_INTENT_MOTIVE_PRIVATE_STATE_CAUSAL_PREVALENCE_CHRONOLOGY_OR_COMPONENT_STATUS_ASSERTION",
+  "voice_review_performed": false
+}
