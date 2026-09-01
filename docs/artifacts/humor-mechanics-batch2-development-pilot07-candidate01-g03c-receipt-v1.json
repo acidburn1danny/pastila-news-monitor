@@ -1,0 +1,30 @@
+{
+  "authority_matrix": {
+    "candidate_regeneration": false,
+    "candidate_repair": false,
+    "candidate_rewrite": false,
+    "curriculum_promotion": false,
+    "g04a_romanian_naturalness": false,
+    "g04b_pool_certification": false,
+    "model_exposure": false,
+    "owner_review": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "training": false,
+    "voice_review": false
+  },
+  "blind_holdout_content_or_metadata_accessed": false,
+  "candidate_bytes_modified": false,
+  "candidate_identity": "44c76c090e226d0ef947e2fc07307fb862761e94950c4eb378b8b3d258427bc1",
+  "candidate_level_verdict": "CANDIDATE_SHORTCUT_PASS",
+  "candidate_raw_sha256": "769228fc99006e0f665360f28805f31d4480419095de1f1fba5794319cc1bfa8",
+  "contamination_verdict": "PASS_CLEAN_DEVELOPMENT_DIAGNOSTIC",
+  "g03b_receipt_identity": "076a4524be08fabfd97028db93c12177b8894c39cfce26e96a0e6f3e5b8e873d",
+  "g03c_diagnostic_identity": "34980657a581989c295bf4c1037f38210fe71832bb45e4a038b25d44caf5204e",
+  "g03c_receipt_identity": "941d3108ff6c515eb556bca77b063a3c58a5b31b9ab18800a4b10915d87ab705",
+  "g03c_verdict": "CANDIDATE_SHORTCUT_PASS_AND_POOL_REBALANCING_PROGRESS_PENDING_QUALITY_GATES_AND_G04B",
+  "next_gate_eligible": "G04A_ROMANIAN_NATURALNESS_SEPARATELY_AUTHORIZED_ONLY",
+  "pool_level_verdict": "POOL_REBALANCING_PROGRESS_PILOT07_QUALITY_GATES_AND_SEPARATE_G04B_PENDING",
+  "schema_name": "batch2-development-pilot07-candidate01-g03c-receipt-v1",
+  "schema_version": "1.0.0"
+}

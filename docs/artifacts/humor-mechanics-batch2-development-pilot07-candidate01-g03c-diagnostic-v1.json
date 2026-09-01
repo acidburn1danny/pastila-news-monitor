@@ -1,0 +1,126 @@
+{
+  "authority_matrix": {
+    "candidate_regeneration": false,
+    "candidate_repair": false,
+    "candidate_rewrite": false,
+    "curriculum_promotion": false,
+    "g04a_romanian_naturalness": false,
+    "g04b_pool_certification": false,
+    "model_exposure": false,
+    "owner_review": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "training": false,
+    "voice_review": false
+  },
+  "blind_holdout_content_or_metadata_accessed": false,
+  "candidate_bytes_modified": false,
+  "candidate_disposition_effect": "ELIGIBLE_FOR_SEPARATELY_AUTHORIZED_G04A_ONLY_NO_POOL_CERTIFICATION",
+  "candidate_identity": "44c76c090e226d0ef947e2fc07307fb862761e94950c4eb378b8b3d258427bc1",
+  "candidate_level": {
+    "constructor_template": {
+      "finding": "PASS_G03B_REQUIRES_MULTI_LINK_DEPENDENCY_NOT_FIXED_LEXEME_GRAMMAR_OR_ORDER_CUE",
+      "material": false
+    },
+    "format": {
+      "finding": "PASS_AUTHORITY_SAFETY_SHAPE_NOT_SUFFICIENT_FOR_TARGET_RECOVERY",
+      "material": false,
+      "observed": "FACTUAL_PREMISE_THEN_MARKED_RECURSIVE_CREATIVE_CHAIN"
+    },
+    "length": {
+      "finding": "PASS_NO_TARGET_THRESHOLD",
+      "material": false,
+      "utf8_bytes": 366
+    },
+    "lexical": {
+      "finding": "PASS_NONDEFINING_G03B_SURFACE_PARAPHRASE_INVARIANT",
+      "material": false,
+      "observed_cues": [
+        "continuare imaginară",
+        "rubrică",
+        "ciclul se repetă",
+        "mai lung decât"
+      ]
+    },
+    "metadata": {
+      "finding": "PASS_CANDIDATE_ARTIFACT_HAS_NO_MECHANISM_LABEL_ORDINAL_ROLE_OR_ANSWER_KEY",
+      "material": false
+    },
+    "position": {
+      "finding": "PASS_COMMON_HUMOR_POSITION_REQUIRES_FULL_CHAIN",
+      "material": false,
+      "observed": "DEPENDENT_TERMINAL_PAYOFF"
+    },
+    "topic_entity": {
+      "finding": "PASS_SOURCE_FAMILY_FIXED_BEFORE_ASSIGNMENT",
+      "material": false,
+      "observed": "NEUTRAL_SYNTHETIC_TECHNICAL_VERIFICATION_REPORT_NO_REAL_OR_PROTECTED_ENTITY"
+    },
+    "verdict": "CANDIDATE_SHORTCUT_PASS",
+    "weak_nonsemantic_classifier": {
+      "execution": "NOT_TRAINED_NO_MODEL_OR_STATISTICAL_FIT",
+      "feature_hypotheses": [
+        "lexeme",
+        "punctuation",
+        "length",
+        "topic",
+        "sentence position",
+        "format"
+      ],
+      "finding": "PASS_NO_SINGLE_FEATURE_EXPLAINS_BLIND_RECOVERY_AND_G03B_CAUSAL_INVARIANCE"
+    }
+  },
+  "candidate_raw_sha256": "769228fc99006e0f665360f28805f31d4480419095de1f1fba5794319cc1bfa8",
+  "contamination": {
+    "blind_family_or_metadata_access": false,
+    "blind_holdout_tuning": false,
+    "candidate_model_visibility": false,
+    "cross_partition_family_overlap": false,
+    "development_partition_only": true,
+    "historical_surface_tuning": false,
+    "owner_preference_tuning": false,
+    "training_visibility": false,
+    "verdict": "PASS_CLEAN_DEVELOPMENT_DIAGNOSTIC"
+  },
+  "creative_premise_family_id": "39db5384af4870785ef54b076c73afed4be48a82fedd5a899f576f97d0dac558",
+  "g03b_commit": "874b38f0cb3fefbb2a09c1e8f42d4d6cf6793ded",
+  "g03b_receipt_identity": "076a4524be08fabfd97028db93c12177b8894c39cfce26e96a0e6f3e5b8e873d",
+  "g03b_review_identity": "504b690e549d061fdeedeba873ae5656c4b6d115421faccaa8abe7f4fe93a76b",
+  "g03c_diagnostic_identity": "34980657a581989c295bf4c1037f38210fe71832bb45e4a038b25d44caf5204e",
+  "g03c_verdict": "CANDIDATE_SHORTCUT_PASS_AND_POOL_REBALANCING_PROGRESS_PENDING_QUALITY_GATES_AND_G04B",
+  "pool_level": {
+    "accessible_scope": "DEVELOPMENT_AND_FROZEN_NONBLIND_METADATA_ONLY",
+    "blind_reserve": "NOT_ACCESSED_NOT_TUNED",
+    "certification_status": "NOT_EVALUATED_G04B_SEPARATE_AND_PILOT07_QUALITY_GATES_PENDING",
+    "close_alternative_profile": "IMPROVED_ESCALATION_AND_SELF_REFERENTIAL_RECURSION_NOT_SHARED_COMIC_RECLASSIFICATION_PROFILE",
+    "dominant_mechanism_recovered_family_count": 3,
+    "excluded_nonpositive_candidates": [
+      "a7414fa9f1c50a5b674d9c3b5d7c531c46e6f8b70472893697a92d0309dc30ac",
+      "61b4c89e4ec65ac211debc034ed35f47f79a2757551266a90fadf5acde270773"
+    ],
+    "family_isolation": "PASS_PILOT03_PILOT04_PILOT07_SOURCE_EVENT_TOPIC_AND_CREATIVE_FAMILIES_DISTINCT",
+    "independent_source_family_count": 3,
+    "new_quality_pending_candidate": "44c76c090e226d0ef947e2fc07307fb862761e94950c4eb378b8b3d258427bc1",
+    "owner_frozen_positive_candidates": [
+      "b4555cc43bf16a466734aed46e93baa83bd9bc37d52d3826976be3370ccef72d",
+      "cf34033fb7017ff29146524108d4cb3fcbf8229681d054d2085dbaba294436e1"
+    ],
+    "owner_frozen_positive_family_count": 2,
+    "prior_g04b_verdict": "POOL_REBALANCING_REQUIRED_NO_CERTIFICATION",
+    "realization_obligation_diversity": "IMPROVED_PILOT07_V3_RECURSIVE_SELF_PROPAGATION_DIFFERS_FROM_PILOT03_04_SHARED_V2_REALIZATION",
+    "required_to_close": [
+      "Pilot 07 blind Romanian-naturalness review",
+      "Pilot 07 blind Voice review",
+      "Pilot 07 owner review",
+      "separately authorized G04B cross-candidate pool audit"
+    ],
+    "verdict": "POOL_REBALANCING_PROGRESS_PILOT07_QUALITY_GATES_AND_SEPARATE_G04B_PENDING",
+    "weak_nonsemantic_classifier": {
+      "reason": "Pilot 07 adds a causally confirmed independent realization, but it is not owner-frozen and this G03C cannot certify the pool.",
+      "status": "NOT_RUN_G04B_SEPARATE",
+      "training_or_tuning_performed": false
+    }
+  },
+  "schema_name": "batch2-development-pilot07-candidate01-g03c-diagnostic-v1",
+  "schema_version": "1.0.0"
+}
