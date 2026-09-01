@@ -1,0 +1,106 @@
+{
+  "candidate_git_blob_oid_sha1": "fd1c7c024523faf63efe610849620364638a48b3",
+  "candidate_identity": "57fd9aa630aee874230759b83ee4cd11eaf99254cde43acf1b11e139824a58e1",
+  "candidate_raw_sha256": "3249775af5b93a68f00ab1e8217652a1411db03d61a40dfbe1e1fa3f7cd7e307",
+  "conformance_receipt_identity": "a2ba3529a489e23a6c70b8405ab585eedd6158882132ad539d411a9f61e6f7e4",
+  "conformance_schema_identity": "29d7b0f97008ad38e64b8e966f398d829a66299ec805290ebbec3f92848efab6",
+  "constructor_contract_identity": "9b647d33dfa40171040fe6acf08b8b6dca6081c41c0f1f4428f910bfdfaa8a6b",
+  "constructor_facing_packet_identity": "f59803859660dcd29d7934873c80ce9febbf16c422d937ab4c8dd7a214c3446d",
+  "constructor_implementation_identity": "c7134743e6b0e7c3ed7637bff3203f774159f192fef7a7b712e15d4d44a6f419",
+  "constructor_source_compatibility_identity": "6554798852137176e9d0b860523b1110da5ac279c9ceae456a99acc09f70a50d",
+  "dependency_trace": {
+    "fact_first_order": true,
+    "first_to_second_invented_link": "FAIL_ONLY_A_NUMERIC_CLAIM_OF_TWO_CONSEQUENCES_IS_PRESENT",
+    "second_link_to_result": "FAIL_NO_CONCRETE_TERMINAL_CONSEQUENCE_IS_PRESENT",
+    "selected_fact": "PASS_EXACT_P5_TRIGGER_TO_AUTOMATIC_NONSTART_RELATION",
+    "selected_fact_to_first_invented_link": "FAIL_NO_INVENTED_EVENT_RELATION_OR_RESULT_IS_SURFACE_INSTANTIATED",
+    "single_literal_transfer": false,
+    "surface_link_necessity": "FAIL_UNTESTABLE_WITHOUT_INSTANTIATED_LINKS",
+    "surface_operand_dataflow": "FAIL_NO_LINK_LEVEL_ACTOR_PATIENT_PREDICATE_OR_PRODUCED_OPERAND_CAN_BE_RECOVERED",
+    "typed_static_plan_commitment": "PASS_FROZEN_PRECONSTRUCTION_BUT_NOT_SURFACE_EVIDENCE"
+  },
+  "failure": {
+    "candidate_repair_performed": false,
+    "classification": "INCOMPLETE_CAUSAL_SPINE",
+    "consequence": "No proposition-derived multi-link spine, typed surface dataflow, link necessity, or non-arbitrariness can be independently recovered from the immutable candidate.",
+    "earliest_failed_link": "SELECTED_FACT_TO_FIRST_INVENTED_CONSEQUENCE",
+    "instruction_language_transfer": "The phrases 'two local consequences' and 'complete invented path' restate obligation structure instead of realizing it.",
+    "mechanism_label_required_for_failure": false,
+    "naturalness_adjudication_required_for_failure": false,
+    "observed_gap": "The surface asserts that two local consequences and a complete path exist but supplies neither consequence, no link predicate, and no produced operand."
+  },
+  "fragment_collision_receipt_identity": "a2e0314bf023f416244645e8a79583ddae71a5007beeecbf29aba5dbdd480c76",
+  "mechanism_adjudication_performed": false,
+  "naturalness_precheck": {
+    "does_not_replace_separate_quality_gates": true,
+    "instruction_or_governance_language_transferred": true,
+    "romanian_naturalness_adjudicated": false,
+    "voice_adjudicated": false
+  },
+  "obligation_instance_identity": "b6c600d6cb4cef27d02fcffe0e978a2c9f694f33351ed630c4bdf3b35513098b",
+  "obligation_version": "DEVELOPMENT_TRANSFORMATION_V5_01",
+  "required_predicates": {
+    "ALL_REFERENCES_AND_OPERANDS_ROLE_COMPATIBLE_AND_BOUND": false,
+    "AT_LEAST_TWO_DISTINCT_NON_RESTATEMENT_LINKS": false,
+    "COMPLETE_MULTI_LINK_CAUSAL_SPINE": false,
+    "EACH_LINK_NECESSARY_AND_NON_ARBITRARY": false,
+    "NO_DELAYED_FACT_DISCLOSURE_AS_PRIMARY_EFFECT": true,
+    "NO_INSTRUCTION_LANGUAGE_TRANSFER": false,
+    "NO_SINGLE_LITERAL_TRANSFER_AS_SOLE_ENGINE": true,
+    "NO_TERMINAL_PUNCTUATION_SPLIT_WITHIN_A_CLAIMED_LINK": true
+  },
+  "schema_name": "batch2-development-pilot09-g02c-conformance-receipt-v5-1",
+  "schema_version": "5.1.0",
+  "sealed_mapping_accessed": false,
+  "selected_proposition_id": "P5",
+  "selected_supporting_span_sha256": "45c1e8c1f05aa1e88abc7e2818ef830c8ad9e4a789e5ce4ac5f99133d33f9f1c",
+  "sufficiency_receipt_identity": "f197280f8069ed15635ab32d9811bed83a5e77c6e9be737844c757d2b2292566",
+  "surface_components": {
+    "creative_marker": {
+      "character_coordinates": [
+        110,
+        141
+      ],
+      "sha256": "95ee7a3cb719a5b03afcc00b379748d0dd80bad426ed6deea7ea174f92cfdc51",
+      "utf8_byte_coordinates": [
+        113,
+        145
+      ]
+    },
+    "selected_fact": {
+      "character_coordinates": [
+        0,
+        109
+      ],
+      "sha256": "45c1e8c1f05aa1e88abc7e2818ef830c8ad9e4a789e5ce4ac5f99133d33f9f1c",
+      "utf8_byte_coordinates": [
+        0,
+        112
+      ]
+    },
+    "uninstantiated_dependency_claim": {
+      "character_coordinates": [
+        193,
+        235
+      ],
+      "sha256": "7a24b5db240b761c43bfb2eba47a94b46fa06fd9ff2cac362e70c9c55472ffcb",
+      "utf8_byte_coordinates": [
+        201,
+        244
+      ]
+    },
+    "uninstantiated_link_count_claim": {
+      "character_coordinates": [
+        143,
+        187
+      ],
+      "sha256": "d370dc95ba6c7548d3369d26b23f2114aedf039c60a30613c54467eee601a3a1",
+      "utf8_byte_coordinates": [
+        147,
+        195
+      ]
+    }
+  },
+  "typed_plan_commitment": "016a0f20d3fcbad3446439a6456577344f3b19086fe9fd174011615e2d0870de",
+  "verdict": "FAIL_INCOMPLETE_CAUSAL_SPINE"
+}
