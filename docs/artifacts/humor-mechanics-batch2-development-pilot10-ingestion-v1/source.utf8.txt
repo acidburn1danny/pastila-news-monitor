@@ -1,0 +1,7 @@
+În după-amiaza de 21 septembrie 2026, depozitul unei grădini botanice primește o livrare de 30 de lăzi cu substrat pentru plante tropicale.
+
+La recepție, fiecare ladă este cântărită, iar numărul înscris pe etichetă este comparat cu numărul din documentul de livrare. Dacă greutatea corespunde valorii înscrise în document și numărul de pe etichetă corespunde celui din document, lada este înregistrată cu eticheta APROBAT și este mutată în zona de depozitare destinată materialelor horticole. Dacă greutatea diferă de valoarea înscrisă în document sau numărul de pe etichetă nu corespunde, lada rămâne în zona de recepție și este înregistrată cu eticheta RESPINS.
+
+Personalul notează pentru fiecare neconcordanță numărul lăzii și tipul diferenței observate. Verificarea se referă numai la această livrare și nu stabilește starea altor materiale aflate deja în depozit.
+
+Înainte de recepție nu este cunoscut dacă vor exista neconcordanțe și nici câte lăzi, dacă există, vor necesita verificări suplimentare.
