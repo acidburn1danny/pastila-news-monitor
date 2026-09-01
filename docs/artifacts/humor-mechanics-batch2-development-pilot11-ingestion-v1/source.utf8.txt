@@ -1,0 +1,7 @@
+În dimineața de 23 septembrie 2026, laboratorul unei fabrici de băuturi verifică un lot de 40 de recipiente din sticlă înainte de umplere.
+
+Pentru fiecare recipient, operatorul verifică dacă suprafața este intactă și dacă seria imprimată pe bază corespunde seriei din fișa lotului. Dacă ambele verificări sunt conforme, recipientul este trecut în registru cu statutul ACCEPTAT și este trimis către linia de umplere. Dacă este observată o fisură sau seria nu corespunde, recipientul primește statutul RESPINS și rămâne în zona de control.
+
+Pentru fiecare recipient respins, operatorul notează separat seria și motivul respingerii. Verificarea se referă numai la acest lot și nu stabilește starea recipientelor din alte loturi.
+
+Înainte de control nu este cunoscut câte recipiente, dacă există, vor fi respinse și nici dacă va fi necesară înlocuirea vreunuia înainte de începerea umplerii.
