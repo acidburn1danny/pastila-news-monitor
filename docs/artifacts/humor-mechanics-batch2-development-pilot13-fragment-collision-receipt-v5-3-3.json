@@ -1,0 +1,65 @@
+{
+  "authority_matrix": {
+    "g02": false,
+    "g02c": false,
+    "g03": false,
+    "g04b_pool_certification": false,
+    "model_exposure": false,
+    "owner_review": false,
+    "production_routing": false,
+    "romanian_naturalness": false,
+    "runtime_integration": false,
+    "training": false,
+    "voice": false
+  },
+  "blind_reserve_accessed": false,
+  "candidate_bytes_unchanged": true,
+  "candidate_git_blob_oid_sha1": "9a643cff281455ee0b4c9772f9740175ab27753b",
+  "candidate_identity": "00dfb416e99d9d489c05cbf317a8b9654d51a5ecb0994220032c0cd68efe2fb6",
+  "candidate_repair_retry_regeneration_or_selection": false,
+  "candidate_surface_byte_length": 552,
+  "candidate_surface_sha256": "907392cd76554340b09ef27145256b45f3c1ae013f41f4e4503ea156dc546759",
+  "candidate_word_count": 71,
+  "capability_state": "CONSUMED_1_OF_1",
+  "collision_count": 0,
+  "conformance_receipt_identity": "4e8e63cfc2f75bfc1ec3daa7f25a7131de9bcacd2de385998e985579ef55385d",
+  "construction_evidence_identity": "a53ee85f94b7d30570ac77dac1f0345aaf642eea98383fe7b2bac89ca29fcd9e",
+  "constructor_provider_emitter_invocations_added": "0/0/0",
+  "denyset_hash_count": 2698,
+  "eligible_comparison_corpus": "TEN_NONBLIND_DEVELOPMENT_FAMILIES_ONLY",
+  "exact_or_normalized_collisions": [],
+  "fragment_denyset_identity": "9e32c6d5f2e97202a0cff2e1f087fbce16100d72af96ad25e8a3d304e0458d8d",
+  "g02_eligibility": "ELIGIBLE_FOR_SEPARATELY_AUTHORIZED_G02_REVIEW",
+  "normalization": "UNICODE_NFKC_CASEFOLD_ALPHANUMERIC_WORDS",
+  "receipt_identity": "983a9dda4fa2bab8c72324f6b7e52a02c958d11ca7de01fe26e2bad3e7d0d9b2",
+  "schema_name": "batch2-development-pilot13-postconstruction-fragment-collision-receipt-v5-3-3",
+  "schema_version": "5.3.3",
+  "total_candidate_windows_tested": 399,
+  "verdict": "PASS_NO_CROSS_PILOT_FRAGMENT_COLLISION",
+  "window_results": [
+    {
+      "candidate_windows_tested": 69,
+      "word_length": 3
+    },
+    {
+      "candidate_windows_tested": 68,
+      "word_length": 4
+    },
+    {
+      "candidate_windows_tested": 67,
+      "word_length": 5
+    },
+    {
+      "candidate_windows_tested": 66,
+      "word_length": 6
+    },
+    {
+      "candidate_windows_tested": 65,
+      "word_length": 7
+    },
+    {
+      "candidate_windows_tested": 64,
+      "word_length": 8
+    }
+  ]
+}
