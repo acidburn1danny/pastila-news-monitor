@@ -1,0 +1,150 @@
+{
+  "authority_matrix": {
+    "construction": false,
+    "constructor_release": false,
+    "creative_premise_assignment": false,
+    "g04b_pool_certification": false,
+    "generation": false,
+    "model_exposure": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "training": false
+  },
+  "authorized_visible_context_sha256": "6fd5aeac76fa3602374be0da17bf7bb82c8b878b6302b3ddd6789712d034f3db",
+  "candidate_surface": null,
+  "closed_factual_authority_envelope": {
+    "authority_scope": "Only the explicitly stated irrigation-maintenance event, temporal and operational scope, six-zone system structure, commanded verification procedure, conditional defect-handling process, sector exclusion, and explicitly unknown defect and replacement outcomes within the accompanying owner-authored synthetic test universe.",
+    "propositions": [
+      {
+        "attribution": "OWNER_AUTHORED_SOURCE",
+        "known_boundary": "RECORDING_AND_LATER_CHECK_OCCUR_ONLY_IF_A_ZONE_DOES_NOT_RESPOND_CORRECTLY",
+        "modality": "ASSERTED",
+        "object": {
+          "character_coordinates": [
+            570,
+            677
+          ],
+          "sha256": "91b63e061ab59a9fbb31b1605046b90efc666b253231ccae1b188d46d4c55013",
+          "utf8_byte_coordinates": [
+            606,
+            718
+          ]
+        },
+        "predicate": {
+          "character_coordinates": [
+            557,
+            569
+          ],
+          "sha256": "af9c32b6c0b69fae2264e6318395803b4c8d498db7d4d44a82c1f1b9de3a3c86",
+          "utf8_byte_coordinates": [
+            592,
+            605
+          ]
+        },
+        "prohibited_inferences": [
+          "NO_REAL_WORLD_ASSERTION",
+          "NO_UNSTATED_CAUSAL_INFERENCE",
+          "NO_UNSTATED_PERSON_INTENT_OR_INTERNAL_STATE_INFERENCE",
+          "NO_UNSTATED_DEFECT_INTERVENTION_REPLACEMENT_OR_OTHER_SECTOR_INFERENCE"
+        ],
+        "proposition_id": "P5",
+        "qualification": {
+          "character_coordinates": [
+            526,
+            556
+          ],
+          "sha256": "d8f3c46725c43231b911692b4c166f7ea18f240596a8bb73d7c49b1545e0efa7",
+          "utf8_byte_coordinates": [
+            559,
+            591
+          ]
+        },
+        "quotation_status": "NO_QUOTATION",
+        "scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE_ONLY",
+        "sensitive_protected_target_classification": "NONE_DECLARED_LOW_RISK_SYNTHETIC",
+        "subject": {
+          "character_coordinates": [
+            526,
+            556
+          ],
+          "sha256": "d8f3c46725c43231b911692b4c166f7ea18f240596a8bb73d7c49b1545e0efa7",
+          "utf8_byte_coordinates": [
+            559,
+            591
+          ]
+        },
+        "supporting_span": {
+          "character_coordinates": [
+            526,
+            677
+          ],
+          "sha256": "6fd5aeac76fa3602374be0da17bf7bb82c8b878b6302b3ddd6789712d034f3db",
+          "span_sha256": "6fd5aeac76fa3602374be0da17bf7bb82c8b878b6302b3ddd6789712d034f3db",
+          "utf8_byte_coordinates": [
+            559,
+            718
+          ]
+        },
+        "time": "CONDITIONAL_DURING_THE_STATED_VERIFICATION",
+        "unknown_boundary": "NO_ASSERTION_THAT_ANY_ZONE_WILL_FAIL_OR_WHICH_COMPONENT_IF_ANY_IS_DEFECTIVE"
+      }
+    ],
+    "source_commitment": "d8c6d88489b6ceeade47629e72fc0f133d4b2e68a599e8eb08a8eb961ebb37ee",
+    "source_sha256": "d2a71300c1d1832f68132e4b824714ec0bc51beecf26f750146befb00a26712a",
+    "world_scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE"
+  },
+  "construction_revision_family_id": "0b70d24e2d85961dd075281da09adf2ac8b5cb35abc37774d0d247fcd11101ea",
+  "constructor_facing_packet_identity": "2ecb50bcca118b4c62f67d6ee05c685ce1073030d6ef8f26d5930185c87ce48c",
+  "constructor_implementation_identity": "UNASSIGNED_REQUIRES_SEPARATE_IMPLEMENTATION_AND_STATIC_AUDIT",
+  "constructor_invoked": false,
+  "creative_marker_family_id": "UNASSIGNED_UNTIL_POSTCONSTRUCTION",
+  "creative_premise_family_id": "UNASSIGNED",
+  "exact_authorized_visible_context_utf8": "O zonă care nu răspunde corect este trecută în fișa de intervenție pentru verificarea ulterioară a electrovanei, cablajului sau circuitului de comandă.",
+  "fragment_denyset_identity": "UNASSIGNED_REQUIRES_FREEZE_BEFORE_RELEASE",
+  "immutable_assignment_identity": "87c2c2d9f5607e1bdcfcf4b2e01bda2039635e2f9c41c633338d4b42d627259a",
+  "mapping_commitment": "c8d41115f1212d1cf2966bb867b202fe64db4a08d1269447287a96a24929f144",
+  "output_constraints": {
+    "language": "ROMANIAN",
+    "length_profile": "COMMON_BATCH2_NEUTRAL_PROFILE_30_TO_90_WORDS_1_TO_3_SENTENCES",
+    "prohibited": [
+      "CANNED_OPENING",
+      "GOVERNANCE_META_LANGUAGE",
+      "PROCEDURAL_ABSTRACT_REGISTER",
+      "UNBOUND_REFERENCE",
+      "FACTUAL_WIDENING"
+    ],
+    "register": "IDIOMATIC_NATURAL_CONCRETE_ROMANIAN"
+  },
+  "schema_name": "batch2-development-pilot08-constructor-facing-rebalancing-assignment-proposal-v4",
+  "schema_version": "4.0.0",
+  "selected_proposition_id": "P5",
+  "selected_supporting_span_sha256": "6fd5aeac76fa3602374be0da17bf7bb82c8b878b6302b3ddd6789712d034f3db",
+  "source_package_identity": "2fd6e1cee4fe69136d976bd988c004de354c5c3cfee553d92f6395ac464fe64f",
+  "status": "PROPOSAL_ZERO_CONSTRUCTION_NO_RELEASE",
+  "sufficiency_receipt_identity": "be0f5cb5d2fa33a7163db4b59babf777d6cf004472cf6a6607206d82870edbe3",
+  "unlabeled_operational_obligation": {
+    "creative_marking_constraints": [
+      "Marcajul nonfactual trebuie ales local pentru acest text, fără formulă sau tranziție prestabilită.",
+      "Nu reutiliza o tranziție creativă, o deschidere sau o aterizare dintr-un alt exemplu.",
+      "Nu transforma cerințele ori limbajul de control în formulări ale rezultatului."
+    ],
+    "forbidden_operations": [
+      "Nu ascunde relația factuală până după rezultatul inventat și nu folosi dezvăluirea ei ca răsturnare principală.",
+      "Nu introduce un reper, operand, eveniment ori cauză care nu poate fi urmărită local până la contextul autorizat.",
+      "Nu baza rezultatul pe redenumire, reclasificare, personificare, intensificare, listă sau joc lexical.",
+      "Nu impune o formulă fixă, un conector, un semn de punctuație, un registru ori un număr fix de propoziții."
+    ],
+    "naturalness_and_safety": [
+      "Folosește română idiomatică și concretă; nu transfera în suprafață limbajul acestei cerințe.",
+      "Separă clar cadrul inventat de autoritatea factuală și nu adăuga fapte, citate, cunoaștere privată sau concluzii despre lumea reală."
+    ],
+    "obligation_instance_identity": "d2d6ad3d20e577c5834f7534028eb21e22f378b330a1607d27eacaa86e2f8876",
+    "obligation_version": "DEVELOPMENT_TRANSFORMATION_V4_01",
+    "transformation": [
+      "Păstrează exact relația factuală furnizată, cu toate calificările și limitele ei, și fă-o disponibilă înainte ca textul să poată produce o schimbare retrospectivă de lectură.",
+      "Construiește o consecință inventată prin cel puțin două legături locale distincte, fiecare necesară și recuperabilă din relația precedentă.",
+      "Consecința trebuie să depindă de întregul lanț; simpla transformare a unui cuvânt, număr ori înscris într-un obiect fizic nu poate susține singură rezultatul.",
+      "Marcajul nonfactual trebuie integrat firesc și trebuie să acopere toate legăturile inventate."
+    ]
+  }
+}
