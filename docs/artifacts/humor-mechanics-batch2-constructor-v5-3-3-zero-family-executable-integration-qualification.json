@@ -1,0 +1,61 @@
+{
+  "CLASS_A_PREINVOCATION_CLOSURE_VERDICT": "PASS_ALL_DETERMINISTIC_CLOSURE_BEFORE_PROVIDER",
+  "CLASS_B_BYTE_DERIVATION_VERDICT": "PASS_OBSERVED_EXCLUSIVELY_FROM_ACTUAL_UTF8_BYTES",
+  "CLAUSE_ONLY_PROVIDER_VERDICT": "PASS_EXACT_ONE_FIELD",
+  "EMITTER_GATING_VERDICT": "PASS_MATCHING_TRUSTED_RECEIPT_REQUIRED",
+  "INFRASTRUCTURE_READINESS_VERDICT": "READY_FOR_NEXT_INDEPENDENT_FAMILY_AS_MECHANISM_TRIAL",
+  "LEGACY_PATH_UNREACHABILITY_VERDICT": "PASS_NO_HISTORICAL_MIXED_RUNTIME_IMPORT_OR_ENTRY_POINT",
+  "REAL_RELEASE_PATH_VERIFICATION": "PASS_EXACT_COMMITTED_ENTRY_POINT",
+  "SEMANTIC_CONFORMANCE_EXECUTABLE_VERDICT": "PASS_SURFACE_OBSERVED_ROLES_EDGES_AND_TERMINAL",
+  "ZERO_FAMILY_INTEGRATION_VERDICT": "PASS_ZERO_FAMILY_REAL_RELEASE_PATH_EXECUTABLE_QUALIFICATION",
+  "blind_material_accessed": false,
+  "defects_found_and_repaired": [
+    {
+      "id": "CLASS_B_CALLER_SUPPLIED_SPANS",
+      "repair": "trusted observer derives spans and forms from actual bytes"
+    },
+    {
+      "id": "SENTENCE_INITIAL_CASE_SENSITIVE_FALSE_NEGATIVE",
+      "repair": "coordinate-preserving Unicode casefold search retaining actual surface spans"
+    }
+  ],
+  "emitter_identity": "5bb1fae007fb8898f7e1a514622bb9bac99d992cc81189cd4ffd33b60fa76a8b",
+  "family_capabilities_consumed": 0,
+  "family_constructor_invocations": 0,
+  "family_emitter_invocations": 0,
+  "family_provider_invocations": 0,
+  "implementation_identity": "3c7c353d488d032dd69f9d12a07a621bfc7bb95b668e76efc08494546f5d5362",
+  "metamorphic_property_tests": {
+    "count": 30,
+    "coverage": [
+      "word order",
+      "Romanian case inflection",
+      "diacritics",
+      "Unicode NFD/NFC behavior",
+      "punctuation",
+      "clitics",
+      "repeated and ambiguous substrings",
+      "multibyte UTF-8",
+      "actor/patient reversal",
+      "predicate replacement",
+      "operand deletion/substitution",
+      "causal reversal",
+      "edge necessity",
+      "terminal arbitrariness",
+      "fabricated coordinates",
+      "Class A/B injection"
+    ],
+    "result": "PASS"
+  },
+  "new_development_candidate_surfaces": 0,
+  "next_owner_action": "AUTHORIZE_METADATA_FIRST_PREPARATION_OF_PILOT13_UNDER_FROZEN_V5_3_3_EXECUTABLE_PATH",
+  "pilot05_12_regressions": {
+    "focused_total_with_integration": 66,
+    "result": "PASS"
+  },
+  "provider_identity": "865c1e9f7cedb5e78b5ecd7524781a8ed8a50816a9be76910c7ee76c375b81ea",
+  "qualification_identity": "9016f7a82cb04ba447c2c2ae4275861ef0bfbd16782c4be3584d85220f5b5c0a",
+  "release_authority": false,
+  "schema_name": "constructor-v5-3-3-zero-family-executable-integration-qualification",
+  "worktree_remediation_remainder": "NONE_IN_SCOPE"
+}

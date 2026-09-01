@@ -1,0 +1,9 @@
+{
+  "emitter_identity": "5bb1fae007fb8898f7e1a514622bb9bac99d992cc81189cd4ffd33b60fa76a8b",
+  "execution_commit": "8c1c5c85e23b39ce02c5158f78636504e46621bd",
+  "implementation_identity": "3c7c353d488d032dd69f9d12a07a621bfc7bb95b668e76efc08494546f5d5362",
+  "provider_identity": "865c1e9f7cedb5e78b5ecd7524781a8ed8a50816a9be76910c7ee76c375b81ea",
+  "qualification_identity": "9016f7a82cb04ba447c2c2ae4275861ef0bfbd16782c4be3584d85220f5b5c0a",
+  "readiness": "READY_FOR_NEXT_INDEPENDENT_FAMILY_AS_MECHANISM_TRIAL",
+  "verdict": "PASS_ZERO_FAMILY_REAL_RELEASE_PATH_EXECUTABLE_QUALIFICATION"
+}
