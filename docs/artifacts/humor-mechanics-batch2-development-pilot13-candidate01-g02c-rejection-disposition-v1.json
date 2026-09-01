@@ -1,0 +1,71 @@
+{
+  "authority_matrix": {
+    "additional_construction_under_consumed_capability": false,
+    "candidate_regeneration": false,
+    "candidate_repair": false,
+    "candidate_retry": false,
+    "candidate_rewrite": false,
+    "g03_mechanism_recovery": false,
+    "g03b": false,
+    "g03c": false,
+    "g04b_pool_certification": false,
+    "model_exposure": false,
+    "owner_positive_review": false,
+    "production_routing": false,
+    "romanian_naturalness_review": false,
+    "runtime_integration": false,
+    "training": false,
+    "voice_review": false
+  },
+  "candidate_bytes_modified": false,
+  "candidate_git_blob_oid_sha1": "9a643cff281455ee0b4c9772f9740175ab27753b",
+  "candidate_identity": "00dfb416e99d9d489c05cbf317a8b9654d51a5ecb0994220032c0cd68efe2fb6",
+  "candidate_level_failure_not_infrastructure_defect": true,
+  "candidate_raw_sha256": "907392cd76554340b09ef27145256b45f3c1ae013f41f4e4503ea156dc546759",
+  "capability_state": "CONSUMED_1_OF_1_NO_FURTHER_CONSTRUCTION",
+  "conformance_receipt_identity": "c4a51b9a8f982a6de9911907af4c8b21ab85b942858a1742755e50a26c7cc5f1",
+  "disposition": "DEVELOPMENT_NONPOSITIVE_G02C_REJECTION_EVIDENCE",
+  "disposition_identity": "a795882c8db00d9e1627808667285e60a70367075faa357c304f326dbed40228",
+  "earliest_failed_link": "P5_TO_L1",
+  "evidence_role": "NONPOSITIVE_OBLIGATION_CONFORMANCE_FAILURE",
+  "existing_identities_modified": false,
+  "formal_pre_emission_conformance_status": "PRESERVED_AS_PROVENANCE_BUT_INSUFFICIENT_AS_INDEPENDENT_G02C_PROOF",
+  "g02c_commit": "cb98b42c6326061cf2805a8f446c511129d39246",
+  "g02c_review_identity": "363eaedb8276532f67761f39ae9272a0462cdad21ea0c39bf95e1c7c27c55f3f",
+  "g02c_verdict": "FAIL_FIRST_INVENTED_LINK_ROLE_AFFORDANCE_AND_CAUSAL_NECESSITY",
+  "g03_eligible": false,
+  "g04b_pool_certification_eligible": false,
+  "material_realization": {
+    "anchor_to_first_link": "PRESENT",
+    "nodes": "3_OF_3",
+    "planned_edges": "2_OF_2",
+    "terminal_result_witnesses": 1
+  },
+  "partition": "DEVELOPMENT",
+  "permitted_future_source_only_diagnostics": [
+    "V5_3_3_FIRST_LINK_ROLE_AFFORDANCE_AND_CAUSAL_NECESSITY_ROOT_CAUSE_ANALYSIS",
+    "PREEMISSION_MATERIAL_PRESENCE_VERSUS_SEMANTIC_EXECUTABILITY_ANALYSIS"
+  ],
+  "placeholder_summary_meta_assertion_or_instruction_transfer": "ABSENT",
+  "positive_coverage_eligible": false,
+  "production_eligible": false,
+  "qualification_and_fictional_marking": "PASS",
+  "romanian_naturalness_review_eligible": false,
+  "runtime_eligible": false,
+  "schema_name": "batch2-development-pilot13-g02c-rejection-disposition-v1",
+  "schema_version": "1.0.0",
+  "sealed_mapping_accessed": false,
+  "semantic_conformance": {
+    "downstream_failures": [
+      "L1_TO_L2",
+      "L2_TO_TERMINAL"
+    ],
+    "failed_first_link": "P5_TO_L1",
+    "necessary_nonarbitrary_links": "0_OF_3",
+    "role_affordance_compatible_links": "0_OF_3"
+  },
+  "stable_rejection_reason": "FIRST_INVENTED_LINK_MATERIALLY_PRESENT_BUT_FACT_ACTOR_TEMPORAL_PATIENT_AND_ELIGIBILITY_OUTPUT_LACK_ROLE_AFFORDANCE_AND_CAUSAL_LICENSE",
+  "training_eligible": false,
+  "visibility": "NON_MODEL_VISIBLE",
+  "voice_review_eligible": false
+}
