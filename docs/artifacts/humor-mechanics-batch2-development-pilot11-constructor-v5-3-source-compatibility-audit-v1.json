@@ -1,0 +1,22 @@
+{
+  "audit_identity": "2a8ee424b9d3cab8b7040c8c36854a7bad0533a4c6e1caf6cc37721442c77793",
+  "candidate_surfaces_created": 0,
+  "compatibility_identity": "8c3cb36494d980cf74f08b96dbf2e60cdcefff45dfd3792d01375b740172a6d9",
+  "constructor_invocations": 0,
+  "deterministic_blockers": [],
+  "emitter_invocations": 0,
+  "exact_frozen_bindings": "PASS",
+  "exact_p3_authority_span": "PASS",
+  "g02b_release": "NOT_PERFORMED",
+  "git_object_only": true,
+  "privileged_affordance_minting": "ABSENT",
+  "provider_invocations": 0,
+  "schema_name": "batch2-development-pilot11-constructor-v5-3-source-compatibility-audit-v1",
+  "schema_version": "1.0.0",
+  "semantic_edge_coverage": "PASS_2_OF_2",
+  "semantic_signature_coverage": "PASS_3_OF_3",
+  "source_shape_neutral_extraction": "PASS",
+  "terminal_edge_equal_strength": "PASS",
+  "typed_plan_closure": "PASS",
+  "verdict": "PASS_STATIC_SEMANTIC_PLAN_VALIDATION_ZERO_REALIZATION_ZERO_CONSTRUCTION_NO_RELEASE"
+}

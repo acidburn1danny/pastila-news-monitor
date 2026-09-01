@@ -1,0 +1,106 @@
+{
+  "abstract_plan_closure": "PASS_THREE_TYPED_NODES_TWO_EDGES_NO_UNBOUND_OPERANDS",
+  "action_affordance_compatibility": "PASS_EACH_NODE_AND_EDGE",
+  "authority_binding": "PASS_EXACT_P3_AND_AUTHORIZED_SUPPORTING_SPAN_ONLY",
+  "authority_matrix": {
+    "candidate_emission": false,
+    "constructor_invocation": false,
+    "emitter_invocation": false,
+    "fragment_collision_evaluation": false,
+    "g02": false,
+    "g02b_release": false,
+    "g02c": false,
+    "g03": false,
+    "g04b_pool_certification": false,
+    "model_exposure": false,
+    "post_realization_semantic_conformance": false,
+    "production_routing": false,
+    "provider_invocation": false,
+    "realization": false,
+    "runtime_integration": false,
+    "training": false
+  },
+  "candidate_emitter_identity": "5a274ac6f140708066f587071e31f5376c0a985e5430d2537839c9627685ad5d",
+  "candidate_surface": null,
+  "compatibility_identity": "8c3cb36494d980cf74f08b96dbf2e60cdcefff45dfd3792d01375b740172a6d9",
+  "constructor_contract_identity": "9d811b18c16e8770549c19c9d8be63ef6f04e030fa67b5a47167b5e7ddc1bef6",
+  "constructor_facing_proposal_identity": "274a9950c275f01fdfdddc561da991751bc1b5e915914200a502451ca4c2c420",
+  "constructor_implementation_identity": "18bd032218924cc8d2890301a1c92a376036918affddea335904a1491c807237",
+  "constructor_invoked": false,
+  "constructor_release": false,
+  "constructor_static_audit_identity": "46b24207afbfa388862598ea3c75a55342be13e108bef1fcd154f2612ec182b8",
+  "counterfactual_dependency_and_non_arbitrariness": "PASS_2_OF_2_EDGES",
+  "emitter_invoked": false,
+  "entity_identity_preservation": "PASS_NO_RECLASSIFICATION_USED_OR_REQUIRED",
+  "factual_authority_widening": "ABSENT",
+  "insufficient_evidence_rejected": [
+    "LEXICAL_RECURRENCE",
+    "STRUCTURAL_PREDECESSOR_CONTINUITY",
+    "RECLASSIFICATION_ALONE",
+    "TERMINAL_WITNESS_CAPABILITY_ALONE"
+  ],
+  "privileged_role_or_affordance_derivation": "ABSENT",
+  "provider_invoked": false,
+  "realization_or_surface_witnesses_created": false,
+  "realization_provider_identity": "c458ecb1c9fe64285f0b70db1ccb9be6ed3e48a4f461f72d22abc0a1f0714a93",
+  "recovered_plan_topology": [
+    {
+      "actor": "FACT_RELATION_497C40BB210DD296",
+      "introduces": [
+        "INVENTED_RELATION_1"
+      ],
+      "node_id": "L1",
+      "patient": "FACT_QUALIFICATION",
+      "predecessors": [],
+      "predicate": "EXTEND_497C40BB210DD296"
+    },
+    {
+      "actor": "INVENTED_RELATION_1",
+      "introduces": [
+        "INVENTED_RELATION_2"
+      ],
+      "node_id": "L2",
+      "patient": "FACT_OBJECT",
+      "predecessors": [
+        "L1"
+      ],
+      "predicate": "PROPAGATE_497C40BB210DD296"
+    },
+    {
+      "actor": "INVENTED_RELATION_2",
+      "introduces": [],
+      "node_id": "RESULT",
+      "patient": "FACT_RELATION_497C40BB210DD296",
+      "predecessors": [
+        "L2"
+      ],
+      "predicate": "RESOLVE_497C40BB210DD296"
+    }
+  ],
+  "release_eligibility": "ELIGIBLE_FOR_SEPARATELY_AUTHORIZED_G02B_PRECONSTRUCTION_REVIEW_ONLY",
+  "required_role_produced_role_compatibility": "PASS_EACH_EDGE",
+  "reviewed_commit": "13822403d3a7bf8f1850f463c52ff3cdce0fc111",
+  "schema_name": "batch2-development-pilot11-constructor-v5-3-source-compatibility-v1",
+  "schema_version": "1.0.0",
+  "sealed_assignment_identity": "9778b0f7be4acb019cc112aacd34ea31bc7696db4ba82c0e41f9e3718511c57b",
+  "selected_proposition_id": "P3",
+  "selected_span_sha256": "3e22d06f68274f2410e8d481a20e3099f338acadf578282acfd31f8c833676cd",
+  "semantic_plan_coverage": {
+    "edges": "2/2",
+    "nodes": "3/3",
+    "terminal_edge_validated": true
+  },
+  "semantic_plan_created": true,
+  "semantic_role_and_predicate_argument_signatures": "PASS_ALL_THREE_RELATIONS",
+  "terminal_edge_strength": "PASS_EQUAL_TO_INTERMEDIATE_EDGES",
+  "typed_operand_extraction": {
+    "object_bound": true,
+    "predicate_bound": true,
+    "qualification_bound": true,
+    "relation_id": "FACT_RELATION_497C40BB210DD296",
+    "subject_bound": true,
+    "verdict": "PASS_SOURCE_SHAPE_NEUTRAL"
+  },
+  "unbound_operands_or_role_incompatible_transitions": "ABSENT",
+  "verdict": "PASS_SOURCE_COMPATIBLE_WITH_FROZEN_CONSTRUCTOR_V5_3_STATIC_SEMANTIC_PLAN_NO_RELEASE"
+}
