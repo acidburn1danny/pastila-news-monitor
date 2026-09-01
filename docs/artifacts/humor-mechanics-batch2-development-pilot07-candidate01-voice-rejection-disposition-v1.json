@@ -1,0 +1,69 @@
+{
+  "authority_matrix": {
+    "additional_construction": false,
+    "candidate_regeneration": false,
+    "candidate_repair": false,
+    "candidate_rewrite": false,
+    "curriculum_promotion": false,
+    "g04b_pool_certification": false,
+    "model_exposure": false,
+    "owner_positive_review": false,
+    "owner_review": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "training": false
+  },
+  "bound_lineage": {
+    "g03_receipt_identity": "bc30997ba763126f8ee0eda3d0a5375dbc9f6ba514e3394ada34cc086d9b5bf9",
+    "g03_reconciliation": "TARGET_RECOVERED_DOMINANT",
+    "g03_validity": "VALID_BLIND_REVIEW",
+    "g03b_receipt_identity": "076a4524be08fabfd97028db93c12177b8894c39cfce26e96a0e6f3e5b8e873d",
+    "g03b_verdict": "CAUSAL_MECHANISM_CONFIRMED",
+    "g03c_receipt_identity": "941d3108ff6c515eb556bca77b063a3c58a5b31b9ab18800a4b10915d87ab705",
+    "g03c_verdict": "CANDIDATE_SHORTCUT_PASS_AND_POOL_REBALANCING_PROGRESS_PENDING_QUALITY_GATES_AND_G04B",
+    "g04a_receipt_identity": "73c42b8de567adf59a68f4c7615bbdaae46f2e77d7b047fa6d7c230ed60e56eb",
+    "g04a_verdict": "ROMANIAN_NATURALNESS_PASS",
+    "voice_receipt_identity": "3e5f4a580f95c9eab44928e3677ad9e62e50348c0eb60a542d0844b8c3e0a467",
+    "voice_review_identity": "e15a9b8168362bbc3573744592e31112a165fa60bd45e33b1fe3cba541db5168",
+    "voice_verdict": "VOICE_REJECTED"
+  },
+  "candidate_bytes_modified": false,
+  "candidate_git_blob_oid_sha1": "345829c569ae87d350a30158e026c52371e3c560",
+  "candidate_identity": "44c76c090e226d0ef947e2fc07307fb862761e94950c4eb378b8b3d258427bc1",
+  "candidate_raw_sha256": "769228fc99006e0f665360f28805f31d4480419095de1f1fba5794319cc1bfa8",
+  "creative_premise_family_id": "39db5384af4870785ef54b076c73afed4be48a82fedd5a899f576f97d0dac558",
+  "curriculum_candidate_eligible": false,
+  "disposition": "DEVELOPMENT_NONPOSITIVE_VOICE_REJECTION_EVIDENCE",
+  "disposition_identity": "4822ba1eede928571f96cb44a70ba5805b24c2707e5153e6747f954bbf7f90ac",
+  "evidence_role": "NONPOSITIVE_VOICE_TEMPLATE_REJECTION",
+  "existing_identities_modified": false,
+  "frozen_findings_reinterpreted": false,
+  "g04b_pool_certification_eligible": false,
+  "owner_review_eligible": false,
+  "partition": "DEVELOPMENT",
+  "permitted_future_source_only_diagnostics": [
+    "CROSS_PILOT_CREATIVE_MARKER_ROOT_CAUSE_ANALYSIS",
+    "CONSTRUCTOR_TEMPLATE_GOVERNANCE_ANALYSIS",
+    "VOICE_SHORTCUT_AND_TEMPLATE_CONTAMINATION_ANALYSIS",
+    "CREATIVE_MARKING_DIVERSITY_GOVERNANCE_REMEDIATION"
+  ],
+  "positive_coverage_eligible": false,
+  "preserved_voice_findings": {
+    "canned_transition": "FAIL",
+    "historical_wording_copy": "FAIL_PARTIAL_EXACT_TEMPLATE_REUSE",
+    "overall_voice": "FAIL",
+    "payoff_economy": "PASS",
+    "sentence_movement": "PASS",
+    "tonal_coherence": "PASS"
+  },
+  "production_eligible": false,
+  "runtime_eligible": false,
+  "schema_name": "batch2-development-pilot07-candidate01-voice-rejection-disposition-v1",
+  "schema_version": "1.0.0",
+  "stable_rejection_reasons": [
+    "CANNED_CROSS_PILOT_CREATIVE_TRANSITION_REUSE"
+  ],
+  "training_eligible": false,
+  "visibility": "NON_MODEL_VISIBLE",
+  "voice_commit": "92631597b63e7fa420b265ee0e55038108608cf2"
+}
