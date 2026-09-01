@@ -1,0 +1,147 @@
+{
+  "blind_family_access": false,
+  "exact_prior_line_reuse": false,
+  "family_independence_identity": "de642c80a6c5ac0c2bad98ac1724ffe634ab0ceaef5476a7b5524b95db86606a",
+  "git_blob_distinct": true,
+  "pilot12_source_sha256": "8b87cef6b320d45d7594bc48919bae63442f51f1f7937b599575d435df69ea27",
+  "pilot12_topology": [
+    "SYNTHETIC_UNIVERSITY_LIBRARY_COLLECTION_TRANSFER",
+    "INVENTORY_CODE_TO_DESTINATION_SHELF_ASSOCIATION",
+    "CODE_READ_AND_SHELF_IDENTIFICATION",
+    "SHELF_MARKED_BOX_PLACEMENT",
+    "SAME_DESTINATION_CONDITIONAL_STORAGE_TRANSPORT",
+    "MIXED_DESTINATION_RECHECK_HOLD",
+    "COLLECTION_ONLY_SCOPE",
+    "DESTINATION_MATCH_AND_RECHECK_UNKNOWN"
+  ],
+  "prior_construction_model_training_runtime_or_production_exposure": false,
+  "prior_family_identities": {
+    "pilot01": {
+      "authority_family": "9e9e829f602abcc23a7fb30a382422c63778f0bd217666bf3981f6aed249c754",
+      "creative_premise_family_id": "UNASSIGNED",
+      "event_family": "0070e9be578ef6554e67ce342e798ca06f07dd898f792ebfea7440544448a55a",
+      "family_closure": "fd2e4d5cac6a7ed1b3800cc382a6860f2b690bf652691c134b94692bf4bf1f84",
+      "revision_family": "2633ed0e140e4e64badea4e67fd848acf6807529b57fa369932c63ce6025b837",
+      "source_family": "0958b102a31ce3a3101ca584a552a60c767243bd3ea8cf0211a64598231b8f12",
+      "topic_entity_family": "2aad237873ea395239255e0f2fda5da0ec0220baca590aaa70bf06605216f4f4"
+    },
+    "pilot02": {
+      "authority_family": "3d312d29db34d3a4f8a2f2fc5b97af88e9b5ff1477040dd6697d7f6472dc9b62",
+      "creative_premise_family_id": "UNASSIGNED",
+      "event_family": "d83ec1870ec3d927cbee90a7eb0230279d35b09d725b060f831d5de3dc5df52e",
+      "family_closure": "ac076a1fd6ec4bc95138683590fca942bcfa322b3637a61b53b78484b12db005",
+      "revision_family": "e688e30d39d3ae465d92f8f13684776f9720fa8214813affe6958c076a01c08c",
+      "source_family": "f75b690801066eb41484e39ba66bccbb3c6963b9721ccea2a96df79d50b38b8c",
+      "topic_entity_family": "ab894f64a7d4a22908e8a520a6f44fa7cd826f11a6126a1c85ea9947d312dc1d"
+    },
+    "pilot03": {
+      "authority_family": "3b8ac6cc7c0833e50e20f537dd3b107b87753678064af4a9a16c54ed01b0e68f",
+      "creative_premise_family_id": "UNASSIGNED",
+      "event_family": "e6e856a2cbfd922994ffa49aac85f15356dc110e165c39c8fdf42a8b080dee32",
+      "family_closure": "72ba444c839d38109fcf46cbad176f6c929dc7155129178428f57bd4060beff5",
+      "revision_family": "471c1ffcef336effca84c8b707ee69df33dafed6bb5e4b5d76737fec900477cf",
+      "source_family": "4f61c0b3898d1adab00cf56b3e1e378c2b3a152ae820efa32102849e7013a093",
+      "topic_entity_family": "b7aafaa8a87f81a589d7b9aad899c08e7b4977df581a832b0289da5841b174be"
+    },
+    "pilot04": {
+      "authority_family": "f8b6dbc61f0f79ed4e396fdfe5645fe66223493cca8606202e4c4cc3de211d23",
+      "creative_premise_family_id": "UNASSIGNED",
+      "event_family": "ea19c20788d4790ee4d6cc0544db7c5cac78730edefbcd0cc773e47bd128efad",
+      "family_closure": "ab682e0762d486faa5218ed249cfffe43feaf65025f23b8fbb2b1b94a7fcb54e",
+      "revision_family": "15662651198cb31d3fd4d49b631f4950c79cb38426c4579c7d009929483030e8",
+      "source_family": "dd1d5cb54f7b3b767b9950a44ee91115a9ccdad98cbd4f5566f454a0b5e94db0",
+      "topic_entity_family": "910dc9e2464b40fce33cef763bfb87fb53f715be61ee6259994da53261a6e875"
+    },
+    "pilot05": {
+      "authority_family": "16e9b1f0a1df6d0966068af27f9fffd310a7186b689e8912d2d197b6e9417f64",
+      "creative_premise_family_id": "UNASSIGNED",
+      "event_family": "d3ddfb6e7a72f3ba7762055f47245505258146bb7250eb47b2168a31bdd7206b",
+      "family_closure": "e9f18ef2fca8ef8b00f72ae9ba34235242fdd43a96f7aad215d4fc803b1663cd",
+      "revision_family": "d4b7535ce011f9bff5d1b2333cff18f0783174764f80639c00c36600bcc105d8",
+      "source_family": "6c06ea44bcf2424c6ed79445c20b7d86825d3ff2bda334b30daa68812d0e8bff",
+      "topic_entity_family": "0a5ef69e012b76abe38f5aada58e44f8642a3a3a77574224ccd7838ff1e0d769"
+    },
+    "pilot06": {
+      "authority_family": "3dd071625b8dfc6d4d9989b0cad831ec640685aafbea5431701fa9827da304f2",
+      "creative_premise_family_id": "UNASSIGNED",
+      "event_family": "16fb775884b176492524b3d80818a549bddd2ca347b44b642731262834dea404",
+      "family_closure": "dd5812610b0aa621f6d80e2873d865b867da7b4f3376e2d139eea787bfdaf086",
+      "revision_family": "c470d94ff129fbf10991bfe8fc5253c9eeed7fd849a0173571518aa2528c1bd5",
+      "source_family": "2772cf009b7e2c47c522e4283bbaa2a85293c128f0b25540b1b91b45328dd61e",
+      "topic_entity_family": "881c4de35f30f8999ef5ca0f8f7244ad8e2614219d5ce254f76cee312fbfa75e"
+    },
+    "pilot07": {
+      "authority_family": "c515b7197dd0883c023cfc53161eaa79b0baf01f3a120884518da97dacafa390",
+      "creative_premise_family_id": "UNASSIGNED",
+      "event_family": "2838d628b0294408d4bad80443a6607e9c437d86594f187ec6c6f786fb96a938",
+      "family_closure": "06b561f2f536cc97548ad480a0848ee12fb8359f245e30e03cbada7e75246486",
+      "revision_family": "3dc35eac900e8dd56160407d9ef1d5d258133f4e856bf245c6044d9aff682fcd",
+      "source_family": "98d5944b3b6f9afa1fa25e8b7238b7fb30c37f3b5e904084abb895328973efe2",
+      "topic_entity_family": "99197d35bcc00dd48cc2b0b322205de8a26be7022c973409a60b4896b32add0e"
+    },
+    "pilot08": {
+      "authority_family": "32293d7225fa4e79eb76855e100e470d752108105ffb4cf3f24562290c152bdd",
+      "construction_revision_family_id": "UNASSIGNED",
+      "creative_marker_family_id": "UNASSIGNED",
+      "creative_premise_family_id": "UNASSIGNED",
+      "event_family": "2d9f67b3a49682bb4d4d6531f085fa1e2bb20d5c75f9ce39e20f76aab86fc27f",
+      "family_closure": "3b228f866845ce6b9220102ad8af897f007405c0b3eb765bd1991f7c1226928a",
+      "revision_family": "5ac3e269349f5d2f8b1841db1998a46612d4cd155f06075da1b307cb5f69a960",
+      "source_family": "41d888684d3657fd6a30ea3a37bc225b358af45d659ebf728bc520cb70209004",
+      "topic_entity_family": "99f68efb4465e38f93026788a06062c901a9b359d6a1e502d63d3355b990df16"
+    },
+    "pilot09": {
+      "authority_family": "07ee83dcf8fbaeb2ccade856687683b13e07d5280f6f13b9358a169d27bd3f08",
+      "construction_revision_family_id": "UNASSIGNED",
+      "creative_marker_family_id": "UNASSIGNED",
+      "creative_premise_family_id": "UNASSIGNED",
+      "event_family": "02e6bf2e099aba433bbc8863fa7b70b3409fdd39ab56b5c51c4fade29d1a2b67",
+      "family_closure": "67115badafe9cf5c18b43b4008808f83abf8f0ebb6b47fa20d253d3007c07fa6",
+      "revision_family": "efcac72521d8cd459e2ab47c811a2fa8db772ae789091f03161a2134c4529295",
+      "source_family": "c185e5d436f48cbd4a7d2562ca3a60b948f6f087749624f45c2415515a30b8d7",
+      "topic_entity_family": "2014c63240a2bad3d9e0c311c4b1674c92e50ebba32d7e33ff19b065a5f28abb"
+    },
+    "pilot10": {
+      "authority_family": "013598b3f1bd023fb8539ac68e874ee86a30452055b252d4c301d3dd7871249a",
+      "construction_revision_family_id": "UNASSIGNED",
+      "creative_marker_family_id": "UNASSIGNED",
+      "creative_premise_family_id": "UNASSIGNED",
+      "event_family": "4b88063a302b1144032b7b7121fc995277267f432efa75f265859f0336d77bdd",
+      "family_closure": "bf5fab9153bd3ac6c3ef1b793ff9e5e41ab875071823df3c29a65b0dbc53cb4d",
+      "revision_family": "99bd2e117962e189ecdace6beaddee82d716e152e01f9ad5d92a915dceff37dc",
+      "source_family": "82b55379b3b02da913e0337350853530ed84d89084a9f27f129577f831a1bc15",
+      "topic_entity_family": "f5c92a659f5a2a39dd118ed91006a481c0f04b0498a96d6732367d212766ab4b"
+    },
+    "pilot11": {
+      "authority_family": "52a5b2138bd40d439cf65aea4d8eb2842efaea614e62352f8a7682f36a14d851",
+      "construction_revision_family_id": "UNASSIGNED",
+      "creative_marker_family_id": "UNASSIGNED",
+      "creative_premise_family_id": "UNASSIGNED",
+      "event_family": "c84fb1b2da238189c9de168f88af297b4473d6bd9d5f5384a3fd3777522cb1dc",
+      "family_closure": "a05bd9cf96214d6f2b86e35440e008acd1fc7c84b1d5aacc7b88500cfb6e40bb",
+      "revision_family": "f4e871ba13e7357c33935ed67ee332af12aaf9ee2d5ecf7b447d7b6a5df2acb0",
+      "source_family": "c823818d0700089d4046395fea8e04503e7146033ef0ce28ca159e1e0ba9bb99",
+      "topic_entity_family": "917643501067e6d07d7803fc7fc9e80832f23ca144cd2e5fb26ae5f698e4c0f6"
+    }
+  },
+  "prior_source_sha256": [
+    "84261f1a6b97f951f70a1b86d42114da9703996607d43d2fc3779bffd7a97cb2",
+    "be9853603f82bc1fd11b2d0e06a692b3db4b83d1a7e20733c203c5aea1a04ea8",
+    "61a5889cb03f72c6f4f72b0f1652b2db43c092f51c91f7d5e59933a99ca2fc30",
+    "db4d440d42596e2db5ca402afa23bc8f65dcf7a7ba23a06d3ebef9e2eb1aa480",
+    "e3404a694bf1203f8a11ceeed0e682511882237e4777bd0e092876994c4326cc",
+    "eb97e6bdffc809d0902f90bb26b95c3c4a6047476b27eec7ac46b613dba030ad",
+    "eaeb78b44b28cc399037892bd31cb82e914573e464ef938dd183736cd03247be",
+    "d2a71300c1d1832f68132e4b824714ec0bc51beecf26f750146befb00a26712a",
+    "608f26b4588c347707ae5eccb08194d498fb3b3e9e7a6402be63ad2bc7c77c77",
+    "454a0c568c12a46224407f6c3b378f8197e3f4653cca6d897d1c03b8d94821d7",
+    "cdf1901941057914cb7b22ac1233771773e2f15bd1671bcc47e2d17d123e2bd9"
+  ],
+  "prior_target_obligation_proposition_constructor_semantic_role_affordance_realization_witness_alignment_premise_or_marker_assignment": false,
+  "result": "PASS_FRESH_FAMILY_INDEPENDENCE",
+  "schema_name": "batch2-development-pilot12-family-independence-v1",
+  "schema_version": "1.0.0",
+  "selected_or_shaped_using_downstream_gate_alignment_opportunity_or_expected_result": false,
+  "source_event_topic_revision_sibling_syndication_same_event_relation": false,
+  "source_hash_distinct": true
+}
