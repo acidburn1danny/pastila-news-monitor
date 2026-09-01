@@ -1,0 +1,151 @@
+{
+  "authority_matrix": {
+    "candidate_regeneration": false,
+    "candidate_repair": false,
+    "candidate_rewrite": false,
+    "g03c": false,
+    "g04a_romanian_naturalness": false,
+    "g04b_pool_certification": false,
+    "owner_review": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "training": false,
+    "voice_review": false
+  },
+  "candidate_bytes_modified": false,
+  "candidate_disposition_effect": "ELIGIBLE_FOR_SEPARATELY_AUTHORIZED_G03C_ONLY",
+  "candidate_identity": "44c76c090e226d0ef947e2fc07307fb862761e94950c4eb378b8b3d258427bc1",
+  "candidate_raw_sha256": "769228fc99006e0f665360f28805f31d4480419095de1f1fba5794319cc1bfa8",
+  "causal_findings": {
+    "factual_boundary_separation": "PASS_I05",
+    "necessary_structure": [
+      "P5 factual relation",
+      "first premise-dependent consequence",
+      "recursive locally dependent consequence",
+      "terminal absurd payoff"
+    ],
+    "not_necessary": [
+      "specific vocabulary",
+      "specific connector",
+      "punctuation",
+      "sentence segmentation",
+      "surface template"
+    ],
+    "removal_test": "PASS_I01_AND_I02_REMOVE_TARGET_STRUCTURE",
+    "substitution_test": "PASS_I03_CHANGES_LABEL",
+    "supporting_escalation_isolation": "PASS_I06",
+    "surface_paraphrase_invariance": "PASS_I04"
+  },
+  "causal_trace": {
+    "absurd_consequence": "The recurrence continues until the report becomes longer than the verification.",
+    "creative_marking": "Într-o continuare imaginară",
+    "factual_premise": "An observed technical problem is entered in the verification report for later analysis.",
+    "local_dependency": "P5_ENTRY_FOR_ANALYSIS_TO_NEW_FIELD_TO_FIELD_ANALYSIS_TO_NEW_ENTRY_TO_RECURSIVE_GROWTH",
+    "transformation_step_1": "The entry adds a new field to the report.",
+    "transformation_step_2": "Analysis of that field requires another entry, which creates the same condition again.",
+    "verdict": "COMPLETE_RECOVERABLE_CAUSAL_CHAIN"
+  },
+  "controls": {
+    "creative_marking_separated_from_mechanism_causality": "PASS_I05",
+    "cumulative_escalation_isolation": "PASS_I06",
+    "delta_only_control": "PASS",
+    "factual_premise_control": "PASS",
+    "lexical_keyword_dependence": "REJECTED_BY_I04",
+    "mere_absurdity_explanation": "REJECTED_BY_I03",
+    "topic_control": "PASS"
+  },
+  "counterfactuals_materialized_as_candidates": false,
+  "creative_premise_family_id": "39db5384af4870785ef54b076c73afed4be48a82fedd5a899f576f97d0dac558",
+  "g03_commit": "2ad9fde06c6e87ec5548be578d6061c58462c981",
+  "g03_receipt_identity": "bc30997ba763126f8ee0eda3d0a5375dbc9f6ba514e3394ada34cc086d9b5bf9",
+  "g03b_review_identity": "504b690e549d061fdeedeba873ae5656c4b6d115421faccaa8abe7f4fe93a76b",
+  "g03b_verdict": "CAUSAL_MECHANISM_CONFIRMED",
+  "minimal_interventions": [
+    {
+      "causal_result": "MECHANISM_REMOVED",
+      "delta_only": "Remove only the step in which analysis of the new field requires another report entry.",
+      "expected_observation": "The process stops after one added field; the self-propagating consequence and target dominance disappear.",
+      "id": "G03B-I01-REMOVE-RECURSIVE-HINGE",
+      "mechanism_after": "ABSENT_OR_WEAK",
+      "preserved": [
+        "P5 factual premise",
+        "fictional marking",
+        "first added field",
+        "topic",
+        "register"
+      ]
+    },
+    {
+      "causal_result": "MECHANISM_REMOVED",
+      "delta_only": "Keep the factual entry for later analysis but remove the imagined rule that the entry adds a new report field.",
+      "expected_observation": "No new object exists to trigger the remaining dependency chain.",
+      "id": "G03B-I02-REMOVE-FIRST-CREATIVE-HINGE",
+      "mechanism_after": "ABSENT",
+      "preserved": [
+        "P5 factual premise",
+        "fictional marking",
+        "later-analysis purpose",
+        "topic"
+      ]
+    },
+    {
+      "causal_result": "LABEL_CHANGE",
+      "delta_only": "Keep the factual premise and fictional status but substitute an absurd event unrelated to entry and analysis.",
+      "expected_observation": "Absurdity remains, but the recoverable premise-dependent extension is absent and the classification changes.",
+      "id": "G03B-I03-SUBSTITUTE-UNRELATED-ABSURDITY",
+      "mechanism_after": "ABSENT_LABEL_CHANGES",
+      "preserved": [
+        "P5 factual premise",
+        "fictional status",
+        "topic",
+        "approximate length",
+        "absurd tone"
+      ]
+    },
+    {
+      "causal_result": "INVARIANT_UNDER_SURFACE_PARAPHRASE",
+      "delta_only": "Change vocabulary, punctuation, and sentence segmentation while preserving every dependency link and the terminal comparison.",
+      "expected_observation": "The target remains dominant without reliance on a fixed word, connector, punctuation pattern, or sentence template.",
+      "id": "G03B-I04-PARAPHRASE-SURFACE-CUES",
+      "mechanism_after": "DOMINANT",
+      "preserved": [
+        "P5 factual premise",
+        "fictional marking",
+        "dependency graph",
+        "payoff",
+        "topic"
+      ]
+    },
+    {
+      "causal_result": "MARKER_NOT_CAUSAL_TO_MECHANISM",
+      "delta_only": "Remove only the explicit fictional continuation marker.",
+      "expected_observation": "The causal operation remains legible, but the candidate becomes independently invalid at G02's factual/creative boundary.",
+      "id": "G03B-I05-REMOVE-CREATIVE-MARKER",
+      "mechanism_after": "DOMINANT_BUT_AUTHORITY_INVALID",
+      "preserved": [
+        "P5 factual premise",
+        "dependency graph",
+        "terminal comparison",
+        "topic"
+      ]
+    },
+    {
+      "causal_result": "ESCALATION_REMOVED_TARGET_WEAKENED",
+      "delta_only": "Allow one premise-dependent added field but stop the process before the cycle repeats.",
+      "expected_observation": "Cumulative escalation disappears; a short logical extension remains but loses much of its absurd payoff.",
+      "id": "G03B-I06-CAP-REPETITION",
+      "mechanism_after": "SUPPORTING_OR_WEAK_NOT_DOMINANT",
+      "preserved": [
+        "P5 factual premise",
+        "fictional marking",
+        "first hinge",
+        "topic",
+        "register"
+      ]
+    }
+  ],
+  "reconciliation_identity": "6cc80a45b8dd9109a1e6901e87f237755b21419c6e11d79f3cee20f648e64061",
+  "schema_name": "batch2-development-pilot07-candidate01-g03b-causal-review-v1",
+  "schema_version": "1.0.0",
+  "tested_mechanism": "Absurd Logical Extension"
+}
