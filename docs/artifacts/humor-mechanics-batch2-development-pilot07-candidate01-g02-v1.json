@@ -1,0 +1,74 @@
+{
+  "authority_binding": {
+    "factual_authority_envelope_identity": "25f9ec7a698ce3e2060642f10f59cf511c29130f29b403066bb3e965c866f6d4",
+    "ingestion_commit": "914f9041247783f00220025d3d940089abc0fd73",
+    "source_commitment": "ee14c946e4a957c13c59b99a3f5bafecd15c625c1bfb668eeddee9a0e0e7e1c1",
+    "source_sha256": "eaeb78b44b28cc399037892bd31cb82e914573e464ef938dd183736cd03247be",
+    "world_scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE"
+  },
+  "authority_matrix": {
+    "g02c_obligation_conformance": false,
+    "g03_mechanism_recovery": false,
+    "g04b_pool_certification": false,
+    "model_training": false,
+    "owner_review": false,
+    "production_routing": false,
+    "regeneration": false,
+    "repair": false,
+    "rewrite": false,
+    "runtime_integration": false,
+    "selection": false
+  },
+  "candidate_byte_length": 366,
+  "candidate_git_blob_oid_sha1": "345829c569ae87d350a30158e026c52371e3c560",
+  "candidate_identity": "44c76c090e226d0ef947e2fc07307fb862761e94950c4eb378b8b3d258427bc1",
+  "candidate_raw_sha256": "769228fc99006e0f665360f28805f31d4480419095de1f1fba5794319cc1bfa8",
+  "construction_evidence_identity": "29a2335640adfc33ba2c173b4256582687eb2e4993c53722c20c46d281f96f19",
+  "creative_nonfactual_separation_result": "PASS_EXPLICIT_LOCAL_IMAGINARY_CONTINUATION_MARKER_COVERS_COMPLETE_CREATIVE_SEQUENCE",
+  "creative_premise_family_id": "39db5384af4870785ef54b076c73afed4be48a82fedd5a899f576f97d0dac558",
+  "eligibility": "ELIGIBLE_FOR_SEPARATELY_AUTHORIZED_G02C_OBLIGATION_CONFORMANCE",
+  "evidence_commit": "b88e13df272ff79a2d39d22b05b6d962f3785713",
+  "exposure_reconciliation_preserved": true,
+  "factual_assertion_trace": [
+    {
+      "authority_proposition_ids": [
+        "P5"
+      ],
+      "candidate_assertion": "EXACT_P5_SUPPORTING_SPAN",
+      "candidate_character_coordinates": [
+        0,
+        114
+      ],
+      "known_boundary": "ISSUE_RECORDING_OCCURS_ONLY_IF_A_TECHNICAL_PROBLEM_IS_OBSERVED",
+      "modality": "ASSERTED",
+      "scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE_ONLY",
+      "source_character_coordinates": [
+        385,
+        499
+      ],
+      "source_span_sha256": "37e92f7c6b55729e6efee58d6145b8184fc0ac98410ab0d412b51f54605a1899",
+      "source_utf8_byte_coordinates": [
+        399,
+        522
+      ],
+      "time": "CONDITIONAL_DURING_OR_AFTER_THE_STATED_TEST",
+      "trace_result": "EXACT_SOURCE_BOUND_CONDITIONAL_ASSERTION_WITH_REPORT_ANALYSIS_PURPOSE_AND_UNKNOWN_INTERVENTION_BOUNDARY",
+      "unknown_boundary": "NO_ASSERTION_THAT_A_PROBLEM_WAS_OR_WILL_BE_OBSERVED_OR_THAT_INTERVENTION_IS_REQUIRED"
+    }
+  ],
+  "g02_receipt_identity": "9205c78cad236f98e9fbf3778ca0dcb04b679c83ec30f43d858c535daa58c4e6",
+  "g02_verdict": "PASS",
+  "g02c_obligation_conformance_performed": false,
+  "invented_quotation_or_private_knowledge_result": "PASS_NONE",
+  "mechanism_adjudication_performed": false,
+  "new_factual_premise_result": "PASS_NONE_REPORT_RUBRIC_CYCLE_REMAINS_EXPLICITLY_IMAGINARY",
+  "partition": "DEVELOPMENT",
+  "post_construction_g02b_preserved": true,
+  "pragmatic_prohibited_conclusion_result": "PASS_NO_REAL_WORLD_PROBLEM_INTERVENTION_OR_PERSON_CONCLUSION",
+  "protected_target_result": "PASS_NO_REAL_PERSON_PROTECTED_OR_SENSITIVE_TARGET",
+  "qualification_scope_result": "PASS_P5_CONDITIONAL_OBSERVATION_REPORT_ANALYSIS_QUALIFICATION_SYNTHETIC_SCOPE_AND_UNKNOWN_INTERVENTION_BOUNDARY_RETAINED",
+  "schema_name": "batch2-development-pilot07-candidate-g02-v1",
+  "schema_version": "1.0.0",
+  "sealed_mapping_accessed": false,
+  "unsupported_inference_result": "PASS_NO_REAL_WORLD_INTENT_MOTIVE_PRIVATE_STATE_CAUSAL_PREVALENCE_CHRONOLOGY_OR_STATUS_ASSERTION"
+}
