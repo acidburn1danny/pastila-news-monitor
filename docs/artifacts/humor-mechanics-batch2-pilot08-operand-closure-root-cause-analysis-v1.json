@@ -1,0 +1,38 @@
+{
+  "analysis_identity": "6833ffa38bf317e510c66efe412f95eca95c449315c0142bcb3d2dbceb25bb82",
+  "candidate_git_blob_oid_sha1": "679ad8c85f55f002523657baf531587694f5f607",
+  "candidate_identity": "6f2aca6eafc4773576a00001d83d1a0e5c2bf5a2c53d1ae2930c2f3147457fb8",
+  "candidate_modified": false,
+  "candidate_raw_sha256": "bc71da32026e9173440a494279fd4dca752cfc8c5547abcaa1ad922bdda0368a",
+  "constructor_v4_module_path": "src/pastila_scout/humor_batch2_development_constructor_v4.py",
+  "constructor_v4_module_sha256": "f13136099e75c95033a54aabb447ded743c96a55479dc9a8b685f2a2b41c12d7",
+  "constructor_v4_preservation": "BYTE_EXACT_HISTORICAL_VERIFICATION_ONLY_NO_FUTURE_RELEASE",
+  "counterfactual_findings": {
+    "candidate_rewrite_performed": false,
+    "prohibit_raw_suffix_inflection_and_embedded_terminal_punctuation": "REMOVES_TWO_DETERMINISTIC_REALIZATION_DEFECTS_WITHOUT_ADJUDICATING_A_CANDIDATE",
+    "reject_prepositional_component_as_actor": "BLOCKS_THE_FAILED_FIRST_LINK_BEFORE_RELEASE",
+    "require_explicit_bound_actor_for_every_invented_predicate": "PRESERVES_GENERAL_CONSTRUCTION_FLEXIBILITY_WITHOUT_FIXING_SURFACE_WORDING",
+    "validate_abstract_plan_before_realization": "PREVENTS_LATER_LINKS_FROM_MASKING_AN_EARLY_CLOSURE_FAILURE"
+  },
+  "disposition_commit": "5345f15dd5b86e9d5fee0a7c22440a453b3983a8",
+  "disposition_identity": "127fe16cfc08883bb3f179d6f599cf3be6a0fa7680e68bfc1a94044f21dd4fbc",
+  "earliest_preventable_boundary": "CONSTRUCTOR_IMPLEMENTATION_STATIC_AUDIT_BEFORE_G02B_RELEASE",
+  "responsibility": {
+    "assignment_obligation_governance": "CONTRIBUTING_REQUIRED_OPERAND_CLOSURE_BUT_DID_NOT_REQUIRE_A_PRECONSTRUCTION_TYPED_PLAN_PROOF",
+    "constructor_v4_implementation": "PRIMARY_INCOMPATIBLE_COMPONENT_TO_ACTOR_SLOT_AND_UNVALIDATED_MORPHOLOGY",
+    "constructor_v4_static_validation": "PRIMARY_PREVENTION_GAP_NO_TYPED_DATAFLOW_OR_PLAN_CLOSURE_CHECK",
+    "g02c_review": "VALID_DETECTION_NOT_CAUSAL",
+    "proposition_sufficiency_governance": "NOT_CAUSAL_P5_IS_FACTUALLY_AND_RELATIONALLY_SUFFICIENT_FOR_ASSIGNMENT"
+  },
+  "root_causes": [
+    "V4_REUSED_THE_BOUND_OBJECT_COMPONENT_IN_A_NEW_ACTOR_POSITION_WITHOUT_ROLE_COMPATIBILITY_VALIDATION",
+    "P5_OBJECT_VALUE_IS_A_PREPOSITIONAL_LOCATION_PURPOSE_PHRASE_NOT_A_BOUND_AGENT_CAPABLE_OF_MOVING_CONTROL",
+    "V4_JOINED_A_COMPONENT_RETAINING_TERMINAL_PUNCTUATION_BEFORE_THE_NEW_PREDICATE_AND_SPLIT_THE_CLAIMED_LINK",
+    "V4_CONSTRUCTED_ROMANIAN_INFLECTION_BY_RAW_LEMMA_SUFFIX_CONCATENATION_WITHOUT_MORPHOLOGICAL_VALIDATION",
+    "V4_STATIC_AUDIT_CHECKED_ACCESS_IDENTITY_AND_LITERAL_LEAKAGE_BUT_NOT_TYPED_OPERAND_DATAFLOW_OR_EMITTED_PLAN_CLOSURE",
+    "G02C_CORRECTLY_DETECTED_THE_FAILURE_BUT_ONLY_AFTER_IRREVERSIBLE_SINGLE_ATTEMPT_CONSUMPTION"
+  ],
+  "schema_name": "batch2-pilot08-operand-closure-root-cause-analysis-v1",
+  "schema_version": "1.0.0",
+  "verdict": "ROOT_CAUSE_CONFIRMED_AT_CONSTRUCTOR_V4_TYPED_OPERAND_AND_STATIC_PLAN_VALIDATION_BOUNDARY"
+}

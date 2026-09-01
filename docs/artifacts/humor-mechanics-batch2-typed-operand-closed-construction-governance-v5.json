@@ -1,0 +1,43 @@
+{
+  "assignment_additional_requirements": [
+    "OBLIGATION_REQUIRES_EXPLICIT_OPERAND_CLOSURE_WITHOUT_SELECTING_SURFACE_ACTORS",
+    "CONSTRUCTOR_CONTRACT_IDENTITY_MUST_REMAIN_UNASSIGNED_UNTIL_SEPARATE_IMPLEMENTATION_AUDIT"
+  ],
+  "construction_authority": false,
+  "constructor_contract_identity": "e42f4741ddab7a6acbdd16f34804cd55408ca5a5428433be3c55eb9b74163c5a",
+  "constructor_implementation_authority": false,
+  "constructor_release_authority": false,
+  "family_version": "TYPED_OPERAND_CLOSED_CONSTRUCTION_V5",
+  "g02b_additional_requirements": [
+    "EXACT_V5_IMPLEMENTATION_AND_CONTRACT_IDENTITIES_BOUND",
+    "STATIC_TYPED_OPERAND_DATAFLOW_AUDIT_PASS",
+    "PILOT08_FAILED_SHAPE_REGRESSION_PASS",
+    "ZERO_CONSTRUCTOR_INVOCATIONS_AND_ZERO_SURFACES_BEFORE_RELEASE"
+  ],
+  "g02c_required_checks": [
+    "COMPLETE_MULTI_LINK_CAUSAL_SPINE",
+    "AT_LEAST_TWO_DISTINCT_NON_RESTATEMENT_LINKS",
+    "EACH_LINK_NECESSARY_AND_NON_ARBITRARY",
+    "ALL_REFERENCES_AND_OPERANDS_ROLE_COMPATIBLE_AND_BOUND",
+    "NO_TERMINAL_PUNCTUATION_SPLIT_WITHIN_A_CLAIMED_LINK",
+    "NO_DELAYED_FACT_DISCLOSURE_AS_PRIMARY_EFFECT",
+    "NO_SINGLE_LITERAL_TRANSFER_AS_SOLE_ENGINE",
+    "NO_INSTRUCTION_LANGUAGE_TRANSFER"
+  ],
+  "governance_identity": "e81ee4eff9044ee16180ef36a7508fe9f1e7c784fa6830299588cea16c2d3a3e",
+  "model_exposure_authority": false,
+  "preserves_v3_order_robust_causal_spine_requirements": true,
+  "preserves_v4_template_diversity_and_fragment_collision_requirements": true,
+  "production_authority": false,
+  "proposition_sufficiency_boundary": "UNCHANGED_POST_G01_FACTUAL_RELATION_SUFFICIENCY_ONLY_NO_CREATIVE_ACTOR_ROLE_GUARANTEE",
+  "root_cause_analysis_identity": "6833ffa38bf317e510c66efe412f95eca95c449315c0142bcb3d2dbceb25bb82",
+  "runtime_authority": false,
+  "schema_name": "batch2-typed-operand-closed-construction-governance-v5",
+  "schema_version": "5.0.0",
+  "source_acquisition_authority": false,
+  "supersedes_governance_identities": [
+    "4848bd025e43eff6652e4c2024072760d372ca4ac7427e5f21e1d2c4bcdb35dc",
+    "cc86204c6f199c80ef7c7bf87a58cf3c62d17acb1fe14bd2666bbf5ba86692f6"
+  ],
+  "training_authority": false
+}

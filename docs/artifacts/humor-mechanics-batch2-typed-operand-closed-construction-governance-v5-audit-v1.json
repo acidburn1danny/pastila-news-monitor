@@ -1,0 +1,22 @@
+{
+  "analysis_identity": "6833ffa38bf317e510c66efe412f95eca95c449315c0142bcb3d2dbceb25bb82",
+  "audit_identity": "527ff336263359f1443937919eb7c8d101b0d7d3525e93f209a27da735489bba",
+  "candidate_surfaces_created": 0,
+  "constructor_contract_identity": "e42f4741ddab7a6acbdd16f34804cd55408ca5a5428433be3c55eb9b74163c5a",
+  "constructor_invocations": 0,
+  "constructor_v4_preservation": "PASS_BYTE_EXACT_HISTORICAL_ONLY",
+  "deterministic_blockers_remaining_before_v5_implementation_phase": [],
+  "governance_identity": "e81ee4eff9044ee16180ef36a7508fe9f1e7c784fa6830299588cea16c2d3a3e",
+  "hidden_constructor_implementation_authority": "ABSENT",
+  "hidden_release_or_construction_authority": "ABSENT",
+  "label_taxonomy_and_answer_leakage": "PASS_ZERO_HITS",
+  "pilot08_regression": "PASS_EXPECTED_PRECONSTRUCTION_REJECTION",
+  "proposition_sufficiency_boundary": "PASS_UNCHANGED_NO_CREATIVE_ROLE_INFERENCE",
+  "regression_identity": "e91926a00312b556b3d095abc7ce666b6cd61b2d863c01b5378be43bac1faae8",
+  "schema_identity": "29d7b0f97008ad38e64b8e966f398d829a66299ec805290ebbec3f92848efab6",
+  "schema_name": "batch2-typed-operand-closed-construction-governance-v5-audit-v1",
+  "schema_version": "1.0.0",
+  "source_or_candidate_created": false,
+  "typed_operand_closure": "PASS_REQUIRED_BEFORE_REALIZATION",
+  "verdict": "PASS_SOURCE_ONLY_GOVERNANCE_AND_CONTRACT_REMEDIATION_ZERO_CONSTRUCTION"
+}
