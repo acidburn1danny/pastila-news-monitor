@@ -1,0 +1,79 @@
+{
+  "abstract_plan_closure": "PASS_THREE_TYPED_NODES_NO_UNBOUND_OPERANDS",
+  "authority_binding": "PASS_EXACT_P5_AND_AUTHORIZED_SUPPORTING_SPAN_ONLY",
+  "authority_matrix": {
+    "construction": false,
+    "fragment_collision_evaluation": false,
+    "g02": false,
+    "g02b_release": false,
+    "g02c": false,
+    "g03": false,
+    "g04b_pool_certification": false,
+    "model_exposure": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "training": false
+  },
+  "candidate_surface": null,
+  "compatibility_identity": "6554798852137176e9d0b860523b1110da5ac279c9ceae456a99acc09f70a50d",
+  "constructor_contract_identity": "9b647d33dfa40171040fe6acf08b8b6dca6081c41c0f1f4428f910bfdfaa8a6b",
+  "constructor_facing_proposal_identity": "2fc8967cb7fba1667524a8683c4d837afbb21dd6c7d6ae61b244ff8b9e6cb5c1",
+  "constructor_implementation_identity": "c7134743e6b0e7c3ed7637bff3203f774159f192fef7a7b712e15d4d44a6f419",
+  "constructor_invoked": false,
+  "constructor_release": false,
+  "constructor_static_audit_identity": "7c304534fbe2ee6b526a4cc4582a243b685ab97f5694ef5524abdeb3e150de47",
+  "factual_authority_widening": "ABSENT",
+  "prior_failed_compatibility_identity": "fabcee37d422ad7e941dd1168c63b9659e27b039831a187da05d7bc665bed5a7",
+  "proposition_derived_abstract_plan": [
+    {
+      "actor": "FACT_RELATION_E1D5CAAB958C829B",
+      "actor_role": "RELATION_HEAD",
+      "introduces": [
+        "INVENTED_RELATION_1"
+      ],
+      "node_id": "L1",
+      "patient": "FACT_QUALIFICATION",
+      "predecessors": [],
+      "predicate_id": "EXTEND_E1D5CAAB958C829B"
+    },
+    {
+      "actor": "INVENTED_RELATION_1",
+      "actor_role": "RELATION_HEAD",
+      "introduces": [
+        "INVENTED_RELATION_2"
+      ],
+      "node_id": "L2",
+      "patient": "FACT_OBJECT",
+      "predecessors": [
+        "L1"
+      ],
+      "predicate_id": "PROPAGATE_E1D5CAAB958C829B"
+    },
+    {
+      "actor": "INVENTED_RELATION_2",
+      "actor_role": "RELATION_HEAD",
+      "introduces": [],
+      "node_id": "RESULT",
+      "patient": "FACT_RELATION_E1D5CAAB958C829B",
+      "predecessors": [
+        "L2"
+      ],
+      "predicate_id": "RESOLVE_E1D5CAAB958C829B"
+    }
+  ],
+  "reviewed_commit": "9b0df3daf3aa894e72259b80131c0da4b0480995",
+  "schema_name": "batch2-development-pilot09-constructor-v5-1-source-compatibility-v1",
+  "schema_version": "1.0.0",
+  "sealed_assignment_identity": "735814216b914a8c3f86150261cff19efb77536126c3c4d13b2f38bd3c0590e1",
+  "selected_proposition_id": "P5",
+  "selected_span_sha256": "45c1e8c1f05aa1e88abc7e2818ef830c8ad9e4a789e5ce4ac5f99133d33f9f1c",
+  "typed_operand_extraction": {
+    "object": "automat.",
+    "predicate": "nu pornește",
+    "qualification_bound": true,
+    "relation_id": "FACT_RELATION_E1D5CAAB958C829B",
+    "subject": "banda",
+    "verdict": "PASS_SOURCE_SHAPE_NEUTRAL"
+  },
+  "verdict": "PASS_SOURCE_COMPATIBLE_WITH_FROZEN_CONSTRUCTOR_V5_1_NO_RELEASE"
+}
