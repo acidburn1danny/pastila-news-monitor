@@ -1,0 +1,23 @@
+{
+  "audit_identity": "c29ab6fc030aa1b581a1c7c7f676e9a626113d74ff0d6c8de9992e3362498cb5",
+  "candidate_surface_absent": true,
+  "constructor_v5_2_compatibility_evaluated": false,
+  "deterministic_blockers": [],
+  "downstream_authority": false,
+  "eligible_propositions": [
+    "P3",
+    "P4"
+  ],
+  "exact_admission_binding": "PASS",
+  "exact_source_and_envelope_binding": "PASS",
+  "exactly_one_selected_proposition": "PASS_P3_FIRST_SOURCE_ORDER_SUFFICIENT",
+  "git_object_only": true,
+  "mechanism_label_absent": true,
+  "realization_or_witness_planning_performed": false,
+  "receipt_identity": "a3ce7039e7e01af1f32d5063022b86a0eb463da72ed5e182c32882776b3d1b1f",
+  "schema_name": "batch2-pilot10-post-g01-proposition-sufficiency-audit-v5-2",
+  "schema_version": "1.0.0",
+  "seven_proposition_spans_reverified": "PASS",
+  "source_relation_sufficiency": "PASS_MECHANISM_NEUTRAL_NO_PLAN",
+  "verdict": "PASS_SOURCE_ONLY_NO_ASSIGNMENT_NO_PLANNING_ZERO_CONSTRUCTION"
+}
