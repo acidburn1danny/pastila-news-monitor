@@ -38,9 +38,9 @@ def test_frozen_packet_inputs_are_byte_exact_at_preparation_commit():
         assert path.read_bytes() == frozen
 
 
-def test_secret_and_response_paths_must_be_outside_repository(tmp_path: Path):
+def test_secret_and_response_paths_must_be_outside_repository():
     module = load_module()
-    external = tmp_path.resolve()
+    external = Path(f"{ROOT.drive}\\Pilot10-owner-controlled-external-test").resolve()
     assert module.outside_repository(external) == external
     try:
         module.outside_repository(ROOT / "forbidden")
