@@ -1,0 +1,159 @@
+{
+  "authority_matrix": {
+    "construction": false,
+    "constructor_release": false,
+    "constructor_v5_source_compatibility_evaluation": false,
+    "creative_premise_assignment": false,
+    "g04b_pool_certification": false,
+    "generation": false,
+    "model_exposure": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "training": false
+  },
+  "authorized_visible_context_sha256": "45c1e8c1f05aa1e88abc7e2818ef830c8ad9e4a789e5ce4ac5f99133d33f9f1c",
+  "candidate_surface": null,
+  "closed_factual_authority_envelope": {
+    "authority_scope": "Only the explicitly stated conveyor-system verification event, temporal and operational scope, parcel-detection process, sensor-to-control signal relation, control-to-conveyor activation relation, conditional non-activation behavior, verification-recording procedure, equipment-scope limitation, and explicitly unknown operational and intervention outcomes within the accompanying owner-authored synthetic test universe.",
+    "propositions": [
+      {
+        "attribution": "OWNER_AUTHORED_SOURCE",
+        "known_boundary": "AUTOMATIC_NONSTART_OCCURS_IF_SENSOR_NONDETECTION_OR_SIGNAL_NONARRIVAL_CONDITION_HOLDS",
+        "modality": "ASSERTED",
+        "object": {
+          "character_coordinates": [
+            579,
+            587
+          ],
+          "sha256": "4e2f62230a5026e9ba5b19a27499a872b81ee6f711ef17588f8a501d69c989ab",
+          "utf8_byte_coordinates": [
+            601,
+            609
+          ]
+        },
+        "predicate": {
+          "character_coordinates": [
+            567,
+            578
+          ],
+          "sha256": "be756032af20fd508fcb6fdb1477cf4fc10610d4d1167b4e0f92bc2f1f3eff32",
+          "utf8_byte_coordinates": [
+            588,
+            600
+          ]
+        },
+        "prohibited_inferences": [
+          "NO_REAL_WORLD_ASSERTION",
+          "NO_UNSTATED_CAUSAL_INFERENCE",
+          "NO_UNSTATED_PERSON_INTENT_OR_INTERNAL_STATE_INFERENCE",
+          "NO_UNSTATED_OPERATION_INTERVENTION_OTHER_EQUIPMENT_OR_OUTCOME_INFERENCE"
+        ],
+        "proposition_id": "P5",
+        "qualification": {
+          "character_coordinates": [
+            478,
+            560
+          ],
+          "sha256": "f10272e03cbc4ce6cedf9a5902857e341bf635f892d8f626a364698b9a57a8a9",
+          "utf8_byte_coordinates": [
+            497,
+            581
+          ]
+        },
+        "quotation_status": "NO_QUOTATION",
+        "scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE_ONLY",
+        "sensitive_protected_target_classification": "NONE_DECLARED_LOW_RISK_SYNTHETIC",
+        "subject": {
+          "character_coordinates": [
+            561,
+            566
+          ],
+          "sha256": "9873fc4269216d4e5fe3c31db04ad614a5832d891969b977e0bf8cb744101cd9",
+          "utf8_byte_coordinates": [
+            582,
+            587
+          ]
+        },
+        "supporting_span": {
+          "character_coordinates": [
+            478,
+            587
+          ],
+          "sha256": "45c1e8c1f05aa1e88abc7e2818ef830c8ad9e4a789e5ce4ac5f99133d33f9f1c",
+          "span_sha256": "45c1e8c1f05aa1e88abc7e2818ef830c8ad9e4a789e5ce4ac5f99133d33f9f1c",
+          "utf8_byte_coordinates": [
+            497,
+            609
+          ]
+        },
+        "time": "CONDITIONAL_DURING_STATED_VERIFICATION",
+        "unknown_boundary": "NO_ASSERTION_THAT_EITHER_CONDITION_WILL_OCCUR_OR_THAT_ANY_COMPONENT_IS_DEFECTIVE"
+      }
+    ],
+    "source_commitment": "c07226c1a0c8776f3306e895bff9ce7b21f28b6262d89e33085cfb6384478730",
+    "source_sha256": "608f26b4588c347707ae5eccb08194d498fb3b3e9e7a6402be63ad2bc7c77c77",
+    "world_scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE"
+  },
+  "construction_revision_family_id": "0fa6e08e7ae88af0760c273e99d26c3ae350779d51a6a59f01e21684d7756579",
+  "constructor_contract_identity": "e42f4741ddab7a6acbdd16f34804cd55408ca5a5428433be3c55eb9b74163c5a",
+  "constructor_facing_packet_identity": "2fc8967cb7fba1667524a8683c4d837afbb21dd6c7d6ae61b244ff8b9e6cb5c1",
+  "constructor_implementation_identity": "UNASSIGNED_PENDING_SEPARATE_V5_SOURCE_COMPATIBILITY_GATE",
+  "constructor_invoked": false,
+  "constructor_v5_source_compatibility_evaluated": false,
+  "creative_marker_family_id": "UNASSIGNED_UNTIL_POSTCONSTRUCTION",
+  "creative_premise_family_id": "UNASSIGNED",
+  "exact_authorized_visible_context_utf8": "Dacă senzorul nu detectează coletul sau semnalul nu ajunge la unitatea de control, banda nu pornește automat.",
+  "fragment_denyset_identity": "UNASSIGNED_REQUIRES_FREEZE_BEFORE_RELEASE",
+  "immutable_assignment_identity": "735814216b914a8c3f86150261cff19efb77536126c3c4d13b2f38bd3c0590e1",
+  "mapping_commitment": "af6dc904d5b02301754d55a40dca7a59d8f5de469e9db39d199efbf3805f1860",
+  "output_constraints": {
+    "language": "ROMANIAN",
+    "length_profile": "COMMON_BATCH2_NEUTRAL_PROFILE_30_TO_90_WORDS_1_TO_3_SENTENCES",
+    "prohibited": [
+      "CANNED_OPENING",
+      "GOVERNANCE_META_LANGUAGE",
+      "PROCEDURAL_ABSTRACT_REGISTER",
+      "UNBOUND_REFERENCE",
+      "FACTUAL_WIDENING"
+    ],
+    "register": "IDIOMATIC_NATURAL_CONCRETE_ROMANIAN"
+  },
+  "schema_name": "batch2-development-pilot09-constructor-facing-rebalancing-assignment-proposal-v5",
+  "schema_version": "5.0.0",
+  "selected_proposition_id": "P5",
+  "selected_supporting_span_sha256": "45c1e8c1f05aa1e88abc7e2818ef830c8ad9e4a789e5ce4ac5f99133d33f9f1c",
+  "source_package_identity": "e6b520958d949f673600366018572fb00da98125646ab75cdb4fc6e34d1da5f0",
+  "status": "PROPOSAL_ZERO_CONSTRUCTION_NO_RELEASE",
+  "sufficiency_receipt_identity": "f197280f8069ed15635ab32d9811bed83a5e77c6e9be737844c757d2b2292566",
+  "unlabeled_operational_obligation": {
+    "creative_marking_constraints": [
+      "Marcajul nonfactual trebuie ales local pentru acest text, fără formulă sau tranziție prestabilită.",
+      "Nu reutiliza o tranziție creativă, o deschidere sau o aterizare dintr-un alt exemplu.",
+      "Nu transforma cerințele ori limbajul de control în formulări ale rezultatului."
+    ],
+    "forbidden_operations": [
+      "Nu ascunde relația factuală până după rezultatul inventat și nu folosi dezvăluirea ei ca răsturnare principală.",
+      "Nu introduce un reper, operand, eveniment ori cauză care nu poate fi urmărită local până la contextul autorizat.",
+      "Nu baza rezultatul pe redenumire, reclasificare, personificare, intensificare, listă sau joc lexical.",
+      "Nu impune o formulă fixă, un conector, un semn de punctuație, un registru ori un număr fix de propoziții."
+    ],
+    "naturalness_and_safety": [
+      "Folosește română idiomatică și concretă; nu transfera în suprafață limbajul acestei cerințe.",
+      "Separă clar cadrul inventat de autoritatea factuală și nu adăuga fapte, citate, cunoaștere privată sau concluzii despre lumea reală."
+    ],
+    "obligation_instance_identity": "b6c600d6cb4cef27d02fcffe0e978a2c9f694f33351ed630c4bdf3b35513098b",
+    "obligation_version": "DEVELOPMENT_TRANSFORMATION_V5_01",
+    "transformation": [
+      "Păstrează exact relația factuală furnizată, cu toate calificările și limitele ei, și fă-o disponibilă înainte ca textul să poată produce o schimbare retrospectivă de lectură.",
+      "Construiește o consecință inventată prin cel puțin două legături locale distincte, fiecare necesară și recuperabilă din relația precedentă.",
+      "Consecința trebuie să depindă de întregul lanț; simpla transformare a unui cuvânt, număr ori înscris într-un obiect fizic nu poate susține singură rezultatul.",
+      "Marcajul nonfactual trebuie integrat firesc și trebuie să acopere toate legăturile inventate."
+    ],
+    "typed_operand_constraints": [
+      "Înaintea realizării, descrie abstract fiecare operand prin rol, tip, proveniență și legătura care îl produce.",
+      "Fiecare legătură inventată poate consuma numai operanzi legați de relația factuală ori produși explicit de legătura precedentă.",
+      "Nu introduce actori, agenți, obiecte de control sau referințe fără producător și tip compatibil în planul abstract.",
+      "Validează închiderea planului abstract înaintea oricărei realizări; la neînchidere, oprește fără suprafață."
+    ]
+  }
+}

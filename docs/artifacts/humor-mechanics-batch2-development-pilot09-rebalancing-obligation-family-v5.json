@@ -1,0 +1,42 @@
+{
+  "candidate_surface": null,
+  "conformance_schema_identity": "29d7b0f97008ad38e64b8e966f398d829a66299ec805290ebbec3f92848efab6",
+  "construction_authority": false,
+  "constructor_visible_obligation": {
+    "creative_marking_constraints": [
+      "Marcajul nonfactual trebuie ales local pentru acest text, fără formulă sau tranziție prestabilită.",
+      "Nu reutiliza o tranziție creativă, o deschidere sau o aterizare dintr-un alt exemplu.",
+      "Nu transforma cerințele ori limbajul de control în formulări ale rezultatului."
+    ],
+    "forbidden_operations": [
+      "Nu ascunde relația factuală până după rezultatul inventat și nu folosi dezvăluirea ei ca răsturnare principală.",
+      "Nu introduce un reper, operand, eveniment ori cauză care nu poate fi urmărită local până la contextul autorizat.",
+      "Nu baza rezultatul pe redenumire, reclasificare, personificare, intensificare, listă sau joc lexical.",
+      "Nu impune o formulă fixă, un conector, un semn de punctuație, un registru ori un număr fix de propoziții."
+    ],
+    "naturalness_and_safety": [
+      "Folosește română idiomatică și concretă; nu transfera în suprafață limbajul acestei cerințe.",
+      "Separă clar cadrul inventat de autoritatea factuală și nu adăuga fapte, citate, cunoaștere privată sau concluzii despre lumea reală."
+    ],
+    "obligation_version": "DEVELOPMENT_TRANSFORMATION_V5_01",
+    "transformation": [
+      "Păstrează exact relația factuală furnizată, cu toate calificările și limitele ei, și fă-o disponibilă înainte ca textul să poată produce o schimbare retrospectivă de lectură.",
+      "Construiește o consecință inventată prin cel puțin două legături locale distincte, fiecare necesară și recuperabilă din relația precedentă.",
+      "Consecința trebuie să depindă de întregul lanț; simpla transformare a unui cuvânt, număr ori înscris într-un obiect fizic nu poate susține singură rezultatul.",
+      "Marcajul nonfactual trebuie integrat firesc și trebuie să acopere toate legăturile inventate."
+    ],
+    "typed_operand_constraints": [
+      "Înaintea realizării, descrie abstract fiecare operand prin rol, tip, proveniență și legătura care îl produce.",
+      "Fiecare legătură inventată poate consuma numai operanzi legați de relația factuală ori produși explicit de legătura precedentă.",
+      "Nu introduce actori, agenți, obiecte de control sau referințe fără producător și tip compatibil în planul abstract.",
+      "Validează închiderea planului abstract înaintea oricărei realizări; la neînchidere, oprește fără suprafață."
+    ]
+  },
+  "family_version": "TYPED_OPERAND_CLOSED_V5_WITH_ORDER_ROBUST_CAUSAL_SPINE_AND_TEMPLATE_DIVERSITY",
+  "governance_identity": "e81ee4eff9044ee16180ef36a7508fe9f1e7c784fa6830299588cea16c2d3a3e",
+  "inherited_causal_spine_governance_identity": "4848bd025e43eff6652e4c2024072760d372ca4ac7427e5f21e1d2c4bcdb35dc",
+  "obligation_family_identity": "4807934b85dc53c2fe43d7796bfe865efec73e52b244eebe2c7fcf07ecfcb068",
+  "schema_name": "batch2-development-pilot09-rebalancing-obligation-family-v5",
+  "schema_version": "5.0.0",
+  "sufficiency_schema_identity": "29d7b0f97008ad38e64b8e966f398d829a66299ec805290ebbec3f92848efab6"
+}
