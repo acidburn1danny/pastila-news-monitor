@@ -1,0 +1,30 @@
+{
+  "analysis_identity": "9f78b97f77c2560a5452d907159098581203494e123ef4b2a3d704162cb09548",
+  "audit_identity": "f1ce2f6b49dda0ff9e331c107f0694af68d4da02183422ff33a952e22bad0361",
+  "candidate_surfaces_created": 0,
+  "constructor_contract_identity": "9d811b18c16e8770549c19c9d8be63ef6f04e030fa67b5a47167b5e7ddc1bef6",
+  "constructor_provider_emitter_invocations": "0/0/0",
+  "constructor_v5_2_preservation": "PASS_BYTE_EXACT",
+  "deterministic_blockers_before_successor_constructor_phase": [
+    "V5_3_PROVIDER_EMITTER_INTEGRATION_AND_STATIC_AUDIT_NOT_PERFORMED"
+  ],
+  "edge_level_causal_necessity": "PASS_EXPLICIT_COUNTERFACTUAL_AND_NON_ARBITRARY_WITNESS_REQUIRED",
+  "entity_identity_vs_reclassification": "PASS_SEPARATED",
+  "g02c_weakened": false,
+  "governance_identity": "073d68d9d21c76974d12eb8e3f591f4172197377bfb36c2de2f85a5afe079dd6",
+  "label_taxonomy_answer_leakage": "PASS_ZERO_HITS",
+  "pilot10_preservation": "PASS_BYTE_EXACT_NONPOSITIVE",
+  "pilot10_regression": "PASS_REJECTED_BEFORE_REALIZATION",
+  "pilot10_regression_identity": "84413654223665f050d7a3e91dd68c6af008aff380f844adbedb81146f576185",
+  "privileged_role_and_affordance_minting": "PASS_PROHIBITED",
+  "release_authority": false,
+  "required_vs_produced_role_compatibility": "PASS_PRESENT_FAIL_CLOSED",
+  "root_cause_layer_separation": "PASS_ONLY_ABSTRACT_PLAN_SEMANTIC_SIGNATURE_REALIZATION_ROLE_AND_PRE_EMISSION_NECESSITY_BOUNDARIES_CHANGED",
+  "schema_identity": "4b26df92539082f11b83c83f76b1d158c7c8f4c87304bdcdd8a6129644f532f3",
+  "schema_name": "batch2-semantic-edge-role-continuity-v5-3-audit-v1",
+  "schema_version": "1.0.0",
+  "semantic_enforcement_implementation_identity": "16e54e9a09ed95905fd1f308d77b7bd4f03084b3a1654f8161a6c78b62ce6983",
+  "terminal_edge_equal_strength": "PASS",
+  "typed_predicate_role_signatures": "PASS_PRESENT_FAIL_CLOSED",
+  "verdict": "PASS_SOURCE_ONLY_SEMANTIC_EDGE_ROLE_CONTINUITY_REMEDIATION_ZERO_CONSTRUCTION_NO_RELEASE"
+}

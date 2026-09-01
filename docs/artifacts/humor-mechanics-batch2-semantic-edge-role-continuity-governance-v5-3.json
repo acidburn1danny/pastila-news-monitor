@@ -1,0 +1,31 @@
+{
+  "construction_authority": false,
+  "constructor_contract_identity": "9d811b18c16e8770549c19c9d8be63ef6f04e030fa67b5a47167b5e7ddc1bef6",
+  "constructor_implementation_authority": false,
+  "constructor_release_authority": false,
+  "dual_enforcement_boundary": {
+    "plan_time": "STATIC_SEMANTIC_ROLE_PREDICATE_ARGUMENT_AFFORDANCE_AND_EDGE_NECESSITY",
+    "pre_emission": "REALIZED_ROLE_AFFORDANCE_CAUSAL_RULE_AND_TERMINAL_EDGE_REVALIDATION"
+  },
+  "g02c_authority": "UNCHANGED_AUTHORITATIVE_INDEPENDENT_POSTCONSTRUCTION_ADJUDICATION",
+  "governance_identity": "073d68d9d21c76974d12eb8e3f591f4172197377bfb36c2de2f85a5afe079dd6",
+  "model_exposure_authority": false,
+  "pilot10_regression_mandatory": true,
+  "production_authority": false,
+  "responsibility_separation": "PLAN_TIME_REJECTS_KNOWN_INCOMPATIBILITY_PRE_EMISSION_REJECTS_REALIZATION_DRIFT_WITHOUT_DUPLICATING_G02C",
+  "root_cause_analysis_identity": "9f78b97f77c2560a5452d907159098581203494e123ef4b2a3d704162cb09548",
+  "runtime_authority": false,
+  "schema_name": "batch2-semantic-edge-role-continuity-governance-v5-3",
+  "schema_version": "5.3.0",
+  "source_acquisition_authority": false,
+  "supersedes_governance_identity": "80bbf059956424ce6f20885de51ce900f6116b40a223a107a46a29d3b012efc6",
+  "training_authority": false,
+  "upstream_boundaries_unchanged": [
+    "G01",
+    "SOURCE_PROPOSITION_SUFFICIENCY",
+    "ASSIGNMENT",
+    "FACTUAL_AUTHORITY",
+    "FRAGMENT_COLLISION",
+    "G02"
+  ]
+}

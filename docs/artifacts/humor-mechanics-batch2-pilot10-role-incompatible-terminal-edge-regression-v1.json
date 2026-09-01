@@ -1,0 +1,17 @@
+{
+  "candidate_bytes_embedded": false,
+  "candidate_git_blob_oid_sha1": "8dfbc43c94190e5b0fca48d6bcd28adf55c21391",
+  "candidate_identity": "0f17fc88debe3ba4d91740cd7541a457aa7c63fdab86abd03e9944e6e85a8f89",
+  "candidate_modified": false,
+  "candidate_persistence_or_emission": false,
+  "candidate_raw_sha256": "013c70e3c15833e789592915f5f31b62eeaed5c1148ff6b6f78607cb0c907464",
+  "expected_primary_failure": "ACTOR_SEMANTIC_ROLE_INCOMPATIBLE_WITH_TERMINAL_PREDICATE",
+  "expected_secondary_failure": "RECLASSIFICATION_CANNOT_MINT_PROCEDURE_APPLYING_AFFORDANCE",
+  "expected_v5_3_result": "FAIL_CLOSED_BEFORE_REALIZATION_WHERE_PLAN_SIGNATURE_EXPOSES_MISMATCH_OTHERWISE_BEFORE_CANDIDATE_EMISSION",
+  "failed_shape": "ALL_NODES_EDGES_AND_TERMINAL_WITNESS_PRESENT_BUT_TERMINAL_ACTOR_LEXICALLY_CONTINUOUS_ROLE_INCOMPATIBLE_AND_CAUSALLY_ARBITRARY",
+  "g02_eligibility": false,
+  "positive_pool_eligibility": false,
+  "regression_identity": "84413654223665f050d7a3e91dd68c6af008aff380f844adbedb81146f576185",
+  "schema_name": "batch2-pilot10-role-incompatible-terminal-edge-regression-v1",
+  "schema_version": "1.0.0"
+}
