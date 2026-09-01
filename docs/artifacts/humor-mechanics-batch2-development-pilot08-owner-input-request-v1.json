@@ -1,0 +1,104 @@
+{
+  "authority_matrix": {
+    "archive_write": false,
+    "construction": false,
+    "constructor_implementation": false,
+    "constructor_release": false,
+    "content_access": false,
+    "content_ingestion": false,
+    "custodial_signing": false,
+    "g01a_admission": false,
+    "g01b_admission": false,
+    "g04b_pool_certification": false,
+    "generation": false,
+    "model_exposure": false,
+    "obligation_assignment": false,
+    "production_routing": false,
+    "proposition_sufficiency_evaluation": false,
+    "runtime_integration": false,
+    "source_acquisition": false,
+    "target_assignment": false,
+    "training": false
+  },
+  "blind_material_accessed": false,
+  "bound_governance_commit": "bd5331cf56edbf693d40b272e4fe6d0fc19d9b1d",
+  "conformance_schema_identity": "12c96a72555a26181abd5d0e7fa033a425fdacafb3a7fb197a21b39358da1dbe",
+  "constructor_v1_preservation": "BYTE_EXACT_HISTORICAL_VERIFICATION_ONLY_NO_FUTURE_RELEASE",
+  "content_accessed": false,
+  "declaration_template_identity": "cf8581ad8e83949530948d365200bb647a29ce4d5ed62a0ea70aec1457bacbba",
+  "governance_identity": "cc86204c6f199c80ef7c7bf87a58cf3c62d17acb1fe14bd2666bbf5ba86692f6",
+  "mandatory_phase_order": [
+    "STRICT_PREINGESTION_VALIDATION",
+    "PROSPECTIVE_IDENTITIES_AND_UNSIGNED_SIGNING_PACKET",
+    "OWNER_OPERATED_CUSTODIAL_SIGNATURES",
+    "ATOMIC_IMMUTABLE_INGESTION",
+    "G01A",
+    "G01B",
+    "SEPARATELY_AUTHORIZED_PROPOSITION_SUFFICIENCY_GATE",
+    "SEPARATELY_AUTHORIZED_ASSIGNMENT_DESIGN",
+    "SEPARATELY_AUTHORIZED_FUTURE_CONSTRUCTOR_IMPLEMENTATION_AND_STATIC_AUDIT",
+    "SEPARATELY_AUTHORIZED_G02B",
+    "SEPARATELY_AUTHORIZED_ONE_ATTEMPT_CONSTRUCTION",
+    "MANDATORY_POSTCONSTRUCTION_FRAGMENT_COLLISION_GATE_BEFORE_G02"
+  ],
+  "owner_files_required": [
+    {
+      "content": "OWNER_AUTHORED_BYTE_EXACT_NEUTRAL_FACTUAL_SOURCE",
+      "encoding": "UTF-8_NO_BOM",
+      "filename": "owner-source-pilot08-v1.txt",
+      "line_endings": "LF_ONLY",
+      "terminal_lf_count": 1
+    },
+    {
+      "canonical_requirement": "UTF8_JSON_NO_BOM_LF_ONE_TERMINAL_LF",
+      "content": "OWNER_COMPLETED_DECLARATION_FROM_TEMPLATE",
+      "filename": "owner-declaration-pilot08-v1.json"
+    }
+  ],
+  "owner_input_request_identity": "147457b5be10db0002e1015fe9fd7e34d2b3d3195c8731167467c92614b37138",
+  "pilot07_preservation": "IMMUTABLE_NONPOSITIVE_VOICE_REJECTION_UNCHANGED",
+  "pilot07_regression_identity": "24a6136e52dc6d86b61fc2ff93bf72b8308bd86ba58f7a3372e855309a3a1f05",
+  "post_g01_boundary": {
+    "assignment_status": "NOT_PERFORMED",
+    "constructor_implementation_status": "NOT_PREPARED_V1_PROHIBITED_FOR_FUTURE_RELEASE",
+    "earliest_permitted_time": "ONLY_AFTER_G01A_AND_G01B_PASS",
+    "fragment_denyset_status": "NOT_DERIVED",
+    "must_not_influence_source_selection_wording_ingestion_or_g01": true,
+    "proposition_evaluation_status": "NOT_PERFORMED"
+  },
+  "preparation_verdict": "PASS_CONTENT_FREE_METADATA_FIRST_OWNER_PACKAGE_GOVERNANCE_V4",
+  "remediation_audit_identity": "6b731c0f525140a540d15ff7140cc9937265a651fd39006783317608ef25f6bb",
+  "root_cause_analysis_identity": "c9d0c04ba2217789f8a1b313f4b37b461511efce8f340ad15f3f89299caa2346",
+  "schema_name": "batch2-development-pilot08-owner-input-request-v1",
+  "schema_version": "1.0.0",
+  "source_content_requirements": {
+    "minimum_independently_bindable_factual_propositions": 2,
+    "must_be_fresh_independent_source_event_topic_authority_and_revision_family": true,
+    "must_be_neutral_nonhumorous": true,
+    "must_be_owner_authored": true,
+    "must_expose_scope_modality_time_and_known_unknown_boundaries_where_applicable": true,
+    "must_not_be_optimized_for_post_g01_sufficiency_assignment_obligation_or_creative_marking": true,
+    "prohibited": [
+      "PILOT01_THROUGH_07_WORDING_ENTITY_EVENT_OR_SOURCE_STRUCTURE_REUSE",
+      "REVISION_SIBLING_SYNDICATION_OR_SAME_EVENT_RELATION_TO_PRIOR_PILOTS",
+      "HUMOR_MECHANISM_OBLIGATION_OR_CREATIVE_MARKER_SHAPED_FRAMING",
+      "GOVERNANCE_OR_INSTRUCTION_STYLE_LANGUAGE",
+      "PERSONAL_PRIVATE_CONFIDENTIAL_SENSITIVE_ALLEGATION_OR_THIRD_PARTY_COPYRIGHTED_CONTENT",
+      "MECHANISM_OBLIGATION_SUFFICIENCY_WITNESS_CREATIVE_PREMISE_OR_TEMPLATE_METADATA"
+    ]
+  },
+  "source_family_created": false,
+  "status": "BLOCKED_AWAITING_OWNER_INPUT",
+  "unassigned": {
+    "authority_family_id": "UNASSIGNED_PENDING_OWNER_BYTES",
+    "construction_revision_family_id": "UNASSIGNED",
+    "creative_marker_family_id": "UNASSIGNED",
+    "creative_premise_family_id": "UNASSIGNED",
+    "event_family_id": "UNASSIGNED_PENDING_OWNER_BYTES",
+    "operational_obligation": "UNASSIGNED",
+    "selected_proposition": "UNASSIGNED",
+    "source_family_id": "UNASSIGNED_PENDING_OWNER_BYTES",
+    "target_mechanism": "UNASSIGNED",
+    "topic_entity_family_id": "UNASSIGNED_PENDING_OWNER_BYTES"
+  }
+}
