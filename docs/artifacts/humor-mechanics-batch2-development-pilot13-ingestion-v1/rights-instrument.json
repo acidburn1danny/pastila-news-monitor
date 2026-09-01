@@ -1,0 +1,70 @@
+{
+    "contributor":  {
+                        "identity_disclosure_approved_for_commit":  false,
+                        "legal_identity_commitment":  "urn:pastila:party:pastila-acida-owner-v1",
+                        "legal_identity_verification_reference":  "owner-record:pastila-acida-owner-v1",
+                        "public_identity":  "urn:pastila:party:pastila-acida-owner-v1",
+                        "rights_holder_identity":  "urn:pastila:party:pastila-acida-owner-v1",
+                        "rights_holder_relationship":  "ORIGINAL_AUTHOR_AND_RIGHTS_HOLDER",
+                        "role":  "ORIGINAL_AUTHOR_AND_RIGHTS_HOLDER"
+                    },
+    "independent_grants":  {
+                               "construction_and_evaluation":  true,
+                               "factual_annotation_and_authority_binding":  true,
+                               "immutable_archival":  true,
+                               "internal_discovery":  true,
+                               "model_exposure":  false,
+                               "production_routing":  false,
+                               "runtime_integration":  false,
+                               "training":  false
+                           },
+    "owner_confirmation":  {
+                               "confirmation_statement":  "I submit the accompanying byte-exact source as an internally owned factual-authority bundle and make only the independent grants explicitly selected in this declaration.",
+                               "confirmed":  true,
+                               "owner_identity":  "PASTILA_ACIDA_OWNER_V1"
+                           },
+    "owner_instruction":  {
+                              "operational_content_access_after_ingestion":  false,
+                              "permit_derived_hashes_and_coordinates":  true,
+                              "permit_development_partition_seal":  true,
+                              "permit_git_object_archival":  true,
+                              "permit_registered_custodial_signing_requests":  true,
+                              "request_preingestion_validation_only":  true
+                          },
+    "ownership_declarations":  {
+                                   "contains_personal_data":  false,
+                                   "contains_private_or_confidential_information":  false,
+                                   "contains_reputation_sensitive_allegation":  false,
+                                   "contains_unattributed_quotation":  false,
+                                   "contains_undisclosed_third_party_material":  false,
+                                   "contains_unlawfully_obtained_information":  false,
+                                   "has_authority_to_make_each_selected_grant":  true,
+                                   "original_authorship":  true,
+                                   "owns_or_controls_required_rights":  true
+                               },
+    "pilot_id":  "BATCH2-DEVELOPMENT-PILOT-13",
+    "schema_name":  "batch2-owner-declaration-pilot13-v1",
+    "schema_version":  "1.0.0",
+    "source":  {
+                   "acquisition_timestamp":  "2026-09-02T01:10:28+03:00",
+                   "authority_scope":  "Only the explicitly stated acoustic-sensor preparation and installation event, sensor quantity, campaign and concert-hall scope, serial-number and assigned-position association, pre-installation verification procedure, individual installation and campaign-log recording, inability-to-install condition and resulting non-installation/logging outcome, operation-specific scope limitation, and explicitly unknown position-availability and non-installation outcomes within the accompanying owner-authored synthetic test universe.",
+                   "capture_timestamp":  "2026-09-02T01:10:20+03:00",
+                   "encoding":  "UTF-8_NO_BOM",
+                   "filename":  "owner-source-pilot13-v1.txt",
+                   "intended_partition":  "DEVELOPMENT",
+                   "line_endings":  "LF_ONLY",
+                   "source_version":  "1.0.0",
+                   "terminal_lf_count":  1,
+                   "world_scope":  "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE"
+               },
+    "source_status_declarations":  {
+                                       "known_and_unknown_boundaries_are_explicit":  true,
+                                       "source_contains_no_mechanism_assignment_constructor_semantic_role_affordance_witness_alignment_template_or_candidate_marker":  true,
+                                       "source_does_not_reuse_pilots_01_through_12_wording_entities_events_or_source_structures":  true,
+                                       "source_has_no_revision_sibling_same_event_or_syndication_relationship_with_pilots_01_through_12":  true,
+                                       "source_is_fresh_and_independent_of_pilots_01_through_12":  true,
+                                       "source_is_neutral_factual_authority":  true,
+                                       "source_was_not_selected_or_shaped_for_target_mechanism_pool_need_proposition_result_assignment_obligation_constructor_compatibility_semantic_role_affordance_realization_witness_alignment_clause_generation_historical_surfaces_evaluation_outcomes_or_expected_positive_result":  true
+                                   },
+    "trial_role":  "LEGITIMATE_END_TO_END_MECHANISM_TRIAL"
+}

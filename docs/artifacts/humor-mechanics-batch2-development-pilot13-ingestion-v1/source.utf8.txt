@@ -1,0 +1,7 @@
+În seara de 28 august 2026, o echipă tehnică a pregătit 18 senzori acustici pentru o campanie de măsurare desfășurată într-o sală de concerte.
+
+Fiecare senzor avea un număr de serie și era asociat în fișa campaniei cu o poziție numerotată din sală. Înainte de instalare, tehnicianul a verificat numărul de serie al fiecărui senzor și a consultat fișa pentru a identifica poziția care îi era atribuită.
+
+Senzorii au fost montați individual în pozițiile înscrise în fișă. După montare, poziția efectivă a fiecărui senzor și ora instalării au fost consemnate în jurnalul campaniei. Un senzor care nu a putut fi instalat în poziția atribuită a rămas nemontat, iar situația a fost notată separat în jurnal.
+
+Operațiunea s-a referit numai la cei 18 senzori pregătiți pentru această campanie și nu a stabilit amplasarea altor echipamente din sala de concerte. Înainte de începerea instalării nu era cunoscut dacă toate pozițiile atribuite vor putea fi folosite și nici dacă vreun senzor va rămâne nemontat.
