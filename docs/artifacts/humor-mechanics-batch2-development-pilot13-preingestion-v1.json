@@ -1,0 +1,640 @@
+{
+  "archive_write": false,
+  "assignment": "UNASSIGNED",
+  "authority_matrix": {
+    "assignment": false,
+    "candidate_emission": false,
+    "constructor_compatibility": false,
+    "constructor_invocation": false,
+    "constructor_release": false,
+    "custodial_signing": false,
+    "fragment_collision": false,
+    "g01a": false,
+    "g01b": false,
+    "g02": false,
+    "g02c": false,
+    "g03": false,
+    "g04b": false,
+    "immutable_ingestion": false,
+    "model_exposure": false,
+    "production_routing": false,
+    "proposition_sufficiency": false,
+    "realization": false,
+    "runtime_integration": false,
+    "semantic_conformance": false,
+    "signature_verification": false,
+    "training": false
+  },
+  "declaration_sha256": "5e18c30cab71ee0ab1e3599e1abc433af3bcebea881d683ed8322387d0d570e3",
+  "emitter_identity": "5bb1fae007fb8898f7e1a514622bb9bac99d992cc81189cd4ffd33b60fa76a8b",
+  "executable_implementation_identity": "3c7c353d488d032dd69f9d12a07a621bfc7bb95b668e76efc08494546f5d5362",
+  "factual_authority_envelope": {
+    "authority_scope": "Only the explicitly stated acoustic-sensor preparation and installation event, sensor quantity, campaign and concert-hall scope, serial-number and assigned-position association, pre-installation verification procedure, individual installation and campaign-log recording, inability-to-install condition and resulting non-installation/logging outcome, operation-specific scope limitation, and explicitly unknown position-availability and non-installation outcomes within the accompanying owner-authored synthetic test universe.",
+    "creative_premise_family_id": "UNASSIGNED",
+    "proposition_selection": "NOT_PERFORMED",
+    "propositions": [
+      {
+        "attribution": "OWNER_AUTHORED_SOURCE",
+        "known_boundary": "SENSOR_QUANTITY_CAMPAIGN_AND_HALL_PREPARATION",
+        "modality": "ASSERTED",
+        "object": {
+          "character_coordinates": [
+            56,
+            141
+          ],
+          "sha256": "9385f29685d0d4ec32736f987dc85bb03cc1a6c2fd741d4f9805d63b19d98dee",
+          "utf8_byte_coordinates": [
+            60,
+            151
+          ]
+        },
+        "predicate": {
+          "character_coordinates": [
+            45,
+            55
+          ],
+          "sha256": "66eca50fa17bb1b1cd04528ca4253bb433e4717ce5c11c5bb5b2cea7d5012ee4",
+          "utf8_byte_coordinates": [
+            48,
+            59
+          ]
+        },
+        "prohibited_inferences": [
+          "NO_REAL_WORLD_ASSERTION",
+          "NO_UNSTATED_CAUSAL_INFERENCE",
+          "NO_UNSTATED_PERSON_INTENT_OR_INTERNAL_STATE_INFERENCE",
+          "NO_UNSTATED_SENSOR_POSITION_OR_INSTALLATION_OUTCOME_INFERENCE"
+        ],
+        "proposition_id": "P1",
+        "qualification": {
+          "character_coordinates": [
+            0,
+            26
+          ],
+          "sha256": "31c9607d21accb6a54eb00b4a79883ca46c5c9bf7c59db37adf782cd93433ac9",
+          "utf8_byte_coordinates": [
+            0,
+            27
+          ]
+        },
+        "quotation_status": "NO_QUOTATION",
+        "scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE_ONLY",
+        "sensitive_protected_target_classification": "NONE_DECLARED_LOW_RISK_SYNTHETIC",
+        "subject": {
+          "character_coordinates": [
+            28,
+            44
+          ],
+          "sha256": "fe5d4951eb3e8eca2a6e4563b27ff69c4dfabd9b45715c2be048c4850201fa76",
+          "utf8_byte_coordinates": [
+            29,
+            47
+          ]
+        },
+        "supporting_span": {
+          "character_coordinates": [
+            0,
+            142
+          ],
+          "sha256": "ae45e21f0886bc59e554c9e04ddeeefd40020cb9f764e06638d7054a88427a5d",
+          "span_sha256": "ae45e21f0886bc59e554c9e04ddeeefd40020cb9f764e06638d7054a88427a5d",
+          "utf8_byte_coordinates": [
+            0,
+            152
+          ]
+        },
+        "time": "EXPLICIT_2026_08_28_EVENING",
+        "unknown_boundary": "NO_OTHER_CAMPAIGN_OR_INSTALLATION_FACT"
+      },
+      {
+        "attribution": "OWNER_AUTHORED_SOURCE",
+        "known_boundary": "SERIAL_NUMBER_AND_NUMBERED_POSITION_ASSOCIATION",
+        "modality": "ASSERTED",
+        "object": {
+          "character_coordinates": [
+            197,
+            247
+          ],
+          "sha256": "f037b16a06693dba6c1e0c60528a9c549e0d1c68b3a22a96961cdca08f5cc041",
+          "utf8_byte_coordinates": [
+            209,
+            264
+          ]
+        },
+        "predicate": {
+          "character_coordinates": [
+            159,
+            196
+          ],
+          "sha256": "ebbb303c7ba5f8b5061d6b3611cf3da5d74463b5a232d5c37eeaccd0dc0e5f66",
+          "utf8_byte_coordinates": [
+            169,
+            208
+          ]
+        },
+        "prohibited_inferences": [
+          "NO_REAL_WORLD_ASSERTION",
+          "NO_UNSTATED_CAUSAL_INFERENCE",
+          "NO_UNSTATED_PERSON_INTENT_OR_INTERNAL_STATE_INFERENCE",
+          "NO_UNSTATED_SENSOR_POSITION_OR_INSTALLATION_OUTCOME_INFERENCE"
+        ],
+        "proposition_id": "P2",
+        "qualification": null,
+        "quotation_status": "NO_QUOTATION",
+        "scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE_ONLY",
+        "sensitive_protected_target_classification": "NONE_DECLARED_LOW_RISK_SYNTHETIC",
+        "subject": {
+          "character_coordinates": [
+            144,
+            158
+          ],
+          "sha256": "8955d48677f7372e22c7b08a22384aa8bb0ba983be2bac96881c30dcb6aa6c56",
+          "utf8_byte_coordinates": [
+            154,
+            168
+          ]
+        },
+        "supporting_span": {
+          "character_coordinates": [
+            144,
+            248
+          ],
+          "sha256": "90b85fe9646da37cc2b2dc9bc763e30532a4d82e151812ea751ffbb8aa820aed",
+          "span_sha256": "90b85fe9646da37cc2b2dc9bc763e30532a4d82e151812ea751ffbb8aa820aed",
+          "utf8_byte_coordinates": [
+            154,
+            265
+          ]
+        },
+        "time": "CAMPAIGN_RECORD_STATE",
+        "unknown_boundary": "NO_ASSERTION_POSITION_WAS_USABLE"
+      },
+      {
+        "attribution": "OWNER_AUTHORED_SOURCE",
+        "known_boundary": "SERIAL_CHECK_AND_ASSIGNED_POSITION_IDENTIFICATION",
+        "modality": "ASSERTED",
+        "object": {
+          "character_coordinates": [
+            295,
+            400
+          ],
+          "sha256": "edddc01506fe44bd655bf62e6c0719e0543938d24f681def32ddbe45bce31110",
+          "utf8_byte_coordinates": [
+            313,
+            425
+          ]
+        },
+        "predicate": {
+          "character_coordinates": [
+            283,
+            294
+          ],
+          "sha256": "62c92adf018fc88c9da99fd45c1e0c2a884452f32c276e5b3d9e38d197003588",
+          "utf8_byte_coordinates": [
+            301,
+            312
+          ]
+        },
+        "prohibited_inferences": [
+          "NO_REAL_WORLD_ASSERTION",
+          "NO_UNSTATED_CAUSAL_INFERENCE",
+          "NO_UNSTATED_PERSON_INTENT_OR_INTERNAL_STATE_INFERENCE",
+          "NO_UNSTATED_SENSOR_POSITION_OR_INSTALLATION_OUTCOME_INFERENCE"
+        ],
+        "proposition_id": "P3",
+        "qualification": {
+          "character_coordinates": [
+            249,
+            269
+          ],
+          "sha256": "9e2146467c210f397f3c970cc60c079ee42e91fe2db900c9c834c26484f83d1a",
+          "utf8_byte_coordinates": [
+            266,
+            287
+          ]
+        },
+        "quotation_status": "NO_QUOTATION",
+        "scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE_ONLY",
+        "sensitive_protected_target_classification": "NONE_DECLARED_LOW_RISK_SYNTHETIC",
+        "subject": {
+          "character_coordinates": [
+            271,
+            282
+          ],
+          "sha256": "314740bb17725ee7a8be60802a61cb5548c707c7afc34fff2d16a352bdde066c",
+          "utf8_byte_coordinates": [
+            289,
+            300
+          ]
+        },
+        "supporting_span": {
+          "character_coordinates": [
+            249,
+            401
+          ],
+          "sha256": "13ea7339a1d84c65524d1c35f58dc2480d97a4c8c93c119eed82cebc45ddeea4",
+          "span_sha256": "13ea7339a1d84c65524d1c35f58dc2480d97a4c8c93c119eed82cebc45ddeea4",
+          "utf8_byte_coordinates": [
+            266,
+            426
+          ]
+        },
+        "time": "BEFORE_INSTALLATION",
+        "unknown_boundary": "NO_ASSERTION_INSTALLATION_SUCCEEDED"
+      },
+      {
+        "attribution": "OWNER_AUTHORED_SOURCE",
+        "known_boundary": "INDIVIDUAL_INSTALLATION_IN_RECORDED_POSITIONS",
+        "modality": "ASSERTED",
+        "object": {
+          "character_coordinates": [
+            428,
+            468
+          ],
+          "sha256": "29637b3c6e8dfaeb81e59e3b85fb20d4f40cfa83ead2f9f5b3bad37e5aff6b46",
+          "utf8_byte_coordinates": [
+            454,
+            500
+          ]
+        },
+        "predicate": {
+          "character_coordinates": [
+            412,
+            427
+          ],
+          "sha256": "55c3e2a7dbe791f69a2b936b74106aaf80921ec7d18e9ffb04f9c36278fe5df0",
+          "utf8_byte_coordinates": [
+            437,
+            453
+          ]
+        },
+        "prohibited_inferences": [
+          "NO_REAL_WORLD_ASSERTION",
+          "NO_UNSTATED_CAUSAL_INFERENCE",
+          "NO_UNSTATED_PERSON_INTENT_OR_INTERNAL_STATE_INFERENCE",
+          "NO_UNSTATED_SENSOR_POSITION_OR_INSTALLATION_OUTCOME_INFERENCE"
+        ],
+        "proposition_id": "P4",
+        "qualification": null,
+        "quotation_status": "NO_QUOTATION",
+        "scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE_ONLY",
+        "sensitive_protected_target_classification": "NONE_DECLARED_LOW_RISK_SYNTHETIC",
+        "subject": {
+          "character_coordinates": [
+            403,
+            411
+          ],
+          "sha256": "190076a84d82f6687f084482eaa3a16c1527943133230c849fa9ea01c404a98d",
+          "utf8_byte_coordinates": [
+            428,
+            436
+          ]
+        },
+        "supporting_span": {
+          "character_coordinates": [
+            403,
+            469
+          ],
+          "sha256": "216bee6d792d426cec10d3a9e13fe9bde8adf95c27979d0a56205fe85b7d27bc",
+          "span_sha256": "216bee6d792d426cec10d3a9e13fe9bde8adf95c27979d0a56205fe85b7d27bc",
+          "utf8_byte_coordinates": [
+            428,
+            501
+          ]
+        },
+        "time": "INSTALLATION_PHASE",
+        "unknown_boundary": "NO_ASSERTION_ALL_ASSIGNED_POSITIONS_WERE_USABLE"
+      },
+      {
+        "attribution": "OWNER_AUTHORED_SOURCE",
+        "known_boundary": "ACTUAL_POSITION_AND_INSTALLATION_TIME_LOGGING",
+        "modality": "ASSERTED",
+        "object": {
+          "character_coordinates": [
+            556,
+            577
+          ],
+          "sha256": "001069d8d1f9e4681f14eceedb3d02c128e417248b585c7558e3ff867c3a8bf2",
+          "utf8_byte_coordinates": [
+            594,
+            616
+          ]
+        },
+        "predicate": {
+          "character_coordinates": [
+            537,
+            555
+          ],
+          "sha256": "5ac309c6791d443bb0457c254c284c8c3879e9a182ca5641553f65498bc2346f",
+          "utf8_byte_coordinates": [
+            575,
+            593
+          ]
+        },
+        "prohibited_inferences": [
+          "NO_REAL_WORLD_ASSERTION",
+          "NO_UNSTATED_CAUSAL_INFERENCE",
+          "NO_UNSTATED_PERSON_INTENT_OR_INTERNAL_STATE_INFERENCE",
+          "NO_UNSTATED_SENSOR_POSITION_OR_INSTALLATION_OUTCOME_INFERENCE"
+        ],
+        "proposition_id": "P5",
+        "qualification": {
+          "character_coordinates": [
+            470,
+            482
+          ],
+          "sha256": "7406d81535b86046be5ffe4282473da9d9ca5ee784cd1d3e9dc0fe743005d66e",
+          "utf8_byte_coordinates": [
+            502,
+            515
+          ]
+        },
+        "quotation_status": "NO_QUOTATION",
+        "scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE_ONLY",
+        "sensitive_protected_target_classification": "NONE_DECLARED_LOW_RISK_SYNTHETIC",
+        "subject": {
+          "character_coordinates": [
+            484,
+            536
+          ],
+          "sha256": "2feb10bd8907329873a8f21635418d2d5d91e66269fe97d4cfec699c294e5471",
+          "utf8_byte_coordinates": [
+            517,
+            574
+          ]
+        },
+        "supporting_span": {
+          "character_coordinates": [
+            470,
+            578
+          ],
+          "sha256": "e1b854d2b88d4489a45f6e53ce937dff06e2e9fad3abe7258a940fb5bf4a4566",
+          "span_sha256": "e1b854d2b88d4489a45f6e53ce937dff06e2e9fad3abe7258a940fb5bf4a4566",
+          "utf8_byte_coordinates": [
+            502,
+            617
+          ]
+        },
+        "time": "AFTER_INSTALLATION",
+        "unknown_boundary": "NO_UNSTATED_LOG_CONTENT"
+      },
+      {
+        "attribution": "OWNER_AUTHORED_SOURCE",
+        "known_boundary": "NONINSTALLATION_AND_SEPARATE_LOGGING",
+        "modality": "ASSERTED",
+        "object": {
+          "character_coordinates": [
+            656,
+            700
+          ],
+          "sha256": "b5a2c6e5089f9095c0f172371c10267817cecfceaafcda63ef7c122ed74513f1",
+          "utf8_byte_coordinates": [
+            699,
+            746
+          ]
+        },
+        "predicate": {
+          "character_coordinates": [
+            638,
+            654
+          ],
+          "sha256": "5bedefcff987d260471d6623f5e0466003ff08389d582b5a5933e4046bb72d47",
+          "utf8_byte_coordinates": [
+            680,
+            697
+          ]
+        },
+        "prohibited_inferences": [
+          "NO_REAL_WORLD_ASSERTION",
+          "NO_UNSTATED_CAUSAL_INFERENCE",
+          "NO_UNSTATED_PERSON_INTENT_OR_INTERNAL_STATE_INFERENCE",
+          "NO_UNSTATED_SENSOR_POSITION_OR_INSTALLATION_OUTCOME_INFERENCE"
+        ],
+        "proposition_id": "P6",
+        "qualification": {
+          "character_coordinates": [
+            589,
+            637
+          ],
+          "sha256": "828eea027f00ea60f1f7ad136c4b17eecd5ee7dc109cf6a7991a117226c08fc0",
+          "utf8_byte_coordinates": [
+            628,
+            679
+          ]
+        },
+        "quotation_status": "NO_QUOTATION",
+        "scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE_ONLY",
+        "sensitive_protected_target_classification": "NONE_DECLARED_LOW_RISK_SYNTHETIC",
+        "subject": {
+          "character_coordinates": [
+            579,
+            588
+          ],
+          "sha256": "8423c6bc8c7449cc7a254ae7074b121729cc08b9b345aeb3202e1e184b9d0fe5",
+          "utf8_byte_coordinates": [
+            618,
+            627
+          ]
+        },
+        "supporting_span": {
+          "character_coordinates": [
+            579,
+            701
+          ],
+          "sha256": "a8dad765a3293540f997df7a0e89eed4223ea02d882dbd21b879e1d154e30ff6",
+          "span_sha256": "a8dad765a3293540f997df7a0e89eed4223ea02d882dbd21b879e1d154e30ff6",
+          "utf8_byte_coordinates": [
+            618,
+            747
+          ]
+        },
+        "time": "IF_ASSIGNED_POSITION_INSTALLATION_IMPOSSIBLE",
+        "unknown_boundary": "NO_ASSERTION_ANY_SENSOR_MET_CONDITION"
+      },
+      {
+        "attribution": "OWNER_AUTHORED_SOURCE",
+        "known_boundary": "EIGHTEEN_SENSOR_SCOPE_AND_OTHER_EQUIPMENT_EXCLUSION",
+        "modality": "ASSERTED",
+        "object": {
+          "character_coordinates": [
+            785,
+            851
+          ],
+          "sha256": "820fbff692239495eb803ce7446c149113219992aca5ce97284b76f4adf8cbab",
+          "utf8_byte_coordinates": [
+            835,
+            902
+          ]
+        },
+        "predicate": {
+          "character_coordinates": [
+            715,
+            726
+          ],
+          "sha256": "5d67361566a35a442252cb6b053cb35f7b4dd142d97204262ba3275e4298699e",
+          "utf8_byte_coordinates": [
+            762,
+            773
+          ]
+        },
+        "prohibited_inferences": [
+          "NO_REAL_WORLD_ASSERTION",
+          "NO_UNSTATED_CAUSAL_INFERENCE",
+          "NO_UNSTATED_PERSON_INTENT_OR_INTERNAL_STATE_INFERENCE",
+          "NO_UNSTATED_SENSOR_POSITION_OR_INSTALLATION_OUTCOME_INFERENCE"
+        ],
+        "proposition_id": "P7",
+        "qualification": {
+          "character_coordinates": [
+            727,
+            784
+          ],
+          "sha256": "e395888a71999f965961488d8ae60a44c870afa60aad9f32e4ae7d1a4496ab57",
+          "utf8_byte_coordinates": [
+            774,
+            834
+          ]
+        },
+        "quotation_status": "NO_QUOTATION",
+        "scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE_ONLY",
+        "sensitive_protected_target_classification": "NONE_DECLARED_LOW_RISK_SYNTHETIC",
+        "subject": {
+          "character_coordinates": [
+            703,
+            714
+          ],
+          "sha256": "34f1accf02bf91bf22d1b2a9360d7964d7e61286c472113be453863772b95d79",
+          "utf8_byte_coordinates": [
+            749,
+            761
+          ]
+        },
+        "supporting_span": {
+          "character_coordinates": [
+            703,
+            852
+          ],
+          "sha256": "0c6a645216bcfe1f595e02d988911dff995759b52103f67df03a01920b2fa3be",
+          "span_sha256": "0c6a645216bcfe1f595e02d988911dff995759b52103f67df03a01920b2fa3be",
+          "utf8_byte_coordinates": [
+            749,
+            903
+          ]
+        },
+        "time": "THIS_CAMPAIGN_OPERATION_ONLY",
+        "unknown_boundary": "NO_ASSERTION_ABOUT_OTHER_EQUIPMENT_PLACEMENT"
+      },
+      {
+        "attribution": "OWNER_AUTHORED_SOURCE",
+        "known_boundary": "POSITION_USABILITY_AND_NONINSTALLATION_OUTCOMES_UNKNOWN",
+        "modality": "ASSERTED",
+        "object": {
+          "character_coordinates": [
+            901,
+            998
+          ],
+          "sha256": "3a1b1f36ece8d026c4bb52907e07db38e0d3d0d4369626da5996568e3bb23e24",
+          "utf8_byte_coordinates": [
+            955,
+            1058
+          ]
+        },
+        "predicate": {
+          "character_coordinates": [
+            885,
+            900
+          ],
+          "sha256": "3aa51f84bc36afce18ea3ce44a19ccc1fd28b8239939f7fe6aafa301d00af95f",
+          "utf8_byte_coordinates": [
+            939,
+            954
+          ]
+        },
+        "prohibited_inferences": [
+          "NO_REAL_WORLD_ASSERTION",
+          "NO_UNSTATED_CAUSAL_INFERENCE",
+          "NO_UNSTATED_PERSON_INTENT_OR_INTERNAL_STATE_INFERENCE",
+          "NO_UNSTATED_SENSOR_POSITION_OR_INSTALLATION_OUTCOME_INFERENCE"
+        ],
+        "proposition_id": "P8",
+        "qualification": {
+          "character_coordinates": [
+            853,
+            884
+          ],
+          "sha256": "613835e7cf76b6144abbb43c15855bfddbd1ba663485aa6819b7978fbcc995e4",
+          "utf8_byte_coordinates": [
+            904,
+            938
+          ]
+        },
+        "quotation_status": "NO_QUOTATION",
+        "scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE_ONLY",
+        "sensitive_protected_target_classification": "NONE_DECLARED_LOW_RISK_SYNTHETIC",
+        "subject": {
+          "character_coordinates": [
+            906,
+            931
+          ],
+          "sha256": "057f72b43e7bce8e9a980ac77ac97dfccc63605cbd697f35377a98761718c145",
+          "utf8_byte_coordinates": [
+            961,
+            987
+          ]
+        },
+        "supporting_span": {
+          "character_coordinates": [
+            853,
+            999
+          ],
+          "sha256": "b48169c54016f37d5e76901c29ebc0ce20fe6cd13dec371c3d8ec47473696278",
+          "span_sha256": "b48169c54016f37d5e76901c29ebc0ce20fe6cd13dec371c3d8ec47473696278",
+          "utf8_byte_coordinates": [
+            904,
+            1059
+          ]
+        },
+        "time": "BEFORE_INSTALLATION_START",
+        "unknown_boundary": "NO_ASSERTION_OF_FUTURE_USABILITY_OR_NONINSTALLATION"
+      }
+    ],
+    "source_commitment": "8886fa5ee7f13af2ab7eca004c4838b9af83d0b31671f1df9a8d98426fdf7ff9",
+    "source_sha256": "9d79b45d06fba5b950f97e7d09f38450177b7ff7d5cbf962a9e4f7af452b6a76",
+    "world_scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE"
+  },
+  "factual_authority_envelope_identity": "509b2472a28a2f6ce3b514a05820f13be29d60df98464af0b1e25d1bb1cb3af9",
+  "family_identities": {
+    "authority_family": "5c3d6c25256ef9f8f020109dd8cb7895034b1d68beea97d3ad50682c950700ad",
+    "event_family": "12c950cdf225235621e5a3d01dd655e9c3b2ccdc9169caa34e37ddd67ffa2e8a",
+    "family_closure": "eb3c3a116fd30596e1b606051a8da8da1aaa9b4ca33eff21bbd94b051928b8b2",
+    "revision_family": "fffdb108f6fd32c19b2c47edb8879c8cbbbc0775b1f36ddc180a946331cce5d9",
+    "source_family": "0bd165b9c8e559db298a11bceb4d54d5ec96b9b39bab653a05defbc060d298d1",
+    "topic_entity_family": "0be1639693363134e91767980bce585548c119ab84f1b32d434cfc0a61900e31"
+  },
+  "family_independence_identity": "f37e392607eb53190b98434a777207a66426fced35d550dede87f96d1bb69125",
+  "immutable_archive_commitment": "a3f32d4f29ccf03f4a2547ab4e7a885c9952ac4219d753b984491538242774e6",
+  "ingested": false,
+  "partition": "DEVELOPMENT",
+  "pilot_role": "LEGITIMATE_END_TO_END_MECHANISM_TRIAL",
+  "preingestion_identity": "8797f63dcf632af3e2dcb0764834e9c33e9750feb064e7c8360898ec9a3fb154",
+  "proposition_binding_count": 8,
+  "proposition_binding_status": "PASS_8_BOUND_NOT_SELECTED",
+  "proposition_sufficiency_evaluated": false,
+  "prospective_git_blob_oid_sha1": "e3631174edc2adb56b1f28b803eafb9ceba487ff",
+  "prospective_partition_identity": "710267f2d079966d1de2a1912bd9ef73deee60d38ecb97914ad4e7bd3cd6fced",
+  "provider_identity": "865c1e9f7cedb5e78b5ecd7524781a8ed8a50816a9be76910c7ee76c375b81ea",
+  "qualification_identity": "9016f7a82cb04ba447c2c2ae4275861ef0bfbd16782c4be3584d85220f5b5c0a",
+  "rights_instrument_identity": "bd784d0cdbc1e0452c6a66ac2f8dfd6a0a94394e892e9500228fbadee6b8ead9",
+  "schema_name": "batch2-development-pilot13-preingestion-v1",
+  "schema_version": "1.0.0",
+  "selected_proposition": "UNASSIGNED",
+  "semantic_role_affordance_realization_witness_or_alignment_planning": "NOT_PERFORMED",
+  "source_byte_length": 1060,
+  "source_commitment": "8886fa5ee7f13af2ab7eca004c4838b9af83d0b31671f1df9a8d98426fdf7ff9",
+  "source_package_identity": "3acf18889454e8fdd8397e0a41f6f96216cd6be98f6ab2b54131acff1e7c31a0",
+  "source_sha256": "9d79b45d06fba5b950f97e7d09f38450177b7ff7d5cbf962a9e4f7af452b6a76",
+  "status": "PROSPECTIVE_UNSIGNED_NOT_INGESTED_NOT_G01_ADMITTED",
+  "target_mechanism": "UNASSIGNED",
+  "validation_commit": "9f6a8de9f4ae7395fb7173cbad70b6ac9315c109",
+  "validation_identity": "38448411de35df15b12cfa5113541820bc21f4812ffe49a3f8b180580a35f7f3"
+}
