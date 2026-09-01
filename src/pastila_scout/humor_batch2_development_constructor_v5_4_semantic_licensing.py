@@ -60,14 +60,25 @@ class LicensedPlan:
     relations: tuple[ProposedRelation, ...]
     derived_operands: tuple[SemanticOperand, ...]
     rule_ids: tuple[str, ...]
+    counterfactual_edges: tuple["CounterfactualEdgeResult", ...]
+
+
+@dataclass(frozen=True, slots=True)
+class CounterfactualEdgeResult:
+    predecessor_relation_id: str
+    successor_relation_id: str
+    produced_operand_id: str
+    removal_breaks_successor: bool
+    alternative_rule_count: int
 
 
 class TrustedRuleRegistry:
     """Immutable registry constructed outside the planner invocation."""
 
     def __init__(self, rules: Iterable[TrustedSemanticRule]) -> None:
-        by_id = {rule.rule_id: rule for rule in rules}
-        if len(by_id) != len(tuple(rules)):
+        materialized = tuple(rules)
+        by_id = {rule.rule_id: rule for rule in materialized}
+        if len(by_id) != len(materialized):
             raise ValueError("duplicate trusted rule")
         self._rules = by_id
 
@@ -76,6 +87,16 @@ class TrustedRuleRegistry:
             return self._rules[rule_id]
         except KeyError as exc:
             raise ValueError("relation requests an untrusted semantic rule") from exc
+
+    def compatible_rules(self, predicate: str, actor: SemanticOperand, patient: SemanticOperand) -> tuple[TrustedSemanticRule, ...]:
+        return tuple(rule for rule in self._rules.values()
+                     if rule.predicate_class == predicate
+                     and actor.entity_class in rule.actor_classes
+                     and patient.entity_class in rule.patient_classes
+                     and rule.actor_roles.issubset(actor.roles)
+                     and rule.patient_roles.issubset(patient.roles)
+                     and rule.actor_affordances.issubset(actor.affordances)
+                     and rule.patient_affordances.issubset(patient.affordances))
 
 
 def _contains(required: frozenset[str], actual: frozenset[str], label: str) -> None:
@@ -103,6 +124,8 @@ def validate_and_license_plan(
     derived: list[SemanticOperand] = []
     terminal_count = 0
     previous: str | None = None
+    produced_by_relation: dict[str, str] = {}
+    counterfactuals: list[CounterfactualEdgeResult] = []
 
     for index, relation in enumerate(proposed_relations):
         if relation.relation_id in seen_relations:
@@ -124,6 +147,9 @@ def validate_and_license_plan(
         _contains(rule.patient_roles, patient.roles, "patient role")
         _contains(rule.actor_affordances, actor.affordances, "actor affordance")
         _contains(rule.patient_affordances, patient.affordances, "patient affordance")
+        compatible = registry.compatible_rules(relation.predicate_class, actor, patient)
+        if len(compatible) != 1 or compatible[0].rule_id != rule.rule_id:
+            raise ValueError("semantic consequence is absent or freely substitutable")
         if rule.origin is RuleOrigin.SOURCE_DERIVED:
             if not rule.source_authority_ids or not rule.source_authority_ids.issubset(
                 actor.authority_ids | patient.authority_ids
@@ -140,6 +166,17 @@ def validate_and_license_plan(
             actor.authority_ids | patient.authority_ids | rule.source_authority_ids,
         )
         operands[result.operand_id] = result
+        if previous is not None:
+            predecessor_result = produced_by_relation[previous]
+            consumed = relation.actor_id == predecessor_result or relation.patient_id == predecessor_result
+            if not consumed:
+                raise ValueError("successor does not consume the immediate predecessor result")
+            # This evidence is validator-derived: remove the predecessor result and
+            # the successor necessarily loses a required bound argument.
+            counterfactuals.append(CounterfactualEdgeResult(
+                previous, relation.relation_id, predecessor_result, consumed, len(compatible) - 1,
+            ))
+        produced_by_relation[relation.relation_id] = result.operand_id
         derived.append(result)
         seen_relations.add(relation.relation_id)
         previous = relation.relation_id
@@ -149,7 +186,8 @@ def validate_and_license_plan(
 
     if terminal_count != 1:
         raise ValueError("plan must contain exactly one terminal relation")
-    return LicensedPlan(proposed_relations, tuple(derived), tuple(r.requested_rule_id for r in proposed_relations))
+    return LicensedPlan(proposed_relations, tuple(derived),
+                        tuple(r.requested_rule_id for r in proposed_relations), tuple(counterfactuals))
 
 
 def assert_registry_is_external(
@@ -164,7 +202,7 @@ def assert_registry_is_external(
 
 
 __all__ = [
-    "LicensedPlan", "ProposedRelation", "RuleOrigin", "SemanticOperand",
+    "CounterfactualEdgeResult", "LicensedPlan", "ProposedRelation", "RuleOrigin", "SemanticOperand",
     "TrustedRuleRegistry", "TrustedSemanticRule", "assert_registry_is_external",
     "validate_and_license_plan",
 ]
