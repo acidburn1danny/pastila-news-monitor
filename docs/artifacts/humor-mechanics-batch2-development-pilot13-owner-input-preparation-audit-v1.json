@@ -1,0 +1,19 @@
+{
+  "audit_identity": "4acc7a902bada6808952fcca7bc1ed626ac41438f017e935591d52e89d7d64ad",
+  "audit_verdict": "PASS_CONTENT_FREE_PILOT13_PREPARATION_STOP_REQUIRED",
+  "authority_matrix_all_false": true,
+  "blind_material_accessed": false,
+  "candidate_surfaces": 0,
+  "constructor_provider_emitter_invocations": "0/0/0",
+  "content_free": true,
+  "deterministic_blockers": [],
+  "family_capabilities_consumed": 0,
+  "historical_evidence_preserved": true,
+  "qualification_identity": "9016f7a82cb04ba447c2c2ae4275861ef0bfbd16782c4be3584d85220f5b5c0a",
+  "request_identity": "864763eb53512265ff0f134af16fa44f1e989c2972b3d3669ac9769af3456363",
+  "schema_name": "batch2-development-pilot13-owner-input-preparation-audit-v1",
+  "source_access_count": 0,
+  "source_files_created": 0,
+  "speculative_architecture_changes": false,
+  "template_identity": "626574966ff8d50a17a467fad5602c3da0a9370c6854fe42d424ce1a434cd100"
+}
