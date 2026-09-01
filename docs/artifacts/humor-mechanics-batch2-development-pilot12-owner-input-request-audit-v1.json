@@ -1,0 +1,23 @@
+{
+  "assignment_performed": false,
+  "audit_identity": "de614f2f953c98cfe63d7cbc2c8a4da312959f50142e770f366e49d2cf64ecc8",
+  "audit_verdict": "PASS_CONTENT_FREE_STOP_REQUIRED",
+  "blind_material_accessed": false,
+  "candidate_surfaces": 0,
+  "construction_authority": false,
+  "constructor_provider_emitter_invocations": "0/0/0",
+  "constructors_v5_3_and_v5_3_1_preserved": true,
+  "content_free": true,
+  "declaration_template_identity": "508ff3b1137c2121d6b2058d45c6f471b04c0a97c3505450d264de216aa3a014",
+  "deterministic_blockers": [],
+  "external_input_blocker": "OWNER_AUTHORED_SOURCE_BYTES_AND_COMPLETED_DECLARATION_REQUIRED",
+  "frozen_v5_3_1_identities_bound_but_not_released_or_invoked": true,
+  "mechanism_neutral": true,
+  "morphological_alignment_opportunity_unassigned_and_prohibited_as_source_shaping": true,
+  "owner_input_request_identity": "f9506e7827ce5aa2d5b5386727086511a6dbe69af616731c0899edb64a77c809",
+  "pilots01_through_11_preserved": true,
+  "proposition_evaluation_performed": false,
+  "release_authority": false,
+  "schema_name": "batch2-development-pilot12-owner-input-request-audit-v1",
+  "schema_version": "1.0.0"
+}
