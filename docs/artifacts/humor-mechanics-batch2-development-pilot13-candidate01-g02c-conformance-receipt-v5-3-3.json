@@ -1,0 +1,145 @@
+{
+  "candidate_bytes_unchanged": true,
+  "candidate_git_blob_oid_sha1": "9a643cff281455ee0b4c9772f9740175ab27753b",
+  "candidate_identity": "00dfb416e99d9d489c05cbf317a8b9654d51a5ecb0994220032c0cd68efe2fb6",
+  "candidate_raw_sha256": "907392cd76554340b09ef27145256b45f3c1ae013f41f4e4503ea156dc546759",
+  "conformance_receipt_identity": "c4a51b9a8f982a6de9911907af4c8b21ab85b942858a1742755e50a26c7cc5f1",
+  "constructor_facing_packet_identity": "5824366b1f2f917b986574a9bcb184dc0d00cdcf457c594d8a00d3c694223f3e",
+  "failure": {
+    "candidate_level_failure_not_infrastructure_defect": true,
+    "candidate_repair_performed": false,
+    "classification": "FIRST_INVENTED_LINK_ROLE_AFFORDANCE_AND_CAUSAL_NECESSITY_FAILURE",
+    "downstream_failures": [
+      "L1_TO_L2_ROLE_AND_NECESSITY",
+      "L2_TO_TERMINAL_ROLE_AUTHORITY_AND_NECESSITY"
+    ],
+    "earliest_failed_link": "P5_TO_L1",
+    "observed_gap": "The surface explicitly states the link but supplies no local rule under which the factual recording proposition can activate a temporal moment or produce eligibility."
+  },
+  "fragment_collision_receipt_identity": "983a9dda4fa2bab8c72324f6b7e52a02c958d11ca7de01fe26e2bad3e7d0d9b2",
+  "independently_recovered_edges": {
+    "L1_TO_L2": {
+      "causal_necessity": "FAIL",
+      "counterfactual": "Eligibility is repeated as actor, but removing L1's production does not expose a rule licensing propagation.",
+      "material_presence": "PASS",
+      "non_arbitrariness": "FAIL",
+      "semantic_role_compatibility": "FAIL"
+    },
+    "L2_TO_RESULT": {
+      "causal_necessity": "FAIL",
+      "counterfactual": "The timesheet demand can be removed or replaced without contradicting the log-bound state.",
+      "material_presence": "PASS",
+      "non_arbitrariness": "FAIL",
+      "semantic_role_compatibility": "FAIL"
+    },
+    "P5_TO_L1": {
+      "causal_necessity": "FAIL",
+      "counterfactual": "Removing P5 wording removes the named actor but no stated rule makes that fact causally necessary for eligibility.",
+      "material_presence": "PASS",
+      "non_arbitrariness": "FAIL",
+      "semantic_role_compatibility": "FAIL"
+    }
+  },
+  "independently_recovered_nodes": {
+    "L1": {
+      "actor": "exact P5 factual proposition",
+      "causal_necessity": "FAIL_NO_LOCAL_RULE_MAKES_P5_PRODUCE_RECORDING_ELIGIBILITY",
+      "material_presence": "PASS_MATERIALLY_INSTANTIATED",
+      "patient": "the post-installation moment",
+      "predicate": "activates",
+      "produced_operand": "local recording eligibility",
+      "semantic_role_compatibility": "FAIL_FACT_HAS_NO_ACTIVATION_AFFORDANCE_AND_TEMPORAL_MOMENT_IS_NOT_ACTIVATABLE_PATIENT"
+    },
+    "L2": {
+      "actor": "local recording eligibility",
+      "causal_necessity": "FAIL_L1_OUTPUT_DOES_NOT_ENTAIL_PROPAGATION_OR_LOG_BOUND_STATE",
+      "material_presence": "PASS_MATERIALLY_INSTANTIATED",
+      "patient": "campaign log",
+      "predicate": "propagates",
+      "produced_operand": "log-bound recording state",
+      "semantic_role_compatibility": "FAIL_ELIGIBILITY_STATE_HAS_NO_POSITION_TIME_PROPAGATION_CAPABILITY"
+    },
+    "RESULT": {
+      "actor": "log-bound recording state",
+      "causal_necessity": "FAIL_TERMINAL_RESULT_IS_LEXICALLY_ATTACHED_NOT_ENTAILED_BY_L2",
+      "material_presence": "PASS_MATERIALLY_INSTANTIATED",
+      "patient": "initial factual relation and campaign log",
+      "predicate": "resolves and obliges",
+      "produced_operand": "log demands sensor timesheets for occupied centimeters",
+      "semantic_role_compatibility": "FAIL_STATE_LACKS_RESOLUTION_AUTHORITY_AND_CANNOT_OBLIGATE_LOG_OR_SENSORS"
+    }
+  },
+  "mechanism_adjudication_performed": false,
+  "obligation_instance_identity": "85b142a8988b99981d7a44c2c2665fce1b303a441663d3dc1b383e03ca773d3d",
+  "obligation_version": "DEVELOPMENT_TRANSFORMATION_V5_3_3_01",
+  "pre_emission_conformance_provenance": "PASS_PRESERVED_NOT_USED_AS_SUFFICIENT_G02C_EVIDENCE",
+  "qualified_executable_implementation_identity": "3c7c353d488d032dd69f9d12a07a621bfc7bb95b668e76efc08494546f5d5362",
+  "required_predicates": {
+    "ENTITY_IDENTITY_LEXICALLY_CONTINUOUS": true,
+    "EVERY_ACTING_OPERAND_HAS_REQUIRED_AFFORDANCE": false,
+    "EVERY_ACTOR_PATIENT_AND_PRODUCED_OPERAND_ROLE_COMPATIBLE": false,
+    "EVERY_EDGE_NECESSARY_AND_NON_ARBITRARY": false,
+    "EVERY_REQUIRED_EDGE_MATERIALLY_INSTANTIATED": true,
+    "EVERY_REQUIRED_NODE_MATERIALLY_INSTANTIATED": true,
+    "EXACTLY_ONE_TERMINAL_RESULT_RECOVERABLE": true,
+    "NO_PLACEHOLDER_SUMMARY_META_OR_INSTRUCTION_SUBSTITUTION": true,
+    "NO_RECLASSIFICATION_DERIVES_PRIVILEGED_AFFORDANCE": false,
+    "QUALIFICATION_AND_FICTIONAL_SCOPE_CONTINUITY": true,
+    "SELECTED_FACTUAL_ANCHOR_RECOVERABLE": true,
+    "TERMINAL_RELATION_CAUSALLY_SUPPORTED": false
+  },
+  "schema_name": "batch2-development-pilot13-g02c-conformance-receipt-v5-3-3",
+  "schema_version": "5.3.3",
+  "sealed_mapping_accessed": false,
+  "selected_proposition_id": "P5",
+  "selected_supporting_span_sha256": "e1b854d2b88d4489a45f6e53ce937dff06e2e9fad3abe7258a940fb5bf4a4566",
+  "semantic_plan_commitment": "dbf4d82c0ca397f6cb66720a956f7a2e4b720fec28347c9eccebba2913d9bb6e",
+  "sufficiency_receipt_identity": "32f44383ebaea7ccdc779f1b3c4c94af57e717e735185ebdfa0d601ad33076f6",
+  "surface_components": {
+    "node_L1": {
+      "character_coordinates": [
+        18,
+        222
+      ],
+      "sha256": "7663b382369d99e849b04d3c10750ecf4439d55befe2dd3fe34c2f3c0c1332c2",
+      "utf8_byte_coordinates": [
+        20,
+        238
+      ]
+    },
+    "node_L2": {
+      "character_coordinates": [
+        224,
+        360
+      ],
+      "sha256": "33077d50fa885a49d744edb729043176f002dff24f61b415d295b82847f963f5",
+      "utf8_byte_coordinates": [
+        240,
+        386
+      ]
+    },
+    "node_RESULT": {
+      "character_coordinates": [
+        362,
+        514
+      ],
+      "sha256": "4e36307ff1eccf052fc6332769011b06d576a6b53e3a532328861fc5e5ae5e71",
+      "utf8_byte_coordinates": [
+        388,
+        551
+      ]
+    },
+    "selected_fact": {
+      "character_coordinates": [
+        18,
+        136
+      ],
+      "sha256": "a7ebacb300d09a0c52d7d468c570dadacd442be573b57db913c4bf1ed7a238f6",
+      "utf8_byte_coordinates": [
+        20,
+        146
+      ]
+    }
+  },
+  "verdict": "FAIL_FIRST_INVENTED_LINK_ROLE_AFFORDANCE_AND_CAUSAL_NECESSITY"
+}
