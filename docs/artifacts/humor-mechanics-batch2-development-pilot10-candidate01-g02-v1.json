@@ -1,0 +1,114 @@
+{
+  "authority_binding": {
+    "factual_authority_envelope_identity": "fbae8cb29dcf203bae478b010fe19036239623551f22949b3cb56ac34ba18d21",
+    "ingestion_commit": "3401c3e28b33498c290cb7506ef77778a7a415ff",
+    "source_commitment": "6cf7bd08e9643efe7651a8bf8e917e90782d383fe5c9eebf58d1ae68740f24ce",
+    "source_sha256": "454a0c568c12a46224407f6c3b378f8197e3f4653cca6d897d1c03b8d94821d7",
+    "world_scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE"
+  },
+  "authority_matrix": {
+    "additional_construction": false,
+    "g02c_obligation_conformance": false,
+    "g03_mechanism_recovery": false,
+    "g03b": false,
+    "g03c": false,
+    "g04a_romanian_naturalness": false,
+    "g04b_pool_certification": false,
+    "model_exposure": false,
+    "owner_review": false,
+    "production_routing": false,
+    "regeneration": false,
+    "repair": false,
+    "rewrite": false,
+    "runtime_integration": false,
+    "selection": false,
+    "training": false,
+    "voice_review": false
+  },
+  "candidate_byte_length": 771,
+  "candidate_git_blob_oid_sha1": "8dfbc43c94190e5b0fca48d6bcd28adf55c21391",
+  "candidate_identity": "0f17fc88debe3ba4d91740cd7541a457aa7c63fdab86abd03e9944e6e85a8f89",
+  "candidate_raw_sha256": "013c70e3c15833e789592915f5f31b62eeaed5c1148ff6b6f78607cb0c907464",
+  "construction_evidence_identity": "f74f47e30f75b48a35deaa395d3e3de17c1c7301bacd19afbdc8e334d066f8ba",
+  "creative_marker_family_id": "4005d38bf9fd6f6aeca7e109d1dccc39b0bc967fca93a33accc21d4349b8f842",
+  "creative_nonfactual_separation_result": "PASS_EXPLICIT_IMAGINARY_MARKER_SCOPES_ALL_INVENTED_NODES_AND_TERMINAL_RESULT",
+  "creative_premise_family_id": "fad53e912579f61a5e488e7448fe2050a10269d54bb2b41f510e2b63adf3e996",
+  "eligibility": "ELIGIBLE_FOR_SEPARATELY_AUTHORIZED_G02C_OBLIGATION_CONFORMANCE",
+  "evidence_commit": "d7d469ad3aaac777da506cafbf5ebd754890d76f",
+  "factual_assertion_trace": [
+    {
+      "authority_proposition_ids": [
+        "P3"
+      ],
+      "candidate_assertion": "EXACT_P3_SUPPORTING_SPAN_AT_CANDIDATE_START",
+      "candidate_character_coordinates": [
+        0,
+        225
+      ],
+      "classification": "FACTUAL_AUTHORITY_EXACT",
+      "known_boundary": "CRATE_IS_APPROVED_AND_MOVED_TO_HORTICULTURAL_STORAGE",
+      "modality": "ASSERTED",
+      "scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE_ONLY",
+      "source_character_coordinates": [
+        267,
+        492
+      ],
+      "source_span_sha256": "188742ebbe30a23349601ddb369b0bb962d87dc9c8efe3227e50a38b6f89d967",
+      "source_utf8_byte_coordinates": [
+        281,
+        518
+      ],
+      "time": "IF_BOTH_DOCUMENT_MATCH_CONDITIONS_HOLD",
+      "trace_result": "EXACT_SOURCE_BOUND_CONDITIONAL_APPROVAL_AND_STORAGE_DISPOSITION",
+      "unknown_boundary": "NO_ASSERTION_THAT_ANY_CRATE_WILL_MEET_BOTH_CONDITIONS"
+    },
+    {
+      "authority_proposition_ids": [
+        "P3"
+      ],
+      "candidate_assertion": "CONDITIONAL_APPROVAL_AND_MOVEMENT_RESTATED_INSIDE_IMAGINARY_SCOPE",
+      "classification": "FACT_DERIVED_REFERENCE_WITHIN_EXPLICIT_NONFACTUAL_FRAME",
+      "trace_result": "COMPATIBLE_PARAPHRASE_RETAINS_BOTH_DOCUMENT_MATCH_CONDITIONS"
+    },
+    {
+      "authority_proposition_ids": [
+        "P3"
+      ],
+      "candidate_assertion": "STORAGE_ZONE_AND_APPROVED_LABEL_REFERENCES_INSIDE_IMAGINARY_CHAIN",
+      "classification": "FACT_DERIVED_OPERANDS_WITHIN_EXPLICIT_NONFACTUAL_FRAME",
+      "trace_result": "SOURCE_OPERANDS_REUSED_WITHOUT_ASSERTING_NEW_REAL_WORLD_DISPOSITION"
+    },
+    {
+      "authority_proposition_ids": [],
+      "candidate_assertion": "RULE_STORAGE_ZONE_TRANSFORMATION_AND_SELF_MOVING_DEPOT",
+      "classification": "CREATIVE_NONFACTUAL",
+      "trace_result": "EXPLICITLY_IMAGINARY_INVENTED_MATERIAL_OUTSIDE_FACTUAL_AUTHORITY"
+    }
+  ],
+  "fragment_collision_binding": {
+    "audit_identity": "adc5281062798e1f35ffa34596ee169afa9fb8f0294a26c618d7ae1760857690",
+    "collision_count": 0,
+    "commit": "706593773da47989c1a83cb7c17291153d46a84c",
+    "denyset_binding": "PASS_EXACT_2135_HASHES",
+    "receipt_identity": "585b063e99a11289d4c430a552a56a0eab0663a82261236574ff2c8f7e04ce6c",
+    "verdict": "PASS_NO_CROSS_PILOT_FRAGMENT_COLLISION"
+  },
+  "g02_receipt_identity": "6ee68cf88584afec9d1f4cccb198e96d99045f142c9466d5a51f1c7e41102187",
+  "g02_verdict": "PASS",
+  "g02c_obligation_conformance_performed": false,
+  "invented_quotation_or_private_knowledge_result": "PASS_NONE",
+  "mechanism_adjudication_performed": false,
+  "new_factual_premise_result": "PASS_NONE_ALL_POST_P3_RULE_TRANSFORMATION_AND_TERMINAL_ACTIONS_REMAIN_EXPLICITLY_IMAGINARY",
+  "partition": "DEVELOPMENT",
+  "post_construction_g02b_preserved": true,
+  "pragmatic_prohibited_conclusion_result": "PASS_NO_ACTUAL_MATCH_OCCURRENCE_UNSTATED_CRATE_STATUS_OR_REAL_WORLD_STORAGE_CONCLUSION",
+  "pre_emission_conformance_preserved": true,
+  "protected_target_result": "PASS_NO_PERSON_PROTECTED_VULNERABLE_OR_SENSITIVE_TARGET",
+  "qualification_scope_result": "PASS_P3_BOTH_DOCUMENT_MATCH_CONDITIONS_TIME_SCOPE_AND_UNKNOWN_CRATE_QUALIFICATION_RETAINED",
+  "romanian_naturalness_review_performed": false,
+  "schema_name": "batch2-development-pilot10-candidate-g02-v1",
+  "schema_version": "1.0.0",
+  "sealed_mapping_accessed": false,
+  "unsupported_inference_result": "PASS_NO_REAL_WORLD_INTENT_MOTIVE_PRIVATE_STATE_CAUSAL_PREVALENCE_CHRONOLOGY_DEFECT_OR_OUTCOME_ASSERTION",
+  "voice_review_performed": false
+}
