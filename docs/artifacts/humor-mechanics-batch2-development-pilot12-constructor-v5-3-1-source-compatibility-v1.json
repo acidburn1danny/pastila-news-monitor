@@ -1,0 +1,112 @@
+{
+  "abstract_plan_closure": "PASS_THREE_TYPED_NODES_TWO_EDGES_NO_UNBOUND_OPERANDS",
+  "action_affordance_compatibility": "PASS_EACH_NODE_AND_EDGE",
+  "alignment_contract_identity": "c4af75cd962802d0035d9de39e6d014f715d5b5f5b60fd690ea3761f289d99fc",
+  "alignment_semantics": "PASS_STATIC_CONSTRAINT_ONLY_NO_OPPORTUNITY_INVENTED_OR_USED_AS_PLAN_EVIDENCE",
+  "authority_binding": "PASS_EXACT_P5_AND_AUTHORIZED_SUPPORTING_SPAN_ONLY_NO_P6_FALLBACK",
+  "authority_matrix": {
+    "candidate_emission": false,
+    "constructor_invocation": false,
+    "emitter_invocation": false,
+    "fragment_collision_evaluation": false,
+    "g02": false,
+    "g02b_release": false,
+    "g02c": false,
+    "g03": false,
+    "g04b_pool_certification": false,
+    "model_exposure": false,
+    "post_realization_coordinate_bound_semantic_conformance": false,
+    "production_routing": false,
+    "provider_invocation": false,
+    "realization": false,
+    "runtime_integration": false,
+    "training": false
+  },
+  "base_constructor_contract_identity": "9d811b18c16e8770549c19c9d8be63ef6f04e030fa67b5a47167b5e7ddc1bef6",
+  "candidate_emitter_identity": "d08e74b2ccfaa5e157a86376e46b2ac70c7f4225261ecb1112c063a236804dd1",
+  "candidate_surface": null,
+  "compatibility_identity": "1a3ca6684d124cb036dc2c738fd4d1fa5d13985207b4f4d3189b4baf977f7721",
+  "constructor_facing_proposal_identity": "7fd84b56a1ca02e9e91b3710099523a70cbb777a16fb73de0563f6bca6e6a440",
+  "constructor_implementation_identity": "a966e92c37d6f957cbd080a9d2961cf05b288633d0d6e9f309c7d6baec956894",
+  "constructor_invoked": false,
+  "constructor_release": false,
+  "constructor_static_audit_identity": "9ebb9c17e228c5ed05f7b711b1284b0ca7a5defa697407d7c690e5f3e9a01d43",
+  "counterfactual_dependency_and_non_arbitrariness": "PASS_2_OF_2_EDGES",
+  "emitter_invoked": false,
+  "entity_identity_preservation": "PASS_NO_RECLASSIFICATION_USED_OR_REQUIRED",
+  "factual_authority_widening": "ABSENT",
+  "insufficient_evidence_rejected": [
+    "LEXICAL_RECURRENCE",
+    "STRUCTURAL_PREDECESSOR_CONTINUITY",
+    "RECLASSIFICATION_ALONE",
+    "POTENTIAL_TERMINAL_WITNESS",
+    "POTENTIAL_MORPHOLOGICAL_ALIGNMENT"
+  ],
+  "privileged_role_or_affordance_derivation": "ABSENT",
+  "provider_invoked": false,
+  "realization_or_surface_witnesses_created": false,
+  "realization_provider_identity": "2846406e03cea3fbbdca5531a7d0bf23fc39b116f7e0413a4bc73a65ea9b6992",
+  "recovered_plan_topology": [
+    {
+      "actor": "FACT_RELATION_05B53E43783231A0",
+      "actor_role": "RELATION_HEAD",
+      "introduces": [
+        "INVENTED_RELATION_1"
+      ],
+      "node_id": "L1",
+      "patient": "FACT_QUALIFICATION",
+      "predecessors": [],
+      "predicate": "EXTEND_05B53E43783231A0"
+    },
+    {
+      "actor": "INVENTED_RELATION_1",
+      "actor_role": "RELATION_HEAD",
+      "introduces": [
+        "INVENTED_RELATION_2"
+      ],
+      "node_id": "L2",
+      "patient": "FACT_OBJECT",
+      "predecessors": [
+        "L1"
+      ],
+      "predicate": "PROPAGATE_05B53E43783231A0"
+    },
+    {
+      "actor": "INVENTED_RELATION_2",
+      "actor_role": "RELATION_HEAD",
+      "introduces": [],
+      "node_id": "RESULT",
+      "patient": "FACT_RELATION_05B53E43783231A0",
+      "predecessors": [
+        "L2"
+      ],
+      "predicate": "RESOLVE_05B53E43783231A0"
+    }
+  ],
+  "release_eligibility": "ELIGIBLE_FOR_SEPARATELY_AUTHORIZED_G02B_PRECONSTRUCTION_REVIEW_ONLY",
+  "required_role_produced_role_compatibility": "PASS_EACH_EDGE",
+  "reviewed_commit": "6b568e541f6966bdb128233c98094bdb5a1698b4",
+  "schema_name": "batch2-development-pilot12-constructor-v5-3-1-source-compatibility-v1",
+  "schema_version": "1.0.0",
+  "sealed_assignment_identity": "03f83dafe45d015bd00b31cf2454a88ecf057c4f37d7b4d0158557ac72258f1c",
+  "selected_proposition_id": "P5",
+  "selected_span_sha256": "095db5d0ce1ef70892963ff424457b91af2689be1d2c91c92bafa087593f216a",
+  "semantic_plan_coverage": {
+    "edges": "2/2",
+    "nodes": "3/3",
+    "terminal_edge_validated": true
+  },
+  "semantic_plan_created": true,
+  "semantic_role_and_predicate_argument_signatures": "PASS_ALL_THREE_RELATIONS",
+  "terminal_edge_strength": "PASS_EQUAL_TO_INTERMEDIATE_EDGES",
+  "typed_operand_extraction": {
+    "object_bound": true,
+    "predicate_bound": true,
+    "qualification_bound": true,
+    "relation_id": "FACT_RELATION_05B53E43783231A0",
+    "subject_bound": true,
+    "verdict": "PASS_SOURCE_SHAPE_NEUTRAL"
+  },
+  "unbound_operands_or_role_incompatible_transitions": "ABSENT",
+  "verdict": "PASS_SOURCE_COMPATIBLE_WITH_FROZEN_CONSTRUCTOR_V5_3_1_STATIC_SEMANTIC_PLAN_NO_RELEASE"
+}
