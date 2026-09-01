@@ -1,0 +1,44 @@
+{
+  "abstract_plan_semantically_closes_over_p5": false,
+  "abstract_plan_validator_precedes_realization": true,
+  "authority_matrix": {
+    "construction": false,
+    "constructor_release": false,
+    "fragment_collision_evaluation": false,
+    "g02": false,
+    "g02c": false,
+    "g03": false,
+    "g04b_pool_certification": false,
+    "model_exposure": false,
+    "production_routing": false,
+    "runtime_integration": false,
+    "training": false
+  },
+  "candidate_surface": null,
+  "compatibility_identity": "fabcee37d422ad7e941dd1168c63b9659e27b039831a187da05d7bc665bed5a7",
+  "constructor_facing_proposal_identity": "2fc8967cb7fba1667524a8683c4d837afbb21dd6c7d6ae61b244ff8b9e6cb5c1",
+  "constructor_implementation_identity": "caf85ada6fcd296d3798b5d47838d7b8a39d029dac5f6ecae68ace58712b9d61",
+  "constructor_invoked": false,
+  "constructor_module_sha256": "5a813d14808234e0e57bb5c866624225c547b8c273f41edbea76d976d25ff47a",
+  "constructor_release": false,
+  "constructor_static_audit_identity": "8451c13e5c5ab887e7001e8e090a54cf2d95643d113011e14b217d8f95f66225",
+  "deterministic_blockers": [
+    "FROZEN_V5_PREFLIGHT_HARDCODES_PILOT08_SUBJECT_OBJECT_LEXICAL_SHAPE",
+    "FROZEN_V5_ABSTRACT_PLAN_MODELS_RETURN_REAPPLICATION_CHECK_NOT_P5_TRIGGER_NONSTART"
+  ],
+  "reviewed_commit": "ef0e5964c14719b16ebaa9cc2843c86d1490de4c",
+  "schema_name": "batch2-development-pilot09-constructor-v5-source-compatibility-v1",
+  "schema_version": "1.0.0",
+  "sealed_assignment_identity": "735814216b914a8c3f86150261cff19efb77536126c3c4d13b2f38bd3c0590e1",
+  "selected_proposition_id": "P5",
+  "selected_span_sha256": "45c1e8c1f05aa1e88abc7e2818ef830c8ad9e4a789e5ce4ac5f99133d33f9f1c",
+  "source_shape_accepted_by_frozen_preflight": false,
+  "typed_component_binding": {
+    "object": "automat.",
+    "predicate": "nu pornește",
+    "qualification_present": true,
+    "subject": "banda"
+  },
+  "typed_operand_dataflow_validator_present": true,
+  "verdict": "FAIL_FROZEN_V5_SOURCE_INCOMPATIBLE_NO_RELEASE"
+}

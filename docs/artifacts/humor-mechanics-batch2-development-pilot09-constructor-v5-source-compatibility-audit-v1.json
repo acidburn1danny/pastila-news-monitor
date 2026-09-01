@@ -1,0 +1,16 @@
+{
+  "abstract_plan_closure_for_p5": "FAIL_SEMANTIC_MISMATCH",
+  "audit_identity": "98ae5c41b37a99c29c8e488c909f92270e66dafe674288129fb4abe4e4bb9691",
+  "candidate_surfaces_created": 0,
+  "compatibility_identity": "fabcee37d422ad7e941dd1168c63b9659e27b039831a187da05d7bc665bed5a7",
+  "constructor_invocations": 0,
+  "exact_proposal_and_p5_binding": "PASS",
+  "frozen_implementation_binding": "PASS",
+  "git_object_only": true,
+  "repair_boundary": "SEPARATE_SUCCESSOR_IMPLEMENTATION_AUTHORIZATION_REQUIRED",
+  "repair_performed": false,
+  "schema_name": "batch2-development-pilot09-constructor-v5-source-compatibility-audit-v1",
+  "schema_version": "1.0.0",
+  "typed_operand_validator_static_presence": "PASS",
+  "verdict": "PASS_FAIL_CLOSED_ZERO_CONSTRUCTION_NO_RELEASE"
+}
