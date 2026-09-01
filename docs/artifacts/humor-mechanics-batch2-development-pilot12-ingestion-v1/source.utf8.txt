@@ -1,0 +1,7 @@
+În dimineața de 25 septembrie 2026, personalul unei biblioteci universitare pregătește pentru mutare o colecție de 60 de volume aflate într-o sală de lectură temporară.
+
+Fiecare volum are un cod de inventar, iar lista de transfer asociază fiecărui cod un raft de destinație. Bibliotecarul citește codul de inventar de pe volum și identifică în lista de transfer raftul asociat acelui cod. Volumul este apoi așezat într-o cutie marcată cu numărul raftului indicat în listă.
+
+O cutie este transportată în depozitul bibliotecii numai dacă toate volumele introduse în ea au același raft de destinație. Dacă o cutie conține volume asociate în lista de transfer cu rafturi diferite, cutia rămâne în sala de lectură pentru reverificare.
+
+Operațiunea se referă numai la cele 60 de volume din această colecție și nu modifică poziția celorlalte cărți ale bibliotecii. Înainte de verificare nu este cunoscut dacă fiecare volum din colecție are în lista de transfer destinația așteptată de personal și nici dacă va fi necesară reverificarea vreunei cutii.
