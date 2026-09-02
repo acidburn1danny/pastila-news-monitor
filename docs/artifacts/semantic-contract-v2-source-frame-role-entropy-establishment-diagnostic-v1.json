@@ -1,0 +1,59 @@
+{
+  "schema": "SEMANTIC_AUTHORITY_SOURCE_FRAME_ROLE_ENTROPY_ESTABLISHMENT_DIAGNOSTIC_V2_V1",
+  "verdict": "FAIL_CLOSED_METADATA_ESTABLISHMENT_INPUTS_NOT_SUPPLIED",
+  "governance_identity": "92a8c1e42dff244ffbf3961f25356ff69eebdadab58f020dd3558df8ba248b5a",
+  "associated_blocker_audit_identity": "511504d1436f4198bb855f74bc4698b635fa892f20850908e8ecab26eb981a21",
+  "validator_identity": "ed8c7346b1eaccb12c21f8adc626f53225304a8e3936c70199b98d7ad8755464",
+  "frame": {
+    "verdict": "NOT_ESTABLISHED",
+    "identity": null,
+    "eligible_population_count": 0,
+    "metadata_inventory_received": false,
+    "independent_registrar_evidence_received": false,
+    "complete_inclusion_exclusion_evidence_received": false,
+    "negative_space_evidence_received": false
+  },
+  "role_appointments": {
+    "verdict": "NOT_ESTABLISHED",
+    "credential_bound_appointments": 0,
+    "required_missing": [
+      "FRAME_REGISTRAR",
+      "ENTROPY_AUTHORITY",
+      "SELECTION_EXECUTOR",
+      "SCOPE_POLICY_OWNER",
+      "BASIS_EXTRACTOR",
+      "ADMISSION_VERIFIER",
+      "CANDIDATE_AUTHOR",
+      "RULE_ADJUDICATOR"
+    ],
+    "synthetic_test_labels_accepted_as_appointments": false,
+    "v2_informed_project_owner_used_as_isolated_role": false
+  },
+  "entropy_precommitment": {
+    "verdict": "NOT_ESTABLISHED",
+    "identity": null,
+    "external_authority": null,
+    "event_identifier": null,
+    "publication_time_or_round": null,
+    "retrieval_and_verification_method": null,
+    "event_occurs_after_frame_freeze": null
+  },
+  "deterministic_blockers": [
+    "NO_INDEPENDENTLY_REGISTERED_METADATA_ONLY_SOURCE_POPULATION_INVENTORY",
+    "NO_COMPLETE_INCLUDED_EXCLUDED_NEGATIVE_SPACE_RECORD",
+    "NO_CREDENTIAL_BOUND_INDEPENDENT_ROLE_APPOINTMENT_PACKETS",
+    "NO_PRENAMED_EXTERNAL_PUBLIC_ENTROPY_EVENT_COORDINATES",
+    "NO_INDEPENDENT_EVIDENCE_THAT_APPOINTEES_LACK_FORBIDDEN_V2_INFORMATION"
+  ],
+  "blocker_classification": "MISSING_EXTERNAL_GOVERNANCE_INPUTS_NOT_DETERMINISTIC_VALIDATOR_DEFECT",
+  "repairs_performed": false,
+  "source_content_inspected_or_acquired": false,
+  "source_selection_executed": false,
+  "authority_bases_created_or_admitted": 0,
+  "curriculum_population_started": false,
+  "pilot15_prepared": false,
+  "blind_or_future_family_access": false,
+  "frozen_v2_semantics_or_coverage_modified": false,
+  "next_action": "OWNER_SUPPLIES_METADATA_ONLY_FRAME_INVENTORY_CREDENTIAL_BOUND_ROLE_APPOINTMENT_PACKETS_AND_PRENAMED_FUTURE_EXTERNAL_ENTROPY_EVENT_SPECIFICATION",
+  "diagnostic_identity": "8fbef727fd8cbed859b6c34bfe2d2fe3747f9410a9775659a5ec4d4a6c8e28bc"
+}
