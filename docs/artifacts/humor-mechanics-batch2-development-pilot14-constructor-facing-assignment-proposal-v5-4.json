@@ -1,0 +1,115 @@
+{
+  "affordance_topology": null,
+  "authority_matrix": {
+    "candidate_emission": false,
+    "constructor_compatibility": false,
+    "constructor_invocation": false,
+    "constructor_release": false,
+    "emitter_invocation": false,
+    "fragment_collision": false,
+    "g02": false,
+    "g02c": false,
+    "g03": false,
+    "g03b": false,
+    "g03c": false,
+    "g04b": false,
+    "model_exposure": false,
+    "owner_review": false,
+    "production_routing": false,
+    "provider_invocation": false,
+    "realization": false,
+    "romanian_naturalness": false,
+    "runtime_integration": false,
+    "semantic_conformance": false,
+    "semantic_plan": false,
+    "semantic_role_or_affordance_planning": false,
+    "training": false,
+    "voice": false
+  },
+  "authority_partition_contract_identity": "UNASSIGNED_REQUIRES_SEPARATE_COMPATIBILITY_PHASE",
+  "authorized_visible_context_sha256": "6b4e02e02116ee04e6e541a7017c9789ae4b29ca0b1009c0bbb772eaa6be69f5",
+  "candidate_surface": null,
+  "closed_factual_authority_envelope": {
+    "authority_scope": "Only the explicitly stated cultural-center frame-inventory event, quantity and temporary-exhibition-room scope, inventory-number and pre-existing recorded-dimension information, independent width/height measurement procedure, recording of measured values in each frame's corresponding record, completed-record storage, unchanged frame positions, operation-specific scope limitation, and explicitly unknown agreement between newly measured and previously recorded dimensions within the accompanying owner-authored synthetic test universe.",
+    "propositions": [
+      {
+        "modality": "ASSERTED",
+        "proposition_id": "P5",
+        "scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE_ONLY",
+        "selection": "NOT_PERFORMED",
+        "statement": "La finalul operațiunii, fișele completate au fost așezate într-un dosar păstrat în sala de expoziție.",
+        "supporting_span": {
+          "character_coordinates": [
+            474,
+            575
+          ],
+          "sha256": "6b4e02e02116ee04e6e541a7017c9789ae4b29ca0b1009c0bbb772eaa6be69f5",
+          "span_sha256": "6b4e02e02116ee04e6e541a7017c9789ae4b29ca0b1009c0bbb772eaa6be69f5",
+          "utf8_byte_coordinates": [
+            509,
+            617
+          ]
+        }
+      }
+    ],
+    "source_commitment": "5ac22f1c751961f9cc7f91ca97aafe57cfcc2889995530616a7c1cdc5cda77a2",
+    "source_sha256": "aec2bccf7ec0cc9f059785d00be1fe891a5b4c64b834da0cb9743518ff9e512d",
+    "world_scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE"
+  },
+  "construction_revision_family_id": "94db0b037b3fbc78c947202afc188138ed84e2ced8ab2de491cf74a698ff0b09",
+  "constructor_compatibility_evaluated": false,
+  "constructor_facing_packet_identity": "eca54c4447cd866fe32c2948181791ae8d9615529aded30a2b18965de7864f14",
+  "constructor_invoked": false,
+  "creative_marker_family_id": "UNASSIGNED_UNTIL_POSTCONSTRUCTION",
+  "creative_premise_family_id": "UNASSIGNED",
+  "emitter_identity": "UNASSIGNED_REQUIRES_SEPARATE_COMPATIBILITY_PHASE",
+  "exact_authorized_visible_context_utf8": "La finalul operațiunii, fișele completate au fost așezate într-un dosar păstrat în sala de expoziție.",
+  "fragment_denyset_identity": "UNASSIGNED_REQUIRES_FREEZE_BEFORE_RELEASE",
+  "immutable_assignment_identity": "943bc9aaa538407f18de4e673f6935b66b8948d4164adacba0fde97f24e857cc",
+  "mapping_commitment": "9809d295deb206ff5af15d205114f1e65024fdf1879098594d9b4164468d3d43",
+  "morphological_alignment_opportunity": null,
+  "pilot_role": "GENUINE_END_TO_END_MECHANISM_TRIAL",
+  "provider_identity": "UNASSIGNED_REQUIRES_SEPARATE_COMPATIBILITY_PHASE",
+  "qualified_executable_implementation_identity": "UNASSIGNED_REQUIRES_SEPARATE_COMPATIBILITY_PHASE",
+  "realization_plan": null,
+  "schema_name": "batch2-development-pilot14-constructor-facing-assignment-proposal-v5-4",
+  "schema_version": "5.4.0",
+  "selected_proposition_id": "P5",
+  "selected_supporting_span_sha256": "6b4e02e02116ee04e6e541a7017c9789ae4b29ca0b1009c0bbb772eaa6be69f5",
+  "semantic_role_signature": null,
+  "source_package_identity": "676ebacdbf0f8b660b87720798e99fa398c6bb7b46700a25e423c28b5ee9939f",
+  "status": "PROPOSAL_ZERO_CONSTRUCTION_NO_RELEASE_NO_SEMANTIC_PLANNING",
+  "sufficiency_receipt_identity": "f1cb814147e7c8cfd353a4ca221bde1a76ee6900d985e7cac78fba8198b0bbfd",
+  "unlabeled_operational_obligation": {
+    "creative_marking_constraints": [
+      "Premisa și marcajul creativ rămân neatribuite până la construcție.",
+      "Nu transfera în rezultat limbajul cerințelor, planului, controlului, guvernanței sau validării."
+    ],
+    "forbidden_operations": [
+      "Nu ascunde relația factuală până după rezultatul inventat și nu folosi dezvăluirea ei ca răsturnare principală.",
+      "Nu introduce un reper, operand, eveniment ori cauză care nu poate fi urmărită local până la contextul autorizat.",
+      "Nu baza rezultatul pe redenumire, reclasificare, personificare, intensificare, listă sau joc lexical.",
+      "Nu impune o formulă fixă, un conector, un semn de punctuație, un registru ori un număr fix de propoziții."
+    ],
+    "future_phase_constraints": [
+      "Orice plan viitor trebuie derivat numai din relația factuală P5 și din rezultate locale explicit produse.",
+      "Fiecare relație viitoare trebuie să păstreze identitatea operanzilor și să fie necesară, ne-arbitrară și închisă referențial.",
+      "Validarea semantică și a martorilor de suprafață aparține exclusiv fazelor ulterioare autorizate separat."
+    ],
+    "naturalness_and_safety": [
+      "Folosește română idiomatică și concretă; nu transfera în suprafață limbajul acestei cerințe.",
+      "Separă clar cadrul inventat de autoritatea factuală și nu adăuga fapte, citate, cunoaștere privată sau concluzii despre lumea reală."
+    ],
+    "obligation_instance_identity": "0361b101313a37320be4aa7065eae3ead293faa1e989ae45733939b1d10d8603",
+    "obligation_version": "DEVELOPMENT_TRANSFORMATION_V5_4_01",
+    "selected_source_relation": "La finalul operațiunii, fișele completate au fost așezate într-un dosar păstrat în sala de expoziție.",
+    "transformation": [
+      "Păstrează exact relația factuală furnizată, cu toate calificările și limitele ei, și fă-o disponibilă înainte ca textul să poată produce o schimbare retrospectivă de lectură.",
+      "Construiește o consecință inventată prin cel puțin două legături locale distincte, fiecare necesară și recuperabilă din relația precedentă.",
+      "Consecința trebuie să depindă de întregul lanț; simpla transformare a unui cuvânt, număr ori înscris într-un obiect fizic nu poate susține singură rezultatul.",
+      "Marcajul nonfactual trebuie integrat firesc și trebuie să acopere toate legăturile inventate."
+    ]
+  },
+  "unselected_proposition_or_fallback_authority": "ABSENT",
+  "witness_topology": null
+}
