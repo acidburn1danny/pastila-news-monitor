@@ -5,10 +5,10 @@ import pytest
 
 from pastila_scout.humor_batch2_development_constructor_v5_3_3_release_path import FrozenSurfaceRoleRule
 from pastila_scout.humor_batch2_development_constructor_v5_4_integration import (
-    FrozenIntegratedAuthorityV54, close_integrated_authority, execute_zero_family_path,
+    FrozenIntegratedAuthorityV54, QualifiedRuntimeBindingsV54, close_integrated_authority, execute_zero_family_path,
 )
 from pastila_scout.humor_batch2_development_constructor_v5_4_semantic_licensing import (
-    ProposedRelation, RuleOrigin, SemanticOperand, TrustedSemanticRule,
+    ProposedRelation, RuleOrigin, SemanticOperand, TrustedSemanticRule, semantic_rule_identity,
 )
 
 
@@ -25,11 +25,15 @@ def frozen_authority() -> FrozenIntegratedAuthorityV54:
         ("ACTOR", "timer", "Timerul"), ("PREDICATE", "TRIGGERS", "pornește"),
         ("PATIENT", "alarm", "alarma"), ("PRODUCED", "ringing", "soneria")))
     return FrozenIntegratedAuthorityV54("authority", "implementation", "binding", "span", "denyset", "alignment",
-        operands, (relation,), (rule,), frozenset({"timer-rule"}), frozenset(), frozenset({"relations"}), roles)
+        operands, (relation,), (rule,), frozenset({semantic_rule_identity(rule)}), frozenset(), frozenset({"relations"}), roles)
+
+
+def bindings() -> QualifiedRuntimeBindingsV54:
+    return QualifiedRuntimeBindingsV54("implementation", "provider", "observer", "emitter", "contract")
 
 
 def test_integrated_zero_family_path_preserves_clause_only_byte_authority():
-    closed = close_integrated_authority(frozen_authority())
+    closed = close_integrated_authority(frozen_authority(), bindings=bindings())
     surface, receipt = execute_zero_family_path(closed=closed,
         provider_payload={"clause": "Timerul pornește alarma și produce soneria."})
     assert surface.decode() == "Timerul pornește alarma și produce soneria."
@@ -39,7 +43,7 @@ def test_integrated_zero_family_path_preserves_clause_only_byte_authority():
 @pytest.mark.parametrize("field", ["rules", "ontology", "roles", "affordances", "predicate_signatures", "necessity"])
 def test_integration_rejects_planner_evidence_fields(field):
     with pytest.raises(ValueError, match="attempts to author"):
-        close_integrated_authority(replace(frozen_authority(), planner_payload_keys=frozenset({field})))
+        close_integrated_authority(replace(frozen_authority(), planner_payload_keys=frozenset({field})), bindings=bindings())
 
 
 def test_observer_mapping_must_match_independently_licensed_plan():
@@ -47,11 +51,11 @@ def test_observer_mapping_must_match_independently_licensed_plan():
     bad = tuple(replace(item, semantic_identity="planner-role") if item.role == "ACTOR" else item
                 for item in authority.role_rules)
     with pytest.raises(ValueError, match="drift"):
-        close_integrated_authority(replace(authority, role_rules=bad))
+        close_integrated_authority(replace(authority, role_rules=bad), bindings=bindings())
 
 
 def test_provider_remains_exactly_clause_only():
-    closed = close_integrated_authority(frozen_authority())
+    closed = close_integrated_authority(frozen_authority(), bindings=bindings())
     with pytest.raises(ValueError, match="exactly"):
         execute_zero_family_path(closed=closed, provider_payload={"clause": "x", "roles": []})
 
@@ -61,10 +65,15 @@ def test_p13_topology_changed_vocabulary_cannot_gain_agentive_affordance(kind):
     authority = frozen_authority()
     changed = replace(authority.authority_operands[0], entity_class=kind)
     with pytest.raises(ValueError, match="entity class"):
-        close_integrated_authority(replace(authority, authority_operands=(changed, authority.authority_operands[1])))
+        close_integrated_authority(replace(authority, authority_operands=(changed, authority.authority_operands[1])), bindings=bindings())
 
 
 def test_omitted_anchor_relation_fails_closed():
     authority = frozen_authority()
     with pytest.raises(ValueError, match="empty"):
-        close_integrated_authority(replace(authority, proposed_relations=()))
+        close_integrated_authority(replace(authority, proposed_relations=()), bindings=bindings())
+
+
+def test_runtime_implementation_identity_skew_fails_before_provider():
+    with pytest.raises(ValueError, match="identity skew"):
+        close_integrated_authority(frozen_authority(), bindings=replace(bindings(), implementation_identity="stale"))

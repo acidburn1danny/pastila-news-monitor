@@ -35,6 +35,15 @@ class FrozenIntegratedAuthorityV54:
 
 
 @dataclass(frozen=True, slots=True)
+class QualifiedRuntimeBindingsV54:
+    implementation_identity: str
+    provider_identity: str
+    observer_identity: str
+    emitter_identity: str
+    contract_identity: str
+
+
+@dataclass(frozen=True, slots=True)
 class ClosedIntegratedAuthorityV54:
     authority: FrozenIntegratedAuthorityV54
     licensed_plan: LicensedPlan
@@ -42,12 +51,18 @@ class ClosedIntegratedAuthorityV54:
     closure_identity: str
 
 
-def close_integrated_authority(authority: FrozenIntegratedAuthorityV54) -> ClosedIntegratedAuthorityV54:
+def close_integrated_authority(authority: FrozenIntegratedAuthorityV54, *,
+                               bindings: QualifiedRuntimeBindingsV54) -> ClosedIntegratedAuthorityV54:
     values = (authority.authority_identity, authority.implementation_identity,
               authority.release_binding_identity, authority.proposition_span_identity,
               authority.denyset_identity, authority.alignment_policy_identity)
     if not all(values):
         raise ValueError("incomplete integrated Class A authority")
+    if authority.implementation_identity != bindings.implementation_identity:
+        raise ValueError("integrated implementation identity skew")
+    if not all((bindings.provider_identity, bindings.observer_identity,
+                bindings.emitter_identity, bindings.contract_identity)):
+        raise ValueError("incomplete independently qualified runtime bindings")
     rules = {rule.rule_id: rule for rule in authority.trusted_rules}
     assert_registry_is_external(registry_rules=rules, planner_payload_keys=authority.planner_payload_keys)
     verify_rule_registry_partition(rules=authority.trusted_rules,
@@ -89,5 +104,5 @@ def execute_zero_family_path(*, closed: ClosedIntegratedAuthorityV54,
     return conditional_emit(authority=closed.byte_authority, surface_bytes=surface, receipt=receipt), receipt
 
 
-__all__ = ["ClosedIntegratedAuthorityV54", "FrozenIntegratedAuthorityV54",
+__all__ = ["ClosedIntegratedAuthorityV54", "FrozenIntegratedAuthorityV54", "QualifiedRuntimeBindingsV54",
            "close_integrated_authority", "execute_zero_family_path"]

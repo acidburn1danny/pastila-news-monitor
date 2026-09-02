@@ -1,0 +1,12 @@
+{
+  "iteration": 1,
+  "finding": "STALE_RULE_CONTENT_AND_RUNTIME_IMPLEMENTATION_IDENTITY_SKEW_NOT_CLOSED",
+  "violated_invariants": [
+    "trust membership must bind canonical rule content rather than a mutable label",
+    "release hydration must compare implementation identity to an independently qualified binding"
+  ],
+  "repair": "canonical semantic-rule commitments and mandatory qualified runtime bindings",
+  "real_family_invocations": "0/0/0",
+  "capabilities_consumed": 0,
+  "candidates_created": 0
+}

@@ -9,6 +9,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import StrEnum
+import hashlib
+import json
 from typing import Iterable, Mapping
 
 
@@ -99,6 +101,19 @@ class TrustedRuleRegistry:
                      and rule.patient_affordances.issubset(patient.affordances))
 
 
+def semantic_rule_identity(rule: TrustedSemanticRule) -> str:
+    payload = {
+        "rule_id": rule.rule_id, "origin": rule.origin.value, "predicate_class": rule.predicate_class,
+        "actor_classes": sorted(rule.actor_classes), "patient_classes": sorted(rule.patient_classes),
+        "actor_roles": sorted(rule.actor_roles), "patient_roles": sorted(rule.patient_roles),
+        "actor_affordances": sorted(rule.actor_affordances),
+        "patient_affordances": sorted(rule.patient_affordances), "result_class": rule.result_class,
+        "result_roles": sorted(rule.result_roles), "result_affordances": sorted(rule.result_affordances),
+        "source_authority_ids": sorted(rule.source_authority_ids),
+    }
+    return hashlib.sha256(json.dumps(payload, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+
+
 def _contains(required: frozenset[str], actual: frozenset[str], label: str) -> None:
     if not required.issubset(actual):
         raise ValueError(f"{label} incompatible with trusted rule")
@@ -152,7 +167,7 @@ def validate_and_license_plan(
         if len(compatible) != 1 or compatible[0].rule_id != rule.rule_id:
             raise ValueError("semantic consequence is absent or freely substitutable")
         if rule.origin is RuleOrigin.SOURCE_DERIVED:
-            if rule.rule_id not in authorized_source_rule_ids:
+            if semantic_rule_identity(rule) not in authorized_source_rule_ids:
                 raise ValueError("source-derived rule identity is not independently authorized")
             if not rule.source_authority_ids or not rule.source_authority_ids.issubset(
                 actor.authority_ids | patient.authority_ids
@@ -218,14 +233,14 @@ def verify_rule_registry_partition(
         raise ValueError("semantic rule trust domains overlap")
     for rule in rules:
         if rule.origin is RuleOrigin.FROZEN_GENERIC_ONTOLOGY:
-            if rule.rule_id not in frozen_generic_rule_ids:
+            if semantic_rule_identity(rule) not in frozen_generic_rule_ids:
                 raise ValueError("generic rule is not in the frozen ontology")
-        elif rule.rule_id not in authorized_source_rule_ids:
+        elif semantic_rule_identity(rule) not in authorized_source_rule_ids:
             raise ValueError("source-derived rule is not in the authority envelope")
 
 
 __all__ = [
     "CounterfactualEdgeResult", "LicensedPlan", "ProposedRelation", "RuleOrigin", "SemanticOperand",
     "TrustedRuleRegistry", "TrustedSemanticRule", "assert_registry_is_external",
-    "validate_and_license_plan", "verify_rule_registry_partition",
+    "semantic_rule_identity", "validate_and_license_plan", "verify_rule_registry_partition",
 ]

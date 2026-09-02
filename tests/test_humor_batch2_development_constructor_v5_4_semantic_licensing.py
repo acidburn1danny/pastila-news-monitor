@@ -5,7 +5,7 @@ import pytest
 from pastila_scout.humor_batch2_development_constructor_v5_4_semantic_licensing import (
     ProposedRelation, RuleOrigin, SemanticOperand, TrustedRuleRegistry,
     TrustedSemanticRule, assert_registry_is_external, validate_and_license_plan,
-    verify_rule_registry_partition,
+    semantic_rule_identity, verify_rule_registry_partition,
 )
 
 
@@ -135,7 +135,7 @@ def test_source_derived_rule_needs_independent_rule_identity_authority():
         "source-rule", True),), registry=TrustedRuleRegistry((source_rule,)))
     with pytest.raises(ValueError, match="not independently authorized"):
         validate_and_license_plan(**args)
-    assert validate_and_license_plan(**args, authorized_source_rule_ids=frozenset({"source-rule"}))
+    assert validate_and_license_plan(**args, authorized_source_rule_ids=frozenset({semantic_rule_identity(source_rule)}))
 
 
 @pytest.mark.parametrize("origin", [RuleOrigin.SOURCE_DERIVED, RuleOrigin.FROZEN_GENERIC_ONTOLOGY])
@@ -146,6 +146,19 @@ def test_rule_cannot_claim_a_trust_domain_by_label_alone(origin):
     with pytest.raises(ValueError, match="not in"):
         verify_rule_registry_partition(rules=(candidate,), frozen_generic_rule_ids=frozenset(),
                                        authorized_source_rule_ids=frozenset())
+
+
+def test_rule_content_change_invalidates_frozen_trust_commitment():
+    original = rule("stable-label", "TRIGGER", "TIMER_EVENT", "ALARM", actor_role="TRIGGER",
+        patient_role="TRIGGERABLE", actor_affordance="FIRE", patient_affordance="BE_TRIGGERED")
+    changed = TrustedSemanticRule(original.rule_id, original.origin, original.predicate_class,
+        original.actor_classes, original.patient_classes, original.actor_roles, original.patient_roles,
+        original.actor_affordances, original.patient_affordances, "DIFFERENT_RESULT", original.result_roles,
+        original.result_affordances, original.source_authority_ids)
+    with pytest.raises(ValueError, match="not in the frozen ontology"):
+        verify_rule_registry_partition(rules=(changed,),
+            frozen_generic_rule_ids=frozenset({semantic_rule_identity(original)}),
+            authorized_source_rule_ids=frozenset())
 
 
 @pytest.mark.parametrize("entity_class", [
