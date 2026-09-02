@@ -14,6 +14,7 @@ def test_one_shot_exact_and_no_retry_or_delay():
   bad={**env(),key:value}
   with pytest.raises(ValueError):m.one_shot_guard(config(),bad,datetime(2026,10,1,tzinfo=timezone.utc))
  with pytest.raises(ValueError,match="delayed"):m.one_shot_guard(config(),env(),datetime(2026,10,1,0,1,tzinfo=timezone.utc))
+ with pytest.raises(ValueError,match="convergence"):m.one_shot_guard(m.FrozenRun(config().scheduled_utc,"1 0 1 10 *",config().workflow_commit,config().deployment_identity,config().ca_sha256),env(),datetime(2026,10,1,tzinfo=timezone.utc))
 def test_concrete_adapter_pins_ca_and_rejects_proxy(tmp_path,monkeypatch):
  ca=tmp_path/"ca";ca.write_bytes(b"ca");run={"ca_sha256":hashlib.sha256(b"ca").hexdigest()};a=m.AdaptiveProductionAdapter(run=run,ca_file=ca)
  monkeypatch.setenv("HTTPS_PROXY","x")
@@ -22,12 +23,17 @@ def test_canonical_output_and_single_persistence(tmp_path):
  c=Capture("X","https://x",b"bytes","GET",200,(("x","y"),),"d"*64,"TLSv1.3"); initiation={"initiation_subject_sha256":"a"*64,"initiation_rekor_uuid":"b"*64,"initiation_rekor_log_index":"1","initiation_rekor_integrated_time":"2","verified":True};files,p=m.canonical_output(CaptureExecution((c,),()),{"x":1},initiation)
  assert set(files)=={"captures/000001.bin","capture-set.json","final-attestation-predicate.json"} and p["subject"][0]["digest"]["sha256"]
  assert p["_type"]=="https://in-toto.io/Statement/v1" and p["predicate"]["initiation"]==initiation
+ assert p["subject"][0]["digest"]["sha256"]==hashlib.sha256(files["capture-set.json"]).hexdigest()
  manifest=json.loads(files["capture-set.json"]);assert manifest["captures"][0]["locator"]=="https://x" and manifest["captures"][0]["tls_version"]=="TLSv1.3"
  out=tmp_path/"out";m.persist_once(files,out)
  with pytest.raises(ValueError):m.persist_once(files,out)
  bad=tmp_path/"bad"
  with pytest.raises(ValueError):m.persist_once({"../escape":b"x"},bad)
  assert not bad.exists()
+ for name in ("a\\..\\escape","a//b","./a"):
+  target=tmp_path/("bad-"+hashlib.sha256(name.encode()).hexdigest())
+  with pytest.raises(ValueError):m.persist_once({name:b"x"},target)
+  assert not target.exists()
  with pytest.raises(ValueError,match="receipt"):m.canonical_output(CaptureExecution((c,),()),{"x":1},{"verified":True})
 def test_dependency_pin_and_inert_cli(tmp_path):
  p=tmp_path/"tool";m.install_dependency_once(b"x",p,hashlib.sha256(b"x").hexdigest());m.verify_installed_dependency(p,hashlib.sha256(b"x").hexdigest())

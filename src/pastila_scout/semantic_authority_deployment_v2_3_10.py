@@ -6,6 +6,7 @@ import hashlib
 import http.client
 import json
 import os
+import re
 import shutil
 import ssl
 import tempfile
@@ -37,11 +38,17 @@ class FrozenRun:
 
 
 def one_shot_guard(config: FrozenRun, environment: Mapping[str, str], now: datetime) -> None:
+    if (not re.fullmatch(r"[0-9a-f]{40}",config.workflow_commit) or not re.fullmatch(r"[0-9a-f]{64}",config.deployment_identity)
+        or not re.fullmatch(r"[0-9a-f]{64}",config.ca_sha256)):
+        raise ValueError("one-shot configuration identity")
+    try: scheduled=datetime.strptime(config.scheduled_utc,"%Y-%m-%dT%H:%M:00Z").replace(tzinfo=timezone.utc)
+    except ValueError as exc: raise ValueError("one-shot timestamp") from exc
+    if config.schedule_cron != f"{scheduled.minute} {scheduled.hour} {scheduled.day} {scheduled.month} *":
+        raise ValueError("schedule/timestamp convergence")
     expected={"GITHUB_EVENT_NAME":"schedule","GITHUB_RUN_ATTEMPT":"1","GITHUB_REPOSITORY":REPOSITORY_SLUG,
               "GITHUB_REPOSITORY_ID":REPOSITORY_ID,"GITHUB_SHA":config.workflow_commit,"GITHUB_EVENT_SCHEDULE":config.schedule_cron}
     if any(environment.get(k)!=v for k,v in expected.items()) or now.tzinfo is None:
         raise ValueError("one-shot run identity")
-    scheduled=datetime.strptime(config.scheduled_utc,"%Y-%m-%dT%H:%M:00Z").replace(tzinfo=timezone.utc)
     if now.astimezone(timezone.utc).replace(second=0,microsecond=0)!=scheduled:
         raise ValueError("missed or delayed one-shot schedule")
 
@@ -81,8 +88,9 @@ def canonical_output(execution: CaptureExecution, run: Mapping[str, object], ini
                      "tls_version":item.tls_version,"path":path,"length":len(payload),"sha256":sha(payload)})
     manifest={"schema":"PASTILA_CAPTURE_SET_V2_3_10","run":dict(run),"captures":rows,"derivations":[list(x) for x in execution.derivations]}
     manifest["capture_set_identity"]=sha(canonical(manifest))
-    predicate={"_type":"https://in-toto.io/Statement/v1","predicateType":"https://pastila.invalid/semantic-authority/final/v2.3.10","subject":[{"name":"capture-set.json","digest":{"sha256":sha(canonical(manifest))}}],"predicate":{"capture_set_identity":manifest["capture_set_identity"],"initiation":dict(initiation),"initiation_claim_sha256":sha(canonical({"domain":"PASTILA_CAPTURE_INITIATION_V2_3_9",**dict(run),"external_parameters":{}}))}}
-    files["capture-set.json"]=canonical(manifest)+b"\n"; files["final-attestation-predicate.json"]=canonical(predicate)+b"\n"
+    files["capture-set.json"]=canonical(manifest)+b"\n"
+    predicate={"_type":"https://in-toto.io/Statement/v1","predicateType":"https://pastila.invalid/semantic-authority/final/v2.3.10","subject":[{"name":"capture-set.json","digest":{"sha256":sha(files["capture-set.json"])}}],"predicate":{"capture_set_identity":manifest["capture_set_identity"],"initiation":dict(initiation),"initiation_claim_sha256":sha(canonical({"domain":"PASTILA_CAPTURE_INITIATION_V2_3_9",**dict(run),"external_parameters":{}}))}}
+    files["final-attestation-predicate.json"]=canonical(predicate)+b"\n"
     return files,predicate
 
 
@@ -91,7 +99,8 @@ def persist_once(files: Mapping[str,bytes], output: Path) -> None:
     closed=[]
     for name,payload in files.items():
         relative=PurePosixPath(name)
-        if relative.is_absolute() or not relative.parts or ".." in relative.parts or any(part in {"", "."} for part in relative.parts) or not isinstance(payload,bytes):
+        if (not isinstance(name,str) or "\\" in name or str(relative)!=name or relative.is_absolute() or not relative.parts
+            or ".." in relative.parts or any(part in {"", "."} for part in relative.parts) or not isinstance(payload,bytes)):
             raise ValueError("output path")
         closed.append((relative,payload))
     temporary=Path(tempfile.mkdtemp(prefix=f".{output.name}-",dir=output.parent))
