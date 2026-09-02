@@ -1,0 +1,69 @@
+{
+  "schema_name": "batch2-owner-declaration-pilot14-v1",
+  "schema_version": "1.0.0",
+  "pilot_id": "BATCH2-DEVELOPMENT-PILOT-14",
+  "trial_role": "GENUINE_END_TO_END_MECHANISM_TRIAL",
+  "source": {
+    "filename": "owner-source-pilot14-v1.txt",
+    "encoding": "UTF-8_NO_BOM",
+    "line_endings": "LF_ONLY",
+    "terminal_lf_count": 1,
+    "source_version": "OWNER_MUST_SUPPLY",
+    "capture_timestamp": "OWNER_MUST_SUPPLY_ISO8601_WITH_OFFSET",
+    "acquisition_timestamp": "OWNER_MUST_SUPPLY_ISO8601_WITH_OFFSET",
+    "authority_scope": "OWNER_MUST_SUPPLY",
+    "world_scope": "OWNER_MUST_SUPPLY",
+    "intended_partition": "DEVELOPMENT"
+  },
+  "contributor": {
+    "public_identity": "OWNER_MUST_SUPPLY_OR_CHOOSE",
+    "legal_identity_commitment": "OWNER_MUST_SUPPLY_OR_CHOOSE",
+    "legal_identity_verification_reference": "OWNER_MUST_SUPPLY_OR_CHOOSE",
+    "role": "OWNER_MUST_SUPPLY_OR_CHOOSE",
+    "rights_holder_identity": "OWNER_MUST_SUPPLY_OR_CHOOSE",
+    "rights_holder_relationship": "OWNER_MUST_SUPPLY_OR_CHOOSE",
+    "identity_disclosure_approved_for_commit": "OWNER_MUST_SUPPLY_OR_CHOOSE"
+  },
+  "ownership_declarations": {
+    "original_authorship": "OWNER_MUST_CHOOSE_BOOLEAN",
+    "owns_or_controls_required_rights": "OWNER_MUST_CHOOSE_BOOLEAN",
+    "has_authority_to_make_each_selected_grant": "OWNER_MUST_CHOOSE_BOOLEAN",
+    "contains_undisclosed_third_party_material": "OWNER_MUST_CHOOSE_BOOLEAN",
+    "contains_private_or_confidential_information": "OWNER_MUST_CHOOSE_BOOLEAN",
+    "contains_personal_data": "OWNER_MUST_CHOOSE_BOOLEAN",
+    "contains_unlawfully_obtained_information": "OWNER_MUST_CHOOSE_BOOLEAN",
+    "contains_unattributed_quotation": "OWNER_MUST_CHOOSE_BOOLEAN",
+    "contains_reputation_sensitive_allegation": "OWNER_MUST_CHOOSE_BOOLEAN"
+  },
+  "independent_grants": {
+    "immutable_archival": "OWNER_MUST_CHOOSE_BOOLEAN_INDEPENDENTLY",
+    "factual_annotation_and_authority_binding": "OWNER_MUST_CHOOSE_BOOLEAN_INDEPENDENTLY",
+    "internal_discovery": "OWNER_MUST_CHOOSE_BOOLEAN_INDEPENDENTLY",
+    "construction_and_evaluation": "OWNER_MUST_CHOOSE_BOOLEAN_INDEPENDENTLY",
+    "model_exposure": "OWNER_MUST_CHOOSE_BOOLEAN_INDEPENDENTLY",
+    "training": "OWNER_MUST_CHOOSE_BOOLEAN_INDEPENDENTLY",
+    "runtime_integration": "OWNER_MUST_CHOOSE_BOOLEAN_INDEPENDENTLY",
+    "production_routing": "OWNER_MUST_CHOOSE_BOOLEAN_INDEPENDENTLY"
+  },
+  "source_status_declarations": {
+    "source_is_neutral_nonhumorous_factual_authority": "OWNER_MUST_CHOOSE_BOOLEAN",
+    "source_is_fresh_and_independent_of_pilots_01_through_13": "OWNER_MUST_CHOOSE_BOOLEAN",
+    "source_has_no_revision_same_event_syndication_or_source_family_relationship_with_pilots_01_through_13": "OWNER_MUST_CHOOSE_BOOLEAN",
+    "source_has_explicit_time_scope_modality_and_known_unknown_boundaries": "OWNER_MUST_CHOOSE_BOOLEAN",
+    "source_has_at_least_two_independently_bindable_factual_propositions": "OWNER_MUST_CHOOSE_BOOLEAN",
+    "source_was_not_selected_or_shaped_for_any_forbidden_downstream_or_v5_4_property": "OWNER_MUST_CHOOSE_BOOLEAN"
+  },
+  "owner_instruction": {
+    "request_preingestion_validation_only": "OWNER_MUST_CHOOSE_BOOLEAN",
+    "permit_derived_hashes_and_coordinates": "OWNER_MUST_CHOOSE_BOOLEAN",
+    "permit_registered_custodial_signing_requests": "OWNER_MUST_CHOOSE_BOOLEAN",
+    "permit_git_object_archival": "OWNER_MUST_CHOOSE_BOOLEAN",
+    "permit_development_partition_seal": "OWNER_MUST_CHOOSE_BOOLEAN",
+    "operational_content_access_after_ingestion": "OWNER_MUST_CHOOSE_BOOLEAN"
+  },
+  "owner_confirmation": {
+    "owner_identity": "OWNER_MUST_SUPPLY",
+    "confirmed": "OWNER_MUST_CHOOSE_BOOLEAN",
+    "confirmation_statement": "OWNER_MUST_SUPPLY_EXPLICIT_STATEMENT"
+  }
+}

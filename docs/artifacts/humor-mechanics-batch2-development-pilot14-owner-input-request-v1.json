@@ -1,0 +1,61 @@
+{
+  "schema_name": "batch2-development-pilot14-owner-input-request-v1",
+  "schema_version": "1.0.0",
+  "status": "BLOCKED_AWAITING_OWNER_INPUT",
+  "preparation_verdict": "PASS_CONTENT_FREE_METADATA_FIRST_PILOT14_FROZEN_QUALIFIED_V5_4_PATH",
+  "pilot_role": "GENUINE_END_TO_END_MECHANISM_TRIAL",
+  "v5_4_bindings": {
+    "qualification_identity": "7fa2ccf198de2feafe89974a85d56c9c246a6402e2a5d57417d48f33a1bae124",
+    "qualification_freeze_commit": "bfaf9fd24b813c3c8d2df693dcc68b52ab6b3558",
+    "semantic_licensing_implementation": "b4419a34510d70b4dd297564fd0f5e727f50fa1d5b965b68de79b3261f408bdb",
+    "integrated_executable_path": "d13c5893f272b37a913305b894876625cccc95bd5b10f35a9c57b8f82b14522e",
+    "qualification_harness": "07002509670b6f17cce87b127c778ea1026fa934916410f79a118860da9712de",
+    "runtime_trust_graph": "8716f93bd5991b55c192d4aee6e36dbcaa122e4e0284daa6f257344a9c1fd310",
+    "contract": "c64f795395a90f85c3867d4e63a5b8ff1ff09b25729418b5e474f68dfd619644",
+    "governance": "54812b7089d0e59c897f696c8822d4dc5b95986de7061059b4be8eb4b807a62d",
+    "conformance_schema": "3825592a810697e1bb3fbd68b28733021db2c50df4e0e6cc02aa21acfa914fc3"
+  },
+  "owner_files_required": [
+    {"filename":"owner-source-pilot14-v1.txt","encoding":"UTF-8_NO_BOM","line_endings":"LF_ONLY","terminal_lf_count":1},
+    {"filename":"owner-declaration-pilot14-v1.json","canonical_requirement":"UTF8_JSON_NO_BOM_LF_ONE_TERMINAL_LF"}
+  ],
+  "acquisition_boundaries": {
+    "owner_authored": true,
+    "neutral_nonhumorous": true,
+    "fresh_independent_of_pilots_01_through_13": true,
+    "no_revision_same_event_syndication_or_source_family_relation": true,
+    "minimum_independently_bindable_factual_propositions": 2,
+    "explicit_time_scope_modality_and_known_unknown_boundaries": true,
+    "source_acquisition_independent_of_v5_4_ontology_and_rule_inventory": true,
+    "prohibited_shaping": [
+      "TARGET_MECHANISM_OR_POOL_NEED","PROPOSITION_SELECTION_OR_RESULT","ASSIGNMENT_OR_OBLIGATION",
+      "CONSTRUCTOR_COMPATIBILITY","SEMANTIC_ROLE_OR_AFFORDANCE_TOPOLOGY","TRUSTED_SEMANTIC_RULE_AVAILABILITY",
+      "CAUSAL_OR_COUNTERFACTUAL_TOPOLOGY","TERMINAL_RESULT_CONVENIENCE","REALIZATION_OR_WITNESS_TOPOLOGY",
+      "MORPHOLOGICAL_ALIGNMENT","CLAUSE_GENERATION_CONVENIENCE","HISTORICAL_SURFACES",
+      "PILOT13_FAILURE_AVOIDANCE","DOWNSTREAM_GATE_OUTCOMES","EXPECTED_POSITIVE_RESULT"
+    ]
+  },
+  "mandatory_phase_order": [
+    "STRICT_PREINGESTION_VALIDATION","PROSPECTIVE_IDENTITIES_AND_UNSIGNED_SIGNING_PACKET",
+    "OWNER_CONTROLLED_SIGNING","INDEPENDENT_SIGNATURE_VERIFICATION_AND_ATOMIC_INGESTION",
+    "G01A_G01B","PROPOSITION_SUFFICIENCY","MECHANISM_LABEL_BLIND_ASSIGNMENT",
+    "V5_4_SOURCE_COMPATIBILITY_AND_INDEPENDENT_SEMANTIC_LICENSING","G02B_RELEASE_DECISION",
+    "EXACTLY_ONE_CONSTRUCTION_ATTEMPT","MANDATORY_PREEMISSION_CONFORMANCE",
+    "FRAGMENT_COLLISION_BEFORE_G02","G02","G02C","BLIND_G03","G03B","G03C",
+    "ROMANIAN_NATURALNESS","VOICE","OWNER_REVIEW","G04B_SEPARATE_AUTHORIZATION"
+  ],
+  "authority_matrix": {
+    "source_access":false,"source_acquisition":false,"prospective_identities":false,"signing":false,
+    "ingestion":false,"g01":false,"proposition_sufficiency":false,"assignment":false,
+    "constructor_compatibility":false,"semantic_planning":false,"release":false,"construction":false,
+    "provider_invocation":false,"observer_invocation":false,"emitter_invocation":false,"candidate_emission":false,
+    "fragment_collision":false,"g02":false,"g02c":false,"g03":false,"quality_review":false,
+    "g04b":false,"model_exposure":false,"training":false,"runtime_integration":false,"production_routing":false
+  },
+  "unassigned": {
+    "source_family":"UNASSIGNED","selected_proposition":"UNASSIGNED","mechanism":"UNASSIGNED",
+    "assignment":"UNASSIGNED","obligation":"UNASSIGNED","semantic_roles":"UNASSIGNED",
+    "affordances":"UNASSIGNED","trusted_rules":"UNASSIGNED","causal_plan":"UNASSIGNED",
+    "realization":"UNASSIGNED","witnesses":"UNASSIGNED","candidate":"UNASSIGNED"
+  }
+}
