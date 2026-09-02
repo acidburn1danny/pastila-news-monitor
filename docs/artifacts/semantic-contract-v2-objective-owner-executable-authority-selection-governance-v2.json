@@ -1,0 +1,106 @@
+{
+  "schema": "OBJECTIVE_OWNER_EXECUTABLE_AUTHORITY_SELECTION_GOVERNANCE_V2_1",
+  "status": "FROZEN_SUCCESSOR_DESIGN_NO_FRAME_NO_SELECTION_NO_SOURCE",
+  "supersedes_governance_identity": "ed1effdc0291ea759c2fb2e56d80d9e6dd9782f18a9f364fac393603e65e9a06",
+  "validator_identity": "18193ec60686f67d5a1aaf7d4aa1515d5420b66a8b03da5b0f8f17963fda59b4",
+  "snapshots": {
+    "roots": ["CROSSREF_ANNUAL_PUBLIC_DATA_FILE", "OPENALEX_PUBLIC_SNAPSHOT"],
+    "selector": "EARLIEST_OFFICIAL_RELEASE_WITH_PUBLICATION_TIMESTAMP_AFTER_V1_FREEZE",
+    "official_manifest_and_complete_archive_digest_required": true,
+    "exact_release_identifier_and_digest_bound": true,
+    "unavailable_or_unverifiable": "TERMINAL_NO_FRAME",
+    "mirrors": "BYTE_IDENTICAL_ONLY_NO_SUBSTITUTION"
+  },
+  "frame": {
+    "key": "NORMALIZED_DOI_ELSE_REGISTRY_NAMESPACE_PLUS_STABLE_ID",
+    "doi_normalization": "LOWERCASE_ASCII_TRIM_HTTPS_DOI_ORG_AND_DOI_PREFIX_ONLY",
+    "cross_registry_merge": "ONE_KEY_ONE_ENTRY_ALL_PROVENANCE_RETAINED",
+    "canonicalization": "RFC8785_JSON_UTF8_LF",
+    "allowed_filters": ["STABLE_KEY_PRESENT", "IMMUTABLE_CONTENT_DIGEST_PRESENT", "EXPLICIT_ACQUISITION_RIGHT_PRESENT"],
+    "missing_field": "EXCLUDE_WITH_FIXED_REASON_AND_RETAIN_RECORD_DIGEST",
+    "semantic_fields_projected": false,
+    "complete_decision_log": true,
+    "counts_and_merkle_roots_required": true,
+    "builder": "HASH_PINNED_DETERMINISTIC_NO_NETWORK_AFTER_SNAPSHOT_ACQUISITION"
+  },
+  "external_commitment": {
+    "service": "SIGSTORE_REKOR_PUBLIC_TRANSPARENCY_LOG",
+    "reference": "https://docs.sigstore.dev/logging/overview/",
+    "payload": "GOVERNANCE_IDENTITY_PLUS_SNAPSHOT_IDENTITIES_PLUS_FRAME_MERKLE_ROOT_PLUS_COUNTS",
+    "inclusion_and_signed_tree_head_required": true,
+    "canonical_commitment": "EARLIEST_VALID_LOG_INDEX_FOR_GOVERNANCE_AND_SNAPSHOT_TUPLE",
+    "all_other_entries": "LOGGED_AS_SUPERSEDED_ATTEMPTS_NOT_ELIGIBLE",
+    "git_or_local_time_authoritative": false
+  },
+  "entropy": {
+    "network": "DRAND_QUICKNET_MAINNET",
+    "chain_hash": "52db9ba70e0cc0f6eaf7803dd07447a1f5477735fd3f661792ba94600c84e971",
+    "scheme": "bls-unchained-g1-rfc9380",
+    "round_rule": "FIRST_ROUND_AT_OR_AFTER_REKOR_INTEGRATED_TIME_PLUS_86400_SECONDS",
+    "signature_verification": true,
+    "chain_info_hash_and_public_key_bound": true,
+    "endpoint_content_quorum": 2,
+    "unavailable_or_invalid": "TERMINAL_NO_SELECTION"
+  },
+  "selection": {
+    "algorithm": "SHA256_REJECTION_SAMPLING_V2_1",
+    "domain": "PASTILA_SEMANTIC_AUTHORITY_SELECTION_V2_1_UTF8_NUL",
+    "seed": "SHA256_DOMAIN_PLUS_GOVERNANCE_PLUS_FRAME_ROOT_PLUS_DRAND_CHAIN_PLUS_ROUND_PLUS_RANDOMNESS",
+    "integer_encoding": "UNSIGNED_BIG_ENDIAN_256",
+    "population_order": "UTF8_BYTEWISE_CANONICAL_KEY",
+    "acceptance": "X_LESS_THAN_FLOOR_2_POW_256_DIV_N_TIMES_N",
+    "retry_input": "DOMAIN_PLUS_SEED_PLUS_UINT64_BE_COUNTER_STARTING_ZERO",
+    "index": "X_MOD_N_AFTER_ACCEPTANCE",
+    "draws": 1,
+    "redraw": false,
+    "trace_every_digest_and_rejection": true,
+    "post_draw_eligibility_failure": "TERMINAL_NO_SOURCE_NO_REDRAW"
+  },
+  "source_version": {
+    "selected_entry_requires_preexisting_content_digest": true,
+    "selected_entry_requires_immutable_locator": true,
+    "retrieval_exactly_once_to_quarantine": true,
+    "digest_mismatch": "TERMINAL_NO_SOURCE_NO_REDRAW",
+    "publisher_update_or_redirect": "TERMINAL_NO_SOURCE_NO_REDRAW"
+  },
+  "scope": {
+    "rule": "EXACT_BYTES_MATCHING_PREEXISTING_CONTENT_DIGEST",
+    "partial_ranges": false,
+    "semantic_exclusions": false,
+    "transform_or_normalize_before_scope_identity": false
+  },
+  "extraction": {
+    "segmenter_identity_frozen_before_frame": true,
+    "lossless_byte_partition": true,
+    "visit_all_segments": true,
+    "drop_segments": false,
+    "coverage_visible": false,
+    "relation_taxonomy_visible": false,
+    "complete_negative_space": true,
+    "semantic_mapping_is_later_non_authoritative_proposal": true
+  },
+  "execution_lifecycle": {
+    "attempt_key": "GOVERNANCE_IDENTITY_PLUS_SNAPSHOT_TUPLE",
+    "canonical_attempt": "EARLIEST_VALID_REKOR_LOG_INDEX",
+    "abort_before_external_commitment": "NO_OUTCOME_NO_ATTEMPT",
+    "abort_after_external_commitment": "TERMINAL_RECORDED_NO_RESTART",
+    "new_run_same_governance": false,
+    "all_attempts_discoverable_from_transparency_log": true,
+    "partial_trace_committed": true
+  },
+  "replay": {
+    "requires_exact_snapshots": true,
+    "requires_rekor_inclusion_and_tree_head": true,
+    "requires_verified_drand_beacon": true,
+    "requires_hash_pinned_executor": true,
+    "two_independent_replays_same_outputs": true,
+    "difference": "FAIL_CLOSED"
+  },
+  "frame_executed": false,
+  "source_selected_or_acquired": false,
+  "authority_basis_created_or_admitted": false,
+  "curriculum_population_started": false,
+  "pilot15_prepared": false,
+  "blind_or_future_family_access": false,
+  "governance_identity": "dbea255e0e23439b5a20a9b0541429877502aaf896976cd2a56537dbb68480c0"
+}
