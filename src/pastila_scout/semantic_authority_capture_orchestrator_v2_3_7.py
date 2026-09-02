@@ -53,6 +53,9 @@ class Capture:
     payload: bytes
     method: str = "GET"
     status: int = 200
+    headers: tuple[tuple[str,str], ...] = ()
+    peer_certificate_sha256: str = ""
+    tls_version: str = ""
 
 
 @dataclass(frozen=True)
@@ -131,6 +134,9 @@ def orchestrate(
         raise ValueError("transparency initiation receipt schema")
     if not HEX64.fullmatch(str(initiation["rekor_uuid"])) or not HEX64.fullmatch(str(initiation["bundle_sha256"])) or not UINT.fullmatch(str(initiation["rekor_log_index"])):
         raise ValueError("transparency initiation proof identity")
+    adapter_binding=getattr(capture,"run_binding",sha256(canonical(run)))
+    if adapter_binding!=sha256(canonical(run)):
+        raise ValueError("capture adapter/run binding")
     records: list[dict[str, object]] = []
     capture_files: dict[str, bytes] = {}
     seen: set[str] = set()
@@ -140,13 +146,17 @@ def orchestrate(
             raise ValueError("capture group closure")
         group_locators: set[str] = set()
         for item in items:
-            if not isinstance(item, Capture) or item.purpose != purpose or item.status != 200 or not item.locator or not item.payload or item.locator in group_locators:
+            if (not isinstance(item, Capture) or item.purpose != purpose or item.status != 200 or not item.locator
+                or (not item.payload and item.method!="HEAD") or item.locator in group_locators):
                 raise ValueError("capture closure")
             _validate_locator(item)
+            if getattr(capture,"production",False):
+                if not item.headers or not HEX64.fullmatch(item.peer_certificate_sha256) or item.tls_version not in {"TLSv1.2","TLSv1.3"}:
+                    raise ValueError("production TLS evidence closure")
             group_locators.add(item.locator)
             path=f"captures/{len(records)+1:05d}-{purpose.lower()}.bin"
             capture_files[path]=bytes(item.payload)
-            records.append({"purpose": purpose, "method": item.method, "locator": item.locator, "path": path, "length": len(item.payload), "sha256": sha256(item.payload)})
+            records.append({"purpose": purpose, "method": item.method, "locator": item.locator, "path": path, "length": len(item.payload), "sha256": sha256(item.payload),"headers":[list(x) for x in item.headers],"peer_certificate_sha256":item.peer_certificate_sha256,"tls_version":item.tls_version})
         seen.add(purpose)
     if tuple(dict.fromkeys(x["purpose"] for x in records)) != PURPOSES:
         raise ValueError("capture order")

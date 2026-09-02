@@ -36,6 +36,31 @@ def test_initiation_failure_or_noop_prevents_transport():
         assert called == []
 
 
+def test_production_adapter_run_binding_cannot_be_substituted():
+    class Adapter:
+        run_binding="0"*64
+        def __call__(self,purpose): raise AssertionError("transport reached")
+    with pytest.raises(ValueError,match="adapter/run binding"):
+        orchestrate(run=RUN,pins=PINS,verify_initiation=lambda _:receipt(),capture=Adapter())
+
+
+def test_production_head_evidence_allows_empty_body_but_not_missing_tls():
+    class Adapter:
+        production=True
+        run_binding=sha256(canonical(RUN))
+        def __call__(self,purpose):
+            method="HEAD" if purpose.endswith("OBJECT_HEAD") else "GET"
+            payload=b"" if method=="HEAD" else b"x"
+            return (Capture(purpose,f"https://{HOSTS[purpose]}/object",payload,method,200,(("content-length","1"),),"a"*64,"TLSv1.3"),)
+    result=orchestrate(run=RUN,pins=PINS,verify_initiation=lambda _:receipt(),capture=Adapter())
+    assert sum(row["method"]=="HEAD" and row["length"]==0 for row in result.manifest["captures"])==2
+    class MissingTls(Adapter):
+        def __call__(self,purpose):
+            value=super().__call__(purpose)[0]
+            return (Capture(value.purpose,value.locator,value.payload,value.method,value.status),)
+    with pytest.raises(ValueError,match="TLS evidence"): orchestrate(run=RUN,pins=PINS,verify_initiation=lambda _:receipt(),capture=MissingTls())
+
+
 @pytest.mark.parametrize("field,value", [("repository_id","9"),("workflow_commit","x"),("run_id","0"),("run_attempt",2),("event_name","workflow_dispatch")])
 def test_run_identity_mutations_fail_closed(field,value):
     run={**RUN,field:value}
