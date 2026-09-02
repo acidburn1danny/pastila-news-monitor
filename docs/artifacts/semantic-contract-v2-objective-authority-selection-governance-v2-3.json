@@ -1,0 +1,61 @@
+{
+  "schema": "OBJECTIVE_AUTHORITY_SELECTION_GOVERNANCE_V2_3",
+  "status": "FROZEN_SOURCE_BLIND_PREEXISTING_RELEASE_SELECTION_READY",
+  "supersedes": "53602bc3360e392fb05328cd6e21b9ccc252b1ab411f79f8ca96e3aea82eef5c",
+  "temporal_selection": {
+    "cutoff_utc": "2026-09-02T17:31:02Z",
+    "rule": "UNIQUE_LATEST_OFFICIAL_COMPLETE_RELEASE_STRICTLY_BEFORE_EXTERNAL_FREEZE",
+    "registries": [
+      "CROSSREF_ANNUAL_PUBLIC_DATA_FILE",
+      "OPENALEX_PUBLIC_QUARTERLY_SNAPSHOT"
+    ],
+    "release_history": "COMPLETE_OFFICIAL_HISTORY_THROUGH_CUTOFF_WITH_EXTERNAL_PROVENANCE",
+    "publication_evidence": "OFFICIAL_RELEASE_RECORD_PLUS_COMPLETE_MANIFEST_DATE",
+    "archive_evidence": "PUBLISHER_COMMITMENT_OR_COMPLETE_PER_OBJECT_SHA256_MERKLE_V1_WITH_IMMUTABLE_LOCATORS",
+    "ties_ambiguity_missing_or_unverifiable": "TERMINAL_NO_FRAME_NO_SUBSTITUTION",
+    "owner_snapshot_choice": false,
+    "post_cutoff_release_effect": "NONE"
+  },
+  "outcome_invariance": {
+    "properties": [
+      "INPUT_ORDER_PERMUTATION_INVARIANT",
+      "POST_CUTOFF_INSERTION_INVARIANT",
+      "OLDER_RELEASE_INSERTION_INVARIANT",
+      "UNIQUE_PREDECESSOR_REQUIRED",
+      "NO_REDRAW_RESAMPLE_OR_FALLBACK",
+      "NO_SEMANTIC_FIELDS_IN_TEMPORAL_SELECTION"
+    ],
+    "proof": "THE_SELECTED_RELEASE_IS_ARGMAX_OF_EXTERNALLY_PROVEN_PUBLICATION_TIME_BELOW_AN_IMMUTABLE_EXTERNALLY_TIMESTAMPED_CUTOFF_OVER_A_COMPLETE_FIXED_REGISTRY_HISTORY",
+    "semantic_content_observed": false
+  },
+  "anti_gaming": {
+    "snapshot_enumeration": "COMPLETE_NOT_OWNER_CURATED",
+    "negative_space": "ALL_OFFICIAL_RELEASES_THROUGH_CUTOFF_ACCOUNTED_FOR",
+    "cutoff_mutation": "PROHIBITED",
+    "registry_substitution": "PROHIBITED",
+    "snapshot_fallback": "PROHIBITED",
+    "post_hoc_filtering": "PROHIBITED",
+    "redraw_or_resampling": false,
+    "content_or_coverage_inspection_before_temporal_selection": false
+  },
+  "unchanged_downstream": {
+    "frame_scope_extraction": "V2_1_FROZEN_UNCHANGED",
+    "rekor_drand_selection": "V2_2_FROZEN_UNCHANGED"
+  },
+  "audit": {
+    "calendar_dependency": "REPAIRED",
+    "retrospective_owner_snapshot_choice": "REJECTED_BY_FIXED_PREDECESSOR_RULE",
+    "release_history_omission": "FAIL_CLOSED",
+    "timestamp_tie": "FAIL_CLOSED",
+    "mutable_or_uncommitted_archive": "FAIL_CLOSED",
+    "semantic_selection_channel": "ABSENT",
+    "remaining_execution_prerequisite": "METADATA_ONLY_COMPLETE_RELEASE_HISTORY_AND_ARCHIVE_COMMITMENT_VERIFICATION"
+  },
+  "registry_snapshots_acquired": 0,
+  "frame_executed": false,
+  "source_selected": false,
+  "authority_basis_created": false,
+  "pilot15_prepared": false,
+  "blind_access": false,
+  "governance_identity": "f9f190dee6d2010f2c6113a9dd54a7817de10c8f0487a4b63e8bb2da30288bbe"
+}
