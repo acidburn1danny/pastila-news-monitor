@@ -1,0 +1,53 @@
+{
+  "anchor_edge_result": "FAIL_NO_INDEPENDENT_SEMANTIC_RULE_AUTHORITY",
+  "assignment_commit": "a4d04419ca415e96dd2ae2d9e6fd664f0d92fe39",
+  "candidate_surfaces": 0,
+  "capability_consumed": false,
+  "class_a_closure": "FAIL_CLOSED_INCOMPLETE_INDEPENDENT_SEMANTIC_LICENSING",
+  "class_b_state": "NOT_CREATED_PRE_REALIZATION",
+  "compatibility_licensing_identity": "be56b22497d999d4e0b7893fdd13e6aa7cf200222501c5182fe20d4bba6876e6",
+  "constructor_provider_observer_emitter_invocations": "0/0/0/0",
+  "constructor_release": false,
+  "edge_findings": [
+    {
+      "authorization": "FAIL_NO_INDEPENDENTLY_FROZEN_APPLICABLE_RULE",
+      "consequence_non_substitutability": "NOT_ESTABLISHED",
+      "counterfactual_necessity": "NOT_DERIVABLE_WITHOUT_AUTHORIZED_RULE",
+      "edge": "P5_TO_L1",
+      "trusted_local_rule_identity": null
+    },
+    {
+      "authorization": "NOT_REACHED_ANCHOR_EDGE_FAILED",
+      "consequence_non_substitutability": "NOT_ESTABLISHED",
+      "counterfactual_necessity": "NOT_DERIVED",
+      "edge": "L1_TO_L2",
+      "trusted_local_rule_identity": null
+    },
+    {
+      "authorization": "NOT_REACHED_ANCHOR_EDGE_FAILED",
+      "consequence_non_substitutability": "NOT_ESTABLISHED",
+      "counterfactual_necessity": "NOT_DERIVED",
+      "edge": "L2_TO_TERMINAL",
+      "trusted_local_rule_identity": null
+    }
+  ],
+  "exact_p5_span_binding": "PASS_EXACT_NO_P6_FALLBACK",
+  "failure_classification": "LEGITIMATE_PROPOSAL_LICENSING_FAILURE_NOT_INFRASTRUCTURE_DEFECT",
+  "independent_affordance_findings": "NO_APPLICABLE_INDEPENDENTLY_LICENSED_INVENTED_AFFORDANCE",
+  "independent_role_and_predicate_findings": "SOURCE_P5_ROLES_RECOVERABLE_INDEPENDENT_INVENTED_ROLES_UNAUTHORIZED",
+  "pilot_role": "GENUINE_END_TO_END_MECHANISM_TRIAL",
+  "planner_evidence_used_as_authority": false,
+  "post_v5_4_qualification_deterministic_infrastructure_defect": "NONE_DISCOVERED",
+  "proposal_identity": "eca54c4447cd866fe32c2948181791ae8d9615529aded30a2b18965de7864f14",
+  "recovered_plan_topology": "UNESTABLISHED_ANCHOR_PLUS_TWO_INVENTED_LINKS_AND_TERMINAL_REQUIRED",
+  "release_eligibility": "NOT_ELIGIBLE",
+  "schema_name": "batch2-development-pilot14-v5-4-independent-semantic-licensing-v1",
+  "schema_version": "5.4.0",
+  "selected_proposition_id": "P5",
+  "selected_supporting_span_sha256": "6b4e02e02116ee04e6e541a7017c9789ae4b29ca0b1009c0bbb772eaa6be69f5",
+  "self_validation_cycle": "PASS_REJECTED_PLANNER_AUTHORED_OR_MISSING_AUTHORITY",
+  "static_semantic_plan_verdict": "FAIL_CLOSED_NO_SEMANTICALLY_LICENSED_PLAN_NO_RELEASE",
+  "terminal_unique_licensing": "NOT_ESTABLISHED_ANCHOR_FAILURE",
+  "trusted_rule_inventory_modified": false,
+  "v5_4_independent_semantic_licensing_verdict": "FAIL_NO_INDEPENDENT_SEMANTIC_LICENSE_FOR_EXACT_P5_PROPOSAL"
+}

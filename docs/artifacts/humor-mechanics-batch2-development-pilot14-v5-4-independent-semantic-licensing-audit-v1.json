@@ -1,0 +1,16 @@
+{
+  "anchor_intermediate_terminal_equal_strength": "PASS_FAIL_CLOSED_AT_ANCHOR",
+  "audit_identity": "b2dad46d5049409793eb9a648c4d181cf116f07d4c29bedd560754ded78d58d0",
+  "compatibility_licensing_identity": "be56b22497d999d4e0b7893fdd13e6aa7cf200222501c5182fe20d4bba6876e6",
+  "counterfactual_evidence_source": "VALIDATOR_ONLY_NONE_DERIVABLE_FOR_UNLICENSED_EDGE",
+  "deterministic_infrastructure_blockers": [],
+  "downstream_authority": false,
+  "exact_assignment_and_p5_binding": "PASS",
+  "planner_semantic_authority": "REJECTED",
+  "schema_name": "batch2-development-pilot14-v5-4-independent-semantic-licensing-audit-v1",
+  "schema_version": "1.0.0",
+  "source_or_generic_rule_invention": "ABSENT",
+  "surface_or_class_b_evidence_created": false,
+  "trusted_domain_independence": "PASS",
+  "verdict": "PASS_FAIL_CLOSED_INDEPENDENT_LICENSING_NO_RELEASE"
+}
