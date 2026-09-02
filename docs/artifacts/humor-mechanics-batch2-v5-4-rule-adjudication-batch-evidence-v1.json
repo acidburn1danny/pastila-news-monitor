@@ -1,0 +1,114 @@
+{
+  "schema": "V5_4_RULE_ADJUDICATION_BATCH_EVIDENCE_V1",
+  "status": "FINAL_REVIEW_COMPLETE_ALL_CANDIDATES_REJECTED",
+  "adjudicator_identity": "RULE_ADJUDICATOR_V54_01",
+  "review_policy": {
+    "semantic_adjudicator_may_impersonate_causal_reviewer": false,
+    "semantic_adjudicator_may_impersonate_adversarial_reviewer": false,
+    "absence_of_required_independent_evidence_is_rejection": true
+  },
+  "independent_review_identity": "91f40b488ec61ee8fa90343c99ce469d61554bf1d5cbdc4acb2ec2f552034a8a",
+  "causal_reviewer_identity": "CAUSAL_REVIEWER_V54_01",
+  "adversarial_reviewer_identity": "ADVERSARIAL_REVIEWER_V54_01",
+  "batches": [
+    {
+      "batch": 1,
+      "candidate_count": 16,
+      "proposed_admitted_count": 0,
+      "rejected_count": 16,
+      "semantic_actor_patient_affordance_review": "NO_ADDITIONAL_CATALOG_WIDE_CLASS_OR_ROLE_SHAPE_BLOCKER_FOUND",
+      "causal_counterfactual_non_substitutability_review": "INDEPENDENT_REVIEW_COMPLETE_REJECT",
+      "adversarial_overbreadth_review": "INDEPENDENT_REVIEW_COMPLETE_REJECT",
+      "composition_review": "INDEPENDENT_REVIEW_COMPLETE_WITH_DECLARED_SIGNATURE_BLOCKERS",
+      "reason_counts": {
+        "COUNTERFACTUAL_NOT_BOUND_TO_CONCRETE_PREDECESSOR_STATE": 16,
+        "EXACT_PREDECESSOR_RESULT_SIGNATURE_NOT_DECLARED": 12,
+        "NON_SUBSTITUTABILITY_ASSERTED_WITHOUT_CONTRAST_EVIDENCE": 16,
+        "TERMINAL_PREDECESSOR_CONSUMPTION_NOT_EXACTLY_BOUND": 4,
+        "TRANSITION_AND_RESULT_MAPPING_UNDER_SPECIFIED": 16
+      }
+    },
+    {
+      "batch": 2,
+      "candidate_count": 20,
+      "proposed_admitted_count": 0,
+      "rejected_count": 20,
+      "semantic_actor_patient_affordance_review": "NO_ADDITIONAL_CATALOG_WIDE_CLASS_OR_ROLE_SHAPE_BLOCKER_FOUND",
+      "causal_counterfactual_non_substitutability_review": "INDEPENDENT_REVIEW_COMPLETE_REJECT",
+      "adversarial_overbreadth_review": "INDEPENDENT_REVIEW_COMPLETE_REJECT",
+      "composition_review": "INDEPENDENT_REVIEW_COMPLETE_WITH_DECLARED_SIGNATURE_BLOCKERS",
+      "reason_counts": {
+        "COUNTERFACTUAL_NOT_BOUND_TO_CONCRETE_PREDECESSOR_STATE": 20,
+        "EXACT_PREDECESSOR_RESULT_SIGNATURE_NOT_DECLARED": 15,
+        "NON_SUBSTITUTABILITY_ASSERTED_WITHOUT_CONTRAST_EVIDENCE": 20,
+        "TERMINAL_PREDECESSOR_CONSUMPTION_NOT_EXACTLY_BOUND": 5,
+        "TRANSITION_AND_RESULT_MAPPING_UNDER_SPECIFIED": 20
+      }
+    },
+    {
+      "batch": 3,
+      "candidate_count": 16,
+      "proposed_admitted_count": 0,
+      "rejected_count": 16,
+      "semantic_actor_patient_affordance_review": "NO_ADDITIONAL_CATALOG_WIDE_CLASS_OR_ROLE_SHAPE_BLOCKER_FOUND",
+      "causal_counterfactual_non_substitutability_review": "INDEPENDENT_REVIEW_COMPLETE_REJECT",
+      "adversarial_overbreadth_review": "INDEPENDENT_REVIEW_COMPLETE_REJECT",
+      "composition_review": "INDEPENDENT_REVIEW_COMPLETE_WITH_DECLARED_SIGNATURE_BLOCKERS",
+      "reason_counts": {
+        "COUNTERFACTUAL_NOT_BOUND_TO_CONCRETE_PREDECESSOR_STATE": 16,
+        "EXACT_PREDECESSOR_RESULT_SIGNATURE_NOT_DECLARED": 12,
+        "NON_SUBSTITUTABILITY_ASSERTED_WITHOUT_CONTRAST_EVIDENCE": 16,
+        "TERMINAL_PREDECESSOR_CONSUMPTION_NOT_EXACTLY_BOUND": 4,
+        "TRANSITION_AND_RESULT_MAPPING_UNDER_SPECIFIED": 16
+      }
+    },
+    {
+      "batch": 4,
+      "candidate_count": 20,
+      "proposed_admitted_count": 0,
+      "rejected_count": 20,
+      "semantic_actor_patient_affordance_review": "NO_ADDITIONAL_CATALOG_WIDE_CLASS_OR_ROLE_SHAPE_BLOCKER_FOUND",
+      "causal_counterfactual_non_substitutability_review": "INDEPENDENT_REVIEW_COMPLETE_REJECT",
+      "adversarial_overbreadth_review": "INDEPENDENT_REVIEW_COMPLETE_REJECT",
+      "composition_review": "INDEPENDENT_REVIEW_COMPLETE_WITH_DECLARED_SIGNATURE_BLOCKERS",
+      "reason_counts": {
+        "COUNTERFACTUAL_NOT_BOUND_TO_CONCRETE_PREDECESSOR_STATE": 20,
+        "EXACT_PREDECESSOR_RESULT_SIGNATURE_NOT_DECLARED": 15,
+        "NON_SUBSTITUTABILITY_ASSERTED_WITHOUT_CONTRAST_EVIDENCE": 20,
+        "PRIVILEGED_AFFORDANCE_SAFETY_NOT_INDEPENDENTLY_ESTABLISHED": 16,
+        "TERMINAL_PREDECESSOR_CONSUMPTION_NOT_EXACTLY_BOUND": 5,
+        "TRANSITION_AND_RESULT_MAPPING_UNDER_SPECIFIED": 20
+      }
+    },
+    {
+      "batch": 5,
+      "candidate_count": 16,
+      "proposed_admitted_count": 0,
+      "rejected_count": 16,
+      "semantic_actor_patient_affordance_review": "NO_ADDITIONAL_CATALOG_WIDE_CLASS_OR_ROLE_SHAPE_BLOCKER_FOUND",
+      "causal_counterfactual_non_substitutability_review": "INDEPENDENT_REVIEW_COMPLETE_REJECT",
+      "adversarial_overbreadth_review": "INDEPENDENT_REVIEW_COMPLETE_REJECT",
+      "composition_review": "INDEPENDENT_REVIEW_COMPLETE_WITH_DECLARED_SIGNATURE_BLOCKERS",
+      "reason_counts": {
+        "CAUSAL_OR_LOGICAL_LICENSE_ASSUMED_IN_PRECONDITION": 11,
+        "COUNTERFACTUAL_NOT_BOUND_TO_CONCRETE_PREDECESSOR_STATE": 16,
+        "EXACT_PREDECESSOR_RESULT_SIGNATURE_NOT_DECLARED": 10,
+        "NON_SUBSTITUTABILITY_ASSERTED_WITHOUT_CONTRAST_EVIDENCE": 16,
+        "TERMINAL_PREDECESSOR_CONSUMPTION_NOT_EXACTLY_BOUND": 4,
+        "TRANSITION_AND_RESULT_MAPPING_UNDER_SPECIFIED": 16
+      }
+    }
+  ],
+  "review_dimensions": [
+    "SEMANTIC_DIRECTION",
+    "ACTOR_PATIENT_TYPING",
+    "ROLE_BINDING",
+    "AFFORDANCE_AUTHORITY",
+    "CAUSAL_NECESSITY",
+    "COUNTERFACTUAL_DEPENDENCY",
+    "CONSEQUENCE_NON_SUBSTITUTABILITY",
+    "COMPOSITION_COMPATIBILITY",
+    "ADVERSARIAL_OVERBREADTH"
+  ],
+  "artifact_identity": "29691a5b5ee1a1cfe3a43fd360de7808e0db7c2a05f6964e7e0e299203f3b837"
+}

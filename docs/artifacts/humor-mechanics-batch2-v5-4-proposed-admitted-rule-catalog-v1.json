@@ -1,0 +1,11 @@
+{
+  "schema": "V5_4_PROPOSED_ADMITTED_RULE_CATALOG_V1",
+  "status": "IMMUTABLE_EMPTY_NO_RULES_ADMITTED_NO_RULES_ACTIVE",
+  "adjudicator_identity": "RULE_ADJUDICATOR_V54_01",
+  "source_disposition_identity": "4cfa0ec639d27df772779d83d212529a8d120073ee0fb9bb3c13d5e266760d33",
+  "canonical_identity_method": "SHA256_RFC8785_COMPATIBLE_CANONICAL_JSON",
+  "proposed_admitted_rule_count": 0,
+  "operational_rule_count": 0,
+  "rules": [],
+  "artifact_identity": "47f1c026427aac49d40f49fe4402a68e879076420c8404d733256d33b025fdad"
+}
