@@ -25,6 +25,10 @@ class FrozenIntegratedAuthorityV54:
     proposition_span_identity: str
     denyset_identity: str
     alignment_policy_identity: str
+    contract_identity: str
+    provider_identity: str
+    observer_identity: str
+    emitter_identity: str
     authority_operands: tuple[SemanticOperand, ...]
     proposed_relations: tuple[ProposedRelation, ...]
     trusted_rules: tuple[TrustedSemanticRule, ...]
@@ -51,6 +55,14 @@ class ClosedIntegratedAuthorityV54:
     closure_identity: str
 
 
+@dataclass(frozen=True, slots=True)
+class TrustedIntegratedReceiptV54:
+    closure_identity: str
+    component_binding_identity: str
+    byte_receipt: TrustedConformanceReceiptV533
+    receipt_identity: str
+
+
 def close_integrated_authority(authority: FrozenIntegratedAuthorityV54, *,
                                bindings: QualifiedRuntimeBindingsV54) -> ClosedIntegratedAuthorityV54:
     values = (authority.authority_identity, authority.implementation_identity,
@@ -60,9 +72,12 @@ def close_integrated_authority(authority: FrozenIntegratedAuthorityV54, *,
         raise ValueError("incomplete integrated Class A authority")
     if authority.implementation_identity != bindings.implementation_identity:
         raise ValueError("integrated implementation identity skew")
-    if not all((bindings.provider_identity, bindings.observer_identity,
-                bindings.emitter_identity, bindings.contract_identity)):
-        raise ValueError("incomplete independently qualified runtime bindings")
+    actual_components = (authority.provider_identity, authority.observer_identity,
+                         authority.emitter_identity, authority.contract_identity)
+    expected_components = (bindings.provider_identity, bindings.observer_identity,
+                           bindings.emitter_identity, bindings.contract_identity)
+    if not all(expected_components) or actual_components != expected_components:
+        raise ValueError("provider observer emitter or contract identity skew")
     rules = {rule.rule_id: rule for rule in authority.trusted_rules}
     assert_registry_is_external(registry_rules=rules, planner_payload_keys=authority.planner_payload_keys)
     verify_rule_registry_partition(rules=authority.trusted_rules,
@@ -96,13 +111,37 @@ def close_integrated_authority(authority: FrozenIntegratedAuthorityV54, *,
                                         hashlib.sha256(material).hexdigest())
 
 
+def _component_binding(authority: FrozenIntegratedAuthorityV54) -> str:
+    material = "|".join((authority.implementation_identity, authority.contract_identity,
+                         authority.provider_identity, authority.observer_identity, authority.emitter_identity))
+    return hashlib.sha256(material.encode()).hexdigest()
+
+
+def conditional_integrated_emit(*, closed: ClosedIntegratedAuthorityV54, surface_bytes: bytes,
+                                receipt: TrustedIntegratedReceiptV54) -> bytes:
+    expected_component = _component_binding(closed.authority)
+    if receipt.closure_identity != closed.closure_identity or receipt.component_binding_identity != expected_component:
+        raise ValueError("emitter receipt does not bind the licensed closure and exact components")
+    core = "|".join((receipt.closure_identity, receipt.component_binding_identity,
+                     receipt.byte_receipt.receipt_identity))
+    if receipt.receipt_identity != hashlib.sha256(core.encode()).hexdigest():
+        raise ValueError("integrated receipt identity mismatch")
+    return conditional_emit(authority=closed.byte_authority, surface_bytes=surface_bytes,
+                            receipt=receipt.byte_receipt)
+
+
 def execute_zero_family_path(*, closed: ClosedIntegratedAuthorityV54,
-                             provider_payload: Mapping[str, Any]) -> tuple[bytes, TrustedConformanceReceiptV533]:
+                             provider_payload: Mapping[str, Any]) -> tuple[bytes, TrustedIntegratedReceiptV54]:
     """Synthetic qualification entry point; it represents no family capability."""
     surface = invoke_clause_only_provider(provider_payload)
-    receipt = observe_and_conform_surface(authority=closed.byte_authority, surface_bytes=surface)
-    return conditional_emit(authority=closed.byte_authority, surface_bytes=surface, receipt=receipt), receipt
+    byte_receipt = observe_and_conform_surface(authority=closed.byte_authority, surface_bytes=surface)
+    component = _component_binding(closed.authority)
+    core = "|".join((closed.closure_identity, component, byte_receipt.receipt_identity))
+    receipt = TrustedIntegratedReceiptV54(closed.closure_identity, component, byte_receipt,
+                                          hashlib.sha256(core.encode()).hexdigest())
+    return conditional_integrated_emit(closed=closed, surface_bytes=surface, receipt=receipt), receipt
 
 
 __all__ = ["ClosedIntegratedAuthorityV54", "FrozenIntegratedAuthorityV54", "QualifiedRuntimeBindingsV54",
-           "close_integrated_authority", "execute_zero_family_path"]
+           "TrustedIntegratedReceiptV54", "close_integrated_authority", "conditional_integrated_emit",
+           "execute_zero_family_path"]

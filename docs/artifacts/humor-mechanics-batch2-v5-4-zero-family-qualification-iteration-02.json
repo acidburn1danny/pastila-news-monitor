@@ -1,0 +1,12 @@
+{
+  "iteration": 2,
+  "finding": "COMPONENT_IDENTITIES_AND_TRUSTED_RECEIPT_DID_NOT_BIND_COMPLETE_LICENSED_CLOSURE",
+  "violated_invariants": [
+    "every provider observer emitter and contract identity must match independent qualification",
+    "emitter receipt must bind the exact licensed closure and component set"
+  ],
+  "repair": "exact component comparisons and closure-bound integrated trusted receipt",
+  "real_family_invocations": "0/0/0",
+  "capabilities_consumed": 0,
+  "candidates_created": 0
+}

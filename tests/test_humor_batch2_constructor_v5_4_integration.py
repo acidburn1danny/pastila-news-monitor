@@ -5,7 +5,8 @@ import pytest
 
 from pastila_scout.humor_batch2_development_constructor_v5_3_3_release_path import FrozenSurfaceRoleRule
 from pastila_scout.humor_batch2_development_constructor_v5_4_integration import (
-    FrozenIntegratedAuthorityV54, QualifiedRuntimeBindingsV54, close_integrated_authority, execute_zero_family_path,
+    FrozenIntegratedAuthorityV54, QualifiedRuntimeBindingsV54, close_integrated_authority,
+    conditional_integrated_emit, execute_zero_family_path,
 )
 from pastila_scout.humor_batch2_development_constructor_v5_4_semantic_licensing import (
     ProposedRelation, RuleOrigin, SemanticOperand, TrustedSemanticRule, semantic_rule_identity,
@@ -25,6 +26,7 @@ def frozen_authority() -> FrozenIntegratedAuthorityV54:
         ("ACTOR", "timer", "Timerul"), ("PREDICATE", "TRIGGERS", "pornește"),
         ("PATIENT", "alarm", "alarma"), ("PRODUCED", "ringing", "soneria")))
     return FrozenIntegratedAuthorityV54("authority", "implementation", "binding", "span", "denyset", "alignment",
+        "contract", "provider", "observer", "emitter",
         operands, (relation,), (rule,), frozenset({semantic_rule_identity(rule)}), frozenset(), frozenset({"relations"}), roles)
 
 
@@ -37,7 +39,7 @@ def test_integrated_zero_family_path_preserves_clause_only_byte_authority():
     surface, receipt = execute_zero_family_path(closed=closed,
         provider_payload={"clause": "Timerul pornește alarma și produce soneria."})
     assert surface.decode() == "Timerul pornește alarma și produce soneria."
-    assert receipt.semantic_conformance == "PASS_ACTUAL_SURFACE_SEMANTIC_CONFORMANCE"
+    assert receipt.byte_receipt.semantic_conformance == "PASS_ACTUAL_SURFACE_SEMANTIC_CONFORMANCE"
 
 
 @pytest.mark.parametrize("field", ["rules", "ontology", "roles", "affordances", "predicate_signatures", "necessity"])
@@ -77,3 +79,18 @@ def test_omitted_anchor_relation_fails_closed():
 def test_runtime_implementation_identity_skew_fails_before_provider():
     with pytest.raises(ValueError, match="identity skew"):
         close_integrated_authority(frozen_authority(), bindings=replace(bindings(), implementation_identity="stale"))
+
+
+@pytest.mark.parametrize("field", ["provider_identity", "observer_identity", "emitter_identity", "contract_identity"])
+def test_each_runtime_component_identity_is_exactly_bound(field):
+    with pytest.raises(ValueError, match="identity skew"):
+        close_integrated_authority(replace(frozen_authority(), **{field: "skew"}), bindings=bindings())
+
+
+def test_receipt_from_different_licensed_closure_cannot_emit():
+    closed = close_integrated_authority(frozen_authority(), bindings=bindings())
+    surface, receipt = execute_zero_family_path(closed=closed,
+        provider_payload={"clause": "Timerul pornește alarma și produce soneria."})
+    other = replace(closed, closure_identity="different-closure")
+    with pytest.raises(ValueError, match="licensed closure"):
+        conditional_integrated_emit(closed=other, surface_bytes=surface, receipt=receipt)
