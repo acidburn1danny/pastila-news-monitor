@@ -1,0 +1,14 @@
+{"schema":"V2_DESIGN_IMPLEMENTATION_CONFORMANCE_MATRIX","verdict":"PASS_ALL_FROZEN_REQUIREMENTS_EXECUTABLY_MAPPED","rows":[
+{"requirement":"17_RELATION_CLASSES","component":"SPECS","test":"test_positive_17_of_17_and_negative_7_of_7","verdict":"PASS"},
+{"requirement":"TYPED_RELATION_BOUND_EVIDENCE","component":"validate_candidate/evidence_identity","test":"test_identity_and_relation_switch_invalidate_evidence","verdict":"PASS"},
+{"requirement":"EVIDENCE_FREE_PASS_IMPOSSIBLE","component":"validate_candidate/adjudicate","test":"test_evidence_free_pass_impossible","verdict":"PASS"},
+{"requirement":"CANDIDATE_SPECIFIC_REASONS","component":"validate_candidate","test":"test_unconditional_universal_rejection_absent","verdict":"PASS"},
+{"requirement":"CLASS_SWITCH_FULL_REVALIDATION","component":"evidence relation_class/candidate binding","test":"test_relation_class_switching_cannot_bypass_evidence_or_continuity","verdict":"PASS"},
+{"requirement":"INDEPENDENT_REVIEWS_WITH_EVIDENCE","component":"adjudicate","test":"test_pass_reviews_without_substantive_evidence_fail","verdict":"PASS"},
+{"requirement":"CLASS_SPECIFIC_CONTINUITY","component":"RelationSpec.continuity","test":"test_affordance_and_continuity_removal_fail","verdict":"PASS"},
+{"requirement":"LEGITIMATE_ALTERNATIVES_ALLOWED_ARBITRARY_REJECTED","component":"arbitrary_substitution_rejected","test":"test_legitimate_alternative_allowed_arbitrary_rejected","verdict":"PASS"},
+{"requirement":"EQUAL_TERMINAL_STRENGTH","component":"terminal validation","test":"test_terminal_gets_equal_strength_validation","verdict":"PASS"},
+{"requirement":"TYPED_CROSS_CLASS_BOUNDARY_NO_AFFORDANCE_LAUNDERING","component":"validate_composition","test":"test_cross_class_boundary_is_typed_and_never_inherits_affordance","verdict":"PASS"},
+{"requirement":"CANONICAL_SERIALIZATION","component":"canonical","test":"test_canonical_identity_ignores_mapping_order_only","verdict":"PASS"},
+{"requirement":"P13_NEGATIVE_CONTROLS","component":"qualification.qualify","test":"test_positive_17_of_17_and_negative_7_of_7","verdict":"PASS"}
+]}
