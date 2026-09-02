@@ -1,0 +1,20 @@
+{
+  "graph": [
+    ["FROZEN_SYNTHETIC_AUTHORITY", "INDEPENDENT_RULE_REGISTRY"],
+    ["PLANNER_STRUCTURE_PROPOSAL", "V5_4_LICENSE_VALIDATOR"],
+    ["INDEPENDENT_RULE_REGISTRY", "V5_4_LICENSE_VALIDATOR"],
+    ["V5_4_LICENSE_VALIDATOR", "VALIDATOR_DERIVED_COUNTERFACTUAL"],
+    ["VALIDATOR_DERIVED_COUNTERFACTUAL", "CLOSED_CLASS_A_AUTHORITY"],
+    ["CLOSED_CLASS_A_AUTHORITY", "CLAUSE_ONLY_PROVIDER"],
+    ["CLAUSE_ONLY_PROVIDER", "ACTUAL_UTF8_BYTES"],
+    ["ACTUAL_UTF8_BYTES", "TRUSTED_COORDINATE_OBSERVER"],
+    ["TRUSTED_COORDINATE_OBSERVER", "CLOSURE_BOUND_TRUSTED_RECEIPT"],
+    ["CLOSURE_BOUND_TRUSTED_RECEIPT", "CONDITIONAL_EMITTER"]
+  ],
+  "forbidden_cycle_present": false,
+  "planner_authorization_edges": 0,
+  "planner_necessity_evidence_edges": 0,
+  "surface_evidence_before_utf8_bytes": 0,
+  "receipt_binds_complete_licensed_closure": true,
+  "trust_domains_distinct_at_runtime": true
+}
