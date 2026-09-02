@@ -1,0 +1,228 @@
+{
+  "archive_write": false,
+  "assignment": "UNASSIGNED",
+  "authority_matrix": {
+    "assignment": false,
+    "candidate_emission": false,
+    "constructor_compatibility": false,
+    "constructor_invocation": false,
+    "constructor_release": false,
+    "custodial_signing": false,
+    "fragment_collision": false,
+    "g01a": false,
+    "g01b": false,
+    "g02": false,
+    "g02c": false,
+    "g03": false,
+    "g04b": false,
+    "immutable_ingestion": false,
+    "model_exposure": false,
+    "production_routing": false,
+    "proposition_sufficiency": false,
+    "realization": false,
+    "runtime_integration": false,
+    "semantic_conformance": false,
+    "signature_verification": false,
+    "training": false
+  },
+  "declaration_sha256": "6f00f326d4f40d82bb856bb1d737f4b859af8f9b0285168d36b91913f01b5580",
+  "emitter_identity": "5bb1fae007fb8898f7e1a514622bb9bac99d992cc81189cd4ffd33b60fa76a8b",
+  "executable_implementation_identity": "d13c5893f272b37a913305b894876625cccc95bd5b10f35a9c57b8f82b14522e",
+  "factual_authority_envelope": {
+    "authority_scope": "Only the explicitly stated cultural-center frame-inventory event, quantity and temporary-exhibition-room scope, inventory-number and pre-existing recorded-dimension information, independent width/height measurement procedure, recording of measured values in each frame's corresponding record, completed-record storage, unchanged frame positions, operation-specific scope limitation, and explicitly unknown agreement between newly measured and previously recorded dimensions within the accompanying owner-authored synthetic test universe.",
+    "creative_premise_family_id": "UNASSIGNED",
+    "proposition_selection": "NOT_PERFORMED",
+    "propositions": [
+      {
+        "modality": "ASSERTED",
+        "proposition_id": "P1",
+        "scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE_ONLY",
+        "selection": "NOT_PERFORMED",
+        "statement": "În dimineața de 30 august 2026, personalul unui centru cultural a inventariat 22 de rame foto aflate într-o sală folosită pentru o expoziție temporară.",
+        "supporting_span": {
+          "character_coordinates": [
+            0,
+            151
+          ],
+          "sha256": "f1f352fd3c81aa88b44d1b2c996e861bc3ea14d0c8d383f9301e84546ff02718",
+          "span_sha256": "f1f352fd3c81aa88b44d1b2c996e861bc3ea14d0c8d383f9301e84546ff02718",
+          "utf8_byte_coordinates": [
+            0,
+            158
+          ]
+        }
+      },
+      {
+        "modality": "ASSERTED",
+        "proposition_id": "P2",
+        "scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE_ONLY",
+        "selection": "NOT_PERFORMED",
+        "statement": "Fiecare ramă avea un număr de inventar și o fișă pe care figurau valorile de lățime și înălțime existente în evidența centrului.",
+        "supporting_span": {
+          "character_coordinates": [
+            153,
+            281
+          ],
+          "sha256": "66d5d0820de535fc4e078a18f94b273066992a123b5cff2b10c10b29da7970ac",
+          "span_sha256": "66d5d0820de535fc4e078a18f94b273066992a123b5cff2b10c10b29da7970ac",
+          "utf8_byte_coordinates": [
+            160,
+            301
+          ]
+        }
+      },
+      {
+        "modality": "ASSERTED",
+        "proposition_id": "P3",
+        "scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE_ONLY",
+        "selection": "NOT_PERFORMED",
+        "statement": "În timpul inventarierii, un angajat a citit numărul de pe fiecare ramă și a măsurat separat lățimea și înălțimea acesteia.",
+        "supporting_span": {
+          "character_coordinates": [
+            282,
+            404
+          ],
+          "sha256": "f4425ec0ded35cae88ca51e2c0d7cbd62a1b82d0c8c71daf82e4b2afc6ee2159",
+          "span_sha256": "f4425ec0ded35cae88ca51e2c0d7cbd62a1b82d0c8c71daf82e4b2afc6ee2159",
+          "utf8_byte_coordinates": [
+            302,
+            435
+          ]
+        }
+      },
+      {
+        "modality": "ASSERTED",
+        "proposition_id": "P4",
+        "scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE_ONLY",
+        "selection": "NOT_PERFORMED",
+        "statement": "Valorile măsurate au fost consemnate în fișa corespunzătoare ramei.",
+        "supporting_span": {
+          "character_coordinates": [
+            405,
+            472
+          ],
+          "sha256": "483204487aa077f9d112a6c3f500ac1d26e96cb5bb741d4c1c89b555cac67781",
+          "span_sha256": "483204487aa077f9d112a6c3f500ac1d26e96cb5bb741d4c1c89b555cac67781",
+          "utf8_byte_coordinates": [
+            436,
+            507
+          ]
+        }
+      },
+      {
+        "modality": "ASSERTED",
+        "proposition_id": "P5",
+        "scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE_ONLY",
+        "selection": "NOT_PERFORMED",
+        "statement": "La finalul operațiunii, fișele completate au fost așezate într-un dosar păstrat în sala de expoziție.",
+        "supporting_span": {
+          "character_coordinates": [
+            474,
+            575
+          ],
+          "sha256": "6b4e02e02116ee04e6e541a7017c9789ae4b29ca0b1009c0bbb772eaa6be69f5",
+          "span_sha256": "6b4e02e02116ee04e6e541a7017c9789ae4b29ca0b1009c0bbb772eaa6be69f5",
+          "utf8_byte_coordinates": [
+            509,
+            617
+          ]
+        }
+      },
+      {
+        "modality": "ASSERTED",
+        "proposition_id": "P6",
+        "scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE_ONLY",
+        "selection": "NOT_PERFORMED",
+        "statement": "Ramele au rămas în pozițiile în care se aflau înainte de inventariere și nu au fost mutate în alt spațiu.",
+        "supporting_span": {
+          "character_coordinates": [
+            576,
+            681
+          ],
+          "sha256": "142e35f55b20af8e3e4622b1b0dfbd5b80113df02ffbfa52110ddafa6b641f29",
+          "span_sha256": "142e35f55b20af8e3e4622b1b0dfbd5b80113df02ffbfa52110ddafa6b641f29",
+          "utf8_byte_coordinates": [
+            618,
+            731
+          ]
+        }
+      },
+      {
+        "modality": "ASSERTED",
+        "proposition_id": "P7",
+        "scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE_ONLY",
+        "selection": "NOT_PERFORMED",
+        "statement": "Operațiunea s-a referit numai la cele 22 de rame aflate în sala respectivă în dimineața de 30 august.",
+        "supporting_span": {
+          "character_coordinates": [
+            683,
+            784
+          ],
+          "sha256": "f5554970b1927bae22560b27663a9033527e0e26a9e1aaa8e30932470d74a045",
+          "span_sha256": "f5554970b1927bae22560b27663a9033527e0e26a9e1aaa8e30932470d74a045",
+          "utf8_byte_coordinates": [
+            733,
+            839
+          ]
+        }
+      },
+      {
+        "modality": "ASSERTED",
+        "proposition_id": "P8",
+        "scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE_ONLY",
+        "selection": "NOT_PERFORMED",
+        "statement": "Înainte de efectuarea măsurătorilor nu era cunoscut dacă valorile măsurate pentru fiecare ramă vor coincide cu cele înscrise anterior în fișa sa.",
+        "supporting_span": {
+          "character_coordinates": [
+            785,
+            930
+          ],
+          "sha256": "bde3e52bd573c7cebf8770116748380106c810be53afaa4e4a6db522ad81f01d",
+          "span_sha256": "bde3e52bd573c7cebf8770116748380106c810be53afaa4e4a6db522ad81f01d",
+          "utf8_byte_coordinates": [
+            840,
+            994
+          ]
+        }
+      }
+    ],
+    "source_commitment": "5ac22f1c751961f9cc7f91ca97aafe57cfcc2889995530616a7c1cdc5cda77a2",
+    "source_sha256": "aec2bccf7ec0cc9f059785d00be1fe891a5b4c64b834da0cb9743518ff9e512d",
+    "world_scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE"
+  },
+  "factual_authority_envelope_identity": "7b5eddc2a15d25eebfb84930abdc2db3c5236e1b4deb67e2b56555301c161075",
+  "family_identities": {
+    "authority_family": "f876c3f2a82193d3af7e9e53fec2d9b54d07b15c4e553bde867be0c4839688d4",
+    "event_family": "8d5c55a950ecbac60f25bed0d07658c4bf95828a53b0eb22a221c36e8c9edd75",
+    "family_closure": "313fea82d4e9bf87575460210d0d29dae96ffc2d93d5b5a75da1c2ce99bbc226",
+    "revision_family": "53ea89b7f283617c2f817477bb1848876717a6452bbdbd1da2d9da32d286ef63",
+    "source_family": "7289b5d037ad77ba949354d9577abb5a18afc79a9f017c7ea07c0eb9ef0bec41",
+    "topic_entity_family": "0be1639693363134e91767980bce585548c119ab84f1b32d434cfc0a61900e31"
+  },
+  "family_independence_identity": "54b3c816b132d8c7158ad7838d069fecb352a5f9a6034e6e2e9e4383bebf9b81",
+  "immutable_archive_commitment": "7dfd0c4f28babc08704f8b40f67548568e8363d95d6ed220c2e3968350c5b4d4",
+  "ingested": false,
+  "partition": "DEVELOPMENT",
+  "pilot_role": "LEGITIMATE_END_TO_END_MECHANISM_TRIAL",
+  "preingestion_identity": "0409ca68b7abd4bc6784637a7e775a3c341046ac5a22b9147f3997cce50de4a4",
+  "proposition_binding_count": 8,
+  "proposition_binding_status": "PASS_8_BOUND_NOT_SELECTED",
+  "proposition_sufficiency_evaluated": false,
+  "prospective_git_blob_oid_sha1": "262eb5fe5c43e0f1de63d69662b3c67dd3dd9d37",
+  "prospective_partition_identity": "ce65e5c102087d26ebc06d4dea6d954d104bec2b1a7e482a64814c483953fd8b",
+  "provider_identity": "865c1e9f7cedb5e78b5ecd7524781a8ed8a50816a9be76910c7ee76c375b81ea",
+  "qualification_identity": "7fa2ccf198de2feafe89974a85d56c9c246a6402e2a5d57417d48f33a1bae124",
+  "rights_instrument_identity": "c06955632d5578224dbcbba92b14872267aef4ba12d1dcb73afba2a5d8671a88",
+  "schema_name": "batch2-development-pilot14-preingestion-v1",
+  "schema_version": "1.0.0",
+  "selected_proposition": "UNASSIGNED",
+  "semantic_role_affordance_realization_witness_or_alignment_planning": "NOT_PERFORMED",
+  "source_byte_length": 995,
+  "source_commitment": "5ac22f1c751961f9cc7f91ca97aafe57cfcc2889995530616a7c1cdc5cda77a2",
+  "source_package_identity": "676ebacdbf0f8b660b87720798e99fa398c6bb7b46700a25e423c28b5ee9939f",
+  "source_sha256": "aec2bccf7ec0cc9f059785d00be1fe891a5b4c64b834da0cb9743518ff9e512d",
+  "status": "PROSPECTIVE_UNSIGNED_NOT_INGESTED_NOT_G01_ADMITTED",
+  "target_mechanism": "UNASSIGNED",
+  "validation_commit": "d6b8ae4f3b3eef89ccbb63d0382913d40133201f",
+  "validation_identity": "da9ca0601770310dc6bf273940dcec7141e1f18b48eed8df0753712d5dc377b1"
+}
