@@ -1,0 +1,14 @@
+{
+  "archive_receipt_identity": "26b4880dfaf82d7f577edced0deb4e0296718e4384752399ee229a350e4b6124",
+  "byte_length": 995,
+  "capture_time": "2026-09-02T10:59:17+03:00",
+  "git_blob_oid_sha1": "262eb5fe5c43e0f1de63d69662b3c67dd3dd9d37",
+  "immutable_archive_commitment": "7dfd0c4f28babc08704f8b40f67548568e8363d95d6ed220c2e3968350c5b4d4",
+  "original_bytes_sha256": "aec2bccf7ec0cc9f059785d00be1fe891a5b4c64b834da0cb9743518ff9e512d",
+  "previous_ledger_head": "a97d53ffe4ce3eedd3438e3551b9ee94b67f2f515e016783359efe290b93a72a",
+  "readback_sha256": "aec2bccf7ec0cc9f059785d00be1fe891a5b4c64b834da0cb9743518ff9e512d",
+  "rights_instrument_identity": "c06955632d5578224dbcbba92b14872267aef4ba12d1dcb73afba2a5d8671a88",
+  "schema_name": "batch2-development-pilot14-immutable-archive-receipt-v1",
+  "schema_version": "1.0.0",
+  "writer_authority": "ATOMIC_CUSTODIAL_PACKET_8_OF_8"
+}

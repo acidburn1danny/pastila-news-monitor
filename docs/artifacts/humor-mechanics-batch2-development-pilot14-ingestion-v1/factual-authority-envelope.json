@@ -1,0 +1,162 @@
+{
+  "authority_scope": "Only the explicitly stated cultural-center frame-inventory event, quantity and temporary-exhibition-room scope, inventory-number and pre-existing recorded-dimension information, independent width/height measurement procedure, recording of measured values in each frame's corresponding record, completed-record storage, unchanged frame positions, operation-specific scope limitation, and explicitly unknown agreement between newly measured and previously recorded dimensions within the accompanying owner-authored synthetic test universe.",
+  "creative_premise_family_id": "UNASSIGNED",
+  "proposition_selection": "NOT_PERFORMED",
+  "propositions": [
+    {
+      "modality": "ASSERTED",
+      "proposition_id": "P1",
+      "scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE_ONLY",
+      "selection": "NOT_PERFORMED",
+      "statement": "În dimineața de 30 august 2026, personalul unui centru cultural a inventariat 22 de rame foto aflate într-o sală folosită pentru o expoziție temporară.",
+      "supporting_span": {
+        "character_coordinates": [
+          0,
+          151
+        ],
+        "sha256": "f1f352fd3c81aa88b44d1b2c996e861bc3ea14d0c8d383f9301e84546ff02718",
+        "span_sha256": "f1f352fd3c81aa88b44d1b2c996e861bc3ea14d0c8d383f9301e84546ff02718",
+        "utf8_byte_coordinates": [
+          0,
+          158
+        ]
+      }
+    },
+    {
+      "modality": "ASSERTED",
+      "proposition_id": "P2",
+      "scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE_ONLY",
+      "selection": "NOT_PERFORMED",
+      "statement": "Fiecare ramă avea un număr de inventar și o fișă pe care figurau valorile de lățime și înălțime existente în evidența centrului.",
+      "supporting_span": {
+        "character_coordinates": [
+          153,
+          281
+        ],
+        "sha256": "66d5d0820de535fc4e078a18f94b273066992a123b5cff2b10c10b29da7970ac",
+        "span_sha256": "66d5d0820de535fc4e078a18f94b273066992a123b5cff2b10c10b29da7970ac",
+        "utf8_byte_coordinates": [
+          160,
+          301
+        ]
+      }
+    },
+    {
+      "modality": "ASSERTED",
+      "proposition_id": "P3",
+      "scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE_ONLY",
+      "selection": "NOT_PERFORMED",
+      "statement": "În timpul inventarierii, un angajat a citit numărul de pe fiecare ramă și a măsurat separat lățimea și înălțimea acesteia.",
+      "supporting_span": {
+        "character_coordinates": [
+          282,
+          404
+        ],
+        "sha256": "f4425ec0ded35cae88ca51e2c0d7cbd62a1b82d0c8c71daf82e4b2afc6ee2159",
+        "span_sha256": "f4425ec0ded35cae88ca51e2c0d7cbd62a1b82d0c8c71daf82e4b2afc6ee2159",
+        "utf8_byte_coordinates": [
+          302,
+          435
+        ]
+      }
+    },
+    {
+      "modality": "ASSERTED",
+      "proposition_id": "P4",
+      "scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE_ONLY",
+      "selection": "NOT_PERFORMED",
+      "statement": "Valorile măsurate au fost consemnate în fișa corespunzătoare ramei.",
+      "supporting_span": {
+        "character_coordinates": [
+          405,
+          472
+        ],
+        "sha256": "483204487aa077f9d112a6c3f500ac1d26e96cb5bb741d4c1c89b555cac67781",
+        "span_sha256": "483204487aa077f9d112a6c3f500ac1d26e96cb5bb741d4c1c89b555cac67781",
+        "utf8_byte_coordinates": [
+          436,
+          507
+        ]
+      }
+    },
+    {
+      "modality": "ASSERTED",
+      "proposition_id": "P5",
+      "scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE_ONLY",
+      "selection": "NOT_PERFORMED",
+      "statement": "La finalul operațiunii, fișele completate au fost așezate într-un dosar păstrat în sala de expoziție.",
+      "supporting_span": {
+        "character_coordinates": [
+          474,
+          575
+        ],
+        "sha256": "6b4e02e02116ee04e6e541a7017c9789ae4b29ca0b1009c0bbb772eaa6be69f5",
+        "span_sha256": "6b4e02e02116ee04e6e541a7017c9789ae4b29ca0b1009c0bbb772eaa6be69f5",
+        "utf8_byte_coordinates": [
+          509,
+          617
+        ]
+      }
+    },
+    {
+      "modality": "ASSERTED",
+      "proposition_id": "P6",
+      "scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE_ONLY",
+      "selection": "NOT_PERFORMED",
+      "statement": "Ramele au rămas în pozițiile în care se aflau înainte de inventariere și nu au fost mutate în alt spațiu.",
+      "supporting_span": {
+        "character_coordinates": [
+          576,
+          681
+        ],
+        "sha256": "142e35f55b20af8e3e4622b1b0dfbd5b80113df02ffbfa52110ddafa6b641f29",
+        "span_sha256": "142e35f55b20af8e3e4622b1b0dfbd5b80113df02ffbfa52110ddafa6b641f29",
+        "utf8_byte_coordinates": [
+          618,
+          731
+        ]
+      }
+    },
+    {
+      "modality": "ASSERTED",
+      "proposition_id": "P7",
+      "scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE_ONLY",
+      "selection": "NOT_PERFORMED",
+      "statement": "Operațiunea s-a referit numai la cele 22 de rame aflate în sala respectivă în dimineața de 30 august.",
+      "supporting_span": {
+        "character_coordinates": [
+          683,
+          784
+        ],
+        "sha256": "f5554970b1927bae22560b27663a9033527e0e26a9e1aaa8e30932470d74a045",
+        "span_sha256": "f5554970b1927bae22560b27663a9033527e0e26a9e1aaa8e30932470d74a045",
+        "utf8_byte_coordinates": [
+          733,
+          839
+        ]
+      }
+    },
+    {
+      "modality": "ASSERTED",
+      "proposition_id": "P8",
+      "scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE_ONLY",
+      "selection": "NOT_PERFORMED",
+      "statement": "Înainte de efectuarea măsurătorilor nu era cunoscut dacă valorile măsurate pentru fiecare ramă vor coincide cu cele înscrise anterior în fișa sa.",
+      "supporting_span": {
+        "character_coordinates": [
+          785,
+          930
+        ],
+        "sha256": "bde3e52bd573c7cebf8770116748380106c810be53afaa4e4a6db522ad81f01d",
+        "span_sha256": "bde3e52bd573c7cebf8770116748380106c810be53afaa4e4a6db522ad81f01d",
+        "utf8_byte_coordinates": [
+          840,
+          994
+        ]
+      }
+    }
+  ],
+  "source_commitment": "5ac22f1c751961f9cc7f91ca97aafe57cfcc2889995530616a7c1cdc5cda77a2",
+  "source_sha256": "aec2bccf7ec0cc9f059785d00be1fe891a5b4c64b834da0cb9743518ff9e512d",
+  "world_scope": "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE"
+}

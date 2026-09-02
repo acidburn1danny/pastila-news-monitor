@@ -1,0 +1,69 @@
+{
+    "schema_name":  "batch2-owner-declaration-pilot14-v1",
+    "schema_version":  "1.0.0",
+    "pilot_id":  "BATCH2-DEVELOPMENT-PILOT-14",
+    "trial_role":  "GENUINE_END_TO_END_MECHANISM_TRIAL",
+    "source":  {
+                   "filename":  "owner-source-pilot14-v1.txt",
+                   "encoding":  "UTF-8_NO_BOM",
+                   "line_endings":  "LF_ONLY",
+                   "terminal_lf_count":  1,
+                   "source_version":  "1.0.0",
+                   "capture_timestamp":  "2026-09-02T10:59:17+03:00",
+                   "acquisition_timestamp":  "2026-09-02T10:59:25+03:00",
+                   "authority_scope":  "Only the explicitly stated cultural-center frame-inventory event, quantity and temporary-exhibition-room scope, inventory-number and pre-existing recorded-dimension information, independent width/height measurement procedure, recording of measured values in each frame\u0027s corresponding record, completed-record storage, unchanged frame positions, operation-specific scope limitation, and explicitly unknown agreement between newly measured and previously recorded dimensions within the accompanying owner-authored synthetic test universe.",
+                   "world_scope":  "OWNER_AUTHORED_SYNTHETIC_TEST_UNIVERSE",
+                   "intended_partition":  "DEVELOPMENT"
+               },
+    "contributor":  {
+                        "public_identity":  "urn:pastila:party:pastila-acida-owner-v1",
+                        "legal_identity_commitment":  "urn:pastila:party:pastila-acida-owner-v1",
+                        "legal_identity_verification_reference":  "owner-record:pastila-acida-owner-v1",
+                        "role":  "ORIGINAL_AUTHOR_AND_RIGHTS_HOLDER",
+                        "rights_holder_identity":  "urn:pastila:party:pastila-acida-owner-v1",
+                        "rights_holder_relationship":  "ORIGINAL_AUTHOR_AND_RIGHTS_HOLDER",
+                        "identity_disclosure_approved_for_commit":  false
+                    },
+    "ownership_declarations":  {
+                                   "original_authorship":  true,
+                                   "owns_or_controls_required_rights":  true,
+                                   "has_authority_to_make_each_selected_grant":  true,
+                                   "contains_undisclosed_third_party_material":  false,
+                                   "contains_private_or_confidential_information":  false,
+                                   "contains_personal_data":  false,
+                                   "contains_unlawfully_obtained_information":  false,
+                                   "contains_unattributed_quotation":  false,
+                                   "contains_reputation_sensitive_allegation":  false
+                               },
+    "independent_grants":  {
+                               "immutable_archival":  true,
+                               "factual_annotation_and_authority_binding":  true,
+                               "internal_discovery":  true,
+                               "construction_and_evaluation":  true,
+                               "model_exposure":  false,
+                               "training":  false,
+                               "runtime_integration":  false,
+                               "production_routing":  false
+                           },
+    "source_status_declarations":  {
+                                       "source_is_neutral_nonhumorous_factual_authority":  true,
+                                       "source_is_fresh_and_independent_of_pilots_01_through_13":  true,
+                                       "source_has_no_revision_same_event_syndication_or_source_family_relationship_with_pilots_01_through_13":  true,
+                                       "source_has_explicit_time_scope_modality_and_known_unknown_boundaries":  true,
+                                       "source_has_at_least_two_independently_bindable_factual_propositions":  true,
+                                       "source_was_not_selected_or_shaped_for_any_forbidden_downstream_or_v5_4_property":  true
+                                   },
+    "owner_instruction":  {
+                              "request_preingestion_validation_only":  true,
+                              "permit_derived_hashes_and_coordinates":  true,
+                              "permit_registered_custodial_signing_requests":  true,
+                              "permit_git_object_archival":  true,
+                              "permit_development_partition_seal":  true,
+                              "operational_content_access_after_ingestion":  false
+                          },
+    "owner_confirmation":  {
+                               "owner_identity":  "PASTILA_ACIDA_OWNER_V1",
+                               "confirmed":  true,
+                               "confirmation_statement":  "I submit the accompanying byte-exact source as an internally owned neutral factual-authority bundle and make only the independent grants explicitly selected in this declaration."
+                           }
+}
