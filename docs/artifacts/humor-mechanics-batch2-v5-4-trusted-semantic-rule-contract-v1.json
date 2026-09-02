@@ -1,0 +1,35 @@
+{
+  "contract": "V5_4_TRUSTED_SEMANTIC_RULE_CONTRACT_V1",
+  "status": "DESIGN_ONLY_NO_RULE_INSTANCES",
+  "semantic_content_required": [
+    "PREDICATE_FAMILY",
+    "TYPED_ACTOR_AND_PATIENT_CLASSES",
+    "REQUIRED_ROLES",
+    "REQUIRED_AFFORDANCES",
+    "TRIGGER_AND_PRECONDITIONS",
+    "DIRECTED_TRANSITION_OR_ACTION",
+    "RULE_DERIVED_RESULT_CLASS_ROLES_AND_AFFORDANCES",
+    "PREDECESSOR_CONSUMPTION_POLICY",
+    "COUNTERFACTUAL_DEPENDENCY_TEST",
+    "CONSEQUENCE_NON_SUBSTITUTABILITY_DOMAIN",
+    "ANCHOR_INTERMEDIATE_TERMINAL_RIGHTS",
+    "COMPOSITION_SCOPE_AND_EXCLUSIONS"
+  ],
+  "trust_requirements": [
+    "CONTENT_ORIGINATES_FROM_PRECOMMITTED_GENERAL_CURRICULUM",
+    "RULE_AUTHOR_CANNOT_ADMIT",
+    "INDEPENDENT_SEMANTIC_AND_CAUSAL_ADJUDICATION",
+    "ADVERSARIAL_OVERBREADTH_REVIEW",
+    "IMMUTABLE_ADMISSION_RECEIPT",
+    "SEPARATE_ACTIVATION_AUTHORITY"
+  ],
+  "canonical_identity": "SHA256(RFC8785_CANONICAL_JSON_OF_COMPLETE_SEMANTIC_CONTENT)",
+  "human_label_authority": false,
+  "planner_authorship_authority": false,
+  "source_wording_alone_authority": false,
+  "classification_grants_affordance": false,
+  "rule_may_restate_causation_without_evidence": false,
+  "supersession_requires_new_identity": true,
+  "historical_authority_inheritance": false,
+  "operational_rule_count": 0
+}

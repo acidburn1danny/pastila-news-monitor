@@ -35,10 +35,13 @@ def test_coverage_targets_and_curriculum_are_precommitted_and_bounded():
 
 def test_rule_schema_requires_independent_review_and_complete_semantics():
     schema = load("humor-mechanics-batch2-v5-4-semantic-rule-admission-schema-v1.json")
+    contract = load("humor-mechanics-batch2-v5-4-trusted-semantic-rule-contract-v1.json")
     required = set(schema["required"])
     assert {"preconditions", "transition", "result", "counterfactual", "non_substitutability", "composition", "adjudication_receipt", "rule_identity"} <= required
     assert schema["additionalProperties"] is False
     assert schema["label_has_no_authority"] is True
+    assert contract["operational_rule_count"] == 0
+    assert contract["rule_may_restate_causation_without_evidence"] is False
 
 
 def test_design_artifacts_have_stable_content_hashes():
@@ -60,6 +63,7 @@ def test_design_freeze_binds_exact_artifact_hashes_and_zero_authority():
     expected = {
         "ontology_schema_identity": "humor-mechanics-batch2-v5-4-general-semantic-ontology-design-v1.json",
         "predicate_taxonomy_identity": "humor-mechanics-batch2-v5-4-general-predicate-taxonomy-v1.json",
+        "trusted_semantic_rule_contract_identity": "humor-mechanics-batch2-v5-4-trusted-semantic-rule-contract-v1.json",
         "semantic_rule_schema_identity": "humor-mechanics-batch2-v5-4-semantic-rule-admission-schema-v1.json",
         "rule_admission_governance_identity": "humor-mechanics-batch2-v5-4-rule-admission-governance-v1.json",
         "composition_model_identity": "humor-mechanics-batch2-v5-4-rule-composition-model-v1.json",

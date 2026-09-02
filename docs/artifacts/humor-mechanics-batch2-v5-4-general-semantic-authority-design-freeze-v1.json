@@ -14,6 +14,7 @@
   "design_artifacts": {
     "ontology_schema_identity": "89dd1b20648f7d4eda4a5adb8e3221687daf56da6f805237088b65f55c9ae9c3",
     "predicate_taxonomy_identity": "8ac73a9d22b86b01244743c96d3a406b5650c82e02dfa8feca38ad24977a84b7",
+    "trusted_semantic_rule_contract_identity": "1b5e63b2e17da939d7254fe94f0ba9edaacc4302ad1e6272872f3280de23993b",
     "semantic_rule_schema_identity": "d161e3a7c22a0a86db681648501977c845be1455293b857d0681797b1631c0f9",
     "rule_admission_governance_identity": "bed4d76d7821ca04e070e7a0725c997111b8d60f79532cf6bb1954082b5c7138",
     "composition_model_identity": "3892dcc99db64f6a2393d6dad85e7e4b3f4950fa91e0cf37fa71d5e5b4336d8b",
