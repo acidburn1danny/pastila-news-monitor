@@ -1,0 +1,29 @@
+{
+  "implementation_sha256": "46d7009582abc7fadb2d74f0953b851aef799d8d081f8fed7595a6cad7332d60",
+  "invariants": {
+    "CLOSED_ATTESTATION_VERIFIER_ENTRYPOINT": "PASS",
+    "DIRECT_CA_VALIDATED_TLS_NO_PROXY": "PASS",
+    "EXACT_V2_3_1_SCHEMA_ASSEMBLY": "PASS",
+    "CROSSREF_RELEASE_RECORD_CAPTURE_CLOSURE": "PASS",
+    "PURPOSE_SPECIFIC_ENDPOINT_AND_METHOD_ALLOWLIST": "PASS",
+    "RELEASE_MANIFEST_COMMITMENT_CLOSURE": "PASS",
+    "RFC3161_BINDS_EXACT_CAPTURE_ENVELOPE": "PASS",
+    "RUN_AND_REGISTRY_REPLAY_DOMAINS": "PASS"
+  },
+  "qualification_identity": "421129e11f657b72bda17b8bcbca3989362284ef70b8c718f807cb5815af341c",
+  "remaining_blockers": ["REAL_METADATA_NOT_ACQUIRED"],
+  "schema": "SEMANTIC_AUTHORITY_ACQUISITION_V2_3_4_ZERO_METADATA_QUALIFICATION",
+  "test_sha256": "1df01067cc56c249bf08d6828ed14a4906358f73b21cf29fda6ae6dd16629c05",
+  "v2_3_1_governance": "41f202af7e835bfc9bbb048d803ee19e7861719ae4d45f0298035f586d640c52",
+  "v2_3_3_implementation": "089833268bc4ba41e688d4e109d7de3a8452f2dbacc5309168a263393f335a42",
+  "verdict": "PASS_PUBLISHER_TLS_RFC3161_AND_EXACT_V2_3_1_ASSEMBLY_ZERO_METADATA",
+  "zero_activity": {
+    "authority_bases": 0,
+    "blind_access": 0,
+    "frame_execution": 0,
+    "pilot15": 0,
+    "registry_metadata": 0,
+    "snapshot_content": 0,
+    "source_selection": 0
+  }
+}

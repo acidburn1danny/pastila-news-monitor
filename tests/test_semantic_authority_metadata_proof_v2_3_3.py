@@ -4,6 +4,9 @@ import pytest
 import pastila_scout.semantic_authority_metadata_proof_v2_3_3 as m
 
 RUN='a'*64
+def test_real_acquisition_remains_fail_closed_until_external_origin_and_integration_are_proved():
+ assert m.REAL_METADATA_ACQUISITION_READY is False
+ assert len(m.ACQUISITION_BLOCKERS)==4
 def verified(purpose,url,payload=b'x',method='GET',headers=None,identity=None):return m.VerifiedCapture(purpose,RUN,method,url,headers or {},payload,identity or hashlib.sha256(payload+url.encode()).hexdigest())
 def test_capture_attests_canonical_envelope_and_replay_domain(monkeypatch,tmp_path):
  calls=[];monkeypatch.setattr(m,'verify_rfc3161',lambda **kw:calls.append(kw))
@@ -22,8 +25,8 @@ def test_crossref_is_derived_from_bytes_and_pagination():
 def test_crossref_invented_projection_interface_no_longer_exists():assert not hasattr(m,'close_crossref_history')
 def openalex(manifest_date='2026-06-26'):
  notes=verified('OPENALEX_RELEASE_NOTES',m.OPENALEX_NOTES,b'RELEASE 2026-06-25\ntext\nRELEASE 2026-05-22\n')
- body=json.dumps({'date':manifest_date,'entities':[{'files':[{'url':'s3://openalex/data/jsonl/works/p.gz','meta':{'content_length':3}}]}]}).encode()
- return notes,verified('OPENALEX_MANIFEST',m.OPENALEX_MANIFEST,body)
+ body=json.dumps({'date':manifest_date,'entities':[{'entity_type':'works','files':[{'url':'s3://openalex/data/jsonl/works/p.gz','meta':{'content_length':3}}]}]}).encode()
+ return notes,verified('OPENALEX_MANIFEST',m.OPENALEX_MANIFEST+'?versionId=v1',body)
 def test_openalex_dates_and_objects_derived_from_bytes():
  result=m.parse_openalex_history(*openalex());assert result['release_date']=='2026-06-25' and result['objects'][0]['byte_length']==3
  with pytest.raises(ValueError):m.parse_openalex_history(*openalex('2026-06-27'))
@@ -34,6 +37,9 @@ def test_attested_head_manifest_closure_and_registry_allowlist():
  with pytest.raises(ValueError):m.bind_attested_checksums(spec,[],registry='OPENALEX',run_identity=RUN)
  bad=copy.copy(head);object.__setattr__(bad,'headers',{**head.headers,'x-amz-checksum-sha256':'etag'})
  with pytest.raises(ValueError):m.bind_attested_checksums(spec,[bad],registry='OPENALEX',run_identity=RUN)
+ with pytest.raises(ValueError):m.bind_attested_checksums(spec,[head,head],registry='OPENALEX',run_identity=RUN)
+ bad_spec=[{'locator':spec[0]['locator'],'byte_length':True}]
+ with pytest.raises(ValueError):m.bind_attested_checksums(bad_spec,[head],registry='OPENALEX',run_identity=RUN)
 def test_qualification_is_fully_closed():
  p=json.loads(Path('docs/artifacts/semantic-contract-v2-3-3-metadata-proof-zero-source-qualification.json').read_text(encoding='utf-8'));m.validate_qualification(p)
  for key,value in [('verdict','REWRITTEN'),('implementation_sha256','0'*64),('dependencies',{}),('proofs',{})]:

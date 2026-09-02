@@ -26,6 +26,23 @@ OPENSSL_SHA256 = "132616b352a13168391ddbcc2eab22ce52df256b3d4cd2c2c6fc245d22bab6
 CA_BUNDLE_SHA256 = "9cc2a774b5198dcff14d9be1e66091f538975d867ce029a96bce15a55dfd730f"
 ADAPTER_IMPLEMENTATION_SHA256 = "cfe13c66dcc22930cd7020e9675a4caa4db24252f229e7fb7c512bd2bdd460df"
 HEX64 = re.compile(r"^[0-9a-f]{64}$")
+REAL_METADATA_ACQUISITION_READY = False
+ACQUISITION_BLOCKERS = (
+    "RFC3161_PROVES_EXISTENCE_TIME_NOT_PUBLISHER_ORIGIN",
+    "CROSSREF_ARCHIVE_LISTING_NOT_INTEGRATED_WITH_RELEASE_HISTORY",
+    "OPENALEX_HISTORICAL_MANIFEST_AUTHORITY_NOT_ESTABLISHED",
+    "V2_3_3_PROJECTIONS_NOT_ASSEMBLED_INTO_V2_3_1_HISTORY_SCHEMA",
+)
+QUALIFICATION_REPAIRS = (
+    "UNATTESTED_PROJECTED_CROSSREF_RECORD_ACCEPTANCE", "CROSSREF_PAGINATION_AND_TERMINAL_NEGATIVE_SPACE_UNBOUND",
+    "CROSSREF_PUBLICATION_TIME_NOT_DERIVED_FROM_CAPTURE_BYTES", "UNATTESTED_OPENALEX_RELEASE_AND_MANIFEST_DATE_ACCEPTANCE",
+    "OPENALEX_RELEASE_NOTES_MANIFEST_CROSS_RUN_REPLAY", "ARBITRARY_S3_BUCKET_ACCEPTANCE",
+    "NONCANONICAL_S3_TO_HTTPS_LOCATOR_MAPPING", "MANIFEST_OBJECT_CHECKSUM_VERSION_LENGTH_NOT_ATTESTED",
+    "CAPTURE_REPLAY_DOMAIN_AND_GOVERNANCE_TIME_UNBOUND", "QUALIFICATION_IDENTITY_CHAIN_REWRITE_ACCEPTANCE",
+    "AMBIGUOUS_CASE_FOLDED_OR_INJECTED_CAPTURE_HEADERS", "NONCANONICAL_CAPTURE_AND_PUBLICATION_TIMESTAMPS",
+    "UNVERIFIED_DERIVED_CAPTURE_IDENTITIES", "OPENALEX_MANIFEST_SCHEMA_AND_NUMERIC_TYPE_CONFUSION",
+    "EMPTY_OR_DUPLICATE_HEAD_OBJECT_SET_ACCEPTANCE", "UNSAFE_S3_VERSION_IDENTIFIER_ACCEPTANCE",
+)
 
 
 def canonical(value: Any) -> bytes:
@@ -49,7 +66,12 @@ class VerifiedCapture:
 
 
 def _envelope(c: Capture) -> dict[str, Any]:
-    headers = {str(k).lower(): str(v) for k, v in c.headers.items()}
+    normalized = [(str(k).lower(), str(v)) for k, v in c.headers.items()]
+    if len({key for key, _ in normalized}) != len(normalized):
+        raise ValueError("ambiguous case-folded header")
+    if any(not key or "\r" in value or "\n" in value for key, value in normalized):
+        raise ValueError("capture header invalid")
+    headers = dict(normalized)
     return {"domain": DOMAIN, "governance_identity": PREDECESSOR_GOVERNANCE,
             "purpose": c.purpose, "run_identity": c.run_identity, "method": c.method,
             "url": c.url, "status": c.status, "headers": headers,
@@ -67,6 +89,8 @@ def verify_capture(c: Capture, *, expected_purpose: str, expected_url: str,
         raise ValueError("GET capture payload missing")
     if c.method == "HEAD" and c.payload:
         raise ValueError("HEAD capture unexpectedly has body")
+    if not re.fullmatch(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z", c.timestamp_utc):
+        raise ValueError("capture timestamp not canonical UTC")
     try:
         timestamp = datetime.fromisoformat(c.timestamp_utc.replace("Z", "+00:00"))
     except ValueError as exc:
@@ -115,7 +139,7 @@ def parse_crossref_history(pages: Iterable[VerifiedCapture]) -> tuple[dict[str, 
     records=[]; seen=set(); run_identity=pages[0].run_identity
     for index,page in enumerate(pages,1):
         expected=CROSSREF_INDEX if index==1 else f"{CROSSREF_INDEX}page/{index}/"
-        if page.purpose!="CROSSREF_RELEASE_INDEX" or page.method!="GET" or page.url!=expected or page.run_identity != run_identity:
+        if page.purpose!="CROSSREF_RELEASE_INDEX" or page.method!="GET" or page.url!=expected or page.run_identity != run_identity or not HEX64.fullmatch(page.identity):
             raise ValueError("Crossref verified page sequence mismatch")
         parser=_CrossrefParser(); parser.feed(page.payload.decode("utf-8"))
         expected_next=None if index==len(pages) else f"{CROSSREF_INDEX}page/{index+1}/"
@@ -123,9 +147,10 @@ def parse_crossref_history(pages: Iterable[VerifiedCapture]) -> tuple[dict[str, 
         for year,url,published in parser.records:
             if url in seen or not url.startswith("https://www.crossref.org/blog/"):
                 raise ValueError("Crossref release alias or authority mismatch")
+            if not re.fullmatch(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z", published): raise ValueError("Crossref publication time not canonical UTC")
             published_at=datetime.fromisoformat(published.replace("Z", "+00:00"))
-            if published_at.tzinfo is None or str(published_at.year) != year: raise ValueError("Crossref publication time invalid")
-            seen.add(url); records.append({"release_id":year,"publication_time":published_at.isoformat(),"official_url":url,"source_capture_identity":page.identity})
+            if str(published_at.year) != year: raise ValueError("Crossref publication time invalid")
+            seen.add(url); records.append({"release_id":year,"publication_date":published_at.date().isoformat(),"official_url":url,"source_capture_identity":page.identity})
     if not records or len({r["release_id"] for r in records})!=len(records):
         raise ValueError("Crossref release identity ambiguity")
     return tuple(sorted(records,key=lambda r:r["release_id"]))
@@ -134,8 +159,9 @@ def parse_crossref_history(pages: Iterable[VerifiedCapture]) -> tuple[dict[str, 
 def parse_openalex_history(notes: VerifiedCapture, manifest: VerifiedCapture) -> dict[str, Any]:
     """Derive release and manifest dates from their independently verified bytes."""
     if (notes.purpose,notes.method,notes.url)!=("OPENALEX_RELEASE_NOTES","GET",OPENALEX_NOTES): raise ValueError("OpenAlex notes capture mismatch")
-    if (manifest.purpose,manifest.method,manifest.url)!=("OPENALEX_MANIFEST","GET",OPENALEX_MANIFEST): raise ValueError("OpenAlex manifest capture mismatch")
-    if notes.run_identity != manifest.run_identity: raise ValueError("OpenAlex cross-run replay")
+    manifest_parts=urlsplit(manifest.url)
+    if (manifest.purpose,manifest.method,manifest_parts.scheme,manifest_parts.netloc,manifest_parts.path)!=("OPENALEX_MANIFEST","GET","https","openalex.s3.amazonaws.com","/data/jsonl/manifest.json") or not re.fullmatch(r"versionId=[A-Za-z0-9._~-]+",manifest_parts.query): raise ValueError("OpenAlex versioned manifest capture mismatch")
+    if notes.run_identity != manifest.run_identity or not all(HEX64.fullmatch(x.identity) for x in (notes,manifest)): raise ValueError("OpenAlex cross-run replay or identity")
     dates=re.findall(r"(?m)^RELEASE (\d{4}-\d{2}-\d{2})\s*$",notes.payload.decode("utf-8"))
     if not dates or len(dates)!=len(set(dates)): raise ValueError("OpenAlex release history missing or duplicate")
     release_dates=[date.fromisoformat(x) for x in dates]
@@ -143,14 +169,18 @@ def parse_openalex_history(notes: VerifiedCapture, manifest: VerifiedCapture) ->
     before=[x for x in release_dates if x<CUTOFF_DATE]
     if not before: raise ValueError("OpenAlex predecessor absent")
     chosen=max(before); value=json.loads(manifest.payload)
+    if not isinstance(value,dict) or set(value)!={"date","entities"} or not isinstance(value["entities"],list): raise ValueError("OpenAlex manifest schema mismatch")
     manifest_date=date.fromisoformat(value["date"])
     if manifest_date not in {chosen,chosen+timedelta(days=1)}:
         raise ValueError("OpenAlex release/manifest reconciliation failure")
-    files=[item for entity in value.get("entities",[]) for item in entity.get("files",[])]
+    if any(not isinstance(entity,dict) or set(entity)!={"entity_type","files"} or not isinstance(entity["files"],list) for entity in value["entities"]): raise ValueError("OpenAlex entity schema mismatch")
+    files=[item for entity in value["entities"] for item in entity["files"]]
+    if any(not isinstance(item,dict) or set(item)!={"url","meta"} or not isinstance(item["meta"],dict) or set(item["meta"])!={"content_length"} or isinstance(item["meta"]["content_length"],bool) or not isinstance(item["meta"]["content_length"],int) or item["meta"]["content_length"]<=0 for item in files): raise ValueError("OpenAlex file schema mismatch")
     locators=[item.get("url") for item in files]
     if not files or len(locators)!=len(set(locators)) or any(not isinstance(x,str) or not x.startswith("s3://openalex/data/jsonl/") for x in locators):
         raise ValueError("OpenAlex manifest object closure failure")
     return {"release_date":chosen.isoformat(),"manifest_date":manifest_date.isoformat(),
+            "release_history":tuple(x.isoformat() for x in release_dates),
             "manifest_capture_identity":manifest.identity,"notes_capture_identity":notes.identity,
             "objects":tuple(sorted(({"locator":item["url"],"byte_length":item["meta"]["content_length"]} for item in files),key=lambda x:x["locator"].encode()))}
 
@@ -161,9 +191,10 @@ def bind_attested_checksums(manifest_objects: Iterable[Mapping[str, Any]], heads
     if registry not in {"CROSSREF","OPENALEX"}: raise ValueError("registry")
     prefix="s3://openalex/data/jsonl/" if registry=="OPENALEX" else "s3://api-snapshots-reqpays-crossref/"
     expected={x.get("locator"):x for x in manifest}
-    if len(expected)!=len(manifest) or any(set(x)!={"locator","byte_length"} or not str(x["locator"]).startswith(prefix) for x in manifest): raise ValueError("manifest locator set invalid")
+    if not manifest or len(expected)!=len(manifest) or any(set(x)!={"locator","byte_length"} or not isinstance(x["locator"],str) or not x["locator"].startswith(prefix) or isinstance(x["byte_length"],bool) or not isinstance(x["byte_length"],int) or x["byte_length"]<=0 for x in manifest): raise ValueError("manifest locator set invalid")
     if not HEX64.fullmatch(run_identity): raise ValueError("replay domain invalid")
     observed={h.url:h for h in heads}
+    if len(observed)!=len(heads): raise ValueError("duplicate HEAD capture")
     https_expected={
         "https://" + urlsplit(k).netloc + ".s3.amazonaws.com" + urlsplit(k).path: v
         for k,v in expected.items()
@@ -176,7 +207,7 @@ def bind_attested_checksums(manifest_objects: Iterable[Mapping[str, Any]], heads
         version=h.headers.get("x-amz-version-id"); checksum=h.headers.get("x-amz-checksum-sha256"); length=h.headers.get("content-length")
         try: decoded=base64.b64decode(checksum,validate=True).hex(); parsed_length=int(length)
         except (TypeError,ValueError): raise ValueError("attested checksum metadata invalid")
-        if not version or len(decoded)!=64 or parsed_length!=spec["byte_length"]: raise ValueError("attested checksum/version/length mismatch")
+        if not isinstance(version,str) or not re.fullmatch(r"[A-Za-z0-9._~-]+",version) or len(decoded)!=64 or parsed_length!=spec["byte_length"] or not HEX64.fullmatch(h.identity): raise ValueError("attested checksum/version/length/identity mismatch")
         source=urlsplit(spec["locator"]); locator=urlunsplit((source.scheme,source.netloc,source.path,urlencode({"versionId":version}),""))
         leaf={"VERSIONED_IMMUTABLE_LOCATOR":locator,"BYTE_LENGTH":parsed_length,"SHA256":decoded,"HEAD_CAPTURE_IDENTITY":h.identity};leaves.append(leaf)
     nodes=[hashlib.sha256(b"\0"+canonical(x)).digest() for x in leaves]
@@ -198,6 +229,7 @@ def validate_qualification(value: Mapping[str,Any]) -> None:
     if value["dependencies"] != dependencies: raise ValueError("dependency identity chain")
     expected={"RFC3161_CANONICAL_ENVELOPE":"PASS","CROSSREF_ACTUAL_HTML_AND_PAGINATION":"PASS","OPENALEX_ACTUAL_NOTES_AND_MANIFEST":"PASS","MANIFEST_TO_ATTESTED_HEAD_CLOSURE":"PASS","REGISTRY_LOCATOR_ALLOWLIST":"PASS","REPLAY_DOMAIN":"PASS"}
     if value["proofs"]!=expected:raise ValueError("proof closure")
+    if value["blockers_repaired"] != list(QUALIFICATION_REPAIRS) or value["remaining_blockers"] != list(ACQUISITION_BLOCKERS): raise ValueError("audit finding closure")
     for key in ("real_metadata_acquired","snapshot_content_acquired","frame_executed","source_selected","authority_basis_created","pilot15_prepared","blind_access"):
         if value[key] not in (0,False):raise ValueError(key)
     if value["qualification_identity"]!=qualification_identity(value):raise ValueError("qualification identity")
