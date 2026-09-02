@@ -1,0 +1,67 @@
+{
+  "activity_boundary": {
+    "authority_bases_created_or_admitted": 0,
+    "blind_or_future_family_access": false,
+    "curriculum_population": false,
+    "pilot15_executed": false,
+    "registry_metadata_acquired": false,
+    "registry_snapshots_acquired": false,
+    "workflow_deployed": false
+  },
+  "deployment_manifest": {
+    "actual_manifest_created": false,
+    "immutable_schema_mutation_cases_rejected": 6,
+    "synthetic_schema_case": "PASS_EXACT_IDENTITY_CLOSED"
+  },
+  "implementation": {
+    "containment_dependency_root": "389e3366b3b7ac7a241032a7b4883d19d7b449428ea019e0a6fae650d24b500b",
+    "launcher_sha256": "62f9af6b03354f8092be0e1780eecb4d18a0715b50123f438dc01f7ab53548fc",
+    "module_sha256": "80a0b2500c1fe629b6111432e27b3fc288f9441146b1d0f27bea772bde918ea8",
+    "test_sha256": "52efbda747a1fa298464fb7e09a3d801f6d79ee8669b881a5d97e7f45b4976e1",
+    "wsl_sha256": "7e9f5cee6d641481e5a942f0e08563bae9c17ee55f0aad888f9aa0be9a5d4757"
+  },
+  "network_containment": {
+    "environment": "ENV_I_CLOSED",
+    "kernel_boundary": "WSL2_LINUX_NETWORK_NAMESPACE",
+    "launcher_hash_verified_before_execution": true,
+    "namespace_command": "unshare --user --map-root-user --net",
+    "proxy_or_credential_environment_inherited": false,
+    "result": "PASS_OS_ENFORCED_ZERO_NETWORK"
+  },
+  "qualification_identity": "fb02601343c0bc6f5e29f89e75468ff90d8e4a94cefdc7e331d7ae6994e8e62b",
+  "real_cosign": {
+    "checksums_sha256": "aec2a6f68d307b09ae196e388dc691a146fa8bdba7fcce9ca4ca41b918adfa63",
+    "cli": "verify-blob-attestation",
+    "linux_amd64_sha256": "4629c757b7618056f8ddd7e2625ae9fdd94c0372a65049520bc7d9df9efc7f71",
+    "signed_checksum_bundle_sha256": "976bcb216e45ed0274e464e2e16d81e84cc85a69b3ed6e3488c1e7cda116379a",
+    "signed_checksum_verification": "PASS_KEYLESS_BUNDLE_ZERO_NETWORK",
+    "version": "v3.1.3"
+  },
+  "remaining_blockers": [
+    "PUBLIC_WORKFLOW_AND_IMMUTABLE_DEPLOYMENT_MANIFEST_NOT_YET_DEPLOYED_OR_FROZEN"
+  ],
+  "schema": "SEMANTIC_AUTHORITY_COSIGN_ZERO_NETWORK_QUALIFICATION_V2_3_7",
+  "supply_chain": {
+    "release_checksum_subject_exact": true,
+    "signed_release_identity": "keyless@projectsigstore.iam.gserviceaccount.com",
+    "signed_release_issuer": "https://accounts.google.com",
+    "trusted_root_length": 6787,
+    "trusted_root_sha256": "6494e21ea73fa7ee769f85f57d5a3e6a08725eae1e38c755fc3517c9e6bc0b66",
+    "tuf_root_sha256": "cd7549b15e7b4e660a89c950bca1bce262a524a5cf909952b66951b5c8667bc6",
+    "tuf_root_version": 1,
+    "tuf_snapshot_sha256": "8f784ab614ec62bfdd5f568eb2a2e3011668449ba235ed4eb7befa99f8469933",
+    "tuf_snapshot_version": 165,
+    "tuf_targets_sha256": "6a697f7f8908c8ab26c11786ecb490b54acec97fa8c802e399f065f8a0cc1acd",
+    "tuf_targets_version": 14
+  },
+  "v2_3_6_governance_identity": "221871c16d48ceafee90ef12ea13df3611b9d1af4ba48bbe314ceae16cc6a84f",
+  "verdict": "PASS_V2_3_7_REAL_COSIGN_OS_CONTAINED_ZERO_NETWORK_QUALIFICATION_DEPLOYMENT_PENDING",
+  "verification_fixtures": {
+    "fixture_bundle_sha256": "a6c1fc36d2a9d6c7844bdb3caf052947fc48b4360e421d637d4647db40d4f9b0",
+    "independent_public_positive": "PASS_VERIFIED_OK",
+    "issuer": "https://github.com/login/oauth",
+    "signer_identity": "cody@soyland.com",
+    "subject_sha256": "732112270d7e59418a8c080b134b24cabd67d250d0d0147a97ed95ba5c280aa4",
+    "tampered_subject_digest": "PASS_FAIL_CLOSED_NONZERO_EXIT"
+  }
+}

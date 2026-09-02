@@ -1,0 +1,24 @@
+# INERT TEMPLATE — not a deployable GitHub Actions workflow.
+# Every @TOKEN@ must be replaced from the frozen deployment manifest only
+# after the RFC-3161 schedule precommit exists.
+name: semantic-authority-metadata-capture-v2-3-6
+on:
+  schedule:
+    - cron: '@SCHEDULE_CRON@'
+permissions:
+  contents: read
+  id-token: write
+  attestations: write
+jobs:
+  capture:
+    if: github.repository_id == '@REPOSITORY_ID@' && github.repository_owner_id == '@OWNER_ID@'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@@CHECKOUT_COMMIT@
+        with:
+          ref: '@WORKFLOW_COMMIT@'
+          persist-credentials: false
+      - name: Verify immutable deployment binding
+        run: python -m pastila_scout.semantic_authority_public_attestation_v2_3_6
+      - name: Stop until capture executable is separately frozen
+        run: exit 78
