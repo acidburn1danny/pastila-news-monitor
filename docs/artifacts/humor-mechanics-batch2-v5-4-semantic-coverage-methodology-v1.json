@@ -1,0 +1,20 @@
+{
+  "schema": "V5_4_SOURCE_INDEPENDENT_SEMANTIC_COVERAGE_METHODOLOGY_V1",
+  "status": "TARGETS_FROZEN_BEFORE_RULE_POPULATION",
+  "metrics": ["SEMANTIC_CLASS_COVERAGE","PREDICATE_FAMILY_COVERAGE","ACTOR_PATIENT_MATRIX_COVERAGE","ANCHOR_REACHABILITY","RESULT_CONSUMABILITY","TWO_EDGE_COMPOSITION_REACHABILITY","TERMINAL_REACHABILITY","DISCONNECTED_ISLAND_COUNT","INTENTIONALLY_PROHIBITED_SPACE","UNSUPPORTED_BUT_INTENDED_SPACE"],
+  "targets": {
+    "predicate_families_with_at_least_one_independently_admitted_rule": {"minimum":17,"of":21},
+    "priority_families_required": ["PHYSICAL_ACTION","MOVEMENT_LOCATION","OBSERVATION_PERCEPTION","MEASUREMENT","MATCHING_VERIFICATION","RECORDING","REPRESENTATION","INFORMATION_TRANSFER","CLASSIFICATION","STATE_TRANSITION","TRIGGERING","PROCEDURAL_ACTION","LOGICAL_IMPLICATION","TEMPORAL_RELATION","CAUSAL_RELATION"],
+    "anchor_capable_families": {"minimum":10},
+    "result_consumable_families": {"minimum":10},
+    "terminal_capable_families": {"minimum":10},
+    "valid_distinct_family_two_edge_compositions": {"minimum":24},
+    "valid_anchor_intermediate_terminal_compositions": {"minimum":12},
+    "disconnected_rule_island_fraction": {"maximum":0.10},
+    "ambiguous_rule_cells": {"maximum":0},
+    "unreviewed_privileged_affordance_rules": {"maximum":0}
+  },
+  "not_a_metric": ["PERCENT_OF_PILOTS_PASSING","FUTURE_FAMILY_SUCCESS_RATE","MECHANISM_POOL_OUTCOME"],
+  "measurement_inputs": "SYNTHETIC_SOURCE_BLIND_TYPED_OPERAND_GRIDS_AND_RULE_GRAPH_ONLY",
+  "failure_mode": "NO_ACTIVATION_IF_ANY_MANDATORY_TARGET_FAILS"
+}

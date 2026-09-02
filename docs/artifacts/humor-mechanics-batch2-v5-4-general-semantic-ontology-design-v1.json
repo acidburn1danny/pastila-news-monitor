@@ -1,0 +1,33 @@
+{
+  "schema": "V5_4_GENERAL_SEMANTIC_ONTOLOGY_DESIGN_V1",
+  "status": "DESIGN_ONLY_ZERO_OPERATIONAL_RULES",
+  "design_inputs": ["general_formal_semantics", "event_semantics", "role_and_affordance_typing", "institutional_norm_semantics"],
+  "excluded_design_inputs": ["pilot13_wording", "pilot14_needs", "historical_candidate_surfaces", "future_family_sources", "mechanism_labels", "pool_state", "desired_outcomes"],
+  "entity_classes": {
+    "PHYSICAL_ENTITY": {"roles": ["ACTOR", "PATIENT", "INSTRUMENT", "SOURCE", "DESTINATION", "POSSESSOR"], "agency": "ONLY_IF_AGENTIVE_SUBTYPE", "affordance_source": "EXPLICIT_TYPE_OR_ADMITTED_RULE"},
+    "PERSON_AGENT": {"roles": ["ACTOR", "PATIENT", "SOURCE", "DESTINATION", "POSSESSOR", "OBLIGEE", "PERMIT_HOLDER"], "agency": "INTRINSIC_BUT_ACTION_SPECIFIC", "affordance_source": "EXPLICIT_CAPABILITY"},
+    "ORGANIZATION_INSTITUTION": {"roles": ["ACTOR", "PATIENT", "SOURCE", "DESTINATION", "AUTHORITY", "OBLIGOR"], "agency": "INSTITUTIONALLY_SCOPED", "affordance_source": "EXPLICIT_JURISDICTION"},
+    "INFORMATIONAL_OBJECT": {"roles": ["PATIENT", "SOURCE", "DESTINATION", "REPRESENTATION", "RESULT"], "agency": "NONE", "affordance_source": "CONTENT_AND_CARRIER_TYPED"},
+    "RECORD_DOCUMENT": {"roles": ["PATIENT", "SOURCE", "REPRESENTATION", "RESULT"], "agency": "NONE", "affordance_source": "RECORDING_OR_EVIDENCE_TYPED"},
+    "REPRESENTATION": {"roles": ["PATIENT", "REPRESENTATION", "RESULT"], "agency": "NONE", "affordance_source": "DENOTES_OR_ENCODES_TYPED"},
+    "LOCATION": {"roles": ["SOURCE", "DESTINATION", "CONDITION", "PATIENT"], "agency": "NONE", "affordance_source": "SPATIAL_RELATION"},
+    "TIME_INTERVAL": {"roles": ["CONDITION", "SOURCE", "DESTINATION"], "agency": "NONE", "affordance_source": "TEMPORAL_RELATION"},
+    "MEASUREMENT_QUANTITY": {"roles": ["PATIENT", "RESULT", "COMPARATOR", "CONDITION"], "agency": "NONE", "affordance_source": "DIMENSION_AND_UNIT_TYPED"},
+    "EVENT": {"roles": ["TRIGGER", "CONDITION", "PATIENT", "RESULT", "SOURCE"], "agency": "NONE_UNLESS_AGENTIVE_EVENT_PARTICIPANT_BOUND", "affordance_source": "EVENT_TYPE"},
+    "PROCESS": {"roles": ["ACTOR", "PATIENT", "TRIGGER", "CONDITION", "RESULT"], "agency": "CAUSAL_NOT_INTENTIONAL", "affordance_source": "PROCESS_TYPE"},
+    "STATE": {"roles": ["PATIENT", "CONDITION", "TRIGGER", "RESULT"], "agency": "NONE", "affordance_source": "STATE_TRANSITION_RULE"},
+    "STATUS": {"roles": ["PATIENT", "CONDITION", "RESULT", "CLASSIFICATION"], "agency": "NONE", "affordance_source": "NO_PRIVILEGE_BY_STATUS_ALONE"},
+    "CLASSIFICATION_CATEGORY": {"roles": ["PATIENT", "CLASSIFICATION", "RESULT"], "agency": "NONE", "affordance_source": "NO_AFFORDANCE_INHERITANCE"},
+    "PERMISSION": {"roles": ["PATIENT", "CONDITION", "RESULT"], "agency": "NONE", "affordance_source": "AUTHORIZED_NORMATIVE_RULE_ONLY"},
+    "OBLIGATION": {"roles": ["PATIENT", "CONDITION", "RESULT"], "agency": "NONE", "affordance_source": "AUTHORIZED_NORMATIVE_RULE_ONLY"},
+    "AUTHORITY": {"roles": ["AUTHORITY", "SOURCE", "CONDITION"], "agency": "JURISDICTION_BOUND", "affordance_source": "EXPLICIT_GRANT_ONLY"},
+    "ABSTRACT_PROPOSITION": {"roles": ["PATIENT", "SOURCE", "CONDITION", "RESULT"], "agency": "NONE", "affordance_source": "LOGICAL_RELATION_ONLY"}
+  },
+  "global_invariants": [
+    "GRAMMAR_DOES_NOT_GRANT_SEMANTIC_ROLE_OR_AFFORDANCE",
+    "CLASSIFICATION_OR_RECLASSIFICATION_DOES_NOT_GRANT_AGENCY_AUTHORITY_PERMISSION_OWNERSHIP_CAPABILITY_OR_AFFORDANCE",
+    "ABSTRACT_CAUSATION_REQUIRES_AN_ADMITTED_RULE_WITH_EXPLICIT_TYPED_PRECONDITIONS",
+    "EVERY_ROLE_AND_AFFORDANCE_HAS_TRACEABLE_TYPE_OR_RULE_AUTHORITY",
+    "ONTOLOGY_DESIGN_INPUT_IS_SEPARATE_FROM_POST_DESIGN_REGRESSION_EVIDENCE"
+  ]
+}

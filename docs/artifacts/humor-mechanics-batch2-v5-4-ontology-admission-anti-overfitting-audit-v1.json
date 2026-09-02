@@ -1,0 +1,29 @@
+{
+  "schema": "V5_4_ONTOLOGY_AND_RULE_ADMISSION_ANTI_OVERFITTING_AUDIT_V1",
+  "verdict": "PASS_DESIGN_COHERENT_ZERO_RULE_ADMISSION_ZERO_FAMILY",
+  "checks": {
+    "pilot_failures_determine_rule_content":"PASS_FORBIDDEN",
+    "source_selection_determines_ontology":"PASS_FORBIDDEN",
+    "target_mechanism_influences_admission":"PASS_FORBIDDEN",
+    "coverage_as_answer_key":"PASS_FORBIDDEN",
+    "constructor_requirements_author_semantic_authority":"PASS_FORBIDDEN",
+    "planner_indirect_authority":"PASS_FORBIDDEN",
+    "ontology_design_input_separated_from_regression_evidence":"PASS",
+    "author_unilateral_admission":"PASS_IMPOSSIBLE_BY_TWO_STAGE_SEPARATION",
+    "operational_rule_population":"PASS_ZERO"
+  },
+  "risk_assessment": {
+    "excessive_rigidity":"CONTROLLED_BY_PREDECLARED_UNSUPPORTED_BUT_INTENDED_CELLS_AND_COVERAGE_TARGETS",
+    "excessive_permissiveness":"CONTROLLED_BY_TYPED_ROLES_AFFORDANCES_PRECONDITIONS_AND_ADVERSARIAL_NEGATIVES",
+    "combinatorial_explosion":"CONTROLLED_BY_PREDICATE_FAMILIES_COMPOSITIONAL_TYPES_AND_RULE_BUDGET",
+    "ontology_ambiguity":"MATERIAL_REQUIRES_INDEPENDENT_ADJUDICATION_AND_VERSIONED_SCOPE",
+    "rule_author_subjectivity":"MATERIAL_REQUIRES_SEPARATE_ADJUDICATOR_AND_CAUSAL_REVIEWER",
+    "admission_scalability":"FEASIBLE_WITH_FIVE_BOUNDED_BATCHES_MAX_88_RULES",
+    "composition_complexity":"CONTROLLED_BY_GRAPH_CHECKS_AND_DEFAULT_THREE_EDGE_LIMIT",
+    "contamination":"LOW_IF_CURRICULUM_PRECOMMITMENT_AND_POST_FREEZE_HOLDOUT_ORDER_IS_ENFORCED"
+  },
+  "identified_design_blockers": [],
+  "operational_family_usable_rule_count": 0,
+  "pilot15_prepared": false,
+  "blind_material_accessed": false
+}

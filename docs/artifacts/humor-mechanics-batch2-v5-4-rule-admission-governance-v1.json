@@ -1,0 +1,29 @@
+{
+  "governance": "V5_4_RULE_ADMISSION_GOVERNANCE_V1",
+  "status": "DESIGN_ONLY_NO_RULES_ADMITTED",
+  "mandatory_separation": {
+    "verdict": "PASS_TWO_PERSON_TWO_STAGE_LOGICAL_SEPARATION_REQUIRED",
+    "rule_author_may_admit": false,
+    "rule_adjudicator_may_author": false,
+    "same_identity_forbidden": true,
+    "independent_causal_reviewer_required": true,
+    "independent_adversarial_reviewer_required": true
+  },
+  "admission_stages": [
+    "CURRICULUM_CELL_PRECOMMITMENT",
+    "SOURCE_BLIND_RULE_AUTHORING",
+    "SCHEMA_AND_CANONICAL_IDENTITY_VALIDATION",
+    "INDEPENDENT_SEMANTIC_ROLE_AND_AFFORDANCE_REVIEW",
+    "INDEPENDENT_CAUSAL_COUNTERFACTUAL_AND_NON_SUBSTITUTABILITY_REVIEW",
+    "ADVERSARIAL_OVERBREADTH_AND_COMPOSITION_REVIEW",
+    "HOLDOUT_REGRESSION_AFTER_RULE_CONTENT_FREEZE",
+    "IMMUTABLE_ADMISSION_RECEIPT",
+    "SEPARATE_ACTIVATION_DECISION"
+  ],
+  "provenance_requirements": ["PREDETERMINED_CURRICULUM_CELL","AUTHOR_AND_REVIEWER_IDENTITIES","TIMESTAMPED_CONTENT_COMMITMENT","NO_FAMILY_SOURCE_ACCESS","NO_BLIND_ACCESS","GENERAL_SEMANTIC_BASIS","REVIEW_EVIDENCE","VERSION_AND_SCOPE"],
+  "forbidden_inputs": ["CURRENT_OR_REJECTED_PILOT_NEED","FUTURE_FAMILY_SOURCE","HISTORICAL_SURFACE_WORDING","MECHANISM_OR_ANSWER_KEY","POOL_NEED","CONSTRUCTOR_SUCCESS_TARGET"],
+  "supersession": {"mutable_in_place":false,"new_identity_required":true,"old_rule_retained_for_audit":true,"automatic_authority_inheritance":false},
+  "revocation": {"deletion":false,"status":"REVOKED_BY_SIGNED_RECEIPT","future_use":false,"historical_evidence_unchanged":true},
+  "activation": "SEPARATE_OWNER_AUTHORIZATION_AFTER_ZERO_FAMILY_COVERAGE_QUALIFICATION",
+  "operational_rules_admitted": 0
+}
