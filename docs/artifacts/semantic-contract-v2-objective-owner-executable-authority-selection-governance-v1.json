@@ -1,0 +1,123 @@
+{
+  "schema": "OBJECTIVE_OWNER_EXECUTABLE_AUTHORITY_SELECTION_GOVERNANCE_V2_V1",
+  "status": "FROZEN_DESIGN_NO_FRAME_NO_SELECTION_NO_SOURCE",
+  "supersedes_execution_dependency": "HUMAN_EPISTEMIC_BLINDNESS_AND_EXTERNAL_REGISTRAR_APPOINTMENTS",
+  "preserves": "SOURCE_FRAME_TO_SELECTION_TO_SCOPE_TO_EXTRACTION_OUTCOME_INDEPENDENCE",
+  "validator_identity": "5b5292f37e41005b7d7a37a1893d436451ac1aa57edc089fa5da46fe2f2cba74",
+  "registry_union": {
+    "operation": "MANDATORY_UNION_NO_REGISTRY_CHOICE",
+    "roots": [
+      "CROSSREF_ANNUAL_PUBLIC_DATA_FILE",
+      "OPENALEX_PUBLIC_SNAPSHOT"
+    ],
+    "snapshot_rule": "FIRST_PUBLISHED_SNAPSHOT_AFTER_GOVERNANCE_FREEZE",
+    "crossref_reference": "https://www.crossref.org/services/metadata-retrieval/public-data-file/",
+    "openalex_reference": "https://docs.openalex.org/download-all-data",
+    "registry_add_remove_or_substitute": "REQUIRES_NEW_GOVERNANCE_VERSION_BEFORE_ANY_FRAME_EXECUTION"
+  },
+  "frame_derivation": {
+    "operation": "STREAM_COMPLETE_REGISTRY_UNION_DEDUPLICATE_BY_STABLE_RECORD_ID",
+    "metadata_fields": [
+      "STABLE_RECORD_ID",
+      "RESOURCE_LOCATOR",
+      "PUBLICATION_TYPE",
+      "LANGUAGE_IF_RECORDED",
+      "ACCESS_AND_LICENSE_METADATA",
+      "REGISTRY_PROVENANCE"
+    ],
+    "allowed_filters": [
+      "STABLE_IDENTIFIER_PRESENT",
+      "RESOURCE_LOCATOR_PRESENT",
+      "PUBLIC_ACCESS_OR_EXPLICIT_ACQUISITION_RIGHT_PRESENT",
+      "MACHINE_READABLE_METADATA_PRESENT"
+    ],
+    "semantic_query_or_keyword_filter": false,
+    "v2_relation_or_coverage_filter": false,
+    "complete_negative_space": true,
+    "owner_discretion": "NONE_AFTER_GOVERNANCE_FREEZE"
+  },
+  "entropy_anchor": {
+    "network": "DRAND_QUICKNET_MAINNET",
+    "chain_hash": "52db9ba70e0cc0f6eaf7803dd07447a1f5477735fd3f661792ba94600c84e971",
+    "scheme": "bls-unchained-g1-rfc9380",
+    "period_seconds": 3,
+    "genesis_time": 1692803367,
+    "round_rule": "FIRST_ROUND_AT_OR_AFTER_FRAME_COMMIT_TIME_PLUS_86400_SECONDS",
+    "round_formula": "floor_ceiling_target_offset_div_period_plus_one",
+    "api_reference": "https://docs.drand.love/developer/API-v2/drand-http-api/",
+    "cryptographic_verification_required": true,
+    "endpoint_quorum": "TWO_MATCHING_RESPONSES_FROM_DISTINCT_OFFICIAL_RELAYS_PLUS_SIGNATURE_VERIFICATION"
+  },
+  "selection": {
+    "input_order": "UTF8_BYTEWISE_STABLE_RECORD_ID",
+    "seed": "SHA256_DOMAIN_SEPARATOR_PLUS_FRAME_IDENTITY_PLUS_VERIFIED_DRAND_RANDOMNESS",
+    "algorithm": "SHA256_DOMAIN_SEPARATED_REJECTION_SAMPLING_V1",
+    "draws": 1,
+    "redraw": false,
+    "semantic_metadata_visible_to_algorithm": false,
+    "post_draw_eligibility_failure": "TERMINAL_NO_SOURCE_NO_REDRAW",
+    "owner_accept_reject_choice": false
+  },
+  "scope": {
+    "rule": "ALL_ACQUIRED_BYTES",
+    "semantic_exclusions": false,
+    "only_exclusion": "BYTES_NOT_LAWFULLY_OR_TECHNICALLY_ACQUIRED_CAUSE_TERMINAL_FAILURE",
+    "owner_scope_choice": false
+  },
+  "extraction": {
+    "policy_frozen_before_frame": true,
+    "phase_one": "LOSSLESS_ALL_BYTE_RANGES_BY_FROZEN_SEGMENTER",
+    "phase_two": "VISIT_EVERY_SEGMENT_IN_BYTE_ORDER_WITH_NO_DROPPING",
+    "semantic_mapping": "PROPOSE_OR_REJECT_EACH_SEGMENT_WITH_REASON_WITHOUT_REMOVING_RECORD",
+    "coverage_visible": false,
+    "relation_class_targets_visible": false,
+    "stopping_rule": "END_OF_SOURCE",
+    "deduplication": "LOG_EQUIVALENCE_GROUP_RETAIN_EVERY_OCCURRENCE",
+    "all_decisions_logged": true,
+    "basis_admission": "SEPARATE_LATER_PHASE_NOT_AUTHORIZED"
+  },
+  "evidence": {
+    "replay_from_public_inputs": true,
+    "complete_intermediate_hash_chain": true,
+    "records": [
+      "REGISTRY_SNAPSHOT_IDENTITIES",
+      "ALL_FRAME_INCLUSIONS_AND_EXCLUSIONS",
+      "FRAME_COMMIT_AND_TIME",
+      "DRAND_CHAIN_ROUND_RANDOMNESS_AND_SIGNATURE",
+      "CANONICAL_ORDER_AND_REJECTION_SAMPLING_TRACE",
+      "SELECTED_METADATA_IDENTITY",
+      "ALL_SOURCE_BYTE_SCOPE",
+      "ALL_SEGMENTS_AND_EXTRACTION_DECISIONS"
+    ],
+    "identity_labels_as_independence_proof": false,
+    "human_blindness_claim_required": false
+  },
+  "owner_execution": {
+    "v2_informed": true,
+    "role": "MECHANICAL_EXECUTOR_OF_FROZEN_REPLAYABLE_POLICY",
+    "may_choose_frame_source_scope_segment_or_redraw": false,
+    "may_abort_after_observing_result": false,
+    "abort_or_partial_run": "FROZEN_TERMINAL_FAILURE_WITH_COMPLETE_PARTIAL_TRACE",
+    "manual_override": false
+  },
+  "fail_closed": [
+    "REGISTRY_OR_SNAPSHOT_SKEW",
+    "INCOMPLETE_FRAME_OR_NEGATIVE_SPACE",
+    "SEMANTIC_FILTER_OR_QUERY",
+    "ENTROPY_SIGNATURE_OR_ENDPOINT_QUORUM_FAILURE",
+    "ROUND_OR_FRAME_TIME_SKEW",
+    "REDRAW_OR_ABORT_AFTER_OBSERVATION",
+    "PARTIAL_SCOPE",
+    "DROPPED_OR_UNLOGGED_SEGMENT",
+    "COVERAGE_OR_RELATION_CLASS_ACCESS",
+    "IDENTITY_OR_REPLAY_MISMATCH"
+  ],
+  "source_population_created": false,
+  "source_selected_or_acquired": false,
+  "semantic_content_accessed": false,
+  "authority_basis_created_or_admitted": false,
+  "curriculum_population_started": false,
+  "pilot15_prepared": false,
+  "blind_or_future_family_access": false,
+  "governance_identity": "ed1effdc0291ea759c2fb2e56d80d9e6dd9782f18a9f364fac393603e65e9a06"
+}
