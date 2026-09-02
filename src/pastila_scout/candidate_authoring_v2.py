@@ -9,21 +9,26 @@ from typing import Any,Iterable,Mapping
 from .relation_contract_v2 import SPECS,candidate_identity,evidence_identity
 
 EPHEMERAL=frozenset({"candidate_identity","batch","sequence","nonce","timestamp","label","author_identity","adjudicator_identity","filename"})
+SUBSTANTIVE_FIELDS=("relation_class","actor_class","patient_class","roles","operands","affordances","continuity","dependency_test","claimed_result","scope","claimed_result_licensed","arbitrary_substitution_rejected","alternative_results_allowed","terminal","semantic_basis_identity")
 
 def _canonical(value:Any)->Any:
-    if isinstance(value,Mapping):return {k:_canonical(v) for k,v in sorted(value.items()) if k not in EPHEMERAL}
+    if isinstance(value,Mapping):return {k:_canonical(v) for k,v in sorted(value.items())}
     if isinstance(value,(list,tuple)):return [_canonical(v) for v in value]
     return value
 
 def semantic_primitive_identity(candidate:Mapping[str,Any])->str:
     """Identity over substantive semantics only, excluding ephemeral metadata."""
-    payload=_canonical(candidate)
+    payload=_canonical({k:candidate[k] for k in SUBSTANTIVE_FIELDS if k in candidate})
     return hashlib.sha256(json.dumps(payload,ensure_ascii=False,sort_keys=True,separators=(",",":")).encode()).hexdigest()
 
 def evidence_basis_identity(basis:Mapping[str,Any])->str:
-    return hashlib.sha256(json.dumps(_canonical(basis),ensure_ascii=False,sort_keys=True,separators=(",",":")).encode()).hexdigest()
+    payload={k:v for k,v in basis.items() if k not in EPHEMERAL}
+    return hashlib.sha256(json.dumps(_canonical(payload),ensure_ascii=False,sort_keys=True,separators=(",",":")).encode()).hexdigest()
 
-def author_from_basis(basis:Mapping[str,Any],*,author_identity:str,adjudicator_identity:str,metadata:Mapping[str,Any]|None=None):
+def authority_identity(authority:Mapping[str,Any])->str:
+    return hashlib.sha256(json.dumps(_canonical({k:v for k,v in authority.items() if k!="authority_identity"}),ensure_ascii=False,sort_keys=True,separators=(",",":")).encode()).hexdigest()
+
+def author_from_basis(basis:Mapping[str,Any],*,author_identity:str,adjudicator_identity:str,authorities:Iterable[Mapping[str,Any]],metadata:Mapping[str,Any]|None=None):
     """Create evidence authority content first, then candidate and final bindings."""
     rc=str(basis.get("relation_class"));spec=SPECS.get(rc)
     if not spec:raise ValueError("unknown relation class")
@@ -32,14 +37,20 @@ def author_from_basis(basis:Mapping[str,Any],*,author_identity:str,adjudicator_i
     if basis.get("origin_order")!="INDEPENDENT_BASIS_BEFORE_EVIDENCE_BEFORE_CANDIDATE":raise ValueError("evidence-first protocol bypass")
     if basis.get("chain_slot") is not None:raise ValueError("V1 chain-slot recurrence")
     if basis.get("generic_produced_state") is True:raise ValueError("unlicensed generic produced-state manufacturing")
-    authority={"basis_identity":evidence_basis_identity(basis),"provenance_identity":basis["authority_provenance"],"canonical_semantic_content":_canonical(basis)}
-    c={"relation_class":rc,"actor_class":basis["actor_class"],"patient_class":basis["patient_class"],"operands":list(basis["operands"]),"affordances":list(basis.get("affordances",spec.required_affordances)),"continuity":{"kind":spec.continuity,"binding":basis.get("continuity_binding")},"dependency_test":spec.dependency,"claimed_result":basis["claimed_result"],"scope":basis["scope"],"claimed_result_licensed":True,"arbitrary_substitution_rejected":True,"alternative_results_allowed":spec.alternatives_allowed,"terminal":{"enabled":False},"semantic_basis_identity":authority["basis_identity"],"author_identity":author_identity,"adjudicator_identity":adjudicator_identity,"candidate_identity":""}
-    if metadata:c.update(metadata)
+    basis_id=evidence_basis_identity(basis); required_kinds={spec.evidence_kind,"contrast_alternatives","semantic_authority"}; authority_list=list(authorities); authority_by_kind={a.get("kind"):a for a in authority_list}
+    if len(authority_list)!=len(authority_by_kind):raise ValueError("duplicate authority kind")
+    if set(authority_by_kind)!=required_kinds:raise ValueError("exact independent authority set required")
+    for kind,a in authority_by_kind.items():
+        if a.get("authority_identity")!=authority_identity(a):raise ValueError("authority identity mismatch")
+        if a.get("basis_identity")!=basis_id or a.get("relation_class")!=rc or a.get("source_provenance_identity")!=basis["authority_provenance"]:raise ValueError("authority binding mismatch")
+        if a.get("trust_domain_owner") in {author_identity,"RULE_AUTHOR","PLANNER"} or not a.get("independent"):raise ValueError("self-derived authority")
+    authority={"basis_identity":basis_id,"provenance_identity":basis["authority_provenance"],"canonical_semantic_content":_canonical(basis)}
+    c={"relation_class":rc,"actor_class":basis["actor_class"],"patient_class":basis["patient_class"],"roles":{"actor":basis.get("actor_role","ACTOR"),"patient":basis.get("patient_role","PATIENT")},"operands":list(basis["operands"]),"affordances":list(basis.get("affordances",spec.required_affordances)),"continuity":{"kind":spec.continuity,"binding":basis.get("continuity_binding")},"dependency_test":spec.dependency,"claimed_result":basis["claimed_result"],"scope":basis["scope"],"claimed_result_licensed":True,"arbitrary_substitution_rejected":True,"alternative_results_allowed":spec.alternatives_allowed,"terminal":{"enabled":False},"semantic_basis_identity":authority["basis_identity"],"author_identity":author_identity,"adjudicator_identity":adjudicator_identity,"candidate_identity":""}
     c["candidate_identity"]=candidate_identity(c)
     evidence=[]
-    for kind in {spec.evidence_kind,"contrast_alternatives","semantic_authority"}:
-        e={"kind":kind,"relation_class":rc,"candidate_identity":c["candidate_identity"],"provenance_identity":authority["provenance_identity"],"trust_domain_owner":"INDEPENDENT_GENERAL_SEMANTIC_AUTHORITY","independent":True,"operands":c["operands"],"canonical_content":{"basis_identity":authority["basis_identity"],"kind":kind},"evidence_identity":""};e["evidence_identity"]=evidence_identity(e);evidence.append(e)
-    return c,evidence,authority
+    for kind in sorted(required_kinds):
+        source=authority_by_kind[kind];e={"kind":kind,"relation_class":rc,"candidate_identity":c["candidate_identity"],"provenance_identity":source["authority_identity"],"trust_domain_owner":source["trust_domain_owner"],"independent":True,"operands":c["operands"],"roles":c["roles"],"canonical_content":source["canonical_semantic_content"],"evidence_identity":""};e["evidence_identity"]=evidence_identity(e);evidence.append(e)
+    return c,evidence,{"basis":authority,"execution_metadata":dict(metadata or {})}
 
 def duplicate_report(candidates:Iterable[Mapping[str,Any]])->dict[str,Any]:
     ids=[semantic_primitive_identity(c) for c in candidates];total=len(ids);unique=len(set(ids))

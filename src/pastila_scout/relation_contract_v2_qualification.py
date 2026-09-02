@@ -4,12 +4,12 @@ from copy import deepcopy
 from .relation_contract_v2 import SPECS,adjudicate,candidate_identity,evidence_identity,validate_composition
 
 def candidate(rc):
- s=SPECS[rc]; c={"relation_class":rc,"actor_class":s.actor_classes[0],"patient_class":s.patient_classes[0],"operands":["ACTOR_1","PATIENT_1"],"affordances":list(s.required_affordances),"continuity":{"kind":s.continuity},"dependency_test":s.dependency,"claimed_result_licensed":True,"arbitrary_substitution_rejected":True,"alternative_results_allowed":s.alternatives_allowed,"terminal":{"enabled":True,"authority":True,"continuity":True,"licensed_result":True,"non_arbitrary":True},"author_identity":"AUTHOR_A","adjudicator_identity":"ADJUDICATOR_B","candidate_identity":""}; c["candidate_identity"]=candidate_identity(c); return c
+ s=SPECS[rc]; c={"relation_class":rc,"actor_class":s.actor_classes[0],"patient_class":s.patient_classes[0],"roles":{"actor":"ACTOR","patient":"PATIENT"},"operands":["ACTOR_1","PATIENT_1"],"affordances":list(s.required_affordances),"continuity":{"kind":s.continuity},"dependency_test":s.dependency,"claimed_result_licensed":True,"arbitrary_substitution_rejected":True,"alternative_results_allowed":s.alternatives_allowed,"terminal":{"enabled":True,"authority":True,"continuity":True,"licensed_result":True,"non_arbitrary":True},"author_identity":"AUTHOR_A","adjudicator_identity":"ADJUDICATOR_B","candidate_identity":""}; c["candidate_identity"]=candidate_identity(c); return c
 
 def evidence(c):
  kinds={SPECS[c["relation_class"]].evidence_kind,"contrast_alternatives","semantic_authority"}; out=[]
  for kind in kinds:
-  e={"kind":kind,"relation_class":c["relation_class"],"candidate_identity":c["candidate_identity"],"provenance_identity":"PROVENANCE_"+kind,"trust_domain_owner":"INDEPENDENT_"+kind,"independent":True,"operands":c["operands"],"canonical_content":{"predicate":kind},"evidence_identity":""};e["evidence_identity"]=evidence_identity(e);out.append(e)
+  e={"kind":kind,"relation_class":c["relation_class"],"candidate_identity":c["candidate_identity"],"provenance_identity":"PROVENANCE_"+kind,"trust_domain_owner":"INDEPENDENT_"+kind,"independent":True,"operands":c["operands"],"roles":c["roles"],"canonical_content":{"predicate":kind},"evidence_identity":""};e["evidence_identity"]=evidence_identity(e);out.append(e)
  return out
 
 def reviews(c,ev):

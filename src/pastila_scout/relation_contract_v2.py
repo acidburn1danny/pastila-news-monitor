@@ -55,6 +55,7 @@ def validate_candidate(candidate: Mapping[str,Any], evidence: list[Mapping[str,A
         if e.get("trust_domain_owner") in {"RULE_AUTHOR","PLANNER"}:b.append("SELF_AUTHORIZING_EVIDENCE");continue
         if e.get("independent") is not True or not e.get("provenance_identity"):b.append("UNTRUSTED_EVIDENCE");continue
         if e.get("operands")!=candidate.get("operands"):b.append("EVIDENCE_OPERAND_SKEW");continue
+        if e.get("roles")!=candidate.get("roles"):b.append("EVIDENCE_ROLE_SKEW");continue
         bound.append(e)
     kinds={e["kind"] for e in bound}
     for kind in required-kinds:b.append("MISSING_EVIDENCE:"+kind)

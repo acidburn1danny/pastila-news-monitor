@@ -1,6 +1,6 @@
 from copy import deepcopy
 import pytest
-from pastila_scout.candidate_authoring_v2 import author_from_basis,duplicate_report,evidence_basis_identity,paths_conform,semantic_primitive_identity
+from pastila_scout.candidate_authoring_v2 import authority_identity,author_from_basis,duplicate_report,evidence_basis_identity,paths_conform,semantic_primitive_identity
 from pastila_scout.curriculum_v2_design import BATCHES
 from pastila_scout.relation_contract_v2 import adjudicate,SPECS
 from pastila_scout.relation_contract_v2_qualification import reviews
@@ -19,7 +19,12 @@ def bases():
    s=SPECS[rc];out.append({"relation_class":rc,"semantic_basis":sub,"actor_class":s.actor_classes[0],"patient_class":patient,"operands":[f"{sub}-actor",f"{sub}-patient"],"claimed_result":result,"scope":{"domain":sub},"authority_provenance":f"general-semantic-authority:{rc}:{sub}","continuity_binding":f"{sub}-continuity","origin_order":"INDEPENDENT_BASIS_BEFORE_EVIDENCE_BEFORE_CANDIDATE"})
  return out
 
-def author(b,meta=None):return author_from_basis(b,author_identity=AUTHOR,adjudicator_identity=ADJ,metadata=meta)
+def authorities(b):
+ s=SPECS[b["relation_class"]];bid=evidence_basis_identity(b);out=[]
+ for kind in sorted({s.evidence_kind,"contrast_alternatives","semantic_authority"}):
+  a={"kind":kind,"basis_identity":bid,"relation_class":b["relation_class"],"source_provenance_identity":b["authority_provenance"],"trust_domain_owner":"INDEPENDENT_AUTHORITY:"+kind,"independent":True,"canonical_semantic_content":{"basis":b["semantic_basis"],"kind":kind},"authority_identity":""};a["authority_identity"]=authority_identity(a);out.append(a)
+ return out
+def author(b,meta=None):return author_from_basis(b,author_identity=AUTHOR,adjudicator_identity=ADJ,authorities=authorities(b),metadata=meta)
 
 def test_replay_16_are_substantively_distinct_and_adjudicable():
  packages=[author(b) for b in bases()];cs=[p[0] for p in packages];assert duplicate_report(cs)["duplicate_rate"]==0
@@ -33,7 +38,7 @@ def test_four_identifier_only_variants_trigger_duplicate_stop():
  b=bases()[0];cs=[author(b,{"sequence":i,"nonce":str(i)})[0] for i in range(4)];assert duplicate_report(cs)["duplicate_rate"]==0.75
 
 def test_evidence_changes_with_substantive_basis():
- packages=[author(b) for b in bases()[:4]];assert len({p[2]["basis_identity"] for p in packages})==4;assert len({p[1][0]["canonical_content"]["basis_identity"] for p in packages})==4
+ packages=[author(b) for b in bases()[:4]];assert len({p[2]["basis"]["basis_identity"] for p in packages})==4;assert len({p[1][0]["provenance_identity"] for p in packages})==4
 
 def test_dry_and_execution_are_same_canonical_path():
  f=lambda b:author(b);assert paths_conform(f,f,bases())
@@ -45,4 +50,42 @@ def test_chain_slot_generic_state_and_reverse_order_fail():
   with pytest.raises(ValueError):author(x)
 
 def test_cross_class_templates_do_not_collapse():
- cs=[author(next(b for b in bases() if b["relation_class"]==rc))[0] for rc in BATCHES[1]];assert len(set(duplicate_report(cs)["identities"]))==4
+    cs=[author(next(b for b in bases() if b["relation_class"]==rc))[0] for rc in BATCHES[1]];assert len(set(duplicate_report(cs)["identities"]))==4
+
+def test_author_cannot_synthesize_or_own_authority():
+ b=bases()[0];auth=authorities(b);auth[0]["trust_domain_owner"]=AUTHOR;auth[0]["authority_identity"]=authority_identity(auth[0])
+ with pytest.raises(ValueError,match="self-derived"):author_from_basis(b,author_identity=AUTHOR,adjudicator_identity=ADJ,authorities=auth)
+
+def test_nested_substantive_label_and_time_are_not_stripped():
+ b=bases()[0];c=author(b)[0];z=deepcopy(c);z["scope"]={"label":"different-semantic-label","timestamp":"event-time"}
+ assert semantic_primitive_identity(c)!=semantic_primitive_identity(z)
+
+def test_evidence_order_is_deterministic():
+ b=bases()[0];first=author(b)[1];second=author_from_basis(b,author_identity=AUTHOR,adjudicator_identity=ADJ,authorities=reversed(authorities(b)))[1]
+ assert [e["evidence_identity"] for e in first]==[e["evidence_identity"] for e in second]
+
+def all_five_batch_bases():
+ out=[]
+ for batch,classes in BATCHES.items():
+  for rc in classes:
+   s=SPECS[rc]
+   for ordinal,aspect in enumerate(("initiation","transformation","verification","bounded-result"),1):
+    out.append({"relation_class":rc,"semantic_basis":f"{rc.lower()}:{aspect}","actor_class":s.actor_classes[0],"patient_class":s.patient_classes[(ordinal-1)%len(s.patient_classes)],"operands":[f"{rc}:{aspect}:actor",f"{rc}:{aspect}:patient"],"claimed_result":f"{rc}:{aspect}:result","scope":{"domain":rc.lower(),"aspect":aspect},"authority_provenance":f"independent:{rc}:{aspect}","continuity_binding":f"{rc}:{aspect}:continuity","origin_order":"INDEPENDENT_BASIS_BEFORE_EVIDENCE_BEFORE_CANDIDATE","batch":batch})
+ return out
+
+def test_all_five_batches_share_one_path_and_have_zero_false_duplicates():
+ bs=all_five_batch_bases();assert len(bs)==68
+ assert paths_conform(lambda b:author(b),lambda b:author(b,{"sequence":"execution"}),bs)
+ packages=[author(b) for b in bs];assert duplicate_report([p[0] for p in packages])["duplicate_rate"]==0
+ assert all(adjudicate(c,e,reviews(c,e))["verdict"].startswith("PASS") for c,e,_ in packages)
+
+def test_duplicate_authority_kind_and_provenance_skew_fail():
+ b=bases()[0];auth=authorities(b)
+ with pytest.raises(ValueError,match="duplicate authority"):author_from_basis(b,author_identity=AUTHOR,adjudicator_identity=ADJ,authorities=auth+[auth[0]])
+ auth=authorities(b);auth[0]["source_provenance_identity"]="wrong";auth[0]["authority_identity"]=authority_identity(auth[0])
+ with pytest.raises(ValueError,match="authority binding"):author_from_basis(b,author_identity=AUTHOR,adjudicator_identity=ADJ,authorities=auth)
+
+def test_evidence_roles_are_explicit_and_skew_fails():
+ c,e,_=author(bases()[0]);assert all(x["roles"]==c["roles"] for x in e)
+ e[0]["roles"]={"actor":"PATIENT","patient":"ACTOR"};e[0]["evidence_identity"]=__import__('pastila_scout.relation_contract_v2',fromlist=['evidence_identity']).evidence_identity(e[0])
+ assert "EVIDENCE_ROLE_SKEW" in adjudicate(c,e,reviews(c,e))["blockers"]
