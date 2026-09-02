@@ -1,0 +1,9 @@
+{
+  "iteration": 3,
+  "finding": "EDGE_RESTATEMENT_AND_DERIVED_CLASS_CYCLE_COULD_PASS_STRUCTURAL_NECESSITY",
+  "violated_invariant": "a causal edge must make licensed semantic progress rather than restate or cycle derived state",
+  "repair": "reject exact operand-signature restatements and repeated derived result classes",
+  "real_family_invocations": "0/0/0",
+  "capabilities_consumed": 0,
+  "candidates_created": 0
+}

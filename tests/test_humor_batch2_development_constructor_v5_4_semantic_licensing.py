@@ -176,3 +176,40 @@ def test_unrelated_vocabulary_and_predicate_permutations_never_create_a_rule(ent
                 rule("control", "TRIGGER", "TIMER_EVENT", "ALARM", actor_role="TRIGGER",
                      patient_role="TRIGGERABLE", actor_affordance="FIRE", patient_affordance="BE_TRIGGERED"),
             )))
+
+
+def test_edge_restatement_rule_fails_even_when_trusted_and_typed():
+    restatement = TrustedSemanticRule("restatement", RuleOrigin.FROZEN_GENERIC_ONTOLOGY, "RESTATE",
+        frozenset({"STATUS"}), frozenset({"LOG"}), frozenset({"STATE"}), frozenset({"RECORD"}),
+        frozenset({"DESCRIBE"}), frozenset({"RECEIVE"}), "STATUS", frozenset({"STATE"}),
+        frozenset({"DESCRIBE"}), frozenset())
+    with pytest.raises(ValueError, match="restates"):
+        validate_and_license_plan(authority_operands=(
+            operand("status", "STATUS", {"STATE"}, {"DESCRIBE"}),
+            operand("log", "LOG", {"RECORD"}, {"RECEIVE"}),
+        ), proposed_relations=(ProposedRelation("r", None, "RESTATE", "status", "log", "same",
+            "restatement", True),), registry=TrustedRuleRegistry((restatement,)))
+
+
+def test_derived_class_cycle_fails_closed():
+    first = TrustedSemanticRule("to-b", RuleOrigin.FROZEN_GENERIC_ONTOLOGY, "STEP1",
+        frozenset({"A"}), frozenset({"INPUT"}), frozenset({"ACTOR"}), frozenset({"PATIENT"}),
+        frozenset({"ACT"}), frozenset({"RECEIVE"}), "B", frozenset({"ACTOR_B"}),
+        frozenset({"ACT_B"}), frozenset())
+    second = TrustedSemanticRule("to-c", RuleOrigin.FROZEN_GENERIC_ONTOLOGY, "STEP2",
+        frozenset({"B"}), frozenset({"INPUT"}), frozenset({"ACTOR_B"}), frozenset({"PATIENT"}),
+        frozenset({"ACT_B"}), frozenset({"RECEIVE"}), "C", frozenset({"ACTOR_C"}),
+        frozenset({"ACT_C"}), frozenset())
+    third = TrustedSemanticRule("back-c", RuleOrigin.FROZEN_GENERIC_ONTOLOGY, "STEP3",
+        frozenset({"C"}), frozenset({"INPUT"}), frozenset({"ACTOR_C"}), frozenset({"PATIENT"}),
+        frozenset({"ACT_C"}), frozenset({"RECEIVE"}), "B", frozenset({"NEW_B"}),
+        frozenset({"NEW_ACT"}), frozenset())
+    registry = TrustedRuleRegistry((first, second, third))
+    with pytest.raises(ValueError, match="cycle"):
+        validate_and_license_plan(authority_operands=(
+            operand("a", "A", {"ACTOR"}, {"ACT"}), operand("input", "INPUT", {"PATIENT"}, {"RECEIVE"}),
+        ), proposed_relations=(
+            ProposedRelation("r1", None, "STEP1", "a", "input", "b1", "to-b"),
+            ProposedRelation("r2", "r1", "STEP2", "b1", "input", "c", "to-c"),
+            ProposedRelation("r3", "r2", "STEP3", "c", "input", "b2", "back-c", True),
+        ), registry=registry)

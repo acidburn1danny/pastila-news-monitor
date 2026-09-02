@@ -142,6 +142,7 @@ def validate_and_license_plan(
     previous: str | None = None
     produced_by_relation: dict[str, str] = {}
     counterfactuals: list[CounterfactualEdgeResult] = []
+    derived_classes: set[str] = set()
 
     for index, relation in enumerate(proposed_relations):
         if relation.relation_id in seen_relations:
@@ -176,6 +177,11 @@ def validate_and_license_plan(
         elif rule.source_authority_ids:
             raise ValueError("generic ontology rule cannot claim source authority")
 
+        if previous is not None:
+            predecessor_result = produced_by_relation[previous]
+            consumed = relation.actor_id == predecessor_result or relation.patient_id == predecessor_result
+            if not consumed:
+                raise ValueError("successor does not consume the immediate predecessor result")
         result = SemanticOperand(
             relation.result_id,
             rule.result_class,
@@ -183,12 +189,16 @@ def validate_and_license_plan(
             rule.result_affordances,
             actor.authority_ids | patient.authority_ids | rule.source_authority_ids,
         )
+        actor_signature = (actor.entity_class, actor.roles, actor.affordances)
+        patient_signature = (patient.entity_class, patient.roles, patient.affordances)
+        result_signature = (result.entity_class, result.roles, result.affordances)
+        if result_signature in {actor_signature, patient_signature}:
+            raise ValueError("semantic edge merely restates an input operand")
+        if result.entity_class in derived_classes:
+            raise ValueError("semantic plan contains a derived-class cycle")
         operands[result.operand_id] = result
+        derived_classes.add(result.entity_class)
         if previous is not None:
-            predecessor_result = produced_by_relation[previous]
-            consumed = relation.actor_id == predecessor_result or relation.patient_id == predecessor_result
-            if not consumed:
-                raise ValueError("successor does not consume the immediate predecessor result")
             # This evidence is validator-derived: remove the predecessor result and
             # the successor necessarily loses a required bound argument.
             counterfactuals.append(CounterfactualEdgeResult(
