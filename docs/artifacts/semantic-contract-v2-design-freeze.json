@@ -1,0 +1,32 @@
+{
+  "schema":"RELATION_CLASSED_CONTRACT_SCHEMA_V2_DESIGN_FREEZE",
+  "verdict":"PASS_SOURCE_BLIND_ZERO_FAMILY_RELATION_CLASSED_CONTRACT_SCHEMA_V2_DESIGN",
+  "identities":{
+    "ontology_v2":"09e6c27e2b19e4f9ff4fbb9009480f959a7cc78db77f34b436abdf79ae00b5ad",
+    "ontology_delta":"d3f877c5f9fdb2785489f2f45ceb6c360017b03d05353cba054489a207bbac9a",
+    "relation_taxonomy":"2bd049892a10275ddaabb8f2da60d9ae30e5b1ead16f22fdbf217029a2b4a2f8",
+    "contract_v2":"ad88df990a73632d0ae15bfd5e0cb3b0a406240ce166538747686c8fd214d0d3",
+    "rule_schema_v2":"052f877c21bd420e9fd493b3b66e539cda704581a21ebbfde8b7c33e2699c587",
+    "evidence_schema_v2":"1cc2db78b17ddacad9a8ea1a046e9ed876d635b93077fcb1e76df43dc8aaa5df",
+    "admission_governance_v2":"8be28b19fb2d5e83e3d008696bcd2a9bc6ddf74b9a9691bb0d82e6b47cfa6b27",
+    "adjudicator_v2_specification":"18f0125c90956c950e823b6388d93b42f8cfa8852e10ee8810937de4ecd69679",
+    "composition_v2":"8a8a424bfe9f67a200ad4d74517a97a17e0715ccdfc25cb03b1169e30c592dda",
+    "satisfiability_audit":"d74c50b2592e9d94d7f19cfb72a9e8a25a8fe28df06e251b64e40b305713abf3",
+    "p13_safety_audit":"acd128dda2a59e2d75b95646d6864f03b1ec2e6819a65fd5b5a3c9897604ec74",
+    "anti_self_validation_audit":"f2310d1a9e4cf00ee88d5ed59792d07a4130ade8b6889f58f3892b183885a94f"
+  },
+  "supported_relation_classes":17,
+  "positive_design_witnesses":"PASS_17_OF_17",
+  "p13_negative_controls":"PASS_7_OF_7_REJECTED",
+  "design_tests":"20 passed",
+  "unresolved_design_blockers":[],
+  "future_curriculum_requirements":["INDEPENDENT_OF_COVERAGE_FEEDBACK","RELATION_CLASS_BALANCED","EVIDENCE_OBJECTS_PRECOMMITTED","NO_TEMPLATE_CHAIN_SLOT_GENERATION","NO_SELF_AUTHORITY","CLASS_SPECIFIC_CONTINUITY","NEGATIVE_CONTROLS_PER_CLASS"],
+  "runtime_implementation_created":false,
+  "rules_populated":0,
+  "rules_admitted":0,
+  "rules_activated":0,
+  "frozen_v1_catalog_modified":false,
+  "pilot15_prepared":false,
+  "blind_access":false,
+  "implementation_readiness":"READY_FOR_SEPARATE_V2_IMPLEMENTATION_AND_EXECUTABLE_QUALIFICATION"
+}
