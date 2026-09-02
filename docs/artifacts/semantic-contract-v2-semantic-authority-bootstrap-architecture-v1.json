@@ -1,0 +1,88 @@
+{
+  "schema": "SEMANTIC_AUTHORITY_BOOTSTRAP_ARCHITECTURE_V2_V1",
+  "status": "DESIGN_FROZEN_NO_AUTHORITY_BASE_CREATED",
+  "diagnostic_identity": "fd6fd634aa206280b23cf15c9e78d39a37fcb794192e813dc5fd0dadd2b328db",
+  "objective": "NON_CIRCULAR_GOVERNED_EXTERNAL_GENERAL_SEMANTIC_AUTHORITY",
+  "pipeline": [
+    "GENERAL_SEMANTIC_AUTHORITY_SOURCE",
+    "GOVERNED_AUTHORITY_BASIS",
+    "INDEPENDENT_ADMISSION_VERIFICATION",
+    "CANDIDATE_AUTHORING",
+    "CANDIDATE_BOUND_EVIDENCE",
+    "RULE_ADJUDICATION"
+  ],
+  "trust_domains": {
+    "source_owner": "SUPPLIES_PREEXISTING_GENERAL_SEMANTIC_CONTENT_AND_PROVENANCE",
+    "authority_verifier": "VALIDATES_SOURCE_PROVENANCE_SCOPE_AND_BASIS_BINDING_WITHOUT_AUTHORING_CONTENT",
+    "candidate_author": "CONSUMES_ONLY_ADMITTED_AUTHORITY_AND_CANNOT CREATE_OR_AMEND_IT",
+    "rule_adjudicator": "READ_ONLY_REVIEW_OF_FROZEN_CANDIDATE_AND_EVIDENCE",
+    "activation_authority": "SEPARATE_LATER_AUTHORITY_NOT_EXERCISED"
+  },
+  "mandatory_separation": [
+    "SOURCE_OWNER_NE_AUTHORITY_VERIFIER",
+    "SOURCE_OWNER_NE_CANDIDATE_AUTHOR",
+    "SOURCE_OWNER_NE_RULE_ADJUDICATOR",
+    "AUTHORITY_VERIFIER_NE_CANDIDATE_AUTHOR",
+    "AUTHORITY_VERIFIER_NE_RULE_ADJUDICATOR",
+    "CANDIDATE_AUTHOR_NE_RULE_ADJUDICATOR"
+  ],
+  "source_manifest_required": [
+    "source_identity",
+    "origin",
+    "source_owner",
+    "provenance_identity",
+    "source_commitment",
+    "synthetic_qualification_fixture"
+  ],
+  "admission_receipt_required": [
+    "admission_identity",
+    "source_identity",
+    "authority_identity",
+    "basis_identity",
+    "relation_class",
+    "kind",
+    "verifier_identity",
+    "verdict",
+    "fail_closed",
+    "candidate_identity"
+  ],
+  "admission_invariants": {
+    "external_origin_exact": "EXTERNAL_GOVERNED_GENERAL_SEMANTIC_SOURCE",
+    "synthetic_fixture_may_be_authority": false,
+    "candidate_dependent_admission": false,
+    "asserted_independence_sufficient": false,
+    "identity_only_provenance_sufficient": false,
+    "candidate_author_may_synthesize_evidence_authority": false,
+    "dry_fixture_may_enter_governed_execution": false,
+    "missing_or_skewed_binding": "FAIL_CLOSED_BEFORE_CANDIDATE_AUTHORING"
+  },
+  "identity_graph": {
+    "source_identity": "CANONICAL_SOURCE_MANIFEST_EXCLUDING_SOURCE_IDENTITY",
+    "basis_identity": "CANONICAL_SUBSTANTIVE_SEMANTIC_BASIS",
+    "authority_identity": "CANONICAL_AUTHORITY_CONTENT_EXCLUDING_AUTHORITY_IDENTITY_AND_ADMISSION_RECEIPT",
+    "admission_identity": "CANONICAL_ADMISSION_RECEIPT_EXCLUDING_ADMISSION_IDENTITY",
+    "acyclic_order": [
+      "SOURCE_IDENTITY",
+      "BASIS_IDENTITY",
+      "AUTHORITY_IDENTITY",
+      "ADMISSION_IDENTITY",
+      "CANDIDATE_IDENTITY",
+      "EVIDENCE_IDENTITY",
+      "ADJUDICATION_IDENTITY"
+    ]
+  },
+  "class_requirements": {
+    "semantic_authority": "EXTERNAL_SOURCE_PLUS_INDEPENDENT_ADMISSION",
+    "relation_specific_authority": "EXTERNAL_SOURCE_PLUS_INDEPENDENT_ADMISSION",
+    "contrast_alternatives": "EXTERNAL_SOURCE_PLUS_INDEPENDENT_ADMISSION",
+    "candidate_bound_evidence": "DERIVED_ONLY_AFTER_AUTHORITY_ADMISSION_AND_NEVER_PROMOTED_BACK_TO_AUTHORITY",
+    "review_evidence": "INDEPENDENT_READ_ONLY_REVIEW_BOUND_TO_FROZEN_EVIDENCE_IDENTITIES"
+  },
+  "no_authority_content_created": true,
+  "bootstrap_validator_implementation_identity": "2a99074c7aadf9a7a7f21d27a320efcfed10b5976d62ac20058d13dee94f537c",
+  "candidate_authoring_consumer_identity": "934fa60b6a204af5746fd90949925d3efa41c2902fb063cb1e957d5410e166f3",
+  "population_started": false,
+  "pilot15_prepared": false,
+  "blind_or_future_family_access": false,
+  "architecture_identity": "303e76185c6b2ca20e0b65982c0311f748f836ba1b784b6d555b8773ccaf66a0"
+}

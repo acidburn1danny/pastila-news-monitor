@@ -7,6 +7,7 @@ from __future__ import annotations
 import hashlib,json
 from typing import Any,Iterable,Mapping
 from .relation_contract_v2 import SPECS,candidate_identity,evidence_identity
+from .semantic_authority_bootstrap_v2 import authority_content_identity,verify_admitted_authority
 
 EPHEMERAL=frozenset({"candidate_identity","batch","sequence","nonce","timestamp","label","author_identity","adjudicator_identity","filename"})
 SUBSTANTIVE_FIELDS=("relation_class","actor_class","patient_class","roles","operands","affordances","continuity","dependency_test","claimed_result","scope","claimed_result_licensed","arbitrary_substitution_rejected","alternative_results_allowed","terminal","semantic_basis_identity")
@@ -26,7 +27,7 @@ def evidence_basis_identity(basis:Mapping[str,Any])->str:
     return hashlib.sha256(json.dumps(_canonical(payload),ensure_ascii=False,sort_keys=True,separators=(",",":")).encode()).hexdigest()
 
 def authority_identity(authority:Mapping[str,Any])->str:
-    return hashlib.sha256(json.dumps(_canonical({k:v for k,v in authority.items() if k!="authority_identity"}),ensure_ascii=False,sort_keys=True,separators=(",",":")).encode()).hexdigest()
+    return authority_content_identity(authority)
 
 def author_from_basis(basis:Mapping[str,Any],*,author_identity:str,adjudicator_identity:str,authorities:Iterable[Mapping[str,Any]],metadata:Mapping[str,Any]|None=None):
     """Create evidence authority content first, then candidate and final bindings."""
@@ -41,9 +42,7 @@ def author_from_basis(basis:Mapping[str,Any],*,author_identity:str,adjudicator_i
     if len(authority_list)!=len(authority_by_kind):raise ValueError("duplicate authority kind")
     if set(authority_by_kind)!=required_kinds:raise ValueError("exact independent authority set required")
     for kind,a in authority_by_kind.items():
-        if a.get("authority_identity")!=authority_identity(a):raise ValueError("authority identity mismatch")
-        if a.get("basis_identity")!=basis_id or a.get("relation_class")!=rc or a.get("source_provenance_identity")!=basis["authority_provenance"]:raise ValueError("authority binding mismatch")
-        if a.get("trust_domain_owner") in {author_identity,"RULE_AUTHOR","PLANNER"} or not a.get("independent"):raise ValueError("self-derived authority")
+        verify_admitted_authority(a,basis_identity=basis_id,relation_class=rc,evidence_kind=kind,source_provenance_identity=basis["authority_provenance"],candidate_author_identity=author_identity,candidate_adjudicator_identity=adjudicator_identity)
     authority={"basis_identity":basis_id,"provenance_identity":basis["authority_provenance"],"canonical_semantic_content":_canonical(basis)}
     c={"relation_class":rc,"actor_class":basis["actor_class"],"patient_class":basis["patient_class"],"roles":{"actor":basis.get("actor_role","ACTOR"),"patient":basis.get("patient_role","PATIENT")},"operands":list(basis["operands"]),"affordances":list(basis.get("affordances",spec.required_affordances)),"continuity":{"kind":spec.continuity,"binding":basis.get("continuity_binding")},"dependency_test":spec.dependency,"claimed_result":basis["claimed_result"],"scope":basis["scope"],"claimed_result_licensed":True,"arbitrary_substitution_rejected":True,"alternative_results_allowed":spec.alternatives_allowed,"terminal":{"enabled":False},"semantic_basis_identity":authority["basis_identity"],"author_identity":author_identity,"adjudicator_identity":adjudicator_identity,"candidate_identity":""}
     c["candidate_identity"]=candidate_identity(c)

@@ -1,0 +1,92 @@
+{
+  "schema": "SEMANTIC_AUTHORITY_BOOTSTRAP_ASSOCIATED_DEFECT_AUDIT_V2_V1",
+  "verdict": "PASS_ARCHITECTURE_FROZEN_DETERMINISTIC_TRUST_BOUNDARY_REPAIRED_AUTHORITY_CONTENT_STILL_REQUIRED",
+  "root_cause_blocker_family": "MISSING_EXTERNAL_AUTHORITY_PLUS_SELF_ASSERTED_INDEPENDENCE_ACCEPTANCE",
+  "earliest_boundary": "GENERAL_SEMANTIC_AUTHORITY_SOURCE_TO_GOVERNED_AUTHORITY_BASIS_ADMISSION",
+  "relationship_to_prior_failures": {
+    "pilot12": "PLAN_DERIVABILITY_AND_SURFACE_EVIDENCE_COULD_BE_CONFUSED_WITH_AUTHORITY",
+    "pilot13": "SELF_OBSERVED_OR_SELF_LICENSED_SEMANTIC_CAUSAL_EVIDENCE",
+    "pilot14": "CORRECT_FAIL_CLOSED_WHEN_NO_INDEPENDENT_LICENSE_EXISTS",
+    "curriculum_v1": "FIXTURE_AND_IDENTIFIER_VARIATION_MASQUERADED_AS_SEMANTIC_DIVERSITY",
+    "stage1": "DRY_EXECUTION_PATH_DIVERGENCE_AND_TEMPLATE_COLLAPSE",
+    "stage2": "CANDIDATE_EVIDENCE_IDENTITY_HARDENED_BUT_EXTERNAL_AUTHORITY_ADMISSION_REMAINED_ASSERTION_BASED"
+  },
+  "findings": [
+    {
+      "id": "ABF-01",
+      "severity": "BLOCKER",
+      "finding": "author_from_basis accepted independent=true and a nonmatching owner label as authority proof",
+      "repair": "require canonical external source manifest and independent admission receipt before authoring"
+    },
+    {
+      "id": "ABF-02",
+      "severity": "BLOCKER",
+      "finding": "authority identity authenticated internally supplied fields but not a governed provenance chain",
+      "repair": "bind source identity basis identity authority identity and admission identity in an acyclic graph"
+    },
+    {
+      "id": "ABF-03",
+      "severity": "BLOCKER",
+      "finding": "candidate authoring generated candidate-bound evidence from authority claims without verifying admission",
+      "repair": "admitted-authority validation is a mandatory precondition to evidence creation"
+    },
+    {
+      "id": "ABF-04",
+      "severity": "ASSOCIATED",
+      "finding": "synthetic dry-qualification authorities were structurally acceptable to governed execution",
+      "repair": "external-origin and synthetic-fixture-negative assertions are identity-bound and fail closed"
+    },
+    {
+      "id": "ABF-05",
+      "severity": "ASSOCIATED",
+      "finding": "trust-domain labels could be varied mechanically to simulate separation",
+      "repair": "source owner verifier candidate author and adjudicator must be four distinct bound identities"
+    },
+    {
+      "id": "ABF-06",
+      "severity": "ASSOCIATED",
+      "finding": "candidate-dependent admission could circularly ratify a chosen rule",
+      "repair": "admission receipt candidate_identity must be null"
+    }
+  ],
+  "authority_evidence_class_audit": {
+    "general_semantic_basis": "ARCHITECTURE_DEFINED_SOURCE_NOT_YET_SUPPLIED",
+    "semantic_authority": "NON_CIRCULAR_SOURCE_AND_ADMISSION_REQUIRED",
+    "relation_specific_evidence": "NON_CIRCULAR_SOURCE_AND_ADMISSION_REQUIRED",
+    "contrast_alternatives": "NON_CIRCULAR_SOURCE_AND_ADMISSION_REQUIRED",
+    "candidate_bound_evidence": "SAFE_ONLY_DOWNSTREAM_OF_ADMITTED_AUTHORITY",
+    "semantic_licensing_review": "READ_ONLY_INDEPENDENT_REVIEW_REQUIRED",
+    "adversarial_review": "READ_ONLY_INDEPENDENT_REVIEW_REQUIRED",
+    "rule_adjudication": "CANNOT_CREATE_MISSING_AUTHORITY",
+    "activation": "SEPARATE_AND_NOT_AUTHORIZED"
+  },
+  "repairs": {
+    "module": "src/pastila_scout/semantic_authority_bootstrap_v2.py",
+    "module_identity": "2a99074c7aadf9a7a7f21d27a320efcfed10b5976d62ac20058d13dee94f537c",
+    "consumer_boundary": "src/pastila_scout/candidate_authoring_v2.py",
+    "consumer_identity": "934fa60b6a204af5746fd90949925d3efa41c2902fb063cb1e957d5410e166f3",
+    "authority_content_created": false,
+    "contract_or_schema_v2_redesigned": false,
+    "curriculum_v2_redesigned": false
+  },
+  "audit_iterations": [
+    "ITERATION_1_DISCOVERED_ASSERTED_INDEPENDENCE_PROVENANCE_AND_DRY_FIXTURE_GAPS",
+    "ITERATION_2_REPAIRED_ACYCLIC_ADMISSION_CHAIN_AND_ADDED_ADVERSARIAL_TESTS",
+    "ITERATION_3_FRESH_AUDIT_NO_NEW_IN_SCOPE_DETERMINISTIC_BLOCKERS"
+  ],
+  "remaining_blockers": [
+    "NO_EXTERNALLY_SUPPLIED_GOVERNED_GENERAL_SEMANTIC_AUTHORITY_SOURCE",
+    "NO_INDEPENDENTLY_VERIFIED_AUTHORITY_BASIS",
+    "NO_OWNER_AUTHORIZATION_TO_CREATE_OR_ADMIT_AUTHORITY_CONTENT"
+  ],
+  "final_fresh_audit": "NO_NEW_IN_SCOPE_DETERMINISTIC_BLOCKERS_ARCHITECTURAL_INPUT_GAP_REMAINS",
+  "worktree_remediation_remainder": "NONE_IN_SCOPE_AFTER_SCOPED_COMMIT",
+  "population_safe_to_restart": false,
+  "next_action": "AUTHORIZE_METADATA_FIRST_EXTERNAL_SEMANTIC_AUTHORITY_SOURCE_REQUEST_AND_INDEPENDENT_ADMISSION_PROTOCOL_PREPARATION_ONLY",
+  "population_started": false,
+  "authority_bases_created": 0,
+  "rules_admitted_or_activated": 0,
+  "pilot15_prepared": false,
+  "blind_or_future_family_access": false,
+  "audit_identity": "9da4f763251a331951d8bd950dc05896512ff84da7f47252fcc96c04d5ac1a3a"
+}

@@ -1,6 +1,7 @@
 from copy import deepcopy
 import pytest
 from pastila_scout.candidate_authoring_v2 import authority_identity,author_from_basis,duplicate_report,evidence_basis_identity,paths_conform,semantic_primitive_identity
+from pastila_scout.semantic_authority_bootstrap_v2 import canonical_identity
 from pastila_scout.curriculum_v2_design import BATCHES
 from pastila_scout.relation_contract_v2 import adjudicate,SPECS
 from pastila_scout.relation_contract_v2_qualification import reviews
@@ -22,7 +23,11 @@ def bases():
 def authorities(b):
  s=SPECS[b["relation_class"]];bid=evidence_basis_identity(b);out=[]
  for kind in sorted({s.evidence_kind,"contrast_alternatives","semantic_authority"}):
-  a={"kind":kind,"basis_identity":bid,"relation_class":b["relation_class"],"source_provenance_identity":b["authority_provenance"],"trust_domain_owner":"INDEPENDENT_AUTHORITY:"+kind,"independent":True,"canonical_semantic_content":{"basis":b["semantic_basis"],"kind":kind},"authority_identity":""};a["authority_identity"]=authority_identity(a);out.append(a)
+  owner="INDEPENDENT_AUTHORITY:"+kind
+  source={"origin":"EXTERNAL_GOVERNED_GENERAL_SEMANTIC_SOURCE","provenance_identity":b["authority_provenance"],"source_owner":owner,"synthetic_qualification_fixture":False,"source_commitment":f"commitment:{kind}:{bid}","source_identity":""};source["source_identity"]=canonical_identity(source,"source_identity")
+  a={"kind":kind,"basis_identity":bid,"relation_class":b["relation_class"],"source_provenance_identity":b["authority_provenance"],"trust_domain_owner":owner,"independent":True,"source_manifest":source,"admission_receipt":{},"canonical_semantic_content":{"basis":b["semantic_basis"],"kind":kind},"authority_identity":""}
+  admission={"source_identity":source["source_identity"],"authority_identity":"","basis_identity":bid,"relation_class":b["relation_class"],"kind":kind,"verdict":"ADMITTED","fail_closed":True,"candidate_identity":None,"verifier_identity":"INDEPENDENT_VERIFIER:"+kind,"admission_identity":""}
+  a["admission_receipt"]=admission;a["authority_identity"]=authority_identity(a);admission["authority_identity"]=a["authority_identity"];admission["admission_identity"]=canonical_identity(admission,"admission_identity");out.append(a)
  return out
 def author(b,meta=None):return author_from_basis(b,author_identity=AUTHOR,adjudicator_identity=ADJ,authorities=authorities(b),metadata=meta)
 
@@ -54,7 +59,7 @@ def test_cross_class_templates_do_not_collapse():
 
 def test_author_cannot_synthesize_or_own_authority():
  b=bases()[0];auth=authorities(b);auth[0]["trust_domain_owner"]=AUTHOR;auth[0]["authority_identity"]=authority_identity(auth[0])
- with pytest.raises(ValueError,match="self-derived"):author_from_basis(b,author_identity=AUTHOR,adjudicator_identity=ADJ,authorities=auth)
+ with pytest.raises(ValueError):author_from_basis(b,author_identity=AUTHOR,adjudicator_identity=ADJ,authorities=auth)
 
 def test_nested_substantive_label_and_time_are_not_stripped():
  b=bases()[0];c=author(b)[0];z=deepcopy(c);z["scope"]={"label":"different-semantic-label","timestamp":"event-time"}
@@ -89,3 +94,28 @@ def test_evidence_roles_are_explicit_and_skew_fails():
  c,e,_=author(bases()[0]);assert all(x["roles"]==c["roles"] for x in e)
  e[0]["roles"]={"actor":"PATIENT","patient":"ACTOR"};e[0]["evidence_identity"]=__import__('pastila_scout.relation_contract_v2',fromlist=['evidence_identity']).evidence_identity(e[0])
  assert "EVIDENCE_ROLE_SKEW" in adjudicate(c,e,reviews(c,e))["blockers"]
+
+@pytest.mark.parametrize("mutation",[
+ lambda a:a.pop("admission_receipt"),
+ lambda a:a["source_manifest"].update(synthetic_qualification_fixture=True),
+ lambda a:a["admission_receipt"].update(candidate_identity="candidate"),
+ lambda a:a["admission_receipt"].update(verifier_identity=AUTHOR),
+])
+def test_asserted_independence_and_mutated_admission_fail_closed(mutation):
+ b=bases()[0];auth=authorities(b);mutation(auth[0])
+ with pytest.raises(ValueError):author_from_basis(b,author_identity=AUTHOR,adjudicator_identity=ADJ,authorities=auth)
+
+def test_resealed_synthetic_source_and_candidate_dependent_admission_still_fail():
+ b=bases()[0]
+ for mode in ("synthetic","candidate-dependent","trust-collision"):
+  auth=authorities(b);a=auth[0]
+  if mode=="synthetic":
+   a["source_manifest"]["synthetic_qualification_fixture"]=True
+   a["source_manifest"]["source_identity"]=canonical_identity(a["source_manifest"],"source_identity")
+  elif mode=="candidate-dependent":a["admission_receipt"]["candidate_identity"]="future-candidate"
+  else:a["admission_receipt"]["verifier_identity"]=AUTHOR
+  a["authority_identity"]=authority_identity(a)
+  a["admission_receipt"]["source_identity"]=a["source_manifest"]["source_identity"]
+  a["admission_receipt"]["authority_identity"]=a["authority_identity"]
+  a["admission_receipt"]["admission_identity"]=canonical_identity(a["admission_receipt"],"admission_identity")
+  with pytest.raises(ValueError):author_from_basis(b,author_identity=AUTHOR,adjudicator_identity=ADJ,authorities=auth)
