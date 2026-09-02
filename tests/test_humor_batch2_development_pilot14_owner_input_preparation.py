@@ -21,13 +21,15 @@ def test_pilot14_preparation_is_content_free_and_bound_to_qualified_v54():
     assert audit["candidate_surfaces"] == 0 and audit["blind_material_accessed"] is False
 
 
-def test_declaration_is_uncompleted_template_and_names_only_future_owner_files():
+def test_declaration_template_is_uncompleted_and_contains_no_owner_source_content():
     template = load("humor-mechanics-batch2-development-pilot14-owner-declaration-template-v1.json")
     assert template["pilot_id"] == "BATCH2-DEVELOPMENT-PILOT-14"
     assert template["source"]["filename"] == "owner-source-pilot14-v1.txt"
     assert "OWNER_MUST" in json.dumps(template)
-    assert not (ROOT / "owner-source-pilot14-v1.txt").exists()
-    assert not (ROOT / "owner-declaration-pilot14-v1.json").exists()
+    assert "30 august 2026" not in json.dumps(template, ensure_ascii=False)
+    assert set(template) == {"schema_name", "schema_version", "pilot_id", "trial_role", "source",
+                             "contributor", "ownership_declarations", "independent_grants",
+                             "source_status_declarations", "owner_instruction", "owner_confirmation"}
 
 
 def test_phase_order_keeps_release_after_semantic_licensing_and_gates_after_construction():
