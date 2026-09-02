@@ -23,7 +23,7 @@ def test_runtime_and_workflow_commits_are_distinct_and_closed():
 
 def test_adaptive_derivation_is_byte_bound_and_order_invariant():
     cross=b'<a href="/blog/release-a/"></a><a href="https://api-snapshots-reqpays-crossref.s3.amazonaws.com/a.tar"></a>'
-    versions=b'<ListVersionsResult><Version><VersionId>v2</VersionId></Version><Version><VersionId>v1</VersionId></Version><IsTruncated>false</IsTruncated></ListVersionsResult>'
+    versions=b'<ListVersionsResult><Version><Key>data/jsonl/manifest.json</Key><VersionId>v2</VersionId></Version><Version><Key>data/jsonl/manifest.json</Key><VersionId>v1</VersionId></Version><IsTruncated>false</IsTruncated></ListVersionsResult>'
     captures={"CROSSREF_RELEASE_INDEX":(Capture("CROSSREF_RELEASE_INDEX",m.SEEDS[0][2],cross),),"OPENALEX_MANIFEST_VERSION_INDEX":(Capture("OPENALEX_MANIFEST_VERSION_INDEX",m.SEEDS[3][2],versions),)}
     first=m.derive_requests(captures); second=m.derive_requests(dict(reversed(tuple(captures.items()))))
     assert first==second and all(row[3] in {m.sha(cross),m.sha(versions)} for row in first)
@@ -54,7 +54,7 @@ def test_adaptive_execution_reaches_fixed_point_without_retry(monkeypatch):
         calls.append((purpose,method,url))
         if purpose=="CROSSREF_RELEASE_INDEX" and url==m.SEEDS[0][2]: payload=b'<a href="/categories/metadata-retrieval/page/2/"></a>'
         elif purpose=="CROSSREF_RELEASE_INDEX": payload=b'<a href="/blog/release-z/"></a>'
-        elif purpose=="OPENALEX_MANIFEST_VERSION_INDEX": payload=b'<ListVersionsResult><Version><VersionId>v1</VersionId></Version><IsTruncated>false</IsTruncated></ListVersionsResult>'
+        elif purpose=="OPENALEX_MANIFEST_VERSION_INDEX": payload=b'<ListVersionsResult><Version><Key>data/jsonl/manifest.json</Key><VersionId>v1</VersionId></Version><IsTruncated>false</IsTruncated></ListVersionsResult>'
         elif purpose=="OPENALEX_MANIFEST": payload=b'{"entries":[{"url":"works/a.gz"}]}'
         else: payload=b"closed"
         return captured(purpose,method,url,payload)
@@ -130,12 +130,17 @@ def test_repository_identity_is_not_caller_selectable(tmp_path):
     with pytest.raises(ValueError,match="run closure"):m.initiation_claim(bad)
 
 def test_openalex_truncation_is_closed_and_continued():
-    payload=b'<ListVersionsResult><Version><VersionId>v1</VersionId></Version><IsTruncated>true</IsTruncated><NextKeyMarker>data-key</NextKeyMarker><NextVersionIdMarker>v1</NextVersionIdMarker></ListVersionsResult>'
+    payload=b'<ListVersionsResult><Version><Key>data/jsonl/manifest.json</Key><VersionId>v1</VersionId></Version><IsTruncated>true</IsTruncated><NextKeyMarker>data/jsonl/manifest.json</NextKeyMarker><NextVersionIdMarker>v1</NextVersionIdMarker></ListVersionsResult>'
     item=Capture("OPENALEX_MANIFEST_VERSION_INDEX",m.SEEDS[3][2],payload)
     rows=m.derive_requests({"OPENALEX_MANIFEST_VERSION_INDEX":(item,)})
-    assert any(row[0]=="OPENALEX_MANIFEST_VERSION_INDEX" and "key-marker=data-key" in row[2] for row in rows)
-    broken=payload.replace(b"<NextKeyMarker>data-key</NextKeyMarker>",b"")
+    assert any(row[0]=="OPENALEX_MANIFEST_VERSION_INDEX" and "key-marker=data%2Fjsonl%2Fmanifest.json" in row[2] and m._allowed_request(*row[:3]) for row in rows)
+    broken=payload.replace(b"<NextKeyMarker>data/jsonl/manifest.json</NextKeyMarker>",b"")
     with pytest.raises(ValueError,match="continuation"):m.derive_requests({"OPENALEX_MANIFEST_VERSION_INDEX":(Capture("OPENALEX_MANIFEST_VERSION_INDEX",m.SEEDS[3][2],broken),)})
+
+def test_openalex_versions_are_bound_to_exact_manifest_key_and_not_delete_markers():
+    payload=b'<ListVersionsResult><Version><Key>other.json</Key><VersionId>wrong</VersionId></Version><DeleteMarker><Key>data/jsonl/manifest.json</Key><VersionId>deleted</VersionId></DeleteMarker><Version><Key>data/jsonl/manifest.json</Key><VersionId>right</VersionId></Version><IsTruncated>false</IsTruncated></ListVersionsResult>'
+    rows=m.derive_requests({"OPENALEX_MANIFEST_VERSION_INDEX":(Capture("OPENALEX_MANIFEST_VERSION_INDEX",m.SEEDS[3][2],payload),)})
+    assert [row[2] for row in rows]==["https://openalex.s3.amazonaws.com/data/jsonl/manifest.json?versionId=right"]
 
 def test_derived_locator_boundary_rejects_userinfo_ports_and_dot_segments():
     for url in ("https://evil@www.crossref.org/blog/x/","https://www.crossref.org:444/blog/x/","https://openalex.s3.amazonaws.com/data/jsonl/../secret"):

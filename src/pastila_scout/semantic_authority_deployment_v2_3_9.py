@@ -11,7 +11,7 @@ from dataclasses import dataclass
 from html.parser import HTMLParser
 from pathlib import Path
 from typing import Any, Callable, Mapping
-from urllib.parse import urljoin, urlsplit
+from urllib.parse import parse_qsl, quote, urljoin, urlsplit
 
 from .semantic_authority_capture_orchestrator_v2_3_7 import Capture, canonical
 from .semantic_authority_cosign_v2_3_7 import decode_dsse_statement
@@ -92,7 +92,11 @@ def _allowed_request(purpose: str, method: str, url: str) -> bool:
     if purpose == "CROSSREF_ARCHIVE_OBJECT_HEAD": return not parsed.query and parsed.path not in {"", "/"}
     if purpose == "OPENALEX_RELEASE_NOTES": return url == SEEDS[2][2]
     if purpose == "OPENALEX_MANIFEST_VERSION_INDEX":
-        return bool(re.fullmatch(r"prefix=data%2Fjsonl%2Fmanifest\.json&versions=(?:&key-marker=[A-Za-z0-9._~-]+&version-id-marker=[A-Za-z0-9._~-]+)?", parsed.query))
+        pairs = parse_qsl(parsed.query, keep_blank_values=True, strict_parsing=True)
+        return pairs == [("prefix", "data/jsonl/manifest.json"), ("versions", "")] or (
+            len(pairs) == 4 and pairs[:2] == [("prefix", "data/jsonl/manifest.json"), ("versions", "")]
+            and pairs[2][0] == "key-marker" and pairs[2][1] == "data/jsonl/manifest.json"
+            and pairs[3][0] == "version-id-marker" and bool(re.fullmatch(r"[A-Za-z0-9._~-]+", pairs[3][1])))
     if purpose == "OPENALEX_MANIFEST": return parsed.path == "/data/jsonl/manifest.json" and bool(re.fullmatch(r"versionId=[A-Za-z0-9._~-]+", parsed.query))
     return purpose == "OPENALEX_ARCHIVE_OBJECT_HEAD" and not parsed.query and parsed.path.startswith("/data/jsonl/") and len(parsed.path) > len("/data/jsonl/")
 
@@ -123,15 +127,18 @@ def derive_requests(captures: Mapping[str, tuple[Capture, ...]]) -> tuple[tuple[
                 except ET.ParseError as exc: raise ValueError("OpenAlex version XML") from exc
                 local = lambda node: node.tag.rsplit("}", 1)[-1]
                 for node in root.iter():
-                    version = (node.text or "").strip()
-                    if local(node) == "VersionId" and re.fullmatch(r"[A-Za-z0-9._~-]+", version):
-                        out.add(("OPENALEX_MANIFEST", "GET", f"https://openalex.s3.amazonaws.com/data/jsonl/manifest.json?versionId={version}", source))
+                    if local(node) != "Version": continue
+                    children = {local(child):(child.text or "").strip() for child in node}
+                    if not {"Key", "VersionId"}.issubset(children) or children["Key"] != "data/jsonl/manifest.json": continue
+                    version = children["VersionId"]
+                    if not re.fullmatch(r"[A-Za-z0-9._~-]+", version): raise ValueError("OpenAlex version identity")
+                    out.add(("OPENALEX_MANIFEST", "GET", f"https://openalex.s3.amazonaws.com/data/jsonl/manifest.json?versionId={version}", source))
                 values = {local(node):(node.text or "").strip() for node in root.iter() if local(node) in {"IsTruncated","NextKeyMarker","NextVersionIdMarker"}}
                 if values.get("IsTruncated") not in {"true", "false"}: raise ValueError("OpenAlex truncation closure")
                 if values["IsTruncated"] == "true":
                     key, version = values.get("NextKeyMarker", ""), values.get("NextVersionIdMarker", "")
-                    if not re.fullmatch(r"[A-Za-z0-9._~-]+", key) or not re.fullmatch(r"[A-Za-z0-9._~-]+", version): raise ValueError("OpenAlex continuation closure")
-                    out.add(("OPENALEX_MANIFEST_VERSION_INDEX", "GET", f"{SEEDS[3][2]}&key-marker={key}&version-id-marker={version}", source))
+                    if key != "data/jsonl/manifest.json" or not re.fullmatch(r"[A-Za-z0-9._~-]+", version): raise ValueError("OpenAlex continuation closure")
+                    out.add(("OPENALEX_MANIFEST_VERSION_INDEX", "GET", f"{SEEDS[3][2]}&key-marker={quote(key, safe='')}&version-id-marker={quote(version, safe='')}", source))
             elif purpose == "OPENALEX_MANIFEST":
                 try: value = json.loads(text)
                 except json.JSONDecodeError as exc: raise ValueError("OpenAlex manifest JSON") from exc
