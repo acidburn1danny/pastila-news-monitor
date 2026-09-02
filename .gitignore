@@ -124,3 +124,33 @@ data/
 
 reports/
 .zero-inference-dependency-bridge/
+
+# -----------------------------------------------------------------------------
+# Repository-local qualification tools and generated evidence workspaces
+# -----------------------------------------------------------------------------
+
+# Hash-pinned V2 verifier installation is required locally but is not source.
+/.tool-downloads/
+
+# Local agent state and generated, reproducible evidence workspaces.
+/.codex/
+/.*-evidence*/
+/.*-failed-attempt*/
+/.*-superseded*/
+
+# Wheel inspection/build workspaces and local launch/test scratch directories.
+/.wheel-*/
+/.*-wheelhouse/
+/.test-*-tmp/
+/.vftmp/
+/.vcortmp2/
+/.voice-*-launch/
+/.geometry-wheel/
+/.scout-list-build-wheel/
+
+# Owner-controlled source/declaration inputs must remain local and uncommitted.
+/owner-source*.txt
+/owner-declaration*.json
+
+# Machine-local runtime settings.
+/config/settings.json
