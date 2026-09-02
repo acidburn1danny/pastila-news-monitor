@@ -1,0 +1,90 @@
+{
+  "schema": "INDEPENDENT_SEMANTIC_AUTHORITY_ADMISSION_PROTOCOL_V2_V1",
+  "status": "FROZEN_PROTOCOL_NO_SOURCE_NO_BASIS_NO_ADMISSION",
+  "bootstrap_architecture_identity": "303e76185c6b2ca20e0b65982c0311f748f836ba1b784b6d555b8773ccaf66a0",
+  "authority_source_request_identity": "d553004f7c444912d432eb3415e649ffc27d48121d8c1ded214935595aa054f9",
+  "trust_domains": {
+    "source_owner": "SUPPLIES_AND_AUTHENTICATES_PREEXISTING_SOURCE_ONLY",
+    "custodial_verifier": "VERIFIES_BYTES_SIGNATURES_CUSTODY_AND_PROVENANCE_ONLY",
+    "basis_extractor": "DERIVES_COORDINATE_BOUND_BASIS_PROPOSALS_WITHOUT_ADMITTING_THEM",
+    "authority_admission_verifier": "INDEPENDENTLY_ADJUDICATES_SOURCE_SUPPORT_SCOPE_AND_SEMANTIC_VALIDITY",
+    "candidate_author": "LATER_CONSUMER_OF_ALREADY_ADMITTED_BASES_ONLY",
+    "rule_adjudicator": "LATER_READ_ONLY_CANDIDATE_AND_EVIDENCE_REVIEWER",
+    "activation_authority": "SEPARATE_LATER_AUTHORITY"
+  },
+  "role_separation": {
+    "all_roles_distinct_except_where_explicit_later_governance_proves_non_conflict": true,
+    "minimum_mandatory_distinct_roles": [
+      "SOURCE_OWNER",
+      "AUTHORITY_ADMISSION_VERIFIER",
+      "CANDIDATE_AUTHOR",
+      "RULE_ADJUDICATOR"
+    ],
+    "component_may_author_and_verify_same_authority": false,
+    "candidate_author_may_select_or_extend_authority": false,
+    "rule_adjudicator_may_create_missing_evidence": false
+  },
+  "source_to_basis_separation": {
+    "source_is_authoritative_input_not_a_basis_by_assertion": true,
+    "basis_requires_actual_source_witness_coordinates": true,
+    "basis_must_retain_qualifications_scope_modality_and_exceptions": true,
+    "basis_extraction_may_not_add_semantic_claims": true,
+    "each_basis_has_distinct_basis_identity": true,
+    "source_identity_and_basis_identity_are_not_interchangeable": true
+  },
+  "independent_admission_checks": [
+    "SOURCE_IDENTITY_AND_RAW_BYTE_COMMITMENT_MATCH",
+    "OWNER_AUTHENTICATION_RIGHTS_AND_SCOPE_PASS",
+    "PROVENANCE_CHAIN_COMPLETE_AND_NON_SELF_ASSERTED",
+    "SOURCE_WITNESS_COORDINATES_MATCH_ACTUAL_BYTES",
+    "BASIS_SEMANTICS_DO_NOT_EXCEED_SOURCE",
+    "QUALIFICATIONS_SCOPE_MODALITY_EXCEPTIONS_AND_UNKNOWN_BOUNDARIES_RETAINED",
+    "RELATION_CLASS_AND_EVIDENCE_KIND_BINDINGS_SUPPORTED",
+    "NO_CANDIDATE_PILOT_MECHANISM_OR_COVERAGE_DEPENDENCY",
+    "NO_SYNTHETIC_FIXTURE_OR_PIPELINE_OUTPUT_PROMOTION",
+    "NO_TRUST_DOMAIN_COLLISION",
+    "NO_IDENTITY_ALIAS_VERSION_SKEW_OR_CANONICALIZATION_AMBIGUITY"
+  ],
+  "admission_outputs_if_later_authorized": {
+    "source_manifest": "IDENTITY_BOUND_EXTERNAL_ORIGIN_PROVENANCE_RIGHTS_AND_SCOPE",
+    "authority_basis": "SOURCE_WITNESS_BOUND_SEMANTIC_CONTENT",
+    "admission_receipt": "VERIFIER_BOUND_PASS_OR_FAIL_WITH_EXACT_PREDICATES",
+    "failed_admission": "TERMINAL_FOR_THAT_BASIS_VERSION_NO_PARTIAL_AUTHORITY",
+    "successful_admission": "FROZEN_BEFORE_ANY_CANDIDATE_AUTHORING"
+  },
+  "anti_circularity_guarantees": [
+    "AUTHORITY_PREEXISTS_CANDIDATE_IDENTITY",
+    "ADMISSION_RECEIPT_CANDIDATE_IDENTITY_IS_NULL",
+    "CANDIDATE_OR_EVIDENCE_CONTENT_CANNOT_APPEAR_IN_AUTHORITY_IDENTITY_INPUT",
+    "CANDIDATE_PASS_REJECT_OR_COVERAGE_RESULTS_CANNOT JUSTIFY_AUTHORITY",
+    "DRY_OR_SYNTHETIC_FIXTURES_CANNOT_ENTER_GOVERNED_AUTHORITY_STORE",
+    "CANDIDATE_BOUND_EVIDENCE_CANNOT_BE_PROMOTED_BACK_TO_SOURCE_OR_BASIS",
+    "ADJUDICATOR_CANNOT_REPAIR_OR_SUPPLY_MISSING_AUTHORITY",
+    "IDENTITY_CONSISTENCY_DOES_NOT_SUBSTITUTE_FOR_PROVENANCE_OR_SEMANTIC_SUPPORT"
+  ],
+  "identity_order": [
+    "RAW_SOURCE_SHA256",
+    "SOURCE_MANIFEST_IDENTITY",
+    "BASIS_IDENTITY",
+    "AUTHORITY_CONTENT_IDENTITY",
+    "ADMISSION_RECEIPT_IDENTITY",
+    "LATER_CANDIDATE_IDENTITY",
+    "LATER_EVIDENCE_IDENTITY",
+    "LATER_ADJUDICATION_IDENTITY"
+  ],
+  "later_consumption_gate": {
+    "requires_admitted_authority": true,
+    "requires_exact_source_basis_authority_admission_binding": true,
+    "requires_trust_domain_separation": true,
+    "missing_or_skewed_input": "FAIL_CLOSED_BEFORE_CANDIDATE_AUTHORING",
+    "dynamic_authority_extension": false,
+    "fallback_to_fixture_or_planner_claim": false
+  },
+  "semantic_content_created": false,
+  "authority_bases_created": 0,
+  "authority_bases_admitted": 0,
+  "population_started": false,
+  "pilot15_prepared": false,
+  "blind_or_future_family_access": false,
+  "protocol_identity": "7bce6759a69b99ccdea18ff01e80e5917fc2137598efbed241867a92dd860810"
+}
