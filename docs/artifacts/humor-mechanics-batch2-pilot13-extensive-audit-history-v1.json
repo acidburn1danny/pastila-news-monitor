@@ -1,0 +1,29 @@
+{
+  "audit_specification_identity": "dbd411155020840fda00932cf11a0a5981c40bb39b37729515fccdf3ef6c3a10",
+  "maximum_remediation_iterations": 12,
+  "iterations_used": 3,
+  "iterations": [
+    {
+      "iteration": 1,
+      "defect": "PLANNER_AUTHORED_SEMANTIC_LICENSE_AND_MISSING_ANCHOR_EDGE",
+      "commit": "42d6241c",
+      "focused_tests": "12 passed"
+    },
+    {
+      "iteration": 2,
+      "defect": "STRUCTURAL_PREDECESSOR_AND_SUBSTITUTABLE_RULE_MASQUERADED_AS_NECESSITY",
+      "commit": "ebf4f5d9",
+      "focused_tests": "15 passed"
+    },
+    {
+      "iteration": 3,
+      "defect": "SOURCE_DERIVED_RULE_ORIGIN_LACKED_EXACT_RULE_AUTHORITY",
+      "commit": "edda50f5",
+      "focused_tests": "18 passed"
+    }
+  ],
+  "final_confirmation_required": true,
+  "real_family_invocations": "0/0/0",
+  "new_capabilities_consumed": 0,
+  "new_candidate_surfaces": 0
+}

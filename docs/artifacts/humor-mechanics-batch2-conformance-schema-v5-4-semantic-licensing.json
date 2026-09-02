@@ -1,0 +1,18 @@
+{
+  "schema": "V5.4_SEMANTIC_LICENSING_CONFORMANCE",
+  "required": [
+    "exact_authority_operands",
+    "external_rule_registry",
+    "unique_rule_resolution",
+    "all_relation_coverage",
+    "typed_argument_compatibility",
+    "required_affordance_compatibility",
+    "immediate_predecessor_result_consumption",
+    "validator_derived_counterfactual",
+    "non_substitutable_terminal"
+  ],
+  "forbidden_planner_fields": [
+    "rules", "ontology", "roles", "affordances", "predicate_signatures", "necessity"
+  ],
+  "failure_mode": "FAIL_CLOSED_BEFORE_CAPABILITY_CONSUMPTION"
+}

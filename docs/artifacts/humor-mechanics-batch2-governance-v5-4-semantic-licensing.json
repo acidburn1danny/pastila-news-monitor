@@ -1,0 +1,12 @@
+{
+  "governance": "V5.4",
+  "scope": "DEVELOPMENT_SUCCESSOR_ONLY",
+  "frozen_predecessors_preserved": true,
+  "fiction_grants_affordance": false,
+  "grammar_grants_affordance": false,
+  "reclassification_grants_affordance": false,
+  "planner_may_extend_ontology": false,
+  "blind_access": false,
+  "pilot13_retry": false,
+  "pilot14_preparation": false
+}

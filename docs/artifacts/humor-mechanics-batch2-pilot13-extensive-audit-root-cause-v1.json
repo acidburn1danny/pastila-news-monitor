@@ -1,0 +1,18 @@
+{
+  "verdict": "ROOT_CAUSE_CONFIRMED_AT_PLANNER_AUTHORED_SEMANTIC_LICENSE_AND_STATIC_SELF_VALIDATION_BOUNDARY",
+  "earliest_boundary": "V5_3_3_STATIC_PLAN_ROLE_AFFORDANCE_RULE_NECESSITY_VALIDATION",
+  "classification": "SYSTEMATIC_ARCHITECTURE_WEAKNESS_NOT_IRREDUCIBLE_GENERATIVE_RANDOMNESS",
+  "pilot13_disposition": "DEVELOPMENT_NONPOSITIVE_G02C_REJECTION_EVIDENCE",
+  "candidate_modified": false,
+  "capability_restored": false,
+  "blind_material_accessed": false,
+  "causal_chain": [
+    "planner authored operand roles and affordances",
+    "planner authored matching predicate signatures",
+    "planner authored causal rule labels and necessity booleans",
+    "validator checked agreement among those same claims",
+    "anchor to first invention was outside predecessor-edge coverage",
+    "realizer faithfully materialized the unlicensed plan",
+    "independent G02C rejected all three relations"
+  ]
+}

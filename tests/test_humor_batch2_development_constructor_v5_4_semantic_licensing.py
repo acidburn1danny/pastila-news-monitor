@@ -146,3 +146,20 @@ def test_rule_cannot_claim_a_trust_domain_by_label_alone(origin):
     with pytest.raises(ValueError, match="not in"):
         verify_rule_registry_partition(rules=(candidate,), frozen_generic_rule_ids=frozenset(),
                                        authorized_source_rule_ids=frozenset())
+
+
+@pytest.mark.parametrize("entity_class", [
+    "PROPOSITION", "TEMPORAL_MOMENT", "STATUS", "ELIGIBILITY", "RECORD", "LOG", "LABEL",
+    "ABSTRACT_STATE", "EVENT", "INFORMATION_OBJECT",
+])
+@pytest.mark.parametrize("predicate", ["ACTIVATE", "PROPAGATE", "RESOLVE", "OBLIGATE", "AUTHORIZE"])
+def test_unrelated_vocabulary_and_predicate_permutations_never_create_a_rule(entity_class, predicate):
+    with pytest.raises(ValueError, match="untrusted semantic rule"):
+        validate_and_license_plan(authority_operands=(
+            operand("x", entity_class, {"GRAMMATICAL_SUBJECT"}, {"PREDECESSOR"}),
+            operand("y", "OBJECT", {"GRAMMATICAL_OBJECT"}, {"TERMINAL_PATIENT"}),
+        ), proposed_relations=(ProposedRelation("relation", None, predicate, "x", "y", "z",
+            f"local-{entity_class.lower()}-{predicate.lower()}", True),), registry=TrustedRuleRegistry((
+                rule("control", "TRIGGER", "TIMER_EVENT", "ALARM", actor_role="TRIGGER",
+                     patient_role="TRIGGERABLE", actor_affordance="FIRE", patient_affordance="BE_TRIGGERED"),
+            )))

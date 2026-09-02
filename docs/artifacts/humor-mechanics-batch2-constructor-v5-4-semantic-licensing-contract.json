@@ -1,0 +1,11 @@
+{
+  "contract": "CONSTRUCTOR_V5_4_INDEPENDENT_SEMANTIC_LICENSING",
+  "planner_evidence_authority": false,
+  "relations_covered": ["SOURCE_TO_FIRST_INVENTION", "INTERMEDIATE", "TERMINAL"],
+  "rule_origins": ["FROZEN_GENERIC_ONTOLOGY", "SOURCE_DERIVED_EXACTLY_AUTHORIZED"],
+  "rule_selection": "UNIQUE_COMPATIBLE_RULE_ONLY",
+  "produced_semantics": "DERIVED_FROM_TRUSTED_RULE_ONLY",
+  "counterfactual": "INDEPENDENT_PREDECESSOR_RESULT_REMOVAL",
+  "terminal_substitution": "FAIL_IF_COMPATIBLE_ALTERNATIVE_EXISTS",
+  "construction_authority": false
+}
