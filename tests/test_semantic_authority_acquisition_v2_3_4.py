@@ -11,6 +11,11 @@ import pastila_scout.semantic_authority_metadata_proof_v2_3_3 as p
 RUN="a"*64
 
 
+def test_real_metadata_gate_remains_closed_for_unresolved_origin_and_registry_derivation():
+    assert a.REAL_METADATA_ACQUISITION_READY is False
+    assert len(a.REMAINING_BLOCKERS)==3
+
+
 class Socket:
     def getpeercert(self, *, binary_form=False): return b"certificate" if binary_form else {}
     def version(self): return "TLSv1.3"
@@ -55,28 +60,34 @@ def test_crossref_discovered_records_require_exact_independent_capture_closure()
 
 
 def capture(purpose="OPENALEX_MANIFEST"):
-    url=p.OPENALEX_MANIFEST+"?versionId=v1" if purpose=="OPENALEX_MANIFEST" else p.OPENALEX_NOTES
-    return p.VerifiedCapture(purpose,RUN,"GET",url,{},b"x",hashlib.sha256(purpose.encode()).hexdigest())
+    if purpose=="OPENALEX_MANIFEST": url,method=p.OPENALEX_MANIFEST+"?versionId=v1","GET"
+    elif purpose=="OPENALEX_ARCHIVE_OBJECT_HEAD": url,method="https://openalex.s3.amazonaws.com/data/jsonl/x","HEAD"
+    else: url,method=p.OPENALEX_NOTES,"GET"
+    identity="b"*64 if purpose=="OPENALEX_ARCHIVE_OBJECT_HEAD" else hashlib.sha256(purpose.encode()).hexdigest()
+    return p.VerifiedCapture(purpose,RUN,method,url,{},b"" if method=="HEAD" else b"x",identity)
 
 
 def archive():
     checksum=hashlib.sha256(b"object").hexdigest()
     leaf={"VERSIONED_IMMUTABLE_LOCATOR":"s3://openalex/data/jsonl/x?versionId=v1","BYTE_LENGTH":6,"SHA256":checksum,"HEAD_CAPTURE_IDENTITY":"b"*64}
-    return {"object_count":1,"total_bytes":6,"merkle_root":"c"*64,"leaves":[leaf]}
+    root=hashlib.sha256(b"\0"+p.canonical(leaf)).hexdigest()
+    return {"object_count":1,"total_bytes":6,"merkle_root":root,"leaves":[leaf]}
 
 
 def test_exact_v231_assembly_closes_registry_run_and_manifest(monkeypatch,tmp_path):
     openssl=tmp_path/"openssl";openssl.write_bytes(b"openssl");ca=tmp_path/"ca";ca.write_bytes(b"ca")
     monkeypatch.setattr(p,"verify_rfc3161",lambda **kw:None)
-    manifest=capture();notes=capture("OPENALEX_RELEASE_NOTES");release={"release_id":"2026-06-25","publication_date":"2026-06-25","official_url":p.OPENALEX_NOTES,"source_capture_identity":notes.identity}
+    manifest=capture();notes=capture("OPENALEX_RELEASE_NOTES");head=capture("OPENALEX_ARCHIVE_OBJECT_HEAD");release={"release_id":"2026-06-25","publication_date":"2026-06-25","official_url":p.OPENALEX_NOTES,"source_capture_identity":notes.identity}
     binding={release["release_id"]:{"registry":"OPENALEX_PUBLIC_QUARTERLY_SNAPSHOT","release_id":release["release_id"],"release_record_identity":notes.identity,"manifest_capture_identity":manifest.identity,"archive":archive()}}
     rows,evidence=a.assemble_release_history(registry="OPENALEX_PUBLIC_QUARTERLY_SNAPSHOT",parsed_releases=[release],commitments=binding,
-      run_identity=RUN,captures=[notes,manifest],history_receipt=b"receipt",history_timestamp_utc="2026-09-03T00:00:00Z",openssl=openssl,ca_file=ca)
+      run_identity=RUN,captures=[notes,manifest,head],history_receipt=b"receipt",history_timestamp_utc="2026-09-03T00:00:00Z",openssl=openssl,ca_file=ca)
     assert set(rows[0])=={"registry","release_id","publication_date","official_release_record_identity","completeness_evidence_identity","archive_commitment_identity","immutable_locator_set_identity","archive_available"}
     selected=a.select_assembled_predecessor(rows=rows,evidence=evidence,history_receipt=b"receipt",registry="OPENALEX_PUBLIC_QUARTERLY_SNAPSHOT",openssl=openssl,ca_file=ca)
     assert selected["release_id"]=="2026-06-25"
     bad=dict(binding);bad[release["release_id"]]={**binding[release["release_id"]],"registry":"CROSSREF_ANNUAL_PUBLIC_DATA_FILE"}
-    with pytest.raises(ValueError):a.assemble_release_history(registry="OPENALEX_PUBLIC_QUARTERLY_SNAPSHOT",parsed_releases=[release],commitments=bad,run_identity=RUN,captures=[notes,manifest],history_receipt=b"r",history_timestamp_utc="2026-09-03T00:00:00Z",openssl=openssl,ca_file=ca)
+    with pytest.raises(ValueError):a.assemble_release_history(registry="OPENALEX_PUBLIC_QUARTERLY_SNAPSHOT",parsed_releases=[release],commitments=bad,run_identity=RUN,captures=[notes,manifest,head],history_receipt=b"r",history_timestamp_utc="2026-09-03T00:00:00Z",openssl=openssl,ca_file=ca)
+    corrupt={release["release_id"]:{**binding[release["release_id"]],"archive":{**archive(),"merkle_root":"0"*64}}}
+    with pytest.raises(ValueError,match="Merkle"):a.assemble_release_history(registry="OPENALEX_PUBLIC_QUARTERLY_SNAPSHOT",parsed_releases=[release],commitments=corrupt,run_identity=RUN,captures=[notes,manifest,head],history_receipt=b"r",history_timestamp_utc="2026-09-03T00:00:00Z",openssl=openssl,ca_file=ca)
 
 
 def test_cross_registry_and_cross_run_replay_fail_closed(monkeypatch,tmp_path):

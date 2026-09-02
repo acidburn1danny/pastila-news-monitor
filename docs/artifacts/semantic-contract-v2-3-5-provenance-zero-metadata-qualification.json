@@ -1,0 +1,30 @@
+{
+  "implementation_sha256": "daeb6a97557a3cd235ebc9aa5aea0d2977eebcbed3ac09799f73bba2fc941bd6",
+  "invariants": {
+    "CROSSREF_ARCHIVE_RELEASE_ASSOCIATION": "PASS",
+    "EXACT_RESPONSE_CLAIM_BINDING": "PASS",
+    "INDEPENDENT_NOTARY_QUORUM": "PASS",
+    "OPENALEX_S3_VERSION_PAGINATION_CLOSURE": "PASS",
+    "PINNED_OPENSSL_ED25519_VERIFICATION": "PASS",
+    "REAL_ACQUISITION_GATE": "FAIL_CLOSED_PENDING_NOTARY_APPOINTMENTS"
+  },
+  "qualification_identity": "552edb1f10a18f027e641b336580d27f4c4d5c653c69fe08fa1d0161b4008e81",
+  "remaining_blockers": [
+    "INDEPENDENT_NOTARY_ENDPOINTS_KEYS_AND_APPOINTMENTS_NOT_YET_FROZEN"
+  ],
+  "schema": "SEMANTIC_AUTHORITY_PROVENANCE_V2_3_5_ZERO_METADATA_QUALIFICATION",
+  "test_sha256": "ffe860fa418f92dff32df8a7af1878c5adeb59d9042dd3eb2872394afdff2b7c",
+  "v2_3_1_governance": "41f202af7e835bfc9bbb048d803ee19e7861719ae4d45f0298035f586d640c52",
+  "v2_3_3_implementation": "089833268bc4ba41e688d4e109d7de3a8452f2dbacc5309168a263393f335a42",
+  "v2_3_4_implementation": "f85ece1e7a3eb168f2013a3c1c2891bc0e64908374e6486128347699a8ce7161",
+  "verdict": "PASS_INDEPENDENT_NOTARY_AND_REGISTRY_DERIVATION_DESIGN_ZERO_METADATA",
+  "zero_activity": {
+    "authority_bases": 0,
+    "blind_access": 0,
+    "frame_execution": 0,
+    "pilot15": 0,
+    "registry_metadata": 0,
+    "snapshot_objects": 0,
+    "source_selection": 0
+  }
+}

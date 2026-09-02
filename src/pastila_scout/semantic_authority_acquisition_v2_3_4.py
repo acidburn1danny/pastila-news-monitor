@@ -21,14 +21,21 @@ ALLOWED_PURPOSES = frozenset({
     "OPENALEX_ARCHIVE_OBJECT_HEAD",
 })
 HEX64 = re.compile(r"^[0-9a-f]{64}$")
+REAL_METADATA_ACQUISITION_READY = False
+REMAINING_BLOCKERS = (
+    "RFC3161_ATTESTS_CALLER_SUPPLIED_ENVELOPE_BUT_NOT_RESPONSE_ORIGIN_NONREPUDIATION",
+    "OPENALEX_VERSION_HISTORY_TO_MANIFEST_VERSION_DERIVATION_NOT_IMPLEMENTED",
+    "CROSSREF_ARCHIVE_INDEX_TO_RELEASE_ASSOCIATION_NOT_IMPLEMENTED",
+)
 
 
 def _purpose_url_method_allowed(purpose: str, url: str, method: str) -> bool:
     parts=urlsplit(url)
+    if parts.port is not None or "%" in parts.path or ".." in parts.path or "//" in parts.path: return False
     exact={"OPENALEX_RELEASE_NOTES":proof.OPENALEX_NOTES,"CROSSREF_ARCHIVE_INDEX":proof.CROSSREF_ARCHIVE}
     if purpose in exact: return method=="GET" and url==exact[purpose]
     if purpose=="CROSSREF_RELEASE_INDEX": return method=="GET" and bool(re.fullmatch(re.escape(proof.CROSSREF_INDEX)+r"(?:page/[1-9]\d*/)?",url))
-    if purpose=="CROSSREF_RELEASE_RECORD": return method=="GET" and parts.hostname=="www.crossref.org" and parts.path.startswith("/blog/") and not parts.query
+    if purpose=="CROSSREF_RELEASE_RECORD": return method=="GET" and parts.hostname=="www.crossref.org" and bool(re.fullmatch(r"/blog/[a-z0-9][a-z0-9-]*/",parts.path)) and not parts.query
     if purpose=="OPENALEX_MANIFEST_VERSION_INDEX": return method=="GET" and url=="https://openalex.s3.amazonaws.com/?prefix=data%2Fjsonl%2Fmanifest.json&versions="
     if purpose=="OPENALEX_MANIFEST": return method=="GET" and parts.hostname=="openalex.s3.amazonaws.com" and parts.path=="/data/jsonl/manifest.json" and bool(re.fullmatch(r"versionId=[A-Za-z0-9._~-]+",parts.query))
     if purpose=="OPENALEX_ARCHIVE_OBJECT_HEAD": return method=="HEAD" and parts.hostname=="openalex.s3.amazonaws.com" and parts.path.startswith("/data/jsonl/") and not parts.query
@@ -42,6 +49,21 @@ def _sha(data: bytes) -> str:
 
 def _canonical(value: Any) -> bytes:
     return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False).encode()
+
+
+def _validate_archive(commitment: Mapping[str,Any], captures_by_identity: Mapping[str,proof.VerifiedCapture], registry: str) -> None:
+    if set(commitment)!={"object_count","total_bytes","merkle_root","leaves"} or not isinstance(commitment["leaves"],list) or not commitment["leaves"]: raise ValueError("archive commitment schema")
+    leaves=commitment["leaves"]
+    if commitment["object_count"]!=len(leaves) or isinstance(commitment["total_bytes"],bool) or commitment["total_bytes"]!=sum(x.get("BYTE_LENGTH",0) for x in leaves): raise ValueError("archive count/length closure")
+    expected_purpose="CROSSREF_ARCHIVE_OBJECT_HEAD" if registry.startswith("CROSSREF_") else "OPENALEX_ARCHIVE_OBJECT_HEAD"
+    seen=set();nodes=[]
+    for leaf in leaves:
+        if set(leaf)!={"VERSIONED_IMMUTABLE_LOCATOR","BYTE_LENGTH","SHA256","HEAD_CAPTURE_IDENTITY"} or leaf["VERSIONED_IMMUTABLE_LOCATOR"] in seen or not HEX64.fullmatch(str(leaf["SHA256"])) or isinstance(leaf["BYTE_LENGTH"],bool) or not isinstance(leaf["BYTE_LENGTH"],int) or leaf["BYTE_LENGTH"]<=0: raise ValueError("archive leaf schema")
+        head=captures_by_identity.get(leaf["HEAD_CAPTURE_IDENTITY"])
+        if head is None or head.purpose!=expected_purpose or head.method!="HEAD": raise ValueError("archive HEAD provenance closure")
+        seen.add(leaf["VERSIONED_IMMUTABLE_LOCATOR"]);nodes.append(hashlib.sha256(b"\0"+proof.canonical(leaf)).digest())
+    while len(nodes)>1: nodes=[hashlib.sha256(b"\1"+nodes[i]+(nodes[i+1] if i+1<len(nodes) else nodes[i])).digest() for i in range(0,len(nodes),2)]
+    if commitment["merkle_root"]!=nodes[0].hex(): raise ValueError("archive Merkle closure")
 
 
 def acquire_attested_capture(
@@ -106,6 +128,7 @@ def assemble_release_history(
     releases = tuple(dict(row) for row in parsed_releases)
     captures=tuple(captures); ids=tuple(item.identity for item in captures)
     if not ids or len(ids) != len(set(ids)) or not all(HEX64.fullmatch(x) for x in ids): raise ValueError("capture identity closure")
+    captures_by_identity={item.identity:item for item in captures}
     purpose_prefix="CROSSREF_" if registry.startswith("CROSSREF_") else "OPENALEX_"
     if any(item.run_identity != run_identity or not item.purpose.startswith(purpose_prefix) for item in captures): raise ValueError("cross-run or cross-registry capture")
     required_purposes = ({"CROSSREF_RELEASE_INDEX", "CROSSREF_ARCHIVE_INDEX"} if purpose_prefix == "CROSSREF_"
@@ -116,10 +139,14 @@ def assemble_release_history(
     rows=[]
     for row in releases:
         if set(row) != {"release_id", "publication_date", "official_url", "source_capture_identity"} or row["source_capture_identity"] not in ids: raise ValueError("parsed release schema or capture closure")
+        source_capture=captures_by_identity[row["source_capture_identity"]]
+        expected_source="CROSSREF_RELEASE_RECORD" if purpose_prefix=="CROSSREF_" else "OPENALEX_RELEASE_NOTES"
+        if source_capture.purpose!=expected_source or source_capture.url!=row["official_url"]: raise ValueError("release-record provenance closure")
         rid=str(row["release_id"]); binding=dict(commitments[rid])
-        if set(binding)!={"registry","release_id","release_record_identity","manifest_capture_identity","archive"} or binding["registry"]!=registry or binding["release_id"]!=rid or binding["release_record_identity"]!=row["source_capture_identity"] or binding["manifest_capture_identity"] not in ids or binding["manifest_capture_identity"]==binding["release_record_identity"]: raise ValueError("registry manifest binding")
+        expected_manifest="CROSSREF_ARCHIVE_INDEX" if purpose_prefix=="CROSSREF_" else "OPENALEX_MANIFEST"
+        if set(binding)!={"registry","release_id","release_record_identity","manifest_capture_identity","archive"} or binding["registry"]!=registry or binding["release_id"]!=rid or binding["release_record_identity"]!=row["source_capture_identity"] or binding["manifest_capture_identity"] not in ids or captures_by_identity[binding["manifest_capture_identity"]].purpose!=expected_manifest: raise ValueError("registry manifest binding")
         commitment=dict(binding["archive"])
-        if set(commitment)!={"object_count","total_bytes","merkle_root","leaves"} or not commitment["leaves"]: raise ValueError("archive commitment schema")
+        _validate_archive(commitment,captures_by_identity,registry)
         archive_identity=_sha(_canonical(binding)); locator_identity=_sha(_canonical([x["VERSIONED_IMMUTABLE_LOCATOR"] for x in commitment["leaves"]]))
         rows.append({"registry":registry,"release_id":rid,"publication_date":row["publication_date"],
           "official_release_record_identity":row["source_capture_identity"],
@@ -169,6 +196,6 @@ def validate_qualification(value: Mapping[str,Any]) -> None:
     expected={"implementation_sha256":_sha(Path(__file__).read_bytes()),"test_sha256":_sha(test_path.read_bytes())}
     if any(value[k]!=v for k,v in expected.items()) or value["v2_3_1_governance"]!=governance.GOVERNANCE_IDENTITY or value["v2_3_3_implementation"]!=_sha(Path(proof.__file__).read_bytes()): raise ValueError("qualification identity chain")
     invariants={"DIRECT_CA_VALIDATED_TLS_NO_PROXY":"PASS","PURPOSE_SPECIFIC_ENDPOINT_AND_METHOD_ALLOWLIST":"PASS","RFC3161_BINDS_EXACT_CAPTURE_ENVELOPE":"PASS","RUN_AND_REGISTRY_REPLAY_DOMAINS":"PASS","CROSSREF_RELEASE_RECORD_CAPTURE_CLOSURE":"PASS","RELEASE_MANIFEST_COMMITMENT_CLOSURE":"PASS","EXACT_V2_3_1_SCHEMA_ASSEMBLY":"PASS","CLOSED_ATTESTATION_VERIFIER_ENTRYPOINT":"PASS"}
-    if value["invariants"]!=invariants or value["remaining_blockers"]!=["REAL_METADATA_NOT_ACQUIRED"]: raise ValueError("qualification invariant closure")
+    if value["invariants"]!=invariants or value["remaining_blockers"]!=list(REMAINING_BLOCKERS): raise ValueError("qualification invariant closure")
     expected_zero={"registry_metadata":0,"snapshot_content":0,"frame_execution":0,"source_selection":0,"authority_bases":0,"pilot15":0,"blind_access":0}
     if value["zero_activity"]!=expected_zero or value["qualification_identity"]!=qualification_identity(value): raise ValueError("qualification closure")
