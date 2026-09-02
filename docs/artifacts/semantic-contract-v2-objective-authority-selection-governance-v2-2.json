@@ -1,0 +1,60 @@
+{
+  "schema": "OBJECTIVE_AUTHORITY_SELECTION_GOVERNANCE_V2_2",
+  "status": "FROZEN_SOURCE_BLIND_WAITING_FOR_POST_CUTOFF_RELEASES",
+  "supersedes": "dbea255e0e23439b5a20a9b0541429877502aaf896976cd2a56537dbb68480c0",
+  "external_freeze": {
+    "protocol": "RFC3161_DIGICERT_SHA256",
+    "payload_sha256": "77ed8b955b7d7f2d342fe7ead521b15436f3a705a6a72416a43f126ff9c4955a",
+    "receipt_sha256": "a304683e1f4173973c76d3f0012ddbd1487b481f6aec2ac6c9333624afe51422",
+    "timestamp_utc": "2026-09-02T17:31:02Z",
+    "message_imprint_algorithm": "SHA256",
+    "signature_chain_verification": "PASS_OPENSSL_TRUSTED_CA",
+    "verified": true
+  },
+  "release_selection": {
+    "registries": ["CROSSREF_ANNUAL_PUBLIC_DATA_FILE", "OPENALEX_PUBLIC_QUARTERLY_SNAPSHOT"],
+    "rule": "UNIQUE_EARLIEST_OFFICIAL_COMPLETE_RELEASE_STRICTLY_AFTER_EXTERNAL_FREEZE",
+    "publication_evidence": "PUBLISHER_RELEASE_RECORD_PLUS_COMPLETE_MANIFEST_DATE",
+    "ties_or_ambiguity": "TERMINAL_NO_FRAME",
+    "unavailable": "WAIT_NO_FRAME_NO_SUBSTITUTION",
+    "daily_paid_openalex_substitution": false
+  },
+  "archive_commitment": {
+    "publisher_monolithic_sha256": "ACCEPT_IF_SIGNED_OR_EXTERNALLY_COMMITTED_BY_PUBLISHER",
+    "otherwise": "COMPLETE_PER_OBJECT_SHA256_MERKLE_V1",
+    "leaf_fields": ["VERSIONED_IMMUTABLE_LOCATOR", "BYTE_LENGTH", "SHA256"],
+    "leaf_order": "UTF8_BYTEWISE_VERSIONED_LOCATOR",
+    "leaf_hash": "SHA256_00_PLUS_CANONICAL_LEAF",
+    "node_hash": "SHA256_01_PLUS_LEFT_PLUS_RIGHT_DUPLICATE_ODD_LAST",
+    "all_manifest_objects_required": true,
+    "manifest_count_total_bytes_and_object_set_bound": true,
+    "etag_accepted": false,
+    "multipart_md5_accepted": false,
+    "locally_asserted_digest_accepted": false,
+    "missing_digest": "TERMINAL_INELIGIBLE",
+    "digest_collection": "FUTURE_SEPARATE_METADATA_ONLY_HASH_STREAMING_AUTHORIZATION_NO_PARSE"
+  },
+  "adapter_freeze": {
+    "registry_adapter": "MUST_BE_HASH_PINNED_AND_ZERO_FRAME_QUALIFIED_BEFORE_SNAPSHOT_BYTES",
+    "rfc3161_verifier": "OPENSSL_3_5_RFC3161_CHAIN_AND_IMPRINT_VERIFICATION",
+    "rekor_verifier": "V2_1_RFC6962_PAYLOAD_TREE_SIGNATURE_VERIFIER",
+    "drand_verifier": "V2_1_PINNED_CHAIN_ROUND_BLS_ADAPTER_AND_TWO_ENDPOINT_QUORUM",
+    "identities": "DEFER_UNTIL_EXECUTABLE_ADAPTERS_EXIST_NO_PLACEHOLDER_IDENTITY"
+  },
+  "lifecycle": {
+    "current": "WAIT_FOR_BOTH_QUALIFYING_RELEASES",
+    "frame_build": "SEPARATELY_AUTHORIZED_AFTER_BOTH_ARCHIVES_COMMITTED",
+    "rekor_frame_commitment": "ONLY_AFTER_COMPLETE_FRAME_EXISTS",
+    "drand_round": "DERIVED_ONLY_FROM_VERIFIED_REKOR_INTEGRATED_TIME_PLUS_86400",
+    "precomputed_rekor_payload_or_round": "PROHIBITED",
+    "redraw_or_release_substitution": false
+  },
+  "registry_snapshots_acquired": 0,
+  "frame_executed": false,
+  "source_selected": false,
+  "authority_basis_created": false,
+  "curriculum_population_started": false,
+  "pilot15_prepared": false,
+  "blind_access": false,
+  "governance_identity": "53602bc3360e392fb05328cd6e21b9ccc252b1ab411f79f8ca96e3aea82eef5c"
+}
