@@ -1,0 +1,18 @@
+{
+  "schema": "OBJECTIVE_AUTHORITY_SELECTION_GOVERNANCE_V2_3_1",
+  "supersedes": "f9f190dee6d2010f2c6113a9dd54a7817de10c8f0487a4b63e8bb2da30288bbe",
+  "verdict": "PASS_HARDENED_PREDECESSOR_GOVERNANCE_METADATA_ACQUISITION_NOT_EXECUTED",
+  "cutoff": {"rfc3161_utc": "2026-09-02T17:31:02Z", "publication_date_exclusive": "2026-09-02", "caller_override": false},
+  "history_proof": {"schema": "EXTERNALLY_VERIFIED_COMPLETE_RELEASE_HISTORY_V2_3_1", "coverage": "ALL_OFFICIAL_COMPLETE_RELEASES_PUBLISHED_BEFORE_2026_09_02", "authority_sources": ["PUBLISHER_RELEASE_INDEX", "PUBLISHER_ARCHIVE_LISTING"], "external_attestation_required": true, "count_and_release_set_root_bound": true, "self_asserted_verification_accepted": false},
+  "selection": {"rule": "UNIQUE_LATEST_OFFICIAL_COMPLETE_RELEASE_DATE_STRICTLY_BEFORE_CUTOFF_DATE", "timestamp_precision": "OFFICIAL_PUBLICATION_DATE_NO_INVENTED_TIME", "unavailable_winner": "TERMINAL_NO_FRAME_NO_FALLBACK", "tie_alias_duplicate_or_version_skew": "TERMINAL_NO_FRAME", "post_cutoff_effect": "NONE", "redraw_resample_or_owner_choice": false},
+  "repaired_blockers": ["CALLER_OVERRIDABLE_CUTOFF", "SELF_ASSERTED_EXTERNAL_VERIFICATION_BOOLEAN", "UNATTESTED_COMPLETE_HISTORY_COUNT_AND_ROOT", "PUBLICATION_TIMESTAMP_PRECISION_INVENTION", "UNVERIFIED_PUBLICATION_AND_COMPLETENESS_IDENTITIES", "ARCHIVE_AVAILABILITY_NOT_FAIL_CLOSED_AFTER_CANONICAL_SELECTION", "DUPLICATE_RELEASE_ALIAS_AND_ARCHIVE_ALIAS", "HISTORY_REPLAY_AND_GOVERNANCE_VERSION_SKEW", "UNKNOWN_SEMANTIC_FIELD_INJECTION"],
+  "unchanged": {"registry_population": ["CROSSREF_ANNUAL_PUBLIC_DATA_FILE", "OPENALEX_PUBLIC_QUARTERLY_SNAPSHOT"], "frame_scope_extraction": "V2_1_FROZEN_UNCHANGED", "rekor_drand_selection": "V2_2_FROZEN_UNCHANGED"},
+  "registry_histories_acquired": 0,
+  "snapshot_content_acquired": 0,
+  "frame_executed": false,
+  "source_selected": false,
+  "authority_basis_created": false,
+  "pilot15_prepared": false,
+  "blind_access": false,
+  "governance_identity": "41f202af7e835bfc9bbb048d803ee19e7861719ae4d45f0298035f586d640c52"
+}
