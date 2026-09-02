@@ -1,0 +1,29 @@
+{
+  "schema": "V5_4_RULE_CONTENT_FREEZE_V1",
+  "status": "FROZEN_EMPTY_ADMITTED_CATALOG_ALL_CANDIDATES_REJECTED",
+  "ontology_identity": "89dd1b20648f7d4eda4a5adb8e3221687daf56da6f805237088b65f55c9ae9c3",
+  "predicate_taxonomy_identity": "8ac73a9d22b86b01244743c96d3a406b5650c82e02dfa8feca38ad24977a84b7",
+  "rule_contract_identity": "1b5e63b2e17da939d7254fe94f0ba9edaacc4302ad1e6272872f3280de23993b",
+  "admission_governance_identity": "bed4d76d7821ca04e070e7a0725c997111b8d60f79532cf6bb1954082b5c7138",
+  "candidate_catalog_identity": "99edf007b17db310b3e71f9fae51611ea12715f77d507fa43a6712ae8cf05e5c",
+  "independent_review_identity": "91f40b488ec61ee8fa90343c99ce469d61554bf1d5cbdc4acb2ec2f552034a8a",
+  "adjudication_disposition_identity": "4cfa0ec639d27df772779d83d212529a8d120073ee0fb9bb3c13d5e266760d33",
+  "final_catalog_identity": "47f1c026427aac49d40f49fe4402a68e879076420c8404d733256d33b025fdad",
+  "final_catalog_file_sha256": "cdb8bf405b834e353620b7bc852f13f336efb8d4a95e392ceb45f5572fd69ff3",
+  "counts": {"batches_completed":5,"candidates":88,"admitted":0,"rejected":88,"operationally_activated":0},
+  "batch_freezes": [
+    {"batch":1,"commit":"698042cf6cef80ec3d414daae130a7746fe475eb","artifact_sha256":"eedf809ced1c05e9046149bd24ab1220672639f02055c0e58ed0a3c701068ae0"},
+    {"batch":2,"commit":"d1945d12c6fdd5f5098b7944dfb76579d276038e","artifact_sha256":"e933826dcf097af68aca24f64eb78191ae69a6d24cf541a75db5bb1111556a79"},
+    {"batch":3,"commit":"353ba565903ce692ace750f37ffdf9fc536f8b6f","artifact_sha256":"77d2524e596cff277167566e4e12e1c970352d2dc3d1eef09726e8e88f9c7821"},
+    {"batch":4,"commit":"0f39de48e1e2c71ab9ce5fa1b3750da96dc3cce5","artifact_sha256":"1f8be899e0fbf6ebd837d4e034aa160964fc1835aad911912ff100cf739d9ccb"},
+    {"batch":5,"commit":"b3fe2bec386baba6646f21d197f2726193cd673c","artifact_sha256":"27af74777eea68e780669637383904b494b86e9f3ccb469d6f8875c936ea8a12"}
+  ],
+  "author_adjudicator_separation": "PASS_DISTINCT_IDENTITIES",
+  "semantic_review": "PASS_COMPLETED_FAIL_CLOSED",
+  "causal_review": "PASS_COMPLETED_ALL_CANDIDATES_REJECTED",
+  "adversarial_review": "PASS_COMPLETED_ALL_CANDIDATES_REJECTED",
+  "post_freeze_rule_modification_permitted": false,
+  "historical_regression_access_before_freeze": false,
+  "pilot15_prepared": false,
+  "blind_access": false
+}
