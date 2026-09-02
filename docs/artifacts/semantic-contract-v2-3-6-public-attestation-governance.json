@@ -25,7 +25,7 @@
     "runner": "GITHUB_HOSTED",
     "source_endpoints": ["CROSSREF_RELEASE_INDEX", "CROSSREF_RELEASE_RECORD", "CROSSREF_ARCHIVE_INDEX", "CROSSREF_ARCHIVE_OBJECT_HEAD", "OPENALEX_RELEASE_NOTES", "OPENALEX_MANIFEST_VERSION_INDEX", "OPENALEX_MANIFEST", "OPENALEX_ARCHIVE_OBJECT_HEAD"]
   },
-  "governance_identity": "4be3ecff240ce9a4d6edaf1f78b294e7556fa09d25390a616d558cebca7f1f2e",
+  "governance_identity": "221871c16d48ceafee90ef12ea13df3611b9d1af4ba48bbe314ceae16cc6a84f",
   "provenance_policy": {
     "capture_manifest_exact_file_set_lengths_and_sha256": true,
     "capture_run_identity_derived_from_transparency_commitment": true,
@@ -70,17 +70,22 @@
   "workflow_policy": {
     "capture_only_after_commitment_inclusion_verified": true,
     "clean_checkout_exact_sha": true,
+    "deployment_commit_is_inert": true,
+    "deployment_after_schedule_precommit_required": true,
     "failed_or_cancelled_committed_run_is_terminal": true,
     "first_step_transparency_commitment_before_network": true,
     "inputs": {},
     "manual_dispatch": false,
+    "missed_delayed_cancelled_or_failed_schedule_is_terminal": true,
     "path": ".github/workflows/semantic-authority-metadata-capture-v2-3-6.yml",
     "permissions": {"attestations": "write", "contents": "read", "id-token": "write"},
     "persist_credentials": false,
     "rerun_or_distinct_run_substitution": false,
-    "scheduled_dispatch": false,
+    "schedule_precommit_rfc3161_required": true,
+    "schedule_utc_and_cron_bound": true,
     "source_commit_bound": true,
-    "trigger": "PUSH_OF_EXACT_DEPLOYMENT_COMMIT_ONLY",
+    "trigger": "SINGLE_PRECOMMITTED_GITHUB_SCHEDULE_EVENT",
+    "push_dispatch": false,
     "workflow_blob_sha256_bound": true,
     "workflow_call": false
   }
