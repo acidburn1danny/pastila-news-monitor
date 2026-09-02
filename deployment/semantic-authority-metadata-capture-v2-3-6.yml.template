@@ -13,12 +13,16 @@ jobs:
   capture:
     if: github.repository_id == '@REPOSITORY_ID@' && github.repository_owner_id == '@OWNER_ID@'
     runs-on: ubuntu-24.04
+    container: python@sha256:edf6433343f65f94707985869aeaafe8beadaeaee11c4bc02068fca52dce28dd
     steps:
-      - uses: actions/checkout@@CHECKOUT_COMMIT@
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           ref: '@WORKFLOW_COMMIT@'
           persist-credentials: false
-      - name: Verify immutable deployment binding
-        run: python -m pastila_scout.semantic_authority_public_attestation_v2_3_6
-      - name: Stop until capture executable is separately frozen
-        run: exit 78
+      - name: Verify frozen orchestration is present but inert
+        env:
+          PYTHONPATH: src
+        run: python -m pastila_scout.semantic_authority_capture_orchestrator_v2_3_7
+      # Activation replaces the inert command only from a separately frozen
+      # deployment manifest. The attestation action itself is immutable-pinned:
+      # actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6
