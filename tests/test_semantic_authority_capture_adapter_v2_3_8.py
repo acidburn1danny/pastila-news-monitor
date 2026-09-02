@@ -3,7 +3,7 @@ from pathlib import Path
 import pytest
 from pastila_scout import semantic_authority_capture_adapter_v2_3_8 as subject
 
-RUN={"deployment_identity":"d"*64,"repository_id":"1355263083","workflow_commit":"9df3768bf1d9033e0b8e9b7674c56765565fcd25","run_id":"7","run_attempt":1,"event_name":"schedule"}
+RUN={"deployment_identity":"d"*64,"repository_id":"1355263083","workflow_commit":"9df3768bf1d9033e0b8e9b7674c56765565fcd25","run_id":"7","run_attempt":1,"event_name":"schedule","request_plan_identity":"e"*64,"ca_sha256":"f"*64}
 
 def bundle():
     claim=subject._initiation_claim(RUN); digest=subject.sha256(subject.canonical(claim))
@@ -61,10 +61,11 @@ def plan():
 
 def test_plan_is_exact_purpose_url_method_and_ca_closed(tmp_path,monkeypatch):
     ca=tmp_path/"ca"; ca.write_bytes(b"ca"); pin=hashlib.sha256(b"ca").hexdigest()
-    requests=plan(); adapter=subject.ProductionCaptureAdapter(requests=requests,expected_plan_identity=subject.request_plan_identity(requests),run_binding=subject.sha256(subject.canonical(RUN)),ca_file=ca,ca_sha256=pin)
+    requests=plan(); run={**RUN,"request_plan_identity":subject.request_plan_identity(requests),"ca_sha256":pin}; adapter=subject.ProductionCaptureAdapter(requests=requests,run=run,ca_file=ca)
     assert tuple(adapter._requests)==subject.PURPOSES
     bad=plan(); bad["OPENALEX_MANIFEST"]=(("GET","https://evil.invalid/x"),)
-    with pytest.raises(ValueError): subject.ProductionCaptureAdapter(requests=bad,expected_plan_identity=subject.request_plan_identity(requests),run_binding=subject.sha256(subject.canonical(RUN)),ca_file=ca,ca_sha256=pin)
+    with pytest.raises(ValueError): subject.ProductionCaptureAdapter(requests=bad,run=run,ca_file=ca)
+    with pytest.raises(ValueError): subject.ProductionCaptureAdapter(requests=requests,run={**run,"ca_sha256":"0"*64},ca_file=ca)
     monkeypatch.setenv("HTTPS_PROXY","x")
     with pytest.raises(ValueError): adapter("OPENALEX_MANIFEST")
 
@@ -86,8 +87,15 @@ def test_zero_network_fake_tls_exercises_production_path(tmp_path,monkeypatch):
     monkeypatch.setattr(subject.ssl,"create_default_context",lambda **kw:object())
     monkeypatch.setattr(subject.http.client,"HTTPSConnection",Connection)
     for key in subject.PROXY_KEYS: monkeypatch.delenv(key,raising=False)
-    requests=plan(); adapter=subject.ProductionCaptureAdapter(requests=requests,expected_plan_identity=subject.request_plan_identity(requests),run_binding=subject.sha256(subject.canonical(RUN)),ca_file=ca,ca_sha256=pin)
+    requests=plan(); run={**RUN,"request_plan_identity":subject.request_plan_identity(requests),"ca_sha256":pin}; adapter=subject.ProductionCaptureAdapter(requests=requests,run=run,ca_file=ca)
     assert adapter("OPENALEX_MANIFEST")[0].payload==b"bytes"
+
+def test_signed_initiation_binds_plan_and_ca(tmp_path,monkeypatch):
+    raw=bundle(); rt=runtime(tmp_path,raw); monkeypatch.setattr(subject.cosign,"verify_blob_attestation",lambda **kw:None); monkeypatch.setattr(subject.cosign,"TRUSTED_ROOT_SHA256",hashlib.sha256(b"root").hexdigest())
+    for field in ("request_plan_identity","ca_sha256"):
+        altered={**RUN,field:"0"*64}
+        with pytest.raises(ValueError,match="statement closure"):
+            subject.verify_initiation_bundle(bundle=raw,run=altered,repository_slug="acidburn1danny/pastila-news-monitor",runtime=rt)
 
 def test_no_network_or_workflow_activation_occurred():
     assert not (Path(__file__).resolve().parents[1]/".github/workflows").exists()

@@ -108,7 +108,7 @@ def orchestrate(
     remove, reorder, retry, or redraw requests.
     """
     validate_pins(pins)
-    required = {"deployment_identity", "repository_id", "workflow_commit", "run_id", "run_attempt", "event_name"}
+    required = {"deployment_identity", "repository_id", "workflow_commit", "run_id", "run_attempt", "event_name", "request_plan_identity", "ca_sha256"}
     if (
         set(run) != required
         or run["event_name"] != "schedule"
@@ -117,6 +117,8 @@ def orchestrate(
         or not HEX64.fullmatch(str(run["deployment_identity"]))
         or not HEX40.fullmatch(str(run["workflow_commit"]))
         or not UINT.fullmatch(str(run["run_id"]))
+        or not HEX64.fullmatch(str(run["request_plan_identity"]))
+        or not HEX64.fullmatch(str(run["ca_sha256"]))
     ):
         raise ValueError("run identity closure")
     initiation = verify_initiation(run)  # must complete before the first transport call
@@ -127,6 +129,8 @@ def orchestrate(
         "workflow_commit": run["workflow_commit"],
         "run_id": run["run_id"],
         "run_attempt": 1,
+        "request_plan_identity": run["request_plan_identity"],
+        "ca_sha256": run["ca_sha256"],
     }
     if not isinstance(initiation, Mapping) or any(initiation.get(k) != v for k, v in expected_initiation.items()):
         raise ValueError("transparency initiation receipt")
@@ -137,6 +141,11 @@ def orchestrate(
     adapter_binding=getattr(capture,"run_binding",sha256(canonical(run)))
     if adapter_binding!=sha256(canonical(run)):
         raise ValueError("capture adapter/run binding")
+    if getattr(capture,"production",False) and (
+        getattr(capture,"plan_identity",None)!=run["request_plan_identity"]
+        or getattr(capture,"ca_sha256",None)!=run["ca_sha256"]
+    ):
+        raise ValueError("capture plan/CA initiation binding")
     records: list[dict[str, object]] = []
     capture_files: dict[str, bytes] = {}
     seen: set[str] = set()

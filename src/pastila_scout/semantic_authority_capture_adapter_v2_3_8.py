@@ -60,17 +60,20 @@ def _initiation_claim(run: Mapping[str, object]) -> dict[str, object]:
         "run_id": run["run_id"],
         "run_attempt": run["run_attempt"],
         "event_name": run["event_name"],
+        "request_plan_identity": run["request_plan_identity"],
+        "ca_sha256": run["ca_sha256"],
         "external_parameters": {},
     }
 
 
 def verify_initiation_bundle(*, bundle: bytes, run: Mapping[str, object], repository_slug: str, runtime: CosignRuntime) -> dict[str, object]:
     """Run the pinned offline verifier, then bind its DSSE statement to this run."""
-    required={"deployment_identity","repository_id","workflow_commit","run_id","run_attempt","event_name"}
+    required={"deployment_identity","repository_id","workflow_commit","run_id","run_attempt","event_name","request_plan_identity","ca_sha256"}
     if (set(run)!=required or not bundle or not re.fullmatch(r"[a-z0-9_.-]+/[a-z0-9_.-]+", repository_slug)
         or not HEX64.fullmatch(str(run["deployment_identity"])) or not re.fullmatch(r"[0-9a-f]{40}",str(run["workflow_commit"]))
         or not UINT.fullmatch(str(run["repository_id"])) or not UINT.fullmatch(str(run["run_id"]))
-        or run["run_attempt"]!=1 or run["event_name"]!="schedule"):
+        or run["run_attempt"]!=1 or run["event_name"]!="schedule"
+        or not HEX64.fullmatch(str(run["request_plan_identity"])) or not HEX64.fullmatch(str(run["ca_sha256"]))) :
         raise ValueError("initiation input")
     if not runtime.bundle_host.is_file() or runtime.bundle_host.is_symlink() or runtime.bundle_host.read_bytes()!=bundle:
         raise ValueError("Cosign/decoder bundle byte split")
@@ -106,6 +109,7 @@ def verify_initiation_bundle(*, bundle: bytes, run: Mapping[str, object], reposi
     return {
         "verified":True,"deployment_identity":run["deployment_identity"],"repository_id":run["repository_id"],
         "workflow_commit":run["workflow_commit"],"run_id":run["run_id"],"run_attempt":1,
+        "request_plan_identity":run["request_plan_identity"],"ca_sha256":run["ca_sha256"],
         "rekor_uuid":sha256(canonical(entry)),"rekor_log_index":log_index,"bundle_sha256":sha256(bundle),
     }
 
@@ -132,8 +136,10 @@ def _allowed(purpose: str, method: str, url: str) -> bool:
 
 class ProductionCaptureAdapter:
     """Direct-TLS adapter over a frozen, derivation-verified request plan."""
-    def __init__(self, *, requests: Mapping[str, tuple[tuple[str,str],...]], expected_plan_identity: str, run_binding: str, ca_file: Path, ca_sha256: str, timeout: int=30):
-        if tuple(requests)!=PURPOSES or request_plan_identity(requests)!=expected_plan_identity or not HEX64.fullmatch(run_binding) or not HEX64.fullmatch(ca_sha256) or timeout!=30:
+    def __init__(self, *, requests: Mapping[str, tuple[tuple[str,str],...]], run: Mapping[str, object], ca_file: Path, timeout: int=30):
+        expected_plan_identity=str(run.get("request_plan_identity","")); ca_sha256=str(run.get("ca_sha256",""))
+        if (tuple(requests)!=PURPOSES or request_plan_identity(requests)!=expected_plan_identity
+            or not HEX64.fullmatch(ca_sha256) or timeout!=30):
             raise ValueError("capture plan closure")
         if not ca_file.is_file() or ca_file.is_symlink() or sha256(ca_file.read_bytes())!=ca_sha256:
             raise ValueError("CA bundle pin")
@@ -146,7 +152,7 @@ class ProductionCaptureAdapter:
                 if not isinstance(row,tuple) or len(row)!=2 or not _allowed(purpose,row[0],row[1]) or row[1] in all_urls: raise ValueError("request plan authority")
                 all_urls.add(row[1]); normalized.append(row)
             closed[purpose]=tuple(normalized)
-        self._requests=closed; self.run_binding=run_binding; self.plan_identity=expected_plan_identity; self._ca_file=ca_file; self._timeout=timeout; self.production=True
+        self._requests=closed; self.run_binding=sha256(canonical(run)); self.plan_identity=expected_plan_identity; self.ca_sha256=ca_sha256; self._ca_file=ca_file; self._timeout=timeout; self.production=True
 
     def __call__(self, purpose: str) -> tuple[Capture,...]:
         if purpose not in self._requests or any(key in os.environ for key in PROXY_KEYS): raise ValueError("capture environment/purpose")

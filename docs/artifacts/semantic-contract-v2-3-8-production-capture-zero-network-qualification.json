@@ -1,9 +1,9 @@
 {
   "schema": "SEMANTIC_AUTHORITY_PRODUCTION_CAPTURE_V2_3_8_ZERO_NETWORK_QUALIFICATION",
   "verdict": "PASS_PRODUCTION_ADAPTER_AND_CRYPTOGRAPHIC_INITIATION_BINDING_ZERO_NETWORK_WORKFLOW_INERT",
-  "implementation_sha256": "8cf2282a0573fbec252ac7ae268c7ce5f4c70e1a6a723f3e1278a4b442b6dd27",
-  "test_sha256": "2cd9e4f1b2c0d7b6f1dbe99a2da5a55d41cb80379fbbbc99ab92f89cfc77676f",
-  "orchestrator_sha256": "9cb7aed8c3d48853854cf08919fd646966806fbdbbdf5cb9b74d30e6f9c84f8b",
+  "implementation_sha256": "ea10502e5f20b0f11c011872fc173ad933a4d09bef508ec45b37d33321f312c7",
+  "test_sha256": "4d42fa50884d6dd75bdc31c3061a27cc8b29e9fc228db21cbf53e004f8327b60",
+  "orchestrator_sha256": "5179804c9e385897cd2579d183b902b64583913d43fdd9f84d70698bbfd05d14",
   "deployment_readme_sha256": "0068700f8f3bbe10efbce2e8864add403d7991c4388d7bcd4b9baef46f386abb",
   "audit_findings": [
     "CALLBACK_ONLY_CAPTURE_HAD_NO_PRODUCTION_TLS_ADAPTER",
@@ -15,7 +15,9 @@
     "CALLER_CONTROLLED_FULCIO_CERTIFICATE_IDENTITY",
     "HOST_BUNDLE_PATH_AND_WSL_BUNDLE_PATH_COULD_DIVERGE",
     "TRUSTED_ROOT_PATH_AND_BYTES_WERE_CALLER_SUBSTITUTABLE",
-    "ARCHIVE_OBJECT_PATH_ALLOWLIST_WAS_OVERBROAD"
+    "ARCHIVE_OBJECT_PATH_ALLOWLIST_WAS_OVERBROAD",
+    "REQUEST_PLAN_IDENTITY_WAS_SELF_CONSISTENT_BUT_NOT_SIGNED",
+    "CA_BUNDLE_PIN_WAS_SELF_CONSISTENT_BUT_NOT_SIGNED"
   ],
   "invariants": {
     "cosign_offline_verification_before_dsse_acceptance": "PASS",
@@ -25,6 +27,7 @@
     "trusted_root_host_wsl_and_FROZEN_HASH": "PASS_EXACT",
     "run_subject_predicate_and_single_tlog_entry": "PASS_EXACT",
     "request_plan_identity": "PASS_FROZEN",
+    "request_plan_and_ca_initiation_binding": "PASS_SIGNED_TRANSPARENTLY",
     "publisher_host_method_and_path_allowlist": "PASS",
     "direct_ca_validated_tls": "PASS_PRODUCTION_PATH",
     "redirect_duplicate_header_and_oversize_rejection": "PASS_FAIL_CLOSED",
@@ -33,6 +36,6 @@
     "workflow": "INERT_NOT_DEPLOYED"
   },
   "zero_activity": {"registry_metadata":0,"snapshot_content":0,"frame_execution":0,"source_selection":0,"authority_bases":0,"pilot15":0,"blind_access":0,"workflow_activations":0},
-  "tests": "62 passed",
-  "qualification_identity": "ae1fa8ddcf71e9f7fd7a3d0ad8c7330a47b27ec081b26c6433d8fc3a57623111"
+  "tests": "64 passed",
+  "qualification_identity": "cf0fa684c62bfe4967c074a1b81cdebfbd8e7f83ce168bf388967ceca74355f6"
 }

@@ -1,14 +1,14 @@
 {
   "schema":"SEMANTIC_AUTHORITY_CAPTURE_ORCHESTRATION_V2_3_7_ZERO_NETWORK_QUALIFICATION",
   "verdict":"PASS_ADVERSARIALLY_REMEDIATED_CAPTURE_ORCHESTRATION_CORE_ZERO_NETWORK_WORKFLOW_INERT",
-  "implementation_sha256":"9cb7aed8c3d48853854cf08919fd646966806fbdbbdf5cb9b74d30e6f9c84f8b",
-  "test_sha256":"15f47f60b7047d54aeb96229e1219f0568f4e43f2cd0a32d4032472a8f084b81",
+  "implementation_sha256":"5179804c9e385897cd2579d183b902b64583913d43fdd9f84d70698bbfd05d14",
+  "test_sha256":"5a06c4200da5ba3a6e6ce393465576f5f57a8b4803836f987ba226e7b0a44e1f",
   "dependency_pins_sha256":"366631a0cbd667f03974941eaedc378c9725e3019a91bafa5355ce182bc3d3d9",
   "dependency_pins_identity":"dbf5a3c094cc355c00055b73a2d32cb091beb00a067a459d20439a39c17cc790",
   "workflow_template_sha256":"45e1859382578ae6de7aa73abccf6ef3e8f384caae5a7c79c47928675979fb65",
-  "audit_findings":["NOOP_INITIATION_VERIFIER_ACCEPTED","ARBITRARY_LOCATOR_AND_METHOD_ACCEPTED","RUN_IDENTITY_SCHEMA_UNBOUND","CAPTURE_BYTES_DISCARDED_AFTER_HASHING","QUALIFICATION_NETWORK_DENIAL_INCOMPLETE","QUALIFICATION_DID_NOT_BIND_TEST_OR_TEMPLATE_BYTES","ONE_CAPTURE_PER_PURPOSE_COULD_NOT_REPRESENT_PAGINATION_OR_ARCHIVE_CLOSURE","CAPTURE_ADAPTER_RUN_BINDING_WAS_NOT_ENFORCED","HEAD_CAPTURE_EMPTY_BODY_WAS_UNREPRESENTABLE","PRODUCTION_TLS_AND_HEADER_EVIDENCE_WAS_NOT_CLOSED_IN_MANIFEST"],
-  "invariants":{"transparency_receipt_schema_and_run_binding":"PASS","transparency_before_transport":"PASS","frozen_purpose_group_order":"PASS","dynamic_page_and_object_group_retention":"PASS","publisher_host_and_method_allowlist":"PASS","single_attempt_no_retry_redraw":"PASS","actual_capture_bytes_retained_and_committed":"PASS","head_empty_body_semantics":"PASS","production_tls_and_header_evidence":"PASS","capture_byte_commitments":"PASS","run_identity_closure":"PASS","capture_adapter_run_binding":"PASS","action_commit_pins":"PASS","container_digest_pin":"PASS","runtime_dependencies":"EMPTY_STDLIB_ONLY","qualification_network_and_process_escape":"DENIED","qualification_identity_chain":"PASS","workflow":"INERT_NOT_DEPLOYED"},
+  "audit_findings":["NOOP_INITIATION_VERIFIER_ACCEPTED","ARBITRARY_LOCATOR_AND_METHOD_ACCEPTED","RUN_IDENTITY_SCHEMA_UNBOUND","CAPTURE_BYTES_DISCARDED_AFTER_HASHING","QUALIFICATION_NETWORK_DENIAL_INCOMPLETE","QUALIFICATION_DID_NOT_BIND_TEST_OR_TEMPLATE_BYTES","ONE_CAPTURE_PER_PURPOSE_COULD_NOT_REPRESENT_PAGINATION_OR_ARCHIVE_CLOSURE","CAPTURE_ADAPTER_RUN_BINDING_WAS_NOT_ENFORCED","HEAD_CAPTURE_EMPTY_BODY_WAS_UNREPRESENTABLE","PRODUCTION_TLS_AND_HEADER_EVIDENCE_WAS_NOT_CLOSED_IN_MANIFEST","SIGNED_INITIATION_DID_NOT_BIND_REQUEST_PLAN_OR_CA"],
+  "invariants":{"transparency_receipt_schema_and_run_binding":"PASS","transparency_before_transport":"PASS","signed_request_plan_and_ca_binding":"PASS","frozen_purpose_group_order":"PASS","dynamic_page_and_object_group_retention":"PASS","publisher_host_and_method_allowlist":"PASS","single_attempt_no_retry_redraw":"PASS","actual_capture_bytes_retained_and_committed":"PASS","head_empty_body_semantics":"PASS","production_tls_and_header_evidence":"PASS","capture_byte_commitments":"PASS","run_identity_closure":"PASS","capture_adapter_run_binding":"PASS","action_commit_pins":"PASS","container_digest_pin":"PASS","runtime_dependencies":"EMPTY_STDLIB_ONLY","qualification_network_and_process_escape":"DENIED","qualification_identity_chain":"PASS","workflow":"INERT_NOT_DEPLOYED"},
   "zero_activity":{"registry_metadata":0,"snapshot_content":0,"frame_execution":0,"source_selection":0,"authority_bases":0,"pilot15":0,"blind_access":0,"workflow_activations":0},
-  "tests":"62 passed",
-  "qualification_identity":"9c2cf895fafed98c0c8398c2b9cf2b5e6f42cc92ced2e6134c8b881cab087c0b"
+  "tests":"64 passed",
+  "qualification_identity":"262105ee5860131ea81b71c439c3ab843ca2d4359fe35fdb7afd09da9268e88f"
 }

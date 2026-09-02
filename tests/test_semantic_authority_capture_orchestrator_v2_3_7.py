@@ -7,11 +7,11 @@ from pastila_scout.semantic_authority_capture_orchestrator_v2_3_7 import Capture
 
 ROOT = Path(__file__).resolve().parents[1]
 PINS = json.loads((ROOT / "deployment" / "dependency-pins-v2-3-7.json").read_text(encoding="utf-8"))
-RUN = {"deployment_identity":"d"*64,"repository_id":"1355263083","workflow_commit":"6aac983e6db4136296e9062cdf46c9c95fe21d01","run_id":"1","run_attempt":1,"event_name":"schedule"}
+RUN = {"deployment_identity":"d"*64,"repository_id":"1355263083","workflow_commit":"6aac983e6db4136296e9062cdf46c9c95fe21d01","run_id":"1","run_attempt":1,"event_name":"schedule","request_plan_identity":"e"*64,"ca_sha256":"f"*64}
 
 
 def receipt(run=RUN):
-    return {"verified":True,"deployment_identity":run["deployment_identity"],"repository_id":run["repository_id"],"workflow_commit":run["workflow_commit"],"run_id":run["run_id"],"run_attempt":1,"rekor_uuid":"a"*64,"rekor_log_index":"1","bundle_sha256":"b"*64}
+    return {"verified":True,"deployment_identity":run["deployment_identity"],"repository_id":run["repository_id"],"workflow_commit":run["workflow_commit"],"run_id":run["run_id"],"run_attempt":1,"request_plan_identity":run["request_plan_identity"],"ca_sha256":run["ca_sha256"],"rekor_uuid":"a"*64,"rekor_log_index":"1","bundle_sha256":"b"*64}
 
 
 def item(purpose, *, payload=b"fixture", status=200, host=None, method=None):
@@ -48,6 +48,8 @@ def test_production_head_evidence_allows_empty_body_but_not_missing_tls():
     class Adapter:
         production=True
         run_binding=sha256(canonical(RUN))
+        plan_identity=RUN["request_plan_identity"]
+        ca_sha256=RUN["ca_sha256"]
         def __call__(self,purpose):
             method="HEAD" if purpose.endswith("OBJECT_HEAD") else "GET"
             payload=b"" if method=="HEAD" else b"x"
@@ -59,6 +61,16 @@ def test_production_head_evidence_allows_empty_body_but_not_missing_tls():
             value=super().__call__(purpose)[0]
             return (Capture(value.purpose,value.locator,value.payload,value.method,value.status),)
     with pytest.raises(ValueError,match="TLS evidence"): orchestrate(run=RUN,pins=PINS,verify_initiation=lambda _:receipt(),capture=MissingTls())
+
+def test_production_plan_or_ca_cannot_be_self_consistent_but_unsigned():
+    class Adapter:
+        production=True
+        run_binding=sha256(canonical(RUN))
+        plan_identity="0"*64
+        ca_sha256=RUN["ca_sha256"]
+        def __call__(self,purpose): raise AssertionError("transport reached")
+    with pytest.raises(ValueError,match="plan/CA initiation binding"):
+        orchestrate(run=RUN,pins=PINS,verify_initiation=lambda _:receipt(),capture=Adapter())
 
 
 @pytest.mark.parametrize("field,value", [("repository_id","9"),("workflow_commit","x"),("run_id","0"),("run_attempt",2),("event_name","workflow_dispatch")])
