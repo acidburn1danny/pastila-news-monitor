@@ -6,6 +6,7 @@ import json
 import os
 import re
 import subprocess
+import xml.etree.ElementTree as ET
 from dataclasses import dataclass
 from html.parser import HTMLParser
 from pathlib import Path
@@ -16,6 +17,8 @@ from .semantic_authority_capture_orchestrator_v2_3_7 import Capture, canonical
 from .semantic_authority_cosign_v2_3_7 import decode_dsse_statement
 
 RUNTIME_COMMIT = "8e6e533b4448ab56040fcc2aefc3de10921ab48e"
+REPOSITORY_ID = "1355263083"
+REPOSITORY_SLUG = "acidburn1danny/pastila-news-monitor"
 COSIGN_SHA256 = "4629c757b7618056f8ddd7e2625ae9fdd94c0372a65049520bc7d9df9efc7f71"
 TRUSTED_ROOT_SHA256 = "6494e21ea73fa7ee769f85f57d5a3e6a08725eae1e38c755fc3517c9e6bc0b66"
 LINUX_LAUNCHER_SHA256 = "62f9af6b03354f8092be0e1780eecb4d18a0715b50123f438dc01f7ab53548fc"
@@ -69,6 +72,31 @@ def _text(payload: bytes) -> str:
     except UnicodeDecodeError as exc: raise ValueError("discovery UTF-8") from exc
 
 
+def _allowed_request(purpose: str, method: str, url: str) -> bool:
+    parsed = urlsplit(url)
+    if (parsed.scheme != "https" or parsed.port is not None or parsed.username is not None
+        or parsed.password is not None or parsed.fragment or ".." in parsed.path or "%" in parsed.path):
+        return False
+    expected_host = {
+        "CROSSREF_RELEASE_INDEX":"www.crossref.org", "CROSSREF_RELEASE_RECORD":"www.crossref.org",
+        "CROSSREF_ARCHIVE_INDEX":"www.crossref.org", "CROSSREF_ARCHIVE_OBJECT_HEAD":"api-snapshots-reqpays-crossref.s3.amazonaws.com",
+        "OPENALEX_RELEASE_NOTES":"openalex.s3.amazonaws.com", "OPENALEX_MANIFEST_VERSION_INDEX":"openalex.s3.amazonaws.com",
+        "OPENALEX_MANIFEST":"openalex.s3.amazonaws.com", "OPENALEX_ARCHIVE_OBJECT_HEAD":"openalex.s3.amazonaws.com",
+    }.get(purpose)
+    if parsed.hostname != expected_host or method != ("HEAD" if purpose.endswith("OBJECT_HEAD") else "GET"):
+        return False
+    if purpose == "CROSSREF_RELEASE_INDEX":
+        return not parsed.query and bool(re.fullmatch(r"/categories/metadata-retrieval/(?:page/[1-9][0-9]*/)?", parsed.path))
+    if purpose == "CROSSREF_RELEASE_RECORD": return not parsed.query and bool(re.fullmatch(r"/blog/[a-z0-9][a-z0-9-]*/", parsed.path))
+    if purpose == "CROSSREF_ARCHIVE_INDEX": return url == SEEDS[1][2]
+    if purpose == "CROSSREF_ARCHIVE_OBJECT_HEAD": return not parsed.query and parsed.path not in {"", "/"}
+    if purpose == "OPENALEX_RELEASE_NOTES": return url == SEEDS[2][2]
+    if purpose == "OPENALEX_MANIFEST_VERSION_INDEX":
+        return bool(re.fullmatch(r"prefix=data%2Fjsonl%2Fmanifest\.json&versions=(?:&key-marker=[A-Za-z0-9._~-]+&version-id-marker=[A-Za-z0-9._~-]+)?", parsed.query))
+    if purpose == "OPENALEX_MANIFEST": return parsed.path == "/data/jsonl/manifest.json" and bool(re.fullmatch(r"versionId=[A-Za-z0-9._~-]+", parsed.query))
+    return purpose == "OPENALEX_ARCHIVE_OBJECT_HEAD" and not parsed.query and parsed.path.startswith("/data/jsonl/") and len(parsed.path) > len("/data/jsonl/")
+
+
 def derive_requests(captures: Mapping[str, tuple[Capture, ...]]) -> tuple[tuple[str, str, str, str], ...]:
     """Derive requests only from captured bytes; the fourth field binds the source bytes."""
     if not captures or not set(captures).issubset(DISCOVERY_PURPOSES):
@@ -91,8 +119,19 @@ def derive_requests(captures: Mapping[str, tuple[Capture, ...]]) -> tuple[tuple[
                     elif parsed.hostname == "api-snapshots-reqpays-crossref.s3.amazonaws.com" and parsed.path not in {"", "/"}:
                         out.add(("CROSSREF_ARCHIVE_OBJECT_HEAD", "HEAD", url, source))
             elif purpose == "OPENALEX_MANIFEST_VERSION_INDEX":
-                for version in re.findall(r"<VersionId>([A-Za-z0-9._~-]+)</VersionId>", text):
-                    out.add(("OPENALEX_MANIFEST", "GET", f"https://openalex.s3.amazonaws.com/data/jsonl/manifest.json?versionId={version}", source))
+                try: root = ET.fromstring(text)
+                except ET.ParseError as exc: raise ValueError("OpenAlex version XML") from exc
+                local = lambda node: node.tag.rsplit("}", 1)[-1]
+                for node in root.iter():
+                    version = (node.text or "").strip()
+                    if local(node) == "VersionId" and re.fullmatch(r"[A-Za-z0-9._~-]+", version):
+                        out.add(("OPENALEX_MANIFEST", "GET", f"https://openalex.s3.amazonaws.com/data/jsonl/manifest.json?versionId={version}", source))
+                values = {local(node):(node.text or "").strip() for node in root.iter() if local(node) in {"IsTruncated","NextKeyMarker","NextVersionIdMarker"}}
+                if values.get("IsTruncated") not in {"true", "false"}: raise ValueError("OpenAlex truncation closure")
+                if values["IsTruncated"] == "true":
+                    key, version = values.get("NextKeyMarker", ""), values.get("NextVersionIdMarker", "")
+                    if not re.fullmatch(r"[A-Za-z0-9._~-]+", key) or not re.fullmatch(r"[A-Za-z0-9._~-]+", version): raise ValueError("OpenAlex continuation closure")
+                    out.add(("OPENALEX_MANIFEST_VERSION_INDEX", "GET", f"{SEEDS[3][2]}&key-marker={key}&version-id-marker={version}", source))
             elif purpose == "OPENALEX_MANIFEST":
                 try: value = json.loads(text)
                 except json.JSONDecodeError as exc: raise ValueError("OpenAlex manifest JSON") from exc
@@ -116,7 +155,7 @@ def derive_requests(captures: Mapping[str, tuple[Capture, ...]]) -> tuple[tuple[
 def initiation_claim(run: Mapping[str, object]) -> dict[str, object]:
     required = {"deployment_identity", "repository_id", "runtime_commit", "workflow_commit", "run_id", "run_attempt", "event_name", "derivation_policy_identity", "seed_plan_identity", "ca_sha256"}
     if (set(run) != required or run["runtime_commit"] != RUNTIME_COMMIT or not HEX40.fullmatch(str(run["workflow_commit"]))
-        or run["workflow_commit"] == run["runtime_commit"] or not UINT.fullmatch(str(run["repository_id"]))
+        or run["workflow_commit"] == run["runtime_commit"] or run["repository_id"] != REPOSITORY_ID
         or not UINT.fullmatch(str(run["run_id"])) or run["run_attempt"] != 1 or run["event_name"] != "schedule"
         or run["derivation_policy_identity"] != DERIVATION_POLICY_IDENTITY or run["seed_plan_identity"] != SEED_PLAN_IDENTITY
         or not HEX64.fullmatch(str(run["deployment_identity"])) or not HEX64.fullmatch(str(run["ca_sha256"]))):
@@ -158,7 +197,7 @@ def run_linux_verifier(runtime: LinuxVerifier, args: tuple[str, ...]) -> subproc
 def verify_linux_initiation(*, run: Mapping[str, object], bundle: bytes, bundle_path: Path, repository_slug: str, runtime: LinuxVerifier) -> Mapping[str, object]:
     claim=initiation_claim(run); digest=sha(canonical(claim))
     if (not bundle or not bundle_path.is_file() or bundle_path.is_symlink() or bundle_path.read_bytes()!=bundle
-        or not re.fullmatch(r"[a-z0-9_.-]+/[a-z0-9_.-]+",repository_slug)):
+        or repository_slug != REPOSITORY_SLUG):
         raise ValueError("initiation bundle input")
     identity=f"https://github.com/{repository_slug}/.github/workflows/semantic-authority-metadata-capture-v2-3-9.yml@refs/heads/public/v2.3.7-capture"
     result=run_linux_verifier(runtime,("verify-blob-attestation","--offline","--bundle",str(bundle_path),"--trusted-root",str(runtime.trusted_root),"--certificate-identity",identity,"--certificate-oidc-issuer","https://token.actions.githubusercontent.com","--certificate-github-workflow-repository",repository_slug,"--certificate-github-workflow-sha",str(run["workflow_commit"]),"--certificate-github-workflow-trigger","schedule","--digest",digest,"--digestAlg","sha256"))
@@ -171,7 +210,8 @@ def verify_linux_initiation(*, run: Mapping[str, object], bundle: bytes, bundle_
         entries=json.loads(bundle)["verificationMaterial"]["tlogEntries"]
         if not isinstance(entries,list) or len(entries)!=1 or not UINT.fullmatch(str(entries[0]["logIndex"])) or not UINT.fullmatch(str(entries[0]["integratedTime"])): raise ValueError
     except (KeyError,TypeError,ValueError,json.JSONDecodeError) as exc: raise ValueError("single Rekor initiation entry") from exc
-    return {"initiation_subject_sha256":digest,"initiation_rekor_entry_sha256":sha(canonical(entries[0])),"verified":True}
+    return {"initiation_subject_sha256":digest,"initiation_rekor_uuid":sha(canonical(entries[0])),
+            "initiation_rekor_log_index":str(entries[0]["logIndex"]),"initiation_rekor_integrated_time":str(entries[0]["integratedTime"]),"verified":True}
 
 
 @dataclass(frozen=True)
@@ -185,6 +225,10 @@ def execute_capture(*, run: Mapping[str, object], bundle: bytes, bundle_path: Pa
     receipt = verify_linux_initiation(run=run,bundle=bundle,bundle_path=bundle_path,repository_slug=repository_slug,runtime=verifier)
     if receipt.get("verified") is not True or receipt.get("initiation_subject_sha256") != sha(canonical(initiation_claim(run))):
         raise ValueError("cryptographic initiation required")
+    if (getattr(capture_one, "production", False) is not True
+        or getattr(capture_one, "run_binding", None) != sha(canonical(run))
+        or getattr(capture_one, "ca_sha256", None) != run["ca_sha256"]):
+        raise ValueError("production capture binding")
     results: list[Capture] = []
     derivation_evidence: list[tuple[str,str,str,str]] = []
     requested: set[tuple[str, str, str]] = set()
@@ -194,10 +238,12 @@ def execute_capture(*, run: Mapping[str, object], bundle: bytes, bundle_path: Pa
         purpose, method, url = pending.pop(0)
         key = (purpose, method, url)
         if key in requested: continue
+        if not _allowed_request(purpose, method, url): raise ValueError("derived request boundary")
         if len(requested) >= MAX_REQUESTS: raise ValueError("adaptive request bound")
         item = capture_one(purpose, method, url)
         if (not isinstance(item, Capture) or item.purpose != purpose or item.method != method or item.locator != url
-            or item.status != 200 or (method == "GET" and not item.payload)):
+            or item.status != 200 or (method == "GET" and not item.payload) or not item.headers
+            or not HEX64.fullmatch(item.peer_certificate_sha256) or item.tls_version not in {"TLSv1.2", "TLSv1.3"}):
             raise ValueError("capture response/request binding")
         requested.add(key); results.append(item)
         if purpose in DISCOVERY_PURPOSES:

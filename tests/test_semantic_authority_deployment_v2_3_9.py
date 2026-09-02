@@ -7,6 +7,14 @@ from pastila_scout.semantic_authority_capture_orchestrator_v2_3_7 import Capture
 def run():
     return {"deployment_identity":"a"*64,"repository_id":"1355263083","runtime_commit":m.RUNTIME_COMMIT,"workflow_commit":"b"*40,"run_id":"1","run_attempt":1,"event_name":"schedule","derivation_policy_identity":m.DERIVATION_POLICY_IDENTITY,"seed_plan_identity":m.SEED_PLAN_IDENTITY,"ca_sha256":"c"*64}
 
+class Transport:
+    production=True
+    def __init__(self, fn): self.fn=fn; self.run_binding=m.sha(m.canonical(run())); self.ca_sha256=run()["ca_sha256"]
+    def __call__(self,purpose,method,url): return self.fn(purpose,method,url)
+
+def captured(purpose, method, url, payload=b"closed"):
+    return Capture(purpose,url,payload,method,200,(("content-type","application/octet-stream"),),"d"*64,"TLSv1.3")
+
 def test_runtime_and_workflow_commits_are_distinct_and_closed():
     assert m.initiation_claim(run())["runtime_commit"]==m.RUNTIME_COMMIT
     for field,value in (("runtime_commit","d"*40),("workflow_commit",m.RUNTIME_COMMIT),("derivation_policy_identity","0"*64),("seed_plan_identity","0"*64)):
@@ -15,7 +23,7 @@ def test_runtime_and_workflow_commits_are_distinct_and_closed():
 
 def test_adaptive_derivation_is_byte_bound_and_order_invariant():
     cross=b'<a href="/blog/release-a/"></a><a href="https://api-snapshots-reqpays-crossref.s3.amazonaws.com/a.tar"></a>'
-    versions=b'<VersionId>v2</VersionId><VersionId>v1</VersionId>'
+    versions=b'<ListVersionsResult><Version><VersionId>v2</VersionId></Version><Version><VersionId>v1</VersionId></Version><IsTruncated>false</IsTruncated></ListVersionsResult>'
     captures={"CROSSREF_RELEASE_INDEX":(Capture("CROSSREF_RELEASE_INDEX",m.SEEDS[0][2],cross),),"OPENALEX_MANIFEST_VERSION_INDEX":(Capture("OPENALEX_MANIFEST_VERSION_INDEX",m.SEEDS[3][2],versions),)}
     first=m.derive_requests(captures); second=m.derive_requests(dict(reversed(tuple(captures.items()))))
     assert first==second and all(row[3] in {m.sha(cross),m.sha(versions)} for row in first)
@@ -27,38 +35,38 @@ def test_manifest_object_derivation_rejects_malformed_or_foreign():
     assert len(rows)==1 and rows[0][2]=="https://openalex.s3.amazonaws.com/data/jsonl/works/a.gz"
     with pytest.raises(ValueError):m.derive_requests({"OPENALEX_MANIFEST":(Capture("OPENALEX_MANIFEST","x",b"{"),)})
 
-def test_initiation_precedes_every_transport_and_failure_is_terminal():
+def test_initiation_precedes_every_transport_and_failure_is_terminal(monkeypatch):
     calls=[]; verifier=object(); bundle_path=Path("bundle")
-    monkey=lambda **kw: (_ for _ in ()).throw(ValueError("crypto"))
-    original=m.verify_linux_initiation;m.verify_linux_initiation=monkey
-    with pytest.raises(ValueError):m.execute_capture(run=run(),bundle=b"x",bundle_path=bundle_path,repository_slug="owner/repo",verifier=verifier,capture_one=lambda *x:calls.append(x))
+    monkeypatch.setattr(m,"verify_linux_initiation",lambda **kw: (_ for _ in ()).throw(ValueError("crypto")))
+    with pytest.raises(ValueError):m.execute_capture(run=run(),bundle=b"x",bundle_path=bundle_path,repository_slug=m.REPOSITORY_SLUG,verifier=verifier,capture_one=lambda *x:calls.append(x))
     assert calls==[]
-    m.verify_linux_initiation=lambda **kw:{"verified":True,"initiation_subject_sha256":m.sha(m.canonical(m.initiation_claim(run())))}
-    def capture(p,method,url):calls.append((p,method,url));return Capture(p,url,b"no links",method)
-    result=m.execute_capture(run=run(),bundle=b"x",bundle_path=bundle_path,repository_slug="owner/repo",verifier=verifier,capture_one=capture)
-    m.verify_linux_initiation=original
+    monkeypatch.setattr(m,"verify_linux_initiation",lambda **kw:{"verified":True,"initiation_subject_sha256":m.sha(m.canonical(m.initiation_claim(run())))})
+    def capture(p,method,url):
+        calls.append((p,method,url))
+        payload=b'<ListVersionsResult><IsTruncated>false</IsTruncated></ListVersionsResult>' if p=="OPENALEX_MANIFEST_VERSION_INDEX" else b"no links"
+        return captured(p,method,url,payload)
+    result=m.execute_capture(run=run(),bundle=b"x",bundle_path=bundle_path,repository_slug=m.REPOSITORY_SLUG,verifier=verifier,capture_one=Transport(capture))
     assert len(result.captures)==4 and result.derivations==() and calls==list(m.SEEDS)
 
-def test_adaptive_execution_reaches_fixed_point_without_retry():
-    calls=[];original=m.verify_linux_initiation;m.verify_linux_initiation=lambda **kw:{"verified":True,"initiation_subject_sha256":m.sha(m.canonical(m.initiation_claim(run())))}
+def test_adaptive_execution_reaches_fixed_point_without_retry(monkeypatch):
+    calls=[];monkeypatch.setattr(m,"verify_linux_initiation",lambda **kw:{"verified":True,"initiation_subject_sha256":m.sha(m.canonical(m.initiation_claim(run())))})
     def capture(purpose,method,url):
         calls.append((purpose,method,url))
         if purpose=="CROSSREF_RELEASE_INDEX" and url==m.SEEDS[0][2]: payload=b'<a href="/categories/metadata-retrieval/page/2/"></a>'
         elif purpose=="CROSSREF_RELEASE_INDEX": payload=b'<a href="/blog/release-z/"></a>'
-        elif purpose=="OPENALEX_MANIFEST_VERSION_INDEX": payload=b'<VersionId>v1</VersionId>'
+        elif purpose=="OPENALEX_MANIFEST_VERSION_INDEX": payload=b'<ListVersionsResult><Version><VersionId>v1</VersionId></Version><IsTruncated>false</IsTruncated></ListVersionsResult>'
         elif purpose=="OPENALEX_MANIFEST": payload=b'{"entries":[{"url":"works/a.gz"}]}'
         else: payload=b"closed"
-        return Capture(purpose,url,payload,method)
-    result=m.execute_capture(run=run(),bundle=b"x",bundle_path=Path("bundle"),repository_slug="owner/repo",verifier=object(),capture_one=capture);m.verify_linux_initiation=original
+        return captured(purpose,method,url,payload)
+    result=m.execute_capture(run=run(),bundle=b"x",bundle_path=Path("bundle"),repository_slug=m.REPOSITORY_SLUG,verifier=object(),capture_one=Transport(capture))
     assert len(calls)==len(set(calls))==8
     assert {x.purpose for x in result.captures}>={"CROSSREF_RELEASE_RECORD","OPENALEX_ARCHIVE_OBJECT_HEAD"}
     assert len(result.derivations)==4 and all(len(x)==4 and len(x[3])==64 for x in result.derivations)
 
-def test_transport_cannot_substitute_response_identity():
-    original=m.verify_linux_initiation;m.verify_linux_initiation=lambda **kw:{"verified":True,"initiation_subject_sha256":m.sha(m.canonical(m.initiation_claim(run())))}
+def test_transport_cannot_substitute_response_identity(monkeypatch):
+    monkeypatch.setattr(m,"verify_linux_initiation",lambda **kw:{"verified":True,"initiation_subject_sha256":m.sha(m.canonical(m.initiation_claim(run())))})
     with pytest.raises(ValueError,match="response/request binding"):
-        m.execute_capture(run=run(),bundle=b"x",bundle_path=Path("bundle"),repository_slug="owner/repo",verifier=object(),capture_one=lambda p,method,url:Capture(p,"https://evil.invalid/",b"x",method))
-    m.verify_linux_initiation=original
+        m.execute_capture(run=run(),bundle=b"x",bundle_path=Path("bundle"),repository_slug=m.REPOSITORY_SLUG,verifier=object(),capture_one=Transport(lambda p,method,url:captured(p,method,"https://evil.invalid/",b"x")))
 
 def test_final_attestation_uses_exact_same_claim():
     r=run(); claim=m.initiation_claim(r)
@@ -85,8 +93,9 @@ def test_linux_initiation_is_direct_crypto_not_callback(tmp_path,monkeypatch):
     bundle=json.dumps({"dsseEnvelope":{"payload":base64.b64encode(json.dumps(statement).encode()).decode(),"payloadType":"application/vnd.in-toto+json","signatures":[{"sig":"fixture"}]},"verificationMaterial":{"tlogEntries":[{"logIndex":1,"integratedTime":2}]}}).encode();path=tmp_path/"bundle";path.write_bytes(bundle)
     monkeypatch.setattr(m,"run_linux_verifier",lambda runtime,args:type("R",(),{"returncode":0,"stdout":b"Verified OK","stderr":b""})())
     runtime=SimpleNamespace(trusted_root=tmp_path/"root")
-    assert m.verify_linux_initiation(run=r,bundle=bundle,bundle_path=path,repository_slug="owner/repo",runtime=runtime)["verified"] is True
-    with pytest.raises(ValueError):m.verify_linux_initiation(run=r,bundle=bundle+b" ",bundle_path=path,repository_slug="owner/repo",runtime=runtime)
+    receipt=m.verify_linux_initiation(run=r,bundle=bundle,bundle_path=path,repository_slug=m.REPOSITORY_SLUG,runtime=runtime)
+    assert receipt["verified"] is True and receipt["initiation_rekor_log_index"]=="1"
+    with pytest.raises(ValueError):m.verify_linux_initiation(run=r,bundle=bundle+b" ",bundle_path=path,repository_slug=m.REPOSITORY_SLUG,runtime=runtime)
 
 def test_rekor_entry_is_mandatory_even_after_cosign_success(tmp_path,monkeypatch):
     import base64
@@ -94,7 +103,7 @@ def test_rekor_entry_is_mandatory_even_after_cosign_success(tmp_path,monkeypatch
     r=run();claim=m.initiation_claim(r);digest=m.sha(m.canonical(claim));statement={"_type":"https://in-toto.io/Statement/v1","subject":[{"name":"pastila-capture-initiation.json","digest":{"sha256":digest}}],"predicateType":"https://pastila.invalid/semantic-authority/initiation/v2.3.9","predicate":claim}
     bundle=json.dumps({"dsseEnvelope":{"payload":base64.b64encode(json.dumps(statement).encode()).decode(),"payloadType":"application/vnd.in-toto+json","signatures":[{"sig":"fixture"}]},"verificationMaterial":{"tlogEntries":[]}}).encode();path=tmp_path/"bundle";path.write_bytes(bundle)
     monkeypatch.setattr(m,"run_linux_verifier",lambda runtime,args:type("R",(),{"returncode":0,"stdout":b"Verified OK","stderr":b""})())
-    with pytest.raises(ValueError,match="Rekor"):m.verify_linux_initiation(run=r,bundle=bundle,bundle_path=path,repository_slug="owner/repo",runtime=SimpleNamespace(trusted_root=tmp_path/"root"))
+    with pytest.raises(ValueError,match="Rekor"):m.verify_linux_initiation(run=r,bundle=bundle,bundle_path=path,repository_slug=m.REPOSITORY_SLUG,runtime=SimpleNamespace(trusted_root=tmp_path/"root"))
 
 def test_same_bytes_at_distinct_locators_are_not_collapsed(monkeypatch):
     monkeypatch.setattr(m,"verify_linux_initiation",lambda **kw:{"verified":True,"initiation_subject_sha256":m.sha(m.canonical(m.initiation_claim(run())))})
@@ -105,9 +114,32 @@ def test_same_bytes_at_distinct_locators_are_not_collapsed(monkeypatch):
         return (("CROSSREF_RELEASE_RECORD","GET","https://www.crossref.org/blog/release-from-page-2/",source),)
     monkeypatch.setattr(m,"derive_requests",derive)
     def capture(purpose,method,url):
-        return Capture(purpose,url,b"identical",method)
-    result=m.execute_capture(run=run(),bundle=b"x",bundle_path=Path("bundle"),repository_slug="owner/repo",verifier=object(),capture_one=capture)
+        return captured(purpose,method,url,b"identical")
+    result=m.execute_capture(run=run(),bundle=b"x",bundle_path=Path("bundle"),repository_slug=m.REPOSITORY_SLUG,verifier=object(),capture_one=Transport(capture))
     assert any(x.purpose=="CROSSREF_RELEASE_RECORD" for x in result.captures)
+
+def test_production_transport_and_tls_are_mandatory(monkeypatch):
+    monkeypatch.setattr(m,"verify_linux_initiation",lambda **kw:{"verified":True,"initiation_subject_sha256":m.sha(m.canonical(m.initiation_claim(run())))})
+    with pytest.raises(ValueError,match="production capture"):
+        m.execute_capture(run=run(),bundle=b"x",bundle_path=Path("bundle"),repository_slug=m.REPOSITORY_SLUG,verifier=object(),capture_one=lambda p,method,url:captured(p,method,url))
+    with pytest.raises(ValueError,match="response/request binding"):
+        m.execute_capture(run=run(),bundle=b"x",bundle_path=Path("bundle"),repository_slug=m.REPOSITORY_SLUG,verifier=object(),capture_one=Transport(lambda p,method,url:Capture(p,url,b"x",method)))
+
+def test_repository_identity_is_not_caller_selectable(tmp_path):
+    r=run(); bad={**r,"repository_id":"999"}
+    with pytest.raises(ValueError,match="run closure"):m.initiation_claim(bad)
+
+def test_openalex_truncation_is_closed_and_continued():
+    payload=b'<ListVersionsResult><Version><VersionId>v1</VersionId></Version><IsTruncated>true</IsTruncated><NextKeyMarker>data-key</NextKeyMarker><NextVersionIdMarker>v1</NextVersionIdMarker></ListVersionsResult>'
+    item=Capture("OPENALEX_MANIFEST_VERSION_INDEX",m.SEEDS[3][2],payload)
+    rows=m.derive_requests({"OPENALEX_MANIFEST_VERSION_INDEX":(item,)})
+    assert any(row[0]=="OPENALEX_MANIFEST_VERSION_INDEX" and "key-marker=data-key" in row[2] for row in rows)
+    broken=payload.replace(b"<NextKeyMarker>data-key</NextKeyMarker>",b"")
+    with pytest.raises(ValueError,match="continuation"):m.derive_requests({"OPENALEX_MANIFEST_VERSION_INDEX":(Capture("OPENALEX_MANIFEST_VERSION_INDEX",m.SEEDS[3][2],broken),)})
+
+def test_derived_locator_boundary_rejects_userinfo_ports_and_dot_segments():
+    for url in ("https://evil@www.crossref.org/blog/x/","https://www.crossref.org:444/blog/x/","https://openalex.s3.amazonaws.com/data/jsonl/../secret"):
+        assert not m._allowed_request("CROSSREF_RELEASE_RECORD" if "crossref" in url else "OPENALEX_ARCHIVE_OBJECT_HEAD","GET" if "crossref" in url else "HEAD",url)
 
 def test_entry_point_remains_inert():
     with pytest.raises(SystemExit,match="not authorized"):m.main()
