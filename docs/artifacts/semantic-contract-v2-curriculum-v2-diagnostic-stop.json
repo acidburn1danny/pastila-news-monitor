@@ -1,0 +1,19 @@
+{
+  "admitted": 16,
+  "batch": 1,
+  "batch2_started": false,
+  "candidate_count": 16,
+  "catalog_created": false,
+  "duplicate_rate": 0.75,
+  "identity": "9171a78e0e8b6da35d5d12558ee8ee30f28bc5ab8cbc856e231c04708cadb4f4",
+  "reasons": [
+    "UNIVERSAL_PASS",
+    "SEMANTIC_DUPLICATE_RATE_ABOVE_10_PERCENT"
+  ],
+  "rejected": 0,
+  "remaining_budget_consumed": false,
+  "root_cause": "FROZEN_CURRICULUM_FIXTURE_GENERATOR_VARIES_IDENTIFIERS_NOT_SEMANTIC_PRIMITIVES_AND_PRODUCES_UNIVERSAL_PASS",
+  "rule_content_freeze_created": false,
+  "schema": "CURRICULUM_V2_DIAGNOSTIC_STOP",
+  "status": "STOP_POPULATION_IMMEDIATELY"
+}

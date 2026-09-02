@@ -1,0 +1,180 @@
+{
+  "activated": 0,
+  "adjudicator": "RULE_ADJUDICATOR_V2_01",
+  "admitted": 16,
+  "author_adjudicator_distinct": true,
+  "candidate_freeze_identity": "c7415b50409f2071f897746fa400b2fcd70c11fdc02a9e33f6388b698e2f42a1",
+  "dispositions": [
+    {
+      "blockers": [],
+      "candidate_identity": "b8cb87481985925d851468b0da716632f0861ad4b64d2488740dd1b91edebdcf",
+      "evidence_path": [
+        "41b2bae9d6bb0817a7eb02a89e483bacb336cdfeceefb669a68070374404aa1c",
+        "af33892ea67e606066607f10810433d4673fcdfc5f196acfb0fb7c598ee2cc47"
+      ],
+      "relation_class": "PHYSICAL_ACTION",
+      "verdict": "PASS_ZERO_FAMILY_DIAGNOSTIC"
+    },
+    {
+      "blockers": [],
+      "candidate_identity": "9d2f3717d016a8c9c1089324ce357ff49c9fa2718e215c7ba297d487ea7d5fce",
+      "evidence_path": [
+        "e828dee88bafe3c603fa88846904ac83845cd0d21759d7b56e5ae04958d04ef1",
+        "0455541750cccc6e70e7c1a1184a1355750adb81f30be3bc98fa4a4a95374310"
+      ],
+      "relation_class": "PHYSICAL_ACTION",
+      "verdict": "PASS_ZERO_FAMILY_DIAGNOSTIC"
+    },
+    {
+      "blockers": [],
+      "candidate_identity": "016d499b8b7bd05be31cbfb9bd3d135b2034f04b2c48d559d056bc777bd69d5c",
+      "evidence_path": [
+        "962aa7d626521ebba7211564324f08e1979b1c84905ae0caed3f1df88fedb797",
+        "e16ad945f1029433b3eb8ff565cefc9e141ff79d0cc2ee368804a947dc7afbfe"
+      ],
+      "relation_class": "PHYSICAL_ACTION",
+      "verdict": "PASS_ZERO_FAMILY_DIAGNOSTIC"
+    },
+    {
+      "blockers": [],
+      "candidate_identity": "1ef10a54d6c1a9db55ef62995788fbfdd5a4e35cfd662381a96aaa5f5b925a47",
+      "evidence_path": [
+        "52d25e2e6b64a64490eb6ba1a6860f7e0f015d49fbca59e5aba87156e68a5a43",
+        "e23d89203de6c9e8b51d59dd1da3f2cb038f4b12be1cf22e14144e7967689f5e"
+      ],
+      "relation_class": "PHYSICAL_ACTION",
+      "verdict": "PASS_ZERO_FAMILY_DIAGNOSTIC"
+    },
+    {
+      "blockers": [],
+      "candidate_identity": "c61b366bb1a05c22ea976b81ab670b46335f8c7ea6753c196ffe1338c4a637ab",
+      "evidence_path": [
+        "7c470b99deb287be2becea9261c1aa06a5160b20c898fda43c433c7044193457",
+        "e925b9b97dff8ea86eee4b186187ee5b1063cd0b5d99ded1d87a94668d33dd83"
+      ],
+      "relation_class": "MOVEMENT_LOCATION",
+      "verdict": "PASS_ZERO_FAMILY_DIAGNOSTIC"
+    },
+    {
+      "blockers": [],
+      "candidate_identity": "491a145ef4c6c4d0ea951b7eeb476fbd9457f2a4a63358287f089191deb3211b",
+      "evidence_path": [
+        "50048ed31527319deed8116d6961fd130de5ab9db13c013e1b7dbe0d88d378a3",
+        "d570c95502b7c5818b20b953dfada86a04b2e1883ccecd452e152938296de45c"
+      ],
+      "relation_class": "MOVEMENT_LOCATION",
+      "verdict": "PASS_ZERO_FAMILY_DIAGNOSTIC"
+    },
+    {
+      "blockers": [],
+      "candidate_identity": "2b2813eb30ef08e2017295bcecb4d9103120947036bf0ba2367731702fac0aa1",
+      "evidence_path": [
+        "cee08ad98b393a76fbf2590beee2b5125aa1eaedfb03bc352b3fca46248879b4",
+        "dad166d73feaa4fcfe8c01a091730c0f6229bc9e6d1e7d5e25d316a5e357b079"
+      ],
+      "relation_class": "MOVEMENT_LOCATION",
+      "verdict": "PASS_ZERO_FAMILY_DIAGNOSTIC"
+    },
+    {
+      "blockers": [],
+      "candidate_identity": "31087f45773752b903bf4da6d6eb9c16e9ed3b8c4ba016e141dd384f6da87e1e",
+      "evidence_path": [
+        "f6a4ee8d112735c4805452c8885d375807c461e7293aac7d7d9ee5985c6e3947",
+        "749dc12d96dcdb1e119f86fb1254502f1b794314ce80869bf915d3d4544b5303"
+      ],
+      "relation_class": "MOVEMENT_LOCATION",
+      "verdict": "PASS_ZERO_FAMILY_DIAGNOSTIC"
+    },
+    {
+      "blockers": [],
+      "candidate_identity": "7a95e22e71b411628c4ba7eff353eea509ec6d2e0e269889bf805f181809c77d",
+      "evidence_path": [
+        "ae12b2a670b83928f6b911997d9b713c8814cfb98e0694b3a7643531f75d9d55",
+        "29f0cca9f13b5a9d38fb5808207d50df156ef79665c8b01f2f1f1d112ceddfb8",
+        "9e2ab9207584a3144640599a2499ec29f3e18212c9b9868dd7cf9a6bbc7f1422"
+      ],
+      "relation_class": "OBSERVATION_PERCEPTION",
+      "verdict": "PASS_ZERO_FAMILY_DIAGNOSTIC"
+    },
+    {
+      "blockers": [],
+      "candidate_identity": "94f24cc7a2d7e7fdf470a560b1689c8133f3c32d8e84b6ff1a0c0f6d1c2d950e",
+      "evidence_path": [
+        "8c28f96ec08b443a7761656b86adf874a142a5ffbd07ea4ebccf6d42370bd07d",
+        "d514510f3ad4abeeef0012c6d05296315a7d9ff407f10264219d9b45f424f47d",
+        "0ad444534a6351698440b4c7084cae0ba8ec10b9df7d3d590763fe0715d48103"
+      ],
+      "relation_class": "OBSERVATION_PERCEPTION",
+      "verdict": "PASS_ZERO_FAMILY_DIAGNOSTIC"
+    },
+    {
+      "blockers": [],
+      "candidate_identity": "070a66e5992869cc4d3b8dedd251eb08f67b390b7f4219bb200641ed3a47b0a8",
+      "evidence_path": [
+        "52ef39bffd7bef1c32f5a555fa91ab8d8b9e3fdf6cbf824befd5c6aea46dfc7c",
+        "71e02d7200bff1002016a6c44d7d9dcba7d80ada34f3c65b24471307d9d864e1",
+        "e21d36cd4b2fb9f40c1b06501c697204fac79ec3b0f0edfc41eeb33ea4fafbf5"
+      ],
+      "relation_class": "OBSERVATION_PERCEPTION",
+      "verdict": "PASS_ZERO_FAMILY_DIAGNOSTIC"
+    },
+    {
+      "blockers": [],
+      "candidate_identity": "676c229746de1474106ef82580736205b04a4f15f2bb51f6b7c93f9176c16234",
+      "evidence_path": [
+        "619a53c2949cc51c6dbfd47686c57ed66fc87e3993007a8f17b850fb1223ddcd",
+        "5882f77ee3b064c5a5e183d9b57eae418d829a39d8c1fefb217bf9e855eb6a4a",
+        "b6c423530bbedf7ce5eeb0dbba5b7463e97d2e3748cf29c95b3c1f341c21c593"
+      ],
+      "relation_class": "OBSERVATION_PERCEPTION",
+      "verdict": "PASS_ZERO_FAMILY_DIAGNOSTIC"
+    },
+    {
+      "blockers": [],
+      "candidate_identity": "9336eabf3c33ca8a08eb7c8b8eb84a5cc34e90a623b4c67d4b74f1edcb8d3d01",
+      "evidence_path": [
+        "477c61b17a3afa479de04956a548ef009af1cc77346086740bf137f65b12cf7d",
+        "ae771b46964bf6a4f7cc3e127d5b6b979aca7e088234f1f433134391f3fccc1f",
+        "4609443f5c47928c4d287ab369d4eb8cca2bda3a6110985ef08a9722f1b07e21"
+      ],
+      "relation_class": "MEASUREMENT",
+      "verdict": "PASS_ZERO_FAMILY_DIAGNOSTIC"
+    },
+    {
+      "blockers": [],
+      "candidate_identity": "e830b79710610f35c206a69d5475191947d3d1c51ace254801633f8ad5fca074",
+      "evidence_path": [
+        "92a96bba49d1d40b2f947cfba0ffd1eada391e29c46eb832d524179881494f0c",
+        "23d6274c2be83fab0ec134b45723953e68dcd7a33f6ca2b028925582d2a53d9b",
+        "1f21905afa61605fe2b443c67ebea6b1c9055d974b44704dd1bc186d6f72f684"
+      ],
+      "relation_class": "MEASUREMENT",
+      "verdict": "PASS_ZERO_FAMILY_DIAGNOSTIC"
+    },
+    {
+      "blockers": [],
+      "candidate_identity": "8c98a4283c1b1ab2f185558c1f27745d9c68051d7aa2cc4ea6bce4a473fc7144",
+      "evidence_path": [
+        "ec11869792fe5d271f0c811b45a82bc7cade22e17dcda0c4f4f27d393045bedd",
+        "19e6ad7ea279d28a0d7d33d179feac8ff8f8bddf0fa187f6cd1e5e66284707cc",
+        "1f52919244f651cd0edfae9d2b358b871ea9c461b0d3f1435f34bd0e660b6019"
+      ],
+      "relation_class": "MEASUREMENT",
+      "verdict": "PASS_ZERO_FAMILY_DIAGNOSTIC"
+    },
+    {
+      "blockers": [],
+      "candidate_identity": "589695adb66567064b2ca3c7b2dbb277a3f990e4c8410baaf04ffcb21bd24e30",
+      "evidence_path": [
+        "8d702b07c0981d78959e7691a31c4c944b0412a3bbeb961e3109296bfdcb0c1a",
+        "b0ed649d07eff8eaa5029dd1a6d0b0e46cf2db724c899e571e0a19887b67b700",
+        "aac779246efb3111e943033b0c5a93213933cd7d63f975682442ec0449324ddc"
+      ],
+      "relation_class": "MEASUREMENT",
+      "verdict": "PASS_ZERO_FAMILY_DIAGNOSTIC"
+    }
+  ],
+  "identity": "f217d6b421404a72b65e95424673908e4b1de8dad5e655cb7d6ff72a426434c3",
+  "rejected": 0,
+  "schema": "CURRICULUM_V2_BATCH1_ADJUDICATION"
+}
