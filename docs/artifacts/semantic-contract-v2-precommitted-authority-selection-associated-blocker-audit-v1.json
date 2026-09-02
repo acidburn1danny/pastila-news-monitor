@@ -1,0 +1,90 @@
+{
+  "schema": "PRECOMMITTED_AUTHORITY_SELECTION_ASSOCIATED_BLOCKER_AUDIT_V2_V1",
+  "verdict": "PASS_SOURCE_BLIND_SELECTION_GOVERNANCE_DESIGNED_AND_VALIDATED_NO_SOURCE_ACTION",
+  "audit_scope": "SOURCE_FRAME_TO_SELECTION_TO_SCOPE_TO_BASIS_EXTRACTION",
+  "validation_implementation_identity": "ed8c7346b1eaccb12c21f8adc626f53225304a8e3936c70199b98d7ad8755464",
+  "findings": [
+    {
+      "id": "SAG-01",
+      "path": "SAMPLING_FRAME_CONSTRUCTION",
+      "defect": "ELIGIBILITY_OR_EXCLUSION_RULES_COULD_BE_WRITTEN_TO FAVOR_V2_CONVENIENT_SOURCES",
+      "repair": "PRECOMMIT_RULES_COMPLETE_INVENTORY_AND_NEGATIVE_SPACE_BEFORE_EXTERNAL_ENTROPY"
+    },
+    {
+      "id": "SAG-02",
+      "path": "SEED_AND_RANDOMNESS",
+      "defect": "PROJECT_CHOSEN_SEED_OR_BEACON_TIMING_COULD ENABLE_GRINDING",
+      "repair": "PRENAME_EXTERNAL_PUBLIC_ENTROPY_EVENT_BEFORE_FROZEN_FRAME_AND_FORBID_REDRAW"
+    },
+    {
+      "id": "SAG-03",
+      "path": "POST_SELECTION_RESAMPLING",
+      "defect": "INVALID_OR_INCONVENIENT_RESULT_COULD_TRIGGER_DISCRETIONARY_REPLACEMENT",
+      "repair": "SINGLE_DRAW_FAIL_CLOSED_NEW_GOVERNANCE_VERSION_REQUIRED"
+    },
+    {
+      "id": "SAG-04",
+      "path": "SCOPE_SELECTION",
+      "defect": "POST_HOC_SCOPE_COULD RETAIN_ONLY_USEFUL_SEMANTIC_REGIONS",
+      "repair": "ENTIRE_SOURCE_DEFAULT_AND_ONLY_PRECOMMITTED_NONSEMANTIC_EXCEPTIONS"
+    },
+    {
+      "id": "SAG-05",
+      "path": "EXTRACTION_STOPPING_AND_FILTERING",
+      "defect": "EXTRACTION_COULD_STOP_AT_COVERAGE_OR_FILTER_BY_RELATION_CLASS",
+      "repair": "EXHAUSTIVE_SOURCE_ORDER_EXTRACTION_TO_END_OF_SCOPE_WITH_ZERO_COVERAGE_FILTERING"
+    },
+    {
+      "id": "SAG-06",
+      "path": "DEDUPLICATION",
+      "defect": "CANONICALIZATION_COULD SILENTLY_REMOVE_COUNTEREXAMPLES_OR_VARIANTS",
+      "repair": "RETAIN_FIRST_AND_LOG_EVERY_DUPLICATE_WITH_ALL_RANGES"
+    },
+    {
+      "id": "SAG-07",
+      "path": "TRUST_DOMAIN_SEPARATION",
+      "defect": "DISTINCT_LABELS_COULD_SIMULATE_EPISTEMIC_OR_ORGANIZATIONAL_INDEPENDENCE",
+      "repair": "CREDENTIAL_BOUND_ROLES_ACCESS_LOGS_AND_V2_INFORMED_OWNER_EXCLUSION_FROM_EXECUTION_ROLES"
+    },
+    {
+      "id": "SAG-08",
+      "path": "NEGATIVE_SPACE",
+      "defect": "ONLY_SELECTED_ITEMS_COULD_BE_RECORDED_HIDING_FRAME_SCOPE_OR_EXTRACTION_BIAS",
+      "repair": "IDENTITY_BOUND_COMPLETE_INCLUDED_EXCLUDED_REJECTED_DUPLICATE_AND_DRAW_EVIDENCE"
+    }
+  ],
+  "anti_gaming_result": {
+    "biased_frame": "FAIL_CLOSED",
+    "exclusion_criteria_gaming": "FAIL_CLOSED",
+    "seed_grinding": "FAIL_CLOSED",
+    "resampling": "FAIL_CLOSED",
+    "scope_cherry_picking": "FAIL_CLOSED",
+    "early_stopping": "FAIL_CLOSED",
+    "coverage_filtering": "FAIL_CLOSED",
+    "opaque_deduplication": "FAIL_CLOSED",
+    "identity_label_only_separation": "FAIL_CLOSED",
+    "post_commitment_version_skew": "FAIL_CLOSED"
+  },
+  "audit_iterations": [
+    "ITERATION_1_MAPPED_DECLARATION_ONLY_SELECTION_GAPS",
+    "ITERATION_2_ADDED_OBJECTIVE_FRAME_ENTROPY_SCOPE_EXTRACTION_AND_NEGATIVE_SPACE_INVARIANTS",
+    "ITERATION_3_ADVERSARIAL_RESEALED_VARIANTS_REJECTED",
+    "ITERATION_4_FRESH_AUDIT_NO_NEW_IN_SCOPE_DETERMINISTIC_BLOCKERS"
+  ],
+  "remaining_blockers": [
+    "NO_AUTHORIZED_SOURCE_POPULATION_OR_FRAME_EXISTS",
+    "NO_INDEPENDENT_FRAME_REGISTRAR_OR_SCOPE_CUSTODIAN_APPOINTED",
+    "NO_PRENAMED_EXTERNAL_ENTROPY_EVENT",
+    "NO_SOURCE_SELECTION_EXECUTION_AUTHORIZED"
+  ],
+  "final_fresh_audit": "NO_NEW_IN_SCOPE_DETERMINISTIC_SELECTION_GOVERNANCE_BLOCKERS",
+  "population_safe_to_resume": false,
+  "source_population_created": false,
+  "source_selected_or_acquired": false,
+  "semantic_content_accessed": false,
+  "authority_bases_created_or_admitted": 0,
+  "curriculum_population_started": false,
+  "pilot15_prepared": false,
+  "blind_or_future_family_access": false,
+  "audit_identity": "511504d1436f4198bb855f74bc4698b635fa892f20850908e8ecab26eb981a21"
+}

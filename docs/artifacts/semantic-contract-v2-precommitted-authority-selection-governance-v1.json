@@ -1,0 +1,130 @@
+{
+  "schema": "PRECOMMITTED_SEMANTIC_AUTHORITY_SELECTION_GOVERNANCE_V2_V1",
+  "status": "FROZEN_SOURCE_BLIND_NO_SELECTION_NO_ACQUISITION",
+  "epistemic_audit_input": "FAIL_CURRENT_PROTOCOL_CAN_ACCEPT_DECLARED_INDEPENDENCE_BUT_CANNOT_DEMONSTRATE_SELECTION_INDEPENDENCE",
+  "bootstrap_architecture_identity": "303e76185c6b2ca20e0b65982c0311f748f836ba1b784b6d555b8773ccaf66a0",
+  "authority_source_request_identity": "d553004f7c444912d432eb3415e649ffc27d48121d8c1ded214935595aa054f9",
+  "admission_protocol_identity": "7bce6759a69b99ccdea18ff01e80e5917fc2137598efbed241867a92dd860810",
+  "validation_implementation_identity": "ed8c7346b1eaccb12c21f8adc626f53225304a8e3936c70199b98d7ad8755464",
+  "source_population_frame_policy": {
+    "population_definition": "FROZEN_ELIGIBILITY_RULES_AND_COMPLETE_ENUMERATED_INVENTORY_BEFORE_ENTROPY",
+    "inclusion_exclusion_rules_precommitted": true,
+    "enumeration_frozen_before_entropy": true,
+    "canonical_order": "UTF8_BYTEWISE_STABLE_ITEM_IDENTITY_ORDER",
+    "inventory_fields": [
+      "ITEM_IDENTITY",
+      "PROVENANCE_POINTER",
+      "ELIGIBILITY_RESULT",
+      "PRECOMMITTED_EXCLUSION_CODE",
+      "REGISTRAR_IDENTITY"
+    ],
+    "negative_space_inventory_required": true,
+    "excluded_items_retained_with_reason": true,
+    "semantic_content_or_v2_coverage_visible_to_registrar": false,
+    "post_freeze_edits": "NEW_VERSION_NEW_SELECTION_EVENT"
+  },
+  "selection_precommitment_model": {
+    "algorithm": "CANONICAL_ORDER_PLUS_PUBLIC_ENTROPY_REJECTION_SAMPLING",
+    "algorithm_version_frozen_before_frame_close": true,
+    "entropy_event_named_before_frame_close": true,
+    "entropy_published_after_frame_close": true,
+    "entropy_source_controlled_by_project": false,
+    "seed_derivation": "SHA256_DOMAIN_SEPARATOR_PLUS_FRAME_IDENTITY_PLUS_PUBLIC_ENTROPY",
+    "selection_mapping": "UNBIASED_REJECTION_SAMPLING_OVER_ELIGIBLE_CANONICAL_INDEXES",
+    "single_draw_no_resampling": true,
+    "selection_before_semantic_inspection": true,
+    "empty_or_invalid_draw": "FAIL_CLOSED_NO_REDRAW",
+    "replacement_source": "REQUIRES_NEW_PRECOMMITMENT_AND_NEW_INDEPENDENT_EVENT"
+  },
+  "scope_policy": {
+    "frozen_before_source_selection": true,
+    "default": "ENTIRE_SELECTED_SOURCE",
+    "exceptions": "PRECOMMITTED_NONSEMANTIC_RULES_ONLY",
+    "allowed_exception_classes": [
+      "RIGHTS_EXCLUDED_BYTES_DECLARED_BEFORE_SELECTION",
+      "MACHINE_UNREADABLE_NONCONTENT_BYTES",
+      "DUPLICATE_BINARY_EMBEDDING_RETAINED_IN_NEGATIVE_SPACE_LOG"
+    ],
+    "semantic_coverage_dependent": false,
+    "post_selection_scope_change": "INVALIDATES_SELECTION_AND_REQUIRES_NEW_VERSION"
+  },
+  "basis_extraction_policy": {
+    "frozen_before_frame_semantic_observation": true,
+    "mode": "EXHAUSTIVE_ALL_ELIGIBLE_ASSERTIONS",
+    "eligibility_predicates": [
+      "ASSERTIVE_GENERAL_SEMANTIC_CONTENT",
+      "SOURCE_WITNESS_HAS_EXACT_CHARACTER_AND_UTF8_COORDINATES",
+      "REFERENCE_SCOPE_MODALITY_QUALIFICATION_AND_EXCEPTION_CLOSURE",
+      "NO_CONTENT_ADDED_BEYOND_SOURCE"
+    ],
+    "ordering": "SOURCE_BYTE_ORDER",
+    "stopping_rule": "END_OF_FROZEN_SCOPE",
+    "deduplication": "RETAIN_FIRST_AND_LOG_EVERY_DUPLICATE",
+    "rejection_log": "EVERY_VISITED_ASSERTION_WITH_PRECOMMITTED_REASON_CODE",
+    "coverage_or_relation_class_filter": false,
+    "ontology_mapping_phase": "ONLY_AFTER_EXTRACTION_FREEZE_AND_NOT_PART_OF_SELECTION",
+    "manual_discretion": "DUAL_INDEPENDENT_EXTRACTION_PLUS_RECONCILIATION_WITHOUT_COVERAGE_ACCESS"
+  },
+  "negative_space_evidence": {
+    "frame": "ALL_INCLUDED_AND_EXCLUDED_ITEMS_WITH_PRECOMMITTED_REASON_CODES",
+    "selection": "CANONICAL_INDEX_ENTROPY_INPUT_REJECTION_STEPS_AND_SINGLE_RESULT",
+    "scope": "ALL_OMITTED_BYTE_RANGES_WITH_PRECOMMITTED_NONSEMANTIC_REASON",
+    "extraction": "ALL_VISITED_ASSERTION_RANGES_AND_INCLUDED_EXCLUDED_DUPLICATE_RESULTS",
+    "resampling": "DRAW_COUNT_EXACTLY_ONE_AND_NO_ALTERNATIVE_RESULTS",
+    "retention": "IMMUTABLE_AND_IDENTITY_BOUND_TO_LATER_SOURCE_BASIS_AND_ADMISSION"
+  },
+  "trust_domain_isolation": {
+    "project_owner": "V2_INFORMED_GOVERNANCE_SPONSOR_NOT_AN_ISOLATED_EXECUTION_ROLE",
+    "frame_registrar": "INDEPENDENT_CREDENTIAL_BOUND_REGISTRAR",
+    "entropy_authority": "PRENAMED_PUBLIC_EXTERNAL_ENTROPY_SOURCE",
+    "selection_executor": "DETERMINISTIC_AUDITABLE_EXECUTOR",
+    "scope_policy_owner": "INDEPENDENT_POLICY_CUSTODIAN",
+    "basis_extractor": "INDEPENDENT_EXTRACTOR_WITHOUT_V2_COVERAGE_ACCESS",
+    "admission_verifier": "INDEPENDENT_SEMANTIC_AND_PROVENANCE_REVIEWER",
+    "candidate_author": "LATER_AUTHORITY_CONSUMER_ONLY",
+    "rule_adjudicator": "LATER_READ_ONLY_CANDIDATE_REVIEWER",
+    "credential_evidence_required": true,
+    "identity_label_alone_sufficient": false,
+    "access_logs_and_signed_role_acceptance_required": true
+  },
+  "forbidden_information": [
+    "ONTOLOGY_V2",
+    "CONTRACT_OR_SCHEMA_V2",
+    "CURRICULUM_V2_BATCHES_OR_COVERAGE",
+    "HISTORICAL_FAILURES_OR_CANDIDATES",
+    "FUTURE_FAMILY_OR_MECHANISM_INFORMATION"
+  ],
+  "identity_chain": [
+    "GOVERNANCE_IDENTITY",
+    "FRAME_POLICY_IDENTITY",
+    "FROZEN_FRAME_IDENTITY",
+    "ENTROPY_EVENT_IDENTITY",
+    "SELECTION_RECORD_IDENTITY",
+    "SCOPE_POLICY_IDENTITY",
+    "SOURCE_MANIFEST_IDENTITY",
+    "EXTRACTION_POLICY_IDENTITY",
+    "EXTRACTION_NEGATIVE_SPACE_IDENTITY",
+    "BASIS_IDENTITY",
+    "ADMISSION_RECEIPT_IDENTITY"
+  ],
+  "fail_closed_conditions": [
+    "FRAME_CHANGED_AFTER_ENTROPY",
+    "UNKNOWN_OR_UNLOGGED_EXCLUSION",
+    "PROJECT_CONTROLLED_OR_RESELECTED_ENTROPY",
+    "REDRAW_OR_POST_SELECTION_REPLACEMENT",
+    "POST_SELECTION_SCOPE_CHANGE",
+    "EARLY_STOP_OR_COVERAGE_FILTERED_EXTRACTION",
+    "UNLOGGED_DEDUPLICATION_OR_REJECTION",
+    "ROLE_IDENTITY_OR_CREDENTIAL_COLLISION",
+    "FORBIDDEN_INFORMATION_ACCESS",
+    "IDENTITY_VERSION_OR_ORDERING_SKEW"
+  ],
+  "source_population_created": false,
+  "source_selected_or_acquired": false,
+  "semantic_content_accessed": false,
+  "authority_basis_created_or_admitted": false,
+  "curriculum_population_started": false,
+  "pilot15_prepared": false,
+  "blind_or_future_family_access": false,
+  "governance_identity": "92a8c1e42dff244ffbf3961f25356ff69eebdadab58f020dd3558df8ba248b5a"
+}
