@@ -1,0 +1,15 @@
+{
+  "inventory": [
+    {"field":"semantic_roles","proposal":"none","authority":"trusted rule registry","validator":"V5.4 licensing","observer":"actual span only"},
+    {"field":"predicate_signature","proposal":"predicate class only","authority":"trusted rule registry","validator":"V5.4 licensing","observer":"actual predicate span"},
+    {"field":"actor_patient_admissibility","proposal":"operand IDs","authority":"trusted rule argument classes","validator":"V5.4 licensing","observer":"coordinate-bound forms"},
+    {"field":"affordances","proposal":"none","authority":"trusted rule registry","validator":"V5.4 licensing","observer":"none"},
+    {"field":"causal_rule","proposal":"requested rule ID","authority":"frozen generic or exact source-rule set","validator":"registry partition","observer":"none"},
+    {"field":"counterfactual_dependency","proposal":"none","authority":"validator mutation","validator":"predecessor removal","observer":"surface continuity only"},
+    {"field":"predecessor_consumption","proposal":"relation operands","authority":"licensed produced operand","validator":"exact immediate consumption","observer":"coordinate continuity"},
+    {"field":"consequence_uniqueness","proposal":"requested result ID","authority":"unique compatible trusted rule","validator":"registry-wide substitution","observer":"actual result span"},
+    {"field":"terminal_licensing","proposal":"terminal relation","authority":"same trusted-rule domain","validator":"same checks plus substitution","observer":"actual terminal span"}
+  ],
+  "forbidden_cycle":"PLANNER_PROPOSAL -> PLANNER_EVIDENCE -> VALIDATOR_ACCEPTANCE",
+  "cycle_audit":"PASS_NO_SELF_AUTHORIZING_DEPENDENCY"
+}
