@@ -31,7 +31,11 @@ RFC3161_INTERMEDIATE_SHA256="0edab770d65632eefbe6ccdb61034e224facf49a960acdf82ae
 RFC3161_MAX_QUERY_BYTES=65536;RFC3161_MAX_REPLY_BYTES=1048576;RFC3161_TIMEOUT_SECONDS=20
 HEX40=re.compile(r"^[0-9a-f]{40}$");HEX64=re.compile(r"^[0-9a-f]{64}$")
 OBJECTS=frozenset({"ca.pem","cosign","deny-network-launcher.sh","openssl","rfc3161-request.tsq","rfc3161-receipt.tsr","rfc3161-root.pem","rfc3161-intermediate.pem","schedule-precommit.json","trusted-root.json"})
+REQUEST_OBJECTS=frozenset({"deny-network-launcher.sh","openssl","rfc3161-request.tsq","schedule-precommit.json"})
+RESPONSE_PROOF_OBJECTS=frozenset({"rfc3161-receipt.tsr","rfc3161-response.headers","rfc3161-receipt-record.json"})
+REQUEST_AUTHORITY_SCHEMA="PASTILA_RFC3161_REQUEST_AUTHORITY_V1"
 SCHEDULE_SELECTION_RULE="FIRST_UTC_HOUR_AT_LEAST_12_HOURS_AFTER_REPLACEMENT_FREEZE"
+SCHEDULE_KEYS=("repository_slug","repository_id","default_branch_ref","core_runtime_commit","deployment_runtime_commit","workflow_freeze_commit","workflow_freeze_epoch","workflow_template_sha256","schedule_selection_rule","scheduled_utc","schedule_cron","rfc3161_tsa_endpoint","rfc3161_tsa_method","rfc3161_query_content_type","rfc3161_reply_content_type","rfc3161_tsa_redirects","rfc3161_tsa_attempts","rfc3161_tsa_nonce","rfc3161_tsa_cert_req","rfc3161_verifier_sha256","rfc3161_root_sha256","rfc3161_intermediate_sha256")
 
 def derive_schedule(freeze_epoch:int)->tuple[str,str]:
  if not isinstance(freeze_epoch,int) or isinstance(freeze_epoch,bool) or freeze_epoch<=0:raise ValueError("workflow freeze epoch")
@@ -41,8 +45,7 @@ def derive_schedule(freeze_epoch:int)->tuple[str,str]:
  return scheduled.strftime("%Y-%m-%dT%H:%M:00Z"),f"{scheduled.minute} {scheduled.hour} {scheduled.day} {scheduled.month} *"
 
 def schedule_payload(v:Mapping[str,object])->bytes:
- keys=("repository_slug","repository_id","default_branch_ref","core_runtime_commit","deployment_runtime_commit","workflow_freeze_commit","workflow_freeze_epoch","workflow_template_sha256","schedule_selection_rule","scheduled_utc","schedule_cron","rfc3161_tsa_endpoint","rfc3161_tsa_method","rfc3161_query_content_type","rfc3161_reply_content_type","rfc3161_tsa_redirects","rfc3161_tsa_attempts","rfc3161_tsa_nonce","rfc3161_tsa_cert_req","rfc3161_verifier_sha256","rfc3161_root_sha256","rfc3161_intermediate_sha256")
- return canonical({"schema":PAYLOAD_SCHEMA,**{k:v[k] for k in keys}})+b"\n"
+ return canonical({"schema":PAYLOAD_SCHEMA,**{k:v[k] for k in SCHEDULE_KEYS}})+b"\n"
 
 class _RejectRedirect(urllib.request.HTTPRedirectHandler):
  def redirect_request(self,req,fp,code,msg,headers,newurl):raise ValueError("RFC3161 redirect")
@@ -78,8 +81,8 @@ def _bound_rfc3161_query(v:Mapping[str,object],o:Mapping[str,Path])->bytes:
  return query
 
 def verify_rfc3161_submission_authority(v:Mapping[str,object],o:Mapping[str,Path],root:Path,*,git_executable:str="/usr/bin/git",isolated:bool=True,deployment_ancestor:str=DEPLOYMENT_RUNTIME_COMMIT)->None:
- validate_manifest(v)
- if set(o)!=OBJECTS:raise ValueError("RFC3161 object closure")
+ validate_request_authority(v)
+ if set(o)!=REQUEST_OBJECTS:raise ValueError("RFC3161 request object closure")
  schedule=o["schedule-precommit.json"]
  if schedule.is_symlink() or schedule.read_bytes()!=schedule_payload(v):raise ValueError("RFC3161 schedule preimage")
  root=root.resolve(strict=True)
@@ -115,6 +118,48 @@ def _entry(x:object)->tuple[str,int,str]:
  if "\\" in path or p.is_absolute() or str(p)!=path or ".." in p.parts or p.parts[:2]!=("deployment","objects"):raise ValueError("object path")
  if not HEX64.fullmatch(digest) or not isinstance(length,int) or isinstance(length,bool) or length<=0:raise ValueError("object commitment")
  return digest,length,path
+
+def validate_request_authority(v:Mapping[str,object])->None:
+ required={"schema",*SCHEDULE_KEYS,"schedule_payload_sha256","rfc3161_request_sha256","objects","request_authority_identity"}
+ if set(v)!=required or v["schema"]!=REQUEST_AUTHORITY_SCHEMA:raise ValueError("RFC3161 request authority schema")
+ if v["repository_slug"]!=REPOSITORY_SLUG or v["repository_id"]!=REPOSITORY_ID or v["default_branch_ref"]!=DEFAULT_BRANCH_REF or v["core_runtime_commit"]!=RUNTIME_COMMIT or v["deployment_runtime_commit"]!=DEPLOYMENT_RUNTIME_COMMIT:raise ValueError("RFC3161 request repository authority")
+ if not HEX40.fullmatch(str(v["workflow_freeze_commit"])) or not isinstance(v["workflow_freeze_epoch"],int) or isinstance(v["workflow_freeze_epoch"],bool) or v["workflow_freeze_epoch"]<=0:raise ValueError("RFC3161 request freeze")
+ if not HEX64.fullmatch(str(v["workflow_template_sha256"])) or v["schedule_selection_rule"]!=SCHEDULE_SELECTION_RULE:raise ValueError("RFC3161 request schedule authority")
+ if (v["scheduled_utc"],v["schedule_cron"])!=derive_schedule(v["workflow_freeze_epoch"]):raise ValueError("RFC3161 request deterministic schedule")
+ fixed={"rfc3161_tsa_endpoint":RFC3161_TSA_ENDPOINT,"rfc3161_tsa_method":RFC3161_TSA_METHOD,"rfc3161_query_content_type":RFC3161_QUERY_CONTENT_TYPE,"rfc3161_reply_content_type":RFC3161_REPLY_CONTENT_TYPE,"rfc3161_tsa_redirects":RFC3161_TSA_REDIRECTS,"rfc3161_tsa_attempts":RFC3161_TSA_ATTEMPTS,"rfc3161_tsa_nonce":RFC3161_TSA_NONCE,"rfc3161_tsa_cert_req":RFC3161_TSA_CERT_REQ,"rfc3161_verifier_sha256":OPENSSL_EXECUTABLE_SHA256,"rfc3161_root_sha256":RFC3161_ROOT_SHA256,"rfc3161_intermediate_sha256":RFC3161_INTERMEDIATE_SHA256}
+ if any(v[k]!=x for k,x in fixed.items()):raise ValueError("RFC3161 request frozen profile")
+ if v["schedule_payload_sha256"]!=sha(schedule_payload(v)) or not HEX64.fullmatch(str(v["rfc3161_request_sha256"])):raise ValueError("RFC3161 request digest")
+ rows=v["objects"]
+ if not isinstance(rows,dict) or set(rows)!=REQUEST_OBJECTS:raise ValueError("RFC3161 request object closure")
+ parsed={k:_entry(x) for k,x in rows.items()}
+ binds={"openssl":"rfc3161_verifier_sha256","deny-network-launcher.sh":"launcher_sha256","rfc3161-request.tsq":"rfc3161_request_sha256","schedule-precommit.json":"schedule_payload_sha256"}
+ # The launcher is fixed by the deployment runtime even though it is not part of the timestamp payload.
+ if parsed["deny-network-launcher.sh"][0]!=LINUX_LAUNCHER_SHA256 or any(parsed[n][0]!=v[f] for n,f in binds.items() if n!="deny-network-launcher.sh"):raise ValueError("RFC3161 request object binding")
+ body=dict(v);identity=body.pop("request_authority_identity")
+ if identity!=sha(canonical(body)):raise ValueError("RFC3161 request authority identity")
+
+def materialize_request(v:Mapping[str,object],root:Path)->dict[str,Path]:
+ validate_request_authority(v);base=root.resolve(strict=True)/"deployment"/"objects";out={}
+ if not base.is_dir() or base.is_symlink():raise ValueError("object root")
+ for name,row in v["objects"].items():
+  digest,length,relative=_entry(row);input_path=root/PurePosixPath(relative)
+  if input_path.is_symlink():raise ValueError("object containment")
+  path=input_path.resolve(strict=True)
+  if path.parent!=base or not path.is_file():raise ValueError("object containment")
+  data=path.read_bytes()
+  if len(data)!=length or sha(data)!=digest:raise ValueError("object bytes")
+  out[name]=path
+ if out["schedule-precommit.json"].read_bytes()!=schedule_payload(v):raise ValueError("payload bytes")
+ return out
+
+def verify_response_proof_closure(root:Path,proof_objects:Mapping[str,object])->None:
+ base=root.resolve(strict=True)/"deployment"/"objects"
+ if set(proof_objects)!=RESPONSE_PROOF_OBJECTS:raise ValueError("RFC3161 response proof closure")
+ for name,row in proof_objects.items():
+  digest,length,relative=_entry(row);input_path=root/PurePosixPath(relative)
+  if input_path.is_symlink():raise ValueError("RFC3161 response proof object")
+  path=input_path.resolve(strict=True);data=path.read_bytes()
+  if path.parent!=base or len(data)!=length or sha(data)!=digest:raise ValueError("RFC3161 response proof object")
 
 def validate_manifest(v:Mapping[str,object])->None:
  required={"schema","repository_slug","repository_id","default_branch_ref","core_runtime_commit","deployment_runtime_commit","workflow_freeze_commit","workflow_freeze_epoch","workflow_template_sha256","schedule_selection_rule","scheduled_utc","schedule_cron","rfc3161_tsa_endpoint","rfc3161_tsa_method","rfc3161_query_content_type","rfc3161_reply_content_type","rfc3161_tsa_redirects","rfc3161_tsa_attempts","rfc3161_tsa_nonce","rfc3161_tsa_cert_req","rfc3161_verifier_sha256","rfc3161_root_sha256","rfc3161_intermediate_sha256","rfc3161_request_sha256","ca_sha256","cosign_sha256","launcher_sha256","trusted_root_sha256","derivation_policy_identity","seed_plan_identity","schedule_payload_sha256","objects","deployment_identity","manifest_identity"}

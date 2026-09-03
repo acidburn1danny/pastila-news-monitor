@@ -16,10 +16,34 @@ def fixture(tmp_path,monkeypatch):
  payload=m.schedule_payload(v);(tmp_path/"deployment/objects/schedule-precommit.json").write_bytes(payload);objects["schedule-precommit.json"].update(sha256=m.sha(payload),length=len(payload));v["schedule_payload_sha256"]=m.sha(payload)
  body=dict(v);v["deployment_identity"]=m.sha(canonical(body));v["manifest_identity"]=m.sha(canonical(v));return v
 
+def request_authority(v,tmp_path):
+ receipt=tmp_path/"deployment/objects/rfc3161-receipt.tsr"
+ if receipt.exists():receipt.unlink()
+ req={"schema":m.REQUEST_AUTHORITY_SCHEMA,**{k:v[k] for k in m.SCHEDULE_KEYS},"schedule_payload_sha256":v["schedule_payload_sha256"],"rfc3161_request_sha256":v["rfc3161_request_sha256"],"objects":{k:v["objects"][k] for k in m.REQUEST_OBJECTS}}
+ req["request_authority_identity"]=m.sha(canonical(req));return req
+
 def test_manifest_materialization_and_tamper(tmp_path,monkeypatch):
  v=fixture(tmp_path,monkeypatch);m.validate_manifest(v);assert set(m.materialize(v,tmp_path))==m.OBJECTS
  (tmp_path/"deployment/objects/cosign").write_bytes(b"tamper")
  with pytest.raises(ValueError,match="bytes"):m.materialize(v,tmp_path)
+
+def test_post_response_proof_closure_is_separate_complete_and_single_read(tmp_path,monkeypatch):
+ rows={}
+ for name in m.RESPONSE_PROOF_OBJECTS:
+  data=name.encode();path=tmp_path/"deployment/objects"/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(data)
+  rows[name]={"sha256":m.sha(data),"length":len(data),"path":f"deployment/objects/{name}"}
+ original_read=m.Path.read_bytes;reads={}
+ def counted(path):reads[path]=reads.get(path,0)+1;return original_read(path)
+ monkeypatch.setattr(m.Path,"read_bytes",counted);m.verify_response_proof_closure(tmp_path,rows)
+ assert set(reads.values())=={1};monkeypatch.setattr(m.Path,"read_bytes",original_read)
+ missing=dict(rows);missing.pop("rfc3161-response.headers")
+ with pytest.raises(ValueError,match="proof closure"):m.verify_response_proof_closure(tmp_path,missing)
+ link=tmp_path/"deployment/objects/rfc3161-response.headers";original_link=m.Path.is_symlink
+ monkeypatch.setattr(m.Path,"is_symlink",lambda self:self==link or original_link(self))
+ with pytest.raises(ValueError,match="proof object"):m.verify_response_proof_closure(tmp_path,rows)
+ monkeypatch.setattr(m.Path,"is_symlink",original_link)
+ (tmp_path/"deployment/objects/rfc3161-receipt.tsr").write_bytes(b"tampered")
+ with pytest.raises(ValueError,match="proof object"):m.verify_response_proof_closure(tmp_path,rows)
 
 @pytest.mark.parametrize("key",["workflow_freeze_commit","workflow_freeze_epoch","schedule_selection_rule","schedule_cron","rfc3161_tsa_endpoint","rfc3161_tsa_method","rfc3161_query_content_type","rfc3161_reply_content_type","rfc3161_tsa_redirects","rfc3161_tsa_attempts","rfc3161_tsa_nonce","rfc3161_tsa_cert_req","rfc3161_root_sha256","rfc3161_intermediate_sha256","rfc3161_verifier_sha256","schedule_payload_sha256","deployment_identity","manifest_identity"])
 def test_identity_mutations_fail(tmp_path,monkeypatch,key):
@@ -36,7 +60,7 @@ def test_schedule_is_commit_time_derived_and_not_caller_selectable(tmp_path,monk
  with pytest.raises(TypeError):m.verify_git(tmp_path,v,"a"*40,schedule_anchor="b"*40,schedule_anchor_epoch=1)
 
 def test_rfc3161_transport_profile_is_enforced_without_network(monkeypatch,tmp_path):
- calls=[]
+ full=fixture(tmp_path,monkeypatch);v=request_authority(full,tmp_path);o=m.materialize_request(v,tmp_path);calls=[]
  class Headers:
   def get_content_type(self):return m.RFC3161_REPLY_CONTENT_TYPE
  class Response:
@@ -48,22 +72,20 @@ def test_rfc3161_transport_profile_is_enforced_without_network(monkeypatch,tmp_p
  class Opener:
   def open(self,request,timeout):calls.append((request,timeout));return Response()
  monkeypatch.setattr(m.urllib.request,"build_opener",lambda *handlers:(calls.append(handlers),Opener())[1])
- monkeypatch.setattr(m,"verify_rfc3161_submission_authority",lambda v,o,root:calls.append(("authority",root)))
+ monkeypatch.setattr(m,"verify_rfc3161_submission_authority",lambda value,objects,root:(m.validate_request_authority(value),calls.append(("authority",root))))
  monkeypatch.setattr(m,"verify_rfc3161_query",lambda v,o:m._bound_rfc3161_query(v,o))
- query=tmp_path/"query.tsq";query.write_bytes(b"query")
- binding={"rfc3161_request_sha256":m.sha(b"query")}
- assert m.submit_rfc3161_query(binding, {"rfc3161-request.tsq":query},root=tmp_path)==b"receipt"
+ query=o["rfc3161-request.tsq"]
+ assert m.submit_rfc3161_query(v,o,root=tmp_path)==b"receipt"
  assert calls[0]==("authority",tmp_path);handlers=calls[1];request,timeout=calls[2]
  assert any(isinstance(x,m.urllib.request.ProxyHandler) and x.proxies=={} for x in handlers)
  assert any(isinstance(x,m._RejectRedirect) for x in handlers)
- assert request.full_url==m.RFC3161_TSA_ENDPOINT and request.method=="POST" and request.data==b"query" and timeout==20
+ assert request.full_url==m.RFC3161_TSA_ENDPOINT and request.method=="POST" and request.data==query.read_bytes() and timeout==20
  assert request.get_header("Content-type")==m.RFC3161_QUERY_CONTENT_TYPE and request.get_header("Accept")==m.RFC3161_REPLY_CONTENT_TYPE
  query.write_bytes(b"")
- with pytest.raises(ValueError,match="query"):m.submit_rfc3161_query(binding, {"rfc3161-request.tsq":query},root=tmp_path)
+ with pytest.raises(ValueError,match="query"):m.submit_rfc3161_query(v,o,root=tmp_path)
 
 def test_rfc3161_query_substitution_after_semantic_validation_uses_bound_bytes(monkeypatch,tmp_path):
- query=tmp_path/"query.tsq";query.write_bytes(b"bound-query")
- v={"rfc3161_request_sha256":m.sha(b"bound-query")};o={"rfc3161-request.tsq":query}
+ full=fixture(tmp_path,monkeypatch);query=tmp_path/"deployment/objects/rfc3161-request.tsq";query.write_bytes(b"bound-query");full["rfc3161_request_sha256"]=m.sha(b"bound-query");full["objects"]["rfc3161-request.tsq"].update(sha256=m.sha(b"bound-query"),length=len(b"bound-query"));v=request_authority(full,tmp_path);o=m.materialize_request(v,tmp_path)
  sent=[]
  class Headers:
   def get_content_type(self):return m.RFC3161_REPLY_CONTENT_TYPE
@@ -77,7 +99,7 @@ def test_rfc3161_query_substitution_after_semantic_validation_uses_bound_bytes(m
   def open(self,request,timeout):sent.append(request.data);return Response()
  def substitute(*args):query.write_bytes(b"substituted-query");return b"bound-query"
  monkeypatch.setattr(m,"verify_rfc3161_query",substitute)
- monkeypatch.setattr(m,"verify_rfc3161_submission_authority",lambda *a,**k:None)
+ monkeypatch.setattr(m,"verify_rfc3161_submission_authority",lambda value,objects,root:m.validate_request_authority(value))
  monkeypatch.setattr(m.urllib.request,"build_opener",lambda *handlers:Opener())
  assert m.submit_rfc3161_query(v,o,root=tmp_path)==b"receipt" and sent==[b"bound-query"]
 
@@ -163,9 +185,10 @@ def test_real_git_ancestry_blob_and_rendering(tmp_path,monkeypatch):
  subprocess.check_call([git,"init",str(tmp_path)]);call("config","user.email","zero@example.invalid");call("config","user.name","zero")
  template=(Path(__file__).parents[1]/m.TEMPLATE_PATH).read_bytes();path=tmp_path/m.TEMPLATE_PATH;path.parent.mkdir(parents=True);path.write_bytes(template);call("add",m.TEMPLATE_PATH);call("commit","-m","freeze");freeze=call("rev-parse","HEAD")
  v=fixture(tmp_path,monkeypatch);v["workflow_freeze_commit"]=freeze;v["workflow_freeze_epoch"]=int(call("show","-s","--format=%ct",freeze));v["scheduled_utc"],v["schedule_cron"]=m.derive_schedule(v["workflow_freeze_epoch"]);v["workflow_template_sha256"]=m.sha(template);payload=m.schedule_payload(v);schedule=tmp_path/"deployment/objects/schedule-precommit.json";schedule.write_bytes(payload);v["schedule_payload_sha256"]=m.sha(payload);v["objects"]["schedule-precommit.json"].update(sha256=m.sha(payload),length=len(payload));body={k:x for k,x in v.items() if k not in {"deployment_identity","manifest_identity"}};v["deployment_identity"]=m.sha(canonical(body));complete={**v};complete.pop("manifest_identity",None);v["manifest_identity"]=m.sha(canonical(complete))
- authority_args={"git_executable":git,"isolated":False,"deployment_ancestor":freeze};m.verify_rfc3161_submission_authority(v,m.materialize(v,tmp_path),tmp_path,**authority_args)
- stale=copy.deepcopy(v);stale["workflow_freeze_commit"]="a"*40
- with pytest.raises(ValueError):m.verify_rfc3161_submission_authority(stale,m.materialize(v,tmp_path),tmp_path,**authority_args)
+ req=request_authority(v,tmp_path);authority_args={"git_executable":git,"isolated":False,"deployment_ancestor":freeze};m.verify_rfc3161_submission_authority(req,m.materialize_request(req,tmp_path),tmp_path,**authority_args)
+ assert not (tmp_path/"deployment/objects/rfc3161-receipt.tsr").exists()
+ stale=copy.deepcopy(req);stale["workflow_freeze_commit"]="a"*40;body=dict(stale);body.pop("request_authority_identity");stale["request_authority_identity"]=m.sha(canonical(body))
+ with pytest.raises(ValueError):m.verify_rfc3161_submission_authority(stale,m.materialize_request(req,tmp_path),tmp_path,**authority_args)
  active=tmp_path/m.WORKFLOW_PATH;active.parent.mkdir(parents=True);active.write_bytes(m.render_workflow(template,v));call("add",m.WORKFLOW_PATH);call("commit","-m","deploy");head=call("rev-parse","HEAD")
  m.verify_worktree(tmp_path,v)
  git_args={"git_executable":git,"isolated":False,"deployment_ancestor":freeze}
