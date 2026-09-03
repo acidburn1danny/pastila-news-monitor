@@ -77,6 +77,7 @@ def test_real_git_ancestry_blob_and_rendering(tmp_path,monkeypatch):
  active=tmp_path/m.WORKFLOW_PATH;active.parent.mkdir(parents=True);active.write_bytes(m.render_workflow(template,v));call("add",m.WORKFLOW_PATH);call("commit","-m","deploy");head=call("rev-parse","HEAD")
  m.verify_worktree(tmp_path,v)
  assert m.verify_git(tmp_path,v,head,git_executable=git,isolated=False,deployment_ancestor=freeze)>0
+ with pytest.raises(ValueError,match="executing HEAD mismatch"):m.verify_git(tmp_path,v,freeze,git_executable=git,isolated=False,deployment_ancestor=freeze)
  skew=copy.deepcopy(v);skew["workflow_freeze_epoch"]+=1
  with pytest.raises(ValueError,match="workflow freeze time"):m.verify_git(tmp_path,skew,head,git_executable=git,isolated=False,deployment_ancestor=freeze)
  active.write_bytes(b"tampered");call("add",m.WORKFLOW_PATH);call("commit","-m","tamper")

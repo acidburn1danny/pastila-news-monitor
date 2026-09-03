@@ -70,6 +70,8 @@ def verify_git(root:Path,v:Mapping[str,object],head:str,*,git_executable:str="/u
   r=subprocess.run([git_executable,"-C",str(root),*args],stdin=subprocess.DEVNULL,stdout=subprocess.PIPE,stderr=subprocess.PIPE,env=env,timeout=20,check=False)
   if r.returncode:raise ValueError("git evidence")
   return r.stdout
+ actual=git("rev-parse","HEAD").decode("ascii","strict").strip()
+ if actual!=head:raise ValueError("executing HEAD mismatch")
  git("merge-base","--is-ancestor",str(v["workflow_freeze_commit"]),head)
  git("merge-base","--is-ancestor",deployment_ancestor,str(v["workflow_freeze_commit"]))
  template=git("show",f"{v['workflow_freeze_commit']}:{TEMPLATE_PATH}")
