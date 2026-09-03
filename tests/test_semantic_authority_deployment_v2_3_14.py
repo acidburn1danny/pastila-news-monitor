@@ -214,7 +214,7 @@ def test_milestone9_audit_qualification_identity_chain():
  assert value["implementation_sha256"]==m.sha((root/"src/pastila_scout/semantic_authority_deployment_v2_3_14.py").read_bytes())
  assert value["test_sha256"]==m.sha(Path(__file__).read_bytes())
  assert value["workflow_template_sha256"]==m.sha((root/m.TEMPLATE_PATH).read_bytes())
- assert value["readiness_authority"]=="PARTIALLY_PROVEN" and len(value["external_evidence_pending"])==2
+ assert value["readiness_authority"]=="PARTIALLY_PROVEN" and value["external_evidence_pending"]==["REAL_PUBLIC_INITIATION_AND_FINAL_SIGSTORE_ATTESTATIONS"]
  assert value["activation_mode"]=="ATTESTATION_ONLY_PRE_CAPTURE"
  assert value["registry_acquired"] is False and value["publisher_metadata_acquired"] is False
  assert value["attestation_only_subject_schema"]==m.ATTESTATION_ONLY_SUBJECT_SCHEMA
@@ -245,7 +245,14 @@ def test_durable_publication_receipt_identity_and_target_binding():
 def test_rfc3161_receipt_record_and_qualification_evidence_closure():
  root=Path(__file__).parents[1];objects=root/"deployment/objects"
  record=m.json.loads((objects/"rfc3161-receipt-record.json").read_text("utf-8"));identity=record.pop("receipt_identity")
- assert identity=="64b12c2f9c87c6076a3b4b8cdb2c2766f8767a32ef04561b11a6bcd687c569a6"==m.sha(canonical(record))
+ assert identity=="0ac93bb1eb821c910ffe8f91d3e63d97009b9a5399f25c3563772b75cd846a98"==m.sha(canonical(record))
+ assert record["schema"]=="PASTILA_RFC3161_RECEIPT_RECORD_V2"
+ assert record["authority_commit"]=="3fb5068a7b2e642d6da32c10096214622f927437"
+ assert record["nonce"]=="0xD29A0C5F9BFF64D9" and record["receipt_length"]==6008
+ assert record["response_profile"]=={"content_length":6008,"content_type":"application/timestamp-reply","date_utc":"2026-09-03T20:55:53Z"}
+ assert record["frozen_verifier_sha256"]==m.OPENSSL_EXECUTABLE_SHA256
+ assert record["verifier_sha256"]==record["verification_runtime"]["executable_sha256"]=="132616b352a13168391ddbcc2eab22ce52df256b3d4cd2c2c6fc245d22bab62c"
+ assert record["verification_runtime"]["result"]=="Verification: OK" and record["frozen_verifier_sha256"]!=record["verifier_sha256"]
  assert record["query_sha256"]==m.sha((objects/"rfc3161-request.tsq").read_bytes())
  assert record["receipt_sha256"]==m.sha((objects/"rfc3161-receipt.tsr").read_bytes())
  assert record["response_headers_sha256"]==m.sha((objects/"rfc3161-response.headers").read_bytes())
@@ -254,8 +261,8 @@ def test_rfc3161_receipt_record_and_qualification_evidence_closure():
  assert record["root_sha256"]==m.sha((objects/"rfc3161-root.pem").read_bytes())
  assert record["intermediate_sha256"]==m.sha((objects/"rfc3161-intermediate.pem").read_bytes())
  qualification=m.json.loads((root/"docs/artifacts/semantic-contract-v2-3-14-three-phase-deployment-zero-network-qualification.json").read_text("utf-8"))
- assert qualification["rfc3161_acquired"] is False
- assert qualification["rfc3161_receipt_evidence"]=={"query_sha256":record["query_sha256"],"receipt_identity":identity,"receipt_sha256":record["receipt_sha256"],"response_headers_sha256":record["response_headers_sha256"],"timestamp_utc":record["timestamp_utc"],"verification":record["verdict"]}
+ assert qualification["rfc3161_acquired"] is True
+ assert qualification["rfc3161_receipt_evidence"]=={"query_sha256":record["query_sha256"],"receipt_identity":identity,"receipt_sha256":record["receipt_sha256"],"response_headers_sha256":record["response_headers_sha256"],"timestamp_utc":record["timestamp_utc"],"verification":record["verdict"],"frozen_verifier_sha256":record["frozen_verifier_sha256"],"verification_runtime":record["verification_runtime"]}
  assert qualification["rfc3161_trust_material"]["root_sha256"]==record["root_sha256"]
  assert qualification["rfc3161_trust_material"]["intermediate_sha256"]==record["intermediate_sha256"]
- assert "REPLACEMENT_RFC3161_RECEIPT" in qualification["external_evidence_pending"]
+ assert "REPLACEMENT_RFC3161_RECEIPT" not in qualification["external_evidence_pending"]
