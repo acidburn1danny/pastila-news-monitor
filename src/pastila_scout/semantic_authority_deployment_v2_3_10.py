@@ -11,7 +11,7 @@ import shutil
 import ssl
 import tempfile
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path, PurePosixPath
 from typing import Mapping
 from urllib.parse import urlsplit
@@ -26,6 +26,7 @@ from .semantic_authority_deployment_v2_3_9 import (
 DOMAIN = "PASTILA_CAPTURE_DEPLOYMENT_V2_3_10"
 MAX_RESPONSE_BYTES = 64 * 1024 * 1024
 PROXY_KEYS = frozenset(k for stem in ("http_proxy","https_proxy","all_proxy","no_proxy") for k in (stem,stem.upper()))
+MAX_SCHEDULE_DELAY = timedelta(hours=24)
 
 
 @dataclass(frozen=True)
@@ -46,11 +47,12 @@ def one_shot_guard(config: FrozenRun, environment: Mapping[str, str], now: datet
     if config.schedule_cron != f"{scheduled.minute} {scheduled.hour} {scheduled.day} {scheduled.month} *":
         raise ValueError("schedule/timestamp convergence")
     expected={"GITHUB_EVENT_NAME":"schedule","GITHUB_RUN_ATTEMPT":"1","GITHUB_REPOSITORY":REPOSITORY_SLUG,
-              "GITHUB_REPOSITORY_ID":REPOSITORY_ID,"GITHUB_SHA":config.workflow_commit,"GITHUB_EVENT_SCHEDULE":config.schedule_cron}
+              "GITHUB_REPOSITORY_ID":REPOSITORY_ID,"GITHUB_SHA":config.workflow_commit,"PASTILA_EVENT_SCHEDULE":config.schedule_cron}
     if any(environment.get(k)!=v for k,v in expected.items()) or now.tzinfo is None:
         raise ValueError("one-shot run identity")
-    if now.astimezone(timezone.utc).replace(second=0,microsecond=0)!=scheduled:
-        raise ValueError("missed or delayed one-shot schedule")
+    observed=now.astimezone(timezone.utc)
+    if observed < scheduled or observed >= scheduled + MAX_SCHEDULE_DELAY:
+        raise ValueError("outside one-shot schedule window")
 
 
 class AdaptiveProductionAdapter:

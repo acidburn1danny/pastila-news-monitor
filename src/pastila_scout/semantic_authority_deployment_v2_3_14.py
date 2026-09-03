@@ -1,6 +1,6 @@
 """V2.3.15 source-blind three-phase deployment boundary."""
 from __future__ import annotations
-import argparse, json, os, re, subprocess, urllib.request
+import argparse, json, os, re, shutil, subprocess, tempfile, urllib.request
 from datetime import datetime, timedelta, timezone
 from email.utils import parsedate_to_datetime
 from pathlib import Path, PurePosixPath
@@ -8,12 +8,14 @@ from typing import Mapping
 from .semantic_authority_capture_orchestrator_v2_3_7 import canonical
 from .semantic_authority_deployment_v2_3_9 import (COSIGN_SHA256, DERIVATION_POLICY_IDENTITY,
     LINUX_LAUNCHER_SHA256, REPOSITORY_ID, REPOSITORY_SLUG, RUNTIME_COMMIT,
-    SEED_PLAN_IDENTITY, LinuxVerifier, initiation_claim, sha)
-from .semantic_authority_deployment_v2_3_10 import FrozenRun, one_shot_guard, run_once, verify_installed_dependency
+    SEED_PLAN_IDENTITY, LinuxVerifier, initiation_claim, sha, verify_linux_initiation)
+from .semantic_authority_deployment_v2_3_10 import MAX_SCHEDULE_DELAY, FrozenRun, one_shot_guard, verify_installed_dependency
 from .semantic_authority_cosign_v2_3_7 import TRUSTED_ROOT_SHA256
 from .semantic_authority_rfc3161_verifier_v2_3_13 import OPENSSL_EXECUTABLE_SHA256, verify_executable
 
 SCHEMA="PASTILA_CAPTURE_DEPLOYMENT_V2_3_15";PAYLOAD_SCHEMA="PASTILA_RFC3161_SCHEDULE_PRECOMMIT_V2_3_15"
+ATTESTATION_ONLY_SUBJECT_SCHEMA="PASTILA_PRE_CAPTURE_ACTIVATION_STATE_V2_3_15"
+ATTESTATION_ONLY_PREDICATE_TYPE="https://pastila.invalid/semantic-authority/pre-capture-activation/v2.3.15"
 DEPLOYMENT_RUNTIME_COMMIT="26f66c54c02e18c05927b91d010290c2f712ca06"
 TEMPLATE_PATH="deployment/semantic-authority-metadata-capture-v2-3-14.yml.template"
 WORKFLOW_PATH=".github/workflows/semantic-authority-metadata-capture-v2-3-9.yml"
@@ -211,23 +213,41 @@ def prepare_initiation(v:Mapping[str,object],head:str,dest:Path)->None:
  if dest.exists():raise ValueError("initiation output")
  dest.mkdir();(dest/"pastila-capture-initiation.json").write_bytes(canonical(claim));(dest/"predicate.json").write_bytes(canonical(claim))
 
+def complete_attestation_only(v:Mapping[str,object],head:str,bundle_path:Path,objects:Mapping[str,Path],output:Path)->dict[str,object]:
+ run=run_claim(v,head)
+ frozen=FrozenRun(str(v["scheduled_utc"]),str(v["schedule_cron"]),head,str(v["deployment_identity"]),str(v["ca_sha256"]))
+ one_shot_guard(frozen,os.environ,datetime.now(timezone.utc))
+ runtime=LinuxVerifier(objects["cosign"],objects["deny-network-launcher.sh"],objects["trusted-root.json"],str(v["cosign_sha256"]),str(v["launcher_sha256"]),str(v["trusted_root_sha256"]))
+ initiation=verify_linux_initiation(run=run,bundle=bundle_path.read_bytes(),bundle_path=bundle_path,repository_slug=REPOSITORY_SLUG,runtime=runtime)
+ prohibitions={"capture_executed":False,"publisher_metadata_acquired":False,"registry_metadata_acquired":False}
+ subject={"schema":ATTESTATION_ONLY_SUBJECT_SCHEMA,"mode":"ATTESTATION_ONLY_PRE_CAPTURE","repository":REPOSITORY_SLUG,
+          "repository_id":REPOSITORY_ID,"workflow_commit":head,"deployment_identity":v["deployment_identity"],
+          "scheduled_utc":v["scheduled_utc"],"schedule_cron":v["schedule_cron"],"initiation":initiation,"prohibitions":prohibitions}
+ predicate={"mode":subject["mode"],"deployment_identity":v["deployment_identity"],"scheduled_utc":v["scheduled_utc"],
+            "schedule_cron":v["schedule_cron"],"initiation":initiation,"prohibitions":prohibitions}
+ if output.exists():raise ValueError("attestation-only output must be absent")
+ temporary=Path(tempfile.mkdtemp(prefix=f".{output.name}-",dir=output.parent))
+ try:
+  (temporary/"pre-capture-deployment-state.json").write_bytes(canonical(subject)+b"\n")
+  (temporary/"final-predicate.json").write_bytes(canonical(predicate)+b"\n")
+  os.replace(temporary,output)
+ except BaseException:
+  if temporary.exists():shutil.rmtree(temporary)
+  raise
+ return subject
+
 def main(argv:list[str]|None=None)->int:
- p=argparse.ArgumentParser();p.add_argument("--manifest",type=Path,required=True);p.add_argument("--prepare-initiation",type=Path);p.add_argument("--initiation-bundle",type=Path);p.add_argument("--execute",action="store_true");a=p.parse_args(argv)
+ p=argparse.ArgumentParser();p.add_argument("--manifest",type=Path,required=True);p.add_argument("--prepare-initiation",type=Path);p.add_argument("--initiation-bundle",type=Path);p.add_argument("--complete-attestation-only",action="store_true");a=p.parse_args(argv)
  root=Path.cwd().resolve(strict=True);v=load(a.manifest);head=runtime_head()
  # This check is part of the production path, not merely a qualification helper.
  # /usr/bin/git is supplied by the immutable container image named in the workflow.
  verify_git(root,v,head);verify_worktree(root,v);o=materialize(v,root);verify_timestamp(v,o,freeze_epoch=int(v["workflow_freeze_epoch"]))
  if a.prepare_initiation:
-  if a.execute or a.initiation_bundle:raise ValueError("phase mode")
+  if a.complete_attestation_only or a.initiation_bundle:raise ValueError("phase mode")
   prepare_initiation(v,head,a.prepare_initiation);return 0
- if not a.execute or not a.initiation_bundle:raise ValueError("capture mode")
+ if not a.complete_attestation_only or not a.initiation_bundle:raise ValueError("attestation-only mode")
  runner_temp=os.environ.get("RUNNER_TEMP","")
  if not runner_temp:raise ValueError("runner temporary root")
  bundle_path=regular_input(a.initiation_bundle,Path(runner_temp))
- run=run_claim(v,head);runtime=LinuxVerifier(o["cosign"],o["deny-network-launcher.sh"],o["trusted-root.json"],str(v["cosign_sha256"]),str(v["launcher_sha256"]),str(v["trusted_root_sha256"]))
- frozen=FrozenRun(str(v["scheduled_utc"]),str(v["schedule_cron"]),head,str(v["deployment_identity"]),str(v["ca_sha256"]))
- run_once(config=frozen,environment=os.environ,now=datetime.now(timezone.utc),run=run,bundle=bundle_path.read_bytes(),bundle_path=bundle_path,verifier=runtime,ca_file=o["ca.pem"],output=Path("capture-output"))
- statement=json.loads((Path("capture-output")/"final-attestation-predicate.json").read_text("utf-8"))
- if set(statement)!={"_type","predicateType","subject","predicate"}:raise ValueError("final statement")
- (Path("capture-output")/"final-predicate.json").write_bytes(canonical(statement["predicate"]));return 0
+ complete_attestation_only(v,head,bundle_path,o,Path("attestation-only-output"));return 0
 if __name__=="__main__":raise SystemExit(main())

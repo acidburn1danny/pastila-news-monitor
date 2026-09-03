@@ -1,5 +1,5 @@
 import hashlib,json
-from datetime import datetime,timezone
+from datetime import datetime,timedelta,timezone
 from pathlib import Path
 import pytest
 from pastila_scout import semantic_authority_deployment_v2_3_10 as m
@@ -7,13 +7,19 @@ from pastila_scout.semantic_authority_capture_orchestrator_v2_3_7 import Capture
 from pastila_scout.semantic_authority_deployment_v2_3_9 import CaptureExecution
 
 def config():return m.FrozenRun("2026-10-01T00:00:00Z","0 0 1 10 *","a"*40,"b"*64,"c"*64)
-def env():return {"GITHUB_EVENT_NAME":"schedule","GITHUB_RUN_ATTEMPT":"1","GITHUB_REPOSITORY":m.REPOSITORY_SLUG,"GITHUB_REPOSITORY_ID":m.REPOSITORY_ID,"GITHUB_SHA":"a"*40,"GITHUB_EVENT_SCHEDULE":"0 0 1 10 *"}
-def test_one_shot_exact_and_no_retry_or_delay():
+def env():return {"GITHUB_EVENT_NAME":"schedule","GITHUB_RUN_ATTEMPT":"1","GITHUB_REPOSITORY":m.REPOSITORY_SLUG,"GITHUB_REPOSITORY_ID":m.REPOSITORY_ID,"GITHUB_SHA":"a"*40,"PASTILA_EVENT_SCHEDULE":"0 0 1 10 *"}
+def test_one_shot_accepts_bounded_scheduler_delay_and_rejects_redraw():
  m.one_shot_guard(config(),env(),datetime(2026,10,1,tzinfo=timezone.utc))
+ m.one_shot_guard(config(),env(),datetime(2026,10,1,23,59,59,tzinfo=timezone.utc))
  for key,value in (("GITHUB_RUN_ATTEMPT","2"),("GITHUB_EVENT_NAME","workflow_dispatch"),("GITHUB_SHA","d"*40)):
   bad={**env(),key:value}
   with pytest.raises(ValueError):m.one_shot_guard(config(),bad,datetime(2026,10,1,tzinfo=timezone.utc))
- with pytest.raises(ValueError,match="delayed"):m.one_shot_guard(config(),env(),datetime(2026,10,1,0,1,tzinfo=timezone.utc))
+ for instant in (datetime(2026,9,30,23,59,59,tzinfo=timezone.utc),datetime(2026,10,2,tzinfo=timezone.utc),datetime(2027,10,1,tzinfo=timezone.utc)):
+  with pytest.raises(ValueError,match="window"):m.one_shot_guard(config(),env(),instant)
+ bad={**env(),"PASTILA_EVENT_SCHEDULE":"0 0 2 10 *"}
+ with pytest.raises(ValueError,match="identity"):m.one_shot_guard(config(),bad,datetime(2026,10,1,tzinfo=timezone.utc))
+ legacy={**env(),"GITHUB_EVENT_SCHEDULE":env()["PASTILA_EVENT_SCHEDULE"]};legacy.pop("PASTILA_EVENT_SCHEDULE")
+ with pytest.raises(ValueError,match="identity"):m.one_shot_guard(config(),legacy,datetime(2026,10,1,tzinfo=timezone.utc))
  with pytest.raises(ValueError,match="convergence"):m.one_shot_guard(m.FrozenRun(config().scheduled_utc,"1 0 1 10 *",config().workflow_commit,config().deployment_identity,config().ca_sha256),env(),datetime(2026,10,1,tzinfo=timezone.utc))
 def test_concrete_adapter_pins_ca_and_rejects_proxy(tmp_path,monkeypatch):
  ca=tmp_path/"ca";ca.write_bytes(b"ca");run={"ca_sha256":hashlib.sha256(b"ca").hexdigest()};a=m.AdaptiveProductionAdapter(run=run,ca_file=ca)

@@ -108,8 +108,11 @@ def test_render_and_template_are_inert_and_executable(tmp_path,monkeypatch):
  rendered=m.render_workflow(template,v);text=rendered.decode();assert not m.re.search(r"@[A-Z0-9_]+@",text)
  assert "workflow_dispatch" not in text and "semantic_authority_deployment_v2_3_14" in text
  assert m.WORKFLOW_PATH.endswith("semantic-authority-metadata-capture-v2-3-9.yml") and m.DEPLOYMENT_RUNTIME_COMMIT=="26f66c54c02e18c05927b91d010290c2f712ca06"
- assert text.index("--prepare-initiation")<text.index("actions/attest@")<text.index("--execute")
- assert text.index("--execute")<text.index("Create final public capture attestation")<text.index("upload-artifact@")
+ assert text.index("--prepare-initiation")<text.index("actions/attest@")<text.index("--complete-attestation-only")
+ assert text.index("--complete-attestation-only")<text.index("Create final public attestation-only pre-capture attestation")<text.index("upload-artifact@")
+ assert "PASTILA_EVENT_SCHEDULE: ${{ github.event.schedule }}" in text
+ assert text.count("push-to-registry: false")==2
+ assert all(x not in text for x in ("--execute","capture-output","execute_capture","Crossref","OpenAlex"))
  assert "sha256sum -c -" in text and "@UPLOAD_ACTION_COMMIT@" not in text
  assert all(x in text for x in ("cosign.part-00","cosign.part-01","cosign.part-02","4629c757b7618056f8ddd7e2625ae9fdd94c0372a65049520bc7d9df9efc7f71"))
  assert text.index("Reconstruct frozen Cosign")<text.index("Verify immutable deployment objects")
@@ -128,6 +131,19 @@ def test_initiation_is_one_shot_guarded_and_has_exact_subject_bytes(tmp_path,mon
  monkeypatch.setenv("GITHUB_RUN_ID","7");dest=tmp_path/"initiation";m.prepare_initiation(v,"b"*40,dest)
  expected=canonical({"closed":True});assert (dest/"pastila-capture-initiation.json").read_bytes()==expected
  assert (dest/"predicate.json").read_bytes()==expected and not expected.endswith(b"\n")
+
+def test_attestation_only_completion_has_exact_truthful_subject_and_no_capture(tmp_path,monkeypatch):
+ v=fixture(tmp_path,monkeypatch);bundle=tmp_path/"bundle.json";bundle.write_bytes(b"bundle")
+ initiation={"initiation_subject_sha256":"a"*64,"initiation_rekor_uuid":"b"*64,"initiation_rekor_log_index":"7","initiation_rekor_integrated_time":"8","verified":True}
+ calls=[];monkeypatch.setattr(m,"one_shot_guard",lambda *a:calls.append("guard"));monkeypatch.setattr(m,"LinuxVerifier",lambda *a:object())
+ monkeypatch.setattr(m,"verify_linux_initiation",lambda **k:(calls.append("verify"),initiation)[1]);monkeypatch.setenv("GITHUB_RUN_ID","9")
+ objects={"cosign":tmp_path/"c","deny-network-launcher.sh":tmp_path/"d","trusted-root.json":tmp_path/"t"}
+ output=tmp_path/"attestation-only-output";subject=m.complete_attestation_only(v,"b"*40,bundle,objects,output)
+ prohibitions={"capture_executed":False,"publisher_metadata_acquired":False,"registry_metadata_acquired":False}
+ assert calls==["guard","verify"] and subject=={"schema":m.ATTESTATION_ONLY_SUBJECT_SCHEMA,"mode":"ATTESTATION_ONLY_PRE_CAPTURE","repository":m.REPOSITORY_SLUG,"repository_id":m.REPOSITORY_ID,"workflow_commit":"b"*40,"deployment_identity":v["deployment_identity"],"scheduled_utc":v["scheduled_utc"],"schedule_cron":v["schedule_cron"],"initiation":initiation,"prohibitions":prohibitions}
+ assert (output/"pre-capture-deployment-state.json").read_bytes()==canonical(subject)+b"\n"
+ predicate=m.json.loads((output/"final-predicate.json").read_bytes());assert predicate["prohibitions"]==prohibitions and predicate["initiation"]==initiation
+ with pytest.raises(ValueError,match="absent"):m.complete_attestation_only(v,"b"*40,bundle,objects,output)
 
 def test_nonselectable_roots_and_default_branch(monkeypatch,tmp_path):
  v=fixture(tmp_path,monkeypatch)
@@ -194,6 +210,11 @@ def test_milestone9_audit_qualification_identity_chain():
  assert value["test_sha256"]==m.sha(Path(__file__).read_bytes())
  assert value["workflow_template_sha256"]==m.sha((root/m.TEMPLATE_PATH).read_bytes())
  assert value["readiness_authority"]=="PARTIALLY_PROVEN" and len(value["external_evidence_pending"])==2
+ assert value["activation_mode"]=="ATTESTATION_ONLY_PRE_CAPTURE"
+ assert value["registry_acquired"] is False and value["publisher_metadata_acquired"] is False
+ assert value["attestation_only_subject_schema"]==m.ATTESTATION_ONLY_SUBJECT_SCHEMA
+ assert value["attestation_only_predicate_type"]==m.ATTESTATION_ONLY_PREDICATE_TYPE
+ assert value["schedule_delay_window_seconds"]==int(m.MAX_SCHEDULE_DELAY.total_seconds())
  assert "DURABLE_PUBLICATION_RECEIPT" not in value["external_evidence_pending"]
 
 def test_durable_publication_receipt_identity_and_target_binding():
@@ -228,8 +249,8 @@ def test_rfc3161_receipt_record_and_qualification_evidence_closure():
  assert record["root_sha256"]==m.sha((objects/"rfc3161-root.pem").read_bytes())
  assert record["intermediate_sha256"]==m.sha((objects/"rfc3161-intermediate.pem").read_bytes())
  qualification=m.json.loads((root/"docs/artifacts/semantic-contract-v2-3-14-three-phase-deployment-zero-network-qualification.json").read_text("utf-8"))
- assert qualification["rfc3161_acquired"] is True
+ assert qualification["rfc3161_acquired"] is False
  assert qualification["rfc3161_receipt_evidence"]=={"query_sha256":record["query_sha256"],"receipt_identity":identity,"receipt_sha256":record["receipt_sha256"],"response_headers_sha256":record["response_headers_sha256"],"timestamp_utc":record["timestamp_utc"],"verification":record["verdict"]}
  assert qualification["rfc3161_trust_material"]["root_sha256"]==record["root_sha256"]
  assert qualification["rfc3161_trust_material"]["intermediate_sha256"]==record["intermediate_sha256"]
- assert "REAL_RFC3161_RECEIPT" not in qualification["external_evidence_pending"]
+ assert "REPLACEMENT_RFC3161_RECEIPT" in qualification["external_evidence_pending"]
