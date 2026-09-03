@@ -49,14 +49,22 @@ def test_rfc3161_transport_profile_is_enforced_without_network(monkeypatch,tmp_p
  monkeypatch.setattr(m.urllib.request,"build_opener",lambda *handlers:(calls.append(handlers),Opener())[1])
  monkeypatch.setattr(m,"verify_rfc3161_query",lambda v,o:None)
  query=tmp_path/"query.tsq";query.write_bytes(b"query")
- assert m.submit_rfc3161_query({}, {"rfc3161-request.tsq":query})==b"receipt"
+ binding={"rfc3161_request_sha256":m.sha(b"query")}
+ assert m.submit_rfc3161_query(binding, {"rfc3161-request.tsq":query})==b"receipt"
  handlers=calls[0];request,timeout=calls[1]
  assert any(isinstance(x,m.urllib.request.ProxyHandler) and x.proxies=={} for x in handlers)
  assert any(isinstance(x,m._RejectRedirect) for x in handlers)
  assert request.full_url==m.RFC3161_TSA_ENDPOINT and request.method=="POST" and request.data==b"query" and timeout==20
  assert request.get_header("Content-type")==m.RFC3161_QUERY_CONTENT_TYPE and request.get_header("Accept")==m.RFC3161_REPLY_CONTENT_TYPE
  query.write_bytes(b"")
- with pytest.raises(ValueError,match="query"):m.submit_rfc3161_query({}, {"rfc3161-request.tsq":query})
+ with pytest.raises(ValueError,match="query"):m.submit_rfc3161_query(binding, {"rfc3161-request.tsq":query})
+
+def test_rfc3161_query_substitution_after_semantic_validation_fails(monkeypatch,tmp_path):
+ query=tmp_path/"query.tsq";query.write_bytes(b"bound-query")
+ v={"rfc3161_request_sha256":m.sha(b"bound-query")};o={"rfc3161-request.tsq":query}
+ def substitute(*args):query.write_bytes(b"substituted-query")
+ monkeypatch.setattr(m,"verify_rfc3161_query",substitute)
+ with pytest.raises(ValueError,match="query bytes"):m.submit_rfc3161_query(v,o)
 
 def query_text(v):
  digest=m.sha(m.schedule_payload(v));pairs=" ".join(digest[i:i+2] for i in range(0,len(digest),2))

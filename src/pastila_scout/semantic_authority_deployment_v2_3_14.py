@@ -69,9 +69,13 @@ def verify_rfc3161_query(v:Mapping[str,object],o:Mapping[str,Path])->None:
  imprint="".join(chunks)
  if imprint.lower()!=sha(schedule_payload(v)):raise ValueError("RFC3161 query imprint")
 
+def _bound_rfc3161_query(v:Mapping[str,object],o:Mapping[str,Path])->bytes:
+ query=o["rfc3161-request.tsq"].read_bytes()
+ if not query or len(query)>RFC3161_MAX_QUERY_BYTES or sha(query)!=v["rfc3161_request_sha256"]:raise ValueError("RFC3161 query bytes")
+ return query
+
 def submit_rfc3161_query(v:Mapping[str,object],o:Mapping[str,Path])->bytes:
- verify_rfc3161_query(v,o);query=o["rfc3161-request.tsq"].read_bytes()
- if not isinstance(query,bytes) or not query or len(query)>RFC3161_MAX_QUERY_BYTES:raise ValueError("RFC3161 query")
+ verify_rfc3161_query(v,o);query=_bound_rfc3161_query(v,o)
  request=urllib.request.Request(RFC3161_TSA_ENDPOINT,data=query,method=RFC3161_TSA_METHOD,headers={"Content-Type":RFC3161_QUERY_CONTENT_TYPE,"Accept":RFC3161_REPLY_CONTENT_TYPE})
  opener=urllib.request.build_opener(urllib.request.ProxyHandler({}),_RejectRedirect())
  with opener.open(request,timeout=RFC3161_TIMEOUT_SECONDS) as response:
@@ -163,9 +167,10 @@ def materialize(v:Mapping[str,object],root:Path)->dict[str,Path]:
  return out
 
 def verify_timestamp(v:Mapping[str,object],o:Mapping[str,Path],*,freeze_epoch:int)->None:
- verify_rfc3161_query(v,o)
+ verify_rfc3161_query(v,o);_bound_rfc3161_query(v,o)
  r=_openssl(v,o,["ts","-verify","-queryfile",str(o["rfc3161-request.tsq"]),"-in",str(o["rfc3161-receipt.tsr"]),"-CAfile",str(o["rfc3161-root.pem"]),"-untrusted",str(o["rfc3161-intermediate.pem"])])
  if r.returncode or (r.stdout.strip(),r.stderr.strip()) not in ((b"Verification: OK",b""),(b"",b"Verification: OK")):raise ValueError("RFC3161 signature")
+ _bound_rfc3161_query(v,o)
  r=_openssl(v,o,["ts","-reply","-in",str(o["rfc3161-receipt.tsr"]),"-text"]);text=r.stdout.decode("utf-8","strict")
  alg=[x.strip() for x in text.splitlines() if x.strip().startswith("Hash Algorithm:")];times=[x.strip() for x in text.splitlines() if x.strip().startswith("Time stamp:")]
  if r.returncode or r.stderr or alg!=["Hash Algorithm: sha256"] or len(times)!=1:raise ValueError("RFC3161 fields")
