@@ -275,10 +275,16 @@ def test_durable_publication_receipt_identity_and_target_binding():
  assert value["publication_review_verdict"]=="PASS_PUBLIC_COMMIT_AND_BRANCH_IDENTITY_CONFIRMED"
  assert value["observed_utc_authority"]=="LOCAL_CLOCK_NOT_RFC3161"
 
-def test_rejected_schedule_proof_and_activation_are_absent_pending_replacement():
+def test_request_artifact_phase_is_absent_before_freeze_or_complete_and_valid_after_regeneration():
  root=Path(__file__).parents[1];objects=root/"deployment/objects"
  assert not (root/m.WORKFLOW_PATH).exists() and not (root/"deployment/v2-3-15-manifest.json").exists()
- for name in ("schedule-precommit.json","rfc3161-request.tsq","rfc3161-receipt.tsr","rfc3161-response.headers","rfc3161-receipt-record.json"):
+ request_names=("schedule-precommit.json","rfc3161-request.tsq","rfc3161-request-authority.json")
+ present=[(objects/name).exists() for name in request_names]
+ assert not any(present) or all(present)
+ if all(present):
+  authority=m.json.loads((objects/"rfc3161-request-authority.json").read_bytes());snapshot=m.materialize_request(authority,root)
+  m.verify_rfc3161_submission_authority(authority,snapshot,root,git_executable=shutil.which("git"),isolated=False)
+ for name in ("rfc3161-receipt.tsr","rfc3161-response.headers","rfc3161-receipt-record.json"):
   assert not (objects/name).exists()
  qualification=m.json.loads((root/"docs/artifacts/semantic-contract-v2-3-14-three-phase-deployment-zero-network-qualification.json").read_text("utf-8"))
  assert qualification["rfc3161_acquired"] is False
@@ -286,3 +292,4 @@ def test_rejected_schedule_proof_and_activation_are_absent_pending_replacement()
  assert "rfc3161_receipt_evidence" not in qualification
  assert qualification["schedule_selection_rule"]==m.SCHEDULE_SELECTION_RULE
  assert qualification["artifact_retention_days"]==30
+ assert qualification["request_artifact_phase_policy"]=="ABSENT_BEFORE_FREEZE_OR_COMPLETE_VALIDATED_REQUEST_SET_AFTER_REGENERATION"
