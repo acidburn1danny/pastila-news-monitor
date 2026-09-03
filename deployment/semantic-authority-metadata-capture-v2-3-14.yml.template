@@ -30,7 +30,7 @@ jobs:
             '80a0b2500c1fe629b6111432e27b3fc288f9441146b1d0f27bea772bde918ea8  src/pastila_scout/semantic_authority_cosign_v2_3_7.py' \
             '539745950274dc8f8decd8eb22975aff36c0966aa264d2f8fc27fb84926bcc06  src/pastila_scout/semantic_authority_public_attestation_v2_3_6.py' \
             'fe007159bb36237818af926bc42b64879296a47c0322818eecea9633054e635d  src/pastila_scout/semantic_authority_deployment_v2_3_10.py' \
-            '258e12682f95ece24894fe45ec8bc9f6c28d21fc09f01ddbca19488c75b52bd9  src/pastila_scout/semantic_authority_deployment_v2_3_14.py' \
+            'cdba88022b2b53d7d8c77c0d46bc5eced72e401b4ac674d271dea89b74ff7b02  src/pastila_scout/semantic_authority_deployment_v2_3_14.py' \
             '5975a5e06277f4a7c745ab7ea1c46060b5d6762fe5715e8f03c1da662902c939  src/pastila_scout/semantic_authority_deployment_v2_3_9.py' \
             'a5a7cf3e01e3605b83bd8754ec33269b670b4e89d8398a1ba598158c3f45d090  src/pastila_scout/semantic_authority_rfc3161_verifier_v2_3_13.py' | sha256sum -c -
       - name: Reconstruct frozen Cosign executable from GitHub-compatible chunks
@@ -70,6 +70,6 @@ jobs:
           name: semantic-authority-pre-capture-activation-${{ github.run_id }}
           path: attestation-only-output
           if-no-files-found: error
-          retention-days: 90
+          retention-days: 30
           compression-level: 0
           overwrite: false

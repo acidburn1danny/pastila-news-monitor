@@ -7,8 +7,8 @@ from pastila_scout.semantic_authority_capture_orchestrator_v2_3_7 import canonic
 def fixture(tmp_path,monkeypatch):
  monkeypatch.setattr(m,"OPENSSL_EXECUTABLE_SHA256",m.sha(b"openssl"));monkeypatch.setattr(m,"COSIGN_SHA256",m.sha(b"cosign"));monkeypatch.setattr(m,"LINUX_LAUNCHER_SHA256",m.sha(b"deny-network-launcher.sh"))
  monkeypatch.setattr(m,"CA_BUNDLE_SHA256",m.sha(b"ca.pem"));monkeypatch.setattr(m,"RFC3161_ROOT_SHA256",m.sha(b"rfc3161-root.pem"));monkeypatch.setattr(m,"RFC3161_INTERMEDIATE_SHA256",m.sha(b"rfc3161-intermediate.pem"));monkeypatch.setattr(m,"TRUSTED_ROOT_SHA256",m.sha(b"trusted-root.json"))
- epoch=1788430198;scheduled,cron=m.derive_schedule(m.SCHEDULE_ANCHOR_EPOCH)
- v={"schema":m.SCHEMA,"repository_slug":m.REPOSITORY_SLUG,"repository_id":m.REPOSITORY_ID,"default_branch_ref":m.DEFAULT_BRANCH_REF,"core_runtime_commit":m.RUNTIME_COMMIT,"deployment_runtime_commit":m.DEPLOYMENT_RUNTIME_COMMIT,"workflow_freeze_commit":"a"*40,"workflow_freeze_epoch":epoch,"workflow_template_sha256":"1"*64,"schedule_selection_rule":m.SCHEDULE_SELECTION_RULE,"schedule_anchor_commit":m.SCHEDULE_ANCHOR_COMMIT,"schedule_anchor_epoch":m.SCHEDULE_ANCHOR_EPOCH,"scheduled_utc":scheduled,"schedule_cron":cron,"rfc3161_tsa_endpoint":m.RFC3161_TSA_ENDPOINT,"rfc3161_tsa_method":m.RFC3161_TSA_METHOD,"rfc3161_query_content_type":m.RFC3161_QUERY_CONTENT_TYPE,"rfc3161_reply_content_type":m.RFC3161_REPLY_CONTENT_TYPE,"rfc3161_tsa_redirects":m.RFC3161_TSA_REDIRECTS,"rfc3161_tsa_attempts":m.RFC3161_TSA_ATTEMPTS,"rfc3161_tsa_nonce":m.RFC3161_TSA_NONCE,"rfc3161_tsa_cert_req":m.RFC3161_TSA_CERT_REQ,"rfc3161_verifier_sha256":m.OPENSSL_EXECUTABLE_SHA256,"rfc3161_root_sha256":m.RFC3161_ROOT_SHA256,"rfc3161_intermediate_sha256":m.RFC3161_INTERMEDIATE_SHA256,"ca_sha256":"3"*64,"cosign_sha256":m.COSIGN_SHA256,"launcher_sha256":m.LINUX_LAUNCHER_SHA256,"trusted_root_sha256":"4"*64,"derivation_policy_identity":m.DERIVATION_POLICY_IDENTITY,"seed_plan_identity":m.SEED_PLAN_IDENTITY}
+ epoch=1788430198;scheduled,cron=m.derive_schedule(epoch)
+ v={"schema":m.SCHEMA,"repository_slug":m.REPOSITORY_SLUG,"repository_id":m.REPOSITORY_ID,"default_branch_ref":m.DEFAULT_BRANCH_REF,"core_runtime_commit":m.RUNTIME_COMMIT,"deployment_runtime_commit":m.DEPLOYMENT_RUNTIME_COMMIT,"workflow_freeze_commit":"a"*40,"workflow_freeze_epoch":epoch,"workflow_template_sha256":"1"*64,"schedule_selection_rule":m.SCHEDULE_SELECTION_RULE,"scheduled_utc":scheduled,"schedule_cron":cron,"rfc3161_tsa_endpoint":m.RFC3161_TSA_ENDPOINT,"rfc3161_tsa_method":m.RFC3161_TSA_METHOD,"rfc3161_query_content_type":m.RFC3161_QUERY_CONTENT_TYPE,"rfc3161_reply_content_type":m.RFC3161_REPLY_CONTENT_TYPE,"rfc3161_tsa_redirects":m.RFC3161_TSA_REDIRECTS,"rfc3161_tsa_attempts":m.RFC3161_TSA_ATTEMPTS,"rfc3161_tsa_nonce":m.RFC3161_TSA_NONCE,"rfc3161_tsa_cert_req":m.RFC3161_TSA_CERT_REQ,"rfc3161_verifier_sha256":m.OPENSSL_EXECUTABLE_SHA256,"rfc3161_root_sha256":m.RFC3161_ROOT_SHA256,"rfc3161_intermediate_sha256":m.RFC3161_INTERMEDIATE_SHA256,"ca_sha256":"3"*64,"cosign_sha256":m.COSIGN_SHA256,"launcher_sha256":m.LINUX_LAUNCHER_SHA256,"trusted_root_sha256":"4"*64,"derivation_policy_identity":m.DERIVATION_POLICY_IDENTITY,"seed_plan_identity":m.SEED_PLAN_IDENTITY}
  payload=m.schedule_payload(v);values={name:(payload if name=="schedule-precommit.json" else name.encode()) for name in m.OBJECTS};objects={}
  for name,data in values.items():
   path=tmp_path/"deployment"/"objects"/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(data);objects[name]={"sha256":m.sha(data),"length":len(data),"path":f"deployment/objects/{name}"}
@@ -21,16 +21,17 @@ def test_manifest_materialization_and_tamper(tmp_path,monkeypatch):
  (tmp_path/"deployment/objects/cosign").write_bytes(b"tamper")
  with pytest.raises(ValueError,match="bytes"):m.materialize(v,tmp_path)
 
-@pytest.mark.parametrize("key",["workflow_freeze_commit","schedule_selection_rule","schedule_anchor_commit","schedule_anchor_epoch","schedule_cron","rfc3161_tsa_endpoint","rfc3161_tsa_method","rfc3161_query_content_type","rfc3161_reply_content_type","rfc3161_tsa_redirects","rfc3161_tsa_attempts","rfc3161_tsa_nonce","rfc3161_tsa_cert_req","rfc3161_root_sha256","rfc3161_intermediate_sha256","rfc3161_verifier_sha256","schedule_payload_sha256","deployment_identity","manifest_identity"])
+@pytest.mark.parametrize("key",["workflow_freeze_commit","workflow_freeze_epoch","schedule_selection_rule","schedule_cron","rfc3161_tsa_endpoint","rfc3161_tsa_method","rfc3161_query_content_type","rfc3161_reply_content_type","rfc3161_tsa_redirects","rfc3161_tsa_attempts","rfc3161_tsa_nonce","rfc3161_tsa_cert_req","rfc3161_root_sha256","rfc3161_intermediate_sha256","rfc3161_verifier_sha256","schedule_payload_sha256","deployment_identity","manifest_identity"])
 def test_identity_mutations_fail(tmp_path,monkeypatch,key):
  v=fixture(tmp_path,monkeypatch);v[key]="0"*(40 if key.endswith("commit") else 64)
  with pytest.raises((ValueError,TypeError)):m.validate_manifest(v)
 
 def test_schedule_is_commit_time_derived_and_not_caller_selectable(tmp_path,monkeypatch):
- v=fixture(tmp_path,monkeypatch);scheduled,cron=m.derive_schedule(m.SCHEDULE_ANCHOR_EPOCH)
+ v=fixture(tmp_path,monkeypatch);scheduled,cron=m.derive_schedule(v["workflow_freeze_epoch"])
  assert (scheduled,cron)==(v["scheduled_utc"],v["schedule_cron"])
- assert scheduled=="2026-10-04T00:00:00Z" and cron=="0 0 4 10 *"
- bad=copy.deepcopy(v);bad["scheduled_utc"]="2026-10-05T00:00:00Z";bad["schedule_cron"]="0 0 5 10 *"
+ assert scheduled=="2026-09-03T23:00:00Z" and cron=="0 23 3 9 *"
+ exact_hour=1788433200;assert m.derive_schedule(exact_hour)==("2026-09-03T23:00:00Z","0 23 3 9 *")
+ bad=copy.deepcopy(v);bad["scheduled_utc"]="2026-09-04T00:00:00Z";bad["schedule_cron"]="0 0 4 9 *"
  with pytest.raises(ValueError,match="deterministic schedule selection"):m.validate_manifest(bad)
  with pytest.raises(TypeError):m.verify_git(tmp_path,v,"a"*40,schedule_anchor="b"*40,schedule_anchor_epoch=1)
 
@@ -122,10 +123,10 @@ def test_render_and_template_are_inert_and_executable(tmp_path,monkeypatch):
 
 def test_timestamp_is_cryptographic_and_precedes_schedule(monkeypatch,tmp_path):
  v=fixture(tmp_path,monkeypatch);o=m.materialize(v,tmp_path);monkeypatch.setattr(m,"verify_executable",lambda p:None);monkeypatch.setattr(m,"verify_installed_dependency",lambda *a:None)
- calls=[];replies=iter([type("R",(),{"returncode":0,"stdout":query_text(v),"stderr":b""})(),type("R",(),{"returncode":0,"stdout":b"Verification: OK\n","stderr":b""})(),type("R",(),{"returncode":0,"stdout":b"Hash Algorithm: sha256\nTime stamp: Wed Sep 30 23:59:00 2026 GMT\n","stderr":b""})()]);monkeypatch.setattr(m.subprocess,"run",lambda args,**k:(calls.append((args,k)),next(replies))[1]);m.verify_timestamp(v,o,freeze_epoch=1)
+ calls=[];replies=iter([type("R",(),{"returncode":0,"stdout":query_text(v),"stderr":b""})(),type("R",(),{"returncode":0,"stdout":b"Verification: OK\n","stderr":b""})(),type("R",(),{"returncode":0,"stdout":b"Hash Algorithm: sha256\nTime stamp: Thu Sep 3 22:59:00 2026 GMT\n","stderr":b""})()]);monkeypatch.setattr(m.subprocess,"run",lambda args,**k:(calls.append((args,k)),next(replies))[1]);m.verify_timestamp(v,o,freeze_epoch=1)
  assert "-queryfile" in calls[1][0] and "/dev/stdin" in calls[1][0] and "-data" not in calls[1][0]
  assert calls[0][1]["input"]==calls[1][1]["input"]==(tmp_path/"deployment/objects/rfc3161-request.tsq").read_bytes()
- late=iter([type("R",(),{"returncode":0,"stdout":query_text(v),"stderr":b""})(),type("R",(),{"returncode":0,"stdout":b"Verification: OK\n","stderr":b""})(),type("R",(),{"returncode":0,"stdout":b"Hash Algorithm: sha256\nTime stamp: Sun Oct 4 00:00:00 2026 GMT\n","stderr":b""})()]);monkeypatch.setattr(m.subprocess,"run",lambda *a,**k:next(late))
+ late=iter([type("R",(),{"returncode":0,"stdout":query_text(v),"stderr":b""})(),type("R",(),{"returncode":0,"stdout":b"Verification: OK\n","stderr":b""})(),type("R",(),{"returncode":0,"stdout":b"Hash Algorithm: sha256\nTime stamp: Thu Sep 3 23:00:00 2026 GMT\n","stderr":b""})()]);monkeypatch.setattr(m.subprocess,"run",lambda *a,**k:next(late))
  with pytest.raises(ValueError,match="phase order"):m.verify_timestamp(v,o,freeze_epoch=1)
 
 def test_initiation_is_one_shot_guarded_and_has_exact_subject_bytes(tmp_path,monkeypatch):
@@ -161,8 +162,7 @@ def test_real_git_ancestry_blob_and_rendering(tmp_path,monkeypatch):
  def call(*args):return subprocess.check_output([git,"-C",str(tmp_path),*args]).decode().strip()
  subprocess.check_call([git,"init",str(tmp_path)]);call("config","user.email","zero@example.invalid");call("config","user.name","zero")
  template=(Path(__file__).parents[1]/m.TEMPLATE_PATH).read_bytes();path=tmp_path/m.TEMPLATE_PATH;path.parent.mkdir(parents=True);path.write_bytes(template);call("add",m.TEMPLATE_PATH);call("commit","-m","freeze");freeze=call("rev-parse","HEAD")
- monkeypatch.setattr(m,"SCHEDULE_ANCHOR_COMMIT",freeze);monkeypatch.setattr(m,"SCHEDULE_ANCHOR_EPOCH",int(call("show","-s","--format=%ct",freeze)))
- v=fixture(tmp_path,monkeypatch);v["workflow_freeze_commit"]=freeze;v["workflow_freeze_epoch"]=int(call("show","-s","--format=%ct",freeze));v["scheduled_utc"],v["schedule_cron"]=m.derive_schedule(m.SCHEDULE_ANCHOR_EPOCH);v["workflow_template_sha256"]=m.sha(template);payload=m.schedule_payload(v);schedule=tmp_path/"deployment/objects/schedule-precommit.json";schedule.write_bytes(payload);v["schedule_payload_sha256"]=m.sha(payload);v["objects"]["schedule-precommit.json"].update(sha256=m.sha(payload),length=len(payload));body={k:x for k,x in v.items() if k not in {"deployment_identity","manifest_identity"}};v["deployment_identity"]=m.sha(canonical(body));complete={**v};complete.pop("manifest_identity",None);v["manifest_identity"]=m.sha(canonical(complete))
+ v=fixture(tmp_path,monkeypatch);v["workflow_freeze_commit"]=freeze;v["workflow_freeze_epoch"]=int(call("show","-s","--format=%ct",freeze));v["scheduled_utc"],v["schedule_cron"]=m.derive_schedule(v["workflow_freeze_epoch"]);v["workflow_template_sha256"]=m.sha(template);payload=m.schedule_payload(v);schedule=tmp_path/"deployment/objects/schedule-precommit.json";schedule.write_bytes(payload);v["schedule_payload_sha256"]=m.sha(payload);v["objects"]["schedule-precommit.json"].update(sha256=m.sha(payload),length=len(payload));body={k:x for k,x in v.items() if k not in {"deployment_identity","manifest_identity"}};v["deployment_identity"]=m.sha(canonical(body));complete={**v};complete.pop("manifest_identity",None);v["manifest_identity"]=m.sha(canonical(complete))
  authority_args={"git_executable":git,"isolated":False,"deployment_ancestor":freeze};m.verify_rfc3161_submission_authority(v,m.materialize(v,tmp_path),tmp_path,**authority_args)
  stale=copy.deepcopy(v);stale["workflow_freeze_commit"]="a"*40
  with pytest.raises(ValueError):m.verify_rfc3161_submission_authority(stale,m.materialize(v,tmp_path),tmp_path,**authority_args)
@@ -214,7 +214,7 @@ def test_milestone9_audit_qualification_identity_chain():
  assert value["implementation_sha256"]==m.sha((root/"src/pastila_scout/semantic_authority_deployment_v2_3_14.py").read_bytes())
  assert value["test_sha256"]==m.sha(Path(__file__).read_bytes())
  assert value["workflow_template_sha256"]==m.sha((root/m.TEMPLATE_PATH).read_bytes())
- assert value["readiness_authority"]=="PARTIALLY_PROVEN" and value["external_evidence_pending"]==["REAL_PUBLIC_INITIATION_AND_FINAL_SIGSTORE_ATTESTATIONS"]
+ assert value["readiness_authority"]=="PARTIALLY_PROVEN" and value["external_evidence_pending"]==["REPLACEMENT_RFC3161_RECEIPT","REAL_PUBLIC_INITIATION_AND_FINAL_SIGSTORE_ATTESTATIONS"]
  assert value["activation_mode"]=="ATTESTATION_ONLY_PRE_CAPTURE"
  assert value["registry_acquired"] is False and value["publisher_metadata_acquired"] is False
  assert value["attestation_only_subject_schema"]==m.ATTESTATION_ONLY_SUBJECT_SCHEMA
@@ -242,27 +242,14 @@ def test_durable_publication_receipt_identity_and_target_binding():
  assert value["publication_review_verdict"]=="PASS_PUBLIC_COMMIT_AND_BRANCH_IDENTITY_CONFIRMED"
  assert value["observed_utc_authority"]=="LOCAL_CLOCK_NOT_RFC3161"
 
-def test_rfc3161_receipt_record_and_qualification_evidence_closure():
+def test_rejected_schedule_proof_and_activation_are_absent_pending_replacement():
  root=Path(__file__).parents[1];objects=root/"deployment/objects"
- record=m.json.loads((objects/"rfc3161-receipt-record.json").read_text("utf-8"));identity=record.pop("receipt_identity")
- assert identity=="0ac93bb1eb821c910ffe8f91d3e63d97009b9a5399f25c3563772b75cd846a98"==m.sha(canonical(record))
- assert record["schema"]=="PASTILA_RFC3161_RECEIPT_RECORD_V2"
- assert record["authority_commit"]=="3fb5068a7b2e642d6da32c10096214622f927437"
- assert record["nonce"]=="0xD29A0C5F9BFF64D9" and record["receipt_length"]==6008
- assert record["response_profile"]=={"content_length":6008,"content_type":"application/timestamp-reply","date_utc":"2026-09-03T20:55:53Z"}
- assert record["frozen_verifier_sha256"]==m.OPENSSL_EXECUTABLE_SHA256
- assert record["verifier_sha256"]==record["verification_runtime"]["executable_sha256"]=="132616b352a13168391ddbcc2eab22ce52df256b3d4cd2c2c6fc245d22bab62c"
- assert record["verification_runtime"]["result"]=="Verification: OK" and record["frozen_verifier_sha256"]!=record["verifier_sha256"]
- assert record["query_sha256"]==m.sha((objects/"rfc3161-request.tsq").read_bytes())
- assert record["receipt_sha256"]==m.sha((objects/"rfc3161-receipt.tsr").read_bytes())
- assert record["response_headers_sha256"]==m.sha((objects/"rfc3161-response.headers").read_bytes())
- assert record["schedule_payload_sha256"]==m.sha((objects/"schedule-precommit.json").read_bytes())
- assert record["authority_commit"]==m.json.loads((objects/"schedule-precommit.json").read_text("utf-8"))["workflow_freeze_commit"]
- assert record["root_sha256"]==m.sha((objects/"rfc3161-root.pem").read_bytes())
- assert record["intermediate_sha256"]==m.sha((objects/"rfc3161-intermediate.pem").read_bytes())
+ assert not (root/m.WORKFLOW_PATH).exists() and not (root/"deployment/v2-3-15-manifest.json").exists()
+ for name in ("schedule-precommit.json","rfc3161-request.tsq","rfc3161-receipt.tsr","rfc3161-response.headers","rfc3161-receipt-record.json"):
+  assert not (objects/name).exists()
  qualification=m.json.loads((root/"docs/artifacts/semantic-contract-v2-3-14-three-phase-deployment-zero-network-qualification.json").read_text("utf-8"))
- assert qualification["rfc3161_acquired"] is True
- assert qualification["rfc3161_receipt_evidence"]=={"query_sha256":record["query_sha256"],"receipt_identity":identity,"receipt_sha256":record["receipt_sha256"],"response_headers_sha256":record["response_headers_sha256"],"timestamp_utc":record["timestamp_utc"],"verification":record["verdict"],"frozen_verifier_sha256":record["frozen_verifier_sha256"],"verification_runtime":record["verification_runtime"]}
- assert qualification["rfc3161_trust_material"]["root_sha256"]==record["root_sha256"]
- assert qualification["rfc3161_trust_material"]["intermediate_sha256"]==record["intermediate_sha256"]
- assert "REPLACEMENT_RFC3161_RECEIPT" not in qualification["external_evidence_pending"]
+ assert qualification["rfc3161_acquired"] is False
+ assert qualification["workflow_activated"] is False
+ assert "rfc3161_receipt_evidence" not in qualification
+ assert qualification["schedule_selection_rule"]==m.SCHEDULE_SELECTION_RULE
+ assert qualification["artifact_retention_days"]==30

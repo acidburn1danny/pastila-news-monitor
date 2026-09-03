@@ -31,18 +31,17 @@ RFC3161_INTERMEDIATE_SHA256="0edab770d65632eefbe6ccdb61034e224facf49a960acdf82ae
 RFC3161_MAX_QUERY_BYTES=65536;RFC3161_MAX_REPLY_BYTES=1048576;RFC3161_TIMEOUT_SECONDS=20
 HEX40=re.compile(r"^[0-9a-f]{40}$");HEX64=re.compile(r"^[0-9a-f]{64}$")
 OBJECTS=frozenset({"ca.pem","cosign","deny-network-launcher.sh","openssl","rfc3161-request.tsq","rfc3161-receipt.tsr","rfc3161-root.pem","rfc3161-intermediate.pem","schedule-precommit.json","trusted-root.json"})
-SCHEDULE_SELECTION_RULE="FIRST_UTC_MIDNIGHT_STRICTLY_AFTER_PUBLIC_ANCHOR_PLUS_30_DAYS"
-SCHEDULE_ANCHOR_COMMIT="4d9e65ea63a3184201b109438705fc960697c580"
-SCHEDULE_ANCHOR_EPOCH=1788430198
+SCHEDULE_SELECTION_RULE="FIRST_UTC_HOUR_AT_LEAST_12_HOURS_AFTER_REPLACEMENT_FREEZE"
 
 def derive_schedule(freeze_epoch:int)->tuple[str,str]:
  if not isinstance(freeze_epoch,int) or isinstance(freeze_epoch,bool) or freeze_epoch<=0:raise ValueError("workflow freeze epoch")
- threshold=datetime.fromtimestamp(freeze_epoch,tz=timezone.utc)+timedelta(days=30)
- scheduled=(threshold+timedelta(days=1)).replace(hour=0,minute=0,second=0,microsecond=0)
- return scheduled.strftime("%Y-%m-%dT%H:%M:00Z"),f"0 0 {scheduled.day} {scheduled.month} *"
+ threshold=datetime.fromtimestamp(freeze_epoch,tz=timezone.utc)+timedelta(hours=12)
+ scheduled=threshold.replace(minute=0,second=0,microsecond=0)
+ if scheduled<threshold:scheduled+=timedelta(hours=1)
+ return scheduled.strftime("%Y-%m-%dT%H:%M:00Z"),f"{scheduled.minute} {scheduled.hour} {scheduled.day} {scheduled.month} *"
 
 def schedule_payload(v:Mapping[str,object])->bytes:
- keys=("repository_slug","repository_id","default_branch_ref","core_runtime_commit","deployment_runtime_commit","workflow_freeze_commit","workflow_freeze_epoch","workflow_template_sha256","schedule_selection_rule","schedule_anchor_commit","schedule_anchor_epoch","scheduled_utc","schedule_cron","rfc3161_tsa_endpoint","rfc3161_tsa_method","rfc3161_query_content_type","rfc3161_reply_content_type","rfc3161_tsa_redirects","rfc3161_tsa_attempts","rfc3161_tsa_nonce","rfc3161_tsa_cert_req","rfc3161_verifier_sha256","rfc3161_root_sha256","rfc3161_intermediate_sha256")
+ keys=("repository_slug","repository_id","default_branch_ref","core_runtime_commit","deployment_runtime_commit","workflow_freeze_commit","workflow_freeze_epoch","workflow_template_sha256","schedule_selection_rule","scheduled_utc","schedule_cron","rfc3161_tsa_endpoint","rfc3161_tsa_method","rfc3161_query_content_type","rfc3161_reply_content_type","rfc3161_tsa_redirects","rfc3161_tsa_attempts","rfc3161_tsa_nonce","rfc3161_tsa_cert_req","rfc3161_verifier_sha256","rfc3161_root_sha256","rfc3161_intermediate_sha256")
  return canonical({"schema":PAYLOAD_SCHEMA,**{k:v[k] for k in keys}})+b"\n"
 
 class _RejectRedirect(urllib.request.HTTPRedirectHandler):
@@ -93,7 +92,6 @@ def verify_rfc3161_submission_authority(v:Mapping[str,object],o:Mapping[str,Path
  freeze=str(v["workflow_freeze_commit"])
  if head!=freeze:raise ValueError("RFC3161 freeze must equal HEAD")
  git("merge-base","--is-ancestor",deployment_ancestor,freeze)
- git("merge-base","--is-ancestor",SCHEDULE_ANCHOR_COMMIT,freeze)
  template=git("show",f"{freeze}:{TEMPLATE_PATH}")
  if sha(template)!=v["workflow_template_sha256"]:raise ValueError("RFC3161 freeze template")
  stamp=git("show","-s","--format=%ct",freeze).decode("ascii","strict").strip()
@@ -119,14 +117,14 @@ def _entry(x:object)->tuple[str,int,str]:
  return digest,length,path
 
 def validate_manifest(v:Mapping[str,object])->None:
- required={"schema","repository_slug","repository_id","default_branch_ref","core_runtime_commit","deployment_runtime_commit","workflow_freeze_commit","workflow_freeze_epoch","workflow_template_sha256","schedule_selection_rule","schedule_anchor_commit","schedule_anchor_epoch","scheduled_utc","schedule_cron","rfc3161_tsa_endpoint","rfc3161_tsa_method","rfc3161_query_content_type","rfc3161_reply_content_type","rfc3161_tsa_redirects","rfc3161_tsa_attempts","rfc3161_tsa_nonce","rfc3161_tsa_cert_req","rfc3161_verifier_sha256","rfc3161_root_sha256","rfc3161_intermediate_sha256","rfc3161_request_sha256","ca_sha256","cosign_sha256","launcher_sha256","trusted_root_sha256","derivation_policy_identity","seed_plan_identity","schedule_payload_sha256","objects","deployment_identity","manifest_identity"}
+ required={"schema","repository_slug","repository_id","default_branch_ref","core_runtime_commit","deployment_runtime_commit","workflow_freeze_commit","workflow_freeze_epoch","workflow_template_sha256","schedule_selection_rule","scheduled_utc","schedule_cron","rfc3161_tsa_endpoint","rfc3161_tsa_method","rfc3161_query_content_type","rfc3161_reply_content_type","rfc3161_tsa_redirects","rfc3161_tsa_attempts","rfc3161_tsa_nonce","rfc3161_tsa_cert_req","rfc3161_verifier_sha256","rfc3161_root_sha256","rfc3161_intermediate_sha256","rfc3161_request_sha256","ca_sha256","cosign_sha256","launcher_sha256","trusted_root_sha256","derivation_policy_identity","seed_plan_identity","schedule_payload_sha256","objects","deployment_identity","manifest_identity"}
  if set(v)!=required or v["schema"]!=SCHEMA or v["repository_slug"]!=REPOSITORY_SLUG or v["repository_id"]!=REPOSITORY_ID or v["default_branch_ref"]!=DEFAULT_BRANCH_REF or v["core_runtime_commit"]!=RUNTIME_COMMIT or v["deployment_runtime_commit"]!=DEPLOYMENT_RUNTIME_COMMIT:raise ValueError("manifest schema")
  if not HEX40.fullmatch(str(v["workflow_freeze_commit"])) or not HEX64.fullmatch(str(v["workflow_template_sha256"])):raise ValueError("workflow freeze")
  if not isinstance(v["workflow_freeze_epoch"],int) or isinstance(v["workflow_freeze_epoch"],bool) or v["workflow_freeze_epoch"]<=0:raise ValueError("workflow freeze epoch")
- if (v["schedule_selection_rule"],v["schedule_anchor_commit"],v["schedule_anchor_epoch"])!=(SCHEDULE_SELECTION_RULE,SCHEDULE_ANCHOR_COMMIT,SCHEDULE_ANCHOR_EPOCH):raise ValueError("schedule authority binding")
+ if v["schedule_selection_rule"]!=SCHEDULE_SELECTION_RULE:raise ValueError("schedule authority binding")
  scheduled=datetime.strptime(str(v["scheduled_utc"]),"%Y-%m-%dT%H:%M:00Z").replace(tzinfo=timezone.utc)
  if v["schedule_cron"]!=f"{scheduled.minute} {scheduled.hour} {scheduled.day} {scheduled.month} *":raise ValueError("schedule convergence")
- if (v["scheduled_utc"],v["schedule_cron"])!=derive_schedule(SCHEDULE_ANCHOR_EPOCH):raise ValueError("deterministic schedule selection")
+ if (v["scheduled_utc"],v["schedule_cron"])!=derive_schedule(v["workflow_freeze_epoch"]):raise ValueError("deterministic schedule selection")
  fixed={"rfc3161_tsa_endpoint":RFC3161_TSA_ENDPOINT,"rfc3161_tsa_method":RFC3161_TSA_METHOD,"rfc3161_query_content_type":RFC3161_QUERY_CONTENT_TYPE,"rfc3161_reply_content_type":RFC3161_REPLY_CONTENT_TYPE,"rfc3161_tsa_redirects":RFC3161_TSA_REDIRECTS,"rfc3161_tsa_attempts":RFC3161_TSA_ATTEMPTS,"rfc3161_tsa_nonce":RFC3161_TSA_NONCE,"rfc3161_tsa_cert_req":RFC3161_TSA_CERT_REQ,"rfc3161_verifier_sha256":OPENSSL_EXECUTABLE_SHA256,"rfc3161_root_sha256":RFC3161_ROOT_SHA256,"rfc3161_intermediate_sha256":RFC3161_INTERMEDIATE_SHA256,"ca_sha256":CA_BUNDLE_SHA256,"cosign_sha256":COSIGN_SHA256,"launcher_sha256":LINUX_LAUNCHER_SHA256,"trusted_root_sha256":TRUSTED_ROOT_SHA256,"derivation_policy_identity":DERIVATION_POLICY_IDENTITY,"seed_plan_identity":SEED_PLAN_IDENTITY}
  if any(v[k]!=x for k,x in fixed.items()):raise ValueError("frozen dependency")
  for k in ("rfc3161_root_sha256","rfc3161_intermediate_sha256","rfc3161_request_sha256","ca_sha256","trusted_root_sha256","schedule_payload_sha256","deployment_identity"):
@@ -159,13 +157,10 @@ def verify_git(root:Path,v:Mapping[str,object],head:str,*,git_executable:str="/u
  if actual!=head:raise ValueError("executing HEAD mismatch")
  git("merge-base","--is-ancestor",str(v["workflow_freeze_commit"]),head)
  git("merge-base","--is-ancestor",deployment_ancestor,str(v["workflow_freeze_commit"]))
- git("merge-base","--is-ancestor",SCHEDULE_ANCHOR_COMMIT,str(v["workflow_freeze_commit"]))
  template=git("show",f"{v['workflow_freeze_commit']}:{TEMPLATE_PATH}")
  if sha(template)!=v["workflow_template_sha256"] or git("show",f"{head}:{WORKFLOW_PATH}")!=render_workflow(template,v):raise ValueError("workflow evidence")
  stamp=git("show","-s","--format=%ct",str(v["workflow_freeze_commit"])).decode("ascii","strict").strip()
  if not stamp.isdigit() or int(stamp)!=v["workflow_freeze_epoch"]:raise ValueError("workflow freeze time")
- anchor_stamp=git("show","-s","--format=%ct",SCHEDULE_ANCHOR_COMMIT).decode("ascii","strict").strip()
- if not anchor_stamp.isdigit() or int(anchor_stamp)!=SCHEDULE_ANCHOR_EPOCH:raise ValueError("schedule anchor time")
  return int(stamp)
 
 def verify_worktree(root:Path,v:Mapping[str,object])->None:
