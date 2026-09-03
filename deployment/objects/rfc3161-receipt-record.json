@@ -1,10 +1,10 @@
 {
-  "authority_commit": "662ef3869dd6abaa932e58d08fe39bcedfc768a0",
+  "authority_commit": "409a88cbf437967e48b7659d50c3aaa24ab847ca",
   "endpoint": "http://timestamp.digicert.com",
   "http_status": 200,
   "identity_algorithm": "SHA256_RFC8785_WITH_RECEIPT_IDENTITY_OMITTED",
   "intermediate_sha256": "0edab770d65632eefbe6ccdb61034e224facf49a960acdf82ae13c64fa0a3519",
-  "nonce": "0x88A8A74C01EA7E81",
+  "nonce": "0xCA7BCC78B45109A0",
   "profile": {
     "attempts": 1,
     "cert_req": true,
@@ -13,17 +13,17 @@
     "redirects": 0,
     "reply_content_type": "application/timestamp-reply"
   },
-  "query_sha256": "df2d9e6b40618059490a3a4abf7336ea116bb715d2ce515c12236e6fa1dcdc8b",
-  "receipt_identity": "5c987cbede0aee5496aeb3e7a60cacba7fed23ae0a72156eecd87e8aae973197",
-  "receipt_length": 6008,
-  "receipt_sha256": "8d9e39c753eb10d6d1a3c1765a35fe155f9106d99cd91c7e1f25dad16a6c2df9",
-  "response_headers_sha256": "cad1c5edf60f0dad23455243c24140551f9061d2d0552283f28b58a1eb179ef8",
+  "query_sha256": "a7f3c7915a80e9310e83107cb1d9030d5bb4468fb30f479a7d2de2e22c4eebd1",
+  "receipt_identity": "64b12c2f9c87c6076a3b4b8cdb2c2766f8767a32ef04561b11a6bcd687c569a6",
+  "receipt_length": 6007,
+  "receipt_sha256": "de8ac15eb0a04c26b9f439839d1f72e700201eea78c7d080cfd0ecf1b73f236c",
+  "response_headers_sha256": "538f115227673e8d9c93aad27aa9d47cd0ffb92119c0024011ec70a4aa43159c",
   "root_sha256": "ce7d6b44f5d510391be98c8d76b18709400a30cd87659bfebe1c6f97ff5181ee",
-  "schedule_payload_sha256": "b3095d06812f1d83e1689aa91bf54dfee72509ad1121d22895432d167d4c1e20",
+  "schedule_payload_sha256": "90c1758325146094e57364596ea96cdbc8e7349282605961a30e5ee23caef200",
   "scheduled_utc": "2026-10-04T00:00:00Z",
   "schema": "PASTILA_RFC3161_RECEIPT_RECORD_V1",
-  "serial_number": "0xA190C91D8589D1CDF3D976D9E7090B16",
-  "timestamp_utc": "2026-09-03T19:03:49Z",
+  "serial_number": "0x186B227563B1E27F43DBB3FD50AC7FBB",
+  "timestamp_utc": "2026-09-03T20:04:17Z",
   "verdict": "PASS_SIGNATURE_TRUST_QUERY_NONCE_IMPRINT_AND_PHASE_ORDER",
   "verifier_sha256": "83a9c490e5cd0f8dc19a31438269d82c7b096e51ca2198290468c3766762bfae"
 }

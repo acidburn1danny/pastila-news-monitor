@@ -219,7 +219,7 @@ def test_durable_publication_receipt_identity_and_target_binding():
 def test_rfc3161_receipt_record_and_qualification_evidence_closure():
  root=Path(__file__).parents[1];objects=root/"deployment/objects"
  record=m.json.loads((objects/"rfc3161-receipt-record.json").read_text("utf-8"));identity=record.pop("receipt_identity")
- assert identity=="5c987cbede0aee5496aeb3e7a60cacba7fed23ae0a72156eecd87e8aae973197"==m.sha(canonical(record))
+ assert identity=="64b12c2f9c87c6076a3b4b8cdb2c2766f8767a32ef04561b11a6bcd687c569a6"==m.sha(canonical(record))
  assert record["query_sha256"]==m.sha((objects/"rfc3161-request.tsq").read_bytes())
  assert record["receipt_sha256"]==m.sha((objects/"rfc3161-receipt.tsr").read_bytes())
  assert record["response_headers_sha256"]==m.sha((objects/"rfc3161-response.headers").read_bytes())
