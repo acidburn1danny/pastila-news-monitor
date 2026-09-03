@@ -99,16 +99,23 @@ def _contained(launcher: Path, launcher_sha256: str, verifier: Path, verifier_sh
 
 def verify_schedule_precommit(manifest: Mapping[str, object], *, payload: Path, receipt: Path, verifier: Path, tsa_root: Path, launcher: Path) -> None:
     expected = schedule_payload(manifest)
-    if _regular(payload, str(manifest["schedule_precommit_payload_sha256"]), "schedule payload") != expected:
+    payload_bytes = _regular(payload, str(manifest["schedule_precommit_payload_sha256"]), "schedule payload")
+    if payload_bytes != expected:
         raise ValueError("schedule payload canonical bytes")
-    _regular(receipt, str(manifest["schedule_precommit_receipt_sha256"]), "schedule receipt")
+    receipt_bytes = _regular(receipt, str(manifest["schedule_precommit_receipt_sha256"]), "schedule receipt")
     verify_installed_dependency(verifier, str(manifest["schedule_precommit_verifier_sha256"]))
     verify_installed_dependency(launcher, str(manifest["launcher_sha256"]))
-    _regular(tsa_root, str(manifest["schedule_precommit_tsa_root_sha256"]), "TSA root")
-    verified = _contained(launcher, str(manifest["launcher_sha256"]), verifier, str(manifest["schedule_precommit_verifier_sha256"]), ["ts", "-verify", "-data", str(payload), "-in", str(receipt), "-CAfile", str(tsa_root)])
-    if verified.returncode != 0 or b"Verification: OK" not in verified.stdout + verified.stderr:
-        raise ValueError("RFC3161 verification")
-    inspected = _contained(launcher, str(manifest["launcher_sha256"]), verifier, str(manifest["schedule_precommit_verifier_sha256"]), ["ts", "-reply", "-in", str(receipt), "-text"])
+    root_bytes = _regular(tsa_root, str(manifest["schedule_precommit_tsa_root_sha256"]), "TSA root")
+    with tempfile.TemporaryDirectory() as folder:
+        frozen = Path(folder)
+        frozen_payload = frozen / "payload"; frozen_payload.write_bytes(payload_bytes)
+        frozen_receipt = frozen / "receipt"; frozen_receipt.write_bytes(receipt_bytes)
+        frozen_root = frozen / "tsa-root"; frozen_root.write_bytes(root_bytes)
+        verified = _contained(launcher, str(manifest["launcher_sha256"]), verifier, str(manifest["schedule_precommit_verifier_sha256"]), ["ts", "-verify", "-data", str(frozen_payload), "-in", str(frozen_receipt), "-CAfile", str(frozen_root)])
+        verification_channels = (verified.stdout.strip(), verified.stderr.strip())
+        if verified.returncode != 0 or verification_channels not in ((b"Verification: OK", b""), (b"", b"Verification: OK")):
+            raise ValueError("RFC3161 verification")
+        inspected = _contained(launcher, str(manifest["launcher_sha256"]), verifier, str(manifest["schedule_precommit_verifier_sha256"]), ["ts", "-reply", "-in", str(frozen_receipt), "-text"])
     try:
         text = inspected.stdout.decode("utf-8", errors="strict")
         time_line = next(line.split(":", 1)[1].strip() for line in text.splitlines() if line.strip().startswith("Time stamp:"))
@@ -116,7 +123,7 @@ def verify_schedule_precommit(manifest: Mapping[str, object], *, payload: Path, 
         scheduled = datetime.strptime(str(manifest["scheduled_utc"]), "%Y-%m-%dT%H:%M:00Z").replace(tzinfo=timezone.utc)
     except (UnicodeDecodeError, ValueError, StopIteration) as exc:
         raise ValueError("RFC3161 verification time") from exc
-    if inspected.returncode != 0 or "Hash Algorithm: sha256" not in text or generated >= scheduled:
+    if inspected.returncode != 0 or inspected.stderr or "Hash Algorithm: sha256" not in text or generated >= scheduled:
         raise ValueError("RFC3161 precommit order")
 
 

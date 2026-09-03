@@ -24,10 +24,12 @@ def test_rfc3161_verifier_is_executed_and_fail_closed(monkeypatch,tmp_path):
     regular=m._regular;monkeypatch.setattr(m,"_regular",lambda path,expected,label:b"root" if label=="TSA root" else regular(path,expected,label))
     monkeypatch.setattr(m,"verify_installed_dependency",lambda *a:None);monkeypatch.setattr(m.subprocess,"run",lambda *a,**k:next(replies))
     m.verify_schedule_precommit(v,payload=payload,receipt=receipt,verifier=tool,tsa_root=root,launcher=launcher)
-    monkeypatch.setattr(m.subprocess,"run",lambda *a,**k:type("R",(),{"returncode":1,"stdout":b""})())
+    monkeypatch.setattr(m.subprocess,"run",lambda *a,**k:type("R",(),{"returncode":1,"stdout":b"","stderr":b""})())
     with pytest.raises(ValueError,match="RFC3161"):m.verify_schedule_precommit(v,payload=payload,receipt=receipt,verifier=tool,tsa_root=root,launcher=launcher)
     late=iter([type("R",(),{"returncode":0,"stdout":b"Verification: OK\n","stderr":b""})(),type("R",(),{"returncode":0,"stdout":b"Hash Algorithm: sha256\nTime stamp: Thu Oct 1 00:00:00 2026 GMT\n","stderr":b""})()]);monkeypatch.setattr(m.subprocess,"run",lambda *a,**k:next(late))
     with pytest.raises(ValueError,match="precommit order"):m.verify_schedule_precommit(v,payload=payload,receipt=receipt,verifier=tool,tsa_root=root,launcher=launcher)
+    warning=iter([type("R",(),{"returncode":0,"stdout":b"Verification: OK\nwarning\n","stderr":b""})(),type("R",(),{"returncode":0,"stdout":b"Hash Algorithm: sha256\nTime stamp: Wed Sep 30 23:59:00 2026 GMT\n","stderr":b""})()]);monkeypatch.setattr(m.subprocess,"run",lambda *a,**k:next(warning))
+    with pytest.raises(ValueError,match="RFC3161 verification"):m.verify_schedule_precommit(v,payload=payload,receipt=receipt,verifier=tool,tsa_root=root,launcher=launcher)
 
 def test_template_is_inert_and_complete():
     text=(Path(__file__).resolve().parents[1]/"deployment/semantic-authority-metadata-capture-v2-3-12.yml.template").read_text()
