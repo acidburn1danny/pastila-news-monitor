@@ -47,7 +47,7 @@ def test_rfc3161_transport_profile_is_enforced_without_network(monkeypatch,tmp_p
  class Opener:
   def open(self,request,timeout):calls.append((request,timeout));return Response()
  monkeypatch.setattr(m.urllib.request,"build_opener",lambda *handlers:(calls.append(handlers),Opener())[1])
- monkeypatch.setattr(m,"verify_rfc3161_query",lambda v,o:None)
+ monkeypatch.setattr(m,"verify_rfc3161_query",lambda v,o:m._bound_rfc3161_query(v,o))
  query=tmp_path/"query.tsq";query.write_bytes(b"query")
  binding={"rfc3161_request_sha256":m.sha(b"query")}
  assert m.submit_rfc3161_query(binding, {"rfc3161-request.tsq":query})==b"receipt"
@@ -59,12 +59,24 @@ def test_rfc3161_transport_profile_is_enforced_without_network(monkeypatch,tmp_p
  query.write_bytes(b"")
  with pytest.raises(ValueError,match="query"):m.submit_rfc3161_query(binding, {"rfc3161-request.tsq":query})
 
-def test_rfc3161_query_substitution_after_semantic_validation_fails(monkeypatch,tmp_path):
+def test_rfc3161_query_substitution_after_semantic_validation_uses_bound_bytes(monkeypatch,tmp_path):
  query=tmp_path/"query.tsq";query.write_bytes(b"bound-query")
  v={"rfc3161_request_sha256":m.sha(b"bound-query")};o={"rfc3161-request.tsq":query}
- def substitute(*args):query.write_bytes(b"substituted-query")
+ sent=[]
+ class Headers:
+  def get_content_type(self):return m.RFC3161_REPLY_CONTENT_TYPE
+ class Response:
+  status=200;headers=Headers()
+  def geturl(self):return m.RFC3161_TSA_ENDPOINT
+  def read(self,n):return b"receipt"
+  def __enter__(self):return self
+  def __exit__(self,*args):return False
+ class Opener:
+  def open(self,request,timeout):sent.append(request.data);return Response()
+ def substitute(*args):query.write_bytes(b"substituted-query");return b"bound-query"
  monkeypatch.setattr(m,"verify_rfc3161_query",substitute)
- with pytest.raises(ValueError,match="query bytes"):m.submit_rfc3161_query(v,o)
+ monkeypatch.setattr(m.urllib.request,"build_opener",lambda *handlers:Opener())
+ assert m.submit_rfc3161_query(v,o)==b"receipt" and sent==[b"bound-query"]
 
 def query_text(v):
  digest=m.sha(m.schedule_payload(v));pairs=" ".join(digest[i:i+2] for i in range(0,len(digest),2))
@@ -103,8 +115,9 @@ def test_render_and_template_are_inert_and_executable(tmp_path,monkeypatch):
 
 def test_timestamp_is_cryptographic_and_precedes_schedule(monkeypatch,tmp_path):
  v=fixture(tmp_path,monkeypatch);o=m.materialize(v,tmp_path);monkeypatch.setattr(m,"verify_executable",lambda p:None);monkeypatch.setattr(m,"verify_installed_dependency",lambda *a:None)
- calls=[];replies=iter([type("R",(),{"returncode":0,"stdout":query_text(v),"stderr":b""})(),type("R",(),{"returncode":0,"stdout":b"Verification: OK\n","stderr":b""})(),type("R",(),{"returncode":0,"stdout":b"Hash Algorithm: sha256\nTime stamp: Wed Sep 30 23:59:00 2026 GMT\n","stderr":b""})()]);monkeypatch.setattr(m.subprocess,"run",lambda args,**k:(calls.append(args),next(replies))[1]);m.verify_timestamp(v,o,freeze_epoch=1)
- assert "-queryfile" in calls[1] and "-data" not in calls[1]
+ calls=[];replies=iter([type("R",(),{"returncode":0,"stdout":query_text(v),"stderr":b""})(),type("R",(),{"returncode":0,"stdout":b"Verification: OK\n","stderr":b""})(),type("R",(),{"returncode":0,"stdout":b"Hash Algorithm: sha256\nTime stamp: Wed Sep 30 23:59:00 2026 GMT\n","stderr":b""})()]);monkeypatch.setattr(m.subprocess,"run",lambda args,**k:(calls.append((args,k)),next(replies))[1]);m.verify_timestamp(v,o,freeze_epoch=1)
+ assert "-queryfile" in calls[1][0] and "/dev/stdin" in calls[1][0] and "-data" not in calls[1][0]
+ assert calls[0][1]["input"]==calls[1][1]["input"]==(tmp_path/"deployment/objects/rfc3161-request.tsq").read_bytes()
  late=iter([type("R",(),{"returncode":0,"stdout":query_text(v),"stderr":b""})(),type("R",(),{"returncode":0,"stdout":b"Verification: OK\n","stderr":b""})(),type("R",(),{"returncode":0,"stdout":b"Hash Algorithm: sha256\nTime stamp: Sun Oct 4 00:00:00 2026 GMT\n","stderr":b""})()]);monkeypatch.setattr(m.subprocess,"run",lambda *a,**k:next(late))
  with pytest.raises(ValueError,match="phase order"):m.verify_timestamp(v,o,freeze_epoch=1)
 
