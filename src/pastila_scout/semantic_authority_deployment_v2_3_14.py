@@ -23,7 +23,7 @@ DEFAULT_BRANCH_REF="refs/heads/public/v2.3.7-capture"
 CA_BUNDLE_SHA256="9cc2a774b5198dcff14d9be1e66091f538975d867ce029a96bce15a55dfd730f"
 HEX40=re.compile(r"^[0-9a-f]{40}$");HEX64=re.compile(r"^[0-9a-f]{64}$")
 OBJECTS=frozenset({"ca.pem","cosign","deny-network-launcher.sh","openssl","rfc3161-receipt.tsr","rfc3161-root.pem","schedule-precommit.json","trusted-root.json"})
-SCHEDULE_SELECTION_RULE="FIRST_UTC_MIDNIGHT_STRICTLY_AFTER_FREEZE_PLUS_30_DAYS"
+SCHEDULE_SELECTION_RULE="FIRST_UTC_MIDNIGHT_STRICTLY_AFTER_PUBLIC_ANCHOR_PLUS_30_DAYS"
 SCHEDULE_ANCHOR_COMMIT="4d9e65ea63a3184201b109438705fc960697c580"
 SCHEDULE_ANCHOR_EPOCH=1788430198
 
@@ -34,7 +34,7 @@ def derive_schedule(freeze_epoch:int)->tuple[str,str]:
  return scheduled.strftime("%Y-%m-%dT%H:%M:00Z"),f"0 0 {scheduled.day} {scheduled.month} *"
 
 def schedule_payload(v:Mapping[str,object])->bytes:
- keys=("repository_slug","repository_id","default_branch_ref","core_runtime_commit","deployment_runtime_commit","workflow_freeze_commit","workflow_freeze_epoch","workflow_template_sha256","scheduled_utc","schedule_cron","rfc3161_verifier_sha256","rfc3161_root_sha256")
+ keys=("repository_slug","repository_id","default_branch_ref","core_runtime_commit","deployment_runtime_commit","workflow_freeze_commit","workflow_freeze_epoch","workflow_template_sha256","schedule_selection_rule","schedule_anchor_commit","schedule_anchor_epoch","scheduled_utc","schedule_cron","rfc3161_verifier_sha256","rfc3161_root_sha256")
  return canonical({"schema":PAYLOAD_SCHEMA,**{k:v[k] for k in keys}})+b"\n"
 
 def _entry(x:object)->tuple[str,int,str]:
@@ -45,10 +45,11 @@ def _entry(x:object)->tuple[str,int,str]:
  return digest,length,path
 
 def validate_manifest(v:Mapping[str,object])->None:
- required={"schema","repository_slug","repository_id","default_branch_ref","core_runtime_commit","deployment_runtime_commit","workflow_freeze_commit","workflow_freeze_epoch","workflow_template_sha256","scheduled_utc","schedule_cron","rfc3161_verifier_sha256","rfc3161_root_sha256","ca_sha256","cosign_sha256","launcher_sha256","trusted_root_sha256","derivation_policy_identity","seed_plan_identity","schedule_payload_sha256","objects","deployment_identity","manifest_identity"}
+ required={"schema","repository_slug","repository_id","default_branch_ref","core_runtime_commit","deployment_runtime_commit","workflow_freeze_commit","workflow_freeze_epoch","workflow_template_sha256","schedule_selection_rule","schedule_anchor_commit","schedule_anchor_epoch","scheduled_utc","schedule_cron","rfc3161_verifier_sha256","rfc3161_root_sha256","ca_sha256","cosign_sha256","launcher_sha256","trusted_root_sha256","derivation_policy_identity","seed_plan_identity","schedule_payload_sha256","objects","deployment_identity","manifest_identity"}
  if set(v)!=required or v["schema"]!=SCHEMA or v["repository_slug"]!=REPOSITORY_SLUG or v["repository_id"]!=REPOSITORY_ID or v["default_branch_ref"]!=DEFAULT_BRANCH_REF or v["core_runtime_commit"]!=RUNTIME_COMMIT or v["deployment_runtime_commit"]!=DEPLOYMENT_RUNTIME_COMMIT:raise ValueError("manifest schema")
  if not HEX40.fullmatch(str(v["workflow_freeze_commit"])) or not HEX64.fullmatch(str(v["workflow_template_sha256"])):raise ValueError("workflow freeze")
  if not isinstance(v["workflow_freeze_epoch"],int) or isinstance(v["workflow_freeze_epoch"],bool) or v["workflow_freeze_epoch"]<=0:raise ValueError("workflow freeze epoch")
+ if (v["schedule_selection_rule"],v["schedule_anchor_commit"],v["schedule_anchor_epoch"])!=(SCHEDULE_SELECTION_RULE,SCHEDULE_ANCHOR_COMMIT,SCHEDULE_ANCHOR_EPOCH):raise ValueError("schedule authority binding")
  scheduled=datetime.strptime(str(v["scheduled_utc"]),"%Y-%m-%dT%H:%M:00Z").replace(tzinfo=timezone.utc)
  if v["schedule_cron"]!=f"{scheduled.minute} {scheduled.hour} {scheduled.day} {scheduled.month} *":raise ValueError("schedule convergence")
  if (v["scheduled_utc"],v["schedule_cron"])!=derive_schedule(SCHEDULE_ANCHOR_EPOCH):raise ValueError("deterministic schedule selection")

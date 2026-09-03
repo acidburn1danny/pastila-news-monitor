@@ -8,7 +8,7 @@ def fixture(tmp_path,monkeypatch):
  monkeypatch.setattr(m,"OPENSSL_EXECUTABLE_SHA256",m.sha(b"openssl"));monkeypatch.setattr(m,"COSIGN_SHA256",m.sha(b"cosign"));monkeypatch.setattr(m,"LINUX_LAUNCHER_SHA256",m.sha(b"deny-network-launcher.sh"))
  monkeypatch.setattr(m,"CA_BUNDLE_SHA256",m.sha(b"ca.pem"));monkeypatch.setattr(m,"TRUSTED_ROOT_SHA256",m.sha(b"trusted-root.json"))
  epoch=1788430198;scheduled,cron=m.derive_schedule(m.SCHEDULE_ANCHOR_EPOCH)
- v={"schema":m.SCHEMA,"repository_slug":m.REPOSITORY_SLUG,"repository_id":m.REPOSITORY_ID,"default_branch_ref":m.DEFAULT_BRANCH_REF,"core_runtime_commit":m.RUNTIME_COMMIT,"deployment_runtime_commit":m.DEPLOYMENT_RUNTIME_COMMIT,"workflow_freeze_commit":"a"*40,"workflow_freeze_epoch":epoch,"workflow_template_sha256":"1"*64,"scheduled_utc":scheduled,"schedule_cron":cron,"rfc3161_verifier_sha256":m.OPENSSL_EXECUTABLE_SHA256,"rfc3161_root_sha256":"2"*64,"ca_sha256":"3"*64,"cosign_sha256":m.COSIGN_SHA256,"launcher_sha256":m.LINUX_LAUNCHER_SHA256,"trusted_root_sha256":"4"*64,"derivation_policy_identity":m.DERIVATION_POLICY_IDENTITY,"seed_plan_identity":m.SEED_PLAN_IDENTITY}
+ v={"schema":m.SCHEMA,"repository_slug":m.REPOSITORY_SLUG,"repository_id":m.REPOSITORY_ID,"default_branch_ref":m.DEFAULT_BRANCH_REF,"core_runtime_commit":m.RUNTIME_COMMIT,"deployment_runtime_commit":m.DEPLOYMENT_RUNTIME_COMMIT,"workflow_freeze_commit":"a"*40,"workflow_freeze_epoch":epoch,"workflow_template_sha256":"1"*64,"schedule_selection_rule":m.SCHEDULE_SELECTION_RULE,"schedule_anchor_commit":m.SCHEDULE_ANCHOR_COMMIT,"schedule_anchor_epoch":m.SCHEDULE_ANCHOR_EPOCH,"scheduled_utc":scheduled,"schedule_cron":cron,"rfc3161_verifier_sha256":m.OPENSSL_EXECUTABLE_SHA256,"rfc3161_root_sha256":"2"*64,"ca_sha256":"3"*64,"cosign_sha256":m.COSIGN_SHA256,"launcher_sha256":m.LINUX_LAUNCHER_SHA256,"trusted_root_sha256":"4"*64,"derivation_policy_identity":m.DERIVATION_POLICY_IDENTITY,"seed_plan_identity":m.SEED_PLAN_IDENTITY}
  payload=m.schedule_payload(v);values={name:(payload if name=="schedule-precommit.json" else (b"ca.pem" if name=="rfc3161-root.pem" else name.encode())) for name in m.OBJECTS};objects={}
  for name,data in values.items():
   path=tmp_path/"deployment"/"objects"/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(data);objects[name]={"sha256":m.sha(data),"length":len(data),"path":f"deployment/objects/{name}"}
@@ -21,7 +21,7 @@ def test_manifest_materialization_and_tamper(tmp_path,monkeypatch):
  (tmp_path/"deployment/objects/cosign").write_bytes(b"tamper")
  with pytest.raises(ValueError,match="bytes"):m.materialize(v,tmp_path)
 
-@pytest.mark.parametrize("key",["workflow_freeze_commit","schedule_cron","rfc3161_verifier_sha256","schedule_payload_sha256","deployment_identity","manifest_identity"])
+@pytest.mark.parametrize("key",["workflow_freeze_commit","schedule_selection_rule","schedule_anchor_commit","schedule_anchor_epoch","schedule_cron","rfc3161_verifier_sha256","schedule_payload_sha256","deployment_identity","manifest_identity"])
 def test_identity_mutations_fail(tmp_path,monkeypatch,key):
  v=fixture(tmp_path,monkeypatch);v[key]="0"*(40 if key.endswith("commit") else 64)
  with pytest.raises((ValueError,TypeError)):m.validate_manifest(v)
