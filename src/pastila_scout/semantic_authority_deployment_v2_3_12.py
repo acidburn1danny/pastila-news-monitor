@@ -118,12 +118,18 @@ def verify_schedule_precommit(manifest: Mapping[str, object], *, payload: Path, 
         inspected = _contained(launcher, str(manifest["launcher_sha256"]), verifier, str(manifest["schedule_precommit_verifier_sha256"]), ["ts", "-reply", "-in", str(frozen_receipt), "-text"])
     try:
         text = inspected.stdout.decode("utf-8", errors="strict")
-        time_line = next(line.split(":", 1)[1].strip() for line in text.splitlines() if line.strip().startswith("Time stamp:"))
+        algorithm_lines = [line.strip() for line in text.splitlines() if line.strip().startswith("Hash Algorithm:")]
+        time_lines = [line.strip() for line in text.splitlines() if line.strip().startswith("Time stamp:")]
+        if algorithm_lines != ["Hash Algorithm: sha256"] or len(time_lines) != 1:
+            raise ValueError("ambiguous RFC3161 fields")
+        time_line = time_lines[0].split(":", 1)[1].strip()
+        if not time_line.endswith(" GMT"):
+            raise ValueError("noncanonical RFC3161 timezone")
         generated = parsedate_to_datetime(time_line).astimezone(timezone.utc)
         scheduled = datetime.strptime(str(manifest["scheduled_utc"]), "%Y-%m-%dT%H:%M:00Z").replace(tzinfo=timezone.utc)
     except (UnicodeDecodeError, ValueError, StopIteration) as exc:
         raise ValueError("RFC3161 verification time") from exc
-    if inspected.returncode != 0 or inspected.stderr or "Hash Algorithm: sha256" not in text or generated >= scheduled:
+    if inspected.returncode != 0 or inspected.stderr or generated >= scheduled:
         raise ValueError("RFC3161 precommit order")
 
 

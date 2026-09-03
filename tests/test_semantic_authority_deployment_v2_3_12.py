@@ -30,6 +30,8 @@ def test_rfc3161_verifier_is_executed_and_fail_closed(monkeypatch,tmp_path):
     with pytest.raises(ValueError,match="precommit order"):m.verify_schedule_precommit(v,payload=payload,receipt=receipt,verifier=tool,tsa_root=root,launcher=launcher)
     warning=iter([type("R",(),{"returncode":0,"stdout":b"Verification: OK\nwarning\n","stderr":b""})(),type("R",(),{"returncode":0,"stdout":b"Hash Algorithm: sha256\nTime stamp: Wed Sep 30 23:59:00 2026 GMT\n","stderr":b""})()]);monkeypatch.setattr(m.subprocess,"run",lambda *a,**k:next(warning))
     with pytest.raises(ValueError,match="RFC3161 verification"):m.verify_schedule_precommit(v,payload=payload,receipt=receipt,verifier=tool,tsa_root=root,launcher=launcher)
+    duplicate=iter([type("R",(),{"returncode":0,"stdout":b"Verification: OK\n","stderr":b""})(),type("R",(),{"returncode":0,"stdout":b"Hash Algorithm: sha256\nHash Algorithm: sha512\nTime stamp: Wed Sep 30 23:59:00 2026 GMT\n","stderr":b""})()]);monkeypatch.setattr(m.subprocess,"run",lambda *a,**k:next(duplicate))
+    with pytest.raises(ValueError,match="verification time"):m.verify_schedule_precommit(v,payload=payload,receipt=receipt,verifier=tool,tsa_root=root,launcher=launcher)
 
 def test_template_is_inert_and_complete():
     text=(Path(__file__).resolve().parents[1]/"deployment/semantic-authority-metadata-capture-v2-3-12.yml.template").read_text()
