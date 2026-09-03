@@ -70,8 +70,10 @@ def test_real_git_ancestry_blob_and_rendering(tmp_path,monkeypatch):
  template=(Path(__file__).parents[1]/m.TEMPLATE_PATH).read_bytes();path=tmp_path/m.TEMPLATE_PATH;path.parent.mkdir(parents=True);path.write_bytes(template);call("add",m.TEMPLATE_PATH);call("commit","-m","freeze");freeze=call("rev-parse","HEAD")
  v=fixture(tmp_path,monkeypatch);v["workflow_freeze_commit"]=freeze;v["workflow_freeze_epoch"]=int(call("show","-s","--format=%ct",freeze));v["workflow_template_sha256"]=m.sha(template);payload=m.schedule_payload(v);schedule=tmp_path/"deployment/objects/schedule-precommit.json";schedule.write_bytes(payload);v["schedule_payload_sha256"]=m.sha(payload);v["objects"]["schedule-precommit.json"].update(sha256=m.sha(payload),length=len(payload));body={k:x for k,x in v.items() if k not in {"deployment_identity","manifest_identity"}};v["deployment_identity"]=m.sha(canonical(body));complete={**v};complete.pop("manifest_identity",None);v["manifest_identity"]=m.sha(canonical(complete))
  active=tmp_path/m.WORKFLOW_PATH;active.parent.mkdir(parents=True);active.write_bytes(m.render_workflow(template,v));call("add",m.WORKFLOW_PATH);call("commit","-m","deploy");head=call("rev-parse","HEAD")
+ m.verify_worktree(tmp_path,v)
  assert m.verify_git(tmp_path,v,head,git_executable=git,isolated=False,deployment_ancestor=freeze)>0
  skew=copy.deepcopy(v);skew["workflow_freeze_epoch"]+=1
  with pytest.raises(ValueError,match="workflow freeze time"):m.verify_git(tmp_path,skew,head,git_executable=git,isolated=False,deployment_ancestor=freeze)
  active.write_bytes(b"tampered");call("add",m.WORKFLOW_PATH);call("commit","-m","tamper")
+ with pytest.raises(ValueError,match="workflow worktree evidence"):m.verify_worktree(tmp_path,v)
  with pytest.raises(ValueError,match="workflow evidence"):m.verify_git(tmp_path,v,call("rev-parse","HEAD"),git_executable=git,isolated=False,deployment_ancestor=freeze)

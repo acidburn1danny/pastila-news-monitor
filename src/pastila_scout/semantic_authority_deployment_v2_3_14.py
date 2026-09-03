@@ -78,6 +78,14 @@ def verify_git(root:Path,v:Mapping[str,object],head:str,*,git_executable:str="/u
  if not stamp.isdigit() or int(stamp)!=v["workflow_freeze_epoch"]:raise ValueError("workflow freeze time")
  return int(stamp)
 
+def verify_worktree(root:Path,v:Mapping[str,object])->None:
+ root=root.resolve(strict=True)
+ template=(root/TEMPLATE_PATH).resolve(strict=True);active=(root/WORKFLOW_PATH).resolve(strict=True)
+ for path,relative in ((template,TEMPLATE_PATH),(active,WORKFLOW_PATH)):
+  if path!=root/PurePosixPath(relative) or not path.is_file() or path.is_symlink():raise ValueError("workflow worktree containment")
+ template_bytes=template.read_bytes()
+ if sha(template_bytes)!=v["workflow_template_sha256"] or active.read_bytes()!=render_workflow(template_bytes,v):raise ValueError("workflow worktree evidence")
+
 def materialize(v:Mapping[str,object],root:Path)->dict[str,Path]:
  validate_manifest(v);base=root.resolve(strict=True)/"deployment"/"objects";out={}
  if not base.is_dir() or base.is_symlink():raise ValueError("object root")
@@ -121,7 +129,7 @@ def prepare_initiation(v:Mapping[str,object],head:str,dest:Path)->None:
 
 def main(argv:list[str]|None=None)->int:
  p=argparse.ArgumentParser();p.add_argument("--manifest",type=Path,required=True);p.add_argument("--prepare-initiation",type=Path);p.add_argument("--initiation-bundle",type=Path);p.add_argument("--execute",action="store_true");a=p.parse_args(argv)
- v=load(a.manifest);head=runtime_head();o=materialize(v,Path.cwd());verify_timestamp(v,o,freeze_epoch=int(v["workflow_freeze_epoch"]))
+ v=load(a.manifest);head=runtime_head();verify_worktree(Path.cwd(),v);o=materialize(v,Path.cwd());verify_timestamp(v,o,freeze_epoch=int(v["workflow_freeze_epoch"]))
  if a.prepare_initiation:
   if a.execute or a.initiation_bundle:raise ValueError("phase mode")
   prepare_initiation(v,head,a.prepare_initiation);return 0
