@@ -22,7 +22,7 @@ jobs:
             python@sha256:edf6433343f65f94707985869aeaafe8beadaeaee11c4bc02068fca52dce28dd \
             python -I -S deployment/verify-milestone-9-proof.py
       - name: Prepare attestation-only subjects
-        run: python -I -S deployment/prepare-milestone-9-attestations.py
+        run: python -I -S deployment/prepare-milestone-9-attestations.py --prepare-initiation
       - name: Attest initiation
         id: initiation
         uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6
@@ -31,6 +31,8 @@ jobs:
           predicate-type: https://pastila.invalid/core-v2/milestone-9/initiation/v1
           predicate-path: milestone-9-output/initiation-predicate.json
           push-to-registry: false
+      - name: Bind initiation attestation into final subject
+        run: python -I -S deployment/prepare-milestone-9-attestations.py --prepare-final '${{ steps.initiation.outputs.bundle-path }}'
       - name: Attest final state
         uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6
         with:

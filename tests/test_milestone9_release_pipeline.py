@@ -80,4 +80,7 @@ def test_activation_template_has_no_rfc3161_transport_or_metadata_capture():
     assert "push-to-registry: false" in text
     assert "timestamp.digicert.com" not in text
     assert "Crossref" not in text and "OpenAlex" not in text
-    assert text.index("Verify committed proof") < text.index("Attest initiation") < text.index("Attest final state")
+    assert text.index("Verify committed proof") < text.index("Attest initiation")
+    assert text.index("Attest initiation") < text.index("Bind initiation attestation into final subject")
+    assert text.index("Bind initiation attestation into final subject") < text.index("Attest final state")
+    assert "--prepare-final '${{ steps.initiation.outputs.bundle-path }}'" in text
