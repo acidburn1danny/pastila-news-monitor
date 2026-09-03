@@ -78,7 +78,29 @@ def _bound_rfc3161_query(v:Mapping[str,object],o:Mapping[str,Path])->bytes:
  if not query or len(query)>RFC3161_MAX_QUERY_BYTES or sha(query)!=v["rfc3161_request_sha256"]:raise ValueError("RFC3161 query bytes")
  return query
 
-def submit_rfc3161_query(v:Mapping[str,object],o:Mapping[str,Path])->bytes:
+def verify_rfc3161_submission_authority(v:Mapping[str,object],o:Mapping[str,Path],root:Path,*,git_executable:str="/usr/bin/git",isolated:bool=True,deployment_ancestor:str=DEPLOYMENT_RUNTIME_COMMIT)->None:
+ validate_manifest(v)
+ if set(o)!=OBJECTS:raise ValueError("RFC3161 object closure")
+ schedule=o["schedule-precommit.json"]
+ if schedule.is_symlink() or schedule.read_bytes()!=schedule_payload(v):raise ValueError("RFC3161 schedule preimage")
+ root=root.resolve(strict=True)
+ def git(*args:str)->bytes:
+  env={"PATH":"/usr/bin:/bin","HOME":"/nonexistent"} if isolated else None
+  r=subprocess.run([git_executable,"-C",str(root),*args],stdin=subprocess.DEVNULL,stdout=subprocess.PIPE,stderr=subprocess.PIPE,env=env,timeout=20,check=False)
+  if r.returncode:raise ValueError("RFC3161 freeze git evidence")
+  return r.stdout
+ head=git("rev-parse","HEAD").decode("ascii","strict").strip()
+ freeze=str(v["workflow_freeze_commit"])
+ if head!=freeze:raise ValueError("RFC3161 freeze must equal HEAD")
+ git("merge-base","--is-ancestor",deployment_ancestor,freeze)
+ git("merge-base","--is-ancestor",SCHEDULE_ANCHOR_COMMIT,freeze)
+ template=git("show",f"{freeze}:{TEMPLATE_PATH}")
+ if sha(template)!=v["workflow_template_sha256"]:raise ValueError("RFC3161 freeze template")
+ stamp=git("show","-s","--format=%ct",freeze).decode("ascii","strict").strip()
+ if not stamp.isdigit() or int(stamp)!=v["workflow_freeze_epoch"]:raise ValueError("RFC3161 freeze epoch")
+
+def submit_rfc3161_query(v:Mapping[str,object],o:Mapping[str,Path],*,root:Path)->bytes:
+ verify_rfc3161_submission_authority(v,o,root)
  query=verify_rfc3161_query(v,o)
  request=urllib.request.Request(RFC3161_TSA_ENDPOINT,data=query,method=RFC3161_TSA_METHOD,headers={"Content-Type":RFC3161_QUERY_CONTENT_TYPE,"Accept":RFC3161_REPLY_CONTENT_TYPE})
  opener=urllib.request.build_opener(urllib.request.ProxyHandler({}),_RejectRedirect())
