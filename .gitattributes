@@ -5,3 +5,11 @@ deployment/objects/rfc3161-request.tsq -text
 deployment/objects/rfc3161-response.headers -text
 deployment/objects/rfc3161-root.pem -text
 deployment/objects/schedule-precommit.json -text
+deployment/objects/ca.pem -text
+deployment/objects/cosign -text
+deployment/objects/deny-network-launcher.sh -text
+deployment/objects/openssl -text
+deployment/objects/trusted-root.json -text
+deployment/objects/cosign.part-00 -text
+deployment/objects/cosign.part-01 -text
+deployment/objects/cosign.part-02 -text

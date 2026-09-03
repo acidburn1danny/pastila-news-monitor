@@ -32,6 +32,15 @@ jobs:
             '65c1ea745ce08ef6cc2819355fe648c0d177c5afde46e5d114c6e2cb716ed93e  src/pastila_scout/semantic_authority_deployment_v2_3_14.py' \
             '5975a5e06277f4a7c745ab7ea1c46060b5d6762fe5715e8f03c1da662902c939  src/pastila_scout/semantic_authority_deployment_v2_3_9.py' \
             'a5a7cf3e01e3605b83bd8754ec33269b670b4e89d8398a1ba598158c3f45d090  src/pastila_scout/semantic_authority_rfc3161_verifier_v2_3_13.py' | sha256sum -c -
+      - name: Reconstruct frozen Cosign executable from GitHub-compatible chunks
+        run: |
+          printf '%s\n' \
+            '4f5025b78f963e81121a3dcc161b0b7c9e72c57f0ba3e2173e4fbd9fd6be5714  deployment/objects/cosign.part-00' \
+            'a18b5085c92dbbf4cc473c320475c42fe7bddd24d9b8aac40885d9fb3683d5ed  deployment/objects/cosign.part-01' \
+            'eb25658f585ca5d92202fae04bd84ee15101129d92f636979abc37d7814c12d3  deployment/objects/cosign.part-02' | sha256sum -c -
+          cat deployment/objects/cosign.part-00 deployment/objects/cosign.part-01 deployment/objects/cosign.part-02 > "$RUNNER_TEMP/cosign"
+          printf '%s\n' '4629c757b7618056f8ddd7e2625ae9fdd94c0372a65049520bc7d9df9efc7f71  '"$RUNNER_TEMP/cosign" | sha256sum -c -
+          install -m 0755 "$RUNNER_TEMP/cosign" deployment/objects/cosign
       - name: Verify immutable deployment objects and RFC-3161 precommit
         run: python -I -S -c "import runpy,sys;sys.path.insert(0,'${{ github.workspace }}/src');runpy.run_module('pastila_scout.semantic_authority_deployment_v2_3_14',run_name='__main__')" --manifest deployment/v2-3-15-manifest.json --prepare-initiation "$RUNNER_TEMP/initiation"
       - name: Create public initiation attestation before publisher capture

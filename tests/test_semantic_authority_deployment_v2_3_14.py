@@ -111,6 +111,8 @@ def test_render_and_template_are_inert_and_executable(tmp_path,monkeypatch):
  assert text.index("--prepare-initiation")<text.index("actions/attest@")<text.index("--execute")
  assert text.index("--execute")<text.index("Create final public capture attestation")<text.index("upload-artifact@")
  assert "sha256sum -c -" in text and "@UPLOAD_ACTION_COMMIT@" not in text
+ assert all(x in text for x in ("cosign.part-00","cosign.part-01","cosign.part-02","4629c757b7618056f8ddd7e2625ae9fdd94c0372a65049520bc7d9df9efc7f71"))
+ assert text.index("Reconstruct frozen Cosign")<text.index("Verify immutable deployment objects")
  assert text.count("python -I -S -c") == 2 and "python -m pastila_scout" not in text
 
 def test_timestamp_is_cryptographic_and_precedes_schedule(monkeypatch,tmp_path):
