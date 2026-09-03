@@ -32,6 +32,7 @@ def test_schedule_is_commit_time_derived_and_not_caller_selectable(tmp_path,monk
  assert scheduled=="2026-10-04T00:00:00Z" and cron=="0 0 4 10 *"
  bad=copy.deepcopy(v);bad["scheduled_utc"]="2026-10-05T00:00:00Z";bad["schedule_cron"]="0 0 5 10 *"
  with pytest.raises(ValueError,match="deterministic schedule selection"):m.validate_manifest(bad)
+ with pytest.raises(TypeError):m.verify_git(tmp_path,v,"a"*40,schedule_anchor="b"*40,schedule_anchor_epoch=1)
 
 def test_alias_extra_separator_and_symlink_fail(tmp_path,monkeypatch):
  v=fixture(tmp_path,monkeypatch);bad=copy.deepcopy(v);bad["objects"]["cosign"]["path"]="deployment/objects/../cosign"
@@ -81,10 +82,11 @@ def test_real_git_ancestry_blob_and_rendering(tmp_path,monkeypatch):
  def call(*args):return subprocess.check_output([git,"-C",str(tmp_path),*args]).decode().strip()
  subprocess.check_call([git,"init",str(tmp_path)]);call("config","user.email","zero@example.invalid");call("config","user.name","zero")
  template=(Path(__file__).parents[1]/m.TEMPLATE_PATH).read_bytes();path=tmp_path/m.TEMPLATE_PATH;path.parent.mkdir(parents=True);path.write_bytes(template);call("add",m.TEMPLATE_PATH);call("commit","-m","freeze");freeze=call("rev-parse","HEAD")
+ monkeypatch.setattr(m,"SCHEDULE_ANCHOR_COMMIT",freeze);monkeypatch.setattr(m,"SCHEDULE_ANCHOR_EPOCH",int(call("show","-s","--format=%ct",freeze)))
  v=fixture(tmp_path,monkeypatch);v["workflow_freeze_commit"]=freeze;v["workflow_freeze_epoch"]=int(call("show","-s","--format=%ct",freeze));v["scheduled_utc"],v["schedule_cron"]=m.derive_schedule(m.SCHEDULE_ANCHOR_EPOCH);v["workflow_template_sha256"]=m.sha(template);payload=m.schedule_payload(v);schedule=tmp_path/"deployment/objects/schedule-precommit.json";schedule.write_bytes(payload);v["schedule_payload_sha256"]=m.sha(payload);v["objects"]["schedule-precommit.json"].update(sha256=m.sha(payload),length=len(payload));body={k:x for k,x in v.items() if k not in {"deployment_identity","manifest_identity"}};v["deployment_identity"]=m.sha(canonical(body));complete={**v};complete.pop("manifest_identity",None);v["manifest_identity"]=m.sha(canonical(complete))
  active=tmp_path/m.WORKFLOW_PATH;active.parent.mkdir(parents=True);active.write_bytes(m.render_workflow(template,v));call("add",m.WORKFLOW_PATH);call("commit","-m","deploy");head=call("rev-parse","HEAD")
  m.verify_worktree(tmp_path,v)
- git_args={"git_executable":git,"isolated":False,"deployment_ancestor":freeze,"schedule_anchor":freeze,"schedule_anchor_epoch":v["workflow_freeze_epoch"]}
+ git_args={"git_executable":git,"isolated":False,"deployment_ancestor":freeze}
  assert m.verify_git(tmp_path,v,head,**git_args)>0
  with pytest.raises(ValueError,match="executing HEAD mismatch"):m.verify_git(tmp_path,v,freeze,**git_args)
  skew=copy.deepcopy(v);skew["workflow_freeze_epoch"]+=1

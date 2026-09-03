@@ -73,7 +73,7 @@ def render_workflow(template:bytes,v:Mapping[str,object])->bytes:
  if re.search(r"@[A-Z0-9_]+@",text):raise ValueError("unresolved template token")
  return text.encode()
 
-def verify_git(root:Path,v:Mapping[str,object],head:str,*,git_executable:str="/usr/bin/git",isolated:bool=True,deployment_ancestor:str=DEPLOYMENT_RUNTIME_COMMIT,schedule_anchor:str=SCHEDULE_ANCHOR_COMMIT,schedule_anchor_epoch:int=SCHEDULE_ANCHOR_EPOCH)->int:
+def verify_git(root:Path,v:Mapping[str,object],head:str,*,git_executable:str="/usr/bin/git",isolated:bool=True,deployment_ancestor:str=DEPLOYMENT_RUNTIME_COMMIT)->int:
  if not HEX40.fullmatch(head):raise ValueError("head")
  def git(*args:str)->bytes:
   env={"PATH":"/usr/bin:/bin","HOME":"/nonexistent"} if isolated else None
@@ -84,13 +84,13 @@ def verify_git(root:Path,v:Mapping[str,object],head:str,*,git_executable:str="/u
  if actual!=head:raise ValueError("executing HEAD mismatch")
  git("merge-base","--is-ancestor",str(v["workflow_freeze_commit"]),head)
  git("merge-base","--is-ancestor",deployment_ancestor,str(v["workflow_freeze_commit"]))
- git("merge-base","--is-ancestor",schedule_anchor,str(v["workflow_freeze_commit"]))
+ git("merge-base","--is-ancestor",SCHEDULE_ANCHOR_COMMIT,str(v["workflow_freeze_commit"]))
  template=git("show",f"{v['workflow_freeze_commit']}:{TEMPLATE_PATH}")
  if sha(template)!=v["workflow_template_sha256"] or git("show",f"{head}:{WORKFLOW_PATH}")!=render_workflow(template,v):raise ValueError("workflow evidence")
  stamp=git("show","-s","--format=%ct",str(v["workflow_freeze_commit"])).decode("ascii","strict").strip()
  if not stamp.isdigit() or int(stamp)!=v["workflow_freeze_epoch"]:raise ValueError("workflow freeze time")
- anchor_stamp=git("show","-s","--format=%ct",schedule_anchor).decode("ascii","strict").strip()
- if not anchor_stamp.isdigit() or int(anchor_stamp)!=schedule_anchor_epoch:raise ValueError("schedule anchor time")
+ anchor_stamp=git("show","-s","--format=%ct",SCHEDULE_ANCHOR_COMMIT).decode("ascii","strict").strip()
+ if not anchor_stamp.isdigit() or int(anchor_stamp)!=SCHEDULE_ANCHOR_EPOCH:raise ValueError("schedule anchor time")
  return int(stamp)
 
 def verify_worktree(root:Path,v:Mapping[str,object])->None:
