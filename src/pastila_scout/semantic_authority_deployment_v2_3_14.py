@@ -1,7 +1,7 @@
 """V2.3.15 source-blind three-phase deployment boundary."""
 from __future__ import annotations
 import argparse, json, os, re, subprocess
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from email.utils import parsedate_to_datetime
 from pathlib import Path, PurePosixPath
 from typing import Mapping
@@ -23,6 +23,13 @@ DEFAULT_BRANCH_REF="refs/heads/public/v2.3.7-capture"
 CA_BUNDLE_SHA256="9cc2a774b5198dcff14d9be1e66091f538975d867ce029a96bce15a55dfd730f"
 HEX40=re.compile(r"^[0-9a-f]{40}$");HEX64=re.compile(r"^[0-9a-f]{64}$")
 OBJECTS=frozenset({"ca.pem","cosign","deny-network-launcher.sh","openssl","rfc3161-receipt.tsr","rfc3161-root.pem","schedule-precommit.json","trusted-root.json"})
+SCHEDULE_SELECTION_RULE="FIRST_UTC_MIDNIGHT_STRICTLY_AFTER_FREEZE_PLUS_30_DAYS"
+
+def derive_schedule(freeze_epoch:int)->tuple[str,str]:
+ if not isinstance(freeze_epoch,int) or isinstance(freeze_epoch,bool) or freeze_epoch<=0:raise ValueError("workflow freeze epoch")
+ threshold=datetime.fromtimestamp(freeze_epoch,tz=timezone.utc)+timedelta(days=30)
+ scheduled=(threshold+timedelta(days=1)).replace(hour=0,minute=0,second=0,microsecond=0)
+ return scheduled.strftime("%Y-%m-%dT%H:%M:00Z"),f"0 0 {scheduled.day} {scheduled.month} *"
 
 def schedule_payload(v:Mapping[str,object])->bytes:
  keys=("repository_slug","repository_id","default_branch_ref","core_runtime_commit","deployment_runtime_commit","workflow_freeze_commit","workflow_freeze_epoch","workflow_template_sha256","scheduled_utc","schedule_cron","rfc3161_verifier_sha256","rfc3161_root_sha256")
@@ -42,6 +49,7 @@ def validate_manifest(v:Mapping[str,object])->None:
  if not isinstance(v["workflow_freeze_epoch"],int) or isinstance(v["workflow_freeze_epoch"],bool) or v["workflow_freeze_epoch"]<=0:raise ValueError("workflow freeze epoch")
  scheduled=datetime.strptime(str(v["scheduled_utc"]),"%Y-%m-%dT%H:%M:00Z").replace(tzinfo=timezone.utc)
  if v["schedule_cron"]!=f"{scheduled.minute} {scheduled.hour} {scheduled.day} {scheduled.month} *":raise ValueError("schedule convergence")
+ if (v["scheduled_utc"],v["schedule_cron"])!=derive_schedule(v["workflow_freeze_epoch"]):raise ValueError("deterministic schedule selection")
  fixed={"rfc3161_verifier_sha256":OPENSSL_EXECUTABLE_SHA256,"rfc3161_root_sha256":CA_BUNDLE_SHA256,"ca_sha256":CA_BUNDLE_SHA256,"cosign_sha256":COSIGN_SHA256,"launcher_sha256":LINUX_LAUNCHER_SHA256,"trusted_root_sha256":TRUSTED_ROOT_SHA256,"derivation_policy_identity":DERIVATION_POLICY_IDENTITY,"seed_plan_identity":SEED_PLAN_IDENTITY}
  if any(v[k]!=x for k,x in fixed.items()):raise ValueError("frozen dependency")
  for k in ("rfc3161_root_sha256","ca_sha256","trusted_root_sha256","schedule_payload_sha256","deployment_identity"):

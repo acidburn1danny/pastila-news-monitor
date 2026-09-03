@@ -29,7 +29,7 @@ jobs:
             '80a0b2500c1fe629b6111432e27b3fc288f9441146b1d0f27bea772bde918ea8  src/pastila_scout/semantic_authority_cosign_v2_3_7.py' \
             '539745950274dc8f8decd8eb22975aff36c0966aa264d2f8fc27fb84926bcc06  src/pastila_scout/semantic_authority_public_attestation_v2_3_6.py' \
             'b2b9b3c0138c01f8f26077ac02056c5379f94187b88ccfd429eb6d7293ff75ea  src/pastila_scout/semantic_authority_deployment_v2_3_10.py' \
-            'c1d94a64a0c53973fb69750139a5ca24da3d762537408247a85af20a1db18504  src/pastila_scout/semantic_authority_deployment_v2_3_14.py' \
+            '3b6aba2dd628ee35336e3b72e09e94d35ee74650b26e0a38a297357a67923666  src/pastila_scout/semantic_authority_deployment_v2_3_14.py' \
             '5975a5e06277f4a7c745ab7ea1c46060b5d6762fe5715e8f03c1da662902c939  src/pastila_scout/semantic_authority_deployment_v2_3_9.py' \
             'a5a7cf3e01e3605b83bd8754ec33269b670b4e89d8398a1ba598158c3f45d090  src/pastila_scout/semantic_authority_rfc3161_verifier_v2_3_13.py' | sha256sum -c -
       - name: Verify immutable deployment objects and RFC-3161 precommit
