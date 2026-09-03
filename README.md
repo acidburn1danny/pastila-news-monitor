@@ -1,11 +1,11 @@
 # Pastila semantic-authority capture deployment
 
-This orphan branch contains only the V2.3.6/V2.3.7 public-attestation
-verification boundary and its frozen governance evidence. It deliberately
+This orphan branch contains the public-attestation verification boundary and
+its frozen governance evidence. It deliberately
 contains no project history, source archives, candidate data, blind material,
 or registry captures.
 
-The workflow template is inert. It must not be installed under
-`.github/workflows/` until its immutable commit, repository identities,
-RFC-3161 schedule precommit, tool pins, and deployment manifest have all been
-derived and independently verified.
+The workflow template is inert. The convergent Milestone 9 phase model is
+documented in `docs/architecture/milestone-9-proof-boundary.md`. In particular,
+RFC-3161 transport is not part of activation and metadata acquisition remains
+outside this branch.
