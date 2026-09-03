@@ -202,6 +202,7 @@ def test_durable_publication_receipt_identity_and_target_binding():
  assert value["commit_sha"]==target and value["published_ref"]==m.DEFAULT_BRANCH_REF
  assert value["tree_sha"]=="dc8429bc3f422b3b90d58fd0dfeee716e324d56b"
  assert value["parent_sha"]=="5a45f1901773d9ca0d3fc93859125bb433686e2f"
+ assert set(value["evidence"])=={"git_ls_remote_sha","github_commit_api_sha","github_branch_api_sha"}
  assert set(value["evidence"].values())=={target}
  assert value["publication_review_verdict"]=="PASS_PUBLIC_COMMIT_AND_BRANCH_IDENTITY_CONFIRMED"
  assert value["observed_utc_authority"]=="LOCAL_CLOCK_NOT_RFC3161"
