@@ -60,7 +60,7 @@ def test_schedule_is_commit_time_derived_and_not_caller_selectable(tmp_path,monk
  with pytest.raises(TypeError):m.verify_git(tmp_path,v,"a"*40,schedule_anchor="b"*40,schedule_anchor_epoch=1)
 
 def test_rfc3161_transport_profile_is_enforced_without_network(monkeypatch,tmp_path):
- full=fixture(tmp_path,monkeypatch);v=request_authority(full,tmp_path);o=m.materialize_request(v,tmp_path);calls=[]
+ full=fixture(tmp_path,monkeypatch);v=request_authority(full,tmp_path);snapshot=m.materialize_request(v,tmp_path);calls=[]
  class Headers:
   def get_content_type(self):return m.RFC3161_REPLY_CONTENT_TYPE
  class Response:
@@ -74,18 +74,16 @@ def test_rfc3161_transport_profile_is_enforced_without_network(monkeypatch,tmp_p
  monkeypatch.setattr(m.urllib.request,"build_opener",lambda *handlers:(calls.append(handlers),Opener())[1])
  monkeypatch.setattr(m,"verify_rfc3161_submission_authority",lambda value,objects,root:(m.validate_request_authority(value),calls.append(("authority",root))))
  monkeypatch.setattr(m,"verify_rfc3161_query",lambda v,o:m._bound_rfc3161_query(v,o))
- query=o["rfc3161-request.tsq"]
- assert m.submit_rfc3161_query(v,o,root=tmp_path)==b"receipt"
+ assert m.submit_rfc3161_query(v,snapshot,root=tmp_path)==b"receipt"
  assert calls[0]==("authority",tmp_path);handlers=calls[1];request,timeout=calls[2]
  assert any(isinstance(x,m.urllib.request.ProxyHandler) and x.proxies=={} for x in handlers)
  assert any(isinstance(x,m._RejectRedirect) for x in handlers)
- assert request.full_url==m.RFC3161_TSA_ENDPOINT and request.method=="POST" and request.data==query.read_bytes() and timeout==20
+ assert request.full_url==m.RFC3161_TSA_ENDPOINT and request.method=="POST" and request.data==snapshot.query_bytes and timeout==20
  assert request.get_header("Content-type")==m.RFC3161_QUERY_CONTENT_TYPE and request.get_header("Accept")==m.RFC3161_REPLY_CONTENT_TYPE
- query.write_bytes(b"")
- with pytest.raises(ValueError,match="query"):m.submit_rfc3161_query(v,o,root=tmp_path)
 
-def test_rfc3161_query_substitution_after_semantic_validation_uses_bound_bytes(monkeypatch,tmp_path):
- full=fixture(tmp_path,monkeypatch);query=tmp_path/"deployment/objects/rfc3161-request.tsq";query.write_bytes(b"bound-query");full["rfc3161_request_sha256"]=m.sha(b"bound-query");full["objects"]["rfc3161-request.tsq"].update(sha256=m.sha(b"bound-query"),length=len(b"bound-query"));v=request_authority(full,tmp_path);o=m.materialize_request(v,tmp_path)
+def test_rfc3161_post_snapshot_path_substitution_cannot_change_transport(monkeypatch,tmp_path):
+ full=fixture(tmp_path,monkeypatch);v=request_authority(full,tmp_path);snapshot=m.materialize_request(v,tmp_path)
+ query=tmp_path/"deployment/objects/rfc3161-request.tsq";schedule=tmp_path/"deployment/objects/schedule-precommit.json"
  sent=[]
  class Headers:
   def get_content_type(self):return m.RFC3161_REPLY_CONTENT_TYPE
@@ -97,11 +95,22 @@ def test_rfc3161_query_substitution_after_semantic_validation_uses_bound_bytes(m
   def __exit__(self,*args):return False
  class Opener:
   def open(self,request,timeout):sent.append(request.data);return Response()
- def substitute(*args):query.write_bytes(b"substituted-query");return b"bound-query"
- monkeypatch.setattr(m,"verify_rfc3161_query",substitute)
- monkeypatch.setattr(m,"verify_rfc3161_submission_authority",lambda value,objects,root:m.validate_request_authority(value))
+ def authority(value,objects,root):
+  m.validate_request_authority(value);query.write_bytes(b"substituted-query");schedule.write_bytes(b"substituted-schedule")
+ monkeypatch.setattr(m,"verify_rfc3161_submission_authority",authority)
+ monkeypatch.setattr(m,"verify_executable",lambda p:None);monkeypatch.setattr(m,"verify_installed_dependency",lambda *a:None)
+ monkeypatch.setattr(m.subprocess,"run",lambda *a,**k:type("R",(),{"returncode":0,"stdout":query_text(v),"stderr":b""})())
  monkeypatch.setattr(m.urllib.request,"build_opener",lambda *handlers:Opener())
- assert m.submit_rfc3161_query(v,o,root=tmp_path)==b"receipt" and sent==[b"bound-query"]
+ assert m.submit_rfc3161_query(v,snapshot,root=tmp_path)==b"receipt" and sent==[snapshot.query_bytes]
+ assert snapshot.schedule_bytes==m.schedule_payload(v) and query.read_bytes()!=snapshot.query_bytes and schedule.read_bytes()!=snapshot.schedule_bytes
+
+def test_request_snapshot_reads_each_object_once_and_is_frozen(monkeypatch,tmp_path):
+ full=fixture(tmp_path,monkeypatch);v=request_authority(full,tmp_path);original=m.Path.read_bytes;reads={}
+ def counted(path):
+  reads[path.name]=reads.get(path.name,0)+1;return original(path)
+ monkeypatch.setattr(m.Path,"read_bytes",counted);snapshot=m.materialize_request(v,tmp_path)
+ assert reads=={name:1 for name in m.REQUEST_OBJECTS}
+ with pytest.raises(m.FrozenInstanceError):snapshot.query_bytes=b"changed"
 
 def query_text(v):
  digest=m.sha(m.schedule_payload(v));pairs=" ".join(digest[i:i+2] for i in range(0,len(digest),2))
@@ -244,6 +253,7 @@ def test_milestone9_audit_qualification_identity_chain():
  assert value["attestation_only_predicate_type"]==m.ATTESTATION_ONLY_PREDICATE_TYPE
  assert value["schedule_delay_window_seconds"]==int(m.MAX_SCHEDULE_DELAY.total_seconds())
  assert "DURABLE_PUBLICATION_RECEIPT" not in value["external_evidence_pending"]
+ assert "deployment/objects/rfc3161-request-authority.json -text" in (root/".gitattributes").read_text("utf-8").splitlines()
 
 def test_durable_publication_receipt_identity_and_target_binding():
  root=Path(__file__).parents[1];path=root/"docs/artifacts/semantic-contract-v2-3-14-durable-publication-receipt.json"

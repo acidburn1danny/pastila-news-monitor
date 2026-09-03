@@ -1,6 +1,7 @@
 """V2.3.15 source-blind three-phase deployment boundary."""
 from __future__ import annotations
 import argparse, json, os, re, shutil, subprocess, tempfile, urllib.request
+from dataclasses import FrozenInstanceError, dataclass
 from datetime import datetime, timedelta, timezone
 from email.utils import parsedate_to_datetime
 from pathlib import Path, PurePosixPath
@@ -37,6 +38,15 @@ REQUEST_AUTHORITY_SCHEMA="PASTILA_RFC3161_REQUEST_AUTHORITY_V1"
 SCHEDULE_SELECTION_RULE="FIRST_UTC_HOUR_AT_LEAST_12_HOURS_AFTER_REPLACEMENT_FREEZE"
 SCHEDULE_KEYS=("repository_slug","repository_id","default_branch_ref","core_runtime_commit","deployment_runtime_commit","workflow_freeze_commit","workflow_freeze_epoch","workflow_template_sha256","schedule_selection_rule","scheduled_utc","schedule_cron","rfc3161_tsa_endpoint","rfc3161_tsa_method","rfc3161_query_content_type","rfc3161_reply_content_type","rfc3161_tsa_redirects","rfc3161_tsa_attempts","rfc3161_tsa_nonce","rfc3161_tsa_cert_req","rfc3161_verifier_sha256","rfc3161_root_sha256","rfc3161_intermediate_sha256")
 
+@dataclass(frozen=True)
+class RequestSnapshot:
+ schedule_bytes:bytes
+ query_bytes:bytes
+ openssl_bytes:bytes
+ launcher_bytes:bytes
+ openssl_path:Path
+ launcher_path:Path
+
 def derive_schedule(freeze_epoch:int)->tuple[str,str]:
  if not isinstance(freeze_epoch,int) or isinstance(freeze_epoch,bool) or freeze_epoch<=0:raise ValueError("workflow freeze epoch")
  threshold=datetime.fromtimestamp(freeze_epoch,tz=timezone.utc)+timedelta(hours=12)
@@ -50,12 +60,15 @@ def schedule_payload(v:Mapping[str,object])->bytes:
 class _RejectRedirect(urllib.request.HTTPRedirectHandler):
  def redirect_request(self,req,fp,code,msg,headers,newurl):raise ValueError("RFC3161 redirect")
 
-def _openssl(v:Mapping[str,object],o:Mapping[str,Path],args:list[str],*,input_bytes:bytes|None=None):
- verify_executable(o["openssl"]);verify_installed_dependency(o["deny-network-launcher.sh"],str(v["launcher_sha256"]))
- base=["/usr/bin/bash",str(o["deny-network-launcher.sh"]),"--launcher-sha256",str(v["launcher_sha256"]),"--expected-sha256",OPENSSL_EXECUTABLE_SHA256,str(o["openssl"])]
+def _openssl(v:Mapping[str,object],o:Mapping[str,Path]|RequestSnapshot,args:list[str],*,input_bytes:bytes|None=None):
+ openssl=o.openssl_path if isinstance(o,RequestSnapshot) else o["openssl"]
+ launcher=o.launcher_path if isinstance(o,RequestSnapshot) else o["deny-network-launcher.sh"]
+ launcher_sha256=str(v.get("launcher_sha256",LINUX_LAUNCHER_SHA256))
+ verify_executable(openssl);verify_installed_dependency(launcher,launcher_sha256)
+ base=["/usr/bin/bash",str(launcher),"--launcher-sha256",launcher_sha256,"--expected-sha256",OPENSSL_EXECUTABLE_SHA256,str(openssl)]
  return subprocess.run(base+args,input=input_bytes,stdin=subprocess.DEVNULL if input_bytes is None else None,stdout=subprocess.PIPE,stderr=subprocess.PIPE,env={"PATH":"/usr/bin:/bin","HOME":"/nonexistent"},timeout=30,check=False)
 
-def verify_rfc3161_query(v:Mapping[str,object],o:Mapping[str,Path])->bytes:
+def verify_rfc3161_query(v:Mapping[str,object],o:Mapping[str,Path]|RequestSnapshot)->bytes:
  query=_bound_rfc3161_query(v,o)
  r=_openssl(v,o,["ts","-query","-in","/dev/stdin","-text"],input_bytes=query)
  if r.returncode or r.stderr:raise ValueError("RFC3161 query parse")
@@ -75,16 +88,17 @@ def verify_rfc3161_query(v:Mapping[str,object],o:Mapping[str,Path])->bytes:
  if imprint.lower()!=sha(schedule_payload(v)):raise ValueError("RFC3161 query imprint")
  return query
 
-def _bound_rfc3161_query(v:Mapping[str,object],o:Mapping[str,Path])->bytes:
- query=o["rfc3161-request.tsq"].read_bytes()
+def _bound_rfc3161_query(v:Mapping[str,object],o:Mapping[str,Path]|RequestSnapshot)->bytes:
+ query=o.query_bytes if isinstance(o,RequestSnapshot) else o["rfc3161-request.tsq"].read_bytes()
  if not query or len(query)>RFC3161_MAX_QUERY_BYTES or sha(query)!=v["rfc3161_request_sha256"]:raise ValueError("RFC3161 query bytes")
  return query
 
-def verify_rfc3161_submission_authority(v:Mapping[str,object],o:Mapping[str,Path],root:Path,*,git_executable:str="/usr/bin/git",isolated:bool=True,deployment_ancestor:str=DEPLOYMENT_RUNTIME_COMMIT)->None:
+def verify_rfc3161_submission_authority(v:Mapping[str,object],o:RequestSnapshot,root:Path,*,git_executable:str="/usr/bin/git",isolated:bool=True,deployment_ancestor:str=DEPLOYMENT_RUNTIME_COMMIT)->None:
  validate_request_authority(v)
- if set(o)!=REQUEST_OBJECTS:raise ValueError("RFC3161 request object closure")
- schedule=o["schedule-precommit.json"]
- if schedule.is_symlink() or schedule.read_bytes()!=schedule_payload(v):raise ValueError("RFC3161 schedule preimage")
+ if not isinstance(o,RequestSnapshot):raise ValueError("RFC3161 immutable request snapshot")
+ committed={"schedule-precommit.json":o.schedule_bytes,"rfc3161-request.tsq":o.query_bytes,"openssl":o.openssl_bytes,"deny-network-launcher.sh":o.launcher_bytes}
+ if any(len(committed[name])!=v["objects"][name]["length"] or sha(committed[name])!=v["objects"][name]["sha256"] for name in REQUEST_OBJECTS):raise ValueError("RFC3161 request snapshot bytes")
+ if o.schedule_bytes!=schedule_payload(v):raise ValueError("RFC3161 schedule preimage")
  root=root.resolve(strict=True)
  def git(*args:str)->bytes:
   env={"PATH":"/usr/bin:/bin","HOME":"/nonexistent"} if isolated else None
@@ -100,7 +114,7 @@ def verify_rfc3161_submission_authority(v:Mapping[str,object],o:Mapping[str,Path
  stamp=git("show","-s","--format=%ct",freeze).decode("ascii","strict").strip()
  if not stamp.isdigit() or int(stamp)!=v["workflow_freeze_epoch"]:raise ValueError("RFC3161 freeze epoch")
 
-def submit_rfc3161_query(v:Mapping[str,object],o:Mapping[str,Path],*,root:Path)->bytes:
+def submit_rfc3161_query(v:Mapping[str,object],o:RequestSnapshot,*,root:Path)->bytes:
  verify_rfc3161_submission_authority(v,o,root)
  query=verify_rfc3161_query(v,o)
  request=urllib.request.Request(RFC3161_TSA_ENDPOINT,data=query,method=RFC3161_TSA_METHOD,headers={"Content-Type":RFC3161_QUERY_CONTENT_TYPE,"Accept":RFC3161_REPLY_CONTENT_TYPE})
@@ -138,8 +152,8 @@ def validate_request_authority(v:Mapping[str,object])->None:
  body=dict(v);identity=body.pop("request_authority_identity")
  if identity!=sha(canonical(body)):raise ValueError("RFC3161 request authority identity")
 
-def materialize_request(v:Mapping[str,object],root:Path)->dict[str,Path]:
- validate_request_authority(v);base=root.resolve(strict=True)/"deployment"/"objects";out={}
+def materialize_request(v:Mapping[str,object],root:Path)->RequestSnapshot:
+ validate_request_authority(v);base=root.resolve(strict=True)/"deployment"/"objects";paths={};data_by_name={}
  if not base.is_dir() or base.is_symlink():raise ValueError("object root")
  for name,row in v["objects"].items():
   digest,length,relative=_entry(row);input_path=root/PurePosixPath(relative)
@@ -148,9 +162,9 @@ def materialize_request(v:Mapping[str,object],root:Path)->dict[str,Path]:
   if path.parent!=base or not path.is_file():raise ValueError("object containment")
   data=path.read_bytes()
   if len(data)!=length or sha(data)!=digest:raise ValueError("object bytes")
-  out[name]=path
- if out["schedule-precommit.json"].read_bytes()!=schedule_payload(v):raise ValueError("payload bytes")
- return out
+  paths[name]=path;data_by_name[name]=data
+ if data_by_name["schedule-precommit.json"]!=schedule_payload(v):raise ValueError("payload bytes")
+ return RequestSnapshot(data_by_name["schedule-precommit.json"],data_by_name["rfc3161-request.tsq"],data_by_name["openssl"],data_by_name["deny-network-launcher.sh"],paths["openssl"],paths["deny-network-launcher.sh"])
 
 def verify_response_proof_closure(root:Path,proof_objects:Mapping[str,object])->None:
  base=root.resolve(strict=True)/"deployment"/"objects"
