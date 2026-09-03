@@ -193,3 +193,15 @@ def test_milestone9_audit_qualification_identity_chain():
  assert value["workflow_template_sha256"]==m.sha((root/m.TEMPLATE_PATH).read_bytes())
  assert value["readiness_authority"]=="PARTIALLY_PROVEN" and len(value["external_evidence_pending"])==3
  assert "DURABLE_PUBLICATION_RECEIPT" not in value["external_evidence_pending"]
+
+def test_durable_publication_receipt_identity_and_target_binding():
+ root=Path(__file__).parents[1];path=root/"docs/artifacts/semantic-contract-v2-3-14-durable-publication-receipt.json"
+ value=m.json.loads(path.read_text("utf-8"));identity=value.pop("receipt_identity")
+ assert identity==m.sha(canonical(value))
+ target="9487348116128059fbc8319e4f581a1365c9f9ce"
+ assert value["commit_sha"]==target and value["published_ref"]==m.DEFAULT_BRANCH_REF
+ assert value["tree_sha"]=="dc8429bc3f422b3b90d58fd0dfeee716e324d56b"
+ assert value["parent_sha"]=="5a45f1901773d9ca0d3fc93859125bb433686e2f"
+ assert set(value["evidence"].values())=={target}
+ assert value["publication_review_verdict"]=="PASS_PUBLIC_COMMIT_AND_BRANCH_IDENTITY_CONFIRMED"
+ assert value["observed_utc_authority"]=="LOCAL_CLOCK_NOT_RFC3161"
