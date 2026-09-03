@@ -217,11 +217,12 @@ def test_durable_publication_receipt_identity_and_target_binding():
 def test_rfc3161_receipt_record_and_qualification_evidence_closure():
  root=Path(__file__).parents[1];objects=root/"deployment/objects"
  record=m.json.loads((objects/"rfc3161-receipt-record.json").read_text("utf-8"));identity=record.pop("receipt_identity")
- assert identity=="4d79712b0d91b5d11ed971e369bae475d9c5b0a8c82b6b02594d680a1354fdd5"==m.sha(canonical(record))
+ assert identity=="5c987cbede0aee5496aeb3e7a60cacba7fed23ae0a72156eecd87e8aae973197"==m.sha(canonical(record))
  assert record["query_sha256"]==m.sha((objects/"rfc3161-request.tsq").read_bytes())
  assert record["receipt_sha256"]==m.sha((objects/"rfc3161-receipt.tsr").read_bytes())
  assert record["response_headers_sha256"]==m.sha((objects/"rfc3161-response.headers").read_bytes())
  assert record["schedule_payload_sha256"]==m.sha((objects/"schedule-precommit.json").read_bytes())
+ assert record["authority_commit"]==m.json.loads((objects/"schedule-precommit.json").read_text("utf-8"))["workflow_freeze_commit"]
  assert record["root_sha256"]==m.sha((objects/"rfc3161-root.pem").read_bytes())
  assert record["intermediate_sha256"]==m.sha((objects/"rfc3161-intermediate.pem").read_bytes())
  qualification=m.json.loads((root/"docs/artifacts/semantic-contract-v2-3-14-three-phase-deployment-zero-network-qualification.json").read_text("utf-8"))
