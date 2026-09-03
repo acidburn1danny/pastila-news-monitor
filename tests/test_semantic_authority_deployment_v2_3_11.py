@@ -22,6 +22,7 @@ def test_checkout_evidence_and_deployment_identity_are_not_self_asserted(monkeyp
 def test_template_has_frozen_runtime_without_workflow_self_reference():
  root=Path(__file__).resolve().parents[1];text=(root/"deployment/semantic-authority-metadata-capture-v2-3-11.yml.template").read_text()
  assert "ref: '@DEPLOYMENT_RUNTIME_COMMIT@'" in text and "ref: '@WORKFLOW_COMMIT@'" not in text and "--manifest" in text and "workflow_dispatch" not in text
+ assert "PYTHONPATH: ${{ github.workspace }}/src" in text
 def test_qualification_identity_chain():
  root=Path(__file__).resolve().parents[1];q=json.loads((root/"docs/artifacts/semantic-contract-v2-3-11-runtime-cli-zero-network-qualification.json").read_text());identity=q.pop("qualification_identity")
  assert identity==hashlib.sha256(json.dumps(q,sort_keys=True,separators=(",",":"),ensure_ascii=False).encode()).hexdigest()

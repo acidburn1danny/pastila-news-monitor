@@ -13,6 +13,8 @@ jobs:
     if: github.repository_id == '1355263083' && github.repository == 'acidburn1danny/pastila-news-monitor' && github.run_attempt == 1 && github.event.schedule == '@SCHEDULE_CRON@'
     runs-on: ubuntu-24.04
     container: python@sha256:edf6433343f65f94707985869aeaafe8beadaeaee11c4bc02068fca52dce28dd
+    env:
+      PYTHONPATH: ${{ github.workspace }}/src
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
