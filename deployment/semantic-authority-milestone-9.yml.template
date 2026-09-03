@@ -1,0 +1,40 @@
+# Inert Milestone 9 activation template. RFC-3161 transport is deliberately absent.
+name: pastila-core-v2-milestone-9-attestation-only
+on:
+  schedule:
+    - cron: '@SCHEDULE_CRON@'
+permissions:
+  contents: read
+  id-token: write
+  attestations: write
+jobs:
+  verify-proof:
+    if: github.repository == 'acidburn1danny/pastila-news-monitor' && github.run_attempt == 1 && github.event_name == 'schedule' && github.event.schedule == '@SCHEDULE_CRON@'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          persist-credentials: false
+      - name: Verify committed proof in pinned OCI runtime with no network
+        run: |
+          docker run --rm --network none --read-only \
+            -v "$GITHUB_WORKSPACE:/work:ro" -w /work \
+            python@sha256:edf6433343f65f94707985869aeaafe8beadaeaee11c4bc02068fca52dce28dd \
+            python -I -S deployment/verify-milestone-9-proof.py
+      - name: Prepare attestation-only subjects
+        run: python -I -S deployment/prepare-milestone-9-attestations.py
+      - name: Attest initiation
+        id: initiation
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6
+        with:
+          subject-path: milestone-9-output/initiation.json
+          predicate-type: https://pastila.invalid/core-v2/milestone-9/initiation/v1
+          predicate-path: milestone-9-output/initiation-predicate.json
+          push-to-registry: false
+      - name: Attest final state
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6
+        with:
+          subject-path: milestone-9-output/final.json
+          predicate-type: https://pastila.invalid/core-v2/milestone-9/attestation-only/v1
+          predicate-path: milestone-9-output/final-predicate.json
+          push-to-registry: false
