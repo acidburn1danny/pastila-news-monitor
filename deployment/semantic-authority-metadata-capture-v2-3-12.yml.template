@@ -1,0 +1,24 @@
+# INERT TWO-PHASE TEMPLATE: freeze this workflow first, then timestamp its canonical
+# schedule payload, then create the final deployment manifest. No manual trigger.
+name: semantic-authority-metadata-capture-v2-3-12
+on:
+  schedule:
+    - cron: '@SCHEDULE_CRON@'
+permissions:
+  contents: read
+  id-token: write
+  attestations: write
+jobs:
+  capture:
+    if: github.repository_id == '1355263083' && github.repository == 'acidburn1danny/pastila-news-monitor' && github.run_attempt == 1 && github.event.schedule == '@SCHEDULE_CRON@'
+    runs-on: ubuntu-24.04
+    container: python@sha256:edf6433343f65f94707985869aeaafe8beadaeaee11c4bc02068fca52dce28dd
+    env:
+      PYTHONPATH: ${{ github.workspace }}/src
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          ref: '@DEPLOYMENT_RUNTIME_COMMIT@'
+          persist-credentials: false
+      - name: Verify timestamped schedule before any capture
+        run: python -m pastila_scout.semantic_authority_deployment_v2_3_12 --manifest '@MANIFEST@' --schedule-payload '@SCHEDULE_PAYLOAD@' --schedule-receipt '@SCHEDULE_RECEIPT@' --rfc3161-verifier '@RFC3161_VERIFIER@' --tsa-root '@TSA_ROOT@' --bundle '@BUNDLE@' --cosign '@COSIGN@' --launcher '@LAUNCHER@' --trusted-root '@TRUSTED_ROOT@' --ca '@CA@' --output '@OUTPUT@'
