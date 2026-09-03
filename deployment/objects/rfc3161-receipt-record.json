@@ -1,0 +1,29 @@
+{
+  "authority_commit": "ba4ae12355ad32ae62ed8fc177cec4acd888cf50",
+  "endpoint": "http://timestamp.digicert.com",
+  "http_status": 200,
+  "identity_algorithm": "SHA256_RFC8785_WITH_RECEIPT_IDENTITY_OMITTED",
+  "intermediate_sha256": "0edab770d65632eefbe6ccdb61034e224facf49a960acdf82ae13c64fa0a3519",
+  "nonce": "0xF502DD9E217353C0",
+  "profile": {
+    "attempts": 1,
+    "cert_req": true,
+    "method": "POST",
+    "query_content_type": "application/timestamp-query",
+    "redirects": 0,
+    "reply_content_type": "application/timestamp-reply"
+  },
+  "query_sha256": "2106002f62eeff6a7631afa9bd8f2a742cbcc5ddde297bc502d79b8c39c7921c",
+  "receipt_identity": "4d79712b0d91b5d11ed971e369bae475d9c5b0a8c82b6b02594d680a1354fdd5",
+  "receipt_length": 6008,
+  "receipt_sha256": "0a6004c160c4e771c793775f238a82bef032b456a7078e6dd23e3a7ca5af9332",
+  "response_headers_sha256": "ede98ca411cad582603df2a4841db0dd72c2a52c6b3fd460bc84bf7903caed88",
+  "root_sha256": "ce7d6b44f5d510391be98c8d76b18709400a30cd87659bfebe1c6f97ff5181ee",
+  "schedule_payload_sha256": "cc1a68f75e2b47c794620ecd6103a2422520a9ff9e07e9e6f198e7737ca1e822",
+  "scheduled_utc": "2026-10-04T00:00:00Z",
+  "schema": "PASTILA_RFC3161_RECEIPT_RECORD_V1",
+  "serial_number": "0xDFDDE802044C0B3D449B684F858E627B",
+  "timestamp_utc": "2026-09-03T17:31:14Z",
+  "verdict": "PASS_SIGNATURE_TRUST_QUERY_NONCE_IMPRINT_AND_PHASE_ORDER",
+  "verifier_sha256": "83a9c490e5cd0f8dc19a31438269d82c7b096e51ca2198290468c3766762bfae"
+}

@@ -1,0 +1,7 @@
+deployment/objects/rfc3161-intermediate.pem -text
+deployment/objects/rfc3161-receipt-record.json -text
+deployment/objects/rfc3161-receipt.tsr -text
+deployment/objects/rfc3161-request.tsq -text
+deployment/objects/rfc3161-response.headers -text
+deployment/objects/rfc3161-root.pem -text
+deployment/objects/schedule-precommit.json -text

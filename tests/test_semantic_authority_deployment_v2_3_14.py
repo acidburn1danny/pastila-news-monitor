@@ -191,7 +191,7 @@ def test_milestone9_audit_qualification_identity_chain():
  assert value["implementation_sha256"]==m.sha((root/"src/pastila_scout/semantic_authority_deployment_v2_3_14.py").read_bytes())
  assert value["test_sha256"]==m.sha(Path(__file__).read_bytes())
  assert value["workflow_template_sha256"]==m.sha((root/m.TEMPLATE_PATH).read_bytes())
- assert value["readiness_authority"]=="PARTIALLY_PROVEN" and len(value["external_evidence_pending"])==3
+ assert value["readiness_authority"]=="PARTIALLY_PROVEN" and len(value["external_evidence_pending"])==2
  assert "DURABLE_PUBLICATION_RECEIPT" not in value["external_evidence_pending"]
 
 def test_durable_publication_receipt_identity_and_target_binding():
@@ -213,3 +213,20 @@ def test_durable_publication_receipt_identity_and_target_binding():
  assert set(value["evidence"].values())=={target}
  assert value["publication_review_verdict"]=="PASS_PUBLIC_COMMIT_AND_BRANCH_IDENTITY_CONFIRMED"
  assert value["observed_utc_authority"]=="LOCAL_CLOCK_NOT_RFC3161"
+
+def test_rfc3161_receipt_record_and_qualification_evidence_closure():
+ root=Path(__file__).parents[1];objects=root/"deployment/objects"
+ record=m.json.loads((objects/"rfc3161-receipt-record.json").read_text("utf-8"));identity=record.pop("receipt_identity")
+ assert identity=="4d79712b0d91b5d11ed971e369bae475d9c5b0a8c82b6b02594d680a1354fdd5"==m.sha(canonical(record))
+ assert record["query_sha256"]==m.sha((objects/"rfc3161-request.tsq").read_bytes())
+ assert record["receipt_sha256"]==m.sha((objects/"rfc3161-receipt.tsr").read_bytes())
+ assert record["response_headers_sha256"]==m.sha((objects/"rfc3161-response.headers").read_bytes())
+ assert record["schedule_payload_sha256"]==m.sha((objects/"schedule-precommit.json").read_bytes())
+ assert record["root_sha256"]==m.sha((objects/"rfc3161-root.pem").read_bytes())
+ assert record["intermediate_sha256"]==m.sha((objects/"rfc3161-intermediate.pem").read_bytes())
+ qualification=m.json.loads((root/"docs/artifacts/semantic-contract-v2-3-14-three-phase-deployment-zero-network-qualification.json").read_text("utf-8"))
+ assert qualification["rfc3161_acquired"] is True
+ assert qualification["rfc3161_receipt_evidence"]=={"query_sha256":record["query_sha256"],"receipt_identity":identity,"receipt_sha256":record["receipt_sha256"],"response_headers_sha256":record["response_headers_sha256"],"timestamp_utc":record["timestamp_utc"],"verification":record["verdict"]}
+ assert qualification["rfc3161_trust_material"]["root_sha256"]==record["root_sha256"]
+ assert qualification["rfc3161_trust_material"]["intermediate_sha256"]==record["intermediate_sha256"]
+ assert "REAL_RFC3161_RECEIPT" not in qualification["external_evidence_pending"]
