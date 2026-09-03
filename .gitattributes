@@ -14,3 +14,9 @@ deployment/objects/trusted-root.json -text
 deployment/objects/cosign.part-00 -text
 deployment/objects/cosign.part-01 -text
 deployment/objects/cosign.part-02 -text
+deployment/milestone-9/release.json -text
+deployment/milestone-9/request-validation.json -text
+deployment/milestone-9/request.tsq -text
+deployment/milestone-9/receipt.tsr -text
+deployment/milestone-9/response.headers -text
+deployment/milestone-9/proof.json -text
