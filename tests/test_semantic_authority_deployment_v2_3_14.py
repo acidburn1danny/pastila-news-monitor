@@ -199,6 +199,13 @@ def test_durable_publication_receipt_identity_and_target_binding():
  value=m.json.loads(path.read_text("utf-8"));identity=value.pop("receipt_identity")
  assert identity==m.sha(canonical(value))
  target="9487348116128059fbc8319e4f581a1365c9f9ce"
+ assert set(value)=={"branch_protected","commit_api_url","commit_sha","commit_url","evidence","identity_algorithm","observed_utc","observed_utc_authority","parent_sha","publication_review_verdict","published_ref","repository","schema","tree_sha"}
+ assert value["schema"]=="PASTILA_DURABLE_PUBLICATION_RECEIPT_V1"
+ assert value["repository"]=="acidburn1danny/pastila-news-monitor"
+ assert value["commit_url"]==f"https://github.com/{value['repository']}/commit/{target}"
+ assert value["commit_api_url"]==f"https://api.github.com/repos/{value['repository']}/commits/{target}"
+ assert value["identity_algorithm"]=="SHA256_RFC8785_WITH_RECEIPT_IDENTITY_OMITTED"
+ assert value["branch_protected"] is False and m.re.fullmatch(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z",value["observed_utc"])
  assert value["commit_sha"]==target and value["published_ref"]==m.DEFAULT_BRANCH_REF
  assert value["tree_sha"]=="dc8429bc3f422b3b90d58fd0dfeee716e324d56b"
  assert value["parent_sha"]=="5a45f1901773d9ca0d3fc93859125bb433686e2f"
