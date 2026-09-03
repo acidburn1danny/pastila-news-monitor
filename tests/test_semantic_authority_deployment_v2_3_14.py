@@ -7,7 +7,7 @@ from pastila_scout.semantic_authority_capture_orchestrator_v2_3_7 import canonic
 def fixture(tmp_path,monkeypatch):
  monkeypatch.setattr(m,"OPENSSL_EXECUTABLE_SHA256",m.sha(b"openssl"));monkeypatch.setattr(m,"COSIGN_SHA256",m.sha(b"cosign"));monkeypatch.setattr(m,"LINUX_LAUNCHER_SHA256",m.sha(b"deny-network-launcher.sh"))
  monkeypatch.setattr(m,"CA_BUNDLE_SHA256",m.sha(b"ca.pem"));monkeypatch.setattr(m,"TRUSTED_ROOT_SHA256",m.sha(b"trusted-root.json"))
- epoch=1788430198;scheduled,cron=m.derive_schedule(epoch)
+ epoch=1788430198;scheduled,cron=m.derive_schedule(m.SCHEDULE_ANCHOR_EPOCH)
  v={"schema":m.SCHEMA,"repository_slug":m.REPOSITORY_SLUG,"repository_id":m.REPOSITORY_ID,"default_branch_ref":m.DEFAULT_BRANCH_REF,"core_runtime_commit":m.RUNTIME_COMMIT,"deployment_runtime_commit":m.DEPLOYMENT_RUNTIME_COMMIT,"workflow_freeze_commit":"a"*40,"workflow_freeze_epoch":epoch,"workflow_template_sha256":"1"*64,"scheduled_utc":scheduled,"schedule_cron":cron,"rfc3161_verifier_sha256":m.OPENSSL_EXECUTABLE_SHA256,"rfc3161_root_sha256":"2"*64,"ca_sha256":"3"*64,"cosign_sha256":m.COSIGN_SHA256,"launcher_sha256":m.LINUX_LAUNCHER_SHA256,"trusted_root_sha256":"4"*64,"derivation_policy_identity":m.DERIVATION_POLICY_IDENTITY,"seed_plan_identity":m.SEED_PLAN_IDENTITY}
  payload=m.schedule_payload(v);values={name:(payload if name=="schedule-precommit.json" else (b"ca.pem" if name=="rfc3161-root.pem" else name.encode())) for name in m.OBJECTS};objects={}
  for name,data in values.items():
@@ -27,7 +27,7 @@ def test_identity_mutations_fail(tmp_path,monkeypatch,key):
  with pytest.raises((ValueError,TypeError)):m.validate_manifest(v)
 
 def test_schedule_is_commit_time_derived_and_not_caller_selectable(tmp_path,monkeypatch):
- v=fixture(tmp_path,monkeypatch);scheduled,cron=m.derive_schedule(v["workflow_freeze_epoch"])
+ v=fixture(tmp_path,monkeypatch);scheduled,cron=m.derive_schedule(m.SCHEDULE_ANCHOR_EPOCH)
  assert (scheduled,cron)==(v["scheduled_utc"],v["schedule_cron"])
  assert scheduled=="2026-10-04T00:00:00Z" and cron=="0 0 4 10 *"
  bad=copy.deepcopy(v);bad["scheduled_utc"]="2026-10-05T00:00:00Z";bad["schedule_cron"]="0 0 5 10 *"
@@ -81,16 +81,17 @@ def test_real_git_ancestry_blob_and_rendering(tmp_path,monkeypatch):
  def call(*args):return subprocess.check_output([git,"-C",str(tmp_path),*args]).decode().strip()
  subprocess.check_call([git,"init",str(tmp_path)]);call("config","user.email","zero@example.invalid");call("config","user.name","zero")
  template=(Path(__file__).parents[1]/m.TEMPLATE_PATH).read_bytes();path=tmp_path/m.TEMPLATE_PATH;path.parent.mkdir(parents=True);path.write_bytes(template);call("add",m.TEMPLATE_PATH);call("commit","-m","freeze");freeze=call("rev-parse","HEAD")
- v=fixture(tmp_path,monkeypatch);v["workflow_freeze_commit"]=freeze;v["workflow_freeze_epoch"]=int(call("show","-s","--format=%ct",freeze));v["scheduled_utc"],v["schedule_cron"]=m.derive_schedule(v["workflow_freeze_epoch"]);v["workflow_template_sha256"]=m.sha(template);payload=m.schedule_payload(v);schedule=tmp_path/"deployment/objects/schedule-precommit.json";schedule.write_bytes(payload);v["schedule_payload_sha256"]=m.sha(payload);v["objects"]["schedule-precommit.json"].update(sha256=m.sha(payload),length=len(payload));body={k:x for k,x in v.items() if k not in {"deployment_identity","manifest_identity"}};v["deployment_identity"]=m.sha(canonical(body));complete={**v};complete.pop("manifest_identity",None);v["manifest_identity"]=m.sha(canonical(complete))
+ v=fixture(tmp_path,monkeypatch);v["workflow_freeze_commit"]=freeze;v["workflow_freeze_epoch"]=int(call("show","-s","--format=%ct",freeze));v["scheduled_utc"],v["schedule_cron"]=m.derive_schedule(m.SCHEDULE_ANCHOR_EPOCH);v["workflow_template_sha256"]=m.sha(template);payload=m.schedule_payload(v);schedule=tmp_path/"deployment/objects/schedule-precommit.json";schedule.write_bytes(payload);v["schedule_payload_sha256"]=m.sha(payload);v["objects"]["schedule-precommit.json"].update(sha256=m.sha(payload),length=len(payload));body={k:x for k,x in v.items() if k not in {"deployment_identity","manifest_identity"}};v["deployment_identity"]=m.sha(canonical(body));complete={**v};complete.pop("manifest_identity",None);v["manifest_identity"]=m.sha(canonical(complete))
  active=tmp_path/m.WORKFLOW_PATH;active.parent.mkdir(parents=True);active.write_bytes(m.render_workflow(template,v));call("add",m.WORKFLOW_PATH);call("commit","-m","deploy");head=call("rev-parse","HEAD")
  m.verify_worktree(tmp_path,v)
- assert m.verify_git(tmp_path,v,head,git_executable=git,isolated=False,deployment_ancestor=freeze)>0
- with pytest.raises(ValueError,match="executing HEAD mismatch"):m.verify_git(tmp_path,v,freeze,git_executable=git,isolated=False,deployment_ancestor=freeze)
+ git_args={"git_executable":git,"isolated":False,"deployment_ancestor":freeze,"schedule_anchor":freeze,"schedule_anchor_epoch":v["workflow_freeze_epoch"]}
+ assert m.verify_git(tmp_path,v,head,**git_args)>0
+ with pytest.raises(ValueError,match="executing HEAD mismatch"):m.verify_git(tmp_path,v,freeze,**git_args)
  skew=copy.deepcopy(v);skew["workflow_freeze_epoch"]+=1
- with pytest.raises(ValueError,match="workflow freeze time"):m.verify_git(tmp_path,skew,head,git_executable=git,isolated=False,deployment_ancestor=freeze)
+ with pytest.raises(ValueError,match="workflow freeze time"):m.verify_git(tmp_path,skew,head,**git_args)
  active.write_bytes(b"tampered");call("add",m.WORKFLOW_PATH);call("commit","-m","tamper")
  with pytest.raises(ValueError,match="workflow worktree evidence"):m.verify_worktree(tmp_path,v)
- with pytest.raises(ValueError,match="workflow evidence"):m.verify_git(tmp_path,v,call("rev-parse","HEAD"),git_executable=git,isolated=False,deployment_ancestor=freeze)
+ with pytest.raises(ValueError,match="workflow evidence"):m.verify_git(tmp_path,v,call("rev-parse","HEAD"),**git_args)
 
 def test_production_main_enforces_git_and_rejects_bundle_alias(tmp_path,monkeypatch):
  v=fixture(tmp_path,monkeypatch);manifest=tmp_path/"manifest.json";manifest.write_text(m.json.dumps(v),encoding="utf-8")

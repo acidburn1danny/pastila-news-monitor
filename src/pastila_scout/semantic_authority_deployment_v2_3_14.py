@@ -24,6 +24,8 @@ CA_BUNDLE_SHA256="9cc2a774b5198dcff14d9be1e66091f538975d867ce029a96bce15a55dfd73
 HEX40=re.compile(r"^[0-9a-f]{40}$");HEX64=re.compile(r"^[0-9a-f]{64}$")
 OBJECTS=frozenset({"ca.pem","cosign","deny-network-launcher.sh","openssl","rfc3161-receipt.tsr","rfc3161-root.pem","schedule-precommit.json","trusted-root.json"})
 SCHEDULE_SELECTION_RULE="FIRST_UTC_MIDNIGHT_STRICTLY_AFTER_FREEZE_PLUS_30_DAYS"
+SCHEDULE_ANCHOR_COMMIT="4d9e65ea63a3184201b109438705fc960697c580"
+SCHEDULE_ANCHOR_EPOCH=1788430198
 
 def derive_schedule(freeze_epoch:int)->tuple[str,str]:
  if not isinstance(freeze_epoch,int) or isinstance(freeze_epoch,bool) or freeze_epoch<=0:raise ValueError("workflow freeze epoch")
@@ -49,7 +51,7 @@ def validate_manifest(v:Mapping[str,object])->None:
  if not isinstance(v["workflow_freeze_epoch"],int) or isinstance(v["workflow_freeze_epoch"],bool) or v["workflow_freeze_epoch"]<=0:raise ValueError("workflow freeze epoch")
  scheduled=datetime.strptime(str(v["scheduled_utc"]),"%Y-%m-%dT%H:%M:00Z").replace(tzinfo=timezone.utc)
  if v["schedule_cron"]!=f"{scheduled.minute} {scheduled.hour} {scheduled.day} {scheduled.month} *":raise ValueError("schedule convergence")
- if (v["scheduled_utc"],v["schedule_cron"])!=derive_schedule(v["workflow_freeze_epoch"]):raise ValueError("deterministic schedule selection")
+ if (v["scheduled_utc"],v["schedule_cron"])!=derive_schedule(SCHEDULE_ANCHOR_EPOCH):raise ValueError("deterministic schedule selection")
  fixed={"rfc3161_verifier_sha256":OPENSSL_EXECUTABLE_SHA256,"rfc3161_root_sha256":CA_BUNDLE_SHA256,"ca_sha256":CA_BUNDLE_SHA256,"cosign_sha256":COSIGN_SHA256,"launcher_sha256":LINUX_LAUNCHER_SHA256,"trusted_root_sha256":TRUSTED_ROOT_SHA256,"derivation_policy_identity":DERIVATION_POLICY_IDENTITY,"seed_plan_identity":SEED_PLAN_IDENTITY}
  if any(v[k]!=x for k,x in fixed.items()):raise ValueError("frozen dependency")
  for k in ("rfc3161_root_sha256","ca_sha256","trusted_root_sha256","schedule_payload_sha256","deployment_identity"):
@@ -71,7 +73,7 @@ def render_workflow(template:bytes,v:Mapping[str,object])->bytes:
  if re.search(r"@[A-Z0-9_]+@",text):raise ValueError("unresolved template token")
  return text.encode()
 
-def verify_git(root:Path,v:Mapping[str,object],head:str,*,git_executable:str="/usr/bin/git",isolated:bool=True,deployment_ancestor:str=DEPLOYMENT_RUNTIME_COMMIT)->int:
+def verify_git(root:Path,v:Mapping[str,object],head:str,*,git_executable:str="/usr/bin/git",isolated:bool=True,deployment_ancestor:str=DEPLOYMENT_RUNTIME_COMMIT,schedule_anchor:str=SCHEDULE_ANCHOR_COMMIT,schedule_anchor_epoch:int=SCHEDULE_ANCHOR_EPOCH)->int:
  if not HEX40.fullmatch(head):raise ValueError("head")
  def git(*args:str)->bytes:
   env={"PATH":"/usr/bin:/bin","HOME":"/nonexistent"} if isolated else None
@@ -82,10 +84,13 @@ def verify_git(root:Path,v:Mapping[str,object],head:str,*,git_executable:str="/u
  if actual!=head:raise ValueError("executing HEAD mismatch")
  git("merge-base","--is-ancestor",str(v["workflow_freeze_commit"]),head)
  git("merge-base","--is-ancestor",deployment_ancestor,str(v["workflow_freeze_commit"]))
+ git("merge-base","--is-ancestor",schedule_anchor,str(v["workflow_freeze_commit"]))
  template=git("show",f"{v['workflow_freeze_commit']}:{TEMPLATE_PATH}")
  if sha(template)!=v["workflow_template_sha256"] or git("show",f"{head}:{WORKFLOW_PATH}")!=render_workflow(template,v):raise ValueError("workflow evidence")
  stamp=git("show","-s","--format=%ct",str(v["workflow_freeze_commit"])).decode("ascii","strict").strip()
  if not stamp.isdigit() or int(stamp)!=v["workflow_freeze_epoch"]:raise ValueError("workflow freeze time")
+ anchor_stamp=git("show","-s","--format=%ct",schedule_anchor).decode("ascii","strict").strip()
+ if not anchor_stamp.isdigit() or int(anchor_stamp)!=schedule_anchor_epoch:raise ValueError("schedule anchor time")
  return int(stamp)
 
 def verify_worktree(root:Path,v:Mapping[str,object])->None:
