@@ -46,7 +46,31 @@ def schedule_payload(v:Mapping[str,object])->bytes:
 class _RejectRedirect(urllib.request.HTTPRedirectHandler):
  def redirect_request(self,req,fp,code,msg,headers,newurl):raise ValueError("RFC3161 redirect")
 
-def submit_rfc3161_query(query:bytes)->bytes:
+def _openssl(v:Mapping[str,object],o:Mapping[str,Path],args:list[str]):
+ verify_executable(o["openssl"]);verify_installed_dependency(o["deny-network-launcher.sh"],str(v["launcher_sha256"]))
+ base=["/usr/bin/bash",str(o["deny-network-launcher.sh"]),"--launcher-sha256",str(v["launcher_sha256"]),"--expected-sha256",OPENSSL_EXECUTABLE_SHA256,str(o["openssl"])]
+ return subprocess.run(base+args,stdin=subprocess.DEVNULL,stdout=subprocess.PIPE,stderr=subprocess.PIPE,env={"PATH":"/usr/bin:/bin","HOME":"/nonexistent"},timeout=30,check=False)
+
+def verify_rfc3161_query(v:Mapping[str,object],o:Mapping[str,Path])->None:
+ r=_openssl(v,o,["ts","-query","-in",str(o["rfc3161-request.tsq"]),"-text"])
+ if r.returncode or r.stderr:raise ValueError("RFC3161 query parse")
+ lines=[x.strip() for x in r.stdout.decode("utf-8","strict").splitlines()]
+ if [x for x in lines if x.startswith("Hash Algorithm:")]!=["Hash Algorithm: sha256"]:raise ValueError("RFC3161 query algorithm")
+ if [x for x in lines if x.startswith("Certificate required:")]!=["Certificate required: yes"]:raise ValueError("RFC3161 query certReq")
+ nonce=[x for x in lines if x.startswith("Nonce:")]
+ if len(nonce)!=1 or not re.fullmatch(r"Nonce:\s+0x[0-9A-Fa-f]+",nonce[0]):raise ValueError("RFC3161 query nonce")
+ try:
+  start=lines.index("Message data:")+1;end=next(i for i in range(start,len(lines)) if not re.match(r"^[0-9A-Fa-f]{4}\s*-",lines[i]))
+ except (ValueError,StopIteration):raise ValueError("RFC3161 query imprint") from None
+ chunks=[]
+ for line in lines[start:end]:
+  if not re.match(r"^[0-9A-Fa-f]{4}\s*-",line):raise ValueError("RFC3161 query imprint")
+  chunks.extend(re.findall(r"[0-9A-Fa-f]{2}",line.split("-",1)[1][:49]))
+ imprint="".join(chunks)
+ if imprint.lower()!=sha(schedule_payload(v)):raise ValueError("RFC3161 query imprint")
+
+def submit_rfc3161_query(v:Mapping[str,object],o:Mapping[str,Path])->bytes:
+ verify_rfc3161_query(v,o);query=o["rfc3161-request.tsq"].read_bytes()
  if not isinstance(query,bytes) or not query or len(query)>RFC3161_MAX_QUERY_BYTES:raise ValueError("RFC3161 query")
  request=urllib.request.Request(RFC3161_TSA_ENDPOINT,data=query,method=RFC3161_TSA_METHOD,headers={"Content-Type":RFC3161_QUERY_CONTENT_TYPE,"Accept":RFC3161_REPLY_CONTENT_TYPE})
  opener=urllib.request.build_opener(urllib.request.ProxyHandler({}),_RejectRedirect())
@@ -139,12 +163,10 @@ def materialize(v:Mapping[str,object],root:Path)->dict[str,Path]:
  return out
 
 def verify_timestamp(v:Mapping[str,object],o:Mapping[str,Path],*,freeze_epoch:int)->None:
- verify_executable(o["openssl"]);verify_installed_dependency(o["deny-network-launcher.sh"],str(v["launcher_sha256"]))
- base=["/usr/bin/bash",str(o["deny-network-launcher.sh"]),"--launcher-sha256",str(v["launcher_sha256"]),"--expected-sha256",OPENSSL_EXECUTABLE_SHA256,str(o["openssl"])]
- def run(args:list[str]):return subprocess.run(base+args,stdin=subprocess.DEVNULL,stdout=subprocess.PIPE,stderr=subprocess.PIPE,env={"PATH":"/usr/bin:/bin","HOME":"/nonexistent"},timeout=30,check=False)
- r=run(["ts","-verify","-queryfile",str(o["rfc3161-request.tsq"]),"-in",str(o["rfc3161-receipt.tsr"]),"-CAfile",str(o["rfc3161-root.pem"]),"-untrusted",str(o["rfc3161-intermediate.pem"])])
+ verify_rfc3161_query(v,o)
+ r=_openssl(v,o,["ts","-verify","-queryfile",str(o["rfc3161-request.tsq"]),"-in",str(o["rfc3161-receipt.tsr"]),"-CAfile",str(o["rfc3161-root.pem"]),"-untrusted",str(o["rfc3161-intermediate.pem"])])
  if r.returncode or (r.stdout.strip(),r.stderr.strip()) not in ((b"Verification: OK",b""),(b"",b"Verification: OK")):raise ValueError("RFC3161 signature")
- r=run(["ts","-reply","-in",str(o["rfc3161-receipt.tsr"]),"-text"]);text=r.stdout.decode("utf-8","strict")
+ r=_openssl(v,o,["ts","-reply","-in",str(o["rfc3161-receipt.tsr"]),"-text"]);text=r.stdout.decode("utf-8","strict")
  alg=[x.strip() for x in text.splitlines() if x.strip().startswith("Hash Algorithm:")];times=[x.strip() for x in text.splitlines() if x.strip().startswith("Time stamp:")]
  if r.returncode or r.stderr or alg!=["Hash Algorithm: sha256"] or len(times)!=1:raise ValueError("RFC3161 fields")
  stamped=parsedate_to_datetime(times[0].split(":",1)[1].strip()).astimezone(timezone.utc);scheduled=datetime.strptime(str(v["scheduled_utc"]),"%Y-%m-%dT%H:%M:00Z").replace(tzinfo=timezone.utc)

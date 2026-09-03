@@ -34,7 +34,7 @@ def test_schedule_is_commit_time_derived_and_not_caller_selectable(tmp_path,monk
  with pytest.raises(ValueError,match="deterministic schedule selection"):m.validate_manifest(bad)
  with pytest.raises(TypeError):m.verify_git(tmp_path,v,"a"*40,schedule_anchor="b"*40,schedule_anchor_epoch=1)
 
-def test_rfc3161_transport_profile_is_enforced_without_network(monkeypatch):
+def test_rfc3161_transport_profile_is_enforced_without_network(monkeypatch,tmp_path):
  calls=[]
  class Headers:
   def get_content_type(self):return m.RFC3161_REPLY_CONTENT_TYPE
@@ -47,13 +47,29 @@ def test_rfc3161_transport_profile_is_enforced_without_network(monkeypatch):
  class Opener:
   def open(self,request,timeout):calls.append((request,timeout));return Response()
  monkeypatch.setattr(m.urllib.request,"build_opener",lambda *handlers:(calls.append(handlers),Opener())[1])
- assert m.submit_rfc3161_query(b"query")==b"receipt"
+ monkeypatch.setattr(m,"verify_rfc3161_query",lambda v,o:None)
+ query=tmp_path/"query.tsq";query.write_bytes(b"query")
+ assert m.submit_rfc3161_query({}, {"rfc3161-request.tsq":query})==b"receipt"
  handlers=calls[0];request,timeout=calls[1]
  assert any(isinstance(x,m.urllib.request.ProxyHandler) and x.proxies=={} for x in handlers)
  assert any(isinstance(x,m._RejectRedirect) for x in handlers)
  assert request.full_url==m.RFC3161_TSA_ENDPOINT and request.method=="POST" and request.data==b"query" and timeout==20
  assert request.get_header("Content-type")==m.RFC3161_QUERY_CONTENT_TYPE and request.get_header("Accept")==m.RFC3161_REPLY_CONTENT_TYPE
- with pytest.raises(ValueError,match="query"):m.submit_rfc3161_query(b"")
+ query.write_bytes(b"")
+ with pytest.raises(ValueError,match="query"):m.submit_rfc3161_query({}, {"rfc3161-request.tsq":query})
+
+def query_text(v):
+ digest=m.sha(m.schedule_payload(v));pairs=" ".join(digest[i:i+2] for i in range(0,len(digest),2))
+ return f"Hash Algorithm: sha256\nMessage data:\n  0000 - {pairs[:47]}\n  0010 - {pairs[48:95]}\nPolicy OID: unspecified\nNonce: 0x01\nCertificate required: yes\nExtensions:\n".encode()
+
+def test_rfc3161_query_requires_payload_imprint_nonce_and_certreq(tmp_path,monkeypatch):
+ v=fixture(tmp_path,monkeypatch);o=m.materialize(v,tmp_path);monkeypatch.setattr(m,"verify_executable",lambda p:None);monkeypatch.setattr(m,"verify_installed_dependency",lambda *a:None)
+ good=query_text(v)
+ monkeypatch.setattr(m.subprocess,"run",lambda *a,**k:type("R",(),{"returncode":0,"stdout":good,"stderr":b""})())
+ m.verify_rfc3161_query(v,o)
+ for bad in (good.replace(b"sha256",b"sha384"),good.replace(b"Nonce: 0x01\n",b""),good.replace(b"required: yes",b"required: no"),good.replace(b"0000 - ",b"0000 - ff ",1)):
+  monkeypatch.setattr(m.subprocess,"run",lambda *a,_bad=bad,**k:type("R",(),{"returncode":0,"stdout":_bad,"stderr":b""})())
+  with pytest.raises(ValueError):m.verify_rfc3161_query(v,o)
 
 def test_alias_extra_separator_and_symlink_fail(tmp_path,monkeypatch):
  v=fixture(tmp_path,monkeypatch);bad=copy.deepcopy(v);bad["objects"]["cosign"]["path"]="deployment/objects/../cosign"
@@ -79,9 +95,9 @@ def test_render_and_template_are_inert_and_executable(tmp_path,monkeypatch):
 
 def test_timestamp_is_cryptographic_and_precedes_schedule(monkeypatch,tmp_path):
  v=fixture(tmp_path,monkeypatch);o=m.materialize(v,tmp_path);monkeypatch.setattr(m,"verify_executable",lambda p:None);monkeypatch.setattr(m,"verify_installed_dependency",lambda *a:None)
- calls=[];replies=iter([type("R",(),{"returncode":0,"stdout":b"Verification: OK\n","stderr":b""})(),type("R",(),{"returncode":0,"stdout":b"Hash Algorithm: sha256\nTime stamp: Wed Sep 30 23:59:00 2026 GMT\n","stderr":b""})()]);monkeypatch.setattr(m.subprocess,"run",lambda args,**k:(calls.append(args),next(replies))[1]);m.verify_timestamp(v,o,freeze_epoch=1)
- assert "-queryfile" in calls[0] and "-data" not in calls[0]
- late=iter([type("R",(),{"returncode":0,"stdout":b"Verification: OK\n","stderr":b""})(),type("R",(),{"returncode":0,"stdout":b"Hash Algorithm: sha256\nTime stamp: Sun Oct 4 00:00:00 2026 GMT\n","stderr":b""})()]);monkeypatch.setattr(m.subprocess,"run",lambda *a,**k:next(late))
+ calls=[];replies=iter([type("R",(),{"returncode":0,"stdout":query_text(v),"stderr":b""})(),type("R",(),{"returncode":0,"stdout":b"Verification: OK\n","stderr":b""})(),type("R",(),{"returncode":0,"stdout":b"Hash Algorithm: sha256\nTime stamp: Wed Sep 30 23:59:00 2026 GMT\n","stderr":b""})()]);monkeypatch.setattr(m.subprocess,"run",lambda args,**k:(calls.append(args),next(replies))[1]);m.verify_timestamp(v,o,freeze_epoch=1)
+ assert "-queryfile" in calls[1] and "-data" not in calls[1]
+ late=iter([type("R",(),{"returncode":0,"stdout":query_text(v),"stderr":b""})(),type("R",(),{"returncode":0,"stdout":b"Verification: OK\n","stderr":b""})(),type("R",(),{"returncode":0,"stdout":b"Hash Algorithm: sha256\nTime stamp: Sun Oct 4 00:00:00 2026 GMT\n","stderr":b""})()]);monkeypatch.setattr(m.subprocess,"run",lambda *a,**k:next(late))
  with pytest.raises(ValueError,match="phase order"):m.verify_timestamp(v,o,freeze_epoch=1)
 
 def test_initiation_is_one_shot_guarded_and_has_exact_subject_bytes(tmp_path,monkeypatch):
