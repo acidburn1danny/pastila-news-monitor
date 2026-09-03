@@ -6,13 +6,13 @@ from pastila_scout.semantic_authority_capture_orchestrator_v2_3_7 import canonic
 
 def fixture(tmp_path,monkeypatch):
  monkeypatch.setattr(m,"OPENSSL_EXECUTABLE_SHA256",m.sha(b"openssl"));monkeypatch.setattr(m,"COSIGN_SHA256",m.sha(b"cosign"));monkeypatch.setattr(m,"LINUX_LAUNCHER_SHA256",m.sha(b"deny-network-launcher.sh"))
- monkeypatch.setattr(m,"CA_BUNDLE_SHA256",m.sha(b"ca.pem"));monkeypatch.setattr(m,"TRUSTED_ROOT_SHA256",m.sha(b"trusted-root.json"))
+ monkeypatch.setattr(m,"CA_BUNDLE_SHA256",m.sha(b"ca.pem"));monkeypatch.setattr(m,"RFC3161_ROOT_SHA256",m.sha(b"rfc3161-root.pem"));monkeypatch.setattr(m,"RFC3161_INTERMEDIATE_SHA256",m.sha(b"rfc3161-intermediate.pem"));monkeypatch.setattr(m,"TRUSTED_ROOT_SHA256",m.sha(b"trusted-root.json"))
  epoch=1788430198;scheduled,cron=m.derive_schedule(m.SCHEDULE_ANCHOR_EPOCH)
- v={"schema":m.SCHEMA,"repository_slug":m.REPOSITORY_SLUG,"repository_id":m.REPOSITORY_ID,"default_branch_ref":m.DEFAULT_BRANCH_REF,"core_runtime_commit":m.RUNTIME_COMMIT,"deployment_runtime_commit":m.DEPLOYMENT_RUNTIME_COMMIT,"workflow_freeze_commit":"a"*40,"workflow_freeze_epoch":epoch,"workflow_template_sha256":"1"*64,"schedule_selection_rule":m.SCHEDULE_SELECTION_RULE,"schedule_anchor_commit":m.SCHEDULE_ANCHOR_COMMIT,"schedule_anchor_epoch":m.SCHEDULE_ANCHOR_EPOCH,"scheduled_utc":scheduled,"schedule_cron":cron,"rfc3161_verifier_sha256":m.OPENSSL_EXECUTABLE_SHA256,"rfc3161_root_sha256":"2"*64,"ca_sha256":"3"*64,"cosign_sha256":m.COSIGN_SHA256,"launcher_sha256":m.LINUX_LAUNCHER_SHA256,"trusted_root_sha256":"4"*64,"derivation_policy_identity":m.DERIVATION_POLICY_IDENTITY,"seed_plan_identity":m.SEED_PLAN_IDENTITY}
- payload=m.schedule_payload(v);values={name:(payload if name=="schedule-precommit.json" else (b"ca.pem" if name=="rfc3161-root.pem" else name.encode())) for name in m.OBJECTS};objects={}
+ v={"schema":m.SCHEMA,"repository_slug":m.REPOSITORY_SLUG,"repository_id":m.REPOSITORY_ID,"default_branch_ref":m.DEFAULT_BRANCH_REF,"core_runtime_commit":m.RUNTIME_COMMIT,"deployment_runtime_commit":m.DEPLOYMENT_RUNTIME_COMMIT,"workflow_freeze_commit":"a"*40,"workflow_freeze_epoch":epoch,"workflow_template_sha256":"1"*64,"schedule_selection_rule":m.SCHEDULE_SELECTION_RULE,"schedule_anchor_commit":m.SCHEDULE_ANCHOR_COMMIT,"schedule_anchor_epoch":m.SCHEDULE_ANCHOR_EPOCH,"scheduled_utc":scheduled,"schedule_cron":cron,"rfc3161_tsa_endpoint":m.RFC3161_TSA_ENDPOINT,"rfc3161_tsa_method":m.RFC3161_TSA_METHOD,"rfc3161_query_content_type":m.RFC3161_QUERY_CONTENT_TYPE,"rfc3161_reply_content_type":m.RFC3161_REPLY_CONTENT_TYPE,"rfc3161_tsa_redirects":m.RFC3161_TSA_REDIRECTS,"rfc3161_tsa_attempts":m.RFC3161_TSA_ATTEMPTS,"rfc3161_tsa_nonce":m.RFC3161_TSA_NONCE,"rfc3161_tsa_cert_req":m.RFC3161_TSA_CERT_REQ,"rfc3161_verifier_sha256":m.OPENSSL_EXECUTABLE_SHA256,"rfc3161_root_sha256":m.RFC3161_ROOT_SHA256,"rfc3161_intermediate_sha256":m.RFC3161_INTERMEDIATE_SHA256,"ca_sha256":"3"*64,"cosign_sha256":m.COSIGN_SHA256,"launcher_sha256":m.LINUX_LAUNCHER_SHA256,"trusted_root_sha256":"4"*64,"derivation_policy_identity":m.DERIVATION_POLICY_IDENTITY,"seed_plan_identity":m.SEED_PLAN_IDENTITY}
+ payload=m.schedule_payload(v);values={name:(payload if name=="schedule-precommit.json" else name.encode()) for name in m.OBJECTS};objects={}
  for name,data in values.items():
   path=tmp_path/"deployment"/"objects"/name;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(data);objects[name]={"sha256":m.sha(data),"length":len(data),"path":f"deployment/objects/{name}"}
- v.update({"schedule_payload_sha256":m.sha(payload),"objects":objects});v.update({"rfc3161_root_sha256":objects["rfc3161-root.pem"]["sha256"],"ca_sha256":objects["ca.pem"]["sha256"],"trusted_root_sha256":objects["trusted-root.json"]["sha256"]})
+ v.update({"schedule_payload_sha256":m.sha(payload),"objects":objects});v.update({"rfc3161_root_sha256":objects["rfc3161-root.pem"]["sha256"],"rfc3161_intermediate_sha256":objects["rfc3161-intermediate.pem"]["sha256"],"rfc3161_request_sha256":objects["rfc3161-request.tsq"]["sha256"],"ca_sha256":objects["ca.pem"]["sha256"],"trusted_root_sha256":objects["trusted-root.json"]["sha256"]})
  payload=m.schedule_payload(v);(tmp_path/"deployment/objects/schedule-precommit.json").write_bytes(payload);objects["schedule-precommit.json"].update(sha256=m.sha(payload),length=len(payload));v["schedule_payload_sha256"]=m.sha(payload)
  body=dict(v);v["deployment_identity"]=m.sha(canonical(body));v["manifest_identity"]=m.sha(canonical(v));return v
 
@@ -21,7 +21,7 @@ def test_manifest_materialization_and_tamper(tmp_path,monkeypatch):
  (tmp_path/"deployment/objects/cosign").write_bytes(b"tamper")
  with pytest.raises(ValueError,match="bytes"):m.materialize(v,tmp_path)
 
-@pytest.mark.parametrize("key",["workflow_freeze_commit","schedule_selection_rule","schedule_anchor_commit","schedule_anchor_epoch","schedule_cron","rfc3161_verifier_sha256","schedule_payload_sha256","deployment_identity","manifest_identity"])
+@pytest.mark.parametrize("key",["workflow_freeze_commit","schedule_selection_rule","schedule_anchor_commit","schedule_anchor_epoch","schedule_cron","rfc3161_tsa_endpoint","rfc3161_tsa_method","rfc3161_query_content_type","rfc3161_reply_content_type","rfc3161_tsa_redirects","rfc3161_tsa_attempts","rfc3161_tsa_nonce","rfc3161_tsa_cert_req","rfc3161_root_sha256","rfc3161_intermediate_sha256","rfc3161_verifier_sha256","schedule_payload_sha256","deployment_identity","manifest_identity"])
 def test_identity_mutations_fail(tmp_path,monkeypatch,key):
  v=fixture(tmp_path,monkeypatch);v[key]="0"*(40 if key.endswith("commit") else 64)
  with pytest.raises((ValueError,TypeError)):m.validate_manifest(v)
@@ -33,6 +33,27 @@ def test_schedule_is_commit_time_derived_and_not_caller_selectable(tmp_path,monk
  bad=copy.deepcopy(v);bad["scheduled_utc"]="2026-10-05T00:00:00Z";bad["schedule_cron"]="0 0 5 10 *"
  with pytest.raises(ValueError,match="deterministic schedule selection"):m.validate_manifest(bad)
  with pytest.raises(TypeError):m.verify_git(tmp_path,v,"a"*40,schedule_anchor="b"*40,schedule_anchor_epoch=1)
+
+def test_rfc3161_transport_profile_is_enforced_without_network(monkeypatch):
+ calls=[]
+ class Headers:
+  def get_content_type(self):return m.RFC3161_REPLY_CONTENT_TYPE
+ class Response:
+  status=200;headers=Headers()
+  def geturl(self):return m.RFC3161_TSA_ENDPOINT
+  def read(self,n):calls.append(("read",n));return b"receipt"
+  def __enter__(self):return self
+  def __exit__(self,*args):return False
+ class Opener:
+  def open(self,request,timeout):calls.append((request,timeout));return Response()
+ monkeypatch.setattr(m.urllib.request,"build_opener",lambda *handlers:(calls.append(handlers),Opener())[1])
+ assert m.submit_rfc3161_query(b"query")==b"receipt"
+ handlers=calls[0];request,timeout=calls[1]
+ assert any(isinstance(x,m.urllib.request.ProxyHandler) and x.proxies=={} for x in handlers)
+ assert any(isinstance(x,m._RejectRedirect) for x in handlers)
+ assert request.full_url==m.RFC3161_TSA_ENDPOINT and request.method=="POST" and request.data==b"query" and timeout==20
+ assert request.get_header("Content-type")==m.RFC3161_QUERY_CONTENT_TYPE and request.get_header("Accept")==m.RFC3161_REPLY_CONTENT_TYPE
+ with pytest.raises(ValueError,match="query"):m.submit_rfc3161_query(b"")
 
 def test_alias_extra_separator_and_symlink_fail(tmp_path,monkeypatch):
  v=fixture(tmp_path,monkeypatch);bad=copy.deepcopy(v);bad["objects"]["cosign"]["path"]="deployment/objects/../cosign"
@@ -58,7 +79,8 @@ def test_render_and_template_are_inert_and_executable(tmp_path,monkeypatch):
 
 def test_timestamp_is_cryptographic_and_precedes_schedule(monkeypatch,tmp_path):
  v=fixture(tmp_path,monkeypatch);o=m.materialize(v,tmp_path);monkeypatch.setattr(m,"verify_executable",lambda p:None);monkeypatch.setattr(m,"verify_installed_dependency",lambda *a:None)
- replies=iter([type("R",(),{"returncode":0,"stdout":b"Verification: OK\n","stderr":b""})(),type("R",(),{"returncode":0,"stdout":b"Hash Algorithm: sha256\nTime stamp: Wed Sep 30 23:59:00 2026 GMT\n","stderr":b""})()]);monkeypatch.setattr(m.subprocess,"run",lambda *a,**k:next(replies));m.verify_timestamp(v,o,freeze_epoch=1)
+ calls=[];replies=iter([type("R",(),{"returncode":0,"stdout":b"Verification: OK\n","stderr":b""})(),type("R",(),{"returncode":0,"stdout":b"Hash Algorithm: sha256\nTime stamp: Wed Sep 30 23:59:00 2026 GMT\n","stderr":b""})()]);monkeypatch.setattr(m.subprocess,"run",lambda args,**k:(calls.append(args),next(replies))[1]);m.verify_timestamp(v,o,freeze_epoch=1)
+ assert "-queryfile" in calls[0] and "-data" not in calls[0]
  late=iter([type("R",(),{"returncode":0,"stdout":b"Verification: OK\n","stderr":b""})(),type("R",(),{"returncode":0,"stdout":b"Hash Algorithm: sha256\nTime stamp: Sun Oct 4 00:00:00 2026 GMT\n","stderr":b""})()]);monkeypatch.setattr(m.subprocess,"run",lambda *a,**k:next(late))
  with pytest.raises(ValueError,match="phase order"):m.verify_timestamp(v,o,freeze_epoch=1)
 

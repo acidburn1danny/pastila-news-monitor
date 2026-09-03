@@ -1,6 +1,6 @@
 """V2.3.15 source-blind three-phase deployment boundary."""
 from __future__ import annotations
-import argparse, json, os, re, subprocess
+import argparse, json, os, re, subprocess, urllib.request
 from datetime import datetime, timedelta, timezone
 from email.utils import parsedate_to_datetime
 from pathlib import Path, PurePosixPath
@@ -21,8 +21,14 @@ ATTEST_ACTION_COMMIT="1e69f48acb82d1966a394da916b4c1698aa569d6"
 UPLOAD_ACTION_COMMIT="ea165f8d65b6e75b540449e92b4886f43607fa02"
 DEFAULT_BRANCH_REF="refs/heads/public/v2.3.7-capture"
 CA_BUNDLE_SHA256="9cc2a774b5198dcff14d9be1e66091f538975d867ce029a96bce15a55dfd730f"
+RFC3161_TSA_ENDPOINT="http://timestamp.digicert.com"
+RFC3161_TSA_METHOD="POST";RFC3161_QUERY_CONTENT_TYPE="application/timestamp-query";RFC3161_REPLY_CONTENT_TYPE="application/timestamp-reply"
+RFC3161_TSA_REDIRECTS=0;RFC3161_TSA_ATTEMPTS=1;RFC3161_TSA_NONCE=True;RFC3161_TSA_CERT_REQ=True
+RFC3161_ROOT_SHA256="ce7d6b44f5d510391be98c8d76b18709400a30cd87659bfebe1c6f97ff5181ee"
+RFC3161_INTERMEDIATE_SHA256="0edab770d65632eefbe6ccdb61034e224facf49a960acdf82ae13c64fa0a3519"
+RFC3161_MAX_QUERY_BYTES=65536;RFC3161_MAX_REPLY_BYTES=1048576;RFC3161_TIMEOUT_SECONDS=20
 HEX40=re.compile(r"^[0-9a-f]{40}$");HEX64=re.compile(r"^[0-9a-f]{64}$")
-OBJECTS=frozenset({"ca.pem","cosign","deny-network-launcher.sh","openssl","rfc3161-receipt.tsr","rfc3161-root.pem","schedule-precommit.json","trusted-root.json"})
+OBJECTS=frozenset({"ca.pem","cosign","deny-network-launcher.sh","openssl","rfc3161-request.tsq","rfc3161-receipt.tsr","rfc3161-root.pem","rfc3161-intermediate.pem","schedule-precommit.json","trusted-root.json"})
 SCHEDULE_SELECTION_RULE="FIRST_UTC_MIDNIGHT_STRICTLY_AFTER_PUBLIC_ANCHOR_PLUS_30_DAYS"
 SCHEDULE_ANCHOR_COMMIT="4d9e65ea63a3184201b109438705fc960697c580"
 SCHEDULE_ANCHOR_EPOCH=1788430198
@@ -34,8 +40,22 @@ def derive_schedule(freeze_epoch:int)->tuple[str,str]:
  return scheduled.strftime("%Y-%m-%dT%H:%M:00Z"),f"0 0 {scheduled.day} {scheduled.month} *"
 
 def schedule_payload(v:Mapping[str,object])->bytes:
- keys=("repository_slug","repository_id","default_branch_ref","core_runtime_commit","deployment_runtime_commit","workflow_freeze_commit","workflow_freeze_epoch","workflow_template_sha256","schedule_selection_rule","schedule_anchor_commit","schedule_anchor_epoch","scheduled_utc","schedule_cron","rfc3161_verifier_sha256","rfc3161_root_sha256")
+ keys=("repository_slug","repository_id","default_branch_ref","core_runtime_commit","deployment_runtime_commit","workflow_freeze_commit","workflow_freeze_epoch","workflow_template_sha256","schedule_selection_rule","schedule_anchor_commit","schedule_anchor_epoch","scheduled_utc","schedule_cron","rfc3161_tsa_endpoint","rfc3161_tsa_method","rfc3161_query_content_type","rfc3161_reply_content_type","rfc3161_tsa_redirects","rfc3161_tsa_attempts","rfc3161_tsa_nonce","rfc3161_tsa_cert_req","rfc3161_verifier_sha256","rfc3161_root_sha256","rfc3161_intermediate_sha256")
  return canonical({"schema":PAYLOAD_SCHEMA,**{k:v[k] for k in keys}})+b"\n"
+
+class _RejectRedirect(urllib.request.HTTPRedirectHandler):
+ def redirect_request(self,req,fp,code,msg,headers,newurl):raise ValueError("RFC3161 redirect")
+
+def submit_rfc3161_query(query:bytes)->bytes:
+ if not isinstance(query,bytes) or not query or len(query)>RFC3161_MAX_QUERY_BYTES:raise ValueError("RFC3161 query")
+ request=urllib.request.Request(RFC3161_TSA_ENDPOINT,data=query,method=RFC3161_TSA_METHOD,headers={"Content-Type":RFC3161_QUERY_CONTENT_TYPE,"Accept":RFC3161_REPLY_CONTENT_TYPE})
+ opener=urllib.request.build_opener(urllib.request.ProxyHandler({}),_RejectRedirect())
+ with opener.open(request,timeout=RFC3161_TIMEOUT_SECONDS) as response:
+  if response.status!=200 or response.geturl()!=RFC3161_TSA_ENDPOINT:raise ValueError("RFC3161 response authority")
+  if response.headers.get_content_type()!=RFC3161_REPLY_CONTENT_TYPE:raise ValueError("RFC3161 response content type")
+  receipt=response.read(RFC3161_MAX_REPLY_BYTES+1)
+ if not receipt or len(receipt)>RFC3161_MAX_REPLY_BYTES:raise ValueError("RFC3161 response size")
+ return receipt
 
 def _entry(x:object)->tuple[str,int,str]:
  if not isinstance(x,dict) or set(x)!={"sha256","length","path"}:raise ValueError("object schema")
@@ -45,7 +65,7 @@ def _entry(x:object)->tuple[str,int,str]:
  return digest,length,path
 
 def validate_manifest(v:Mapping[str,object])->None:
- required={"schema","repository_slug","repository_id","default_branch_ref","core_runtime_commit","deployment_runtime_commit","workflow_freeze_commit","workflow_freeze_epoch","workflow_template_sha256","schedule_selection_rule","schedule_anchor_commit","schedule_anchor_epoch","scheduled_utc","schedule_cron","rfc3161_verifier_sha256","rfc3161_root_sha256","ca_sha256","cosign_sha256","launcher_sha256","trusted_root_sha256","derivation_policy_identity","seed_plan_identity","schedule_payload_sha256","objects","deployment_identity","manifest_identity"}
+ required={"schema","repository_slug","repository_id","default_branch_ref","core_runtime_commit","deployment_runtime_commit","workflow_freeze_commit","workflow_freeze_epoch","workflow_template_sha256","schedule_selection_rule","schedule_anchor_commit","schedule_anchor_epoch","scheduled_utc","schedule_cron","rfc3161_tsa_endpoint","rfc3161_tsa_method","rfc3161_query_content_type","rfc3161_reply_content_type","rfc3161_tsa_redirects","rfc3161_tsa_attempts","rfc3161_tsa_nonce","rfc3161_tsa_cert_req","rfc3161_verifier_sha256","rfc3161_root_sha256","rfc3161_intermediate_sha256","rfc3161_request_sha256","ca_sha256","cosign_sha256","launcher_sha256","trusted_root_sha256","derivation_policy_identity","seed_plan_identity","schedule_payload_sha256","objects","deployment_identity","manifest_identity"}
  if set(v)!=required or v["schema"]!=SCHEMA or v["repository_slug"]!=REPOSITORY_SLUG or v["repository_id"]!=REPOSITORY_ID or v["default_branch_ref"]!=DEFAULT_BRANCH_REF or v["core_runtime_commit"]!=RUNTIME_COMMIT or v["deployment_runtime_commit"]!=DEPLOYMENT_RUNTIME_COMMIT:raise ValueError("manifest schema")
  if not HEX40.fullmatch(str(v["workflow_freeze_commit"])) or not HEX64.fullmatch(str(v["workflow_template_sha256"])):raise ValueError("workflow freeze")
  if not isinstance(v["workflow_freeze_epoch"],int) or isinstance(v["workflow_freeze_epoch"],bool) or v["workflow_freeze_epoch"]<=0:raise ValueError("workflow freeze epoch")
@@ -53,16 +73,16 @@ def validate_manifest(v:Mapping[str,object])->None:
  scheduled=datetime.strptime(str(v["scheduled_utc"]),"%Y-%m-%dT%H:%M:00Z").replace(tzinfo=timezone.utc)
  if v["schedule_cron"]!=f"{scheduled.minute} {scheduled.hour} {scheduled.day} {scheduled.month} *":raise ValueError("schedule convergence")
  if (v["scheduled_utc"],v["schedule_cron"])!=derive_schedule(SCHEDULE_ANCHOR_EPOCH):raise ValueError("deterministic schedule selection")
- fixed={"rfc3161_verifier_sha256":OPENSSL_EXECUTABLE_SHA256,"rfc3161_root_sha256":CA_BUNDLE_SHA256,"ca_sha256":CA_BUNDLE_SHA256,"cosign_sha256":COSIGN_SHA256,"launcher_sha256":LINUX_LAUNCHER_SHA256,"trusted_root_sha256":TRUSTED_ROOT_SHA256,"derivation_policy_identity":DERIVATION_POLICY_IDENTITY,"seed_plan_identity":SEED_PLAN_IDENTITY}
+ fixed={"rfc3161_tsa_endpoint":RFC3161_TSA_ENDPOINT,"rfc3161_tsa_method":RFC3161_TSA_METHOD,"rfc3161_query_content_type":RFC3161_QUERY_CONTENT_TYPE,"rfc3161_reply_content_type":RFC3161_REPLY_CONTENT_TYPE,"rfc3161_tsa_redirects":RFC3161_TSA_REDIRECTS,"rfc3161_tsa_attempts":RFC3161_TSA_ATTEMPTS,"rfc3161_tsa_nonce":RFC3161_TSA_NONCE,"rfc3161_tsa_cert_req":RFC3161_TSA_CERT_REQ,"rfc3161_verifier_sha256":OPENSSL_EXECUTABLE_SHA256,"rfc3161_root_sha256":RFC3161_ROOT_SHA256,"rfc3161_intermediate_sha256":RFC3161_INTERMEDIATE_SHA256,"ca_sha256":CA_BUNDLE_SHA256,"cosign_sha256":COSIGN_SHA256,"launcher_sha256":LINUX_LAUNCHER_SHA256,"trusted_root_sha256":TRUSTED_ROOT_SHA256,"derivation_policy_identity":DERIVATION_POLICY_IDENTITY,"seed_plan_identity":SEED_PLAN_IDENTITY}
  if any(v[k]!=x for k,x in fixed.items()):raise ValueError("frozen dependency")
- for k in ("rfc3161_root_sha256","ca_sha256","trusted_root_sha256","schedule_payload_sha256","deployment_identity"):
+ for k in ("rfc3161_root_sha256","rfc3161_intermediate_sha256","rfc3161_request_sha256","ca_sha256","trusted_root_sha256","schedule_payload_sha256","deployment_identity"):
   if not HEX64.fullmatch(str(v[k])):raise ValueError("digest")
  if sha(schedule_payload(v))!=v["schedule_payload_sha256"]:raise ValueError("payload binding")
  rows=v["objects"]
  if not isinstance(rows,dict) or set(rows)!=OBJECTS:raise ValueError("object closure")
  parsed={k:_entry(x) for k,x in rows.items()}
  if len({x[2] for x in parsed.values()})!=len(parsed):raise ValueError("object alias")
- binds={"openssl":"rfc3161_verifier_sha256","rfc3161-root.pem":"rfc3161_root_sha256","ca.pem":"ca_sha256","cosign":"cosign_sha256","deny-network-launcher.sh":"launcher_sha256","trusted-root.json":"trusted_root_sha256","schedule-precommit.json":"schedule_payload_sha256"}
+ binds={"openssl":"rfc3161_verifier_sha256","rfc3161-root.pem":"rfc3161_root_sha256","rfc3161-intermediate.pem":"rfc3161_intermediate_sha256","rfc3161-request.tsq":"rfc3161_request_sha256","ca.pem":"ca_sha256","cosign":"cosign_sha256","deny-network-launcher.sh":"launcher_sha256","trusted-root.json":"trusted_root_sha256","schedule-precommit.json":"schedule_payload_sha256"}
  if any(parsed[n][0]!=v[f] for n,f in binds.items()):raise ValueError("object/pin binding")
  body={k:x for k,x in v.items() if k not in {"deployment_identity","manifest_identity"}}
  if v["deployment_identity"]!=sha(canonical(body)):raise ValueError("deployment identity")
@@ -122,7 +142,7 @@ def verify_timestamp(v:Mapping[str,object],o:Mapping[str,Path],*,freeze_epoch:in
  verify_executable(o["openssl"]);verify_installed_dependency(o["deny-network-launcher.sh"],str(v["launcher_sha256"]))
  base=["/usr/bin/bash",str(o["deny-network-launcher.sh"]),"--launcher-sha256",str(v["launcher_sha256"]),"--expected-sha256",OPENSSL_EXECUTABLE_SHA256,str(o["openssl"])]
  def run(args:list[str]):return subprocess.run(base+args,stdin=subprocess.DEVNULL,stdout=subprocess.PIPE,stderr=subprocess.PIPE,env={"PATH":"/usr/bin:/bin","HOME":"/nonexistent"},timeout=30,check=False)
- r=run(["ts","-verify","-data",str(o["schedule-precommit.json"]),"-in",str(o["rfc3161-receipt.tsr"]),"-CAfile",str(o["rfc3161-root.pem"])])
+ r=run(["ts","-verify","-queryfile",str(o["rfc3161-request.tsq"]),"-in",str(o["rfc3161-receipt.tsr"]),"-CAfile",str(o["rfc3161-root.pem"]),"-untrusted",str(o["rfc3161-intermediate.pem"])])
  if r.returncode or (r.stdout.strip(),r.stderr.strip()) not in ((b"Verification: OK",b""),(b"",b"Verification: OK")):raise ValueError("RFC3161 signature")
  r=run(["ts","-reply","-in",str(o["rfc3161-receipt.tsr"]),"-text"]);text=r.stdout.decode("utf-8","strict")
  alg=[x.strip() for x in text.splitlines() if x.strip().startswith("Hash Algorithm:")];times=[x.strip() for x in text.splitlines() if x.strip().startswith("Time stamp:")]
