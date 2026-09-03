@@ -31,6 +31,15 @@ def provenance() -> dict[str, object]:
 
 def test_provenance_is_exact_and_v2312_uses_linux_pin():
     verifier.verify_provenance_record(provenance())
+    assert verifier.RUNTIME_LAYER_SHA256 == (
+        "53c88f1dfeb79b2f207f7f1a03a45e0dc5ed208b9f496de16b98f81189dc0392",
+        "eae668646f447b181fe300ae6756351b6167aa2578be449b167ba79ed4926798",
+        "ff2e6e687b6ce78177a4cac678dd533c8e72b97469f030783b6bb491f681fd4c",
+        "7c40a3faff76845154c32b7b35d5535b201d3bd04f94a0c408f8e98f9ed98ad6",
+        "85694cfea2c4dfd425b9947a149670940f0625182653d556ed9c541e0cb1f292",
+        "d7d82d76b698080549e693e4b53493dc29835ae4ac836fb2aa2d6ef513e9008c",
+        "50475ada0cb12c5af6c0c7c3188df0354108a5096b87a1ba0ca5a34e4e1150d3",
+    )
     assert deployment.OPENSSL_SHA256 == verifier.OPENSSL_EXECUTABLE_SHA256
     bad = provenance()
     bad["openssl_version"] = "caller-selected"

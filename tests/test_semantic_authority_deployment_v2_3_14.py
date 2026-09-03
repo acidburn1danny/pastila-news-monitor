@@ -99,7 +99,7 @@ def test_rfc3161_post_snapshot_path_substitution_cannot_change_transport(monkeyp
   m.validate_request_authority(value);query.write_bytes(b"substituted-query");schedule.write_bytes(b"substituted-schedule")
  monkeypatch.setattr(m,"verify_rfc3161_submission_authority",authority)
  monkeypatch.setattr(m,"verify_executable",lambda p:None);monkeypatch.setattr(m,"verify_installed_dependency",lambda *a:None)
- monkeypatch.setattr(m.subprocess,"run",lambda *a,**k:type("R",(),{"returncode":0,"stdout":query_text(v),"stderr":b""})())
+ monkeypatch.setattr(m.subprocess,"run",lambda *a,**k:type("R",(),{"returncode":0,"stdout":query_text(v),"stderr":m.RFC3161_OPENSSL_CONFIG_NOTICE})())
  monkeypatch.setattr(m.urllib.request,"build_opener",lambda *handlers:Opener())
  assert m.submit_rfc3161_query(v,snapshot,root=tmp_path)==b"receipt" and sent==[snapshot.query_bytes]
  assert snapshot.schedule_bytes==m.schedule_payload(v) and query.read_bytes()!=snapshot.query_bytes and schedule.read_bytes()!=snapshot.schedule_bytes
@@ -119,11 +119,14 @@ def query_text(v):
 def test_rfc3161_query_requires_payload_imprint_nonce_and_certreq(tmp_path,monkeypatch):
  v=fixture(tmp_path,monkeypatch);o=m.materialize(v,tmp_path);monkeypatch.setattr(m,"verify_executable",lambda p:None);monkeypatch.setattr(m,"verify_installed_dependency",lambda *a:None)
  good=query_text(v)
- monkeypatch.setattr(m.subprocess,"run",lambda *a,**k:type("R",(),{"returncode":0,"stdout":good,"stderr":b""})())
+ monkeypatch.setattr(m.subprocess,"run",lambda *a,**k:type("R",(),{"returncode":0,"stdout":good,"stderr":m.RFC3161_OPENSSL_CONFIG_NOTICE})())
  m.verify_rfc3161_query(v,o)
  for bad in (good.replace(b"sha256",b"sha384"),good.replace(b"Nonce: 0x01\n",b""),good.replace(b"required: yes",b"required: no"),good.replace(b"0000 - ",b"0000 - ff ",1)):
-  monkeypatch.setattr(m.subprocess,"run",lambda *a,_bad=bad,**k:type("R",(),{"returncode":0,"stdout":_bad,"stderr":b""})())
+  monkeypatch.setattr(m.subprocess,"run",lambda *a,_bad=bad,**k:type("R",(),{"returncode":0,"stdout":_bad,"stderr":m.RFC3161_OPENSSL_CONFIG_NOTICE})())
   with pytest.raises(ValueError):m.verify_rfc3161_query(v,o)
+ for stderr in (b"",m.RFC3161_OPENSSL_CONFIG_NOTICE+b"extra\n",m.RFC3161_OPENSSL_CONFIG_NOTICE*2,b"Using configuration from /caller/selected.cnf\n"):
+  monkeypatch.setattr(m.subprocess,"run",lambda *a,_stderr=stderr,**k:type("R",(),{"returncode":0,"stdout":good,"stderr":_stderr})())
+  with pytest.raises(ValueError,match="query parse"):m.verify_rfc3161_query(v,o)
 
 def test_alias_extra_separator_and_symlink_fail(tmp_path,monkeypatch):
  v=fixture(tmp_path,monkeypatch);bad=copy.deepcopy(v);bad["objects"]["cosign"]["path"]="deployment/objects/../cosign"
@@ -154,10 +157,10 @@ def test_render_and_template_are_inert_and_executable(tmp_path,monkeypatch):
 
 def test_timestamp_is_cryptographic_and_precedes_schedule(monkeypatch,tmp_path):
  v=fixture(tmp_path,monkeypatch);o=m.materialize(v,tmp_path);monkeypatch.setattr(m,"verify_executable",lambda p:None);monkeypatch.setattr(m,"verify_installed_dependency",lambda *a:None)
- calls=[];replies=iter([type("R",(),{"returncode":0,"stdout":query_text(v),"stderr":b""})(),type("R",(),{"returncode":0,"stdout":b"Verification: OK\n","stderr":b""})(),type("R",(),{"returncode":0,"stdout":b"Hash Algorithm: sha256\nTime stamp: Thu Sep 3 22:59:00 2026 GMT\n","stderr":b""})()]);monkeypatch.setattr(m.subprocess,"run",lambda args,**k:(calls.append((args,k)),next(replies))[1]);m.verify_timestamp(v,o,freeze_epoch=1)
+ calls=[];notice=m.RFC3161_OPENSSL_CONFIG_NOTICE;replies=iter([type("R",(),{"returncode":0,"stdout":query_text(v),"stderr":notice})(),type("R",(),{"returncode":0,"stdout":b"Verification: OK\n","stderr":notice})(),type("R",(),{"returncode":0,"stdout":b"Hash Algorithm: sha256\nTime stamp: Thu Sep 3 22:59:00 2026 GMT\n","stderr":notice})()]);monkeypatch.setattr(m.subprocess,"run",lambda args,**k:(calls.append((args,k)),next(replies))[1]);m.verify_timestamp(v,o,freeze_epoch=1)
  assert "-queryfile" in calls[1][0] and "/dev/stdin" in calls[1][0] and "-data" not in calls[1][0]
  assert calls[0][1]["input"]==calls[1][1]["input"]==(tmp_path/"deployment/objects/rfc3161-request.tsq").read_bytes()
- late=iter([type("R",(),{"returncode":0,"stdout":query_text(v),"stderr":b""})(),type("R",(),{"returncode":0,"stdout":b"Verification: OK\n","stderr":b""})(),type("R",(),{"returncode":0,"stdout":b"Hash Algorithm: sha256\nTime stamp: Thu Sep 3 23:00:00 2026 GMT\n","stderr":b""})()]);monkeypatch.setattr(m.subprocess,"run",lambda *a,**k:next(late))
+ late=iter([type("R",(),{"returncode":0,"stdout":query_text(v),"stderr":notice})(),type("R",(),{"returncode":0,"stdout":b"Verification: OK\n","stderr":notice})(),type("R",(),{"returncode":0,"stdout":b"Hash Algorithm: sha256\nTime stamp: Thu Sep 3 23:00:00 2026 GMT\n","stderr":notice})()]);monkeypatch.setattr(m.subprocess,"run",lambda *a,**k:next(late))
  with pytest.raises(ValueError,match="phase order"):m.verify_timestamp(v,o,freeze_epoch=1)
 
 def test_initiation_is_one_shot_guarded_and_has_exact_subject_bytes(tmp_path,monkeypatch):

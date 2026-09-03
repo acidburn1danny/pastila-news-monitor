@@ -30,6 +30,7 @@ RFC3161_TSA_REDIRECTS=0;RFC3161_TSA_ATTEMPTS=1;RFC3161_TSA_NONCE=True;RFC3161_TS
 RFC3161_ROOT_SHA256="ce7d6b44f5d510391be98c8d76b18709400a30cd87659bfebe1c6f97ff5181ee"
 RFC3161_INTERMEDIATE_SHA256="0edab770d65632eefbe6ccdb61034e224facf49a960acdf82ae13c64fa0a3519"
 RFC3161_MAX_QUERY_BYTES=65536;RFC3161_MAX_REPLY_BYTES=1048576;RFC3161_TIMEOUT_SECONDS=20
+RFC3161_OPENSSL_CONFIG_NOTICE=b"Using configuration from /usr/lib/ssl/openssl.cnf\n"
 HEX40=re.compile(r"^[0-9a-f]{40}$");HEX64=re.compile(r"^[0-9a-f]{64}$")
 OBJECTS=frozenset({"ca.pem","cosign","deny-network-launcher.sh","openssl","rfc3161-request.tsq","rfc3161-receipt.tsr","rfc3161-root.pem","rfc3161-intermediate.pem","schedule-precommit.json","trusted-root.json"})
 REQUEST_OBJECTS=frozenset({"deny-network-launcher.sh","openssl","rfc3161-request.tsq","schedule-precommit.json"})
@@ -71,7 +72,7 @@ def _openssl(v:Mapping[str,object],o:Mapping[str,Path]|RequestSnapshot,args:list
 def verify_rfc3161_query(v:Mapping[str,object],o:Mapping[str,Path]|RequestSnapshot)->bytes:
  query=_bound_rfc3161_query(v,o)
  r=_openssl(v,o,["ts","-query","-in","/dev/stdin","-text"],input_bytes=query)
- if r.returncode or r.stderr:raise ValueError("RFC3161 query parse")
+ if r.returncode or r.stderr!=RFC3161_OPENSSL_CONFIG_NOTICE:raise ValueError("RFC3161 query parse")
  lines=[x.strip() for x in r.stdout.decode("utf-8","strict").splitlines()]
  if [x for x in lines if x.startswith("Hash Algorithm:")]!=["Hash Algorithm: sha256"]:raise ValueError("RFC3161 query algorithm")
  if [x for x in lines if x.startswith("Certificate required:")]!=["Certificate required: yes"]:raise ValueError("RFC3161 query certReq")
@@ -249,10 +250,10 @@ def materialize(v:Mapping[str,object],root:Path)->dict[str,Path]:
 def verify_timestamp(v:Mapping[str,object],o:Mapping[str,Path],*,freeze_epoch:int)->None:
  query=verify_rfc3161_query(v,o)
  r=_openssl(v,o,["ts","-verify","-queryfile","/dev/stdin","-in",str(o["rfc3161-receipt.tsr"]),"-CAfile",str(o["rfc3161-root.pem"]),"-untrusted",str(o["rfc3161-intermediate.pem"])],input_bytes=query)
- if r.returncode or (r.stdout.strip(),r.stderr.strip()) not in ((b"Verification: OK",b""),(b"",b"Verification: OK")):raise ValueError("RFC3161 signature")
+ if r.returncode or r.stdout.strip()!=b"Verification: OK" or r.stderr!=RFC3161_OPENSSL_CONFIG_NOTICE:raise ValueError("RFC3161 signature")
  r=_openssl(v,o,["ts","-reply","-in",str(o["rfc3161-receipt.tsr"]),"-text"]);text=r.stdout.decode("utf-8","strict")
  alg=[x.strip() for x in text.splitlines() if x.strip().startswith("Hash Algorithm:")];times=[x.strip() for x in text.splitlines() if x.strip().startswith("Time stamp:")]
- if r.returncode or r.stderr or alg!=["Hash Algorithm: sha256"] or len(times)!=1:raise ValueError("RFC3161 fields")
+ if r.returncode or r.stderr!=RFC3161_OPENSSL_CONFIG_NOTICE or alg!=["Hash Algorithm: sha256"] or len(times)!=1:raise ValueError("RFC3161 fields")
  stamped=parsedate_to_datetime(times[0].split(":",1)[1].strip()).astimezone(timezone.utc);scheduled=datetime.strptime(str(v["scheduled_utc"]),"%Y-%m-%dT%H:%M:00Z").replace(tzinfo=timezone.utc)
  if stamped.timestamp()<=freeze_epoch or stamped>=scheduled:raise ValueError("RFC3161 phase order")
 
