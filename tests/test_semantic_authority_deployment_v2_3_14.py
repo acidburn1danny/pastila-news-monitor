@@ -32,6 +32,10 @@ def test_alias_extra_separator_and_symlink_fail(tmp_path,monkeypatch):
  with pytest.raises(ValueError):m.validate_manifest(bad)
  bad=copy.deepcopy(v);bad["objects"]["extra"]={"sha256":"0"*64,"length":1,"path":"deployment/objects/extra"}
  with pytest.raises(ValueError):m.validate_manifest(bad)
+ link=tmp_path/"deployment/objects/cosign";original=m.Path.is_symlink
+ monkeypatch.setattr(m.Path,"is_symlink",lambda self:self==link or original(self))
+ with pytest.raises(ValueError,match="object containment"):m.materialize(v,tmp_path)
+ monkeypatch.setattr(m.Path,"is_symlink",original)
 
 def test_render_and_template_are_inert_and_executable(tmp_path,monkeypatch):
  template=(Path(__file__).parents[1]/m.TEMPLATE_PATH).read_bytes();v=fixture(tmp_path,monkeypatch);v["workflow_template_sha256"]=m.sha(template)
@@ -41,6 +45,7 @@ def test_render_and_template_are_inert_and_executable(tmp_path,monkeypatch):
  assert text.index("--prepare-initiation")<text.index("actions/attest@")<text.index("--execute")
  assert text.index("--execute")<text.index("Create final public capture attestation")<text.index("upload-artifact@")
  assert "sha256sum -c -" in text and "@UPLOAD_ACTION_COMMIT@" not in text
+ assert text.count("python -I -S -c") == 2 and "python -m pastila_scout" not in text
 
 def test_timestamp_is_cryptographic_and_precedes_schedule(monkeypatch,tmp_path):
  v=fixture(tmp_path,monkeypatch);o=m.materialize(v,tmp_path);monkeypatch.setattr(m,"verify_executable",lambda p:None);monkeypatch.setattr(m,"verify_installed_dependency",lambda *a:None)
@@ -77,3 +82,42 @@ def test_real_git_ancestry_blob_and_rendering(tmp_path,monkeypatch):
  active.write_bytes(b"tampered");call("add",m.WORKFLOW_PATH);call("commit","-m","tamper")
  with pytest.raises(ValueError,match="workflow worktree evidence"):m.verify_worktree(tmp_path,v)
  with pytest.raises(ValueError,match="workflow evidence"):m.verify_git(tmp_path,v,call("rev-parse","HEAD"),git_executable=git,isolated=False,deployment_ancestor=freeze)
+
+def test_production_main_enforces_git_and_rejects_bundle_alias(tmp_path,monkeypatch):
+ v=fixture(tmp_path,monkeypatch);manifest=tmp_path/"manifest.json";manifest.write_text(m.json.dumps(v),encoding="utf-8")
+ monkeypatch.chdir(tmp_path);monkeypatch.setattr(m,"runtime_head",lambda:"b"*40)
+ called=[]
+ monkeypatch.setattr(m,"verify_git",lambda root,value,head:called.append((root,value,head)))
+ monkeypatch.setattr(m,"verify_worktree",lambda *a:None);monkeypatch.setattr(m,"materialize",lambda *a:{})
+ monkeypatch.setattr(m,"verify_timestamp",lambda *a,**k:None)
+ destination=tmp_path/"initiation";monkeypatch.setattr(m,"prepare_initiation",lambda *a:None)
+ assert m.main(["--manifest",str(manifest),"--prepare-initiation",str(destination)])==0
+ assert called and called[0][2]=="b"*40
+ outside=tmp_path.parent/"outside-bundle.json";outside.write_bytes(b"{}")
+ with pytest.raises(ValueError,match="input containment"):m.regular_input(outside,tmp_path)
+ inside=tmp_path/"bundle.json";inside.write_bytes(b"{}")
+ alias=tmp_path/"bundle-alias.json";alias.write_bytes(b"{}")
+ original=m.Path.is_symlink;monkeypatch.setattr(m.Path,"is_symlink",lambda self:self==alias or original(self))
+ with pytest.raises(ValueError,match="input containment"):m.regular_input(alias,tmp_path)
+ monkeypatch.setattr(m.Path,"is_symlink",original)
+ assert m.regular_input(inside,tmp_path)==inside.resolve()
+ parent=tmp_path/"nested";parent.mkdir();nested=parent/"bundle.json";nested.write_bytes(b"{}")
+ monkeypatch.setattr(m.Path,"is_symlink",lambda self:self==parent or original(self))
+ with pytest.raises(ValueError,match="input containment"):m.regular_input(nested,tmp_path)
+
+def test_production_main_fails_before_materialization_when_git_evidence_fails(tmp_path,monkeypatch):
+ v=fixture(tmp_path,monkeypatch);manifest=tmp_path/"manifest.json";manifest.write_text(m.json.dumps(v),encoding="utf-8")
+ monkeypatch.chdir(tmp_path);monkeypatch.setattr(m,"runtime_head",lambda:"b"*40)
+ monkeypatch.setattr(m,"verify_git",lambda *a,**k:(_ for _ in ()).throw(ValueError("git evidence")))
+ reached=[];monkeypatch.setattr(m,"materialize",lambda *a:reached.append(True))
+ with pytest.raises(ValueError,match="git evidence"):m.main(["--manifest",str(manifest),"--prepare-initiation",str(tmp_path/"i")])
+ assert reached==[]
+
+def test_milestone9_audit_qualification_identity_chain():
+ root=Path(__file__).parents[1];record_path=root/"docs/artifacts/semantic-contract-v2-3-14-three-phase-deployment-zero-network-qualification.json"
+ value=m.json.loads(record_path.read_text("utf-8"));identity=value.pop("qualification_identity")
+ assert identity==m.sha(canonical(value))
+ assert value["implementation_sha256"]==m.sha((root/"src/pastila_scout/semantic_authority_deployment_v2_3_14.py").read_bytes())
+ assert value["test_sha256"]==m.sha(Path(__file__).read_bytes())
+ assert value["workflow_template_sha256"]==m.sha((root/m.TEMPLATE_PATH).read_bytes())
+ assert value["readiness_authority"]=="PARTIALLY_PROVEN" and len(value["external_evidence_pending"])==4

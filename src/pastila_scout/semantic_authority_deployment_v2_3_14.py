@@ -80,9 +80,11 @@ def verify_git(root:Path,v:Mapping[str,object],head:str,*,git_executable:str="/u
 
 def verify_worktree(root:Path,v:Mapping[str,object])->None:
  root=root.resolve(strict=True)
- template=(root/TEMPLATE_PATH).resolve(strict=True);active=(root/WORKFLOW_PATH).resolve(strict=True)
+ template_input=root/TEMPLATE_PATH;active_input=root/WORKFLOW_PATH
+ if template_input.is_symlink() or active_input.is_symlink():raise ValueError("workflow worktree containment")
+ template=template_input.resolve(strict=True);active=active_input.resolve(strict=True)
  for path,relative in ((template,TEMPLATE_PATH),(active,WORKFLOW_PATH)):
-  if path!=root/PurePosixPath(relative) or not path.is_file() or path.is_symlink():raise ValueError("workflow worktree containment")
+  if path!=root/PurePosixPath(relative) or not path.is_file():raise ValueError("workflow worktree containment")
  template_bytes=template.read_bytes()
  if sha(template_bytes)!=v["workflow_template_sha256"] or active.read_bytes()!=render_workflow(template_bytes,v):raise ValueError("workflow worktree evidence")
 
@@ -90,8 +92,10 @@ def materialize(v:Mapping[str,object],root:Path)->dict[str,Path]:
  validate_manifest(v);base=root.resolve(strict=True)/"deployment"/"objects";out={}
  if not base.is_dir() or base.is_symlink():raise ValueError("object root")
  for name,row in v["objects"].items():
-  digest,length,relative=_entry(row);path=(root/PurePosixPath(relative)).resolve(strict=True)
-  if path.parent!=base or not path.is_file() or path.is_symlink():raise ValueError("object containment")
+  digest,length,relative=_entry(row);input_path=root/PurePosixPath(relative)
+  if input_path.is_symlink():raise ValueError("object containment")
+  path=input_path.resolve(strict=True)
+  if path.parent!=base or not path.is_file():raise ValueError("object containment")
   data=path.read_bytes()
   if len(data)!=length or sha(data)!=digest:raise ValueError("object bytes")
   out[name]=path
@@ -111,8 +115,24 @@ def verify_timestamp(v:Mapping[str,object],o:Mapping[str,Path],*,freeze_epoch:in
  if stamped.timestamp()<=freeze_epoch or stamped>=scheduled:raise ValueError("RFC3161 phase order")
 
 def load(path:Path)->Mapping[str,object]:
- if not path.is_file() or path.is_symlink() or path.stat().st_size>1048576:raise ValueError("manifest file")
+ if not path.is_absolute():path=Path.cwd()/path
+ if path.is_symlink():raise ValueError("manifest file")
+ path=path.resolve(strict=True)
+ if not path.is_file() or path.stat().st_size>1048576:raise ValueError("manifest file")
  v=json.loads(path.read_text("utf-8"));validate_manifest(v);return v
+
+def regular_input(path:Path,root:Path)->Path:
+ """Resolve an input once and reject aliases, links, and paths outside the checkout."""
+ root=root.resolve(strict=True);candidate=path if path.is_absolute() else Path.cwd()/path
+ candidate=Path(os.path.abspath(candidate))
+ if not candidate.is_relative_to(root):raise ValueError("input containment")
+ cursor=root
+ for part in candidate.relative_to(root).parts:
+  cursor=cursor/part
+  if cursor.is_symlink():raise ValueError("input containment")
+ resolved=candidate.resolve(strict=True)
+ if not resolved.is_file() or not resolved.is_relative_to(root):raise ValueError("input containment")
+ return resolved
 
 def run_claim(v:Mapping[str,object],head:str)->dict[str,object]:
  return {"deployment_identity":v["deployment_identity"],"repository_id":REPOSITORY_ID,"runtime_commit":RUNTIME_COMMIT,"workflow_commit":head,"run_id":os.environ.get("GITHUB_RUN_ID",""),"run_attempt":1,"event_name":"schedule","derivation_policy_identity":DERIVATION_POLICY_IDENTITY,"seed_plan_identity":SEED_PLAN_IDENTITY,"ca_sha256":v["ca_sha256"]}
@@ -129,14 +149,20 @@ def prepare_initiation(v:Mapping[str,object],head:str,dest:Path)->None:
 
 def main(argv:list[str]|None=None)->int:
  p=argparse.ArgumentParser();p.add_argument("--manifest",type=Path,required=True);p.add_argument("--prepare-initiation",type=Path);p.add_argument("--initiation-bundle",type=Path);p.add_argument("--execute",action="store_true");a=p.parse_args(argv)
- v=load(a.manifest);head=runtime_head();verify_worktree(Path.cwd(),v);o=materialize(v,Path.cwd());verify_timestamp(v,o,freeze_epoch=int(v["workflow_freeze_epoch"]))
+ root=Path.cwd().resolve(strict=True);v=load(a.manifest);head=runtime_head()
+ # This check is part of the production path, not merely a qualification helper.
+ # /usr/bin/git is supplied by the immutable container image named in the workflow.
+ verify_git(root,v,head);verify_worktree(root,v);o=materialize(v,root);verify_timestamp(v,o,freeze_epoch=int(v["workflow_freeze_epoch"]))
  if a.prepare_initiation:
   if a.execute or a.initiation_bundle:raise ValueError("phase mode")
   prepare_initiation(v,head,a.prepare_initiation);return 0
  if not a.execute or not a.initiation_bundle:raise ValueError("capture mode")
+ runner_temp=os.environ.get("RUNNER_TEMP","")
+ if not runner_temp:raise ValueError("runner temporary root")
+ bundle_path=regular_input(a.initiation_bundle,Path(runner_temp))
  run=run_claim(v,head);runtime=LinuxVerifier(o["cosign"],o["deny-network-launcher.sh"],o["trusted-root.json"],str(v["cosign_sha256"]),str(v["launcher_sha256"]),str(v["trusted_root_sha256"]))
  frozen=FrozenRun(str(v["scheduled_utc"]),str(v["schedule_cron"]),head,str(v["deployment_identity"]),str(v["ca_sha256"]))
- run_once(config=frozen,environment=os.environ,now=datetime.now(timezone.utc),run=run,bundle=a.initiation_bundle.read_bytes(),bundle_path=a.initiation_bundle,verifier=runtime,ca_file=o["ca.pem"],output=Path("capture-output"))
+ run_once(config=frozen,environment=os.environ,now=datetime.now(timezone.utc),run=run,bundle=bundle_path.read_bytes(),bundle_path=bundle_path,verifier=runtime,ca_file=o["ca.pem"],output=Path("capture-output"))
  statement=json.loads((Path("capture-output")/"final-attestation-predicate.json").read_text("utf-8"))
  if set(statement)!={"_type","predicateType","subject","predicate"}:raise ValueError("final statement")
  (Path("capture-output")/"final-predicate.json").write_bytes(canonical(statement["predicate"]));return 0
