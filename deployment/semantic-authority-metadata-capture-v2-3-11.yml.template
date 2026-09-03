@@ -1,0 +1,22 @@
+# INERT TEMPLATE: @DEPLOYMENT_RUNTIME_COMMIT@ is frozen by the preceding runtime commit;
+# @WORKFLOW_COMMIT@ is never embedded or self-referenced here.
+name: semantic-authority-metadata-capture-v2-3-11
+on:
+  schedule:
+    - cron: '@SCHEDULE_CRON@'
+permissions:
+  contents: read
+  id-token: write
+  attestations: write
+jobs:
+  capture:
+    if: github.repository_id == '1355263083' && github.repository == 'acidburn1danny/pastila-news-monitor' && github.run_attempt == 1 && github.event.schedule == '@SCHEDULE_CRON@'
+    runs-on: ubuntu-24.04
+    container: python@sha256:edf6433343f65f94707985869aeaafe8beadaeaee11c4bc02068fca52dce28dd
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          ref: '@DEPLOYMENT_RUNTIME_COMMIT@'
+          persist-credentials: false
+      - name: Fail closed until the timestamped deployment manifest is supplied
+        run: python -m pastila_scout.semantic_authority_deployment_v2_3_11 --manifest '@MANIFEST@' --bundle '@BUNDLE@' --cosign '@COSIGN@' --launcher '@LAUNCHER@' --trusted-root '@TRUSTED_ROOT@' --ca '@CA@' --output '@OUTPUT@'
