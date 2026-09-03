@@ -19,6 +19,9 @@ from .semantic_authority_deployment_v2_3_11 import checkout_commit
 
 SCHEMA = "PASTILA_CAPTURE_DEPLOYMENT_V2_3_12"
 PAYLOAD_SCHEMA = "PASTILA_RFC3161_SCHEDULE_PRECOMMIT_V2_3_12"
+V2_3_3_QUALIFICATION_IDENTITY = "2b4b9db9ade3029a45375fb8ef24aab314e96319b73104050234d9259f07d8ba"
+OPENSSL_SHA256 = "132616b352a13168391ddbcc2eab22ce52df256b3d4cd2c2c6fc245d22bab62c"
+CA_BUNDLE_SHA256 = "9cc2a774b5198dcff14d9be1e66091f538975d867ce029a96bce15a55dfd730f"
 HEX40 = re.compile(r"^[0-9a-f]{40}$")
 HEX64 = re.compile(r"^[0-9a-f]{64}$")
 
@@ -35,6 +38,7 @@ def schedule_payload(manifest: Mapping[str, object]) -> bytes:
         "schedule_cron": manifest["schedule_cron"],
         "schedule_precommit_verifier_sha256": manifest["schedule_precommit_verifier_sha256"],
         "schedule_precommit_tsa_root_sha256": manifest["schedule_precommit_tsa_root_sha256"],
+        "rfc3161_qualification_identity": manifest["rfc3161_qualification_identity"],
     }
     return canonical(value) + b"\n"
 
@@ -48,11 +52,17 @@ def validate_manifest(value: Mapping[str, object]) -> None:
         "seed_plan_identity", "schedule_precommit_payload_sha256",
         "schedule_precommit_receipt_sha256", "schedule_precommit_verifier_sha256",
         "schedule_precommit_tsa_root_sha256", "manifest_identity",
+        "rfc3161_qualification_identity",
     }
     if set(value) != required or value["schema"] != SCHEMA or value["repository_slug"] != REPOSITORY_SLUG or value["repository_id"] != REPOSITORY_ID:
         raise ValueError("manifest schema/repository")
     if value["core_runtime_commit"] != RUNTIME_COMMIT or not HEX40.fullmatch(str(value["deployment_runtime_commit"])) or not HEX40.fullmatch(str(value["workflow_commit"])) or len({value["core_runtime_commit"], value["deployment_runtime_commit"], value["workflow_commit"]}) != 3:
         raise ValueError("runtime/workflow identity separation")
+    if (value["rfc3161_qualification_identity"] != V2_3_3_QUALIFICATION_IDENTITY
+        or value["schedule_precommit_verifier_sha256"] != OPENSSL_SHA256
+        or value["schedule_precommit_tsa_root_sha256"] != CA_BUNDLE_SHA256
+        or value["ca_sha256"] != CA_BUNDLE_SHA256):
+        raise ValueError("frozen verifier/CA trust")
     for key in required - {"schema", "repository_slug", "repository_id", "core_runtime_commit", "deployment_runtime_commit", "workflow_commit", "scheduled_utc", "schedule_cron"}:
         if key not in {"manifest_identity"} and not HEX64.fullmatch(str(value[key])):
             raise ValueError("manifest digest")
