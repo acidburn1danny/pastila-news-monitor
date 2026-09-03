@@ -1,0 +1,67 @@
+{
+  "schema": "SEMANTIC_CONTRACT_V2_3_13_LINUX_OPENSSL_RFC3161_ZERO_NETWORK_QUALIFICATION",
+  "verdict": "PASS_LINUX_NATIVE_SUPPLY_CHAIN_PINNED_OPENSSL_RFC3161_ZERO_NETWORK_QUALIFICATION",
+  "predecessor_commit": "74bb1837e710e263cb139831f9502b94ddbf79f5",
+  "runtime_image": {
+    "index_sha256": "edf6433343f65f94707985869aeaafe8beadaeaee11c4bc02068fca52dce28dd",
+    "amd64_manifest_sha256": "da6cc0443346c30914c68d265b8dba465cb85708c572d97846122fd036edc003",
+    "platform": "linux/amd64",
+    "base": "buildpack-deps:trixie",
+    "sbom_sha256": "fbe29777e66f0a992e9629621256776cde33fa3d57ce07152141fd77a629a808",
+    "rootfs_layers_sha256": [
+      "53c88f1dfeb79b2f207f7f1a03a45e0dc5ed208b9f496de16b98f81189dc0392",
+      "eae668646f447b181fe300ae6756351b6167aa2578be449b167ba79ed4926798"
+    ],
+    "dependency_closure": "PASS_EXECUTED_IN_DIGEST_PINNED_OCI_ROOTFS"
+  },
+  "debian_provenance": {
+    "snapshot": "20251118T120000Z",
+    "inrelease_sha256": "a3f869d29c521a824ac8a9d7619b2539532af2d3ce5d5003c25e1df8f497bb23",
+    "packages_sha256": "83b7feb4a963517002e20c497f3482f3e8f419b8b04598e89efdb9b58bafc6d5",
+    "signatures": "PASS_3_OF_3",
+    "signing_fingerprints": [
+      "B8B80B5B623EAB6AD8775C45B7C5D7D6350947F8",
+      "04B54C3CDCA79751B16BC6B5225629DF75B188BD",
+      "41587F7DB8C774BCCF131416762F67A0B2C39DE4"
+    ]
+  },
+  "openssl": {
+    "version": "3.5.4-1~deb13u1",
+    "package_sha256": "c10711cab7bdaf56f707c5b55b5f27e4fba9019bd7c1ff12540adc9322f206ae",
+    "libssl_package_sha256": "7fc9f0372f9271eaad49dbe373f858897853bb02eef6f30f25112cebf2f4afd0",
+    "executable_sha256": "83a9c490e5cd0f8dc19a31438269d82c7b096e51ca2198290468c3766762bfae",
+    "runtime_libssl_sha256": "0ee209617de171cebc07295b1b997a3aa15bf0a8ff99f1a4a2df39bcb7b4237f",
+    "runtime_libcrypto_sha256": "27a68367828749ef0180c14dbb9beb22729b472c4bf764ab8b0a724a5753962b",
+    "elf": "PASS_ELF64_LITTLE_ENDIAN_AMD64",
+    "runtime_version": "OpenSSL 3.5.4 30 Sep 2025"
+  },
+  "rfc3161_fixtures": {
+    "positive": "PASS_VERIFICATION_OK",
+    "tampered": "PASS_REJECTED_MESSAGE_IMPRINT_MISMATCH",
+    "network_isolation": "PASS_FRESH_USER_AND_NETWORK_NAMESPACE_NO_USABLE_INTERFACE",
+    "receipt_sha256": "0bae45211350af556b956ad0a8207269ae976c33367d23faaf5cc4888dca1a72",
+    "tsa_certificate_sha256": "23fd8ad3589e4be1fd193def873dc45ca279044ae221bae3fac3a6d36ba35930",
+    "payload_sha256": "aec9a1337346025f5e8cd205a1587ec48c26d6d75b106a6a5f970151c69ee50a",
+    "tampered_payload_sha256": "3c39b7a206d2e7a3155f812bcb885ba64d5e693c8158aee7fbf883a2db0090fb"
+  },
+  "module_sha256": "a5a7cf3e01e3605b83bd8754ec33269b670b4e89d8398a1ba598158c3f45d090",
+  "test_sha256": "edcf794103255d9f10478f6c0b45ed1a10fc815d1f9b03dd575f693f6c869365",
+  "carried_blocker_repaired": "WINDOWS_OPENSSL_PIN_REUSED_ON_LINUX_RUNTIME",
+  "new_blockers_repaired": [
+    "OFFLINE_QUALIFICATION_COULD_LOAD_HOST_LIBSSL_INSTEAD_OF_ARTIFACT_MATCHED_RUNTIME_CLOSURE",
+    "ZERO_NETWORK_QUALIFICATION_DID_NOT_EXECUTE_INSIDE_DIGEST_PINNED_RUNTIME_ROOTFS"
+  ],
+  "remaining_blockers": [],
+  "zero_activity": {
+    "workflow_deployed": 0,
+    "rfc3161_requests": 0,
+    "registry_metadata": 0,
+    "frame_execution": 0,
+    "source_selection": 0,
+    "authority_bases": 0,
+    "pilot15": 0,
+    "blind_access": 0
+  },
+  "tests": "98 passed",
+  "qualification_identity": "561bacaa18d5578539427c3b6c7abb235976046d6854e57315da21af5f37296c"
+}

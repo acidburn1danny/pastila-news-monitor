@@ -13,14 +13,15 @@ from pathlib import Path
 from typing import Mapping
 
 from .semantic_authority_capture_orchestrator_v2_3_7 import canonical
-from .semantic_authority_deployment_v2_3_9 import LinuxVerifier, REPOSITORY_ID, REPOSITORY_SLUG, RUNTIME_COMMIT, sha
+from .semantic_authority_deployment_v2_3_9 import LINUX_LAUNCHER_SHA256, LinuxVerifier, REPOSITORY_ID, REPOSITORY_SLUG, RUNTIME_COMMIT, sha
 from .semantic_authority_deployment_v2_3_10 import FrozenRun, run_once, verify_installed_dependency
 from .semantic_authority_deployment_v2_3_11 import checkout_commit
+from .semantic_authority_rfc3161_verifier_v2_3_13 import OPENSSL_EXECUTABLE_SHA256, verify_executable
 
 SCHEMA = "PASTILA_CAPTURE_DEPLOYMENT_V2_3_12"
 PAYLOAD_SCHEMA = "PASTILA_RFC3161_SCHEDULE_PRECOMMIT_V2_3_12"
-V2_3_3_QUALIFICATION_IDENTITY = "2b4b9db9ade3029a45375fb8ef24aab314e96319b73104050234d9259f07d8ba"
-OPENSSL_SHA256 = "132616b352a13168391ddbcc2eab22ce52df256b3d4cd2c2c6fc245d22bab62c"
+RFC3161_QUALIFICATION_IDENTITY = "561bacaa18d5578539427c3b6c7abb235976046d6854e57315da21af5f37296c"
+OPENSSL_SHA256 = OPENSSL_EXECUTABLE_SHA256
 CA_BUNDLE_SHA256 = "9cc2a774b5198dcff14d9be1e66091f538975d867ce029a96bce15a55dfd730f"
 HEX40 = re.compile(r"^[0-9a-f]{40}$")
 HEX64 = re.compile(r"^[0-9a-f]{64}$")
@@ -58,10 +59,11 @@ def validate_manifest(value: Mapping[str, object]) -> None:
         raise ValueError("manifest schema/repository")
     if value["core_runtime_commit"] != RUNTIME_COMMIT or not HEX40.fullmatch(str(value["deployment_runtime_commit"])) or not HEX40.fullmatch(str(value["workflow_commit"])) or len({value["core_runtime_commit"], value["deployment_runtime_commit"], value["workflow_commit"]}) != 3:
         raise ValueError("runtime/workflow identity separation")
-    if (value["rfc3161_qualification_identity"] != V2_3_3_QUALIFICATION_IDENTITY
+    if (value["rfc3161_qualification_identity"] != RFC3161_QUALIFICATION_IDENTITY
         or value["schedule_precommit_verifier_sha256"] != OPENSSL_SHA256
         or value["schedule_precommit_tsa_root_sha256"] != CA_BUNDLE_SHA256
-        or value["ca_sha256"] != CA_BUNDLE_SHA256):
+        or value["ca_sha256"] != CA_BUNDLE_SHA256
+        or value["launcher_sha256"] != LINUX_LAUNCHER_SHA256):
         raise ValueError("frozen verifier/CA trust")
     for key in required - {"schema", "repository_slug", "repository_id", "core_runtime_commit", "deployment_runtime_commit", "workflow_commit", "scheduled_utc", "schedule_cron"}:
         if key not in {"manifest_identity"} and not HEX64.fullmatch(str(value[key])):
@@ -103,7 +105,7 @@ def verify_schedule_precommit(manifest: Mapping[str, object], *, payload: Path, 
     if payload_bytes != expected:
         raise ValueError("schedule payload canonical bytes")
     receipt_bytes = _regular(receipt, str(manifest["schedule_precommit_receipt_sha256"]), "schedule receipt")
-    verify_installed_dependency(verifier, str(manifest["schedule_precommit_verifier_sha256"]))
+    verify_executable(verifier)
     verify_installed_dependency(launcher, str(manifest["launcher_sha256"]))
     root_bytes = _regular(tsa_root, str(manifest["schedule_precommit_tsa_root_sha256"]), "TSA root")
     with tempfile.TemporaryDirectory() as folder:
