@@ -1,0 +1,21 @@
+{
+  "branch_protected": false,
+  "commit_api_url": "https://api.github.com/repos/acidburn1danny/pastila-news-monitor/commits/9487348116128059fbc8319e4f581a1365c9f9ce",
+  "commit_sha": "9487348116128059fbc8319e4f581a1365c9f9ce",
+  "commit_url": "https://github.com/acidburn1danny/pastila-news-monitor/commit/9487348116128059fbc8319e4f581a1365c9f9ce",
+  "evidence": {
+    "github_branch_api_sha": "9487348116128059fbc8319e4f581a1365c9f9ce",
+    "github_commit_api_sha": "9487348116128059fbc8319e4f581a1365c9f9ce",
+    "git_ls_remote_sha": "9487348116128059fbc8319e4f581a1365c9f9ce"
+  },
+  "identity_algorithm": "SHA256_RFC8785_WITH_RECEIPT_IDENTITY_OMITTED",
+  "observed_utc": "2026-09-03T16:24:18Z",
+  "observed_utc_authority": "LOCAL_CLOCK_NOT_RFC3161",
+  "parent_sha": "5a45f1901773d9ca0d3fc93859125bb433686e2f",
+  "publication_review_verdict": "PASS_PUBLIC_COMMIT_AND_BRANCH_IDENTITY_CONFIRMED",
+  "published_ref": "refs/heads/public/v2.3.7-capture",
+  "receipt_identity": "7913ce6ed4c01dfc9e0eb14e5d8338a57d6e59e152b67ac9e7d460e8c951ce3b",
+  "repository": "acidburn1danny/pastila-news-monitor",
+  "schema": "PASTILA_DURABLE_PUBLICATION_RECEIPT_V1",
+  "tree_sha": "dc8429bc3f422b3b90d58fd0dfeee716e324d56b"
+}

@@ -191,4 +191,5 @@ def test_milestone9_audit_qualification_identity_chain():
  assert value["implementation_sha256"]==m.sha((root/"src/pastila_scout/semantic_authority_deployment_v2_3_14.py").read_bytes())
  assert value["test_sha256"]==m.sha(Path(__file__).read_bytes())
  assert value["workflow_template_sha256"]==m.sha((root/m.TEMPLATE_PATH).read_bytes())
- assert value["readiness_authority"]=="PARTIALLY_PROVEN" and len(value["external_evidence_pending"])==4
+ assert value["readiness_authority"]=="PARTIALLY_PROVEN" and len(value["external_evidence_pending"])==3
+ assert "DURABLE_PUBLICATION_RECEIPT" not in value["external_evidence_pending"]
