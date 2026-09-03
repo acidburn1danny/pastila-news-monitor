@@ -1,0 +1,34 @@
+# INERT V2.3.14 TEMPLATE. Rename into .github/workflows only after the workflow
+# freeze commit, RFC-3161 receipt, and final deployment manifest are all frozen.
+name: semantic-authority-metadata-capture-v2-3-15
+on:
+  schedule:
+    - cron: '@SCHEDULE_CRON@'
+permissions:
+  contents: read
+  id-token: write
+  attestations: write
+  artifact-metadata: write
+jobs:
+  capture:
+    if: github.repository_id == '1355263083' && github.repository == 'acidburn1danny/pastila-news-monitor' && github.run_attempt == 1 && github.event_name == 'schedule' && github.event.schedule == '@SCHEDULE_CRON@'
+    runs-on: ubuntu-24.04
+    container: python@sha256:edf6433343f65f94707985869aeaafe8beadaeaee11c4bc02068fca52dce28dd
+    env:
+      PYTHONPATH: ${{ github.workspace }}/src
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Verify immutable deployment objects and RFC-3161 precommit
+        run: python -m pastila_scout.semantic_authority_deployment_v2_3_14 --manifest deployment/v2-3-15-manifest.json --prepare-initiation "$RUNNER_TEMP/initiation"
+      - name: Create public initiation attestation before publisher capture
+        id: initiation
+        uses: actions/attest@@ATTEST_ACTION_COMMIT@
+        with:
+          subject-path: ${{ runner.temp }}/initiation/pastila-capture-initiation.json
+          predicate-type: https://pastila.invalid/semantic-authority/initiation/v2.3.9
+          predicate-path: ${{ runner.temp }}/initiation/predicate.json
+      - name: Verify initiation bundle then capture exactly once
+        run: python -m pastila_scout.semantic_authority_deployment_v2_3_14 --manifest deployment/v2-3-15-manifest.json --initiation-bundle '${{ steps.initiation.outputs.bundle-path }}' --execute
