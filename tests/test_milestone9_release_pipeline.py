@@ -3,7 +3,7 @@ import copy
 import pytest
 from pathlib import Path
 
-from pastila_scout.milestone9_proof_boundary import SCHEDULE_RULE
+from pastila_scout.milestone9_proof_boundary import SCHEDULE_RULE, derive_schedule
 from pastila_scout.milestone9_release_pipeline import (
     OPENSSL_EXECUTABLE_SHA256,
     RELEASE_SCHEMA,
@@ -25,8 +25,8 @@ def release():
         "workflow_template_sha256": "c" * 64,
         "pipeline_sha256": "d" * 64,
         "schedule_rule": SCHEDULE_RULE,
-        "scheduled_utc": "2026-09-04T15:00:00Z",
-        "schedule_cron": "0 15 4 9 *",
+        "scheduled_utc": derive_schedule(1)[0],
+        "schedule_cron": derive_schedule(1)[1],
         "scheduler_delay_hours": 24,
         "artifact_retention_days": 30,
         "runtime_image_index_sha256": RUNTIME_IMAGE_INDEX_SHA256,

@@ -50,7 +50,8 @@ registry metadata paths remain absent from attestation-only activation.
 ## Stable governance
 
 - Schedule selection:
-  `FIRST_UTC_HOUR_AT_LEAST_12_HOURS_AFTER_REPLACEMENT_FREEZE`
+  `FIRST_UTC_MINUTE_17_AT_LEAST_12_HOURS_AFTER_REPLACEMENT_FREEZE`
+  (minute 17 avoids GitHub's documented top-of-hour congestion)
 - Scheduler delay allowance: 24 hours
 - Artifact retention: 30 days
 - Manual or redrawn scheduled execution: prohibited

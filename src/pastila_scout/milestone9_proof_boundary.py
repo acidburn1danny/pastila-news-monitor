@@ -7,11 +7,22 @@ from enum import Enum
 import json
 from pathlib import Path
 from typing import Mapping
+from datetime import datetime, timedelta, timezone
 
 
-SCHEDULE_RULE = "FIRST_UTC_HOUR_AT_LEAST_12_HOURS_AFTER_REPLACEMENT_FREEZE"
+SCHEDULE_RULE = "FIRST_UTC_MINUTE_17_AT_LEAST_12_HOURS_AFTER_REPLACEMENT_FREEZE"
 ARTIFACT_RETENTION_DAYS = 30
 SCHEDULER_DELAY_HOURS = 24
+
+
+def derive_schedule(freeze_epoch: int) -> tuple[str, str]:
+    if not isinstance(freeze_epoch, int) or isinstance(freeze_epoch, bool) or freeze_epoch <= 0:
+        raise ValueError("freeze epoch")
+    threshold = datetime.fromtimestamp(freeze_epoch, timezone.utc) + timedelta(hours=12)
+    scheduled = threshold.replace(minute=17, second=0, microsecond=0)
+    if scheduled < threshold:
+        scheduled += timedelta(hours=1)
+    return scheduled.strftime("%Y-%m-%dT%H:%M:00Z"), f"17 {scheduled.hour} {scheduled.day} {scheduled.month} *"
 
 
 class Phase(Enum):

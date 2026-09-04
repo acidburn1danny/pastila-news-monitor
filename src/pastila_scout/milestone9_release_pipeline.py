@@ -13,6 +13,7 @@ from .milestone9_proof_boundary import (
     ARTIFACT_RETENTION_DAYS,
     SCHEDULE_RULE,
     SCHEDULER_DELAY_HOURS,
+    derive_schedule,
 )
 from .semantic_authority_capture_orchestrator_v2_3_7 import canonical
 from .semantic_authority_rfc3161_verifier_v2_3_13 import (
@@ -74,6 +75,8 @@ def validate_release(value: Mapping[str, object]) -> str:
     }
     if any(value[key] != expected for key, expected in fixed.items()):
         raise ValueError("release authority")
+    if (value["scheduled_utc"], value["schedule_cron"]) != derive_schedule(value["freeze_epoch"]):
+        raise ValueError("release schedule derivation")
     for key in ("workflow_template_sha256", "pipeline_sha256"):
         if not HEX64.fullmatch(str(value[key])):
             raise ValueError("release digest")
