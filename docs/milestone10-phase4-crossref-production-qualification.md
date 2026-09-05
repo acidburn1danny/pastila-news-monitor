@@ -1,0 +1,49 @@
+# Milestone 10 Phase 4 — Crossref Production Capture Qualification
+
+Phase 4 qualifies the complete production orchestration path offline. It is
+based on the accepted Phase 3 authority at commit
+`809be94457dcc0cc3dc6ab9f8671338882b4afb7`, tree
+`4a2886f9d183bd1cdf0248e9f64e750d35478ce1`.
+
+## Qualified boundary
+
+`pastila_scout.crossref_production_qualification_v1` composes the frozen Phase
+2 request/capture/normalization implementation with the Phase 3 immutable
+integration boundary and a durable publication/recovery boundary. The attempt
+is consumed before the response is read. Raw bytes are committed before
+normalization, normalized bytes before integration, accepted state atomically,
+and the completion record last.
+
+The Phase 4 entry accepts only `OfflineCrossrefResponseV1`. Its constructor
+requires the exact status, ordered parsed-header bytes, response-body bytes,
+request identity, and raw-capture identity already committed by the Phase 2
+proof. The internal response stream is in-memory and single-use. Phase 4 does
+not construct, accept, export, or bind a network transport.
+
+Recovery never invokes transport. It reopens only regular files through a
+single file descriptor, rejects symlinks and detected replacement or mutation,
+revalidates the raw request, wire request, response headers/body, manifest,
+normalized bytes, accepted state, Phase 3 replay, and completion closure. A
+matching interrupted state publication can be completed; a foreign pending
+state fails closed.
+
+## Preserved authority
+
+- Crossref is the only provider represented.
+- The frozen request remains one GET, ten records maximum, zero redirect,
+  zero retry, one page, and a 15-second production transport deadline.
+- Raw response, normalized records, integration batch, accepted state, and
+  completion remain separate identity domains.
+- The accepted Phase 3 integration continues to admit only the exact qualified
+  Phase 2 normalized artifact; Phase 4 introduces no broader metadata
+  acceptance policy.
+- No retention, timing, scheduling, credential, proxy, OpenAlex, downstream
+  publishing, RFC-3161, or Sigstore policy is introduced.
+
+## Deliberate non-authority
+
+Phase 4 performs no Crossref request and captures no new metadata. It exposes
+no production network entry point. It does not authorize execution merely
+because the orchestration succeeds against the committed response snapshot.
+Binding a real transport or issuing another Crossref request requires a later,
+separately defined and explicitly authorized owner action.
