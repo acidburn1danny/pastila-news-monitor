@@ -42,6 +42,9 @@ _SCOUT_PROVIDER_NAMES = (
 _PRE_EDITOR_DEFAULT_NAMES = tuple(
     name for name in _NAMES if name != "editor_default_model"
 )
+_PRE_SCOUT_PROVIDER_NAMES = tuple(
+    name for name in _NAMES if name not in _SCOUT_PROVIDER_NAMES
+)
 _LEGACY_NAMES = tuple(
     name for name in _PRE_EDITOR_DEFAULT_NAMES if name not in _SCOUT_PROVIDER_NAMES
 )
@@ -215,22 +218,28 @@ def _read_settings(path: Path) -> WindowsSettingsV1:
         if type(pairs) is not list or any(type(item) is not tuple for item in pairs):
             raise ValueError
         names = tuple(name for name, _ in pairs)
-        if names not in {_NAMES, _PRE_EDITOR_DEFAULT_NAMES, _LEGACY_NAMES} or len(
+        if names not in {
+            _NAMES,
+            _PRE_EDITOR_DEFAULT_NAMES,
+            _PRE_SCOUT_PROVIDER_NAMES,
+            _LEGACY_NAMES,
+        } or len(
             set(names)
         ) != len(names):
             raise ValueError
         values = dict(pairs)
-        if names == _LEGACY_NAMES:
+        if names in {_PRE_SCOUT_PROVIDER_NAMES, _LEGACY_NAMES}:
             values.update(
                 scout_provider="openai",
                 ollama_base_url="http://localhost:11434",
                 ollama_model="qwen3:14b",
                 scout_ai_timeout_seconds=120.0,
             )
-        if names != _NAMES:
+        if names in {_PRE_EDITOR_DEFAULT_NAMES, _LEGACY_NAMES}:
             values["editor_default_model"] = (
                 "pastila-editor-core-v1.2-experimental"
             )
+        if names != _NAMES:
             values = {name: values[name] for name in _NAMES}
         return WindowsSettingsV1(**values)
     except KeyboardInterrupt, SystemExit, GeneratorExit, MemoryError:

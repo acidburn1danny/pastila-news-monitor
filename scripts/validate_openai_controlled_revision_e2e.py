@@ -725,7 +725,7 @@ def main() -> int:
     print(f"Live-request budget: {live_budget}")
     print(f"Unique valid invocations: {'YES' if unique else 'NO'}")
     print(f"Credential available: {'YES' if available else 'NO'}")
-    if not available or not unique:
+    if not unique:
         print("Status: STOPPED — preflight failed")
         return 2
     print("Predicate definitions loaded: PASS")
@@ -762,6 +762,9 @@ def main() -> int:
         print("Live requests: 0")
         print("SDK requests: 0")
         return 0
+    if not available:
+        print("Status: STOPPED - approved credential unavailable")
+        return 2
     scenario_work = (
         ((2, SCENARIOS[1]),)
         if part5f or part5g or part5h or part5k

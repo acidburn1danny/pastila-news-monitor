@@ -10,7 +10,6 @@ from pastila_scout.semantic_authority_external_verifiers_v2_2 import (
     verify_quicknet_offline,
 )
 
-
 ROOT = Path(__file__).resolve().parents[1]
 TOOLS = ROOT / ".tool-downloads" / "v2-2-verifiers"
 NODE_ROOT = TOOLS / "node-v22.23.2-win-x64"
@@ -27,15 +26,20 @@ def pins():
 
 def drand_args(info, beacon):
     p = pins()
-    return dict(
-        node=NODE_ROOT / "node.exe", node_sha256=p["node_executable_sha256"],
-        node_tree_sha256=p["node_runtime_tree_sha256"],
-        launcher=LAUNCHER, launcher_sha256=p["drand_launcher_sha256"],
-        client_root=CLIENT, client_lock=CLIENT_RUNTIME / "package-lock.json",
-        client_lock_sha256=p["drand_client_lock_sha256"], chain_info=info,
-        client_tree_sha256=p["drand_client_tree_sha256"],
-        beacon=beacon, expected_round=1,
-    )
+    return {
+        "node": NODE_ROOT / "node.exe",
+        "node_sha256": p["node_executable_sha256"],
+        "node_tree_sha256": p["node_runtime_tree_sha256"],
+        "launcher": LAUNCHER,
+        "launcher_sha256": p["drand_launcher_sha256"],
+        "client_root": CLIENT,
+        "client_lock": CLIENT_RUNTIME / "package-lock.json",
+        "client_lock_sha256": p["drand_client_lock_sha256"],
+        "chain_info": info,
+        "client_tree_sha256": p["drand_client_tree_sha256"],
+        "beacon": beacon,
+        "expected_round": 1,
+    }
 
 
 def test_rekor_binary_is_official_hash_pinned_and_launches_without_network():
@@ -47,6 +51,7 @@ def test_rekor_binary_is_official_hash_pinned_and_launches_without_network():
 
 
 def test_quicknet_bls_valid_upstream_vector_and_tamper_fail_closed(monkeypatch):
+    pins()
     info = json.loads((TOOLS / "quicknet-info.json").read_text(encoding="utf-8"))
     beacon = json.loads((TOOLS / "quicknet-round-1.json").read_text(encoding="utf-8"))
     monkeypatch.setenv("NODE_OPTIONS", "--require=C:\\attacker-controlled-preload.cjs")
@@ -64,6 +69,7 @@ def test_quicknet_bls_valid_upstream_vector_and_tamper_fail_closed(monkeypatch):
 
 
 def test_pins_reject_component_and_lockfile_skew(tmp_path):
+    pins()
     info = json.loads((TOOLS / "quicknet-info.json").read_text(encoding="utf-8"))
     beacon = json.loads((TOOLS / "quicknet-round-1.json").read_text(encoding="utf-8"))
     args = drand_args(info, beacon)

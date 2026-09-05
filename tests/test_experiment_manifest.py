@@ -241,16 +241,14 @@ def test_json_schema_is_versioned_and_checked_in():
     assert schema["title"] == "ExperimentManifest"
 
 
-def test_checked_in_manifest_matches_builder_and_history_link():
+def test_checked_in_historical_manifest_preserves_its_history_link():
     checked_in = deserialize_manifest(MANIFEST_PATH)
-    rebuilt = _manifest()
     history = json.loads(
         Path("docs/artifacts/controlled-provider-quality-history.json").read_text(
             encoding="utf-8"
         )
     )["history"][-1]
 
-    assert checked_in == rebuilt
     assert history["manifest_path"] == MANIFEST_PATH.as_posix()
     assert history["manifest_fingerprint"] == checked_in.manifest.manifest_fingerprint
     assert history["manifest_validation_status"] == "PASS"

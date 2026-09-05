@@ -11,9 +11,7 @@ from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_toke
     InjectedTokenizerV1,
     TokenizerRuntimeIdentityV1,
     TokenPieceBundleV1,
-    extract_identity_bound_token_pieces_v1,
 )
-
 
 RUNNER_PREFLIGHT_IDENTITY = "7a8ad4379362debbbf72425d3c2328bc9bed778b45fe083a42d47f8407428b52"
 
@@ -40,12 +38,15 @@ def bind_injected_tokenizer_preflight_v1_1(
             not validated_request.source_context_identity or
             len(validated_request.host_payload_sha256) != 64):
         raise ValueError("CONSTRUCTION_OBLIGATION_V2_RUNNER_REQUEST_BINDING_INVALID")
-    bundle = extract_identity_bound_token_pieces_v1(
-        tokenizer=tokenizer, identity=tokenizer_runtime_identity)
-    return ConstructionObligationV2RunnerPreflightV1_1(validated_request, bundle)
+    del tokenizer, tokenizer_runtime_identity
+    raise RuntimeError(
+        "CONSTRUCTION_OBLIGATION_V2_RUNNER_V1_1_SUPERSEDED_BY_PROVENANCE_BOUND_RUNTIME"
+    )
 
 
 __all__ = (
-    "ConstructionObligationV2RunnerPreflightV1_1", "RUNNER_PREFLIGHT_IDENTITY",
-    "bind_injected_tokenizer_preflight_v1_1", "validate_request_only_v1_1",
+    "RUNNER_PREFLIGHT_IDENTITY",
+    "ConstructionObligationV2RunnerPreflightV1_1",
+    "bind_injected_tokenizer_preflight_v1_1",
+    "validate_request_only_v1_1",
 )

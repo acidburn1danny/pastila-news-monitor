@@ -19,7 +19,12 @@ class _EditorApplicationError(Exception):
         return Exception.__getattribute__(self, name)
 
     def __setattr__(self, name: str, value: object) -> None:
-        if name == "__suppress_context__":
+        if name in {
+            "__cause__",
+            "__context__",
+            "__suppress_context__",
+            "__traceback__",
+        }:
             Exception.__setattr__(self, name, value)
             return
         raise AttributeError("Editor application errors are immutable")

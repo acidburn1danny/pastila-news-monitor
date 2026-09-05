@@ -3,10 +3,10 @@
 import pytest
 from pydantic import ValidationError
 from test_controlled_generation import (
+    authored_story_result,
     config,
     context_from_pipeline,
     profile_from_pipeline,
-    story_result,
 )
 from test_voice_model import voice_pipeline
 
@@ -32,7 +32,9 @@ from pastila_scout.editor.qa.orchestration import (
 def _generation_case(*, story_text: str | None = None):
     scout, flow, generic, commentary, voice = voice_pipeline([{"event_id": 7}])
     story_id = commentary.blueprint.flow_order[0]
-    story = story_result(story_id, 1)
+    # The provider boundary accepts only authored content. Application-owned
+    # story and blueprint identities are deterministically rebound after parse.
+    story = authored_story_result(story_id, 1)
     if story_text is not None:
         story["commentary_blocks"][0]["text"] = story_text
     responses = [

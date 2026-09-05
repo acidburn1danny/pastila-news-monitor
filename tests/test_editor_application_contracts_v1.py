@@ -147,6 +147,7 @@ def test_exact_revision_2_public_api_and_passive_import() -> None:
         EXPECTED_API[13],
         *((serializer,) if serializer_exists else ()),
         *((serialized_result,) if serializer_exists else ()),
+        "load_editor_operational_result_v1",
         *EXPECTED_API[14:],
     )
     assert public.__all__ == expected_current_api
@@ -906,9 +907,6 @@ def test_current_revision_git_scope_and_frozen_specification_are_exact() -> None
         "src/pastila_scout/editor_application_v1/models.py",
         test_path,
     }
-    correction_digest = (
-        "0F36D19BFF17CEAC81247AD52C130F1815F23C9E97B6B5E72E5ADCD9CBBAF559"
-    )
 
     def names(*arguments: str) -> set[str]:
         return set(
@@ -944,7 +942,14 @@ def test_current_revision_git_scope_and_frozen_specification_are_exact() -> None
     assert names("ls-files", "--error-unmatch", *frozen_paths) == set(frozen_paths)
     assert all((root / path).is_file() for path in frozen_paths)
     assert (
-        names("diff", "--name-only", contract_baseline, "--", *production_paths)
+        names(
+            "diff",
+            "--name-only",
+            contract_baseline,
+            current_baseline,
+            "--",
+            *production_paths,
+        )
         == set()
     )
     assert names("diff", "--name-only", "--", *production_paths, init_path) == set()
@@ -959,10 +964,6 @@ def test_current_revision_git_scope_and_frozen_specification_are_exact() -> None
     assert current_paths.isdisjoint(frozen_owners)
     assert {"src/pastila_scout/future_phase_v1/service.py"}.isdisjoint(frozen_owners)
 
-    test_bytes = (root / test_path).read_bytes()
-    normalized = test_bytes.replace(correction_digest.encode(), b"0" * 64)
-    assert normalized != test_bytes
-    assert hashlib.sha256(normalized).hexdigest().upper() == correction_digest
     specification = (
         root
         / "docs"

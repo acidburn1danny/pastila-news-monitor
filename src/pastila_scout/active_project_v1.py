@@ -29,6 +29,9 @@ from pastila_scout.contracts.identity import (
     verify_scout_input_identity,
 )
 from pastila_scout.contracts.scout_editor import ScoutEditorInputV1
+from pastila_scout.editor_application_v1.errors import (
+    EditorApplicationSerializationError,
+)
 from pastila_scout.editorial_evidence_v1 import EditorialEvidenceStoreV1
 from pastila_scout.editorial_recommendation_v1 import (
     EditorialCandidateV1,
@@ -675,16 +678,25 @@ class ActiveProjectStoreV1:
         ) + (material,)
         chief = project.chief_editor_items
         if reference not in {item.material_reference for item in chief}:
-            v2_reference = (
-                create_chief_editor_v2_story_reference(
+            v2_reference = None
+            if output_path.is_file():
+                try:
+                    v2_reference = create_chief_editor_v2_story_reference(
                     material_reference=reference,
                     event_id=event_id,
                     output_path=output_path,
                     payload_sha256=payload_sha256,
-                )
-                if output_path.is_file()
-                else None
-            )
+                    )
+                except (
+                    EditorApplicationSerializationError,
+                    OSError,
+                    TypeError,
+                    ValueError,
+                ):
+                    # V2 enrichment is observation-only. A valid V1 material
+                    # record must not be rejected because its payload predates
+                    # the optional operational-result format.
+                    pass
             chief += (ChiefEditorItemV1(reference, v2_story_reference=v2_reference),)
         updated = ActiveProjectV1(
             project.project_id,
@@ -1229,11 +1241,12 @@ class ActiveProjectStoreV1:
             )
         ):
             raise ValueError("Evidenta esec Editor invalida")
-        failures = tuple(
-            item
+        if any(
+            item.event_id == evidence.event_id
             for item in project.editor_terminal_failures
-            if item.event_id != evidence.event_id
-        )
+        ):
+            raise ValueError("Evidenta esec Editor exista deja")
+        failures = project.editor_terminal_failures
         updated = ActiveProjectV1(
             project.project_id,
             project.title,

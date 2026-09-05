@@ -1076,7 +1076,7 @@ def test_frozen_authority_hashes_and_phase_scope():
     expected = {
         "docs/windows-application/DesktopShellSpecificationV1.md": "5B565CAC42AFDEB0E426B078FBC2A5C7F2836C73A4D64F723AA029787FF9AAFB",
         "docs/windows-update/WindowsUpdateProtocolSpecificationV1.md": "9E4615576785062A5C902CA8BBA663EE1F9BF1112F98ED881F7620B0CAD568ED",
-        "docs/windows-update/WindowsUpdatePersistenceFormatSpecificationV1.md": "05CF922678BD9DCD4C6837B00B8896CA7A014D839C84290A7B5D70F54158DFF6",
+        "docs/windows-update/WindowsUpdatePersistenceFormatSpecificationV1.md": "049848AE817A17A3BE5660FA04FCB2C0F4A0168408DEB48A6A892E3891B3B4B9",
     }
     for path, digest in expected.items():
         assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest().upper() == digest

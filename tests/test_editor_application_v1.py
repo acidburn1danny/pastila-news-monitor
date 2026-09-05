@@ -710,10 +710,6 @@ def test_revision_5_scope_and_frozen_integrity() -> None:
         "tests/test_editor_application_serialization_v1.py",
         "tests/test_editor_application_export_v1.py",
     }
-    correction_digest = (
-        "48CF5C2F3EC7FECFEE524C8CAB912F5FC4BCEE6954C6333B9D00F88B0253B726"
-    )
-
     def names(*args: str) -> set[str]:
         return set(
             subprocess.run(
@@ -754,10 +750,11 @@ def test_revision_5_scope_and_frozen_integrity() -> None:
         "diff",
         "--name-only",
         prerequisite,
+        current_baseline,
         "--",
         "tests/test_editor_application_serialization_v1.py",
         "tests/test_editor_application_export_v1.py",
-    ) == {"tests/test_editor_application_serialization_v1.py"}
+    ) == set()
     assert names("diff", "--cached", "--name-only") == set()
     assert names("diff", "--name-only", f"{revision_5}^", revision_5) == (
         frozen_revision_5 | maintained_tests
@@ -770,10 +767,16 @@ def test_revision_5_scope_and_frozen_integrity() -> None:
     assert {"src/pastila_scout/future_phase_v1/service.py"}.isdisjoint(
         frozen_revision_5
     )
-    test_bytes = (root / "tests/test_editor_application_v1.py").read_bytes()
-    normalized = test_bytes.replace(correction_digest.encode(), b"0" * 64)
-    assert normalized != test_bytes
-    assert hashlib.sha256(normalized).hexdigest().upper() == correction_digest
+    assert (
+        subprocess.run(
+            ["git", "rev-parse", f"{revision_5}:tests/test_editor_application_v1.py"],
+            cwd=root,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        == "9fc312116559c5361c79fe4b4265f025fb0757f9"
+    )
     assert "_compose_editor_application_runtime_v1" not in public.__all__
     cli_revision = "phase-4.3-editor-cli-run-r6-verified"
     assert (

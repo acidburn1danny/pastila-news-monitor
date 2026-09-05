@@ -9,16 +9,22 @@ from pathlib import Path
 import pytest
 
 from pastila_scout.experimental_core_v1_2_stage_p_construction_obligation_v2_runner_v1_1 import (
-    ConstructionObligationV2RunnerPreflightV1_1,
     bind_injected_tokenizer_preflight_v1_1,
 )
-from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_runner_protocol_codec_v1 import RunnerRequestV1
-from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_tokenizer_piece_adapter_v1 import (
-    DECODER_IDENTITY, EOS_TOKEN_ID, PROJECTOR_FREEZE_IDENTITY,
-    SPECIAL_TOKEN_IDS, TOKENIZER_IDENTITY, TOKENIZER_IMPLEMENTATION,
-    TRANSFORMERS_VERSION, VOCABULARY_SIZE, TokenizerRuntimeIdentityV1,
+from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_runner_protocol_codec_v1 import (
+    RunnerRequestV1,
 )
-
+from pastila_scout.semantic_admission_v2.stage_p_construction_obligation_v2_tokenizer_piece_adapter_v1 import (
+    DECODER_IDENTITY,
+    EOS_TOKEN_ID,
+    PROJECTOR_FREEZE_IDENTITY,
+    SPECIAL_TOKEN_IDS,
+    TOKENIZER_IDENTITY,
+    TOKENIZER_IMPLEMENTATION,
+    TRANSFORMERS_VERSION,
+    VOCABULARY_SIZE,
+    TokenizerRuntimeIdentityV1,
+)
 
 SOURCE = Path("src/pastila_scout/experimental_core_v1_2_stage_p_construction_obligation_v2_runner_v1_1.py")
 ARTIFACT = Path("docs/artifacts/semantic-admission-v2-stage-p-construction-obligation-v2-runner-tokenizer-preflight-v1-1.json")
@@ -46,15 +52,13 @@ def identity():
         tuple(sorted(SPECIAL_TOKEN_IDS)), PROJECTOR_FREEZE_IDENTITY)
 
 
-def test_static_preflight_binds_validated_request_to_immutable_piece_bundle():
+def test_superseded_preflight_fails_closed_before_tokenizer_decode():
     tokenizer = TokenizersBackend()
-    result = bind_injected_tokenizer_preflight_v1_1(
-        validated_request=request(), tokenizer=tokenizer,
-        tokenizer_runtime_identity=identity())
-    assert type(result) is ConstructionObligationV2RunnerPreflightV1_1
-    assert result.request.source_context_identity == "source-context"
-    assert len(result.token_piece_bundle.token_pieces) == VOCABULARY_SIZE
-    assert tokenizer.decode_calls == VOCABULARY_SIZE
+    with pytest.raises(RuntimeError, match="V1_1_SUPERSEDED"):
+        bind_injected_tokenizer_preflight_v1_1(
+            validated_request=request(), tokenizer=tokenizer,
+            tokenizer_runtime_identity=identity())
+    assert tokenizer.decode_calls == 0
 
 
 def test_bad_request_or_identity_fails_before_decode():
@@ -64,7 +68,7 @@ def test_bad_request_or_identity_fails_before_decode():
             validated_request=object(), tokenizer=tokenizer,
             tokenizer_runtime_identity=identity())
     assert tokenizer.decode_calls == 0
-    with pytest.raises(ValueError, match="IDENTITY_MISMATCH"):
+    with pytest.raises(RuntimeError, match="V1_1_SUPERSEDED"):
         bind_injected_tokenizer_preflight_v1_1(
             validated_request=request(), tokenizer=tokenizer,
             tokenizer_runtime_identity=replace(identity(), decoder_identity="wrong"))

@@ -18,7 +18,6 @@ from pastila_scout.editor.commentary_models import (
 from pastila_scout.editor.engine import EditorialSelectionResult, SelectionEngine
 from pastila_scout.editor.flow_models import FlowDecisionTrace, FlowOptimizationResult
 from pastila_scout.editor.flow_optimizer import EpisodeFlowOptimizer
-from pastila_scout.editor.generation.controlled_generator import ControlledGenerator
 from pastila_scout.editor.models import (
     DecisionOutcome,
     DecisionTrace,
@@ -57,3 +56,19 @@ __all__ = [
     "VoiceDecisionTrace",
     "VoiceModelBuilder",
 ]
+
+
+def __getattr__(name: str):
+    """Load the generation boundary only when that public symbol is requested.
+
+    Importing an unrelated editor submodule must not eagerly construct the
+    complete generation/provider authority graph.
+    """
+
+    if name == "ControlledGenerator":
+        from pastila_scout.editor.generation.controlled_generator import (
+            ControlledGenerator,
+        )
+
+        return ControlledGenerator
+    raise AttributeError(name)
