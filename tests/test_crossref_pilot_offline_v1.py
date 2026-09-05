@@ -446,14 +446,14 @@ def test_attempt_is_consumed_across_fresh_adapter_instances(tmp_path: Path) -> N
         )
 
 
-def test_production_execution_root_is_fixed_repository_relative_and_not_created() -> (
-    None
-):
-    root = authorized_execution_root_v1()
-    assert root == Path(__file__).resolve().parents[1] / (
+def test_production_execution_root_is_fixed_and_resolution_has_no_side_effect() -> None:
+    expected = Path(__file__).resolve().parents[1] / (
         ".pastila-runtime/milestone10-crossref-pilot-v2"
     )
-    assert not root.exists()
+    existed_before = expected.exists()
+    root = authorized_execution_root_v1()
+    assert root == expected
+    assert root.exists() is existed_before
 
 
 def test_total_deadline_expires_before_any_wire_request(monkeypatch) -> None:

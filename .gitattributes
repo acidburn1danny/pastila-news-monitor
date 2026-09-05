@@ -25,6 +25,9 @@
 .semantic-admission-v2-staged-gate-f-two-case-proof-v1-evidence/host-trace-case10.json -text
 .semantic-admission-v2-staged-gate-f-two-case-proof-v1-evidence/raw-run-receipts.json -text
 
+# Preserve the Crossref pilot V2 request, response, and normalized proof bytes.
+.pastila-runtime/milestone10-crossref-pilot-v2/** -text -eol
+
 # Preserve the frozen Stage P Prompt-V2/V4 construction receipt byte-for-byte.
 .semantic-admission-v2-stage-p-prompt-v2-v4-binding-evidence/construction-preflight.json -text -eol
 

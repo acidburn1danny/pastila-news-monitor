@@ -92,8 +92,14 @@ def test_phase2_qualification_schema_identity_and_zero_activity() -> None:
         "raw_request_response_identity_binding": "PASS",
         "real_stdlib_http_parser_boundary": "PASS",
         "recursive_normalized_immutability": "PASS",
+        "runtime_proof_git_byte_preservation": "PASS",
         "single_use_concrete_adapter": "PASS",
         "strict_response_and_json_profile": "PASS",
         "total_monotonic_deadline": "PASS",
         "truthful_canonical_parsed_headers": "PASS",
     }
+    attributes = (ROOT / ".gitattributes").read_text(encoding="utf-8")
+    assert (
+        ".pastila-runtime/milestone10-crossref-pilot-v2/** -text -eol"
+        in attributes.splitlines()
+    )
