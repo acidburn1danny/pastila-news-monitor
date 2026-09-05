@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import io
 import json
 import os
 import re
@@ -233,18 +234,31 @@ def _verify_bundle_source(
         != "commit"
     ):
         raise ReleaseOrchestrationError("application payload source is not a commit")
-    tracked = tuple(
-        path
-        for path in _git(
-            repository,
-            "ls-tree",
-            "-r",
-            "--name-only",
+    archive = subprocess.run(
+        (
+            "git",
+            "-C",
+            str(repository),
+            "archive",
+            "--format=zip",
             application_payload_source_head,
-        ).splitlines()
-        if path.startswith("src/pastila_scout/") and path.endswith(".py")
-    )
-    expected = {path.removeprefix("src/"): path for path in tracked}
+            "--",
+            "src/pastila_scout",
+            "config/sources.yaml",
+        ),
+        check=True,
+        capture_output=True,
+    ).stdout
+    try:
+        with zipfile.ZipFile(io.BytesIO(archive)) as source_archive:
+            expected = {
+                name.removeprefix("src/"): source_archive.read(name)
+                for name in source_archive.namelist()
+                if name.startswith("src/pastila_scout/") and name.endswith(".py")
+            }
+            expected_sources = source_archive.read("config/sources.yaml")
+    except (KeyError, zipfile.BadZipFile) as error:
+        raise ReleaseOrchestrationError("payload source archive is invalid") from error
     try:
         with zipfile.ZipFile(wheel) as archive:
             actual = {
@@ -258,34 +272,12 @@ def _verify_bundle_source(
         raise ReleaseOrchestrationError(
             "bundle application sources do not match payload source"
         )
-    for archive_path, repository_path in expected.items():
-        expected_bytes = subprocess.run(
-            (
-                "git",
-                "-C",
-                str(repository),
-                "show",
-                f"{application_payload_source_head}:{repository_path}",
-            ),
-            check=True,
-            capture_output=True,
-        ).stdout
+    for archive_path, expected_bytes in expected.items():
         if expected_bytes != actual[archive_path]:
             raise ReleaseOrchestrationError(
                 "bundle application sources do not match payload source"
             )
     bundled_sources = bundle / "config" / "sources.yaml"
-    expected_sources = subprocess.run(
-        (
-            "git",
-            "-C",
-            str(repository),
-            "show",
-            f"{application_payload_source_head}:config/sources.yaml",
-        ),
-        check=True,
-        capture_output=True,
-    ).stdout
     if bundled_sources.read_bytes() != expected_sources:
         raise ReleaseOrchestrationError(
             "bundle source configuration does not match payload source"

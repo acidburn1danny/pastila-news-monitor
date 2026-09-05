@@ -724,7 +724,8 @@ def _subprocess_matrix():
     return diagnostics
 
 
-def test_complete_separate_process_diagnostic_matrix():
+@pytest.fixture(scope="module")
+def stable_subprocess_matrix():
     code = (
         "import json,runpy,sys;sys.path.insert(0,'tests');"
         "n=runpy.run_path('tests/test_editorial_script_composer_provider_results_exhaustive_freeze.py');"
@@ -733,6 +734,10 @@ def test_complete_separate_process_diagnostic_matrix():
     first = subprocess.check_output([sys.executable, "-c", code])
     second = subprocess.check_output([sys.executable, "-c", code])
     assert first == second
+    return json.loads(first)
+
+
+def test_complete_separate_process_diagnostic_matrix(stable_subprocess_matrix):
     expected = (
         json.dumps(
             _subprocess_matrix(),
@@ -743,7 +748,7 @@ def test_complete_separate_process_diagnostic_matrix():
         ).encode()
         + b"\n"
     )
-    assert first.rstrip(b"\r\n") == expected.rstrip(b"\r\n")
+    assert stable_subprocess_matrix == json.loads(expected)
 
 
 ARTIFACT_CASES = (
@@ -1480,17 +1485,25 @@ def _subprocess_scenario_payload(case_id):
     }
 
 
-@pytest.mark.parametrize("case_id", SUBPROCESS_SCENARIOS)
-def test_each_subprocess_scenario_is_stable_and_reports_its_descriptor(case_id):
+@pytest.fixture(scope="module")
+def stable_subprocess_scenarios():
     code = (
         "import json,runpy,sys;sys.path.insert(0,'tests');"
         "n=runpy.run_path('tests/test_editorial_script_composer_provider_results_exhaustive_freeze.py');"
-        "print(json.dumps(n['_subprocess_scenario_payload'](sys.argv[1]),sort_keys=True,separators=(',',':'),ensure_ascii=True,default=list))"
+        "print(json.dumps({case_id:n['_subprocess_scenario_payload'](case_id) "
+        "for case_id in n['SUBPROCESS_SCENARIOS']},sort_keys=True,separators=(',',':'),ensure_ascii=True,default=list))"
     )
-    first = subprocess.check_output([sys.executable, "-c", code, case_id])
-    second = subprocess.check_output([sys.executable, "-c", code, case_id])
+    first = subprocess.check_output([sys.executable, "-c", code])
+    second = subprocess.check_output([sys.executable, "-c", code])
     assert first == second
-    actual = json.loads(first)
+    return json.loads(first)
+
+
+@pytest.mark.parametrize("case_id", SUBPROCESS_SCENARIOS)
+def test_each_subprocess_scenario_is_stable_and_reports_its_descriptor(
+    case_id, stable_subprocess_scenarios
+):
+    actual = stable_subprocess_scenarios[case_id]
     expected = json.loads(
         json.dumps(_subprocess_scenario_payload(case_id), default=list)
     )

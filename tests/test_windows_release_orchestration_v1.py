@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import io
 import json
 import shutil
 import subprocess
@@ -33,23 +34,33 @@ def _bundle(root: Path, source_ref: str = "HEAD") -> Path:
         path = bundle / relative
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(relative.encode())
+    archived = subprocess.check_output(
+        [
+            "git",
+            "archive",
+            "--format=zip",
+            source_ref,
+            "--",
+            "src/pastila_scout",
+            "config/sources.yaml",
+        ]
+    )
+    source_archive = zipfile.ZipFile(io.BytesIO(archived))
     (bundle / "config" / "sources.yaml").write_bytes(
-        subprocess.check_output(["git", "show", f"{source_ref}:config/sources.yaml"])
+        source_archive.read("config/sources.yaml")
     )
     wheel = (
         root / "wheelhouse" / f"pastila_news_monitor-{PROJECT_VERSION}-py3-none-any.whl"
     )
     wheel.parent.mkdir(parents=True, exist_ok=True)
-    tracked = subprocess.check_output(
-        ["git", "ls-tree", "-r", "--name-only", source_ref], text=True
-    ).splitlines()
     with zipfile.ZipFile(wheel, "w") as archive:
-        for path in tracked:
+        for path in source_archive.namelist():
             if path.startswith("src/pastila_scout/") and path.endswith(".py"):
                 archive.writestr(
                     path.removeprefix("src/"),
-                    subprocess.check_output(["git", "show", f"{source_ref}:{path}"]),
+                    source_archive.read(path),
                 )
+    source_archive.close()
     digest = __import__("hashlib").sha256(wheel.read_bytes()).hexdigest()
     direct = (
         bundle / f"pastila_news_monitor-{PROJECT_VERSION}.dist-info" / "direct_url.json"
