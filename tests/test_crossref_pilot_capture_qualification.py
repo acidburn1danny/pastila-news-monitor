@@ -62,6 +62,30 @@ def test_capture_qualification_binds_exact_committed_proof_bytes() -> None:
         "3dd2ae1e8596f1a4146b87409e07c7dd626b6dbf"
     )
     assert value["qualification_test_sha256"] == sha256(Path(__file__).read_bytes())
+    proof_tree = subprocess.check_output(
+        [
+            "git",
+            "-c",
+            f"safe.directory={ROOT.as_posix()}",
+            "rev-parse",
+            f"{PROOF_COMMIT}^{{tree}}",
+        ],
+        cwd=ROOT,
+        text=True,
+    ).strip()
+    proof_parent = subprocess.check_output(
+        [
+            "git",
+            "-c",
+            f"safe.directory={ROOT.as_posix()}",
+            "rev-parse",
+            f"{PROOF_COMMIT}^",
+        ],
+        cwd=ROOT,
+        text=True,
+    ).strip()
+    assert proof_tree == value["proof_tree"]
+    assert proof_parent == value["execution_authority_commit"]
     assert value["artifact_sha256"] == {
         name: sha256(path.read_bytes()) for name, path in ARTIFACTS.items()
     }
@@ -123,13 +147,29 @@ def test_capture_qualification_reconstructs_semantic_identity_closure() -> None:
     assert capture.identity == value["raw_capture_identity"]
     assert normalized.canonical_bytes == ARTIFACTS["normalized_records"].read_bytes()
     assert normalized.identity == value["normalized_identity"]
+    assert capture.identity != normalized.identity
     assert len(normalized.records) == value["record_count"] == 10
-    assert len({record.DOI for record in normalized.records}) == 10
+    assert (
+        len({record.DOI for record in normalized.records})
+        == value["unique_doi_count"]
+        == 10
+    )
     selected = {"DOI", "title", "publisher", "type", "published", "created", "URL"}
     assert len(raw_document["message"]["items"]) == 10
     assert all(set(item) == selected for item in raw_document["message"]["items"])
-    assert terminal["raw_capture_identity"] == capture.identity
-    assert terminal["normalized_identity"] == normalized.identity
+    assert terminal == {
+        "http_status": value["http"]["status"],
+        "metadata_records_acquired": value["record_count"],
+        "normalized_identity": normalized.identity,
+        "outcome": "SUCCESS_NO_RETRY",
+        "raw_capture_identity": capture.identity,
+        "request_identity": value["request_identity"],
+        "response_body_sha256": value["artifact_sha256"]["response_body"],
+        "response_headers_sha256": value["artifact_sha256"]["response_headers"],
+        "retry_authorized": False,
+        "schema": "pastila-crossref-pilot-terminal-result-v2",
+        "wire_request_sha256": value["wire_request_sha256"],
+    }
     assert value["transport"] == {
         "attempts": 1,
         "pages": 1,
