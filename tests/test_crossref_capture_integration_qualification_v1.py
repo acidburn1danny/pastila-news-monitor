@@ -5,7 +5,9 @@ from __future__ import annotations
 import ast
 import hashlib
 import json
+import os
 import subprocess
+import sys
 from pathlib import Path
 
 from pastila_scout.crossref_capture_integration_v1 import (
@@ -126,6 +128,9 @@ def test_phase3_qualification_reconstructs_exact_result_offline(monkeypatch) -> 
         "qualified_state_input_only": "PASS",
         "raw_normalized_integrated_separation": "PASS",
         "replay_idempotent": "PASS",
+        "runtime_authority_rebinding_rejected": "PASS",
+        "runtime_schema_rebinding_rejected": "PASS",
+        "transitive_network_imports_absent": "PASS",
     }
     assert (
         len(
@@ -154,4 +159,31 @@ def test_phase3_module_has_no_network_or_persistence_import_boundary() -> None:
     }
     assert imported_roots.isdisjoint(
         {"http", "httpx", "socket", "sqlite3", "ssl", "urllib"}
+    )
+    assert "pastila_scout" not in imported_roots
+
+
+def test_fresh_phase3_import_has_no_transitive_network_runtime() -> None:
+    environment = os.environ.copy()
+    environment["PYTHONPATH"] = str(ROOT / "src")
+    environment["PYTHONDONTWRITEBYTECODE"] = "1"
+    code = """
+import json
+import sys
+before = set(sys.modules)
+import pastila_scout.crossref_capture_integration_v1
+print(json.dumps(sorted(set(sys.modules) - before)))
+"""
+    loaded = set(
+        json.loads(
+            subprocess.check_output(
+                [sys.executable, "-c", code],
+                cwd=ROOT,
+                env=environment,
+                text=True,
+            )
+        )
+    )
+    assert loaded.isdisjoint(
+        {"http", "http.client", "httpx", "socket", "sqlite3", "ssl", "urllib.request"}
     )

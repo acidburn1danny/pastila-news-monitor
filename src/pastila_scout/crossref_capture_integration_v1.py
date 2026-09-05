@@ -7,11 +7,6 @@ import json
 from dataclasses import dataclass
 from typing import Literal, cast
 
-from pastila_scout.crossref_pilot_offline_v1 import (
-    MAXIMUM_RECORDS,
-    CanonicalJsonObjectV1,
-)
-
 INTEGRATION_SCHEMA = "pastila-crossref-capture-integration-v1"
 STATE_SCHEMA = "pastila-crossref-integration-state-v1"
 QUARANTINE_SCHEMA = "pastila-crossref-integration-quarantine-v1"
@@ -45,6 +40,31 @@ class CrossrefIntegrationInputRejected(ValueError):
 
 
 @dataclass(frozen=True, slots=True)
+class _CanonicalJsonObjectV1:
+    """Local immutable JSON object without importing the transport module."""
+
+    canonical_bytes: bytes
+
+    def __post_init__(self) -> None:
+        if type(self.canonical_bytes) is not bytes:
+            raise CrossrefIntegrationInputRejected("canonical object is not bytes")
+        try:
+            value = json.loads(self.canonical_bytes)
+        except (UnicodeDecodeError, json.JSONDecodeError) as error:
+            raise CrossrefIntegrationInputRejected(
+                "canonical object is not JSON"
+            ) from error
+        if (
+            not isinstance(value, dict)
+            or _canonical_json_bytes(value) != self.canonical_bytes
+        ):
+            raise CrossrefIntegrationInputRejected("canonical object is not canonical")
+
+    def as_dict(self) -> dict[str, object]:
+        return cast(dict[str, object], json.loads(self.canonical_bytes))
+
+
+@dataclass(frozen=True, slots=True)
 class CrossrefIntegratedRecordV1:
     """Provider-bound metadata record retaining exact capture provenance."""
 
@@ -53,8 +73,8 @@ class CrossrefIntegratedRecordV1:
     title: tuple[str, ...] | None
     publisher: str | None
     type: str | None
-    published: CanonicalJsonObjectV1 | None
-    created: CanonicalJsonObjectV1 | None
+    published: _CanonicalJsonObjectV1 | None
+    created: _CanonicalJsonObjectV1 | None
     URL: str | None
     source_ordinal: int
     raw_capture_identity: str
@@ -79,7 +99,7 @@ class CrossrefIntegratedRecordV1:
         ):
             raise CrossrefIntegrationInputRejected("optional string is invalid")
         if any(
-            value is not None and type(value) is not CanonicalJsonObjectV1
+            value is not None and type(value) is not _CanonicalJsonObjectV1
             for value in (self.published, self.created)
         ):
             raise CrossrefIntegrationInputRejected("canonical object is invalid")
@@ -121,7 +141,7 @@ class CrossrefIntegrationBatchV1:
             type(record) is not CrossrefIntegratedRecordV1 for record in self.records
         ):
             raise CrossrefIntegrationInputRejected("batch records are not immutable")
-        if len(self.records) > MAXIMUM_RECORDS:
+        if len(self.records) > 10:
             raise CrossrefIntegrationInputRejected("batch exceeds record limit")
         _require_sha256(self.raw_capture_identity, "raw capture identity")
         _require_sha256(self.normalized_identity, "normalized identity")
@@ -143,7 +163,7 @@ class CrossrefIntegrationBatchV1:
             "raw_capture_identity": self.raw_capture_identity,
             "record_identities": [record.identity for record in self.records],
             "records": [record.as_dict() for record in self.records],
-            "schema": INTEGRATION_SCHEMA,
+            "schema": "pastila-crossref-capture-integration-v1",
         }
 
     @property
@@ -188,7 +208,7 @@ class CrossrefIntegrationStateV1:
             "applied_batch_identities": list(self.applied_batch_identities),
             "record_identities": [record.identity for record in self.records],
             "records": [record.as_dict() for record in self.records],
-            "schema": STATE_SCHEMA,
+            "schema": "pastila-crossref-integration-state-v1",
         }
 
     @property
@@ -240,7 +260,7 @@ class CrossrefIntegrationQuarantineV1:
             "expected_raw_capture_identity": self.expected_raw_capture_identity,
             "input_sha256": self.input_sha256,
             "reason_codes": list(self.reason_codes),
-            "schema": QUARANTINE_SCHEMA,
+            "schema": "pastila-crossref-integration-quarantine-v1",
             "state_after_identity": self.state_after_identity,
             "state_before_identity": self.state_before_identity,
         }
@@ -300,14 +320,28 @@ def integrate_crossref_normalized_bytes_v1(
 
     if type(state) is not CrossrefIntegrationStateV1 or type(payload) is not bytes:
         raise TypeError("state and payload must be exact immutable boundary types")
+    # These values are deliberately reconstructed in the consuming frame. Public
+    # module constants are evidence labels, never runtime admission authority.
+    empty_state_identity = (
+        "62846329a1f032711c76f5120705b4c9a1237b92d5de6e9e273da8f25b41475b"
+    )
+    accepted_state_identity = (
+        "768ac0572117e39a3cc0f9f4b7d0a255ed116f33b4fd6f5653e09c091ac804d5"
+    )
     if state.identity not in {
-        PHASE3_EMPTY_STATE_IDENTITY,
-        PHASE3_ACCEPTED_STATE_IDENTITY,
+        empty_state_identity,
+        accepted_state_identity,
     }:
         raise CrossrefIntegrationInputRejected("state is not a qualified Phase 3 state")
-    expected_raw_capture_identity = PHASE2_RAW_CAPTURE_IDENTITY
-    expected_normalized_identity = PHASE2_NORMALIZED_IDENTITY
-    input_sha256 = _sha256(payload)
+    expected_raw_capture_identity = (
+        "3acbdb9f2e54940f5953b497ace279a5884d0ce607f4e77e868de9a667783281"
+    )
+    expected_normalized_identity = (
+        "bc2dd86d76c89f9e39f4a99a72db87ef57a5835ea92533a02f942ecc1111f4e0"
+    )
+    from hashlib import sha256 as local_sha256
+
+    input_sha256 = local_sha256(payload).hexdigest()
     reasons: set[str] = set()
     if input_sha256 != expected_normalized_identity:
         reasons.add("NORMALIZED_IDENTITY_MISMATCH")
@@ -315,12 +349,12 @@ def integrate_crossref_normalized_bytes_v1(
     document = _decode_document(payload, reasons)
     records: list[CrossrefIntegratedRecordV1] = []
     if document is not None:
-        if document.get("schema") != _NORMALIZED_SCHEMA:
+        if document.get("schema") != "pastila-crossref-pilot-offline-v1":
             reasons.add("NORMALIZED_SCHEMA_MISMATCH")
         if document.get("raw_capture_identity") != expected_raw_capture_identity:
             reasons.add("RAW_CAPTURE_IDENTITY_MISMATCH")
         values = document.get("records")
-        if not isinstance(values, list) or len(values) > MAXIMUM_RECORDS:
+        if not isinstance(values, list) or len(values) > 10:
             reasons.add("RECORD_SET_INVALID")
         else:
             for ordinal, value in enumerate(values):
@@ -406,7 +440,16 @@ def _map_record(
     normalized_identity: str,
     reasons: set[str],
 ) -> CrossrefIntegratedRecordV1 | None:
-    if not isinstance(value, dict) or set(value) != _RECORD_FIELDS:
+    record_fields = {
+        "DOI",
+        "URL",
+        "created",
+        "published",
+        "publisher",
+        "title",
+        "type",
+    }
+    if not isinstance(value, dict) or set(value) != record_fields:
         reasons.add("RECORD_SHAPE_INVALID")
         return None
     doi = value.get("DOI")
@@ -438,12 +481,12 @@ def _map_record(
         published=(
             None
             if value.get("published") is None
-            else CanonicalJsonObjectV1(_canonical_json_bytes(value["published"]))
+            else _CanonicalJsonObjectV1(_canonical_json_bytes(value["published"]))
         ),
         created=(
             None
             if value.get("created") is None
-            else CanonicalJsonObjectV1(_canonical_json_bytes(value["created"]))
+            else _CanonicalJsonObjectV1(_canonical_json_bytes(value["created"]))
         ),
         URL=cast(str | None, value.get("URL")),
         source_ordinal=ordinal,

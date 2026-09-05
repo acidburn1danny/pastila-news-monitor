@@ -8,6 +8,7 @@ from pathlib import Path
 
 import pytest
 
+import pastila_scout.crossref_capture_integration_v1 as integration_module
 from pastila_scout.crossref_capture_integration_v1 import (
     CrossrefIntegrationInputRejected,
     CrossrefIntegrationResultV1,
@@ -172,6 +173,63 @@ def test_changed_bytes_cannot_select_their_own_authority() -> None:
             _canonical(value),
             expected_normalized_identity="0" * 64,
         )
+
+
+def test_runtime_evidence_label_rebinding_cannot_change_admission(monkeypatch) -> None:
+    value = json.loads(NORMALIZED.read_bytes())
+    value["raw_capture_identity"] = "1" * 64
+    value["records"][0]["title"] = ["Runtime-rebound evidence"]
+    changed = _canonical(value)
+    monkeypatch.setattr(
+        integration_module,
+        "PHASE2_NORMALIZED_IDENTITY",
+        __import__("hashlib").sha256(changed).hexdigest(),
+    )
+    monkeypatch.setattr(integration_module, "PHASE2_RAW_CAPTURE_IDENTITY", "1" * 64)
+
+    result = _integrate(payload=changed)
+    assert result.disposition == "QUARANTINED"
+    assert result.quarantine is not None
+    assert {
+        "NORMALIZED_IDENTITY_MISMATCH",
+        "RAW_CAPTURE_IDENTITY_MISMATCH",
+    }.issubset(result.quarantine.reason_codes)
+
+
+def test_runtime_state_label_rebinding_cannot_admit_unqualified_state(
+    monkeypatch,
+) -> None:
+    accepted = _integrate()
+    assert accepted.batch is not None
+    unqualified = CrossrefIntegrationStateV1((accepted.batch.records[0],), ())
+    monkeypatch.setattr(
+        integration_module, "PHASE3_EMPTY_STATE_IDENTITY", unqualified.identity
+    )
+    monkeypatch.setattr(
+        integration_module, "PHASE3_ACCEPTED_STATE_IDENTITY", unqualified.identity
+    )
+
+    with pytest.raises(CrossrefIntegrationInputRejected, match="not a qualified"):
+        _integrate(unqualified)
+
+
+def test_runtime_schema_label_rebinding_cannot_change_output(monkeypatch) -> None:
+    expected = _integrate()
+    assert expected.batch is not None
+    for name in (
+        "INTEGRATION_SCHEMA",
+        "STATE_SCHEMA",
+        "QUARANTINE_SCHEMA",
+        "_NORMALIZED_SCHEMA",
+    ):
+        monkeypatch.setattr(integration_module, name, "caller-rebound-schema")
+    monkeypatch.setattr(integration_module, "_RECORD_FIELDS", set())
+
+    actual = _integrate()
+    assert actual.disposition == "ACCEPTED"
+    assert actual.batch is not None
+    assert actual.batch.identity == expected.batch.identity
+    assert actual.state.identity == expected.state.identity
 
 
 def test_unqualified_preexisting_state_cannot_enter_integration_boundary() -> None:
