@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import hashlib
 import json
 from dataclasses import dataclass
 from typing import Literal, cast
@@ -125,7 +124,9 @@ class CrossrefIntegratedRecordV1:
 
     @property
     def identity(self) -> str:
-        return _sha256(_canonical_json_bytes(self.as_dict()))
+        from hashlib import sha256
+
+        return sha256(_canonical_json_bytes(self.as_dict())).hexdigest()
 
 
 @dataclass(frozen=True, slots=True)
@@ -172,7 +173,9 @@ class CrossrefIntegrationBatchV1:
 
     @property
     def identity(self) -> str:
-        return _sha256(self.canonical_bytes)
+        from hashlib import sha256
+
+        return sha256(self.canonical_bytes).hexdigest()
 
 
 @dataclass(frozen=True, slots=True)
@@ -217,7 +220,9 @@ class CrossrefIntegrationStateV1:
 
     @property
     def identity(self) -> str:
-        return _sha256(self.canonical_bytes)
+        from hashlib import sha256
+
+        return sha256(self.canonical_bytes).hexdigest()
 
 
 @dataclass(frozen=True, slots=True)
@@ -267,7 +272,9 @@ class CrossrefIntegrationQuarantineV1:
 
     @property
     def identity(self) -> str:
-        return _sha256(_canonical_json_bytes(self.as_dict()))
+        from hashlib import sha256
+
+        return sha256(_canonical_json_bytes(self.as_dict())).hexdigest()
 
 
 @dataclass(frozen=True, slots=True)
@@ -320,6 +327,59 @@ def integrate_crossref_normalized_bytes_v1(
 
     if type(state) is not CrossrefIntegrationStateV1 or type(payload) is not bytes:
         raise TypeError("state and payload must be exact immutable boundary types")
+    from hashlib import sha256 as local_sha256
+    from json import dumps as local_json_dumps
+    from json import loads as local_json_loads
+
+    def local_canonical(value: object) -> bytes:
+        return (
+            local_json_dumps(
+                value,
+                ensure_ascii=False,
+                allow_nan=False,
+                sort_keys=True,
+                separators=(",", ":"),
+            )
+            + "\n"
+        ).encode("utf-8")
+
+    def local_record_dict(record: CrossrefIntegratedRecordV1) -> dict[str, object]:
+        return {
+            "DOI": record.DOI,
+            "URL": record.URL,
+            "created": (
+                None
+                if record.created is None
+                else local_json_loads(record.created.canonical_bytes)
+            ),
+            "doi_key": record.doi_key,
+            "normalized_identity": record.normalized_identity,
+            "published": (
+                None
+                if record.published is None
+                else local_json_loads(record.published.canonical_bytes)
+            ),
+            "publisher": record.publisher,
+            "raw_capture_identity": record.raw_capture_identity,
+            "source_ordinal": record.source_ordinal,
+            "title": None if record.title is None else list(record.title),
+            "type": record.type,
+        }
+
+    local_records = [local_record_dict(record) for record in state.records]
+    local_record_identities = [
+        local_sha256(local_canonical(record)).hexdigest() for record in local_records
+    ]
+    trusted_state_identity = local_sha256(
+        local_canonical(
+            {
+                "applied_batch_identities": list(state.applied_batch_identities),
+                "record_identities": local_record_identities,
+                "records": local_records,
+                "schema": "pastila-crossref-integration-state-v1",
+            }
+        )
+    ).hexdigest()
     # These values are deliberately reconstructed in the consuming frame. Public
     # module constants are evidence labels, never runtime admission authority.
     empty_state_identity = (
@@ -328,7 +388,7 @@ def integrate_crossref_normalized_bytes_v1(
     accepted_state_identity = (
         "768ac0572117e39a3cc0f9f4b7d0a255ed116f33b4fd6f5653e09c091ac804d5"
     )
-    if state.identity not in {
+    if trusted_state_identity not in {
         empty_state_identity,
         accepted_state_identity,
     }:
@@ -339,8 +399,6 @@ def integrate_crossref_normalized_bytes_v1(
     expected_normalized_identity = (
         "bc2dd86d76c89f9e39f4a99a72db87ef57a5835ea92533a02f942ecc1111f4e0"
     )
-    from hashlib import sha256 as local_sha256
-
     input_sha256 = local_sha256(payload).hexdigest()
     reasons: set[str] = set()
     if input_sha256 != expected_normalized_identity:
@@ -506,10 +564,6 @@ def _canonical_json_bytes(value: object) -> bytes:
         )
         + "\n"
     ).encode("utf-8")
-
-
-def _sha256(value: bytes) -> str:
-    return hashlib.sha256(value).hexdigest()
 
 
 def _require_sha256(value: object, field: str) -> None:

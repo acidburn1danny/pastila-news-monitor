@@ -129,6 +129,8 @@ def test_phase3_qualification_reconstructs_exact_result_offline(monkeypatch) -> 
         "raw_normalized_integrated_separation": "PASS",
         "replay_idempotent": "PASS",
         "runtime_authority_rebinding_rejected": "PASS",
+        "runtime_canonical_helper_injection_rejected": "PASS",
+        "runtime_hash_helper_injection_rejected": "PASS",
         "runtime_schema_rebinding_rejected": "PASS",
         "transitive_network_imports_absent": "PASS",
     }

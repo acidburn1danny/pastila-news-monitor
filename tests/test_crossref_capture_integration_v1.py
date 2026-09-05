@@ -213,6 +213,44 @@ def test_runtime_state_label_rebinding_cannot_admit_unqualified_state(
         _integrate(unqualified)
 
 
+def test_runtime_hash_helper_injection_cannot_admit_unqualified_state(
+    monkeypatch,
+) -> None:
+    accepted = _integrate()
+    assert accepted.batch is not None
+    unqualified = CrossrefIntegrationStateV1((accepted.batch.records[0],), ())
+    monkeypatch.setattr(
+        integration_module,
+        "_sha256",
+        lambda value: (
+            "62846329a1f032711c76f5120705b4c9a1237b92d5de6e9e273da8f25b41475b"
+        ),
+        raising=False,
+    )
+
+    with pytest.raises(CrossrefIntegrationInputRejected, match="not a qualified"):
+        _integrate(unqualified)
+
+
+def test_runtime_canonical_helper_injection_cannot_admit_unqualified_state(
+    monkeypatch,
+) -> None:
+    accepted = _integrate()
+    assert accepted.batch is not None
+    unqualified = CrossrefIntegrationStateV1((accepted.batch.records[0],), ())
+    monkeypatch.setattr(
+        integration_module,
+        "_canonical_json_bytes",
+        lambda value: (
+            b'{"applied_batch_identities":[],"record_identities":[],'
+            b'"records":[],"schema":"pastila-crossref-integration-state-v1"}\n'
+        ),
+    )
+
+    with pytest.raises(CrossrefIntegrationInputRejected, match="not a qualified"):
+        _integrate(unqualified)
+
+
 def test_runtime_schema_label_rebinding_cannot_change_output(monkeypatch) -> None:
     expected = _integrate()
     assert expected.batch is not None
