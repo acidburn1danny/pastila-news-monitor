@@ -61,6 +61,12 @@ def pytest_addoption(parser: pytest.Parser) -> None:
         default=False,
         help="run the explicitly authorized superseded identity/evidence modules",
     )
+    parser.addoption(
+        "--run-owner-evidence",
+        action="store_true",
+        default=False,
+        help="run the explicitly authorized owner-held evidence modules",
+    )
 
 
 def pytest_configure(config: pytest.Config) -> None:
@@ -90,12 +96,11 @@ def pytest_collection_modifyitems(
         required = _OWNER_EVIDENCE_PREREQUISITES.get(module_name)
         if required is None:
             continue
+        item.add_marker(pytest.mark.owner_evidence)
         missing = tuple(name for name in required if not (root / name).is_file())
-        if missing:
-            item.add_marker(pytest.mark.owner_evidence)
+        if missing and not config.getoption("--run-owner-evidence"):
             item.add_marker(
                 pytest.mark.skip(
-                    reason="owner-held historical evidence absent: "
-                    + ", ".join(missing)
+                    reason="owner-held evidence suite disabled; use --run-owner-evidence"
                 )
             )
