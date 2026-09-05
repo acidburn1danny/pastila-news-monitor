@@ -41,6 +41,9 @@ class FakeResponse:
     def getheaders(self) -> list[tuple[str, str]]:
         return list(self._headers)
 
+    def begin(self) -> None:
+        return None
+
     def read(self, amount: int) -> bytes:
         self.read_amounts.append(amount)
         chunk = self._body[self._offset : self._offset + amount]
@@ -332,9 +335,17 @@ def test_crossref_envelope_authority_is_exact(updates: dict[str, object]) -> Non
 def test_direct_https_adapter_is_single_use_exact_and_closes(monkeypatch) -> None:
     import pastila_scout.crossref_pilot_offline_v1 as module
 
+    monkeypatch.setenv("SSL_CERT_FILE", "C:/untrusted/environment-ca.pem")
+    monkeypatch.setenv("SSL_CERT_DIR", "C:/untrusted/environment-ca-directory")
     events = []
 
+    class Socket:
+        def settimeout(self, value):
+            events.append(("socket-timeout", value))
+
     class Connection:
+        response_class = None
+
         def __init__(self, host, port, *, timeout, context):
             events.append(
                 (
@@ -346,20 +357,14 @@ def test_direct_https_adapter_is_single_use_exact_and_closes(monkeypatch) -> Non
                     context.verify_mode,
                 )
             )
+            self.sock = Socket()
+            self.response_class = lambda sock, method: FakeResponse(body([]))
 
-        def putrequest(self, method, target, *, skip_accept_encoding):
-            events.append(("request", method, target, skip_accept_encoding))
+        def connect(self):
+            events.append(("tls-connect",))
 
-        def putheader(self, name, value):
-            events.append(("header", name, value))
-
-        def endheaders(self):
-            events.append(("end",))
-
-        def getresponse(self):
-            response = FakeResponse(body([]))
-            response._headers = [("Content-Type", MEDIA_TYPE)]
-            return response
+        def send(self, value):
+            events.append(("wire", value))
 
         def close(self):
             events.append(("close",))
@@ -369,9 +374,19 @@ def test_direct_https_adapter_is_single_use_exact_and_closes(monkeypatch) -> Non
     raw = execute_one_shot_capture_v1(adapter)
     assert raw.request_identity == frozen_request_identity_v1()
     assert events[0][0:4] == ("connect", "api.crossref.org", 443, 15)
-    assert events[1] == ("request", "GET", FROZEN_REQUEST.target, True)
-    assert [event[1:] for event in events if event[0] == "header"] == list(
-        FROZEN_REQUEST.headers
+    wire = next(event[1] for event in events if event[0] == "wire")
+    assert (
+        wire
+        == module.WIRE_REQUEST_BYTES
+        == (
+            b"GET /v1/works?rows=10&sort=published&order=asc&select="
+            b"DOI%2Ctitle%2Cpublisher%2Ctype%2Cpublished%2Ccreated%2CURL HTTP/1.1\r\n"
+            b"Host: api.crossref.org\r\n"
+            b"Accept: application/vnd.crossref-api-message+json\r\n"
+            b"Accept-Encoding: identity\r\n"
+            b"User-Agent: PastilaScout-CrossrefPilot "
+            b"(+https://github.com/acidburn1danny/pastila-news-monitor)\r\n\r\n"
+        )
     )
     assert events[-1] == ("close",)
     with pytest.raises(Exception, match="single-use"):
@@ -383,6 +398,7 @@ def test_raw_capture_is_durably_recorded_before_normalization(tmp_path: Path) ->
     destination = tmp_path / "raw-capture"
     assert record_raw_capture_v1(destination, raw) == raw.identity
     assert (destination / "response-body.bin").read_bytes() == raw.body
+    assert (destination / "wire-request.http").read_bytes().endswith(b"\r\n\r\n")
     manifest = json.loads((destination / "manifest.json").read_bytes())
     assert manifest["capture_identity"] == raw.identity
     assert manifest["request_identity"] == frozen_request_identity_v1()
@@ -393,12 +409,45 @@ def test_raw_capture_is_durably_recorded_before_normalization(tmp_path: Path) ->
 def test_closed_lifecycle_records_raw_before_terminal_normalization_failure(
     tmp_path: Path,
 ) -> None:
-    destination = tmp_path / "failed-normalization-raw"
     response = FakeResponse(body([{"DOI": 7}]))
     with pytest.raises(NormalizationRejected):
-        execute_record_then_normalize_v1(lambda _request: response, destination)
-    assert (destination / "response-body.bin").read_bytes() == body([{"DOI": 7}])
+        execute_record_then_normalize_v1(lambda _request: response, tmp_path)
+    assert (tmp_path / "raw-capture" / "response-body.bin").read_bytes() == body(
+        [{"DOI": 7}]
+    )
+    assert (tmp_path / "attempt-consumed.json").is_file()
     assert response.closed is True
+
+
+def test_attempt_is_consumed_across_fresh_adapter_instances(tmp_path: Path) -> None:
+    execute_record_then_normalize_v1(lambda _request: FakeResponse(body([])), tmp_path)
+    with pytest.raises(FileExistsError):
+        execute_record_then_normalize_v1(
+            lambda _request: FakeResponse(body([])), tmp_path
+        )
+
+
+def test_total_deadline_expires_before_any_wire_request(monkeypatch) -> None:
+    import pastila_scout.crossref_pilot_offline_v1 as module
+
+    events = []
+
+    class Connection:
+        def __init__(self, *_args, **_kwargs):
+            self.sock = object()
+
+        def connect(self):
+            events.append("connect-returned")
+
+        def close(self):
+            events.append("closed")
+
+    ticks = iter((100.0, 116.0))
+    monkeypatch.setattr(module.time, "monotonic", lambda: next(ticks))
+    monkeypatch.setattr(module.http.client, "HTTPSConnection", Connection)
+    with pytest.raises(TimeoutError, match="deadline"):
+        DirectCrossrefHttpsTransportV1()(FROZEN_REQUEST)
+    assert events == ["connect-returned", "closed"]
 
 
 def test_writer_rejects_capture_from_another_request(tmp_path: Path) -> None:

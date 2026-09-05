@@ -8,9 +8,12 @@ opening a network connection by itself.
 
 `pastila_scout.crossref_pilot_offline_v1` reconstructs the exact approved request
 inside every authoritative operation, so replacing its public display binding
-cannot redirect execution. The direct adapter uses Python's platform-trusted
-TLS client, exact host and port, hostname verification, a 15-second socket
-timeout, and no proxy, redirect, retry, pagination, credential, scheduler,
+cannot redirect execution. The direct adapter verifies and exclusively loads
+the existing Certifi CA bundle identity
+`9cc2a774b5198dcff14d9be1e66091f538975d867ce029a96bce15a55dfd730f`,
+ignoring environment-selected CA paths. It uses the exact host and port,
+hostname verification, a monotonic 15-second deadline, and no proxy, redirect,
+retry, pagination, credential, scheduler,
 publisher, RFC-3161, Sigstore, or OpenAlex integration. It is single-use.
 
 The response body is read incrementally with a one-byte sentinel over the
@@ -18,16 +21,21 @@ The response body is read incrementally with a one-byte sentinel over the
 Status and headers are captured with the exact body before response-profile or
 normalization validation.
 
-Raw response status, ordered header pairs, and body bytes have distinct SHA-256
-identities. Normalized output is a different canonical identity domain and
+Response status, canonical ordered parsed-header pairs, and raw body bytes have
+distinct SHA-256 identities. No claim to raw HTTP header wire bytes is made.
+Normalized output is a different canonical identity domain and
 contains the raw-capture identity. Arrays are retained internally as tuples and
 nested JSON objects as immutable canonical bytes; callers receive fresh
 projections, so later mutation cannot change an accepted identity.
 
-The raw capture also contains the frozen-request identity. The closed lifecycle
-entry point writes request bytes, response headers, response body, and a manifest
+The raw capture also contains an identity over the semantic profile and exact
+HTTP/1.1 wire-request hash. The wire request includes the exact request line,
+`Host`, approved headers, CRLF framing, and terminal empty line. The closed
+lifecycle first publishes an exclusive durable `CONSUMED_BEFORE_TRANSPORT`
+record shared by the execution root. It then writes semantic request bytes,
+wire request bytes, parsed response headers, raw response body, and a manifest
 to a new staging directory with exclusive files and file flushes, publishes the
-directory by atomic rename, and only then attempts normalization. Failed
+directory by no-replacement rename, and only then attempts normalization. Failed
 normalization therefore cannot erase or replace the raw evidence.
 
 Normalization is atomic. A malformed envelope, more than ten items, missing or

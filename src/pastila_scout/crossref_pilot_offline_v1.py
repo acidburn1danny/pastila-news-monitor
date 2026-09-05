@@ -7,10 +7,13 @@ import http.client
 import json
 import os
 import ssl
+import time
 from collections.abc import Callable, Mapping
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Protocol, cast
+
+import certifi
 
 SCHEMA = "pastila-crossref-pilot-offline-v1"
 ENDPOINT = "https://api.crossref.org/v1/works"
@@ -26,6 +29,15 @@ MEDIA_TYPE = "application/vnd.crossref-api-message+json"
 MAXIMUM_RESPONSE_BODY_BYTES = 2_097_152
 MAXIMUM_RECORDS = 10
 READ_CHUNK_BYTES = 65_536
+CA_BUNDLE_SHA256 = "9cc2a774b5198dcff14d9be1e66091f538975d867ce029a96bce15a55dfd730f"
+WIRE_REQUEST_BYTES = (
+    f"GET {REQUEST_TARGET} HTTP/1.1\r\n"
+    "Host: api.crossref.org\r\n"
+    f"Accept: {MEDIA_TYPE}\r\n"
+    "Accept-Encoding: identity\r\n"
+    f"User-Agent: {USER_AGENT}\r\n"
+    "\r\n"
+).encode("ascii")
 
 
 class CrossrefPilotFailure(ValueError):
@@ -222,9 +234,11 @@ class NormalizedRecordSetV1:
 def frozen_request_identity_v1() -> str:
     """Return the identity of the only request accepted by this implementation."""
 
-    return hashlib.sha256(
-        _canonical_json_bytes(asdict(_build_frozen_request_v1()))
-    ).hexdigest()
+    value = {
+        "profile": asdict(_build_frozen_request_v1()),
+        "wire_request_sha256": hashlib.sha256(WIRE_REQUEST_BYTES).hexdigest(),
+    }
+    return hashlib.sha256(_canonical_json_bytes(value)).hexdigest()
 
 
 def execute_one_shot_capture_v1(transport_once: TransportOnce) -> RawResponseCaptureV1:
@@ -249,16 +263,23 @@ class _ConnectionBoundResponseV1:
         self,
         response: http.client.HTTPResponse,
         connection: http.client.HTTPSConnection,
+        started: float,
     ) -> None:
         self.status = response.status
         self._response = response
         self._connection = connection
+        self._started = started
 
     def getheaders(self) -> list[tuple[str, str]]:
         return self._response.getheaders()
 
     def read(self, amount: int) -> bytes:
-        return self._response.read(amount)
+        if self._connection.sock is None:
+            raise CrossrefPilotFailure("TLS socket unavailable during response read")
+        self._connection.sock.settimeout(_remaining_seconds(self._started))
+        value = self._response.read(amount)
+        _require_deadline(self._started)
+        return value
 
     def close(self) -> None:
         try:
@@ -281,7 +302,11 @@ class DirectCrossrefHttpsTransportV1:
             raise CrossrefPilotFailure("transport is single-use")
         self._consumed = True
 
-        context = ssl.create_default_context()
+        started = time.monotonic()
+        ca_path = Path(certifi.where()).resolve(strict=True)
+        if hashlib.sha256(ca_path.read_bytes()).hexdigest() != CA_BUNDLE_SHA256:
+            raise CrossrefPilotFailure("CA bundle identity mismatch")
+        context = ssl.create_default_context(cafile=str(ca_path))
         context.check_hostname = True
         context.verify_mode = ssl.CERT_REQUIRED
         connection = http.client.HTTPSConnection(
@@ -291,19 +316,32 @@ class DirectCrossrefHttpsTransportV1:
             context=context,
         )
         try:
-            connection.putrequest(
-                expected.method,
-                expected.target,
-                skip_accept_encoding=True,
+            connection.connect()
+            _require_deadline(started)
+            if connection.sock is None:
+                raise CrossrefPilotFailure("TLS socket unavailable")
+            connection.sock.settimeout(_remaining_seconds(started))
+            connection.send(WIRE_REQUEST_BYTES)
+            response = connection.response_class(
+                connection.sock, method=expected.method
             )
-            for name, value in expected.headers:
-                connection.putheader(name, value)
-            connection.endheaders()
-            response = connection.getresponse()
+            response.begin()
+            _require_deadline(started)
         except BaseException:
             connection.close()
             raise
-        return _ConnectionBoundResponseV1(response, connection)
+        return _ConnectionBoundResponseV1(response, connection, started)
+
+
+def _remaining_seconds(started: float) -> float:
+    remaining = 15.0 - (time.monotonic() - started)
+    if remaining <= 0:
+        raise TimeoutError("Crossref pilot total deadline exceeded")
+    return remaining
+
+
+def _require_deadline(started: float) -> None:
+    _remaining_seconds(started)
 
 
 def validate_response_profile_v1(capture: RawResponseCaptureV1) -> None:
@@ -384,8 +422,10 @@ def record_raw_capture_v1(destination: Path, capture: RawResponseCaptureV1) -> s
         "request_identity": capture.request_identity,
         "schema": "pastila-crossref-pilot-raw-capture-v1",
         "status": capture.status,
+        "wire_request_sha256": hashlib.sha256(WIRE_REQUEST_BYTES).hexdigest(),
     }
     _write_durable_new(staging / "request.json", request_bytes)
+    _write_durable_new(staging / "wire-request.http", WIRE_REQUEST_BYTES)
     _write_durable_new(staging / "response-headers.json", headers_bytes)
     _write_durable_new(staging / "response-body.bin", capture.body)
     _write_durable_new(staging / "manifest.json", _canonical_json_bytes(manifest))
@@ -395,13 +435,35 @@ def record_raw_capture_v1(destination: Path, capture: RawResponseCaptureV1) -> s
 
 def execute_record_then_normalize_v1(
     transport_once: TransportOnce,
-    raw_destination: Path,
+    execution_root: Path,
 ) -> NormalizedRecordSetV1:
     """Closed lifecycle: one capture, durable raw publication, then normalization."""
 
+    raw_destination = _consume_attempt_authority_v1(execution_root)
     capture = execute_one_shot_capture_v1(transport_once)
     record_raw_capture_v1(raw_destination, capture)
     return normalize_capture_v1(capture)
+
+
+def _consume_attempt_authority_v1(execution_root: Path) -> Path:
+    if not isinstance(execution_root, Path) or not execution_root.is_dir():
+        raise CrossrefPilotFailure("execution root must be an existing directory")
+    resolved = execution_root.resolve(strict=True)
+    if os.path.normcase(str(resolved)) != os.path.normcase(
+        str(execution_root.absolute())
+    ):
+        raise CrossrefPilotFailure("execution root must not traverse a symlink")
+    attempt = resolved / "attempt-consumed.json"
+    payload = _canonical_json_bytes(
+        {
+            "request_identity": frozen_request_identity_v1(),
+            "schema": "pastila-crossref-pilot-attempt-consumption-v1",
+            "state": "CONSUMED_BEFORE_TRANSPORT",
+        }
+    )
+    _write_durable_new(attempt, payload)
+    _sync_directory(resolved)
+    return resolved / "raw-capture"
 
 
 def _write_durable_new(path: Path, payload: bytes) -> None:
@@ -411,6 +473,17 @@ def _write_durable_new(path: Path, payload: bytes) -> None:
             stream.write(payload)
             stream.flush()
             os.fsync(stream.fileno())
+    finally:
+        os.close(descriptor)
+
+
+def _sync_directory(path: Path) -> None:
+    if os.name == "nt":
+        # Individual files are flushed; Windows does not expose directory fsync.
+        return
+    descriptor = os.open(path, os.O_RDONLY)
+    try:
+        os.fsync(descriptor)
     finally:
         os.close(descriptor)
 
