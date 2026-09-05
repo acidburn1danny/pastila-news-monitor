@@ -7,25 +7,27 @@ based on the accepted Phase 3 authority at commit
 
 ## Qualified boundary
 
-`pastila_scout.crossref_production_qualification_v1` composes the frozen Phase
-2 request/capture/normalization implementation with the Phase 3 immutable
-integration boundary and a durable publication/recovery boundary. The attempt
-is consumed before the response is read. Raw bytes are committed before
-normalization, normalized bytes before integration, accepted state atomically,
-and the completion record last.
+`pastila_scout.crossref_production_qualification_v1` reproduces only the frozen,
+transport-neutral Phase 2 request/snapshot/normalization semantics locally,
+then composes them with the Phase 3 immutable integration boundary and a durable
+publication/recovery boundary. It does not import the network-capable Phase 2
+module. The attempt is consumed before the response snapshot is read. Raw bytes
+are committed before normalization, normalized bytes before integration,
+accepted state atomically, and the completion record last.
 
 The Phase 4 entry accepts only `OfflineCrossrefResponseV1`. Its constructor
 requires the exact status, ordered parsed-header bytes, response-body bytes,
 request identity, and raw-capture identity already committed by the Phase 2
-proof. The internal response stream is in-memory and single-use. Phase 4 does
-not construct, accept, export, or bind a network transport.
+proof. Phase 4 does not construct, accept, export, import, or bind a network
+transport, and its fresh import closure contains no HTTP, TLS, or socket module.
 
 Recovery never invokes transport. It reopens only regular files through a
 single file descriptor, rejects symlinks and detected replacement or mutation,
 revalidates the raw request, wire request, response headers/body, manifest,
 normalized bytes, accepted state, Phase 3 replay, and completion closure. A
-matching interrupted state publication can be completed; a foreign pending
-state fails closed.
+matching interrupted publication can be completed; a foreign pending artifact
+fails closed. Quarantine uses the same synchronized pending, atomic no-overwrite
+publication, and exact pending reconciliation as accepted state.
 
 ## Preserved authority
 

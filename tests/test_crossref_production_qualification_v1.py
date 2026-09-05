@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import json
 import os
+import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -77,8 +79,8 @@ def test_runtime_authority_rebinding_fails_before_mutation(
 @pytest.mark.parametrize(
     ("authority", "name"),
     [
-        (production._capture_authority, "_consume_attempt_authority_v1"),
-        (production._capture_authority, "record_raw_capture_v1"),
+        (production, "_consume_attempt"),
+        (production, "_record_raw_snapshot"),
         (production._integration_authority, "_decode_document"),
     ],
 )
@@ -90,7 +92,7 @@ def test_transitive_runtime_rebinding_fails_before_mutation(
 ) -> None:
     root = tmp_path / "run"
     monkeypatch.setattr(authority, name, lambda *args, **kwargs: None)
-    with pytest.raises(CrossrefProductionQualificationError, match="closure"):
+    with pytest.raises(CrossrefProductionQualificationError, match="rebound"):
         execute_offline_crossref_production_qualification_v1(root, offline_response())
     assert not root.exists()
 
@@ -180,9 +182,36 @@ def test_foreign_pending_alongside_published_state_fails_closed(
     execute_offline_crossref_production_qualification_v1(root, offline_response())
     (root / "integration-state.json.pending").write_bytes(b"foreign")
     with pytest.raises(
-        CrossrefProductionQualificationError, match="published-state hard-link"
+        CrossrefProductionQualificationError, match="published-artifact hard-link"
     ):
         recover_offline_crossref_production_qualification_v1(root)
+
+
+def test_quarantine_publication_is_atomic_and_pending_recoverable(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    state = production.CrossrefIntegrationStateV1()
+    result = production.integrate_crossref_normalized_bytes_v1(state, b"malformed")
+    assert result.disposition == "QUARANTINED"
+    root = tmp_path / "run"
+    root.mkdir()
+    real_link = os.link
+
+    def interrupted_link(source, destination):
+        raise OSError("simulated quarantine interruption")
+
+    monkeypatch.setattr(production.os, "link", interrupted_link)
+    with pytest.raises(OSError, match="quarantine interruption"):
+        production._publish_result(root, root / "integration-state.json", state, result)
+    assert (root / "quarantine.json.pending").exists()
+    assert not (root / "quarantine.json").exists()
+    assert not (root / "integration-state.json").exists()
+
+    monkeypatch.setattr(production.os, "link", real_link)
+    production._publish_result(root, root / "integration-state.json", state, result)
+    assert (root / "quarantine.json").exists()
+    assert not (root / "quarantine.json.pending").exists()
+    assert not (root / "integration-state.json").exists()
 
 
 def test_altered_offline_snapshot_is_rejected_before_execution(tmp_path: Path) -> None:
@@ -196,6 +225,7 @@ def test_module_has_no_production_network_entry_or_policy_expansion() -> None:
     source = Path(production.__file__).read_text(encoding="utf-8")
     assert "DirectCrossrefHttpsTransportV1" not in source
     assert "http.client" not in source
+    assert "crossref_pilot_offline_v1" not in source
     assert "import TransportOnce" not in source
     assert "OpenAlex" not in source
     assert "schedule" not in source.casefold()
@@ -211,6 +241,26 @@ def test_module_has_no_production_network_entry_or_policy_expansion() -> None:
         "execute_offline_crossref_production_qualification_v1",
         "recover_offline_crossref_production_qualification_v1",
     }
+
+
+def test_fresh_import_is_network_inert_and_has_no_transport_reachability() -> None:
+    code = f"""
+import sys
+sys.path.insert(0, {str(ROOT / "src")!r})
+import pastila_scout.crossref_production_qualification_v1 as module
+network = sorted({{'http', 'http.client', 'socket', 'ssl'}}.intersection(sys.modules))
+reachable = [name for name, value in vars(module).items()
+             if hasattr(value, 'DirectCrossrefHttpsTransportV1')]
+print(','.join(network))
+print(','.join(reachable))
+"""
+    result = subprocess.run(
+        [sys.executable, "-I", "-B", "-c", code],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    assert result.stdout.splitlines() == ["", ""]
 
 
 def test_symlink_execution_boundary_is_rejected_when_supported(
