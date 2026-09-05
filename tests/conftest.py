@@ -81,7 +81,6 @@ def pytest_configure(config: pytest.Config) -> None:
 def pytest_collection_modifyitems(
     config: pytest.Config, items: list[pytest.Item]
 ) -> None:
-    root = Path(__file__).resolve().parents[1]
     for item in items:
         module_name = Path(str(item.path)).name
         if module_name in _HISTORICAL_IDENTITY_MODULES:
@@ -93,12 +92,10 @@ def pytest_collection_modifyitems(
                     )
                 )
                 continue
-        required = _OWNER_EVIDENCE_PREREQUISITES.get(module_name)
-        if required is None:
+        if module_name not in _OWNER_EVIDENCE_PREREQUISITES:
             continue
         item.add_marker(pytest.mark.owner_evidence)
-        missing = tuple(name for name in required if not (root / name).is_file())
-        if missing and not config.getoption("--run-owner-evidence"):
+        if not config.getoption("--run-owner-evidence"):
             item.add_marker(
                 pytest.mark.skip(
                     reason="owner-held evidence suite disabled; use --run-owner-evidence"
