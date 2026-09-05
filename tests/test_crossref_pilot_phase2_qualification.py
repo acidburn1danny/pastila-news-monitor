@@ -54,7 +54,7 @@ def test_phase2_qualification_schema_identity_and_zero_activity() -> None:
     )
     assert value["frozen_request_identity"] == frozen_request_identity_v1()
     assert value["execution_root_relative"] == (
-        ".pastila-runtime/milestone10-crossref-pilot-v1"
+        ".pastila-runtime/milestone10-crossref-pilot-v2"
     )
     assert value["tls_ca_bundle_sha256"] == CA_BUNDLE_SHA256
     assert (
@@ -87,6 +87,7 @@ def test_phase2_qualification_schema_identity_and_zero_activity() -> None:
         "exact_http11_wire_request": "PASS",
         "fixed_repository_relative_execution_root": "PASS",
         "no_redirect_retry_or_pagination": "PASS",
+        "request_accept_response_content_type_separation": "PASS",
         "raw_normalized_identity_separation": "PASS",
         "raw_request_response_identity_binding": "PASS",
         "real_stdlib_http_parser_boundary": "PASS",

@@ -16,6 +16,13 @@ hostname verification, a monotonic 15-second deadline, and no proxy, redirect,
 retry, pagination, credential, scheduler,
 publisher, RFC-3161, Sigstore, or OpenAlex integration. It is single-use.
 
+The request advertises `Accept: application/json`; the successful response is
+required to identify itself exactly as `application/json`. Request negotiation
+and response validation remain deliberately separate constants so neither can
+silently change the other. This supersedes the consumed
+V1 request, whose coupled media-type profile received one terminal HTTP 406;
+that raw failure evidence remains immutable in the V1 execution root.
+
 The response body is read incrementally with a one-byte sentinel over the
 2,097,152-byte ceiling. The first excess byte produces a terminal failure.
 Status and headers are captured with the exact body before response-profile or
@@ -32,7 +39,7 @@ The raw capture also contains an identity over the semantic profile and exact
 HTTP/1.1 wire-request hash. The wire request includes the exact request line,
 `Host`, approved headers, CRLF framing, and terminal empty line. The closed
 lifecycle uses only the repository-relative execution root
-`.pastila-runtime/milestone10-crossref-pilot-v1` and first publishes an exclusive
+`.pastila-runtime/milestone10-crossref-pilot-v2` and first publishes an exclusive
 durable `CONSUMED_BEFORE_TRANSPORT` record there. It then writes semantic request bytes,
 wire request bytes, parsed response headers, raw response body, and a manifest
 to a new staging directory with exclusive files and file flushes, publishes the

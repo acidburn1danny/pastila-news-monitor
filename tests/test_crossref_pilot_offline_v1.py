@@ -13,6 +13,7 @@ from pastila_scout.crossref_pilot_offline_v1 import (
     FROZEN_REQUEST,
     MAXIMUM_RESPONSE_BODY_BYTES,
     MEDIA_TYPE,
+    REQUEST_ACCEPT_MEDIA_TYPE,
     DirectCrossrefHttpsTransportV1,
     NormalizationRejected,
     NormalizedRecordSetV1,
@@ -26,6 +27,7 @@ from pastila_scout.crossref_pilot_offline_v1 import (
     frozen_request_identity_v1,
     normalize_capture_v1,
     record_raw_capture_v1,
+    validate_response_profile_v1,
 )
 
 
@@ -99,7 +101,7 @@ def test_frozen_request_is_exact_and_has_no_retry_redirect_pagination_or_body() 
         "method": "GET",
         "target": "/v1/works?rows=10&sort=published&order=asc&select=DOI%2Ctitle%2Cpublisher%2Ctype%2Cpublished%2Ccreated%2CURL",
         "headers": (
-            ("Accept", MEDIA_TYPE),
+            ("Accept", REQUEST_ACCEPT_MEDIA_TYPE),
             ("Accept-Encoding", "identity"),
             (
                 "User-Agent",
@@ -113,6 +115,19 @@ def test_frozen_request_is_exact_and_has_no_retry_redirect_pagination_or_body() 
         "maximum_pages": 1,
     }
     assert len(frozen_request_identity_v1()) == 64
+
+
+def test_request_accept_and_response_content_type_are_distinct_authorities() -> None:
+    assert REQUEST_ACCEPT_MEDIA_TYPE == "application/json"
+    assert MEDIA_TYPE == "application/json"
+    validate_response_profile_v1(capture(body([]), content_type=MEDIA_TYPE))
+    with pytest.raises(ResponseProfileRejected, match="Content-Type"):
+        validate_response_profile_v1(
+            capture(
+                body([]),
+                content_type="application/vnd.crossref-api-message+json",
+            )
+        )
 
 
 def test_transport_is_called_exactly_once_and_raw_components_are_identity_bound() -> (
@@ -154,7 +169,7 @@ def test_body_limit_is_enforced_during_read_at_first_excess_byte() -> None:
         (301, MEDIA_TYPE),
         (429, MEDIA_TYPE),
         (500, MEDIA_TYPE),
-        (200, "application/json"),
+        (200, "application/vnd.crossref-api-message+json"),
     ],
 )
 def test_status_redirect_rate_limit_server_error_and_media_type_fail_closed(
@@ -384,7 +399,7 @@ def test_direct_https_adapter_is_single_use_exact_and_closes(monkeypatch) -> Non
             b"GET /v1/works?rows=10&sort=published&order=asc&select="
             b"DOI%2Ctitle%2Cpublisher%2Ctype%2Cpublished%2Ccreated%2CURL HTTP/1.1\r\n"
             b"Host: api.crossref.org\r\n"
-            b"Accept: application/vnd.crossref-api-message+json\r\n"
+            b"Accept: application/json\r\n"
             b"Accept-Encoding: identity\r\n"
             b"User-Agent: PastilaScout-CrossrefPilot "
             b"(+https://github.com/acidburn1danny/pastila-news-monitor)\r\n\r\n"
@@ -436,7 +451,7 @@ def test_production_execution_root_is_fixed_repository_relative_and_not_created(
 ):
     root = authorized_execution_root_v1()
     assert root == Path(__file__).resolve().parents[1] / (
-        ".pastila-runtime/milestone10-crossref-pilot-v1"
+        ".pastila-runtime/milestone10-crossref-pilot-v2"
     )
     assert not root.exists()
 
@@ -490,7 +505,7 @@ def test_real_stdlib_http_parser_closes_canonical_parsed_header_boundary() -> No
     try:
         writer.sendall(
             b"HTTP/1.1 200 OK\r\n"
-            b"Content-Type: application/vnd.crossref-api-message+json\r\n"
+            b"Content-Type: application/json\r\n"
             b"X-Order: first\r\n"
             b"X-Order: second\r\n"
             + f"Content-Length: {len(body([]))}\r\n\r\n".encode("ascii")

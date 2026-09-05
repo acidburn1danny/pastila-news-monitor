@@ -25,16 +25,19 @@ USER_AGENT = (
     "PastilaScout-CrossrefPilot "
     "(+https://github.com/acidburn1danny/pastila-news-monitor)"
 )
-MEDIA_TYPE = "application/vnd.crossref-api-message+json"
+REQUEST_ACCEPT_MEDIA_TYPE = "application/json"
+RESPONSE_MEDIA_TYPE = "application/json"
+# Backward-compatible public name for the response profile used by fixtures.
+MEDIA_TYPE = RESPONSE_MEDIA_TYPE
 MAXIMUM_RESPONSE_BODY_BYTES = 2_097_152
 MAXIMUM_RECORDS = 10
 READ_CHUNK_BYTES = 65_536
 CA_BUNDLE_SHA256 = "9cc2a774b5198dcff14d9be1e66091f538975d867ce029a96bce15a55dfd730f"
-EXECUTION_ROOT_RELATIVE = Path(".pastila-runtime/milestone10-crossref-pilot-v1")
+EXECUTION_ROOT_RELATIVE = Path(".pastila-runtime/milestone10-crossref-pilot-v2")
 WIRE_REQUEST_BYTES = (
     f"GET {REQUEST_TARGET} HTTP/1.1\r\n"
     "Host: api.crossref.org\r\n"
-    f"Accept: {MEDIA_TYPE}\r\n"
+    f"Accept: {REQUEST_ACCEPT_MEDIA_TYPE}\r\n"
     "Accept-Encoding: identity\r\n"
     f"User-Agent: {USER_AGENT}\r\n"
     "\r\n"
@@ -67,7 +70,7 @@ class FrozenRequestV1:
     method: str = "GET"
     target: str = REQUEST_TARGET
     headers: tuple[tuple[str, str], ...] = (
-        ("Accept", MEDIA_TYPE),
+        ("Accept", REQUEST_ACCEPT_MEDIA_TYPE),
         ("Accept-Encoding", "identity"),
         ("User-Agent", USER_AGENT),
     )
@@ -353,7 +356,10 @@ def validate_response_profile_v1(capture: RawResponseCaptureV1) -> None:
     content_types = [
         value for name, value in capture.headers if name.casefold() == "content-type"
     ]
-    if len(content_types) != 1 or content_types[0].strip().casefold() != MEDIA_TYPE:
+    if (
+        len(content_types) != 1
+        or content_types[0].strip().casefold() != RESPONSE_MEDIA_TYPE
+    ):
         raise ResponseProfileRejected("Content-Type is not the frozen media type")
     content_encodings = [
         value
