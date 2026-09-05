@@ -38,7 +38,7 @@ def test_phase2_qualification_schema_identity_and_zero_activity() -> None:
         "zero_activity",
     }
     assert value["schema"] == "pastila-crossref-pilot-phase2-offline-qualification-v1"
-    assert value["verdict"] == "PASS_OFFLINE_IMPLEMENTATION_ONLY"
+    assert value["verdict"] == "PASS_OFFLINE_PRENETWORK_IMPLEMENTATION"
     assert value["foundation_commit"] == "3fa29f45ae3d4ee57b495f39dc5518776c5c2da2"
     assert value["phase1_commit"] == "e75dcdea4aa6dc8b89645ec9f9dcf0c1fb0d42a8"
     assert value["phase1_authority_identity"] == (
@@ -63,10 +63,14 @@ def test_phase2_qualification_schema_identity_and_zero_activity() -> None:
     assert value["invariants"] == {
         "atomic_normalization": "PASS",
         "body_limit_streaming_sentinel": "PASS",
+        "closed_capture_record_normalize_order": "PASS",
+        "direct_platform_trusted_tls_no_proxy": "PASS",
+        "exact_crossref_envelope": "PASS",
         "exact_frozen_request": "PASS",
-        "no_default_network_adapter": "PASS",
         "no_redirect_retry_or_pagination": "PASS",
         "raw_normalized_identity_separation": "PASS",
+        "raw_request_response_identity_binding": "PASS",
         "recursive_normalized_immutability": "PASS",
+        "single_use_concrete_adapter": "PASS",
         "strict_response_and_json_profile": "PASS",
     }

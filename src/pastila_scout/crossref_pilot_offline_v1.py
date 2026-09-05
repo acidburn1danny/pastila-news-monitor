@@ -3,9 +3,13 @@
 from __future__ import annotations
 
 import hashlib
+import http.client
 import json
+import os
+import ssl
 from collections.abc import Callable, Mapping
 from dataclasses import asdict, dataclass
+from pathlib import Path
 from typing import Protocol, cast
 
 SCHEMA = "pastila-crossref-pilot-offline-v1"
@@ -64,6 +68,12 @@ class FrozenRequestV1:
 FROZEN_REQUEST = FrozenRequestV1()
 
 
+def _build_frozen_request_v1() -> FrozenRequestV1:
+    """Reconstruct authority locally so a replaced module binding is irrelevant."""
+
+    return FrozenRequestV1()
+
+
 class ResponseStream(Protocol):
     """Minimum response surface; deliberately has no redirect/retry operations."""
 
@@ -73,6 +83,8 @@ class ResponseStream(Protocol):
 
     def read(self, amount: int) -> bytes: ...
 
+    def close(self) -> None: ...
+
 
 TransportOnce = Callable[[FrozenRequestV1], ResponseStream]
 
@@ -81,11 +93,13 @@ TransportOnce = Callable[[FrozenRequestV1], ResponseStream]
 class RawResponseCaptureV1:
     """Exact response components retained separately from normalized records."""
 
+    request_identity: str
     status: int
     headers: tuple[tuple[str, str], ...]
     body: bytes
 
     def __post_init__(self) -> None:
+        _validate_sha256(self.request_identity, "request identity")
         if type(self.status) is not int:
             raise TypeError("raw status must be an integer")
         if type(self.headers) is not tuple or any(
@@ -111,6 +125,7 @@ class RawResponseCaptureV1:
         envelope = {
             "body_sha256": self.body_sha256,
             "headers": self.headers,
+            "request_identity": self.request_identity,
             "status": self.status,
         }
         return hashlib.sha256(_canonical_json_bytes(envelope)).hexdigest()
@@ -182,19 +197,13 @@ class NormalizedRecordSetV1:
     records: tuple[NormalizedRecordV1, ...]
 
     def __post_init__(self) -> None:
-        if (
-            type(self.raw_capture_identity) is not str
-            or len(self.raw_capture_identity) != 64
-            or any(
-                character not in "0123456789abcdef"
-                for character in self.raw_capture_identity
-            )
-        ):
-            raise ValueError("raw capture identity must be lowercase SHA-256")
+        _validate_sha256(self.raw_capture_identity, "raw capture identity")
         if type(self.records) is not tuple or any(
             type(record) is not NormalizedRecordV1 for record in self.records
         ):
             raise TypeError("normalized records must be an immutable record tuple")
+        if len(self.records) > MAXIMUM_RECORDS:
+            raise ValueError("normalized record set contains more than 10 records")
 
     @property
     def canonical_bytes(self) -> bytes:
@@ -213,18 +222,88 @@ class NormalizedRecordSetV1:
 def frozen_request_identity_v1() -> str:
     """Return the identity of the only request accepted by this implementation."""
 
-    return hashlib.sha256(_canonical_json_bytes(asdict(FROZEN_REQUEST))).hexdigest()
+    return hashlib.sha256(
+        _canonical_json_bytes(asdict(_build_frozen_request_v1()))
+    ).hexdigest()
 
 
 def execute_one_shot_capture_v1(transport_once: TransportOnce) -> RawResponseCaptureV1:
     """Invoke one supplied transport exactly once and capture its response bytes."""
 
-    response = transport_once(FROZEN_REQUEST)
-    if isinstance(response.status, bool) or not isinstance(response.status, int):
-        raise ResponseProfileRejected("HTTP status must be an integer")
-    headers = _capture_headers(response.getheaders())
-    body = _read_bounded_body(response)
-    return RawResponseCaptureV1(response.status, headers, body)
+    request = _build_frozen_request_v1()
+    response = transport_once(request)
+    try:
+        if isinstance(response.status, bool) or not isinstance(response.status, int):
+            raise ResponseProfileRejected("HTTP status must be an integer")
+        headers = _capture_headers(response.getheaders())
+        body = _read_bounded_body(response)
+        return RawResponseCaptureV1(
+            frozen_request_identity_v1(), response.status, headers, body
+        )
+    finally:
+        response.close()
+
+
+class _ConnectionBoundResponseV1:
+    def __init__(
+        self,
+        response: http.client.HTTPResponse,
+        connection: http.client.HTTPSConnection,
+    ) -> None:
+        self.status = response.status
+        self._response = response
+        self._connection = connection
+
+    def getheaders(self) -> list[tuple[str, str]]:
+        return self._response.getheaders()
+
+    def read(self, amount: int) -> bytes:
+        return self._response.read(amount)
+
+    def close(self) -> None:
+        try:
+            self._response.close()
+        finally:
+            self._connection.close()
+
+
+class DirectCrossrefHttpsTransportV1:
+    """Single-use, direct TLS transport for the exact frozen request."""
+
+    def __init__(self) -> None:
+        self._consumed = False
+
+    def __call__(self, request: FrozenRequestV1) -> ResponseStream:
+        expected = _build_frozen_request_v1()
+        if type(request) is not FrozenRequestV1 or request != expected:
+            raise CrossrefPilotFailure("transport request is not the frozen request")
+        if self._consumed:
+            raise CrossrefPilotFailure("transport is single-use")
+        self._consumed = True
+
+        context = ssl.create_default_context()
+        context.check_hostname = True
+        context.verify_mode = ssl.CERT_REQUIRED
+        connection = http.client.HTTPSConnection(
+            expected.host,
+            expected.port,
+            timeout=expected.timeout_seconds,
+            context=context,
+        )
+        try:
+            connection.putrequest(
+                expected.method,
+                expected.target,
+                skip_accept_encoding=True,
+            )
+            for name, value in expected.headers:
+                connection.putheader(name, value)
+            connection.endheaders()
+            response = connection.getresponse()
+        except BaseException:
+            connection.close()
+            raise
+        return _ConnectionBoundResponseV1(response, connection)
 
 
 def validate_response_profile_v1(capture: RawResponseCaptureV1) -> None:
@@ -237,13 +316,33 @@ def validate_response_profile_v1(capture: RawResponseCaptureV1) -> None:
     ]
     if len(content_types) != 1 or content_types[0].strip().casefold() != MEDIA_TYPE:
         raise ResponseProfileRejected("Content-Type is not the frozen media type")
+    content_encodings = [
+        value
+        for name, value in capture.headers
+        if name.casefold() == "content-encoding"
+    ]
+    if len(content_encodings) > 1 or (
+        content_encodings and content_encodings[0].strip().casefold() != "identity"
+    ):
+        raise ResponseProfileRejected("Content-Encoding is not identity")
 
 
 def normalize_capture_v1(capture: RawResponseCaptureV1) -> NormalizedRecordSetV1:
     """Normalize all items atomically; never return a partial record set."""
 
+    if capture.request_identity != frozen_request_identity_v1():
+        raise ResponseProfileRejected("capture is not bound to the frozen request")
     validate_response_profile_v1(capture)
     document = _decode_json_object(capture.body)
+    if document.get("status") != "ok":
+        raise NormalizationRejected('response.status must be exactly "ok"')
+    if document.get("message-type") != "work-list":
+        raise NormalizationRejected('response.message-type must be exactly "work-list"')
+    message_version = document.get("message-version")
+    if not isinstance(message_version, str) or message_version == "":
+        raise NormalizationRejected(
+            "response.message-version must be a non-empty string"
+        )
     message = document.get("message")
     if not isinstance(message, dict):
         raise NormalizationRejected("response.message must be an object")
@@ -255,6 +354,65 @@ def normalize_capture_v1(capture: RawResponseCaptureV1) -> NormalizedRecordSetV1
 
     records = tuple(_normalize_item(item, index) for index, item in enumerate(items))
     return NormalizedRecordSetV1(capture.identity, records)
+
+
+def record_raw_capture_v1(destination: Path, capture: RawResponseCaptureV1) -> str:
+    """Durably publish an immutable raw-capture directory before normalization."""
+
+    if capture.request_identity != frozen_request_identity_v1():
+        raise CrossrefPilotFailure("raw capture is not bound to the frozen request")
+    if (
+        not isinstance(destination, Path)
+        or destination.exists()
+        or destination.is_symlink()
+    ):
+        raise CrossrefPilotFailure("raw capture destination must be a new Path")
+    unresolved_parent = destination.parent.absolute()
+    parent = destination.parent.resolve(strict=True)
+    if not parent.is_dir() or os.path.normcase(str(parent)) != os.path.normcase(
+        str(unresolved_parent)
+    ):
+        raise CrossrefPilotFailure("raw capture parent must be a real directory")
+    staging = parent / f".{destination.name}.tmp-{os.getpid()}"
+    staging.mkdir(mode=0o700)
+    request_bytes = _canonical_json_bytes(asdict(_build_frozen_request_v1()))
+    headers_bytes = _canonical_json_bytes(capture.headers)
+    manifest = {
+        "body_sha256": capture.body_sha256,
+        "capture_identity": capture.identity,
+        "headers_sha256": capture.headers_sha256,
+        "request_identity": capture.request_identity,
+        "schema": "pastila-crossref-pilot-raw-capture-v1",
+        "status": capture.status,
+    }
+    _write_durable_new(staging / "request.json", request_bytes)
+    _write_durable_new(staging / "response-headers.json", headers_bytes)
+    _write_durable_new(staging / "response-body.bin", capture.body)
+    _write_durable_new(staging / "manifest.json", _canonical_json_bytes(manifest))
+    os.rename(staging, destination)
+    return capture.identity
+
+
+def execute_record_then_normalize_v1(
+    transport_once: TransportOnce,
+    raw_destination: Path,
+) -> NormalizedRecordSetV1:
+    """Closed lifecycle: one capture, durable raw publication, then normalization."""
+
+    capture = execute_one_shot_capture_v1(transport_once)
+    record_raw_capture_v1(raw_destination, capture)
+    return normalize_capture_v1(capture)
+
+
+def _write_durable_new(path: Path, payload: bytes) -> None:
+    descriptor = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+    try:
+        with os.fdopen(descriptor, "wb", closefd=False) as stream:
+            stream.write(payload)
+            stream.flush()
+            os.fsync(stream.fileno())
+    finally:
+        os.close(descriptor)
 
 
 def _capture_headers(values: object) -> tuple[tuple[str, str], ...]:
@@ -379,6 +537,15 @@ def _canonical_json_bytes(value: object) -> bytes:
     ).encode("utf-8")
 
 
+def _validate_sha256(value: object, field: str) -> None:
+    if (
+        type(value) is not str
+        or len(value) != 64
+        or any(character not in "0123456789abcdef" for character in value)
+    ):
+        raise ValueError(f"{field} must be lowercase SHA-256")
+
+
 __all__ = (
     "ENDPOINT",
     "FROZEN_REQUEST",
@@ -390,6 +557,7 @@ __all__ = (
     "USER_AGENT",
     "CanonicalJsonObjectV1",
     "CrossrefPilotFailure",
+    "DirectCrossrefHttpsTransportV1",
     "FrozenRequestV1",
     "NormalizationRejected",
     "NormalizedRecordSetV1",
@@ -398,7 +566,9 @@ __all__ = (
     "ResponseBodyLimitExceeded",
     "ResponseProfileRejected",
     "execute_one_shot_capture_v1",
+    "execute_record_then_normalize_v1",
     "frozen_request_identity_v1",
     "normalize_capture_v1",
+    "record_raw_capture_v1",
     "validate_response_profile_v1",
 )
