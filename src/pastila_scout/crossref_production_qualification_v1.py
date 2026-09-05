@@ -182,7 +182,7 @@ def execute_offline_crossref_production_qualification_v1(
     _record_raw_snapshot(raw_root, response)
     normalized_bytes = _normalize_exact_snapshot(response)
     normalized_path = root / "normalized-records.json"
-    _write_durable_new(normalized_path, normalized_bytes)
+    _atomic_publish_or_verify_existing(normalized_path, normalized_bytes)
     return _integrate_and_publish(root, normalized_bytes)
 
 
@@ -194,14 +194,14 @@ def recover_offline_crossref_production_qualification_v1(
     _require_runtime_authority()
     root = _require_existing_execution_root(execution_root)
     completed = root / "completion.json"
+    _reconcile_pending_publication(completed)
     if completed.exists():
         recorded = _load_completed_outcome(completed)
-        normalized_bytes = _read_regular_file(root / "normalized-records.json")
         response = _load_complete_raw_capture(root / "raw-capture")
-        if _normalize_exact_snapshot(response) != normalized_bytes:
-            raise CrossrefProductionQualificationError(
-                "normalized bytes do not match the durable raw capture"
-            )
+        normalized_bytes = _normalize_exact_snapshot(response)
+        _atomic_publish_or_verify_existing(
+            root / "normalized-records.json", normalized_bytes
+        )
         state = _load_qualified_state(root / "integration-state.json", normalized_bytes)
         initial = CrossrefIntegrationStateV1()
         accepted = integrate_crossref_normalized_bytes_v1(initial, normalized_bytes)
@@ -218,12 +218,9 @@ def recover_offline_crossref_production_qualification_v1(
         return recorded
 
     normalized_path = root / "normalized-records.json"
-    if normalized_path.exists():
-        normalized_bytes = _read_regular_file(normalized_path)
-    else:
-        response = _load_complete_raw_capture(root / "raw-capture")
-        normalized_bytes = _normalize_exact_snapshot(response)
-        _write_durable_new(normalized_path, normalized_bytes)
+    response = _load_complete_raw_capture(root / "raw-capture")
+    normalized_bytes = _normalize_exact_snapshot(response)
+    _atomic_publish_or_verify_existing(normalized_path, normalized_bytes)
     return _integrate_and_publish(root, normalized_bytes)
 
 
@@ -264,7 +261,9 @@ def _record_raw_snapshot(raw_root: Path, response: OfflineCrossrefResponseV1) ->
     _write_durable_new(raw_root / "wire-request.http", WIRE_REQUEST_BYTES)
     _write_durable_new(raw_root / "response-headers.json", headers_bytes)
     _write_durable_new(raw_root / "response-body.bin", response.body)
-    _write_durable_new(raw_root / "manifest.json", _canonical_json_bytes(manifest))
+    _atomic_publish_or_verify_existing(
+        raw_root / "manifest.json", _canonical_json_bytes(manifest)
+    )
 
 
 def _normalize_exact_snapshot(response: OfflineCrossrefResponseV1) -> bytes:
@@ -406,8 +405,20 @@ def _integrate_and_publish(
     state_before = _load_qualified_state(state_path, normalized_bytes)
     result = integrate_crossref_normalized_bytes_v1(state_before, normalized_bytes)
     _publish_result(root, state_path, state_before, result)
-    outcome = _outcome_from_result(state_before, normalized_bytes, result)
-    _write_durable_new(root / "completion.json", outcome.canonical_bytes)
+    if result.disposition == "IDEMPOTENT_REPLAY":
+        empty = CrossrefIntegrationStateV1()
+        accepted = integrate_crossref_normalized_bytes_v1(empty, normalized_bytes)
+        if (
+            accepted.disposition != "ACCEPTED"
+            or accepted.state.identity != state_before.identity
+        ):
+            raise CrossrefProductionQualificationError(
+                "durable state is not the original accepted publication"
+            )
+        outcome = _outcome_from_result(empty, normalized_bytes, accepted)
+    else:
+        outcome = _outcome_from_result(state_before, normalized_bytes, result)
+    _atomic_publish_or_verify_existing(root / "completion.json", outcome.canonical_bytes)
     return outcome
 
 
@@ -523,54 +534,36 @@ def _load_complete_raw_capture(raw_root: Path) -> OfflineCrossrefResponseV1:
         raise CrossrefProductionQualificationError(
             "raw capture root must be a real contained directory"
         )
-    manifest_path = raw_root / "manifest.json"
-    manifest_bytes = _read_regular_file(manifest_path)
-    manifest = _decode_exact_object(manifest_bytes)
-    expected_fields = {
-        "body_sha256",
-        "capture_identity",
-        "headers_sha256",
-        "request_identity",
-        "schema",
-        "status",
-        "wire_request_sha256",
-    }
-    if set(manifest) != expected_fields or manifest.get("schema") != (
-        "pastila-crossref-pilot-raw-capture-v1"
-    ):
-        raise CrossrefProductionQualificationError("raw manifest schema mismatch")
     body = _read_regular_file(raw_root / "response-body.bin")
     header_bytes = _read_regular_file(raw_root / "response-headers.json")
     request_bytes = _read_regular_file(raw_root / "request.json")
     wire_bytes = _read_regular_file(raw_root / "wire-request.http")
     if request_bytes != _request_profile_bytes():
         raise CrossrefProductionQualificationError("raw request bytes mismatch")
-    if wire_bytes != WIRE_REQUEST_BYTES or hashlib.sha256(wire_bytes).hexdigest() != (
-        manifest.get("wire_request_sha256")
-    ):
+    if wire_bytes != WIRE_REQUEST_BYTES:
         raise CrossrefProductionQualificationError("wire request bytes mismatch")
     headers_value = _decode_exact_value(header_bytes)
     if not isinstance(headers_value, list):
         raise CrossrefProductionQualificationError("raw headers are not an array")
     try:
         headers = tuple(tuple(pair) for pair in headers_value)
-        if (
-            type(manifest["request_identity"]) is not str
-            or type(manifest["status"]) is not int
-        ):
-            raise TypeError("raw manifest field type mismatch")
-        response = OfflineCrossrefResponseV1(manifest["status"], headers, body)
+        response = OfflineCrossrefResponseV1(200, headers, body)
     except (TypeError, ValueError) as exc:
         raise CrossrefProductionQualificationError(
             "raw capture reconstruction failed"
         ) from exc
-    if (
-        manifest["request_identity"] != PHASE2_REQUEST_IDENTITY
-        or manifest.get("capture_identity") != PHASE2_RAW_CAPTURE_IDENTITY
-        or hashlib.sha256(body).hexdigest() != manifest.get("body_sha256")
-        or hashlib.sha256(header_bytes).hexdigest() != manifest.get("headers_sha256")
-    ):
-        raise CrossrefProductionQualificationError("raw capture identity mismatch")
+    expected_manifest = _canonical_json_bytes(
+        {
+            "body_sha256": hashlib.sha256(body).hexdigest(),
+            "capture_identity": PHASE2_RAW_CAPTURE_IDENTITY,
+            "headers_sha256": hashlib.sha256(header_bytes).hexdigest(),
+            "request_identity": PHASE2_REQUEST_IDENTITY,
+            "schema": "pastila-crossref-pilot-raw-capture-v1",
+            "status": response.status,
+            "wire_request_sha256": hashlib.sha256(wire_bytes).hexdigest(),
+        }
+    )
+    _atomic_publish_or_verify_existing(raw_root / "manifest.json", expected_manifest)
     return response
 
 
@@ -826,18 +819,35 @@ _INTEGRATION_RUNTIME_CLOSURE = tuple(
 _LOCAL_RUNTIME_CLOSURE = tuple(
     (name, globals()[name])
     for name in (
+        "CrossrefIntegrationResultV1",
+        "CrossrefIntegrationStateV1",
+        "CrossrefProductionOutcomeV1",
         "OfflineCrossrefResponseV1",
         "_atomic_publish_new",
         "_atomic_publish_or_verify_existing",
+        "_canonical_json_bytes",
         "_consume_attempt",
+        "_decode_exact_object",
+        "_decode_exact_value",
         "_decode_response_json",
+        "_integrate_and_publish",
         "_load_complete_raw_capture",
+        "_load_completed_outcome",
+        "_load_qualified_state",
         "_normalize_exact_snapshot",
         "_normalize_item",
+        "_outcome_from_result",
+        "_publish_result",
+        "_raw_capture_identity",
+        "_raw_identity_from_normalized",
         "_read_regular_file",
         "_reconcile_pending_publication",
         "_record_raw_snapshot",
+        "_require_existing_execution_root",
+        "_require_new_execution_root",
+        "_require_sha256",
         "_request_profile_bytes",
+        "_sync_directory",
         "_write_durable_new",
     )
 )

@@ -13,7 +13,10 @@ then composes them with the Phase 3 immutable integration boundary and a durable
 publication/recovery boundary. It does not import the network-capable Phase 2
 module. The attempt is consumed before the response snapshot is read. Raw bytes
 are committed before normalization, normalized bytes before integration,
-accepted state atomically, and the completion record last.
+accepted state atomically, and the completion record last. Every phase-complete
+marker (raw manifest, normalized record set, accepted/quarantine state, and
+completion record) uses synchronized pending bytes plus atomic no-overwrite
+publication.
 
 The Phase 4 entry accepts only `OfflineCrossrefResponseV1`. Its constructor
 requires the exact status, ordered parsed-header bytes, response-body bytes,
@@ -26,8 +29,10 @@ single file descriptor, rejects symlinks and detected replacement or mutation,
 revalidates the raw request, wire request, response headers/body, manifest,
 normalized bytes, accepted state, Phase 3 replay, and completion closure. A
 matching interrupted publication can be completed; a foreign pending artifact
-fails closed. Quarantine uses the same synchronized pending, atomic no-overwrite
-publication, and exact pending reconciliation as accepted state.
+fails closed. Recovery after accepted-state publication reconstructs and
+publishes the original `ACCEPTED` outcome rather than reclassifying it as a new
+replay outcome. Quarantine uses the same synchronized pending, atomic
+no-overwrite publication, and exact pending reconciliation as accepted state.
 
 ## Preserved authority
 

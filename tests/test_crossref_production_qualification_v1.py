@@ -81,6 +81,9 @@ def test_runtime_authority_rebinding_fails_before_mutation(
     [
         (production, "_consume_attempt"),
         (production, "_record_raw_snapshot"),
+        (production, "_integrate_and_publish"),
+        (production, "_load_qualified_state"),
+        (production, "_atomic_publish_or_verify_existing"),
         (production._integration_authority, "_decode_document"),
     ],
 )
@@ -131,16 +134,12 @@ def test_atomic_state_publication_recovers_only_matching_pending_bytes(
 ) -> None:
     root = tmp_path / "run"
     real_link = os.link
-    calls = 0
-
-    def fail_first_link(source, destination):
-        nonlocal calls
-        calls += 1
-        if calls == 1:
+    def fail_state_link(source, destination):
+        if Path(destination).name == "integration-state.json":
             raise OSError("simulated interruption")
         return real_link(source, destination)
 
-    monkeypatch.setattr(production.os, "link", fail_first_link)
+    monkeypatch.setattr(production.os, "link", fail_state_link)
     with pytest.raises(OSError, match="simulated interruption"):
         execute_offline_crossref_production_qualification_v1(root, offline_response())
     assert (root / "integration-state.json.pending").exists()
@@ -158,7 +157,9 @@ def test_foreign_pending_state_fails_closed(tmp_path: Path) -> None:
     real_link = production.os.link
 
     def interrupt(source, destination):
-        raise OSError("stop")
+        if Path(destination).name == "integration-state.json":
+            raise OSError("stop")
+        return real_link(source, destination)
 
     production.os.link = interrupt
     try:
@@ -213,6 +214,36 @@ def test_quarantine_publication_is_atomic_and_pending_recoverable(
     assert not (root / "quarantine.json.pending").exists()
     assert not (root / "integration-state.json").exists()
 
+
+@pytest.mark.parametrize(
+    "artifact",
+    ["manifest.json", "normalized-records.json", "completion.json"],
+)
+def test_durable_phase_markers_recover_after_interrupted_atomic_publication(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, artifact: str
+) -> None:
+    root = tmp_path / "run"
+    real_link = os.link
+
+    def interrupt_selected(source, destination):
+        if Path(destination).name == artifact:
+            raise OSError(f"simulated {artifact} interruption")
+        return real_link(source, destination)
+
+    monkeypatch.setattr(production.os, "link", interrupt_selected)
+    with pytest.raises(OSError, match="simulated"):
+        execute_offline_crossref_production_qualification_v1(
+            root, offline_response()
+        )
+    matches = list(root.rglob(artifact + ".pending"))
+    assert len(matches) == 1
+    assert not matches[0].with_name(artifact).exists()
+
+    monkeypatch.setattr(production.os, "link", real_link)
+    outcome = recover_offline_crossref_production_qualification_v1(root)
+    assert outcome.disposition == "ACCEPTED"
+    assert outcome.state_after_identity == STATE_IDENTITY
+    assert not list(root.rglob("*.pending"))
 
 def test_altered_offline_snapshot_is_rejected_before_execution(tmp_path: Path) -> None:
     exact = offline_response()
