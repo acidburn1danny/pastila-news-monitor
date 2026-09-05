@@ -30,6 +30,7 @@ def test_phase2_qualification_schema_identity_and_zero_activity() -> None:
     assert set(value) == {
         "design_sha256",
         "dependency_manifest_sha256",
+        "execution_root_relative",
         "foundation_commit",
         "frozen_request_identity",
         "implementation_sha256",
@@ -52,6 +53,9 @@ def test_phase2_qualification_schema_identity_and_zero_activity() -> None:
         "3ee1f209bf4b83c07d47b95c7bc4f76485bfcbfe7b7f73cffb5664fd533555c4"
     )
     assert value["frozen_request_identity"] == frozen_request_identity_v1()
+    assert value["execution_root_relative"] == (
+        ".pastila-runtime/milestone10-crossref-pilot-v1"
+    )
     assert value["tls_ca_bundle_sha256"] == CA_BUNDLE_SHA256
     assert (
         value["wire_request_sha256"] == hashlib.sha256(WIRE_REQUEST_BYTES).hexdigest()
@@ -81,9 +85,11 @@ def test_phase2_qualification_schema_identity_and_zero_activity() -> None:
         "exact_crossref_envelope": "PASS",
         "exact_frozen_request": "PASS",
         "exact_http11_wire_request": "PASS",
+        "fixed_repository_relative_execution_root": "PASS",
         "no_redirect_retry_or_pagination": "PASS",
         "raw_normalized_identity_separation": "PASS",
         "raw_request_response_identity_binding": "PASS",
+        "real_stdlib_http_parser_boundary": "PASS",
         "recursive_normalized_immutability": "PASS",
         "single_use_concrete_adapter": "PASS",
         "strict_response_and_json_profile": "PASS",

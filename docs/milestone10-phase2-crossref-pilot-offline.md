@@ -31,11 +31,13 @@ projections, so later mutation cannot change an accepted identity.
 The raw capture also contains an identity over the semantic profile and exact
 HTTP/1.1 wire-request hash. The wire request includes the exact request line,
 `Host`, approved headers, CRLF framing, and terminal empty line. The closed
-lifecycle first publishes an exclusive durable `CONSUMED_BEFORE_TRANSPORT`
-record shared by the execution root. It then writes semantic request bytes,
+lifecycle uses only the repository-relative execution root
+`.pastila-runtime/milestone10-crossref-pilot-v1` and first publishes an exclusive
+durable `CONSUMED_BEFORE_TRANSPORT` record there. It then writes semantic request bytes,
 wire request bytes, parsed response headers, raw response body, and a manifest
 to a new staging directory with exclusive files and file flushes, publishes the
-directory by no-replacement rename, and only then attempts normalization. Failed
+into an exclusively created directory and publishes its manifest last. Only then
+does it attempt normalization. Failed
 normalization therefore cannot erase or replace the raw evidence.
 
 Normalization is atomic. A malformed envelope, more than ten items, missing or

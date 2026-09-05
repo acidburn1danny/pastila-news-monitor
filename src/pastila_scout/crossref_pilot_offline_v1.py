@@ -30,6 +30,7 @@ MAXIMUM_RESPONSE_BODY_BYTES = 2_097_152
 MAXIMUM_RECORDS = 10
 READ_CHUNK_BYTES = 65_536
 CA_BUNDLE_SHA256 = "9cc2a774b5198dcff14d9be1e66091f538975d867ce029a96bce15a55dfd730f"
+EXECUTION_ROOT_RELATIVE = Path(".pastila-runtime/milestone10-crossref-pilot-v1")
 WIRE_REQUEST_BYTES = (
     f"GET {REQUEST_TARGET} HTTP/1.1\r\n"
     "Host: api.crossref.org\r\n"
@@ -411,8 +412,8 @@ def record_raw_capture_v1(destination: Path, capture: RawResponseCaptureV1) -> s
         str(unresolved_parent)
     ):
         raise CrossrefPilotFailure("raw capture parent must be a real directory")
-    staging = parent / f".{destination.name}.tmp-{os.getpid()}"
-    staging.mkdir(mode=0o700)
+    destination.mkdir(mode=0o700)
+    _sync_directory(parent)
     request_bytes = _canonical_json_bytes(asdict(_build_frozen_request_v1()))
     headers_bytes = _canonical_json_bytes(capture.headers)
     manifest = {
@@ -424,20 +425,38 @@ def record_raw_capture_v1(destination: Path, capture: RawResponseCaptureV1) -> s
         "status": capture.status,
         "wire_request_sha256": hashlib.sha256(WIRE_REQUEST_BYTES).hexdigest(),
     }
-    _write_durable_new(staging / "request.json", request_bytes)
-    _write_durable_new(staging / "wire-request.http", WIRE_REQUEST_BYTES)
-    _write_durable_new(staging / "response-headers.json", headers_bytes)
-    _write_durable_new(staging / "response-body.bin", capture.body)
-    _write_durable_new(staging / "manifest.json", _canonical_json_bytes(manifest))
-    os.rename(staging, destination)
+    _write_durable_new(destination / "request.json", request_bytes)
+    _write_durable_new(destination / "wire-request.http", WIRE_REQUEST_BYTES)
+    _write_durable_new(destination / "response-headers.json", headers_bytes)
+    _write_durable_new(destination / "response-body.bin", capture.body)
+    # Manifest presence is the sole completion marker and is always published last.
+    _write_durable_new(destination / "manifest.json", _canonical_json_bytes(manifest))
     return capture.identity
 
 
 def execute_record_then_normalize_v1(
     transport_once: TransportOnce,
+) -> NormalizedRecordSetV1:
+    """Use the single repository-relative authority root for the closed lifecycle."""
+
+    return _execute_record_then_normalize_at_root_v1(
+        transport_once,
+        authorized_execution_root_v1(),
+    )
+
+
+def authorized_execution_root_v1() -> Path:
+    """Return the only production execution root; performs no creation or mutation."""
+
+    repository_root = Path(__file__).resolve().parents[2]
+    return repository_root / EXECUTION_ROOT_RELATIVE
+
+
+def _execute_record_then_normalize_at_root_v1(
+    transport_once: TransportOnce,
     execution_root: Path,
 ) -> NormalizedRecordSetV1:
-    """Closed lifecycle: one capture, durable raw publication, then normalization."""
+    """Testable closed lifecycle at an already-created authority root."""
 
     raw_destination = _consume_attempt_authority_v1(execution_root)
     capture = execute_one_shot_capture_v1(transport_once)
@@ -475,6 +494,7 @@ def _write_durable_new(path: Path, payload: bytes) -> None:
             os.fsync(stream.fileno())
     finally:
         os.close(descriptor)
+    _sync_directory(path.parent)
 
 
 def _sync_directory(path: Path) -> None:
@@ -621,6 +641,7 @@ def _validate_sha256(value: object, field: str) -> None:
 
 __all__ = (
     "ENDPOINT",
+    "EXECUTION_ROOT_RELATIVE",
     "FROZEN_REQUEST",
     "MAXIMUM_RECORDS",
     "MAXIMUM_RESPONSE_BODY_BYTES",
@@ -638,6 +659,7 @@ __all__ = (
     "RawResponseCaptureV1",
     "ResponseBodyLimitExceeded",
     "ResponseProfileRejected",
+    "authorized_execution_root_v1",
     "execute_one_shot_capture_v1",
     "execute_record_then_normalize_v1",
     "frozen_request_identity_v1",

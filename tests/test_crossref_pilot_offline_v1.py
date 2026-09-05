@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import socket
 from dataclasses import asdict
 from pathlib import Path
 
@@ -19,8 +20,9 @@ from pastila_scout.crossref_pilot_offline_v1 import (
     RawResponseCaptureV1,
     ResponseBodyLimitExceeded,
     ResponseProfileRejected,
+    _execute_record_then_normalize_at_root_v1,
+    authorized_execution_root_v1,
     execute_one_shot_capture_v1,
-    execute_record_then_normalize_v1,
     frozen_request_identity_v1,
     normalize_capture_v1,
     record_raw_capture_v1,
@@ -411,7 +413,7 @@ def test_closed_lifecycle_records_raw_before_terminal_normalization_failure(
 ) -> None:
     response = FakeResponse(body([{"DOI": 7}]))
     with pytest.raises(NormalizationRejected):
-        execute_record_then_normalize_v1(lambda _request: response, tmp_path)
+        _execute_record_then_normalize_at_root_v1(lambda _request: response, tmp_path)
     assert (tmp_path / "raw-capture" / "response-body.bin").read_bytes() == body(
         [{"DOI": 7}]
     )
@@ -420,11 +422,23 @@ def test_closed_lifecycle_records_raw_before_terminal_normalization_failure(
 
 
 def test_attempt_is_consumed_across_fresh_adapter_instances(tmp_path: Path) -> None:
-    execute_record_then_normalize_v1(lambda _request: FakeResponse(body([])), tmp_path)
+    _execute_record_then_normalize_at_root_v1(
+        lambda _request: FakeResponse(body([])), tmp_path
+    )
     with pytest.raises(FileExistsError):
-        execute_record_then_normalize_v1(
+        _execute_record_then_normalize_at_root_v1(
             lambda _request: FakeResponse(body([])), tmp_path
         )
+
+
+def test_production_execution_root_is_fixed_repository_relative_and_not_created() -> (
+    None
+):
+    root = authorized_execution_root_v1()
+    assert root == Path(__file__).resolve().parents[1] / (
+        ".pastila-runtime/milestone10-crossref-pilot-v1"
+    )
+    assert not root.exists()
 
 
 def test_total_deadline_expires_before_any_wire_request(monkeypatch) -> None:
@@ -448,6 +462,50 @@ def test_total_deadline_expires_before_any_wire_request(monkeypatch) -> None:
     with pytest.raises(TimeoutError, match="deadline"):
         DirectCrossrefHttpsTransportV1()(FROZEN_REQUEST)
     assert events == ["connect-returned", "closed"]
+
+
+def test_wrong_ca_bytes_fail_before_connection_creation(
+    monkeypatch, tmp_path: Path
+) -> None:
+    import pastila_scout.crossref_pilot_offline_v1 as module
+
+    wrong_ca = tmp_path / "wrong-ca.pem"
+    wrong_ca.write_bytes(b"not the pinned CA bundle")
+    monkeypatch.setattr(module.certifi, "where", lambda: str(wrong_ca))
+    calls = []
+    monkeypatch.setattr(
+        module.http.client,
+        "HTTPSConnection",
+        lambda *_args, **_kwargs: calls.append("connection"),
+    )
+    with pytest.raises(Exception, match="CA bundle identity mismatch"):
+        DirectCrossrefHttpsTransportV1()(FROZEN_REQUEST)
+    assert calls == []
+
+
+def test_real_stdlib_http_parser_closes_canonical_parsed_header_boundary() -> None:
+    import http.client
+
+    writer, reader = socket.socketpair()
+    try:
+        writer.sendall(
+            b"HTTP/1.1 200 OK\r\n"
+            b"Content-Type: application/vnd.crossref-api-message+json\r\n"
+            b"X-Order: first\r\n"
+            b"X-Order: second\r\n"
+            + f"Content-Length: {len(body([]))}\r\n\r\n".encode("ascii")
+            + body([])
+        )
+        writer.shutdown(socket.SHUT_WR)
+        response = http.client.HTTPResponse(reader, method="GET")
+        response.begin()
+        raw = execute_one_shot_capture_v1(lambda _request: response)
+    finally:
+        writer.close()
+        reader.close()
+    assert raw.body == body([])
+    assert raw.headers[1:3] == (("X-Order", "first"), ("X-Order", "second"))
+    assert normalize_capture_v1(raw).records == ()
 
 
 def test_writer_rejects_capture_from_another_request(tmp_path: Path) -> None:
