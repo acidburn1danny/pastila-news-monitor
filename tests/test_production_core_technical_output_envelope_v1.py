@@ -1,4 +1,6 @@
 import copy
+import json
+from pathlib import Path
 
 import pytest
 
@@ -15,6 +17,12 @@ class CharacterTokenizer:
 
     def encode(self, text: str) -> tuple[int, ...]:
         return tuple(ord(character) for character in text)
+
+
+QUALIFICATION = (
+    Path(__file__).resolve().parents[1]
+    / "docs/artifacts/production-core-technical-output-envelope-qualification-v1.json"
+)
 
 
 def _response(output_type: str, outcome: str, text: str | None) -> dict[str, object]:
@@ -169,3 +177,30 @@ def test_same_logical_space_identity_cannot_hide_response_substitution() -> None
     assert first["space_identity"] == second["space_identity"]
     assert first["response_space_sha256"] != second["response_space_sha256"]
     assert first["receipt_sha256"] != second["receipt_sha256"]
+
+
+def test_qualification_receipts_and_witnesses_recompute_exactly() -> None:
+    reproduction = json.loads(QUALIFICATION.read_text(encoding="utf-8"))[
+        "synthetic_reproduction"
+    ]
+    actual = [
+        derive_synthetic_envelope(
+            _space(),
+            CharacterTokenizer(),
+            tokenizer_closure_validator=lambda tokenizer: True,
+        )
+        for _ in range(2)
+    ]
+    assert [item["receipt_sha256"] for item in actual] == reproduction[
+        "deterministic_invocation_receipt_sha256"
+    ]
+    for field in (
+        "response_space_sha256",
+        "tokenizer_identity",
+        "response_count",
+        "byte_maximum",
+        "byte_witness_sha256",
+        "token_exact_maximum",
+        "token_witness_sha256",
+    ):
+        assert all(item[field] == reproduction[field] for item in actual)

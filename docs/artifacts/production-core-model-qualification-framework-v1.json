@@ -68,7 +68,7 @@
     "technical_output_envelope_mechanism": {
       "status": "OWNER_APPROVED_RULES_OFFLINE_DERIVATOR_QUALIFICATION_ONLY",
       "sha256": "18ae65cf9aa96481468025d4be13a3fe7c05e99572deeb949f2a6470b1d9f48a",
-      "qualification_sha256": "ab19383809d2572e7887d486ead3c8a44b4a7132323371fb7d32e7aadb8a1ca4",
+      "qualification_sha256": "c1339a2e7375129360e64d269b0e23cfd67a5c66b8bc1167070f737eb7061a8f",
       "candidate_execution_authorized": false,
       "candidate_results_inspected": false,
       "defines_inference_wall_time_or_rss": false

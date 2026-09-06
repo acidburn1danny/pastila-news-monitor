@@ -5,8 +5,8 @@
   "identities": {
     "mechanism_sha256": "18ae65cf9aa96481468025d4be13a3fe7c05e99572deeb949f2a6470b1d9f48a",
     "implementation_sha256": "1538163d740ad0dba04034d9dd8bbecbe7f0f2615aedbb94d86d0b3f1e55576f",
-    "implementation_test_sha256": "fa32ab29b7ba93128e5c18c8db3c93cd3b6463b9a3b42334ea7a2f7307338405",
-    "qualification_test_sha256": "c138ff441f16ceab3bf8582fdce126bd5eae72948673510eafe00f6e570701de"
+    "implementation_test_sha256": "79ccc3e1bf6ce0e3366c90a9bec5698b48a400a5f92fba5466e82458c7598e84",
+    "qualification_test_sha256": "6e54536c56f268127bee0361e1557fa9384a99a2539a990fb9eba8e9eb59eb7f"
   },
   "synthetic_reproduction": {
     "space_identity": "synthetic-space-v1",
@@ -18,10 +18,11 @@
     "token_exact_maximum": 424,
     "token_witness_sha256": "fed130c502e0f6497dc5186778b41a39d5164bcdd52cff690b9e6836a74b7d88",
     "expected_receipt_sha256": "4e1ee9e28636d29de2dc6e8bb9e16f364ed8d218a72a00a640801941201e381d",
-    "clean_run_receipt_sha256": [
+    "deterministic_invocation_receipt_sha256": [
       "4e1ee9e28636d29de2dc6e8bb9e16f364ed8d218a72a00a640801941201e381d",
       "4e1ee9e28636d29de2dc6e8bb9e16f364ed8d218a72a00a640801941201e381d"
     ],
+    "clean_materialization_claimed": false,
     "production_value_authority": false
   },
   "qualification": {
@@ -33,7 +34,7 @@
     "incomplete_or_falsely_declared_branch_coverage_rejected": "PASS",
     "unqualified_tokenizer_closure_rejected": "PASS",
     "synthetic_response_space_content_binding": "PASS",
-    "synthetic_exact_byte_and_token_witness_reproducibility": "PASS_TWO_OF_TWO",
+    "synthetic_exact_byte_and_token_witness_reproducibility": "PASS_TWO_DETERMINISTIC_INVOCATIONS_SAME_RUNTIME",
     "zero_margin_rule_preserved": true
   },
   "production_values_emitted": false,
