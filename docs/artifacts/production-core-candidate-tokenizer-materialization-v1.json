@@ -32,10 +32,14 @@
   "runtime": {
     "rootfs_sha256": "274e7d1519f05f41108413efb01d35680b88e0f4b13bb63fca9634be155980f4",
     "probe_sha256": "1ef4fd391872b14714e5b6fd3b9fcdc887b447822f57e30dd82e36c86326bb95",
-    "launcher_sha256": "dce2f462a598c8b458a238a4caca98bd9121f435179e3e20046a254abdbb336f",
+    "launcher_sha256": "3fae1a576424d1ce3ec3e150e790b921c94d76f75ecfdced7449139c7729b6c2",
     "network": "DENY_ALL_NEW_NAMESPACE",
     "rootfs_and_tokenizer_mounts": "READ_ONLY",
-    "host_loader_library_or_configuration_inherited": false
+    "host_loader_library_or_configuration_inherited": false,
+    "object_store_resolution": "EXPLICIT_CALLER_SUPPLIED_CANONICAL_ROOT",
+    "embedded_absolute_host_path": false,
+    "symlink_or_containment_escape": "FAIL_CLOSED",
+    "content_addressed_tokenizer_object_required": true
   },
   "materializations": [
     {

@@ -61,11 +61,17 @@ def test_probe_and_launcher_are_exactly_bound_and_network_denied() -> None:
     assert "tokenizer snapshot identity mismatch" in launcher
     assert 'mount -o remount,bind,ro "$1/tmp/tokenizer"' in launcher
     assert "/mnt/c/pf9" not in launcher
+    assert "/home/pastila" not in launcher
+    assert "AUTHORITY_ROOT=" not in launcher
     assert 'REPO_ROOT="$(realpath -e -- "$SCRIPT_DIR/..")"' in launcher
+    assert 'OBJECT_STORE_ROOT="$(realpath -e -- "$STORE_INPUT")"' in launcher
+    assert '"$OBJECT_STORE_ROOT" != "$STORE_INPUT"' in launcher
+    assert 'case "$TOKENIZER" in "$OBJECT_STORE_ROOT"/*)' in launcher
+    assert "content-addressed tokenizer object mismatch" in launcher
     assert '"${10}" = fixed' in launcher
     assert "qualification tokenizer emitted stderr" in launcher
-    assert '"$2" = frozen-default' in launcher
-    assert '"$3" != comparison-only' in launcher
+    assert '"$MODE" = frozen-default' in launcher
+    assert '"$4" != comparison-only' in launcher
     assert "comparison-only tokenizer stderr identity mismatch" in launcher
     assert "4425935b0a695ecb79d5d3b975e8b3fbd73594c24ae6deb1bb235491faae873d" in launcher
     assert "EXPECTED_FILE_SHA256" in probe
@@ -85,6 +91,11 @@ def test_derivation_remains_fail_closed_pending_explicit_authority() -> None:
     assert semantics["defines_global_core_v2_tokenizer_policy"] is False
     assert semantics["promotes_candidate"] is False
     assert semantics["claims_universal_equivalence_with_frozen_default"] is False
+    runtime = value["runtime"]
+    assert runtime["object_store_resolution"] == "EXPLICIT_CALLER_SUPPLIED_CANONICAL_ROOT"
+    assert runtime["embedded_absolute_host_path"] is False
+    assert runtime["symlink_or_containment_escape"] == "FAIL_CLOSED"
+    assert runtime["content_addressed_tokenizer_object_required"] is True
     assert value["technical_byte_ceiling_emitted"] is False
     assert value["technical_token_ceiling_emitted"] is False
     assert value["candidate_evaluation_or_promotion_effect"] is False

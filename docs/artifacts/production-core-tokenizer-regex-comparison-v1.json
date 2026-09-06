@@ -7,7 +7,7 @@
   "tokenizer_object_sha256": "2a00451398b3bb51d3c0fa3f4758c77061377ada35abbb7f5e1006be3aaced5c",
   "runtime_rootfs_sha256": "274e7d1519f05f41108413efb01d35680b88e0f4b13bb63fca9634be155980f4",
   "probe_sha256": "1ef4fd391872b14714e5b6fd3b9fcdc887b447822f57e30dd82e36c86326bb95",
-  "launcher_sha256": "dce2f462a598c8b458a238a4caca98bd9121f435179e3e20046a254abdbb336f",
+  "launcher_sha256": "3fae1a576424d1ce3ec3e150e790b921c94d76f75ecfdced7449139c7729b6c2",
   "matrix": {
     "materialization_a": {
       "frozen_default_observation_sha256": "dcefecf131f0e0a60281ce6456f8d3d9a397c5b63280a35f7105cd0fbff4d4ec",

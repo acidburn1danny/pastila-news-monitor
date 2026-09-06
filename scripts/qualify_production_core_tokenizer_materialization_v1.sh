@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-readonly AUTHORITY_ROOT="/home/pastila/.pastila-runtime/production-core-qualification-v1"
-readonly ROOTFS="$AUTHORITY_ROOT/materialized-c"
 readonly ROOTFS_SHA256="274e7d1519f05f41108413efb01d35680b88e0f4b13bb63fca9634be155980f4"
 readonly TOKENIZER_SHA256="2a00451398b3bb51d3c0fa3f4758c77061377ada35abbb7f5e1006be3aaced5c"
+readonly TOKENIZER_SIZE=17295360
 readonly SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 readonly REPO_ROOT="$(realpath -e -- "$SCRIPT_DIR/..")"
 readonly PROBE="$REPO_ROOT/src/pastila_scout/production_core_tokenizer_materialization_probe_v1.py"
@@ -15,18 +14,45 @@ readonly DEFAULT_STDERR_SHA256="4425935b0a695ecb79d5d3b975e8b3fbd73594c24ae6deb1
 readonly DEFAULT_STDERR_SIZE=348
 readonly PYTHON="/opt/production-core-runtime/bin/python"
 
-if [[ ! "$1" =~ ^tokenizer-materialized-[ab]$ ]] || \
-   [[ "$2" = fixed && $# -ne 2 ]] || \
-   [[ "$2" = frozen-default && ( $# -ne 3 || "$3" != comparison-only ) ]] || \
-   [[ ! "$2" =~ ^(frozen-default|fixed)$ ]]; then
+if [[ $# -lt 3 || $# -gt 4 ]]; then
   echo "invalid tokenizer materialization" >&2
   exit 2
 fi
-readonly TOKENIZER="$AUTHORITY_ROOT/$1"
-readonly MODE="$2"
-if [[ ! -d "$TOKENIZER" || -L "$TOKENIZER" || "$(realpath -e -- "$TOKENIZER")" != "$TOKENIZER" ]]; then
+readonly STORE_INPUT="$1"
+readonly MATERIALIZATION="$2"
+readonly MODE="$3"
+if [[ ! "$MATERIALIZATION" =~ ^tokenizer-materialized-[ab]$ ]] || \
+   [[ "$MODE" = fixed && $# -ne 3 ]] || \
+   [[ "$MODE" = frozen-default && ( $# -ne 4 || "$4" != comparison-only ) ]] || \
+   [[ ! "$MODE" =~ ^(frozen-default|fixed)$ ]]; then
+  echo "invalid tokenizer materialization" >&2
+  exit 2
+fi
+if [[ ! -d "$STORE_INPUT" || -L "$STORE_INPUT" ]]; then
+  echo "invalid object store resolution" >&2
+  exit 2
+fi
+readonly OBJECT_STORE_ROOT="$(realpath -e -- "$STORE_INPUT")"
+if [[ "$OBJECT_STORE_ROOT" != "$STORE_INPUT" || "$OBJECT_STORE_ROOT" = / || "$OBJECT_STORE_ROOT" = "$REPO_ROOT" ]]; then
+  echo "invalid object store resolution" >&2
+  exit 2
+fi
+readonly ROOTFS="$OBJECT_STORE_ROOT/materialized-c"
+readonly TOKENIZER="$OBJECT_STORE_ROOT/$MATERIALIZATION"
+readonly TOKENIZER_OBJECT="$OBJECT_STORE_ROOT/objects/sha256/$TOKENIZER_SHA256.tar"
+if [[ ! -d "$ROOTFS" || -L "$ROOTFS" || "$(realpath -e -- "$ROOTFS")" != "$ROOTFS" ]] || \
+   [[ ! -d "$TOKENIZER" || -L "$TOKENIZER" || "$(realpath -e -- "$TOKENIZER")" != "$TOKENIZER" ]] || \
+   [[ ! -f "$TOKENIZER_OBJECT" || -L "$TOKENIZER_OBJECT" || "$(realpath -e -- "$TOKENIZER_OBJECT")" != "$TOKENIZER_OBJECT" ]]; then
   echo "invalid tokenizer materialization resolution" >&2
   exit 2
+fi
+case "$ROOTFS" in "$OBJECT_STORE_ROOT"/*) ;; *) echo "rootfs escaped object store" >&2; exit 2 ;; esac
+case "$TOKENIZER" in "$OBJECT_STORE_ROOT"/*) ;; *) echo "tokenizer escaped object store" >&2; exit 2 ;; esac
+case "$TOKENIZER_OBJECT" in "$OBJECT_STORE_ROOT"/objects/sha256/*) ;; *) echo "object escaped store" >&2; exit 2 ;; esac
+if [[ "$(wc -c < "$TOKENIZER_OBJECT")" -ne "$TOKENIZER_SIZE" ]] || \
+   [[ "$(sha256sum "$TOKENIZER_OBJECT" | cut -d' ' -f1)" != "$TOKENIZER_SHA256" ]]; then
+  echo "content-addressed tokenizer object mismatch" >&2
+  exit 4
 fi
 if [[ ! -f "$PROBE" || -L "$PROBE" ]]; then
   echo "invalid tokenizer probe" >&2
