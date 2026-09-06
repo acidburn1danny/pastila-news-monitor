@@ -1,13 +1,60 @@
 import hashlib
 import json
+import os
+import shutil
+import subprocess
+import uuid
 from pathlib import Path
+
+import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 EVIDENCE = ROOT / "docs/artifacts/production-core-content-addressed-runtime-calibration-v1.json"
+WSL_DISTRIBUTION = "Ubuntu-24.04"
+RUNTIME_ROOT = "/home/pastila/.pastila-runtime/production-core-qualification-v1"
 
 
 def _value() -> dict[str, object]:
     return json.loads(EVIDENCE.read_text(encoding="utf-8"))
+
+
+def _wsl_path(path: Path) -> str:
+    resolved = path.resolve()
+    if os.name != "nt" or not resolved.drive:
+        raise RuntimeError("WSL path conversion requires Windows")
+    return f"/mnt/{resolved.drive[0].lower()}{resolved.as_posix()[2:]}"
+
+
+def _wsl(*arguments: str) -> subprocess.CompletedProcess[str]:
+    executable = shutil.which("wsl.exe")
+    if executable is None:
+        pytest.skip("WSL executable unavailable on this platform")
+    ready = subprocess.run(
+        [executable, "--distribution", WSL_DISTRIBUTION, "--user", "root", "--", "true"],
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        check=False,
+    )
+    if ready.returncode != 0:
+        pytest.skip("frozen WSL qualification distribution unavailable")
+    return subprocess.run(
+        [
+            executable,
+            "--distribution",
+            WSL_DISTRIBUTION,
+            "--user",
+            "root",
+            "--",
+            *arguments,
+        ],
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        check=False,
+    )
 
 
 def test_runtime_is_content_addressed_and_reproduced_twice() -> None:
@@ -106,3 +153,41 @@ def test_materializer_and_launcher_fail_closed_on_substitution() -> None:
     assert 'if [ "$before" != "$5" ]' in launcher
     assert 'if [ "$after" != "$5" ]' in launcher
     assert "! -name lo" in launcher
+
+
+@pytest.mark.skipif(os.name != "nt", reason="WSL qualification boundary is Windows-only")
+def test_executables_reject_noncanonical_and_nested_targets() -> None:
+    materializer = _wsl_path(ROOT / "scripts/materialize_production_core_runtime_v1.sh")
+    launcher = _wsl_path(ROOT / "scripts/run_production_core_offline_calibration_v1.sh")
+    cases = (
+        (materializer, f"{RUNTIME_ROOT}/materialized-c/nested"),
+        (materializer, f"{RUNTIME_ROOT}/materialized-c/../nested"),
+        (materializer, f"{RUNTIME_ROOT}/materialized-"),
+        (launcher, f"{RUNTIME_ROOT}/materialized-c/opt"),
+        (launcher, f"{RUNTIME_ROOT}/materialized-c/../materialized-c"),
+        (launcher, f"{RUNTIME_ROOT}/materialized-"),
+    )
+    for script, target in cases:
+        result = _wsl("bash", script, target, "probe")
+        assert result.returncode == 2, (target, result.stdout, result.stderr)
+
+
+@pytest.mark.skipif(os.name != "nt", reason="WSL qualification boundary is Windows-only")
+def test_executables_reject_symlink_and_substituted_rootfs() -> None:
+    suffix = uuid.uuid4().hex
+    symlink = f"{RUNTIME_ROOT}/materialized-audit-symlink-{suffix}"
+    substituted = f"{RUNTIME_ROOT}/materialized-audit-substituted-{suffix}"
+    materializer = _wsl_path(ROOT / "scripts/materialize_production_core_runtime_v1.sh")
+    launcher = _wsl_path(ROOT / "scripts/run_production_core_offline_calibration_v1.sh")
+    try:
+        created_link = _wsl("ln", "-s", "/tmp/nonexistent-runtime", symlink)
+        assert created_link.returncode == 0, created_link.stderr
+        rejected_link = _wsl("bash", materializer, symlink)
+        assert rejected_link.returncode == 3, rejected_link.stderr
+        created_directory = _wsl("mkdir", substituted)
+        assert created_directory.returncode == 0, created_directory.stderr
+        rejected_substitution = _wsl("bash", launcher, substituted, "probe")
+        assert rejected_substitution.returncode == 4, rejected_substitution.stderr
+    finally:
+        _wsl("unlink", symlink)
+        _wsl("rmdir", substituted)
