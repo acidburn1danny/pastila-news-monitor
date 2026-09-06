@@ -1,0 +1,30 @@
+{
+  "schema": "pastila-production-core-technical-output-envelope-qualification",
+  "schema_version": 1,
+  "verdict": "PASS_SYNTHETIC_OFFLINE_NO_PRODUCTION_VALUES",
+  "identities": {
+    "mechanism_sha256": "18ae65cf9aa96481468025d4be13a3fe7c05e99572deeb949f2a6470b1d9f48a",
+    "implementation_sha256": "25beb94dd25659985b0ae23fc1f573909243b7dab9be4920cee1a14e647b441b",
+    "implementation_test_sha256": "45ac3135dab675c8e1d64f8ca557c4710d14b3afe7a4a027ca6d504d65dc03b3",
+    "qualification_test_sha256": "27705be9730923cbb22c78880ed8edf8dfa835c8063438c8a89fab8c855792fb"
+  },
+  "qualification": {
+    "canonical_utf8_nfc_serialization": "PASS",
+    "contractual_object_and_array_order": "PASS",
+    "minimal_json_escaping": "PASS",
+    "source_span_id_grammar_and_sha256_subform": "PASS",
+    "prohibited_path_url_whitespace_percent_fragment_and_control_forms": "PASS",
+    "incomplete_or_falsely_declared_branch_coverage_rejected": "PASS",
+    "unqualified_tokenizer_closure_rejected": "PASS",
+    "synthetic_exact_byte_and_token_witness_reproducibility": "PASS_TWO_OF_TWO",
+    "zero_margin_rule_preserved": true
+  },
+  "production_values_emitted": false,
+  "candidate_model_executed": false,
+  "candidate_results_inspected": false,
+  "network_activity": false,
+  "inference_wall_time_or_rss_calibration": false,
+  "production_tokenizer_materialized_or_inspected": false,
+  "production_derivation_authorized": false,
+  "remaining_boundary": "SEPARATE_OWNER_AUTHORIZATION_REQUIRED_FOR_CONTENT_ADDRESSED_TOKENIZER_MATERIALIZATION_AND_PRODUCTION_VALUE_DERIVATION"
+}

@@ -1,0 +1,116 @@
+{
+  "schema": "pastila-production-core-technical-output-envelope-mechanism",
+  "schema_version": 1,
+  "status": "OWNER_APPROVED_RULES_OFFLINE_DERIVATOR_QUALIFICATION_ONLY",
+  "scope": {
+    "qualification_execution_profile": "V1",
+    "technical_safety_envelopes_only": true,
+    "defines_semantic_quality": false,
+    "changes_semantic_output_contract": false,
+    "executes_candidate_model": false,
+    "inspects_candidate_results": false,
+    "defines_inference_wall_time_or_rss": false,
+    "defines_global_core_v2_policy": false
+  },
+  "frozen_inputs": {
+    "semantic_output_contract_sha256": "c141a01edf647bc6937bc413e5c3454529a428fcb7cb42bccecd0c1b22ee2df0",
+    "structured_qualification_response_contract_sha256": "b6143dbc1ab04ded733e64cbd989c0a9a803fa5367dbda9f8ae4e9bcff71272d",
+    "execution_profile_sha256": "92bafd61be5f43fea48bf1e88b35eb694ab26d8a09b420243770ea37d46e8274",
+    "content_addressed_runtime_sha256": "274e7d1519f05f41108413efb01d35680b88e0f4b13bb63fca9634be155980f4"
+  },
+  "byte_envelope_derivation": {
+    "input": "ONE_COMPLETE_STRUCTURALLY_AND_SEMANTICALLY_VALID_RESPONSE_V1",
+    "measurement": "LENGTH_OF_EXACT_CANONICAL_UTF8_TRANSPORT_BYTES",
+    "worst_case_domain": [
+      "FACTUAL_ANSWER",
+      "COMMENTARY_ANSWER",
+      "FACTUAL_ABSTAIN",
+      "COMMENTARY_ABSTAIN"
+    ],
+    "method": "EXACT_MAXIMUM_CANONICAL_LENGTH_WITH_COMPLETE_SPACE_PROOF_AND_ATTAINING_WITNESS",
+    "overflow_behavior": "FAIL_BEFORE_ACCEPTED_STATE_MUTATION",
+    "truncation": false,
+    "retry_or_redraw": false,
+    "value_bytes": null
+  },
+  "token_envelope_derivation": {
+    "input": "THE_SAME_EXACT_CANONICAL_RESPONSE_BYTES_DECODED_AS_STRICT_UTF8",
+    "tokenizer_authority": "EXACT_CONTENT_ADDRESSED_CANDIDATE_MANIFEST_TOKENIZER_ONLY",
+    "model_weights_or_inference_required": false,
+    "network": "DENY_ALL",
+    "host_or_fallback_tokenizer_allowed": false,
+    "derivation": "PROVE_THE_SMALLEST_CONSERVATIVE_UPPER_BOUND_FOR_EVERY_ADMISSIBLE_RESPONSE_UNDER_THE_EXACT_TOKENIZER",
+    "cross_candidate_rule": "APPLY_THE_IDENTICAL_ALGORITHM_INDEPENDENTLY_TO_EACH_CANDIDATE_TOKENIZER; NO_SCORE_OR_PROMOTION_EFFECT",
+    "max_output_tokens_relationship": "A_FUTURE_EXECUTION_LIMIT_MAY_NOT_EXCEED_THE_SEPARATELY_OWNER_APPROVED_TECHNICAL_TOKEN_ENVELOPE_AND_MAY_NOT_REDEFINE_SEMANTIC_LIMITS",
+    "value_tokens": null
+  },
+  "canonical_serialization": {
+    "encoding": "UTF-8",
+    "bom": false,
+    "terminal_newline": false,
+    "external_whitespace": false,
+    "unicode_normalization": "NFC_BEFORE_LIMIT_BINDING_AND_SERIALIZATION",
+    "unpaired_surrogate_behavior": "REJECT",
+    "top_level_key_order": "CONTRACTUAL",
+    "nested_key_order": "CONTRACTUAL",
+    "array_order": "CONTRACTUAL_NO_REORDERING",
+    "separators": [",", ":"],
+    "quote_escape": "BACKSLASH_DOUBLE_QUOTE",
+    "backslash_escape": "DOUBLE_BACKSLASH",
+    "slash_escape": false,
+    "control_characters": "REJECT",
+    "other_unicode": "DIRECT_UTF8_NO_ARBITRARY_ESCAPE",
+    "integer": "MINIMAL_BASE10_ASCII_NO_PLUS_LEADING_ZERO_FRACTION_OR_EXPONENT",
+    "null_literal": "null"
+  },
+  "source_span_id_authority": {
+    "encoding": "ASCII",
+    "minimum_characters": 1,
+    "maximum_characters": 128,
+    "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+    "semantics": "OPAQUE_CASE_SENSITIVE_BYTE_EQUALITY_NO_CASE_FOLDING_OR_NORMALIZATION",
+    "path_url_or_percent_decoding": false,
+    "content_addressed_subform": "^sha256:[0-9a-f]{64}$"
+  },
+  "margin_policy": {
+    "arbitrary_percentage_empirical_candidate_or_convenience_margin": false,
+    "byte_margin": 0,
+    "token_margin": 0,
+    "byte_authority": "EXACT_DEMONSTRATED_MAXIMUM_WITH_WITNESS",
+    "token_authority": "SMALLEST_PROVEN_CONSERVATIVE_UPPER_BOUND",
+    "token_exact_maximum_claim_requires_attaining_valid_witness": true
+  },
+  "required_proof_receipt": {
+    "binds": [
+      "mechanism_identity",
+      "semantic_contract_identity",
+      "structured_response_contract_identity",
+      "canonical_serializer_identity",
+      "identifier_bound_contract_identity",
+      "runtime_identity",
+      "tokenizer_identity",
+      "derivation_implementation_identity",
+      "derived_byte_value",
+      "derived_token_value",
+      "negative_regression_identity"
+    ],
+    "candidate_output_or_score_allowed": false,
+    "clean_repetitions_required": 2,
+    "byte_and_token_results_must_match": true,
+    "failure_result": "NO_TECHNICAL_OUTPUT_ENVELOPE_AUTHORITY"
+  },
+  "fail_closed_conditions": [
+    "unbounded response field",
+    "missing or ambiguous canonical serializer",
+    "missing or mismatched tokenizer bytes",
+    "tokenizer loads undeclared files",
+    "tokenizer attempts network access",
+    "tokenizer normalization differs between clean materializations",
+    "derivation cannot prove coverage of every contract branch",
+    "derived values differ between clean materializations",
+    "candidate model weights are loaded or candidate output is inspected"
+  ],
+  "pending_owner_decisions": [],
+  "derived_values_authority": "PENDING_SEPARATE_OWNER_APPROVAL",
+  "candidate_evaluation_authorized": false
+}

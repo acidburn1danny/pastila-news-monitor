@@ -144,6 +144,28 @@ Technical token/byte and model-inference wall-time/RSS limits remain separate
 and pending owner approval. The approved structural supervisor envelopes do not
 resolve or imply them.
 
+### Candidate-neutral technical-output envelope mechanism
+
+Technical byte and token envelopes are derived only from a complete valid
+Structured Qualification Response V1. The byte mechanism proves the maximum
+canonical UTF-8 serialization length across every factual, commentary, and
+abstention branch. The token mechanism applies the same frozen algorithm to the
+exact content-addressed tokenizer declared by each candidate manifest, offline
+and without loading model weights or inspecting candidate output. Different
+tokenizer identities may produce different safety values; this has no scoring,
+comparison, selection, or promotion effect.
+
+No numeric envelope is yet authority. Derivation remains fail-closed until the
+owner separately defines the exact JSON byte canonicalization, bounds the
+currently unbounded `source_span_id`, and decides whether proven maxima are used
+directly or receive a fixed non-semantic margin. Two clean derivations must bind
+the serializer, contracts, runtime, tokenizer, implementation, results, and
+negative regressions and must reproduce identical byte and token values.
+
+This mechanism does not authorize candidate inference and cannot define or
+infer model cancellation, wall-time, RSS, semantic quality, or global Core V2
+policy.
+
 ## Unauthorized-default manifestation audit
 
 The repaired production-authority manifestations were:

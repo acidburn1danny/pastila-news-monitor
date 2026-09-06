@@ -7,6 +7,9 @@ ARTIFACT = ROOT / "docs/artifacts/production-core-model-qualification-framework-
 CALIBRATION = ROOT / "docs/artifacts/production-core-candidate-free-host-calibration-v1.json"
 WSL_CALIBRATION = ROOT / "docs/artifacts/production-core-candidate-free-wsl-calibration-v1.json"
 PROFILE = ROOT / "docs/artifacts/production-core-execution-profile-proposal-v1.json"
+TECHNICAL_MECHANISM = (
+    ROOT / "docs/artifacts/production-core-technical-output-envelope-mechanism-v1.json"
+)
 
 
 def test_framework_freezes_candidate_neutral_thresholds_without_results() -> None:
@@ -30,6 +33,16 @@ def test_framework_freezes_candidate_neutral_thresholds_without_results() -> Non
     assert thresholds["cancellation_deadline_seconds"] is None
     assert thresholds["wall_time_seconds_per_case_max"] is None
     assert thresholds["peak_rss_bytes_per_case_max"] is None
+    assert thresholds["technical_output_bytes_max"] is None
+    assert thresholds["technical_output_tokens_max"] is None
+    mechanism = thresholds["technical_output_envelope_mechanism"]
+    assert mechanism["status"] == (
+        "OWNER_APPROVED_RULES_OFFLINE_DERIVATOR_QUALIFICATION_ONLY"
+    )
+    assert mechanism["sha256"] == hashlib.sha256(TECHNICAL_MECHANISM.read_bytes()).hexdigest()
+    assert mechanism["candidate_execution_authorized"] is False
+    assert mechanism["candidate_results_inspected"] is False
+    assert mechanism["defines_inference_wall_time_or_rss"] is False
     assert thresholds["qualification_execution_profile_v1_structural_supervisor_envelopes"] == {
         "authority_status": "OWNER_APPROVED",
         "evidence_sha256": hashlib.sha256(
