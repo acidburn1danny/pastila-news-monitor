@@ -99,9 +99,7 @@ def test_phase5_qualification_binds_exact_bytes_and_predecessor() -> None:
 
 
 def test_production_capture_evidence_is_preserved_byte_for_byte_by_git() -> None:
-    proof_root = ROOT / (
-        ".pastila-runtime/milestone10-crossref-production-capture-v1"
-    )
+    proof_root = ROOT / (".pastila-runtime/milestone10-crossref-production-capture-v1")
     paths = (
         proof_root / "attempt-consumed.json",
         proof_root / "completion.json",
@@ -118,10 +116,7 @@ def test_production_capture_evidence_is_preserved_byte_for_byte_by_git() -> None
     )
     lines = output.splitlines()
     assert len(lines) == len(paths) * 2
-    assert all(
-        line.endswith((": text: unset", ": eol: unset"))
-        for line in lines
-    )
+    assert all(line.endswith((": text: unset", ": eol: unset")) for line in lines)
 
 
 def test_phase5_does_not_change_existing_acceptance_selection_boundaries() -> None:
@@ -143,9 +138,11 @@ def test_phase5_does_not_change_existing_acceptance_selection_boundaries() -> No
         path for path in changed if "phase5" in path or "production_capture" in path
     }
     assert phase5 == {
+        "docs/artifacts/milestone10-phase5-crossref-production-capture-execution-qualification-v1.json",
         "docs/artifacts/milestone10-phase5-bounded-crossref-production-capture-qualification-v1.json",
         "docs/milestone10-phase5-bounded-crossref-production-capture.md",
         "src/pastila_scout/crossref_production_capture_v1.py",
+        "tests/test_crossref_production_capture_execution_qualification_v1.py",
         "tests/test_crossref_production_capture_qualification_v1.py",
         "tests/test_crossref_production_capture_v1.py",
     }
