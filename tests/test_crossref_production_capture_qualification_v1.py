@@ -98,6 +98,32 @@ def test_phase5_qualification_binds_exact_bytes_and_predecessor() -> None:
     }
 
 
+def test_production_capture_evidence_is_preserved_byte_for_byte_by_git() -> None:
+    proof_root = ROOT / (
+        ".pastila-runtime/milestone10-crossref-production-capture-v1"
+    )
+    paths = (
+        proof_root / "attempt-consumed.json",
+        proof_root / "completion.json",
+        proof_root / "raw-capture/manifest.json",
+        proof_root / "raw-capture/request.json",
+        proof_root / "raw-capture/response-body.bin",
+        proof_root / "raw-capture/response-headers.json",
+        proof_root / "raw-capture/wire-request.http",
+    )
+    output = subprocess.check_output(
+        ["git", "check-attr", "text", "eol", "--", *(str(p) for p in paths)],
+        cwd=ROOT,
+        text=True,
+    )
+    lines = output.splitlines()
+    assert len(lines) == len(paths) * 2
+    assert all(
+        line.endswith((": text: unset", ": eol: unset"))
+        for line in lines
+    )
+
+
 def test_phase5_does_not_change_existing_acceptance_selection_boundaries() -> None:
     changed = set(
         subprocess.check_output(
@@ -124,7 +150,8 @@ def test_phase5_does_not_change_existing_acceptance_selection_boundaries() -> No
         "tests/test_crossref_production_capture_v1.py",
     }
     governed = phase5 | {
-        "docs/artifacts/milestone10-closure-crossref-production-qualification-v1.json"
+        ".gitattributes",
+        "docs/artifacts/milestone10-closure-crossref-production-qualification-v1.json",
     }
     assert {
         path for path in changed if not path.startswith(".pastila-runtime/")
