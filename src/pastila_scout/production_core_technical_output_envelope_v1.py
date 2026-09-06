@@ -41,11 +41,16 @@ BRANCHES = frozenset(
     {"FACTUAL_ANSWER", "COMMENTARY_ANSWER", "FACTUAL_ABSTAIN", "COMMENTARY_ABSTAIN"}
 )
 
+TECHNICAL_BYTE_CEILING = 6268
+TECHNICAL_TOKEN_CEILING = 6268
+BYTE_CEILING_CLASSIFICATION = "EXACT_CANONICAL_MAXIMUM"
+TOKEN_CEILING_CLASSIFICATION = "CONSERVATIVE_BYTE_TIGHT_TOKEN_CEILING"
+
 
 class OfflineTokenizer(Protocol):
     identity: str
 
-    def encode(self, text: str) -> Sequence[int]: ...
+    def encode(self, text: str, *, add_special_tokens: bool) -> Sequence[int]: ...
 
 
 @dataclass(frozen=True)
@@ -164,6 +169,105 @@ def canonical_response_bytes(response: Mapping[str, object]) -> bytes:
     ).encode("utf-8", errors="strict")
 
 
+def maximal_structural_response() -> dict[str, object]:
+    """Return the attaining witness for the approved conservative lexical superset."""
+
+    span_ids = ["s" + ("z" * 124) + f"{index:03d}" for index in range(24)]
+    return {
+        "schema": "pastila-core-v2-structured-qualification-response",
+        "schema_version": 1,
+        "case_id": "c" + ("z" * 127),
+        "request_identity": "sha256:" + ("f" * 64),
+        "output_type": "FACTUAL",
+        "outcome": "ANSWER",
+        "text": "\U0010ffff" * 650,
+        "claim_bindings": [
+            {"claim_index": index + 1, "source_span_ids": span_ids[index * 8 : (index + 1) * 8]}
+            for index in range(3)
+        ],
+        "abstention_code": None,
+    }
+
+
+def structural_branch_byte_maxima() -> dict[str, int]:
+    """Derive an attaining canonical-byte maximum for every contract branch."""
+
+    factual = maximal_structural_response()
+    commentary = {
+        **factual,
+        "output_type": "COMMENTARY",
+        "text": "\U0010ffff" * 1000,
+        "claim_bindings": [],
+    }
+    longest_abstention = max(ABSTENTION_CODES, key=lambda value: (len(value), value))
+    abstentions = {
+        output_type: {
+            **factual,
+            "output_type": output_type,
+            "outcome": "ABSTAIN",
+            "text": None,
+            "claim_bindings": [],
+            "abstention_code": longest_abstention,
+        }
+        for output_type in ("FACTUAL", "COMMENTARY")
+    }
+    witnesses = {
+        "FACTUAL_ANSWER": factual,
+        "COMMENTARY_ANSWER": commentary,
+        "FACTUAL_ABSTAIN": abstentions["FACTUAL"],
+        "COMMENTARY_ABSTAIN": abstentions["COMMENTARY"],
+    }
+    return {name: len(canonical_response_bytes(value)) for name, value in witnesses.items()}
+
+
+def derive_approved_production_envelope(*, tokenizer_byte_tight_proven: bool) -> dict[str, object]:
+    """Emit the owner-approved safety envelope only after its proof gate closes."""
+
+    witness = canonical_response_bytes(maximal_structural_response())
+    branch_maxima = structural_branch_byte_maxima()
+    if len(witness) != TECHNICAL_BYTE_CEILING:
+        raise RuntimeError("canonical maximum witness identity changed")
+    if max(branch_maxima.values()) != TECHNICAL_BYTE_CEILING:
+        raise RuntimeError("structural branch maximum changed")
+    if not tokenizer_byte_tight_proven:
+        raise ValueError("tokenizer tokens<=bytes closure is not proven")
+    return {
+        "technical_byte_ceiling": TECHNICAL_BYTE_CEILING,
+        "technical_byte_ceiling_classification": BYTE_CEILING_CLASSIFICATION,
+        "technical_token_ceiling": TECHNICAL_TOKEN_CEILING,
+        "technical_token_ceiling_classification": TOKEN_CEILING_CLASSIFICATION,
+        "byte_witness_sha256": hashlib.sha256(witness).hexdigest(),
+        "structural_branch_byte_maxima": branch_maxima,
+        "tokenizer_exact_maximum_claimed": False,
+        "formal_bpe_maximizer_authorized": False,
+        "margin_bytes": 0,
+        "margin_tokens": 0,
+        "candidate_derived": False,
+        "overflow_behavior": "FAIL_CLOSED",
+        "truncation": "PROHIBITED",
+        "retry_or_redraw": "PROHIBITED",
+        "semantic_quality_effect": "NONE",
+    }
+
+
+def enforce_technical_output_envelope(
+    response: Mapping[str, object], tokenizer: OfflineTokenizer
+) -> bytes:
+    """Fail closed before acceptance when either approved safety ceiling is exceeded."""
+
+    canonical_bytes = canonical_response_bytes(response)
+    token_ids = tuple(
+        tokenizer.encode(
+            canonical_bytes.decode("utf-8", errors="strict"), add_special_tokens=False
+        )
+    )
+    if len(canonical_bytes) > TECHNICAL_BYTE_CEILING:
+        raise ValueError("technical byte ceiling exceeded")
+    if len(token_ids) > TECHNICAL_TOKEN_CEILING:
+        raise ValueError("technical token ceiling exceeded")
+    return canonical_bytes
+
+
 def derive_synthetic_envelope(
     space: FiniteResponseSpace,
     tokenizer: OfflineTokenizer,
@@ -180,7 +284,13 @@ def derive_synthetic_envelope(
         encoded = canonical_response_bytes(response)
         space_hasher.update(len(encoded).to_bytes(8, byteorder="big"))
         space_hasher.update(encoded)
-        token_count = len(tuple(tokenizer.encode(encoded.decode("utf-8", errors="strict"))))
+        token_count = len(
+            tuple(
+                tokenizer.encode(
+                    encoded.decode("utf-8", errors="strict"), add_special_tokens=False
+                )
+            )
+        )
         if token_count < 0:
             raise ValueError("invalid tokenizer result")
         observations.append(

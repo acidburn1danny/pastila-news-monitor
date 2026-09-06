@@ -63,8 +63,16 @@
       "truncation": "PROHIBITED",
       "trailing_output": "PROHIBITED"
     },
-    "technical_output_bytes_max": null,
-    "technical_output_tokens_max": null,
+    "technical_output_bytes_max": 6268,
+    "technical_output_bytes_classification": "EXACT_CANONICAL_MAXIMUM",
+    "technical_output_tokens_max": 6268,
+    "technical_output_tokens_classification": "CONSERVATIVE_BYTE_TIGHT_TOKEN_CEILING",
+    "technical_output_tokenizer_exact_maximum_claimed": false,
+    "technical_output_formal_bpe_maximizer_authorized": false,
+    "technical_output_overflow": "FAIL_CLOSED",
+    "technical_output_truncation": "PROHIBITED",
+    "technical_output_retry_or_redraw": "PROHIBITED",
+    "technical_output_semantic_quality_effect": "NONE",
     "qualification_execution_profile_v1_tokenizer_semantics": {
       "authority_status": "OWNER_APPROVED",
       "load_argument": "fix_mistral_regex=True",
@@ -76,9 +84,9 @@
       "claims_universal_equivalence_with_frozen_default": false
     },
     "technical_output_envelope_mechanism": {
-      "status": "OWNER_APPROVED_RULES_OFFLINE_DERIVATOR_QUALIFICATION_ONLY",
-      "sha256": "18ae65cf9aa96481468025d4be13a3fe7c05e99572deeb949f2a6470b1d9f48a",
-      "qualification_sha256": "c1339a2e7375129360e64d269b0e23cfd67a5c66b8bc1167070f737eb7061a8f",
+      "status": "OWNER_APPROVED_PRODUCTION_VALUES_OFFLINE_QUALIFIED",
+      "sha256": "c3f659ba80ebe49adcd4eb2f42f81f277d0fa1d029283086fe0385122db56bcb",
+      "qualification_sha256": "a88e4fcd7213570171cfbba21b8fe3ab68858af14ae6cbd468f10bae8ec8e78b",
       "candidate_execution_authorized": false,
       "candidate_results_inspected": false,
       "defines_inference_wall_time_or_rss": false
@@ -114,9 +122,11 @@
     ,"structured qualification response exact nine-field contract with evaluator-only verdict authority"
     ,"Qualification Execution Profile v1 structural supervisor envelopes: 500 ms cancellation, 1 s structural wall time, and 64 MiB structural peak RSS; not inference limits or global Core V2 policy"
     ,"Qualification Execution Profile v1 tokenizer loads with fix_mistral_regex=True and fails closed when absent or warned; profile-specific only"
+    ,"Qualification Execution Profile v1 technical byte ceiling 6268 as exact canonical maximum"
+    ,"Qualification Execution Profile v1 technical token ceiling 6268 as conservative byte-tight safety bound, not an exact tokenizer-specific maximum"
   ],
   "pending_owner_acceptance": [
     "materialized execution-profile runtime identities",
-    "derived technical bytes and tokens safety values"
+    "inference wall-time and peak-RSS limits"
   ]
 }

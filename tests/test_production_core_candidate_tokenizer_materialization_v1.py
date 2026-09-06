@@ -78,11 +78,9 @@ def test_probe_and_launcher_are_exactly_bound_and_network_denied() -> None:
     assert "tokenizer file identity mismatch" in probe
 
 
-def test_derivation_remains_fail_closed_pending_explicit_authority() -> None:
+def test_owner_approved_byte_tight_derivation_is_closed() -> None:
     value = _value()
-    assert {item["code"] for item in value["remaining_blockers"]} == {
-        "COMPLETE_TOKEN_UPPER_BOUND_PROOF_NOT_YET_IMPLEMENTED",
-    }
+    assert value["remaining_blockers"] == []
     semantics = value["qualification_execution_profile_v1_tokenizer_semantics"]
     assert semantics["load_argument"] == "fix_mistral_regex=True"
     assert semantics["missing_or_false_argument"] == "FAIL_CLOSED"
@@ -96,7 +94,11 @@ def test_derivation_remains_fail_closed_pending_explicit_authority() -> None:
     assert runtime["embedded_absolute_host_path"] is False
     assert runtime["symlink_or_containment_escape"] == "FAIL_CLOSED"
     assert runtime["content_addressed_tokenizer_object_required"] is True
-    assert value["technical_byte_ceiling_emitted"] is False
-    assert value["technical_token_ceiling_emitted"] is False
+    assert value["technical_byte_ceiling_emitted"] == 6268
+    assert value["technical_token_ceiling_emitted"] == 6268
+    assert value["technical_token_ceiling_classification"] == (
+        "CONSERVATIVE_BYTE_TIGHT_TOKEN_CEILING"
+    )
+    assert value["tokenizer_exact_maximum_claimed"] is False
     assert value["candidate_evaluation_or_promotion_effect"] is False
     assert value["network_activity"] is False

@@ -19,7 +19,7 @@
     "content_addressed_runtime_sha256": "274e7d1519f05f41108413efb01d35680b88e0f4b13bb63fca9634be155980f4"
   },
   "byte_envelope_derivation": {
-    "input": "ONE_COMPLETE_STRUCTURALLY_AND_SEMANTICALLY_VALID_RESPONSE_V1",
+    "input": "FORMAL_CONSERVATIVE_LEXICAL_SUPERSET_OF_STRUCTURALLY_VALID_RESPONSE_V1",
     "measurement": "LENGTH_OF_EXACT_CANONICAL_UTF8_TRANSPORT_BYTES",
     "worst_case_domain": [
       "FACTUAL_ANSWER",
@@ -27,11 +27,13 @@
       "FACTUAL_ABSTAIN",
       "COMMENTARY_ABSTAIN"
     ],
-    "method": "EXACT_MAXIMUM_CANONICAL_LENGTH_WITH_COMPLETE_SPACE_PROOF_AND_ATTAINING_WITNESS",
+    "method": "EXACT_MAXIMUM_CANONICAL_LENGTH_OVER_OWNER_APPROVED_STRUCTURAL_SUPERSET_WITH_ATTAINING_STRUCTURAL_WITNESS",
     "overflow_behavior": "FAIL_BEFORE_ACCEPTED_STATE_MUTATION",
     "truncation": false,
     "retry_or_redraw": false,
-    "value_bytes": null
+    "value_bytes": 6268,
+    "classification": "EXACT_CANONICAL_MAXIMUM",
+    "witness_sha256": "3be0ab93fd2bbf415be2ae5a5344a7017b723294383dea97c3a40607267fe820"
   },
   "token_envelope_derivation": {
     "input": "THE_SAME_EXACT_CANONICAL_RESPONSE_BYTES_DECODED_AS_STRICT_UTF8",
@@ -39,10 +41,14 @@
     "model_weights_or_inference_required": false,
     "network": "DENY_ALL",
     "host_or_fallback_tokenizer_allowed": false,
-    "derivation": "PROVE_THE_SMALLEST_CONSERVATIVE_UPPER_BOUND_FOR_EVERY_ADMISSIBLE_RESPONSE_UNDER_THE_EXACT_TOKENIZER",
+    "special_tokens_during_response_measurement": false,
+    "derivation": "BYTE_LEVEL_TOKENIZER_PROPERTY_TOKENS_LESS_THAN_OR_EQUAL_TO_CANONICAL_UTF8_BYTES_OVER_THE_COMPLETE_OWNER_APPROVED_STRUCTURAL_SUPERSET",
     "cross_candidate_rule": "APPLY_THE_IDENTICAL_ALGORITHM_INDEPENDENTLY_TO_EACH_CANDIDATE_TOKENIZER; NO_SCORE_OR_PROMOTION_EFFECT",
     "max_output_tokens_relationship": "A_FUTURE_EXECUTION_LIMIT_MAY_NOT_EXCEED_THE_SEPARATELY_OWNER_APPROVED_TECHNICAL_TOKEN_ENVELOPE_AND_MAY_NOT_REDEFINE_SEMANTIC_LIMITS",
-    "value_tokens": null
+    "value_tokens": 6268,
+    "classification": "CONSERVATIVE_BYTE_TIGHT_TOKEN_CEILING",
+    "exact_tokenizer_specific_maximum_claimed": false,
+    "formal_bpe_transducer_or_dp_maximizer_authorized": false
   },
   "canonical_serialization": {
     "encoding": "UTF-8",
@@ -77,8 +83,9 @@
     "byte_margin": 0,
     "token_margin": 0,
     "byte_authority": "EXACT_DEMONSTRATED_MAXIMUM_WITH_WITNESS",
-    "token_authority": "SMALLEST_PROVEN_CONSERVATIVE_UPPER_BOUND",
-    "token_exact_maximum_claim_requires_attaining_valid_witness": true
+    "token_authority": "SMALLEST_CURRENTLY_DEMONSTRATED_UNIVERSAL_SAFETY_BOUND_FROM_EXACT_BYTE_MAXIMUM_AND_PROVEN_BYTE_LEVEL_TOKENIZER_PROPERTY",
+    "token_exact_maximum_claim_requires_attaining_valid_witness": true,
+    "token_exact_maximum_claimed": false
   },
   "required_proof_receipt": {
     "binds": [
@@ -111,6 +118,6 @@
     "candidate model weights are loaded or candidate output is inspected"
   ],
   "pending_owner_decisions": [],
-  "derived_values_authority": "PENDING_SEPARATE_OWNER_APPROVAL",
+  "derived_values_authority": "OWNER_APPROVED_6268_BYTES_EXACT_AND_6268_TOKENS_CONSERVATIVE_BYTE_TIGHT",
   "candidate_evaluation_authorized": false
 }

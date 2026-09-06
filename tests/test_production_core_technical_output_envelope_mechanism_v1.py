@@ -21,7 +21,7 @@ def _value() -> dict[str, object]:
     return json.loads(MECHANISM.read_text(encoding="utf-8"))
 
 
-def test_mechanism_binds_existing_authority_without_values() -> None:
+def test_mechanism_binds_existing_authority_and_approved_values() -> None:
     value = _value()
     frozen = value["frozen_inputs"]
     assert frozen["semantic_output_contract_sha256"] == hashlib.sha256(
@@ -31,9 +31,11 @@ def test_mechanism_binds_existing_authority_without_values() -> None:
         STRUCTURED.read_bytes()
     ).hexdigest()
     assert frozen["execution_profile_sha256"] == hashlib.sha256(PROFILE.read_bytes()).hexdigest()
-    assert value["byte_envelope_derivation"]["value_bytes"] is None
-    assert value["token_envelope_derivation"]["value_tokens"] is None
-    assert value["derived_values_authority"] == "PENDING_SEPARATE_OWNER_APPROVAL"
+    assert value["byte_envelope_derivation"]["value_bytes"] == 6268
+    assert value["token_envelope_derivation"]["value_tokens"] == 6268
+    assert value["derived_values_authority"] == (
+        "OWNER_APPROVED_6268_BYTES_EXACT_AND_6268_TOKENS_CONSERVATIVE_BYTE_TIGHT"
+    )
 
 
 def test_mechanism_is_candidate_neutral_and_does_not_authorize_inference() -> None:
@@ -77,7 +79,7 @@ def test_receipt_requires_two_clean_identical_derivations() -> None:
 
 def test_qualification_evidence_binds_rules_implementation_and_tests() -> None:
     value = json.loads(QUALIFICATION.read_text(encoding="utf-8"))
-    assert value["verdict"] == "PASS_SYNTHETIC_OFFLINE_NO_PRODUCTION_VALUES"
+    assert value["verdict"] == "PASS_OFFLINE_PRODUCTION_TECHNICAL_OUTPUT_ENVELOPE"
     assert value["identities"] == {
         "mechanism_sha256": hashlib.sha256(MECHANISM.read_bytes()).hexdigest(),
         "implementation_sha256": hashlib.sha256(IMPLEMENTATION.read_bytes()).hexdigest(),
@@ -86,7 +88,7 @@ def test_qualification_evidence_binds_rules_implementation_and_tests() -> None:
         ).hexdigest(),
         "qualification_test_sha256": hashlib.sha256(QUALIFICATION_TEST.read_bytes()).hexdigest(),
     }
-    assert value["production_values_emitted"] is False
+    assert value["production_values_emitted"] == {"bytes": 6268, "tokens": 6268}
     assert value["candidate_model_executed"] is False
     assert value["candidate_results_inspected"] is False
     assert value["network_activity"] is False
@@ -98,3 +100,11 @@ def test_qualification_evidence_binds_rules_implementation_and_tests() -> None:
     ]
     assert reproduction["clean_materialization_claimed"] is False
     assert reproduction["production_value_authority"] is False
+    production = value["production_qualification"]
+    assert production["clean_materialization_receipt_sha256"] == [
+        "42ed4d38aade1185a8cd7d125aa14290cd9921a6b8498b3fd7d8ae880fc59a63",
+        "42ed4d38aade1185a8cd7d125aa14290cd9921a6b8498b3fd7d8ae880fc59a63",
+    ]
+    assert production["witness_bytes"] == 6268
+    assert production["witness_tokens"] == 4390
+    assert production["token_ceiling_is_exact_tokenizer_maximum"] is False

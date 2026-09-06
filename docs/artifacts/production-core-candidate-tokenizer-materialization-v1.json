@@ -31,8 +31,8 @@
   },
   "runtime": {
     "rootfs_sha256": "274e7d1519f05f41108413efb01d35680b88e0f4b13bb63fca9634be155980f4",
-    "probe_sha256": "1ef4fd391872b14714e5b6fd3b9fcdc887b447822f57e30dd82e36c86326bb95",
-    "launcher_sha256": "3fae1a576424d1ce3ec3e150e790b921c94d76f75ecfdced7449139c7729b6c2",
+    "probe_sha256": "fbf32b51ed77f725b17ab346aa2fc86aecba7979e97f831c7fa75f8bdb9406a1",
+    "launcher_sha256": "eb806e98c883ec24e12f76c536641d0e54b3a61635fedc0c84682285ad05c5e9",
     "network": "DENY_ALL_NEW_NAMESPACE",
     "rootfs_and_tokenizer_mounts": "READ_ONLY",
     "host_loader_library_or_configuration_inherited": false,
@@ -45,14 +45,14 @@
     {
       "logical_id": "A",
       "reconstructed_object_sha256": "2a00451398b3bb51d3c0fa3f4758c77061377ada35abbb7f5e1006be3aaced5c",
-      "frozen_default_observation_sha256": "dcefecf131f0e0a60281ce6456f8d3d9a397c5b63280a35f7105cd0fbff4d4ec",
-      "fixed_observation_sha256": "198e87a690244089a7d1cb7e5b28359ce48004965c34f1c3d513e1785f52c46d"
+      "frozen_default_observation_sha256": "e7cd77b9331f0fc36d91534d6f416cf23d60dd2cf4b698a3ce1e2baafa7a3b7f",
+      "fixed_observation_sha256": "42ed4d38aade1185a8cd7d125aa14290cd9921a6b8498b3fd7d8ae880fc59a63"
     },
     {
       "logical_id": "B",
       "reconstructed_object_sha256": "2a00451398b3bb51d3c0fa3f4758c77061377ada35abbb7f5e1006be3aaced5c",
-      "frozen_default_observation_sha256": "dcefecf131f0e0a60281ce6456f8d3d9a397c5b63280a35f7105cd0fbff4d4ec",
-      "fixed_observation_sha256": "198e87a690244089a7d1cb7e5b28359ce48004965c34f1c3d513e1785f52c46d"
+      "frozen_default_observation_sha256": "e7cd77b9331f0fc36d91534d6f416cf23d60dd2cf4b698a3ce1e2baafa7a3b7f",
+      "fixed_observation_sha256": "42ed4d38aade1185a8cd7d125aa14290cd9921a6b8498b3fd7d8ae880fc59a63"
     }
   ],
   "observation": {
@@ -75,14 +75,19 @@
     "promotes_candidate": false,
     "claims_universal_equivalence_with_frozen_default": false
   },
-  "remaining_blockers": [
-    {
-      "code": "COMPLETE_TOKEN_UPPER_BOUND_PROOF_NOT_YET_IMPLEMENTED",
-      "evidence": "Materialization proves tokenizer byte/runtime closure, not a smallest conservative upper bound over the complete valid response space."
-    }
-  ],
-  "technical_byte_ceiling_emitted": false,
-  "technical_token_ceiling_emitted": false,
+  "remaining_blockers": [],
+  "technical_output_envelope": {
+    "byte_witness_sha256": "3be0ab93fd2bbf415be2ae5a5344a7017b723294383dea97c3a40607267fe820",
+    "witness_bytes": 6268,
+    "witness_tokens": 4390,
+    "tokenizer_byte_tight_definition_proven": true,
+    "two_clean_materializations_identical": true
+  },
+  "technical_byte_ceiling_emitted": 6268,
+  "technical_byte_ceiling_classification": "EXACT_CANONICAL_MAXIMUM",
+  "technical_token_ceiling_emitted": 6268,
+  "technical_token_ceiling_classification": "CONSERVATIVE_BYTE_TIGHT_TOKEN_CEILING",
+  "tokenizer_exact_maximum_claimed": false,
   "candidate_evaluation_or_promotion_effect": false,
   "network_activity": false
 }

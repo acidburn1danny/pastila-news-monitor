@@ -140,9 +140,9 @@ whole with no repair, coercion, extraction, retry, redraw, or state mutation.
 Candidate output cannot contain or determine PASS/FAIL; only a separate
 evaluator-authority receipt can record that verdict.
 
-Technical token/byte and model-inference wall-time/RSS limits remain separate
-and pending owner approval. The approved structural supervisor envelopes do not
-resolve or imply them.
+Model-inference wall-time/RSS limits remain separate and pending owner approval.
+The approved structural supervisor and technical-output envelopes do not resolve
+or imply them.
 
 For Qualification Execution Profile v1 only, the owner designates the frozen
 tokenizer loaded explicitly with `fix_mistral_regex=True`. A missing or false
@@ -152,21 +152,26 @@ candidate, or claim universal equivalence with frozen-default semantics.
 
 ### Candidate-neutral technical-output envelope mechanism
 
-Technical byte and token envelopes are derived only from a complete valid
-Structured Qualification Response V1. The byte mechanism proves the maximum
-canonical UTF-8 serialization length across every factual, commentary, and
-abstention branch. The token mechanism applies the same frozen algorithm to the
-exact content-addressed tokenizer declared by each candidate manifest, offline
-and without loading model weights or inspecting candidate output. Different
-tokenizer identities may produce different safety values; this has no scoring,
-comparison, selection, or promotion effect.
+The owner-approved Qualification Execution Profile v1 envelope is `6268` UTF-8
+bytes, classified `EXACT_CANONICAL_MAXIMUM`, over the approved conservative
+lexical superset of structurally valid responses. Its attaining structural
+witness is bound in qualification evidence. The technical token ceiling is
+also `6268`, classified `CONSERVATIVE_BYTE_TIGHT_TOKEN_CEILING`: the exact
+frozen tokenizer closure proves that every emitted token consumes at least one
+input byte, hence tokens cannot exceed canonical UTF-8 bytes. This is not a
+claim that `6268` is the tokenizer-specific exact maximum, and a formal BPE
+transducer/DP maximizer is explicitly not authorized.
 
-No numeric envelope is yet authority. Derivation remains fail-closed until the
-owner separately defines the exact JSON byte canonicalization, bounds the
-currently unbounded `source_span_id`, and decides whether proven maxima are used
-directly or receive a fixed non-semantic margin. Two clean derivations must bind
-the serializer, contracts, runtime, tokenizer, implementation, results, and
-negative regressions and must reproduce identical byte and token values.
+Token measurement uses `add_special_tokens=False`; BOS/EOS or any other
+adapter-injected token is outside the response-byte envelope and cannot enter
+through an implicit tokenizer default.
+
+Both limits have zero arbitrary margin. Overflow fails closed; truncation,
+retry, and redraw are prohibited. Runtime gates serialize and tokenize the same
+validated response object, preventing caller-supplied byte/token-count
+rebinding. Any tokenizer, pre-tokenizer, model, or normalization identity change
+invalidates the token proof and requires requalification. Two clean offline
+materializations must reproduce the bound and receipt identities.
 
 This mechanism does not authorize candidate inference and cannot define or
 infer model cancellation, wall-time, RSS, semantic quality, or global Core V2

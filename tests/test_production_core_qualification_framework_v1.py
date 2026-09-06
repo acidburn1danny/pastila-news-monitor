@@ -36,12 +36,14 @@ def test_framework_freezes_candidate_neutral_thresholds_without_results() -> Non
     assert thresholds["cancellation_deadline_seconds"] is None
     assert thresholds["wall_time_seconds_per_case_max"] is None
     assert thresholds["peak_rss_bytes_per_case_max"] is None
-    assert thresholds["technical_output_bytes_max"] is None
-    assert thresholds["technical_output_tokens_max"] is None
-    mechanism = thresholds["technical_output_envelope_mechanism"]
-    assert mechanism["status"] == (
-        "OWNER_APPROVED_RULES_OFFLINE_DERIVATOR_QUALIFICATION_ONLY"
+    assert thresholds["technical_output_bytes_max"] == 6268
+    assert thresholds["technical_output_tokens_max"] == 6268
+    assert thresholds["technical_output_bytes_classification"] == "EXACT_CANONICAL_MAXIMUM"
+    assert thresholds["technical_output_tokens_classification"] == (
+        "CONSERVATIVE_BYTE_TIGHT_TOKEN_CEILING"
     )
+    mechanism = thresholds["technical_output_envelope_mechanism"]
+    assert mechanism["status"] == "OWNER_APPROVED_PRODUCTION_VALUES_OFFLINE_QUALIFIED"
     assert mechanism["sha256"] == hashlib.sha256(TECHNICAL_MECHANISM.read_bytes()).hexdigest()
     assert mechanism["qualification_sha256"] == hashlib.sha256(
         TECHNICAL_QUALIFICATION.read_bytes()

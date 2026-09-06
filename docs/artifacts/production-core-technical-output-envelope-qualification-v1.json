@@ -1,12 +1,12 @@
 {
   "schema": "pastila-production-core-technical-output-envelope-qualification",
   "schema_version": 1,
-  "verdict": "PASS_SYNTHETIC_OFFLINE_NO_PRODUCTION_VALUES",
+  "verdict": "PASS_OFFLINE_PRODUCTION_TECHNICAL_OUTPUT_ENVELOPE",
   "identities": {
-    "mechanism_sha256": "18ae65cf9aa96481468025d4be13a3fe7c05e99572deeb949f2a6470b1d9f48a",
-    "implementation_sha256": "1538163d740ad0dba04034d9dd8bbecbe7f0f2615aedbb94d86d0b3f1e55576f",
-    "implementation_test_sha256": "79ccc3e1bf6ce0e3366c90a9bec5698b48a400a5f92fba5466e82458c7598e84",
-    "qualification_test_sha256": "6e54536c56f268127bee0361e1557fa9384a99a2539a990fb9eba8e9eb59eb7f"
+    "mechanism_sha256": "c3f659ba80ebe49adcd4eb2f42f81f277d0fa1d029283086fe0385122db56bcb",
+    "implementation_sha256": "e3ac013360a239713c0da02b59359c6cfc87579e93a6721892af0bb96184bf01",
+    "implementation_test_sha256": "956ee02cfe287e77830c26d87427731f1a2945f590f9eff0efddd4048046a6b0",
+    "qualification_test_sha256": "f843d19e0b22766640abb9e975a9517e491cee9fe61fed0728c422feb284f901"
   },
   "synthetic_reproduction": {
     "space_identity": "synthetic-space-v1",
@@ -37,12 +37,40 @@
     "synthetic_exact_byte_and_token_witness_reproducibility": "PASS_TWO_DETERMINISTIC_INVOCATIONS_SAME_RUNTIME",
     "zero_margin_rule_preserved": true
   },
-  "production_values_emitted": false,
+  "production_qualification": {
+    "owner_authority": "6268_BYTES_EXACT_CANONICAL_MAXIMUM_AND_6268_TOKENS_CONSERVATIVE_BYTE_TIGHT",
+    "byte_witness_sha256": "3be0ab93fd2bbf415be2ae5a5344a7017b723294383dea97c3a40607267fe820",
+    "witness_bytes": 6268,
+    "witness_tokens": 4390,
+    "structural_branch_byte_maxima": {
+      "FACTUAL_ANSWER": 6268,
+      "COMMENTARY_ANSWER": 4414,
+      "FACTUAL_ABSTAIN": 442,
+      "COMMENTARY_ABSTAIN": 445
+    },
+    "tokenizer_byte_tight_definition_proven": true,
+    "clean_materialization_ids": ["A", "B"],
+    "clean_materialization_receipt_sha256": [
+      "42ed4d38aade1185a8cd7d125aa14290cd9921a6b8498b3fd7d8ae880fc59a63",
+      "42ed4d38aade1185a8cd7d125aa14290cd9921a6b8498b3fd7d8ae880fc59a63"
+    ],
+    "technical_byte_ceiling": 6268,
+    "technical_byte_ceiling_classification": "EXACT_CANONICAL_MAXIMUM",
+    "technical_token_ceiling": 6268,
+    "technical_token_ceiling_classification": "CONSERVATIVE_BYTE_TIGHT_TOKEN_CEILING",
+    "token_ceiling_is_exact_tokenizer_maximum": false,
+    "formal_bpe_maximizer_authorized": false,
+    "overflow_behavior": "FAIL_CLOSED",
+    "truncation": "PROHIBITED",
+    "retry_or_redraw": "PROHIBITED",
+    "semantic_quality_effect": "NONE"
+  },
+  "production_values_emitted": {"bytes": 6268, "tokens": 6268},
   "candidate_model_executed": false,
   "candidate_results_inspected": false,
   "network_activity": false,
   "inference_wall_time_or_rss_calibration": false,
-  "production_tokenizer_materialized_or_inspected": false,
-  "production_derivation_authorized": false,
-  "remaining_boundary": "SEPARATE_OWNER_AUTHORIZATION_REQUIRED_FOR_CONTENT_ADDRESSED_TOKENIZER_MATERIALIZATION_AND_PRODUCTION_VALUE_DERIVATION"
+  "production_tokenizer_materialized_or_inspected": true,
+  "production_derivation_authorized": true,
+  "remaining_boundary": "CANDIDATE_EXECUTION_AND_INFERENCE_WALL_TIME_OR_RSS_REMAIN_UNAUTHORIZED"
 }

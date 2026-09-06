@@ -7,7 +7,11 @@ import pytest
 from pastila_scout.production_core_technical_output_envelope_v1 import (
     BRANCHES,
     canonical_response_bytes,
+    derive_approved_production_envelope,
     derive_synthetic_envelope,
+    enforce_technical_output_envelope,
+    maximal_structural_response,
+    structural_branch_byte_maxima,
     qualified_finite_space,
 )
 
@@ -15,7 +19,8 @@ from pastila_scout.production_core_technical_output_envelope_v1 import (
 class CharacterTokenizer:
     identity = "sha256:" + "1" * 64
 
-    def encode(self, text: str) -> tuple[int, ...]:
+    def encode(self, text: str, *, add_special_tokens: bool) -> tuple[int, ...]:
+        assert add_special_tokens is False
         return tuple(ord(character) for character in text)
 
 
@@ -204,3 +209,42 @@ def test_qualification_receipts_and_witnesses_recompute_exactly() -> None:
         "token_witness_sha256",
     ):
         assert all(item[field] == reproduction[field] for item in actual)
+
+
+def test_approved_byte_tight_envelope_has_exact_attaining_witness() -> None:
+    witness = canonical_response_bytes(maximal_structural_response())
+    assert len(witness) == 6268
+    assert __import__("hashlib").sha256(witness).hexdigest() == (
+        "3be0ab93fd2bbf415be2ae5a5344a7017b723294383dea97c3a40607267fe820"
+    )
+    receipt = derive_approved_production_envelope(tokenizer_byte_tight_proven=True)
+    assert receipt["technical_byte_ceiling"] == 6268
+    assert receipt["technical_token_ceiling"] == 6268
+    assert receipt["technical_byte_ceiling_classification"] == "EXACT_CANONICAL_MAXIMUM"
+    assert receipt["technical_token_ceiling_classification"] == (
+        "CONSERVATIVE_BYTE_TIGHT_TOKEN_CEILING"
+    )
+    assert receipt["tokenizer_exact_maximum_claimed"] is False
+    assert receipt["formal_bpe_maximizer_authorized"] is False
+    assert receipt["structural_branch_byte_maxima"] == {
+        "FACTUAL_ANSWER": 6268,
+        "COMMENTARY_ANSWER": 4414,
+        "FACTUAL_ABSTAIN": 442,
+        "COMMENTARY_ABSTAIN": 445,
+    }
+    assert structural_branch_byte_maxima() == receipt["structural_branch_byte_maxima"]
+
+
+def test_production_envelope_proof_and_runtime_gates_fail_closed() -> None:
+    with pytest.raises(ValueError, match="tokens<=bytes closure"):
+        derive_approved_production_envelope(tokenizer_byte_tight_proven=False)
+    response = maximal_structural_response()
+    assert len(enforce_technical_output_envelope(response, CharacterTokenizer())) == 6268
+
+    class InflatingTokenizer(CharacterTokenizer):
+        def encode(self, text: str, *, add_special_tokens: bool) -> tuple[int, ...]:
+            assert add_special_tokens is False
+            return tuple(range(6269))
+
+    with pytest.raises(ValueError, match="token ceiling"):
+        enforce_technical_output_envelope(response, InflatingTokenizer())
