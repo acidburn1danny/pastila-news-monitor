@@ -1,0 +1,153 @@
+{
+  "schema": "pastila-production-core-content-addressed-runtime-calibration",
+  "schema_version": 1,
+  "status": "CANDIDATE_FREE_RUNTIME_MATERIALIZED_LIMIT_PROPOSALS_PENDING_OWNER_APPROVAL",
+  "frozen_authority": {
+    "commit": "d5885027194ade26a8dec3ac13ccecd3ae6f6b9d",
+    "tree": "f8d14d3d99570a24b379d01e8789158bde786a6d",
+    "execution_profile_proposal_sha256": "92bafd61be5f43fea48bf1e88b35eb694ab26d8a09b420243770ea37d46e8274",
+    "current_head_required_to_equal_freeze": false,
+    "authority_rule": "THE_EXACT_COMMIT_TREE_AND_PROFILE_OBJECT_MUST_EXIST_AND_MATCH; A_LATER_EVIDENCE_COMMIT_MAY_BE_HEAD"
+  },
+  "runtime_object": {
+    "kind": "CANONICAL_TAR_ROOTFS",
+    "logical_object_name": "sha256/274e7d1519f05f41108413efb01d35680b88e0f4b13bb63fca9634be155980f4.tar",
+    "sha256": "274e7d1519f05f41108413efb01d35680b88e0f4b13bb63fca9634be155980f4",
+    "size_bytes": 11113052160,
+    "canonicalization": "GNU_TAR_SORT_NAME_MTIME_EPOCH_OWNER_GROUP_ZERO_NUMERIC_OWNER",
+    "closure_manifest": "THE_CANONICAL_TAR_STREAM_BINDS_EVERY_ORDERED_PATH_TYPE_MODE_SYMLINK_TARGET_AND_REGULAR_FILE_BYTE",
+    "ordered_dependency_manifest_sha256": "274e7d1519f05f41108413efb01d35680b88e0f4b13bb63fca9634be155980f4",
+    "candidate_bytes_included": false,
+    "candidate_results_included_or_inspected": false
+  },
+  "components": {
+    "python_executable_sha256": "1643dacd9feaedc58f3cc581e4d22577dfe25c09b10282936186ccf0f2e61118",
+    "elf_loader_sha256": "cd4df4f3c7b83673d61189bf2eaebd33ca4f2853ab9772b8a25e025ef99b1e81",
+    "calibration_harness_sha256": "8cd81b408e25d2d66412436d22e1659a880a5f47f343f67bd4bf718d9c69929b",
+    "runtime_probe_sha256": "05ed9158d8c1a8a392cb5c3c6b3bcfad5b466ee9270198bcc5242e14f444c807",
+    "materializer_sha256": "81e79e3b4d8e576502a5261f147261c0425e7fd5f2c7b1e92fda3fd3ff6b18e1",
+    "offline_launcher_sha256": "1df1460699cfb5cee46179affd7d2565773fea21f4f8b9500156558088ebcef8"
+  },
+  "provenance_scope": {
+    "rootfs_byte_identity_authority": "CONTENT_ADDRESSED_CANONICAL_TAR",
+    "bootstrap_source": "OWNER_AUTHORIZED_LOCAL_OFFLINE_OBSERVATION",
+    "bootstrap_source_is_future_resolution_authority": false,
+    "future_materialization_source": "VERIFIED_ROOTFS_OBJECT_DESCRIPTOR_ONLY",
+    "upstream_package_origin_claimed": false,
+    "reason": "Qualification binds the complete observed runtime bytes; it does not claim unproven upstream package provenance."
+  },
+  "runtime_packages": {
+    "accelerate": "1.14.0",
+    "bitsandbytes": "0.50.1",
+    "safetensors": "0.8.0",
+    "tokenizers": "0.22.2",
+    "torch": "2.13.0+cu130",
+    "torch_cuda": "13.0",
+    "transformers": "5.15.0"
+  },
+  "accelerator_probe": {
+    "nvidia_smi_compute_capability": "12.0",
+    "nvidia_smi_memory_total_mib": 16303,
+    "torch_compute_capability": [12, 0],
+    "torch_usable_memory_bytes": 17094475776,
+    "torch_bf16_supported": true,
+    "torch_deterministic_algorithms_enabled": true,
+    "cuda_device_count": 1
+  },
+  "execution_boundary": {
+    "network": "NEW_CHILD_NAMESPACE_WITH_NO_EXTERNAL_INTERFACE",
+    "parent_network_namespace": "net:[4026531833]",
+    "observed_child_network_namespaces": ["net:[4026532228]", "net:[4026532293]"],
+    "rootfs": "READ_ONLY_BIND_REMOUNT",
+    "temporary_storage": "EPHEMERAL_TMPFS_64_MIB",
+    "host_environment_inherited": false,
+    "allowed_manifest_bound_environment": {
+      "CUBLAS_WORKSPACE_CONFIG": ":4096:8",
+      "CUDA_VISIBLE_DEVICES": "0",
+      "PYTHONHASHSEED": "0",
+      "TOKENIZERS_PARALLELISM": "false"
+    }
+  },
+  "clean_materializations": [
+    {
+      "logical_id": "A",
+      "receipt_sha256": "549fa12c75a9673f75ddc7711ae799680dc2c8a1f7bc85f3cfc99816004b22a4",
+      "rootfs_sha256_before_execution": "274e7d1519f05f41108413efb01d35680b88e0f4b13bb63fca9634be155980f4",
+      "rootfs_sha256_after_execution": "274e7d1519f05f41108413efb01d35680b88e0f4b13bb63fca9634be155980f4",
+      "cancellation_ns_max": 1255679,
+      "wall_time_ns_p99": 9089319,
+      "peak_rss_bytes_max": 23261184,
+      "structural_output_bytes": 58547,
+      "deterministic_result_identity": "c5b02ae60483e0702b13c5b830495598a934e2aafeedcd1fdef512c399d51dfb",
+      "runtime_probe": {
+        "network_namespace": "net:[4026532228]",
+        "compute_capability": [12, 0],
+        "bf16_supported": true,
+        "deterministic_algorithms_enabled": true,
+        "cuda_device_count": 1,
+        "candidate_model_loaded": false,
+        "candidate_result_inspected": false,
+        "packages": {
+          "accelerate": "1.14.0",
+          "bitsandbytes": "0.50.1",
+          "safetensors": "0.8.0",
+          "tokenizers": "0.22.2",
+          "torch": "2.13.0+cu130",
+          "torch_cuda": "13.0",
+          "transformers": "5.15.0"
+        }
+      }
+    },
+    {
+      "logical_id": "B",
+      "receipt_sha256": "b9ee18869ad53b609c80982f26136e40ffef6d85d3465b684ce259aec8b0dd45",
+      "rootfs_sha256_before_execution": "274e7d1519f05f41108413efb01d35680b88e0f4b13bb63fca9634be155980f4",
+      "rootfs_sha256_after_execution": "274e7d1519f05f41108413efb01d35680b88e0f4b13bb63fca9634be155980f4",
+      "cancellation_ns_max": 1156383,
+      "wall_time_ns_p99": 8676711,
+      "peak_rss_bytes_max": 23269376,
+      "structural_output_bytes": 58547,
+      "deterministic_result_identity": "c5b02ae60483e0702b13c5b830495598a934e2aafeedcd1fdef512c399d51dfb",
+      "runtime_probe": {
+        "network_namespace": "net:[4026532293]",
+        "compute_capability": [12, 0],
+        "bf16_supported": true,
+        "deterministic_algorithms_enabled": true,
+        "cuda_device_count": 1,
+        "candidate_model_loaded": false,
+        "candidate_result_inspected": false,
+        "packages": {
+          "accelerate": "1.14.0",
+          "bitsandbytes": "0.50.1",
+          "safetensors": "0.8.0",
+          "tokenizers": "0.22.2",
+          "torch": "2.13.0+cu130",
+          "torch_cuda": "13.0",
+          "transformers": "5.15.0"
+        }
+      }
+    }
+  ],
+  "candidate_free_limit_proposals": {
+    "authority_status": "PENDING_OWNER_APPROVAL",
+    "scope": "SUPERVISOR_AND_STRUCTURAL_RUNTIME_OVERHEAD_ONLY_NOT_MODEL_INFERENCE",
+    "cancellation_deadline_ns": 500000000,
+    "structural_wall_time_ns": 1000000000,
+    "structural_peak_rss_bytes": 67108864,
+    "technical_output_bytes": null,
+    "technical_output_tokens": null
+  },
+  "unresolved_limits": [
+    {
+      "code": "INFERENCE_RESOURCE_CEILINGS_REQUIRE_NON_SEMANTIC_CANDIDATE_EXECUTION",
+      "reason": "Model inference wall time and peak RSS cannot be measured by a candidate-free structural runtime probe."
+    },
+    {
+      "code": "TECHNICAL_OUTPUT_ENVELOPE_REQUIRES_FROZEN_TOKENIZER_AND_BOUNDED_IDENTIFIERS",
+      "reason": "No production tokenizer is designated and source_span_id byte length is not owner-bounded."
+    }
+  ],
+  "network_activity": false,
+  "candidate_evaluation_started": false,
+  "candidate_promotion_effect": false
+}
