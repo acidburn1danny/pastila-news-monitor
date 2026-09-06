@@ -1,0 +1,84 @@
+{
+  "schema": "pastila-production-core-candidate-tokenizer-materialization",
+  "schema_version": 1,
+  "status": "PASS_MATERIALIZED_OWNER_DESIGNATED_FIXED_REGEX",
+  "authority_commit": "01a677a8bb4fe9691d085e2ab25ecb08a0c257f4",
+  "candidate_mapping": {
+    "pastila-editor-core-v1.1-experimental": "sha256:2a00451398b3bb51d3c0fa3f4758c77061377ada35abbb7f5e1006be3aaced5c",
+    "pastila-editor-core-v1.2-experimental": "sha256:2a00451398b3bb51d3c0fa3f4758c77061377ada35abbb7f5e1006be3aaced5c"
+  },
+  "bootstrap_source": {
+    "kind": "OWNER_AUTHORIZED_LOCAL_OFFLINE_OBSERVATION",
+    "snapshot": "3cea74c1ebaf5ce5f5a2553de470e2ceab825142",
+    "future_resolution_authority": false,
+    "source_symlinks_dereferenced": true
+  },
+  "tokenizer_object": {
+    "kind": "CANONICAL_TAR",
+    "sha256": "2a00451398b3bb51d3c0fa3f4758c77061377ada35abbb7f5e1006be3aaced5c",
+    "size_bytes": 17295360,
+    "logical_name": "sha256/2a00451398b3bb51d3c0fa3f4758c77061377ada35abbb7f5e1006be3aaced5c.tar",
+    "canonicalization": "GNU_TAR_SORT_NAME_MTIME_EPOCH_OWNER_GROUP_ZERO_NUMERIC_OWNER_DEREFERENCE",
+    "ordered_files": {
+      "chat_template.jinja": "2f545122222db8bb43ca0ea0c49e9185320a8670f7d35575b0da0eb48b1e8970",
+      "config.json": "b1897778395bb1795489a048ebde2e6d216eee21014ce9c18193d15f097454a6",
+      "tokenizer.json": "d5f6046775b112f0e2d456ee9dba450684ab964fe5c4e231599bdc6773028135",
+      "tokenizer_config.json": "f59f7294e4f26383d0ea93840fe21cf197784be0842a8301a0343e8c34ed0d6d"
+    },
+    "model_weights_included": false,
+    "adapter_bytes_included": false,
+    "candidate_results_included_or_inspected": false
+  },
+  "runtime": {
+    "rootfs_sha256": "274e7d1519f05f41108413efb01d35680b88e0f4b13bb63fca9634be155980f4",
+    "probe_sha256": "1ef4fd391872b14714e5b6fd3b9fcdc887b447822f57e30dd82e36c86326bb95",
+    "launcher_sha256": "dce2f462a598c8b458a238a4caca98bd9121f435179e3e20046a254abdbb336f",
+    "network": "DENY_ALL_NEW_NAMESPACE",
+    "rootfs_and_tokenizer_mounts": "READ_ONLY",
+    "host_loader_library_or_configuration_inherited": false
+  },
+  "materializations": [
+    {
+      "logical_id": "A",
+      "reconstructed_object_sha256": "2a00451398b3bb51d3c0fa3f4758c77061377ada35abbb7f5e1006be3aaced5c",
+      "frozen_default_observation_sha256": "dcefecf131f0e0a60281ce6456f8d3d9a397c5b63280a35f7105cd0fbff4d4ec",
+      "fixed_observation_sha256": "198e87a690244089a7d1cb7e5b28359ce48004965c34f1c3d513e1785f52c46d"
+    },
+    {
+      "logical_id": "B",
+      "reconstructed_object_sha256": "2a00451398b3bb51d3c0fa3f4758c77061377ada35abbb7f5e1006be3aaced5c",
+      "frozen_default_observation_sha256": "dcefecf131f0e0a60281ce6456f8d3d9a397c5b63280a35f7105cd0fbff4d4ec",
+      "fixed_observation_sha256": "198e87a690244089a7d1cb7e5b28359ce48004965c34f1c3d513e1785f52c46d"
+    }
+  ],
+  "observation": {
+    "tokenizer_class": "TokenizersBackend",
+    "vocabulary_size": 131072,
+    "comparison_corpus_sha256": "42d071e047bc7ea3a9cc2d1b7c2c22f74d8db4355a976c51cb727ee3dd0ecd78",
+    "comparison_case_count": 40,
+    "differing_case_count": 0,
+    "model_loaded": false,
+    "inference_executed": false,
+    "candidate_result_inspected": false
+  },
+  "qualification_execution_profile_v1_tokenizer_semantics": {
+    "authority_status": "OWNER_APPROVED",
+    "load_argument": "fix_mistral_regex=True",
+    "missing_or_false_argument": "FAIL_CLOSED",
+    "incorrect_regex_warning_or_any_stderr": "FAIL_CLOSED",
+    "profile_specific_only": true,
+    "defines_global_core_v2_tokenizer_policy": false,
+    "promotes_candidate": false,
+    "claims_universal_equivalence_with_frozen_default": false
+  },
+  "remaining_blockers": [
+    {
+      "code": "COMPLETE_TOKEN_UPPER_BOUND_PROOF_NOT_YET_IMPLEMENTED",
+      "evidence": "Materialization proves tokenizer byte/runtime closure, not a smallest conservative upper bound over the complete valid response space."
+    }
+  ],
+  "technical_byte_ceiling_emitted": false,
+  "technical_token_ceiling_emitted": false,
+  "candidate_evaluation_or_promotion_effect": false,
+  "network_activity": false
+}

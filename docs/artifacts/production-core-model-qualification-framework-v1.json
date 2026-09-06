@@ -65,6 +65,16 @@
     },
     "technical_output_bytes_max": null,
     "technical_output_tokens_max": null,
+    "qualification_execution_profile_v1_tokenizer_semantics": {
+      "authority_status": "OWNER_APPROVED",
+      "load_argument": "fix_mistral_regex=True",
+      "missing_or_false_argument": "FAIL_CLOSED",
+      "incorrect_regex_warning": "FAIL_CLOSED",
+      "profile_specific_only": true,
+      "defines_global_core_v2_tokenizer_policy": false,
+      "promotes_candidate": false,
+      "claims_universal_equivalence_with_frozen_default": false
+    },
     "technical_output_envelope_mechanism": {
       "status": "OWNER_APPROVED_RULES_OFFLINE_DERIVATOR_QUALIFICATION_ONLY",
       "sha256": "18ae65cf9aa96481468025d4be13a3fe7c05e99572deeb949f2a6470b1d9f48a",
@@ -103,6 +113,7 @@
     ,"commentary semantic output contract"
     ,"structured qualification response exact nine-field contract with evaluator-only verdict authority"
     ,"Qualification Execution Profile v1 structural supervisor envelopes: 500 ms cancellation, 1 s structural wall time, and 64 MiB structural peak RSS; not inference limits or global Core V2 policy"
+    ,"Qualification Execution Profile v1 tokenizer loads with fix_mistral_regex=True and fails closed when absent or warned; profile-specific only"
   ],
   "pending_owner_acceptance": [
     "materialized execution-profile runtime identities",

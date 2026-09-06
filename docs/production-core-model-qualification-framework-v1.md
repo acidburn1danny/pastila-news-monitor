@@ -144,6 +144,12 @@ Technical token/byte and model-inference wall-time/RSS limits remain separate
 and pending owner approval. The approved structural supervisor envelopes do not
 resolve or imply them.
 
+For Qualification Execution Profile v1 only, the owner designates the frozen
+tokenizer loaded explicitly with `fix_mistral_regex=True`. A missing or false
+flag, or the incorrect-regex warning during qualification loading, fails closed.
+This designation does not define global Core V2 tokenizer policy, promote any
+candidate, or claim universal equivalence with frozen-default semantics.
+
 ### Candidate-neutral technical-output envelope mechanism
 
 Technical byte and token envelopes are derived only from a complete valid
