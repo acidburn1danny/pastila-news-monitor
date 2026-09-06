@@ -91,3 +91,9 @@ def test_qualification_evidence_binds_rules_implementation_and_tests() -> None:
     assert value["candidate_results_inspected"] is False
     assert value["network_activity"] is False
     assert value["inference_wall_time_or_rss_calibration"] is False
+    reproduction = value["synthetic_reproduction"]
+    assert reproduction["clean_run_receipt_sha256"] == [
+        reproduction["expected_receipt_sha256"],
+        reproduction["expected_receipt_sha256"],
+    ]
+    assert reproduction["production_value_authority"] is False

@@ -175,8 +175,11 @@ def derive_synthetic_envelope(
     if not tokenizer.identity or not tokenizer_closure_validator(tokenizer):
         raise ValueError("tokenizer closure is not qualified offline")
     observations: list[tuple[int, int, str, bytes]] = []
+    space_hasher = hashlib.sha256()
     for response in space.responses:
         encoded = canonical_response_bytes(response)
+        space_hasher.update(len(encoded).to_bytes(8, byteorder="big"))
+        space_hasher.update(encoded)
         token_count = len(tuple(tokenizer.encode(encoded.decode("utf-8", errors="strict"))))
         if token_count < 0:
             raise ValueError("invalid tokenizer result")
@@ -190,6 +193,7 @@ def derive_synthetic_envelope(
         "schema_version": 1,
         "status": "PASS_SYNTHETIC_MECHANISM_ONLY_NO_PRODUCTION_AUTHORITY",
         "space_identity": space.identity,
+        "response_space_sha256": space_hasher.hexdigest(),
         "tokenizer_identity": tokenizer.identity,
         "response_count": len(space.responses),
         "byte_maximum": byte_witness[0],

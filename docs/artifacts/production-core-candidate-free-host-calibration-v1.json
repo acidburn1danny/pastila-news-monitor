@@ -4,7 +4,7 @@
   "authority_status": "NON_AUTHORITATIVE_HOST_SUPERVISOR_PROBE",
   "candidate_model_loaded": false,
   "candidate_result_inspected": false,
-  "framework_sha256": "ef7de8859f4e421f1e45fe396935d7a92aa9a0997f29785d2a489b803fbb510f",
+  "framework_sha256": "bb0b3a9d2f8f6b2a3db45b08d9a9d9ddcf2c4fbe88ff597ff41cd679988a0051",
   "execution_profile_draft_sha256": "9e49906872d4b30a97f95f2c96485197f43e72df1940142f1b1730176733002d",
   "calibration_harness_sha256": "8cd81b408e25d2d66412436d22e1659a880a5f47f343f67bd4bf718d9c69929b",
   "platform": {

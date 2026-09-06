@@ -10,6 +10,9 @@ PROFILE = ROOT / "docs/artifacts/production-core-execution-profile-proposal-v1.j
 TECHNICAL_MECHANISM = (
     ROOT / "docs/artifacts/production-core-technical-output-envelope-mechanism-v1.json"
 )
+TECHNICAL_QUALIFICATION = (
+    ROOT / "docs/artifacts/production-core-technical-output-envelope-qualification-v1.json"
+)
 
 
 def test_framework_freezes_candidate_neutral_thresholds_without_results() -> None:
@@ -40,6 +43,9 @@ def test_framework_freezes_candidate_neutral_thresholds_without_results() -> Non
         "OWNER_APPROVED_RULES_OFFLINE_DERIVATOR_QUALIFICATION_ONLY"
     )
     assert mechanism["sha256"] == hashlib.sha256(TECHNICAL_MECHANISM.read_bytes()).hexdigest()
+    assert mechanism["qualification_sha256"] == hashlib.sha256(
+        TECHNICAL_QUALIFICATION.read_bytes()
+    ).hexdigest()
     assert mechanism["candidate_execution_authorized"] is False
     assert mechanism["candidate_results_inspected"] is False
     assert mechanism["defines_inference_wall_time_or_rss"] is False

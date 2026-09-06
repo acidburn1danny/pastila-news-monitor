@@ -125,6 +125,7 @@ def test_synthetic_derivation_is_reproducible_and_never_production_authority() -
     assert first["candidate_result_inspected"] is False
     assert first["byte_maximum"] > 0
     assert first["token_exact_maximum"] > 0
+    assert len(first["response_space_sha256"]) == 64
 
 
 def test_incomplete_space_or_unqualified_tokenizer_fails_closed() -> None:
@@ -148,3 +149,23 @@ def test_declared_branch_coverage_cannot_replace_actual_response_coverage() -> N
         qualified_finite_space(
             repeated, identity="false-coverage", covered_branches=BRANCHES
         )
+
+
+def test_same_logical_space_identity_cannot_hide_response_substitution() -> None:
+    original = _space()
+    changed_responses = list(original.responses)
+    changed_responses[1] = _response("COMMENTARY", "ANSWER", "Alt text complet.")
+    substituted = qualified_finite_space(
+        changed_responses, identity=original.identity, covered_branches=BRANCHES
+    )
+    first = derive_synthetic_envelope(
+        original, CharacterTokenizer(), tokenizer_closure_validator=lambda tokenizer: True
+    )
+    second = derive_synthetic_envelope(
+        substituted,
+        CharacterTokenizer(),
+        tokenizer_closure_validator=lambda tokenizer: True,
+    )
+    assert first["space_identity"] == second["space_identity"]
+    assert first["response_space_sha256"] != second["response_space_sha256"]
+    assert first["receipt_sha256"] != second["receipt_sha256"]
