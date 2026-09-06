@@ -179,15 +179,29 @@ def test_executables_reject_symlink_and_substituted_rootfs() -> None:
     substituted = f"{RUNTIME_ROOT}/materialized-audit-substituted-{suffix}"
     materializer = _wsl_path(ROOT / "scripts/materialize_production_core_runtime_v1.sh")
     launcher = _wsl_path(ROOT / "scripts/run_production_core_offline_calibration_v1.sh")
+    link_created = False
+    directory_created = False
     try:
         created_link = _wsl("ln", "-s", "/tmp/nonexistent-runtime", symlink)
+        link_created = created_link.returncode == 0
         assert created_link.returncode == 0, created_link.stderr
         rejected_link = _wsl("bash", materializer, symlink)
         assert rejected_link.returncode == 3, rejected_link.stderr
         created_directory = _wsl("mkdir", substituted)
+        directory_created = created_directory.returncode == 0
         assert created_directory.returncode == 0, created_directory.stderr
         rejected_substitution = _wsl("bash", launcher, substituted, "probe")
         assert rejected_substitution.returncode == 4, rejected_substitution.stderr
     finally:
-        _wsl("unlink", symlink)
-        _wsl("rmdir", substituted)
+        cleanup_failures: list[tuple[str, subprocess.CompletedProcess[str]]] = []
+        if link_created:
+            removed_link = _wsl("unlink", symlink)
+            if removed_link.returncode != 0:
+                cleanup_failures.append((symlink, removed_link))
+        if directory_created:
+            removed_directory = _wsl("rmdir", substituted)
+            if removed_directory.returncode != 0:
+                cleanup_failures.append((substituted, removed_directory))
+        assert not cleanup_failures, [
+            (path, result.returncode, result.stderr) for path, result in cleanup_failures
+        ]
