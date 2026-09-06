@@ -1,0 +1,60 @@
+{
+  "schema": "pastila-production-core-execution-profile",
+  "schema_version": 1,
+  "status": "INCOMPLETE_OWNER_AUTHORITY_REQUIRED",
+  "application_host": {
+    "os": "Windows",
+    "architecture": "AMD64",
+    "python_abi": "CPython 3.14"
+  },
+  "inference_boundary": {
+    "supported_platform": null,
+    "hardware_class": null,
+    "accelerator_class": null,
+    "runtime_manifest_sha256": null,
+    "loader_sha256": null,
+    "precision_mode": null,
+    "thread_count": null,
+    "thread_scheduling_policy": null
+  },
+  "candidate_bound_components": {
+    "model_sha256_required": true,
+    "tokenizer_sha256_required": true,
+    "adapter_sha256_required": true,
+    "logical_content_addressed_resolution_only": true,
+    "absolute_paths_forbidden": true
+  },
+  "decoding": {
+    "temperature": 0,
+    "top_p": 1,
+    "seed_behavior": "EXACT_SEED_OR_DECLARED_DETERMINISTIC_UNSEEDED_RUNTIME",
+    "context_tokens": 8192,
+    "max_output_tokens": null,
+    "stop_sequences": []
+  },
+  "environment": {
+    "network_policy": "DENY_ALL",
+    "allowed_environment_names": [
+      "CUBLAS_WORKSPACE_CONFIG",
+      "CUDA_VISIBLE_DEVICES",
+      "PYTHONHASHSEED",
+      "TOKENIZERS_PARALLELISM"
+    ],
+    "allowed_environment_values_must_be_manifest_bound": true,
+    "undeclared_file_reads_allowed": false,
+    "automatic_download_allowed": false,
+    "provider_fallback_allowed": false
+  },
+  "measurement": {
+    "clock": "monotonic_ns",
+    "rss_metric": "fresh-child peak working set",
+    "cancellation_trials": 20,
+    "structural_trials": 20,
+    "cancellation_margin": "max(500ms,ceil_50ms(3*max_observed))",
+    "wall_time_margin": "max(1s,ceil_100ms(2*p99_observed))",
+    "peak_rss_margin": "ceil_64MiB(1.5*max_observed)",
+    "technical_output_margin": "pending tokenizer-bound structural workload; not a semantic quality rule",
+    "semantic_output_ceiling": "owner-approved and separately content-bound",
+    "technical_output_ceiling": "pending owner approval"
+  }
+}

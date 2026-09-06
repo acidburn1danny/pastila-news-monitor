@@ -1,0 +1,69 @@
+{
+  "schema": "pastila-core-v2-semantic-output-contract",
+  "schema_version": 1,
+  "authority": "OWNER_APPROVED",
+  "measurement": {
+    "unit": "Unicode characters",
+    "stage": "canonical Unicode text after structural validation"
+  },
+  "global_rules": {
+    "contractual_completion_is_terminal": true,
+    "trailing_output_after_completion": "FAIL",
+    "semantic_ceiling_overflow": "FAIL",
+    "truncation": "PROHIBITED",
+    "silent_continuation": "PROHIBITED",
+    "runtime_or_token_budget_may_redefine_semantic_limit": false,
+    "candidate_evaluation_uses_pre_execution_frozen_contract": true
+  },
+  "factual_output": {
+    "status": "OWNER_APPROVED",
+    "natural_structure": {
+      "propositions": {"minimum": 2, "maximum": 3},
+      "sentences": {"minimum": 1, "maximum": 2},
+      "selection_rule": "depending on the natural structure of the text"
+    },
+    "primary_contract": "sentence or proposition structure",
+    "secondary_hard_maximum_unicode_characters": 650,
+    "format": {
+      "text_blocks": 1,
+      "bullets_allowed": false,
+      "headings_allowed": false,
+      "trailing_continuation_allowed": false
+    },
+    "overflow": "FAIL",
+    "truncate": false,
+    "continue_in_another_field_or_block": false
+  },
+  "commentary_output": {
+    "status": "OWNER_APPROVED",
+    "maximum_sentences": 3,
+    "complete_structure_may_include": [
+      "setup or observation",
+      "development",
+      "punchline"
+    ],
+    "complete_punchline_or_normal_construction_must_remain_possible": true,
+    "hard_maximum_unicode_characters": 1000,
+    "format": {
+      "text_blocks": 1,
+      "trailing_continuation_allowed": false
+    },
+    "overflow": "FAIL",
+    "truncate": false,
+    "continue_in_another_field_or_block": false
+  },
+  "structured_qualification_response": {
+    "status": "OWNER_APPROVED",
+    "contract_sha256": "b6143dbc1ab04ded733e64cbd989c0a9a803fa5367dbda9f8ae4e9bcff71272d",
+    "candidate_verdict_authority": false,
+    "evaluator_only_verdict_authority": true
+  },
+  "technical_runtime_decisions": {
+    "status": "PENDING_OWNER_APPROVAL",
+    "max_output_tokens": null,
+    "technical_output_byte_ceiling": null,
+    "inference_cancellation_deadline": null,
+    "inference_wall_time_ceiling": null,
+    "inference_peak_rss_ceiling": null
+  }
+}

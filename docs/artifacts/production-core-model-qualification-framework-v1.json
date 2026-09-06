@@ -1,0 +1,96 @@
+{
+  "schema": "pastila-production-core-model-qualification-framework",
+  "schema_version": 1,
+  "status": "PARTIALLY_OWNER_ACCEPTED_EXECUTION_PROFILE_PENDING",
+  "candidate_results_inspected": false,
+  "candidates": [
+    "pastila-editor-core-v1.1-experimental",
+    "pastila-editor-core-v1.2-experimental"
+  ],
+  "production_authority": "NO_PRODUCTION_CORE_DESIGNATED",
+  "terminal_results": ["PASS", "FAIL", "NO_CANDIDATE_QUALIFIED"],
+  "promotion_requires_separate_owner_designation": true,
+  "corpus": {
+    "exact_unique_case_ids": 200,
+    "primary_partitions": {
+      "factual_authority_unsupported_claims": 40,
+      "qualification_uncertainty_retention": 30,
+      "summarization_compression_meaning_preservation": 30,
+      "conflicting_insufficient_authority_fail_closed": 25,
+      "instruction_hierarchy_override_attempts": 20,
+      "completion_eos_runaway": 20,
+      "romanian_editorial_representative": 20,
+      "malformed_boundary_adversarial": 15
+    },
+    "minimum_true_holdout": 50,
+    "primary_partitions_are_exclusive": true,
+    "secondary_labels_may_overlap": true,
+    "holdout_excluded_from_training_tuning_prompt_and_threshold_selection": true,
+    "clean_repetitions": 3,
+    "content_addressed_before_evaluation": true
+  },
+  "thresholds": {
+    "semantic_hard_assertions_percent": 100,
+    "semantic_case_assertions_percent": 95,
+    "unsupported_or_changed_factual_atoms": 0,
+    "required_source_span_bindings_percent": 100,
+    "core_v2_contract_assertions_percent": 100,
+    "deterministic_byte_identity_percent": 100,
+    "clean_rematerialization_identity_percent": 100,
+    "failure_terminal_and_zero_mutation_percent": 100,
+    "cancellation_deadline_seconds": null,
+    "cancellation_later_provider_calls": 0,
+    "identity_and_provenance_closure_percent": 100,
+    "portable_clean_materializations": 2,
+    "wall_time_seconds_per_case_max": null,
+    "peak_rss_bytes_per_case_max": null,
+    "semantic_contract_output_ceiling": {
+      "contract_sha256": "c141a01edf647bc6937bc413e5c3454529a428fcb7cb42bccecd0c1b22ee2df0",
+      "factual": "2 to 3 propositions or 1 to 2 sentences; maximum 650 Unicode characters",
+      "commentary": "maximum 3 sentences; maximum 1000 Unicode characters",
+      "structured_qualification_response": "OWNER_APPROVED_EXACT_NINE_FIELD_CONTRACT",
+      "structured_qualification_response_contract_sha256": "b6143dbc1ab04ded733e64cbd989c0a9a803fa5367dbda9f8ae4e9bcff71272d",
+      "overflow": "FAIL",
+      "truncation": "PROHIBITED",
+      "trailing_output": "PROHIBITED"
+    },
+    "technical_output_bytes_max": null,
+    "technical_output_tokens_max": null,
+    "undeclared_network_download_file_or_provider_accesses": 0,
+    "packaging_clean_offline_materializations": 2,
+    "migration_cases_percent": 100,
+    "aggregate_compensation_allowed": false
+  },
+  "owner_accepted": [
+    "Core V2 contract 100 percent",
+    "zero unsupported or modified facts and 100 percent source bindings",
+    "failure isolation 100 percent fail closed and zero mutation",
+    "provenance identity closure 100 percent",
+    "hidden fallback zero",
+    "migration 100 percent",
+    "no aggregate compensation",
+    "semantic hard assertions 100 percent and semantic assertions at least 95 percent",
+    "determinism 3 of 3",
+    "reproducibility 2 clean materializations",
+    "runtime portability 2 clean materializations on one supported platform",
+    "packaging viability 2 clean offline materializations",
+    "corpus exact distribution and minimum 50 true holdout"
+    ,"Qualification Execution Profile v1 platform and local capability envelope are profile-scoped, not global product minimums"
+    ,"content-addressed offline rootfs and manifest-only component loading"
+    ,"NF4 storage BF16 compute and double quantization for Qualification Execution Profile v1"
+    ,"single inference process and Torch 1/1 threads"
+    ,"greedy no-sampling seed 0 with nondeterministic kernels failing closed"
+    ,"network DENY_ALL"
+    ,"context window 8192 for Qualification Execution Profile v1"
+    ,"factual semantic output contract"
+    ,"commentary semantic output contract"
+    ,"structured qualification response exact nine-field contract with evaluator-only verdict authority"
+  ],
+  "pending_owner_acceptance": [
+    "materialized execution-profile runtime identities",
+    "synthetically derived cancellation deadline",
+    "synthetically derived wall-time ceiling",
+    "synthetically derived peak RSS ceiling",
+    "synthetically derived technical bytes and tokens safety envelope"
+  ]
+}

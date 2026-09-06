@@ -19,6 +19,8 @@ from pastila_scout.editor_core_identities_v1 import (
     CORE_V1_1_MODEL_ID,
     CORE_V1_2_DISPLAY_NAME,
     CORE_V1_2_MODEL_ID,
+    NO_PRODUCTION_CORE_DESIGNATED,
+    NO_PRODUCTION_CORE_DISPLAY_NAME,
 )
 
 from .errors import _DesktopShellConfigurationError
@@ -256,6 +258,12 @@ def _editor_default_selection(
     settings: _DesktopSettingsProjectionV1,
 ) -> tuple[str, str, str | None]:
     configured = settings.editor_default_model
+    if configured == NO_PRODUCTION_CORE_DESIGNATED:
+        return (
+            NO_PRODUCTION_CORE_DISPLAY_NAME,
+            settings.editor_provider,
+            "Execuția Editor este indisponibilă: NO_PRODUCTION_CORE_DESIGNATED.",
+        )
     experimental = {
         CORE_V1_1_MODEL_ID: CORE_V1_1_DISPLAY_NAME,
         CORE_V1_2_MODEL_ID: CORE_V1_2_DISPLAY_NAME,
@@ -281,6 +289,7 @@ def _editor_model_catalog(
     settings: _DesktopSettingsProjectionV1,
 ) -> tuple[str, ...]:
     candidates = (
+        NO_PRODUCTION_CORE_DISPLAY_NAME,
         settings.ollama_model,
         settings.editor_model,
         CORE_V1_1_DISPLAY_NAME,
@@ -1322,6 +1331,7 @@ class _DesktopMainWindowV1:
         experimental_models = {
             CORE_V1_1_DISPLAY_NAME: CORE_V1_1_MODEL_ID,
             CORE_V1_2_DISPLAY_NAME: CORE_V1_2_MODEL_ID,
+            NO_PRODUCTION_CORE_DISPLAY_NAME: NO_PRODUCTION_CORE_DESIGNATED,
         }
         if values["model"] in experimental_models:
             values["model"] = experimental_models[values["model"]]

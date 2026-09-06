@@ -14,38 +14,33 @@ from pastila_scout.expression_catalog_v2.eligibility_models import (
     ExpressionEligibilityResultV1,
     ExpressionOwnerSelectionReceiptV1,
 )
+from pastila_scout.production_core_authority_v1 import NO_PRODUCTION_CORE_DESIGNATED
 from pastila_scout.voice_deterministic_v2.models import (
     ProvenanceClassV1,
     RenderedProvenanceSpanV1,
 )
 from pastila_scout.voice_eligibility_v2.models import (
-    VoiceEligibilityResultV1,
     VoiceOwnerSelectionReceiptV1,
-    VoiceRepetitionSnapshotV1,
 )
 from pastila_scout.voice_executor_v2.models import (
     DeterministicBackendKindV2,
     DeterministicTerminalKindV2,
-    VoiceDeterministicExecutionRequestV2,
     VoiceDeterministicTerminalResultV2,
     VoiceGeneratedResultV2,
     VoiceSafelyAbstainedResultV2,
 )
 from pastila_scout.voice_fact_atoms_v2.persistence import canonical_identity
+from pastila_scout.voice_governed_context_v2 import VoiceGovernedContextV2
 from pastila_scout.voice_governed_realization_v1 import (
     PROGRAM_ID as GOVERNED_REALIZATION_PROGRAM_ID,
 )
-from pastila_scout.voice_governed_context_v2 import VoiceGovernedContextV2
 from pastila_scout.voice_governed_realization_v1 import (
     REALIZER_IDENTITY,
 )
-from pastila_scout.voice_repetition_v2 import VoiceAtomicAcceptanceStoreV1
-from pastila_scout.voice_repetition_v2.models import VoiceAcceptanceRequestV1
 
 from .voice_adjudication_actions import VoiceDesktopAdjudicationActionV1
 from .voice_adjudication_presentation import present_voice_adjudication_v1
 from .voice_v2_interaction import VoiceDesktopActionInputV2, VoiceDesktopPresentationV2
-
 
 VoiceDesktopGovernedContextV2 = VoiceGovernedContextV2
 
@@ -386,7 +381,7 @@ class VoiceDesktopWorkflowCoordinatorV2:
                     result = VoiceSafelyAbstainedResultV2(
                         renderer_identity=REALIZER_IDENTITY,
                         request_identity=request.request_identity,
-                        reason_code="governed_local_model_unavailable",
+                        reason_code="NO_PRODUCTION_CORE_DESIGNATED",
                         governed_identity=request.request_identity,
                     )
                     result = result.model_copy(
@@ -479,7 +474,7 @@ class VoiceDesktopWorkflowCoordinatorV2:
             "model_identity": (
                 outcome.receipt.model_identity
                 if outcome.receipt is not None
-                else "pastila-editor-core-v1.2-experimental"
+                else NO_PRODUCTION_CORE_DESIGNATED
             ),
             "realization_receipt_identity": receipt_identity,
             "realization_receipt": outcome.receipt,

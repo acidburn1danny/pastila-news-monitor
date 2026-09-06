@@ -1,0 +1,153 @@
+{
+  "schema": "pastila-core-v2-structured-qualification-response-contract",
+  "schema_version": 1,
+  "authority": "OWNER_APPROVED",
+  "candidate_output": {
+    "required_top_level_fields_in_order": [
+      "schema",
+      "schema_version",
+      "case_id",
+      "request_identity",
+      "output_type",
+      "outcome",
+      "text",
+      "claim_bindings",
+      "abstention_code"
+    ],
+    "optional_fields": [],
+    "additional_fields_allowed": false,
+    "field_contracts": {
+      "schema": {
+        "type": "string",
+        "const": "pastila-core-v2-structured-qualification-response"
+      },
+      "schema_version": {"type": "integer", "const": 1},
+      "case_id": {
+        "type": "string",
+        "minimum_characters": 1,
+        "maximum_characters": 128,
+        "pattern": "^[a-z0-9][a-z0-9._-]{0,127}$",
+        "must_equal_request_case_id": true
+      },
+      "request_identity": {
+        "type": "string",
+        "pattern": "^sha256:[0-9a-f]{64}$",
+        "must_equal_request_identity": true
+      },
+      "output_type": {"enum": ["FACTUAL", "COMMENTARY"]},
+      "outcome": {"enum": ["ANSWER", "ABSTAIN"]},
+      "text": {"type": ["string", "null"]},
+      "claim_bindings": {
+        "type": "array",
+        "maximum_items": 3,
+        "item_required_fields_in_order": ["claim_index", "source_span_ids"],
+        "item_optional_fields": [],
+        "item_additional_fields_allowed": false,
+        "claim_index": "unique contiguous integer starting at 1",
+        "source_span_ids_minimum": 1,
+        "source_span_ids_maximum": 8,
+        "aggregate_source_span_ids_maximum": 24,
+        "source_span_ids_must_resolve_in_request_authority": true,
+        "duplicates_allowed": false,
+        "ordering": "deterministic"
+      },
+      "abstention_code": {
+        "type": ["string", "null"],
+        "enum_when_string": [
+          "INSUFFICIENT_AUTHORITY",
+          "CONFLICTING_AUTHORITY",
+          "AMBIGUOUS_SCOPE",
+          "UNRESOLVED_REFERENCE",
+          "INSTRUCTION_AUTHORITY_CONFLICT",
+          "CANNOT_SATISFY_OUTPUT_CONTRACT",
+          "SAFETY_ENVELOPE_EXCEEDED"
+        ]
+      }
+    }
+  },
+  "combination_invariants": {
+    "FACTUAL_ANSWER": {
+      "text": "non-empty string",
+      "semantic_structure": "2 to 3 propositions or 1 to 2 sentences",
+      "maximum_unicode_characters": 650,
+      "text_blocks": 1,
+      "bullets_allowed": false,
+      "headings_allowed": false,
+      "claim_bindings_items": {"minimum": 1, "maximum": 3},
+      "every_material_proposition_has_exactly_one_claim_index": true,
+      "abstention_code": null
+    },
+    "COMMENTARY_ANSWER": {
+      "text": "non-empty string",
+      "maximum_sentences": 3,
+      "maximum_unicode_characters": 1000,
+      "complete_setup_development_punchline_permitted": true,
+      "factual_claims_allowed": false,
+      "text_blocks": 1,
+      "claim_bindings": [],
+      "abstention_code": null
+    },
+    "ABSTAIN": {
+      "text": null,
+      "claim_bindings": [],
+      "abstention_code": "one exact approved enum value"
+    }
+  },
+  "completion": {
+    "exactly_one_json_object": true,
+    "all_nine_fields_present": true,
+    "identity_and_binding_resolution_required": true,
+    "structural_validation_required": true,
+    "terminal_object_close_followed_immediately_by_eof": true,
+    "trailing_output_allowed": false,
+    "second_object_allowed": false,
+    "markdown_or_code_fence_allowed": false,
+    "automatic_field_completion_allowed": false
+  },
+  "invalid_conditions": [
+    "invalid JSON",
+    "top level is not an object",
+    "duplicate key",
+    "missing field",
+    "additional field",
+    "wrong type",
+    "unknown enum",
+    "integer represented as float",
+    "BOM",
+    "invalid UTF-8",
+    "prohibited control character",
+    "NaN or Infinity",
+    "uppercase or noncanonical identity",
+    "case or request identity mismatch",
+    "missing duplicate or unknown binding",
+    "text present for ABSTAIN",
+    "abstention code present for ANSWER",
+    "trailing bytes after object",
+    "semantic limit exceeded",
+    "truncated output"
+  ],
+  "invalid_behavior": {
+    "result": "MALFORMED_RESPONSE_FAIL",
+    "reject_whole_response": true,
+    "coercion": false,
+    "repair": false,
+    "truncation": false,
+    "valid_subobject_extraction": false,
+    "retry_or_redraw": false,
+    "state_mutation": false
+  },
+  "qualification_authority_separation": {
+    "candidate_output_may_contain_verdict": false,
+    "candidate_output_may_determine_verdict": false,
+    "verdict_authority": "EVALUATOR_ONLY",
+    "verdict_recorded_in_separate_evaluator_authority_receipt": true
+  },
+  "technical_runtime_limits": {
+    "status": "PENDING_OWNER_APPROVAL",
+    "max_output_tokens": null,
+    "technical_output_byte_ceiling": null,
+    "inference_cancellation_deadline": null,
+    "inference_wall_time_ceiling": null,
+    "inference_peak_rss_ceiling": null
+  }
+}

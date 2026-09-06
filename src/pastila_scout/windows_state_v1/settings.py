@@ -13,6 +13,12 @@ from typing import NoReturn
 
 from .errors import _WindowsStateSettingsError
 
+_NO_PRODUCTION_CORE_DESIGNATED = "NO_PRODUCTION_CORE_DESIGNATED"
+_EXPERIMENTAL_CORE_SELECTIONS = {
+    "pastila-editor-core-v1.1-experimental",
+    "pastila-editor-core-v1.2-experimental",
+}
+
 _NAMES = (
     "schema",
     "schema_version",
@@ -235,10 +241,11 @@ def _read_settings(path: Path) -> WindowsSettingsV1:
                 ollama_model="qwen3:14b",
                 scout_ai_timeout_seconds=120.0,
             )
-        if names in {_PRE_EDITOR_DEFAULT_NAMES, _LEGACY_NAMES}:
-            values["editor_default_model"] = (
-                "pastila-editor-core-v1.2-experimental"
-            )
+        if (
+            names in {_PRE_EDITOR_DEFAULT_NAMES, _LEGACY_NAMES}
+            or values["editor_default_model"] in _EXPERIMENTAL_CORE_SELECTIONS
+        ):
+            values["editor_default_model"] = _NO_PRODUCTION_CORE_DESIGNATED
         if names != _NAMES:
             values = {name: values[name] for name in _NAMES}
         return WindowsSettingsV1(**values)

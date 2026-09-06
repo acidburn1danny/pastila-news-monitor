@@ -1,0 +1,37 @@
+{
+  "schema": "pastila-production-core-candidate-free-calibration",
+  "schema_version": 1,
+  "authority_status": "NON_AUTHORITATIVE_HOST_SUPERVISOR_PROBE",
+  "candidate_model_loaded": false,
+  "candidate_result_inspected": false,
+  "framework_sha256": "6b22f646a247753ca50680664b00e91ed8383d326f1cbab7db1cda353bcdfef5",
+  "execution_profile_draft_sha256": "9e49906872d4b30a97f95f2c96485197f43e72df1940142f1b1730176733002d",
+  "calibration_harness_sha256": "8cd81b408e25d2d66412436d22e1659a880a5f47f343f67bd4bf718d9c69929b",
+  "platform": {
+    "os": "Windows",
+    "machine": "AMD64"
+  },
+  "runtime_sha256": "97c3228a59dcc05a771ab4eeec8126ce3f36ebb53616b479adc9f2c8050a9e84",
+  "trials": 20,
+  "rounds": 25,
+  "observed": {
+    "cancellation_ns_max": 875800,
+    "wall_time_ns_p99": 7930900,
+    "peak_rss_bytes_max": 26365952,
+    "structural_output_bytes": 58547,
+    "deterministic_result_identity": "c5b02ae60483e0702b13c5b830495598a934e2aafeedcd1fdef512c399d51dfb"
+  },
+  "predeclared_margin_results": {
+    "cancellation_deadline_ns": 500000000,
+    "wall_time_ns": 1000000000,
+    "peak_rss_bytes": 67108864,
+    "technical_output_bytes": null,
+    "technical_output_tokens": null
+  },
+  "limitations": [
+    "values characterize only the Windows host supervisor and structural harness",
+    "values do not characterize an owner-approved inference runtime",
+    "technical output bytes and tokens require a frozen tokenizer-bound workload",
+    "no value is eligible as a candidate qualification threshold before owner approval"
+  ]
+}

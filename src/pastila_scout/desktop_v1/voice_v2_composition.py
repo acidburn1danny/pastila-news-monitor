@@ -2,18 +2,11 @@
 
 from __future__ import annotations
 
-import sys
 from dataclasses import dataclass
 from pathlib import Path
 
 from pastila_scout.editor_voice_deterministic_v2 import (
     EditorDeterministicVoiceApplicationServiceV2,
-)
-from pastila_scout.experimental_core_v1_2 import (
-    MODEL_ID as CORE_V1_2_MODEL_ID,
-)
-from pastila_scout.experimental_core_v1_2 import (
-    ExperimentalCoreV12Executor,
 )
 from pastila_scout.voice_adjudication_v2 import (
     VoiceAdjudicationApplicationServiceV1,
@@ -23,10 +16,6 @@ from pastila_scout.voice_canonical_state_v2 import CanonicalVoiceWorkspaceStoreV
 from pastila_scout.voice_executor_v2 import (
     BOUNDED_INITIAL_PRODUCTION_ACTIVATION_POLICY_V1,
     DeterministicVoiceExecutorV2,
-)
-from pastila_scout.voice_governed_realization_v1 import (
-    GovernedNumericRealizerV1,
-    build_core_v1_2_generator,
 )
 from pastila_scout.voice_ordinary_bootstrap_v2 import (
     OrdinaryPersistedStoryVoiceBootstrapV2,
@@ -119,23 +108,9 @@ def compose_voice_v2_production(
     context_registry = VoiceDesktopContextRegistryV2(
         persisted_context_loader, ordinary_story_bootstrap
     )
+    # A production composition cannot bind an experimental specimen.  This
+    # remains None until a separately owner-designated manifest is supplied.
     governed_realizer = None
-    if (
-        settings is not None
-        and getattr(settings, "editor_default_model", None) == CORE_V1_2_MODEL_ID
-    ):
-        project_root = Path(
-            getattr(sys, "_MEIPASS", Path(__file__).resolve().parents[3])
-        )
-        local_executor = ExperimentalCoreV12Executor(
-            project_root=project_root, max_output_tokens=500
-        )
-        governed_realizer = GovernedNumericRealizerV1(
-            build_core_v1_2_generator(
-                executor=local_executor,
-                timeout_seconds=float(settings.editor_timeout_seconds),
-            )
-        )
     desktop_adjudication = (
         VoiceDesktopAdjudicationCoordinatorV1(adjudication_application)
         if adjudication_application is not None

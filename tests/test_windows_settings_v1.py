@@ -24,9 +24,7 @@ def test_resource_is_the_defaults_authority() -> None:
     assert settings.scout_period_days == 7
     assert settings.editor_timeout_seconds == 120.0
     assert settings.ollama_model == "qwen3:14b"
-    assert settings.editor_default_model == (
-        "pastila-editor-core-v1.2-experimental"
-    )
+    assert settings.editor_default_model == "NO_PRODUCTION_CORE_DESIGNATED"
 
 
 def test_absent_mutable_settings_load_defaults(tmp_path: Path) -> None:
@@ -49,13 +47,25 @@ def test_pre_editor_default_settings_migrate_and_persist(tmp_path: Path) -> None
     del payload["editor_default_model"]
     path.write_text(json.dumps(payload), encoding="utf-8")
     loaded = _load_windows_settings_v1(path=path, defaults_path=DEFAULTS)
-    assert loaded.editor_default_model == (
-        "pastila-editor-core-v1.2-experimental"
-    )
+    assert loaded.editor_default_model == "NO_PRODUCTION_CORE_DESIGNATED"
     _save_windows_settings_v1(path=path, settings=loaded)
     assert json.loads(path.read_text("utf-8"))["editor_default_model"] == (
-        "pastila-editor-core-v1.2-experimental"
+        "NO_PRODUCTION_CORE_DESIGNATED"
     )
+
+
+def test_experimental_persisted_defaults_migrate_neutrally(tmp_path: Path) -> None:
+    for model in (
+        "pastila-editor-core-v1.1-experimental",
+        "pastila-editor-core-v1.2-experimental",
+    ):
+        payload = json.loads(DEFAULTS.read_text(encoding="utf-8"))
+        payload["editor_default_model"] = model
+        path = tmp_path / f"{model}.json"
+        path.write_text(json.dumps(payload), encoding="utf-8")
+        assert _load_windows_settings_v1(
+            path=path, defaults_path=DEFAULTS
+        ).editor_default_model == "NO_PRODUCTION_CORE_DESIGNATED"
 
 
 def test_save_retains_one_backup(tmp_path: Path) -> None:

@@ -1,0 +1,37 @@
+{
+  "schema": "pastila-production-core-candidate-free-calibration",
+  "schema_version": 1,
+  "authority_status": "NON_AUTHORITATIVE_WSL_SUPERVISOR_PROBE",
+  "candidate_model_loaded": false,
+  "candidate_result_inspected": false,
+  "execution_profile_proposal_sha256": "92bafd61be5f43fea48bf1e88b35eb694ab26d8a09b420243770ea37d46e8274",
+  "calibration_harness_sha256": "8cd81b408e25d2d66412436d22e1659a880a5f47f343f67bd4bf718d9c69929b",
+  "platform": {
+    "os": "Linux",
+    "machine": "x86_64",
+    "boundary": "WSL2_UBUNTU_24_04_4"
+  },
+  "runtime_sha256": "1643dacd9feaedc58f3cc581e4d22577dfe25c09b10282936186ccf0f2e61118",
+  "trials": 20,
+  "rounds": 25,
+  "observed": {
+    "cancellation_ns_max": 1131807,
+    "wall_time_ns_p99": 10265391,
+    "peak_rss_bytes_max": 19443712,
+    "structural_output_bytes": 58547,
+    "deterministic_result_identity": "c5b02ae60483e0702b13c5b830495598a934e2aafeedcd1fdef512c399d51dfb"
+  },
+  "predeclared_margin_results": {
+    "cancellation_deadline_ns": 500000000,
+    "wall_time_ns": 1000000000,
+    "peak_rss_bytes": 67108864,
+    "technical_output_bytes": null,
+    "technical_output_tokens": null
+  },
+  "limitations": [
+    "values characterize only the WSL supervisor and structural harness",
+    "the mutable local WSL distribution is observation source, not runtime authority",
+    "no CUDA, loader, tokenizer, adapter, or model workload was executed",
+    "no value is eligible as a candidate threshold before runtime materialization and owner approval"
+  ]
+}

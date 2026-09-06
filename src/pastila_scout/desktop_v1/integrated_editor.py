@@ -23,9 +23,8 @@ from pastila_scout.editor_application_v1 import (
 from pastila_scout.editor_core_identities_v1 import (
     CORE_V1_1_MODEL_ID,
     CORE_V1_2_MODEL_ID,
+    NO_PRODUCTION_CORE_DESIGNATED,
 )
-from pastila_scout.editor.generation.semantic_draft_v2 import PastilaEditorSemanticDraftV2
-from pastila_scout.editor_application_v1 import load_editor_operational_result_v1
 from pastila_scout.expression_retrieval_v1.usage import load_committed_usage_receipts_v1
 from pastila_scout.provider_execution_v2 import CancellationTokenV2
 from pastila_scout.provider_selection_v1 import ProviderChoiceV1
@@ -64,13 +63,12 @@ def _integrated_editor_request_v1(
         source, selected = _selected_scout_input_v1(project=project, event_id=event_id)
     model = model_override or settings.editor_default_model
     if governed_factual_material:
-        if model != CORE_V1_2_MODEL_ID:
-            raise ValueError("Governed commentary requires PastilaAcida Core V1.2")
-        source, selected = _governed_summary_source_v1(
-            project=project,
-            source=source,
-            selected=selected,
-            event_id=event_id,
+        raise ValueError(
+            "Governed commentary unavailable: NO_PRODUCTION_CORE_DESIGNATED"
+        )
+    if model == NO_PRODUCTION_CORE_DESIGNATED:
+        raise ValueError(
+            "Editor generation unavailable: NO_PRODUCTION_CORE_DESIGNATED"
         )
     provider = ProviderChoiceV1(
         "ollama"
@@ -135,30 +133,6 @@ def _integrated_editor_request_v1(
         reference,
         CancellationTokenV2(cancellation_requested=False),
     )
-
-
-def _governed_summary_source_v1(*, project, source, selected, event_id: int):
-    """Bind commentary generation to the already-persisted factual authority."""
-
-    materials = tuple(
-        item for item in getattr(project, "editor_materials", ()) if item.event_id == event_id
-    )
-    if len(materials) != 1:
-        raise ValueError("Governed Editor factual material is unavailable")
-    material = materials[0]
-    result = load_editor_operational_result_v1(
-        path=Path(material.output_path), payload_sha256=material.payload_sha256
-    )
-    if type(result.draft) is not PastilaEditorSemanticDraftV2:
-        raise ValueError("Governed Editor factual material is not Semantic Draft V2")
-    stories = tuple(item for item in result.draft.stories if item.event_id == event_id)
-    if len(stories) != 1:
-        raise ValueError("Governed Editor factual story is unavailable")
-    governed = stories[0].factual_summary.text
-    selected = selected.model_copy(update={"canonical_summary": governed})
-    data = source.model_dump(mode="json")
-    data["ranked_events"] = [selected.model_dump(mode="json")]
-    return assign_scout_input_identity(data), selected
 
 
 __all__: tuple[str, ...] = ()

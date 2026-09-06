@@ -9,11 +9,7 @@ from pastila_scout.contracts.samples import sample_scout_input
 from pastila_scout.desktop_v1.first_run import _complete_desktop_setup_v1
 from pastila_scout.desktop_v1.integrated_editor import _integrated_editor_request_v1
 from pastila_scout.editor.engine import SelectionEngine
-from pastila_scout.editor_application_v1.configuration import (
-    EditorApplicationGenerationConfigurationAuthorityV1,
-)
 from pastila_scout.editor_generation_runtime_v1.composition import (
-    _create_editor_generation_runtime_session_factory_v1,
     _EditorAttemptReferenceFactoryV1,
 )
 from pastila_scout.editor_operational_v1 import EditorOperationalCoordinatorV1
@@ -34,7 +30,7 @@ def _multi_scout_input():
     return assign_scout_input_identity(data)
 
 
-def test_recovered_project_builds_complete_ollama_editor_request(tmp_path):
+def test_recovered_project_fails_closed_without_production_core(tmp_path):
     settings = _default_windows_settings_v1(defaults_path=DEFAULTS)
     settings = _complete_desktop_setup_v1(
         settings=settings,
@@ -46,33 +42,8 @@ def test_recovered_project_builds_complete_ollama_editor_request(tmp_path):
     )
     source = _multi_scout_input()
     project = SimpleNamespace(scout_input=source, candidate=source.ranked_events[0])
-    request = _integrated_editor_request_v1(project=project, settings=settings)
-    assert request.scout_input == source
-    assert request.generation_configuration.provider.value == "ollama"
-    assert request.generation_configuration.model_identifier == (
-        "pastila-editor-core-v1.2-experimental"
-    )
-    assert request.generation_configuration.max_output_tokens == 2000
-    assert request.episode_context.mandatory_event_ids == (project.candidate.event_id,)
-    assert request.selection_profile.minimum_source_diversity == (
-        project.candidate.source_count
-    )
-    assert request.destination.path.parent == settings.editor_output_directory
-    preparation = EditorOperationalCoordinatorV1(SelectionEngine()).prepare(
-        scout_input=request.scout_input,
-        selection_profile=request.selection_profile,
-        episode_context=request.episode_context,
-    )
-    assert preparation.plan is not None
-    materialized = EditorApplicationGenerationConfigurationAuthorityV1()._materialize(
-        configuration=request.generation_configuration
-    )
-    session = _create_editor_generation_runtime_session_factory_v1().open(
-        materialized.runtime_options,
-        operation_reference=request.operation_reference,
-    )
-    assert session.operation_reference == request.operation_reference
-    session.close()
+    with pytest.raises(ValueError, match="NO_PRODUCTION_CORE_DESIGNATED"):
+        _integrated_editor_request_v1(project=project, settings=settings)
 
 
 def test_non_first_selected_event_has_explicit_request_and_output_identity(tmp_path):
@@ -90,7 +61,10 @@ def test_non_first_selected_event_has_explicit_request_and_output_identity(tmp_p
     project = SimpleNamespace(scout_input=source, candidate=source.ranked_events[0])
 
     request = _integrated_editor_request_v1(
-        project=project, settings=settings, event_id=selected.event_id
+        project=project,
+        settings=settings,
+        event_id=selected.event_id,
+        model_override=settings.ollama_model,
     )
 
     assert tuple(event.event_id for event in request.scout_input.ranked_events) == (
@@ -105,7 +79,12 @@ def test_non_first_selected_event_has_explicit_request_and_output_identity(tmp_p
         f"editor-{project.candidate.event_id}-"
     )
     with pytest.raises(ValueError):
-        _integrated_editor_request_v1(project=project, settings=settings, event_id=999)
+        _integrated_editor_request_v1(
+            project=project,
+            settings=settings,
+            event_id=999,
+            model_override=settings.ollama_model,
+        )
 
     third_data = source.model_dump(mode="json")
     third = dict(third_data["ranked_events"][0])
@@ -117,7 +96,10 @@ def test_non_first_selected_event_has_explicit_request_and_output_identity(tmp_p
         scout_input=last_source, candidate=last_source.ranked_events[0]
     )
     last_request = _integrated_editor_request_v1(
-        project=last_project, settings=settings, event_id=46
+        project=last_project,
+        settings=settings,
+        event_id=46,
+        model_override=settings.ollama_model,
     )
     assert tuple(
         event.event_id for event in last_request.scout_input.ranked_events
@@ -148,7 +130,9 @@ def test_request_caps_diversity_at_representative_provenance(tmp_path):
     source = assign_scout_input_identity(data)
     project = SimpleNamespace(scout_input=source, candidate=source.ranked_events[0])
 
-    request = _integrated_editor_request_v1(project=project, settings=settings)
+    request = _integrated_editor_request_v1(
+        project=project, settings=settings, model_override=settings.ollama_model
+    )
     preparation = EditorOperationalCoordinatorV1(SelectionEngine()).prepare(
         scout_input=request.scout_input,
         selection_profile=request.selection_profile,

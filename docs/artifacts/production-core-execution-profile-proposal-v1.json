@@ -1,0 +1,100 @@
+{
+  "schema": "pastila-production-core-execution-profile-proposal",
+  "schema_version": 1,
+  "status": "OWNER_APPROVED_PROFILE_VALUES_RUNTIME_MATERIALIZATION_REQUIRED",
+  "authority_effect": "QUALIFICATION_EXECUTION_PROFILE_V1_ONLY",
+  "scope": {
+    "purpose": "FIRST_CANDIDATE_NEUTRAL_QUALIFICATION",
+    "defines_global_core_v2_minimum_hardware": false,
+    "defines_core_v2_portability_policy": false,
+    "promotes_or_selects_candidate": false
+  },
+  "supported_platform": "WSL2_LINUX_X86_64_UBUNTU_24_04",
+  "hardware_class": {
+    "host_cpu_architecture": "x86_64",
+    "qualification_profile_physical_cores": 8,
+    "fixed_logical_cpu_visibility": 16,
+    "qualification_profile_wsl_memory_bytes": 16562937856,
+    "qualification_profile_wsl_swap_bytes": 4294967296,
+    "global_product_minimum": false
+  },
+  "accelerator_class": {
+    "vendor": "NVIDIA",
+    "qualification_profile_compute_capability": "12.0",
+    "qualification_profile_vram_bytes": 17094934528,
+    "observed_local_device": "GeForce RTX 5080",
+    "device_uuid_is_not_portable_authority": true,
+    "global_product_minimum": false
+  },
+  "runtime": {
+    "form": "CONTENT_ADDRESSED_OFFLINE_ROOTFS",
+    "ubuntu_release": "24.04",
+    "rootfs_sha256": null,
+    "python_runtime_sha256": null,
+    "loader_sha256": null,
+    "ordered_dependency_manifest_sha256": null,
+    "local_mutable_wsl_install_is_authority": false
+  },
+  "loading": {
+    "model": "CANDIDATE_MANIFEST_SHA256_ONLY",
+    "tokenizer": "CANDIDATE_MANIFEST_SHA256_ONLY",
+    "adapter": "CANDIDATE_MANIFEST_SHA256_ONLY",
+    "local_files_only": true,
+    "path_guessing": false,
+    "network": "DENY_ALL"
+  },
+  "precision": {
+    "storage": "NF4",
+    "compute": "BFLOAT16",
+    "double_quantization": true,
+    "status": "OWNER_APPROVED_FOR_QUALIFICATION_PROFILE_V1"
+  },
+  "decoding": {
+    "do_sample": false,
+    "temperature": 0,
+    "top_p": 1,
+    "seed": 0,
+    "deterministic_algorithms_required": true,
+    "nondeterministic_kernel_behavior": "FAIL_CLOSED",
+    "context_tokens": 8192,
+    "max_output_tokens": null,
+    "context_status": "OWNER_APPROVED_FOR_QUALIFICATION_PROFILE_V1",
+    "semantic_output_contract_status": "OWNER_APPROVED_AND_SEPARATELY_BOUND",
+    "technical_output_limit_status": "PENDING_OWNER_APPROVAL"
+  },
+  "semantic_output_authority": {
+    "contract_sha256": "c141a01edf647bc6937bc413e5c3454529a428fcb7cb42bccecd0c1b22ee2df0",
+    "factual_output": "OWNER_APPROVED_2_TO_3_PROPOSITIONS_OR_1_TO_2_SENTENCES_MAX_650_UNICODE_CHARACTERS",
+    "commentary_output": "OWNER_APPROVED_MAX_3_SENTENCES_MAX_1000_UNICODE_CHARACTERS",
+    "structured_qualification_response": "OWNER_APPROVED_EXACT_NINE_FIELD_CONTRACT",
+    "structured_qualification_response_contract_sha256": "b6143dbc1ab04ded733e64cbd989c0a9a803fa5367dbda9f8ae4e9bcff71272d",
+    "technical_limits_derived_from_semantic_limits": false
+  },
+  "threads": {
+    "inference_processes": 1,
+    "torch_intraop_threads": 1,
+    "torch_interop_threads": 1,
+    "tokenizer_parallelism": false,
+    "scheduler": "FIXED_SINGLE_REQUEST_NO_CONCURRENT_INFERENCE"
+  },
+  "environment": {
+    "allowed_names": [
+      "CUBLAS_WORKSPACE_CONFIG",
+      "CUDA_VISIBLE_DEVICES",
+      "PYTHONHASHSEED",
+      "TOKENIZERS_PARALLELISM"
+    ],
+    "values_must_be_manifest_bound": true,
+    "undeclared_names": "REJECT",
+    "undeclared_file_reads": "REJECT",
+    "network": "DENY_ALL"
+  },
+  "observed_local_capability": {
+    "windows": "11_PRO_BUILD_26200_AMD64",
+    "wsl_kernel": "6.18.33.2-microsoft-standard-WSL2",
+    "ubuntu": "24.04.4_LTS",
+    "wsl_python": "3.12.3",
+    "wsl_python_executable_sha256": "1643dacd9feaedc58f3cc581e4d22577dfe25c09b10282936186ccf0f2e61118",
+    "nvidia_driver": "610.47"
+  }
+}

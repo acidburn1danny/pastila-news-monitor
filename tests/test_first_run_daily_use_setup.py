@@ -2,7 +2,7 @@ from pathlib import Path
 
 from pastila_scout.desktop_v1 import entrypoint, first_run
 from pastila_scout.desktop_v1.views import (
-    CORE_V1_2_DISPLAY_NAME,
+    NO_PRODUCTION_CORE_DISPLAY_NAME,
     _editor_default_selection,
     _editor_display_model,
     _editor_model_catalog,
@@ -71,9 +71,7 @@ def test_completion_persists_and_valid_settings_skip_setup(tmp_path, monkeypatch
     assert not result.setup_required
     assert completed.scout_provider == completed.editor_provider == "ollama"
     assert completed.editor_model == "qwen3:14b"
-    assert completed.editor_default_model == (
-        "pastila-editor-core-v1.2-experimental"
-    )
+    assert completed.editor_default_model == "NO_PRODUCTION_CORE_DESIGNATED"
     assert completed.editor_output_directory.is_dir()
 
 
@@ -104,9 +102,9 @@ def test_editor_default_is_independent_and_has_visible_safe_fallback(tmp_path):
     settings = _default_windows_settings_v1(defaults_path=DEFAULTS)
     assert settings.ollama_model == "qwen3:14b"
     assert _editor_default_selection(settings) == (
-        CORE_V1_2_DISPLAY_NAME,
-        "ollama",
-        None,
+        NO_PRODUCTION_CORE_DISPLAY_NAME,
+        settings.editor_provider,
+        "Execuția Editor este indisponibilă: NO_PRODUCTION_CORE_DESIGNATED.",
     )
     values = {
         name: getattr(settings, name)
@@ -124,6 +122,7 @@ def test_editor_model_catalog_is_unique_and_retains_manual_choices():
     settings = _default_windows_settings_v1(defaults_path=DEFAULTS)
     catalog = _editor_model_catalog(settings)
     assert catalog == (
+        "Niciun Core de producție desemnat",
         "qwen3:14b",
         "gpt-4.1-mini",
         "PastilaAcida Editor Core V1.1 Experimental",
@@ -131,7 +130,7 @@ def test_editor_model_catalog_is_unique_and_retains_manual_choices():
     )
     assert len(catalog) == len(set(catalog))
     selected, _, _ = _editor_default_selection(settings)
-    assert selected == CORE_V1_2_DISPLAY_NAME
+    assert selected == NO_PRODUCTION_CORE_DISPLAY_NAME
     assert selected in catalog
 
 
