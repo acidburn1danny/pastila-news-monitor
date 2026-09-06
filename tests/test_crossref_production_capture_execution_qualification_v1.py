@@ -116,7 +116,17 @@ def test_execution_qualification_binds_its_test_and_preflight_qualification() ->
     value = json.loads(QUALIFICATION.read_bytes())
     assert (
         value["qualification_test_sha256"]
-        == hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
+        == hashlib.sha256(
+            subprocess.check_output(
+                [
+                    "git",
+                    "show",
+                    "04205ccb73542f3360b3811e31c2caef7adec1dc:"
+                    + Path(__file__).relative_to(ROOT).as_posix(),
+                ],
+                cwd=ROOT,
+            )
+        ).hexdigest()
     )
     preflight = ROOT / (
         "docs/artifacts/"

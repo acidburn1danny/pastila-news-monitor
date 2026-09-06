@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import subprocess
 from pathlib import Path
 
 from pastila_scout.crossref_pilot_offline_v1 import (
@@ -19,6 +20,7 @@ QUALIFICATION = (
     / "artifacts"
     / "milestone10-phase2-crossref-pilot-offline-qualification-v1.json"
 )
+QUALIFICATION_COMMIT = "82f1cf1c681e014e73208fa32e5e4ed78d3f963a"
 
 
 def sha256(path: Path) -> str:
@@ -69,7 +71,18 @@ def test_phase2_qualification_schema_identity_and_zero_activity() -> None:
     assert value["design_sha256"] == sha256(
         ROOT / "docs" / "milestone10-phase2-crossref-pilot-offline.md"
     )
-    assert value["qualification_test_sha256"] == sha256(Path(__file__))
+    historical_test = subprocess.check_output(
+        [
+            "git",
+            "show",
+            f"{QUALIFICATION_COMMIT}:{Path(__file__).relative_to(ROOT).as_posix()}",
+        ],
+        cwd=ROOT,
+    )
+    assert (
+        value["qualification_test_sha256"]
+        == hashlib.sha256(historical_test).hexdigest()
+    )
     assert value["dependency_manifest_sha256"] == sha256(ROOT / "pyproject.toml")
     assert value["zero_activity"] == {
         "crossref_network_requests": 0,

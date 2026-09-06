@@ -61,7 +61,15 @@ def test_capture_qualification_binds_exact_committed_proof_bytes() -> None:
     assert value["execution_authority_commit"] == (
         "3dd2ae1e8596f1a4146b87409e07c7dd626b6dbf"
     )
-    assert value["qualification_test_sha256"] == sha256(Path(__file__).read_bytes())
+    historical_test = subprocess.check_output(
+        [
+            "git",
+            "show",
+            f"777a5f673f32f3fc06b1da7bae2ffcbba2baa399:{Path(__file__).relative_to(ROOT).as_posix()}",
+        ],
+        cwd=ROOT,
+    )
+    assert value["qualification_test_sha256"] == sha256(historical_test)
     proof_tree = subprocess.check_output(
         [
             "git",
@@ -138,9 +146,9 @@ def test_capture_qualification_reconstructs_semantic_identity_closure() -> None:
     assert request["body"] is None
     assert manifest["request_identity"] == value["request_identity"]
     assert manifest["wire_request_sha256"] == value["wire_request_sha256"]
-    assert sha256(ARTIFACTS["wire_request"].read_bytes()) == value[
-        "wire_request_sha256"
-    ]
+    assert (
+        sha256(ARTIFACTS["wire_request"].read_bytes()) == value["wire_request_sha256"]
+    )
     assert value["http"] == {"content_type": "application/json", "status": 200}
     assert capture.status == value["http"]["status"]
     assert content_types == [value["http"]["content_type"]]

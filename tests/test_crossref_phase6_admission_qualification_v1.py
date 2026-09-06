@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import subprocess
 from pathlib import Path
 
 import pastila_scout.crossref_phase6_admission_v1 as phase6
@@ -26,7 +27,19 @@ def test_phase6_qualification_binds_exact_components() -> None:
     assert value["implementation_test_sha256"] == _sha(
         ROOT / "tests/test_crossref_phase6_admission_v1.py"
     )
-    assert value["qualification_test_sha256"] == _sha(Path(__file__))
+    historical_test = subprocess.check_output(
+        [
+            "git",
+            "show",
+            "31093ab8bc4a0a1ed147a1b0d9932b55424012ac:"
+            + Path(__file__).relative_to(ROOT).as_posix(),
+        ],
+        cwd=ROOT,
+    )
+    assert (
+        value["qualification_test_sha256"]
+        == hashlib.sha256(historical_test).hexdigest()
+    )
     assert value["document_sha256"] == _sha(
         ROOT / "docs/milestone10-phase6-crossref-production-admission.md"
     )

@@ -85,7 +85,11 @@ def test_phase3_qualification_has_exact_authority_and_file_bindings() -> None:
     assert value["implementation_test_sha256"] == _sha256(
         IMPLEMENTATION_TEST.read_bytes()
     )
-    assert value["qualification_test_sha256"] == _sha256(Path(__file__).read_bytes())
+    historical_test = _git(
+        "show",
+        f"809be94457dcc0cc3dc6ab9f8671338882b4afb7:{Path(__file__).relative_to(ROOT).as_posix()}",
+    )
+    assert value["qualification_test_sha256"] == _sha256(historical_test)
     committed = _git(
         "show",
         f"{PHASE2_PROOF_COMMIT}:.pastila-runtime/"

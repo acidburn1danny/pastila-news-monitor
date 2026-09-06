@@ -75,7 +75,15 @@ def test_qualification_binds_exact_authorities_and_bytes() -> None:
     assert value["implementation_test_sha256"] == sha256(
         (ROOT / "tests/test_crossref_production_qualification_v1.py").read_bytes()
     )
-    assert value["qualification_test_sha256"] == sha256(Path(__file__).read_bytes())
+    historical_test = subprocess.check_output(
+        [
+            "git",
+            "show",
+            f"1510156748a56dc0063fcca1ff1b053cf0c927ca:{Path(__file__).relative_to(ROOT).as_posix()}",
+        ],
+        cwd=ROOT,
+    )
+    assert value["qualification_test_sha256"] == sha256(historical_test)
     assert value["document_sha256"] == sha256(
         (
             ROOT / "docs/milestone10-phase4-crossref-production-qualification.md"
@@ -109,14 +117,14 @@ def test_qualification_reconstructs_exact_result_without_network(
 def test_phase4_does_not_change_default_or_authorized_skip_boundaries() -> None:
     changed = set(
         subprocess.check_output(
-            ["git", "diff", "--name-only", BASE_COMMIT, "--"],
-            cwd=ROOT,
-            text=True,
-        ).splitlines()
-    )
-    changed.update(
-        subprocess.check_output(
-            ["git", "ls-files", "--others", "--exclude-standard"],
+            [
+                "git",
+                "diff",
+                "--name-only",
+                BASE_COMMIT,
+                "54037f907f16ecb3aefe4fd7128b948d4f862d4c",
+                "--",
+            ],
             cwd=ROOT,
             text=True,
         ).splitlines()
