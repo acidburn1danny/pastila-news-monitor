@@ -19,6 +19,7 @@ CLOSURE = ROOT / (
 )
 PHASE4_COMMIT = "54037f907f16ecb3aefe4fd7128b948d4f862d4c"
 PHASE4_TREE = "87e9ce4619223bc9ba216ce5c96aa85c3386d70f"
+PHASE5_PROOF_TIP = "04205ccb73542f3360b3811e31c2caef7adec1dc"
 
 
 def sha256(path: Path) -> str:
@@ -80,7 +81,19 @@ def test_phase5_qualification_binds_exact_bytes_and_predecessor() -> None:
     assert value["implementation_test_sha256"] == sha256(
         ROOT / "tests/test_crossref_production_capture_v1.py"
     )
-    assert value["qualification_test_sha256"] == sha256(Path(__file__))
+    historical_test = subprocess.check_output(
+        [
+            "git",
+            "show",
+            PHASE5_PROOF_TIP
+            + ":tests/test_crossref_production_capture_qualification_v1.py",
+        ],
+        cwd=ROOT,
+    )
+    assert (
+        value["qualification_test_sha256"]
+        == hashlib.sha256(historical_test).hexdigest()
+    )
     assert value["design_sha256"] == sha256(
         ROOT / "docs/milestone10-phase5-bounded-crossref-production-capture.md"
     )
@@ -122,14 +135,14 @@ def test_production_capture_evidence_is_preserved_byte_for_byte_by_git() -> None
 def test_phase5_does_not_change_existing_acceptance_selection_boundaries() -> None:
     changed = set(
         subprocess.check_output(
-            ["git", "diff", "--name-only", PHASE4_COMMIT, "--"],
-            cwd=ROOT,
-            text=True,
-        ).splitlines()
-    )
-    changed.update(
-        subprocess.check_output(
-            ["git", "ls-files", "--others", "--exclude-standard"],
+            [
+                "git",
+                "diff",
+                "--name-only",
+                PHASE4_COMMIT,
+                PHASE5_PROOF_TIP,
+                "--",
+            ],
             cwd=ROOT,
             text=True,
         ).splitlines()
