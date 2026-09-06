@@ -11,7 +11,9 @@ PROFILE = ROOT / "docs/artifacts/production-core-execution-profile-proposal-v1.j
 
 def test_framework_freezes_candidate_neutral_thresholds_without_results() -> None:
     value = json.loads(ARTIFACT.read_text(encoding="utf-8"))
-    assert value["status"] == "PARTIALLY_OWNER_ACCEPTED_EXECUTION_PROFILE_PENDING"
+    assert value["status"] == (
+        "OWNER_ACCEPTED_PROFILE_V1_STRUCTURAL_ENVELOPES_INFERENCE_LIMITS_PENDING"
+    )
     assert value["candidate_results_inspected"] is False
     assert value["production_authority"] == "NO_PRODUCTION_CORE_DESIGNATED"
     assert value["terminal_results"] == ["PASS", "FAIL", "NO_CANDIDATE_QUALIFIED"]
@@ -25,6 +27,23 @@ def test_framework_freezes_candidate_neutral_thresholds_without_results() -> Non
     assert thresholds["semantic_case_assertions_percent"] == 95
     assert thresholds["unsupported_or_changed_factual_atoms"] == 0
     assert thresholds["aggregate_compensation_allowed"] is False
+    assert thresholds["cancellation_deadline_seconds"] is None
+    assert thresholds["wall_time_seconds_per_case_max"] is None
+    assert thresholds["peak_rss_bytes_per_case_max"] is None
+    assert thresholds["qualification_execution_profile_v1_structural_supervisor_envelopes"] == {
+        "authority_status": "OWNER_APPROVED",
+        "evidence_sha256": hashlib.sha256(
+            (
+                ROOT
+                / "docs/artifacts/production-core-content-addressed-runtime-calibration-v1.json"
+            ).read_bytes()
+        ).hexdigest(),
+        "cancellation_deadline_seconds": 0.5,
+        "structural_wall_time_seconds": 1,
+        "structural_peak_rss_bytes": 64 * 1024 * 1024,
+        "defines_model_inference_limits": False,
+        "defines_global_core_v2_policy": False,
+    }
     assert not ({"scores", "winner", "candidate_results"} & value.keys())
 
 

@@ -1,7 +1,7 @@
 {
   "schema": "pastila-production-core-model-qualification-framework",
   "schema_version": 1,
-  "status": "PARTIALLY_OWNER_ACCEPTED_EXECUTION_PROFILE_PENDING",
+  "status": "OWNER_ACCEPTED_PROFILE_V1_STRUCTURAL_ENVELOPES_INFERENCE_LIMITS_PENDING",
   "candidate_results_inspected": false,
   "candidates": [
     "pastila-editor-core-v1.1-experimental",
@@ -44,6 +44,15 @@
     "portable_clean_materializations": 2,
     "wall_time_seconds_per_case_max": null,
     "peak_rss_bytes_per_case_max": null,
+    "qualification_execution_profile_v1_structural_supervisor_envelopes": {
+      "authority_status": "OWNER_APPROVED",
+      "evidence_sha256": "19b03af8e38351d7f0444853797fc19546a7ca07a77181db08cbd95061ce8207",
+      "cancellation_deadline_seconds": 0.5,
+      "structural_wall_time_seconds": 1,
+      "structural_peak_rss_bytes": 67108864,
+      "defines_model_inference_limits": false,
+      "defines_global_core_v2_policy": false
+    },
     "semantic_contract_output_ceiling": {
       "contract_sha256": "c141a01edf647bc6937bc413e5c3454529a428fcb7cb42bccecd0c1b22ee2df0",
       "factual": "2 to 3 propositions or 1 to 2 sentences; maximum 650 Unicode characters",
@@ -85,12 +94,10 @@
     ,"factual semantic output contract"
     ,"commentary semantic output contract"
     ,"structured qualification response exact nine-field contract with evaluator-only verdict authority"
+    ,"Qualification Execution Profile v1 structural supervisor envelopes: 500 ms cancellation, 1 s structural wall time, and 64 MiB structural peak RSS; not inference limits or global Core V2 policy"
   ],
   "pending_owner_acceptance": [
     "materialized execution-profile runtime identities",
-    "synthetically derived cancellation deadline",
-    "synthetically derived wall-time ceiling",
-    "synthetically derived peak RSS ceiling",
     "synthetically derived technical bytes and tokens safety envelope"
   ]
 }

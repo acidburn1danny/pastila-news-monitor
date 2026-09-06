@@ -1,7 +1,7 @@
 # Production Core Model Qualification Framework V1
 
-Status: **partially owner-accepted; exact execution profile and synthetic resource
-calibration pending**.
+Status: **Qualification Execution Profile v1 structural supervisor envelopes
+owner-approved; inference and technical-output limits remain pending**.
 
 Neither `experimental_core_v1_1` nor `experimental_core_v1_2` is production
 authority. Version order has no evidentiary weight. Qualification may return
@@ -41,10 +41,13 @@ threshold selection. Corpus and holdout identities are frozen before execution.
 
 Owner has accepted the 95% semantic threshold, 3/3 determinism, 2/2 clean
 reproducibility, 2/2 same-supported-platform portability, 2/2 offline packaging,
-the corpus distribution, and all previously declared hard gates. Cancellation,
-wall-time, peak-RSS, and technical bytes/tokens values remain null until
-candidate-free calibration and explicit owner approval. The semantic output
-ceiling is independently derived from the Core V2 contract.
+the corpus distribution, and all previously declared hard gates. For
+Qualification Execution Profile v1 only, the owner also approved structural
+supervisor envelopes of 500 ms cancellation, 1 s structural wall time, and
+64 MiB structural peak RSS. These are not model-inference limits, global Core V2
+policy, or global hardware requirements. Inference wall-time/RSS and technical
+bytes/tokens limits remain unresolved. The semantic output ceiling is
+independently derived from the Core V2 contract.
 
 ## Evidence
 
@@ -106,10 +109,11 @@ limit is approved. In particular, 2000 tokens is not a semantic contract; any
 future technical token limit is only a runtime safety envelope and awards no
 semantic quality credit. None of these profile values promotes a candidate.
 
-Candidate-free Windows and WSL structural probes converged on proposed
+Candidate-free Windows and WSL structural probes converged on owner-approved
 supervisor-only envelopes of 500 ms cancellation, 1 s structural wall time,
-and 64 MiB structural peak RSS. They do not measure inference and cannot be
-used as candidate qualification ceilings.
+and 64 MiB structural peak RSS for Qualification Execution Profile v1. They do
+not measure inference, are not per-case model ceilings, and do not define global
+Core V2 policy or global hardware requirements.
 
 The owner-approved factual output contract permits 2–3 propositions or 1–2
 sentences, depending on the natural structure of the text, with a hard secondary
@@ -136,8 +140,9 @@ whole with no repair, coercion, extraction, retry, redraw, or state mutation.
 Candidate output cannot contain or determine PASS/FAIL; only a separate
 evaluator-authority receipt can record that verdict.
 
-Technical token/byte, cancellation, wall-time, and RSS limits remain separate
-and pending owner approval.
+Technical token/byte and model-inference wall-time/RSS limits remain separate
+and pending owner approval. The approved structural supervisor envelopes do not
+resolve or imply them.
 
 ## Unauthorized-default manifestation audit
 

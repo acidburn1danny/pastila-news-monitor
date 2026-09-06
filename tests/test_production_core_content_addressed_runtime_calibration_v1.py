@@ -114,11 +114,27 @@ def test_execution_is_network_denied_read_only_and_environment_closed() -> None:
 
 def test_candidate_free_limits_do_not_overstate_inference_authority() -> None:
     value = _value()
-    limits = value["candidate_free_limit_proposals"]
-    assert limits["authority_status"] == "PENDING_OWNER_APPROVAL"
-    assert limits["scope"] == "SUPERVISOR_AND_STRUCTURAL_RUNTIME_OVERHEAD_ONLY_NOT_MODEL_INFERENCE"
+    limits = value["qualification_execution_profile_v1_structural_supervisor_envelopes"]
+    assert limits["authority_status"] == (
+        "OWNER_APPROVED_FOR_QUALIFICATION_EXECUTION_PROFILE_V1"
+    )
+    assert limits["scope"] == (
+        "SUPERVISOR_AND_STRUCTURAL_RUNTIME_OVERHEAD_ONLY_NOT_MODEL_INFERENCE_"
+        "NOT_GLOBAL_CORE_V2_POLICY"
+    )
+    assert limits["cancellation_deadline_ns"] == 500_000_000
+    assert limits["structural_wall_time_ns"] == 1_000_000_000
+    assert limits["structural_peak_rss_bytes"] == 64 * 1024 * 1024
     assert limits["technical_output_bytes"] is None
     assert limits["technical_output_tokens"] is None
+    effect = value["authority_effect"]
+    assert effect == {
+        "qualification_execution_profile_v1_structural_supervisor_envelopes": True,
+        "defines_model_inference_limits": False,
+        "defines_global_core_v2_policy": False,
+        "defines_global_hardware_requirements": False,
+        "authorizes_candidate_execution_or_evaluation": False,
+    }
     assert {item["code"] for item in value["unresolved_limits"]} == {
         "INFERENCE_RESOURCE_CEILINGS_REQUIRE_NON_SEMANTIC_CANDIDATE_EXECUTION",
         "TECHNICAL_OUTPUT_ENVELOPE_REQUIRES_FROZEN_TOKENIZER_AND_BOUNDED_IDENTIFIERS",

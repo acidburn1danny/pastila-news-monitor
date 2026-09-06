@@ -1,7 +1,7 @@
 {
   "schema": "pastila-production-core-content-addressed-runtime-calibration",
   "schema_version": 1,
-  "status": "CANDIDATE_FREE_RUNTIME_MATERIALIZED_LIMIT_PROPOSALS_PENDING_OWNER_APPROVAL",
+  "status": "CANDIDATE_FREE_RUNTIME_MATERIALIZED_STRUCTURAL_ENVELOPES_OWNER_APPROVED",
   "frozen_authority": {
     "commit": "d5885027194ade26a8dec3ac13ccecd3ae6f6b9d",
     "tree": "f8d14d3d99570a24b379d01e8789158bde786a6d",
@@ -128,14 +128,21 @@
       }
     }
   ],
-  "candidate_free_limit_proposals": {
-    "authority_status": "PENDING_OWNER_APPROVAL",
-    "scope": "SUPERVISOR_AND_STRUCTURAL_RUNTIME_OVERHEAD_ONLY_NOT_MODEL_INFERENCE",
+  "qualification_execution_profile_v1_structural_supervisor_envelopes": {
+    "authority_status": "OWNER_APPROVED_FOR_QUALIFICATION_EXECUTION_PROFILE_V1",
+    "scope": "SUPERVISOR_AND_STRUCTURAL_RUNTIME_OVERHEAD_ONLY_NOT_MODEL_INFERENCE_NOT_GLOBAL_CORE_V2_POLICY",
     "cancellation_deadline_ns": 500000000,
     "structural_wall_time_ns": 1000000000,
     "structural_peak_rss_bytes": 67108864,
     "technical_output_bytes": null,
     "technical_output_tokens": null
+  },
+  "authority_effect": {
+    "qualification_execution_profile_v1_structural_supervisor_envelopes": true,
+    "defines_model_inference_limits": false,
+    "defines_global_core_v2_policy": false,
+    "defines_global_hardware_requirements": false,
+    "authorizes_candidate_execution_or_evaluation": false
   },
   "unresolved_limits": [
     {
