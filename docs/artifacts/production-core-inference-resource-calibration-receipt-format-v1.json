@@ -1,0 +1,34 @@
+{
+  "schema": "pastila-production-core-inference-resource-calibration-receipt-format",
+  "schema_version": 1,
+  "status": "MECHANISM_ONLY_NO_LIMIT_AUTHORITY",
+  "required_execution_authority": [
+    "commit",
+    "tree",
+    "probe_sha256",
+    "launcher_sha256",
+    "rootfs_sha256"
+  ],
+  "required_object_authority": [
+    "candidate",
+    "base_manifest",
+    "adapter_manifest"
+  ],
+  "matrix": {
+    "prefill": {"input_tokens": 8192, "generated_tokens": 0, "trials": 3},
+    "full_generation": {"input_tokens": 1924, "generated_tokens": 6268, "trials": 1},
+    "total_context_tokens": 8192
+  },
+  "framing": "CANONICAL_COMPACT_JSON_LF_SHA256_OF_JSON_BYTES_LF",
+  "recording": "CREATE_NEW_ATOMIC_RENAME_READ_ONLY_NO_OVERWRITE",
+  "threat_model": {
+    "concurrent_privileged_host_mutation": "EXCLUDED",
+    "reason": "A host administrator able to mutate backing inodes can also alter the kernel, process memory, GPU driver, or measurement clock; this mechanism instead detects ordinary substitution before and after use and isolates all child writes.",
+    "detected": "PRE_USE_IDENTITY_MISMATCH_POST_USE_MUTATION_PATH_REBINDING_RECEIPT_COLLISION_OR_BYTE_CHANGE"
+  },
+  "authority_effect": {
+    "defines_wall_time_or_rss_limits": false,
+    "performs_semantic_evaluation": false,
+    "promotes_candidate": false
+  }
+}
