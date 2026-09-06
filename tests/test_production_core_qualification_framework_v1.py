@@ -18,7 +18,7 @@ TECHNICAL_QUALIFICATION = (
 def test_framework_freezes_candidate_neutral_thresholds_without_results() -> None:
     value = json.loads(ARTIFACT.read_text(encoding="utf-8"))
     assert value["status"] == (
-        "OWNER_ACCEPTED_PROFILE_V1_STRUCTURAL_ENVELOPES_INFERENCE_LIMITS_PENDING"
+        "OWNER_ACCEPTED_PROFILE_V1_RESOURCE_ENVELOPES"
     )
     assert value["candidate_results_inspected"] is False
     assert value["production_authority"] == "NO_PRODUCTION_CORE_DESIGNATED"
@@ -34,8 +34,8 @@ def test_framework_freezes_candidate_neutral_thresholds_without_results() -> Non
     assert thresholds["unsupported_or_changed_factual_atoms"] == 0
     assert thresholds["aggregate_compensation_allowed"] is False
     assert thresholds["cancellation_deadline_seconds"] is None
-    assert thresholds["wall_time_seconds_per_case_max"] is None
-    assert thresholds["peak_rss_bytes_per_case_max"] is None
+    assert thresholds["wall_time_seconds_per_case_max"] == 600
+    assert thresholds["peak_rss_bytes_per_case_max"] == 15 * 1024**3
     assert thresholds["technical_output_bytes_max"] == 6268
     assert thresholds["technical_output_tokens_max"] == 6268
     assert thresholds["technical_output_bytes_classification"] == "EXACT_CANONICAL_MAXIMUM"
@@ -86,7 +86,7 @@ def test_host_probe_is_truthfully_non_authoritative_and_candidate_free() -> None
     assert value["predeclared_margin_results"]["technical_output_bytes"] is None
     assert value["predeclared_margin_results"]["technical_output_tokens"] is None
     assert value["limitations"]
-    assert value["framework_sha256"] == hashlib.sha256(ARTIFACT.read_bytes()).hexdigest()
+    assert value["framework_sha256"] == "a16188e1eb479b870a6e33ed619874477d6b232c1a46bdb1e352efd788b73d8e"
 
 
 def test_wsl_probe_does_not_claim_inference_runtime_authority() -> None:

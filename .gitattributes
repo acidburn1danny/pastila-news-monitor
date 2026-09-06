@@ -31,6 +31,9 @@
 # Preserve the bounded Crossref production capture evidence byte-for-byte.
 .pastila-runtime/milestone10-crossref-production-capture-v1/** -text -eol
 
+# Preserve inference-resource calibration receipts byte-for-byte.
+docs/artifacts/production-core-inference-resource-calibration-receipts/** -text -eol
+
 # Preserve the frozen Stage P Prompt-V2/V4 construction receipt byte-for-byte.
 .semantic-admission-v2-stage-p-prompt-v2-v4-binding-evidence/construction-preflight.json -text -eol
 

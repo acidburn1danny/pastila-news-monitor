@@ -25,7 +25,7 @@ if every gate passes; there is no aggregate-score compensation.
 | Cancellation | 100% pre-start and checkpoint cancellations meet the candidate-free synthetically derived deadline, make 0 later provider calls, and publish 0 accepted output | deadline pending |
 | Provenance/identity | 100% artifacts self-bind and transitively bind input, model, tokenizer, runtime, adapter, invocation contract, output, and qualification identities | technical invariant |
 | Portability/runtime closure | Two clean offline materializations from the same manifest yield identical component hashes and pass all probes with no absolute host path | technical invariant |
-| Resource ceilings | Every case remains inside separately frozen wall-time, peak-RSS, and technical bytes/tokens safety envelopes; these do not award semantic quality credit | values pending |
+| Resource ceilings | Every case remains inside separately frozen wall-time, peak-RSS, and technical bytes/tokens safety envelopes; these do not award semantic quality credit | 600 s load-plus-generation; 15 GiB RSS; 6268 bytes/tokens |
 | Hidden fallback absence | 0 DNS/socket/HTTP calls, 0 model downloads, 0 undeclared file reads, and 0 alternate model/provider invocations under instrumented denial | technical invariant |
 | Packaging viability | Clean offline install/materialization from declared artifacts succeeds twice and all production entry probes resolve only manifest-bound bytes | technical invariant |
 | Migration compatibility | 100% V1.1, V1.2, missing/legacy, and fresh settings cases converge as specified below without inference or fallback | technical invariant |
@@ -140,7 +140,10 @@ whole with no repair, coercion, extraction, retry, redraw, or state mutation.
 Candidate output cannot contain or determine PASS/FAIL; only a separate
 evaluator-authority receipt can record that verdict.
 
-Model-inference wall-time/RSS limits remain separate and pending owner approval.
+For Qualification Execution Profile v1 only, model inference fails closed when
+load plus full-generation wall time exceeds 600 seconds or peak RSS across load,
+prefill, and generation exceeds 15 GiB (16,106,127,360 bytes). These are not
+global Core V2 hardware or performance requirements and award no semantic credit.
 The approved structural supervisor and technical-output envelopes do not resolve
 or imply them.
 

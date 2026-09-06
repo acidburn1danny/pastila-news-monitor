@@ -1,7 +1,7 @@
 {
   "schema": "pastila-production-core-model-qualification-framework",
   "schema_version": 1,
-  "status": "OWNER_ACCEPTED_PROFILE_V1_STRUCTURAL_ENVELOPES_INFERENCE_LIMITS_PENDING",
+  "status": "OWNER_ACCEPTED_PROFILE_V1_RESOURCE_ENVELOPES",
   "candidate_results_inspected": false,
   "candidates": [
     "pastila-editor-core-v1.1-experimental",
@@ -42,8 +42,14 @@
     "cancellation_later_provider_calls": 0,
     "identity_and_provenance_closure_percent": 100,
     "portable_clean_materializations": 2,
-    "wall_time_seconds_per_case_max": null,
-    "peak_rss_bytes_per_case_max": null,
+    "wall_time_seconds_per_case_max": 600,
+    "peak_rss_bytes_per_case_max": 16106127360,
+    "inference_resource_limits_scope": "QUALIFICATION_EXECUTION_PROFILE_V1_ONLY_NOT_GLOBAL_CORE_V2_POLICY",
+    "inference_resource_limits_qualification": {
+      "sha256": "8fa13da0e87b2cb264190d7976a5731c08db613243d5e6edd59b159a229848cb",
+      "enforcement_module_sha256": "e70037f6a952a73c25bd398094c7b95e3d0780c938245f0646e1bdb7eb3bdd01",
+      "overflow": "FAIL_CLOSED"
+    },
     "qualification_execution_profile_v1_structural_supervisor_envelopes": {
       "authority_status": "OWNER_APPROVED",
       "evidence_sha256": "19b03af8e38351d7f0444853797fc19546a7ca07a77181db08cbd95061ce8207",
@@ -124,9 +130,10 @@
     ,"Qualification Execution Profile v1 tokenizer loads with fix_mistral_regex=True and fails closed when absent or warned; profile-specific only"
     ,"Qualification Execution Profile v1 technical byte ceiling 6268 as exact canonical maximum"
     ,"Qualification Execution Profile v1 technical token ceiling 6268 as conservative byte-tight safety bound, not an exact tokenizer-specific maximum"
+    ,"Qualification Execution Profile v1 inference wall-time ceiling 600 seconds"
+    ,"Qualification Execution Profile v1 inference peak-RSS ceiling 15 GiB or 16106127360 bytes"
   ],
   "pending_owner_acceptance": [
-    "materialized execution-profile runtime identities",
-    "inference wall-time and peak-RSS limits"
+    "materialized execution-profile runtime identities"
   ]
 }

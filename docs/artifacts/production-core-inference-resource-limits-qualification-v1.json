@@ -1,0 +1,38 @@
+{
+  "schema": "pastila-production-core-inference-resource-limits-qualification",
+  "schema_version": 1,
+  "status": "OWNER_APPROVED_LIMITS_OFFLINE_QUALIFIED",
+  "scope": "QUALIFICATION_EXECUTION_PROFILE_V1_ONLY_NOT_GLOBAL_CORE_V2_POLICY",
+  "mechanism": {
+    "commit": "4a9bd25b3a451157faffb069a4231623168a8779",
+    "tree": "750c5356f2fee8eef1f4d5a11e83628f7c7de8d3",
+    "rootfs_sha256": "274e7d1519f05f41108413efb01d35680b88e0f4b13bb63fca9634be155980f4"
+  },
+  "qualified_components": {
+    "enforcement_module_sha256": "e70037f6a952a73c25bd398094c7b95e3d0780c938245f0646e1bdb7eb3bdd01",
+    "enforcement_test_sha256": "4b35ce9339fce9b4046d2381899902090c0b2944ab5faa2e901ccf708612fc92",
+    "framework_binding": "FRAMEWORK_BINDS_THIS_QUALIFICATION_BY_SHA256"
+  },
+  "receipts": {
+    "v1_1_a": "bcd03f8f63d278b80fabea4db24e55a5b7f65007a185cfcfea1398c20e78b069",
+    "v1_2_a": "aeb3fd538b2c00c6b2acaa10ac94d912b6497140f6ead7c6f79d1c3ad01ed887",
+    "v1_1_b": "30a3b8581ecc9c0cdfefbee66764959126023528d8d1bb95bd77bf781c4bcd4d",
+    "v1_2_b": "46570ab41f247d782f1d7ac9c24ee0ae5332d56e28b5f18001b70f253f12995f"
+  },
+  "observed_maxima": {
+    "load_plus_full_generation_wall_ns": 544306569441,
+    "full_generation_wall_ns": 533714600973,
+    "prefill_wall_ns": 4038797867,
+    "peak_rss_bytes": 15269445632
+  },
+  "owner_approved_limits": {
+    "inference_wall_time_ns": 600000000000,
+    "inference_peak_rss_bytes": 16106127360,
+    "wall_measurement": "LOAD_WALL_NS_PLUS_FULL_GENERATION_WALL_NS",
+    "rss_measurement": "MAX_LOAD_PREFILL_AND_FULL_GENERATION_PEAK_RSS",
+    "overflow": "FAIL_CLOSED",
+    "coercion_truncation_retry_or_redraw": "PROHIBITED"
+  },
+  "candidate_semantic_evaluation": false,
+  "candidate_promotion_effect": false
+}
