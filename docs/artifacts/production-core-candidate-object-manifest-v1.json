@@ -1,0 +1,36 @@
+{
+  "schema": "pastila-production-core-candidate-object-manifest",
+  "schema_version": 1,
+  "status": "PRE_EXECUTION_CONTENT_ADDRESSED_AUTHORITY",
+  "base_model": {
+    "manifest_sha256": "f5a9327e40390c7f0cf93962d75abbbc5ae8da1fac48e1274092ac52cf88bf39",
+    "bytes": 27924394330,
+    "files": 17
+  },
+  "tokenizer": {
+    "object_sha256": "2a00451398b3bb51d3c0fa3f4758c77061377ada35abbb7f5e1006be3aaced5c",
+    "fix_mistral_regex": true
+  },
+  "adapters": {
+    "pastila-editor-core-v1.1-experimental": {
+      "manifest_sha256": "0bc4bb1b83b5c1375c1e676844dea079831e7ad0b90db955fa89a2f7d65c3e47",
+      "bytes": 243884513,
+      "files": 3
+    },
+    "pastila-editor-core-v1.2-experimental": {
+      "manifest_sha256": "22b5a7bde7194c66d895b9acab5791a8d8573df67f93704eab933666df7978a2",
+      "bytes": 243884513,
+      "files": 3
+    }
+  },
+  "system_prompts": {
+    "pastila-editor-core-v1.1-experimental": "9b25e239fc227252906fecab393a42a82eca4baa643ceed28177d3c5054e93fc",
+    "pastila-editor-core-v1.2-experimental": "111bc2734343c67aab4e1a04003199b98d4955fe9579e445cd7b5d6805a9da17"
+  },
+  "rootfs_sha256": "274e7d1519f05f41108413efb01d35680b88e0f4b13bb63fca9634be155980f4",
+  "object_resolution": "EXPLICIT_READ_ONLY_PATH_PLUS_COMPLETE_FLAT_FILE_MANIFEST",
+  "absolute_paths_are_authority": false,
+  "network": "DENY_ALL_NEW_CHILD_NAMESPACE",
+  "candidate_execution_performed": false,
+  "manifest_identity": "51cae2453234d19fef6cd6bb1505beb7ae9bb8a27fcd152a61a6a7bb181a0420"
+}
