@@ -1,0 +1,26 @@
+{
+  "schema": "pastila-production-core-semantic-adjudicator-public-key-registry",
+  "schema_version": 1,
+  "status": "OWNER_REGISTERED_PUBLIC_IDENTITIES",
+  "kit_commit": "776e673a640b1619edbeaf9b4aa2471bcc62d77d",
+  "kit_tree": "44f25a7ea1a4598a75cd83bfa6560bf369a58162",
+  "roles": {
+    "ADJUDICATOR_A": {
+      "adjudicator_id": "EVALUATOR-A-01",
+      "public_key_format": "PEM_SUBJECT_PUBLIC_KEY_INFO_ED25519_EXACT_BYTES_BASE64",
+      "public_key_sha256": "e30913d2a150ff6c3c5d621550c94e9559175921ca9dae49bfbe2bbabc911497",
+      "public_key_pem_base64": "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0NCk1Db3dCUVlESzJWd0F5RUFqcXRGSElsZ0l0UWZqSjdLb1JZYmJpOFlkcUhqTnhhUWlySGJDcVRONU80PQ0KLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tDQo="
+    },
+    "ADJUDICATOR_B": {
+      "adjudicator_id": "EVALUATOR-B-01",
+      "public_key_format": "PEM_SUBJECT_PUBLIC_KEY_INFO_ED25519_EXACT_BYTES_BASE64",
+      "public_key_sha256": "0fcc6461e3e6a0c53693ac834ae7e7264dc379a37b721eb40ace99d12c96c793",
+      "public_key_pem_base64": "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0NCk1Db3dCUVlESzJWd0F5RUFjakY3MkY4d0Y2aWl0dTg1Ymxldm9hWSs2TGtRMURTbjN1UDlhaW93S1EwPQ0KLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tDQo="
+    }
+  },
+  "independence_assertion": "OWNER_DESIGNATED_DISTINCT_HUMAN_EVALUATORS_WITH_DISTINCT_PUBLIC_KEYS",
+  "private_key_material_present": false,
+  "candidate_execution_authorized": false,
+  "candidate_promotion_effect": false,
+  "registry_identity": "ac4cb3ac3330df2473fe6e149df183c0bfbbb18f5b1b83bb34de3346234be433"
+}
