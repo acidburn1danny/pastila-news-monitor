@@ -18,17 +18,17 @@ EXECUTOR = ROOT / "scripts" / "execute_production_core_candidate_qualification_v
 CORE = ROOT / "src" / "pastila_scout" / "production_core_candidate_qualification_v1.py"
 ENVELOPE = ROOT / "src" / "pastila_scout" / "production_core_technical_output_envelope_v1.py"
 EXPECTED_EXECUTOR_SHA256 = "f0773ac4239a909c97941a0a309db0bb05d6222abc7afec86676ece557886946"
-EXPECTED_CORE_SHA256 = "35da46f483ffe2cd1c3832cbc8e4786d7a7c06d788ea3a03d64a2e8d5935f85c"
+EXPECTED_CORE_SHA256 = "3b9717517856f576b2f1ce4a4e42a2856d797d65d911e6a03ac3bb103b8e438f"
 EXPECTED_ENVELOPE_SHA256 = "e3ac013360a239713c0da02b59359c6cfc87579e93a6721892af0bb96184bf01"
 EXPECTED_ARTIFACT_SHA256 = {
     "production-core-candidate-object-manifest-v1.json": "551e6c2983e6d71664298432aa9b20e45b1677e3a45b8c6458a563cb913e83bf",
-    "production-core-comparative-qualification-generation-v1.json": "9ea5994df9a3732ed9a8b9fde67d939a309f5f6e327db38c0039347ee4128797",
-    "production-core-candidate-qualification-mechanism-v1.json": "27bb09e63a7c0b8c61254ac7c13b259801a1d45259f16d9b20d85ff91e6a488e",
+    "production-core-comparative-qualification-generation-v1.json": "2b23402d58a6b143c94152e285cdc9fa1b588bc84d333b15de85c6a158626950",
+    "production-core-candidate-qualification-mechanism-v1.json": "ccb23295442afade5eff00a4c50745dd5e4020df13f8bf60a50193c888291a18",
 }
 EXPECTED_IDENTITIES = {
     "manifest_identity": "51cae2453234d19fef6cd6bb1505beb7ae9bb8a27fcd152a61a6a7bb181a0420",
-    "qualification_generation_identity": "254525ca4dbd811a2fc0108c5a5c4b967be84e9cea36a855a46a55396cbecce6",
-    "qualification_identity": "5d5faa8be4b82a4027319647a70d56b23fb41b34f4cf50a7a6700df14417bc40",
+    "qualification_generation_identity": "b865af83fe360eb19c4f1fe07ad953becf38daedf6282e7c4f85027dc649eeac",
+    "qualification_identity": "52968d6040ecd05cb968412eb3272c8cf55be6fa76125e94829cb536a87da91f",
 }
 
 

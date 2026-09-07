@@ -212,7 +212,7 @@ def test_launcher_has_one_network_namespace_and_frozen_boundary() -> None:
     runner = (ROOT / "src/pastila_scout/production_core_candidate_qualification_runner_v1.py").read_text("utf-8")
     assert launcher.count("unshare --mount --net --pid --ipc --uts --fork") == 1
     assert "/proc/$$/fd" not in launcher
-    assert launcher.count("/proc/self/fd/") == 9
+    assert launcher.count("/proc/self/fd/") == 10
     assert "curl " not in launcher and "wget " not in launcher
     assert "env -i" in launcher and "mount -o remount,bind,ro" in launcher
     assert 'install -m 000 /dev/null "$ROOTFS/tmp/input/authority/$target"' in launcher
@@ -225,6 +225,11 @@ def test_launcher_has_one_network_namespace_and_frozen_boundary() -> None:
     assert launcher.count("</proc/uptime") >= 3
     assert 'sequence < last_sequence || completed < last_completed' in launcher
     assert '\\"stage\\":\\"BATCH_COMPLETE\\",\\"sequence\\":201,\\"completed_count\\":200' in launcher
+    assert launcher.count('snapshot_heartbeat "$OUTPUT/heartbeat.json"') == 2
+    assert 'heartbeat_snapshot_b64="$(base64 -w0 "/proc/self/fd/$heartbeat_fd")"' in launcher
+    assert launcher.count('printf %s "$heartbeat_snapshot_b64" | base64 -d') >= 4
+    assert "heartbeat-poll.snapshot" not in launcher and "heartbeat-final.snapshot" not in launcher
+    assert 'sha256sum "$OUTPUT/heartbeat.json"' not in launcher
     assert "requests" not in runner and "httpx" not in runner and "socket" not in runner
     orchestrator = (ROOT / "scripts/execute_production_core_candidate_qualification_v1.py").read_text("utf-8")
     assert "materialize_batches(" in orchestrator
@@ -415,7 +420,7 @@ def test_replacement_authority_cannot_be_rebound() -> None:
     plan = json.loads((ROOT / "docs/artifacts/production-core-comparative-qualification-generation-v1.json").read_bytes())
     manifest = json.loads((ROOT / "docs/artifacts/production-core-candidate-object-manifest-v1.json").read_bytes())
     changed = json.loads(json.dumps(plan))
-    changed["replacement_authority"]["replacement_attempt_ordinal"] = 6
+    changed["replacement_authority"]["replacement_attempt_ordinal"] = 7
     core = dict(changed)
     core.pop("qualification_generation_identity")
     changed["qualification_generation_identity"] = commitment(core)

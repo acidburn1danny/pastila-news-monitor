@@ -67,3 +67,19 @@ read -r uptime _ </proc/uptime; whole="${uptime%%.*}"; frac="${uptime#*.}00"; su
 (( runner_now % 10000000 == 0 && supervisor_now >= runner_now ))
 runner_deadline=$((runner_now + 600000000000))
 (( runner_deadline <= supervisor_now + 600000000000 ))
+
+# Byte-exact snapshots reject command-substitution normalization and path swaps.
+snapshot_fixture() { local source="$1" fd; exec {fd}<"$source"; fixture_b64="$(base64 -w0 "/proc/self/fd/$fd")"; exec {fd}<&-; }
+canonical='{"sequence":1}'
+printf %s "$canonical" > "$work/heartbeat-clean"
+printf '%s\n' "$canonical" > "$work/heartbeat-lf"
+printf '%s\n\n' "$canonical" > "$work/heartbeat-double-lf"
+printf '%s\0' "$canonical" > "$work/heartbeat-nul"
+for kind in clean lf double-lf nul; do snapshot_fixture "$work/heartbeat-$kind"; printf %s "$fixture_b64" > "$work/encoded-$kind"; done
+cmp -s <(base64 -d "$work/encoded-clean") <(printf %s "$canonical")
+! cmp -s <(base64 -d "$work/encoded-lf") <(printf %s "$canonical")
+! cmp -s <(base64 -d "$work/encoded-double-lf") <(printf %s "$canonical")
+! cmp -s <(base64 -d "$work/encoded-nul") <(printf %s "$canonical")
+printf %s "$canonical" > "$work/heartbeat-a"; printf '{"sequence":2}' > "$work/heartbeat-b"; ln -s "$work/heartbeat-a" "$work/heartbeat-current"
+exec {fd}<"$work/heartbeat-current"; ln -sfn "$work/heartbeat-b" "$work/heartbeat-current"; swapped_b64="$(base64 -w0 "/proc/self/fd/$fd")"; exec {fd}<&-
+cmp -s <(printf %s "$swapped_b64" | base64 -d) <(printf %s "$canonical")
