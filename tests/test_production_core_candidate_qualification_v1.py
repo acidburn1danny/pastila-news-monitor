@@ -6,6 +6,7 @@ import json
 import subprocess
 import sys
 from pathlib import Path
+from unittest.mock import patch
 
 import pytest
 
@@ -32,6 +33,15 @@ ROOT = Path(__file__).resolve().parents[1]
 def execution_module():
     path = ROOT / "scripts/execute_production_core_candidate_qualification_v1.py"
     spec = importlib.util.spec_from_file_location("pcq_execution_test", path)
+    assert spec and spec.loader
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def entry_module():
+    path = ROOT / "scripts/launch_production_core_candidate_qualification_v1.py"
+    spec = importlib.util.spec_from_file_location("pcq_entry_test", path)
     assert spec and spec.loader
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
@@ -206,7 +216,7 @@ def test_launcher_has_one_network_namespace_and_frozen_boundary() -> None:
     assert "requests" not in runner and "httpx" not in runner and "socket" not in runner
     orchestrator = (ROOT / "scripts/execute_production_core_candidate_qualification_v1.py").read_text("utf-8")
     assert "materialize_batches(" in orchestrator
-    assert orchestrator.count("subprocess.run(command, check=True)") == 1
+    assert orchestrator.count("_run_launcher(command, launcher_bytes)") == 1
     assert "tenacity" not in orchestrator and "while attempt" not in orchestrator
 
 
@@ -270,7 +280,7 @@ def test_production_cli_recovers_before_mutable_authority_resolution(tmp_path: P
     completed = subprocess.run(
         [
             sys.executable,
-            str(ROOT / "scripts/execute_production_core_candidate_qualification_v1.py"),
+            str(ROOT / "scripts/launch_production_core_candidate_qualification_v1.py"),
             "--resolution", str(tmp_path / "missing-resolution.json"),
             "--secret", str(tmp_path / "missing-secret.json"),
             "--output", str(output),
@@ -283,6 +293,85 @@ def test_production_cli_recovers_before_mutable_authority_resolution(tmp_path: P
     assert completed.returncode == 1
     failure = json.loads((output / "terminal-failure.json").read_bytes())
     assert failure["failure_class"] == "RECOVERED_CONSUMED_ATTEMPT_WITHOUT_TERMINAL_RECORD"
+
+
+def test_windows_to_wsl_object_identity_argument_transport_is_executable() -> None:
+    module = execution_module()
+    target = ROOT / "docs/artifacts/production-core-candidate-object-manifest-v1.json"
+    wsl_target = module._wsl(target)
+    helper = ROOT / "scripts/resolve_production_core_object_identity_v1.sh"
+    identity = module._wsl_object_identity(wsl_target, helper.read_bytes())
+    assert identity.startswith(f"{wsl_target}|")
+    device_inode = identity.rstrip().rsplit("|", 1)[1]
+    device, inode = device_inode.split(":", 1)
+    assert device.isdigit() and inode.isdigit()
+
+
+def test_verified_helper_and_launcher_bytes_cannot_be_reopened_or_substituted(tmp_path: Path) -> None:
+    module = execution_module()
+    helper = tmp_path / "helper.sh"
+    helper.write_bytes(b"verified-helper")
+    helper_bytes = module._read_pinned_source(
+        helper, hashlib.sha256(b"verified-helper").hexdigest()
+    )
+    helper.write_bytes(b"substituted-helper")
+    with patch.object(module.subprocess, "run") as called:
+        called.return_value.stdout = b"/object|1:2\n"
+        assert module._wsl_object_identity("/object", helper_bytes) == "/object|1:2\n"
+        assert called.call_args.kwargs["input"] == b"verified-helper"
+
+    launcher = tmp_path / "launcher.sh"
+    launcher.write_bytes(b"verified-launcher")
+    launcher_bytes = module._read_pinned_source(
+        launcher, hashlib.sha256(b"verified-launcher").hexdigest()
+    )
+    launcher.write_bytes(b"substituted-launcher")
+    with patch.object(module.subprocess, "run") as called:
+        module._run_launcher(["wsl.exe"], launcher_bytes)
+        assert called.call_args.kwargs["input"] == b"verified-launcher"
+
+
+def test_pinned_source_reader_rejects_substitution(tmp_path: Path) -> None:
+    module = execution_module()
+    source = tmp_path / "source.sh"
+    source.write_bytes(b"substituted")
+    with pytest.raises(SystemExit, match="byte mismatch"):
+        module._read_pinned_source(source, hashlib.sha256(b"expected").hexdigest())
+
+
+def test_pinned_entry_rejects_executor_substitution_before_execution(tmp_path: Path) -> None:
+    module = entry_module()
+    executor = tmp_path / "executor.py"
+    executor.write_bytes(b"substituted")
+    module.EXECUTOR = executor
+    module.EXPECTED_EXECUTOR_SHA256 = hashlib.sha256(b"expected").hexdigest()
+    with pytest.raises(SystemExit, match="Python authority byte mismatch"):
+        module._read_pinned(executor, module.EXPECTED_EXECUTOR_SHA256)
+
+
+def test_executor_rejects_direct_unpinned_entry() -> None:
+    source = (ROOT / "scripts/execute_production_core_candidate_qualification_v1.py").read_text("utf-8")
+    assert 'globals().get("PINNED_ENTRY_EXECUTOR_SHA256")' in source
+
+
+def test_pinned_core_ignores_ambient_envelope_module_substitution() -> None:
+    module = entry_module()
+    fake = type(sys)("pastila_scout.production_core_technical_output_envelope_v1")
+    fake.canonical_response_bytes = lambda _value: b"forged"
+    sys.modules[fake.__name__] = fake
+    loaded = module._load_core()
+    valid = {
+        "schema": "pastila-core-v2-structured-qualification-response",
+        "schema_version": 1,
+        "case_id": "case-1",
+        "request_identity": "sha256:" + "0" * 64,
+        "output_type": "FACTUAL",
+        "outcome": "ABSTAIN",
+        "text": None,
+        "claim_bindings": [],
+        "abstention_code": "INSUFFICIENT_AUTHORITY",
+    }
+    assert loaded.canonical_response_bytes(valid) != b"forged"
 
 
 def test_sigterm_after_attempt_consumption_publishes_terminal_failure() -> None:

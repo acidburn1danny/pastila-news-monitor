@@ -1,16 +1,15 @@
 #!/usr/bin/env bash
 set -euo pipefail
 readonly ROOTFS_SHA256="274e7d1519f05f41108413efb01d35680b88e0f4b13bb63fca9634be155980f4"
-readonly SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
-readonly REPO="$(dirname -- "$SCRIPT_DIR")"
-readonly RUNNER="$REPO/src/pastila_scout/production_core_candidate_qualification_runner_v1.py"
-if [[ $# -ne 11 ]]; then echo "usage: $0 ROOTFS_TAR MODEL ADAPTER PROMPT BATCH OUTPUT CANDIDATE GENERATION_ID BATCH_SHA PROMPT_SHA RUNNER_SHA" >&2; exit 2; fi
+if [[ $# -ne 12 ]]; then echo "usage: launcher ROOTFS_TAR MODEL ADAPTER PROMPT BATCH OUTPUT CANDIDATE GENERATION_ID BATCH_SHA PROMPT_SHA RUNNER_SHA RUNNER" >&2; exit 2; fi
 [[ "$(id -u)" == 0 ]] || { echo "root required" >&2; exit 3; }
 for ordinal in 1 2 3 4 5 6; do [[ ! -L "${!ordinal}" ]] || exit 3; done
 readonly ROOTFS_TAR="$(realpath -e -- "$1")" MODEL="$(realpath -e -- "$2")" ADAPTER="$(realpath -e -- "$3")"
 readonly PROMPT="$(realpath -e -- "$4")" BATCH="$(realpath -e -- "$5")" OUTPUT="$(realpath -e -- "$6")"
 readonly CANDIDATE="$7" GENERATION_ID="$8"
-readonly EXPECTED_BATCH_SHA256="$9" EXPECTED_PROMPT_SHA256="${10}" EXPECTED_RUNNER_SHA256="${11}"
+readonly EXPECTED_BATCH_SHA256="$9" EXPECTED_PROMPT_SHA256="${10}" EXPECTED_RUNNER_SHA256="${11}" RUNNER_INPUT="${12}"
+[[ ! -L "$RUNNER_INPUT" && -f "$RUNNER_INPUT" ]] || exit 3
+readonly RUNNER="$(realpath -e -- "$RUNNER_INPUT")"
 case "$CANDIDATE" in pastila-editor-core-v1.1-experimental|pastila-editor-core-v1.2-experimental) ;; *) exit 3;; esac
 [[ -f "$ROOTFS_TAR" && -d "$MODEL" && -d "$ADAPTER" && -f "$PROMPT" && -f "$BATCH" && -d "$OUTPUT" ]] || exit 3
 [[ -z "$(find "$OUTPUT" -mindepth 1 -print -quit)" && "$GENERATION_ID" =~ ^[0-9a-f]{64}$ && "$EXPECTED_BATCH_SHA256" =~ ^[0-9a-f]{64}$ && "$EXPECTED_PROMPT_SHA256" =~ ^[0-9a-f]{64}$ && "$EXPECTED_RUNNER_SHA256" =~ ^[0-9a-f]{64}$ ]] || exit 3

@@ -8,10 +8,11 @@
   "source_sha256": {
     "src/pastila_scout/production_core_candidate_qualification_v1.py": "e8573bc63699d215954c800aea7b33401f86a778dce0e3cefc410cbbbbe3c5ad",
     "src/pastila_scout/production_core_candidate_qualification_runner_v1.py": "0fe69ce28fa70670d86962e37a29dbf9702bbe5402fb37d98422ae3206709ef1",
-    "scripts/run_production_core_candidate_qualification_v1.sh": "7c090a0c380fddf1c9f722104e591b3cfdfa052158501f56a12bf39888342bc3",
-    "scripts/execute_production_core_candidate_qualification_v1.py": "ca153459532e815177fae7905c05e449158d7d40e955155191b8530f1b120522",
-    "scripts/materialize_production_core_candidate_qualification_v1.py": "e1e328f002a4291c1ae0945cef94e0ca84b2392a3911ae716733aff53e9de530",
-    "tests/test_production_core_candidate_qualification_v1.py": "025ba6498dbc255463023966d1f74a76d62124ca2b99e9a7ee25729dba731af3",
+    "scripts/run_production_core_candidate_qualification_v1.sh": "fd867d04aff65eb9fd349f1392c3a2d3b8abf41a4343fc95425090b63dd23ad9",
+    "scripts/resolve_production_core_object_identity_v1.sh": "75cd74aeac115b65b34d9c3abaf9cab7ebbf578cdb62e915e7dd39ba627286a5",
+    "scripts/execute_production_core_candidate_qualification_v1.py": "68dc9ef77040074dfbfbc7638a64e6c38ebbe8860adfa15fef519a704ef6fe02",
+    "scripts/materialize_production_core_candidate_qualification_v1.py": "662d1b74e156a72909393a5cf48c265c5a1554c95fc11e77a6a2ebbfc2630bae",
+    "tests/test_production_core_candidate_qualification_v1.py": "336b13ee91a16a4304dba2f7239dad4acd36c223eb3d06d4128bd402518039bb",
     "tests/fixtures/production_core_candidate_qualification_isolation_v1.sh": "918619e380bdab9a1bd22d1ef0bc1b8fe6a9a53f429cec1e61aef20660f8510c",
     "tests/fixtures/production_core_candidate_qualification_watchdog_v1.sh": "c52026477a4728b4d5865062b1ef046c255d6efba10f9cac5c18180240f55d7a",
     "tests/fixtures/production_core_candidate_qualification_terminal_v1.sh": "835b858ceda9fa44f5289841643f64a22ffa1d4791a3c91bb65b9e7a4ce286c2",
@@ -22,5 +23,5 @@
   "candidate_outputs_inspected": false,
   "network_activity": false,
   "promotion_effect": false,
-  "qualification_identity": "eea75bd9afc430089e5a5fbe559c069463d4fe12ecb29682ed78ec9dde4bdb2a"
+  "qualification_identity": "ebd47940a73c426c5e5f1b515c0c16ca989c8fd989a858cac53883aecfb9e0f5"
 }

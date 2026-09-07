@@ -6,23 +6,24 @@ import argparse
 import atexit
 import hashlib
 import json
+import os
 import signal
+import stat
 import subprocess
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 
-from pastila_scout.production_core_candidate_qualification_authority_v1 import (
-    validate_terminal_candidate_qualification_authority,
-)
-from pastila_scout.production_core_candidate_qualification_v1 import (
-    atomic_publish,
-    build_blind_packet,
-    build_execution_receipt,
-    canonical_json_bytes,
-    materialize_batches,
-)
+if "PINNED_ENTRY_EXECUTOR_SHA256" not in globals():  # test/import support; main rejects direct execution
+    from pastila_scout.production_core_candidate_qualification_v1 import (
+        atomic_publish,
+        build_blind_packet,
+        build_execution_receipt,
+        canonical_json_bytes,
+        materialize_batches,
+    )
 
 ROOT = Path(__file__).resolve().parents[1]
 ARTIFACTS = ROOT / "docs" / "artifacts"
+IDENTITY_HELPER = ROOT / "scripts" / "resolve_production_core_object_identity_v1.sh"
 
 
 def _object(path: Path) -> dict[str, object]:
@@ -33,19 +34,53 @@ def _object(path: Path) -> dict[str, object]:
 
 
 def _wsl(path: Path) -> str:
-    completed = subprocess.run(
-        ["wsl.exe", "-d", "Ubuntu-24.04", "--", "wslpath", "-a", str(path)],
-        check=True, capture_output=True, text=True,
-    )
-    return completed.stdout.strip()
+    if path.is_symlink() or not path.exists():
+        raise SystemExit("Windows-to-WSL path authority rejected")
+    windows = PureWindowsPath(path.absolute())
+    if not windows.drive or windows.root != "\\" or len(windows.drive) != 2:
+        raise SystemExit("unsupported Windows-to-WSL path authority")
+    drive = windows.drive[0]
+    if not drive.isascii() or not drive.isalpha():
+        raise SystemExit("unsupported Windows drive authority")
+    relative = windows.relative_to(windows.anchor)
+    if any(part in {"", ".", ".."} for part in relative.parts):
+        raise SystemExit("invalid Windows-to-WSL path authority")
+    return f"/mnt/{drive.lower()}/" + "/".join(relative.parts)
 
 
-def _wsl_object_identity(path: str) -> str:
+def _read_pinned_source(path: Path, expected_sha256: str) -> bytes:
+    if path.is_symlink():
+        raise SystemExit("production executable source symlink rejected")
+    flags = os.O_RDONLY | getattr(os, "O_BINARY", 0)
+    if hasattr(os, "O_NOFOLLOW"):
+        flags |= os.O_NOFOLLOW
+    descriptor = os.open(path, flags)
+    try:
+        metadata = os.fstat(descriptor)
+        if not stat.S_ISREG(metadata.st_mode):
+            raise SystemExit("production executable source is not a regular file")
+        with os.fdopen(descriptor, "rb", closefd=False) as handle:
+            data = handle.read()
+    finally:
+        os.close(descriptor)
+    if hashlib.sha256(data).hexdigest() != expected_sha256:
+        raise SystemExit("production executable source byte mismatch")
+    return data
+
+
+def _wsl_object_identity(path: str, helper_bytes: bytes) -> str:
     completed = subprocess.run(
-        ["wsl.exe", "-d", "Ubuntu-24.04", "--", "bash", "--noprofile", "--norc", "-c", 'p=$(realpath -e -- "$1") && printf "%s|" "$p" && stat -Lc "%d:%i" -- "$p"', "bash", path],
-        check=True, capture_output=True, text=True,
+        [
+            "wsl.exe", "-d", "Ubuntu-24.04", "--", "bash", "--noprofile",
+            "--norc", "-s", "--", path,
+        ],
+        input=helper_bytes, check=True, capture_output=True,
     )
-    return completed.stdout
+    return completed.stdout.decode("utf-8", errors="strict")
+
+
+def _run_launcher(command: list[str], launcher_bytes: bytes) -> None:
+    subprocess.run(command, input=launcher_bytes, check=True)
 
 
 def _publish_terminal_failure(
@@ -121,10 +156,24 @@ def main() -> int:
         "production-core-candidate-qualification-mechanism-v1.json",
     )
     authority_bytes = {name: (ARTIFACTS / name).read_bytes() for name in authority_names}
-    validate_terminal_candidate_qualification_authority(authority_bytes)
+    terminal_validator = globals().get("PINNED_TERMINAL_VALIDATOR")
+    if not callable(terminal_validator):
+        raise SystemExit("terminal validator was not supplied by pinned entry authority")
+    terminal_validator(authority_bytes)
     plan = json.loads(authority_bytes[authority_names[1]])
     candidate_manifest = json.loads(authority_bytes[authority_names[0]])
     mechanism = json.loads(authority_bytes[authority_names[2]])
+    source_sha256 = mechanism.get("source_sha256")
+    if not isinstance(source_sha256, dict):
+        raise SystemExit("production executable source authority absent")
+    executor_name = "scripts/execute_production_core_candidate_qualification_v1.py"
+    helper_name = "scripts/resolve_production_core_object_identity_v1.sh"
+    launcher_name = "scripts/run_production_core_candidate_qualification_v1.sh"
+    if globals().get("PINNED_ENTRY_EXECUTOR_SHA256") != source_sha256.get(executor_name):
+        raise SystemExit("executor was not loaded by the pinned entry authority")
+    helper_bytes = _read_pinned_source(IDENTITY_HELPER, str(source_sha256.get(helper_name)))
+    launcher = ROOT / launcher_name
+    launcher_bytes = _read_pinned_source(launcher, str(source_sha256.get(launcher_name)))
     generation = str(plan["qualification_generation_identity"])
     if any(output.iterdir()):
         if _recover_unclosed_attempt(output, generation):
@@ -161,7 +210,7 @@ def main() -> int:
         if not isinstance(local, dict) or list(local) != ["rootfs_tar", "model", "adapters", "materialization_provenance_identity"]:
             raise SystemExit("materialization resolution mismatch")
         paths = [str(local["rootfs_tar"]), str(local["model"]), *map(str, local["adapters"].values())]  # type: ignore[union-attr]
-        identities = {_wsl_object_identity(path) for path in paths}
+        identities = {_wsl_object_identity(path, helper_bytes) for path in paths}
         if len(identities) != len(paths) or resolved_objects.intersection(identities):
             raise SystemExit("clean materializations are not physically distinct")
         resolved_objects.update(identities)
@@ -169,7 +218,9 @@ def main() -> int:
         expected_proof = plan["clean_materialization_authority"][materialization]["provenance_identity"]  # type: ignore[index]
         if proof != expected_proof:
             raise SystemExit("materialization provenance is not distinct")
-    launcher = ROOT / "scripts" / "run_production_core_candidate_qualification_v1.sh"
+    runner = ROOT / "src" / "pastila_scout" / "production_core_candidate_qualification_runner_v1.py"
+    if runner.is_symlink() or not runner.is_file():
+        raise SystemExit("runner source authority rejected")
     prompts = {
         "pastila-editor-core-v1.1-experimental": ROOT / ".experimental-0-3-editor-core-v1-architecture-prompt-first-training-plan-v1-evidence" / "PASTILAACIDA_EDITOR_CORE_SYSTEM_PROMPT_V1.txt",
         "pastila-editor-core-v1.2-experimental": ROOT / ".experimental-0-3-core-v1-2-journalistic-deontology-prime-directive-v1-evidence" / "PASTILAACIDA_EDITOR_CORE_SYSTEM_PROMPT_V1_2.txt",
@@ -216,15 +267,16 @@ def main() -> int:
         result_dir.mkdir()
         command = [
             "wsl.exe", "-d", "Ubuntu-24.04", "-u", "root", "--", "bash",
-            _wsl(launcher), str(local["rootfs_tar"]), str(local["model"]),
+            "--noprofile", "--norc", "-s", "--", str(local["rootfs_tar"]), str(local["model"]),
             str(adapters[candidate]), _wsl(prompts[candidate]), _wsl(batch_path),
             _wsl(result_dir), candidate, generation,
             str(batch["batch_sha256"]),
             str(candidate_manifest["system_prompts"][candidate]),
             str(mechanism["source_sha256"]["src/pastila_scout/production_core_candidate_qualification_runner_v1.py"]),
+            _wsl(runner),
         ]
         try:
-            subprocess.run(command, check=True)  # exactly one attempt; no retry path
+            _run_launcher(command, launcher_bytes)  # exactly one attempt; no retry path
         except (OSError, subprocess.CalledProcessError) as exc:
             partial = sorted(
                 ({"path": str(path.relative_to(output)).replace("\\", "/"), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()} for path in output.rglob("*") if path.is_file()),

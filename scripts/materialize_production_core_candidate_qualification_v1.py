@@ -144,6 +144,7 @@ def main() -> int:
         "src/pastila_scout/production_core_candidate_qualification_v1.py",
         "src/pastila_scout/production_core_candidate_qualification_runner_v1.py",
         "scripts/run_production_core_candidate_qualification_v1.sh",
+        "scripts/resolve_production_core_object_identity_v1.sh",
         "scripts/execute_production_core_candidate_qualification_v1.py",
         "scripts/materialize_production_core_candidate_qualification_v1.py",
         "tests/test_production_core_candidate_qualification_v1.py",
