@@ -8,6 +8,13 @@ set -euo pipefail
 snapshot_fd="$1"
 [[ "$(cat "/proc/self/fd/$snapshot_fd")" == descriptor-sentinel ]]
 mount --make-rprivate /
+fixture_root="$(mktemp -d)"
+mkdir -p "$fixture_root/input/authority"
+install -m 000 /dev/null "$fixture_root/input/authority/prompt.txt"
+mount --bind "/proc/self/fd/$snapshot_fd" "$fixture_root/input/authority/prompt.txt"
+[[ "$(cat "$fixture_root/input/authority/prompt.txt")" == descriptor-sentinel ]]
+umount "$fixture_root/input/authority/prompt.txt"
+rm -rf -- "$fixture_root"
 mount -t proc proc /proc
 [[ "$$" == 1 ]]
 [[ "$(awk -F: 'NR>2 {gsub(/ /,"",$1); print $1}' /proc/net/dev | sort -u | paste -sd, -)" == lo ]]

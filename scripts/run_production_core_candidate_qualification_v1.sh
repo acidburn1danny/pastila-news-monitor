@@ -48,6 +48,9 @@ mount -t proc proc "$ROOTFS/proc"; mounted+=("$ROOTFS/proc")
 for name in dev sys; do mount --rbind "/$name" "$ROOTFS/$name"; mounted+=("$ROOTFS/$name"); mount --make-rslave "$ROOTFS/$name"; done
 mount -t tmpfs -o size=64m,mode=1777 tmpfs "$ROOTFS/tmp"; mounted+=("$ROOTFS/tmp")
 mkdir -p "$ROOTFS/tmp/input/model" "$ROOTFS/tmp/input/adapter" "$ROOTFS/tmp/input/authority" "$ROOTFS/tmp/output"
+for target in prompt.txt batch.json runner.py; do
+  install -m 000 /dev/null "$ROOTFS/tmp/input/authority/$target"
+done
 for source_target in "$MODEL_SNAPSHOT|$ROOTFS/tmp/input/model" "$ADAPTER_SNAPSHOT|$ROOTFS/tmp/input/adapter"; do source="${source_target%%|*}"; target="${source_target#*|}"; mount --bind "$source" "$target"; mounted+=("$target"); mount -o remount,bind,ro "$target"; done
 for source_target in "$PROMPT_SNAPSHOT|$ROOTFS/tmp/input/authority/prompt.txt" "$BATCH_SNAPSHOT|$ROOTFS/tmp/input/authority/batch.json" "$RUNNER_SNAPSHOT|$ROOTFS/tmp/input/authority/runner.py"; do source="${source_target%%|*}"; target="${source_target#*|}"; mount --bind "$source" "$target"; mounted+=("$target"); mount -o remount,bind,ro "$target"; done
 mount --bind "$OUTPUT" "$ROOTFS/tmp/output"; mounted+=("$ROOTFS/tmp/output")

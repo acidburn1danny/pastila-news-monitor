@@ -15,6 +15,7 @@ from pastila_scout.production_core_candidate_qualification_authority_v1 import (
 )
 from pastila_scout.production_core_candidate_qualification_v1 import (
     ALIASES,
+    REPLACEMENT_AUTHORITY,
     QualificationAuthorityError,
     atomic_publish,
     build_blind_packet,
@@ -214,6 +215,7 @@ def test_launcher_has_one_network_namespace_and_frozen_boundary() -> None:
     assert launcher.count("/proc/self/fd/") == 9
     assert "curl " not in launcher and "wget " not in launcher
     assert "env -i" in launcher and "mount -o remount,bind,ro" in launcher
+    assert 'install -m 000 /dev/null "$ROOTFS/tmp/input/authority/$target"' in launcher
     assert "fix_mistral_regex=True" in runner
     assert "do_sample=False" in runner and "max_new_tokens=MAX_OUTPUT" in runner
     assert "requests" not in runner and "httpx" not in runner and "socket" not in runner
@@ -390,38 +392,7 @@ def test_generated_public_authority_has_no_secret_or_execution_claim() -> None:
     qualification = json.loads((ROOT / "docs/artifacts/production-core-candidate-qualification-mechanism-v1.json").read_bytes())
     assert plan["matrix"] == {"materializations": 2, "repetitions": 3, "cases": 200, "candidates": 2, "rows": 2400}
     assert plan["alias_mapping_public"] is False
-    assert plan["replacement_authority"] == {
-        "superseded_generation_identity": "69480287640939fbeb9e27c6d0f8b35881a11020baa5a9565f3368fb7ce12155",
-        "consumed_attempt_identity": "4440016ac96d7d49c6dafd18675b4d6c4a51459a1bc46bc60d7918685845e522",
-        "terminal_failure_identity": "0bf4e535ae23b46ef16ba6695a02ec40f6a4c8ba9d4af836593c0626cc2fa708",
-        "replacement_attempt_ordinal": 2,
-        "retry_or_redraw": False,
-        "predecessor_attempt": {
-            "schema": "pastila-production-core-comparative-execution-attempt",
-            "schema_version": 1,
-            "qualification_generation_identity": "69480287640939fbeb9e27c6d0f8b35881a11020baa5a9565f3368fb7ce12155",
-            "alias_secret_commitment": "0195c095f520e5cbfbbdbe3f353091ca3cef86e9e3e9862c12dfa9f28267d2e7",
-            "attempt_ordinal": 1,
-            "retry_or_redraw_authorized": False,
-            "status": "CONSUMED_BEFORE_EXECUTION",
-            "attempt_identity": "4440016ac96d7d49c6dafd18675b4d6c4a51459a1bc46bc60d7918685845e522",
-        },
-        "predecessor_terminal_failure": {
-            "schema": "pastila-production-core-comparative-execution-terminal-failure",
-            "schema_version": 1,
-            "qualification_generation_identity": "69480287640939fbeb9e27c6d0f8b35881a11020baa5a9565f3368fb7ce12155",
-            "attempt_identity": "4440016ac96d7d49c6dafd18675b4d6c4a51459a1bc46bc60d7918685845e522",
-            "failed_materialization": "A",
-            "failed_repetition": 1,
-            "failed_candidate_alias": "CANDIDATE-A",
-            "failure_class": "CalledProcessError",
-            "partial_artifact_count": 2,
-            "partial_artifact_root": "52296adba2e6d1ba2b4a82047b2b689425423ab2ab8b746010f447631238efff",
-            "retry_or_redraw_authorized": False,
-            "promotion_effect": False,
-            "failure_identity": "0bf4e535ae23b46ef16ba6695a02ec40f6a4c8ba9d4af836593c0626cc2fa708",
-        },
-    }
+    assert plan["replacement_authority"] == REPLACEMENT_AUTHORITY
     assert "aliases" not in plan and plan["candidate_execution_performed"] is False
     assert qualification["synthetic_only"] is True
     assert qualification["candidate_models_loaded_or_executed"] is False
@@ -435,7 +406,7 @@ def test_replacement_authority_cannot_be_rebound() -> None:
     plan = json.loads((ROOT / "docs/artifacts/production-core-comparative-qualification-generation-v1.json").read_bytes())
     manifest = json.loads((ROOT / "docs/artifacts/production-core-candidate-object-manifest-v1.json").read_bytes())
     changed = json.loads(json.dumps(plan))
-    changed["replacement_authority"]["replacement_attempt_ordinal"] = 3
+    changed["replacement_authority"]["replacement_attempt_ordinal"] = 4
     core = dict(changed)
     core.pop("qualification_generation_identity")
     changed["qualification_generation_identity"] = commitment(core)
