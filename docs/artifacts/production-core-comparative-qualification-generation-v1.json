@@ -11,97 +11,129 @@
   "alias_secret_commitment": "0195c095f520e5cbfbbdbe3f353091ca3cef86e9e3e9862c12dfa9f28267d2e7",
   "alias_mapping_public": false,
   "replacement_authority": {
-    "superseded_generation_identity": "6ebd356f7e42ca8192f4e362127f17f169337d24923274dad472b5e43f3509cb",
-    "consumed_attempt_identity": "bd2710eeb4c22e7d3232e2566c61ac94f12c862ead418fc615efbb11d32de1c9",
-    "terminal_failure_identity": "9bb7a9258348428b3f7d9aa8d2c6235ca68418a2f5879f89c4cd2ce818bb2d0e",
-    "replacement_attempt_ordinal": 4,
+    "superseded_generation_identity": "80058a04ee40c896a71c950b83c242af160479fcce5bd495577c57cea9d0bc04",
+    "consumed_attempt_identity": "cc6d9969c6f2392cbe76c4068becd1e049226dcadf61f4e3eb0f93bec2d65aad",
+    "terminal_failure_identity": "2669611fca5cd76ce84aad37d737f139c26cc65c452bceed350257d405811c6c",
+    "replacement_attempt_ordinal": 5,
     "retry_or_redraw": false,
     "predecessor_attempt": {
       "schema": "pastila-production-core-comparative-execution-attempt",
       "schema_version": 1,
-      "qualification_generation_identity": "6ebd356f7e42ca8192f4e362127f17f169337d24923274dad472b5e43f3509cb",
+      "qualification_generation_identity": "80058a04ee40c896a71c950b83c242af160479fcce5bd495577c57cea9d0bc04",
       "alias_secret_commitment": "0195c095f520e5cbfbbdbe3f353091ca3cef86e9e3e9862c12dfa9f28267d2e7",
-      "attempt_ordinal": 3,
+      "attempt_ordinal": 4,
       "retry_or_redraw_authorized": false,
       "status": "CONSUMED_BEFORE_EXECUTION",
-      "attempt_identity": "bd2710eeb4c22e7d3232e2566c61ac94f12c862ead418fc615efbb11d32de1c9"
+      "attempt_identity": "cc6d9969c6f2392cbe76c4068becd1e049226dcadf61f4e3eb0f93bec2d65aad"
     },
     "predecessor_terminal_failure": {
       "schema": "pastila-production-core-comparative-execution-terminal-failure",
       "schema_version": 1,
-      "qualification_generation_identity": "6ebd356f7e42ca8192f4e362127f17f169337d24923274dad472b5e43f3509cb",
-      "attempt_identity": "bd2710eeb4c22e7d3232e2566c61ac94f12c862ead418fc615efbb11d32de1c9",
+      "qualification_generation_identity": "80058a04ee40c896a71c950b83c242af160479fcce5bd495577c57cea9d0bc04",
+      "attempt_identity": "cc6d9969c6f2392cbe76c4068becd1e049226dcadf61f4e3eb0f93bec2d65aad",
       "failed_materialization": "A",
       "failed_repetition": 1,
       "failed_candidate_alias": "CANDIDATE-A",
       "failure_class": "CalledProcessError",
-      "partial_artifact_count": 8,
-      "partial_artifact_root": "e1818e65a4c63373f3a0f2ead6519da651ec4875f9db6d4ca34d1062f5716cd8",
+      "partial_artifact_count": 188,
+      "partial_artifact_root": "43448503978ceba8118450b71c7ec4effe462926cdab4e2816fa2149ef922aa6",
       "retry_or_redraw_authorized": false,
       "promotion_effect": false,
-      "failure_identity": "9bb7a9258348428b3f7d9aa8d2c6235ca68418a2f5879f89c4cd2ce818bb2d0e"
+      "failure_identity": "2669611fca5cd76ce84aad37d737f139c26cc65c452bceed350257d405811c6c"
     },
     "prior_replacement_authority": {
-      "superseded_generation_identity": "870c84ac320153ab20070f2b2106a1dc1c09339d791cf6616b81dc8da0d5c8a6",
-      "consumed_attempt_identity": "38a82e57df1394e7479ab21da1765f1865f580c4aeb94d875856f9cda115d5df",
-      "terminal_failure_identity": "5e3fc7a2efb53de28061dc48ed21e04e06d7a6799b09b5f368041d4a26752731",
-      "replacement_attempt_ordinal": 3,
+      "superseded_generation_identity": "6ebd356f7e42ca8192f4e362127f17f169337d24923274dad472b5e43f3509cb",
+      "consumed_attempt_identity": "bd2710eeb4c22e7d3232e2566c61ac94f12c862ead418fc615efbb11d32de1c9",
+      "terminal_failure_identity": "9bb7a9258348428b3f7d9aa8d2c6235ca68418a2f5879f89c4cd2ce818bb2d0e",
+      "replacement_attempt_ordinal": 4,
       "retry_or_redraw": false,
       "predecessor_attempt": {
         "schema": "pastila-production-core-comparative-execution-attempt",
         "schema_version": 1,
-        "qualification_generation_identity": "870c84ac320153ab20070f2b2106a1dc1c09339d791cf6616b81dc8da0d5c8a6",
+        "qualification_generation_identity": "6ebd356f7e42ca8192f4e362127f17f169337d24923274dad472b5e43f3509cb",
         "alias_secret_commitment": "0195c095f520e5cbfbbdbe3f353091ca3cef86e9e3e9862c12dfa9f28267d2e7",
-        "attempt_ordinal": 2,
+        "attempt_ordinal": 3,
         "retry_or_redraw_authorized": false,
         "status": "CONSUMED_BEFORE_EXECUTION",
-        "attempt_identity": "38a82e57df1394e7479ab21da1765f1865f580c4aeb94d875856f9cda115d5df"
+        "attempt_identity": "bd2710eeb4c22e7d3232e2566c61ac94f12c862ead418fc615efbb11d32de1c9"
       },
       "predecessor_terminal_failure": {
         "schema": "pastila-production-core-comparative-execution-terminal-failure",
         "schema_version": 1,
-        "qualification_generation_identity": "870c84ac320153ab20070f2b2106a1dc1c09339d791cf6616b81dc8da0d5c8a6",
-        "attempt_identity": "38a82e57df1394e7479ab21da1765f1865f580c4aeb94d875856f9cda115d5df",
+        "qualification_generation_identity": "6ebd356f7e42ca8192f4e362127f17f169337d24923274dad472b5e43f3509cb",
+        "attempt_identity": "bd2710eeb4c22e7d3232e2566c61ac94f12c862ead418fc615efbb11d32de1c9",
         "failed_materialization": "A",
         "failed_repetition": 1,
         "failed_candidate_alias": "CANDIDATE-A",
         "failure_class": "CalledProcessError",
-        "partial_artifact_count": 2,
-        "partial_artifact_root": "e5261f1648b9675c6b8fe0e23892b0807bb347b811fabb0e9ebe791d5fc3de6e",
+        "partial_artifact_count": 8,
+        "partial_artifact_root": "e1818e65a4c63373f3a0f2ead6519da651ec4875f9db6d4ca34d1062f5716cd8",
         "retry_or_redraw_authorized": false,
         "promotion_effect": false,
-        "failure_identity": "5e3fc7a2efb53de28061dc48ed21e04e06d7a6799b09b5f368041d4a26752731"
+        "failure_identity": "9bb7a9258348428b3f7d9aa8d2c6235ca68418a2f5879f89c4cd2ce818bb2d0e"
       },
       "prior_replacement_authority": {
-        "superseded_generation_identity": "69480287640939fbeb9e27c6d0f8b35881a11020baa5a9565f3368fb7ce12155",
-        "consumed_attempt_identity": "4440016ac96d7d49c6dafd18675b4d6c4a51459a1bc46bc60d7918685845e522",
-        "terminal_failure_identity": "0bf4e535ae23b46ef16ba6695a02ec40f6a4c8ba9d4af836593c0626cc2fa708",
-        "replacement_attempt_ordinal": 2,
+        "superseded_generation_identity": "870c84ac320153ab20070f2b2106a1dc1c09339d791cf6616b81dc8da0d5c8a6",
+        "consumed_attempt_identity": "38a82e57df1394e7479ab21da1765f1865f580c4aeb94d875856f9cda115d5df",
+        "terminal_failure_identity": "5e3fc7a2efb53de28061dc48ed21e04e06d7a6799b09b5f368041d4a26752731",
+        "replacement_attempt_ordinal": 3,
         "retry_or_redraw": false,
         "predecessor_attempt": {
           "schema": "pastila-production-core-comparative-execution-attempt",
           "schema_version": 1,
-          "qualification_generation_identity": "69480287640939fbeb9e27c6d0f8b35881a11020baa5a9565f3368fb7ce12155",
+          "qualification_generation_identity": "870c84ac320153ab20070f2b2106a1dc1c09339d791cf6616b81dc8da0d5c8a6",
           "alias_secret_commitment": "0195c095f520e5cbfbbdbe3f353091ca3cef86e9e3e9862c12dfa9f28267d2e7",
-          "attempt_ordinal": 1,
+          "attempt_ordinal": 2,
           "retry_or_redraw_authorized": false,
           "status": "CONSUMED_BEFORE_EXECUTION",
-          "attempt_identity": "4440016ac96d7d49c6dafd18675b4d6c4a51459a1bc46bc60d7918685845e522"
+          "attempt_identity": "38a82e57df1394e7479ab21da1765f1865f580c4aeb94d875856f9cda115d5df"
         },
         "predecessor_terminal_failure": {
           "schema": "pastila-production-core-comparative-execution-terminal-failure",
           "schema_version": 1,
-          "qualification_generation_identity": "69480287640939fbeb9e27c6d0f8b35881a11020baa5a9565f3368fb7ce12155",
-          "attempt_identity": "4440016ac96d7d49c6dafd18675b4d6c4a51459a1bc46bc60d7918685845e522",
+          "qualification_generation_identity": "870c84ac320153ab20070f2b2106a1dc1c09339d791cf6616b81dc8da0d5c8a6",
+          "attempt_identity": "38a82e57df1394e7479ab21da1765f1865f580c4aeb94d875856f9cda115d5df",
           "failed_materialization": "A",
           "failed_repetition": 1,
           "failed_candidate_alias": "CANDIDATE-A",
           "failure_class": "CalledProcessError",
           "partial_artifact_count": 2,
-          "partial_artifact_root": "52296adba2e6d1ba2b4a82047b2b689425423ab2ab8b746010f447631238efff",
+          "partial_artifact_root": "e5261f1648b9675c6b8fe0e23892b0807bb347b811fabb0e9ebe791d5fc3de6e",
           "retry_or_redraw_authorized": false,
           "promotion_effect": false,
-          "failure_identity": "0bf4e535ae23b46ef16ba6695a02ec40f6a4c8ba9d4af836593c0626cc2fa708"
+          "failure_identity": "5e3fc7a2efb53de28061dc48ed21e04e06d7a6799b09b5f368041d4a26752731"
+        },
+        "prior_replacement_authority": {
+          "superseded_generation_identity": "69480287640939fbeb9e27c6d0f8b35881a11020baa5a9565f3368fb7ce12155",
+          "consumed_attempt_identity": "4440016ac96d7d49c6dafd18675b4d6c4a51459a1bc46bc60d7918685845e522",
+          "terminal_failure_identity": "0bf4e535ae23b46ef16ba6695a02ec40f6a4c8ba9d4af836593c0626cc2fa708",
+          "replacement_attempt_ordinal": 2,
+          "retry_or_redraw": false,
+          "predecessor_attempt": {
+            "schema": "pastila-production-core-comparative-execution-attempt",
+            "schema_version": 1,
+            "qualification_generation_identity": "69480287640939fbeb9e27c6d0f8b35881a11020baa5a9565f3368fb7ce12155",
+            "alias_secret_commitment": "0195c095f520e5cbfbbdbe3f353091ca3cef86e9e3e9862c12dfa9f28267d2e7",
+            "attempt_ordinal": 1,
+            "retry_or_redraw_authorized": false,
+            "status": "CONSUMED_BEFORE_EXECUTION",
+            "attempt_identity": "4440016ac96d7d49c6dafd18675b4d6c4a51459a1bc46bc60d7918685845e522"
+          },
+          "predecessor_terminal_failure": {
+            "schema": "pastila-production-core-comparative-execution-terminal-failure",
+            "schema_version": 1,
+            "qualification_generation_identity": "69480287640939fbeb9e27c6d0f8b35881a11020baa5a9565f3368fb7ce12155",
+            "attempt_identity": "4440016ac96d7d49c6dafd18675b4d6c4a51459a1bc46bc60d7918685845e522",
+            "failed_materialization": "A",
+            "failed_repetition": 1,
+            "failed_candidate_alias": "CANDIDATE-A",
+            "failure_class": "CalledProcessError",
+            "partial_artifact_count": 2,
+            "partial_artifact_root": "52296adba2e6d1ba2b4a82047b2b689425423ab2ab8b746010f447631238efff",
+            "retry_or_redraw_authorized": false,
+            "promotion_effect": false,
+            "failure_identity": "0bf4e535ae23b46ef16ba6695a02ec40f6a4c8ba9d4af836593c0626cc2fa708"
+          }
         }
       }
     }
@@ -19355,5 +19387,5 @@
   ],
   "promotion_effect": false,
   "candidate_execution_performed": false,
-  "qualification_generation_identity": "80058a04ee40c896a71c950b83c242af160479fcce5bd495577c57cea9d0bc04"
+  "qualification_generation_identity": "254525ca4dbd811a2fc0108c5a5c4b967be84e9cea36a855a46a55396cbecce6"
 }

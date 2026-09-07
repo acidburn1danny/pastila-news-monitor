@@ -64,6 +64,17 @@ def _write_new(path: Path, data: bytes) -> None:
         os.fsync(handle.fileno())
 
 
+def _boottime_centisecond_ns() -> int:
+    uptime = Path("/proc/uptime").read_text("ascii").split(maxsplit=1)[0]
+    whole, separator, fraction = uptime.partition(".")
+    if not separator or not whole.isascii() or not whole.isdigit():
+        raise SystemExit("CLOCK_BOOTTIME authority malformed")
+    centiseconds = (fraction + "00")[:2]
+    if not centiseconds.isascii() or not centiseconds.isdigit():
+        raise SystemExit("CLOCK_BOOTTIME authority malformed")
+    return int(whole) * 1_000_000_000 + int(centiseconds) * 10_000_000
+
+
 def _heartbeat(
     stage: str, sequence: int, completed_count: int, case_id: str | None = None
 ) -> None:
@@ -76,9 +87,7 @@ def _heartbeat(
     }
     if case_id is not None:
         value["case_id"] = case_id
-    value["deadline_boottime_ns"] = (
-        time.clock_gettime_ns(time.CLOCK_BOOTTIME) + MAX_WALL_NS
-    )
+    value["deadline_boottime_ns"] = _boottime_centisecond_ns() + MAX_WALL_NS
     temporary.write_bytes(json.dumps(value, separators=(",", ":")).encode())
     os.replace(temporary, target)
 

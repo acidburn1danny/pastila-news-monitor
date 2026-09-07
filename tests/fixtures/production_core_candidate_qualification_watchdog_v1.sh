@@ -55,3 +55,15 @@ valid_final "{\"stage\":\"BATCH_COMPLETE\",\"sequence\":201,\"completed_count\":
 ! valid_final "{\"stage\":\"BATCH_COMPLETE\",\"sequence\":201,\"completed_count\":200,\"deadline_boottime_ns\":$((now + 700000000000))}" "$now" 200 200
 ! valid_final "{\"stage\":\"BATCH_COMPLETE\",\"sequence\":201,\"completed_count\":200,\"extra\":true,\"deadline_boottime_ns\":$((now + 100000000))}" "$now" 200 200
 ! valid_final "{\"stage\":\"BATCH_COMPLETE\",\"sequence\":201,\"completed_count\":200,\"deadline_boottime_ns\":$((now + 100000000))}" "$now" 202 201
+
+# Runner and supervisor parsers agree exactly on one frozen uptime sample.
+uptime_sample="12345.67 890.12"
+runner_sample="$(python3 -c 'import sys; u=sys.argv[1].split(maxsplit=1)[0]; w,sep,f=u.partition("."); assert sep and w.isascii() and w.isdigit(); c=(f+"00")[:2]; assert c.isascii() and c.isdigit(); print(int(w)*1_000_000_000+int(c)*10_000_000)' "$uptime_sample")"
+read -r uptime _ <<<"$uptime_sample"; whole="${uptime%%.*}"; frac="${uptime#*.}00"; supervisor_sample=$((10#$whole * 1000000000 + 10#${frac:0:2} * 10000000))
+[[ "$runner_sample" == "$supervisor_sample" && "$runner_sample" == 12345670000000 ]]
+# Live sanity has no scheduler-latency assumption: the later read is conservative.
+runner_now="$(python3 -c 'from pathlib import Path; u=Path("/proc/uptime").read_text("ascii").split(maxsplit=1)[0]; w,_,f=u.partition("."); print(int(w)*1_000_000_000+int((f+"00")[:2])*10_000_000)')"
+read -r uptime _ </proc/uptime; whole="${uptime%%.*}"; frac="${uptime#*.}00"; supervisor_now=$((10#$whole * 1000000000 + 10#${frac:0:2} * 10000000))
+(( runner_now % 10000000 == 0 && supervisor_now >= runner_now ))
+runner_deadline=$((runner_now + 600000000000))
+(( runner_deadline <= supervisor_now + 600000000000 ))
