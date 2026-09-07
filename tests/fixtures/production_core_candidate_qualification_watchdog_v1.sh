@@ -21,4 +21,4 @@ while kill -0 "$child" 2>/dev/null; do read -r uptime _ </proc/uptime; whole="${
 set +e; wait "$child" 2>/dev/null; status=$?; set -e; [[ "$invalid_heartbeat" == true && "$status" -ne 0 ]]
 printf first > "$work/a"; printf second > "$work/b"; ln -s "$work/a" "$work/current"
 exec {snapshot_fd}<"$work/current"; ln -sfn "$work/b" "$work/current"
-[[ "$(cat "/proc/$$/fd/$snapshot_fd")" == first ]]
+[[ "$(cat "/proc/self/fd/$snapshot_fd")" == first ]]

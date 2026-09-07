@@ -26,6 +26,40 @@ HOLDOUT_IDENTITY = "0a051049c78b893d44968fb02f2df86a3534de803e623ba056d15059a336
 FREEZE_IDENTITY = "89d13366227b63c29ca71a00426f4918a4d8e62c8e07de10aaa810f887e9611a"
 RUBRIC_IDENTITY = "3bff615d5412abbde10a3ab85d45b82a0e019be196ea21914303d1e6b284353b"
 REGISTRY_IDENTITY = "26772b5ae3e7ffe853e75b79b9d37ef7649ad183917afa2a0170f79e2b2d1639"
+PREDECESSOR_ATTEMPT = {
+    "schema": "pastila-production-core-comparative-execution-attempt",
+    "schema_version": 1,
+    "qualification_generation_identity": "69480287640939fbeb9e27c6d0f8b35881a11020baa5a9565f3368fb7ce12155",
+    "alias_secret_commitment": "0195c095f520e5cbfbbdbe3f353091ca3cef86e9e3e9862c12dfa9f28267d2e7",
+    "attempt_ordinal": 1,
+    "retry_or_redraw_authorized": False,
+    "status": "CONSUMED_BEFORE_EXECUTION",
+    "attempt_identity": "4440016ac96d7d49c6dafd18675b4d6c4a51459a1bc46bc60d7918685845e522",
+}
+PREDECESSOR_FAILURE = {
+    "schema": "pastila-production-core-comparative-execution-terminal-failure",
+    "schema_version": 1,
+    "qualification_generation_identity": "69480287640939fbeb9e27c6d0f8b35881a11020baa5a9565f3368fb7ce12155",
+    "attempt_identity": "4440016ac96d7d49c6dafd18675b4d6c4a51459a1bc46bc60d7918685845e522",
+    "failed_materialization": "A",
+    "failed_repetition": 1,
+    "failed_candidate_alias": "CANDIDATE-A",
+    "failure_class": "CalledProcessError",
+    "partial_artifact_count": 2,
+    "partial_artifact_root": "52296adba2e6d1ba2b4a82047b2b689425423ab2ab8b746010f447631238efff",
+    "retry_or_redraw_authorized": False,
+    "promotion_effect": False,
+    "failure_identity": "0bf4e535ae23b46ef16ba6695a02ec40f6a4c8ba9d4af836593c0626cc2fa708",
+}
+REPLACEMENT_AUTHORITY = {
+    "superseded_generation_identity": "69480287640939fbeb9e27c6d0f8b35881a11020baa5a9565f3368fb7ce12155",
+    "consumed_attempt_identity": "4440016ac96d7d49c6dafd18675b4d6c4a51459a1bc46bc60d7918685845e522",
+    "terminal_failure_identity": "0bf4e535ae23b46ef16ba6695a02ec40f6a4c8ba9d4af836593c0626cc2fa708",
+    "replacement_attempt_ordinal": 2,
+    "retry_or_redraw": False,
+    "predecessor_attempt": PREDECESSOR_ATTEMPT,
+    "predecessor_terminal_failure": PREDECESSOR_FAILURE,
+}
 MATERIALIZATIONS = ("A", "B")
 REPETITIONS = (1, 2, 3)
 ALIASES = ("CANDIDATE-A", "CANDIDATE-B")
@@ -156,6 +190,25 @@ def validate_generation_authority(
     recorded = core.pop("qualification_generation_identity", None)
     if recorded != identity(core):
         raise QualificationAuthorityError("generation identity mismatch")
+    replacement = plan.get("replacement_authority")
+    if not isinstance(replacement, dict):
+        raise QualificationAuthorityError("replacement authority absent")
+    attempt = replacement.get("predecessor_attempt")
+    failure = replacement.get("predecessor_terminal_failure")
+    if not isinstance(attempt, dict) or not isinstance(failure, dict):
+        raise QualificationAuthorityError("replacement evidence absent")
+    attempt_core = dict(attempt)
+    attempt_identity = attempt_core.pop("attempt_identity", None)
+    failure_core = dict(failure)
+    failure_identity = failure_core.pop("failure_identity", None)
+    if (
+        attempt_identity != identity(attempt_core)
+        or failure_identity != identity(failure_core)
+        or failure.get("attempt_identity") != attempt_identity
+        or failure.get("qualification_generation_identity")
+        != attempt.get("qualification_generation_identity")
+    ):
+        raise QualificationAuthorityError("replacement evidence identity mismatch")
     if list(candidate_manifest)[-1:] != ["manifest_identity"]:
         raise QualificationAuthorityError("candidate manifest field order mismatch")
     manifest_core = dict(candidate_manifest)
@@ -170,6 +223,7 @@ def validate_generation_authority(
         or plan.get("rubric_identity") != RUBRIC_IDENTITY
         or plan.get("adjudicator_registry_identity") != REGISTRY_IDENTITY
         or plan.get("candidate_object_manifest_identity") != manifest_identity
+        or plan.get("replacement_authority") != REPLACEMENT_AUTHORITY
         or plan.get("candidate_execution_performed") is not False
         or plan.get("promotion_effect") is not False
     ):

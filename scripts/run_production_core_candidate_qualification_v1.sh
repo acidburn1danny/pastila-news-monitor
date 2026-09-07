@@ -31,19 +31,19 @@ cleanup() { local i; for ((i=${#mounted[@]}-1; i>=0; i--)); do umount -l -- "${m
 trap cleanup EXIT INT TERM
 [[ "$$" == 1 && "$(readlink /proc/self/ns/net)" != "$PARENT_NETNS" && "$(readlink /proc/self/ns/pid)" != "$PARENT_PIDNS" ]] || exit 4
 exec {rootfs_fd}<"$ROOTFS_TAR"
-[[ "$(sha256sum "/proc/$$/fd/$rootfs_fd" | cut -d' ' -f1)" == "274e7d1519f05f41108413efb01d35680b88e0f4b13bb63fca9634be155980f4" ]] || exit 4
-tar -xf "/proc/$$/fd/$rootfs_fd" -C "$ROOTFS"
-[[ "$(sha256sum "/proc/$$/fd/$rootfs_fd" | cut -d' ' -f1)" == "274e7d1519f05f41108413efb01d35680b88e0f4b13bb63fca9634be155980f4" ]] || exit 4
+[[ "$(sha256sum "/proc/self/fd/$rootfs_fd" | cut -d' ' -f1)" == "274e7d1519f05f41108413efb01d35680b88e0f4b13bb63fca9634be155980f4" ]] || exit 4
+tar -xf "/proc/self/fd/$rootfs_fd" -C "$ROOTFS"
+[[ "$(sha256sum "/proc/self/fd/$rootfs_fd" | cut -d' ' -f1)" == "274e7d1519f05f41108413efb01d35680b88e0f4b13bb63fca9634be155980f4" ]] || exit 4
 [[ -z "$(find "$MODEL" "$ADAPTER" -type l -print -quit)" ]] || exit 4
 MODEL_SNAPSHOT="$WORK/model-snapshot"; ADAPTER_SNAPSHOT="$WORK/adapter-snapshot"
 cp -a --reflink=auto -- "$MODEL" "$MODEL_SNAPSHOT"
 cp -a --reflink=auto -- "$ADAPTER" "$ADAPTER_SNAPSHOT"
 exec {prompt_fd}<"$PROMPT"; exec {batch_fd}<"$BATCH"; exec {runner_fd}<"$RUNNER"
-[[ "$(sha256sum "/proc/$$/fd/$prompt_fd" | cut -d' ' -f1)" == "$PROMPT_SHA256" ]] || exit 4
-[[ "$(sha256sum "/proc/$$/fd/$batch_fd" | cut -d' ' -f1)" == "$BATCH_SHA256" ]] || exit 4
-[[ "$(sha256sum "/proc/$$/fd/$runner_fd" | cut -d' ' -f1)" == "$RUNNER_SHA256" ]] || exit 4
+[[ "$(sha256sum "/proc/self/fd/$prompt_fd" | cut -d' ' -f1)" == "$PROMPT_SHA256" ]] || exit 4
+[[ "$(sha256sum "/proc/self/fd/$batch_fd" | cut -d' ' -f1)" == "$BATCH_SHA256" ]] || exit 4
+[[ "$(sha256sum "/proc/self/fd/$runner_fd" | cut -d' ' -f1)" == "$RUNNER_SHA256" ]] || exit 4
 PROMPT_SNAPSHOT="$WORK/prompt.txt"; BATCH_SNAPSHOT="$WORK/batch.json"; RUNNER_SNAPSHOT="$WORK/runner.py"
-cat "/proc/$$/fd/$prompt_fd" > "$PROMPT_SNAPSHOT"; cat "/proc/$$/fd/$batch_fd" > "$BATCH_SNAPSHOT"; cat "/proc/$$/fd/$runner_fd" > "$RUNNER_SNAPSHOT"
+cat "/proc/self/fd/$prompt_fd" > "$PROMPT_SNAPSHOT"; cat "/proc/self/fd/$batch_fd" > "$BATCH_SNAPSHOT"; cat "/proc/self/fd/$runner_fd" > "$RUNNER_SNAPSHOT"
 mount -t proc proc "$ROOTFS/proc"; mounted+=("$ROOTFS/proc")
 for name in dev sys; do mount --rbind "/$name" "$ROOTFS/$name"; mounted+=("$ROOTFS/$name"); mount --make-rslave "$ROOTFS/$name"; done
 mount -t tmpfs -o size=64m,mode=1777 tmpfs "$ROOTFS/tmp"; mounted+=("$ROOTFS/tmp")

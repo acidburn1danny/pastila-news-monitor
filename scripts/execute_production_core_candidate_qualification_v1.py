@@ -232,7 +232,7 @@ def main() -> int:
         "schema_version": 1,
         "qualification_generation_identity": generation,
         "alias_secret_commitment": plan["alias_secret_commitment"],
-        "attempt_ordinal": 1,
+        "attempt_ordinal": plan["replacement_authority"]["replacement_attempt_ordinal"],
         "retry_or_redraw_authorized": False,
         "status": "CONSUMED_BEFORE_EXECUTION",
     }

@@ -3,18 +3,18 @@
   "schema_version": 1,
   "status": "OFFLINE_PREINFERENCE_QUALIFIED",
   "candidate_manifest_identity": "51cae2453234d19fef6cd6bb1505beb7ae9bb8a27fcd152a61a6a7bb181a0420",
-  "qualification_generation_identity": "69480287640939fbeb9e27c6d0f8b35881a11020baa5a9565f3368fb7ce12155",
+  "qualification_generation_identity": "870c84ac320153ab20070f2b2106a1dc1c09339d791cf6616b81dc8da0d5c8a6",
   "alias_secret_commitment": "0195c095f520e5cbfbbdbe3f353091ca3cef86e9e3e9862c12dfa9f28267d2e7",
   "source_sha256": {
-    "src/pastila_scout/production_core_candidate_qualification_v1.py": "e8573bc63699d215954c800aea7b33401f86a778dce0e3cefc410cbbbbe3c5ad",
+    "src/pastila_scout/production_core_candidate_qualification_v1.py": "2ad281a63ec267d48e6c6dab043c0f701886dedc64d2dc7c480bbcf299775187",
     "src/pastila_scout/production_core_candidate_qualification_runner_v1.py": "0fe69ce28fa70670d86962e37a29dbf9702bbe5402fb37d98422ae3206709ef1",
-    "scripts/run_production_core_candidate_qualification_v1.sh": "fd867d04aff65eb9fd349f1392c3a2d3b8abf41a4343fc95425090b63dd23ad9",
+    "scripts/run_production_core_candidate_qualification_v1.sh": "812933886df83bd2c9646e2e730a1d2dd62fa9d74c001fd32e133b106192b91a",
     "scripts/resolve_production_core_object_identity_v1.sh": "75cd74aeac115b65b34d9c3abaf9cab7ebbf578cdb62e915e7dd39ba627286a5",
-    "scripts/execute_production_core_candidate_qualification_v1.py": "68dc9ef77040074dfbfbc7638a64e6c38ebbe8860adfa15fef519a704ef6fe02",
-    "scripts/materialize_production_core_candidate_qualification_v1.py": "662d1b74e156a72909393a5cf48c265c5a1554c95fc11e77a6a2ebbfc2630bae",
-    "tests/test_production_core_candidate_qualification_v1.py": "336b13ee91a16a4304dba2f7239dad4acd36c223eb3d06d4128bd402518039bb",
-    "tests/fixtures/production_core_candidate_qualification_isolation_v1.sh": "918619e380bdab9a1bd22d1ef0bc1b8fe6a9a53f429cec1e61aef20660f8510c",
-    "tests/fixtures/production_core_candidate_qualification_watchdog_v1.sh": "c52026477a4728b4d5865062b1ef046c255d6efba10f9cac5c18180240f55d7a",
+    "scripts/execute_production_core_candidate_qualification_v1.py": "f0773ac4239a909c97941a0a309db0bb05d6222abc7afec86676ece557886946",
+    "scripts/materialize_production_core_candidate_qualification_v1.py": "85efeeac04e33835626320c5176915550cfe63530d744299c09ebedf85c51e42",
+    "tests/test_production_core_candidate_qualification_v1.py": "6df24305de5a49b3243a93aee613b6ea08216d33375e098c6c22e46d2d936792",
+    "tests/fixtures/production_core_candidate_qualification_isolation_v1.sh": "70d4d51db80262c87db2edb7f1ba30769a7732c8c78615b9fa586fd577a98690",
+    "tests/fixtures/production_core_candidate_qualification_watchdog_v1.sh": "7e45328d78d2a03d278d2b3a84be3a03996cec06824babd789b3d72ef6a42106",
     "tests/fixtures/production_core_candidate_qualification_terminal_v1.sh": "835b858ceda9fa44f5289841643f64a22ffa1d4791a3c91bb65b9e7a4ce286c2",
     "docs/production-core-candidate-qualification-v1.md": "5cb3ac41b4d45401955195639d48bee987f94fd4d05f6e89f6fbc5432481d70c"
   },
@@ -23,5 +23,5 @@
   "candidate_outputs_inspected": false,
   "network_activity": false,
   "promotion_effect": false,
-  "qualification_identity": "ebd47940a73c426c5e5f1b515c0c16ca989c8fd989a858cac53883aecfb9e0f5"
+  "qualification_identity": "d005ff8ae53d7a1165ae6a668c4cc2d369866035425b26a4fba640922247b84b"
 }

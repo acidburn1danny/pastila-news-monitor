@@ -10,6 +10,38 @@
   "candidate_object_manifest_identity": "51cae2453234d19fef6cd6bb1505beb7ae9bb8a27fcd152a61a6a7bb181a0420",
   "alias_secret_commitment": "0195c095f520e5cbfbbdbe3f353091ca3cef86e9e3e9862c12dfa9f28267d2e7",
   "alias_mapping_public": false,
+  "replacement_authority": {
+    "superseded_generation_identity": "69480287640939fbeb9e27c6d0f8b35881a11020baa5a9565f3368fb7ce12155",
+    "consumed_attempt_identity": "4440016ac96d7d49c6dafd18675b4d6c4a51459a1bc46bc60d7918685845e522",
+    "terminal_failure_identity": "0bf4e535ae23b46ef16ba6695a02ec40f6a4c8ba9d4af836593c0626cc2fa708",
+    "replacement_attempt_ordinal": 2,
+    "retry_or_redraw": false,
+    "predecessor_attempt": {
+      "schema": "pastila-production-core-comparative-execution-attempt",
+      "schema_version": 1,
+      "qualification_generation_identity": "69480287640939fbeb9e27c6d0f8b35881a11020baa5a9565f3368fb7ce12155",
+      "alias_secret_commitment": "0195c095f520e5cbfbbdbe3f353091ca3cef86e9e3e9862c12dfa9f28267d2e7",
+      "attempt_ordinal": 1,
+      "retry_or_redraw_authorized": false,
+      "status": "CONSUMED_BEFORE_EXECUTION",
+      "attempt_identity": "4440016ac96d7d49c6dafd18675b4d6c4a51459a1bc46bc60d7918685845e522"
+    },
+    "predecessor_terminal_failure": {
+      "schema": "pastila-production-core-comparative-execution-terminal-failure",
+      "schema_version": 1,
+      "qualification_generation_identity": "69480287640939fbeb9e27c6d0f8b35881a11020baa5a9565f3368fb7ce12155",
+      "attempt_identity": "4440016ac96d7d49c6dafd18675b4d6c4a51459a1bc46bc60d7918685845e522",
+      "failed_materialization": "A",
+      "failed_repetition": 1,
+      "failed_candidate_alias": "CANDIDATE-A",
+      "failure_class": "CalledProcessError",
+      "partial_artifact_count": 2,
+      "partial_artifact_root": "52296adba2e6d1ba2b4a82047b2b689425423ab2ab8b746010f447631238efff",
+      "retry_or_redraw_authorized": false,
+      "promotion_effect": false,
+      "failure_identity": "0bf4e535ae23b46ef16ba6695a02ec40f6a4c8ba9d4af836593c0626cc2fa708"
+    }
+  },
   "matrix": {
     "materializations": 2,
     "repetitions": 3,
@@ -19259,5 +19291,5 @@
   ],
   "promotion_effect": false,
   "candidate_execution_performed": false,
-  "qualification_generation_identity": "69480287640939fbeb9e27c6d0f8b35881a11020baa5a9565f3368fb7ce12155"
+  "qualification_generation_identity": "870c84ac320153ab20070f2b2106a1dc1c09339d791cf6616b81dc8da0d5c8a6"
 }
