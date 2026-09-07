@@ -22,3 +22,36 @@ set +e; wait "$child" 2>/dev/null; status=$?; set -e; [[ "$invalid_heartbeat" ==
 printf first > "$work/a"; printf second > "$work/b"; ln -s "$work/a" "$work/current"
 exec {snapshot_fd}<"$work/current"; ln -sfn "$work/b" "$work/current"
 [[ "$(cat "/proc/self/fd/$snapshot_fd")" == first ]]
+
+# Polling may legitimately miss CASE_COMPLETE; monotonic counters retain proof.
+valid_progress() {
+  local previous_sequence="$1" previous_completed="$2" previous_stage="$3" sequence="$4" completed="$5" stage="$6"
+  (( sequence >= previous_sequence && completed >= previous_completed )) || return 1
+  if (( sequence == previous_sequence )); then
+    [[ "$previous_stage" == GENERATE && "$stage" == CASE_COMPLETE ]] || return 1
+  fi
+  case "$stage" in
+    GENERATE) (( sequence >= 1 && sequence <= 200 && completed == sequence - 1 )) ;;
+    CASE_COMPLETE) (( sequence >= 1 && sequence <= 200 && completed == sequence )) ;;
+    BATCH_COMPLETE) (( sequence == 201 && completed == 200 )) ;;
+    *) return 1 ;;
+  esac
+}
+valid_progress 1 0 GENERATE 2 1 GENERATE
+valid_progress 7 6 GENERATE 10 10 CASE_COMPLETE
+! valid_progress 2 1 GENERATE 1 1 CASE_COMPLETE
+! valid_progress 2 1 GENERATE 2 1 GENERATE
+! valid_progress 2 1 GENERATE 4 1 GENERATE
+
+valid_final() {
+  local value="$1" now="$2" last_sequence="$3" last_completed="$4" observed expected
+  observed="$(sed -n 's/.*"deadline_boottime_ns":\([0-9][0-9]*\)}$/\1/p' <<<"$value")"
+  [[ "$observed" =~ ^[0-9]+$ ]] || return 1
+  expected="{\"stage\":\"BATCH_COMPLETE\",\"sequence\":201,\"completed_count\":200,\"deadline_boottime_ns\":$observed}"
+  [[ "$value" == "$expected" ]] || return 1
+  (( observed >= now && observed <= now + 600000000000 && 201 >= last_sequence && 200 >= last_completed ))
+}
+valid_final "{\"stage\":\"BATCH_COMPLETE\",\"sequence\":201,\"completed_count\":200,\"deadline_boottime_ns\":$((now + 100000000))}" "$now" 200 200
+! valid_final "{\"stage\":\"BATCH_COMPLETE\",\"sequence\":201,\"completed_count\":200,\"deadline_boottime_ns\":$((now + 700000000000))}" "$now" 200 200
+! valid_final "{\"stage\":\"BATCH_COMPLETE\",\"sequence\":201,\"completed_count\":200,\"extra\":true,\"deadline_boottime_ns\":$((now + 100000000))}" "$now" 200 200
+! valid_final "{\"stage\":\"BATCH_COMPLETE\",\"sequence\":201,\"completed_count\":200,\"deadline_boottime_ns\":$((now + 100000000))}" "$now" 202 201

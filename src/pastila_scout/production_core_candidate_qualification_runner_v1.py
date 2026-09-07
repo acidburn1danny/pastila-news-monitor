@@ -64,9 +64,21 @@ def _write_new(path: Path, data: bytes) -> None:
         os.fsync(handle.fileno())
 
 
-def _heartbeat(value: dict[str, object]) -> None:
+def _heartbeat(
+    stage: str, sequence: int, completed_count: int, case_id: str | None = None
+) -> None:
     target = Path("/tmp/output/heartbeat.json")
     temporary = Path("/tmp/output/.heartbeat.tmp")
+    value: dict[str, object] = {
+        "stage": stage,
+        "sequence": sequence,
+        "completed_count": completed_count,
+    }
+    if case_id is not None:
+        value["case_id"] = case_id
+    value["deadline_boottime_ns"] = (
+        time.clock_gettime_ns(time.CLOCK_BOOTTIME) + MAX_WALL_NS
+    )
     temporary.write_bytes(json.dumps(value, separators=(",", ":")).encode())
     os.replace(temporary, target)
 
@@ -127,7 +139,7 @@ def main() -> int:
         bnb_4bit_compute_dtype=torch.bfloat16, bnb_4bit_use_double_quant=True,
     )
     load_started = time.monotonic_ns()
-    _heartbeat({"stage": "LOAD", "deadline_boottime_ns": time.clock_gettime_ns(time.CLOCK_BOOTTIME) + MAX_WALL_NS})
+    _heartbeat("LOAD", 0, 0)
     loaded = AutoModelForImageTextToText.from_pretrained(
         model, local_files_only=True, quantization_config=configuration,
         device_map={"": 0}, dtype=torch.bfloat16, attn_implementation="sdpa",
@@ -138,7 +150,7 @@ def main() -> int:
     loaded = PeftModel.from_pretrained(loaded, adapter, is_trainable=False)
     loaded.eval()
     load_ns = time.monotonic_ns() - load_started
-    for row in batch:
+    for sequence, row in enumerate(batch, 1):
         if list(row) != ["case_id", "request_identity", "prompt"]:
             raise SystemExit("batch row schema/order mismatch")
         case_id = row["case_id"]
@@ -157,7 +169,7 @@ def main() -> int:
         encoded = {key: value.to("cuda") for key, value in encoded.items()}
         torch.cuda.reset_peak_memory_stats()
         started = time.monotonic_ns()
-        _heartbeat({"stage": "GENERATE", "case_id": case_id, "deadline_boottime_ns": time.clock_gettime_ns(time.CLOCK_BOOTTIME) + MAX_WALL_NS - load_ns})
+        _heartbeat("GENERATE", sequence, sequence - 1, case_id)
         with torch.inference_mode():
             generated = loaded.generate(
                 **encoded, do_sample=False, num_beams=1, repetition_penalty=1.0,
@@ -203,8 +215,8 @@ def main() -> int:
             Path("/tmp/output") / f"{stem}.observation.json",
             json.dumps(observation, ensure_ascii=False, separators=(",", ":")).encode(),
         )
-        _heartbeat({"stage": "CASE_COMPLETE", "case_id": case_id, "deadline_boottime_ns": time.clock_gettime_ns(time.CLOCK_BOOTTIME) + MAX_WALL_NS})
-    _heartbeat({"stage": "BATCH_COMPLETE", "deadline_boottime_ns": time.clock_gettime_ns(time.CLOCK_BOOTTIME) + MAX_WALL_NS})
+        _heartbeat("CASE_COMPLETE", sequence, sequence, case_id)
+    _heartbeat("BATCH_COMPLETE", 201, 200)
     return 0
 
 

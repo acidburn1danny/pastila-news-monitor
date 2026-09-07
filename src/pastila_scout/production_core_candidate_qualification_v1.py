@@ -85,7 +85,7 @@ PREDECESSOR_FAILURE_2 = {
     "promotion_effect": False,
     "failure_identity": "5e3fc7a2efb53de28061dc48ed21e04e06d7a6799b09b5f368041d4a26752731",
 }
-REPLACEMENT_AUTHORITY = {
+PRIOR_REPLACEMENT_AUTHORITY_2 = {
     "superseded_generation_identity": "870c84ac320153ab20070f2b2106a1dc1c09339d791cf6616b81dc8da0d5c8a6",
     "consumed_attempt_identity": "38a82e57df1394e7479ab21da1765f1865f580c4aeb94d875856f9cda115d5df",
     "terminal_failure_identity": "5e3fc7a2efb53de28061dc48ed21e04e06d7a6799b09b5f368041d4a26752731",
@@ -94,6 +94,41 @@ REPLACEMENT_AUTHORITY = {
     "predecessor_attempt": PREDECESSOR_ATTEMPT_2,
     "predecessor_terminal_failure": PREDECESSOR_FAILURE_2,
     "prior_replacement_authority": PRIOR_REPLACEMENT_AUTHORITY,
+}
+PREDECESSOR_ATTEMPT_3 = {
+    "schema": "pastila-production-core-comparative-execution-attempt",
+    "schema_version": 1,
+    "qualification_generation_identity": "6ebd356f7e42ca8192f4e362127f17f169337d24923274dad472b5e43f3509cb",
+    "alias_secret_commitment": "0195c095f520e5cbfbbdbe3f353091ca3cef86e9e3e9862c12dfa9f28267d2e7",
+    "attempt_ordinal": 3,
+    "retry_or_redraw_authorized": False,
+    "status": "CONSUMED_BEFORE_EXECUTION",
+    "attempt_identity": "bd2710eeb4c22e7d3232e2566c61ac94f12c862ead418fc615efbb11d32de1c9",
+}
+PREDECESSOR_FAILURE_3 = {
+    "schema": "pastila-production-core-comparative-execution-terminal-failure",
+    "schema_version": 1,
+    "qualification_generation_identity": "6ebd356f7e42ca8192f4e362127f17f169337d24923274dad472b5e43f3509cb",
+    "attempt_identity": "bd2710eeb4c22e7d3232e2566c61ac94f12c862ead418fc615efbb11d32de1c9",
+    "failed_materialization": "A",
+    "failed_repetition": 1,
+    "failed_candidate_alias": "CANDIDATE-A",
+    "failure_class": "CalledProcessError",
+    "partial_artifact_count": 8,
+    "partial_artifact_root": "e1818e65a4c63373f3a0f2ead6519da651ec4875f9db6d4ca34d1062f5716cd8",
+    "retry_or_redraw_authorized": False,
+    "promotion_effect": False,
+    "failure_identity": "9bb7a9258348428b3f7d9aa8d2c6235ca68418a2f5879f89c4cd2ce818bb2d0e",
+}
+REPLACEMENT_AUTHORITY = {
+    "superseded_generation_identity": "6ebd356f7e42ca8192f4e362127f17f169337d24923274dad472b5e43f3509cb",
+    "consumed_attempt_identity": "bd2710eeb4c22e7d3232e2566c61ac94f12c862ead418fc615efbb11d32de1c9",
+    "terminal_failure_identity": "9bb7a9258348428b3f7d9aa8d2c6235ca68418a2f5879f89c4cd2ce818bb2d0e",
+    "replacement_attempt_ordinal": 4,
+    "retry_or_redraw": False,
+    "predecessor_attempt": PREDECESSOR_ATTEMPT_3,
+    "predecessor_terminal_failure": PREDECESSOR_FAILURE_3,
+    "prior_replacement_authority": PRIOR_REPLACEMENT_AUTHORITY_2,
 }
 MATERIALIZATIONS = ("A", "B")
 REPETITIONS = (1, 2, 3)

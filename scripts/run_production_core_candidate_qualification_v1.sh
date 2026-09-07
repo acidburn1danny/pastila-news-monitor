@@ -63,27 +63,33 @@ mount_sha="$(sha256sum /proc/self/mountinfo | cut -d' ' -f1)"
 printf '{"schema":"pastila-production-core-network-boundary-log","schema_version":1,"policy":"DENY_ALL_NEW_CHILD_NAMESPACE","observed_interfaces":["lo"],"observed_ipv4_route_rows":0,"namespace_init_pid":1,"network_namespace_differs_from_parent":true,"pid_namespace_differs_from_parent":true,"promotion_effect":false}' > "$OUTPUT/network-boundary.json"
 printf '{"schema":"pastila-production-core-file-boundary-log","schema_version":1,"model_mount_read_only":true,"adapter_mount_read_only":true,"candidate_private_snapshots":true,"authority_inputs_from_open_descriptors":true,"private_rootfs_from_open_descriptor":true,"mountinfo_sha256":"%s","host_pid_namespace_reachable":false}' "$mount_sha" > "$OUTPUT/file-boundary.json"
 env -i BATCH_SHA256="$BATCH_SHA256" PROMPT_SHA256="$PROMPT_SHA256" CUBLAS_WORKSPACE_CONFIG=:4096:8 CUDA_VISIBLE_DEVICES=0 HF_HUB_OFFLINE=1 PYTHONHASHSEED=0 TOKENIZERS_PARALLELISM=false TRANSFORMERS_OFFLINE=1 TRITON_LIBCUDA_PATH=/usr/lib/wsl/lib TRITON_CACHE_DIR=/tmp/triton-cache QUALIFICATION_GENERATION_IDENTITY="$GENERATION_ID" ROOTFS_SHA256="$ROOTFS_SHA256" RUNNER_SHA256="$RUNNER_SHA256" /usr/sbin/chroot "$ROOTFS" /opt/production-core-runtime/bin/python -I /tmp/input/authority/runner.py /tmp/input/model /tmp/input/adapter /tmp/input/authority/prompt.txt /tmp/input/authority/batch.json "$CANDIDATE" &
-runner_pid=$!; timed_out=false; invalid_heartbeat=false; last_heartbeat_sha=""; generation_allowance=600000000000; supervisor_stage=INIT; active_case=""; generation_count=0
+runner_pid=$!; timed_out=false; invalid_heartbeat=false; last_heartbeat_sha=""; generation_allowance=600000000000; last_sequence=-1; last_completed=0; last_stage=INIT
 read -r initial_uptime _ </proc/uptime; initial_whole="${initial_uptime%%.*}"; initial_frac="${initial_uptime#*.}000000000"; initial_now=$((10#$initial_whole * 1000000000 + 10#${initial_frac:0:9})); supervisor_deadline=$((initial_now + 600000000000))
 while kill -0 "$runner_pid" 2>/dev/null; do
   read -r uptime _ </proc/uptime; whole="${uptime%%.*}"; frac="${uptime#*.}000000000"; now=$((10#$whole * 1000000000 + 10#${frac:0:9}))
   if [[ -f "$OUTPUT/heartbeat.json" ]]; then
     heartbeat_sha="$(sha256sum "$OUTPUT/heartbeat.json" | cut -d' ' -f1)"
     if [[ "$heartbeat_sha" != "$last_heartbeat_sha" ]]; then
-      stage="$(sed -n 's/.*"stage":"\([A-Z_]*\)".*/\1/p' "$OUTPUT/heartbeat.json")"
-      case_id="$(sed -n 's/.*"case_id":"\([A-Za-z0-9._:-]*\)".*/\1/p' "$OUTPUT/heartbeat.json")"
-      observed="$(sed -n 's/.*"deadline_boottime_ns":\([0-9][0-9]*\).*/\1/p' "$OUTPUT/heartbeat.json")"
-      if [[ ! "$observed" =~ ^[0-9]+$ ]] || (( observed < now || observed > now + 600000000000 )); then invalid_heartbeat=true; kill -KILL "$runner_pid" 2>/dev/null || true; break; fi
+      heartbeat_json="$(cat "$OUTPUT/heartbeat.json")"
+      stage="$(sed -n 's/^{"stage":"\([A-Z_]*\)".*/\1/p' <<<"$heartbeat_json")"
+      sequence="$(sed -n 's/.*"sequence":\([0-9][0-9]*\).*/\1/p' <<<"$heartbeat_json")"
+      completed="$(sed -n 's/.*"completed_count":\([0-9][0-9]*\).*/\1/p' <<<"$heartbeat_json")"
+      case_id="$(sed -n 's/.*"case_id":"\([A-Za-z0-9._:-]*\)".*/\1/p' <<<"$heartbeat_json")"
+      observed="$(sed -n 's/.*"deadline_boottime_ns":\([0-9][0-9]*\)}$/\1/p' <<<"$heartbeat_json")"
+      if [[ ! "$sequence" =~ ^[0-9]+$ || ! "$completed" =~ ^[0-9]+$ || ! "$observed" =~ ^[0-9]+$ ]] || (( observed < now || observed > now + 600000000000 )); then invalid_heartbeat=true; kill -KILL "$runner_pid" 2>/dev/null || true; break; fi
       case "$stage" in
-        LOAD) [[ "$supervisor_stage" == INIT && -z "$case_id" ]] || { invalid_heartbeat=true; kill -KILL "$runner_pid" 2>/dev/null || true; break; }; supervisor_stage=LOAD ;;
+        LOAD) [[ "$sequence" == 0 && "$completed" == 0 && -z "$case_id" ]] || { invalid_heartbeat=true; kill -KILL "$runner_pid" 2>/dev/null || true; break; }; expected="{\"stage\":\"LOAD\",\"sequence\":0,\"completed_count\":0,\"deadline_boottime_ns\":$observed}" ;;
         GENERATE)
-          [[ ( "$supervisor_stage" == LOAD || "$supervisor_stage" == CASE_COMPLETE ) && -n "$case_id" && $generation_count -lt 200 ]] || { invalid_heartbeat=true; kill -KILL "$runner_pid" 2>/dev/null || true; break; }
+          [[ -n "$case_id" && $sequence -ge 1 && $sequence -le 200 && $completed -eq $((sequence - 1)) ]] || { invalid_heartbeat=true; kill -KILL "$runner_pid" 2>/dev/null || true; break; }
+          expected="{\"stage\":\"GENERATE\",\"sequence\":$sequence,\"completed_count\":$completed,\"case_id\":\"$case_id\",\"deadline_boottime_ns\":$observed}"
           if (( generation_allowance == 600000000000 )); then elapsed=$((now - initial_now)); (( elapsed < 600000000000 )) || { timed_out=true; kill -KILL "$runner_pid" 2>/dev/null || true; break; }; generation_allowance=$((600000000000 - elapsed)); fi
-          supervisor_deadline=$((now + generation_allowance)); supervisor_stage=GENERATE; active_case="$case_id"; generation_count=$((generation_count + 1)) ;;
-        CASE_COMPLETE) [[ "$supervisor_stage" == GENERATE && "$case_id" == "$active_case" ]] || { invalid_heartbeat=true; kill -KILL "$runner_pid" 2>/dev/null || true; break; }; supervisor_stage=CASE_COMPLETE ;;
-        BATCH_COMPLETE) [[ "$supervisor_stage" == CASE_COMPLETE && -z "$case_id" && $generation_count -eq 200 ]] || { invalid_heartbeat=true; kill -KILL "$runner_pid" 2>/dev/null || true; break; }; supervisor_stage=BATCH_COMPLETE ;;
+          supervisor_deadline=$((now + generation_allowance)) ;;
+        CASE_COMPLETE) [[ -n "$case_id" && $sequence -ge 1 && $sequence -le 200 && $completed -eq $sequence ]] || { invalid_heartbeat=true; kill -KILL "$runner_pid" 2>/dev/null || true; break; }; expected="{\"stage\":\"CASE_COMPLETE\",\"sequence\":$sequence,\"completed_count\":$completed,\"case_id\":\"$case_id\",\"deadline_boottime_ns\":$observed}" ;;
+        BATCH_COMPLETE) [[ "$sequence" == 201 && "$completed" == 200 && -z "$case_id" ]] || { invalid_heartbeat=true; kill -KILL "$runner_pid" 2>/dev/null || true; break; }; expected="{\"stage\":\"BATCH_COMPLETE\",\"sequence\":201,\"completed_count\":200,\"deadline_boottime_ns\":$observed}" ;;
         *) invalid_heartbeat=true; kill -KILL "$runner_pid" 2>/dev/null || true; break ;;
       esac
+      if [[ "$heartbeat_json" != "$expected" ]] || (( sequence < last_sequence || completed < last_completed )) || { (( sequence == last_sequence )) && [[ "$last_stage" != GENERATE || "$stage" != CASE_COMPLETE ]]; }; then invalid_heartbeat=true; kill -KILL "$runner_pid" 2>/dev/null || true; break; fi
+      last_sequence=$sequence; last_completed=$completed; last_stage="$stage"
       last_heartbeat_sha="$heartbeat_sha"
     fi
   fi
@@ -94,5 +100,10 @@ set +e; wait "$runner_pid"; status=$?; set -e
 if [[ "$invalid_heartbeat" == true ]]; then printf '{"schema":"pastila-production-core-supervisor-failure","schema_version":1,"code":"INVALID_HEARTBEAT_AUTHORITY","ceiling_ns":600000000000}' > "$OUTPUT/supervisor-failure.json"; exit 125; fi
 if [[ "$timed_out" == true ]]; then printf '{"schema":"pastila-production-core-supervisor-failure","schema_version":1,"code":"INFERENCE_WALL_TIME_EXCEEDED","ceiling_ns":600000000000}' > "$OUTPUT/supervisor-failure.json"; exit 124; fi
 [[ "$status" -eq 0 ]] || exit "$status"
+final_heartbeat="$(cat "$OUTPUT/heartbeat.json")"
+final_observed="$(sed -n 's/.*"deadline_boottime_ns":\([0-9][0-9]*\)}$/\1/p' <<<"$final_heartbeat")"
+read -r final_uptime _ </proc/uptime; final_whole="${final_uptime%%.*}"; final_frac="${final_uptime#*.}000000000"; final_now=$((10#$final_whole * 1000000000 + 10#${final_frac:0:9}))
+final_expected="{\"stage\":\"BATCH_COMPLETE\",\"sequence\":201,\"completed_count\":200,\"deadline_boottime_ns\":$final_observed}"
+if [[ ! "$final_observed" =~ ^[0-9]+$ || "$final_heartbeat" != "$final_expected" ]] || (( final_observed < final_now || final_observed > final_now + 600000000000 || 201 < last_sequence || 200 < last_completed )); then printf '{"schema":"pastila-production-core-supervisor-failure","schema_version":1,"code":"INVALID_FINAL_HEARTBEAT_AUTHORITY","ceiling_ns":600000000000}' > "$OUTPUT/supervisor-failure.json"; exit 125; fi
 sync -f "$OUTPUT"
 CHILD

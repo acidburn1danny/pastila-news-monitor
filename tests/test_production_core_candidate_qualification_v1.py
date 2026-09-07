@@ -218,6 +218,10 @@ def test_launcher_has_one_network_namespace_and_frozen_boundary() -> None:
     assert 'install -m 000 /dev/null "$ROOTFS/tmp/input/authority/$target"' in launcher
     assert "fix_mistral_regex=True" in runner
     assert "do_sample=False" in runner and "max_new_tokens=MAX_OUTPUT" in runner
+    assert '_heartbeat("GENERATE", sequence, sequence - 1, case_id)' in runner
+    assert '_heartbeat("CASE_COMPLETE", sequence, sequence, case_id)' in runner
+    assert 'sequence < last_sequence || completed < last_completed' in launcher
+    assert '\\"stage\\":\\"BATCH_COMPLETE\\",\\"sequence\\":201,\\"completed_count\\":200' in launcher
     assert "requests" not in runner and "httpx" not in runner and "socket" not in runner
     orchestrator = (ROOT / "scripts/execute_production_core_candidate_qualification_v1.py").read_text("utf-8")
     assert "materialize_batches(" in orchestrator
@@ -406,7 +410,7 @@ def test_replacement_authority_cannot_be_rebound() -> None:
     plan = json.loads((ROOT / "docs/artifacts/production-core-comparative-qualification-generation-v1.json").read_bytes())
     manifest = json.loads((ROOT / "docs/artifacts/production-core-candidate-object-manifest-v1.json").read_bytes())
     changed = json.loads(json.dumps(plan))
-    changed["replacement_authority"]["replacement_attempt_ordinal"] = 4
+    changed["replacement_authority"]["replacement_attempt_ordinal"] = 5
     core = dict(changed)
     core.pop("qualification_generation_identity")
     changed["qualification_generation_identity"] = commitment(core)
