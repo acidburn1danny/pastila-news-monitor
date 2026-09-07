@@ -1,0 +1,32 @@
+{
+  "schema": "pastila-production-core-holdout-access-control-receipt",
+  "schema_version": 1,
+  "status": "FROZEN_ACCESS_POLICY_BEFORE_CANDIDATE_EXECUTION",
+  "holdout_identity": "0a051049c78b893d44968fb02f2df86a3534de803e623ba056d15059a3365c5a",
+  "freeze_utc": "2026-09-07T12:41:18Z",
+  "content_access_before_freeze": [
+    "AUTHORIZED_CORPUS_MATERIALIZATION_PROCESS"
+  ],
+  "post_freeze_allowed_purposes": [
+    "INTEGRITY_VALIDATION",
+    "AUTHORIZED_CANDIDATE_EVALUATION",
+    "INDEPENDENT_SEMANTIC_ADJUDICATION"
+  ],
+  "registered_adjudicator_roles": [
+    "ADJUDICATOR_A",
+    "ADJUDICATOR_B"
+  ],
+  "post_freeze_excluded_project_activities": [
+    "training",
+    "fine_tuning",
+    "adapter_training",
+    "prompt_selection",
+    "threshold_selection",
+    "qualification_design",
+    "prior_candidate_evaluation"
+  ],
+  "candidate_runner_receives_case_only_at_frozen_evaluation_time": true,
+  "claim_scope": "PROJECT_CONTROLLED_ACTIVITIES_ONLY",
+  "global_training_exclusion_claimed": false,
+  "access_receipt_identity": "b00a330966d16b8932b3915ae3e476501d1cb44d1451cd0f69ef05ce5ad9d4c3"
+}

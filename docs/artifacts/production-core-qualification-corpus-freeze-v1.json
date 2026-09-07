@@ -1,0 +1,25 @@
+{
+  "schema": "pastila-production-core-qualification-corpus-freeze",
+  "schema_version": 1,
+  "status": "FROZEN_CANDIDATE_NEUTRAL_NO_CANDIDATE_EXECUTION",
+  "freeze_utc": "2026-09-07T12:41:18Z",
+  "freeze_basis_commit": "587442835faa85084e7245759bb33ffbe141c7a3",
+  "freeze_basis_tree": "c980a1236f76dfef13f9a4e73ad2cf26c35a2ef9",
+  "corpus_identity": "5933f6ddb450a00566cb42a7dabd908975687360e5d9f16766d55b1dff7899b6",
+  "holdout_identity": "0a051049c78b893d44968fb02f2df86a3534de803e623ba056d15059a3365c5a",
+  "assertion_manifest_identity": "87e8a32d50f1085c80b0719f842033c5b1c42e5255e02ab0e479294a98315b84",
+  "rubric_identity": "3bff615d5412abbde10a3ab85d45b82a0e019be196ea21914303d1e6b284353b",
+  "provenance_identity": "b15c9a1150d3491143ae7ad1d3576af0d93056827d923135370e87ffd3b0ca0d",
+  "access_receipt_identity": "b00a330966d16b8932b3915ae3e476501d1cb44d1451cd0f69ef05ce5ad9d4c3",
+  "artifact_sha256": {
+    "production-core-qualification-corpus-v1.json": "0f403d8384ad444376dadb8bbf655a3024811b1ef989f429e436275714a6a83f",
+    "production-core-qualification-holdout-v1.json": "0812bc27d1fc9c8c8869c7a9c917323517f5b397f7466e37d1b98de8857793d4",
+    "production-core-qualification-assertions-v1.json": "f03288a260711d1e48ca3df2cec2d2de4ef3245632116aa395e83a6f5e9f4b92",
+    "production-core-qualification-rubric-v1.json": "ecf187216cca9d18f72b2471bc3027d94100b4795af4833aa481e45ff10e9b0c",
+    "production-core-qualification-corpus-provenance-v1.json": "71554bdddd20d1cbdfb08031953c3ed5835cbab04a39b45a0e2e6cb0ece83376",
+    "production-core-qualification-holdout-access-v1.json": "9194cda87403d5290ddf80fdd917d58895bad52581c46344948e6f72b97d3869"
+  },
+  "candidate_execution_authorized": false,
+  "candidate_execution_observed": false,
+  "freeze_identity": "89d13366227b63c29ca71a00426f4918a4d8e62c8e07de10aaa810f887e9611a"
+}

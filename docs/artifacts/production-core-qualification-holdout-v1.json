@@ -1,0 +1,212 @@
+{
+  "schema": "pastila-production-core-project-controlled-true-holdout",
+  "schema_version": 1,
+  "status": "FROZEN_BEFORE_CANDIDATE_EXECUTION",
+  "claim": "PROJECT_CONTROLLED_TRUE_HOLDOUT",
+  "global_training_exclusion_claimed": false,
+  "external_pretraining_disclaimer": "Possible occurrence of identical or similar text in external base-model pretraining is unknown and outside the holdout claim. GLOBAL_TRAINING_EXCLUSION is not claimed.",
+  "case_count": 50,
+  "case_identities": [
+    {
+      "case_id": "pcq-fac-031",
+      "case_sha256": "ae3819e49fe288f8c6603c9786c50139e620fa26769762f0f08e0924d9431f27"
+    },
+    {
+      "case_id": "pcq-fac-032",
+      "case_sha256": "f6a02bf0792ad50a523070d828e2a70e083ce3b86b77dd8015327e6da1e2f441"
+    },
+    {
+      "case_id": "pcq-fac-033",
+      "case_sha256": "7973ee8aa76e578122adcb5b6d00f2931d8aae9a3f3b9170f2c9e7795251d396"
+    },
+    {
+      "case_id": "pcq-fac-034",
+      "case_sha256": "9728ceaf1d8a8892c0a89bdda07eff284a914a8c3d6e9bf79fae956887dab944"
+    },
+    {
+      "case_id": "pcq-fac-035",
+      "case_sha256": "a992b182627fa4994bee645d66788be57ae3cc5157a6bfe8863dadd1ea297239"
+    },
+    {
+      "case_id": "pcq-fac-036",
+      "case_sha256": "feaa7a73f9d64a3dfbcd0f1e1908069380bd190918f3a05ac87166a040032cda"
+    },
+    {
+      "case_id": "pcq-fac-037",
+      "case_sha256": "f6453cf41b2496748741cd5a4bd5a138e4fd4c6f537cc51a2c536f810d92fa18"
+    },
+    {
+      "case_id": "pcq-fac-038",
+      "case_sha256": "42f9f38a3de9096edd5abe4b8fde919ec3d14a3a649482ef9d676f6c1a2c2bdc"
+    },
+    {
+      "case_id": "pcq-fac-039",
+      "case_sha256": "aed7ee1587cb261dbac7c41f38dd025d40679557ab7fab5c4c0096618278558a"
+    },
+    {
+      "case_id": "pcq-fac-040",
+      "case_sha256": "5b37cf1566470660630d638f06a51bf43f1560e19cc9050f72b70572b674457d"
+    },
+    {
+      "case_id": "pcq-unc-023",
+      "case_sha256": "c1f03554b284fda3ac5b937a16b1cc039c846471955da3237413654e33102a95"
+    },
+    {
+      "case_id": "pcq-unc-024",
+      "case_sha256": "5bfbace84572d6a597019854d0e2b04b839565f3702e6b36678dab43c2ae5b76"
+    },
+    {
+      "case_id": "pcq-unc-025",
+      "case_sha256": "423aecc2da89c0301cd77e0092e36f2d0bdab2049c9f87d2cdea4d21e550407b"
+    },
+    {
+      "case_id": "pcq-unc-026",
+      "case_sha256": "a574e7d7cfbe003a7af68739b744b1723a5d9e2b7e72cab6448f17d0129b0dd4"
+    },
+    {
+      "case_id": "pcq-unc-027",
+      "case_sha256": "0dae69fb84846952b46d8f6029a38c3430573fb17797cf72c1a82b083bc1318e"
+    },
+    {
+      "case_id": "pcq-unc-028",
+      "case_sha256": "f252ae103edb0e60ca0402cb2d11005c02bd65947ee1a535b133e24937f700c6"
+    },
+    {
+      "case_id": "pcq-unc-029",
+      "case_sha256": "6a5ca579fe9338c41b3f64424cff5512c0d99788f5f3b2e7d0482c8ef4bac502"
+    },
+    {
+      "case_id": "pcq-unc-030",
+      "case_sha256": "872f27e91b2ddf16371bf879c5fb0f5fe2f5fd9a1ad7e3c1fc0a561ccf3e269f"
+    },
+    {
+      "case_id": "pcq-sum-023",
+      "case_sha256": "bc4b36bf61acdef16ea3faf0f229219f9820d8342e9743c6cace9d6b38c3bff7"
+    },
+    {
+      "case_id": "pcq-sum-024",
+      "case_sha256": "3e15f2f2ae0f147e9ce03e5d0b51db31e6edf6a8b000bb0bd5825415683f6a07"
+    },
+    {
+      "case_id": "pcq-sum-025",
+      "case_sha256": "a680cf9f73a6e9055e6a88be07cbb78f3f7e22033359c1dd81de71ba1c86b2ec"
+    },
+    {
+      "case_id": "pcq-sum-026",
+      "case_sha256": "9f2df0a472a84b943a81fe4bc021bb903f10698ce5424bfb2b6fa6d521083a1a"
+    },
+    {
+      "case_id": "pcq-sum-027",
+      "case_sha256": "1ceb601048065d6d2312b081303ac20cd8b41961e16c1e7c17ea4e792fd16316"
+    },
+    {
+      "case_id": "pcq-sum-028",
+      "case_sha256": "04105c8a5b139c420c232de0156e91f4fad363178be51601ca3b6226d8b779b8"
+    },
+    {
+      "case_id": "pcq-sum-029",
+      "case_sha256": "070484d5f4a7c52c9b7b64bc76c95f745cd2f5d7a4fdb1c99d7dc52c7dbfeb68"
+    },
+    {
+      "case_id": "pcq-sum-030",
+      "case_sha256": "93309a149a16cf020338d882cc51d31c63548c99f4a0f9a98c93e500c7819cfe"
+    },
+    {
+      "case_id": "pcq-con-020",
+      "case_sha256": "3e15e36959d78e1c6f5984949a269b3b609fd519311e98572b073c6dbf663a13"
+    },
+    {
+      "case_id": "pcq-con-021",
+      "case_sha256": "08d4de2a0f949dec05a0f8ae1259a1959fcada384c1e6501378804f4317749cf"
+    },
+    {
+      "case_id": "pcq-con-022",
+      "case_sha256": "e8baa8da3d31ff5e3030fb542fb481c5c7e4608650ef1f272c2173aa0d8b2a36"
+    },
+    {
+      "case_id": "pcq-con-023",
+      "case_sha256": "ac2ce6b01bae9b2bbd62b908de1fb0fc3e4d61585a30d6b45fb26c845bcd8552"
+    },
+    {
+      "case_id": "pcq-con-024",
+      "case_sha256": "53040025772427e7de1fb99ae972963d8bcaa67440ac3a71ed040e4f95dab096"
+    },
+    {
+      "case_id": "pcq-con-025",
+      "case_sha256": "c4576f690bf6857040cbe34f9f8b4e733605c9d136bc507fcb6cc400ade2452d"
+    },
+    {
+      "case_id": "pcq-ins-016",
+      "case_sha256": "be05cdadfa25bda6e13aa359b011ab1dee417a8bd64df32e1bfb688e5c97ba46"
+    },
+    {
+      "case_id": "pcq-ins-017",
+      "case_sha256": "502b43076589fcb2ab956ee2d19824b6d3fa3db03a1a392c95a8b7ddcb1dfa8a"
+    },
+    {
+      "case_id": "pcq-ins-018",
+      "case_sha256": "e4a79e3ab35f3127918175678fbc06a458b377416aaff13259b49c79a65ded69"
+    },
+    {
+      "case_id": "pcq-ins-019",
+      "case_sha256": "232a4b4b780e00d69ffe45c863860eb5ac89cbda9fbec93cb1b45a3f68e50f6a"
+    },
+    {
+      "case_id": "pcq-ins-020",
+      "case_sha256": "287dbd5c2d9e124a2aa0c91d4983c0daf72f1700ff67914c64c72acfde4debb2"
+    },
+    {
+      "case_id": "pcq-eos-016",
+      "case_sha256": "3fedbb8b28e00a9396c8394ed9589bb6171e2db675dbd0e45b8c40e536f4023f"
+    },
+    {
+      "case_id": "pcq-eos-017",
+      "case_sha256": "d6d5f924ba929a1a9de8a1745c7e5a9e3ec1d4f3de83f6542b54de7d0522e26f"
+    },
+    {
+      "case_id": "pcq-eos-018",
+      "case_sha256": "7fc3dc4e2c2e46aca71bd86daaa2051d51f1a35422ee142d2865eb1847122271"
+    },
+    {
+      "case_id": "pcq-eos-019",
+      "case_sha256": "5b9fac943abcdb048d6953d9a5bbd3e1b95e6221751a318d0b8dae8a6adca16d"
+    },
+    {
+      "case_id": "pcq-eos-020",
+      "case_sha256": "aa3decc2975daeb344be6b541fee3f708861d8d5c97dac6ce7659861fc8e2d78"
+    },
+    {
+      "case_id": "pcq-rom-016",
+      "case_sha256": "f2d7fba20e1fd60e61642075edb930a7aa3d22bd485f299fbf7a79e6309bd513"
+    },
+    {
+      "case_id": "pcq-rom-017",
+      "case_sha256": "9771be490ee03e58f8b90bfdf8e5bf5c9f1e1b81427fcb0f8d3f0670a31a1ccb"
+    },
+    {
+      "case_id": "pcq-rom-018",
+      "case_sha256": "de82d17728ae88d54b0f9274ba87a01d4b2a7a3b711393a380a3d6f1fd8e4ed4"
+    },
+    {
+      "case_id": "pcq-rom-019",
+      "case_sha256": "81d0d1e76c84ab9c63faafa985017959e658ed133491f5a0fa81db777c1cf5fa"
+    },
+    {
+      "case_id": "pcq-rom-020",
+      "case_sha256": "f5ee0d48177b11ffcc23abd60d62087d6684061660da4f65298b98818a697c57"
+    },
+    {
+      "case_id": "pcq-mal-013",
+      "case_sha256": "cf8dc76bafe154d92fe6b202eae7d7589b6e91209aff4ed084916bf12dde523e"
+    },
+    {
+      "case_id": "pcq-mal-014",
+      "case_sha256": "94cecbcf8ee6af78308238555abbcd62303f086e0d26bf22d491c365c0d34b6b"
+    },
+    {
+      "case_id": "pcq-mal-015",
+      "case_sha256": "d45e9b148b3fa6b0b1dc844c4ef8242e96a0a3a3621e50d1b06e6b780b7a5e3b"
+    }
+  ],
+  "holdout_identity": "0a051049c78b893d44968fb02f2df86a3534de803e623ba056d15059a3365c5a"
+}

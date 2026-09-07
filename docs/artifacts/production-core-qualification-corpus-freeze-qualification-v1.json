@@ -1,0 +1,17 @@
+{
+  "schema": "pastila-production-core-qualification-corpus-freeze-qualification",
+  "schema_version": 1,
+  "status": "PASS_CANDIDATE_NEUTRAL_PRE_EXECUTION_FREEZE",
+  "freeze_identity": "89d13366227b63c29ca71a00426f4918a4d8e62c8e07de10aaa810f887e9611a",
+  "freeze_artifact_sha256": "58fafb8944c4e6754ce8c2d06f2ee6b624e651d38b5a430613305754f03a4cd5",
+  "materializer_sha256": "87a8a733815fb5150303c8ef2cc7e0307a9eb55bee67e1bfe88105c4049b07be",
+  "case_catalog_sha256": "bb131077bbe075b9841098916c99def1145acb91e59f17317e25c27b1662dffd",
+  "validator_sha256": "ebe55f4e6a991af297d73674a17744944021f3cca8972a5b2a59aafc0ce2062e",
+  "test_sha256": "47cde86cb4a0e5afef56008b681f46fc4aaa5d076ca47234d0e16a55c29822d7",
+  "documentation_sha256": "93b62196fe3a32f657e7c83b8d57c5e8e2584fc11e43279051f744316851544b",
+  "external_authority_sha256": "f065fab501b382ca5360fedd17fb52b46820f502542e914e1ec035f80af2ecee",
+  "external_authority_test_sha256": "d7fa6703cbb2fb5419535d452e26089b08a351778977088a7508e2915e39af8d",
+  "candidate_execution_authorized": false,
+  "candidate_execution_observed": false,
+  "qualification_identity": "fb405417923b827a0672d99dca476d53fe4651db52d409d2ad0459412f325935"
+}

@@ -1,0 +1,15 @@
+{
+  "schema": "pastila-production-core-qualification-rubric-manifest",
+  "schema_version": 1,
+  "status": "FROZEN_BEFORE_CANDIDATE_EXECUTION",
+  "corpus_identity": "5933f6ddb450a00566cb42a7dabd908975687360e5d9f16766d55b1dff7899b6",
+  "rules": {
+    "hard_gate": "100_PERCENT_EACH_RUN_NO_COMPENSATION",
+    "semantic_gate": "AT_LEAST_95_PERCENT_EACH_RUN_NO_COMPENSATION",
+    "factual_atoms": "ZERO_UNSUPPORTED_OR_CHANGED_AND_100_PERCENT_SOURCE_BOUND",
+    "abstention": "EXACT_EXPECTED_CODE",
+    "adjudication": "TWO_OWNER_REGISTERED_ED25519_RECEIPTS"
+  },
+  "adjudicator_registry_identity": "26772b5ae3e7ffe853e75b79b9d37ef7649ad183917afa2a0170f79e2b2d1639",
+  "rubric_identity": "3bff615d5412abbde10a3ab85d45b82a0e019be196ea21914303d1e6b284353b"
+}

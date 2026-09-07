@@ -1,0 +1,22 @@
+{
+  "schema": "pastila-production-core-corpus-provenance-receipt",
+  "schema_version": 1,
+  "status": "TERMINAL_PRE_CANDIDATE_FREEZE",
+  "created_by": "OPENAI_CODEX_CANDIDATE_NEUTRAL_SYNTHETIC_FIXTURE_GENERATOR",
+  "creation_method": "REVIEWABLE_MULTI_FAMILY_CASE_CATALOG_WITH_CASE_SPECIFIC_SEMANTIC_ORACLES",
+  "materializer_sha256": "87a8a733815fb5150303c8ef2cc7e0307a9eb55bee67e1bfe88105c4049b07be",
+  "case_catalog_sha256": "bb131077bbe075b9841098916c99def1145acb91e59f17317e25c27b1662dffd",
+  "freeze_utc": "2026-09-07T12:41:18Z",
+  "freeze_basis_commit": "587442835faa85084e7245759bb33ffbe141c7a3",
+  "freeze_basis_tree": "c980a1236f76dfef13f9a4e73ad2cf26c35a2ef9",
+  "candidate_models_loaded_or_executed": false,
+  "candidate_outputs_inspected": false,
+  "training_tuning_prompt_threshold_inputs_used": false,
+  "artifacts": {
+    "production-core-qualification-corpus-v1.json": "0f403d8384ad444376dadb8bbf655a3024811b1ef989f429e436275714a6a83f",
+    "production-core-qualification-holdout-v1.json": "0812bc27d1fc9c8c8869c7a9c917323517f5b397f7466e37d1b98de8857793d4",
+    "production-core-qualification-assertions-v1.json": "f03288a260711d1e48ca3df2cec2d2de4ef3245632116aa395e83a6f5e9f4b92",
+    "production-core-qualification-rubric-v1.json": "ecf187216cca9d18f72b2471bc3027d94100b4795af4833aa481e45ff10e9b0c"
+  },
+  "provenance_identity": "b15c9a1150d3491143ae7ad1d3576af0d93056827d923135370e87ffd3b0ca0d"
+}
