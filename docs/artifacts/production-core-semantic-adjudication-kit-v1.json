@@ -1,0 +1,73 @@
+{
+  "schema": "pastila-production-core-semantic-adjudication-kit",
+  "schema_version": 1,
+  "status": "CANDIDATE_NEUTRAL_SYNTHETIC_ONLY_NOT_EXECUTION_AUTHORITY",
+  "scope": "QUALIFICATION_EXECUTION_PROFILE_V1_ONLY",
+  "adjudicator_roles": ["ADJUDICATOR_A", "ADJUDICATOR_B"],
+  "independence": {
+    "distinct_people_required": true,
+    "distinct_ed25519_public_key_sha256_required": true,
+    "private_keys_must_remain_external": true,
+    "candidate_identity_blinded": true,
+    "verdict_non_disclosure_until_both_complete": true
+  },
+  "signed_fields_in_order": [
+    "schema",
+    "schema_version",
+    "qualification_generation_sha256",
+    "corpus_sha256",
+    "case_id",
+    "candidate_alias",
+    "candidate_output_sha256",
+    "assertion_id",
+    "rubric_sha256",
+    "adjudicator_id",
+    "adjudicator_role",
+    "adjudicator_key_sha256",
+    "verdict"
+  ],
+  "verdicts": ["PASS", "FAIL", "INDETERMINATE"],
+  "aggregate_semantics": {
+    "PASS": "both distinct valid receipts say PASS over identical authority",
+    "FAIL_CLOSED": "any FAIL, INDETERMINATE, disagreement, missing receipt, invalid signature, duplicate identity, or binding mismatch"
+  },
+  "authority_enforcement": {
+    "owner_registered_role_person_and_key_mapping_required": true,
+    "distinct_registered_person_ids_required": true,
+    "exact_expected_qualification_generation_corpus_case_alias_output_assertion_and_rubric_required": true,
+    "opaque_candidate_aliases": ["CANDIDATE-A", "CANDIDATE-B"]
+  },
+  "cryptography": {
+    "algorithm": "Ed25519",
+    "message": "compact UTF-8 JSON of signed fields in contractual order, no BOM or newline",
+    "signature_encoding": "strict canonical base64",
+    "verifier": "single-read snapshots of an explicit OpenSSL executable and its two crypto DLLs, each matching an externally supplied SHA-256",
+    "environment": "sanitized explicit OPENSSL_CONF, OPENSSL_MODULES and PATH; no inherited OpenSSL configuration or provider path"
+  },
+  "project_controlled_true_holdout": {
+    "minimum_cases": 50,
+    "freeze_before_candidate_evaluation": true,
+    "separate_case_and_manifest_sha256": true,
+    "excluded_project_activities": [
+      "training",
+      "fine_tuning",
+      "adapter_training",
+      "prompt_selection",
+      "threshold_selection",
+      "qualification_design",
+      "prior_candidate_evaluation"
+    ],
+    "post_freeze_access": "EVALUATOR_ONLY_AFTER_ALL_MECHANISM_PROMPT_THRESHOLD_AND_RUBRIC_FREEZES",
+    "external_pretraining_disclaimer": "Possible occurrence of identical or similar text in external base-model pretraining is unknown and outside the holdout claim. GLOBAL_TRAINING_EXCLUSION is not claimed."
+  },
+  "invalid_output_effect": "ZERO_STATE_MUTATION_NO_RETRY_NO_REDRAW",
+  "qualified_components": {
+    "implementation_sha256": "f03b539eda501a7b544c1533a5e6703628bc815eb5005d379388542a795222c7",
+    "executable_test_sha256": "109b6505bb5f9c5434ff2d7abc88fd42e461c10c225206c9f8fb08e266125efd",
+    "documentation_sha256": "c70945c9c06f94ca9f9a4681fc95a01d3e036cf02a61aa6cb8ff8343c1745fe8"
+  },
+  "candidate_execution_authorized": false,
+  "candidate_results_inspected": false,
+  "candidate_promotion_effect": false,
+  "public_key_registration": "SEPARATE_OWNER_AUTHORITY_REQUIRED"
+}
