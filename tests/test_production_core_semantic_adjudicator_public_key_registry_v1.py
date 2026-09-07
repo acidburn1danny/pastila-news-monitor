@@ -12,8 +12,8 @@ TOP_LEVEL_FIELDS = (
     "schema",
     "schema_version",
     "status",
-    "kit_commit",
-    "kit_tree",
+    "registration_basis_kit_commit",
+    "registration_basis_kit_tree",
     "roles",
     "independence_assertion",
     "private_key_material_present",
@@ -67,10 +67,20 @@ def test_owner_registered_public_key_registry_is_exact_and_identity_closed():
     )
     assert type(value["schema_version"]) is int and value["schema_version"] == 1
     assert value["status"] == "OWNER_REGISTERED_PUBLIC_IDENTITIES"
-    assert value["kit_commit"] == "776e673a640b1619edbeaf9b4aa2471bcc62d77d"
-    assert value["kit_tree"] == "44f25a7ea1a4598a75cd83bfa6560bf369a58162"
+    assert (
+        value["registration_basis_kit_commit"]
+        == "776e673a640b1619edbeaf9b4aa2471bcc62d77d"
+    )
+    assert (
+        value["registration_basis_kit_tree"]
+        == "44f25a7ea1a4598a75cd83bfa6560bf369a58162"
+    )
     assert tuple(value["roles"]) == ("ADJUDICATOR_A", "ADJUDICATOR_B")
     assert value["registry_identity"] == _identity(value)
+    assert (
+        value["registry_identity"]
+        == "26772b5ae3e7ffe853e75b79b9d37ef7649ad183917afa2a0170f79e2b2d1639"
+    )
 
 
 def test_public_key_bytes_hashes_ids_and_independence_are_closed():

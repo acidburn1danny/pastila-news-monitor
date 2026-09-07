@@ -17,7 +17,11 @@ def test_kit_authority_is_synthetic_candidate_neutral_and_component_bound():
     assert value["candidate_execution_authorized"] is False
     assert value["candidate_results_inspected"] is False
     assert value["candidate_promotion_effect"] is False
-    assert value["public_key_registration"] == "SEPARATE_OWNER_AUTHORITY_REQUIRED"
+    assert value["public_key_registration"] == {
+        "status": "OWNER_REGISTERED_RUNTIME_CONSUMED",
+        "registry_identity": "26772b5ae3e7ffe853e75b79b9d37ef7649ad183917afa2a0170f79e2b2d1639",
+        "registry_artifact_sha256": "9c0371fdbf5a455ac740f736b7733bab784422c177fd2a4534071e6f1a74327c",
+    }
     assert value["qualified_components"] == {
         "implementation_sha256": _sha(
             ROOT / "src/pastila_scout/production_core_semantic_adjudication_v1.py"

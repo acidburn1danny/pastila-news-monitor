@@ -21,6 +21,7 @@
     "candidate_output_sha256",
     "assertion_id",
     "rubric_sha256",
+    "adjudicator_registry_identity",
     "adjudicator_id",
     "adjudicator_role",
     "adjudicator_key_sha256",
@@ -33,6 +34,9 @@
   },
   "authority_enforcement": {
     "owner_registered_role_person_and_key_mapping_required": true,
+    "byte_exact_registry_snapshot_and_artifact_sha256_required": true,
+    "registry_identity_in_receipt_and_expected_authority_required": true,
+    "caller_selected_registry_mapping_is_prohibited_in_production": true,
     "distinct_registered_person_ids_required": true,
     "exact_expected_qualification_generation_corpus_case_alias_output_assertion_and_rubric_required": true,
     "opaque_candidate_aliases": ["CANDIDATE-A", "CANDIDATE-B"]
@@ -62,12 +66,16 @@
   },
   "invalid_output_effect": "ZERO_STATE_MUTATION_NO_RETRY_NO_REDRAW",
   "qualified_components": {
-    "implementation_sha256": "f03b539eda501a7b544c1533a5e6703628bc815eb5005d379388542a795222c7",
-    "executable_test_sha256": "109b6505bb5f9c5434ff2d7abc88fd42e461c10c225206c9f8fb08e266125efd",
-    "documentation_sha256": "c70945c9c06f94ca9f9a4681fc95a01d3e036cf02a61aa6cb8ff8343c1745fe8"
+    "implementation_sha256": "5b59cc6322ae5a59150a070d04ffa878e1e0659ff9ca8dd03d4cee240f139da3",
+    "executable_test_sha256": "8c8459b12d6f54a2a4225b290388a7bef0ddb255ddbeb02dfe04e36e2462ae40",
+    "documentation_sha256": "ae6a2c3d02d8cedc93a0976f74b614a1734e40312d6a972d6acf7c4dd435835e"
   },
   "candidate_execution_authorized": false,
   "candidate_results_inspected": false,
   "candidate_promotion_effect": false,
-  "public_key_registration": "SEPARATE_OWNER_AUTHORITY_REQUIRED"
+  "public_key_registration": {
+    "status": "OWNER_REGISTERED_RUNTIME_CONSUMED",
+    "registry_identity": "26772b5ae3e7ffe853e75b79b9d37ef7649ad183917afa2a0170f79e2b2d1639",
+    "registry_artifact_sha256": "9c0371fdbf5a455ac740f736b7733bab784422c177fd2a4534071e6f1a74327c"
+  }
 }

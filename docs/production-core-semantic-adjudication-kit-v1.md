@@ -6,8 +6,9 @@ This offline kit authenticates two independent human decisions without making
 the candidate responsible for its own verdict. It does not run a model, contain
 candidate output, designate adjudicators, or promote a candidate.
 
-Each reviewer receives the same candidate-blinded case, output, assertion, and
-rubric identities. `ADJUDICATOR_A` and `ADJUDICATOR_B` sign separate canonical
+Each reviewer receives the same candidate-blinded case, output, assertion,
+rubric, and adjudicator-registry identities. `ADJUDICATOR_A` and
+`ADJUDICATOR_B` sign separate canonical
 receipts with distinct owner-registered identities and Ed25519 keys. Only two
 valid `PASS` receipts over the exact owner-supplied qualification authority
 aggregate to `PASS`. Every other state fails closed. Candidate aliases are
@@ -16,8 +17,12 @@ restricted to the opaque values `CANDIDATE-A` and `CANDIDATE-B`.
 ## Key handling
 
 Generate each private key on its evaluator's computer. Never copy or commit the
-private key. Export only the public key. Registration of the two public-key byte
-identities is a later, explicit owner-authority step.
+private key. Export only the public key. The owner registration is consumed as
+one byte-exact, SHA-256-bound registry snapshot. The production loader rejects
+duplicate or reordered fields, noncanonical key encoding, non-Ed25519 SPKI
+bytes, identity mismatch, and non-independent registrations. It materializes
+the public keys only from that validated snapshot; caller-selected
+role/person/key mappings are not a production authority path.
 
 The kit accepts an explicit OpenSSL runtime manifest for the executable,
 `libcrypto`, and `libssl`. It snapshots their verified bytes before execution
@@ -41,6 +46,7 @@ Possible occurrence of identical or similar text in external base-model
 pretraining is unknown and outside this claim. `GLOBAL_TRAINING_EXCLUSION` is
 not claimed.
 
-This generation contains synthetic fixtures only. Corpus creation, reviewer-key
-registration, candidate execution, adjudication receipts, and promotion remain
-separate authorities.
+This generation contains synthetic fixtures only. Corpus creation, candidate
+execution, adjudication receipts, and promotion remain separate authorities.
+The registry identity is a signed receipt field and an exact expected-authority
+field, so a receipt from a stale or substituted registry cannot be aggregated.

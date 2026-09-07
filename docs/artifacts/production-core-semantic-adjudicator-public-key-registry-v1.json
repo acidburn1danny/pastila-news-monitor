@@ -2,8 +2,8 @@
   "schema": "pastila-production-core-semantic-adjudicator-public-key-registry",
   "schema_version": 1,
   "status": "OWNER_REGISTERED_PUBLIC_IDENTITIES",
-  "kit_commit": "776e673a640b1619edbeaf9b4aa2471bcc62d77d",
-  "kit_tree": "44f25a7ea1a4598a75cd83bfa6560bf369a58162",
+  "registration_basis_kit_commit": "776e673a640b1619edbeaf9b4aa2471bcc62d77d",
+  "registration_basis_kit_tree": "44f25a7ea1a4598a75cd83bfa6560bf369a58162",
   "roles": {
     "ADJUDICATOR_A": {
       "adjudicator_id": "EVALUATOR-A-01",
@@ -22,5 +22,5 @@
   "private_key_material_present": false,
   "candidate_execution_authorized": false,
   "candidate_promotion_effect": false,
-  "registry_identity": "ac4cb3ac3330df2473fe6e149df183c0bfbbb18f5b1b83bb34de3346234be433"
+  "registry_identity": "26772b5ae3e7ffe853e75b79b9d37ef7649ad183917afa2a0170f79e2b2d1639"
 }

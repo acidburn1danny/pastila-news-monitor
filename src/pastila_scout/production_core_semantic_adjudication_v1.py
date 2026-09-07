@@ -10,6 +10,7 @@ import re
 import subprocess
 import tempfile
 from collections.abc import Mapping, Sequence
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
@@ -30,6 +31,7 @@ SIGNED_FIELDS = (
     "candidate_output_sha256",
     "assertion_id",
     "rubric_sha256",
+    "adjudicator_registry_identity",
     "adjudicator_id",
     "adjudicator_role",
     "adjudicator_key_sha256",
@@ -62,6 +64,7 @@ def _validate_unsigned(value: Mapping[str, Any]) -> dict[str, Any]:
         "corpus_sha256",
         "candidate_output_sha256",
         "rubric_sha256",
+        "adjudicator_registry_identity",
         "adjudicator_key_sha256",
     ):
         if not isinstance(item[field], str) or not HEX64.fullmatch(item[field]):
@@ -74,6 +77,146 @@ def _validate_unsigned(value: Mapping[str, Any]) -> dict[str, Any]:
     if item["adjudicator_role"] not in ROLE_IDS or item["verdict"] not in VERDICTS:
         raise ValueError("receipt enum invalid")
     return item
+
+
+REGISTRY_FIELDS = (
+    "schema",
+    "schema_version",
+    "status",
+    "registration_basis_kit_commit",
+    "registration_basis_kit_tree",
+    "roles",
+    "independence_assertion",
+    "private_key_material_present",
+    "candidate_execution_authorized",
+    "candidate_promotion_effect",
+    "registry_identity",
+)
+REGISTRY_ROLE_FIELDS = (
+    "adjudicator_id",
+    "public_key_format",
+    "public_key_sha256",
+    "public_key_pem_base64",
+)
+ED25519_SPKI_PREFIX = bytes.fromhex("302a300506032b6570032100")
+AUTHORIZED_REGISTRY_ARTIFACT_SHA256 = (
+    "9c0371fdbf5a455ac740f736b7733bab784422c177fd2a4534071e6f1a74327c"
+)
+AUTHORIZED_REGISTRY_IDENTITY = (
+    "26772b5ae3e7ffe853e75b79b9d37ef7649ad183917afa2a0170f79e2b2d1639"
+)
+AUTHORIZED_REGISTRY_KIT_COMMIT = "776e673a640b1619edbeaf9b4aa2471bcc62d77d"
+AUTHORIZED_REGISTRY_KIT_TREE = "44f25a7ea1a4598a75cd83bfa6560bf369a58162"
+
+
+@dataclass(frozen=True)
+class LoadedAdjudicatorRegistry:
+    identity: str
+    registrations: Mapping[str, tuple[str, str]]
+    public_key_bytes: Mapping[str, bytes]
+
+
+def _strict_pairs(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    result: dict[str, Any] = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError(f"duplicate registry JSON key: {key}")
+        result[key] = value
+    return result
+
+
+def load_adjudicator_registry(registry_bytes: bytes) -> LoadedAdjudicatorRegistry:
+    """Validate one exact registry byte snapshot and materialize its public keys."""
+    if type(registry_bytes) is not bytes:
+        raise ValueError("registry snapshot must be immutable bytes")
+    if sha256(registry_bytes) != AUTHORIZED_REGISTRY_ARTIFACT_SHA256:
+        raise ValueError("registry artifact identity mismatch")
+    try:
+        value = json.loads(
+            registry_bytes.decode("utf-8"), object_pairs_hook=_strict_pairs
+        )
+    except (UnicodeDecodeError, json.JSONDecodeError, ValueError) as exc:
+        raise ValueError("registry encoding invalid") from exc
+    if not isinstance(value, dict) or tuple(value) != REGISTRY_FIELDS:
+        raise ValueError("registry fields/order invalid")
+    if (
+        value["schema"]
+        != "pastila-production-core-semantic-adjudicator-public-key-registry"
+        or type(value["schema_version"]) is not int
+        or value["schema_version"] != 1
+        or value["status"] != "OWNER_REGISTERED_PUBLIC_IDENTITIES"
+        or value["registration_basis_kit_commit"] != AUTHORIZED_REGISTRY_KIT_COMMIT
+        or value["registration_basis_kit_tree"] != AUTHORIZED_REGISTRY_KIT_TREE
+        or value["independence_assertion"]
+        != "OWNER_DESIGNATED_DISTINCT_HUMAN_EVALUATORS_WITH_DISTINCT_PUBLIC_KEYS"
+        or value["private_key_material_present"] is not False
+        or value["candidate_execution_authorized"] is not False
+        or value["candidate_promotion_effect"] is not False
+    ):
+        raise ValueError("registry authority invalid")
+    roles = value["roles"]
+    if not isinstance(roles, dict) or tuple(roles) != ROLE_IDS:
+        raise ValueError("registry roles invalid")
+    body = dict(value)
+    claimed_identity = body.pop("registry_identity")
+    if claimed_identity != AUTHORIZED_REGISTRY_IDENTITY or claimed_identity != sha256(
+        canonical(body)
+    ):
+        raise ValueError("registry identity invalid")
+    registrations: dict[str, tuple[str, str]] = {}
+    keys: dict[str, bytes] = {}
+    for role in ROLE_IDS:
+        record = roles[role]
+        if not isinstance(record, dict) or tuple(record) != REGISTRY_ROLE_FIELDS:
+            raise ValueError("registry role fields/order invalid")
+        adjudicator_id = record["adjudicator_id"]
+        key_sha256 = record["public_key_sha256"]
+        encoded = record["public_key_pem_base64"]
+        if (
+            not isinstance(adjudicator_id, str)
+            or not ID.fullmatch(adjudicator_id)
+            or record["public_key_format"]
+            != "PEM_SUBJECT_PUBLIC_KEY_INFO_ED25519_EXACT_BYTES_BASE64"
+            or not isinstance(key_sha256, str)
+            or not HEX64.fullmatch(key_sha256)
+            or not isinstance(encoded, str)
+        ):
+            raise ValueError("registry role authority invalid")
+        try:
+            key_bytes = base64.b64decode(encoded, validate=True)
+        except Exception as exc:
+            raise ValueError("registry key encoding invalid") from exc
+        if (
+            base64.b64encode(key_bytes).decode("ascii") != encoded
+            or sha256(key_bytes) != key_sha256
+        ):
+            raise ValueError("registry key identity invalid")
+        lines = key_bytes.split(b"\r\n")
+        if (
+            len(lines) != 4
+            or lines[0] != b"-----BEGIN PUBLIC KEY-----"
+            or lines[2] != b"-----END PUBLIC KEY-----"
+            or lines[3] != b""
+        ):
+            raise ValueError("registry key PEM invalid")
+        try:
+            der = base64.b64decode(lines[1], validate=True)
+        except Exception as exc:
+            raise ValueError("registry key DER encoding invalid") from exc
+        if (
+            base64.b64encode(der) != lines[1]
+            or len(der) != 44
+            or not der.startswith(ED25519_SPKI_PREFIX)
+        ):
+            raise ValueError("registry key is not exact Ed25519 SPKI")
+        registrations[role] = (adjudicator_id, key_sha256)
+        keys[role] = key_bytes
+    if (
+        len({x[0] for x in registrations.values()}) != 2
+        or len({x[1] for x in registrations.values()}) != 2
+    ):
+        raise ValueError("registry adjudicators are not independent")
+    return LoadedAdjudicatorRegistry(claimed_identity, registrations, keys)
 
 
 def signed_message(value: Mapping[str, Any]) -> bytes:
@@ -249,6 +392,7 @@ def adjudicate_pair(
         "candidate_output_sha256",
         "assertion_id",
         "rubric_sha256",
+        "adjudicator_registry_identity",
     )
     if (
         len(receipts) != 2
@@ -304,3 +448,32 @@ def adjudicate_pair(
         raise ValueError("adjudicators evaluated different authority")
     verdicts = [x["verdict"] for x in verified]
     return "PASS" if verdicts == ["PASS", "PASS"] else "FAIL_CLOSED"
+
+
+def adjudicate_pair_from_registry(
+    receipts: Sequence[Mapping[str, Any]],
+    *,
+    registry_bytes: bytes,
+    expected_authority: Mapping[str, Any],
+    openssl: Path,
+    expected_openssl_runtime_sha256: Mapping[str, str],
+) -> str:
+    """Adjudicate using only keys materialized from one validated registry snapshot."""
+    registry = load_adjudicator_registry(registry_bytes)
+    if expected_authority.get("adjudicator_registry_identity") != registry.identity:
+        raise ValueError("expected registry authority mismatch")
+    with tempfile.TemporaryDirectory() as folder:
+        root = Path(folder)
+        public_keys: dict[str, Path] = {}
+        for role in ROLE_IDS:
+            path = root / f"{role}.public.pem"
+            path.write_bytes(registry.public_key_bytes[role])
+            public_keys[role] = path
+        return adjudicate_pair(
+            receipts,
+            public_keys=public_keys,
+            registered_adjudicators=registry.registrations,
+            expected_authority=expected_authority,
+            openssl=openssl,
+            expected_openssl_runtime_sha256=expected_openssl_runtime_sha256,
+        )

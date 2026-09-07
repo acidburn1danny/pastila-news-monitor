@@ -1,5 +1,6 @@
 import copy
 import hashlib
+import json
 import os
 import shutil
 import subprocess
@@ -12,6 +13,8 @@ from pastila_scout.production_core_semantic_adjudication_v1 import (
     ROLE_IDS,
     SIGNED_FIELDS,
     adjudicate_pair,
+    adjudicate_pair_from_registry,
+    load_adjudicator_registry,
     sha256,
     sign_receipt,
     verify_receipt,
@@ -20,6 +23,12 @@ from pastila_scout.production_core_semantic_adjudication_v1 import (
 OPENSSL = Path(
     os.environ.get("PASTILA_ADJUDICATION_TEST_OPENSSL", shutil.which("openssl") or "")
 )
+ROOT = Path(__file__).resolve().parents[1]
+REGISTRY = (
+    ROOT
+    / "docs/artifacts/production-core-semantic-adjudicator-public-key-registry-v1.json"
+)
+REGISTRY_IDENTITY = "26772b5ae3e7ffe853e75b79b9d37ef7649ad183917afa2a0170f79e2b2d1639"
 
 
 def _keypair(root: Path, name: str):
@@ -49,6 +58,7 @@ def _unsigned(role: str, key: Path, verdict="PASS"):
         "candidate_output_sha256": "3" * 64,
         "assertion_id": "ASSERTION-001",
         "rubric_sha256": "4" * 64,
+        "adjudicator_registry_identity": REGISTRY_IDENTITY,
         "adjudicator_id": f"PERSON-{role[-1]}",
         "adjudicator_role": role,
         "adjudicator_key_sha256": sha256(key.read_bytes()),
@@ -89,6 +99,7 @@ def kit(tmp_path):
             "candidate_output_sha256",
             "assertion_id",
             "rubric_sha256",
+            "adjudicator_registry_identity",
         )
     }
     registrations = {
@@ -123,7 +134,14 @@ def test_real_ed25519_two_person_pass_is_offline_and_identity_closed(kit):
 
 
 @pytest.mark.parametrize(
-    "field", ["case_id", "candidate_output_sha256", "rubric_sha256", "verdict"]
+    "field",
+    [
+        "case_id",
+        "candidate_output_sha256",
+        "rubric_sha256",
+        "adjudicator_registry_identity",
+        "verdict",
+    ],
 )
 def test_signed_field_substitution_fails(kit, field):
     runtime, _, _, (_, a_pub, a), _ = kit
@@ -321,4 +339,91 @@ def test_duplicate_person_disagreement_missing_and_cross_case_fail_closed(kit):
             expected_authority=authority,
             openssl=OPENSSL,
             expected_openssl_runtime_sha256=runtime,
+        )
+
+
+def test_registry_loader_closes_exact_artifact_identity_and_key_bytes():
+    raw = REGISTRY.read_bytes()
+    loaded = load_adjudicator_registry(raw)
+    assert loaded.identity == REGISTRY_IDENTITY
+    value = json.loads(raw)
+    for role in ROLE_IDS:
+        assert (
+            sha256(loaded.public_key_bytes[role])
+            == value["roles"][role]["public_key_sha256"]
+        )
+        assert loaded.registrations[role] == (
+            value["roles"][role]["adjudicator_id"],
+            value["roles"][role]["public_key_sha256"],
+        )
+
+
+def test_registry_artifact_substitution_and_duplicate_keys_fail_closed():
+    raw = REGISTRY.read_bytes()
+    with pytest.raises(ValueError, match="artifact identity mismatch"):
+        load_adjudicator_registry(raw + b" ")
+    duplicate = raw.replace(
+        b'{\n  "schema":', b'{\n  "schema":"duplicate",\n  "schema":', 1
+    )
+    with pytest.raises(ValueError):
+        load_adjudicator_registry(duplicate)
+
+
+def test_registry_wrapper_materializes_exact_keys_and_rejects_stale_authority(
+    monkeypatch,
+):
+    raw = REGISTRY.read_bytes()
+    expected_authority = {
+        "qualification_generation_sha256": "1" * 64,
+        "corpus_sha256": "2" * 64,
+        "case_id": "PCQ-FAC-001",
+        "candidate_alias": "CANDIDATE-A",
+        "candidate_output_sha256": "3" * 64,
+        "assertion_id": "ASSERTION-001",
+        "rubric_sha256": "4" * 64,
+        "adjudicator_registry_identity": REGISTRY_IDENTITY,
+    }
+    observed = {}
+
+    def inspect_materialization(
+        receipts,
+        *,
+        public_keys,
+        registered_adjudicators,
+        expected_authority,
+        openssl,
+        expected_openssl_runtime_sha256,
+    ):
+        del receipts, openssl, expected_openssl_runtime_sha256
+        observed["keys"] = {role: public_keys[role].read_bytes() for role in ROLE_IDS}
+        observed["registrations"] = registered_adjudicators
+        observed["authority"] = expected_authority
+        return "PASS"
+
+    monkeypatch.setattr(module, "adjudicate_pair", inspect_materialization)
+    assert (
+        adjudicate_pair_from_registry(
+            [],
+            registry_bytes=raw,
+            expected_authority=expected_authority,
+            openssl=Path("unused"),
+            expected_openssl_runtime_sha256={},
+        )
+        == "PASS"
+    )
+    loaded = load_adjudicator_registry(raw)
+    assert observed == {
+        "keys": loaded.public_key_bytes,
+        "registrations": loaded.registrations,
+        "authority": expected_authority,
+    }
+    stale = dict(expected_authority)
+    stale["adjudicator_registry_identity"] = "f" * 64
+    with pytest.raises(ValueError, match="expected registry authority mismatch"):
+        adjudicate_pair_from_registry(
+            [],
+            registry_bytes=raw,
+            expected_authority=stale,
+            openssl=Path("unused"),
+            expected_openssl_runtime_sha256={},
         )
