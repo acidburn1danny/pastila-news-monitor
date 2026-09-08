@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import base64
 import hashlib
 import hmac
 import json
@@ -200,6 +201,38 @@ REPLACEMENT_AUTHORITY = {
     "predecessor_terminal_failure": PREDECESSOR_FAILURE_5,
     "prior_replacement_authority": PRIOR_REPLACEMENT_AUTHORITY_4,
 }
+PREDECESSOR_ATTEMPT_6 = {
+    "schema": "pastila-production-core-comparative-execution-attempt",
+    "schema_version": 1,
+    "qualification_generation_identity": "b865af83fe360eb19c4f1fe07ad953becf38daedf6282e7c4f85027dc649eeac",
+    "alias_secret_commitment": "0195c095f520e5cbfbbdbe3f353091ca3cef86e9e3e9862c12dfa9f28267d2e7",
+    "attempt_ordinal": 6,
+    "retry_or_redraw_authorized": False,
+    "status": "CONSUMED_BEFORE_EXECUTION",
+    "attempt_identity": "fe679550cc192134c4f3a756e497521285a7dc52d0473e92ba6f68025a9b64c5",
+}
+PREDECESSOR_FAILURE_6 = {
+    "schema": "pastila-production-core-comparative-execution-terminal-failure",
+    "schema_version": 1,
+    "qualification_generation_identity": "b865af83fe360eb19c4f1fe07ad953becf38daedf6282e7c4f85027dc649eeac",
+    "attempt_identity": "fe679550cc192134c4f3a756e497521285a7dc52d0473e92ba6f68025a9b64c5",
+    "failure_class": "UNCAUGHT_OR_CANCELLED_AFTER_ATTEMPT_CONSUMPTION",
+    "partial_artifact_count": 406,
+    "partial_artifact_root": "9626f2628183e8137be37d9ffed5b3018d4b323cf69f66a47626f9cc87095dc4",
+    "retry_or_redraw_authorized": False,
+    "promotion_effect": False,
+    "failure_identity": "1f507b9ddc7470891e41f440cbe8306ebaa3dcf47db4b79e13956641dc1fe9c5",
+}
+REPLACEMENT_AUTHORITY_7 = {
+    "superseded_generation_identity": "b865af83fe360eb19c4f1fe07ad953becf38daedf6282e7c4f85027dc649eeac",
+    "consumed_attempt_identity": "fe679550cc192134c4f3a756e497521285a7dc52d0473e92ba6f68025a9b64c5",
+    "terminal_failure_identity": "1f507b9ddc7470891e41f440cbe8306ebaa3dcf47db4b79e13956641dc1fe9c5",
+    "replacement_attempt_ordinal": 7,
+    "retry_or_redraw": False,
+    "predecessor_attempt": PREDECESSOR_ATTEMPT_6,
+    "predecessor_terminal_failure": PREDECESSOR_FAILURE_6,
+    "prior_replacement_authority": REPLACEMENT_AUTHORITY,
+}
 MATERIALIZATIONS = ("A", "B")
 REPETITIONS = (1, 2, 3)
 ALIASES = ("CANDIDATE-A", "CANDIDATE-B")
@@ -363,7 +396,7 @@ def validate_generation_authority(
         or plan.get("rubric_identity") != RUBRIC_IDENTITY
         or plan.get("adjudicator_registry_identity") != REGISTRY_IDENTITY
         or plan.get("candidate_object_manifest_identity") != manifest_identity
-        or plan.get("replacement_authority") != REPLACEMENT_AUTHORITY
+        or plan.get("replacement_authority") != REPLACEMENT_AUTHORITY_7
         or plan.get("candidate_execution_performed") is not False
         or plan.get("promotion_effect") is not False
     ):
@@ -442,7 +475,12 @@ def validate_candidate_output(raw: bytes, case: Mapping[str, object]) -> tuple[d
         raise QualificationAuthorityError("candidate output is not one UTF-8 JSON object") from exc
     if not isinstance(parsed, dict):
         raise QualificationAuthorityError("candidate output is not an object")
-    canonical = canonical_response_bytes(parsed)
+    try:
+        canonical = canonical_response_bytes(parsed)
+    except (KeyError, TypeError, ValueError, UnicodeEncodeError) as exc:
+        raise QualificationAuthorityError(
+            "candidate output violates structured response contract"
+        ) from exc
     if raw != canonical:
         raise QualificationAuthorityError("candidate output is not canonical or contains trailing bytes")
     if parsed["case_id"] != case["case_id"] or parsed["request_identity"] != case["request_identity"]:
@@ -459,7 +497,7 @@ def build_execution_receipt(
     network_log_sha256: str, file_access_log_sha256: str,
     observation_sha256: str, observation_identity: str,
     runner_sha256: str, prompt_sha256: str, batch_sha256: str,
-    candidate: str,
+    candidate: str, terminal_eos: bool,
 ) -> dict[str, object]:
     integers = (output_tokens, input_tokens, load_plus_generation_wall_ns, peak_rss_bytes)
     if any(type(value) is not int or value < 0 for value in integers):
@@ -478,7 +516,7 @@ def build_execution_receipt(
     ):
         if len(value) != 64 or any(ch not in HEX for ch in value):
             raise QualificationAuthorityError("log identity invalid")
-    if candidate not in ADAPTER_MANIFESTS:
+    if candidate not in ADAPTER_MANIFESTS or type(terminal_eos) is not bool:
         raise QualificationAuthorityError("candidate receipt authority invalid")
     core = {
         "schema": "pastila-production-core-candidate-execution-receipt",
@@ -503,7 +541,7 @@ def build_execution_receipt(
         "network_policy": "DENY_ALL_NEW_CHILD_NAMESPACE",
         "network_log_sha256": network_log_sha256,
         "file_access_log_sha256": file_access_log_sha256,
-        "terminal_eos": True,
+        "terminal_eos": terminal_eos,
         "promotion_effect": False,
     }
     return {**core, "receipt_identity": identity(core)}
@@ -513,6 +551,7 @@ def build_blind_packet(
     *, authority: Mapping[str, object], case: Mapping[str, object], alias: str,
     raw_output: bytes, assertion: Mapping[str, object], rubric: Mapping[str, object],
     execution_receipt_identity: str | None = None,
+    terminal_eos: bool = True,
 ) -> dict[str, object]:
     if alias not in ALIASES:
         raise QualificationAuthorityError("candidate alias invalid")
@@ -521,7 +560,28 @@ def build_blind_packet(
         or any(ch not in HEX for ch in execution_receipt_identity)
     ):
         raise QualificationAuthorityError("execution receipt identity invalid")
-    parsed, canonical = validate_candidate_output(raw_output, case)
+    if type(terminal_eos) is not bool:
+        raise QualificationAuthorityError("terminal EOS authority invalid")
+    raw_sha256 = hashlib.sha256(raw_output).hexdigest()
+    try:
+        if not terminal_eos:
+            raise QualificationAuthorityError("candidate output did not terminate with EOS")
+        parsed, canonical = validate_candidate_output(raw_output, case)
+    except QualificationAuthorityError as exc:
+        parsed = None
+        validation = {
+            "status": "FAIL",
+            "failure_code": "STRUCTURED_RESPONSE_V1_INVALID",
+            "failure_detail": str(exc),
+        }
+    else:
+        if canonical != raw_output:
+            raise QualificationAuthorityError("validated output byte identity changed")
+        validation = {
+            "status": "PASS",
+            "failure_code": None,
+            "failure_detail": None,
+        }
     core = {
         "schema": "pastila-production-core-blind-adjudication-packet",
         "schema_version": 1,
@@ -530,13 +590,41 @@ def build_blind_packet(
         "case": dict(case),
         "candidate_alias": alias,
         "candidate_output": parsed,
-        "candidate_output_sha256": hashlib.sha256(canonical).hexdigest(),
+        "candidate_output_base64": base64.b64encode(raw_output).decode("ascii"),
+        "candidate_output_sha256": raw_sha256,
+        "candidate_output_validation": validation,
         "execution_receipt_identity": execution_receipt_identity,
         "assertion": dict(assertion),
         "rubric_sha256": RUBRIC_IDENTITY,
         "adjudicator_registry_identity": REGISTRY_IDENTITY,
     }
     return {**core, "packet_identity": identity(core)}
+
+
+def semantic_adjudication_authority(
+    packet: Mapping[str, object],
+) -> dict[str, object]:
+    """Issue semantic authority only for a structurally valid blinded packet."""
+
+    core = dict(packet)
+    packet_identity = core.pop("packet_identity", None)
+    if packet_identity != identity(core):
+        raise QualificationAuthorityError("blind packet identity mismatch")
+    validation = packet.get("candidate_output_validation")
+    if not isinstance(validation, dict) or validation.get("status") != "PASS":
+        raise QualificationAuthorityError("structural FAIL is terminal")
+    if validation != {"status": "PASS", "failure_code": None, "failure_detail": None}:
+        raise QualificationAuthorityError("structural validation authority invalid")
+    return {
+        "qualification_generation_sha256": packet["qualification_generation_sha256"],
+        "corpus_sha256": packet["corpus_sha256"],
+        "case_id": packet["case"]["case_id"],  # type: ignore[index]
+        "candidate_alias": packet["candidate_alias"],
+        "candidate_output_sha256": packet["candidate_output_sha256"],
+        "assertion_id": packet["assertion"]["assertion_id"],  # type: ignore[index]
+        "rubric_sha256": packet["rubric_sha256"],
+        "adjudicator_registry_identity": packet["adjudicator_registry_identity"],
+    }
 
 
 def atomic_publish(path: Path, data: bytes) -> None:
@@ -566,6 +654,7 @@ __all__ = (
     "CORPUS_IDENTITY",
     "FREEZE_IDENTITY",
     "HOLDOUT_IDENTITY",
+    "REPLACEMENT_AUTHORITY_7",
     "ROOTFS_SHA256",
     "TOKENIZER_SHA256",
     "QualificationAuthorityError",
@@ -578,6 +667,7 @@ __all__ = (
     "file_manifest",
     "identity",
     "materialize_batches",
+    "semantic_adjudication_authority",
     "validate_candidate_output",
     "validate_generation_authority",
     "validate_secret_mapping",

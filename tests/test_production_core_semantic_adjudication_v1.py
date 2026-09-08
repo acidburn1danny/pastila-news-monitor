@@ -1,3 +1,4 @@
+import base64
 import copy
 import hashlib
 import json
@@ -374,15 +375,79 @@ def test_registry_wrapper_materializes_exact_keys_and_rejects_stale_authority(
 ):
     raw = REGISTRY.read_bytes()
     expected_authority = {
-        "qualification_generation_sha256": "1" * 64,
-        "corpus_sha256": "2" * 64,
-        "case_id": "PCQ-FAC-001",
+        "qualification_generation_sha256": module.FROZEN_GENERATION_IDENTITY,
+        "corpus_sha256": module.FROZEN_CORPUS_IDENTITY,
+        "case_id": "pcq-fac-001",
         "candidate_alias": "CANDIDATE-A",
         "candidate_output_sha256": "3" * 64,
         "assertion_id": "ASSERTION-001",
-        "rubric_sha256": "4" * 64,
-        "adjudicator_registry_identity": REGISTRY_IDENTITY,
+        "rubric_sha256": module.FROZEN_RUBRIC_IDENTITY,
+        "adjudicator_registry_identity": module.FROZEN_REGISTRY_IDENTITY,
     }
+    candidate_output = {
+        "schema": "pastila-core-v2-structured-qualification-response",
+        "schema_version": 1,
+        "case_id": expected_authority["case_id"],
+        "request_identity": "sha256:" + "6" * 64,
+        "output_type": "FACTUAL",
+        "outcome": "ANSWER",
+        "text": "Fapt verificat.",
+        "claim_bindings": [{"claim_index": 1, "source_span_ids": ["source:1"]}],
+        "abstention_code": None,
+    }
+    valid_output = module.canonical_response_bytes(candidate_output)
+    packet_core = {
+        "schema": "pastila-production-core-blind-adjudication-packet",
+        "schema_version": 1,
+        "qualification_generation_sha256": expected_authority["qualification_generation_sha256"],
+        "corpus_sha256": expected_authority["corpus_sha256"],
+        "case": {"case_id": expected_authority["case_id"], "request_identity": candidate_output["request_identity"], "output_type": "FACTUAL"},
+        "candidate_alias": expected_authority["candidate_alias"],
+        "candidate_output": candidate_output,
+        "candidate_output_base64": base64.b64encode(valid_output).decode("ascii"),
+        "candidate_output_sha256": module.sha256(valid_output),
+        "candidate_output_validation": {"status": "PASS", "failure_code": None, "failure_detail": None},
+        "execution_receipt_identity": "5" * 64,
+        "assertion": {"assertion_id": expected_authority["assertion_id"]},
+        "rubric_sha256": expected_authority["rubric_sha256"],
+        "adjudicator_registry_identity": expected_authority["adjudicator_registry_identity"],
+    }
+    packet = {**packet_core, "packet_identity": module.sha256(module.canonical(packet_core))}
+    packet_bytes = module.canonical(packet)
+    packet_path = "materialization-A/repetition-1/CANDIDATE-A/case.blind.json"
+    def custody_for(selected_packet: bytes, *, inventory_mutation=None, custody_mutation=None):
+        inventory = [
+            {"path": packet_path, "sha256": module.sha256(selected_packet)},
+            *(
+                {"path": f"materialization-B/repetition-3/CANDIDATE-B/dummy-{index:04d}.blind.json", "sha256": f"{index:064x}"}
+                for index in range(1, 2400)
+            ),
+        ]
+        inventory.sort(key=lambda row: row["path"].encode("ascii"))
+        if inventory_mutation is not None:
+            inventory_mutation(inventory)
+        inventory_bytes = module.canonical(inventory)
+        custody_core = {
+            "schema": "pastila-production-core-blind-export-custody-manifest",
+            "schema_version": 1,
+            "adjudicator_role": "ADJUDICATOR_A",
+            "qualification_generation_identity": module.FROZEN_GENERATION_IDENTITY,
+            "packet_count": 2400,
+            "packets_root": module.sha256(inventory_bytes),
+            "candidate_mapping_present": False,
+            "private_observations_present": False,
+        }
+        if custody_mutation is not None:
+            custody_mutation(custody_core)
+        custody_identity = module.sha256(module.canonical(custody_core))
+        return {
+            "blind_packet_path": packet_path,
+            "export_inventory_bytes": inventory_bytes,
+            "custody_manifest_bytes": module.canonical({**custody_core, "custody_identity": custody_identity}),
+            "authorized_custody_identity": custody_identity,
+        }
+    custody_args = custody_for(packet_bytes)
+    expected_authority["candidate_output_sha256"] = module.sha256(valid_output)
     observed = {}
 
     def inspect_materialization(
@@ -405,7 +470,8 @@ def test_registry_wrapper_materializes_exact_keys_and_rejects_stale_authority(
         adjudicate_pair_from_registry(
             [],
             registry_bytes=raw,
-            expected_authority=expected_authority,
+            blind_packet_bytes=packet_bytes,
+            **custody_args,
             openssl=Path("unused"),
             expected_openssl_runtime_sha256={},
         )
@@ -417,13 +483,58 @@ def test_registry_wrapper_materializes_exact_keys_and_rejects_stale_authority(
         "registrations": loaded.registrations,
         "authority": expected_authority,
     }
-    stale = dict(expected_authority)
-    stale["adjudicator_registry_identity"] = "f" * 64
-    with pytest.raises(ValueError, match="expected registry authority mismatch"):
+    malformed_custodies = (
+        custody_for(packet_bytes, inventory_mutation=lambda rows: rows.append("bad-row")),
+        custody_for(packet_bytes, inventory_mutation=lambda rows: rows[1].update({"extra": True})),
+        custody_for(packet_bytes, inventory_mutation=lambda rows: rows[1].__setitem__("path", rows[0]["path"])),
+        custody_for(packet_bytes, inventory_mutation=lambda rows: rows.reverse()),
+        custody_for(packet_bytes, inventory_mutation=lambda rows: rows[1].__setitem__("path", "../escape.blind.json")),
+        custody_for(packet_bytes, custody_mutation=lambda value: value.__setitem__("adjudicator_role", "OWNER")),
+        custody_for(packet_bytes, custody_mutation=lambda value: value.__setitem__("schema_version", True)),
+        custody_for(packet_bytes, custody_mutation=lambda value: value.__setitem__("packet_count", True)),
+        custody_for(packet_bytes, custody_mutation=lambda value: value.__setitem__("extra", True)),
+    )
+    for malformed in malformed_custodies:
+        with pytest.raises(ValueError, match="custody"):
+            adjudicate_pair_from_registry(
+                [], registry_bytes=raw, blind_packet_bytes=packet_bytes,
+                **malformed, openssl=Path("unused"),
+                expected_openssl_runtime_sha256={},
+            )
+    invalid_core = dict(packet_core)
+    invalid_core["candidate_output_validation"] = {
+        "status": "FAIL",
+        "failure_code": "STRUCTURED_RESPONSE_V1_INVALID",
+        "failure_detail": "candidate output is not one UTF-8 JSON object",
+    }
+    invalid = {**invalid_core, "packet_identity": module.sha256(module.canonical(invalid_core))}
+    invalid_bytes = module.canonical(invalid)
+    with pytest.raises(ValueError, match="structural FAIL is terminal"):
         adjudicate_pair_from_registry(
             [],
             registry_bytes=raw,
-            expected_authority=stale,
+            blind_packet_bytes=invalid_bytes,
+            **custody_for(invalid_bytes),
             openssl=Path("unused"),
             expected_openssl_runtime_sha256={},
         )
+
+    for mutate, message in (
+        (lambda value: value["candidate_output"].__setitem__("text", "Substituit."), "raw/canonical"),
+        (lambda value: value["case"].__setitem__("request_identity", "sha256:" + "7" * 64), "case binding"),
+        (lambda value: value.__setitem__("qualification_generation_sha256", "8" * 64), "frozen authority"),
+        (lambda value: value.__setitem__("schema_version", True), "frozen authority"),
+    ):
+        rebound_core = copy.deepcopy(packet_core)
+        mutate(rebound_core)
+        rebound = {
+            **rebound_core,
+            "packet_identity": module.sha256(module.canonical(rebound_core)),
+        }
+        rebound_bytes = module.canonical(rebound)
+        with pytest.raises(ValueError, match=message):
+            adjudicate_pair_from_registry(
+                [], registry_bytes=raw, blind_packet_bytes=rebound_bytes,
+                **custody_for(rebound_bytes),
+                openssl=Path("unused"), expected_openssl_runtime_sha256={},
+            )

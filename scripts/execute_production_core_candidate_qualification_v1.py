@@ -83,6 +83,23 @@ def _run_launcher(command: list[str], launcher_bytes: bytes) -> None:
     subprocess.run(command, input=launcher_bytes, check=True)
 
 
+def _publish_case_evidence(
+    *, receipt_path: Path, receipt: dict[str, object],
+    exports: dict[str, Path], materialization: str, repetition: int,
+    alias: str, stem: str, packet: dict[str, object],
+) -> None:
+    """Publish one case atomically; structural FAIL does not stop later cases."""
+
+    atomic_publish(receipt_path, canonical_json_bytes(receipt))
+    for export_root in exports.values():
+        role_dir = (
+            export_root / f"materialization-{materialization}"
+            / f"repetition-{repetition}" / alias
+        )
+        role_dir.mkdir(parents=True, exist_ok=True)
+        atomic_publish(role_dir / f"{stem}.blind.json", canonical_json_bytes(packet))
+
+
 def _publish_terminal_failure(
     output: Path, generation: str, attempt: dict[str, object], failure_class: str
 ) -> None:
@@ -343,7 +360,7 @@ def main() -> int:
                 or observation.get("request_identity") != row["request_identity"]
                 or observation.get("rootfs_sha256") != candidate_manifest["rootfs_sha256"]
                 or observation.get("adapter_manifest_sha256") != candidate_manifest["adapters"][candidate]["manifest_sha256"]  # type: ignore[index]
-                or observation.get("terminal_eos") is not True
+                or type(observation.get("terminal_eos")) is not bool
             ):
                 raise SystemExit("runner observation authority mismatch")
             raw = raw_path.read_bytes()
@@ -366,19 +383,20 @@ def main() -> int:
                 prompt_sha256=observation["system_prompt_sha256"],  # type: ignore[arg-type]
                 batch_sha256=observation["batch_sha256"],  # type: ignore[arg-type]
                 candidate=candidate,
+                terminal_eos=observation["terminal_eos"],  # type: ignore[arg-type]
             )
             receipt_path = batch_dir / f"{stem}.receipt.json"
-            atomic_publish(receipt_path, canonical_json_bytes(receipt))
             packet = build_blind_packet(
                 authority=plan, case=case_by_id[row["case_id"]], alias=alias,
                 raw_output=raw, assertion=assertion_by_case[row["case_id"]], rubric=rubric,
                 execution_receipt_identity=receipt["receipt_identity"],
+                terminal_eos=observation["terminal_eos"],  # type: ignore[arg-type]
             )
-            for role, export_root in exports.items():
-                role_dir = export_root / f"materialization-{materialization}" / f"repetition-{repetition}" / alias
-                role_dir.mkdir(parents=True, exist_ok=True)
-                packet_path = role_dir / f"{stem}.blind.json"
-                atomic_publish(packet_path, canonical_json_bytes(packet))
+            _publish_case_evidence(
+                receipt_path=receipt_path, receipt=receipt, exports=exports,
+                materialization=materialization, repetition=repetition,
+                alias=alias, stem=stem, packet=packet,
+            )
     inventory = sorted(
         ({"path": str(path.relative_to(output)).replace("\\", "/"), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()} for path in output.rglob("*") if path.is_file()),
         key=lambda row: row["path"],

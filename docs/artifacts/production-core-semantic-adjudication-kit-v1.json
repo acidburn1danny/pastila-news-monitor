@@ -39,6 +39,10 @@
     "caller_selected_registry_mapping_is_prohibited_in_production": true,
     "distinct_registered_person_ids_required": true,
     "exact_expected_qualification_generation_corpus_case_alias_output_assertion_and_rubric_required": true,
+    "canonical_blind_packet_snapshot_required": true,
+    "owner_authorized_export_custody_membership_required": true,
+    "structural_fail_is_terminal_before_semantic_receipt_verification": true,
+    "caller_selected_expected_authority_is_prohibited_in_production": true,
     "opaque_candidate_aliases": ["CANDIDATE-A", "CANDIDATE-B"]
   },
   "cryptography": {
@@ -66,9 +70,9 @@
   },
   "invalid_output_effect": "ZERO_STATE_MUTATION_NO_RETRY_NO_REDRAW",
   "qualified_components": {
-    "implementation_sha256": "5b59cc6322ae5a59150a070d04ffa878e1e0659ff9ca8dd03d4cee240f139da3",
-    "executable_test_sha256": "8c8459b12d6f54a2a4225b290388a7bef0ddb255ddbeb02dfe04e36e2462ae40",
-    "documentation_sha256": "ae6a2c3d02d8cedc93a0976f74b614a1734e40312d6a972d6acf7c4dd435835e"
+    "implementation_sha256": "9600c8ec8830c7f9192970eee7b91c2a7b6528ad0d9e72a301e0e432f635e954",
+    "executable_test_sha256": "d23c531735443896266f38a02590a7fc4b6dcac6727eb05f5b5696049b9c0f3a",
+    "documentation_sha256": "7a3890eb872bc4c6c4403730af998cfedf07ea9a99be32b98a07f2afedf987b0"
   },
   "candidate_execution_authorized": false,
   "candidate_results_inspected": false,

@@ -17,18 +17,18 @@ ROOT = ENTRY.parent.parent
 EXECUTOR = ROOT / "scripts" / "execute_production_core_candidate_qualification_v1.py"
 CORE = ROOT / "src" / "pastila_scout" / "production_core_candidate_qualification_v1.py"
 ENVELOPE = ROOT / "src" / "pastila_scout" / "production_core_technical_output_envelope_v1.py"
-EXPECTED_EXECUTOR_SHA256 = "f0773ac4239a909c97941a0a309db0bb05d6222abc7afec86676ece557886946"
-EXPECTED_CORE_SHA256 = "3b9717517856f576b2f1ce4a4e42a2856d797d65d911e6a03ac3bb103b8e438f"
+EXPECTED_EXECUTOR_SHA256 = "e10c87b6315c038a30c29843c1cee7ee951b2b3dfaddb1d0ca0fd3a1b2bdabf9"
+EXPECTED_CORE_SHA256 = "fdd1707eaae8979e3aa85d7bc681af7370752628cc287c364bb45ff92993cd07"
 EXPECTED_ENVELOPE_SHA256 = "e3ac013360a239713c0da02b59359c6cfc87579e93a6721892af0bb96184bf01"
 EXPECTED_ARTIFACT_SHA256 = {
     "production-core-candidate-object-manifest-v1.json": "551e6c2983e6d71664298432aa9b20e45b1677e3a45b8c6458a563cb913e83bf",
-    "production-core-comparative-qualification-generation-v1.json": "2b23402d58a6b143c94152e285cdc9fa1b588bc84d333b15de85c6a158626950",
-    "production-core-candidate-qualification-mechanism-v1.json": "ccb23295442afade5eff00a4c50745dd5e4020df13f8bf60a50193c888291a18",
+    "production-core-comparative-qualification-generation-v1.json": "8ee6a0dd4b246f930e718a8f32cf0ad880c000f82a82d1b7be34abc97797b5c4",
+    "production-core-candidate-qualification-mechanism-v1.json": "40cb957fb238929deda82d9057205e434e5062e98fd3fa6c836fa0e6c75aac3a",
 }
 EXPECTED_IDENTITIES = {
     "manifest_identity": "51cae2453234d19fef6cd6bb1505beb7ae9bb8a27fcd152a61a6a7bb181a0420",
-    "qualification_generation_identity": "b865af83fe360eb19c4f1fe07ad953becf38daedf6282e7c4f85027dc649eeac",
-    "qualification_identity": "52968d6040ecd05cb968412eb3272c8cf55be6fa76125e94829cb536a87da91f",
+    "qualification_generation_identity": "cfa6c00b96430246755c7cdce4c59b52d67946b91c1635077890c317b9afcadf",
+    "qualification_identity": "f6d1d3d5f30918be6676a1f7f80e7f99d7d96afceaf766a195b22a68aee25540",
 }
 
 

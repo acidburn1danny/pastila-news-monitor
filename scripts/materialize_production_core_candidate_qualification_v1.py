@@ -15,7 +15,7 @@ from pastila_scout.production_core_candidate_qualification_v1 import (
     FREEZE_IDENTITY,
     HOLDOUT_IDENTITY,
     REGISTRY_IDENTITY,
-    REPLACEMENT_AUTHORITY,
+    REPLACEMENT_AUTHORITY_7,
     ROOTFS_SHA256,
     RUBRIC_IDENTITY,
     TOKENIZER_SHA256,
@@ -127,7 +127,7 @@ def main() -> int:
         "candidate_object_manifest_identity": candidate_manifest["manifest_identity"],
         "alias_secret_commitment": commitment,
         "alias_mapping_public": False,
-        "replacement_authority": REPLACEMENT_AUTHORITY,
+        "replacement_authority": REPLACEMENT_AUTHORITY_7,
         "matrix": {"materializations": 2, "repetitions": 3, "cases": 200, "candidates": 2, "rows": 2400},
         "clean_materialization_authority": {
             "A": {"accepted_calibration_receipts": ["bcd03f8f63d278b80fabea4db24e55a5b7f65007a185cfcfea1398c20e78b069", "aeb3fd538b2c00c6b2acaa10ac94d912b6497140f6ead7c6f79d1c3ad01ed887"], "provenance_identity": "21782e3b5ed3a1643fcf376c1010e23a09f18986351a83115668908c5cf88cfc"},

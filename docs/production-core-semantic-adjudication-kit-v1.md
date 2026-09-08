@@ -24,6 +24,15 @@ bytes, identity mismatch, and non-independent registrations. It materializes
 the public keys only from that validated snapshot; caller-selected
 role/person/key mappings are not a production authority path.
 
+The production registry wrapper consumes the exact canonical blind-packet
+bytes, verifies the packet identity and raw-output Base64/SHA-256 binding, and
+derives receipt authority exclusively from that snapshot. Structural `FAIL`
+is terminal before signature verification; neither signed semantic `PASS`
+receipts nor caller-selected expected-authority fields can override it.
+Before adjudication, the wrapper also requires the packet's unique membership
+in a canonical export inventory whose root is bound by an explicitly
+owner-authorized custody identity produced after qualification execution.
+
 The kit accepts an explicit OpenSSL runtime manifest for the executable,
 `libcrypto`, and `libssl`. It snapshots their verified bytes before execution
 and supplies an isolated empty configuration/provider directory and explicit

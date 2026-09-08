@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import base64
 import hashlib
 import importlib.util
 import json
@@ -15,7 +16,7 @@ from pastila_scout.production_core_candidate_qualification_authority_v1 import (
 )
 from pastila_scout.production_core_candidate_qualification_v1 import (
     ALIASES,
-    REPLACEMENT_AUTHORITY,
+    REPLACEMENT_AUTHORITY_7,
     QualificationAuthorityError,
     atomic_publish,
     build_blind_packet,
@@ -24,6 +25,7 @@ from pastila_scout.production_core_candidate_qualification_v1 import (
     canonical_json_bytes,
     deterministic_schedule,
     materialize_batches,
+    semantic_adjudication_authority,
     validate_candidate_output,
     validate_generation_authority,
     validate_secret_mapping,
@@ -181,6 +183,7 @@ def test_resource_receipt_fails_closed_without_retry_or_promotion() -> None:
         "prompt_sha256": "1" * 64,
         "batch_sha256": "2" * 64,
         "candidate": "pastila-editor-core-v1.1-experimental",
+        "terminal_eos": True,
     }
     receipt = build_execution_receipt(**kwargs)
     assert receipt["promotion_effect"] is False
@@ -196,7 +199,113 @@ def test_blind_packet_contains_alias_not_candidate_identity() -> None:
     packet = build_blind_packet(authority={"qualification_generation_identity": "a" * 64}, case=case, alias="CANDIDATE-A", raw_output=raw, assertion={"assertion_id": "x"}, rubric={})
     encoded = canonical_json_bytes(packet)
     assert packet["candidate_alias"] == "CANDIDATE-A"
+    assert packet["candidate_output_validation"] == {
+        "status": "PASS", "failure_code": None, "failure_detail": None,
+    }
+    assert packet["candidate_output_base64"]
     assert b"experimental_core" not in encoded and b"v1.1" not in encoded and b"v1.2" not in encoded
+
+
+def test_invalid_candidate_output_is_byte_exact_case_failure_not_batch_failure() -> None:
+    case = corpus()["cases"][0]
+    invalid_outputs = (
+        b"not-json",
+        b"{}",
+        canonical_json_bytes(response(case)) + b"\n",
+        b"\xff\x00candidate-output",
+    )
+    for raw in invalid_outputs:
+        packet = build_blind_packet(
+            authority={"qualification_generation_identity": "a" * 64},
+            case=case,
+            alias="CANDIDATE-A",
+            raw_output=raw,
+            assertion={"assertion_id": "x"},
+            rubric={},
+        )
+        assert packet["candidate_output"] is None
+        assert packet["candidate_output_validation"]["status"] == "FAIL"
+        assert packet["candidate_output_validation"]["failure_code"] == (
+            "STRUCTURED_RESPONSE_V1_INVALID"
+        )
+        assert base64.b64decode(packet["candidate_output_base64"], validate=True) == raw
+        assert packet["candidate_output_sha256"] == hashlib.sha256(raw).hexdigest()
+        with pytest.raises(QualificationAuthorityError, match="structural FAIL is terminal"):
+            semantic_adjudication_authority(packet)
+
+    valid_raw = canonical_json_bytes(response(case))
+    valid_packet = build_blind_packet(
+        authority={"qualification_generation_identity": "a" * 64},
+        case=case,
+        alias="CANDIDATE-A",
+        raw_output=valid_raw,
+        assertion={"assertion_id": "x"},
+        rubric={},
+    )
+    authority = semantic_adjudication_authority(valid_packet)
+    assert authority["candidate_output_sha256"] == hashlib.sha256(valid_raw).hexdigest()
+
+
+def test_non_eos_is_byte_exact_case_failure_and_next_case_continues() -> None:
+    first, second = corpus()["cases"][:2]
+    first_raw = canonical_json_bytes(response(first))
+    second_raw = canonical_json_bytes(response(second))
+    packets = [
+        build_blind_packet(
+            authority={"qualification_generation_identity": "a" * 64},
+            case=case,
+            alias="CANDIDATE-A",
+            raw_output=raw,
+            assertion={"assertion_id": "x"},
+            rubric={},
+            terminal_eos=terminal_eos,
+        )
+        for case, raw, terminal_eos in (
+            (first, first_raw, False),
+            (second, second_raw, True),
+        )
+    ]
+    assert packets[0]["candidate_output_validation"] == {
+        "status": "FAIL",
+        "failure_code": "STRUCTURED_RESPONSE_V1_INVALID",
+        "failure_detail": "candidate output did not terminate with EOS",
+    }
+    assert base64.b64decode(packets[0]["candidate_output_base64"], validate=True) == first_raw
+    assert packets[1]["candidate_output_validation"]["status"] == "PASS"
+    assert semantic_adjudication_authority(packets[1])["case_id"] == second["case_id"]
+
+
+def test_production_case_publisher_continues_after_structural_failure(tmp_path: Path) -> None:
+    module = execution_module()
+    private = tmp_path / "private"
+    export_a = tmp_path / "a"
+    export_b = tmp_path / "b"
+    for path in (private, export_a, export_b):
+        path.mkdir()
+    exports = {"ADJUDICATOR_A": export_a, "ADJUDICATOR_B": export_b}
+    first, second = corpus()["cases"][:2]
+    packets = []
+    for case, terminal_eos in ((first, False), (second, True)):
+        raw = canonical_json_bytes(response(case))
+        packets.append(build_blind_packet(
+            authority={"qualification_generation_identity": "a" * 64},
+            case=case, alias="CANDIDATE-A", raw_output=raw,
+            assertion={"assertion_id": "x"}, rubric={}, terminal_eos=terminal_eos,
+        ))
+    for index, packet in enumerate(packets, start=1):
+        module._publish_case_evidence(
+            receipt_path=private / f"case-{index}.receipt.json",
+            receipt={"case": index}, exports=exports, materialization="A",
+            repetition=1, alias="CANDIDATE-A", stem=f"case-{index}", packet=packet,
+        )
+    assert json.loads((private / "case-1.receipt.json").read_bytes()) == {"case": 1}
+    assert json.loads((private / "case-2.receipt.json").read_bytes()) == {"case": 2}
+    for root in (export_a, export_b):
+        packet_dir = root / "materialization-A" / "repetition-1" / "CANDIDATE-A"
+        first_packet = json.loads((packet_dir / "case-1.blind.json").read_bytes())
+        second_packet = json.loads((packet_dir / "case-2.blind.json").read_bytes())
+        assert first_packet["candidate_output_validation"]["status"] == "FAIL"
+        assert second_packet["candidate_output_validation"]["status"] == "PASS"
 
 
 def test_atomic_publication_rejects_collision(tmp_path: Path) -> None:
@@ -406,7 +515,7 @@ def test_generated_public_authority_has_no_secret_or_execution_claim() -> None:
     qualification = json.loads((ROOT / "docs/artifacts/production-core-candidate-qualification-mechanism-v1.json").read_bytes())
     assert plan["matrix"] == {"materializations": 2, "repetitions": 3, "cases": 200, "candidates": 2, "rows": 2400}
     assert plan["alias_mapping_public"] is False
-    assert plan["replacement_authority"] == REPLACEMENT_AUTHORITY
+    assert plan["replacement_authority"] == REPLACEMENT_AUTHORITY_7
     assert "aliases" not in plan and plan["candidate_execution_performed"] is False
     assert qualification["synthetic_only"] is True
     assert qualification["candidate_models_loaded_or_executed"] is False
@@ -420,7 +529,7 @@ def test_replacement_authority_cannot_be_rebound() -> None:
     plan = json.loads((ROOT / "docs/artifacts/production-core-comparative-qualification-generation-v1.json").read_bytes())
     manifest = json.loads((ROOT / "docs/artifacts/production-core-candidate-object-manifest-v1.json").read_bytes())
     changed = json.loads(json.dumps(plan))
-    changed["replacement_authority"]["replacement_attempt_ordinal"] = 7
+    changed["replacement_authority"]["replacement_attempt_ordinal"] = 8
     core = dict(changed)
     core.pop("qualification_generation_identity")
     changed["qualification_generation_identity"] = commitment(core)

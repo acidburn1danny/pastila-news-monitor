@@ -16,8 +16,15 @@ are terminal.
 Both candidates receive the same case-derived user request. Candidate-specific
 system prompts and adapters remain part of each frozen candidate identity, not
 part of the shared request. The output contract is exactly Structured
-Qualification Response V1. Raw bytes must already be its canonical UTF-8 JSON
-serialization; repair, extraction, truncation, retry and redraw are prohibited.
+Qualification Response V1. Raw bytes are always retained byte-for-byte. A
+canonical UTF-8 JSON response proceeds to semantic adjudication; an invalid
+response is represented in the blinded packet by its exact Base64 bytes and
+SHA-256 identity and receives a fail-closed per-case structural result. Invalid
+candidate behavior never becomes a batch infrastructure failure. Repair,
+extraction, truncation, retry and redraw remain prohibited.
+Absence of terminal EOS is the same per-case structural failure. Structural
+FAIL is terminal evaluator authority: no semantic-adjudication authority is
+issued for that packet, so a later human receipt cannot override it with PASS.
 
 Execution consumes the frozen content-addressed OCI rootfs tar through one open
 descriptor, extracts a private rootfs, snapshots candidate directories, uses

@@ -11,8 +11,12 @@ import subprocess
 import tempfile
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Any
+
+from pastila_scout.production_core_technical_output_envelope_v1 import (
+    canonical_response_bytes,
+)
 
 SCHEMA = "pastila-production-core-semantic-adjudication-receipt"
 SCHEMA_VERSION = 1
@@ -21,6 +25,10 @@ ROLE_IDS = ("ADJUDICATOR_A", "ADJUDICATOR_B")
 CANDIDATE_ALIASES = frozenset({"CANDIDATE-A", "CANDIDATE-B"})
 HEX64 = re.compile(r"^[0-9a-f]{64}$")
 ID = re.compile(r"^[A-Z0-9][A-Z0-9._:-]{0,127}$")
+FROZEN_GENERATION_IDENTITY = "cfa6c00b96430246755c7cdce4c59b52d67946b91c1635077890c317b9afcadf"
+FROZEN_CORPUS_IDENTITY = "5933f6ddb450a00566cb42a7dabd908975687360e5d9f16766d55b1dff7899b6"
+FROZEN_RUBRIC_IDENTITY = "3bff615d5412abbde10a3ab85d45b82a0e019be196ea21914303d1e6b284353b"
+FROZEN_REGISTRY_IDENTITY = "26772b5ae3e7ffe853e75b79b9d37ef7649ad183917afa2a0170f79e2b2d1639"
 SIGNED_FIELDS = (
     "schema",
     "schema_version",
@@ -454,12 +462,142 @@ def adjudicate_pair_from_registry(
     receipts: Sequence[Mapping[str, Any]],
     *,
     registry_bytes: bytes,
-    expected_authority: Mapping[str, Any],
+    blind_packet_bytes: bytes,
+    blind_packet_path: str,
+    export_inventory_bytes: bytes,
+    custody_manifest_bytes: bytes,
+    authorized_custody_identity: str,
     openssl: Path,
     expected_openssl_runtime_sha256: Mapping[str, str],
 ) -> str:
-    """Adjudicate using only keys materialized from one validated registry snapshot."""
+    """Adjudicate a structurally valid, identity-closed blind packet snapshot."""
     registry = load_adjudicator_registry(registry_bytes)
+    try:
+        inventory = json.loads(export_inventory_bytes, object_pairs_hook=_strict_pairs)
+        custody = json.loads(custody_manifest_bytes, object_pairs_hook=_strict_pairs)
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise ValueError("custody authority is not canonical JSON") from exc
+    if (
+        not isinstance(inventory, list)
+        or canonical(inventory) != export_inventory_bytes
+        or not isinstance(custody, dict)
+        or canonical(custody) != custody_manifest_bytes
+        or not HEX64.fullmatch(authorized_custody_identity)
+    ):
+        raise ValueError("custody authority malformed")
+    custody_fields = (
+        "schema", "schema_version", "adjudicator_role",
+        "qualification_generation_identity", "packet_count", "packets_root",
+        "candidate_mapping_present", "private_observations_present",
+        "custody_identity",
+    )
+    if tuple(custody) != custody_fields:
+        raise ValueError("custody fields/order invalid")
+    normalized_inventory: list[dict[str, str]] = []
+    for row in inventory:
+        if not isinstance(row, dict) or tuple(row) != ("path", "sha256"):
+            raise ValueError("custody inventory row schema invalid")
+        path = row.get("path")
+        digest = row.get("sha256")
+        if not isinstance(path, str) or not isinstance(digest, str) or not HEX64.fullmatch(digest):
+            raise ValueError("custody inventory row value invalid")
+        pure = PurePosixPath(path)
+        if (
+            not path.endswith(".blind.json")
+            or not path.isascii()
+            or "\\" in path
+            or pure.is_absolute()
+            or str(pure) != path
+            or any(part in {"", ".", ".."} for part in pure.parts)
+        ):
+            raise ValueError("custody inventory path invalid")
+        normalized_inventory.append({"path": path, "sha256": digest})
+    if (
+        len(normalized_inventory) != 2400
+        or len({row["path"] for row in normalized_inventory}) != 2400
+        or normalized_inventory != sorted(
+            normalized_inventory, key=lambda row: row["path"].encode("ascii")
+        )
+    ):
+        raise ValueError("custody inventory cardinality/order invalid")
+    custody_core = dict(custody)
+    custody_identity = custody_core.pop("custody_identity", None)
+    if custody_identity != authorized_custody_identity or custody_identity != sha256(canonical(custody_core)):
+        raise ValueError("custody identity is not owner-authorized")
+    if (
+        custody.get("schema") != "pastila-production-core-blind-export-custody-manifest"
+        or type(custody.get("schema_version")) is not int
+        or custody.get("schema_version") != 1
+        or custody.get("adjudicator_role") not in ROLE_IDS
+        or custody.get("qualification_generation_identity") != FROZEN_GENERATION_IDENTITY
+        or type(custody.get("packet_count")) is not int
+        or custody.get("packet_count") != len(inventory)
+        or custody.get("packets_root") != sha256(export_inventory_bytes)
+        or custody.get("candidate_mapping_present") is not False
+        or custody.get("private_observations_present") is not False
+    ):
+        raise ValueError("custody closure mismatch")
+    expected_member = {"path": blind_packet_path, "sha256": sha256(blind_packet_bytes)}
+    if inventory.count(expected_member) != 1:
+        raise ValueError("blind packet absent from authorized custody")
+    try:
+        packet = json.loads(blind_packet_bytes, object_pairs_hook=_strict_pairs)
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise ValueError("blind packet is not one JSON object") from exc
+    if not isinstance(packet, dict) or canonical(packet) != blind_packet_bytes:
+        raise ValueError("blind packet is not canonical")
+    packet_core = dict(packet)
+    packet_identity = packet_core.pop("packet_identity", None)
+    if packet_identity != sha256(canonical(packet_core)):
+        raise ValueError("blind packet identity mismatch")
+    validation = packet.get("candidate_output_validation")
+    if validation != {"status": "PASS", "failure_code": None, "failure_detail": None}:
+        raise ValueError("structural FAIL is terminal")
+    try:
+        raw_output = base64.b64decode(packet["candidate_output_base64"], validate=True)
+        case_id = packet["case"]["case_id"]
+        request_identity = packet["case"]["request_identity"]
+        output_type = packet["case"]["output_type"]
+        assertion_id = packet["assertion"]["assertion_id"]
+    except (KeyError, TypeError, ValueError) as exc:
+        raise ValueError("blind packet authority malformed") from exc
+    if sha256(raw_output) != packet.get("candidate_output_sha256"):
+        raise ValueError("blind packet raw-output identity mismatch")
+    candidate_output = packet.get("candidate_output")
+    if not isinstance(candidate_output, dict):
+        raise TypeError("structural PASS output is not an object")
+    try:
+        independently_canonical = canonical_response_bytes(candidate_output)
+    except (KeyError, TypeError, ValueError, UnicodeEncodeError) as exc:
+        raise ValueError("structural PASS does not satisfy the response contract") from exc
+    if independently_canonical != raw_output:
+        raise ValueError("structural PASS raw/canonical output mismatch")
+    if (
+        candidate_output.get("case_id") != case_id
+        or candidate_output.get("request_identity") != request_identity
+        or candidate_output.get("output_type") != output_type
+    ):
+        raise ValueError("structural PASS case binding mismatch")
+    if (
+        packet.get("schema") != "pastila-production-core-blind-adjudication-packet"
+        or type(packet.get("schema_version")) is not int
+        or packet.get("schema_version") != 1
+        or packet.get("qualification_generation_sha256") != FROZEN_GENERATION_IDENTITY
+        or packet.get("corpus_sha256") != FROZEN_CORPUS_IDENTITY
+        or packet.get("rubric_sha256") != FROZEN_RUBRIC_IDENTITY
+        or packet.get("adjudicator_registry_identity") != FROZEN_REGISTRY_IDENTITY
+    ):
+        raise ValueError("blind packet frozen authority mismatch")
+    expected_authority = {
+        "qualification_generation_sha256": packet.get("qualification_generation_sha256"),
+        "corpus_sha256": packet.get("corpus_sha256"),
+        "case_id": case_id,
+        "candidate_alias": packet.get("candidate_alias"),
+        "candidate_output_sha256": packet.get("candidate_output_sha256"),
+        "assertion_id": assertion_id,
+        "rubric_sha256": packet.get("rubric_sha256"),
+        "adjudicator_registry_identity": packet.get("adjudicator_registry_identity"),
+    }
     if expected_authority.get("adjudicator_registry_identity") != registry.identity:
         raise ValueError("expected registry authority mismatch")
     with tempfile.TemporaryDirectory() as folder:
