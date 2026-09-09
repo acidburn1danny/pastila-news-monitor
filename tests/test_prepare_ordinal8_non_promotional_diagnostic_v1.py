@@ -18,7 +18,7 @@ RUBRIC_PATH = (
 )
 REGISTRY_PATH = (
     Path(__file__).parents[1]
-    / "docs/artifacts/production-core-non-promotional-diagnostic-adjudicator-registry-v1.json"
+    / "docs/artifacts/production-core-non-promotional-diagnostic-adjudicator-registry-v2.json"
 )
 SPEC = importlib.util.spec_from_file_location("diagnostic_prep", SCRIPT)
 module = importlib.util.module_from_spec(SPEC)
@@ -140,7 +140,7 @@ def test_role_selection_materializes_only_requested_role_and_preserves_bytes(tmp
         assert module.canonical(value) == path.read_bytes()
         assert value["purpose"] == "NON_PROMOTIONAL_DIAGNOSTIC"
         assert value["adjudicator_role"] == "ADJUDICATOR_B"
-        assert value["adjudicator_id"] == "EVALUATOR-B-02"
+        assert value["adjudicator_id"] == "EVALUATOR-B-03"
         assert value["adjudicator_key_sha256"] == module.ROLES["ADJUDICATOR_B"][2]
         assert value["verdict"] in module.VERDICTS
         assert value["rubric_artifact_sha256"] == module.RUBRIC_ARTIFACT_SHA256
