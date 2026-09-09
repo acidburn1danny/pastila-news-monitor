@@ -8,12 +8,12 @@ from collections.abc import Mapping
 
 EXPECTED_ARTIFACT_SHA256 = {
     "production-core-candidate-object-manifest-v1.json": "551e6c2983e6d71664298432aa9b20e45b1677e3a45b8c6458a563cb913e83bf",
-    "production-core-comparative-qualification-generation-v1.json": "8ee6a0dd4b246f930e718a8f32cf0ad880c000f82a82d1b7be34abc97797b5c4",
-    "production-core-candidate-qualification-mechanism-v1.json": "40cb957fb238929deda82d9057205e434e5062e98fd3fa6c836fa0e6c75aac3a",
+    "production-core-comparative-qualification-generation-v1.json": "0e551b020070ba4b73ad5e6b834393d69a90a15e272937852ce44d994e72fabc",
+    "production-core-candidate-qualification-mechanism-v1.json": "cf8b708018f405548b496f7be424b440f35d4399394ab9cf3a07dd47d78f1c01",
 }
 EXPECTED_MANIFEST_IDENTITY = "51cae2453234d19fef6cd6bb1505beb7ae9bb8a27fcd152a61a6a7bb181a0420"
-EXPECTED_GENERATION_IDENTITY = "cfa6c00b96430246755c7cdce4c59b52d67946b91c1635077890c317b9afcadf"
-EXPECTED_QUALIFICATION_IDENTITY = "f6d1d3d5f30918be6676a1f7f80e7f99d7d96afceaf766a195b22a68aee25540"
+EXPECTED_GENERATION_IDENTITY = "bbcfa148c1eaf58b5dda2f2f87297b7a573f660020c0d6af3e849cfed137a8b5"
+EXPECTED_QUALIFICATION_IDENTITY = "e2cda8f13ee6821711445b67b482fc2024f30f93572470707d9361905d1c96c1"
 
 
 def validate_terminal_candidate_qualification_authority(

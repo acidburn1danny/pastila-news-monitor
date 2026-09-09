@@ -16,7 +16,8 @@ from pastila_scout.production_core_candidate_qualification_authority_v1 import (
 )
 from pastila_scout.production_core_candidate_qualification_v1 import (
     ALIASES,
-    REPLACEMENT_AUTHORITY_7,
+    ORDINAL_7_INVALIDATION_IDENTITY,
+    REPLACEMENT_AUTHORITY_8,
     QualificationAuthorityError,
     atomic_publish,
     build_blind_packet,
@@ -149,6 +150,102 @@ def test_common_prompt_uses_only_frozen_case_authority() -> None:
     assert "CANDIDATE-A" not in prompt and "experimental" not in prompt
     changed = dict(case); changed["ignored"] = "candidate-specific"
     assert build_candidate_prompt(changed) == prompt
+
+
+def test_common_prompt_materializes_complete_frozen_response_contract() -> None:
+    prompt = build_candidate_prompt(corpus()["cases"][0]).split("\nINPUT=", 1)[0]
+    required_literals = (
+        "pastila-core-v2-structured-qualification-response",
+        "schema_version must be the integer 1",
+        "ANSWER or ABSTAIN",
+        "INSUFFICIENT_AUTHORITY",
+        "CONFLICTING_AUTHORITY",
+        "AMBIGUOUS_SCOPE",
+        "UNRESOLVED_REFERENCE",
+        "INSTRUCTION_AUTHORITY_CONFLICT",
+        "CANNOT_SATISFY_OUTPUT_CONTRACT",
+        "SAFETY_ENVELOPE_EXCEEDED",
+        "For FACTUAL+ANSWER",
+        "For COMMENTARY+ANSWER",
+        "For ABSTAIN",
+        "claim_index and source_span_ids",
+        "Do not emit Markdown, code fences",
+        "followed immediately by EOF",
+        "Add no fields",
+        "Unicode NFC",
+        "Encode as UTF-8 without BOM or final newline",
+        "non-ASCII Unicode characters literally",
+        "escape only characters whose escaping JSON requires",
+        "reject control characters and unpaired surrogates",
+        "no duplicate keys",
+        "^[a-z0-9][a-z0-9._-]{0,127}$",
+        "^sha256:[0-9a-f]{64}$",
+        "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+        "at most 24 globally unique references total",
+        "must occur in INPUT authority_spans",
+        "FACTUAL or COMMENTARY",
+        "JSON booleans, floats, NaN, and Infinity",
+        "at most 6268 UTF-8 bytes and 6268 tokenizer output tokens",
+    )
+    assert all(literal in prompt for literal in required_literals)
+
+
+def test_ordinal7_completion_is_preserved_as_invalid_common_mechanism() -> None:
+    value = json.loads(
+        (ROOT / "docs/artifacts/production-core-comparative-qualification-ordinal7-invalidation-v1.json").read_bytes()
+    )
+    core = dict(value)
+    recorded = core.pop("invalidation_identity")
+    assert recorded == ORDINAL_7_INVALIDATION_IDENTITY
+    assert recorded == commitment(core)
+    assert value["execution_status"] == "COMPLETE"
+    assert value["comparative_qualification_status"] == "INVALID_COMMON_MECHANISM"
+    assert value["semantic_adjudication_authorized"] is False
+    assert value["structural_fail_count"] == 2400
+
+
+def test_prompt_input_envelope_receipts_are_reproducible_and_self_bound() -> None:
+    values = []
+    for materialization, expected in (
+        ("a", "d634c778b009d108be599f6e4ffba2a0db982a960581cf220df7f91924b8711b"),
+        ("b", "edd0d63a5cde1ad199aaceca9904fbc8ce8b076af17847d8682f8a81c162a81a"),
+    ):
+        value = json.loads(
+            (ROOT / f"docs/artifacts/production-core-candidate-prompt-input-envelope-materialization-{materialization}-v1.json").read_bytes()
+        )
+        core = dict(value)
+        assert core.pop("receipt_identity") == expected == commitment(core)
+        assert value["maximum_input_tokens"] == 1568 < value["input_token_ceiling"] == 1924
+        assert value["model_loaded"] is value["inference_executed"] is False
+        assert value["network"] == "DENY_ALL_NEW_NAMESPACE"
+        assert value["rootfs_sha256"] == "274e7d1519f05f41108413efb01d35680b88e0f4b13bb63fca9634be155980f4"
+        assert value["consumed_tokenizer_snapshot_sha256"] == value["tokenizer_sha256"]
+        assert value["production_model_tokenizer_equivalence"] == "EXACT_FIVE_FILE_CANONICAL_TAR_SHA256"
+        assert len(value["effective_runner_tokenizer_closure_sha256"]) == 64
+        values.append(value)
+    assert values[0]["request_token_count_root"] == values[1]["request_token_count_root"]
+    assert values[0]["attaining_requests"] == values[1]["attaining_requests"]
+
+
+def test_prompt_input_envelope_runtime_substitution_paths_fail_closed() -> None:
+    completed = subprocess.run(
+        [
+            "wsl.exe",
+            "-d",
+            "Ubuntu-24.04",
+            "-u",
+            "root",
+            "--",
+            "bash",
+            "/mnt/c/pf9/tests/fixtures/production_core_candidate_prompt_input_envelope_negative_v1.sh",
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+        timeout=60,
+    )
+    assert completed.returncode == 0, completed.stderr
+    assert completed.stdout == "PROMPT_INPUT_ENVELOPE_NEGATIVE_PASS\n"
 
 
 def test_raw_output_requires_exact_canonical_bytes_and_bindings() -> None:
@@ -515,7 +612,7 @@ def test_generated_public_authority_has_no_secret_or_execution_claim() -> None:
     qualification = json.loads((ROOT / "docs/artifacts/production-core-candidate-qualification-mechanism-v1.json").read_bytes())
     assert plan["matrix"] == {"materializations": 2, "repetitions": 3, "cases": 200, "candidates": 2, "rows": 2400}
     assert plan["alias_mapping_public"] is False
-    assert plan["replacement_authority"] == REPLACEMENT_AUTHORITY_7
+    assert plan["replacement_authority"] == REPLACEMENT_AUTHORITY_8
     assert "aliases" not in plan and plan["candidate_execution_performed"] is False
     assert qualification["synthetic_only"] is True
     assert qualification["candidate_models_loaded_or_executed"] is False
@@ -529,7 +626,7 @@ def test_replacement_authority_cannot_be_rebound() -> None:
     plan = json.loads((ROOT / "docs/artifacts/production-core-comparative-qualification-generation-v1.json").read_bytes())
     manifest = json.loads((ROOT / "docs/artifacts/production-core-candidate-object-manifest-v1.json").read_bytes())
     changed = json.loads(json.dumps(plan))
-    changed["replacement_authority"]["replacement_attempt_ordinal"] = 8
+    changed["replacement_authority"]["replacement_attempt_ordinal"] = 9
     core = dict(changed)
     core.pop("qualification_generation_identity")
     changed["qualification_generation_identity"] = commitment(core)

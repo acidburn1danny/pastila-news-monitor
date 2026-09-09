@@ -14,10 +14,12 @@ from pastila_scout.production_core_candidate_qualification_v1 import (
     CORPUS_IDENTITY,
     FREEZE_IDENTITY,
     HOLDOUT_IDENTITY,
+    ORDINAL_7_INVALIDATION_IDENTITY,
     REGISTRY_IDENTITY,
-    REPLACEMENT_AUTHORITY_7,
+    REPLACEMENT_AUTHORITY_8,
     ROOTFS_SHA256,
     RUBRIC_IDENTITY,
+    SYSTEM_INSTRUCTION,
     TOKENIZER_SHA256,
     canonical_json_bytes,
     deterministic_schedule,
@@ -79,11 +81,16 @@ def main() -> int:
     holdout = _load("production-core-qualification-holdout-v1.json")
     rubric = _load("production-core-qualification-rubric-v1.json")
     registry = _load("production-core-semantic-adjudicator-public-key-registry-v1.json")
+    invalidation = _load("production-core-comparative-qualification-ordinal7-invalidation-v1.json")
+    invalidation_core = dict(invalidation)
+    recorded_invalidation = invalidation_core.pop("invalidation_identity", None)
     if (
         corpus.get("corpus_identity") != CORPUS_IDENTITY
         or holdout.get("holdout_identity") != HOLDOUT_IDENTITY
         or rubric.get("rubric_identity") != RUBRIC_IDENTITY
         or registry.get("registry_identity") != REGISTRY_IDENTITY
+        or recorded_invalidation != ORDINAL_7_INVALIDATION_IDENTITY
+        or recorded_invalidation != identity(invalidation_core)
     ):
         raise SystemExit("published qualification authority mismatch")
     cases = corpus.get("cases")
@@ -127,14 +134,27 @@ def main() -> int:
         "candidate_object_manifest_identity": candidate_manifest["manifest_identity"],
         "alias_secret_commitment": commitment,
         "alias_mapping_public": False,
-        "replacement_authority": REPLACEMENT_AUTHORITY_7,
+        "replacement_authority": REPLACEMENT_AUTHORITY_8,
         "matrix": {"materializations": 2, "repetitions": 3, "cases": 200, "candidates": 2, "rows": 2400},
         "clean_materialization_authority": {
             "A": {"accepted_calibration_receipts": ["bcd03f8f63d278b80fabea4db24e55a5b7f65007a185cfcfea1398c20e78b069", "aeb3fd538b2c00c6b2acaa10ac94d912b6497140f6ead7c6f79d1c3ad01ed887"], "provenance_identity": "21782e3b5ed3a1643fcf376c1010e23a09f18986351a83115668908c5cf88cfc"},
             "B": {"accepted_calibration_receipts": ["30a3b8581ecc9c0cdfefbee66764959126023528d8d1bb95bd77bf781c4bcd4d", "46570ab41f247d782f1d7ac9c24ee0ae5332d56e28b5f18001b70f253f12995f"], "provenance_identity": "240a920deaae1127ab380b05238cd152dd63b9c36b60d6c9f21219e5be373f75"},
         },
         "schedule": schedule,
-        "request_construction": "COMMON_STRUCTURED_QUALIFICATION_RESPONSE_V1_PROMPT",
+        "request_construction": "COMPLETE_FROZEN_STRUCTURED_QUALIFICATION_RESPONSE_V1_PROMPT",
+        "response_contract_sha256": _sha(
+            ARTIFACTS / "core-v2-structured-qualification-response-v1.json"
+        ),
+        "common_instruction_sha256": hashlib.sha256(
+            SYSTEM_INSTRUCTION.encode("utf-8")
+        ).hexdigest(),
+        "input_envelope_qualification": {
+            "materialization_a_receipt_identity": "d634c778b009d108be599f6e4ffba2a0db982a960581cf220df7f91924b8711b",
+            "materialization_b_receipt_identity": "edd0d63a5cde1ad199aaceca9904fbc8ce8b076af17847d8682f8a81c162a81a",
+            "request_token_count_root": "d4684f53edf9a33e745e7ad42ca75d4dce64a849e457899960f60e4ef47417e8",
+            "maximum_input_tokens": 1568,
+            "input_token_ceiling": 1924,
+        },
         "limits": {"context_tokens": 8192, "input_tokens_max": 1924, "output_tokens_max": 6268, "wall_time_ns": 600000000000, "peak_rss_bytes": 16106127360},
         "runtime": {"rootfs_sha256": ROOTFS_SHA256, "network": "DENY_ALL_NEW_CHILD_NAMESPACE", "candidate_processes_concurrent": 1, "retry_or_redraw": False},
         "durable_outputs": ["raw", "observation", "execution_receipt", "network_boundary_log", "file_boundary_log", "blind_adjudication_packet"],
@@ -149,11 +169,18 @@ def main() -> int:
         "scripts/resolve_production_core_object_identity_v1.sh",
         "scripts/execute_production_core_candidate_qualification_v1.py",
         "scripts/materialize_production_core_candidate_qualification_v1.py",
+        "scripts/probe_production_core_candidate_prompt_input_envelope_v1.py",
+        "scripts/probe_production_core_candidate_prompt_input_envelope_v1.sh",
         "tests/test_production_core_candidate_qualification_v1.py",
         "tests/fixtures/production_core_candidate_qualification_isolation_v1.sh",
         "tests/fixtures/production_core_candidate_qualification_watchdog_v1.sh",
         "tests/fixtures/production_core_candidate_qualification_terminal_v1.sh",
+        "tests/fixtures/production_core_candidate_prompt_input_envelope_negative_v1.sh",
         "docs/production-core-candidate-qualification-v1.md",
+        "docs/artifacts/core-v2-structured-qualification-response-v1.json",
+        "docs/artifacts/production-core-comparative-qualification-ordinal7-invalidation-v1.json",
+        "docs/artifacts/production-core-candidate-prompt-input-envelope-materialization-a-v1.json",
+        "docs/artifacts/production-core-candidate-prompt-input-envelope-materialization-b-v1.json",
     ]
     qualification_core = {
         "schema": "pastila-production-core-candidate-qualification-mechanism-qualification",

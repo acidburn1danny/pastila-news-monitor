@@ -233,6 +233,27 @@ REPLACEMENT_AUTHORITY_7 = {
     "predecessor_terminal_failure": PREDECESSOR_FAILURE_6,
     "prior_replacement_authority": REPLACEMENT_AUTHORITY,
 }
+PREDECESSOR_ATTEMPT_7 = {
+    "schema": "pastila-production-core-comparative-execution-attempt",
+    "schema_version": 1,
+    "qualification_generation_identity": "cfa6c00b96430246755c7cdce4c59b52d67946b91c1635077890c317b9afcadf",
+    "alias_secret_commitment": "0195c095f520e5cbfbbdbe3f353091ca3cef86e9e3e9862c12dfa9f28267d2e7",
+    "attempt_ordinal": 7,
+    "retry_or_redraw_authorized": False,
+    "status": "CONSUMED_BEFORE_EXECUTION",
+    "attempt_identity": "0930912dcd6b21bbbe04efadfeaf92fba0fb58cf375d7e7e4966fde3933029a5",
+}
+ORDINAL_7_INVALIDATION_IDENTITY = "ee2a16db1b6d825d31b466a51a1ed28f75844631328030f196ffa2991a3d02d9"
+REPLACEMENT_AUTHORITY_8 = {
+    "superseded_generation_identity": "cfa6c00b96430246755c7cdce4c59b52d67946b91c1635077890c317b9afcadf",
+    "consumed_attempt_identity": "0930912dcd6b21bbbe04efadfeaf92fba0fb58cf375d7e7e4966fde3933029a5",
+    "completed_execution_identity": "8dd50527d13a5e48fa581d8c4cd297864391b5d9faca33c96cf73eca1bcacbfe",
+    "comparative_invalidation_identity": ORDINAL_7_INVALIDATION_IDENTITY,
+    "replacement_attempt_ordinal": 8,
+    "retry_or_redraw": False,
+    "predecessor_attempt": PREDECESSOR_ATTEMPT_7,
+    "prior_replacement_authority": REPLACEMENT_AUTHORITY_7,
+}
 MATERIALIZATIONS = ("A", "B")
 REPETITIONS = (1, 2, 3)
 ALIASES = ("CANDIDATE-A", "CANDIDATE-B")
@@ -332,12 +353,43 @@ def deterministic_schedule(
 
 
 SYSTEM_INSTRUCTION = (
-    "Return exactly one Structured Qualification Response V1 JSON object and EOF. "
-    "Use exactly these ordered keys: schema,schema_version,case_id,request_identity,"
-    "output_type,outcome,text,claim_bindings,abstention_code. Never add, repair, "
-    "truncate, retry, redraw, or emit trailing text. Bind factual claims only to supplied "
-    "source_span_ids. Fail closed with an authorized abstention code when authority is "
-    "insufficient or the request cannot satisfy the contract."
+    "Return exactly one compact UTF-8 JSON object followed immediately by EOF. "
+    "Do not emit Markdown, code fences, BOM, leading/trailing whitespace, commentary, "
+    "or a second object. Emit keys in exactly this order: schema,schema_version,case_id,"
+    "request_identity,output_type,outcome,text,claim_bindings,abstention_code. "
+    "schema must be the string 'pastila-core-v2-structured-qualification-response'; "
+    "schema_version must be the integer 1; case_id, request_identity, and output_type "
+    "must exactly equal INPUT. case_id must match ^[a-z0-9][a-z0-9._-]{0,127}$; "
+    "request_identity must match ^sha256:[0-9a-f]{64}$; output_type must be exactly "
+    "FACTUAL or COMMENTARY. outcome must be exactly ANSWER or ABSTAIN. "
+    "For ABSTAIN: text=null, claim_bindings=[], and abstention_code is exactly one of "
+    "INSUFFICIENT_AUTHORITY,CONFLICTING_AUTHORITY,AMBIGUOUS_SCOPE,UNRESOLVED_REFERENCE,"
+    "INSTRUCTION_AUTHORITY_CONFLICT,CANNOT_SATISFY_OUTPUT_CONTRACT,"
+    "SAFETY_ENVELOPE_EXCEEDED. For ANSWER: abstention_code=null. "
+    "For FACTUAL+ANSWER: text is one non-empty block of 2-3 propositions or 1-2 "
+    "sentences, at most 650 Unicode characters, with no bullets or headings; "
+    "claim_bindings has 1-3 objects with exactly ordered keys claim_index and "
+    "source_span_ids; claim_index values are unique contiguous integers starting at 1; "
+    "each source_span_ids array has 1-8 unique supplied IDs in deterministic order, "
+    "with at most 24 globally unique references total. Every source_span_id must be an "
+    "ASCII string of 1-128 characters matching ^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$; "
+    "a value beginning sha256: must match ^sha256:[0-9a-f]{64}$ exactly and is "
+    "case-sensitive. Every referenced ID must occur in INPUT authority_spans, and every "
+    "material proposition has exactly one "
+    "claim index. For COMMENTARY+ANSWER: text is one non-empty block of at most 3 "
+    "sentences and 1000 Unicode characters, contains no factual claims, "
+    "claim_bindings=[], and may use a complete setup/development/punchline. "
+    "Before serialization normalize every string to Unicode NFC. Encode as UTF-8 "
+    "without BOM or final newline. Emit valid non-ASCII Unicode characters literally "
+    "and escape only characters whose escaping JSON requires; reject control characters "
+    "and unpaired surrogates. Use no duplicate keys. Use JSON null, arrays, strings, "
+    "and integers exactly as specified; JSON booleans, floats, NaN, and Infinity are "
+    "not integers and are prohibited. Add no fields. The complete encoded response "
+    "must be at most 6268 UTF-8 bytes and 6268 tokenizer output tokens; overflow fails "
+    "closed and must never be truncated. "
+    "Never coerce, repair, truncate, retry, redraw, or continue after the closing brace. "
+    "If authority is insufficient or the contract cannot be satisfied, emit ABSTAIN "
+    "under the exact rules above."
 )
 
 
@@ -368,20 +420,29 @@ def validate_generation_authority(
         raise QualificationAuthorityError("replacement authority absent")
     attempt = replacement.get("predecessor_attempt")
     failure = replacement.get("predecessor_terminal_failure")
-    if not isinstance(attempt, dict) or not isinstance(failure, dict):
+    if not isinstance(attempt, dict):
         raise QualificationAuthorityError("replacement evidence absent")
     attempt_core = dict(attempt)
     attempt_identity = attempt_core.pop("attempt_identity", None)
-    failure_core = dict(failure)
-    failure_identity = failure_core.pop("failure_identity", None)
-    if (
-        attempt_identity != identity(attempt_core)
-        or failure_identity != identity(failure_core)
-        or failure.get("attempt_identity") != attempt_identity
-        or failure.get("qualification_generation_identity")
-        != attempt.get("qualification_generation_identity")
-    ):
+    if attempt_identity != identity(attempt_core):
         raise QualificationAuthorityError("replacement evidence identity mismatch")
+    if isinstance(failure, dict):
+        failure_core = dict(failure)
+        failure_identity = failure_core.pop("failure_identity", None)
+        if (
+            failure_identity != identity(failure_core)
+            or failure.get("attempt_identity") != attempt_identity
+            or failure.get("qualification_generation_identity")
+            != attempt.get("qualification_generation_identity")
+        ):
+            raise QualificationAuthorityError("replacement evidence identity mismatch")
+    elif (
+        replacement.get("completed_execution_identity")
+        != "8dd50527d13a5e48fa581d8c4cd297864391b5d9faca33c96cf73eca1bcacbfe"
+        or replacement.get("comparative_invalidation_identity")
+        != ORDINAL_7_INVALIDATION_IDENTITY
+    ):
+        raise QualificationAuthorityError("completed invalidation evidence mismatch")
     if list(candidate_manifest)[-1:] != ["manifest_identity"]:
         raise QualificationAuthorityError("candidate manifest field order mismatch")
     manifest_core = dict(candidate_manifest)
@@ -396,7 +457,7 @@ def validate_generation_authority(
         or plan.get("rubric_identity") != RUBRIC_IDENTITY
         or plan.get("adjudicator_registry_identity") != REGISTRY_IDENTITY
         or plan.get("candidate_object_manifest_identity") != manifest_identity
-        or plan.get("replacement_authority") != REPLACEMENT_AUTHORITY_7
+        or plan.get("replacement_authority") != REPLACEMENT_AUTHORITY_8
         or plan.get("candidate_execution_performed") is not False
         or plan.get("promotion_effect") is not False
     ):
@@ -654,7 +715,9 @@ __all__ = (
     "CORPUS_IDENTITY",
     "FREEZE_IDENTITY",
     "HOLDOUT_IDENTITY",
+    "ORDINAL_7_INVALIDATION_IDENTITY",
     "REPLACEMENT_AUTHORITY_7",
+    "REPLACEMENT_AUTHORITY_8",
     "ROOTFS_SHA256",
     "TOKENIZER_SHA256",
     "QualificationAuthorityError",

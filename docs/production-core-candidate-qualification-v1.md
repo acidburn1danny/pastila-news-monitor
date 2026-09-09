@@ -26,6 +26,23 @@ Absence of terminal EOS is the same per-case structural failure. Structural
 FAIL is terminal evaluator authority: no semantic-adjudication authority is
 issued for that packet, so a later human receipt cannot override it with PASS.
 
+Ordinal 7 completed all 2,400 executions and its byte-exact evidence remains
+preserved, but it is invalid as a comparative semantic qualification because
+the common request did not materialize the complete frozen response contract.
+Its blinded packets must not be sent for adjudication and its outputs must not
+be extracted or repaired. The ordinal-8 successor embeds the exact schema
+constants, enums, branch invariants, binding rules, compact JSON/no-fence
+framing, and immediate-EOF rule in every common request. It is a new frozen
+generation, never a retry or redraw.
+
+The complete ordinal-8 request was tokenizer-qualified offline in both clean
+materializations using the frozen `fix_mistral_regex=True` tokenizer. All 400
+candidate/case combinations fit the 1,924-token input ceiling; the maximum is
+1,568 tokens, attained by candidate V1.1 on `pcq-rom-011`. Both materializations
+produce request/token-count root
+`d4684f53edf9a33e745e7ad42ca75d4dce64a849e457899960f60e4ef47417e8`.
+No model was loaded and no inference or network activity occurred.
+
 Execution consumes the frozen content-addressed OCI rootfs tar through one open
 descriptor, extracts a private rootfs, snapshots candidate directories, uses
 read-only model and adapter mounts, and creates exactly one child network/PID/

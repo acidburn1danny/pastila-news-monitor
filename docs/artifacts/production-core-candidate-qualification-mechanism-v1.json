@@ -3,25 +3,32 @@
   "schema_version": 1,
   "status": "OFFLINE_PREINFERENCE_QUALIFIED",
   "candidate_manifest_identity": "51cae2453234d19fef6cd6bb1505beb7ae9bb8a27fcd152a61a6a7bb181a0420",
-  "qualification_generation_identity": "cfa6c00b96430246755c7cdce4c59b52d67946b91c1635077890c317b9afcadf",
+  "qualification_generation_identity": "bbcfa148c1eaf58b5dda2f2f87297b7a573f660020c0d6af3e849cfed137a8b5",
   "alias_secret_commitment": "0195c095f520e5cbfbbdbe3f353091ca3cef86e9e3e9862c12dfa9f28267d2e7",
   "source_sha256": {
-    "src/pastila_scout/production_core_candidate_qualification_v1.py": "fdd1707eaae8979e3aa85d7bc681af7370752628cc287c364bb45ff92993cd07",
+    "src/pastila_scout/production_core_candidate_qualification_v1.py": "4b55637fe2823ff68c7cb4a41fe6c755c75030fa66be18241fc13a2a57e84782",
     "src/pastila_scout/production_core_candidate_qualification_runner_v1.py": "244fceb37c906148edfa2b94929234f89dbdf916c9ff21e1cf0d28d20bba9315",
     "scripts/run_production_core_candidate_qualification_v1.sh": "6ef3c943215e56dc70c9ab1d08fbe57c5ec1716943b1f6e051a502c23bcb3c4c",
     "scripts/resolve_production_core_object_identity_v1.sh": "75cd74aeac115b65b34d9c3abaf9cab7ebbf578cdb62e915e7dd39ba627286a5",
     "scripts/execute_production_core_candidate_qualification_v1.py": "e10c87b6315c038a30c29843c1cee7ee951b2b3dfaddb1d0ca0fd3a1b2bdabf9",
-    "scripts/materialize_production_core_candidate_qualification_v1.py": "e3b12c7fb22043d4f6c528c40614b1c4c817f11d3638af14f70402666e68f502",
-    "tests/test_production_core_candidate_qualification_v1.py": "b93f082fe91054391e49bd19224013a84b5d680443145e4e4f9fda64a511378d",
+    "scripts/materialize_production_core_candidate_qualification_v1.py": "99a3aa5e1e1032c73d7b853d0dbf5c047dcd969c75c545588a03d2c94e590fe5",
+    "scripts/probe_production_core_candidate_prompt_input_envelope_v1.py": "86f93de30e19aa7bf1cb5cabea60c6abe94f1243220da2f2b4620d35e03b350d",
+    "scripts/probe_production_core_candidate_prompt_input_envelope_v1.sh": "425a54989acf535893e38988efe7ffc30358bdf7d745ec887b1a0b148a2e4ca6",
+    "tests/test_production_core_candidate_qualification_v1.py": "ab1193c5a9492b8ce6a8cf4f1567e2e31d454adb0f97816e984a2c8d923703fa",
     "tests/fixtures/production_core_candidate_qualification_isolation_v1.sh": "478ac5dfdb85ea610516286900813e79bd7b1edf97c610f22321741459daacd4",
     "tests/fixtures/production_core_candidate_qualification_watchdog_v1.sh": "46d27ae00465809ba4c9b59f76fa62e3915825251dbefd6277310aff523ad494",
     "tests/fixtures/production_core_candidate_qualification_terminal_v1.sh": "835b858ceda9fa44f5289841643f64a22ffa1d4791a3c91bb65b9e7a4ce286c2",
-    "docs/production-core-candidate-qualification-v1.md": "111628608d0590cadb62d5deb5356dbabcfb70f2d478dfbe14285bcb8eb28c01"
+    "tests/fixtures/production_core_candidate_prompt_input_envelope_negative_v1.sh": "ff85078b5161e0cc8b4ac5610ef018f008e87d345b100b86d3b4ed2cf06fb815",
+    "docs/production-core-candidate-qualification-v1.md": "92f62b551140eaea655ac719ba51db214b0a33ab6a985b9a366ca049bec103ab",
+    "docs/artifacts/core-v2-structured-qualification-response-v1.json": "b6143dbc1ab04ded733e64cbd989c0a9a803fa5367dbda9f8ae4e9bcff71272d",
+    "docs/artifacts/production-core-comparative-qualification-ordinal7-invalidation-v1.json": "ec91f80c9de6a5e0c1da144c9faf3e9ed5dac4be9c2b266a65f3f8cafd51678f",
+    "docs/artifacts/production-core-candidate-prompt-input-envelope-materialization-a-v1.json": "7adba4861314985b3ebda9c247b4a056cd6f0b2d6069c949d6c1e91ab8668f23",
+    "docs/artifacts/production-core-candidate-prompt-input-envelope-materialization-b-v1.json": "01e8218176f31309b72bcca457abd668b53230442ea43bf36b75939050d43f42"
   },
   "synthetic_only": true,
   "candidate_models_loaded_or_executed": false,
   "candidate_outputs_inspected": false,
   "network_activity": false,
   "promotion_effect": false,
-  "qualification_identity": "f6d1d3d5f30918be6676a1f7f80e7f99d7d96afceaf766a195b22a68aee25540"
+  "qualification_identity": "e2cda8f13ee6821711445b67b482fc2024f30f93572470707d9361905d1c96c1"
 }
