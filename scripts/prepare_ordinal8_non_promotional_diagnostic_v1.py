@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import zipfile
 from pathlib import Path, PurePosixPath
 
 CASES = ("pcq-eos-001", "pcq-eos-010")
@@ -30,6 +31,13 @@ DIAGNOSTIC_REGISTRY = "40b813e9f99123bd11f3c2db34d1526614a063aa07dd269e964682220
 PUBLIC_COMMIT = "890aae1904183ec22ab2620f78dfdb02672b4806"
 PUBLIC_TREE = "7f458f4bdc6df3b6e3cab2018eaa97e1937874"
 AUDIT_IDENTITY = "c749b7d08a43dc1358a6da781265dec98dcec0dcf6bd0dfc193aa7501be6d9b1"
+RUBRIC_ARTIFACT_SHA256 = (
+    "ecf187216cca9d18f72b2471bc3027d94100b4795af4833aa481e45ff10e9b0c"
+)
+REGISTRY_ARTIFACT_SHA256 = (
+    "3e3f11b018c4bd5a3e8424db83d22deb55eabce21d1c84ee532a9cc46e92caba"
+)
+VERDICTS = ("PASS", "FAIL", "INDETERMINATE")
 
 
 def canonical(value: object) -> bytes:
@@ -118,7 +126,11 @@ def collect(source: Path) -> list[tuple[Path, dict, bytes]]:
 
 
 def manifest(
-    role: str, evaluator_id: str, key_sha: str, rows: list[tuple[Path, dict, bytes]]
+    role: str,
+    evaluator_id: str,
+    key_sha: str,
+    rows: list[tuple[Path, dict, bytes]],
+    supporting_files: list[dict[str, str]],
 ) -> dict:
     families = []
     inventory = []
@@ -170,6 +182,7 @@ def manifest(
         "repetitions_per_family": 6,
         "families": families,
         "packet_inventory_sha256": digest(canonical(inventory)),
+        "supporting_files": supporting_files,
         "constraints": {
             "hard_gate_result_unchanged": True,
             "hard_gate_compensation_permitted": False,
@@ -183,11 +196,87 @@ def manifest(
     return {**core, "package_identity": digest(canonical(core))}
 
 
+def decision_message(
+    role: str,
+    evaluator_id: str,
+    key_sha: str,
+    relative: Path,
+    packet: dict,
+    verdict: str,
+) -> bytes:
+    value = {
+        "schema": "pastila-production-core-ordinal8-non-promotional-diagnostic-decision",
+        "schema_version": 1,
+        "purpose": "NON_PROMOTIONAL_DIAGNOSTIC",
+        "diagnostic_adjudicator_registry_identity": DIAGNOSTIC_REGISTRY,
+        "qualification_generation_sha256": GENERATION,
+        "corpus_sha256": CORPUS,
+        "rubric_sha256": RUBRIC,
+        "case_id": packet["case"]["case_id"],
+        "request_identity": packet["case"]["request_identity"],
+        "assertion_sha256": digest(canonical(packet["assertion"])),
+        "rubric_artifact_sha256": RUBRIC_ARTIFACT_SHA256,
+        "candidate_alias": packet["candidate_alias"],
+        "candidate_output_sha256": packet["candidate_output_sha256"],
+        "packet_identity": packet["packet_identity"],
+        "execution_receipt_identity": packet["execution_receipt_identity"],
+        "source_packet_adjudicator_registry_identity": SOURCE_PACKET_REGISTRY,
+        "materialization": relative.parts[0],
+        "repetition": relative.parts[1],
+        "adjudicator_id": evaluator_id,
+        "adjudicator_role": role,
+        "adjudicator_key_sha256": key_sha,
+        "verdict": verdict,
+        "hard_gate_result_unchanged": True,
+        "hard_gate_compensation_permitted": False,
+        "candidate_qualification_effect": False,
+        "candidate_promotion_effect": False,
+        "retry_or_redraw_permitted": False,
+        "new_run_authorized": False,
+    }
+    return canonical(value)
+
+
+INSTRUCTIONS = b"""ORDINAL 8 NON_PROMOTIONAL DIAGNOSTIC - OFFLINE ONLY\r
+\r
+1. Verify the ZIP SHA-256 supplied separately, then extract into a new directory.\r
+2. Do not reveal candidate identity and do not obtain the other adjudicator's decisions.\r
+3. Review rubric.json and each packet's case, candidate_output, and assertion.\r
+4. For every one of the 12 packet coordinates, choose exactly one prebuilt message:\r
+   PASS.decision.json, FAIL.decision.json, or INDETERMINATE.decision.json.\r
+5. Copy the 12 chosen files to a new selected-decisions directory, preserving paths.\r
+6. For each selected message run offline:\r
+   openssl pkeyutl -sign -inkey ed25519-private.pem -rawin -in <decision.json> -out <decision.json.sig>\r
+7. Return exactly the 12 selected .decision.json files and their 12 .sig files.\r
+8. Never return or copy ed25519-private.pem. Do not edit or reserialize decision files.\r
+\r
+This diagnostic cannot compensate the failed hard gate, promote a candidate, authorize retry/redraw, or authorize a new run.\r
+"""
+
+
+def deterministic_zip(package: Path, archive: Path) -> None:
+    with zipfile.ZipFile(archive, "w", compression=zipfile.ZIP_STORED) as target:
+        files = sorted(
+            (item for item in package.rglob("*") if item.is_file()),
+            key=lambda item: (
+                item.relative_to(package.parent).as_posix().encode("ascii")
+            ),
+        )
+        for path in files:
+            name = path.relative_to(package.parent).as_posix()
+            info = zipfile.ZipInfo(name, date_time=(1980, 1, 1, 0, 0, 0))
+            info.compress_type = zipfile.ZIP_STORED
+            info.external_attr = 0o100644 << 16
+            target.writestr(info, path.read_bytes())
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--runtime-root", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--role", choices=tuple(ROLES), action="append")
+    parser.add_argument("--rubric", type=Path, required=True)
+    parser.add_argument("--registry", type=Path, required=True)
     args = parser.parse_args()
     if args.runtime_root.is_symlink():
         raise ValueError("runtime root symlink rejected")
@@ -209,6 +298,12 @@ def main() -> None:
     if [(x[0].as_posix(), x[2]) for x in a] != [(x[0].as_posix(), x[2]) for x in b]:
         raise ValueError("A/B source packet bytes differ")
     selected_roles = tuple(args.role or ROLES)
+    rubric_bytes = args.rubric.read_bytes()
+    registry_bytes = args.registry.read_bytes()
+    if digest(rubric_bytes) != RUBRIC_ARTIFACT_SHA256:
+        raise ValueError("rubric artifact identity mismatch")
+    if digest(registry_bytes) != REGISTRY_ARTIFACT_SHA256:
+        raise ValueError("diagnostic registry artifact identity mismatch")
     output.mkdir(parents=False)
     for role in selected_roles:
         folder, evaluator_id, key_sha = ROLES[role]
@@ -220,8 +315,48 @@ def main() -> None:
             target = packet_root / relative
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_bytes(raw)
-        value = manifest(role, evaluator_id, key_sha, rows)
+        (package / "rubric.json").write_bytes(rubric_bytes)
+        (package / "diagnostic-registry.json").write_bytes(registry_bytes)
+        (package / "SIGNING-INSTRUCTIONS.txt").write_bytes(INSTRUCTIONS)
+        decision_inventory = []
+        for relative, packet, _ in rows:
+            coordinate = Path(
+                relative.parts[0], relative.parts[1], packet["case"]["case_id"]
+            )
+            for verdict in VERDICTS:
+                message = decision_message(
+                    role, evaluator_id, key_sha, relative, packet, verdict
+                )
+                decision_path = (
+                    package
+                    / "decision-messages"
+                    / coordinate
+                    / f"{verdict}.decision.json"
+                )
+                decision_path.parent.mkdir(parents=True, exist_ok=True)
+                decision_path.write_bytes(message)
+                decision_inventory.append(
+                    {
+                        "path": decision_path.relative_to(package).as_posix(),
+                        "sha256": digest(message),
+                    }
+                )
+        decision_inventory.sort(key=lambda row: row["path"].encode("ascii"))
+        supporting_files = [
+            {"path": "rubric.json", "sha256": digest(rubric_bytes)},
+            {"path": "diagnostic-registry.json", "sha256": digest(registry_bytes)},
+            {"path": "SIGNING-INSTRUCTIONS.txt", "sha256": digest(INSTRUCTIONS)},
+            {
+                "path": "decision-messages.inventory.json",
+                "sha256": digest(canonical(decision_inventory)),
+            },
+        ]
+        (package / "decision-messages.inventory.json").write_bytes(
+            canonical(decision_inventory)
+        )
+        value = manifest(role, evaluator_id, key_sha, rows, supporting_files)
         (package / "manifest.json").write_bytes(canonical(value))
+        deterministic_zip(package, output / f"{role}.NON_PROMOTIONAL_DIAGNOSTIC.zip")
     print(
         canonical(
             {
@@ -232,6 +367,9 @@ def main() -> None:
                     "package_identity": json.loads(
                         (output / role / "manifest.json").read_bytes()
                     )["package_identity"],
+                    "archive_sha256": digest(
+                        (output / f"{role}.NON_PROMOTIONAL_DIAGNOSTIC.zip").read_bytes()
+                    ),
                 }
                 for role in selected_roles
             }

@@ -1,6 +1,9 @@
 import importlib.util
+import json
+import shutil
 import subprocess
 import sys
+import zipfile
 from pathlib import Path
 
 import pytest
@@ -8,6 +11,14 @@ import pytest
 SCRIPT = (
     Path(__file__).parents[1]
     / "scripts/prepare_ordinal8_non_promotional_diagnostic_v1.py"
+)
+RUBRIC_PATH = (
+    Path(__file__).parents[1]
+    / "docs/artifacts/production-core-qualification-rubric-v1.json"
+)
+REGISTRY_PATH = (
+    Path(__file__).parents[1]
+    / "docs/artifacts/production-core-non-promotional-diagnostic-adjudicator-registry-v1.json"
 )
 SPEC = importlib.util.spec_from_file_location("diagnostic_prep", SCRIPT)
 module = importlib.util.module_from_spec(SPEC)
@@ -25,6 +36,7 @@ def packet(case_id: str, coordinate: str) -> bytes:
             "case_id": case_id,
             "request_identity": "sha256:" + module.digest(case_id.encode()),
         },
+        "assertion": {"assertion_id": "ASSERTION:" + case_id.upper()},
         "candidate_alias": "CANDIDATE-A",
         "candidate_output_sha256": module.digest(case_id.encode()),
         "candidate_output_validation": {
@@ -58,7 +70,9 @@ def make_runtime(root: Path) -> Path:
 def test_manifest_is_content_addressed_non_promotional_and_non_compensating(tmp_path):
     runtime = make_runtime(tmp_path / "runtime")
     rows = module.collect(runtime / "adjudicator-a-v8")
-    value = module.manifest("ADJUDICATOR_A", *module.ROLES["ADJUDICATOR_A"][1:], rows)
+    value = module.manifest(
+        "ADJUDICATOR_A", *module.ROLES["ADJUDICATOR_A"][1:], rows, []
+    )
     identity = value.pop("package_identity")
     assert identity == module.digest(module.canonical(value))
     assert value["purpose"] == "NON_PROMOTIONAL_DIAGNOSTIC"
@@ -95,6 +109,10 @@ def test_role_selection_materializes_only_requested_role_and_preserves_bytes(tmp
             str(output),
             "--role",
             "ADJUDICATOR_B",
+            "--rubric",
+            str(RUBRIC_PATH),
+            "--registry",
+            str(REGISTRY_PATH),
         ],
         check=True,
         capture_output=True,
@@ -106,6 +124,42 @@ def test_role_selection_materializes_only_requested_role_and_preserves_bytes(tmp
     assert [item.read_bytes() for item in produced] == [
         item.read_bytes() for item in source
     ]
+    package = output / "ADJUDICATOR_B"
+    assert (package / "rubric.json").read_bytes() == RUBRIC_PATH.read_bytes()
+    assert (
+        package / "diagnostic-registry.json"
+    ).read_bytes() == REGISTRY_PATH.read_bytes()
+    messages = sorted((package / "decision-messages").rglob("*.decision.json"))
+    assert len(messages) == 36
+    inventory = json.loads((package / "decision-messages.inventory.json").read_bytes())
+    assert {row["path"] for row in inventory} == {
+        path.relative_to(package).as_posix() for path in messages
+    }
+    for path in messages:
+        value = json.loads(path.read_bytes())
+        assert module.canonical(value) == path.read_bytes()
+        assert value["purpose"] == "NON_PROMOTIONAL_DIAGNOSTIC"
+        assert value["adjudicator_role"] == "ADJUDICATOR_B"
+        assert value["adjudicator_id"] == "EVALUATOR-B-02"
+        assert value["adjudicator_key_sha256"] == module.ROLES["ADJUDICATOR_B"][2]
+        assert value["verdict"] in module.VERDICTS
+        assert value["rubric_artifact_sha256"] == module.RUBRIC_ARTIFACT_SHA256
+        assert value["hard_gate_result_unchanged"] is True
+        assert value["hard_gate_compensation_permitted"] is False
+        assert value["candidate_qualification_effect"] is False
+        assert value["candidate_promotion_effect"] is False
+        assert value["retry_or_redraw_permitted"] is False
+        assert value["new_run_authorized"] is False
+    archive = output / "ADJUDICATOR_B.NON_PROMOTIONAL_DIAGNOSTIC.zip"
+    with zipfile.ZipFile(archive) as zipped:
+        expected = {
+            "ADJUDICATOR_B/" + path.relative_to(package).as_posix()
+            for path in package.rglob("*")
+            if path.is_file()
+        }
+        assert set(zipped.namelist()) == expected
+        for name in expected:
+            assert zipped.read(name) == (output / name).read_bytes()
 
 
 def test_a_and_b_source_exports_must_be_byte_identical(tmp_path):
@@ -120,6 +174,10 @@ def test_a_and_b_source_exports_must_be_byte_identical(tmp_path):
             str(runtime),
             "--output",
             str(tmp_path / "diagnostic"),
+            "--rubric",
+            str(RUBRIC_PATH),
+            "--registry",
+            str(REGISTRY_PATH),
         ],
         check=False,
         capture_output=True,
@@ -166,9 +224,82 @@ def test_existing_output_fails_without_overwrite(tmp_path):
             str(output),
             "--role",
             "ADJUDICATOR_B",
+            "--rubric",
+            str(RUBRIC_PATH),
+            "--registry",
+            str(REGISTRY_PATH),
         ],
         check=False,
         capture_output=True,
     )
     assert run.returncode != 0
     assert list(output.iterdir()) == []
+
+
+def test_prebuilt_decision_supports_offline_ed25519_round_trip(tmp_path):
+    openssl = shutil.which("openssl")
+    assert openssl is not None
+    runtime = make_runtime(tmp_path / "runtime")
+    output = tmp_path / "diagnostic"
+    subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "--runtime-root",
+            str(runtime),
+            "--output",
+            str(output),
+            "--role",
+            "ADJUDICATOR_B",
+            "--rubric",
+            str(RUBRIC_PATH),
+            "--registry",
+            str(REGISTRY_PATH),
+        ],
+        check=True,
+        capture_output=True,
+    )
+    message = next(
+        (output / "ADJUDICATOR_B/decision-messages").rglob("PASS.decision.json")
+    )
+    private_key = tmp_path / "private.pem"
+    public_key = tmp_path / "public.pem"
+    signature = tmp_path / "decision.sig"
+    subprocess.run(
+        [openssl, "genpkey", "-algorithm", "ED25519", "-out", private_key], check=True
+    )
+    subprocess.run(
+        [openssl, "pkey", "-in", private_key, "-pubout", "-out", public_key], check=True
+    )
+    subprocess.run(
+        [
+            openssl,
+            "pkeyutl",
+            "-sign",
+            "-inkey",
+            private_key,
+            "-rawin",
+            "-in",
+            message,
+            "-out",
+            signature,
+        ],
+        check=True,
+    )
+    verified = subprocess.run(
+        [
+            openssl,
+            "pkeyutl",
+            "-verify",
+            "-pubin",
+            "-inkey",
+            public_key,
+            "-rawin",
+            "-in",
+            message,
+            "-sigfile",
+            signature,
+        ],
+        check=False,
+    )
+    assert verified.returncode == 0
