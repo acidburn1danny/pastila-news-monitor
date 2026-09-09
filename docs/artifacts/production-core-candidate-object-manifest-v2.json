@@ -1,0 +1,15 @@
+{
+  "schema": "pastila-production-core-candidate-object-manifest",
+  "schema_version": 2,
+  "status": "UNCHANGED_TECHNICAL_OBJECT_AUTHORITY_NO_EXECUTION",
+  "base_model_manifest_sha256": "f5a9327e40390c7f0cf93962d75abbbc5ae8da1fac48e1274092ac52cf88bf39",
+  "tokenizer_sha256": "2a00451398b3bb51d3c0fa3f4758c77061377ada35abbb7f5e1006be3aaced5c",
+  "tokenizer_fix_mistral_regex": true,
+  "adapter_manifest_sha256": {
+    "pastila-editor-core-v1.1-experimental": "0bc4bb1b83b5c1375c1e676844dea079831e7ad0b90db955fa89a2f7d65c3e47",
+    "pastila-editor-core-v1.2-experimental": "22b5a7bde7194c66d895b9acab5791a8d8573df67f93704eab933666df7978a2"
+  },
+  "rootfs_sha256": "274e7d1519f05f41108413efb01d35680b88e0f4b13bb63fca9634be155980f4",
+  "candidate_execution_performed": false,
+  "manifest_identity": "e9645372c95f00459fc53132289ecc61af33f3ebb167b859ba7223acde161760"
+}
