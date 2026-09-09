@@ -1,0 +1,43 @@
+{
+  "schema": "pastila-core-v2-semantic-output-contract",
+  "schema_version": 2,
+  "status": "OWNER_APPROVED_PROSPECTIVE_SUCCESSOR",
+  "supersedes_version": 1,
+  "historical_v1_immutable": true,
+  "unicode_unit": "NFC_UNICODE_SCALAR_VALUES",
+  "qsu": {
+    "authority_identity": "2bc9eb507adfd6d3cb45c6c73d04711e61b0b2f98712daf23ad968de2c30d8fc",
+    "algorithm": "UNICODE_16_0_0_UAX29_C3_1_UNMODIFIED",
+    "term": "QUALIFICATION_SENTENCE_UNIT",
+    "locale_or_tailoring_allowed": false
+  },
+  "factual": {
+    "shape_authority": "FROZEN_CASE_REQUIRED_FACTUAL_SHAPE",
+    "shapes": {
+      "MATERIAL_PROPOSITIONS": "2_TO_3",
+      "QUALIFICATION_SENTENCE_UNITS": "1_TO_2"
+    },
+    "maximum_unicode_scalars": 650,
+    "one_text_block": true,
+    "bullets_or_headings": false,
+    "unsupported_or_changed_facts": 0,
+    "source_binding_percent": 100
+  },
+  "commentary": {
+    "editorial_target_qsu": 3,
+    "target_classification": "DIAGNOSTIC_ONLY_NON_FAILING",
+    "target_qualification_effect": false,
+    "hard_maximum_qsu": 5,
+    "hard_maximum_unicode_scalars": 1000,
+    "limits_independent": true,
+    "structure": "PERMITTED_AND_REQUIRED_ONLY_WHEN_EXPLICITLY_REQUESTED"
+  },
+  "global": {
+    "completion_terminal": true,
+    "trailing_output": "FAIL",
+    "overflow": "FAIL",
+    "truncate": false,
+    "retry_or_redraw": false
+  },
+  "contract_identity": "5ff45b99134e4b4be865949b54202743ef96db276674eefe0185b4f7163b1410"
+}

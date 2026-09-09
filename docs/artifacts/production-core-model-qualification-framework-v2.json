@@ -1,0 +1,21 @@
+{
+  "schema": "pastila-production-core-model-qualification-framework",
+  "schema_version": 2,
+  "status": "PROSPECTIVE_AUTHORITY_CLOSED_NO_GENERATION_AUTHORIZED",
+  "historical_ordinal8_immutable": true,
+  "bindings": {
+    "unicode_authority_identity": "2bc9eb507adfd6d3cb45c6c73d04711e61b0b2f98712daf23ad968de2c30d8fc",
+    "semantic_contract_identity": "5ff45b99134e4b4be865949b54202743ef96db276674eefe0185b4f7163b1410",
+    "structured_response_contract_identity": "088ffa8ed7536f732b71b46bdb4f161594518f35a909ea21868044c2902b15e4",
+    "corpus_identity": "b67f67147f0e9629189944cf229ffd7da4c03e4b244182d5dce1b808385a9fe9",
+    "assertion_manifest_identity": "cce045e9093fb2a92b86339d3f7c7a4e0cd99d85782dc3967826341a7860571c",
+    "rubric_identity": "659339bac91cfbdf993c7b57555dfd9191e609816db76e60bc41f13d0dfba1a6",
+    "execution_profile_identity": "06aae46a8dce5eeedbd87cd122e935dcc51e17c221d6efb689b80f20bcda621f",
+    "shared_authority_module_sha256": "af079fb50f281e09433dba299feaf9c2354bb4946df8e476658f71cc228d4c41"
+  },
+  "candidate_visible_authority_closure": "REQUIRED_EXACT",
+  "candidate_execution_authorized": false,
+  "qualification_generation_authorized": false,
+  "promotion_effect": false,
+  "framework_identity": "9d8bb34d7ae7a7527ab0916e37a0e0537f156c5b35f7e580e36863efabfbb3c6"
+}

@@ -1,0 +1,32 @@
+{
+  "schema": "pastila-production-core-execution-profile",
+  "schema_version": 2,
+  "status": "OWNER_APPROVED_PROFILE_VALUES",
+  "scope": "QUALIFICATION_EXECUTION_PROFILE_V1_ONLY_NOT_GLOBAL_POLICY",
+  "semantic_contract_identity": "5ff45b99134e4b4be865949b54202743ef96db276674eefe0185b4f7163b1410",
+  "technical": {
+    "context_tokens": 8192,
+    "input_tokens_max": 1924,
+    "output_bytes_max": 6268,
+    "output_tokens_max": 6268,
+    "token_class": "CONSERVATIVE_BYTE_TIGHT",
+    "wall_seconds": 600,
+    "peak_rss_bytes": 16106127360,
+    "structural_cancellation_ms": 500,
+    "structural_wall_seconds": 1,
+    "structural_rss_bytes": 67108864,
+    "tokenizer_fix_mistral_regex": true,
+    "greedy": true,
+    "seed": 0,
+    "nf4_bf16_double_quant": true,
+    "processes": 1,
+    "torch_threads": [
+      1,
+      1
+    ],
+    "network": "DENY_ALL",
+    "overflow": "FAIL_NO_TRUNCATION_RETRY_REDRAW"
+  },
+  "semantic_successor_changes_technical_maximum": false,
+  "profile_identity": "06aae46a8dce5eeedbd87cd122e935dcc51e17c221d6efb689b80f20bcda621f"
+}

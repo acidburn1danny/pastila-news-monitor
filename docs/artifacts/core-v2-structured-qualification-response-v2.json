@@ -1,0 +1,53 @@
+{
+  "schema": "pastila-core-v2-structured-qualification-response-contract",
+  "schema_version": 2,
+  "status": "OWNER_APPROVED_PROSPECTIVE_SUCCESSOR",
+  "semantic_contract_identity": "5ff45b99134e4b4be865949b54202743ef96db276674eefe0185b4f7163b1410",
+  "required_fields": [
+    "schema",
+    "schema_version",
+    "case_id",
+    "request_identity",
+    "output_type",
+    "outcome",
+    "text",
+    "claim_bindings",
+    "abstention_code"
+  ],
+  "optional_fields": [],
+  "additional_fields_allowed": false,
+  "schema_const": "pastila-core-v2-structured-qualification-response",
+  "schema_version_const": 2,
+  "output_types": [
+    "FACTUAL",
+    "COMMENTARY"
+  ],
+  "outcomes": [
+    "ANSWER",
+    "ABSTAIN"
+  ],
+  "claim_bindings": {
+    "maximum": 3,
+    "claim_indexes": "CONTIGUOUS_FROM_1_IN_MATERIAL_PROPOSITION_ORDER",
+    "source_ids_per_claim": [
+      1,
+      8
+    ],
+    "aggregate_maximum": 24,
+    "duplicates": false,
+    "order": "STRICT_REQUEST_AUTHORITY_ORDER"
+  },
+  "abstention_codes": [
+    "INSUFFICIENT_AUTHORITY",
+    "CONFLICTING_AUTHORITY",
+    "AMBIGUOUS_SCOPE",
+    "UNRESOLVED_REFERENCE",
+    "INSTRUCTION_AUTHORITY_CONFLICT",
+    "CANNOT_SATISFY_OUTPUT_CONTRACT",
+    "SAFETY_ENVELOPE_EXCEEDED"
+  ],
+  "serialization": "ONE_COMPACT_NFC_UTF8_OBJECT_THEN_EOF",
+  "invalid_behavior": "FAIL_CLOSED_ZERO_MUTATION_NO_REPAIR_COERCION_TRUNCATION_RETRY_REDRAW",
+  "evaluator_only_verdict": true,
+  "contract_identity": "088ffa8ed7536f732b71b46bdb4f161594518f35a909ea21868044c2902b15e4"
+}

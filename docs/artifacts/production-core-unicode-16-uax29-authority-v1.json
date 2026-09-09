@@ -1,0 +1,16 @@
+{
+  "schema": "pastila-production-core-unicode-uax29-authority",
+  "schema_version": 1,
+  "status": "OFFICIAL_UNICODE_16_AUTHORITY_CONTENT_ADDRESSED",
+  "unicode_version": "16.0.0",
+  "uax_revision": 45,
+  "conformance": "UAX29-C3-1_DEFAULT_SENTENCE_BOUNDARIES",
+  "resources": {
+    "SentenceBreakProperty.txt": "20aab5eca3842c7a27cc6756d74488a4a5f744c8dca2948ec1128f26a60d1f79",
+    "SentenceBreakTest.txt": "0aef84034ee1789eb71021454fac384e83080b05922272d63cf297f4bf08150e",
+    "tr29-45.html": "4579c185bd45feac761de590d874aca71788e339b35179318a4c43412fd4f9e4"
+  },
+  "runtime_authority_identity": "baa7f72966196d6eada227d094033cff647eef2b35366f98876aa17f392aeebf",
+  "substitution_prohibited": true,
+  "authority_identity": "2bc9eb507adfd6d3cb45c6c73d04711e61b0b2f98712daf23ad968de2c30d8fc"
+}
