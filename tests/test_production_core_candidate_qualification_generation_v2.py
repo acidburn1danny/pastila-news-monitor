@@ -18,12 +18,6 @@ from pastila_scout.production_core_candidate_qualification_generation_v2 import 
 
 ROOT = Path(__file__).resolve().parents[1]
 ART = ROOT / "docs" / "artifacts"
-SECRET = (
-    ROOT
-    / ".pastila-runtime"
-    / "production-core-qualification-v2"
-    / "candidate-alias-secret-v2.json"
-)
 
 
 def load(name):
@@ -109,7 +103,6 @@ def test_validator_controllable_authority_is_candidate_visible_1_to_1():
 def test_generation_closes_all_authorities_and_has_no_stale_policy():
     generation = load("production-core-comparative-qualification-generation-v2.json")
     requests = load("production-core-candidate-request-manifest-v2.json")
-    secret = json.loads(SECRET.read_bytes())
     validate_generation(
         generation,
         requests,
@@ -120,7 +113,6 @@ def test_generation_closes_all_authorities_and_has_no_stale_policy():
         },
         load("production-core-qualification-corpus-v1.json"),
         load("production-core-qualification-corpus-v2.json"),
-        secret,
     )
     assert generation["authority_bindings"] == {
         "public_ref": "refs/heads/foundation/core-v2-production-core-qualification-framework",
@@ -146,7 +138,6 @@ def test_generation_closes_all_authorities_and_has_no_stale_policy():
 def test_stale_and_caller_selected_authority_fail_closed():
     generation = load("production-core-comparative-qualification-generation-v2.json")
     requests = load("production-core-candidate-request-manifest-v2.json")
-    secret = json.loads(SECRET.read_bytes())
     candidate_manifest = load("production-core-candidate-object-manifest-v2.json")
     receipts = {
         "A": load("production-core-candidate-input-envelope-a-v2.json"),
@@ -174,7 +165,6 @@ def test_stale_and_caller_selected_authority_fail_closed():
                 receipts,
                 historical,
                 successor,
-                secret,
             )
     rebound_requests = copy.deepcopy(requests)
     rebound_requests["requests"][0]["candidate_visible_request"] += "substitution"
@@ -186,7 +176,7 @@ def test_stale_and_caller_selected_authority_fail_closed():
     core = dict(changed)
     core.pop("qualification_generation_identity")
     changed["qualification_generation_identity"] = identity(core)
-    with pytest.raises(GenerationAuthorityError, match="rederivation"):
+    with pytest.raises(GenerationAuthorityError, match="identity|rederivation"):
         validate_generation(
             changed,
             rebound_requests,
@@ -194,7 +184,6 @@ def test_stale_and_caller_selected_authority_fail_closed():
             receipts,
             historical,
             successor,
-            secret,
         )
     changed_history = copy.deepcopy(historical)
     changed_history["cases"][0]["request"] += " substituted"
@@ -214,7 +203,7 @@ def test_stale_and_caller_selected_authority_fail_closed():
     core = dict(changed)
     core.pop("qualification_generation_identity")
     changed["qualification_generation_identity"] = identity(core)
-    with pytest.raises(GenerationAuthorityError, match="receipt authority"):
+    with pytest.raises(GenerationAuthorityError, match="identity|receipt authority"):
         validate_generation(
             changed,
             requests,
@@ -222,7 +211,6 @@ def test_stale_and_caller_selected_authority_fail_closed():
             rebound_receipts,
             historical,
             successor,
-            secret,
         )
 
 

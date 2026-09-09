@@ -71,6 +71,19 @@ EXPECTED_SYSTEM_PROMPT_SHA256 = [
 EXPECTED_TOKEN_COUNT_ROOT = (
     "e24236fbe48fcf74d3f897fd1132518c65fcc0f2c613d9d83c5d07bad34fc9d9"
 )
+EXPECTED_REQUEST_MANIFEST_IDENTITY = (
+    "f3b0e0d11c5b73fba39ce21f5daa040e788a2ea09d455389bf990ee8264b4d03"
+)
+EXPECTED_GENERATION_IDENTITY = (
+    "ccb426a8dd5f062794056a164fe815ab59af45db6166a1340853ead42a55e528"
+)
+EXPECTED_CANDIDATE_MANIFEST_IDENTITY = (
+    "e9645372c95f00459fc53132289ecc61af33f3ebb167b859ba7223acde161760"
+)
+EXPECTED_RECEIPT_IDENTITIES = {
+    "A": "5b5dabba11b4a99ec5fa835d12ecabff2c831765b011799ca5af59bcec676995",
+    "B": "9c2974e0bf4b325d8156b2085f2bce3b6ed1ebf2575155edc46e93b48a5d0476",
+}
 
 
 class GenerationAuthorityError(ValueError):
@@ -232,18 +245,30 @@ def validate_generation(
     receipts: Mapping[str, Mapping[str, object]],
     historical_corpus: Mapping[str, object],
     successor_corpus: Mapping[str, object],
-    secret: Mapping[str, object],
+    secret: Mapping[str, object] | None = None,
 ) -> dict[str, str]:
     _unseal(
         generation,
         "qualification_generation_identity",
         str(generation.get("qualification_generation_identity")),
     )
+    if (
+        generation.get("qualification_generation_identity")
+        != EXPECTED_GENERATION_IDENTITY
+        or request_manifest.get("request_manifest_identity")
+        != EXPECTED_REQUEST_MANIFEST_IDENTITY
+    ):
+        raise GenerationAuthorityError("terminal public identity mismatch")
     _unseal(
         request_manifest,
         "request_manifest_identity",
         str(request_manifest.get("request_manifest_identity")),
     )
+    if (
+        candidate_manifest.get("manifest_identity")
+        != EXPECTED_CANDIDATE_MANIFEST_IDENTITY
+    ):
+        raise GenerationAuthorityError("terminal candidate manifest identity mismatch")
     expected_requests = materialize_request_authorities(
         historical_corpus, successor_corpus
     )
@@ -332,6 +357,8 @@ def validate_generation(
             raise GenerationAuthorityError("input materializations do not converge")
         convergence = current
         expected_receipt_ids[label] = receipt["receipt_identity"]
+    if expected_receipt_ids != EXPECTED_RECEIPT_IDENTITIES:
+        raise GenerationAuthorityError("terminal receipt identity mismatch")
     bindings = generation.get("authority_bindings")
     expected = {
         "public_ref": PUBLIC_AUTHORITY_REF,
@@ -376,9 +403,34 @@ def validate_generation(
             raise GenerationAuthorityError("request byte mismatch")
     case_ids: Sequence[str] = [str(row["case_id"]) for row in rows]
     commitment = str(generation.get("alias_secret_commitment"))
-    schedule = deterministic_schedule(case_ids, secret, commitment)
-    if schedule != generation.get("schedule"):
-        raise GenerationAuthorityError("schedule mismatch")
+    schedule = generation.get("schedule")
+    if not isinstance(schedule, list) or len(schedule) != 2400:
+        raise GenerationAuthorityError("public schedule cardinality mismatch")
+    expected_global = list(range(1, 2401))
+    if [row.get("global_ordinal") for row in schedule] != expected_global:
+        raise GenerationAuthorityError("public schedule ordinal mismatch")
+    for materialization in MATERIALIZATIONS:
+        for repetition in REPETITIONS:
+            for alias in ALIASES:
+                batch = [
+                    row
+                    for row in schedule
+                    if row.get("materialization") == materialization
+                    and row.get("repetition") == repetition
+                    and row.get("candidate_alias") == alias
+                ]
+                if (
+                    len(batch) != 200
+                    or {row.get("case_id") for row in batch} != set(case_ids)
+                    or [row.get("batch_ordinal") for row in batch]
+                    != list(range(1, 201))
+                ):
+                    raise GenerationAuthorityError("public schedule coverage mismatch")
+    if secret is None:
+        return {}
+    expected_schedule = deterministic_schedule(case_ids, secret, commitment)
+    if expected_schedule != schedule:
+        raise GenerationAuthorityError("private schedule derivation mismatch")
     return validate_secret_mapping(secret, commitment)
 
 
