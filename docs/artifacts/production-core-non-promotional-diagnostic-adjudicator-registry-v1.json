@@ -1,0 +1,29 @@
+{
+  "schema": "pastila-production-core-non-promotional-diagnostic-adjudicator-registry",
+  "schema_version": 1,
+  "status": "OWNER_REPLACEMENT_DESIGNATED",
+  "purpose": "NON_PROMOTIONAL_DIAGNOSTIC",
+  "supersedes_registry_identity": "26772b5ae3e7ffe853e75b79b9d37ef7649ad183917afa2a0170f79e2b2d1639",
+  "roles": {
+    "ADJUDICATOR_A": {
+      "adjudicator_id": "EVALUATOR-A-01",
+      "public_key_sha256": "e30913d2a150ff6c3c5d621550c94e9559175921ca9dae49bfbe2bbabc911497",
+      "public_key_format": "PEM_SUBJECT_PUBLIC_KEY_INFO_ED25519_EXACT_BYTES_BASE64",
+      "public_key_pem_base64": "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0NCk1Db3dCUVlESzJWd0F5RUFqcXRGSElsZ0l0UWZqSjdLb1JZYmJpOFlkcUhqTnhhUWlySGJDcVRONU80PQ0KLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tDQo="
+    },
+    "ADJUDICATOR_B": {
+      "adjudicator_id": "EVALUATOR-B-02",
+      "public_key_sha256": "3a93216b56f3ba932836a759e669437b03eabe3817ec5497e6beb7390cf4e8a9",
+      "public_key_format": "PEM_SUBJECT_PUBLIC_KEY_INFO_ED25519_EXACT_BYTES_BASE64",
+      "public_key_pem_base64": "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0NCk1Db3dCUVlESzJWd0F5RUFBeXYxRnM0a1pBaEhKcmc4RDhrZmNVbDNFMURpS05XREtzendMc3dyMmxvPQ0KLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tDQo="
+    }
+  },
+  "independence_assertion": "OWNER_DESIGNATED_DISTINCT_HUMAN_EVALUATORS_WITH_DISTINCT_PUBLIC_KEYS",
+  "historical_evidence_mutated": false,
+  "hard_gate_compensation_permitted": false,
+  "candidate_promotion_effect": false,
+  "retry_or_redraw_permitted": false,
+  "new_run_authorized": false,
+  "historical_registry_artifact_sha256": "9c0371fdbf5a455ac740f736b7733bab784422c177fd2a4534071e6f1a74327c",
+  "registry_identity": "40b813e9f99123bd11f3c2db34d1526614a063aa07dd269e9646822200e2035b"
+}
