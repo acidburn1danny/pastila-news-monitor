@@ -1,0 +1,44 @@
+{
+  "adjudication_performed": false,
+  "attempt_consumed_permanently": true,
+  "attempt_identity": "c4cf86d09f92d156f5a506f71e04ce9166d1061ed69a7f6460539c8243d3380a",
+  "attempt_ordinal": 1,
+  "candidate_dispositions": [
+    {
+      "candidate": "pastila-editor-core-v1.1-experimental",
+      "disposition": "REJECTED_STRUCTURALLY"
+    },
+    {
+      "candidate": "pastila-editor-core-v1.2-experimental",
+      "disposition": "REJECTED_STRUCTURALLY"
+    }
+  ],
+  "completion_identity": "7b7ac4fc43a8fc8b58cbdba84f4d76722ffcef130e78f977af9c352582f9ba2f",
+  "disposition_identity": "acd5b874de1a3b9c638194836d94f6f7b569781c2b63f778b04c8cb44871084f",
+  "evidence": {
+    "artifact_count": 7261,
+    "artifact_root": "440c8ccc3a53b989d7b8af577582eaaf7840299296bc2307ec520323762df3a4",
+    "attempt_sha256": "5228eff0fbc85b7929ed62b7464cef4f567f5107a2428e87b94c3c7b4434e1bd",
+    "candidate_alias_counts": {
+      "CANDIDATE-A": 1200,
+      "CANDIDATE-B": 1200
+    },
+    "completed_rows": 2400,
+    "completion_sha256": "0e6adc2dac68fd61c4a3da0b29cddc3b8cd53e8573785346a6568b26b988325c",
+    "materialization_counts": {
+      "A": 1200,
+      "B": 1200
+    },
+    "structural_status_counts": {
+      "FAIL_CLOSED_INVALID_OUTPUT": 2400
+    }
+  },
+  "execution_authority_identity": "1192708d5fb27a4d4a1da3c4fd6b4408acef72790b7db3b8b79287be9857efe4",
+  "promotion_effect": false,
+  "qualification_generation_identity": "ccb426a8dd5f062794056a164fe815ab59af45db6166a1340853ead42a55e528",
+  "retry_or_redraw": false,
+  "schema": "pastila-production-core-terminal-qualification-disposition-v2",
+  "schema_version": 2,
+  "status": "TERMINAL_STRUCTURAL_REJECTION_BOTH_CANDIDATES",
+  "successor_requirement": "NEW_SUCCESSOR_LINEAGE_AND_NEW_EXECUTION_AUTHORITY"
+}

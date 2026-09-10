@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "schema_version", "status", "execution_authority_identity",
+    "qualification_generation_identity", "attempt_identity", "attempt_ordinal",
+    "attempt_consumed_permanently", "completion_identity", "evidence",
+    "candidate_dispositions", "retry_or_redraw", "adjudication_performed",
+    "promotion_effect", "successor_requirement", "disposition_identity"
+  ],
+  "properties": {
+    "schema": {"const": "pastila-production-core-terminal-qualification-disposition-v2"},
+    "schema_version": {"const": 2},
+    "status": {"const": "TERMINAL_STRUCTURAL_REJECTION_BOTH_CANDIDATES"},
+    "execution_authority_identity": {"const": "1192708d5fb27a4d4a1da3c4fd6b4408acef72790b7db3b8b79287be9857efe4"},
+    "qualification_generation_identity": {"const": "ccb426a8dd5f062794056a164fe815ab59af45db6166a1340853ead42a55e528"},
+    "attempt_identity": {"const": "c4cf86d09f92d156f5a506f71e04ce9166d1061ed69a7f6460539c8243d3380a"},
+    "attempt_ordinal": {"const": 1},
+    "attempt_consumed_permanently": {"const": true},
+    "completion_identity": {"const": "7b7ac4fc43a8fc8b58cbdba84f4d76722ffcef130e78f977af9c352582f9ba2f"},
+    "evidence": {
+      "type": "object", "additionalProperties": false,
+      "required": ["attempt_sha256", "completion_sha256", "artifact_root", "artifact_count", "completed_rows", "structural_status_counts", "candidate_alias_counts", "materialization_counts"],
+      "properties": {
+        "attempt_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "completion_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "artifact_root": {"const": "440c8ccc3a53b989d7b8af577582eaaf7840299296bc2307ec520323762df3a4"},
+        "artifact_count": {"const": 7261},
+        "completed_rows": {"const": 2400},
+        "structural_status_counts": {"const": {"FAIL_CLOSED_INVALID_OUTPUT": 2400}},
+        "candidate_alias_counts": {"const": {"CANDIDATE-A": 1200, "CANDIDATE-B": 1200}},
+        "materialization_counts": {"const": {"A": 1200, "B": 1200}}
+      }
+    },
+    "candidate_dispositions": {
+      "const": [
+        {"candidate": "pastila-editor-core-v1.1-experimental", "disposition": "REJECTED_STRUCTURALLY"},
+        {"candidate": "pastila-editor-core-v1.2-experimental", "disposition": "REJECTED_STRUCTURALLY"}
+      ]
+    },
+    "retry_or_redraw": {"const": false},
+    "adjudication_performed": {"const": false},
+    "promotion_effect": {"const": false},
+    "successor_requirement": {"const": "NEW_SUCCESSOR_LINEAGE_AND_NEW_EXECUTION_AUTHORITY"},
+    "disposition_identity": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  }
+}
