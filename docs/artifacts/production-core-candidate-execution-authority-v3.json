@@ -1,0 +1,30 @@
+{
+  "schema": "pastila-production-core-candidate-execution-authority",
+  "schema_version": 2,
+  "status": "PASS_OFFLINE_EXECUTION_AUTHORITY_ZERO_ATTEMPTS",
+  "authority_identities": {
+    "qualification_generation_identity": "7b4900523953253391e8753d39ae8253e6652055cf5c99612a007eaadba552f9",
+    "qualification_identity": "281f5cfd3e5627e582e099129ad8b023052b694e5834f6b6843b13368abbc314",
+    "request_manifest_identity": "f3b0e0d11c5b73fba39ce21f5daa040e788a2ea09d455389bf990ee8264b4d03",
+    "candidate_object_manifest_identity": "94ce74f28df6027c404800787e7ba39c16a35f688094c2bb96220d1592ad72ce"
+  },
+  "source_sha256": {
+    "docs/schemas/production-core-candidate-execution-authority-v3.schema.json": "f0516e34682fb2484b1dd419523ccbb2f2764c01b0756ae2d15bf708463968ab",
+    "docs/schemas/production-core-candidate-execution-evidence-v2.schema.json": "55abaf7d8fc8a0ebd1b9b3db3d5e213b6e36534ff078a3687de80b6cc246cd33",
+    "scripts/execute_production_core_candidate_qualification_v3.py": "92dca4e22e832ce3c0bc461296afa08cdc1621d3b33072a319ae1451dc9d488c",
+    "scripts/launch_production_core_candidate_qualification_v3.py": "ca64d3de04647269bfe78819f03463465bf342ca9a99bb1a425db519ceada8e3",
+    "scripts/resolve_production_core_object_authority_v2.sh": "4231ea3dae2f9399edeed8c2d5f96faa16c13714a594a1a381ea50ceb4cf0be0",
+    "scripts/run_production_core_candidate_qualification_v3.sh": "65a357d2ddb87175cd6f2ce24e7074f425180d681f485f1f54f9deb3c30a3c00",
+    "src/pastila_scout/production_core_candidate_execution_authority_v3.py": "9e93ff53d9422858818fcdedea7a135ac36203b824db68e4ba78096c8354cf58",
+    "src/pastila_scout/production_core_candidate_qualification_runner_v3.py": "816de4b522f178860d28f0d805d675cb4021430885c8dfbb673a7d594a3252cb",
+    "src/pastila_scout/production_core_semantic_authority_v2.py": "af079fb50f281e09433dba299feaf9c2354bb4946df8e476658f71cc228d4c41",
+    "tests/test_production_core_successor_execution_authority_v3.py": "1f352bdb5a9f6fa266571d408b17b18f8fe54fbc95ae6a91ee2f839dfe58a543"
+  },
+  "matrix_rows": 2400,
+  "attempt_ordinal": 1,
+  "retry_or_redraw_authorized": false,
+  "adjudication_performed": false,
+  "candidate_execution_performed": false,
+  "promotion_effect": false,
+  "execution_authority_identity": "2a8fb059d36efad540e86c7d232643683cc48bcbf8507a94d5607d0316561cb1"
+}

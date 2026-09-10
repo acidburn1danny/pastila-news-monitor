@@ -1,0 +1,24 @@
+{
+  "schema": "pastila-production-core-candidate-object-manifest",
+  "schema_version": 3,
+  "status": "SUCCESSOR_CONTENT_ADDRESSED_AUTHORITY_NO_EXECUTION",
+  "base_model_manifest_sha256": "f5a9327e40390c7f0cf93962d75abbbc5ae8da1fac48e1274092ac52cf88bf39",
+  "tokenizer_sha256": "2a00451398b3bb51d3c0fa3f4758c77061377ada35abbb7f5e1006be3aaced5c",
+  "tokenizer_fix_mistral_regex": true,
+  "adapter_manifest_sha256": {
+    "pastila-editor-core-v1.1-json-successor": "16d6384355abfeff9a2c35cfa9866c604f8fd9703c19dcfbefcfdbb7fdb7dcf3",
+    "pastila-editor-core-v1.2-json-successor": "dccfee343ad1e305a0e193501b3a8adba11da01afd3d890ee38275dda82ac719"
+  },
+  "training_receipt_identity": {
+    "pastila-editor-core-v1.1-json-successor": "cab8806ae4b8a78cf355ebc065f60cdf19fc13b6a37adefe47482ab7751e0e77",
+    "pastila-editor-core-v1.2-json-successor": "d362ab7d26e0bbb9793782ca294376b248de053fc3dbe4fc5740359cfdbf2acf"
+  },
+  "training_runtime_authority_identity": "a125295dee3f8cc7238203512501ed7aa5b7e8d36bed43b9701f86a4fd15ee69",
+  "predecessor_terminal_disposition_identity": "acd5b874de1a3b9c638194836d94f6f7b569781c2b63f778b04c8cb44871084f",
+  "rootfs_sha256": "274e7d1519f05f41108413efb01d35680b88e0f4b13bb63fca9634be155980f4",
+  "candidate_execution_performed": false,
+  "qualification_attempt_consumed": false,
+  "adjudication_performed": false,
+  "promotion_effect": false,
+  "manifest_identity": "94ce74f28df6027c404800787e7ba39c16a35f688094c2bb96220d1592ad72ce"
+}

@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schema_version", "status", "authority_identities", "source_sha256", "matrix_rows", "attempt_ordinal", "retry_or_redraw_authorized", "adjudication_performed", "candidate_execution_performed", "promotion_effect", "execution_authority_identity"],
+  "properties": {
+    "schema": {"const": "pastila-production-core-candidate-execution-authority"},
+    "schema_version": {"const": 2},
+    "status": {"const": "PASS_OFFLINE_EXECUTION_AUTHORITY_ZERO_ATTEMPTS"},
+    "authority_identities": {
+      "type": "object", "additionalProperties": false,
+      "required": ["qualification_generation_identity", "qualification_identity", "request_manifest_identity", "candidate_object_manifest_identity"],
+      "properties": {
+        "qualification_generation_identity": {"const": "7b4900523953253391e8753d39ae8253e6652055cf5c99612a007eaadba552f9"},
+        "qualification_identity": {"const": "281f5cfd3e5627e582e099129ad8b023052b694e5834f6b6843b13368abbc314"},
+        "request_manifest_identity": {"const": "f3b0e0d11c5b73fba39ce21f5daa040e788a2ea09d455389bf990ee8264b4d03"},
+        "candidate_object_manifest_identity": {"const": "94ce74f28df6027c404800787e7ba39c16a35f688094c2bb96220d1592ad72ce"}
+      }
+    },
+    "source_sha256": {
+      "type": "object", "additionalProperties": false,
+      "required": ["docs/schemas/production-core-candidate-execution-authority-v3.schema.json", "docs/schemas/production-core-candidate-execution-evidence-v2.schema.json", "scripts/execute_production_core_candidate_qualification_v3.py", "scripts/launch_production_core_candidate_qualification_v3.py", "scripts/resolve_production_core_object_authority_v2.sh", "scripts/run_production_core_candidate_qualification_v3.sh", "src/pastila_scout/production_core_candidate_execution_authority_v3.py", "src/pastila_scout/production_core_candidate_qualification_runner_v3.py", "src/pastila_scout/production_core_semantic_authority_v2.py", "tests/test_production_core_successor_execution_authority_v3.py"],
+      "properties": {
+        "docs/schemas/production-core-candidate-execution-authority-v3.schema.json": {"$ref": "#/$defs/sha256"},
+        "docs/schemas/production-core-candidate-execution-evidence-v2.schema.json": {"$ref": "#/$defs/sha256"},
+        "scripts/execute_production_core_candidate_qualification_v3.py": {"$ref": "#/$defs/sha256"},
+        "scripts/launch_production_core_candidate_qualification_v3.py": {"$ref": "#/$defs/sha256"},
+        "scripts/resolve_production_core_object_authority_v2.sh": {"$ref": "#/$defs/sha256"},
+        "scripts/run_production_core_candidate_qualification_v3.sh": {"$ref": "#/$defs/sha256"},
+        "src/pastila_scout/production_core_candidate_execution_authority_v3.py": {"$ref": "#/$defs/sha256"},
+        "src/pastila_scout/production_core_candidate_qualification_runner_v3.py": {"$ref": "#/$defs/sha256"},
+        "src/pastila_scout/production_core_semantic_authority_v2.py": {"const": "af079fb50f281e09433dba299feaf9c2354bb4946df8e476658f71cc228d4c41"},
+        "tests/test_production_core_successor_execution_authority_v3.py": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "matrix_rows": {"const": 2400}, "attempt_ordinal": {"const": 1},
+    "retry_or_redraw_authorized": {"const": false}, "adjudication_performed": {"const": false},
+    "candidate_execution_performed": {"const": false}, "promotion_effect": {"const": false},
+    "execution_authority_identity": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {"sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+}

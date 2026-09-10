@@ -1,0 +1,30 @@
+{
+  "schema": "pastila-production-core-candidate-generation-qualification",
+  "schema_version": 2,
+  "status": "PASS_SUCCESSOR_OFFLINE_PREINFERENCE_ZERO_CANDIDATE_EXECUTION",
+  "qualification_generation_identity": "7b4900523953253391e8753d39ae8253e6652055cf5c99612a007eaadba552f9",
+  "request_manifest_identity": "f3b0e0d11c5b73fba39ce21f5daa040e788a2ea09d455389bf990ee8264b4d03",
+  "candidate_object_manifest_identity": "94ce74f28df6027c404800787e7ba39c16a35f688094c2bb96220d1592ad72ce",
+  "input_envelope_receipt_identities": {
+    "A": "5b5dabba11b4a99ec5fa835d12ecabff2c831765b011799ca5af59bcec676995",
+    "B": "9c2974e0bf4b325d8156b2085f2bce3b6ed1ebf2575155edc46e93b48a5d0476"
+  },
+  "candidate_visible_mapping": "COMPLETE_1_TO_1",
+  "request_count": 200,
+  "rendering_count": 400,
+  "candidate_neutral": true,
+  "mechanism_source_sha256": {
+    "src/pastila_scout/production_core_semantic_authority_v2.py": "af079fb50f281e09433dba299feaf9c2354bb4946df8e476658f71cc228d4c41",
+    "src/pastila_scout/production_core_candidate_qualification_generation_v2.py": "006ba690ed9941b2e12ca7636b75bd60975bc3801ec71d0ce4956d7dbfc41b3b",
+    "scripts/materialize_production_core_candidate_qualification_v2.py": "008387a2458a449e08b7385e4524b160c1ec88c37e2ba6bf9328e9abf0982d24",
+    "scripts/probe_production_core_candidate_prompt_input_envelope_v2.py": "b5afad95b2c91e224aaa329fac6dfc20983be8b09b42ddf6ca10b43c74783ccc",
+    "scripts/probe_production_core_candidate_prompt_input_envelope_v2.sh": "bcf0e5babf35d3533bd3352630580b1a12eb7e8db3148cce4e348c1b4aa872fb",
+    "tests/test_production_core_candidate_qualification_generation_v2.py": "c2ba613ed8498e66c372e7825fe4ccce843471a97308a5050b59c2ee03956966"
+  },
+  "candidate_execution_performed": false,
+  "network_activity": false,
+  "promotion_effect": false,
+  "qualification_attempt_consumed": false,
+  "adjudication_performed": false,
+  "qualification_identity": "281f5cfd3e5627e582e099129ad8b023052b694e5834f6b6843b13368abbc314"
+}
