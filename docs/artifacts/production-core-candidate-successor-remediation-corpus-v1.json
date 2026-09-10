@@ -1,0 +1,14 @@
+{
+  "schema": "pastila-production-core-candidate-successor-remediation-corpus",
+  "schema_version": 1,
+  "status": "FROZEN_HOLDOUT_ISOLATED_RAW_JSON_TARGETS",
+  "predecessor_terminal_disposition_identity": "acd5b874de1a3b9c638194836d94f6f7b569781c2b63f778b04c8cb44871084f",
+  "example_count": 240,
+  "corpus_sha256": "bbfc3548f143d5ebf7c735e67aa3b33fbbe750c71eb1c7c77005e941a0293ac1",
+  "qualification_or_holdout_examples_used": 0,
+  "consumed_attempt_outputs_used": 0,
+  "target_markdown_fence_count": 0,
+  "candidate_execution_performed": false,
+  "promotion_effect": false,
+  "corpus_identity": "66157251808a1c0dce73d3d63efb7270cb51d3751d842e72d3cac7f61ca54a27"
+}

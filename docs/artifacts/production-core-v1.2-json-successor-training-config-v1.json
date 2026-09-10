@@ -1,0 +1,31 @@
+{
+  "schema": "pastila-production-core-candidate-successor-training-config",
+  "schema_version": 1,
+  "status": "FROZEN_PRETRAINING_ZERO_EXECUTION",
+  "candidate": "pastila-editor-core-v1.2-json-successor",
+  "predecessor_adapter_manifest_sha256": "22b5a7bde7194c66d895b9acab5791a8d8573df67f93704eab933666df7978a2",
+  "base_model_manifest_sha256": "f5a9327e40390c7f0cf93962d75abbbc5ae8da1fac48e1274092ac52cf88bf39",
+  "remediation_corpus_identity": "66157251808a1c0dce73d3d63efb7270cb51d3751d842e72d3cac7f61ca54a27",
+  "objective": "ASSISTANT_ONLY_NEXT_TOKEN_CROSS_ENTROPY_RAW_JSON_EOF",
+  "seed": 314159,
+  "epochs": 3,
+  "learning_rate": "0.00005",
+  "warmup_ratio": "0.05",
+  "weight_decay": "0.0",
+  "gradient_accumulation_steps": 8,
+  "micro_batch_size": 1,
+  "max_sequence_tokens": 1924,
+  "precision": "BF16",
+  "optimizer": "PAGED_ADAMW_8BIT",
+  "lora": {
+    "r": 16,
+    "alpha": 32,
+    "dropout": "0.05",
+    "continue_from_predecessor": true
+  },
+  "network_activity": false,
+  "candidate_execution_performed": false,
+  "qualification_attempt_consumed": false,
+  "promotion_effect": false,
+  "training_config_identity": "68102625df0957cc154e0b688247bcddba1abb1c06945b25b540f74342896997"
+}
