@@ -1,0 +1,142 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "request_identity": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "inventory_row": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1, "pattern": "^(?!/)(?!.*(?:^|/)\\.{1,2}(?:/|$))(?!.*\\\\).+$"},
+        "sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "observed_object": {
+      "type": "object", "additionalProperties": false,
+      "required": ["role", "kind", "expected_content_identity", "physical_identity", "content_identity"],
+      "properties": {
+        "role": {"enum": ["rootfs", "base_model", "adapter_v1_1", "adapter_v1_2"]},
+        "kind": {"enum": ["file", "flat-dir"]},
+        "expected_content_identity": {"$ref": "#/$defs/sha256"},
+        "physical_identity": {"type": "string", "minLength": 1},
+        "content_identity": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "materialization": {
+      "type": "object", "additionalProperties": false,
+      "required": ["schema", "materialization", "objects", "materialization_provenance_identity"],
+      "properties": {
+        "schema": {"const": "pastila-production-core-observed-materialization-provenance-v2"},
+        "materialization": {"enum": ["A", "B"]},
+        "objects": {"type": "array", "minItems": 4, "maxItems": 4, "items": {"$ref": "#/$defs/observed_object"}},
+        "materialization_provenance_identity": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "preflight": {
+      "type": "object", "additionalProperties": false,
+      "required": ["schema", "schema_version", "execution_authority_identity", "qualification_generation_identity", "request_manifest_identity", "candidate_object_manifest_identity", "qualification_identity", "source_sha256", "system_prompt_sha256", "unicode_authority_sha256", "alias_secret_commitment", "alias_secret_sha256", "observed_materializations", "batch_count", "matrix_rows", "attempt_consumed", "candidate_execution_performed", "preflight_identity"],
+      "properties": {
+        "schema": {"const": "pastila-production-core-comparative-execution-preflight-v2"},
+        "schema_version": {"const": 2},
+        "execution_authority_identity": {"$ref": "#/$defs/sha256"},
+        "qualification_generation_identity": {"const": "ccb426a8dd5f062794056a164fe815ab59af45db6166a1340853ead42a55e528"},
+        "request_manifest_identity": {"const": "f3b0e0d11c5b73fba39ce21f5daa040e788a2ea09d455389bf990ee8264b4d03"},
+        "candidate_object_manifest_identity": {"const": "e9645372c95f00459fc53132289ecc61af33f3ebb167b859ba7223acde161760"},
+        "qualification_identity": {"const": "535be0b80908bb6c2226996973d30f5ebb3413da80b9d78b7c71a08843c6d81a"},
+        "source_sha256": {"type": "object", "minProperties": 10, "maxProperties": 10, "additionalProperties": {"$ref": "#/$defs/sha256"}},
+        "system_prompt_sha256": {"type": "object", "minProperties": 2, "maxProperties": 2, "additionalProperties": {"$ref": "#/$defs/sha256"}},
+        "unicode_authority_sha256": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"$ref": "#/$defs/sha256"}},
+        "alias_secret_commitment": {"const": "08ac67b1516e72080eacd49fd08dff6adbe1c0f80c2b0313bc24f4052955a27b"},
+        "alias_secret_sha256": {"const": "08ac67b1516e72080eacd49fd08dff6adbe1c0f80c2b0313bc24f4052955a27b"},
+        "observed_materializations": {"type": "object", "additionalProperties": false, "required": ["A", "B"], "properties": {"A": {"$ref": "#/$defs/materialization"}, "B": {"$ref": "#/$defs/materialization"}}},
+        "batch_count": {"const": 12}, "matrix_rows": {"const": 2400},
+        "attempt_consumed": {"const": false}, "candidate_execution_performed": {"const": false},
+        "preflight_identity": {"$ref": "#/$defs/sha256"}
+      }
+    }
+  },
+  "oneOf": [
+    {"$ref": "#/$defs/preflight"},
+    {
+      "type": "object", "additionalProperties": false,
+      "required": ["schema", "schema_version", "execution_authority_identity", "preflight", "preflight_identity", "qualification_generation_identity", "attempt_ordinal", "matrix_rows", "retry_or_redraw_authorized", "promotion_effect", "status", "attempt_identity"],
+      "properties": {
+        "schema": {"const": "pastila-production-core-comparative-execution-attempt-v2"},
+        "schema_version": {"const": 2},
+        "execution_authority_identity": {"$ref": "#/$defs/sha256"},
+        "preflight": {"$ref": "#/$defs/preflight"},
+        "preflight_identity": {"$ref": "#/$defs/sha256"},
+        "qualification_generation_identity": {"const": "ccb426a8dd5f062794056a164fe815ab59af45db6166a1340853ead42a55e528"},
+        "attempt_ordinal": {"const": 1}, "matrix_rows": {"const": 2400},
+        "retry_or_redraw_authorized": {"const": false}, "promotion_effect": {"const": false},
+        "status": {"const": "CONSUMED_BEFORE_EXECUTION"},
+        "attempt_identity": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema", "schema_version", "execution_authority_identity", "attempt_identity", "qualification_generation_identity", "global_ordinal", "materialization", "repetition", "candidate_alias", "case_id", "request_identity", "candidate_visible_request_sha256", "raw_output_sha256", "observation_identity", "structural_status", "retry_or_redraw", "adjudication_performed", "promotion_effect", "receipt_identity"],
+      "properties": {
+        "schema": {"const": "pastila-production-core-case-execution-receipt-v2"},
+        "schema_version": {"const": 2},
+        "execution_authority_identity": {"$ref": "#/$defs/sha256"},
+        "attempt_identity": {"$ref": "#/$defs/sha256"},
+        "qualification_generation_identity": {"const": "ccb426a8dd5f062794056a164fe815ab59af45db6166a1340853ead42a55e528"},
+        "global_ordinal": {"type": "integer", "minimum": 1, "maximum": 2400},
+        "materialization": {"enum": ["A", "B"]},
+        "repetition": {"enum": [1, 2, 3]},
+        "candidate_alias": {"enum": ["CANDIDATE-A", "CANDIDATE-B"]},
+        "case_id": {"type": "string", "minLength": 1},
+        "request_identity": {"$ref": "#/$defs/request_identity"},
+        "candidate_visible_request_sha256": {"$ref": "#/$defs/sha256"},
+        "raw_output_sha256": {"$ref": "#/$defs/sha256"},
+        "observation_identity": {"$ref": "#/$defs/sha256"},
+        "structural_status": {"enum": ["FAIL_CLOSED_INVALID_OUTPUT", "STRUCTURALLY_VALID_PENDING_ADJUDICATION"]},
+        "retry_or_redraw": {"const": false},
+        "adjudication_performed": {"const": false},
+        "promotion_effect": {"const": false},
+        "receipt_identity": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema", "schema_version", "attempt_identity", "qualification_generation_identity", "completed_rows", "failure_class", "failed_batch", "partial_artifact_count", "partial_artifact_root", "retry_or_redraw_authorized", "promotion_effect", "terminal_failure_identity"],
+      "properties": {
+        "schema": {"const": "pastila-production-core-comparative-terminal-failure-v2"},
+        "schema_version": {"const": 2},
+        "attempt_identity": {"$ref": "#/$defs/sha256"},
+        "qualification_generation_identity": {"const": "ccb426a8dd5f062794056a164fe815ab59af45db6166a1340853ead42a55e528"},
+        "completed_rows": {"type": "integer", "minimum": 0, "maximum": 2400},
+        "failure_class": {"type": "string", "minLength": 1},
+        "failed_batch": {"type": ["object", "null"]},
+        "partial_artifact_count": {"type": "integer", "minimum": 1},
+        "partial_artifact_root": {"$ref": "#/$defs/sha256"},
+        "retry_or_redraw_authorized": {"const": false},
+        "promotion_effect": {"const": false},
+        "terminal_failure_identity": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema", "schema_version", "attempt_identity", "execution_authority_identity", "qualification_generation_identity", "completed_rows", "artifact_inventory", "artifact_root", "retry_or_redraw", "adjudication_performed", "promotion_effect", "completion_identity"],
+      "properties": {
+        "schema": {"const": "pastila-production-core-comparative-execution-completion-v2"},
+        "schema_version": {"const": 2},
+        "attempt_identity": {"$ref": "#/$defs/sha256"},
+        "execution_authority_identity": {"$ref": "#/$defs/sha256"},
+        "qualification_generation_identity": {"const": "ccb426a8dd5f062794056a164fe815ab59af45db6166a1340853ead42a55e528"},
+        "completed_rows": {"const": 2400},
+        "artifact_inventory": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/inventory_row"}},
+        "artifact_root": {"$ref": "#/$defs/sha256"},
+        "retry_or_redraw": {"const": false},
+        "adjudication_performed": {"const": false},
+        "promotion_effect": {"const": false},
+        "completion_identity": {"$ref": "#/$defs/sha256"}
+      }
+    }
+  ]
+}

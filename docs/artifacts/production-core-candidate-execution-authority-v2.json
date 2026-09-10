@@ -1,0 +1,30 @@
+{
+  "schema": "pastila-production-core-candidate-execution-authority",
+  "schema_version": 2,
+  "status": "PASS_OFFLINE_EXECUTION_AUTHORITY_ZERO_ATTEMPTS",
+  "authority_identities": {
+    "qualification_generation_identity": "ccb426a8dd5f062794056a164fe815ab59af45db6166a1340853ead42a55e528",
+    "qualification_identity": "535be0b80908bb6c2226996973d30f5ebb3413da80b9d78b7c71a08843c6d81a",
+    "request_manifest_identity": "f3b0e0d11c5b73fba39ce21f5daa040e788a2ea09d455389bf990ee8264b4d03",
+    "candidate_object_manifest_identity": "e9645372c95f00459fc53132289ecc61af33f3ebb167b859ba7223acde161760"
+  },
+  "source_sha256": {
+    "docs/schemas/production-core-candidate-execution-authority-v2.schema.json": "181dd6d4d1eed0c394e5e1bc9d61ed789f550259f45aa50c1bc79a346e7d55c1",
+    "docs/schemas/production-core-candidate-execution-evidence-v2.schema.json": "55abaf7d8fc8a0ebd1b9b3db3d5e213b6e36534ff078a3687de80b6cc246cd33",
+    "scripts/execute_production_core_candidate_qualification_v2.py": "692fb99600e50997253692488034c86d416913d2cc9637aa914345fad891e87e",
+    "scripts/launch_production_core_candidate_qualification_v2.py": "ca2b8b6bc4cb64c77e9f90d77fbe610646bc5b27fb8a4d602287e52a4511cd37",
+    "scripts/resolve_production_core_object_authority_v2.sh": "4231ea3dae2f9399edeed8c2d5f96faa16c13714a594a1a381ea50ceb4cf0be0",
+    "scripts/run_production_core_candidate_qualification_v2.sh": "6ef3c943215e56dc70c9ab1d08fbe57c5ec1716943b1f6e051a502c23bcb3c4c",
+    "src/pastila_scout/production_core_candidate_execution_authority_v2.py": "8e012d04785135f3c924bab4c8a72ce0fc8559abc3702d7eb4c4d1225c302461",
+    "src/pastila_scout/production_core_candidate_qualification_runner_v2.py": "dfd7201b94aa80f3c672e915e1e70e42ae33e198a0ec000143dbb6bd268d756d",
+    "src/pastila_scout/production_core_semantic_authority_v2.py": "af079fb50f281e09433dba299feaf9c2354bb4946df8e476658f71cc228d4c41",
+    "tests/test_production_core_candidate_execution_authority_v2.py": "b7cb61ab4d00833b0b289db49976337ac087dd1fdaf1fa933d96e13db2888771"
+  },
+  "matrix_rows": 2400,
+  "attempt_ordinal": 1,
+  "retry_or_redraw_authorized": false,
+  "adjudication_performed": false,
+  "candidate_execution_performed": false,
+  "promotion_effect": false,
+  "execution_authority_identity": "1192708d5fb27a4d4a1da3c4fd6b4408acef72790b7db3b8b79287be9857efe4"
+}
