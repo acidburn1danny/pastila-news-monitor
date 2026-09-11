@@ -1,0 +1,38 @@
+{
+  "adjudication_performed": false,
+  "attempt_consumed_permanently": true,
+  "attempt_identity": "337bb8acc130cc02f77f83c7a026b9212c781ba06d11989e64ef11b334f6a5ca",
+  "attempt_ordinal": 1,
+  "attempt_relaunch_authorized": false,
+  "disposition_identity": "4a95de2298db2cd618cafd8b9e17797097fcc93af901f386fccb474c4e9e052a",
+  "evidence": {
+    "attempt_sha256": "e8ca01f7b4b213a64f3f1b708b8496ea6203e14ab6bc30b0e6c21861b49ff14d",
+    "partial_artifact_count": 5680,
+    "partial_artifact_root": "a37c02a3e21a0612b20d150af9f6b0c7958ac6a344bfa3573eee15c7d39eed72",
+    "terminal_failure_sha256": "59c311f73ad90d6ad3342b06c83d70693c5a744188e6182dd331be1613b7896c"
+  },
+  "execution_authority_identity": "2a8fb059d36efad540e86c7d232643683cc48bcbf8507a94d5607d0316561cb1",
+  "failed_batch": {
+    "candidate_alias": "CANDIDATE-B",
+    "materialization": "B",
+    "repetition": 2
+  },
+  "failure_class": "UNCAUGHT_AFTER_ATTEMPT_CONSUMPTION",
+  "finalized_rows": {
+    "completed": 1800,
+    "matrix": 2400
+  },
+  "partial_raw_outputs": {
+    "completed": 1914,
+    "matrix": 2400
+  },
+  "promotion_effect": false,
+  "qualification_generation_identity": "7b4900523953253391e8753d39ae8253e6652055cf5c99612a007eaadba552f9",
+  "retry_or_redraw": false,
+  "root_cause_determined": false,
+  "schema": "pastila-production-core-successor-terminal-disposition-v3",
+  "schema_version": 3,
+  "successor_requirement": "NEW_SUCCESSOR_LINEAGE_AND_NEW_EXECUTION_AUTHORITY",
+  "terminal_failure_identity": "d132b5c57e8ffc7344b70ae2881655b02abb7baebf3c916c6ae2259d361f9e89",
+  "terminal_state": "FAILURE"
+}

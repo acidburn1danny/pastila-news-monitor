@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schema_version", "terminal_state", "failure_class", "root_cause_determined", "execution_authority_identity", "qualification_generation_identity", "attempt_ordinal", "attempt_identity", "terminal_failure_identity", "attempt_consumed_permanently", "attempt_relaunch_authorized", "finalized_rows", "partial_raw_outputs", "failed_batch", "evidence", "retry_or_redraw", "adjudication_performed", "promotion_effect", "successor_requirement", "disposition_identity"],
+  "properties": {
+    "schema": {"const": "pastila-production-core-successor-terminal-disposition-v3"},
+    "schema_version": {"const": 3},
+    "terminal_state": {"const": "FAILURE"},
+    "failure_class": {"const": "UNCAUGHT_AFTER_ATTEMPT_CONSUMPTION"},
+    "root_cause_determined": {"const": false},
+    "execution_authority_identity": {"const": "2a8fb059d36efad540e86c7d232643683cc48bcbf8507a94d5607d0316561cb1"},
+    "qualification_generation_identity": {"const": "7b4900523953253391e8753d39ae8253e6652055cf5c99612a007eaadba552f9"},
+    "attempt_ordinal": {"const": 1},
+    "attempt_identity": {"const": "337bb8acc130cc02f77f83c7a026b9212c781ba06d11989e64ef11b334f6a5ca"},
+    "terminal_failure_identity": {"const": "d132b5c57e8ffc7344b70ae2881655b02abb7baebf3c916c6ae2259d361f9e89"},
+    "attempt_consumed_permanently": {"const": true},
+    "attempt_relaunch_authorized": {"const": false},
+    "finalized_rows": {"const": {"completed": 1800, "matrix": 2400}},
+    "partial_raw_outputs": {"const": {"completed": 1914, "matrix": 2400}},
+    "failed_batch": {"const": {"materialization": "B", "repetition": 2, "candidate_alias": "CANDIDATE-B"}},
+    "evidence": {"type": "object", "additionalProperties": false, "required": ["attempt_sha256", "terminal_failure_sha256", "partial_artifact_count", "partial_artifact_root"], "properties": {"attempt_sha256": {"$ref": "#/$defs/sha256"}, "terminal_failure_sha256": {"$ref": "#/$defs/sha256"}, "partial_artifact_count": {"const": 5680}, "partial_artifact_root": {"const": "a37c02a3e21a0612b20d150af9f6b0c7958ac6a344bfa3573eee15c7d39eed72"}}},
+    "retry_or_redraw": {"const": false},
+    "adjudication_performed": {"const": false},
+    "promotion_effect": {"const": false},
+    "successor_requirement": {"const": "NEW_SUCCESSOR_LINEAGE_AND_NEW_EXECUTION_AUTHORITY"},
+    "disposition_identity": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {"sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+}
