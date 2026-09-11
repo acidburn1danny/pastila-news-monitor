@@ -1,0 +1,43 @@
+{
+  "schema": "pastila-production-core-v1.1-successor-adapter-audit-receipt",
+  "schema_version": 5,
+  "status": "PASS_ZERO_QUALIFICATION_ATTEMPTS",
+  "branch": "successor/core-v2-v1-1-eos-remediation-v5",
+  "training_source_commit": "a140a612a7c80131064d2e44323345c5985ca613",
+  "gate_source_commit": "ac9b6b18272b4ec94902db6cd98aaef2e39169eb",
+  "training_runtime_authority_identity": "321a2f5d29bde8507214a891d6385a910888a8c528c1b1a9447ef7fcadbd741a",
+  "training_receipt_identity": "23e32f06ccd290750007a70dce88ab64c402325db2851b08a206a6a6131619d2",
+  "training": {
+    "mode": "FULL",
+    "optimizer": "PAGED_ADAMW_8BIT",
+    "optimizer_steps": 40,
+    "epochs": 1,
+    "final_loss": "0.00068188272416591644",
+    "compile_load_triton": true,
+    "backward_4bit": true,
+    "save_reload": true
+  },
+  "adapter_materialization_sha256": {
+    "A": "0b3b8c317b8bfbf73dd4c131d92f1bc768d5e638034a49cecdc76da2d4e07f4b",
+    "B": "0b3b8c317b8bfbf73dd4c131d92f1bc768d5e638034a49cecdc76da2d4e07f4b"
+  },
+  "adapter_materializations_byte_identical": true,
+  "development_sha256": "58590d6c63e71dd32149de73f77daf949c69183ee35fdb733d85b2915e5f3511",
+  "development_gate": {
+    "materialization_A_disposition_identity": "a8b418cafe653cf912a9b2e96a6598dc394409a47ab57a37f47ff13a7568d1c5",
+    "materialization_B_disposition_identity": "86e7e9e5b303e038616754a0ae7ed0851b464df53dee3dcf0f9c67c3958cba76",
+    "observation_rows_each": 48,
+    "cross_materialization_observation_mismatches": 0,
+    "terminal_eos_passed_each": 48,
+    "canonical_json_passed_each": 48,
+    "anti_repetition_passed_each": 48,
+    "exact_target_diagnostic_only_each": 33,
+    "status": "PASS"
+  },
+  "qualification_attempt_consumed": false,
+  "candidate_execution_performed": false,
+  "retry_or_redraw": false,
+  "adjudication_performed": false,
+  "promotion_effect": false,
+  "adapter_audit_identity": "7519871ebd5cc566a06a8c24f04976244cda9e0653e35464adc1ef8bd80b77a2"
+}
