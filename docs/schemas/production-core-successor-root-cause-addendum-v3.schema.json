@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schema_version", "historical_disposition_identity", "historical_disposition_reinterpreted", "attempt_ordinal", "attempt_identity", "terminal_failure_identity", "attempt_consumed_permanently", "attempt_relaunch_authorized", "execution_boundary_cause", "internal_generate_stall_cause", "failed_inference", "evidence_chain", "watchdog_exit_code", "evidence", "retry_or_redraw", "adjudication_performed", "promotion_effect", "addendum_identity"],
+  "properties": {
+    "schema": {"const": "pastila-production-core-successor-root-cause-addendum-v3"},
+    "schema_version": {"const": 3},
+    "historical_disposition_identity": {"const": "4a95de2298db2cd618cafd8b9e17797097fcc93af901f386fccb474c4e9e052a"},
+    "historical_disposition_reinterpreted": {"const": false},
+    "attempt_ordinal": {"const": 1},
+    "attempt_identity": {"const": "337bb8acc130cc02f77f83c7a026b9212c781ba06d11989e64ef11b334f6a5ca"},
+    "terminal_failure_identity": {"const": "d132b5c57e8ffc7344b70ae2881655b02abb7baebf3c916c6ae2259d361f9e89"},
+    "attempt_consumed_permanently": {"const": true},
+    "attempt_relaunch_authorized": {"const": false},
+    "execution_boundary_cause": {"const": "INFERENCE_WALL_TIME_EXCEEDED"},
+    "internal_generate_stall_cause": {"const": "UNDETERMINED"},
+    "failed_inference": {"const": {"materialization": "B", "repetition": 2, "candidate_alias": "CANDIDATE-B", "sequence": 115, "completed_before_inference": 114, "case_id": "pcq-unc-025", "request_identity": "sha256:edcb67dadf41d5d3211823d05cc2ab53119cf279dfdaa47c321dcd4134ec0492", "raw_output_absent": true, "observation_absent": true}},
+    "evidence_chain": {"const": ["GENERATE_HEARTBEAT_SEQUENCE_115_COMPLETED_114", "NO_CASE_COMPLETE_OR_DURABLE_OUTPUT_FOR_SEQUENCE_115", "SUPERVISOR_INFERENCE_WALL_TIME_EXCEEDED_600000000000_NS", "WATCHDOG_KILL_AND_EXIT_124", "OUTER_SUBPROCESS_CALLED_PROCESS_ERROR", "TERMINAL_FAILURE_UNCAUGHT_AFTER_ATTEMPT_CONSUMPTION"]},
+    "watchdog_exit_code": {"const": 124},
+    "evidence": {"type": "object", "additionalProperties": false, "required": ["historical_disposition_sha256", "terminal_failure_sha256", "supervisor_failure_sha256", "last_heartbeat_sha256", "failed_batch_sha256"], "properties": {"historical_disposition_sha256": {"$ref": "#/$defs/sha256"}, "terminal_failure_sha256": {"$ref": "#/$defs/sha256"}, "supervisor_failure_sha256": {"$ref": "#/$defs/sha256"}, "last_heartbeat_sha256": {"$ref": "#/$defs/sha256"}, "failed_batch_sha256": {"$ref": "#/$defs/sha256"}}},
+    "retry_or_redraw": {"const": false},
+    "adjudication_performed": {"const": false},
+    "promotion_effect": {"const": false},
+    "addendum_identity": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {"sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+}

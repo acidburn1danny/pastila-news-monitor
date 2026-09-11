@@ -1,0 +1,44 @@
+{
+  "addendum_identity": "5290e19dae6d775d03200629b98980823a43495da607cf952286d2a052ed7672",
+  "adjudication_performed": false,
+  "attempt_consumed_permanently": true,
+  "attempt_identity": "337bb8acc130cc02f77f83c7a026b9212c781ba06d11989e64ef11b334f6a5ca",
+  "attempt_ordinal": 1,
+  "attempt_relaunch_authorized": false,
+  "evidence": {
+    "failed_batch_sha256": "39e0fb7361cf8745f95ac424f076c9e62b6aa6dcf231c61bee55b60e7f5e0a8e",
+    "historical_disposition_sha256": "2589d7fadd42cc4cae3dbae27fbc969f8bc87af796d5a01cd401db385d0169cb",
+    "last_heartbeat_sha256": "62ab14477d2d4e597734528d00c4495977f904765ea2480fffb458f431abaa7a",
+    "supervisor_failure_sha256": "ea83c3c04bf2f72b6e98f5dfd6710061a06765d5e97cf622a48d09c4133d179f",
+    "terminal_failure_sha256": "59c311f73ad90d6ad3342b06c83d70693c5a744188e6182dd331be1613b7896c"
+  },
+  "evidence_chain": [
+    "GENERATE_HEARTBEAT_SEQUENCE_115_COMPLETED_114",
+    "NO_CASE_COMPLETE_OR_DURABLE_OUTPUT_FOR_SEQUENCE_115",
+    "SUPERVISOR_INFERENCE_WALL_TIME_EXCEEDED_600000000000_NS",
+    "WATCHDOG_KILL_AND_EXIT_124",
+    "OUTER_SUBPROCESS_CALLED_PROCESS_ERROR",
+    "TERMINAL_FAILURE_UNCAUGHT_AFTER_ATTEMPT_CONSUMPTION"
+  ],
+  "execution_boundary_cause": "INFERENCE_WALL_TIME_EXCEEDED",
+  "failed_inference": {
+    "candidate_alias": "CANDIDATE-B",
+    "case_id": "pcq-unc-025",
+    "completed_before_inference": 114,
+    "materialization": "B",
+    "observation_absent": true,
+    "raw_output_absent": true,
+    "repetition": 2,
+    "request_identity": "sha256:edcb67dadf41d5d3211823d05cc2ab53119cf279dfdaa47c321dcd4134ec0492",
+    "sequence": 115
+  },
+  "historical_disposition_identity": "4a95de2298db2cd618cafd8b9e17797097fcc93af901f386fccb474c4e9e052a",
+  "historical_disposition_reinterpreted": false,
+  "internal_generate_stall_cause": "UNDETERMINED",
+  "promotion_effect": false,
+  "retry_or_redraw": false,
+  "schema": "pastila-production-core-successor-root-cause-addendum-v3",
+  "schema_version": 3,
+  "terminal_failure_identity": "d132b5c57e8ffc7344b70ae2881655b02abb7baebf3c916c6ae2259d361f9e89",
+  "watchdog_exit_code": 124
+}
