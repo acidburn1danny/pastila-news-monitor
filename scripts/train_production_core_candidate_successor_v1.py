@@ -106,7 +106,8 @@ def main() -> int:
     if any(output.iterdir()):
         raise SystemExit("successor output must be empty")
     rows = [json.loads(line) for line in corpus.read_text("utf-8").splitlines()]
-    if len(rows) != 240:
+    expected_rows = 320 if config.get("schema_version") == 2 else 240
+    if len(rows) != expected_rows:
         raise SystemExit("remediation corpus cardinality mismatch")
 
     import bitsandbytes as bnb
