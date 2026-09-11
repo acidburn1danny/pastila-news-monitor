@@ -89,3 +89,10 @@ def test_executor_uses_atomic_staging_and_never_replays_accepted_checkpoint():
     assert '"production-core-successor-comparative-qualification-generation-v5.json"' in source
     assert '"production-core-successor-candidate-object-manifest-v5.json"' in source
     assert 'globals()["PINNED_ROOTFS_SHA256"]' in source
+
+
+def test_attempt_preflight_requires_exact_v6_source_closure():
+    source = (Path(__file__).resolve().parents[1] / "src/pastila_scout/production_core_candidate_execution_authority_v3.py").read_text("utf-8")
+    assert 'or set(sources) != {' in source
+    assert '"src/pastila_scout/production_core_checkpoint_resume_v6.py"' in source
+    assert '"tests/test_production_core_checkpoint_resume_v6.py"' in source
