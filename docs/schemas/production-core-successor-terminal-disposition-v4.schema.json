@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schema_version", "terminal_state", "failure_class", "execution_boundary_cause_determined", "internal_generate_stall_cause", "execution_authority_identity", "qualification_generation_identity", "attempt_ordinal", "attempt_identity", "terminal_failure_identity", "attempt_consumed_permanently", "attempt_relaunch_authorized", "finalized_rows", "partial_raw_outputs", "failed_batch", "failed_inference", "watchdog_exit_code", "evidence", "retry_or_redraw", "adjudication_performed", "promotion_effect", "successor_requirement", "disposition_identity"],
+  "properties": {
+    "schema": {"const": "pastila-production-core-successor-terminal-disposition-v4"},
+    "schema_version": {"const": 4},
+    "terminal_state": {"const": "FAILURE"},
+    "failure_class": {"const": "INFERENCE_WALL_TIME_EXCEEDED"},
+    "execution_boundary_cause_determined": {"const": true},
+    "internal_generate_stall_cause": {"const": "UNDETERMINED"},
+    "execution_authority_identity": {"const": "1e13898e54a330b99f1717f6e104e6e92a8f60ced31b0b6c80f7b03594806700"},
+    "qualification_generation_identity": {"const": "7b4900523953253391e8753d39ae8253e6652055cf5c99612a007eaadba552f9"},
+    "attempt_ordinal": {"const": 1},
+    "attempt_identity": {"const": "0d5b83d2d4437a9f534d6e813dea491ebbedc51a6ee307760ecfef2d007095e1"},
+    "terminal_failure_identity": {"const": "3f30d18ba5f65f4e26e63423c90aa154f3d1aea0ea3db8fca4e4eef11e44f632"},
+    "attempt_consumed_permanently": {"const": true},
+    "attempt_relaunch_authorized": {"const": false},
+    "finalized_rows": {"const": {"completed": 600, "matrix": 2400}},
+    "partial_raw_outputs": {"const": {"completed": 612, "matrix": 2400}},
+    "failed_batch": {"const": {"materialization": "A", "repetition": 2, "candidate_alias": "CANDIDATE-B"}},
+    "failed_inference": {"const": {"sequence": 13, "completed_before_inference": 12, "case_id": "pcq-unc-018", "request_identity": "sha256:db9e692a353383f1726786a75ec313343022f8f4b0342216f8aaf030508cedf8", "input_tokens": 1639, "raw_output_absent": true, "observation_absent": true}},
+    "watchdog_exit_code": {"const": 124},
+    "evidence": {"type": "object", "additionalProperties": false, "required": ["authority_sha256", "attempt_sha256", "terminal_failure_sha256", "supervisor_failure_sha256", "last_heartbeat_sha256", "failed_inference_started_sha256", "partial_artifact_count", "partial_artifact_root"], "properties": {"authority_sha256": {"$ref": "#/$defs/sha256"}, "attempt_sha256": {"$ref": "#/$defs/sha256"}, "terminal_failure_sha256": {"$ref": "#/$defs/sha256"}, "supervisor_failure_sha256": {"$ref": "#/$defs/sha256"}, "last_heartbeat_sha256": {"$ref": "#/$defs/sha256"}, "failed_inference_started_sha256": {"$ref": "#/$defs/sha256"}, "partial_artifact_count": {"const": 3071}, "partial_artifact_root": {"const": "adc8b2823cb15ff42257a63d4d073d837fe5c218b576adb7dfc121ff998e04e8"}}},
+    "retry_or_redraw": {"const": false},
+    "adjudication_performed": {"const": false},
+    "promotion_effect": {"const": false},
+    "successor_requirement": {"const": "NEW_SUCCESSOR_LINEAGE_AND_NEW_EXECUTION_AUTHORITY"},
+    "disposition_identity": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {"sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+}

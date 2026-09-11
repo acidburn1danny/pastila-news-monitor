@@ -1,0 +1,53 @@
+{
+  "adjudication_performed": false,
+  "attempt_consumed_permanently": true,
+  "attempt_identity": "0d5b83d2d4437a9f534d6e813dea491ebbedc51a6ee307760ecfef2d007095e1",
+  "attempt_ordinal": 1,
+  "attempt_relaunch_authorized": false,
+  "disposition_identity": "33889a38d71976313b87512e47a8c279830af083b9ff98a17af42bda5fea2ce7",
+  "evidence": {
+    "attempt_sha256": "bf1cf922ddb75ff0c08adbca7352a7037772f893f751570a42b55a5b1c5c5898",
+    "authority_sha256": "b2975d36f2bff7904b90fb91697d87304c609b238efae819c1d252d1ba38b1ce",
+    "failed_inference_started_sha256": "8937975c1d2c0bad59132df31de7999c076530d1c3ede059ad55bbcdb60ec5cb",
+    "last_heartbeat_sha256": "893d8e8848d4c4862fdde1619e056a0565a3657195c1ac70ec9244304746f950",
+    "partial_artifact_count": 3071,
+    "partial_artifact_root": "adc8b2823cb15ff42257a63d4d073d837fe5c218b576adb7dfc121ff998e04e8",
+    "supervisor_failure_sha256": "1cafa977c49f5ca834f7d73d45e2c94a208551d0f9a7917cc727c1ca03c799bc",
+    "terminal_failure_sha256": "67ef4906bcc587d27b2bd37cc6a444b521c52d0dafdf3a7ed8c41ce721e1caab"
+  },
+  "execution_authority_identity": "1e13898e54a330b99f1717f6e104e6e92a8f60ced31b0b6c80f7b03594806700",
+  "execution_boundary_cause_determined": true,
+  "failed_batch": {
+    "candidate_alias": "CANDIDATE-B",
+    "materialization": "A",
+    "repetition": 2
+  },
+  "failed_inference": {
+    "case_id": "pcq-unc-018",
+    "completed_before_inference": 12,
+    "input_tokens": 1639,
+    "observation_absent": true,
+    "raw_output_absent": true,
+    "request_identity": "sha256:db9e692a353383f1726786a75ec313343022f8f4b0342216f8aaf030508cedf8",
+    "sequence": 13
+  },
+  "failure_class": "INFERENCE_WALL_TIME_EXCEEDED",
+  "finalized_rows": {
+    "completed": 600,
+    "matrix": 2400
+  },
+  "internal_generate_stall_cause": "UNDETERMINED",
+  "partial_raw_outputs": {
+    "completed": 612,
+    "matrix": 2400
+  },
+  "promotion_effect": false,
+  "qualification_generation_identity": "7b4900523953253391e8753d39ae8253e6652055cf5c99612a007eaadba552f9",
+  "retry_or_redraw": false,
+  "schema": "pastila-production-core-successor-terminal-disposition-v4",
+  "schema_version": 4,
+  "successor_requirement": "NEW_SUCCESSOR_LINEAGE_AND_NEW_EXECUTION_AUTHORITY",
+  "terminal_failure_identity": "3f30d18ba5f65f4e26e63423c90aa154f3d1aea0ea3db8fca4e4eef11e44f632",
+  "terminal_state": "FAILURE",
+  "watchdog_exit_code": 124
+}
