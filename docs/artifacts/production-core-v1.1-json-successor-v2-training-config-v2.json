@@ -1,0 +1,31 @@
+{
+  "schema": "pastila-production-core-candidate-successor-training-config",
+  "schema_version": 2,
+  "status": "FROZEN_PRETRAINING_ZERO_EXECUTION",
+  "candidate": "pastila-editor-core-v1.1-json-successor-v2",
+  "predecessor_adapter_manifest_sha256": "16d6384355abfeff9a2c35cfa9866c604f8fd9703c19dcfbefcfdbb7fdb7dcf3",
+  "base_model_manifest_sha256": "f5a9327e40390c7f0cf93962d75abbbc5ae8da1fac48e1274092ac52cf88bf39",
+  "remediation_corpus_identity": "c07342e4810d7e7e767d5e263b4b1e231b3b5deb4811cdcc1cb7492ab99612c4",
+  "objective": "ASSISTANT_ONLY_NEXT_TOKEN_CROSS_ENTROPY_EXPLICIT_EOS",
+  "seed": 271828,
+  "epochs": 1,
+  "learning_rate": "0.00001",
+  "weight_decay": "0.0",
+  "gradient_accumulation_steps": 8,
+  "micro_batch_size": 1,
+  "max_sequence_tokens": 1924,
+  "precision": "BF16",
+  "optimizer": "PAGED_ADAMW_8BIT",
+  "post_training_eligibility_gate": {
+    "examples": 48,
+    "require_terminal_eos": true,
+    "require_canonical_json": true,
+    "max_repeated_ngram": 3,
+    "required_before_candidate_manifest": true
+  },
+  "network_activity": false,
+  "candidate_execution_performed": false,
+  "qualification_attempt_consumed": false,
+  "promotion_effect": false,
+  "training_config_identity": "82eb25e7c9766e117a3784ea1c441d689b8a05b74fd9368d0749a639f7e5cfad"
+}

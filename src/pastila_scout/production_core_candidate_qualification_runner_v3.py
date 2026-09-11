@@ -148,6 +148,8 @@ def main() -> int:
         AutoModelForImageTextToText,
         AutoTokenizer,
         BitsAndBytesConfig,
+        StoppingCriteria,
+        StoppingCriteriaList,
     )
 
     versions = {
@@ -168,6 +170,22 @@ def main() -> int:
     )
     if tokenizer.pad_token_id is None:
         tokenizer.pad_token = tokenizer.eos_token
+
+    class OutputByteCeiling(StoppingCriteria):
+        """Stop once a response cannot satisfy the frozen UTF-8 byte envelope."""
+
+        def __init__(self, prompt_tokens: int) -> None:
+            self.prompt_tokens = prompt_tokens
+            self.exceeded = False
+
+        def __call__(self, input_ids, scores, **kwargs):
+            response = input_ids[0, self.prompt_tokens :]
+            if response.shape[0] % 32:
+                return False
+            response = response.detach().cpu()
+            size = len(tokenizer.decode(response, skip_special_tokens=True).encode("utf-8"))
+            self.exceeded = size > 6268
+            return self.exceeded
     configuration = BitsAndBytesConfig(
         load_in_4bit=True,
         bnb_4bit_quant_type="nf4",
@@ -245,6 +263,7 @@ def main() -> int:
             ).encode(),
         )
         _heartbeat("GENERATE", sequence, sequence - 1, case_id)
+        byte_ceiling = OutputByteCeiling(input_tokens)
         with torch.inference_mode():
             generated = loaded.generate(
                 **encoded,
@@ -254,12 +273,22 @@ def main() -> int:
                 max_new_tokens=MAX_OUTPUT,
                 eos_token_id=tokenizer.eos_token_id,
                 pad_token_id=tokenizer.pad_token_id,
+                stopping_criteria=StoppingCriteriaList([byte_ceiling]),
                 use_cache=True,
             )
         generation_ns = time.monotonic_ns() - started
         tokens = generated[0, input_tokens:].cpu()
         output = tokenizer.decode(tokens, skip_special_tokens=True).encode("utf-8")
         terminal_eos = bool(len(tokens) and int(tokens[-1]) == tokenizer.eos_token_id)
+        termination_reason = (
+            "TERMINAL_EOS"
+            if terminal_eos
+            else "OUTPUT_BYTE_CEILING_EXCEEDED"
+            if byte_ceiling.exceeded
+            else "MAX_NEW_TOKENS_EXHAUSTED"
+            if len(tokens) >= MAX_OUTPUT
+            else "GENERATION_STOPPED_WITHOUT_EOS"
+        )
         peak_rss = int(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss) * 1024
         fatal_resource_exceeded = (
             load_ns + generation_ns > MAX_WALL_NS or peak_rss > MAX_RSS
@@ -294,6 +323,7 @@ def main() -> int:
             "raw_output_sha256": _sha(output),
             "runtime_versions": versions,
             "terminal_eos": terminal_eos,
+            "termination_reason": termination_reason,
             "candidate_output_status": candidate_output_status,
         }
         observation = {
@@ -320,6 +350,7 @@ def main() -> int:
             "generation_wall_ns": generation_ns,
             "output_tokens": len(tokens),
             "terminal_eos": terminal_eos,
+            "termination_reason": termination_reason,
         }
         inference_complete = {
             **inference_complete_core,

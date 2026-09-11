@@ -182,6 +182,7 @@ def validate_inference_lifecycle(
             "generation_wall_ns",
             "output_tokens",
             "terminal_eos",
+            "termination_reason",
             "event_identity",
         )
         or started.get("schema") != "pastila-production-core-inference-lifecycle-event"
@@ -204,6 +205,8 @@ def validate_inference_lifecycle(
         or completed.get("generation_wall_ns") != observation.get("generation_wall_ns")
         or completed.get("output_tokens") != observation.get("output_tokens")
         or completed.get("terminal_eos") != observation.get("terminal_eos")
+        or completed.get("termination_reason")
+        != observation.get("termination_reason")
         or type(started.get("started_boottime_ns")) is not int
         or started["started_boottime_ns"] < 0
     ):

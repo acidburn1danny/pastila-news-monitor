@@ -1,0 +1,17 @@
+{
+  "schema": "pastila-production-core-v1.1-eos-remediation-corpus",
+  "schema_version": 2,
+  "status": "FROZEN_HOLDOUT_ISOLATED_PRETRAINING",
+  "v4_terminal_disposition_identity": "33889a38d71976313b87512e47a8c279830af083b9ff98a17af42bda5fea2ce7",
+  "train_examples": 320,
+  "development_examples": 48,
+  "train_sha256": "d87018809fde41a2bf23e0a98395d0258b757b683e2fdf11e678cf933dadbed5",
+  "development_sha256": "58590d6c63e71dd32149de73f77daf949c69183ee35fdb733d85b2915e5f3511",
+  "qualification_or_holdout_examples_used": 0,
+  "consumed_attempt_outputs_used": 0,
+  "eos_supervision_required": true,
+  "candidate_execution_performed": false,
+  "qualification_attempt_consumed": false,
+  "promotion_effect": false,
+  "corpus_identity": "c07342e4810d7e7e767d5e263b4b1e231b3b5deb4811cdcc1cb7492ab99612c4"
+}

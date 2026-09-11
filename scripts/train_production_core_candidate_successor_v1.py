@@ -183,6 +183,10 @@ def main() -> int:
                     messages, tokenize=True, add_generation_prompt=False
                 )
             )
+            if not tokens or tokens[-1] != tokenizer.eos_token_id:
+                raise SystemExit("training target must end with supervised EOS")
+            if tokenizer.eos_token_id in tokens[len(prefix) : -1]:
+                raise SystemExit("training target contains premature supervised EOS")
             if len(tokens) > int(config["max_sequence_tokens"]):
                 raise SystemExit("training sequence ceiling exceeded")
             input_ids = torch.tensor([tokens], device="cuda")

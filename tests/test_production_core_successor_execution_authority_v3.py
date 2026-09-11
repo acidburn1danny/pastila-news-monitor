@@ -137,6 +137,7 @@ def test_inference_lifecycle_is_content_addressed_and_cross_bound():
         "generation_wall_ns": 123,
         "output_tokens": 7,
         "terminal_eos": True,
+        "termination_reason": "TERMINAL_EOS",
     }
     started_core = {
         "schema": "pastila-production-core-inference-lifecycle-event",
@@ -162,6 +163,7 @@ def test_inference_lifecycle_is_content_addressed_and_cross_bound():
         "generation_wall_ns": 123,
         "output_tokens": 7,
         "terminal_eos": True,
+        "termination_reason": "TERMINAL_EOS",
     }
     completed = {**completed_core, "event_identity": module.identity(completed_core)}
     module.validate_inference_lifecycle(

@@ -506,6 +506,7 @@ def validate_observation(
         "raw_output_sha256",
         "runtime_versions",
         "terminal_eos",
+        "termination_reason",
         "candidate_output_status",
         "observation_identity",
     )
@@ -535,6 +536,13 @@ def validate_observation(
         or observation.get("raw_output_sha256") != hashlib.sha256(raw).hexdigest()
         or observation.get("runtime_versions") != RUNTIME_VERSIONS
         or type(observation.get("terminal_eos")) is not bool
+        or observation.get("termination_reason")
+        not in {
+            "TERMINAL_EOS",
+            "OUTPUT_BYTE_CEILING_EXCEEDED",
+            "MAX_NEW_TOKENS_EXHAUSTED",
+            "GENERATION_STOPPED_WITHOUT_EOS",
+        }
     ):
         raise ExecutionAuthorityError("runner observation closure mismatch")
     for key, maximum, positive in (
@@ -559,6 +567,17 @@ def validate_observation(
     )
     if observation.get("candidate_output_status") != expected_status:
         raise ExecutionAuthorityError("candidate output status mismatch")
+    expected_reason = (
+        "TERMINAL_EOS"
+        if observation["terminal_eos"] is True
+        else "OUTPUT_BYTE_CEILING_EXCEEDED"
+        if len(raw) > 6268
+        else "MAX_NEW_TOKENS_EXHAUSTED"
+        if observation["output_tokens"] == 6268
+        else "GENERATION_STOPPED_WITHOUT_EOS"
+    )
+    if observation.get("termination_reason") != expected_reason:
+        raise ExecutionAuthorityError("candidate termination reason mismatch")
     return expected_status
 
 
