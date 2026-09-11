@@ -13,8 +13,8 @@
   "source_sha256": {
     "docs/schemas/production-core-candidate-execution-authority-v6.schema.json": "24e4bd2cb0e4c0fa8ff9eee1cf61484aa1f70985a0fd8dcd52e60d6da975ff6a",
     "docs/schemas/production-core-candidate-execution-evidence-v2.schema.json": "55abaf7d8fc8a0ebd1b9b3db3d5e213b6e36534ff078a3687de80b6cc246cd33",
-    "scripts/execute_production_core_candidate_qualification_v3.py": "2e168614d66148eddc8577bb5cec2ec65b4e38e85ee6848a5962d7b12e3931f3",
-    "scripts/launch_production_core_candidate_qualification_v3.py": "f00b4edeef2621d6534d7cd10795b564164ce7d4ffcdd5162fb4f7b7710feeda",
+    "scripts/execute_production_core_candidate_qualification_v3.py": "5e873f291da0c861bf55355ad522b87dd06e276d17d9b290092aa3c8556ab9f7",
+    "scripts/launch_production_core_candidate_qualification_v3.py": "3f813988853c0cdc95e998649bc71b6d01eb6131e6b17fe8353812d2de906204",
     "scripts/resolve_production_core_object_authority_v2.sh": "4231ea3dae2f9399edeed8c2d5f96faa16c13714a594a1a381ea50ceb4cf0be0",
     "scripts/run_production_core_candidate_qualification_v3.sh": "74d57b5c89c32792fee22eb2ac5b3206008577a2becccaa318d0f0fc90878e43",
     "scripts/materialize_production_core_successor_execution_authority_v6.py": "881f24b064e3b3ab8fa14688169eb264baf881e9e8cbe2672438116ad07a0515",
@@ -23,7 +23,7 @@
     "src/pastila_scout/production_core_candidate_qualification_runner_v3.py": "2d211a17bb6d10bea87d30c296f23c5a9c791d82e764d93e6eb178777ead51fc",
     "src/pastila_scout/production_core_checkpoint_resume_v6.py": "cf8949f639292f1334df4c782764a0619d28cf4a377b33b8d7a66720bea206b0",
     "src/pastila_scout/production_core_semantic_authority_v2.py": "af079fb50f281e09433dba299feaf9c2354bb4946df8e476658f71cc228d4c41",
-    "tests/test_production_core_checkpoint_resume_v6.py": "bf01adefbb1f3f117be06ae218d7387ac4d2de45430c9bbf4f817c963ec66405",
+    "tests/test_production_core_checkpoint_resume_v6.py": "286b5903cf1f2fa04646079c04610059e4cbeec2eb5668eea88ca2aa003ca563",
     "tests/test_production_core_successor_execution_authority_v3.py": "671e0f0f44785e95d6106c4ba6ff4dd912bca6801f53882171dff877e63bb144"
   },
   "matrix_rows": 2400,
@@ -42,5 +42,5 @@
   "adjudication_performed": false,
   "candidate_execution_performed": false,
   "promotion_effect": false,
-  "execution_authority_identity": "892a9db5a651399a90cc66081b5a9ae14ef2657d7a0825ff80cd096cdba235b4"
+  "execution_authority_identity": "aecc023f1c2c5c18cb58979d31f4c08e1026cb80d20c1386a048f113398d1ddd"
 }

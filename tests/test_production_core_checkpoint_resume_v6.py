@@ -86,3 +86,6 @@ def test_executor_uses_atomic_staging_and_never_replays_accepted_checkpoint():
     assert "RECOVERED_CONSUMED_ATTEMPT_WITHOUT_TERMINAL_RECORD" not in source
     assert 'attempt.get("preflight") != pre' in source
     assert 'raise SystemExit("resume preflight substitution")' in source
+    assert '"production-core-successor-comparative-qualification-generation-v5.json"' in source
+    assert '"production-core-successor-candidate-object-manifest-v5.json"' in source
+    assert 'globals()["PINNED_ROOTFS_SHA256"]' in source

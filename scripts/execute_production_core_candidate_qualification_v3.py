@@ -61,10 +61,10 @@ RUNNER = (
 )
 LAUNCHER = ROOT / "scripts" / "run_production_core_candidate_qualification_v3.sh"
 NAMES = (
-    "production-core-successor-comparative-qualification-generation-v3.json",
+    "production-core-successor-comparative-qualification-generation-v5.json",
     "production-core-candidate-request-manifest-v2.json",
-    "production-core-successor-candidate-object-manifest-v3.json",
-    "production-core-successor-candidate-generation-qualification-v3.json",
+    "production-core-successor-candidate-object-manifest-v5.json",
+    "production-core-successor-candidate-generation-qualification-v5.json",
 )
 PROMPTS = {
     "pastila-editor-core-v1.1-json-successor-v2": ROOT
@@ -419,7 +419,7 @@ def main():
         ):
             raise SystemExit("adapter resolution rejected")
         checks = [
-            ("rootfs", str(local["rootfs_tar"]), "file", candidates["rootfs_sha256"]),
+            ("rootfs", str(local["rootfs_tar"]), "file", globals()["PINNED_ROOTFS_SHA256"]),
             (
                 "base_model",
                 str(local["model"]),
@@ -443,7 +443,7 @@ def main():
         for role, path, kind, expected in checks:
             observed = object_authority(path, kind, helper)
             if observed["content_identity"] != expected:
-                raise SystemExit("content-addressed object mismatch")
+                raise SystemExit(f"content-addressed object mismatch: {label}/{role}")
             ids.append(observed["physical_identity"])
             observed_objects.append(
                 {
@@ -643,7 +643,7 @@ def main():
             expected = {
                 "qualification_generation_identity": GENERATION_IDENTITY,
                 "candidate": candidate,
-                "rootfs_sha256": candidates["rootfs_sha256"],
+                "rootfs_sha256": globals()["PINNED_ROOTFS_SHA256"],
                 "base_manifest_sha256": candidates["base_model_manifest_sha256"],
                 "adapter_manifest_sha256": candidates["adapter_manifest_sha256"][
                     candidate

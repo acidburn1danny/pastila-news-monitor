@@ -22,7 +22,7 @@ CORE = (
 SEMANTIC = ROOT / "src" / "pastila_scout" / "production_core_semantic_authority_v2.py"
 CHECKPOINT = ROOT / "src" / "pastila_scout" / "production_core_checkpoint_resume_v6.py"
 ART = ROOT / "docs" / "artifacts"
-EXECUTOR_SHA = "2e168614d66148eddc8577bb5cec2ec65b4e38e85ee6848a5962d7b12e3931f3"
+EXECUTOR_SHA = "5e873f291da0c861bf55355ad522b87dd06e276d17d9b290092aa3c8556ab9f7"
 CORE_SHA = "b07670c114d9dde584b15568ca4d0fb8d150baec043da08811255877fcf44d1a"
 CHECKPOINT_SHA = "cf8949f639292f1334df4c782764a0619d28cf4a377b33b8d7a66720bea206b0"
 SEMANTIC_SHA = "af079fb50f281e09433dba299feaf9c2354bb4946df8e476658f71cc228d4c41"
@@ -173,6 +173,7 @@ def main():
         "PINNED_ENTRY_EXECUTOR_SHA256": EXECUTOR_SHA,
         "PINNED_TERMINAL_VALIDATOR": terminal,
         "PINNED_EXECUTION_MECHANISM": mechanism,
+        "PINNED_ROOTFS_SHA256": module.EXPECTED_OBJECTS[0][2],
         "build_checkpoint_receipt": checkpoint.build_receipt,
         "validate_checkpoint_chain": checkpoint.validate_chain,
         "write_checkpoint_receipt": checkpoint.write_receipt,
