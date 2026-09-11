@@ -87,10 +87,10 @@ def test_execution_authority_schema_is_closed():
     schema = json.loads(
         (
             ART.parent
-            / "schemas/production-core-candidate-execution-authority-v6.schema.json"
+            / "schemas/production-core-candidate-execution-authority-v7.schema.json"
         ).read_bytes()
     )
-    value = load("production-core-candidate-execution-authority-v6.json")
+    value = load("production-core-candidate-execution-authority-v7.json")
     Draft202012Validator(schema).validate(value)
 
 

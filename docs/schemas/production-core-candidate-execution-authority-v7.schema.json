@@ -1,0 +1,14 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema","type":"object","additionalProperties":false,
+  "required":["schema","schema_version","status","bound_source_commit","predecessor_terminal_failure_identity","authority_identities","source_sha256","matrix_rows","checkpoint_policy","attempt_ordinal","attempt_consumption_authorized","candidate_execution_authorized","retry_or_redraw_authorized","adjudication_performed","candidate_execution_performed","promotion_effect","execution_authority_identity"],
+  "properties":{
+    "schema":{"const":"pastila-production-core-candidate-execution-authority"},"schema_version":{"const":7},
+    "status":{"const":"FROZEN_SUCCESSOR_V7_CHECKPOINT_ORDINAL_REPAIR_ZERO_ATTEMPTS"},
+    "bound_source_commit":{"const":"798d94247191fc46b3ff2d6bdc2fc5837ba5261a"},
+    "predecessor_terminal_failure_identity":{"const":"a70714f53e9249f20f3803c6998fcb99d477ae14940c67c914347a9f8c1a7c67"},
+    "authority_identities":{"type":"object"},"source_sha256":{"type":"object","minProperties":14,"additionalProperties":{"$ref":"#/$defs/sha256"}},
+    "matrix_rows":{"const":2400},
+    "checkpoint_policy":{"const":{"checkpoint_count":12,"rows_per_checkpoint":200,"ordinal_source":"VALIDATED_AUTHORITY_SCHEDULE","atomic_publish":true,"content_addressed_receipt":true,"same_attempt_resume_only":true,"recalculate_finalized_rows":false}},
+    "attempt_ordinal":{"const":1},"attempt_consumption_authorized":{"const":false},"candidate_execution_authorized":{"const":false},"retry_or_redraw_authorized":{"const":false},"adjudication_performed":{"const":false},"candidate_execution_performed":{"const":false},"promotion_effect":{"const":false},"execution_authority_identity":{"$ref":"#/$defs/sha256"}
+  },"$defs":{"sha256":{"type":"string","pattern":"^[0-9a-f]{64}$"}}
+}

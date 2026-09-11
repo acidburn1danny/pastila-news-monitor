@@ -16,6 +16,8 @@ def batches():
             "candidate_alias": "CANDIDATE-A" if n % 2 else "CANDIDATE-B",
             "batch_sha256": f"{n:064x}",
             "batch": [{"global_ordinal": (n - 1) * 200 + i} for i in range(1, 201)],
+            "first_global_ordinal": (n - 1) * 200 + 1,
+            "last_global_ordinal": n * 200,
         }
         for n in range(1, 13)
     ]
@@ -96,3 +98,12 @@ def test_attempt_preflight_requires_exact_v6_source_closure():
     assert 'or set(sources) != {' in source
     assert '"src/pastila_scout/production_core_checkpoint_resume_v6.py"' in source
     assert '"tests/test_production_core_checkpoint_resume_v6.py"' in source
+
+
+def test_authoritative_batch_ordinals_are_not_candidate_payload_fields():
+    source = (Path(__file__).resolve().parents[1] / "src/pastila_scout/production_core_candidate_execution_authority_v3.py").read_text("utf-8")
+    checkpoint = (Path(__file__).resolve().parents[1] / "src/pastila_scout/production_core_checkpoint_resume_v6.py").read_text("utf-8")
+    assert '"first_global_ordinal": selected[0]["global_ordinal"]' in source
+    assert '"last_global_ordinal": selected[-1]["global_ordinal"]' in source
+    assert 'batch["first_global_ordinal"]' in checkpoint
+    assert 'rows[0]["global_ordinal"]' not in checkpoint

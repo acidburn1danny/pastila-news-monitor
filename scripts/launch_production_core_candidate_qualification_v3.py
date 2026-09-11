@@ -23,8 +23,8 @@ SEMANTIC = ROOT / "src" / "pastila_scout" / "production_core_semantic_authority_
 CHECKPOINT = ROOT / "src" / "pastila_scout" / "production_core_checkpoint_resume_v6.py"
 ART = ROOT / "docs" / "artifacts"
 EXECUTOR_SHA = "5e873f291da0c861bf55355ad522b87dd06e276d17d9b290092aa3c8556ab9f7"
-CORE_SHA = "6ca1f496168e960507e85fcce81845e4f93a021ebd259ea112fe5687ea8b308e"
-CHECKPOINT_SHA = "cf8949f639292f1334df4c782764a0619d28cf4a377b33b8d7a66720bea206b0"
+CORE_SHA = "31a93c12294ded191852c16e62bc48bb15d3f047c5292024e623bb05edbe3c44"
+CHECKPOINT_SHA = "d33e08722a0f4759644cd6b1e902570ec430202bfe6a7c1f2c269fbc722b8d58"
 SEMANTIC_SHA = "af079fb50f281e09433dba299feaf9c2354bb4946df8e476658f71cc228d4c41"
 ARTIFACTS = {
     "production-core-successor-comparative-qualification-generation-v5.json": "6bd336c2e1ff733f02fd4d05065a8dbb5364eeebaf5dd10a7e6f8cdc32a4995d",
@@ -75,20 +75,20 @@ def main():
     checkpoint = types.ModuleType("pinned_checkpoint_resume_v6")
     checkpoint.__file__ = str(CHECKPOINT)
     exec(compile(checkpoint_source, str(CHECKPOINT), "exec"), checkpoint.__dict__, checkpoint.__dict__)
-    mechanism_raw = read(ART / "production-core-candidate-execution-authority-v6.json")
+    mechanism_raw = read(ART / "production-core-candidate-execution-authority-v7.json")
     mechanism = json.loads(mechanism_raw)
     core = dict(mechanism)
     recorded = core.pop("execution_authority_identity", None)
     sources = mechanism.get("source_sha256", {})
     authority = mechanism.get("authority_identities")
     expected_sources = {
-        "docs/schemas/production-core-candidate-execution-authority-v6.schema.json",
+        "docs/schemas/production-core-candidate-execution-authority-v7.schema.json",
         "docs/schemas/production-core-candidate-execution-evidence-v2.schema.json",
         "scripts/execute_production_core_candidate_qualification_v3.py",
         "scripts/launch_production_core_candidate_qualification_v3.py",
         "scripts/resolve_production_core_object_authority_v2.sh",
         "scripts/run_production_core_candidate_qualification_v3.sh",
-        "scripts/materialize_production_core_successor_execution_authority_v6.py",
+        "scripts/materialize_production_core_successor_execution_authority_v7.py",
         "scripts/smoke_production_core_checkpoint_resume_v6.py",
         "src/pastila_scout/production_core_candidate_execution_authority_v3.py",
         "src/pastila_scout/production_core_candidate_qualification_runner_v3.py",
@@ -111,6 +111,7 @@ def main():
             "schema_version",
             "status",
             "bound_source_commit",
+            "predecessor_terminal_failure_identity",
             "authority_identities",
             "source_sha256",
             "matrix_rows",
@@ -126,9 +127,9 @@ def main():
         )
         or mechanism.get("schema")
         != "pastila-production-core-candidate-execution-authority"
-        or mechanism.get("schema_version") != 6
+        or mechanism.get("schema_version") != 7
         or mechanism.get("status")
-        != "FROZEN_SUCCESSOR_V6_CHECKPOINT_RESUME_AUTHORITY_ZERO_ATTEMPTS_OWNER_EXECUTION_NOT_AUTHORIZED"
+        != "FROZEN_SUCCESSOR_V7_CHECKPOINT_ORDINAL_REPAIR_ZERO_ATTEMPTS"
         or authority != expected_authority
         or not isinstance(sources, dict)
         or set(sources) != expected_sources
@@ -136,6 +137,7 @@ def main():
         or mechanism.get("checkpoint_policy") != {
             "checkpoint_count": 12,
             "rows_per_checkpoint": 200,
+            "ordinal_source": "VALIDATED_AUTHORITY_SCHEDULE",
             "atomic_publish": True,
             "content_addressed_receipt": True,
             "same_attempt_resume_only": True,
@@ -143,7 +145,9 @@ def main():
         }
         or mechanism.get("attempt_ordinal") != 1
         or mechanism.get("bound_source_commit")
-        != "cb10ec438e2189067d1340dc9e357d4f2069f60b"
+        != "798d94247191fc46b3ff2d6bdc2fc5837ba5261a"
+        or mechanism.get("predecessor_terminal_failure_identity")
+        != "a70714f53e9249f20f3803c6998fcb99d477ae14940c67c914347a9f8c1a7c67"
         or mechanism.get("attempt_consumption_authorized") is not False
         or mechanism.get("candidate_execution_authorized") is not False
         or mechanism.get("retry_or_redraw_authorized") is not False

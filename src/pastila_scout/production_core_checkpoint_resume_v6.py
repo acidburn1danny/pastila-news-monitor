@@ -68,8 +68,8 @@ def build_receipt(
         "batch_sha256": batch["batch_sha256"],
         "batch_directory": directory_binding or directory.name,
         "finalized_rows": 200,
-        "first_global_ordinal": rows[0]["global_ordinal"],
-        "last_global_ordinal": rows[-1]["global_ordinal"],
+        "first_global_ordinal": batch["first_global_ordinal"],
+        "last_global_ordinal": batch["last_global_ordinal"],
         "artifact_closure": artifact_closure(directory),
         "retry_or_redraw": False,
         "same_attempt_resume_only": True,
@@ -135,8 +135,8 @@ def validate_chain(
             "previous_checkpoint_identity": previous,
             "batch_sha256": batch["batch_sha256"],
             "batch_coordinates": {key: batch[key] for key in ("materialization", "repetition", "candidate_alias")},
-            "first_global_ordinal": batch["batch"][0]["global_ordinal"],
-            "last_global_ordinal": batch["batch"][-1]["global_ordinal"],
+            "first_global_ordinal": batch["first_global_ordinal"],
+            "last_global_ordinal": batch["last_global_ordinal"],
         }
         if claimed != identity(core) or any(receipt.get(k) != v for k, v in expected.items()):
             raise CheckpointError("checkpoint identity/binding mismatch")

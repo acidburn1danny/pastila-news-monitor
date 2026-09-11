@@ -21,7 +21,8 @@ def batches():
     return [
         {"materialization": "A" if n <= 6 else "B", "repetition": ((n - 1) % 6) // 2 + 1,
          "candidate_alias": "CANDIDATE-A" if n % 2 else "CANDIDATE-B", "batch_sha256": f"{n:064x}",
-         "batch": [{"global_ordinal": (n - 1) * 200 + i, "synthetic": True} for i in range(1, 201)]}
+         "batch": [{"synthetic_row": i} for i in range(1, 201)],
+         "first_global_ordinal": (n - 1) * 200 + 1, "last_global_ordinal": n * 200}
         for n in range(1, 13)
     ]
 
