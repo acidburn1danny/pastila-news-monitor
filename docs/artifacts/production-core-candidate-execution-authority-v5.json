@@ -1,0 +1,37 @@
+{
+  "schema": "pastila-production-core-candidate-execution-authority",
+  "schema_version": 5,
+  "status": "FROZEN_SUCCESSOR_V5_EXECUTION_AUTHORITY_ZERO_ATTEMPTS_OWNER_EXECUTION_NOT_AUTHORIZED",
+  "bound_source_commit": "040122150a62cd08861dbec02f9085f7e521c784",
+  "authority_identities": {
+    "qualification_generation_identity": "6d388a99731e3d4a08fa2a629374c37dd97994806ac54ffe49ab9fb1b41d630d",
+    "qualification_identity": "4d2a4b7a42141668e907bd90cb96cf8d28dce518761b3c0dc0375954ea6575f4",
+    "request_manifest_identity": "f3b0e0d11c5b73fba39ce21f5daa040e788a2ea09d455389bf990ee8264b4d03",
+    "candidate_object_manifest_identity": "7bff8d58e56c1fd8e29f91f440b4f4c91ce4d79413d4186d895406f852c6abf9",
+    "candidate_audit_receipt_identity": "7519871ebd5cc566a06a8c24f04976244cda9e0653e35464adc1ef8bd80b77a2"
+  },
+  "source_sha256": {
+    "docs/schemas/production-core-candidate-execution-authority-v5.schema.json": "576cccb6e9eb9ec840cc86194b20ba93db0d714056837e79dd6087d1eee8ed3b",
+    "docs/schemas/production-core-candidate-execution-evidence-v2.schema.json": "55abaf7d8fc8a0ebd1b9b3db3d5e213b6e36534ff078a3687de80b6cc246cd33",
+    "scripts/materialize_production_core_successor_candidate_manifest_v5.py": "eefb80d5767292802cc671a87ffc9c343148396616f29c96965a9f94c819c2e3",
+    "scripts/materialize_production_core_successor_qualification_generation_v5.py": "cef9133de0372807afd85a37bfc89ddff3a4c902b510ff396a11f835707bd976",
+    "scripts/execute_production_core_candidate_qualification_v3.py": "a95fb47d559fd8609d1ea79e4f7318cd0b9f49075186a858c579cddd375705a7",
+    "scripts/launch_production_core_candidate_qualification_v3.py": "3db6ce98073700e7e872a1af3a2515d24ed82f83107ad0f9b0fcd72004fadda4",
+    "scripts/resolve_production_core_object_authority_v2.sh": "4231ea3dae2f9399edeed8c2d5f96faa16c13714a594a1a381ea50ceb4cf0be0",
+    "scripts/run_production_core_candidate_qualification_v3.sh": "74d57b5c89c32792fee22eb2ac5b3206008577a2becccaa318d0f0fc90878e43",
+    "src/pastila_scout/production_core_candidate_execution_authority_v3.py": "37f9bf16df723b2695bc254d6eef2bb5d7566ad18dcad49ff235625d607e55b8",
+    "src/pastila_scout/production_core_candidate_qualification_runner_v3.py": "2d211a17bb6d10bea87d30c296f23c5a9c791d82e764d93e6eb178777ead51fc",
+    "src/pastila_scout/production_core_semantic_authority_v2.py": "af079fb50f281e09433dba299feaf9c2354bb4946df8e476658f71cc228d4c41",
+    "tests/test_production_core_successor_execution_authority_v3.py": "2785caf68d201f7960704ece25f0845f519ca489adcd9f68cc8667dfe339503b",
+    "tests/test_production_core_successor_candidate_manifest_v5.py": "982ae9fe9f7248c6f2a89efad88f54da47817bb559c50954567a5a34cef801cf"
+  },
+  "matrix_rows": 2400,
+  "attempt_ordinal": 1,
+  "attempt_consumption_authorized": false,
+  "candidate_execution_authorized": false,
+  "retry_or_redraw_authorized": false,
+  "adjudication_performed": false,
+  "candidate_execution_performed": false,
+  "promotion_effect": false,
+  "execution_authority_identity": "02030b64996d6646541a826c6ef8db5debe28c01b2c8c721a2d654f9d9410040"
+}

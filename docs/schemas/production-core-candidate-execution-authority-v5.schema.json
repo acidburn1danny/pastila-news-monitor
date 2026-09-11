@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schema_version", "status", "bound_source_commit", "authority_identities", "source_sha256", "matrix_rows", "attempt_ordinal", "attempt_consumption_authorized", "candidate_execution_authorized", "retry_or_redraw_authorized", "adjudication_performed", "candidate_execution_performed", "promotion_effect", "execution_authority_identity"],
+  "properties": {
+    "schema": {"const": "pastila-production-core-candidate-execution-authority"},
+    "schema_version": {"const": 5},
+    "status": {"const": "FROZEN_SUCCESSOR_V5_EXECUTION_AUTHORITY_ZERO_ATTEMPTS_OWNER_EXECUTION_NOT_AUTHORIZED"},
+    "bound_source_commit": {"const": "040122150a62cd08861dbec02f9085f7e521c784"},
+    "authority_identities": {
+      "type": "object", "additionalProperties": false,
+      "required": ["qualification_generation_identity", "qualification_identity", "request_manifest_identity", "candidate_object_manifest_identity", "candidate_audit_receipt_identity"],
+      "properties": {
+        "qualification_generation_identity": {"const": "6d388a99731e3d4a08fa2a629374c37dd97994806ac54ffe49ab9fb1b41d630d"},
+        "qualification_identity": {"const": "4d2a4b7a42141668e907bd90cb96cf8d28dce518761b3c0dc0375954ea6575f4"},
+        "request_manifest_identity": {"const": "f3b0e0d11c5b73fba39ce21f5daa040e788a2ea09d455389bf990ee8264b4d03"},
+        "candidate_object_manifest_identity": {"const": "7bff8d58e56c1fd8e29f91f440b4f4c91ce4d79413d4186d895406f852c6abf9"},
+        "candidate_audit_receipt_identity": {"const": "7519871ebd5cc566a06a8c24f04976244cda9e0653e35464adc1ef8bd80b77a2"}
+      }
+    },
+    "source_sha256": {"type": "object", "minProperties": 10, "additionalProperties": {"$ref": "#/$defs/sha256"}},
+    "matrix_rows": {"const": 2400},
+    "attempt_ordinal": {"const": 1},
+    "attempt_consumption_authorized": {"const": false},
+    "candidate_execution_authorized": {"const": false},
+    "retry_or_redraw_authorized": {"const": false},
+    "adjudication_performed": {"const": false},
+    "candidate_execution_performed": {"const": false},
+    "promotion_effect": {"const": false},
+    "execution_authority_identity": {"$ref": "#/$defs/sha256"}
+  },
+  "$defs": {"sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+}

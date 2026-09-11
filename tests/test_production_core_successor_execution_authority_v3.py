@@ -35,11 +35,13 @@ def load(name):
 
 
 def test_successor_objects_and_training_provenance_are_closed():
-    value = load("production-core-successor-candidate-object-manifest-v3.json")
+    value = load("production-core-successor-candidate-object-manifest-v5.json")
     core = dict(value)
-    assert core.pop("manifest_identity") == identity(core)
+    claimed = core.pop("manifest_identity")
+    observed = hashlib.sha256(json.dumps(core, ensure_ascii=False, allow_nan=False, separators=(",", ":"), sort_keys=True).encode()).hexdigest()
+    assert claimed == observed
     assert set(value["adapter_manifest_sha256"]) == {
-        "pastila-editor-core-v1.1-json-successor",
+        "pastila-editor-core-v1.1-json-successor-v2",
         "pastila-editor-core-v1.2-json-successor",
     }
     assert len(value["training_receipt_identity"]) == 2
@@ -49,7 +51,7 @@ def test_successor_objects_and_training_provenance_are_closed():
 
 def test_successor_generation_preserves_matrix_and_schedule_without_redraw():
     old = load("production-core-comparative-qualification-generation-v2.json")
-    new = load("production-core-successor-comparative-qualification-generation-v3.json")
+    new = load("production-core-successor-comparative-qualification-generation-v5.json")
     core = dict(new)
     assert core.pop("qualification_generation_identity") == identity(core)
     assert new["schedule"] == old["schedule"]
@@ -62,7 +64,7 @@ def test_successor_generation_preserves_matrix_and_schedule_without_redraw():
 
 
 def test_successor_preflight_qualification_is_sealed_and_zero_effect():
-    value = load("production-core-successor-candidate-generation-qualification-v3.json")
+    value = load("production-core-successor-candidate-generation-qualification-v5.json")
     core = dict(value)
     assert core.pop("qualification_identity") == identity(core)
     assert value["candidate_execution_performed"] is False
@@ -73,10 +75,10 @@ def test_successor_preflight_qualification_is_sealed_and_zero_effect():
 
 def test_executable_preflight_accepts_only_the_successor_authorities():
     rows = validate_preflight(
-        load("production-core-successor-comparative-qualification-generation-v3.json"),
+        load("production-core-successor-comparative-qualification-generation-v5.json"),
         load("production-core-candidate-request-manifest-v2.json"),
-        load("production-core-successor-candidate-object-manifest-v3.json"),
-        load("production-core-successor-candidate-generation-qualification-v3.json"),
+        load("production-core-successor-candidate-object-manifest-v5.json"),
+        load("production-core-successor-candidate-generation-qualification-v5.json"),
     )
     assert len(rows) == 2400
 
@@ -85,10 +87,10 @@ def test_execution_authority_schema_is_closed():
     schema = json.loads(
         (
             ART.parent
-            / "schemas/production-core-candidate-execution-authority-v3.schema.json"
+            / "schemas/production-core-candidate-execution-authority-v5.schema.json"
         ).read_bytes()
     )
-    value = load("production-core-candidate-execution-authority-v3.json")
+    value = load("production-core-candidate-execution-authority-v5.json")
     Draft202012Validator(schema).validate(value)
 
 

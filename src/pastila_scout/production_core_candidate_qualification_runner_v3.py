@@ -27,19 +27,19 @@ EXPECTED_RUNTIME = {
     "transformers": "5.15.0",
 }
 EXPECTED_ADAPTERS = {
-    "pastila-editor-core-v1.1-json-successor": "16d6384355abfeff9a2c35cfa9866c604f8fd9703c19dcfbefcfdbb7fdb7dcf3",
+    "pastila-editor-core-v1.1-json-successor-v2": "0b3b8c317b8bfbf73dd4c131d92f1bc768d5e638034a49cecdc76da2d4e07f4b",
     "pastila-editor-core-v1.2-json-successor": "dccfee343ad1e305a0e193501b3a8adba11da01afd3d890ee38275dda82ac719",
 }
 EXPECTED_BASE = "f5a9327e40390c7f0cf93962d75abbbc5ae8da1fac48e1274092ac52cf88bf39"
 EXPECTED_PROMPTS = {
-    "pastila-editor-core-v1.1-json-successor": "9b25e239fc227252906fecab393a42a82eca4baa643ceed28177d3c5054e93fc",
+    "pastila-editor-core-v1.1-json-successor-v2": "9b25e239fc227252906fecab393a42a82eca4baa643ceed28177d3c5054e93fc",
     "pastila-editor-core-v1.2-json-successor": "111bc2734343c67aab4e1a04003199b98d4955fe9579e445cd7b5d6805a9da17",
 }
 MAX_INPUT = 1924
 MAX_OUTPUT = 6268
 MAX_WALL_NS = 600_000_000_000
 MAX_RSS = 16_106_127_360
-EXPECTED_GENERATION = "7b4900523953253391e8753d39ae8253e6652055cf5c99612a007eaadba552f9"
+EXPECTED_GENERATION = "6d388a99731e3d4a08fa2a629374c37dd97994806ac54ffe49ab9fb1b41d630d"
 
 
 def _sha(data: bytes) -> str:

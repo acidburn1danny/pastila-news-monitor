@@ -10,7 +10,7 @@ readonly CANDIDATE="$7" GENERATION_ID="$8"
 readonly EXPECTED_BATCH_SHA256="$9" EXPECTED_PROMPT_SHA256="${10}" EXPECTED_RUNNER_SHA256="${11}" RUNNER_INPUT="${12}"
 [[ ! -L "$RUNNER_INPUT" && -f "$RUNNER_INPUT" ]] || exit 3
 readonly RUNNER="$(realpath -e -- "$RUNNER_INPUT")"
-case "$CANDIDATE" in pastila-editor-core-v1.1-json-successor|pastila-editor-core-v1.2-json-successor) ;; *) exit 3;; esac
+case "$CANDIDATE" in pastila-editor-core-v1.1-json-successor-v2|pastila-editor-core-v1.2-json-successor) ;; *) exit 3;; esac
 [[ -f "$ROOTFS_TAR" && -d "$MODEL" && -d "$ADAPTER" && -f "$PROMPT" && -f "$BATCH" && -d "$OUTPUT" ]] || exit 3
 [[ -z "$(find "$OUTPUT" -mindepth 1 -print -quit)" && "$GENERATION_ID" =~ ^[0-9a-f]{64}$ && "$EXPECTED_BATCH_SHA256" =~ ^[0-9a-f]{64}$ && "$EXPECTED_PROMPT_SHA256" =~ ^[0-9a-f]{64}$ && "$EXPECTED_RUNNER_SHA256" =~ ^[0-9a-f]{64}$ ]] || exit 3
 [[ -f "$RUNNER" && ! -L "$RUNNER" ]] || exit 3

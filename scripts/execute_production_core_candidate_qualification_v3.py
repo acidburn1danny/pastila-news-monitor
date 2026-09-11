@@ -61,7 +61,7 @@ NAMES = (
     "production-core-successor-candidate-generation-qualification-v3.json",
 )
 PROMPTS = {
-    "pastila-editor-core-v1.1-json-successor": ROOT
+    "pastila-editor-core-v1.1-json-successor-v2": ROOT
     / ".experimental-0-3-editor-core-v1-architecture-prompt-first-training-plan-v1-evidence"
     / "PASTILAACIDA_EDITOR_CORE_SYSTEM_PROMPT_V1.txt",
     "pastila-editor-core-v1.2-json-successor": ROOT
@@ -69,7 +69,7 @@ PROMPTS = {
     / "PASTILAACIDA_EDITOR_CORE_SYSTEM_PROMPT_V1_2.txt",
 }
 PROMPT_SHA256 = {
-    "pastila-editor-core-v1.1-json-successor": "9b25e239fc227252906fecab393a42a82eca4baa643ceed28177d3c5054e93fc",
+    "pastila-editor-core-v1.1-json-successor-v2": "9b25e239fc227252906fecab393a42a82eca4baa643ceed28177d3c5054e93fc",
     "pastila-editor-core-v1.2-json-successor": "111bc2734343c67aab4e1a04003199b98d4955fe9579e445cd7b5d6805a9da17",
 }
 

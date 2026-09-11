@@ -6,15 +6,15 @@ import hashlib
 import json
 from collections.abc import Mapping, Sequence
 
-GENERATION_IDENTITY = "7b4900523953253391e8753d39ae8253e6652055cf5c99612a007eaadba552f9"
+GENERATION_IDENTITY = "6d388a99731e3d4a08fa2a629374c37dd97994806ac54ffe49ab9fb1b41d630d"
 QUALIFICATION_IDENTITY = (
-    "281f5cfd3e5627e582e099129ad8b023052b694e5834f6b6843b13368abbc314"
+    "4d2a4b7a42141668e907bd90cb96cf8d28dce518761b3c0dc0375954ea6575f4"
 )
 REQUEST_MANIFEST_IDENTITY = (
     "f3b0e0d11c5b73fba39ce21f5daa040e788a2ea09d455389bf990ee8264b4d03"
 )
 CANDIDATE_MANIFEST_IDENTITY = (
-    "94ce74f28df6027c404800787e7ba39c16a35f688094c2bb96220d1592ad72ce"
+    "7bff8d58e56c1fd8e29f91f440b4f4c91ce4d79413d4186d895406f852c6abf9"
 )
 MATRIX_ROWS = 2400
 ALIASES = ("CANDIDATE-A", "CANDIDATE-B")
@@ -30,7 +30,7 @@ UNICODE_AUTHORITY_SHA256 = (
     "4579c185bd45feac761de590d874aca71788e339b35179318a4c43412fd4f9e4",
 )
 ALIAS_SECRET_COMMITMENT = (
-    "61688e0fda61fb97f852639aeba7bec1b36852bb96aadc13ffe6e51a20503cf5"
+    "ee86684da529d0b1a75c172d5ed2c3ec65f21da5f350d53cb7dda500f4449dca"
 )
 EXPECTED_OBJECTS = (
     (
@@ -46,7 +46,7 @@ EXPECTED_OBJECTS = (
     (
         "adapter_v1_1",
         "flat-dir",
-        "16d6384355abfeff9a2c35cfa9866c604f8fd9703c19dcfbefcfdbb7fdb7dcf3",
+        "0b3b8c317b8bfbf73dd4c131d92f1bc768d5e638034a49cecdc76da2d4e07f4b",
     ),
     (
         "adapter_v1_2",
@@ -76,6 +76,16 @@ def _unseal(value: Mapping[str, object], field: str, expected: str) -> None:
         raise ExecutionAuthorityError(f"{field} mismatch")
 
 
+def _unseal_sorted(value: Mapping[str, object], field: str, expected: str) -> None:
+    core = dict(value)
+    claimed = core.pop(field, None)
+    observed = hashlib.sha256(
+        json.dumps(core, ensure_ascii=False, allow_nan=False, separators=(",", ":"), sort_keys=True).encode()
+    ).hexdigest()
+    if claimed != expected or observed != expected:
+        raise ExecutionAuthorityError(f"{field} mismatch")
+
+
 def validate_preflight(
     generation: Mapping[str, object],
     request_manifest: Mapping[str, object],
@@ -85,7 +95,7 @@ def validate_preflight(
     """Validate every public input before an attempt may be consumed."""
     _unseal(generation, "qualification_generation_identity", GENERATION_IDENTITY)
     _unseal(request_manifest, "request_manifest_identity", REQUEST_MANIFEST_IDENTITY)
-    _unseal(candidate_manifest, "manifest_identity", CANDIDATE_MANIFEST_IDENTITY)
+    _unseal_sorted(candidate_manifest, "manifest_identity", CANDIDATE_MANIFEST_IDENTITY)
     _unseal(qualification, "qualification_identity", QUALIFICATION_IDENTITY)
     if (
         generation.get("schema_version") != 2
@@ -196,7 +206,7 @@ def validate_preflight_receipt(preflight: Mapping[str, object]) -> None:
         )
         or prompts
         != {
-            "pastila-editor-core-v1.1-json-successor": "9b25e239fc227252906fecab393a42a82eca4baa643ceed28177d3c5054e93fc",
+            "pastila-editor-core-v1.1-json-successor-v2": "9b25e239fc227252906fecab393a42a82eca4baa643ceed28177d3c5054e93fc",
             "pastila-editor-core-v1.2-json-successor": "111bc2734343c67aab4e1a04003199b98d4955fe9579e445cd7b5d6805a9da17",
         }
         or preflight.get("unicode_authority_sha256") != list(UNICODE_AUTHORITY_SHA256)
@@ -323,7 +333,7 @@ def resolve_aliases(secret: Mapping[str, object], commitment: str) -> dict[str, 
         or tuple(aliases) != ALIASES
         or set(aliases.values())
         != {
-            "pastila-editor-core-v1.1-json-successor",
+            "pastila-editor-core-v1.1-json-successor-v2",
             "pastila-editor-core-v1.2-json-successor",
         }
         or hashlib.sha256(canonical(secret)).hexdigest() != commitment
@@ -915,11 +925,11 @@ def validate_completion(
         validate_case_receipt(receipt, attempt, row)
         candidate = observation.get("candidate")
         adapters = {
-            "pastila-editor-core-v1.1-json-successor": EXPECTED_OBJECTS[2][2],
+            "pastila-editor-core-v1.1-json-successor-v2": EXPECTED_OBJECTS[2][2],
             "pastila-editor-core-v1.2-json-successor": EXPECTED_OBJECTS[3][2],
         }
         prompts = {
-            "pastila-editor-core-v1.1-json-successor": "9b25e239fc227252906fecab393a42a82eca4baa643ceed28177d3c5054e93fc",
+            "pastila-editor-core-v1.1-json-successor-v2": "9b25e239fc227252906fecab393a42a82eca4baa643ceed28177d3c5054e93fc",
             "pastila-editor-core-v1.2-json-successor": "111bc2734343c67aab4e1a04003199b98d4955fe9579e445cd7b5d6805a9da17",
         }
         if candidate not in adapters:

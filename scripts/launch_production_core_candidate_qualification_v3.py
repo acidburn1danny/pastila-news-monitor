@@ -21,14 +21,14 @@ CORE = (
 )
 SEMANTIC = ROOT / "src" / "pastila_scout" / "production_core_semantic_authority_v2.py"
 ART = ROOT / "docs" / "artifacts"
-EXECUTOR_SHA = "92b8dfa5b7d978b21873ec2cb924f87d799d140fadcbdee23cdc012d2239d700"
-CORE_SHA = "4cb79460e8f978be195b5c3ab880325f042124626076ff6d5ac6f2689da6fc22"
+EXECUTOR_SHA = "a95fb47d559fd8609d1ea79e4f7318cd0b9f49075186a858c579cddd375705a7"
+CORE_SHA = "37f9bf16df723b2695bc254d6eef2bb5d7566ad18dcad49ff235625d607e55b8"
 SEMANTIC_SHA = "af079fb50f281e09433dba299feaf9c2354bb4946df8e476658f71cc228d4c41"
 ARTIFACTS = {
-    "production-core-successor-comparative-qualification-generation-v3.json": "cce6e04455587cbe51be1f5615eec3c2dade20ad3d2255983a793b6849c02623",
+    "production-core-successor-comparative-qualification-generation-v5.json": "6bd336c2e1ff733f02fd4d05065a8dbb5364eeebaf5dd10a7e6f8cdc32a4995d",
     "production-core-candidate-request-manifest-v2.json": "b07d11975e558056a9350c75522c7d2fce2b9e6e924ea2a691cf76d70eb652d6",
-    "production-core-successor-candidate-object-manifest-v3.json": "b19735fb6f8ac53bfc0770d91f0100cced4c513e6b7ad8883d3ca9bdb1b60a82",
-    "production-core-successor-candidate-generation-qualification-v3.json": "2d3fca69bdcfd7a1b7fac318d63472be8030af2d4c15b782c8e7a6e97c16b203",
+    "production-core-successor-candidate-object-manifest-v5.json": "01003a0e9f005f717c7525c0d7fa9462208633c1bff44c8003d0c6f10d17b2f3",
+    "production-core-successor-candidate-generation-qualification-v5.json": "cdb139b0a2e330a7b64529add4b4c9cfb7b9e1c3abe078537c09505fdc5089d0",
 }
 
 
