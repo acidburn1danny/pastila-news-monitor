@@ -20,9 +20,11 @@ CORE = (
     / "production_core_candidate_execution_authority_v3.py"
 )
 SEMANTIC = ROOT / "src" / "pastila_scout" / "production_core_semantic_authority_v2.py"
+CHECKPOINT = ROOT / "src" / "pastila_scout" / "production_core_checkpoint_resume_v6.py"
 ART = ROOT / "docs" / "artifacts"
-EXECUTOR_SHA = "a95fb47d559fd8609d1ea79e4f7318cd0b9f49075186a858c579cddd375705a7"
-CORE_SHA = "37f9bf16df723b2695bc254d6eef2bb5d7566ad18dcad49ff235625d607e55b8"
+EXECUTOR_SHA = "2e168614d66148eddc8577bb5cec2ec65b4e38e85ee6848a5962d7b12e3931f3"
+CORE_SHA = "b07670c114d9dde584b15568ca4d0fb8d150baec043da08811255877fcf44d1a"
+CHECKPOINT_SHA = "cf8949f639292f1334df4c782764a0619d28cf4a377b33b8d7a66720bea206b0"
 SEMANTIC_SHA = "af079fb50f281e09433dba299feaf9c2354bb4946df8e476658f71cc228d4c41"
 ARTIFACTS = {
     "production-core-successor-comparative-qualification-generation-v5.json": "6bd336c2e1ff733f02fd4d05065a8dbb5364eeebaf5dd10a7e6f8cdc32a4995d",
@@ -69,22 +71,30 @@ def main():
         semantic.__dict__,
     )
     raw = {name: read(ART / name, digest) for name, digest in ARTIFACTS.items()}
-    mechanism_raw = read(ART / "production-core-candidate-execution-authority-v4.json")
+    checkpoint_source = read(CHECKPOINT, CHECKPOINT_SHA)
+    checkpoint = types.ModuleType("pinned_checkpoint_resume_v6")
+    checkpoint.__file__ = str(CHECKPOINT)
+    exec(compile(checkpoint_source, str(CHECKPOINT), "exec"), checkpoint.__dict__, checkpoint.__dict__)
+    mechanism_raw = read(ART / "production-core-candidate-execution-authority-v6.json")
     mechanism = json.loads(mechanism_raw)
     core = dict(mechanism)
     recorded = core.pop("execution_authority_identity", None)
     sources = mechanism.get("source_sha256", {})
     authority = mechanism.get("authority_identities")
     expected_sources = {
-        "docs/schemas/production-core-candidate-execution-authority-v4.schema.json",
+        "docs/schemas/production-core-candidate-execution-authority-v6.schema.json",
         "docs/schemas/production-core-candidate-execution-evidence-v2.schema.json",
         "scripts/execute_production_core_candidate_qualification_v3.py",
         "scripts/launch_production_core_candidate_qualification_v3.py",
         "scripts/resolve_production_core_object_authority_v2.sh",
         "scripts/run_production_core_candidate_qualification_v3.sh",
+        "scripts/materialize_production_core_successor_execution_authority_v6.py",
+        "scripts/smoke_production_core_checkpoint_resume_v6.py",
         "src/pastila_scout/production_core_candidate_execution_authority_v3.py",
         "src/pastila_scout/production_core_candidate_qualification_runner_v3.py",
+        "src/pastila_scout/production_core_checkpoint_resume_v6.py",
         "src/pastila_scout/production_core_semantic_authority_v2.py",
+        "tests/test_production_core_checkpoint_resume_v6.py",
         "tests/test_production_core_successor_execution_authority_v3.py",
     }
     expected_authority = {
@@ -92,7 +102,7 @@ def main():
         "qualification_identity": module.QUALIFICATION_IDENTITY,
         "request_manifest_identity": module.REQUEST_MANIFEST_IDENTITY,
         "candidate_object_manifest_identity": module.CANDIDATE_MANIFEST_IDENTITY,
-        "root_cause_addendum_identity": "5290e19dae6d775d03200629b98980823a43495da607cf952286d2a052ed7672",
+        "candidate_audit_receipt_identity": "7519871ebd5cc566a06a8c24f04976244cda9e0653e35464adc1ef8bd80b77a2",
     }
     if (
         tuple(mechanism)
@@ -101,11 +111,10 @@ def main():
             "schema_version",
             "status",
             "bound_source_commit",
-            "predecessor_attempt_identity",
-            "predecessor_attempt_consumed_permanently",
             "authority_identities",
             "source_sha256",
             "matrix_rows",
+            "checkpoint_policy",
             "attempt_ordinal",
             "attempt_consumption_authorized",
             "candidate_execution_authorized",
@@ -117,19 +126,24 @@ def main():
         )
         or mechanism.get("schema")
         != "pastila-production-core-candidate-execution-authority"
-        or mechanism.get("schema_version") != 4
+        or mechanism.get("schema_version") != 6
         or mechanism.get("status")
-        != "FROZEN_SUCCESSOR_EXECUTION_AUTHORITY_ZERO_ATTEMPTS_OWNER_EXECUTION_NOT_AUTHORIZED"
+        != "FROZEN_SUCCESSOR_V6_CHECKPOINT_RESUME_AUTHORITY_ZERO_ATTEMPTS_OWNER_EXECUTION_NOT_AUTHORIZED"
         or authority != expected_authority
         or not isinstance(sources, dict)
         or set(sources) != expected_sources
         or mechanism.get("matrix_rows") != 2400
+        or mechanism.get("checkpoint_policy") != {
+            "checkpoint_count": 12,
+            "rows_per_checkpoint": 200,
+            "atomic_publish": True,
+            "content_addressed_receipt": True,
+            "same_attempt_resume_only": True,
+            "recalculate_finalized_rows": False,
+        }
         or mechanism.get("attempt_ordinal") != 1
         or mechanism.get("bound_source_commit")
-        != "6c72a3c45c4a251a8fe61db82aea5bd462238120"
-        or mechanism.get("predecessor_attempt_identity")
-        != "337bb8acc130cc02f77f83c7a026b9212c781ba06d11989e64ef11b334f6a5ca"
-        or mechanism.get("predecessor_attempt_consumed_permanently") is not True
+        != "cb10ec438e2189067d1340dc9e357d4f2069f60b"
         or mechanism.get("attempt_consumption_authorized") is not False
         or mechanism.get("candidate_execution_authorized") is not False
         or mechanism.get("retry_or_redraw_authorized") is not False
@@ -159,6 +173,9 @@ def main():
         "PINNED_ENTRY_EXECUTOR_SHA256": EXECUTOR_SHA,
         "PINNED_TERMINAL_VALIDATOR": terminal,
         "PINNED_EXECUTION_MECHANISM": mechanism,
+        "build_checkpoint_receipt": checkpoint.build_receipt,
+        "validate_checkpoint_chain": checkpoint.validate_chain,
+        "write_checkpoint_receipt": checkpoint.write_receipt,
     }
     for name in (
         "GENERATION_IDENTITY",

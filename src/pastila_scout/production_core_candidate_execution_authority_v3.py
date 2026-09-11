@@ -872,7 +872,7 @@ def validate_completion(
         raise ExecutionAuthorityError("completion schedule cardinality mismatch")
     if artifact_bytes.get("attempt.json") != canonical(attempt):
         raise ExecutionAuthorityError("completion attempt bytes mismatch")
-    expected_paths = {"attempt.json"}
+    expected_paths = {"attempt.json"} | {f"checkpoint-{ordinal:02d}.json" for ordinal in range(1, 13)}
     batches: dict[str, list[Mapping[str, object]]] = {}
     for row in expected_rows:
         ordinal = row.get("global_ordinal")
@@ -972,7 +972,8 @@ def validate_completion(
                 completed_path,
             }
         )
-    for directory, batch_rows in batches.items():
+    previous_checkpoint = None
+    for checkpoint_ordinal, (directory, batch_rows) in enumerate(batches.items(), 1):
         batch = [
             {
                 "case_id": row["case_id"],
@@ -996,6 +997,48 @@ def validate_completion(
                 "completion boundary evidence absent"
             ) from exc
         validate_boundary_logs(network, file_boundary)
+        checkpoint_path = f"checkpoint-{checkpoint_ordinal:02d}.json"
+        checkpoint_raw = artifact_bytes.get(checkpoint_path)
+        try:
+            checkpoint = json.loads(checkpoint_raw) if checkpoint_raw is not None else None
+        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+            raise ExecutionAuthorityError("completion checkpoint malformed") from exc
+        if not isinstance(checkpoint, dict) or checkpoint_raw != canonical(checkpoint):
+            raise ExecutionAuthorityError("completion checkpoint noncanonical")
+        checkpoint_core = dict(checkpoint)
+        checkpoint_identity = checkpoint_core.pop("checkpoint_identity", None)
+        closure = [
+            {"path": path.removeprefix(directory + "/"), "size": len(data), "sha256": hashlib.sha256(data).hexdigest()}
+            for path, data in sorted(artifact_bytes.items())
+            if path.startswith(directory + "/")
+        ]
+        materialization, repetition, candidate_alias = directory.split("/")
+        coordinates = {
+            "materialization": materialization.removeprefix("materialization-"),
+            "repetition": int(repetition.removeprefix("repetition-")),
+            "candidate_alias": candidate_alias,
+        }
+        if (
+            checkpoint_identity != identity(checkpoint_core)
+            or checkpoint.get("schema") != "pastila-production-core-qualification-checkpoint-receipt"
+            or checkpoint.get("schema_version") != 6
+            or checkpoint.get("attempt_identity") != attempt.get("attempt_identity")
+            or checkpoint.get("execution_authority_identity") != attempt.get("execution_authority_identity")
+            or checkpoint.get("qualification_generation_identity") != GENERATION_IDENTITY
+            or checkpoint.get("checkpoint_ordinal") != checkpoint_ordinal
+            or checkpoint.get("previous_checkpoint_identity") != previous_checkpoint
+            or checkpoint.get("batch_coordinates") != coordinates
+            or checkpoint.get("batch_sha256") != hashlib.sha256(canonical(batch)).hexdigest()
+            or checkpoint.get("batch_directory") != directory
+            or checkpoint.get("finalized_rows") != 200
+            or checkpoint.get("first_global_ordinal") != batch_rows[0]["global_ordinal"]
+            or checkpoint.get("last_global_ordinal") != batch_rows[-1]["global_ordinal"]
+            or checkpoint.get("artifact_closure") != closure
+            or checkpoint.get("retry_or_redraw") is not False
+            or checkpoint.get("same_attempt_resume_only") is not True
+        ):
+            raise ExecutionAuthorityError("completion checkpoint closure mismatch")
+        previous_checkpoint = checkpoint_identity
         expected_paths.update(
             {
                 f"{directory}/batch.json",

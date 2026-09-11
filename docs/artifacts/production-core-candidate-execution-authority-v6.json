@@ -1,0 +1,46 @@
+{
+  "schema": "pastila-production-core-candidate-execution-authority",
+  "schema_version": 6,
+  "status": "FROZEN_SUCCESSOR_V6_CHECKPOINT_RESUME_AUTHORITY_ZERO_ATTEMPTS_OWNER_EXECUTION_NOT_AUTHORIZED",
+  "bound_source_commit": "cb10ec438e2189067d1340dc9e357d4f2069f60b",
+  "authority_identities": {
+    "qualification_generation_identity": "6d388a99731e3d4a08fa2a629374c37dd97994806ac54ffe49ab9fb1b41d630d",
+    "qualification_identity": "4d2a4b7a42141668e907bd90cb96cf8d28dce518761b3c0dc0375954ea6575f4",
+    "request_manifest_identity": "f3b0e0d11c5b73fba39ce21f5daa040e788a2ea09d455389bf990ee8264b4d03",
+    "candidate_object_manifest_identity": "7bff8d58e56c1fd8e29f91f440b4f4c91ce4d79413d4186d895406f852c6abf9",
+    "candidate_audit_receipt_identity": "7519871ebd5cc566a06a8c24f04976244cda9e0653e35464adc1ef8bd80b77a2"
+  },
+  "source_sha256": {
+    "docs/schemas/production-core-candidate-execution-authority-v6.schema.json": "24e4bd2cb0e4c0fa8ff9eee1cf61484aa1f70985a0fd8dcd52e60d6da975ff6a",
+    "docs/schemas/production-core-candidate-execution-evidence-v2.schema.json": "55abaf7d8fc8a0ebd1b9b3db3d5e213b6e36534ff078a3687de80b6cc246cd33",
+    "scripts/execute_production_core_candidate_qualification_v3.py": "2e168614d66148eddc8577bb5cec2ec65b4e38e85ee6848a5962d7b12e3931f3",
+    "scripts/launch_production_core_candidate_qualification_v3.py": "f00b4edeef2621d6534d7cd10795b564164ce7d4ffcdd5162fb4f7b7710feeda",
+    "scripts/resolve_production_core_object_authority_v2.sh": "4231ea3dae2f9399edeed8c2d5f96faa16c13714a594a1a381ea50ceb4cf0be0",
+    "scripts/run_production_core_candidate_qualification_v3.sh": "74d57b5c89c32792fee22eb2ac5b3206008577a2becccaa318d0f0fc90878e43",
+    "scripts/materialize_production_core_successor_execution_authority_v6.py": "881f24b064e3b3ab8fa14688169eb264baf881e9e8cbe2672438116ad07a0515",
+    "scripts/smoke_production_core_checkpoint_resume_v6.py": "a3a31419a00d11206a6c105540fc94df9e58d27b44b81dfad5b935c8f5a6d4dc",
+    "src/pastila_scout/production_core_candidate_execution_authority_v3.py": "b07670c114d9dde584b15568ca4d0fb8d150baec043da08811255877fcf44d1a",
+    "src/pastila_scout/production_core_candidate_qualification_runner_v3.py": "2d211a17bb6d10bea87d30c296f23c5a9c791d82e764d93e6eb178777ead51fc",
+    "src/pastila_scout/production_core_checkpoint_resume_v6.py": "cf8949f639292f1334df4c782764a0619d28cf4a377b33b8d7a66720bea206b0",
+    "src/pastila_scout/production_core_semantic_authority_v2.py": "af079fb50f281e09433dba299feaf9c2354bb4946df8e476658f71cc228d4c41",
+    "tests/test_production_core_checkpoint_resume_v6.py": "bf01adefbb1f3f117be06ae218d7387ac4d2de45430c9bbf4f817c963ec66405",
+    "tests/test_production_core_successor_execution_authority_v3.py": "671e0f0f44785e95d6106c4ba6ff4dd912bca6801f53882171dff877e63bb144"
+  },
+  "matrix_rows": 2400,
+  "checkpoint_policy": {
+    "checkpoint_count": 12,
+    "rows_per_checkpoint": 200,
+    "atomic_publish": true,
+    "content_addressed_receipt": true,
+    "same_attempt_resume_only": true,
+    "recalculate_finalized_rows": false
+  },
+  "attempt_ordinal": 1,
+  "attempt_consumption_authorized": false,
+  "candidate_execution_authorized": false,
+  "retry_or_redraw_authorized": false,
+  "adjudication_performed": false,
+  "candidate_execution_performed": false,
+  "promotion_effect": false,
+  "execution_authority_identity": "892a9db5a651399a90cc66081b5a9ae14ef2657d7a0825ff80cd096cdba235b4"
+}

@@ -9,6 +9,7 @@ import hashlib
 import json
 import os
 import signal
+import shutil
 import stat
 import subprocess
 from pathlib import Path, PureWindowsPath
@@ -37,6 +38,11 @@ if "PINNED_ENTRY_EXECUTOR_SHA256" not in globals():
         UAX29_SHA256,
         Unicode16SentenceAuthority,
         validate_response_v2,
+    )
+    from pastila_scout.production_core_checkpoint_resume_v6 import (
+        build_receipt as build_checkpoint_receipt,
+        validate_chain as validate_checkpoint_chain,
+        write_receipt as write_checkpoint_receipt,
     )
 
     PINNED_UNICODE_AUTHORITY_SHA256 = (
@@ -344,6 +350,7 @@ def main():
     generation, requests, candidates, qualification = (obj(snapshots[n]) for n in NAMES)
     rows = validate_preflight(generation, requests, candidates, qualification)
     existing = list(output.iterdir())
+    recovered_attempt = None
     if existing:
         names = {path.name for path in existing}
         if (
@@ -356,27 +363,7 @@ def main():
             if not isinstance(mechanism, dict):
                 raise SystemExit("mechanism absent")
             validate_attempt(attempt, str(mechanism["execution_authority_identity"]))
-            partial = sorted(
-                (
-                    {
-                        "path": str(path.relative_to(output)).replace("\\", "/"),
-                        "sha256": hashlib.sha256(read(path)).hexdigest(),
-                    }
-                    for path in output.rglob("*")
-                    if path.is_file()
-                ),
-                key=lambda row: row["path"],
-            )
-            failure = build_terminal_failure(
-                attempt,
-                completed_receipt_count(output, attempt, rows),
-                "RECOVERED_CONSUMED_ATTEMPT_WITHOUT_TERMINAL_RECORD",
-                partial_artifacts=partial,
-            )
-            validate_terminal_failure(failure, attempt, partial)
-            atomic(output / "terminal-failure.json", canonical(failure))
-            release_locks()
-            return 1
+            recovered_attempt = attempt
         raise SystemExit("output must be empty or one recoverable attempt")
     secret = obj(read(secret_path))
     batches = materialize_batches(
@@ -506,9 +493,19 @@ def main():
         print(json.dumps(pre, separators=(",", ":")))
         release_locks()
         return 0
-    attempt = build_attempt(str(mechanism["execution_authority_identity"]), pre)
-    atomic(output / "attempt.json", canonical(attempt))
-    completed = 0
+    attempt = recovered_attempt or build_attempt(str(mechanism["execution_authority_identity"]), pre)
+    if recovered_attempt is None:
+        atomic(output / "attempt.json", canonical(attempt))
+    elif attempt.get("preflight") != pre or attempt.get("preflight_identity") != pre.get("preflight_identity"):
+        raise SystemExit("resume preflight substitution")
+    accepted_checkpoints, previous_checkpoint = validate_checkpoint_chain(
+        output,
+        attempt_identity=str(attempt["attempt_identity"]),
+        execution_authority_identity=str(mechanism["execution_authority_identity"]),
+        generation_identity=GENERATION_IDENTITY,
+        batches=batches,
+    )
+    completed = accepted_checkpoints * 200
     current_batch = None
 
     def terminal(code):
@@ -542,21 +539,14 @@ def main():
             validate_terminal_failure(failure, attempt, partial)
             atomic(output / "terminal-failure.json", canonical(failure))
 
-    atexit.register(
-        lambda: (
-            terminal("UNCAUGHT_AFTER_ATTEMPT_CONSUMPTION")
-            if not (output / "completion.json").exists()
-            else None
-        )
-    )
-
     def interrupted(number, _frame):
-        terminal(f"SIGNAL_{number}_AFTER_ATTEMPT_CONSUMPTION")
         raise SystemExit(128 + number)
 
     signal.signal(signal.SIGINT, interrupted)
     signal.signal(signal.SIGTERM, interrupted)
-    for batch in batches:
+    for checkpoint_ordinal, batch in enumerate(batches, 1):
+        if checkpoint_ordinal <= accepted_checkpoints:
+            continue
         current_batch = batch
         label = str(batch["materialization"])
         local = mats[label]
@@ -567,13 +557,20 @@ def main():
             / f"repetition-{batch['repetition']}"
             / str(batch["candidate_alias"])
         )
-        directory.mkdir(parents=True)
-        directory_locks.append(lock_directory(directory))
-        batch_path = directory / "batch.json"
+        directory.parent.mkdir(parents=True, exist_ok=True)
+        staging = output / f".checkpoint-{checkpoint_ordinal:02d}.in-progress"
+        if staging.exists():
+            if staging.is_symlink() or not staging.is_dir():
+                terminal("CHECKPOINT_STAGING_PATH_REJECTED")
+                raise SystemExit("checkpoint staging path rejected")
+            shutil.rmtree(staging)
+        staging.mkdir()
+        directory_locks.append(lock_directory(staging))
+        batch_path = staging / "batch.json"
         atomic(batch_path, canonical(batch["batch"]))
-        prompt_snapshot = directory / "system-prompt.txt"
+        prompt_snapshot = staging / "system-prompt.txt"
         atomic(prompt_snapshot, prompt_snapshots[candidate])
-        result = directory / "results"
+        result = staging / "results"
         result.mkdir()
         directory_locks.append(lock_directory(result))
         prompt = prompt_snapshot
@@ -700,9 +697,27 @@ def main():
             validate_case_receipt(
                 receipt, attempt, rows[int(receipt["global_ordinal"]) - 1]
             )
-            atomic(directory / f"{stem}.receipt.json", canonical(receipt))
+            atomic(staging / f"{stem}.receipt.json", canonical(receipt))
         if {path.name for path in result.iterdir() if path.is_file()} != expected_names:
             raise SystemExit("result closure mismatch")
+        close_directory(directory_locks.pop())
+        close_directory(directory_locks.pop())
+        if directory.exists():
+            terminal("CHECKPOINT_DESTINATION_ALREADY_EXISTS")
+            raise SystemExit("checkpoint destination already exists")
+        os.replace(staging, directory)
+        checkpoint = build_checkpoint_receipt(
+            attempt_identity=str(attempt["attempt_identity"]),
+            execution_authority_identity=str(mechanism["execution_authority_identity"]),
+            generation_identity=GENERATION_IDENTITY,
+            checkpoint_ordinal=checkpoint_ordinal,
+            previous_checkpoint_identity=previous_checkpoint,
+            batch=batch,
+            directory=directory,
+            directory_binding=str(directory.relative_to(output)).replace("\\", "/"),
+        )
+        write_checkpoint_receipt(output / f"checkpoint-{checkpoint_ordinal:02d}.json", checkpoint)
+        previous_checkpoint = str(checkpoint["checkpoint_identity"])
         completed += 200
     current_batch = None
     artifact_snapshots = {
