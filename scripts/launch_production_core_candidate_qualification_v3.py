@@ -21,8 +21,8 @@ CORE = (
 )
 SEMANTIC = ROOT / "src" / "pastila_scout" / "production_core_semantic_authority_v2.py"
 ART = ROOT / "docs" / "artifacts"
-EXECUTOR_SHA = "92dca4e22e832ce3c0bc461296afa08cdc1621d3b33072a319ae1451dc9d488c"
-CORE_SHA = "9e93ff53d9422858818fcdedea7a135ac36203b824db68e4ba78096c8354cf58"
+EXECUTOR_SHA = "92b8dfa5b7d978b21873ec2cb924f87d799d140fadcbdee23cdc012d2239d700"
+CORE_SHA = "4cb79460e8f978be195b5c3ab880325f042124626076ff6d5ac6f2689da6fc22"
 SEMANTIC_SHA = "af079fb50f281e09433dba299feaf9c2354bb4946df8e476658f71cc228d4c41"
 ARTIFACTS = {
     "production-core-successor-comparative-qualification-generation-v3.json": "cce6e04455587cbe51be1f5615eec3c2dade20ad3d2255983a793b6849c02623",
@@ -69,14 +69,14 @@ def main():
         semantic.__dict__,
     )
     raw = {name: read(ART / name, digest) for name, digest in ARTIFACTS.items()}
-    mechanism_raw = read(ART / "production-core-candidate-execution-authority-v3.json")
+    mechanism_raw = read(ART / "production-core-candidate-execution-authority-v4.json")
     mechanism = json.loads(mechanism_raw)
     core = dict(mechanism)
     recorded = core.pop("execution_authority_identity", None)
     sources = mechanism.get("source_sha256", {})
     authority = mechanism.get("authority_identities")
     expected_sources = {
-        "docs/schemas/production-core-candidate-execution-authority-v3.schema.json",
+        "docs/schemas/production-core-candidate-execution-authority-v4.schema.json",
         "docs/schemas/production-core-candidate-execution-evidence-v2.schema.json",
         "scripts/execute_production_core_candidate_qualification_v3.py",
         "scripts/launch_production_core_candidate_qualification_v3.py",
@@ -92,6 +92,7 @@ def main():
         "qualification_identity": module.QUALIFICATION_IDENTITY,
         "request_manifest_identity": module.REQUEST_MANIFEST_IDENTITY,
         "candidate_object_manifest_identity": module.CANDIDATE_MANIFEST_IDENTITY,
+        "root_cause_addendum_identity": "5290e19dae6d775d03200629b98980823a43495da607cf952286d2a052ed7672",
     }
     if (
         tuple(mechanism)
@@ -99,10 +100,15 @@ def main():
             "schema",
             "schema_version",
             "status",
+            "bound_source_commit",
+            "predecessor_attempt_identity",
+            "predecessor_attempt_consumed_permanently",
             "authority_identities",
             "source_sha256",
             "matrix_rows",
             "attempt_ordinal",
+            "attempt_consumption_authorized",
+            "candidate_execution_authorized",
             "retry_or_redraw_authorized",
             "adjudication_performed",
             "candidate_execution_performed",
@@ -111,13 +117,21 @@ def main():
         )
         or mechanism.get("schema")
         != "pastila-production-core-candidate-execution-authority"
-        or mechanism.get("schema_version") != 2
-        or mechanism.get("status") != "PASS_OFFLINE_EXECUTION_AUTHORITY_ZERO_ATTEMPTS"
+        or mechanism.get("schema_version") != 4
+        or mechanism.get("status")
+        != "FROZEN_SUCCESSOR_EXECUTION_AUTHORITY_ZERO_ATTEMPTS_OWNER_EXECUTION_NOT_AUTHORIZED"
         or authority != expected_authority
         or not isinstance(sources, dict)
         or set(sources) != expected_sources
         or mechanism.get("matrix_rows") != 2400
         or mechanism.get("attempt_ordinal") != 1
+        or mechanism.get("bound_source_commit")
+        != "6c72a3c45c4a251a8fe61db82aea5bd462238120"
+        or mechanism.get("predecessor_attempt_identity")
+        != "337bb8acc130cc02f77f83c7a026b9212c781ba06d11989e64ef11b334f6a5ca"
+        or mechanism.get("predecessor_attempt_consumed_permanently") is not True
+        or mechanism.get("attempt_consumption_authorized") is not False
+        or mechanism.get("candidate_execution_authorized") is not False
         or mechanism.get("retry_or_redraw_authorized") is not False
         or recorded != module.identity(core)
         or hashlib.sha256(read(ENTRY)).hexdigest()

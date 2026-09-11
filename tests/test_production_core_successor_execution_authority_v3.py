@@ -200,3 +200,41 @@ def test_completion_authority_closure_includes_lifecycle_events():
         "f\"{directory}/results/inference-{row['batch_ordinal']:03d}-completed.json\""
         in source
     )
+
+
+def test_successor_v4_authority_is_frozen_without_execution_or_attempt():
+    schema = json.loads(
+        (
+            ART.parent
+            / "schemas/production-core-candidate-execution-authority-v4.schema.json"
+        ).read_bytes()
+    )
+    value = load("production-core-candidate-execution-authority-v4.json")
+    Draft202012Validator(schema).validate(value)
+    core = dict(value)
+    assert core.pop("execution_authority_identity") == identity(core)
+    assert value["bound_source_commit"] == "6c72a3c45c4a251a8fe61db82aea5bd462238120"
+    assert value["predecessor_attempt_consumed_permanently"] is True
+    assert value["attempt_consumption_authorized"] is False
+    assert value["candidate_execution_authorized"] is False
+    assert value["candidate_execution_performed"] is False
+    assert value["adjudication_performed"] is False
+    assert value["promotion_effect"] is False
+
+
+def test_successor_v4_schema_rejects_extra_source_and_execution_authorization():
+    schema = json.loads(
+        (
+            ART.parent
+            / "schemas/production-core-candidate-execution-authority-v4.schema.json"
+        ).read_bytes()
+    )
+    validator = Draft202012Validator(schema)
+    value = load("production-core-candidate-execution-authority-v4.json")
+    extra = json.loads(json.dumps(value))
+    extra["source_sha256"]["host/fallback.py"] = "0" * 64
+    assert list(validator.iter_errors(extra))
+    execution = json.loads(json.dumps(value))
+    execution["candidate_execution_authorized"] = True
+    execution["attempt_consumption_authorized"] = True
+    assert list(validator.iter_errors(execution))

@@ -1,0 +1,36 @@
+{
+  "schema": "pastila-production-core-candidate-execution-authority",
+  "schema_version": 4,
+  "status": "FROZEN_SUCCESSOR_EXECUTION_AUTHORITY_ZERO_ATTEMPTS_OWNER_EXECUTION_NOT_AUTHORIZED",
+  "bound_source_commit": "6c72a3c45c4a251a8fe61db82aea5bd462238120",
+  "predecessor_attempt_identity": "337bb8acc130cc02f77f83c7a026b9212c781ba06d11989e64ef11b334f6a5ca",
+  "predecessor_attempt_consumed_permanently": true,
+  "authority_identities": {
+    "qualification_generation_identity": "7b4900523953253391e8753d39ae8253e6652055cf5c99612a007eaadba552f9",
+    "qualification_identity": "281f5cfd3e5627e582e099129ad8b023052b694e5834f6b6843b13368abbc314",
+    "request_manifest_identity": "f3b0e0d11c5b73fba39ce21f5daa040e788a2ea09d455389bf990ee8264b4d03",
+    "candidate_object_manifest_identity": "94ce74f28df6027c404800787e7ba39c16a35f688094c2bb96220d1592ad72ce",
+    "root_cause_addendum_identity": "5290e19dae6d775d03200629b98980823a43495da607cf952286d2a052ed7672"
+  },
+  "source_sha256": {
+    "docs/schemas/production-core-candidate-execution-authority-v4.schema.json": "c4dd860d41b521c9bb5a2bf07ec3ef996f010e7f2e040c31ffc0fcd9fd53b81c",
+    "docs/schemas/production-core-candidate-execution-evidence-v2.schema.json": "55abaf7d8fc8a0ebd1b9b3db3d5e213b6e36534ff078a3687de80b6cc246cd33",
+    "scripts/execute_production_core_candidate_qualification_v3.py": "92b8dfa5b7d978b21873ec2cb924f87d799d140fadcbdee23cdc012d2239d700",
+    "scripts/launch_production_core_candidate_qualification_v3.py": "2d628372bb76931a31ed40c6175286b786745896553af33071579de73d5f9a61",
+    "scripts/resolve_production_core_object_authority_v2.sh": "4231ea3dae2f9399edeed8c2d5f96faa16c13714a594a1a381ea50ceb4cf0be0",
+    "scripts/run_production_core_candidate_qualification_v3.sh": "d3feaab37ec7b9c99a64f2da3239fc5754838d3eaf67e3c564df57ba38db2b2a",
+    "src/pastila_scout/production_core_candidate_execution_authority_v3.py": "4cb79460e8f978be195b5c3ab880325f042124626076ff6d5ac6f2689da6fc22",
+    "src/pastila_scout/production_core_candidate_qualification_runner_v3.py": "4bc2ebca1bf454f658812fe051aedcbae0ed4e6a8f2f02e694a54a9e27c8495c",
+    "src/pastila_scout/production_core_semantic_authority_v2.py": "af079fb50f281e09433dba299feaf9c2354bb4946df8e476658f71cc228d4c41",
+    "tests/test_production_core_successor_execution_authority_v3.py": "d5e217eee5ffa12f150ce74d638752c80baf0d169329f86397d3f5661ee73cdc"
+  },
+  "matrix_rows": 2400,
+  "attempt_ordinal": 1,
+  "attempt_consumption_authorized": false,
+  "candidate_execution_authorized": false,
+  "retry_or_redraw_authorized": false,
+  "adjudication_performed": false,
+  "candidate_execution_performed": false,
+  "promotion_effect": false,
+  "execution_authority_identity": "1e13898e54a330b99f1717f6e104e6e92a8f60ced31b0b6c80f7b03594806700"
+}
