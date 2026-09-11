@@ -1,0 +1,47 @@
+{
+  "adjudication_performed": false,
+  "candidate_execution_performed": false,
+  "full_training_started": false,
+  "observation": {
+    "adjudication_performed": false,
+    "authority_mounts_read_only": true,
+    "base_model_manifest_sha256": "f5a9327e40390c7f0cf93962d75abbbc5ae8da1fac48e1274092ac52cf88bf39",
+    "branch": "successor/core-v2-v1-1-eos-remediation-v5",
+    "candidate_execution_performed": false,
+    "config_sha256": "0616d633d568326fdd5e85db87a4f430e773cb1cc1cd5ac5ce35e87ac0d927ac",
+    "corpus_sha256": "d87018809fde41a2bf23e0a98395d0258b757b683e2fdf11e678cf933dadbed5",
+    "development_probe_sha256": "58590d6c63e71dd32149de73f77daf949c69183ee35fdb733d85b2915e5f3511",
+    "full_training_started": false,
+    "host_path_fallback": false,
+    "launcher_sha256": "3b40efea8398475e2aacdf0d7b1dd279542349b94f9f2c4c777871f49b3dd70f",
+    "network_activity": false,
+    "optimizer": "PAGED_ADAMW_8BIT",
+    "output_mount_writable_only": true,
+    "post_training_gate_required": true,
+    "predecessor_adapter_manifest_sha256": "16d6384355abfeff9a2c35cfa9866c604f8fd9703c19dcfbefcfdbb7fdb7dcf3",
+    "promotion_effect": false,
+    "qualification_attempt_consumed": false,
+    "retry_or_redraw": false,
+    "rootfs_byte_identical": true,
+    "rootfs_materialization_sha256": {
+      "D": "9c8a26024a36a808bf077be880a214fcb3308233354e1824ae7ebc82d931f826",
+      "E": "9c8a26024a36a808bf077be880a214fcb3308233354e1824ae7ebc82d931f826"
+    },
+    "smoke": {
+      "backward_4bit": true,
+      "compile_load_triton": true,
+      "mode": "SMOKE",
+      "optimizer_steps": 1,
+      "receipt_identity": "c15981119778c4a89af4d3cd7a12cb258187a42893b7e6dea2af7bed8be0879a",
+      "save_reload": true
+    },
+    "source_commit": "a140a612a7c80131064d2e44323345c5985ca613",
+    "trainer_sha256": "b14feac0c425bba82420ae375d47ac00eee91acc6537716463cb12c7f1b52286"
+  },
+  "promotion_effect": false,
+  "qualification_attempt_consumed": false,
+  "schema": "pastila-production-core-training-runtime-authority",
+  "schema_version": 5,
+  "status": "PASS_OFFLINE_V1_1_EOS_TRAINING_RUNTIME_ZERO_QUALIFICATION_ATTEMPTS",
+  "training_runtime_authority_identity": "321a2f5d29bde8507214a891d6385a910888a8c528c1b1a9447ef7fcadbd741a"
+}
