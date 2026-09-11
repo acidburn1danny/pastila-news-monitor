@@ -96,6 +96,120 @@ def obj(raw):
     return value
 
 
+def typed_supervisor_failure(result: Path, returncode: int) -> str:
+    """Recover only a closed, durable supervisor classification."""
+    path = result / "supervisor-failure.json"
+    try:
+        raw = read(path)
+        value = obj(raw)
+    except OSError, ValueError, json.JSONDecodeError, SystemExit:
+        return "UNCAUGHT_AFTER_ATTEMPT_CONSUMPTION"
+    expected_exit = {
+        "INFERENCE_WALL_TIME_EXCEEDED": 124,
+        "INVALID_HEARTBEAT_AUTHORITY": 125,
+        "INVALID_FINAL_HEARTBEAT_AUTHORITY": 125,
+    }
+    if (
+        raw != canonical(value)
+        or tuple(value)
+        != (
+            "schema",
+            "schema_version",
+            "code",
+            "ceiling_ns",
+            "watchdog_exit_code",
+            "last_sequence",
+            "last_completed_count",
+            "last_stage",
+        )
+        or value.get("schema") != "pastila-production-core-supervisor-failure"
+        or value.get("schema_version") != 2
+        or value.get("ceiling_ns") != 600_000_000_000
+        or value.get("code") not in expected_exit
+        or value.get("watchdog_exit_code") != expected_exit[value["code"]]
+        or returncode != value["watchdog_exit_code"]
+        or type(value.get("last_sequence")) is not int
+        or not -1 <= value["last_sequence"] <= 201
+        or type(value.get("last_completed_count")) is not int
+        or not 0 <= value["last_completed_count"] <= 200
+        or value.get("last_stage")
+        not in ("INIT", "LOAD", "GENERATE", "CASE_COMPLETE", "BATCH_COMPLETE")
+    ):
+        return "UNCAUGHT_AFTER_ATTEMPT_CONSUMPTION"
+    return str(value["code"])
+
+
+def validate_inference_lifecycle(
+    started_raw: bytes,
+    completed_raw: bytes,
+    *,
+    sequence: int,
+    row: dict[str, object],
+    observation: dict[str, object],
+) -> None:
+    started, completed = obj(started_raw), obj(completed_raw)
+    started_core, completed_core = dict(started), dict(completed)
+    started_identity = started_core.pop("event_identity", None)
+    completed_identity = completed_core.pop("event_identity", None)
+    if (
+        started_raw != canonical(started)
+        or completed_raw != canonical(completed)
+        or started_identity != identity(started_core)
+        or completed_identity != identity(completed_core)
+        or tuple(started)
+        != (
+            "schema",
+            "schema_version",
+            "phase",
+            "sequence",
+            "completed_count",
+            "case_id",
+            "request_identity",
+            "input_tokens",
+            "started_boottime_ns",
+            "event_identity",
+        )
+        or tuple(completed)
+        != (
+            "schema",
+            "schema_version",
+            "phase",
+            "sequence",
+            "completed_count",
+            "case_id",
+            "request_identity",
+            "started_event_identity",
+            "generation_wall_ns",
+            "output_tokens",
+            "terminal_eos",
+            "event_identity",
+        )
+        or started.get("schema") != "pastila-production-core-inference-lifecycle-event"
+        or completed.get("schema")
+        != "pastila-production-core-inference-lifecycle-event"
+        or started.get("schema_version") != 1
+        or completed.get("schema_version") != 1
+        or started.get("phase") != "STARTED"
+        or completed.get("phase") != "COMPLETED"
+        or started.get("sequence") != sequence
+        or completed.get("sequence") != sequence
+        or started.get("completed_count") != sequence - 1
+        or completed.get("completed_count") != sequence
+        or started.get("case_id") != row.get("case_id")
+        or completed.get("case_id") != row.get("case_id")
+        or started.get("request_identity") != row.get("request_identity")
+        or completed.get("request_identity") != row.get("request_identity")
+        or completed.get("started_event_identity") != started_identity
+        or started.get("input_tokens") != observation.get("input_tokens")
+        or completed.get("generation_wall_ns") != observation.get("generation_wall_ns")
+        or completed.get("output_tokens") != observation.get("output_tokens")
+        or completed.get("terminal_eos") != observation.get("terminal_eos")
+        or type(started.get("started_boottime_ns")) is not int
+        or started["started_boottime_ns"] < 0
+    ):
+        raise SystemExit("inference lifecycle evidence mismatch")
+
+
 def atomic(path, data):
     if path.exists() or path.is_symlink():
         raise SystemExit("artifact collision")
@@ -487,11 +601,15 @@ def main():
             ).hexdigest(),
             wsl(RUNNER),
         ]
-        subprocess.run(
-            command,
-            input=source_bytes[str(LAUNCHER.relative_to(ROOT)).replace("\\", "/")],
-            check=True,
-        )
+        try:
+            subprocess.run(
+                command,
+                input=source_bytes[str(LAUNCHER.relative_to(ROOT)).replace("\\", "/")],
+                check=True,
+            )
+        except subprocess.CalledProcessError as exc:
+            terminal(typed_supervisor_failure(result, exc.returncode))
+            raise SystemExit(exc.returncode) from exc
         network = obj(read(result / "network-boundary.json"))
         file_boundary = obj(read(result / "file-boundary.json"))
         validate_boundary_logs(network, file_boundary)
@@ -505,8 +623,21 @@ def main():
             raw_path = result / f"{stem}.raw"
             observation_path = result / f"{stem}.observation.json"
             expected_names.update({raw_path.name, observation_path.name})
+            expected_names.update(
+                {
+                    f"inference-{index:03d}-started.json",
+                    f"inference-{index:03d}-completed.json",
+                }
+            )
             raw = read(raw_path)
             observation = obj(read(observation_path))
+            validate_inference_lifecycle(
+                read(result / f"inference-{index:03d}-started.json"),
+                read(result / f"inference-{index:03d}-completed.json"),
+                sequence=index,
+                row=row,
+                observation=observation,
+            )
             observation_core = dict(observation)
             observed_identity = observation_core.pop("observation_identity", None)
             expected = {

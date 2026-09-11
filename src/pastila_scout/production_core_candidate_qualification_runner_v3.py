@@ -217,6 +217,33 @@ def main() -> int:
         encoded = {key: value.to("cuda") for key, value in encoded.items()}
         torch.cuda.reset_peak_memory_stats()
         started = time.monotonic_ns()
+        inference_start_core = {
+            "schema": "pastila-production-core-inference-lifecycle-event",
+            "schema_version": 1,
+            "phase": "STARTED",
+            "sequence": sequence,
+            "completed_count": sequence - 1,
+            "case_id": case_id,
+            "request_identity": request_identity,
+            "input_tokens": input_tokens,
+            "started_boottime_ns": _boottime_centisecond_ns(),
+        }
+        inference_start = {
+            **inference_start_core,
+            "event_identity": _sha(
+                json.dumps(
+                    inference_start_core,
+                    ensure_ascii=False,
+                    separators=(",", ":"),
+                ).encode()
+            ),
+        }
+        _write_new(
+            Path("/tmp/output") / f"inference-{sequence:03d}-started.json",
+            json.dumps(
+                inference_start, ensure_ascii=False, separators=(",", ":")
+            ).encode(),
+        )
         _heartbeat("GENERATE", sequence, sequence - 1, case_id)
         with torch.inference_mode():
             generated = loaded.generate(
@@ -280,6 +307,35 @@ def main() -> int:
         _write_new(
             Path("/tmp/output") / f"{stem}.observation.json",
             json.dumps(observation, ensure_ascii=False, separators=(",", ":")).encode(),
+        )
+        inference_complete_core = {
+            "schema": "pastila-production-core-inference-lifecycle-event",
+            "schema_version": 1,
+            "phase": "COMPLETED",
+            "sequence": sequence,
+            "completed_count": sequence,
+            "case_id": case_id,
+            "request_identity": request_identity,
+            "started_event_identity": inference_start["event_identity"],
+            "generation_wall_ns": generation_ns,
+            "output_tokens": len(tokens),
+            "terminal_eos": terminal_eos,
+        }
+        inference_complete = {
+            **inference_complete_core,
+            "event_identity": _sha(
+                json.dumps(
+                    inference_complete_core,
+                    ensure_ascii=False,
+                    separators=(",", ":"),
+                ).encode()
+            ),
+        }
+        _write_new(
+            Path("/tmp/output") / f"inference-{sequence:03d}-completed.json",
+            json.dumps(
+                inference_complete, ensure_ascii=False, separators=(",", ":")
+            ).encode(),
         )
         if fatal_resource_exceeded:
             raise SystemExit(

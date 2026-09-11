@@ -653,6 +653,75 @@ def validate_case_receipt(
     return ordinal
 
 
+def validate_inference_lifecycle_events(
+    started: Mapping[str, object],
+    completed: Mapping[str, object],
+    expected: Mapping[str, object],
+    observation: Mapping[str, object],
+) -> None:
+    """Validate one durable per-inference STARTED/COMPLETED evidence pair."""
+    started_core, completed_core = dict(started), dict(completed)
+    started_identity = started_core.pop("event_identity", None)
+    completed_identity = completed_core.pop("event_identity", None)
+    sequence = expected.get("batch_ordinal")
+    if (
+        tuple(started)
+        != (
+            "schema",
+            "schema_version",
+            "phase",
+            "sequence",
+            "completed_count",
+            "case_id",
+            "request_identity",
+            "input_tokens",
+            "started_boottime_ns",
+            "event_identity",
+        )
+        or tuple(completed)
+        != (
+            "schema",
+            "schema_version",
+            "phase",
+            "sequence",
+            "completed_count",
+            "case_id",
+            "request_identity",
+            "started_event_identity",
+            "generation_wall_ns",
+            "output_tokens",
+            "terminal_eos",
+            "event_identity",
+        )
+        or started.get("schema") != "pastila-production-core-inference-lifecycle-event"
+        or completed.get("schema")
+        != "pastila-production-core-inference-lifecycle-event"
+        or started.get("schema_version") != 1
+        or completed.get("schema_version") != 1
+        or started.get("phase") != "STARTED"
+        or completed.get("phase") != "COMPLETED"
+        or type(sequence) is not int
+        or started.get("sequence") != sequence
+        or completed.get("sequence") != sequence
+        or started.get("completed_count") != sequence - 1
+        or completed.get("completed_count") != sequence
+        or started.get("case_id") != expected.get("case_id")
+        or completed.get("case_id") != expected.get("case_id")
+        or started.get("request_identity") != expected.get("request_identity")
+        or completed.get("request_identity") != expected.get("request_identity")
+        or completed.get("started_event_identity") != started_identity
+        or started.get("input_tokens") != observation.get("input_tokens")
+        or completed.get("generation_wall_ns") != observation.get("generation_wall_ns")
+        or completed.get("output_tokens") != observation.get("output_tokens")
+        or completed.get("terminal_eos") != observation.get("terminal_eos")
+        or type(started.get("started_boottime_ns")) is not int
+        or int(started["started_boottime_ns"]) < 0
+        or started_identity != identity(started_core)
+        or completed_identity != identity(completed_core)
+    ):
+        raise ExecutionAuthorityError("inference lifecycle evidence mismatch")
+
+
 def validate_terminal_failure(
     failure: Mapping[str, object],
     attempt: Mapping[str, object],
@@ -792,17 +861,36 @@ def validate_completion(
         receipt_raw = artifact_bytes.get(receipt_path)
         raw_path = f"{directory}/results/{stem}.raw"
         observation_path = f"{directory}/results/{stem}.observation.json"
+        started_path = (
+            f"{directory}/results/inference-{row['batch_ordinal']:03d}-started.json"
+        )
+        completed_path = (
+            f"{directory}/results/inference-{row['batch_ordinal']:03d}-completed.json"
+        )
         raw = artifact_bytes.get(raw_path)
         observation_raw = artifact_bytes.get(observation_path)
-        if receipt_raw is None or raw is None or observation_raw is None:
+        started_raw = artifact_bytes.get(started_path)
+        completed_raw = artifact_bytes.get(completed_path)
+        if (
+            receipt_raw is None
+            or raw is None
+            or observation_raw is None
+            or started_raw is None
+            or completed_raw is None
+        ):
             raise ExecutionAuthorityError("completion receipt absent")
         try:
             receipt = json.loads(receipt_raw)
             observation = json.loads(observation_raw)
+            started = json.loads(started_raw)
+            completed = json.loads(completed_raw)
         except (UnicodeDecodeError, json.JSONDecodeError) as exc:
             raise ExecutionAuthorityError("completion artifact JSON malformed") from exc
-        if receipt_raw != canonical(receipt) or observation_raw != canonical(
-            observation
+        if (
+            receipt_raw != canonical(receipt)
+            or observation_raw != canonical(observation)
+            or started_raw != canonical(started)
+            or completed_raw != canonical(completed)
         ):
             raise ExecutionAuthorityError("completion artifact noncanonical")
         validate_case_receipt(receipt, attempt, row)
@@ -840,6 +928,7 @@ def validate_completion(
             "request_identity": row["request_identity"],
         }
         validate_observation(observation, raw, expected_observation)
+        validate_inference_lifecycle_events(started, completed, row, observation)
         if (
             receipt["raw_output_sha256"] != hashlib.sha256(raw).hexdigest()
             or receipt["observation_identity"] != observation["observation_identity"]
@@ -850,6 +939,8 @@ def validate_completion(
                 receipt_path,
                 raw_path,
                 observation_path,
+                started_path,
+                completed_path,
             }
         )
     for directory, batch_rows in batches.items():
@@ -903,6 +994,7 @@ __all__ = (
     "validate_boundary_logs",
     "validate_case_receipt",
     "validate_completion",
+    "validate_inference_lifecycle_events",
     "validate_observation",
     "validate_preflight",
     "validate_preflight_receipt",

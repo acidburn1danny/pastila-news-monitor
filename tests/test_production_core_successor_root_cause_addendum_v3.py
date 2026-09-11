@@ -6,9 +6,13 @@ import pytest
 from jsonschema import Draft202012Validator
 
 ROOT = Path(__file__).resolve().parents[1]
-SCRIPT = ROOT / "scripts/materialize_production_core_successor_root_cause_addendum_v3.py"
+SCRIPT = (
+    ROOT / "scripts/materialize_production_core_successor_root_cause_addendum_v3.py"
+)
 ARTIFACT = ROOT / "docs/artifacts/production-core-successor-root-cause-addendum-v3.json"
-SCHEMA = ROOT / "docs/schemas/production-core-successor-root-cause-addendum-v3.schema.json"
+SCHEMA = (
+    ROOT / "docs/schemas/production-core-successor-root-cause-addendum-v3.schema.json"
+)
 
 
 def module():
@@ -33,22 +37,62 @@ def test_published_addendum_is_closed_and_preserves_historical_disposition():
     assert value["promotion_effect"] is False
 
 
-def test_builder_rejects_supervisor_evidence_drift(tmp_path):
+def test_builder_rejects_supervisor_evidence_drift(tmp_path, monkeypatch):
+    materializer = module()
     execution = tmp_path / "execution"
     disposition = tmp_path / "disposition.json"
-    source = ROOT / ".pastila-runtime/production-core-successor-execution-v3-attempt1"
     disposition.write_bytes(
-        (ROOT / "docs/artifacts/production-core-successor-terminal-disposition-v3.json").read_bytes()
+        (
+            ROOT
+            / "docs/artifacts/production-core-successor-terminal-disposition-v3.json"
+        ).read_bytes()
     )
-    target = execution / module().FAILED_DIRECTORY / "results"
+    failure = {
+        "attempt_identity": materializer.ATTEMPT,
+        "failure_class": "UNCAUGHT_AFTER_ATTEMPT_CONSUMPTION",
+        "terminal_failure_identity": materializer.TERMINAL_FAILURE,
+    }
+    execution.mkdir()
+    failure_raw = materializer.canonical(failure)
+    (execution / "terminal-failure.json").write_bytes(failure_raw)
+    target = execution / materializer.FAILED_DIRECTORY / "results"
     target.mkdir(parents=True)
-    for relative in ("terminal-failure.json",):
-        (execution / relative).write_bytes((source / relative).read_bytes())
-    failed_source = source / module().FAILED_DIRECTORY
-    (target / "heartbeat.json").write_bytes((failed_source / "results/heartbeat.json").read_bytes())
-    supervisor = json.loads((failed_source / "results/supervisor-failure.json").read_bytes())
+    heartbeat = {
+        "stage": "GENERATE",
+        "sequence": 115,
+        "completed_count": 114,
+        "case_id": "pcq-unc-025",
+        "deadline_boottime_ns": 39_819_100_000_000,
+    }
+    heartbeat_raw = materializer.canonical(heartbeat)
+    (target / "heartbeat.json").write_bytes(heartbeat_raw)
+    supervisor = {
+        "schema": "pastila-production-core-supervisor-failure",
+        "schema_version": 1,
+        "code": "INFERENCE_WALL_TIME_EXCEEDED",
+        "ceiling_ns": 600_000_000_000,
+    }
+    supervisor_raw = materializer.canonical(supervisor)
+    (target / "supervisor-failure.json").write_bytes(supervisor_raw)
+    batch = [{} for _ in range(200)]
+    batch[114] = {"case_id": "pcq-unc-025"}
+    (target.parent / "batch.json").write_bytes(json.dumps(batch).encode())
+    monkeypatch.setattr(
+        materializer,
+        "TERMINAL_FAILURE_SHA256",
+        materializer.hashlib.sha256(failure_raw).hexdigest(),
+    )
+    monkeypatch.setattr(
+        materializer,
+        "SUPERVISOR_SHA256",
+        materializer.hashlib.sha256(supervisor_raw).hexdigest(),
+    )
+    monkeypatch.setattr(
+        materializer,
+        "HEARTBEAT_SHA256",
+        materializer.hashlib.sha256(heartbeat_raw).hexdigest(),
+    )
     supervisor["code"] = "INVALID_HEARTBEAT_AUTHORITY"
-    (target / "supervisor-failure.json").write_bytes(module().canonical(supervisor))
-    (target.parent / "batch.json").write_bytes((failed_source / "batch.json").read_bytes())
+    (target / "supervisor-failure.json").write_bytes(materializer.canonical(supervisor))
     with pytest.raises(SystemExit, match="supervisor evidence drift"):
-        module().build(execution, disposition)
+        materializer.build(execution, disposition)

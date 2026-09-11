@@ -1,4 +1,5 @@
 import hashlib
+import importlib.util
 import json
 from pathlib import Path
 
@@ -10,6 +11,15 @@ from pastila_scout.production_core_candidate_execution_authority_v3 import (
 
 ROOT = Path(__file__).resolve().parents[1]
 ART = ROOT / "docs" / "artifacts"
+
+
+def executor_module():
+    path = ROOT / "scripts/execute_production_core_candidate_qualification_v3.py"
+    spec = importlib.util.spec_from_file_location("successor_executor_v4", path)
+    value = importlib.util.module_from_spec(spec)
+    assert spec.loader is not None
+    spec.loader.exec_module(value)
+    return value
 
 
 def identity(value):
@@ -87,3 +97,106 @@ def test_preflight_only_returns_before_attempt_construction():
         ROOT / "scripts/execute_production_core_candidate_qualification_v3.py"
     ).read_text("utf-8")
     assert source.index("if o.preflight_only:") < source.index("build_attempt(")
+
+
+def test_typed_supervisor_failure_requires_closed_code_exit_binding(tmp_path):
+    module = executor_module()
+    result = tmp_path / "results"
+    result.mkdir()
+    value = {
+        "schema": "pastila-production-core-supervisor-failure",
+        "schema_version": 2,
+        "code": "INFERENCE_WALL_TIME_EXCEEDED",
+        "ceiling_ns": 600_000_000_000,
+        "watchdog_exit_code": 124,
+        "last_sequence": 115,
+        "last_completed_count": 114,
+        "last_stage": "GENERATE",
+    }
+    (result / "supervisor-failure.json").write_bytes(module.canonical(value))
+    assert (
+        module.typed_supervisor_failure(result, 124) == "INFERENCE_WALL_TIME_EXCEEDED"
+    )
+    assert (
+        module.typed_supervisor_failure(result, 125)
+        == "UNCAUGHT_AFTER_ATTEMPT_CONSUMPTION"
+    )
+    value["code"] = "HOST_INVENTED_FAILURE"
+    (result / "supervisor-failure.json").write_bytes(module.canonical(value))
+    assert (
+        module.typed_supervisor_failure(result, 124)
+        == "UNCAUGHT_AFTER_ATTEMPT_CONSUMPTION"
+    )
+
+
+def test_inference_lifecycle_is_content_addressed_and_cross_bound():
+    module = executor_module()
+    row = {"case_id": "case-1", "request_identity": "sha256:" + "a" * 64}
+    observation = {
+        "input_tokens": 42,
+        "generation_wall_ns": 123,
+        "output_tokens": 7,
+        "terminal_eos": True,
+    }
+    started_core = {
+        "schema": "pastila-production-core-inference-lifecycle-event",
+        "schema_version": 1,
+        "phase": "STARTED",
+        "sequence": 1,
+        "completed_count": 0,
+        "case_id": "case-1",
+        "request_identity": row["request_identity"],
+        "input_tokens": 42,
+        "started_boottime_ns": 1000,
+    }
+    started = {**started_core, "event_identity": module.identity(started_core)}
+    completed_core = {
+        "schema": "pastila-production-core-inference-lifecycle-event",
+        "schema_version": 1,
+        "phase": "COMPLETED",
+        "sequence": 1,
+        "completed_count": 1,
+        "case_id": "case-1",
+        "request_identity": row["request_identity"],
+        "started_event_identity": started["event_identity"],
+        "generation_wall_ns": 123,
+        "output_tokens": 7,
+        "terminal_eos": True,
+    }
+    completed = {**completed_core, "event_identity": module.identity(completed_core)}
+    module.validate_inference_lifecycle(
+        module.canonical(started),
+        module.canonical(completed),
+        sequence=1,
+        row=row,
+        observation=observation,
+    )
+    completed["generation_wall_ns"] = 124
+    import pytest
+
+    with pytest.raises(SystemExit, match="lifecycle evidence mismatch"):
+        module.validate_inference_lifecycle(
+            module.canonical(started),
+            module.canonical(completed),
+            sequence=1,
+            row=row,
+            observation=observation,
+        )
+
+
+def test_completion_authority_closure_includes_lifecycle_events():
+    source = (
+        ROOT / "src/pastila_scout/production_core_candidate_execution_authority_v3.py"
+    ).read_text("utf-8")
+    assert (
+        "validate_inference_lifecycle_events(started, completed, row, observation)"
+        in source
+    )
+    assert (
+        "f\"{directory}/results/inference-{row['batch_ordinal']:03d}-started.json\""
+        in source
+    )
+    assert (
+        "f\"{directory}/results/inference-{row['batch_ordinal']:03d}-completed.json\""
+        in source
+    )

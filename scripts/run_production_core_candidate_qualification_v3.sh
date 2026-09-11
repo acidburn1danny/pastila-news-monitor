@@ -104,14 +104,14 @@ while kill -0 "$runner_pid" 2>/dev/null; do
   sleep 1
 done
 set +e; wait "$runner_pid"; status=$?; set -e
-if [[ "$invalid_heartbeat" == true ]]; then printf '{"schema":"pastila-production-core-supervisor-failure","schema_version":1,"code":"INVALID_HEARTBEAT_AUTHORITY","ceiling_ns":600000000000}' > "$OUTPUT/supervisor-failure.json"; exit 125; fi
-if [[ "$timed_out" == true ]]; then printf '{"schema":"pastila-production-core-supervisor-failure","schema_version":1,"code":"INFERENCE_WALL_TIME_EXCEEDED","ceiling_ns":600000000000}' > "$OUTPUT/supervisor-failure.json"; exit 124; fi
+if [[ "$invalid_heartbeat" == true ]]; then printf '{"schema":"pastila-production-core-supervisor-failure","schema_version":2,"code":"INVALID_HEARTBEAT_AUTHORITY","ceiling_ns":600000000000,"watchdog_exit_code":125,"last_sequence":%s,"last_completed_count":%s,"last_stage":"%s"}' "$last_sequence" "$last_completed" "$last_stage" > "$OUTPUT/supervisor-failure.json"; exit 125; fi
+if [[ "$timed_out" == true ]]; then printf '{"schema":"pastila-production-core-supervisor-failure","schema_version":2,"code":"INFERENCE_WALL_TIME_EXCEEDED","ceiling_ns":600000000000,"watchdog_exit_code":124,"last_sequence":%s,"last_completed_count":%s,"last_stage":"%s"}' "$last_sequence" "$last_completed" "$last_stage" > "$OUTPUT/supervisor-failure.json"; exit 124; fi
 [[ "$status" -eq 0 ]] || exit "$status"
-snapshot_heartbeat "$OUTPUT/heartbeat.json" || { printf '{"schema":"pastila-production-core-supervisor-failure","schema_version":1,"code":"INVALID_FINAL_HEARTBEAT_AUTHORITY","ceiling_ns":600000000000}' > "$OUTPUT/supervisor-failure.json"; exit 125; }
+snapshot_heartbeat "$OUTPUT/heartbeat.json" || { printf '{"schema":"pastila-production-core-supervisor-failure","schema_version":2,"code":"INVALID_FINAL_HEARTBEAT_AUTHORITY","ceiling_ns":600000000000,"watchdog_exit_code":125,"last_sequence":%s,"last_completed_count":%s,"last_stage":"%s"}' "$last_sequence" "$last_completed" "$last_stage" > "$OUTPUT/supervisor-failure.json"; exit 125; }
 final_heartbeat="$(printf %s "$heartbeat_snapshot_b64" | base64 -d)"
 final_observed="$(sed -n 's/.*"deadline_boottime_ns":\([0-9][0-9]*\)}$/\1/p' <<<"$final_heartbeat")"
 read -r final_uptime _ </proc/uptime; final_whole="${final_uptime%%.*}"; final_frac="${final_uptime#*.}000000000"; final_now=$((10#$final_whole * 1000000000 + 10#${final_frac:0:9}))
 final_expected="{\"stage\":\"BATCH_COMPLETE\",\"sequence\":201,\"completed_count\":200,\"deadline_boottime_ns\":$final_observed}"
-if [[ ! "$final_observed" =~ ^[0-9]+$ ]] || ! cmp -s <(printf %s "$heartbeat_snapshot_b64" | base64 -d) <(printf %s "$final_expected") || (( final_observed < final_now || final_observed > final_now + 600000000000 || 201 < last_sequence || 200 < last_completed )); then printf '{"schema":"pastila-production-core-supervisor-failure","schema_version":1,"code":"INVALID_FINAL_HEARTBEAT_AUTHORITY","ceiling_ns":600000000000}' > "$OUTPUT/supervisor-failure.json"; exit 125; fi
+if [[ ! "$final_observed" =~ ^[0-9]+$ ]] || ! cmp -s <(printf %s "$heartbeat_snapshot_b64" | base64 -d) <(printf %s "$final_expected") || (( final_observed < final_now || final_observed > final_now + 600000000000 || 201 < last_sequence || 200 < last_completed )); then printf '{"schema":"pastila-production-core-supervisor-failure","schema_version":2,"code":"INVALID_FINAL_HEARTBEAT_AUTHORITY","ceiling_ns":600000000000,"watchdog_exit_code":125,"last_sequence":%s,"last_completed_count":%s,"last_stage":"%s"}' "$last_sequence" "$last_completed" "$last_stage" > "$OUTPUT/supervisor-failure.json"; exit 125; fi
 sync -f "$OUTPUT"
 CHILD

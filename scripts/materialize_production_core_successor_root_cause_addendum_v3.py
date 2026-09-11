@@ -11,7 +11,9 @@ ATTEMPT = "337bb8acc130cc02f77f83c7a026b9212c781ba06d11989e64ef11b334f6a5ca"
 TERMINAL_FAILURE = "d132b5c57e8ffc7344b70ae2881655b02abb7baebf3c916c6ae2259d361f9e89"
 DISPOSITION = "4a95de2298db2cd618cafd8b9e17797097fcc93af901f386fccb474c4e9e052a"
 DISPOSITION_SHA256 = "2589d7fadd42cc4cae3dbae27fbc969f8bc87af796d5a01cd401db385d0169cb"
-TERMINAL_FAILURE_SHA256 = "59c311f73ad90d6ad3342b06c83d70693c5a744188e6182dd331be1613b7896c"
+TERMINAL_FAILURE_SHA256 = (
+    "59c311f73ad90d6ad3342b06c83d70693c5a744188e6182dd331be1613b7896c"
+)
 SUPERVISOR_SHA256 = "ea83c3c04bf2f72b6e98f5dfd6710061a06765d5e97cf622a48d09c4133d179f"
 HEARTBEAT_SHA256 = "62ab14477d2d4e597734528d00c4495977f904765ea2480fffb458f431abaa7a"
 FAILED_DIRECTORY = Path("materialization-B/repetition-2/CANDIDATE-B")
@@ -68,7 +70,9 @@ def build(execution_root: Path, disposition_path: Path) -> dict[str, object]:
         or failure.get("failure_class") != "UNCAUGHT_AFTER_ATTEMPT_CONSUMPTION"
     ):
         raise SystemExit("terminal failure drift")
-    if hashlib.sha256(supervisor_raw).hexdigest() != SUPERVISOR_SHA256 or supervisor != {
+    if hashlib.sha256(
+        supervisor_raw
+    ).hexdigest() != SUPERVISOR_SHA256 or supervisor != {
         "schema": "pastila-production-core-supervisor-failure",
         "schema_version": 1,
         "code": "INFERENCE_WALL_TIME_EXCEEDED",
@@ -83,12 +87,19 @@ def build(execution_root: Path, disposition_path: Path) -> dict[str, object]:
         "deadline_boottime_ns": 39_819_100_000_000,
     }:
         raise SystemExit("heartbeat evidence drift")
-    if not isinstance(batch, list) or len(batch) != 200 or batch[114].get(
-        "case_id"
-    ) != "pcq-unc-025":
+    if (
+        not isinstance(batch, list)
+        or len(batch) != 200
+        or batch[114].get("case_id") != "pcq-unc-025"
+    ):
         raise SystemExit("failed case binding drift")
-    stem = "pcq-unc-025.edcb67dadf41d5d3211823d05cc2ab53119cf279dfdaa47c321dcd4134ec0492"
-    if any((failed / "results" / f"{stem}.{suffix}").exists() for suffix in ("raw", "observation.json")):
+    stem = (
+        "pcq-unc-025.edcb67dadf41d5d3211823d05cc2ab53119cf279dfdaa47c321dcd4134ec0492"
+    )
+    if any(
+        (failed / "results" / f"{stem}.{suffix}").exists()
+        for suffix in ("raw", "observation.json")
+    ):
         raise SystemExit("failed inference unexpectedly has terminal output")
     core = {
         "schema": "pastila-production-core-successor-root-cause-addendum-v3",
@@ -146,7 +157,9 @@ def main() -> int:
         args.execution_root.resolve(strict=True),
         args.disposition.resolve(strict=True),
     )
-    encoded = json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True).encode() + b"\n"
+    encoded = (
+        json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True).encode() + b"\n"
+    )
     if args.output.exists() and args.output.read_bytes() != encoded:
         raise SystemExit("published addendum differs")
     if not args.output.exists():
