@@ -198,20 +198,16 @@ def validate_preflight_receipt(preflight: Mapping[str, object]) -> None:
         or len(str(preflight["execution_authority_identity"])) != 64
         or not isinstance(sources, Mapping)
         or set(sources) != {
-            "docs/schemas/production-core-candidate-execution-authority-v7.schema.json",
             "docs/schemas/production-core-candidate-execution-evidence-v2.schema.json",
             "scripts/execute_production_core_candidate_qualification_v3.py",
-            "scripts/launch_production_core_candidate_qualification_v3.py",
+            "scripts/launch_production_core_candidate_qualification_v4.py",
             "scripts/resolve_production_core_object_authority_v2.sh",
             "scripts/run_production_core_candidate_qualification_v3.sh",
-            "scripts/materialize_production_core_successor_execution_authority_v7.py",
             "scripts/smoke_production_core_checkpoint_resume_v6.py",
             "src/pastila_scout/production_core_candidate_execution_authority_v3.py",
             "src/pastila_scout/production_core_candidate_qualification_runner_v3.py",
             "src/pastila_scout/production_core_checkpoint_resume_v6.py",
             "src/pastila_scout/production_core_semantic_authority_v2.py",
-            "tests/test_production_core_checkpoint_resume_v6.py",
-            "tests/test_production_core_successor_execution_authority_v3.py",
         }
         or any(
             not isinstance(value, str)
