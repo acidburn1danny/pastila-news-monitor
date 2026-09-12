@@ -1,0 +1,27 @@
+{
+  "schema": "pastila-production-core-v9-dual-structural-remediation-corpus",
+  "schema_version": 1,
+  "status": "FROZEN_HOLDOUT_ISOLATED_PRETRAINING",
+  "predecessor_terminal_disposition_identity": "077fc4b81f0e5768c7fd3b49394358a1f56a3ef217c9c527ede70bf9b870e9bb",
+  "completion_audit_receipt_identity": "7caba9a9c72423c10d62949f9ce15283562e2533ef715e6b21e925c708b05950",
+  "train_examples": 480,
+  "development_examples": 72,
+  "train_sha256": "ecac8fe5b1c1069de2ff69614d210aa800b7838cdf8911d5b505747f515fddcd",
+  "development_sha256": "9d276d4d49088ee52539a032874609de75d492027e2a6bfd70ec54da95f74059",
+  "targeted_failure_classes": [
+    "MARKDOWN_JSON_FENCE",
+    "MISSING_OR_WRONG_CLAIM_MAPPING",
+    "DUPLICATE_SOURCE_SPAN_ACROSS_CLAIMS",
+    "ANSWER_WHEN_ABSTENTION_REQUIRED",
+    "REQUEST_IDENTITY_SUBSTITUTION",
+    "MALFORMED_JSON",
+    "RUNAWAY_OUTPUT"
+  ],
+  "qualification_or_holdout_examples_used": 0,
+  "consumed_attempt_outputs_used": 0,
+  "candidate_execution_performed": false,
+  "qualification_attempt_consumed": false,
+  "adjudication_performed": false,
+  "promotion_effect": false,
+  "corpus_identity": "80772cae8b3af36f171ed3a3c6634d941d6780a6d249c495b737944bcdbfeba4"
+}

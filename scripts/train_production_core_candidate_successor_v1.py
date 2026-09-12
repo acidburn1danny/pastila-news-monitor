@@ -106,7 +106,11 @@ def main() -> int:
     if any(output.iterdir()):
         raise SystemExit("successor output must be empty")
     rows = [json.loads(line) for line in corpus.read_text("utf-8").splitlines()]
-    expected_rows = 320 if config.get("schema_version") == 2 else 240
+    expected_rows_by_schema = {1: 240, 2: 320, 3: 480}
+    try:
+        expected_rows = expected_rows_by_schema[config.get("schema_version")]
+    except (KeyError, TypeError) as exc:
+        raise SystemExit("training config schema version mismatch") from exc
     if len(rows) != expected_rows:
         raise SystemExit("remediation corpus cardinality mismatch")
 
