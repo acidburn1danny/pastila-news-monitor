@@ -4,9 +4,13 @@ import json
 from pathlib import Path
 
 from jsonschema import Draft202012Validator
-
 from pastila_scout.production_core_candidate_execution_authority_v3 import (
+    ExecutionAuthorityError,
+    validate_inference_lifecycle_events,
     validate_preflight,
+)
+from pastila_scout.production_core_candidate_execution_authority_v3 import (
+    identity as authority_identity,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -186,6 +190,83 @@ def test_inference_lifecycle_is_content_addressed_and_cross_bound():
             row=row,
             observation=observation,
         )
+
+
+def _authority_lifecycle_pair():
+    row = {
+        "batch_ordinal": 1,
+        "case_id": "case-1",
+        "request_identity": "sha256:" + "a" * 64,
+    }
+    observation = {
+        "input_tokens": 42,
+        "generation_wall_ns": 123,
+        "output_tokens": 7,
+        "terminal_eos": True,
+        "termination_reason": "TERMINAL_EOS",
+    }
+    started_core = {
+        "schema": "pastila-production-core-inference-lifecycle-event",
+        "schema_version": 1,
+        "phase": "STARTED",
+        "sequence": 1,
+        "completed_count": 0,
+        "case_id": row["case_id"],
+        "request_identity": row["request_identity"],
+        "input_tokens": 42,
+        "started_boottime_ns": 1000,
+    }
+    started = {**started_core, "event_identity": authority_identity(started_core)}
+    completed_core = {
+        "schema": "pastila-production-core-inference-lifecycle-event",
+        "schema_version": 1,
+        "phase": "COMPLETED",
+        "sequence": 1,
+        "completed_count": 1,
+        "case_id": row["case_id"],
+        "request_identity": row["request_identity"],
+        "started_event_identity": started["event_identity"],
+        "generation_wall_ns": 123,
+        "output_tokens": 7,
+        "terminal_eos": True,
+        "termination_reason": "TERMINAL_EOS",
+    }
+    completed = {
+        **completed_core,
+        "event_identity": authority_identity(completed_core),
+    }
+    return row, observation, started, completed
+
+
+def test_final_authority_accepts_executor_completed_schema():
+    row, observation, started, completed = _authority_lifecycle_pair()
+    validate_inference_lifecycle_events(started, completed, row, observation)
+
+
+def test_final_authority_rejects_missing_wrong_and_stale_termination_reason():
+    import pytest
+
+    row, observation, started, completed = _authority_lifecycle_pair()
+    for mutation in ("missing", "wrong", "stale"):
+        changed = dict(completed)
+        if mutation == "missing":
+            changed.pop("termination_reason")
+        elif mutation == "wrong":
+            changed["termination_reason"] = "OUTPUT_BYTE_CEILING_EXCEEDED"
+        else:
+            changed["stale_validator_only_field"] = True
+        core = dict(changed)
+        core.pop("event_identity")
+        changed["event_identity"] = authority_identity(core)
+        with pytest.raises(
+            ExecutionAuthorityError, match="inference lifecycle evidence mismatch"
+        ):
+            validate_inference_lifecycle_events(
+                started=started,
+                completed=changed,
+                expected=row,
+                observation=observation,
+            )
 
 
 def test_completion_authority_closure_includes_lifecycle_events():
