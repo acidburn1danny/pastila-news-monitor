@@ -1,0 +1,103 @@
+{
+  "schema": "pastila-production-core-v8-1-completion-audit-receipt",
+  "schema_version": 1,
+  "status": "PASS_ZERO_BLOCKERS",
+  "audit_mode": "FRESH_ADVERSARIAL_READ_ONLY",
+  "audited_source_commit": "db91e013fbe540ed745dc32f4caa1590aa14600d",
+  "execution_authority_identity": "589ff2d7f8f98c071e0300a23016970517536f28e065139f5ba0422505a4ebe1",
+  "attempt_ordinal": 1,
+  "attempt_identity": "56193f17487b6e9a04fa977422cae0fdf960ac18ae6f974233b25b1437781627",
+  "attempt_sha256": "d6338f9192690b0604fb3b4cffe7db68f4e50489c84b861945bbc49d20b3565b",
+  "completion_identity": "b5b3e87cb10914351a66762a5862053a0c77dbc3c7fc638c5f6559562f937196",
+  "completion_sha256": "c7152d87aebae0b4dcb79044ed479261494a26208a977ffd94bd83c0a13614b6",
+  "artifact_root": "060dfa6989f86a267196924778543500a61e4c70cad81e0a8e2b1307c9d21a8b",
+  "artifact_inventory_entries": 12073,
+  "matrix_rows": 2400,
+  "matrix_evidence_counts": {
+    "raw_outputs": 2400,
+    "observations": 2400,
+    "lifecycle_started": 2400,
+    "lifecycle_completed": 2400
+  },
+  "checkpoints": [
+    {
+      "ordinal": 1,
+      "checkpoint_identity": "ec3ad2397e799a8d8861bad0303d12334fc2a39d486bff1d22e41b74783ef4be",
+      "checkpoint_sha256": "b3092924b55609fee41160f53acee7ed80e2f31f9a5c8aca1d771094ff8fb329"
+    },
+    {
+      "ordinal": 2,
+      "checkpoint_identity": "66033f9449d686a02b9f3ee6b02c1f13c4bd6a083ea025fac3c179e9d8934044",
+      "checkpoint_sha256": "fb9ad46f80dfed8ae88957049b5816f2c1a43f86c4942fac52f9f36880b4ce71"
+    },
+    {
+      "ordinal": 3,
+      "checkpoint_identity": "1879a4571182aeae1843d803e07893bb35de6c00f570f858e772903a2987bd09",
+      "checkpoint_sha256": "4997c505d122206da8553679f07240a965847512d47bc693798a4e319c64b802"
+    },
+    {
+      "ordinal": 4,
+      "checkpoint_identity": "b25726a19294549bb5b5e22a26ec268cd8c1ee91c6110a858f4f71b021d8ba5a",
+      "checkpoint_sha256": "8c72e2d6606c9e5fcaeb4d6be7d584cd2e7d7ea617d5e42b971e11b1d14116b0"
+    },
+    {
+      "ordinal": 5,
+      "checkpoint_identity": "999bd97545e55e4758ba3364134cb2d918a140e2b06a45b75cb78fa90220903a",
+      "checkpoint_sha256": "b3d21ebc3b60de4302e9e053582a7af170c5baac71c98a1e1f890e2f1961c0fc"
+    },
+    {
+      "ordinal": 6,
+      "checkpoint_identity": "be14a58df2b5bcf5ac887c88a3a0033a0cdf49c65c32ad043a0f9fa3f47684e2",
+      "checkpoint_sha256": "bc12fd0e95c4256cd1370529d09bd54214efc46204179430c637753ec9d9677d"
+    },
+    {
+      "ordinal": 7,
+      "checkpoint_identity": "17e1ab24220a47ff3f9683eb2a192f931508357429a3da290dc7e9e3957c413d",
+      "checkpoint_sha256": "b071c5ecea64e1fffd5a96845d07cd925e1994950e7740dbf6ede3204b8b2b0c"
+    },
+    {
+      "ordinal": 8,
+      "checkpoint_identity": "06559f022744485c7d821f9189de1a2c1ba4baabfa618a8ba381629a09f1aed4",
+      "checkpoint_sha256": "8954470b093ff4d8167a6987cf9231e194515baa102d0c414eb7376fd0643e5d"
+    },
+    {
+      "ordinal": 9,
+      "checkpoint_identity": "2707f070407c330fe614a5a3267ba007fbad3c79e90e7a3e983a5c9b0fc362a9",
+      "checkpoint_sha256": "49a93ccd4e104277cd4a88efcd5930572338fbf73437eaecabbfa1ccbf9c1e1f"
+    },
+    {
+      "ordinal": 10,
+      "checkpoint_identity": "004e1fdc4eaa742d7f16bc43e33afd1097edda5e7d67b788232867e917500048",
+      "checkpoint_sha256": "f2fb235b32b9592aa4f165998d4c624b05ca4795291a96e6a39d509ba61ec050"
+    },
+    {
+      "ordinal": 11,
+      "checkpoint_identity": "52257411d6dba09f87d8ef270d16982761f58c149daa855bb82c4b131dadc317",
+      "checkpoint_sha256": "dea83a533b52c6a7d4adafa9346f19d8d93da3180e1d3f25e48e7da4d8435346"
+    },
+    {
+      "ordinal": 12,
+      "checkpoint_identity": "9dae8b0b95715422c3e2d9dba4af5863a2abc373aa06c660a23dce9843897d42",
+      "checkpoint_sha256": "92cfd8f2c664787ae4324f17695aff30b80c20154efe4ca7309b85b2d5cf6f53"
+    }
+  ],
+  "terminal_checkpoint_identity": "9dae8b0b95715422c3e2d9dba4af5863a2abc373aa06c660a23dce9843897d42",
+  "validator_sha256": "404a180db4500b6e6cb633d9e17e3b5a3ec8ae615f9babdcf0ad50f8f0d1989c",
+  "relevant_tests": {
+    "passed": 24,
+    "failed": 0
+  },
+  "symlinks_detected": 0,
+  "staging_directories_detected": 0,
+  "terminal_failure_present": false,
+  "blockers_identified": 0,
+  "blockers_remaining": 0,
+  "attempt_consumed": true,
+  "candidate_execution_completed": true,
+  "attempt_reexecuted": false,
+  "artifacts_modified_by_audit": false,
+  "retry_or_redraw": false,
+  "adjudication_performed": false,
+  "promotion_effect": false,
+  "audit_receipt_identity": "7caba9a9c72423c10d62949f9ce15283562e2533ef715e6b21e925c708b05950"
+}
