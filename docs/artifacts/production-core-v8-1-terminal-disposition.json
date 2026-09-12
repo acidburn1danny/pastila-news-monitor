@@ -1,0 +1,49 @@
+{
+  "schema": "pastila-production-core-v8-1-terminal-qualification-disposition",
+  "schema_version": 1,
+  "status": "TERMINAL_STRUCTURAL_REJECTION_BOTH_CANDIDATES",
+  "execution_authority_identity": "589ff2d7f8f98c071e0300a23016970517536f28e065139f5ba0422505a4ebe1",
+  "qualification_generation_identity": "6d388a99731e3d4a08fa2a629374c37dd97994806ac54ffe49ab9fb1b41d630d",
+  "rubric_identity": "659339bac91cfbdf993c7b57555dfd9191e609816db76e60bc41f13d0dfba1a6",
+  "completion_audit_receipt_identity": "7caba9a9c72423c10d62949f9ce15283562e2533ef715e6b21e925c708b05950",
+  "attempt_identity": "56193f17487b6e9a04fa977422cae0fdf960ac18ae6f974233b25b1437781627",
+  "attempt_ordinal": 1,
+  "attempt_consumed_permanently": true,
+  "completion_identity": "b5b3e87cb10914351a66762a5862053a0c77dbc3c7fc638c5f6559562f937196",
+  "evidence": {
+    "attempt_sha256": "d6338f9192690b0604fb3b4cffe7db68f4e50489c84b861945bbc49d20b3565b",
+    "completion_sha256": "c7152d87aebae0b4dcb79044ed479261494a26208a977ffd94bd83c0a13614b6",
+    "artifact_root": "060dfa6989f86a267196924778543500a61e4c70cad81e0a8e2b1307c9d21a8b",
+    "artifact_count": 12073,
+    "completed_rows": 2400,
+    "structural_status_counts": {
+      "FAIL_CLOSED_INVALID_OUTPUT": 2400
+    },
+    "candidate_alias_counts": {
+      "CANDIDATE-A": 1200,
+      "CANDIDATE-B": 1200
+    }
+  },
+  "candidate_dispositions": [
+    {
+      "candidate_alias": "CANDIDATE-A",
+      "candidate": "pastila-editor-core-v1.2-json-successor",
+      "disposition": "REJECTED_STRUCTURALLY"
+    },
+    {
+      "candidate_alias": "CANDIDATE-B",
+      "candidate": "pastila-editor-core-v1.1-json-successor-v2",
+      "disposition": "REJECTED_STRUCTURALLY"
+    }
+  ],
+  "adjudication_authorized": true,
+  "semantic_adjudication_required": false,
+  "semantic_adjudication_performed": false,
+  "semantic_adjudication_bypass_reason": "STRUCTURAL_FAIL_IS_TERMINAL_BEFORE_SIGNATURE_VERIFICATION",
+  "stale_custody_exports_used": false,
+  "retry_or_redraw": false,
+  "candidate_execution_repeated": false,
+  "promotion_effect": false,
+  "successor_requirement": "NEW_SUCCESSOR_LINEAGE_AND_NEW_EXECUTION_AUTHORITY",
+  "disposition_identity": "077fc4b81f0e5768c7fd3b49394358a1f56a3ef217c9c527ede70bf9b870e9bb"
+}
