@@ -8,7 +8,7 @@ import subprocess
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
-COMMIT="4fbdbe4f09eae536f3fa43c2c517d01e8296bcb6"
+COMMIT="48f26c7a607fbc39896cdfa8ec853ed5133ac7ec"
 PUB="29616718e9d17a3c88f630af52fee0ef7a9dc7adc519412c4870f06b63ca1cca"
 SOURCES=("docs/schemas/production-core-candidate-execution-evidence-v2.schema.json","scripts/execute_production_core_candidate_qualification_v3.py","scripts/launch_production_core_candidate_qualification_v4.py","scripts/resolve_production_core_object_authority_v2.sh","scripts/run_production_core_candidate_qualification_v3.sh","scripts/smoke_production_core_checkpoint_resume_v6.py","src/pastila_scout/production_core_candidate_execution_authority_v3.py","src/pastila_scout/production_core_candidate_qualification_runner_v3.py","src/pastila_scout/production_core_checkpoint_resume_v6.py","src/pastila_scout/production_core_semantic_authority_v2.py")
 IDS={"qualification_generation_identity":"6d388a99731e3d4a08fa2a629374c37dd97994806ac54ffe49ab9fb1b41d630d","qualification_identity":"4d2a4b7a42141668e907bd90cb96cf8d28dce518761b3c0dc0375954ea6575f4","request_manifest_identity":"f3b0e0d11c5b73fba39ce21f5daa040e788a2ea09d455389bf990ee8264b4d03","candidate_object_manifest_identity":"7bff8d58e56c1fd8e29f91f440b4f4c91ce4d79413d4186d895406f852c6abf9","candidate_audit_receipt_identity":"7519871ebd5cc566a06a8c24f04976244cda9e0653e35464adc1ef8bd80b77a2"}

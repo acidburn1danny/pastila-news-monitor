@@ -4,7 +4,10 @@ from pathlib import Path
 import pytest
 
 from pastila_scout.production_core_checkpoint_resume_v6 import (
-    CheckpointError, build_receipt, validate_chain, write_receipt,
+    CheckpointError,
+    build_receipt,
+    validate_chain,
+    write_receipt,
 )
 
 
