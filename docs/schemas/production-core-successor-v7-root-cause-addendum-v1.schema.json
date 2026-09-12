@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "schema_version", "execution_authority_identity",
+    "qualification_generation_identity", "attempt_ordinal", "attempt_identity",
+    "attempt_consumed_permanently", "attempt_relaunch_authorized",
+    "terminal_failure_identity", "failure_class", "completed_rows",
+    "checkpoint_count", "failed_batch", "mismatch", "lifecycle_evidence",
+    "evidence", "retry_or_redraw", "adjudication_performed",
+    "promotion_effect", "successor_requirement", "addendum_identity"
+  ],
+  "properties": {
+    "schema": {"const": "pastila-production-core-successor-v7-root-cause-addendum"},
+    "schema_version": {"const": 1},
+    "execution_authority_identity": {"const": "c3cd54548938cbf8da161279a77152fdefe98a28e59a5ae502b198e24a61cd20"},
+    "qualification_generation_identity": {"const": "6d388a99731e3d4a08fa2a629374c37dd97994806ac54ffe49ab9fb1b41d630d"},
+    "attempt_ordinal": {"const": 1},
+    "attempt_identity": {"const": "48a971983f78a4395dc03e40ba26b1e98e62bb7c452bb43ce0caf662b0d5d72d"},
+    "attempt_consumed_permanently": {"const": true},
+    "attempt_relaunch_authorized": {"const": false},
+    "terminal_failure_identity": {"const": "a4eb2c19c9b47a74236793adc01cd807d4ed5048415407095737553a12185fc6"},
+    "failure_class": {"const": "INFERENCE_LIFECYCLE_EVIDENCE_MISMATCH_AFTER_ATTEMPT_CONSUMPTION"},
+    "completed_rows": {"const": 2400},
+    "checkpoint_count": {"const": 12},
+    "failed_batch": {"type": "null"},
+    "mismatch": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["classification", "executor_completed_schema_includes", "final_validator_completed_schema_omits", "attempt_outputs_reinterpreted", "attempt_outputs_modified"],
+      "properties": {
+        "classification": {"const": "FROZEN_FINAL_VALIDATOR_SCHEMA_STALE"},
+        "executor_completed_schema_includes": {"const": "termination_reason"},
+        "final_validator_completed_schema_omits": {"const": "termination_reason"},
+        "attempt_outputs_reinterpreted": {"const": false},
+        "attempt_outputs_modified": {"const": false}
+      }
+    },
+    "lifecycle_evidence": {
+      "type": "object",
+      "required": ["started_events", "completed_events", "observations", "executor_completed_keys", "stale_final_validator_completed_keys", "field_rejected_only_by_stale_validator", "termination_reason_counts", "first_demonstrating_event"],
+      "properties": {
+        "started_events": {"const": 2400},
+        "completed_events": {"const": 2400},
+        "observations": {"const": 2400},
+        "field_rejected_only_by_stale_validator": {"const": "termination_reason"},
+        "termination_reason_counts": {
+          "const": {"OUTPUT_BYTE_CEILING_EXCEEDED": 6, "TERMINAL_EOS": 2394}
+        },
+        "executor_completed_keys": {"type": "array"},
+        "stale_final_validator_completed_keys": {"type": "array"},
+        "first_demonstrating_event": {"type": "object"}
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "required": ["attempt_sha256", "terminal_failure_sha256", "partial_artifact_count", "partial_artifact_root", "executor_source_sha256", "final_validator_source_sha256"],
+      "properties": {
+        "attempt_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "terminal_failure_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "partial_artifact_count": {"const": 12073},
+        "partial_artifact_root": {"const": "a8486947436a619e1aa94ba4f09c8dde63120f58ffa4b0f72c1b0443bee4fa2d"},
+        "executor_source_sha256": {"const": "5e873f291da0c861bf55355ad522b87dd06e276d17d9b290092aa3c8556ab9f7"},
+        "final_validator_source_sha256": {"const": "31a93c12294ded191852c16e62bc48bb15d3f047c5292024e623bb05edbe3c44"}
+      }
+    },
+    "retry_or_redraw": {"const": false},
+    "adjudication_performed": {"const": false},
+    "promotion_effect": {"const": false},
+    "successor_requirement": {"const": "NEW_SUCCESSOR_LINEAGE_AND_NEW_EXECUTION_AUTHORITY"},
+    "addendum_identity": {"const": "06661c7dc7c73d80bfef026da13e50732de27eb2f19cc3d4ad674e3ede44f84d"}
+  }
+}

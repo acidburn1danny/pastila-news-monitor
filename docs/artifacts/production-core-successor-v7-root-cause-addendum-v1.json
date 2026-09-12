@@ -1,0 +1,82 @@
+{
+  "addendum_identity": "06661c7dc7c73d80bfef026da13e50732de27eb2f19cc3d4ad674e3ede44f84d",
+  "adjudication_performed": false,
+  "attempt_consumed_permanently": true,
+  "attempt_identity": "48a971983f78a4395dc03e40ba26b1e98e62bb7c452bb43ce0caf662b0d5d72d",
+  "attempt_ordinal": 1,
+  "attempt_relaunch_authorized": false,
+  "checkpoint_count": 12,
+  "completed_rows": 2400,
+  "evidence": {
+    "attempt_sha256": "6b57a91852802c336c39dfd0d530e15796bb84e72d87d23a02e78ea16f4a007e",
+    "executor_source_sha256": "5e873f291da0c861bf55355ad522b87dd06e276d17d9b290092aa3c8556ab9f7",
+    "final_validator_source_sha256": "31a93c12294ded191852c16e62bc48bb15d3f047c5292024e623bb05edbe3c44",
+    "partial_artifact_count": 12073,
+    "partial_artifact_root": "a8486947436a619e1aa94ba4f09c8dde63120f58ffa4b0f72c1b0443bee4fa2d",
+    "terminal_failure_sha256": "8a23d1b5a505cf41c76a0ec1652fd66564ce14fc821737b2d16533555e9fd9d0"
+  },
+  "execution_authority_identity": "c3cd54548938cbf8da161279a77152fdefe98a28e59a5ae502b198e24a61cd20",
+  "failed_batch": null,
+  "failure_class": "INFERENCE_LIFECYCLE_EVIDENCE_MISMATCH_AFTER_ATTEMPT_CONSUMPTION",
+  "lifecycle_evidence": {
+    "completed_events": 2400,
+    "executor_completed_keys": [
+      "schema",
+      "schema_version",
+      "phase",
+      "sequence",
+      "completed_count",
+      "case_id",
+      "request_identity",
+      "started_event_identity",
+      "generation_wall_ns",
+      "output_tokens",
+      "terminal_eos",
+      "termination_reason",
+      "event_identity"
+    ],
+    "field_rejected_only_by_stale_validator": "termination_reason",
+    "first_demonstrating_event": {
+      "case_id": "pcq-mal-010",
+      "event_identity": "f887db1b51fca834c42995177f8599b4bf790c82bf8b3b3a600a38ff27835e48",
+      "path": "materialization-A/repetition-1/CANDIDATE-A/results/inference-001-completed.json",
+      "request_identity": "sha256:b606828c6cdfa2b50934505f821116883bf3413c8eb9e28c5cec3c02d3153975",
+      "sha256": "e682459d16509cf0d27bdd05da21ffb5f34046219f6c5d32c79b3a5941c771a8",
+      "termination_reason": "TERMINAL_EOS"
+    },
+    "observations": 2400,
+    "stale_final_validator_completed_keys": [
+      "schema",
+      "schema_version",
+      "phase",
+      "sequence",
+      "completed_count",
+      "case_id",
+      "request_identity",
+      "started_event_identity",
+      "generation_wall_ns",
+      "output_tokens",
+      "terminal_eos",
+      "event_identity"
+    ],
+    "started_events": 2400,
+    "termination_reason_counts": {
+      "OUTPUT_BYTE_CEILING_EXCEEDED": 6,
+      "TERMINAL_EOS": 2394
+    }
+  },
+  "mismatch": {
+    "attempt_outputs_modified": false,
+    "attempt_outputs_reinterpreted": false,
+    "classification": "FROZEN_FINAL_VALIDATOR_SCHEMA_STALE",
+    "executor_completed_schema_includes": "termination_reason",
+    "final_validator_completed_schema_omits": "termination_reason"
+  },
+  "promotion_effect": false,
+  "qualification_generation_identity": "6d388a99731e3d4a08fa2a629374c37dd97994806ac54ffe49ab9fb1b41d630d",
+  "retry_or_redraw": false,
+  "schema": "pastila-production-core-successor-v7-root-cause-addendum",
+  "schema_version": 1,
+  "successor_requirement": "NEW_SUCCESSOR_LINEAGE_AND_NEW_EXECUTION_AUTHORITY",
+  "terminal_failure_identity": "a4eb2c19c9b47a74236793adc01cd807d4ed5048415407095737553a12185fc6"
+}
