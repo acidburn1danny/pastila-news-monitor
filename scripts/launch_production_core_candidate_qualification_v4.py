@@ -6,6 +6,7 @@ import hashlib
 import json
 import os
 import stat
+import subprocess
 import sys
 import types
 from pathlib import Path
@@ -22,6 +23,11 @@ CORE = (
 SEMANTIC = ROOT / "src" / "pastila_scout" / "production_core_semantic_authority_v2.py"
 CHECKPOINT = ROOT / "src" / "pastila_scout" / "production_core_checkpoint_resume_v6.py"
 ART = ROOT / "docs" / "artifacts"
+OPENSSL = Path(r"C:\Program Files\FireDaemon OpenSSL 3.5\bin\openssl.exe")
+SIGNING_PUBLIC_KEY = ART / "production-core-v8-1-signing-public.pem"
+SIGNING_PUBLIC_KEY_SHA256 = "29616718e9d17a3c88f630af52fee0ef7a9dc7adc519412c4870f06b63ca1cca"
+SIGNED_BINDING = ART / "production-core-candidate-execution-authority-v8-1.binding.json"
+DETACHED_SIGNATURE = ART / "production-core-candidate-execution-authority-v8-1.binding.sig"
 EXECUTOR_SHA = "5e873f291da0c861bf55355ad522b87dd06e276d17d9b290092aa3c8556ab9f7"
 CORE_SHA = "680db18a94b61327d0285f1e4ff04bb60b9b4e0dbc601145511dcf97b8e6c4d8"
 CHECKPOINT_SHA = "d33e08722a0f4759644cd6b1e902570ec430202bfe6a7c1f2c269fbc722b8d58"
@@ -79,6 +85,34 @@ def main():
         checkpoint.__dict__,
         checkpoint.__dict__,
     )
+    public_key = read(SIGNING_PUBLIC_KEY, SIGNING_PUBLIC_KEY_SHA256)
+    if b"-----BEGIN PUBLIC KEY-----" not in public_key:
+        raise SystemExit("signing public key encoding mismatch")
+    binding_raw = read(SIGNED_BINDING)
+    signature = read(DETACHED_SIGNATURE)
+    if len(signature) != 64 or not OPENSSL.is_file():
+        raise SystemExit("detached signing boundary unavailable")
+    verified = subprocess.run(
+        [
+            str(OPENSSL),
+            "pkeyutl",
+            "-verify",
+            "-pubin",
+            "-inkey",
+            str(SIGNING_PUBLIC_KEY),
+            "-rawin",
+            "-in",
+            str(SIGNED_BINDING),
+            "-sigfile",
+            str(DETACHED_SIGNATURE),
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+    )
+    if verified.returncode != 0:
+        raise SystemExit("detached authority signature invalid")
+    binding = json.loads(binding_raw)
     mechanism_raw = read(
         ART / "production-core-candidate-execution-authority-v8-1.json"
     )
@@ -106,6 +140,35 @@ def main():
         "candidate_object_manifest_identity": module.CANDIDATE_MANIFEST_IDENTITY,
         "candidate_audit_receipt_identity": "7519871ebd5cc566a06a8c24f04976244cda9e0653e35464adc1ef8bd80b77a2",
     }
+    if (
+        tuple(binding)
+        != (
+            "schema",
+            "schema_version",
+            "algorithm",
+            "public_key_sha256",
+            "authority_identity",
+            "authority_sha256",
+            "bound_source_commit",
+            "source_sha256",
+            "candidate_execution_authorized",
+            "attempt_consumption_authorized",
+        )
+        or binding.get("schema")
+        != "pastila-production-core-v8-1-detached-authority-binding"
+        or binding.get("schema_version") != 1
+        or binding.get("algorithm") != "Ed25519"
+        or binding.get("public_key_sha256") != SIGNING_PUBLIC_KEY_SHA256
+        or binding.get("authority_identity") != recorded
+        or binding.get("authority_sha256")
+        != hashlib.sha256(mechanism_raw).hexdigest()
+        or binding.get("bound_source_commit")
+        != mechanism.get("bound_source_commit")
+        or binding.get("source_sha256") != sources
+        or binding.get("candidate_execution_authorized") is not False
+        or binding.get("attempt_consumption_authorized") is not False
+    ):
+        raise SystemExit("signed authority binding mismatch")
     if (
         tuple(mechanism)
         != (
@@ -148,8 +211,6 @@ def main():
             "recalculate_finalized_rows": False,
         }
         or mechanism.get("attempt_ordinal") != 1
-        or mechanism.get("bound_source_commit")
-        != "5d51f5fbe403803fcbf89fe535803438a4ae4e33"
         or mechanism.get("predecessor_terminal_failure_identity")
         != "a4eb2c19c9b47a74236793adc01cd807d4ed5048415407095737553a12185fc6"
         or mechanism.get("predecessor_root_cause_addendum_identity")
