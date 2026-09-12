@@ -13,5 +13,6 @@ def test_v8_1_launcher_is_separate_fixed_and_fail_closed():
     assert "detached authority signature invalid" in source
     assert "signed authority binding mismatch" in source
     assert "FROZEN_SUCCESSOR_V8_1_LAUNCH_BINDING_REPAIR_ZERO_ATTEMPTS" in source
+    assert source.count("scripts/launch_production_core_candidate_qualification_v4.py") == 2
     assert "predecessor_root_cause_addendum_identity" in source
     assert "lifecycle_completed_contract" in source

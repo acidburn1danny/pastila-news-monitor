@@ -124,7 +124,7 @@ def main():
     expected_sources = {
         "docs/schemas/production-core-candidate-execution-evidence-v2.schema.json",
         "scripts/execute_production_core_candidate_qualification_v3.py",
-        "scripts/launch_production_core_candidate_qualification_v3.py",
+        "scripts/launch_production_core_candidate_qualification_v4.py",
         "scripts/resolve_production_core_object_authority_v2.sh",
         "scripts/run_production_core_candidate_qualification_v3.sh",
         "scripts/smoke_production_core_checkpoint_resume_v6.py",
@@ -226,7 +226,7 @@ def main():
         or mechanism.get("retry_or_redraw_authorized") is not False
         or recorded != module.identity(core)
         or hashlib.sha256(read(ENTRY)).hexdigest()
-        != sources.get("scripts/launch_production_core_candidate_qualification_v3.py")
+        != sources.get("scripts/launch_production_core_candidate_qualification_v4.py")
         or hashlib.sha256(semantic_source).hexdigest()
         != sources.get("src/pastila_scout/production_core_semantic_authority_v2.py")
         or mechanism.get("candidate_execution_performed") is not False
