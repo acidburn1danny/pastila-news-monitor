@@ -61,10 +61,10 @@ RUNNER = (
 )
 LAUNCHER = ROOT / "scripts" / "run_production_core_candidate_qualification_v3.sh"
 NAMES = (
-    "production-core-successor-comparative-qualification-generation-v5.json",
+    "production-core-successor-comparative-qualification-generation-v9.json",
     "production-core-candidate-request-manifest-v2.json",
-    "production-core-successor-candidate-object-manifest-v5.json",
-    "production-core-successor-candidate-generation-qualification-v5.json",
+    "production-core-successor-candidate-object-manifest-v9.json",
+    "production-core-successor-candidate-generation-qualification-v9.json",
 )
 PROMPTS = {
     "pastila-editor-core-v1.1-json-successor-v2": ROOT

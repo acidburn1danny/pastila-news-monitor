@@ -32,4 +32,5 @@ def test_training_fails_closed_without_one_terminal_supervised_eos():
     ).read_text("utf-8")
     assert "tokens[-1] != tokenizer.eos_token_id" in source
     assert "tokenizer.eos_token_id in tokens[len(prefix) : -1]" in source
-    assert 'expected_rows = 320 if config.get("schema_version") == 2 else 240' in source
+    assert "expected_rows_by_schema = {1: 240, 2: 320, 3: 480}" in source
+    assert 'raise SystemExit("training config schema version mismatch")' in source

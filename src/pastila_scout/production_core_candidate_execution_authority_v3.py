@@ -6,15 +6,15 @@ import hashlib
 import json
 from collections.abc import Mapping, Sequence
 
-GENERATION_IDENTITY = "6d388a99731e3d4a08fa2a629374c37dd97994806ac54ffe49ab9fb1b41d630d"
+GENERATION_IDENTITY = "b7af3517a14e987efa344e9cd9c7bcbbdd9ddb3656cc9060e72fdca71ca7c8d2"
 QUALIFICATION_IDENTITY = (
-    "4d2a4b7a42141668e907bd90cb96cf8d28dce518761b3c0dc0375954ea6575f4"
+    "fc9033f03c2d11f933183a5a8fac2df8d01bf44a1e28e1db3d252eabb7332605"
 )
 REQUEST_MANIFEST_IDENTITY = (
     "f3b0e0d11c5b73fba39ce21f5daa040e788a2ea09d455389bf990ee8264b4d03"
 )
 CANDIDATE_MANIFEST_IDENTITY = (
-    "7bff8d58e56c1fd8e29f91f440b4f4c91ce4d79413d4186d895406f852c6abf9"
+    "d868b2cd1dd40f62d98dc61afdb9ace81dec78588a78fc82efdc347ab7cc335d"
 )
 MATRIX_ROWS = 2400
 ALIASES = ("CANDIDATE-A", "CANDIDATE-B")
@@ -46,12 +46,12 @@ EXPECTED_OBJECTS = (
     (
         "adapter_v1_1",
         "flat-dir",
-        "0b3b8c317b8bfbf73dd4c131d92f1bc768d5e638034a49cecdc76da2d4e07f4b",
+        "ac58e53492c58f635defad01009769e948819f10733c1473ea11ecf8df29107c",
     ),
     (
         "adapter_v1_2",
         "flat-dir",
-        "dccfee343ad1e305a0e193501b3a8adba11da01afd3d890ee38275dda82ac719",
+        "a8c0f6778f6d218cfdec47b53f87eb8dfc4af2c55077f559983e4331876b3ab8",
     ),
 )
 

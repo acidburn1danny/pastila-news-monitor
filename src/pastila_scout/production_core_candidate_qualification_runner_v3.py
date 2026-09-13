@@ -27,8 +27,8 @@ EXPECTED_RUNTIME = {
     "transformers": "5.15.0",
 }
 EXPECTED_ADAPTERS = {
-    "pastila-editor-core-v1.1-json-successor-v2": "0b3b8c317b8bfbf73dd4c131d92f1bc768d5e638034a49cecdc76da2d4e07f4b",
-    "pastila-editor-core-v1.2-json-successor": "dccfee343ad1e305a0e193501b3a8adba11da01afd3d890ee38275dda82ac719",
+    "pastila-editor-core-v1.1-json-successor-v2": "ac58e53492c58f635defad01009769e948819f10733c1473ea11ecf8df29107c",
+    "pastila-editor-core-v1.2-json-successor": "a8c0f6778f6d218cfdec47b53f87eb8dfc4af2c55077f559983e4331876b3ab8",
 }
 EXPECTED_BASE = "f5a9327e40390c7f0cf93962d75abbbc5ae8da1fac48e1274092ac52cf88bf39"
 EXPECTED_PROMPTS = {
@@ -39,7 +39,7 @@ MAX_INPUT = 1924
 MAX_OUTPUT = 6268
 MAX_WALL_NS = 600_000_000_000
 MAX_RSS = 16_106_127_360
-EXPECTED_GENERATION = "6d388a99731e3d4a08fa2a629374c37dd97994806ac54ffe49ab9fb1b41d630d"
+EXPECTED_GENERATION = "b7af3517a14e987efa344e9cd9c7bcbbdd9ddb3656cc9060e72fdca71ca7c8d2"
 
 
 def _sha(data: bytes) -> str:
