@@ -1,0 +1,96 @@
+{
+  "schema": "pastila-production-core-v10-unified-execution-design",
+  "schema_version": 1,
+  "status": "AUDITED_DESIGN_FROZEN_ZERO_TRAINING_ZERO_QUALIFICATION_EXECUTION",
+  "predecessor_disposition_identity": "7855e21d82402416dcee091baa7a6bcc5cb4c63783aafa33c65bd355c7d83587",
+  "root_cause": "NON_REPRESENTATIVE_DEVELOPMENT_GATE_PROMPT_AND_DISTRIBUTION_MISMATCH",
+  "v9_evidence": {
+    "runtime_envelope_pass": 2376,
+    "structural_failures": 2400,
+    "byte_ceiling_failures": 24,
+    "deterministic_v1_1_overflow_cases": {
+      "pcq-eos-007": 6,
+      "pcq-eos-009": 6,
+      "pcq-eos-013": 6,
+      "pcq-eos-014": 6
+    }
+  },
+  "execution_contract": {
+    "schema": "pastila-production-core-unified-execution-contract",
+    "schema_version": 10,
+    "phases": [
+      "TRAINING",
+      "DEVELOPMENT",
+      "SHADOW_QUALIFICATION",
+      "QUALIFICATION"
+    ],
+    "consumer_entrypoints": {
+      "TRAINING": "render_training_messages",
+      "DEVELOPMENT": "render_development_messages",
+      "SHADOW_QUALIFICATION": "render_shadow_qualification_messages",
+      "QUALIFICATION": "render_qualification_messages"
+    },
+    "editorial_prompt_sha256": {
+      "pastila-editor-core-v1.1-json-successor": "9b25e239fc227252906fecab393a42a82eca4baa643ceed28177d3c5054e93fc",
+      "pastila-editor-core-v1.2-json-successor": "111bc2734343c67aab4e1a04003199b98d4955fe9579e445cd7b5d6805a9da17"
+    },
+    "output_protocol_sha256": "403ee654bc6e5baa80f54f1ee677d8b4104fdca3fc15aec32d812f72e874dcfa",
+    "system_composition": "EDITORIAL_BYTES_UTF8 + LF_LF + OUTPUT_PROTOCOL",
+    "message_shape": [
+      "system",
+      "user"
+    ],
+    "chat_template": {
+      "add_generation_prompt": true,
+      "fix_mistral_regex": true
+    },
+    "generation_policy": {
+      "do_sample": false,
+      "num_beams": 1,
+      "repetition_penalty": "1.0",
+      "max_new_tokens": 6268,
+      "maximum_utf8_bytes": 6268,
+      "eos_token": "TOKENIZER_EOS",
+      "pad_token": "TOKENIZER_PAD_OR_EOS",
+      "use_cache": true,
+      "byte_ceiling_poll_tokens": 32
+    },
+    "post_generation_repair": false,
+    "qualification_or_holdout_content_in_development": false,
+    "fail_closed_on_any_projection_difference": true
+  },
+  "execution_contract_identity": "99cc7e41160d47a10248e6f9e760ccb8fcfd7b60434ece45cfdd83b3d4ac3723",
+  "required_invariants": [
+    "ONE_RENDERER_SOURCE_FOR_ALL_PHASES",
+    "BYTE_IDENTICAL_SYSTEM_COMPOSITION",
+    "BYTE_IDENTICAL_CHAT_TEMPLATE_OPTIONS",
+    "BYTE_IDENTICAL_GENERATION_POLICY",
+    "DISJOINT_SHADOW_CONTENT_SAME_GRAMMAR_AND_LENGTH_BUCKETS",
+    "ZERO_MARKDOWN_FENCES",
+    "TERMINAL_EOS_AFTER_CLOSING_BRACE",
+    "BYTE_CEILING_HEADROOM",
+    "TWO_REPRODUCIBLE_MATERIALIZATIONS",
+    "FAIL_CLOSED_ON_ANY_DIVERGENCE"
+  ],
+  "gates_before_training_authority": [
+    "renderer consumer import scan",
+    "phase projection executable smoke",
+    "wrong editorial hash negative",
+    "phase mutation negative",
+    "qualification leakage negative"
+  ],
+  "gates_after_training_before_candidate_manifest": [
+    "qualification-shaped shadow matrix",
+    "100 percent canonical JSON",
+    "100 percent terminal EOS",
+    "zero byte ceiling events",
+    "long-context and adversarial coverage"
+  ],
+  "training_authorized": false,
+  "training_performed": false,
+  "qualification_execution_authorized": false,
+  "qualification_attempt_consumed": false,
+  "adjudication_performed": false,
+  "promotion_effect": false,
+  "design_identity": "c228b40ede09b2abb55779b7f0d7dc4a3e82386b5cbf4543483ea47a8036a871"
+}
