@@ -200,7 +200,7 @@ def validate_preflight_receipt(preflight: Mapping[str, object]) -> None:
         or set(sources) != {
             "docs/schemas/production-core-candidate-execution-evidence-v2.schema.json",
             "scripts/execute_production_core_candidate_qualification_v3.py",
-            "scripts/launch_production_core_candidate_qualification_v4.py",
+            "scripts/launch_production_core_candidate_qualification_v9.py",
             "scripts/resolve_production_core_object_authority_v2.sh",
             "scripts/run_production_core_candidate_qualification_v3.sh",
             "scripts/smoke_production_core_checkpoint_resume_v6.py",

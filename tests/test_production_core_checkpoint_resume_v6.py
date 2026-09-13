@@ -100,7 +100,7 @@ def test_attempt_preflight_requires_exact_v6_source_closure():
     source = (Path(__file__).resolve().parents[1] / "src/pastila_scout/production_core_candidate_execution_authority_v3.py").read_text("utf-8")
     assert 'or set(sources) != {' in source
     assert '"src/pastila_scout/production_core_checkpoint_resume_v6.py"' in source
-    assert '"scripts/launch_production_core_candidate_qualification_v4.py"' in source
+    assert '"scripts/launch_production_core_candidate_qualification_v9.py"' in source
     assert '"tests/test_production_core_checkpoint_resume_v6.py"' not in source
 
 
