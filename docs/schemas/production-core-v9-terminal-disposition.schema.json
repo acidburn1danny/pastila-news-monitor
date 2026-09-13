@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "schema_version", "status", "execution_authority_identity", "qualification_generation_identity", "rubric_identity", "attempt_identity", "attempt_ordinal", "attempt_consumed_permanently", "completion_identity", "evidence", "candidate_dispositions", "adjudication_authorized", "semantic_adjudication_required", "semantic_adjudication_performed", "semantic_adjudication_bypass_reason", "retry_or_redraw", "candidate_execution_repeated", "promotion_effect", "successor_requirement", "disposition_identity"],
+  "properties": {
+    "schema": {"const": "pastila-production-core-v9-terminal-qualification-disposition"},
+    "schema_version": {"const": 1},
+    "status": {"const": "TERMINAL_STRUCTURAL_REJECTION_BOTH_CANDIDATES"},
+    "execution_authority_identity": {"const": "bee480f41b2ad320a384831a2f39c025f2cdc4dfc0045de9c462ad97e6307c91"},
+    "qualification_generation_identity": {"const": "b7af3517a14e987efa344e9cd9c7bcbbdd9ddb3656cc9060e72fdca71ca7c8d2"},
+    "rubric_identity": {"const": "659339bac91cfbdf993c7b57555dfd9191e609816db76e60bc41f13d0dfba1a6"},
+    "attempt_identity": {"const": "576e57b801034712aaabc0053b3a89998328fc324c66674411c4092c72f37176"},
+    "attempt_ordinal": {"const": 1},
+    "attempt_consumed_permanently": {"const": true},
+    "completion_identity": {"const": "c50c79a45b786ecf6989c12cb13ecf732353ba84359943174154ea7eb917f882"},
+    "evidence": {
+      "type": "object", "additionalProperties": false,
+      "required": ["attempt_sha256", "completion_sha256", "artifact_root", "artifact_count", "completed_rows", "structural_status_counts", "candidate_alias_counts", "candidate_output_status_counts", "termination_reason_counts"],
+      "properties": {
+        "attempt_sha256": {"const": "ea88e3f4fbe7d3371bd61dc975d60aaf46bf68db2cf7b30b55635f5ecf4edf8b"},
+        "completion_sha256": {"const": "b136cd2fa2c27b19449624275d2bfddd7be55a78a4307601965e3c1a06966a79"},
+        "artifact_root": {"const": "d7fae41666a676184904d25ee44bca6b1f60e6223caa25cac3b187a118f66838"},
+        "artifact_count": {"const": 12073}, "completed_rows": {"const": 2400},
+        "structural_status_counts": {"const": {"FAIL_CLOSED_INVALID_OUTPUT": 2400}},
+        "candidate_alias_counts": {"const": {"CANDIDATE-A": 1200, "CANDIDATE-B": 1200}},
+        "candidate_output_status_counts": {"const": {"EXECUTION_ENVELOPE_FAIL_CLOSED": 24, "EXECUTION_ENVELOPE_PASS": 2376}},
+        "termination_reason_counts": {"const": {"OUTPUT_BYTE_CEILING_EXCEEDED": 24, "TERMINAL_EOS": 2376}}
+      }
+    },
+    "candidate_dispositions": {"const": [{"candidate_alias": "CANDIDATE-A", "candidate": "pastila-editor-core-v1.2-json-successor-v9", "disposition": "REJECTED_STRUCTURALLY"}, {"candidate_alias": "CANDIDATE-B", "candidate": "pastila-editor-core-v1.1-json-successor-v9", "disposition": "REJECTED_STRUCTURALLY"}]},
+    "adjudication_authorized": {"const": true}, "semantic_adjudication_required": {"const": false},
+    "semantic_adjudication_performed": {"const": false},
+    "semantic_adjudication_bypass_reason": {"const": "STRUCTURAL_FAIL_IS_TERMINAL_BEFORE_SIGNATURE_VERIFICATION"},
+    "retry_or_redraw": {"const": false}, "candidate_execution_repeated": {"const": false},
+    "promotion_effect": {"const": false},
+    "successor_requirement": {"const": "NEW_SUCCESSOR_LINEAGE_AND_NEW_EXECUTION_AUTHORITY"},
+    "disposition_identity": {"const": "7855e21d82402416dcee091baa7a6bcc5cb4c63783aafa33c65bd355c7d83587"}
+  }
+}
