@@ -36,4 +36,7 @@ def test_generation_contract_is_structural_and_non_repairing():
     assert GENERATION_POLICY["do_sample"] is False
     assert GENERATION_POLICY["maximum_utf8_bytes"]==6268
     assert GENERATION_POLICY["max_new_tokens"]==6268
+    assert GENERATION_POLICY["maximum_input_tokens"]==3072
+    assert GENERATION_POLICY["maximum_training_sequence_tokens"]==3072
+    assert GENERATION_POLICY["maximum_total_context_tokens"]<=GENERATION_POLICY["minimum_model_context_tokens"]
     assert len(contract_identity())==64

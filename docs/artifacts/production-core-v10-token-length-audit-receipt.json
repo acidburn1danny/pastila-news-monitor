@@ -1,0 +1,71 @@
+{
+  "schema": "pastila-production-core-v10-token-length-audit-receipt",
+  "schema_version": 1,
+  "status": "PASS_ZERO_BLOCKERS_TOKENIZER_ONLY_ZERO_MODEL_LOAD",
+  "design_identity": "0c3da64e01a570adac723966db696908f0fab6fce7aa41e492cb7beca1c4008d",
+  "execution_contract_identity": "cb580100302d3b6c462417a2c2d4ef0cb78f0bfc149470710f76a569e70b8562",
+  "corpus_manifest_identity": "739c4cf9702d6e612b6baee4530568c34ea245d8658241e8f4e389d9452d8610",
+  "base_model_manifest_sha256": "f5a9327e40390c7f0cf93962d75abbbc5ae8da1fac48e1274092ac52cf88bf39",
+  "tokenizer_sha256": "2a00451398b3bb51d3c0fa3f4758c77061377ada35abbb7f5e1006be3aaced5c",
+  "rootfs_sha256": "9c8a26024a36a808bf077be880a214fcb3308233354e1824ae7ebc82d931f826",
+  "auditor_sha256": "738268008be702ae5249bfc9d8cfff2e5f5382d4b2fb4220263a27894a5d7613",
+  "maximum_sequence_tokens": 3072,
+  "observed": {
+    "pastila-editor-core-v1.1-json-successor-v10-shadow.jsonl": {
+      "length_buckets": {
+        "ADVERSARIAL": 48,
+        "BOUNDARY": 48,
+        "LONG": 48,
+        "MEDIUM": 48,
+        "SHORT": 48
+      },
+      "maximum_tokens": 2891,
+      "minimum_tokens": 1988,
+      "rows": 240
+    },
+    "pastila-editor-core-v1.1-json-successor-v10-train.jsonl": {
+      "length_buckets": {
+        "ADVERSARIAL": 96,
+        "BOUNDARY": 96,
+        "LONG": 96,
+        "MEDIUM": 96,
+        "SHORT": 96
+      },
+      "maximum_tokens": 2855,
+      "minimum_tokens": 1959,
+      "rows": 480
+    },
+    "pastila-editor-core-v1.2-json-successor-v10-shadow.jsonl": {
+      "length_buckets": {
+        "ADVERSARIAL": 48,
+        "BOUNDARY": 48,
+        "LONG": 48,
+        "MEDIUM": 48,
+        "SHORT": 48
+      },
+      "maximum_tokens": 2695,
+      "minimum_tokens": 1792,
+      "rows": 240
+    },
+    "pastila-editor-core-v1.2-json-successor-v10-train.jsonl": {
+      "length_buckets": {
+        "ADVERSARIAL": 96,
+        "BOUNDARY": 96,
+        "LONG": 96,
+        "MEDIUM": 96,
+        "SHORT": 96
+      },
+      "maximum_tokens": 2661,
+      "minimum_tokens": 1759,
+      "rows": 480
+    }
+  },
+  "model_loaded": false,
+  "inference_performed": false,
+  "training_authorized": false,
+  "training_performed": false,
+  "qualification_execution_authorized": false,
+  "qualification_attempt_consumed": false,
+  "promotion_effect": false,
+  "receipt_identity": "c3db7e6c9c54f9bf336dedede0fb19d2e1d3cc675e168ebeebcb14362c664673"
+}

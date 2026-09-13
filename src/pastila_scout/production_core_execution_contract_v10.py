@@ -27,6 +27,10 @@ GENERATION_POLICY = {
     "pad_token": "TOKENIZER_PAD_OR_EOS",
     "use_cache": True,
     "byte_ceiling_poll_tokens": 32,
+    "maximum_input_tokens": 3072,
+    "maximum_training_sequence_tokens": 3072,
+    "maximum_total_context_tokens": 9340,
+    "minimum_model_context_tokens": 16384,
 }
 PHASES = ("TRAINING", "DEVELOPMENT", "SHADOW_QUALIFICATION", "QUALIFICATION")
 CONSUMER_ENTRYPOINTS = {

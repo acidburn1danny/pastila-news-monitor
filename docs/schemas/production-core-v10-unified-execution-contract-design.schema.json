@@ -31,19 +31,19 @@
         "system_composition": {"const": "EDITORIAL_BYTES_UTF8 + LF_LF + OUTPUT_PROTOCOL"},
         "message_shape": {"const": ["system", "user"]},
         "chat_template": {"const": {"add_generation_prompt": true, "fix_mistral_regex": true}},
-        "generation_policy": {"const": {"do_sample": false, "num_beams": 1, "repetition_penalty": "1.0", "max_new_tokens": 6268, "maximum_utf8_bytes": 6268, "eos_token": "TOKENIZER_EOS", "pad_token": "TOKENIZER_PAD_OR_EOS", "use_cache": true, "byte_ceiling_poll_tokens": 32}},
+        "generation_policy": {"const": {"do_sample": false, "num_beams": 1, "repetition_penalty": "1.0", "max_new_tokens": 6268, "maximum_utf8_bytes": 6268, "eos_token": "TOKENIZER_EOS", "pad_token": "TOKENIZER_PAD_OR_EOS", "use_cache": true, "byte_ceiling_poll_tokens": 32, "maximum_input_tokens": 3072, "maximum_training_sequence_tokens": 3072, "maximum_total_context_tokens": 9340, "minimum_model_context_tokens": 16384}},
         "post_generation_repair": {"const": false},
         "qualification_or_holdout_content_in_development": {"const": false},
         "fail_closed_on_any_projection_difference": {"const": true}
       }
     },
-    "execution_contract_identity": {"const": "99cc7e41160d47a10248e6f9e760ccb8fcfd7b60434ece45cfdd83b3d4ac3723"},
+    "execution_contract_identity": {"const": "cb580100302d3b6c462417a2c2d4ef0cb78f0bfc149470710f76a569e70b8562"},
     "required_invariants": {"type": "array", "minItems": 10, "uniqueItems": true, "items": {"type": "string"}},
     "gates_before_training_authority": {"type": "array", "minItems": 5, "uniqueItems": true, "items": {"type": "string"}},
     "gates_after_training_before_candidate_manifest": {"type": "array", "minItems": 5, "uniqueItems": true, "items": {"type": "string"}},
     "training_authorized": {"const": false}, "training_performed": {"const": false},
     "qualification_execution_authorized": {"const": false}, "qualification_attempt_consumed": {"const": false},
     "adjudication_performed": {"const": false}, "promotion_effect": {"const": false},
-    "design_identity": {"const": "c228b40ede09b2abb55779b7f0d7dc4a3e82386b5cbf4543483ea47a8036a871"}
+    "design_identity": {"const": "0c3da64e01a570adac723966db696908f0fab6fce7aa41e492cb7beca1c4008d"}
   }
 }

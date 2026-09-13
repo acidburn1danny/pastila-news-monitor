@@ -1,0 +1,48 @@
+{
+  "schema": "pastila-production-core-v10-corpus-and-training-config-manifest",
+  "schema_version": 1,
+  "status": "AUDITED_PRETRAINING_ZERO_EXECUTION",
+  "design_identity": "0c3da64e01a570adac723966db696908f0fab6fce7aa41e492cb7beca1c4008d",
+  "execution_contract_identity": "cb580100302d3b6c462417a2c2d4ef0cb78f0bfc149470710f76a569e70b8562",
+  "request_protocol_sha256": "dc8e63c8ad1961735ba9ff6191b9cc93471420b6dbe95ab3d40caf6341996466",
+  "artifacts": {
+    "pastila-editor-core-v1.1-json-successor-v10-train.jsonl": {
+      "sha256": "12ce4c7aeb257e9d5c1a92dd8c5d75d1e998819ecd19eddafa0e42cab83072f1",
+      "rows": 480
+    },
+    "pastila-editor-core-v1.1-json-successor-v10-shadow.jsonl": {
+      "sha256": "e0adbfdaf7df1ac7365692c4ceae90bee62b5c07349521ec333f721c668304f3",
+      "rows": 240
+    },
+    "pastila-editor-core-v1.1-json-successor-v10-training-config-v10.json": {
+      "sha256": "0477d8a3aab9b5b1c73febcbb22900b00b9933e4ba435f62c90e91a35eae6268"
+    },
+    "pastila-editor-core-v1.2-json-successor-v10-train.jsonl": {
+      "sha256": "5491630f3b959f890a74cce3075a9a2e976304138e342c379d4e5fd6a0a9641c",
+      "rows": 480
+    },
+    "pastila-editor-core-v1.2-json-successor-v10-shadow.jsonl": {
+      "sha256": "74d79f07c2f8bc7b0182e255e2119d7c15d9e4f4642f99adef7654d9cd7754ce",
+      "rows": 240
+    },
+    "pastila-editor-core-v1.2-json-successor-v10-training-config-v10.json": {
+      "sha256": "6529f010bcaf33b3b4c932754b23c9c26c99f3c3c182a0e0f3416256aee10e00"
+    }
+  },
+  "training_config_identities": {
+    "pastila-editor-core-v1.1-json-successor-v10": "dd30729f82fa342bbd716f42aff85943e586f7f00804616ae71f64509f59b24b",
+    "pastila-editor-core-v1.2-json-successor-v10": "31f5e31631179e98460aeed2688c15da09fdc5ad490475617e3e355292a1bcab"
+  },
+  "training_rows_per_candidate": 480,
+  "shadow_rows_per_candidate": 240,
+  "qualification_content_used": 0,
+  "qualification_protocol_used_as_public_grammar": true,
+  "consumed_attempt_outputs_used": 0,
+  "training_authorized": false,
+  "training_performed": false,
+  "qualification_execution_authorized": false,
+  "qualification_attempt_consumed": false,
+  "adjudication_performed": false,
+  "promotion_effect": false,
+  "manifest_identity": "739c4cf9702d6e612b6baee4530568c34ea245d8658241e8f4e389d9452d8610"
+}

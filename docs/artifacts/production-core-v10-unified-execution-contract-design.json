@@ -53,13 +53,17 @@
       "eos_token": "TOKENIZER_EOS",
       "pad_token": "TOKENIZER_PAD_OR_EOS",
       "use_cache": true,
-      "byte_ceiling_poll_tokens": 32
+      "byte_ceiling_poll_tokens": 32,
+      "maximum_input_tokens": 3072,
+      "maximum_training_sequence_tokens": 3072,
+      "maximum_total_context_tokens": 9340,
+      "minimum_model_context_tokens": 16384
     },
     "post_generation_repair": false,
     "qualification_or_holdout_content_in_development": false,
     "fail_closed_on_any_projection_difference": true
   },
-  "execution_contract_identity": "99cc7e41160d47a10248e6f9e760ccb8fcfd7b60434ece45cfdd83b3d4ac3723",
+  "execution_contract_identity": "cb580100302d3b6c462417a2c2d4ef0cb78f0bfc149470710f76a569e70b8562",
   "required_invariants": [
     "ONE_RENDERER_SOURCE_FOR_ALL_PHASES",
     "BYTE_IDENTICAL_SYSTEM_COMPOSITION",
@@ -92,5 +96,5 @@
   "qualification_attempt_consumed": false,
   "adjudication_performed": false,
   "promotion_effect": false,
-  "design_identity": "c228b40ede09b2abb55779b7f0d7dc4a3e82386b5cbf4543483ea47a8036a871"
+  "design_identity": "0c3da64e01a570adac723966db696908f0fab6fce7aa41e492cb7beca1c4008d"
 }
