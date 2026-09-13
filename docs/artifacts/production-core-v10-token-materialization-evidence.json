@@ -1,16 +1,12 @@
 {
-  "schema": "pastila-production-core-v10-token-length-audit-receipt",
+  "schema": "pastila-production-core-v10-token-materialization-evidence",
   "schema_version": 1,
-  "status": "PASS_ZERO_BLOCKERS_TOKENIZER_ONLY_ZERO_MODEL_LOAD",
-  "design_identity": "0c3da64e01a570adac723966db696908f0fab6fce7aa41e492cb7beca1c4008d",
-  "execution_contract_identity": "cb580100302d3b6c462417a2c2d4ef0cb78f0bfc149470710f76a569e70b8562",
-  "corpus_manifest_identity": "817992aa93274b8076f7f54825c9fe038290849a6eb44dc90d40f09dfdd86f0f",
-  "base_model_manifest_sha256": "f5a9327e40390c7f0cf93962d75abbbc5ae8da1fac48e1274092ac52cf88bf39",
-  "tokenizer_sha256": "2a00451398b3bb51d3c0fa3f4758c77061377ada35abbb7f5e1006be3aaced5c",
-  "rootfs_sha256": "9c8a26024a36a808bf077be880a214fcb3308233354e1824ae7ebc82d931f826",
-  "auditor_sha256": "738268008be702ae5249bfc9d8cfff2e5f5382d4b2fb4220263a27894a5d7613",
-  "token_materialization_evidence_identity": "116022580ec74b8d4a1c0f165652611827496d6cce3d0d4a4a37c28156dac858",
-  "maximum_sequence_tokens": 3072,
+  "status": "TWO_MATERIALIZATIONS_BYTE_EXACT",
+  "materializations": [
+    "A",
+    "B"
+  ],
+  "observation_sha256": "06e23dfcf80886a2de828e9fc3bfe3146ed434a7858243f43170299c97d234cb",
   "observed": {
     "pastila-editor-core-v1.1-json-successor-v10-shadow.jsonl": {
       "length_buckets": {
@@ -61,12 +57,9 @@
       "rows": 480
     }
   },
+  "maximum_training_sequence_tokens": 3072,
   "model_loaded": false,
   "inference_performed": false,
-  "training_authorized": false,
   "training_performed": false,
-  "qualification_execution_authorized": false,
-  "qualification_attempt_consumed": false,
-  "promotion_effect": false,
-  "receipt_identity": "a34755fa318567856e77fe8b81b6b8ed66bcf7d906615723291c7c7722fb53a5"
+  "evidence_identity": "116022580ec74b8d4a1c0f165652611827496d6cce3d0d4a4a37c28156dac858"
 }

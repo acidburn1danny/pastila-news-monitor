@@ -31,6 +31,7 @@ def test_configs_cannot_authorize_training():
   value=json.loads(path.read_bytes()); assert value["status"]=="FROZEN_PRETRAINING_ZERO_EXECUTION"
   assert value["optimizer"]=="PAGED_ADAMW_8BIT" and value["training_authorized"] is False
   assert value["max_sequence_tokens"]==3072
+  assert len(value["training_input_validator_sha256"])==64
   assert value["post_training_gate"]["production_renderer_required"] is True
 
 def test_manifest_and_all_artifact_identities_are_closed():
@@ -38,5 +39,6 @@ def test_manifest_and_all_artifact_identities_are_closed():
  manifest=json.loads((ART/"production-core-v10-corpus-and-training-config-manifest.json").read_bytes()); core=dict(manifest); claimed=core.pop("manifest_identity")
  assert hashlib.sha256(json.dumps(core,ensure_ascii=False,separators=(",",":")).encode()).hexdigest()==claimed
  for name,row in manifest["artifacts"].items(): assert hashlib.sha256((ART/name).read_bytes()).hexdigest()==row["sha256"]
+ assert manifest["training_input_validator_sha256"]==hashlib.sha256((ROOT/"scripts/validate_production_core_v10_training_inputs.py").read_bytes()).hexdigest()
  for path in ART.glob("pastila-editor-core-v1.*-json-successor-v10-training-config-v10.json"):
   value=json.loads(path.read_bytes()); core=dict(value); claimed=core.pop("training_config_identity"); assert hashlib.sha256(json.dumps(core,ensure_ascii=False,separators=(",",":")).encode()).hexdigest()==claimed

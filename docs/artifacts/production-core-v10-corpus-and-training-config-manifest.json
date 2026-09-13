@@ -4,6 +4,7 @@
   "status": "AUDITED_PRETRAINING_ZERO_EXECUTION",
   "design_identity": "0c3da64e01a570adac723966db696908f0fab6fce7aa41e492cb7beca1c4008d",
   "execution_contract_identity": "cb580100302d3b6c462417a2c2d4ef0cb78f0bfc149470710f76a569e70b8562",
+  "training_input_validator_sha256": "45a84581eb78d254f431d64c748e7d113bd8b2b966f8ee52377136cb207f33ea",
   "request_protocol_sha256": "dc8e63c8ad1961735ba9ff6191b9cc93471420b6dbe95ab3d40caf6341996466",
   "artifacts": {
     "pastila-editor-core-v1.1-json-successor-v10-train.jsonl": {
@@ -15,7 +16,7 @@
       "rows": 240
     },
     "pastila-editor-core-v1.1-json-successor-v10-training-config-v10.json": {
-      "sha256": "0477d8a3aab9b5b1c73febcbb22900b00b9933e4ba435f62c90e91a35eae6268"
+      "sha256": "acd290dd26aade2fde98af4e9b21499bdd50c5aecb16352c3da37112b25f0a40"
     },
     "pastila-editor-core-v1.2-json-successor-v10-train.jsonl": {
       "sha256": "5491630f3b959f890a74cce3075a9a2e976304138e342c379d4e5fd6a0a9641c",
@@ -26,12 +27,12 @@
       "rows": 240
     },
     "pastila-editor-core-v1.2-json-successor-v10-training-config-v10.json": {
-      "sha256": "6529f010bcaf33b3b4c932754b23c9c26c99f3c3c182a0e0f3416256aee10e00"
+      "sha256": "c958ac6fbcecc0af7b4f652a7acf1e3073ed0a5aba97fb6abc3903039846e32f"
     }
   },
   "training_config_identities": {
-    "pastila-editor-core-v1.1-json-successor-v10": "dd30729f82fa342bbd716f42aff85943e586f7f00804616ae71f64509f59b24b",
-    "pastila-editor-core-v1.2-json-successor-v10": "31f5e31631179e98460aeed2688c15da09fdc5ad490475617e3e355292a1bcab"
+    "pastila-editor-core-v1.1-json-successor-v10": "abd5e31beaba215e9d32850a8693905beefec4b6ba45d2d977d2f0533a2495b5",
+    "pastila-editor-core-v1.2-json-successor-v10": "3abe6dc3e13f04686dbe86f546ae458407fce9e3eda3eef9b5ecb5b2de142699"
   },
   "training_rows_per_candidate": 480,
   "shadow_rows_per_candidate": 240,
@@ -44,5 +45,5 @@
   "qualification_attempt_consumed": false,
   "adjudication_performed": false,
   "promotion_effect": false,
-  "manifest_identity": "739c4cf9702d6e612b6baee4530568c34ea245d8658241e8f4e389d9452d8610"
+  "manifest_identity": "817992aa93274b8076f7f54825c9fe038290849a6eb44dc90d40f09dfdd86f0f"
 }
