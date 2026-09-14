@@ -55,3 +55,15 @@ def test_wrong_contract_and_renderer_fail_closed(tmp_path):
     config_copy.write_text(json.dumps(matching_config), encoding="utf-8")
     with pytest.raises(ValueError, match="renderer divergence"):
         m.validate(corpus_copy, config_copy)
+
+
+@pytest.mark.parametrize("field", ["training_execution_profile", "performance_freeze_identity"])
+def test_wrong_performance_profile_binding_fails_closed(tmp_path, field):
+    m = module()
+    corpus, config = paths("pastila-editor-core-v1.1-json-successor-v10")
+    wrong_config = json.loads(config.read_bytes())
+    wrong_config[field] = "WRONG"
+    config_copy = tmp_path / "config.json"
+    config_copy.write_text(json.dumps(wrong_config), encoding="utf-8")
+    with pytest.raises(ValueError, match="training execution profile|performance freeze identity"):
+        m.validate(corpus, config_copy)

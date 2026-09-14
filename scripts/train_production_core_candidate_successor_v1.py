@@ -8,6 +8,7 @@ import os
 import random
 import sys
 import time
+from contextlib import nullcontext
 from pathlib import Path
 
 EXPECTED_ENV = {
@@ -21,6 +22,31 @@ EXPECTED_ENV = {
     "TRANSFORMERS_OFFLINE": "1",
     "TRITON_CACHE_DIR": "/tmp/triton-cache",
     "TRITON_LIBCUDA_PATH": "/usr/lib/wsl/lib",
+}
+
+PERFORMANCE_VARIANT_CAPABILITIES = {
+    "BASELINE": frozenset(),
+    "FLASH_ONLY": frozenset({"flash"}),
+    "EFFICIENT_ONLY": frozenset({"efficient"}),
+    "EXPANDABLE_ALLOCATOR": frozenset({"expandable_allocator"}),
+    "FLASH_ONLY_EXPANDABLE_ALLOCATOR": frozenset({"flash", "expandable_allocator"}),
+    "FLASH_REPEAT_KV": frozenset({"flash", "repeat_kv"}),
+    "FLASH_REPEAT_KV_EXPANDABLE_ALLOCATOR": frozenset({"flash", "repeat_kv", "expandable_allocator"}),
+    "BF16_AUTOCAST": frozenset({"bf16"}),
+    "BF16_AUTOCAST_FLASH_REPEAT_KV": frozenset({"bf16", "flash", "repeat_kv"}),
+    "BF16_AUTOCAST_FLASH_REPEAT_KV_EXPANDABLE_ALLOCATOR": frozenset(
+        {"bf16", "flash", "repeat_kv", "expandable_allocator"}
+    ),
+    "BF16_FLASH_REPEAT_KV_MEMORY_DIAGNOSTIC": frozenset({"bf16", "flash", "repeat_kv"}),
+    "BF16_FLASH_REPEAT_KV_SELECTIVE_LOGITS_DIAGNOSTIC": frozenset(
+        {"bf16", "flash", "repeat_kv", "selective_logits"}
+    ),
+    "BF16_FLASH_REPEAT_KV_SELECTIVE_LOGITS": frozenset(
+        {"bf16", "flash", "repeat_kv", "selective_logits"}
+    ),
+    "BF16_FLEX_ATTENTION_SELECTIVE_LOGITS_DIAGNOSTIC": frozenset(
+        {"bf16", "flex", "selective_logits"}
+    ),
 }
 
 
@@ -66,6 +92,24 @@ def canonicalize_adapter_config(root: Path) -> None:
     path.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
+def performance_snapshot(output: Path, torch: object, phase: str, started_ns: int) -> None:
+    torch.cuda.synchronize()
+    value = {
+        "schema": "pastila-production-core-v10-performance-memory-snapshot",
+        "schema_version": 1,
+        "phase": phase,
+        "elapsed_ms": (time.monotonic_ns() - started_ns) // 1_000_000,
+        "allocated_bytes": torch.cuda.memory_allocated(),
+        "reserved_bytes": torch.cuda.memory_reserved(),
+        "peak_allocated_bytes": torch.cuda.max_memory_allocated(),
+        "peak_reserved_bytes": torch.cuda.max_memory_reserved(),
+    }
+    with (output / "performance-telemetry.jsonl").open("ab") as handle:
+        handle.write(json.dumps(value, separators=(",", ":"), sort_keys=True).encode() + b"\n")
+        handle.flush()
+        os.fsync(handle.fileno())
+
+
 def token_ids(encoded: object) -> list[int]:
     if hasattr(encoded, "get") and encoded.get("input_ids") is not None:
         encoded = encoded.get("input_ids")
@@ -85,6 +129,12 @@ def token_ids(encoded: object) -> list[int]:
             f"member={type(values[0]).__name__ if isinstance(values, (list, tuple)) and values else 'none'}"
         )
     return list(values)
+
+
+def assistant_logit_span(prefix_length: int, total_length: int) -> tuple[int, int]:
+    if not 0 < prefix_length < total_length:
+        raise SystemExit("assistant selective-logit span mismatch")
+    return prefix_length - 1, total_length - 1
 
 
 def progress_event(
@@ -326,7 +376,7 @@ def main() -> int:
     ] or predecessor_sha != config.get("predecessor_adapter_manifest_sha256"):
         raise SystemExit("predecessor adapter identity mismatch")
     existing = {path.name for path in output.iterdir()}
-    if existing - {"training-progress.jsonl", "training-checkpoints"}:
+    if existing - {"training-progress.jsonl", "training-checkpoints", "performance-telemetry.jsonl"}:
         raise SystemExit("successor output is neither empty nor resumable")
     rows = [json.loads(line) for line in corpus.read_text("utf-8").splitlines()]
     expected_rows_by_schema = {1: 240, 2: 320, 3: 480}
@@ -340,6 +390,24 @@ def main() -> int:
     mode = os.environ["TRAINING_MODE"]
     if mode not in {"SMOKE", "CHECKPOINT_SMOKE", "BATCH_SMOKE", "FULL"}:
         raise SystemExit("training mode authority mismatch")
+    performance_variant = config.get("performance_variant")
+    training_execution_profile = config.get("training_execution_profile")
+    if performance_variant is not None and training_execution_profile is not None:
+        raise SystemExit("training execution profile conflicts with performance variant")
+    if performance_variant is not None and performance_variant not in PERFORMANCE_VARIANT_CAPABILITIES:
+        raise SystemExit("training performance variant mismatch")
+    if performance_variant is not None and mode != "BATCH_SMOKE":
+        raise SystemExit("performance variants are BATCH_SMOKE only")
+    if training_execution_profile not in {None, "BF16_FLASH_REPEAT_KV_SELECTIVE_LOGITS"}:
+        raise SystemExit("training execution profile mismatch")
+    if training_execution_profile is not None and mode != "FULL":
+        raise SystemExit("training execution profile is FULL only")
+    effective_performance_profile = performance_variant or training_execution_profile
+    performance_capabilities = PERFORMANCE_VARIANT_CAPABILITIES.get(
+        effective_performance_profile, frozenset()
+    )
+    if "expandable_allocator" in performance_capabilities:
+        os.environ["PYTORCH_ALLOC_CONF"] = "expandable_segments:True"
     effective_mode = "SMOKE" if mode == "CHECKPOINT_SMOKE" else mode
     accumulation = 1 if effective_mode == "SMOKE" else int(config["gradient_accumulation_steps"])
     epochs = 1 if effective_mode == "SMOKE" else int(config["epochs"])
@@ -363,12 +431,17 @@ def main() -> int:
 
     import bitsandbytes as bnb
     import torch
+    from torch.nn.attention import SDPBackend, sdpa_kernel
     from peft import PeftModel, prepare_model_for_kbit_training
     from transformers import (
         AutoModelForImageTextToText,
         AutoTokenizer,
         BitsAndBytesConfig,
     )
+    if "repeat_kv" in performance_capabilities:
+        from transformers.integrations import sdpa_attention
+
+        sdpa_attention.use_gqa_in_sdpa = lambda attention_mask, key, value: False
 
     seed = int(config["seed"])
     random.seed(seed)
@@ -392,7 +465,11 @@ def main() -> int:
         quantization_config=quantization,
         device_map={"": 0},
         dtype=torch.bfloat16,
-        attn_implementation="sdpa",
+        attn_implementation=(
+            "flex_attention"
+            if "flex" in performance_capabilities
+            else "sdpa"
+        ),
         low_cpu_mem_usage=True,
     )
     loaded.model.vision_tower = None
@@ -414,6 +491,8 @@ def main() -> int:
         lr=float(config["learning_rate"]),
         weight_decay=float(config["weight_decay"]),
     )
+    if performance_variant is not None:
+        performance_snapshot(output, torch, "MODEL_ADAPTER_OPTIMIZER_READY", time.monotonic_ns())
     resumed_from_checkpoint_identity = None
     start_position = 0
     previous_checkpoint_identity = None
@@ -438,6 +517,8 @@ def main() -> int:
         losses = []
         steps = 0
     started_ns = time.monotonic_ns()
+    torch.cuda.reset_peak_memory_stats()
+    batch_started_ns = time.monotonic_ns()
     if checkpoint is not None:
         progress_events += 1
         progress_identity = progress_event(
@@ -457,7 +538,10 @@ def main() -> int:
         order = list(range(len(rows)))
         random.Random(seed + epoch).shuffle(order)
         if mode == "BATCH_SMOKE":
-            order = order[:accumulation]
+            probe_microsteps = int(config.get("performance_probe_microsteps", accumulation))
+            if not 1 <= probe_microsteps <= accumulation:
+                raise SystemExit("performance probe cardinality mismatch")
+            order = order[:probe_microsteps]
         for position, index in enumerate(order, 1):
             if position <= start_position:
                 continue
@@ -495,10 +579,38 @@ def main() -> int:
             input_ids = torch.tensor([tokens], device="cuda")
             labels = input_ids.clone()
             labels[:, : len(prefix)] = -100
-            result = loaded(input_ids=input_ids, labels=labels, use_cache=False)
-            loss = result.loss / accumulation
+            attention_context = nullcontext()
+            if "flash" in performance_capabilities:
+                attention_context = sdpa_kernel(SDPBackend.FLASH_ATTENTION)
+            elif performance_variant == "EFFICIENT_ONLY":
+                attention_context = sdpa_kernel(SDPBackend.EFFICIENT_ATTENTION)
+            autocast_context = nullcontext()
+            if "bf16" in performance_capabilities:
+                autocast_context = torch.autocast(device_type="cuda", dtype=torch.bfloat16)
+            selective_logits = "selective_logits" in performance_capabilities
+            with autocast_context, attention_context:
+                if selective_logits:
+                    logit_start, logit_stop = assistant_logit_span(len(prefix), len(tokens))
+                    logit_indices = torch.arange(logit_start, logit_stop, device="cuda")
+                    result = loaded(
+                        input_ids=input_ids,
+                        use_cache=False,
+                        logits_to_keep=logit_indices,
+                    )
+                    raw_loss = torch.nn.functional.cross_entropy(
+                        result.logits.float().reshape(-1, result.logits.shape[-1]),
+                        labels[:, len(prefix) :].reshape(-1),
+                    )
+                else:
+                    result = loaded(input_ids=input_ids, labels=labels, use_cache=False)
+                    raw_loss = result.loss
+            if performance_variant is not None:
+                performance_snapshot(output, torch, f"FORWARD_COMPLETED_POSITION_{position}", batch_started_ns)
+            loss = raw_loss / accumulation
             loss.backward()
-            losses.append(float(result.loss.detach().cpu()))
+            if performance_variant is not None:
+                performance_snapshot(output, torch, f"BACKWARD_COMPLETED_POSITION_{position}", batch_started_ns)
+            losses.append(float(raw_loss.detach().cpu()))
             progress_events += 1
             progress_identity = progress_event(
                 output,
@@ -589,6 +701,40 @@ def main() -> int:
         "adjudication_performed": False,
         "promotion_effect": False,
     }
+    if performance_variant is not None:
+        torch.cuda.synchronize()
+        receipt["performance_bakeoff"] = {
+            "variant": performance_variant,
+            "attention_backend_enforcement": (
+                "FLEX_ATTENTION"
+                if "flex" in performance_capabilities
+                else
+                "FLASH_ONLY"
+                if "flash" in performance_capabilities
+                else "EFFICIENT_ONLY"
+                if performance_variant == "EFFICIENT_ONLY"
+                else "AUTOMATIC_SDPA"
+            ),
+            "allocator": (
+                "EXPANDABLE_SEGMENTS"
+                if "expandable_allocator" in performance_capabilities
+                else "DEFAULT"
+            ),
+            "gqa_strategy": (
+                "REPEAT_KV_TO_QUERY_HEAD_COUNT"
+                if "repeat_kv" in performance_capabilities
+                else "NATIVE_ENABLE_GQA"
+            ),
+            "autocast_dtype": (
+                "BF16"
+                if "bf16" in performance_capabilities
+                else "DISABLED"
+            ),
+            "logits_scope": "ASSISTANT_TARGETS_PLUS_PRECEDING_PREDICTOR" if selective_logits else "FULL_SEQUENCE",
+            "elapsed_ms": (time.monotonic_ns() - batch_started_ns) // 1_000_000,
+            "peak_allocated_bytes": torch.cuda.max_memory_allocated(),
+            "peak_reserved_bytes": torch.cuda.max_memory_reserved(),
+        }
     core = json.dumps(receipt, separators=(",", ":"), sort_keys=True).encode()
     receipt["receipt_identity"] = hashlib.sha256(core).hexdigest()
     (output / "training-receipt.json").write_text(

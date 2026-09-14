@@ -1,15 +1,17 @@
 {
   "schema": "pastila-production-core-candidate-successor-training-config",
-  "schema_version": 3,
+  "schema_version": 4,
   "status": "FROZEN_PRETRAINING_ZERO_EXECUTION",
   "candidate": "pastila-editor-core-v1.2-json-successor-v10",
   "predecessor_adapter_manifest_sha256": "a8c0f6778f6d218cfdec47b53f87eb8dfc4af2c55077f559983e4331876b3ab8",
   "base_model_manifest_sha256": "f5a9327e40390c7f0cf93962d75abbbc5ae8da1fac48e1274092ac52cf88bf39",
   "execution_contract_identity": "cb580100302d3b6c462417a2c2d4ef0cb78f0bfc149470710f76a569e70b8562",
-  "training_input_validator_sha256": "45a84581eb78d254f431d64c748e7d113bd8b2b966f8ee52377136cb207f33ea",
+  "training_input_validator_sha256": "f5407a3311b62459c09b6899426c5722c697081a3f497e9d2fe49a61c7d8a058",
   "training_corpus_sha256": "5491630f3b959f890a74cce3075a9a2e976304138e342c379d4e5fd6a0a9641c",
   "shadow_corpus_sha256": "74d79f07c2f8bc7b0182e255e2119d7c15d9e4f4642f99adef7654d9cd7754ce",
   "objective": "ASSISTANT_ONLY_NEXT_TOKEN_CROSS_ENTROPY_EXPLICIT_EOS",
+  "training_execution_profile": "BF16_FLASH_REPEAT_KV_SELECTIVE_LOGITS",
+  "performance_freeze_identity": "d418ac661108e44237d3be7bbbda8e0ae9b4d0a5a918d95a47594095d055cfff",
   "seed": 314159,
   "epochs": 1,
   "learning_rate": "0.00001",
@@ -34,5 +36,5 @@
   "qualification_attempt_consumed": false,
   "adjudication_performed": false,
   "promotion_effect": false,
-  "training_config_identity": "3abe6dc3e13f04686dbe86f546ae458407fce9e3eda3eef9b5ecb5b2de142699"
+  "training_config_identity": "b89d91261657f8ac7f26ed77b24fdb62266c99bbfce7f410ede38ece37334d87"
 }

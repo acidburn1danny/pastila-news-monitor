@@ -37,8 +37,12 @@ def validate(corpus: Path, config_path: Path) -> dict[str, object]:
     corpus_raw = corpus.read_bytes()
     config = json.loads(config_path.read_bytes())
     candidate = config.get("candidate")
-    if config.get("schema_version") != 3 or config.get("status") != "FROZEN_PRETRAINING_ZERO_EXECUTION":
+    if config.get("schema_version") != 4 or config.get("status") != "FROZEN_PRETRAINING_ZERO_EXECUTION":
         raise ValueError("V10 config boundary mismatch")
+    if config.get("training_execution_profile") != "BF16_FLASH_REPEAT_KV_SELECTIVE_LOGITS":
+        raise ValueError("training execution profile mismatch")
+    if config.get("performance_freeze_identity") != "d418ac661108e44237d3be7bbbda8e0ae9b4d0a5a918d95a47594095d055cfff":
+        raise ValueError("performance freeze identity mismatch")
     if config.get("execution_contract_identity") != contract_identity():
         raise ValueError("execution contract identity mismatch")
     ceiling = GENERATION_POLICY["maximum_training_sequence_tokens"]
