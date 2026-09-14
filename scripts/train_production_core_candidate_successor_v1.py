@@ -379,7 +379,7 @@ def main() -> int:
     if existing - {"training-progress.jsonl", "training-checkpoints", "performance-telemetry.jsonl"}:
         raise SystemExit("successor output is neither empty nor resumable")
     rows = [json.loads(line) for line in corpus.read_text("utf-8").splitlines()]
-    expected_rows_by_schema = {1: 240, 2: 320, 3: 480}
+    expected_rows_by_schema = {1: 240, 2: 320, 3: 480, 4: 480}
     try:
         expected_rows = expected_rows_by_schema[config.get("schema_version")]
     except (KeyError, TypeError) as exc:

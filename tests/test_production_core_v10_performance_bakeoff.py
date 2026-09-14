@@ -56,6 +56,11 @@ def test_variant_capabilities_are_centralized_and_fail_closed():
     ] == {"bf16", "flex", "selective_logits"}
 
 
+def test_frozen_profile_schema_has_full_corpus_cardinality():
+    source = (Path(__file__).resolve().parents[1] / "scripts/train_production_core_candidate_successor_v1.py").read_text()
+    assert "3: 480, 4: 480" in source
+
+
 def test_assistant_logit_span_predicts_every_assistant_token_including_eos():
     assert assistant_logit_span(2400, 2641) == (2399, 2640)
     assert len(range(*assistant_logit_span(2400, 2641))) == 241
