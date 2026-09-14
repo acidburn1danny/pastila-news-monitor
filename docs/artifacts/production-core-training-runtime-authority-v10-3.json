@@ -1,0 +1,58 @@
+{
+  "adjudication_performed": false,
+  "candidate_execution_performed": false,
+  "full_training_authorized": true,
+  "full_training_started": false,
+  "observation": {
+    "adjudication_performed": false,
+    "base_model_manifest_sha256": "f5a9327e40390c7f0cf93962d75abbbc5ae8da1fac48e1274092ac52cf88bf39",
+    "branch": "successor/core-v2-v10-unified-execution-contract",
+    "candidate_execution_performed": false,
+    "candidates": {
+      "pastila-editor-core-v1.1-json-successor-v10": {
+        "config_sha256": "be4f28f967bdc128094e06a3092f9be27ddbaf03ac5fdb270d2cfd036b3f10ae",
+        "training_config_identity": "1d7587ae93158c644a56e8f64d51e862a09b2060864def619b9814835b1049a7"
+      },
+      "pastila-editor-core-v1.2-json-successor-v10": {
+        "config_sha256": "f7c2cd9bbadea3fd845c49456c95a6ca6e420d34d868113e4df6d4729216527c",
+        "training_config_identity": "b89d91261657f8ac7f26ed77b24fdb62266c99bbfce7f410ede38ece37334d87"
+      }
+    },
+    "checkpoint_frequency": "EVERY_OPTIMIZER_STEP",
+    "checkpoint_resume_audit_identity": "914730733543eecbfebc869959397356161c2f892d2178f1327459f043e47377",
+    "checkpoint_resume_audit_sha256": "e30bb1b81b47bfcd7adfd5aaaf6e40fab7de8e9b79914c7c459149d5bd441884",
+    "corpus_manifest_identity": "f409dde31dd778c89d534eb94294fab115589388268048088e91f9d0c9500084",
+    "corpus_manifest_sha256": "aedc6e9a01e3170dd670d95432cee89c5b254418d5bcff6489534a7d03ecba9a",
+    "execution_contract_identity": "cb580100302d3b6c462417a2c2d4ef0cb78f0bfc149470710f76a569e70b8562",
+    "execution_contract_sha256": "eb2ab0914175f0f9ae50882c4c96fbc792cfee1fe40fa39740b9ef8f58a1825d",
+    "host_path_fallback": false,
+    "launcher_sha256": "69381e707890b052bebe98fd481f29cf318351f8ba8694cc512d9a502763170f",
+    "network_activity": false,
+    "optimizer": "PAGED_ADAMW_8BIT",
+    "performance_freeze_identity": "d418ac661108e44237d3be7bbbda8e0ae9b4d0a5a918d95a47594095d055cfff",
+    "performance_freeze_sha256": "02d4413106261d7f197533c7a061288c6ca4fdab41288e4b6802cd925f4c71b8",
+    "predecessor_training_authority_identity": "a06dca57553584761a13524c93d0ca4782ff016f158344a5daf66d30e6782c3a",
+    "predecessor_training_authority_sha256": "065f3415c2d529c396c1570e52a4f40e433e2df41e7447ccfb591ba028cabff0",
+    "promotion_effect": false,
+    "qualification_attempt_consumed": false,
+    "rootfs_byte_identical": true,
+    "rootfs_materialization_sha256": {
+      "D": "9c8a26024a36a808bf077be880a214fcb3308233354e1824ae7ebc82d931f826",
+      "E": "9c8a26024a36a808bf077be880a214fcb3308233354e1824ae7ebc82d931f826"
+    },
+    "runtime_smoke_authority_identity": "6877f7596d0cafc9518681147f6880b7630bed6f7e23fc88a0d43aab15a2ed23",
+    "runtime_smoke_authority_sha256": "2ba9296be11ad129b7fef010537c162e24d3c09d2722a7cde8788b6a0df7c3ed",
+    "schema_cardinality_repair": "SCHEMA_4_EXACTLY_480_ROWS",
+    "source_commit": "5c1f69ecb57a63a07a0bddfbea6ad9fec9482b57",
+    "source_tree": "18c3f4871ed75483fe8618b1bcbeb133e2501ed2",
+    "trainer_sha256": "7cb7f7e4d3820155b40a49fa7e97f51eb6f29d775b1ec8b6d3efa410fedf7984",
+    "training_execution_profile": "BF16_FLASH_REPEAT_KV_SELECTIVE_LOGITS",
+    "training_input_validator_sha256": "f5407a3311b62459c09b6899426c5722c697081a3f497e9d2fe49a61c7d8a058"
+  },
+  "promotion_effect": false,
+  "qualification_attempt_consumed": false,
+  "schema": "pastila-production-core-training-runtime-authority",
+  "schema_version": "10.3",
+  "status": "PASS_SCHEMA_REPAIRED_OPTIMIZED_DUAL_SUCCESSOR_V10_TRAINING_RUNTIME_ZERO_QUALIFICATION_ATTEMPTS",
+  "training_runtime_authority_identity": "cda69071c31cacd50cd6ace67fa7c7955df431ad6f0ad9035d12a7df414e3d7b"
+}
