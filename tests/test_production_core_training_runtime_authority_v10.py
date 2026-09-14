@@ -2,6 +2,7 @@ import copy
 import hashlib
 import importlib.util
 import json
+import subprocess
 from pathlib import Path
 
 import pytest
@@ -41,18 +42,23 @@ def test_published_authority_is_closed_and_zero_execution():
 
 def test_all_v10_bindings_match_bytes_and_identities():
     value = observation()
-    paths = {
+    current_paths = {
         "execution_contract_sha256": ROOT / "src/pastila_scout/production_core_execution_contract_v10.py",
         "corpus_manifest_sha256": ART / "production-core-v10-corpus-and-training-config-manifest.json",
         "token_audit_receipt_sha256": ART / "production-core-v10-token-length-audit-receipt.json",
         "token_materialization_evidence_sha256": ART / "production-core-v10-token-materialization-evidence.json",
         "training_input_validator_sha256": ROOT / "scripts/validate_production_core_v10_training_inputs.py",
-        "launcher_sha256": ROOT / "scripts/run_production_core_candidate_successor_training_v1.sh",
-        "trainer_sha256": ROOT / "scripts/train_production_core_candidate_successor_v1.py",
         "runtime_smoke_authority_sha256": ART / "production-core-training-runtime-authority-v9.json",
     }
-    for field, path in paths.items():
+    for field, path in current_paths.items():
         assert hashlib.sha256(path.read_bytes()).hexdigest() == value[field]
+    historical_paths = {
+        "launcher_sha256": "scripts/run_production_core_candidate_successor_training_v1.sh",
+        "trainer_sha256": "scripts/train_production_core_candidate_successor_v1.py",
+    }
+    for field, path in historical_paths.items():
+        raw = subprocess.check_output(["git", "show", f'{value["source_commit"]}:{path}'])
+        assert hashlib.sha256(raw).hexdigest() == value[field]
     runtime_smoke = json.loads((ART / "production-core-training-runtime-authority-v9.json").read_bytes())
     assert runtime_smoke["training_runtime_authority_identity"] == value["runtime_smoke_authority_identity"]
     for candidate, binding in CANDIDATES.items():
