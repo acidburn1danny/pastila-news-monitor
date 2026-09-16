@@ -8,7 +8,18 @@ _EXPECTED_SOURCE_SHA256="5616841ee9dfc3c174d100aed07c79419df8850c0f63fbd7add9b1f
 _raw=_SOURCE.read_bytes()
 if hashlib.sha256(_raw).hexdigest()!=_EXPECTED_SOURCE_SHA256:
  raise RuntimeError("V3 execution validator source mismatch")
-exec(compile(_raw,str(_SOURCE),"exec"),globals(),globals())  # noqa: S102 - byte-pinned local authority
+_source=_raw.decode("utf-8")
+_changes={
+ "scripts/execute_production_core_candidate_qualification_v3.py":"scripts/execute_production_core_candidate_qualification_v10.py",
+ "scripts/launch_production_core_candidate_qualification_v9.py":"scripts/launch_production_core_candidate_qualification_v10.py",
+ "src/pastila_scout/production_core_candidate_execution_authority_v3.py":"src/pastila_scout/production_core_candidate_execution_authority_v10.py",
+ "9b25e239fc227252906fecab393a42a82eca4baa643ceed28177d3c5054e93fc":"91c84e9ab10cbecdfdd7e255b133c56263feb546d55d7e1ea01362f9be5567bb",
+ "111bc2734343c67aab4e1a04003199b98d4955fe9579e445cd7b5d6805a9da17":"70e125c8fa6e58f3864419bec34f6685a95bcb7bbfb9455838aaf593d01fac36",
+}
+for _old,_new in _changes.items():
+ if _old not in _source:raise RuntimeError(f"V10 validator projection witness absent: {_old}")
+ _source=_source.replace(_old,_new)
+exec(compile(_source,str(_SOURCE),"exec"),globals(),globals())  # noqa: S102 - byte-pinned local authority
 
 GENERATION_IDENTITY="a2bfb6b3ed0f9d77bcc54ed7be0c11380b62b6df0863e2ef41302333f65688d7"
 QUALIFICATION_IDENTITY="607ef6193b312c6d2e5d581c10caf9cb8a3a14a5b46166888e9bd8bddade5a45"

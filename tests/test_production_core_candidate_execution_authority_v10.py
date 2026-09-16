@@ -24,3 +24,9 @@ def test_executor_projects_its_entry_binding_to_v10():
  spec=importlib.util.spec_from_file_location("executor_v10_projection",path);value=importlib.util.module_from_spec(spec);assert spec.loader;spec.loader.exec_module(value)
  assert 'sources.get("scripts/execute_production_core_candidate_qualification_v10.py")' in value.source
  assert 'sources.get("scripts/execute_production_core_candidate_qualification_v3.py")' not in value.source
+def test_receipt_validator_projects_v10_source_and_prompt_authority():
+ assert "scripts/execute_production_core_candidate_qualification_v10.py" in v10._source
+ assert "scripts/launch_production_core_candidate_qualification_v10.py" in v10._source
+ assert "src/pastila_scout/production_core_candidate_execution_authority_v10.py" in v10._source
+ assert "91c84e9ab10cbecdfdd7e255b133c56263feb546d55d7e1ea01362f9be5567bb" in v10._source
+ assert "70e125c8fa6e58f3864419bec34f6685a95bcb7bbfb9455838aaf593d01fac36" in v10._source
