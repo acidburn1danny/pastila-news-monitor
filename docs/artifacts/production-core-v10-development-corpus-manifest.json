@@ -1,0 +1,22 @@
+{
+  "schema": "pastila-production-core-v10-development-corpus-manifest",
+  "schema_version": 1,
+  "execution_contract_identity": "cb580100302d3b6c462417a2c2d4ef0cb78f0bfc149470710f76a569e70b8562",
+  "qualification_rows_used": 0,
+  "training_or_shadow_rows_used": 0,
+  "candidates": {
+    "pastila-editor-core-v1.1-json-successor-v10": {
+      "file": "pastila-editor-core-v1.1-json-successor-v10-development-v10.jsonl",
+      "sha256": "a2cdfd141c394969fc66a5728186693ef47b83ed491d1c37fffd14642a42724a",
+      "rows": 72,
+      "editorial_prompt_sha256": "9b25e239fc227252906fecab393a42a82eca4baa643ceed28177d3c5054e93fc"
+    },
+    "pastila-editor-core-v1.2-json-successor-v10": {
+      "file": "pastila-editor-core-v1.2-json-successor-v10-development-v10.jsonl",
+      "sha256": "8cdf2da9aff237a26cf6f966f6cf977b75977ac83b9a68ba9317f4ee848581a6",
+      "rows": 72,
+      "editorial_prompt_sha256": "111bc2734343c67aab4e1a04003199b98d4955fe9579e445cd7b5d6805a9da17"
+    }
+  },
+  "manifest_identity": "5963940bba4a97e764f0a50b76319e9afc3cdbe21e8fb55423193c9f706cac52"
+}
