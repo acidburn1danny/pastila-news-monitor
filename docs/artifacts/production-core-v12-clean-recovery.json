@@ -1,0 +1,112 @@
+{
+  "active_identities": {
+    "adapter_audit": "50eb1fb7b425fdee07b7fbd672c405c0dc2cd5b34e0df6270bb0468c3ea846d8",
+    "candidate_manifest": "6c3bf1d21e85a454069ccd4e80f542fa5005ea6b89b41bb0d90b4acad2533314",
+    "qualification_generation": "a2bfb6b3ed0f9d77bcc54ed7be0c11380b62b6df0863e2ef41302333f65688d7",
+    "training_runtime_authority": "cda69071c31cacd50cd6ace67fa7c7955df431ad6f0ad9035d12a7df414e3d7b"
+  },
+  "classification": {
+    "ARCHIVE": [
+      "historical evidence already sealed and versioned"
+    ],
+    "KEEP_AND_VERSION": [
+      "source",
+      "schemas",
+      "materializers",
+      "manifests",
+      "receipts",
+      "audit/disposition/addendum provenance"
+    ],
+    "KEEP_EXTERNAL_WITH_REPRODUCIBLE_BINDING": [
+      "base model",
+      "inference rootfs",
+      "tokenizer",
+      "two final V10 adapters"
+    ],
+    "SAFE_TO_DELETE": [
+      "reproducible caches",
+      "superseded materializations",
+      "accepted-checkpoint duplicates",
+      "test temp directories"
+    ],
+    "UNKNOWN_BLOCKER": []
+  },
+  "execution_state": {
+    "adjudication": false,
+    "candidate_execution": 0,
+    "promotion": false,
+    "successor_attempt_consumption": 0,
+    "successor_authority_built": false
+  },
+  "external_objects": [
+    {
+      "archive_bytes": 27924418560,
+      "archive_sha256": "8138a2e11a94c65b4291501f1efba1dd28f5d808060b88a3636a7037c95ab0d9",
+      "backup_name": "base-model-f5a9327e40390c7f0cf93962d75abbbc5ae8da1fac48e1274092ac52cf88bf39.tar",
+      "content_bytes": 27924394330,
+      "content_files": 17,
+      "flat_content_identity": "f5a9327e40390c7f0cf93962d75abbbc5ae8da1fac48e1274092ac52cf88bf39",
+      "logical_name": "base-model"
+    },
+    {
+      "archive_bytes": 11113052160,
+      "archive_sha256": "274e7d1519f05f41108413efb01d35680b88e0f4b13bb63fca9634be155980f4",
+      "backup_name": "rootfs-274e7d1519f05f41108413efb01d35680b88e0f4b13bb63fca9634be155980f4.tar",
+      "logical_name": "inference-rootfs"
+    },
+    {
+      "archive_bytes": 17295360,
+      "archive_sha256": "2a00451398b3bb51d3c0fa3f4758c77061377ada35abbb7f5e1006be3aaced5c",
+      "backup_name": "tokenizer-2a00451398b3bb51d3c0fa3f4758c77061377ada35abbb7f5e1006be3aaced5c.tar",
+      "logical_name": "tokenizer"
+    },
+    {
+      "archive_bytes": 243896320,
+      "archive_sha256": "0e6cfe05dadf983eecd799c86245892a6591fa653e10f209e917b011afcea268",
+      "backup_name": "adapter-813131dc9cae57a66f216957475479e716594c46a67f77783122ff955aa7ee32.tar",
+      "content_bytes": 243885915,
+      "content_files": 4,
+      "flat_content_identity": "813131dc9cae57a66f216957475479e716594c46a67f77783122ff955aa7ee32",
+      "logical_name": "adapter-v10-v1.1"
+    },
+    {
+      "archive_bytes": 243896320,
+      "archive_sha256": "c85c60c60b5c30e57df309d1c1cf3c4580a3507bb09753e5705c74ba264eab22",
+      "backup_name": "adapter-8c277a123fef81908f03bdaf31925b93c1a95a3c0969ef23088331427e64013f.tar",
+      "content_bytes": 243885853,
+      "content_files": 4,
+      "flat_content_identity": "8c277a123fef81908f03bdaf31925b93c1a95a3c0969ef23088331427e64013f",
+      "logical_name": "adapter-v10-v1.2"
+    }
+  ],
+  "platform": {
+    "gpu": "RTX 5080 with a compatible WSL NVIDIA driver",
+    "minimum_free_bytes_for_external_restore": 40000000000,
+    "python": "3.14 project environment from pyproject.toml",
+    "windows": "Windows 11 with WSL2",
+    "wsl_distribution": "Ubuntu-24.04"
+  },
+  "recovery_manifest_identity": "52350edd7f5193e47128b788be97151fc3635b6524594d5aea939d66d34d4836",
+  "remaining_blockers": [],
+  "repository": {
+    "canonical_branch": "successor/core-v2-v12-runner-binding-remediation",
+    "recovery_metadata_rule": "checkout the published branch head; source checkpoint must be an ancestor",
+    "remote": "https://github.com/acidburn1danny/pastila-news-monitor.git",
+    "source_checkpoint": {
+      "commit": "2c64de10398fe39cbd42d7f2d46d544e5ac0fe3f",
+      "tree": "3c83e9901cbc743f0b83feeeab19e5724206b977"
+    }
+  },
+  "schema": "pastila-production-core-v12-clean-recovery",
+  "schema_version": 1,
+  "secret_recovery": {
+    "private_key_committed": false,
+    "public_material_is_versioned": true,
+    "requirement": "securely back up or explicitly rotate the V8.1 Ed25519 private key; rotation changes future signatures but must not rewrite historical bindings"
+  },
+  "status": "CLEAN_CLONE_RECOVERY_READY",
+  "v12": {
+    "next_action": "Build and audit the successor execution authority binding the canonical V12 recovery commit and runner V12 identity, with candidate execution and attempt consumption still zero.",
+    "runner_identity": "b7073a3b75036e5be26aa4b1d9546aa9f012370168a74df552b648708e399e29"
+  }
+}

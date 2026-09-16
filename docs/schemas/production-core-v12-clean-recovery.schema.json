@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pastila.invalid/schemas/production-core-v12-clean-recovery.schema.json",
+  "type": "object",
+  "required": ["schema", "schema_version", "status", "repository", "v12", "execution_state", "external_objects", "secret_recovery", "remaining_blockers", "recovery_manifest_identity"],
+  "properties": {
+    "schema": {"const": "pastila-production-core-v12-clean-recovery"},
+    "schema_version": {"const": 1},
+    "status": {"const": "CLEAN_CLONE_RECOVERY_READY"},
+    "recovery_manifest_identity": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "remaining_blockers": {"type": "array", "maxItems": 0},
+    "external_objects": {"type": "array", "minItems": 5},
+    "repository": {"type": "object"},
+    "v12": {"type": "object"},
+    "execution_state": {"type": "object"},
+    "secret_recovery": {"type": "object"}
+  },
+  "additionalProperties": true
+}
