@@ -1,0 +1,48 @@
+{
+  "addendum_identity": "841cf2e96cd2e7412091ea19ca4d17b8aaefc5b568be1d61e09371db6c428454",
+  "adjudication_performed": false,
+  "attempt_consumed_permanently": true,
+  "attempt_identity": "b1423e52b38f208b0bfcb0b8350e144ff7197af41e81451b61b99f199c334227",
+  "attempt_ordinal": 1,
+  "attempt_relaunch_authorized": false,
+  "authorized_generation_identity": "a2bfb6b3ed0f9d77bcc54ed7be0c11380b62b6df0863e2ef41302333f65688d7",
+  "demonstrated_observations": [
+    "AUTHORITY_BINDS_V3_RUNNER_SOURCE",
+    "EXECUTOR_TRANSMITS_V10_GENERATION_IDENTITY",
+    "RUNNER_EXPECTS_V3_GENERATION_IDENTITY",
+    "GENERATION_CHECK_PRECEDES_FIRST_HEARTBEAT",
+    "BOUNDARY_LOGS_PUBLISHED",
+    "HEARTBEAT_ABSENT",
+    "MODEL_LOAD_AND_INFERENCE_NOT_REACHED",
+    "CHECKPOINT_RECEIPT_ABSENT",
+    "TERMINAL_FAILURE_UNCAUGHT_AFTER_ATTEMPT_CONSUMPTION"
+  ],
+  "evidence_sha256": {
+    "attempt": "8151479c6636c630880974703153732725c399b4db994b076b21360cbfccd45f",
+    "batch": "699be4dd51411664ede157f7fac6c6927b3c60ac511067d2a8a59eed1f2d28c3",
+    "execution_authority": "c8c40883b04b5b043345da1021142b9243e0a9458a756dcef36f267b5ae7e7ee",
+    "file_boundary": "d626a2ea8a1e7a05e0efdb116a1da5670cb9b2df512dac7f5f24402ff42fc0ca",
+    "launcher_source": "ceddefe2fca34cf7edbda08518c15604172a25ad074029b8686fc5236f26bc7d",
+    "network_boundary": "abbd3cb07265e3479beab667bccc060088d55b016efd5262cafdf0ae52d34c4c",
+    "qualification_generation": "2ca33d629ebdbc32e77f06d0365dc94e8aebc84b0848826244c39c2cfd396039",
+    "runner_source": "ad29f2820159a7f47199a572db6c3f9a42b8664e0f2e3959d618a06513ad695f",
+    "system_prompt": "70e125c8fa6e58f3864419bec34f6685a95bcb7bbfb9455838aaf593d01fac36",
+    "terminal_failure": "95631554ec1a25afd00c54287fc96404c86a49e1694d065d4266e66ce7d3702e"
+  },
+  "execution_boundary_cause": "STALE_RUNNER_QUALIFICATION_GENERATION_BINDING",
+  "failure_stage": "RUNNER_AUTHORITY_VERIFICATION_BEFORE_FIRST_HEARTBEAT",
+  "inference_started": false,
+  "latent_bindings_reached": false,
+  "latent_stale_runner_bindings": [
+    "ADAPTER_MANIFESTS",
+    "SYSTEM_PROMPTS"
+  ],
+  "promotion_effect": false,
+  "retry_or_redraw": false,
+  "runner_expected_generation_identity": "b7af3517a14e987efa344e9cd9c7bcbbdd9ddb3656cc9060e72fdca71ca7c8d2",
+  "schema": "pastila-production-core-v11-root-cause-addendum",
+  "schema_version": 1,
+  "terminal_disposition_identity": "d764c62ee85f647db3698f834cb6bcb389f84ef298d26a25b59de7af966fde9f",
+  "terminal_disposition_reinterpreted": false,
+  "terminal_failure_identity": "f7116832890471cb7cf00e059be5e8a9023dcdbcf3e0da2db21e2a8568e26cbf"
+}
