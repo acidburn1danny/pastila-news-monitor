@@ -1,4 +1,4 @@
-import hashlib,importlib,json
+import hashlib,importlib,importlib.util,json
 from pathlib import Path
 import pytest
 from pastila_scout import production_core_candidate_execution_authority_v10 as v10
@@ -19,3 +19,8 @@ def test_v10_preflight_accepts_only_resealed_inputs():
 def test_attempt_remains_unconsumed_until_separate_execution_authorization():
  source=(ROOT/"src/pastila_scout/production_core_candidate_execution_authority_v10.py").read_text("utf-8")
  assert "build_attempt(" not in source and "candidate_execution_authorized" not in source
+def test_executor_projects_its_entry_binding_to_v10():
+ path=ROOT/"scripts/execute_production_core_candidate_qualification_v10.py"
+ spec=importlib.util.spec_from_file_location("executor_v10_projection",path);value=importlib.util.module_from_spec(spec);assert spec.loader;spec.loader.exec_module(value)
+ assert 'sources.get("scripts/execute_production_core_candidate_qualification_v10.py")' in value.source
+ assert 'sources.get("scripts/execute_production_core_candidate_qualification_v3.py")' not in value.source

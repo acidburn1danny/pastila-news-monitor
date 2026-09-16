@@ -10,6 +10,7 @@ if hashlib.sha256(raw).hexdigest()!=_EXPECTED_SOURCE_SHA256:raise SystemExit("V3
 source=raw.decode("utf-8")
 changes={
  'production_core_candidate_execution_authority_v3':'production_core_candidate_execution_authority_v10',
+ 'scripts/execute_production_core_candidate_qualification_v3.py':'scripts/execute_production_core_candidate_qualification_v10.py',
  'production-core-successor-comparative-qualification-generation-v9.json':'production-core-successor-comparative-qualification-generation-v10.json',
  'production-core-successor-candidate-object-manifest-v9.json':'production-core-successor-candidate-object-manifest-v10.json',
  'production-core-successor-candidate-generation-qualification-v9.json':'production-core-successor-candidate-generation-qualification-v10.json',
