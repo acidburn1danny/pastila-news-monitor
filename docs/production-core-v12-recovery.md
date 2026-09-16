@@ -26,6 +26,8 @@ reinstall. Rotation must never rewrite historical authority or signature records
 5. Run `pytest tests/test_production_core_recovery_v12.py tests/test_production_core_candidate_qualification_runner_v12.py`.
 6. Verify the external object set with the command above, then restore the content-addressed
    objects into newly created WSL runtime directories. Never trust paths without rechecking hashes.
+   A recovery smoke may point the V12 test at an explicit reconstructed resolution JSON through
+   `PASTILA_V12_OBJECT_RESOLUTION`; the default remains the historical local runtime location.
 7. Re-run the V12 runner materializer and require identity
    `b7073a3b75036e5be26aa4b1d9546aa9f012370168a74df552b648708e399e29`.
 

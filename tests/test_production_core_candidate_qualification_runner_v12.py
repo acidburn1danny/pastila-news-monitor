@@ -2,6 +2,7 @@ import ast
 import hashlib
 import importlib.util
 import json
+import os
 from pathlib import Path
 
 import pytest
@@ -9,7 +10,12 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 MATERIALIZER = ROOT / "scripts/materialize_production_core_candidate_qualification_runner_v12.py"
 RUNNER = ROOT / "src/pastila_scout/production_core_candidate_qualification_runner_v12.py"
-RESOLUTION = ROOT / ".pastila-runtime/production-core-successor-qualification-v10/local-object-resolution-v10.json"
+RESOLUTION = Path(
+    os.environ.get(
+        "PASTILA_V12_OBJECT_RESOLUTION",
+        ROOT / ".pastila-runtime/production-core-successor-qualification-v10/local-object-resolution-v10.json",
+    )
+)
 
 
 def module():
