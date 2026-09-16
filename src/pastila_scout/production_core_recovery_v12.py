@@ -83,8 +83,14 @@ def validate(value: Mapping[str, Any]) -> None:
         "promotion": False,
     }:
         raise ValueError("execution state mismatch")
-    if value["remaining_blockers"]:
-        raise ValueError("recovery manifest contains blockers")
+    if value["status"] == "CLEAN_CLONE_RECOVERY_READY":
+        if value["remaining_blockers"]:
+            raise ValueError("ready recovery manifest contains blockers")
+    elif value["status"] == "PENDING_SECURE_PRIVATE_KEY_BACKUP":
+        if value["remaining_blockers"] != ["V8.1_ED25519_PRIVATE_KEY_HAS_NO_VERIFIED_OFF_SYSTEM_ENCRYPTED_BACKUP"]:
+            raise ValueError("pending recovery blocker mismatch")
+    else:
+        raise ValueError("recovery status mismatch")
 
 
 def verify_external_objects(value: Mapping[str, Any], object_root: Path) -> None:

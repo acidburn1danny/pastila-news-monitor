@@ -29,7 +29,9 @@
       "accepted-checkpoint duplicates",
       "test temp directories"
     ],
-    "UNKNOWN_BLOCKER": []
+    "UNKNOWN_BLOCKER": [
+      "V8.1 Ed25519 private key secure backup destination"
+    ]
   },
   "execution_state": {
     "adjudication": false,
@@ -86,8 +88,10 @@
     "windows": "Windows 11 with WSL2",
     "wsl_distribution": "Ubuntu-24.04"
   },
-  "recovery_manifest_identity": "52350edd7f5193e47128b788be97151fc3635b6524594d5aea939d66d34d4836",
-  "remaining_blockers": [],
+  "recovery_manifest_identity": "a369d319586f0f41ac2522a61eb208e472f1bb79fc8f1d8a1fd6571cfa011047",
+  "remaining_blockers": [
+    "V8.1_ED25519_PRIVATE_KEY_HAS_NO_VERIFIED_OFF_SYSTEM_ENCRYPTED_BACKUP"
+  ],
   "repository": {
     "canonical_branch": "successor/core-v2-v12-runner-binding-remediation",
     "recovery_metadata_rule": "checkout the published branch head; source checkpoint must be an ancestor",
@@ -104,7 +108,7 @@
     "public_material_is_versioned": true,
     "requirement": "securely back up or explicitly rotate the V8.1 Ed25519 private key; rotation changes future signatures but must not rewrite historical bindings"
   },
-  "status": "CLEAN_CLONE_RECOVERY_READY",
+  "status": "PENDING_SECURE_PRIVATE_KEY_BACKUP",
   "v12": {
     "next_action": "Build and audit the successor execution authority binding the canonical V12 recovery commit and runner V12 identity, with candidate execution and attempt consumption still zero.",
     "runner_identity": "b7073a3b75036e5be26aa4b1d9546aa9f012370168a74df552b648708e399e29"

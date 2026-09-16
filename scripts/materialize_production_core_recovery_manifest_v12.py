@@ -12,7 +12,7 @@ def build() -> dict[str, object]:
     core: dict[str, object] = {
         "schema": "pastila-production-core-v12-clean-recovery",
         "schema_version": 1,
-        "status": "CLEAN_CLONE_RECOVERY_READY",
+        "status": "PENDING_SECURE_PRIVATE_KEY_BACKUP",
         "repository": {
             "remote": "https://github.com/acidburn1danny/pastila-news-monitor.git",
             "canonical_branch": "successor/core-v2-v12-runner-binding-remediation",
@@ -97,9 +97,9 @@ def build() -> dict[str, object]:
             "KEEP_EXTERNAL_WITH_REPRODUCIBLE_BINDING": ["base model", "inference rootfs", "tokenizer", "two final V10 adapters"],
             "ARCHIVE": ["historical evidence already sealed and versioned"],
             "SAFE_TO_DELETE": ["reproducible caches", "superseded materializations", "accepted-checkpoint duplicates", "test temp directories"],
-            "UNKNOWN_BLOCKER": [],
+            "UNKNOWN_BLOCKER": ["V8.1 Ed25519 private key secure backup destination"],
         },
-        "remaining_blockers": [],
+        "remaining_blockers": ["V8.1_ED25519_PRIVATE_KEY_HAS_NO_VERIFIED_OFF_SYSTEM_ENCRYPTED_BACKUP"],
     }
     result = seal(core)
     validate(result)

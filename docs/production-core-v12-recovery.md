@@ -16,6 +16,9 @@ The private Ed25519 signing key is deliberately excluded from Git and from the u
 recovery set. Back it up separately in an encrypted secret store, or explicitly rotate it after
 reinstall. Rotation must never rewrite historical authority or signature records.
 
+Until that separate backup has been verified, the recovery manifest intentionally remains
+`PENDING_SECURE_PRIVATE_KEY_BACKUP`; the final readiness gate must not be reported as PASS.
+
 ## Clean bootstrap
 
 1. Install Git, Python 3.14, WSL2 `Ubuntu-24.04`, and a compatible NVIDIA WSL driver.

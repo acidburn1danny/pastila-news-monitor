@@ -6,9 +6,9 @@
   "properties": {
     "schema": {"const": "pastila-production-core-v12-clean-recovery"},
     "schema_version": {"const": 1},
-    "status": {"const": "CLEAN_CLONE_RECOVERY_READY"},
+    "status": {"enum": ["PENDING_SECURE_PRIVATE_KEY_BACKUP", "CLEAN_CLONE_RECOVERY_READY"]},
     "recovery_manifest_identity": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
-    "remaining_blockers": {"type": "array", "maxItems": 0},
+    "remaining_blockers": {"type": "array", "maxItems": 1, "items": {"type": "string"}},
     "external_objects": {"type": "array", "minItems": 5},
     "repository": {"type": "object"},
     "v12": {"type": "object"},

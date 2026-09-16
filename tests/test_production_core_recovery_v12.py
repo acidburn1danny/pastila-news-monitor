@@ -21,6 +21,10 @@ def materializer():
 def test_recovery_manifest_is_reproducible_and_strict():
     value = materializer().build()
     validate(value)
+    assert value["status"] == "PENDING_SECURE_PRIVATE_KEY_BACKUP"
+    assert value["remaining_blockers"] == [
+        "V8.1_ED25519_PRIVATE_KEY_HAS_NO_VERIFIED_OFF_SYSTEM_ENCRYPTED_BACKUP"
+    ]
     assert value["execution_state"]["candidate_execution"] == 0
     assert value["execution_state"]["successor_attempt_consumption"] == 0
     broken = copy.deepcopy(value)
