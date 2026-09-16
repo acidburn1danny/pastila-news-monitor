@@ -28,6 +28,8 @@ reinstall. Rotation must never rewrite historical authority or signature records
    objects into newly created WSL runtime directories. Never trust paths without rechecking hashes.
    A recovery smoke may point the V12 test at an explicit reconstructed resolution JSON through
    `PASTILA_V12_OBJECT_RESOLUTION`; the default remains the historical local runtime location.
+   If the restored adapters live on a Windows volume, set `PASTILA_V12_ADAPTER_HOST_ROOT` to
+   their parent directory; this avoids treating a drvfs path as an inaccessible WSL UNC path.
 7. Re-run the V12 runner materializer and require identity
    `b7073a3b75036e5be26aa4b1d9546aa9f012370168a74df552b648708e399e29`.
 

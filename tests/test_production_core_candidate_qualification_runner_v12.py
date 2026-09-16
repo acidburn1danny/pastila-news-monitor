@@ -16,6 +16,7 @@ RESOLUTION = Path(
         ROOT / ".pastila-runtime/production-core-successor-qualification-v10/local-object-resolution-v10.json",
     )
 )
+ADAPTER_HOST_ROOT = os.environ.get("PASTILA_V12_ADAPTER_HOST_ROOT")
 
 
 def module():
@@ -64,11 +65,20 @@ def test_v12_generation_and_prompt_bindings_match_v10_authority():
 def test_v12_adapter_bindings_match_both_independent_materializations():
     values = constants()
     resolution = json.loads(RESOLUTION.read_bytes())
+    tags = {
+        "pastila-editor-core-v1.1-json-successor-v2": "v1.1",
+        "pastila-editor-core-v1.2-json-successor": "v1.2",
+    }
     for candidate, expected in values["EXPECTED_ADAPTERS"].items():
         observed = []
         for label in ("A", "B"):
             linux = resolution["materializations"][label]["adapters"][candidate]
-            observed.append(manifest(Path("//wsl.localhost/Ubuntu-24.04" + linux)))
+            root = (
+                Path(ADAPTER_HOST_ROOT) / f"{tags[candidate]}-{label}"
+                if ADAPTER_HOST_ROOT
+                else Path("//wsl.localhost/Ubuntu-24.04" + linux)
+            )
+            observed.append(manifest(root))
         assert observed == [expected, expected]
 
 
