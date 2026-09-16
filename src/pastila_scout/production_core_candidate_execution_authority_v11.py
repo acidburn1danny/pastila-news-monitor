@@ -27,4 +27,11 @@ _source = _source.replace(
     _needle
     + ' "scripts/run_production_core_candidate_qualification_v3.sh":"scripts/run_production_core_candidate_qualification_v11.sh",\n',
 )
+_marker = 'exec(compile(_source,str(_SOURCE),"exec"),globals(),globals())  # noqa: S102 - byte-pinned local authority\n'
+if _source.count(_marker) != 1:
+    raise RuntimeError("V11 validator capacity insertion mismatch")
+_injection = '''
+_source=_source.replace('"scripts/run_production_core_candidate_qualification_v11.sh",','"scripts/run_production_core_candidate_qualification_v11.sh",\\n            "scripts/preflight_production_core_wsl_host_capacity_v11.py",')
+'''
+_source = _source.replace(_marker, _injection + _marker)
 exec(compile(_source, str(_SOURCE), "exec"), globals(), globals())  # noqa: S102

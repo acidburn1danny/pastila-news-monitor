@@ -17,7 +17,7 @@ _changes = {
     "production-core-candidate-execution-authority-v10.binding.sig": "production-core-candidate-execution-authority-v11.binding.sig",
     "production-core-candidate-execution-authority-v10.json": "production-core-candidate-execution-authority-v11.json",
     "2795c02e96ee3e65165775e0592f201de2d1508d2ce4841859601795414f5f98": "ca3eb6a262ac2de2ffd00d320191e971b8054218ebfdb45627769224c2dbbce8",
-    "bf202b19031dc914758a2c10a6c0466dfcc700c03f0d4ae2ee2b3b662e040b83": "121fb577bb075a445d12baa663a20e77e3f9f1d5a3cc9297f9a3609fa51d34f6",
+    "bf202b19031dc914758a2c10a6c0466dfcc700c03f0d4ae2ee2b3b662e040b83": "e5e0e76acd1b20b8439d2c3a97bd3d9954fb33b4c95cc1f455d579561646b768",
     "pastila-production-core-v10-detached-authority-binding": "pastila-production-core-v11-detached-authority-binding",
     "FROZEN_SUCCESSOR_V10_UNIFIED_EXECUTION_CONTRACT_ZERO_ATTEMPTS": "FROZEN_SUCCESSOR_V11_WSL_SIGBUS_REMEDIATION_ZERO_ATTEMPTS",
     "7855e21d82402416dcee091baa7a6bcc5cb4c63783aafa33c65bd355c7d83587": "6550b88c424adda261fa723c08f3ce128d61cbdc811cb4d2b311657dc9f04983",

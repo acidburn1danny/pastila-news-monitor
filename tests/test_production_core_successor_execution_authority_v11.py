@@ -28,6 +28,7 @@ def test_v11_executor_and_validator_bind_no_copy_runner():
     validator = (ROOT / "src/pastila_scout/production_core_candidate_execution_authority_v11.py").read_text("utf-8")
     assert "run_production_core_candidate_qualification_v11.sh" in executor
     assert "run_production_core_candidate_qualification_v11.sh" in validator
+    assert "preflight_production_core_wsl_host_capacity_v11.py" in validator
     assert "run_production_core_candidate_qualification_v3.sh':'run_production_core_candidate_qualification_v11.sh" in executor
 
 
