@@ -11,6 +11,7 @@ if hashlib.sha256(_raw).hexdigest() != _EXPECTED:
     raise SystemExit("V10 launcher source mismatch")
 _source = _raw.decode("utf-8")
 _changes = {
+    "scripts/launch_production_core_candidate_qualification_v10.py": "scripts/launch_production_core_candidate_qualification_v11.py",
     "execute_production_core_candidate_qualification_v10.py": "execute_production_core_candidate_qualification_v11.py",
     "production_core_candidate_execution_authority_v10.py": "production_core_candidate_execution_authority_v11.py",
     "production-core-candidate-execution-authority-v10.binding.json": "production-core-candidate-execution-authority-v11.binding.json",

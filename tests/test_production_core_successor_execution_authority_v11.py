@@ -1,5 +1,6 @@
 import hashlib
 import importlib.util
+import dis
 from pathlib import Path
 
 import pytest
@@ -21,6 +22,9 @@ def test_v11_entry_binds_v11_executor_validator_and_capacity_gate():
     assert value.CORE.name == "production_core_candidate_execution_authority_v11.py"
     assert value.CAPACITY.name == "preflight_production_core_wsl_host_capacity_v11.py"
     assert value.CAPACITY_SHA == hashlib.sha256(value.CAPACITY.read_bytes()).hexdigest()
+    constants = repr(tuple(dis.Bytecode(value.main).codeobj.co_consts))
+    assert "scripts/launch_production_core_candidate_qualification_v11.py" in constants
+    assert "scripts/launch_production_core_candidate_qualification_v10.py" not in constants
 
 
 def test_v11_executor_and_validator_bind_no_copy_runner():
