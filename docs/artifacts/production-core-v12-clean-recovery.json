@@ -29,9 +29,7 @@
       "accepted-checkpoint duplicates",
       "test temp directories"
     ],
-    "UNKNOWN_BLOCKER": [
-      "V8.1 Ed25519 private key secure backup destination"
-    ]
+    "UNKNOWN_BLOCKER": []
   },
   "execution_state": {
     "adjudication": false,
@@ -88,10 +86,8 @@
     "windows": "Windows 11 with WSL2",
     "wsl_distribution": "Ubuntu-24.04"
   },
-  "recovery_manifest_identity": "a369d319586f0f41ac2522a61eb208e472f1bb79fc8f1d8a1fd6571cfa011047",
-  "remaining_blockers": [
-    "V8.1_ED25519_PRIVATE_KEY_HAS_NO_VERIFIED_OFF_SYSTEM_ENCRYPTED_BACKUP"
-  ],
+  "recovery_manifest_identity": "8c064b062bd68a2c3f5cae839672a8d4e94b8ee49b8d3d3ed8f077ffc878439e",
+  "remaining_blockers": [],
   "repository": {
     "canonical_branch": "successor/core-v2-v12-runner-binding-remediation",
     "recovery_metadata_rule": "checkout the published branch head; source checkpoint must be an ancestor",
@@ -104,11 +100,32 @@
   "schema": "pastila-production-core-v12-clean-recovery",
   "schema_version": 1,
   "secret_recovery": {
+    "backup": {
+      "bitlocker": {
+        "automatic_unlock": false,
+        "conversion_status": "USED_SPACE_ONLY_ENCRYPTED",
+        "method": "AES_128",
+        "percentage_encrypted": 100,
+        "protection": "ON",
+        "protectors": [
+          "PASSWORD",
+          "NUMERICAL_PASSWORD"
+        ],
+        "version": "2.0"
+      },
+      "byte_exact_verified": true,
+      "private_key_bytes": 122,
+      "private_key_hash_disclosed": false,
+      "public_key_sha256": "093b000881cc8e5a3d6167932d352d4cac3d7b4c448d0536f49cff9628d7d3a2",
+      "relative_path": "pastila-v12-secret-recovery/private.pem",
+      "removable_media": "TOSHIBA TransMemory",
+      "volume_label": "SCOUT_BACKUP"
+    },
     "private_key_committed": false,
     "public_material_is_versioned": true,
-    "requirement": "securely back up or explicitly rotate the V8.1 Ed25519 private key; rotation changes future signatures but must not rewrite historical bindings"
+    "requirement": "owner must retain the BitLocker password or numerical recovery password separately from the USB"
   },
-  "status": "PENDING_SECURE_PRIVATE_KEY_BACKUP",
+  "status": "CLEAN_CLONE_RECOVERY_READY",
   "v12": {
     "next_action": "Build and audit the successor execution authority binding the canonical V12 recovery commit and runner V12 identity, with candidate execution and attempt consumption still zero.",
     "runner_identity": "b7073a3b75036e5be26aa4b1d9546aa9f012370168a74df552b648708e399e29"

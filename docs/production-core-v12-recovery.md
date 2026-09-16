@@ -13,11 +13,10 @@ python -c "import json,pathlib; from pastila_scout.production_core_recovery_v12 
 ```
 
 The private Ed25519 signing key is deliberately excluded from Git and from the unencrypted
-recovery set. Back it up separately in an encrypted secret store, or explicitly rotate it after
-reinstall. Rotation must never rewrite historical authority or signature records.
-
-Until that separate backup has been verified, the recovery manifest intentionally remains
-`PENDING_SECURE_PRIVATE_KEY_BACKUP`; the final readiness gate must not be reported as PASS.
+recovery set. Its verified byte-exact backup is stored on the owner-held BitLocker To Go volume
+labelled `SCOUT_BACKUP`, under `pastila-v12-secret-recovery/private.pem`. BitLocker protection was
+verified on with 100% used-space encryption and automatic unlock disabled. The owner must retain
+the password or numerical recovery password separately. Never disclose the private-key hash.
 
 ## Clean bootstrap
 

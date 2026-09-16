@@ -12,7 +12,7 @@ def build() -> dict[str, object]:
     core: dict[str, object] = {
         "schema": "pastila-production-core-v12-clean-recovery",
         "schema_version": 1,
-        "status": "PENDING_SECURE_PRIVATE_KEY_BACKUP",
+        "status": "CLEAN_CLONE_RECOVERY_READY",
         "repository": {
             "remote": "https://github.com/acidburn1danny/pastila-news-monitor.git",
             "canonical_branch": "successor/core-v2-v12-runner-binding-remediation",
@@ -82,7 +82,25 @@ def build() -> dict[str, object]:
         ],
         "secret_recovery": {
             "private_key_committed": False,
-            "requirement": "securely back up or explicitly rotate the V8.1 Ed25519 private key; rotation changes future signatures but must not rewrite historical bindings",
+            "backup": {
+                "volume_label": "SCOUT_BACKUP",
+                "removable_media": "TOSHIBA TransMemory",
+                "bitlocker": {
+                    "version": "2.0",
+                    "conversion_status": "USED_SPACE_ONLY_ENCRYPTED",
+                    "percentage_encrypted": 100,
+                    "method": "AES_128",
+                    "protection": "ON",
+                    "automatic_unlock": False,
+                    "protectors": ["PASSWORD", "NUMERICAL_PASSWORD"],
+                },
+                "relative_path": "pastila-v12-secret-recovery/private.pem",
+                "private_key_bytes": 122,
+                "byte_exact_verified": True,
+                "private_key_hash_disclosed": False,
+                "public_key_sha256": "093b000881cc8e5a3d6167932d352d4cac3d7b4c448d0536f49cff9628d7d3a2"
+            },
+            "requirement": "owner must retain the BitLocker password or numerical recovery password separately from the USB",
             "public_material_is_versioned": True,
         },
         "platform": {
@@ -97,9 +115,9 @@ def build() -> dict[str, object]:
             "KEEP_EXTERNAL_WITH_REPRODUCIBLE_BINDING": ["base model", "inference rootfs", "tokenizer", "two final V10 adapters"],
             "ARCHIVE": ["historical evidence already sealed and versioned"],
             "SAFE_TO_DELETE": ["reproducible caches", "superseded materializations", "accepted-checkpoint duplicates", "test temp directories"],
-            "UNKNOWN_BLOCKER": ["V8.1 Ed25519 private key secure backup destination"],
+            "UNKNOWN_BLOCKER": [],
         },
-        "remaining_blockers": ["V8.1_ED25519_PRIVATE_KEY_HAS_NO_VERIFIED_OFF_SYSTEM_ENCRYPTED_BACKUP"],
+        "remaining_blockers": [],
     }
     result = seal(core)
     validate(result)
