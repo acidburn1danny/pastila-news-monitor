@@ -1,0 +1,34 @@
+{
+  "adjudication_performed": false,
+  "attempt_consumed_permanently": true,
+  "attempt_identity": "7a31793e27306f76523c20a69eb06cced7aa67258af7726d40f3def36b57f517",
+  "attempt_ordinal": 1,
+  "candidate_execution_repeated": false,
+  "completed_rows": 0,
+  "disposition_identity": "6550b88c424adda261fa723c08f3ce128d61cbdc811cb4d2b311657dc9f04983",
+  "evidence_sha256": {
+    "attempt": "166b117bd4662c3d6b4fa49843a6a7ad409c16d4fced0daa3b51f5ff78d99be9",
+    "batch": "699be4dd51411664ede157f7fac6c6927b3c60ac511067d2a8a59eed1f2d28c3",
+    "stderr": "ad1ffa8d6f0ba0100db40d4b6e562913fd6037a4acc68583092d0551a2436b06",
+    "system_prompt": "70e125c8fa6e58f3864419bec34f6685a95bcb7bbfb9455838aaf593d01fac36",
+    "terminal_failure": "63d5fa33081134a74458c77488c1848c0c55221ad0a592b313f03c3fd81b59f7"
+  },
+  "execution_authority_identity": "7eee3b6aa16704d754ab38327a4d98f7147697d0d4a3e7e8684e3e982a87a94d",
+  "failed_batch": {
+    "candidate_alias": "CANDIDATE-A",
+    "materialization": "A",
+    "repetition": 1
+  },
+  "failure_class": "UNCAUGHT_AFTER_ATTEMPT_CONSUMPTION",
+  "matrix_rows": 2400,
+  "promotion_effect": false,
+  "published_checkpoints": 0,
+  "qualification_generation_identity": "a2bfb6b3ed0f9d77bcc54ed7be0c11380b62b6df0863e2ef41302333f65688d7",
+  "retry_or_redraw": false,
+  "root_cause_determined": false,
+  "schema": "pastila-production-core-v10-terminal-failure-disposition",
+  "schema_version": 1,
+  "status": "TERMINAL_FAILURE_ATTEMPT_CONSUMED",
+  "successor_requirement": "NEW_SUCCESSOR_LINEAGE_AND_NEW_EXECUTION_AUTHORITY",
+  "terminal_failure_identity": "20bd5a4390566e5d78fd1bac251d13234323d82301bc735bd71575e4f3ccf74e"
+}

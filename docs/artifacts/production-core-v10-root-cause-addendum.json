@@ -1,0 +1,32 @@
+{
+  "addendum_identity": "22d8b88c0b716fbfb8e09e75d48648ade5f726fd173ee34a1c2ec522d258d95f",
+  "adjudication_performed": false,
+  "attempt_consumed_permanently": true,
+  "attempt_identity": "7a31793e27306f76523c20a69eb06cced7aa67258af7726d40f3def36b57f517",
+  "attempt_ordinal": 1,
+  "attempt_relaunch_authorized": false,
+  "demonstrated_observations": [
+    "CP_MODEL_SNAPSHOT_TERMINATED_BY_SIGBUS",
+    "UNSHARE_EXECUTION_BOUNDARY_TERMINATED_BY_SIGBUS",
+    "RUNNER_OUTPUT_ABSENT",
+    "CHECKPOINT_RECEIPT_ABSENT",
+    "TERMINAL_FAILURE_UNCAUGHT_AFTER_ATTEMPT_CONSUMPTION"
+  ],
+  "evidence_sha256": {
+    "attempt": "166b117bd4662c3d6b4fa49843a6a7ad409c16d4fced0daa3b51f5ff78d99be9",
+    "batch": "699be4dd51411664ede157f7fac6c6927b3c60ac511067d2a8a59eed1f2d28c3",
+    "stderr": "ad1ffa8d6f0ba0100db40d4b6e562913fd6037a4acc68583092d0551a2436b06",
+    "system_prompt": "70e125c8fa6e58f3864419bec34f6685a95bcb7bbfb9455838aaf593d01fac36",
+    "terminal_failure": "63d5fa33081134a74458c77488c1848c0c55221ad0a592b313f03c3fd81b59f7"
+  },
+  "execution_boundary_cause": "WSL_EXECUTION_BOUNDARY_SIGBUS_DURING_MODEL_SNAPSHOT",
+  "failure_stage": "MODEL_SNAPSHOT_BEFORE_RUNNER_START",
+  "internal_sigbus_cause": "UNDETERMINED",
+  "promotion_effect": false,
+  "retry_or_redraw": false,
+  "schema": "pastila-production-core-v10-root-cause-addendum",
+  "schema_version": 1,
+  "terminal_disposition_identity": "6550b88c424adda261fa723c08f3ce128d61cbdc811cb4d2b311657dc9f04983",
+  "terminal_disposition_reinterpreted": false,
+  "terminal_failure_identity": "20bd5a4390566e5d78fd1bac251d13234323d82301bc735bd71575e4f3ccf74e"
+}
