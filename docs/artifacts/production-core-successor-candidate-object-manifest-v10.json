@@ -1,0 +1,24 @@
+{
+  "adapter_audit_identity": "50eb1fb7b425fdee07b7fbd672c405c0dc2cd5b34e0df6270bb0468c3ea846d8",
+  "adapter_manifest_sha256": {
+    "pastila-editor-core-v1.1-json-successor-v10": "813131dc9cae57a66f216957475479e716594c46a67f77783122ff955aa7ee32",
+    "pastila-editor-core-v1.2-json-successor-v10": "8c277a123fef81908f03bdaf31925b93c1a95a3c0969ef23088331427e64013f"
+  },
+  "adjudication_performed": false,
+  "base_model_manifest_sha256": "f5a9327e40390c7f0cf93962d75abbbc5ae8da1fac48e1274092ac52cf88bf39",
+  "candidate_execution_performed": false,
+  "execution_contract_sha256": "eb2ab0914175f0f9ae50882c4c96fbc792cfee1fe40fa39740b9ef8f58a1825d",
+  "manifest_identity": "6c3bf1d21e85a454069ccd4e80f542fa5005ea6b89b41bb0d90b4acad2533314",
+  "promotion_effect": false,
+  "qualification_attempt_consumed": false,
+  "qualification_authority_issued": false,
+  "retry_or_redraw": false,
+  "schema": "pastila-production-core-candidate-object-manifest",
+  "schema_version": 10,
+  "source_commit": "dfbef63d493688406cbe92f5970ecf52e3056763",
+  "source_tree": "6fa0a79b74af5e40fffd85f691fe1e981da8ddd6",
+  "status": "V10_SUCCESSOR_CONTENT_ADDRESSED_AUTHORITY_NO_QUALIFICATION_EXECUTION",
+  "tokenizer_fix_mistral_regex": true,
+  "tokenizer_sha256": "2a00451398b3bb51d3c0fa3f4758c77061377ada35abbb7f5e1006be3aaced5c",
+  "training_runtime_authority_identity": "cda69071c31cacd50cd6ace67fa7c7955df431ad6f0ad9035d12a7df414e3d7b"
+}

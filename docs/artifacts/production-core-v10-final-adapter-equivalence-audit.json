@@ -1,0 +1,66 @@
+{
+  "adapters": {
+    "pastila-editor-core-v1.1-json-successor-v10": {
+      "content_identity": "813131dc9cae57a66f216957475479e716594c46a67f77783122ff955aa7ee32",
+      "development_gate_identities": {
+        "A": "88a03f853709dca50a04528b7a0a577b37fcfd14bbd2e06d0c8d7fee3cf0769e",
+        "B": "c588bc680dc15c10f5c9bbfce576538ddddb4ab0136bfa39791617c7639734f9"
+      },
+      "development_rows": 72,
+      "final_checkpoint_identity": "2723d9f0cac7133239f2d5e37afb5022beb49183a61cb911339762e753a2b6b3",
+      "materializations": {
+        "A": "813131dc9cae57a66f216957475479e716594c46a67f77783122ff955aa7ee32",
+        "B": "813131dc9cae57a66f216957475479e716594c46a67f77783122ff955aa7ee32"
+      },
+      "shadow_gate_identities": {
+        "A": "021401af76fc8bb7856f5b2044b4667537bdea001f34cc82f815e5e1f7d1f1a4",
+        "B": "aa26c42479d2e41b6caa87251f3b2b53c06380582b39a947a54a4396555204cf"
+      },
+      "shadow_rows": 240,
+      "training_receipt_identity": "15c39a923fc10dc9145710ed74d94d872c3854e2bac56ba2e51ac13483e9921b"
+    },
+    "pastila-editor-core-v1.2-json-successor-v10": {
+      "content_identity": "8c277a123fef81908f03bdaf31925b93c1a95a3c0969ef23088331427e64013f",
+      "development_gate_identities": {
+        "A": "ce83d5381c9d7f76c8d8ac5ee253315e66093412f07a64ec34ecb5d689cc7447",
+        "B": "131454fae5f7cd39e85b34be4bfda97d3725fafa8343e2e2ee5603092c3f67f7"
+      },
+      "development_rows": 72,
+      "final_checkpoint_identity": "6925fca8c5b6c9e94e96255cb21ec9442aff5d0ac2f7bd0f2038ce45475a7dd1",
+      "materializations": {
+        "A": "8c277a123fef81908f03bdaf31925b93c1a95a3c0969ef23088331427e64013f",
+        "B": "8c277a123fef81908f03bdaf31925b93c1a95a3c0969ef23088331427e64013f"
+      },
+      "shadow_gate_identities": {
+        "A": "b4ff9e7b1b65392265689dbb876bccf266babd2f6b0afb030aadc27d9572972f",
+        "B": "511d02f492bee00819950d5700fd839d3c600c76efc77412e60235c42905870e"
+      },
+      "shadow_rows": 240,
+      "training_receipt_identity": "f716f48db091d51263cab72ca97df1e8930d09194b11fa3dd0be618739f8b46a"
+    }
+  },
+  "adjudication_performed": false,
+  "audit_identity": "50eb1fb7b425fdee07b7fbd672c405c0dc2cd5b34e0df6270bb0468c3ea846d8",
+  "base_model_manifest_sha256": "f5a9327e40390c7f0cf93962d75abbbc5ae8da1fac48e1274092ac52cf88bf39",
+  "blockers": [],
+  "candidate_execution_performed": false,
+  "execution_contract_sha256": "eb2ab0914175f0f9ae50882c4c96fbc792cfee1fe40fa39740b9ef8f58a1825d",
+  "host_fallback": false,
+  "materializations_byte_identical": true,
+  "network_activity": false,
+  "partition_cardinality": {
+    "development": 144,
+    "qualification_used": 0,
+    "shadow": 480,
+    "training": 960
+  },
+  "phase_projection_equivalent": true,
+  "promotion_effect": false,
+  "qualification_attempt_consumed": false,
+  "retry_or_redraw": false,
+  "rootfs_sha256": "9c8a26024a36a808bf077be880a214fcb3308233354e1824ae7ebc82d931f826",
+  "schema": "pastila-production-core-v10-final-adapter-equivalence-audit",
+  "schema_version": 1,
+  "status": "PASS_ZERO_BLOCKERS_ZERO_QUALIFICATION_ATTEMPTS",
+  "training_runtime_authority_identity": "cda69071c31cacd50cd6ace67fa7c7955df431ad6f0ad9035d12a7df414e3d7b"
+}
