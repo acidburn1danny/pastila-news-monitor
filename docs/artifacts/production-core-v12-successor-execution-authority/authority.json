@@ -1,0 +1,109 @@
+{
+  "adjudication": false,
+  "attempt_consumption_authorized": false,
+  "authority_identity": "3058bb06d251c86ad0be1a5548fc30dd68c2582ed57693ac672838ffa7fb7b35",
+  "bound_source_commit": "5a94ab6601d7f37a5b50f345592aacd404d3f621",
+  "bound_source_tree": "5527fbd0f36018f5687d6abc7f77574073c6a987",
+  "builder_sha256": "9d216c99e3055d12b361fa55c6a1e2be6b29b01a82ed31ab6c0b22e1d525e903",
+  "candidate_execution": 0,
+  "candidate_execution_authorized": false,
+  "promotion": false,
+  "public_key_pem_sha256": "093b000881cc8e5a3d6167932d352d4cac3d7b4c448d0536f49cff9628d7d3a2",
+  "recovery_manifest_identity": "8c064b062bd68a2c3f5cae839672a8d4e94b8ee49b8d3d3ed8f077ffc878439e",
+  "recovery_resolution_identity": "7623e67ceeeb42fc42f18a329d825311ddc723046595201060b6d0f638f81e77",
+  "runner_v12_identity": "b7073a3b75036e5be26aa4b1d9546aa9f012370168a74df552b648708e399e29",
+  "runtime_object_closure": {
+    "executor_projection_sha256": "d593521492375b30b31fc483c961ecb24191ad5030693ef3d0510162d329c10f",
+    "objects": {
+      "A": {
+        "model": {
+          "content_identity": "f5a9327e40390c7f0cf93962d75abbbc5ae8da1fac48e1274092ac52cf88bf39",
+          "kind": "flat-dir",
+          "path": "/root/pf9-v12-recovery-replay-20260917/models/A",
+          "physical_identity": "/root/pf9-v12-recovery-replay-20260917/models/A|2096:49293"
+        },
+        "pastila-editor-core-v1.1-json-successor-v2": {
+          "content_identity": "813131dc9cae57a66f216957475479e716594c46a67f77783122ff955aa7ee32",
+          "kind": "flat-dir",
+          "path": "/root/pf9-v12-recovery-replay-20260917/adapters/A/pastila-editor-core-v1.1-json-successor-v2",
+          "physical_identity": "/root/pf9-v12-recovery-replay-20260917/adapters/A/pastila-editor-core-v1.1-json-successor-v2|2096:49769"
+        },
+        "pastila-editor-core-v1.2-json-successor": {
+          "content_identity": "8c277a123fef81908f03bdaf31925b93c1a95a3c0969ef23088331427e64013f",
+          "kind": "flat-dir",
+          "path": "/root/pf9-v12-recovery-replay-20260917/adapters/A/pastila-editor-core-v1.2-json-successor",
+          "physical_identity": "/root/pf9-v12-recovery-replay-20260917/adapters/A/pastila-editor-core-v1.2-json-successor|2096:49774"
+        },
+        "rootfs": {
+          "content_identity": "274e7d1519f05f41108413efb01d35680b88e0f4b13bb63fca9634be155980f4",
+          "kind": "file",
+          "path": "/root/pf9-v12-recovery-replay-20260917/rootfs/inference-rootfs.tar",
+          "physical_identity": "/root/pf9-v12-recovery-replay-20260917/rootfs/inference-rootfs.tar|2096:49800"
+        }
+      },
+      "B": {
+        "model": {
+          "content_identity": "f5a9327e40390c7f0cf93962d75abbbc5ae8da1fac48e1274092ac52cf88bf39",
+          "kind": "flat-dir",
+          "path": "/root/pf9-v12-recovery-replay-20260917/models/B",
+          "physical_identity": "/root/pf9-v12-recovery-replay-20260917/models/B|2096:49750"
+        },
+        "pastila-editor-core-v1.1-json-successor-v2": {
+          "content_identity": "813131dc9cae57a66f216957475479e716594c46a67f77783122ff955aa7ee32",
+          "kind": "flat-dir",
+          "path": "/root/pf9-v12-recovery-replay-20260917/adapters/B/pastila-editor-core-v1.1-json-successor-v2",
+          "physical_identity": "/root/pf9-v12-recovery-replay-20260917/adapters/B/pastila-editor-core-v1.1-json-successor-v2|2096:49780"
+        },
+        "pastila-editor-core-v1.2-json-successor": {
+          "content_identity": "8c277a123fef81908f03bdaf31925b93c1a95a3c0969ef23088331427e64013f",
+          "kind": "flat-dir",
+          "path": "/root/pf9-v12-recovery-replay-20260917/adapters/B/pastila-editor-core-v1.2-json-successor",
+          "physical_identity": "/root/pf9-v12-recovery-replay-20260917/adapters/B/pastila-editor-core-v1.2-json-successor|2096:49785"
+        },
+        "rootfs": {
+          "content_identity": "274e7d1519f05f41108413efb01d35680b88e0f4b13bb63fca9634be155980f4",
+          "kind": "file",
+          "path": "/root/pf9-v12-recovery-replay-20260917/rootfs/inference-rootfs.tar",
+          "physical_identity": "/root/pf9-v12-recovery-replay-20260917/rootfs/inference-rootfs.tar|2096:49800"
+        }
+      }
+    },
+    "recovery_resolution_sha256": "38e62acfc1e8b202db2e7ada5ec7b3bb80c4666b468b5989dbb87a3be2971223"
+  },
+  "runtime_object_resolution": {
+    "materializations": {
+      "A": {
+        "adapters": {
+          "pastila-editor-core-v1.1-json-successor-v2": "/root/pf9-v12-recovery-replay-20260917/adapters/A/pastila-editor-core-v1.1-json-successor-v2",
+          "pastila-editor-core-v1.2-json-successor": "/root/pf9-v12-recovery-replay-20260917/adapters/A/pastila-editor-core-v1.2-json-successor"
+        },
+        "model": "/root/pf9-v12-recovery-replay-20260917/models/A",
+        "rootfs_tar": "/root/pf9-v12-recovery-replay-20260917/rootfs/inference-rootfs.tar"
+      },
+      "B": {
+        "adapters": {
+          "pastila-editor-core-v1.1-json-successor-v2": "/root/pf9-v12-recovery-replay-20260917/adapters/B/pastila-editor-core-v1.1-json-successor-v2",
+          "pastila-editor-core-v1.2-json-successor": "/root/pf9-v12-recovery-replay-20260917/adapters/B/pastila-editor-core-v1.2-json-successor"
+        },
+        "model": "/root/pf9-v12-recovery-replay-20260917/models/B",
+        "rootfs_tar": "/root/pf9-v12-recovery-replay-20260917/rootfs/inference-rootfs.tar"
+      }
+    },
+    "schema": "pastila-production-core-local-object-resolution-v2",
+    "schema_version": 2
+  },
+  "schema": "pastila-production-core-successor-execution-authority-v12",
+  "schema_version": 1,
+  "source_sha256": {
+    "docs/schemas/production-core-candidate-execution-evidence-v2.schema.json": "55abaf7d8fc8a0ebd1b9b3db3d5e213b6e36534ff078a3687de80b6cc246cd33",
+    "scripts/audit_production_core_v12_recovery_runtime.py": "006fb746de25ef923b88b1b87809c7c99a75ca090268f038064b57c3058f8da0",
+    "scripts/execute_production_core_candidate_qualification_v11.py": "ca3eb6a262ac2de2ffd00d320191e971b8054218ebfdb45627769224c2dbbce8",
+    "scripts/launch_production_core_candidate_qualification_v11.py": "2e7469206ba6ed6c705bf4a2f57ec85d41a9f4c27755e4e0c9a458a05cd29082",
+    "scripts/materialize_production_core_v12_recovery_runtime.py": "928c28c413ab73c4ef58b5fd0a8b785e0162f11ead3051366cd64ef22e787fa3",
+    "scripts/resolve_production_core_object_authority_v2.sh": "4231ea3dae2f9399edeed8c2d5f96faa16c13714a594a1a381ea50ceb4cf0be0",
+    "src/pastila_scout/production_core_candidate_execution_authority_v11.py": "e5e0e76acd1b20b8439d2c3a97bd3d9954fb33b4c95cc1f455d579561646b768",
+    "src/pastila_scout/production_core_candidate_qualification_runner_v12.py": "b7073a3b75036e5be26aa4b1d9546aa9f012370168a74df552b648708e399e29"
+  },
+  "status": "FROZEN_V12_RECOVERY_BOUND_ZERO_ATTEMPTS",
+  "successor_attempt_consumption": 0
+}
