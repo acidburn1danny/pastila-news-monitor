@@ -25,6 +25,36 @@ def test_source_closure_binds_published_commit_tree_and_runner(monkeypatch):
         authority.source_closure()
 
 
+def test_source_closure_rejects_unrelated_or_divergent_published_history(monkeypatch):
+    original_git = authority.git
+    original_ancestor = authority.ancestor
+
+    def substituted_ref(*args):
+        if args == ("rev-parse", "refs/remotes/origin/successor/core-v2-v12-runner-binding-remediation"):
+            return b"f" * 40
+        return original_git(*args)
+
+    monkeypatch.setattr(authority, "git", substituted_ref)
+    monkeypatch.setattr(authority, "ancestor", lambda older, newer: False if newer == "f" * 40 else original_ancestor(older, newer))
+    with pytest.raises(ValueError, match="published recovery branch mismatch"):
+        authority.source_closure()
+
+    monkeypatch.setattr(authority, "ancestor", lambda older, newer: older == authority.COMMIT)
+    with pytest.raises(ValueError, match="local and published histories diverge"):
+        authority.source_closure()
+
+
+def test_source_closure_accepts_only_checkout_newline_conversion_for_public_key(monkeypatch, tmp_path):
+    original = authority.PUBLIC_KEY.read_bytes()
+    key = tmp_path / "public.pem"
+    monkeypatch.setattr(authority, "PUBLIC_KEY", key)
+    key.write_bytes(original.replace(b"\r\n", b"\n"))
+    authority.source_closure()
+    key.write_bytes(original + b"extra")
+    with pytest.raises(ValueError, match="signing public key identity mismatch"):
+        authority.source_closure()
+
+
 def test_binding_explicitly_carries_v12_state_and_rejects_legacy_identity():
     body = {
         "authority_identity": "a" * 64,
