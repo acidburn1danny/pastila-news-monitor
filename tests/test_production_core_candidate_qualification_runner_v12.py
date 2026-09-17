@@ -10,12 +10,8 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 MATERIALIZER = ROOT / "scripts/materialize_production_core_candidate_qualification_runner_v12.py"
 RUNNER = ROOT / "src/pastila_scout/production_core_candidate_qualification_runner_v12.py"
-RESOLUTION = Path(
-    os.environ.get(
-        "PASTILA_V12_OBJECT_RESOLUTION",
-        ROOT / ".pastila-runtime/production-core-successor-qualification-v10/local-object-resolution-v10.json",
-    )
-)
+RECOVERY_ROOT = Path(os.environ.get("PASTILA_V12_RECOVERY_ROOT", ROOT / ".pastila-runtime/production-core-v12-recovery"))
+RESOLUTION = Path(os.environ.get("PASTILA_V12_OBJECT_RESOLUTION", RECOVERY_ROOT / "v12-recovery-runtime-resolution.json"))
 ADAPTER_HOST_ROOT = os.environ.get("PASTILA_V12_ADAPTER_HOST_ROOT")
 
 
@@ -37,8 +33,11 @@ def manifest(root: Path):
     rows = []
     for path in sorted(root.iterdir(), key=lambda item: item.name.encode()):
         assert not path.is_symlink() and path.is_file()
-        raw = path.read_bytes()
-        rows.append(path.name.encode() + b"\0" + len(raw).to_bytes(8, "big") + hashlib.sha256(raw).digest())
+        digest = hashlib.sha256()
+        with path.open("rb") as stream:
+            for chunk in iter(lambda: stream.read(8 * 1024 * 1024), b""):
+                digest.update(chunk)
+        rows.append(path.name.encode() + b"\0" + path.stat().st_size.to_bytes(8, "big") + digest.digest())
     return hashlib.sha256(b"".join(rows)).hexdigest()
 
 
@@ -64,7 +63,11 @@ def test_v12_generation_and_prompt_bindings_match_v10_authority():
 
 def test_v12_adapter_bindings_match_both_independent_materializations():
     values = constants()
+    if not RESOLUTION.is_file():
+        pytest.skip("V12 recovery resolution unavailable; set PASTILA_V12_OBJECT_RESOLUTION")
     resolution = json.loads(RESOLUTION.read_bytes())
+    recovery = module_recovery()
+    recovery.validate_recovery_resolution(resolution)
     tags = {
         "pastila-editor-core-v1.1-json-successor-v2": "v1.1",
         "pastila-editor-core-v1.2-json-successor": "v1.2",
@@ -76,10 +79,19 @@ def test_v12_adapter_bindings_match_both_independent_materializations():
             root = (
                 Path(ADAPTER_HOST_ROOT) / f"{tags[candidate]}-{label}"
                 if ADAPTER_HOST_ROOT
-                else Path("//wsl.localhost/Ubuntu-24.04" + linux)
+                else recovery.host_path(linux)
             )
             observed.append(manifest(root))
         assert observed == [expected, expected]
+
+
+def module_recovery():
+    script = ROOT / "scripts/materialize_production_core_v12_recovery_runtime.py"
+    spec = importlib.util.spec_from_file_location("v12_recovery_runtime", script)
+    value = importlib.util.module_from_spec(spec)
+    assert spec.loader
+    spec.loader.exec_module(value)
+    return value
 
 
 def test_materializer_rejects_source_drift(monkeypatch, tmp_path):

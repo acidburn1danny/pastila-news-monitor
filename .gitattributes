@@ -37,6 +37,10 @@ docs/artifacts/production-core-inference-resource-calibration-receipts/** -text 
 # Preserve the frozen Stage P Prompt-V2/V4 construction receipt byte-for-byte.
 .semantic-admission-v2-stage-p-prompt-v2-v4-binding-evidence/construction-preflight.json -text -eol
 
+# Preserve the canonical V10 prompt authority bytes across Windows checkouts.
+docs/artifacts/pastila-editor-core-v1.1-json-successor-v10-system-prompt.txt -text -eol
+docs/artifacts/pastila-editor-core-v1.2-json-successor-v10-system-prompt.txt -text -eol
+
 # Shell
 *.sh text eol=lf
 
