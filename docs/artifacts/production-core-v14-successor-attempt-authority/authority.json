@@ -1,0 +1,42 @@
+{
+  "adjudication": false,
+  "alias_secret_commitment": "345b9faeaaef2820efb630b9a30e10e9b037b4fbbb4cbebe81d9abd196fe6920",
+  "authority_identity": "27955b01b3254a08679b200a3f20d4c5d382f582834b98119f701f37cc86b5ec",
+  "bound_published_commit": "0533f2ada34265d411f100beb441941e210d477a",
+  "bound_published_tree": "13ac9ce7ce62d91063b12896ef8b7a21510b703b",
+  "builder_sha256": "7cc224cf05f8791b8212d939705dff95bbae5aaa6c878d7c7e179afe2fffbefd",
+  "candidate_execution_authorized": false,
+  "new_attempt_consumption": 0,
+  "new_attempt_consumption_authorized": false,
+  "predecessor_attempt_consumption": 1,
+  "predecessor_authority_identity": "2aaa50283451d5338b15d256becccb1ac7e557f12a677126051a036c368d2804",
+  "predecessor_terminal_evidence": {
+    "accepted_checkpoints": 0,
+    "attempt_identity": "28358c61c869659b4af1774eecd5f462bf2e209b0cf19503025438deb367a67e",
+    "attempt_sha256": "3e1ebfc4033b5bf1e3a0817935d664d9644e2c799cf523966266c988e65c89ab",
+    "completed_rows": 0,
+    "partial_artifact_root": "3d1fabbf09ad5320c2c20620a99c3e25e3f73fbc5d8a5866d7bb87a27124423a",
+    "terminal_failure_identity": "8aa8b23f9cec02aaa8157bd4773e6666e4f16ac4987135791655d0c63650ce7d",
+    "terminal_failure_sha256": "9102ab18dc3ca03b5142a53bc96475a5dce0855d3c03bcfcd66791777feee742"
+  },
+  "promotion": false,
+  "public_key_pem_sha256": "29616718e9d17a3c88f630af52fee0ef7a9dc7adc519412c4870f06b63ca1cca",
+  "recovery_resolution_identity": "7623e67ceeeb42fc42f18a329d825311ddc723046595201060b6d0f638f81e77",
+  "runner_binding": {
+    "historical_generation_rejected": true,
+    "historical_qualification_rejected": true,
+    "qualification_generation_identity": "65d5b2502c0ff3a30367cceccda2a2e5c772844cb70500445a186deebf1d4567",
+    "qualification_identity": "309facaf268c79cdf3e6c635bec47c46c68121b7b5eb543f07c801048386da13",
+    "runner_sha256": "cbbd562763047eb8a501fc1a5a6f883537c3ae11eed8987ef18469454f5d6d5e",
+    "shell_sha256": "ff590f3824cf59e9932daf7a50b5adcc6e5b5701fd899d50911d6d13ad4d8dd3"
+  },
+  "runtime_object_authority_identity": "6df414df46d2c76196a74b7e19baeb5c2cf39123cfdec48c7b859cb46e998d8f",
+  "schedule_sha256": "31f34e235826f3d0ec6647151732bc02c67fdaeab22fd1a40369c416a18a1f66",
+  "schema": "pastila-production-core-v14-successor-attempt-authority",
+  "schema_version": 1,
+  "source_sha256": {
+    "scripts/run_production_core_candidate_qualification_v14.sh": "ff590f3824cf59e9932daf7a50b5adcc6e5b5701fd899d50911d6d13ad4d8dd3",
+    "src/pastila_scout/production_core_candidate_qualification_runner_v14.py": "cbbd562763047eb8a501fc1a5a6f883537c3ae11eed8987ef18469454f5d6d5e"
+  },
+  "status": "FROZEN_SUCCESSOR_BOUNDARY_NO_NEW_ATTEMPT"
+}
