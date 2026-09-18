@@ -19,10 +19,13 @@ sources without adding unrelated paths.
 The dependency order is acyclic: the two published predecessor signatures and
 their source maps -> seven r2 source hashes -> r2 authority -> r2 binding ->
 Ed25519 signature -> runtime receipt. The r2 identities and future publication
-commit do not occur in the hashed r2 sources. The future r2 commit must have
-the published checkpoint as its sole parent and contain exactly the seven r2
-sources and four signed r2 artifacts. The live remote commit, tree, exact file
-set and every published blob are checked before a receipt can be issued.
+commit do not occur in the hashed r2 sources. The initial r2 checkpoint
+`46fa435afc93831104bb68e03599fcba9fd3c718` remains local historical
+evidence. Its corrective successor must have that checkpoint as its sole parent
+and change exactly four r2 sources and four signed r2 artifacts. All 42 sources,
+including the unchanged r2 sources, must match signed hashes and published
+blobs. The live remote commit, tree, exact changed-file set and every published
+blob are checked before a receipt can be issued.
 
 The receipt is runtime observation, never qualification evidence. The r2
 consuming route self-issues a new receipt, rechecks the signed authority and

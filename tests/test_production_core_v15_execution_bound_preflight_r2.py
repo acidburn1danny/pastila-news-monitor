@@ -44,6 +44,9 @@ def test_acyclic_source_graph_and_published_base() -> None:
     assert "import preflight_production_core_candidate_qualification_v15_bound" not in (ROOT / "scripts/materialize_production_core_v15_execution_bound_preflight_r2.py").read_text()
     assert issuer.BASE_COMMIT == "c060df236c416dd9ef7d62c987205973da7767a9"
     assert issuer.git("rev-parse", f"{issuer.BASE_COMMIT}^") == "f1cf2967705d29e53fb2e5eccc7459aecc2b43fc"
+    assert issuer.PUBLICATION_PARENT == "46fa435afc93831104bb68e03599fcba9fd3c718"
+    assert issuer.git("show", "-s", "--format=%P", issuer.PUBLICATION_PARENT) == issuer.BASE_COMMIT
+    assert set(issuer.CORRECTIVE_SOURCES) <= set(issuer.NEW_SOURCES)
 
 
 def test_complete_minimal_consuming_source_closure() -> None:
@@ -103,13 +106,30 @@ def test_fixture_consuming_gate_passes_the_previous_failure_without_claim(tmp_pa
 
 def test_predecessor_publication_and_signed_artifacts_rejected(
         tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
-    authority = {"source_sha256": {}}
+    authority = {"source_sha256": {}, "publication_parent_commit": issuer.PUBLICATION_PARENT}
     ref = f"refs/heads/{issuer.BRANCH}"
     original_git = issuer.git
+    # Before push, the old remote ref must fail at the publication/ref gate.
     with monkeypatch.context() as patch:
         patch.setattr(issuer, "git", lambda *args: (
             f"{issuer.BASE_COMMIT}\t{ref}" if args[0] == "ls-remote" else original_git(*args)))
-        with pytest.raises(ValueError, match="publication parent drift"):
+        with pytest.raises(ValueError, match="^execution-bound publication/ref drift$"):
+            gate.current_publication(authority)
+    # An old R2 ref that matches local HEAD still fails the exact parent gate.
+    with monkeypatch.context() as patch:
+        patch.setattr(issuer, "git", lambda *args: (
+            f"{issuer.PUBLICATION_PARENT}\t{ref}" if args[0] == "ls-remote"
+            else issuer.PUBLICATION_PARENT if args == ("rev-parse", "HEAD")
+            else original_git(*args)))
+        with pytest.raises(ValueError, match="^execution-bound publication parent drift$"):
+            gate.current_publication(authority)
+    # The predecessor ref cannot masquerade as the corrective successor.
+    with monkeypatch.context() as patch:
+        patch.setattr(issuer, "git", lambda *args: (
+            f"{issuer.BASE_COMMIT}\t{ref}" if args[0] == "ls-remote"
+            else issuer.BASE_COMMIT if args == ("rev-parse", "HEAD")
+            else original_git(*args)))
+        with pytest.raises(ValueError, match="^execution-bound checkpoint ancestry drift$"):
             gate.current_publication(authority)
     old = ROOT / "docs/artifacts/production-core-v15-execution-bound-preflight"
     copied = tmp_path / "old-authority"

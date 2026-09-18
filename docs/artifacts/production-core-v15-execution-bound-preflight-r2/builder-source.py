@@ -20,12 +20,19 @@ BASE_TREE = "9f2bd9a0fbddb954ed04f951988adfdf7021180f"
 BASE_AUTHORITY = "41114ad21042d406bbed292dc24b04fa4e01e22aa8f2bf0ff4a4434d566ed2f6"
 BASE_BINDING = "057714cee9cc3cf5ec4b43ea670990fcc6dd5b53f025c7004e949001428b2d07"
 BASE_SIGNATURE = "aac2c3654dc28beba3076d6afe0e034704e208c60565dd15d5f342790fe30957"
+PUBLICATION_PARENT = "46fa435afc93831104bb68e03599fcba9fd3c718"
 BRANCH = "successor/core-v2-v12-runner-binding-remediation"
 NEW_SOURCES = (
     "docs/production-core-v15-execution-bound-preflight-r2.md",
     "scripts/audit_production_core_v15_execution_bound_preflight_r2.py",
     "scripts/execute_production_core_candidate_qualification_v15_bound_r2.py",
     "scripts/launch_production_core_candidate_qualification_v15_bound_r2.py",
+    "scripts/materialize_production_core_v15_execution_bound_preflight_r2.py",
+    "scripts/preflight_production_core_candidate_qualification_v15_bound_r2.py",
+    "tests/test_production_core_v15_execution_bound_preflight_r2.py",
+)
+CORRECTIVE_SOURCES = (
+    "docs/production-core-v15-execution-bound-preflight-r2.md",
     "scripts/materialize_production_core_v15_execution_bound_preflight_r2.py",
     "scripts/preflight_production_core_candidate_qualification_v15_bound_r2.py",
     "tests/test_production_core_v15_execution_bound_preflight_r2.py",
@@ -138,6 +145,7 @@ def build(recovery: Path, private: Path, backup: Path, v13_terminal: Path,
         "schema": "pastila-production-core-v15-execution-bound-preflight-r2-authority",
         "schema_version": 1, "status": "NO_CANDIDATE_NO_ATTEMPT",
         "published_base_commit": BASE_COMMIT, "published_base_tree": BASE_TREE,
+        "publication_parent_commit": PUBLICATION_PARENT,
         "published_base_blobs": {name: digest(subprocess.check_output(
             ["git", "show", f"{BASE_COMMIT}:{name}"], cwd=ROOT)) for name in published_base()},
         "base_authority_identity": BASE_AUTHORITY, "base_binding_identity": BASE_BINDING,
@@ -179,6 +187,7 @@ def binding_for(authority: dict, raw: bytes) -> dict:
         "schema_version": 1, "algorithm": "Ed25519",
         "authority_identity": authority["authority_identity"], "authority_sha256": digest(raw),
         "published_base_commit": BASE_COMMIT, "base_authority_identity": BASE_AUTHORITY,
+        "publication_parent_commit": PUBLICATION_PARENT,
         "bound_executor_sha256": authority["bound_executor_sha256"],
         "bound_preflight_sha256": authority["bound_preflight_sha256"],
         "validator_sha256": authority["validator_sha256"],

@@ -21,18 +21,20 @@ LIFETIME_NS = 900_000_000_000
 
 
 def current_publication(authority: dict) -> tuple[str, str]:
+    if authority.get("publication_parent_commit") != issuer.PUBLICATION_PARENT:
+        raise ValueError("execution-bound signed publication parent drift")
     ref = f"refs/heads/{issuer.BRANCH}"
     remote = issuer.git("ls-remote", "--heads", "origin", ref).split()
     if len(remote) != 2 or remote[1] != ref or remote[0] != issuer.git("rev-parse", "HEAD"):
         raise ValueError("execution-bound publication/ref drift")
     commit = remote[0]
-    if subprocess.run(["git", "merge-base", "--is-ancestor", issuer.BASE_COMMIT, commit],
+    if subprocess.run(["git", "merge-base", "--is-ancestor", issuer.PUBLICATION_PARENT, commit],
                       cwd=ROOT, capture_output=True).returncode:
         raise ValueError("execution-bound checkpoint ancestry drift")
-    if issuer.git("show", "-s", "--format=%P", commit) != issuer.BASE_COMMIT:
+    if issuer.git("show", "-s", "--format=%P", commit) != issuer.PUBLICATION_PARENT:
         raise ValueError("execution-bound publication parent drift")
     published_files = set(issuer.git("diff-tree", "--no-commit-id", "--name-only", "-r", commit).splitlines())
-    required_files = set(issuer.NEW_SOURCES) | {
+    required_files = set(issuer.CORRECTIVE_SOURCES) | {
         f"docs/artifacts/production-core-v15-execution-bound-preflight-r2/{name}"
         for name in ("authority.json", "binding.json", "binding.sig", "builder-source.py")
     }
