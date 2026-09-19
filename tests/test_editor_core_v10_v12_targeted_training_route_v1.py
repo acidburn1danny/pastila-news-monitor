@@ -62,6 +62,7 @@ def test_ml_imports_and_optimizer_are_execution_only():
     assert not top_imports.intersection({"torch", "transformers", "peft", "bitsandbytes"})
     source = WORKER.read_text("utf-8")
     assert source.count("optimizer.step()") == 1
+    assert 'deregister_op_overrides(disable_op_symbols="bmm")' in source
     assert "def fixture_smoke(config:" in source
     assert "PAGED_ADAMW_8BIT_NEW_STATE" in source
 

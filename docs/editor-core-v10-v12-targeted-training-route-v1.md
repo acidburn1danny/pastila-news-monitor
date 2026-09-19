@@ -10,6 +10,11 @@ gradient accumulation 8, a new paged AdamW 8-bit optimizer at `5e-6`, constant
 schedule without warmup, BF16, no packing, 16 optimizer steps, and checkpoints
 at optimizer steps 8 and 16.
 
+The worker disables PyTorch's experimental `_native` `bmm` override before
+model execution. This preserves the established V10/V12/V14 runtime behavior
+and uses the packaged CUDA kernel without requiring an unbound runtime C
+compiler inside the sealed rootfs.
+
 `scripts/run_editor_core_v10_v12_targeted_continuation_v1.sh` is the future
 execution route. It requires an explicit execution arming flag and owner-side
 environment gate, verifies every physical input identity, uses read-only input

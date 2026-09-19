@@ -141,6 +141,7 @@ def run_training(model_path: Path, parent_path: Path, corpus_path: Path, config_
     import bitsandbytes as bnb
     import torch
     from peft import PeftModel, prepare_model_for_kbit_training
+    from torch._native.registry import deregister_op_overrides
     from transformers import AutoModelForImageTextToText, AutoTokenizer, BitsAndBytesConfig
 
     seed = int(config["seed"])
@@ -148,6 +149,7 @@ def run_training(model_path: Path, parent_path: Path, corpus_path: Path, config_
     torch.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)
     torch.use_deterministic_algorithms(True)
+    deregister_op_overrides(disable_op_symbols="bmm")
     tokenizer = AutoTokenizer.from_pretrained(model_path, local_files_only=True, fix_mistral_regex=True)
     if tokenizer.pad_token_id is None:
         tokenizer.pad_token = tokenizer.eos_token

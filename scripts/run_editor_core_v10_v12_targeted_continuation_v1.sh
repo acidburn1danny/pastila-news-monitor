@@ -12,7 +12,7 @@ EXPECTED_PARENT=8c277a123fef81908f03bdaf31925b93c1a95a3c0969ef23088331427e64013f
 EXPECTED_CORPUS=c1ee2f4a6c0561eba52ef7a437a885568cf8fd2b53956b0c3a05c309ca0fad4a
 EXPECTED_CONFIG=ed4f76ff6683c7dedd8a7e0563cd0df19d55eb4d103824b0e82211a7fe781cd8
 EXPECTED_HELPER=7026fe0ea99d54d0fc6caefd5ac4b6c1119e488b1cdc96336ce14387b7ffb433
-EXPECTED_WORKER=676be771def3e79f597f708ffed66c1c9ff8c306ed41eb690714b311a904689a
+EXPECTED_WORKER=cf1ae099797a983607e3f5793671e3ed055eaf4978ac1aa40b79ae0684391376
 sha256() { sha256sum -- "$1" | cut -d' ' -f1; }
 flat_manifest() { { while IFS= read -r -d '' path; do name="${path##*/}"; size="$(stat -Lc %s -- "$path")"; digest="$(sha256 "$path")"; printf '%s\0' "$name"; printf '%016x' "$size" | xxd -r -p; printf '%s' "$digest" | xxd -r -p; done < <(find "$1" -mindepth 1 -maxdepth 1 -type f -print0 | sort -z); } | sha256sum | cut -d' ' -f1; }
 [[ $(sha256 "$ROOTFS_TAR") == "$EXPECTED_ROOTFS" && $(sha256 "$CORPUS") == "$EXPECTED_CORPUS" && $(sha256 "$CONFIG") == "$EXPECTED_CONFIG" ]] || exit 4
