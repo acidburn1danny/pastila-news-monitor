@@ -38,6 +38,8 @@ def audit(recovery: Path, private: Path, backup: Path, v13_terminal: Path,
             or authority.get("attempt_consumption") != 0
             or authority.get("candidate_execution_authorized") is not False
             or authority.get("attempt_consumption_authorized") is not False
+            or authority.get("bound_supervisor_sha256") != authority.get("source_sha256", {}).get(
+                "scripts/supervise_production_core_candidate_qualification_v15_r4.py")
             or authority.get("adjudication") is not False
             or authority.get("promotion") is not False):
         raise ValueError("R4 authority identity or state rejected")

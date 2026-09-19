@@ -31,6 +31,7 @@ NEW_SOURCES = (
     "scripts/audit_production_core_v15_r4_execution_authority.py",
     "scripts/preflight_production_core_candidate_qualification_v15_r4.py",
     "scripts/execute_production_core_candidate_qualification_v15_r4.py",
+    "scripts/supervise_production_core_candidate_qualification_v15_r4.py",
     "tests/test_production_core_v15_r4_execution_authority.py",
 )
 
@@ -182,6 +183,7 @@ def build(recovery: Path, private: Path, backup: Path, v13_terminal: Path,
         "namespace_binding_identity": digest(canonical(namespace_claim)),
         "bound_executor_sha256": sources["scripts/execute_production_core_candidate_qualification_v15_r4.py"],
         "bound_preflight_sha256": sources["scripts/preflight_production_core_candidate_qualification_v15_r4.py"],
+        "bound_supervisor_sha256": sources["scripts/supervise_production_core_candidate_qualification_v15_r4.py"],
         "projection_sha256": sources[projection.SOURCE],
         "matrix_rows": 2400, "batch_count": 12, "rows_per_batch": 200,
         "request_count": 200, "shell_argument_count": 16,
@@ -210,6 +212,7 @@ def binding_for(authority: dict, raw: bytes) -> dict:
         "historical_r3": authority["historical_r3"],
         "bound_executor_sha256": authority["bound_executor_sha256"],
         "bound_preflight_sha256": authority["bound_preflight_sha256"],
+        "bound_supervisor_sha256": authority["bound_supervisor_sha256"],
         "projection_sha256": authority["projection_sha256"],
         "projected_mechanics_sha256": authority["projected_mechanics_sha256"],
         "namespace_binding_identity": authority["namespace_binding_identity"],

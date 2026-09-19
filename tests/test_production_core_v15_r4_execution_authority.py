@@ -18,6 +18,7 @@ import execute_production_core_candidate_qualification_v15_r4 as route  # noqa: 
 import materialize_production_core_v15_r4_execution_authority as issuer  # noqa: E402
 import preflight_production_core_candidate_qualification_v15_r4 as gate  # noqa: E402
 import project_production_core_candidate_qualification_v15_r4 as projection  # noqa: E402
+import supervise_production_core_candidate_qualification_v15_r4 as supervisor  # noqa: E402
 import smoke_production_core_v15_attempt_execution_boundary as fixture_smoke  # noqa: E402
 
 
@@ -122,3 +123,38 @@ def test_r4_fixture_only_supervision_and_no_clobber(monkeypatch) -> None:
     assert result["sigkill_after_claim"] == "NO_RECONSUMPTION_NO_ORPHAN"
     assert result["real_attempt_json"] == "ABSENT"
     assert list(issuer.R4_OUTPUT.iterdir()) == []
+
+
+def test_persistent_supervisor_requires_owner_and_projects_exact_route(tmp_path: Path) -> None:
+    paths = (tmp_path,) * 9
+    with pytest.raises(ValueError, match="owner authorization"):
+        supervisor.supervise(tmp_path, *paths, owner_authorized=False)
+    command = supervisor.command(*paths)
+    assert command[1].endswith("execute_production_core_candidate_qualification_v15_r4.py")
+    assert command[-1] == "--consume-attempt"
+    assert command.count("--output") == 1
+
+
+def test_supervisor_state_is_durable_nonqualification_evidence(tmp_path: Path) -> None:
+    run = "a" * 64
+    core = {"schema": supervisor.SCHEMA, "run_identity": run,
+            "authority_identity": "b" * 64, "qualification_evidence": False,
+            "phase": "ACTIVE", "unit": "fixture.service", "accepted_checkpoints": 3,
+            "completed_rows": 600, "sequence": 4, "adjudication": False,
+            "promotion": False}
+    path = tmp_path / "state.json"
+    supervisor.atomic_state(path, core)
+    assert supervisor.read_state(path, run) == core
+    altered = json.loads(path.read_bytes()); altered["completed_rows"] = 800
+    path.write_text(json.dumps(altered))
+    with pytest.raises(ValueError, match="state rejected"):
+        supervisor.read_state(path, run)
+
+
+def test_supervisor_source_binds_no_restart_cgroup_and_terminal_closure() -> None:
+    source = (ROOT / "scripts/supervise_production_core_candidate_qualification_v15_r4.py").read_text("utf-8")
+    assert '"--property=Restart=no"' in source
+    assert '"--property=KillMode=control-group"' in source
+    assert "seal_uncaught(output, authority)" in source
+    assert "UNHANDLED_SUPERVISED_PROCESS_EXIT" in source
+    assert "systemctl\", \"kill\", \"--kill-who=all" in source

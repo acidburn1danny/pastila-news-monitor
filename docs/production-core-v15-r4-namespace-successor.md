@@ -24,6 +24,15 @@ the effective namespace claim, R3 publication and signature, and empty R4
 output. Under the exclusive lock, the consuming route repeats the signed audit,
 receipt, and live namespace checks immediately before atomic `attempt.json`.
 
+The signed R4 supervisor starts that exact route as a single systemd service
+with `Restart=no` and `KillMode=control-group`. Its durable state and heartbeat
+live outside qualification output. It observes accepted checkpoint receipts,
+rejects regression and parallel ownership, propagates termination to the whole
+worker cgroup, and seals the already-authorized terminal-failure schema if an
+unexpected post-claim process exit bypasses the route's own exception closure.
+It never starts a second service for an existing state and never treats its
+monitor files as qualification evidence.
+
 This local signed boundary does not grant candidate execution or attempt
 consumption. Publication requires a separate checkpoint commit and push. A
 future attempt requires its own owner authorization and a fresh executable
