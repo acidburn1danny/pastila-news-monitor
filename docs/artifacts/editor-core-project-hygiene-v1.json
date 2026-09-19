@@ -1,0 +1,42 @@
+{
+  "schema": "pastila-editor-core-project-hygiene",
+  "schema_version": 1,
+  "status": "PASS_0_BLOCKERS",
+  "active_editor_development_state": {
+    "source_commit": "635cc160e2b54e468ba9654f50e4da4de18ca31f",
+    "source_tree": "8bb5e782a77b5051eec8909550cda525734d83fb",
+    "parent_adapter_content_identity": "8c277a123fef81908f03bdaf31925b93c1a95a3c0969ef23088331427e64013f",
+    "parent_checkpoint_identity": "6925fca8c5b6c9e94e96255cb21ec9442aff5d0ac2f7bd0f2038ce45475a7dd1",
+    "dataset_manifest_identity": "cbcf7a90ff55b56b5499ce4967a54118b3d99c57c105d7645fada6ad54392b8e",
+    "training_config_identity": "934bc1dcd02f2eb23e98e4ef371e2fd89eb9d7b921eb0554cec8e51cc561f975",
+    "training_corpus_sha256": "c1ee2f4a6c0561eba52ef7a437a885568cf8fd2b53956b0c3a05c309ca0fad4a",
+    "new_training_rows": 64,
+    "replay_rows": 64,
+    "independent_holdout_rows": 32,
+    "training_performed": false,
+    "optimizer_steps": 0
+  },
+  "retained_asset_classes": [
+    "MODEL_LINEAGE_REPRODUCIBILITY",
+    "INDEPENDENT_EVALUATION_CORPORA",
+    "IMMUTABLE_HISTORICAL_EVIDENCE",
+    "RECOVERY_CONTRACT_OBJECTS"
+  ],
+  "cleanup": {
+    "removed_classes": [
+      "REPRODUCIBLE_TOOL_CACHE",
+      "BYTE_IDENTICAL_DUPLICATE_MATERIALIZATION"
+    ],
+    "source_changed": false,
+    "model_lineage_changed": false,
+    "dataset_or_holdout_changed": false,
+    "immutable_evidence_changed": false,
+    "recovery_objects_changed": false
+  },
+  "local_paths_published": false,
+  "local_storage_inventory_published": false,
+  "candidate_execution_performed_by_cleanup": false,
+  "attempt_consumption_performed_by_cleanup": false,
+  "adjudication_performed_by_cleanup": false,
+  "governance_constructed_by_cleanup": false
+}
