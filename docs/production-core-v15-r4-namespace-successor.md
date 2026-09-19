@@ -37,3 +37,7 @@ This local signed boundary does not grant candidate execution or attempt
 consumption. Publication requires a separate checkpoint commit and push. A
 future attempt requires its own owner authorization and a fresh executable
 pre-consumption preflight. No retry of the consumed R2 attempt is permitted.
+The publication gate accepts only a linear descendant chain from the exact R3
+commit and requires the cumulative `R3..HEAD` file set and every published blob
+to equal the signed R4 closure. Merge ancestry and unrelated follow-up files are
+rejected.

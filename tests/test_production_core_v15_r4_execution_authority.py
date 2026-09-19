@@ -99,6 +99,14 @@ def test_publication_gate_rejects_unpublished_r4(monkeypatch) -> None:
         gate.current_publication({"source_sha256": {}})
 
 
+def test_publication_gate_uses_linear_cumulative_successor_closure() -> None:
+    source = (ROOT / "scripts/preflight_production_core_candidate_qualification_v15_r4.py").read_text("utf-8")
+    assert '"merge-base", "--is-ancestor"' in source
+    assert '"rev-list", "--reverse", "--parents"' in source
+    assert '"diff", "--name-only", issuer.R3_COMMIT, head' in source
+    assert "diff-tree" not in source
+
+
 def test_signature_tamper_rejected_before_runtime_audit(monkeypatch, tmp_path: Path) -> None:
     if not issuer.OUTPUT.is_dir():
         pytest.skip("R4 signed artifacts not yet materialized")

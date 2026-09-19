@@ -26,13 +26,20 @@ def current_publication(authority: dict) -> tuple[str, str]:
     head = issuer.git("rev-parse", "HEAD")
     if len(parts) != 2 or parts[1] != ref or parts[0] != head:
         raise ValueError("R4 unpublished or remote ref drift")
-    if issuer.git("show", "-s", "--format=%P", head) != issuer.R3_COMMIT:
-        raise ValueError("R4 publication parent must be published R3")
+    ancestry = subprocess.run(["git", "merge-base", "--is-ancestor", issuer.R3_COMMIT, head],
+                              cwd=issuer.ROOT, check=False)
+    descendants = issuer.git("rev-list", "--reverse", "--parents",
+                             f"{issuer.R3_COMMIT}..{head}").splitlines()
+    if (ancestry.returncode != 0 or not descendants
+            or any(len(row.split()) != 2 for row in descendants)
+            or descendants[0].split()[1] != issuer.R3_COMMIT
+            or descendants[-1].split()[0] != head):
+        raise ValueError("R4 publication must be a linear successor of published R3")
     required = set(issuer.NEW_SOURCES) | {
         f"docs/artifacts/production-core-v15-r4-execution-authority/{name}"
         for name in issuer.ARTIFACT_NAMES
     }
-    committed = set(issuer.git("diff-tree", "--no-commit-id", "--name-only", "-r", head).splitlines())
+    committed = set(issuer.git("diff", "--name-only", issuer.R3_COMMIT, head).splitlines())
     if committed != required:
         raise ValueError("R4 published file scope mismatch")
     for name, expected in authority["source_sha256"].items():

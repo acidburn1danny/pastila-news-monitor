@@ -52,8 +52,14 @@ def git(*args: str) -> str:
 def historical_r3() -> dict:
     """Verify the published R3 snapshot and immutable R2/V14 evidence."""
     head = git("rev-parse", "HEAD")
-    if head != R3_COMMIT and git("show", "-s", "--format=%P", head) != R3_COMMIT:
-        raise ValueError("R4 HEAD must be R3 or its direct successor")
+    ancestry = subprocess.run(["git", "merge-base", "--is-ancestor", R3_COMMIT, head],
+                              cwd=ROOT, check=False)
+    descendants = git("rev-list", "--reverse", "--parents", f"{R3_COMMIT}..{head}").splitlines()
+    if (ancestry.returncode != 0 or not descendants
+            or any(len(row.split()) != 2 for row in descendants)
+            or descendants[0].split()[1] != R3_COMMIT
+            or descendants[-1].split()[0] != head):
+        raise ValueError("R4 HEAD must be a linear successor of published R3")
     if (git("rev-parse", f"{R3_COMMIT}^{{tree}}") != R3_TREE
             or git("rev-parse", f"refs/remotes/origin/{BRANCH}") not in (R3_COMMIT, head)):
         raise ValueError("R3 published checkpoint drift")
