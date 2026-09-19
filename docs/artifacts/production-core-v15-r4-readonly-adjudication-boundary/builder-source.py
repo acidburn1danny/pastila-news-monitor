@@ -16,6 +16,7 @@ OUTPUT = ROOT / "docs/artifacts/production-core-v15-r4-readonly-adjudication-bou
 R4_OUTPUT = Path("/root/pf9-v15-r4-preconsumption-output")
 R4_COMMIT = "13d9decbfdff22151a0bfaf64b3dd828463dbae1"
 R4_TREE = "810d23709e585da8caafac7cb7fd0dadd196fae6"
+PUBLICATION_BASE_COMMIT = "2a238d6f3b9591be63d6eadc1bda0cad41442531"
 BRANCH = "successor/core-v2-v12-runner-binding-remediation"
 ARTIFACTS = ("boundary.json", "binding.json", "binding.sig", "builder-source.py")
 SOURCES = (
@@ -27,28 +28,37 @@ SOURCES = (
 )
 
 
+def validate_publication_state(head: str, remote: str) -> str:
+    if head == R4_COMMIT:
+        raise ValueError("adjudication publication ref drift")
+    if remote == R4_COMMIT:
+        return "LOCAL_PREPUBLICATION"
+    if remote == head and head != R4_COMMIT:
+        return "PUBLISHED_EXACT_HEAD"
+    raise ValueError("adjudication publication ref drift")
+
+
 def digest(raw: bytes) -> str:
     return hashlib.sha256(raw).hexdigest()
 
 
 def build(output: Path = R4_OUTPUT) -> dict[str, object]:
     head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
-    if subprocess.run(["git", "merge-base", "--is-ancestor", R4_COMMIT, head], cwd=ROOT).returncode:
-        raise ValueError("R4 published source checkpoint is not an ancestor")
+    if subprocess.run(["git", "merge-base", "--is-ancestor", PUBLICATION_BASE_COMMIT, head], cwd=ROOT).returncode:
+        raise ValueError("adjudication publication base is not an ancestor")
     descendants = subprocess.check_output(
-        ["git", "rev-list", "--reverse", "--parents", f"{R4_COMMIT}..{head}"],
+        ["git", "rev-list", "--reverse", "--parents", f"{PUBLICATION_BASE_COMMIT}..{head}"],
         cwd=ROOT, text=True,
     ).splitlines()
-    if (head != R4_COMMIT
+    if (head != PUBLICATION_BASE_COMMIT
             and (not descendants or any(len(row.split()) != 2 for row in descendants)
-                 or descendants[0].split()[1] != R4_COMMIT
+                 or descendants[0].split()[1] != PUBLICATION_BASE_COMMIT
                  or descendants[-1].split()[0] != head)):
         raise ValueError("adjudication checkpoint must be a linear R4 successor")
     if subprocess.check_output(["git", "rev-parse", f"{R4_COMMIT}^{{tree}}"], cwd=ROOT, text=True).strip() != R4_TREE:
         raise ValueError("R4 published source tree drift")
     remote = subprocess.check_output(["git", "rev-parse", f"refs/remotes/origin/{BRANCH}"], cwd=ROOT, text=True).strip()
-    if remote != R4_COMMIT:
-        raise ValueError("R4 remote publication drift")
+    publication_state = validate_publication_state(head, remote)
     authority_raw = (ROOT / "docs/artifacts/production-core-v15-r4-execution-authority/authority.json").read_bytes()
     authority = json.loads(authority_raw)
     if authority.get("authority_identity") != "a1bbd95e21b73c903a99d661c43a53448c7d50dab38c95c09e143b5d40740aa9":
@@ -56,6 +66,11 @@ def build(output: Path = R4_OUTPUT) -> dict[str, object]:
     generation = json.loads((ROOT / "docs/artifacts/production-core-successor-comparative-qualification-generation-v13.json").read_bytes())
     evidence = close_r4_evidence(output, generation["schedule"])
     source_sha256 = {name: digest((ROOT / name).read_bytes()) for name in SOURCES}
+    if publication_state == "PUBLISHED_EXACT_HEAD":
+        for name, expected in source_sha256.items():
+            committed = subprocess.check_output(["git", "show", f"{head}:{name}"], cwd=ROOT)
+            if digest(committed) != expected:
+                raise ValueError(f"published adjudication source drift: {name}")
     registry = (ROOT / "docs/artifacts/production-core-semantic-adjudicator-public-key-registry-v1.json").read_bytes()
     core = {
         "schema": "pastila-production-core-v15-r4-readonly-adjudication-boundary",
@@ -63,6 +78,8 @@ def build(output: Path = R4_OUTPUT) -> dict[str, object]:
         "status": "SIGNED_READY_FOR_TWO_INDEPENDENT_HUMAN_RECEIPTS_NO_VERDICT",
         "published_r4_commit": R4_COMMIT,
         "published_r4_tree": R4_TREE,
+        "publication_base_commit": PUBLICATION_BASE_COMMIT,
+        "publication_gate": "REMOTE_IS_R4_DURING_LOCAL_PREPUBLICATION_OR_BYTE_EXACT_HEAD_AFTER_PUBLICATION",
         "r4_execution_authority_identity": authority["authority_identity"],
         "r4_binding_identity": digest((ROOT / "docs/artifacts/production-core-v15-r4-execution-authority/binding.json").read_bytes()),
         "r4_signature_identity": digest((ROOT / "docs/artifacts/production-core-v15-r4-execution-authority/binding.sig").read_bytes()),
@@ -97,6 +114,7 @@ def binding_for(boundary: dict[str, object], raw: bytes) -> dict[str, object]:
         "boundary_identity": boundary["boundary_identity"],
         "boundary_sha256": digest(raw),
         "published_r4_commit": R4_COMMIT,
+        "publication_base_commit": PUBLICATION_BASE_COMMIT,
         "r4_evidence": boundary["r4_evidence"],
         "source_sha256": boundary["source_sha256"],
         "adjudication_performed": False,

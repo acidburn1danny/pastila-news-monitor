@@ -48,3 +48,17 @@ def test_boundary_binds_r4_as_publication_parent_not_mutable_head():
     value = issuer.build()
     assert value["published_r4_commit"] == issuer.R4_COMMIT
     assert value["published_r4_tree"] == issuer.R4_TREE
+
+
+def test_publication_gate_accepts_only_prepublication_or_exact_head():
+    head = "a" * 40
+    assert issuer.validate_publication_state(head, issuer.R4_COMMIT) == "LOCAL_PREPUBLICATION"
+    assert issuer.validate_publication_state(head, head) == "PUBLISHED_EXACT_HEAD"
+    for remote in ("b" * 40, issuer.PUBLICATION_BASE_COMMIT):
+        with pytest.raises(ValueError, match="publication ref drift"):
+            issuer.validate_publication_state(head, remote)
+
+
+def test_publication_gate_rejects_historical_r4_as_published_head():
+    with pytest.raises(ValueError, match="publication ref drift"):
+        issuer.validate_publication_state(issuer.R4_COMMIT, issuer.R4_COMMIT)
