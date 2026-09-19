@@ -1,0 +1,40 @@
+{
+  "adjudication_performed": false,
+  "boundary_identity": "77fcf784df5faedbda1f34de3e7def2da4ae6553d79de5bd0de839a5d6f8fe30",
+  "closure_rule": "EXACTLY_ONE_VALID_ED25519_RECEIPT_PER_PACKET_PER_DISTINCT_REGISTERED_ROLE; ALL_1986_PAIRS_REQUIRED; OTHERWISE_FAIL_CLOSED",
+  "custody_schema": "pastila-production-core-v15-r4-adjudication-custody/v1",
+  "packet_schema": "pastila-production-core-v15-r4-blind-adjudication-packet/v1",
+  "projection": {
+    "excluded_structural_failures": 414,
+    "packet_count": 1986,
+    "packet_inventory_root": "bf5bc935db4cb0ccf48d4a880302de8e52a84cf8fe7ca27cb6038f70328c7baf",
+    "packet_projection_root": "871f4877a91f8143c497146a28a0d9ff22a38221491bd7c2cf15eb95de9a7e9d"
+  },
+  "promotion": false,
+  "public_key_pem_sha256": "29616718e9d17a3c88f630af52fee0ef7a9dc7adc519412c4870f06b63ca1cca",
+  "publication_gate": "LINEAR_SUCCESSOR; REMOTE_IS_BASE_PREPUBLICATION_OR_EXACT_HEAD_POSTPUBLICATION",
+  "published_source_commit": "b0e34239e1f03b7b98d7e85feed57b0a6c910596",
+  "real_packets_materialized": false,
+  "real_receipts_created": false,
+  "receipt_count_required": 3972,
+  "receipt_schema": "pastila-production-core-v15-r4-semantic-receipt/v1",
+  "receipts_per_packet": 2,
+  "registry_identity": "26772b5ae3e7ffe853e75b79b9d37ef7649ad183917afa2a0170f79e2b2d1639",
+  "registry_sha256": "9c0371fdbf5a455ac740f736b7733bab784422c177fd2a4534071e6f1a74327c",
+  "roles": [
+    "ADJUDICATOR_A",
+    "ADJUDICATOR_B"
+  ],
+  "schema": "pastila-production-core-v15-r4-adjudication-execution-boundary",
+  "schema_version": 1,
+  "semantic_verdict": null,
+  "source_boundary_identity": "6b2c55935999aaf6da077c0dddd9289f3eec059665d9e361c93cad40aa67568e",
+  "source_sha256": {
+    "docs/production-core-v15-r4-adjudication-execution-boundary.md": "25f536999e9e0f03a433b1a0a9062147eb9e6299e5f4d479a197cc1c9e8a9add",
+    "scripts/audit_production_core_v15_r4_adjudication_execution_boundary.py": "86e2b9d39bc4a50f9f43a38b991f059c9b5f1f96440f96b7670549076be5d82e",
+    "scripts/materialize_production_core_v15_r4_adjudication_execution_boundary.py": "614641f4f1400d8f5db47efe9595d6a7aef5004725a0d3a379f7be4e25839dbe",
+    "src/pastila_scout/production_core_r4_adjudication_execution.py": "a1f6e7580b9044c46813003958db5adf611d6f8aad590e8bf387143b1caaa28b",
+    "tests/test_production_core_v15_r4_adjudication_execution_boundary.py": "101e160a568338d5a4438d9710c86de3d4f081a88fe22c9c8c76f16ade431d66"
+  },
+  "status": "SIGNED_NO_PACKETS_NO_RECEIPTS_NO_VERDICT"
+}
