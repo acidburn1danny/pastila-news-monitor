@@ -1,0 +1,22 @@
+{
+  "schema": "pastila-editor-core-targeted-continuation-token-audit",
+  "schema_version": 1,
+  "status": "PASS_TOKENIZER_ONLY_ZERO_MODEL_LOAD_ZERO_TRAINING",
+  "tokenizer_sha256": "2a00451398b3bb51d3c0fa3f4758c77061377ada35abbb7f5e1006be3aaced5c",
+  "dataset_manifest_identity": "cbcf7a90ff55b56b5499ce4967a54118b3d99c57c105d7645fada6ad54392b8e",
+  "training_corpus_sha256": "c1ee2f4a6c0561eba52ef7a437a885568cf8fd2b53956b0c3a05c309ca0fad4a",
+  "holdout_requests_sha256": "e4d6815fec1fd9e0e1f4c011f86bc14d8522a9a0f6d36d713c1bb7542fd9f448",
+  "holdout_answer_key_sha256": "0c7e004099346e3685ba15a97bd1024d212b3528e8549186ea0ef89f79982a4f",
+  "training_rows": 128,
+  "holdout_rows": 32,
+  "maximum_training_sequence_tokens": 2659,
+  "maximum_holdout_input_tokens": 1657,
+  "maximum_holdout_expected_sequence_tokens": 1900,
+  "configured_ceiling": 3072,
+  "all_sequences_within_ceiling": true,
+  "terminal_eos_verified": true,
+  "model_loaded": false,
+  "inference_performed": false,
+  "training_performed": false,
+  "audit_identity": "d8fa0ca4a57a8d17ba0e07b47c21fc5eed6d02ec2596cfd95e9a082769b99c22"
+}
