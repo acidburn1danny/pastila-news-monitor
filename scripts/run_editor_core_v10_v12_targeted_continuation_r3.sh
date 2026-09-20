@@ -23,8 +23,9 @@ EXPECTED_WORKER=a7392f55e362fe224be202170684fe548c8ba109b420b49d1446161e2c1f4d78
 sha256() { sha256sum -- "$1" | cut -d' ' -f1; }
 flat_manifest() { { while IFS= read -r -d '' path; do name="${path##*/}"; size="$(stat -Lc %s -- "$path")"; digest="$(sha256 "$path")"; printf '%s\0' "$name"; printf '%016x' "$size" | xxd -r -p; printf '%s' "$digest" | xxd -r -p; done < <(find "$1" -mindepth 1 -maxdepth 1 -type f -print0 | sort -z); } | sha256sum | cut -d' ' -f1; }
 checkpoint_identity() { python3 -B -c 'import hashlib,json,sys; p=sys.argv[1]; v=json.load(open(p,"rb")); i=v.pop("checkpoint_identity",None); c=json.dumps(v,ensure_ascii=False,allow_nan=False,sort_keys=True,separators=(",",":" )).encode(); assert i==hashlib.sha256(c).hexdigest() and v.get("model_sha256")==sys.argv[2] and v.get("optimizer_steps")==9; print(i)' "$1" "$EXPECTED_MODEL"; }
-[[ $(git -C "$REPOSITORY" rev-parse "$EXPECTED_SOURCE_COMMIT^{tree}") == "$EXPECTED_SOURCE_TREE" ]] || exit 4
-git -C "$REPOSITORY" merge-base --is-ancestor "$EXPECTED_SOURCE_COMMIT" HEAD || exit 4
+GIT=(git -c "safe.directory=$REPOSITORY" -C "$REPOSITORY")
+[[ $("${GIT[@]}" rev-parse "$EXPECTED_SOURCE_COMMIT^{tree}") == "$EXPECTED_SOURCE_TREE" ]] || exit 4
+"${GIT[@]}" merge-base --is-ancestor "$EXPECTED_SOURCE_COMMIT" HEAD || exit 4
 [[ $(sha256 "$ROOTFS_TAR") == "$EXPECTED_ROOTFS" && $(sha256 "$CORPUS") == "$EXPECTED_CORPUS" && $(sha256 "$CONFIG") == "$EXPECTED_CONFIG" ]] || exit 4
 [[ $(sha256 "$HELPER") == "$EXPECTED_HELPER" && $(sha256 "$ZERO_STEP") == "$EXPECTED_ZERO_STEP" && $(sha256 "$WORKER") == "$EXPECTED_WORKER" ]] || exit 4
 [[ $(flat_manifest "$MODEL") == "$EXPECTED_MODEL" && $(flat_manifest "$PARENT") == "$EXPECTED_PARENT" ]] || exit 4

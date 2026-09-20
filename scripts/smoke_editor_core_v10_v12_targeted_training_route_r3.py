@@ -24,9 +24,11 @@ def run() -> dict[str, object]:
     top_imports = {alias.name for node in tree.body if isinstance(node, (ast.Import, ast.ImportFrom)) for alias in node.names}
     if top_imports & {"torch", "transformers", "peft", "bitsandbytes"}:
         raise ValueError("ML imports escaped execution-only function")
-    required = ["unshare --kill-child=KILL --mount --net --pid --ipc --uts --fork", "TRAINING_EXECUTION_AUTHORIZED=1", "mount -o remount,bind,ro", "EXPECTED_SOURCE_COMMIT=283452937456a7136c6061d00a46ed93ca010317", "EXPECTED_SOURCE_TREE=fb241e53993b43ec2885a4b1904f94909bb9cbc7", "merge-base --is-ancestor", "EXPECTED_ZERO_STEP=", "EXPECTED_WORKER=", "EXPECTED_CORPUS=", "--execute-authorized"]
+    required = ["unshare --kill-child=KILL --mount --net --pid --ipc --uts --fork", "TRAINING_EXECUTION_AUTHORIZED=1", "mount -o remount,bind,ro", "EXPECTED_SOURCE_COMMIT=283452937456a7136c6061d00a46ed93ca010317", "EXPECTED_SOURCE_TREE=fb241e53993b43ec2885a4b1904f94909bb9cbc7", 'GIT=(git -c "safe.directory=$REPOSITORY" -C "$REPOSITORY")', '"${GIT[@]}" merge-base --is-ancestor', "EXPECTED_ZERO_STEP=", "EXPECTED_WORKER=", "EXPECTED_CORPUS=", "--execute-authorized"]
     if any(value not in route_source for value in required):
         raise ValueError("bound route source closure mismatch")
+    if "git config --global" in route_source:
+        raise ValueError("route must not persist Git trust policy")
     core = {"schema": "pastila-editor-core-targeted-r3-training-route-fixture-smoke", "schema_version": 1, "status": "PASS_FIXTURE_ONLY_ZERO_TRAINING", "worker_smoke_identity": result["smoke_identity"], "worker_sha256": hashlib.sha256(WORKER.read_bytes()).hexdigest(), "route_sha256": hashlib.sha256(ROUTE.read_bytes()).hexdigest(), "zero_step_sha256": hashlib.sha256(ZERO_STEP.read_bytes()).hexdigest(), "model_loaded": False, "optimizer_created": False, "optimizer_steps": 0, "training_performed": False}
     return {**core, "smoke_identity": hashlib.sha256(json.dumps(core, sort_keys=True, separators=(",", ":")).encode()).hexdigest()}
 

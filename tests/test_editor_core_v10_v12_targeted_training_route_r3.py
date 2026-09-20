@@ -69,7 +69,9 @@ def test_bound_route_is_isolated_and_binds_r3_sources():
     assert "EDITOR_CORE_R3_TRAINING_OWNER_AUTHORIZED" in source
     assert "EXPECTED_SOURCE_COMMIT=283452937456a7136c6061d00a46ed93ca010317" in source
     assert "EXPECTED_SOURCE_TREE=fb241e53993b43ec2885a4b1904f94909bb9cbc7" in source
-    assert 'merge-base --is-ancestor "$EXPECTED_SOURCE_COMMIT" HEAD' in source
+    assert 'GIT=(git -c "safe.directory=$REPOSITORY" -C "$REPOSITORY")' in source
+    assert '"${GIT[@]}" merge-base --is-ancestor "$EXPECTED_SOURCE_COMMIT" HEAD' in source
+    assert 'git config --global' not in source
     assert "EXPECTED_CHECKPOINT=96e10b85fe30c4be43c2cc1a0b906f04ea4c476cc8d422b4ad26e9758b85b2be" in source
     assert 'checkpoint_identity "$PARENT_CHECKPOINT/checkpoint.json"' in source
     assert "HF_HUB_OFFLINE=1" in source and "TRANSFORMERS_OFFLINE=1" in source

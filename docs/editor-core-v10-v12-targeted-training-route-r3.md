@@ -16,6 +16,9 @@ CUDA snapshot. It requires an explicit owner execution gate, native empty ext4
 output, read-only inputs, and isolated network, PID, mount, IPC, and UTS
 namespaces. The R2 worker and R1 parent cannot substitute.
 
+Publication checks trust only the exact repository path for each Git command.
+The route does not modify the invoking user's persistent Git configuration.
+
 The fixture smoke imports no ML runtime and performs no model load, optimizer
 construction, backward pass, checkpoint write, or optimizer step. Construction
 and audit of this route do not authorize real training.
