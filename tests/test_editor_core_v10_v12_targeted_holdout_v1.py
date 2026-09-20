@@ -31,6 +31,15 @@ def test_fixture_rejects_target_leakage():
         load(RUNNER, "holdout_runner_bad").fixture_smoke(rows)
 
 
+def test_published_request_projection_is_complete():
+    runner = load(RUNNER, "holdout_runner_projection")
+    requests = ROOT / "docs/artifacts/editor-core-v10-v12-targeted-continuation-v1-holdout-requests.jsonl"
+    rows = runner.validate_requests(requests)
+    identities = [runner.request_identity(row) for row in rows]
+    assert len(identities) == 32
+    assert len(set(identities)) == 32
+
+
 def test_auditor_counts_structural_and_exact(tmp_path):
     keys = tmp_path / "keys.jsonl"
     output = tmp_path / "output"
@@ -38,7 +47,7 @@ def test_auditor_counts_structural_and_exact(tmp_path):
     key_rows = []
     for index in range(1, 33):
         example = f"case-{index}"
-        response = json.dumps({"schema":"x","schema_version":1,"case_id":example,"request_identity":f"sha256:{index}","output_type":"FACTUAL","outcome":"ABSTAIN","text":None,"claim_bindings":[],"abstention_code":"INSUFFICIENT_AUTHORITY"}, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+        response = json.dumps({"schema":"x","schema_version":1,"case_id":example,"request_identity":f"sha256:{index}","output_type":"FACTUAL","outcome":"ABSTAIN","text":None,"claim_bindings":[],"abstention_code":"INSUFFICIENT_AUTHORITY"}, ensure_ascii=False, separators=(",", ":"))
         key_rows.append({"example_id":example,"failure_class":"FIXTURE","assistant_target":response})
         row = {"example_id":example,"request_identity":f"sha256:{index}","candidate":"fixture","response":response,"terminal_eos":True,"within_byte_ceiling":True,"nfc":True}
         (output / f"{index:03d}.json").write_text(json.dumps(row), encoding="utf-8")

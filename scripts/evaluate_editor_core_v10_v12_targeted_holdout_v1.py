@@ -43,6 +43,19 @@ def validate_requests(path: Path) -> list[dict[str, object]]:
     return rows
 
 
+def request_identity(row: dict[str, object]) -> str:
+    """Read the bound identity from the canonical INPUT object in the user message."""
+    user = row["messages"][1]
+    content = user.get("content") if isinstance(user, dict) else None
+    if not isinstance(content, str) or "\nINPUT=" not in content:
+        raise ValueError("holdout INPUT projection missing")
+    payload = json.loads(content.rsplit("\nINPUT=", 1)[1])
+    value = payload.get("request_identity")
+    if not isinstance(value, str) or not value.startswith("sha256:") or len(value) != 71:
+        raise ValueError("holdout request identity missing")
+    return value
+
+
 def run(model_path: Path, adapter_path: Path, requests_path: Path, output: Path, candidate: str) -> dict[str, object]:
     if os.environ.get("EVALUATION_EXECUTION_AUTHORIZED") != "1" or any(output.iterdir()):
         raise ValueError("evaluation invocation mismatch")
@@ -94,7 +107,7 @@ def run(model_path: Path, adapter_path: Path, requests_path: Path, output: Path,
         observation = {
             "index": index,
             "example_id": row["example_id"],
-            "request_identity": row["request_identity"],
+            "request_identity": request_identity(row),
             "candidate": candidate,
             "input_tokens": input_tokens,
             "output_tokens": len(tokens),

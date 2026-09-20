@@ -7,6 +7,8 @@ import json
 from collections import Counter
 from pathlib import Path
 
+RESPONSE_KEYS = ["schema", "schema_version", "case_id", "request_identity", "output_type", "outcome", "text", "claim_bindings", "abstention_code"]
+
 
 def canonical(value: object) -> bytes:
     return json.dumps(value, ensure_ascii=False, allow_nan=False, sort_keys=True, separators=(",", ":")).encode()
@@ -31,8 +33,8 @@ def audit(output: Path, answer_key: Path) -> dict[str, object]:
         exact += row["response"] == expected
         try:
             parsed = json.loads(row["response"])
-            canonical_json = canonical(parsed) == row["response"].encode()
-            shape = set(parsed) == {"schema", "schema_version", "case_id", "request_identity", "output_type", "outcome", "text", "claim_bindings", "abstention_code"}
+            canonical_json = json.dumps(parsed, ensure_ascii=False, allow_nan=False, separators=(",", ":")).encode() == row["response"].encode()
+            shape = list(parsed) == RESPONSE_KEYS
             bound = parsed.get("case_id") == row["example_id"] and parsed.get("request_identity") == row["request_identity"]
             valid = canonical_json and shape and bound and row["terminal_eos"] and row["within_byte_ceiling"] and row["nfc"]
         except (ValueError, TypeError):
