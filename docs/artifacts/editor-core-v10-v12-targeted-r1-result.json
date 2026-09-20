@@ -1,0 +1,62 @@
+{
+  "schema": "pastila-editor-core-targeted-continuation-result",
+  "schema_version": 1,
+  "status": "PASS_MEASURABLE_ML_PROGRESS",
+  "source_commit": "dc061820107ff2d4a3bab75431b8ac29e02d93ab",
+  "training": {
+    "parent_adapter_identity": "8c277a123fef81908f03bdaf31925b93c1a95a3c0969ef23088331427e64013f",
+    "training_receipt_identity": "bde0363562a699e79603c857fa18015d7cf0a5a26d26d25a032ec7dfc508b2db",
+    "optimizer_steps": 16,
+    "checkpoint_8_identity": "00ee968941f8cba8ea47534d441c272c7a3120f9076953aa552f67e302a0ceef",
+    "checkpoint_8_adapter_identity": "50b292f9cfdfb2f44dcc8bb9ef811ea367c78db505e4adc2c62e851e6060d3a4",
+    "checkpoint_16_identity": "8eaab7f4e7a0d86207a1a4e8e8a37706a3f6b53648c0793e72dcdfebdcc2d27d",
+    "checkpoint_16_adapter_identity": "15a72fa1a2a7a27c99dbd727c1419ee668f5b245f92f2427409c43a8720eb6fd",
+    "final_loss": "0.00044640383566729724",
+    "holdout_used_for_training": false
+  },
+  "evaluation": {
+    "requests_sha256": "e4d6815fec1fd9e0e1f4c011f86bc14d8522a9a0f6d36d713c1bb7542fd9f448",
+    "answer_key_sha256": "0c7e004099346e3685ba15a97bd1024d212b3528e8549186ea0ef89f79982a4f",
+    "runner_sha256": "434847d19f24e54ec774f2e1c304b8f7fa4a9357e847df38902bf8834e088063",
+    "rows": 32,
+    "parent": {
+      "receipt_identity": "7a031427647d06ad92e5739aa1fe3aa7fda129eb21296e9ba2580b6c214b2c8d",
+      "audit_identity": "f21d44a2b70a09d1f2a5c2d6646a8349dab8a2e5d65eb9df53500eea4cc7719d",
+      "structural_passed": 32,
+      "exact_target_passed": 12
+    },
+    "checkpoint_8": {
+      "receipt_identity": "ca1e090eb3f1c1a375efb6c537e561ff61cf5296a458d9864669d84cbfe39831",
+      "audit_identity": "cb22ac629882d797414c7d7fda940b6bfda30bd6a862a18c06af0ee823751f74",
+      "structural_passed": 32,
+      "exact_target_passed": 20
+    },
+    "checkpoint_16": {
+      "receipt_identity": "e3da3e6d09960f6430d074bc9e132348644d6a1558c071311ffd75bff3941636",
+      "audit_identity": "fb167a60d16fe368402191d0e1d79e44c4cc23fe4d805607767ee2509a268b75",
+      "structural_passed": 32,
+      "exact_target_passed": 20
+    },
+    "remaining_mismatch_classes": {
+      "EPISTEMIC_CALIBRATION": 4,
+      "TRANSITION_NO_NEW_FACTS": 4,
+      "UNSUPPORTED_MATERIAL_CLAIMS": 4
+    },
+    "training_performed": false
+  },
+  "selection": {
+    "selected_checkpoint": 8,
+    "selected_adapter_identity": "50b292f9cfdfb2f44dcc8bb9ef811ea367c78db505e4adc2c62e851e6060d3a4",
+    "reason": "SAME_EXACT_SCORE_AS_STEP_16_WITH_HALF_THE_OPTIMIZER_STEPS_AND_NO_ADDITIONAL_FAILED_OUTPUT_DRIFT"
+  },
+  "preservation": {
+    "manifest_identity": "f46cedb9999b2770764e4ab357ad61649b90095545db14ee8fa475671f1d51fe",
+    "payload_sha256": "d55d69646ff821037bd2105a4433030f7e24a7067a0e9752210f8cc60a738a5b",
+    "payload_bytes": 980817920,
+    "files": 113,
+    "local_paths_published": false
+  },
+  "promotion": false,
+  "adjudication_performed": false,
+  "result_identity": "6edfaddf27d566fd360831f74767aa41682c29d571354bb5ff836cc7ce51a71f"
+}

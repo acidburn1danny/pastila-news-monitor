@@ -6,8 +6,8 @@ promotion authority.
 
 ## Active baseline
 
-`ACTIVE_EDITOR_DEVELOPMENT_STATE` is the targeted continuation round introduced
-by Git commit `635cc160e2b54e468ba9654f50e4da4de18ca31f`:
+`ACTIVE_EDITOR_DEVELOPMENT_STATE` is the evaluated checkpoint 8 from the
+targeted continuation round:
 
 - parent adapter content identity: `8c277a123fef81908f03bdaf31925b93c1a95a3c0969ef23088331427e64013f`;
 - parent checkpoint identity: `6925fca8c5b6c9e94e96255cb21ec9442aff5d0ac2f7bd0f2038ce45475a7dd1`;
@@ -16,11 +16,18 @@ by Git commit `635cc160e2b54e468ba9654f50e4da4de18ca31f`:
 - training corpus identity: `c1ee2f4a6c0561eba52ef7a437a885568cf8fd2b53956b0c3a05c309ca0fad4a`;
 - 64 new targeted examples, 64 replay anchors, and a separate 32-case
   independent holdout;
-- training and optimizer activity: not performed.
+- training receipt identity: `bde0363562a699e79603c857fa18015d7cf0a5a26d26d25a032ec7dfc508b2db`;
+- selected checkpoint identity: `00ee968941f8cba8ea47534d441c272c7a3120f9076953aa552f67e302a0ceef`;
+- selected adapter content identity: `50b292f9cfdfb2f44dcc8bb9ef811ea367c78db505e4adc2c62e851e6060d3a4`;
+- independent holdout result: 32/32 structurally valid and 20/32 exact target,
+  compared with 12/32 for the parent;
+- checkpoint 16 also scored 20/32 and changed only responses that remained
+  mismatches, so checkpoint 8 is retained as the smaller effective update.
 
-The next development step is construction and zero-step validation of a
-training launcher bound to these published inputs. Starting training remains a
-separate owner action.
+The next development step is semantic failure mining on separate development
+evidence for epistemic calibration, transition no-new-facts behavior, and
+unsupported material claims. The independent holdout remains excluded from
+training labels. This experimental selection is not a promotion or release.
 
 ## Scope separation
 
