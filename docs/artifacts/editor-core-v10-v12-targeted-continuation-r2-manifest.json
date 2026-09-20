@@ -1,0 +1,67 @@
+{
+  "schema": "pastila-editor-core-targeted-continuation-dataset-manifest",
+  "schema_version": 2,
+  "status": "PREPARED_ZERO_TRAINING",
+  "parent_adapter_content_identity": "50b292f9cfdfb2f44dcc8bb9ef811ea367c78db505e4adc2c62e851e6060d3a4",
+  "parent_checkpoint_identity": "00ee968941f8cba8ea47534d441c272c7a3120f9076953aa552f67e302a0ceef",
+  "failure_classes": [
+    "UNSUPPORTED_MATERIAL_CLAIMS",
+    "EPISTEMIC_CALIBRATION",
+    "TRANSITION_NO_NEW_FACTS"
+  ],
+  "rows_per_failure_class": {
+    "new_train": 12,
+    "holdout": 6
+  },
+  "artifacts": {
+    "new-train": {
+      "path": "docs/artifacts/editor-core-v10-v12-targeted-continuation-r2-new-train.jsonl",
+      "sha256": "aff87a21bc384bb4c19ee61676e513b877cdd5ecd21d867166734d231a6e7a98",
+      "rows": 36,
+      "bytes": 246035
+    },
+    "replay-anchors": {
+      "path": "docs/artifacts/editor-core-v10-v12-targeted-continuation-r2-replay-anchors.jsonl",
+      "sha256": "915c2bb8c8189ba5cb804c2a3ed08d286bb2dea275e33c54045e4a841ec7895f",
+      "rows": 36,
+      "bytes": 279847
+    },
+    "training": {
+      "path": "docs/artifacts/editor-core-v10-v12-targeted-continuation-r2-training.jsonl",
+      "sha256": "9c99425dc9c2ce1f69f2694177b8698892a8e1cc8ed67b5e7fe910d6e56ce072",
+      "rows": 72,
+      "bytes": 525882
+    },
+    "holdout-requests": {
+      "path": "docs/artifacts/editor-core-v10-v12-targeted-continuation-r2-holdout-requests.jsonl",
+      "sha256": "2b56edeea672e82ab3fa67cfc1f6af8378389a615602773f8fccf6e45de159c9",
+      "rows": 18,
+      "bytes": 111627
+    },
+    "holdout-answer-key": {
+      "path": "docs/artifacts/editor-core-v10-v12-targeted-continuation-r2-holdout-answer-key.jsonl",
+      "sha256": "c56846224abfdd10f714931484cdc18d9b8e13bc6f18cd5bd41917b18a90e048",
+      "rows": 18,
+      "bytes": 14665
+    },
+    "training-config": {
+      "path": "docs/artifacts/editor-core-v10-v12-targeted-continuation-r2-training-config.json",
+      "sha256": "991e84f5063b6a27cc2311af5c5bde94b91b1bc5a27738d7d6596a12e9076fc6"
+    }
+  },
+  "replay_sources": {
+    "v10_v1_2": {
+      "rows": 18,
+      "source": "docs/artifacts/pastila-editor-core-v1.2-json-successor-v10-train.jsonl"
+    },
+    "targeted_r1": {
+      "rows": 18,
+      "source": "docs/artifacts/editor-core-v10-v12-targeted-continuation-v1-new-train.jsonl"
+    }
+  },
+  "holdout_answer_key_separate": true,
+  "prior_holdout_targets_reused": false,
+  "r4_evidence_used": false,
+  "training_performed": false,
+  "manifest_identity": "ad4a58a6179ae7857d3d6db508a1e82432914027d2c32f3b178854508ff44bb8"
+}
