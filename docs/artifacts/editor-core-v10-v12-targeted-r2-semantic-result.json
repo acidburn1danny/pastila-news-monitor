@@ -1,0 +1,157 @@
+{
+  "schema": "pastila-editor-core-targeted-r2-semantic-result",
+  "schema_version": 1,
+  "status": "DEVELOPMENT_PARENT_SELECTED",
+  "published_evaluation_commit": "be664fb201287b6697c8b0ecc5cfff3cedab536a",
+  "published_evaluation_tree": "2a9636b27f270c1023579da5637a003ffbf6345e",
+  "requests_sha256": "2b56edeea672e82ab3fa67cfc1f6af8378389a615602773f8fccf6e45de159c9",
+  "answer_key_sha256": "c56846224abfdd10f714931484cdc18d9b8e13bc6f18cd5bd41917b18a90e048",
+  "runner_sha256": "539c122f9a3159a67da40dd0e9168f0b2b67f0eeb21705144ac0408abe2b4bad",
+  "r1": {
+    "adapter_identity": "50b292f9cfdfb2f44dcc8bb9ef811ea367c78db505e4adc2c62e851e6060d3a4",
+    "inference_receipt_identity": "6a30a6ac017c2400a2e33e0487292e3617cfb0903ec5d35adfcb85d33df7b12c",
+    "audit_identity": "b91c83722bc7fac441e88e0c6d7c992813eb197a6854e2c1bd667385d2a2946c",
+    "structural_passed": 18,
+    "semantic_passed": 8
+  },
+  "r2": {
+    "checkpoint_identity": "96e10b85fe30c4be43c2cc1a0b906f04ea4c476cc8d422b4ad26e9758b85b2be",
+    "adapter_identity": "c680d686f0b139e618d99fab235c62267caa9482df0efbccb44cb2c58c124f02",
+    "training_receipt_identity": "b348be512d66766612c2adf3f98fa5f511123997664ff3a19557ab0a3f4928a6",
+    "inference_receipt_identity": "141b2eaef3e8934b346c072ce68082fff7e67496aa034c8989419edaf79b6530",
+    "audit_identity": "a28182190ca0f50de5a1dd8826e38a083064e2fb94e04180deabc691c0e542e0",
+    "structural_passed": 18,
+    "semantic_passed": 12
+  },
+  "blinded_review": {
+    "comparison_identity": "0d2d221335e75c6a98c8217e0eabdd299e2394e2262a201aae454b79e526c73f",
+    "criteria_fixed_before_candidate_decode": true,
+    "rows_reviewed": 18,
+    "r1_unique_wins": 2,
+    "r2_unique_wins": 6,
+    "both_pass": 6,
+    "both_fail": 4,
+    "ties": 10,
+    "exact_string_matches_r1": 0,
+    "exact_string_matches_r2": 0
+  },
+  "semantic_criteria": [
+    "FACTUAL_FIDELITY",
+    "EPISTEMIC_ATTRIBUTION_AND_UNCERTAINTY",
+    "REQUESTED_MATERIAL_COMPLETENESS",
+    "NO_UNSUPPORTED_FACTS",
+    "TRANSITION_NO_NEW_FACTS",
+    "OUTPUT_TYPE_APPROPRIATE_CONCISION"
+  ],
+  "case_decisions": [
+    {
+      "case_id": "ec-v10-v12-r2-holdout-unsupported-material-claims-13",
+      "verdict": "BOTH_PASS"
+    },
+    {
+      "case_id": "ec-v10-v12-r2-holdout-unsupported-material-claims-14",
+      "verdict": "BOTH_PASS"
+    },
+    {
+      "case_id": "ec-v10-v12-r2-holdout-unsupported-material-claims-15",
+      "verdict": "BOTH_PASS"
+    },
+    {
+      "case_id": "ec-v10-v12-r2-holdout-unsupported-material-claims-16",
+      "verdict": "BOTH_PASS"
+    },
+    {
+      "case_id": "ec-v10-v12-r2-holdout-unsupported-material-claims-17",
+      "verdict": "BOTH_PASS"
+    },
+    {
+      "case_id": "ec-v10-v12-r2-holdout-unsupported-material-claims-18",
+      "verdict": "BOTH_PASS"
+    },
+    {
+      "case_id": "ec-v10-v12-r2-holdout-epistemic-calibration-13",
+      "verdict": "BOTH_FAIL"
+    },
+    {
+      "case_id": "ec-v10-v12-r2-holdout-epistemic-calibration-14",
+      "verdict": "BOTH_FAIL"
+    },
+    {
+      "case_id": "ec-v10-v12-r2-holdout-epistemic-calibration-15",
+      "verdict": "R1_PASS_R2_FAIL"
+    },
+    {
+      "case_id": "ec-v10-v12-r2-holdout-epistemic-calibration-16",
+      "verdict": "BOTH_FAIL"
+    },
+    {
+      "case_id": "ec-v10-v12-r2-holdout-epistemic-calibration-17",
+      "verdict": "BOTH_FAIL"
+    },
+    {
+      "case_id": "ec-v10-v12-r2-holdout-epistemic-calibration-18",
+      "verdict": "R1_PASS_R2_FAIL"
+    },
+    {
+      "case_id": "ec-v10-v12-r2-holdout-transition-no-new-facts-13",
+      "verdict": "R1_FAIL_R2_PASS"
+    },
+    {
+      "case_id": "ec-v10-v12-r2-holdout-transition-no-new-facts-14",
+      "verdict": "R1_FAIL_R2_PASS"
+    },
+    {
+      "case_id": "ec-v10-v12-r2-holdout-transition-no-new-facts-15",
+      "verdict": "R1_FAIL_R2_PASS"
+    },
+    {
+      "case_id": "ec-v10-v12-r2-holdout-transition-no-new-facts-16",
+      "verdict": "R1_FAIL_R2_PASS"
+    },
+    {
+      "case_id": "ec-v10-v12-r2-holdout-transition-no-new-facts-17",
+      "verdict": "R1_FAIL_R2_PASS"
+    },
+    {
+      "case_id": "ec-v10-v12-r2-holdout-transition-no-new-facts-18",
+      "verdict": "R1_FAIL_R2_PASS"
+    }
+  ],
+  "failure_class_results": {
+    "UNSUPPORTED_MATERIAL_CLAIMS": {
+      "r1_passed": 6,
+      "r2_passed": 6,
+      "verdict": "NO_CHANGE"
+    },
+    "TRANSITION_NO_NEW_FACTS": {
+      "r1_passed": 0,
+      "r2_passed": 6,
+      "verdict": "R2_IMPROVEMENT"
+    },
+    "EPISTEMIC_CALIBRATION": {
+      "r1_passed": 2,
+      "r2_passed": 0,
+      "verdict": "R2_REMAINING_FAILURE_CLUSTER"
+    }
+  },
+  "unresolved_r2_case_ids": [
+    "ec-v10-v12-r2-holdout-epistemic-calibration-13",
+    "ec-v10-v12-r2-holdout-epistemic-calibration-14",
+    "ec-v10-v12-r2-holdout-epistemic-calibration-15",
+    "ec-v10-v12-r2-holdout-epistemic-calibration-16",
+    "ec-v10-v12-r2-holdout-epistemic-calibration-17",
+    "ec-v10-v12-r2-holdout-epistemic-calibration-18"
+  ],
+  "selection": {
+    "scope": "DEVELOPMENT_ONLY",
+    "selected_parent": "R2_STEP_9",
+    "selected_adapter_identity": "c680d686f0b139e618d99fab235c62267caa9482df0efbccb44cb2c58c124f02",
+    "reason": "NET_SEMANTIC_IMPROVEMENT_WITH_ONE_BOUNDED_REMAINING_FAILURE_CLASS",
+    "promotion": false,
+    "release": false
+  },
+  "training_performed_by_selection": false,
+  "adjudication_performed": false,
+  "local_paths_published": false,
+  "result_identity": "a691df6824edaeb96fa3f548abebd411c99b43dd9beb997ea9534dbf5fa6e3aa"
+}
