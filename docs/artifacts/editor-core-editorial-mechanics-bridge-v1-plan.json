@@ -1,0 +1,155 @@
+{
+  "schema": "pastila-editor-core-editorial-mechanics-bridge-plan",
+  "schema_version": 1,
+  "parent_adapter_identity": "c680d686f0b139e618d99fab235c62267caa9482df0efbccb44cb2c58c124f02",
+  "parent_checkpoint_identity": "96e10b85fe30c4be43c2cc1a0b906f04ea4c476cc8d422b4ad26e9758b85b2be",
+  "source_r2_corpus_sha256": "9c99425dc9c2ce1f69f2694177b8698892a8e1cc8ed67b5e7fe910d6e56ce072",
+  "training_authorized": false,
+  "training_performed": false,
+  "voice_or_comedy_training": false,
+  "frozen_holdout_target_training_use": false,
+  "operators": [
+    "FACT_SELECTION",
+    "QUALIFIED_COMPRESSION",
+    "CHRONOLOGICAL_ORDER",
+    "PRECISE_ATTRIBUTION",
+    "SUPPORTED_CONTRAST",
+    "FACTUAL_TRANSITION",
+    "NATURAL_ROMANIAN",
+    "EPISTEMIC_GUARD"
+  ],
+  "case_counts": {
+    "train": 48,
+    "development": 24,
+    "holdout": 24
+  },
+  "split_by": "SYNTHETIC_EVENT_FAMILY; six train, three development, three holdout families shared across operators but disjoint across splits",
+  "factorial": {
+    "target_design": [
+      "LITERAL_SAFE_CONTROL",
+      "NEUTRAL_EDITORIAL_MECHANICS"
+    ],
+    "instruction_signal": [
+      "OPERATOR_SPECIFIC",
+      "GENERIC_FACTUAL_REWRITE"
+    ],
+    "recipe_strength": [
+      "R2_LIKE",
+      "STRONGER_PREDECLARED"
+    ],
+    "replay_strategy": [
+      "FIXED_BASELINE",
+      "PROTECTIVE_SELECTION"
+    ],
+    "one_factor_at_a_time": true,
+    "arms": [
+      {
+        "id": "A0",
+        "mode": "UNTRAINED_R2_PARENT"
+      },
+      {
+        "id": "A1",
+        "target": "LITERAL_SAFE_CONTROL",
+        "instruction": "OPERATOR_SPECIFIC",
+        "recipe": "R2_LIKE",
+        "replay": "FIXED_BASELINE"
+      },
+      {
+        "id": "A2",
+        "target": "NEUTRAL_EDITORIAL_MECHANICS",
+        "instruction": "OPERATOR_SPECIFIC",
+        "recipe": "R2_LIKE",
+        "replay": "FIXED_BASELINE"
+      },
+      {
+        "id": "A3",
+        "target": "LITERAL_SAFE_CONTROL",
+        "instruction": "OPERATOR_SPECIFIC",
+        "recipe": "STRONGER_PREDECLARED",
+        "replay": "FIXED_BASELINE"
+      },
+      {
+        "id": "A4",
+        "target": "NEUTRAL_EDITORIAL_MECHANICS",
+        "instruction": "OPERATOR_SPECIFIC",
+        "recipe": "STRONGER_PREDECLARED",
+        "replay": "FIXED_BASELINE"
+      },
+      {
+        "id": "A5",
+        "target": "NEUTRAL_EDITORIAL_MECHANICS",
+        "instruction": "OPERATOR_SPECIFIC",
+        "recipe": "R2_LIKE",
+        "replay": "PROTECTIVE_SELECTION"
+      },
+      {
+        "id": "A6",
+        "target": "LITERAL_SAFE_CONTROL",
+        "instruction": "GENERIC_FACTUAL_REWRITE",
+        "recipe": "R2_LIKE",
+        "replay": "FIXED_BASELINE"
+      },
+      {
+        "id": "A7",
+        "target": "NEUTRAL_EDITORIAL_MECHANICS",
+        "instruction": "GENERIC_FACTUAL_REWRITE",
+        "recipe": "R2_LIKE",
+        "replay": "FIXED_BASELINE"
+      }
+    ],
+    "fixed_training_rows_per_arm": 96,
+    "replay_sources": [
+      "pastila-editor-core-v1.2-json-successor-v10-train.jsonl",
+      "editor-core-v10-v12-targeted-continuation-v1-new-train.jsonl",
+      "editor-core-v10-v12-targeted-continuation-r2-training.jsonl"
+    ],
+    "replay_selection": "48 deterministic rows, 16 per accepted V10/R1/R2 source; protective arm prioritizes labeled factual/epistemic/transition classes within each source",
+    "recipe_values": {
+      "R2_LIKE": {
+        "learning_rate": "0.000003",
+        "epochs": 1,
+        "micro_batch_size": 1,
+        "gradient_accumulation_steps": 8,
+        "expected_steps": 12
+      },
+      "STRONGER_PREDECLARED": {
+        "learning_rate": "0.000003",
+        "epochs": 2,
+        "micro_batch_size": 1,
+        "gradient_accumulation_steps": 8,
+        "expected_steps": 24
+      }
+    },
+    "recipe_interpretation": "strength varies exposure/steps only; same LR, rows, order seed, parent and runtime; training-token budget must pass before authorization",
+    "common_runtime": {
+      "optimizer": "PAGED_ADAMW_8BIT_NEW_STATE",
+      "scheduler": "CONSTANT_WITHOUT_WARMUP",
+      "precision": "BF16",
+      "packing": false,
+      "max_sequence_tokens": 3072,
+      "base_model_and_runtime": "BIND_TO_PUBLISHED_R2_COMPATIBLE_RUNTIME_BEFORE_EXECUTION"
+    },
+    "replicate_seeds": [
+      271828,
+      314159,
+      161803
+    ],
+    "research_runs": 21,
+    "arm_a0": "ONE_FROZEN_R2_BASELINE_EVALUATION; NO_TRAINING"
+  },
+  "evaluation": {
+    "gates": [
+      "FACTUAL_EPISTEMIC_SAFETY",
+      "EDITORIAL_REWRITE_QUALITY",
+      "ROMANIAN_NATURALNESS",
+      "REGRESSION_PROTECTION"
+    ],
+    "safety_priority": "ANY_MATERIAL_FACTUAL_OR_EPISTEMIC_REGRESSION_BLOCKS_PARENT_SELECTION",
+    "source_copy": "SAFE_COPY_CAN_PASS_FACTUALITY_BUT_FAIL_EXPLICIT_REWRITE_QUALITY",
+    "exact_target_string": "DIAGNOSTIC_ONLY_NOT_SEMANTIC_VERDICT",
+    "development_set": "TUNING_AND_FAILURE_MINING_ONLY",
+    "holdout_set": "UNTOUCHED_UNTIL_ARM_SELECTION_RULES_FROZEN; NOT_USED_FOR_TUNING",
+    "human_review": "BLINDED_CASE_BY_CASE_ON_SOURCE_BOUND_FACTUALITY_AND_EDITORIAL_QUALITY"
+  },
+  "plan_identity": "4caa3811ff1eb9e19bc0e460edd760755e224100953595e5a5c4b91ab73cb6ef"
+}

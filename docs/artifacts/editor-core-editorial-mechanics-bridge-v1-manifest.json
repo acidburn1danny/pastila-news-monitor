@@ -1,0 +1,74 @@
+{
+  "schema": "pastila-editor-core-editorial-mechanics-bridge-manifest",
+  "schema_version": 1,
+  "status": "DESIGN_AND_DATA_ONLY",
+  "parent_adapter_identity": "c680d686f0b139e618d99fab235c62267caa9482df0efbccb44cb2c58c124f02",
+  "parent_checkpoint_identity": "96e10b85fe30c4be43c2cc1a0b906f04ea4c476cc8d422b4ad26e9758b85b2be",
+  "source_r2_corpus_sha256": "9c99425dc9c2ce1f69f2694177b8698892a8e1cc8ed67b5e7fe910d6e56ce072",
+  "files": {
+    "train-mechanics": {
+      "sha256": "ca8dda47ad69d6e2ff244e30831820945f18905ff4881b0c9fc5083c62d9badc",
+      "bytes": 333542,
+      "rows": 48
+    },
+    "train-control": {
+      "sha256": "60cb421c2b12b5e437c5aa2c84905712f4612555daaec03d5cb1bebde07d0c03",
+      "bytes": 334782,
+      "rows": 48
+    },
+    "train-mechanics-generic": {
+      "sha256": "b6ca3996140cd48cf99cd1408eabb65aabf2213fb000cc88c3905e28d874a30d",
+      "bytes": 336248,
+      "rows": 48
+    },
+    "train-control-generic": {
+      "sha256": "be508a4f187bf4d307bc234c12d21ac68fcdcb5e3f6c20c94330ac43c79d9c07",
+      "bytes": 337488,
+      "rows": 48
+    },
+    "replay-baseline": {
+      "sha256": "17ef7dd6dd8cbb20a4e7121736a68b34cfdc256d472ae801cb9339737339fe06",
+      "bytes": 362545,
+      "rows": 48
+    },
+    "replay-protective": {
+      "sha256": "675ecc373f5062d0670e152c54857ca9593159b8eb3f3d869679fca8b0f3b55f",
+      "bytes": 356929,
+      "rows": 48
+    },
+    "development-requests": {
+      "sha256": "de964a75032a286f5de6e4d578f408bc876f368b0d93ea00d44ec451fdb03d59",
+      "bytes": 150622,
+      "rows": 24
+    },
+    "development-answer-key": {
+      "sha256": "cbe864ea76f9a4226aed0ffa2356c812c899f8c6508b15e30f9c546b58cf8df4",
+      "bytes": 52693,
+      "rows": 24
+    },
+    "holdout-requests": {
+      "sha256": "9dae33f98144b7bad5c657da409785369f81cfe81a4f9c9bdd270a72a1fdd921",
+      "bytes": 150748,
+      "rows": 24
+    },
+    "holdout-answer-key": {
+      "sha256": "a801f8945f8a5ee4162fc0e732264f78fbe9fb6abb566f056f23a3ddd6c80a8d",
+      "bytes": 52556,
+      "rows": 24
+    },
+    "counterexamples": {
+      "sha256": "f3d473b4786fb2296a04256640959026d1722411675662db2933566f74505dfb",
+      "bytes": 45121,
+      "rows": 96
+    },
+    "plan": {
+      "sha256": "c2cef76c187a03f51ca93c5e580522ce20092091639487d8cf83b892d277c4d1",
+      "bytes": 5114
+    }
+  },
+  "training_performed": false,
+  "adjudication_performed": false,
+  "development_parent_changed": false,
+  "voice_or_comedy_material_imported": false,
+  "manifest_identity": "a4649f59a5a536c688e7d3741bc46e82d8997dc6a8c04948a25424528102ba3a"
+}
