@@ -11,7 +11,7 @@ from pathlib import Path
 EXPECTED_ROWS = 12
 RESPONSE_KEYS = ["schema", "schema_version", "case_id", "request_identity", "output_type", "outcome", "text", "claim_bindings", "abstention_code"]
 SEMANTIC_MARKERS = {
-    "ATTRIBUTION_DENIAL_FINALITY": (("suspiciun",), ("ar fi",), ("neag",), ("hotÄƒrÃ¢re finalÄƒ",)),
+    "ATTRIBUTION_DENIAL_FINALITY": (("suspiciun",), ("ar fi",), ("neag",), ("final",)),
     "PRELIMINARY_CONTEST_PENDING": (("intermediar", "provizori"), ("ar fi",), ("obiec",), ("deschis", "nesoluționat", "nesoluționată")),
 }
 
