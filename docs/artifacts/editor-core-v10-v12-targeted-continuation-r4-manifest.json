@@ -1,0 +1,72 @@
+{
+  "schema": "pastila-editor-core-targeted-continuation-dataset-manifest",
+  "schema_version": 3,
+  "status": "PREPARED_ZERO_TRAINING",
+  "parent_adapter_content_identity": "c680d686f0b139e618d99fab235c62267caa9482df0efbccb44cb2c58c124f02",
+  "parent_checkpoint_identity": "96e10b85fe30c4be43c2cc1a0b906f04ea4c476cc8d422b4ad26e9758b85b2be",
+  "failure_classes": [
+    "EPISTEMIC_CALIBRATION"
+  ],
+  "diagnostic_patterns": [
+    "ATTRIBUTION_DENIAL_FINALITY",
+    "PRELIMINARY_CONTEST_PENDING"
+  ],
+  "source_diagnostic_case_ids": [
+    "ec-v10-v12-r3-holdout-epistemic-calibration-27",
+    "ec-v10-v12-r3-holdout-epistemic-calibration-29",
+    "ec-v10-v12-r3-holdout-epistemic-calibration-33"
+  ],
+  "rows": {
+    "new_train": 12,
+    "replay": 36,
+    "holdout": 12
+  },
+  "artifacts": {
+    "new-train": {
+      "path": "docs/artifacts/editor-core-v10-v12-targeted-continuation-r4-new-train.jsonl",
+      "sha256": "1b63e0cf2467e3a0157e193480ab53bc01ccaca4438152734be880712750d068",
+      "rows": 12,
+      "bytes": 85072
+    },
+    "replay-anchors": {
+      "path": "docs/artifacts/editor-core-v10-v12-targeted-continuation-r4-replay-anchors.jsonl",
+      "sha256": "ca80e17a9214e8453324b29917ba56188dec105c02eaac6684cf0e7c18ab8f5c",
+      "rows": 36,
+      "bytes": 281169
+    },
+    "training": {
+      "path": "docs/artifacts/editor-core-v10-v12-targeted-continuation-r4-training.jsonl",
+      "sha256": "464fdd6fa3769e665ba52e7fb12f659ebac5255a711864a7eda0cc44ae22edbc",
+      "rows": 48,
+      "bytes": 366241
+    },
+    "holdout-requests": {
+      "path": "docs/artifacts/editor-core-v10-v12-targeted-continuation-r4-holdout-requests.jsonl",
+      "sha256": "0d2f4c5d44b76e1c405672825fd6e148f128ca99515fe2b638b27ddcbb2f0acd",
+      "rows": 12,
+      "bytes": 75391
+    },
+    "holdout-answer-key": {
+      "path": "docs/artifacts/editor-core-v10-v12-targeted-continuation-r4-holdout-answer-key.jsonl",
+      "sha256": "b5e0ce075fefd809d6de58a2bd28dbbb8f909e4bce8c6acb1fa24a98a845b837",
+      "rows": 12,
+      "bytes": 12175
+    },
+    "training-config": {
+      "path": "docs/artifacts/editor-core-v10-v12-targeted-continuation-r4-training-config.json",
+      "sha256": "c36a6e9db94fa50b79423013f2c356f14c6c6c4a3798222e4cf51c624b73d5b6"
+    }
+  },
+  "replay_sources": {
+    "v10_v1_2": 12,
+    "targeted_r1": 12,
+    "targeted_r2": 12
+  },
+  "r3_holdout_used_as_diagnostic_only": true,
+  "r3_holdout_training_use": false,
+  "rejected_r3_adapter_training_use": false,
+  "holdout_answer_key_separate": true,
+  "r4_evidence_used": false,
+  "training_performed": false,
+  "manifest_identity": "6ff7e14b7402c4ad676b897dfe5b9157f5cedf83a488eb5e6504748ff69af6ed"
+}

@@ -1,0 +1,50 @@
+{
+  "schema": "pastila-editor-core-targeted-r3-semantic-result",
+  "schema_version": 1,
+  "status": "DEVELOPMENT_PARENT_REJECTED",
+  "published_evaluation_commit": "5a202083f10bf59448c6ef2b0572437ac101b72a",
+  "published_evaluation_tree": "eefc8e871f201fce5383a49fce99e3c392899374",
+  "requests_sha256": "dc0bc9168c83d9a1711fb24e73170a8f838cce343b4312c7f2288cd9a48d59a6",
+  "answer_key_sha256": "7d725668bd553124c5f91e42d16280b27079afee68968a98a81b450599772c8d",
+  "runner_sha256": "411f0d9daae90fc90433bbdb89728953536cdec74dde05692abf8bb8a3e7b878",
+  "r2_parent": {
+    "checkpoint_identity": "96e10b85fe30c4be43c2cc1a0b906f04ea4c476cc8d422b4ad26e9758b85b2be",
+    "adapter_identity": "c680d686f0b139e618d99fab235c62267caa9482df0efbccb44cb2c58c124f02",
+    "inference_receipt_identity": "78b996553c05aff1f626d79ff5587c4860d3f8568f89538294b33eeb9b7759d3",
+    "audit_identity": "10d512a6abb5c9186b248f126fbffd218ffb7e92e620884b98e8b71505f63c84",
+    "structural_passed": 12,
+    "semantic_passed": 12
+  },
+  "r3_candidate": {
+    "checkpoint_identity": "f51cdbe7b109e9cc2c51c56f1cc49f2346d5e2083e1efc57ac7af267eca63030",
+    "adapter_identity": "eaa142cb58c2b795e75ce1b57746950e6fcd3026bc5dd2ac8d55c210c5ce6a00",
+    "training_receipt_identity": "2e91fcc985679a5e6341de6fa609d592567065e2ec15954f1b5508b82715d688",
+    "inference_receipt_identity": "2b81bdc8b84b713951b1da3c71b8f7dc99ca5bd9be758f6b321d96c6e1c16a60",
+    "audit_identity": "177bb6f0894f3a59ab81439e3fe802237dc3ec4eb68d1ae168be5ddaa2498077",
+    "structural_passed": 12,
+    "semantic_passed": 9
+  },
+  "comparison_identity": "6b55750ba56097226bddac7ab120db616f08bf7c51c03a4f09f3af56bf025632",
+  "semantic_regression_case_ids": [
+    "ec-v10-v12-r3-holdout-epistemic-calibration-27",
+    "ec-v10-v12-r3-holdout-epistemic-calibration-29",
+    "ec-v10-v12-r3-holdout-epistemic-calibration-33"
+  ],
+  "semantic_improvement_case_ids": [],
+  "behavioral_finding": "R3 overcorrected attribution wording and removed suspicion or modal framing in three attribution-denial-finality cases while providing no semantic improvement over R2.",
+  "selection": {
+    "scope": "DEVELOPMENT_ONLY",
+    "rejected_candidate": "R3_STEP_6",
+    "retained_parent": "R2_STEP_9",
+    "retained_adapter_identity": "c680d686f0b139e618d99fab235c62267caa9482df0efbccb44cb2c58c124f02",
+    "reason": "SEMANTIC_REGRESSION_WITH_ZERO_IMPROVEMENTS",
+    "promotion": false,
+    "release": false
+  },
+  "r3_holdout_training_use": false,
+  "r3_holdout_targets_reused": false,
+  "training_performed_by_selection": false,
+  "adjudication_performed": false,
+  "local_paths_published": false,
+  "result_identity": "6b91d41397fddfc3dcdd31c6d738f892e4ed38007907c0ec561043df20d17229"
+}
