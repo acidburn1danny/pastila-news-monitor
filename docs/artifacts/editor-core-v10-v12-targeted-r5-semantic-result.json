@@ -1,0 +1,51 @@
+{
+  "schema": "pastila-editor-core-targeted-r5-semantic-result",
+  "schema_version": 1,
+  "status": "DEVELOPMENT_PARENT_REJECTED",
+  "published_evaluation_commit": "88bfb41eb6ade95ef839425e157423a7319f0513",
+  "published_evaluation_tree": "21821fbea580dc861f07f3ac90dff1ae7b0db97d",
+  "holdout_requests_sha256": "c4eff85258569792dffac867abb5117f40ae9be1e857cbb0130eb71a0ec659e3",
+  "answer_key_sha256": "8fecfb3f835fbc1eb2d45d7ed98f6cb568779a043cb6c46f9d4ffb0a88eb5343",
+  "runner_sha256": "ae972eff7ff3b455a01f42a9391d79bae279fee1fc0fe7614f965f4683e4c8ae",
+  "r2_parent": {
+    "checkpoint_identity": "96e10b85fe30c4be43c2cc1a0b906f04ea4c476cc8d422b4ad26e9758b85b2be",
+    "adapter_identity": "c680d686f0b139e618d99fab235c62267caa9482df0efbccb44cb2c58c124f02",
+    "inference_receipt_identity": "cb7fc98ba92d7985a29036e8e14e6ea772ee6713c0170ab707ca37fe9c8f4233",
+    "audit_identity": "63d66f5e477fec66cfc1dd1c752b3d2506d2e609690bcb19c7cf79be0eaa96fa",
+    "structural_passed": 12,
+    "epistemic_elements_preserved": 12
+  },
+  "r5_candidate": {
+    "checkpoint_identity": "1e3b2be2daff296170b9930976a79dba2aa9850133eebd665c237c2482821889",
+    "adapter_identity": "41e280f26688e3cc1afdf94622a16ff238fdca8c600c930105ed008c6cb43024",
+    "training_receipt_identity": "8acf1a0d7438aa4ccf0ace3ae380bf9d51dd3485577eeec91b0beb14a7ce079b",
+    "inference_receipt_identity": "28922da7789919992678684f6517b126715c223af4c454d6ff2d0bbee340956b",
+    "audit_identity": "6b3aaa63739e2ecee680884e4395705a413a2f460cf1a6aa588352ec397a6afe",
+    "structural_passed": 12,
+    "epistemic_elements_preserved": 12
+  },
+  "comparison_identity": "060e6a8f2df39a0d8bbb8308f99a5cdf2e764dd9b869dfce9161afa8d598971a",
+  "response_equal": 10,
+  "response_changed": 2,
+  "changed_case_ids": ["ec-v10-v12-r5-h-13", "ec-v10-v12-r5-h-15"],
+  "semantic_improvement_case_ids": [],
+  "epistemic_regression_case_ids": [],
+  "attribution_wording_regression_case_ids": ["ec-v10-v12-r5-h-13", "ec-v10-v12-r5-h-15"],
+  "review_method": "READ_ONLY_CASE_BY_CASE_SOURCE_AND_RESPONSE_COMPARISON_AFTER_ISOLATED_INFERENCE",
+  "diagnostic_marker_limit": "LEXICAL_MARKERS_DO_NOT_ESTABLISH_PARENT_SELECTION",
+  "selection": {
+    "scope": "DEVELOPMENT_ONLY",
+    "rejected_candidate": "R5_STEP_6",
+    "retained_parent": "R2_STEP_9",
+    "retained_adapter_identity": "c680d686f0b139e618d99fab235c62267caa9482df0efbccb44cb2c58c124f02",
+    "reason": "NO_SEMANTIC_IMPROVEMENT_AND_ATTRIBUTION_WORDING_REGRESSION",
+    "promotion": false,
+    "release": false
+  },
+  "r3_and_r4_remain_rejected": true,
+  "holdout_targets_reused_for_training": false,
+  "training_performed_by_selection": false,
+  "adjudication_performed": false,
+  "local_paths_published": false,
+  "result_identity": "25d4be0fce305808f3170b59dec09d6c1194e3052c74c9b56ab7cdd9b08272c7"
+}

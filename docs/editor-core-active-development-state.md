@@ -23,12 +23,14 @@ the second targeted continuation round:
   transition cases, R1 won two epistemic cases, six cases passed for both, and
   four epistemic cases failed for both.
 
-The next development step is an R3 failure-mining pack restricted to the six
-unresolved `EPISTEMIC_CALIBRATION` cases. Those cases define the diagnostic
-cluster but remain excluded from training labels. New disjoint examples must
-teach preservation of allegation attribution, denial/contest, and unresolved
-procedural status. This experimental development-parent selection is not a
-promotion or release.
+Subsequent independent evaluations rejected R3, R4, and R5 for
+development-parent selection. The R5 result is recorded in
+`docs/artifacts/editor-core-v10-v12-targeted-r5-semantic-result.json`: R5
+produced no semantic improvement on its frozen holdout and weakened
+attribution wording in two changed responses. R2 step-9 therefore remains
+the single development parent. Any next training round requires fresh,
+disjoint development evidence; frozen holdout targets remain evaluation-only.
+This development-parent state is not a promotion or release.
 
 ## Scope separation
 
