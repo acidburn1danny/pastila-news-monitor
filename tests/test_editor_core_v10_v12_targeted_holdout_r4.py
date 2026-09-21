@@ -70,7 +70,7 @@ def test_shell_binds_only_the_two_expected_adapters_and_excludes_answer_key():
     source = SHELL.read_text(encoding="utf-8")
     assert "r2-step-9" in source and "c680d686f0b139e618d99fab235c62267caa9482df0efbccb44cb2c58c124f02" in source
     assert "r4-step-6" in source and "b33ad877554809d92e6a85ad1ce988d82fb047ae59ec504f820af020913cd032" in source
-    assert "EXPECTED_PARENT_COMMIT=753f635c21cf356343bb93561d7010d4a8d809a9" in source
+    assert "EXPECTED_PARENT_COMMIT=64d4776f9524f6178da7d89a3466a180d0f3f37c" in source
     assert 'rev-parse HEAD^)' in source and 'rev-parse HEAD^^{tree})' in source
     assert 'GIT=(git -c "safe.directory=$REPOSITORY" -C "$REPOSITORY")' in source
     assert "git config --global" not in source
