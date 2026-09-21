@@ -13,6 +13,15 @@ directory. The successful local smoke used a temporary ext4 fixture directory
 and removed it afterward. This receipt does not bind or create a real R5
 training output.
 
+Receipt schema version 2 makes this change explicit. `receipt_identity` hashes
+the canonical receipt fields that describe stable
+source, dataset, parent, runtime-content and zero-training closure. The output
+directory's device and inode are reported separately as
+`output_runtime_observation`. They are checked before and after each probe,
+but are excluded from the reproducible identity because fresh empty fixture
+directories have different inodes. A later consuming route must validate its
+own output directory; this zero-step receipt does not authorize one.
+
 The launcher has no training mode and imports no model, optimizer, PEFT,
 Transformers, Torch, or bitsandbytes implementation. Its receipt reports model
 load, optimizer creation, optimizer steps, inference, and training as zero or

@@ -145,3 +145,39 @@ def test_model_drift_stops_before_parent_and_runtime(monkeypatch, tmp_path):
     monkeypatch.setattr(m, "validate_public_inputs", lambda: ({}, {}, {}))
     with pytest.raises(ValueError, match="base model identity"):
         m.zero_step(model, checkpoint, tmp_path / "rootfs", snapshot, output)
+
+
+def test_receipt_identity_excludes_ephemeral_output_identity(monkeypatch, tmp_path):
+    m = module()
+    outputs = [tmp_path / "first", tmp_path / "second"]
+    for output in outputs:
+        output.mkdir()
+    monkeypatch.setattr(m, "output_snapshot", lambda path: (7, 101 if path == outputs[0] else 202))
+    monkeypatch.setattr(m, "validate_public_inputs", lambda: (
+        {"manifest_identity": m.DATASET_MANIFEST},
+        {"training_corpus_sha256": "corpus", "training_config_identity": m.TRAINING_CONFIG},
+        {"new_rows": 12, "replay_rows": 24, "holdout_rows": 12},
+    ))
+    monkeypatch.setattr(m, "flat_manifest", lambda path: m.BASE_MODEL)
+    monkeypatch.setattr(m, "validate_parent", lambda path: {"adapter_identity": m.PARENT_ADAPTER, "checkpoint_identity": m.PARENT_CHECKPOINT})
+    monkeypatch.setattr(m, "load_script", lambda *args: type("Snapshot", (), {"manifest": staticmethod(lambda path: {"manifest_identity": m.SNAPSHOT})})())
+    monkeypatch.setattr(m, "run_runtime_probe", lambda *args: {"rootfs_sha256": m.ROOTFS, "cuda_available": True, "versions": {}})
+    receipts = [m.zero_step(tmp_path, tmp_path, tmp_path, tmp_path, output) for output in outputs]
+    assert receipts[0]["receipt_identity"] == receipts[1]["receipt_identity"]
+    assert receipts[0]["output_runtime_observation"] != receipts[1]["output_runtime_observation"]
+    for receipt in receipts:
+        stable = {key: value for key, value in receipt.items() if key not in {"receipt_identity", "output_runtime_observation"}}
+        assert receipt["receipt_identity"] == hashlib.sha256(m.canonical(stable)).hexdigest()
+
+
+def test_output_identity_change_during_probe_fails_closed(monkeypatch, tmp_path):
+    m = module()
+    calls = iter(((7, 101), (7, 202)))
+    monkeypatch.setattr(m, "output_snapshot", lambda path: next(calls))
+    monkeypatch.setattr(m, "validate_public_inputs", lambda: ({}, {}, {}))
+    monkeypatch.setattr(m, "flat_manifest", lambda path: m.BASE_MODEL)
+    monkeypatch.setattr(m, "validate_parent", lambda path: {})
+    monkeypatch.setattr(m, "load_script", lambda *args: type("Snapshot", (), {"manifest": staticmethod(lambda path: {"manifest_identity": m.SNAPSHOT})})())
+    monkeypatch.setattr(m, "run_runtime_probe", lambda *args: {})
+    with pytest.raises(ValueError, match="output identity changed"):
+        m.zero_step(tmp_path, tmp_path, tmp_path, tmp_path, tmp_path)

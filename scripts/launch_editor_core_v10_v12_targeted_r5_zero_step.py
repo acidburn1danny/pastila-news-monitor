@@ -221,7 +221,7 @@ def zero_step(model: Path, checkpoint: Path, rootfs: Path, snapshot: Path, outpu
         raise ValueError("zero-step output identity changed")
     core = {
         "schema": "pastila-editor-core-targeted-r5-zero-step-receipt",
-        "schema_version": 1,
+        "schema_version": 2,
         "status": "PASS_ZERO_STEP_ZERO_TRAINING",
         "active_source_commit": ACTIVE_COMMIT,
         "active_source_tree": ACTIVE_TREE,
@@ -245,8 +245,6 @@ def zero_step(model: Path, checkpoint: Path, rootfs: Path, snapshot: Path, outpu
         "independent_holdout_rows": dataset_audit["holdout_rows"],
         "output_entries_before": 0,
         "output_entries_after": 0,
-        "output_device": before[0],
-        "output_inode": before[1],
         "model_loaded": False,
         "inference_performed": False,
         "forward_backward_performed": False,
@@ -257,7 +255,11 @@ def zero_step(model: Path, checkpoint: Path, rootfs: Path, snapshot: Path, outpu
         "adjudication_performed": False,
         "promotion": False,
     }
-    return {**core, "receipt_identity": hashlib.sha256(canonical(core)).hexdigest()}
+    return {
+        **core,
+        "receipt_identity": hashlib.sha256(canonical(core)).hexdigest(),
+        "output_runtime_observation": {"device": before[0], "inode": before[1]},
+    }
 
 
 def main() -> int:
