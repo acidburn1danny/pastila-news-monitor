@@ -23,8 +23,7 @@ def test_successor_authority_exact_slots_and_local_publication_gate():
         (arm, seed) for arm in ("A1", "A2") for seed in authority.SEEDS}
     assert all(s["max_optimizer_steps"] == 12 and s["run_limit"] == 1 for s in core["slots"])
     assert core["holdout_access_authorized"] is False
-    with pytest.raises(ValueError, match="successor not committed"):
-        authority.verify("A1", authority.SEEDS[0], require_published=False)
+    assert authority.verify("A1", authority.SEEDS[0], require_published=False)["status"] == "PASS_LOCAL_COMMIT_ONLY"
     with pytest.raises(ValueError, match="unauthorized slot"):
         authority.verify("A3", authority.SEEDS[0])
 

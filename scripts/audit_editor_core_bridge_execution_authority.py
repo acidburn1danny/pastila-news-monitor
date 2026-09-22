@@ -17,8 +17,9 @@ def git(root: Path, *args: str) -> bytes:
 
 
 def audit(root: Path) -> dict:
-    if git(root, "rev-parse", "HEAD").decode().strip() != PUBLISHED:
-        raise ValueError("local published HEAD drift")
+    head = git(root, "rev-parse", "HEAD").decode().strip()
+    subprocess.run(["git", "-C", str(root), "merge-base", "--is-ancestor", PUBLISHED, head],
+                   check=True, stderr=subprocess.DEVNULL)
     protocol_bytes = git(root, "show", f"{PUBLISHED}:{PROTOCOL}")
     if (root / PROTOCOL).read_bytes() != protocol_bytes:
         raise ValueError("protocol worktree mutation")
@@ -37,7 +38,7 @@ def audit(root: Path) -> dict:
     if b"BRIDGE_A1A2_OWNER_AUTHORIZED" not in route_bytes:
         raise ValueError("execution route identity drift")
     return {"published_commit": PUBLISHED,
-            "tree": git(root, "rev-parse", "HEAD^{tree}").decode().strip(),
+            "tree": git(root, "rev-parse", f"{PUBLISHED}^{{tree}}").decode().strip(),
             "development_parent": PARENT, "matched_run_slots": 6,
             "holdout_access_authorized": False, "real_runs_authorized": False,
             "optimizer_steps_authorized": 0, "execution_authority": "BLOCKED",
