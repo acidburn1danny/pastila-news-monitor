@@ -1,0 +1,84 @@
+{
+  "schema": "editor-core-editorial-bridge-staged-a1-a2-design",
+  "schema_version": 1,
+  "status": "DESIGN_ONLY_NO_EXECUTION_AUTHORITY",
+  "published_bridge_commit": "94880823ac060539f21b1df4b8374b04a484ad78",
+  "published_bridge_plan_identity": "4caa3811ff1eb9e19bc0e460edd760755e224100953595e5a5c4b91ab73cb6ef",
+  "parent_adapter_identity": "c680d686f0b139e618d99fab235c62267caa9482df0efbccb44cb2c58c124f02",
+  "historical_96_protocol": "PRESERVED_UNMODIFIED_BLOCKED",
+  "proposed_16_48_protocol": "PRESERVED_DISTINCT_DESIGN_ONLY",
+  "contrast": {
+    "arms": ["A1", "A2"],
+    "changed_factor_only": "TARGET_DESIGN_LITERAL_SAFE_CONTROL_VS_NEUTRAL_EDITORIAL_MECHANICS",
+    "fixed": ["R2_PARENT", "FORTY_EIGHT_SOURCE_SITUATIONS", "FORTY_EIGHT_REPLAY_SLOTS", "OPERATOR_SPECIFIC_REQUEST", "R2_LIKE_RECIPE", "LEARNING_RATE", "ONE_EPOCH", "ROW_ORDER_PER_SEED", "TOKEN_BUDGET", "BASE_MODEL", "RUNTIME", "GENERATION_SETTINGS"],
+    "seeds": [271828, 314159, 161803],
+    "real_runs_authorized": false
+  },
+  "diagnostic": {
+    "naturalistic_cases": 16,
+    "cases_per_operator": 2,
+    "synthetic_development_cases": 24,
+    "minimum_publishers": 4,
+    "minimum_genres": 4,
+    "minimum_original_romanian": 12,
+    "minimum_speech_cases": 2,
+    "minimum_multi_position_cases": 2,
+    "maximum_cases_per_publisher": 6,
+    "distinct_document_event_families": true,
+    "terminal_rights_provenance_key_review_before_use": true,
+    "blind_independent_response_review": true,
+    "training_or_confirmatory_reuse": false
+  },
+  "confirmatory": {
+    "cases": 48,
+    "cases_per_operator": 6,
+    "selection_protocol_frozen_before_stage_one": true,
+    "case_curator_blind_to_all_candidate_outputs": true,
+    "source_and_key_freeze_before_first_confirmatory_inference": true,
+    "one_challenger_one_opening": true,
+    "not_used_for_tuning_or_design": true,
+    "requires_separate_successor_gate": true
+  },
+  "scoring": {
+    "dimensions": ["FACTUAL_EPISTEMIC_SAFETY", "EDITORIAL_TRANSFORMATION", "ROMANIAN_NATURALNESS"],
+    "per_case_three_seed_majority_sign": true,
+    "ties_and_unresolved_are_not_wins": true,
+    "diagnostic_exact_sign_test_exploratory_one_sided_alpha": 0.10,
+    "minimum_case_level_editorial_wins_for_expand": 4,
+    "minimum_seed_level_positive_net_for_expand": 2,
+    "no_confirmed_material_safety_regression": true,
+    "both_arms_safety_checked_against_r2": true,
+    "no_severe_romanian_regression": true,
+    "safe_copy_may_pass_safety_but_not_explicit_rewrite": true,
+    "exact_reference_match_or_training_loss_selects_challenger": false
+  },
+  "decisions": {
+    "stop": ["IDENTITY_OR_RIGHTS_OR_LEAKAGE_OR_BLINDING_FAILURE", "CONFIRMED_MATERIAL_FACTUAL_OR_EPISTEMIC_REGRESSION", "NO_NATURALISTIC_EDITORIAL_WIN_IN_AT_LEAST_TWO_SEEDS"],
+    "revise": ["NATURALISTIC_SIGNAL_WEAK_OR_SEED_UNSTABLE", "SYNTHETIC_ONLY_GAIN", "REVIEW_DISPUTE_OR_CASE_DEFECT", "SCORING_WORKLOAD_DISPROPORTIONATE"],
+    "expand": "ALL_PREHUMAN_AND_REVIEW_GATES_PASS; AT_LEAST_TWO_POSITIVE_SEEDS; AT_LEAST_FOUR_CASE_LEVEL_MAJORITY_WINS; CASE_LEVEL_ONE_SIDED_EXACT_SIGN_P_LE_0_10; ZERO_CONFIRMED_MATERIAL_SAFETY_AND_SEVERE_ROMANIAN_REGRESSION",
+    "expand_is_not_parent_selection": true,
+    "next_causal_contrast_if_expand": "A3_VS_A4_MATCHED_STRONGER_RECIPE; THEN_COMPARE_A2_VS_A4_AND_A1_VS_A3_TO_TEST_RECIPE_INTERACTION",
+    "other_arms_require_separate_branch_evidence": true
+  },
+  "parent_selection_later": {
+    "at_most_one_challenger_preselected_on_development": true,
+    "controlled_synthetic_holdout_cases": 24,
+    "one_shot_naturalistic_confirmatory_cases": 48,
+    "confirmatory_independent_reviewers": 2,
+    "editorial_one_sided_exact_sign_alpha": 0.025,
+    "confirmed_material_safety_regression_veto": true,
+    "separate_evidence_decision_required": true,
+    "promotion_or_release_authorized": false
+  },
+  "workload": {
+    "runs": 6,
+    "development_cases_per_run": 40,
+    "maximum_raw_case_response_pairs": 240,
+    "exact_same_case_response_hash_dedup_only": true,
+    "machine_semantic_verdict_allowed": false
+  },
+  "training_authorized": false,
+  "optimizer_steps_authorized": 0,
+  "adjudication_authorized": false,
+  "parent_change_authorized": false
+}

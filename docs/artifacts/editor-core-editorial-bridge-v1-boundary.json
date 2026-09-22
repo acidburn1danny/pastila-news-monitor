@@ -1,0 +1,123 @@
+{
+  "schema": "editor-core-editorial-bridge-execution-boundary",
+  "schema_version": 1,
+  "status": "LOCAL_PREFLIGHT_ONLY_NO_ABLATION_AUTHORITY",
+  "published_dataset_commit": "94880823ac060539f21b1df4b8374b04a484ad78",
+  "published_dataset_tree": "ff2ec5bcf306e81710c3dd25fff1e9234ef48d6c",
+  "published_manifest_identity": "a4649f59a5a536c688e7d3741bc46e82d8997dc6a8c04948a25424528102ba3a",
+  "published_plan_identity": "4caa3811ff1eb9e19bc0e460edd760755e224100953595e5a5c4b91ab73cb6ef",
+  "parent_adapter_identity": "c680d686f0b139e618d99fab235c62267caa9482df0efbccb44cb2c58c124f02",
+  "parent_checkpoint_identity": "96e10b85fe30c4be43c2cc1a0b906f04ea4c476cc8d422b4ad26e9758b85b2be",
+  "base_model_identity": "f5a9327e40390c7f0cf93962d75abbbc5ae8da1fac48e1274092ac52cf88bf39",
+  "rootfs_sha256": "274e7d1519f05f41108413efb01d35680b88e0f4b13bb63fca9634be155980f4",
+  "driver_snapshot_manifest_identity": "f2074e618ba99a03e327ef2462a814b5a9503bbe5994692805ff8c4f11375126",
+  "token_audit_receipt_identity": "0fa23527803c1a22fc0b9051737b0658ce6ca3cddc804fd4665d561b3f1bb92d",
+  "token_audit_blob_sha256": "5f10a9fe863fc05deb90025430370c0bbde771b818dbfe0d4ff4c6e3a3131ea2",
+  "arm_projection_identity": "4ed829eb87c5acdd7b79efbd969691c1ebef38f5b7588c9c69604f88ca2e49a7",
+  "arm_corpus_sha256": {
+    "A1": "f3461bfcc83d199c4517db08fafaa05dfab31e4a6d3ec98519c33ca9ff34df48",
+    "A2": "10b7fda096e2155f1bbc199268ba60fb37432e6317806cfe51d305d45cb3afc5",
+    "A3": "f3461bfcc83d199c4517db08fafaa05dfab31e4a6d3ec98519c33ca9ff34df48",
+    "A4": "10b7fda096e2155f1bbc199268ba60fb37432e6317806cfe51d305d45cb3afc5",
+    "A5": "988f05be36543ea4ce04c7b3e816737b6df45fb5b5a59971fcd057bef878f2ea",
+    "A6": "1775495d4941662510c0b5fa374d511ef4b3ce059282d3ffc5cc392f5df9af28",
+    "A7": "e549946789d8a439f79978e05caea4a0bec90e27a7824abee38901df432b9ec5"
+  },
+  "naturalistic_evaluation": {
+    "status": "PROTOCOL_FROZEN_CORPUS_NOT_MATERIALIZED",
+    "required_cases": 96,
+    "operator_quota": {
+      "FACT_SELECTION": 12,
+      "QUALIFIED_COMPRESSION": 12,
+      "CHRONOLOGICAL_ORDER": 12,
+      "PRECISE_ATTRIBUTION": 12,
+      "SUPPORTED_CONTRAST": 12,
+      "FACTUAL_TRANSITION": 12,
+      "NATURAL_ROMANIAN": 12,
+      "EPISTEMIC_GUARD": 12
+    },
+    "justification": "Twelve independent source families per operator gives >93% chance to observe a failure mode present in at least 20% of that stratum; 96 total paired cases give >94% chance to observe a 3% overall failure mode, assuming independent draws.",
+    "collection_order": "FREEZE_AND_HASH_BEFORE_FIRST_REAL_ABLATION_OR_A0_EVALUATION",
+    "source_requirement": "REAL_INDEPENDENT_NATURALISTIC_DOCUMENTS_NOT_GENERATOR_TEMPLATES_OR_FROZEN_HOLDOUTS",
+    "source_family_requirement": "96_DISTINCT_SOURCE_DOCUMENT_FAMILIES; provenance URI or project source identity plus acquisition timestamp and SHA256",
+    "case_schema": [
+      "case_id",
+      "operator",
+      "source_family",
+      "source_document_sha256",
+      "source_provenance",
+      "request",
+      "authority_spans",
+      "request_identity"
+    ],
+    "answer_key_schema": [
+      "case_id",
+      "request_identity",
+      "supported_claims",
+      "required_qualifications",
+      "disallowed_inferences",
+      "editorial_operation",
+      "source_span_bindings"
+    ],
+    "request_key_separation": "REQUESTS_ONLY_IN_INFERENCE; KEYS_ONLY_IN_BLINDED_SCORING; NEITHER_IN_TRAINING",
+    "anti_contamination": "EXACT_CASE_SOURCE_TARGET_EXCLUSION_AND_5GRAM_REVIEW_AGAINST_BRIDGE_TRAIN_DEV_HOLDOUT_AND_R2_R6_FROZEN_EVIDENCE",
+    "evaluation_design": "PAIRED_R2_VS_ONE_PRESELECTED_CHALLENGER; CANDIDATE_BLINDED; TWO_INDEPENDENT_REVIEWERS; DISAGREEMENTS_INDETERMINATE_PENDING_RESOLUTION",
+    "scoring_axes": [
+      "FACTUAL_EPISTEMIC_SAFETY",
+      "EDITORIAL_REWRITE_QUALITY",
+      "ROMANIAN_NATURALNESS",
+      "REGRESSION_PROTECTION"
+    ],
+    "source_copy": "SAFE_COPY_MAY_PASS_FACTUALITY_BUT_FAIL_REWRITE_WHEN_REQUESTED",
+    "use_limit": "ONE_SHOT_PARENT_SELECTION_AFTER_DEVELOPMENT_ARM_RULES_LOCKED; NO_TRAINING_OR_ITERATIVE_TUNING"
+  },
+  "stop_rules": {
+    "before_any_ablation": [
+      "PUBLISHED_GATE_AND_SOURCE_CLOSURE",
+      "EXACT_TOKENIZER_EOS_AND_3072_CAP",
+      "R2_PARENT_BASE_MODEL_ROOTFS_CUDA_SNAPSHOT_CLOSURE",
+      "NATURALISTIC_CORPUS_FROZEN_AND_SEALED",
+      "SPLIT_ISOLATION",
+      "DISTINCT_EMPTY_EXT4_OUTPUT_PER_RUN"
+    ],
+    "immediate_program_stop": [
+      "ANY_TRAIN_EVAL_OR_NATURALISTIC_TARGET_LEAKAGE",
+      "RUNTIME_OR_SOURCE_IDENTITY_DRIFT",
+      "UNBOUND_RETRY_OR_OUTPUT_REUSE",
+      "EVALUATION_BLINDING_FAILURE"
+    ],
+    "immediate_arm_stop": [
+      "CONFIRMED_MATERIAL_FACTUAL_OR_EPISTEMIC_REGRESSION_ON_DEVELOPMENT",
+      "ARM_PROCESS_OR_CHECKPOINT_FAILURE"
+    ],
+    "run_failure": "TERMINAL_FOR_THAT_RUN; PRESERVE_EVIDENCE; NO_AUTOMATIC_RETRY",
+    "development_rule": "THREE_SEEDS_PER_ARM; PAIRED_BLINDED_CASE_REVIEW; NOMINATE_AT_MOST_ONE_ARM; NO_SAFETY_REGRESSION; EDITORIAL_WINS_MUST_EXCEED_LOSSES_WITH_EXACT_ONE_SIDED_SIGN_TEST_P_LE_0.025",
+    "controlled_holdout_rule": "ONE_SHOT_AFTER_ARM_AND_THRESHOLD_LOCK; ZERO_MATERIAL_SAFETY_REGRESSIONS; NO_HOLDOUT_FEEDBACK_TO_TRAINING",
+    "naturalistic_selection_rule": "ONE_PRESELECTED_ARM_VS_R2_ON_96_CASES; TWO_INDEPENDENT_BLINDED_REVIEWERS; ZERO_CONFIRMED_MATERIAL_SAFETY_REGRESSIONS; PAIRED_EDITORIAL_SIGN_TEST_P_LE_0.025; NO_SEVERE_ROMANIAN_REGRESSION",
+    "source_copy_not_win": true,
+    "training_loss_not_parent_selection": true,
+    "parent_change_requires_separate_evidence_and_owner_action": true,
+    "r3_r6_selected": false
+  },
+  "source_hashes": {
+    "scripts/audit_editor_core_editorial_bridge_token_lengths.py": "cea0284024c900c105715d46125648bca6429231f1e7a51e28bda902e1e6b678",
+    "scripts/run_editor_core_editorial_bridge_token_audit.sh": "dc75dc38368a23e08f98e0bbc64be489044c8cc9729356680bdba0c9246a40f3",
+    "scripts/project_editor_core_editorial_bridge_arms.py": "2fa41dfcdfccb60800b69e17be4437de24488b77cc6abdf0a3812a3943e6c945",
+    "scripts/validate_editor_core_editorial_bridge_naturalistic.py": "23ed34f80af70fa4b863e6dced16fa6bc1502c4e27ea51b7bcf51181278b0c77",
+    "scripts/preflight_editor_core_editorial_bridge.py": "8c71d32a44ef840ab7c0e5db83ac887e2dd0d6f1a8c9f2c1d6911baf37c95695",
+    "scripts/audit_editor_core_editorial_bridge_boundary.py": "6d14bee845692021872647203a328bcaeeee0c27c038436809c9aa16eab812dd",
+    "scripts/build_editor_core_editorial_bridge_boundary.py": "6abe0aaca09d578a3fb04f01294b16d6428e41164a7da55a44f71b0c660b7ca0",
+    "tests/test_editor_core_editorial_bridge_boundary.py": "6cab2d3585e13920d5dc2aa78564fd3be01a2f49dd710f3fc560eda0606adb4d",
+    "docs/editor-core-editorial-bridge-execution-gate.md": "9a39408908d0e539a9bb6cb995bbdafee845e63abf82a4f0065b23302ed8dca7",
+    "scripts/launch_editor_core_v10_v12_targeted_r6_zero_step.py": "878a8aa0a79b6694114a02b9dced0967f7f364a6fa9f7c945928d42ec97ad944",
+    "src/pastila_scout/production_core_wsl_driver_snapshot_v15.py": "7026fe0ea99d54d0fc6caefd5ac4b6c1119e488b1cdc96336ce14387b7ffb433",
+    "scripts/probe_production_core_isolated_gpu_v15.sh": "849dc2ffb59e833c001770e81fdc996592bc45c18173f1b11ef545d242446c1a"
+  },
+  "training_authorized": false,
+  "training_performed": false,
+  "optimizer_steps": 0,
+  "development_parent_changed": false,
+  "adjudication_performed": false,
+  "promotion": false,
+  "boundary_identity": "940b0b2819ebb1d1094ed4072a1fed28e0b878e60d90bfd72f8be5164e3fe7c6"
+}
