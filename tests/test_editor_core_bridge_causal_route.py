@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import sys
 from pathlib import Path
@@ -40,7 +41,7 @@ def fixture_responses(root: Path):
         for row in requests:
             request = json.loads(row["messages"][1]["content"].split("\nINPUT=", 1)[1])
             rows.append({"case_id": row["example_id"], "request_identity": request["request_identity"],
-                         "response": "fixture response " + name})
+                         "response": "fixture response " + hashlib.sha256(name.encode()).hexdigest()[:12]})
         (root / f"{name}.jsonl").write_bytes(b"".join(compact(row).encode("utf-8") + b"\n" for row in rows))
 
 

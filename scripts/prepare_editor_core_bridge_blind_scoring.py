@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import secrets
 import stat
 from pathlib import Path
@@ -34,6 +35,8 @@ def read_responses(path: Path, expected: dict[str, str]) -> dict[str, str]:
                 or row["request_identity"] != expected[row["case_id"]]
                 or not isinstance(row["response"], str) or not row["response"]):
             raise ValueError("response request binding")
+        if re.search(r"(?i)\b(?:a1|a2|r2)(?:[-_ ]?seed[-_ ]?\d+)?\b|checkpoint[-_ ]?\d+", row["response"]):
+            raise ValueError("candidate identity leakage")
     return {row["case_id"]: row["response"] for row in rows}
 
 
@@ -111,6 +114,46 @@ def prepare(responses_root: Path, packets_root: Path, reference_root: Path, cust
     return {"primary_pair_packets": len(packet_hashes), "later_reference_packets": len(reference_hashes),
             "custody_identity": mapping["custody_identity"], "candidate_blinded": True,
             "reference_separate_until_primary_lock": True, "answer_key_read": False, "holdout_read": False}
+
+
+def audit_prepared(packets_root: Path, reference_root: Path, custody_root: Path) -> dict:
+    """Custodian-only read-only audit; never expose its sealed map to reviewer."""
+    from record_editor_core_bridge_blind_score import _packet
+
+    roots = (packets_root, reference_root, custody_root)
+    if any(root.is_symlink() or not root.is_dir() for root in roots):
+        raise ValueError("custody root")
+    resolved = [root.resolve() for root in roots]
+    if any(a == b or a in b.parents or b in a.parents for i, a in enumerate(resolved)
+           for b in resolved[i + 1:]):
+        raise ValueError("custody root overlap")
+    sealed = custody_root / "sealed-arm-map.json"
+    if {p.name for p in custody_root.iterdir()} != {sealed.name} or sealed.is_symlink():
+        raise ValueError("sealed-map inventory")
+    mapping = json.loads(sealed.read_bytes())
+    core = {k: v for k, v in mapping.items() if k != "custody_identity"}
+    if (mapping.get("custody_identity") != sha(canonical(core))
+            or mapping.get("development_requests_sha256") !=
+            sha((ART / f"{PREFIX}-development-requests.jsonl").read_bytes())):
+        raise ValueError("sealed-map identity/source")
+    primary = sorted(packets_root.iterdir())
+    reference = sorted(reference_root.iterdir())
+    if len(primary) != 72 or len(reference) != 24 or len(mapping.get("packets", [])) != 96:
+        raise ValueError("packet count")
+    for path in primary:
+        _packet(path, "primary")
+    for path in reference:
+        _packet(path, "reference")
+    if (sorted(sha(p.read_bytes()) for p in primary) != sorted(mapping["primary_packet_file_hashes"])
+            or sorted(sha(p.read_bytes()) for p in reference) != sorted(mapping["reference_packet_file_hashes"])):
+        raise ValueError("packet/custody hash binding")
+    actual = {p.stem: json.loads(p.read_bytes())["packet_identity"] for p in primary + reference}
+    if (len(actual) != 96 or
+            {row["packet_id"]: row["packet_identity"] for row in mapping["packets"]} != actual):
+        raise ValueError("packet/custody identity binding")
+    return {"primary_count": 72, "reference_count": 24,
+            "custody_identity": mapping["custody_identity"], "answer_key_read": False,
+            "holdout_read": False}
 
 
 if __name__ == "__main__":

@@ -1,0 +1,61 @@
+{
+  "adjudication_authorized": false,
+  "authority_identity": "9d1ece6eddc0c24e3d91a2e1c4f05f25f0dc36405e48fb78c872cdf9c8ffd019",
+  "claimed_result": "CONTROLLED_SYNTHETIC_DEVELOPMENT_EDITORIAL_SIGNAL_ONLY",
+  "holdout_access_authorized": false,
+  "parent_adapter_identity": "c680d686f0b139e618d99fab235c62267caa9482df0efbccb44cb2c58c124f02",
+  "parent_checkpoint_identity": "96e10b85fe30c4be43c2cc1a0b906f04ea4c476cc8d422b4ad26e9758b85b2be",
+  "parent_selection_authorized": false,
+  "per_run_owner_invocation_required": true,
+  "promotion_authorized": false,
+  "publication_required": true,
+  "real_training_authorized_after_publication": true,
+  "schema": "editor-core-bridge-causal-execution-authority",
+  "schema_version": 2,
+  "scope": "SYNTHETIC_DEVELOPMENT_CAUSAL_A1_A2_ONLY",
+  "slots": [
+    {
+      "arm": "A1",
+      "max_optimizer_steps": 12,
+      "output_slug": "a1-seed-271828",
+      "run_limit": 1,
+      "seed": 271828
+    },
+    {
+      "arm": "A1",
+      "max_optimizer_steps": 12,
+      "output_slug": "a1-seed-314159",
+      "run_limit": 1,
+      "seed": 314159
+    },
+    {
+      "arm": "A1",
+      "max_optimizer_steps": 12,
+      "output_slug": "a1-seed-161803",
+      "run_limit": 1,
+      "seed": 161803
+    },
+    {
+      "arm": "A2",
+      "max_optimizer_steps": 12,
+      "output_slug": "a2-seed-271828",
+      "run_limit": 1,
+      "seed": 271828
+    },
+    {
+      "arm": "A2",
+      "max_optimizer_steps": 12,
+      "output_slug": "a2-seed-314159",
+      "run_limit": 1,
+      "seed": 314159
+    },
+    {
+      "arm": "A2",
+      "max_optimizer_steps": 12,
+      "output_slug": "a2-seed-161803",
+      "run_limit": 1,
+      "seed": 161803
+    }
+  ],
+  "supersedes_execution_gate_from_commit": "37846897e4ef69b9ab10aeaadf33a78de16c2098"
+}

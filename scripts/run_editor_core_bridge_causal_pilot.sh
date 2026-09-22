@@ -21,11 +21,19 @@ for relative in \
   scripts/train_editor_core_bridge_causal_pilot.py \
   scripts/project_editor_core_bridge_causal_runs.py \
   scripts/launch_editor_core_bridge_causal_zero_step.py \
+  scripts/launch_editor_core_bridge_causal_successor_zero_step.py \
   scripts/audit_editor_core_bridge_development_causal_pilot.py \
   scripts/audit_editor_core_bridge_a1_a2_fixture_gate.py \
-  docs/artifacts/editor-core-editorial-bridge-development-causal-pilot-v1.json; do
+  scripts/verify_editor_core_bridge_causal_execution_authority.py \
+  docs/artifacts/editor-core-editorial-bridge-development-causal-pilot-v1.json \
+  docs/artifacts/editor-core-editorial-bridge-causal-execution-authority-v2.json; do
   cmp -s <("${GIT[@]}" show "$HEAD:$relative") "$REPO/$relative" || exit 4
 done
+
+# The environment flag only confirms a deliberate owner invocation. The
+# published successor authority, exact slot and remote HEAD grant scope.
+python3 -B "$REPO/scripts/verify_editor_core_bridge_causal_execution_authority.py" \
+  --arm "$5" --seed "$6" >/dev/null || exit 4
 
 ROOTFS="$(realpath -e -- "$1")"; MODEL="$(realpath -e -- "$2")"
 CHECKPOINT="$(realpath -e -- "$3")"; PARENT="$(realpath -e -- "$CHECKPOINT/adapter")"
@@ -38,7 +46,7 @@ SHA() { sha256sum -- "$1" | cut -d' ' -f1; }
 
 # This checks all six separate empty ext4 targets, published Bridge ancestry,
 # model, R2 parent, rootfs, driver snapshot, tokenizer and source bindings.
-python3 -B "$REPO/scripts/launch_editor_core_bridge_causal_zero_step.py" \
+python3 -B "$REPO/scripts/launch_editor_core_bridge_causal_successor_zero_step.py" \
   --model "$MODEL" --parent-checkpoint "$CHECKPOINT" --rootfs "$ROOTFS" \
   --driver-snapshot "$SNAPSHOT" --outputs "$OUTPUTS" --target-slug "$SLUG" >/dev/null
 
