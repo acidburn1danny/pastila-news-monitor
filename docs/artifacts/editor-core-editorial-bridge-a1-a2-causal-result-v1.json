@@ -1,0 +1,157 @@
+{
+  "schema": "editor-core-editorial-bridge-a1-a2-causal-result",
+  "schema_version": 1,
+  "status": "A2_STOP",
+  "evidence": {
+    "primary_closure_identity": "9e6f64a8ce6ac8a59cb8c7bf1d3ab230e784081d979a1dc3bf49083b8276ec56",
+    "primary_records": 72,
+    "reference_closure_identity": "0336aa36d334042a8b14ce934af2b39f31c03fda04110185d7ccf28bcd0780d8",
+    "reference_records": 24,
+    "sealed_custody_identity": "a3c257d5d4fc6779b1f5b70d0247ea59cfacf70f77aa7ad2a4a12575d28a6dc8",
+    "reviewer_id": "EDITORIAL_BRIDGE_REVIEWER_01",
+    "records_modified_by_decision": false
+  },
+  "mapping_inventory": {
+    "mapping_is_packet_specific": true,
+    "x_to_a1": 39,
+    "x_to_a2": 33,
+    "y_to_a1": 33,
+    "y_to_a2": 39
+  },
+  "pair_winners": {
+    "A1": 29,
+    "A2": 16,
+    "TIE": 27,
+    "INDETERMINATE": 0,
+    "total": 72
+  },
+  "seed_results": [
+    {
+      "seed": 161803,
+      "A1": 10,
+      "A2": 5,
+      "TIE": 9,
+      "a2_net": -5
+    },
+    {
+      "seed": 271828,
+      "A1": 9,
+      "A2": 6,
+      "TIE": 9,
+      "a2_net": -3
+    },
+    {
+      "seed": 314159,
+      "A1": 10,
+      "A2": 5,
+      "TIE": 9,
+      "a2_net": -5
+    }
+  ],
+  "arm_quality": {
+    "A1": {
+      "factual": {
+        "PASS": 69,
+        "FAIL": 3
+      },
+      "editorial": {
+        "PASS": 69,
+        "FAIL": 3
+      },
+      "romanian": {
+        "PASS": 71,
+        "FAIL": 1
+      }
+    },
+    "A2": {
+      "factual": {
+        "PASS": 56,
+        "FAIL": 16
+      },
+      "editorial": {
+        "PASS": 60,
+        "FAIL": 12
+      },
+      "romanian": {
+        "PASS": 68,
+        "FAIL": 4
+      }
+    }
+  },
+  "r2_reference_quality": {
+    "factual": {
+      "PASS": 21,
+      "FAIL": 3
+    },
+    "editorial": {
+      "PASS": 20,
+      "FAIL": 4
+    },
+    "romanian": {
+      "PASS": 21,
+      "FAIL": 3
+    },
+    "total": 24
+  },
+  "case_aggregation": {
+    "A1_WIN": 9,
+    "A2_WIN": 6,
+    "TIE_OR_INDETERMINATE": 9,
+    "total": 24,
+    "operators_with_a2_win": [
+      "FACT_SELECTION",
+      "QUALIFIED_COMPRESSION",
+      "SUPPORTED_CONTRAST"
+    ]
+  },
+  "regressions": {
+    "confirmed_material_factual_or_epistemic_seed_results": 16,
+    "romanian_seed_results": 4,
+    "failure_clusters": [
+      "ACTOR_AND_ATTRIBUTION_DRIFT",
+      "EXPLICIT_EXCLUSION_VIOLATION",
+      "EPISTEMIC_QUALIFIER_AND_PROCEDURAL_STATUS_LOSS",
+      "QUALIFIED_COMPRESSION_09_UNSUPPORTED_FACT_AND_DEGENERATION",
+      "ROMANIAN_QUALITY_REGRESSION"
+    ]
+  },
+  "decision": {
+    "outcome": "STOP",
+    "target_design": "A2_NEUTRAL_EDITORIAL_MECHANICS",
+    "target_design_state": "CLOSED_NOT_TO_BE_RESUMED",
+    "stop_criteria_satisfied": [
+      "CONFIRMED_MATERIAL_FACTUAL_OR_EPISTEMIC_REGRESSION",
+      "CASE_LOSSES_EXCEED_MAXIMUM",
+      "OPERATORS_WITH_A2_WIN_BELOW_MINIMUM",
+      "NO_POSITIVE_A2_SEED_NET",
+      "ROMANIAN_REGRESSIONS_PRESENT"
+    ],
+    "continue_criteria_satisfied": false,
+    "naturalistic_confirmation_justified": false
+  },
+  "development_parent": {
+    "name": "R2_STEP_9",
+    "checkpoint_identity": "96e10b85fe30c4be43c2cc1a0b906f04ea4c476cc8d422b4ad26e9758b85b2be",
+    "adapter_identity": "c680d686f0b139e618d99fab235c62267caa9482df0efbccb44cb2c58c124f02",
+    "changed": false
+  },
+  "claim_limits": {
+    "allowed": "UNDER_THE_MATCHED_SYNTHETIC_DEVELOPMENT_RECIPE_A2_FAILED_THE_PREDECLARED_SAFETY_AND_CONTINUE_GATES_VERSUS_A1_AND_R2",
+    "forbidden": [
+      "NATURALISTIC_TRANSFER",
+      "GENERALIZATION",
+      "DEVELOPMENT_PARENT_SELECTION_FOR_A2",
+      "PROMOTION",
+      "RELEASE",
+      "SUBSTITUTE_FOR_NATURALISTIC_EVALUATION"
+    ]
+  },
+  "holdout_opened": false,
+  "training_performed_by_decision": false,
+  "inference_performed_by_decision": false,
+  "adjudication_performed": false,
+  "promotion": false,
+  "release": false,
+  "local_paths_published": false,
+  "result_identity": "d5acd494ba5ef7b9b5a94aca4389ea943fb8f8fcdebddf65fd8e06a1c8029978"
+}

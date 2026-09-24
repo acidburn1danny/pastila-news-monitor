@@ -32,6 +32,15 @@ the single development parent. Any next training round requires fresh,
 disjoint development evidence; frozen holdout targets remain evaluation-only.
 This development-parent state is not a promotion or release.
 
+The Editorial Mechanics Bridge A1/A2 causal pilot subsequently stopped A2
+under its matched synthetic development recipe. Its publication-safe result is
+recorded in
+`docs/artifacts/editor-core-editorial-bridge-a1-a2-causal-result-v1.json`.
+The A2 causal pilot produced local editorial gains but failed the predeclared
+factual, epistemic, case-loss, operator-coverage, seed-consistency and Romanian
+quality gates. It neither selects a parent nor establishes naturalistic
+transfer. R2 step-9 therefore remains the single development parent.
+
 ## Scope separation
 
 The repository retains four asset classes outside the active baseline:
