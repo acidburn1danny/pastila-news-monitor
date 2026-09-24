@@ -8,6 +8,7 @@ def test_no_model_optimizer_route():
     source=LAUNCHER.read_text(encoding='utf-8');imports={a.name for n in ast.walk(ast.parse(source)) if isinstance(n,(ast.Import,ast.ImportFrom)) for a in n.names};assert not imports&{'torch','transformers','peft','bitsandbytes'};assert 'from_pretrained' not in source and 'optimizer.step' not in source
 def test_public_binding():
     m=module();manifest,config=m.validate_public();assert manifest['manifest_identity']==m.MANIFEST;assert config['parent_adapter_sha256']==m.PARENT_ADAPTER
+    assert len(m.ZERO_STEP_FILES)==3
 def test_substitution_fails(monkeypatch):
     m=module();monkeypatch.setattr(m.subprocess,'check_output',lambda *a,**k:'0'*40+'\n');
     with pytest.raises(ValueError):m.validate_public()

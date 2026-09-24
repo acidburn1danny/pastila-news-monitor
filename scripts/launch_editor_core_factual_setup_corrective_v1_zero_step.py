@@ -9,6 +9,7 @@ MANIFEST='50b387a0025025f5daac68cd65ab5570a731f9bb0db2a82c023921829e806a88'; CON
 PARENT_ADAPTER='c680d686f0b139e618d99fab235c62267caa9482df0efbccb44cb2c58c124f02';PARENT_CHECKPOINT='96e10b85fe30c4be43c2cc1a0b906f04ea4c476cc8d422b4ad26e9758b85b2be'
 BOUNDARY='0e8f70e013668c56e76053c38dfbd62331813553de31735492db183be7b3169f'
 FILES=('docs/artifacts/editor-core-factual-setup-corrective-v1-config.json','docs/artifacts/editor-core-factual-setup-corrective-v1-holdout-answer-key.jsonl','docs/artifacts/editor-core-factual-setup-corrective-v1-holdout-requests.jsonl','docs/artifacts/editor-core-factual-setup-corrective-v1-manifest.json','docs/artifacts/editor-core-factual-setup-corrective-v1-token-audit.json','docs/artifacts/editor-core-factual-setup-corrective-v1-training.jsonl','docs/editor-core-factual-setup-corrective-v1.md','scripts/audit_editor_core_factual_setup_corrective_v1.py','scripts/audit_editor_core_factual_setup_corrective_v1_tokens.py','scripts/build_editor_core_factual_setup_corrective_v1.py','scripts/run_editor_core_factual_setup_corrective_v1_token_audit.sh','tests/test_editor_core_factual_setup_corrective_v1.py')
+ZERO_STEP_FILES=('docs/artifacts/editor-core-factual-setup-corrective-v1-zero-step-boundary.json','scripts/launch_editor_core_factual_setup_corrective_v1_zero_step.py','tests/test_editor_core_factual_setup_corrective_v1_zero_step.py')
 def canonical(x):return json.dumps(x,ensure_ascii=False,allow_nan=False,sort_keys=True,separators=(',',':')).encode()
 def sha(x):return hashlib.sha256(x).hexdigest()
 def file_sha(p):return sha(p.read_bytes())
@@ -22,12 +23,16 @@ def flat_manifest(root):
 def validate_public():
     git=['git','-c',f'safe.directory={ROOT}']; tree=subprocess.check_output([*git,'rev-parse',f'{COMMIT}^{{tree}}'],cwd=ROOT,text=True).strip()
     if tree!=TREE:raise ValueError('published tree')
+    upstream_name=subprocess.check_output([*git,'rev-parse','--abbrev-ref','--symbolic-full-name','@{upstream}'],cwd=ROOT,text=True).strip()
+    if upstream_name!='origin/successor/core-v2-v12-runner-binding-remediation':raise ValueError('published upstream')
     upstream=subprocess.check_output([*git,'rev-parse','@{upstream}'],cwd=ROOT,text=True).strip()
-    if upstream!=COMMIT:raise ValueError('published commit')
+    if subprocess.run([*git,'merge-base','--is-ancestor',COMMIT,upstream],cwd=ROOT).returncode:raise ValueError('published dataset ancestry')
     names=tuple(subprocess.check_output([*git,'diff-tree','--no-commit-id','--name-only','-r',COMMIT],cwd=ROOT,text=True).splitlines())
     if names!=FILES:raise ValueError('published scope')
     for name in FILES:
         if subprocess.check_output([*git,'show',f'{COMMIT}:{name}'],cwd=ROOT)!=(ROOT/name).read_bytes():raise ValueError('published blob drift')
+    for name in ZERO_STEP_FILES:
+        if subprocess.check_output([*git,'show',f'{upstream}:{name}'],cwd=ROOT)!=(ROOT/name).read_bytes():raise ValueError('published zero-step blob drift')
     m=json.loads((ART/'editor-core-factual-setup-corrective-v1-manifest.json').read_text(encoding='utf-8'));c=json.loads((ART/'editor-core-factual-setup-corrective-v1-config.json').read_text(encoding='utf-8'))
     if m['manifest_identity']!=MANIFEST or c['config_identity']!=CONFIG or c['parent_adapter_sha256']!=PARENT_ADAPTER or c['training_authorized'] is not False:raise ValueError('dataset binding')
     b=json.loads((ART/'editor-core-factual-setup-corrective-v1-zero-step-boundary.json').read_text(encoding='utf-8'));ident=b.pop('boundary_identity')
