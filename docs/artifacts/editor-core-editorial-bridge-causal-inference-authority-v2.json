@@ -1,0 +1,68 @@
+{
+  "answer_key_access_authorized": false,
+  "audit_path": "scripts/audit_editor_core_bridge_causal_responses_v2.py",
+  "audit_sha256": "f131c3173bfad23d495a674751e525dfb26451bf147585504be0de1caa0071d2",
+  "authority_identity": "0f05ca9788dd96a73eebf4fcc8279f8b723d6fe61a4442499bfa0d8b9a446b5e",
+  "candidates": [
+    {
+      "adapter_sha256": "c680d686f0b139e618d99fab235c62267caa9482df0efbccb44cb2c58c124f02",
+      "candidate": "r2"
+    },
+    {
+      "adapter_sha256": "bc35f315bd786a10d4ca31964690176696420614b90bbea8a79135c0d917fdc3",
+      "candidate": "a1-seed-271828"
+    },
+    {
+      "adapter_sha256": "7a33b02ae749f54ddea3339f060e4d68fe0176081408bb5b97000375dc933211",
+      "candidate": "a1-seed-314159"
+    },
+    {
+      "adapter_sha256": "a9d7e9afe8e4e2b93c613d3b213dd751d5607e8faa4c96ca67b4f39f7eb7833b",
+      "candidate": "a1-seed-161803"
+    },
+    {
+      "adapter_sha256": "e801dd982d61cbc46ac9f3fb495d1808d1269c08e17d06faad940e0d229e0fc3",
+      "candidate": "a2-seed-271828"
+    },
+    {
+      "adapter_sha256": "2fc68cc41c8b76a2ff12fc959e4933c301f0d35297300d2dc866edc1c1fe42a9",
+      "candidate": "a2-seed-314159"
+    },
+    {
+      "adapter_sha256": "85aeae73b2984af2be5c4988cc9e38c79dfd1d23c60846e408e435e939ae8db1",
+      "candidate": "a2-seed-161803"
+    }
+  ],
+  "design_path": "docs/editor-core-editorial-bridge-causal-inference-successor-v2.md",
+  "design_sha256": "2aa97fa120575e18efa408a6d6ebb422230db74ca8bd9b5884009ed8e5910383",
+  "deterministic_decoding": true,
+  "development_requests_sha256": "de964a75032a286f5de6e4d578f408bc876f368b0d93ea00d44ec451fdb03d59",
+  "historical_inference_evidence_eligibility": "REJECTED_NON_TERMINAL_OUTPUT",
+  "historical_scoring_packages_eligibility": "REJECTED_REGENERATE_FROM_ZERO",
+  "holdout_access_authorized": false,
+  "human_scoring_authorized": false,
+  "implementation_parent_commit": "3e198f539b5b671ca74d4da5757c1013e9f6ee57",
+  "max_new_tokens": 2048,
+  "model_sha256": "f5a9327e40390c7f0cf93962d75abbbc5ae8da1fac48e1274092ac52cf88bf39",
+  "no_repeat_ngram_size": 8,
+  "optimizer_steps_authorized": 0,
+  "request_binding_required_per_row": true,
+  "route_path": "scripts/run_editor_core_bridge_causal_inference_v2.sh",
+  "route_sha256": "8cb374f2478e545334b0bf52a6d41b25f793d6e6fb71e8003adf61bac43ab2cc",
+  "rows_per_candidate": 24,
+  "schema": "editor-core-bridge-causal-development-inference-successor-authority",
+  "schema_version": 2,
+  "scope": "SYNTHETIC_DEVELOPMENT_RESPONSES_ONLY",
+  "single_terminal_log_event_required": true,
+  "strict_json_required_per_row": true,
+  "supersedes_authority_identity": "15e2b1806164ba191aacf6bd5f828e8f2170d996ec20e5b41f214f3ca9197aa7",
+  "supersession_reason": "FAIL_CLOSED_EOS_JSON_AND_TERMINAL_LOG_CLOSURE",
+  "supervisor_path": "scripts/supervise_editor_core_bridge_causal_inference_v2.py",
+  "supervisor_sha256": "e36e541b7fd0183a9d53e249eccc5059d419d0b823f60d622d4ea157e9737dc5",
+  "terminal_eos_required_per_row": true,
+  "training_authorized": false,
+  "verifier_path": "scripts/verify_editor_core_bridge_causal_inference_authority_v2.py",
+  "verifier_sha256": "41f00b8e3a483d107d91af6b0c22998af3b44a210754316db3889302ced65afc",
+  "worker_path": "scripts/generate_editor_core_bridge_causal_responses_v2.py",
+  "worker_sha256": "9c076fe9639d76a3d08c5b5dd075a67765ee461fa7c2e3ad5b7491e10c527f7f"
+}
