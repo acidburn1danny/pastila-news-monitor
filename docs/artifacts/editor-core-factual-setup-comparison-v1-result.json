@@ -1,0 +1,22 @@
+{
+  "benchmark_manifest_identity": "827449da03369587465c2c67d1f69c0ed73d4fa08f960b6f98b403125be9eaa0",
+  "cases": 24,
+  "claim_limit": "R1_CHECKPOINT_8_VS_R2_STEP_9_ON_THIS_SYNTHETIC_MULTISOURCE_EDITOR_CONTRACT_BENCHMARK",
+  "contract_identity": "67a5cd5813d422c513795dd88b561db3f74a55ee2a932d8bcb2d0d1035eb0b37",
+  "development_parent_conclusion": "R2_STEP_9_RETAINS_OPERATIONALLY_NO_SUPERIORITY_CLAIM",
+  "historical_holdouts_opened": false,
+  "judgments_sha256": "60f7d48787e60d86606ea0ca36db6c9b96f67a6a6e8aa2ff2c1656de84ad4686",
+  "one_sided_sign_test_p": 0.1875,
+  "r1_receipt_identity": "7a684bff7343e57761aea1763c0ba453e9a1bcf214206679795e863816146fea",
+  "r1_wins": 1,
+  "r2_receipt_identity": "676872000e1463b577e83844e26d586fcfc61d5d459544336fff0d7edb9792da",
+  "r2_safety_regressions": 0,
+  "r2_wins": 4,
+  "result_identity": "f84dfe6009b62aa56b7f89c3bfea1f3d1201eca45619b3139f0b141c91557658",
+  "schema": "editor-core-factual-setup-comparison-result",
+  "schema_version": 1,
+  "selection_rule_pass": false,
+  "ties": 19,
+  "training_performed": false,
+  "voice_comedy_final_polish_scored": false
+}

@@ -1,0 +1,24 @@
+{"case_id":"ec-editor-setup-v1-01","winner":"R2","r2_safety_regression":false,"reason":"R1 transforms approved financing into conditional financing; R2 preserves approval and unsigned-contract status."}
+{"case_id":"ec-editor-setup-v1-02","winner":"R2","r2_safety_regression":false,"reason":"R2 preserves the allegation modality with «ar fi»; R1 states omission more categorically."}
+{"case_id":"ec-editor-setup-v1-03","winner":"TIE","r2_safety_regression":false,"reason":"Equivalent chronology, current closure, and two-sentence structure."}
+{"case_id":"ec-editor-setup-v1-04","winner":"TIE","r2_safety_regression":false,"reason":"Equivalent corrected total and duplicate reconciliation."}
+{"case_id":"ec-editor-setup-v1-05","winner":"TIE","r2_safety_regression":false,"reason":"Both invent «Birocrația» and fail to preserve the exact no-final-decision/current-authorization formulation."}
+{"case_id":"ec-editor-setup-v1-06","winner":"TIE","r2_safety_regression":false,"reason":"Both substitute the river name and omit that the forecast may change; both fail safety/sufficiency."}
+{"case_id":"ec-editor-setup-v1-07","winner":"TIE","r2_safety_regression":false,"reason":"Both omit the explicit condition that repair must proceed according to plan."}
+{"case_id":"ec-editor-setup-v1-08","winner":"R2","r2_safety_regression":false,"reason":"Both blur the cumulative value of other fees, but R2 satisfies the two-sentence setup contract while R1 does not."}
+{"case_id":"ec-editor-setup-v1-09","winner":"TIE","r2_safety_regression":false,"reason":"Outputs are materially equivalent and preserve the unsigned-contract status."}
+{"case_id":"ec-editor-setup-v1-10","winner":"TIE","r2_safety_regression":false,"reason":"Both preserve allegation modality, contest, and unresolved verification; wording difference is non-material."}
+{"case_id":"ec-editor-setup-v1-11","winner":"TIE","r2_safety_regression":false,"reason":"Equivalent chronology and current closure."}
+{"case_id":"ec-editor-setup-v1-12","winner":"TIE","r2_safety_regression":false,"reason":"Both reconcile the corrected total but omit the exact duplicate count."}
+{"case_id":"ec-editor-setup-v1-13","winner":"TIE","r2_safety_regression":false,"reason":"Both invent «Birocrația», omit the vote day, and weaken the current-authorization status."}
+{"case_id":"ec-editor-setup-v1-14","winner":"TIE","r2_safety_regression":false,"reason":"Both preserve probability and inactive preparation but omit that the forecast may change."}
+{"case_id":"ec-editor-setup-v1-15","winner":"TIE","r2_safety_regression":false,"reason":"Both omit the explicit repair-condition qualification."}
+{"case_id":"ec-editor-setup-v1-16","winner":"R2","r2_safety_regression":false,"reason":"R2 satisfies the two-sentence contract and separates the unchanged-fees effect; R1 produces one sentence."}
+{"case_id":"ec-editor-setup-v1-17","winner":"TIE","r2_safety_regression":false,"reason":"Equivalent approval and unsigned-contract status."}
+{"case_id":"ec-editor-setup-v1-18","winner":"TIE","r2_safety_regression":false,"reason":"Both first state the alleged omission categorically and omit that the authority has not established facts."}
+{"case_id":"ec-editor-setup-v1-19","winner":"R1","r2_safety_regression":false,"reason":"R1 preserves that the alert concerned a conduit; R2 drops that factual detail."}
+{"case_id":"ec-editor-setup-v1-20","winner":"TIE","r2_safety_regression":false,"reason":"Both reconcile the corrected total but omit the exact duplicate count."}
+{"case_id":"ec-editor-setup-v1-21","winner":"TIE","r2_safety_regression":false,"reason":"Both invent «Birocrația» and fail to state that the authorization remains in force."}
+{"case_id":"ec-editor-setup-v1-22","winner":"TIE","r2_safety_regression":false,"reason":"Both preserve probability and inactive preparation but omit that the forecast may change."}
+{"case_id":"ec-editor-setup-v1-23","winner":"TIE","r2_safety_regression":false,"reason":"Both omit the explicit repair-condition qualification."}
+{"case_id":"ec-editor-setup-v1-24","winner":"TIE","r2_safety_regression":false,"reason":"Both blur that 231 lei is the cumulative value of the other unchanged fees."}

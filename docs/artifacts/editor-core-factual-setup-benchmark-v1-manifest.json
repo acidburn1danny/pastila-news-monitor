@@ -1,0 +1,24 @@
+{
+  "allowed_claim": "R1_CHECKPOINT_8_VS_R2_STEP_9_ON_THIS_SYNTHETIC_MULTISOURCE_EDITOR_CONTRACT_BENCHMARK",
+  "answer_key_sha256": "6a8bdb9b16f901b2567751ecad7ca1aa5b9e9ce03da0af8dfec89d4bf7558764",
+  "cases": 24,
+  "cases_per_operator": 3,
+  "contract_sha256": "0500fc27edca2a7d61c5285b365b3e95c147108df614bdbaae2eca0268084667",
+  "forbidden_claims": [
+    "NATURALISTIC_TRANSFER",
+    "PROMOTION",
+    "RELEASE"
+  ],
+  "historical_holdouts_read": false,
+  "manifest_identity": "827449da03369587465c2c67d1f69c0ed73d4fa08f960b6f98b403125be9eaa0",
+  "operators": 8,
+  "requests_sha256": "436adcaf59392c852965501a1b1ed8068c991619e8f3de9e2cd92047f80ae51f",
+  "schema": "editor-core-factual-setup-benchmark-manifest",
+  "schema_version": 1,
+  "sentence_maximum": 3,
+  "sentence_minimum": 2,
+  "sources_per_case": 3,
+  "status": "FROZEN_PRE_INFERENCE",
+  "training_data_used": false,
+  "voice_comedy_or_final_polish_objective": false
+}

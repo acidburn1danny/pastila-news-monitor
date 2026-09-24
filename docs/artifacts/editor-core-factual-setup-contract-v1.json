@@ -1,0 +1,73 @@
+{
+  "schema": "editor-core-factual-setup-contract",
+  "schema_version": 1,
+  "pipeline": [
+    "SCOUT",
+    "EDITOR",
+    "VOICE",
+    "CHIEF_EDITOR",
+    "FINAL"
+  ],
+  "editor_output": {
+    "type": "SOURCE_BOUND_FACTUAL_SETUP",
+    "minimum_sentences": 2,
+    "maximum_sentences": 3,
+    "authority_for_voice": true
+  },
+  "required": [
+    "FACT_SELECTION",
+    "MULTISOURCE_RECONCILIATION",
+    "FACTUAL_SUFFICIENCY",
+    "ACTOR_AND_ATTRIBUTION_PRESERVATION",
+    "CHRONOLOGY",
+    "NAMES_AND_NUMBERS",
+    "MODALITY_AND_UNCERTAINTY",
+    "PROCEDURAL_STATUS",
+    "CLAIM_VS_ESTABLISHED_FACT",
+    "ZERO_INVENTED_FACTS",
+    "FUNCTIONAL_ROMANIAN"
+  ],
+  "forbidden_objectives": [
+    "VOICE",
+    "COMEDY",
+    "SARCASM",
+    "IRONY",
+    "ROAST",
+    "COMMENTARY",
+    "RHETORICAL_PUNCH",
+    "STYLISTIC_PERSONALITY",
+    "FINAL_PROSE_POLISH",
+    "RHYTHM"
+  ],
+  "evaluation_order": [
+    "STRUCTURE_AND_SENTENCE_BUDGET",
+    "FACTUAL_EPISTEMIC_SAFETY",
+    "FACTUAL_SUFFICIENCY_AND_RECONCILIATION",
+    "COMPRESSION",
+    "FUNCTIONAL_ROMANIAN"
+  ],
+  "safety_is_lexicographically_prior": true,
+  "source_copy_policy": "VALID_ONLY_IF_IT_INDEPENDENTLY_SATISFIES_STRUCTURE_SAFETY_SUFFICIENCY_AND_COMPRESSION",
+  "paired_selection_rule": {
+    "unit": "CASE",
+    "case_order": [
+      "FACTUAL_EPISTEMIC_SAFETY",
+      "FACTUAL_SUFFICIENCY_AND_RECONCILIATION",
+      "STRUCTURE_AND_SENTENCE_BUDGET",
+      "COMPRESSION",
+      "FUNCTIONAL_ROMANIAN"
+    ],
+    "tie_when_no_material_difference": true,
+    "candidate_may_replace_incumbent_only_if": [
+      "ZERO_MATERIAL_SAFETY_REGRESSIONS_ON_CASES_THE_INCUMBENT_PASSES",
+      "POSITIVE_PAIRED_WIN_BALANCE",
+      "ONE_SIDED_EXACT_SIGN_TEST_P_LE_0_05_ON_RESOLVED_DISCORDANT_CASES"
+    ],
+    "otherwise": "KEEP_R2_OPERATIONALLY_AND_REPORT_INCONCLUSIVE_OR_R2_CONFIRMED_AS_OBSERVED"
+  },
+  "training_authorized": false,
+  "parent_change_authorized": false,
+  "promotion_authorized": false,
+  "release_authorized": false,
+  "contract_identity": "67a5cd5813d422c513795dd88b561db3f74a55ee2a932d8bcb2d0d1035eb0b37"
+}
