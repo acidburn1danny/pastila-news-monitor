@@ -51,6 +51,7 @@ def test_ml_runtime_and_optimizer_are_execution_only():
     assert 'EXPECTED_ROWS = 72' in source and 'EXPECTED_STEPS = 9' in source
 
 def test_bound_route_has_exact_public_bindings_and_isolation():
+    assert ROUTE.read_bytes().startswith(b'#!/usr/bin/env bash\n')
     source=ROUTE.read_text('utf-8')
     assert 'EXPECTED_SOURCE_COMMIT=5a5537ff9eb076a289b8fde6b306c38c11085899' in source
     assert 'EXPECTED_SOURCE_TREE=dff0bcc0af869726ec70b528d5b7f96116e4d7ea' in source

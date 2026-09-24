@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 set -euo pipefail
 [[ $# == 8 && ( ${8:-} == --execute-authorized || ${8:-} == --preflight-only ) && $(id -u) == 0 ]] || exit 2
 MODE="$8"
