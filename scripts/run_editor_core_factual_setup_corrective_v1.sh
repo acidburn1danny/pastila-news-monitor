@@ -1,7 +1,10 @@
 ﻿#!/usr/bin/env bash
 set -euo pipefail
-[[ $# == 8 && ${8:-} == --execute-authorized && $(id -u) == 0 ]] || exit 2
-[[ ${EDITOR_FACTUAL_SETUP_CORRECTIVE_V1_OWNER_AUTHORIZED:-0} == 1 ]] || exit 3
+[[ $# == 8 && ( ${8:-} == --execute-authorized || ${8:-} == --preflight-only ) && $(id -u) == 0 ]] || exit 2
+MODE="$8"
+if [[ $MODE == --execute-authorized ]]; then
+  [[ ${EDITOR_FACTUAL_SETUP_CORRECTIVE_V1_OWNER_AUTHORIZED:-0} == 1 ]] || exit 3
+fi
 ROOTFS_TAR="$(realpath -e -- "$1")"; MODEL="$(realpath -e -- "$2")"; PARENT_CHECKPOINT="$(realpath -e -- "$3")"
 PARENT="$(realpath -e -- "$PARENT_CHECKPOINT/adapter")"; CORPUS="$(realpath -e -- "$4")"; CONFIG="$(realpath -e -- "$5")"
 OUTPUT="$(realpath -e -- "$6")"; WORKER="$(realpath -e -- "$7")"
@@ -38,6 +41,10 @@ json_identity "$CONFIG" config_identity "$EXPECTED_CONFIG_IDENTITY"; json_identi
 checkpoint_identity "$PARENT_CHECKPOINT/checkpoint.json"
 [[ $(findmnt -n -o FSTYPE --target "$OUTPUT") == ext4 && ! -L $OUTPUT && -z $(find "$OUTPUT" -mindepth 1 -print -quit) ]] || exit 4
 python3 -B "$ZERO_STEP" --parent-checkpoint "$PARENT_CHECKPOINT" --output "$OUTPUT" >/dev/null
+if [[ $MODE == --preflight-only ]]; then
+  printf '{"model_loaded":false,"optimizer_created":false,"optimizer_steps":0,"status":"PASS_EXECUTABLE_PREFLIGHT","training_performed":false}\n'
+  exit 0
+fi
 WORK="$(mktemp -d /tmp/editor-factual-corrective-v1.XXXXXXXX)"; ROOTFS="$WORK/rootfs"; mkdir "$ROOTFS"; child=""
 cleanup() { [[ -n $child ]] && kill -KILL -- "-$child" 2>/dev/null || true; umount -R "$ROOTFS" 2>/dev/null || true; rm -rf -- "$WORK"; }
 trap cleanup EXIT INT TERM

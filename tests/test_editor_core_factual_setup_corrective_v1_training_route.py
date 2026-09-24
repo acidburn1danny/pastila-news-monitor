@@ -63,6 +63,9 @@ def test_bound_route_has_exact_public_bindings_and_isolation():
     assert 'unshare --kill-child=KILL --mount --net --pid --ipc --uts --fork' in source
     assert 'HF_HUB_OFFLINE=1' in source and 'TRANSFORMERS_OFFLINE=1' in source
     assert 'EDITOR_FACTUAL_SETUP_CORRECTIVE_V1_OWNER_AUTHORIZED' in source
+    assert '--preflight-only' in source
+    assert 'PASS_EXECUTABLE_PREFLIGHT' in source
+    assert source.index('if [[ $MODE == --preflight-only ]]') < source.index('WORK="$(mktemp -d')
     assert '${14}' in source and '${17}' in source
     assert 'git config --global' not in source
 
@@ -75,7 +78,7 @@ def test_holdout_voice_and_historical_candidates_are_not_route_inputs():
 def test_route_refuses_unarmed_invocation():
     if os.name == 'nt':
         first_lines=ROUTE.read_text('utf-8').splitlines()[:4]
-        assert '[[ $# == 8 && ${8:-} == --execute-authorized && $(id -u) == 0 ]] || exit 2' in first_lines
+        assert any('--preflight-only' in line and '--execute-authorized' in line and 'exit 2' in line for line in first_lines)
         return
     result=subprocess.run(['bash',str(ROUTE)],capture_output=True)
     assert result.returncode==2

@@ -6,4 +6,6 @@ The frozen execution recipe is one epoch over 72 rows, batch size 1, gradient ac
 
 The shell route requires an explicit owner authorization environment flag, validates every frozen identity, runs the published zero-step gate, isolates the process from the network, and mounts inputs read-only. Fixture smoke imports no ML runtime, creates no optimizer, loads no model, and performs no training.
 
+`--preflight-only` executes the complete source, runtime, model, parent, corpus, config, manifest, output-root and zero-step validation chain, then exits before runtime extraction, chroot, model load or optimizer creation. `--execute-authorized` remains separately guarded by the owner-authorization environment flag.
+
 The 24-case corrective holdout and all historical holdouts are absent from the execution route. EDITOR remains limited to a factual 2–3 sentence setup; VOICE and CHIEF EDITOR objectives are excluded.
