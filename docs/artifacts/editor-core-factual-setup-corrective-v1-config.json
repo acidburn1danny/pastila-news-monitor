@@ -1,0 +1,12 @@
+{
+  "config_identity": "2b813d0485a3d3e186e4b5a4c88139af83d8d54fb25e759cee0921ee94da230b",
+  "contract_identity": "67a5cd5813d422c513795dd88b561db3f74a55ee2a932d8bcb2d0d1035eb0b37",
+  "holdout_rows": 24,
+  "parent_adapter_sha256": "c680d686f0b139e618d99fab235c62267caa9482df0efbccb44cb2c58c124f02",
+  "replay_rows": 24,
+  "schema": "editor-factual-setup-corrective-config",
+  "schema_version": 1,
+  "targeted_rows": 48,
+  "training_authorized": false,
+  "voice_or_chief_objective": false
+}

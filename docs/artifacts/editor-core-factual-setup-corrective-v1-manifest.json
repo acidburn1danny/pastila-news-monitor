@@ -1,0 +1,31 @@
+{
+  "artifacts": {
+    "holdout-answer-key": {
+      "rows": 24,
+      "sha256": "4dbf0d5b7eca8f15f5d06c5036e36a9ae968262d6061834982db17c5471c612d"
+    },
+    "holdout-requests": {
+      "rows": 24,
+      "sha256": "f97815679124cf040d0f7da5c010052532b6d8e08a71ff7ea2071de9035ddf11"
+    },
+    "training": {
+      "rows": 72,
+      "sha256": "56c3e13cf79f24882c09b4b73403fa05c1ba628d48c58b822b09f440d848f606"
+    }
+  },
+  "config_sha256": "49e03990128dd97c746df5a9158796b60a4863d22e41ca7c50b0daae6ac507b4",
+  "development_holdout_disjoint": true,
+  "failure_classes": [
+    "INVENTED_ACTOR",
+    "ENTITY_SUBSTITUTION",
+    "CATEGORICAL_ALLEGATION",
+    "LOST_QUALIFICATION",
+    "INCOMPLETE_NUMERIC_RECONCILIATION",
+    "INCOMPLETE_PROCEDURAL_STATUS"
+  ],
+  "historical_holdouts_read": false,
+  "manifest_identity": "50b387a0025025f5daac68cd65ab5570a731f9bb0db2a82c023921829e806a88",
+  "schema": "editor-factual-setup-corrective-manifest",
+  "schema_version": 1,
+  "training_authorized": false
+}

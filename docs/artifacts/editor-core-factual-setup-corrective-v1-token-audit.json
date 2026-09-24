@@ -1,0 +1,13 @@
+{
+  "audit_identity": "a9d65a5078250aa5602cd79d0d7297b9209c709048d732475aacae01b1462acb",
+  "ceiling": 3072,
+  "maximum_sequence_tokens": 757,
+  "model_loaded": false,
+  "rows": 96,
+  "schema": "editor-factual-setup-corrective-token-audit",
+  "schema_version": 1,
+  "status": "PASS_TOKENIZER_ONLY",
+  "terminal_eos_verified": true,
+  "tokenizer_sha256": "d5f6046775b112f0e2d456ee9dba450684ab964fe5c4e231599bdc6773028135",
+  "training_performed": false
+}
