@@ -1,0 +1,18 @@
+{
+  "schema": "editor-factual-setup-corrective-zero-step-boundary",
+  "schema_version": 1,
+  "published_commit": "1c7ca27d38199dbf547d157bf2d09ddcaf33632c",
+  "published_tree": "ccc6414075ea96341406c1ed89d2926bd8cc2ab6",
+  "manifest_identity": "50b387a0025025f5daac68cd65ab5570a731f9bb0db2a82c023921829e806a88",
+  "config_identity": "2b813d0485a3d3e186e4b5a4c88139af83d8d54fb25e759cee0921ee94da230b",
+  "parent": "R2_STEP_9",
+  "parent_adapter_identity": "c680d686f0b139e618d99fab235c62267caa9482df0efbccb44cb2c58c124f02",
+  "parent_checkpoint_identity": "96e10b85fe30c4be43c2cc1a0b906f04ea4c476cc8d422b4ad26e9758b85b2be",
+  "published_file_count": 12,
+  "model_load_authorized": false,
+  "optimizer_creation_authorized": false,
+  "training_authorized": false,
+  "promotion_authorized": false,
+  "release_authorized": false,
+  "boundary_identity": "0e8f70e013668c56e76053c38dfbd62331813553de31735492db183be7b3169f"
+}
