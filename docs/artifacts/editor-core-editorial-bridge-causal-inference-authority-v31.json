@@ -1,0 +1,75 @@
+{
+  "answer_key_access_authorized": false,
+  "audit_path": "scripts/audit_editor_core_bridge_causal_responses_v3.py",
+  "audit_sha256": "6c88f64db6a97207526cc41504d2ea7361d5a4ad50612b0718089f73fb22f03d",
+  "authority_identity": "7af0189a33e88ba08131c7f068fc12c6eb9cc8422835be3a97a00b5165727693",
+  "candidates": [
+    {
+      "adapter_sha256": "c680d686f0b139e618d99fab235c62267caa9482df0efbccb44cb2c58c124f02",
+      "candidate": "r2"
+    },
+    {
+      "adapter_sha256": "bc35f315bd786a10d4ca31964690176696420614b90bbea8a79135c0d917fdc3",
+      "candidate": "a1-seed-271828"
+    },
+    {
+      "adapter_sha256": "7a33b02ae749f54ddea3339f060e4d68fe0176081408bb5b97000375dc933211",
+      "candidate": "a1-seed-314159"
+    },
+    {
+      "adapter_sha256": "a9d7e9afe8e4e2b93c613d3b213dd751d5607e8faa4c96ca67b4f39f7eb7833b",
+      "candidate": "a1-seed-161803"
+    },
+    {
+      "adapter_sha256": "e801dd982d61cbc46ac9f3fb495d1808d1269c08e17d06faad940e0d229e0fc3",
+      "candidate": "a2-seed-271828"
+    },
+    {
+      "adapter_sha256": "2fc68cc41c8b76a2ff12fc959e4933c301f0d35297300d2dc866edc1c1fe42a9",
+      "candidate": "a2-seed-314159"
+    },
+    {
+      "adapter_sha256": "85aeae73b2984af2be5c4988cc9e38c79dfd1d23c60846e408e435e939ae8db1",
+      "candidate": "a2-seed-161803"
+    }
+  ],
+  "case_bound_failure_evidence": true,
+  "constraint_path": "scripts/editor_core_bridge_json_constraint_v3.py",
+  "constraint_sha256": "5c98158062dcf19d484a641b456b509bdcca1e5d21eba14754977bbd6a36ba6c",
+  "design_path": "docs/editor-core-editorial-bridge-causal-inference-successor-v31.md",
+  "design_sha256": "43177c407d1392fc694c452a73dfa03acc2792b6c40df8e16803f8238c70c7e6",
+  "deterministic_decoding": true,
+  "development_requests_sha256": "de964a75032a286f5de6e4d578f408bc876f368b0d93ea00d44ec451fdb03d59",
+  "historical_v1_v2_evidence_eligibility": "REJECTED_REGENERATE_FROM_ZERO",
+  "historical_v3_evidence_eligibility": "REJECTED_REGENERATE_FROM_ZERO",
+  "holdout_access_authorized": false,
+  "human_scoring_authorized": false,
+  "implementation_parent_commit": "33f44141707b8881c50bff25fd5ac7c3a6654ef2",
+  "invalid_payload_persistence": false,
+  "max_new_tokens": 2048,
+  "model_sha256": "f5a9327e40390c7f0cf93962d75abbbc5ae8da1fac48e1274092ac52cf88bf39",
+  "no_repeat_ngram_size": null,
+  "optimizer_steps_authorized": 0,
+  "partial_receipt_persistence": false,
+  "preflight_path": "scripts/preflight_editor_core_bridge_json_constraint_v3.py",
+  "preflight_sha256": "d4aa7773d9cdb1c7cc1cdeaa6de9d608f660eec33c27f6198ffb1cc3220a5077",
+  "route_path": "scripts/run_editor_core_bridge_causal_inference_v31.sh",
+  "route_sha256": "0524d11d9e68e7d1e64aebe2bf8d3a9cf1bbde0209539b8f21be3003db2030f1",
+  "rows_per_candidate": 24,
+  "schema": "editor-core-bridge-causal-development-inference-structural-successor-authority",
+  "schema_version": "3.1",
+  "scope": "SYNTHETIC_DEVELOPMENT_RESPONSES_ONLY",
+  "single_terminal_log_event_required": true,
+  "strict_post_validation_required": true,
+  "structural_json_dfa": true,
+  "supersedes_authority_identity": "06836c28596c8bd02d4539f10da6a9ae550ccd1f96ccaa6653a458ebfee23593",
+  "supersession_reason": "BRACED_POSITIONAL_ARGUMENT_14_ROUTE_REPAIR",
+  "supervisor_path": "scripts/supervise_editor_core_bridge_causal_inference_v3.py",
+  "supervisor_sha256": "fb5255021238325d7062218fb41af1447e6ffba07dc337ae4d4f0663027ae8c9",
+  "terminal_eos_required_per_row": true,
+  "training_authorized": false,
+  "verifier_path": "scripts/verify_editor_core_bridge_causal_inference_authority_v31.py",
+  "verifier_sha256": "fe1f6c30d08c6256d7c06b382b84085fdf6ff4f90aa0740dfb5270de364f8658",
+  "worker_path": "scripts/generate_editor_core_bridge_causal_responses_v3.py",
+  "worker_sha256": "802a224f20259f92d39b3aefcc92858de4bdecc86686cd9cd4b57663f1507259"
+}
