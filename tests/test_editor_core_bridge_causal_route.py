@@ -49,6 +49,8 @@ def test_blind_packet_and_sealed_mapping_fixture(tmp_path):
     responses, packets, reference, custody = (tmp_path / name for name in ("responses", "packets", "reference", "custody"))
     for path in (responses, packets, reference, custody):
         path.mkdir()
+    reference.chmod(0o700)
+    custody.chmod(0o700)
     fixture_responses(responses)
     result = prepare(responses, packets, reference, custody, permutation=lambda: [1, 0])
     assert result["primary_pair_packets"] == 72 and result["later_reference_packets"] == 24
@@ -65,6 +67,8 @@ def test_blind_scoring_rejects_overlap_and_replay(tmp_path):
     responses, packets, reference, custody = (tmp_path / name for name in ("responses", "packets", "reference", "custody"))
     for path in (responses, packets, reference, custody):
         path.mkdir()
+    reference.chmod(0o700)
+    custody.chmod(0o700)
     fixture_responses(responses)
     with pytest.raises(ValueError, match="separation"):
         prepare(responses, packets, reference, packets)

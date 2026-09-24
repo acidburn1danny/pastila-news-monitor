@@ -24,6 +24,10 @@ def roots(tmp_path):
     paths = [tmp_path / part for part in ("responses", "packets", "reference", "custody", "scores", "reference_scores")]
     for path in paths:
         path.mkdir()
+    paths[2].chmod(0o700)
+    paths[3].chmod(0o700)
+    paths[4].chmod(0o700)
+    paths[5].chmod(0o700)
     fixture_responses(paths[0])
     prepare(*paths[:4], permutation=lambda: [0, 1])
     return paths
