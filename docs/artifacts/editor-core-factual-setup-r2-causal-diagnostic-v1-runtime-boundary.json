@@ -1,0 +1,42 @@
+{
+  "arms": 4,
+  "evaluation_identity": "0f31cb67ea2a5b6094307bb54c76d6c3856d48088bff867a9aacdd57de8e791a",
+  "files": {
+    "preflight": "dde9e697fa72bf1d005961f6b12b4391f226596b25e6b6d9819dd4976b6361dc",
+    "route": "bddd8d2ff4c273721365d5b74097d9e4ff02937b8f34b8283ee6b03ecb1f6ab4",
+    "smoke": "3bb8558a52c79b0225cea54c85e65ca24150e8c42660d7129670d3c3c31f7bf6",
+    "worker": "de28271ab9346f6a89a98f8d9946b21d2f8da7e756409ef408027dc1b2a1e27e"
+  },
+  "invalid_payload_persistence": false,
+  "model_load_authorized": false,
+  "optimizer_creation_authorized": false,
+  "optimizer_steps_authorized": 0,
+  "output_isolation": "DISTINCT_EMPTY_ROOT_PER_ARM_SEED",
+  "pack_identity": "c9480b68c8f2c10ce4e36b2371d6ae564b43a4ad5fdde23e57759dc4ec8a99bc",
+  "parent_adapter_identity": "c680d686f0b139e618d99fab235c62267caa9482df0efbccb44cb2c58c124f02",
+  "parent_checkpoint_identity": "96e10b85fe30c4be43c2cc1a0b906f04ea4c476cc8d422b4ad26e9758b85b2be",
+  "parent_selection_authority": false,
+  "protocol_identity": "41799641949b42a3bd0c4c50abd9cb1dc7da72d594db106bbb8704b5fdfbda7a",
+  "published_source_commit": "67946ad7375d7631ea184b974667e08de6db3292",
+  "published_source_tree": "20eec3317677ccbab4efdf0b6a936a61c3aedf6e",
+  "receipts": [
+    "TEACHER_FORCED_BEFORE_AFTER",
+    "ADAPTER_DELTA",
+    "SEMANTIC_MEASUREMENT",
+    "TERMINAL"
+  ],
+  "recipes_identity": "61de5f5276af6899a708522c4e6ae91e31e40fe977aafacad4fc0bfebc29bced",
+  "runtime_boundary_identity": "934879da1ddf07a4297290c8738a3ae825833e0eaa8dd18b3aaa7283d65df64f",
+  "schema": "editor-factual-setup-r2-causal-diagnostic-real-runtime-boundary",
+  "schema_version": 1,
+  "seeds": [
+    161803,
+    271828,
+    314159
+  ],
+  "slots": 12,
+  "status": "REAL_RUNTIME_BOUND_ZERO_REAL_EXECUTION",
+  "terminal_rule": "ONE_TERMINAL_RECEIPT_AFTER_COMPLETE_CLOSURE",
+  "tokenizer_sha256": "d5f6046775b112f0e2d456ee9dba450684ab964fe5c4e231599bdc6773028135",
+  "training_authorized": false
+}
