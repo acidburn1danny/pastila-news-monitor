@@ -8,6 +8,6 @@ def main():
  assert all(x["optimizer_steps"]==9 and x["run_limit"]==1 and x["fresh_zero_step_required"] for x in d["slots"])
  assert d["owner_run_authorization_required"] and not d["real_runs_authorized_in_build_task"] and not d["holdout_access_authorized"] and not d["parent_selection_authority"]
  worker=(ROOT/"scripts/train_editor_core_factual_setup_r2_causal_diagnostic_runtime_v1.py").read_text(encoding="utf-8"); tree=ast.parse(worker); assert "CAUSAL_DIAGNOSTIC_REAL_RUN_AUTHORIZED" in worker and any(isinstance(n,ast.FunctionDef) and n.name=="run_slot" for n in tree.body)
- supervisor=(ROOT/"scripts/supervise_editor_core_factual_setup_r2_causal_diagnostic_v1.py").read_text(encoding="utf-8"); assert "real runs require a separate owner authorization invocation" in supervisor
+ supervisor=(ROOT/"scripts/supervise_editor_core_factual_setup_r2_causal_diagnostic_v1.py").read_text(encoding="utf-8"); route=(ROOT/"scripts/run_editor_core_factual_setup_r2_causal_diagnostic_slot_v1.sh").read_text(encoding="utf-8"); assert "--execute-authorized" in supervisor and "EDITOR_CAUSAL_DIAGNOSTIC_OWNER_AUTHORIZED" in route and "--preflight-only" in route
  print(json.dumps({"status":"PASS","blockers":0,"authority_identity":ident,"slots":12,"real_runs":0,"model_loaded":False,"optimizer_steps":0},sort_keys=True))
 if __name__=="__main__": main()

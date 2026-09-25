@@ -13,3 +13,7 @@ def test_supervisor_fixture_and_refusal(tmp_path):
 def test_worker_real_branch_is_beyond_gate(monkeypatch):
  m=load("scripts/train_editor_core_factual_setup_r2_causal_diagnostic_runtime_v1.py","worker2"); monkeypatch.delenv("CAUSAL_DIAGNOSTIC_REAL_RUN_AUTHORIZED",raising=False)
  with pytest.raises(RuntimeError,match="not authorized"): m.run_slot(*([Path("x")]*6),"T0_CONTROL_S0_CONTROL",161803)
+def test_real_supervisor_and_route_require_separate_owner_authority(monkeypatch):
+ m=load("scripts/supervise_editor_core_factual_setup_r2_causal_diagnostic_v1.py","sup2"); monkeypatch.delenv("EDITOR_CAUSAL_DIAGNOSTIC_OWNER_AUTHORIZED",raising=False); root=Path("unused")
+ with pytest.raises(ValueError,match="owner run authorization"): m.execute_all(root,Path("route"),{})
+ text=(ROOT/"scripts/run_editor_core_factual_setup_r2_causal_diagnostic_slot_v1.sh").read_text(); assert "EDITOR_CAUSAL_DIAGNOSTIC_OWNER_AUTHORIZED" in text and "--execute-authorized" in text and "--preflight-only" in text

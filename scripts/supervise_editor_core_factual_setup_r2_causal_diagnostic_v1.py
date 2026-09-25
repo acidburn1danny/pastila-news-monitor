@@ -21,12 +21,24 @@ def preflight_all(root:Path, route:Path, rootfs:Path, model:Path, corpus:Path, c
         if receipt.get("status")!="PASS_ZERO_STEP" or receipt.get("model_loaded") or receipt.get("optimizer_steps")!=0: raise ValueError("slot zero-step failure")
         receipts.append({"slot_id":authority["slot"]["slot_id"],"preflight_identity":receipt["preflight_identity"],"mapping_identity":receipt["mapping_identity"]})
     return {"status":"PASS_12_SLOT_ZERO_STEP","slots":receipts,"model_loaded":False,"optimizer_steps":0,"real_runs":0}
+def execute_all(root:Path, training_route:Path, common:dict[str,Path]):
+    if os.environ.get("EDITOR_CAUSAL_DIAGNOSTIC_OWNER_AUTHORIZED")!="1": raise ValueError("separate owner run authorization missing")
+    slots=plan(root); terminals=[]
+    for item in slots:
+        signal=common["control"] if item["arm"].startswith("T0_") else common["challenger"]
+        command=["bash",str(training_route),str(common["rootfs"]),str(common["model"]),str(common["checkpoint"]),str(common["corpus"]),str(signal),str(common["development"]),item["output"],str(common["worker"]),str(common["verifier"]),item["arm"],str(item["seed"]),str(common["route"]),str(common["preflight"]),str(common["challenger"]),"--execute-authorized"]
+        subprocess.run(command,check=True)
+        terminal=json.loads((Path(item["output"])/"terminal.json").read_text()); terminals.append(terminal)
+    return {"status":"PASS_12_TERMINAL_SLOTS","terminals":terminals}
 def main():
     p=argparse.ArgumentParser(); p.add_argument("--output-root",type=Path,required=True); p.add_argument("--fixture-only",action="store_true"); p.add_argument("--preflight-all",action="store_true"); p.add_argument("--local-authority",action="store_true")
-    for name in ("route","rootfs","model","corpus","challenger","preflight","worker"): p.add_argument(f"--{name}",type=Path)
+    p.add_argument("--execute-authorized",action="store_true")
+    for name in ("route","training-route","rootfs","model","checkpoint","corpus","control","challenger","development","preflight","worker","verifier"): p.add_argument(f"--{name}",type=Path)
     a=p.parse_args()
     if a.fixture_only: result=fixture(a.output_root)
     elif a.preflight_all and all(getattr(a,n) for n in ("route","rootfs","model","corpus","challenger","preflight","worker")): result=preflight_all(a.output_root,a.route,a.rootfs,a.model,a.corpus,a.challenger,a.preflight,a.worker,not a.local_authority)
+    elif a.execute_authorized and all(getattr(a,n.replace('-','_')) for n in ("route","training-route","rootfs","model","checkpoint","corpus","control","challenger","development","preflight","worker","verifier")):
+        result=execute_all(a.output_root,a.training_route,{n.replace('-','_'):getattr(a,n.replace('-','_')) for n in ("route","rootfs","model","checkpoint","corpus","control","challenger","development","preflight","worker","verifier")})
     else: raise SystemExit("real runs require a separate owner authorization invocation")
     print(json.dumps(result,sort_keys=True))
 if __name__=="__main__": main()
