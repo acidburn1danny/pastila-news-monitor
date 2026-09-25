@@ -1,0 +1,58 @@
+{
+  "claims_allowed": [
+    "T1_CRITICAL_SPAN_SIGNAL_CHANGED_DEVELOPMENT_BEHAVIOR_UNDER_THIS_CONTROLLED_DIAGNOSTIC",
+    "S1_PRODUCED_GREATER_BEHAVIORAL_PLASTICITY_AND_A_MATERIAL_REPLAY_REGRESSION"
+  ],
+  "claims_forbidden": [
+    "DEVELOPMENT_PARENT_SELECTION",
+    "NATURALISTIC_TRANSFER",
+    "PROMOTION",
+    "RELEASE",
+    "VOICE_OR_CHIEF_EDITOR_CONCLUSIONS"
+  ],
+  "decision": {
+    "S1_HIGHER_PLASTICITY": "STOP_FOR_CURRENT_CONTINUATION",
+    "T1_S0": "HYPOTHESIS_ONLY_REQUIRES_REDESIGNED_REPLAY_PROTECTIONS",
+    "T1_S1": "STOP",
+    "development_parent": "R2_STEP_9",
+    "parent_selection_authority": false,
+    "promotion": false,
+    "release": false
+  },
+  "development": {
+    "bundles": 13,
+    "replicated_signal": "T1_S1_CORRECTS_CATEGORICAL_ALLEGATION_CASE_18",
+    "rows_per_bundle": 24,
+    "terminal_eos": 312
+  },
+  "development_closure_identity": "4cf6fbc9d5c2c7168cf993bfbcdc284ffdc9bf9095be9de820b5ddaca7dc307e",
+  "historical_holdouts_accessed": false,
+  "optimizer_steps_during_evaluation": 0,
+  "protocol_identity": "41799641949b42a3bd0c4c50abd9cb1dc7da72d594db106bbb8704b5fdfbda7a",
+  "replay": {
+    "additional_findings": [
+      "META_EDITORIAL_TEXT",
+      "INCOMPLETE_NUMERIC_RECONCILIATION",
+      "UNSUPPORTED_PROCESS_ATTRIBUTION"
+    ],
+    "bundles": 13,
+    "failure_case": "ec-fsc-v1-r-6-01",
+    "failure_cluster": [
+      "PROCEDURAL_STATUS_CORRUPTION",
+      "NUMERIC_REPETITION",
+      "INVENTED_ACTOR",
+      "DEGENERATE_REPETITION"
+    ],
+    "material_regression": true,
+    "rows_per_bundle": 24,
+    "terminal_eos": 312
+  },
+  "replay_closure_identity": "3ebee4ee784bf70ee3a372847ab31664ba138904213f49b1077f096a8f6b3022",
+  "replay_requests_sha256": "856ec4be2c90f0dc17014161b6a8d922e7d7c4c777ec8ca986aa769f4c67c83d",
+  "result_identity": "1a2ed5142f9523b901355e77a7e53d8d21a1b12e7659c84151a17c4a49b8e200",
+  "schema": "editor-factual-setup-r2-causal-diagnostic-terminal-result",
+  "schema_version": 1,
+  "status": "PASS_DIAGNOSTIC_T1_S1_STOP",
+  "stop_rule_triggered": "STOP_ON_REPLAY_REGRESSION_ABOVE_ZERO_MATERIAL_CASES",
+  "training_performed_during_evaluation": false
+}
