@@ -27,3 +27,11 @@ def test_supervisor_rejects_nonterminal_or_wrong_step_receipt(tmp_path,monkeypat
  monkeypatch.setattr(m.subprocess,"run",fake_run)
  common={k:Path(k) for k in ("rootfs","model","checkpoint","corpus","control","challenger","development","worker","verifier","route","preflight")}
  with pytest.raises(ValueError,match="terminal closure failure"): m.execute_all(root,Path("training-route"),common)
+
+def test_supervisor_accepts_published_terminal_schema(tmp_path,monkeypatch):
+ m=load("scripts/supervise_editor_core_factual_setup_r2_causal_diagnostic_v1.py","sup4"); root=tmp_path/"slots"; root.mkdir(); monkeypatch.setenv("EDITOR_CAUSAL_DIAGNOSTIC_OWNER_AUTHORIZED","1")
+ def fake_run(command,check):
+  out=Path(command[8]); arm=command[11]; seed=int(command[12]); (out/"terminal.json").write_text(json.dumps({"status":"PASS_TRAINING_TERMINAL","optimizer_steps":9,"slot_id":f"{arm}__seed_{seed}"}))
+ monkeypatch.setattr(m.subprocess,"run",fake_run)
+ common={k:Path(k) for k in ("rootfs","model","checkpoint","corpus","control","challenger","development","worker","verifier","route","preflight")}
+ got=m.execute_all(root,Path("training-route"),common); assert got["slots_completed"]==12 and got["optimizer_steps_total"]==108

@@ -1,5 +1,5 @@
 {
-  "authority_identity": "38d1c979d3f427b1894f1367d1ff2e28c25b3495fa4c6e1b409f44604a1dc4e3",
+  "authority_identity": "3d38670c0d7e7d52c7120ec6efe12b5fe147f08e9bcc99ff9c514d8742930d2c",
   "evaluation_identity": "0f31cb67ea2a5b6094307bb54c76d6c3856d48088bff867a9aacdd57de8e791a",
   "holdout_access_authorized": false,
   "owner_run_authorization_required": true,
@@ -131,7 +131,7 @@
   ],
   "source_commit": "9649ba9e290487d4fb5c365599904d1f2ee26f72",
   "source_tree": "28642cd09a7c4bf0e2ad4e6a887d1a2f85e1795e",
-  "supervisor_sha256": "cf149e5dd4a7237888062e3b8134b7eb944cdf1e9ad919d787a129086a26c50d",
+  "supervisor_sha256": "903da388ec13b9f4ef48f8c116cb6b60451283795a765796b1d94fca74b8e0b9",
   "terminal_receipt_required": true,
   "tokenizer_sha256": "d5f6046775b112f0e2d456ee9dba450684ab964fe5c4e231599bdc6773028135",
   "training_route_sha256": "c72df02bfd8ac6f1526658fca742237eb116a7552eaa505b3dc365dfdf178b45",

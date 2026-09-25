@@ -29,7 +29,8 @@ def execute_all(root:Path, training_route:Path, common:dict[str,Path]):
         command=["bash",str(training_route),str(common["rootfs"]),str(common["model"]),str(common["checkpoint"]),str(common["corpus"]),str(signal),str(common["development"]),item["output"],str(common["worker"]),str(common["verifier"]),item["arm"],str(item["seed"]),str(common["route"]),str(common["preflight"]),str(common["challenger"]),"--execute-authorized"]
         subprocess.run(command,check=True)
         terminal=json.loads((Path(item["output"])/"terminal.json").read_text())
-        if terminal.get("status")!="PASS_TRAINING_TERMINAL" or terminal.get("optimizer_steps")!=9 or terminal.get("arm")!=item["arm"] or terminal.get("seed")!=item["seed"]:
+        expected_slot=f"{item['arm']}__seed_{item['seed']}"
+        if terminal.get("status")!="PASS_TRAINING_TERMINAL" or terminal.get("optimizer_steps")!=9 or terminal.get("slot_id")!=expected_slot:
             raise ValueError(f"terminal closure failure: {item['arm']} seed {item['seed']}")
         terminals.append(terminal)
     result={"status":"PASS_12_TERMINAL_SLOTS","terminals":terminals,"optimizer_steps_total":108,"slots_completed":12}
