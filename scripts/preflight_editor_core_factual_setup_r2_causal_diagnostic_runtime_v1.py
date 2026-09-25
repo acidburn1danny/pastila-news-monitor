@@ -3,9 +3,9 @@ from __future__ import annotations
 import argparse, hashlib, json
 from pathlib import Path
 try:
-    from worker import ARMS, SEEDS, EXPECTED_TOKENIZER, identity, real_token_map, row_order
+    from worker import ARMS, SEEDS, EXPECTED_TOKENIZER, identity, real_chat_token_map, row_order
 except ImportError:  # repository execution
-    from train_editor_core_factual_setup_r2_causal_diagnostic_runtime_v1 import ARMS, SEEDS, EXPECTED_TOKENIZER, identity, real_token_map, row_order
+    from train_editor_core_factual_setup_r2_causal_diagnostic_runtime_v1 import ARMS, SEEDS, EXPECTED_TOKENIZER, identity, real_chat_token_map, row_order
 
 def sha(path: Path) -> str: return hashlib.sha256(path.read_bytes()).hexdigest()
 def main() -> int:
@@ -20,7 +20,7 @@ def main() -> int:
     for row in rows:
         source=corpus[row["example_id"]]; assistant=source["messages"][2]["content"]
         if hashlib.sha256(assistant.encode()).hexdigest()!=row["assistant_target_sha256"]: raise ValueError("assistant target binding")
-        m=real_token_map(tok,assistant,row["critical_spans"]); mapped.append({"example_id":row["example_id"],"spans":m["mapped_spans"]})
+        m=real_chat_token_map(tok,source["messages"],row["critical_spans"]); mapped.append({"example_id":row["example_id"],"assistant_token_start":m["assistant_token_start"],"assistant_token_end_exclusive":m["assistant_token_end_exclusive"],"spans":m["mapped_spans"]})
     core={"schema":"editor-factual-setup-r2-causal-runtime-tokenizer-preflight","schema_version":1,"status":"PASS_ZERO_STEP","tokenizer_sha256":EXPECTED_TOKENIZER,"rows":len(rows),"spans":sum(len(x["spans"]) for x in mapped),"mapping_identity":identity(mapped),"orders":{str(s):identity(row_order(s)) for s in SEEDS},"arms":sorted(ARMS),"slots":12,"model_loaded":False,"optimizer_created":False,"optimizer_steps":0,"training_performed":False,"inference_performed":False}
     print(json.dumps({**core,"preflight_identity":identity(core)},sort_keys=True,separators=(",",":")))
     return 0

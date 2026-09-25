@@ -9,6 +9,16 @@ def load():
 class Tok:
     def __call__(self,text,**_): return {"input_ids":list(range(len(text))),"offset_mapping":[(i,i+1) for i in range(len(text))]}
 
+class ChatTok(Tok):
+    def apply_chat_template(self,messages,tokenize,add_generation_prompt):
+        text="".join(x["content"] for x in messages[:2])+"<assistant>"+("" if len(messages)==2 else messages[2]["content"])+("" if add_generation_prompt or len(messages)==2 else "<eos>")
+        return list(range(len(text))) if tokenize else text
+
+class BatchChatTok(ChatTok):
+    def apply_chat_template(self,messages,tokenize,add_generation_prompt):
+        value=super().apply_chat_template(messages,tokenize,add_generation_prompt)
+        return {"input_ids":value,"attention_mask":[1]*len(value)} if tokenize else value
+
 def test_inventory_and_axis_isolation():
     m=load(); assert len(m.ARMS)*len(m.SEEDS)==12
     assert {v[0] for v in m.ARMS.values()}=={"T0","T1"}; assert {v[1] for v in m.ARMS.values()}=={"5e-7","1e-6"}
@@ -20,6 +30,12 @@ def test_real_mapping_and_fail_closed(tmp_path):
     got=m.real_token_map(Tok(),assistant,[span]); assert got["mapped_spans"][0]["token_start"]==a
     with pytest.raises(ValueError): m.real_token_map(Tok(),assistant,[{**span,"text":"greșit"}])
     with pytest.raises(RuntimeError): m.run_slot(*([Path("x")]*6),"T0_CONTROL_S0_CONTROL",161803)
+
+def test_chat_mapping_uses_structural_assistant_boundary():
+    m=load(); assistant='{"case_id":"x","text":"Actor calificat."}'; messages=[{"role":"system","content":"s"},{"role":"user","content":assistant},{"role":"assistant","content":assistant}]; a=assistant.index("Actor")
+    got=m.real_chat_token_map(ChatTok(),messages,[{"field":"text","start":a,"end":a+5,"text":"Actor"}])
+    expected=len("s"+assistant+"<assistant>"); assert got["assistant_token_start"]==expected; assert got["mapped_spans"][0]["token_start"]==expected+a
+    assert m.real_chat_token_map(BatchChatTok(),messages,[{"field":"text","start":a,"end":a+5,"text":"Actor"}])==got
 
 def test_fixture_receipts_and_no_partial(tmp_path):
     m=load(); out=tmp_path/"out"; out.mkdir(); assistant='{"case_id":"x","text":"Fapt calificat."}'; a=assistant.index("Fapt")

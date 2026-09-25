@@ -48,6 +48,35 @@ def real_token_map(tokenizer, assistant: str, spans: list[dict]) -> dict:
         mapped.append({"char_start":a,"char_end":b,"token_start":selected[0],"token_end_exclusive":selected[-1]+1,"token_char_start":offsets[selected[0]][0],"token_char_end":offsets[selected[-1]][1]})
     return {"assistant_token_ids":ids,"mapped_spans":mapped}
 
+def real_chat_token_map(tokenizer, messages: list[dict], spans: list[dict]) -> dict:
+    """Map assistant-relative character spans onto the exact chat-template tokens."""
+    assistant=messages[2]["content"]
+    rendered=tokenizer.apply_chat_template(messages,tokenize=False,add_generation_prompt=False)
+    prefix=tokenizer.apply_chat_template(messages[:2],tokenize=False,add_generation_prompt=True)
+    if not rendered.startswith(prefix): raise ValueError("chat template prefix drift")
+    assistant_char_start=len(prefix)
+    if rendered[assistant_char_start:assistant_char_start+len(assistant)]!=assistant: raise ValueError("assistant chat boundary drift")
+    encoded=tokenizer(rendered,add_special_tokens=False,return_offsets_mapping=True)
+    ids=list(encoded["input_ids"]); offsets=[tuple(x) for x in encoded["offset_mapping"]]
+    templated=tokenizer.apply_chat_template(messages,tokenize=True,add_generation_prompt=False)
+    template_ids=list(templated["input_ids"] if hasattr(templated,"keys") else templated)
+    if ids!=template_ids or len(ids)!=len(offsets):
+        mismatch=next((i for i,(a,b) in enumerate(zip(ids,template_ids)) if a!=b),min(len(ids),len(template_ids)))
+        raise ValueError(f"chat template token identity drift: encoded={len(ids)} template={len(template_ids)} mismatch={mismatch} encoded_head={ids[:4]} template_head={template_ids[:4]}")
+    answer_end=assistant_char_start+len(assistant)
+    answer_tokens=[i for i,(a,b) in enumerate(offsets) if a<answer_end and b>assistant_char_start and a<b]
+    if not answer_tokens or answer_tokens!=list(range(answer_tokens[0],answer_tokens[-1]+1)): raise ValueError("assistant token boundary")
+    mapped=[]
+    for span in spans:
+        a,b=int(span["start"]),int(span["end"])
+        if span.get("field")!="text" or assistant[a:b]!=span.get("text"): raise ValueError("critical span content")
+        absolute_a=assistant_char_start+a; absolute_b=assistant_char_start+b
+        selected=[i for i,(x,y) in enumerate(offsets) if x<absolute_b and y>absolute_a and x<y]
+        if not selected or offsets[selected[0]][0]>absolute_a or offsets[selected[-1]][1]<absolute_b: raise ValueError("critical span tokenizer coverage")
+        if selected!=list(range(selected[0],selected[-1]+1)) or any(i not in answer_tokens for i in selected): raise ValueError("critical span escaped assistant")
+        mapped.append({"char_start":a,"char_end":b,"token_start":selected[0],"token_end_exclusive":selected[-1]+1,"token_char_start":offsets[selected[0]][0]-assistant_char_start,"token_char_end":offsets[selected[-1]][1]-assistant_char_start})
+    return {"input_ids":ids,"assistant_token_start":answer_tokens[0],"assistant_token_end_exclusive":answer_tokens[-1]+1,"mapped_spans":mapped}
+
 def receipt(kind: str, slot_id: str, payload: dict) -> dict:
     core={"schema":f"editor-factual-setup-r2-causal-runtime-{kind}","schema_version":1,"slot_id":slot_id,**payload}
     return {**core,"receipt_identity":identity(core)}
@@ -67,11 +96,6 @@ def fixture_run(tokenizer, assistant: str, annotation: dict, output: Path, arm: 
     for name,_ in documents[:-1]: os.replace(staging/name,output/name)
     os.replace(staging/"terminal.json",output/"terminal.json"); staging.rmdir()
     return terminal
-
-def _subsequence(haystack: list[int], needle: list[int], floor: int) -> int:
-    hits=[i for i in range(max(0,floor),len(haystack)-len(needle)+1) if haystack[i:i+len(needle)]==needle]
-    if len(hits)!=1: raise ValueError("assistant token subsequence is not unique")
-    return hits[0]
 
 def _write_receipts_atomic(output: Path, documents: list[tuple[str,dict]]) -> None:
     staging=output/".staging"
@@ -116,11 +140,10 @@ def run_slot(model_path: Path, parent_path: Path, corpus_path: Path, signal_path
 
     prepared=[]
     for row in corpus:
-        messages=row["messages"]; prefix=list(tokenizer.apply_chat_template(messages[:2],tokenize=True,add_generation_prompt=True)); tokens=list(tokenizer.apply_chat_template(messages,tokenize=True,add_generation_prompt=False))
-        assistant=messages[2]["content"]; mapping=real_token_map(tokenizer,assistant,annotations[row["example_id"]]["critical_spans"]); body=mapping["assistant_token_ids"]; start=_subsequence(tokens,body,max(0,len(prefix)-8))
+        messages=row["messages"]; mapping=real_chat_token_map(tokenizer,messages,annotations[row["example_id"]]["critical_spans"]); tokens=mapping["input_ids"]; start=mapping["assistant_token_start"]
         if not tokens or tokens[-1]!=tokenizer.eos_token_id or len(tokens)>3072: raise ValueError("token sequence closure")
         critical=set()
-        for span in mapping["mapped_spans"]: critical.update(range(start+span["token_start"],start+span["token_end_exclusive"]))
+        for span in mapping["mapped_spans"]: critical.update(range(span["token_start"],span["token_end_exclusive"]))
         prepared.append((tokens,start,critical))
 
     def probe() -> dict:
