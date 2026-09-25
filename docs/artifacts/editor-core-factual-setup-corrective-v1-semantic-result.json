@@ -1,0 +1,183 @@
+{
+  "answer_key_sha256": "4dbf0d5b7eca8f15f5d06c5036e36a9ae968262d6061834982db17c5471c612d",
+  "bundle_x_receipt": "d16a60c1b7f5f3c630a8e437ad535ea047d690c516781e406ff94e2eeeb55d92",
+  "bundle_y_receipt": "57e4fc72fb21c22f2c0b466b8d2916b21536f60ae1eb2efeb2d35fe171c40490",
+  "case_verdicts": {
+    "ec-fsc-v1-h-1-01": {
+      "X": "FAIL",
+      "Y": "FAIL",
+      "winner": "TIE"
+    },
+    "ec-fsc-v1-h-1-02": {
+      "X": "FAIL",
+      "Y": "FAIL",
+      "winner": "TIE"
+    },
+    "ec-fsc-v1-h-1-03": {
+      "X": "FAIL",
+      "Y": "FAIL",
+      "winner": "TIE"
+    },
+    "ec-fsc-v1-h-1-04": {
+      "X": "FAIL",
+      "Y": "FAIL",
+      "winner": "TIE"
+    },
+    "ec-fsc-v1-h-2-01": {
+      "X": "FAIL",
+      "Y": "FAIL",
+      "winner": "X"
+    },
+    "ec-fsc-v1-h-2-02": {
+      "X": "PASS",
+      "Y": "PASS",
+      "winner": "TIE"
+    },
+    "ec-fsc-v1-h-2-03": {
+      "X": "PASS",
+      "Y": "FAIL",
+      "winner": "X"
+    },
+    "ec-fsc-v1-h-2-04": {
+      "X": "FAIL",
+      "Y": "FAIL",
+      "winner": "TIE"
+    },
+    "ec-fsc-v1-h-3-01": {
+      "X": "FAIL",
+      "Y": "FAIL",
+      "winner": "TIE"
+    },
+    "ec-fsc-v1-h-3-02": {
+      "X": "FAIL",
+      "Y": "FAIL",
+      "winner": "TIE"
+    },
+    "ec-fsc-v1-h-3-03": {
+      "X": "FAIL",
+      "Y": "FAIL",
+      "winner": "TIE"
+    },
+    "ec-fsc-v1-h-3-04": {
+      "X": "FAIL",
+      "Y": "FAIL",
+      "winner": "TIE"
+    },
+    "ec-fsc-v1-h-4-01": {
+      "X": "FAIL",
+      "Y": "FAIL",
+      "winner": "TIE"
+    },
+    "ec-fsc-v1-h-4-02": {
+      "X": "PASS",
+      "Y": "PASS",
+      "winner": "TIE"
+    },
+    "ec-fsc-v1-h-4-03": {
+      "X": "PASS",
+      "Y": "PASS",
+      "winner": "TIE"
+    },
+    "ec-fsc-v1-h-4-04": {
+      "X": "FAIL",
+      "Y": "PASS",
+      "winner": "Y"
+    },
+    "ec-fsc-v1-h-5-01": {
+      "X": "PASS",
+      "Y": "PASS",
+      "winner": "TIE"
+    },
+    "ec-fsc-v1-h-5-02": {
+      "X": "FAIL",
+      "Y": "FAIL",
+      "winner": "TIE"
+    },
+    "ec-fsc-v1-h-5-03": {
+      "X": "FAIL",
+      "Y": "FAIL",
+      "winner": "TIE"
+    },
+    "ec-fsc-v1-h-5-04": {
+      "X": "FAIL",
+      "Y": "FAIL",
+      "winner": "Y"
+    },
+    "ec-fsc-v1-h-6-01": {
+      "X": "FAIL",
+      "Y": "FAIL",
+      "winner": "TIE"
+    },
+    "ec-fsc-v1-h-6-02": {
+      "X": "PASS",
+      "Y": "FAIL",
+      "winner": "X"
+    },
+    "ec-fsc-v1-h-6-03": {
+      "X": "FAIL",
+      "Y": "FAIL",
+      "winner": "TIE"
+    },
+    "ec-fsc-v1-h-6-04": {
+      "X": "FAIL",
+      "Y": "FAIL",
+      "winner": "TIE"
+    }
+  },
+  "development_parent": "R2_STEP_9",
+  "historical_holdouts_accessed": false,
+  "mapping": {
+    "X": "CORRECTIVE_V1",
+    "Y": "R2_STEP_9"
+  },
+  "passes": {
+    "X": 6,
+    "Y": 5
+  },
+  "per_failure_class": {
+    "CATEGORICAL_ALLEGATION": {
+      "X": 0,
+      "Y": 0,
+      "cases": 4
+    },
+    "ENTITY_SUBSTITUTION": {
+      "X": 2,
+      "Y": 1,
+      "cases": 4
+    },
+    "INCOMPLETE_NUMERIC_RECONCILIATION": {
+      "X": 1,
+      "Y": 1,
+      "cases": 4
+    },
+    "INCOMPLETE_PROCEDURAL_STATUS": {
+      "X": 1,
+      "Y": 0,
+      "cases": 4
+    },
+    "INVENTED_ACTOR": {
+      "X": 0,
+      "Y": 0,
+      "cases": 4
+    },
+    "LOST_QUALIFICATION": {
+      "X": 2,
+      "Y": 3,
+      "cases": 4
+    }
+  },
+  "promotion": false,
+  "release": false,
+  "requests_sha256": "f97815679124cf040d0f7da5c010052532b6d8e08a71ff7ea2071de9035ddf11",
+  "result_identity": "29c6bd2f345e947803b8e8edee6587b66d9ea924b89cdd42090b6335050d2b17",
+  "schema": "editor-factual-setup-corrective-v1-semantic-result",
+  "schema_version": 1,
+  "semantic_conclusion": "INSUFFICIENT_SUPERIORITY_RETAIN_R2",
+  "status": "PASS_AUDIT_RETAIN_R2",
+  "training_performed": false,
+  "winners": {
+    "TIE": 19,
+    "X": 3,
+    "Y": 2
+  }
+}
