@@ -1,0 +1,133 @@
+{
+  "arms": [
+    {
+      "arm_id": "T0_CONTROL_S0_CONTROL",
+      "recipe_strength": "S0_CONTROL",
+      "runs": [
+        "T0_CONTROL_S0_CONTROL__seed_161803",
+        "T0_CONTROL_S0_CONTROL__seed_271828",
+        "T0_CONTROL_S0_CONTROL__seed_314159"
+      ],
+      "seeds": [
+        161803,
+        271828,
+        314159
+      ],
+      "signal_sha256": "3b79faf08d33a555e706b2e8f21d667cdff4891cb72ec60abe5599223e0f5181",
+      "target_signal": "T0_CONTROL"
+    },
+    {
+      "arm_id": "T0_CONTROL_S1_HIGHER_PLASTICITY",
+      "recipe_strength": "S1_HIGHER_PLASTICITY",
+      "runs": [
+        "T0_CONTROL_S1_HIGHER_PLASTICITY__seed_161803",
+        "T0_CONTROL_S1_HIGHER_PLASTICITY__seed_271828",
+        "T0_CONTROL_S1_HIGHER_PLASTICITY__seed_314159"
+      ],
+      "seeds": [
+        161803,
+        271828,
+        314159
+      ],
+      "signal_sha256": "3b79faf08d33a555e706b2e8f21d667cdff4891cb72ec60abe5599223e0f5181",
+      "target_signal": "T0_CONTROL"
+    },
+    {
+      "arm_id": "T1_CONTRACT_WEIGHTED_S0_CONTROL",
+      "recipe_strength": "S0_CONTROL",
+      "runs": [
+        "T1_CONTRACT_WEIGHTED_S0_CONTROL__seed_161803",
+        "T1_CONTRACT_WEIGHTED_S0_CONTROL__seed_271828",
+        "T1_CONTRACT_WEIGHTED_S0_CONTROL__seed_314159"
+      ],
+      "seeds": [
+        161803,
+        271828,
+        314159
+      ],
+      "signal_sha256": "a6c90d629cea87d6f16b122199e3c319ad4d1a78ae6b25855d5bce8aa3020a3e",
+      "target_signal": "T1_CONTRACT_WEIGHTED"
+    },
+    {
+      "arm_id": "T1_CONTRACT_WEIGHTED_S1_HIGHER_PLASTICITY",
+      "recipe_strength": "S1_HIGHER_PLASTICITY",
+      "runs": [
+        "T1_CONTRACT_WEIGHTED_S1_HIGHER_PLASTICITY__seed_161803",
+        "T1_CONTRACT_WEIGHTED_S1_HIGHER_PLASTICITY__seed_271828",
+        "T1_CONTRACT_WEIGHTED_S1_HIGHER_PLASTICITY__seed_314159"
+      ],
+      "seeds": [
+        161803,
+        271828,
+        314159
+      ],
+      "signal_sha256": "a6c90d629cea87d6f16b122199e3c319ad4d1a78ae6b25855d5bce8aa3020a3e",
+      "target_signal": "T1_CONTRACT_WEIGHTED"
+    }
+  ],
+  "claims_allowed": [
+    "TARGET_SIGNAL_CAUSAL_EFFECT_UNDER_MATCHED_RECIPES",
+    "RECIPE_STRENGTH_CAUSAL_EFFECT_UNDER_MATCHED_TARGET_SIGNAL",
+    "TARGET_BY_STRENGTH_INTERACTION"
+  ],
+  "claims_forbidden": [
+    "DEVELOPMENT_PARENT_SELECTION",
+    "NATURALISTIC_TRANSFER",
+    "BASE_MODEL_CAPACITY_LIMIT",
+    "PROMOTION",
+    "RELEASE"
+  ],
+  "contract_identity": "67a5cd5813d422c513795dd88b561db3f74a55ee2a932d8bcb2d0d1035eb0b37",
+  "decision_table": {
+    "CORPUS_GENERALIZATION": "TRAIN_ACQUISITION_PASSES_BUT_DEVELOPMENT_DOES_NOT",
+    "INTERACTION": "T1_GAIN_EXISTS_ONLY_AT_ONE_STRENGTH",
+    "LORA_OR_OPTIMIZATION_REVIEW": "S1_T1_CANNOT_ACQUIRE_TRAIN_CRITICAL_SPANS",
+    "NO_ACTIONABLE_SIGNAL": "NO_ARM_HAS_REPLICATED_DEVELOPMENT_GAIN",
+    "RECIPE_UNDERPOWERED": "S1_BEATS_S0_FOR_BOTH_SIGNALS_WITH_SAFETY_AND_REPLAY_INTACT",
+    "TARGET_SIGNAL": "T1_BEATS_T0_AT_MATCHED_STRENGTH_WITH_SAFETY_AND_REPLAY_INTACT"
+  },
+  "development_parent_change_authorized": false,
+  "factorial": "2_TARGET_SIGNALS_X_2_RECIPE_STRENGTHS",
+  "fixed_deterministic_decoding": {
+    "do_sample": false,
+    "max_input_tokens": 3072,
+    "max_new_tokens": 2048,
+    "num_beams": 1,
+    "seed": 0,
+    "structural_json_required": true,
+    "temperature": null,
+    "terminal_eos_required": true,
+    "top_p": null
+  },
+  "fixed_development_manifest_identity": "827449da03369587465c2c67d1f69c0ed73d4fa08f960b6f98b403125be9eaa0",
+  "fixed_evaluation_identity": "0f31cb67ea2a5b6094307bb54c76d6c3856d48088bff867a9aacdd57de8e791a",
+  "fixed_training_corpus_sha256": "56c3e13cf79f24882c09b4b73403fa05c1ba628d48c58b822b09f440d848f606",
+  "matched_row_order_per_seed": true,
+  "model_load_authorized": false,
+  "optimizer_creation_authorized": false,
+  "optimizer_steps_authorized": 0,
+  "parent": "R2_STEP_9",
+  "parent_adapter_identity": "c680d686f0b139e618d99fab235c62267caa9482df0efbccb44cb2c58c124f02",
+  "parent_checkpoint_identity": "96e10b85fe30c4be43c2cc1a0b906f04ea4c476cc8d422b4ad26e9758b85b2be",
+  "protocol_identity": "41799641949b42a3bd0c4c50abd9cb1dc7da72d594db106bbb8704b5fdfbda7a",
+  "real_runs_authorized": false,
+  "recipe_contrast": "LR_5E_7_VS_1E_6_WITH_ALL_OTHER_RECIPE_FIELDS_IDENTICAL",
+  "replay_rows": 24,
+  "schema": "editor-factual-setup-r2-causal-learnability-stability-protocol",
+  "schema_version": 1,
+  "seeds": [
+    161803,
+    271828,
+    314159
+  ],
+  "status": "DESIGN_ONLY_REAL_RUNS_NOT_AUTHORIZED",
+  "stop_rules": [
+    "STOP_ON_ANY_MATERIAL_FACTUAL_OR_EPISTEMIC_REGRESSION_VS_R2",
+    "STOP_ON_REPLAY_REGRESSION_ABOVE_ZERO_MATERIAL_CASES",
+    "STOP_ON_IDENTITY_CONTAMINATION_OR_SEED_MISMATCH",
+    "STOP_ON_TARGET_ACQUISITION_FAILURE_IN_ALL_ARMS"
+  ],
+  "target_signal_contrast": "UNIFORM_FINAL_TARGET_VS_CONTRACT_CRITICAL_SPAN_WEIGHTING_ON_IDENTICAL_TARGET_BYTES",
+  "targeted_rows": 48,
+  "training_rows": 72
+}

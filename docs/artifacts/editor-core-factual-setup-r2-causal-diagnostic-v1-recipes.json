@@ -1,0 +1,26 @@
+{
+  "changed_field_only": "learning_rate",
+  "fixed": {
+    "assistant_only_loss": true,
+    "epochs": 1,
+    "gradient_accumulation_steps": 8,
+    "max_sequence_tokens": 3072,
+    "micro_batch_size": 1,
+    "optimizer": "PAGED_ADAMW_8BIT_NEW_STATE",
+    "optimizer_steps": 9,
+    "packing": false,
+    "precision": "BF16",
+    "scheduler": "CONSTANT_WITHOUT_WARMUP"
+  },
+  "levels": {
+    "S0_CONTROL": {
+      "learning_rate": "0.0000005"
+    },
+    "S1_HIGHER_PLASTICITY": {
+      "learning_rate": "0.0000010"
+    }
+  },
+  "recipes_identity": "61de5f5276af6899a708522c4e6ae91e31e40fe977aafacad4fc0bfebc29bced",
+  "schema": "editor-factual-setup-r2-causal-diagnostic-recipes",
+  "schema_version": 1
+}

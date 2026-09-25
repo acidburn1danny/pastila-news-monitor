@@ -1,0 +1,38 @@
+{
+  "artifacts": {
+    "challenger_signal": {
+      "path": "docs/artifacts/editor-core-factual-setup-r2-causal-diagnostic-v1-challenger-signal.jsonl",
+      "rows": 72,
+      "sha256": "a6c90d629cea87d6f16b122199e3c319ad4d1a78ae6b25855d5bce8aa3020a3e"
+    },
+    "control_signal": {
+      "path": "docs/artifacts/editor-core-factual-setup-r2-causal-diagnostic-v1-control-signal.jsonl",
+      "rows": 72,
+      "sha256": "3b79faf08d33a555e706b2e8f21d667cdff4891cb72ec60abe5599223e0f5181"
+    },
+    "evaluation": {
+      "path": "docs/artifacts/editor-core-factual-setup-r2-causal-diagnostic-v1-evaluation.json",
+      "sha256": "da2db8167def12cd2e4a859390bdee2749f2dccc12baef251f8daed20952f6cb"
+    },
+    "recipes": {
+      "path": "docs/artifacts/editor-core-factual-setup-r2-causal-diagnostic-v1-recipes.json",
+      "sha256": "05536583cd0d79d376d77b5b6048dcf6da5c9b93479c0d6d9a2fc16035509201"
+    },
+    "source_training": {
+      "path": "docs/artifacts/editor-core-factual-setup-corrective-v1-training.jsonl",
+      "rows": 72,
+      "sha256": "56c3e13cf79f24882c09b4b73403fa05c1ba628d48c58b822b09f440d848f606"
+    }
+  },
+  "assistant_target_bytes_identical_between_signals": true,
+  "critical_annotated_rows": 48,
+  "development_training_disjoint": true,
+  "historical_holdouts_read": false,
+  "minimal_pairs": 24,
+  "pack_identity": "c9480b68c8f2c10ce4e36b2371d6ae564b43a4ad5fdde23e57759dc4ec8a99bc",
+  "protocol_identity": "41799641949b42a3bd0c4c50abd9cb1dc7da72d594db106bbb8704b5fdfbda7a",
+  "replay_rows_identical_between_signals": true,
+  "schema": "editor-factual-setup-r2-causal-diagnostic-pack",
+  "schema_version": 1,
+  "voice_or_chief_objective": false
+}

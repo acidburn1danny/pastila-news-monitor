@@ -1,0 +1,60 @@
+{
+  "deterministic_decoding": {
+    "do_sample": false,
+    "max_input_tokens": 3072,
+    "max_new_tokens": 2048,
+    "num_beams": 1,
+    "seed": 0,
+    "structural_json_required": true,
+    "temperature": null,
+    "terminal_eos_required": true,
+    "top_p": null
+  },
+  "development_answer_key_sha256": "6a8bdb9b16f901b2567751ecad7ca1aa5b9e9ce03da0af8dfec89d4bf7558764",
+  "development_cases": 24,
+  "development_manifest_identity": "827449da03369587465c2c67d1f69c0ed73d4fa08f960b6f98b403125be9eaa0",
+  "development_requests_sha256": "436adcaf59392c852965501a1b1ed8068c991619e8f3de9e2cd92047f80ae51f",
+  "evaluation_identity": "0f31cb67ea2a5b6094307bb54c76d6c3856d48088bff867a9aacdd57de8e791a",
+  "exact_target_match_is_not_semantic_verdict": true,
+  "historical_holdouts_allowed": false,
+  "metrics": {
+    "acquisition": [
+      "TRAIN_DECODE_SEMANTIC_PASS",
+      "TRAIN_CRITICAL_UNIT_RECALL"
+    ],
+    "adapter": [
+      "FULL_ADAPTER_CONTENT_IDENTITY",
+      "L2_DELTA_BY_TENSOR",
+      "CHANGED_TENSOR_COUNT"
+    ],
+    "behavior": [
+      "DETERMINISTIC_RESPONSE_SHA256",
+      "PARENT_EQUAL_RESPONSE_COUNT"
+    ],
+    "generalization": [
+      "DEVELOPMENT_PAIRED_SEMANTIC_WIN",
+      "DEVELOPMENT_CRITICAL_UNIT_RECALL"
+    ],
+    "retention": [
+      "REPLAY_SEMANTIC_PASS",
+      "REPLAY_REGRESSION"
+    ],
+    "safety": [
+      "FACTUAL_ERROR",
+      "EPISTEMIC_ERROR",
+      "INVENTED_ACTOR_OR_ENTITY"
+    ],
+    "stability": [
+      "PER_SEED_DIRECTION",
+      "SEED_AGREEMENT"
+    ],
+    "teacher_forced": [
+      "FULL_ASSISTANT_MEAN_NLL",
+      "CRITICAL_SPAN_MEAN_NLL",
+      "CRITICAL_TOKEN_COVERAGE"
+    ]
+  },
+  "schema": "editor-factual-setup-r2-causal-diagnostic-evaluation",
+  "schema_version": 1,
+  "selection_authority": "NONE_DEVELOPMENT_RESEARCH_ONLY"
+}
