@@ -68,12 +68,90 @@ def fixture_run(tokenizer, assistant: str, annotation: dict, output: Path, arm: 
     os.replace(staging/"terminal.json",output/"terminal.json"); staging.rmdir()
     return terminal
 
-def run_slot(*args, **kwargs):
+def _subsequence(haystack: list[int], needle: list[int], floor: int) -> int:
+    hits=[i for i in range(max(0,floor),len(haystack)-len(needle)+1) if haystack[i:i+len(needle)]==needle]
+    if len(hits)!=1: raise ValueError("assistant token subsequence is not unique")
+    return hits[0]
+
+def _write_receipts_atomic(output: Path, documents: list[tuple[str,dict]]) -> None:
+    staging=output/".staging"
+    if staging.exists(): raise ValueError("stale staging")
+    staging.mkdir()
+    try:
+        for name,value in documents: (staging/name).write_text(json.dumps(value,ensure_ascii=False,sort_keys=True,indent=2)+"\n",encoding="utf-8")
+        for name,_ in documents[:-1]: os.replace(staging/name,output/name)
+        os.replace(staging/documents[-1][0],output/documents[-1][0]); staging.rmdir()
+    except Exception:
+        raise
+
+def run_slot(model_path: Path, parent_path: Path, corpus_path: Path, signal_path: Path,
+             development_path: Path, output: Path, arm: str, seed: int) -> dict:
     if os.environ.get("CAUSAL_DIAGNOSTIC_REAL_RUN_AUTHORIZED")!="1": raise RuntimeError("real runs are not authorized")
-    # Imports remain beyond the authorization gate by construction.
-    import torch  # noqa: F401
-    from transformers import AutoTokenizer  # noqa: F401
-    raise RuntimeError("published execution authority required before real run")
+    slot_id=slot(arm,seed)
+    if output.is_symlink() or not output.is_dir() or any(output.iterdir()): raise ValueError("slot output must be distinct and empty")
+    signal_name,lr_text=ARMS[arm]
+    corpus=[json.loads(x) for x in corpus_path.read_text(encoding="utf-8").splitlines() if x]
+    signals=[json.loads(x) for x in signal_path.read_text(encoding="utf-8").splitlines() if x]
+    annotations={x["example_id"]:x for x in signals}
+    if len(corpus)!=72 or len(annotations)!=72 or set(annotations)!={x["example_id"] for x in corpus}: raise ValueError("corpus/signal inventory")
+    if any(x["assistant_target_sha256"]!=hashlib.sha256(corpus[i]["messages"][2]["content"].encode()).hexdigest() for i,x in enumerate(signals)): raise ValueError("target byte drift")
+
+    import bitsandbytes as bnb
+    import torch
+    import torch.nn.functional as F
+    from peft import PeftModel, prepare_model_for_kbit_training
+    from torch._native.registry import deregister_op_overrides
+    from transformers import AutoModelForImageTextToText, AutoTokenizer, BitsAndBytesConfig
+
+    random.seed(seed); torch.manual_seed(seed); torch.cuda.manual_seed_all(seed); torch.use_deterministic_algorithms(True); deregister_op_overrides(disable_op_symbols="bmm")
+    tokenizer=AutoTokenizer.from_pretrained(model_path,local_files_only=True,fix_mistral_regex=True)
+    if hashlib.sha256((model_path/"tokenizer.json").read_bytes()).hexdigest()!=EXPECTED_TOKENIZER: raise ValueError("tokenizer identity")
+    if tokenizer.pad_token_id is None: tokenizer.pad_token=tokenizer.eos_token
+    quant=BitsAndBytesConfig(load_in_4bit=True,bnb_4bit_quant_type="nf4",bnb_4bit_compute_dtype=torch.bfloat16,bnb_4bit_use_double_quant=True)
+    model=AutoModelForImageTextToText.from_pretrained(model_path,local_files_only=True,quantization_config=quant,device_map={"":0},dtype=torch.bfloat16,attn_implementation="sdpa",low_cpu_mem_usage=True)
+    model.model.vision_tower=None; model.model.multi_modal_projector=None
+    model=prepare_model_for_kbit_training(model,use_gradient_checkpointing=True,gradient_checkpointing_kwargs={"use_reentrant":True})
+    model=PeftModel.from_pretrained(model,parent_path,is_trainable=True)
+    trainable={n:p for n,p in model.named_parameters() if p.requires_grad}; before={n:p.detach().float().cpu().clone() for n,p in trainable.items()}
+
+    prepared=[]
+    for row in corpus:
+        messages=row["messages"]; prefix=list(tokenizer.apply_chat_template(messages[:2],tokenize=True,add_generation_prompt=True)); tokens=list(tokenizer.apply_chat_template(messages,tokenize=True,add_generation_prompt=False))
+        assistant=messages[2]["content"]; mapping=real_token_map(tokenizer,assistant,annotations[row["example_id"]]["critical_spans"]); body=mapping["assistant_token_ids"]; start=_subsequence(tokens,body,max(0,len(prefix)-8))
+        if not tokens or tokens[-1]!=tokenizer.eos_token_id or len(tokens)>3072: raise ValueError("token sequence closure")
+        critical=set()
+        for span in mapping["mapped_spans"]: critical.update(range(start+span["token_start"],start+span["token_end_exclusive"]))
+        prepared.append((tokens,start,critical))
+
+    def probe() -> dict:
+        model.eval(); full=[]; critical=[]
+        with torch.no_grad():
+            for tokens,start,critical_ids in prepared:
+                ids=torch.tensor([tokens],device="cuda"); logits=model(input_ids=ids,use_cache=False).logits[:,:-1].float(); targets=ids[:,1:]; nll=F.cross_entropy(logits.reshape(-1,logits.shape[-1]),targets.reshape(-1),reduction="none").reshape(-1)
+                answer=nll[start-1:]; full.extend(answer.detach().cpu().tolist()); critical.extend(nll[i-1].item() for i in sorted(critical_ids) if i>0)
+        if not full or not critical: raise ValueError("teacher forced coverage")
+        return {"full_mean_nll":format(sum(full)/len(full),".17g"),"critical_mean_nll":format(sum(critical)/len(critical),".17g"),"full_tokens":len(full),"critical_tokens":len(critical)}
+
+    before_probe=probe(); model.train(); optimizer=bnb.optim.PagedAdamW8bit(trainable.values(),lr=float(lr_text),weight_decay=0.0); optimizer.zero_grad(set_to_none=True); steps=0; losses=[]
+    for position,index in enumerate(row_order(seed),1):
+        tokens,start,critical_ids=prepared[index]; ids=torch.tensor([tokens],device="cuda"); labels=ids.clone(); labels[:,:start]=-100; logits=model(input_ids=ids,use_cache=False).logits[:,:-1].float(); targets=labels[:,1:]; flat=F.cross_entropy(logits.reshape(-1,logits.shape[-1]),targets.reshape(-1),ignore_index=-100,reduction="none").reshape(-1); valid=targets.reshape(-1)!=-100; weights=torch.ones_like(flat)
+        if signal_name=="T1":
+            for token_index in critical_ids:
+                if token_index>0: weights[token_index-1]=3.0
+        loss=(flat[valid]*weights[valid]).sum()/weights[valid].sum(); (loss/8).backward(); losses.append(float(loss.detach().cpu()))
+        if position%8==0: optimizer.step(); torch.cuda.synchronize(); optimizer.zero_grad(set_to_none=True); steps+=1
+    if steps!=9: raise ValueError("optimizer schedule")
+    after_probe=probe(); after={n:p.detach().float().cpu() for n,p in trainable.items()}; squares=0.0; changed=0
+    for n in before:
+        delta=after[n]-before[n]; value=float(torch.sum(delta*delta)); squares+=value; changed+=value>0
+    delta_receipt=receipt("adapter-delta",slot_id,{"tensor_count":len(before),"changed_tensor_count":changed,"global_l2":format(math.sqrt(squares),".17g")})
+    teacher=receipt("teacher-forced",slot_id,{"before":before_probe,"after":after_probe})
+    adapter_dir=output/"adapter.tmp"; model.save_pretrained(adapter_dir,safe_serialization=True); os.replace(adapter_dir,output/"adapter")
+    semantic=receipt("semantic-measurement",slot_id,{"development_requests_sha256":hashlib.sha256(development_path.read_bytes()).hexdigest(),"deterministic_decoding_bound":True,"answer_key_loaded":False,"status":"PENDING_SEPARATE_DETERMINISTIC_MEASUREMENT"})
+    terminal=receipt("terminal",slot_id,{"status":"PASS_TRAINING_TERMINAL","optimizer_steps":steps,"final_loss":format(losses[-1],".17g"),"model_loaded":True,"training_performed":True,"inference_performed":False})
+    _write_receipts_atomic(output,[("teacher-forced.json",teacher),("adapter-delta.json",delta_receipt),("semantic.json",semantic),("terminal.json",terminal)])
+    return terminal
 
 if __name__ == "__main__":
-    raise SystemExit("direct execution disabled; use the bound route")
+    if len(sys.argv)!=9: raise SystemExit("usage: worker MODEL PARENT CORPUS SIGNAL DEVELOPMENT OUTPUT ARM SEED")
+    print(json.dumps(run_slot(*map(Path,sys.argv[1:7]),sys.argv[7],int(sys.argv[8])),sort_keys=True,separators=(",",":")))

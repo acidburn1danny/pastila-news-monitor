@@ -19,7 +19,7 @@ def test_real_mapping_and_fail_closed(tmp_path):
     a=assistant.index("Actorul"); span={"field":"text","start":a,"end":a+7,"text":"Actorul"}
     got=m.real_token_map(Tok(),assistant,[span]); assert got["mapped_spans"][0]["token_start"]==a
     with pytest.raises(ValueError): m.real_token_map(Tok(),assistant,[{**span,"text":"greșit"}])
-    with pytest.raises(RuntimeError): m.run_slot()
+    with pytest.raises(RuntimeError): m.run_slot(*([Path("x")]*6),"T0_CONTROL_S0_CONTROL",161803)
 
 def test_fixture_receipts_and_no_partial(tmp_path):
     m=load(); out=tmp_path/"out"; out.mkdir(); assistant='{"case_id":"x","text":"Fapt calificat."}'; a=assistant.index("Fapt")

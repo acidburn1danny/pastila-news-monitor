@@ -5,7 +5,7 @@
     "preflight": "dde9e697fa72bf1d005961f6b12b4391f226596b25e6b6d9819dd4976b6361dc",
     "route": "bddd8d2ff4c273721365d5b74097d9e4ff02937b8f34b8283ee6b03ecb1f6ab4",
     "smoke": "3bb8558a52c79b0225cea54c85e65ca24150e8c42660d7129670d3c3c31f7bf6",
-    "worker": "de28271ab9346f6a89a98f8d9946b21d2f8da7e756409ef408027dc1b2a1e27e"
+    "worker": "5a0aa6a6d6fa49680d30fc1ae302cee738a442067b9b7a7f72ff1cf3d74d389f"
   },
   "invalid_payload_persistence": false,
   "model_load_authorized": false,
@@ -26,7 +26,7 @@
     "TERMINAL"
   ],
   "recipes_identity": "61de5f5276af6899a708522c4e6ae91e31e40fe977aafacad4fc0bfebc29bced",
-  "runtime_boundary_identity": "934879da1ddf07a4297290c8738a3ae825833e0eaa8dd18b3aaa7283d65df64f",
+  "runtime_boundary_identity": "7ad42479bb9309344e0085e3375f65102f8383257c46cd41c4a2fc404c87890e",
   "schema": "editor-factual-setup-r2-causal-diagnostic-real-runtime-boundary",
   "schema_version": 1,
   "seeds": [
