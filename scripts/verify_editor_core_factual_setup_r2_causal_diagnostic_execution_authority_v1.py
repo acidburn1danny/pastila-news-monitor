@@ -10,7 +10,8 @@ def verify(arm,seed,require_published=True):
     head=git("rev-parse","HEAD")
     if require_published:
         committed=subprocess.check_output(["git","-c",f"safe.directory={ROOT}","-C",str(ROOT),"show",f"{head}:{REL}"])
-        assert committed.rstrip(b"\n")==raw.rstrip(b"\n") and git("rev-parse","@{upstream}")==head
+        expected=json.dumps({**doc,"authority_identity":ident},ensure_ascii=False,sort_keys=True,indent=2).encode()+b"\n"
+        assert committed==expected and json.loads(committed)==json.loads(raw) and git("rev-parse","@{upstream}")==head
     else:
         subprocess.run(["git","-c",f"safe.directory={ROOT}","-C",str(ROOT),"merge-base","--is-ancestor",doc["source_commit"],head],check=True)
     return {"status":"PASS_PUBLISHED_AUTHORITY" if require_published else "PASS_LOCAL_AUTHORITY","authority_identity":ident,"commit":head,"slot":slots[0]}
