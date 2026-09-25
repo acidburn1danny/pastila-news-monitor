@@ -1,0 +1,54 @@
+{
+  "arms": [
+    "T0_CONTROL_S0_CONTROL",
+    "T0_CONTROL_S1_HIGHER_PLASTICITY",
+    "T1_CONTRACT_WEIGHTED_S0_CONTROL",
+    "T1_CONTRACT_WEIGHTED_S1_HIGHER_PLASTICITY"
+  ],
+  "boundary_identity": "a79d7d38ef3589a90ac0e8f77cbcf6cd67c05a869eb1feb8de0d5a905d4955c7",
+  "evaluation_identity": "0f31cb67ea2a5b6094307bb54c76d6c3856d48088bff867a9aacdd57de8e791a",
+  "fixture_sha256": "50350e32a07d3d0806757c21ab501da7c939802df0c43f612af0eb91064b7c97",
+  "inference_authorized": false,
+  "measurements": [
+    "BYTE_SPAN_TO_TOKEN_MAPPING",
+    "FULL_TARGET_NLL",
+    "CRITICAL_SPAN_NLL",
+    "ADAPTER_DELTA",
+    "TRAIN_ACQUISITION",
+    "REPLAY_RETENTION",
+    "DEVELOPMENT_EVALUATION"
+  ],
+  "model_load_authorized": false,
+  "optimizer_creation_authorized": false,
+  "optimizer_steps_authorized": 0,
+  "output_isolation": "DISTINCT_EMPTY_ROOT_PER_ARM_SEED",
+  "pack_identity": "c9480b68c8f2c10ce4e36b2371d6ae564b43a4ad5fdde23e57759dc4ec8a99bc",
+  "parent": "R2_STEP_9",
+  "parent_adapter_identity": "c680d686f0b139e618d99fab235c62267caa9482df0efbccb44cb2c58c124f02",
+  "parent_checkpoint_identity": "96e10b85fe30c4be43c2cc1a0b906f04ea4c476cc8d422b4ad26e9758b85b2be",
+  "parent_selection_authority": false,
+  "promotion": false,
+  "protocol_identity": "41799641949b42a3bd0c4c50abd9cb1dc7da72d594db106bbb8704b5fdfbda7a",
+  "published_source_commit": "e4858a37f98890618d4e59579bf074043a3c81b7",
+  "published_source_tree": "7a570d4457ddbb7288e42579911d36afdbd359ea",
+  "recipes_identity": "61de5f5276af6899a708522c4e6ae91e31e40fe977aafacad4fc0bfebc29bced",
+  "release": false,
+  "schema": "editor-factual-setup-r2-causal-diagnostic-execution-boundary",
+  "schema_version": 1,
+  "seeds": [
+    161803,
+    271828,
+    314159
+  ],
+  "slots": 12,
+  "status": "FIXTURE_ONLY_REAL_RUNS_NOT_AUTHORIZED",
+  "stop_rules": [
+    "STOP_ON_ANY_MATERIAL_FACTUAL_OR_EPISTEMIC_REGRESSION_VS_R2",
+    "STOP_ON_REPLAY_REGRESSION_ABOVE_ZERO_MATERIAL_CASES",
+    "STOP_ON_IDENTITY_CONTAMINATION_OR_SEED_MISMATCH",
+    "STOP_ON_TARGET_ACQUISITION_FAILURE_IN_ALL_ARMS"
+  ],
+  "training_authorized": false,
+  "worker_sha256": "161722484382f9fd9208c8ea5aae34ffa081aac308b08e22704442709d0ccaf2",
+  "zero_step_required": true
+}
