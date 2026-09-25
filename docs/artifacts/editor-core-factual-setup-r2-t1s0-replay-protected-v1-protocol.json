@@ -1,0 +1,91 @@
+{
+  "arms": [
+    {
+      "arm_id": "T1_S0_EXISTING_CONTROL",
+      "signal_sha256": "a6c90d629cea87d6f16b122199e3c319ad4d1a78ae6b25855d5bce8aa3020a3e"
+    },
+    {
+      "arm_id": "T1_S0_REPLAY_PROTECTED",
+      "signal_sha256": "65536e6c0c8ee8ed443acd5823ad2d1e2cc65a713cc1d42639e7603cbca88b26"
+    }
+  ],
+  "claims_allowed": [
+    "CAUSAL_EFFECT_OF_EXPLICIT_REPLAY_WEIGHTING_UNDER_T1_S0"
+  ],
+  "claims_forbidden": [
+    "PARENT_SELECTION",
+    "NATURALISTIC_TRANSFER",
+    "PROMOTION",
+    "RELEASE"
+  ],
+  "common_repetition_gate": {
+    "applies_identically_to_both_arms": true,
+    "material_replay_regressions_allowed": 0,
+    "normalized_duplicate_sentence_allowed": false,
+    "normalized_repeated_clause_allowed": false,
+    "novel_actor_allowed": false
+  },
+  "decision_table": {
+    "CONTINUE_RESEARCH": "PROTECTED_ARM_PRESERVES_T1_S0_DEVELOPMENT_SIGNAL_AND_HAS_ZERO_MATERIAL_REPLAY_REGRESSIONS_IN_AT_LEAST_2_OF_3_SEEDS",
+    "REVISE": "REPLAY_PROTECTION_IMPROVES_RETENTION_BUT_ERASES_TARGETED_DEVELOPMENT_GAIN",
+    "STOP": "ANY_MATERIAL_FACTUAL_EPISTEMIC_OR_REPLAY_REGRESSION_OR_NO_REPLICATED_DEVELOPMENT_SIGNAL"
+  },
+  "fixed": {
+    "assistant_target_bytes": "IDENTICAL_ALL_72_ROWS",
+    "corrective_signal_rows": "BYTE_IDENTICAL_ALL_48_ROWS",
+    "deterministic_decoding": {
+      "do_sample": false,
+      "max_input_tokens": 3072,
+      "max_new_tokens": 2048,
+      "num_beams": 1,
+      "seed": 0,
+      "structural_json_required": true,
+      "temperature": null,
+      "terminal_eos_required": true,
+      "top_p": null
+    },
+    "evaluator_identity": "0f31cb67ea2a5b6094307bb54c76d6c3856d48088bff867a9aacdd57de8e791a",
+    "learning_rate": "0.0000005",
+    "recipe_identity": "61de5f5276af6899a708522c4e6ae91e31e40fe977aafacad4fc0bfebc29bced",
+    "recipe_level": "S0_CONTROL",
+    "training_corpus_sha256": "56c3e13cf79f24882c09b4b73403fa05c1ba628d48c58b822b09f440d848f606"
+  },
+  "historical_holdouts_allowed": false,
+  "hypothesis": "T1_S0_WITH_EXPLICIT_REPLAY_WEIGHTING_RETAINS_TARGETED_GAIN_WITHOUT_PROCEDURAL_NUMERIC_ACTOR_OR_REPETITION_REGRESSION",
+  "matched_row_order_per_seed": true,
+  "measurements": [
+    "TEACHER_FORCED_FULL_TARGET_NLL",
+    "TEACHER_FORCED_REPLAY_CRITICAL_SPAN_NLL",
+    "DETERMINISTIC_DEVELOPMENT_SEMANTIC_SCORE",
+    "DETERMINISTIC_REPLAY_RETENTION",
+    "PROCEDURAL_NUMERIC_ACTOR_AND_REPETITION_FAILURE_COUNTS",
+    "ADAPTER_DELTA",
+    "BETWEEN_SEED_STABILITY"
+  ],
+  "model_load_authorized": false,
+  "optimizer_creation_authorized": false,
+  "optimizer_steps_authorized": 0,
+  "parent": "R2_STEP_9",
+  "parent_adapter_identity": "c680d686f0b139e618d99fab235c62267caa9482df0efbccb44cb2c58c124f02",
+  "parent_selection_authority": false,
+  "protocol_identity": "9b6276e9847978a538141122d600b77f69f6920a286455b9da6d9c6cf415284f",
+  "real_runs_authorized": false,
+  "replay_protections": {
+    "actor_fidelity": "weight the complete actor-bound sequence",
+    "epistemic_qualification": "retain existing allegation and qualification replay safety",
+    "numeric_reconciliation": "weight the complete reconciled numeric sequence",
+    "procedural_status": "weight the complete safe procedural sequence",
+    "repetition_degeneration": "weight complete non-repetitive 2-3 sentence text and score repetition identically in both arms"
+  },
+  "schema": "editor-factual-setup-r2-t1s0-replay-protected-protocol",
+  "schema_version": 1,
+  "seeds": [
+    161803,
+    271828,
+    314159
+  ],
+  "single_causal_difference": "CRITICAL_SPAN_WEIGHTING_ADDED_TO_24_REPLAY_TEXT_VALUES",
+  "source_terminal_result_identity": "1a2ed5142f9523b901355e77a7e53d8d21a1b12e7659c84151a17c4a49b8e200",
+  "status": "DESIGN_ONLY_REAL_RUNS_NOT_AUTHORIZED",
+  "training_authorized": false
+}

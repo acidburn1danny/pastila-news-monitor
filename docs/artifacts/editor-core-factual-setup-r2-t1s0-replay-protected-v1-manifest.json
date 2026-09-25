@@ -1,0 +1,23 @@
+{
+  "assistant_target_bytes_identical": true,
+  "control_signal_sha256": "a6c90d629cea87d6f16b122199e3c319ad4d1a78ae6b25855d5bce8aa3020a3e",
+  "corrective_rows_unchanged": 48,
+  "coverage": {
+    "ACTOR_FIDELITY": 8,
+    "EPISTEMIC_QUALIFICATION": 8,
+    "NUMERIC_RECONCILIATION": 4,
+    "PROCEDURAL_STATUS": 4
+  },
+  "evaluation_identity": "0f31cb67ea2a5b6094307bb54c76d6c3856d48088bff867a9aacdd57de8e791a",
+  "historical_holdouts_read": false,
+  "pack_identity": "2676266a823346a8a361bf009f2c3dae0ed2226bb86731e59e8c4a735810b588",
+  "protected_signal_sha256": "65536e6c0c8ee8ed443acd5823ad2d1e2cc65a713cc1d42639e7603cbca88b26",
+  "protocol_identity": "9b6276e9847978a538141122d600b77f69f6920a286455b9da6d9c6cf415284f",
+  "recipes_identity": "61de5f5276af6899a708522c4e6ae91e31e40fe977aafacad4fc0bfebc29bced",
+  "replay_rows_protected": 24,
+  "rows": 72,
+  "schema": "editor-factual-setup-r2-t1s0-replay-protected-pack",
+  "schema_version": 1,
+  "source_training_sha256": "56c3e13cf79f24882c09b4b73403fa05c1ba628d48c58b822b09f440d848f606",
+  "voice_or_chief_objective": false
+}
