@@ -1,5 +1,5 @@
 {
-  "authority_identity": "118a3879f65ea8355713742461bde674e8ea27b276c3f66a94cdea8508806703",
+  "authority_identity": "84e36c9a2e925193845c8c7f5d86c314ffe33d20a5e54db8eadc082809a6e483",
   "evaluation_identity": "0f31cb67ea2a5b6094307bb54c76d6c3856d48088bff867a9aacdd57de8e791a",
   "holdout_access_authorized": false,
   "owner_run_authorization_required": true,
@@ -131,9 +131,10 @@
   ],
   "source_commit": "9649ba9e290487d4fb5c365599904d1f2ee26f72",
   "source_tree": "28642cd09a7c4bf0e2ad4e6a887d1a2f85e1795e",
-  "supervisor_sha256": "b10f66f0fd4b135a0310af51e1f550b21baabbea22d2cc7019e05d1098201587",
+  "supervisor_sha256": "263d17860b5d62b5b1a5fce430a5e9a542d4a3e1f3d37e0ea00f9480f07ba6d7",
   "terminal_receipt_required": true,
   "tokenizer_sha256": "d5f6046775b112f0e2d456ee9dba450684ab964fe5c4e231599bdc6773028135",
-  "training_route_sha256": "97b9352a5c7d107e7d3a02aa0f072a1d9214baee1c85c16ba2a129905ab921d5",
+  "training_route_sha256": "ac5ef1b467e08aa18d17ead2d140bb606fdc74d3652505fb580ef24989cf08b6",
+  "verifier_sha256": "e98beed874eccdcdd7de569ac538c708ccffccd0c54b9136d0bba2506330f18b",
   "worker_sha256": "5a0aa6a6d6fa49680d30fc1ae302cee738a442067b9b7a7f72ff1cf3d74d389f"
 }

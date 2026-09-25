@@ -3,9 +3,12 @@ import argparse,hashlib,json,subprocess
 from pathlib import Path
 ROOT=Path(__file__).parents[1]; REL="docs/artifacts/editor-core-factual-setup-r2-causal-diagnostic-v1-execution-authority.json"
 def canonical(v): return json.dumps(v,ensure_ascii=False,allow_nan=False,sort_keys=True,separators=(",",":")).encode()
+def sha(path): return hashlib.sha256(path.read_bytes()).hexdigest()
 def git(*a): return subprocess.check_output(["git","-c",f"safe.directory={ROOT}","-C",str(ROOT),*a]).decode().strip()
 def verify(arm,seed,require_published=True):
     raw=(ROOT/REL).read_bytes(); doc=json.loads(raw); ident=doc.pop("authority_identity"); assert ident==hashlib.sha256(canonical(doc)).hexdigest()
+    bound={"worker_sha256":"scripts/train_editor_core_factual_setup_r2_causal_diagnostic_runtime_v1.py","route_sha256":"scripts/run_editor_core_factual_setup_r2_causal_diagnostic_runtime_v1.sh","training_route_sha256":"scripts/run_editor_core_factual_setup_r2_causal_diagnostic_slot_v1.sh","supervisor_sha256":"scripts/supervise_editor_core_factual_setup_r2_causal_diagnostic_v1.py","verifier_sha256":"scripts/verify_editor_core_factual_setup_r2_causal_diagnostic_execution_authority_v1.py"}
+    assert all(doc[key]==sha(ROOT/rel) for key,rel in bound.items())
     slots=[s for s in doc["slots"] if s["arm"]==arm and s["seed"]==seed]; assert len(slots)==1 and len(doc["slots"])==12 and len({s["slot_id"] for s in doc["slots"]})==12
     head=git("rev-parse","HEAD")
     if require_published:

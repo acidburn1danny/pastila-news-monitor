@@ -28,8 +28,13 @@ def execute_all(root:Path, training_route:Path, common:dict[str,Path]):
         signal=common["control"] if item["arm"].startswith("T0_") else common["challenger"]
         command=["bash",str(training_route),str(common["rootfs"]),str(common["model"]),str(common["checkpoint"]),str(common["corpus"]),str(signal),str(common["development"]),item["output"],str(common["worker"]),str(common["verifier"]),item["arm"],str(item["seed"]),str(common["route"]),str(common["preflight"]),str(common["challenger"]),"--execute-authorized"]
         subprocess.run(command,check=True)
-        terminal=json.loads((Path(item["output"])/"terminal.json").read_text()); terminals.append(terminal)
-    return {"status":"PASS_12_TERMINAL_SLOTS","terminals":terminals}
+        terminal=json.loads((Path(item["output"])/"terminal.json").read_text())
+        if terminal.get("status")!="PASS_TRAINING_TERMINAL" or terminal.get("optimizer_steps")!=9 or terminal.get("arm")!=item["arm"] or terminal.get("seed")!=item["seed"]:
+            raise ValueError(f"terminal closure failure: {item['arm']} seed {item['seed']}")
+        terminals.append(terminal)
+    result={"status":"PASS_12_TERMINAL_SLOTS","terminals":terminals,"optimizer_steps_total":108,"slots_completed":12}
+    tmp=root/".program-terminal.json.tmp"; final=root/"program-terminal.json"; tmp.write_text(json.dumps(result,sort_keys=True)+"\n",encoding="utf-8"); tmp.replace(final)
+    return result
 def main():
     p=argparse.ArgumentParser(); p.add_argument("--output-root",type=Path,required=True); p.add_argument("--fixture-only",action="store_true"); p.add_argument("--preflight-all",action="store_true"); p.add_argument("--local-authority",action="store_true")
     p.add_argument("--execute-authorized",action="store_true")

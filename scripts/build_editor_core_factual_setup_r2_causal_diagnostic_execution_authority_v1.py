@@ -14,6 +14,7 @@ def main():
       "runtime_boundary_identity":runtime["runtime_boundary_identity"],"worker_sha256":sha(ROOT/"scripts/train_editor_core_factual_setup_r2_causal_diagnostic_runtime_v1.py"),
       "route_sha256":sha(ROOT/"scripts/run_editor_core_factual_setup_r2_causal_diagnostic_runtime_v1.sh"),"supervisor_sha256":sha(ROOT/"scripts/supervise_editor_core_factual_setup_r2_causal_diagnostic_v1.py"),
       "training_route_sha256":sha(ROOT/"scripts/run_editor_core_factual_setup_r2_causal_diagnostic_slot_v1.sh"),
+      "verifier_sha256":sha(ROOT/"scripts/verify_editor_core_factual_setup_r2_causal_diagnostic_execution_authority_v1.py"),
       "protocol_identity":runtime["protocol_identity"],"pack_identity":runtime["pack_identity"],"recipes_identity":runtime["recipes_identity"],"evaluation_identity":runtime["evaluation_identity"],
       "parent_adapter_identity":runtime["parent_adapter_identity"],"parent_checkpoint_identity":runtime["parent_checkpoint_identity"],"tokenizer_sha256":runtime["tokenizer_sha256"],"slots":slots,
       "owner_run_authorization_required":True,"publication_required":True,"real_runs_authorized_in_build_task":False,"holdout_access_authorized":False,"parent_selection_authority":False,

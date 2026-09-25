@@ -17,3 +17,12 @@ def test_real_supervisor_and_route_require_separate_owner_authority(monkeypatch)
  m=load("scripts/supervise_editor_core_factual_setup_r2_causal_diagnostic_v1.py","sup2"); monkeypatch.delenv("EDITOR_CAUSAL_DIAGNOSTIC_OWNER_AUTHORIZED",raising=False); root=Path("unused")
  with pytest.raises(ValueError,match="owner run authorization"): m.execute_all(root,Path("route"),{})
  text=(ROOT/"scripts/run_editor_core_factual_setup_r2_causal_diagnostic_slot_v1.sh").read_text(); assert "EDITOR_CAUSAL_DIAGNOSTIC_OWNER_AUTHORIZED" in text and "--execute-authorized" in text and "--preflight-only" in text
+ assert "EXPECTED_T0_SIGNAL" in text and "EXPECTED_T1_SIGNAL" in text
+
+def test_supervisor_rejects_nonterminal_or_wrong_step_receipt(tmp_path,monkeypatch):
+ m=load("scripts/supervise_editor_core_factual_setup_r2_causal_diagnostic_v1.py","sup3"); root=tmp_path/"slots"; root.mkdir(); monkeypatch.setenv("EDITOR_CAUSAL_DIAGNOSTIC_OWNER_AUTHORIZED","1")
+ def fake_run(command,check):
+  out=Path(command[8]); (out/"terminal.json").write_text(json.dumps({"status":"PASS_TRAINING_TERMINAL","optimizer_steps":8,"arm":command[11],"seed":int(command[12])}))
+ monkeypatch.setattr(m.subprocess,"run",fake_run)
+ common={k:Path(k) for k in ("rootfs","model","checkpoint","corpus","control","challenger","development","worker","verifier","route","preflight")}
+ with pytest.raises(ValueError,match="terminal closure failure"): m.execute_all(root,Path("training-route"),common)
