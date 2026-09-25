@@ -1,0 +1,48 @@
+{
+  "arms": [
+    "T1_S0_EXISTING_CONTROL",
+    "T1_S0_REPLAY_PROTECTED"
+  ],
+  "common_measurement_annotations_sha256": "65536e6c0c8ee8ed443acd5823ad2d1e2cc65a713cc1d42639e7603cbca88b26",
+  "control_learning_signal_sha256": "a6c90d629cea87d6f16b122199e3c319ad4d1a78ae6b25855d5bce8aa3020a3e",
+  "evaluation_identity": "0f31cb67ea2a5b6094307bb54c76d6c3856d48088bff867a9aacdd57de8e791a",
+  "files": {
+    "audit": "932d8b12f4bc3a112bd7b02927b5c3fd253fc4c647e3d4bc05b38a3bb9fd350f",
+    "preflight": "746d9af5430e6271949aafea0a875bec490d337a017c7aa1fb2d04d90c21d7df",
+    "route": "86e604c6f0a150f238404b251264ea4c48ff4148b4888720952f293fa37d2ec4",
+    "smoke": "f8aac80ad8e5a050dd85926243436640448a047148f28dc6a80eb548bea1f1c9",
+    "worker": "2d24485f4564080a60cfbae7a73ce75c62850283ca32b3a5a9b027408822ba5d"
+  },
+  "historical_holdouts_allowed": false,
+  "inference_authorized": false,
+  "learning_measurement_separation": true,
+  "learning_rate": "0.0000005",
+  "model_load_authorized": false,
+  "optimizer_creation_authorized": false,
+  "optimizer_steps_authorized": 0,
+  "output_isolation": "DISTINCT_EMPTY_ROOT_PER_ARM_SEED",
+  "pack_identity": "2676266a823346a8a361bf009f2c3dae0ed2226bb86731e59e8c4a735810b588",
+  "parent": "R2_STEP_9",
+  "parent_adapter_identity": "c680d686f0b139e618d99fab235c62267caa9482df0efbccb44cb2c58c124f02",
+  "parent_selection_authority": false,
+  "promotion": false,
+  "protected_learning_signal_sha256": "65536e6c0c8ee8ed443acd5823ad2d1e2cc65a713cc1d42639e7603cbca88b26",
+  "protocol_identity": "9b6276e9847978a538141122d600b77f69f6920a286455b9da6d9c6cf415284f",
+  "published_source_commit": "cc5e1894506372afca0a915a6ed202968c7b7f10",
+  "published_source_tree": "5939a9509fd54e2142de5448ad2ab3ffad697e99",
+  "recipe": "S0_CONTROL",
+  "release": false,
+  "runtime_boundary_identity": "75074a9de2f9ecfee37889a1339db6f11401d0750d70271ec8fb27a5936a8baa",
+  "schema": "editor-factual-setup-r2-t1s0-replay-protected-real-runtime-boundary",
+  "schema_version": 1,
+  "seeds": [
+    161803,
+    271828,
+    314159
+  ],
+  "slots": 6,
+  "status": "BOUND_REAL_RUNTIME_NOT_AUTHORIZED",
+  "terminal_rule": "TERMINAL_RECEIPT_LAST",
+  "tokenizer_sha256": "d5f6046775b112f0e2d456ee9dba450684ab964fe5c4e231599bdc6773028135",
+  "training_authorized": false
+}
