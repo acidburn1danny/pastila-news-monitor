@@ -18,8 +18,8 @@ def preflight_all(root:Path, route:Path, rootfs:Path, model:Path, corpus:Path, c
         authority=verify(item["arm"],item["seed"],published)
         command=["bash",str(route),str(rootfs),str(model),str(corpus),str(challenger),item["output"],str(preflight),str(worker),"--preflight-only"]
         result=subprocess.run(command,check=True,text=True,capture_output=True); receipt=json.loads(result.stdout)
-        if receipt.get("status")!="PASS_ZERO_STEP" or receipt.get("model_loaded") or receipt.get("optimizer_steps")!=0: raise ValueError("slot zero-step failure")
-        receipts.append({"slot_id":authority["slot"]["slot_id"],"preflight_identity":receipt["preflight_identity"],"mapping_identity":receipt["mapping_identity"]})
+        if receipt.get("status")!="PASS_ZERO_STEP" or receipt.get("model_loaded") or receipt.get("optimizer_steps")!=0 or receipt.get("rows")!=72 or receipt.get("spans",0)<=0: raise ValueError("slot zero-step failure")
+        receipts.append({"slot_id":authority["slot"]["slot_id"],"preflight_identity":receipt["preflight_identity"],"mapping_identity":receipt["mapping_identity"],"measurement_rows":receipt["rows"],"measurement_spans":receipt["spans"]})
     return {"status":"PASS_12_SLOT_ZERO_STEP","slots":receipts,"model_loaded":False,"optimizer_steps":0,"real_runs":0}
 def execute_all(root:Path, training_route:Path, common:dict[str,Path]):
     if os.environ.get("EDITOR_CAUSAL_DIAGNOSTIC_OWNER_AUTHORIZED")!="1": raise ValueError("separate owner run authorization missing")

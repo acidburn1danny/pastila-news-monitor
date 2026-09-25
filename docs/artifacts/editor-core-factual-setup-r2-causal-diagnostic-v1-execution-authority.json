@@ -1,5 +1,5 @@
 {
-  "authority_identity": "395d56f1d1fce64add150ced71d77c14c5067e005aa5da6f7fdfd4bac4223804",
+  "authority_identity": "99d7efb5510a3ab468e40605781e5f6a940c97c7768be8041c865ad55a0c1ee9",
   "evaluation_identity": "0f31cb67ea2a5b6094307bb54c76d6c3856d48088bff867a9aacdd57de8e791a",
   "holdout_access_authorized": false,
   "owner_run_authorization_required": true,
@@ -15,7 +15,7 @@
   "release_authorized": false,
   "retry_authorized": false,
   "route_sha256": "bddd8d2ff4c273721365d5b74097d9e4ff02937b8f34b8283ee6b03ecb1f6ab4",
-  "runtime_boundary_identity": "c15c66ac606804e6d4f6e1c9067ecfb21cba909b048ed4a981c72383aed3c225",
+  "runtime_boundary_identity": "a9f1dd5baace7b5254d14d4200b694e9696cc0647e36d17e6d7fab7a013491ee",
   "schema": "editor-factual-setup-r2-causal-diagnostic-execution-authority",
   "schema_version": 1,
   "scope": "DEVELOPMENT_RESEARCH_FACTORIAL_2X2_ONLY",
@@ -131,10 +131,10 @@
   ],
   "source_commit": "9649ba9e290487d4fb5c365599904d1f2ee26f72",
   "source_tree": "28642cd09a7c4bf0e2ad4e6a887d1a2f85e1795e",
-  "supervisor_sha256": "263d17860b5d62b5b1a5fce430a5e9a542d4a3e1f3d37e0ea00f9480f07ba6d7",
+  "supervisor_sha256": "cf149e5dd4a7237888062e3b8134b7eb944cdf1e9ad919d787a129086a26c50d",
   "terminal_receipt_required": true,
   "tokenizer_sha256": "d5f6046775b112f0e2d456ee9dba450684ab964fe5c4e231599bdc6773028135",
-  "training_route_sha256": "ac5ef1b467e08aa18d17ead2d140bb606fdc74d3652505fb580ef24989cf08b6",
+  "training_route_sha256": "c72df02bfd8ac6f1526658fca742237eb116a7552eaa505b3dc365dfdf178b45",
   "verifier_sha256": "e98beed874eccdcdd7de569ac538c708ccffccd0c54b9136d0bba2506330f18b",
-  "worker_sha256": "867f7727c2b3a57d5e4fbe8326a7470183645499cf133218d1face84b63549c2"
+  "worker_sha256": "bc0e7247f44e91755df5e88404089c87967f6bf3a6eb6c3aa1a1bda0216bf8e8"
 }

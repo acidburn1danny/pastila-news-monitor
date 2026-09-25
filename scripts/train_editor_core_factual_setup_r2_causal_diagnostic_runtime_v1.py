@@ -108,17 +108,22 @@ def _write_receipts_atomic(output: Path, documents: list[tuple[str,dict]]) -> No
     except Exception:
         raise
 
-def run_slot(model_path: Path, parent_path: Path, corpus_path: Path, signal_path: Path,
-             development_path: Path, output: Path, arm: str, seed: int) -> dict:
+def run_slot(model_path: Path, parent_path: Path, corpus_path: Path, learning_signal_path: Path,
+             measurement_annotations_path: Path, development_path: Path, output: Path, arm: str, seed: int) -> dict:
     if os.environ.get("CAUSAL_DIAGNOSTIC_REAL_RUN_AUTHORIZED")!="1": raise RuntimeError("real runs are not authorized")
     slot_id=slot(arm,seed)
     if output.is_symlink() or not output.is_dir() or any(output.iterdir()): raise ValueError("slot output must be distinct and empty")
     signal_name,lr_text=ARMS[arm]
     corpus=[json.loads(x) for x in corpus_path.read_text(encoding="utf-8").splitlines() if x]
-    signals=[json.loads(x) for x in signal_path.read_text(encoding="utf-8").splitlines() if x]
-    annotations={x["example_id"]:x for x in signals}
-    if len(corpus)!=72 or len(annotations)!=72 or set(annotations)!={x["example_id"] for x in corpus}: raise ValueError("corpus/signal inventory")
-    if any(x["assistant_target_sha256"]!=hashlib.sha256(corpus[i]["messages"][2]["content"].encode()).hexdigest() for i,x in enumerate(signals)): raise ValueError("target byte drift")
+    learning_signals=[json.loads(x) for x in learning_signal_path.read_text(encoding="utf-8").splitlines() if x]
+    measurement_signals=[json.loads(x) for x in measurement_annotations_path.read_text(encoding="utf-8").splitlines() if x]
+    learning={x["example_id"]:x for x in learning_signals}; annotations={x["example_id"]:x for x in measurement_signals}
+    expected_ids={x["example_id"] for x in corpus}
+    if len(corpus)!=72 or len(learning)!=72 or len(annotations)!=72 or set(learning)!=expected_ids or set(annotations)!=expected_ids: raise ValueError("corpus/signal inventory")
+    targets={x["example_id"]:hashlib.sha256(x["messages"][2]["content"].encode()).hexdigest() for x in corpus}
+    if any(x["assistant_target_sha256"]!=targets[x["example_id"]] for x in learning_signals): raise ValueError("learning target byte drift")
+    if any(x["assistant_target_sha256"]!=targets[x["example_id"]] for x in measurement_signals): raise ValueError("measurement target byte drift")
+    if any(not x["critical_spans"] for x in measurement_signals): raise ValueError("measurement critical-span coverage")
 
     import bitsandbytes as bnb
     import torch
@@ -176,5 +181,5 @@ def run_slot(model_path: Path, parent_path: Path, corpus_path: Path, signal_path
     return terminal
 
 if __name__ == "__main__":
-    if len(sys.argv)!=9: raise SystemExit("usage: worker MODEL PARENT CORPUS SIGNAL DEVELOPMENT OUTPUT ARM SEED")
-    print(json.dumps(run_slot(*map(Path,sys.argv[1:7]),sys.argv[7],int(sys.argv[8])),sort_keys=True,separators=(",",":")))
+    if len(sys.argv)!=10: raise SystemExit("usage: worker MODEL PARENT CORPUS LEARNING_SIGNAL MEASUREMENT_ANNOTATIONS DEVELOPMENT OUTPUT ARM SEED")
+    print(json.dumps(run_slot(*map(Path,sys.argv[1:8]),sys.argv[8],int(sys.argv[9])),sort_keys=True,separators=(",",":")))

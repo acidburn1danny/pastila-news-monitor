@@ -29,7 +29,7 @@ def test_real_mapping_and_fail_closed(tmp_path):
     a=assistant.index("Actorul"); span={"field":"text","start":a,"end":a+7,"text":"Actorul"}
     got=m.real_token_map(Tok(),assistant,[span]); assert got["mapped_spans"][0]["token_start"]==a
     with pytest.raises(ValueError): m.real_token_map(Tok(),assistant,[{**span,"text":"greșit"}])
-    with pytest.raises(RuntimeError): m.run_slot(*([Path("x")]*6),"T0_CONTROL_S0_CONTROL",161803)
+    with pytest.raises(RuntimeError): m.run_slot(*([Path("x")]*7),"T0_CONTROL_S0_CONTROL",161803)
 
 def test_chat_mapping_uses_structural_assistant_boundary():
     m=load(); assistant='{"case_id":"x","text":"Actor calificat."}'; messages=[{"role":"system","content":"s"},{"role":"user","content":assistant},{"role":"assistant","content":assistant}]; a=assistant.index("Actor")
@@ -46,6 +46,8 @@ def test_fixture_receipts_and_no_partial(tmp_path):
 def test_source_has_no_top_level_ml_import():
     text=(ROOT/"scripts/train_editor_core_factual_setup_r2_causal_diagnostic_runtime_v1.py").read_text(encoding="utf-8")
     assert "    import torch" in text and "\nimport torch" not in text
+    assert "learning_signal_path" in text and "measurement_annotations_path" in text
+    assert "measurement critical-span coverage" in text
 
 def test_all_published_critical_spans_map_inside_assistant_text():
     m=load()
