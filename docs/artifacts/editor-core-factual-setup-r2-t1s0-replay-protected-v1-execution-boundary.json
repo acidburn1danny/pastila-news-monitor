@@ -1,0 +1,91 @@
+{
+  "arms": [
+    "T1_S0_EXISTING_CONTROL",
+    "T1_S0_REPLAY_PROTECTED"
+  ],
+  "boundary_identity": "cb9119154bac17b3b5fc5cd604a8dee33f1a527d563fe2eb0ac8d5e0bf90f68a",
+  "decision_states": [
+    "STOP",
+    "REVISE",
+    "CONTINUE_RESEARCH"
+  ],
+  "files": {
+    "audit": "39624fd09ea2ccff1c18b6b552c98cf6ad4cd99c335a90b88a96e810afd86606",
+    "fixture": "fd31743e375c2046c0b09af8fd62ca751853db4e9921565fec979294d1920fb2",
+    "smoke": "3e28b602dcf77f2edfe20d0f693cc4aadc62eb51668b0a1e4b9e09768e7fe6bb",
+    "worker": "e81ee77ea5ae73c4f46f4f6168dfdabb666b14ee91d715dfd7f834d183b7a222",
+    "zero_step": "a7ad2f65231bd4bc7e3ce4c6d038d0b878537bc8cba84ab7f303ab0a79781ade"
+  },
+  "historical_holdouts_allowed": false,
+  "inference_authorized": false,
+  "matched_row_order_per_seed": true,
+  "measurements": [
+    "TEACHER_FORCED_FULL_TARGET_BEFORE_AFTER",
+    "TEACHER_FORCED_CRITICAL_SPAN_BEFORE_AFTER",
+    "DETERMINISTIC_DEVELOPMENT",
+    "DETERMINISTIC_REPLAY"
+  ],
+  "model_load_authorized": false,
+  "optimizer_creation_authorized": false,
+  "optimizer_steps_authorized": 0,
+  "output_isolation": "DISTINCT_EMPTY_ROOT_PER_SLOT",
+  "pack_identity": "2676266a823346a8a361bf009f2c3dae0ed2226bb86731e59e8c4a735810b588",
+  "parent": "R2_STEP_9",
+  "parent_selection_authority": false,
+  "promotion": false,
+  "protocol_identity": "9b6276e9847978a538141122d600b77f69f6920a286455b9da6d9c6cf415284f",
+  "published_source_commit": "d576541042a2312bc9c1cacdd9b0d91921ae4882",
+  "published_source_tree": "dbf816450e24d7030be5a3ea073acc3f54fe99b8",
+  "recipe": "S0_CONTROL",
+  "release": false,
+  "schema": "editor-factual-setup-r2-t1s0-replay-protected-fixture-boundary",
+  "schema_version": 1,
+  "seeds": [
+    161803,
+    271828,
+    314159
+  ],
+  "slots": [
+    {
+      "arm": "T1_S0_EXISTING_CONTROL",
+      "output_root_policy": "DISTINCT_EMPTY",
+      "seed": 161803,
+      "slot_id": "T1_S0_EXISTING_CONTROL__seed_161803"
+    },
+    {
+      "arm": "T1_S0_EXISTING_CONTROL",
+      "output_root_policy": "DISTINCT_EMPTY",
+      "seed": 271828,
+      "slot_id": "T1_S0_EXISTING_CONTROL__seed_271828"
+    },
+    {
+      "arm": "T1_S0_EXISTING_CONTROL",
+      "output_root_policy": "DISTINCT_EMPTY",
+      "seed": 314159,
+      "slot_id": "T1_S0_EXISTING_CONTROL__seed_314159"
+    },
+    {
+      "arm": "T1_S0_REPLAY_PROTECTED",
+      "output_root_policy": "DISTINCT_EMPTY",
+      "seed": 161803,
+      "slot_id": "T1_S0_REPLAY_PROTECTED__seed_161803"
+    },
+    {
+      "arm": "T1_S0_REPLAY_PROTECTED",
+      "output_root_policy": "DISTINCT_EMPTY",
+      "seed": 271828,
+      "slot_id": "T1_S0_REPLAY_PROTECTED__seed_271828"
+    },
+    {
+      "arm": "T1_S0_REPLAY_PROTECTED",
+      "output_root_policy": "DISTINCT_EMPTY",
+      "seed": 314159,
+      "slot_id": "T1_S0_REPLAY_PROTECTED__seed_314159"
+    }
+  ],
+  "status": "FIXTURE_ONLY_REAL_RUNS_NOT_AUTHORIZED",
+  "terminal_rule": "TERMINAL_RECEIPT_LAST_NO_PARTIAL_ELIGIBLE_EVIDENCE",
+  "token_mapping_rule": "ALL_CONTIGUOUS_TOKENS_WITH_OFFSETS_INTERSECTING_TEXT_SPAN",
+  "tokenizer_sha256": "d5f6046775b112f0e2d456ee9dba450684ab964fe5c4e231599bdc6773028135",
+  "training_authorized": false
+}

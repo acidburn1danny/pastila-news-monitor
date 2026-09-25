@@ -1,0 +1,6 @@
+{
+  "assistant": "{\"case_id\":\"fixture\",\"text\":\"Comisia a propus suspendarea pentru 30 de zile. Până la vot nu există o decizie finală.\"}",
+  "critical_spans": [
+    {"field": "text", "start": 29, "end": 116, "text": "Comisia a propus suspendarea pentru 30 de zile. Până la vot nu există o decizie finală."}
+  ]
+}
