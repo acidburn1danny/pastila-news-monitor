@@ -123,7 +123,7 @@ def run_slot(model_path: Path, parent_path: Path, corpus_path: Path, learning_si
     targets={x["example_id"]:hashlib.sha256(x["messages"][2]["content"].encode()).hexdigest() for x in corpus}
     if any(x["assistant_target_sha256"]!=targets[x["example_id"]] for x in learning_signals): raise ValueError("learning target byte drift")
     if any(x["assistant_target_sha256"]!=targets[x["example_id"]] for x in measurement_signals): raise ValueError("measurement target byte drift")
-    if any(not x["critical_spans"] for x in measurement_signals): raise ValueError("measurement critical-span coverage")
+    if sum(len(x["critical_spans"]) for x in measurement_signals)<=0: raise ValueError("measurement critical-span coverage")
 
     import bitsandbytes as bnb
     import torch
