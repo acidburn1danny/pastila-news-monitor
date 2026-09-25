@@ -1,0 +1,94 @@
+{
+  "authority_identity": "d01a1f1b1a935ded49e3cfc206ef7b93f03793449c268c776629d30a3e00cd73",
+  "evaluation_identity": "0f31cb67ea2a5b6094307bb54c76d6c3856d48088bff867a9aacdd57de8e791a",
+  "execution_performed": false,
+  "failure_policy": "STOP_PROGRAM_AT_FIRST_FAILURE",
+  "files": {
+    "audit": "0c176a5416fb87419b1fafc741612aaca1e0e30b86d46477f787159d34ffd8cc",
+    "supervisor": "ad41f3e4df1317138ce8c9aeb14314bfcf655d0005cc54c544cab0e5e5ebb11e",
+    "tests": "13035d918e15f8f97910076994a6dc2b653a7b08dcd6ee624ce08a33c4e4efb7"
+  },
+  "historical_holdouts_allowed": false,
+  "output_isolation": "DISTINCT_NEW_EMPTY_ROOT_PER_SLOT",
+  "pack_identity": "2676266a823346a8a361bf009f2c3dae0ed2226bb86731e59e8c4a735810b588",
+  "parent": "R2_STEP_9",
+  "parent_adapter_identity": "c680d686f0b139e618d99fab235c62267caa9482df0efbccb44cb2c58c124f02",
+  "parent_selection_authority": false,
+  "program_run_limit": 1,
+  "promotion": false,
+  "protocol_identity": "9b6276e9847978a538141122d600b77f69f6920a286455b9da6d9c6cf415284f",
+  "recipe": "S0_CONTROL",
+  "release": false,
+  "retry_allowed": false,
+  "runtime_boundary_identity": "75074a9de2f9ecfee37889a1339db6f11401d0750d70271ec8fb27a5936a8baa",
+  "runtime_source_commit": "2aafeb6536b779ad4e5c7b0417c86188a56a6bc7",
+  "runtime_source_tree": "5f6e7298f838e9f1c1adfeb6401019890d3923d6",
+  "schema": "editor-factual-setup-r2-t1s0-replay-protected-execution-authority",
+  "schema_version": 1,
+  "slot_count": 6,
+  "slots": [
+    {
+      "arm": "T1_S0_EXISTING_CONTROL",
+      "fresh_exact_tokenizer_zero_step_required": true,
+      "optimizer_steps": 9,
+      "output_root_policy": "DISTINCT_EMPTY",
+      "retry_allowed": false,
+      "run_limit": 1,
+      "seed": 161803,
+      "slot_id": "T1_S0_EXISTING_CONTROL__seed_161803"
+    },
+    {
+      "arm": "T1_S0_EXISTING_CONTROL",
+      "fresh_exact_tokenizer_zero_step_required": true,
+      "optimizer_steps": 9,
+      "output_root_policy": "DISTINCT_EMPTY",
+      "retry_allowed": false,
+      "run_limit": 1,
+      "seed": 271828,
+      "slot_id": "T1_S0_EXISTING_CONTROL__seed_271828"
+    },
+    {
+      "arm": "T1_S0_EXISTING_CONTROL",
+      "fresh_exact_tokenizer_zero_step_required": true,
+      "optimizer_steps": 9,
+      "output_root_policy": "DISTINCT_EMPTY",
+      "retry_allowed": false,
+      "run_limit": 1,
+      "seed": 314159,
+      "slot_id": "T1_S0_EXISTING_CONTROL__seed_314159"
+    },
+    {
+      "arm": "T1_S0_REPLAY_PROTECTED",
+      "fresh_exact_tokenizer_zero_step_required": true,
+      "optimizer_steps": 9,
+      "output_root_policy": "DISTINCT_EMPTY",
+      "retry_allowed": false,
+      "run_limit": 1,
+      "seed": 161803,
+      "slot_id": "T1_S0_REPLAY_PROTECTED__seed_161803"
+    },
+    {
+      "arm": "T1_S0_REPLAY_PROTECTED",
+      "fresh_exact_tokenizer_zero_step_required": true,
+      "optimizer_steps": 9,
+      "output_root_policy": "DISTINCT_EMPTY",
+      "retry_allowed": false,
+      "run_limit": 1,
+      "seed": 271828,
+      "slot_id": "T1_S0_REPLAY_PROTECTED__seed_271828"
+    },
+    {
+      "arm": "T1_S0_REPLAY_PROTECTED",
+      "fresh_exact_tokenizer_zero_step_required": true,
+      "optimizer_steps": 9,
+      "output_root_policy": "DISTINCT_EMPTY",
+      "retry_allowed": false,
+      "run_limit": 1,
+      "seed": 314159,
+      "slot_id": "T1_S0_REPLAY_PROTECTED__seed_314159"
+    }
+  ],
+  "status": "AUTHORIZED_BOUNDARY_NOT_EXECUTED",
+  "tokenizer_sha256": "d5f6046775b112f0e2d456ee9dba450684ab964fe5c4e231599bdc6773028135",
+  "zero_step_timing": "IMMEDIATELY_BEFORE_EACH_SLOT_MODEL_LOAD"
+}
