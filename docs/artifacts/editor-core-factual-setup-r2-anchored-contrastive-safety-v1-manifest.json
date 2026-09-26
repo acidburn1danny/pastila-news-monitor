@@ -1,0 +1,34 @@
+{
+  "boundary_identity": "367ebeb754b5b1b6c0b5fe43780611596f8f4260f0396207f57318fec98f1166",
+  "coverage": {
+    "CATEGORICAL_ALLEGATION": 8,
+    "ENTITY_SUBSTITUTION": 8,
+    "INCOMPLETE_NUMERIC_RECONCILIATION": 8,
+    "INCOMPLETE_PROCEDURAL_STATUS": 8,
+    "INVENTED_ACTOR": 8,
+    "LOST_QUALIFICATION": 8
+  },
+  "factorial_arms": 4,
+  "factorial_source_result_identity": "1a2ed5142f9523b901355e77a7e53d8d21a1b12e7659c84151a17c4a49b8e200",
+  "fixture_slots": 12,
+  "gradient_probe_identity": "1327f7b387f1ff46a6cfd83c598bc2599e54c69e4cb66fe3ae81cedb56912e10",
+  "historical_holdouts_read": false,
+  "minimal_pairs": 48,
+  "minimal_pairs_sha256": "a986105db31a02a6cc16dfab0821666a58f58685a83f50cead7c25bd5a536cc1",
+  "pack_identity": "4aba4d0ae34630528621a34b3f33bf0dc8152ece8bc40e95d8aeffe43c696449",
+  "protocol_identity": "7c9595d94b7cd1af535e74380e11ee4424af1b31edfe0195b1198acb9fba86b4",
+  "real_execution_authorized": false,
+  "replay_protected_source_result_identity": "2365593a741fb6e9aa08e2e481b9aa3a06bf05b36d5abb1e4eecb1a92eb9a6da",
+  "retention_anchors": 24,
+  "retention_anchors_sha256": "6f3599e17010e0a7154f8f85019a9b4f55a4db897da87f4d1c35c435c15d5b7f",
+  "schema": "editor-r2-anchored-contrastive-safety-pack",
+  "schema_version": 1,
+  "seeds": [
+    161803,
+    271828,
+    314159
+  ],
+  "source_training_sha256": "56c3e13cf79f24882c09b4b73403fa05c1ba628d48c58b822b09f440d848f606",
+  "t1_signal_sha256": "a6c90d629cea87d6f16b122199e3c319ad4d1a78ae6b25855d5bce8aa3020a3e",
+  "voice_or_chief_objective": false
+}

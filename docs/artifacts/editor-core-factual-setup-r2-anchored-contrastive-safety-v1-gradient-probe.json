@@ -1,0 +1,50 @@
+{
+  "backward_authorized": false,
+  "conflict_thresholds": {
+    "near_orthogonal_abs_lt": "0.05",
+    "nonfinite_allowed": false,
+    "strong_negative_cosine_lte": "-0.10",
+    "zero_required_norm_allowed": false
+  },
+  "failure_classes": [
+    "INVENTED_ACTOR",
+    "ENTITY_SUBSTITUTION",
+    "CATEGORICAL_ALLEGATION",
+    "LOST_QUALIFICATION",
+    "INCOMPLETE_NUMERIC_RECONCILIATION",
+    "INCOMPLETE_PROCEDURAL_STATUS"
+  ],
+  "gradient_probe_identity": "1327f7b387f1ff46a6cfd83c598bc2599e54c69e4cb66fe3ae81cedb56912e10",
+  "layer_group_rule": "TRANSFORMER_DEPTH_TERCILE_X_ATTENTION_OR_MLP_LORA_PARAMETER",
+  "layer_groups": [
+    "EARLY_ATTENTION",
+    "EARLY_MLP",
+    "MIDDLE_ATTENTION",
+    "MIDDLE_MLP",
+    "LATE_ATTENTION",
+    "LATE_MLP"
+  ],
+  "measurements": [
+    "L2_GRADIENT_NORM",
+    "COSINE_CORRECTIVE_VS_REPLAY_CE",
+    "PAIRWISE_MARGIN_GRADIENT_NORM",
+    "VIRTUAL_STEP_R2_KL_CURVATURE"
+  ],
+  "model_load_authorized": false,
+  "optimizer_creation_authorized": false,
+  "parent": "R2_STEP_9",
+  "receipts": [
+    "PER_FAILURE_CLASS_LAYER_GROUP",
+    "AGGREGATE_CONFLICT_MATRIX",
+    "VIRTUAL_STEP_KL_DRIFT"
+  ],
+  "schema": "editor-r2-anchored-gradient-conflict-probe",
+  "schema_version": 1,
+  "virtual_step": {
+    "mutates_model": false,
+    "optimizer_created": false,
+    "parameter_domain": "R2_LORA_TRAINABLE_PARAMETERS_ONLY",
+    "scale": "S0_LEARNING_RATE"
+  },
+  "zero_gradient_trap_avoided": "REPLAY_CE_GRADIENT_AT_R2_FOR_CONFLICT; KL_MEASURED_AFTER_FUNCTIONAL_VIRTUAL_CORRECTIVE_DISPLACEMENT"
+}

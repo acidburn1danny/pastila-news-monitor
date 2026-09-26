@@ -1,0 +1,135 @@
+{
+  "arms": [
+    {
+      "arm_id": "P0_POSITIVE_ONLY_K0_NO_KL",
+      "contrastive": false,
+      "execution_role": "FROZEN_EXISTING_T1_S0_REFERENCE",
+      "r2_kl": false
+    },
+    {
+      "arm_id": "P1_CONTRASTIVE_K0_NO_KL",
+      "contrastive": true,
+      "execution_role": "DISPOSABLE_RESEARCH",
+      "r2_kl": false
+    },
+    {
+      "arm_id": "P0_POSITIVE_ONLY_K1_R2_KL",
+      "contrastive": false,
+      "execution_role": "DISPOSABLE_RESEARCH",
+      "r2_kl": true
+    },
+    {
+      "arm_id": "P1_CONTRASTIVE_K1_R2_KL",
+      "contrastive": true,
+      "execution_role": "DISPOSABLE_RESEARCH",
+      "r2_kl": true
+    }
+  ],
+  "causal_contrasts": {
+    "CONTRASTIVE_EFFECT_AT_K0": [
+      "P0_POSITIVE_ONLY_K0_NO_KL",
+      "P1_CONTRASTIVE_K0_NO_KL"
+    ],
+    "CONTRASTIVE_EFFECT_AT_K1": [
+      "P0_POSITIVE_ONLY_K1_R2_KL",
+      "P1_CONTRASTIVE_K1_R2_KL"
+    ],
+    "KL_EFFECT_AT_P0": [
+      "P0_POSITIVE_ONLY_K0_NO_KL",
+      "P0_POSITIVE_ONLY_K1_R2_KL"
+    ],
+    "KL_EFFECT_AT_P1": [
+      "P1_CONTRASTIVE_K0_NO_KL",
+      "P1_CONTRASTIVE_K1_R2_KL"
+    ]
+  },
+  "claims_allowed": [
+    "CONTRASTIVE_OBJECTIVE_CAUSAL_EFFECT",
+    "R2_KL_RETENTION_CAUSAL_EFFECT",
+    "CONTRASTIVE_BY_KL_INTERACTION"
+  ],
+  "claims_forbidden": [
+    "PARENT_SELECTION",
+    "NATURALISTIC_TRANSFER",
+    "BASE_MODEL_LIMIT",
+    "PROMOTION",
+    "RELEASE"
+  ],
+  "factorial": "2_CONTRASTIVE_LEVELS_X_2_R2_KL_LEVELS",
+  "fixed": {
+    "deterministic_decoding": {
+      "do_sample": false,
+      "max_input_tokens": 3072,
+      "max_new_tokens": 2048,
+      "num_beams": 1,
+      "seed": 0,
+      "structural_json_required": true,
+      "temperature": null,
+      "terminal_eos_required": true,
+      "top_p": null
+    },
+    "evaluator_identity": "0f31cb67ea2a5b6094307bb54c76d6c3856d48088bff867a9aacdd57de8e791a",
+    "learning_rate": "0.0000005",
+    "recipe": "S0_CONTROL",
+    "recipe_identity": "61de5f5276af6899a708522c4e6ae91e31e40fe977aafacad4fc0bfebc29bced",
+    "row_order_matched_per_seed": true,
+    "source_training_sha256": "56c3e13cf79f24882c09b4b73403fa05c1ba628d48c58b822b09f440d848f606",
+    "t1_signal_sha256": "a6c90d629cea87d6f16b122199e3c319ad4d1a78ae6b25855d5bce8aa3020a3e"
+  },
+  "historical_holdouts_allowed": false,
+  "inference_authorized": false,
+  "model_load_authorized": false,
+  "objectives": {
+    "contrastive": {
+      "changed_field_only": "text",
+      "form": "HINGE_ON_LENGTH_NORMALIZED_CHOSEN_MINUS_REJECTED_LOG_PROB",
+      "margin_nats_per_token": "0.25",
+      "weight": "1.0"
+    },
+    "positive_sft": {
+      "critical_weight": "3.0",
+      "source": "T1_CONTRACT_WEIGHTED",
+      "text_tokens_only": true
+    },
+    "r2_kl": {
+      "domain": "24_REPLAY_TEXT_VALUES_PLUS_EOS",
+      "form": "FORWARD_KL_P_R2_TO_P_CANDIDATE",
+      "r2_frozen": true,
+      "weight": "0.10"
+    }
+  },
+  "optimizer_creation_authorized": false,
+  "optimizer_steps_authorized": 0,
+  "parent": "R2_STEP_9",
+  "parent_adapter_identity": "c680d686f0b139e618d99fab235c62267caa9482df0efbccb44cb2c58c124f02",
+  "parent_selection_authority": false,
+  "protocol_identity": "7c9595d94b7cd1af535e74380e11ee4424af1b31edfe0195b1198acb9fba86b4",
+  "schema": "editor-r2-anchored-contrastive-safety-diagnostic-protocol",
+  "schema_version": 1,
+  "seeds": [
+    161803,
+    271828,
+    314159
+  ],
+  "status": "DESIGN_FIXTURE_ONLY_NO_MODEL_AUTHORITY",
+  "stop_rules": {
+    "CONTINUE_RESEARCH": [
+      "REPLICATED_DEVELOPMENT_GAIN_AT_LEAST_2_OF_3_SEEDS",
+      "ZERO_MATERIAL_REPLAY_REGRESSIONS",
+      "PAIRWISE_MARGIN_POSITIVE_ALL_FAILURE_CLASSES",
+      "RETENTION_AND_CONFLICT_GATES_PASS"
+    ],
+    "REVISE": [
+      "CONTRASTIVE_MARGIN_IMPROVES_BUT_RETENTION_BUDGET_FAILS",
+      "SYSTEMATIC_NEGATIVE_GRADIENT_COSINE_UNRESOLVED_BY_KL_ARM"
+    ],
+    "STOP": [
+      "ANY_MATERIAL_FACTUAL_OR_EPISTEMIC_REGRESSION",
+      "ANY_MATERIAL_REPLAY_REGRESSION",
+      "NOVEL_ACTOR_OR_REPETITION",
+      "NONFINITE_OR_ZERO_REQUIRED_GRADIENT"
+    ]
+  },
+  "training_authorized": false,
+  "weighted_sft_t1s0_line": "CLOSED_REFERENCE_ONLY"
+}

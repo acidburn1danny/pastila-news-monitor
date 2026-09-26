@@ -1,0 +1,122 @@
+{
+  "arms": [
+    "P0_POSITIVE_ONLY_K0_NO_KL",
+    "P1_CONTRASTIVE_K0_NO_KL",
+    "P0_POSITIVE_ONLY_K1_R2_KL",
+    "P1_CONTRASTIVE_K1_R2_KL"
+  ],
+  "boundary_identity": "367ebeb754b5b1b6c0b5fe43780611596f8f4260f0396207f57318fec98f1166",
+  "failure_semantics": "NO_PARTIAL_ELIGIBLE_EVIDENCE",
+  "fixture_measurements": [
+    "PAIR_ISOLATION",
+    "CONTRASTIVE_MARGIN",
+    "KL_NONNEGATIVITY",
+    "GRADIENT_COSINE_BY_FAILURE_AND_LAYER",
+    "OUTPUT_ISOLATION",
+    "STOP_REVISE_CONTINUE"
+  ],
+  "gradient_probe_identity": "1327f7b387f1ff46a6cfd83c598bc2599e54c69e4cb66fe3ae81cedb56912e10",
+  "historical_holdouts_allowed": false,
+  "inference_authorized": false,
+  "model_load_authorized": false,
+  "optimizer_creation_authorized": false,
+  "pairs_sha256": "a986105db31a02a6cc16dfab0821666a58f58685a83f50cead7c25bd5a536cc1",
+  "parent_selection_authority": false,
+  "protocol_identity": "7c9595d94b7cd1af535e74380e11ee4424af1b31edfe0195b1198acb9fba86b4",
+  "receipt_publication": "ATOMIC_TERMINAL_LAST",
+  "retention_sha256": "6f3599e17010e0a7154f8f85019a9b4f55a4db897da87f4d1c35c435c15d5b7f",
+  "schema": "editor-r2-anchored-contrastive-safety-fixture-boundary",
+  "schema_version": 1,
+  "seeds": [
+    161803,
+    271828,
+    314159
+  ],
+  "slots": [
+    {
+      "arm_id": "P0_POSITIVE_ONLY_K0_NO_KL",
+      "output_root_policy": "DISTINCT_EMPTY",
+      "real_execution_authorized": false,
+      "seed": 161803,
+      "slot_id": "P0_POSITIVE_ONLY_K0_NO_KL__seed_161803"
+    },
+    {
+      "arm_id": "P0_POSITIVE_ONLY_K0_NO_KL",
+      "output_root_policy": "DISTINCT_EMPTY",
+      "real_execution_authorized": false,
+      "seed": 271828,
+      "slot_id": "P0_POSITIVE_ONLY_K0_NO_KL__seed_271828"
+    },
+    {
+      "arm_id": "P0_POSITIVE_ONLY_K0_NO_KL",
+      "output_root_policy": "DISTINCT_EMPTY",
+      "real_execution_authorized": false,
+      "seed": 314159,
+      "slot_id": "P0_POSITIVE_ONLY_K0_NO_KL__seed_314159"
+    },
+    {
+      "arm_id": "P1_CONTRASTIVE_K0_NO_KL",
+      "output_root_policy": "DISTINCT_EMPTY",
+      "real_execution_authorized": false,
+      "seed": 161803,
+      "slot_id": "P1_CONTRASTIVE_K0_NO_KL__seed_161803"
+    },
+    {
+      "arm_id": "P1_CONTRASTIVE_K0_NO_KL",
+      "output_root_policy": "DISTINCT_EMPTY",
+      "real_execution_authorized": false,
+      "seed": 271828,
+      "slot_id": "P1_CONTRASTIVE_K0_NO_KL__seed_271828"
+    },
+    {
+      "arm_id": "P1_CONTRASTIVE_K0_NO_KL",
+      "output_root_policy": "DISTINCT_EMPTY",
+      "real_execution_authorized": false,
+      "seed": 314159,
+      "slot_id": "P1_CONTRASTIVE_K0_NO_KL__seed_314159"
+    },
+    {
+      "arm_id": "P0_POSITIVE_ONLY_K1_R2_KL",
+      "output_root_policy": "DISTINCT_EMPTY",
+      "real_execution_authorized": false,
+      "seed": 161803,
+      "slot_id": "P0_POSITIVE_ONLY_K1_R2_KL__seed_161803"
+    },
+    {
+      "arm_id": "P0_POSITIVE_ONLY_K1_R2_KL",
+      "output_root_policy": "DISTINCT_EMPTY",
+      "real_execution_authorized": false,
+      "seed": 271828,
+      "slot_id": "P0_POSITIVE_ONLY_K1_R2_KL__seed_271828"
+    },
+    {
+      "arm_id": "P0_POSITIVE_ONLY_K1_R2_KL",
+      "output_root_policy": "DISTINCT_EMPTY",
+      "real_execution_authorized": false,
+      "seed": 314159,
+      "slot_id": "P0_POSITIVE_ONLY_K1_R2_KL__seed_314159"
+    },
+    {
+      "arm_id": "P1_CONTRASTIVE_K1_R2_KL",
+      "output_root_policy": "DISTINCT_EMPTY",
+      "real_execution_authorized": false,
+      "seed": 161803,
+      "slot_id": "P1_CONTRASTIVE_K1_R2_KL__seed_161803"
+    },
+    {
+      "arm_id": "P1_CONTRASTIVE_K1_R2_KL",
+      "output_root_policy": "DISTINCT_EMPTY",
+      "real_execution_authorized": false,
+      "seed": 271828,
+      "slot_id": "P1_CONTRASTIVE_K1_R2_KL__seed_271828"
+    },
+    {
+      "arm_id": "P1_CONTRASTIVE_K1_R2_KL",
+      "output_root_policy": "DISTINCT_EMPTY",
+      "real_execution_authorized": false,
+      "seed": 314159,
+      "slot_id": "P1_CONTRASTIVE_K1_R2_KL__seed_314159"
+    }
+  ],
+  "training_authorized": false
+}
