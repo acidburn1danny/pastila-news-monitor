@@ -1,0 +1,43 @@
+{
+  "arms": 4,
+  "evaluator_identity": "0f31cb67ea2a5b6094307bb54c76d6c3856d48088bff867a9aacdd57de8e791a",
+  "files": {
+    "preflight": "37df567ea7722219e8a7a56113aa9fd4f98116948df7a736f7ed8c6acd1d197c",
+    "route": "600e751dfef9550d5a772fd9918ee0e2d97fb305a3a616c1ec052d62defeff9d",
+    "smoke": "4913fa117f2f9fb6e5ad836c5a47195a67ab5501e349b21c2afc5c5dbcc07090",
+    "worker": "d400d38fe13d40889e8ff09c7021c4add444358d01873270f01df9ea64db78c4"
+  },
+  "historical_holdouts_allowed": false,
+  "inference_authorized": false,
+  "model_load_authorized": false,
+  "network": "DENY_ALL_NEW_NAMESPACE",
+  "optimizer_creation_authorized": false,
+  "optimizer_steps_authorized": 0,
+  "output_isolation": "DISTINCT_EMPTY_ROOT_PER_ARM_SEED",
+  "pack_identity": "4aba4d0ae34630528621a34b3f33bf0dc8152ece8bc40e95d8aeffe43c696449",
+  "pairs_sha256": "a986105db31a02a6cc16dfab0821666a58f58685a83f50cead7c25bd5a536cc1",
+  "parent": "R2_STEP_9",
+  "parent_adapter_identity": "c680d686f0b139e618d99fab235c62267caa9482df0efbccb44cb2c58c124f02",
+  "parent_checkpoint_identity": "96e10b85fe30c4be43c2cc1a0b906f04ea4c476cc8d422b4ad26e9758b85b2be",
+  "parent_selection_authority": false,
+  "protocol_identity": "7c9595d94b7cd1af535e74380e11ee4424af1b31edfe0195b1198acb9fba86b4",
+  "published_source_commit": "eadbddf23da3408f8cfb8233823f4f8fd974519f",
+  "published_source_tree": "e07eb052f78d2d634dcd4f5482fb84508f585a2d",
+  "recipe_identity": "61de5f5276af6899a708522c4e6ae91e31e40fe977aafacad4fc0bfebc29bced",
+  "retention_sha256": "6f3599e17010e0a7154f8f85019a9b4f55a4db897da87f4d1c35c435c15d5b7f",
+  "rootfs_sha256": "274e7d1519f05f41108413efb01d35680b88e0f4b13bb63fca9634be155980f4",
+  "runtime_boundary_identity": "d21606b5f61d8af73ce3f2f428d32ad62ef26fc1b54eee4087fb8fac0c5c8c3d",
+  "schema": "editor-r2-anchored-contrastive-safety-real-runtime-boundary",
+  "schema_version": 1,
+  "seeds": [
+    161803,
+    271828,
+    314159
+  ],
+  "slots": 12,
+  "status": "FIXTURE_ONLY_ZERO_REAL_AUTHORITY",
+  "terminal_rule": "ATOMIC_TERMINAL_LAST_NO_PARTIAL_ELIGIBLE_EVIDENCE",
+  "tokenizer_sha256": "d5f6046775b112f0e2d456ee9dba450684ab964fe5c4e231599bdc6773028135",
+  "training_authorized": false,
+  "weighted_sft_t1s0_line": "CLOSED_REFERENCE_ONLY"
+}
