@@ -5,7 +5,7 @@
     "preflight": "37df567ea7722219e8a7a56113aa9fd4f98116948df7a736f7ed8c6acd1d197c",
     "route": "600e751dfef9550d5a772fd9918ee0e2d97fb305a3a616c1ec052d62defeff9d",
     "smoke": "4913fa117f2f9fb6e5ad836c5a47195a67ab5501e349b21c2afc5c5dbcc07090",
-    "worker": "d400d38fe13d40889e8ff09c7021c4add444358d01873270f01df9ea64db78c4"
+    "worker": "a68abe5a4ec48667bf9317db0e1227ce8038523ba8b53a8bebca1991fd1dccb9"
   },
   "historical_holdouts_allowed": false,
   "inference_authorized": false,
@@ -26,7 +26,7 @@
   "recipe_identity": "61de5f5276af6899a708522c4e6ae91e31e40fe977aafacad4fc0bfebc29bced",
   "retention_sha256": "6f3599e17010e0a7154f8f85019a9b4f55a4db897da87f4d1c35c435c15d5b7f",
   "rootfs_sha256": "274e7d1519f05f41108413efb01d35680b88e0f4b13bb63fca9634be155980f4",
-  "runtime_boundary_identity": "d21606b5f61d8af73ce3f2f428d32ad62ef26fc1b54eee4087fb8fac0c5c8c3d",
+  "runtime_boundary_identity": "352fd2d9f443721b7999ca2bbe52cb6d21b895ec175b651dae869d8fe6167dce",
   "schema": "editor-r2-anchored-contrastive-safety-real-runtime-boundary",
   "schema_version": 1,
   "seeds": [
