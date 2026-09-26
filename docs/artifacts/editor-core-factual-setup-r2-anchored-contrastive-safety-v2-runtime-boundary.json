@@ -1,0 +1,46 @@
+{
+  "authority_before_output_plan": true,
+  "failure_evidence": {
+    "eligible_evidence": false,
+    "example_id": true,
+    "phase": true,
+    "slot_id": true
+  },
+  "files": {
+    "preflight": "1a08d936ac9ca79cbb0e90ce750858378ed6e6451e7a894c65018ad13a2dfefe",
+    "supervisor": "4cc856c899b44a28110cdf127f8b24900ab6bf99d0f16d9fce42d377c5e1752e",
+    "verifier": "5e58a09fa3647f678715c6b214e3832af56b3e3d4ab85fc770b4a2817c261de3",
+    "worker": "dd3aa23c1c52a0e20e540542a90211e1e9cf88ea16e81a2f948f35077e72d7a4"
+  },
+  "historical_holdouts_allowed": false,
+  "mapping_contract": {
+    "corrective_nonempty_required": true,
+    "corrective_rows": 48,
+    "replay_empty_required": true,
+    "replay_rows": 24
+  },
+  "parent": "R2_STEP_9",
+  "parent_adapter_identity": "c680d686f0b139e618d99fab235c62267caa9482df0efbccb44cb2c58c124f02",
+  "parent_checkpoint_identity": "96e10b85fe30c4be43c2cc1a0b906f04ea4c476cc8d422b4ad26e9758b85b2be",
+  "parent_selection_authority": false,
+  "predecessor_authority_commit": "2161ad74fe8ebc711ba8db6902fb076ec25622be",
+  "predecessor_terminal_failure": {
+    "example_id": "ec-fsc-v1-r-1-01",
+    "optimizer_steps": 0,
+    "phase": "PRE_OPTIMIZER_TOKEN_MAPPING",
+    "slot_id": "P0_POSITIVE_ONLY_K0_NO_KL__seed_161803"
+  },
+  "runtime_boundary_identity": "15f0679aeef29b8bd946912e2ef46915ce1bcb810358432e7be308dc0c8bc288",
+  "schema": "editor-r2-anchored-contrastive-safety-car-runtime-boundary",
+  "schema_version": 2,
+  "source_commit": "27aba99b41b24f66dfe2017185469331e604f189",
+  "source_tree": "3eb15d1fdc71c7967755539a9a7a97625fc7c24e",
+  "status": "CAR_CLOSED_ZERO_REAL_RUNS",
+  "tokenizer_sha256": "d5f6046775b112f0e2d456ee9dba450684ab964fe5c4e231599bdc6773028135",
+  "weighted_sft_t1s0_line": "CLOSED_REFERENCE_ONLY",
+  "zero_step": {
+    "atomic_receipt": true,
+    "before_model_load": true,
+    "complete_72_row_mapping": true
+  }
+}

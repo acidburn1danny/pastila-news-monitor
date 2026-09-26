@@ -2,7 +2,7 @@ from __future__ import annotations
 import hashlib,json,subprocess
 from pathlib import Path
 ROOT=Path(__file__).parents[1]; ART=ROOT/"docs/artifacts"
-SOURCE_COMMIT="76a3427e2d3aeb4ede555996d2821d29300d98c4"; SOURCE_TREE="7efaf3f6f420f574848d7a55977255d9b643a31f"
+SOURCE_COMMIT="27aba99b41b24f66dfe2017185469331e604f189"; SOURCE_TREE="3eb15d1fdc71c7967755539a9a7a97625fc7c24e"
 ARMS=("P0_POSITIVE_ONLY_K0_NO_KL","P1_CONTRASTIVE_K0_NO_KL","P0_POSITIVE_ONLY_K1_R2_KL","P1_CONTRASTIVE_K1_R2_KL"); SEEDS=(161803,271828,314159)
 FILES={"worker":"scripts/editor_core_factual_setup_r2_anchored_contrastive_safety_runtime_v2.py","preflight":"scripts/preflight_editor_core_factual_setup_r2_anchored_contrastive_safety_runtime_v2.py","supervisor":"scripts/supervise_editor_core_factual_setup_r2_anchored_contrastive_safety_v2.py","verifier":"scripts/verify_editor_core_factual_setup_r2_anchored_contrastive_safety_authority_v2.py"}
 def canonical(v): return json.dumps(v,ensure_ascii=False,allow_nan=False,sort_keys=True,separators=(",",":")).encode()
