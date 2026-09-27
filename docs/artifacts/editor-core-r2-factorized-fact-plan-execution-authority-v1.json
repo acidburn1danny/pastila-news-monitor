@@ -1,5 +1,6 @@
 {
-  "authority_identity": "cd3ce3c3a814c0d52bb0e12c43a87bede1c71dc1cfda713caadbfc96ea99bb1c",
+  "atomic_failure_evidence_required": true,
+  "authority_identity": "604cd2fc4382cdd1a342c5bd590dfd2ea10e6943f252ded53ee037064490aad2",
   "distinct_empty_output_root_per_slot": true,
   "fresh_exact_tokenizer_zero_step_per_slot": true,
   "historical_holdouts_allowed": false,
@@ -18,8 +19,10 @@
   "release_authorized": false,
   "retry_authorized": false,
   "runtime_boundary_identity": "e1dfab62d55b296940d102d93370fd326e837893ed14abd95539d32862cc0d80",
+  "runtime_python": "/root/pf9-ml-runtime-20260926/bin/python",
+  "runtime_python_sha256": "e50d468e8b0adfb05733f5b87b3cff34829c4a8c1aea50c865aa8bdfe4bb150f",
   "schema": "editor-r2-factorized-fact-plan-execution-authority",
-  "schema_version": 1,
+  "schema_version": 2,
   "scope": "DEVELOPMENT_RESEARCH_4X3_ONLY",
   "slots": [
     {
@@ -108,9 +111,9 @@
     }
   ],
   "stop_on_first_failure": true,
-  "supervisor_sha256": "a7aa78aa8c10a26eaff4a59e6795e2ccab495d07f2e5fe8b16fdd1d1d50b515e",
+  "supervisor_sha256": "d3e8c7e8ce26e8174a1145f8a3ae3c28044b381ffb86287bdab4cfca966ff536",
   "tokenizer_sha256": "d5f6046775b112f0e2d456ee9dba450684ab964fe5c4e231599bdc6773028135",
-  "verifier_sha256": "b64975f8740b71e171c8247c8dfc9f185ed6af2cfb0e15c6a8aaf6776c10ab92",
+  "verifier_sha256": "ab0847871ab3b4adf38a94fac32d80a6b1b7ea5501dc99676e929976d1dfe218",
   "voice_or_chief_objectives": false,
   "worker_sha256": "e7978454d7ed34e047ff62079600521383580e9a39bf9f66989a5951270892c4"
 }
