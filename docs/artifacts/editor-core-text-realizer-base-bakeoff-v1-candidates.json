@@ -1,0 +1,65 @@
+{
+  "candidates_identity": "b01aa1933285df4063e0806f9e6bfbfc5a2ba65e25e8447a55a9f7bf3d1204b4",
+  "download_authorized": false,
+  "excluded_initially": [
+    "google/gemma-3-12b-it",
+    "Qwen/Qwen3.5-9B"
+  ],
+  "exclusion_reason": "MULTIMODAL_RUNTIME_CONFOUNDING_IN_TEXT_ONLY_FIRST_ROUND",
+  "expansion_order": [
+    "Qwen/Qwen3-14B",
+    "google/gemma-3-12b-it",
+    "Qwen/Qwen3.5-9B"
+  ],
+  "initial_arms": [
+    {
+      "adapter": "R2_STEP_9",
+      "adapter_identity": "c680d686f0b139e618d99fab235c62267caa9482df0efbccb44cb2c58c124f02",
+      "architecture_scope": "MULTIMODAL_EXISTING_CONTROL",
+      "arm_id": "C0_R2_MINISTRAL",
+      "family": "MINISTRAL_3",
+      "model": "mistralai/Ministral-3-14B-Instruct-2512",
+      "model_revision": "BOUND_BY_EXISTING_R2_MANIFEST",
+      "role": "CONTROL"
+    },
+    {
+      "adapter": null,
+      "architecture_scope": "TEXT_ONLY",
+      "arm_id": "C1_QWEN3_8B",
+      "family": "QWEN3",
+      "model": "Qwen/Qwen3-8B",
+      "model_revision": "MUST_PIN_BEFORE_DOWNLOAD",
+      "role": "PRIMARY_CHALLENGER",
+      "thinking": "DISABLED"
+    },
+    {
+      "adapter": null,
+      "architecture_scope": "TEXT_ONLY",
+      "arm_id": "C2_QWEN25_7B",
+      "family": "QWEN2_5",
+      "model": "Qwen/Qwen2.5-7B-Instruct",
+      "model_revision": "MUST_PIN_BEFORE_DOWNLOAD",
+      "role": "MATURE_FAMILY_CONTROL",
+      "thinking": "NOT_APPLICABLE"
+    }
+  ],
+  "model_load_authorized": false,
+  "quantization_policy": {
+    "challengers": "SAME_BACKEND_BIT_WIDTH_AND_QUANTIZATION_RECIPE",
+    "interpretation": "DEPLOYABLE_MODEL_RUNTIME_PACKAGE_COMPARISON",
+    "maximum_peak_vram_gib": 16,
+    "r2_control": "AUTHORITATIVE_EXISTING_RUNTIME_UNCHANGED",
+    "winner_confirmation": "REFERENCE_OR_HIGHER_PRECISION_CONFIRMATION_REQUIRED_BEFORE_PIVOT"
+  },
+  "runtime_binding_required": [
+    "MODEL_REVISION",
+    "TOKENIZER_REVISION",
+    "CHAT_TEMPLATE_SHA256",
+    "WEIGHT_MANIFEST",
+    "QUANTIZATION_RECIPE",
+    "TRANSFORMERS_VERSION",
+    "CUDA_VERSION"
+  ],
+  "schema": "editor-text-realizer-base-bakeoff-candidates",
+  "schema_version": 1
+}

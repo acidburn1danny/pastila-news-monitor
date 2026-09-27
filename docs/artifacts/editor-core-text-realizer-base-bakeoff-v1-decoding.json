@@ -1,0 +1,20 @@
+{
+  "decoding_identity": "db2ff484f24c0b5982d44721f645111875451c7f7a630521eca6df24aac58ebe",
+  "do_sample": false,
+  "external_verifier": "BYTE_IDENTICAL_ALL_ARMS",
+  "extractive_fallback": "BYTE_IDENTICAL_ALL_ARMS",
+  "max_new_tokens": 768,
+  "native_chat_template": "MODEL_SPECIFIC_AND_MUST_BE_HASH_PINNED",
+  "no_repeat_ngram_size": 0,
+  "proposal_schema": "SOURCE_BOUND_HYBRID_REALIZATION_SCHEMA_V1",
+  "qwen3_enable_thinking": false,
+  "repetition_penalty": 1.0,
+  "schema": "editor-text-realizer-base-bakeoff-decoding",
+  "schema_version": 1,
+  "seed_role": "REPRODUCIBILITY_ONLY_NOT_SAMPLING",
+  "semantic_prompt_payload": "BYTE_IDENTICAL_BEFORE_NATIVE_CHAT_TEMPLATE",
+  "structured_decoding": "DISABLED_TO_MEASURE_NATIVE_ADHERENCE",
+  "temperature": null,
+  "top_k": null,
+  "top_p": null
+}

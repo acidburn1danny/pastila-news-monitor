@@ -1,0 +1,37 @@
+{
+  "cases": 48,
+  "evaluation_identity": "2021ff47edabcc8382f4aa9dd34b35fe84ebd1b0f1b52a0999a47b9b3db25b07",
+  "human_blind_required_for": [
+    "FUNCTIONAL_ROMANIAN",
+    "NATURALNESS",
+    "USABLE_REALIZATION_GAIN"
+  ],
+  "machine_score_cannot_select_parent": true,
+  "metrics": [
+    "NATIVE_SCHEMA_ADHERENCE",
+    "VERIFIER_ACCEPTANCE",
+    "FALLBACK_RATE",
+    "REQUIRED_ATOM_COVERAGE",
+    "NOVEL_ACTOR_OR_NUMBER",
+    "EPISTEMIC_MARKER_RETENTION",
+    "PROCEDURAL_STATUS_RETENTION",
+    "NUMBER_ROLE_FIDELITY",
+    "SENTENCE_BUDGET",
+    "REPETITION",
+    "FUNCTIONAL_ROMANIAN_BLIND",
+    "PEAK_VRAM_GIB",
+    "LATENCY_SECONDS_PER_CASE",
+    "TOKENS_PER_SECOND",
+    "RUNTIME_FAILURE_RATE"
+  ],
+  "oracle_scope": "FEASIBILITY_UPPER_BOUND_ONLY",
+  "partitions": {
+    "DEVELOPMENT": 24,
+    "REPLAY_RETENTION": 24
+  },
+  "quantization_confound_control": "MATCHED_BETWEEN_QWEN_CHALLENGERS_AND_CONFIRM_WINNER_AT_REFERENCE_OR_HIGHER_PRECISION",
+  "reproducibility": "ONE_PRIMARY_DETERMINISTIC_RUN_PLUS_BYTE_EXACT_REPLAY",
+  "schema": "editor-text-realizer-base-bakeoff-evaluation",
+  "schema_version": 1,
+  "source_authority": "SOURCE_BOUND_LEDGER"
+}

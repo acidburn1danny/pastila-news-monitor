@@ -1,0 +1,26 @@
+{
+  "files": {
+    "editor-core-text-realizer-base-bakeoff-v1-candidates.json": "c075dc50344699ae6c52a33e6326e97d73aa69c83025226eb759e07d910d12b5",
+    "editor-core-text-realizer-base-bakeoff-v1-decoding.json": "70c931552bbb7ae6b64688d58a0b14e2056bbd8b49422a9e90192d36d764afc3",
+    "editor-core-text-realizer-base-bakeoff-v1-evaluation.json": "bab8d9213edc3c1f063b17d5c0006e582bc6f1bcccc729ede08adf7b364930a3",
+    "editor-core-text-realizer-base-bakeoff-v1-protocol.json": "afea9c2068bdd18b63bbd4e77e714bbd9a0d03ffbba355eac8dd2ae0cbf8f63b",
+    "editor-core-text-realizer-base-bakeoff-v1-terminal-rules.json": "85f7fa3ac47e0d669703a3a9d87e0937b3431ddfdb8a4ac7481b02afe273cd98"
+  },
+  "fixture_only": true,
+  "historical_holdouts_read": false,
+  "inference_performed": false,
+  "model_loaded": false,
+  "models_downloaded": false,
+  "optimizer_created": false,
+  "pack_identity": "1c6a6a6eccf1b23bb8627b7a91832936fdd7df56b34dc8cde3ad923a0653cfc3",
+  "protocol_identity": "1159a4cd2c658437065485d596178b13d2f2e716c707b48a87ab901f4c2b9e4c",
+  "schema": "editor-text-realizer-base-bakeoff-pack",
+  "schema_version": 1,
+  "source_files": {
+    "editor-core-factual-setup-contract-v1.json": "0500fc27edca2a7d61c5285b365b3e95c147108df614bdbaae2eca0268084667",
+    "editor-core-source-bound-hybrid-closed-semantic-result-v1.json": "bcc2ab147e5d914bd3b08b643233a14a14e7f53521fb24e3280c62dbbc2da67f",
+    "editor-core-source-bound-hybrid-feasibility-v1-ledgers.jsonl": "907e972b81bf538b6b7aa7125b5cf140637b57537206b6c0d38be83d5da9ae8f",
+    "editor-core-source-bound-hybrid-feasibility-v1-realization-schema.json": "b6c458ff86557819ff8f98e2dcd4f97918c5608073153df111a57e68c0f953bd"
+  },
+  "training_performed": false
+}
