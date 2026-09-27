@@ -1,0 +1,103 @@
+{
+  "atomic_receipts": true,
+  "authority_identity": "ea9488637bdb53dbfce8f1ee4b1fae135f7492cf9c19dbeb813afbe8cee8cc3a",
+  "autonomous_ledger_construction_claimed": false,
+  "b2_extractive_fallback_required": true,
+  "b2_verifier_required": true,
+  "distinct_empty_output_root_per_slot": true,
+  "fresh_exact_tokenizer_zero_step_per_slot": true,
+  "historical_holdouts_allowed": false,
+  "no_partial_eligible_evidence": true,
+  "oracle_fixture_upper_bound": true,
+  "owner_run_authorization_required": true,
+  "pack_identity": "bbad139fde613c1c912cd53992b4c2be047d73180f6a6ae732dc6348461d28f9",
+  "parent": "R2_STEP_9",
+  "parent_adapter_identity": "c680d686f0b139e618d99fab235c62267caa9482df0efbccb44cb2c58c124f02",
+  "parent_selection_authority": false,
+  "preflight_sha256": "bfbfd0b53969f59ab6dbb3d40f17feb00244ca36f693472a1f2e4bb064cc053f",
+  "promotion_authorized": false,
+  "protocol_identity": "5a5ef79af85a3b58b3c0e2f46be3f9e3dd573d75dae361c6d6df88588f7c1aea",
+  "published_commit": "a44ab7be551da500f05ea4c10a5cf1f5eadd7212",
+  "published_tree": "e35835627e1b84b57b17face2d18fdbcb1b0c04f",
+  "real_runs_authorized_in_build_task": false,
+  "release_authorized": false,
+  "retry_authorized": false,
+  "runtime_boundary_identity": "8ede9f6933be1e7e452bbe1bce638978947549aa8db18f74161868f715b7bc7c",
+  "runtime_python": "/root/pf9-ml-runtime-20260926/bin/python",
+  "runtime_python_sha256": "e50d468e8b0adfb05733f5b87b3cff34829c4a8c1aea50c865aa8bdfe4bb150f",
+  "schema": "editor-source-bound-hybrid-execution-authority",
+  "schema_version": 1,
+  "scope": "FEASIBILITY_UPPER_BOUND_3X3_ONLY",
+  "slots": [
+    {
+      "arm": "B0_R2_ONE_PASS",
+      "output_slug": "b0_r2_one_pass__seed_161803",
+      "run_limit": 1,
+      "seed": 161803,
+      "slot_id": "B0_R2_ONE_PASS__seed_161803"
+    },
+    {
+      "arm": "B0_R2_ONE_PASS",
+      "output_slug": "b0_r2_one_pass__seed_271828",
+      "run_limit": 1,
+      "seed": 271828,
+      "slot_id": "B0_R2_ONE_PASS__seed_271828"
+    },
+    {
+      "arm": "B0_R2_ONE_PASS",
+      "output_slug": "b0_r2_one_pass__seed_314159",
+      "run_limit": 1,
+      "seed": 314159,
+      "slot_id": "B0_R2_ONE_PASS__seed_314159"
+    },
+    {
+      "arm": "B1_EXTRACTIVE_BASELINE",
+      "output_slug": "b1_extractive_baseline__seed_161803",
+      "run_limit": 1,
+      "seed": 161803,
+      "slot_id": "B1_EXTRACTIVE_BASELINE__seed_161803"
+    },
+    {
+      "arm": "B1_EXTRACTIVE_BASELINE",
+      "output_slug": "b1_extractive_baseline__seed_271828",
+      "run_limit": 1,
+      "seed": 271828,
+      "slot_id": "B1_EXTRACTIVE_BASELINE__seed_271828"
+    },
+    {
+      "arm": "B1_EXTRACTIVE_BASELINE",
+      "output_slug": "b1_extractive_baseline__seed_314159",
+      "run_limit": 1,
+      "seed": 314159,
+      "slot_id": "B1_EXTRACTIVE_BASELINE__seed_314159"
+    },
+    {
+      "arm": "B2_HYBRID",
+      "output_slug": "b2_hybrid__seed_161803",
+      "run_limit": 1,
+      "seed": 161803,
+      "slot_id": "B2_HYBRID__seed_161803"
+    },
+    {
+      "arm": "B2_HYBRID",
+      "output_slug": "b2_hybrid__seed_271828",
+      "run_limit": 1,
+      "seed": 271828,
+      "slot_id": "B2_HYBRID__seed_271828"
+    },
+    {
+      "arm": "B2_HYBRID",
+      "output_slug": "b2_hybrid__seed_314159",
+      "run_limit": 1,
+      "seed": 314159,
+      "slot_id": "B2_HYBRID__seed_314159"
+    }
+  ],
+  "stop_on_first_failure": true,
+  "successor_training": "SUSPENDED",
+  "supervisor_sha256": "9b25bcc8c8a2a3554d3fe998d8436dc08b1f99687b18f8fa16ecf9079f436310",
+  "tokenizer_sha256": "d5f6046775b112f0e2d456ee9dba450684ab964fe5c4e231599bdc6773028135",
+  "verifier_sha256": "aa92c23dc78253ebd6b6ba02c61dd2cff386f8cec8698d8ac1e765d2e0455007",
+  "voice_or_chief_editor_objective": false,
+  "worker_sha256": "4b3d7d972d23be554320276dc6b197a8d48fa2c3cf243b7cef469b2d9c8086cc"
+}
