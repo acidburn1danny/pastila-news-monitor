@@ -87,9 +87,14 @@ def main() -> None:
                 if terminal["status"] != "PASS_TERMINAL" or terminal["slot_id"] != slot_id: raise ValueError("terminal receipt")
                 completed.append(slot_id)
             except Exception as error:
+                worker_failure = None
+                if (staging / "failure.json").is_file():
+                    worker_failure = json.loads((staging / "failure.json").read_text())
                 if work.exists(): shutil.rmtree(work)
                 atomic_json(args.output_root / "failure.json", {"status": "TERMINAL_FAILURE", "slot_id": slot_id,
                                                                 "phase": phase, "error_type": type(error).__name__,
+                                                                "example_id": worker_failure.get("example_id") if worker_failure else None,
+                                                                "worker_phase": worker_failure.get("phase") if worker_failure else None,
                                                                 "partial_eligible_evidence": False})
                 raise
     for arm in ARMS:

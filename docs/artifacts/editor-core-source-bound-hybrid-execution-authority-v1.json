@@ -1,8 +1,9 @@
 {
   "atomic_receipts": true,
-  "authority_identity": "2d3dc2361f824f8df6bab59e489e036c19e38d72ee48ef27501f8d870343de98",
+  "authority_identity": "6187c37576689faf6e587dd1b654a0579778d6400ae49428860cafc87b98a60d",
   "autonomous_ledger_construction_claimed": false,
   "b2_extractive_fallback_required": true,
+  "b2_malformed_proposal_routes_to_extractive_fallback": true,
   "b2_verifier_required": true,
   "base_model_file_count": 17,
   "base_model_manifest_artifact_sha256": "a96745c2554c84bf43616a4f8184a1c1f6081167aea280f9cac0b48e3ca4a4cd",
@@ -16,6 +17,7 @@
     "tokenizer": "/root/pf9-v12-recovery-replay-20260917/tokenizers/A",
     "worker": "/mnt/c/pf9/scripts/editor_core_source_bound_hybrid_slot_v1.py"
   },
+  "case_runtime_failure_identifies_example_without_invalid_payload": true,
   "distinct_empty_output_root_per_slot": true,
   "fresh_exact_tokenizer_zero_step_per_slot": true,
   "historical_holdouts_allowed": false,
@@ -26,7 +28,7 @@
   "parent": "R2_STEP_9",
   "parent_adapter_identity": "c680d686f0b139e618d99fab235c62267caa9482df0efbccb44cb2c58c124f02",
   "parent_selection_authority": false,
-  "predecessor_authority_identity": "ea9488637bdb53dbfce8f1ee4b1fae135f7492cf9c19dbeb813afbe8cee8cc3a",
+  "predecessor_authority_identity": "2d3dc2361f824f8df6bab59e489e036c19e38d72ee48ef27501f8d870343de98",
   "preflight_sha256": "bfbfd0b53969f59ab6dbb3d40f17feb00244ca36f693472a1f2e4bb064cc053f",
   "promotion_authorized": false,
   "protocol_identity": "5a5ef79af85a3b58b3c0e2f46be3f9e3dd573d75dae361c6d6df88588f7c1aea",
@@ -39,8 +41,9 @@
   "runtime_python": "/root/pf9-ml-runtime-20260926/bin/python",
   "runtime_python_sha256": "e50d468e8b0adfb05733f5b87b3cff34829c4a8c1aea50c865aa8bdfe4bb150f",
   "schema": "editor-source-bound-hybrid-execution-authority",
-  "schema_version": 2,
+  "schema_version": 3,
   "scope": "FEASIBILITY_UPPER_BOUND_3X3_ONLY",
+  "semantic_invalidity_is_observation_not_runtime_failure": true,
   "slots": [
     {
       "arm": "B0_R2_ONE_PASS",
@@ -108,9 +111,9 @@
   ],
   "stop_on_first_failure": true,
   "successor_training": "SUSPENDED",
-  "supervisor_sha256": "8addf3f5810dc96d6cb3890b28d1db4df8fc777d23aa1ccebf8c514bb82d74d6",
+  "supervisor_sha256": "435a0001e5448da4484fc08198f3da6d1268ddc2cd5bcfc24c353aec79ae727b",
   "tokenizer_sha256": "d5f6046775b112f0e2d456ee9dba450684ab964fe5c4e231599bdc6773028135",
-  "verifier_sha256": "0539afba6a22c12f485f6b7f3ccf1593e890735295a08199f0d20dce4d0828c3",
+  "verifier_sha256": "867c02dd3aa5efd52aa38add7c9bedde1e9fb344f0eb58ce22f9a927d7ceefad",
   "voice_or_chief_editor_objective": false,
-  "worker_sha256": "4b3d7d972d23be554320276dc6b197a8d48fa2c3cf243b7cef469b2d9c8086cc"
+  "worker_sha256": "f84141dbd51340c144498d5e28122ad581d624a7c433d50d19640e4b10e68324"
 }

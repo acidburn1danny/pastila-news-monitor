@@ -50,3 +50,11 @@ def test_real_inputs_are_path_and_content_bound_before_root_creation():
     assert 'hashlib.sha256(args.preflight.read_bytes()).hexdigest()' in source
     assert 'hashlib.sha256(args.worker.read_bytes()).hexdigest()' in source
     assert source.index("verify_model_materialization(args.model, args.artifacts)") < source.index("args.output_root.mkdir")
+
+def test_semantic_invalidity_is_observed_and_b2_falls_back():
+    worker = (SCRIPTS / "editor_core_source_bound_hybrid_slot_v1.py").read_text(encoding="utf-8")
+    supervisor = (SCRIPTS / "supervise_editor_core_source_bound_hybrid_v1.py").read_text(encoding="utf-8")
+    assert '"structural_valid": structural_valid' in worker
+    assert 'proposal = {"case_id": ledger["case_id"], "sentences": []}' in worker
+    assert '"invalid_payload_persisted": False' in worker
+    assert 'worker_failure.get("example_id")' in supervisor

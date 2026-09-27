@@ -7,3 +7,5 @@ B2 must pass the ledger verifier or use the deterministic extractive fallback. O
 Real execution requires a separate owner authorization.
 
 Successor schema v2 also binds the canonical runtime paths and verifies the complete 17-file, 27,924,394,330-byte base-model manifest before creating the program output root.
+
+Successor schema v3 records malformed B0 structure as a semantic observation and routes malformed B2 proposals through the mandatory extractive fallback. True runtime failures identify the case without persisting an invalid payload.

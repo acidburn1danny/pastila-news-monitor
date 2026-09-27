@@ -15,8 +15,8 @@ def main():
     slots = [{"slot_id": f"{arm}__seed_{seed}", "arm": arm, "seed": seed,
               "output_slug": f"{arm.lower()}__seed_{seed}", "run_limit": 1}
              for arm in ARMS for seed in SEEDS]
-    core = {"schema": "editor-source-bound-hybrid-execution-authority", "schema_version": 2,
-            "predecessor_authority_identity": "ea9488637bdb53dbfce8f1ee4b1fae135f7492cf9c19dbeb813afbe8cee8cc3a",
+    core = {"schema": "editor-source-bound-hybrid-execution-authority", "schema_version": 3,
+            "predecessor_authority_identity": "2d3dc2361f824f8df6bab59e489e036c19e38d72ee48ef27501f8d870343de98",
             "scope": "FEASIBILITY_UPPER_BOUND_3X3_ONLY", "published_commit": "a44ab7be551da500f05ea4c10a5cf1f5eadd7212",
             "published_tree": tree, "runtime_boundary_identity": boundary["runtime_boundary_identity"],
             "pack_identity": boundary["pack_identity"], "protocol_identity": boundary["protocol_identity"],
@@ -39,6 +39,9 @@ def main():
             "verifier_sha256": digest(ROOT / "scripts/verify_editor_core_source_bound_hybrid_authority_v1.py"),
             "preflight_sha256": digest(ROOT / "scripts/preflight_editor_core_source_bound_hybrid_runtime_v1.py"),
             "slots": slots, "fresh_exact_tokenizer_zero_step_per_slot": True,
+            "semantic_invalidity_is_observation_not_runtime_failure": True,
+            "b2_malformed_proposal_routes_to_extractive_fallback": True,
+            "case_runtime_failure_identifies_example_without_invalid_payload": True,
             "distinct_empty_output_root_per_slot": True, "b2_verifier_required": True,
             "b2_extractive_fallback_required": True, "atomic_receipts": True,
             "no_partial_eligible_evidence": True, "retry_authorized": False, "stop_on_first_failure": True,

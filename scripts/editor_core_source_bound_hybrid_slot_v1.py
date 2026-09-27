@@ -32,7 +32,7 @@ def fixture(arm: str, seed: int) -> dict:
             "inference_performed": False, "optimizer_created": False, "training_performed": False}
 
 
-def model_proposal(model, tokenizer, ledger: dict, arm: str) -> dict:
+def model_output(model, tokenizer, ledger: dict, arm: str) -> str:
     if arm == "B0_R2_ONE_PASS":
         material = "\n".join(span["text"] for span in ledger["source_spans"])
         instruction = (f"CERINȚĂ: {ledger['request']}\nSURSE:\n{material}\n"
@@ -53,8 +53,7 @@ def model_proposal(model, tokenizer, ledger: dict, arm: str) -> dict:
         generated = model.generate(**encoded, do_sample=False, num_beams=1, max_new_tokens=768,
                                    eos_token_id=tokenizer.eos_token_id,
                                    pad_token_id=tokenizer.pad_token_id, use_cache=True)
-    raw = tokenizer.decode(generated[0, encoded.input_ids.shape[1]:], skip_special_tokens=True).strip()
-    return json.loads(raw)
+    return tokenizer.decode(generated[0, encoded.input_ids.shape[1]:], skip_special_tokens=True).strip()
 
 
 def real(args: argparse.Namespace) -> None:
@@ -87,25 +86,42 @@ def real(args: argparse.Namespace) -> None:
         model.eval()
     rows = []
     for ledger in ledgers:
-        if args.arm == "B1_EXTRACTIVE_BASELINE":
-            proposal = extractive_proposal(ledger)
-            verified = verify_proposal(ledger, proposal)
-            if not verified["accepted"]:
-                raise ValueError("extractive baseline rejected")
-            row = {"case_id": ledger["case_id"], "arm": args.arm, "route": "DETERMINISTIC_EXTRACTIVE",
-                   "text": verified["text"], "verified": True}
-        elif args.arm == "B2_HYBRID":
-            proposal = model_proposal(model, tokenizer, ledger, args.arm)
-            result = execute_with_fallback(ledger, proposal)
-            row = {"case_id": ledger["case_id"], "arm": args.arm, "route": result["route"],
-                   "text": result["text"], "verified": True}
-        else:
-            proposal = model_proposal(model, tokenizer, ledger, args.arm)
-            if proposal.get("case_id") != ledger["case_id"] or not isinstance(proposal.get("text"), str):
-                raise ValueError("malformed B0 output")
-            row = {"case_id": ledger["case_id"], "arm": args.arm, "route": "R2_ONE_PASS",
-                   "text": proposal["text"], "verified": False}
-        rows.append(row)
+        try:
+            if args.arm == "B1_EXTRACTIVE_BASELINE":
+                proposal = extractive_proposal(ledger)
+                verified = verify_proposal(ledger, proposal)
+                if not verified["accepted"]: raise ValueError("extractive baseline rejected")
+                row = {"case_id": ledger["case_id"], "arm": args.arm, "route": "DETERMINISTIC_EXTRACTIVE",
+                       "text": verified["text"], "verified": True, "structural_valid": True}
+            elif args.arm == "B2_HYBRID":
+                raw = model_output(model, tokenizer, ledger, args.arm)
+                try:
+                    proposal = json.loads(raw)
+                    structural_valid = isinstance(proposal, dict)
+                except (json.JSONDecodeError, TypeError):
+                    proposal = {"case_id": ledger["case_id"], "sentences": []}
+                    structural_valid = False
+                result = execute_with_fallback(ledger, proposal)
+                row = {"case_id": ledger["case_id"], "arm": args.arm, "route": result["route"],
+                       "text": result["text"], "verified": True, "structural_valid": structural_valid,
+                       "rejection_reasons": result["primary"]["reasons"]}
+            else:
+                raw = model_output(model, tokenizer, ledger, args.arm)
+                try:
+                    proposal = json.loads(raw)
+                except (json.JSONDecodeError, TypeError):
+                    proposal = None
+                structural_valid = (isinstance(proposal, dict) and proposal.get("case_id") == ledger["case_id"]
+                                    and isinstance(proposal.get("text"), str))
+                row = {"case_id": ledger["case_id"], "arm": args.arm, "route": "R2_ONE_PASS",
+                       "text": proposal["text"] if structural_valid else raw, "verified": False,
+                       "structural_valid": structural_valid}
+            rows.append(row)
+        except Exception as error:
+            atomic_json(args.output / "failure.json", {"status": "CASE_RUNTIME_FAILURE", "slot_id": f"{args.arm}__seed_{args.seed}",
+                                                       "example_id": ledger["case_id"], "phase": "CASE_EXECUTION",
+                                                       "error_type": type(error).__name__, "invalid_payload_persisted": False})
+            raise
     atomic_json(args.output / "observations.json", rows)
     atomic_json(args.output / "terminal.json", {"status": "PASS_TERMINAL", "slot_id": f"{args.arm}__seed_{args.seed}",
                                                 "rows": len(rows), "optimizer_created": False,
