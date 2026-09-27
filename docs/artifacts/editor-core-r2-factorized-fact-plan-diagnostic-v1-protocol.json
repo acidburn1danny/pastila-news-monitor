@@ -1,0 +1,26 @@
+{
+  "contrastive_and_kl_forms_tested": "CLOSED",
+  "editor_output": "FACTUAL_SETUP_MAX_2_TO_3_SENTENCES",
+  "evaluation_identity": "3b1dbb03ef2243f6661fd1ecd6b9a04f1ec739b8dda6865884f066365c04ef6b",
+  "historical_holdouts_allowed": false,
+  "intervention_identity": "6e188767d6469edc9e7e05093d769cc5579088a40e586743524211874eb2aff3",
+  "learning_mechanism": "FACTORIZED_PLAN_SUPERVISION_THEN_PLAN_CONDITIONED_REALIZATION",
+  "model_load_authorized": false,
+  "one_pass_reweighting_closed": true,
+  "optimizer_creation_authorized": false,
+  "parent": "R2_STEP_9",
+  "parent_adapter_identity": "c680d686f0b139e618d99fab235c62267caa9482df0efbccb44cb2c58c124f02",
+  "parent_selection_authority": false,
+  "protocol_identity": "da63d3394035c8ebdd4a821e5b1c47966179169e1b13c4926a7775143425b35d",
+  "schema": "editor-r2-factorized-fact-plan-learnability-protocol",
+  "schema_identity": "4083c271c4c5303823534134fea18b98adb306c26b1904affd32afd0e2f851b5",
+  "schema_version": 1,
+  "seeds": [
+    161803,
+    271828,
+    314159
+  ],
+  "status": "DESIGN_FIXTURE_ONLY_NO_MODEL_AUTHORITY",
+  "training_authorized": false,
+  "weighted_sft_t1s0": "CLOSED_REFERENCE_ONLY"
+}

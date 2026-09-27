@@ -1,0 +1,52 @@
+{
+  "causal_contrasts": {
+    "FACTORIZATION": "I3_VS_I0",
+    "ORACLE_INTERVENTION": "I2_VS_I0",
+    "PLAN_CONSTRUCTION": "I3_PLAN_VS_I1_ORACLE",
+    "PLAN_TO_TEXT": "I2_VS_ORACLE_SETUP_TARGET"
+  },
+  "intervention_identity": "6e188767d6469edc9e7e05093d769cc5579088a40e586743524211874eb2aff3",
+  "interventions": [
+    {
+      "id": "I0_ONE_PASS_R2",
+      "plan_source": "NONE",
+      "purpose": "ONE_PASS_CONTROL",
+      "realizer": "R2_STEP_9"
+    },
+    {
+      "id": "I1_ORACLE_PLAN_SCORE",
+      "plan_source": "ORACLE",
+      "purpose": "PLAN_VALIDITY_CEILING",
+      "realizer": "NONE"
+    },
+    {
+      "id": "I2_ORACLE_PLAN_TO_R2_SETUP",
+      "plan_source": "ORACLE",
+      "purpose": "ISOLATE_PLAN_TO_TEXT_REALIZATION",
+      "realizer": "R2_STEP_9"
+    },
+    {
+      "id": "I3_R2_PLAN_TO_R2_SETUP",
+      "plan_source": "R2_GENERATED",
+      "purpose": "END_TO_END_FACTORIZED_AND_PLAN_CONSTRUCTION_GAP",
+      "realizer": "R2_STEP_9"
+    }
+  ],
+  "matched": [
+    "CASES",
+    "ROW_ORDER_PER_SEED",
+    "R2_PARENT",
+    "TOKENIZER",
+    "DECODING",
+    "EVALUATOR",
+    "SENTENCE_CONTRACT"
+  ],
+  "schema": "editor-r2-factorized-intervention-matrix",
+  "schema_version": 1,
+  "seeds": [
+    161803,
+    271828,
+    314159
+  ],
+  "slots": 12
+}

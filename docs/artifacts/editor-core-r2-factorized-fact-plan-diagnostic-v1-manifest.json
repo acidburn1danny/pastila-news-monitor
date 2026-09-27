@@ -1,0 +1,27 @@
+{
+  "cases": 48,
+  "development": 24,
+  "files": {
+    "editor-core-r2-factorized-fact-plan-diagnostic-v1-cases.jsonl": "3c6312ed69a85d584cfcdc4a350e59b68dea79b4c630a8f5616bdc9802b12590",
+    "editor-core-r2-factorized-fact-plan-diagnostic-v1-evaluation.json": "78090cfa093d113f82aefcdf587f40ac6cd71086dcdddf1c1080f49c34ae6d84",
+    "editor-core-r2-factorized-fact-plan-diagnostic-v1-fact-plan-schema.json": "e37c54f76ff970cb257bb7e2e6691fbfb7faf198aa07c08569b6babb50044162",
+    "editor-core-r2-factorized-fact-plan-diagnostic-v1-interventions.json": "cedeb6415907c6b4125f34115723415bebdd1a238db0d7e26f0a355b6b08417c",
+    "editor-core-r2-factorized-fact-plan-diagnostic-v1-oracle-plans.jsonl": "47935c954bba07c388c87954763b8ac80417e6aaaa017834a0d4c74bb0cc03c9",
+    "editor-core-r2-factorized-fact-plan-diagnostic-v1-protocol.json": "bcd3a2442446cd1b9c2781045cadbb18694bf3245ca032e7afffbabf60d93d85"
+  },
+  "fixture_slots": 12,
+  "historical_holdouts_read": false,
+  "interventions": 4,
+  "oracle_plans": 48,
+  "pack_identity": "de12429f7c66a9efc4ba48d20e4f2227989ca238a42a76a5ba017bb9351a37c8",
+  "protocol_identity": "da63d3394035c8ebdd4a821e5b1c47966179169e1b13c4926a7775143425b35d",
+  "replay": 24,
+  "schema": "editor-r2-factorized-fact-plan-diagnostic-pack",
+  "schema_version": 1,
+  "seeds": [
+    161803,
+    271828,
+    314159
+  ],
+  "voice_or_chief_objective": false
+}

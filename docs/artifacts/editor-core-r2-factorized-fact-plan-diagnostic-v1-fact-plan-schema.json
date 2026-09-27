@@ -1,0 +1,24 @@
+{
+  "fields": {
+    "actors_entities": "SOURCE_BOUND_ACTORS_AND_ENTITIES",
+    "authority_inventory": "ORDERED_SOURCE_BOUND_SPANS",
+    "case_id": "EXACT_INPUT_CASE_ID",
+    "contradictions": "SUPPORTED_CROSS_SOURCE_RELATIONS",
+    "epistemic_status": "CLAIM_ATTRIBUTION_MODALITY_CERTAINTY",
+    "numbers": "VALUE_UNIT_ROLE_SOURCE_BINDING",
+    "procedural_status": "PROPOSAL_DECISION_STAGE_CURRENT_EFFECT",
+    "selected_facts": "ORDERED_REQUIRED_FACT_ATOMS",
+    "setup_constraints": "TWO_TO_THREE_SENTENCES_FACTUAL_ONLY"
+  },
+  "invariants": [
+    "NO_UNSUPPORTED_ATOM",
+    "EVERY_ATOM_HAS_SOURCE_SPAN",
+    "NUMBERS_KEEP_ROLE_AND_UNIT",
+    "CLAIM_STATUS_EXPLICIT",
+    "PROCEDURAL_CURRENT_EFFECT_EXPLICIT",
+    "NO_VOICE_OR_COMMENTARY"
+  ],
+  "schema": "editor-r2-factorized-fact-plan-schema",
+  "schema_identity": "4083c271c4c5303823534134fea18b98adb306c26b1904affd32afd0e2f851b5",
+  "schema_version": 1
+}

@@ -1,0 +1,52 @@
+{
+  "claims_forbidden": [
+    "PARENT_SELECTION",
+    "NATURALISTIC_TRANSFER",
+    "PROMOTION",
+    "RELEASE"
+  ],
+  "evaluation_identity": "3b1dbb03ef2243f6661fd1ecd6b9a04f1ec739b8dda6865884f066365c04ef6b",
+  "partitions": {
+    "DEVELOPMENT": 24,
+    "REPLAY_RETENTION": 24
+  },
+  "plan_metrics": [
+    "UNSUPPORTED_ATOMS",
+    "MISSING_REQUIRED_FACTS",
+    "ACTOR_ENTITY_FIDELITY",
+    "NUMBER_ROLE_FIDELITY",
+    "EPISTEMIC_STATUS",
+    "PROCEDURAL_STATUS",
+    "CONTRADICTION_BINDING"
+  ],
+  "schema": "editor-r2-factorized-evaluation-contract",
+  "schema_version": 1,
+  "seed_stability": "SAME_DIRECTION_AND_NO_MATERIAL_REGRESSION_IN_AT_LEAST_2_OF_3_SEEDS",
+  "setup_metrics": [
+    "PLAN_TO_TEXT_ENTAILMENT",
+    "PLAN_COVERAGE",
+    "NO_FACT_BEYOND_PLAN",
+    "TWO_TO_THREE_SENTENCES",
+    "FUNCTIONAL_ROMANIAN",
+    "REPETITION"
+  ],
+  "stop_rules": {
+    "CONTINUE_RESEARCH": [
+      "ORACLE_CAUSAL_CEILING_POSITIVE",
+      "GENERATED_PLAN_VALIDITY_GAIN_REPLICATED",
+      "PLAN_TO_TEXT_FAITHFULNESS_PASS",
+      "ZERO_MATERIAL_REPLAY_REGRESSIONS"
+    ],
+    "REVISE": [
+      "ORACLE_PLAN_IMPROVES_BUT_GENERATED_PLAN_FAILS",
+      "PLAN_VALID_BUT_PLAN_TO_TEXT_FAITHFULNESS_FAILS",
+      "SEED_DIRECTION_UNSTABLE"
+    ],
+    "STOP": [
+      "ANY_NOVEL_ACTOR",
+      "ANY_MATERIAL_NUMBER_ROLE_LOSS",
+      "ANY_EPISTEMIC_OR_PROCEDURAL_UPGRADE",
+      "ANY_MATERIAL_REPLAY_REGRESSION"
+    ]
+  }
+}
