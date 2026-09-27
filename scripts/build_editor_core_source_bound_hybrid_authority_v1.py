@@ -9,11 +9,14 @@ def digest(path): return hashlib.sha256(path.read_bytes()).hexdigest()
 
 def main():
     boundary = json.loads((ROOT / "docs/artifacts/editor-core-source-bound-hybrid-runtime-boundary-v1.json").read_text())
+    model_manifest_path = ROOT / "docs/artifacts/semantic-admission-v2-stage-p-construction-obligation-v2-model-adapter-immutable-manifest-v1.json"
+    model_manifest = json.loads(model_manifest_path.read_text())
     tree = subprocess.check_output(["git", "show", "-s", "--format=%T", "a44ab7be551da500f05ea4c10a5cf1f5eadd7212"], text=True).strip()
     slots = [{"slot_id": f"{arm}__seed_{seed}", "arm": arm, "seed": seed,
               "output_slug": f"{arm.lower()}__seed_{seed}", "run_limit": 1}
              for arm in ARMS for seed in SEEDS]
-    core = {"schema": "editor-source-bound-hybrid-execution-authority", "schema_version": 1,
+    core = {"schema": "editor-source-bound-hybrid-execution-authority", "schema_version": 2,
+            "predecessor_authority_identity": "ea9488637bdb53dbfce8f1ee4b1fae135f7492cf9c19dbeb813afbe8cee8cc3a",
             "scope": "FEASIBILITY_UPPER_BOUND_3X3_ONLY", "published_commit": "a44ab7be551da500f05ea4c10a5cf1f5eadd7212",
             "published_tree": tree, "runtime_boundary_identity": boundary["runtime_boundary_identity"],
             "pack_identity": boundary["pack_identity"], "protocol_identity": boundary["protocol_identity"],
@@ -21,6 +24,16 @@ def main():
             "parent_adapter_identity": boundary["parent_adapter_identity"],
             "runtime_python": "/root/pf9-ml-runtime-20260926/bin/python",
             "runtime_python_sha256": "e50d468e8b0adfb05733f5b87b3cff34829c4a8c1aea50c865aa8bdfe4bb150f",
+            "bound_paths": {"model": "/root/pf9-v12-recovery-replay-20260917/models/A",
+                            "tokenizer": "/root/pf9-v12-recovery-replay-20260917/tokenizers/A",
+                            "parent": "/root/pf9-editor-core-v10-v12-targeted-r2-output/adapter",
+                            "artifacts": "/mnt/c/pf9/docs/artifacts",
+                            "preflight": "/mnt/c/pf9/scripts/preflight_editor_core_source_bound_hybrid_runtime_v1.py",
+                            "worker": "/mnt/c/pf9/scripts/editor_core_source_bound_hybrid_slot_v1.py"},
+            "base_model_manifest_artifact_sha256": digest(model_manifest_path),
+            "base_model_manifest_identity": model_manifest["base_snapshot"]["manifest_sha256"],
+            "base_model_file_count": model_manifest["base_snapshot"]["file_count"],
+            "base_model_total_file_bytes": model_manifest["base_snapshot"]["total_file_bytes"],
             "worker_sha256": digest(ROOT / "scripts/editor_core_source_bound_hybrid_slot_v1.py"),
             "supervisor_sha256": digest(ROOT / "scripts/supervise_editor_core_source_bound_hybrid_v1.py"),
             "verifier_sha256": digest(ROOT / "scripts/verify_editor_core_source_bound_hybrid_authority_v1.py"),

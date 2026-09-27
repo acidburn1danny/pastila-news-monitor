@@ -1,7 +1,7 @@
 from __future__ import annotations
 import argparse, hashlib, json, os, shutil, subprocess
 from pathlib import Path
-from verify_editor_core_source_bound_hybrid_authority_v1 import ARMS, SEEDS, verify
+from verify_editor_core_source_bound_hybrid_authority_v1 import ARMS, AUTH, SEEDS, verify
 
 RUNTIME_SHA256 = "e50d468e8b0adfb05733f5b87b3cff34829c4a8c1aea50c865aa8bdfe4bb150f"
 
@@ -9,6 +9,24 @@ def atomic_json(path: Path, value: object) -> None:
     temporary = path.with_suffix(path.suffix + ".tmp")
     temporary.write_text(json.dumps(value, sort_keys=True, indent=2) + "\n", encoding="utf-8")
     temporary.replace(path)
+
+def verify_model_materialization(model: Path, artifacts: Path) -> None:
+    manifest_path = artifacts / "semantic-admission-v2-stage-p-construction-obligation-v2-model-adapter-immutable-manifest-v1.json"
+    authority = json.loads(AUTH.read_text())
+    if hashlib.sha256(manifest_path.read_bytes()).hexdigest() != authority["base_model_manifest_artifact_sha256"]:
+        raise ValueError("base model manifest artifact")
+    manifest = json.loads(manifest_path.read_text())["base_snapshot"]
+    files = manifest["files"]
+    if len(files) != authority["base_model_file_count"] or sum(x["size"] for x in files) != authority["base_model_total_file_bytes"]:
+        raise ValueError("base model inventory")
+    for item in files:
+        path = model / item["path"]
+        if path.is_symlink() or not path.is_file() or path.stat().st_size != item["size"]:
+            raise ValueError("base model file inventory")
+        digest = hashlib.sha256()
+        with path.open("rb") as stream:
+            for block in iter(lambda: stream.read(8 * 1024 * 1024), b""): digest.update(block)
+        if digest.hexdigest() != item["sha256"]: raise ValueError("base model file identity")
 
 def main() -> None:
     parser = argparse.ArgumentParser()
@@ -31,10 +49,17 @@ def main() -> None:
         raise ValueError("program output root must be new or empty")
     if not args.execute_authorized or os.environ.get("SOURCE_BOUND_HYBRID_PROGRAM_AUTHORIZED") != "1":
         raise SystemExit("separate owner authorization required")
-    if not args.runtime_python or hashlib.sha256(args.runtime_python.read_bytes()).hexdigest() != RUNTIME_SHA256:
+    authority_doc = json.loads(AUTH.read_text())
+    actual_paths = {"model": str(args.model), "tokenizer": str(args.tokenizer), "parent": str(args.parent),
+                    "artifacts": str(args.artifacts), "preflight": str(args.preflight), "worker": str(args.worker)}
+    if actual_paths != authority_doc["bound_paths"]: raise SystemExit("bound path identity")
+    if not args.runtime_python or str(args.runtime_python) != authority_doc["runtime_python"] or hashlib.sha256(args.runtime_python.read_bytes()).hexdigest() != RUNTIME_SHA256:
         raise SystemExit("runtime python identity")
     if not all((args.model, args.tokenizer, args.parent, args.artifacts, args.preflight, args.worker)):
         raise SystemExit("missing bound input")
+    if hashlib.sha256(args.preflight.read_bytes()).hexdigest() != authority_doc["preflight_sha256"]: raise SystemExit("preflight identity")
+    if hashlib.sha256(args.worker.read_bytes()).hexdigest() != authority_doc["worker_sha256"]: raise SystemExit("worker identity")
+    verify_model_materialization(args.model, args.artifacts)
     args.output_root.mkdir(parents=True, exist_ok=False)
     work = args.output_root / ".inflight"
     work.mkdir()

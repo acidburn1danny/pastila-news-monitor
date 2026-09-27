@@ -43,3 +43,10 @@ def test_atomic_and_no_partial_evidence_are_supervised():
     assert ').replace(args.output_root / f"{arm.lower()}__seed_{seed}")' in source
     assert source.index('shutil.rmtree(work)\n    atomic_json(args.output_root / "terminal.json"') > source.index("for arm in ARMS:")
     assert '"partial_eligible_evidence": False' in source
+
+def test_real_inputs_are_path_and_content_bound_before_root_creation():
+    source = (SCRIPTS / "supervise_editor_core_source_bound_hybrid_v1.py").read_text(encoding="utf-8")
+    assert 'if actual_paths != authority_doc["bound_paths"]' in source
+    assert 'hashlib.sha256(args.preflight.read_bytes()).hexdigest()' in source
+    assert 'hashlib.sha256(args.worker.read_bytes()).hexdigest()' in source
+    assert source.index("verify_model_materialization(args.model, args.artifacts)") < source.index("args.output_root.mkdir")

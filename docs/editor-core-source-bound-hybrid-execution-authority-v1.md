@@ -5,3 +5,5 @@ It binds the published runtime boundary, pack, protocol, exact tokenizer, and or
 Every slot requires a fresh zero-step receipt. Slot output is staged and becomes eligible only after an atomic terminal PASS.
 B2 must pass the ledger verifier or use the deterministic extractive fallback. Oracle selection remains an upper-bound intervention and is not autonomous ledger construction.
 Real execution requires a separate owner authorization.
+
+Successor schema v2 also binds the canonical runtime paths and verifies the complete 17-file, 27,924,394,330-byte base-model manifest before creating the program output root.

@@ -14,7 +14,7 @@ def verify(arm=None, seed=None):
     value = json.loads(AUTH.read_text(encoding="utf-8")); identity = value.pop("authority_identity")
     if identity != hashlib.sha256(canonical(value)).hexdigest(): raise ValueError("authority identity")
     boundary = json.loads((ROOT / "docs/artifacts/editor-core-source-bound-hybrid-runtime-boundary-v1.json").read_text())
-    if value["published_commit"] != "a44ab7be551da500f05ea4c10a5cf1f5eadd7212": raise ValueError("published commit")
+    if value["published_commit"] != "a44ab7be551da500f05ea4c10a5cf1f5eadd7212" or value["schema_version"] != 2: raise ValueError("published commit")
     if value["runtime_boundary_identity"] != boundary["runtime_boundary_identity"]: raise ValueError("boundary identity")
     if value["pack_identity"] != boundary["pack_identity"] or value["protocol_identity"] != boundary["protocol_identity"]: raise ValueError("pack/protocol")
     if value["tokenizer_sha256"] != boundary["tokenizer_sha256"] or value["parent_adapter_identity"] != boundary["parent_adapter_identity"]: raise ValueError("tokenizer/parent")
@@ -24,6 +24,17 @@ def verify(arm=None, seed=None):
                 "preflight_sha256": "preflight_editor_core_source_bound_hybrid_runtime_v1.py"}
     for key, name in expected.items():
         if value[key] != digest(ROOT / "scripts" / name): raise ValueError(key)
+    model_manifest_path = ROOT / "docs/artifacts/semantic-admission-v2-stage-p-construction-obligation-v2-model-adapter-immutable-manifest-v1.json"
+    model_manifest = json.loads(model_manifest_path.read_text())
+    if value["base_model_manifest_artifact_sha256"] != digest(model_manifest_path): raise ValueError("model manifest artifact")
+    if value["base_model_manifest_identity"] != model_manifest["base_snapshot"]["manifest_sha256"]: raise ValueError("model identity")
+    expected_paths = {"model": "/root/pf9-v12-recovery-replay-20260917/models/A",
+                      "tokenizer": "/root/pf9-v12-recovery-replay-20260917/tokenizers/A",
+                      "parent": "/root/pf9-editor-core-v10-v12-targeted-r2-output/adapter",
+                      "artifacts": "/mnt/c/pf9/docs/artifacts",
+                      "preflight": "/mnt/c/pf9/scripts/preflight_editor_core_source_bound_hybrid_runtime_v1.py",
+                      "worker": "/mnt/c/pf9/scripts/editor_core_source_bound_hybrid_slot_v1.py"}
+    if value["bound_paths"] != expected_paths: raise ValueError("bound paths")
     if len(value["slots"]) != 9 or len({x["slot_id"] for x in value["slots"]}) != 9: raise ValueError("slot inventory")
     if {x["arm"] for x in value["slots"]} != set(ARMS) or {x["seed"] for x in value["slots"]} != set(SEEDS): raise ValueError("factorial")
     required_true = ("fresh_exact_tokenizer_zero_step_per_slot", "distinct_empty_output_root_per_slot",
