@@ -19,12 +19,16 @@ def real(args):
  if os.environ.get("FACTORIZED_FACT_PLAN_SLOT_AUTHORIZED")!="1": raise SystemExit("separate owner authorization required")
  # Imports and model load intentionally occur only beyond the authorization gate.
  import torch
- from transformers import AutoModelForCausalLM,AutoTokenizer,BitsAndBytesConfig
+ from torch._native.registry import deregister_op_overrides
+ from transformers import AutoModelForImageTextToText,AutoTokenizer,BitsAndBytesConfig
  from peft import PeftModel
  from editor_core_r2_factorized_fact_plan_runtime_v1 import validate_plan
  torch.manual_seed(args.seed)
- tok=AutoTokenizer.from_pretrained(args.tokenizer,local_files_only=True,use_fast=True)
- base=AutoModelForCausalLM.from_pretrained(args.model,local_files_only=True,device_map="auto",quantization_config=BitsAndBytesConfig(load_in_4bit=True,bnb_4bit_quant_type="nf4",bnb_4bit_compute_dtype=torch.bfloat16))
+ torch.cuda.manual_seed_all(args.seed); torch.use_deterministic_algorithms(True); deregister_op_overrides(disable_op_symbols="bmm")
+ tok=AutoTokenizer.from_pretrained(args.tokenizer,local_files_only=True,use_fast=True,fix_mistral_regex=True)
+ if tok.pad_token_id is None: tok.pad_token=tok.eos_token
+ base=AutoModelForImageTextToText.from_pretrained(args.model,local_files_only=True,device_map={"":0},dtype=torch.bfloat16,attn_implementation="sdpa",low_cpu_mem_usage=True,quantization_config=BitsAndBytesConfig(load_in_4bit=True,bnb_4bit_quant_type="nf4",bnb_4bit_compute_dtype=torch.bfloat16,bnb_4bit_use_double_quant=True))
+ base.model.vision_tower=None; base.model.multi_modal_projector=None
  model=PeftModel.from_pretrained(base,args.parent,is_trainable=False); model.eval()
  cases=[json.loads(x) for x in (args.artifacts/"editor-core-r2-factorized-fact-plan-diagnostic-v1-cases.jsonl").read_text(encoding="utf-8").splitlines()]
  plans={x["case_id"]:x for x in map(json.loads,(args.artifacts/"editor-core-r2-factorized-fact-plan-diagnostic-v1-oracle-plans.jsonl").read_text(encoding="utf-8").splitlines())}
