@@ -1,0 +1,40 @@
+{
+  "bundle_file": "editor-vnext-minimal-source-authority-diagnostic-v1-bundle.json",
+  "bundle_identity": "9fb26a21251073c0cbbeee5a9036082ca0e5f07869b7e9998f9dd935647d961e",
+  "bundle_sha256": "1ee730cadc83d21c2409efcc4500068cf75ebe9075155a70417518988969e1f3",
+  "diagnostic_tooling": {
+    "scripts/build_editor_vnext_minimal_source_authority_diagnostic_v1.py": "5490769aaaf0bca67498f36570df8ddd9ad60c7fa1d9862cb76b80ff72400247",
+    "scripts/fixture_editor_vnext_minimal_source_authority_diagnostic_v1.py": "9d1f463b2555e10437a108c8526cebbadeecb4349a243ba56445857485f77993",
+    "tests/test_editor_vnext_minimal_source_authority_diagnostic_v1.py": "90cd6f745ebd9ea5bd3b52f04a826260dac1766e533581d14dac03aa7d3bb171"
+  },
+  "ephemeral_by_default": [
+    "GENERATIONS",
+    "CACHES",
+    "INTERMEDIATE_PACKETS",
+    "REJECTED_OUTPUTS",
+    "PER_CASE_DEBUG_TRACES"
+  ],
+  "historical_holdouts_read": false,
+  "inference_performed": false,
+  "legacy_runtime_dependencies": [],
+  "manifest_identity": "2e912cb302b5e39a043f43df0a786fc0d138f8758fe3482aa6befa24cf3c0f00",
+  "model_loaded": false,
+  "persistent_outputs": [
+    "editor-vnext-minimal-source-authority-diagnostic-v1-bundle.json",
+    "editor-vnext-minimal-source-authority-diagnostic-v1-manifest.json",
+    "../editor-vnext-minimal-source-authority-diagnostic-v1.md"
+  ],
+  "python": ">=3.14",
+  "real_runtime_preflight": "FAIL_CLOSED_UNLESS_EACH_REQUIRED_OBJECT_IS_LOCALLY_MATERIALIZED_AND_CONTENT_VERIFIED",
+  "required_real_runtime_objects": {
+    "adapter_identity": "c680d686f0b139e618d99fab235c62267caa9482df0efbccb44cb2c58c124f02",
+    "checkpoint_identity": "96e10b85fe30c4be43c2cc1a0b906f04ea4c476cc8d422b4ad26e9758b85b2be",
+    "role": "FROZEN_REFERENCE_REALIZER_NOT_LOADED",
+    "tokenizer_identity": "d5f6046775b112f0e2d456ee9dba450684ab964fe5c4e231599bdc6773028135"
+  },
+  "schema": "editor-vnext-minimal-complete-dependency-manifest",
+  "schema_version": 1,
+  "self_contained_fixture_source_bytes": true,
+  "third_party_runtime_dependencies": [],
+  "training_performed": false
+}

@@ -1,0 +1,4854 @@
+{
+  "arms": {
+    "ORACLE_UPPER_BOUND": "MEASUREMENT_ONLY",
+    "V0_FULL_SOURCE": "ALL_SOURCE_SPANS_TO_R2_REFERENCE_REALIZER",
+    "V1_DETERMINISTIC_EVIDENCE": "CANONICAL_FIRST_SPAN_PLUS_SPANS_WITH_EXPLICIT_CRITICAL_LITERALS",
+    "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": "V1_PLUS_ID_ONLY_SELECTOR_FOR_MISSING_REQUIRED_SPANS"
+  },
+  "authorities": {
+    "inference": false,
+    "model_load": false,
+    "optimizer": false,
+    "parent_selection": false,
+    "promotion": false,
+    "release": false,
+    "training": false
+  },
+  "bundle_identity": "9fb26a21251073c0cbbeee5a9036082ca0e5f07869b7e9998f9dd935647d961e",
+  "claim_limits": [
+    "NO_REAL_INFERENCE",
+    "NO_AUTONOMOUS_SELECTOR_CLAIM",
+    "NO_PARENT_SELECTION",
+    "NO_NATURALISTIC_TRANSFER"
+  ],
+  "contracts": {
+    "EditorSetup": {
+      "creative_content_allowed": false,
+      "required": [
+        "text",
+        "sentence_span_citations",
+        "verifier_status"
+      ],
+      "usual_sentence_target": "TWO_TO_THREE_EXTENSIBLE_FOR_FACTUAL_SUFFICIENCY"
+    },
+    "EvidencePacket": {
+      "prohibits": [
+        "FREE_TEXT_FACTS",
+        "NEW_ACTORS",
+        "NEW_NUMBERS",
+        "SILENT_CONFLICT_RESOLUTION"
+      ],
+      "required": [
+        "source_packet_identity",
+        "selected_span_ids",
+        "critical_literals",
+        "unresolved_flags"
+      ]
+    },
+    "SourcePacket": {
+      "authority": "SOURCE_TEXT_BYTES_ONLY",
+      "required": [
+        "event_id",
+        "completeness",
+        "spans",
+        "packet_identity"
+      ],
+      "span_required": [
+        "span_id",
+        "source_id",
+        "text",
+        "sha256",
+        "byte_start",
+        "byte_end"
+      ]
+    }
+  },
+  "fixtures": [
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-editor-setup-v1-01:s1",
+          "ec-editor-setup-v1-01:s2"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-editor-setup-v1-01:s1",
+          "ec-editor-setup-v1-01:s2",
+          "ec-editor-setup-v1-01:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-editor-setup-v1-01:s1",
+          "ec-editor-setup-v1-01:s2",
+          "ec-editor-setup-v1-01:s3"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-editor-setup-v1-01:s1",
+          "ec-editor-setup-v1-01:s2",
+          "ec-editor-setup-v1-01:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-editor-setup-v1-01",
+      "failure_class": "MULTISOURCE_FACT_SELECTION",
+      "fixture_identity": "b3ad501c59f2880495f8b19449158dff4c753753c181ba288c813d9721816ad9",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-editor-setup-v1-01:s1",
+          "ec-editor-setup-v1-01:s2"
+        ]
+      },
+      "partition": "DEVELOPMENT",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-editor-setup-v1-01",
+        "packet_identity": "0d2b3725e97fad53a9d8ab002829e32f46ad68f6201c506bd10fe7a93c2e7221",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 93,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "127"
+              ],
+              "procedural": [
+                "aprobat"
+              ]
+            },
+            "position": 0,
+            "sha256": "feadee24ad0e6a61be317e8e748c2c28804eac28324bc774f12396bee837d812",
+            "source_id": "consiliu",
+            "span_id": "ec-editor-setup-v1-01:s1",
+            "text": "Consiliul local din Brașov a aprobat 127 de milioane de lei pentru noul centru medical Arin."
+          },
+          {
+            "byte_end": 121,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": [
+                "aprobat",
+                "semnat"
+              ]
+            },
+            "position": 1,
+            "sha256": "a351d3329f3040f2a535b2251eaf680168a59cf424973eb05b580ccc455270bb",
+            "source_id": "minister",
+            "span_id": "ec-editor-setup-v1-01:s2",
+            "text": "Ministerul a precizat că finanțarea centrului Arin este aprobată, dar contractul de execuție nu a fost încă semnat."
+          },
+          {
+            "byte_end": 101,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "19"
+              ],
+              "procedural": []
+            },
+            "position": 2,
+            "sha256": "1b12cfd45de793e75c6e766fafd3d15bcb95bac0457ae38796283022e11767f7",
+            "source_id": "sport",
+            "span_id": "ec-editor-setup-v1-01:s3",
+            "text": "În aceeași ședință au fost alocate 19 milioane de lei pentru modernizarea stadionului municipal."
+          }
+        ]
+      }
+    },
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-editor-setup-v1-02:s1",
+          "ec-editor-setup-v1-02:s2",
+          "ec-editor-setup-v1-02:s3"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-editor-setup-v1-02:s1",
+          "ec-editor-setup-v1-02:s2",
+          "ec-editor-setup-v1-02:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-editor-setup-v1-02:s1",
+          "ec-editor-setup-v1-02:s2"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-editor-setup-v1-02:s1",
+          "ec-editor-setup-v1-02:s2",
+          "ec-editor-setup-v1-02:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [
+          "ec-editor-setup-v1-02:s3"
+        ],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-editor-setup-v1-02",
+      "failure_class": "ATTRIBUTED_CONTEST",
+      "fixture_identity": "231f600c03c1e714ecbd1ead2436ce9455c3e056c5a2c53e2e7db1a496ad0efd",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-editor-setup-v1-02:s1",
+          "ec-editor-setup-v1-02:s2",
+          "ec-editor-setup-v1-02:s3"
+        ]
+      },
+      "partition": "DEVELOPMENT",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-editor-setup-v1-02",
+        "packet_identity": "4771aff814d8674a083ceb7f13f7eb5666c8d7affbae21aaf5c4d601a728b214",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 99,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [
+                "ar fi",
+                "preliminar"
+              ],
+              "numbers_dates_amounts": [
+                "127"
+              ],
+              "procedural": []
+            },
+            "position": 0,
+            "sha256": "b3fff2f5a6b70c2900b36538b11c0d6f99b84d022d55ce1ada11125095b6a537",
+            "source_id": "inspectori",
+            "span_id": "ec-editor-setup-v1-02:s1",
+            "text": "Inspectorii afirmă într-o notă preliminară că Depozitul Arin ar fi omis 127 de înregistrări."
+          },
+          {
+            "byte_end": 98,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [
+                "afirma"
+              ],
+              "numbers_dates_amounts": [],
+              "procedural": []
+            },
+            "position": 1,
+            "sha256": "1d76d5e7ebe9f425a3f53e60834abcfcf1351eeeb5576a79495e189c6cd02780",
+            "source_id": "depozit",
+            "span_id": "ec-editor-setup-v1-02:s2",
+            "text": "Depozitul Arin contestă afirmația și spune că registrul transmis conține toate operațiunile."
+          },
+          {
+            "byte_end": 109,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": []
+            },
+            "position": 2,
+            "sha256": "68c3f4ccab863b1f741ab8f74d528fc9a9c021186169b8f4aebb4a223b93d978",
+            "source_id": "autoritate",
+            "span_id": "ec-editor-setup-v1-02:s3",
+            "text": "Autoritatea de control declară că verificarea este în curs și că nu a stabilit încă situația de fapt."
+          }
+        ]
+      }
+    },
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-editor-setup-v1-03:s1",
+          "ec-editor-setup-v1-03:s2",
+          "ec-editor-setup-v1-03:s3"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-editor-setup-v1-03:s1",
+          "ec-editor-setup-v1-03:s2",
+          "ec-editor-setup-v1-03:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-editor-setup-v1-03:s1"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-editor-setup-v1-03:s1",
+          "ec-editor-setup-v1-03:s2",
+          "ec-editor-setup-v1-03:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [
+          "ec-editor-setup-v1-03:s2",
+          "ec-editor-setup-v1-03:s3"
+        ],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-editor-setup-v1-03",
+      "failure_class": "CHRONOLOGY_UPDATE",
+      "fixture_identity": "b8aa735acc5e7033400189bfa97aceb6aa8a34dd1296e663ccbe9fe838ba7d4c",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-editor-setup-v1-03:s1",
+          "ec-editor-setup-v1-03:s2",
+          "ec-editor-setup-v1-03:s3"
+        ]
+      },
+      "partition": "DEVELOPMENT",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-editor-setup-v1-03",
+        "packet_identity": "6bfd4a17e9807f5ba134ec9d7cc5caa1430372c29704f42b0f03ee251c7ee7af",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 101,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": []
+            },
+            "position": 0,
+            "sha256": "90c19f01ef1969e760ce860cb6d022f3465fa876400102d41825ae69a9b4cfca",
+            "source_id": "initial",
+            "span_id": "ec-editor-setup-v1-03:s1",
+            "text": "Locuitorii din cartierul Arin au fost evacuați luni dimineață după o alertă privind o conductă."
+          },
+          {
+            "byte_end": 94,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": []
+            },
+            "position": 1,
+            "sha256": "1f91ed4a705ec71751a8d9c3c2066e3597f9f74eb7ae49d272f9fa1805075655",
+            "source_id": "return",
+            "span_id": "ec-editor-setup-v1-03:s2",
+            "text": "Primăria din Brașov a permis revenirea locuitorilor în aceeași seară, după măsurători."
+          },
+          {
+            "byte_end": 116,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": []
+            },
+            "position": 2,
+            "sha256": "f3c90be2284a4bdde1c75ff2a98854182b620c2f32bae299c4a784cf296efc49",
+            "source_id": "latest",
+            "span_id": "ec-editor-setup-v1-03:s3",
+            "text": "Operatorul rețelei a anunțat ulterior că strada principală rămâne închisă până la finalizarea reparației."
+          }
+        ]
+      }
+    },
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-editor-setup-v1-04:s1",
+          "ec-editor-setup-v1-04:s2",
+          "ec-editor-setup-v1-04:s3"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-editor-setup-v1-04:s1",
+          "ec-editor-setup-v1-04:s2",
+          "ec-editor-setup-v1-04:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-editor-setup-v1-04:s1",
+          "ec-editor-setup-v1-04:s2",
+          "ec-editor-setup-v1-04:s3"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-editor-setup-v1-04:s1",
+          "ec-editor-setup-v1-04:s2",
+          "ec-editor-setup-v1-04:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-editor-setup-v1-04",
+      "failure_class": "NUMERIC_RECONCILIATION",
+      "fixture_identity": "315e45a214be26d9b98559aeaa64b2a50e0e76381cb982376f2f435ce38719a4",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-editor-setup-v1-04:s1",
+          "ec-editor-setup-v1-04:s2",
+          "ec-editor-setup-v1-04:s3"
+        ]
+      },
+      "partition": "DEVELOPMENT",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-editor-setup-v1-04",
+        "packet_identity": "d5429cbecbc9096cb1d8a43d4cab894b25fdc10f2a6825553ecbf83f4efd3fe3",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 79,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "127"
+              ],
+              "procedural": []
+            },
+            "position": 0,
+            "sha256": "e96bad7c20e00604db21a68d65df39d95face538858b986b1c380654a68adb17",
+            "source_id": "initial",
+            "span_id": "ec-editor-setup-v1-04:s1",
+            "text": "Un inventar provizoriu a raportat 127 de dosare depuse la agenția din Brașov."
+          },
+          {
+            "byte_end": 91,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "108",
+                "19"
+              ],
+              "procedural": []
+            },
+            "position": 1,
+            "sha256": "4057e36a30fb365362b61bb15156db918d67d4c8f7e8132dd8c45c3e716b03b6",
+            "source_id": "breakdown",
+            "span_id": "ec-editor-setup-v1-04:s2",
+            "text": "Agenția a precizat că 108 de dosare erau distincte, iar 19 erau înregistrări duplicate."
+          },
+          {
+            "byte_end": 87,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "108"
+              ],
+              "procedural": []
+            },
+            "position": 2,
+            "sha256": "9abba5fd76dae922dc778187f80b95bcc866e666b614a73dc9c5db88d31a2c31",
+            "source_id": "correction",
+            "span_id": "ec-editor-setup-v1-04:s3",
+            "text": "Buletinul corectat stabilește totalul la 108 de dosare, după eliminarea duplicatelor."
+          }
+        ]
+      }
+    },
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-editor-setup-v1-05:s1",
+          "ec-editor-setup-v1-05:s2",
+          "ec-editor-setup-v1-05:s3"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-editor-setup-v1-05:s1",
+          "ec-editor-setup-v1-05:s2",
+          "ec-editor-setup-v1-05:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-editor-setup-v1-05:s1",
+          "ec-editor-setup-v1-05:s2",
+          "ec-editor-setup-v1-05:s3"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-editor-setup-v1-05:s1",
+          "ec-editor-setup-v1-05:s2",
+          "ec-editor-setup-v1-05:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-editor-setup-v1-05",
+      "failure_class": "PROCEDURAL_STATUS",
+      "fixture_identity": "abb9229db463fdf0ba5120f255750e4623b5ec631fdf7ebebb08167b56b63683",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-editor-setup-v1-05:s1",
+          "ec-editor-setup-v1-05:s2",
+          "ec-editor-setup-v1-05:s3"
+        ]
+      },
+      "partition": "DEVELOPMENT",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-editor-setup-v1-05",
+        "packet_identity": "513885ba46fda0291a43fd151b38a13ce847dce64bf595dbba0d0e90b313cba6",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 82,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "19"
+              ],
+              "procedural": [
+                "propus"
+              ]
+            },
+            "position": 0,
+            "sha256": "09bd47ea3a925f49882784c1a34328b54038eeb85294a6aa216b5da3c2ad4dd1",
+            "source_id": "proposal",
+            "span_id": "ec-editor-setup-v1-05:s1",
+            "text": "Comisia tehnică a propus suspendarea autorizației companiei Arin pentru 19 zile."
+          },
+          {
+            "byte_end": 65,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": [
+                "propunere",
+                "vot"
+              ]
+            },
+            "position": 1,
+            "sha256": "04251b1b5eca306e18ddda55306beeffd02835695f8aee763780a3cf8d269a56",
+            "source_id": "vote",
+            "span_id": "ec-editor-setup-v1-05:s2",
+            "text": "Propunerea urmează să fie votată de plenul autorității luni."
+          },
+          {
+            "byte_end": 82,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": [
+                "vot"
+              ]
+            },
+            "position": 2,
+            "sha256": "511aee075c20b80bca0e32709529d8d0385cb4acdf70e0765508f2396a348c7b",
+            "source_id": "status",
+            "span_id": "ec-editor-setup-v1-05:s3",
+            "text": "Până la vot nu există o decizie finală, iar autorizația rămâne în vigoare."
+          }
+        ]
+      }
+    },
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-editor-setup-v1-06:s1",
+          "ec-editor-setup-v1-06:s2",
+          "ec-editor-setup-v1-06:s3"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-editor-setup-v1-06:s1",
+          "ec-editor-setup-v1-06:s2",
+          "ec-editor-setup-v1-06:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-editor-setup-v1-06:s1"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-editor-setup-v1-06:s1",
+          "ec-editor-setup-v1-06:s2",
+          "ec-editor-setup-v1-06:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [
+          "ec-editor-setup-v1-06:s2",
+          "ec-editor-setup-v1-06:s3"
+        ],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-editor-setup-v1-06",
+      "failure_class": "MODALITY_UNCERTAINTY",
+      "fixture_identity": "b291fb7d965fdc6b98557b2dd6fc44ba8c7dfeb5bc999cd375ab0a2e504bef6c",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-editor-setup-v1-06:s1",
+          "ec-editor-setup-v1-06:s2",
+          "ec-editor-setup-v1-06:s3"
+        ]
+      },
+      "partition": "DEVELOPMENT",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-editor-setup-v1-06",
+        "packet_identity": "6d4d821e123fa4e3c03e78fa829bbd4dda7f99051db4ac65c9e99cb7a7c3abd5",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 106,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "19%"
+              ],
+              "procedural": []
+            },
+            "position": 0,
+            "sha256": "1535168158f540ee9b6d7a0f702213181622fa0391df120807bcc0a3c25e4c02",
+            "source_id": "forecast",
+            "span_id": "ec-editor-setup-v1-06:s1",
+            "text": "Institutul estimează o probabilitate de 19% ca nivelul râului Arin să depășească pragul de atenție."
+          },
+          {
+            "byte_end": 105,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": []
+            },
+            "position": 1,
+            "sha256": "274e555bd3737b7df0e115e9edeaac7af43c473a12daa93b2e6ecf422a9cfec4",
+            "source_id": "local",
+            "span_id": "ec-editor-setup-v1-06:s2",
+            "text": "Primăria din Brașov pregătește evacuarea preventivă a unei străzi, dar măsura nu a fost activată."
+          },
+          {
+            "byte_end": 84,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": []
+            },
+            "position": 2,
+            "sha256": "2c8c373caefb7f4aff29a8ec0d97f6f8e22e754a84cadf6fb66e152f1d6bd407",
+            "source_id": "uncertainty",
+            "span_id": "ec-editor-setup-v1-06:s3",
+            "text": "Institutul avertizează că prognoza se poate modifica odată cu noile măsurători."
+          }
+        ]
+      }
+    },
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-editor-setup-v1-07:s1",
+          "ec-editor-setup-v1-07:s2"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-editor-setup-v1-07:s1",
+          "ec-editor-setup-v1-07:s2",
+          "ec-editor-setup-v1-07:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-editor-setup-v1-07:s1",
+          "ec-editor-setup-v1-07:s2",
+          "ec-editor-setup-v1-07:s3"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-editor-setup-v1-07:s1",
+          "ec-editor-setup-v1-07:s2",
+          "ec-editor-setup-v1-07:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-editor-setup-v1-07",
+      "failure_class": "COMPRESSION_WITH_DISTRACTOR",
+      "fixture_identity": "f43c8dd7ccf70712ec941cde6371280e485e7afd2e2288d7b4f2b01ada16ab7c",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-editor-setup-v1-07:s1",
+          "ec-editor-setup-v1-07:s2"
+        ]
+      },
+      "partition": "DEVELOPMENT",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-editor-setup-v1-07",
+        "packet_identity": "9b3498720ffb7a8b15e447382a4e80a94813fad2704665d0646a6d837f3f1b0c",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 112,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "127"
+              ],
+              "procedural": []
+            },
+            "position": 0,
+            "sha256": "453c34d310f73d49c9c23f6ee0406ba3dd059caeceb0a0b19a763903dd281ff1",
+            "source_id": "incident",
+            "span_id": "ec-editor-setup-v1-07:s1",
+            "text": "Operatorul Arin anunță că 127 de consumatori din Brașov au rămas fără apă după avarierea unei conducte."
+          },
+          {
+            "byte_end": 104,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "18",
+                "00"
+              ],
+              "procedural": []
+            },
+            "position": 1,
+            "sha256": "eb1d5a71ab962dd9a6d0349725c882706386fa28b1b7a2982ebc743bf0d1ed50",
+            "source_id": "repair",
+            "span_id": "ec-editor-setup-v1-07:s2",
+            "text": "Operatorul estimează reluarea furnizării luni la ora 18:00, dacă reparația decurge conform planului."
+          },
+          {
+            "byte_end": 104,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "42",
+                "2011"
+              ],
+              "procedural": []
+            },
+            "position": 2,
+            "sha256": "20191da78ff953702f6a9608d333a4376606b7b6f82114123d70b83c45e58482",
+            "source_id": "history",
+            "span_id": "ec-editor-setup-v1-07:s3",
+            "text": "Rețeaua din Brașov a fost construită în urmă cu 42 de ani și a trecut printr-o extindere în 2011."
+          }
+        ]
+      }
+    },
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-editor-setup-v1-08:s1",
+          "ec-editor-setup-v1-08:s2",
+          "ec-editor-setup-v1-08:s3"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-editor-setup-v1-08:s1",
+          "ec-editor-setup-v1-08:s2",
+          "ec-editor-setup-v1-08:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-editor-setup-v1-08:s1",
+          "ec-editor-setup-v1-08:s3"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-editor-setup-v1-08:s1",
+          "ec-editor-setup-v1-08:s2",
+          "ec-editor-setup-v1-08:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [
+          "ec-editor-setup-v1-08:s2"
+        ],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-editor-setup-v1-08",
+      "failure_class": "CROSS_SOURCE_SUFFICIENCY",
+      "fixture_identity": "55e229a745a9b77d8629f4c1a6c22c0851890fe74f3f171d95b2032b998b61ed",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-editor-setup-v1-08:s1",
+          "ec-editor-setup-v1-08:s2",
+          "ec-editor-setup-v1-08:s3"
+        ]
+      },
+      "partition": "DEVELOPMENT",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-editor-setup-v1-08",
+        "packet_identity": "f65547d953e7748756700b13ec7d3525094acf2813e58bec7a1c314e1c1f1fae",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 105,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "19%"
+              ],
+              "procedural": []
+            },
+            "position": 0,
+            "sha256": "840e751190fdc5de06315d405dbe2fa6327057a2a709a0a32fb2bc7603ee2d0c",
+            "source_id": "decision",
+            "span_id": "ec-editor-setup-v1-08:s1",
+            "text": "Consiliul universității Arin a decis reducerea taxei de înscriere cu 19% pentru candidații eligibili."
+          },
+          {
+            "byte_end": 90,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": []
+            },
+            "position": 1,
+            "sha256": "ecc773c0fc49178eac5563245b7be3c2ec15311f148cafb49e0a6daf77b5a948",
+            "source_id": "application",
+            "span_id": "ec-editor-setup-v1-08:s2",
+            "text": "Universitatea precizează că reducerea se aplică sesiunii din Brașov care începe luni."
+          },
+          {
+            "byte_end": 113,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "127"
+              ],
+              "procedural": []
+            },
+            "position": 2,
+            "sha256": "21ccc70bb6cfe50c5e54e74422b7a665db38a41954fc4df9d53bdea5a184da41",
+            "source_id": "scope",
+            "span_id": "ec-editor-setup-v1-08:s3",
+            "text": "Măsura privește numai taxa de înscriere; celelalte taxe, în valoare cumulată de 127 de lei, nu se modifică."
+          }
+        ]
+      }
+    },
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-editor-setup-v1-09:s1",
+          "ec-editor-setup-v1-09:s2"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-editor-setup-v1-09:s1",
+          "ec-editor-setup-v1-09:s2",
+          "ec-editor-setup-v1-09:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-editor-setup-v1-09:s1",
+          "ec-editor-setup-v1-09:s2",
+          "ec-editor-setup-v1-09:s3"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-editor-setup-v1-09:s1",
+          "ec-editor-setup-v1-09:s2",
+          "ec-editor-setup-v1-09:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-editor-setup-v1-09",
+      "failure_class": "MULTISOURCE_FACT_SELECTION",
+      "fixture_identity": "2c41aded4a6aee182d15650aa8508ec02c4ce17e2832b8e9410c5748659416d8",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-editor-setup-v1-09:s1",
+          "ec-editor-setup-v1-09:s2"
+        ]
+      },
+      "partition": "DEVELOPMENT",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-editor-setup-v1-09",
+        "packet_identity": "45eea81ac3ec2cf5d3aec3e561b833e98afb9ab60216cb9b0d8eca48484f82ad",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 92,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "184"
+              ],
+              "procedural": [
+                "aprobat"
+              ]
+            },
+            "position": 0,
+            "sha256": "0969ad450f8fbbacd508e1f611fc04fd749eefbba7cb533c573118d95f5fd549",
+            "source_id": "consiliu",
+            "span_id": "ec-editor-setup-v1-09:s1",
+            "text": "Consiliul local din Oradea a aprobat 184 de milioane de lei pentru noul centru medical Vela."
+          },
+          {
+            "byte_end": 121,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": [
+                "aprobat",
+                "semnat"
+              ]
+            },
+            "position": 1,
+            "sha256": "2aafd11d22c3623e5dcf4448d2806a9625df3f749555c60229fe3f0c1b3be879",
+            "source_id": "minister",
+            "span_id": "ec-editor-setup-v1-09:s2",
+            "text": "Ministerul a precizat că finanțarea centrului Vela este aprobată, dar contractul de execuție nu a fost încă semnat."
+          },
+          {
+            "byte_end": 101,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "27"
+              ],
+              "procedural": []
+            },
+            "position": 2,
+            "sha256": "335ab1f44889cb9150aae57b1d262669e7edcf599afe698db8b7e46c4f5d5d24",
+            "source_id": "sport",
+            "span_id": "ec-editor-setup-v1-09:s3",
+            "text": "În aceeași ședință au fost alocate 27 milioane de lei pentru modernizarea stadionului municipal."
+          }
+        ]
+      }
+    },
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-editor-setup-v1-10:s1",
+          "ec-editor-setup-v1-10:s2",
+          "ec-editor-setup-v1-10:s3"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-editor-setup-v1-10:s1",
+          "ec-editor-setup-v1-10:s2",
+          "ec-editor-setup-v1-10:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-editor-setup-v1-10:s1",
+          "ec-editor-setup-v1-10:s2"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-editor-setup-v1-10:s1",
+          "ec-editor-setup-v1-10:s2",
+          "ec-editor-setup-v1-10:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [
+          "ec-editor-setup-v1-10:s3"
+        ],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-editor-setup-v1-10",
+      "failure_class": "ATTRIBUTED_CONTEST",
+      "fixture_identity": "bc96e0ee478d381157dc47ab427a2844e6b55e4cde301357d5e55e291db50e8e",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-editor-setup-v1-10:s1",
+          "ec-editor-setup-v1-10:s2",
+          "ec-editor-setup-v1-10:s3"
+        ]
+      },
+      "partition": "DEVELOPMENT",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-editor-setup-v1-10",
+        "packet_identity": "80d9b25234c49bb5e8c192a801e758f4aa0a3e5e9d1da9988dd44e56455e2db1",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 99,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [
+                "ar fi",
+                "preliminar"
+              ],
+              "numbers_dates_amounts": [
+                "184"
+              ],
+              "procedural": []
+            },
+            "position": 0,
+            "sha256": "890382dc79d508b8e76c220239e2f379170f5d0f9170c3f7b70753a38a41db67",
+            "source_id": "inspectori",
+            "span_id": "ec-editor-setup-v1-10:s1",
+            "text": "Inspectorii afirmă într-o notă preliminară că Depozitul Vela ar fi omis 184 de înregistrări."
+          },
+          {
+            "byte_end": 98,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [
+                "afirma"
+              ],
+              "numbers_dates_amounts": [],
+              "procedural": []
+            },
+            "position": 1,
+            "sha256": "9a7d032d8f67bd55aaaf8505f45328bbf114e51a5cd9eae2a31cfde4a139dbd1",
+            "source_id": "depozit",
+            "span_id": "ec-editor-setup-v1-10:s2",
+            "text": "Depozitul Vela contestă afirmația și spune că registrul transmis conține toate operațiunile."
+          },
+          {
+            "byte_end": 109,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": []
+            },
+            "position": 2,
+            "sha256": "68c3f4ccab863b1f741ab8f74d528fc9a9c021186169b8f4aebb4a223b93d978",
+            "source_id": "autoritate",
+            "span_id": "ec-editor-setup-v1-10:s3",
+            "text": "Autoritatea de control declară că verificarea este în curs și că nu a stabilit încă situația de fapt."
+          }
+        ]
+      }
+    },
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-editor-setup-v1-11:s1",
+          "ec-editor-setup-v1-11:s2",
+          "ec-editor-setup-v1-11:s3"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-editor-setup-v1-11:s1",
+          "ec-editor-setup-v1-11:s2",
+          "ec-editor-setup-v1-11:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-editor-setup-v1-11:s1"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-editor-setup-v1-11:s1",
+          "ec-editor-setup-v1-11:s2",
+          "ec-editor-setup-v1-11:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [
+          "ec-editor-setup-v1-11:s2",
+          "ec-editor-setup-v1-11:s3"
+        ],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-editor-setup-v1-11",
+      "failure_class": "CHRONOLOGY_UPDATE",
+      "fixture_identity": "c24ffd834650737319ed88ae603d1703bde1b51e68d5dbb3e6bae5273dcd83c6",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-editor-setup-v1-11:s1",
+          "ec-editor-setup-v1-11:s2",
+          "ec-editor-setup-v1-11:s3"
+        ]
+      },
+      "partition": "DEVELOPMENT",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-editor-setup-v1-11",
+        "packet_identity": "37db3c0d716d93843651d72ada0e8737987e6de5781951d295d6be10578ea5a6",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 103,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": []
+            },
+            "position": 0,
+            "sha256": "b272c63ce5ca32bcd7460974e8a890f14392a411a0bff596efa4986ff3d866c2",
+            "source_id": "initial",
+            "span_id": "ec-editor-setup-v1-11:s1",
+            "text": "Locuitorii din cartierul Vela au fost evacuați marți dimineață după o alertă privind o conductă."
+          },
+          {
+            "byte_end": 93,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": []
+            },
+            "position": 1,
+            "sha256": "29aba95a9a903c22ffa2b749eca7c81a322ea14044e5781cb40427b5171d92fe",
+            "source_id": "return",
+            "span_id": "ec-editor-setup-v1-11:s2",
+            "text": "Primăria din Oradea a permis revenirea locuitorilor în aceeași seară, după măsurători."
+          },
+          {
+            "byte_end": 116,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": []
+            },
+            "position": 2,
+            "sha256": "f3c90be2284a4bdde1c75ff2a98854182b620c2f32bae299c4a784cf296efc49",
+            "source_id": "latest",
+            "span_id": "ec-editor-setup-v1-11:s3",
+            "text": "Operatorul rețelei a anunțat ulterior că strada principală rămâne închisă până la finalizarea reparației."
+          }
+        ]
+      }
+    },
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-editor-setup-v1-12:s1",
+          "ec-editor-setup-v1-12:s2",
+          "ec-editor-setup-v1-12:s3"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-editor-setup-v1-12:s1",
+          "ec-editor-setup-v1-12:s2",
+          "ec-editor-setup-v1-12:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-editor-setup-v1-12:s1",
+          "ec-editor-setup-v1-12:s2",
+          "ec-editor-setup-v1-12:s3"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-editor-setup-v1-12:s1",
+          "ec-editor-setup-v1-12:s2",
+          "ec-editor-setup-v1-12:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-editor-setup-v1-12",
+      "failure_class": "NUMERIC_RECONCILIATION",
+      "fixture_identity": "b9282caa00f6674b3a18807ca336203a1be260d577a83bf04fff95dd28c19d8a",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-editor-setup-v1-12:s1",
+          "ec-editor-setup-v1-12:s2",
+          "ec-editor-setup-v1-12:s3"
+        ]
+      },
+      "partition": "DEVELOPMENT",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-editor-setup-v1-12",
+        "packet_identity": "86a213fee61fbe450e3b1d8892d19200a4879314247d1a79e5e3b421db8cba1a",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 78,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "184"
+              ],
+              "procedural": []
+            },
+            "position": 0,
+            "sha256": "b9b0f93f135452662414816626405eadca169383ddcd2e40d85144265e610315",
+            "source_id": "initial",
+            "span_id": "ec-editor-setup-v1-12:s1",
+            "text": "Un inventar provizoriu a raportat 184 de dosare depuse la agenția din Oradea."
+          },
+          {
+            "byte_end": 91,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "157",
+                "27"
+              ],
+              "procedural": []
+            },
+            "position": 1,
+            "sha256": "68c07ab90ab5152d8f8309a3de4a786a195976f2d0dfc9c4ca8fd92fee5f4496",
+            "source_id": "breakdown",
+            "span_id": "ec-editor-setup-v1-12:s2",
+            "text": "Agenția a precizat că 157 de dosare erau distincte, iar 27 erau înregistrări duplicate."
+          },
+          {
+            "byte_end": 87,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "157"
+              ],
+              "procedural": []
+            },
+            "position": 2,
+            "sha256": "1fa2ee01d565cd18e7f8adcfa83aeb203c2b23d2c83b543e924e3a78a3858776",
+            "source_id": "correction",
+            "span_id": "ec-editor-setup-v1-12:s3",
+            "text": "Buletinul corectat stabilește totalul la 157 de dosare, după eliminarea duplicatelor."
+          }
+        ]
+      }
+    },
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-editor-setup-v1-13:s1",
+          "ec-editor-setup-v1-13:s2",
+          "ec-editor-setup-v1-13:s3"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-editor-setup-v1-13:s1",
+          "ec-editor-setup-v1-13:s2",
+          "ec-editor-setup-v1-13:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-editor-setup-v1-13:s1",
+          "ec-editor-setup-v1-13:s2",
+          "ec-editor-setup-v1-13:s3"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-editor-setup-v1-13:s1",
+          "ec-editor-setup-v1-13:s2",
+          "ec-editor-setup-v1-13:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-editor-setup-v1-13",
+      "failure_class": "PROCEDURAL_STATUS",
+      "fixture_identity": "7cbae8ef8278c10628fd01b3c0502280e579206571a1d7828748bdda5ef5a84d",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-editor-setup-v1-13:s1",
+          "ec-editor-setup-v1-13:s2",
+          "ec-editor-setup-v1-13:s3"
+        ]
+      },
+      "partition": "DEVELOPMENT",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-editor-setup-v1-13",
+        "packet_identity": "1090e64c1756e449388462f4b672ec1f6c1eb6c95fbc6812b1462e8d96fbf0de",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 82,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "27"
+              ],
+              "procedural": [
+                "propus"
+              ]
+            },
+            "position": 0,
+            "sha256": "e92f554dc8fbd898c61711cdf38b3c334ef1865987f84d592197d06620eb8278",
+            "source_id": "proposal",
+            "span_id": "ec-editor-setup-v1-13:s1",
+            "text": "Comisia tehnică a propus suspendarea autorizației companiei Vela pentru 27 zile."
+          },
+          {
+            "byte_end": 67,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": [
+                "propunere",
+                "vot"
+              ]
+            },
+            "position": 1,
+            "sha256": "6c2ef2e0a4f4b84700298111953c358dc7ecada17d728c22d3739c4572b9438e",
+            "source_id": "vote",
+            "span_id": "ec-editor-setup-v1-13:s2",
+            "text": "Propunerea urmează să fie votată de plenul autorității marți."
+          },
+          {
+            "byte_end": 82,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": [
+                "vot"
+              ]
+            },
+            "position": 2,
+            "sha256": "511aee075c20b80bca0e32709529d8d0385cb4acdf70e0765508f2396a348c7b",
+            "source_id": "status",
+            "span_id": "ec-editor-setup-v1-13:s3",
+            "text": "Până la vot nu există o decizie finală, iar autorizația rămâne în vigoare."
+          }
+        ]
+      }
+    },
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-editor-setup-v1-14:s1",
+          "ec-editor-setup-v1-14:s2",
+          "ec-editor-setup-v1-14:s3"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-editor-setup-v1-14:s1",
+          "ec-editor-setup-v1-14:s2",
+          "ec-editor-setup-v1-14:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-editor-setup-v1-14:s1"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-editor-setup-v1-14:s1",
+          "ec-editor-setup-v1-14:s2",
+          "ec-editor-setup-v1-14:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [
+          "ec-editor-setup-v1-14:s2",
+          "ec-editor-setup-v1-14:s3"
+        ],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-editor-setup-v1-14",
+      "failure_class": "MODALITY_UNCERTAINTY",
+      "fixture_identity": "50f9fce9cce9676f0b2eca648a94f974a253e12bd9e1bf817b211a268fc010c5",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-editor-setup-v1-14:s1",
+          "ec-editor-setup-v1-14:s2",
+          "ec-editor-setup-v1-14:s3"
+        ]
+      },
+      "partition": "DEVELOPMENT",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-editor-setup-v1-14",
+        "packet_identity": "b86ca20367a1c2e69ac0f0d84bcf2ab3b3530219c9e6ec7da50cdade8e2f5ffa",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 106,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "27%"
+              ],
+              "procedural": []
+            },
+            "position": 0,
+            "sha256": "748767f2507c2bfe47c2b4d2b1937f1f639880ccfe6a167022314321fb3275db",
+            "source_id": "forecast",
+            "span_id": "ec-editor-setup-v1-14:s1",
+            "text": "Institutul estimează o probabilitate de 27% ca nivelul râului Vela să depășească pragul de atenție."
+          },
+          {
+            "byte_end": 104,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": []
+            },
+            "position": 1,
+            "sha256": "0021d07fbc668f27655062cad9a58f4e12aa99f4ac7ce02f3863e41e262d4800",
+            "source_id": "local",
+            "span_id": "ec-editor-setup-v1-14:s2",
+            "text": "Primăria din Oradea pregătește evacuarea preventivă a unei străzi, dar măsura nu a fost activată."
+          },
+          {
+            "byte_end": 84,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": []
+            },
+            "position": 2,
+            "sha256": "2c8c373caefb7f4aff29a8ec0d97f6f8e22e754a84cadf6fb66e152f1d6bd407",
+            "source_id": "uncertainty",
+            "span_id": "ec-editor-setup-v1-14:s3",
+            "text": "Institutul avertizează că prognoza se poate modifica odată cu noile măsurători."
+          }
+        ]
+      }
+    },
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-editor-setup-v1-15:s1",
+          "ec-editor-setup-v1-15:s2"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-editor-setup-v1-15:s1",
+          "ec-editor-setup-v1-15:s2",
+          "ec-editor-setup-v1-15:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-editor-setup-v1-15:s1",
+          "ec-editor-setup-v1-15:s2",
+          "ec-editor-setup-v1-15:s3"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-editor-setup-v1-15:s1",
+          "ec-editor-setup-v1-15:s2",
+          "ec-editor-setup-v1-15:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-editor-setup-v1-15",
+      "failure_class": "COMPRESSION_WITH_DISTRACTOR",
+      "fixture_identity": "2f3d68120d7d7b66a1f5a8efc4e5bef7927898893aef468599887091798fca44",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-editor-setup-v1-15:s1",
+          "ec-editor-setup-v1-15:s2"
+        ]
+      },
+      "partition": "DEVELOPMENT",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-editor-setup-v1-15",
+        "packet_identity": "f1e85a6a2e6a93dd294113000ee5bd1e3baca6b42fde18f3efd56cbac1887539",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 111,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "184"
+              ],
+              "procedural": []
+            },
+            "position": 0,
+            "sha256": "e83dc33c44090f2ecfc367e726a6e970a636e4d379944df211e45f5d45507283",
+            "source_id": "incident",
+            "span_id": "ec-editor-setup-v1-15:s1",
+            "text": "Operatorul Vela anunță că 184 de consumatori din Oradea au rămas fără apă după avarierea unei conducte."
+          },
+          {
+            "byte_end": 106,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "18",
+                "00"
+              ],
+              "procedural": []
+            },
+            "position": 1,
+            "sha256": "c1e77e512305bc3459f198a7402002aa2f445fa0d63d21dd102901433af92ba2",
+            "source_id": "repair",
+            "span_id": "ec-editor-setup-v1-15:s2",
+            "text": "Operatorul estimează reluarea furnizării marți la ora 18:00, dacă reparația decurge conform planului."
+          },
+          {
+            "byte_end": 103,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "42",
+                "2011"
+              ],
+              "procedural": []
+            },
+            "position": 2,
+            "sha256": "96d18d7eea2df5223e6e2c969c3a47438044f2ee29f82012e8087d29b3cdded4",
+            "source_id": "history",
+            "span_id": "ec-editor-setup-v1-15:s3",
+            "text": "Rețeaua din Oradea a fost construită în urmă cu 42 de ani și a trecut printr-o extindere în 2011."
+          }
+        ]
+      }
+    },
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-editor-setup-v1-16:s1",
+          "ec-editor-setup-v1-16:s2",
+          "ec-editor-setup-v1-16:s3"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-editor-setup-v1-16:s1",
+          "ec-editor-setup-v1-16:s2",
+          "ec-editor-setup-v1-16:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-editor-setup-v1-16:s1",
+          "ec-editor-setup-v1-16:s3"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-editor-setup-v1-16:s1",
+          "ec-editor-setup-v1-16:s2",
+          "ec-editor-setup-v1-16:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [
+          "ec-editor-setup-v1-16:s2"
+        ],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-editor-setup-v1-16",
+      "failure_class": "CROSS_SOURCE_SUFFICIENCY",
+      "fixture_identity": "c9fa53c760370e0f53be4210c6083919cea899b2e963a6a8cb21e9a73fa52af6",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-editor-setup-v1-16:s1",
+          "ec-editor-setup-v1-16:s2",
+          "ec-editor-setup-v1-16:s3"
+        ]
+      },
+      "partition": "DEVELOPMENT",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-editor-setup-v1-16",
+        "packet_identity": "d0439ca7238297fe77983608e3e7826f9171f4ea62f902d45a6c630be83f0e45",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 105,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "27%"
+              ],
+              "procedural": []
+            },
+            "position": 0,
+            "sha256": "455ac86f1fc90cf0d4c09081e25248235d31ac0a5fa76225ca1212746f4e8cdd",
+            "source_id": "decision",
+            "span_id": "ec-editor-setup-v1-16:s1",
+            "text": "Consiliul universității Vela a decis reducerea taxei de înscriere cu 27% pentru candidații eligibili."
+          },
+          {
+            "byte_end": 91,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": []
+            },
+            "position": 1,
+            "sha256": "98884c173e349ab163323688d0f27e651387562792fa96ef1b965f49b111ed2d",
+            "source_id": "application",
+            "span_id": "ec-editor-setup-v1-16:s2",
+            "text": "Universitatea precizează că reducerea se aplică sesiunii din Oradea care începe marți."
+          },
+          {
+            "byte_end": 113,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "184"
+              ],
+              "procedural": []
+            },
+            "position": 2,
+            "sha256": "da351b9cac4cf31433d19c0a70791df63b985672e7dc821ab3fd75369aee71cb",
+            "source_id": "scope",
+            "span_id": "ec-editor-setup-v1-16:s3",
+            "text": "Măsura privește numai taxa de înscriere; celelalte taxe, în valoare cumulată de 184 de lei, nu se modifică."
+          }
+        ]
+      }
+    },
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-editor-setup-v1-17:s1",
+          "ec-editor-setup-v1-17:s2"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-editor-setup-v1-17:s1",
+          "ec-editor-setup-v1-17:s2",
+          "ec-editor-setup-v1-17:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-editor-setup-v1-17:s1",
+          "ec-editor-setup-v1-17:s2",
+          "ec-editor-setup-v1-17:s3"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-editor-setup-v1-17:s1",
+          "ec-editor-setup-v1-17:s2",
+          "ec-editor-setup-v1-17:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-editor-setup-v1-17",
+      "failure_class": "MULTISOURCE_FACT_SELECTION",
+      "fixture_identity": "1b5136dae0cb891ae87a41b9ba7e72b1aba6339b46cad6068ec0f67588446132",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-editor-setup-v1-17:s1",
+          "ec-editor-setup-v1-17:s2"
+        ]
+      },
+      "partition": "DEVELOPMENT",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-editor-setup-v1-17",
+        "packet_identity": "38e0ed11a34789bd162541c63aa753ee4973c6d79026047090cb370eb7b03cb0",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 96,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "231"
+              ],
+              "procedural": [
+                "aprobat"
+              ]
+            },
+            "position": 0,
+            "sha256": "f2305b042671dbf3417a02c15cda30a02efb28441977d89672cb4ee7c6bcf13f",
+            "source_id": "consiliu",
+            "span_id": "ec-editor-setup-v1-17:s1",
+            "text": "Consiliul local din Buzău a aprobat 231 de milioane de lei pentru noul centru medical Meridian."
+          },
+          {
+            "byte_end": 125,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": [
+                "aprobat",
+                "semnat"
+              ]
+            },
+            "position": 1,
+            "sha256": "44006b2ed4e893657aa420109be9a908fec555c3ded8a1bf07809e004cde6027",
+            "source_id": "minister",
+            "span_id": "ec-editor-setup-v1-17:s2",
+            "text": "Ministerul a precizat că finanțarea centrului Meridian este aprobată, dar contractul de execuție nu a fost încă semnat."
+          },
+          {
+            "byte_end": 101,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "34"
+              ],
+              "procedural": []
+            },
+            "position": 2,
+            "sha256": "b471db0c8f3dc94b1800da9d8edb73e477ca73732c1dc6e7e9797ea76dfa4f9d",
+            "source_id": "sport",
+            "span_id": "ec-editor-setup-v1-17:s3",
+            "text": "În aceeași ședință au fost alocate 34 milioane de lei pentru modernizarea stadionului municipal."
+          }
+        ]
+      }
+    },
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-editor-setup-v1-18:s1",
+          "ec-editor-setup-v1-18:s2",
+          "ec-editor-setup-v1-18:s3"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-editor-setup-v1-18:s1",
+          "ec-editor-setup-v1-18:s2",
+          "ec-editor-setup-v1-18:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-editor-setup-v1-18:s1",
+          "ec-editor-setup-v1-18:s2"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-editor-setup-v1-18:s1",
+          "ec-editor-setup-v1-18:s2",
+          "ec-editor-setup-v1-18:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [
+          "ec-editor-setup-v1-18:s3"
+        ],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-editor-setup-v1-18",
+      "failure_class": "ATTRIBUTED_CONTEST",
+      "fixture_identity": "2ba820efa56a78ffd73a579cbfa357a3fff28ffa693e61c5a1981944561c660c",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-editor-setup-v1-18:s1",
+          "ec-editor-setup-v1-18:s2",
+          "ec-editor-setup-v1-18:s3"
+        ]
+      },
+      "partition": "DEVELOPMENT",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-editor-setup-v1-18",
+        "packet_identity": "98e9effe90144a5354a1a7593ccf16843b6bbbb09ee466006d6b87ca0010dd7c",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 103,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [
+                "ar fi",
+                "preliminar"
+              ],
+              "numbers_dates_amounts": [
+                "231"
+              ],
+              "procedural": []
+            },
+            "position": 0,
+            "sha256": "d31791a53b3678b94eda99d408439e3e8218ae527855482bab3b7c495cdd7033",
+            "source_id": "inspectori",
+            "span_id": "ec-editor-setup-v1-18:s1",
+            "text": "Inspectorii afirmă într-o notă preliminară că Depozitul Meridian ar fi omis 231 de înregistrări."
+          },
+          {
+            "byte_end": 102,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [
+                "afirma"
+              ],
+              "numbers_dates_amounts": [],
+              "procedural": []
+            },
+            "position": 1,
+            "sha256": "88129bc154f59c734595576288a0b2a7dc03872d36ed45fddc8286a938a68d0e",
+            "source_id": "depozit",
+            "span_id": "ec-editor-setup-v1-18:s2",
+            "text": "Depozitul Meridian contestă afirmația și spune că registrul transmis conține toate operațiunile."
+          },
+          {
+            "byte_end": 109,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": []
+            },
+            "position": 2,
+            "sha256": "68c3f4ccab863b1f741ab8f74d528fc9a9c021186169b8f4aebb4a223b93d978",
+            "source_id": "autoritate",
+            "span_id": "ec-editor-setup-v1-18:s3",
+            "text": "Autoritatea de control declară că verificarea este în curs și că nu a stabilit încă situația de fapt."
+          }
+        ]
+      }
+    },
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-editor-setup-v1-19:s1",
+          "ec-editor-setup-v1-19:s2",
+          "ec-editor-setup-v1-19:s3"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-editor-setup-v1-19:s1",
+          "ec-editor-setup-v1-19:s2",
+          "ec-editor-setup-v1-19:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-editor-setup-v1-19:s1"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-editor-setup-v1-19:s1",
+          "ec-editor-setup-v1-19:s2",
+          "ec-editor-setup-v1-19:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [
+          "ec-editor-setup-v1-19:s2",
+          "ec-editor-setup-v1-19:s3"
+        ],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-editor-setup-v1-19",
+      "failure_class": "CHRONOLOGY_UPDATE",
+      "fixture_identity": "906f2b6a275300558ebc3f912d4334015892278995f2e59eb74601628e36e23f",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-editor-setup-v1-19:s1",
+          "ec-editor-setup-v1-19:s2",
+          "ec-editor-setup-v1-19:s3"
+        ]
+      },
+      "partition": "DEVELOPMENT",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-editor-setup-v1-19",
+        "packet_identity": "a516c00b2da35ba63746c15eceade59cf1066a54c3164ca1b6c20b5f8774eb70",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 109,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": []
+            },
+            "position": 0,
+            "sha256": "af71991c4df47ecada4b49c8a8b3416a7b3c93c93e7c2ed3fef87f482dd3c685",
+            "source_id": "initial",
+            "span_id": "ec-editor-setup-v1-19:s1",
+            "text": "Locuitorii din cartierul Meridian au fost evacuați miercuri dimineață după o alertă privind o conductă."
+          },
+          {
+            "byte_end": 93,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": []
+            },
+            "position": 1,
+            "sha256": "05fe30a0006fd31a4a797d0d08495125a9c8b4e9a451d601aa69271703a74cfa",
+            "source_id": "return",
+            "span_id": "ec-editor-setup-v1-19:s2",
+            "text": "Primăria din Buzău a permis revenirea locuitorilor în aceeași seară, după măsurători."
+          },
+          {
+            "byte_end": 116,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": []
+            },
+            "position": 2,
+            "sha256": "f3c90be2284a4bdde1c75ff2a98854182b620c2f32bae299c4a784cf296efc49",
+            "source_id": "latest",
+            "span_id": "ec-editor-setup-v1-19:s3",
+            "text": "Operatorul rețelei a anunțat ulterior că strada principală rămâne închisă până la finalizarea reparației."
+          }
+        ]
+      }
+    },
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-editor-setup-v1-20:s1",
+          "ec-editor-setup-v1-20:s2",
+          "ec-editor-setup-v1-20:s3"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-editor-setup-v1-20:s1",
+          "ec-editor-setup-v1-20:s2",
+          "ec-editor-setup-v1-20:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-editor-setup-v1-20:s1",
+          "ec-editor-setup-v1-20:s2",
+          "ec-editor-setup-v1-20:s3"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-editor-setup-v1-20:s1",
+          "ec-editor-setup-v1-20:s2",
+          "ec-editor-setup-v1-20:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-editor-setup-v1-20",
+      "failure_class": "NUMERIC_RECONCILIATION",
+      "fixture_identity": "1ad82e08f78a60d7a63f8930bdf00c5819d979bf2cea1c5ddadc6321a10b213d",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-editor-setup-v1-20:s1",
+          "ec-editor-setup-v1-20:s2",
+          "ec-editor-setup-v1-20:s3"
+        ]
+      },
+      "partition": "DEVELOPMENT",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-editor-setup-v1-20",
+        "packet_identity": "41ac46a707e7820c6559e95ac935da59e18492aa3f41a56721fc601ea0d91cc3",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 78,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "231"
+              ],
+              "procedural": []
+            },
+            "position": 0,
+            "sha256": "7e626583b82d7dc91f95eabdc821da4615c78baa92f85eb3b0d2a4d85fb55c91",
+            "source_id": "initial",
+            "span_id": "ec-editor-setup-v1-20:s1",
+            "text": "Un inventar provizoriu a raportat 231 de dosare depuse la agenția din Buzău."
+          },
+          {
+            "byte_end": 91,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "197",
+                "34"
+              ],
+              "procedural": []
+            },
+            "position": 1,
+            "sha256": "57b7724d02b204aa6dd046f4d22594e1b75678ec71f7a8ec883642267107fb44",
+            "source_id": "breakdown",
+            "span_id": "ec-editor-setup-v1-20:s2",
+            "text": "Agenția a precizat că 197 de dosare erau distincte, iar 34 erau înregistrări duplicate."
+          },
+          {
+            "byte_end": 87,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "197"
+              ],
+              "procedural": []
+            },
+            "position": 2,
+            "sha256": "57ef58ccbe03920fc36066108f56359477692694ea81e83e000a999da27205e9",
+            "source_id": "correction",
+            "span_id": "ec-editor-setup-v1-20:s3",
+            "text": "Buletinul corectat stabilește totalul la 197 de dosare, după eliminarea duplicatelor."
+          }
+        ]
+      }
+    },
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-editor-setup-v1-21:s1",
+          "ec-editor-setup-v1-21:s2",
+          "ec-editor-setup-v1-21:s3"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-editor-setup-v1-21:s1",
+          "ec-editor-setup-v1-21:s2",
+          "ec-editor-setup-v1-21:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-editor-setup-v1-21:s1",
+          "ec-editor-setup-v1-21:s2",
+          "ec-editor-setup-v1-21:s3"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-editor-setup-v1-21:s1",
+          "ec-editor-setup-v1-21:s2",
+          "ec-editor-setup-v1-21:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-editor-setup-v1-21",
+      "failure_class": "PROCEDURAL_STATUS",
+      "fixture_identity": "91b146a320743d91bf1786f8cc4ca95fcbdbc39bfe662a80ef7b89c12ebcbe08",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-editor-setup-v1-21:s1",
+          "ec-editor-setup-v1-21:s2",
+          "ec-editor-setup-v1-21:s3"
+        ]
+      },
+      "partition": "DEVELOPMENT",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-editor-setup-v1-21",
+        "packet_identity": "d345c304ba6eeb92e82ccb148b8a65155da620a353fc39207fc78adae3d3a90d",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 86,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "34"
+              ],
+              "procedural": [
+                "propus"
+              ]
+            },
+            "position": 0,
+            "sha256": "3f46721ec60ed768be89e5f511467241b76a0e00f09b5e3141a52368b14ebf28",
+            "source_id": "proposal",
+            "span_id": "ec-editor-setup-v1-21:s1",
+            "text": "Comisia tehnică a propus suspendarea autorizației companiei Meridian pentru 34 zile."
+          },
+          {
+            "byte_end": 69,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": [
+                "propunere",
+                "vot"
+              ]
+            },
+            "position": 1,
+            "sha256": "244c7fd37fdf1985f12f50994861d5827c376e2d75aba6642b225c7b40db9d97",
+            "source_id": "vote",
+            "span_id": "ec-editor-setup-v1-21:s2",
+            "text": "Propunerea urmează să fie votată de plenul autorității miercuri."
+          },
+          {
+            "byte_end": 82,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": [
+                "vot"
+              ]
+            },
+            "position": 2,
+            "sha256": "511aee075c20b80bca0e32709529d8d0385cb4acdf70e0765508f2396a348c7b",
+            "source_id": "status",
+            "span_id": "ec-editor-setup-v1-21:s3",
+            "text": "Până la vot nu există o decizie finală, iar autorizația rămâne în vigoare."
+          }
+        ]
+      }
+    },
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-editor-setup-v1-22:s1",
+          "ec-editor-setup-v1-22:s2",
+          "ec-editor-setup-v1-22:s3"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-editor-setup-v1-22:s1",
+          "ec-editor-setup-v1-22:s2",
+          "ec-editor-setup-v1-22:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-editor-setup-v1-22:s1"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-editor-setup-v1-22:s1",
+          "ec-editor-setup-v1-22:s2",
+          "ec-editor-setup-v1-22:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [
+          "ec-editor-setup-v1-22:s2",
+          "ec-editor-setup-v1-22:s3"
+        ],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-editor-setup-v1-22",
+      "failure_class": "MODALITY_UNCERTAINTY",
+      "fixture_identity": "484f130259f05e51b345248c62dec18642efae340ab9f9dd4ccda6c9e93b1158",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-editor-setup-v1-22:s1",
+          "ec-editor-setup-v1-22:s2",
+          "ec-editor-setup-v1-22:s3"
+        ]
+      },
+      "partition": "DEVELOPMENT",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-editor-setup-v1-22",
+        "packet_identity": "f67ee67c7f6e7109367f5e08f747e9b6803c8e2913b70c24702ba887af9c33af",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 110,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "34%"
+              ],
+              "procedural": []
+            },
+            "position": 0,
+            "sha256": "d0d736eaef779f239cfe9ee15b7b3eb655da8d08f771fbb55d7a758ece045fa1",
+            "source_id": "forecast",
+            "span_id": "ec-editor-setup-v1-22:s1",
+            "text": "Institutul estimează o probabilitate de 34% ca nivelul râului Meridian să depășească pragul de atenție."
+          },
+          {
+            "byte_end": 104,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": []
+            },
+            "position": 1,
+            "sha256": "bf8b2cd6bfb678d45e428ed2e5331105d31ae99126f25446a09d515f332fb7a3",
+            "source_id": "local",
+            "span_id": "ec-editor-setup-v1-22:s2",
+            "text": "Primăria din Buzău pregătește evacuarea preventivă a unei străzi, dar măsura nu a fost activată."
+          },
+          {
+            "byte_end": 84,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": []
+            },
+            "position": 2,
+            "sha256": "2c8c373caefb7f4aff29a8ec0d97f6f8e22e754a84cadf6fb66e152f1d6bd407",
+            "source_id": "uncertainty",
+            "span_id": "ec-editor-setup-v1-22:s3",
+            "text": "Institutul avertizează că prognoza se poate modifica odată cu noile măsurători."
+          }
+        ]
+      }
+    },
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-editor-setup-v1-23:s1",
+          "ec-editor-setup-v1-23:s2"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-editor-setup-v1-23:s1",
+          "ec-editor-setup-v1-23:s2",
+          "ec-editor-setup-v1-23:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-editor-setup-v1-23:s1",
+          "ec-editor-setup-v1-23:s2",
+          "ec-editor-setup-v1-23:s3"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-editor-setup-v1-23:s1",
+          "ec-editor-setup-v1-23:s2",
+          "ec-editor-setup-v1-23:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-editor-setup-v1-23",
+      "failure_class": "COMPRESSION_WITH_DISTRACTOR",
+      "fixture_identity": "4b6d44f45d4b40a9757a9894d8f5a4d01658e62bb6aae95f40131070e0890067",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-editor-setup-v1-23:s1",
+          "ec-editor-setup-v1-23:s2"
+        ]
+      },
+      "partition": "DEVELOPMENT",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-editor-setup-v1-23",
+        "packet_identity": "1ec00f8a385cc6855ac860224f092d6c1f08dacaea91c90abb0f35f74f0a5d74",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 115,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "231"
+              ],
+              "procedural": []
+            },
+            "position": 0,
+            "sha256": "a6d0f143925f3c74e256b53896c646919268e821388d81180836ee195a16b4e9",
+            "source_id": "incident",
+            "span_id": "ec-editor-setup-v1-23:s1",
+            "text": "Operatorul Meridian anunță că 231 de consumatori din Buzău au rămas fără apă după avarierea unei conducte."
+          },
+          {
+            "byte_end": 108,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "18",
+                "00"
+              ],
+              "procedural": []
+            },
+            "position": 1,
+            "sha256": "cb45e2d6a0b8abb9f76ca41ded0e01fd75ee92a9f3fbe2a54cf4f360e28ca932",
+            "source_id": "repair",
+            "span_id": "ec-editor-setup-v1-23:s2",
+            "text": "Operatorul estimează reluarea furnizării miercuri la ora 18:00, dacă reparația decurge conform planului."
+          },
+          {
+            "byte_end": 103,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "42",
+                "2011"
+              ],
+              "procedural": []
+            },
+            "position": 2,
+            "sha256": "d30a888c5250f0251ea93b985f2e74d0f46ed4326a15b70e4efd99b306d2933b",
+            "source_id": "history",
+            "span_id": "ec-editor-setup-v1-23:s3",
+            "text": "Rețeaua din Buzău a fost construită în urmă cu 42 de ani și a trecut printr-o extindere în 2011."
+          }
+        ]
+      }
+    },
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-editor-setup-v1-24:s1",
+          "ec-editor-setup-v1-24:s2",
+          "ec-editor-setup-v1-24:s3"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-editor-setup-v1-24:s1",
+          "ec-editor-setup-v1-24:s2",
+          "ec-editor-setup-v1-24:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-editor-setup-v1-24:s1",
+          "ec-editor-setup-v1-24:s3"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-editor-setup-v1-24:s1",
+          "ec-editor-setup-v1-24:s2",
+          "ec-editor-setup-v1-24:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [
+          "ec-editor-setup-v1-24:s2"
+        ],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-editor-setup-v1-24",
+      "failure_class": "CROSS_SOURCE_SUFFICIENCY",
+      "fixture_identity": "09d17bcc834797d4b62d88f48dd7ad0bf5fa6b054d2d661e71825a86f080ca4d",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-editor-setup-v1-24:s1",
+          "ec-editor-setup-v1-24:s2",
+          "ec-editor-setup-v1-24:s3"
+        ]
+      },
+      "partition": "DEVELOPMENT",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-editor-setup-v1-24",
+        "packet_identity": "30b812eaf8973a88fec715621ddca1ff0cabddc0baaafa1e0c81041b536aa6b9",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 109,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "34%"
+              ],
+              "procedural": []
+            },
+            "position": 0,
+            "sha256": "8318e8a4f6d7d5796aa819b6ea9662d5be8b84fc7dee62ac5f4b5990715b16b6",
+            "source_id": "decision",
+            "span_id": "ec-editor-setup-v1-24:s1",
+            "text": "Consiliul universității Meridian a decis reducerea taxei de înscriere cu 34% pentru candidații eligibili."
+          },
+          {
+            "byte_end": 93,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": []
+            },
+            "position": 1,
+            "sha256": "d1908d04a21c172fe8f4a8da59fee5f9a5c3ecd724e5edeb4015d6e84a4dbe80",
+            "source_id": "application",
+            "span_id": "ec-editor-setup-v1-24:s2",
+            "text": "Universitatea precizează că reducerea se aplică sesiunii din Buzău care începe miercuri."
+          },
+          {
+            "byte_end": 113,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "231"
+              ],
+              "procedural": []
+            },
+            "position": 2,
+            "sha256": "67e93e542b27a6c72232b78f7df634a4e09c14f8526d8ea66db6e7394d798f5a",
+            "source_id": "scope",
+            "span_id": "ec-editor-setup-v1-24:s3",
+            "text": "Măsura privește numai taxa de înscriere; celelalte taxe, în valoare cumulată de 231 de lei, nu se modifică."
+          }
+        ]
+      }
+    },
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-fsc-v1-r-1-01:s1",
+          "ec-fsc-v1-r-1-01:s2",
+          "ec-fsc-v1-r-1-01:s3"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-fsc-v1-r-1-01:s1",
+          "ec-fsc-v1-r-1-01:s2",
+          "ec-fsc-v1-r-1-01:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-fsc-v1-r-1-01:s1",
+          "ec-fsc-v1-r-1-01:s3"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-fsc-v1-r-1-01:s1",
+          "ec-fsc-v1-r-1-01:s2",
+          "ec-fsc-v1-r-1-01:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [
+          "ec-fsc-v1-r-1-01:s2"
+        ],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-fsc-v1-r-1-01",
+      "failure_class": "INVENTED_ACTOR",
+      "fixture_identity": "e86f1b6dfb9b139ab72e945b7fcec96349b6a07cf88a5abda3645efcbc788b82",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-fsc-v1-r-1-01:s1",
+          "ec-fsc-v1-r-1-01:s2",
+          "ec-fsc-v1-r-1-01:s3"
+        ]
+      },
+      "partition": "REPLAY_RETENTION",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-fsc-v1-r-1-01",
+        "packet_identity": "6bd30f1309d66d4238207e8d924c09709315383cae3d810c6d91a7c8f3db6884",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 75,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "300"
+              ],
+              "procedural": [
+                "aprobat"
+              ]
+            },
+            "position": 0,
+            "sha256": "ec687767fa637d56bdf335b4424d3b341ecf5e34aaa18a8ef3512364229604ce",
+            "source_id": "consiliu",
+            "span_id": "ec-fsc-v1-r-1-01:s1",
+            "text": "Consiliul local din Sibiu a aprobat programul Entitatea Invented_Actor 300."
+          },
+          {
+            "byte_end": 60,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": []
+            },
+            "position": 1,
+            "sha256": "f6161b53a78fce8f7154bc6f79637a4d8c81f83f5a9d96d4b1baf1d0cf7acd13",
+            "source_id": "directie",
+            "span_id": "ec-fsc-v1-r-1-01:s2",
+            "text": "Direcția tehnică a anunțat că implementarea începe joi."
+          },
+          {
+            "byte_end": 35,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": [
+                "semnat"
+              ]
+            },
+            "position": 2,
+            "sha256": "9406bc035f566199d569ebac41adc8218d8789bd0ef3669008e70064ff7a3f61",
+            "source_id": "stadiu",
+            "span_id": "ec-fsc-v1-r-1-01:s3",
+            "text": "Contractul nu a fost încă semnat."
+          }
+        ]
+      }
+    },
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-fsc-v1-r-1-02:s1",
+          "ec-fsc-v1-r-1-02:s2",
+          "ec-fsc-v1-r-1-02:s3"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-fsc-v1-r-1-02:s1",
+          "ec-fsc-v1-r-1-02:s2",
+          "ec-fsc-v1-r-1-02:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-fsc-v1-r-1-02:s1",
+          "ec-fsc-v1-r-1-02:s3"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-fsc-v1-r-1-02:s1",
+          "ec-fsc-v1-r-1-02:s2",
+          "ec-fsc-v1-r-1-02:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [
+          "ec-fsc-v1-r-1-02:s2"
+        ],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-fsc-v1-r-1-02",
+      "failure_class": "INVENTED_ACTOR",
+      "fixture_identity": "53545c84344d7e5ac08cec18550a4cf6d5ab4d39384cde3faeddf140217b51ab",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-fsc-v1-r-1-02:s1",
+          "ec-fsc-v1-r-1-02:s2",
+          "ec-fsc-v1-r-1-02:s3"
+        ]
+      },
+      "partition": "REPLAY_RETENTION",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-fsc-v1-r-1-02",
+        "packet_identity": "0da12d89b6ecaa5d9f88982e5f1665acda38e893244c095c749198f46287e2e3",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 75,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "301"
+              ],
+              "procedural": [
+                "aprobat"
+              ]
+            },
+            "position": 0,
+            "sha256": "fa03c119cf4ae431fde8e5468f89f3910dde4a2682008f8b9f710801ffb1b077",
+            "source_id": "consiliu",
+            "span_id": "ec-fsc-v1-r-1-02:s1",
+            "text": "Consiliul local din Iași a aprobat programul Entitatea Invented_Actor 301."
+          },
+          {
+            "byte_end": 60,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": []
+            },
+            "position": 1,
+            "sha256": "f6161b53a78fce8f7154bc6f79637a4d8c81f83f5a9d96d4b1baf1d0cf7acd13",
+            "source_id": "directie",
+            "span_id": "ec-fsc-v1-r-1-02:s2",
+            "text": "Direcția tehnică a anunțat că implementarea începe joi."
+          },
+          {
+            "byte_end": 35,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": [
+                "semnat"
+              ]
+            },
+            "position": 2,
+            "sha256": "9406bc035f566199d569ebac41adc8218d8789bd0ef3669008e70064ff7a3f61",
+            "source_id": "stadiu",
+            "span_id": "ec-fsc-v1-r-1-02:s3",
+            "text": "Contractul nu a fost încă semnat."
+          }
+        ]
+      }
+    },
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-fsc-v1-r-1-03:s1",
+          "ec-fsc-v1-r-1-03:s2",
+          "ec-fsc-v1-r-1-03:s3"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-fsc-v1-r-1-03:s1",
+          "ec-fsc-v1-r-1-03:s2",
+          "ec-fsc-v1-r-1-03:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-fsc-v1-r-1-03:s1",
+          "ec-fsc-v1-r-1-03:s3"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-fsc-v1-r-1-03:s1",
+          "ec-fsc-v1-r-1-03:s2",
+          "ec-fsc-v1-r-1-03:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [
+          "ec-fsc-v1-r-1-03:s2"
+        ],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-fsc-v1-r-1-03",
+      "failure_class": "INVENTED_ACTOR",
+      "fixture_identity": "15562d95782dfc8607ae93fcb55b853626d310a658442428bcc2838f02deab6b",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-fsc-v1-r-1-03:s1",
+          "ec-fsc-v1-r-1-03:s2",
+          "ec-fsc-v1-r-1-03:s3"
+        ]
+      },
+      "partition": "REPLAY_RETENTION",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-fsc-v1-r-1-03",
+        "packet_identity": "df49964403331b3bdaeb98a90330e472ae82e7b4ca693b63c4048573815a8ef0",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 77,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "302"
+              ],
+              "procedural": [
+                "aprobat"
+              ]
+            },
+            "position": 0,
+            "sha256": "974c633b2504b4c1133aa3c1d4eec89ebef1ff9e298ea903366104c835654ad4",
+            "source_id": "consiliu",
+            "span_id": "ec-fsc-v1-r-1-03:s1",
+            "text": "Consiliul local din Craiova a aprobat programul Entitatea Invented_Actor 302."
+          },
+          {
+            "byte_end": 60,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": []
+            },
+            "position": 1,
+            "sha256": "f6161b53a78fce8f7154bc6f79637a4d8c81f83f5a9d96d4b1baf1d0cf7acd13",
+            "source_id": "directie",
+            "span_id": "ec-fsc-v1-r-1-03:s2",
+            "text": "Direcția tehnică a anunțat că implementarea începe joi."
+          },
+          {
+            "byte_end": 35,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": [
+                "semnat"
+              ]
+            },
+            "position": 2,
+            "sha256": "9406bc035f566199d569ebac41adc8218d8789bd0ef3669008e70064ff7a3f61",
+            "source_id": "stadiu",
+            "span_id": "ec-fsc-v1-r-1-03:s3",
+            "text": "Contractul nu a fost încă semnat."
+          }
+        ]
+      }
+    },
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-fsc-v1-r-1-04:s1",
+          "ec-fsc-v1-r-1-04:s2",
+          "ec-fsc-v1-r-1-04:s3"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-fsc-v1-r-1-04:s1",
+          "ec-fsc-v1-r-1-04:s2",
+          "ec-fsc-v1-r-1-04:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-fsc-v1-r-1-04:s1",
+          "ec-fsc-v1-r-1-04:s3"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-fsc-v1-r-1-04:s1",
+          "ec-fsc-v1-r-1-04:s2",
+          "ec-fsc-v1-r-1-04:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [
+          "ec-fsc-v1-r-1-04:s2"
+        ],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-fsc-v1-r-1-04",
+      "failure_class": "INVENTED_ACTOR",
+      "fixture_identity": "b8e652c7a2d5106745068db7aafe2aad22e1723c859df27d6e115815c6836794",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-fsc-v1-r-1-04:s1",
+          "ec-fsc-v1-r-1-04:s2",
+          "ec-fsc-v1-r-1-04:s3"
+        ]
+      },
+      "partition": "REPLAY_RETENTION",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-fsc-v1-r-1-04",
+        "packet_identity": "89a644b20d04b24277626939f8926deebcee556363de201ae758b2f38c025827",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 79,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "303"
+              ],
+              "procedural": [
+                "aprobat"
+              ]
+            },
+            "position": 0,
+            "sha256": "c2b693924ce32652e2fca7a7bdc7b4ecce859343157c6f172a8c0ae01843165d",
+            "source_id": "consiliu",
+            "span_id": "ec-fsc-v1-r-1-04:s1",
+            "text": "Consiliul local din Ploiești a aprobat programul Entitatea Invented_Actor 303."
+          },
+          {
+            "byte_end": 60,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": []
+            },
+            "position": 1,
+            "sha256": "f6161b53a78fce8f7154bc6f79637a4d8c81f83f5a9d96d4b1baf1d0cf7acd13",
+            "source_id": "directie",
+            "span_id": "ec-fsc-v1-r-1-04:s2",
+            "text": "Direcția tehnică a anunțat că implementarea începe joi."
+          },
+          {
+            "byte_end": 35,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": [
+                "semnat"
+              ]
+            },
+            "position": 2,
+            "sha256": "9406bc035f566199d569ebac41adc8218d8789bd0ef3669008e70064ff7a3f61",
+            "source_id": "stadiu",
+            "span_id": "ec-fsc-v1-r-1-04:s3",
+            "text": "Contractul nu a fost încă semnat."
+          }
+        ]
+      }
+    },
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-fsc-v1-r-2-01:s1",
+          "ec-fsc-v1-r-2-01:s2",
+          "ec-fsc-v1-r-2-01:s3"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-fsc-v1-r-2-01:s1",
+          "ec-fsc-v1-r-2-01:s2",
+          "ec-fsc-v1-r-2-01:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-fsc-v1-r-2-01:s1",
+          "ec-fsc-v1-r-2-01:s2",
+          "ec-fsc-v1-r-2-01:s3"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-fsc-v1-r-2-01:s1",
+          "ec-fsc-v1-r-2-01:s2",
+          "ec-fsc-v1-r-2-01:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-fsc-v1-r-2-01",
+      "failure_class": "ENTITY_SUBSTITUTION",
+      "fixture_identity": "252bd4b41efa7f1d2156438a93649af8a2f2f3e5e3e52f0e83196b5cdb6481e7",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-fsc-v1-r-2-01:s1",
+          "ec-fsc-v1-r-2-01:s2",
+          "ec-fsc-v1-r-2-01:s3"
+        ]
+      },
+      "partition": "REPLAY_RETENTION",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-fsc-v1-r-2-01",
+        "packet_identity": "d52d4de9b2f46fc5a485f64ef630f0799fd376c166c02df96b0a678e80bee7f4",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 81,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "320"
+              ],
+              "procedural": []
+            },
+            "position": 0,
+            "sha256": "fb410854bd9303e345eccece09bb30f66b7887eb5916ccabf1d0097529e0a3e0",
+            "source_id": "operator",
+            "span_id": "ec-fsc-v1-r-2-01:s1",
+            "text": "Operatorul Entitatea Entity_Substitution 320 administrează rețeaua din Craiova."
+          },
+          {
+            "byte_end": 85,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "2380",
+                "320"
+              ],
+              "procedural": []
+            },
+            "position": 1,
+            "sha256": "1229ffd7b61c652b5225651861b5b1891f3f23cb55c6b87efa6b702571094a8f",
+            "source_id": "incident",
+            "span_id": "ec-fsc-v1-r-2-01:s2",
+            "text": "O avarie a afectat 2380 de utilizatori ai rețelei Entitatea Entity_Substitution 320."
+          },
+          {
+            "byte_end": 74,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "320"
+              ],
+              "procedural": []
+            },
+            "position": 2,
+            "sha256": "a145922661e4e8036698a873c19ceb63f27bb0be41bb69b602988cb10aec3517",
+            "source_id": "remediere",
+            "span_id": "ec-fsc-v1-r-2-01:s3",
+            "text": "Operatorul Entitatea Entity_Substitution 320 estimează remedierea vineri."
+          }
+        ]
+      }
+    },
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-fsc-v1-r-2-02:s1",
+          "ec-fsc-v1-r-2-02:s2",
+          "ec-fsc-v1-r-2-02:s3"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-fsc-v1-r-2-02:s1",
+          "ec-fsc-v1-r-2-02:s2",
+          "ec-fsc-v1-r-2-02:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-fsc-v1-r-2-02:s1",
+          "ec-fsc-v1-r-2-02:s2",
+          "ec-fsc-v1-r-2-02:s3"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-fsc-v1-r-2-02:s1",
+          "ec-fsc-v1-r-2-02:s2",
+          "ec-fsc-v1-r-2-02:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-fsc-v1-r-2-02",
+      "failure_class": "ENTITY_SUBSTITUTION",
+      "fixture_identity": "b0756f3eace43089663732eeba1a75c40438ab467e5f495aa43292b9ead192d5",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-fsc-v1-r-2-02:s1",
+          "ec-fsc-v1-r-2-02:s2",
+          "ec-fsc-v1-r-2-02:s3"
+        ]
+      },
+      "partition": "REPLAY_RETENTION",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-fsc-v1-r-2-02",
+        "packet_identity": "3ea200df6895dd6de286df9474103defddbbbf6febf04e6b6dfc7291dc70a573",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 83,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "321"
+              ],
+              "procedural": []
+            },
+            "position": 0,
+            "sha256": "d05edaf112d40146763bebd0590ce9b6e4fdc84a7327996651ad400afb75ef32",
+            "source_id": "operator",
+            "span_id": "ec-fsc-v1-r-2-02:s1",
+            "text": "Operatorul Entitatea Entity_Substitution 321 administrează rețeaua din Ploiești."
+          },
+          {
+            "byte_end": 85,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "2387",
+                "321"
+              ],
+              "procedural": []
+            },
+            "position": 1,
+            "sha256": "70ea528732de6584d1f236036f23afbb11457a40a5882ad905c9ffc821527ec0",
+            "source_id": "incident",
+            "span_id": "ec-fsc-v1-r-2-02:s2",
+            "text": "O avarie a afectat 2387 de utilizatori ai rețelei Entitatea Entity_Substitution 321."
+          },
+          {
+            "byte_end": 74,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "321"
+              ],
+              "procedural": []
+            },
+            "position": 2,
+            "sha256": "dd42071922f6fabf4e7616eef4971a4e0c78c68a8b5ecd7aa36048ff33b9529e",
+            "source_id": "remediere",
+            "span_id": "ec-fsc-v1-r-2-02:s3",
+            "text": "Operatorul Entitatea Entity_Substitution 321 estimează remedierea vineri."
+          }
+        ]
+      }
+    },
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-fsc-v1-r-2-03:s1",
+          "ec-fsc-v1-r-2-03:s2",
+          "ec-fsc-v1-r-2-03:s3"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-fsc-v1-r-2-03:s1",
+          "ec-fsc-v1-r-2-03:s2",
+          "ec-fsc-v1-r-2-03:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-fsc-v1-r-2-03:s1",
+          "ec-fsc-v1-r-2-03:s2",
+          "ec-fsc-v1-r-2-03:s3"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-fsc-v1-r-2-03:s1",
+          "ec-fsc-v1-r-2-03:s2",
+          "ec-fsc-v1-r-2-03:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-fsc-v1-r-2-03",
+      "failure_class": "ENTITY_SUBSTITUTION",
+      "fixture_identity": "a8e198ddaf3b97b8149c675c920755f825808bf0061a5009558cf869bfd2e852",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-fsc-v1-r-2-03:s1",
+          "ec-fsc-v1-r-2-03:s2",
+          "ec-fsc-v1-r-2-03:s3"
+        ]
+      },
+      "partition": "REPLAY_RETENTION",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-fsc-v1-r-2-03",
+        "packet_identity": "eca518df46ab6ab7c68bb0e6a5ce14612eff54d851a2626bfd93769cc5b29245",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 78,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "322"
+              ],
+              "procedural": []
+            },
+            "position": 0,
+            "sha256": "bb9be807eccbb2711eaf5649bbd5ad17e23b8391dc08b27873e18805369e0a1b",
+            "source_id": "operator",
+            "span_id": "ec-fsc-v1-r-2-03:s1",
+            "text": "Operatorul Entitatea Entity_Substitution 322 administrează rețeaua din Arad."
+          },
+          {
+            "byte_end": 85,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "2394",
+                "322"
+              ],
+              "procedural": []
+            },
+            "position": 1,
+            "sha256": "4711ad512d50b509c2fdd73f848d68d274c2a72b294ae32c7e2004ae9151c2dc",
+            "source_id": "incident",
+            "span_id": "ec-fsc-v1-r-2-03:s2",
+            "text": "O avarie a afectat 2394 de utilizatori ai rețelei Entitatea Entity_Substitution 322."
+          },
+          {
+            "byte_end": 74,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "322"
+              ],
+              "procedural": []
+            },
+            "position": 2,
+            "sha256": "58d03338d797b665974aa0e83e8fb5bb192e76c3aaa8927bc66e7578b5c1f60a",
+            "source_id": "remediere",
+            "span_id": "ec-fsc-v1-r-2-03:s3",
+            "text": "Operatorul Entitatea Entity_Substitution 322 estimează remedierea vineri."
+          }
+        ]
+      }
+    },
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-fsc-v1-r-2-04:s1",
+          "ec-fsc-v1-r-2-04:s2",
+          "ec-fsc-v1-r-2-04:s3"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-fsc-v1-r-2-04:s1",
+          "ec-fsc-v1-r-2-04:s2",
+          "ec-fsc-v1-r-2-04:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-fsc-v1-r-2-04:s1",
+          "ec-fsc-v1-r-2-04:s2",
+          "ec-fsc-v1-r-2-04:s3"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-fsc-v1-r-2-04:s1",
+          "ec-fsc-v1-r-2-04:s2",
+          "ec-fsc-v1-r-2-04:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-fsc-v1-r-2-04",
+      "failure_class": "ENTITY_SUBSTITUTION",
+      "fixture_identity": "ee2236fb0e1a7418732bca281840234ffb2ede4304175a2b297d411f52b04d34",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-fsc-v1-r-2-04:s1",
+          "ec-fsc-v1-r-2-04:s2",
+          "ec-fsc-v1-r-2-04:s3"
+        ]
+      },
+      "partition": "REPLAY_RETENTION",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-fsc-v1-r-2-04",
+        "packet_identity": "1f58659e22cbcf1cedd5d213ef2e5227f7bd703b7661da6978e4787ee4ce8041",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 81,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "323"
+              ],
+              "procedural": []
+            },
+            "position": 0,
+            "sha256": "0bacee9f08158d919af9d6e313b8867f63de201aee7199b968ae291602f513e4",
+            "source_id": "operator",
+            "span_id": "ec-fsc-v1-r-2-04:s1",
+            "text": "Operatorul Entitatea Entity_Substitution 323 administrează rețeaua din Suceava."
+          },
+          {
+            "byte_end": 85,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "2401",
+                "323"
+              ],
+              "procedural": []
+            },
+            "position": 1,
+            "sha256": "3f803b9142dda6a9ea45e3b03b6142b9492511781791368475a97fd98a72b100",
+            "source_id": "incident",
+            "span_id": "ec-fsc-v1-r-2-04:s2",
+            "text": "O avarie a afectat 2401 de utilizatori ai rețelei Entitatea Entity_Substitution 323."
+          },
+          {
+            "byte_end": 74,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "323"
+              ],
+              "procedural": []
+            },
+            "position": 2,
+            "sha256": "0a32363de13ec94ea4e18a23153f956f40995337d32d8c51a82e7b9c7d2a4350",
+            "source_id": "remediere",
+            "span_id": "ec-fsc-v1-r-2-04:s3",
+            "text": "Operatorul Entitatea Entity_Substitution 323 estimează remedierea vineri."
+          }
+        ]
+      }
+    },
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-fsc-v1-r-3-01:s1",
+          "ec-fsc-v1-r-3-01:s2",
+          "ec-fsc-v1-r-3-01:s3"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-fsc-v1-r-3-01:s1",
+          "ec-fsc-v1-r-3-01:s2",
+          "ec-fsc-v1-r-3-01:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-fsc-v1-r-3-01:s1",
+          "ec-fsc-v1-r-3-01:s2"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-fsc-v1-r-3-01:s1",
+          "ec-fsc-v1-r-3-01:s2",
+          "ec-fsc-v1-r-3-01:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [
+          "ec-fsc-v1-r-3-01:s3"
+        ],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-fsc-v1-r-3-01",
+      "failure_class": "CATEGORICAL_ALLEGATION",
+      "fixture_identity": "eac4e40088ff48602abf00cada212e9b559fefa597f091871df58c88e384ff94",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-fsc-v1-r-3-01:s1",
+          "ec-fsc-v1-r-3-01:s2",
+          "ec-fsc-v1-r-3-01:s3"
+        ]
+      },
+      "partition": "REPLAY_RETENTION",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-fsc-v1-r-3-01",
+        "packet_identity": "d7dfe05169a4caf1f9633b657f08d352dbefc46ce36f15353b3d10306390765c",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 98,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [
+                "ar fi",
+                "preliminar"
+              ],
+              "numbers_dates_amounts": [
+                "340",
+                "351"
+              ],
+              "procedural": []
+            },
+            "position": 0,
+            "sha256": "60ee475668f195a97bfeec5544416c76bbc17decbc7b0c8ae46e7eccaf7c4343",
+            "source_id": "raport",
+            "span_id": "ec-fsc-v1-r-3-01:s1",
+            "text": "Un raport preliminar susține că Entitatea Categorical_Allegation 340 ar fi omis 351 declarații."
+          },
+          {
+            "byte_end": 57,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "340"
+              ],
+              "procedural": []
+            },
+            "position": 1,
+            "sha256": "657552bf260a9dbd625bb33dab3b8f223022a7a932de679d322b863e783d7e58",
+            "source_id": "raspuns",
+            "span_id": "ec-fsc-v1-r-3-01:s2",
+            "text": "Entitatea Categorical_Allegation 340 contestă acuzația."
+          },
+          {
+            "byte_end": 74,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": []
+            },
+            "position": 2,
+            "sha256": "e7dddd459886531a923e31d27dd6369bf708b2f379c0a97f8d33921ce21f4901",
+            "source_id": "control",
+            "span_id": "ec-fsc-v1-r-3-01:s3",
+            "text": "Autoritatea spune că verificarea continuă și faptele nu sunt stabilite."
+          }
+        ]
+      }
+    },
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-fsc-v1-r-3-02:s1",
+          "ec-fsc-v1-r-3-02:s2",
+          "ec-fsc-v1-r-3-02:s3"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-fsc-v1-r-3-02:s1",
+          "ec-fsc-v1-r-3-02:s2",
+          "ec-fsc-v1-r-3-02:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-fsc-v1-r-3-02:s1",
+          "ec-fsc-v1-r-3-02:s2"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-fsc-v1-r-3-02:s1",
+          "ec-fsc-v1-r-3-02:s2",
+          "ec-fsc-v1-r-3-02:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [
+          "ec-fsc-v1-r-3-02:s3"
+        ],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-fsc-v1-r-3-02",
+      "failure_class": "CATEGORICAL_ALLEGATION",
+      "fixture_identity": "a359b947a642784d055dce0b25845987e2d2d8b6cc1f20783b635a9c97d258f9",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-fsc-v1-r-3-02:s1",
+          "ec-fsc-v1-r-3-02:s2",
+          "ec-fsc-v1-r-3-02:s3"
+        ]
+      },
+      "partition": "REPLAY_RETENTION",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-fsc-v1-r-3-02",
+        "packet_identity": "c831aca1bc8ab40bd3fccb281e1bea3c93a3cd8e1e5e3be8fa7a28b429b877ab",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 98,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [
+                "ar fi",
+                "preliminar"
+              ],
+              "numbers_dates_amounts": [
+                "341",
+                "352"
+              ],
+              "procedural": []
+            },
+            "position": 0,
+            "sha256": "ff96f80db609becdfe3204bfb1714454ecdf20683120cccccece6890113503cf",
+            "source_id": "raport",
+            "span_id": "ec-fsc-v1-r-3-02:s1",
+            "text": "Un raport preliminar susține că Entitatea Categorical_Allegation 341 ar fi omis 352 declarații."
+          },
+          {
+            "byte_end": 57,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "341"
+              ],
+              "procedural": []
+            },
+            "position": 1,
+            "sha256": "679fe31ba0dde49c743431bfe9e892ffa79a856582a83e2d9e59614513dd6a55",
+            "source_id": "raspuns",
+            "span_id": "ec-fsc-v1-r-3-02:s2",
+            "text": "Entitatea Categorical_Allegation 341 contestă acuzația."
+          },
+          {
+            "byte_end": 74,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": []
+            },
+            "position": 2,
+            "sha256": "e7dddd459886531a923e31d27dd6369bf708b2f379c0a97f8d33921ce21f4901",
+            "source_id": "control",
+            "span_id": "ec-fsc-v1-r-3-02:s3",
+            "text": "Autoritatea spune că verificarea continuă și faptele nu sunt stabilite."
+          }
+        ]
+      }
+    },
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-fsc-v1-r-3-03:s1",
+          "ec-fsc-v1-r-3-03:s2",
+          "ec-fsc-v1-r-3-03:s3"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-fsc-v1-r-3-03:s1",
+          "ec-fsc-v1-r-3-03:s2",
+          "ec-fsc-v1-r-3-03:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-fsc-v1-r-3-03:s1",
+          "ec-fsc-v1-r-3-03:s2"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-fsc-v1-r-3-03:s1",
+          "ec-fsc-v1-r-3-03:s2",
+          "ec-fsc-v1-r-3-03:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [
+          "ec-fsc-v1-r-3-03:s3"
+        ],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-fsc-v1-r-3-03",
+      "failure_class": "CATEGORICAL_ALLEGATION",
+      "fixture_identity": "312e44413b2cfcfb98ca7f46143e61ec0a74f4b9074af81d64ae9e193f85598f",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-fsc-v1-r-3-03:s1",
+          "ec-fsc-v1-r-3-03:s2",
+          "ec-fsc-v1-r-3-03:s3"
+        ]
+      },
+      "partition": "REPLAY_RETENTION",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-fsc-v1-r-3-03",
+        "packet_identity": "90b977f1732a976b38823271974d67d1b8b59809c1e6648471909788fa1b13b2",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 98,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [
+                "ar fi",
+                "preliminar"
+              ],
+              "numbers_dates_amounts": [
+                "342",
+                "353"
+              ],
+              "procedural": []
+            },
+            "position": 0,
+            "sha256": "a3b2d564cf2d4db28427fe88a50b0da972ddc2a049833ca36ac63fd52fb354fa",
+            "source_id": "raport",
+            "span_id": "ec-fsc-v1-r-3-03:s1",
+            "text": "Un raport preliminar susține că Entitatea Categorical_Allegation 342 ar fi omis 353 declarații."
+          },
+          {
+            "byte_end": 57,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "342"
+              ],
+              "procedural": []
+            },
+            "position": 1,
+            "sha256": "a2d9241b781e5c0317a47099c501117d9318f5d5660aabaf6936f1f67fc9f408",
+            "source_id": "raspuns",
+            "span_id": "ec-fsc-v1-r-3-03:s2",
+            "text": "Entitatea Categorical_Allegation 342 contestă acuzația."
+          },
+          {
+            "byte_end": 74,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": []
+            },
+            "position": 2,
+            "sha256": "e7dddd459886531a923e31d27dd6369bf708b2f379c0a97f8d33921ce21f4901",
+            "source_id": "control",
+            "span_id": "ec-fsc-v1-r-3-03:s3",
+            "text": "Autoritatea spune că verificarea continuă și faptele nu sunt stabilite."
+          }
+        ]
+      }
+    },
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-fsc-v1-r-3-04:s1",
+          "ec-fsc-v1-r-3-04:s2",
+          "ec-fsc-v1-r-3-04:s3"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-fsc-v1-r-3-04:s1",
+          "ec-fsc-v1-r-3-04:s2",
+          "ec-fsc-v1-r-3-04:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-fsc-v1-r-3-04:s1",
+          "ec-fsc-v1-r-3-04:s2"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-fsc-v1-r-3-04:s1",
+          "ec-fsc-v1-r-3-04:s2",
+          "ec-fsc-v1-r-3-04:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [
+          "ec-fsc-v1-r-3-04:s3"
+        ],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-fsc-v1-r-3-04",
+      "failure_class": "CATEGORICAL_ALLEGATION",
+      "fixture_identity": "08a2cae928c366d492eecbb0fb35abf6171c2699b8193a1fa2fe6cf08f0daf5b",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-fsc-v1-r-3-04:s1",
+          "ec-fsc-v1-r-3-04:s2",
+          "ec-fsc-v1-r-3-04:s3"
+        ]
+      },
+      "partition": "REPLAY_RETENTION",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-fsc-v1-r-3-04",
+        "packet_identity": "cd4d4c75b40440c185bbd802acba38c63126250f445acb61c637df87ea54ef3b",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 98,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [
+                "ar fi",
+                "preliminar"
+              ],
+              "numbers_dates_amounts": [
+                "343",
+                "354"
+              ],
+              "procedural": []
+            },
+            "position": 0,
+            "sha256": "d56626f5faf5e35f7a91f5c0c3ec4f68f68ecec4c0c080aeef3649fe3fa873ba",
+            "source_id": "raport",
+            "span_id": "ec-fsc-v1-r-3-04:s1",
+            "text": "Un raport preliminar susține că Entitatea Categorical_Allegation 343 ar fi omis 354 declarații."
+          },
+          {
+            "byte_end": 57,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "343"
+              ],
+              "procedural": []
+            },
+            "position": 1,
+            "sha256": "3fdfc0824323ee8d33f3f85b86c2441a89f060c5590158651484e11cb7aa2da1",
+            "source_id": "raspuns",
+            "span_id": "ec-fsc-v1-r-3-04:s2",
+            "text": "Entitatea Categorical_Allegation 343 contestă acuzația."
+          },
+          {
+            "byte_end": 74,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": []
+            },
+            "position": 2,
+            "sha256": "e7dddd459886531a923e31d27dd6369bf708b2f379c0a97f8d33921ce21f4901",
+            "source_id": "control",
+            "span_id": "ec-fsc-v1-r-3-04:s3",
+            "text": "Autoritatea spune că verificarea continuă și faptele nu sunt stabilite."
+          }
+        ]
+      }
+    },
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-fsc-v1-r-4-01:s1",
+          "ec-fsc-v1-r-4-01:s2",
+          "ec-fsc-v1-r-4-01:s3"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-fsc-v1-r-4-01:s1",
+          "ec-fsc-v1-r-4-01:s2",
+          "ec-fsc-v1-r-4-01:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-fsc-v1-r-4-01:s1"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-fsc-v1-r-4-01:s1",
+          "ec-fsc-v1-r-4-01:s2",
+          "ec-fsc-v1-r-4-01:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [
+          "ec-fsc-v1-r-4-01:s2",
+          "ec-fsc-v1-r-4-01:s3"
+        ],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-fsc-v1-r-4-01",
+      "failure_class": "LOST_QUALIFICATION",
+      "fixture_identity": "c7465f6a568abc4b797f132d4f44699367791d40cb8dc650bc65e63c6fa0b944",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-fsc-v1-r-4-01:s1",
+          "ec-fsc-v1-r-4-01:s2",
+          "ec-fsc-v1-r-4-01:s3"
+        ]
+      },
+      "partition": "REPLAY_RETENTION",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-fsc-v1-r-4-01",
+        "packet_identity": "1c42f120f799fc6c9f47f4600e7379d5c096580572de39f8f160f29df6dc5b53",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 74,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "371%"
+              ],
+              "procedural": []
+            },
+            "position": 0,
+            "sha256": "b8b2929069fdedfd8ff6b4dc259c0a914f5d4771ccd57306c256b798af361925",
+            "source_id": "estimare",
+            "span_id": "ec-fsc-v1-r-4-01:s1",
+            "text": "Institutul estimează o probabilitate de 371% pentru depășirea pragului."
+          },
+          {
+            "byte_end": 74,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": []
+            },
+            "position": 1,
+            "sha256": "1cd3c7767a247699ec7c137341ab45e97f08c32e830dd5a86a278a1981873930",
+            "source_id": "conditie",
+            "span_id": "ec-fsc-v1-r-4-01:s2",
+            "text": "Estimarea este valabilă numai dacă precipitațiile continuă până joi."
+          },
+          {
+            "byte_end": 54,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": []
+            },
+            "position": 2,
+            "sha256": "15b739c5707c5593c5570b9229d4c735cd817d9c659dc3a9d4ba2c586be4aa2f",
+            "source_id": "revizie",
+            "span_id": "ec-fsc-v1-r-4-01:s3",
+            "text": "Prognoza poate fi revizuită după noile măsurători."
+          }
+        ]
+      }
+    },
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-fsc-v1-r-4-02:s1",
+          "ec-fsc-v1-r-4-02:s2",
+          "ec-fsc-v1-r-4-02:s3"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-fsc-v1-r-4-02:s1",
+          "ec-fsc-v1-r-4-02:s2",
+          "ec-fsc-v1-r-4-02:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-fsc-v1-r-4-02:s1"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-fsc-v1-r-4-02:s1",
+          "ec-fsc-v1-r-4-02:s2",
+          "ec-fsc-v1-r-4-02:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [
+          "ec-fsc-v1-r-4-02:s2",
+          "ec-fsc-v1-r-4-02:s3"
+        ],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-fsc-v1-r-4-02",
+      "failure_class": "LOST_QUALIFICATION",
+      "fixture_identity": "89389574147ba600065eb98a212dd964a541b5902e930168fa43c2eed4efcc19",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-fsc-v1-r-4-02:s1",
+          "ec-fsc-v1-r-4-02:s2",
+          "ec-fsc-v1-r-4-02:s3"
+        ]
+      },
+      "partition": "REPLAY_RETENTION",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-fsc-v1-r-4-02",
+        "packet_identity": "f33fb44377a810d558930ed42c7160ce61ebd000cc145e8b6e052035a0e71eea",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 74,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "372%"
+              ],
+              "procedural": []
+            },
+            "position": 0,
+            "sha256": "2e2197fcedbb3cfc50ef96a6a3c3ea6fb20c58b5f91430e9e19f3a4ca0ec6500",
+            "source_id": "estimare",
+            "span_id": "ec-fsc-v1-r-4-02:s1",
+            "text": "Institutul estimează o probabilitate de 372% pentru depășirea pragului."
+          },
+          {
+            "byte_end": 74,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": []
+            },
+            "position": 1,
+            "sha256": "1cd3c7767a247699ec7c137341ab45e97f08c32e830dd5a86a278a1981873930",
+            "source_id": "conditie",
+            "span_id": "ec-fsc-v1-r-4-02:s2",
+            "text": "Estimarea este valabilă numai dacă precipitațiile continuă până joi."
+          },
+          {
+            "byte_end": 54,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": []
+            },
+            "position": 2,
+            "sha256": "15b739c5707c5593c5570b9229d4c735cd817d9c659dc3a9d4ba2c586be4aa2f",
+            "source_id": "revizie",
+            "span_id": "ec-fsc-v1-r-4-02:s3",
+            "text": "Prognoza poate fi revizuită după noile măsurători."
+          }
+        ]
+      }
+    },
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-fsc-v1-r-4-03:s1",
+          "ec-fsc-v1-r-4-03:s2",
+          "ec-fsc-v1-r-4-03:s3"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-fsc-v1-r-4-03:s1",
+          "ec-fsc-v1-r-4-03:s2",
+          "ec-fsc-v1-r-4-03:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-fsc-v1-r-4-03:s1"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-fsc-v1-r-4-03:s1",
+          "ec-fsc-v1-r-4-03:s2",
+          "ec-fsc-v1-r-4-03:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [
+          "ec-fsc-v1-r-4-03:s2",
+          "ec-fsc-v1-r-4-03:s3"
+        ],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-fsc-v1-r-4-03",
+      "failure_class": "LOST_QUALIFICATION",
+      "fixture_identity": "56ba96c49f75a56d8de22baba2f321867c55b385544a3acf2008ae6e9a4e1f72",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-fsc-v1-r-4-03:s1",
+          "ec-fsc-v1-r-4-03:s2",
+          "ec-fsc-v1-r-4-03:s3"
+        ]
+      },
+      "partition": "REPLAY_RETENTION",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-fsc-v1-r-4-03",
+        "packet_identity": "e5c8dcab6d7020a193064dca58e1a7beb499405e24a6232868f454b2f2cba338",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 74,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "373%"
+              ],
+              "procedural": []
+            },
+            "position": 0,
+            "sha256": "3efcb114a97cdbc1a8d76b315c3236d844796aa632947efcdae9236fadb63154",
+            "source_id": "estimare",
+            "span_id": "ec-fsc-v1-r-4-03:s1",
+            "text": "Institutul estimează o probabilitate de 373% pentru depășirea pragului."
+          },
+          {
+            "byte_end": 74,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": []
+            },
+            "position": 1,
+            "sha256": "1cd3c7767a247699ec7c137341ab45e97f08c32e830dd5a86a278a1981873930",
+            "source_id": "conditie",
+            "span_id": "ec-fsc-v1-r-4-03:s2",
+            "text": "Estimarea este valabilă numai dacă precipitațiile continuă până joi."
+          },
+          {
+            "byte_end": 54,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": []
+            },
+            "position": 2,
+            "sha256": "15b739c5707c5593c5570b9229d4c735cd817d9c659dc3a9d4ba2c586be4aa2f",
+            "source_id": "revizie",
+            "span_id": "ec-fsc-v1-r-4-03:s3",
+            "text": "Prognoza poate fi revizuită după noile măsurători."
+          }
+        ]
+      }
+    },
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-fsc-v1-r-4-04:s1",
+          "ec-fsc-v1-r-4-04:s2",
+          "ec-fsc-v1-r-4-04:s3"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-fsc-v1-r-4-04:s1",
+          "ec-fsc-v1-r-4-04:s2",
+          "ec-fsc-v1-r-4-04:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-fsc-v1-r-4-04:s1"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-fsc-v1-r-4-04:s1",
+          "ec-fsc-v1-r-4-04:s2",
+          "ec-fsc-v1-r-4-04:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [
+          "ec-fsc-v1-r-4-04:s2",
+          "ec-fsc-v1-r-4-04:s3"
+        ],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-fsc-v1-r-4-04",
+      "failure_class": "LOST_QUALIFICATION",
+      "fixture_identity": "73312d9362aa78f778afe4110e13ce62166ebc8cb9bcb32add7fbc5425266704",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-fsc-v1-r-4-04:s1",
+          "ec-fsc-v1-r-4-04:s2",
+          "ec-fsc-v1-r-4-04:s3"
+        ]
+      },
+      "partition": "REPLAY_RETENTION",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-fsc-v1-r-4-04",
+        "packet_identity": "06c925336dbf40af4b8924df1f8fd44b71cc2511d7f95771e60ca5c85a21227c",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 74,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "374%"
+              ],
+              "procedural": []
+            },
+            "position": 0,
+            "sha256": "0fd78f4c4b790510047406bb4dc4643c62c36f9d18b81b80e4385d7d81d4599e",
+            "source_id": "estimare",
+            "span_id": "ec-fsc-v1-r-4-04:s1",
+            "text": "Institutul estimează o probabilitate de 374% pentru depășirea pragului."
+          },
+          {
+            "byte_end": 74,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": []
+            },
+            "position": 1,
+            "sha256": "1cd3c7767a247699ec7c137341ab45e97f08c32e830dd5a86a278a1981873930",
+            "source_id": "conditie",
+            "span_id": "ec-fsc-v1-r-4-04:s2",
+            "text": "Estimarea este valabilă numai dacă precipitațiile continuă până joi."
+          },
+          {
+            "byte_end": 54,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": []
+            },
+            "position": 2,
+            "sha256": "15b739c5707c5593c5570b9229d4c735cd817d9c659dc3a9d4ba2c586be4aa2f",
+            "source_id": "revizie",
+            "span_id": "ec-fsc-v1-r-4-04:s3",
+            "text": "Prognoza poate fi revizuită după noile măsurători."
+          }
+        ]
+      }
+    },
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-fsc-v1-r-5-01:s1",
+          "ec-fsc-v1-r-5-01:s2",
+          "ec-fsc-v1-r-5-01:s3"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-fsc-v1-r-5-01:s1",
+          "ec-fsc-v1-r-5-01:s2",
+          "ec-fsc-v1-r-5-01:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-fsc-v1-r-5-01:s1",
+          "ec-fsc-v1-r-5-01:s2",
+          "ec-fsc-v1-r-5-01:s3"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-fsc-v1-r-5-01:s1",
+          "ec-fsc-v1-r-5-01:s2",
+          "ec-fsc-v1-r-5-01:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-fsc-v1-r-5-01",
+      "failure_class": "INCOMPLETE_NUMERIC_RECONCILIATION",
+      "fixture_identity": "0e4cc04e078d3566c0dd6c99123f52a1a379c3484ac670728567eabf03726d63",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-fsc-v1-r-5-01:s1",
+          "ec-fsc-v1-r-5-01:s2",
+          "ec-fsc-v1-r-5-01:s3"
+        ]
+      },
+      "partition": "REPLAY_RETENTION",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-fsc-v1-r-5-01",
+        "packet_identity": "c6d576f335c49b447b71ecce5a9aaa11d7573370db479248797442d9e5c8a42e",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 47,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "2800"
+              ],
+              "procedural": []
+            },
+            "position": 0,
+            "sha256": "27d047842a3b2a9e37eb7a910e1bd181197d926f54eb483948224bb4b89e7fd6",
+            "source_id": "initial",
+            "span_id": "ec-fsc-v1-r-5-01:s1",
+            "text": "Inventarul provizoriu cuprindea 2800 de dosare."
+          },
+          {
+            "byte_end": 55,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "391"
+              ],
+              "procedural": []
+            },
+            "position": 1,
+            "sha256": "28d6188a7844bd4b94e5e419c33a8cf3f6947de7026749ab75508b39722c87ae",
+            "source_id": "duplicate",
+            "span_id": "ec-fsc-v1-r-5-01:s2",
+            "text": "Verificarea a identificat 391 înregistrări duplicate."
+          },
+          {
+            "byte_end": 47,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "2409"
+              ],
+              "procedural": []
+            },
+            "position": 2,
+            "sha256": "a317cb7c3bdabb0d57cf5e4748df6c2a810bae09a7856cf826a9660ca901cdea",
+            "source_id": "final",
+            "span_id": "ec-fsc-v1-r-5-01:s3",
+            "text": "Totalul corectat este de 2409 dosare distincte."
+          }
+        ]
+      }
+    },
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-fsc-v1-r-5-02:s1",
+          "ec-fsc-v1-r-5-02:s2",
+          "ec-fsc-v1-r-5-02:s3"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-fsc-v1-r-5-02:s1",
+          "ec-fsc-v1-r-5-02:s2",
+          "ec-fsc-v1-r-5-02:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-fsc-v1-r-5-02:s1",
+          "ec-fsc-v1-r-5-02:s2",
+          "ec-fsc-v1-r-5-02:s3"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-fsc-v1-r-5-02:s1",
+          "ec-fsc-v1-r-5-02:s2",
+          "ec-fsc-v1-r-5-02:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-fsc-v1-r-5-02",
+      "failure_class": "INCOMPLETE_NUMERIC_RECONCILIATION",
+      "fixture_identity": "73d050a28c56e599accc749dd1482dabcfa46d971e8469e2c7e746bbef90c3d2",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-fsc-v1-r-5-02:s1",
+          "ec-fsc-v1-r-5-02:s2",
+          "ec-fsc-v1-r-5-02:s3"
+        ]
+      },
+      "partition": "REPLAY_RETENTION",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-fsc-v1-r-5-02",
+        "packet_identity": "47a0d324b9794de5a670e3b60200233a3faab1630c92abc6b661bfe6e112dc1f",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 47,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "2807"
+              ],
+              "procedural": []
+            },
+            "position": 0,
+            "sha256": "eb9843825e5a779edb8cc3d7d2cda24b3267a871ae2cb7e3567e6e9c3239ff4e",
+            "source_id": "initial",
+            "span_id": "ec-fsc-v1-r-5-02:s1",
+            "text": "Inventarul provizoriu cuprindea 2807 de dosare."
+          },
+          {
+            "byte_end": 55,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "392"
+              ],
+              "procedural": []
+            },
+            "position": 1,
+            "sha256": "cc3db961565d6ad6e373f5f07368c50ba3c0b6eb4fe8f24700e7a6e7ac7d70f7",
+            "source_id": "duplicate",
+            "span_id": "ec-fsc-v1-r-5-02:s2",
+            "text": "Verificarea a identificat 392 înregistrări duplicate."
+          },
+          {
+            "byte_end": 47,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "2415"
+              ],
+              "procedural": []
+            },
+            "position": 2,
+            "sha256": "0b968670df6f2e07a309cb05bd187d900fa708f1aa187c7dc3de54503305aebd",
+            "source_id": "final",
+            "span_id": "ec-fsc-v1-r-5-02:s3",
+            "text": "Totalul corectat este de 2415 dosare distincte."
+          }
+        ]
+      }
+    },
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-fsc-v1-r-5-03:s1",
+          "ec-fsc-v1-r-5-03:s2",
+          "ec-fsc-v1-r-5-03:s3"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-fsc-v1-r-5-03:s1",
+          "ec-fsc-v1-r-5-03:s2",
+          "ec-fsc-v1-r-5-03:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-fsc-v1-r-5-03:s1",
+          "ec-fsc-v1-r-5-03:s2",
+          "ec-fsc-v1-r-5-03:s3"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-fsc-v1-r-5-03:s1",
+          "ec-fsc-v1-r-5-03:s2",
+          "ec-fsc-v1-r-5-03:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-fsc-v1-r-5-03",
+      "failure_class": "INCOMPLETE_NUMERIC_RECONCILIATION",
+      "fixture_identity": "e0b97ff152dd01f30a938439802f17cf77b58f9e08751d3d2091b0098f5dda97",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-fsc-v1-r-5-03:s1",
+          "ec-fsc-v1-r-5-03:s2",
+          "ec-fsc-v1-r-5-03:s3"
+        ]
+      },
+      "partition": "REPLAY_RETENTION",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-fsc-v1-r-5-03",
+        "packet_identity": "56d4351bf9ae1d16673f1027732a27283fa2132779ce8d9eb1a3736dcd8d401c",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 47,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "2814"
+              ],
+              "procedural": []
+            },
+            "position": 0,
+            "sha256": "6c13fc2460a097af6e7f5c27fe4d6be521f9700ce0cf2ac981c06e6a64604be1",
+            "source_id": "initial",
+            "span_id": "ec-fsc-v1-r-5-03:s1",
+            "text": "Inventarul provizoriu cuprindea 2814 de dosare."
+          },
+          {
+            "byte_end": 55,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "393"
+              ],
+              "procedural": []
+            },
+            "position": 1,
+            "sha256": "a2608225bd6e4a282e5d459fbb895999731783f8351c790848dc9207b08304c2",
+            "source_id": "duplicate",
+            "span_id": "ec-fsc-v1-r-5-03:s2",
+            "text": "Verificarea a identificat 393 înregistrări duplicate."
+          },
+          {
+            "byte_end": 47,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "2421"
+              ],
+              "procedural": []
+            },
+            "position": 2,
+            "sha256": "ebc65bed32ceb7c545b735153011b49c8da98936854a25e8d5b1793f7861201b",
+            "source_id": "final",
+            "span_id": "ec-fsc-v1-r-5-03:s3",
+            "text": "Totalul corectat este de 2421 dosare distincte."
+          }
+        ]
+      }
+    },
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-fsc-v1-r-5-04:s1",
+          "ec-fsc-v1-r-5-04:s2",
+          "ec-fsc-v1-r-5-04:s3"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-fsc-v1-r-5-04:s1",
+          "ec-fsc-v1-r-5-04:s2",
+          "ec-fsc-v1-r-5-04:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-fsc-v1-r-5-04:s1",
+          "ec-fsc-v1-r-5-04:s2",
+          "ec-fsc-v1-r-5-04:s3"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-fsc-v1-r-5-04:s1",
+          "ec-fsc-v1-r-5-04:s2",
+          "ec-fsc-v1-r-5-04:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-fsc-v1-r-5-04",
+      "failure_class": "INCOMPLETE_NUMERIC_RECONCILIATION",
+      "fixture_identity": "c0078f0817697bfb409975b4cc5e633eb8aa6b57eab684a93d25d952983b0414",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-fsc-v1-r-5-04:s1",
+          "ec-fsc-v1-r-5-04:s2",
+          "ec-fsc-v1-r-5-04:s3"
+        ]
+      },
+      "partition": "REPLAY_RETENTION",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-fsc-v1-r-5-04",
+        "packet_identity": "6faa5cf4b37d4fcebf040439c593a79ebdf3c41722d70467a79541223cef0314",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 47,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "2821"
+              ],
+              "procedural": []
+            },
+            "position": 0,
+            "sha256": "e6e1e2eee2f8a5df402eaec9b5cb7e35fccfad7a7034367f360c2796de92c50b",
+            "source_id": "initial",
+            "span_id": "ec-fsc-v1-r-5-04:s1",
+            "text": "Inventarul provizoriu cuprindea 2821 de dosare."
+          },
+          {
+            "byte_end": 55,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "394"
+              ],
+              "procedural": []
+            },
+            "position": 1,
+            "sha256": "353888ef12a39d48b9834b37eecc8d9504a69fbdcd98e1c523c5e83479884f4c",
+            "source_id": "duplicate",
+            "span_id": "ec-fsc-v1-r-5-04:s2",
+            "text": "Verificarea a identificat 394 înregistrări duplicate."
+          },
+          {
+            "byte_end": 47,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "2427"
+              ],
+              "procedural": []
+            },
+            "position": 2,
+            "sha256": "1b4b934509cbc1391a4b7876d20bfaacddeb3ab87f074bc830239712b0992895",
+            "source_id": "final",
+            "span_id": "ec-fsc-v1-r-5-04:s3",
+            "text": "Totalul corectat este de 2427 dosare distincte."
+          }
+        ]
+      }
+    },
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-fsc-v1-r-6-01:s1",
+          "ec-fsc-v1-r-6-01:s2",
+          "ec-fsc-v1-r-6-01:s3"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-fsc-v1-r-6-01:s1",
+          "ec-fsc-v1-r-6-01:s2",
+          "ec-fsc-v1-r-6-01:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-fsc-v1-r-6-01:s1",
+          "ec-fsc-v1-r-6-01:s2",
+          "ec-fsc-v1-r-6-01:s3"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-fsc-v1-r-6-01:s1",
+          "ec-fsc-v1-r-6-01:s2",
+          "ec-fsc-v1-r-6-01:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-fsc-v1-r-6-01",
+      "failure_class": "INCOMPLETE_PROCEDURAL_STATUS",
+      "fixture_identity": "fac31906f44cc1d59877772205e72a4c93e0151cbd2a5dd7a17e9ba5d5ec8e19",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-fsc-v1-r-6-01:s1",
+          "ec-fsc-v1-r-6-01:s2",
+          "ec-fsc-v1-r-6-01:s3"
+        ]
+      },
+      "partition": "REPLAY_RETENTION",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-fsc-v1-r-6-01",
+        "packet_identity": "f0e512f8cbc42b7609fcafbb2014cac5784a8c92665893604ecbc704f9d20d2a",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 102,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "400",
+                "411"
+              ],
+              "procedural": [
+                "propus"
+              ]
+            },
+            "position": 0,
+            "sha256": "c33cd5426612c135464d5c8d75eccd86e7938a1f8465c2a36d1a42efaf13da5d",
+            "source_id": "propunere",
+            "span_id": "ec-fsc-v1-r-6-01:s1",
+            "text": "Comisia a propus suspendarea autorizației Entitatea Incomplete_Procedural_Status 400 pentru 411 zile."
+          },
+          {
+            "byte_end": 49,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": [
+                "propunere",
+                "vot"
+              ]
+            },
+            "position": 1,
+            "sha256": "641544f29dc4edf9768c26caa6dafd2d058c6e33066df8953ed191be16e42d5c",
+            "source_id": "vot",
+            "span_id": "ec-fsc-v1-r-6-01:s2",
+            "text": "Propunerea urmează să fie votată luni de plen."
+          },
+          {
+            "byte_end": 82,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": [
+                "vot"
+              ]
+            },
+            "position": 2,
+            "sha256": "511aee075c20b80bca0e32709529d8d0385cb4acdf70e0765508f2396a348c7b",
+            "source_id": "efect",
+            "span_id": "ec-fsc-v1-r-6-01:s3",
+            "text": "Până la vot nu există o decizie finală, iar autorizația rămâne în vigoare."
+          }
+        ]
+      }
+    },
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-fsc-v1-r-6-02:s1",
+          "ec-fsc-v1-r-6-02:s2",
+          "ec-fsc-v1-r-6-02:s3"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-fsc-v1-r-6-02:s1",
+          "ec-fsc-v1-r-6-02:s2",
+          "ec-fsc-v1-r-6-02:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-fsc-v1-r-6-02:s1",
+          "ec-fsc-v1-r-6-02:s2",
+          "ec-fsc-v1-r-6-02:s3"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-fsc-v1-r-6-02:s1",
+          "ec-fsc-v1-r-6-02:s2",
+          "ec-fsc-v1-r-6-02:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-fsc-v1-r-6-02",
+      "failure_class": "INCOMPLETE_PROCEDURAL_STATUS",
+      "fixture_identity": "227114c86f224d22af248e508f3e2715a6031c301087358ba502453ac95321ae",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-fsc-v1-r-6-02:s1",
+          "ec-fsc-v1-r-6-02:s2",
+          "ec-fsc-v1-r-6-02:s3"
+        ]
+      },
+      "partition": "REPLAY_RETENTION",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-fsc-v1-r-6-02",
+        "packet_identity": "fa14f50dad81dee45e72112f8b57fd3d4eebe91160601cdc6e0bf87482029644",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 102,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "401",
+                "412"
+              ],
+              "procedural": [
+                "propus"
+              ]
+            },
+            "position": 0,
+            "sha256": "391f860b9dc8175fa604cc3d0751067422204fec9a682c5866e84f13ed2aeb78",
+            "source_id": "propunere",
+            "span_id": "ec-fsc-v1-r-6-02:s1",
+            "text": "Comisia a propus suspendarea autorizației Entitatea Incomplete_Procedural_Status 401 pentru 412 zile."
+          },
+          {
+            "byte_end": 49,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": [
+                "propunere",
+                "vot"
+              ]
+            },
+            "position": 1,
+            "sha256": "641544f29dc4edf9768c26caa6dafd2d058c6e33066df8953ed191be16e42d5c",
+            "source_id": "vot",
+            "span_id": "ec-fsc-v1-r-6-02:s2",
+            "text": "Propunerea urmează să fie votată luni de plen."
+          },
+          {
+            "byte_end": 82,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": [
+                "vot"
+              ]
+            },
+            "position": 2,
+            "sha256": "511aee075c20b80bca0e32709529d8d0385cb4acdf70e0765508f2396a348c7b",
+            "source_id": "efect",
+            "span_id": "ec-fsc-v1-r-6-02:s3",
+            "text": "Până la vot nu există o decizie finală, iar autorizația rămâne în vigoare."
+          }
+        ]
+      }
+    },
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-fsc-v1-r-6-03:s1",
+          "ec-fsc-v1-r-6-03:s2",
+          "ec-fsc-v1-r-6-03:s3"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-fsc-v1-r-6-03:s1",
+          "ec-fsc-v1-r-6-03:s2",
+          "ec-fsc-v1-r-6-03:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-fsc-v1-r-6-03:s1",
+          "ec-fsc-v1-r-6-03:s2",
+          "ec-fsc-v1-r-6-03:s3"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-fsc-v1-r-6-03:s1",
+          "ec-fsc-v1-r-6-03:s2",
+          "ec-fsc-v1-r-6-03:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-fsc-v1-r-6-03",
+      "failure_class": "INCOMPLETE_PROCEDURAL_STATUS",
+      "fixture_identity": "b52b258bcd106bb9e47e9fa4cbe57d130ec85c4189799e9b6890fa8189e02883",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-fsc-v1-r-6-03:s1",
+          "ec-fsc-v1-r-6-03:s2",
+          "ec-fsc-v1-r-6-03:s3"
+        ]
+      },
+      "partition": "REPLAY_RETENTION",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-fsc-v1-r-6-03",
+        "packet_identity": "14357ecca4f57ae5d405043fdd8b4df1bc37fa568c328f038dcc7c4392a15a32",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 102,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "402",
+                "413"
+              ],
+              "procedural": [
+                "propus"
+              ]
+            },
+            "position": 0,
+            "sha256": "dd9df6ea4483860fe78240bbcbfff94b200fff53f22d3f9fadc3e3223c23bb4e",
+            "source_id": "propunere",
+            "span_id": "ec-fsc-v1-r-6-03:s1",
+            "text": "Comisia a propus suspendarea autorizației Entitatea Incomplete_Procedural_Status 402 pentru 413 zile."
+          },
+          {
+            "byte_end": 49,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": [
+                "propunere",
+                "vot"
+              ]
+            },
+            "position": 1,
+            "sha256": "641544f29dc4edf9768c26caa6dafd2d058c6e33066df8953ed191be16e42d5c",
+            "source_id": "vot",
+            "span_id": "ec-fsc-v1-r-6-03:s2",
+            "text": "Propunerea urmează să fie votată luni de plen."
+          },
+          {
+            "byte_end": 82,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": [
+                "vot"
+              ]
+            },
+            "position": 2,
+            "sha256": "511aee075c20b80bca0e32709529d8d0385cb4acdf70e0765508f2396a348c7b",
+            "source_id": "efect",
+            "span_id": "ec-fsc-v1-r-6-03:s3",
+            "text": "Până la vot nu există o decizie finală, iar autorizația rămâne în vigoare."
+          }
+        ]
+      }
+    },
+    {
+      "arms": {
+        "ORACLE_UPPER_BOUND": [
+          "ec-fsc-v1-r-6-04:s1",
+          "ec-fsc-v1-r-6-04:s2",
+          "ec-fsc-v1-r-6-04:s3"
+        ],
+        "V0_FULL_SOURCE": [
+          "ec-fsc-v1-r-6-04:s1",
+          "ec-fsc-v1-r-6-04:s2",
+          "ec-fsc-v1-r-6-04:s3"
+        ],
+        "V1_DETERMINISTIC_EVIDENCE": [
+          "ec-fsc-v1-r-6-04:s1",
+          "ec-fsc-v1-r-6-04:s2",
+          "ec-fsc-v1-r-6-04:s3"
+        ],
+        "V2_DETERMINISTIC_PLUS_BOUNDED_SELECTOR": [
+          "ec-fsc-v1-r-6-04:s1",
+          "ec-fsc-v1-r-6-04:s2",
+          "ec-fsc-v1-r-6-04:s3"
+        ]
+      },
+      "bounded_selector_fixture": {
+        "add_span_ids": [],
+        "free_text_facts_allowed": false,
+        "operation": "ADD_EXISTING_SPAN_IDS_ONLY",
+        "oracle_measurement_proxy": true
+      },
+      "case_id": "ec-fsc-v1-r-6-04",
+      "failure_class": "INCOMPLETE_PROCEDURAL_STATUS",
+      "fixture_identity": "775bf5097b990b99d67bed1d1363229497c6310d9e507c27fb9bc57bf0b6208b",
+      "measurement_only": {
+        "oracle_required_span_ids": [
+          "ec-fsc-v1-r-6-04:s1",
+          "ec-fsc-v1-r-6-04:s2",
+          "ec-fsc-v1-r-6-04:s3"
+        ]
+      },
+      "partition": "REPLAY_RETENTION",
+      "source_packet": {
+        "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+        "event_id": "ec-fsc-v1-r-6-04",
+        "packet_identity": "8d18735c271894ec2e3c1f2eaa53ea54d50d70f67fab5998338d46cc237e73af",
+        "schema": "editor-vnext-source-packet",
+        "schema_version": 1,
+        "spans": [
+          {
+            "byte_end": 102,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [
+                "403",
+                "414"
+              ],
+              "procedural": [
+                "propus"
+              ]
+            },
+            "position": 0,
+            "sha256": "0dd6c28ebe503ac3820d5dc5f5ba08cd969261a0e26dd045f0ace440db167321",
+            "source_id": "propunere",
+            "span_id": "ec-fsc-v1-r-6-04:s1",
+            "text": "Comisia a propus suspendarea autorizației Entitatea Incomplete_Procedural_Status 403 pentru 414 zile."
+          },
+          {
+            "byte_end": 49,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": [
+                "propunere",
+                "vot"
+              ]
+            },
+            "position": 1,
+            "sha256": "641544f29dc4edf9768c26caa6dafd2d058c6e33066df8953ed191be16e42d5c",
+            "source_id": "vot",
+            "span_id": "ec-fsc-v1-r-6-04:s2",
+            "text": "Propunerea urmează să fie votată luni de plen."
+          },
+          {
+            "byte_end": 82,
+            "byte_start": 0,
+            "critical_literals": {
+              "attribution_modality": [],
+              "numbers_dates_amounts": [],
+              "procedural": [
+                "vot"
+              ]
+            },
+            "position": 2,
+            "sha256": "511aee075c20b80bca0e32709529d8d0385cb4acdf70e0765508f2396a348c7b",
+            "source_id": "efect",
+            "span_id": "ec-fsc-v1-r-6-04:s3",
+            "text": "Până la vot nu există o decizie finală, iar autorizația rămâne în vigoare."
+          }
+        ]
+      }
+    }
+  ],
+  "metrics": [
+    "FACTUAL_SAFETY",
+    "FACTUAL_SUFFICIENCY",
+    "SPAN_RECALL",
+    "SELECTOR_RATE",
+    "FALLBACK_RATE",
+    "CONTEXT_BYTES",
+    "FUNCTIONAL_ROMANIAN",
+    "OPERATIONAL_COMPONENT_COUNT"
+  ],
+  "product_pipeline": [
+    "SCOUT",
+    "FACTUAL_AUTHORITY",
+    "EDITOR",
+    "VOICE",
+    "CHIEF_EDITOR",
+    "FINAL"
+  ],
+  "r2_reference": {
+    "adapter_identity": "c680d686f0b139e618d99fab235c62267caa9482df0efbccb44cb2c58c124f02",
+    "checkpoint_identity": "96e10b85fe30c4be43c2cc1a0b906f04ea4c476cc8d422b4ad26e9758b85b2be",
+    "role": "FROZEN_REFERENCE_REALIZER_NOT_LOADED",
+    "tokenizer_identity": "d5f6046775b112f0e2d456ee9dba450684ab964fe5c4e231599bdc6773028135"
+  },
+  "schema": "editor-vnext-minimal-source-authority-diagnostic",
+  "schema_version": 1,
+  "selector_contract": {
+    "free_text_facts": false,
+    "input": "SOURCE_PACKET_AND_DETERMINISTIC_SPAN_FEATURES",
+    "may_change_source_bytes": false,
+    "output": "EXISTING_SPAN_IDS_OR_ABSTAIN",
+    "unresolved_conflicts_must_be_flagged": true
+  },
+  "status": "DESIGN_FIXTURE_ONLY",
+  "terminal_rules": {
+    "CONTINUE": [
+      "ZERO_ACCEPTED_DRIFT",
+      "V2_PRESERVES_ORACLE_SUFFICIENCY",
+      "V2_REDUCES_CONTEXT_WITH_STABLE_SAFETY",
+      "SELECTOR_OUTPUT_IS_ID_ONLY"
+    ],
+    "REVISE": [
+      "V1_REQUIRED_SPAN_RECALL_BELOW_90_PERCENT",
+      "V2_SELECTOR_RATE_ABOVE_50_PERCENT",
+      "FALLBACK_RATE_ABOVE_25_PERCENT"
+    ],
+    "STOP": [
+      "ANY_UNBOUND_ACCEPTED_FACT",
+      "ANY_CRITICAL_LITERAL_MUTATION",
+      "V2_CANNOT_ABSTAIN",
+      "NO_SAFETY_OR_SUFFICIENCY_ADVANTAGE_OVER_V0"
+    ],
+    "precedence": "STOP_THEN_REVISE_THEN_CONTINUE"
+  },
+  "verifier": {
+    "checks": [
+      "PACKET_IDENTITY",
+      "CITATIONS_EXIST",
+      "NUMBER_DATE_AMOUNT_IN_CITED_SPANS",
+      "REQUIRED_MODALITY_AND_PROCEDURE",
+      "NO_VOICE_CONTENT"
+    ],
+    "failure": "DISCARD_DRAFT_THEN_EXTRACTIVE_FALLBACK_OR_ABSTAIN"
+  }
+}
