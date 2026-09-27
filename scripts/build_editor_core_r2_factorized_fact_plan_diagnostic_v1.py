@@ -9,7 +9,7 @@ def canonical(v): return json.dumps(v,ensure_ascii=False,allow_nan=False,sort_ke
 def sha(b): return hashlib.sha256(b).hexdigest()
 def identified(v,key): v=dict(v); v[key]=sha(canonical(v)); return v
 def rows(p): return [json.loads(x) for x in p.read_text(encoding='utf-8').splitlines()]
-def write_json(name,v): (ART/name).write_text(json.dumps(v,ensure_ascii=False,sort_keys=True,indent=2)+'\n',encoding='utf-8')
+def write_json(name,v): (ART/name).write_bytes((json.dumps(v,ensure_ascii=False,sort_keys=True,indent=2)+'\n').encode())
 def write_jsonl(name,v): (ART/name).write_bytes(b''.join(canonical(x)+b'\n' for x in v))
 
 dev_req=rows(ART/'editor-core-factual-setup-benchmark-v1-requests.jsonl')
