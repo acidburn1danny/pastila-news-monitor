@@ -1,0 +1,35 @@
+{
+  "candidate_sha256": "1ad6c1e6708df6b7c795afece539ae78118949d474f361fa75513ba2342fd708",
+  "contract_identity": "1315cae400811765d61ee32171ae04e181221af512183dcc476f348113f3df5f",
+  "dependency_lock_identity": "58b22d87a50f9eb28592043e1fdeb1ba6eb841b2e103b65f30ebd710785731ca",
+  "fixture_packet_identity": "0d2b3725e97fad53a9d8ab002829e32f46ad68f6201c506bd10fe7a93c2e7221",
+  "global_vnext_migration_pass": false,
+  "inference": {
+    "model_loaded": true,
+    "optimizer_created": false,
+    "performed": true,
+    "training_performed": false
+  },
+  "legacy_dependency_count": 0,
+  "platform_tree_identity": "ef5318bfa36af16350ec96d16ef84eb8b55c527894c3c5045f08d4b9ba1bc498",
+  "product_lock_identity": "de0bb55a9d2d3491c2bd2ae19ea3f96ea1e13f7a81bf1163d07b2897027e1381",
+  "product_root": "/root/pastila-vnext/v1",
+  "production_acceptance_authority": false,
+  "r2_lock_identity": "53fafbc03f70c8c32357645a6a428260f1bdfbd104edbe1c4aa825e95c83a10f",
+  "receipt_identity": "64feb0e0edcf03accf4a93abc68dcaade907cd6ed39511af5594e34f6bd241d8",
+  "safety_boundary": {
+    "action": "SOURCE_PRESERVING_FALLBACK",
+    "fallback_text_sha256": "89a50090642a7e7099f2509c1b4c0ef00c02116d7c79d7f892cd0d60596a339f",
+    "production_mode_enabled": false
+  },
+  "schema": "editor-vnext-minimal-v0-runtime-closure",
+  "schema_version": 1,
+  "shadow_verifier": {
+    "affected_output": false,
+    "authoritative": false,
+    "status": "NOT_CONFIGURED_NON_BLOCKING"
+  },
+  "single_persistent_product_root": true,
+  "status": "PASS_V0_DEVELOPMENT_RUNTIME",
+  "structural_output_valid": true
+}

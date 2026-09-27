@@ -1,0 +1,60 @@
+{
+  "completeness": "FIXTURE_EXCERPTS_COMPLETE_FOR_CASE",
+  "event_id": "ec-editor-setup-v1-01",
+  "packet_identity": "0d2b3725e97fad53a9d8ab002829e32f46ad68f6201c506bd10fe7a93c2e7221",
+  "schema": "editor-vnext-source-packet",
+  "schema_version": 1,
+  "spans": [
+    {
+      "byte_end": 93,
+      "byte_start": 0,
+      "critical_literals": {
+        "attribution_modality": [],
+        "numbers_dates_amounts": [
+          "127"
+        ],
+        "procedural": [
+          "aprobat"
+        ]
+      },
+      "position": 0,
+      "sha256": "feadee24ad0e6a61be317e8e748c2c28804eac28324bc774f12396bee837d812",
+      "source_id": "consiliu",
+      "span_id": "ec-editor-setup-v1-01:s1",
+      "text": "Consiliul local din Brașov a aprobat 127 de milioane de lei pentru noul centru medical Arin."
+    },
+    {
+      "byte_end": 121,
+      "byte_start": 0,
+      "critical_literals": {
+        "attribution_modality": [],
+        "numbers_dates_amounts": [],
+        "procedural": [
+          "aprobat",
+          "semnat"
+        ]
+      },
+      "position": 1,
+      "sha256": "a351d3329f3040f2a535b2251eaf680168a59cf424973eb05b580ccc455270bb",
+      "source_id": "minister",
+      "span_id": "ec-editor-setup-v1-01:s2",
+      "text": "Ministerul a precizat că finanțarea centrului Arin este aprobată, dar contractul de execuție nu a fost încă semnat."
+    },
+    {
+      "byte_end": 101,
+      "byte_start": 0,
+      "critical_literals": {
+        "attribution_modality": [],
+        "numbers_dates_amounts": [
+          "19"
+        ],
+        "procedural": []
+      },
+      "position": 2,
+      "sha256": "1b12cfd45de793e75c6e766fafd3d15bcb95bac0457ae38796283022e11767f7",
+      "source_id": "sport",
+      "span_id": "ec-editor-setup-v1-01:s3",
+      "text": "În aceeași ședință au fost alocate 19 milioane de lei pentru modernizarea stadionului municipal."
+    }
+  ]
+}

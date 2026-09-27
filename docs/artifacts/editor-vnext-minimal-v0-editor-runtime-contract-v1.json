@@ -1,0 +1,40 @@
+{
+  "active_integration": false,
+  "contract_identity": "1315cae400811765d61ee32171ae04e181221af512183dcc476f348113f3df5f",
+  "decoding": {
+    "do_sample": false,
+    "max_new_tokens": 256,
+    "num_beams": 1
+  },
+  "fallback": {
+    "maximum_complete_source_sentences": 3,
+    "mode": "SOURCE_PRESERVING_OR_ABSTAIN",
+    "production_acceptance_authority": "TEMPORARY_SAFETY_BOUNDARY_ONLY"
+  },
+  "prompt": {
+    "system": "Ești EDITOR factual. SourcePacket este singura autoritate factuală. Produce un setup factual sigur, concis și util pentru VOICE. Nu introduce comentariu, sarcasm sau informații noi.",
+    "user_template": "Transformă exclusiv sursele de mai jos într-un setup factual, uzual 2–3 propoziții și mai lung numai când factualitatea o cere. Păstrează actorii, cifrele, atribuirea, modalitatea și statutul procedural. Returnează numai JSON: {\"case_id\":\"{event_id}\",\"text\":\"...\"}.\nSURSE:\n{sources}"
+  },
+  "schema": "editor-vnext-minimal-v0-runtime-contract",
+  "schema_version": 1,
+  "shadow": {
+    "authoritative": false,
+    "may_block_startup": false,
+    "may_change_output": false,
+    "may_route": false,
+    "optional": true
+  },
+  "source_packet": {
+    "authority": "PRIMARY_FACTUAL_AUTHORITY",
+    "schema": "editor-vnext-source-packet",
+    "schema_version": 1
+  },
+  "structural_output": {
+    "additional_keys": false,
+    "duplicate_keys": false,
+    "required_keys": [
+      "case_id",
+      "text"
+    ]
+  }
+}

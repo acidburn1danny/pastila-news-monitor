@@ -1,0 +1,50 @@
+{
+  "contract_identity": "1315cae400811765d61ee32171ae04e181221af512183dcc476f348113f3df5f",
+  "ephemeral": [
+    "CANDIDATES",
+    "TERMINAL_RECEIPTS",
+    "SHADOW_RECEIPTS",
+    "CACHES",
+    "INTERMEDIATES"
+  ],
+  "files": [
+    {
+      "path": "runtime.py",
+      "sha256": "dbc81db59c924aa55840c880ebfe60807ba783d6653f3f8a881c20f36bb5a640",
+      "size": 12342
+    },
+    {
+      "path": "contract.json",
+      "sha256": "a57bd50173109b6bdb9512c97ad58b134329044c66aa6adc8fe457f6edbc9481",
+      "size": 1469
+    },
+    {
+      "path": "platform-requirements.json",
+      "sha256": "5e1abf624112641d0252ec73b4c1925482d39d92d514ffc9403564fae6cb2c85",
+      "size": 653
+    }
+  ],
+  "lock_identity": "58b22d87a50f9eb28592043e1fdeb1ba6eb841b2e103b65f30ebd710785731ca",
+  "persistent": [
+    "RUNTIME",
+    "CONTRACT",
+    "DEPENDENCY_LOCK",
+    "PLATFORM_REQUIREMENTS"
+  ],
+  "platform_component_path": "platform/python-ml-v1",
+  "platform_requirements_sha256": "5e1abf624112641d0252ec73b4c1925482d39d92d514ffc9403564fae6cb2c85",
+  "platform_tree_identity": "ef5318bfa36af16350ec96d16ef84eb8b55c527894c3c5045f08d4b9ba1bc498",
+  "product_root": "/root/pastila-vnext/v1",
+  "r2_component_path": "components/r2-reference-v1",
+  "r2_lock_identity": "53fafbc03f70c8c32357645a6a428260f1bdfbd104edbe1c4aa825e95c83a10f",
+  "runtime_path": "runtime/editor-v0-v1",
+  "schema": "editor-vnext-minimal-v0-runtime-dependency-lock",
+  "schema_version": 1,
+  "shadow_verifier": {
+    "authority": "NON_AUTHORITATIVE_OPTIONAL",
+    "factual_authority_dependency": false,
+    "may_route": false,
+    "startup_dependency": false
+  },
+  "status": "MATERIALIZED_SINGLE_PRODUCT_ROOT"
+}

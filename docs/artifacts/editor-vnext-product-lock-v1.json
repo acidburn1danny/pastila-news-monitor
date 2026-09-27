@@ -1,0 +1,65 @@
+{
+  "cleanroom_roots_are_dependencies": false,
+  "components": {
+    "EDITOR_V0_RUNTIME": {
+      "lock_identity": "58b22d87a50f9eb28592043e1fdeb1ba6eb841b2e103b65f30ebd710785731ca",
+      "production_acceptance_authority": false,
+      "status": "PASS_DEVELOPMENT_RUNTIME"
+    },
+    "PYTHON_ML_PLATFORM": {
+      "bytes": 5031019544,
+      "declared_symlinks": [
+        [
+          "bin/python",
+          "python3"
+        ],
+        [
+          "bin/python3",
+          "/usr/bin/python3"
+        ],
+        [
+          "bin/python3.12",
+          "python3"
+        ],
+        [
+          "lib64",
+          "lib"
+        ]
+      ],
+      "files_and_links": 21453,
+      "host_platform_dependencies": [
+        "/usr/bin/python3",
+        "NVIDIA_DRIVER",
+        "CUDA_CAPABLE_GPU"
+      ],
+      "status": "PASS",
+      "tree_identity": "ef5318bfa36af16350ec96d16ef84eb8b55c527894c3c5045f08d4b9ba1bc498"
+    },
+    "R2_REFERENCE": {
+      "lock_identity": "53fafbc03f70c8c32357645a6a428260f1bdfbd104edbe1c4aa825e95c83a10f",
+      "status": "PASS"
+    }
+  },
+  "global_vnext_migration_pass": false,
+  "layout": {
+    "editor_v0_runtime": "runtime/editor-v0-v1",
+    "python_ml_platform": "platform/python-ml-v1",
+    "r2": "components/r2-reference-v1"
+  },
+  "legacy_dependency_count": 0,
+  "missing_for_global_migration_pass": [
+    "SCOUT",
+    "SOURCEPACKET_ORCHESTRATION",
+    "VERIFIER_PROMOTION_OR_EQUIVALENT_ACCEPTANCE_BOUNDARY",
+    "VOICE",
+    "CHIEF_EDITOR",
+    "FINAL_ORCHESTRATION",
+    "FULL_ACCEPTANCE_E2E"
+  ],
+  "product_lock_identity": "de0bb55a9d2d3491c2bd2ae19ea3f96ea1e13f7a81bf1163d07b2897027e1381",
+  "product_root": "/root/pastila-vnext/v1",
+  "schema": "editor-vnext-product-lock",
+  "schema_version": 1,
+  "single_persistent_product_root": true,
+  "status": "PARTIAL_PRODUCT_CLOSURE"
+}
