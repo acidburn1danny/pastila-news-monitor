@@ -1,0 +1,25 @@
+{
+  "schema": "editor-vnext-r2-platform-requirements",
+  "schema_version": 1,
+  "python": "3.12.3",
+  "packages": {
+    "accelerate": "1.14.0",
+    "bitsandbytes": "0.50.1",
+    "peft": "0.20.0",
+    "torch": "2.13.0+cu130",
+    "transformers": "5.15.0"
+  },
+  "cuda_runtime": "13.0",
+  "gpu_minimum": "CUDA-capable GPU with sufficient memory for NF4 load",
+  "observed_platform": {
+    "gpu": "NVIDIA GeForce RTX 5080",
+    "driver": "616.92",
+    "memory_mib": 16303
+  },
+  "ownership": {
+    "python_packages": "VNEXT_MANAGED_RUNTIME",
+    "python_interpreter": "HOST_PLATFORM",
+    "nvidia_driver": "HOST_PLATFORM",
+    "gpu": "HOST_PLATFORM"
+  }
+}
