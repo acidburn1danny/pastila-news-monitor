@@ -1,0 +1,26 @@
+{
+  "applies_to": [
+    "C1_QWEN3_8B",
+    "C2_QWEN25_7B"
+  ],
+  "backend": "bitsandbytes",
+  "bits": 4,
+  "bnb_4bit_compute_dtype": "bfloat16",
+  "bnb_4bit_quant_type": "nf4",
+  "bnb_4bit_use_double_quant": true,
+  "device_map": "cuda:0",
+  "load_in_4bit": true,
+  "maximum_peak_vram_gib": 16,
+  "persist_quantized_weights": false,
+  "quantization_identity": "507fed5471301b2b9f23f269df6482b5e4960d24f7bfd7826013f1634061106e",
+  "reference_or_higher_precision_confirmation_required_before_pivot": true,
+  "runtime_versions": {
+    "accelerate": "1.14.0",
+    "bitsandbytes": "0.50.1",
+    "torch": "2.13.0+cu130",
+    "transformers": "5.15.0"
+  },
+  "same_recipe_all_challengers": true,
+  "schema": "editor-text-realizer-quantization-recipe",
+  "schema_version": 1
+}

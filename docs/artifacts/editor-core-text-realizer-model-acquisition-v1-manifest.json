@@ -1,0 +1,19 @@
+{
+  "authority_identity": "52346e1d315ab7a6245a3c81a24ce8518355b5bd586636cea6a36253d3c3536f",
+  "files": {
+    "editor-core-text-realizer-model-acquisition-v1-authority.json": "3edb963f4f2bce8441d8f6a1b82ffb687526a92bd74ff88739055fb151be0e6f",
+    "editor-core-text-realizer-model-acquisition-v1-quantization.json": "75a5846a1aefeb1b278168cbefed93db5d2bf8d5c16ae4d92dccee1c9e34716e",
+    "editor-core-text-realizer-model-acquisition-v1-snapshots.json": "336ebfef7c0f8c56fd2b57c02709fc622bb39e1cf8ce6645136356df5ffe200a"
+  },
+  "inference_performed": false,
+  "model_loaded": false,
+  "models_downloaded": false,
+  "pack_identity": "7b17ab2d71ac26287c89eda94773a83d6b06abaea0746d5da3474c8f5ac2216e",
+  "quantization_performed": false,
+  "schema": "editor-text-realizer-model-acquisition-pack",
+  "schema_version": 1,
+  "source_files": {
+    "editor-core-text-realizer-base-bakeoff-v1-manifest.json": "f51b154d3709676cba13b0bedafaf59369067c9cb0da1279f489504cd396518b",
+    "editor-core-text-realizer-base-bakeoff-v1-protocol.json": "afea9c2068bdd18b63bbd4e77e714bbd9a0d03ffbba355eac8dd2ae0cbf8f63b"
+  }
+}

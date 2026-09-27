@@ -1,0 +1,205 @@
+{
+  "aggregate_bytes": 31640268536,
+  "metadata_source": "OFFICIAL_HUGGING_FACE_API_AND_GIT_HEAD",
+  "models": [
+    {
+      "candidate_id": "C1_QWEN3_8B",
+      "content_addressed_root": "/root/pf9-editor-model-store/sha256/be259728abcc2c864bdf4d035267a8fcf8ccc57e4e277f8bd5d0934f1963fbc7",
+      "files": [
+        {
+          "git_oid": "52373fe24473b1aa44333d318f578ae6bf04b49b",
+          "path": ".gitattributes",
+          "sha256": null,
+          "size": 1570
+        },
+        {
+          "git_oid": "6634c8cc3133b3848ec74b9f275acaaa1ea618ab",
+          "path": "LICENSE",
+          "sha256": null,
+          "size": 11343
+        },
+        {
+          "git_oid": "ecc3ebd0849aa08d9484bd911dddfd5261b10d30",
+          "path": "README.md",
+          "sha256": null,
+          "size": 16660
+        },
+        {
+          "git_oid": "d46195ac87f837ad233d02b2f80f148bf7c005e0",
+          "path": "config.json",
+          "sha256": null,
+          "size": 728
+        },
+        {
+          "git_oid": "20a8a9156fc8c3f25295ca067f61fdf120d517c5",
+          "path": "generation_config.json",
+          "sha256": null,
+          "size": 239
+        },
+        {
+          "git_oid": "31349551d90c7606f325fe0f11bbb8bd5fa0d7c7",
+          "path": "merges.txt",
+          "sha256": null,
+          "size": 1671853
+        },
+        {
+          "git_oid": "8d46cf470aff053c27fd6d956d4d69af9460bd2a",
+          "path": "model-00001-of-00005.safetensors",
+          "sha256": "31d6a825ae35f11fb85b195b4c42c146c051e446433125a215336abdf95cbf5f",
+          "size": 3996250744
+        },
+        {
+          "git_oid": "e726a2bcb3b100cba7ae899689cc029d8a08b20c",
+          "path": "model-00002-of-00005.safetensors",
+          "sha256": "5991236cea6fe21f3d43cab0f0e84448734fbbe0789816202989f2ddc9d18282",
+          "size": 3993160032
+        },
+        {
+          "git_oid": "c94db38adbcb837246c797986365b8e4603ef3ac",
+          "path": "model-00003-of-00005.safetensors",
+          "sha256": "c5185c4794be2d8a9784d5753c9922db38df478ce11f9ed0b415b7304d896836",
+          "size": 3959604768
+        },
+        {
+          "git_oid": "a6c92dd09e29e1f72271e087f89ee033b321101c",
+          "path": "model-00004-of-00005.safetensors",
+          "sha256": "b5ee7de71fbf17db3d5704e0c8f2bc7d005ca9e1d7ca2aeb19827b0cfcaa917a",
+          "size": 3187841392
+        },
+        {
+          "git_oid": "7bbb0cbc623d70925a3a82b301a99cb52ac9ed5b",
+          "path": "model-00005-of-00005.safetensors",
+          "sha256": "20c2d6366ab85c90786ccdd829cd2b9e7d30ef3b2ebbb998280e7e4014b542ff",
+          "size": 1244659840
+        },
+        {
+          "git_oid": "2b85c00f1b118961cd7a477e2bba0fe197a4ce1a",
+          "path": "model.safetensors.index.json",
+          "sha256": null,
+          "size": 32878
+        },
+        {
+          "git_oid": "cd71f61a15a522601badb3dc960d800d9cb3766c",
+          "path": "tokenizer.json",
+          "sha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+          "size": 11422654
+        },
+        {
+          "git_oid": "417d038a63fa3de29cfde265caedae14d1a58d92",
+          "path": "tokenizer_config.json",
+          "sha256": null,
+          "size": 9732
+        },
+        {
+          "git_oid": "4783fe10ac3adce15ac8f358ef5462739852c569",
+          "path": "vocab.json",
+          "sha256": null,
+          "size": 2776833
+        }
+      ],
+      "license": "apache-2.0",
+      "repo_id": "Qwen/Qwen3-8B",
+      "revision": "b968826d9c46dd6066d109eabc6255188de91218",
+      "snapshot_identity": "be259728abcc2c864bdf4d035267a8fcf8ccc57e4e277f8bd5d0934f1963fbc7",
+      "total_bytes": 16397461266
+    },
+    {
+      "candidate_id": "C2_QWEN25_7B",
+      "content_addressed_root": "/root/pf9-editor-model-store/sha256/5fe636f259ab71443c94837b3c19420e0b796c3d9edcd371332b8ff88577e8fd",
+      "files": [
+        {
+          "git_oid": "a6344aac8c09253b3b630fb776ae94478aa0275b",
+          "path": ".gitattributes",
+          "sha256": null,
+          "size": 1519
+        },
+        {
+          "git_oid": "6634c8cc3133b3848ec74b9f275acaaa1ea618ab",
+          "path": "LICENSE",
+          "sha256": null,
+          "size": 11343
+        },
+        {
+          "git_oid": "4e9536cebaeb5cac673952ad5d0eeae469900f81",
+          "path": "README.md",
+          "sha256": null,
+          "size": 6240
+        },
+        {
+          "git_oid": "0178295f88afc3c7f279ed284f961f8c1be00654",
+          "path": "config.json",
+          "sha256": null,
+          "size": 663
+        },
+        {
+          "git_oid": "0eb3c536657dcd12626e09eca4b6198c0cbcde1e",
+          "path": "generation_config.json",
+          "sha256": null,
+          "size": 243
+        },
+        {
+          "git_oid": "20024bfe7c83998e9aeaf98a0cd6a2ce6306c2f0",
+          "path": "merges.txt",
+          "sha256": null,
+          "size": 1671839
+        },
+        {
+          "git_oid": "5e68dcea92e3696ddd4e1d44d9b420a31fe5622c",
+          "path": "model-00001-of-00004.safetensors",
+          "sha256": "a1333e6293854747c481288ea83b348226af178dd565c49b6f9495ba1966aba7",
+          "size": 3945441440
+        },
+        {
+          "git_oid": "e07e23d4595678a717aaad11eef9bc22056c284a",
+          "path": "model-00002-of-00004.safetensors",
+          "sha256": "f5d25a2772cb825164a2a2c0fb6d51a87e282abf21e4dd75bc5cfb3cd0ea6185",
+          "size": 3864726352
+        },
+        {
+          "git_oid": "114c07bb791bac8d2b32109b7729ef2f9a489dfe",
+          "path": "model-00003-of-00004.safetensors",
+          "sha256": "8efdec4c1bc12317ae1a38dc42b595ce777738a64deea3fcb8a0a91381bcdfd5",
+          "size": 3864726424
+        },
+        {
+          "git_oid": "f4841c787f178938010ce784a3ec99e5568524b5",
+          "path": "model-00004-of-00004.safetensors",
+          "sha256": "1a72d403cdf0c1ec3cb7f289f17b394a01e64394c2e9b3c0f94dbce3faf879bd",
+          "size": 3556377672
+        },
+        {
+          "git_oid": "14d037fdda5a1311dcc0275003a7a370d84114e6",
+          "path": "model.safetensors.index.json",
+          "sha256": null,
+          "size": 27752
+        },
+        {
+          "git_oid": "443909a61d429dff23010e5bddd28ff530edda00",
+          "path": "tokenizer.json",
+          "sha256": null,
+          "size": 7031645
+        },
+        {
+          "git_oid": "07bfe0640cb5a0037f9322287fbfc682806cf672",
+          "path": "tokenizer_config.json",
+          "sha256": null,
+          "size": 7305
+        },
+        {
+          "git_oid": "4783fe10ac3adce15ac8f358ef5462739852c569",
+          "path": "vocab.json",
+          "sha256": null,
+          "size": 2776833
+        }
+      ],
+      "license": "apache-2.0",
+      "repo_id": "Qwen/Qwen2.5-7B-Instruct",
+      "revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+      "snapshot_identity": "5fe636f259ab71443c94837b3c19420e0b796c3d9edcd371332b8ff88577e8fd",
+      "total_bytes": 15242807270
+    }
+  ],
+  "schema": "editor-text-realizer-model-snapshots",
+  "schema_version": 1,
+  "snapshots_identity": "644cb9ae380eabbf7700f4556bed35c7757543649c95276d4a1f700ac6a99423"
+}
