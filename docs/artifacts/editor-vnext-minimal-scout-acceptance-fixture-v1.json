@@ -1,0 +1,35 @@
+{
+  "captured_at": "2026-09-28T10:00:00Z",
+  "feeds": [
+    {
+      "source": {
+        "categories": [
+          "Social"
+        ],
+        "enabled": true,
+        "id": "fixture_public",
+        "max_articles_per_poll": 10,
+        "name": "Fixture Public",
+        "url": "https://fixture.invalid/public.xml"
+      },
+      "xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><rss version=\"2.0\"><channel><title>Fixture Public</title><item><title>Consiliul Brașov a aprobat 127 milioane de lei pentru centrul Arin</title><link>https://fixture.invalid/public/arin</link><description>Consiliul local din Brașov a aprobat 127 de milioane de lei pentru centrul medical Arin.</description><pubDate>Sun, 28 Sep 2026 08:00:00 GMT</pubDate></item><item><title>O expoziție de fotografie se deschide la Sibiu</title><link>https://fixture.invalid/public/expozitie</link><description>Expoziția se deschide luni la Sibiu.</description></item></channel></rss>"
+    },
+    {
+      "source": {
+        "categories": [
+          "Social"
+        ],
+        "enabled": true,
+        "id": "fixture_ministry",
+        "max_articles_per_poll": 10,
+        "name": "Fixture Ministry",
+        "url": "https://fixture.invalid/ministry.xml"
+      },
+      "xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><feed xmlns=\"http://www.w3.org/2005/Atom\"><title>Fixture Ministry</title><entry><title>Centrul Arin: Consiliul Brașov aprobă finanțarea de 127 milioane de lei</title><link href=\"https://fixture.invalid/ministry/arin\"/><summary>Ministerul a precizat că finanțarea de 127 de milioane de lei este aprobată, dar contractul nu a fost încă semnat.</summary><updated>2026-09-28T08:10:00Z</updated></entry></feed>"
+    }
+  ],
+  "fixture_identity": "157bffa0b6ab5a30f1c6304a18145e4083f06f3b6d55980e104075ad72f406af",
+  "schema": "editor-vnext-minimal-scout-acceptance-fixture",
+  "schema_version": 1,
+  "selected_source_count": 2
+}

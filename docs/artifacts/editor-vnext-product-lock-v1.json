@@ -38,25 +38,31 @@
     "R2_REFERENCE": {
       "lock_identity": "53fafbc03f70c8c32357645a6a428260f1bdfbd104edbe1c4aa825e95c83a10f",
       "status": "PASS"
+    },
+    "SCOUT_SOURCEPACKET": {
+      "acceptance_receipt_identity": "ec75e07b1357554f54b7e7e78c50f0c328ccf1dc712e2d8a5b0689f026a3b8db",
+      "lock_identity": "65db88f17f53e92c392232548e10f369514d04bfd68e592b12cd8cff7022e208",
+      "source_packet_contract_identity": "badaa72de4168e2c104496ad7aa38bba12118808fbdb4d475802a9bbb4e9adcf",
+      "status": "PASS"
     }
   },
   "global_vnext_migration_pass": false,
   "layout": {
     "editor_v0_runtime": "runtime/editor-v0-v1",
     "python_ml_platform": "platform/python-ml-v1",
-    "r2": "components/r2-reference-v1"
+    "r2": "components/r2-reference-v1",
+    "scout": "runtime/scout-v1",
+    "scout_state": "state/scout-v1"
   },
   "legacy_dependency_count": 0,
   "missing_for_global_migration_pass": [
-    "SCOUT",
-    "SOURCEPACKET_ORCHESTRATION",
     "VERIFIER_PROMOTION_OR_EQUIVALENT_ACCEPTANCE_BOUNDARY",
     "VOICE",
     "CHIEF_EDITOR",
     "FINAL_ORCHESTRATION",
     "FULL_ACCEPTANCE_E2E"
   ],
-  "product_lock_identity": "de0bb55a9d2d3491c2bd2ae19ea3f96ea1e13f7a81bf1163d07b2897027e1381",
+  "product_lock_identity": "464cdad44101e3fc6e0ab195414a7ab4e597ef8dd848871126e57b5649305d2e",
   "product_root": "/root/pastila-vnext/v1",
   "schema": "editor-vnext-product-lock",
   "schema_version": 1,

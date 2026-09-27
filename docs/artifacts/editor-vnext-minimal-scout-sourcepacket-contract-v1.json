@@ -1,0 +1,55 @@
+{
+  "architecture": "SCOUT_DISCOVERY_CAPTURE_GROUPING_SELECTION_TO_SELF_CONTAINED_SOURCEPACKET",
+  "contract_identity": "badaa72de4168e2c104496ad7aa38bba12118808fbdb4d475802a9bbb4e9adcf",
+  "event_grouping": {
+    "conflicting_explicit_numbers_block_merge": true,
+    "minimum_token_overlap": 0.6,
+    "mode": "CONSERVATIVE_DETERMINISTIC_TITLE_MATCH"
+  },
+  "handoff": {
+    "event_authority_bundle": false,
+    "one_article_per_source": true,
+    "selection_authority": "EXPLICIT_USER_EVENT_ID",
+    "source_packet_completeness": "ALL_CAPTURED_UNIQUE_SOURCES"
+  },
+  "persistence": {
+    "database": "SQLITE",
+    "historical_database_required": false,
+    "schema_migration": "CREATE_IF_ABSENT_V1",
+    "state_path": "state/scout-v1/scout.db"
+  },
+  "product_flow": [
+    "SCOUT_DISCOVERY_CAPTURE",
+    "EVENT_GROUPING",
+    "USER_SELECTION_HANDOFF",
+    "SELF_CONTAINED_SOURCEPACKET",
+    "R2_V0_RUNTIME",
+    "STRUCTURAL_BOUNDARY"
+  ],
+  "schema": "editor-vnext-minimal-scout-sourcepacket-contract",
+  "schema_version": 1,
+  "source_packet": {
+    "authority": "PRIMARY_FACTUAL_AUTHORITY",
+    "forbidden_dependencies": [
+      "EVENT_AUTHORITY_BUNDLE",
+      "EVIDENCE_PACKET",
+      "BOUNDED_SELECTOR",
+      "FACTUAL_LEDGER",
+      "SEMANTIC_AUTHORITY_SUBSYSTEM"
+    ],
+    "schema": "editor-vnext-source-packet",
+    "schema_version": 1,
+    "self_contained_provenance": [
+      "SOURCE_ID",
+      "SOURCE_NAME",
+      "SOURCE_FEED_URL",
+      "ARTICLE_URL",
+      "TITLE",
+      "PUBLISHED_AT",
+      "CAPTURED_AT",
+      "CAPTURE_SHA256",
+      "TEXT_SHA256",
+      "TEXT_BYTES"
+    ]
+  }
+}

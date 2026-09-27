@@ -1,0 +1,678 @@
+{
+  "schema": "pastila-vnext-scout-sources",
+  "schema_version": 1,
+  "sources": [
+    {
+      "adapter": "rss",
+      "categories": [
+        "Politica",
+        "Social",
+        "Diverse"
+      ],
+      "enabled": true,
+      "id": "digi24",
+      "max_articles_per_poll": 60,
+      "name": "Digi24",
+      "url": "https://www.digi24.ro/rss"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Politica",
+        "Social",
+        "Diverse"
+      ],
+      "enabled": true,
+      "id": "hotnews",
+      "max_articles_per_poll": 50,
+      "name": "HotNews",
+      "url": "https://hotnews.ro/feed"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Politica",
+        "Social",
+        "Diverse"
+      ],
+      "enabled": true,
+      "id": "g4media",
+      "max_articles_per_poll": 50,
+      "name": "G4Media",
+      "url": "https://www.g4media.ro/feed"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Politica",
+        "Social",
+        "CanCan",
+        "Diverse"
+      ],
+      "enabled": true,
+      "id": "antena3",
+      "max_articles_per_poll": 50,
+      "name": "Antena 3 CNN",
+      "url": "https://www.antena3.ro/rss"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Politica",
+        "Social",
+        "CanCan",
+        "Diverse"
+      ],
+      "enabled": true,
+      "id": "libertatea",
+      "max_articles_per_poll": 50,
+      "name": "Libertatea",
+      "url": "https://www.libertatea.ro/feed"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Politica",
+        "Social",
+        "Diverse"
+      ],
+      "enabled": true,
+      "id": "rfi",
+      "max_articles_per_poll": 50,
+      "name": "RFI Romania",
+      "url": "https://www.rfi.fr/ro/rss"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Politica",
+        "Social",
+        "Diverse"
+      ],
+      "enabled": true,
+      "id": "recorder",
+      "max_articles_per_poll": 50,
+      "name": "Recorder",
+      "url": "https://recorder.ro/feed/"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Social",
+        "Diverse"
+      ],
+      "enabled": true,
+      "id": "economica",
+      "max_articles_per_poll": 50,
+      "name": "Economica.net",
+      "url": "https://www.economica.net/feed"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Politica",
+        "Social",
+        "CanCan",
+        "Diverse"
+      ],
+      "enabled": true,
+      "id": "adevarul",
+      "max_articles_per_poll": 50,
+      "name": "Adevarul",
+      "url": "https://adevarul.ro/rss/index"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Politica",
+        "Social",
+        "CanCan",
+        "Diverse"
+      ],
+      "enabled": true,
+      "id": "observatornews",
+      "max_articles_per_poll": 50,
+      "name": "Observator News",
+      "url": "https://observatornews.ro/rss/"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Politica",
+        "Social",
+        "Diverse"
+      ],
+      "enabled": true,
+      "id": "context",
+      "max_articles_per_poll": 50,
+      "name": "Context.ro",
+      "url": "https://context.ro/feed"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Politica",
+        "Social",
+        "CanCan",
+        "Diverse"
+      ],
+      "enabled": true,
+      "id": "romaniatv",
+      "max_articles_per_poll": 50,
+      "name": "RomaniaTV.net",
+      "url": "https://www.romaniatv.net/feed"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Politica",
+        "Social",
+        "CanCan",
+        "Diverse"
+      ],
+      "enabled": true,
+      "id": "stirile_protv",
+      "max_articles_per_poll": 50,
+      "name": "Stirile ProTV",
+      "url": "https://rss.stirileprotv.ro/"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "CanCan",
+        "Social",
+        "Diverse"
+      ],
+      "enabled": true,
+      "id": "cancan",
+      "max_articles_per_poll": 50,
+      "name": "CanCan.ro",
+      "url": "https://www.cancan.ro/feed"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "CanCan",
+        "Social",
+        "Diverse"
+      ],
+      "enabled": true,
+      "id": "click",
+      "max_articles_per_poll": 50,
+      "name": "Click.ro",
+      "url": "https://click.ro/rss/index"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Politica",
+        "Social",
+        "Diverse"
+      ],
+      "enabled": true,
+      "id": "buletin_bucuresti",
+      "max_articles_per_poll": 50,
+      "name": "Buletin de Bucuresti",
+      "url": "https://buletin.de/bucuresti/feed/"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Politica",
+        "Social",
+        "Diverse"
+      ],
+      "enabled": true,
+      "id": "monitorul_cluj",
+      "max_articles_per_poll": 50,
+      "name": "Monitorul de Cluj",
+      "url": "https://www.monitorulcj.ro/rss/"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Politica",
+        "Social",
+        "Diverse"
+      ],
+      "enabled": true,
+      "id": "pressalert",
+      "max_articles_per_poll": 50,
+      "name": "PRESSALERT.ro",
+      "url": "https://www.pressalert.ro/feed/"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Politica",
+        "Social",
+        "Diverse"
+      ],
+      "enabled": true,
+      "id": "reporteris",
+      "max_articles_per_poll": 50,
+      "name": "ReporterIS",
+      "url": "https://reporteris.ro/feed/"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Politica",
+        "Social",
+        "Diverse"
+      ],
+      "enabled": true,
+      "id": "bizbrasov",
+      "max_articles_per_poll": 50,
+      "name": "Biz Brasov",
+      "url": "https://bizbrasov.ro/feed/"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Politica",
+        "Social",
+        "Diverse"
+      ],
+      "enabled": true,
+      "id": "ctnews",
+      "max_articles_per_poll": 50,
+      "name": "Constanta NEWS",
+      "url": "https://www.ctnews.ro/feed/"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Politica",
+        "Social",
+        "Diverse"
+      ],
+      "enabled": true,
+      "id": "info_sud_est",
+      "max_articles_per_poll": 50,
+      "name": "Info Sud-Est",
+      "url": "https://www.info-sud-est.ro/feed/"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Politica",
+        "Social",
+        "Diverse"
+      ],
+      "enabled": true,
+      "id": "gds",
+      "max_articles_per_poll": 50,
+      "name": "Gazeta de Sud",
+      "url": "https://www.gds.ro/feed/"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Politica",
+        "Social",
+        "Diverse"
+      ],
+      "enabled": true,
+      "id": "oradea_indirect",
+      "max_articles_per_poll": 50,
+      "name": "Oradea in direct",
+      "url": "https://oradeaindirect.ro/feed/"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Politica",
+        "Social",
+        "Diverse"
+      ],
+      "enabled": true,
+      "id": "turnul_sfatului",
+      "max_articles_per_poll": 50,
+      "name": "Turnul Sfatului",
+      "url": "https://www.turnulsfatului.ro/feed/"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Politica",
+        "Social",
+        "CanCan",
+        "Diverse"
+      ],
+      "enabled": true,
+      "id": "oficiul_de_stiri",
+      "max_articles_per_poll": 50,
+      "name": "Oficiul de Stiri",
+      "url": "https://oficiuldestiri.ro/feed"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Politica",
+        "Social",
+        "Diverse"
+      ],
+      "enabled": true,
+      "id": "republica",
+      "max_articles_per_poll": 50,
+      "name": "Republica",
+      "url": "https://republica.ro/rss"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Politica",
+        "Social",
+        "CanCan",
+        "Diverse"
+      ],
+      "enabled": true,
+      "id": "b1tv",
+      "max_articles_per_poll": 50,
+      "name": "B1TV",
+      "url": "https://www.b1tv.ro/feed/"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Politica",
+        "Social",
+        "Diverse"
+      ],
+      "enabled": true,
+      "id": "ordinea",
+      "max_articles_per_poll": 50,
+      "name": "Ordinea",
+      "url": "https://www.ordinea.ro/feed/"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Politica",
+        "Social",
+        "CanCan",
+        "Diverse"
+      ],
+      "enabled": true,
+      "id": "ziare_com",
+      "max_articles_per_poll": 50,
+      "name": "Ziare.com",
+      "url": "https://ziare.com/rss/breaking_news.xml"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Social",
+        "Diverse"
+      ],
+      "enabled": true,
+      "id": "marturie_athonita",
+      "max_articles_per_poll": 50,
+      "name": "Marturie Athonita",
+      "url": "https://marturieathonita.ro/feed.xml"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Politica",
+        "Social",
+        "Diverse"
+      ],
+      "enabled": true,
+      "id": "tvr_info",
+      "max_articles_per_poll": 50,
+      "name": "TVR Info",
+      "url": "https://tvrinfo.ro/feed/"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Social",
+        "Diverse"
+      ],
+      "enabled": true,
+      "id": "cfr_sa",
+      "max_articles_per_poll": 50,
+      "name": "CFR SA",
+      "url": "https://cfr.ro/feed/"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Social",
+        "Diverse"
+      ],
+      "enabled": true,
+      "id": "amccrs_pmb",
+      "max_articles_per_poll": 50,
+      "name": "AMCCRS PMB",
+      "url": "https://amccrs-pmb.ro/feed/"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Externe"
+      ],
+      "enabled": true,
+      "id": "bbc_world",
+      "max_articles_per_poll": 50,
+      "name": "BBC News World",
+      "url": "https://feeds.bbci.co.uk/news/world/rss.xml"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Externe"
+      ],
+      "enabled": true,
+      "id": "politico_europe",
+      "max_articles_per_poll": 50,
+      "name": "Politico Europe",
+      "url": "https://www.politico.eu/feed/"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Externe"
+      ],
+      "enabled": true,
+      "id": "guardian_world",
+      "max_articles_per_poll": 50,
+      "name": "Guardian World",
+      "url": "https://www.theguardian.com/world/rss"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Externe"
+      ],
+      "enabled": true,
+      "id": "aljazeera",
+      "max_articles_per_poll": 50,
+      "name": "Al Jazeera",
+      "url": "https://www.aljazeera.com/xml/rss/all.xml"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Externe"
+      ],
+      "enabled": true,
+      "id": "cbs_news",
+      "max_articles_per_poll": 50,
+      "name": "CBS News",
+      "url": "https://www.cbsnews.com/latest/rss/main"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Externe"
+      ],
+      "enabled": true,
+      "id": "abc_news",
+      "max_articles_per_poll": 50,
+      "name": "ABC News",
+      "url": "https://feeds.abcnews.com/abcnews/topstories"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Externe"
+      ],
+      "enabled": true,
+      "id": "los_angeles_times",
+      "max_articles_per_poll": 50,
+      "name": "Los Angeles Times",
+      "url": "https://www.latimes.com/index.rss"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Externe"
+      ],
+      "enabled": true,
+      "id": "the_conversation",
+      "max_articles_per_poll": 50,
+      "name": "The Conversation",
+      "url": "https://theconversation.com/global/articles.atom"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Externe"
+      ],
+      "enabled": true,
+      "id": "deutsche_welle",
+      "max_articles_per_poll": 50,
+      "name": "Deutsche Welle",
+      "url": "https://rss.dw.com/rdf/rss-en-top"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Externe"
+      ],
+      "enabled": true,
+      "id": "yahoo_news",
+      "max_articles_per_poll": 50,
+      "name": "Yahoo News",
+      "url": "https://news.yahoo.com/rss/"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Externe"
+      ],
+      "enabled": true,
+      "id": "fox_news",
+      "max_articles_per_poll": 50,
+      "name": "Fox News",
+      "url": "https://moxie.foxnews.com/google-publisher/latest.xml"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Externe"
+      ],
+      "enabled": true,
+      "id": "fbi_news",
+      "max_articles_per_poll": 50,
+      "name": "FBI News",
+      "url": "https://www.fbi.gov/feeds/fbi-in-the-news/rss.xml"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Externe"
+      ],
+      "enabled": true,
+      "id": "msnow",
+      "max_articles_per_poll": 50,
+      "name": "MS NOW",
+      "url": "https://www.ms.now/feed"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Externe",
+        "CanCan"
+      ],
+      "enabled": true,
+      "id": "cbs_entertainment",
+      "max_articles_per_poll": 50,
+      "name": "CBS Entertainment",
+      "url": "https://www.cbsnews.com/latest/rss/entertainment"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Externe",
+        "Diverse"
+      ],
+      "enabled": true,
+      "id": "ars_technica",
+      "max_articles_per_poll": 50,
+      "name": "Ars Technica",
+      "url": "https://feeds.arstechnica.com/arstechnica/index"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Externe",
+        "Diverse"
+      ],
+      "enabled": true,
+      "id": "techcrunch",
+      "max_articles_per_poll": 50,
+      "name": "TechCrunch",
+      "url": "https://techcrunch.com/feed"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Externe",
+        "CanCan"
+      ],
+      "enabled": true,
+      "id": "e_news",
+      "max_articles_per_poll": 50,
+      "name": "E! News",
+      "url": "https://eol-feeds.eonline.com/rssfeed/us/top_stories"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Externe"
+      ],
+      "enabled": true,
+      "id": "nyt",
+      "max_articles_per_poll": 50,
+      "name": "The New York Times",
+      "url": "https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Externe"
+      ],
+      "enabled": true,
+      "id": "independent",
+      "max_articles_per_poll": 50,
+      "name": "The Independent",
+      "url": "https://www.independent.co.uk/rss"
+    },
+    {
+      "adapter": "rss",
+      "categories": [
+        "Externe"
+      ],
+      "enabled": true,
+      "id": "tmz",
+      "max_articles_per_poll": 50,
+      "name": "TMZ",
+      "url": "https://www.tmz.com/rss.xml"
+    }
+  ],
+  "sources_identity": "6ede03ad6e2e7b22ceb9792b02ecb4e3d3bee3266ac16f5a5a5d1aa70603e2ae"
+}

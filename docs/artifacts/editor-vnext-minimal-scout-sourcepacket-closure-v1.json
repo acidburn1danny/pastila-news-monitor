@@ -1,0 +1,33 @@
+{
+  "acceptance": {
+    "capture": "DETERMINISTIC_RSS_ATOM_FIXTURE_USING_PRODUCTION_PARSER",
+    "factual_acceptance_authority": false,
+    "grouping": true,
+    "network_reachability_tested": false,
+    "r2_inference": true,
+    "source_count": 2,
+    "structural_output_valid": true,
+    "user_selection_equivalent": "EXPLICIT_EVENT_ID"
+  },
+  "acceptance_receipt_identity": "ec75e07b1357554f54b7e7e78c50f0c328ccf1dc712e2d8a5b0689f026a3b8db",
+  "closure_identity": "2a219116b2fad8a9bbd170408da8a8e531814361583c292dadcc5bebbbe264a4",
+  "database": {
+    "engine": "SQLITE",
+    "fresh_schema": true,
+    "historical_database_migrated": false
+  },
+  "editor_receipt_identity": "365b59748d2c6cd83239f6ebea428eb15cc3538fea597d831441bead7a742c93",
+  "legacy_dependency_count": 0,
+  "optimizer_created": false,
+  "product_lock_identity": "464cdad44101e3fc6e0ab195414a7ab4e597ef8dd848871126e57b5649305d2e",
+  "product_root": "/root/pastila-vnext/v1",
+  "schema": "editor-vnext-minimal-scout-sourcepacket-closure",
+  "schema_version": 1,
+  "scout_lock_identity": "65db88f17f53e92c392232548e10f369514d04bfd68e592b12cd8cff7022e208",
+  "shadow_verifier_authoritative": false,
+  "source_packet_contract_identity": "badaa72de4168e2c104496ad7aa38bba12118808fbdb4d475802a9bbb4e9adcf",
+  "source_packet_identity": "be2045feebe8c3cc7b242ac149e137a0dfe7a210f120dbdceba529482233a940",
+  "sources_identity": "6ede03ad6e2e7b22ceb9792b02ecb4e3d3bee3266ac16f5a5a5d1aa70603e2ae",
+  "status": "PASS",
+  "training_performed": false
+}
