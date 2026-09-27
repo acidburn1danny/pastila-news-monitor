@@ -1,0 +1,116 @@
+{
+  "authority_identity": "cd3ce3c3a814c0d52bb0e12c43a87bede1c71dc1cfda713caadbfc96ea99bb1c",
+  "distinct_empty_output_root_per_slot": true,
+  "fresh_exact_tokenizer_zero_step_per_slot": true,
+  "historical_holdouts_allowed": false,
+  "one_pass_weighted_sft_contrastive_kl": "CLOSED_TESTED_FORMS",
+  "owner_run_authorization_required": true,
+  "pack_identity": "57da2b8a1e052ddb7d80fd19085fc8930c95c93d36836e6c2f087cab0ce64b6a",
+  "parent": "R2_STEP_9",
+  "parent_adapter_identity": "c680d686f0b139e618d99fab235c62267caa9482df0efbccb44cb2c58c124f02",
+  "parent_selection_authority": false,
+  "preflight_sha256": "f7f4f47e8c6609e5af0405c8bb810cdb87f6a947c0ecb93e6d0507866ec6ed94",
+  "promotion_authorized": false,
+  "protocol_identity": "da63d3394035c8ebdd4a821e5b1c47966179169e1b13c4926a7775143425b35d",
+  "published_commit": "08adffa0d3c5827ac715b73fc13f6b1cb915b3a0",
+  "published_tree": "798c774a16385724543ffb3986daaa433547767f",
+  "real_runs_authorized_in_build_task": false,
+  "release_authorized": false,
+  "retry_authorized": false,
+  "runtime_boundary_identity": "e1dfab62d55b296940d102d93370fd326e837893ed14abd95539d32862cc0d80",
+  "schema": "editor-r2-factorized-fact-plan-execution-authority",
+  "schema_version": 1,
+  "scope": "DEVELOPMENT_RESEARCH_4X3_ONLY",
+  "slots": [
+    {
+      "intervention": "I0_ONE_PASS_R2",
+      "output_slug": "i0_one_pass_r2__seed_161803",
+      "run_limit": 1,
+      "seed": 161803,
+      "slot_id": "I0_ONE_PASS_R2__seed_161803"
+    },
+    {
+      "intervention": "I0_ONE_PASS_R2",
+      "output_slug": "i0_one_pass_r2__seed_271828",
+      "run_limit": 1,
+      "seed": 271828,
+      "slot_id": "I0_ONE_PASS_R2__seed_271828"
+    },
+    {
+      "intervention": "I0_ONE_PASS_R2",
+      "output_slug": "i0_one_pass_r2__seed_314159",
+      "run_limit": 1,
+      "seed": 314159,
+      "slot_id": "I0_ONE_PASS_R2__seed_314159"
+    },
+    {
+      "intervention": "I1_ORACLE_PLAN_SCORE",
+      "output_slug": "i1_oracle_plan_score__seed_161803",
+      "run_limit": 1,
+      "seed": 161803,
+      "slot_id": "I1_ORACLE_PLAN_SCORE__seed_161803"
+    },
+    {
+      "intervention": "I1_ORACLE_PLAN_SCORE",
+      "output_slug": "i1_oracle_plan_score__seed_271828",
+      "run_limit": 1,
+      "seed": 271828,
+      "slot_id": "I1_ORACLE_PLAN_SCORE__seed_271828"
+    },
+    {
+      "intervention": "I1_ORACLE_PLAN_SCORE",
+      "output_slug": "i1_oracle_plan_score__seed_314159",
+      "run_limit": 1,
+      "seed": 314159,
+      "slot_id": "I1_ORACLE_PLAN_SCORE__seed_314159"
+    },
+    {
+      "intervention": "I2_ORACLE_PLAN_TO_R2_SETUP",
+      "output_slug": "i2_oracle_plan_to_r2_setup__seed_161803",
+      "run_limit": 1,
+      "seed": 161803,
+      "slot_id": "I2_ORACLE_PLAN_TO_R2_SETUP__seed_161803"
+    },
+    {
+      "intervention": "I2_ORACLE_PLAN_TO_R2_SETUP",
+      "output_slug": "i2_oracle_plan_to_r2_setup__seed_271828",
+      "run_limit": 1,
+      "seed": 271828,
+      "slot_id": "I2_ORACLE_PLAN_TO_R2_SETUP__seed_271828"
+    },
+    {
+      "intervention": "I2_ORACLE_PLAN_TO_R2_SETUP",
+      "output_slug": "i2_oracle_plan_to_r2_setup__seed_314159",
+      "run_limit": 1,
+      "seed": 314159,
+      "slot_id": "I2_ORACLE_PLAN_TO_R2_SETUP__seed_314159"
+    },
+    {
+      "intervention": "I3_R2_PLAN_TO_R2_SETUP",
+      "output_slug": "i3_r2_plan_to_r2_setup__seed_161803",
+      "run_limit": 1,
+      "seed": 161803,
+      "slot_id": "I3_R2_PLAN_TO_R2_SETUP__seed_161803"
+    },
+    {
+      "intervention": "I3_R2_PLAN_TO_R2_SETUP",
+      "output_slug": "i3_r2_plan_to_r2_setup__seed_271828",
+      "run_limit": 1,
+      "seed": 271828,
+      "slot_id": "I3_R2_PLAN_TO_R2_SETUP__seed_271828"
+    },
+    {
+      "intervention": "I3_R2_PLAN_TO_R2_SETUP",
+      "output_slug": "i3_r2_plan_to_r2_setup__seed_314159",
+      "run_limit": 1,
+      "seed": 314159,
+      "slot_id": "I3_R2_PLAN_TO_R2_SETUP__seed_314159"
+    }
+  ],
+  "stop_on_first_failure": true,
+  "supervisor_sha256": "a7aa78aa8c10a26eaff4a59e6795e2ccab495d07f2e5fe8b16fdd1d1d50b515e",
+  "tokenizer_sha256": "d5f6046775b112f0e2d456ee9dba450684ab964fe5c4e231599bdc6773028135",
+  "verifier_sha256": "b64975f8740b71e171c8247c8dfc9f185ed6af2cfb0e15c6a8aaf6776c10ab92",
+  "voice_or_chief_objectives": false,
+  "worker_sha256": "e7978454d7ed34e047ff62079600521383580e9a39bf9f66989a5951270892c4"
+}

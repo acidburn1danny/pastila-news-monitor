@@ -1,0 +1,12 @@
+from __future__ import annotations
+import hashlib,json
+from pathlib import Path
+ROOT=Path(__file__).parents[1]; ARMS=("I0_ONE_PASS_R2","I1_ORACLE_PLAN_SCORE","I2_ORACLE_PLAN_TO_R2_SETUP","I3_R2_PLAN_TO_R2_SETUP"); SEEDS=(161803,271828,314159)
+def canonical(v): return json.dumps(v,ensure_ascii=False,allow_nan=False,sort_keys=True,separators=(",",":")).encode()
+def sha(p): return hashlib.sha256(p.read_bytes()).hexdigest()
+def main():
+ b=json.loads((ROOT/"docs/artifacts/editor-core-r2-factorized-fact-plan-runtime-boundary-v1.json").read_text())
+ slots=[{"slot_id":f"{a}__seed_{s}","intervention":a,"seed":s,"output_slug":f"{a.lower()}__seed_{s}","run_limit":1} for a in ARMS for s in SEEDS]
+ core={"schema":"editor-r2-factorized-fact-plan-execution-authority","schema_version":1,"scope":"DEVELOPMENT_RESEARCH_4X3_ONLY","published_commit":"08adffa0d3c5827ac715b73fc13f6b1cb915b3a0","published_tree":"798c774a16385724543ffb3986daaa433547767f","runtime_boundary_identity":b["runtime_boundary_identity"],"protocol_identity":b["protocol_identity"],"pack_identity":b["pack_identity"],"parent":"R2_STEP_9","parent_adapter_identity":b["parent_adapter_identity"],"tokenizer_sha256":b["tokenizer_sha256"],"worker_sha256":sha(ROOT/"scripts/editor_core_r2_factorized_fact_plan_slot_v1.py"),"supervisor_sha256":sha(ROOT/"scripts/supervise_editor_core_r2_factorized_fact_plan_v1.py"),"verifier_sha256":sha(ROOT/"scripts/verify_editor_core_r2_factorized_fact_plan_authority_v1.py"),"preflight_sha256":sha(ROOT/"scripts/preflight_editor_core_r2_factorized_fact_plan_runtime_v1.py"),"slots":slots,"fresh_exact_tokenizer_zero_step_per_slot":True,"distinct_empty_output_root_per_slot":True,"retry_authorized":False,"stop_on_first_failure":True,"owner_run_authorization_required":True,"real_runs_authorized_in_build_task":False,"historical_holdouts_allowed":False,"parent_selection_authority":False,"promotion_authorized":False,"release_authorized":False,"one_pass_weighted_sft_contrastive_kl":"CLOSED_TESTED_FORMS","voice_or_chief_objectives":False}
+ doc={**core,"authority_identity":hashlib.sha256(canonical(core)).hexdigest()}; out=ROOT/"docs/artifacts/editor-core-r2-factorized-fact-plan-execution-authority-v1.json"; out.write_bytes(json.dumps(doc,ensure_ascii=False,sort_keys=True,indent=2).encode()+b"\n"); print(json.dumps({"status":"PASS_BUILD","authority_identity":doc["authority_identity"]},sort_keys=True))
+if __name__=="__main__": main()
