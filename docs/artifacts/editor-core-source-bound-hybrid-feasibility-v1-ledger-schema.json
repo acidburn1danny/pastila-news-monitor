@@ -1,0 +1,54 @@
+{
+  "atom_types": [
+    "SOURCE_FACT",
+    "NUMERIC_FACT",
+    "TEMPORAL_FACT",
+    "ATTRIBUTED_OR_QUALIFIED_CLAIM",
+    "PROCEDURAL_STATUS"
+  ],
+  "authority_model": {
+    "fallback": "DETERMINISTIC_EXTRACTIVE_FROM_REQUIRED_ATOMS",
+    "ledger": "DERIVED_SOURCE_BOUND_AUTHORITY",
+    "realizer": "NON_AUTHORITATIVE_ORDER_AND_CONNECTOR_PROPOSAL",
+    "source_spans": "SOLE_FACTUAL_AUTHORITY",
+    "verifier": "ACCEPT_OR_REJECT_AGAINST_LEDGER"
+  },
+  "invariants": [
+    "QUOTE_BYTES_EQUAL_SOURCE_SLICE",
+    "EVERY_ATOM_HAS_EXACTLY_ONE_SOURCE_SPAN",
+    "REQUIRED_OBLIGATIONS_BIND_TO_ONE_OR_MORE_ATOMS",
+    "EXCLUDED_ATOMS_CANNOT_ENTER_REALIZATION",
+    "REALIZER_CANNOT_CREATE_FACTUAL_AUTHORITY",
+    "ACCEPTED_TEXT_MUST_PASS_ALL_LEDGER_CHECKS",
+    "FAILURE_USES_EXTRACTIVE_FALLBACK"
+  ],
+  "ledger_schema_identity": "67d54663014579df024140b821e67011221bfeadec6ab60f22a1d5a040ab2e3b",
+  "relation_types": [
+    "SUPPORTS_REQUIREMENT",
+    "QUALIFIES",
+    "UPDATES",
+    "CONTESTS",
+    "EXCLUDES"
+  ],
+  "required_atom_fields": [
+    "atom_id",
+    "atom_type",
+    "source_span_id",
+    "source_sha256",
+    "quote",
+    "byte_start",
+    "byte_end",
+    "selection",
+    "actors_entities",
+    "numbers",
+    "epistemic_markers",
+    "procedural_markers"
+  ],
+  "schema": "editor-source-bound-factual-ledger-schema",
+  "schema_version": 1,
+  "selection_states": [
+    "REQUIRED",
+    "OPTIONAL",
+    "EXCLUDED"
+  ]
+}

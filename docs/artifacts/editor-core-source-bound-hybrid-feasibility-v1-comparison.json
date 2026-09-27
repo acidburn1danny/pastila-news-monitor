@@ -1,0 +1,59 @@
+{
+  "arms": [
+    {
+      "authority": "SOURCE_SPANS",
+      "generation": "R2_STEP_9",
+      "id": "B0_R2_ONE_PASS",
+      "verification": "CONTRACT_ONLY"
+    },
+    {
+      "authority": "LEDGER_REQUIRED_ATOMS",
+      "generation": "DETERMINISTIC_QUOTES",
+      "id": "B1_EXTRACTIVE_BASELINE",
+      "verification": "LEDGER"
+    },
+    {
+      "authority": "LEDGER",
+      "generation": "SEPARATE_TEXT_REALIZER",
+      "id": "B2_HYBRID",
+      "verification": "LEDGER_AND_FALLBACK"
+    }
+  ],
+  "causal_questions": {
+    "B1_VS_B0": "VALUE_OF_MOVING_FACT_AUTHORITY_TO_DETERMINISTIC_EXTRACTION",
+    "B2_VS_B0": "END_TO_END_HYBRID_VALUE",
+    "B2_VS_B1": "VALUE_AND_RISK_OF_SEPARATE_TEXT_REALIZATION"
+  },
+  "comparison_identity": "a4ba38348280398993b4872efbcfdbaf3686452b72ed8ff035f2001470764272",
+  "matched": [
+    "CASES",
+    "PARTITIONS",
+    "SEEDS",
+    "LEDGER",
+    "METRICS",
+    "SENTENCE_BUDGET"
+  ],
+  "metrics": [
+    "LEDGER_CONSTRUCTION_VALIDITY",
+    "REQUIRED_ATOM_COVERAGE",
+    "NOVEL_ACTOR",
+    "NUMBER_ROLE_FIDELITY",
+    "EPISTEMIC_MARKER_RETENTION",
+    "PROCEDURAL_STATUS_RETENTION",
+    "UNSUPPORTED_CONTENT_TOKEN",
+    "SENTENCE_BUDGET",
+    "REPETITION",
+    "FALLBACK_RATE",
+    "FALLBACK_SUFFICIENCY",
+    "FUNCTIONAL_ROMANIAN_PROXY"
+  ],
+  "real_execution_authority": false,
+  "schema": "editor-source-bound-hybrid-comparison",
+  "schema_version": 1,
+  "seeds": [
+    161803,
+    271828,
+    314159
+  ],
+  "semantic_scoring_required_later": true
+}

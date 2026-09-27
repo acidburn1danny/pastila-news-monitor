@@ -1,0 +1,29 @@
+{
+  "atoms": 144,
+  "development": 24,
+  "files": {
+    "editor-core-source-bound-hybrid-feasibility-v1-comparison.json": "6463b01fa969c5660754cf983e4af834232fe061d667e3444d54c9a2a0576fa2",
+    "editor-core-source-bound-hybrid-feasibility-v1-ledger-schema.json": "57a9b790c30685edd94bf7418fb9b25f13e822ca29d3ccfae544e45f2d5095ba",
+    "editor-core-source-bound-hybrid-feasibility-v1-ledgers.jsonl": "907e972b81bf538b6b7aa7125b5cf140637b57537206b6c0d38be83d5da9ae8f",
+    "editor-core-source-bound-hybrid-feasibility-v1-protocol.json": "8d9cb054d6f66137fb6415c7bc7cc8065905de15a209fbcaa60add589d60c368",
+    "editor-core-source-bound-hybrid-feasibility-v1-realization-schema.json": "b6c458ff86557819ff8f98e2dcd4f97918c5608073153df111a57e68c0f953bd",
+    "editor-core-source-bound-hybrid-feasibility-v1-reconciliation-rules.json": "2fd96776bb525a06f534b4a1bfb448d6a41176ad6a4378e9b9daaaf7d6741dc2",
+    "editor-core-source-bound-hybrid-feasibility-v1-terminal-rules.json": "5dba3d43cad9c8cd02be45274954ef7bd5238f2fc5ae96052a3f7de59a1dbdc6"
+  },
+  "historical_holdouts_read": false,
+  "inference_performed": false,
+  "ledgers": 48,
+  "model_loaded": false,
+  "obligations": 192,
+  "optimizer_created": false,
+  "pack_identity": "bbad139fde613c1c912cd53992b4c2be047d73180f6a6ae732dc6348461d28f9",
+  "protocol_identity": "5a5ef79af85a3b58b3c0e2f46be3f9e3dd573d75dae361c6d6df88588f7c1aea",
+  "replay_retention": 24,
+  "schema": "editor-source-bound-hybrid-feasibility-pack",
+  "schema_version": 1,
+  "source_files": {
+    "editor-core-r2-factorized-fact-plan-diagnostic-v1-cases.jsonl": "3c6312ed69a85d584cfcdc4a350e59b68dea79b4c630a8f5616bdc9802b12590",
+    "editor-core-r2-factorized-fact-plan-diagnostic-v1-oracle-plans.jsonl": "47935c954bba07c388c87954763b8ac80417e6aaaa017834a0d4c74bb0cc03c9"
+  },
+  "training_performed": false
+}

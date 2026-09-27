@@ -1,0 +1,25 @@
+{
+  "accepted_output": "DETERMINISTIC_JOIN_OF_VERIFIED_SENTENCES",
+  "fields": {
+    "case_id": "EXACT_LEDGER_CASE_ID",
+    "sentences": "TWO_OR_THREE_SENTENCE_OBJECTS",
+    "sentences[].atom_ids": "NONEMPTY_SUBSET_OF_ALLOWED_ATOMS",
+    "sentences[].text": "NON_AUTHORITATIVE_PROPOSED_TEXT"
+  },
+  "realization_schema_identity": "db23f70c2fc0f1693a6fc31857397448ccc0fd8ed357fb5944a6ec3dc3d38487",
+  "rejected_output": "DISCARDED_NOT_EVIDENCE; RETURN_EXTRACTIVE_FALLBACK",
+  "schema": "editor-ledger-bound-realization-proposal-schema",
+  "schema_version": 1,
+  "verifier_checks": [
+    "CASE_ID_MATCH",
+    "TWO_TO_THREE_SENTENCES",
+    "ALL_BINDINGS_ALLOWED",
+    "ALL_REQUIRED_ATOMS_BOUND",
+    "NO_EXCLUDED_ATOM_BOUND",
+    "NO_UNAUTHORIZED_NUMBER",
+    "NO_UNAUTHORIZED_CONTENT_TOKEN",
+    "ALL_REQUIRED_EPISTEMIC_MARKERS",
+    "ALL_REQUIRED_PROCEDURAL_MARKERS",
+    "NO_REPETITIVE_CLAUSE"
+  ]
+}

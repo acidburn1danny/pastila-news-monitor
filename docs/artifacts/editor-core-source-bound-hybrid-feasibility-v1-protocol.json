@@ -1,0 +1,39 @@
+{
+  "autonomous_ledger_construction_claimed": false,
+  "cases": 48,
+  "closed_mechanisms": [
+    "WEIGHTED_SFT_T1_S0_TESTED_FORMS",
+    "CONTRASTIVE_TESTED_FORM",
+    "R2_KL_TESTED_FORM",
+    "FACTORIZED_FACT_PLAN_V1"
+  ],
+  "comparison_identity": "a4ba38348280398993b4872efbcfdbaf3686452b72ed8ff035f2001470764272",
+  "decision_identity": "71878e271c1bee7680a1bbc365f50636c2e3f7e9f9921b9a2883aa3763fd9de7",
+  "fixture_selection_uses_oracle": true,
+  "historical_holdouts_allowed": false,
+  "inference_authorized": false,
+  "ledger_schema_identity": "67d54663014579df024140b821e67011221bfeadec6ab60f22a1d5a040ab2e3b",
+  "model_load_authorized": false,
+  "objective": "MOVE_FACTUAL_AUTHORITY_FROM_PROBABILISTIC_BEHAVIOR_TO_SOURCE_BOUND_LEDGER",
+  "optimizer_creation_authorized": false,
+  "parent": "R2_STEP_9",
+  "parent_adapter_identity": "c680d686f0b139e618d99fab235c62267caa9482df0efbccb44cb2c58c124f02",
+  "parent_selection_authority": false,
+  "partitions": {
+    "DEVELOPMENT": 24,
+    "REPLAY_RETENTION": 24
+  },
+  "promotion_authorized": false,
+  "protocol_identity": "5a5ef79af85a3b58b3c0e2f46be3f9e3dd573d75dae361c6d6df88588f7c1aea",
+  "real_route_requires_independent_selection_curation": true,
+  "realization_schema_identity": "db23f70c2fc0f1693a6fc31857397448ccc0fd8ed357fb5944a6ec3dc3d38487",
+  "reconciliation_identity": "ab7cf0f9a2dddfc3a59972e699e501d5a59bab7b6ada6986c50d1a7e82a4e693",
+  "release_authorized": false,
+  "schema": "editor-source-bound-hybrid-feasibility-protocol",
+  "schema_version": 1,
+  "status": "DESIGN_FIXTURE_ONLY_NO_REAL_EXECUTION_AUTHORITY",
+  "successor_candidate_authorized": false,
+  "successor_training": "SUSPENDED",
+  "training_authorized": false,
+  "voice_or_chief_editor_objective": false
+}
