@@ -1,0 +1,16 @@
+{
+  "schema": "editor-vnext-minimal-source-bound-verifier-fixtures",
+  "schema_version": 1,
+  "cases": [
+    {"case_id":"numeric-invention","class":"TRUE_MODEL_FAILURE","expected":"FAIL_PROVEN","source":"Inventarul avea 2800 de dosare, dintre care 391 duplicate. Totalul corectat este 2409.","output":"{\"case_id\":\"numeric-invention\",\"text\":\"Inventarul avea 3.911 dosare, iar totalul corectat era 2.409.\"}"},
+    {"case_id":"numeric-ro-format","class":"VERIFIER_FALSE_REJECTION","expected":"PASS_PROVEN","source":"Inventarul avea 2800 de dosare, dintre care 391 duplicate. Totalul corectat este 2409.","output":"{\"case_id\":\"numeric-ro-format\",\"text\":\"Inventarul avea 2.800 de dosare, dintre care 391 duplicate. Totalul corectat este 2.409.\"}"},
+    {"case_id":"invented-actor","class":"TRUE_MODEL_FAILURE","expected":"FAIL_PROVEN","source":"Ana Popescu a prezentat raportul la București.","output":"{\"case_id\":\"invented-actor\",\"text\":\"Ana Popescu și Mihai Ionescu au prezentat raportul la București.\"}"},
+    {"case_id":"entity-preserved","class":"VERIFIER_FALSE_REJECTION","expected":"PASS_PROVEN","source":"Ana Popescu a prezentat raportul la București.","output":"{\"case_id\":\"entity-preserved\",\"text\":\"Ana Popescu a prezentat raportul la București.\"}"},
+    {"case_id":"qualification-upgrade","class":"TRUE_MODEL_FAILURE","expected":"FAIL_PROVEN","source":"Potrivit procurorilor, firma ar fi transferat suma.","output":"{\"case_id\":\"qualification-upgrade\",\"text\":\"Firma a transferat confirmat suma.\"}"},
+    {"case_id":"qualification-omission","class":"UNPROVEN","expected":"UNPROVEN","source":"Potrivit procurorilor, firma ar fi transferat suma.","output":"{\"case_id\":\"qualification-omission\",\"text\":\"Firma a transferat suma.\"}"},
+    {"case_id":"status-omission","class":"UNPROVEN","expected":"UNPROVEN","source":"Raportul preliminar descrie incidentul.","output":"{\"case_id\":\"status-omission\",\"text\":\"Raportul descrie incidentul.\"}"},
+    {"case_id":"status-preserved","class":"VERIFIER_FALSE_REJECTION","expected":"PASS_PROVEN","source":"Raportul preliminar descrie incidentul.","output":"{\"case_id\":\"status-preserved\",\"text\":\"Raportul preliminar descrie incidentul.\"}"},
+    {"case_id":"duplicate-key","class":"TRUE_MODEL_FAILURE","expected":"FAIL_PROVEN","source":"Sursa confirmă 12 cazuri.","output":"{\"case_id\":\"duplicate-key\",\"case_id\":\"wrong\",\"text\":\"Sursa confirmă 12 cazuri.\"}"},
+    {"case_id":"semantic-unsupported","class":"UNPROVEN","expected":"UNPROVEN","source":"Compania a publicat raportul anual.","output":"{\"case_id\":\"semantic-unsupported\",\"text\":\"Compania a închis fabrica.\"}"}
+  ]
+}
