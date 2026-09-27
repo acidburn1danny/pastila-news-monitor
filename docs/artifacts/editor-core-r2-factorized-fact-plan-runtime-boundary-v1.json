@@ -1,0 +1,36 @@
+{
+  "files": {
+    "scripts/editor_core_r2_factorized_fact_plan_runtime_v1.py": "5f379314190ea1664c1908d752521e068141b6553ecafc5f33827a89453e5453",
+    "scripts/preflight_editor_core_r2_factorized_fact_plan_runtime_v1.py": "f7f4f47e8c6609e5af0405c8bb810cdb87f6a947c0ecb93e6d0507866ec6ed94",
+    "scripts/run_editor_core_r2_factorized_fact_plan_runtime_v1.sh": "ee97b3b636a2e01ebce210966789e1a9adeb324086937f71a044edc1789c549d",
+    "scripts/smoke_editor_core_r2_factorized_fact_plan_runtime_v1.py": "93833310e4961e92a75f45fa16a47f8241f18daf78eb56d404ab2369f72098f8"
+  },
+  "historical_holdouts_allowed": false,
+  "interventions": 4,
+  "model_load_authorized": false,
+  "optimizer_creation_authorized": false,
+  "output_isolation": "DISTINCT_EMPTY_ROOT_PER_SLOT",
+  "pack_identity": "57da2b8a1e052ddb7d80fd19085fc8930c95c93d36836e6c2f087cab0ce64b6a",
+  "parent": "R2_STEP_9",
+  "parent_adapter_identity": "c680d686f0b139e618d99fab235c62267caa9482df0efbccb44cb2c58c124f02",
+  "parent_selection_authority": false,
+  "phases": [
+    "PLAN_GENERATION",
+    "ORACLE_PLAN_INTERVENTION",
+    "PLAN_VALIDATION",
+    "PLAN_CONDITIONED_SETUP_REALIZATION"
+  ],
+  "protocol_identity": "da63d3394035c8ebdd4a821e5b1c47966179169e1b13c4926a7775143425b35d",
+  "real_execution_authority": false,
+  "runtime_boundary_identity": "e1dfab62d55b296940d102d93370fd326e837893ed14abd95539d32862cc0d80",
+  "schema": "editor-r2-factorized-fact-plan-runtime-boundary",
+  "schema_version": 1,
+  "seeds": 3,
+  "slots": 12,
+  "source_commit": "11c39a158e3edd98418ebbc15e472a1c2388f43a",
+  "source_tree": "f3e0e6e344a79611ab1402cf4152974b553c53ae",
+  "status": "FIXTURE_ONLY_NO_REAL_AUTHORITY",
+  "terminal_receipt_last": true,
+  "tokenizer_sha256": "d5f6046775b112f0e2d456ee9dba450684ab964fe5c4e231599bdc6773028135",
+  "training_authorized": false
+}
