@@ -28,7 +28,7 @@ def main() -> None:
     if receipt.exists():
         raise ValueError("receipt must not already exist")
     lock = json.loads((root / "dependency-lock.json").read_text(encoding="utf-8"))
-    if lock["lock_identity"] != "fe0754562970b9afe5a12ca03167c44e993182c6176ac06468d528f1973eda6d":
+    if lock["lock_identity"] != "53fafbc03f70c8c32357645a6a428260f1bdfbd104edbe1c4aa825e95c83a10f":
         raise ValueError("closure identity mismatch")
     expected_prefixes = (str(root), str(Path(sys.prefix).resolve()), "/usr/lib", "/usr/local/lib")
     imported_paths = []
