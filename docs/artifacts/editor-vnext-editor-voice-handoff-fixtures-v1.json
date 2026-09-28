@@ -1,0 +1,39 @@
+{
+  "editor_receipt": {
+    "receipt_identity": "1ce927738a30ddf4a07a1220654806ae011b3f70348b70904e2c2f2ec0119fbc",
+    "runtime_lock_identity": "58b22d87a50f9eb28592043e1fdeb1ba6eb841b2e103b65f30ebd710785731ca",
+    "schema": "editor-vnext-v0-terminal-receipt",
+    "schema_version": 1,
+    "source_packet_identity": "f910dbda089f296efdd39eb7efe8b1a6cbf301e67cabf5e96e165e9af39644a3",
+    "structural_valid": true
+  },
+  "fixture_identity": "2acf5c06e6cea7169afad0311fd4ec983b6ceabede43dafb391964cccd8b1d7c",
+  "human_acceptance": {
+    "review_receipt_identity": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    "reviewed_at": "2026-09-28T12:00:00Z",
+    "reviewer_id": "fixture-reviewer"
+  },
+  "schema": "editor-vnext-editor-voice-handoff-fixtures",
+  "schema_version": 1,
+  "setup_text": "Consiliul local din Brașov a aprobat 127 de milioane de lei pentru centrul medical Arin. Ministerul a precizat că finanțarea este aprobată, dar contractul nu a fost încă semnat.",
+  "source_packet": {
+    "event_id": "fixture:arin",
+    "packet_identity": "f910dbda089f296efdd39eb7efe8b1a6cbf301e67cabf5e96e165e9af39644a3",
+    "schema": "editor-vnext-source-packet",
+    "schema_version": 1,
+    "sources": [
+      {
+        "article_url": "https://fixture.invalid/public/arin",
+        "source_id": "fixture_public",
+        "text": "Consiliul local din Brașov a aprobat 127 de milioane de lei pentru centrul medical Arin.",
+        "text_sha256": "673cba6d7f86132109c24ab1016cde27cef6fa9ded23044aefec7c8136e5f95f"
+      },
+      {
+        "article_url": "https://fixture.invalid/ministry/arin",
+        "source_id": "fixture_ministry",
+        "text": "Ministerul a precizat că finanțarea este aprobată, dar contractul nu a fost încă semnat.",
+        "text_sha256": "12fa01306bb0cecf1a55dfddef6390d67f4455e500049929097ea5e4aeb85945"
+      }
+    ]
+  }
+}

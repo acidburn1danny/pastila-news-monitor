@@ -1,0 +1,22 @@
+{
+  "enforcement_enabled": false,
+  "fixture_identity": "2acf5c06e6cea7169afad0311fd4ec983b6ceabede43dafb391964cccd8b1d7c",
+  "legacy_dependency_count": 0,
+  "production_acceptance_policy_changed": false,
+  "result_identity": "35c92d93a92c38db2aa0d6684ebad0d81f2d2f8a86b031f4d0560637f84e572b",
+  "schema": "editor-vnext-editor-voice-handoff-diagnostic-result",
+  "schema_version": 1,
+  "setup_packet_identities": {
+    "ABSTAIN": "738e96a5fc6e058901fdf690890717548a3f28be6b870d0ef2e9105bd83b6223",
+    "DEVELOPMENT_UNREVIEWED": "9e2b84c04061ec6d5513fdb80671b48773c74a5f1b48dfbe8e0b948aba8f77d0",
+    "HUMAN_ACCEPTED": "5f3f96e4d302a56a6109ba4f2afd1b4054a79a510acd991fb110bd06f696cb5d",
+    "SOURCE_PRESERVING_FALLBACK": "c128bc3e9adbd9e5967186807a08c4da1d151a38ea17654552ec352158ebd900"
+  },
+  "status": "PASS_DIAGNOSTIC_ONLY",
+  "terminal_rule": "CONTINUE_TO_VOICE_RUNTIME_INVENTORY_WITH_DEVELOPMENT_ONLY_BOUNDARY",
+  "voice_input_identities": {
+    "DEVELOPMENT_UNREVIEWED": "6a80c80641f0d770b9d4d76d80d08f48c180dc0c973bce746d5680e48832a3e1",
+    "HUMAN_ACCEPTED": "6dd17931ed2e9ad29767a019d8c3833c8490c3e837c217e1c276e3a54612b84f",
+    "SOURCE_PRESERVING_FALLBACK": "2a8fbb584ac73b2339853ad23ddde62e9615e3e44f47bb746c9a5af2044fe971"
+  }
+}

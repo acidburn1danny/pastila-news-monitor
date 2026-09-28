@@ -1,0 +1,15 @@
+{
+  "schema": "editor-vnext-editor-voice-handoff-contract",
+  "schema_version": 1,
+  "diagnostic_only": true,
+  "enforcement_enabled": false,
+  "source_packet_contract_identity": "badaa72de4168e2c104496ad7aa38bba12118808fbdb4d475802a9bbb4e9adcf",
+  "editor_runtime_lock_identity": "58b22d87a50f9eb28592043e1fdeb1ba6eb841b2e103b65f30ebd710785731ca",
+  "states": ["DEVELOPMENT_UNREVIEWED", "SOURCE_PRESERVING_FALLBACK", "ABSTAIN", "HUMAN_ACCEPTED"],
+  "human_accepted": "OPTIONAL_EXTERNAL_AUTHORITY_ONLY; NOT_AN_IMPOSED_WORKFLOW",
+  "voice_input_authority": "EDITOR_SETUP_TEXT_ONLY",
+  "voice_may_add_factual_claims": false,
+  "voice_must_preserve_factual_setup": true,
+  "production_acceptance_policy_changed": false,
+  "forbidden_components": ["EVIDENCE_PACKET", "FACTUAL_LEDGER", "MODEL_JUDGE", "NLI", "SELECTOR"]
+}

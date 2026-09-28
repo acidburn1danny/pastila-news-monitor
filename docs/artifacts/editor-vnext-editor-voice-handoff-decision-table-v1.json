@@ -1,0 +1,9 @@
+{
+  "schema": "editor-vnext-editor-voice-handoff-decision-table",
+  "schema_version": 1,
+  "DEVELOPMENT_UNREVIEWED": {"voice_allowed": true, "development_only": true, "production_publish": false, "automatic": true},
+  "SOURCE_PRESERVING_FALLBACK": {"voice_allowed": true, "development_only": true, "production_publish": false, "automatic": true},
+  "ABSTAIN": {"voice_allowed": false, "development_only": true, "production_publish": false, "automatic": true},
+  "HUMAN_ACCEPTED": {"voice_allowed": true, "development_only": false, "production_publish": true, "automatic": false},
+  "terminal_rule": "CONTINUE_TO_VOICE_RUNTIME_INVENTORY_WITH_DEVELOPMENT_ONLY_BOUNDARY; STOP_BEFORE_PRODUCT_ACTIVATION_UNTIL_ACCEPTANCE_AUTHORITY_EXISTS"
+}
