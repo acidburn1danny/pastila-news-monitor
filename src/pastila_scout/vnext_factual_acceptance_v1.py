@@ -24,6 +24,62 @@ class FactualAcceptanceError(BoundaryError):
     pass
 
 
+def authorize_review_session(
+    store: SQLiteStateStore,
+    *,
+    workflow_identity: str,
+    packet: Mapping[str, object],
+    actor: str,
+    allowed_outcome: str,
+    authorization_identity: str,
+    draft: Mapping[str, object] | None = None,
+    invocation_receipt: Mapping[str, object] | None = None,
+    structural_failure: Mapping[str, object] | None = None,
+) -> dict[str, object]:
+    """Persist a single-use review grant under the SQLite writer authority."""
+    input_kind, input_identity = _review_input(
+        packet=packet,
+        draft=draft,
+        invocation_receipt=invocation_receipt,
+        structural_failure=structural_failure,
+    )
+    if allowed_outcome not in OUTCOMES or (allowed_outcome == "ACCEPT_DRAFT" and input_kind != "EDITOR_DRAFT"):
+        raise FactualAcceptanceError("review-session outcome is incompatible with input")
+    if not actor.strip() or _SHA256.fullmatch(authorization_identity) is None:
+        raise FactualAcceptanceError("review-session actor and authorization are required")
+    if store.load_workflow(workflow_identity)["state"] != "FACTUAL_REVIEW_PENDING":
+        raise FactualAcceptanceError("workflow is not ready to authorize factual review")
+    session: dict[str, object] = {
+        "schema": "vnext-factual-review-session",
+        "schema_version": 1,
+        "workflow_identity": workflow_identity,
+        "issued_by": store.writer_identity,
+        "actor": actor.strip(),
+        "source_packet_identity": packet["packet_identity"],
+        "input_kind": input_kind,
+        "input_identity": input_identity,
+        "allowed_outcome": allowed_outcome,
+        "authorization_identity": authorization_identity,
+        "status": "OPEN",
+    }
+    session["review_session_identity"] = object_identity(session)
+    with store.write() as connection:
+        row = connection.execute(
+            "SELECT current_state FROM workflows WHERE workflow_identity=?",
+            (workflow_identity,),
+        ).fetchone()
+        if row is None or row["current_state"] != "FACTUAL_REVIEW_PENDING":
+            raise FactualAcceptanceError("workflow changed before review authorization")
+        connection.execute(
+            "INSERT INTO review_sessions(review_session_identity,workflow_identity,issued_by,actor,source_packet_identity,input_kind,input_identity,allowed_outcome,authorization_identity,status,decision_identity) VALUES(?,?,?,?,?,?,?,?,?,?,NULL)",
+            (
+                session["review_session_identity"], workflow_identity, store.writer_identity, session["actor"],
+                packet["packet_identity"], input_kind, input_identity, allowed_outcome, authorization_identity, "OPEN",
+            ),
+        )
+    return session
+
+
 def _identity(value: Mapping[str, object], key: str) -> str:
     actual = value.get(key)
     if not isinstance(actual, str) or _SHA256.fullmatch(actual) is None or actual != object_identity({k: v for k, v in value.items() if k != key}):
@@ -48,15 +104,29 @@ def _review_input(*, packet: Mapping[str, object], draft: Mapping[str, object] |
     return "STRUCTURAL_FAILURE", str(structural_failure["failure_identity"])
 
 
-def build_review_decision(*, workflow_identity: str, review_session_identity: str,
+def build_review_decision(*, workflow_identity: str, review_session: Mapping[str, object],
                           packet: Mapping[str, object], outcome: str, actor: str,
                           reason_code: str, draft: Mapping[str, object] | None = None,
                           invocation_receipt: Mapping[str, object] | None = None,
                           structural_failure: Mapping[str, object] | None = None,
                           fallback_span_ids: Sequence[str] = ()) -> dict[str, object]:
     input_kind, input_identity = _review_input(packet=packet, draft=draft, invocation_receipt=invocation_receipt, structural_failure=structural_failure)
-    if not workflow_identity or _SHA256.fullmatch(review_session_identity) is None:
-        raise FactualAcceptanceError("workflow and review-session authority are required")
+    review_session_identity = review_session.get("review_session_identity")
+    if (
+        not workflow_identity
+        or review_session.get("schema") != "vnext-factual-review-session"
+        or review_session.get("schema_version") != 1
+        or review_session.get("workflow_identity") != workflow_identity
+        or review_session.get("source_packet_identity") != packet.get("packet_identity")
+        or review_session.get("input_kind") != input_kind
+        or review_session.get("input_identity") != input_identity
+        or review_session.get("status") != "OPEN"
+        or review_session.get("allowed_outcome") != outcome
+        or review_session.get("actor") != actor.strip()
+        or _SHA256.fullmatch(str(review_session.get("authorization_identity"))) is None
+        or review_session_identity != object_identity({k: v for k, v in review_session.items() if k != "review_session_identity"})
+    ):
+        raise FactualAcceptanceError("persisted review-session authority is incompatible")
     if outcome not in OUTCOMES or (outcome == "ACCEPT_DRAFT" and input_kind != "EDITOR_DRAFT"):
         raise FactualAcceptanceError("outcome is incompatible with factual review input")
     if not actor.strip() or not reason_code.strip():
@@ -74,7 +144,7 @@ def build_review_decision(*, workflow_identity: str, review_session_identity: st
         "actor": actor.strip(), "reason_code": reason_code.strip(),
         "source_packet_identity": packet["packet_identity"], "input_kind": input_kind,
         "input_identity": input_identity, "fallback_span_ids": list(span_ids),
-        "authority_mode": "EXPLICIT_TRUSTED_REVIEW_SESSION",
+        "authority_mode": "PERSISTED_SINGLE_USE_REVIEW_SESSION",
     }
     decision["decision_identity"] = object_identity(decision)
     return decision
@@ -87,8 +157,8 @@ def validate_review_decision(decision: Mapping[str, object], *, workflow_identit
         raise FactualAcceptanceError("factual decision schema mismatch")
     if decision.get("decision_kind") != "FACTUAL" or decision.get("outcome") not in OUTCOMES:
         raise FactualAcceptanceError("factual decision kind/outcome mismatch")
-    if decision.get("authority_mode") != "EXPLICIT_TRUSTED_REVIEW_SESSION" or _SHA256.fullmatch(str(decision.get("review_session_identity"))) is None:
-        raise FactualAcceptanceError("trusted review-session authority missing")
+    if decision.get("authority_mode") != "PERSISTED_SINGLE_USE_REVIEW_SESSION" or _SHA256.fullmatch(str(decision.get("review_session_identity"))) is None:
+        raise FactualAcceptanceError("persisted review-session authority missing")
     if decision.get("workflow_identity") != workflow_identity or decision.get("source_packet_identity") != packet.get("packet_identity") or decision.get("input_kind") != input_kind or decision.get("input_identity") != input_identity:
         raise FactualAcceptanceError("factual decision provenance mismatch")
     if input_kind == "STRUCTURAL_FAILURE" and decision.get("outcome") == "ACCEPT_DRAFT":
@@ -179,7 +249,28 @@ def persist_factual_result(store: SQLiteStateStore, *, workflow_identity: str, p
         else:
             atomic_json(path, dict(value), root=store.root, overwrite=False)
     def persist_rows(connection: object) -> None:
+        session = connection.execute(
+            "SELECT workflow_identity,issued_by,actor,source_packet_identity,input_kind,input_identity,allowed_outcome,authorization_identity,status FROM review_sessions WHERE review_session_identity=?",
+            (decision["review_session_identity"],),
+        ).fetchone()
+        expected_session = (
+            workflow_identity,
+            store.writer_identity,
+            decision["actor"],
+            packet["packet_identity"],
+            decision["input_kind"],
+            decision["input_identity"],
+            decision["outcome"],
+        )
+        if session is None or tuple(session[:7]) != expected_session or _SHA256.fullmatch(str(session["authorization_identity"])) is None or session["status"] != "OPEN":
+            raise FactualAcceptanceError("review session is absent, mismatched, or consumed")
         connection.execute("INSERT INTO workflow_artifacts VALUES(?,?,?,?,?,?)", (artifact["artifact_identity"], workflow_identity, kind, artifact["artifact_identity"], paths[0][0].as_posix(), "vnext-factual-output-v2"))
         connection.execute("INSERT INTO decisions VALUES(?,?,?,?,?,?,?)", (decision["decision_identity"], workflow_identity, "FACTUAL", decision["outcome"], decision["actor"], decision["input_identity"], receipt["receipt_identity"]))
+        changed = connection.execute(
+            "UPDATE review_sessions SET status='CONSUMED',decision_identity=? WHERE review_session_identity=? AND status='OPEN'",
+            (decision["decision_identity"], decision["review_session_identity"]),
+        ).rowcount
+        if changed != 1:
+            raise FactualAcceptanceError("review session was not consumed exactly once")
     operation = object_identity({"workflow": workflow_identity, "decision": decision["decision_identity"], "output": artifact["artifact_identity"]})
     store.transition(TransitionRequest(workflow_identity, "factual:adjudicate", "FACTUAL_REVIEW_PENDING", kind, "FACTUAL_REVIEW", str(decision["outcome"]), str(decision["input_identity"]), str(artifact["artifact_identity"]), f"attempt:{operation}", f"idempotency:{operation}", observed_at, {"component": "VNext Cross-Component Authority, Artifact Ownership & Factual Acceptance Repair v1", "decision_receipt_identity": str(receipt["receipt_identity"])}), before_commit=persist_rows)

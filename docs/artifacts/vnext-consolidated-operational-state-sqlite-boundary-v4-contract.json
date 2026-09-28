@@ -1,0 +1,40 @@
+{
+  "active_integration": false,
+  "authority": {
+    "foundation_commit": "05083563f5d7a312642e1cb940da71e92c63b5b8",
+    "workflow_v3_identity": "8fab885d9c0563972acaed8c1f75e4dda91b9da6eccb40d0c258a9b1b788363a"
+  },
+  "authority_identity": "da2ba911ff7b0d056be6e5622ebe3fc87917353e66c7f0a13a6e1840ae8bba2a",
+  "legacy_dependency_count": 0,
+  "migration": {
+    "from": 3,
+    "monotonic": true,
+    "new_authority_table": "review_sessions",
+    "preserves_existing_rows": true,
+    "session_statuses": [
+      "OPEN",
+      "CONSUMED"
+    ],
+    "single_open_session_per_input": true,
+    "to": 4
+  },
+  "persistence": {
+    "eligibility_authority": "SQLITE_WORKFLOW_ASSOCIATION_AND_STATE",
+    "insert_or_ignore_authority_rows": false,
+    "review_authority": "PERSISTED_WORKFLOW_BOUND_SINGLE_USE_SESSION",
+    "self_asserted_session_identity_accepted": false,
+    "session_consumption_atomic_with_decision": true,
+    "session_issuer": "SQLITE_SINGLE_WRITER_IDENTITY",
+    "session_source_packet_bound": true,
+    "strict_authoritative_inserts": true,
+    "unassociated_blob_eligible": false
+  },
+  "product_data_migration": false,
+  "product_root_dependency": false,
+  "schema": "vnext-consolidated-operational-state-sqlite-boundary",
+  "schema_version": 4,
+  "status": "SUCCESSOR_TRUSTED_REVIEW_REPAIR_ISOLATED_NOT_ACTIVE",
+  "stop_all_candidates": true,
+  "supersedes": "vnext-consolidated-operational-state-sqlite-boundary-v3",
+  "voice": "DISABLED_UNTIL_PROMOTION"
+}

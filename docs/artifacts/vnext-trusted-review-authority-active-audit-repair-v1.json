@@ -1,0 +1,46 @@
+{
+  "active_graph_decisions": {
+    "canonical_source_packet": "DIRECT",
+    "compatibility_adapter": "EXCLUDED_HISTORICAL",
+    "current_auditor_count": 1,
+    "historical_auditors": "HISTORICAL_COMMIT_ONLY"
+  },
+  "authority_bindings": {
+    "active_manifest_identity": "62fee2fd38c4c08e29a554480f0a34407f290301048083cc9a68b335c2c6852f",
+    "sqlite_v4_identity": "da2ba911ff7b0d056be6e5622ebe3fc87917353e66c7f0a13a6e1840ae8bba2a",
+    "workflow_v3_identity": "8fab885d9c0563972acaed8c1f75e4dda91b9da6eccb40d0c258a9b1b788363a"
+  },
+  "blocker_closure": {
+    "inconsistent_active_audit_chain": {
+      "repair": "ONE_CURRENT_AUDITOR_PLUS_EXPLICIT_HISTORICAL_COMMIT_BINDINGS",
+      "status": "CLOSED"
+    },
+    "self_asserted_review_session": {
+      "atomic_consumption": true,
+      "repair": "PERSISTED_WORKFLOW_BOUND_SINGLE_USE_SESSION",
+      "status": "CLOSED"
+    }
+  },
+  "bound_commit": "214e41fc1d4f6ba42dbafbb60b3467167e74a250",
+  "closure_identity": "05f273878bde96230fa83d31d98720f24d136e935924f931f890c2aab65282c4",
+  "invariants": {
+    "active_integration": false,
+    "audit_streak": "0/2",
+    "final_implemented": false,
+    "legacy_dependency_count": 0,
+    "orchestrator_implemented": false,
+    "product_lock_replaced": false,
+    "product_root_modified": false,
+    "stop_all_candidates": true,
+    "voice": "DISABLED_UNTIL_PROMOTION"
+  },
+  "schema": "vnext-trusted-review-authority-active-audit-repair",
+  "schema_version": 1,
+  "status": "ISOLATED_NOT_ACTIVE",
+  "validation": {
+    "fresh_current_audit": "PASS",
+    "fresh_tests": "89_PASS",
+    "historical_evidence_modified": false,
+    "legacy_dependency_count": 0
+  }
+}

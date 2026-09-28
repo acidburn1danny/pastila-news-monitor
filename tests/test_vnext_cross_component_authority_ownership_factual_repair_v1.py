@@ -17,6 +17,7 @@ from pastila_scout.vnext_editor_vertical_slice_v1 import (
 from pastila_scout.vnext_factual_acceptance_v1 import (
     FactualAcceptanceError,
     adjudicate,
+    authorize_review_session,
     build_review_decision,
     persist_factual_result,
 )
@@ -56,12 +57,16 @@ def prepare(store, flow, *, failure=False):
     return packet, invocation, draft, failed
 
 
-def decide(flow, outcome, *, failure=False):
+def decide(store, flow, outcome, *, failure=False):
     packet, invocation, draft, failed = inputs(); spans = [packet["spans"][0]["span_id"]] if outcome == "APPROVE_SOURCE_FALLBACK" else []
     kwargs = {"structural_failure": failed} if failure else {"draft": draft, "invocation_receipt": invocation}
-    decision = build_review_decision(workflow_identity=flow, review_session_identity=object_identity({"session": flow}), packet=packet, outcome=outcome, actor="owner", reason_code="REVIEWED", fallback_span_ids=spans, **kwargs)
+    session = authorize_review_session(
+        store, workflow_identity=flow, packet=packet, actor="owner", allowed_outcome=outcome,
+        authorization_identity=object_identity({"owner-authorization": flow, "outcome": outcome}), **kwargs,
+    )
+    decision = build_review_decision(workflow_identity=flow, review_session=session, packet=packet, outcome=outcome, actor="owner", reason_code="REVIEWED", fallback_span_ids=spans, **kwargs)
     receipt, artifact = adjudicate(workflow_identity=flow, packet=packet, decision=decision, **kwargs)
-    return packet, invocation, draft, failed, decision, receipt, artifact
+    return packet, invocation, draft, failed, session, decision, receipt, artifact
 
 
 def test_workflow_authority_exactly_matches_executable_contract():
@@ -73,26 +78,28 @@ def test_workflow_authority_exactly_matches_executable_contract():
 
 
 @pytest.mark.parametrize(("outcome", "kind"), (("ACCEPT_DRAFT", "ACCEPTED_SETUP"), ("APPROVE_SOURCE_FALLBACK", "SOURCE_FALLBACK"), ("ABSTAIN", "ABSTAINED")))
-def test_draft_review_has_three_exclusive_bound_results(outcome, kind):
-    *_, decision, receipt, artifact = decide("flow", outcome)
+def test_draft_review_has_three_exclusive_bound_results(tmp_path, outcome, kind):
+    store = SQLiteStateStore(root=tmp_path, database=Path("state.db"), writer_identity="writer"); store.bootstrap(); prepare(store, "flow")
+    *_, decision, receipt, artifact = decide(store, "flow", outcome)
     assert artifact["artifact_kind"] == kind and artifact["workflow_identity"] == "flow"
-    assert decision["authority_mode"] == "EXPLICIT_TRUSTED_REVIEW_SESSION"
+    assert decision["authority_mode"] == "PERSISTED_SINGLE_USE_REVIEW_SESSION"
     assert receipt["workflow_identity"] == "flow"
 
 
-def test_structural_failure_uses_same_gate_and_cannot_be_accepted():
-    *_, artifact = decide("failed", "APPROVE_SOURCE_FALLBACK", failure=True)
+def test_structural_failure_uses_same_gate_and_cannot_be_accepted(tmp_path):
+    store = SQLiteStateStore(root=tmp_path, database=Path("state.db"), writer_identity="writer"); store.bootstrap(); prepare(store, "failed", failure=True)
+    *_, artifact = decide(store, "failed", "APPROVE_SOURCE_FALLBACK", failure=True)
     assert artifact["artifact_kind"] == "SOURCE_FALLBACK" and artifact["review_input_kind"] == "STRUCTURAL_FAILURE"
     packet, _, _, failed = inputs()
     with pytest.raises(FactualAcceptanceError, match="incompatible"):
-        build_review_decision(workflow_identity="failed", review_session_identity="a" * 64, packet=packet, outcome="ACCEPT_DRAFT", actor="owner", reason_code="bad", structural_failure=failed)
+        authorize_review_session(store, workflow_identity="failed", packet=packet, actor="owner", allowed_outcome="ACCEPT_DRAFT", authorization_identity="a" * 64, structural_failure=failed)
 
 
 def test_workflow_bound_identity_and_cross_workflow_associations(tmp_path):
     store = SQLiteStateStore(root=tmp_path, database=Path("state.db"), writer_identity="writer"); store.bootstrap()
-    assert SCHEMA_VERSION == 3
+    assert SCHEMA_VERSION == 4
     for flow in ("flow-a", "flow-b"):
-        prepare(store, flow); packet, invocation, draft, _, decision, receipt, artifact = decide(flow, "ACCEPT_DRAFT")
+        prepare(store, flow); packet, invocation, draft, _, _, decision, receipt, artifact = decide(store, flow, "ACCEPT_DRAFT")
         persist_factual_result(store, workflow_identity=flow, packet=packet, draft=draft, invocation_receipt=invocation, decision=decision, receipt=receipt, artifact=artifact, observed_at="2026-09-29T00:01:00Z")
     with store.read() as connection:
         assert connection.execute("SELECT COUNT(*) FROM workflow_artifacts WHERE artifact_kind='EDITOR_DRAFT'").fetchone()[0] == 2
@@ -105,7 +112,7 @@ def test_structural_failure_persists_noneligible_then_reviewed_fallback(tmp_path
     store = SQLiteStateStore(root=tmp_path, database=Path("state.db"), writer_identity="writer"); store.bootstrap()
     prepare(store, "failed", failure=True)
     assert store.load_workflow("failed")["state"] == "FACTUAL_REVIEW_PENDING"
-    packet, _, _, failed, decision, receipt, artifact = decide("failed", "APPROVE_SOURCE_FALLBACK", failure=True)
+    packet, _, _, failed, _, decision, receipt, artifact = decide(store, "failed", "APPROVE_SOURCE_FALLBACK", failure=True)
     persist_factual_result(store, workflow_identity="failed", packet=packet, structural_failure=failed, decision=decision, receipt=receipt, artifact=artifact, observed_at="2026-09-29T00:01:00Z")
     with store.read() as connection:
         assert connection.execute("SELECT artifact_kind FROM workflow_artifacts WHERE artifact_kind='STRUCTURAL_FAILURE'").fetchone()[0] == "STRUCTURAL_FAILURE"
@@ -114,13 +121,34 @@ def test_structural_failure_persists_noneligible_then_reviewed_fallback(tmp_path
 
 def test_wrong_workflow_or_tampering_fails_before_publication(tmp_path):
     store = SQLiteStateStore(root=tmp_path, database=Path("state.db"), writer_identity="writer"); store.bootstrap(); prepare(store, "flow")
-    packet, invocation, draft, _, decision, receipt, artifact = decide("other", "ACCEPT_DRAFT")
+    (tmp_path / "other").mkdir(); other = SQLiteStateStore(root=tmp_path / "other", database=Path("state.db"), writer_identity="writer"); other.bootstrap(); prepare(other, "other")
+    packet, invocation, draft, _, _, decision, receipt, artifact = decide(other, "other", "ACCEPT_DRAFT")
     before = sorted(path.relative_to(tmp_path) for path in tmp_path.rglob("*.json"))
     with pytest.raises(FactualAcceptanceError, match="provenance|workflow"):
         persist_factual_result(store, workflow_identity="flow", packet=packet, draft=draft, invocation_receipt=invocation, decision=decision, receipt=receipt, artifact=artifact, observed_at="2026-09-29T00:01:00Z")
     assert sorted(path.relative_to(tmp_path) for path in tmp_path.rglob("*.json")) == before
     changed = copy.deepcopy(decision); changed["actor"] = "attacker"
     with pytest.raises(FactualAcceptanceError): adjudicate(workflow_identity="other", packet=packet, draft=draft, invocation_receipt=invocation, decision=changed)
+
+
+def test_unregistered_or_replayed_review_session_is_rejected(tmp_path):
+    store = SQLiteStateStore(root=tmp_path, database=Path("state.db"), writer_identity="writer"); store.bootstrap(); packet, invocation, draft, _ = prepare(store, "flow")
+    fake = {
+        "schema": "vnext-factual-review-session", "schema_version": 1, "workflow_identity": "flow",
+        "issued_by": "writer", "actor": "owner", "source_packet_identity": packet["packet_identity"], "input_kind": "EDITOR_DRAFT",
+        "input_identity": draft["draft_identity"], "allowed_outcome": "ACCEPT_DRAFT",
+        "authorization_identity": "a" * 64, "status": "OPEN",
+    }
+    fake["review_session_identity"] = object_identity(fake)
+    decision = build_review_decision(workflow_identity="flow", review_session=fake, packet=packet, outcome="ACCEPT_DRAFT", actor="owner", reason_code="REVIEWED", draft=draft, invocation_receipt=invocation)
+    receipt, artifact = adjudicate(workflow_identity="flow", packet=packet, decision=decision, draft=draft, invocation_receipt=invocation)
+    with pytest.raises(FactualAcceptanceError, match="absent"):
+        persist_factual_result(store, workflow_identity="flow", packet=packet, draft=draft, invocation_receipt=invocation, decision=decision, receipt=receipt, artifact=artifact, observed_at="2026-09-29T00:01:00Z")
+
+    _, _, _, _, _, valid_decision, valid_receipt, valid_artifact = decide(store, "flow", "ACCEPT_DRAFT")
+    persist_factual_result(store, workflow_identity="flow", packet=packet, draft=draft, invocation_receipt=invocation, decision=valid_decision, receipt=valid_receipt, artifact=valid_artifact, observed_at="2026-09-29T00:01:00Z")
+    with store.read() as connection:
+        assert connection.execute("SELECT status FROM review_sessions").fetchone()[0] == "CONSUMED"
 
 
 def test_successor_fixture_is_utf8_and_content_addressed():

@@ -1,0 +1,65 @@
+{
+  "active_authorities": {
+    "sqlite": {
+      "identity": "da2ba911ff7b0d056be6e5622ebe3fc87917353e66c7f0a13a6e1840ae8bba2a",
+      "identity_key": "authority_identity",
+      "path": "docs/artifacts/vnext-consolidated-operational-state-sqlite-boundary-v4-contract.json"
+    },
+    "workflow": {
+      "identity": "8fab885d9c0563972acaed8c1f75e4dda91b9da6eccb40d0c258a9b1b788363a",
+      "identity_key": "authority_identity",
+      "path": "docs/artifacts/vnext-active-product-workflow-state-contract-v3.json"
+    }
+  },
+  "active_runtime_modules": [
+    "src/pastila_scout/vnext_foundation_v1.py",
+    "src/pastila_scout/vnext_workflow_v1.py",
+    "src/pastila_scout/vnext_state_sqlite_v1.py",
+    "src/pastila_scout/vnext_scout_production_v1.py",
+    "src/pastila_scout/vnext_editor_vertical_slice_v1.py",
+    "src/pastila_scout/vnext_factual_acceptance_v1.py"
+  ],
+  "bound_commit": "214e41fc1d4f6ba42dbafbb60b3467167e74a250",
+  "current_auditor": "scripts/audit_vnext_trusted_review_authority_active_audit_repair_v1.py",
+  "excluded_from_active_graph": [
+    {
+      "path": "src/pastila_scout/vnext_sourcepacket_binding_v1.py",
+      "reason": "SUPERSEDED_COMPATIBILITY_ADAPTER_CANONICAL_SOURCE_PACKET_USED_DIRECTLY"
+    },
+    {
+      "category": "HISTORICAL_COMPONENT_AUDITORS",
+      "reason": "REPRODUCE_ONLY_AT_BOUND_COMMIT"
+    },
+    {
+      "category": "EVALUATION_AND_FROZEN_EVIDENCE",
+      "reason": "NOT_RUNTIME_DEPENDENCY"
+    }
+  ],
+  "historical_commit_only_auditors": [
+    {
+      "commit": "b30c962b",
+      "path": "scripts/audit_vnext_consolidated_operational_state_sqlite_boundary_v1.py"
+    },
+    {
+      "commit": "a85fa31d",
+      "path": "scripts/audit_vnext_scout_production_closure_v1.py"
+    },
+    {
+      "commit": "2a934cec",
+      "path": "scripts/audit_vnext_sourcepacket_production_binding_v1.py"
+    }
+  ],
+  "invariants": {
+    "active_integration": false,
+    "final_implemented": false,
+    "legacy_dependency_count": 0,
+    "orchestrator_implemented": false,
+    "product_lock_replaced": false,
+    "stop_all_candidates": true,
+    "voice": "DISABLED_UNTIL_PROMOTION"
+  },
+  "manifest_identity": "62fee2fd38c4c08e29a554480f0a34407f290301048083cc9a68b335c2c6852f",
+  "schema": "vnext-active-authority-audit-manifest",
+  "schema_version": 1,
+  "status": "SUCCESSOR_ISOLATED_NOT_ACTIVE"
+}
