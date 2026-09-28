@@ -1,0 +1,117 @@
+{
+  "bindings": {
+    "candidate_lock_identity": "3aca84d7470bc56c976bd5fd7101daf978a138ecb025ae1d17661a07c21b14ee",
+    "candidates": [
+      {
+        "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+        "revision": "BOUND_BY_VNEXT_R2_LOCK_53fafbc03f70c8c32357645a6a428260f1bdfbd104edbe1c4aa825e95c83a10f",
+        "root": "components/r2-reference-v1",
+        "tokenizer_sha256": "d5f6046775b112f0e2d456ee9dba450684ab964fe5c4e231599bdc6773028135"
+      },
+      {
+        "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+        "revision": "b968826d9c46dd6066d109eabc6255188de91218",
+        "root": "components/voice-candidates-v1/qwen3-8b",
+        "tokenizer_sha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4"
+      },
+      {
+        "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+        "revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+        "root": "components/voice-candidates-v1/qwen2.5-7b-instruct",
+        "tokenizer_sha256": "c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539"
+      }
+    ],
+    "plan_identity": "2ddc49ed46d0e891aef7b69b4874de5305c32346b8ec0962f296c50859faaa61",
+    "r2_lock_identity": "53fafbc03f70c8c32357645a6a428260f1bdfbd104edbe1c4aa825e95c83a10f"
+  },
+  "boundary_identity": "bea8d2764dc361eac2787776a4ec7d6d515ce218c2b682269b017ed9119f6531",
+  "decoding": {
+    "do_sample": false,
+    "identity": "VOICE_BAKEOFF_DETERMINISTIC_DECODING_V1",
+    "max_new_tokens": 256,
+    "qwen3_enable_thinking": false,
+    "structured_json": true,
+    "temperature": null,
+    "top_p": null
+  },
+  "dispatch": {
+    "identity": "5bad1dc1071d948fd476c618f5eba3fb12ee1e2221aa0a40607f0443a3fe9b38",
+    "per_candidate": {
+      "V0_R2_MINISTRAL_CONTROL": 72,
+      "V1_QWEN3_8B_NON_THINKING": 72,
+      "V2_QWEN25_7B_INSTRUCT": 72
+    },
+    "review_answer_key_dependency": false,
+    "rows": 216,
+    "runtime_path": "editor-vnext-voice-bakeoff-car-dispatch-v1.jsonl"
+  },
+  "execution": {
+    "attempt_ceiling": 1,
+    "authorized": false,
+    "automatic_retry": false,
+    "inference": false,
+    "model_load": false,
+    "outputs_completed": 0,
+    "stop_on_first_terminal_failure": true
+  },
+  "factual_invariants": [
+    "EDITOR_SETUP_BYTES_IMMUTABLE",
+    "COMMENTARY_SEPARATE",
+    "NO_NEW_FACTUAL_CLAIMS",
+    "ABSTENTION_ALLOWED",
+    "NO_SOURCEPACKET_AUTHORITY_FOR_VOICE"
+  ],
+  "isolation": {
+    "dispatch_visibility": "SUPERVISOR_AND_WORKER_ONLY",
+    "review_answer_key_access": "FORBIDDEN",
+    "review_visibility": "BLIND_LABEL_ONLY",
+    "scoring_access": "FORBIDDEN",
+    "unseal_access": "FORBIDDEN"
+  },
+  "matrix": {
+    "candidates": 3,
+    "cases": 24,
+    "seeds": [
+      161803,
+      271828,
+      314159
+    ],
+    "slots": 216
+  },
+  "parent_authority_identity": "ca31fa6ea9b221e53897e34c2c7e108db4e5dc030ed680a9083d57e733b5fe43",
+  "publication": {
+    "atomic_outputs": true,
+    "partial_eligible_evidence": false,
+    "terminal_receipt_last": true
+  },
+  "schema": "editor-vnext-voice-bakeoff-car-execution-authority",
+  "schema_version": 1,
+  "source_authority_commit": "a64097f72cee9927ea5dbfe1f2f8ddf69925d9ad",
+  "status": "PASS_CAR_BOUND_STOP_BEFORE_MODEL_LOAD",
+  "successor_authority_identity": "ba6c35e1f3abe2744c8e6341ddfd517307f40e755a98d5fb6fd00128203e5add",
+  "terminal_rules": {
+    "CONTINUE": [
+      "ZERO_FACTUAL_DRIFT",
+      "ZERO_SETUP_MUTATION",
+      "DEPENDENCY_GATES_PASS",
+      "SIGN_TEST_P_LT_0_05",
+      "AT_LEAST_15_WINS_AT_MOST_5_LOSSES",
+      "REPLICATED_TWO_SEEDS",
+      "NO_REPETITION_REGRESSION"
+    ],
+    "REVISE": [
+      "STRUCTURAL_FAILURE_ABOVE_2_PERCENT",
+      "ABSTENTION_ABOVE_20_PERCENT",
+      "LATENCY_ABOVE_30_SECONDS",
+      "NON_REPLICATED_QUALITY_ADVANTAGE"
+    ],
+    "STOP": [
+      "IDENTITY_DRIFT",
+      "SETUP_MUTATION",
+      "UNSUPPORTED_FACTUAL_CLAIM",
+      "OOM",
+      "VRAM_ABOVE_14_5_GIB",
+      "LEGACY_DEPENDENCY"
+    ]
+  }
+}
