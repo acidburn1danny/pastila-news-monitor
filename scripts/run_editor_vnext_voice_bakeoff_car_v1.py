@@ -6,7 +6,11 @@ from pathlib import Path
 def canonical(v): return json.dumps(v,ensure_ascii=False,allow_nan=False,sort_keys=True,separators=(",",":")).encode()
 def sha(b): return hashlib.sha256(b).hexdigest()
 def atomic(path,value):
-    path.parent.mkdir(parents=True,exist_ok=True); tmp=path.with_suffix(path.suffix+".tmp"); tmp.write_bytes(json.dumps(value,ensure_ascii=False,sort_keys=True,indent=2).encode()+b"\n"); os.fsync(tmp.open("rb").fileno()) if False else None; tmp.replace(path)
+    path.parent.mkdir(parents=True,exist_ok=True); tmp=path.with_suffix(path.suffix+".tmp")
+    with tmp.open("wb") as stream:
+        stream.write(json.dumps(value,ensure_ascii=False,sort_keys=True,indent=2).encode()+b"\n")
+        stream.flush(); os.fsync(stream.fileno())
+    tmp.replace(path)
 def rows(path): return [json.loads(x) for x in path.read_text(encoding="utf-8").splitlines()]
 def prompt(case):
     return [{"role":"system","content":"Ești VOICE pentru Pastila Acidă. Primești un setup factual imuabil. Scrie numai commentary separat. Nu adăuga actori, evenimente, cifre, date, statut sau alte afirmații factuale. Poți abstine. Returnează JSON: {\"commentary\": string, \"abstained\": boolean}."},{"role":"user","content":"EDITOR_SETUP_IMMUTABLE:\n"+case["factual_setup"]+"\nINSTRUCȚIUNE:\n"+case["bounded_voice_instruction"]}]

@@ -13,3 +13,5 @@ def test_tamper_identity():
  a=json.loads((P/"editor-vnext-voice-bakeoff-car-execution-authority-v1.json").read_text()); a["matrix"]["slots"]=215; assert identify(a,"successor_authority_identity")["successor_authority_identity"]!=a["successor_authority_identity"]
 def test_worker_is_inference_only():
  s=Path("scripts/run_editor_vnext_voice_bakeoff_car_v1.py").read_text(); assert "model.generate" in s and "optimizer" not in s.lower().replace('"optimizer":false','') and "train(" not in s
+def test_atomic_publication_is_durable():
+ s=Path("scripts/run_editor_vnext_voice_bakeoff_car_v1.py").read_text(); assert "stream.flush()" in s and "os.fsync(stream.fileno())" in s and "tmp.replace(path)" in s
