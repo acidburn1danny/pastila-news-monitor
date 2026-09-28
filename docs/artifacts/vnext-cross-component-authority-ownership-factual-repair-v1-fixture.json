@@ -1,0 +1,17 @@
+{
+  "bound_commit": "70b5b04ae06f1f4c469413e7365a6812079f8614",
+  "expected_terminal_states": [
+    "ACCEPTED_SETUP",
+    "SOURCE_FALLBACK",
+    "ABSTAINED"
+  ],
+  "fixture_identity": "072b14177fc49c571f46f303f7ab98d7cb2cc99b3d9478523785429df36369bb",
+  "review_session_identity": "ec6b961da71e8a978316883e29629656c439a3cfb3920dc42627652adf094863",
+  "romanian_text": "Știrea păstrează finanțarea, atribuirea și situația încă nesemnată.",
+  "schema": "vnext-cross-component-authority-ownership-factual-repair-fixture",
+  "schema_version": 1,
+  "workflow_ids": [
+    "flow-a",
+    "flow-b"
+  ]
+}

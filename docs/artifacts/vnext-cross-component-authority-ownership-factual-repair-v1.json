@@ -1,0 +1,39 @@
+{
+  "authority_bindings": {
+    "editor_vertical_slice_identity": "39a947c56a96d338b9c3fbbce23bf01f1f44e81790d2a1270e0bde9ac3646db1",
+    "fixture_identity": "072b14177fc49c571f46f303f7ab98d7cb2cc99b3d9478523785429df36369bb",
+    "sqlite_v3_identity": "13ce5eb6fe5cdab7b2b3089086b9bce79f26a161d27ec3aa01f9f9c1aa6ce9da",
+    "workflow_v3_identity": "8fab885d9c0563972acaed8c1f75e4dda91b9da6eccb40d0c258a9b1b788363a"
+  },
+  "bound_commit": "70b5b04ae06f1f4c469413e7365a6812079f8614",
+  "closure_identity": "534b949de4e3afa77f25c7830e9688a97d59737fb7dbd307187c769a2c2c3ec1",
+  "eligibility": {
+    "authority": "SQLITE_WORKFLOW_ASSOCIATION_AND_STATE",
+    "editor_draft_eligible": false,
+    "structural_failure_eligible": false,
+    "unassociated_blob_eligible": false
+  },
+  "invariants": {
+    "active_integration": false,
+    "final_implemented": false,
+    "legacy_dependency_count": 0,
+    "orchestrator_implemented": false,
+    "product_lock_replaced": false,
+    "product_root_modified": false,
+    "stop_all_candidates": true,
+    "voice": "DISABLED_UNTIL_PROMOTION"
+  },
+  "repairs": [
+    "EXHAUSTIVE_WORKFLOW_AUTHORITY",
+    "WORKFLOW_BOUND_ARTIFACT_ASSOCIATION",
+    "WORKFLOW_BOUND_FACTUAL_DECISION",
+    "STRUCTURAL_FAILURE_REVIEW_GATE",
+    "STRICT_AUTHORITY_INSERTS",
+    "TRUSTED_REVIEW_SESSION_BINDING",
+    "UTF8_SUCCESSOR_FIXTURE"
+  ],
+  "replaces_local_unpublished_commit": "97cbadd04b6eb0150e3c28d6d3e4ee6b474f6f36",
+  "schema": "vnext-cross-component-authority-ownership-factual-repair",
+  "schema_version": 1,
+  "status": "ISOLATED_NOT_ACTIVE"
+}

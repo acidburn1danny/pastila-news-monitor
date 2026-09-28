@@ -25,7 +25,7 @@ from .vnext_workflow_v1 import (
     validate_workflow,
 )
 
-SCHEMA_VERSION = 2
+SCHEMA_VERSION = 3
 DEFAULT_BUSY_TIMEOUT_MS = 5_000
 MIGRATION_1 = (
     "CREATE TABLE schema_migrations (version INTEGER PRIMARY KEY, migration_identity TEXT NOT NULL UNIQUE, applied_by TEXT NOT NULL)",
@@ -48,7 +48,13 @@ MIGRATION_2 = (
     "DROP TABLE workflow_artifacts",
     "ALTER TABLE workflow_artifacts_v2 RENAME TO workflow_artifacts",
 )
-MIGRATIONS = {1: MIGRATION_1, 2: MIGRATION_2}
+MIGRATION_3 = (
+    "CREATE TABLE workflow_artifacts_v3 (artifact_identity TEXT NOT NULL, workflow_identity TEXT NOT NULL REFERENCES workflows(workflow_identity), artifact_kind TEXT NOT NULL CHECK(artifact_kind IN ('EDITOR_DRAFT','STRUCTURAL_FAILURE','ACCEPTED_SETUP','SOURCE_FALLBACK','ABSTAINED','VOICE_DRAFT','FINAL_OUTPUT')), payload_identity TEXT NOT NULL, payload_ref TEXT NOT NULL, schema_identity TEXT NOT NULL, PRIMARY KEY(workflow_identity,artifact_identity))",
+    "INSERT INTO workflow_artifacts_v3 SELECT * FROM workflow_artifacts",
+    "DROP TABLE workflow_artifacts",
+    "ALTER TABLE workflow_artifacts_v3 RENAME TO workflow_artifacts",
+)
+MIGRATIONS = {1: MIGRATION_1, 2: MIGRATION_2, 3: MIGRATION_3}
 
 
 class StateBoundaryError(BoundaryError):

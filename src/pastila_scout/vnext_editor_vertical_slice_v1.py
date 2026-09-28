@@ -172,6 +172,42 @@ def validate_editor_draft(
         raise EditorVerticalSliceError("EditorDraft identity mismatch")
 
 
+def build_structural_failure(
+    packet: Mapping[str, object], *, failure_code: str, evidence_identity: str,
+) -> dict[str, object]:
+    """Create bounded evidence for the review-gated structural recovery path."""
+    validate_scout_packet(packet)
+    if not failure_code or _SHA256.fullmatch(evidence_identity) is None:
+        raise EditorVerticalSliceError("invalid structural failure evidence")
+    failure: dict[str, object] = {
+        "schema": "vnext-editor-structural-failure", "schema_version": 1,
+        "artifact_kind": "STRUCTURAL_FAILURE",
+        "event_identity": packet["event_identity"],
+        "source_packet_identity": packet["packet_identity"],
+        "failure_code": failure_code,
+        "evidence_identity": evidence_identity,
+        "eligible_as_accepted_setup": False,
+        "eligible_for_voice": False,
+    }
+    failure["failure_identity"] = object_identity(failure)
+    return failure
+
+
+def validate_structural_failure(failure: Mapping[str, object], *, packet: Mapping[str, object]) -> None:
+    validate_scout_packet(packet)
+    if failure.get("schema") != "vnext-editor-structural-failure" or failure.get("schema_version") != 1 or failure.get("artifact_kind") != "STRUCTURAL_FAILURE":
+        raise EditorVerticalSliceError("structural failure schema mismatch")
+    if failure.get("source_packet_identity") != packet.get("packet_identity") or failure.get("event_identity") != packet.get("event_identity"):
+        raise EditorVerticalSliceError("structural failure source binding mismatch")
+    if not isinstance(failure.get("failure_code"), str) or not failure["failure_code"] or _SHA256.fullmatch(str(failure.get("evidence_identity"))) is None:
+        raise EditorVerticalSliceError("invalid structural failure evidence")
+    if failure.get("eligible_as_accepted_setup") is not False or failure.get("eligible_for_voice") is not False:
+        raise EditorVerticalSliceError("structural failure crossed eligibility boundary")
+    semantic = {key: value for key, value in failure.items() if key != "failure_identity"}
+    if failure.get("failure_identity") != object_identity(semantic):
+        raise EditorVerticalSliceError("structural failure identity mismatch")
+
+
 def persist_editor_draft(
     store: SQLiteStateStore, *, workflow_identity: str, packet: Mapping[str, object],
     invocation: Mapping[str, object], draft: Mapping[str, object], observed_at: str,
@@ -195,7 +231,7 @@ def persist_editor_draft(
 
     def insert_artifact(connection: object) -> None:
         connection.execute(
-            "INSERT OR IGNORE INTO workflow_artifacts VALUES(?,?,?,?,?,?)",
+            "INSERT INTO workflow_artifacts VALUES(?,?,?,?,?,?)",
             (draft["draft_identity"], workflow_identity, "EDITOR_DRAFT", draft["draft_identity"], relative.as_posix(), "vnext-editor-draft-v1"),
         )
 
@@ -204,6 +240,36 @@ def persist_editor_draft(
         before_commit=insert_artifact,
     )
     store.transition(_transition(workflow_identity, "editor-structural-pass", "EDITOR_DRAFT_READY", "FACTUAL_REVIEW_PENDING", str(draft["draft_identity"]), str(draft["draft_identity"]), observed_at))
+
+
+def persist_structural_failure(
+    store: SQLiteStateStore, *, workflow_identity: str, packet: Mapping[str, object],
+    failure: Mapping[str, object], observed_at: str,
+) -> None:
+    """Persist a non-eligible failure and route it through factual review."""
+    validate_structural_failure(failure, packet=packet)
+    store.transition(_transition(workflow_identity, "editor-start", "SOURCE_PACKET_READY", "EDITOR_PENDING", str(packet["packet_identity"]), None, observed_at))
+    relative = Path("blobs/editor-failures") / f"{failure['failure_identity']}.json"
+    path = store.root / relative
+    if path.exists():
+        if json.loads(path.read_text(encoding="utf-8")) != failure:
+            raise EditorVerticalSliceError("immutable structural failure conflict")
+    else:
+        atomic_json(path, dict(failure), root=store.root, overwrite=False)
+
+    def insert_artifact(connection: object) -> None:
+        connection.execute(
+            "INSERT INTO workflow_artifacts VALUES(?,?,?,?,?,?)",
+            (failure["failure_identity"], workflow_identity, "STRUCTURAL_FAILURE", failure["failure_identity"], relative.as_posix(), "vnext-editor-structural-failure-v1"),
+        )
+
+    store.transition(
+        _transition(workflow_identity, "editor-structural-fail", "EDITOR_PENDING", "STRUCTURAL_FAIL", str(packet["packet_identity"]), str(failure["failure_identity"]), observed_at),
+        before_commit=insert_artifact,
+    )
+    store.transition(
+        _transition(workflow_identity, "editor-failure-review", "STRUCTURAL_FAIL", "FACTUAL_REVIEW_PENDING", str(failure["failure_identity"]), str(failure["failure_identity"]), observed_at)
+    )
 
 
 def _transition(workflow: str, operation: str, previous: str, resulting: str, input_id: str, output_id: str | None, observed_at: str) -> TransitionRequest:

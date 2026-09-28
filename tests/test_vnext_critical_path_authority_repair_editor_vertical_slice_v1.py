@@ -100,15 +100,14 @@ def test_workflow_repairs_make_success_and_failure_routes_coherent():
     success, _, _ = apply_transition(success, transition("success", "EDITOR_PENDING", "EDITOR_DRAFT_READY", 10))
     success, _, _ = apply_transition(success, transition("success", "EDITOR_DRAFT_READY", "FACTUAL_REVIEW_PENDING", 11))
     assert success["state"] == "FACTUAL_REVIEW_PENDING"
-    for recovery in ("SOURCE_FALLBACK", "ABSTAINED"):
-        failed = new_workflow(f"failed-{recovery}")
-        failed["state"] = "EDITOR_PENDING"; failed["state_identity"] = object_identity({key: value for key, value in failed.items() if key != "state_identity"})
-        failed, _, _ = apply_transition(failed, transition(f"failed-{recovery}", "EDITOR_PENDING", "STRUCTURAL_FAIL", 20))
-        failed, _, _ = apply_transition(failed, transition(f"failed-{recovery}", "STRUCTURAL_FAIL", recovery, 21))
-        assert failed["state"] == recovery
+    failed = new_workflow("failed")
+    failed["state"] = "EDITOR_PENDING"; failed["state_identity"] = object_identity({key: value for key, value in failed.items() if key != "state_identity"})
+    failed, _, _ = apply_transition(failed, transition("failed", "EDITOR_PENDING", "STRUCTURAL_FAIL", 20))
+    failed, _, _ = apply_transition(failed, transition("failed", "STRUCTURAL_FAIL", "FACTUAL_REVIEW_PENDING", 21))
+    assert failed["state"] == "FACTUAL_REVIEW_PENDING"
 
 
-def test_sqlite_v1_database_migrates_to_v2(tmp_path: Path):
+def test_sqlite_v1_database_migrates_through_v3(tmp_path: Path):
     database = tmp_path / "state.db"
     connection = sqlite3.connect(database)
     for statement in MIGRATION_1: connection.execute(statement)
@@ -120,9 +119,10 @@ def test_sqlite_v1_database_migrates_to_v2(tmp_path: Path):
     store = SQLiteStateStore(root=tmp_path, database=Path("state.db"), writer_identity="writer")
     store.bootstrap()
     with store.read() as current:
-        assert current.execute("PRAGMA user_version").fetchone()[0] == 2
+        assert current.execute("PRAGMA user_version").fetchone()[0] == 3
         sql = current.execute("SELECT sql FROM sqlite_master WHERE name='workflow_artifacts'").fetchone()[0]
-        assert all(kind in sql for kind in ("ACCEPTED_SETUP", "SOURCE_FALLBACK", "ABSTAINED"))
+        assert all(kind in sql for kind in ("STRUCTURAL_FAILURE", "ACCEPTED_SETUP", "SOURCE_FALLBACK", "ABSTAINED"))
+        assert "PRIMARYKEY(workflow_identity,artifact_identity)" in sql.replace(" ", "")
         assert current.execute("SELECT artifact_kind FROM workflow_artifacts WHERE artifact_identity='old-draft'").fetchone()[0] == "EDITOR_DRAFT"
 
 

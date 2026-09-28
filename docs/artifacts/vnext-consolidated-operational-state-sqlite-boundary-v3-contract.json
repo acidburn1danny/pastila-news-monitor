@@ -1,0 +1,34 @@
+{
+  "active_integration": false,
+  "authority": {
+    "foundation_commit": "05083563f5d7a312642e1cb940da71e92c63b5b8",
+    "workflow_v3_identity": "8fab885d9c0563972acaed8c1f75e4dda91b9da6eccb40d0c258a9b1b788363a"
+  },
+  "authority_identity": "13ce5eb6fe5cdab7b2b3089086b9bce79f26a161d27ec3aa01f9f9c1aa6ce9da",
+  "legacy_dependency_count": 0,
+  "migration": {
+    "from": 2,
+    "monotonic": true,
+    "new_artifact_kind": "STRUCTURAL_FAILURE",
+    "preserves_existing_rows": true,
+    "to": 3,
+    "workflow_artifact_primary_key": [
+      "workflow_identity",
+      "artifact_identity"
+    ]
+  },
+  "persistence": {
+    "eligibility_authority": "SQLITE_WORKFLOW_ASSOCIATION_AND_STATE",
+    "insert_or_ignore_authority_rows": false,
+    "strict_authoritative_inserts": true,
+    "unassociated_blob_eligible": false
+  },
+  "product_data_migration": false,
+  "product_root_dependency": false,
+  "schema": "vnext-consolidated-operational-state-sqlite-boundary",
+  "schema_version": 3,
+  "status": "SUCCESSOR_REPAIR_ISOLATED_NOT_ACTIVE",
+  "stop_all_candidates": true,
+  "supersedes": "vnext-consolidated-operational-state-sqlite-boundary-v2",
+  "voice": "DISABLED_UNTIL_PROMOTION"
+}
