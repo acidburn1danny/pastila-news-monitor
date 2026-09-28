@@ -495,23 +495,30 @@ def build_source_packet(
     event_identity: str,
     observed_at: str,
 ) -> dict[str, object]:
-    store.transition(_transition(workflow_identity, "select", "GROUPED", "SELECTED", event_identity, event_identity, observed_at))
     with store.read() as connection:
         rows = connection.execute(
             "SELECT c.capture_identity,c.payload_ref FROM event_sources es JOIN captures c USING(capture_identity) WHERE es.event_identity=? ORDER BY c.source_identity,c.capture_identity",
             (event_identity,),
         ).fetchall()
+    store.transition(_transition(workflow_identity, "select", "GROUPED", "SELECTED", event_identity, event_identity, observed_at))
     if not rows:
+        evidence = object_identity({"workflow": workflow_identity, "event": event_identity, "failure": "UNKNOWN_OR_EMPTY_EVENT"})
+        store.transition(_transition(workflow_identity, "source-packet-invalid", "SELECTED", "SOURCE_PACKET_INVALID", event_identity, evidence, observed_at))
         raise ScoutError("unknown or empty event")
     selected: dict[str, dict[str, object]] = {}
-    for row in rows:
-        path = store.root / row["payload_ref"]
-        value = json.loads(path.read_text(encoding="utf-8"))
-        if value.get("capture_identity") != row["capture_identity"]:
-            raise ScoutError("capture reference identity mismatch")
-        prior = selected.get(str(value["source_identity"]))
-        if prior is None or len(str(value["source_text"])) > len(str(prior["source_text"])):
-            selected[str(value["source_identity"])] = value
+    try:
+        for row in rows:
+            path = store.root / row["payload_ref"]
+            value = json.loads(path.read_text(encoding="utf-8"))
+            if value.get("capture_identity") != row["capture_identity"]:
+                raise ScoutError("capture reference identity mismatch")
+            prior = selected.get(str(value["source_identity"]))
+            if prior is None or len(str(value["source_text"])) > len(str(prior["source_text"])):
+                selected[str(value["source_identity"])] = value
+    except (OSError, json.JSONDecodeError, KeyError, TypeError, ScoutError) as exc:
+        evidence = object_identity({"workflow": workflow_identity, "event": event_identity, "failure": type(exc).__name__})
+        store.transition(_transition(workflow_identity, "source-packet-invalid", "SELECTED", "SOURCE_PACKET_INVALID", event_identity, evidence, observed_at))
+        raise ScoutError("selected event cannot produce a valid SourcePacket") from exc
     spans = []
     for index, value in enumerate(sorted(selected.values(), key=lambda item: str(item["source_identity"]))):
         text = str(value["source_text"])

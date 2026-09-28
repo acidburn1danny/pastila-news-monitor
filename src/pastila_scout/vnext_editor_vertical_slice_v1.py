@@ -116,6 +116,7 @@ def run_editor_vertical_slice(packet: Mapping[str, object], backend: R2Backend) 
         "decoding": dict(DECODING), "decoding_identity": DECODING_IDENTITY,
         "resolved_special_tokens": {"eos_token_id": evidence.eos_token_id, "pad_token_id": evidence.pad_token_id},
         "runtime_identity": RUNTIME_IDENTITY, "raw_output_sha256": sha256_bytes(evidence.raw_output),
+        "parsed_text_sha256": sha256_bytes(text.encode("utf-8")),
         "model_loaded": True, "inference_performed": True,
         "optimizer_created": False, "training_performed": False,
     }
@@ -146,7 +147,7 @@ def validate_editor_draft(
         "schema", "schema_version", "source_packet_identity", "r2_lock_identity", "r2_identities",
         "prompt_identity", "messages_identity", "rendered_prompt_sha256", "input_token_ids_identity",
         "chat_template_sha256", "decoding", "decoding_identity", "resolved_special_tokens",
-        "runtime_identity", "raw_output_sha256", "model_loaded", "inference_performed",
+        "runtime_identity", "raw_output_sha256", "parsed_text_sha256", "model_loaded", "inference_performed",
         "optimizer_created", "training_performed", "receipt_identity",
     }
     if set(invocation_receipt) != required_receipt or invocation_receipt.get("schema") != "vnext-r2-editor-invocation-receipt" or invocation_receipt.get("schema_version") != 1:
@@ -165,6 +166,8 @@ def validate_editor_draft(
             raise EditorVerticalSliceError(f"invalid invocation identity: {key}")
     if draft.get("raw_output_sha256") != invocation_receipt.get("raw_output_sha256"):
         raise EditorVerticalSliceError("EditorDraft output binding mismatch")
+    if invocation_receipt.get("parsed_text_sha256") != sha256_bytes(str(draft.get("text", "")).encode("utf-8")):
+        raise EditorVerticalSliceError("EditorDraft parsed-text binding mismatch")
     if draft.get("factual_acceptance_status") != "NOT_EVALUATED" or draft.get("eligible_as_accepted_setup") is not False or draft.get("eligible_for_voice") is not False:
         raise EditorVerticalSliceError("EditorDraft crossed eligibility boundary")
     semantic_draft = {key: value for key, value in draft.items() if key != "draft_identity"}

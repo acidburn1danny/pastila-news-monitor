@@ -1,0 +1,51 @@
+{
+  "schema": "vnext-cross-component-eligibility-evidence-recovery-transitive-repair",
+  "schema_version": 1,
+  "status": "ISOLATED_NOT_ACTIVE",
+  "bound_commit": "dc0123ac3652f4eee3b3aeab6c533c3203f8ef41",
+  "blocker_closure": {
+    "editordraft_text_unbound": {
+      "status": "CLOSED",
+      "repair": "PARSED_TEXT_SHA256_BOUND_TO_DRAFT_TEXT"
+    },
+    "factual_review_missing_ownership": {
+      "status": "CLOSED",
+      "repair": "SQLITE_WORKFLOW_SOURCEPACKET_AND_INPUT_ASSOCIATION_REQUIRED"
+    },
+    "review_and_terminal_replay_unsafe": {
+      "status": "CLOSED",
+      "repair": "REQUEST_IDENTITY_AND_IDEMPOTENT_EXACT_REPLAY"
+    },
+    "invalid_sourcepacket_state_unreachable": {
+      "status": "CLOSED",
+      "repair": "FAIL_CLOSED_SELECTED_TO_SOURCE_PACKET_INVALID"
+    },
+    "transitive_r2_module_omitted": {
+      "status": "CLOSED",
+      "repair": "RECURSIVE_ACTIVE_IMPORT_CLOSURE_AUDIT"
+    }
+  },
+  "authority_bindings": {
+    "active_manifest_identity": "c2905fb624e11a0be2fe6c38a2d7fbc665f225242377b64cdeba711ea85979ef",
+    "sqlite_v5_identity": "7e129b546ea12e20b074b32de36e0109051976729c7d5a9852472dec7f9f9dfe",
+    "workflow_v3_identity": "8fab885d9c0563972acaed8c1f75e4dda91b9da6eccb40d0c258a9b1b788363a"
+  },
+  "invariants": {
+    "active_integration": false,
+    "product_lock_replaced": false,
+    "product_root_modified": false,
+    "orchestrator_implemented": false,
+    "final_implemented": false,
+    "voice": "DISABLED_UNTIL_PROMOTION",
+    "stop_all_candidates": true,
+    "legacy_dependency_count": 0,
+    "audit_streak": "0/2"
+  },
+  "validation": {
+    "fresh_tests": "92_PASS",
+    "fresh_current_audit": "PASS",
+    "historical_evidence_modified": false,
+    "transitive_active_graph_complete": true
+  },
+  "closure_identity": "40518d0ef5f331de3615fbb31b4bd822fe3f39bc3fe36722f09b8e3600f63e50"
+}

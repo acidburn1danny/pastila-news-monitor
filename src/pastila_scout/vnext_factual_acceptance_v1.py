@@ -10,7 +10,7 @@ from .vnext_editor_vertical_slice_v1 import (
     validate_editor_draft,
     validate_structural_failure,
 )
-from .vnext_foundation_v1 import BoundaryError, atomic_json, object_identity
+from .vnext_foundation_v1 import BoundaryError, atomic_json, contained_path, object_identity
 from .vnext_scout_production_v1 import validate_scout_packet
 from .vnext_state_sqlite_v1 import SQLiteStateStore
 from .vnext_workflow_v1 import TransitionRequest
@@ -24,61 +24,54 @@ class FactualAcceptanceError(BoundaryError):
     pass
 
 
-def authorize_review_session(
-    store: SQLiteStateStore,
-    *,
-    workflow_identity: str,
-    packet: Mapping[str, object],
-    actor: str,
-    allowed_outcome: str,
-    authorization_identity: str,
-    draft: Mapping[str, object] | None = None,
-    invocation_receipt: Mapping[str, object] | None = None,
-    structural_failure: Mapping[str, object] | None = None,
-) -> dict[str, object]:
-    """Persist a single-use review grant under the SQLite writer authority."""
-    input_kind, input_identity = _review_input(
-        packet=packet,
-        draft=draft,
-        invocation_receipt=invocation_receipt,
-        structural_failure=structural_failure,
-    )
+def _registered_input(store: SQLiteStateStore, *, workflow_identity: str, packet: Mapping[str, object], input_kind: str, input_identity: str, draft: Mapping[str, object] | None, invocation_receipt: Mapping[str, object] | None, structural_failure: Mapping[str, object] | None) -> None:
+    expected_kind = "EDITOR_DRAFT" if draft is not None else "STRUCTURAL_FAILURE"
+    if input_kind != expected_kind:
+        raise FactualAcceptanceError("review input kind mismatch")
+    with store.read() as connection:
+        packet_row = connection.execute("SELECT event_identity,payload_ref FROM source_packets WHERE packet_identity=?", (packet["packet_identity"],)).fetchone()
+        packet_transition = connection.execute("SELECT 1 FROM state_transitions WHERE workflow_identity=? AND resulting_state='SOURCE_PACKET_READY' AND output_identity=?", (workflow_identity, packet["packet_identity"])).fetchone()
+        artifact_row = connection.execute("SELECT artifact_kind,payload_ref FROM workflow_artifacts WHERE workflow_identity=? AND artifact_identity=?", (workflow_identity, input_identity)).fetchone()
+    if packet_row is None or packet_transition is None or packet_row["event_identity"] != packet.get("event_identity"):
+        raise FactualAcceptanceError("SourcePacket is not registered to this workflow")
+    packet_path = contained_path(store.root, Path(str(packet_row["payload_ref"])), allow_missing=False)
+    if json.loads(packet_path.read_text(encoding="utf-8")) != packet:
+        raise FactualAcceptanceError("registered SourcePacket payload mismatch")
+    if artifact_row is None or artifact_row["artifact_kind"] != expected_kind:
+        raise FactualAcceptanceError("review input is not registered to this workflow")
+    expected_value = draft if draft is not None else structural_failure
+    artifact_path = contained_path(store.root, Path(str(artifact_row["payload_ref"])), allow_missing=False)
+    if json.loads(artifact_path.read_text(encoding="utf-8")) != expected_value:
+        raise FactualAcceptanceError("registered review input payload mismatch")
+    if draft is not None:
+        assert invocation_receipt is not None
+        invocation_path = contained_path(store.root, Path("blobs/editor-invocations") / f"{invocation_receipt['receipt_identity']}.json", allow_missing=False)
+        if json.loads(invocation_path.read_text(encoding="utf-8")) != invocation_receipt:
+            raise FactualAcceptanceError("registered invocation receipt mismatch")
+
+
+def authorize_review_session(store: SQLiteStateStore, *, workflow_identity: str, packet: Mapping[str, object], actor: str, allowed_outcome: str, authorization_identity: str, draft: Mapping[str, object] | None = None, invocation_receipt: Mapping[str, object] | None = None, structural_failure: Mapping[str, object] | None = None) -> dict[str, object]:
+    input_kind, input_identity = _review_input(packet=packet, draft=draft, invocation_receipt=invocation_receipt, structural_failure=structural_failure)
     if allowed_outcome not in OUTCOMES or (allowed_outcome == "ACCEPT_DRAFT" and input_kind != "EDITOR_DRAFT"):
         raise FactualAcceptanceError("review-session outcome is incompatible with input")
     if not actor.strip() or _SHA256.fullmatch(authorization_identity) is None:
         raise FactualAcceptanceError("review-session actor and authorization are required")
-    if store.load_workflow(workflow_identity)["state"] != "FACTUAL_REVIEW_PENDING":
-        raise FactualAcceptanceError("workflow is not ready to authorize factual review")
-    session: dict[str, object] = {
-        "schema": "vnext-factual-review-session",
-        "schema_version": 1,
-        "workflow_identity": workflow_identity,
-        "issued_by": store.writer_identity,
-        "actor": actor.strip(),
-        "source_packet_identity": packet["packet_identity"],
-        "input_kind": input_kind,
-        "input_identity": input_identity,
-        "allowed_outcome": allowed_outcome,
-        "authorization_identity": authorization_identity,
-        "status": "OPEN",
-    }
+    _registered_input(store, workflow_identity=workflow_identity, packet=packet, input_kind=input_kind, input_identity=input_identity, draft=draft, invocation_receipt=invocation_receipt, structural_failure=structural_failure)
+    request_identity = object_identity({"workflow_identity": workflow_identity, "actor": actor.strip(), "source_packet_identity": packet["packet_identity"], "input_kind": input_kind, "input_identity": input_identity, "allowed_outcome": allowed_outcome, "authorization_identity": authorization_identity})
+    session: dict[str, object] = {"schema": "vnext-factual-review-session", "schema_version": 2, "request_identity": request_identity, "workflow_identity": workflow_identity, "issued_by": store.writer_identity, "actor": actor.strip(), "source_packet_identity": packet["packet_identity"], "input_kind": input_kind, "input_identity": input_identity, "allowed_outcome": allowed_outcome, "authorization_identity": authorization_identity, "status": "OPEN"}
     session["review_session_identity"] = object_identity(session)
     with store.write() as connection:
-        row = connection.execute(
-            "SELECT current_state FROM workflows WHERE workflow_identity=?",
-            (workflow_identity,),
-        ).fetchone()
+        existing = connection.execute("SELECT review_session_identity,workflow_identity,issued_by,actor,source_packet_identity,input_kind,input_identity,allowed_outcome,authorization_identity,request_identity FROM review_sessions WHERE request_identity=?", (request_identity,)).fetchone()
+        if existing is not None:
+            expected = (session["review_session_identity"], workflow_identity, store.writer_identity, session["actor"], packet["packet_identity"], input_kind, input_identity, allowed_outcome, authorization_identity, request_identity)
+            if tuple(existing) != expected:
+                raise FactualAcceptanceError("conflicting review-session replay")
+            return session
+        row = connection.execute("SELECT current_state FROM workflows WHERE workflow_identity=?", (workflow_identity,)).fetchone()
         if row is None or row["current_state"] != "FACTUAL_REVIEW_PENDING":
-            raise FactualAcceptanceError("workflow changed before review authorization")
-        connection.execute(
-            "INSERT INTO review_sessions(review_session_identity,workflow_identity,issued_by,actor,source_packet_identity,input_kind,input_identity,allowed_outcome,authorization_identity,status,decision_identity) VALUES(?,?,?,?,?,?,?,?,?,?,NULL)",
-            (
-                session["review_session_identity"], workflow_identity, store.writer_identity, session["actor"],
-                packet["packet_identity"], input_kind, input_identity, allowed_outcome, authorization_identity, "OPEN",
-            ),
-        )
+            raise FactualAcceptanceError("workflow is not ready to authorize factual review")
+        connection.execute("INSERT INTO review_sessions(review_session_identity,workflow_identity,issued_by,actor,source_packet_identity,input_kind,input_identity,allowed_outcome,authorization_identity,status,decision_identity,request_identity) VALUES(?,?,?,?,?,?,?,?,?,?,NULL,?)", (session["review_session_identity"], workflow_identity, store.writer_identity, session["actor"], packet["packet_identity"], input_kind, input_identity, allowed_outcome, authorization_identity, "OPEN", request_identity))
     return session
-
 
 def _identity(value: Mapping[str, object], key: str) -> str:
     actual = value.get(key)
@@ -115,7 +108,8 @@ def build_review_decision(*, workflow_identity: str, review_session: Mapping[str
     if (
         not workflow_identity
         or review_session.get("schema") != "vnext-factual-review-session"
-        or review_session.get("schema_version") != 1
+        or review_session.get("schema_version") != 2
+        or _SHA256.fullmatch(str(review_session.get("request_identity"))) is None
         or review_session.get("workflow_identity") != workflow_identity
         or review_session.get("source_packet_identity") != packet.get("packet_identity")
         or review_session.get("input_kind") != input_kind
@@ -231,46 +225,43 @@ def validate_factual_output(artifact: Mapping[str, object], *, workflow_identity
     _identity(receipt, "receipt_identity")
 
 
-def persist_factual_result(store: SQLiteStateStore, *, workflow_identity: str, packet: Mapping[str, object],
-                           decision: Mapping[str, object], receipt: Mapping[str, object], artifact: Mapping[str, object],
-                           observed_at: str, draft: Mapping[str, object] | None = None,
-                           invocation_receipt: Mapping[str, object] | None = None,
-                           structural_failure: Mapping[str, object] | None = None) -> None:
+def persist_factual_result(store: SQLiteStateStore, *, workflow_identity: str, packet: Mapping[str, object], decision: Mapping[str, object], receipt: Mapping[str, object], artifact: Mapping[str, object], observed_at: str, draft: Mapping[str, object] | None = None, invocation_receipt: Mapping[str, object] | None = None, structural_failure: Mapping[str, object] | None = None) -> None:
     validate_factual_output(artifact, workflow_identity=workflow_identity, packet=packet, decision=decision, receipt=receipt, draft=draft, invocation_receipt=invocation_receipt, structural_failure=structural_failure)
-    if store.load_workflow(workflow_identity)["state"] != "FACTUAL_REVIEW_PENDING":
-        raise FactualAcceptanceError("workflow is not ready for factual review")
+    input_kind, input_identity = _review_input(packet=packet, draft=draft, invocation_receipt=invocation_receipt, structural_failure=structural_failure)
+    _registered_input(store, workflow_identity=workflow_identity, packet=packet, input_kind=input_kind, input_identity=input_identity, draft=draft, invocation_receipt=invocation_receipt, structural_failure=structural_failure)
     kind = str(artifact["artifact_kind"])
     paths = ((Path("blobs/factual-outputs") / f"{artifact['artifact_identity']}.json", artifact), (Path("blobs/factual-decisions") / f"{decision['decision_identity']}.json", decision), (Path("blobs/factual-receipts") / f"{receipt['receipt_identity']}.json", receipt))
+    current_state = store.load_workflow(workflow_identity)["state"]
+    if current_state != "FACTUAL_REVIEW_PENDING":
+        with store.read() as connection:
+            decision_row = connection.execute("SELECT outcome,actor,input_identity,receipt_identity FROM decisions WHERE decision_identity=? AND workflow_identity=?", (decision["decision_identity"], workflow_identity)).fetchone()
+            artifact_row = connection.execute("SELECT artifact_kind,payload_identity,payload_ref FROM workflow_artifacts WHERE workflow_identity=? AND artifact_identity=?", (workflow_identity, artifact["artifact_identity"])).fetchone()
+            session_row = connection.execute("SELECT status,decision_identity FROM review_sessions WHERE review_session_identity=?", (decision["review_session_identity"],)).fetchone()
+        expected_decision = (decision["outcome"], decision["actor"], decision["input_identity"], receipt["receipt_identity"])
+        expected_artifact = (kind, artifact["artifact_identity"], paths[0][0].as_posix())
+        if current_state == kind and decision_row is not None and tuple(decision_row) == expected_decision and artifact_row is not None and tuple(artifact_row) == expected_artifact and session_row is not None and tuple(session_row) == ("CONSUMED", decision["decision_identity"]):
+            for relative, value in paths:
+                path = contained_path(store.root, relative, allow_missing=False)
+                if json.loads(path.read_text(encoding="utf-8")) != value:
+                    raise FactualAcceptanceError(f"replayed factual evidence mismatch: {relative}")
+            return
+        raise FactualAcceptanceError("workflow is not ready for factual review")
     for relative, value in paths:
-        path = store.root / relative
+        path = contained_path(store.root, relative)
         if path.exists():
             if json.loads(path.read_text(encoding="utf-8")) != value:
                 raise FactualAcceptanceError(f"immutable factual evidence conflict: {relative}")
         else:
             atomic_json(path, dict(value), root=store.root, overwrite=False)
     def persist_rows(connection: object) -> None:
-        session = connection.execute(
-            "SELECT workflow_identity,issued_by,actor,source_packet_identity,input_kind,input_identity,allowed_outcome,authorization_identity,status FROM review_sessions WHERE review_session_identity=?",
-            (decision["review_session_identity"],),
-        ).fetchone()
-        expected_session = (
-            workflow_identity,
-            store.writer_identity,
-            decision["actor"],
-            packet["packet_identity"],
-            decision["input_kind"],
-            decision["input_identity"],
-            decision["outcome"],
-        )
+        session = connection.execute("SELECT workflow_identity,issued_by,actor,source_packet_identity,input_kind,input_identity,allowed_outcome,authorization_identity,status FROM review_sessions WHERE review_session_identity=?", (decision["review_session_identity"],)).fetchone()
+        expected_session = (workflow_identity, store.writer_identity, decision["actor"], packet["packet_identity"], decision["input_kind"], decision["input_identity"], decision["outcome"])
         if session is None or tuple(session[:7]) != expected_session or _SHA256.fullmatch(str(session["authorization_identity"])) is None or session["status"] != "OPEN":
             raise FactualAcceptanceError("review session is absent, mismatched, or consumed")
         connection.execute("INSERT INTO workflow_artifacts VALUES(?,?,?,?,?,?)", (artifact["artifact_identity"], workflow_identity, kind, artifact["artifact_identity"], paths[0][0].as_posix(), "vnext-factual-output-v2"))
         connection.execute("INSERT INTO decisions VALUES(?,?,?,?,?,?,?)", (decision["decision_identity"], workflow_identity, "FACTUAL", decision["outcome"], decision["actor"], decision["input_identity"], receipt["receipt_identity"]))
-        changed = connection.execute(
-            "UPDATE review_sessions SET status='CONSUMED',decision_identity=? WHERE review_session_identity=? AND status='OPEN'",
-            (decision["decision_identity"], decision["review_session_identity"]),
-        ).rowcount
+        changed = connection.execute("UPDATE review_sessions SET status='CONSUMED',decision_identity=? WHERE review_session_identity=? AND status='OPEN'", (decision["decision_identity"], decision["review_session_identity"])).rowcount
         if changed != 1:
             raise FactualAcceptanceError("review session was not consumed exactly once")
     operation = object_identity({"workflow": workflow_identity, "decision": decision["decision_identity"], "output": artifact["artifact_identity"]})
-    store.transition(TransitionRequest(workflow_identity, "factual:adjudicate", "FACTUAL_REVIEW_PENDING", kind, "FACTUAL_REVIEW", str(decision["outcome"]), str(decision["input_identity"]), str(artifact["artifact_identity"]), f"attempt:{operation}", f"idempotency:{operation}", observed_at, {"component": "VNext Cross-Component Authority, Artifact Ownership & Factual Acceptance Repair v1", "decision_receipt_identity": str(receipt["receipt_identity"])}), before_commit=persist_rows)
+    store.transition(TransitionRequest(workflow_identity, "factual:adjudicate", "FACTUAL_REVIEW_PENDING", kind, "FACTUAL_REVIEW", str(decision["outcome"]), str(decision["input_identity"]), str(artifact["artifact_identity"]), f"attempt:{operation}", f"idempotency:{operation}", observed_at, {"component": "VNext Cross-Component Eligibility, Evidence Binding, Recovery & Transitive Audit Repair v1", "decision_receipt_identity": str(receipt["receipt_identity"])}), before_commit=persist_rows)

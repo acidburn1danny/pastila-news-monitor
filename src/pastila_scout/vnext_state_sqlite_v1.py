@@ -25,7 +25,7 @@ from .vnext_workflow_v1 import (
     validate_workflow,
 )
 
-SCHEMA_VERSION = 4
+SCHEMA_VERSION = 5
 DEFAULT_BUSY_TIMEOUT_MS = 5_000
 MIGRATION_1 = (
     "CREATE TABLE schema_migrations (version INTEGER PRIMARY KEY, migration_identity TEXT NOT NULL UNIQUE, applied_by TEXT NOT NULL)",
@@ -58,7 +58,11 @@ MIGRATION_4 = (
     "CREATE TABLE review_sessions (review_session_identity TEXT PRIMARY KEY, workflow_identity TEXT NOT NULL REFERENCES workflows(workflow_identity), issued_by TEXT NOT NULL, actor TEXT NOT NULL, source_packet_identity TEXT NOT NULL, input_kind TEXT NOT NULL CHECK(input_kind IN ('EDITOR_DRAFT','STRUCTURAL_FAILURE')), input_identity TEXT NOT NULL, allowed_outcome TEXT NOT NULL CHECK(allowed_outcome IN ('ACCEPT_DRAFT','APPROVE_SOURCE_FALLBACK','ABSTAIN')), authorization_identity TEXT NOT NULL, status TEXT NOT NULL CHECK(status IN ('OPEN','CONSUMED')), decision_identity TEXT UNIQUE)",
     "CREATE UNIQUE INDEX review_sessions_open_input ON review_sessions(workflow_identity,input_kind,input_identity) WHERE status='OPEN'",
 )
-MIGRATIONS = {1: MIGRATION_1, 2: MIGRATION_2, 3: MIGRATION_3, 4: MIGRATION_4}
+MIGRATION_5 = (
+    "ALTER TABLE review_sessions ADD COLUMN request_identity TEXT",
+    "CREATE UNIQUE INDEX review_sessions_request_identity ON review_sessions(request_identity) WHERE request_identity IS NOT NULL",
+)
+MIGRATIONS = {1: MIGRATION_1, 2: MIGRATION_2, 3: MIGRATION_3, 4: MIGRATION_4, 5: MIGRATION_5}
 
 
 class StateBoundaryError(BoundaryError):

@@ -21,7 +21,7 @@ from pastila_scout.vnext_factual_acceptance_v1 import (
     build_review_decision,
     persist_factual_result,
 )
-from pastila_scout.vnext_foundation_v1 import object_identity
+from pastila_scout.vnext_foundation_v1 import atomic_json, object_identity
 from pastila_scout.vnext_state_sqlite_v1 import SCHEMA_VERSION, SQLiteStateStore
 from pastila_scout.vnext_workflow_v1 import STATES, TRANSITIONS, TransitionRequest
 
@@ -51,7 +51,14 @@ def transition(flow, left, right, index):
 
 def prepare(store, flow, *, failure=False):
     packet, invocation, draft, failed = inputs(); store.create_workflow(flow)
-    for index, (left, right) in enumerate((("DISCOVERED", "CAPTURED"), ("CAPTURED", "GROUPED"), ("GROUPED", "SELECTED"), ("SELECTED", "SOURCE_PACKET_READY")), 1): store.transition(transition(flow, left, right, index))
+    for index, (left, right) in enumerate((("DISCOVERED", "CAPTURED"), ("CAPTURED", "GROUPED"), ("GROUPED", "SELECTED")), 1): store.transition(transition(flow, left, right, index))
+    store.transition(TransitionRequest(flow, "fixture:4", "SELECTED", "SOURCE_PACKET_READY", "fixture", "PASS", object_identity(4), packet["packet_identity"], f"attempt:{flow}:4", f"idem:{flow}:4"))
+    relative = Path("blobs/source-packets") / f"{packet['packet_identity']}.json"
+    if not (store.root / relative).exists():
+        atomic_json(store.root / relative, packet, root=store.root, overwrite=False)
+    with store.write() as connection:
+        connection.execute("INSERT OR IGNORE INTO events VALUES(?,?)", (packet["event_identity"], "fixture-group"))
+        connection.execute("INSERT OR IGNORE INTO source_packets VALUES(?,?,?,?)", (packet["packet_identity"], packet["event_identity"], packet["packet_identity"], relative.as_posix()))
     if failure: persist_structural_failure(store, workflow_identity=flow, packet=packet, failure=failed, observed_at="2026-09-29T00:00:00Z")
     else: persist_editor_draft(store, workflow_identity=flow, packet=packet, invocation=invocation, draft=draft, observed_at="2026-09-29T00:00:00Z")
     return packet, invocation, draft, failed
@@ -97,7 +104,7 @@ def test_structural_failure_uses_same_gate_and_cannot_be_accepted(tmp_path):
 
 def test_workflow_bound_identity_and_cross_workflow_associations(tmp_path):
     store = SQLiteStateStore(root=tmp_path, database=Path("state.db"), writer_identity="writer"); store.bootstrap()
-    assert SCHEMA_VERSION == 4
+    assert SCHEMA_VERSION == 5
     for flow in ("flow-a", "flow-b"):
         prepare(store, flow); packet, invocation, draft, _, _, decision, receipt, artifact = decide(store, flow, "ACCEPT_DRAFT")
         persist_factual_result(store, workflow_identity=flow, packet=packet, draft=draft, invocation_receipt=invocation, decision=decision, receipt=receipt, artifact=artifact, observed_at="2026-09-29T00:01:00Z")
@@ -134,7 +141,7 @@ def test_wrong_workflow_or_tampering_fails_before_publication(tmp_path):
 def test_unregistered_or_replayed_review_session_is_rejected(tmp_path):
     store = SQLiteStateStore(root=tmp_path, database=Path("state.db"), writer_identity="writer"); store.bootstrap(); packet, invocation, draft, _ = prepare(store, "flow")
     fake = {
-        "schema": "vnext-factual-review-session", "schema_version": 1, "workflow_identity": "flow",
+        "schema": "vnext-factual-review-session", "schema_version": 2, "request_identity": "b" * 64, "workflow_identity": "flow",
         "issued_by": "writer", "actor": "owner", "source_packet_identity": packet["packet_identity"], "input_kind": "EDITOR_DRAFT",
         "input_identity": draft["draft_identity"], "allowed_outcome": "ACCEPT_DRAFT",
         "authorization_identity": "a" * 64, "status": "OPEN",
@@ -145,7 +152,13 @@ def test_unregistered_or_replayed_review_session_is_rejected(tmp_path):
     with pytest.raises(FactualAcceptanceError, match="absent"):
         persist_factual_result(store, workflow_identity="flow", packet=packet, draft=draft, invocation_receipt=invocation, decision=decision, receipt=receipt, artifact=artifact, observed_at="2026-09-29T00:01:00Z")
 
-    _, _, _, _, _, valid_decision, valid_receipt, valid_artifact = decide(store, "flow", "ACCEPT_DRAFT")
+    authorization = object_identity({"owner-authorization": "flow", "outcome": "ACCEPT_DRAFT"})
+    first_session = authorize_review_session(store, workflow_identity="flow", packet=packet, actor="owner", allowed_outcome="ACCEPT_DRAFT", authorization_identity=authorization, draft=draft, invocation_receipt=invocation)
+    replayed_session = authorize_review_session(store, workflow_identity="flow", packet=packet, actor="owner", allowed_outcome="ACCEPT_DRAFT", authorization_identity=authorization, draft=draft, invocation_receipt=invocation)
+    assert replayed_session == first_session
+    valid_decision = build_review_decision(workflow_identity="flow", review_session=first_session, packet=packet, outcome="ACCEPT_DRAFT", actor="owner", reason_code="REVIEWED", draft=draft, invocation_receipt=invocation)
+    valid_receipt, valid_artifact = adjudicate(workflow_identity="flow", packet=packet, decision=valid_decision, draft=draft, invocation_receipt=invocation)
+    persist_factual_result(store, workflow_identity="flow", packet=packet, draft=draft, invocation_receipt=invocation, decision=valid_decision, receipt=valid_receipt, artifact=valid_artifact, observed_at="2026-09-29T00:01:00Z")
     persist_factual_result(store, workflow_identity="flow", packet=packet, draft=draft, invocation_receipt=invocation, decision=valid_decision, receipt=valid_receipt, artifact=valid_artifact, observed_at="2026-09-29T00:01:00Z")
     with store.read() as connection:
         assert connection.execute("SELECT status FROM review_sessions").fetchone()[0] == "CONSUMED"
