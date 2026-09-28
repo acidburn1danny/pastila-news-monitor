@@ -1,0 +1,28 @@
+{
+  "schema": "vnext-active-product-component-migration-matrix",
+  "schema_version": 1,
+  "status": "DESIGN_AUTHORITY_ONLY",
+  "rows": [
+    {"current": "product-lock.json", "classification": "REBUILD", "target": "manifest/product-lock.json", "active_dependency": true, "action": "replace only after consolidated graph passes acceptance", "acceptance": "all active dependencies explicit and clean-room restorable"},
+    {"current": "components/r2-reference-v1", "classification": "KEEP", "target": "components/editor-r2", "active_dependency": true, "action": "preserve byte-identically and relocate only in an authorized migration", "acceptance": "lock adapter checkpoint tokenizer and base identities unchanged"},
+    {"current": "platform/python-ml-v1", "classification": "MERGE", "target": "platform/python-ml", "active_dependency": true, "action": "retain materialization but make pinned platform specification reconstructible", "acceptance": "clean restore and startup pass"},
+    {"current": "runtime/editor-v0-v1", "classification": "REBUILD", "target": "app/editor", "active_dependency": true, "action": "separate EditorDraft structural validation and factual acceptance", "acceptance": "EditorDraft cannot be consumed as AcceptedSetup"},
+    {"current": "editor structural validation", "classification": "MERGE", "target": "app/acceptance/structural.py", "active_dependency": true, "action": "merge into canonical acceptance boundary", "acceptance": "schema and adversarial negatives pass"},
+    {"current": "source-preserving fallback", "classification": "MERGE", "target": "app/acceptance/fallback.py", "active_dependency": true, "action": "make explicit workflow outcome", "acceptance": "fallback uses only SourcePacket bytes or abstains"},
+    {"current": "shadow verifier", "classification": "KEEP", "target": "evaluation/shadow-verifier", "active_dependency": false, "action": "retain as parallel non-authoritative evaluation", "acceptance": "cannot block startup route or alter output"},
+    {"current": "runtime/scout-v1", "classification": "REBUILD", "target": "app/scout", "active_dependency": true, "action": "production-close adapters capture grouping and recovery", "acceptance": "deterministic acceptance and live-adapter contract pass"},
+    {"current": "runtime/scout-v1/sources.json", "classification": "MERGE", "target": "config/sources.json", "active_dependency": true, "action": "preserve definitions subject to validation and health separation", "acceptance": "all enabled definitions schema-valid"},
+    {"current": "SourcePacket contract v1", "classification": "KEEP", "target": "contracts/source-packet.json", "active_dependency": true, "action": "preserve semantic contract and identity where possible", "acceptance": "self-contained provenance and no hidden lookup"},
+    {"current": "state/scout-v1/scout.db", "classification": "MERGE", "target": "state/product.sqlite3", "active_dependency": true, "action": "migrate only required operational state into consolidated schema", "acceptance": "migrations backup restore WAL and integrity pass"},
+    {"current": "components/voice-candidates-v1", "classification": "ARCHIVE", "target": "archive index or separately managed frozen evidence storage", "active_dependency": false, "action": "remove from active graph after independent terminal closure verification", "acceptance": "STOP_ALL_CANDIDATES remains reproducible without startup dependency"},
+    {"current": "runs/voice-bakeoff-*", "classification": "ARCHIVE", "target": "frozen evidence archive", "active_dependency": false, "action": "retain only minimal justified terminal evidence", "acceptance": "terminal result identity reproducible"},
+    {"current": "reviews/voice-blind-v1", "classification": "ARCHIVE", "target": "frozen evidence archive", "active_dependency": false, "action": "retain immutable closure outside startup graph", "acceptance": "216-receipt closure remains verifiable"},
+    {"current": "VOICE review scoring unseal taxonomy tooling", "classification": "ARCHIVE", "target": "evaluation/tooling and frozen evidence archive", "active_dependency": false, "action": "exclude from product imports", "acceptance": "product starts with archive unavailable"},
+    {"current": "historical execution authorities and failed runs", "classification": "DROP", "target": "none except minimal terminal evidence selected for archive", "active_dependency": false, "action": "make cleanup-eligible only after global migration pass", "acceptance": "not referenced directly or transitively"},
+    {"current": "duplicated canonical JSON hashing atomic write lock and preflight code", "classification": "MERGE", "target": "foundation", "active_dependency": true, "action": "consolidate into one shared implementation", "acceptance": "cross-component conformance and recovery pass"},
+    {"current": "CHIEF EDITOR as prospective separate model", "classification": "DROP", "target": "app/policy", "active_dependency": false, "action": "represent minimal workflow policy and approval in orchestrator", "acceptance": "no model dependency and all approval gates explicit"},
+    {"current": "FINAL", "classification": "REBUILD", "target": "app/final", "active_dependency": true, "action": "implement deterministic assembly and export later", "acceptance": "byte-reproducible golden E2E"},
+    {"current": "GUI", "classification": "REBUILD", "target": "app/ui", "active_dependency": false, "action": "defer until CLI workflow and state model stabilize", "acceptance": "full parity with approved product workflow"}
+  ],
+  "cleanup_gate": "GLOBAL_VNEXT_MIGRATION_PASS_AND_SEPARATE_OWNER_AUTHORIZATION"
+}

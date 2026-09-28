@@ -1,0 +1,39 @@
+{
+  "schema": "vnext-active-product-consolidation-acceptance-gates",
+  "schema_version": 1,
+  "status": "DESIGN_AUTHORITY_ONLY",
+  "gates": [
+    {"id": "FOUNDATION", "requires": ["canonical identity", "canonical JSON", "atomic storage", "lock resolution", "recovery tests"]},
+    {"id": "SCOUT", "requires": ["source adapter contract", "capture and grouping corpus", "source health", "failure recovery", "production closure"]},
+    {"id": "SOURCE_PACKET", "requires": ["self-contained bytes", "provenance", "content identity", "no hidden lookup"]},
+    {"id": "EDITOR", "requires": ["R2 byte lock", "deterministic decoding", "EditorDraft schema", "structural validation"]},
+    {"id": "FACTUAL_ACCEPTANCE", "requires": ["explicit ACCEPT SOURCE_FALLBACK or ABSTAIN", "EditorDraft cannot bypass gate", "human authority until verifier promotion"]},
+    {"id": "VOICE", "requires": ["separate promoted mechanism", "factual safety", "commentary quality", "repetition", "seed stability", "pilot checkpoint"]},
+    {"id": "FINAL", "requires": ["approved inputs only", "deterministic assembly", "byte-reproducible export"]},
+    {"id": "GUI", "requires": ["stable state machine", "product CLI parity", "core E2E", "backup restore"]},
+    {"id": "DEPLOYMENT", "requires": ["clean restore", "startup preflight", "declared platform", "legacy scan zero"]},
+    {"id": "GLOBAL_VNEXT_MIGRATION", "requires": ["legacy unavailable", "full product E2E", "application startup", "acceptance E2E", "LEGACY_DEPENDENCY_COUNT=0"]}
+  ],
+  "development_evaluation_policy": {
+    "pilot_required": true,
+    "maximum_observations_before_checkpoint": 100,
+    "checkpoint_verdicts": ["STOP", "REVISE", "CONTINUE"],
+    "over_100_requires_evidence_based_justification": true,
+    "intermediates_default": "EPHEMERAL",
+    "persistent_minimum": ["PROTOCOL", "INPUT_CLOSURE", "TERMINAL_RESULT", "MINIMUM_JUSTIFIED_EVIDENCE"]
+  },
+  "consolidation_exit": [
+    "active graph explicit and minimal",
+    "product imports exclude evaluation and archive",
+    "SCOUT production closure",
+    "SourcePacket self-contained",
+    "factual acceptance cannot be bypassed",
+    "fallback and abstention operational",
+    "SQLite migration backup restore pass",
+    "deterministic FINAL pass",
+    "clean-room restore startup and E2E pass",
+    "STOP_ALL_CANDIDATES remains active",
+    "LEGACY_DEPENDENCY_COUNT=0"
+  ],
+  "cleanup": {"executed_by_this_checkpoint": false, "eligibility_requires": ["GLOBAL_VNEXT_MIGRATION_PASS", "no direct or transitive references", "independent evidence closure", "separate owner authorization"]}
+}

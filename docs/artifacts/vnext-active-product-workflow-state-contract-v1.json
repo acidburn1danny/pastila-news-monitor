@@ -1,0 +1,45 @@
+{
+  "schema": "vnext-active-product-workflow-state-contract",
+  "schema_version": 1,
+  "status": "DESIGN_AUTHORITY_ONLY",
+  "initial_state": "DISCOVERED",
+  "states": [
+    "DISCOVERED", "CAPTURED", "GROUPED", "SELECTED", "SOURCE_PACKET_READY",
+    "EDITOR_PENDING", "EDITOR_DRAFT_READY", "STRUCTURAL_PASS", "STRUCTURAL_FAIL",
+    "FACTUAL_REVIEW_PENDING", "ACCEPTED_SETUP", "SOURCE_FALLBACK", "ABSTAINED",
+    "VOICE_DISABLED", "VOICE_PENDING", "VOICE_DRAFT_READY", "POLICY_REVIEW_PENDING",
+    "APPROVED_FOR_FINAL", "REJECTED", "REVISION_REQUIRED", "FINAL_READY", "EXPORTED",
+    "CAPTURE_FAILED", "SOURCE_PACKET_INVALID", "EDITOR_FAILED",
+    "FACTUAL_ACCEPTANCE_FAILED", "VOICE_UNAVAILABLE", "FINAL_ASSEMBLY_FAILED"
+  ],
+  "artifact_types": {
+    "EDITOR_DRAFT": {"eligible_as_accepted_setup": false},
+    "ACCEPTED_SETUP": {"eligible_for_voice": true},
+    "SOURCE_FALLBACK": {"eligible_for_voice": true, "requires_explicit_approval": true},
+    "ABSTAINED": {"eligible_for_voice": false}
+  },
+  "transitions": [
+    ["DISCOVERED", "CAPTURED"], ["CAPTURED", "GROUPED"], ["GROUPED", "SELECTED"],
+    ["SELECTED", "SOURCE_PACKET_READY"], ["SOURCE_PACKET_READY", "EDITOR_PENDING"],
+    ["EDITOR_PENDING", "EDITOR_DRAFT_READY"], ["EDITOR_DRAFT_READY", "STRUCTURAL_PASS"],
+    ["EDITOR_DRAFT_READY", "STRUCTURAL_FAIL"], ["STRUCTURAL_PASS", "FACTUAL_REVIEW_PENDING"],
+    ["FACTUAL_REVIEW_PENDING", "ACCEPTED_SETUP"], ["FACTUAL_REVIEW_PENDING", "SOURCE_FALLBACK"],
+    ["FACTUAL_REVIEW_PENDING", "ABSTAINED"], ["ACCEPTED_SETUP", "VOICE_DISABLED"],
+    ["ACCEPTED_SETUP", "VOICE_PENDING"], ["SOURCE_FALLBACK", "VOICE_DISABLED"],
+    ["SOURCE_FALLBACK", "VOICE_PENDING"], ["VOICE_PENDING", "VOICE_DRAFT_READY"],
+    ["VOICE_DRAFT_READY", "POLICY_REVIEW_PENDING"], ["VOICE_DISABLED", "POLICY_REVIEW_PENDING"],
+    ["POLICY_REVIEW_PENDING", "APPROVED_FOR_FINAL"], ["POLICY_REVIEW_PENDING", "REJECTED"],
+    ["POLICY_REVIEW_PENDING", "REVISION_REQUIRED"], ["APPROVED_FOR_FINAL", "FINAL_READY"],
+    ["FINAL_READY", "EXPORTED"]
+  ],
+  "failure_model": {
+    "partial_output_eligible": false,
+    "state_transition_atomic": true,
+    "idempotency_key_required": true,
+    "recovery_requires_explicit_new_attempt": true,
+    "source_packet_survives_model_failure": true
+  },
+  "voice": {"state": "DISABLED_UNTIL_PROMOTION", "r2_may_serve_as_voice": false},
+  "chief_editor": {"separate_model": false, "role": "WORKFLOW_POLICY_APPROVAL_ABSORBED_BY_ORCHESTRATOR"},
+  "final": {"mode": "DETERMINISTIC_ASSEMBLY_EXPORT"}
+}

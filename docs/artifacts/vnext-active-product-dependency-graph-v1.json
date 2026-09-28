@@ -1,0 +1,50 @@
+{
+  "schema": "vnext-active-product-dependency-graph",
+  "schema_version": 1,
+  "status": "DESIGN_AUTHORITY_ONLY",
+  "verdict": "C_REFACTOR_CONSOLIDATE_BEFORE_CONTINUING",
+  "architecture": "MODULAR_MONOLITH",
+  "product_root": "/root/pastila-vnext/v1",
+  "legacy_dependency_count": 0,
+  "stop_all_candidates": true,
+  "nodes": [
+    {"id": "product_cli", "target_path": "app/cli", "active": true, "depends_on": ["workflow", "foundation"]},
+    {"id": "workflow", "target_path": "app/workflow", "active": true, "depends_on": ["scout", "source_packet", "editor", "factual_acceptance", "policy", "final", "state", "foundation"]},
+    {"id": "scout", "target_path": "app/scout", "active": true, "depends_on": ["source_config", "state", "source_packet", "foundation"]},
+    {"id": "source_config", "target_path": "config/sources.json", "active": true, "depends_on": ["foundation"]},
+    {"id": "source_packet", "target_path": "contracts/source-packet.json", "active": true, "depends_on": ["foundation"]},
+    {"id": "editor", "target_path": "app/editor", "active": true, "depends_on": ["r2", "source_packet", "structural_validation", "foundation"]},
+    {"id": "r2", "target_path": "components/editor-r2", "active": true, "depends_on": ["python_ml", "foundation"]},
+    {"id": "python_ml", "target_path": "platform/python-ml", "active": true, "depends_on": ["declared_host_platform"]},
+    {"id": "declared_host_platform", "target_path": "manifest/platform-lock.json", "active": true, "depends_on": []},
+    {"id": "structural_validation", "target_path": "app/acceptance/structural.py", "active": true, "depends_on": ["foundation"]},
+    {"id": "factual_acceptance", "target_path": "app/acceptance", "active": true, "depends_on": ["structural_validation", "source_fallback", "state", "foundation"]},
+    {"id": "source_fallback", "target_path": "app/acceptance/fallback.py", "active": true, "depends_on": ["source_packet", "foundation"]},
+    {"id": "policy", "target_path": "app/policy", "active": true, "depends_on": ["state", "foundation"]},
+    {"id": "final", "target_path": "app/final", "active": true, "depends_on": ["policy", "foundation"]},
+    {"id": "state", "target_path": "state/product.sqlite3", "active": true, "depends_on": ["migrations"]},
+    {"id": "migrations", "target_path": "app/state/migrations", "active": true, "depends_on": ["foundation"]},
+    {"id": "foundation", "target_path": "foundation", "active": true, "depends_on": []}
+  ],
+  "disabled_boundaries": [
+    {"id": "voice", "target_path": "app/voice", "state": "DISABLED_UNTIL_PROMOTION", "active_dependency": false},
+    {"id": "gui", "target_path": "app/ui", "state": "DEFERRED_UNTIL_CORE_WORKFLOW_STABLE", "active_dependency": false},
+    {"id": "shadow_verifier", "target_path": "evaluation/shadow-verifier", "state": "NON_AUTHORITATIVE_OPTIONAL", "active_dependency": false}
+  ],
+  "explicitly_excluded": [
+    "QWEN3_CANDIDATE_CLOSURE",
+    "QWEN25_CANDIDATE_CLOSURE",
+    "REJECTED_VOICE_CANDIDATE_DEPENDENCIES",
+    "BAKEOFF_RUNS",
+    "REVIEW_UI_SERVER",
+    "HUMAN_REVIEW_RECEIPTS_AS_RUNTIME_DEPENDENCY",
+    "SCORING_UNSEAL_TAXONOMY_TOOLING",
+    "HISTORICAL_EXECUTION_AUTHORITIES",
+    "EXPERIMENTAL_ADAPTERS",
+    "FAILED_RUNS",
+    "DEVELOPMENT_FIXTURE_AUTHORITIES",
+    "FROZEN_EVIDENCE_REPORTS",
+    "CLEAN_ROOM_WORKSPACES",
+    "LEGACY_REPOSITORY_RUNTIME"
+  ]
+}
