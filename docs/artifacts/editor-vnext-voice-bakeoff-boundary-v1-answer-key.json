@@ -1,0 +1,872 @@
+{
+  "answer_key_identity": "3d02d051b73d83ec9f208beda147dd9b2c18bcb284758acba9cf31f358cec0fb",
+  "mappings": [
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "ada2885a0cfa24af216a3a3af6d1eb16edc7e284d2d2fd62d0acb8f08a4b1e01"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "b6c8f602d81423acfdb97e96a7a76df045a535ff7481b2667c2fd618189e8fa6"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "4797c6e994f7055ba3368759f9f00fc5e1cdc1c44894788ffb7614967b5e2f1e"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "db81bcb626c059016b0970b174c4ea1c30b5a8c9327ce2ee301f26a6af0f26c8"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "9c9caa5751b2f6702a9076c78a63f878770ed661caacee2c19127ff4ab80b970"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "ccaea74e4d36b3eeb1824a3d5b1c91c58d7d829e008f73a65ec59e90cd299c84"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "ef2d6f946ecf2914541245b112a7fcc134162e1d1e14aa797a21029fec060df1"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "51b6faa80669fde8fa41df02a1dc21c0c204339f8de94026047204ed48bcb497"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "ccf0e8bfbd1fede9df234680dd6bc47bb0c20b5f7f09be8913babb4e47ef7c33"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "d0d0822e3ca3fc2e300f065ea31d8416584629a02e3a635fab0e0da5c6383429"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "ac47397f1aba069e4f3dfaf4b8458805ded297cfe15208865966fa98b51097d5"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "1a08aeddbd07c34272bd78c76ed966046d0afd312fc33bb45a90fb5e4886b740"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "3f020a2cef2feec0e9fe40e05ffefb17da94eaa5bba38547cb4d854f5f2fffac"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "384d0175e686bd480cef08ef8ccee259ebdb1541d8835d022e70d51eb29a117a"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "0fd228de4cfa7d277c869c1f7f91fbc61dcc9f1fbfe144ed1468b39af5f4f532"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "d9e62a80af8a8dabb995954e7d2e72d0f8d76cb8a14f1d5f6afe6be0f109cec4"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "361c91948817e849990f960b14bbae4839aa9fdc47dcc542f0aa45133bb628be"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "8906ca41faca0270d722153b75cf6b9edf3600415c2b9ea4ea09ae4050dac9bc"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "5322391c670637b952b4ebd33102ba4c615265a3738b9fdc14272cf2e8539a81"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "999d0a7416c208095df0709f78ed94a7b96529b785bbd3885bb9e007b8883b38"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "cecbeca6bd98f4066758c72baabc73289af3a19cff6c670cf6fd86d445055368"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "fc749f03e85e9612c79bdd51ae7540333baa5722e0b1a6ccb709e74d4ee3073c"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "a9b8af957db853362e31c0cadf7b6798d669e0fd673f68aabdb16e928aa9bc2c"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "a78074cbca19d37cdda9e52198cc9379e5c7762541657f598c5b45cdb028fb2e"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "e0794a5ec34954ace0d337b544ff4777646c509845d6561930daa790d7f54b7e"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "3a72c0b98d8d84332446cdc2e567adf54d83ae33e7d76939f28252bd78c3a6f6"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "d59fa3d3d7679e0b8b3dbc1787d037c499397ac100bef95c23629ff636e9edbe"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "9b584f038a612ae9ced3b8fb8105b47aa4c1cc46eaaf66fc336ad913a6cbaa46"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "737782de6deeb3128d9ba77f51129a43514e16e920e80bf486a5a41693d4413c"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "c55f7f8b387f9d1eb59dfdf9a2c11617cab4f6609eaa5794efed51c64b97c920"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "f34f9616ae608f7fe95940c784eafc4b64e6f33c89c4c42f3952d91ac4196a53"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "8d228316bc1db04b1f4099e56b6e730c4897ec8deb1ccb414907f5abd161a727"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "bd90346fe74f4fe4dc709cb48ef0b49620772f1892dc360ddac42c6dbd6574d6"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "ecbb340da86195ed7b2675b098d0ab575e94f8fa77d885ec5648741b2ceb3c0a"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "f10d8ba051ed053648d701ffcf3e969f5664a9655786504e3249bffbd2db0e52"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "4c76fd662ce085681bf7f93f127619df1f5eedf30ef3fdeaf9a35fab445563b6"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "d58a5052d47616c4570187a4aa3b01a1ab400946be7074230a1ae44e5baed981"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "016e5d65857311d172fcea8284525782aa31bf11b60c5a42ddf31c709dd4c5e2"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "15f761bd8b10bf807f24b741761db36eba203f2ee04c9e2b981423138c04d902"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "2b6d332cc216add66f89f11205e12de4f3bd558cbda5843d38c10c7d1ad3575f"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "ebd1c91efb89e105499866ff2d32b7d9851082c128120ef8d2a252a0b68052d9"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "52bc8bfe85f2ab72d33a543e448210e135c3702f885a2d7d458a8a69697e280d"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "58cf1cbde97154e54267d53ffda9ee3b250f05c34e424b30062cea8eae04ce44"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "cc6e56ac2099beb29453299d281a7e2432a9817d214608f32b53a7892f1aa03a"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "ff852bc738c194e9f9e6ce00f2f3c92c6fc92d4851a4ebb86b278997449fcaf5"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "077141371cc9e4598c0e7a9c0ced2942cf6c50409eb94849218afabcd346ca47"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "385629df7685afff5de41f00f953630098c674c74101fe48af0aaa7a6042a182"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "bd88f650306a4ff7a90776aaf65092c005737794abdb84e6a12d30abbf6a6b91"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "f2ff91c34c048816475d9d8652056ac8ca8f0691cbe9495e63c98f552fdb8a7a"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "5e77dd7ab7f9d2b9ba5bbaaf4346d114fd92eee0b4b0c854a31f96f853b3c0a3"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "9042787d47e9ce9894331c99f6e2ea1759633ca052db2406fc1512d1f3a90dd6"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "45c3d7731e7490c463cefbe0c310692f363191a39ce355ac0f7a52774bd79848"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "9366c9f3f213c6886743cbac115fc7e8f4d024d45cd9b5e4d3fd155bbd0d2cf5"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "710d95738914af45154a6994d1a23a62cfe1dc2a9d8a5acf7faf80b7a0865aeb"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "ad27f2b33a5d70fb7314ffbd5916cfc4e3f467a2df4273499a93907e5232363b"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "d53df4e93b46055e44f4430f91087ed034fa57b18cff51f477e18039fb676449"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "c43d8ae3e9b6bf7f756edad013dd01541165008e8be82a62bd3930749bbd21c7"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "d165fd46fd9e099f33c87114b0e52c418e88c1b11f195dffc7d7fc247e4efab8"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "5378d171b05999e64c01ecc4d0c4e60f261ebb8e982e42ab22357f1e877f9ed6"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "728c86347f0863e95fb27da99be5cc8212bca46f2d518feee6d97b3519ea2933"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "f4e6fc9cb36e141b9de42488c2fe87d3cb1fe3b7548cbb46004ec28509d6ae19"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "cb8a02ab2261df646b47d18beb7ff3b81712a099acf145209c078f366ad4bec9"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "7a004210e51c7472947004e409c723174cc2ef7beb68bd19f2e1ba43d561d3cb"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "2e8c48e05881c01f4367f0acb7811d6a1da64e5068808bb12ef66e05502540ee"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "90b6a6468218ebde8636873d663df54496b03455067937c0858ea17fb675c423"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "0361aa14d942c1c6b9fe133304f2f680541fec9b16943fa90661296f2e552cea"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "88aff9ca9b2be6a6035e5076a1f4e4de46c849c6f92db875583e657514c045e2"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "7a343a0d90e2a20a76e2379e231b17a5843b95e7e7a1459e67e5237b5bc8d162"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "b82ffc313e29f18c21cc776db1a8bc05a4aae3513dabc6e9552ea620eeb57d75"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "93626db91ca9b4b1f3d8872cc5c427f61d67a02e7fa5c418487b4826ad48281e"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "6a14420c80e517b32a4f15d0a41030ed7ff0475b05770d03f4dfb1f6e8eb564a"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "92c75de110f2e5f0b606ef608f94ca426f62bf06a22cbd23c8e9f454be38b947"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "3bbc6128c4441741aa8ac3c2c754926441e9e5a167911889bbf69dac996d3fd5"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "0899c568ae914688e503429dcb6a12fbfb6d1dbb1511cdf8a1c5f759b84287e8"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "d50d2ea127e3b23109d5393a9e79b2946498685b25259195568831e64c9fbd82"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "c29f8820931e5379a628f0c94e00c28906012b994f6103b2b8cfb0c5872e56a1"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "5b730238546fa0ccb0dfb5612cc9c60d1c0dfc05815a47f14bfe75affa0afe7c"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "a2772da421a0770bf21a3f2e7cbbfffe5d6219efea237df68894d59809201e65"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "27d12be981aef0c8801e04edd150b40a5f1000ff9e4211763aeb8f1f6ef3e1bc"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "3eb04f9248fa2cb86f7c94e642a569bb226d53393d151f4d9c26c5df565aaea0"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "a0cb0fb387de58b3f11917d6fc75f9ba3a384e4dfe1b5ab0687303a20b4eebad"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "ba0846f1e1908a7bebab98cec3ee1e19f8207a503071209852e01cfa5456779a"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "f2390a1c2aabffe5cd3f62a1399cbd3e751ff8b4503d3ba0628015f5d77ac1ca"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "29328c2f504d1364627b5ee28f9d19a97fd84079f975c49143bd333f7cd4ea30"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "0f83a75b8fc63dcb990f76f811cdfdeeb7d15c1601557f9b10317fc7afc62cfc"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "ab358d7d47cd4ee3fbf5c0a62c8967d97f6cebea66e746300cdd37337bdb22fe"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "bbf140189568479275e2f13d9634c1d9cddfea89cc6cbab519a1afa25d3e26b2"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "bf4c31e100835decef1698c20c3201551f7f2908d6a1e616f45877121ee46754"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "fa16aa8a18e54943bc2d2ae728b382f0dce593d57ac57b8a9da8032267433fa3"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "b825e7e7c931c5d6b5304cad02152617fcbd112ae1a255c78c1b899033db5003"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "0f32a69b5ac7c7110b2668de7b6d9a5e4a9845f2842e85c9696036dd2727138d"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "c08fe175822d580c0f54794bb75343a4a445a5fd1eea79dd408014c738ac29cd"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "5227e4595b03cbd5d7aee26ab167f98a1f0b339626f6689d0e7ef5c273ae8e55"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "01a4b0fe739f9aaedb902a7d33243ef3b0e6a75529112eb1c1396d6eac36431e"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "98be4311613bc18338b257c2b016836bcaa1b2d3e00979596417302abd7bbbe2"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "57caa0ccb7f3f3ea436083dde0bb9411874327cf0ba1f39ffe370bdfe12fc789"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "ef9626504cc586f8c8e3000a98cbc0a1f3cc39c271f73df712d56c053daf2fd6"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "a64eb0b152a6a92b04a272ad867633ea7d4ec163ae7480fdaa08b2541d9e31b9"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "b750595be84782911e1177a08de40a013d1a3d15e8990b32732929220c6eeaa4"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "7c9c1163dc9c42f37b833886b27817f6ac2c3e420ee3dd1d4debfd01c6fa81df"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "c42f0d278bfc4a540e37376a0801545971de58af861a36307f42fc10ae6b8c61"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "b141ebd8fda931aaa5e73eca229f8d78540fb485fd917df43b530c88527de119"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "80659f49822bd806bd93725ea309e50933f394047205c2bd0bf59e1c00a4aa5d"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "6b6e7bb5cf78c72e6ddbd8af9bc55433cf5196f1ae28dc34eb0e071a2fd9e16e"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "484089a59d5d277aaa0a21581886c72066ccd6b6cc895b849b4861e3580b784a"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "af696b2cc8296f3366257947a4b863a5e69d3d5e8e7d60ab7b30398b89a51430"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "b1f0615199f29d0925c446f4abdda84e7fbe784f8fed89f15c479c545ea66034"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "0ff033b669e2895535e3c1f4605f149b6f2dd3977915bc5d2e0d59f0f50bf811"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "42ecd3907f77d450d3392e45d4dc5a5c14bed3838a8c5a1b498ba7bfdc260da7"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "ce945d3a8cb2ec5b45d95055cfb26aeb0dfdde713aa8af65ce21acfd5deb988b"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "027eb4fa1f442b7e536d89b48a6e8fca2bcbb058e7b82127b608e42d0c05fa75"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "8ca1a901bdf87b615cf46086d2b6a6ff5765f235f2193f6ea42d70edab23be2e"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "fddf8da6d36b35b1a16037eff0198d52be8566ccf4bd7539877fac43caea9929"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "ef42406b972b00c332cf0f14fde208f3987fb46102409223fb42672d5460ba95"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "46def3b0eddc2c4501d14c0b0bbf11f314500bfc365ca77c079459a0e661a3cd"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "554d1d467c864e0add314827b183509ef4643bed09ae272f8dfcf5b9477915c5"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "18880e80b9d8608b52a9903d463402946f0ab3e3df63fc6083461f19c590e87b"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "9421d162afe8c1ed3a177fdcaa5d2f0812276380da6cc10795bd44977e989602"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "9fe64f4ee4aed5845142fd50cfe08ca1a7fd723636638ef7389b3f3f2c14e2bb"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "d10909b13d9e95ce62dbd7329a1485066dad5c02a190928141836b887ebc952a"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "344d211fc5d579a74232aae56cc8346a18131c4d4050b4a385507d76c92cccf3"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "7e2353a4bd31afea48a9397cfa120e83c509fa9f47312f243db4d3058e045cb5"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "c6a582826e695386372a7dc3062a9fa33cdf634b6a773f923311f75b12904f80"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "9aa1d8ecbeaa2a45681135568d9ed8c2ec34b5cc2cd6ca458636b38d89023510"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "062d8fbe7e8172f5093380eb6465a932572ed063c88de1d33f490e29c067affe"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "f998d4b6715b1a59d6426d5297eb0d7dd6ddf2d59bb855dd51b2085b6c634e76"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "1be06cc7fafb2098cd22e70e296d2710432f1d23d8d43ee5f8afc018aef9e1c4"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "5b91d9d49f625629fbd806ef22273cfd70486c942b6f7a325b9be74a0334008c"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "d43508ff78baaa6e650953852c95c97b1642c16adeaa8477f207951a1dc59ff2"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "c8f3974894510ac986ed7d5c7c3b985909cd217456053077760844cfa09976c4"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "8b69aaa39974c9d7a21c2bef1717b5869744992c885bf4c0a2d68dfaf932b3b1"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "b8b9c923b11d6e14bfae4fdfd83945ef3abedd16c51b4b43cfa8478b9e20f88c"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "86fc134728407de5b228342f2de2e0e6d0e34f3012fc8283b575dc396afcca29"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "86da20c71c6ff55abd0c5526cd0875f24b97db9870d7a45c3495317383afa7e2"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "e56354aa2ab00bcebd5f18bbe913c10a0f36473dc579f070f30548b67c115ced"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "d113c6a9e08756650f2f79dbb451a693cf0ce49c6f7416e68b770073ea921be3"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "cbdb72186e03616ba83d3ded632f26901235f6cb5e7bb2874c0f3c096f0788ec"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "81daba51c9b7a531b468e9a378f77b1128a60b7e0e16afaa5d7133cfdf7f59bb"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "aaebe88e05e2442c0cbe243213eacbb3830506333c65af51f75dde84328d01ad"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "4bedbf6ad28627a38aa950fd9b756d738d0a52fefd3d944f403ca893a577a20e"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "f37f1bbc5a23d2155dc262cbddeb58f76234a7168004fd282f8373b5071c070c"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "f9b8592dc3a805caf9cfd120f70cfa6f8c97ffca249fc77f483e9b8100b872cd"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "4093878e02a273cff8f51013805c789bc99e5854f1ae955442df3c7e4a9a56fc"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "fb26f39677378a11400dd11a77c461a0c63147e9867573d51d48ee2cddf6cee0"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "f17bff321d834eec54d0922d33af26ef89694e3273f4c9e4ac39e2a9d0d31ca6"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "ec769f8035aa0ed0c2ccefaf3267bf2281b64b3de4a54ccdcc43a84a895e17fd"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "5611daf6ea4b8d904e6848c3a23536f6548fc200f2da14a14c09a6449e6f70b1"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "125c5d2ed2ff59ad0c903f1b497ce7d61ace80d2ba47c26d91dbd32c97fe16ac"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "a4e7b15412054f5acf363c96c98bba3c7ebc9cc676e90fbb4a010577af63a691"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "b8b3029aa31a744cbb2770edb483017a5ea5b854301b9f50b8ed78941d05129a"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "3ed93f2b8c783ca9b14ba94c4a3eeb44b1a679ea1e84cb39ed781a0e54c88ae4"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "302c9f01ac1f8496de44905acc11b54c361453b1ecec33efad717a2b2e6302bf"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "3d6b3c39e3cadcfddf21582fc08b7363aa5c41417be5b78a22f988c46c812c90"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "d7ddc79abde09af9b3be6411582de1e6dd42a2a52f8c5f59978d096686125f79"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "ed430225981ec42940580d3c84348beb8b1256a658693e566595dbcd15108fa8"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "bdfec55e8383ff43213df672866cec017d7685ad37de68cd5cf80d9a109f0700"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "877883cdc40afcbe097166908968d132a69a9035c50b7a517996fd8d159e6725"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "2b90934fa1045e95e3e9553240257255d99f8698a3cefc041d44c60edfb61769"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "59112ca066d476ab2950a37568e98706e3800c5fb5e9ac6e1854d4bcd75f8197"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "a62d388b17caa0cb697bfd94ca3413cf521b40bc2ad2082766e4d72adc65b096"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "a40580233f956f2ba99e7b9b2167f9ac17928e19516139aa66911247d5aa63ed"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "00535968366633ba8811e7289b1600dfedee577a077c46f14298bc7a087df37c"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "78bd99b52dc7c20aed78dcaa5c9ade0468fd2ad4679bf852df6f79eab8ff3d72"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "38962a34a43b9e6c2ad57cfc412737c6e4495d4539db6d4a3f5c956d98f3dc88"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "500a1c3e049479f490f961a7ddbf009c65c4df996fb8981bd97b58d528d0761b"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "eb68fe88d9c46a97e21bc9e5525cf6fe4dff3e8ad567d423bf81c13bc01e0421"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "b0140a5e1606b856934f5ce02fec3e9165cbe4bc1b11e3e692e4eb3439e4a79c"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "4b1cba5a24ff7ffa94516038f0e7076a5d4663f6ce0956a09d3690ab4b6f8679"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "da849bb679df9a28a0ca4f85a135add4c021d7bda3af702ba11959f269f987a6"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "8b401981ba152aab5257fb7627215153b8fcbeaa02b25917e7cf1024851bc46e"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "5fd0d750a5c04b7c1dcf1dc72dd8f2c063005c70a9f84a0ee4f4e70f4ae8bb8d"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "d0d7cf0ca0bba21c9fc54bc0d33f563586a293ee3d77514563a75464bd6f96e0"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "8022a8abc94eccd5fd05b13834f9517d72e02637723c3e48dae3ca04edbcf0f0"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "b10b25853415e9efe7cad7f078e4021902b7c2fa2a5671014634ba23a9a7551f"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "94b607d86491da755eaeef6bd637fd11a8084ea853156c496e4ebe1264635193"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "a6424e6a569c635f42d494099c4e8b52cab4cca88a7b4df1447d8d7be7e7e9e3"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "c0aa126fcae906e8a391eb9c23465c549b131b6dc0e35469993bbffd46a6e0af"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "7568645d1d19eec9b1546c43bf6de11a8e9385295911cfd6cc06acdadb5eb06c"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "392218ea5bde77712a46266b984cd463721d1918386d67a71624b44871eed577"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "0e201d1ac9ad82ded60e1e9145fbe1a76dc300e8e855e38a3f69da3092d0d70b"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "4590d7482092213b0db6661e6f12c85403e6f2134d966af1874b3e25c04ddb7a"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "e5e4011b2c50eeca818a27da70ba55573773366f648491def90ee8ed88f1b802"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "06b54ed576727aa6543a7795acdd7f017205be0dec00d4333f0ca8a992b847b6"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "f2bfc6196c46030994cfffffddb5367ace691a89001c45f2ceee04dd08c9fa53"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "a5e8779d49105deb8f8da45e9e0c4c37eae2397213909b8e23fdd27d5f55d2a3"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "a91e0e43a6aed74ea57c18233777f19e6d8e8ec6008021cf049c030123296794"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "3e47c60384b54256033e9e4214340b492819894a7363b682e006ae8eb091880e"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "002fb7a416ff83f16503d7af86f66065815bfaced24ff2bb706fbe67fde0adf8"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "bbe78df77e90e326bae7bdd9007b0663671f17b9e7c5d9a1ebbe640dbce7b9f1"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "7686166be5e053e9af0319b835f8c9aa8f8be063cea0f5c5c97d6863fc198a82"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "f5a920999f642b9c14866015c470af1d785a713c37d021a557bdeb4458c17282"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "f5ed4932d4a3644ef085990568d065a77537f53759cae2fdf2693998f225f090"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "13ab7151d75b1654a62b8e5257dcd7839453db9e1842f34d2f6fddee17110d53"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "a20029580f3e46d84547c572536bf7a7922d013376fd32243cf6923923f23db6"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "1e61e2af5340c1bc5fabd34de2abea867a3fc476c7ed3fdf36817bd825b34953"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "cb6541016532ea3b7552cafe40276ab40c7945855825d810c9c77b9ab14fa918"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "a3949a8ea6410ca9a50c56d64a081b19f30c67856a73513a9be49b75f90c9ed7"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "3d93c7d25f4364c5c8358d2e37b2b56914f5d4448bfb616e15ad0b4f4a5c70bd"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "a711552d2531eff9e372e75cb9a507b37ac4176038e6bb12dc872b072807902b"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "1559e3272d05d581ce42db7401cc41b98415a75b09e847132f3e1442153d331d"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "d0217078cc1db5fdf05cc4d3fa26f281183cc0e3b51e323494f73fa42f217b65"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "f16fa4c45745c1593c3829dcc44c0ce0b2ff587001621d53288aaf5a45bc452f"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "608b5c789230acbc159a8cd091779f5a98d44e606000893514a7d63d4dc390c4"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "5d243515a565635f8be9738065f5d99908649e59a07a753357a04124141b44b6"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "03b5ee26e62672e3ace43c90cb564ff5a6f760aeef14a36b873579cad7961815"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "c3db874fadf466d0158f6a2bdf872fe3886e29be3454b7971b0645a793b5be1b"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "9421e4a6bf8922a60265f09297c7ad48e285399486084f23b8e68245c2b7faa0"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "573862dd38cc03f9c3f948878719344e10935047080c385f0b9c0f5b1c547b49"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "77567b651110dd5cc1f6b378d90ae2af4b7360d4a0f022bd38fb3af655b8c167"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "d32acef812dbc4197bad325a46cdf103d4aae381e055d5aaff5cc0198fba13c6"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "60e7a512e7227f7b7b23967d4c3f8be9fc628cfd1821553f141e6101962eeb9e"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "d80d00a19ab6446a7686ade5087c9d573146d5062ee53bdfc3f92112266c6ec0"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "aebeed604e23a5292682fd01eca236d111072aabf128f066886cb1247356d2ff"
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "slot_identity": "d03fc19589f835a9a6fbdabacdebe9ef3c6620eb6bc082d4b48c10f21589798a"
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "slot_identity": "178dde412c7384598831cee9e21fbc721bd08af5b2db8776c7b4571dd6c494d4"
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "slot_identity": "d63db3c3246b964b04ed8b7beb9e02b19ad5bd4265c0a940585726f899f9f1f5"
+    }
+  ],
+  "runtime_access": "FORBIDDEN",
+  "schema": "editor-vnext-voice-bakeoff-answer-key",
+  "schema_version": 1
+}
