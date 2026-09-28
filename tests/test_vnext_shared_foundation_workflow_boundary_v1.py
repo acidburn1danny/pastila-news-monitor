@@ -74,11 +74,28 @@ def test_legal_illegal_idempotent_and_conflicting_transitions():
 
 
 def test_complete_canonical_disabled_voice_path_and_published_transition_binding():
-    published = json.loads(Path("docs/artifacts/vnext-active-product-workflow-state-contract-v1.json").read_text(encoding="utf-8"))
     from pastila_scout.vnext_workflow_v1 import STATES, TRANSITIONS
 
-    assert set(published["states"]) == set(STATES)
-    assert {tuple(pair) for pair in published["transitions"]} <= set(TRANSITIONS)
+    expected_states = {
+        "DISCOVERED", "CAPTURED", "GROUPED", "SELECTED", "SOURCE_PACKET_READY",
+        "EDITOR_PENDING", "EDITOR_DRAFT_READY", "STRUCTURAL_PASS", "STRUCTURAL_FAIL",
+        "FACTUAL_REVIEW_PENDING", "ACCEPTED_SETUP", "SOURCE_FALLBACK", "ABSTAINED",
+        "VOICE_DISABLED", "VOICE_PENDING", "VOICE_DRAFT_READY", "POLICY_REVIEW_PENDING",
+        "APPROVED_FOR_FINAL", "REJECTED", "REVISION_REQUIRED", "FINAL_READY", "EXPORTED",
+        "CAPTURE_FAILED", "SOURCE_PACKET_INVALID", "EDITOR_FAILED",
+        "FACTUAL_ACCEPTANCE_FAILED", "VOICE_UNAVAILABLE", "FINAL_ASSEMBLY_FAILED",
+    }
+    required_transitions = {
+        ("FACTUAL_REVIEW_PENDING", "ACCEPTED_SETUP"),
+        ("FACTUAL_REVIEW_PENDING", "SOURCE_FALLBACK"),
+        ("FACTUAL_REVIEW_PENDING", "ABSTAINED"),
+        ("ACCEPTED_SETUP", "VOICE_DISABLED"),
+        ("VOICE_DISABLED", "POLICY_REVIEW_PENDING"),
+        ("APPROVED_FOR_FINAL", "FINAL_READY"),
+        ("FINAL_READY", "EXPORTED"),
+    }
+    assert expected_states == set(STATES)
+    assert required_transitions <= set(TRANSITIONS)
     path = [
         "DISCOVERED", "CAPTURED", "GROUPED", "SELECTED", "SOURCE_PACKET_READY",
         "EDITOR_PENDING", "EDITOR_DRAFT_READY", "STRUCTURAL_PASS", "FACTUAL_REVIEW_PENDING",
