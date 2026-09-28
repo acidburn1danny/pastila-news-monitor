@@ -1,0 +1,49 @@
+{
+  "atomic_no_overwrite": true,
+  "candidate_fields_forbidden": true,
+  "content_addressed": true,
+  "factual_safety": {
+    "values": [
+      "PASS",
+      "STOP_FACTUAL_DRIFT",
+      "ABSTENTION_VALID",
+      "INCOMPLETE"
+    ]
+  },
+  "quality": {
+    "fields": [
+      "romanian_naturalness",
+      "relevance",
+      "sarcasm_irony_roast",
+      "pastila_acida_style",
+      "non_generic",
+      "restraint",
+      "target_choice"
+    ],
+    "integer_range": [
+      1,
+      5
+    ]
+  },
+  "repetition": {
+    "fields": [
+      "exact_duplicate",
+      "normalized_phrase_reuse",
+      "cross_case_template_reuse",
+      "human_perceived_repetition",
+      "seed_stability_finding"
+    ]
+  },
+  "required": [
+    "blind_output_identity",
+    "case_identity",
+    "seed_alias",
+    "factual_safety",
+    "quality",
+    "repetition",
+    "completion_state",
+    "reviewer_receipt_identity"
+  ],
+  "schema": "editor-vnext-voice-score-receipt",
+  "schema_version": 1
+}

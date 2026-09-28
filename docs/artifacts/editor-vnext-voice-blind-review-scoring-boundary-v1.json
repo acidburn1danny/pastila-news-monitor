@@ -1,0 +1,89 @@
+{
+  "bindings": {
+    "dispatch_identity": "5bad1dc1071d948fd476c618f5eba3fb12ee1e2221aa0a40607f0443a3fe9b38",
+    "execution_boundary": "bea8d2764dc361eac2787776a4ec7d6d515ce218c2b682269b017ed9119f6531",
+    "inference_closure": "f8f938cbb3ae2a41da6b73389b1108c0d1e77bb1d50a77aee77728000977b3fa",
+    "output_root_identity": "e996fd00d9599b4db9706dc4ab588dc0d75d64fd0b5a613b401087d08321860b",
+    "runtime_commit": "e319a69be924b277ea1e2c2187821d617b0f037b",
+    "successor_authority": "ba6c35e1f3abe2744c8e6341ddfd517307f40e755a98d5fb6fd00128203e5add"
+  },
+  "blindness": {
+    "answer_key": "SEALED",
+    "answer_key_runtime_access": "FORBIDDEN",
+    "candidate_metadata_excluded": true,
+    "dispatch_metadata_excluded": true,
+    "timing_vram_excluded": true
+  },
+  "completion_gate": {
+    "duplicates": 0,
+    "incomplete": 0,
+    "missing": 0,
+    "overwrite_allowed": false,
+    "required_unique_complete_receipts": 216,
+    "unseal_before_pass": false
+  },
+  "execution": {
+    "human_review": false,
+    "human_scores": 0,
+    "new_inference": false,
+    "scoring": false,
+    "selection": false,
+    "unseal": false
+  },
+  "inventory": {
+    "human_scores": 0,
+    "outputs": 216,
+    "review_items": 216
+  },
+  "legacy_dependency_count": 0,
+  "product_lock": {
+    "candidate_promoted": false,
+    "unchanged": true
+  },
+  "review_boundary_identity": "104252702c6bb27585e3615ffec0667aa519649a54275e641aeb7be826096d0e",
+  "review_items_sha256": "bd5596b3d345b947b090af3e29fb02e009f0ab1f1dfe94d5d8492b3300c8784c",
+  "schema": "editor-vnext-voice-blind-review-scoring-boundary",
+  "schema_version": 1,
+  "scoring_contract": {
+    "factual_invariants": [
+      "EDITOR_SETUP_BYTES_IMMUTABLE",
+      "COMMENTARY_SEPARATE",
+      "NO_NEW_FACTUAL_CLAIMS",
+      "ABSTENTION_ALLOWED",
+      "NO_SOURCEPACKET_AUTHORITY_FOR_VOICE"
+    ],
+    "priority": [
+      "FACTUAL_SAFETY",
+      "COMMENTARY_QUALITY"
+    ],
+    "schema": "editor-vnext-voice-score-receipt-v1",
+    "source_plan_identity": "2ddc49ed46d0e891aef7b69b4874de5305c32346b8ec0962f296c50859faaa61"
+  },
+  "status": "PASS_ZERO_REVIEW_STOP_BEFORE_HUMAN_SCORE",
+  "terminal_rules": {
+    "CONTINUE": [
+      "ZERO_FACTUAL_DRIFT",
+      "ZERO_SETUP_MUTATION",
+      "DEPENDENCY_GATES_PASS",
+      "SIGN_TEST_P_LT_0_05",
+      "AT_LEAST_15_WINS_AT_MOST_5_LOSSES",
+      "REPLICATED_TWO_SEEDS",
+      "NO_REPETITION_REGRESSION"
+    ],
+    "REVISE": [
+      "STRUCTURAL_FAILURE_ABOVE_2_PERCENT",
+      "ABSTENTION_ABOVE_20_PERCENT",
+      "LATENCY_ABOVE_30_SECONDS",
+      "NON_REPLICATED_QUALITY_ADVANTAGE"
+    ],
+    "STOP": [
+      "IDENTITY_DRIFT",
+      "SETUP_MUTATION",
+      "UNSUPPORTED_FACTUAL_CLAIM",
+      "OOM",
+      "VRAM_ABOVE_14_5_GIB",
+      "LEGACY_DEPENDENCY"
+    ]
+  },
+  "terminal_rules_source": "bea8d2764dc361eac2787776a4ec7d6d515ce218c2b682269b017ed9119f6531"
+}
