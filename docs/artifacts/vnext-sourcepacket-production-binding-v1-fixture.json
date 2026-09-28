@@ -1,0 +1,95 @@
+{
+  "expected_bound_packet": {
+    "completeness": "ALL_CAPTURED_UNIQUE_SOURCES",
+    "event_id": "event:arin",
+    "packet_identity": "facb4d1dc230c10d6c744befbd37e7d0ab559f24c13c5f11a118e956a7c994e2",
+    "schema": "editor-vnext-source-packet",
+    "schema_version": 1,
+    "selection_authority": "EXPLICIT_USER_EVENT_ID",
+    "source_count": 2,
+    "spans": [
+      {
+        "article_url": "https://fixture-public.invalid/arin",
+        "byte_end": 77,
+        "byte_start": 0,
+        "capture_sha256": "3922da6a93259ee3fe33ef64ff12e343d5c757ea4ce6c84cef558dcaf0f81117",
+        "captured_at": "2026-09-28T12:00:00Z",
+        "content_scope": "FEED_ENTRY_SOURCE_TEXT",
+        "position": 0,
+        "published_at": "2026-09-28T08:00:00Z",
+        "sha256": "e76075fba5193db8f3c66ad034607293cec91cd2d443246f4d39403ef4f96a86",
+        "source_feed_url": "https://fixture-public.invalid/feed",
+        "source_id": "fixture-public",
+        "source_name": "Public News",
+        "span_id": "event:arin:source:1",
+        "text": "Consiliul local a aprobat 127 de milioane de lei pentru centrul medical Arin.",
+        "title": "Consiliul aprob? finan?area centrului Arin"
+      },
+      {
+        "article_url": "https://fixture-ministry.invalid/arin",
+        "byte_end": 88,
+        "byte_start": 0,
+        "capture_sha256": "c6bcaa2e60528a4d86a0e0ad72906adf8a0f595719437aee108161e7ac846e0f",
+        "captured_at": "2026-09-28T12:00:00Z",
+        "content_scope": "FEED_ENTRY_SOURCE_TEXT",
+        "position": 1,
+        "published_at": "2026-09-28T08:00:00Z",
+        "sha256": "ec5392828af6e2d9e985b3c833eb2df79af39425ac2f474b65f94948c9c610d4",
+        "source_feed_url": "https://fixture-ministry.invalid/feed",
+        "source_id": "fixture-ministry",
+        "source_name": "Ministerul S?n?t??ii",
+        "span_id": "event:arin:source:2",
+        "text": "Ministerul a precizat c? finan?area este aprobat?, dar contractul nu a fost ?nc? semnat.",
+        "title": "Ministerul clarific? statutul contractului"
+      }
+    ]
+  },
+  "fixture_identity": "85080946b044947848f9ae86adcbb1ec00dc3dceadd277d0d74e6ed8309e5ea4",
+  "schema": "vnext-sourcepacket-production-binding-fixture",
+  "schema_version": 1,
+  "source_packet": {
+    "completeness": "ONE_BEST_CAPTURE_PER_GROUPED_SOURCE",
+    "event_identity": "event:arin",
+    "packet_identity": "a540c58317f7f13a2ad9ae6fe3a8d90ea95ae0b566d84232d8a33be1d1788f67",
+    "schema": "vnext-source-packet",
+    "schema_version": 1,
+    "selection_authority": "EXPLICIT_EVENT_ID",
+    "source_count": 2,
+    "spans": [
+      {
+        "article_url": "https://fixture-public.invalid/arin",
+        "byte_end": 77,
+        "byte_start": 0,
+        "capture_identity": "3922da6a93259ee3fe33ef64ff12e343d5c757ea4ce6c84cef558dcaf0f81117",
+        "captured_at": "2026-09-28T12:00:00Z",
+        "content_scope": "FEED_ENTRY_SOURCE_TEXT",
+        "position": 0,
+        "published_at": "2026-09-28T08:00:00Z",
+        "source_feed_url": "https://fixture-public.invalid/feed",
+        "source_identity": "fixture-public",
+        "source_name": "Public News",
+        "span_id": "event:arin:source:1",
+        "text": "Consiliul local a aprobat 127 de milioane de lei pentru centrul medical Arin.",
+        "text_sha256": "e76075fba5193db8f3c66ad034607293cec91cd2d443246f4d39403ef4f96a86",
+        "title": "Consiliul aprob? finan?area centrului Arin"
+      },
+      {
+        "article_url": "https://fixture-ministry.invalid/arin",
+        "byte_end": 88,
+        "byte_start": 0,
+        "capture_identity": "c6bcaa2e60528a4d86a0e0ad72906adf8a0f595719437aee108161e7ac846e0f",
+        "captured_at": "2026-09-28T12:00:00Z",
+        "content_scope": "FEED_ENTRY_SOURCE_TEXT",
+        "position": 1,
+        "published_at": "2026-09-28T08:00:00Z",
+        "source_feed_url": "https://fixture-ministry.invalid/feed",
+        "source_identity": "fixture-ministry",
+        "source_name": "Ministerul S?n?t??ii",
+        "span_id": "event:arin:source:2",
+        "text": "Ministerul a precizat c? finan?area este aprobat?, dar contractul nu a fost ?nc? semnat.",
+        "text_sha256": "ec5392828af6e2d9e985b3c833eb2df79af39425ac2f474b65f94948c9c610d4",
+        "title": "Ministerul clarific? statutul contractului"
+      }
+    ]
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "acceptance": [
+    "SELF_CONTAINED",
+    "ALL_UNIQUE_GROUPED_SOURCES",
+    "TEXT_BYTES_BOUND",
+    "PROVENANCE_PRESERVED",
+    "NO_HIDDEN_LOOKUP",
+    "DETERMINISTIC",
+    "FAIL_CLOSED"
+  ],
+  "active_integration": false,
+  "binding": {
+    "identity": "RECOMPUTED_FOR_FROZEN_TARGET_SCHEMA",
+    "provenance": "FIELD_PRESERVING",
+    "semantic_interpretation": "ONE_SELECTED_CAPTURE_FOR_EVERY_UNIQUE_GROUPED_SOURCE",
+    "source_completeness": "ONE_BEST_CAPTURE_PER_GROUPED_SOURCE",
+    "source_schema": "vnext-source-packet",
+    "source_selection": "EXPLICIT_EVENT_ID",
+    "target_completeness": "ALL_CAPTURED_UNIQUE_SOURCES",
+    "target_schema": "editor-vnext-source-packet",
+    "target_selection": "EXPLICIT_USER_EVENT_ID",
+    "text_bytes": "BYTE_IDENTICAL"
+  },
+  "closure_identity": "b07ced12a272a9e847098f9bcbdc20048e44eea9821ffa92df22451971a26e7f",
+  "forbidden": [
+    "HISTORICAL_DB_MIGRATION",
+    "PRODUCT_DATA_MIGRATION",
+    "ACTIVE_INTEGRATION",
+    "PRODUCT_ROOT_CHANGE",
+    "PRODUCT_LOCK_CHANGE",
+    "R2_EDITOR_REBUILD",
+    "FACTUAL_ACCEPTANCE",
+    "LEGACY_DEPENDENCY"
+  ],
+  "historical_database_migrated": false,
+  "legacy_dependency_count": 0,
+  "product_data_migration": false,
+  "product_root_dependency": false,
+  "published_authorities": {
+    "canonical_workflow_sha256": "9b9e8ade1ce0dd6193e44d7113b8ace163d85e40b032ff279fa9326d3e235d3f",
+    "scout_production_commit": "a85fa31de8ec8d43a823b0c58181f3f619fbd3b7",
+    "scout_runtime_sha256": "c1f57af99e9f453df773465df6d25cac328a164947ffcc9f760887cb9a187503",
+    "shared_foundation_sha256": "e9d857e5910fffd76dfd9aed1891e86ad68cf31602150ef0445455f6b4bc8615",
+    "sourcepacket_contract_identity": "badaa72de4168e2c104496ad7aa38bba12118808fbdb4d475802a9bbb4e9adcf",
+    "sourcepacket_contract_sha256": "2a1cfbd8f0f3bc3a17de096a97ef2437a1f88a40589ee9b5b3c6238ccb98f639",
+    "sqlite_boundary_sha256": "16983a09d3a7821674790dc19c6befe386ee894404dca322e68f15d517d0a5d5"
+  },
+  "schema": "vnext-sourcepacket-production-binding-closure",
+  "schema_version": 1,
+  "status": "ISOLATED_NOT_ACTIVE",
+  "stop_all_candidates": true,
+  "voice": "DISABLED_UNTIL_PROMOTION"
+}
