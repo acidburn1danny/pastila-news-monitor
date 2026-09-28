@@ -15,3 +15,8 @@ def test_worker_is_inference_only():
  s=Path("scripts/run_editor_vnext_voice_bakeoff_car_v1.py").read_text(); assert "model.generate" in s and "optimizer" not in s.lower().replace('"optimizer":false','') and "train(" not in s
 def test_atomic_publication_is_durable():
  s=Path("scripts/run_editor_vnext_voice_bakeoff_car_v1.py").read_text(); assert "stream.flush()" in s and "os.fsync(stream.fileno())" in s and "tmp.replace(path)" in s
+def test_required_receipt_and_runtime_gates():
+ s=Path("scripts/run_editor_vnext_voice_bakeoff_car_v1.py").read_text();
+ for field in ("grant_identity","input_sha256","decoding_identity","output_sha256","peak_vram_gib","LATENCY_LIMIT","VRAM_LIMIT"): assert field in s
+def test_supervisor_fail_closed_and_exact_order():
+ s=Path("scripts/run_editor_vnext_voice_bakeoff_car_program_v1.py").read_text(); assert "ORDER=" in s and "program-failure.json" in s and "PASS_INFERENCE_CLOSURE" in s and "len(outputs)!=216" in s

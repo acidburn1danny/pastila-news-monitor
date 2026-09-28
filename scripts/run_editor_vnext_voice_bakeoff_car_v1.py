@@ -31,10 +31,10 @@ def run(a):
  dispatch=[x for x in rows(a.dispatch) if x["candidate_id"]==a.candidate]; cases={x["case_id"]:x for x in rows(a.cases)}
  if len(dispatch)!=72: raise ValueError("candidate dispatch must be 72")
  model,tokenizer=load(a.candidate,a.product_root); started=time.time()
+ import torch; torch.cuda.reset_peak_memory_stats()
  try:
   for d in dispatch:
-   torch_seed=d["seed"]
-   import torch; torch.manual_seed(torch_seed); torch.cuda.manual_seed_all(torch_seed)
+   torch_seed=d["seed"]; torch.manual_seed(torch_seed); torch.cuda.manual_seed_all(torch_seed); case_started=time.time()
    messages=prompt(cases[d["case_id"]]); kw={"tokenize":False,"add_generation_prompt":True};
    if a.candidate=="V1_QWEN3_8B_NON_THINKING": kw["enable_thinking"]=False
    text=tokenizer.apply_chat_template(messages,**kw); enc=tokenizer(text,return_tensors="pt").to(model.device)
@@ -42,8 +42,13 @@ def run(a):
    raw=tokenizer.decode(out[0,enc.input_ids.shape[1]:],skip_special_tokens=True).strip()
    try: parsed=json.loads(raw); commentary=parsed["commentary"]; abstained=bool(parsed["abstained"]); assert isinstance(commentary,str)
    except Exception as e: raise RuntimeError(f"STRUCTURAL_OUTPUT:{d['slot_identity']}:{type(e).__name__}")
-   body={"slot_identity":d["slot_identity"],"dispatch_identity":d["dispatch_identity"],"blind_label":d["blind_label"],"commentary":commentary,"abstained":abstained,"candidate_receipt":{"candidate_id":a.candidate,"revision":d["revision"],"tokenizer_sha256":d["tokenizer_sha256"]},"raw_sha256":sha(raw.encode()),"terminal_state":"PASS"}; atomic(a.output/d["output_relative_path"],body)
-  summary={"candidate_id":a.candidate,"outputs":72,"elapsed_seconds":time.time()-started,"terminal_state":"PASS","inference_only":True,"training":False,"optimizer":False}; atomic(a.output/f"terminal-{a.candidate}.json",{**summary,"receipt_identity":sha(canonical(summary))})
+   elapsed=time.time()-case_started
+   if elapsed>30: raise RuntimeError(f"LATENCY_LIMIT:{d['slot_identity']}:{elapsed}")
+   core={"slot_identity":d["slot_identity"],"grant_identity":d["grant_identity"],"dispatch_identity":d["dispatch_identity"],"input_sha256":sha(canonical(cases[d["case_id"]])),"decoding_identity":d["decoding_identity"],"blind_label":d["blind_label"],"commentary":commentary,"abstained":abstained,"candidate_receipt":{"candidate_id":a.candidate,"revision":d["revision"],"tokenizer_sha256":d["tokenizer_sha256"]},"raw_sha256":sha(raw.encode()),"elapsed_seconds":elapsed,"terminal_state":"PASS"}
+   output_sha=sha(canonical(core)); atomic(a.output/d["output_relative_path"],{**core,"output_sha256":output_sha,"receipt_identity":sha(canonical({**core,"output_sha256":output_sha}))})
+  peak=torch.cuda.max_memory_allocated()/1024**3
+  if peak>14.5: raise RuntimeError(f"VRAM_LIMIT:{peak}")
+  summary={"candidate_id":a.candidate,"outputs":72,"elapsed_seconds":time.time()-started,"peak_vram_gib":peak,"terminal_state":"PASS","inference_only":True,"training":False,"optimizer":False}; atomic(a.output/f"terminal-{a.candidate}.json",{**summary,"receipt_identity":sha(canonical(summary))})
  except Exception as e:
   atomic(a.output/f"failure-{a.candidate}.json",{"candidate_id":a.candidate,"error_type":type(e).__name__,"message":str(e),"terminal_state":"FAIL","partial_eligible_evidence":False}); raise
  finally: del model; gc.collect()
