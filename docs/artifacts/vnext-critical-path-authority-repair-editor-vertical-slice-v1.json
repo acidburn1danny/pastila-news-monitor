@@ -1,0 +1,74 @@
+{
+  "active_integration": false,
+  "authority_bindings": {
+    "fixture_identity": "653ec0f04e4ac7f28b1e8ad0b5a232905f34ce3c5101f84d118da33c7d3f23fe",
+    "sqlite_v2_identity": "575b909eda56a86d1d775ba391a292f4f443b7b705afefd6efb4cfea21dc2d69",
+    "workflow_v2_identity": "2faa62d23faed1460b448b0ad38b45546314708320e80ceac8ad5fde93f527c2"
+  },
+  "closure_identity": "39a947c56a96d338b9c3fbbce23bf01f1f44e81790d2a1270e0bde9ac3646db1",
+  "editor": {
+    "decoding_identity": "79f8bcd7c4d573e5b38cd2b164d6248851747690dd40e09c2e9be247308a61ad",
+    "eligible_as_accepted_setup": false,
+    "eligible_for_voice": false,
+    "factual_acceptance_status": "NOT_IMPLEMENTED",
+    "input": "vnext-source-packet",
+    "output": "vnext-editor-draft",
+    "prompt_identity": "f5115e29e9949379275d78b3045ee7653fe061ea17de2d2bf9980ec59b7be60b",
+    "r2_lock_identity": "53fafbc03f70c8c32357645a6a428260f1bdfbd104edbe1c4aa825e95c83a10f",
+    "runtime_identity": "b68bd176dd84a2f7eb7a5aba79c92a4434909281725026630ce361229ad40713"
+  },
+  "inference_performed": false,
+  "legacy_dependency_count": 0,
+  "model_loaded": false,
+  "model_relocated": false,
+  "product_lock_replaced": false,
+  "product_root_modified": false,
+  "repairs": {
+    "source_packet": {
+      "active_schema": "vnext-source-packet",
+      "active_schema_count": 1,
+      "legacy_compatibility_binding_active": false
+    },
+    "sqlite": {
+      "artifact_kinds": [
+        "EDITOR_DRAFT",
+        "ACCEPTED_SETUP",
+        "SOURCE_FALLBACK",
+        "ABSTAINED",
+        "VOICE_DRAFT",
+        "FINAL_OUTPUT"
+      ],
+      "migration": "MONOTONIC_V1_TO_V2",
+      "schema_version": 2
+    },
+    "workflow": {
+      "invalid_output": [
+        "EDITOR_PENDING",
+        "STRUCTURAL_FAIL"
+      ],
+      "removed_redundant_state": "STRUCTURAL_PASS",
+      "safe_recovery_reachable": [
+        [
+          "STRUCTURAL_FAIL",
+          "SOURCE_FALLBACK"
+        ],
+        [
+          "STRUCTURAL_FAIL",
+          "ABSTAINED"
+        ]
+      ],
+      "valid_output": [
+        "EDITOR_PENDING",
+        "EDITOR_DRAFT_READY",
+        "FACTUAL_REVIEW_PENDING"
+      ]
+    }
+  },
+  "schema": "vnext-critical-path-authority-repair-editor-vertical-slice",
+  "schema_version": 1,
+  "status": "ISOLATED_NOT_ACTIVE",
+  "stop_all_candidates": true,
+  "supersedes_local_unpublished_editor_commit": "1d465c729dc51e66295271d0afbf9049a36ed67d",
+  "training_performed": false,
+  "voice": "DISABLED_UNTIL_PROMOTION"
+}

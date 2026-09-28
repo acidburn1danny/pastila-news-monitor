@@ -1,0 +1,67 @@
+{
+  "active_integration": false,
+  "authority": {
+    "foundation_commit": "05083563f5d7a312642e1cb940da71e92c63b5b8",
+    "foundation_sha256": "e9d857e5910fffd76dfd9aed1891e86ad68cf31602150ef0445455f6b4bc8615",
+    "workflow_sha256": "9b9e8ade1ce0dd6193e44d7113b8ace163d85e40b032ff279fa9326d3e235d3f"
+  },
+  "authority_identity": "575b909eda56a86d1d775ba391a292f4f443b7b705afefd6efb4cfea21dc2d69",
+  "consolidations": {
+    "decisions": [
+      "FACTUAL",
+      "APPROVAL"
+    ],
+    "workflow_artifacts": [
+      "EDITOR_DRAFT",
+      "ACCEPTED_SETUP",
+      "SOURCE_FALLBACK",
+      "ABSTAINED",
+      "VOICE_DRAFT",
+      "FINAL_OUTPUT"
+    ]
+  },
+  "external_runtime_dependencies_new": 0,
+  "inference": false,
+  "legacy_dependency_count": 0,
+  "network": false,
+  "payload_policy": "IDENTITY_REFERENCE_AND_SCHEMA_METADATA_ONLY",
+  "product_data_migration": false,
+  "product_root_dependency": false,
+  "runtime_dependencies": [
+    "PYTHON_STANDARD_LIBRARY",
+    "PYTHON_SQLITE",
+    "VNEXT_SHARED_FOUNDATION_V1",
+    "VNEXT_CANONICAL_WORKFLOW_V1"
+  ],
+  "schema": "vnext-consolidated-operational-state-sqlite-boundary",
+  "schema_version": 2,
+  "sqlite_policy": {
+    "backup": "SQLITE_BACKUP_API_TO_TEMP_VERIFY_ATOMIC_REPLACE",
+    "busy_timeout_ms_default": 5000,
+    "foreign_keys": true,
+    "journal_mode": "WAL",
+    "restore": "NEW_PATH_VERIFY_BEFORE_ELIGIBILITY_NO_ACTIVATION",
+    "synchronous": "FULL",
+    "write_transaction": "BEGIN_IMMEDIATE",
+    "writer_ownership": "ONE_PERSISTED_WRITER_IDENTITY"
+  },
+  "status": "SUCCESSOR_ISOLATED_NOT_ACTIVE",
+  "stop_all_candidates": true,
+  "supersedes": "vnext-consolidated-operational-state-sqlite-boundary-v1",
+  "tables": [
+    "schema_migrations",
+    "writer_owner",
+    "sources",
+    "captures",
+    "events",
+    "event_sources",
+    "source_packets",
+    "workflows",
+    "workflow_artifacts",
+    "decisions",
+    "attempts",
+    "idempotency",
+    "state_transitions"
+  ],
+  "voice": "DISABLED_UNTIL_PROMOTION"
+}

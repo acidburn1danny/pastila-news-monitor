@@ -25,7 +25,7 @@ from .vnext_workflow_v1 import (
     validate_workflow,
 )
 
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
 DEFAULT_BUSY_TIMEOUT_MS = 5_000
 MIGRATION_1 = (
     "CREATE TABLE schema_migrations (version INTEGER PRIMARY KEY, migration_identity TEXT NOT NULL UNIQUE, applied_by TEXT NOT NULL)",
@@ -42,7 +42,13 @@ MIGRATION_1 = (
     "CREATE TABLE idempotency (workflow_identity TEXT NOT NULL REFERENCES workflows(workflow_identity), idempotency_identity TEXT NOT NULL, request_identity TEXT NOT NULL, receipt_identity TEXT NOT NULL, PRIMARY KEY(workflow_identity,idempotency_identity))",
     "CREATE TABLE state_transitions (sequence INTEGER PRIMARY KEY AUTOINCREMENT, workflow_identity TEXT NOT NULL REFERENCES workflows(workflow_identity), receipt_identity TEXT NOT NULL UNIQUE, operation_identity TEXT NOT NULL, previous_state TEXT NOT NULL, resulting_state TEXT NOT NULL, actor TEXT NOT NULL, outcome TEXT NOT NULL, input_identity TEXT NOT NULL, output_identity TEXT, attempt_identity TEXT NOT NULL REFERENCES attempts(attempt_identity), idempotency_identity TEXT NOT NULL, receipt_json BLOB NOT NULL)",
 )
-MIGRATIONS = {1: MIGRATION_1}
+MIGRATION_2 = (
+    "CREATE TABLE workflow_artifacts_v2 (artifact_identity TEXT PRIMARY KEY, workflow_identity TEXT NOT NULL REFERENCES workflows(workflow_identity), artifact_kind TEXT NOT NULL CHECK(artifact_kind IN ('EDITOR_DRAFT','ACCEPTED_SETUP','SOURCE_FALLBACK','ABSTAINED','VOICE_DRAFT','FINAL_OUTPUT')), payload_identity TEXT NOT NULL, payload_ref TEXT NOT NULL, schema_identity TEXT NOT NULL)",
+    "INSERT INTO workflow_artifacts_v2 SELECT * FROM workflow_artifacts",
+    "DROP TABLE workflow_artifacts",
+    "ALTER TABLE workflow_artifacts_v2 RENAME TO workflow_artifacts",
+)
+MIGRATIONS = {1: MIGRATION_1, 2: MIGRATION_2}
 
 
 class StateBoundaryError(BoundaryError):

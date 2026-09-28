@@ -1,0 +1,22 @@
+{
+  "chat_template_sha256": "5f8183143289cbe9bbef47e0fc44a9c33c96b7464a3c2853d036492b98c39b5f",
+  "eos_token_id": 2,
+  "expected_draft_identity": "4ed5d7a76d44693207f5c2f3d1d6f2b1e7bedc24f18e06336952d3f058e453aa",
+  "expected_invocation_receipt_identity": "0cf4d96ef7b3cfe72ec32e216ee0ba050209ddd66fadcc9579a02f88d2e810ea",
+  "expected_text": "Consiliul local a aprobat 127 de milioane de lei pentru centrul medical Arin. Ministerul a precizat că finanțarea este aprobată, dar contractul nu a fost încă semnat.",
+  "fixture_identity": "653ec0f04e4ac7f28b1e8ad0b5a232905f34ce3c5101f84d118da33c7d3f23fe",
+  "input_token_ids": [
+    1,
+    910,
+    127,
+    44,
+    2
+  ],
+  "pad_token_id": 2,
+  "raw_output": "{\"case_id\":\"event:arin\",\"text\":\"Consiliul local a aprobat 127 de milioane de lei pentru centrul medical Arin. Ministerul a precizat că finanțarea este aprobată, dar contractul nu a fost încă semnat.\"}",
+  "rendered_prompt": "fixture rendered prompt bound to canonical SourcePacket",
+  "schema": "vnext-editor-vertical-slice-fixture",
+  "schema_version": 1,
+  "source_packet_fixture": "docs/artifacts/vnext-sourcepacket-production-binding-v1-fixture.json",
+  "source_packet_member": "source_packet"
+}

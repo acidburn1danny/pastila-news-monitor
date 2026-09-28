@@ -37,8 +37,8 @@ def test_bootstrap_schema_policy_and_migration_identity(tmp_path: Path):
         assert connection.execute("PRAGMA foreign_keys").fetchone()[0] == 1
         assert connection.execute("PRAGMA journal_mode").fetchone()[0].casefold() == "wal"
         assert connection.execute("PRAGMA busy_timeout").fetchone()[0] == 100
-        assert connection.execute("PRAGMA user_version").fetchone()[0] == 1
-        assert connection.execute("SELECT COUNT(*) FROM schema_migrations").fetchone()[0] == 1
+        assert connection.execute("PRAGMA user_version").fetchone()[0] == 2
+        assert connection.execute("SELECT COUNT(*) FROM schema_migrations").fetchone()[0] == 2
     value.bootstrap()
     assert value.verify_integrity()["status"] == "PASS"
 
@@ -160,3 +160,17 @@ def test_fixture_and_contract_are_self_contained():
     assert contract["product_data_migration"] is False and contract["active_integration"] is False
     assert len(fixtures["cases"]) == 25
     assert object_identity(fixtures) == object_identity(json.loads(json.dumps(fixtures)))
+
+
+def test_acceptance_artifact_kinds_are_persistable_without_implementing_acceptance(tmp_path: Path):
+    value = store(tmp_path); value.create_workflow("flow-1")
+    with value.write() as connection:
+        for index, kind in enumerate(("EDITOR_DRAFT", "ACCEPTED_SETUP", "SOURCE_FALLBACK", "ABSTAINED")):
+            connection.execute(
+                "INSERT INTO workflow_artifacts VALUES(?,?,?,?,?,?)",
+                (f"artifact-{index}", "flow-1", kind, f"payload-{index}", f"blobs/{index}.json", "schema-v1"),
+            )
+    with value.read() as connection:
+        assert [row[0] for row in connection.execute("SELECT artifact_kind FROM workflow_artifacts ORDER BY artifact_identity")] == [
+            "EDITOR_DRAFT", "ACCEPTED_SETUP", "SOURCE_FALLBACK", "ABSTAINED",
+        ]

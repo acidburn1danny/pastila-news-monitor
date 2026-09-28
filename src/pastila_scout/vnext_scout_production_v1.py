@@ -32,6 +32,7 @@ MAX_DECOMPRESSED_BYTES = 4_000_000
 MAX_ARTICLES_PER_SOURCE = 60
 STOPWORDS = frozenset({"a", "ai", "al", "ale", "cu", "de", "din", "in", "la", "o", "pe", "si", "un", "unei", "unui"})
 TRACKING_KEYS = frozenset({"fbclid", "gclid", "mc_cid", "mc_eid"})
+_SHA256 = re.compile(r"[0-9a-f]{64}")
 
 
 class ScoutError(BoundaryError):
@@ -97,6 +98,44 @@ class EventGroup:
 
 
 Transport = Callable[[SourceDefinition, float], FetchResponse]
+
+
+def validate_scout_packet(packet: Mapping[str, object]) -> tuple[Mapping[str, object], ...]:
+    """Validate the one canonical VNext SourcePacket emitted by SCOUT."""
+    if packet.get("schema") != "vnext-source-packet" or packet.get("schema_version") != SCHEMA_VERSION:
+        raise ScoutError("SourcePacket schema mismatch")
+    if packet.get("selection_authority") != "EXPLICIT_EVENT_ID" or packet.get("completeness") != "ONE_BEST_CAPTURE_PER_GROUPED_SOURCE":
+        raise ScoutError("SourcePacket authority/completeness mismatch")
+    claimed = packet.get("packet_identity")
+    if not isinstance(claimed, str) or _SHA256.fullmatch(claimed) is None:
+        raise ScoutError("SourcePacket identity invalid")
+    if object_identity({key: value for key, value in packet.items() if key != "packet_identity"}) != claimed:
+        raise ScoutError("SourcePacket identity mismatch")
+    if not isinstance(packet.get("event_identity"), str) or not packet["event_identity"]:
+        raise ScoutError("SourcePacket event identity missing")
+    spans = packet.get("spans")
+    if not isinstance(spans, list) or not spans or packet.get("source_count") != len(spans):
+        raise ScoutError("SourcePacket spans/source_count mismatch")
+    sources: set[str] = set()
+    span_ids: set[str] = set()
+    for position, span in enumerate(spans):
+        if not isinstance(span, Mapping) or span.get("position") != position:
+            raise ScoutError("SourcePacket span ordering mismatch")
+        source = span.get("source_identity"); span_id = span.get("span_id"); text = span.get("text")
+        if not isinstance(source, str) or not source or source in sources or not isinstance(span_id, str) or not span_id or span_id in span_ids:
+            raise ScoutError("SourcePacket source/span identity invalid")
+        if not isinstance(text, str) or not text.strip():
+            raise ScoutError("SourcePacket text invalid")
+        sources.add(source); span_ids.add(span_id)
+        encoded = text.encode("utf-8")
+        if span.get("byte_start") != 0 or span.get("byte_end") != len(encoded) or span.get("text_sha256") != sha256_bytes(encoded):
+            raise ScoutError("SourcePacket text binding mismatch")
+        if span.get("content_scope") != "FEED_ENTRY_SOURCE_TEXT":
+            raise ScoutError("SourcePacket content scope mismatch")
+        for key in ("capture_identity", "source_name", "source_feed_url", "article_url", "title", "captured_at"):
+            if not isinstance(span.get(key), str) or not span[key]:
+                raise ScoutError(f"SourcePacket {key} missing")
+    return tuple(spans)
 
 
 def _clean(value: str | None) -> str:

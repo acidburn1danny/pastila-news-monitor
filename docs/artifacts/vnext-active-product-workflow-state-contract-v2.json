@@ -1,0 +1,172 @@
+{
+  "artifact_types": {
+    "ABSTAINED": {
+      "eligible_for_voice": false
+    },
+    "ACCEPTED_SETUP": {
+      "eligible_for_voice": true
+    },
+    "EDITOR_DRAFT": {
+      "eligible_as_accepted_setup": false
+    },
+    "SOURCE_FALLBACK": {
+      "eligible_for_voice": true,
+      "requires_explicit_approval": true
+    }
+  },
+  "authority_identity": "2faa62d23faed1460b448b0ad38b45546314708320e80ceac8ad5fde93f527c2",
+  "chief_editor": {
+    "role": "WORKFLOW_POLICY_APPROVAL_ABSORBED_BY_ORCHESTRATOR",
+    "separate_model": false
+  },
+  "failure_model": {
+    "idempotency_key_required": true,
+    "partial_output_eligible": false,
+    "recovery_requires_explicit_new_attempt": true,
+    "source_packet_survives_model_failure": true,
+    "state_transition_atomic": true
+  },
+  "final": {
+    "mode": "DETERMINISTIC_ASSEMBLY_EXPORT"
+  },
+  "initial_state": "DISCOVERED",
+  "schema": "vnext-active-product-workflow-state-contract",
+  "schema_version": 2,
+  "states": [
+    "DISCOVERED",
+    "CAPTURED",
+    "GROUPED",
+    "SELECTED",
+    "SOURCE_PACKET_READY",
+    "EDITOR_PENDING",
+    "EDITOR_DRAFT_READY",
+    "STRUCTURAL_FAIL",
+    "FACTUAL_REVIEW_PENDING",
+    "ACCEPTED_SETUP",
+    "SOURCE_FALLBACK",
+    "ABSTAINED",
+    "VOICE_DISABLED",
+    "VOICE_PENDING",
+    "VOICE_DRAFT_READY",
+    "POLICY_REVIEW_PENDING",
+    "APPROVED_FOR_FINAL",
+    "REJECTED",
+    "REVISION_REQUIRED",
+    "FINAL_READY",
+    "EXPORTED",
+    "CAPTURE_FAILED",
+    "SOURCE_PACKET_INVALID",
+    "EDITOR_FAILED",
+    "FACTUAL_ACCEPTANCE_FAILED",
+    "VOICE_UNAVAILABLE",
+    "FINAL_ASSEMBLY_FAILED"
+  ],
+  "status": "SUCCESSOR_DESIGN_AUTHORITY_NOT_ACTIVE",
+  "supersedes": "vnext-active-product-workflow-state-contract-v1",
+  "transitions": [
+    [
+      "DISCOVERED",
+      "CAPTURED"
+    ],
+    [
+      "CAPTURED",
+      "GROUPED"
+    ],
+    [
+      "GROUPED",
+      "SELECTED"
+    ],
+    [
+      "SELECTED",
+      "SOURCE_PACKET_READY"
+    ],
+    [
+      "SOURCE_PACKET_READY",
+      "EDITOR_PENDING"
+    ],
+    [
+      "EDITOR_PENDING",
+      "EDITOR_DRAFT_READY"
+    ],
+    [
+      "EDITOR_PENDING",
+      "STRUCTURAL_FAIL"
+    ],
+    [
+      "EDITOR_DRAFT_READY",
+      "FACTUAL_REVIEW_PENDING"
+    ],
+    [
+      "STRUCTURAL_FAIL",
+      "SOURCE_FALLBACK"
+    ],
+    [
+      "STRUCTURAL_FAIL",
+      "ABSTAINED"
+    ],
+    [
+      "FACTUAL_REVIEW_PENDING",
+      "ACCEPTED_SETUP"
+    ],
+    [
+      "FACTUAL_REVIEW_PENDING",
+      "SOURCE_FALLBACK"
+    ],
+    [
+      "FACTUAL_REVIEW_PENDING",
+      "ABSTAINED"
+    ],
+    [
+      "ACCEPTED_SETUP",
+      "VOICE_DISABLED"
+    ],
+    [
+      "ACCEPTED_SETUP",
+      "VOICE_PENDING"
+    ],
+    [
+      "SOURCE_FALLBACK",
+      "VOICE_DISABLED"
+    ],
+    [
+      "SOURCE_FALLBACK",
+      "VOICE_PENDING"
+    ],
+    [
+      "VOICE_PENDING",
+      "VOICE_DRAFT_READY"
+    ],
+    [
+      "VOICE_DRAFT_READY",
+      "POLICY_REVIEW_PENDING"
+    ],
+    [
+      "VOICE_DISABLED",
+      "POLICY_REVIEW_PENDING"
+    ],
+    [
+      "POLICY_REVIEW_PENDING",
+      "APPROVED_FOR_FINAL"
+    ],
+    [
+      "POLICY_REVIEW_PENDING",
+      "REJECTED"
+    ],
+    [
+      "POLICY_REVIEW_PENDING",
+      "REVISION_REQUIRED"
+    ],
+    [
+      "APPROVED_FOR_FINAL",
+      "FINAL_READY"
+    ],
+    [
+      "FINAL_READY",
+      "EXPORTED"
+    ]
+  ],
+  "voice": {
+    "r2_may_serve_as_voice": false,
+    "state": "DISABLED_UNTIL_PROMOTION"
+  }
+}

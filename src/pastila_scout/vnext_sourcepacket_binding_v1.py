@@ -5,6 +5,9 @@ import re
 from collections.abc import Mapping
 
 from .vnext_foundation_v1 import BoundaryError, object_identity, sha256_bytes
+from .vnext_scout_production_v1 import (
+    validate_scout_packet as _validate_canonical_scout_packet,
+)
 
 SOURCE_SCHEMA = "vnext-source-packet"
 TARGET_SCHEMA = "editor-vnext-source-packet"
@@ -36,6 +39,10 @@ def _sha256(value: Mapping[str, object], key: str) -> str:
 
 def validate_scout_packet(packet: Mapping[str, object]) -> tuple[Mapping[str, object], ...]:
     """Validate only properties provable from the self-contained SCOUT packet."""
+    try:
+        canonical = _validate_canonical_scout_packet(packet)
+    except BoundaryError as exc:
+        raise SourcePacketBindingError(str(exc)) from exc
     if packet.get("schema") != SOURCE_SCHEMA or packet.get("schema_version") != SCHEMA_VERSION:
         raise SourcePacketBindingError("SCOUT SourcePacket schema mismatch")
     if packet.get("selection_authority") != SOURCE_SELECTION:
@@ -79,7 +86,7 @@ def validate_scout_packet(packet: Mapping[str, object]) -> tuple[Mapping[str, ob
             raise SourcePacketBindingError("invalid published_at")
         if raw_span.get("content_scope") != "FEED_ENTRY_SOURCE_TEXT":
             raise SourcePacketBindingError("unsupported content scope")
-    return tuple(spans)
+    return canonical
 
 
 def bind_source_packet(packet: Mapping[str, object]) -> dict[str, object]:

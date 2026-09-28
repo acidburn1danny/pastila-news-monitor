@@ -78,7 +78,7 @@ def test_complete_canonical_disabled_voice_path_and_published_transition_binding
 
     expected_states = {
         "DISCOVERED", "CAPTURED", "GROUPED", "SELECTED", "SOURCE_PACKET_READY",
-        "EDITOR_PENDING", "EDITOR_DRAFT_READY", "STRUCTURAL_PASS", "STRUCTURAL_FAIL",
+        "EDITOR_PENDING", "EDITOR_DRAFT_READY", "STRUCTURAL_FAIL",
         "FACTUAL_REVIEW_PENDING", "ACCEPTED_SETUP", "SOURCE_FALLBACK", "ABSTAINED",
         "VOICE_DISABLED", "VOICE_PENDING", "VOICE_DRAFT_READY", "POLICY_REVIEW_PENDING",
         "APPROVED_FOR_FINAL", "REJECTED", "REVISION_REQUIRED", "FINAL_READY", "EXPORTED",
@@ -89,6 +89,9 @@ def test_complete_canonical_disabled_voice_path_and_published_transition_binding
         ("FACTUAL_REVIEW_PENDING", "ACCEPTED_SETUP"),
         ("FACTUAL_REVIEW_PENDING", "SOURCE_FALLBACK"),
         ("FACTUAL_REVIEW_PENDING", "ABSTAINED"),
+        ("EDITOR_PENDING", "STRUCTURAL_FAIL"),
+        ("STRUCTURAL_FAIL", "SOURCE_FALLBACK"),
+        ("STRUCTURAL_FAIL", "ABSTAINED"),
         ("ACCEPTED_SETUP", "VOICE_DISABLED"),
         ("VOICE_DISABLED", "POLICY_REVIEW_PENDING"),
         ("APPROVED_FOR_FINAL", "FINAL_READY"),
@@ -98,7 +101,7 @@ def test_complete_canonical_disabled_voice_path_and_published_transition_binding
     assert required_transitions <= set(TRANSITIONS)
     path = [
         "DISCOVERED", "CAPTURED", "GROUPED", "SELECTED", "SOURCE_PACKET_READY",
-        "EDITOR_PENDING", "EDITOR_DRAFT_READY", "STRUCTURAL_PASS", "FACTUAL_REVIEW_PENDING",
+        "EDITOR_PENDING", "EDITOR_DRAFT_READY", "FACTUAL_REVIEW_PENDING",
         "ACCEPTED_SETUP", "VOICE_DISABLED", "POLICY_REVIEW_PENDING", "APPROVED_FOR_FINAL",
         "FINAL_READY", "EXPORTED",
     ]
