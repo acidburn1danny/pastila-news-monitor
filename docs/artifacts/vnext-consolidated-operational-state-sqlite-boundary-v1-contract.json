@@ -1,0 +1,36 @@
+{
+  "schema": "vnext-consolidated-operational-state-sqlite-boundary",
+  "schema_version": 1,
+  "status": "ISOLATED_NOT_ACTIVE",
+  "authority": {
+    "foundation_commit": "05083563f5d7a312642e1cb940da71e92c63b5b8",
+    "foundation_sha256": "e9d857e5910fffd76dfd9aed1891e86ad68cf31602150ef0445455f6b4bc8615",
+    "workflow_sha256": "9b9e8ade1ce0dd6193e44d7113b8ace163d85e40b032ff279fa9326d3e235d3f"
+  },
+  "runtime_dependencies": ["PYTHON_STANDARD_LIBRARY", "PYTHON_SQLITE", "VNEXT_SHARED_FOUNDATION_V1", "VNEXT_CANONICAL_WORKFLOW_V1"],
+  "tables": ["schema_migrations", "writer_owner", "sources", "captures", "events", "event_sources", "source_packets", "workflows", "workflow_artifacts", "decisions", "attempts", "idempotency", "state_transitions"],
+  "consolidations": {
+    "workflow_artifacts": ["EDITOR_DRAFT", "VOICE_DRAFT", "FINAL_OUTPUT"],
+    "decisions": ["FACTUAL", "APPROVAL"]
+  },
+  "sqlite_policy": {
+    "journal_mode": "WAL",
+    "foreign_keys": true,
+    "busy_timeout_ms_default": 5000,
+    "write_transaction": "BEGIN_IMMEDIATE",
+    "synchronous": "FULL",
+    "writer_ownership": "ONE_PERSISTED_WRITER_IDENTITY",
+    "backup": "SQLITE_BACKUP_API_TO_TEMP_VERIFY_ATOMIC_REPLACE",
+    "restore": "NEW_PATH_VERIFY_BEFORE_ELIGIBILITY_NO_ACTIVATION"
+  },
+  "payload_policy": "IDENTITY_REFERENCE_AND_SCHEMA_METADATA_ONLY",
+  "product_data_migration": false,
+  "active_integration": false,
+  "product_root_dependency": false,
+  "network": false,
+  "inference": false,
+  "external_runtime_dependencies_new": 0,
+  "legacy_dependency_count": 0,
+  "stop_all_candidates": true,
+  "voice": "DISABLED_UNTIL_PROMOTION"
+}
