@@ -1,0 +1,44 @@
+{
+  "active_integration": false,
+  "authority": {
+    "foundation_commit": "05083563f5d7a312642e1cb940da71e92c63b5b8",
+    "workflow_v3_identity": "8fab885d9c0563972acaed8c1f75e4dda91b9da6eccb40d0c258a9b1b788363a"
+  },
+  "legacy_dependency_count": 0,
+  "migration": {
+    "from": 5,
+    "to": 6,
+    "monotonic": true,
+    "preserves_existing_rows": true,
+    "new_authority_table": "policy_sessions",
+    "single_open_session_per_input": true,
+    "same_request_replay_idempotent": true,
+    "conflicting_request_fail_closed": true
+  },
+  "persistence": {
+    "eligibility_authority": "SQLITE_WORKFLOW_ASSOCIATION_AND_STATE",
+    "insert_or_ignore_authority_rows": false,
+    "review_authority": "PERSISTED_WORKFLOW_BOUND_SINGLE_USE_SESSION",
+    "self_asserted_session_identity_accepted": false,
+    "session_consumption_atomic_with_decision": true,
+    "session_issuer": "SQLITE_SINGLE_WRITER_IDENTITY",
+    "session_source_packet_bound": true,
+    "strict_authoritative_inserts": true,
+    "unassociated_blob_eligible": false,
+    "source_packet_workflow_association_required": true,
+    "input_artifact_workflow_association_required": true,
+    "terminal_result_replay_idempotent": true,
+    "policy_authority": "PERSISTED_WORKFLOW_BOUND_SINGLE_USE_SESSION",
+    "final_input_authority": "OWNED_FACTUAL_OUTPUT_PLUS_PERSISTED_POLICY_APPROVAL",
+    "deterministic_export": true
+  },
+  "product_data_migration": false,
+  "product_root_dependency": false,
+  "schema": "vnext-consolidated-operational-state-sqlite-boundary",
+  "schema_version": 6,
+  "status": "CORE_POLICY_FINAL_SUCCESSOR_ISOLATED_NOT_ACTIVE",
+  "stop_all_candidates": true,
+  "supersedes": "vnext-consolidated-operational-state-sqlite-boundary-v5",
+  "voice": "DISABLED_UNTIL_PROMOTION",
+  "authority_identity": "34be8e0b8a46fbaf4f026662923c6c941dc1bbd24a93ce455a78d5971c1267e4"
+}

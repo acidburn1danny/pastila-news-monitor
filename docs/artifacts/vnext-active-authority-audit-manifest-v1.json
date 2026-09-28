@@ -1,9 +1,9 @@
 {
   "active_authorities": {
     "sqlite": {
-      "identity": "7e129b546ea12e20b074b32de36e0109051976729c7d5a9852472dec7f9f9dfe",
+      "identity": "34be8e0b8a46fbaf4f026662923c6c941dc1bbd24a93ce455a78d5971c1267e4",
       "identity_key": "authority_identity",
-      "path": "docs/artifacts/vnext-consolidated-operational-state-sqlite-boundary-v5-contract.json"
+      "path": "docs/artifacts/vnext-consolidated-operational-state-sqlite-boundary-v6-contract.json"
     },
     "workflow": {
       "identity": "8fab885d9c0563972acaed8c1f75e4dda91b9da6eccb40d0c258a9b1b788363a",
@@ -18,10 +18,11 @@
     "src/pastila_scout/vnext_scout_production_v1.py",
     "src/pastila_scout/vnext_r2_consolidation_binding_v1.py",
     "src/pastila_scout/vnext_editor_vertical_slice_v1.py",
-    "src/pastila_scout/vnext_factual_acceptance_v1.py"
+    "src/pastila_scout/vnext_factual_acceptance_v1.py",
+    "src/pastila_scout/vnext_core_final_v1.py"
   ],
-  "bound_commit": "dc0123ac3652f4eee3b3aeab6c533c3203f8ef41",
-  "current_auditor": "scripts/audit_vnext_cross_component_eligibility_evidence_recovery_transitive_repair_v1.py",
+  "bound_commit": "62f373bac6b149c8ae88780145538813670dff2a",
+  "current_auditor": "scripts/audit_vnext_core_workflow_deterministic_final_v1.py",
   "excluded_from_active_graph": [
     {
       "path": "src/pastila_scout/vnext_sourcepacket_binding_v1.py",
@@ -52,6 +53,10 @@
     {
       "commit": "dc0123ac",
       "path": "scripts/audit_vnext_trusted_review_authority_active_audit_repair_v1.py"
+    },
+    {
+      "commit": "62f373ba",
+      "path": "scripts/audit_vnext_cross_component_eligibility_evidence_recovery_transitive_repair_v1.py"
     }
   ],
   "invariants": {
@@ -66,5 +71,5 @@
   "schema": "vnext-active-authority-audit-manifest",
   "schema_version": 1,
   "status": "SUCCESSOR_ISOLATED_NOT_ACTIVE",
-  "manifest_identity": "c2905fb624e11a0be2fe6c38a2d7fbc665f225242377b64cdeba711ea85979ef"
+  "manifest_identity": "f447c620d21ff60cb2722d521bf92352913e3b44cef3031432c29059783cecb2"
 }

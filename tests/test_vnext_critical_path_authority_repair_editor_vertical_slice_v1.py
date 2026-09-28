@@ -119,7 +119,7 @@ def test_sqlite_v1_database_migrates_through_v3(tmp_path: Path):
     store = SQLiteStateStore(root=tmp_path, database=Path("state.db"), writer_identity="writer")
     store.bootstrap()
     with store.read() as current:
-        assert current.execute("PRAGMA user_version").fetchone()[0] == 5
+        assert current.execute("PRAGMA user_version").fetchone()[0] == 6
         sql = current.execute("SELECT sql FROM sqlite_master WHERE name='workflow_artifacts'").fetchone()[0]
         assert all(kind in sql for kind in ("STRUCTURAL_FAILURE", "ACCEPTED_SETUP", "SOURCE_FALLBACK", "ABSTAINED"))
         assert "PRIMARYKEY(workflow_identity,artifact_identity)" in sql.replace(" ", "")

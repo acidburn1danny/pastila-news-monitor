@@ -10,12 +10,12 @@ ART=Path('docs/artifacts')
 
 def load(name): return json.loads((ART/name).read_text(encoding='utf-8'))
 def test_authorities_and_transitive_auditor():
-    for name,key in (('vnext-consolidated-operational-state-sqlite-boundary-v5-contract.json','authority_identity'),('vnext-active-authority-audit-manifest-v1.json','manifest_identity'),('vnext-cross-component-eligibility-evidence-recovery-transitive-repair-v1.json','closure_identity')):
+    for name,key in (('vnext-consolidated-operational-state-sqlite-boundary-v6-contract.json','authority_identity'),('vnext-active-authority-audit-manifest-v1.json','manifest_identity'),('vnext-cross-component-eligibility-evidence-recovery-transitive-repair-v1.json','closure_identity')):
         value=load(name); assert value[key]==object_identity({k:v for k,v in value.items() if k!=key})
     manifest=load('vnext-active-authority-audit-manifest-v1.json')
     assert 'src/pastila_scout/vnext_r2_consolidation_binding_v1.py' in manifest['active_runtime_modules']
-    assert SCHEMA_VERSION==5
-    run=subprocess.run([sys.executable,'scripts/audit_vnext_cross_component_eligibility_evidence_recovery_transitive_repair_v1.py'],check=True,capture_output=True,text=True)
+    assert SCHEMA_VERSION==6
+    run=subprocess.run([sys.executable,'scripts/audit_vnext_core_workflow_deterministic_final_v1.py'],check=True,capture_output=True,text=True)
     assert json.loads(run.stdout)['status']=='PASS'
 def test_draft_text_is_bound_to_parsed_evidence():
     fixture=load('vnext-critical-path-authority-repair-editor-vertical-slice-v1-fixture.json')

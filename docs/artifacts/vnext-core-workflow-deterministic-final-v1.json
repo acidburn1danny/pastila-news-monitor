@@ -1,0 +1,49 @@
+{
+  "schema": "vnext-core-workflow-deterministic-final-vertical-slice",
+  "schema_version": 1,
+  "status": "ISOLATED_NOT_ACTIVE",
+  "bound_commit": "62f373bac6b149c8ae88780145538813670dff2a",
+  "architecture": {
+    "module": "src/pastila_scout/vnext_core_final_v1.py",
+    "voice_mode": "DISABLED",
+    "policy_and_final_merged": true,
+    "frozen_workflow_authority_changed": false,
+    "accepted_inputs": [
+      "ACCEPTED_SETUP",
+      "SOURCE_FALLBACK"
+    ],
+    "rejected_inputs": [
+      "EDITOR_DRAFT",
+      "STRUCTURAL_FAILURE",
+      "ABSTAINED",
+      "VOICE_DRAFT"
+    ],
+    "policy_outcomes": [
+      "APPROVE_FINAL",
+      "REJECT",
+      "REVISE"
+    ],
+    "final_assembly": "DETERMINISTIC_PASSTHROUGH_V1"
+  },
+  "authority_bindings": {
+    "workflow_v3_identity": "8fab885d9c0563972acaed8c1f75e4dda91b9da6eccb40d0c258a9b1b788363a",
+    "sqlite_v6_identity": "34be8e0b8a46fbaf4f026662923c6c941dc1bbd24a93ce455a78d5971c1267e4",
+    "active_manifest_identity": "f447c620d21ff60cb2722d521bf92352913e3b44cef3031432c29059783cecb2"
+  },
+  "invariants": {
+    "active_integration": false,
+    "product_lock_replaced": false,
+    "product_root_modified": false,
+    "voice": "DISABLED_UNTIL_PROMOTION",
+    "stop_all_candidates": true,
+    "legacy_dependency_count": 0
+  },
+  "validation": {
+    "tests": "98_PASS",
+    "auditor": "PASS",
+    "byte_reproducible_export": true,
+    "replay_safe": true,
+    "historical_evidence_modified": false
+  },
+  "closure_identity": "0fb5da50c0710d75e6da8032259f47c0be7d44793fb7d7880483bbfea4e66a44"
+}
