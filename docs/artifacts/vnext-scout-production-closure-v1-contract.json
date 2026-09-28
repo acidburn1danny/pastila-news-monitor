@@ -1,0 +1,60 @@
+{
+  "schema": "vnext-scout-production-closure",
+  "schema_version": 1,
+  "status": "ISOLATED_NOT_ACTIVE",
+  "published_dependencies": {
+    "shared_foundation_sha256": "e9d857e5910fffd76dfd9aed1891e86ad68cf31602150ef0445455f6b4bc8615",
+    "canonical_workflow_sha256": "9b9e8ade1ce0dd6193e44d7113b8ace163d85e40b032ff279fa9326d3e235d3f",
+    "sqlite_boundary_sha256": "16983a09d3a7821674790dc19c6befe386ee894404dca322e68f15d517d0a5d5",
+    "source_set_sha256": "d727bd2febd2990878d411b45b3cb8c84c17f342e3b490eb17b2f1ec5efbbc1a",
+    "sourcepacket_contract_sha256": "2a1cfbd8f0f3bc3a17de096a97ef2437a1f88a40589ee9b5b3c6238ccb98f639"
+  },
+  "responsibilities": [
+    "RSS_ATOM_DISCOVERY_CAPTURE",
+    "SOURCE_PROVENANCE",
+    "CONSERVATIVE_EVENT_GROUPING",
+    "EXPLICIT_USER_EVENT_SELECTION",
+    "SELF_CONTAINED_SOURCEPACKET_HANDOFF"
+  ],
+  "excluded_responsibilities": [
+    "EDITOR",
+    "FACTUAL_ACCEPTANCE",
+    "VOICE",
+    "FINAL",
+    "GUI",
+    "RANKING",
+    "SUMMARIZATION"
+  ],
+  "capture": {
+    "transport": "HTTPS_WITH_BOUNDED_GZIP",
+    "compressed_byte_limit": 2000000,
+    "decompressed_byte_limit": 4000000,
+    "parser": "PYTHON_STDLIB_XML_RSS_ATOM_RDF",
+    "bounded_workers_default": 8,
+    "dtd_entities": "FORBIDDEN",
+    "failure_isolation": "PER_SOURCE",
+    "content_claim": "FEED_ENTRY_SOURCE_TEXT"
+  },
+  "grouping": {
+    "algorithm": "scout-complete-link-title-v1",
+    "cross_source_only": true,
+    "minimum_shared_tokens": 3,
+    "minimum_containment_overlap": 0.6,
+    "conflicting_explicit_numbers": "NO_MERGE",
+    "chain_merge": "FORBIDDEN",
+    "selection": "EXPLICIT_EVENT_ID"
+  },
+  "persistence": {
+    "authority": "VNEXT_CONSOLIDATED_OPERATIONAL_STATE_SQLITE_BOUNDARY_V1",
+    "immutable_payloads": "CONTENT_ADDRESSED_REFERENCES",
+    "workflow_states": ["DISCOVERED", "CAPTURED", "GROUPED", "SELECTED", "SOURCE_PACKET_READY", "CAPTURE_FAILED"],
+    "partial_eligible_evidence": false
+  },
+  "external_runtime_dependencies_new": 0,
+  "product_data_migration": false,
+  "active_integration": false,
+  "product_root_dependency": false,
+  "legacy_dependency_count": 0,
+  "stop_all_candidates": true,
+  "voice": "DISABLED_UNTIL_PROMOTION"
+}

@@ -1,0 +1,35 @@
+{
+  "schema": "vnext-scout-source-set-diagnostic",
+  "schema_version": 1,
+  "observations": 56,
+  "mandatory_checkpoint": "CONTINUE",
+  "configured_sources": 54,
+  "initial_pass": 53,
+  "initial_fail": 1,
+  "sampled_entries": 1462,
+  "valid_title_link": 1462,
+  "summary_minimum_40_chars": 1459,
+  "dated_entries": 1462,
+  "finding": {
+    "source_identity": "independent",
+    "http_status": 200,
+    "content_type": "text/xml",
+    "content_encoding": "gzip",
+    "compressed_payload_sha256": "6e1aca044470740bb8a7a4110461f4d3edb13716d132070bc314082dced97106",
+    "root_cause": "INITIAL_DIAGNOSTIC_DID_NOT_DECODE_CONTENT_ENCODING_GZIP",
+    "repair": "BOUNDED_GZIP_DECOMPRESSION_IN_CAPTURE_TRANSPORT",
+    "post_repair_fixture": "PASS"
+  },
+  "post_repair_expected_source_support": 54,
+  "claims": {
+    "network_reachability_snapshot": true,
+    "rss_atom_primary_capture_justified": true,
+    "article_body_capture_required": false,
+    "grouping_naturalistic_accuracy_measured": false
+  },
+  "limitations": [
+    "NETWORK_HEALTH_IS_A_POINT_IN_TIME_OBSERVATION",
+    "FEED_DESCRIPTION_AVAILABILITY_DOES_NOT_PROVE_FULL_ARTICLE_COMPLETENESS",
+    "GROUPING_ACCURACY_REQUIRES_SEPARATE_LABELED_NATURALISTIC_MONITORING"
+  ]
+}

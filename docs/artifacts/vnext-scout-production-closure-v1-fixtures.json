@@ -1,0 +1,25 @@
+{
+  "schema": "vnext-scout-production-fixtures",
+  "schema_version": 1,
+  "captured_at": "2026-09-28T12:00:00Z",
+  "sources": [
+    {"source_id":"fixture_public","name":"Fixture Public","url":"https://fixture.invalid/public.xml","categories":["Social"],"maximum_articles":10},
+    {"source_id":"fixture_ministry","name":"Fixture Ministry","url":"https://fixture.invalid/ministry.xml","categories":["Social"],"maximum_articles":10},
+    {"source_id":"fixture_local","name":"Fixture Local","url":"https://fixture.invalid/local.xml","categories":["Local"],"maximum_articles":10}
+  ],
+  "feeds": {
+    "fixture_public": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><rss version=\"2.0\"><channel><item><title>Consiliul Brașov aprobă 127 milioane de lei pentru centrul Arin</title><link>https://fixture.invalid/public/arin?utm_source=rss</link><description>Consiliul local din Brașov a aprobat finanțarea de 127 de milioane de lei pentru centrul medical Arin.</description><pubDate>Sun, 28 Sep 2026 08:00:00 GMT</pubDate></item></channel></rss>",
+    "fixture_ministry": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><feed xmlns=\"http://www.w3.org/2005/Atom\"><entry><title>Centrul Arin: Consiliul Brașov aprobă finanțarea de 127 milioane</title><link href=\"https://fixture.invalid/ministry/arin\"/><summary>Ministerul a precizat că finanțarea de 127 de milioane de lei este aprobată, dar contractul nu a fost încă semnat.</summary><updated>2026-09-28T08:10:00Z</updated></entry></feed>",
+    "fixture_local": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><rss version=\"2.0\"><channel><item><title>Expoziție de fotografie deschisă luni la Sibiu</title><link>https://fixture.invalid/local/expozitie</link><description>Expoziția de fotografie se deschide luni în centrul orașului Sibiu.</description><pubDate>Sun, 28 Sep 2026 09:00:00 GMT</pubDate></item></channel></rss>"
+  },
+  "grouping_cases": [
+    {"expected":true,"left":"Consiliul Brașov aprobă 127 milioane de lei pentru centrul Arin","right":"Centrul Arin: Consiliul Brașov aprobă finanțarea de 127 milioane"},
+    {"expected":false,"left":"Consiliul Brașov aprobă 127 milioane pentru centrul Arin","right":"Consiliul Brașov aprobă 19 milioane pentru centrul Arin"},
+    {"expected":false,"left":"Guvernul aprobă bugetul pentru spitale","right":"Guvernul discută reforma fiscală"},
+    {"expected":true,"left":"Parlamentul votează legea pensiilor speciale miercuri","right":"Legea pensiilor speciale este votată miercuri de Parlament"},
+    {"expected":false,"left":"Primăria Cluj cumpără 20 de autobuze electrice","right":"Primăria Iași cumpără 20 de autobuze electrice"},
+    {"expected":true,"left":"Ministerul Educației publică calendarul examenului de bacalaureat","right":"Calendarul examenului de bacalaureat publicat de Ministerul Educației"},
+    {"expected":false,"left":"Banca Națională menține dobânda cheie","right":"Banca Centrală Europeană reduce dobânda cheie"},
+    {"expected":false,"left":"Expoziție de fotografie deschisă luni la Sibiu","right":"Festival de teatru deschis luni la Sibiu"}
+  ]
+}
