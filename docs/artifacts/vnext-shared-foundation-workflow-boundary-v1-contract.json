@@ -1,0 +1,44 @@
+{
+  "schema": "vnext-shared-foundation-workflow-boundary",
+  "schema_version": 1,
+  "status": "ISOLATED_NOT_ACTIVE",
+  "authority_commit": "4bd80d1aebede3737292cf97640e5d63ca07786e",
+  "architecture": "MODULAR_MONOLITH",
+  "product_root": "/root/pastila-vnext/v1",
+  "modules": [
+    "pastila_scout.vnext_foundation_v1",
+    "pastila_scout.vnext_workflow_v1"
+  ],
+  "capabilities": [
+    "CANONICAL_JSON_UTF8", "SHA256_BYTES", "SHA256_CANONICAL_OBJECTS", "TREE_IDENTITY",
+    "SCHEMA_VERSION_VALIDATION", "ATOMIC_WRITE", "PATH_CONTAINMENT", "DEPENDENCY_LOCK",
+    "IMMUTABLE_RECEIPT", "CANONICAL_STATE_TRANSITIONS", "IDEMPOTENCY",
+    "CONFLICTING_REPLAY_FAILURE", "INTERRUPTED_WRITE_RECOVERY", "PREFLIGHT",
+    "DIRECT_TRANSITIVE_LEGACY_SCAN"
+  ],
+  "receipt": {
+    "schema": "vnext-operational-receipt",
+    "large_payloads_forbidden": true,
+    "semantic_identity_excludes": ["observed_at", "provenance"],
+    "required": [
+      "workflow_identity", "operation_identity", "previous_state", "resulting_state",
+      "actor", "outcome", "input_identity", "output_identity", "attempt_identity",
+      "idempotency_identity"
+    ]
+  },
+  "recovery": {
+    "partial_publication_eligible": false,
+    "temporary_files_may_be_removed": true,
+    "state_may_be_invented_from_intermediates": false
+  },
+  "forbidden_dependencies": [
+    "EVALUATION_TOOLING", "ARCHIVE_TOOLING", "LEGACY", "PRODUCT_ROOT_FOR_TESTING",
+    "CANDIDATE_MODELS", "R2", "SCOUT", "PRODUCT_SQLITE_STATE", "NETWORK", "INFERENCE"
+  ],
+  "active_integration": false,
+  "product_lock_modified": false,
+  "product_root_modified": false,
+  "voice": "DISABLED_UNTIL_PROMOTION",
+  "stop_all_candidates": true,
+  "legacy_dependency_count": 0
+}

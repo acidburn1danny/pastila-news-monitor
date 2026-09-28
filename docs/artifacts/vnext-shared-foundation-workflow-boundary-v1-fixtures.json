@@ -1,0 +1,25 @@
+{
+  "schema": "vnext-shared-foundation-workflow-fixtures",
+  "schema_version": 1,
+  "cases": [
+    {"id": "LEGAL_TRANSITION", "expected": "PASS"},
+    {"id": "ILLEGAL_TRANSITION", "expected": "FAIL_CLOSED"},
+    {"id": "IDEMPOTENT_REPLAY", "expected": "NO_DUPLICATE"},
+    {"id": "CONFLICTING_REPLAY", "expected": "FAIL_CLOSED"},
+    {"id": "INTERRUPTED_ATOMIC_WRITE", "expected": "ORIGINAL_REMAINS"},
+    {"id": "ATOMIC_REPLACE_FAILURE", "expected": "NO_PARTIAL_PUBLICATION"},
+    {"id": "INCOMPLETE_PUBLICATION", "expected": "INELIGIBLE"},
+    {"id": "IMMUTABLE_RECEIPT", "expected": "NO_OVERWRITE"},
+    {"id": "DEPENDENCY_IDENTITY_MISMATCH", "expected": "FAIL_CLOSED"},
+    {"id": "UNDECLARED_DEPENDENCY", "expected": "FAIL_CLOSED"},
+    {"id": "FORBIDDEN_EXTERNAL_PATH", "expected": "FAIL_CLOSED"},
+    {"id": "SYMLINK_ESCAPE", "expected": "FAIL_CLOSED"},
+    {"id": "HARDLINK_ESCAPE_RISK", "expected": "FAIL_CLOSED"},
+    {"id": "DIRECT_LEGACY_DEPENDENCY", "expected": "FAIL_CLOSED"},
+    {"id": "TRANSITIVE_LEGACY_DEPENDENCY", "expected": "FAIL_CLOSED"},
+    {"id": "BENIGN_LEGACY_TEXT", "expected": "PASS"},
+    {"id": "RECOVERY_NO_STATE_INVENTION", "expected": "PASS"},
+    {"id": "DETERMINISTIC_IDENTITIES", "expected": "PASS"},
+    {"id": "OBSERVATION_METADATA_IDENTITY", "expected": "STABLE"}
+  ]
+}
