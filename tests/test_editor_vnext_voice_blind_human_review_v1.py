@@ -65,10 +65,10 @@ def test_no_scoring_or_unseal_capability():
 
 def test_localhost_blind_render_contains_no_candidate_metadata():
     receipts = Path(f".voice-human-review-test-{uuid.uuid4().hex}"); receipts.mkdir()
-    server = ThreadingHTTPServer(("127.0.0.1", 0), handler_for(ROOT, receipts)); thread = threading.Thread(target=server.serve_forever); thread.start()
+    server = ThreadingHTTPServer(("127.0.0.1", 0), handler_for(ROOT, receipts, "Daniel")); thread = threading.Thread(target=server.serve_forever); thread.start()
     try:
         body = urllib.request.urlopen(f"http://127.0.0.1:{server.server_port}/", timeout=5).read().decode()
-        assert "Blind review" in body and "answer key: SEALED" in body
+        assert "Blind review" in body and "answer key: SEALED" in body and "Reviewer: <b>Daniel</b>" in body
         assert not any(field in body for field in FORBIDDEN)
     finally:
         server.shutdown(); server.server_close(); thread.join(); receipts.rmdir()

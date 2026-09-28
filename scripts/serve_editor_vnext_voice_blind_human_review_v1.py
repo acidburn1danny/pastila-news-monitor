@@ -113,7 +113,7 @@ def page(item: dict, index: int, complete: int, reviewer: str) -> bytes:
 <h1>Blind review {index + 1}/216</h1><p>Complete: {complete}; answer key: SEALED.</p>
 <article><b>Factual setup</b><p>{html.escape(item['factual_setup'])}</p><b>Commentary</b><p>{html.escape(item['commentary'])}</p><p>Abstained: {str(item['abstained']).lower()}</p></article>
 <form method="post" action="/receipt"><input type="hidden" name="blind_output_identity" value="{item['blind_output_identity']}">
-<label>Reviewer alias <input name="reviewer_alias" value="{html.escape(reviewer)}" required></label>
+<p>Reviewer: <b>{html.escape(reviewer)}</b></p><input type="hidden" name="reviewer_alias" value="{html.escape(reviewer)}">
 <label>Factual safety <select name="factual_safety" required><option>PASS</option><option>STOP_FACTUAL_DRIFT</option><option>ABSTENTION_VALID</option></select></label>
 <div class="scores">{quality}</div><fieldset><legend>Repetition</legend>{checks}
 <label>Human perceived repetition (1 low, 5 high) <select name="human_perceived_repetition" required>{options}</select></label>
@@ -122,7 +122,8 @@ def page(item: dict, index: int, complete: int, reviewer: str) -> bytes:
     return body.encode()
 
 
-def handler_for(root: Path, receipts: Path):
+def handler_for(root: Path, receipts: Path, reviewer_alias: str):
+    if not reviewer_alias.strip(): raise ValueError("bound reviewer alias is required")
     _, items, _ = load_boundary(root)
     by_identity = {item["blind_output_identity"]: item for item in items}
     class Handler(BaseHTTPRequestHandler):
@@ -132,13 +133,13 @@ def handler_for(root: Path, receipts: Path):
             if not pending:
                 payload = b"216/216 complete. STOP before unseal."
             else:
-                i, item = pending[0]; payload = page(item, i, state["receipts"], "")
+                i, item = pending[0]; payload = page(item, i, state["receipts"], reviewer_alias)
             self.send_response(200); self.send_header("Content-Type", "text/html; charset=utf-8"); self.send_header("Content-Length", str(len(payload))); self.end_headers(); self.wfile.write(payload)
         def do_POST(self):
             if self.path != "/receipt": self.send_error(404); return
             length = int(self.headers.get("Content-Length", "0")); form = {k: v[-1] for k, v in parse_qs(self.rfile.read(length).decode(), keep_blank_values=True).items()}
             try:
-                item = by_identity[form.pop("blind_output_identity")]; receipt = validate_submission(item, form, form.get("reviewer_alias", "")); write_receipt(receipts, receipt)
+                item = by_identity[form.pop("blind_output_identity")]; form["reviewer_alias"] = reviewer_alias; receipt = validate_submission(item, form, reviewer_alias); write_receipt(receipts, receipt)
             except (KeyError, ValueError, FileExistsError) as error:
                 self.send_error(409, str(error)); return
             self.send_response(303); self.send_header("Location", "/"); self.end_headers()
@@ -148,11 +149,12 @@ def handler_for(root: Path, receipts: Path):
 
 def main() -> None:
     parser = argparse.ArgumentParser(); parser.add_argument("--boundary-root", type=Path, required=True); parser.add_argument("--receipts-root", type=Path, required=True)
-    parser.add_argument("--preflight", action="store_true"); parser.add_argument("--host", default="127.0.0.1"); parser.add_argument("--port", type=int, default=8765); args = parser.parse_args()
+    parser.add_argument("--preflight", action="store_true"); parser.add_argument("--reviewer-alias"); parser.add_argument("--host", default="127.0.0.1"); parser.add_argument("--port", type=int, default=8765); args = parser.parse_args()
     state = preflight(args.boundary_root, args.receipts_root)
     if args.preflight: print(json.dumps(state, sort_keys=True)); return
     if args.host not in {"127.0.0.1", "localhost"}: raise SystemExit("review server must bind localhost")
-    print(json.dumps(state, sort_keys=True)); ThreadingHTTPServer((args.host, args.port), handler_for(args.boundary_root, args.receipts_root)).serve_forever()
+    if not args.reviewer_alias: raise SystemExit("--reviewer-alias is required when serving")
+    print(json.dumps(state, sort_keys=True)); ThreadingHTTPServer((args.host, args.port), handler_for(args.boundary_root, args.receipts_root, args.reviewer_alias)).serve_forever()
 
 
 if __name__ == "__main__": main()
