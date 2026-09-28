@@ -1,0 +1,21 @@
+{
+  "candidates": 2,
+  "closure_identity": "26818ce1b119d2370b2b4a5c24c8e9108d68636f62f16ba52f28ad62d258384d",
+  "download_performed": false,
+  "files": 29,
+  "hardlinks": 0,
+  "inference_performed": false,
+  "legacy_dependency_count": 0,
+  "legacy_path_hits": 0,
+  "lock_identity": "3aca84d7470bc56c976bd5fd7101daf978a138ecb025ae1d17661a07c21b14ee",
+  "model_loaded": false,
+  "optimizer_created": false,
+  "product_root": "/root/pastila-vnext/v1",
+  "relative_root": "components/voice-candidates-v1",
+  "schema": "editor-vnext-voice-candidates-dependency-closure",
+  "schema_version": 1,
+  "snapshot_bytes": 31640268536,
+  "status": "PASS_DEPENDENCY_ONLY_NO_MODEL_LOAD",
+  "symlinks": 0,
+  "training_performed": false
+}
