@@ -1,0 +1,75 @@
+{
+  "authority": {
+    "action": "PRESERVE_BYTE_IDENTICALLY_RELOCATE_ONLY_IN_LATER_AUTHORIZED_MIGRATION",
+    "consolidation_plan_commit": "4bd80d1aebede3737292cf97640e5d63ca07786e",
+    "migration_classification": "KEEP",
+    "source_component": "components/r2-reference-v1",
+    "target_component": "components/editor-r2"
+  },
+  "binding": {
+    "active_integration": false,
+    "binding_identity": "0084f051f7aac5e90f2209e1796d5dbf7a26bb3fbb14fbf0a9e06b5b0818810f",
+    "bytes_modified": false,
+    "editor_rebuilt": false,
+    "file_count": 25,
+    "inference_performed": false,
+    "legacy_dependency_count": 0,
+    "model_loaded": false,
+    "platform_tree_identity": "ef5318bfa36af16350ec96d16ef84eb8b55c527894c3c5045f08d4b9ba1bc498",
+    "product_lock_replaced": false,
+    "r2_lock_identity": "53fafbc03f70c8c32357645a6a428260f1bdfbd104edbe1c4aa825e95c83a10f",
+    "r2_lock_sha256": "bb6817428f0663a00d7acafb5fcd5abd5f03615002380276a28502e280b28a3e",
+    "relative_layout_preserved": true,
+    "relocation_authorized": false,
+    "relocation_strategy": "COPY_THEN_VERIFY_BEFORE_LATER_ACTIVATION",
+    "schema": "vnext-r2-byte-identical-consolidation-binding",
+    "schema_version": 1,
+    "source_component": "components/r2-reference-v1",
+    "status": "ISOLATED_NOT_ACTIVE",
+    "target_component": "components/editor-r2",
+    "total_bytes": 28185570253
+  },
+  "closure_identity": "98db9cb3a276b6684fd3f2013a359b55703b8073d7745a9461a40ba4168adbf6",
+  "forbidden_actions": [
+    "R2_BYTE_CHANGE",
+    "R2_IDENTITY_CHANGE",
+    "MODEL_REBUILD",
+    "EDITOR_REBUILD",
+    "FACTUAL_ACCEPTANCE",
+    "PRODUCT_LOCK_REPLACEMENT",
+    "ACTIVE_INTEGRATION",
+    "RELOCATION",
+    "COPY",
+    "LEGACY_DEPENDENCY"
+  ],
+  "legacy_dependency_count": 0,
+  "product_lock_modified": false,
+  "product_root_modified": false,
+  "r2_identities": {
+    "adapter_flat_identity": "c680d686f0b139e618d99fab235c62267caa9482df0efbccb44cb2c58c124f02",
+    "base_model_flat_identity": "f5a9327e40390c7f0cf93962d75abbbc5ae8da1fac48e1274092ac52cf88bf39",
+    "checkpoint_identity": "96e10b85fe30c4be43c2cc1a0b906f04ea4c476cc8d422b4ad26e9758b85b2be",
+    "tokenizer_flat_identity": "026c7803af845d166451a8845defbc359cfda96d2d33c56d9648dcc8c117d1b2",
+    "tokenizer_json_sha256": "d5f6046775b112f0e2d456ee9dba450684ab964fe5c4e231599bdc6773028135"
+  },
+  "runtime_binding": {
+    "adapter_loader": "PeftModel",
+    "fix_mistral_regex": true,
+    "loader": "AutoModelForImageTextToText",
+    "local_files_only": true
+  },
+  "schema": "vnext-r2-byte-identical-consolidation-binding-closure",
+  "schema_version": 1,
+  "status": "ISOLATED_NOT_ACTIVE",
+  "stop_all_candidates": true,
+  "validation": {
+    "bytes": 28185570253,
+    "dependency_only_preflight": "PASS",
+    "files": 25,
+    "hardlink_aliases": 0,
+    "inference_performed": false,
+    "model_loaded": false,
+    "symlinks": 0
+  },
+  "voice": "DISABLED_UNTIL_PROMOTION"
+}
