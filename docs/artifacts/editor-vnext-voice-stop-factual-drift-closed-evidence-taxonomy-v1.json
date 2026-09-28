@@ -1,0 +1,134 @@
+{
+  "bindings": {
+    "answer_key_identity": "3d02d051b73d83ec9f208beda147dd9b2c18bcb284758acba9cf31f358cec0fb",
+    "frozen_terminal_result_identity": "5f521de2625e73db9d6958536b57799b190a0583fc26e2c03fea1fbaf8923ea3",
+    "review_boundary_identity": "104252702c6bb27585e3615ffec0667aa519649a54275e641aeb7be826096d0e",
+    "scoring_closure_identity": "a94d44bcf6e677d62a7715a1631544e7f6659a59d277fd674e46bc51f25ac768"
+  },
+  "claims": {
+    "demonstrated": [
+      "69_OF_74_STOPS_HAVE_SOURCE_BOUND_OBSERVABLE_TRIGGER",
+      "72_OF_74_STOPS_BELONG_TO_UNANIMOUS_THREE_SEED_STOP_GROUPS",
+      "NUMERIC_MUTATION_IS_R2_SPECIFIC_IN_THIS_COHORT",
+      "EPISTEMIC_PROCEDURAL_RECAST_IS_QWEN3_SPECIFIC_IN_THIS_COHORT"
+    ],
+    "suggested": [
+      "ONE_PASS_COMMENTARY_BLURS_FACTUAL_ANCHORS_AND_RHETORICAL_REALIZATION",
+      "R2_CREATIVE_EXTRAPOLATION_AND_QWEN3_GENERALIZATION_ARE_DISTINCT_FAILURE_MODES"
+    ],
+    "undetermined": [
+      "REVIEWER_RATIONALE_FOR_EACH_STOP",
+      "FALSE_REJECTION_RATE_FOR_FIGURATIVE_COMMENTARY",
+      "INTERNAL_MODEL_CAUSE"
+    ]
+  },
+  "closed_evidence": {
+    "distinct_candidate_case_patterns": 25,
+    "immutable_identities": {
+      "boundary_sha256": "f5178d90a5cb8af45eb6fe054caed64b9e13952b4b13359892e4b175d36a7e7e",
+      "completion_sha256": "11c09015991b3f6b322caf1183b795cc03fd06d1aa69b3e29c494daf363104f0",
+      "inference_output_set_sha256": "4510df892c0ce6886205eba3b65f6ba2befa0e04bb33d0a264eca781f1bd5a10",
+      "receipt_set_sha256": "464104f272123c76270e4d2e5d3fc469c3d14a970685f0fe0aa17479e38b6888",
+      "review_items_sha256": "bd5596b3d345b947b090af3e29fb02e009f0ab1f1dfe94d5d8492b3300c8784c",
+      "terminal_result_file_sha256": "5ddc0257b260b75d64d58c69515340e6f514078f6460c2acc8c17dfc459c09a1"
+    },
+    "inference_outputs": 216,
+    "per_candidate": {
+      "V0_R2_MINISTRAL_CONTROL": 27,
+      "V1_QWEN3_8B_NON_THINKING": 44,
+      "V2_QWEN25_7B_INSTRUCT": 3
+    },
+    "review_items": 216,
+    "score_receipts": 216,
+    "stop_factual_drift": 74
+  },
+  "frozen_state": {
+    "inference_outputs_modified": false,
+    "legacy_dependency_count": 0,
+    "new_inference": false,
+    "overall_verdict": "STOP_ALL_CANDIDATES",
+    "receipts_modified": false,
+    "rescoring": false,
+    "scores_modified": false,
+    "selected_candidate": null,
+    "verdicts_modified": false
+  },
+  "schema": "editor-vnext-voice-stop-factual-drift-closed-evidence-taxonomy",
+  "schema_version": 1,
+  "status": "PASS_WITH_EVIDENCE_LIMITATION",
+  "taxonomy": {
+    "classes": [
+      "UNSUPPORTED_CONCRETE_ADDITION_OR_STATE",
+      "NUMERIC_OR_QUANTITATIVE_MUTATION",
+      "EPISTEMIC_OR_PROCEDURAL_RECAST",
+      "UNSUPPORTED_CAUSAL_OR_EVALUATIVE_ASSERTION",
+      "FIGURATIVE_IMPLICATION_WITH_FACTUAL_READING",
+      "EVIDENCE_LIMITATION"
+    ],
+    "distinct_pattern_total": {
+      "EPISTEMIC_OR_PROCEDURAL_RECAST": 3,
+      "EVIDENCE_LIMITATION": 2,
+      "FIGURATIVE_IMPLICATION_WITH_FACTUAL_READING": 4,
+      "NUMERIC_OR_QUANTITATIVE_MUTATION": 3,
+      "UNSUPPORTED_CAUSAL_OR_EVALUATIVE_ASSERTION": 5,
+      "UNSUPPORTED_CONCRETE_ADDITION_OR_STATE": 8
+    },
+    "evidence_limitation_receipts": [
+      "467842a8aa2c52c10fc71bd43ea3c14fc62dd53a0470af2abb4540a406c28f63",
+      "597f829b546a8813b757dc3a61672153ccfc7fa42b7d28fcf2894015afe37230",
+      "9543c1cd34dfb121368d2a80e433c90247793bb90e2c17dcc9eab407b35c31a3",
+      "a93a0ae1167f0f386a3fcb0c82102a38dfd4b9f64779b1e548db079fe26d4d78",
+      "aec1a37912f86fcf2c1b0a455d3214da24bf92f528653bb6696811d09876b15f"
+    ],
+    "mixed_label_byte_identical_groups": [
+      {
+        "candidate": "V1_QWEN3_8B_NON_THINKING",
+        "case_id": "VOICE-V1-18",
+        "commentary_sha256": "312f2d0ec03e042917e66b5c6f0196460f30b4e355da7375010c7112da445942",
+        "labels": {
+          "PASS": 1,
+          "STOP_FACTUAL_DRIFT": 2
+        },
+        "receipts": [
+          "597f829b546a8813b757dc3a61672153ccfc7fa42b7d28fcf2894015afe37230",
+          "aec1a37912f86fcf2c1b0a455d3214da24bf92f528653bb6696811d09876b15f"
+        ]
+      }
+    ],
+    "receipt_weighted_per_candidate": {
+      "V0_R2_MINISTRAL_CONTROL": {
+        "EPISTEMIC_OR_PROCEDURAL_RECAST": 0,
+        "EVIDENCE_LIMITATION": 0,
+        "FIGURATIVE_IMPLICATION_WITH_FACTUAL_READING": 9,
+        "NUMERIC_OR_QUANTITATIVE_MUTATION": 9,
+        "UNSUPPORTED_CAUSAL_OR_EVALUATIVE_ASSERTION": 3,
+        "UNSUPPORTED_CONCRETE_ADDITION_OR_STATE": 6
+      },
+      "V1_QWEN3_8B_NON_THINKING": {
+        "EPISTEMIC_OR_PROCEDURAL_RECAST": 9,
+        "EVIDENCE_LIMITATION": 5,
+        "FIGURATIVE_IMPLICATION_WITH_FACTUAL_READING": 3,
+        "NUMERIC_OR_QUANTITATIVE_MUTATION": 0,
+        "UNSUPPORTED_CAUSAL_OR_EVALUATIVE_ASSERTION": 9,
+        "UNSUPPORTED_CONCRETE_ADDITION_OR_STATE": 18
+      },
+      "V2_QWEN25_7B_INSTRUCT": {
+        "EPISTEMIC_OR_PROCEDURAL_RECAST": 0,
+        "EVIDENCE_LIMITATION": 0,
+        "FIGURATIVE_IMPLICATION_WITH_FACTUAL_READING": 0,
+        "NUMERIC_OR_QUANTITATIVE_MUTATION": 0,
+        "UNSUPPORTED_CAUSAL_OR_EVALUATIVE_ASSERTION": 3,
+        "UNSUPPORTED_CONCRETE_ADDITION_OR_STATE": 0
+      }
+    },
+    "receipt_weighted_total": {
+      "EPISTEMIC_OR_PROCEDURAL_RECAST": 9,
+      "EVIDENCE_LIMITATION": 5,
+      "FIGURATIVE_IMPLICATION_WITH_FACTUAL_READING": 12,
+      "NUMERIC_OR_QUANTITATIVE_MUTATION": 9,
+      "UNSUPPORTED_CAUSAL_OR_EVALUATIVE_ASSERTION": 15,
+      "UNSUPPORTED_CONCRETE_ADDITION_OR_STATE": 24
+    }
+  },
+  "taxonomy_result_identity": "d86681d1eda554357077bbacd8cb64ae4dce21b7a3977e041b6ee6e966f01530"
+}
