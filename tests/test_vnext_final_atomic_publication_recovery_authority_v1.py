@@ -120,14 +120,14 @@ def test_export_tampering_fails_eligibility_loader(tmp_path):
         )
 
 
-def test_authority_semantics_do_not_claim_product_orchestrator():
+def test_authority_semantics_claim_isolated_product_orchestrator():
     manifest = json.loads(
         Path("docs/artifacts/vnext-active-authority-audit-manifest-v1.json").read_text(encoding="utf-8")
     )
     invariants = manifest["invariants"]
     assert invariants["post_acceptance_policy_final_implemented"] is True
     assert invariants["policy_final_merged"] is True
-    assert invariants["product_orchestrator_implemented"] is False
+    assert invariants["product_orchestrator_implemented"] is True
 
 
 

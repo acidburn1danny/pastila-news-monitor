@@ -1,0 +1,38 @@
+{
+  "authority": {
+    "event_selection": "EXPLICIT_EVENT_ID",
+    "factual_review": "EXPLICIT_TYPED_INSTRUCTION",
+    "orchestrator": "ORDERING_AND_ROUTING_ONLY",
+    "policy": "EXPLICIT_TYPED_INSTRUCTION"
+  },
+  "base_commit": "71443f463c6f0320b9c4f53f37bf672157764286",
+  "closure_identity": "94ddb653edcfa5a20537bab402979393f2f9590ddf678088946c833a8067c94b",
+  "invariants": {
+    "active_integration": false,
+    "audit_streak": "0/2",
+    "legacy_dependency_count": 0,
+    "product_lock_replaced": false,
+    "stop_all_candidates": true,
+    "voice": "DISABLED_UNTIL_PROMOTION"
+  },
+  "name": "VNext Product Orchestrator & Integrated Core E2E Closure v1",
+  "path": [
+    "SCOUT_CAPTURE_GROUP",
+    "EXPLICIT_EVENT_SELECTION",
+    "SOURCE_PACKET",
+    "R2_EDITOR_DRAFT",
+    "EXPLICIT_FACTUAL_REVIEW",
+    "EXPLICIT_POLICY_APPROVAL",
+    "DETERMINISTIC_FINAL",
+    "IMMUTABLE_EXPORT"
+  ],
+  "recovery": "PERSISTED_BUNDLE_REHYDRATION_VALIDATED",
+  "schema": "vnext-product-orchestrator-integrated-core-e2e-closure",
+  "schema_version": 1,
+  "status": "PASS",
+  "validation": {
+    "dedicated": "11_PASS",
+    "self_contained_auditor": "PASS",
+    "suite": "121_PASS"
+  }
+}
