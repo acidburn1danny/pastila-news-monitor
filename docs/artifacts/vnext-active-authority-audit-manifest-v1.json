@@ -28,8 +28,8 @@
     "src/pastila_scout/vnext_product_orchestrator_v1.py"
   ],
   "binding_semantics": "SUCCESSOR_OVER_BOUND_COMMIT",
-  "bound_commit": "fbb7dfcd1024d90fc0d63d3b24b611bba56f8827",
-  "current_auditor": "scripts/audit_vnext_scout_workflow_event_ownership_grouping_lineage_repair_v1.py",
+  "bound_commit": "4ad644e8bef589fc22875738c7d1dfc57bee8caf",
+  "current_auditor": "scripts/audit_vnext_scout_capture_batch_grouping_transitive_lineage_repair_v1.py",
   "excluded_from_active_graph": [
     {
       "path": "src/pastila_scout/vnext_sourcepacket_binding_v1.py",
@@ -112,11 +112,18 @@
     {
       "commit": "fbb7dfcd",
       "path": "scripts/audit_vnext_source_selection_authority_canonical_sourcepacket_repair_v1.py"
+    },
+    {
+      "commit": "4ad644e8",
+      "path": "scripts/audit_vnext_scout_workflow_event_ownership_grouping_lineage_repair_v1.py"
     }
   ],
   "invariants": {
     "active_integration": false,
     "canonical_source_packet": true,
+    "canonical_workflow_transition_recovery": true,
+    "capture_batch_content_addressed_authority": true,
+    "capture_to_grouping_transitive_lineage": true,
     "editor_draft_relational_ownership": true,
     "editor_to_factual_transition_ownership": true,
     "explicit_user_selection_authority": true,
@@ -147,7 +154,7 @@
     "voice": "DISABLED_UNTIL_PROMOTION",
     "workflow_event_relational_ownership": true
   },
-  "manifest_identity": "86e7bd52fae69956b951b5259348f38788b1485ac1ed069a64900e4eb62bb60f",
+  "manifest_identity": "d7672f756190633d152e214ff1971680d1038067f265d000f4dca3dab6adc2bd",
   "schema": "vnext-active-authority-audit-manifest",
   "schema_version": 1,
   "status": "SUCCESSOR_ISOLATED_NOT_ACTIVE"

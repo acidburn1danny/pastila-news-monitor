@@ -582,30 +582,123 @@ def persist_capture_and_grouping(
     return groups
 
 
+def _validate_owned_scout_transition(
+    row: object,
+    *,
+    workflow_identity: str,
+    expected: Mapping[str, object],
+    label: str,
+) -> dict[str, object]:
+    if any(row[key] != value for key, value in expected.items()):
+        raise ScoutError(f"{label} transition binding mismatch")
+    try:
+        receipt = json.loads(row["receipt_json"])
+    except (TypeError, json.JSONDecodeError) as exc:
+        raise ScoutError(f"{label} transition receipt invalid") from exc
+    receipt_expected = {
+        "workflow_identity": workflow_identity,
+        "receipt_identity": row["receipt_identity"],
+        "attempt_identity": row["attempt_identity"],
+        "idempotency_identity": row["idempotency_identity"],
+        **expected,
+    }
+    semantic_keys = (
+        "schema", "schema_version", "workflow_identity", "operation_identity",
+        "previous_state", "resulting_state", "actor", "outcome",
+        "input_identity", "output_identity", "attempt_identity",
+        "idempotency_identity",
+    )
+    if (
+        not isinstance(receipt, dict)
+        or any(receipt.get(key) != value for key, value in receipt_expected.items())
+        or receipt.get("receipt_identity")
+        != object_identity({key: receipt.get(key) for key in semantic_keys})
+        or row["receipt_json"] != canonical_json(receipt)
+        or row["attempt_workflow_identity"] != workflow_identity
+        or row["attempt_operation_identity"] != expected["operation_identity"]
+        or row["attempt_outcome"] != expected["outcome"]
+        or row["idempotency_request_identity"] != row["receipt_identity"]
+        or row["idempotency_receipt_identity"] != row["receipt_identity"]
+    ):
+        raise ScoutError(f"{label} operational receipt binding mismatch")
+    return receipt
+
+
+def _load_content_addressed_json(
+    path: Path,
+    *,
+    claimed_identity: str,
+    identity_key: str,
+    label: str,
+) -> dict[str, object]:
+    try:
+        payload = path.read_bytes()
+        value = json.loads(payload.decode("utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise ScoutError(f"{label} is missing or invalid") from exc
+    if (
+        not isinstance(value, dict)
+        or value.get(identity_key) != claimed_identity
+        or object_identity({key: item for key, item in value.items() if key != identity_key})
+        != claimed_identity
+        or payload != canonical_json(value) + b"\n"
+    ):
+        raise ScoutError(f"{label} content-addressed binding mismatch")
+    return value
+
+
 def validate_workflow_event_membership(
     store: SQLiteStateStore,
     *,
     workflow_identity: str,
     event_identity: str,
 ) -> tuple[object, ...]:
-    """Prove that an event belongs to this workflow's exact grouping result."""
+    """Prove capture-batch, grouping, event membership, and selected-event lineage."""
+    workflow_state = store.load_workflow(workflow_identity)
+
+    transition_query = (
+        "SELECT st.receipt_identity,st.operation_identity,st.previous_state,"
+        "st.resulting_state,st.actor,st.outcome,st.input_identity,"
+        "st.output_identity,st.attempt_identity,st.idempotency_identity,"
+        "st.receipt_json,a.workflow_identity AS attempt_workflow_identity,"
+        "a.operation_identity AS attempt_operation_identity,"
+        "a.outcome AS attempt_outcome,i.request_identity "
+        "AS idempotency_request_identity,i.receipt_identity "
+        "AS idempotency_receipt_identity FROM state_transitions st "
+        "LEFT JOIN attempts a ON a.attempt_identity=st.attempt_identity "
+        "LEFT JOIN idempotency i ON i.workflow_identity=st.workflow_identity "
+        "AND i.idempotency_identity=st.idempotency_identity "
+        "WHERE st.workflow_identity=? AND st.previous_state=? "
+        "AND st.resulting_state=?"
+    )
     with store.read() as connection:
         memberships = connection.execute(
-            "SELECT we.event_identity,we.grouping_identity,we.position,e.grouping_identity "
-            "AS persisted_grouping_identity FROM workflow_events we "
-            "JOIN events e USING(event_identity) WHERE we.workflow_identity=? "
-            "ORDER BY we.position",
+            "SELECT we.event_identity,we.grouping_identity,we.position,"
+            "e.grouping_identity AS persisted_grouping_identity "
+            "FROM workflow_events we JOIN events e USING(event_identity) "
+            "WHERE we.workflow_identity=? ORDER BY we.position",
             (workflow_identity,),
         ).fetchall()
-        transitions = connection.execute(
-            "SELECT receipt_identity,operation_identity,previous_state,resulting_state,"
-            "actor,outcome,input_identity,output_identity,attempt_identity,"
-            "idempotency_identity,receipt_json FROM state_transitions "
-            "WHERE workflow_identity=? AND previous_state='CAPTURED' "
-            "AND resulting_state='GROUPED'",
+        capture_transitions = connection.execute(
+            transition_query,
+            (workflow_identity, "DISCOVERED", "CAPTURED"),
+        ).fetchall()
+        grouping_transitions = connection.execute(
+            transition_query,
+            (workflow_identity, "CAPTURED", "GROUPED"),
+        ).fetchall()
+        membership_captures = connection.execute(
+            "SELECT we.event_identity,es.capture_identity FROM workflow_events we "
+            "JOIN event_sources es USING(event_identity) "
+            "WHERE we.workflow_identity=? "
+            "ORDER BY we.position,es.capture_identity",
             (workflow_identity,),
         ).fetchall()
-        captures = connection.execute(
+        capture_rows = connection.execute(
+            "SELECT capture_identity,source_identity,payload_identity,payload_ref,"
+            "captured_at FROM captures ORDER BY capture_identity"
+        ).fetchall()
+        selected_captures = connection.execute(
             "SELECT c.capture_identity,c.payload_ref FROM workflow_events we "
             "JOIN event_sources es USING(event_identity) "
             "JOIN captures c USING(capture_identity) "
@@ -613,6 +706,7 @@ def validate_workflow_event_membership(
             "ORDER BY c.source_identity,c.capture_identity",
             (workflow_identity, event_identity),
         ).fetchall()
+
     if not memberships:
         raise ScoutError("workflow event membership missing")
     if [row["position"] for row in memberships] != list(range(len(memberships))):
@@ -625,55 +719,122 @@ def validate_workflow_event_membership(
     selected = [row for row in memberships if row["event_identity"] == event_identity]
     if len(selected) != 1:
         raise ScoutError("event is not owned uniquely by workflow grouping")
-    if len(transitions) != 1:
+    if len(capture_transitions) != 1:
+        raise ScoutError("capture transition ownership is absent or ambiguous")
+    if len(grouping_transitions) != 1:
         raise ScoutError("grouping transition ownership is absent or ambiguous")
-    transition = transitions[0]
+
+    capture_transition = capture_transitions[0]
+    batch_identity = capture_transition["output_identity"]
+    if not isinstance(batch_identity, str) or _SHA256.fullmatch(batch_identity) is None:
+        raise ScoutError("capture transition output identity invalid")
+    batch = _load_content_addressed_json(
+        store.root / "blobs/capture-batches" / f"{batch_identity}.json",
+        claimed_identity=batch_identity,
+        identity_key="batch_identity",
+        label="capture batch",
+    )
+    if (
+        batch.get("schema") != "vnext-scout-capture-batch"
+        or batch.get("schema_version") != SCHEMA_VERSION
+        or not isinstance(batch.get("sources_identity"), str)
+        or not str(batch["sources_identity"]).strip()
+        or not isinstance(batch.get("article_references"), dict)
+        or not batch["article_references"]
+        or not isinstance(batch.get("failures"), list)
+    ):
+        raise ScoutError("capture batch contract mismatch")
+    capture_receipt = _validate_owned_scout_transition(
+        capture_transition,
+        workflow_identity=workflow_identity,
+        expected={
+            "operation_identity": "scout:capture",
+            "previous_state": "DISCOVERED",
+            "resulting_state": "CAPTURED",
+            "actor": "SCOUT",
+            "outcome": "PASS",
+            "input_identity": batch["sources_identity"],
+            "output_identity": batch_identity,
+        },
+        label="capture",
+    )
+    capture_history = [
+        item for item in workflow_state["receipts"]
+        if item.get("previous_state") == "DISCOVERED"
+        and item.get("resulting_state") == "CAPTURED"
+    ]
+    if capture_history != [capture_receipt]:
+        raise ScoutError("capture canonical workflow history mismatch")
+
+    references = batch["article_references"]
+    expected_captures = set(references)
+    actual_captures = [row["capture_identity"] for row in membership_captures]
+    if (
+        len(actual_captures) != len(expected_captures)
+        or set(actual_captures) != expected_captures
+    ):
+        raise ScoutError("workflow grouping does not consume exact capture batch")
+    captures_by_identity = {
+        row["capture_identity"]: row
+        for row in capture_rows
+        if row["capture_identity"] in expected_captures
+    }
+    if set(captures_by_identity) != expected_captures:
+        raise ScoutError("capture batch rows are absent or ambiguous")
+    for capture_identity, reference in references.items():
+        if (
+            not isinstance(capture_identity, str)
+            or _SHA256.fullmatch(capture_identity) is None
+            or reference != f"blobs/captures/{capture_identity}.json"
+        ):
+            raise ScoutError("capture batch reference binding mismatch")
+        row = captures_by_identity[capture_identity]
+        if (
+            row["payload_identity"] != capture_identity
+            or row["payload_ref"] != reference
+        ):
+            raise ScoutError("capture row binding mismatch")
+        capture = _load_content_addressed_json(
+            store.root / str(reference),
+            claimed_identity=capture_identity,
+            identity_key="capture_identity",
+            label="capture payload",
+        )
+        if (
+            capture.get("schema") != "vnext-scout-capture"
+            or capture.get("schema_version") != SCHEMA_VERSION
+            or capture.get("source_identity") != row["source_identity"]
+            or capture.get("captured_at") != row["captured_at"]
+        ):
+            raise ScoutError("capture payload row binding mismatch")
+
     expected_output = object_identity(
         [row["grouping_identity"] for row in memberships]
     )
-    expected = {
-        "operation_identity": "scout:group",
-        "previous_state": "CAPTURED",
-        "resulting_state": "GROUPED",
-        "actor": "SCOUT",
-        "outcome": "PASS",
-        "output_identity": expected_output,
-    }
-    if any(transition[key] != value for key, value in expected.items()):
-        raise ScoutError("grouping transition binding mismatch")
-    if not isinstance(transition["input_identity"], str) or _SHA256.fullmatch(
-        transition["input_identity"]
-    ) is None:
-        raise ScoutError("grouping transition input identity invalid")
-    try:
-        receipt = json.loads(transition["receipt_json"])
-    except (TypeError, json.JSONDecodeError) as exc:
-        raise ScoutError("grouping transition receipt invalid") from exc
-    receipt_expected = {
-        "workflow_identity": workflow_identity,
-        "receipt_identity": transition["receipt_identity"],
-        "attempt_identity": transition["attempt_identity"],
-        "idempotency_identity": transition["idempotency_identity"],
-        "input_identity": transition["input_identity"],
-        **expected,
-    }
-    if (
-        not isinstance(receipt, dict)
-        or any(receipt.get(key) != value for key, value in receipt_expected.items())
-        or receipt.get("receipt_identity") != object_identity({
-            key: receipt.get(key) for key in (
-                "schema", "schema_version", "workflow_identity",
-                "operation_identity", "previous_state", "resulting_state",
-                "actor", "outcome", "input_identity", "output_identity",
-                "attempt_identity", "idempotency_identity",
-            )
-        })
-    ):
-        raise ScoutError("grouping transition receipt binding mismatch")
-    if not captures:
+    grouping_receipt = _validate_owned_scout_transition(
+        grouping_transitions[0],
+        workflow_identity=workflow_identity,
+        expected={
+            "operation_identity": "scout:group",
+            "previous_state": "CAPTURED",
+            "resulting_state": "GROUPED",
+            "actor": "SCOUT",
+            "outcome": "PASS",
+            "input_identity": batch_identity,
+            "output_identity": expected_output,
+        },
+        label="grouping",
+    )
+    grouping_history = [
+        item for item in workflow_state["receipts"]
+        if item.get("previous_state") == "CAPTURED"
+        and item.get("resulting_state") == "GROUPED"
+    ]
+    if grouping_history != [grouping_receipt]:
+        raise ScoutError("grouping canonical workflow history mismatch")
+    if not selected_captures:
         raise ScoutError("owned workflow event has no captures")
-    return tuple(captures)
-
+    return tuple(selected_captures)
 
 def build_source_packet(
     store: SQLiteStateStore,

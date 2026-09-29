@@ -1,0 +1,63 @@
+{
+  "authority": {
+    "capture_batch": "CONTENT_ADDRESSED",
+    "manifest_identity": "d7672f756190633d152e214ff1971680d1038067f265d000f4dca3dab6adc2bd",
+    "schema_migration": false,
+    "sqlite_v7_identity": "d84e8d4a8dd3c9866d1014ab80f94d2ca988cb5cb0be69ce26cfb304fee48e14",
+    "transition_chain": [
+      "DISCOVERED_TO_CAPTURED",
+      "CAPTURED_TO_GROUPED"
+    ]
+  },
+  "blocker_closure": {
+    "canonical_history_gap": {
+      "repair": "BIND_EXACT_SCOUT_RECEIPTS_TO_CANONICAL_WORKFLOW_HISTORY",
+      "root_cause": "RECOVERY_DID_NOT_RECONSTRUCT_CANONICAL_WORKFLOW_HISTORY",
+      "status": "CLOSED"
+    },
+    "non_transitive_membership": {
+      "repair": "EXACT_BATCH_TO_CAPTURE_ROWS_TO_EVENT_MEMBERSHIP_RECONCILIATION",
+      "root_cause": "WORKFLOW_EVENT_CAPTURES_WERE_NOT_RECONCILED_WITH_THE_AUTHORIZED_BATCH",
+      "status": "CLOSED"
+    },
+    "unbound_capture_batch": {
+      "repair": "CONTENT_ADDRESSED_BATCH_VALIDATION_BOUND_TO_EXACT_CAPTURE_TRANSITION",
+      "root_cause": "GROUPING_RECOVERY_DID_NOT_LOAD_OR_VALIDATE_THE_CAPTURE_BATCH_NAMED_BY_THE_CAPTURE_TRANSITION",
+      "status": "CLOSED"
+    },
+    "unbound_grouping_input": {
+      "repair": "REQUIRE_GROUPING_INPUT_TO_EQUAL_CAPTURE_TRANSITION_OUTPUT",
+      "root_cause": "GROUPING_INPUT_WAS_ONLY_CHECKED_AS_SHA256_SHAPED",
+      "status": "CLOSED"
+    }
+  },
+  "bound_commit": "4ad644e8bef589fc22875738c7d1dfc57bee8caf",
+  "closure_identity": "0a23b3598e30b090f2af2da49683be44546b2b94c0d2893710037ec60b5db468",
+  "fault_injection": {
+    "absent": true,
+    "altered": true,
+    "capture_payloads": true,
+    "capture_rows": true,
+    "cross_workflow": true,
+    "downstream_recovery": true,
+    "duplicate": true,
+    "terminal_recovery": true
+  },
+  "invariants": {
+    "active_integration": false,
+    "audit_streak": "0/2",
+    "legacy_dependency_count": 0,
+    "product_lock_replaced": false,
+    "stop_all_candidates": true,
+    "voice": "DISABLED_UNTIL_PROMOTION"
+  },
+  "schema": "vnext-scout-capture-batch-grouping-transitive-lineage-repair",
+  "schema_version": 1,
+  "status": "SUCCESSOR_ISOLATED_NOT_ACTIVE",
+  "validation": {
+    "dedicated": "16_PASS",
+    "self_contained_auditor": "PASS",
+    "vnext_suite": "340_PASS"
+  },
+  "verdict": "PASS"
+}
