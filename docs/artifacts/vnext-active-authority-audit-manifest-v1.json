@@ -11,9 +11,9 @@
       "path": "docs/artifacts/vnext-consolidated-operational-state-sqlite-boundary-v7-contract.json"
     },
     "workflow": {
-      "identity": "a8a901a817bd847175684ee519a91068a41e756982e7ba16203ba0d521220548",
+      "identity": "8d5135d476a03ec076d2fc9daa049a25654294ebcac9b8b83967597baad0f34f",
       "identity_key": "authority_identity",
-      "path": "docs/artifacts/vnext-active-product-workflow-state-contract-v4.json"
+      "path": "docs/artifacts/vnext-active-product-workflow-state-contract-v5.json"
     }
   },
   "active_runtime_modules": [
@@ -28,8 +28,8 @@
     "src/pastila_scout/vnext_product_orchestrator_v1.py"
   ],
   "binding_semantics": "SUCCESSOR_OVER_BOUND_COMMIT",
-  "bound_commit": "4584c94812e0dddaba6cd2e75c8787db94610181",
-  "current_auditor": "scripts/audit_vnext_scout_no_eligible_terminal_workflow_repair_v1.py",
+  "bound_commit": "87ddff21382c86c51fcc3fcdbb6cf46cec798d1f",
+  "current_auditor": "scripts/audit_vnext_scout_terminal_outcome_authority_completeness_repair_v1.py",
   "excluded_from_active_graph": [
     {
       "path": "src/pastila_scout/vnext_sourcepacket_binding_v1.py",
@@ -128,6 +128,10 @@
     {
       "commit": "4584c948",
       "path": "scripts/audit_vnext_scout_capture_uniqueness_no_eligible_repair_v1.py"
+    },
+    {
+      "commit": "87ddff21",
+      "path": "scripts/audit_vnext_scout_no_eligible_terminal_workflow_repair_v1.py"
     }
   ],
   "invariants": {
@@ -171,11 +175,12 @@
     "source_maximum_articles_enforced": true,
     "source_packet_relational_ownership": true,
     "stop_all_candidates": true,
+    "terminal_outcome_authority_complete": true,
     "validated_typed_source_set_authority": true,
     "voice": "DISABLED_UNTIL_PROMOTION",
     "workflow_event_relational_ownership": true
   },
-  "manifest_identity": "50a58a2ad413c01d9f0bb62eea8e0f9870af40a2e28ce0949a116332e5c3f933",
+  "manifest_identity": "1a42dd5fcd0c008b9bde6c3b0c16ae02d6661ff6fbc41395071be1283e844d37",
   "schema": "vnext-active-authority-audit-manifest",
   "schema_version": 1,
   "status": "SUCCESSOR_ISOLATED_NOT_ACTIVE"
