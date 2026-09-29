@@ -37,3 +37,27 @@ def test_mutable_state_is_separate_from_immutable_inventory():
  preflight=(ROOT/"scripts/preflight_vnext_active_integration_candidate_v1.py").read_text()
  assert '"mutable_state"' in builder and '"state"' not in builder.split('for base in (',1)[1].split('):',1)[0]
  assert 'require_pristine_state' in preflight and 'PRAGMA integrity_check' in preflight
+
+
+def test_candidate_v2_lock_and_terminal_result_identities():
+ lock=load("vnext-active-integration-product-lock-candidate-v2.json")
+ claimed=lock.pop("product_lock_identity")
+ assert identity(lock)==claimed=="28e930dc7725f71fc9ae8b8256cbec860ef409ec7034cf35c19da60a9055f9ca"
+ assert lock["runtime_source_commit"]=="c211a07551284627a8e23c6e84d7dbf7e1125681"
+ assert lock["assembly_boundary_commit"]=="f84a9c6b493e7f54de3ea47f7fd97441af3d3db2"
+ result=load("vnext-active-integration-candidate-closure-atomic-semantics-repair-v1.json")
+ result_claimed=result.pop("result_identity")
+ assert identity(result)==result_claimed=="f56dd9edd429ed265b97f89b4508a1efe7c951b546ed55c1c57893a403a3bee1"
+ assert result["status"]=="PASS" and result["blockers"]==0
+ assert result["active_product_root_mutated"] is False and result["product_lock_replaced"] is False
+ assert result["legacy_dependency_count"]==0
+
+def test_candidate_v2_has_one_root_lock_and_exhaustive_inventory_semantics():
+ lock=load("vnext-active-integration-product-lock-candidate-v2.json")
+ assert lock["product_root"]=="/root/pastila-vnext/v1"
+ assert lock["activation"]["full_root_atomic_swap_required"] is True
+ assert lock["mutable_state"]["database"]=="state/product.sqlite3"
+ assert lock["active_integration_state"]=="CANDIDATE_NOT_ACTIVATED"
+ preflight=(ROOT/"scripts/preflight_vnext_active_integration_candidate_v1.py").read_text()
+ assert "managed inventory mismatch" in preflight
+ assert 'root/"product-lock.json"' in preflight

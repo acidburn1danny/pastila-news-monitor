@@ -1,0 +1,83 @@
+{
+  "active_dependency_graph_identity": "f393b101ae5bf1dcab73775d463307765bf9a24568c8d045d4284aebac4d415e",
+  "active_product_lock_sha256": "2ddc484171f3b58f0f10ce4c4c73c1db51323d5c545320c578dc17ebb3edb4e6",
+  "active_product_root_mutated": false,
+  "application_file_count": 24,
+  "assembly_boundary_commit": "f84a9c6b493e7f54de3ea47f7fd97441af3d3db2",
+  "audit_identity": "44f7f72dd63f49170c7da6efa374b64a4b1c72a946bb580f08c28751ee6f85f6",
+  "base_commit": "210ad63de93fbc1ce2185cee72090c23b51a07c2",
+  "blockers": 0,
+  "candidate_file_count": 24846,
+  "candidate_product_lock_identity": "28e930dc7725f71fc9ae8b8256cbec860ef409ec7034cf35c19da60a9055f9ca",
+  "candidate_product_lock_sha256": "d33118308cc38c728dfc0a9c59a8d35ff54bc2f8d3b8671ccbe11f2aa2e3c522",
+  "candidate_total_bytes": 33317267323,
+  "car": [
+    {
+      "finding": "candidate bootstrap and acceptance used different writer identities",
+      "fresh_restart": "PASS",
+      "repair": "one canonical writer identity vnext-product-runtime-v1",
+      "root_cause": "writer ownership was not canonical across assembly and runtime"
+    },
+    {
+      "finding": "startup-created SQLite WAL/SHM files violated immutable inventory",
+      "fresh_restart": "PASS",
+      "repair": "separate content-addressed bootstrap state from runtime state; verify pristine staging and relational runtime integrity",
+      "root_cause": "mutable operational state was included in immutable application inventory semantics"
+    }
+  ],
+  "clean_room_restore": "PASS",
+  "dependency_closure": "PASS",
+  "deterministic_rebuild": "PASS_2_OF_2",
+  "extra_bytes_rejected": "PASS",
+  "frozen_platform_authority_identity": "ef5318bfa36af16350ec96d16ef84eb8b55c527894c3c5045f08d4b9ba1bc498",
+  "full_root_fault_injection": [
+    {
+      "current_lock_sha256": "2ddc484171f3b58f0f10ce4c4c73c1db51323d5c545320c578dc17ebb3edb4e6",
+      "failpoint": "BEFORE_BACKUP",
+      "staged_lock_sha256": "d33118308cc38c728dfc0a9c59a8d35ff54bc2f8d3b8671ccbe11f2aa2e3c522",
+      "status": "PASS_RECOVERED"
+    },
+    {
+      "current_lock_sha256": "2ddc484171f3b58f0f10ce4c4c73c1db51323d5c545320c578dc17ebb3edb4e6",
+      "failpoint": "AFTER_BACKUP",
+      "staged_lock_sha256": "d33118308cc38c728dfc0a9c59a8d35ff54bc2f8d3b8671ccbe11f2aa2e3c522",
+      "status": "PASS_RECOVERED"
+    },
+    {
+      "current_lock_sha256": "2ddc484171f3b58f0f10ce4c4c73c1db51323d5c545320c578dc17ebb3edb4e6",
+      "failpoint": "AFTER_ACTIVATE",
+      "full_root_rename": true,
+      "rollback_byte_exact": true,
+      "staged_lock_sha256": "d33118308cc38c728dfc0a9c59a8d35ff54bc2f8d3b8671ccbe11f2aa2e3c522",
+      "status": "PASS_ROLLED_BACK"
+    }
+  ],
+  "inference": false,
+  "integrated_e2e": {
+    "acceptance_identity": "3c4d868f6f53e5abc311757e89715054d8e450f1c5ad465b315f2be2478da95a",
+    "editor_draft_identity": "a0bbd5e150a5e2baa2841aad62523411390f6c9bd111c5acf864e6e75888b4eb",
+    "export_receipt_identity": "0a17a6150292ec868b7eebe7ad44a9fd9e3ec300a3d28c4f6f43c92d4616d378",
+    "factual_artifact_identity": "dba5f220a117745bb66c22f8dcc0c5d5335a941ec8f390e605afb0563eec5379",
+    "final_identity": "7572bdeae7b0e29b5599283befd27f74c0453e4ef3b1ae2264869cb7e13172ef",
+    "inference": false,
+    "legacy_dependency_count": 0,
+    "materialized_state_exercised": true,
+    "model_load": false,
+    "source_packet_identity": "9c4f8c204e0b190c1e141327b4edbe3b44c37f71aaf93b572105ebf1fbefa23a",
+    "status": "PASS",
+    "workflow_state": "EXPORTED"
+  },
+  "inventory_exhaustive": "PASS",
+  "legacy_dependency_count": 0,
+  "model_load": false,
+  "platform_semantics_authority_identity": "b36072106b26922166662fdafcf06afa54022f8d1e289c7490ab4cb0822a548d",
+  "product_lock_replaced": false,
+  "r2_dependency_lock_identity": "53fafbc03f70c8c32357645a6a428260f1bdfbd104edbe1c4aa825e95c83a10f",
+  "result_identity": "f56dd9edd429ed265b97f89b4508a1efe7c951b546ed55c1c57893a403a3bee1",
+  "runtime_source_commit": "c211a07551284627a8e23c6e84d7dbf7e1125681",
+  "schema": "vnext-active-integration-candidate-closure-atomic-semantics-repair-v1",
+  "schema_version": 1,
+  "stable_platform_content_identity": "93a314b96a2e687ed76c298f440d426681c49d446bec5edfe0cb175fa9dd82fd",
+  "startup": "PASS_STARTUP_READY",
+  "status": "PASS"
+}
