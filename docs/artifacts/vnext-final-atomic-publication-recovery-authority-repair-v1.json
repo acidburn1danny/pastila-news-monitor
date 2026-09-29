@@ -1,0 +1,42 @@
+{
+  "schema": "vnext-final-atomic-publication-recovery-authority-repair",
+  "schema_version": 1,
+  "status": "ISOLATED_NOT_ACTIVE",
+  "successor_over_commit": "0a4e6e00281c658f7930958e57292631cdefeff4",
+  "blocker_closure": {
+    "premature_export_visibility": {
+      "status": "CLOSED",
+      "repair": "FINAL_READY_BEFORE_EXPORT_PLUS_EXPORTED_ELIGIBILITY_GATE"
+    },
+    "product_orchestrator_authority_overclaim": {
+      "status": "CLOSED",
+      "repair": "PRECISE_POST_ACCEPTANCE_POLICY_FINAL_SEMANTICS"
+    }
+  },
+  "publication_protocol": {
+    "phase_1": "INTERNAL_FINAL_BLOB",
+    "phase_2": "ATOMIC_FINAL_READY_WITH_ARTIFACT_OWNERSHIP",
+    "phase_3": "IMMUTABLE_EXPORT_AND_RECEIPT",
+    "phase_4": "EXPORTED_TRANSITION",
+    "eligibility": "EXPORTED_STATE_PLUS_ARTIFACT_PLUS_RECEIPT_PLUS_BYTE_IDENTITY"
+  },
+  "authority_bindings": {
+    "active_manifest_identity": "6a9275fc2efa358691571e63872b3bbde7c91b361720ca976561834902e635fc",
+    "sqlite_schema_version": 6
+  },
+  "validation": {
+    "tests": "106_PASS",
+    "fault_injection": "3_PASS",
+    "auditor": "PASS"
+  },
+  "invariants": {
+    "active_integration": false,
+    "product_lock_replaced": false,
+    "product_root_modified": false,
+    "audit_streak": "0/2",
+    "voice": "DISABLED_UNTIL_PROMOTION",
+    "stop_all_candidates": true,
+    "legacy_dependency_count": 0
+  },
+  "closure_identity": "8aee47401df7a2315e5ac626568f580cd91e8922a29371a4a712f77355e8dd36"
+}

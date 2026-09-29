@@ -21,8 +21,8 @@
     "src/pastila_scout/vnext_factual_acceptance_v1.py",
     "src/pastila_scout/vnext_core_final_v1.py"
   ],
-  "bound_commit": "23995243a2b46bcdb94742d29fac818b3aee842a",
-  "current_auditor": "scripts/audit_vnext_core_workflow_authority_e2e_ownership_repair_v1.py",
+  "bound_commit": "0a4e6e00281c658f7930958e57292631cdefeff4",
+  "current_auditor": "scripts/audit_vnext_final_atomic_publication_recovery_authority_v1.py",
   "excluded_from_active_graph": [
     {
       "path": "src/pastila_scout/vnext_sourcepacket_binding_v1.py",
@@ -61,21 +61,26 @@
     {
       "commit": "23995243",
       "path": "scripts/audit_vnext_core_workflow_deterministic_final_v1.py"
+    },
+    {
+      "commit": "0a4e6e00",
+      "path": "scripts/audit_vnext_core_workflow_authority_e2e_ownership_repair_v1.py"
     }
   ],
   "invariants": {
     "active_integration": false,
     "final_implemented": true,
     "legacy_dependency_count": 0,
-    "orchestrator_implemented": true,
     "product_lock_replaced": false,
     "stop_all_candidates": true,
     "voice": "DISABLED_UNTIL_PROMOTION",
-    "core_workflow_policy_final_merged": true
+    "post_acceptance_policy_final_implemented": true,
+    "policy_final_merged": true,
+    "product_orchestrator_implemented": false
   },
   "schema": "vnext-active-authority-audit-manifest",
   "schema_version": 1,
   "status": "SUCCESSOR_ISOLATED_NOT_ACTIVE",
   "binding_semantics": "SUCCESSOR_OVER_BOUND_COMMIT",
-  "manifest_identity": "b11fc3f452bb17219526c8f51f336fdc0e3223af0d0a8a69ce73604b916fe367"
+  "manifest_identity": "6a9275fc2efa358691571e63872b3bbde7c91b361720ca976561834902e635fc"
 }

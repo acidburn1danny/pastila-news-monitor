@@ -147,27 +147,209 @@ def persist_policy_decision(store:SQLiteStateStore,*,workflow_identity:str,factu
     semantic={'workflow':workflow_identity,'decision':did,'target':target}; ident=object_identity(semantic)
     store.transition(TransitionRequest(workflow_identity,'core:policy-decision','POLICY_REVIEW_PENDING',target,'POLICY',outcome,str(factual_output['artifact_identity']),did,f'attempt:{ident}',f'idempotency:{ident}',observed_at,{'component':'VNext Core Workflow to Deterministic FINAL Vertical Slice v1'}),before_commit=rows)
 
-def assemble_and_export_final(store:SQLiteStateStore,*,workflow_identity:str,factual_output:Mapping[str,object],decision:Mapping[str,object],observed_at:str)->tuple[dict[str,object],dict[str,object]]:
-    _owned_factual(store,workflow_identity,factual_output); did=_identity(decision,'decision_identity')
-    if decision.get('outcome')!='APPROVE_FINAL' or decision.get('workflow_identity')!=workflow_identity or decision.get('input_identity')!=factual_output.get('artifact_identity'): raise CoreFinalError('FINAL requires approved factual input')
-    with store.read() as connection: row=connection.execute("SELECT 1 FROM decisions WHERE workflow_identity=? AND decision_identity=? AND decision_kind='APPROVAL' AND outcome='APPROVE_FINAL'",(workflow_identity,did)).fetchone()
-    if row is None: raise CoreFinalError('persisted policy approval missing')
-    final={'schema':'vnext-final-output','schema_version':1,'artifact_kind':'FINAL_OUTPUT','workflow_identity':workflow_identity,'source_packet_identity':factual_output['source_packet_identity'],'factual_input_kind':factual_output['artifact_kind'],'factual_input_identity':factual_output['artifact_identity'],'policy_decision_identity':did,'voice_mode':'DISABLED','text':factual_output['text'],'assembly':'DETERMINISTIC_PASSTHROUGH_V1'}
-    final['artifact_identity']=object_identity(final); payload=canonical_json(final)+b'\n'
-    output_rel=Path('blobs/final-outputs')/f"{final['artifact_identity']}.json"; export_rel=Path('exports')/f"{final['artifact_identity']}.json"
-    for rel in (output_rel,export_rel):
-        path=contained_path(store.root,rel)
-        if path.exists():
-            if path.read_bytes()!=payload: raise CoreFinalError(f'immutable FINAL conflict: {rel}')
+def _final_value(
+    workflow_identity: str,
+    factual_output: Mapping[str, object],
+    decision_identity: str,
+) -> dict[str, object]:
+    final: dict[str, object] = {
+        "schema": "vnext-final-output",
+        "schema_version": 1,
+        "artifact_kind": "FINAL_OUTPUT",
+        "workflow_identity": workflow_identity,
+        "source_packet_identity": factual_output["source_packet_identity"],
+        "factual_input_kind": factual_output["artifact_kind"],
+        "factual_input_identity": factual_output["artifact_identity"],
+        "policy_decision_identity": decision_identity,
+        "voice_mode": "DISABLED",
+        "text": factual_output["text"],
+        "assembly": "DETERMINISTIC_PASSTHROUGH_V1",
+    }
+    final["artifact_identity"] = object_identity(final)
+    return final
+
+
+def _export_receipt(
+    workflow_identity: str,
+    final_identity: str,
+    export_ref: Path,
+    payload: bytes,
+) -> dict[str, object]:
+    receipt: dict[str, object] = {
+        "schema": "vnext-final-export-receipt",
+        "schema_version": 1,
+        "workflow_identity": workflow_identity,
+        "final_identity": final_identity,
+        "export_ref": export_ref.as_posix(),
+        "export_sha256": sha256_bytes(payload),
+        "export_size": len(payload),
+    }
+    receipt["receipt_identity"] = object_identity(receipt)
+    return receipt
+
+
+def load_exported_final(
+    store: SQLiteStateStore,
+    *,
+    workflow_identity: str,
+    final_identity: str,
+) -> tuple[dict[str, object], dict[str, object]]:
+    if store.load_workflow(workflow_identity)["state"] != "EXPORTED":
+        raise CoreFinalError("FINAL output is not export-eligible")
+    with store.read() as connection:
+        row = connection.execute(
+            "SELECT payload_identity,payload_ref FROM workflow_artifacts "
+            "WHERE workflow_identity=? AND artifact_identity=? AND artifact_kind='FINAL_OUTPUT'",
+            (workflow_identity, final_identity),
+        ).fetchone()
+    if row is None or row["payload_identity"] != final_identity:
+        raise CoreFinalError("persisted FINAL ownership missing")
+    final = _load_owned_json(store, Path(str(row["payload_ref"])), "FINAL payload")
+    _identity(final, "artifact_identity")
+    if (
+        final.get("artifact_identity") != final_identity
+        or final.get("workflow_identity") != workflow_identity
+    ):
+        raise CoreFinalError("persisted FINAL payload mismatch")
+    receipt = _load_owned_json(
+        store,
+        Path("receipts/final-exports") / f"{final_identity}.json",
+        "FINAL export receipt",
+    )
+    _identity(receipt, "receipt_identity")
+    export_ref = receipt.get("export_ref")
+    if (
+        receipt.get("workflow_identity") != workflow_identity
+        or receipt.get("final_identity") != final_identity
+        or not isinstance(export_ref, str)
+    ):
+        raise CoreFinalError("FINAL export receipt provenance mismatch")
+    export_path = contained_path(store.root, Path(export_ref), allow_missing=False)
+    payload = export_path.read_bytes()
+    if (
+        receipt.get("export_sha256") != sha256_bytes(payload)
+        or receipt.get("export_size") != len(payload)
+        or payload != canonical_json(final) + b"\n"
+    ):
+        raise CoreFinalError("FINAL export bytes mismatch")
+    return final, receipt
+
+
+def assemble_and_export_final(
+    store: SQLiteStateStore,
+    *,
+    workflow_identity: str,
+    factual_output: Mapping[str, object],
+    decision: Mapping[str, object],
+    observed_at: str,
+) -> tuple[dict[str, object], dict[str, object]]:
+    _owned_factual(store, workflow_identity, factual_output)
+    decision_identity = _identity(decision, "decision_identity")
+    if (
+        decision.get("outcome") != "APPROVE_FINAL"
+        or decision.get("workflow_identity") != workflow_identity
+        or decision.get("input_identity") != factual_output.get("artifact_identity")
+    ):
+        raise CoreFinalError("FINAL requires approved factual input")
+    with store.read() as connection:
+        row = connection.execute(
+            "SELECT 1 FROM decisions WHERE workflow_identity=? AND decision_identity=? "
+            "AND decision_kind='APPROVAL' AND outcome='APPROVE_FINAL'",
+            (workflow_identity, decision_identity),
+        ).fetchone()
+    if row is None:
+        raise CoreFinalError("persisted policy approval missing")
+
+    final = _final_value(workflow_identity, factual_output, decision_identity)
+    final_identity = str(final["artifact_identity"])
+    payload = canonical_json(final) + b"\n"
+    output_ref = Path("blobs/final-outputs") / f"{final_identity}.json"
+    export_ref = Path("exports") / f"{final_identity}.json"
+    receipt_ref = Path("receipts/final-exports") / f"{final_identity}.json"
+    receipt = _export_receipt(workflow_identity, final_identity, export_ref, payload)
+
+    state = store.load_workflow(workflow_identity)["state"]
+    if state not in {"APPROVED_FOR_FINAL", "FINAL_READY", "EXPORTED"}:
+        raise CoreFinalError(f"workflow is not FINAL-ready: {state}")
+
+    output_path = contained_path(store.root, output_ref)
+    if output_path.exists():
+        if output_path.read_bytes() != payload:
+            raise CoreFinalError(f"immutable FINAL conflict: {output_ref}")
+    else:
+        from .vnext_foundation_v1 import atomic_write
+        atomic_write(output_path, payload, root=store.root, overwrite=False)
+
+    if state == "APPROVED_FOR_FINAL":
+        def persist_final(connection):
+            connection.execute(
+                "INSERT INTO workflow_artifacts VALUES(?,?,?,?,?,?)",
+                (
+                    final_identity,
+                    workflow_identity,
+                    "FINAL_OUTPUT",
+                    final_identity,
+                    output_ref.as_posix(),
+                    "vnext-final-output-v1",
+                ),
+            )
+
+        semantic = {"workflow": workflow_identity, "final": final_identity}
+        transition_identity = object_identity(semantic)
+        store.transition(
+            TransitionRequest(
+                workflow_identity,
+                "core:final-assembly",
+                "APPROVED_FOR_FINAL",
+                "FINAL_READY",
+                "FINAL",
+                "PASS",
+                decision_identity,
+                final_identity,
+                f"attempt:{transition_identity}",
+                f"idempotency:{transition_identity}",
+                observed_at,
+                {"component": "VNext FINAL Atomic Publication, Recovery & Authority Semantics Repair v1"},
+            ),
+            before_commit=persist_final,
+        )
+        state = "FINAL_READY"
+
+    if state == "FINAL_READY":
+        from .vnext_foundation_v1 import atomic_write
+        export_path = contained_path(store.root, export_ref)
+        if export_path.exists():
+            if export_path.read_bytes() != payload:
+                raise CoreFinalError(f"immutable FINAL conflict: {export_ref}")
         else:
-            from .vnext_foundation_v1 import atomic_write
-            atomic_write(path,payload,root=store.root,overwrite=False)
-    state=store.load_workflow(workflow_identity)['state']
-    if state=='APPROVED_FOR_FINAL':
-        def rows(connection): connection.execute('INSERT INTO workflow_artifacts VALUES(?,?,?,?,?,?)',(final['artifact_identity'],workflow_identity,'FINAL_OUTPUT',final['artifact_identity'],output_rel.as_posix(),'vnext-final-output-v1'))
-        semantic={'workflow':workflow_identity,'final':final['artifact_identity']}; ident=object_identity(semantic)
-        store.transition(TransitionRequest(workflow_identity,'core:final-assembly','APPROVED_FOR_FINAL','FINAL_READY','FINAL','PASS',did,final['artifact_identity'],f'attempt:{ident}',f'idempotency:{ident}',observed_at,{'component':'VNext Core Workflow to Deterministic FINAL Vertical Slice v1'}),before_commit=rows); state='FINAL_READY'
-    if state=='FINAL_READY': _transition(store,workflow_identity,'FINAL_READY','EXPORTED','core:final-export',str(final['artifact_identity']),str(final['artifact_identity']),'FINAL','PASS',observed_at); state='EXPORTED'
-    if state!='EXPORTED': raise CoreFinalError(f'workflow is not FINAL-ready: {state}')
-    receipt={'schema':'vnext-final-export-receipt','schema_version':1,'workflow_identity':workflow_identity,'final_identity':final['artifact_identity'],'export_ref':export_rel.as_posix(),'export_sha256':sha256_bytes(payload),'export_size':len(payload)}; receipt['receipt_identity']=object_identity(receipt)
-    return final,receipt
+            atomic_write(export_path, payload, root=store.root, overwrite=False)
+        receipt_path = contained_path(store.root, receipt_ref)
+        if receipt_path.exists():
+            if json.loads(receipt_path.read_text(encoding="utf-8")) != receipt:
+                raise CoreFinalError("immutable FINAL export receipt conflict")
+        else:
+            atomic_json(receipt_path, receipt, root=store.root, overwrite=False)
+        _transition(
+            store,
+            workflow_identity,
+            "FINAL_READY",
+            "EXPORTED",
+            "core:final-export",
+            final_identity,
+            str(receipt["receipt_identity"]),
+            "FINAL",
+            "PASS",
+            observed_at,
+        )
+        state = "EXPORTED"
+
+    if state != "EXPORTED":
+        raise CoreFinalError(f"workflow is not export-ready: {state}")
+    persisted_final, persisted_receipt = load_exported_final(
+        store,
+        workflow_identity=workflow_identity,
+        final_identity=final_identity,
+    )
+    if persisted_final != final or persisted_receipt != receipt:
+        raise CoreFinalError("FINAL replay mismatch")
+    return final, receipt
