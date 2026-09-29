@@ -1,0 +1,33 @@
+{
+  "authority_identity": "b36072106b26922166662fdafcf06afa54022f8d1e289c7490ab4cb0822a548d",
+  "bound_commit": "210ad63de93fbc1ce2185cee72090c23b51a07c2",
+  "frozen_platform_authority_identity": "ef5318bfa36af16350ec96d16ef84eb8b55c527894c3c5045f08d4b9ba1bc498",
+  "host_dependencies": {
+    "gpu": {
+      "minimum_memory_mib": 16000,
+      "name": "NVIDIA GeForce RTX 5080"
+    },
+    "nvidia_driver": {
+      "minimum": "616.92"
+    },
+    "packages": {
+      "accelerate": "1.14.0",
+      "bitsandbytes": "0.50.1",
+      "cuda-bindings": "13.4.3",
+      "cuda-toolkit": "13.0.3.0",
+      "peft": "0.20.0",
+      "torch": "2.13.0",
+      "transformers": "5.15.0"
+    },
+    "python": {
+      "path": "/usr/bin/python3",
+      "version": "3.12.3"
+    }
+  },
+  "inference_required": false,
+  "model_load_required": false,
+  "schema": "vnext-platform-lock-semantics",
+  "schema_version": 2,
+  "stable_content_identity_algorithm": "CANONICAL_TREE_SHA256_EXCLUDING_PYTHON_BYTECODE_CACHE_V1",
+  "status": "SUCCESSOR_CANDIDATE_AUTHORITY"
+}

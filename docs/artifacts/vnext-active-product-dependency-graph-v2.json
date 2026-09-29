@@ -1,0 +1,150 @@
+{
+  "architecture": "MODULAR_MONOLITH",
+  "authority_identity": "f393b101ae5bf1dcab73775d463307765bf9a24568c8d045d4284aebac4d415e",
+  "bound_commit": "210ad63de93fbc1ce2185cee72090c23b51a07c2",
+  "disabled": [
+    {
+      "id": "voice",
+      "state": "DISABLED_UNTIL_PROMOTION"
+    },
+    {
+      "id": "gui",
+      "state": "DEFERRED"
+    }
+  ],
+  "excluded": [
+    "EVALUATION",
+    "HISTORICAL_RECEIPTS",
+    "LEGACY_RUNTIME",
+    "VOICE_CANDIDATES"
+  ],
+  "legacy_dependency_count": 0,
+  "nodes": [
+    {
+      "depends_on": [
+        "workflow",
+        "foundation",
+        "platform_lock"
+      ],
+      "id": "product_cli",
+      "target_path": "app/cli/product.py"
+    },
+    {
+      "depends_on": [
+        "scout",
+        "source_packet",
+        "editor",
+        "factual_acceptance",
+        "policy_final",
+        "state",
+        "foundation"
+      ],
+      "id": "workflow",
+      "target_path": "app/workflow/pastila_scout/vnext_product_orchestrator_v1.py"
+    },
+    {
+      "depends_on": [
+        "source_config",
+        "state",
+        "source_packet",
+        "foundation"
+      ],
+      "id": "scout",
+      "target_path": "app/workflow/pastila_scout/vnext_scout_production_v1.py"
+    },
+    {
+      "depends_on": [
+        "foundation"
+      ],
+      "id": "source_config",
+      "target_path": "config/sources.json"
+    },
+    {
+      "depends_on": [
+        "foundation"
+      ],
+      "id": "source_packet",
+      "target_path": "contracts/source-packet.json"
+    },
+    {
+      "depends_on": [
+        "r2",
+        "source_packet",
+        "foundation"
+      ],
+      "id": "editor",
+      "target_path": "app/workflow/pastila_scout/vnext_editor_vertical_slice_v1.py"
+    },
+    {
+      "depends_on": [
+        "python_ml",
+        "foundation"
+      ],
+      "id": "r2",
+      "target_path": "components/editor-r2"
+    },
+    {
+      "depends_on": [
+        "platform_lock"
+      ],
+      "id": "python_ml",
+      "target_path": "platform/python-ml"
+    },
+    {
+      "depends_on": [],
+      "id": "platform_lock",
+      "target_path": "manifest/platform-lock.json"
+    },
+    {
+      "depends_on": [
+        "editor",
+        "source_packet",
+        "state",
+        "foundation"
+      ],
+      "id": "factual_acceptance",
+      "target_path": "app/workflow/pastila_scout/vnext_factual_acceptance_v1.py"
+    },
+    {
+      "depends_on": [
+        "factual_acceptance",
+        "state",
+        "foundation"
+      ],
+      "id": "policy_final",
+      "target_path": "app/workflow/pastila_scout/vnext_core_final_v1.py"
+    },
+    {
+      "depends_on": [
+        "state_schema"
+      ],
+      "id": "state",
+      "target_path": "state/product.sqlite3"
+    },
+    {
+      "depends_on": [
+        "workflow_authority",
+        "foundation"
+      ],
+      "id": "state_schema",
+      "target_path": "app/workflow/pastila_scout/vnext_state_sqlite_v1.py"
+    },
+    {
+      "depends_on": [
+        "foundation"
+      ],
+      "id": "workflow_authority",
+      "target_path": "app/workflow/pastila_scout/vnext_workflow_v1.py"
+    },
+    {
+      "depends_on": [],
+      "id": "foundation",
+      "target_path": "app/workflow/pastila_scout/vnext_foundation_v1.py"
+    }
+  ],
+  "product_root": "/root/pastila-vnext/v1",
+  "schema": "vnext-active-product-dependency-graph",
+  "schema_version": 2,
+  "status": "SUCCESSOR_CANDIDATE_AUTHORITY",
+  "supersedes": "vnext-active-product-dependency-graph-v1"
+}
