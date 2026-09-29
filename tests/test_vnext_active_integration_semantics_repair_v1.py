@@ -31,3 +31,9 @@ def test_builder_declares_separate_runtime_and_assembly_lineage():
 def test_canonical_runtime_writer_is_shared():
  for name in ("build_vnext_active_integration_product_lock_boundary_v1.py","accept_vnext_active_integration_candidate_v1.py","product_cli_vnext_v1.py"):
   assert 'writer_identity="vnext-product-runtime-v1"' in (ROOT/"scripts"/name).read_text()
+
+def test_mutable_state_is_separate_from_immutable_inventory():
+ builder=(ROOT/"scripts/build_vnext_active_integration_product_lock_boundary_v1.py").read_text()
+ preflight=(ROOT/"scripts/preflight_vnext_active_integration_candidate_v1.py").read_text()
+ assert '"mutable_state"' in builder and '"state"' not in builder.split('for base in (',1)[1].split('):',1)[0]
+ assert 'require_pristine_state' in preflight and 'PRAGMA integrity_check' in preflight

@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Exact dependency and authority preflight for a VNext product candidate."""
-import argparse,hashlib,json,os,re,shutil,subprocess
+import argparse,hashlib,json,os,re,shutil,sqlite3,subprocess
 from pathlib import Path
 FROZEN_PLATFORM="ef5318bfa36af16350ec96d16ef84eb8b55c527894c3c5045f08d4b9ba1bc498"
 LEGACY_MARKERS=("/"+"root/pf9-","/mnt"+"/f/pt","F:"+chr(92)+chr(92)+"pt","/root/"+"pastila-news-monitor")
-MANAGED=("app","config","contracts","foundation","manifest","state")
+MANAGED=("app","config","contracts","foundation","manifest")
 def canonical(v):return json.dumps(v,ensure_ascii=False,sort_keys=True,separators=(",",":")).encode()
 def identity(v):return hashlib.sha256(canonical(v)).hexdigest()
 def file_hash(p):
@@ -50,7 +50,7 @@ def verify_host(root,platform):
  def parts(x):return tuple(int(n) for n in re.findall(r"\d+",x))
  if parts(driver)<parts(host["nvidia_driver"]["minimum"]):raise RuntimeError("driver too old")
  return {"python":version,"packages":packages,"gpu":name,"driver":driver,"memory_mib":int(memory)}
-def verify(root,full_platform_hash=True,verify_host_dependencies=True):
+def verify(root,full_platform_hash=True,verify_host_dependencies=True,require_pristine_state=False):
  root=root.resolve(strict=True);lock=load(root/"product-lock.json");check_identity(lock,"product_lock_identity")
  if lock["product_root"]!="/root/pastila-vnext/v1" or lock["active_integration_state"]!="CANDIDATE_NOT_ACTIVATED" or lock["legacy_dependency_count"]!=0:raise RuntimeError("candidate authority mismatch")
  expected={x["path"]:x for x in lock["application_files"]};actual=managed_entries(root)
@@ -70,6 +70,12 @@ def verify(root,full_platform_hash=True,verify_host_dependencies=True):
  if platform["frozen_platform_authority_identity"]!=FROZEN_PLATFORM:raise RuntimeError("frozen platform authority mismatch")
  if platform["stable_content_identity"]!=lock["components"]["PYTHON_ML_PLATFORM"]["stable_content_identity"]:raise RuntimeError("platform lock binding mismatch")
  if full_platform_hash and tree_identity(root/"platform/python-ml")!=platform["stable_content_identity"]:raise RuntimeError("stable platform content mismatch")
+ state_db=root/lock["mutable_state"]["database"]
+ if not state_db.is_file():raise RuntimeError("product state database missing")
+ pristine=file_hash(state_db)==lock["mutable_state"]["bootstrap_sha256"]
+ if require_pristine_state and not pristine:raise RuntimeError("staged state is not pristine")
+ connection=sqlite3.connect("file:"+state_db.as_posix()+"?mode=ro",uri=True);integrity=connection.execute("PRAGMA integrity_check").fetchone()[0];connection.close()
+ if integrity!="ok":raise RuntimeError("SQLite integrity failed")
  host_result=verify_host(root,platform) if verify_host_dependencies else {"verified":False}
  for rel,row in actual.items():
   p=root/rel
@@ -77,6 +83,6 @@ def verify(root,full_platform_hash=True,verify_host_dependencies=True):
    try:text=p.read_text(encoding="utf-8")
    except UnicodeDecodeError:continue
    if any(m.casefold() in text.casefold() for m in LEGACY_MARKERS):raise RuntimeError("legacy binding: "+rel)
- return {"status":"PASS","product_lock_identity":lock["product_lock_identity"],"application_files":len(actual),"r2_files":len(r2lock["files"]),"platform_tree_verified":full_platform_hash,"host_dependencies":host_result,"active_graph_identity":graph["authority_identity"],"legacy_dependency_count":0}
+ return {"status":"PASS","product_lock_identity":lock["product_lock_identity"],"application_files":len(actual),"r2_files":len(r2lock["files"]),"platform_tree_verified":full_platform_hash,"host_dependencies":host_result,"active_graph_identity":graph["authority_identity"],"state_bootstrap_pristine":pristine,"state_integrity":"PASS","legacy_dependency_count":0}
 if __name__=="__main__":
- p=argparse.ArgumentParser();p.add_argument("--root",type=Path,required=True);p.add_argument("--skip-platform-hash",action="store_true");p.add_argument("--skip-host",action="store_true");a=p.parse_args();print(json.dumps(verify(a.root,not a.skip_platform_hash,not a.skip_host),sort_keys=True))
+ p=argparse.ArgumentParser();p.add_argument("--root",type=Path,required=True);p.add_argument("--skip-platform-hash",action="store_true");p.add_argument("--skip-host",action="store_true");p.add_argument("--require-pristine-state",action="store_true");a=p.parse_args();print(json.dumps(verify(a.root,not a.skip_platform_hash,not a.skip_host,a.require_pristine_state),sort_keys=True))
