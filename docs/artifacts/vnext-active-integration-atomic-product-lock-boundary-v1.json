@@ -5,20 +5,21 @@
     "product_root": "/root/pastila-vnext/v1",
     "root_mutated": false
   },
-  "boundary_identity": "6c11a59db79698b4017652902b9539f53094506b4d1edbf0c33669ca6f9b907a",
+  "boundary_identity": "5acd4c7052c105e1333709b88a6522ea52fe56b6457efe581943caf312c883ca",
   "candidate": {
-    "application_files": 34,
-    "bytes": 33313641490,
-    "files": 24603,
+    "application_files": 30,
+    "bytes": 33313379068,
+    "files": 24593,
     "platform_tree_identity": "93a314b96a2e687ed76c298f440d426681c49d446bec5edfe0cb175fa9dd82fd",
-    "product_lock_identity": "d2c274cfbe8eb9f8d9dd4d7bee7be1a3c82d18825173c44816503e7286086ec6",
-    "product_lock_sha256": "7b72ee9b9702b670680c84ce02060c19922d05e00b6eb06990ec020048854c82",
+    "product_lock_identity": "e96b9d34256b4dc24621f1c76531c849cb08c95ee54c35a2b686e65717c2d48b",
+    "product_lock_sha256": "e098cb751b06d910345eab1635b853dce26acf9fccbe77bbc37690ba26053e8b",
     "r2_lock_identity": "53fafbc03f70c8c32357645a6a428260f1bdfbd104edbe1c4aa825e95c83a10f"
   },
   "closure": {
     "acceptance_identity": "9a1aaedf88f90d639bb431645d3f3f2c7b7805d842342088df074631fa27d79b",
     "clean_room_restore": "PASS",
     "dependency_preflight": "PASS",
+    "deterministic_rebuild": "PASS_2_OF_2",
     "integrated_e2e": "PASS",
     "legacy_dependency_count": 0,
     "rollback_simulation": "PASS_BYTE_EXACT"

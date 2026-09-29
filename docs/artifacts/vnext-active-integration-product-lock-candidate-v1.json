@@ -47,26 +47,6 @@
       "size": 0
     },
     {
-      "path": "app/workflow/pastila_scout/__pycache__/__init__.cpython-312.pyc",
-      "sha256": "63252e35f4d1cdfd647184578c17e4bba3af570224995bef0b5ff9a1c4dd8e17",
-      "size": 176
-    },
-    {
-      "path": "app/workflow/pastila_scout/__pycache__/vnext_foundation_v1.cpython-312.pyc",
-      "sha256": "cdc9ac36273c5701a5aa002e107781101a97f9ede65a26a05cc3f6f37215fe92",
-      "size": 18994
-    },
-    {
-      "path": "app/workflow/pastila_scout/__pycache__/vnext_state_sqlite_v1.cpython-312.pyc",
-      "sha256": "ced23fe6f394b34a84033d579475d6182bff08dce18255f3fd43e86418d82a72",
-      "size": 30333
-    },
-    {
-      "path": "app/workflow/pastila_scout/__pycache__/vnext_workflow_v1.cpython-312.pyc",
-      "sha256": "7897c08e1a9d06845719b9c1c80e63a49b0d5ed8fac73c73f7441fb4126ac591",
-      "size": 9724
-    },
-    {
       "path": "app/workflow/pastila_scout/vnext_core_final_v1.py",
       "sha256": "03a62ff1f87325fff6714d6f492dfb985341a57719d25d560529cf6bda284dae",
       "size": 24511
@@ -196,7 +176,7 @@
     "LEGACY_RUNTIME"
   ],
   "legacy_dependency_count": 0,
-  "product_lock_identity": "d2c274cfbe8eb9f8d9dd4d7bee7be1a3c82d18825173c44816503e7286086ec6",
+  "product_lock_identity": "e96b9d34256b4dc24621f1c76531c849cb08c95ee54c35a2b686e65717c2d48b",
   "product_root": "/root/pastila-vnext/v1",
   "schema": "vnext-product-lock-candidate",
   "schema_version": 1,

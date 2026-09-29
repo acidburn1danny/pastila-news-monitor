@@ -40,13 +40,13 @@ def build(repo,source,target):
  shutil.copy2(source/"product-lock.json",target/"manifest/prior-product-lock.json")
  platform_identity=tree_identity(target/"platform/python-ml")
  platform={"schema":"vnext-platform-lock","schema_version":1,"tree_identity":platform_identity,"path":"platform/python-ml","platform_dependency":True};platform["lock_identity"]=ident(platform);write(target/"manifest/platform-lock.json",platform)
- sys.path.insert(0,str(target/"app/workflow"))
+ sys.dont_write_bytecode=True;sys.path.insert(0,str(target/"app/workflow"))
  from pastila_scout.vnext_state_sqlite_v1 import SQLiteStateStore
  state=target/"state";state.mkdir();store=SQLiteStateStore(root=state,database=Path("product.sqlite3"),writer_identity="candidate-bootstrap");store.bootstrap()
  files=[]
  for base in ("app","config","contracts","foundation","manifest/authorities","state"):
   for p in sorted((target/base).rglob("*")):
-   if p.is_file():files.append({"path":p.relative_to(target).as_posix(),"size":p.stat().st_size,"sha256":fh(p)})
+   if p.is_file() and "__pycache__" not in p.parts and p.suffix!=".pyc":files.append({"path":p.relative_to(target).as_posix(),"size":p.stat().st_size,"sha256":fh(p)})
  for p in (target/"manifest/platform-lock.json",target/"manifest/prior-product-lock.json"):
   files.append({"path":p.relative_to(target).as_posix(),"size":p.stat().st_size,"sha256":fh(p)})
  r2=json.loads((target/"components/editor-r2/dependency-lock.json").read_text())

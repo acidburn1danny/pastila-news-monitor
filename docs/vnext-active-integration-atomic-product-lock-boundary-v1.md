@@ -12,10 +12,11 @@ VOICE candidates, frozen evaluation evidence, review receipts și runtime-urile 
 
 ## Evidence
 
-- Candidate product-lock identity: `d2c274cfbe8eb9f8d9dd4d7bee7be1a3c82d18825173c44816503e7286086ec6`
-- Boundary identity: `6c11a59db79698b4017652902b9539f53094506b4d1edbf0c33669ca6f9b907a`
+- Candidate product-lock identity: `e96b9d34256b4dc24621f1c76531c849cb08c95ee54c35a2b686e65717c2d48b`
+- Boundary identity: `5acd4c7052c105e1333709b88a6522ea52fe56b6457efe581943caf312c883ca`
 - R2 lock identity: `53fafbc03f70c8c32357645a6a428260f1bdfbd104edbe1c4aa825e95c83a10f`
-- Materialized closure: 24,603 files, 33,313,641,490 bytes
+- Materialized closure: 24,593 files, 33,313,379,068 bytes
+- Deterministic rebuild: PASS (2/2 identical locks)
 - Dependency preflight: PASS
 - Clean-room restore with source candidate unavailable: PASS
 - Integrated deterministic E2E through EXPORTED: PASS
