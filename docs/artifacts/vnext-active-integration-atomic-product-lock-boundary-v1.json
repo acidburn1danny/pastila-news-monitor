@@ -1,0 +1,32 @@
+{
+  "active_state": {
+    "product_lock_replaced": false,
+    "product_lock_sha256": "2ddc484171f3b58f0f10ce4c4c73c1db51323d5c545320c578dc17ebb3edb4e6",
+    "product_root": "/root/pastila-vnext/v1",
+    "root_mutated": false
+  },
+  "boundary_identity": "6c11a59db79698b4017652902b9539f53094506b4d1edbf0c33669ca6f9b907a",
+  "candidate": {
+    "application_files": 34,
+    "bytes": 33313641490,
+    "files": 24603,
+    "platform_tree_identity": "93a314b96a2e687ed76c298f440d426681c49d446bec5edfe0cb175fa9dd82fd",
+    "product_lock_identity": "d2c274cfbe8eb9f8d9dd4d7bee7be1a3c82d18825173c44816503e7286086ec6",
+    "product_lock_sha256": "7b72ee9b9702b670680c84ce02060c19922d05e00b6eb06990ec020048854c82",
+    "r2_lock_identity": "53fafbc03f70c8c32357645a6a428260f1bdfbd104edbe1c4aa825e95c83a10f"
+  },
+  "closure": {
+    "acceptance_identity": "9a1aaedf88f90d639bb431645d3f3f2c7b7805d842342088df074631fa27d79b",
+    "clean_room_restore": "PASS",
+    "dependency_preflight": "PASS",
+    "integrated_e2e": "PASS",
+    "legacy_dependency_count": 0,
+    "rollback_simulation": "PASS_BYTE_EXACT"
+  },
+  "inference": false,
+  "model_load": false,
+  "schema": "vnext-active-integration-atomic-product-lock-boundary",
+  "schema_version": 1,
+  "source_commit": "c211a07551284627a8e23c6e84d7dbf7e1125681",
+  "status": "PASS_CANDIDATE_NOT_ACTIVATED"
+}
