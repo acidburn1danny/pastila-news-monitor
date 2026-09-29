@@ -22,6 +22,7 @@ from .vnext_editor_vertical_slice_v1 import (
     persist_structural_failure,
     run_editor_vertical_slice,
     validate_editor_draft,
+    validate_structural_failure,
 )
 from .vnext_factual_acceptance_v1 import (
     adjudicate,
@@ -87,12 +88,13 @@ class EditorReviewBundle:
 class FactualResultBundle:
     workflow_identity: str
     packet: Mapping[str, object]
-    invocation: Mapping[str, object]
-    draft: Mapping[str, object]
+    invocation: Mapping[str, object] | None
+    draft: Mapping[str, object] | None
     decision: Mapping[str, object]
     receipt: Mapping[str, object]
     artifact: Mapping[str, object]
     terminal_state: str | None = None
+    structural_failure: Mapping[str, object] | None = None
 
 
 @dataclass(frozen=True)
@@ -152,22 +154,15 @@ class ProductOrchestrator:
         return packet
 
     def load_editor_review_bundle(self, workflow_identity: str) -> EditorReviewBundle:
-        self.store.load_workflow(workflow_identity)
+        packet = self.load_source_packet(workflow_identity)
         with self.store.read() as connection:
-            packet_rows = connection.execute(
-                "SELECT sp.payload_ref FROM source_packets sp "
-                "JOIN state_transitions st ON st.output_identity=sp.packet_identity "
-                "WHERE st.workflow_identity=? AND st.resulting_state='SOURCE_PACKET_READY'",
-                (workflow_identity,),
-            ).fetchall()
             draft_rows = connection.execute(
-                "SELECT payload_ref FROM workflow_artifacts "
+                "SELECT artifact_identity,payload_ref FROM workflow_artifacts "
                 "WHERE workflow_identity=? AND artifact_kind='EDITOR_DRAFT'",
                 (workflow_identity,),
             ).fetchall()
-        if len(packet_rows) != 1 or len(draft_rows) != 1:
+        if len(draft_rows) != 1:
             raise ProductOrchestratorError("persisted editor ownership is absent or ambiguous")
-        packet = self._load_json(str(packet_rows[0]["payload_ref"]), "SourcePacket")
         draft = self._load_json(str(draft_rows[0]["payload_ref"]), "EditorDraft")
         receipt_identity = draft.get("invocation_receipt_identity")
         if not isinstance(receipt_identity, str):
@@ -176,15 +171,62 @@ class ProductOrchestrator:
             f"blobs/editor-invocations/{receipt_identity}.json",
             "EDITOR invocation",
         )
-        validate_editor_draft(
-            draft,
-            source_packet=packet,
-            invocation_receipt=invocation,
-        )
+        validate_editor_draft(draft, source_packet=packet, invocation_receipt=invocation)
+        with self.store.read() as connection:
+            transitions = connection.execute(
+                "SELECT input_identity,output_identity FROM state_transitions "
+                "WHERE workflow_identity=? AND previous_state='EDITOR_PENDING' "
+                "AND resulting_state='EDITOR_DRAFT_READY'",
+                (workflow_identity,),
+            ).fetchall()
+        if (
+            len(transitions) != 1
+            or transitions[0]["output_identity"] != draft.get("draft_identity")
+        ):
+            raise ProductOrchestratorError("EditorDraft transition ownership is absent or ambiguous")
+        transition_input = str(transitions[0]["input_identity"])
+        if transition_input != receipt_identity:
+            retry = self._load_json(
+                f"blobs/editor-retry-authorizations/{transition_input}.json",
+                "EDITOR retry authorization",
+            )
+            required = {
+                "schema", "schema_version", "workflow_identity",
+                "source_packet_identity", "invocation_receipt_identity",
+                "authorization_identity", "receipt_identity",
+            }
+            if (
+                set(retry) != required
+                or retry.get("schema") != "vnext-editor-retry-authorization-receipt"
+                or retry.get("schema_version") != 1
+                or retry.get("workflow_identity") != workflow_identity
+                or retry.get("source_packet_identity") != packet.get("packet_identity")
+                or retry.get("invocation_receipt_identity") != receipt_identity
+                or re.fullmatch(r"[0-9a-f]{64}", str(retry.get("authorization_identity"))) is None
+                or retry.get("receipt_identity") != transition_input
+                or retry.get("receipt_identity") != object_identity(
+                    {key: value for key, value in retry.items() if key != "receipt_identity"}
+                )
+            ):
+                raise ProductOrchestratorError("EDITOR retry authorization binding mismatch")
         return EditorReviewBundle(workflow_identity, packet, invocation, draft)
 
+    def load_editor_failure_bundle(self, workflow_identity: str) -> EditorFailureBundle:
+        packet = self.load_source_packet(workflow_identity)
+        with self.store.read() as connection:
+            rows = connection.execute(
+                "SELECT payload_ref FROM workflow_artifacts "
+                "WHERE workflow_identity=? AND artifact_kind='STRUCTURAL_FAILURE'",
+                (workflow_identity,),
+            ).fetchall()
+        if len(rows) != 1:
+            raise ProductOrchestratorError("persisted structural failure is absent or ambiguous")
+        failure = self._load_json(str(rows[0]["payload_ref"]), "structural failure")
+        validate_structural_failure(failure, packet=packet)
+        return EditorFailureBundle(workflow_identity, packet, failure)
+
     def load_factual_result_bundle(self, workflow_identity: str) -> FactualResultBundle:
-        editor = self.load_editor_review_bundle(workflow_identity)
+        packet = self.load_source_packet(workflow_identity)
         with self.store.read() as connection:
             rows = connection.execute(
                 "SELECT artifact_identity,payload_ref FROM workflow_artifacts "
@@ -213,24 +255,39 @@ class ProductOrchestrator:
             f"blobs/factual-receipts/{decision_rows[0]['receipt_identity']}.json",
             "factual receipt",
         )
+        review_kind = artifact.get("review_input_kind")
+        if review_kind == "EDITOR_DRAFT":
+            editor = self.load_editor_review_bundle(workflow_identity)
+            invocation = editor.invocation
+            draft = editor.draft
+            structural_failure = None
+        elif review_kind == "STRUCTURAL_FAILURE":
+            failure_bundle = self.load_editor_failure_bundle(workflow_identity)
+            invocation = None
+            draft = None
+            structural_failure = failure_bundle.failure
+        else:
+            raise ProductOrchestratorError("unsupported factual review input kind")
         validate_factual_output(
             artifact,
             workflow_identity=workflow_identity,
-            packet=editor.packet,
+            packet=packet,
             decision=decision,
             receipt=receipt,
-            draft=editor.draft,
-            invocation_receipt=editor.invocation,
+            draft=draft,
+            invocation_receipt=invocation,
+            structural_failure=structural_failure,
         )
         return FactualResultBundle(
             workflow_identity,
-            editor.packet,
-            editor.invocation,
-            editor.draft,
+            packet,
+            invocation,
+            draft,
             decision,
             receipt,
             artifact,
             "ABSTAINED" if artifact.get("artifact_kind") == "ABSTAINED" else None,
+            structural_failure,
         )
 
     def capture_and_group(
@@ -354,7 +411,7 @@ class ProductOrchestrator:
 
     def apply_factual_review(
         self,
-        bundle: EditorReviewBundle,
+        bundle: EditorReviewBundle | EditorFailureBundle,
         *,
         instruction: FactualReviewInstruction,
         observed_at: str,
@@ -363,6 +420,16 @@ class ProductOrchestrator:
             self.store.load_workflow(bundle.workflow_identity)["workflow_identity"]
         ):
             raise ProductOrchestratorError("workflow ownership mismatch")
+        if isinstance(bundle, EditorReviewBundle):
+            invocation = bundle.invocation
+            draft = bundle.draft
+            structural_failure = None
+        elif isinstance(bundle, EditorFailureBundle):
+            invocation = None
+            draft = None
+            structural_failure = bundle.failure
+        else:
+            raise ProductOrchestratorError("unsupported factual review bundle")
         session = authorize_review_session(
             self.store,
             workflow_identity=bundle.workflow_identity,
@@ -370,8 +437,9 @@ class ProductOrchestrator:
             actor=instruction.actor,
             allowed_outcome=instruction.outcome,
             authorization_identity=instruction.authorization_identity,
-            draft=bundle.draft,
-            invocation_receipt=bundle.invocation,
+            draft=draft,
+            invocation_receipt=invocation,
+            structural_failure=structural_failure,
         )
         decision = build_review_decision(
             workflow_identity=bundle.workflow_identity,
@@ -380,16 +448,18 @@ class ProductOrchestrator:
             outcome=instruction.outcome,
             actor=instruction.actor,
             reason_code=instruction.reason_code,
-            draft=bundle.draft,
-            invocation_receipt=bundle.invocation,
+            draft=draft,
+            invocation_receipt=invocation,
+            structural_failure=structural_failure,
             fallback_span_ids=instruction.fallback_span_ids,
         )
         receipt, artifact = adjudicate(
             workflow_identity=bundle.workflow_identity,
             packet=bundle.packet,
             decision=decision,
-            draft=bundle.draft,
-            invocation_receipt=bundle.invocation,
+            draft=draft,
+            invocation_receipt=invocation,
+            structural_failure=structural_failure,
         )
         persist_factual_result(
             self.store,
@@ -398,19 +468,21 @@ class ProductOrchestrator:
             decision=decision,
             receipt=receipt,
             artifact=artifact,
-            draft=bundle.draft,
-            invocation_receipt=bundle.invocation,
+            draft=draft,
+            invocation_receipt=invocation,
+            structural_failure=structural_failure,
             observed_at=observed_at,
         )
         return FactualResultBundle(
             bundle.workflow_identity,
             bundle.packet,
-            bundle.invocation,
-            bundle.draft,
+            invocation,
+            draft,
             decision,
             receipt,
             artifact,
             "ABSTAINED" if artifact.get("artifact_kind") == "ABSTAINED" else None,
+            structural_failure,
         )
 
     def _load_policy_decision(

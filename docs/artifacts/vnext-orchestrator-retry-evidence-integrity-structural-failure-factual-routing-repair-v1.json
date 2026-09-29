@@ -1,0 +1,38 @@
+{
+  "authority": {
+    "accept_draft": "FORBIDDEN",
+    "factual_outcomes": [
+      "APPROVE_SOURCE_FALLBACK",
+      "ABSTAIN"
+    ],
+    "retry_evidence": "TRANSITION_INPUT_TO_IMMUTABLE_RECEIPT",
+    "structural_failure": "PERSISTED_WORKFLOW_OWNED_INPUT"
+  },
+  "base_commit": "83d11754a3ff852aeaf68ee633dbab64e8eb69aa",
+  "closure_identity": "3b744055031e154cf5996552ba826c96efdbc89d55d2c77bc10b101e68837c03",
+  "findings_closed": [
+    "RETRY_RECEIPT_REQUIRED_ON_REHYDRATION",
+    "RETRY_RECEIPT_TAMPER_FAIL_CLOSED",
+    "RETRY_RECEIPT_CROSS_WORKFLOW_FAIL_CLOSED",
+    "STRUCTURAL_FAILURE_FALLBACK_ROUTING",
+    "STRUCTURAL_FAILURE_ABSTENTION_ROUTING",
+    "STRUCTURAL_FAILURE_REHYDRATION"
+  ],
+  "invariants": {
+    "active_integration": false,
+    "audit_streak": "0/2",
+    "legacy_dependency_count": 0,
+    "product_lock_replaced": false,
+    "stop_all_candidates": true,
+    "voice": "DISABLED_UNTIL_PROMOTION"
+  },
+  "name": "VNext Orchestrator Retry-Evidence Integrity & Structural-Failure Factual Routing Repair v1",
+  "schema": "vnext-orchestrator-retry-evidence-integrity-structural-failure-factual-routing-repair",
+  "schema_version": 1,
+  "status": "PASS",
+  "validation": {
+    "dedicated_fault_injection": "24_PASS",
+    "self_contained_auditor": "PASS",
+    "suite": "134_PASS"
+  }
+}

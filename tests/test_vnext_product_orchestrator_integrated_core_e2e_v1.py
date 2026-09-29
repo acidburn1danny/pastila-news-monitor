@@ -489,3 +489,114 @@ def test_factual_abstention_is_terminal_and_rehydratable(tmp_path):
             final_observed_at="2026-09-29T07:06:00Z",
         )
     assert store.load_workflow(editor.workflow_identity)["state"] == "ABSTAINED"
+
+
+def authorized_retry(tmp_path):
+    store, orchestrator, _ = source_ready_after_backend_failure(tmp_path)
+    enter_editor_pending(store)
+    orchestrator.retry_editor_generation(
+        workflow_identity="recovery-flow",
+        backend=Backend(),
+        retry_authorization_identity=object_identity({"retry": "authorized"}),
+        editor_observed_at="2026-09-29T09:00:00Z",
+    )
+    with store.read() as connection:
+        retry_identity = connection.execute(
+            "SELECT input_identity FROM state_transitions WHERE workflow_identity=? "
+            "AND previous_state='EDITOR_PENDING' AND resulting_state='EDITOR_DRAFT_READY'",
+            ("recovery-flow",),
+        ).fetchone()[0]
+    return store, orchestrator, retry_identity
+
+
+def test_retry_receipt_absence_fails_closed_on_rehydration(tmp_path):
+    _, orchestrator, retry_identity = authorized_retry(tmp_path)
+    (tmp_path / "blobs" / "editor-retry-authorizations" / f"{retry_identity}.json").unlink()
+    with pytest.raises(ProductOrchestratorError, match="retry authorization"):
+        orchestrator.load_editor_review_bundle("recovery-flow")
+
+
+def test_retry_receipt_tamper_fails_closed_on_rehydration(tmp_path):
+    _, orchestrator, retry_identity = authorized_retry(tmp_path)
+    path = tmp_path / "blobs" / "editor-retry-authorizations" / f"{retry_identity}.json"
+    value = json.loads(path.read_text(encoding="utf-8"))
+    value["authorization_identity"] = "0" * 64
+    path.write_text(json.dumps(value), encoding="utf-8")
+    with pytest.raises(ProductOrchestratorError, match="binding mismatch"):
+        orchestrator.load_editor_review_bundle("recovery-flow")
+
+
+def test_retry_receipt_cross_workflow_fails_closed(tmp_path):
+    store, orchestrator, retry_identity = authorized_retry(tmp_path)
+    path = tmp_path / "blobs" / "editor-retry-authorizations" / f"{retry_identity}.json"
+    value = json.loads(path.read_text(encoding="utf-8"))
+    value["workflow_identity"] = "other-flow"
+    value.pop("receipt_identity")
+    rebound = object_identity(value)
+    value["receipt_identity"] = rebound
+    rebound_path = path.with_name(f"{rebound}.json")
+    rebound_path.write_text(json.dumps(value), encoding="utf-8")
+    path.unlink()
+    with store.write() as connection:
+        connection.execute(
+            "UPDATE state_transitions SET input_identity=? "
+            "WHERE workflow_identity=? AND previous_state='EDITOR_PENDING' "
+            "AND resulting_state='EDITOR_DRAFT_READY'",
+            (rebound, "recovery-flow"),
+        )
+    with pytest.raises(ProductOrchestratorError, match="binding mismatch"):
+        orchestrator.load_editor_review_bundle("recovery-flow")
+
+
+def structural_failure_bundle(tmp_path):
+    store, orchestrator, _ = source_ready_after_backend_failure(tmp_path)
+    enter_editor_pending(store)
+    failure = orchestrator.record_editor_failure(
+        workflow_identity="recovery-flow",
+        failure_code="INFERENCE_INTERRUPTED",
+        evidence_identity=object_identity({"failure": "injected"}),
+        observed_at="2026-09-29T10:00:00Z",
+    )
+    return store, orchestrator, failure
+
+
+def test_structural_failure_routes_to_source_fallback_and_rehydrates(tmp_path):
+    store, orchestrator, failure = structural_failure_bundle(tmp_path)
+    span = failure.packet["spans"][0]["span_id"]
+    factual = orchestrator.apply_factual_review(
+        failure,
+        instruction=factual_instruction("APPROVE_SOURCE_FALLBACK", (span,)),
+        observed_at="2026-09-29T10:01:00Z",
+    )
+    assert factual.artifact["artifact_kind"] == "SOURCE_FALLBACK"
+    assert factual.structural_failure == failure.failure
+    restarted = ProductOrchestrator(bootstrap_store(tmp_path, writer_identity="writer"))
+    loaded = restarted.load_factual_result_bundle("recovery-flow")
+    assert loaded.artifact == factual.artifact
+    assert loaded.structural_failure == failure.failure
+    assert store.load_workflow("recovery-flow")["state"] == "SOURCE_FALLBACK"
+
+
+def test_structural_failure_routes_to_abstention_and_rehydrates(tmp_path):
+    store, orchestrator, failure = structural_failure_bundle(tmp_path)
+    factual = orchestrator.apply_factual_review(
+        failure,
+        instruction=factual_instruction("ABSTAIN"),
+        observed_at="2026-09-29T10:01:00Z",
+    )
+    assert factual.terminal_state == "ABSTAINED"
+    restarted = ProductOrchestrator(bootstrap_store(tmp_path, writer_identity="writer"))
+    loaded = restarted.load_factual_result_bundle("recovery-flow")
+    assert loaded.terminal_state == "ABSTAINED"
+    assert loaded.structural_failure == failure.failure
+    assert store.load_workflow("recovery-flow")["state"] == "ABSTAINED"
+
+
+def test_structural_failure_cannot_be_accepted_as_draft(tmp_path):
+    _, orchestrator, failure = structural_failure_bundle(tmp_path)
+    with pytest.raises(Exception, match="incompatible"):
+        orchestrator.apply_factual_review(
+            failure,
+            instruction=factual_instruction("ACCEPT_DRAFT"),
+            observed_at="2026-09-29T10:01:00Z",
+        )
