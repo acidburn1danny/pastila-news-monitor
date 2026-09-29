@@ -156,7 +156,7 @@ def test_user_event_selection_is_explicit_and_fail_closed(tmp_path):
         transport=transport,
         captured_at="2026-09-29T01:00:00Z",
     )
-    with pytest.raises(Exception, match="unknown or empty event"):
+    with pytest.raises(Exception, match="event is not owned uniquely by workflow grouping"):
         orchestrator.select_and_generate_editor_draft(
             workflow_identity="flow",
             selected_event_identity="event:missing",
@@ -166,7 +166,7 @@ def test_user_event_selection_is_explicit_and_fail_closed(tmp_path):
             source_packet_observed_at="2026-09-29T01:01:00Z",
             editor_observed_at="2026-09-29T01:02:00Z",
         )
-    assert store.load_workflow("flow")["state"] == "SOURCE_PACKET_INVALID"
+    assert store.load_workflow("flow")["state"] == "GROUPED"
 
 
 def test_orchestrator_never_infers_factual_authority(tmp_path):

@@ -525,11 +525,47 @@ def persist_capture_and_grouping(
     )
     groups = group_articles(articles)
 
+    grouping_output_identity = object_identity(
+        [group.grouping_identity for group in groups]
+    )
+
     def persist_groups(connection: object) -> None:
-        for group in groups:
-            connection.execute("INSERT INTO events VALUES(?,?)", (group.event_identity, group.grouping_identity))
-            for article in group.captures:
-                connection.execute("INSERT INTO event_sources VALUES(?,?)", (group.event_identity, article.capture_identity))
+        for position, group in enumerate(groups):
+            connection.execute(
+                "INSERT OR IGNORE INTO events VALUES(?,?)",
+                (group.event_identity, group.grouping_identity),
+            )
+            persisted = connection.execute(
+                "SELECT grouping_identity FROM events WHERE event_identity=?",
+                (group.event_identity,),
+            ).fetchone()
+            if persisted is None or persisted["grouping_identity"] != group.grouping_identity:
+                raise ScoutError("global event identity conflicts with grouping")
+            connection.execute(
+                "INSERT INTO workflow_events VALUES(?,?,?,?)",
+                (
+                    workflow_identity,
+                    group.event_identity,
+                    group.grouping_identity,
+                    position,
+                ),
+            )
+            expected_captures = sorted(article.capture_identity for article in group.captures)
+            for capture_identity in expected_captures:
+                connection.execute(
+                    "INSERT OR IGNORE INTO event_sources VALUES(?,?)",
+                    (group.event_identity, capture_identity),
+                )
+            actual_captures = [
+                row["capture_identity"]
+                for row in connection.execute(
+                    "SELECT capture_identity FROM event_sources "
+                    "WHERE event_identity=? ORDER BY capture_identity",
+                    (group.event_identity,),
+                ).fetchall()
+            ]
+            if actual_captures != expected_captures:
+                raise ScoutError("global event capture membership conflict")
 
     store.transition(
         _transition(
@@ -538,12 +574,105 @@ def persist_capture_and_grouping(
             "CAPTURED",
             "GROUPED",
             batch_identity,
-            object_identity([group.grouping_identity for group in groups]),
+            grouping_output_identity,
             observed_at,
         ),
         before_commit=persist_groups,
     )
     return groups
+
+
+def validate_workflow_event_membership(
+    store: SQLiteStateStore,
+    *,
+    workflow_identity: str,
+    event_identity: str,
+) -> tuple[object, ...]:
+    """Prove that an event belongs to this workflow's exact grouping result."""
+    with store.read() as connection:
+        memberships = connection.execute(
+            "SELECT we.event_identity,we.grouping_identity,we.position,e.grouping_identity "
+            "AS persisted_grouping_identity FROM workflow_events we "
+            "JOIN events e USING(event_identity) WHERE we.workflow_identity=? "
+            "ORDER BY we.position",
+            (workflow_identity,),
+        ).fetchall()
+        transitions = connection.execute(
+            "SELECT receipt_identity,operation_identity,previous_state,resulting_state,"
+            "actor,outcome,input_identity,output_identity,attempt_identity,"
+            "idempotency_identity,receipt_json FROM state_transitions "
+            "WHERE workflow_identity=? AND previous_state='CAPTURED' "
+            "AND resulting_state='GROUPED'",
+            (workflow_identity,),
+        ).fetchall()
+        captures = connection.execute(
+            "SELECT c.capture_identity,c.payload_ref FROM workflow_events we "
+            "JOIN event_sources es USING(event_identity) "
+            "JOIN captures c USING(capture_identity) "
+            "WHERE we.workflow_identity=? AND we.event_identity=? "
+            "ORDER BY c.source_identity,c.capture_identity",
+            (workflow_identity, event_identity),
+        ).fetchall()
+    if not memberships:
+        raise ScoutError("workflow event membership missing")
+    if [row["position"] for row in memberships] != list(range(len(memberships))):
+        raise ScoutError("workflow event positions are not canonical")
+    if any(
+        row["grouping_identity"] != row["persisted_grouping_identity"]
+        for row in memberships
+    ):
+        raise ScoutError("workflow event grouping binding mismatch")
+    selected = [row for row in memberships if row["event_identity"] == event_identity]
+    if len(selected) != 1:
+        raise ScoutError("event is not owned uniquely by workflow grouping")
+    if len(transitions) != 1:
+        raise ScoutError("grouping transition ownership is absent or ambiguous")
+    transition = transitions[0]
+    expected_output = object_identity(
+        [row["grouping_identity"] for row in memberships]
+    )
+    expected = {
+        "operation_identity": "scout:group",
+        "previous_state": "CAPTURED",
+        "resulting_state": "GROUPED",
+        "actor": "SCOUT",
+        "outcome": "PASS",
+        "output_identity": expected_output,
+    }
+    if any(transition[key] != value for key, value in expected.items()):
+        raise ScoutError("grouping transition binding mismatch")
+    if not isinstance(transition["input_identity"], str) or _SHA256.fullmatch(
+        transition["input_identity"]
+    ) is None:
+        raise ScoutError("grouping transition input identity invalid")
+    try:
+        receipt = json.loads(transition["receipt_json"])
+    except (TypeError, json.JSONDecodeError) as exc:
+        raise ScoutError("grouping transition receipt invalid") from exc
+    receipt_expected = {
+        "workflow_identity": workflow_identity,
+        "receipt_identity": transition["receipt_identity"],
+        "attempt_identity": transition["attempt_identity"],
+        "idempotency_identity": transition["idempotency_identity"],
+        "input_identity": transition["input_identity"],
+        **expected,
+    }
+    if (
+        not isinstance(receipt, dict)
+        or any(receipt.get(key) != value for key, value in receipt_expected.items())
+        or receipt.get("receipt_identity") != object_identity({
+            key: receipt.get(key) for key in (
+                "schema", "schema_version", "workflow_identity",
+                "operation_identity", "previous_state", "resulting_state",
+                "actor", "outcome", "input_identity", "output_identity",
+                "attempt_identity", "idempotency_identity",
+            )
+        })
+    ):
+        raise ScoutError("grouping transition receipt binding mismatch")
+    if not captures:
+        raise ScoutError("owned workflow event has no captures")
+    return tuple(captures)
 
 
 def build_source_packet(
@@ -555,11 +684,11 @@ def build_source_packet(
     selection_authorization_identity: str,
     observed_at: str,
 ) -> dict[str, object]:
-    with store.read() as connection:
-        rows = connection.execute(
-            "SELECT c.capture_identity,c.payload_ref FROM event_sources es JOIN captures c USING(capture_identity) WHERE es.event_identity=? ORDER BY c.source_identity,c.capture_identity",
-            (event_identity,),
-        ).fetchall()
+    rows = validate_workflow_event_membership(
+        store,
+        workflow_identity=workflow_identity,
+        event_identity=event_identity,
+    )
     if not isinstance(selection_actor, str) or not selection_actor.strip():
         raise ScoutError("explicit selection actor required")
     if (

@@ -9,11 +9,11 @@ from pastila_scout.vnext_state_sqlite_v1 import MIGRATION_4, MIGRATION_5, MIGRAT
 
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "docs/artifacts/vnext-active-authority-audit-manifest-v1.json"
-SQLITE = ROOT / "docs/artifacts/vnext-consolidated-operational-state-sqlite-boundary-v6-contract.json"
+SQLITE = ROOT / "docs/artifacts/vnext-consolidated-operational-state-sqlite-boundary-v7-contract.json"
 
 
 def test_schema_v5_persists_replay_safe_review_authority():
-    assert SCHEMA_VERSION == 6
+    assert SCHEMA_VERSION == 7
     joined = "\n".join(MIGRATION_4 + MIGRATION_5 + MIGRATION_6)
     assert "CREATE TABLE review_sessions" in joined
     assert "status IN ('OPEN','CONSUMED')" in joined
@@ -25,8 +25,8 @@ def test_active_manifest_is_content_addressed_and_has_one_current_auditor():
     assert value["manifest_identity"] == object_identity(
         {key: item for key, item in value.items() if key != "manifest_identity"}
     )
-    assert value["current_auditor"] == "scripts/audit_vnext_source_selection_authority_canonical_sourcepacket_repair_v1.py"
-    assert len(value["historical_commit_only_auditors"]) == 16
+    assert value["current_auditor"] == "scripts/audit_vnext_scout_workflow_event_ownership_grouping_lineage_repair_v1.py"
+    assert len(value["historical_commit_only_auditors"]) == 17
     assert all(item["commit"] for item in value["historical_commit_only_auditors"])
 
 

@@ -1,0 +1,51 @@
+{
+  "authority": {
+    "event_scope": "GLOBAL_CONTENT_ADDRESSED",
+    "manifest_identity": "86e7bd52fae69956b951b5259348f38788b1485ac1ed069a64900e4eb62bb60f",
+    "membership_scope": "WORKFLOW_BOUND",
+    "sqlite_v7_identity": "d84e8d4a8dd3c9866d1014ab80f94d2ca988cb5cb0be69ce26cfb304fee48e14"
+  },
+  "blocker_closure": {
+    "cross_workflow_selection": {
+      "repair": "WORKFLOW_EVENTS_RELATION_PLUS_CURRENT_WORKFLOW_SELECTION_VALIDATION",
+      "root_cause": "GLOBAL_EVENT_ROWS_LACKED_WORKFLOW_OWNERSHIP_ASSOCIATION",
+      "status": "CLOSED"
+    },
+    "event_reuse_collision": {
+      "repair": "VERIFIED_GLOBAL_EVENT_REUSE_PLUS_DISTINCT_WORKFLOW_MEMBERSHIP",
+      "root_cause": "GLOBAL_CONTENT_ADDRESSED_EVENT_INSERT_WAS_NOT_IDEMPOTENT_ACROSS_WORKFLOWS",
+      "status": "CLOSED"
+    },
+    "grouping_recovery_gap": {
+      "repair": "EXACT_MEMBERSHIP_OUTPUT_TRANSITION_AND_RECEIPT_REPRODUCTION",
+      "root_cause": "CAPTURED_TO_GROUPED_OUTPUT_AND_RECEIPT_WERE_NOT_REVALIDATED_DURING_RECOVERY",
+      "status": "CLOSED"
+    }
+  },
+  "bound_commit": "fbb7dfcd1024d90fc0d63d3b24b611bba56f8827",
+  "closure_identity": "c5d4ad75a76e60744abd1f214ae2e4dd9c37d363bc4aed0191b04f44da782f43",
+  "fault_injection": {
+    "absent": true,
+    "altered": true,
+    "cross_workflow": true,
+    "duplicate": true,
+    "terminal_rehydration": true
+  },
+  "invariants": {
+    "active_integration": false,
+    "audit_streak": "0/2",
+    "legacy_dependency_count": 0,
+    "product_lock_replaced": false,
+    "stop_all_candidates": true,
+    "voice": "DISABLED_UNTIL_PROMOTION"
+  },
+  "schema": "vnext-scout-workflow-event-ownership-grouping-lineage-repair",
+  "schema_version": 1,
+  "status": "SUCCESSOR_ISOLATED_NOT_ACTIVE",
+  "validation": {
+    "dedicated": "14_PASS",
+    "self_contained_auditor": "PASS",
+    "vnext_suite": "324_PASS"
+  },
+  "verdict": "PASS"
+}

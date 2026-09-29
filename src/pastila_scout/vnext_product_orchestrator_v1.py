@@ -155,10 +155,19 @@ class ProductOrchestrator:
         from .vnext_scout_production_v1 import (
             validate_scout_packet,
             validate_selection_receipt,
+            validate_workflow_event_membership,
         )
-        validate_scout_packet(packet)
-        packet_identity = str(packet["packet_identity"])
-        event_identity = str(packet["event_identity"])
+        try:
+            validate_scout_packet(packet)
+            packet_identity = str(packet["packet_identity"])
+            event_identity = str(packet["event_identity"])
+            validate_workflow_event_membership(
+                self.store,
+                workflow_identity=workflow_identity,
+                event_identity=event_identity,
+            )
+        except BoundaryError as exc:
+            raise ProductOrchestratorError(str(exc)) from exc
         selection_receipt = packet.get("selection_receipt")
         if not isinstance(selection_receipt, Mapping):
             raise ProductOrchestratorError("SourcePacket selection authority is missing")

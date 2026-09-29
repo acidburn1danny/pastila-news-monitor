@@ -81,4 +81,4 @@ def test_unowned_tampered_and_editor_draft_inputs_fail_closed(tmp_path):
     with pytest.raises(CoreFinalError): enter_policy_review(store,workflow_identity='flow',factual_output=draft,observed_at='2026-09-29T00:01:00Z')
 
 def test_schema_v6_and_integrity(tmp_path):
-    store,_=make_store(tmp_path); assert SCHEMA_VERSION==6 and store.verify_integrity()['schema_version']==6
+    store,_=make_store(tmp_path); assert SCHEMA_VERSION==7 and store.verify_integrity()['schema_version']==7

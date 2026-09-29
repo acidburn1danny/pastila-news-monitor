@@ -124,7 +124,7 @@ def test_structural_failure_uses_same_gate_and_cannot_be_accepted(tmp_path):
 
 def test_workflow_bound_identity_and_cross_workflow_associations(tmp_path):
     store = SQLiteStateStore(root=tmp_path, database=Path("state.db"), writer_identity="writer"); store.bootstrap()
-    assert SCHEMA_VERSION == 6
+    assert SCHEMA_VERSION == 7
     for flow in ("flow-a", "flow-b"):
         prepare(store, flow); packet, invocation, draft, _, _, decision, receipt, artifact = decide(store, flow, "ACCEPT_DRAFT")
         persist_factual_result(store, workflow_identity=flow, packet=packet, draft=draft, invocation_receipt=invocation, decision=decision, receipt=receipt, artifact=artifact, observed_at="2026-09-29T00:01:00Z")
