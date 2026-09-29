@@ -146,7 +146,7 @@ def test_capture_group_selection_and_sourcepacket_use_published_state_boundary(t
         assert connection.execute("SELECT COUNT(*) FROM source_packets").fetchone()[0] == 1
 
 
-def test_all_source_failure_is_terminal_without_partial_eligible_state(tmp_path: Path):
+def test_all_sources_without_eligible_entries_are_neutral_terminal(tmp_path: Path):
     state = store(tmp_path)
     groups = persist_capture_and_grouping(
         state,
@@ -157,7 +157,7 @@ def test_all_source_failure_is_terminal_without_partial_eligible_state(tmp_path:
         observed_at=fixture()["captured_at"],
     )
     assert groups == ()
-    assert state.load_workflow("workflow-1")["state"] == "CAPTURE_FAILED"
+    assert state.load_workflow("workflow-1")["state"] == "NO_ELIGIBLE_CONTENT"
     manifests = list((tmp_path / "blobs/capture-batches").glob("*.json"))
     assert len(manifests) == 1
     with state.read() as connection:

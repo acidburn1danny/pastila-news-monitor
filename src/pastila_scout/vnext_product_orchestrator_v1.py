@@ -41,6 +41,7 @@ from .vnext_scout_production_v1 import (
     build_source_packet,
     capture_sources,
     persist_capture_and_grouping,
+    validate_terminal_capture_outcome,
 )
 from .vnext_state_sqlite_v1 import SQLiteStateStore
 
@@ -607,6 +608,16 @@ class ProductOrchestrator:
             "ABSTAINED" if artifact.get("artifact_kind") == "ABSTAINED" else None,
             structural_failure,
         )
+
+    def load_capture_terminal_result(
+        self, workflow_identity: str
+    ) -> Mapping[str, object]:
+        try:
+            return validate_terminal_capture_outcome(
+                self.store, workflow_identity=workflow_identity
+            )
+        except BoundaryError as exc:
+            raise ProductOrchestratorError(str(exc)) from exc
 
     def capture_and_group(
         self,

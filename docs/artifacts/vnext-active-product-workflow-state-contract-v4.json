@@ -1,0 +1,206 @@
+{
+  "artifact_types": {
+    "ABSTAINED": {
+      "eligible_for_voice": false
+    },
+    "ACCEPTED_SETUP": {
+      "eligible_for_voice": true
+    },
+    "EDITOR_DRAFT": {
+      "eligible_as_accepted_setup": false
+    },
+    "SOURCE_FALLBACK": {
+      "eligible_for_voice": true,
+      "requires_explicit_approval": true
+    },
+    "STRUCTURAL_FAILURE": {
+      "eligible_as_accepted_setup": false,
+      "eligible_for_voice": false
+    }
+  },
+  "authority_identity": "a8a901a817bd847175684ee519a91068a41e756982e7ba16203ba0d521220548",
+  "failure_model": {
+    "idempotency_key_required": true,
+    "partial_output_eligible": false,
+    "state_transition_atomic": true,
+    "structural_failure_requires_factual_review": true
+  },
+  "final": {
+    "mode": "DETERMINISTIC_ASSEMBLY_EXPORT"
+  },
+  "initial_state": "DISCOVERED",
+  "schema": "vnext-active-product-workflow-state-contract",
+  "schema_version": 4,
+  "states": [
+    "ABSTAINED",
+    "ACCEPTED_SETUP",
+    "APPROVED_FOR_FINAL",
+    "CAPTURED",
+    "CAPTURE_FAILED",
+    "DISCOVERED",
+    "EDITOR_DRAFT_READY",
+    "EDITOR_FAILED",
+    "EDITOR_PENDING",
+    "EXPORTED",
+    "FACTUAL_ACCEPTANCE_FAILED",
+    "FACTUAL_REVIEW_PENDING",
+    "FINAL_ASSEMBLY_FAILED",
+    "FINAL_READY",
+    "GROUPED",
+    "NO_ELIGIBLE_CONTENT",
+    "POLICY_REVIEW_PENDING",
+    "REJECTED",
+    "REVISION_REQUIRED",
+    "SELECTED",
+    "SOURCE_FALLBACK",
+    "SOURCE_PACKET_INVALID",
+    "SOURCE_PACKET_READY",
+    "STRUCTURAL_FAIL",
+    "VOICE_DISABLED",
+    "VOICE_DRAFT_READY",
+    "VOICE_PENDING",
+    "VOICE_UNAVAILABLE"
+  ],
+  "status": "SUCCESSOR_NO_ELIGIBLE_TERMINAL_AUTHORITY_NOT_ACTIVE",
+  "supersedes": "vnext-active-product-workflow-state-contract-v3",
+  "terminal_semantics": {
+    "CAPTURE_FAILED": {
+      "operational_outcome": "FAIL",
+      "requires_capture_failure_evidence": true
+    },
+    "NO_ELIGIBLE_CONTENT": {
+      "operational_outcome": "PASS",
+      "requires_all_enabled_sources_no_eligible": true
+    }
+  },
+  "transitions": [
+    [
+      "ACCEPTED_SETUP",
+      "VOICE_DISABLED"
+    ],
+    [
+      "ACCEPTED_SETUP",
+      "VOICE_PENDING"
+    ],
+    [
+      "APPROVED_FOR_FINAL",
+      "FINAL_ASSEMBLY_FAILED"
+    ],
+    [
+      "APPROVED_FOR_FINAL",
+      "FINAL_READY"
+    ],
+    [
+      "CAPTURED",
+      "GROUPED"
+    ],
+    [
+      "DISCOVERED",
+      "CAPTURED"
+    ],
+    [
+      "DISCOVERED",
+      "CAPTURE_FAILED"
+    ],
+    [
+      "DISCOVERED",
+      "NO_ELIGIBLE_CONTENT"
+    ],
+    [
+      "EDITOR_DRAFT_READY",
+      "FACTUAL_REVIEW_PENDING"
+    ],
+    [
+      "EDITOR_PENDING",
+      "EDITOR_DRAFT_READY"
+    ],
+    [
+      "EDITOR_PENDING",
+      "EDITOR_FAILED"
+    ],
+    [
+      "EDITOR_PENDING",
+      "STRUCTURAL_FAIL"
+    ],
+    [
+      "FACTUAL_REVIEW_PENDING",
+      "ABSTAINED"
+    ],
+    [
+      "FACTUAL_REVIEW_PENDING",
+      "ACCEPTED_SETUP"
+    ],
+    [
+      "FACTUAL_REVIEW_PENDING",
+      "FACTUAL_ACCEPTANCE_FAILED"
+    ],
+    [
+      "FACTUAL_REVIEW_PENDING",
+      "SOURCE_FALLBACK"
+    ],
+    [
+      "FINAL_READY",
+      "EXPORTED"
+    ],
+    [
+      "GROUPED",
+      "SELECTED"
+    ],
+    [
+      "POLICY_REVIEW_PENDING",
+      "APPROVED_FOR_FINAL"
+    ],
+    [
+      "POLICY_REVIEW_PENDING",
+      "REJECTED"
+    ],
+    [
+      "POLICY_REVIEW_PENDING",
+      "REVISION_REQUIRED"
+    ],
+    [
+      "SELECTED",
+      "SOURCE_PACKET_INVALID"
+    ],
+    [
+      "SELECTED",
+      "SOURCE_PACKET_READY"
+    ],
+    [
+      "SOURCE_FALLBACK",
+      "VOICE_DISABLED"
+    ],
+    [
+      "SOURCE_FALLBACK",
+      "VOICE_PENDING"
+    ],
+    [
+      "SOURCE_PACKET_READY",
+      "EDITOR_PENDING"
+    ],
+    [
+      "STRUCTURAL_FAIL",
+      "FACTUAL_REVIEW_PENDING"
+    ],
+    [
+      "VOICE_DISABLED",
+      "POLICY_REVIEW_PENDING"
+    ],
+    [
+      "VOICE_DRAFT_READY",
+      "POLICY_REVIEW_PENDING"
+    ],
+    [
+      "VOICE_PENDING",
+      "VOICE_DRAFT_READY"
+    ],
+    [
+      "VOICE_PENDING",
+      "VOICE_UNAVAILABLE"
+    ]
+  ],
+  "voice": {
+    "r2_may_serve_as_voice": false,
+    "state": "DISABLED_UNTIL_PROMOTION"
+  }
+}

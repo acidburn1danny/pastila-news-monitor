@@ -614,11 +614,12 @@ def persist_capture_and_grouping(
     batch["batch_identity"] = batch_identity
     _publish_immutable(store.root, Path("blobs/capture-batches") / f"{batch_identity}.json", batch)
     if not articles:
+        terminal_state = "CAPTURE_FAILED" if failures else "NO_ELIGIBLE_CONTENT"
         request = _transition(
             workflow_identity,
             "capture",
             "DISCOVERED",
-            "CAPTURE_FAILED",
+            terminal_state,
             sources_identity,
             batch_identity,
             observed_at,
@@ -772,6 +773,105 @@ def _load_content_addressed_json(
     ):
         raise ScoutError(f"{label} content-addressed binding mismatch")
     return value
+
+
+def validate_terminal_capture_outcome(
+    store: SQLiteStateStore,
+    *,
+    workflow_identity: str,
+) -> dict[str, object]:
+    """Rehydrate and validate an exact terminal SCOUT capture outcome."""
+    workflow_state = store.load_workflow(workflow_identity)
+    terminal_state = workflow_state["state"]
+    if terminal_state not in {"CAPTURE_FAILED", "NO_ELIGIBLE_CONTENT"}:
+        raise ScoutError("workflow is not in a terminal capture state")
+
+    transition_query = (
+        "SELECT st.receipt_identity,st.operation_identity,st.previous_state,"
+        "st.resulting_state,st.actor,st.outcome,st.input_identity,"
+        "st.output_identity,st.attempt_identity,st.idempotency_identity,"
+        "st.receipt_json,a.workflow_identity AS attempt_workflow_identity,"
+        "a.operation_identity AS attempt_operation_identity,"
+        "a.outcome AS attempt_outcome,i.request_identity "
+        "AS idempotency_request_identity,i.receipt_identity "
+        "AS idempotency_receipt_identity FROM state_transitions st "
+        "LEFT JOIN attempts a ON a.attempt_identity=st.attempt_identity "
+        "LEFT JOIN idempotency i ON i.workflow_identity=st.workflow_identity "
+        "AND i.idempotency_identity=st.idempotency_identity "
+        "WHERE st.workflow_identity=? AND st.previous_state='DISCOVERED' "
+        "AND st.resulting_state=?"
+    )
+    with store.read() as connection:
+        transitions = connection.execute(
+            transition_query, (workflow_identity, terminal_state)
+        ).fetchall()
+    if len(transitions) != 1:
+        raise ScoutError("terminal capture transition ownership is absent or ambiguous")
+    transition = transitions[0]
+    batch_identity = transition["output_identity"]
+    if not isinstance(batch_identity, str) or _SHA256.fullmatch(batch_identity) is None:
+        raise ScoutError("terminal capture batch identity invalid")
+    batch = _load_content_addressed_json(
+        store.root / "blobs/capture-batches" / f"{batch_identity}.json",
+        claimed_identity=batch_identity,
+        identity_key="batch_identity",
+        label="terminal capture batch",
+    )
+    if (
+        batch.get("schema") != "vnext-scout-capture-batch"
+        or batch.get("schema_version") != SCHEMA_VERSION
+        or not isinstance(batch.get("sources_identity"), str)
+        or batch.get("source_set_reference")
+        != f"blobs/source-sets/{batch.get('sources_identity')}.json"
+        or batch.get("article_references") != {}
+        or not isinstance(batch.get("source_dispositions"), list)
+        or not isinstance(batch.get("failures"), list)
+    ):
+        raise ScoutError("terminal capture batch contract mismatch")
+    source_set_document = _load_content_addressed_json(
+        store.root / str(batch["source_set_reference"]),
+        claimed_identity=str(batch["sources_identity"]),
+        identity_key="sources_identity",
+        label="terminal SourceSet",
+    )
+    source_set = load_sources(source_set_document)
+    expected_dispositions = _reconcile_source_dispositions(
+        source_set.definitions, (), batch["failures"]
+    )
+    if batch["source_dispositions"] != expected_dispositions:
+        raise ScoutError("terminal capture disposition binding mismatch")
+    if terminal_state == "NO_ELIGIBLE_CONTENT":
+        if batch["failures"] or any(
+            item["outcome"] != "NO_ELIGIBLE_ENTRIES"
+            for item in expected_dispositions
+        ):
+            raise ScoutError("no-eligible terminal semantics mismatch")
+        expected_outcome = "PASS"
+    else:
+        if not batch["failures"] or not any(
+            item["outcome"] == "CAPTURE_FAILED"
+            for item in expected_dispositions
+        ):
+            raise ScoutError("capture-failed terminal semantics mismatch")
+        expected_outcome = "FAIL"
+
+    receipt = _validate_owned_scout_transition(
+        transition,
+        workflow_identity=workflow_identity,
+        expected={
+            "operation_identity": "scout:capture",
+            "previous_state": "DISCOVERED",
+            "resulting_state": terminal_state,
+            "actor": "SCOUT",
+            "outcome": expected_outcome,
+            "input_identity": batch["sources_identity"],
+            "output_identity": batch_identity,
+        },
+        label="terminal capture",
+    )
+    if workflow_state["receipts"] != [receipt]:
+        raise ScoutError("terminal capture canonical workflow history mismatch")
+    return batch
 
 
 def validate_workflow_event_membership(

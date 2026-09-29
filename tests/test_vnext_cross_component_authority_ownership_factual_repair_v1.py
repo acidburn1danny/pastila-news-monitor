@@ -27,7 +27,7 @@ from pastila_scout.vnext_workflow_v1 import STATES, TRANSITIONS, TransitionReque
 
 EDITOR = Path("docs/artifacts/vnext-critical-path-authority-repair-editor-vertical-slice-v1-fixture.json")
 SOURCE = Path("docs/artifacts/vnext-sourcepacket-production-binding-v1-fixture.json")
-AUTHORITY = Path("docs/artifacts/vnext-active-product-workflow-state-contract-v3.json")
+AUTHORITY = Path("docs/artifacts/vnext-active-product-workflow-state-contract-v4.json")
 FIXTURE = Path("docs/artifacts/vnext-cross-component-authority-ownership-factual-repair-v1-fixture.json")
 
 

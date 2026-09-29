@@ -1,0 +1,49 @@
+{
+  "authority": {
+    "manifest_identity": "50a58a2ad413c01d9f0bb62eea8e0f9870af40a2e28ce0949a116332e5c3f933",
+    "schema_migration": false,
+    "sqlite_v7_identity": "d84e8d4a8dd3c9866d1014ab80f94d2ca988cb5cb0be69ce26cfb304fee48e14",
+    "workflow_v4_identity": "a8a901a817bd847175684ee519a91068a41e756982e7ba16203ba0d521220548"
+  },
+  "blocker_closure": {
+    "aggregate_no_eligible_contradiction": {
+      "repair": "DISTINCT_NO_ELIGIBLE_CONTENT_TERMINAL_WITH_PASS_OUTCOME",
+      "root_cause": "ZERO_ARTICLE_BATCHES_UNCONDITIONALLY_TRANSITIONED_TO_CAPTURE_FAILED",
+      "status": "CLOSED"
+    },
+    "missing_terminal_capture_recovery": {
+      "repair": "SEPARATE_FAIL_CLOSED_RECOVERY_FOR_NEUTRAL_AND_FAILURE_TERMINALS",
+      "root_cause": "CAPTURE_TERMINALS_HAD_NO_CONTENT_ADDRESSED_REHYDRATION_BOUNDARY",
+      "status": "CLOSED"
+    }
+  },
+  "bound_commit": "4584c94812e0dddaba6cd2e75c8787db94610181",
+  "closure_identity": "95e22896a5c97fb366ad71878fa4b3e00e9241d8c70a1320e1a0617b9220837f",
+  "fault_injection": {
+    "all_empty": true,
+    "all_failure": true,
+    "altered_transition": true,
+    "cross_workflow_transition": true,
+    "duplicate_transition": true,
+    "missing_batch": true,
+    "missing_transition": true,
+    "mixed_empty_failure": true
+  },
+  "invariants": {
+    "active_integration": false,
+    "audit_streak": "0/2",
+    "legacy_dependency_count": 0,
+    "product_lock_replaced": false,
+    "stop_all_candidates": true,
+    "voice": "DISABLED_UNTIL_PROMOTION"
+  },
+  "schema": "vnext-scout-no-eligible-terminal-workflow-authority-repair",
+  "schema_version": 1,
+  "status": "SUCCESSOR_ISOLATED_NOT_ACTIVE",
+  "validation": {
+    "dedicated": "14_PASS",
+    "self_contained_auditor": "PASS",
+    "vnext_suite": "385_PASS"
+  },
+  "verdict": "PASS"
+}
