@@ -1,0 +1,59 @@
+{
+  "authority": {
+    "capture_api": "SINGLE_VALIDATED_SOURCE_SET",
+    "capture_batch": "CONTENT_ADDRESSED_AND_SOURCE_SET_BOUND",
+    "manifest_identity": "360ceabf19b7b08a920d120f339970b9dea25c744fca71ce64aeb0567a652485",
+    "schema_migration": false,
+    "source_registry_semantics": "CURRENT_NON_AUTHORITATIVE_REGISTRY",
+    "sqlite_v7_identity": "d84e8d4a8dd3c9866d1014ab80f94d2ca988cb5cb0be69ce26cfb304fee48e14"
+  },
+  "blocker_closure": {
+    "non_exhaustive_source_outcomes": {
+      "repair": "EXHAUSTIVE_CAPTURED_FAILED_OR_NO_ELIGIBLE_DISPOSITION",
+      "root_cause": "CAPTURE_BATCH_RECORDED_SUCCESSES_AND_FAILURES_WITHOUT_ONE_DISPOSITION_PER_ENABLED_SOURCE",
+      "status": "CLOSED"
+    },
+    "split_source_authority": {
+      "repair": "TYPED_CANONICAL_VALIDATED_SOURCE_SET_VALUE",
+      "root_cause": "CAPTURE_ACCEPTED_INDEPENDENT_SOURCE_IDENTITY_AND_DEFINITIONS",
+      "status": "CLOSED"
+    },
+    "unbound_capture_provenance": {
+      "repair": "EXACT_SOURCE_ID_NAME_URL_AND_CATEGORIES_RECONCILIATION",
+      "root_cause": "CAPTURE_PAYLOAD_METADATA_WAS_NOT_RECONCILED_WITH_EXACT_SOURCE_DEFINITION",
+      "status": "CLOSED"
+    }
+  },
+  "bound_commit": "439b39fa671df22ab7fbc69e4818a9d35e3a6976",
+  "closure_identity": "ff639451139b05ae5f2c41861f8c25aba783e867b1712badbf23c348990043a9",
+  "fault_injection": {
+    "altered_source_set": true,
+    "cross_workflow_lineage": true,
+    "downstream_recovery": true,
+    "duplicate": true,
+    "extra_source": true,
+    "false_identity": true,
+    "missing_disposition": true,
+    "missing_source_set": true,
+    "modified_definition": true,
+    "subset": true,
+    "terminal_recovery": true
+  },
+  "invariants": {
+    "active_integration": false,
+    "audit_streak": "0/2",
+    "legacy_dependency_count": 0,
+    "product_lock_replaced": false,
+    "stop_all_candidates": true,
+    "voice": "DISABLED_UNTIL_PROMOTION"
+  },
+  "schema": "vnext-scout-source-set-disposition-integrity-repair",
+  "schema_version": 1,
+  "status": "SUCCESSOR_ISOLATED_NOT_ACTIVE",
+  "validation": {
+    "dedicated": "17_PASS",
+    "self_contained_auditor": "PASS",
+    "vnext_suite": "357_PASS"
+  },
+  "verdict": "PASS"
+}

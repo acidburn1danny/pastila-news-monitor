@@ -29,7 +29,7 @@ from pastila_scout.vnext_core_final_v1 import (
 )
 from pastila_scout.vnext_workflow_v1 import TransitionRequest
 from pastila_scout.vnext_r2_consolidation_binding_v1 import EXPECTED_LOCK_IDENTITY
-from pastila_scout.vnext_scout_production_v1 import FetchResponse, SourceDefinition
+from pastila_scout.vnext_scout_production_v1 import FetchResponse, SourceDefinition, source_set_from_definitions
 
 
 class Backend:
@@ -59,10 +59,10 @@ def source(source_id, name, url):
     return SourceDefinition(source_id, name, url, ("politica",), 5)
 
 
-SOURCES = (
+SOURCES = source_set_from_definitions((
     source("s1", "Sursa Unu", "https://one.example/feed"),
     source("s2", "Sursa Doi", "https://two.example/feed"),
-)
+))
 
 
 def transport(definition, timeout):
@@ -84,8 +84,7 @@ def prepare(tmp_path):
     orchestrator.create_workflow(flow)
     groups, failures = orchestrator.capture_and_group(
         workflow_identity=flow,
-        sources_identity="2" * 64,
-        sources=SOURCES,
+        source_set=SOURCES,
         transport=transport,
         captured_at="2026-09-29T01:00:00Z",
         maximum_workers=2,
@@ -151,8 +150,7 @@ def test_user_event_selection_is_explicit_and_fail_closed(tmp_path):
     orchestrator.create_workflow("flow")
     orchestrator.capture_and_group(
         workflow_identity="flow",
-        sources_identity="2" * 64,
-        sources=SOURCES,
+        source_set=SOURCES,
         transport=transport,
         captured_at="2026-09-29T01:00:00Z",
     )
@@ -295,8 +293,7 @@ def source_ready_after_backend_failure(tmp_path):
     orchestrator.create_workflow("recovery-flow")
     groups, _ = orchestrator.capture_and_group(
         workflow_identity="recovery-flow",
-        sources_identity="2" * 64,
-        sources=SOURCES,
+        source_set=SOURCES,
         transport=transport,
         captured_at="2026-09-29T04:00:00Z",
     )

@@ -51,8 +51,7 @@ def test_selection_requires_explicit_actor_and_authorization(
     orchestrator.create_workflow("flow")
     groups, _ = orchestrator.capture_and_group(
         workflow_identity="flow",
-        sources_identity="2" * 64,
-        sources=SOURCES,
+        source_set=SOURCES,
         transport=transport,
         captured_at="2026-09-29T01:00:00Z",
         maximum_workers=2,

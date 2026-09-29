@@ -24,7 +24,7 @@ def _capture_group(store: SQLiteStateStore, workflow: str, captured_at: str = "2
     orchestrator = ProductOrchestrator(store)
     orchestrator.create_workflow(workflow)
     groups, _ = orchestrator.capture_and_group(
-        workflow_identity=workflow, sources_identity="2" * 64, sources=SOURCES,
+        workflow_identity=workflow, source_set=SOURCES,
         transport=transport, captured_at=captured_at, maximum_workers=2,
     )
     return orchestrator, groups

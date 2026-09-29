@@ -36,6 +36,7 @@ from .vnext_scout_production_v1 import (
     CaptureFailure,
     EventGroup,
     SourceDefinition,
+    ValidatedSourceSet,
     Transport,
     build_source_packet,
     capture_sources,
@@ -611,8 +612,7 @@ class ProductOrchestrator:
         self,
         *,
         workflow_identity: str,
-        sources_identity: str,
-        sources: Sequence[SourceDefinition],
+        source_set: ValidatedSourceSet,
         transport: Transport,
         captured_at: str,
         timeout: float = 20.0,
@@ -620,8 +620,10 @@ class ProductOrchestrator:
     ) -> tuple[tuple[EventGroup, ...], tuple[CaptureFailure, ...]]:
         if self.store.load_workflow(workflow_identity)["state"] != "DISCOVERED":
             raise ProductOrchestratorError("workflow is not ready for SCOUT capture")
+        if not isinstance(source_set, ValidatedSourceSet):
+            raise ProductOrchestratorError("validated SourceSet required")
         articles, failures = capture_sources(
-            sources,
+            source_set.definitions,
             transport=transport,
             captured_at=captured_at,
             timeout=timeout,
@@ -630,7 +632,7 @@ class ProductOrchestrator:
         groups = persist_capture_and_grouping(
             self.store,
             workflow_identity=workflow_identity,
-            sources_identity=sources_identity,
+            source_set=source_set,
             articles=articles,
             failures=failures,
             observed_at=captured_at,

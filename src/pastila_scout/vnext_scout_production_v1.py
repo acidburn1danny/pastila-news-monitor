@@ -7,7 +7,7 @@ import json
 import re
 import urllib.request
 import xml.etree.ElementTree as ET
-from collections.abc import Callable, Mapping, Sequence
+from collections.abc import Callable, Iterator, Mapping, Sequence
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import asdict, dataclass
 from datetime import UTC, datetime
@@ -58,6 +58,22 @@ class SourceDefinition:
     url: str
     categories: tuple[str, ...]
     maximum_articles: int = 50
+
+
+@dataclass(frozen=True)
+class ValidatedSourceSet(Sequence[SourceDefinition]):
+    source_set_identity: str
+    canonical_document: Mapping[str, object]
+    definitions: tuple[SourceDefinition, ...]
+
+    def __len__(self) -> int:
+        return len(self.definitions)
+
+    def __getitem__(self, index):
+        return self.definitions[index]
+
+    def __iter__(self) -> Iterator[SourceDefinition]:
+        return iter(self.definitions)
 
 
 @dataclass(frozen=True)
@@ -288,7 +304,26 @@ def http_transport(source: SourceDefinition, timeout: float) -> FetchResponse:
     return FetchResponse(payload, final_url, content_type, encoding)
 
 
-def load_sources(value: Mapping[str, object]) -> tuple[SourceDefinition, ...]:
+def source_set_from_definitions(
+    definitions: Sequence[SourceDefinition],
+) -> ValidatedSourceSet:
+    raw = []
+    for item in definitions:
+        raw.append({
+            "adapter": "rss", "categories": list(item.categories), "enabled": True,
+            "id": item.source_id, "max_articles_per_poll": item.maximum_articles,
+            "name": item.name, "url": item.url,
+        })
+    value: dict[str, object] = {
+        "schema": "pastila-vnext-scout-sources",
+        "schema_version": 1,
+        "sources": raw,
+    }
+    value["sources_identity"] = object_identity(value)
+    return load_sources(value)
+
+
+def load_sources(value: Mapping[str, object]) -> ValidatedSourceSet:
     if value.get("schema") != "pastila-vnext-scout-sources" or value.get("schema_version") != 1:
         raise SourceConfigError("source-set schema mismatch")
     expected = object_identity({key: item for key, item in value.items() if key != "sources_identity"})
@@ -314,7 +349,8 @@ def load_sources(value: Mapping[str, object]) -> tuple[SourceDefinition, ...]:
         result.append(SourceDefinition(source_id, str(raw.get("name", "")), url, tuple(map(str, categories)), maximum))
     if not result:
         raise SourceConfigError("no enabled RSS sources")
-    return tuple(result)
+    canonical_document = json.loads(canonical_json(value).decode("utf-8"))
+    return ValidatedSourceSet(str(value["sources_identity"]), canonical_document, tuple(result))
 
 
 def parse_feed(source: SourceDefinition, response: FetchResponse, captured_at: str) -> tuple[CapturedArticle, ...]:
@@ -468,11 +504,49 @@ def persist_capture_and_grouping(
     store: SQLiteStateStore,
     *,
     workflow_identity: str,
-    sources_identity: str,
+    source_set: ValidatedSourceSet,
     articles: Sequence[CapturedArticle],
     failures: Sequence[CaptureFailure],
     observed_at: str,
 ) -> tuple[EventGroup, ...]:
+    if not isinstance(source_set, ValidatedSourceSet):
+        raise SourceConfigError("validated SourceSet required")
+    reproduced = load_sources(source_set.canonical_document)
+    if reproduced != source_set:
+        raise SourceConfigError("SourceSet value is not canonical")
+    sources_identity = source_set.source_set_identity
+    source_set_reference = _publish_immutable(
+        store.root,
+        Path("blobs/source-sets") / f"{sources_identity}.json",
+        source_set.canonical_document,
+    )
+    definitions = {item.source_id: item for item in source_set.definitions}
+    article_counts = {source_id: 0 for source_id in definitions}
+    for article in articles:
+        definition = definitions.get(article.source_identity)
+        if definition is None:
+            raise SourceConfigError("capture source is outside validated SourceSet")
+        if (
+            article.source_name != definition.name
+            or article.source_feed_url != definition.url
+            or article.categories != definition.categories
+        ):
+            raise SourceConfigError("capture provenance conflicts with SourceDefinition")
+        article_counts[article.source_identity] += 1
+    failures_by_source = {item.source_identity: item for item in failures}
+    if len(failures_by_source) != len(failures) or not set(failures_by_source) <= set(definitions):
+        raise SourceConfigError("capture failures conflict with validated SourceSet")
+    dispositions = []
+    for source_id in definitions:
+        if article_counts[source_id] and source_id in failures_by_source:
+            raise SourceConfigError("source cannot be captured and failed")
+        if article_counts[source_id]:
+            disposition = {"source_identity": source_id, "outcome": "CAPTURED", "article_count": article_counts[source_id]}
+        elif source_id in failures_by_source:
+            disposition = {"source_identity": source_id, "outcome": "CAPTURE_FAILED", "article_count": 0, "failure_class": failures_by_source[source_id].failure_class}
+        else:
+            disposition = {"source_identity": source_id, "outcome": "NO_ELIGIBLE_ENTRIES", "article_count": 0}
+        dispositions.append(disposition)
     references = {}
     for article in articles:
         references[article.capture_identity] = _publish_immutable(
@@ -484,7 +558,9 @@ def persist_capture_and_grouping(
         "schema": "vnext-scout-capture-batch",
         "schema_version": SCHEMA_VERSION,
         "sources_identity": sources_identity,
+        "source_set_reference": source_set_reference,
         "article_references": dict(sorted(references.items())),
+        "source_dispositions": dispositions,
         "failures": [asdict(item) for item in failures],
     }
     batch_identity = object_identity(batch)
@@ -505,7 +581,11 @@ def persist_capture_and_grouping(
 
     def persist_captures(connection: object) -> None:
         for article in articles:
-            connection.execute("INSERT OR IGNORE INTO sources VALUES(?,?,?)", (article.source_identity, "RSS", sources_identity))
+            connection.execute(
+                "INSERT INTO sources VALUES(?,?,?) ON CONFLICT(source_identity) "
+                "DO UPDATE SET source_type=excluded.source_type,config_identity=excluded.config_identity",
+                (article.source_identity, "RSS", sources_identity),
+            )
             connection.execute(
                 "INSERT OR IGNORE INTO captures VALUES(?,?,?,?,?)",
                 (article.capture_identity, article.source_identity, article.capture_identity, references[article.capture_identity], article.captured_at),
@@ -739,11 +819,29 @@ def validate_workflow_event_membership(
         or batch.get("schema_version") != SCHEMA_VERSION
         or not isinstance(batch.get("sources_identity"), str)
         or not str(batch["sources_identity"]).strip()
+        or batch.get("source_set_reference")
+        != f"blobs/source-sets/{batch.get('sources_identity')}.json"
         or not isinstance(batch.get("article_references"), dict)
         or not batch["article_references"]
+        or not isinstance(batch.get("source_dispositions"), list)
         or not isinstance(batch.get("failures"), list)
     ):
         raise ScoutError("capture batch contract mismatch")
+    source_set_document = _load_content_addressed_json(
+        store.root / str(batch["source_set_reference"]),
+        claimed_identity=str(batch["sources_identity"]),
+        identity_key="sources_identity",
+        label="SourceSet",
+    )
+    source_set = load_sources(source_set_document)
+    definitions = {item.source_id: item for item in source_set.definitions}
+    dispositions = batch["source_dispositions"]
+    if (
+        len(dispositions) != len(definitions)
+        or [item.get("source_identity") for item in dispositions] != list(definitions)
+        or any(item.get("outcome") not in {"CAPTURED", "CAPTURE_FAILED", "NO_ELIGIBLE_ENTRIES"} for item in dispositions)
+    ):
+        raise ScoutError("SourceSet dispositions are not exhaustive")
     capture_receipt = _validate_owned_scout_transition(
         capture_transition,
         workflow_identity=workflow_identity,
@@ -800,13 +898,34 @@ def validate_workflow_event_membership(
             identity_key="capture_identity",
             label="capture payload",
         )
+        definition = definitions.get(str(capture.get("source_identity")))
         if (
             capture.get("schema") != "vnext-scout-capture"
             or capture.get("schema_version") != SCHEMA_VERSION
             or capture.get("source_identity") != row["source_identity"]
             or capture.get("captured_at") != row["captured_at"]
+            or definition is None
+            or capture.get("source_name") != definition.name
+            or capture.get("source_feed_url") != definition.url
+            or capture.get("categories") != list(definition.categories)
         ):
-            raise ScoutError("capture payload row binding mismatch")
+            raise ScoutError("capture payload SourceDefinition binding mismatch")
+    counts = {source_id: 0 for source_id in definitions}
+    for capture_identity in expected_captures:
+        capture = json.loads((store.root / str(references[capture_identity])).read_text(encoding="utf-8"))
+        counts[str(capture["source_identity"])] += 1
+    failures_by_source = {str(item.get("source_identity")): item for item in batch["failures"]}
+    expected_dispositions = []
+    for source_id in definitions:
+        if counts[source_id]:
+            item = {"source_identity": source_id, "outcome": "CAPTURED", "article_count": counts[source_id]}
+        elif source_id in failures_by_source:
+            item = {"source_identity": source_id, "outcome": "CAPTURE_FAILED", "article_count": 0, "failure_class": failures_by_source[source_id].get("failure_class")}
+        else:
+            item = {"source_identity": source_id, "outcome": "NO_ELIGIBLE_ENTRIES", "article_count": 0}
+        expected_dispositions.append(item)
+    if dispositions != expected_dispositions:
+        raise ScoutError("SourceSet disposition binding mismatch")
 
     expected_output = object_identity(
         [row["grouping_identity"] for row in memberships]

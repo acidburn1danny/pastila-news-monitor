@@ -10,7 +10,7 @@ import pytest
 from pastila_scout.vnext_foundation_v1 import object_identity
 from pastila_scout.vnext_scout_production_v1 import (
     FetchResponse,
-    SourceDefinition,
+    SourceDefinition, source_set_from_definitions,
     build_source_packet,
     capture_sources,
     persist_capture_and_grouping,
@@ -95,7 +95,7 @@ def test_real_scout_production_fixture_reaches_frozen_packet(tmp_path: Path):
     articles, failures = capture_sources(definitions, transport=transport, captured_at=value["captured_at"])
     store = SQLiteStateStore(root=tmp_path, database=Path("state.db"), writer_identity="sourcepacket-binding-test", busy_timeout_ms=100)
     store.bootstrap(); store.create_workflow("workflow-binding")
-    groups = persist_capture_and_grouping(store, workflow_identity="workflow-binding", sources_identity="sources:fixture", articles=articles, failures=failures, observed_at=value["captured_at"])
+    groups = persist_capture_and_grouping(store, workflow_identity="workflow-binding", source_set=source_set_from_definitions(definitions), articles=articles, failures=failures, observed_at=value["captured_at"])
     selected = next(group for group in groups if len(group.captures) == 2)
     source = build_source_packet(
         store,

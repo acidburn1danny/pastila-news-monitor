@@ -13,7 +13,7 @@ from pastila_scout.vnext_scout_production_v1 import (
     CaptureError,
     FeedParseError,
     FetchResponse,
-    SourceDefinition,
+    SourceDefinition, source_set_from_definitions,
     build_source_packet,
     capture_sources,
     group_articles,
@@ -119,7 +119,7 @@ def test_capture_group_selection_and_sourcepacket_use_published_state_boundary(t
     groups = persist_capture_and_grouping(
         state,
         workflow_identity="workflow-1",
-        sources_identity="sources:test",
+        source_set=source_set_from_definitions(definitions),
         articles=articles,
         failures=failures,
         observed_at=value["captured_at"],
@@ -151,7 +151,7 @@ def test_all_source_failure_is_terminal_without_partial_eligible_state(tmp_path:
     groups = persist_capture_and_grouping(
         state,
         workflow_identity="workflow-1",
-        sources_identity="sources:test",
+        source_set=source_set_from_definitions(tuple(map(source, fixture()["sources"]))),
         articles=(),
         failures=(),
         observed_at=fixture()["captured_at"],
@@ -176,8 +176,8 @@ def test_duplicate_capture_replay_is_idempotent(tmp_path: Path):
     value = fixture(); definition = source(value["sources"][0])
     articles = parse_feed(definition, response(value["feeds"][definition.source_id]), value["captured_at"])
     state = store(tmp_path)
-    first = persist_capture_and_grouping(state, workflow_identity="workflow-1", sources_identity="sources:test", articles=articles, failures=(), observed_at=value["captured_at"])
-    second = persist_capture_and_grouping(state, workflow_identity="workflow-1", sources_identity="sources:test", articles=articles, failures=(), observed_at=value["captured_at"])
+    first = persist_capture_and_grouping(state, workflow_identity="workflow-1", source_set=source_set_from_definitions((definition,)), articles=articles, failures=(), observed_at=value["captured_at"])
+    second = persist_capture_and_grouping(state, workflow_identity="workflow-1", source_set=source_set_from_definitions((definition,)), articles=articles, failures=(), observed_at=value["captured_at"])
     assert first == second
     with state.read() as connection:
         assert connection.execute("SELECT COUNT(*) FROM captures").fetchone()[0] == 1
