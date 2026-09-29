@@ -13,10 +13,18 @@ from pastila_scout.vnext_foundation_v1 import object_identity
 from pastila_scout.vnext_product_orchestrator_v1 import (
     FactualReviewInstruction,
     PolicyInstruction,
+    PolicyTerminalBundle,
     ProductOrchestrator,
     ProductOrchestratorError,
     bootstrap_store,
 )
+from pastila_scout.vnext_core_final_v1 import (
+    authorize_policy_session,
+    build_policy_decision,
+    enter_policy_review,
+    persist_policy_decision,
+)
+from pastila_scout.vnext_workflow_v1 import TransitionRequest
 from pastila_scout.vnext_r2_consolidation_binding_v1 import EXPECTED_LOCK_IDENTITY
 from pastila_scout.vnext_scout_production_v1 import FetchResponse, SourceDefinition
 
@@ -164,22 +172,24 @@ def test_orchestrator_never_infers_factual_authority(tmp_path):
         )
 
 
-def test_orchestrator_never_infers_policy_authority(tmp_path):
+@pytest.mark.parametrize(("outcome", "state"), [("REJECT", "REJECTED"), ("REVISE", "REVISION_REQUIRED")])
+def test_explicit_policy_terminal_routing(tmp_path, outcome, state):
     _, orchestrator, editor = prepare(tmp_path)
     factual = orchestrator.apply_factual_review(
         editor,
         instruction=factual_instruction(),
         observed_at="2026-09-29T01:03:00Z",
     )
-    with pytest.raises(ProductOrchestratorError, match="explicit APPROVE_FINAL"):
-        orchestrator.apply_policy_and_export(
-            factual,
-            instruction=policy_instruction("REJECT"),
-            policy_entry_observed_at="2026-09-29T01:04:00Z",
-            policy_decision_observed_at="2026-09-29T01:05:00Z",
-            final_observed_at="2026-09-29T01:06:00Z",
-        )
-    assert orchestrator.store.load_workflow(editor.workflow_identity)["state"] == "ACCEPTED_SETUP"
+    result = orchestrator.apply_policy_and_export(
+        factual,
+        instruction=policy_instruction(outcome),
+        policy_entry_observed_at="2026-09-29T01:04:00Z",
+        policy_decision_observed_at="2026-09-29T01:05:00Z",
+        final_observed_at="2026-09-29T01:06:00Z",
+    )
+    assert isinstance(result, PolicyTerminalBundle)
+    assert result.state == state
+    assert orchestrator.store.load_workflow(editor.workflow_identity)["state"] == state
 
 
 def test_cross_workflow_bundle_is_rejected(tmp_path):
@@ -208,14 +218,14 @@ def test_export_replay_does_not_duplicate_terminal_transition(tmp_path):
         policy_decision_observed_at="2026-09-29T01:05:00Z",
         final_observed_at="2026-09-29T01:06:00Z",
     )
-    with pytest.raises(Exception):
-        orchestrator.apply_policy_and_export(
-            factual,
-            instruction=policy_instruction(),
-            policy_entry_observed_at="2026-09-29T01:04:00Z",
-            policy_decision_observed_at="2026-09-29T01:05:00Z",
-            final_observed_at="2026-09-29T01:06:00Z",
-        )
+    replay = orchestrator.apply_policy_and_export(
+        factual,
+        instruction=policy_instruction(),
+        policy_entry_observed_at="2026-09-29T01:04:00Z",
+        policy_decision_observed_at="2026-09-29T01:05:00Z",
+        final_observed_at="2026-09-29T01:06:00Z",
+    )
+    assert replay.receipt == first.receipt
     with store.read() as connection:
         count = connection.execute(
             "SELECT COUNT(*) FROM state_transitions WHERE workflow_identity=? "
@@ -270,3 +280,212 @@ def test_restart_rejects_tampered_persisted_editor_draft(tmp_path):
     restarted = ProductOrchestrator(bootstrap_store(tmp_path, writer_identity="writer"))
     with pytest.raises(Exception):
         restarted.load_editor_review_bundle(editor.workflow_identity)
+
+
+def source_ready_after_backend_failure(tmp_path):
+    store = bootstrap_store(tmp_path, writer_identity="writer")
+    orchestrator = ProductOrchestrator(store)
+    orchestrator.create_workflow("recovery-flow")
+    groups, _ = orchestrator.capture_and_group(
+        workflow_identity="recovery-flow",
+        sources_identity="2" * 64,
+        sources=SOURCES,
+        transport=transport,
+        captured_at="2026-09-29T04:00:00Z",
+    )
+    class FailingBackend(Backend):
+        def generate(self, messages, decoding):
+            raise RuntimeError("injected")
+    with pytest.raises(RuntimeError, match="injected"):
+        orchestrator.select_and_generate_editor_draft(
+            workflow_identity="recovery-flow",
+            selected_event_identity=groups[0].event_identity,
+            backend=FailingBackend(),
+            source_packet_observed_at="2026-09-29T04:01:00Z",
+            editor_observed_at="2026-09-29T04:02:00Z",
+        )
+    assert store.load_workflow("recovery-flow")["state"] == "SOURCE_PACKET_READY"
+    return store, orchestrator, groups[0].event_identity
+
+
+def enter_editor_pending(store):
+    semantic = object_identity({"editor": "pending-fault"})
+    store.transition(TransitionRequest(
+        "recovery-flow", "fault:editor-pending", "SOURCE_PACKET_READY", "EDITOR_PENDING",
+        "EDITOR", "STARTED", object_identity({"packet": "input"}), None,
+        f"attempt:{semantic}", f"idempotency:{semantic}", "2026-09-29T04:02:00Z",
+        {"component": "fault-injection"},
+    ))
+
+
+def test_source_packet_ready_recovery_continues_editor(tmp_path):
+    store, orchestrator, event = source_ready_after_backend_failure(tmp_path)
+    bundle = orchestrator.select_and_generate_editor_draft(
+        workflow_identity="recovery-flow",
+        selected_event_identity=event,
+        backend=Backend(),
+        source_packet_observed_at="2026-09-29T04:01:00Z",
+        editor_observed_at="2026-09-29T04:02:00Z",
+    )
+    assert bundle.packet["event_identity"] == event
+    assert store.load_workflow("recovery-flow")["state"] == "FACTUAL_REVIEW_PENDING"
+
+
+def test_editor_pending_requires_explicit_disposition(tmp_path):
+    store, orchestrator, event = source_ready_after_backend_failure(tmp_path)
+    enter_editor_pending(store)
+    with pytest.raises(ProductOrchestratorError, match="explicit retry or failure disposition"):
+        orchestrator.select_and_generate_editor_draft(
+            workflow_identity="recovery-flow",
+            selected_event_identity=event,
+            backend=Backend(),
+            source_packet_observed_at="2026-09-29T04:01:00Z",
+            editor_observed_at="2026-09-29T04:02:00Z",
+        )
+    failure = orchestrator.record_editor_failure(
+        workflow_identity="recovery-flow",
+        failure_code="INFERENCE_INTERRUPTED",
+        evidence_identity=object_identity({"failure": "injected"}),
+        observed_at="2026-09-29T04:03:00Z",
+    )
+    assert failure.failure["eligible_for_voice"] is False
+    assert store.load_workflow("recovery-flow")["state"] == "FACTUAL_REVIEW_PENDING"
+
+
+def test_editor_pending_retry_requires_authority_and_recovers(tmp_path):
+    store, orchestrator, _ = source_ready_after_backend_failure(tmp_path)
+    enter_editor_pending(store)
+    with pytest.raises(ProductOrchestratorError, match="authorization"):
+        orchestrator.retry_editor_generation(
+            workflow_identity="recovery-flow",
+            backend=Backend(),
+            retry_authorization_identity="short",
+            editor_observed_at="2026-09-29T04:03:00Z",
+        )
+    bundle = orchestrator.retry_editor_generation(
+        workflow_identity="recovery-flow",
+        backend=Backend(),
+        retry_authorization_identity=object_identity({"retry": "authorized"}),
+        editor_observed_at="2026-09-29T04:03:00Z",
+    )
+    assert bundle.draft["eligible_for_voice"] is False
+    with store.read() as connection:
+        row = connection.execute(
+            "SELECT input_identity FROM state_transitions WHERE workflow_identity=? "
+            "AND previous_state='EDITOR_PENDING' AND resulting_state='EDITOR_DRAFT_READY'",
+            ("recovery-flow",),
+        ).fetchone()
+    retry_path = tmp_path / "blobs" / "editor-retry-authorizations" / f"{row['input_identity']}.json"
+    retry_receipt = json.loads(retry_path.read_text(encoding="utf-8"))
+    assert retry_receipt["authorization_identity"] == object_identity({"retry": "authorized"})
+    assert retry_receipt["receipt_identity"] == row["input_identity"]
+    assert store.load_workflow("recovery-flow")["state"] == "FACTUAL_REVIEW_PENDING"
+
+
+def persist_approved_policy(store, factual):
+    enter_policy_review(
+        store,
+        workflow_identity=factual.workflow_identity,
+        factual_output=factual.artifact,
+        observed_at="2026-09-29T05:04:00Z",
+    )
+    instruction = policy_instruction()
+    session = authorize_policy_session(
+        store,
+        workflow_identity=factual.workflow_identity,
+        factual_output=factual.artifact,
+        actor=instruction.actor,
+        allowed_outcome=instruction.outcome,
+        authorization_identity=instruction.authorization_identity,
+    )
+    decision = build_policy_decision(
+        workflow_identity=factual.workflow_identity,
+        factual_output=factual.artifact,
+        session=session,
+        outcome=instruction.outcome,
+        actor=instruction.actor,
+        reason_code=instruction.reason_code,
+    )
+    persist_policy_decision(
+        store,
+        workflow_identity=factual.workflow_identity,
+        factual_output=factual.artifact,
+        session=session,
+        decision=decision,
+        observed_at="2026-09-29T05:05:00Z",
+    )
+
+
+def test_approved_for_final_recovery_continues_without_new_authority(tmp_path):
+    store, orchestrator, editor = prepare(tmp_path)
+    factual = orchestrator.apply_factual_review(
+        editor, instruction=factual_instruction(), observed_at="2026-09-29T05:03:00Z"
+    )
+    persist_approved_policy(store, factual)
+    restarted = ProductOrchestrator(bootstrap_store(tmp_path, writer_identity="writer"))
+    loaded = restarted.load_factual_result_bundle(editor.workflow_identity)
+    result = restarted.apply_policy_and_export(
+        loaded,
+        instruction=policy_instruction(),
+        policy_entry_observed_at="2026-09-29T05:04:00Z",
+        policy_decision_observed_at="2026-09-29T05:05:00Z",
+        final_observed_at="2026-09-29T05:06:00Z",
+    )
+    assert result.final["artifact_kind"] == "FINAL_OUTPUT"
+    assert store.load_workflow(editor.workflow_identity)["state"] == "EXPORTED"
+
+
+def test_final_ready_recovery_completes_atomic_export(tmp_path, monkeypatch):
+    import pastila_scout.vnext_core_final_v1 as final_module
+    store, orchestrator, editor = prepare(tmp_path)
+    factual = orchestrator.apply_factual_review(
+        editor, instruction=factual_instruction(), observed_at="2026-09-29T06:03:00Z"
+    )
+    original = final_module._transition
+    def fail_export(store_arg, workflow, left, right, *args, **kwargs):
+        if left == "FINAL_READY" and right == "EXPORTED":
+            raise RuntimeError("injected export interruption")
+        return original(store_arg, workflow, left, right, *args, **kwargs)
+    monkeypatch.setattr(final_module, "_transition", fail_export)
+    with pytest.raises(RuntimeError, match="injected export interruption"):
+        orchestrator.apply_policy_and_export(
+            factual,
+            instruction=policy_instruction(),
+            policy_entry_observed_at="2026-09-29T06:04:00Z",
+            policy_decision_observed_at="2026-09-29T06:05:00Z",
+            final_observed_at="2026-09-29T06:06:00Z",
+        )
+    assert store.load_workflow(editor.workflow_identity)["state"] == "FINAL_READY"
+    monkeypatch.setattr(final_module, "_transition", original)
+    restarted = ProductOrchestrator(bootstrap_store(tmp_path, writer_identity="writer"))
+    result = restarted.apply_policy_and_export(
+        restarted.load_factual_result_bundle(editor.workflow_identity),
+        instruction=policy_instruction(),
+        policy_entry_observed_at="2026-09-29T06:04:00Z",
+        policy_decision_observed_at="2026-09-29T06:05:00Z",
+        final_observed_at="2026-09-29T06:06:00Z",
+    )
+    assert result.receipt["final_identity"] == result.final["artifact_identity"]
+    assert store.load_workflow(editor.workflow_identity)["state"] == "EXPORTED"
+
+
+def test_factual_abstention_is_terminal_and_rehydratable(tmp_path):
+    store, orchestrator, editor = prepare(tmp_path)
+    factual = orchestrator.apply_factual_review(
+        editor,
+        instruction=factual_instruction("ABSTAIN"),
+        observed_at="2026-09-29T07:03:00Z",
+    )
+    assert factual.terminal_state == "ABSTAINED"
+    restarted = ProductOrchestrator(bootstrap_store(tmp_path, writer_identity="writer"))
+    loaded = restarted.load_factual_result_bundle(editor.workflow_identity)
+    assert loaded.terminal_state == "ABSTAINED"
+    with pytest.raises(ProductOrchestratorError, match="terminal"):
+        restarted.apply_policy_and_export(
+            loaded,
+            instruction=policy_instruction(),
+            policy_entry_observed_at="2026-09-29T07:04:00Z",
+            policy_decision_observed_at="2026-09-29T07:05:00Z",
+            final_observed_at="2026-09-29T07:06:00Z",
+        )
+    assert store.load_workflow(editor.workflow_identity)["state"] == "ABSTAINED"

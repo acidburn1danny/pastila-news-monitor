@@ -214,9 +214,14 @@ def validate_structural_failure(failure: Mapping[str, object], *, packet: Mappin
 def persist_editor_draft(
     store: SQLiteStateStore, *, workflow_identity: str, packet: Mapping[str, object],
     invocation: Mapping[str, object], draft: Mapping[str, object], observed_at: str,
+    retry_authorization_identity: str | None = None,
 ) -> None:
     validate_editor_draft(draft, source_packet=packet, invocation_receipt=invocation)
-    store.transition(_transition(workflow_identity, "editor-start", "SOURCE_PACKET_READY", "EDITOR_PENDING", str(packet["packet_identity"]), None, observed_at))
+    state = store.load_workflow(workflow_identity)["state"]
+    if state == "SOURCE_PACKET_READY":
+        store.transition(_transition(workflow_identity, "editor-start", "SOURCE_PACKET_READY", "EDITOR_PENDING", str(packet["packet_identity"]), None, observed_at))
+    elif state != "EDITOR_PENDING":
+        raise EditorVerticalSliceError(f"workflow is not ready to persist EditorDraft: {state}")
     relative = Path("blobs/editor-drafts") / f"{draft['draft_identity']}.json"
     receipt_relative = Path("blobs/editor-invocations") / f"{invocation['receipt_identity']}.json"
     receipt_path = store.root / receipt_relative
@@ -232,6 +237,28 @@ def persist_editor_draft(
     else:
         atomic_json(path, dict(draft), root=store.root, overwrite=False)
 
+    transition_input = str(invocation["receipt_identity"])
+    if retry_authorization_identity is not None:
+        if _SHA256.fullmatch(retry_authorization_identity) is None:
+            raise EditorVerticalSliceError("invalid retry authorization identity")
+        retry_receipt: dict[str, object] = {
+            "schema": "vnext-editor-retry-authorization-receipt",
+            "schema_version": 1,
+            "workflow_identity": workflow_identity,
+            "source_packet_identity": packet["packet_identity"],
+            "invocation_receipt_identity": invocation["receipt_identity"],
+            "authorization_identity": retry_authorization_identity,
+        }
+        retry_receipt["receipt_identity"] = object_identity(retry_receipt)
+        retry_relative = Path("blobs/editor-retry-authorizations") / f"{retry_receipt['receipt_identity']}.json"
+        retry_path = store.root / retry_relative
+        if retry_path.exists():
+            if json.loads(retry_path.read_text(encoding="utf-8")) != retry_receipt:
+                raise EditorVerticalSliceError("immutable retry authorization conflict")
+        else:
+            atomic_json(retry_path, retry_receipt, root=store.root, overwrite=False)
+        transition_input = str(retry_receipt["receipt_identity"])
+
     def insert_artifact(connection: object) -> None:
         connection.execute(
             "INSERT INTO workflow_artifacts VALUES(?,?,?,?,?,?)",
@@ -239,7 +266,7 @@ def persist_editor_draft(
         )
 
     store.transition(
-        _transition(workflow_identity, "editor-draft", "EDITOR_PENDING", "EDITOR_DRAFT_READY", str(invocation["receipt_identity"]), str(draft["draft_identity"]), observed_at),
+        _transition(workflow_identity, "editor-draft", "EDITOR_PENDING", "EDITOR_DRAFT_READY", transition_input, str(draft["draft_identity"]), observed_at),
         before_commit=insert_artifact,
     )
     store.transition(_transition(workflow_identity, "editor-structural-pass", "EDITOR_DRAFT_READY", "FACTUAL_REVIEW_PENDING", str(draft["draft_identity"]), str(draft["draft_identity"]), observed_at))
@@ -251,7 +278,11 @@ def persist_structural_failure(
 ) -> None:
     """Persist a non-eligible failure and route it through factual review."""
     validate_structural_failure(failure, packet=packet)
-    store.transition(_transition(workflow_identity, "editor-start", "SOURCE_PACKET_READY", "EDITOR_PENDING", str(packet["packet_identity"]), None, observed_at))
+    state = store.load_workflow(workflow_identity)["state"]
+    if state == "SOURCE_PACKET_READY":
+        store.transition(_transition(workflow_identity, "editor-start", "SOURCE_PACKET_READY", "EDITOR_PENDING", str(packet["packet_identity"]), None, observed_at))
+    elif state != "EDITOR_PENDING":
+        raise EditorVerticalSliceError(f"workflow is not ready to persist structural failure: {state}")
     relative = Path("blobs/editor-failures") / f"{failure['failure_identity']}.json"
     path = store.root / relative
     if path.exists():

@@ -23,8 +23,8 @@
     "src/pastila_scout/vnext_product_orchestrator_v1.py"
   ],
   "binding_semantics": "SUCCESSOR_OVER_BOUND_COMMIT",
-  "bound_commit": "71443f463c6f0320b9c4f53f37bf672157764286",
-  "current_auditor": "scripts/audit_vnext_product_orchestrator_integrated_core_e2e_v1.py",
+  "bound_commit": "08d722e0af008fc163d990ea35233b9dc0027bea",
+  "current_auditor": "scripts/audit_vnext_product_orchestrator_state_aware_recovery_terminal_routing_v1.py",
   "excluded_from_active_graph": [
     {
       "path": "src/pastila_scout/vnext_sourcepacket_binding_v1.py",
@@ -75,12 +75,18 @@
     {
       "commit": "71443f4",
       "path": "scripts/audit_vnext_final_export_receipt_transition_binding_v1.py"
+    },
+    {
+      "commit": "08d722e",
+      "path": "scripts/audit_vnext_product_orchestrator_integrated_core_e2e_v1.py"
     }
   ],
   "invariants": {
     "active_integration": false,
     "final_implemented": true,
     "legacy_dependency_count": 0,
+    "orchestrator_state_aware_recovery": true,
+    "orchestrator_terminal_routing": true,
     "policy_final_merged": true,
     "post_acceptance_policy_final_implemented": true,
     "product_lock_replaced": false,
@@ -88,7 +94,7 @@
     "stop_all_candidates": true,
     "voice": "DISABLED_UNTIL_PROMOTION"
   },
-  "manifest_identity": "b57fe580a8b83a94c7ca5dcd5f7c741086fa6acb1333b93d0eb1d1630f50dfac",
+  "manifest_identity": "9ad1aefc11daba78cf3fc144d79a9639d602e127fe502a5b218e8c47dcd17652",
   "schema": "vnext-active-authority-audit-manifest",
   "schema_version": 1,
   "status": "SUCCESSOR_ISOLATED_NOT_ACTIVE"

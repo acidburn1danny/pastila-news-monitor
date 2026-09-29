@@ -1,0 +1,37 @@
+{
+  "authority": {
+    "editor_failure": "EXPLICIT_SOURCE_BOUND_EVIDENCE",
+    "editor_pending_retry": "EXPLICIT_AUTHORIZATION_IDENTITY",
+    "editor_pending_retry_receipt": "IMMUTABLE_TRANSITION_INPUT_BINDING",
+    "policy_resume": "PERSISTED_CONSUMED_AUTHORITY_ONLY",
+    "terminal_outcomes": "NO_EXPORT"
+  },
+  "base_commit": "08d722e0af008fc163d990ea35233b9dc0027bea",
+  "closure_identity": "de254c684299c2e23a017e20c8998c02b6b6e32aaf6cb7478e756dcc1a666a3f",
+  "findings_closed": [
+    "SOURCE_PACKET_READY_RESUME",
+    "EDITOR_PENDING_EXPLICIT_DISPOSITION",
+    "APPROVED_FOR_FINAL_RESUME",
+    "FINAL_READY_RESUME",
+    "REJECTED_ROUTING",
+    "REVISION_REQUIRED_ROUTING",
+    "ABSTAINED_ROUTING"
+  ],
+  "invariants": {
+    "active_integration": false,
+    "audit_streak": "0/2",
+    "legacy_dependency_count": 0,
+    "product_lock_replaced": false,
+    "stop_all_candidates": true,
+    "voice": "DISABLED_UNTIL_PROMOTION"
+  },
+  "name": "VNext Product Orchestrator State-Aware Recovery & Terminal Routing Repair v1",
+  "schema": "vnext-product-orchestrator-state-aware-recovery-terminal-routing-repair",
+  "schema_version": 1,
+  "status": "PASS",
+  "validation": {
+    "dedicated_fault_injection": "18_PASS",
+    "self_contained_auditor": "PASS",
+    "suite": "128_PASS"
+  }
+}

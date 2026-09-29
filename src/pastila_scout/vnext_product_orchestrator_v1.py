@@ -2,12 +2,14 @@
 from __future__ import annotations
 
 import json
+import re
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from pathlib import Path
 
 from .vnext_core_final_v1 import (
     assemble_and_export_final,
+    load_exported_final,
     authorize_policy_session,
     build_policy_decision,
     enter_policy_review,
@@ -15,7 +17,9 @@ from .vnext_core_final_v1 import (
 )
 from .vnext_editor_vertical_slice_v1 import (
     R2Backend,
+    build_structural_failure,
     persist_editor_draft,
+    persist_structural_failure,
     run_editor_vertical_slice,
     validate_editor_draft,
 )
@@ -26,7 +30,7 @@ from .vnext_factual_acceptance_v1 import (
     persist_factual_result,
     validate_factual_output,
 )
-from .vnext_foundation_v1 import BoundaryError, contained_path
+from .vnext_foundation_v1 import BoundaryError, contained_path, object_identity
 from .vnext_scout_production_v1 import (
     CaptureFailure,
     EventGroup,
@@ -88,6 +92,7 @@ class FactualResultBundle:
     decision: Mapping[str, object]
     receipt: Mapping[str, object]
     artifact: Mapping[str, object]
+    terminal_state: str | None = None
 
 
 @dataclass(frozen=True)
@@ -95,6 +100,20 @@ class ExportBundle:
     workflow_identity: str
     final: Mapping[str, object]
     receipt: Mapping[str, object]
+
+
+@dataclass(frozen=True)
+class PolicyTerminalBundle:
+    workflow_identity: str
+    state: str
+    decision: Mapping[str, object]
+
+
+@dataclass(frozen=True)
+class EditorFailureBundle:
+    workflow_identity: str
+    packet: Mapping[str, object]
+    failure: Mapping[str, object]
 
 
 class ProductOrchestrator:
@@ -115,6 +134,22 @@ class ProductOrchestrator:
         if not isinstance(value, dict):
             raise ProductOrchestratorError(f"{label} must be an object")
         return value
+
+    def load_source_packet(self, workflow_identity: str) -> dict[str, object]:
+        self.store.load_workflow(workflow_identity)
+        with self.store.read() as connection:
+            rows = connection.execute(
+                "SELECT sp.payload_ref FROM source_packets sp "
+                "JOIN state_transitions st ON st.output_identity=sp.packet_identity "
+                "WHERE st.workflow_identity=? AND st.resulting_state='SOURCE_PACKET_READY'",
+                (workflow_identity,),
+            ).fetchall()
+        if len(rows) != 1:
+            raise ProductOrchestratorError("persisted SourcePacket ownership is absent or ambiguous")
+        packet = self._load_json(str(rows[0]["payload_ref"]), "SourcePacket")
+        from .vnext_scout_production_v1 import validate_scout_packet
+        validate_scout_packet(packet)
+        return packet
 
     def load_editor_review_bundle(self, workflow_identity: str) -> EditorReviewBundle:
         self.store.load_workflow(workflow_identity)
@@ -153,7 +188,7 @@ class ProductOrchestrator:
         with self.store.read() as connection:
             rows = connection.execute(
                 "SELECT artifact_identity,payload_ref FROM workflow_artifacts "
-                "WHERE workflow_identity=? AND artifact_kind IN ('ACCEPTED_SETUP','SOURCE_FALLBACK')",
+                "WHERE workflow_identity=? AND artifact_kind IN ('ACCEPTED_SETUP','SOURCE_FALLBACK','ABSTAINED')",
                 (workflow_identity,),
             ).fetchall()
         if len(rows) != 1:
@@ -195,6 +230,7 @@ class ProductOrchestrator:
             decision,
             receipt,
             artifact,
+            "ABSTAINED" if artifact.get("artifact_kind") == "ABSTAINED" else None,
         )
 
     def capture_and_group(
@@ -236,14 +272,24 @@ class ProductOrchestrator:
         source_packet_observed_at: str,
         editor_observed_at: str,
     ) -> EditorReviewBundle:
-        if self.store.load_workflow(workflow_identity)["state"] != "GROUPED":
-            raise ProductOrchestratorError("workflow is not ready for explicit event selection")
-        packet = build_source_packet(
-            self.store,
-            workflow_identity=workflow_identity,
-            event_identity=selected_event_identity,
-            observed_at=source_packet_observed_at,
-        )
+        state = str(self.store.load_workflow(workflow_identity)["state"])
+        if state == "GROUPED":
+            packet = build_source_packet(
+                self.store,
+                workflow_identity=workflow_identity,
+                event_identity=selected_event_identity,
+                observed_at=source_packet_observed_at,
+            )
+        elif state in {"SOURCE_PACKET_READY", "EDITOR_PENDING"}:
+            packet = self.load_source_packet(workflow_identity)
+            if packet.get("event_identity") != selected_event_identity:
+                raise ProductOrchestratorError("selected event conflicts with persisted SourcePacket")
+            if state == "EDITOR_PENDING":
+                raise ProductOrchestratorError(
+                    "EDITOR_PENDING requires explicit retry or failure disposition"
+                )
+        else:
+            raise ProductOrchestratorError(f"workflow is not editor-routable: {state}")
         invocation, draft = run_editor_vertical_slice(packet, backend)
         persist_editor_draft(
             self.store,
@@ -254,6 +300,57 @@ class ProductOrchestrator:
             observed_at=editor_observed_at,
         )
         return EditorReviewBundle(workflow_identity, packet, invocation, draft)
+
+    def retry_editor_generation(
+        self,
+        *,
+        workflow_identity: str,
+        backend: R2Backend,
+        retry_authorization_identity: str,
+        editor_observed_at: str,
+    ) -> EditorReviewBundle:
+        if re.fullmatch(r"[0-9a-f]{64}", retry_authorization_identity) is None:
+            raise ProductOrchestratorError("explicit retry authorization identity required")
+        if self.store.load_workflow(workflow_identity)["state"] != "EDITOR_PENDING":
+            raise ProductOrchestratorError("workflow is not awaiting explicit EDITOR disposition")
+        packet = self.load_source_packet(workflow_identity)
+        invocation, draft = run_editor_vertical_slice(packet, backend)
+        persist_editor_draft(
+            self.store,
+            workflow_identity=workflow_identity,
+            packet=packet,
+            invocation=invocation,
+            draft=draft,
+            observed_at=editor_observed_at,
+            retry_authorization_identity=retry_authorization_identity,
+        )
+        return EditorReviewBundle(workflow_identity, packet, invocation, draft)
+
+    def record_editor_failure(
+        self,
+        *,
+        workflow_identity: str,
+        failure_code: str,
+        evidence_identity: str,
+        observed_at: str,
+    ) -> EditorFailureBundle:
+        state = str(self.store.load_workflow(workflow_identity)["state"])
+        if state not in {"SOURCE_PACKET_READY", "EDITOR_PENDING"}:
+            raise ProductOrchestratorError("workflow is not awaiting EDITOR disposition")
+        packet = self.load_source_packet(workflow_identity)
+        failure = build_structural_failure(
+            packet,
+            failure_code=failure_code,
+            evidence_identity=evidence_identity,
+        )
+        persist_structural_failure(
+            self.store,
+            workflow_identity=workflow_identity,
+            packet=packet,
+            failure=failure,
+            observed_at=observed_at,
+        )
+        return EditorFailureBundle(workflow_identity, packet, failure)
 
     def apply_factual_review(
         self,
@@ -313,7 +410,44 @@ class ProductOrchestrator:
             decision,
             receipt,
             artifact,
+            "ABSTAINED" if artifact.get("artifact_kind") == "ABSTAINED" else None,
         )
+
+    def _load_policy_decision(
+        self,
+        bundle: FactualResultBundle,
+        instruction: PolicyInstruction,
+    ) -> dict[str, object]:
+        with self.store.read() as connection:
+            rows = connection.execute(
+                "SELECT d.decision_identity,d.outcome,d.actor,ps.authorization_identity "
+                "FROM decisions d JOIN policy_sessions ps ON ps.decision_identity=d.decision_identity "
+                "WHERE d.workflow_identity=? AND d.decision_kind='APPROVAL'",
+                (bundle.workflow_identity,),
+            ).fetchall()
+        if len(rows) != 1:
+            raise ProductOrchestratorError("persisted policy authority is absent or ambiguous")
+        row = rows[0]
+        if (
+            row["outcome"] != instruction.outcome
+            or row["actor"] != instruction.actor.strip()
+            or row["authorization_identity"] != instruction.authorization_identity
+        ):
+            raise ProductOrchestratorError("persisted policy authority conflicts with instruction")
+        decision = self._load_json(
+            f"blobs/policy-decisions/{row['decision_identity']}.json",
+            "policy decision",
+        )
+        if (
+            decision.get("input_identity") != bundle.artifact.get("artifact_identity")
+            or decision.get("reason_code") != instruction.reason_code.strip()
+        ):
+            raise ProductOrchestratorError("persisted policy decision input/reason mismatch")
+        if decision.get("decision_identity") != object_identity(
+            {key: value for key, value in decision.items() if key != "decision_identity"}
+        ):
+            raise ProductOrchestratorError("persisted policy decision identity mismatch")
+        return decision
 
     def apply_policy_and_export(
         self,
@@ -323,48 +457,74 @@ class ProductOrchestrator:
         policy_entry_observed_at: str,
         policy_decision_observed_at: str,
         final_observed_at: str,
-    ) -> ExportBundle:
-        if instruction.outcome != "APPROVE_FINAL":
-            raise ProductOrchestratorError(
-                "isolated export path requires explicit APPROVE_FINAL authority"
+    ) -> ExportBundle | PolicyTerminalBundle:
+        if bundle.terminal_state == "ABSTAINED":
+            raise ProductOrchestratorError("ABSTAINED is terminal and cannot enter policy")
+        state = str(self.store.load_workflow(bundle.workflow_identity)["state"])
+        terminal_by_outcome = {"REJECT": "REJECTED", "REVISE": "REVISION_REQUIRED"}
+        if state in {"APPROVED_FOR_FINAL", "FINAL_READY", "EXPORTED", "REJECTED", "REVISION_REQUIRED"}:
+            decision = self._load_policy_decision(bundle, instruction)
+        else:
+            enter_policy_review(
+                self.store,
+                workflow_identity=bundle.workflow_identity,
+                factual_output=bundle.artifact,
+                observed_at=policy_entry_observed_at,
             )
-        enter_policy_review(
-            self.store,
-            workflow_identity=bundle.workflow_identity,
-            factual_output=bundle.artifact,
-            observed_at=policy_entry_observed_at,
-        )
-        session = authorize_policy_session(
-            self.store,
-            workflow_identity=bundle.workflow_identity,
-            factual_output=bundle.artifact,
-            actor=instruction.actor,
-            allowed_outcome=instruction.outcome,
-            authorization_identity=instruction.authorization_identity,
-        )
-        decision = build_policy_decision(
-            workflow_identity=bundle.workflow_identity,
-            factual_output=bundle.artifact,
-            session=session,
-            outcome=instruction.outcome,
-            actor=instruction.actor,
-            reason_code=instruction.reason_code,
-        )
-        persist_policy_decision(
-            self.store,
-            workflow_identity=bundle.workflow_identity,
-            factual_output=bundle.artifact,
-            session=session,
-            decision=decision,
-            observed_at=policy_decision_observed_at,
-        )
-        final, receipt = assemble_and_export_final(
-            self.store,
-            workflow_identity=bundle.workflow_identity,
-            factual_output=bundle.artifact,
-            decision=decision,
-            observed_at=final_observed_at,
-        )
+            session = authorize_policy_session(
+                self.store,
+                workflow_identity=bundle.workflow_identity,
+                factual_output=bundle.artifact,
+                actor=instruction.actor,
+                allowed_outcome=instruction.outcome,
+                authorization_identity=instruction.authorization_identity,
+            )
+            decision = build_policy_decision(
+                workflow_identity=bundle.workflow_identity,
+                factual_output=bundle.artifact,
+                session=session,
+                outcome=instruction.outcome,
+                actor=instruction.actor,
+                reason_code=instruction.reason_code,
+            )
+            persist_policy_decision(
+                self.store,
+                workflow_identity=bundle.workflow_identity,
+                factual_output=bundle.artifact,
+                session=session,
+                decision=decision,
+                observed_at=policy_decision_observed_at,
+            )
+            state = str(self.store.load_workflow(bundle.workflow_identity)["state"])
+        if instruction.outcome in terminal_by_outcome:
+            expected = terminal_by_outcome[instruction.outcome]
+            if state != expected:
+                raise ProductOrchestratorError("policy terminal routing mismatch")
+            return PolicyTerminalBundle(bundle.workflow_identity, state, decision)
+        if instruction.outcome != "APPROVE_FINAL":
+            raise ProductOrchestratorError("unsupported policy outcome")
+        if state == "EXPORTED":
+            with self.store.read() as connection:
+                rows = connection.execute(
+                    "SELECT artifact_identity FROM workflow_artifacts "
+                    "WHERE workflow_identity=? AND artifact_kind='FINAL_OUTPUT'",
+                    (bundle.workflow_identity,),
+                ).fetchall()
+            if len(rows) != 1:
+                raise ProductOrchestratorError("persisted FINAL ownership is absent or ambiguous")
+            final, receipt = load_exported_final(
+                self.store,
+                workflow_identity=bundle.workflow_identity,
+                final_identity=str(rows[0]["artifact_identity"]),
+            )
+        else:
+            final, receipt = assemble_and_export_final(
+                self.store,
+                workflow_identity=bundle.workflow_identity,
+                factual_output=bundle.artifact,
+                decision=decision,
+                observed_at=final_observed_at,
+            )
         return ExportBundle(bundle.workflow_identity, final, receipt)
 
 
