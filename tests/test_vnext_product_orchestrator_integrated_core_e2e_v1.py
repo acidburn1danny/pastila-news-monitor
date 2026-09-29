@@ -762,3 +762,115 @@ def test_factual_transition_decision_receipt_provenance_fails_closed(tmp_path, s
         match="factual result transition receipt provenance mismatch",
     ):
         orchestrator.load_factual_result_bundle(workflow_identity)
+
+
+@pytest.mark.parametrize(
+    ("column", "value"),
+    (("payload_identity", "9" * 64), ("payload_ref", "blobs/source-packets/foreign.json")),
+)
+def test_source_packet_row_drift_fails_closed(tmp_path, column, value):
+    store, orchestrator, editor = prepare(tmp_path)
+    with store.write() as connection:
+        connection.execute(
+            f"UPDATE source_packets SET {column}=? WHERE packet_identity=?",
+            (value, editor.packet["packet_identity"]),
+        )
+    with pytest.raises(BoundaryError):
+        orchestrator.load_source_packet("product-flow")
+
+
+@pytest.mark.parametrize("mode", ("missing", "duplicate", "altered", "cross_workflow"))
+def test_source_packet_transition_lineage_fails_closed(tmp_path, mode):
+    store, orchestrator, _ = prepare(tmp_path)
+    _fault_transition(
+        store, orchestrator, "product-flow",
+        "SELECTED", "SOURCE_PACKET_READY", mode,
+    )
+    with pytest.raises(BoundaryError):
+        orchestrator.load_source_packet("product-flow")
+
+
+@pytest.mark.parametrize(
+    ("column", "value"),
+    (("payload_identity", "8" * 64), ("schema_identity", "foreign-schema")),
+)
+def test_editor_draft_artifact_row_drift_fails_closed(tmp_path, column, value):
+    store, orchestrator, editor = prepare(tmp_path)
+    with store.write() as connection:
+        connection.execute(
+            f"UPDATE workflow_artifacts SET {column}=? "
+            "WHERE workflow_identity=? AND artifact_identity=?",
+            (value, "product-flow", editor.draft["draft_identity"]),
+        )
+    with pytest.raises(ProductOrchestratorError, match="EditorDraft artifact binding mismatch"):
+        orchestrator.load_editor_review_bundle("product-flow")
+
+
+@pytest.mark.parametrize("mode", ("missing", "duplicate", "altered", "cross_workflow"))
+def test_editor_draft_transition_lineage_fails_closed(tmp_path, mode):
+    store, orchestrator, _ = prepare(tmp_path)
+    _fault_transition(
+        store, orchestrator, "product-flow",
+        "EDITOR_PENDING", "EDITOR_DRAFT_READY", mode,
+    )
+    with pytest.raises(BoundaryError):
+        orchestrator.load_editor_review_bundle("product-flow")
+
+
+@pytest.mark.parametrize("mode", ("missing", "duplicate", "altered", "cross_workflow"))
+def test_editor_to_factual_transition_lineage_fails_closed(tmp_path, mode):
+    store, orchestrator, _ = prepare(tmp_path)
+    _fault_transition(
+        store, orchestrator, "product-flow",
+        "EDITOR_DRAFT_READY", "FACTUAL_REVIEW_PENDING", mode,
+    )
+    with pytest.raises(ProductOrchestratorError, match="EditorDraft factual review transition"):
+        orchestrator.load_editor_review_bundle("product-flow")
+
+
+@pytest.mark.parametrize(
+    ("previous_state", "resulting_state", "loader"),
+    (
+        ("SELECTED", "SOURCE_PACKET_READY", "source"),
+        ("EDITOR_PENDING", "EDITOR_DRAFT_READY", "editor"),
+        ("EDITOR_DRAFT_READY", "FACTUAL_REVIEW_PENDING", "editor"),
+    ),
+)
+def test_upstream_operational_receipt_drift_fails_closed(
+    tmp_path, previous_state, resulting_state, loader
+):
+    store, orchestrator, _ = prepare(tmp_path)
+    with store.write() as connection:
+        row = connection.execute(
+            "SELECT receipt_identity,receipt_json FROM state_transitions "
+            "WHERE workflow_identity=? AND previous_state=? AND resulting_state=?",
+            ("product-flow", previous_state, resulting_state),
+        ).fetchone()
+        receipt = json.loads(row["receipt_json"])
+        receipt["actor"] = "INTRUDER"
+        connection.execute(
+            "UPDATE state_transitions SET receipt_json=? WHERE receipt_identity=?",
+            (json.dumps(receipt, sort_keys=True, separators=(",", ":")), row["receipt_identity"]),
+        )
+    with pytest.raises(ProductOrchestratorError, match="transition receipt binding mismatch"):
+        if loader == "source":
+            orchestrator.load_source_packet("product-flow")
+        else:
+            orchestrator.load_editor_review_bundle("product-flow")
+
+
+@pytest.mark.parametrize("mode", ("missing", "duplicate", "altered", "cross_workflow"))
+def test_terminal_factual_rehydration_rejects_broken_editor_lineage(tmp_path, mode):
+    store, orchestrator, editor = prepare(tmp_path)
+    orchestrator.apply_factual_review(
+        editor,
+        instruction=factual_instruction("ABSTAIN"),
+        observed_at="2026-09-29T12:00:00Z",
+    )
+    _fault_transition(
+        store, orchestrator, "product-flow",
+        "EDITOR_DRAFT_READY", "FACTUAL_REVIEW_PENDING", mode,
+    )
+    restarted = ProductOrchestrator(bootstrap_store(tmp_path, writer_identity="writer"))
+    with pytest.raises(ProductOrchestratorError, match="EditorDraft factual review transition"):
+        restarted.load_factual_result_bundle("product-flow")

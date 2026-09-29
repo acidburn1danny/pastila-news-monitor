@@ -1,0 +1,36 @@
+{
+  "authority": {
+    "editor_draft": "FULL_ARTIFACT_AND_TWO_TRANSITION_LINEAGE",
+    "source_packet": "FULL_ROW_AND_EXACT_TRANSITION_LINEAGE",
+    "terminal_rehydration": "REQUIRES_TRANSITIVE_EDITOR_LINEAGE"
+  },
+  "base_commit": "dfdb2bf285b4e21ab16a39cc3740f08a5089b377",
+  "closure_identity": "36adb02a4548d2fafcea4c7e403a1ee6981658219d3fdce322cc4072966f0204",
+  "findings_closed": [
+    "SOURCE_PACKET_ROW_BINDING_REQUIRED",
+    "SOURCE_PACKET_TRANSITION_AND_RECEIPT_REQUIRED",
+    "EDITOR_DRAFT_ARTIFACT_ROW_BINDING_REQUIRED",
+    "EDITOR_DRAFT_TRANSITION_AND_RECEIPT_REQUIRED",
+    "EDITOR_TO_FACTUAL_TRANSITION_AND_RECEIPT_REQUIRED",
+    "TERMINAL_FACTUAL_REHYDRATION_REQUIRES_EDITOR_LINEAGE",
+    "ABSENT_DUPLICATE_ALTERED_CROSS_WORKFLOW_FAIL_CLOSED"
+  ],
+  "invariants": {
+    "active_integration": false,
+    "audit_streak": "0/2",
+    "legacy_dependency_count": 0,
+    "product_lock_replaced": false,
+    "schema_version": 6,
+    "stop_all_candidates": true,
+    "voice": "DISABLED_UNTIL_PROMOTION"
+  },
+  "name": "VNext SourcePacket & EditorDraft Relational Ownership Integrity Repair v1",
+  "schema": "vnext-sourcepacket-editor-draft-relational-ownership-integrity-repair",
+  "schema_version": 1,
+  "status": "PASS",
+  "validation": {
+    "dedicated_fault_injection": "77_PASS",
+    "self_contained_auditor": "PASS",
+    "suite": "187_PASS"
+  }
+}

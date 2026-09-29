@@ -141,23 +141,48 @@ class ProductOrchestrator:
         self.store.load_workflow(workflow_identity)
         with self.store.read() as connection:
             rows = connection.execute(
-                "SELECT sp.payload_ref FROM source_packets sp "
+                "SELECT sp.packet_identity,sp.event_identity,sp.payload_identity,sp.payload_ref "
+                "FROM source_packets sp "
                 "JOIN state_transitions st ON st.output_identity=sp.packet_identity "
-                "WHERE st.workflow_identity=? AND st.resulting_state='SOURCE_PACKET_READY'",
+                "WHERE st.workflow_identity=? AND st.previous_state='SELECTED' "
+                "AND st.resulting_state='SOURCE_PACKET_READY'",
                 (workflow_identity,),
             ).fetchall()
         if len(rows) != 1:
             raise ProductOrchestratorError("persisted SourcePacket ownership is absent or ambiguous")
-        packet = self._load_json(str(rows[0]["payload_ref"]), "SourcePacket")
+        row = rows[0]
+        packet = self._load_json(str(row["payload_ref"]), "SourcePacket")
         from .vnext_scout_production_v1 import validate_scout_packet
         validate_scout_packet(packet)
+        packet_identity = str(packet["packet_identity"])
+        event_identity = str(packet["event_identity"])
+        expected_row = (
+            packet_identity,
+            event_identity,
+            packet_identity,
+            f"blobs/source-packets/{packet_identity}.json",
+        )
+        if tuple(row) != expected_row:
+            raise ProductOrchestratorError("SourcePacket row binding mismatch")
+        self._require_owned_transition(
+            workflow_identity=workflow_identity,
+            previous_state="SELECTED",
+            resulting_state="SOURCE_PACKET_READY",
+            operation_identity="scout:source-packet",
+            actor="SCOUT",
+            outcome="PASS",
+            input_identity=event_identity,
+            output_identity=packet_identity,
+            label="SourcePacket",
+        )
         return packet
 
     def load_editor_review_bundle(self, workflow_identity: str) -> EditorReviewBundle:
         packet = self.load_source_packet(workflow_identity)
         with self.store.read() as connection:
             draft_rows = connection.execute(
-                "SELECT artifact_identity,payload_ref FROM workflow_artifacts "
+                "SELECT artifact_identity,payload_identity,payload_ref,schema_identity "
+                "FROM workflow_artifacts "
                 "WHERE workflow_identity=? AND artifact_kind='EDITOR_DRAFT'",
                 (workflow_identity,),
             ).fetchall()
@@ -172,6 +197,15 @@ class ProductOrchestrator:
             "EDITOR invocation",
         )
         validate_editor_draft(draft, source_packet=packet, invocation_receipt=invocation)
+        draft_identity = str(draft["draft_identity"])
+        expected_artifact = (
+            draft_identity,
+            draft_identity,
+            f"blobs/editor-drafts/{draft_identity}.json",
+            "vnext-editor-draft-v1",
+        )
+        if tuple(draft_rows[0]) != expected_artifact:
+            raise ProductOrchestratorError("EditorDraft artifact binding mismatch")
         with self.store.read() as connection:
             transitions = connection.execute(
                 "SELECT input_identity,output_identity FROM state_transitions "
@@ -209,6 +243,28 @@ class ProductOrchestrator:
                 )
             ):
                 raise ProductOrchestratorError("EDITOR retry authorization binding mismatch")
+        self._require_owned_transition(
+            workflow_identity=workflow_identity,
+            previous_state="EDITOR_PENDING",
+            resulting_state="EDITOR_DRAFT_READY",
+            operation_identity="editor:editor-draft",
+            actor="EDITOR",
+            outcome="PASS",
+            input_identity=transition_input,
+            output_identity=draft_identity,
+            label="EditorDraft",
+        )
+        self._require_owned_transition(
+            workflow_identity=workflow_identity,
+            previous_state="EDITOR_DRAFT_READY",
+            resulting_state="FACTUAL_REVIEW_PENDING",
+            operation_identity="editor:editor-structural-pass",
+            actor="EDITOR",
+            outcome="PASS",
+            input_identity=draft_identity,
+            output_identity=draft_identity,
+            label="EditorDraft factual review",
+        )
         return EditorReviewBundle(workflow_identity, packet, invocation, draft)
 
     def _require_owned_transition(

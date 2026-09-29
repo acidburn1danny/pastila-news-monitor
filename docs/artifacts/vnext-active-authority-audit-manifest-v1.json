@@ -23,8 +23,8 @@
     "src/pastila_scout/vnext_product_orchestrator_v1.py"
   ],
   "binding_semantics": "SUCCESSOR_OVER_BOUND_COMMIT",
-  "bound_commit": "58b89343deeb3852b0cdb1cb3d60ea41dd33d7e4",
-  "current_auditor": "scripts/audit_vnext_orchestrator_structural_factual_relational_ownership_v1.py",
+  "bound_commit": "dfdb2bf285b4e21ab16a39cc3740f08a5089b377",
+  "current_auditor": "scripts/audit_vnext_sourcepacket_editor_draft_relational_ownership_v1.py",
   "excluded_from_active_graph": [
     {
       "path": "src/pastila_scout/vnext_sourcepacket_binding_v1.py",
@@ -87,10 +87,16 @@
     {
       "commit": "58b89343",
       "path": "scripts/audit_vnext_orchestrator_retry_evidence_integrity_structural_routing_v1.py"
+    },
+    {
+      "commit": "dfdb2bf2",
+      "path": "scripts/audit_vnext_orchestrator_structural_factual_relational_ownership_v1.py"
     }
   ],
   "invariants": {
     "active_integration": false,
+    "editor_draft_relational_ownership": true,
+    "editor_to_factual_transition_ownership": true,
     "final_implemented": true,
     "legacy_dependency_count": 0,
     "orchestrator_factual_relational_ownership": true,
@@ -103,10 +109,11 @@
     "post_acceptance_policy_final_implemented": true,
     "product_lock_replaced": false,
     "product_orchestrator_implemented": true,
+    "source_packet_relational_ownership": true,
     "stop_all_candidates": true,
     "voice": "DISABLED_UNTIL_PROMOTION"
   },
-  "manifest_identity": "45d4816c6772daeb8c5de7f77dbb841a7619ec8ee05d745dcb5da2f2b9824537",
+  "manifest_identity": "f6db7c60e2badbc30c8f869b5910c78096f5e66a7622ad177dec61cf96e7418f",
   "schema": "vnext-active-authority-audit-manifest",
   "schema_version": 1,
   "status": "SUCCESSOR_ISOLATED_NOT_ACTIVE"

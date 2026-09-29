@@ -25,8 +25,8 @@ def test_active_manifest_is_content_addressed_and_has_one_current_auditor():
     assert value["manifest_identity"] == object_identity(
         {key: item for key, item in value.items() if key != "manifest_identity"}
     )
-    assert value["current_auditor"] == "scripts/audit_vnext_orchestrator_structural_factual_relational_ownership_v1.py"
-    assert len(value["historical_commit_only_auditors"]) == 12
+    assert value["current_auditor"] == "scripts/audit_vnext_sourcepacket_editor_draft_relational_ownership_v1.py"
+    assert len(value["historical_commit_only_auditors"]) == 13
     assert all(item["commit"] for item in value["historical_commit_only_auditors"])
 
 
