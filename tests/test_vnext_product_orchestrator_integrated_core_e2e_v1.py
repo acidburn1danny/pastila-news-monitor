@@ -9,7 +9,7 @@ from pastila_scout.vnext_editor_vertical_slice_v1 import (
     DECODING,
     GenerationEvidence,
 )
-from pastila_scout.vnext_foundation_v1 import object_identity
+from pastila_scout.vnext_foundation_v1 import BoundaryError, object_identity
 from pastila_scout.vnext_product_orchestrator_v1 import (
     FactualReviewInstruction,
     PolicyInstruction,
@@ -600,3 +600,165 @@ def test_structural_failure_cannot_be_accepted_as_draft(tmp_path):
             instruction=factual_instruction("ACCEPT_DRAFT"),
             observed_at="2026-09-29T10:01:00Z",
         )
+
+
+def _persisted_factual_bundle(tmp_path, *, structural, outcome="ABSTAIN"):
+    if structural:
+        store, orchestrator, review = structural_failure_bundle(tmp_path)
+        workflow_identity = "recovery-flow"
+    else:
+        store, orchestrator, review = prepare(tmp_path)
+        workflow_identity = "product-flow"
+    factual = orchestrator.apply_factual_review(
+        review,
+        instruction=factual_instruction(outcome),
+        observed_at="2026-09-29T11:00:00Z",
+    )
+    return store, orchestrator, factual, workflow_identity
+
+
+def _fault_transition(store, orchestrator, workflow_identity, previous_state, resulting_state, mode):
+    if mode == "missing":
+        with store.write() as connection:
+            connection.execute(
+                "DELETE FROM state_transitions WHERE workflow_identity=? "
+                "AND previous_state=? AND resulting_state=?",
+                (workflow_identity, previous_state, resulting_state),
+            )
+    elif mode == "duplicate":
+        with store.write() as connection:
+            connection.execute(
+                "INSERT INTO state_transitions("
+                "workflow_identity,receipt_identity,operation_identity,previous_state,"
+                "resulting_state,actor,outcome,input_identity,output_identity,"
+                "attempt_identity,idempotency_identity,receipt_json"
+                ") SELECT workflow_identity,?,operation_identity,previous_state,"
+                "resulting_state,actor,outcome,input_identity,output_identity,"
+                "attempt_identity,idempotency_identity,receipt_json "
+                "FROM state_transitions WHERE workflow_identity=? "
+                "AND previous_state=? AND resulting_state=?",
+                ("e" * 64, workflow_identity, previous_state, resulting_state),
+            )
+    elif mode == "altered":
+        with store.write() as connection:
+            connection.execute(
+                "UPDATE state_transitions SET output_identity=? WHERE workflow_identity=? "
+                "AND previous_state=? AND resulting_state=?",
+                ("d" * 64, workflow_identity, previous_state, resulting_state),
+            )
+    elif mode == "cross_workflow":
+        orchestrator.create_workflow("foreign-flow")
+        with store.write() as connection:
+            connection.execute(
+                "UPDATE state_transitions SET workflow_identity=? WHERE workflow_identity=? "
+                "AND previous_state=? AND resulting_state=?",
+                ("foreign-flow", workflow_identity, previous_state, resulting_state),
+            )
+    else:
+        raise AssertionError(mode)
+
+
+@pytest.mark.parametrize("mode", ("missing", "duplicate", "altered", "cross_workflow"))
+def test_structural_failure_transition_lineage_fails_closed(tmp_path, mode):
+    store, orchestrator, _ = structural_failure_bundle(tmp_path)
+    _fault_transition(
+        store, orchestrator, "recovery-flow",
+        "EDITOR_PENDING", "STRUCTURAL_FAIL", mode,
+    )
+    with pytest.raises(ProductOrchestratorError, match="structural failure transition"):
+        orchestrator.load_editor_failure_bundle("recovery-flow")
+
+
+@pytest.mark.parametrize("mode", ("missing", "duplicate", "altered", "cross_workflow"))
+def test_structural_failure_review_transition_lineage_fails_closed(tmp_path, mode):
+    store, orchestrator, _ = structural_failure_bundle(tmp_path)
+    _fault_transition(
+        store, orchestrator, "recovery-flow",
+        "STRUCTURAL_FAIL", "FACTUAL_REVIEW_PENDING", mode,
+    )
+    with pytest.raises(ProductOrchestratorError, match="structural failure review transition"):
+        orchestrator.load_editor_failure_bundle("recovery-flow")
+
+
+@pytest.mark.parametrize(
+    ("structural", "column", "value"),
+    (
+        (False, "input_identity", "a" * 64),
+        (False, "outcome", "APPROVE_SOURCE_FALLBACK"),
+        (False, "actor", "intruder"),
+        (False, "receipt_identity", "b" * 64),
+        (True, "input_identity", "a" * 64),
+        (True, "outcome", "APPROVE_SOURCE_FALLBACK"),
+        (True, "actor", "intruder"),
+        (True, "receipt_identity", "b" * 64),
+    ),
+)
+def test_factual_decision_row_drift_fails_closed(tmp_path, structural, column, value):
+    store, orchestrator, factual, workflow_identity = _persisted_factual_bundle(
+        tmp_path, structural=structural
+    )
+    with store.write() as connection:
+        connection.execute(
+            f"UPDATE decisions SET {column}=? WHERE decision_identity=?",
+            (value, factual.decision["decision_identity"]),
+        )
+    with pytest.raises(BoundaryError):
+        orchestrator.load_factual_result_bundle(workflow_identity)
+
+
+@pytest.mark.parametrize("structural", (False, True))
+@pytest.mark.parametrize("mode", ("missing", "duplicate", "altered", "cross_workflow"))
+def test_factual_transition_lineage_fails_closed(tmp_path, structural, mode):
+    store, orchestrator, factual, workflow_identity = _persisted_factual_bundle(
+        tmp_path, structural=structural
+    )
+    _fault_transition(
+        store, orchestrator, workflow_identity,
+        "FACTUAL_REVIEW_PENDING", str(factual.artifact["artifact_kind"]), mode,
+    )
+    with pytest.raises(ProductOrchestratorError, match="factual result transition"):
+        orchestrator.load_factual_result_bundle(workflow_identity)
+
+
+@pytest.mark.parametrize("structural", (False, True))
+@pytest.mark.parametrize(
+    ("column", "value"),
+    (("payload_identity", "c" * 64), ("schema_identity", "foreign-schema")),
+)
+def test_factual_artifact_row_drift_fails_closed(tmp_path, structural, column, value):
+    store, orchestrator, factual, workflow_identity = _persisted_factual_bundle(
+        tmp_path, structural=structural
+    )
+    with store.write() as connection:
+        connection.execute(
+            f"UPDATE workflow_artifacts SET {column}=? "
+            "WHERE workflow_identity=? AND artifact_identity=?",
+            (value, workflow_identity, factual.artifact["artifact_identity"]),
+        )
+    with pytest.raises(ProductOrchestratorError, match="factual artifact binding mismatch"):
+        orchestrator.load_factual_result_bundle(workflow_identity)
+
+
+@pytest.mark.parametrize("structural", (False, True))
+def test_factual_transition_decision_receipt_provenance_fails_closed(tmp_path, structural):
+    store, orchestrator, factual, workflow_identity = _persisted_factual_bundle(
+        tmp_path, structural=structural
+    )
+    with store.write() as connection:
+        row = connection.execute(
+            "SELECT receipt_identity,receipt_json FROM state_transitions "
+            "WHERE workflow_identity=? AND previous_state='FACTUAL_REVIEW_PENDING' "
+            "AND resulting_state=?",
+            (workflow_identity, factual.artifact["artifact_kind"]),
+        ).fetchone()
+        receipt = json.loads(row["receipt_json"])
+        receipt["provenance"]["decision_receipt_identity"] = "f" * 64
+        connection.execute(
+            "UPDATE state_transitions SET receipt_json=? WHERE receipt_identity=?",
+            (json.dumps(receipt, sort_keys=True, separators=(",", ":")), row["receipt_identity"]),
+        )
+    with pytest.raises(
+        ProductOrchestratorError,
+        match="factual result transition receipt provenance mismatch",
+    ):
+        orchestrator.load_factual_result_bundle(workflow_identity)

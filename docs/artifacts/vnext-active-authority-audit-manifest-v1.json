@@ -23,8 +23,8 @@
     "src/pastila_scout/vnext_product_orchestrator_v1.py"
   ],
   "binding_semantics": "SUCCESSOR_OVER_BOUND_COMMIT",
-  "bound_commit": "83d11754a3ff852aeaf68ee633dbab64e8eb69aa",
-  "current_auditor": "scripts/audit_vnext_orchestrator_retry_evidence_integrity_structural_routing_v1.py",
+  "bound_commit": "58b89343deeb3852b0cdb1cb3d60ea41dd33d7e4",
+  "current_auditor": "scripts/audit_vnext_orchestrator_structural_factual_relational_ownership_v1.py",
   "excluded_from_active_graph": [
     {
       "path": "src/pastila_scout/vnext_sourcepacket_binding_v1.py",
@@ -83,15 +83,21 @@
     {
       "commit": "83d1175",
       "path": "scripts/audit_vnext_product_orchestrator_state_aware_recovery_terminal_routing_v1.py"
+    },
+    {
+      "commit": "58b89343",
+      "path": "scripts/audit_vnext_orchestrator_retry_evidence_integrity_structural_routing_v1.py"
     }
   ],
   "invariants": {
     "active_integration": false,
     "final_implemented": true,
     "legacy_dependency_count": 0,
+    "orchestrator_factual_relational_ownership": true,
     "orchestrator_retry_evidence_integrity": true,
     "orchestrator_state_aware_recovery": true,
     "orchestrator_structural_failure_factual_routing": true,
+    "orchestrator_structural_transition_ownership": true,
     "orchestrator_terminal_routing": true,
     "policy_final_merged": true,
     "post_acceptance_policy_final_implemented": true,
@@ -100,7 +106,7 @@
     "stop_all_candidates": true,
     "voice": "DISABLED_UNTIL_PROMOTION"
   },
-  "manifest_identity": "d3fa5cd484143f054f4e776c014e243082715541b5942e821d3d9c200d43250f",
+  "manifest_identity": "45d4816c6772daeb8c5de7f77dbb841a7619ec8ee05d745dcb5da2f2b9824537",
   "schema": "vnext-active-authority-audit-manifest",
   "schema_version": 1,
   "status": "SUCCESSOR_ISOLATED_NOT_ACTIVE"

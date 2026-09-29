@@ -211,25 +211,118 @@ class ProductOrchestrator:
                 raise ProductOrchestratorError("EDITOR retry authorization binding mismatch")
         return EditorReviewBundle(workflow_identity, packet, invocation, draft)
 
+    def _require_owned_transition(
+        self,
+        *,
+        workflow_identity: str,
+        previous_state: str,
+        resulting_state: str,
+        operation_identity: str,
+        actor: str,
+        outcome: str,
+        input_identity: str,
+        output_identity: str,
+        label: str,
+    ) -> None:
+        with self.store.read() as connection:
+            rows = connection.execute(
+                "SELECT receipt_identity,operation_identity,previous_state,resulting_state,"
+                "actor,outcome,input_identity,output_identity,attempt_identity,"
+                "idempotency_identity,receipt_json FROM state_transitions "
+                "WHERE workflow_identity=? AND previous_state=? AND resulting_state=?",
+                (workflow_identity, previous_state, resulting_state),
+            ).fetchall()
+        if len(rows) != 1:
+            raise ProductOrchestratorError(f"{label} transition ownership is absent or ambiguous")
+        row = rows[0]
+        expected = {
+            "operation_identity": operation_identity,
+            "previous_state": previous_state,
+            "resulting_state": resulting_state,
+            "actor": actor,
+            "outcome": outcome,
+            "input_identity": input_identity,
+            "output_identity": output_identity,
+        }
+        if any(row[key] != value for key, value in expected.items()):
+            raise ProductOrchestratorError(f"{label} transition binding mismatch")
+        try:
+            receipt = json.loads(row["receipt_json"])
+        except (TypeError, json.JSONDecodeError) as exc:
+            raise ProductOrchestratorError(f"{label} transition receipt is invalid") from exc
+        receipt_expected = {
+            "workflow_identity": workflow_identity,
+            "receipt_identity": row["receipt_identity"],
+            "attempt_identity": row["attempt_identity"],
+            "idempotency_identity": row["idempotency_identity"],
+            **expected,
+        }
+        if (
+            not isinstance(receipt, dict)
+            or any(receipt.get(key) != value for key, value in receipt_expected.items())
+            or receipt.get("receipt_identity") != object_identity({
+                key: receipt.get(key) for key in (
+                    "schema", "schema_version", "workflow_identity",
+                    "operation_identity", "previous_state", "resulting_state",
+                    "actor", "outcome", "input_identity", "output_identity",
+                    "attempt_identity", "idempotency_identity",
+                )
+            })
+        ):
+            raise ProductOrchestratorError(f"{label} transition receipt binding mismatch")
+
     def load_editor_failure_bundle(self, workflow_identity: str) -> EditorFailureBundle:
         packet = self.load_source_packet(workflow_identity)
         with self.store.read() as connection:
             rows = connection.execute(
-                "SELECT payload_ref FROM workflow_artifacts "
+                "SELECT artifact_identity,payload_identity,payload_ref,schema_identity "
+                "FROM workflow_artifacts "
                 "WHERE workflow_identity=? AND artifact_kind='STRUCTURAL_FAILURE'",
                 (workflow_identity,),
             ).fetchall()
         if len(rows) != 1:
             raise ProductOrchestratorError("persisted structural failure is absent or ambiguous")
-        failure = self._load_json(str(rows[0]["payload_ref"]), "structural failure")
+        row = rows[0]
+        failure = self._load_json(str(row["payload_ref"]), "structural failure")
         validate_structural_failure(failure, packet=packet)
+        failure_identity = str(failure["failure_identity"])
+        expected_artifact = (
+            failure_identity,
+            failure_identity,
+            f"blobs/editor-failures/{failure_identity}.json",
+            "vnext-editor-structural-failure-v1",
+        )
+        if tuple(row) != expected_artifact:
+            raise ProductOrchestratorError("structural failure artifact binding mismatch")
+        self._require_owned_transition(
+            workflow_identity=workflow_identity,
+            previous_state="EDITOR_PENDING",
+            resulting_state="STRUCTURAL_FAIL",
+            operation_identity="editor:editor-structural-fail",
+            actor="EDITOR",
+            outcome="PASS",
+            input_identity=str(packet["packet_identity"]),
+            output_identity=failure_identity,
+            label="structural failure",
+        )
+        self._require_owned_transition(
+            workflow_identity=workflow_identity,
+            previous_state="STRUCTURAL_FAIL",
+            resulting_state="FACTUAL_REVIEW_PENDING",
+            operation_identity="editor:editor-failure-review",
+            actor="EDITOR",
+            outcome="PASS",
+            input_identity=failure_identity,
+            output_identity=failure_identity,
+            label="structural failure review",
+        )
         return EditorFailureBundle(workflow_identity, packet, failure)
 
     def load_factual_result_bundle(self, workflow_identity: str) -> FactualResultBundle:
         packet = self.load_source_packet(workflow_identity)
         with self.store.read() as connection:
             rows = connection.execute(
-                "SELECT artifact_identity,payload_ref FROM workflow_artifacts "
+                "SELECT artifact_identity,payload_identity,payload_ref,schema_identity FROM workflow_artifacts "
                 "WHERE workflow_identity=? AND artifact_kind IN ('ACCEPTED_SETUP','SOURCE_FALLBACK','ABSTAINED')",
                 (workflow_identity,),
             ).fetchall()
@@ -245,14 +338,16 @@ class ProductOrchestrator:
         )
         with self.store.read() as connection:
             decision_rows = connection.execute(
-                "SELECT receipt_identity FROM decisions "
+                "SELECT decision_identity,workflow_identity,decision_kind,outcome,actor,"
+                "input_identity,receipt_identity FROM decisions "
                 "WHERE workflow_identity=? AND decision_identity=? AND decision_kind='FACTUAL'",
                 (workflow_identity, decision_identity),
             ).fetchall()
         if len(decision_rows) != 1:
             raise ProductOrchestratorError("persisted factual decision is absent or ambiguous")
+        decision_row = decision_rows[0]
         receipt = self._load_json(
-            f"blobs/factual-receipts/{decision_rows[0]['receipt_identity']}.json",
+            f"blobs/factual-receipts/{decision_row['receipt_identity']}.json",
             "factual receipt",
         )
         review_kind = artifact.get("review_input_kind")
@@ -278,6 +373,50 @@ class ProductOrchestrator:
             invocation_receipt=invocation,
             structural_failure=structural_failure,
         )
+        expected_decision_row = (
+            decision["decision_identity"],
+            workflow_identity,
+            "FACTUAL",
+            decision["outcome"],
+            decision["actor"],
+            decision["input_identity"],
+            receipt["receipt_identity"],
+        )
+        if tuple(decision_row) != expected_decision_row:
+            raise ProductOrchestratorError("persisted factual decision binding mismatch")
+        artifact_identity = str(artifact["artifact_identity"])
+        expected_artifact_row = (
+            artifact_identity,
+            artifact_identity,
+            f"blobs/factual-outputs/{artifact_identity}.json",
+            "vnext-factual-output-v2",
+        )
+        if tuple(rows[0]) != expected_artifact_row:
+            raise ProductOrchestratorError("persisted factual artifact binding mismatch")
+        self._require_owned_transition(
+            workflow_identity=workflow_identity,
+            previous_state="FACTUAL_REVIEW_PENDING",
+            resulting_state=str(artifact["artifact_kind"]),
+            operation_identity="factual:adjudicate",
+            actor="FACTUAL_REVIEW",
+            outcome=str(decision["outcome"]),
+            input_identity=str(decision["input_identity"]),
+            output_identity=artifact_identity,
+            label="factual result",
+        )
+        with self.store.read() as connection:
+            transition_rows = connection.execute(
+                "SELECT receipt_json FROM state_transitions WHERE workflow_identity=? "
+                "AND previous_state='FACTUAL_REVIEW_PENDING' AND resulting_state=?",
+                (workflow_identity, artifact["artifact_kind"]),
+            ).fetchall()
+        transition_receipt = json.loads(transition_rows[0]["receipt_json"])
+        provenance = transition_receipt.get("provenance")
+        if (
+            not isinstance(provenance, dict)
+            or provenance.get("decision_receipt_identity") != receipt["receipt_identity"]
+        ):
+            raise ProductOrchestratorError("factual result transition receipt provenance mismatch")
         return FactualResultBundle(
             workflow_identity,
             packet,

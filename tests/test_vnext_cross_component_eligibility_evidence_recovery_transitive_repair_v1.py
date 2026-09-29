@@ -15,7 +15,7 @@ def test_authorities_and_transitive_auditor():
     manifest=load('vnext-active-authority-audit-manifest-v1.json')
     assert 'src/pastila_scout/vnext_r2_consolidation_binding_v1.py' in manifest['active_runtime_modules']
     assert SCHEMA_VERSION==6
-    run=subprocess.run([sys.executable,'scripts/audit_vnext_orchestrator_retry_evidence_integrity_structural_routing_v1.py'],check=True,capture_output=True,text=True)
+    run=subprocess.run([sys.executable,'scripts/audit_vnext_orchestrator_structural_factual_relational_ownership_v1.py'],check=True,capture_output=True,text=True)
     assert json.loads(run.stdout)['status']=='PASS'
 def test_draft_text_is_bound_to_parsed_evidence():
     fixture=load('vnext-critical-path-authority-repair-editor-vertical-slice-v1-fixture.json')

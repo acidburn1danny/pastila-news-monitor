@@ -1,0 +1,35 @@
+{
+  "authority": {
+    "factual_decision_row": "MUST_MATCH_IMMUTABLE_DECISION_RECEIPT_AND_INPUT",
+    "factual_transition": "EXACT_WORKFLOW_OWNED_FACTUAL_REVIEW_TRANSITION",
+    "structural_failure": "EXACT_TWO_TRANSITION_LINEAGE"
+  },
+  "base_commit": "58b89343deeb3852b0cdb1cb3d60ea41dd33d7e4",
+  "closure_identity": "fce5d239149434688a4276020ae61b99d7c61c6fd9db7ba10540ee2ea3d1c202",
+  "findings_closed": [
+    "STRUCTURAL_FAILURE_TRANSITION_LINEAGE_REQUIRED",
+    "STRUCTURAL_FAILURE_REVIEW_TRANSITION_LINEAGE_REQUIRED",
+    "FACTUAL_DECISION_ROW_FULL_BINDING_REQUIRED",
+    "FACTUAL_ARTIFACT_ROW_FULL_BINDING_REQUIRED",
+    "FACTUAL_TRANSITION_AND_DECISION_RECEIPT_PROVENANCE_REQUIRED",
+    "ABSENT_DUPLICATE_ALTERED_CROSS_WORKFLOW_FAIL_CLOSED"
+  ],
+  "invariants": {
+    "active_integration": false,
+    "audit_streak": "0/2",
+    "legacy_dependency_count": 0,
+    "product_lock_replaced": false,
+    "schema_version": 6,
+    "stop_all_candidates": true,
+    "voice": "DISABLED_UNTIL_PROMOTION"
+  },
+  "name": "VNext Orchestrator Structural & Factual Relational Ownership Integrity Repair v1",
+  "schema": "vnext-orchestrator-structural-factual-relational-ownership-integrity-repair",
+  "schema_version": 1,
+  "status": "PASS",
+  "validation": {
+    "dedicated_fault_injection": "54_PASS",
+    "self_contained_auditor": "PASS",
+    "suite": "164_PASS"
+  }
+}
