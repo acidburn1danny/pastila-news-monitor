@@ -28,8 +28,8 @@
     "src/pastila_scout/vnext_product_orchestrator_v1.py"
   ],
   "binding_semantics": "SUCCESSOR_OVER_BOUND_COMMIT",
-  "bound_commit": "439b39fa671df22ab7fbc69e4818a9d35e3a6976",
-  "current_auditor": "scripts/audit_vnext_scout_source_set_disposition_integrity_repair_v1.py",
+  "bound_commit": "823f11b335768e2b9fc2833f6fcb41bdbc0590e8",
+  "current_auditor": "scripts/audit_vnext_scout_capture_uniqueness_no_eligible_repair_v1.py",
   "excluded_from_active_graph": [
     {
       "path": "src/pastila_scout/vnext_sourcepacket_binding_v1.py",
@@ -120,6 +120,10 @@
     {
       "commit": "439b39fa",
       "path": "scripts/audit_vnext_scout_capture_batch_grouping_transitive_lineage_repair_v1.py"
+    },
+    {
+      "commit": "823f11b3",
+      "path": "scripts/audit_vnext_scout_source_set_disposition_integrity_repair_v1.py"
     }
   ],
   "invariants": {
@@ -127,6 +131,8 @@
     "canonical_source_packet": true,
     "canonical_workflow_transition_recovery": true,
     "capture_batch_content_addressed_authority": true,
+    "capture_disposition_issuance_recovery_equivalence": true,
+    "capture_identity_uniqueness_at_issuance": true,
     "capture_provenance_source_definition_binding": true,
     "capture_to_grouping_transitive_lineage": true,
     "editor_draft_relational_ownership": true,
@@ -140,6 +146,7 @@
     "global_event_cross_workflow_reuse": true,
     "grouping_transition_relational_ownership": true,
     "legacy_dependency_count": 0,
+    "no_eligible_distinct_from_capture_failure": true,
     "orchestrator_factual_relational_ownership": true,
     "orchestrator_retry_evidence_integrity": true,
     "orchestrator_state_aware_recovery": true,
@@ -155,13 +162,14 @@
     "product_lock_replaced": false,
     "product_orchestrator_implemented": true,
     "selection_transition_relational_ownership": true,
+    "source_maximum_articles_enforced": true,
     "source_packet_relational_ownership": true,
     "stop_all_candidates": true,
     "validated_typed_source_set_authority": true,
     "voice": "DISABLED_UNTIL_PROMOTION",
     "workflow_event_relational_ownership": true
   },
-  "manifest_identity": "360ceabf19b7b08a920d120f339970b9dea25c744fca71ce64aeb0567a652485",
+  "manifest_identity": "7e11419805da602246788ce5a917b07cb82547525b00193b3817c7a46cd5cc78",
   "schema": "vnext-active-authority-audit-manifest",
   "schema_version": 1,
   "status": "SUCCESSOR_ISOLATED_NOT_ACTIVE"

@@ -1,0 +1,57 @@
+{
+  "authority": {
+    "capture_reconciliation": "SHARED_ISSUANCE_AND_RECOVERY",
+    "manifest_identity": "7e11419805da602246788ce5a917b07cb82547525b00193b3817c7a46cd5cc78",
+    "schema_migration": false,
+    "sqlite_v7_identity": "d84e8d4a8dd3c9866d1014ab80f94d2ca988cb5cb0be69ce26cfb304fee48e14"
+  },
+  "blocker_closure": {
+    "duplicate_capture_identity": {
+      "repair": "REJECT_DUPLICATE_CAPTURE_IDENTITY_BEFORE_ANY_PERSISTENCE",
+      "root_cause": "CAPTURE_SEQUENCE_WAS_COUNTED_BEFORE_ARTICLE_REFERENCES_COLLAPSED_DUPLICATE_IDENTITIES",
+      "status": "CLOSED"
+    },
+    "issuance_recovery_semantic_drift": {
+      "repair": "ONE_SHARED_RECONCILIATION_FUNCTION_WITH_MAXIMUM_AND_FAILURE_VALIDATION",
+      "root_cause": "ISSUANCE_AND_RECOVERY_USED_SEPARATE_DISPOSITION_LOGIC",
+      "status": "CLOSED"
+    },
+    "unreachable_no_eligible": {
+      "repair": "VALID_EMPTY_FEED_RETURNS_EMPTY_CAPTURE_WITHOUT_FAILURE",
+      "root_cause": "VALID_EMPTY_FEED_WAS_RAISED_AS_FEED_PARSE_FAILURE",
+      "status": "CLOSED"
+    }
+  },
+  "bound_commit": "823f11b335768e2b9fc2833f6fcb41bdbc0590e8",
+  "closure_identity": "4ab130b6cdf1e965a6b186a4a5a2418a4de02ce8905fbef7419228e74f5fd4e2",
+  "fault_injection": {
+    "captured_and_failed_conflict": true,
+    "downstream_recovery": true,
+    "duplicate_capture_identity": true,
+    "duplicate_failure": true,
+    "extra_failure": true,
+    "invalid_failure_shape": true,
+    "invalid_feed": true,
+    "maximum_articles": true,
+    "mixed_three_dispositions": true,
+    "terminal_recovery": true,
+    "valid_empty_feed": true
+  },
+  "invariants": {
+    "active_integration": false,
+    "audit_streak": "0/2",
+    "legacy_dependency_count": 0,
+    "product_lock_replaced": false,
+    "stop_all_candidates": true,
+    "voice": "DISABLED_UNTIL_PROMOTION"
+  },
+  "schema": "vnext-scout-capture-uniqueness-no-eligible-repair",
+  "schema_version": 1,
+  "status": "SUCCESSOR_ISOLATED_NOT_ACTIVE",
+  "validation": {
+    "dedicated": "14_PASS",
+    "self_contained_auditor": "PASS",
+    "vnext_suite": "371_PASS"
+  },
+  "verdict": "PASS"
+}

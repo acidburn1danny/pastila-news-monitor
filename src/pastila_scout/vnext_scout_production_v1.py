@@ -402,8 +402,6 @@ def parse_feed(source: SourceDefinition, response: FetchResponse, captured_at: s
         ))
         if len(articles) >= source.maximum_articles:
             break
-    if not articles:
-        raise FeedParseError("feed has no valid title/link entries")
     return tuple(articles)
 
 
@@ -500,6 +498,62 @@ def _publish_immutable(root: Path, relative: Path, value: Mapping[str, object]) 
     return relative.as_posix()
 
 
+def _reconcile_source_dispositions(
+    definitions: Sequence[SourceDefinition],
+    capture_source_identities: Sequence[str],
+    failures: Sequence[Mapping[str, object]],
+) -> list[dict[str, object]]:
+    by_source = {item.source_id: item for item in definitions}
+    counts = {source_id: 0 for source_id in by_source}
+    for source_id in capture_source_identities:
+        if source_id not in by_source:
+            raise SourceConfigError("capture source is outside validated SourceSet")
+        counts[source_id] += 1
+        if counts[source_id] > by_source[source_id].maximum_articles:
+            raise SourceConfigError("capture count exceeds SourceDefinition maximum_articles")
+
+    failures_by_source: dict[str, Mapping[str, object]] = {}
+    for failure in failures:
+        if (
+            set(failure) != {"source_identity", "failure_class", "detail"}
+            or not isinstance(failure.get("source_identity"), str)
+            or not isinstance(failure.get("failure_class"), str)
+            or not failure["failure_class"]
+            or not isinstance(failure.get("detail"), str)
+        ):
+            raise SourceConfigError("capture failure record is invalid")
+        source_id = str(failure["source_identity"])
+        if source_id not in by_source or source_id in failures_by_source:
+            raise SourceConfigError("capture failures conflict with validated SourceSet")
+        failures_by_source[source_id] = failure
+
+    dispositions: list[dict[str, object]] = []
+    for source_id in by_source:
+        if counts[source_id] and source_id in failures_by_source:
+            raise SourceConfigError("source cannot be captured and failed")
+        if counts[source_id]:
+            disposition = {
+                "source_identity": source_id,
+                "outcome": "CAPTURED",
+                "article_count": counts[source_id],
+            }
+        elif source_id in failures_by_source:
+            disposition = {
+                "source_identity": source_id,
+                "outcome": "CAPTURE_FAILED",
+                "article_count": 0,
+                "failure_class": failures_by_source[source_id]["failure_class"],
+            }
+        else:
+            disposition = {
+                "source_identity": source_id,
+                "outcome": "NO_ELIGIBLE_ENTRIES",
+                "article_count": 0,
+            }
+        dispositions.append(disposition)
+    return dispositions
+
+
 def persist_capture_and_grouping(
     store: SQLiteStateStore,
     *,
@@ -515,13 +569,10 @@ def persist_capture_and_grouping(
     if reproduced != source_set:
         raise SourceConfigError("SourceSet value is not canonical")
     sources_identity = source_set.source_set_identity
-    source_set_reference = _publish_immutable(
-        store.root,
-        Path("blobs/source-sets") / f"{sources_identity}.json",
-        source_set.canonical_document,
-    )
     definitions = {item.source_id: item for item in source_set.definitions}
-    article_counts = {source_id: 0 for source_id in definitions}
+    capture_identities = [item.capture_identity for item in articles]
+    if len(capture_identities) != len(set(capture_identities)):
+        raise SourceConfigError("duplicate capture_identity")
     for article in articles:
         definition = definitions.get(article.source_identity)
         if definition is None:
@@ -532,21 +583,17 @@ def persist_capture_and_grouping(
             or article.categories != definition.categories
         ):
             raise SourceConfigError("capture provenance conflicts with SourceDefinition")
-        article_counts[article.source_identity] += 1
-    failures_by_source = {item.source_identity: item for item in failures}
-    if len(failures_by_source) != len(failures) or not set(failures_by_source) <= set(definitions):
-        raise SourceConfigError("capture failures conflict with validated SourceSet")
-    dispositions = []
-    for source_id in definitions:
-        if article_counts[source_id] and source_id in failures_by_source:
-            raise SourceConfigError("source cannot be captured and failed")
-        if article_counts[source_id]:
-            disposition = {"source_identity": source_id, "outcome": "CAPTURED", "article_count": article_counts[source_id]}
-        elif source_id in failures_by_source:
-            disposition = {"source_identity": source_id, "outcome": "CAPTURE_FAILED", "article_count": 0, "failure_class": failures_by_source[source_id].failure_class}
-        else:
-            disposition = {"source_identity": source_id, "outcome": "NO_ELIGIBLE_ENTRIES", "article_count": 0}
-        dispositions.append(disposition)
+    failure_records = [asdict(item) for item in failures]
+    dispositions = _reconcile_source_dispositions(
+        source_set.definitions,
+        [item.source_identity for item in articles],
+        failure_records,
+    )
+    source_set_reference = _publish_immutable(
+        store.root,
+        Path("blobs/source-sets") / f"{sources_identity}.json",
+        source_set.canonical_document,
+    )
     references = {}
     for article in articles:
         references[article.capture_identity] = _publish_immutable(
@@ -561,7 +608,7 @@ def persist_capture_and_grouping(
         "source_set_reference": source_set_reference,
         "article_references": dict(sorted(references.items())),
         "source_dispositions": dispositions,
-        "failures": [asdict(item) for item in failures],
+        "failures": failure_records,
     }
     batch_identity = object_identity(batch)
     batch["batch_identity"] = batch_identity
@@ -910,20 +957,17 @@ def validate_workflow_event_membership(
             or capture.get("categories") != list(definition.categories)
         ):
             raise ScoutError("capture payload SourceDefinition binding mismatch")
-    counts = {source_id: 0 for source_id in definitions}
+    capture_source_identities = []
     for capture_identity in expected_captures:
-        capture = json.loads((store.root / str(references[capture_identity])).read_text(encoding="utf-8"))
-        counts[str(capture["source_identity"])] += 1
-    failures_by_source = {str(item.get("source_identity")): item for item in batch["failures"]}
-    expected_dispositions = []
-    for source_id in definitions:
-        if counts[source_id]:
-            item = {"source_identity": source_id, "outcome": "CAPTURED", "article_count": counts[source_id]}
-        elif source_id in failures_by_source:
-            item = {"source_identity": source_id, "outcome": "CAPTURE_FAILED", "article_count": 0, "failure_class": failures_by_source[source_id].get("failure_class")}
-        else:
-            item = {"source_identity": source_id, "outcome": "NO_ELIGIBLE_ENTRIES", "article_count": 0}
-        expected_dispositions.append(item)
+        capture = json.loads(
+            (store.root / str(references[capture_identity])).read_text(encoding="utf-8")
+        )
+        capture_source_identities.append(str(capture["source_identity"]))
+    expected_dispositions = _reconcile_source_dispositions(
+        source_set.definitions,
+        capture_source_identities,
+        batch["failures"],
+    )
     if dispositions != expected_dispositions:
         raise ScoutError("SourceSet disposition binding mismatch")
 
