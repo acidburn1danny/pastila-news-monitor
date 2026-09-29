@@ -97,11 +97,17 @@ def test_real_scout_production_fixture_reaches_frozen_packet(tmp_path: Path):
     store.bootstrap(); store.create_workflow("workflow-binding")
     groups = persist_capture_and_grouping(store, workflow_identity="workflow-binding", sources_identity="sources:fixture", articles=articles, failures=failures, observed_at=value["captured_at"])
     selected = next(group for group in groups if len(group.captures) == 2)
-    source = build_source_packet(store, workflow_identity="workflow-binding", event_identity=selected.event_identity, observed_at=value["captured_at"])
-    bound = bind_source_packet(source)
-    validate_bound_source_packet(bound)
-    assert bound["source_count"] == 2
-    assert {item["source_id"] for item in bound["spans"]} == {item.source_identity for item in selected.captures}
+    source = build_source_packet(
+        store,
+        workflow_identity="workflow-binding",
+        event_identity=selected.event_identity,
+        selection_actor="Daniel",
+        selection_authorization_identity="a" * 64,
+        observed_at=value["captured_at"],
+    )
+    assert source["selection_authority"] == "EXPLICIT_USER_EVENT_ID"
+    with pytest.raises(SourcePacketBindingError):
+        bind_source_packet(source)
     assert store.load_workflow("workflow-binding")["state"] == "SOURCE_PACKET_READY"
 
 

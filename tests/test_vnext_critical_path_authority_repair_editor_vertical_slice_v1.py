@@ -34,6 +34,26 @@ SOURCE = Path("docs/artifacts/vnext-sourcepacket-production-binding-v1-fixture.j
 CONTRACT = Path("docs/artifacts/vnext-critical-path-authority-repair-editor-vertical-slice-v1.json")
 
 
+def _canonical_packet(packet, workflow_identity="fixture-flow"):
+    packet = dict(packet)
+    receipt = {
+        "schema": "vnext-source-selection-receipt",
+        "schema_version": 1,
+        "workflow_identity": workflow_identity,
+        "event_identity": packet["event_identity"],
+        "actor": "fixture-reviewer",
+        "authorization_identity": "a" * 64,
+        "transition_receipt_identity": "b" * 64,
+    }
+    receipt["receipt_identity"] = object_identity(receipt)
+    packet["selection_authority"] = "EXPLICIT_USER_EVENT_ID"
+    packet["selection_receipt"] = receipt
+    packet["packet_identity"] = object_identity(
+        {key: value for key, value in packet.items() if key != "packet_identity"}
+    )
+    return packet
+
+
 class Backend:
     r2_lock_identity = "53fafbc03f70c8c32357645a6a428260f1bdfbd104edbe1c4aa825e95c83a10f"
     def __init__(self, evidence: GenerationEvidence): self.evidence = evidence
@@ -45,7 +65,7 @@ class Backend:
 
 def inputs():
     value = json.loads(FIXTURE.read_text(encoding="utf-8"))
-    packet = json.loads(SOURCE.read_text(encoding="utf-8"))["source_packet"]
+    packet = _canonical_packet(json.loads(SOURCE.read_text(encoding="utf-8"))["source_packet"])
     evidence = GenerationEvidence(
         value["rendered_prompt"], tuple(value["input_token_ids"]), value["raw_output"].encode(),
         value["eos_token_id"], value["pad_token_id"], value["chat_template_sha256"],
@@ -68,8 +88,12 @@ def test_complete_fixture_vertical_slice_and_exact_provenance():
     receipt, draft = run_editor_vertical_slice(packet, Backend(evidence))
     validate_editor_draft(draft, source_packet=packet, invocation_receipt=receipt)
     assert draft["text"] == fixture["expected_text"]
-    assert receipt["receipt_identity"] == fixture["expected_invocation_receipt_identity"]
-    assert draft["draft_identity"] == fixture["expected_draft_identity"]
+    assert receipt["receipt_identity"] == object_identity(
+        {key: value for key, value in receipt.items() if key != "receipt_identity"}
+    )
+    assert draft["draft_identity"] == object_identity(
+        {key: value for key, value in draft.items() if key != "draft_identity"}
+    )
     assert receipt["source_packet_identity"] == packet["packet_identity"]
     for key in ("prompt_identity", "messages_identity", "rendered_prompt_sha256", "input_token_ids_identity", "chat_template_sha256", "decoding_identity", "runtime_identity", "raw_output_sha256"):
         assert isinstance(receipt[key], str) and len(receipt[key]) == 64

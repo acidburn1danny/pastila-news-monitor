@@ -1,0 +1,48 @@
+{
+  "blocker_closure": {
+    "authority_escalation": {
+      "repair": "CONTENT_ADDRESSED_SELECTION_RECEIPT_BOUND_TO_WORKFLOW_EVENT_ACTOR_AUTHORIZATION_AND_GROUPED_TO_SELECTED_TRANSITION",
+      "root_cause": "EXPLICIT_EVENT_ID_WAS_RELABELLED_EXPLICIT_USER_EVENT_ID_WITHOUT_SELECTION_EVIDENCE",
+      "status": "CLOSED"
+    },
+    "selection_recovery_gap": {
+      "repair": "EXACT_GROUPED_TO_SELECTED_ROW_RECEIPT_AND_PERSISTED_SELECTION_BLOB_VALIDATION",
+      "root_cause": "SOURCE_PACKET_RECOVERY_VALIDATED_ONLY_SELECTED_TO_SOURCE_PACKET_READY",
+      "status": "CLOSED"
+    }
+  },
+  "bound_commit": "07c8c4cbc7b050343a51f1be4bbb3c8d7f478c28",
+  "canonicalization": {
+    "active_packet_schema": "vnext-source-packet",
+    "authority_identity": "715214775e65aa13138670349d79c568c87261cd7c1db48f778df78584f388e8",
+    "frozen_historical_evidence_modified": false,
+    "historical_adapter_active": false,
+    "selection_authority": "EXPLICIT_USER_EVENT_ID"
+  },
+  "closure_identity": "a3ddba9917bc06ef8d5c03e5f7425bf3e3b50da38eda38917aed7bf7c6bbf824",
+  "fault_injection": {
+    "absent": true,
+    "altered": true,
+    "cross_workflow": true,
+    "duplicate": true,
+    "terminal_rehydration": true
+  },
+  "invariants": {
+    "active_integration": false,
+    "audit_streak": "0/2",
+    "legacy_dependency_count": 0,
+    "product_lock_replaced": false,
+    "schema_changed": false,
+    "stop_all_candidates": true,
+    "voice": "DISABLED_UNTIL_PROMOTION"
+  },
+  "schema": "vnext-source-selection-authority-canonical-sourcepacket-repair",
+  "schema_version": 1,
+  "status": "SUCCESSOR_ISOLATED_NOT_ACTIVE",
+  "validation": {
+    "dedicated": "10_PASS",
+    "self_contained_auditor": "PASS",
+    "vnext_suite": "310_PASS"
+  },
+  "verdict": "PASS"
+}

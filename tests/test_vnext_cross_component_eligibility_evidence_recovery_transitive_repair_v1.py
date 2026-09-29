@@ -9,17 +9,37 @@ from pastila_scout.vnext_r2_consolidation_binding_v1 import EXPECTED_LOCK_IDENTI
 ART=Path('docs/artifacts')
 
 def load(name): return json.loads((ART/name).read_text(encoding='utf-8'))
+
+def _canonical_packet(packet, workflow_identity="fixture-flow"):
+    packet = dict(packet)
+    receipt = {
+        "schema": "vnext-source-selection-receipt",
+        "schema_version": 1,
+        "workflow_identity": workflow_identity,
+        "event_identity": packet["event_identity"],
+        "actor": "fixture-reviewer",
+        "authorization_identity": "a" * 64,
+        "transition_receipt_identity": "b" * 64,
+    }
+    receipt["receipt_identity"] = object_identity(receipt)
+    packet["selection_authority"] = "EXPLICIT_USER_EVENT_ID"
+    packet["selection_receipt"] = receipt
+    packet["packet_identity"] = object_identity(
+        {key: value for key, value in packet.items() if key != "packet_identity"}
+    )
+    return packet
+
 def test_authorities_and_transitive_auditor():
     for name,key in (('vnext-consolidated-operational-state-sqlite-boundary-v6-contract.json','authority_identity'),('vnext-active-authority-audit-manifest-v1.json','manifest_identity'),('vnext-cross-component-eligibility-evidence-recovery-transitive-repair-v1.json','closure_identity')):
         value=load(name); assert value[key]==object_identity({k:v for k,v in value.items() if k!=key})
     manifest=load('vnext-active-authority-audit-manifest-v1.json')
     assert 'src/pastila_scout/vnext_r2_consolidation_binding_v1.py' in manifest['active_runtime_modules']
     assert SCHEMA_VERSION==6
-    run=subprocess.run([sys.executable,'scripts/audit_vnext_factual_review_policy_entry_relational_ownership_v1.py'],check=True,capture_output=True,text=True)
+    run=subprocess.run([sys.executable,'scripts/audit_vnext_source_selection_authority_canonical_sourcepacket_repair_v1.py'],check=True,capture_output=True,text=True)
     assert json.loads(run.stdout)['status']=='PASS'
 def test_draft_text_is_bound_to_parsed_evidence():
     fixture=load('vnext-critical-path-authority-repair-editor-vertical-slice-v1-fixture.json')
-    packet=load('vnext-sourcepacket-production-binding-v1-fixture.json')['source_packet']
+    packet=_canonical_packet(load('vnext-sourcepacket-production-binding-v1-fixture.json')['source_packet'])
     evidence=GenerationEvidence(fixture['rendered_prompt'],tuple(fixture['input_token_ids']),fixture['raw_output'].encode(),fixture['eos_token_id'],fixture['pad_token_id'],fixture['chat_template_sha256'])
     class Backend:
         r2_lock_identity=EXPECTED_LOCK_IDENTITY

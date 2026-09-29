@@ -6,7 +6,7 @@ from collections.abc import Mapping
 
 from .vnext_foundation_v1 import BoundaryError, object_identity, sha256_bytes
 from .vnext_scout_production_v1 import (
-    validate_scout_packet as _validate_canonical_scout_packet,
+    _validate_legacy_scout_packet as _validate_canonical_scout_packet,
 )
 
 SOURCE_SCHEMA = "vnext-source-packet"

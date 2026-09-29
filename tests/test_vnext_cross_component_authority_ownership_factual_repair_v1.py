@@ -31,6 +31,26 @@ AUTHORITY = Path("docs/artifacts/vnext-active-product-workflow-state-contract-v3
 FIXTURE = Path("docs/artifacts/vnext-cross-component-authority-ownership-factual-repair-v1-fixture.json")
 
 
+def _canonical_packet(packet, workflow_identity="fixture-flow"):
+    packet = dict(packet)
+    receipt = {
+        "schema": "vnext-source-selection-receipt",
+        "schema_version": 1,
+        "workflow_identity": workflow_identity,
+        "event_identity": packet["event_identity"],
+        "actor": "fixture-reviewer",
+        "authorization_identity": "a" * 64,
+        "transition_receipt_identity": "b" * 64,
+    }
+    receipt["receipt_identity"] = object_identity(receipt)
+    packet["selection_authority"] = "EXPLICIT_USER_EVENT_ID"
+    packet["selection_receipt"] = receipt
+    packet["packet_identity"] = object_identity(
+        {key: value for key, value in packet.items() if key != "packet_identity"}
+    )
+    return packet
+
+
 class Backend:
     r2_lock_identity = "53fafbc03f70c8c32357645a6a428260f1bdfbd104edbe1c4aa825e95c83a10f"
     def __init__(self, evidence): self.evidence = evidence
@@ -38,7 +58,7 @@ class Backend:
 
 
 def inputs():
-    editor = json.loads(EDITOR.read_text(encoding="utf-8")); packet = json.loads(SOURCE.read_text(encoding="utf-8"))["source_packet"]
+    editor = json.loads(EDITOR.read_text(encoding="utf-8")); packet = _canonical_packet(json.loads(SOURCE.read_text(encoding="utf-8"))["source_packet"])
     evidence = GenerationEvidence(editor["rendered_prompt"], tuple(editor["input_token_ids"]), editor["raw_output"].encode(), editor["eos_token_id"], editor["pad_token_id"], editor["chat_template_sha256"])
     invocation, draft = run_editor_vertical_slice(packet, Backend(evidence))
     failure = build_structural_failure(packet, failure_code="STRICT_JSON_INVALID", evidence_identity="a" * 64)

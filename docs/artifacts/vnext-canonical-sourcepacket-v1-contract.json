@@ -1,0 +1,42 @@
+{
+  "active_runtime_module": "src/pastila_scout/vnext_scout_production_v1.py",
+  "authority_identity": "715214775e65aa13138670349d79c568c87261cd7c1db48f778df78584f388e8",
+  "historical_adapter_active": false,
+  "legacy_dependency_count": 0,
+  "packet_schema": "vnext-source-packet",
+  "packet_schema_version": 1,
+  "schema": "vnext-canonical-sourcepacket-contract",
+  "schema_version": 1,
+  "selection_authority": "EXPLICIT_USER_EVENT_ID",
+  "selection_receipt": {
+    "content_addressed": true,
+    "embedded_in_source_packet": true,
+    "persisted_immutable": true,
+    "required_binding": [
+      "workflow_identity",
+      "event_identity",
+      "actor",
+      "authorization_identity",
+      "transition_receipt_identity"
+    ],
+    "required_transition": "GROUPED_TO_SELECTED",
+    "schema": "vnext-source-selection-receipt",
+    "schema_version": 1
+  },
+  "source_authority": {
+    "required_provenance": [
+      "source_identity",
+      "source_name",
+      "source_feed_url",
+      "article_url",
+      "title",
+      "published_at",
+      "captured_at",
+      "capture_identity",
+      "text_sha256",
+      "text_bytes"
+    ],
+    "self_contained": true
+  },
+  "status": "SUCCESSOR_ISOLATED_NOT_ACTIVE"
+}

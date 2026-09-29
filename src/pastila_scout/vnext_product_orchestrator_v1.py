@@ -152,10 +152,30 @@ class ProductOrchestrator:
             raise ProductOrchestratorError("persisted SourcePacket ownership is absent or ambiguous")
         row = rows[0]
         packet = self._load_json(str(row["payload_ref"]), "SourcePacket")
-        from .vnext_scout_production_v1 import validate_scout_packet
+        from .vnext_scout_production_v1 import (
+            validate_scout_packet,
+            validate_selection_receipt,
+        )
         validate_scout_packet(packet)
         packet_identity = str(packet["packet_identity"])
         event_identity = str(packet["event_identity"])
+        selection_receipt = packet.get("selection_receipt")
+        if not isinstance(selection_receipt, Mapping):
+            raise ProductOrchestratorError("SourcePacket selection authority is missing")
+        try:
+            validate_selection_receipt(
+                selection_receipt,
+                event_identity=event_identity,
+                workflow_identity=workflow_identity,
+            )
+        except BoundaryError as exc:
+            raise ProductOrchestratorError(str(exc)) from exc
+        persisted_selection = self._load_json(
+            f"blobs/source-selections/{selection_receipt['receipt_identity']}.json",
+            "source selection receipt",
+        )
+        if persisted_selection != selection_receipt:
+            raise ProductOrchestratorError("SourcePacket selection receipt persistence mismatch")
         expected_row = (
             packet_identity,
             event_identity,
@@ -164,6 +184,24 @@ class ProductOrchestrator:
         )
         if tuple(row) != expected_row:
             raise ProductOrchestratorError("SourcePacket row binding mismatch")
+        selection_transition = self._require_owned_transition(
+            workflow_identity=workflow_identity,
+            previous_state="GROUPED",
+            resulting_state="SELECTED",
+            operation_identity="scout:select",
+            actor=str(selection_receipt["actor"]),
+            outcome="PASS",
+            input_identity=event_identity,
+            output_identity=event_identity,
+            label="explicit source selection",
+        )
+        if (
+            selection_receipt.get("transition_receipt_identity")
+            != selection_transition.get("receipt_identity")
+        ):
+            raise ProductOrchestratorError(
+                "SourcePacket selection transition receipt binding mismatch"
+            )
         self._require_owned_transition(
             workflow_identity=workflow_identity,
             previous_state="SELECTED",
@@ -279,7 +317,7 @@ class ProductOrchestrator:
         input_identity: str,
         output_identity: str | None,
         label: str,
-    ) -> None:
+    ) -> dict[str, object]:
         with self.store.read() as connection:
             rows = connection.execute(
                 "SELECT receipt_identity,operation_identity,previous_state,resulting_state,"
@@ -326,6 +364,7 @@ class ProductOrchestrator:
             })
         ):
             raise ProductOrchestratorError(f"{label} transition receipt binding mismatch")
+        return receipt
 
     def load_editor_failure_bundle(self, workflow_identity: str) -> EditorFailureBundle:
         packet = self.load_source_packet(workflow_identity)
@@ -594,6 +633,8 @@ class ProductOrchestrator:
         *,
         workflow_identity: str,
         selected_event_identity: str,
+        selection_actor: str,
+        selection_authorization_identity: str,
         backend: R2Backend,
         source_packet_observed_at: str,
         editor_observed_at: str,
@@ -604,6 +645,8 @@ class ProductOrchestrator:
                 self.store,
                 workflow_identity=workflow_identity,
                 event_identity=selected_event_identity,
+                selection_actor=selection_actor,
+                selection_authorization_identity=selection_authorization_identity,
                 observed_at=source_packet_observed_at,
             )
         elif state in {"SOURCE_PACKET_READY", "EDITOR_PENDING"}:

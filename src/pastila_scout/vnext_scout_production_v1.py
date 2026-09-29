@@ -100,8 +100,8 @@ class EventGroup:
 Transport = Callable[[SourceDefinition, float], FetchResponse]
 
 
-def validate_scout_packet(packet: Mapping[str, object]) -> tuple[Mapping[str, object], ...]:
-    """Validate the one canonical VNext SourcePacket emitted by SCOUT."""
+def _validate_legacy_scout_packet(packet: Mapping[str, object]) -> tuple[Mapping[str, object], ...]:
+    """Validate the historical pre-selection-receipt packet for frozen evidence only."""
     if packet.get("schema") != "vnext-source-packet" or packet.get("schema_version") != SCHEMA_VERSION:
         raise ScoutError("SourcePacket schema mismatch")
     if packet.get("selection_authority") != "EXPLICIT_EVENT_ID" or packet.get("completeness") != "ONE_BEST_CAPTURE_PER_GROUPED_SOURCE":
@@ -136,6 +136,64 @@ def validate_scout_packet(packet: Mapping[str, object]) -> tuple[Mapping[str, ob
             if not isinstance(span.get(key), str) or not span[key]:
                 raise ScoutError(f"SourcePacket {key} missing")
     return tuple(spans)
+
+
+def validate_selection_receipt(
+    receipt: Mapping[str, object],
+    *,
+    event_identity: str,
+    workflow_identity: str | None = None,
+) -> None:
+    """Validate the minimal content-addressed authority for explicit user selection."""
+    required = {
+        "schema", "schema_version", "workflow_identity", "event_identity", "actor",
+        "authorization_identity", "transition_receipt_identity", "receipt_identity",
+    }
+    if set(receipt) != required:
+        raise ScoutError("selection receipt shape mismatch")
+    if receipt.get("schema") != "vnext-source-selection-receipt" or receipt.get("schema_version") != 1:
+        raise ScoutError("selection receipt schema mismatch")
+    if receipt.get("event_identity") != event_identity:
+        raise ScoutError("selection receipt event mismatch")
+    if workflow_identity is not None and receipt.get("workflow_identity") != workflow_identity:
+        raise ScoutError("selection receipt workflow mismatch")
+    for key in ("workflow_identity", "actor"):
+        if not isinstance(receipt.get(key), str) or not str(receipt[key]).strip():
+            raise ScoutError(f"selection receipt {key} missing")
+    for key in ("authorization_identity", "transition_receipt_identity", "receipt_identity"):
+        if not isinstance(receipt.get(key), str) or _SHA256.fullmatch(str(receipt[key])) is None:
+            raise ScoutError(f"selection receipt {key} invalid")
+    if receipt["receipt_identity"] != object_identity(
+        {key: value for key, value in receipt.items() if key != "receipt_identity"}
+    ):
+        raise ScoutError("selection receipt identity mismatch")
+
+
+def validate_scout_packet(packet: Mapping[str, object]) -> tuple[Mapping[str, object], ...]:
+    """Validate the canonical active SourcePacket and its explicit selection authority."""
+    if packet.get("schema") != "vnext-source-packet" or packet.get("schema_version") != SCHEMA_VERSION:
+        raise ScoutError("SourcePacket schema mismatch")
+    if packet.get("selection_authority") != "EXPLICIT_USER_EVENT_ID":
+        raise ScoutError("SourcePacket authority mismatch")
+    claimed = packet.get("packet_identity")
+    if not isinstance(claimed, str) or _SHA256.fullmatch(claimed) is None:
+        raise ScoutError("SourcePacket identity invalid")
+    if object_identity({key: value for key, value in packet.items() if key != "packet_identity"}) != claimed:
+        raise ScoutError("SourcePacket identity mismatch")
+    event_identity = packet.get("event_identity")
+    if not isinstance(event_identity, str) or not event_identity:
+        raise ScoutError("SourcePacket event identity missing")
+    receipt = packet.get("selection_receipt")
+    if not isinstance(receipt, Mapping):
+        raise ScoutError("SourcePacket selection receipt missing")
+    validate_selection_receipt(receipt, event_identity=event_identity)
+    legacy = dict(packet)
+    legacy["selection_authority"] = "EXPLICIT_EVENT_ID"
+    legacy.pop("selection_receipt", None)
+    legacy["packet_identity"] = object_identity(
+        {key: value for key, value in legacy.items() if key != "packet_identity"}
+    )
+    return _validate_legacy_scout_packet(legacy)
 
 
 def _clean(value: str | None) -> str:
@@ -493,6 +551,8 @@ def build_source_packet(
     *,
     workflow_identity: str,
     event_identity: str,
+    selection_actor: str,
+    selection_authorization_identity: str,
     observed_at: str,
 ) -> dict[str, object]:
     with store.read() as connection:
@@ -500,7 +560,47 @@ def build_source_packet(
             "SELECT c.capture_identity,c.payload_ref FROM event_sources es JOIN captures c USING(capture_identity) WHERE es.event_identity=? ORDER BY c.source_identity,c.capture_identity",
             (event_identity,),
         ).fetchall()
-    store.transition(_transition(workflow_identity, "select", "GROUPED", "SELECTED", event_identity, event_identity, observed_at))
+    if not isinstance(selection_actor, str) or not selection_actor.strip():
+        raise ScoutError("explicit selection actor required")
+    if (
+        not isinstance(selection_authorization_identity, str)
+        or _SHA256.fullmatch(selection_authorization_identity) is None
+    ):
+        raise ScoutError("explicit selection authorization identity required")
+    _, transition_receipt, changed = store.transition(
+        _transition(
+            workflow_identity,
+            "select",
+            "GROUPED",
+            "SELECTED",
+            event_identity,
+            event_identity,
+            observed_at,
+            actor=selection_actor,
+        )
+    )
+    if not changed:
+        raise ScoutError("selection transition must be newly persisted")
+    selection_receipt: dict[str, object] = {
+        "schema": "vnext-source-selection-receipt",
+        "schema_version": 1,
+        "workflow_identity": workflow_identity,
+        "event_identity": event_identity,
+        "actor": selection_actor,
+        "authorization_identity": selection_authorization_identity,
+        "transition_receipt_identity": transition_receipt["receipt_identity"],
+    }
+    selection_receipt["receipt_identity"] = object_identity(selection_receipt)
+    validate_selection_receipt(
+        selection_receipt,
+        event_identity=event_identity,
+        workflow_identity=workflow_identity,
+    )
+    _publish_immutable(
+        store.root,
+        Path("blobs/source-selections") / f"{selection_receipt['receipt_identity']}.json",
+        selection_receipt,
+    )
     if not rows:
         evidence = object_identity({"workflow": workflow_identity, "event": event_identity, "failure": "UNKNOWN_OR_EMPTY_EVENT"})
         store.transition(_transition(workflow_identity, "source-packet-invalid", "SELECTED", "SOURCE_PACKET_INVALID", event_identity, evidence, observed_at))
@@ -543,7 +643,8 @@ def build_source_packet(
         "schema": "vnext-source-packet",
         "schema_version": SCHEMA_VERSION,
         "event_identity": event_identity,
-        "selection_authority": "EXPLICIT_EVENT_ID",
+        "selection_authority": "EXPLICIT_USER_EVENT_ID",
+        "selection_receipt": selection_receipt,
         "completeness": "ONE_BEST_CAPTURE_PER_GROUPED_SOURCE",
         "source_count": len(spans),
         "spans": spans,
@@ -562,7 +663,17 @@ def build_source_packet(
     return packet
 
 
-def _transition(workflow: str, operation: str, previous: str, resulting: str, input_identity: str, output_identity: str, observed_at: str) -> TransitionRequest:
+def _transition(
+    workflow: str,
+    operation: str,
+    previous: str,
+    resulting: str,
+    input_identity: str,
+    output_identity: str,
+    observed_at: str,
+    *,
+    actor: str = "SCOUT",
+) -> TransitionRequest:
     semantic = {"workflow": workflow, "operation": operation, "previous": previous, "resulting": resulting, "input": input_identity, "output": output_identity}
     identity = object_identity(semantic)
     return TransitionRequest(
@@ -570,7 +681,7 @@ def _transition(workflow: str, operation: str, previous: str, resulting: str, in
         operation_id=f"scout:{operation}",
         previous_state=previous,
         resulting_state=resulting,
-        actor="SCOUT",
+        actor=actor,
         outcome="PASS" if not resulting.endswith("FAILED") else "FAIL",
         input_identity=input_identity,
         output_identity=output_identity,

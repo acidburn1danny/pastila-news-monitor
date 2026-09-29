@@ -95,6 +95,8 @@ def prepare(tmp_path):
     editor = orchestrator.select_and_generate_editor_draft(
         workflow_identity=flow,
         selected_event_identity=groups[0].event_identity,
+        selection_actor="Daniel",
+        selection_authorization_identity="a" * 64,
         backend=Backend(),
         source_packet_observed_at="2026-09-29T01:01:00Z",
         editor_observed_at="2026-09-29T01:02:00Z",
@@ -158,6 +160,8 @@ def test_user_event_selection_is_explicit_and_fail_closed(tmp_path):
         orchestrator.select_and_generate_editor_draft(
             workflow_identity="flow",
             selected_event_identity="event:missing",
+            selection_actor="Daniel",
+            selection_authorization_identity="a" * 64,
             backend=Backend(),
             source_packet_observed_at="2026-09-29T01:01:00Z",
             editor_observed_at="2026-09-29T01:02:00Z",
@@ -303,6 +307,8 @@ def source_ready_after_backend_failure(tmp_path):
         orchestrator.select_and_generate_editor_draft(
             workflow_identity="recovery-flow",
             selected_event_identity=groups[0].event_identity,
+            selection_actor="Daniel",
+            selection_authorization_identity="a" * 64,
             backend=FailingBackend(),
             source_packet_observed_at="2026-09-29T04:01:00Z",
             editor_observed_at="2026-09-29T04:02:00Z",
@@ -326,6 +332,8 @@ def test_source_packet_ready_recovery_continues_editor(tmp_path):
     bundle = orchestrator.select_and_generate_editor_draft(
         workflow_identity="recovery-flow",
         selected_event_identity=event,
+        selection_actor="Daniel",
+        selection_authorization_identity="a" * 64,
         backend=Backend(),
         source_packet_observed_at="2026-09-29T04:01:00Z",
         editor_observed_at="2026-09-29T04:02:00Z",
@@ -341,6 +349,8 @@ def test_editor_pending_requires_explicit_disposition(tmp_path):
         orchestrator.select_and_generate_editor_draft(
             workflow_identity="recovery-flow",
             selected_event_identity=event,
+            selection_actor="Daniel",
+            selection_authorization_identity="a" * 64,
             backend=Backend(),
             source_packet_observed_at="2026-09-29T04:01:00Z",
             editor_observed_at="2026-09-29T04:02:00Z",

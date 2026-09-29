@@ -1,5 +1,10 @@
 {
   "active_authorities": {
+    "source_packet": {
+      "identity": "715214775e65aa13138670349d79c568c87261cd7c1db48f778df78584f388e8",
+      "identity_key": "authority_identity",
+      "path": "docs/artifacts/vnext-canonical-sourcepacket-v1-contract.json"
+    },
     "sqlite": {
       "identity": "34be8e0b8a46fbaf4f026662923c6c941dc1bbd24a93ce455a78d5971c1267e4",
       "identity_key": "authority_identity",
@@ -23,12 +28,12 @@
     "src/pastila_scout/vnext_product_orchestrator_v1.py"
   ],
   "binding_semantics": "SUCCESSOR_OVER_BOUND_COMMIT",
-  "bound_commit": "a9c4b58393a3441b483175487dc2a8bcff96ba7a",
-  "current_auditor": "scripts/audit_vnext_factual_review_policy_entry_relational_ownership_v1.py",
+  "bound_commit": "07c8c4cbc7b050343a51f1be4bbb3c8d7f478c28",
+  "current_auditor": "scripts/audit_vnext_source_selection_authority_canonical_sourcepacket_repair_v1.py",
   "excluded_from_active_graph": [
     {
       "path": "src/pastila_scout/vnext_sourcepacket_binding_v1.py",
-      "reason": "SUPERSEDED_COMPATIBILITY_ADAPTER_CANONICAL_SOURCE_PACKET_USED_DIRECTLY"
+      "reason": "HISTORICAL_AUTHORITY_UPGRADING_ADAPTER_SUPERSEDED_BY_CANONICAL_SOURCE_PACKET"
     },
     {
       "category": "HISTORICAL_COMPONENT_AUDITORS",
@@ -99,12 +104,18 @@
     {
       "commit": "a9c4b583",
       "path": "scripts/audit_vnext_policy_final_relational_ownership_v1.py"
+    },
+    {
+      "commit": "07c8c4cb",
+      "path": "scripts/audit_vnext_factual_review_policy_entry_relational_ownership_v1.py"
     }
   ],
   "invariants": {
     "active_integration": false,
+    "canonical_source_packet": true,
     "editor_draft_relational_ownership": true,
     "editor_to_factual_transition_ownership": true,
+    "explicit_user_selection_authority": true,
     "factual_review_session_relational_ownership": true,
     "final_artifact_relational_ownership": true,
     "final_implemented": true,
@@ -124,11 +135,12 @@
     "post_acceptance_policy_final_implemented": true,
     "product_lock_replaced": false,
     "product_orchestrator_implemented": true,
+    "selection_transition_relational_ownership": true,
     "source_packet_relational_ownership": true,
     "stop_all_candidates": true,
     "voice": "DISABLED_UNTIL_PROMOTION"
   },
-  "manifest_identity": "18dbec4ba447935337fa689054ab10ae74e79debf052b9faf5ae1aeb5161f307",
+  "manifest_identity": "76c90f5d1cfe01daf72013b5855da122dc541b1452e4fe0ccebdee2498de8788",
   "schema": "vnext-active-authority-audit-manifest",
   "schema_version": 1,
   "status": "SUCCESSOR_ISOLATED_NOT_ACTIVE"

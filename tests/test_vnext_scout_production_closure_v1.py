@@ -125,9 +125,18 @@ def test_capture_group_selection_and_sourcepacket_use_published_state_boundary(t
         observed_at=value["captured_at"],
     )
     selected = next(item for item in groups if len(item.captures) == 2)
-    packet = build_source_packet(state, workflow_identity="workflow-1", event_identity=selected.event_identity, observed_at=value["captured_at"])
+    packet = build_source_packet(
+        state,
+        workflow_identity="workflow-1",
+        event_identity=selected.event_identity,
+        selection_actor="Daniel",
+        selection_authorization_identity="a" * 64,
+        observed_at=value["captured_at"],
+    )
     assert packet["source_count"] == 2
-    assert packet["selection_authority"] == "EXPLICIT_EVENT_ID"
+    assert packet["selection_authority"] == "EXPLICIT_USER_EVENT_ID"
+    assert packet["selection_receipt"]["actor"] == "Daniel"
+    assert packet["selection_receipt"]["authorization_identity"] == "a" * 64
     assert object_identity({key: item for key, item in packet.items() if key != "packet_identity"}) == packet["packet_identity"]
     assert state.load_workflow("workflow-1")["state"] == "SOURCE_PACKET_READY"
     assert state.reconstruct_workflow("workflow-1")["state"] == "SOURCE_PACKET_READY"
