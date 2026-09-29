@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import sqlite3
 from pathlib import Path
 
 import pytest
@@ -878,11 +879,15 @@ def test_terminal_factual_rehydration_rejects_broken_editor_lineage(tmp_path, mo
         restarted.load_factual_result_bundle("product-flow")
 
 
-def _persisted_policy_bundle(tmp_path, outcome):
+def _persisted_policy_bundle(tmp_path, outcome, factual_outcome="ACCEPT_DRAFT"):
     store, orchestrator, editor = prepare(tmp_path)
+    fallback = (
+        (editor.packet["spans"][0]["span_id"],)
+        if factual_outcome == "APPROVE_SOURCE_FALLBACK" else ()
+    )
     factual = orchestrator.apply_factual_review(
         editor,
-        instruction=factual_instruction(),
+        instruction=factual_instruction(factual_outcome, fallback),
         observed_at="2026-09-29T20:00:00Z",
     )
     instruction = policy_instruction(outcome)
@@ -1088,3 +1093,123 @@ def test_final_transition_operational_receipt_fails_closed(
             workflow_identity=workflow_identity,
             final_identity=str(exported.final["artifact_identity"]),
         )
+
+
+@pytest.mark.parametrize(
+    ("column", "value"),
+    (
+        ("request_identity", "a" * 64),
+        ("issued_by", "intruder"),
+        ("input_identity", "b" * 64),
+        ("status", "OPEN"),
+    ),
+)
+def test_factual_review_session_complete_row_binding_fails_closed(tmp_path, column, value):
+    store, orchestrator, exported, workflow_identity = _exported_bundle(tmp_path)
+    del exported
+    with store.write() as connection:
+        connection.execute(
+            f"UPDATE review_sessions SET {column}=? WHERE workflow_identity=?",
+            (value, workflow_identity),
+        )
+    with pytest.raises(ProductOrchestratorError, match="factual review-session"):
+        orchestrator.load_factual_result_bundle(workflow_identity)
+
+
+def test_factual_review_session_absence_fails_closed(tmp_path):
+    store, orchestrator, _, workflow_identity = _exported_bundle(tmp_path)
+    with store.write() as connection:
+        connection.execute(
+            "DELETE FROM review_sessions WHERE workflow_identity=?",
+            (workflow_identity,),
+        )
+    with pytest.raises(ProductOrchestratorError, match="absent or ambiguous"):
+        orchestrator.load_factual_result_bundle(workflow_identity)
+
+
+def test_factual_review_session_cross_workflow_fails_closed(tmp_path):
+    store, orchestrator, _, workflow_identity = _exported_bundle(tmp_path)
+    orchestrator.create_workflow("foreign-flow")
+    with store.write() as connection:
+        connection.execute(
+            "UPDATE review_sessions SET workflow_identity='foreign-flow' "
+            "WHERE workflow_identity=?",
+            (workflow_identity,),
+        )
+    with pytest.raises(ProductOrchestratorError, match="absent or ambiguous"):
+        orchestrator.load_factual_result_bundle(workflow_identity)
+
+
+def test_factual_review_session_duplicate_decision_is_schema_rejected(tmp_path):
+    store, _, _, workflow_identity = _exported_bundle(tmp_path)
+    with store.read() as connection:
+        row = connection.execute(
+            "SELECT * FROM review_sessions WHERE workflow_identity=?",
+            (workflow_identity,),
+        ).fetchone()
+    values = tuple(row)
+    duplicate = ("f" * 64,) + values[1:]
+    with pytest.raises(sqlite3.IntegrityError, match="UNIQUE"):
+        with store.write() as connection:
+            connection.execute(
+                "INSERT INTO review_sessions VALUES(?,?,?,?,?,?,?,?,?,?,?,?)",
+                duplicate,
+            )
+
+
+@pytest.mark.parametrize("outcome", ("APPROVE_FINAL", "REJECT", "REVISE"))
+@pytest.mark.parametrize("factual_outcome", ("ACCEPT_DRAFT", "APPROVE_SOURCE_FALLBACK"))
+@pytest.mark.parametrize(
+    ("previous_state", "resulting_state", "label"),
+    (
+        (None, "VOICE_DISABLED", "factual result to VOICE-disabled"),
+        ("VOICE_DISABLED", "POLICY_REVIEW_PENDING", "Policy entry"),
+    ),
+)
+@pytest.mark.parametrize("mode", ("missing", "duplicate", "altered", "cross_workflow"))
+def test_policy_entry_transition_lineage_fails_closed(
+    tmp_path, outcome, factual_outcome, previous_state, resulting_state, label, mode,
+):
+    store, orchestrator, factual, instruction = _persisted_policy_bundle(
+        tmp_path, outcome, factual_outcome
+    )
+    previous_state = previous_state or str(factual.artifact["artifact_kind"])
+    _fault_transition(
+        store, orchestrator, factual.workflow_identity,
+        previous_state, resulting_state, mode,
+    )
+    with pytest.raises(ProductOrchestratorError, match=label):
+        _recover_policy(orchestrator, factual, instruction)
+
+
+@pytest.mark.parametrize("outcome", ("APPROVE_FINAL", "REJECT", "REVISE"))
+@pytest.mark.parametrize("factual_outcome", ("ACCEPT_DRAFT", "APPROVE_SOURCE_FALLBACK"))
+@pytest.mark.parametrize(
+    ("previous_state", "resulting_state", "label"),
+    (
+        (None, "VOICE_DISABLED", "factual result to VOICE-disabled"),
+        ("VOICE_DISABLED", "POLICY_REVIEW_PENDING", "Policy entry"),
+    ),
+)
+def test_policy_entry_operational_receipt_fails_closed(
+    tmp_path, outcome, factual_outcome, previous_state, resulting_state, label,
+):
+    store, orchestrator, factual, instruction = _persisted_policy_bundle(
+        tmp_path, outcome, factual_outcome
+    )
+    previous_state = previous_state or str(factual.artifact["artifact_kind"])
+    with store.write() as connection:
+        row = connection.execute(
+            "SELECT receipt_json FROM state_transitions WHERE workflow_identity=? "
+            "AND previous_state=? AND resulting_state=?",
+            (factual.workflow_identity, previous_state, resulting_state),
+        ).fetchone()
+        receipt = json.loads(row["receipt_json"])
+        receipt["actor"] = "intruder"
+        connection.execute(
+            "UPDATE state_transitions SET receipt_json=? WHERE workflow_identity=? "
+            "AND previous_state=? AND resulting_state=?",
+            (json.dumps(receipt), factual.workflow_identity, previous_state, resulting_state),
+        )
+    with pytest.raises(ProductOrchestratorError, match=f"{label} transition receipt"):
+        _recover_policy(orchestrator, factual, instruction)

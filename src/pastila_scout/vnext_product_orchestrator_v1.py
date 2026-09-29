@@ -277,7 +277,7 @@ class ProductOrchestrator:
         actor: str,
         outcome: str,
         input_identity: str,
-        output_identity: str,
+        output_identity: str | None,
         label: str,
     ) -> None:
         with self.store.read() as connection:
@@ -374,6 +374,75 @@ class ProductOrchestrator:
         )
         return EditorFailureBundle(workflow_identity, packet, failure)
 
+    def _require_factual_review_session(
+        self,
+        *,
+        workflow_identity: str,
+        packet: Mapping[str, object],
+        decision: Mapping[str, object],
+    ) -> None:
+        decision_identity = str(decision.get("decision_identity"))
+        with self.store.read() as connection:
+            rows = connection.execute(
+                "SELECT review_session_identity,workflow_identity,issued_by,actor,"
+                "source_packet_identity,input_kind,input_identity,allowed_outcome,"
+                "authorization_identity,status,decision_identity,request_identity "
+                "FROM review_sessions WHERE workflow_identity=? AND decision_identity=?",
+                (workflow_identity, decision_identity),
+            ).fetchall()
+        if len(rows) != 1:
+            raise ProductOrchestratorError(
+                "persisted factual review-session authority is absent or ambiguous"
+            )
+        row = rows[0]
+        authorization_identity = str(row["authorization_identity"])
+        if re.fullmatch(r"[0-9a-f]{64}", authorization_identity) is None:
+            raise ProductOrchestratorError(
+                "persisted factual review-session authorization is invalid"
+            )
+        expected_request = object_identity({
+            "workflow_identity": workflow_identity,
+            "actor": decision.get("actor"),
+            "source_packet_identity": packet.get("packet_identity"),
+            "input_kind": decision.get("input_kind"),
+            "input_identity": decision.get("input_identity"),
+            "allowed_outcome": decision.get("outcome"),
+            "authorization_identity": authorization_identity,
+        })
+        expected_session = {
+            "schema": "vnext-factual-review-session",
+            "schema_version": 2,
+            "request_identity": expected_request,
+            "workflow_identity": workflow_identity,
+            "issued_by": self.store.writer_identity,
+            "actor": decision.get("actor"),
+            "source_packet_identity": packet.get("packet_identity"),
+            "input_kind": decision.get("input_kind"),
+            "input_identity": decision.get("input_identity"),
+            "allowed_outcome": decision.get("outcome"),
+            "authorization_identity": authorization_identity,
+            "status": "OPEN",
+        }
+        session_identity = object_identity(expected_session)
+        expected_row = (
+            session_identity,
+            workflow_identity,
+            self.store.writer_identity,
+            decision.get("actor"),
+            packet.get("packet_identity"),
+            decision.get("input_kind"),
+            decision.get("input_identity"),
+            decision.get("outcome"),
+            authorization_identity,
+            "CONSUMED",
+            decision_identity,
+            expected_request,
+        )
+        if decision.get("review_session_identity") != session_identity or tuple(row) != expected_row:
+            raise ProductOrchestratorError(
+                "persisted factual review-session row binding mismatch"
+            )
+
     def load_factual_result_bundle(self, workflow_identity: str) -> FactualResultBundle:
         packet = self.load_source_packet(workflow_identity)
         with self.store.read() as connection:
@@ -437,6 +506,11 @@ class ProductOrchestrator:
             decision["actor"],
             decision["input_identity"],
             receipt["receipt_identity"],
+        )
+        self._require_factual_review_session(
+            workflow_identity=workflow_identity,
+            packet=packet,
+            decision=decision,
         )
         if tuple(decision_row) != expected_decision_row:
             raise ProductOrchestratorError("persisted factual decision binding mismatch")
@@ -787,6 +861,28 @@ class ProductOrchestrator:
             raise ProductOrchestratorError("persisted policy-session row binding mismatch")
         self._require_owned_transition(
             workflow_identity=bundle.workflow_identity,
+            previous_state=str(bundle.artifact["artifact_kind"]),
+            resulting_state="VOICE_DISABLED",
+            operation_identity="core:voice-disabled",
+            actor="system",
+            outcome="VOICE_DISABLED",
+            input_identity=expected_input,
+            output_identity=None,
+            label="factual result to VOICE-disabled",
+        )
+        self._require_owned_transition(
+            workflow_identity=bundle.workflow_identity,
+            previous_state="VOICE_DISABLED",
+            resulting_state="POLICY_REVIEW_PENDING",
+            operation_identity="core:policy-pending",
+            actor="system",
+            outcome="POLICY_REQUIRED",
+            input_identity=expected_input,
+            output_identity=None,
+            label="Policy entry",
+        )
+        self._require_owned_transition(
+            workflow_identity=bundle.workflow_identity,
             previous_state="POLICY_REVIEW_PENDING",
             resulting_state=expected_target,
             operation_identity="core:policy-decision",
@@ -807,6 +903,9 @@ class ProductOrchestrator:
         policy_decision_observed_at: str,
         final_observed_at: str,
     ) -> ExportBundle | PolicyTerminalBundle:
+        persisted_bundle = self.load_factual_result_bundle(bundle.workflow_identity)
+        if persisted_bundle != bundle:
+            raise ProductOrchestratorError("factual result bundle conflicts with persisted authority")
         if bundle.terminal_state == "ABSTAINED":
             raise ProductOrchestratorError("ABSTAINED is terminal and cannot enter policy")
         state = str(self.store.load_workflow(bundle.workflow_identity)["state"])
@@ -844,6 +943,7 @@ class ProductOrchestrator:
                 decision=decision,
                 observed_at=policy_decision_observed_at,
             )
+            decision = self._load_policy_decision(bundle, instruction)
             state = str(self.store.load_workflow(bundle.workflow_identity)["state"])
         if instruction.outcome in terminal_by_outcome:
             expected = terminal_by_outcome[instruction.outcome]

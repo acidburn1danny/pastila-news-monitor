@@ -23,8 +23,8 @@
     "src/pastila_scout/vnext_product_orchestrator_v1.py"
   ],
   "binding_semantics": "SUCCESSOR_OVER_BOUND_COMMIT",
-  "bound_commit": "0f5890452c4ead7c0288c980fe085924cbe8422b",
-  "current_auditor": "scripts/audit_vnext_policy_final_relational_ownership_v1.py",
+  "bound_commit": "a9c4b58393a3441b483175487dc2a8bcff96ba7a",
+  "current_auditor": "scripts/audit_vnext_factual_review_policy_entry_relational_ownership_v1.py",
   "excluded_from_active_graph": [
     {
       "path": "src/pastila_scout/vnext_sourcepacket_binding_v1.py",
@@ -95,12 +95,17 @@
     {
       "commit": "0f589045",
       "path": "scripts/audit_vnext_sourcepacket_editor_draft_relational_ownership_v1.py"
+    },
+    {
+      "commit": "a9c4b583",
+      "path": "scripts/audit_vnext_policy_final_relational_ownership_v1.py"
     }
   ],
   "invariants": {
     "active_integration": false,
     "editor_draft_relational_ownership": true,
     "editor_to_factual_transition_ownership": true,
+    "factual_review_session_relational_ownership": true,
     "final_artifact_relational_ownership": true,
     "final_implemented": true,
     "final_transition_ownership": true,
@@ -112,6 +117,7 @@
     "orchestrator_structural_transition_ownership": true,
     "orchestrator_terminal_routing": true,
     "policy_decision_relational_ownership": true,
+    "policy_entry_transition_ownership": true,
     "policy_final_merged": true,
     "policy_session_relational_ownership": true,
     "policy_transition_ownership": true,
@@ -122,7 +128,7 @@
     "stop_all_candidates": true,
     "voice": "DISABLED_UNTIL_PROMOTION"
   },
-  "manifest_identity": "3f8c2e8d9fcb7107a6907433256d633275c0c19da81dc68a518effce786156f6",
+  "manifest_identity": "18dbec4ba447935337fa689054ab10ae74e79debf052b9faf5ae1aeb5161f307",
   "schema": "vnext-active-authority-audit-manifest",
   "schema_version": 1,
   "status": "SUCCESSOR_ISOLATED_NOT_ACTIVE"

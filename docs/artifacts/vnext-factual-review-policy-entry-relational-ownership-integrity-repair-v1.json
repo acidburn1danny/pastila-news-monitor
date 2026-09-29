@@ -1,0 +1,42 @@
+{
+  "authority": {
+    "factual_review_session": "FULL_CONSUMED_ROW_CONTENT_ADDRESSED_BINDING",
+    "factual_to_voice_disabled": "EXACT_TRANSITION_AND_OPERATIONAL_RECEIPT",
+    "policy_outcomes": [
+      "APPROVE_FINAL",
+      "REJECT",
+      "REVISE"
+    ],
+    "recovery": "FAIL_CLOSED_TRANSITIVE_LINEAGE",
+    "voice_disabled_to_policy_pending": "EXACT_TRANSITION_AND_OPERATIONAL_RECEIPT"
+  },
+  "base_commit": "a9c4b58393a3441b483175487dc2a8bcff96ba7a",
+  "closure_identity": "769602ca88ba0f0521c7173bf82c89a6bed8612a21b60ed3446ebe75a898bcbb",
+  "findings_closed": [
+    "FACTUAL_REVIEW_SESSION_COMPLETE_ROW_BINDING_REQUIRED",
+    "FACTUAL_REVIEW_REQUEST_AND_SESSION_IDENTITY_REPRODUCTION_REQUIRED",
+    "FACTUAL_RESULT_TO_VOICE_DISABLED_TRANSITION_REQUIRED",
+    "VOICE_DISABLED_TO_POLICY_PENDING_TRANSITION_REQUIRED",
+    "POLICY_ENTRY_OPERATIONAL_RECEIPTS_REQUIRED",
+    "ALL_POLICY_OUTCOMES_REQUIRE_TRANSITIVE_ENTRY_LINEAGE",
+    "ABSENT_DUPLICATE_ALTERED_CROSS_WORKFLOW_FAIL_CLOSED"
+  ],
+  "invariants": {
+    "active_integration": false,
+    "audit_streak": "0/2",
+    "legacy_dependency_count": 0,
+    "product_lock_replaced": false,
+    "schema_version": 6,
+    "stop_all_candidates": true,
+    "voice": "DISABLED_UNTIL_PROMOTION"
+  },
+  "name": "VNext Factual Review Authority & Policy Entry Relational Ownership Integrity Repair v1",
+  "schema": "vnext-factual-review-policy-entry-relational-ownership-integrity-repair",
+  "schema_version": 1,
+  "status": "PASS",
+  "validation": {
+    "dedicated_fault_injection": "190_PASS",
+    "self_contained_auditor": "PASS",
+    "suite": "300_PASS"
+  }
+}
