@@ -13,12 +13,32 @@ def transition(store,flow,left,right,index,output=None):
 
 def make_store(tmp_path,kind='ACCEPTED_SETUP',flow='flow'):
     store=SQLiteStateStore(root=tmp_path,database=Path('state.db'),writer_identity='writer'); store.bootstrap(); store.create_workflow(flow)
-    chain=[('DISCOVERED','CAPTURED'),('CAPTURED','GROUPED'),('GROUPED','SELECTED'),('SELECTED','SOURCE_PACKET_READY'),('SOURCE_PACKET_READY','EDITOR_PENDING'),('EDITOR_PENDING','EDITOR_DRAFT_READY'),('EDITOR_DRAFT_READY','FACTUAL_REVIEW_PENDING'),('FACTUAL_REVIEW_PENDING',kind)]
-    artifact={'schema':'vnext-factual-output','schema_version':2,'artifact_kind':kind,'workflow_identity':flow,'event_identity':'event:1','source_packet_identity':'a'*64,'review_input_kind':'EDITOR_DRAFT','review_input_identity':'b'*64,'decision_identity':'c'*64,'text':'Un fapt verificat, păstrat exact.','eligible_for_voice':True,'requires_explicit_approval':kind=='SOURCE_FALLBACK'}
+    outcome='ACCEPT_DRAFT' if kind=='ACCEPTED_SETUP' else 'APPROVE_SOURCE_FALLBACK'
+    review_input_identity='b'*64
+    decision={
+        'schema':'vnext-factual-review-decision','schema_version':2,'decision_kind':'FACTUAL',
+        'outcome':outcome,'workflow_identity':flow,'review_session_identity':'e'*64,
+        'actor':'reviewer','reason_code':'REVIEWED','source_packet_identity':'a'*64,
+        'input_kind':'EDITOR_DRAFT','input_identity':review_input_identity,
+        'fallback_span_ids':[] if kind=='ACCEPTED_SETUP' else ['span:1'],
+        'authority_mode':'PERSISTED_SINGLE_USE_REVIEW_SESSION',
+    }
+    decision['decision_identity']=object_identity(decision)
+    artifact={'schema':'vnext-factual-output','schema_version':2,'artifact_kind':kind,'workflow_identity':flow,'event_identity':'event:1','source_packet_identity':'a'*64,'review_input_kind':'EDITOR_DRAFT','review_input_identity':review_input_identity,'decision_identity':decision['decision_identity'],'text':'Un fapt verificat, păstrat exact.','eligible_for_voice':True,'requires_explicit_approval':kind=='SOURCE_FALLBACK'}
     artifact['artifact_identity']=object_identity(artifact)
+    receipt={'schema':'vnext-factual-acceptance-receipt','schema_version':2,'workflow_identity':flow,'decision_identity':decision['decision_identity'],'input_identity':review_input_identity,'output_identity':artifact['artifact_identity'],'resulting_state':kind}
+    receipt['receipt_identity']=object_identity(receipt)
+    chain=[('DISCOVERED','CAPTURED'),('CAPTURED','GROUPED'),('GROUPED','SELECTED'),('SELECTED','SOURCE_PACKET_READY'),('SOURCE_PACKET_READY','EDITOR_PENDING'),('EDITOR_PENDING','EDITOR_DRAFT_READY'),('EDITOR_DRAFT_READY','FACTUAL_REVIEW_PENDING'),('FACTUAL_REVIEW_PENDING',kind)]
     for i,(left,right) in enumerate(chain,1): transition(store,flow,left,right,i,artifact['artifact_identity'] if right==kind else object_identity({'i':i}))
-    rel=Path('blobs/factual-outputs')/f"{artifact['artifact_identity']}.json"; atomic_json(tmp_path/rel,artifact,root=tmp_path,overwrite=False)
-    with store.write() as connection: connection.execute('INSERT INTO workflow_artifacts VALUES(?,?,?,?,?,?)',(artifact['artifact_identity'],flow,kind,artifact['artifact_identity'],rel.as_posix(),'vnext-factual-output-v2'))
+    artifact_rel=Path('blobs/factual-outputs')/f"{artifact['artifact_identity']}.json"
+    decision_rel=Path('blobs/factual-decisions')/f"{decision['decision_identity']}.json"
+    receipt_rel=Path('blobs/factual-receipts')/f"{receipt['receipt_identity']}.json"
+    atomic_json(tmp_path/artifact_rel,artifact,root=tmp_path,overwrite=False)
+    atomic_json(tmp_path/decision_rel,decision,root=tmp_path,overwrite=False)
+    atomic_json(tmp_path/receipt_rel,receipt,root=tmp_path,overwrite=False)
+    with store.write() as connection:
+        connection.execute('INSERT INTO decisions VALUES(?,?,?,?,?,?,?)',(decision['decision_identity'],flow,'FACTUAL',outcome,'reviewer',review_input_identity,receipt['receipt_identity']))
+        connection.execute('INSERT INTO workflow_artifacts VALUES(?,?,?,?,?,?)',(artifact['artifact_identity'],flow,kind,artifact['artifact_identity'],artifact_rel.as_posix(),'vnext-factual-output-v2'))
     return store,artifact
 
 def approve(store,artifact,flow='flow'):

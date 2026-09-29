@@ -1,0 +1,40 @@
+{
+  "schema": "vnext-core-workflow-authority-e2e-ownership-repair",
+  "schema_version": 1,
+  "status": "ISOLATED_NOT_ACTIVE",
+  "successor_over_commit": "23995243a2b46bcdb94742d29fac818b3aee842a",
+  "blocker_closure": {
+    "active_authority_semantic_drift": {
+      "status": "CLOSED",
+      "repair": "COHERENT_SUCCESSOR_MANIFEST"
+    },
+    "factual_acceptance_provenance_gap": {
+      "status": "CLOSED",
+      "repair": "DECISION_RECEIPT_PAYLOAD_TRANSITION_BINDING"
+    },
+    "missing_real_component_e2e": {
+      "status": "CLOSED",
+      "repair": "REAL_COMPONENT_ACCEPTANCE_PATH"
+    }
+  },
+  "authority_bindings": {
+    "active_manifest_identity": "b11fc3f452bb17219526c8f51f336fdc0e3223af0d0a8a69ce73604b916fe367",
+    "sqlite_schema_version": 6
+  },
+  "validation": {
+    "tests": "102_PASS",
+    "real_component_e2e": "4_PASS",
+    "auditor": "PASS",
+    "fresh_restart_required": true
+  },
+  "invariants": {
+    "active_integration": false,
+    "product_lock_replaced": false,
+    "product_root_modified": false,
+    "audit_streak": "0/2",
+    "voice": "DISABLED_UNTIL_PROMOTION",
+    "stop_all_candidates": true,
+    "legacy_dependency_count": 0
+  },
+  "closure_identity": "316761029fff2ee338cda7be799f338075aafa024ddc36931005cc78c50dfe55"
+}

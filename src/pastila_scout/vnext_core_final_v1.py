@@ -10,7 +10,19 @@ from .vnext_workflow_v1 import TransitionRequest
 _SHA256=re.compile(r'[0-9a-f]{64}')
 POLICY_OUTCOMES={'APPROVE_FINAL':'APPROVED_FOR_FINAL','REJECT':'REJECTED','REVISE':'REVISION_REQUIRED'}
 FACTUAL_KINDS={'ACCEPTED_SETUP','SOURCE_FALLBACK'}
-class CoreFinalError(BoundaryError): pass
+class CoreFinalError(BoundaryError):
+    pass
+
+
+def _load_owned_json(store: SQLiteStateStore, relative: Path, label: str) -> dict[str, object]:
+    try:
+        path = contained_path(store.root, relative, allow_missing=False)
+        value = json.loads(path.read_text(encoding="utf-8"))
+    except (BoundaryError, OSError, json.JSONDecodeError) as exc:
+        raise CoreFinalError(f"{label} is missing or invalid") from exc
+    if not isinstance(value, dict):
+        raise CoreFinalError(f"{label} must be a JSON object")
+    return value
 
 def _identity(value:Mapping[str,object],key:str)->str:
     actual=value.get(key)
@@ -21,10 +33,62 @@ def _owned_factual(store:SQLiteStateStore,workflow_identity:str,artifact:Mapping
     identity=_identity(artifact,'artifact_identity'); kind=str(artifact.get('artifact_kind'))
     if kind not in FACTUAL_KINDS or artifact.get('workflow_identity')!=workflow_identity or not artifact.get('eligible_for_voice') or not isinstance(artifact.get('text'),str) or not artifact['text'].strip(): raise CoreFinalError('ineligible factual input')
     with store.read() as connection:
-        row=connection.execute('SELECT artifact_kind,payload_identity,payload_ref FROM workflow_artifacts WHERE workflow_identity=? AND artifact_identity=?',(workflow_identity,identity)).fetchone()
-    if row is None or tuple(row[:2])!=(kind,identity): raise CoreFinalError('factual input is not owned by workflow')
-    path=contained_path(store.root,Path(str(row['payload_ref'])),allow_missing=False)
-    if json.loads(path.read_text(encoding='utf-8'))!=artifact: raise CoreFinalError('factual input payload mismatch')
+        row = connection.execute(
+            "SELECT artifact_kind,payload_identity,payload_ref FROM workflow_artifacts "
+            "WHERE workflow_identity=? AND artifact_identity=?",
+            (workflow_identity, identity),
+        ).fetchone()
+        decision_row = connection.execute(
+            "SELECT outcome,input_identity,receipt_identity FROM decisions "
+            "WHERE workflow_identity=? AND decision_identity=? AND decision_kind='FACTUAL'",
+            (workflow_identity, artifact.get("decision_identity")),
+        ).fetchone()
+        transition_row = connection.execute(
+            "SELECT 1 FROM state_transitions WHERE workflow_identity=? "
+            "AND resulting_state=? AND output_identity=?",
+            (workflow_identity, kind, identity),
+        ).fetchone()
+    if row is None or tuple(row[:2]) != (kind, identity):
+        raise CoreFinalError("factual input is not owned by workflow")
+    expected_outcome = "ACCEPT_DRAFT" if kind == "ACCEPTED_SETUP" else "APPROVE_SOURCE_FALLBACK"
+    if (
+        decision_row is None
+        or decision_row["outcome"] != expected_outcome
+        or decision_row["input_identity"] != artifact.get("review_input_identity")
+        or transition_row is None
+    ):
+        raise CoreFinalError("persisted factual acceptance provenance missing")
+    persisted_artifact = _load_owned_json(store, Path(str(row["payload_ref"])), "factual input")
+    if persisted_artifact != artifact:
+        raise CoreFinalError("factual input payload mismatch")
+    decision = _load_owned_json(
+        store,
+        Path("blobs/factual-decisions") / f"{artifact['decision_identity']}.json",
+        "factual decision",
+    )
+    _identity(decision, "decision_identity")
+    if (
+        decision.get("decision_identity") != artifact.get("decision_identity")
+        or decision.get("workflow_identity") != workflow_identity
+        or decision.get("outcome") != expected_outcome
+        or decision.get("input_identity") != artifact.get("review_input_identity")
+    ):
+        raise CoreFinalError("persisted factual decision payload mismatch")
+    receipt = _load_owned_json(
+        store,
+        Path("blobs/factual-receipts") / f"{decision_row['receipt_identity']}.json",
+        "factual receipt",
+    )
+    _identity(receipt, "receipt_identity")
+    if (
+        receipt.get("receipt_identity") != decision_row["receipt_identity"]
+        or receipt.get("workflow_identity") != workflow_identity
+        or receipt.get("decision_identity") != artifact.get("decision_identity")
+        or receipt.get("input_identity") != artifact.get("review_input_identity")
+        or receipt.get("output_identity") != identity
+        or receipt.get("resulting_state") != kind
+    ):
+        raise CoreFinalError("persisted factual receipt payload mismatch")
 
 def _transition(store:SQLiteStateStore,workflow:str,left:str,right:str,operation:str,input_identity:str,output_identity:str|None,actor:str,outcome:str,observed_at:str)->None:
     semantic={'workflow':workflow,'left':left,'right':right,'operation':operation,'input':input_identity,'output':output_identity,'actor':actor,'outcome':outcome}
