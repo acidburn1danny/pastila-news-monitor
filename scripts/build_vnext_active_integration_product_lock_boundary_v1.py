@@ -40,7 +40,7 @@ def build(repo,source,target,assembly_commit):
  write(target/"manifest/platform-lock.json",platform,"lock_identity")
  sys.dont_write_bytecode=True;sys.path.insert(0,str(target/"app/workflow"))
  from pastila_scout.vnext_state_sqlite_v1 import SQLiteStateStore
- state=target/"state";state.mkdir();store=SQLiteStateStore(root=state,database=Path("product.sqlite3"),writer_identity="candidate-bootstrap");store.bootstrap();shutil.rmtree(pkg/"__pycache__",ignore_errors=True)
+ state=target/"state";state.mkdir();store=SQLiteStateStore(root=state,database=Path("product.sqlite3"),writer_identity="vnext-product-runtime-v1");store.bootstrap();shutil.rmtree(pkg/"__pycache__",ignore_errors=True)
  rows=[]
  for base in ("app","config","contracts","manifest","state"):
   for p in sorted((target/base).rglob("*")):

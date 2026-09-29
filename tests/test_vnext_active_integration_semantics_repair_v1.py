@@ -27,3 +27,7 @@ def test_builder_declares_separate_runtime_and_assembly_lineage():
  assert '"runtime_source_commit":RUNTIME_SOURCE' in text
  assert '"assembly_boundary_commit":assembly_commit' in text
  assert 'target/"product-lock.json"' in text
+
+def test_canonical_runtime_writer_is_shared():
+ for name in ("build_vnext_active_integration_product_lock_boundary_v1.py","accept_vnext_active_integration_candidate_v1.py","product_cli_vnext_v1.py"):
+  assert 'writer_identity="vnext-product-runtime-v1"' in (ROOT/"scripts"/name).read_text()

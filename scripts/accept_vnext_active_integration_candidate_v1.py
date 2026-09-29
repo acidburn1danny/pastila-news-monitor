@@ -24,7 +24,7 @@ def run(root,work):
   body=("<rss><channel><item><title>Guvernul anunta masura de 10 milioane de lei</title><link>https://"+d.source_id+".example/a</link><description>Guvernul a anuntat masura de 10 milioane de lei.</description></item></channel></rss>").encode()
   return FetchResponse(body,d.url,"application/rss+xml")
  if work.exists() and any(work.iterdir()):raise RuntimeError("workspace not empty")
- work.mkdir(parents=True,exist_ok=True);shutil.copy2(root/"state/product.sqlite3",work/"product.sqlite3");store=SQLiteStateStore(root=work,database=Path("product.sqlite3"),writer_identity="acceptance");store.verify_integrity();o=ProductOrchestrator(store);flow="flow";o.create_workflow(flow)
+ work.mkdir(parents=True,exist_ok=True);shutil.copy2(root/"state/product.sqlite3",work/"product.sqlite3");store=SQLiteStateStore(root=work,database=Path("product.sqlite3"),writer_identity="vnext-product-runtime-v1");store.verify_integrity();o=ProductOrchestrator(store);flow="flow";o.create_workflow(flow)
  groups,failures=o.capture_and_group(workflow_identity=flow,source_set=sources,transport=fetch,captured_at="2026-09-30T00:00:00Z",maximum_workers=2)
  if failures or len(groups)!=1:raise RuntimeError("SCOUT failed")
  draft=o.select_and_generate_editor_draft(workflow_identity=flow,selected_event_identity=groups[0].event_identity,selection_actor="acceptance",selection_authorization_identity="a"*64,backend=Backend(),source_packet_observed_at="2026-09-30T00:01:00Z",editor_observed_at="2026-09-30T00:02:00Z")

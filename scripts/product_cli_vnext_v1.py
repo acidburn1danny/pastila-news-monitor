@@ -9,7 +9,7 @@ def startup(root:Path):
  preflight=verify(root,full_platform_hash=True)
  sys.path.insert(0,str(root/"app/workflow"))
  from pastila_scout.vnext_state_sqlite_v1 import SQLiteStateStore
- store=SQLiteStateStore(root=root/"state",database=Path("product.sqlite3"),writer_identity="product-startup-readonly")
+ store=SQLiteStateStore(root=root/"state",database=Path("product.sqlite3"),writer_identity="vnext-product-runtime-v1")
  integrity=store.verify_integrity()
  sources=json.loads((root/"config/sources.json").read_text(encoding="utf-8"))
  if integrity.get("status")!="PASS" or not isinstance(sources,(list,dict)):raise RuntimeError("startup contract failed")
