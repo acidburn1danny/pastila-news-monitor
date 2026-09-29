@@ -128,3 +128,91 @@ def test_authority_semantics_do_not_claim_product_orchestrator():
     assert invariants["post_acceptance_policy_final_implemented"] is True
     assert invariants["policy_final_merged"] is True
     assert invariants["product_orchestrator_implemented"] is False
+
+
+
+def exported_store(tmp_path):
+    store, flow, artifact, decision = approved_store(tmp_path)
+    final, receipt = assemble_and_export_final(
+        store, workflow_identity=flow, factual_output=artifact,
+        decision=decision, observed_at="2026-09-29T00:04:00Z",
+    )
+    return store, flow, final, receipt
+
+
+def replace_receipt(tmp_path, final_identity, receipt):
+    path = tmp_path / "receipts" / "final-exports" / f"{final_identity}.json"
+    path.write_text(
+        json.dumps(receipt, ensure_ascii=False, sort_keys=True, separators=(",", ":")) + "\n",
+        encoding="utf-8",
+    )
+
+
+def test_self_consistent_receipt_rebinding_is_rejected(tmp_path):
+    store, flow, final, receipt = exported_store(tmp_path)
+    original = tmp_path / receipt["export_ref"]
+    rebound_path = tmp_path / "exports" / "rebound.json"
+    rebound_path.write_bytes(original.read_bytes())
+    rebound = dict(receipt)
+    rebound["export_ref"] = "exports/rebound.json"
+    rebound.pop("receipt_identity")
+    rebound["receipt_identity"] = object_identity(rebound)
+    replace_receipt(tmp_path, final["artifact_identity"], rebound)
+    with pytest.raises(CoreFinalError, match="transition binding mismatch"):
+        load_exported_final(
+            store, workflow_identity=flow, final_identity=final["artifact_identity"]
+        )
+
+
+def test_cross_workflow_receipt_is_rejected(tmp_path):
+    store, flow, final, receipt = exported_store(tmp_path)
+    rebound = dict(receipt)
+    rebound["workflow_identity"] = "other-workflow"
+    rebound.pop("receipt_identity")
+    rebound["receipt_identity"] = object_identity(rebound)
+    replace_receipt(tmp_path, final["artifact_identity"], rebound)
+    with pytest.raises(CoreFinalError, match="provenance mismatch"):
+        load_exported_final(
+            store, workflow_identity=flow, final_identity=final["artifact_identity"]
+        )
+
+
+def test_missing_export_transition_binding_is_rejected(tmp_path):
+    store, flow, final, _ = exported_store(tmp_path)
+    with store.write() as connection:
+        connection.execute(
+            "UPDATE state_transitions SET output_identity=NULL "
+            "WHERE workflow_identity=? AND resulting_state='EXPORTED'",
+            (flow,),
+        )
+    with pytest.raises(CoreFinalError, match="transition binding mismatch"):
+        load_exported_final(
+            store, workflow_identity=flow, final_identity=final["artifact_identity"]
+        )
+
+
+def test_duplicate_export_transition_binding_is_rejected(tmp_path):
+    store, flow, final, receipt = exported_store(tmp_path)
+    attempt = "attempt:duplicate-export"
+    with store.write() as connection:
+        connection.execute(
+            "INSERT INTO attempts VALUES(?,?,?,?)",
+            (attempt, flow, "audit:duplicate-export", "PASS"),
+        )
+        connection.execute(
+            "INSERT INTO state_transitions("
+            "workflow_identity,receipt_identity,operation_identity,previous_state,"
+            "resulting_state,actor,outcome,input_identity,output_identity,"
+            "attempt_identity,idempotency_identity,receipt_json"
+            ") VALUES(?,?,?,?,?,?,?,?,?,?,?,?)",
+            (
+                flow, object_identity({"duplicate": flow}), "audit:duplicate-export",
+                "FINAL_READY", "EXPORTED", "audit", "PASS",
+                final["artifact_identity"], receipt["receipt_identity"],
+                attempt, "idempotency:duplicate-export", b"{}",
+            ),
+        )
+    with pytest.raises(CoreFinalError, match="transition binding mismatch"):
+        load_exported_final(
+            store, workflow_identity=flow, final_identity=final["artifact_identity"]
+        )

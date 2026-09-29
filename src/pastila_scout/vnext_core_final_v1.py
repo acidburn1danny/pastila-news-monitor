@@ -224,6 +224,19 @@ def load_exported_final(
         or not isinstance(export_ref, str)
     ):
         raise CoreFinalError("FINAL export receipt provenance mismatch")
+    with store.read() as connection:
+        transition_rows = connection.execute(
+            "SELECT input_identity,output_identity FROM state_transitions "
+            "WHERE workflow_identity=? AND previous_state='FINAL_READY' "
+            "AND resulting_state='EXPORTED'",
+            (workflow_identity,),
+        ).fetchall()
+    if (
+        len(transition_rows) != 1
+        or transition_rows[0]["input_identity"] != final_identity
+        or transition_rows[0]["output_identity"] != receipt["receipt_identity"]
+    ):
+        raise CoreFinalError("FINAL export transition binding mismatch")
     export_path = contained_path(store.root, Path(export_ref), allow_missing=False)
     payload = export_path.read_bytes()
     if (

@@ -1,0 +1,38 @@
+{
+  "schema": "vnext-final-export-receipt-transition-binding-repair",
+  "schema_version": 1,
+  "status": "ISOLATED_NOT_ACTIVE",
+  "successor_over_commit": "e79b40828e90c7266e10234868c0d4b03d277b5b",
+  "blocker_closure": {
+    "self_consistent_receipt_rebinding": {
+      "status": "CLOSED",
+      "repair": "EXACT_EXPORTED_TRANSITION_INPUT_OUTPUT_BINDING"
+    }
+  },
+  "eligibility_binding": {
+    "previous_state": "FINAL_READY",
+    "resulting_state": "EXPORTED",
+    "input_identity": "FINAL_IDENTITY",
+    "output_identity": "EXPORT_RECEIPT_IDENTITY",
+    "cardinality": "EXACTLY_ONE"
+  },
+  "authority_bindings": {
+    "active_manifest_identity": "549d454789777ba20a50860158bb2a2121641721271ed452ec2a18a510236e28",
+    "sqlite_schema_version": 6
+  },
+  "validation": {
+    "tests": "110_PASS",
+    "dedicated_adversarial": "8_PASS",
+    "auditor": "PASS"
+  },
+  "invariants": {
+    "active_integration": false,
+    "product_lock_replaced": false,
+    "product_root_modified": false,
+    "audit_streak": "0/2",
+    "voice": "DISABLED_UNTIL_PROMOTION",
+    "stop_all_candidates": true,
+    "legacy_dependency_count": 0
+  },
+  "closure_identity": "a93c982960a5c769497467fdc948cb5ffaedb2621b39231823a812d0fa55c89b"
+}
