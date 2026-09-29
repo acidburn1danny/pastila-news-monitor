@@ -188,6 +188,68 @@ def _export_receipt(
     return receipt
 
 
+
+def _require_owned_transition(
+    store: SQLiteStateStore,
+    *,
+    workflow_identity: str,
+    previous_state: str,
+    resulting_state: str,
+    operation_identity: str,
+    actor: str,
+    outcome: str,
+    input_identity: str,
+    output_identity: str,
+    label: str,
+) -> None:
+    with store.read() as connection:
+        rows = connection.execute(
+            "SELECT receipt_identity,operation_identity,previous_state,resulting_state,"
+            "actor,outcome,input_identity,output_identity,attempt_identity,"
+            "idempotency_identity,receipt_json FROM state_transitions "
+            "WHERE workflow_identity=? AND previous_state=? AND resulting_state=?",
+            (workflow_identity, previous_state, resulting_state),
+        ).fetchall()
+    if len(rows) != 1:
+        raise CoreFinalError(f"{label} transition binding mismatch: ownership is absent or ambiguous")
+    row = rows[0]
+    expected = {
+        "operation_identity": operation_identity,
+        "previous_state": previous_state,
+        "resulting_state": resulting_state,
+        "actor": actor,
+        "outcome": outcome,
+        "input_identity": input_identity,
+        "output_identity": output_identity,
+    }
+    if any(row[key] != value for key, value in expected.items()):
+        raise CoreFinalError(f"{label} transition binding mismatch")
+    try:
+        receipt = json.loads(row["receipt_json"])
+    except (TypeError, json.JSONDecodeError) as exc:
+        raise CoreFinalError(f"{label} transition receipt is invalid") from exc
+    receipt_expected = {
+        "workflow_identity": workflow_identity,
+        "receipt_identity": row["receipt_identity"],
+        "attempt_identity": row["attempt_identity"],
+        "idempotency_identity": row["idempotency_identity"],
+        **expected,
+    }
+    receipt_core = {
+        key: receipt.get(key) for key in (
+            "schema", "schema_version", "workflow_identity",
+            "operation_identity", "previous_state", "resulting_state",
+            "actor", "outcome", "input_identity", "output_identity",
+            "attempt_identity", "idempotency_identity",
+        )
+    }
+    if (
+        not isinstance(receipt, dict)
+        or any(receipt.get(key) != value for key, value in receipt_expected.items())
+        or receipt.get("receipt_identity") != object_identity(receipt_core)
+    ):
+        raise CoreFinalError(f"{label} transition receipt binding mismatch")
+
 def load_exported_final(
     store: SQLiteStateStore,
     *,
@@ -197,13 +259,18 @@ def load_exported_final(
     if store.load_workflow(workflow_identity)["state"] != "EXPORTED":
         raise CoreFinalError("FINAL output is not export-eligible")
     with store.read() as connection:
-        row = connection.execute(
-            "SELECT payload_identity,payload_ref FROM workflow_artifacts "
-            "WHERE workflow_identity=? AND artifact_identity=? AND artifact_kind='FINAL_OUTPUT'",
+        rows = connection.execute(
+            "SELECT artifact_identity,payload_identity,payload_ref,schema_identity "
+            "FROM workflow_artifacts WHERE workflow_identity=? "
+            "AND artifact_identity=? AND artifact_kind='FINAL_OUTPUT'",
             (workflow_identity, final_identity),
-        ).fetchone()
-    if row is None or row["payload_identity"] != final_identity:
-        raise CoreFinalError("persisted FINAL ownership missing")
+        ).fetchall()
+    expected_ref = f"blobs/final-outputs/{final_identity}.json"
+    if len(rows) != 1 or tuple(rows[0]) != (
+        final_identity, final_identity, expected_ref, "vnext-final-output-v1"
+    ):
+        raise CoreFinalError("persisted FINAL artifact-row binding mismatch")
+    row = rows[0]
     final = _load_owned_json(store, Path(str(row["payload_ref"])), "FINAL payload")
     _identity(final, "artifact_identity")
     if (
@@ -224,19 +291,33 @@ def load_exported_final(
         or not isinstance(export_ref, str)
     ):
         raise CoreFinalError("FINAL export receipt provenance mismatch")
-    with store.read() as connection:
-        transition_rows = connection.execute(
-            "SELECT input_identity,output_identity FROM state_transitions "
-            "WHERE workflow_identity=? AND previous_state='FINAL_READY' "
-            "AND resulting_state='EXPORTED'",
-            (workflow_identity,),
-        ).fetchall()
-    if (
-        len(transition_rows) != 1
-        or transition_rows[0]["input_identity"] != final_identity
-        or transition_rows[0]["output_identity"] != receipt["receipt_identity"]
-    ):
-        raise CoreFinalError("FINAL export transition binding mismatch")
+    policy_decision_identity = final.get("policy_decision_identity")
+    if not isinstance(policy_decision_identity, str):
+        raise CoreFinalError("persisted FINAL policy authority missing")
+    _require_owned_transition(
+        store,
+        workflow_identity=workflow_identity,
+        previous_state="APPROVED_FOR_FINAL",
+        resulting_state="FINAL_READY",
+        operation_identity="core:final-assembly",
+        actor="FINAL",
+        outcome="PASS",
+        input_identity=policy_decision_identity,
+        output_identity=final_identity,
+        label="FINAL assembly",
+    )
+    _require_owned_transition(
+        store,
+        workflow_identity=workflow_identity,
+        previous_state="FINAL_READY",
+        resulting_state="EXPORTED",
+        operation_identity="core:final-export",
+        actor="FINAL",
+        outcome="PASS",
+        input_identity=final_identity,
+        output_identity=str(receipt["receipt_identity"]),
+        label="FINAL export",
+    )
     export_path = contained_path(store.root, Path(export_ref), allow_missing=False)
     payload = export_path.read_bytes()
     if (

@@ -1,0 +1,39 @@
+{
+  "authority": {
+    "final_artifact": "FULL_ARTIFACT_ROW_AND_TWO_TRANSITION_LINEAGE",
+    "operational_receipts": "CONTENT_ADDRESSED_SEMANTIC_BINDING",
+    "policy_decision": "FULL_ROW_AND_EXACT_TRANSITION_LINEAGE",
+    "policy_session": "FULL_CONSUMED_ROW_BINDING",
+    "recovery_and_terminal_routes": "FAIL_CLOSED_TRANSITIVE_LINEAGE"
+  },
+  "base_commit": "0f5890452c4ead7c0288c980fe085924cbe8422b",
+  "closure_identity": "c50e61b2f975ad0388274c36efba4442402f1d8f7300f50fa9e11d5bfef4bc7c",
+  "findings_closed": [
+    "POLICY_DECISION_ROW_BINDING_REQUIRED",
+    "POLICY_SESSION_ROW_BINDING_REQUIRED",
+    "POLICY_TRANSITION_AND_RECEIPT_REQUIRED_ALL_OUTCOMES",
+    "FINAL_ARTIFACT_ROW_BINDING_REQUIRED",
+    "FINAL_ASSEMBLY_TRANSITION_AND_RECEIPT_REQUIRED",
+    "FINAL_EXPORT_TRANSITION_AND_RECEIPT_REQUIRED",
+    "RECOVERY_AND_TERMINAL_POLICY_ROUTES_FAIL_CLOSED",
+    "ABSENT_DUPLICATE_ALTERED_CROSS_WORKFLOW_FAIL_CLOSED"
+  ],
+  "invariants": {
+    "active_integration": false,
+    "audit_streak": "0/2",
+    "legacy_dependency_count": 0,
+    "product_lock_replaced": false,
+    "schema_version": 6,
+    "stop_all_candidates": true,
+    "voice": "DISABLED_UNTIL_PROMOTION"
+  },
+  "name": "VNext Policy & FINAL Relational Ownership Integrity Repair v1",
+  "schema": "vnext-policy-final-relational-ownership-integrity-repair",
+  "schema_version": 1,
+  "status": "PASS",
+  "validation": {
+    "dedicated_fault_injection": "123_PASS",
+    "self_contained_auditor": "PASS",
+    "suite": "233_PASS"
+  }
+}

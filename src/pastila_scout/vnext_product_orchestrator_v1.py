@@ -687,33 +687,115 @@ class ProductOrchestrator:
     ) -> dict[str, object]:
         with self.store.read() as connection:
             rows = connection.execute(
-                "SELECT d.decision_identity,d.outcome,d.actor,ps.authorization_identity "
-                "FROM decisions d JOIN policy_sessions ps ON ps.decision_identity=d.decision_identity "
+                "SELECT d.decision_identity,d.workflow_identity,d.decision_kind,d.outcome,"
+                "d.actor,d.input_identity,d.receipt_identity,"
+                "ps.policy_session_identity,ps.request_identity,"
+                "ps.workflow_identity AS session_workflow_identity,ps.issued_by,"
+                "ps.actor AS session_actor,ps.input_kind,"
+                "ps.input_identity AS session_input_identity,ps.allowed_outcome,"
+                "ps.authorization_identity,ps.status,"
+                "ps.decision_identity AS session_decision_identity "
+                "FROM decisions d JOIN policy_sessions ps "
+                "ON ps.decision_identity=d.decision_identity "
                 "WHERE d.workflow_identity=? AND d.decision_kind='APPROVAL'",
                 (bundle.workflow_identity,),
             ).fetchall()
         if len(rows) != 1:
             raise ProductOrchestratorError("persisted policy authority is absent or ambiguous")
         row = rows[0]
-        if (
-            row["outcome"] != instruction.outcome
-            or row["actor"] != instruction.actor.strip()
-            or row["authorization_identity"] != instruction.authorization_identity
-        ):
-            raise ProductOrchestratorError("persisted policy authority conflicts with instruction")
+        decision_identity = str(row["decision_identity"])
         decision = self._load_json(
-            f"blobs/policy-decisions/{row['decision_identity']}.json",
+            f"blobs/policy-decisions/{decision_identity}.json",
             "policy decision",
         )
+        expected_target = {
+            "APPROVE_FINAL": "APPROVED_FOR_FINAL",
+            "REJECT": "REJECTED",
+            "REVISE": "REVISION_REQUIRED",
+        }.get(instruction.outcome)
+        expected_input = str(bundle.artifact["artifact_identity"])
+        expected_actor = instruction.actor.strip()
+        if expected_target is None:
+            raise ProductOrchestratorError("unsupported policy outcome")
         if (
-            decision.get("input_identity") != bundle.artifact.get("artifact_identity")
+            decision.get("schema") != "vnext-policy-decision"
+            or decision.get("schema_version") != 1
+            or decision.get("decision_kind") != "APPROVAL"
+            or decision.get("decision_identity") != decision_identity
+            or decision.get("workflow_identity") != bundle.workflow_identity
+            or decision.get("outcome") != instruction.outcome
+            or decision.get("actor") != expected_actor
             or decision.get("reason_code") != instruction.reason_code.strip()
+            or decision.get("input_kind") != bundle.artifact.get("artifact_kind")
+            or decision.get("input_identity") != expected_input
+            or decision.get("decision_identity") != object_identity(
+                {key: value for key, value in decision.items() if key != "decision_identity"}
+            )
         ):
-            raise ProductOrchestratorError("persisted policy decision input/reason mismatch")
-        if decision.get("decision_identity") != object_identity(
-            {key: value for key, value in decision.items() if key != "decision_identity"}
-        ):
-            raise ProductOrchestratorError("persisted policy decision identity mismatch")
+            raise ProductOrchestratorError("persisted policy decision payload mismatch")
+        expected_decision_receipt = object_identity({
+            "decision": decision_identity,
+            "target": expected_target,
+        })
+        decision_row_expected = {
+            "workflow_identity": bundle.workflow_identity,
+            "decision_kind": "APPROVAL",
+            "outcome": instruction.outcome,
+            "actor": expected_actor,
+            "input_identity": expected_input,
+            "receipt_identity": expected_decision_receipt,
+        }
+        if any(row[key] != value for key, value in decision_row_expected.items()):
+            raise ProductOrchestratorError("persisted policy decision row binding mismatch")
+        expected_request = object_identity({
+            "workflow_identity": bundle.workflow_identity,
+            "actor": expected_actor,
+            "input_identity": expected_input,
+            "allowed_outcome": instruction.outcome,
+            "authorization_identity": instruction.authorization_identity,
+        })
+        expected_session = {
+            "schema": "vnext-policy-session",
+            "schema_version": 1,
+            "request_identity": expected_request,
+            "workflow_identity": bundle.workflow_identity,
+            "issued_by": self.store.writer_identity,
+            "actor": expected_actor,
+            "input_kind": bundle.artifact.get("artifact_kind"),
+            "input_identity": expected_input,
+            "allowed_outcome": instruction.outcome,
+            "authorization_identity": instruction.authorization_identity,
+            "status": "OPEN",
+        }
+        session_identity = object_identity(expected_session)
+        if decision.get("policy_session_identity") != session_identity:
+            raise ProductOrchestratorError("persisted policy-session identity mismatch")
+        session_row_expected = {
+            "policy_session_identity": session_identity,
+            "request_identity": expected_request,
+            "session_workflow_identity": bundle.workflow_identity,
+            "issued_by": self.store.writer_identity,
+            "session_actor": expected_actor,
+            "input_kind": bundle.artifact.get("artifact_kind"),
+            "session_input_identity": expected_input,
+            "allowed_outcome": instruction.outcome,
+            "authorization_identity": instruction.authorization_identity,
+            "status": "CONSUMED",
+            "session_decision_identity": decision_identity,
+        }
+        if any(row[key] != value for key, value in session_row_expected.items()):
+            raise ProductOrchestratorError("persisted policy-session row binding mismatch")
+        self._require_owned_transition(
+            workflow_identity=bundle.workflow_identity,
+            previous_state="POLICY_REVIEW_PENDING",
+            resulting_state=expected_target,
+            operation_identity="core:policy-decision",
+            actor="POLICY",
+            outcome=instruction.outcome,
+            input_identity=expected_input,
+            output_identity=decision_identity,
+            label="policy decision",
+        )
         return decision
 
     def apply_policy_and_export(
