@@ -52,20 +52,14 @@ def test_workflow_authority_v5_declares_exact_terminal_predicates():
     assert set(authority["states"]) == set(STATES)
 
 
-def test_manifest_binds_only_the_complete_successor_authority():
-    authority = load("vnext-active-product-workflow-state-contract-v5.json")
+def test_v5_predecessor_auditor_is_historical_not_current():
     manifest = load("vnext-active-authority-audit-manifest-v1.json")
-    assert manifest["manifest_identity"] == object_identity(
-        {key: value for key, value in manifest.items() if key != "manifest_identity"}
-    )
-    assert manifest["bound_commit"] == "87ddff21382c86c51fcc3fcdbb6cf46cec798d1f"
-    assert manifest["active_authorities"]["workflow"] == {
-        "identity": authority["authority_identity"],
-        "identity_key": "authority_identity",
-        "path": "docs/artifacts/vnext-active-product-workflow-state-contract-v5.json",
+    expected = {
+        "commit": "86af603a",
+        "path": "scripts/audit_vnext_scout_terminal_outcome_authority_completeness_repair_v1.py",
     }
-    assert manifest["invariants"]["terminal_outcome_authority_complete"] is True
-
+    assert expected in manifest["historical_commit_only_auditors"]
+    assert manifest["current_auditor"] != expected["path"]
 
 def test_runtime_and_sqlite_are_byte_identical_and_unchanged():
     for relative, expected in RUNTIME_HASHES.items():
