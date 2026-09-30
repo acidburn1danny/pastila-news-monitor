@@ -44,12 +44,12 @@ def test_mutable_state_is_separate_from_immutable_inventory():
 def test_candidate_v2_lock_and_terminal_result_identities():
  lock=load("vnext-active-integration-product-lock-candidate-v2.json")
  claimed=lock.pop("product_lock_identity")
- assert identity(lock)==claimed=="28e930dc7725f71fc9ae8b8256cbec860ef409ec7034cf35c19da60a9055f9ca"
+ assert identity(lock)==claimed=="68fb2c347367ff3aa725cfb44de11be07921ad2e39fcbe98b01b389eee46c19b"
  assert lock["runtime_source_commit"]=="c211a07551284627a8e23c6e84d7dbf7e1125681"
- assert lock["assembly_boundary_commit"]=="f84a9c6b493e7f54de3ea47f7fd97441af3d3db2"
+ assert lock["assembly_boundary_commit"]=="a65095dc0b362fcbba6439d64cc5af4ae9d294ff"
  result=load("vnext-active-integration-candidate-closure-atomic-semantics-repair-v1.json")
  result_claimed=result.pop("result_identity")
- assert identity(result)==result_claimed=="f56dd9edd429ed265b97f89b4508a1efe7c951b546ed55c1c57893a403a3bee1"
+ assert identity(result)==result_claimed=="3dec31b7632497eb0855922b975396f6a0ca7446fa908c3481eaabe359283e27"
  assert result["status"]=="PASS" and result["blockers"]==0
  assert result["active_product_root_mutated"] is False and result["product_lock_replaced"] is False
  assert result["legacy_dependency_count"]==0

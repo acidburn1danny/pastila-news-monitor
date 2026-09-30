@@ -16,8 +16,8 @@
     },
     {
       "path": "app/cli/activation.py",
-      "sha256": "ee8bdafa6927c552492fa97f1d3a1122a58c62ea018cc83df73e8fb4a1ff98d0",
-      "size": 2048,
+      "sha256": "ee789e80537e8744e6d20f2f7656120b12cb40fb13ea4c8a87f2439c7a8013c3",
+      "size": 2955,
       "type": "file"
     },
     {
@@ -154,7 +154,7 @@
     }
   ],
   "assembly_bound_parent": "210ad63de93fbc1ce2185cee72090c23b51a07c2",
-  "assembly_boundary_commit": "f84a9c6b493e7f54de3ea47f7fd97441af3d3db2",
+  "assembly_boundary_commit": "a65095dc0b362fcbba6439d64cc5af4ae9d294ff",
   "components": {
     "PYTHON_ML_PLATFORM": {
       "frozen_platform_authority_identity": "ef5318bfa36af16350ec96d16ef84eb8b55c527894c3c5045f08d4b9ba1bc498",
@@ -182,7 +182,7 @@
     "runtime_files_allowed": true
   },
   "platform_semantics_authority_identity": "b36072106b26922166662fdafcf06afa54022f8d1e289c7490ab4cb0822a548d",
-  "product_lock_identity": "28e930dc7725f71fc9ae8b8256cbec860ef409ec7034cf35c19da60a9055f9ca",
+  "product_lock_identity": "68fb2c347367ff3aa725cfb44de11be07921ad2e39fcbe98b01b389eee46c19b",
   "product_root": "/root/pastila-vnext/v1",
   "runtime_source_commit": "c211a07551284627a8e23c6e84d7dbf7e1125681",
   "schema": "vnext-product-lock",
