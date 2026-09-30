@@ -1,0 +1,15 @@
+{
+  "blockers": 0,
+  "candidate_modified": false,
+  "checks": {
+    "atomic_rollback": "BYTE_EXACT",
+    "declared_mutable_runtime": "PASS",
+    "managed_drift": "FAIL_CLOSED",
+    "unauthorized_extra": "FAIL_CLOSED"
+  },
+  "legacy_dependency_count": 0,
+  "result_identity": "d7de4a334ddb3fa88934aa30afb6ec6a31f1f19704c61a803648c6d7b50d20e1",
+  "schema": "vnext-atomic-activation-managed-mutable-repair-result-v1",
+  "status": "PASS",
+  "waiting_period": false
+}
