@@ -1,14 +1,19 @@
 {
   "activation_receipt_identity": "1c5b0c103ba609408780f93b59ac98fec31d29151601ed20e5299cd8c8ce587f",
   "active_root_modified": false,
-  "active_state_authority_identity": "1b2fef1f7553661a4e2741fe2274f0b77331988bbbaf846006ef0fbe6329424b",
+  "active_state_authority_identity": "1d53b5402e30251abf412aa649e3a3f231b59bddfd4628c2e5ee9141b532d7a8",
   "active_surface_identity": "db997a11045e8aef32891743d9aaed282cac436d6cc3fcb113f07ab140e9e738",
   "blockers": 0,
   "candidate_modified": false,
   "legacy_dependency_count": 0,
-  "product_lock_successor_identity": "d41096cbcdcb82f9f7320d3e284b2d857f43bbb9f8f3f8b794aa75c1b4a08b3f",
-  "product_lock_successor_sha256": "a3c992653c00940778433c007ed6d76612ae711e56ea129a2329ab5be71923f6",
-  "result_identity": "484a90022b3cc5e23d77e751f351e92f8430b5ecee902b58650e5f33aa8387d4",
+  "managed_inventory_updates": [
+    "manifest/activation/vnext-activation-receipt-v1.json",
+    "manifest/authorities/vnext-active-product-lock-successor-v1.json"
+  ],
+  "product_lock_successor_identity": "e369d766e44990ee14c7674d1f4dbda3b1d2f2a17b9c492a88617d4c8f78e291",
+  "product_lock_successor_sha256": "d7cc43e895ecb688770e0992e4ed358d032b50244ccc2d1e193594a9e2ccb7fc",
+  "prospective_installability": "PASS_EXACT_TWO_MANAGED_REPLACEMENTS",
+  "result_identity": "dfa337121411673811012e1814bdb247fd9d307dbd1f713e01a22c34bef20799",
   "rollback_roots_modified": false,
   "schema": "vnext-current-activation-attestation-repair-result-v1",
   "status": "PASS",

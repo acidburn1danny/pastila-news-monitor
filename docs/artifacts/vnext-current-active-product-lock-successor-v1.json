@@ -11,6 +11,7 @@
     "candidate_commit": "929972ebc89e54c7d7d94b87346b2faf50823608",
     "controller_authority_commit": "bbb7068777a0010132f0ee1e39dd345cf9eb6fa7",
     "current_activation_receipt_identity": "1c5b0c103ba609408780f93b59ac98fec31d29151601ed20e5299cd8c8ce587f",
+    "current_active_state_authority_identity": "1d53b5402e30251abf412aa649e3a3f231b59bddfd4628c2e5ee9141b532d7a8",
     "historical_attestation": {
       "activation_receipt_identity": "2d79120f5b2b294ae9067e1596f7460778035e1837e849bf0b45896e2335e9d2",
       "active_audit_authority_identity": "7449832298f2e16ee65dfe2611af97cb9d44b0de3e12da5b40162971fc16c29d",
@@ -133,8 +134,8 @@
     },
     {
       "path": "manifest/activation/vnext-activation-receipt-v1.json",
-      "sha256": "aa2bb039fdb5303f981e7f5ad444bbd81701cfcebfb5c64e60e50a0cfb2b1d16",
-      "size": 1410,
+      "sha256": "d9a287f4e8715179f635185868f5327b738e0ca669919cb4373adc456a27601f",
+      "size": 1682,
       "type": "file"
     },
     {
@@ -157,8 +158,8 @@
     },
     {
       "path": "manifest/authorities/vnext-active-product-lock-successor-v1.json",
-      "sha256": "4145410babbb2f22508426a0e52201ab3bc0a80c7f6aa8438ba56dd73fce7ac8",
-      "size": 7194,
+      "sha256": "ced77c10fa70fdd7c0266745b754e036fd0909845ea4e2b84ad3fa76095ee523",
+      "size": 1533,
       "type": "file"
     },
     {
@@ -236,7 +237,7 @@
     "database": "state/product.sqlite3",
     "runtime_files_allowed": true
   },
-  "product_lock_identity": "d41096cbcdcb82f9f7320d3e284b2d857f43bbb9f8f3f8b794aa75c1b4a08b3f",
+  "product_lock_identity": "e369d766e44990ee14c7674d1f4dbda3b1d2f2a17b9c492a88617d4c8f78e291",
   "product_root": "/root/pastila-vnext/v1",
   "runtime_cache_policy": {
     "allowed": [

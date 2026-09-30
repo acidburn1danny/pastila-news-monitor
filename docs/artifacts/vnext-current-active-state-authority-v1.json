@@ -3,11 +3,7 @@
   "active_authority_surface_identity": "db997a11045e8aef32891743d9aaed282cac436d6cc3fcb113f07ab140e9e738",
   "active_graph_identity": "5a3129321375e45491eed0ade83ad218c2a74f3a5ea6241bdc3d68acc111100c",
   "active_root": "/root/pastila-vnext/v1",
-  "active_state_authority_identity": "1b2fef1f7553661a4e2741fe2274f0b77331988bbbaf846006ef0fbe6329424b",
-  "attestation_successor_product_lock": {
-    "identity": "d41096cbcdcb82f9f7320d3e284b2d857f43bbb9f8f3f8b794aa75c1b4a08b3f",
-    "sha256": "a3c992653c00940778433c007ed6d76612ae711e56ea129a2329ab5be71923f6"
-  },
+  "active_state_authority_identity": "1d53b5402e30251abf412aa649e3a3f231b59bddfd4628c2e5ee9141b532d7a8",
   "audit_identity": "57c0630dc366d36d42c7c8a5356cb8499dcfac024daae387906eb9eeb5cb4045",
   "candidate_commit": "929972ebc89e54c7d7d94b87346b2faf50823608",
   "controller_authority_commit": "bbb7068777a0010132f0ee1e39dd345cf9eb6fa7",
@@ -23,6 +19,7 @@
     "protected_product_lock_sha256": "2ddc484171f3b58f0f10ce4c4c73c1db51323d5c545320c578dc17ebb3edb4e6"
   },
   "schema": "vnext-current-active-state-authority-v1",
-  "schema_version": 1,
-  "status": "ACTIVATED_ATTESTED"
+  "schema_version": 2,
+  "status": "ACTIVATED_ATTESTED",
+  "successor_binding_semantics": "AUTHORITY_BINDS_INSTALLED_LOCK_RECEIPT_AND_RUNTIME;PRODUCT_LOCK_SUCCESSOR_BINDS_AUTHORITY"
 }

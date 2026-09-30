@@ -2,34 +2,36 @@
 
 ## Verdict
 
-PASS + 0 BLOCKERS.
+PASS + 0 BLOCKERS after CAR and fresh audit restart.
 
-The bounded successor repairs the stale activation authority without modifying the active product or either rollback root.
+The bounded successor repairs stale activation authority without modifying the active product or either rollback root.
 
 ## Evidence discipline
 
-The activation controller did not persist an exact execution timestamp. The new receipt therefore records activated_at as null with status NOT_RECORDED_NO_RETROACTIVE_FABRICATION. No timestamp was reconstructed from filesystem metadata or conversation time.
+The activation controller did not persist an exact execution timestamp. The receipt records activated_at as null with status NOT_RECORDED_NO_RETROACTIVE_FABRICATION. No timestamp was reconstructed.
 
-## Successor bindings
+## CAR
 
-- controller authority commit: bbb7068777a0010132f0ee1e39dd345cf9eb6fa7;
-- candidate commit: 929972ebc89e54c7d7d94b87346b2faf50823608;
-- installed product-lock identity: 5e31722e1e78fb44d2abd74c51a00e4074a67ff254c5497bfde64e228e7b9653;
-- installed product-lock SHA-256: e21a31c35123e3464b5231ffce596e97c379bb7baa1d64d902b88a9c91e04824;
-- active graph identity: 5a3129321375e45491eed0ade83ad218c2a74f3a5ea6241bdc3d68acc111100c;
-- active authority surface: db997a11045e8aef32891743d9aaed282cac436d6cc3fcb113f07ab140e9e738;
-- activation audit identity: 57c0630dc366d36d42c7c8a5356cb8499dcfac024daae387906eb9eeb5cb4045;
-- mechanism: renameat2(RENAME_EXCHANGE);
-- current rollback lock SHA-256: 0ff93c4d9f550c8458d2223ae91627903bf02dc24973c59d3069fa94ada1100e;
-- protected historical rollback lock SHA-256: 2ddc484171f3b58f0f10ce4c4c73c1db51323d5c545320c578dc17ebb3edb4e6.
+Prospective installation review found a circular authority/product-lock binding and missing managed-inventory updates. The repaired design is acyclic: Active-State Authority binds the installed lock, receipt, runtime and rollback evidence; the product-lock successor binds that authority. Its inventory replaces exactly the canonical receipt and active-state-authority rows, with no path-set expansion.
 
 ## Identities
 
 - current activation receipt: 1c5b0c103ba609408780f93b59ac98fec31d29151601ed20e5299cd8c8ce587f;
-- product-lock attestation successor: d41096cbcdcb82f9f7320d3e284b2d857f43bbb9f8f3f8b794aa75c1b4a08b3f;
-- product-lock successor SHA-256: a3c992653c00940778433c007ed6d76612ae711e56ea129a2329ab5be71923f6;
-- active-state authority: 1b2fef1f7553661a4e2741fe2274f0b77331988bbbaf846006ef0fbe6329424b;
-- terminal result: 484a90022b3cc5e23d77e751f351e92f8430b5ecee902b58650e5f33aa8387d4.
+- product-lock attestation successor: e369d766e44990ee14c7674d1f4dbda3b1d2f2a17b9c492a88617d4c8f78e291;
+- product-lock successor SHA-256: d7cc43e895ecb688770e0992e4ed358d032b50244ccc2d1e193594a9e2ccb7fc;
+- active-state authority: 1d53b5402e30251abf412aa649e3a3f231b59bddfd4628c2e5ee9141b532d7a8;
+- active surface: db997a11045e8aef32891743d9aaed282cac436d6cc3fcb113f07ab140e9e738;
+- terminal result: dfa337121411673811012e1814bdb247fd9d307dbd1f713e01a22c34bef20799.
+
+## Installation semantics
+
+Prospective installability: PASS_EXACT_TWO_MANAGED_REPLACEMENTS.
+
+Canonical replacements:
+- manifest/activation/vnext-activation-receipt-v1.json;
+- manifest/authorities/vnext-active-product-lock-successor-v1.json.
+
+The successor product-lock then replaces root product-lock.json atomically. All other managed inventory rows remain byte-identical.
 
 ## Scope
 
@@ -48,4 +50,4 @@ Active root modified: false. Rollback roots modified: false. Candidate modified:
 
 ## Next gate
 
-Publish the exact checkpoint, run fresh post-push closure, then separately authorize atomic installation of the attestation successor into the active authority surface.
+Publish this successor CAR and run fresh post-push closure. Atomic installation remains separately authorized.
