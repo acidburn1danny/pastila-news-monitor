@@ -1,0 +1,37 @@
+{
+  "activation_receipt_identity": "2d79120f5b2b294ae9067e1596f7460778035e1837e849bf0b45896e2335e9d2",
+  "active_root_mutated": false,
+  "active_state_authority_identity": "f7ab34467d316c9ef0a827c5483eab291ea1976036f38f8d0578edc471eed164",
+  "blockers": 0,
+  "fault_injection": [
+    {
+      "failpoint": "BEFORE_BACKUP",
+      "status": "PASS_BYTE_EXACT_RECOVERY"
+    },
+    {
+      "failpoint": "AFTER_BACKUP",
+      "status": "PASS_BYTE_EXACT_RECOVERY"
+    },
+    {
+      "failpoint": "AFTER_ACTIVATE",
+      "status": "PASS_BYTE_EXACT_RECOVERY"
+    }
+  ],
+  "legacy_dependency_count": 0,
+  "live": {
+    "acceptance_identity": "3c4d868f6f53e5abc311757e89715054d8e450f1c5ad465b315f2be2478da95a",
+    "active_unchanged": true,
+    "e2e": "PASS",
+    "startup": "PASS_STARTUP_READY",
+    "terminal": "EXPORTED"
+  },
+  "r2_closure": "PASS",
+  "restore_simulation": "PASS_RESTORE_AND_CONTROLLED_RETURN",
+  "result_identity": "83408bd71533ebb8b435c392d741084236958ba9498c043fa6b74a730d723a7f",
+  "rollback_managed_integrity": "PASS",
+  "rollback_manifest_identity": "2d86d60806ca15eb8051dcbf61952c10c0d669e077f3ff4e7d167bf3b5509485",
+  "rollback_root_mutated": false,
+  "schema": "vnext-active-state-attestation-rollback-proof-result-v1",
+  "sqlite_integrity": "PASS",
+  "status": "PASS"
+}

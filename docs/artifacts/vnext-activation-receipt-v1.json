@@ -1,0 +1,28 @@
+{
+  "activated_at": "2026-09-30T10:23:15Z",
+  "activation_receipt_identity": "2d79120f5b2b294ae9067e1596f7460778035e1837e849bf0b45896e2335e9d2",
+  "active": {
+    "dependency_graph_identity": "f393b101ae5bf1dcab73775d463307765bf9a24568c8d045d4284aebac4d415e",
+    "managed_application_identity": "e617897ca069d49efc880525dec6eb94888e034d9fa00b900ee5248c4d68e006",
+    "successor_product_lock_identity": "f7ab34467d316c9ef0a827c5483eab291ea1976036f38f8d0578edc471eed164"
+  },
+  "assembly_boundary_commit": "a65095dc0b362fcbba6439d64cc5af4ae9d294ff",
+  "atomic_swap": {
+    "active_root": "/root/pastila-vnext/v1",
+    "mechanism": "FULL_ROOT_OS_RENAME_SAME_FILESYSTEM",
+    "result": "PASS",
+    "rollback_root": "/root/pastila-vnext/.rollback-pre-68fb2c347367"
+  },
+  "attestation_timing": "POST_ACTIVATION",
+  "authority_commit": "27d966969e1fef6a884c24906c2c991c7f38cc71",
+  "candidate": {
+    "product_lock_identity": "68fb2c347367ff3aa725cfb44de11be07921ad2e39fcbe98b01b389eee46c19b",
+    "product_lock_sha256": "0ff93c4d9f550c8458d2223ae91627903bf02dc24973c59d3069fa94ada1100e",
+    "tree_identity": "c05fb8373f251ab0f3780e42ad219e8e0de90b92183cbf0424ace5b7cc027ba6"
+  },
+  "legacy_dependency_count": 0,
+  "rollback_manifest_identity": "2d86d60806ca15eb8051dcbf61952c10c0d669e077f3ff4e7d167bf3b5509485",
+  "schema": "vnext-activation-receipt-v1",
+  "schema_version": 1,
+  "status": "ATTESTED_ACTIVATED"
+}

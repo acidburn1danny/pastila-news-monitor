@@ -1,0 +1,71 @@
+{
+  "authority": {
+    "product_lock_identity": "464cdad44101e3fc6e0ab195414a7ab4e597ef8dd848871126e57b5649305d2e",
+    "product_lock_sha256": "2ddc484171f3b58f0f10ce4c4c73c1db51323d5c545320c578dc17ebb3edb4e6"
+  },
+  "excluded_non_authoritative_paths": [
+    "components/voice-candidates-v1",
+    "reviews",
+    "runs"
+  ],
+  "legacy_dependency_count": 0,
+  "managed_components": {
+    "components/r2-reference-v1": {
+      "bytes": 28185575977,
+      "entries": 26,
+      "tree_identity": "14f881f17cc308fcde05c3a2b17813d5cceaafc65c4b8961d7830a1838688062"
+    },
+    "platform/python-ml-v1": {
+      "bytes": 5031019544,
+      "entries": 21453,
+      "tree_identity": "5ace607c0321d7a3d61f927e51ef70715aa682aa75ec4a51b9908573f671aeee"
+    },
+    "runtime/editor-v0-v1": {
+      "bytes": 16129,
+      "entries": 4,
+      "tree_identity": "ba45da993c0867211622a312173d6af573e7c5328ad7d5b1f4127b156f89f892"
+    },
+    "runtime/scout-v1": {
+      "bytes": 36548,
+      "entries": 4,
+      "tree_identity": "b038d7be53c2d26190dad05de7d883f88dade69d22c0cf38462c68e3754c5805"
+    },
+    "state/scout-v1": {
+      "bytes": 0,
+      "entries": 0,
+      "tree_identity": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    }
+  },
+  "pre_activation_raw_tree_claim": {
+    "identity": "679611e7e4dd1341da26c036872b0d44cc8d29df426e979d197849d56ce4e244",
+    "status": "UNRECONCILED_NON_AUTHORITATIVE"
+  },
+  "regenerable_runtime_bytes": {
+    "observed": {
+      "cache_directories": 487,
+      "pyc_bytes": 76124572,
+      "pyc_files": 3340,
+      "sqlite_sidecars": 0
+    },
+    "rules": [
+      "**/__pycache__/**",
+      "**/*.pyc",
+      "**/*-wal",
+      "**/*-shm",
+      "**/*-journal"
+    ]
+  },
+  "required_paths": [
+    "product-lock.json",
+    "components/r2-reference-v1",
+    "platform/python-ml-v1",
+    "runtime/editor-v0-v1",
+    "runtime/scout-v1",
+    "state/scout-v1"
+  ],
+  "rollback_manifest_identity": "2d86d60806ca15eb8051dcbf61952c10c0d669e077f3ff4e7d167bf3b5509485",
+  "rollback_root": "/root/pastila-vnext/.rollback-pre-68fb2c347367",
+  "schema": "vnext-canonical-rollback-manifest-v1",
+  "schema_version": 1,
+  "status": "PASS_CANONICAL_MANAGED_ROLLBACK_BYTES"
+}
