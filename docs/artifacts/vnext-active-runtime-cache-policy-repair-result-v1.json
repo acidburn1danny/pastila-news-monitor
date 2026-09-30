@@ -1,0 +1,19 @@
+{
+  "active_graph_identity": "f98a47aa61c5391abe7bda7efe79a9cbaeae326f47b7c89be5a188517c11bed3",
+  "blockers": 0,
+  "classification_matrix": "17/17 PASS",
+  "e2e": "EXPORTED",
+  "legacy_dependency_count": 0,
+  "managed_files": 30,
+  "product_lock_identity": "b8fe4dd7c7d1e9482388a7435e4655b9c9ef0436adaf1d224befac0530949514",
+  "product_lock_sha256": "de5fe4388f065123bcfc7c7c0f829ecba9b24340819e59b8c58d3762e1d896e7",
+  "repository_dependency_count": 0,
+  "restart": "PASS",
+  "result_identity": "45339040673d7fed1ea32d49cda78a4c72c7155acca85fdecedcc20266035183",
+  "schema": "vnext-active-runtime-cache-policy-repair-result",
+  "schema_version": 1,
+  "source_commit": "408a5a6c90aa0d89876077edcf69380a614a3dd2",
+  "standalone_audit_identity": "fe9b36b57528de3806be73ef16c6458c4a29efc246af779adaf84b9e7b78f29c",
+  "startup": "PASS_STARTUP_READY",
+  "status": "PASS"
+}
