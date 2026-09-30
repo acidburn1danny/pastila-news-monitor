@@ -1,0 +1,25 @@
+{
+  "activation_receipt_identity": "1c5b0c103ba609408780f93b59ac98fec31d29151601ed20e5299cd8c8ce587f",
+  "active_root_modified": false,
+  "active_state_authority_identity": "1d53b5402e30251abf412aa649e3a3f231b59bddfd4628c2e5ee9141b532d7a8",
+  "base_commit": "ca7761fd8dd530c8efde8659ff17ada573139a0c",
+  "legacy_dependency_count": 0,
+  "managed_replacements": [
+    "app/cli/audit.py",
+    "app/cli/preflight.py",
+    "manifest/activation/vnext-activation-receipt-v1.json",
+    "manifest/authorities/vnext-active-product-lock-successor-v1.json"
+  ],
+  "product_lock_successor_identity": "b9609a71c07803ff58cd3e8980b8c8bb31cd717b538be68bdd76fa6b6914ecba",
+  "product_lock_successor_sha256": "233488e0ed2e0e1f273ced35bcaccd52e012d49544d86a9a45402f4fc7e5d12d",
+  "result_identity": "51681aba791a8c3e1f58454ea9e39d61f0b9444d044a4efac779f4181e8bfee2",
+  "rollback_roots_modified": false,
+  "schema": "vnext-active-preflight-v5-compatibility-repair-result-v1",
+  "schema_version": 1,
+  "status": "PASS",
+  "supported_schemas": [
+    4,
+    5
+  ],
+  "waiting_period": false
+}
