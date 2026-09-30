@@ -1,0 +1,18 @@
+{
+  "active_root_modified": false,
+  "blockers": 0,
+  "candidate_commit": "929972ebc89e54c7d7d94b87346b2faf50823608",
+  "candidate_modified": false,
+  "checks": {
+    "backup_finalization_failure": "ATOMIC_BYTE_EXACT_ROLLBACK",
+    "success_path": "ATOMIC_EXCHANGE_PASS",
+    "transient_rollback_exchange_failure": "RETRIED_BYTE_EXACT",
+    "validation_failure": "ATOMIC_BYTE_EXACT_ROLLBACK"
+  },
+  "legacy_dependency_count": 0,
+  "mechanism": "renameat2(RENAME_EXCHANGE)",
+  "result_identity": "47d49570c1daf8000fd7bcdbef0cb27080307ebf7afa14a928f841a2747c4533",
+  "schema": "vnext-atomic-activation-swap-failure-windows-repair-result-v1",
+  "status": "PASS",
+  "waiting_period": false
+}

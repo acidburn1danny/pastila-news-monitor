@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Atomic activation with authority bytes separated from declared mutable runtime bytes."""
-import argparse,hashlib,json,os,subprocess,types
+import argparse,ctypes,hashlib,json,os,subprocess,types
 from pathlib import Path
 
 ACTIVE=Path('/root/pastila-vnext/v1')
@@ -65,18 +65,31 @@ def full_tree_identity(root):
   else:raise RuntimeError('unsupported rollback entry: '+rel)
  return identity(rows)
 
+def exchange_paths(left,right):
+ libc=ctypes.CDLL(None,use_errno=True)
+ try:renameat2=libc.renameat2
+ except AttributeError as exc:raise RuntimeError('RENAME_EXCHANGE_UNAVAILABLE') from exc
+ renameat2.argtypes=[ctypes.c_int,ctypes.c_char_p,ctypes.c_int,ctypes.c_char_p,ctypes.c_uint]
+ renameat2.restype=ctypes.c_int
+ if renameat2(-100,os.fsencode(left),-100,os.fsencode(right),2)!=0:
+  code=ctypes.get_errno();raise OSError(code,os.strerror(code))
+
+def rollback_exchange(current,staged):
+ try:exchange_paths(current,staged)
+ except OSError:
+  exchange_paths(current,staged)
+
 def atomic_swap(current,staged,backup,validate_after):
- old_tree=full_tree_identity(current);old_lock=sha(current/'product-lock.json');failed=current.parent/(current.name+'.failed-activation')
- swapped=False
+ old_tree=full_tree_identity(current);old_lock=sha(current/'product-lock.json');exchanged=False
  try:
-  os.replace(current,backup);os.replace(staged,current);swapped=True
+  exchange_paths(current,staged);exchanged=True
   result=validate_after(current)
-  if full_tree_identity(backup)!=old_tree or sha(backup/'product-lock.json')!=old_lock:raise RuntimeError('rollback root drift')
+  if full_tree_identity(staged)!=old_tree or sha(staged/'product-lock.json')!=old_lock:raise RuntimeError('rollback root drift')
+  os.replace(staged,backup);exchanged=False
   return result
  except BaseException:
-  if swapped:
-   if failed.exists():raise RuntimeError('failed root collision')
-   os.replace(current,failed);os.replace(backup,current)
+  if exchanged:
+   rollback_exchange(current,staged)
    if full_tree_identity(current)!=old_tree or sha(current/'product-lock.json')!=old_lock:raise RuntimeError('ROLLBACK_BYTE_IDENTITY_FAILURE')
   raise
 
