@@ -15,12 +15,14 @@ def test_platform_semantics_separates_frozen_and_stable_identity():
  assert p["stable_content_identity_algorithm"].endswith("_V1")
  assert p["host_dependencies"]["python"]=={"path":"/usr/bin/python3","version":"3.12.3"}
 def roots(tmp_path):
- c=tmp_path/"current";s=tmp_path/"staged";c.mkdir();s.mkdir();(c/"product-lock.json").write_text("old");(s/"product-lock.json").write_text("new");return c,s
+ c=tmp_path/"current";s=tmp_path/"staged";c.mkdir();s.mkdir();(c/"product-lock.json").write_text("old");(s/"product-lock.json").write_text("new");(c/"nested").mkdir();(c/"nested/current.bin").write_bytes(b"current");(c/"empty").mkdir();(s/"nested").mkdir();(s/"nested/staged.bin").write_bytes(b"staged");return c,s
 def test_full_root_fault_windows_restore_names_and_bytes(tmp_path):
  for point in ("BEFORE_BACKUP","AFTER_BACKUP","AFTER_ACTIVATE"):
   base=tmp_path/point;base.mkdir();c,s=roots(base);result=simulate(c,s,point)
   assert result["status"].startswith("PASS")
   assert c.is_dir() and s.is_dir() and (c/"product-lock.json").read_text()=="old" and (s/"product-lock.json").read_text()=="new"
+  assert result["full_root_tree_verified"] is True and result["rollback_byte_exact"] is True
+  assert (c/"nested/current.bin").read_bytes()==b"current" and (s/"nested/staged.bin").read_bytes()==b"staged" and (c/"empty").is_dir()
   assert not (base/"current.activation-backup").exists()
 def test_builder_declares_separate_runtime_and_assembly_lineage():
  text=(ROOT/"scripts/build_vnext_active_integration_product_lock_boundary_v1.py").read_text()

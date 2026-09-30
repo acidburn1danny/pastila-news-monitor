@@ -13,7 +13,7 @@ def rollback(old,new):
 def run_json(command,env=None):
  p=subprocess.run(command,text=True,capture_output=True,check=True,env=env);return json.loads(p.stdout)
 def full_root_faults(candidate,active_lock):
- current=Path(tempfile.mkdtemp(prefix="vnext-audit-current-",dir=candidate.parent));(current/"product-lock.json").write_bytes(active_lock)
+ current=Path(tempfile.mkdtemp(prefix="vnext-audit-current-",dir=candidate.parent));(current/"product-lock.json").write_bytes(active_lock);(current/"app/runtime").mkdir(parents=True);(current/"app/runtime/current.bin").write_bytes(b"active-root-fixture");(current/"state").mkdir();(current/"state/empty").mkdir()
  results=[]
  try:
   for point in ("BEFORE_BACKUP","AFTER_BACKUP","AFTER_ACTIVATE"):results.append(simulate(current,candidate,point))
@@ -30,6 +30,7 @@ def audit(repo,candidate,active):
  startup=run_json([py,str(candidate/"app/cli/product.py"),"--root",str(candidate)],env)
  with tempfile.TemporaryDirectory(prefix="vnext-audit-e2e-") as d:acceptance=run_json([py,str(candidate/"app/cli/acceptance.py"),"--root",str(candidate),"--workspace",d+"/state"],env)
  faults=full_root_faults(candidate,active_bytes)
+ if not all(x.get("full_root_tree_verified") and x.get("rollback_byte_exact") for x in faults):raise RuntimeError("full-root rollback evidence incomplete")
  terminal=load(repo/"docs/artifacts/vnext-active-integration-candidate-closure-atomic-semantics-repair-v1.json");check_identity(terminal,"result_identity")
  if terminal["candidate_product_lock_identity"]!=pre["product_lock_identity"] or terminal["active_product_lock_sha256"]!=ACTIVE_SHA:raise RuntimeError("terminal result binding mismatch")
  result={"status":"PASS","candidate_product_lock_identity":pre["product_lock_identity"],"active_product_lock_sha256":ACTIVE_SHA,"dependency_closure":"PASS","startup":startup,"integrated_e2e":acceptance,"full_root_fault_injection":faults,"deterministic_rebuild":"PASS_2_OF_2","active_product_root_mutated":False,"product_lock_replaced":False,"legacy_dependency_count":0}
