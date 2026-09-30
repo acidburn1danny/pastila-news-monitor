@@ -1,0 +1,228 @@
+{
+  "active_authorities": {
+    "source_packet": {
+      "identity": "715214775e65aa13138670349d79c568c87261cd7c1db48f778df78584f388e8",
+      "identity_key": "authority_identity",
+      "path": "docs/artifacts/vnext-canonical-sourcepacket-v1-contract.json"
+    },
+    "sqlite": {
+      "identity": "d84e8d4a8dd3c9866d1014ab80f94d2ca988cb5cb0be69ce26cfb304fee48e14",
+      "identity_key": "authority_identity",
+      "path": "docs/artifacts/vnext-consolidated-operational-state-sqlite-boundary-v7-contract.json"
+    },
+    "workflow": {
+      "identity": "4a1fc5c51fe96796d0a5727013e97eba5829278bf9d14075c5feda81a950ead9",
+      "identity_key": "authority_identity",
+      "path": "docs/artifacts/vnext-active-product-workflow-state-contract-v6.json"
+    }
+  },
+  "active_bindings": {
+    "activation_receipt_identity": "2d79120f5b2b294ae9067e1596f7460778035e1837e849bf0b45896e2335e9d2",
+    "active_product_lock_sha256": "0ff93c4d9f550c8458d2223ae91627903bf02dc24973c59d3069fa94ada1100e",
+    "active_state_authority_identity": "f7ab34467d316c9ef0a827c5483eab291ea1976036f38f8d0578edc471eed164",
+    "rollback_manifest_identity": "2d86d60806ca15eb8051dcbf61952c10c0d669e077f3ff4e7d167bf3b5509485"
+  },
+  "active_runtime_modules": [
+    "src/pastila_scout/vnext_foundation_v1.py",
+    "src/pastila_scout/vnext_workflow_v1.py",
+    "src/pastila_scout/vnext_state_sqlite_v1.py",
+    "src/pastila_scout/vnext_scout_production_v1.py",
+    "src/pastila_scout/vnext_r2_consolidation_binding_v1.py",
+    "src/pastila_scout/vnext_editor_vertical_slice_v1.py",
+    "src/pastila_scout/vnext_factual_acceptance_v1.py",
+    "src/pastila_scout/vnext_core_final_v1.py",
+    "src/pastila_scout/vnext_product_orchestrator_v1.py"
+  ],
+  "bound_commit": "f9a566b0c350ea113844e21f93c80bf8a8f6dd7f",
+  "coverage": {
+    "coverage_semantics": "PRE_ACTIVATION_EVIDENCE_PRESERVED_PLUS_POST_ACTIVATION_LIVE_SUCCESSOR_AUDIT",
+    "post_activation_required_checks": [
+      "ACTIVE_PRODUCT_LOCK",
+      "ACTIVE_STATE_AUTHORITY",
+      "ACTIVATION_RECEIPT",
+      "CANONICAL_ROLLBACK_MANIFEST",
+      "ACTIVE_ROOT_MANAGED_BYTES",
+      "ACTIVE_DEPENDENCY_GRAPH",
+      "R2_BYTES",
+      "PLATFORM_TREE",
+      "SQLITE_INTEGRITY",
+      "STARTUP",
+      "INTEGRATED_E2E_EXPORTED",
+      "ROLLBACK_RESTORE_FAULT_INJECTION",
+      "LEGACY_DEPENDENCY_COUNT_ZERO"
+    ],
+    "pre_activation_invariant_snapshot": {
+      "identity": "5f668fd3cb769ffd936c06589461d3bc38baefaf3a8ef1b3d2ae1bd592b8a534",
+      "keys": [
+        "active_integration",
+        "canonical_source_packet",
+        "canonical_workflow_transition_recovery",
+        "capture_batch_content_addressed_authority",
+        "capture_disposition_issuance_recovery_equivalence",
+        "capture_identity_uniqueness_at_issuance",
+        "capture_provenance_source_definition_binding",
+        "capture_terminal_recovery",
+        "capture_to_grouping_transitive_lineage",
+        "editor_draft_relational_ownership",
+        "editor_to_factual_transition_ownership",
+        "exhaustive_per_source_capture_dispositions",
+        "exhaustive_source_disposition_terminal_authority",
+        "explicit_user_selection_authority",
+        "factual_review_session_relational_ownership",
+        "final_artifact_relational_ownership",
+        "final_implemented",
+        "final_transition_ownership",
+        "global_event_cross_workflow_reuse",
+        "grouping_transition_relational_ownership",
+        "legacy_dependency_count",
+        "no_eligible_distinct_from_capture_failure",
+        "no_eligible_terminal_authority",
+        "orchestrator_factual_relational_ownership",
+        "orchestrator_retry_evidence_integrity",
+        "orchestrator_state_aware_recovery",
+        "orchestrator_structural_failure_factual_routing",
+        "orchestrator_structural_transition_ownership",
+        "orchestrator_terminal_routing",
+        "policy_decision_relational_ownership",
+        "policy_entry_transition_ownership",
+        "policy_final_merged",
+        "policy_session_relational_ownership",
+        "policy_transition_ownership",
+        "post_acceptance_policy_final_implemented",
+        "product_lock_replaced",
+        "product_orchestrator_implemented",
+        "selection_transition_relational_ownership",
+        "source_maximum_articles_enforced",
+        "source_packet_relational_ownership",
+        "stop_all_candidates",
+        "terminal_outcome_authority_complete",
+        "validated_typed_source_set_authority",
+        "voice",
+        "workflow_event_relational_ownership"
+      ],
+      "source_manifest_identity": "154f689b70c050820e1595ba08375f1965ef5a4aa0521e279dd2063a9703dbde"
+    }
+  },
+  "current_auditor": "scripts/audit_vnext_post_activation_active_audit_authority_v1.py",
+  "current_auditor_count": 1,
+  "exclusive_current_auditor": true,
+  "historical_commit_only_auditors": [
+    {
+      "commit": "b30c962b",
+      "path": "scripts/audit_vnext_consolidated_operational_state_sqlite_boundary_v1.py"
+    },
+    {
+      "commit": "a85fa31d",
+      "path": "scripts/audit_vnext_scout_production_closure_v1.py"
+    },
+    {
+      "commit": "2a934cec",
+      "path": "scripts/audit_vnext_sourcepacket_production_binding_v1.py"
+    },
+    {
+      "commit": "dc0123ac",
+      "path": "scripts/audit_vnext_trusted_review_authority_active_audit_repair_v1.py"
+    },
+    {
+      "commit": "62f373ba",
+      "path": "scripts/audit_vnext_cross_component_eligibility_evidence_recovery_transitive_repair_v1.py"
+    },
+    {
+      "commit": "23995243",
+      "path": "scripts/audit_vnext_core_workflow_deterministic_final_v1.py"
+    },
+    {
+      "commit": "0a4e6e00",
+      "path": "scripts/audit_vnext_core_workflow_authority_e2e_ownership_repair_v1.py"
+    },
+    {
+      "commit": "e79b4082",
+      "path": "scripts/audit_vnext_final_atomic_publication_recovery_authority_v1.py"
+    },
+    {
+      "commit": "71443f4",
+      "path": "scripts/audit_vnext_final_export_receipt_transition_binding_v1.py"
+    },
+    {
+      "commit": "08d722e",
+      "path": "scripts/audit_vnext_product_orchestrator_integrated_core_e2e_v1.py"
+    },
+    {
+      "commit": "83d1175",
+      "path": "scripts/audit_vnext_product_orchestrator_state_aware_recovery_terminal_routing_v1.py"
+    },
+    {
+      "commit": "58b89343",
+      "path": "scripts/audit_vnext_orchestrator_retry_evidence_integrity_structural_routing_v1.py"
+    },
+    {
+      "commit": "dfdb2bf2",
+      "path": "scripts/audit_vnext_orchestrator_structural_factual_relational_ownership_v1.py"
+    },
+    {
+      "commit": "0f589045",
+      "path": "scripts/audit_vnext_sourcepacket_editor_draft_relational_ownership_v1.py"
+    },
+    {
+      "commit": "a9c4b583",
+      "path": "scripts/audit_vnext_policy_final_relational_ownership_v1.py"
+    },
+    {
+      "commit": "07c8c4cb",
+      "path": "scripts/audit_vnext_factual_review_policy_entry_relational_ownership_v1.py"
+    },
+    {
+      "commit": "fbb7dfcd",
+      "path": "scripts/audit_vnext_source_selection_authority_canonical_sourcepacket_repair_v1.py"
+    },
+    {
+      "commit": "4ad644e8",
+      "path": "scripts/audit_vnext_scout_workflow_event_ownership_grouping_lineage_repair_v1.py"
+    },
+    {
+      "commit": "439b39fa",
+      "path": "scripts/audit_vnext_scout_capture_batch_grouping_transitive_lineage_repair_v1.py"
+    },
+    {
+      "commit": "823f11b3",
+      "path": "scripts/audit_vnext_scout_source_set_disposition_integrity_repair_v1.py"
+    },
+    {
+      "commit": "4584c948",
+      "path": "scripts/audit_vnext_scout_capture_uniqueness_no_eligible_repair_v1.py"
+    },
+    {
+      "commit": "87ddff21",
+      "path": "scripts/audit_vnext_scout_no_eligible_terminal_workflow_repair_v1.py"
+    },
+    {
+      "commit": "86af603a",
+      "path": "scripts/audit_vnext_scout_terminal_outcome_authority_completeness_repair_v1.py"
+    },
+    {
+      "commit": "c211a07551284627a8e23c6e84d7dbf7e1125681",
+      "path": "scripts/audit_vnext_scout_exhaustive_source_disposition_terminal_authority_repair_v1.py",
+      "reason": "PRE_ACTIVATION_PRODUCT_LOCK_ASSERTION",
+      "sha256": "f92cab0d3ba7fb1b6d2df5fe031b36b8c15689bd5e3f778caad354f138d68293"
+    }
+  ],
+  "historical_evidence_mutated": false,
+  "historical_tests": [
+    {
+      "active_coverage_replacement": "scripts/audit_vnext_post_activation_active_audit_authority_v1.py",
+      "classification": "PRE_ACTIVATION_COMMIT_ONLY",
+      "path": "tests/test_vnext_cross_component_eligibility_evidence_recovery_transitive_repair_v1.py",
+      "reason": "TRANSITIVELY_INVOKES_PRE_ACTIVATION_LOCK_ASSERTION",
+      "sha256": "0a9d54634c699f73b9155e3e7d3b9027bffdd54a59e17f2b285528918ffdcb9a"
+    }
+  ],
+  "legacy_dependency_count": 0,
+  "manifest_identity": "7449832298f2e16ee65dfe2611af97cb9d44b0de3e12da5b40162971fc16c29d",
+  "schema": "vnext-post-activation-active-audit-authority-v1",
+  "schema_version": 1,
+  "status": "PASS_ACTIVE_AUDIT_AUTHORITY_SUCCESSOR",
+  "supersedes": {
+    "manifest_identity": "154f689b70c050820e1595ba08375f1965ef5a4aa0521e279dd2063a9703dbde",
+    "path": "docs/artifacts/vnext-active-authority-audit-manifest-v1.json"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "active_audit_manifest_identity": "7449832298f2e16ee65dfe2611af97cb9d44b0de3e12da5b40162971fc16c29d",
+  "active_root_mutated": false,
+  "blockers": 0,
+  "current_auditor": "scripts/audit_vnext_post_activation_active_audit_authority_v1.py",
+  "current_auditor_count": 1,
+  "historical_test_classification": "PRE_ACTIVATION_COMMIT_ONLY",
+  "legacy_dependency_count": 0,
+  "nested_successor_result_identity": "83408bd71533ebb8b435c392d741084236958ba9498c043fa6b74a730d723a7f",
+  "post_activation_coverage": "COMPLETE",
+  "pre_activation_coverage": "PRESERVED",
+  "predecessor_classification": "HISTORICAL_COMMIT_ONLY",
+  "r2_closure": "PASS",
+  "result_identity": "b721a1c1aab661818460aa90566eea5d1377adfb0dc33e1a0c4604fb22f2667b",
+  "rollback_root_mutated": false,
+  "schema": "vnext-post-activation-active-audit-authority-result-v1",
+  "sqlite_integrity": "PASS",
+  "status": "PASS"
+}
