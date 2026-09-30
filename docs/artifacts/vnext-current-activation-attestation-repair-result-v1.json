@@ -1,0 +1,16 @@
+{
+  "activation_receipt_identity": "1c5b0c103ba609408780f93b59ac98fec31d29151601ed20e5299cd8c8ce587f",
+  "active_root_modified": false,
+  "active_state_authority_identity": "1b2fef1f7553661a4e2741fe2274f0b77331988bbbaf846006ef0fbe6329424b",
+  "active_surface_identity": "db997a11045e8aef32891743d9aaed282cac436d6cc3fcb113f07ab140e9e738",
+  "blockers": 0,
+  "candidate_modified": false,
+  "legacy_dependency_count": 0,
+  "product_lock_successor_identity": "d41096cbcdcb82f9f7320d3e284b2d857f43bbb9f8f3f8b794aa75c1b4a08b3f",
+  "product_lock_successor_sha256": "a3c992653c00940778433c007ed6d76612ae711e56ea129a2329ab5be71923f6",
+  "result_identity": "484a90022b3cc5e23d77e751f351e92f8430b5ecee902b58650e5f33aa8387d4",
+  "rollback_roots_modified": false,
+  "schema": "vnext-current-activation-attestation-repair-result-v1",
+  "status": "PASS",
+  "waiting_period": false
+}
