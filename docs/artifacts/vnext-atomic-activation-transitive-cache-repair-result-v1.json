@@ -1,0 +1,15 @@
+{
+  "blockers": 0,
+  "candidate_commit": "929972ebc89e54c7d7d94b87346b2faf50823608",
+  "candidate_modified": false,
+  "checks": {
+    "environment_binding": "PASS",
+    "protected_child": "NO_EXECUTABLE_CACHE",
+    "unprotected_child": "PYC_GENERATED"
+  },
+  "legacy_dependency_count": 0,
+  "result_identity": "d18d8457d68a23fb61b0329af29c0ee4a651409b21ad2d9bf6fa2f3cfe2e0af3",
+  "schema": "vnext-atomic-activation-transitive-cache-repair-result-v1",
+  "status": "PASS",
+  "waiting_period": false
+}

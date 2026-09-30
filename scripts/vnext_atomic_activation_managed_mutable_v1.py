@@ -18,6 +18,9 @@ def canonical(value):
 def identity(value):
  return hashlib.sha256(canonical(value)).hexdigest()
 
+def execution_env():
+ env=os.environ.copy();env['PYTHONDONTWRITEBYTECODE']='1';return env
+
 def load_policy(root):
  path=root/'app/cli/runtime_bytes_policy.py'
  module=types.ModuleType('runtime_bytes_policy')
@@ -87,11 +90,11 @@ def activate(active,staged,backup,protected_rollback,repo,expected_commit,expect
  if lock['product_lock_identity']!=expected_lock_identity or sha(staged/'product-lock.json')!=expected_lock_sha or graph['authority_identity']!=expected_graph_identity or lock['active_graph_identity']!=expected_graph_identity:raise RuntimeError('staging identity mismatch')
  baseline=surface_snapshot(staged)
  py=staged/'platform/python-ml/bin/python';product=staged/'app/cli/product.py'
- subprocess.run([str(py),'-I','-B',str(product),'--root',str(staged),'--preflight-only'],check=True,capture_output=True,text=True)
+ subprocess.run([str(py),'-I','-B',str(product),'--root',str(staged),'--preflight-only'],check=True,capture_output=True,text=True,env=execution_env())
  def validate_after(current):
   py=current/'platform/python-ml/bin/python';product=current/'app/cli/product.py';auditor=current/'app/cli/audit.py'
-  subprocess.run([str(py),'-I','-B',str(product),'--root',str(current),'--preflight-only'],check=True,capture_output=True,text=True)
-  audit=json.loads(subprocess.run([str(py),'-I','-B',str(auditor),'--root',str(current),'--rollback-root',str(protected_rollback),'--live'],check=True,capture_output=True,text=True).stdout)
+  subprocess.run([str(py),'-I','-B',str(product),'--root',str(current),'--preflight-only'],check=True,capture_output=True,text=True,env=execution_env())
+  audit=json.loads(subprocess.run([str(py),'-I','-B',str(auditor),'--root',str(current),'--rollback-root',str(protected_rollback),'--live'],check=True,capture_output=True,text=True,env=execution_env()).stdout)
   if audit['status']!='PASS' or audit['e2e']!='EXPORTED':raise RuntimeError('post-activation audit')
   post=verify_post_swap(current,baseline)
   return {'status':'PASS_ACTIVATED','authority_identity':post['authority_identity'],'runtime_cache':post['cache'],'audit':audit,'rollback_root':str(backup)}
