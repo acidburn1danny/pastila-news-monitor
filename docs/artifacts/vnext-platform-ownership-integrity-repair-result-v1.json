@@ -1,0 +1,14 @@
+{
+  "active_graph_identity": "12263e59997d7bce2c94c6d174daa3baed88819fe7ab89cbe983be051fefab90",
+  "base_commit": "e6b5a59892f2b52235e3c0cb9c765132ef3dadd0",
+  "legacy_dependency_count": 0,
+  "managed_files": 30,
+  "platform_hardlink_auditor": "FAIL_CLOSED",
+  "platform_hardlink_preflight": "FAIL_CLOSED",
+  "product_lock_identity": "eb729655ac287b4e98373762f902c26cdbb96a3c1c19d82cff8847c022caa195",
+  "product_lock_sha256": "76fba42278d6eda61814a97f27525a4b1a7e5ca8566811316b211172015bcd25",
+  "result_identity": "46a51ffec111f02e2fd65162dc752ab8571914e864e2ccd5f73468f1050724ff",
+  "schema": "vnext-platform-ownership-integrity-repair-result-v1",
+  "standalone_audit_identity": "aee8c7d264b1010997cad0e818203dd47a77f2f2941ea9f073cc93fc5573b488",
+  "status": "PASS"
+}
