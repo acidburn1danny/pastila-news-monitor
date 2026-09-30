@@ -1,0 +1,21 @@
+{
+  "active_graph_identity": "4eb947f5c881a21f37e6424407e20b47bfaefe69a653ab8e1e4d48f44cb8b49a",
+  "active_product_lock_modified": false,
+  "active_root_modified": false,
+  "active_suite": "429 PASS / 1 PRE_ACTIVATION_COMMIT_ONLY deselected",
+  "blockers": 0,
+  "candidate_size_gib_approx": 31,
+  "e2e_terminal_state": "EXPORTED",
+  "legacy_dependency_count": 0,
+  "managed_files": 29,
+  "product_lock_identity": "91927b608b7115e410fc8873dcf23ad851a4530a6cc68b4405dd99a94abce5db",
+  "product_lock_sha256": "f20efa2edbf28a3d8113d59885597a65aa2d563ef9686295fa3e248d0f789544",
+  "repository_dependency_count": 0,
+  "result_identity": "2ffd760481ea97ae6f9a6e9e72f93781c6099f89df27eb1e367dce82082eff6d",
+  "rollback_root_modified": false,
+  "schema": "vnext-authority-materialization-closure-result",
+  "schema_version": 1,
+  "source_commit": "830d7ac7f3753030c6a128dc4cc423731ba72dcd",
+  "standalone_audit_identity": "7763d194c947b0e29fc5992e31efe0c66f7a895198eba3c661e4e39162372984",
+  "status": "PASS"
+}
