@@ -1,0 +1,14 @@
+{
+  "active_graph_identity": "626179006f0b2fbc2c982952db04f5c53590157cf964d0c50bc63390cf115ca2",
+  "base_commit": "7305b1d83ff94dd0a512b5f85558050710a27c87",
+  "entry_type_faults_passed": 8,
+  "entry_type_faults_total": 8,
+  "legacy_dependency_count": 0,
+  "managed_files": 30,
+  "product_lock_identity": "f7df7f692a43dab6101cbe16a0023dc647e81f4f7ab5d66cfadb23723ce068b7",
+  "product_lock_sha256": "c602031a3be05e2019fa82baf2d1ad5a1692bad31b879951a879b2eeaaef533d",
+  "result_identity": "cab402642c20fe6da5d30a3d5a76827e5ada741cac58ed4c83c07973fc2d40b9",
+  "schema": "vnext-filesystem-entry-type-integrity-repair-result-v1",
+  "standalone_audit_identity": "30cb161dcffafcd0b6ee1a9446bd3ef8f5f241aa75b313666eed18718f80a2f7",
+  "status": "PASS"
+}
