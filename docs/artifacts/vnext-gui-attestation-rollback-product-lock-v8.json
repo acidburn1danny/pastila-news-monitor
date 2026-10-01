@@ -68,8 +68,8 @@
     },
     {
       "path": "app/cli/preflight.py",
-      "sha256": "d9e188a4d70e034058667e519d1a060dd05a3e50bc3798a8af373bd09c96cc41",
-      "size": 17780,
+      "sha256": "7e86f36a8af3d80ecafd772ac953288ffcae83a12117e8f5dea9c4b788264153",
+      "size": 18269,
       "type": "file"
     },
     {
@@ -283,7 +283,7 @@
     "canonical_startup_paths": 1,
     "cli_gui_parity": "SHARED_ORCHESTRATOR_AND_STATE",
     "identity": "b92d7a4a8b919ccbf7b4e05770e454843f30028f87d41e4d8db40e3d90bc3e5a",
-    "state": "CANDIDATE_NOT_ACTIVATED"
+    "state": "ACTIVE"
   },
   "legacy_dependency_count": 0,
   "managed_inventory_semantics": "EXHAUSTIVE_REJECT_EXTRA_EXCEPT_DECLARED_RUNTIME_CACHE",
@@ -304,7 +304,7 @@
     ],
     "v5_attestation_validation": "RECEIPT_AUTHORITY_PREDECESSOR_GRAPH_AND_ORIGIN_BOUND"
   },
-  "product_lock_identity": "8ce91f853683022d7d1ea9860853e0589139883f65803cf0af404b9ecd32760a",
+  "product_lock_identity": "733ad2a1e95d3d672869edf670d6677f8d630d8b6a2aa3607dc0efbbf75d4562",
   "product_root": "/root/pastila-vnext/v1",
   "rollback_authority_successor_of_product_lock_identity": "5a5988bd0fb3b7d760c5a99dd13c007281a6900dd6a572c21c3812d6cd00bf93",
   "rollback_authority_transition": {

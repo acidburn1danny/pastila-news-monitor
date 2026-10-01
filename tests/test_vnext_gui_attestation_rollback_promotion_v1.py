@@ -12,6 +12,7 @@ def test_identities_and_rollback_semantics():
  assert r['rollback']['manifest_identity']==m['rollback_manifest_identity']
  assert l['activation_attestation']['canonical_rollback_manifest_identity']==m['rollback_manifest_identity']
  assert l['supersedes_product_lock_identity']=='4d45f169ed4f6eba530e181a7e61ce4ade02d63e8d21f5177b3d4d18d15a0738'
+ assert l['gui_authority']['state']=='ACTIVE'
  assert l['rollback_authority_successor_of_product_lock_identity']==b.ACTIVE_ID
 def test_prospective_three_phase_closure():
  r=load('vnext-gui-attestation-rollback-promotion-result-v1.json');assert r['status']=='PASS' and r['blockers']==0

@@ -68,6 +68,7 @@ def verify_activation_authority(root,lock):
  if version in (4,5):return "PREDECESSOR_SCHEMA"
  if version==8:
   if lock.get("supersedes_product_lock_identity")!="4d45f169ed4f6eba530e181a7e61ce4ade02d63e8d21f5177b3d4d18d15a0738":raise RuntimeError("GUI candidate predecessor mismatch")
+  if lock.get("gui_authority",{}).get("state")!="ACTIVE":raise RuntimeError("GUI authority state mismatch")
   att=lock.get("activation_attestation",{})
   if att.get("activation_candidate_product_lock_identity")!="4d45f169ed4f6eba530e181a7e61ce4ade02d63e8d21f5177b3d4d18d15a0738":raise RuntimeError("GUI activation candidate mismatch")
   receipt=load(root/"manifest/activation/vnext-activation-receipt-v1.json");check_identity(receipt,"activation_receipt_identity")
@@ -128,6 +129,8 @@ def verify(root,full_platform_hash=True,verify_host_dependencies=True,require_pr
   if row!=actual[path]:raise RuntimeError("managed byte mismatch: "+path)
  graph=load(root/"manifest/authorities/vnext-active-product-dependency-graph-v3.json");check_identity(graph,"authority_identity")
  if graph.get("schema_version") not in (3,4) or graph.get("status")!="ACTIVE_SELF_CONTAINED_AUTHORITY_CLOSURE":raise RuntimeError("active graph authority mismatch")
+ if lock.get("schema_version")==8 and {x.get("id"):x.get("state") for x in graph.get("enabled",[])}.get("gui")!="ACTIVE":raise RuntimeError("GUI active graph state mismatch")
+ if lock.get("schema_version")==8 and lock.get("gui_authority",{}).get("state")!={x.get("id"):x.get("state") for x in graph.get("enabled",[])}.get("gui"):raise RuntimeError("GUI lock/graph state mismatch")
  if lock.get("schema_version") in (7,8):
   bindings=lock.get("contract_authority_bindings")
   if graph.get("schema_version")!=4 or graph.get("contract_authority_bindings")!=bindings:raise RuntimeError("contract authority graph binding")

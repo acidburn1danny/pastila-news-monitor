@@ -25,12 +25,12 @@
     "manifest/authorities/vnext-active-product-lock-successor-v1.json",
     "manifest/rollback/vnext-canonical-rollback-manifest-v1.json"
   ],
-  "product_lock_identity": "8ce91f853683022d7d1ea9860853e0589139883f65803cf0af404b9ecd32760a",
-  "product_lock_sha256": "daf0c07ebb88909e2c0cf5fc7fa3406b7bc68b04a1b82c342d4f32bdb12949fe",
+  "product_lock_identity": "733ad2a1e95d3d672869edf670d6677f8d630d8b6a2aa3607dc0efbbf75d4562",
+  "product_lock_sha256": "8e250c6183015e307252cb2b4cb3896ca9795481b5cfe2cf138733fca6eb6b42",
   "prospective_install": {
     "audit": "PASS",
     "preflight": "PASS_PREFLIGHT",
-    "product_lock_identity": "8ce91f853683022d7d1ea9860853e0589139883f65803cf0af404b9ecd32760a",
+    "product_lock_identity": "733ad2a1e95d3d672869edf670d6677f8d630d8b6a2aa3607dc0efbbf75d4562",
     "rollback_integrity": "PASS",
     "startup": "PASS_STARTUP_READY",
     "terminal": "EXPORTED"
@@ -38,7 +38,7 @@
   "prospective_restore": {
     "audit": "PASS",
     "preflight": "PASS_PREFLIGHT",
-    "product_lock_identity": "8ce91f853683022d7d1ea9860853e0589139883f65803cf0af404b9ecd32760a",
+    "product_lock_identity": "733ad2a1e95d3d672869edf670d6677f8d630d8b6a2aa3607dc0efbbf75d4562",
     "rollback_integrity": "PASS",
     "startup": "PASS_STARTUP_READY",
     "terminal": "EXPORTED"
@@ -51,7 +51,7 @@
     "startup": "PASS_STARTUP_READY",
     "terminal": "EXPORTED"
   },
-  "result_identity": "2d4281943b1a57a9fc771c01c399418ec897a40325b298422fdf47e6fcb495b3",
+  "result_identity": "79c6ae458fe8bed9e4ccc62bf3b322afb8b8b0c5a90737c9f983d9f76c1fc472",
   "retirement_executed": false,
   "rollback_manifest_identity": "2db94e7b233f0cb4838fffdfbcd1aff2bc4ce695fd37ed01f08fae4bb39d973e",
   "rollback_roots_modified": false,
