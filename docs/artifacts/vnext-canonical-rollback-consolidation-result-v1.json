@@ -1,0 +1,21 @@
+{
+    "active_root_modified": false,
+    "active_state_authority_identity": "8ff045e724f54911357edbb663d88ac8b044e6c8eef57c896b114117fa37a6b6",
+    "blockers": 0,
+    "historical_retirement_executed": false,
+    "legacy_dependency_count": 0,
+    "managed_replacements": [
+        "app/cli/audit.py",
+        "app/cli/preflight.py",
+        "manifest/authorities/vnext-active-product-lock-successor-v1.json",
+        "manifest/rollback/vnext-canonical-rollback-manifest-v1.json"
+    ],
+    "product_lock_identity": "03e43da4e052ed0bf0a1caa7f9da7103a111e1192362ea9887ed86388b864b78",
+    "product_lock_sha256": "196c5f7bdec6f59f0609ad334dbdebdc17e5ad9f793945713ff2b7afaa5b58a2",
+    "prospective_simulation": "PASS_INSTALL_STARTUP_E2E_AND_BYTE_EXACT_ROLLBACK_RESTORE",
+    "result_identity": "5882a661e380042cc475445c3ae254d637ced91b1d2bf390873e35559f5ab28d",
+    "rollback_manifest_identity": "0f4e8cae08fc09514bd1bf8d6ec72478d0e69a64c7d4140489ddf6ff229bdeda",
+    "rollback_roots_modified": false,
+    "schema": "vnext-canonical-rollback-consolidation-result-v1",
+    "status": "PASS"
+}
