@@ -1,0 +1,1 @@
+# VNext Active Contract Lifecycle Semantics & Authority Coherence Repair v1\n\nBounded metadata and binding successor only. Runtime modules, SQLite data/schema, active root, canonical rollback, VOICE, and GUI remain unchanged. Installation requires separate authorization.\n

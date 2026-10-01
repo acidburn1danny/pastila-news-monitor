@@ -1,0 +1,47 @@
+{
+  "active_runtime_module": "src/pastila_scout/vnext_scout_production_v1.py",
+  "authority_identity": "8a5b76cf017e0befe971a8082492d5418cacd673bece0562a906a8d28f7a9fa4",
+  "historical_adapter_active": false,
+  "legacy_dependency_count": 0,
+  "lifecycle": {
+    "bound_predecessor_product_lock_identity": "03e43da4e052ed0bf0a1caa7f9da7103a111e1192362ea9887ed86388b864b78",
+    "product_root": "/root/pastila-vnext/v1",
+    "state": "ACTIVE"
+  },
+  "packet_schema": "vnext-source-packet",
+  "packet_schema_version": 1,
+  "schema": "vnext-canonical-sourcepacket-contract",
+  "schema_version": 2,
+  "selection_authority": "EXPLICIT_USER_EVENT_ID",
+  "selection_receipt": {
+    "content_addressed": true,
+    "embedded_in_source_packet": true,
+    "persisted_immutable": true,
+    "required_binding": [
+      "workflow_identity",
+      "event_identity",
+      "actor",
+      "authorization_identity",
+      "transition_receipt_identity"
+    ],
+    "required_transition": "GROUPED_TO_SELECTED",
+    "schema": "vnext-source-selection-receipt",
+    "schema_version": 1
+  },
+  "source_authority": {
+    "required_provenance": [
+      "source_identity",
+      "source_name",
+      "source_feed_url",
+      "article_url",
+      "title",
+      "published_at",
+      "captured_at",
+      "capture_identity",
+      "text_sha256",
+      "text_bytes"
+    ],
+    "self_contained": true
+  },
+  "status": "ACTIVE_INSTALLED_AUTHORITY"
+}

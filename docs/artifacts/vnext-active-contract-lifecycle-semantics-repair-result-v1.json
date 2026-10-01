@@ -1,0 +1,17 @@
+{
+  "active_graph_identity": "9141199073e6a3239308686f9302ceb7103c11dc5ec1e5311b344cf0d4f1e09c",
+  "active_root_modified": false,
+  "active_state_authority_identity": "6d9b3f7fe500c22f632e3c288e3be65cebe4a3240a0c4b4bc94096c95bf66b3e",
+  "blockers": 0,
+  "gui_started": false,
+  "legacy_dependency_count": 0,
+  "product_lock_identity": "3229ddda9f36971f2928ea3fdb6b78e145e956d240ede2b5d781fe3fbb0cd7a2",
+  "product_lock_sha256": "3b4a569e0cecd0df1769847f2735595770eec1a466900f3dcb56839529fe8093",
+  "result_identity": "2c00b664ccc428c1e02d4c61b1aeb90f642e43b3ac636ae5cd517ceec93c1039",
+  "runtime_bytes_unchanged": true,
+  "source_packet_authority_identity": "8a5b76cf017e0befe971a8082492d5418cacd673bece0562a906a8d28f7a9fa4",
+  "sqlite_authority_identity": "4884e6fc193b23c675c7b7e897c55fb94d7d704dc42d4dfe74dd75bc95f9aa0f",
+  "status": "PASS",
+  "voice_started": false,
+  "workflow_authority_identity": "be10ee13449573883952fa15f944a199798e4cf28c8f0e83e5143f6c74dc2e80"
+}

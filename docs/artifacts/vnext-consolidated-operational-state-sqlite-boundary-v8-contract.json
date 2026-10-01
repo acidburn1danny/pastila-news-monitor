@@ -1,0 +1,59 @@
+{
+  "active_integration": true,
+  "authority": {
+    "foundation_commit": "05083563f5d7a312642e1cb940da71e92c63b5b8",
+    "workflow_v3_identity": "8fab885d9c0563972acaed8c1f75e4dda91b9da6eccb40d0c258a9b1b788363a"
+  },
+  "authority_identity": "4884e6fc193b23c675c7b7e897c55fb94d7d704dc42d4dfe74dd75bc95f9aa0f",
+  "legacy_dependency_count": 0,
+  "lifecycle": {
+    "bound_predecessor_product_lock_identity": "03e43da4e052ed0bf0a1caa7f9da7103a111e1192362ea9887ed86388b864b78",
+    "product_root": "/root/pastila-vnext/v1",
+    "state": "ACTIVE"
+  },
+  "migration": {
+    "from": 6,
+    "global_event_reuse": true,
+    "monotonic": true,
+    "new_authority_table": "workflow_events",
+    "preserves_existing_rows": true,
+    "to": 7,
+    "workflow_event_primary_key": [
+      "workflow_identity",
+      "event_identity"
+    ],
+    "workflow_position_unique": true
+  },
+  "persistence": {
+    "deterministic_export": true,
+    "eligibility_authority": "SQLITE_WORKFLOW_ASSOCIATION_AND_STATE",
+    "event_identity_scope": "GLOBAL_CONTENT_ADDRESSED",
+    "final_input_authority": "OWNED_FACTUAL_OUTPUT_PLUS_PERSISTED_POLICY_APPROVAL",
+    "grouping_output_identity": "ORDERED_GROUPING_IDENTITIES",
+    "grouping_receipt_validation": "EXACT_AND_CONTENT_ADDRESSED",
+    "grouping_transition": "CAPTURED_TO_GROUPED",
+    "input_artifact_workflow_association_required": true,
+    "insert_or_ignore_authority_rows": false,
+    "policy_authority": "PERSISTED_WORKFLOW_BOUND_SINGLE_USE_SESSION",
+    "recovery": "FAIL_CLOSED",
+    "review_authority": "PERSISTED_WORKFLOW_BOUND_SINGLE_USE_SESSION",
+    "selection_scope": "CURRENT_WORKFLOW_ONLY",
+    "self_asserted_session_identity_accepted": false,
+    "session_consumption_atomic_with_decision": true,
+    "session_issuer": "SQLITE_SINGLE_WRITER_IDENTITY",
+    "session_source_packet_bound": true,
+    "source_packet_workflow_association_required": true,
+    "strict_authoritative_inserts": true,
+    "terminal_result_replay_idempotent": true,
+    "unassociated_blob_eligible": false,
+    "workflow_event_authority": "WORKFLOW_EVENTS_RELATION"
+  },
+  "product_data_migration": false,
+  "product_root_dependency": false,
+  "schema": "vnext-consolidated-operational-state-sqlite-boundary",
+  "schema_version": 8,
+  "status": "ACTIVE_INSTALLED_AUTHORITY",
+  "stop_all_candidates": true,
+  "supersedes": "vnext-consolidated-operational-state-sqlite-boundary-v6",
+  "voice": "DISABLED_UNTIL_PROMOTION"
+}

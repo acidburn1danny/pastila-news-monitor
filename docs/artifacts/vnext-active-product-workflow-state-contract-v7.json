@@ -1,0 +1,247 @@
+{
+  "artifact_types": {
+    "ABSTAINED": {
+      "eligible_for_voice": false
+    },
+    "ACCEPTED_SETUP": {
+      "eligible_for_voice": true
+    },
+    "EDITOR_DRAFT": {
+      "eligible_as_accepted_setup": false
+    },
+    "SOURCE_FALLBACK": {
+      "eligible_for_voice": true,
+      "requires_explicit_approval": true
+    },
+    "STRUCTURAL_FAILURE": {
+      "eligible_as_accepted_setup": false,
+      "eligible_for_voice": false
+    }
+  },
+  "authority_identity": "be10ee13449573883952fa15f944a199798e4cf28c8f0e83e5143f6c74dc2e80",
+  "failure_model": {
+    "idempotency_key_required": true,
+    "partial_output_eligible": false,
+    "state_transition_atomic": true,
+    "structural_failure_requires_factual_review": true
+  },
+  "final": {
+    "mode": "DETERMINISTIC_ASSEMBLY_EXPORT"
+  },
+  "initial_state": "DISCOVERED",
+  "lifecycle": {
+    "bound_predecessor_product_lock_identity": "03e43da4e052ed0bf0a1caa7f9da7103a111e1192362ea9887ed86388b864b78",
+    "product_root": "/root/pastila-vnext/v1",
+    "state": "ACTIVE"
+  },
+  "schema": "vnext-active-product-workflow-state-contract",
+  "schema_version": 7,
+  "source_disposition_contract": {
+    "cardinality": "EXACTLY_ONE_PER_ENABLED_SOURCE",
+    "domain": "EXACT_ENABLED_SOURCE_SET",
+    "extra_source_dispositions_forbidden": true,
+    "failure_disposition_binding": "BIJECTIVE_BY_SOURCE_IDENTITY",
+    "missing_source_dispositions_forbidden": true,
+    "outcome_derivation": {
+      "CAPTURED": {
+        "capture_count": "1_TO_SOURCE_MAXIMUM",
+        "failure_record_count": 0
+      },
+      "CAPTURE_FAILED": {
+        "capture_count": 0,
+        "failure_record_count": 1
+      },
+      "NO_ELIGIBLE_ENTRIES": {
+        "capture_count": 0,
+        "failure_record_count": 0
+      }
+    },
+    "source_identity_unique": true
+  },
+  "states": [
+    "ABSTAINED",
+    "ACCEPTED_SETUP",
+    "APPROVED_FOR_FINAL",
+    "CAPTURED",
+    "CAPTURE_FAILED",
+    "DISCOVERED",
+    "EDITOR_DRAFT_READY",
+    "EDITOR_FAILED",
+    "EDITOR_PENDING",
+    "EXPORTED",
+    "FACTUAL_ACCEPTANCE_FAILED",
+    "FACTUAL_REVIEW_PENDING",
+    "FINAL_ASSEMBLY_FAILED",
+    "FINAL_READY",
+    "GROUPED",
+    "NO_ELIGIBLE_CONTENT",
+    "POLICY_REVIEW_PENDING",
+    "REJECTED",
+    "REVISION_REQUIRED",
+    "SELECTED",
+    "SOURCE_FALLBACK",
+    "SOURCE_PACKET_INVALID",
+    "SOURCE_PACKET_READY",
+    "STRUCTURAL_FAIL",
+    "VOICE_DISABLED",
+    "VOICE_DRAFT_READY",
+    "VOICE_PENDING",
+    "VOICE_UNAVAILABLE"
+  ],
+  "status": "ACTIVE_INSTALLED_AUTHORITY",
+  "supersedes": "vnext-active-product-workflow-state-contract-v5",
+  "terminal_semantics": {
+    "CAPTURE_FAILED": {
+      "capture_count": 0,
+      "disposition_counts": {
+        "CAPTURED": 0,
+        "CAPTURE_FAILED": "AT_LEAST_ONE",
+        "NO_ELIGIBLE_ENTRIES": "ZERO_OR_MORE",
+        "TOTAL": "ENABLED_SOURCE_COUNT"
+      },
+      "failure_record_count": "EQUALS_CAPTURE_FAILED_DISPOSITION_COUNT",
+      "operational_outcome": "FAIL"
+    },
+    "NO_ELIGIBLE_CONTENT": {
+      "capture_count": 0,
+      "disposition_counts": {
+        "CAPTURED": 0,
+        "CAPTURE_FAILED": 0,
+        "NO_ELIGIBLE_ENTRIES": "ENABLED_SOURCE_COUNT",
+        "TOTAL": "ENABLED_SOURCE_COUNT"
+      },
+      "failure_record_count": 0,
+      "operational_outcome": "PASS"
+    }
+  },
+  "transitions": [
+    [
+      "ACCEPTED_SETUP",
+      "VOICE_DISABLED"
+    ],
+    [
+      "ACCEPTED_SETUP",
+      "VOICE_PENDING"
+    ],
+    [
+      "APPROVED_FOR_FINAL",
+      "FINAL_ASSEMBLY_FAILED"
+    ],
+    [
+      "APPROVED_FOR_FINAL",
+      "FINAL_READY"
+    ],
+    [
+      "CAPTURED",
+      "GROUPED"
+    ],
+    [
+      "DISCOVERED",
+      "CAPTURED"
+    ],
+    [
+      "DISCOVERED",
+      "CAPTURE_FAILED"
+    ],
+    [
+      "DISCOVERED",
+      "NO_ELIGIBLE_CONTENT"
+    ],
+    [
+      "EDITOR_DRAFT_READY",
+      "FACTUAL_REVIEW_PENDING"
+    ],
+    [
+      "EDITOR_PENDING",
+      "EDITOR_DRAFT_READY"
+    ],
+    [
+      "EDITOR_PENDING",
+      "EDITOR_FAILED"
+    ],
+    [
+      "EDITOR_PENDING",
+      "STRUCTURAL_FAIL"
+    ],
+    [
+      "FACTUAL_REVIEW_PENDING",
+      "ABSTAINED"
+    ],
+    [
+      "FACTUAL_REVIEW_PENDING",
+      "ACCEPTED_SETUP"
+    ],
+    [
+      "FACTUAL_REVIEW_PENDING",
+      "FACTUAL_ACCEPTANCE_FAILED"
+    ],
+    [
+      "FACTUAL_REVIEW_PENDING",
+      "SOURCE_FALLBACK"
+    ],
+    [
+      "FINAL_READY",
+      "EXPORTED"
+    ],
+    [
+      "GROUPED",
+      "SELECTED"
+    ],
+    [
+      "POLICY_REVIEW_PENDING",
+      "APPROVED_FOR_FINAL"
+    ],
+    [
+      "POLICY_REVIEW_PENDING",
+      "REJECTED"
+    ],
+    [
+      "POLICY_REVIEW_PENDING",
+      "REVISION_REQUIRED"
+    ],
+    [
+      "SELECTED",
+      "SOURCE_PACKET_INVALID"
+    ],
+    [
+      "SELECTED",
+      "SOURCE_PACKET_READY"
+    ],
+    [
+      "SOURCE_FALLBACK",
+      "VOICE_DISABLED"
+    ],
+    [
+      "SOURCE_FALLBACK",
+      "VOICE_PENDING"
+    ],
+    [
+      "SOURCE_PACKET_READY",
+      "EDITOR_PENDING"
+    ],
+    [
+      "STRUCTURAL_FAIL",
+      "FACTUAL_REVIEW_PENDING"
+    ],
+    [
+      "VOICE_DISABLED",
+      "POLICY_REVIEW_PENDING"
+    ],
+    [
+      "VOICE_DRAFT_READY",
+      "POLICY_REVIEW_PENDING"
+    ],
+    [
+      "VOICE_PENDING",
+      "VOICE_DRAFT_READY"
+    ],
+    [
+      "VOICE_PENDING",
+      "VOICE_UNAVAILABLE"
+    ]
+  ],
+  "voice": {
+    "r2_may_serve_as_voice": false,
+    "state": "DISABLED_UNTIL_PROMOTION"
+  }
+}
