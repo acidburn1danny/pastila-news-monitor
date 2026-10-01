@@ -14,21 +14,21 @@ def exercise(root,workspace,rollback=None,full=True):
  if full:
   a=command([str(py),'-I','-B',str(root/'app/cli/audit.py'),'--root',str(root),'--rollback-root',str(rollback),'--live'],env);r.update(audit=a['status'],rollback_integrity=a['rollback_integrity'])
  return r
-def overlay(out,root):
- copy(out.parents[1]/'scripts/vnext_gui_attestation_rollback_preflight_v1.py',root/'app/cli/preflight.py')
+def overlay(repo,out,root):
+ copy(repo/'scripts/vnext_gui_attestation_rollback_preflight_v1.py',root/'app/cli/preflight.py')
  mapping={'vnext-gui-current-activation-receipt-v2.json':'manifest/activation/vnext-activation-receipt-v1.json','vnext-gui-current-active-state-authority-v2.json':'manifest/authorities/vnext-active-product-lock-successor-v1.json','vnext-gui-attestation-canonical-rollback-manifest-v5.json':'manifest/rollback/vnext-canonical-rollback-manifest-v1.json','vnext-gui-attestation-rollback-product-lock-v8.json':'product-lock.json'}
  for src,dst in mapping.items():copy(out/src,root/dst)
 def run(repo,active,immediate,historical,prior,out):
  b=module(repo/'scripts/build_vnext_gui_attestation_rollback_promotion_v1.py','builder');before={str(x):b.sha(x/'product-lock.json') for x in (active,immediate,historical,prior)};built=b.build(repo,active,immediate,historical,prior,out)
  with tempfile.TemporaryDirectory(prefix='vnext-gui-rollback-promotion-',dir='/root') as raw:
   td=Path(raw);u,w,m=mount(active,td,'install')
-  try:overlay(out,m);install=exercise(m,td/'install-e2e',immediate,True)
+  try:overlay(repo,out,m);install=exercise(m,td/'install-e2e',immediate,True)
   finally:subprocess.run(['umount',str(m)],check=True)
   u2,w2,m2=mount(immediate,td,'rollback')
   try:rollback=exercise(m2,td/'rollback-e2e',historical,True)
   finally:subprocess.run(['umount',str(m2)],check=True)
   shutil.rmtree(u);shutil.rmtree(w);u.mkdir();w.mkdir();subprocess.run(['mount','-t','overlay','overlay','-o',f'lowerdir={active},upperdir={u},workdir={w}',str(m)],check=True)
-  try:overlay(out,m);restore=exercise(m,td/'restore-e2e',immediate,True)
+  try:overlay(repo,out,m);restore=exercise(m,td/'restore-e2e',immediate,True)
   finally:subprocess.run(['umount',str(m)],check=True)
  after={str(x):b.sha(x/'product-lock.json') for x in (active,immediate,historical,prior)}
  if before!=after:raise RuntimeError('protected root mutation')
