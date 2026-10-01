@@ -1,0 +1,55 @@
+{
+  "activation_receipt_identity": "4d7aafa66b4a84b6a705ddad395b19f85c6eb36701a6f62c37f7a069e182a5a8",
+  "active": {
+    "audit_identity": "dfb1bb619e438d9b41fbbe5e22f38e6183760e3768acea1feb057c603b91ec78",
+    "authority_surface_identity": "29dddf588f38661416ee3f11fd63e66ec4673fd65cc55bb89853052a5f552dc6",
+    "integrated_e2e": "EXPORTED",
+    "managed_files": 33,
+    "startup": "PASS_STARTUP_READY"
+  },
+  "active_graph_identity": "01d6b01a382ceb21518beeed0e6c5645f076e071767096d4358ddc5aa8ea5409",
+  "atomic_swap": {
+    "active_root": "/root/pastila-vnext/v1",
+    "mechanism": "renameat2(RENAME_EXCHANGE)",
+    "result": "PASS_ACTIVATED"
+  },
+  "authority_commit": "01df91cdbcb685363d2cdd05ce57af1bddc51c77",
+  "candidate": {
+    "product_lock_identity": "4d45f169ed4f6eba530e181a7e61ce4ade02d63e8d21f5177b3d4d18d15a0738"
+  },
+  "installed_product_lock": {
+    "identity": "6deeb96a788f3780835a9dce3583153e53ab6c6121ddea994495e4c9cc8e1a9f",
+    "sha256": "67dead9fd542da9464fc798a7037fb15b4c5f8270c626c9e0ce41f58265a74ff"
+  },
+  "legacy_dependency_count": 0,
+  "predecessor_activation_receipt_identity": "94315f47066ef8936d13c8dc8ddcbf7db063a723bb7618839bb9844ab077419d",
+  "repository_dependency_count": 0,
+  "rollback": {
+    "canonical_product_lock_identity": "6deeb96a788f3780835a9dce3583153e53ab6c6121ddea994495e4c9cc8e1a9f",
+    "canonical_product_lock_sha256": "67dead9fd542da9464fc798a7037fb15b4c5f8270c626c9e0ce41f58265a74ff",
+    "canonical_root": "/root/pastila-vnext/.rollback-pre-attestation-5a5988bd",
+    "historical_roots": [
+      {
+        "classification": "HISTORICAL_NON_CANONICAL",
+        "path": "/root/pastila-vnext/.rollback-pre-gui-4d45f169",
+        "product_lock_identity": "278df8cdd27f641a44fd7941bfc89c362dcb5af3f1a9f265148fa11c85e44ab0",
+        "product_lock_sha256": "c9c6b9bb60c881781b1b534990bc37b76a7e012f2599144e2656984854f5fa58"
+      },
+      {
+        "classification": "HISTORICAL_NON_CANONICAL_PENDING_RETIREMENT",
+        "path": "/root/pastila-vnext/.rollback-pre-contract-e180a1e5",
+        "product_lock_identity": "03e43da4e052ed0bf0a1caa7f9da7103a111e1192362ea9887ed86388b864b78",
+        "product_lock_sha256": "196c5f7bdec6f59f0609ad334dbdebdc17e5ad9f793945713ff2b7afaa5b58a2"
+      }
+    ],
+    "manifest_identity": "2db94e7b233f0cb4838fffdfbcd1aff2bc4ce695fd37ed01f08fae4bb39d973e"
+  },
+  "schema": "vnext-gui-current-activation-receipt-v2",
+  "schema_version": 2,
+  "status": "ATTESTED_CURRENT_ACTIVATION_CANONICAL_ROLLBACK_RECONCILED",
+  "temporal_claim": {
+    "activated_at": null,
+    "status": "NOT_RECORDED_NO_RETROACTIVE_FABRICATION"
+  },
+  "voice": "DISABLED_UNTIL_PROMOTION"
+}

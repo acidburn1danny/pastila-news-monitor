@@ -1,0 +1,39 @@
+{
+  "activation_candidate_product_lock_identity": "4d45f169ed4f6eba530e181a7e61ce4ade02d63e8d21f5177b3d4d18d15a0738",
+  "activation_receipt_identity": "4d7aafa66b4a84b6a705ddad395b19f85c6eb36701a6f62c37f7a069e182a5a8",
+  "active_authority_surface_identity": "29dddf588f38661416ee3f11fd63e66ec4673fd65cc55bb89853052a5f552dc6",
+  "active_graph_identity": "01d6b01a382ceb21518beeed0e6c5645f076e071767096d4358ddc5aa8ea5409",
+  "active_root": "/root/pastila-vnext/v1",
+  "active_state_authority_identity": "b6c34ebbe0319f3cdea593a3fc254bbd86fcbc5994fc36e45793ac45cc4f9424",
+  "canonical_rollback": {
+    "manifest_identity": "2db94e7b233f0cb4838fffdfbcd1aff2bc4ce695fd37ed01f08fae4bb39d973e",
+    "product_lock_identity": "6deeb96a788f3780835a9dce3583153e53ab6c6121ddea994495e4c9cc8e1a9f",
+    "product_lock_sha256": "67dead9fd542da9464fc798a7037fb15b4c5f8270c626c9e0ce41f58265a74ff",
+    "root": "/root/pastila-vnext/.rollback-pre-attestation-5a5988bd"
+  },
+  "historical_roots": [
+    {
+      "classification": "HISTORICAL_NON_CANONICAL",
+      "path": "/root/pastila-vnext/.rollback-pre-gui-4d45f169",
+      "product_lock_identity": "278df8cdd27f641a44fd7941bfc89c362dcb5af3f1a9f265148fa11c85e44ab0",
+      "product_lock_sha256": "c9c6b9bb60c881781b1b534990bc37b76a7e012f2599144e2656984854f5fa58"
+    },
+    {
+      "classification": "HISTORICAL_NON_CANONICAL_PENDING_RETIREMENT",
+      "path": "/root/pastila-vnext/.rollback-pre-contract-e180a1e5",
+      "product_lock_identity": "03e43da4e052ed0bf0a1caa7f9da7103a111e1192362ea9887ed86388b864b78",
+      "product_lock_sha256": "196c5f7bdec6f59f0609ad334dbdebdc17e5ad9f793945713ff2b7afaa5b58a2"
+    }
+  ],
+  "installed_product_lock": {
+    "identity": "5a5988bd0fb3b7d760c5a99dd13c007281a6900dd6a572c21c3812d6cd00bf93",
+    "sha256": "6c79a7e25b22c80caad93a05b6701860166e3af88626a543fc3aa9c38ed761ee"
+  },
+  "legacy_dependency_count": 0,
+  "post_install_audit_identity": "dfb1bb619e438d9b41fbbe5e22f38e6183760e3768acea1feb057c603b91ec78",
+  "predecessor_active_state_authority_identity": "7fce03be563e737021a61d4804aa8c1c5e68e38406525c59b4130a4e50715f9a",
+  "schema": "vnext-gui-current-active-state-authority-v2",
+  "schema_version": 2,
+  "status": "ACTIVATED_ATTESTED_CANONICAL_FACTUAL_IMMEDIATE_PREDECESSOR",
+  "voice": "DISABLED_UNTIL_PROMOTION"
+}
