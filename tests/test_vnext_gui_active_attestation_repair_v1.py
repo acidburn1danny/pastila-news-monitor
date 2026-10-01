@@ -16,3 +16,9 @@ def test_schema8_preflight_and_gui_unchanged():
  for p in ("app/cli/gui.py","app/workflow/pastila_scout/vnext_product_gui_v1.py","manifest/authorities/vnext-product-gui-cli-parity-authority-v1.json"):assert rows[p]==old[p]
 def test_result_and_rollback():
  r=load("vnext-gui-active-attestation-repair-result-v1.json");assert r["status"]=="PASS" and not r["blockers"];assert r["prospective_install"]=="PASS" and r["prospective_rollback"]==r["prospective_restore"]=="PASS_BYTE_EXACT";assert not r["active_root_modified"] and not r["rollback_root_modified"]
+
+def test_schema8_transitive_historical_audit_authority():
+ a=m("scripts/audit_vnext_gui_active_product_v1.py","a8");l=load("vnext-gui-active-product-lock-v8.json")
+ h=l["activation_attestation"]["historical_attestation"]
+ while "active_audit_authority_identity" not in h:h=h["historical_attestation"]
+ assert a.historical_audit_identity(l["activation_attestation"])==h["active_audit_authority_identity"]

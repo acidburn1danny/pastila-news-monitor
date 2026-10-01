@@ -20,3 +20,7 @@ This bounded repair converts the validated inactive GUI candidate into a separat
 ## CAR
 
 The standalone auditor initially loaded the copied preflight without its canonical runtime-bytes-policy import path. The auditor loader was repaired in scope; affected evidence was invalidated and the full boundary audit restarted fresh to PASS.
+
+## Installation CAR
+
+The schema 8 auditor now resolves the active-audit authority transitively through the preserved historical attestation chain. The previous direct lookup failed closed during canonical staged audit. Affected product-lock/result evidence was regenerated and the full boundary audit restarted fresh.

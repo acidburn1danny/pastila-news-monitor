@@ -13,6 +13,12 @@ def sha(p):
 def load(p):return json.loads(p.read_text())
 def check(v,k):
  if v[k]!=ident({x:y for x,y in v.items() if x!=k}):raise RuntimeError('identity '+k)
+def historical_audit_identity(att):
+ h=att.get('historical_attestation',{})
+ for _ in range(8):
+  if 'active_audit_authority_identity' in h:return h['active_audit_authority_identity']
+  h=h.get('historical_attestation',{}) if isinstance(h,dict) else {}
+ raise RuntimeError('historical active audit authority')
 def secure_policy(root,lock):
  p=root/'app/cli/runtime_bytes_policy.py';row={x['path']:x for x in lock['application_files']}.get('app/cli/runtime_bytes_policy.py')
  if not row or p.stat().st_size!=row['size'] or sha(p)!=row['sha256']:raise RuntimeError('policy bootstrap mismatch')
@@ -43,9 +49,9 @@ def audit(root,rollback=None,live=False):
  paths={'active_state':'manifest/authorities/vnext-active-product-lock-successor-v1.json','receipt':'manifest/activation/vnext-activation-receipt-v1.json','rollback':'manifest/rollback/vnext-canonical-rollback-manifest-v1.json','audit':'manifest/authorities/vnext-post-activation-active-audit-authority-v1.json'}
  att=lock['activation_attestation']
  if lock.get('schema_version') in (6,7,8):
-  expected={'active_state':(att['current_active_state_authority_identity'],'active_state_authority_identity'),'receipt':(att['current_activation_receipt_identity'],'activation_receipt_identity'),'rollback':(att['canonical_rollback_manifest_identity'],'rollback_manifest_identity'),'audit':(att['historical_attestation']['active_audit_authority_identity'],'manifest_identity')}
+  expected={'active_state':(att['current_active_state_authority_identity'],'active_state_authority_identity'),'receipt':(att['current_activation_receipt_identity'],'activation_receipt_identity'),'rollback':(att['canonical_rollback_manifest_identity'],'rollback_manifest_identity'),'audit':(historical_audit_identity(att),'manifest_identity')}
  elif lock.get('schema_version')==5:
-  expected={'active_state':(att['current_active_state_authority_identity'],'active_state_authority_identity'),'receipt':(att['current_activation_receipt_identity'],'activation_receipt_identity'),'rollback':(att['historical_attestation']['rollback_manifest_identity'],'rollback_manifest_identity'),'audit':(att['historical_attestation']['active_audit_authority_identity'],'manifest_identity')}
+  expected={'active_state':(att['current_active_state_authority_identity'],'active_state_authority_identity'),'receipt':(att['current_activation_receipt_identity'],'activation_receipt_identity'),'rollback':(att['historical_attestation']['rollback_manifest_identity'],'rollback_manifest_identity'),'audit':(historical_audit_identity(att),'manifest_identity')}
  elif lock.get('schema_version')==4:
   expected={'active_state':(att['active_state_authority_identity'],'product_lock_identity'),'receipt':(att['activation_receipt_identity'],'activation_receipt_identity'),'rollback':(att['rollback_manifest_identity'],'rollback_manifest_identity'),'audit':(att['active_audit_authority_identity'],'manifest_identity')}
  else:raise RuntimeError('unsupported product-lock schema')
