@@ -5,6 +5,11 @@ from pathlib import Path
 def module(path, name):
     s=importlib.util.spec_from_file_location(name,path); m=importlib.util.module_from_spec(s); s.loader.exec_module(m); return m
 
+def replace_preserving_target_mode(source,target):
+    mode=target.stat().st_mode & 0o777
+    shutil.copyfile(source,target)
+    os.chmod(target,mode)
+
 def run(repo,active,rollback,historical,simulate):
     b=module(repo/'scripts/build_vnext_canonical_rollback_consolidation_v1.py','builder')
     with tempfile.TemporaryDirectory(prefix='vnext-rollback-boundary-',dir='/tmp') as td:
@@ -29,11 +34,11 @@ def run(repo,active,rollback,historical,simulate):
             upper.mkdir();work.mkdir();merged.mkdir()
             subprocess.run(['mount','-t','overlay','overlay','-o',f'lowerdir={active},upperdir={upper},workdir={work}',str(merged)],check=True)
             try:
-                shutil.copy2(repo/'scripts/vnext_materialized_active_preflight_v10.py',merged/'app/cli/preflight.py')
-                shutil.copy2(repo/'scripts/audit_vnext_materialized_active_product_v12.py',merged/'app/cli/audit.py')
-                shutil.copy2(out/'vnext-current-active-state-authority-v2.json',merged/'manifest/authorities/vnext-active-product-lock-successor-v1.json')
-                shutil.copy2(out/'vnext-canonical-rollback-manifest-v2.json',merged/'manifest/rollback/vnext-canonical-rollback-manifest-v1.json')
-                shutil.copy2(out/'vnext-canonical-rollback-product-lock-successor-v1.json',merged/'product-lock.json')
+                replace_preserving_target_mode(repo/'scripts/vnext_materialized_active_preflight_v10.py',merged/'app/cli/preflight.py')
+                replace_preserving_target_mode(repo/'scripts/audit_vnext_materialized_active_product_v12.py',merged/'app/cli/audit.py')
+                replace_preserving_target_mode(out/'vnext-current-active-state-authority-v2.json',merged/'manifest/authorities/vnext-active-product-lock-successor-v1.json')
+                replace_preserving_target_mode(out/'vnext-canonical-rollback-manifest-v2.json',merged/'manifest/rollback/vnext-canonical-rollback-manifest-v1.json')
+                replace_preserving_target_mode(out/'vnext-canonical-rollback-product-lock-successor-v1.json',merged/'product-lock.json')
                 env=dict(os.environ,PYTHONDONTWRITEBYTECODE='1')
                 py=merged/'platform/python-ml/bin/python'
                 pre=subprocess.run([str(py),'-I','-B',str(merged/'app/cli/product.py'),'--root',str(merged),'--preflight-only'],env=env,text=True,capture_output=True,check=True)

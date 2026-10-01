@@ -48,3 +48,13 @@ def test_preflight_pins_canonical_rollback_semantics(tmp_path):
  lock['activation_attestation']['canonical_rollback_manifest_identity']=rollback['rollback_manifest_identity']; lock['activation_attestation']['current_active_state_authority_identity']=authority['active_state_authority_identity']; lock.pop('product_lock_identity'); lock['product_lock_identity']=b.identity(lock)
  import pytest
  with pytest.raises(RuntimeError,match='canonical rollback target'):pf.verify_activation_authority(root,lock)
+
+
+def test_publication_auditor_preserves_canonical_target_mode(tmp_path):
+ a=mod(REPO/'scripts/audit_vnext_canonical_rollback_consolidation_v1.py','a_mode')
+ source=tmp_path/'source';target=tmp_path/'target'
+ source.write_text('new');target.write_text('old')
+ source.chmod(0o775);target.chmod(0o755)
+ a.replace_preserving_target_mode(source,target)
+ assert target.read_text()=='new'
+ assert target.stat().st_mode & 0o777==0o755

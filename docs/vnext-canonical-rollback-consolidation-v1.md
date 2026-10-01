@@ -29,3 +29,8 @@ No successor installation, active product-lock replacement, rollback-root deleti
 ## CAR-01 — Canonical target semantic pinning
 
 An independent adversarial audit showed that internal content-address consistency alone did not pin the authorized rollback root. The successor preflight now requires the exact immediate-predecessor root, product-lock identity and SHA-256, the exact historical-root classification, and the separate retirement gate. A fully coherent and recontent-addressed rewrite to an unauthorized root is rejected fail-closed. All dependent evidence was rebuilt and the complete boundary audit restarted fresh.
+
+
+## CAR-02 — Publication reconstruction mode normalization
+
+Fresh upstream reconstruction exposed umask-dependent executable source modes (`0775`) propagated by `copy2` into the simulated product. The product preflight correctly rejected group-writable bytes. The boundary auditor now copies content while preserving each canonical target mode, making publication closure independent of archive extraction umask without changing the candidate or any authority identity.
