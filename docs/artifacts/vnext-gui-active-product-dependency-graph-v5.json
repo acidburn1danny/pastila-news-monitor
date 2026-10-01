@@ -1,0 +1,223 @@
+{
+  "architecture": "MODULAR_MONOLITH",
+  "authority_identity": "2988148850530be87b2804686cf45c975acdf6b010279d6cffa10f7017b51cfc",
+  "bound_commit": "7110c33de7c52cc0f2a8792cbccac5daa073d079",
+  "contract_authority_bindings": {
+    "source_packet": "8a5b76cf017e0befe971a8082492d5418cacd673bece0562a906a8d28f7a9fa4",
+    "sqlite": "4884e6fc193b23c675c7b7e897c55fb94d7d704dc42d4dfe74dd75bc95f9aa0f",
+    "workflow": "be10ee13449573883952fa15f944a199798e4cf28c8f0e83e5143f6c74dc2e80"
+  },
+  "disabled": [
+    {
+      "id": "voice",
+      "state": "DISABLED_UNTIL_PROMOTION"
+    }
+  ],
+  "enabled": [
+    {
+      "id": "gui",
+      "state": "CANDIDATE_NOT_ACTIVATED"
+    }
+  ],
+  "excluded": [
+    "EVALUATION",
+    "HISTORICAL_RECEIPTS",
+    "LEGACY_RUNTIME",
+    "VOICE_CANDIDATES"
+  ],
+  "legacy_dependency_count": 0,
+  "nodes": [
+    {
+      "depends_on": [
+        "workflow",
+        "foundation",
+        "platform_lock"
+      ],
+      "id": "product_cli",
+      "target_path": "app/cli/product.py"
+    },
+    {
+      "depends_on": [
+        "scout",
+        "source_packet",
+        "editor",
+        "factual_acceptance",
+        "policy_final",
+        "state",
+        "foundation"
+      ],
+      "id": "workflow",
+      "target_path": "app/workflow/pastila_scout/vnext_product_orchestrator_v1.py"
+    },
+    {
+      "depends_on": [
+        "source_config",
+        "state",
+        "source_packet",
+        "foundation"
+      ],
+      "id": "scout",
+      "target_path": "app/workflow/pastila_scout/vnext_scout_production_v1.py"
+    },
+    {
+      "depends_on": [
+        "foundation"
+      ],
+      "id": "source_config",
+      "target_path": "config/sources.json"
+    },
+    {
+      "depends_on": [
+        "foundation"
+      ],
+      "id": "source_packet",
+      "target_path": "contracts/source-packet.json"
+    },
+    {
+      "depends_on": [
+        "r2",
+        "source_packet",
+        "foundation"
+      ],
+      "id": "editor",
+      "target_path": "app/workflow/pastila_scout/vnext_editor_vertical_slice_v1.py"
+    },
+    {
+      "depends_on": [
+        "python_ml",
+        "foundation"
+      ],
+      "id": "r2",
+      "target_path": "components/editor-r2"
+    },
+    {
+      "depends_on": [
+        "platform_lock"
+      ],
+      "id": "python_ml",
+      "target_path": "platform/python-ml"
+    },
+    {
+      "depends_on": [],
+      "id": "platform_lock",
+      "target_path": "manifest/platform-lock.json"
+    },
+    {
+      "depends_on": [
+        "editor",
+        "source_packet",
+        "state",
+        "foundation"
+      ],
+      "id": "factual_acceptance",
+      "target_path": "app/workflow/pastila_scout/vnext_factual_acceptance_v1.py"
+    },
+    {
+      "depends_on": [
+        "factual_acceptance",
+        "state",
+        "foundation"
+      ],
+      "id": "policy_final",
+      "target_path": "app/workflow/pastila_scout/vnext_core_final_v1.py"
+    },
+    {
+      "depends_on": [
+        "state_schema"
+      ],
+      "id": "state",
+      "target_path": "state/product.sqlite3"
+    },
+    {
+      "depends_on": [
+        "workflow_authority",
+        "foundation"
+      ],
+      "id": "state_schema",
+      "target_path": "app/workflow/pastila_scout/vnext_state_sqlite_v1.py"
+    },
+    {
+      "depends_on": [
+        "foundation"
+      ],
+      "id": "workflow_authority",
+      "target_path": "app/workflow/pastila_scout/vnext_workflow_v1.py"
+    },
+    {
+      "depends_on": [],
+      "id": "foundation",
+      "target_path": "app/workflow/pastila_scout/vnext_foundation_v1.py"
+    },
+    {
+      "depends_on": [
+        "activation_receipt",
+        "rollback_authority"
+      ],
+      "id": "active_state_authority",
+      "target_path": "manifest/authorities/vnext-active-product-lock-successor-v1.json"
+    },
+    {
+      "depends_on": [
+        "rollback_authority"
+      ],
+      "id": "activation_receipt",
+      "target_path": "manifest/activation/vnext-activation-receipt-v1.json"
+    },
+    {
+      "depends_on": [],
+      "id": "rollback_authority",
+      "target_path": "manifest/rollback/vnext-canonical-rollback-manifest-v1.json"
+    },
+    {
+      "depends_on": [
+        "active_auditor"
+      ],
+      "id": "active_audit_authority",
+      "target_path": "manifest/authorities/vnext-post-activation-active-audit-authority-v1.json"
+    },
+    {
+      "depends_on": [
+        "product_cli",
+        "platform_lock",
+        "r2",
+        "state"
+      ],
+      "id": "active_auditor",
+      "target_path": "app/cli/audit.py"
+    },
+    {
+      "depends_on": [
+        "gui_adapter",
+        "product_cli",
+        "workflow",
+        "state",
+        "gui_authority"
+      ],
+      "id": "gui",
+      "target_path": "app/cli/gui.py"
+    },
+    {
+      "depends_on": [
+        "workflow",
+        "state",
+        "foundation"
+      ],
+      "id": "gui_adapter",
+      "target_path": "app/workflow/pastila_scout/vnext_product_gui_v1.py"
+    },
+    {
+      "depends_on": [
+        "gui_adapter",
+        "product_cli"
+      ],
+      "id": "gui_authority",
+      "target_path": "manifest/authorities/vnext-product-gui-cli-parity-authority-v1.json"
+    }
+  ],
+  "product_root": "/root/pastila-vnext/v1",
+  "schema": "vnext-active-product-dependency-graph-v4",
+  "schema_version": 4,
+  "status": "CANDIDATE_GUI_INTEGRATION_NOT_ACTIVATED",
+  "supersedes": "9141199073e6a3239308686f9302ceb7103c11dc5ec1e5311b344cf0d4f1e09c",
+  "voice_state": "DISABLED_UNTIL_PROMOTION"
+}

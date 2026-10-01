@@ -1,0 +1,28 @@
+{
+  "active_graph_identity": "2988148850530be87b2804686cf45c975acdf6b010279d6cffa10f7017b51cfc",
+  "active_root_modified": false,
+  "base_commit": "7110c33de7c52cc0f2a8792cbccac5daa073d079",
+  "blockers": 0,
+  "canonical_rollback_modified": false,
+  "canonical_startup_paths": 1,
+  "cli_gui_parity": "PASS_SHARED_ORCHESTRATOR_AND_STATE",
+  "e2e_terminal": "EXPORTED",
+  "gui_runtime_bytes": [
+    "app/cli/gui.py",
+    "app/workflow/pastila_scout/vnext_product_gui_v1.py",
+    "manifest/authorities/vnext-product-gui-cli-parity-authority-v1.json"
+  ],
+  "legacy_dependency_count": 0,
+  "managed_inventory_count": 33,
+  "predecessor_product_lock_identity": "278df8cdd27f641a44fd7941bfc89c362dcb5af3f1a9f265148fa11c85e44ab0",
+  "product_lock_identity": "4d45f169ed4f6eba530e181a7e61ce4ade02d63e8d21f5177b3d4d18d15a0738",
+  "product_lock_sha256": "10222a0dd308fa8faea4bfee8b7016d85abd59fe94240239bc60824e6f635d8f",
+  "restart_recovery": "PASS",
+  "restore_simulation": "PASS_BYTE_EXACT",
+  "result_identity": "c0cf71bd5be0ecdc4328542ae1d1caedb9ccfbc652deb5027a2b47c3fef78e42",
+  "rollback_simulation": "PASS_BYTE_EXACT",
+  "schema": "vnext-gui-active-integration-result",
+  "schema_version": 1,
+  "status": "PASS",
+  "voice": "DISABLED_UNTIL_PROMOTION"
+}
