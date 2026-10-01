@@ -1,0 +1,22 @@
+{
+  "activation_receipt_identity": "b56fc51feab0769a292396632391ee6a3323068004a1797bd15f7e90bb785f17",
+  "active_graph_identity": "01d6b01a382ceb21518beeed0e6c5645f076e071767096d4358ddc5aa8ea5409",
+  "active_root_modified": false,
+  "active_state_authority_identity": "61c1697e2f976584d84669dbd2a8eef99120f472a844580fbf93dc7277368025",
+  "blockers": 0,
+  "candidate_identity": "4d45f169ed4f6eba530e181a7e61ce4ade02d63e8d21f5177b3d4d18d15a0738",
+  "legacy_dependency_count": 0,
+  "managed_inventory_count": 33,
+  "product_lock_identity": "6e299781a76bb4c02176dcf3cf8f7f41a9adc1f9221e10b3f2f511592f0c472c",
+  "product_lock_sha256": "c9281f858343184834d1d56bbb50798f1c8bdc8e53fb94c35e8ee56718315c50",
+  "prospective_install": "PASS",
+  "prospective_restore": "PASS_BYTE_EXACT",
+  "prospective_rollback": "PASS_BYTE_EXACT",
+  "result_identity": "7267adb7bd18d6540bf027178531d86aa0faa03cc7797845be3ac0409606e880",
+  "rollback_manifest_identity": "18ac1c69c09e253ed67c0aba4e4757704f5628593fab01c5a83605d3330c21aa",
+  "rollback_root_modified": false,
+  "schema": "vnext-gui-active-attestation-repair-result-v1",
+  "schema_version": 1,
+  "status": "PASS",
+  "voice": "DISABLED_UNTIL_PROMOTION"
+}

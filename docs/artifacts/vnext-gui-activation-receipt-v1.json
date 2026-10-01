@@ -1,0 +1,22 @@
+{
+  "activation_receipt_identity": "b56fc51feab0769a292396632391ee6a3323068004a1797bd15f7e90bb785f17",
+  "active_graph_successor_identity": "01d6b01a382ceb21518beeed0e6c5645f076e071767096d4358ddc5aa8ea5409",
+  "atomic_swap": {
+    "active_root": "/root/pastila-vnext/v1",
+    "mechanism": "renameat2(RENAME_EXCHANGE)",
+    "prospective_result": "PASS",
+    "rollback_root": "/root/pastila-vnext/.rollback-pre-gui-4d45f169"
+  },
+  "candidate": {
+    "active_graph_identity": "2988148850530be87b2804686cf45c975acdf6b010279d6cffa10f7017b51cfc",
+    "product_lock_identity": "4d45f169ed4f6eba530e181a7e61ce4ade02d63e8d21f5177b3d4d18d15a0738",
+    "product_lock_sha256": "10222a0dd308fa8faea4bfee8b7016d85abd59fe94240239bc60824e6f635d8f"
+  },
+  "candidate_commit": "4b4b1175ae63470350e1c15c22e79d4a177ee303",
+  "legacy_dependency_count": 0,
+  "rollback_manifest_identity": "18ac1c69c09e253ed67c0aba4e4757704f5628593fab01c5a83605d3330c21aa",
+  "schema": "vnext-gui-activation-receipt-v1",
+  "schema_version": 1,
+  "status": "AUTHORIZED_PROSPECTIVE_INSTALLATION",
+  "voice": "DISABLED_UNTIL_PROMOTION"
+}
