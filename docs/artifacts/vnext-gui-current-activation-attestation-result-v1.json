@@ -1,0 +1,19 @@
+{
+  "activation_receipt_identity": "94315f47066ef8936d13c8dc8ddcbf7db063a723bb7618839bb9844ab077419d",
+  "active_authority_surface_identity": "29dddf588f38661416ee3f11fd63e66ec4673fd65cc55bb89853052a5f552dc6",
+  "active_graph_identity": "01d6b01a382ceb21518beeed0e6c5645f076e071767096d4358ddc5aa8ea5409",
+  "active_state_authority_identity": "7fce03be563e737021a61d4804aa8c1c5e68e38406525c59b4130a4e50715f9a",
+  "blockers": 0,
+  "immediate_rollback_root": "/root/pastila-vnext/.rollback-pre-gui-4d45f169",
+  "installed_product_lock_identity": "6deeb96a788f3780835a9dce3583153e53ab6c6121ddea994495e4c9cc8e1a9f",
+  "legacy_dependency_count": 0,
+  "post_install_audit_identity": "dfb1bb619e438d9b41fbbe5e22f38e6183760e3768acea1feb057c603b91ec78",
+  "prior_rollback_root": "/root/pastila-vnext/.rollback-pre-contract-e180a1e5",
+  "product_lock_successor_identity": "5a5988bd0fb3b7d760c5a99dd13c007281a6900dd6a572c21c3812d6cd00bf93",
+  "product_lock_successor_sha256": "6c79a7e25b22c80caad93a05b6701860166e3af88626a543fc3aa9c38ed761ee",
+  "result_identity": "096e1fd6e10ea4843840c11abf643d2ceccc149de4dc1a85cc17694aad560180",
+  "schema": "vnext-gui-current-activation-attestation-result-v1",
+  "schema_version": 1,
+  "status": "PASS",
+  "voice": "DISABLED_UNTIL_PROMOTION"
+}
