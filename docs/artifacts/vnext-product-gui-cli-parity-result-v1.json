@@ -1,0 +1,26 @@
+{
+  "active_product_modified": false,
+  "active_vnext_regression": "490/490 PASS",
+  "authority_identity": "b92d7a4a8b919ccbf7b4e05770e454843f30028f87d41e4d8db40e3d90bc3e5a",
+  "blockers": 0,
+  "canonical_rollback_modified": false,
+  "canonical_startup_paths": 1,
+  "cli_gui_parity": "PASS_SHARED_CONTROLLER_AND_STATE",
+  "direct_sql_writes": 0,
+  "e2e_terminal": "EXPORTED",
+  "historical_closure_files_excluded": [
+    "tests/test_vnext_active_contract_lifecycle_semantics_repair_v1.py",
+    "tests/test_vnext_canonical_rollback_consolidation_v1.py",
+    "tests/test_vnext_cross_component_eligibility_evidence_recovery_transitive_repair_v1.py"
+  ],
+  "historical_exclusion_reason": "SUPERSEDED_PRODUCT_LOCK_OR_RETIRED_ROLLBACK_AUTHORITY",
+  "legacy_dependency_count": 0,
+  "restart_recovery": "PASS_TERMINAL_REHYDRATION",
+  "result_identity": "1c2f9e8d69b15db59a2c389208d800bad3e2e9885009e346ccebef26316038aa",
+  "schema": "vnext-product-gui-cli-parity-result",
+  "schema_version": 1,
+  "status": "PASS",
+  "tests": "5/5 PASS",
+  "voice": "DISABLED_UNTIL_PROMOTION",
+  "workflow_implementations_added": 0
+}

@@ -1,0 +1,21 @@
+{
+  "architecture": "THIN_PRESENTATION_ADAPTER_OVER_CANONICAL_ORCHESTRATOR",
+  "authority_identity": "b92d7a4a8b919ccbf7b4e05770e454843f30028f87d41e4d8db40e3d90bc3e5a",
+  "base_commit": "aeef50cd4e5f40a5dcbb86131592c0fb6ce504a0",
+  "canonical_startup": "scripts/product_cli_vnext_v1.py:startup",
+  "constraints": {
+    "active_integration": false,
+    "direct_sql_writes": 0,
+    "legacy_dependency_count": 0,
+    "voice": "DISABLED_UNTIL_PROMOTION",
+    "workflow_implementations_added": 0
+  },
+  "file_sha256": {
+    "scripts/vnext_product_gui_cli_v1.py": "7d0b27f77216967ebfd3ee6069d4b3854e70e99729ced3cdcb56e1eaf658d203",
+    "src/pastila_scout/vnext_product_gui_v1.py": "706f33db7d890132532576d91fcd5dcc494f6eecb6298087a119bc3195a40d6e",
+    "tests/test_vnext_product_gui_cli_parity_v1.py": "54b19ef1d2fa73805fd4961169fdbc523fc4f2a987d37824ba9881be1c77e287"
+  },
+  "name": "VNext Canonical Product GUI & CLI-Parity Vertical Slice v1",
+  "schema": "vnext-product-gui-cli-parity-authority",
+  "schema_version": 1
+}
