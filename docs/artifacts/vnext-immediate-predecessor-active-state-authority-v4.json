@@ -1,0 +1,34 @@
+{
+  "activation_candidate_product_lock_identity": "5e31722e1e78fb44d2abd74c51a00e4074a67ff254c5497bfde64e228e7b9653",
+  "activation_receipt_identity": "1c5b0c103ba609408780f93b59ac98fec31d29151601ed20e5299cd8c8ce587f",
+  "active_graph_identity": "9141199073e6a3239308686f9302ceb7103c11dc5ec1e5311b344cf0d4f1e09c",
+  "active_root": "/root/pastila-vnext/v1",
+  "active_state_authority_identity": "002e22c0672ac803b15ea79b474d5b88e5b6f00fa887fae5eaf532321388a54e",
+  "canonical_rollback": {
+    "manifest_identity": "e22a02ae51a2377e2245de49fe95d4239cf87b5c0c4765f546cb38223d8c6714",
+    "product_lock_identity": "03e43da4e052ed0bf0a1caa7f9da7103a111e1192362ea9887ed86388b864b78",
+    "product_lock_sha256": "196c5f7bdec6f59f0609ad334dbdebdc17e5ad9f793945713ff2b7afaa5b58a2",
+    "root": "/root/pastila-vnext/.rollback-pre-contract-e180a1e5"
+  },
+  "contract_authority_bindings": {
+    "source_packet": "8a5b76cf017e0befe971a8082492d5418cacd673bece0562a906a8d28f7a9fa4",
+    "sqlite": "4884e6fc193b23c675c7b7e897c55fb94d7d704dc42d4dfe74dd75bc95f9aa0f",
+    "workflow": "be10ee13449573883952fa15f944a199798e4cf28c8f0e83e5143f6c74dc2e80"
+  },
+  "installed_product_lock": {
+    "identity": "e180a1e504983cc807fdf1a923613893f71d47f1ed308962d8317113ce9693e8",
+    "sha256": "00c33e0f64bba06dada06231cb00e4785eb127d8d5b5a78e6b32f748447d97e5"
+  },
+  "legacy_dependency_count": 0,
+  "predecessor_active_state_authority_identity": "6d9b3f7fe500c22f632e3c288e3be65cebe4a3240a0c4b4bc94096c95bf66b3e",
+  "prior_canonical_root": {
+    "classification": "HISTORICAL_NON_CANONICAL_RETIREMENT_PENDING_SEPARATE_AUTHORITY",
+    "product_lock_identity": "68fb2c347367ff3aa725cfb44de11be07921ad2e39fcbe98b01b389eee46c19b",
+    "product_lock_sha256": "0ff93c4d9f550c8458d2223ae91627903bf02dc24973c59d3069fa94ada1100e",
+    "root": "/root/pastila-vnext/.rollback-pre-exchange-5e31722e"
+  },
+  "retired_root_references": [],
+  "schema": "vnext-current-active-state-authority-v4",
+  "schema_version": 5,
+  "status": "ACTIVATED_ATTESTED_CANONICAL_IMMEDIATE_PREDECESSOR"
+}

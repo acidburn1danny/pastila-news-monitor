@@ -1,0 +1,26 @@
+{
+  "authority": {
+    "product_lock_identity": "03e43da4e052ed0bf0a1caa7f9da7103a111e1192362ea9887ed86388b864b78",
+    "product_lock_sha256": "196c5f7bdec6f59f0609ad334dbdebdc17e5ad9f793945713ff2b7afaa5b58a2"
+  },
+  "legacy_dependency_count": 0,
+  "prior_canonical_root": {
+    "classification": "HISTORICAL_NON_CANONICAL_RETIREMENT_PENDING_SEPARATE_AUTHORITY",
+    "path": "/root/pastila-vnext/.rollback-pre-exchange-5e31722e",
+    "product_lock_identity": "68fb2c347367ff3aa725cfb44de11be07921ad2e39fcbe98b01b389eee46c19b",
+    "product_lock_sha256": "0ff93c4d9f550c8458d2223ae91627903bf02dc24973c59d3069fa94ada1100e"
+  },
+  "retired_root_references": [],
+  "rollback_manifest_identity": "e22a02ae51a2377e2245de49fe95d4239cf87b5c0c4765f546cb38223d8c6714",
+  "rollback_root": "/root/pastila-vnext/.rollback-pre-contract-e180a1e5",
+  "schema": "vnext-canonical-rollback-manifest-v3",
+  "schema_version": 3,
+  "status": "PASS_CANONICAL_IMMEDIATE_PREDECESSOR",
+  "verification": {
+    "active_graph_identity": "5a3129321375e45491eed0ade83ad218c2a74f3a5ea6241bdc3d68acc111100c",
+    "managed_file_count": 30,
+    "managed_inventory_source": "product-lock.json",
+    "prospective_atomic_rollback": "PASS",
+    "prospective_restore": "PASS"
+  }
+}
