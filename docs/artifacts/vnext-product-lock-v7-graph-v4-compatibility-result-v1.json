@@ -1,0 +1,14 @@
+{
+  "active_root_modified": false,
+  "auditor_sha256": "e165ca56b6cdf1214d7448e1659e49127b1f4e6613b603ac6ca69c58835a0ac7",
+  "blockers": 0,
+  "gui_started": false,
+  "legacy_dependency_count": 0,
+  "predecessor_product_lock_identity": "3229ddda9f36971f2928ea3fdb6b78e145e956d240ede2b5d781fe3fbb0cd7a2",
+  "preflight_sha256": "ea7baad20980fa2102a6529f4357f4aac30e9678d23fed36fb8205a914eab6c2",
+  "product_lock_identity": "e180a1e504983cc807fdf1a923613893f71d47f1ed308962d8317113ce9693e8",
+  "product_lock_sha256": "00c33e0f64bba06dada06231cb00e4785eb127d8d5b5a78e6b32f748447d97e5",
+  "result_identity": "a05924184e16ceaa92aec48a868a7e69832f5768341f420026bdd2c2441e8f63",
+  "status": "PASS",
+  "voice_started": false
+}
