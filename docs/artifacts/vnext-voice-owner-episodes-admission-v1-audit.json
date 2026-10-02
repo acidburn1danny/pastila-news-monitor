@@ -1,0 +1,18 @@
+{
+  "audit_identity": "30b6b3375a350299ac1311dc52a881eee8f3f5cb9b3ceaf19c5d9adfa796f6e3",
+  "checks": {
+    "curriculum_not_training_corpus": true,
+    "episode_29_absent": true,
+    "family_partition_disjoint": true,
+    "no_unadjudicated_training_rows": true,
+    "protected_state": true,
+    "qwen_bakeoff_unexposed": true,
+    "rights_bound_to_hashes": true,
+    "training_fail_closed": true,
+    "twelve_exact_sources": true
+  },
+  "result_identity": "6d4ad50110dcd72aac5435cd310df176c99017fa7891035cd3f81ee3b9121f81",
+  "schema": "vnext-voice-owner-written-episodes-admission-audit",
+  "schema_version": 1,
+  "status": "PASS"
+}

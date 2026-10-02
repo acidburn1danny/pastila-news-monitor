@@ -51,3 +51,5 @@ docs/artifacts/pastila-editor-core-v1.2-json-successor-v10-system-prompt.txt -te
 
 # Preserve the frozen Pilot 01 rights instrument byte-for-byte.
 docs/artifacts/humor-mechanics-batch2-development-pilot01-ingestion-v1/rights-instrument.json -text -eol
+
+docs/artifacts/vnext-voice-owner-episodes-v1/sources/*.txt -text -eol

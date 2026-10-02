@@ -1,0 +1,330 @@
+{
+  "active_integration": false,
+  "active_product_modified": false,
+  "authority_parent": "705aaff7aac0d72dc1347bf9f60faba63670d916",
+  "canonical_rollback_modified": false,
+  "factual_commentary_separation": {
+    "episode_34_trailing_non_program_marker": "EXCLUDED_FROM_FUTURE_GOLD_UNLESS_OWNER_ADJUDICATES",
+    "reason": "EPISODE_DOCUMENTS_INTERLEAVE_FACTUAL_SETUP_AND_OWNER_COMMENTARY_WITHOUT_AUTHORITATIVE_SPAN_LABELS",
+    "source_bytes_admitted": 179756,
+    "status": "FAIL_CLOSED_PENDING_SPAN_LEVEL_ADJUDICATION",
+    "training_rows_admitted": 0
+  },
+  "factual_safety": {
+    "abstention_examples_required": true,
+    "constrained_projection": "RUNTIME_ONLY",
+    "factual_authority": "RUNTIME_ONLY",
+    "status": "PENDING_RECORD_CONSTRUCTION",
+    "unsupported_fact_negatives_required": true
+  },
+  "gold_commentary": {
+    "characters": 0,
+    "holdout_rows": 0,
+    "tokens_estimated": 0,
+    "train_rows": 0,
+    "validation_rows": 0
+  },
+  "gui_state": "ACTIVE",
+  "leakage_closure": {
+    "historical_development_evidence_training_exposure": false,
+    "qwen3_bakeoff_training_exposure": false,
+    "status": "PASS_SOURCE_FAMILY_RESERVATION_ZERO_MODEL_VISIBLE_ROWS",
+    "whole_family_isolation": true
+  },
+  "legacy_dependency_count": 0,
+  "mechanism_annotation": {
+    "curriculum": "HUMOR_MECHANICS_CURRICULUM_V1_FROZEN_50",
+    "curriculum_is_training_corpus": false,
+    "evidence_backed_observed_mechanisms": [
+      "HMCV1-B01-M05-FRAME_TRANSFER",
+      "HMCV1-B01-M08-ESCALATION",
+      "HMCV1-B02-M10-ROLE_SIMULATION"
+    ],
+    "positive_gaps": [
+      "HMCV1-B01-M01-SARCASM",
+      "HMCV1-B01-M02-IRONY",
+      "HMCV1-B01-M03-CONTRAST_JUXTAPOSITION",
+      "HMCV1-B01-M04-COMIC_ANALOGY",
+      "HMCV1-B01-M05-FRAME_TRANSFER",
+      "HMCV1-B01-M06-HYPERBOLE",
+      "HMCV1-B01-M07-UNDERSTATEMENT",
+      "HMCV1-B01-M08-ESCALATION",
+      "HMCV1-B01-M09-REVERSAL",
+      "HMCV1-B01-M10-DEADPAN_OBSERVATION",
+      "HMCV1-B02-M01-MISDIRECTION",
+      "HMCV1-B02-M02-LITERALIZATION",
+      "HMCV1-B02-M03-ABSURD_LOGICAL_EXTENSION",
+      "HMCV1-B02-M04-PERSONIFICATION",
+      "HMCV1-B02-M05-COMIC_RECLASSIFICATION_CATEGORY_ERROR",
+      "HMCV1-B02-M06-MOCK_PRAISE",
+      "HMCV1-B02-M07-FALSE_CONCESSION",
+      "HMCV1-B02-M08-RHETORICAL_QUESTION",
+      "HMCV1-B02-M09-DISCOURSE_FORM_PARODY",
+      "HMCV1-B02-M10-ROLE_SIMULATION",
+      "HMCV1-B03-M01-SETUP_PAYOFF",
+      "HMCV1-B03-M02-RULE_OF_THREE",
+      "HMCV1-B03-M03-REPETITION_WITH_VARIATION",
+      "HMCV1-B03-M04-COMIC_ENUMERATION",
+      "HMCV1-B03-M05-PARALLELISM_STRUCTURAL_SYMMETRY",
+      "HMCV1-B03-M06-DELAYED_PAYOFF",
+      "HMCV1-B03-M07-CALLBACK",
+      "HMCV1-B03-M08-ANTI_CLIMAX_BATHOS",
+      "HMCV1-B03-M09-TAG_COMIC_AFTERTHOUGHT",
+      "HMCV1-B03-M10-PAUSE_BEAT_ELLIPTICAL_OMISSION",
+      "HMCV1-B04-M01-PERSPECTIVE_SHIFT",
+      "HMCV1-B04-M02-NAIVE_NARRATOR_FEIGNED_INNOCENCE",
+      "HMCV1-B04-M03-FAUX_COMPLIANCE",
+      "HMCV1-B04-M04-SELF_IMPLICATION",
+      "HMCV1-B04-M05-AUDIENCE_COMPLICITY_SHARED_RECOGNITION",
+      "HMCV1-B04-M06-STATUS_REVERSAL",
+      "HMCV1-B04-M07-DOUBLE_MEANING",
+      "HMCV1-B04-M08-ZEUGMA_SPLIT_SEMANTIC_ATTACHMENT",
+      "HMCV1-B04-M09-METONYMIC_SUBSTITUTION",
+      "HMCV1-B04-M10-SENTENCE_FINAL_REINTERPRETATION",
+      "HMCV1-B05-M01-BOOKENDING",
+      "HMCV1-B05-M02-RUNNING_GAG",
+      "HMCV1-B05-M03-CONTROLLED_AMBIGUITY",
+      "HMCV1-B05-M04-KNOWN_UNKNOWN_PLAY",
+      "HMCV1-B05-M05-ABSURD_ALTERNATIVES_WITHOUT_SELECTION",
+      "HMCV1-B05-M06-FAUX_DEFINITION",
+      "HMCV1-B05-M07-COMIC_NAMING_LABELING",
+      "HMCV1-B05-M08-APHORISTIC_COMPRESSION",
+      "HMCV1-B05-M09-FAMILIAR_EXPRESSION_SUBVERSION",
+      "HMCV1-B05-M10-SERIOUS_RESET_WITHHELD_HUMOR"
+    ],
+    "positive_training_mechanisms": [],
+    "quota_fill": false,
+    "records_fully_annotated": 0,
+    "source_level_evidence": [
+      {
+        "authority": "humor-mechanics-curriculum-v1-batch2-m20-owner-freeze-v1",
+        "episode": 32,
+        "mechanisms": [
+          "HMCV1-B01-M05-FRAME_TRANSFER",
+          "HMCV1-B01-M08-ESCALATION",
+          "HMCV1-B02-M10-ROLE_SIMULATION"
+        ],
+        "training_eligible": false
+      }
+    ]
+  },
+  "partition": {
+    "assignment_frozen_before_RECORD_CONSTRUCTION": true,
+    "family_overlap": 0,
+    "owner_blind_holdout": [
+      31,
+      32,
+      33,
+      34
+    ],
+    "qwen3_bakeoff": "PERMANENT_EVALUATION_ONLY_SEPARATE_HOLDOUT",
+    "revision_colocation": true,
+    "source_identity_overlap": 0,
+    "train": [
+      22,
+      23,
+      24,
+      25,
+      26,
+      27
+    ],
+    "unit": "WHOLE_EPISODE_TRANSITIVE_FAMILY",
+    "validation": [
+      28,
+      30
+    ]
+  },
+  "promotion": false,
+  "result_identity": "6d4ad50110dcd72aac5435cd310df176c99017fa7891035cd3f81ee3b9121f81",
+  "rights_closure": {
+    "source_documents_training_authorized": 12,
+    "status": "PASS_OWNER_AUTHOR_AND_RIGHTS_HOLDER_DECLARATION_BOUND_TO_EXACT_SOURCE_HASHES",
+    "third_party_rights_claimed": false,
+    "uses": [
+      "VOICE_DATASET_CONSTRUCTION",
+      "HUMOR_MECHANICS_ANNOTATION",
+      "TRAIN_VALIDATION_AFTER_PARTITION_GATE",
+      "FUTURE_QWEN3_LORA_AFTER_REQUIRED_GATES"
+    ]
+  },
+  "schema": "vnext-voice-owner-written-episodes-admission-boundary",
+  "schema_version": 1,
+  "source_corpus": {
+    "bytes_admitted": 179756,
+    "documents": 12,
+    "episode_29": "ABSENT_NOT_RECONSTRUCTED",
+    "episodes": [
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      30,
+      31,
+      32,
+      33,
+      34
+    ],
+    "sources": [
+      {
+        "bytes": 15478,
+        "draft_final_status": "OWNER_ATTESTED_FILMED_SOURCE",
+        "episode": 22,
+        "family_identity": "PASTILA_ACIDA_EPISODE_22",
+        "partition_reservation": "TRAIN",
+        "path": "docs/artifacts/vnext-voice-owner-episodes-v1/sources/episode-22.txt",
+        "record_level_training_eligibility": "PENDING_FACTUAL_COMMENTARY_SPAN_ADJUDICATION",
+        "sha256": "49891e9da6d571f95df322715da17e05239560a62d47265ec2beb49dbdf90718",
+        "source_admission": "ADMITTED_OWNER_WRITTEN_FILMED_EPISODE",
+        "training_rights": "GRANTED_BY_OWNER_IN_SESSION_2026-10-03"
+      },
+      {
+        "bytes": 11084,
+        "draft_final_status": "OWNER_ATTESTED_FILMED_SOURCE",
+        "episode": 23,
+        "family_identity": "PASTILA_ACIDA_EPISODE_23",
+        "partition_reservation": "TRAIN",
+        "path": "docs/artifacts/vnext-voice-owner-episodes-v1/sources/episode-23.txt",
+        "record_level_training_eligibility": "PENDING_FACTUAL_COMMENTARY_SPAN_ADJUDICATION",
+        "sha256": "36f799a92e8ea256473995dc2820ea25d3ea18dbc460a74a3f04cdd215e73d0e",
+        "source_admission": "ADMITTED_OWNER_WRITTEN_FILMED_EPISODE",
+        "training_rights": "GRANTED_BY_OWNER_IN_SESSION_2026-10-03"
+      },
+      {
+        "bytes": 13033,
+        "draft_final_status": "OWNER_ATTESTED_FILMED_SOURCE",
+        "episode": 24,
+        "family_identity": "PASTILA_ACIDA_EPISODE_24",
+        "partition_reservation": "TRAIN",
+        "path": "docs/artifacts/vnext-voice-owner-episodes-v1/sources/episode-24.txt",
+        "record_level_training_eligibility": "PENDING_FACTUAL_COMMENTARY_SPAN_ADJUDICATION",
+        "sha256": "fe1d59a879b810f2b3369c18230bf82f26f9c1c35c721acb0947eb46347f67fc",
+        "source_admission": "ADMITTED_OWNER_WRITTEN_FILMED_EPISODE",
+        "training_rights": "GRANTED_BY_OWNER_IN_SESSION_2026-10-03"
+      },
+      {
+        "bytes": 11373,
+        "draft_final_status": "OWNER_ATTESTED_FILMED_SOURCE",
+        "episode": 25,
+        "family_identity": "PASTILA_ACIDA_EPISODE_25",
+        "partition_reservation": "TRAIN",
+        "path": "docs/artifacts/vnext-voice-owner-episodes-v1/sources/episode-25.txt",
+        "record_level_training_eligibility": "PENDING_FACTUAL_COMMENTARY_SPAN_ADJUDICATION",
+        "sha256": "d9ac80c5f5db56f0e4697f3696e5f824582cb2782ae18994727a67441f5db5e1",
+        "source_admission": "ADMITTED_OWNER_WRITTEN_FILMED_EPISODE",
+        "training_rights": "GRANTED_BY_OWNER_IN_SESSION_2026-10-03"
+      },
+      {
+        "bytes": 13303,
+        "draft_final_status": "OWNER_ATTESTED_FILMED_SOURCE",
+        "episode": 26,
+        "family_identity": "PASTILA_ACIDA_EPISODE_26",
+        "partition_reservation": "TRAIN",
+        "path": "docs/artifacts/vnext-voice-owner-episodes-v1/sources/episode-26.txt",
+        "record_level_training_eligibility": "PENDING_FACTUAL_COMMENTARY_SPAN_ADJUDICATION",
+        "sha256": "6f7872af2a625e3ddb0ad48bf8301d3b526463081d89873cb41d75e94b1f8c0f",
+        "source_admission": "ADMITTED_OWNER_WRITTEN_FILMED_EPISODE",
+        "training_rights": "GRANTED_BY_OWNER_IN_SESSION_2026-10-03"
+      },
+      {
+        "bytes": 11433,
+        "draft_final_status": "OWNER_ATTESTED_FILMED_SOURCE",
+        "episode": 27,
+        "family_identity": "PASTILA_ACIDA_EPISODE_27",
+        "partition_reservation": "TRAIN",
+        "path": "docs/artifacts/vnext-voice-owner-episodes-v1/sources/episode-27.txt",
+        "record_level_training_eligibility": "PENDING_FACTUAL_COMMENTARY_SPAN_ADJUDICATION",
+        "sha256": "58904e57187b81d77d2389c3c7fb862084662e500c0f2a1205d71ce1a52cd8ae",
+        "source_admission": "ADMITTED_OWNER_WRITTEN_FILMED_EPISODE",
+        "training_rights": "GRANTED_BY_OWNER_IN_SESSION_2026-10-03"
+      },
+      {
+        "bytes": 13458,
+        "draft_final_status": "OWNER_ATTESTED_FILMED_SOURCE",
+        "episode": 28,
+        "family_identity": "PASTILA_ACIDA_EPISODE_28",
+        "partition_reservation": "VALIDATION",
+        "path": "docs/artifacts/vnext-voice-owner-episodes-v1/sources/episode-28.txt",
+        "record_level_training_eligibility": "PENDING_FACTUAL_COMMENTARY_SPAN_ADJUDICATION",
+        "sha256": "0f16ce6ce3f914bb0618c84566b25776f12fc44b21b3e8cf0b3f2b34bf83c012",
+        "source_admission": "ADMITTED_OWNER_WRITTEN_FILMED_EPISODE",
+        "training_rights": "GRANTED_BY_OWNER_IN_SESSION_2026-10-03"
+      },
+      {
+        "bytes": 23571,
+        "draft_final_status": "OWNER_ATTESTED_FILMED_SOURCE",
+        "episode": 30,
+        "family_identity": "PASTILA_ACIDA_EPISODE_30",
+        "partition_reservation": "VALIDATION",
+        "path": "docs/artifacts/vnext-voice-owner-episodes-v1/sources/episode-30.txt",
+        "record_level_training_eligibility": "PENDING_FACTUAL_COMMENTARY_SPAN_ADJUDICATION",
+        "sha256": "1f32bb452276d1a9dba4fce55e368cfb667a5184761cdaff9204bbeaef658a71",
+        "source_admission": "ADMITTED_OWNER_WRITTEN_FILMED_EPISODE",
+        "training_rights": "GRANTED_BY_OWNER_IN_SESSION_2026-10-03"
+      },
+      {
+        "bytes": 18285,
+        "draft_final_status": "OWNER_ATTESTED_FILMED_SOURCE",
+        "episode": 31,
+        "family_identity": "PASTILA_ACIDA_EPISODE_31",
+        "partition_reservation": "OWNER_BLIND_HOLDOUT",
+        "path": "docs/artifacts/vnext-voice-owner-episodes-v1/sources/episode-31.txt",
+        "record_level_training_eligibility": "PENDING_FACTUAL_COMMENTARY_SPAN_ADJUDICATION",
+        "sha256": "429779895057340b1332376a76c9f8a21fa68def55bdc99acb2bcdbb02f01c44",
+        "source_admission": "ADMITTED_OWNER_WRITTEN_FILMED_EPISODE",
+        "training_rights": "GRANTED_BY_OWNER_IN_SESSION_2026-10-03"
+      },
+      {
+        "bytes": 13493,
+        "draft_final_status": "OWNER_ATTESTED_FILMED_SOURCE",
+        "episode": 32,
+        "family_identity": "PASTILA_ACIDA_EPISODE_32",
+        "partition_reservation": "OWNER_BLIND_HOLDOUT",
+        "path": "docs/artifacts/vnext-voice-owner-episodes-v1/sources/episode-32.txt",
+        "record_level_training_eligibility": "PENDING_FACTUAL_COMMENTARY_SPAN_ADJUDICATION",
+        "sha256": "966f90b79e9b3d1a580b8fbebbe70c4efa650c715239eefb6bddf811a7666f69",
+        "source_admission": "ADMITTED_OWNER_WRITTEN_FILMED_EPISODE",
+        "training_rights": "GRANTED_BY_OWNER_IN_SESSION_2026-10-03"
+      },
+      {
+        "bytes": 21536,
+        "draft_final_status": "OWNER_ATTESTED_FILMED_SOURCE",
+        "episode": 33,
+        "family_identity": "PASTILA_ACIDA_EPISODE_33",
+        "partition_reservation": "OWNER_BLIND_HOLDOUT",
+        "path": "docs/artifacts/vnext-voice-owner-episodes-v1/sources/episode-33.txt",
+        "record_level_training_eligibility": "PENDING_FACTUAL_COMMENTARY_SPAN_ADJUDICATION",
+        "sha256": "4ecf35a7a35a3dfd2b360754758b10c9221639ab05be9bb21587daf4e391934e",
+        "source_admission": "ADMITTED_OWNER_WRITTEN_FILMED_EPISODE",
+        "training_rights": "GRANTED_BY_OWNER_IN_SESSION_2026-10-03"
+      },
+      {
+        "bytes": 13709,
+        "draft_final_status": "OWNER_ATTESTED_FILMED_SOURCE_DRAFT_LABEL_RETAINED",
+        "episode": 34,
+        "family_identity": "PASTILA_ACIDA_EPISODE_34",
+        "partition_reservation": "OWNER_BLIND_HOLDOUT",
+        "path": "docs/artifacts/vnext-voice-owner-episodes-v1/sources/episode-34.txt",
+        "record_level_training_eligibility": "PENDING_FACTUAL_COMMENTARY_SPAN_ADJUDICATION",
+        "sha256": "c191f5afffae44db252741430f03afa7dea37de7967b628af921a4311ae659dc",
+        "source_admission": "ADMITTED_OWNER_WRITTEN_FILMED_EPISODE",
+        "training_rights": "GRANTED_BY_OWNER_IN_SESSION_2026-10-03"
+      }
+    ]
+  },
+  "status": "PASS_SOURCE_RIGHTS_ADMISSION_DATASET_NOT_READY",
+  "training_readiness": {
+    "blockers": [
+      "ZERO_SPAN_ADJUDICATED_GOLD_ROWS",
+      "ZERO_TRAINING_POSITIVE_MECHANISM_COVERAGE",
+      "NO_FACTUAL_SAFETY_NEGATIVE_SET",
+      "NO_RECORD_LEVEL_DEDUPLICATION_OR_CONTAMINATION_AUDIT"
+    ],
+    "qwen3_lora": "NOT_READY",
+    "training_performed": false,
+    "weights_modified": false
+  },
+  "voice_state": "DISABLED_UNTIL_PROMOTION"
+}
