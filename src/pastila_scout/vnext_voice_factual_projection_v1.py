@@ -72,3 +72,33 @@ def projection_decision(setup: str, commentary: str) -> dict[str, object]:
         ],
         "unsupported": unsupported,
     }
+
+
+def enforce_candidate_projection(setup: str, response: dict[str, object]) -> dict[str, object]:
+    """Fail closed on malformed abstention or unsupported numeric claims.
+
+    The function is deliberately side effect free.  It belongs between model
+    generation and VOICE draft construction, so the orchestrator remains the
+    only workflow writer.
+    """
+    status = response.get("status")
+    commentary = response.get("commentary")
+    if status == "ABSTAIN":
+        return {
+            "status": "ABSTAIN",
+            "commentary": "",
+            "decision": "NORMALIZE_ABSTENTION",
+            "findings": ["ABSTAIN_WITH_COMMENTARY"] if commentary not in {None, ""} else [],
+        }
+    if status != "COMMENTARY" or not isinstance(commentary, str) or not commentary.strip():
+        return {"status": "ABSTAIN", "commentary": "", "decision": "REJECT_MALFORMED_RESPONSE", "findings": ["MALFORMED_RESPONSE"]}
+    projection = projection_decision(setup, commentary)
+    if projection["decision"] != "ALLOW_NUMERIC_PROJECTION":
+        return {
+            "status": "ABSTAIN",
+            "commentary": "",
+            "decision": "REJECT_UNSUPPORTED_FACT",
+            "findings": ["UNSUPPORTED_FACT"],
+            "projection": projection,
+        }
+    return {"status": "COMMENTARY", "commentary": commentary.strip(), "decision": "ALLOW", "findings": [], "projection": projection}

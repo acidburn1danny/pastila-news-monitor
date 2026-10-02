@@ -1,0 +1,22 @@
+{
+  "active_integration": false,
+  "factual_closure": {
+    "taxonomy_authority": "vnext-voice-factual-safety-taxonomy-correction-v1",
+    "unsupported_numeric_claim": "FAIL_CLOSED_ABSTAIN"
+  },
+  "legacy_dependency_count": 0,
+  "orchestrator_writer_only": true,
+  "placement": "AFTER_GENERATION_BEFORE_VOICE_DRAFT_PERSISTENCE",
+  "promotion": false,
+  "quality_effect": "NONE_DEMONSTRATED",
+  "qwen3_terminal": "REJECT_COMMENTARY_QUALITY",
+  "result_identity": "44eda44905a83649c120e3f9aed855e276292e24a1d22f5487c835d27f111ce4",
+  "schema": "vnext-voice-candidate-strategy-repair",
+  "schema_version": 1,
+  "status": "PASS_IMPLEMENTATION_NON_PROMOTABLE",
+  "structural_closure": {
+    "abstain_commentary": "NORMALIZE_TO_EMPTY",
+    "malformed_response": "FAIL_CLOSED_ABSTAIN"
+  },
+  "voice_state": "DISABLED_UNTIL_PROMOTION"
+}
