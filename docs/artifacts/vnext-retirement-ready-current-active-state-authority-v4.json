@@ -1,0 +1,45 @@
+{
+  "activation_candidate_product_lock_identity": "4d45f169ed4f6eba530e181a7e61ce4ade02d63e8d21f5177b3d4d18d15a0738",
+  "activation_receipt_identity": "3ab1a7dd2694bf62466c8444492e5781a71f219ab9d26722ea9451983344962e",
+  "active_authority_surface_identity": "29dddf588f38661416ee3f11fd63e66ec4673fd65cc55bb89853052a5f552dc6",
+  "active_graph_identity": "01d6b01a382ceb21518beeed0e6c5645f076e071767096d4358ddc5aa8ea5409",
+  "active_root": "/root/pastila-vnext/v1",
+  "active_state_authority_identity": "4d426ecf1e1909457df131d4639d95bdd56bce699eda42700c32fad050b1cdc0",
+  "canonical_rollback": {
+    "manifest_identity": "6190ac5ddd2a57566c21c07416183adf0ed6d2f018901529010796db52e3aa32",
+    "product_lock_identity": "5a5988bd0fb3b7d760c5a99dd13c007281a6900dd6a572c21c3812d6cd00bf93",
+    "product_lock_sha256": "6c79a7e25b22c80caad93a05b6701860166e3af88626a543fc3aa9c38ed761ee",
+    "root": "/root/pastila-vnext/.rollback-pre-gui-coherent-733ad2a1"
+  },
+  "historical_roots": [
+    {
+      "classification": "HISTORICAL_NON_CANONICAL",
+      "path": "/root/pastila-vnext/.rollback-pre-gui-4d45f169",
+      "product_lock_identity": "278df8cdd27f641a44fd7941bfc89c362dcb5af3f1a9f265148fa11c85e44ab0",
+      "product_lock_sha256": "c9c6b9bb60c881781b1b534990bc37b76a7e012f2599144e2656984854f5fa58"
+    },
+    {
+      "classification": "HISTORICAL_NON_CANONICAL_PENDING_RETIREMENT",
+      "path": "/root/pastila-vnext/.rollback-pre-contract-e180a1e5",
+      "product_lock_identity": "03e43da4e052ed0bf0a1caa7f9da7103a111e1192362ea9887ed86388b864b78",
+      "product_lock_sha256": "196c5f7bdec6f59f0609ad334dbdebdc17e5ad9f793945713ff2b7afaa5b58a2"
+    },
+    {
+      "classification": "HISTORICAL_NON_CANONICAL_OLDEST_GENERATION",
+      "path": "/root/pastila-vnext/.rollback-pre-exchange-5e31722e",
+      "product_lock_identity": "68fb2c347367ff3aa725cfb44de11be07921ad2e39fcbe98b01b389eee46c19b",
+      "product_lock_sha256": "0ff93c4d9f550c8458d2223ae91627903bf02dc24973c59d3069fa94ada1100e"
+    }
+  ],
+  "installed_product_lock": {
+    "identity": "91f3e6bc7cb5ae790ed757f765a3a3f77515826f02425210db8e57a76dfbd46c",
+    "sha256": "962ea73a3c61d0317a58d43b85db3a5a8cdd9f6c84a121f06fd9c3927c4333ad"
+  },
+  "legacy_dependency_count": 0,
+  "post_install_audit_identity": "dfb1bb619e438d9b41fbbe5e22f38e6183760e3768acea1feb057c603b91ec78",
+  "predecessor_active_state_authority_identity": "8f0a2e9c54045927556dd5f1a90866347c37d85d7e0e100380ff86ee7ae61b48",
+  "schema": "vnext-retirement-ready-current-active-state-authority-v4",
+  "schema_version": 3,
+  "status": "ACTIVATED_ATTESTED_CANONICAL_FACTUAL_IMMEDIATE_PREDECESSOR",
+  "voice": "DISABLED_UNTIL_PROMOTION"
+}
