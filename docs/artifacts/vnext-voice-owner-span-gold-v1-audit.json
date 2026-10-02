@@ -1,0 +1,18 @@
+{
+  "audit_identity": "27b6f31db234ba54868c2d30f2a927a0a96e968282a2e65fcd3bed8023210179",
+  "checks": {
+    "distinct_spans": true,
+    "exact_spans": true,
+    "families_disjoint": true,
+    "holdout_unread": true,
+    "mechanisms_in_frozen_curriculum": true,
+    "no_rewrites": true,
+    "not_training_ready": true,
+    "protected_state": true,
+    "records_16": true
+  },
+  "result_identity": "1a6188f331b143ada83a67a76edb3d0bcba59e3fb25d44af71c47023fb79a243",
+  "schema": "vnext-voice-owner-span-gold-audit",
+  "schema_version": 1,
+  "status": "PASS"
+}
