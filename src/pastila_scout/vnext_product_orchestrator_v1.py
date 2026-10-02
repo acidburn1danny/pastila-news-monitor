@@ -44,6 +44,7 @@ from .vnext_scout_production_v1 import (
     validate_terminal_capture_outcome,
 )
 from .vnext_state_sqlite_v1 import SQLiteStateStore
+from .vnext_voice_chief_editor_v1 import VoiceBackend, build_voice_draft, persist_voice_draft
 
 
 class ProductOrchestratorError(BoundaryError):
@@ -97,6 +98,13 @@ class FactualResultBundle:
     artifact: Mapping[str, object]
     terminal_state: str | None = None
     structural_failure: Mapping[str, object] | None = None
+
+
+@dataclass(frozen=True)
+class VoiceDraftBundle:
+    workflow_identity: str
+    factual: Mapping[str, object]
+    draft: Mapping[str, object]
 
 
 @dataclass(frozen=True)
@@ -958,6 +966,66 @@ class ProductOrchestrator:
             label="policy decision",
         )
         return decision
+
+    def load_voice_draft_bundle(self, workflow_identity: str) -> VoiceDraftBundle:
+        factual = self.load_factual_result_bundle(workflow_identity)
+        with self.store.read() as connection:
+            rows = connection.execute(
+                "SELECT artifact_identity,payload_identity,payload_ref,schema_identity "
+                "FROM workflow_artifacts WHERE workflow_identity=? AND artifact_kind='VOICE_DRAFT'",
+                (workflow_identity,),
+            ).fetchall()
+        if len(rows) != 1:
+            raise ProductOrchestratorError("persisted VOICE ownership is absent or ambiguous")
+        draft = self._load_json(str(rows[0]["payload_ref"]), "VOICE draft")
+        identity = object_identity({key: value for key, value in draft.items() if key != "artifact_identity"})
+        expected = (identity, identity, f"blobs/voice-drafts/{identity}.json", "vnext-voice-draft-v1")
+        if draft.get("artifact_identity") != identity or tuple(rows[0]) != expected:
+            raise ProductOrchestratorError("VOICE draft artifact binding mismatch")
+        if (
+            draft.get("factual_input_identity") != factual.artifact.get("artifact_identity")
+            or draft.get("factual_setup") != factual.artifact.get("text")
+            or draft.get("source_packet_identity") != factual.artifact.get("source_packet_identity")
+        ):
+            raise ProductOrchestratorError("VOICE draft factual provenance mismatch")
+        return VoiceDraftBundle(workflow_identity, factual.artifact, draft)
+
+    def apply_voice(
+        self,
+        bundle: FactualResultBundle,
+        *,
+        instruction: str,
+        seed: int,
+        backend: VoiceBackend,
+        observed_at: str,
+    ) -> VoiceDraftBundle:
+        persisted = self.load_factual_result_bundle(bundle.workflow_identity)
+        if persisted != bundle or bundle.terminal_state is not None:
+            raise ProductOrchestratorError("VOICE requires persisted eligible factual authority")
+        draft = build_voice_draft(workflow_identity=bundle.workflow_identity, factual=bundle.artifact, instruction=instruction, seed=seed, backend=backend)
+        persist_voice_draft(self.store, workflow_identity=bundle.workflow_identity, factual=bundle.artifact, draft=draft, observed_at=observed_at)
+        return VoiceDraftBundle(bundle.workflow_identity, bundle.artifact, draft)
+
+    def apply_chief_editor_and_export(
+        self,
+        bundle: VoiceDraftBundle,
+        *,
+        instruction: PolicyInstruction,
+        policy_entry_observed_at: str,
+        policy_decision_observed_at: str,
+        final_observed_at: str,
+    ) -> ExportBundle | PolicyTerminalBundle:
+        persisted = self.load_voice_draft_bundle(bundle.workflow_identity)
+        if persisted != bundle:
+            raise ProductOrchestratorError("VOICE bundle conflicts with persisted authority")
+        enter_policy_review(self.store, workflow_identity=bundle.workflow_identity, factual_output=bundle.draft, observed_at=policy_entry_observed_at)
+        session = authorize_policy_session(self.store, workflow_identity=bundle.workflow_identity, factual_output=bundle.draft, actor=instruction.actor, allowed_outcome=instruction.outcome, authorization_identity=instruction.authorization_identity)
+        decision = build_policy_decision(workflow_identity=bundle.workflow_identity, factual_output=bundle.draft, session=session, outcome=instruction.outcome, actor=instruction.actor, reason_code=instruction.reason_code)
+        persist_policy_decision(self.store, workflow_identity=bundle.workflow_identity, factual_output=bundle.draft, session=session, decision=decision, observed_at=policy_decision_observed_at)
+        if instruction.outcome != "APPROVE_FINAL":
+            return PolicyTerminalBundle(bundle.workflow_identity, str(self.store.load_workflow(bundle.workflow_identity)["state"]), decision)
+        final, receipt = assemble_and_export_final(self.store, workflow_identity=bundle.workflow_identity, factual_output=bundle.draft, decision=decision, observed_at=final_observed_at)
+        return ExportBundle(bundle.workflow_identity, final, receipt)
 
     def apply_policy_and_export(
         self,

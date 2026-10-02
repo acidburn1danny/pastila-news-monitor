@@ -1,0 +1,32 @@
+{
+  "active_integration": false,
+  "architecture": [
+    "SCOUT",
+    "EDITOR",
+    "VOICE",
+    "CHIEF_EDITOR",
+    "FINAL"
+  ],
+  "authority_identity": "6e60b3e7ac358667662f6d7e69cf34e625526df4baccb3913dea9547a8d4426d",
+  "boundary": "VNext Canonical VOICE & Chief-Editor Integration Vertical Slice v1",
+  "chief_editor_authority": "EXISTING_POLICY_SESSION",
+  "default_voice_backend": null,
+  "final_authority": "EXISTING_FINAL_BOUNDARY",
+  "promotion": false,
+  "promotion_prerequisites": {
+    "abstention_contract": "CLOSED_BY_THIS_BOUNDARY",
+    "architecture_and_persistence": "CLOSED_BY_THIS_BOUNDARY",
+    "candidate_materialization": "OPEN_REQUIRES_SEPARATE_AUTHORITY",
+    "commentary_quality_bakeoff": "OPEN_REQUIRES_REAL_CANDIDATES",
+    "factual_safety_contract": "CLOSED_BY_THIS_BOUNDARY",
+    "pilot_checkpoint": "OPEN_REQUIRES_PROMOTION_AUTHORITY",
+    "repetition_corpus_gate": "OPEN_REQUIRES_REAL_CANDIDATES",
+    "restart_recovery": "CLOSED_BY_DEDICATED_TEST",
+    "seed_and_decoding_receipt": "CLOSED_BY_THIS_BOUNDARY"
+  },
+  "schema": "vnext-voice-chief-editor-vertical-slice-authority",
+  "schema_version": 1,
+  "voice_input_authority": "FACTUAL_ACCEPTANCE",
+  "voice_state": "DISABLED_UNTIL_PROMOTION",
+  "workflow_owner": "ProductOrchestrator"
+}

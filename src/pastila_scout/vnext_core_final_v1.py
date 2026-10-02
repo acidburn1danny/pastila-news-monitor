@@ -90,20 +90,36 @@ def _owned_factual(store:SQLiteStateStore,workflow_identity:str,artifact:Mapping
     ):
         raise CoreFinalError("persisted factual receipt payload mismatch")
 
+
+def _owned_policy_input(store:SQLiteStateStore,workflow_identity:str,artifact:Mapping[str,object])->None:
+    if artifact.get('artifact_kind') in FACTUAL_KINDS:
+        _owned_factual(store,workflow_identity,artifact); return
+    identity=_identity(artifact,'artifact_identity')
+    if artifact.get('artifact_kind')!='VOICE_DRAFT' or artifact.get('workflow_identity')!=workflow_identity or artifact.get('voice_status') not in {'COMMENTARY','ABSTAIN'} or not isinstance(artifact.get('factual_setup'),str):
+        raise CoreFinalError('ineligible Chief Editor input')
+    with store.read() as connection:
+        row=connection.execute("SELECT payload_identity,payload_ref FROM workflow_artifacts WHERE workflow_identity=? AND artifact_identity=? AND artifact_kind='VOICE_DRAFT'",(workflow_identity,identity)).fetchone()
+    if row is None or row['payload_identity']!=identity:
+        raise CoreFinalError('VOICE draft is not owned by workflow')
+    if _load_owned_json(store,Path(str(row['payload_ref'])),'VOICE draft')!=artifact:
+        raise CoreFinalError('VOICE draft payload mismatch')
+
 def _transition(store:SQLiteStateStore,workflow:str,left:str,right:str,operation:str,input_identity:str,output_identity:str|None,actor:str,outcome:str,observed_at:str)->None:
     semantic={'workflow':workflow,'left':left,'right':right,'operation':operation,'input':input_identity,'output':output_identity,'actor':actor,'outcome':outcome}
     ident=object_identity(semantic)
     store.transition(TransitionRequest(workflow,operation,left,right,actor,outcome,input_identity,output_identity,f'attempt:{ident}',f'idempotency:{ident}',observed_at,{'component':'VNext Core Workflow to Deterministic FINAL Vertical Slice v1'}))
 
 def enter_policy_review(store:SQLiteStateStore,*,workflow_identity:str,factual_output:Mapping[str,object],observed_at:str)->None:
-    _owned_factual(store,workflow_identity,factual_output); ident=str(factual_output['artifact_identity']); state=store.load_workflow(workflow_identity)['state']; kind=str(factual_output['artifact_kind'])
+    _owned_policy_input(store,workflow_identity,factual_output); ident=str(factual_output['artifact_identity']); state=store.load_workflow(workflow_identity)['state']; kind=str(factual_output['artifact_kind'])
+    if state=='VOICE_DRAFT_READY' and kind=='VOICE_DRAFT':
+        _transition(store,workflow_identity,'VOICE_DRAFT_READY','POLICY_REVIEW_PENDING','core:chief-editor-pending',ident,None,'CHIEF_EDITOR','POLICY_REQUIRED',observed_at); state='POLICY_REVIEW_PENDING'
     if state==kind:
         _transition(store,workflow_identity,kind,'VOICE_DISABLED','core:voice-disabled',ident,None,'system','VOICE_DISABLED',observed_at); state='VOICE_DISABLED'
     if state=='VOICE_DISABLED': _transition(store,workflow_identity,'VOICE_DISABLED','POLICY_REVIEW_PENDING','core:policy-pending',ident,None,'system','POLICY_REQUIRED',observed_at); state='POLICY_REVIEW_PENDING'
     if state!='POLICY_REVIEW_PENDING': raise CoreFinalError(f'workflow is not policy-ready: {state}')
 
 def authorize_policy_session(store:SQLiteStateStore,*,workflow_identity:str,factual_output:Mapping[str,object],actor:str,allowed_outcome:str,authorization_identity:str)->dict[str,object]:
-    _owned_factual(store,workflow_identity,factual_output)
+    _owned_policy_input(store,workflow_identity,factual_output)
     if allowed_outcome not in POLICY_OUTCOMES or not actor.strip() or _SHA256.fullmatch(authorization_identity) is None: raise CoreFinalError('invalid policy authority request')
     if store.load_workflow(workflow_identity)['state']!='POLICY_REVIEW_PENDING': raise CoreFinalError('workflow is not ready for policy authority')
     request=object_identity({'workflow_identity':workflow_identity,'actor':actor.strip(),'input_identity':factual_output['artifact_identity'],'allowed_outcome':allowed_outcome,'authorization_identity':authorization_identity})
@@ -126,7 +142,7 @@ def build_policy_decision(*,workflow_identity:str,factual_output:Mapping[str,obj
     value['decision_identity']=object_identity(value); return value
 
 def persist_policy_decision(store:SQLiteStateStore,*,workflow_identity:str,factual_output:Mapping[str,object],session:Mapping[str,object],decision:Mapping[str,object],observed_at:str)->None:
-    _owned_factual(store,workflow_identity,factual_output); did=_identity(decision,'decision_identity'); sid=_identity(session,'policy_session_identity'); outcome=str(decision.get('outcome'))
+    _owned_policy_input(store,workflow_identity,factual_output); did=_identity(decision,'decision_identity'); sid=_identity(session,'policy_session_identity'); outcome=str(decision.get('outcome'))
     if outcome not in POLICY_OUTCOMES or decision.get('workflow_identity')!=workflow_identity or decision.get('policy_session_identity')!=sid or decision.get('input_identity')!=factual_output.get('artifact_identity') or session.get('allowed_outcome')!=outcome: raise CoreFinalError('policy decision provenance mismatch')
     target=POLICY_OUTCOMES[outcome]; relative=Path('blobs/policy-decisions')/f'{did}.json'; path=contained_path(store.root,relative)
     if path.exists():
@@ -152,19 +168,24 @@ def _final_value(
     factual_output: Mapping[str, object],
     decision_identity: str,
 ) -> dict[str, object]:
+    is_voice = factual_output.get("artifact_kind") == "VOICE_DRAFT"
     final: dict[str, object] = {
         "schema": "vnext-final-output",
         "schema_version": 1,
         "artifact_kind": "FINAL_OUTPUT",
         "workflow_identity": workflow_identity,
         "source_packet_identity": factual_output["source_packet_identity"],
-        "factual_input_kind": factual_output["artifact_kind"],
-        "factual_input_identity": factual_output["artifact_identity"],
+        "factual_input_kind": factual_output.get("factual_input_kind", factual_output["artifact_kind"]),
+        "factual_input_identity": factual_output.get("factual_input_identity", factual_output["artifact_identity"]),
         "policy_decision_identity": decision_identity,
-        "voice_mode": "DISABLED",
-        "text": factual_output["text"],
-        "assembly": "DETERMINISTIC_PASSTHROUGH_V1",
+        "voice_mode": "ENABLED" if is_voice else "DISABLED",
+        "text": (str(factual_output["factual_setup"]) + ("\n\n" + str(factual_output["commentary"]) if factual_output.get("commentary") else "")) if is_voice else factual_output["text"],
+        "assembly": "DETERMINISTIC_SETUP_COMMENTARY_V1" if is_voice else "DETERMINISTIC_PASSTHROUGH_V1",
     }
+    if is_voice:
+        final["voice_draft_identity"] = factual_output["artifact_identity"]
+        final["factual_setup"] = factual_output["factual_setup"]
+        final["commentary"] = factual_output["commentary"]
     final["artifact_identity"] = object_identity(final)
     return final
 
@@ -337,7 +358,7 @@ def assemble_and_export_final(
     decision: Mapping[str, object],
     observed_at: str,
 ) -> tuple[dict[str, object], dict[str, object]]:
-    _owned_factual(store, workflow_identity, factual_output)
+    _owned_policy_input(store, workflow_identity, factual_output)
     decision_identity = _identity(decision, "decision_identity")
     if (
         decision.get("outcome") != "APPROVE_FINAL"

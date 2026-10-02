@@ -25,7 +25,7 @@ from .vnext_workflow_v1 import (
     validate_workflow,
 )
 
-SCHEMA_VERSION = 7
+SCHEMA_VERSION = 8
 DEFAULT_BUSY_TIMEOUT_MS = 5_000
 MIGRATION_1 = (
     "CREATE TABLE schema_migrations (version INTEGER PRIMARY KEY, migration_identity TEXT NOT NULL UNIQUE, applied_by TEXT NOT NULL)",
@@ -69,7 +69,14 @@ MIGRATION_6 = (
 MIGRATION_7 = (
     "CREATE TABLE workflow_events (workflow_identity TEXT NOT NULL REFERENCES workflows(workflow_identity), event_identity TEXT NOT NULL REFERENCES events(event_identity), grouping_identity TEXT NOT NULL, position INTEGER NOT NULL CHECK(position>=0), PRIMARY KEY(workflow_identity,event_identity), UNIQUE(workflow_identity,position))",
 )
-MIGRATIONS = {1: MIGRATION_1, 2: MIGRATION_2, 3: MIGRATION_3, 4: MIGRATION_4, 5: MIGRATION_5, 6: MIGRATION_6, 7: MIGRATION_7}
+MIGRATION_8 = (
+    "CREATE TABLE policy_sessions_v2 (policy_session_identity TEXT PRIMARY KEY, request_identity TEXT NOT NULL UNIQUE, workflow_identity TEXT NOT NULL REFERENCES workflows(workflow_identity), issued_by TEXT NOT NULL, actor TEXT NOT NULL, input_kind TEXT NOT NULL CHECK(input_kind IN ('ACCEPTED_SETUP','SOURCE_FALLBACK','VOICE_DRAFT')), input_identity TEXT NOT NULL, allowed_outcome TEXT NOT NULL CHECK(allowed_outcome IN ('APPROVE_FINAL','REJECT','REVISE')), authorization_identity TEXT NOT NULL, status TEXT NOT NULL CHECK(status IN ('OPEN','CONSUMED')), decision_identity TEXT UNIQUE)",
+    "INSERT INTO policy_sessions_v2 SELECT * FROM policy_sessions",
+    "DROP TABLE policy_sessions",
+    "ALTER TABLE policy_sessions_v2 RENAME TO policy_sessions",
+    "CREATE UNIQUE INDEX policy_sessions_open_input ON policy_sessions(workflow_identity,input_kind,input_identity) WHERE status='OPEN'",
+)
+MIGRATIONS = {1: MIGRATION_1, 2: MIGRATION_2, 3: MIGRATION_3, 4: MIGRATION_4, 5: MIGRATION_5, 6: MIGRATION_6, 7: MIGRATION_7, 8: MIGRATION_8}
 
 
 class StateBoundaryError(BoundaryError):
