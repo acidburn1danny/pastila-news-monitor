@@ -1,0 +1,508 @@
+{
+  "candidate_mapping_unsealed_after_scoring": "V1_QWEN3_8B_NON_THINKING",
+  "legacy_dependency_count": 0,
+  "promotion": false,
+  "quality_composite_mean": 1.809524,
+  "quality_means": {
+    "non_generic": 1.25,
+    "pastila_acida_style": 1.083333,
+    "relevance": 2.083333,
+    "restraint": 3.208333,
+    "romanian_naturalness": 2.875,
+    "sarcasm_irony_roast": 1.083333,
+    "target_choice": 1.083333
+  },
+  "repetition": {
+    "exact_cross_case_duplicates": 0,
+    "internal_repetition_cases": [
+      "VOICE-V1-15",
+      "VOICE-V1-16",
+      "VOICE-V1-23"
+    ],
+    "repeated_three_word_starts": {
+      "într o lume": 9
+    }
+  },
+  "result_identity": "99c161dd3b4c6569667b191d2365db355fdff3cbd8931530a6dbb574cf5f5568",
+  "schema": "vnext-qwen3-blind-commentary-adjudication",
+  "schema_version": 1,
+  "scores": [
+    {
+      "blind_case_identity": "a2416cce7ba00e9f66c1d9da016ffbeea09b923d33beebc69b32c2694ed46329",
+      "case_id": "VOICE-V1-01",
+      "composite": 1.571429,
+      "reason": "generic reflection; no satirical target",
+      "schema": "vnext-qwen3-blind-commentary-score",
+      "schema_version": 1,
+      "score_identity": "22cf1a2ec59829f5957fa683afe5ed63bb379602fc666b433c209061eb680add",
+      "scores": {
+        "non_generic": 1,
+        "pastila_acida_style": 1,
+        "relevance": 2,
+        "restraint": 2,
+        "romanian_naturalness": 3,
+        "sarcasm_irony_roast": 1,
+        "target_choice": 1
+      },
+      "structural_findings": [
+        "ABSTAIN_WITH_COMMENTARY"
+      ]
+    },
+    {
+      "blind_case_identity": "c70f50f447772425b8ac094a40fbe43317376af57afbb77dc45a53b7a9734aff",
+      "case_id": "VOICE-V1-02",
+      "composite": 1.714286,
+      "reason": "meta-description of brand rather than commentary",
+      "schema": "vnext-qwen3-blind-commentary-score",
+      "schema_version": 1,
+      "score_identity": "a7d2971c0778c0e3fbfaf6c40b20d201048c06ee8421fb2ff85dedf6abf4d94f",
+      "scores": {
+        "non_generic": 1,
+        "pastila_acida_style": 1,
+        "relevance": 1,
+        "restraint": 4,
+        "romanian_naturalness": 3,
+        "sarcasm_irony_roast": 1,
+        "target_choice": 1
+      },
+      "structural_findings": [
+        "ABSTAIN_WITH_COMMENTARY"
+      ]
+    },
+    {
+      "blind_case_identity": "e5de49bf9bb4584d4225ac5cb47e9ce63abfdbce1f666e19cb1da40a9bbf936e",
+      "case_id": "VOICE-V1-03",
+      "composite": 2.285714,
+      "reason": "relevant but generic system-failure claim",
+      "schema": "vnext-qwen3-blind-commentary-score",
+      "schema_version": 1,
+      "score_identity": "ad4696ce256b232f489a45af6665468c5d78f803b6ae9dd6ccab76e936599178",
+      "scores": {
+        "non_generic": 2,
+        "pastila_acida_style": 1,
+        "relevance": 3,
+        "restraint": 4,
+        "romanian_naturalness": 3,
+        "sarcasm_irony_roast": 1,
+        "target_choice": 2
+      },
+      "structural_findings": []
+    },
+    {
+      "blind_case_identity": "e59180a190dad56f57cc74ece38ef8dfea610454a7e7051752ee215576d5350f",
+      "case_id": "VOICE-V1-04",
+      "composite": 2.285714,
+      "reason": "some irony, awkward and weakly targeted",
+      "schema": "vnext-qwen3-blind-commentary-score",
+      "schema_version": 1,
+      "score_identity": "7f2bc9c5fe51f3d5f45ee60e36238f2542d616b95d32e93a7a97ae08bfd2c94c",
+      "scores": {
+        "non_generic": 2,
+        "pastila_acida_style": 2,
+        "relevance": 3,
+        "restraint": 3,
+        "romanian_naturalness": 2,
+        "sarcasm_irony_roast": 2,
+        "target_choice": 2
+      },
+      "structural_findings": []
+    },
+    {
+      "blind_case_identity": "f8edc3495f887459a38d29155b3a78780fcf19715722b1e4e877a29d727d8fb1",
+      "case_id": "VOICE-V1-05",
+      "composite": 1.714286,
+      "reason": "neutral recap with invented editorial attribution",
+      "schema": "vnext-qwen3-blind-commentary-score",
+      "schema_version": 1,
+      "score_identity": "7617fecd746afb5f3a3b005d248fc86a66b1f12cb6eacf065297b89fdfd36ce4",
+      "scores": {
+        "non_generic": 1,
+        "pastila_acida_style": 1,
+        "relevance": 2,
+        "restraint": 3,
+        "romanian_naturalness": 3,
+        "sarcasm_irony_roast": 1,
+        "target_choice": 1
+      },
+      "structural_findings": []
+    },
+    {
+      "blind_case_identity": "27a90c15b787a0410eb615eac74331cc52bf4067f2b4b3bcd9dd800c97580bdf",
+      "case_id": "VOICE-V1-06",
+      "composite": 1.857143,
+      "reason": "neutral process commentary",
+      "schema": "vnext-qwen3-blind-commentary-score",
+      "schema_version": 1,
+      "score_identity": "b0930569080a833a79815a8a48be03558f1157ba9bcbb7510e6b2b9ca826cb95",
+      "scores": {
+        "non_generic": 1,
+        "pastila_acida_style": 1,
+        "relevance": 2,
+        "restraint": 4,
+        "romanian_naturalness": 3,
+        "sarcasm_irony_roast": 1,
+        "target_choice": 1
+      },
+      "structural_findings": []
+    },
+    {
+      "blind_case_identity": "67896a9ba082be907f5074ade6b6e99b85d118cf2057350ba006a3bd236b92c4",
+      "case_id": "VOICE-V1-07",
+      "composite": 1.571429,
+      "reason": "generic responsibility language",
+      "schema": "vnext-qwen3-blind-commentary-score",
+      "schema_version": 1,
+      "score_identity": "dffdc7f2e237f66d58a0ff6f7e054c0194523ff43a9275db97214d3b4a7a49ff",
+      "scores": {
+        "non_generic": 1,
+        "pastila_acida_style": 1,
+        "relevance": 2,
+        "restraint": 2,
+        "romanian_naturalness": 3,
+        "sarcasm_irony_roast": 1,
+        "target_choice": 1
+      },
+      "structural_findings": []
+    },
+    {
+      "blind_case_identity": "987f7a71f02a87100df9c310bd50d15fdd05c3ab8b31eadcc2006f0189d1b1d3",
+      "case_id": "VOICE-V1-08",
+      "composite": 1.857143,
+      "reason": "melodramatic generic prose",
+      "schema": "vnext-qwen3-blind-commentary-score",
+      "schema_version": 1,
+      "score_identity": "e5eb463ad72391dadff05dec3f3102632c9b84fa03c8ca8e5a5c3590f63b29d2",
+      "scores": {
+        "non_generic": 2,
+        "pastila_acida_style": 1,
+        "relevance": 2,
+        "restraint": 3,
+        "romanian_naturalness": 3,
+        "sarcasm_irony_roast": 1,
+        "target_choice": 1
+      },
+      "structural_findings": []
+    },
+    {
+      "blind_case_identity": "34b3885d41096cc7d3e1ab4298e96bbb409b3a89a6281ff590fe16c49dce9cdc",
+      "case_id": "VOICE-V1-09",
+      "composite": 2.285714,
+      "reason": "off-target coffee aside",
+      "schema": "vnext-qwen3-blind-commentary-score",
+      "schema_version": 1,
+      "score_identity": "a22a995285371283a5b7aaa0cd3b330a607f3472ad589f79ca516264e912812d",
+      "scores": {
+        "non_generic": 2,
+        "pastila_acida_style": 2,
+        "relevance": 2,
+        "restraint": 4,
+        "romanian_naturalness": 3,
+        "sarcasm_irony_roast": 2,
+        "target_choice": 1
+      },
+      "structural_findings": []
+    },
+    {
+      "blind_case_identity": "0ca4d5225c371066edb1aa5020cdc54892627400a155a1d2426639fc57435a70",
+      "case_id": "VOICE-V1-10",
+      "composite": 1.857143,
+      "reason": "generic justice symbolism",
+      "schema": "vnext-qwen3-blind-commentary-score",
+      "schema_version": 1,
+      "score_identity": "15907d0b54484ef1266fd5334f538d57e516b74cf877e8d5d65919f1b3263d86",
+      "scores": {
+        "non_generic": 1,
+        "pastila_acida_style": 1,
+        "relevance": 2,
+        "restraint": 4,
+        "romanian_naturalness": 3,
+        "sarcasm_irony_roast": 1,
+        "target_choice": 1
+      },
+      "structural_findings": []
+    },
+    {
+      "blind_case_identity": "4ba1a7c78210c1eb56d73159e51b7f2825f0ffefdcd6cd71962c4d92ac105285",
+      "case_id": "VOICE-V1-11",
+      "composite": 1.857143,
+      "reason": "generic statement about figures",
+      "schema": "vnext-qwen3-blind-commentary-score",
+      "schema_version": 1,
+      "score_identity": "28590e6330ea334ab2cba7ec335970719622cbd3ef0c307fa8d9c9241c981e6e",
+      "scores": {
+        "non_generic": 1,
+        "pastila_acida_style": 1,
+        "relevance": 2,
+        "restraint": 4,
+        "romanian_naturalness": 3,
+        "sarcasm_irony_roast": 1,
+        "target_choice": 1
+      },
+      "structural_findings": []
+    },
+    {
+      "blind_case_identity": "70ad4995086bd2eb95eb5714079b19659df56e2942acbd3c02c0d8ab33a37152",
+      "case_id": "VOICE-V1-12",
+      "composite": 2.0,
+      "reason": "generic opportunity aphorism",
+      "schema": "vnext-qwen3-blind-commentary-score",
+      "schema_version": 1,
+      "score_identity": "3ee71f1a32676f33400f7e71abe0ddfb19d33e98d6c53e8571518862b1cb5fd6",
+      "scores": {
+        "non_generic": 2,
+        "pastila_acida_style": 1,
+        "relevance": 2,
+        "restraint": 4,
+        "romanian_naturalness": 3,
+        "sarcasm_irony_roast": 1,
+        "target_choice": 1
+      },
+      "structural_findings": []
+    },
+    {
+      "blind_case_identity": "a7e2df06f65bdb9e7da944f74d5288cd07a2cafcfde7e3010824f7e551ac03a6",
+      "case_id": "VOICE-V1-13",
+      "composite": 1.714286,
+      "reason": "awkward generic transparency statement",
+      "schema": "vnext-qwen3-blind-commentary-score",
+      "schema_version": 1,
+      "score_identity": "02da444cf642e341dc9260723a22cec6eb0243f4e67c4fa46b0b5f3717c1fe8d",
+      "scores": {
+        "non_generic": 1,
+        "pastila_acida_style": 1,
+        "relevance": 2,
+        "restraint": 4,
+        "romanian_naturalness": 2,
+        "sarcasm_irony_roast": 1,
+        "target_choice": 1
+      },
+      "structural_findings": []
+    },
+    {
+      "blind_case_identity": "1d174b1d3a0c998071cba2b21786b2f7e1722931d0c4693ab4f03d7f77d96bbc",
+      "case_id": "VOICE-V1-14",
+      "composite": 1.857143,
+      "reason": "neutral explanatory recap",
+      "schema": "vnext-qwen3-blind-commentary-score",
+      "schema_version": 1,
+      "score_identity": "a139ee695b20f774cbf31f90a9103387096f3c0cc2d194981faecfebcc005a18",
+      "scores": {
+        "non_generic": 1,
+        "pastila_acida_style": 1,
+        "relevance": 3,
+        "restraint": 3,
+        "romanian_naturalness": 3,
+        "sarcasm_irony_roast": 1,
+        "target_choice": 1
+      },
+      "structural_findings": []
+    },
+    {
+      "blind_case_identity": "8fec34d1f975b1c765247203fab040ff6ceb9c41b301a1fb469338d4a98d1144",
+      "case_id": "VOICE-V1-15",
+      "composite": 1.428571,
+      "reason": "repetitive uncertainty monologue",
+      "schema": "vnext-qwen3-blind-commentary-score",
+      "schema_version": 1,
+      "score_identity": "0aaf33cf4d611f3fce3d94bc30c8149ac75f221fcc887871f86d58cd1b6feedf",
+      "scores": {
+        "non_generic": 1,
+        "pastila_acida_style": 1,
+        "relevance": 2,
+        "restraint": 1,
+        "romanian_naturalness": 3,
+        "sarcasm_irony_roast": 1,
+        "target_choice": 1
+      },
+      "structural_findings": [
+        "ABSTAIN_WITH_COMMENTARY"
+      ]
+    },
+    {
+      "blind_case_identity": "aef625dc5c004d3af376e0ccd03f352a9b49d78cba27a409c7bf2eb238a339c7",
+      "case_id": "VOICE-V1-16",
+      "composite": 1.428571,
+      "reason": "internal phrase repetition",
+      "schema": "vnext-qwen3-blind-commentary-score",
+      "schema_version": 1,
+      "score_identity": "339be7d4ef0170fa3c8dd03cbbd5bb13a2f7530b3832ef59626732d70dc95b2f",
+      "scores": {
+        "non_generic": 1,
+        "pastila_acida_style": 1,
+        "relevance": 2,
+        "restraint": 1,
+        "romanian_naturalness": 3,
+        "sarcasm_irony_roast": 1,
+        "target_choice": 1
+      },
+      "structural_findings": []
+    },
+    {
+      "blind_case_identity": "f489bcf1f659d0d576f0828276e4ef1b61bccd76156f3f33ad9e8e9db09e0051",
+      "case_id": "VOICE-V1-17",
+      "composite": 1.571429,
+      "reason": "generic hedging",
+      "schema": "vnext-qwen3-blind-commentary-score",
+      "schema_version": 1,
+      "score_identity": "57e4524950c3475fc8276c491b3945ad93c775e8230a3ae83c41a626b91a55ba",
+      "scores": {
+        "non_generic": 1,
+        "pastila_acida_style": 1,
+        "relevance": 2,
+        "restraint": 2,
+        "romanian_naturalness": 3,
+        "sarcasm_irony_roast": 1,
+        "target_choice": 1
+      },
+      "structural_findings": []
+    },
+    {
+      "blind_case_identity": "07826c6c76b5330b52f13fc86c46ce64022ce7083f1e0fe148942c661cc159ed",
+      "case_id": "VOICE-V1-18",
+      "composite": 1.571429,
+      "reason": "awkward abstract prose",
+      "schema": "vnext-qwen3-blind-commentary-score",
+      "schema_version": 1,
+      "score_identity": "14ee7f8d9a2068bd48974bd9fdc4b09971af6d52ed2aa7161798923d64bab9cd",
+      "scores": {
+        "non_generic": 1,
+        "pastila_acida_style": 1,
+        "relevance": 2,
+        "restraint": 3,
+        "romanian_naturalness": 2,
+        "sarcasm_irony_roast": 1,
+        "target_choice": 1
+      },
+      "structural_findings": []
+    },
+    {
+      "blind_case_identity": "57bbe714a78d6e09bf441ecf566748840142028956354a79a0fd2f9b47e5db6e",
+      "case_id": "VOICE-V1-19",
+      "composite": 1.714286,
+      "reason": "generic label metaphor",
+      "schema": "vnext-qwen3-blind-commentary-score",
+      "schema_version": 1,
+      "score_identity": "64d61a740478b3d1a9d4674c7941bc155212fcefa533cf516176ffc6fab1d06f",
+      "scores": {
+        "non_generic": 1,
+        "pastila_acida_style": 1,
+        "relevance": 2,
+        "restraint": 3,
+        "romanian_naturalness": 3,
+        "sarcasm_irony_roast": 1,
+        "target_choice": 1
+      },
+      "structural_findings": []
+    },
+    {
+      "blind_case_identity": "1cfbbc837758ad016606949b2a172002edfe68c6b1ae18e58c57ef984ba5a68f",
+      "case_id": "VOICE-V1-20",
+      "composite": 2.142857,
+      "reason": "plain paraphrase",
+      "schema": "vnext-qwen3-blind-commentary-score",
+      "schema_version": 1,
+      "score_identity": "ca8cd29bb81cda328dc95d8d3b186a98831e83cb31c52016b2713529e3629f2b",
+      "scores": {
+        "non_generic": 1,
+        "pastila_acida_style": 1,
+        "relevance": 3,
+        "restraint": 5,
+        "romanian_naturalness": 3,
+        "sarcasm_irony_roast": 1,
+        "target_choice": 1
+      },
+      "structural_findings": []
+    },
+    {
+      "blind_case_identity": "ed67e8d2ba579fc7bae973779bee3ec22699c26c1074ecdd8b2c3abb08c1b9c9",
+      "case_id": "VOICE-V1-21",
+      "composite": 1.714286,
+      "reason": "generic promises aphorism",
+      "schema": "vnext-qwen3-blind-commentary-score",
+      "schema_version": 1,
+      "score_identity": "919143ce1f1af90a8443ed84dd801ac287463c65a45f1ccff64db69f3b8244ae",
+      "scores": {
+        "non_generic": 1,
+        "pastila_acida_style": 1,
+        "relevance": 2,
+        "restraint": 3,
+        "romanian_naturalness": 3,
+        "sarcasm_irony_roast": 1,
+        "target_choice": 1
+      },
+      "structural_findings": []
+    },
+    {
+      "blind_case_identity": "05a1c8a34b7397c9cc8dbf37c03bdf47f4ef63f3898a36aab174162aece53e7e",
+      "case_id": "VOICE-V1-22",
+      "composite": 2.0,
+      "reason": "unrelated minimal platitude",
+      "schema": "vnext-qwen3-blind-commentary-score",
+      "schema_version": 1,
+      "score_identity": "36c64c04477a453fcb5c49686ccd3e2f6ffbc0eb1eccac07ea9f906c4cd9e075",
+      "scores": {
+        "non_generic": 2,
+        "pastila_acida_style": 1,
+        "relevance": 1,
+        "restraint": 5,
+        "romanian_naturalness": 3,
+        "sarcasm_irony_roast": 1,
+        "target_choice": 1
+      },
+      "structural_findings": [
+        "ABSTAIN_WITH_COMMENTARY"
+      ]
+    },
+    {
+      "blind_case_identity": "4d9c05c2c5e1827c498d2b9e647a514216b9e33e4f2e258a70eca7614627a060",
+      "case_id": "VOICE-V1-23",
+      "composite": 1.428571,
+      "reason": "long repetitive question chain",
+      "schema": "vnext-qwen3-blind-commentary-score",
+      "schema_version": 1,
+      "score_identity": "afb90d5b95fb1c3a0403f1f1ddddee46dc7a632a4969da85fd5613138a3329d5",
+      "scores": {
+        "non_generic": 1,
+        "pastila_acida_style": 1,
+        "relevance": 2,
+        "restraint": 1,
+        "romanian_naturalness": 3,
+        "sarcasm_irony_roast": 1,
+        "target_choice": 1
+      },
+      "structural_findings": []
+    },
+    {
+      "blind_case_identity": "72edc97309719b07f6ef3cf46ecec75441dfcf7d3346b84a5ba638723c1688cb",
+      "case_id": "VOICE-V1-24",
+      "composite": 2.0,
+      "reason": "generic call for more action",
+      "schema": "vnext-qwen3-blind-commentary-score",
+      "schema_version": 1,
+      "score_identity": "d6d66599b91f42b021f9977cc3705000f037817abbecc5a73771515cf14a69cd",
+      "scores": {
+        "non_generic": 1,
+        "pastila_acida_style": 1,
+        "relevance": 2,
+        "restraint": 5,
+        "romanian_naturalness": 3,
+        "sarcasm_irony_roast": 1,
+        "target_choice": 1
+      },
+      "structural_findings": []
+    }
+  ],
+  "seed_outputs": 72,
+  "seed_stable_cases": 24,
+  "status": "PASS_ADJUDICATION_REJECT_CANDIDATE",
+  "structural_violation_cases": [
+    "VOICE-V1-01",
+    "VOICE-V1-02",
+    "VOICE-V1-15",
+    "VOICE-V1-22"
+  ],
+  "structural_violation_outputs": 12,
+  "terminal": "REJECT_STRUCTURAL_AND_COMMENTARY_QUALITY",
+  "unique_outputs": 24,
+  "voice_state": "DISABLED_UNTIL_PROMOTION"
+}
