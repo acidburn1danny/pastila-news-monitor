@@ -1,0 +1,174 @@
+{
+  "active_integration": false,
+  "admissions": [
+    {
+      "corpus": "HUMOR_MECHANICS_CURRICULUM_V1",
+      "disposition": "REJECT_AS_TRAINING_CORPUS",
+      "reason": "TAXONOMY_ONLY_TRAINING_AUTHORITY_NONE",
+      "records": 50
+    },
+    {
+      "corpus": "BATCH2_OWNER_FROZEN_PILOT03",
+      "disposition": "REJECT",
+      "reason": "DEVELOPMENT_ONLY_TRAINING_ELIGIBLE_FALSE",
+      "records": 1
+    },
+    {
+      "corpus": "BATCH2_OWNER_FROZEN_PILOT04",
+      "disposition": "REJECT",
+      "reason": "DEVELOPMENT_ONLY_TRAINING_ELIGIBLE_FALSE",
+      "records": 1
+    },
+    {
+      "corpus": "BATCH2_M20_OWNER_FREEZE",
+      "disposition": "REJECT",
+      "reason": "SUPPORTING_ONLY_TRAINING_ELIGIBLE_FALSE",
+      "records": 1
+    },
+    {
+      "corpus": "BATCH2_M12_CONTRAST_FREEZE",
+      "disposition": "REJECT",
+      "reason": "CONTRAST_ONLY_MODEL_VISIBILITY_FALSE",
+      "records": 1
+    },
+    {
+      "corpus": "BATCH2_HISTORICAL_G02_NEGATIVES",
+      "disposition": "REJECT",
+      "reason": "HISTORICAL_EVIDENCE_ONLY_NON_MODEL_VISIBLE",
+      "records": 14
+    },
+    {
+      "corpus": "EDITORIAL_MECHANICS_BRIDGE",
+      "disposition": "REJECT",
+      "reason": "FACTUAL_EDITOR_TASK_NOT_OWNER_GOLD_VOICE_COMMENTARY",
+      "records": 96
+    },
+    {
+      "corpus": "QWEN3_BAKEOFF_CASES",
+      "disposition": "RESERVE_HOLDOUT",
+      "reason": "EVALUATION_ONLY_NO_TRAINING_EXPOSURE",
+      "records": 24
+    },
+    {
+      "corpus": "OWNER_WRITTEN_EPISODE_34",
+      "disposition": "REJECT_PENDING_ADMISSION_PACKAGE",
+      "reason": "TEXT_BYTES_FACTUAL_SETUP_COMMENTARY_PROVENANCE_RIGHTS_AND_TRAINING_ELIGIBILITY_NOT_MATERIALIZED",
+      "records": 0
+    }
+  ],
+  "authority_head": "89bbea8065f0996ffd830c6e8122560e5f404bd0",
+  "declared_batch2_priority_gaps": [
+    "M11",
+    "M12",
+    "M13",
+    "M17",
+    "M18",
+    "M19"
+  ],
+  "factual_safety": {
+    "abstention_gold_required": true,
+    "constrained_projection_remains_runtime": true,
+    "current_dataset_examples_checked": 0,
+    "setup_commentary_separate_required": true,
+    "status": "PASS_SCHEMA_ZERO_ADMITTED",
+    "unsupported_fact_negatives_required": true
+  },
+  "future_blind_holdout_required": true,
+  "gold_records": 0,
+  "holdout": {
+    "case_set_identity": "934f9ec71b5e8573d83a37d28e5222dacfb161203326ca9c59f77cd7fa0b8c9a",
+    "model_exposure": false,
+    "records": 24,
+    "source": "QWEN3_BAKEOFF",
+    "training_exposure": false
+  },
+  "leakage_closure": {
+    "gold_deduplication": "VACUOUS_ZERO_GOLD",
+    "status": "PASS",
+    "train_holdout_identity_overlap": 0,
+    "train_holdout_path_overlap": 0
+  },
+  "legacy_dependency_count": 0,
+  "lora_training_ready": false,
+  "mechanism_coverage": {
+    "curriculum_mechanisms": 50,
+    "positive_gaps": [
+      "HMCV1-B01-M01-SARCASM",
+      "HMCV1-B01-M02-IRONY",
+      "HMCV1-B01-M03-CONTRAST_JUXTAPOSITION",
+      "HMCV1-B01-M04-COMIC_ANALOGY",
+      "HMCV1-B01-M05-FRAME_TRANSFER",
+      "HMCV1-B01-M06-HYPERBOLE",
+      "HMCV1-B01-M07-UNDERSTATEMENT",
+      "HMCV1-B01-M08-ESCALATION",
+      "HMCV1-B01-M09-REVERSAL",
+      "HMCV1-B01-M10-DEADPAN_OBSERVATION",
+      "HMCV1-B02-M01-MISDIRECTION",
+      "HMCV1-B02-M02-LITERALIZATION",
+      "HMCV1-B02-M03-ABSURD_LOGICAL_EXTENSION",
+      "HMCV1-B02-M04-PERSONIFICATION",
+      "HMCV1-B02-M05-COMIC_RECLASSIFICATION_CATEGORY_ERROR",
+      "HMCV1-B02-M06-MOCK_PRAISE",
+      "HMCV1-B02-M07-FALSE_CONCESSION",
+      "HMCV1-B02-M08-RHETORICAL_QUESTION",
+      "HMCV1-B02-M09-DISCOURSE_FORM_PARODY",
+      "HMCV1-B02-M10-ROLE_SIMULATION",
+      "HMCV1-B03-M01-SETUP_PAYOFF",
+      "HMCV1-B03-M02-RULE_OF_THREE",
+      "HMCV1-B03-M03-REPETITION_WITH_VARIATION",
+      "HMCV1-B03-M04-COMIC_ENUMERATION",
+      "HMCV1-B03-M05-PARALLELISM_STRUCTURAL_SYMMETRY",
+      "HMCV1-B03-M06-DELAYED_PAYOFF",
+      "HMCV1-B03-M07-CALLBACK",
+      "HMCV1-B03-M08-ANTI_CLIMAX_BATHOS",
+      "HMCV1-B03-M09-TAG_COMIC_AFTERTHOUGHT",
+      "HMCV1-B03-M10-PAUSE_BEAT_ELLIPTICAL_OMISSION",
+      "HMCV1-B04-M01-PERSPECTIVE_SHIFT",
+      "HMCV1-B04-M02-NAIVE_NARRATOR_FEIGNED_INNOCENCE",
+      "HMCV1-B04-M03-FAUX_COMPLIANCE",
+      "HMCV1-B04-M04-SELF_IMPLICATION",
+      "HMCV1-B04-M05-AUDIENCE_COMPLICITY_SHARED_RECOGNITION",
+      "HMCV1-B04-M06-STATUS_REVERSAL",
+      "HMCV1-B04-M07-DOUBLE_MEANING",
+      "HMCV1-B04-M08-ZEUGMA_SPLIT_SEMANTIC_ATTACHMENT",
+      "HMCV1-B04-M09-METONYMIC_SUBSTITUTION",
+      "HMCV1-B04-M10-SENTENCE_FINAL_REINTERPRETATION",
+      "HMCV1-B05-M01-BOOKENDING",
+      "HMCV1-B05-M02-RUNNING_GAG",
+      "HMCV1-B05-M03-CONTROLLED_AMBIGUITY",
+      "HMCV1-B05-M04-KNOWN_UNKNOWN_PLAY",
+      "HMCV1-B05-M05-ABSURD_ALTERNATIVES_WITHOUT_SELECTION",
+      "HMCV1-B05-M06-FAUX_DEFINITION",
+      "HMCV1-B05-M07-COMIC_NAMING_LABELING",
+      "HMCV1-B05-M08-APHORISTIC_COMPRESSION",
+      "HMCV1-B05-M09-FAMILIAR_EXPRESSION_SUBVERSION",
+      "HMCV1-B05-M10-SERIOUS_RESET_WITHHELD_HUMOR"
+    ],
+    "quota_fill": false,
+    "train_compositional_examples": 0,
+    "train_positive_mechanisms": 0
+  },
+  "partition_contract": {
+    "answer_keys_separately_custodied": true,
+    "assignment_before_construction": true,
+    "family_level_isolation": true,
+    "revision_co_location": true,
+    "split_unit": "TRANSITIVE_FAMILY_CLOSURE"
+  },
+  "promotion": false,
+  "result_identity": "8b8080fba6358aac1cc6b5270c1fda890a90e4cd821f9dc6d5b01ce201ee2e79",
+  "rights_closure": {
+    "concrete_training_grants": 0,
+    "model_visible_records": 0,
+    "status": "FAIL_CLOSED_NO_ELIGIBLE_CORPUS",
+    "training_eligible_records": 0
+  },
+  "schema": "vnext-voice-commentary-quality-gold-dataset-boundary",
+  "schema_version": 1,
+  "status": "PASS_BOUNDARY_DATASET_NOT_READY",
+  "train_records": 0,
+  "training_performed": false,
+  "validation_records": 0,
+  "voice_state": "DISABLED_UNTIL_PROMOTION",
+  "weights_modified": false
+}
