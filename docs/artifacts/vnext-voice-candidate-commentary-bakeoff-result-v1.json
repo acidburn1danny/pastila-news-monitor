@@ -1,0 +1,65 @@
+{
+  "active_integration": false,
+  "blind_review_items": 216,
+  "blind_review_sha256": "0e8a88a599a053b7fad3bf505be793491ff1f000c8032c7c60e4d77cd0a338e4",
+  "factual_safety_automated_scope": "UNSUPPORTED_NUMERIC_CLAIMS_ONLY",
+  "human_commentary_review_materialized": true,
+  "human_review_required_for_current_terminal": false,
+  "human_semantic_review_completed": false,
+  "legacy_dependency_count": 0,
+  "outputs": 216,
+  "per_candidate": {
+    "V0_R2_MINISTRAL_CONTROL": {
+      "abstention_rate": 0.375,
+      "abstentions": 27,
+      "cross_case_reused_phrases": 0,
+      "exact_duplicate_outputs": 48,
+      "mean_commentary_chars": 223.042,
+      "outputs": 72,
+      "seed_cases": 24,
+      "seed_stable_cases": 24,
+      "terminal": "STOP_FACTUAL_DRIFT",
+      "unsupported_number_cases": [
+        "VOICE-V1-06",
+        "VOICE-V1-22"
+      ],
+      "unsupported_number_findings": 2
+    },
+    "V1_QWEN3_8B_NON_THINKING": {
+      "abstention_rate": 0.166667,
+      "abstentions": 12,
+      "cross_case_reused_phrases": 0,
+      "exact_duplicate_outputs": 48,
+      "mean_commentary_chars": 196.625,
+      "outputs": 72,
+      "seed_cases": 24,
+      "seed_stable_cases": 24,
+      "terminal": "STOP_FACTUAL_DRIFT",
+      "unsupported_number_cases": [
+        "VOICE-V1-04"
+      ],
+      "unsupported_number_findings": 1
+    },
+    "V2_QWEN25_7B_INSTRUCT": {
+      "abstention_rate": 0.916667,
+      "abstentions": 66,
+      "cross_case_reused_phrases": 0,
+      "exact_duplicate_outputs": 48,
+      "mean_commentary_chars": 87.708,
+      "outputs": 72,
+      "seed_cases": 24,
+      "seed_stable_cases": 24,
+      "terminal": "REVISE_ABSTENTION",
+      "unsupported_number_cases": [],
+      "unsupported_number_findings": 0
+    }
+  },
+  "promotion": false,
+  "promotion_prerequisites_closed": false,
+  "result_identity": "e22f9ef13cfc3d30319be09d69da97c024f147006a507355285d2016ef7d7fd7",
+  "schema": "vnext-voice-candidate-commentary-bakeoff-result",
+  "schema_version": 1,
+  "selected_candidate": null,
+  "status": "PASS_BAKEOFF_CLOSED_NO_PROMOTABLE_CANDIDATE",
+  "voice_state": "DISABLED_UNTIL_PROMOTION"
+}

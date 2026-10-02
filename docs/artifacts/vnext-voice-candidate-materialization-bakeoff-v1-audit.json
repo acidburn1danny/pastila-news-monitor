@@ -1,0 +1,1 @@
+{"audit_identity": "1dacf7b754fa3ab79751d4974503c65f46070ab0fd2bab1ba410c4ee9be7f442", "blockers": [], "dedicated_tests": "3 passed", "legacy_dependency_count": 0, "outputs": 216, "schema": "vnext-voice-candidate-bakeoff-audit", "schema_version": 1, "selected_candidate": null, "status": "PASS", "voice_state": "DISABLED_UNTIL_PROMOTION"}
