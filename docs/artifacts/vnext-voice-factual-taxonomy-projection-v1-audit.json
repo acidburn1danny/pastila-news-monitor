@@ -1,0 +1,1 @@
+{"audit_identity": "d9b6b41f09fadbbb0d6127f34db6497607eb9e2511b8320848b5437852e1fec8", "blockers": [], "dedicated_tests": "4 passed", "legacy_dependency_count": 0, "rows": 216, "schema": "vnext-voice-factual-taxonomy-projection-audit", "schema_version": 1, "status": "PASS", "voice_state": "DISABLED_UNTIL_PROMOTION"}

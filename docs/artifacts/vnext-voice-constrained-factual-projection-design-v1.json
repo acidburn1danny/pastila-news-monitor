@@ -1,0 +1,26 @@
+{
+  "allow": [
+    "SUPPORTED_COPY",
+    "ENTAILED_DERIVATION_WITH_PROOF",
+    "SEMANTIC_EQUIVALENCE_WITH_NORMALIZATION"
+  ],
+  "design_identity": "2c28ff7e3be294190a68afa07966adf39d7f071499f92ea1903ef3bb3f7f2a2c",
+  "input_authority": "IMMUTABLE_FACTUAL_ARTIFACT",
+  "placement": "AFTER_CANDIDATE_GENERATION_BEFORE_VOICE_DRAFT_PERSISTENCE",
+  "promotion": false,
+  "recovery": [
+    "ONE_BOUNDED_REGENERATION",
+    "ABSTAIN_ON_SECOND_REJECTION"
+  ],
+  "reject": [
+    "UNSUPPORTED_FACT",
+    "UNPROVEN_ENTITY_EVENT_STATUS_ATTRIBUTION_TEMPORAL_CLAIM"
+  ],
+  "runtime_integration": false,
+  "schema": "vnext-voice-constrained-factual-projection-design",
+  "schema_version": 1,
+  "status": "PASS_DESIGN_ONLY",
+  "training": false,
+  "voice_state": "DISABLED_UNTIL_PROMOTION",
+  "workflow_writer": "ProductOrchestrator"
+}

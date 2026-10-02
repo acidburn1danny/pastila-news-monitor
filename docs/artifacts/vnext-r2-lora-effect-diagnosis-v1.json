@@ -1,0 +1,31 @@
+{
+  "adapter_language_keys": 560,
+  "adapter_vision_keys": 0,
+  "base_structural_pass": 0,
+  "base_structural_total": 9,
+  "base_unsupported_cases": [
+    "VOICE-V1-22"
+  ],
+  "diagnosis_identity": "8bf400e115bee5e0aa91ae67a9d8abdd7cb23e9807167e7198c41511a267c8ec",
+  "lora_effect_on_factual_drift_incidence": "NEUTRAL_IN_DIAGNOSTIC_SUBSET",
+  "lora_effect_on_structure": "POSITIVE",
+  "lora_structural_pass": 9,
+  "lora_structural_total": 9,
+  "lora_unsupported_cases": [
+    "VOICE-V1-22"
+  ],
+  "peft_warning_causal": false,
+  "probe_cases": [
+    "VOICE-V1-04",
+    "VOICE-V1-06",
+    "VOICE-V1-22"
+  ],
+  "probe_seeds": [
+    161803,
+    271828,
+    314159
+  ],
+  "schema": "vnext-r2-lora-effect-diagnosis",
+  "schema_version": 1,
+  "status": "PASS"
+}

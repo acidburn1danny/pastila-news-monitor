@@ -1,0 +1,1579 @@
+{
+  "legacy_dependency_count": 0,
+  "per_candidate": {
+    "V0_R2_MINISTRAL_CONTROL": {
+      "abstention_rate": 0.375,
+      "abstentions": 27,
+      "outputs": 72,
+      "taxonomy_counts": {
+        "SEMANTIC_EQUIVALENCE": 3,
+        "SUPPORTED_COPY": 15,
+        "UNSUPPORTED_FACT": 3
+      },
+      "terminal": "STOP_FACTUAL_DRIFT",
+      "unsupported_cases": [
+        "VOICE-V1-22"
+      ]
+    },
+    "V1_QWEN3_8B_NON_THINKING": {
+      "abstention_rate": 0.166667,
+      "abstentions": 12,
+      "outputs": 72,
+      "taxonomy_counts": {
+        "ENTAILED_DERIVATION": 3
+      },
+      "terminal": "CONTINUE_TO_BLIND_COMMENTARY_REVIEW",
+      "unsupported_cases": []
+    },
+    "V2_QWEN25_7B_INSTRUCT": {
+      "abstention_rate": 0.916667,
+      "abstentions": 66,
+      "outputs": 72,
+      "taxonomy_counts": {
+        "SUPPORTED_COPY": 6
+      },
+      "terminal": "REVISE_ABSTENTION",
+      "unsupported_cases": []
+    }
+  },
+  "promotion": false,
+  "result_identity": "a402e49030abf0612a296309e08d65b26c160fbd2e3813ba290bc944b986a11e",
+  "rows": [
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-01",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-01",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-01",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-02",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-02",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-02",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-03",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-03",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-03",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-04",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-04",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-04",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-05",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-05",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-05",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-06",
+      "claims": [
+        {
+          "classification": "SEMANTIC_EQUIVALENCE",
+          "support": [
+            "0,80"
+          ],
+          "surface": "80"
+        }
+      ],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-06",
+      "claims": [
+        {
+          "classification": "SEMANTIC_EQUIVALENCE",
+          "support": [
+            "0,80"
+          ],
+          "surface": "80"
+        }
+      ],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-06",
+      "claims": [
+        {
+          "classification": "SEMANTIC_EQUIVALENCE",
+          "support": [
+            "0,80"
+          ],
+          "surface": "80"
+        }
+      ],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-07",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-07",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-07",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-08",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-08",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-08",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-09",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-09",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-09",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-10",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-10",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-10",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-11",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-11",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-11",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-12",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-12",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-12",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-13",
+      "claims": [
+        {
+          "classification": "SUPPORTED_COPY",
+          "support": [
+            "50.000"
+          ],
+          "surface": "50.000"
+        }
+      ],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-13",
+      "claims": [
+        {
+          "classification": "SUPPORTED_COPY",
+          "support": [
+            "50.000"
+          ],
+          "surface": "50.000"
+        }
+      ],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-13",
+      "claims": [
+        {
+          "classification": "SUPPORTED_COPY",
+          "support": [
+            "50.000"
+          ],
+          "surface": "50.000"
+        }
+      ],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-14",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-14",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-14",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-15",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-15",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-15",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-16",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-16",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-16",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-17",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-17",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-17",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-18",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-18",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-18",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-19",
+      "claims": [
+        {
+          "classification": "SUPPORTED_COPY",
+          "support": [
+            "3.911"
+          ],
+          "surface": "3.911"
+        }
+      ],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-19",
+      "claims": [
+        {
+          "classification": "SUPPORTED_COPY",
+          "support": [
+            "3.911"
+          ],
+          "surface": "3.911"
+        }
+      ],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-19",
+      "claims": [
+        {
+          "classification": "SUPPORTED_COPY",
+          "support": [
+            "3.911"
+          ],
+          "surface": "3.911"
+        }
+      ],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-20",
+      "claims": [
+        {
+          "classification": "SUPPORTED_COPY",
+          "support": [
+            "13"
+          ],
+          "surface": "13"
+        },
+        {
+          "classification": "SUPPORTED_COPY",
+          "support": [
+            "10"
+          ],
+          "surface": "10"
+        }
+      ],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-20",
+      "claims": [
+        {
+          "classification": "SUPPORTED_COPY",
+          "support": [
+            "13"
+          ],
+          "surface": "13"
+        },
+        {
+          "classification": "SUPPORTED_COPY",
+          "support": [
+            "10"
+          ],
+          "surface": "10"
+        }
+      ],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-20",
+      "claims": [
+        {
+          "classification": "SUPPORTED_COPY",
+          "support": [
+            "13"
+          ],
+          "surface": "13"
+        },
+        {
+          "classification": "SUPPORTED_COPY",
+          "support": [
+            "10"
+          ],
+          "surface": "10"
+        }
+      ],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-21",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-21",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-21",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-22",
+      "claims": [
+        {
+          "classification": "SUPPORTED_COPY",
+          "support": [
+            "42"
+          ],
+          "surface": "42"
+        },
+        {
+          "classification": "UNSUPPORTED_FACT",
+          "support": [],
+          "surface": "43"
+        }
+      ],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-22",
+      "claims": [
+        {
+          "classification": "SUPPORTED_COPY",
+          "support": [
+            "42"
+          ],
+          "surface": "42"
+        },
+        {
+          "classification": "UNSUPPORTED_FACT",
+          "support": [],
+          "surface": "43"
+        }
+      ],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-22",
+      "claims": [
+        {
+          "classification": "SUPPORTED_COPY",
+          "support": [
+            "42"
+          ],
+          "surface": "42"
+        },
+        {
+          "classification": "UNSUPPORTED_FACT",
+          "support": [],
+          "surface": "43"
+        }
+      ],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-23",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-23",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-23",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-24",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-24",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V0_R2_MINISTRAL_CONTROL",
+      "case_id": "VOICE-V1-24",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-01",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-01",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-01",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-02",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-02",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-02",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-03",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-03",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-03",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-04",
+      "claims": [
+        {
+          "classification": "ENTAILED_DERIVATION",
+          "support": [
+            "5,4",
+            "5,1"
+          ],
+          "surface": "0,3"
+        }
+      ],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-04",
+      "claims": [
+        {
+          "classification": "ENTAILED_DERIVATION",
+          "support": [
+            "5,4",
+            "5,1"
+          ],
+          "surface": "0,3"
+        }
+      ],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-04",
+      "claims": [
+        {
+          "classification": "ENTAILED_DERIVATION",
+          "support": [
+            "5,4",
+            "5,1"
+          ],
+          "surface": "0,3"
+        }
+      ],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-05",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-05",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-05",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-06",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-06",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-06",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-07",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-07",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-07",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-08",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-08",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-08",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-09",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-09",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-09",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-10",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-10",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-10",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-11",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-11",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-11",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-12",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-12",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-12",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-13",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-13",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-13",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-14",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-14",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-14",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-15",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-15",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-15",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-16",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-16",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-16",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-17",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-17",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-17",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-18",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-18",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-18",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-19",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-19",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-19",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-20",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-20",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-20",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-21",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-21",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-21",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-22",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-22",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-22",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-23",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-23",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-23",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-24",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-24",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V1_QWEN3_8B_NON_THINKING",
+      "case_id": "VOICE-V1-24",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-01",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-01",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-01",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-02",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-02",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-02",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-03",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-03",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-03",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-04",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-04",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-04",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-05",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-05",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-05",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-06",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-06",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-06",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-07",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-07",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-07",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-08",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-08",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-08",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-09",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-09",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-09",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-10",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-10",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-10",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-11",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-11",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-11",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-12",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-12",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-12",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-13",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-13",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-13",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-14",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-14",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-14",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-15",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-15",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-15",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-16",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-16",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-16",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-17",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-17",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-17",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-18",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-18",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-18",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-19",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-19",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-19",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-20",
+      "claims": [
+        {
+          "classification": "SUPPORTED_COPY",
+          "support": [
+            "13"
+          ],
+          "surface": "13"
+        },
+        {
+          "classification": "SUPPORTED_COPY",
+          "support": [
+            "10"
+          ],
+          "surface": "10"
+        }
+      ],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-20",
+      "claims": [
+        {
+          "classification": "SUPPORTED_COPY",
+          "support": [
+            "13"
+          ],
+          "surface": "13"
+        },
+        {
+          "classification": "SUPPORTED_COPY",
+          "support": [
+            "10"
+          ],
+          "surface": "10"
+        }
+      ],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-20",
+      "claims": [
+        {
+          "classification": "SUPPORTED_COPY",
+          "support": [
+            "13"
+          ],
+          "surface": "13"
+        },
+        {
+          "classification": "SUPPORTED_COPY",
+          "support": [
+            "10"
+          ],
+          "surface": "10"
+        }
+      ],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-21",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-21",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-21",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-22",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-22",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-22",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-23",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-23",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-23",
+      "claims": [],
+      "seed": 314159
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-24",
+      "claims": [],
+      "seed": 161803
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-24",
+      "claims": [],
+      "seed": 271828
+    },
+    {
+      "candidate_id": "V2_QWEN25_7B_INSTRUCT",
+      "case_id": "VOICE-V1-24",
+      "claims": [],
+      "seed": 314159
+    }
+  ],
+  "schema": "vnext-voice-factual-safety-taxonomy-correction",
+  "schema_version": 1,
+  "selected_candidate": null,
+  "status": "PASS_CORRECTED_EVIDENCE",
+  "supersedes_result_identity": "e22f9ef13cfc3d30319be09d69da97c024f147006a507355285d2016ef7d7fd7",
+  "taxonomy": [
+    "SUPPORTED_COPY",
+    "ENTAILED_DERIVATION",
+    "SEMANTIC_EQUIVALENCE",
+    "UNSUPPORTED_FACT"
+  ],
+  "voice_state": "DISABLED_UNTIL_PROMOTION"
+}
