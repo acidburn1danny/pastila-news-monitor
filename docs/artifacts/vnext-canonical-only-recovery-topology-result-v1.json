@@ -1,0 +1,79 @@
+{
+  "activation_receipt_identity": "cffbb5aefcc14353a75eb5e719dfa1cc8159286320f25070d3d50398f65145b0",
+  "active_root_modified": false,
+  "active_state_authority_identity": "4aa1c23e75d3a35b3257554a422e3c4c887c7659e2c11aa085563809cf0d1e26",
+  "blockers": 0,
+  "canonical_rollback_integrity": "PASS",
+  "canonical_rollback_root": "/root/pastila-vnext/.rollback-pre-gui-coherent-733ad2a1",
+  "canonical_startup_paths": 1,
+  "cli_gui_parity": "PASS_SHARED_ORCHESTRATOR_AND_STATE",
+  "historical_evidence": [
+    {
+      "evidence_role": "CONTENT_ADDRESSED_PROVENANCE_ONLY",
+      "generation": "GUI_PREDECESSOR",
+      "origin_commit": "929972ebc89e54c7d7d94b87346b2faf50823608",
+      "physical_root_required": false,
+      "product_lock_identity": "278df8cdd27f641a44fd7941bfc89c362dcb5af3f1a9f265148fa11c85e44ab0",
+      "product_lock_sha256": "c9c6b9bb60c881781b1b534990bc37b76a7e012f2599144e2656984854f5fa58",
+      "reconstructible": true
+    },
+    {
+      "evidence_role": "CONTENT_ADDRESSED_PROVENANCE_ONLY",
+      "generation": "CONTRACT_PREDECESSOR",
+      "origin_commit": "929972ebc89e54c7d7d94b87346b2faf50823608",
+      "physical_root_required": false,
+      "product_lock_identity": "03e43da4e052ed0bf0a1caa7f9da7103a111e1192362ea9887ed86388b864b78",
+      "product_lock_sha256": "196c5f7bdec6f59f0609ad334dbdebdc17e5ad9f793945713ff2b7afaa5b58a2",
+      "reconstructible": true
+    },
+    {
+      "evidence_role": "CONTENT_ADDRESSED_PROVENANCE_ONLY",
+      "generation": "EXCHANGE_PREDECESSOR",
+      "origin_commit": "a65095dc0b362fcbba6439d64cc5af4ae9d294ff",
+      "physical_root_required": false,
+      "product_lock_identity": "68fb2c347367ff3aa725cfb44de11be07921ad2e39fcbe98b01b389eee46c19b",
+      "product_lock_sha256": "0ff93c4d9f550c8458d2223ae91627903bf02dc24973c59d3069fa94ada1100e",
+      "reconstructible": true
+    }
+  ],
+  "historical_physical_path_references": 0,
+  "legacy_dependency_count": 0,
+  "product_lock_identity": "5932d13d27f90e4289796a69f035ba5c925239c85d0c6e3e420ea1d7232f10dc",
+  "product_lock_sha256": "bb3e991e43dc9b63898f6574ff61e7ee232a2f70be1b58bca9a57d2ba504a884",
+  "prospective_install": {
+    "audit": "PASS",
+    "legacy_dependency_count": 0,
+    "preflight": "PASS_PREFLIGHT",
+    "repository_dependency_count": 0,
+    "rollback_integrity": "PASS",
+    "startup": "PASS_STARTUP_READY",
+    "terminal": "EXPORTED"
+  },
+  "prospective_restore": {
+    "audit": "PASS",
+    "legacy_dependency_count": 0,
+    "preflight": "PASS_PREFLIGHT",
+    "repository_dependency_count": 0,
+    "rollback_integrity": "PASS",
+    "startup": "PASS_STARTUP_READY",
+    "terminal": "EXPORTED"
+  },
+  "prospective_rollback": {
+    "legacy_dependency_count": 0,
+    "preflight": "PASS_PREFLIGHT",
+    "product_lock_identity": "5a5988bd0fb3b7d760c5a99dd13c007281a6900dd6a572c21c3812d6cd00bf93",
+    "startup": "PASS_STARTUP_READY",
+    "terminal": "EXPORTED"
+  },
+  "protected_root_identity_preservation": "PASS",
+  "recovery_topology": "ACTIVE_TO_CANONICAL_ONLY",
+  "result_identity": "76eae01159aa84236be3728fcdd7206128dfeedbe2414b929c937d0fe6140d26",
+  "retirement_eligible_bytes": 99918413824,
+  "retirement_executed": false,
+  "rollback_manifest_identity": "c33815a49d951304e977f0469fe7905646f6ebf252b23c4a8a1458e5a66604bc",
+  "rollback_roots_modified": false,
+  "schema": "vnext-canonical-only-recovery-topology-result-v1",
+  "schema_version": 1,
+  "status": "PASS",
+  "voice": "DISABLED_UNTIL_PROMOTION"
+}

@@ -1,0 +1,47 @@
+{
+  "authority": {
+    "product_lock_identity": "5a5988bd0fb3b7d760c5a99dd13c007281a6900dd6a572c21c3812d6cd00bf93",
+    "product_lock_sha256": "6c79a7e25b22c80caad93a05b6701860166e3af88626a543fc3aa9c38ed761ee"
+  },
+  "historical_evidence": [
+    {
+      "evidence_role": "CONTENT_ADDRESSED_PROVENANCE_ONLY",
+      "generation": "GUI_PREDECESSOR",
+      "origin_commit": "929972ebc89e54c7d7d94b87346b2faf50823608",
+      "physical_root_required": false,
+      "product_lock_identity": "278df8cdd27f641a44fd7941bfc89c362dcb5af3f1a9f265148fa11c85e44ab0",
+      "product_lock_sha256": "c9c6b9bb60c881781b1b534990bc37b76a7e012f2599144e2656984854f5fa58",
+      "reconstructible": true
+    },
+    {
+      "evidence_role": "CONTENT_ADDRESSED_PROVENANCE_ONLY",
+      "generation": "CONTRACT_PREDECESSOR",
+      "origin_commit": "929972ebc89e54c7d7d94b87346b2faf50823608",
+      "physical_root_required": false,
+      "product_lock_identity": "03e43da4e052ed0bf0a1caa7f9da7103a111e1192362ea9887ed86388b864b78",
+      "product_lock_sha256": "196c5f7bdec6f59f0609ad334dbdebdc17e5ad9f793945713ff2b7afaa5b58a2",
+      "reconstructible": true
+    },
+    {
+      "evidence_role": "CONTENT_ADDRESSED_PROVENANCE_ONLY",
+      "generation": "EXCHANGE_PREDECESSOR",
+      "origin_commit": "a65095dc0b362fcbba6439d64cc5af4ae9d294ff",
+      "physical_root_required": false,
+      "product_lock_identity": "68fb2c347367ff3aa725cfb44de11be07921ad2e39fcbe98b01b389eee46c19b",
+      "product_lock_sha256": "0ff93c4d9f550c8458d2223ae91627903bf02dc24973c59d3069fa94ada1100e",
+      "reconstructible": true
+    }
+  ],
+  "legacy_dependency_count": 0,
+  "recovery_topology": {
+    "active": "/root/pastila-vnext/v1",
+    "canonical_rollback": "/root/pastila-vnext/.rollback-pre-gui-coherent-733ad2a1",
+    "historical_physical_roots_required": 0,
+    "physical_root_count": 1
+  },
+  "rollback_manifest_identity": "c33815a49d951304e977f0469fe7905646f6ebf252b23c4a8a1458e5a66604bc",
+  "rollback_root": "/root/pastila-vnext/.rollback-pre-gui-coherent-733ad2a1",
+  "schema": "vnext-canonical-only-rollback-manifest-v8",
+  "schema_version": 8,
+  "status": "PASS_CANONICAL_ONLY_FACTUAL_IMMEDIATE_PREDECESSOR"
+}

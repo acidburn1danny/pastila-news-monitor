@@ -1,0 +1,373 @@
+{
+  "activation": {
+    "authorized": true,
+    "full_root_atomic_swap_required": true,
+    "prepared": true,
+    "product_lock_replacement": true
+  },
+  "activation_attestation": {
+    "activation_candidate_product_lock_identity": "4d45f169ed4f6eba530e181a7e61ce4ade02d63e8d21f5177b3d4d18d15a0738",
+    "active_authority_surface_identity": "29dddf588f38661416ee3f11fd63e66ec4673fd65cc55bb89853052a5f552dc6",
+    "audit_identity": "dfb1bb619e438d9b41fbbe5e22f38e6183760e3768acea1feb057c603b91ec78",
+    "candidate_commit": "4b4b1175ae63470350e1c15c22e79d4a177ee303",
+    "canonical_rollback_manifest_identity": "c33815a49d951304e977f0469fe7905646f6ebf252b23c4a8a1458e5a66604bc",
+    "canonical_rollback_product_lock_identity": "5a5988bd0fb3b7d760c5a99dd13c007281a6900dd6a572c21c3812d6cd00bf93",
+    "canonical_rollback_product_lock_sha256": "6c79a7e25b22c80caad93a05b6701860166e3af88626a543fc3aa9c38ed761ee",
+    "current_activation_receipt_identity": "cffbb5aefcc14353a75eb5e719dfa1cc8159286320f25070d3d50398f65145b0",
+    "current_active_state_authority_identity": "4aa1c23e75d3a35b3257554a422e3c4c887c7659e2c11aa085563809cf0d1e26",
+    "historical_attestation": {
+      "activation_candidate_product_lock_identity": "5e31722e1e78fb44d2abd74c51a00e4074a67ff254c5497bfde64e228e7b9653",
+      "active_authority_surface_identity": "db997a11045e8aef32891743d9aaed282cac436d6cc3fcb113f07ab140e9e738",
+      "audit_identity": "57c0630dc366d36d42c7c8a5356cb8499dcfac024daae387906eb9eeb5cb4045",
+      "candidate_commit": "929972ebc89e54c7d7d94b87346b2faf50823608",
+      "canonical_rollback_manifest_identity": "e22a02ae51a2377e2245de49fe95d4239cf87b5c0c4765f546cb38223d8c6714",
+      "canonical_rollback_product_lock_identity": "03e43da4e052ed0bf0a1caa7f9da7103a111e1192362ea9887ed86388b864b78",
+      "canonical_rollback_product_lock_sha256": "196c5f7bdec6f59f0609ad334dbdebdc17e5ad9f793945713ff2b7afaa5b58a2",
+      "controller_authority_commit": "bbb7068777a0010132f0ee1e39dd345cf9eb6fa7",
+      "current_activation_receipt_identity": "1c5b0c103ba609408780f93b59ac98fec31d29151601ed20e5299cd8c8ce587f",
+      "current_active_state_authority_identity": "002e22c0672ac803b15ea79b474d5b88e5b6f00fa887fae5eaf532321388a54e",
+      "historical_attestation": {
+        "activation_receipt_identity": "2d79120f5b2b294ae9067e1596f7460778035e1837e849bf0b45896e2335e9d2",
+        "active_audit_authority_identity": "7449832298f2e16ee65dfe2611af97cb9d44b0de3e12da5b40162971fc16c29d",
+        "active_state_authority_identity": "f7ab34467d316c9ef0a827c5483eab291ea1976036f38f8d0578edc471eed164",
+        "rollback_manifest_identity": "2d86d60806ca15eb8051dcbf61952c10c0d669e077f3ff4e7d167bf3b5509485"
+      },
+      "mechanism": "renameat2(RENAME_EXCHANGE)",
+      "rollback_product_lock_sha256": "196c5f7bdec6f59f0609ad334dbdebdc17e5ad9f793945713ff2b7afaa5b58a2"
+    },
+    "installed_product_lock_identity": "6deeb96a788f3780835a9dce3583153e53ab6c6121ddea994495e4c9cc8e1a9f",
+    "mechanism": "renameat2(RENAME_EXCHANGE)",
+    "rollback_product_lock_sha256": "6c79a7e25b22c80caad93a05b6701860166e3af88626a543fc3aa9c38ed761ee"
+  },
+  "active_graph_identity": "01d6b01a382ceb21518beeed0e6c5645f076e071767096d4358ddc5aa8ea5409",
+  "active_integration_state": "ACTIVATED",
+  "application_files": [
+    {
+      "path": "app/cli/acceptance.py",
+      "sha256": "cc0ad4c8fa70280ab47a001c8ef677e64935f3220e3de7f4176c3f315e8dc0b3",
+      "size": 4540,
+      "type": "file"
+    },
+    {
+      "path": "app/cli/activation.py",
+      "sha256": "ee789e80537e8744e6d20f2f7656120b12cb40fb13ea4c8a87f2439c7a8013c3",
+      "size": 2955,
+      "type": "file"
+    },
+    {
+      "path": "app/cli/audit.py",
+      "sha256": "68d1c20ce954397b0a87d90387fe255ef78ae6069be649249f6e40618772d489",
+      "size": 9914,
+      "type": "file"
+    },
+    {
+      "path": "app/cli/gui.py",
+      "sha256": "7d0b27f77216967ebfd3ee6069d4b3854e70e99729ced3cdcb56e1eaf658d203",
+      "size": 1326,
+      "type": "file"
+    },
+    {
+      "path": "app/cli/preflight.py",
+      "sha256": "9015fd082d82f337c0ac80ac75880d00ca26532545a1b939137cf5f95f37e02b",
+      "size": 15034,
+      "type": "file"
+    },
+    {
+      "path": "app/cli/product.py",
+      "sha256": "168db7185b814a87387228aa78bf4b509f36847fb3bd9328f82859007d996a26",
+      "size": 2754,
+      "type": "file"
+    },
+    {
+      "path": "app/cli/runtime_bytes_policy.py",
+      "sha256": "b24190b93a628283b1a0b7ca3b978d1bf35663e32fb3144a0daa291f4eee414f",
+      "size": 1410,
+      "type": "file"
+    },
+    {
+      "path": "app/workflow/pastila_scout/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0,
+      "type": "file"
+    },
+    {
+      "path": "app/workflow/pastila_scout/vnext_core_final_v1.py",
+      "sha256": "03a62ff1f87325fff6714d6f492dfb985341a57719d25d560529cf6bda284dae",
+      "size": 24511,
+      "type": "file"
+    },
+    {
+      "path": "app/workflow/pastila_scout/vnext_editor_vertical_slice_v1.py",
+      "sha256": "e9fdc6487b05afb272ef91a651715b9ea977e9af3707fbbb3422607f0dd864e1",
+      "size": 22036,
+      "type": "file"
+    },
+    {
+      "path": "app/workflow/pastila_scout/vnext_factual_acceptance_v1.py",
+      "sha256": "3d660d148a8bb75756c6150aac21a5ff90ec633c6a34942a81a1746d1de78ebb",
+      "size": 24124,
+      "type": "file"
+    },
+    {
+      "path": "app/workflow/pastila_scout/vnext_foundation_v1.py",
+      "sha256": "e9d857e5910fffd76dfd9aed1891e86ad68cf31602150ef0445455f6b4bc8615",
+      "size": 11974,
+      "type": "file"
+    },
+    {
+      "path": "app/workflow/pastila_scout/vnext_product_gui_v1.py",
+      "sha256": "706f33db7d890132532576d91fcd5dcc494f6eecb6298087a119bc3195a40d6e",
+      "size": 4742,
+      "type": "file"
+    },
+    {
+      "path": "app/workflow/pastila_scout/vnext_product_orchestrator_v1.py",
+      "sha256": "f158c01a3d48455c58f0a32780df607a4dcf4a35c936bcf3645d2dd1e3c689e7",
+      "size": 44582,
+      "type": "file"
+    },
+    {
+      "path": "app/workflow/pastila_scout/vnext_r2_consolidation_binding_v1.py",
+      "sha256": "2cfb592261c2374493a17ae6758b87a2038b8dc6d75528ce82d5fbed625a47e3",
+      "size": 7327,
+      "type": "file"
+    },
+    {
+      "path": "app/workflow/pastila_scout/vnext_scout_production_v1.py",
+      "sha256": "b08633014c2d59ab39b668d3371bbc37003c676e606584d2d0333c784226632d",
+      "size": 52875,
+      "type": "file"
+    },
+    {
+      "path": "app/workflow/pastila_scout/vnext_state_sqlite_v1.py",
+      "sha256": "9138ad811589841638543a10d49c278c8978f972d52755ef105860a240c67d95",
+      "size": 23829,
+      "type": "file"
+    },
+    {
+      "path": "app/workflow/pastila_scout/vnext_workflow_v1.py",
+      "sha256": "b3214f3b9f43ae14751bd0ecc2c04d055435ca56996ed735c438efd6d930506a",
+      "size": 7563,
+      "type": "file"
+    },
+    {
+      "path": "config/sources.json",
+      "sha256": "9759a19e6e65e363031718f760b1b2866d117a708c4fa0b881a236548d61b1ec",
+      "size": 15646,
+      "type": "file"
+    },
+    {
+      "path": "contracts/source-packet.json",
+      "sha256": "17348f7d8b691dba8d3c95ac051df5131a9c54c070c27aa10a6adc0a24fff58f",
+      "size": 1216,
+      "type": "file"
+    },
+    {
+      "path": "manifest/activation/vnext-activation-receipt-v1.json",
+      "sha256": "1ac9f3ebe6ab36d9d7ad7ac1119c192bfb643ae6a0054ae7dde3c61139439b19",
+      "size": 3403,
+      "type": "file"
+    },
+    {
+      "path": "manifest/authorities/vnext-active-integration-platform-lock-semantics-v2.json",
+      "sha256": "02b9be3322e9e01726ad566552cb1fcdccb04b243d1633ff2f122f4ee7c6389d",
+      "size": 1037,
+      "type": "file"
+    },
+    {
+      "path": "manifest/authorities/vnext-active-product-consolidation-acceptance-gates-v1.json",
+      "sha256": "5bff2bdadaf60b130fc59e0b318422031d514176774f28d945ea21689e519b11",
+      "size": 2592,
+      "type": "file"
+    },
+    {
+      "path": "manifest/authorities/vnext-active-product-dependency-graph-v3.json",
+      "sha256": "04d1e56b744260b1ce06a0b66529b044c49ffdbd8fb48fd27209d14ba20dc5b7",
+      "size": 5516,
+      "type": "file"
+    },
+    {
+      "path": "manifest/authorities/vnext-active-product-lock-successor-v1.json",
+      "sha256": "d9a863fcbd4ddc155df11dc5ad3577b86609d7f2f1c9fee2a45b4dca6be76d2b",
+      "size": 2904,
+      "type": "file"
+    },
+    {
+      "path": "manifest/authorities/vnext-active-product-workflow-state-contract-v6.json",
+      "sha256": "030ad82b510ad830a8379f8f29fa3a058c1eb385cbf78c2af701e21c99c0d845",
+      "size": 5317,
+      "type": "file"
+    },
+    {
+      "path": "manifest/authorities/vnext-canonical-sourcepacket-v1-contract.json",
+      "sha256": "20676830b82e15742c820430a2bde6c8f317402e1e2733efc2037af32f91f04e",
+      "size": 1418,
+      "type": "file"
+    },
+    {
+      "path": "manifest/authorities/vnext-consolidated-operational-state-sqlite-boundary-v7-contract.json",
+      "sha256": "4263bd4d2fada8557794a339f081702afd86e4ce4330535f29dca6d52865a387",
+      "size": 2437,
+      "type": "file"
+    },
+    {
+      "path": "manifest/authorities/vnext-post-activation-active-audit-authority-v1.json",
+      "sha256": "56119c9b96a251706e46eb1e197f0da27bb03d37147a6564d68c2c23c3005e61",
+      "size": 9095,
+      "type": "file"
+    },
+    {
+      "path": "manifest/authorities/vnext-product-gui-cli-parity-authority-v1.json",
+      "sha256": "07368394fedba44793b2608c664ad6d64179eebd38ab465c3e45adbb4f00bfe0",
+      "size": 1018,
+      "type": "file"
+    },
+    {
+      "path": "manifest/history/vnext-active-authority-audit-manifest-v1.json",
+      "sha256": "0ac8a2db4a4f7a3f555702b6ca1daded03041ee2ab74f368ebc6d97912368bcf",
+      "size": 7350,
+      "type": "file"
+    },
+    {
+      "path": "manifest/platform-lock.json",
+      "sha256": "fb2e9adc5a2a70652a007acc56abb92c1f17b7f6b170e13471661dca5109dccf",
+      "size": 1125,
+      "type": "file"
+    },
+    {
+      "path": "manifest/rollback/vnext-canonical-rollback-manifest-v1.json",
+      "sha256": "2eb43ca8d24204c8386551f91923bb11ef810574b2e03e90780384f8c7d5e7a9",
+      "size": 2173,
+      "type": "file"
+    }
+  ],
+  "assembly_authority_commit": "5b83e6fa8f08b103439dbfb90de3feff005d4e2f",
+  "assembly_boundary_commit": "7110c33de7c52cc0f2a8792cbccac5daa073d079",
+  "attestation_successor_of_product_lock_identity": "6deeb96a788f3780835a9dce3583153e53ab6c6121ddea994495e4c9cc8e1a9f",
+  "canonical_only_recovery_successor_of_product_lock_identity": "f4be30b434dd4ed1f709fb1fa0115c297f599bf1acb382a40255c1ce00f7bd3e",
+  "compatibility_authority": {
+    "active_graph_schema": 4,
+    "auditor": "V13",
+    "contract_authority_bindings": "EXACT",
+    "preflight": "V11",
+    "product_lock_schema": 7
+  },
+  "components": {
+    "PYTHON_ML_PLATFORM": {
+      "frozen_platform_authority_identity": "ef5318bfa36af16350ec96d16ef84eb8b55c527894c3c5045f08d4b9ba1bc498",
+      "path": "platform/python-ml",
+      "role": "DECLARED_PLATFORM_DEPENDENCY",
+      "stable_content_identity": "93a314b96a2e687ed76c298f440d426681c49d446bec5edfe0cb175fa9dd82fd",
+      "verification": "FULL_TREE_IDENTITY"
+    },
+    "R2_REFERENCE": {
+      "file_count": 25,
+      "lock_identity": "53fafbc03f70c8c32357645a6a428260f1bdfbd104edbe1c4aa825e95c83a10f",
+      "path": "components/editor-r2",
+      "role": "REFERENCE_REALIZER",
+      "total_bytes": 28185570253,
+      "verification": "EXHAUSTIVE_LOCK_SET_EQUALITY"
+    }
+  },
+  "contract_authority_bindings": {
+    "source_packet": "8a5b76cf017e0befe971a8082492d5418cacd673bece0562a906a8d28f7a9fa4",
+    "sqlite": "4884e6fc193b23c675c7b7e897c55fb94d7d704dc42d4dfe74dd75bc95f9aa0f",
+    "workflow": "be10ee13449573883952fa15f944a199798e4cf28c8f0e83e5143f6c74dc2e80"
+  },
+  "excluded_categories": [
+    "VOICE_CANDIDATES",
+    "EVALUATION",
+    "HISTORICAL_RECEIPTS",
+    "LEGACY_RUNTIME"
+  ],
+  "gui_authority": {
+    "canonical_startup_paths": 1,
+    "cli_gui_parity": "SHARED_ORCHESTRATOR_AND_STATE",
+    "identity": "b92d7a4a8b919ccbf7b4e05770e454843f30028f87d41e4d8db40e3d90bc3e5a",
+    "state": "ACTIVE"
+  },
+  "historical_chain_retirement_readiness": {
+    "eligible_generations": [
+      "GUI_PREDECESSOR",
+      "CONTRACT_PREDECESSOR",
+      "EXCHANGE_PREDECESSOR"
+    ],
+    "physical_identity_dependencies": 0,
+    "physical_path_references": 0,
+    "retirement_requires_further_authority_successor": false
+  },
+  "legacy_dependency_count": 0,
+  "managed_inventory_semantics": "EXHAUSTIVE_REJECT_EXTRA_EXCEPT_DECLARED_RUNTIME_CACHE",
+  "mutable_state": {
+    "authority": "CONTENT_ADDRESSED_RELATIONAL_STATE",
+    "bootstrap_sha256": "37fe64c596430831fad5031c30f2c84c5a014c66ac1fb552e95ff15cbc0fffbc",
+    "database": "state/product.sqlite3",
+    "runtime_files_allowed": true
+  },
+  "preflight_v5_compatibility": {
+    "base_authority_commit": "ca7761fd8dd530c8efde8659ff17ada573139a0c",
+    "canonical_auditor": "app/cli/audit.py",
+    "canonical_preflight": "app/cli/preflight.py",
+    "status": "SEMANTICALLY_VALIDATED",
+    "supported_product_lock_schemas": [
+      4,
+      5
+    ],
+    "v5_attestation_validation": "RECEIPT_AUTHORITY_PREDECESSOR_GRAPH_AND_ORIGIN_BOUND"
+  },
+  "product_lock_identity": "5932d13d27f90e4289796a69f035ba5c925239c85d0c6e3e420ea1d7232f10dc",
+  "product_root": "/root/pastila-vnext/v1",
+  "redundant_historical_root_retirement_readiness": {
+    "authority_references": 0,
+    "removed_root_reference_count": 2,
+    "retirement_executed": false
+  },
+  "rollback_authority_successor_of_product_lock_identity": "91f3e6bc7cb5ae790ed757f765a3a3f77515826f02425210db8e57a76dfbd46c",
+  "rollback_authority_transition": {
+    "factual_immediate_predecessor_root": "/root/pastila-vnext/.rollback-pre-gui-coherent-733ad2a1",
+    "historical_evidence": [
+      {
+        "evidence_role": "CONTENT_ADDRESSED_PROVENANCE_ONLY",
+        "generation": "GUI_PREDECESSOR",
+        "origin_commit": "929972ebc89e54c7d7d94b87346b2faf50823608",
+        "physical_root_required": false,
+        "product_lock_identity": "278df8cdd27f641a44fd7941bfc89c362dcb5af3f1a9f265148fa11c85e44ab0",
+        "product_lock_sha256": "c9c6b9bb60c881781b1b534990bc37b76a7e012f2599144e2656984854f5fa58",
+        "reconstructible": true
+      },
+      {
+        "evidence_role": "CONTENT_ADDRESSED_PROVENANCE_ONLY",
+        "generation": "CONTRACT_PREDECESSOR",
+        "origin_commit": "929972ebc89e54c7d7d94b87346b2faf50823608",
+        "physical_root_required": false,
+        "product_lock_identity": "03e43da4e052ed0bf0a1caa7f9da7103a111e1192362ea9887ed86388b864b78",
+        "product_lock_sha256": "196c5f7bdec6f59f0609ad334dbdebdc17e5ad9f793945713ff2b7afaa5b58a2",
+        "reconstructible": true
+      },
+      {
+        "evidence_role": "CONTENT_ADDRESSED_PROVENANCE_ONLY",
+        "generation": "EXCHANGE_PREDECESSOR",
+        "origin_commit": "a65095dc0b362fcbba6439d64cc5af4ae9d294ff",
+        "physical_root_required": false,
+        "product_lock_identity": "68fb2c347367ff3aa725cfb44de11be07921ad2e39fcbe98b01b389eee46c19b",
+        "product_lock_sha256": "0ff93c4d9f550c8458d2223ae91627903bf02dc24973c59d3069fa94ada1100e",
+        "reconstructible": true
+      }
+    ],
+    "historical_physical_roots_required": 0,
+    "topology": "ACTIVE_TO_CANONICAL_ONLY"
+  },
+  "runtime_cache_policy": {
+    "allowed": [
+      "state/*.sqlite3-wal",
+      "state/*.sqlite3-shm"
+    ],
+    "authoritative": false,
+    "regenerable": true
+  },
+  "runtime_source_commit": "c211a07551284627a8e23c6e84d7dbf7e1125681",
+  "schema": "vnext-product-lock",
+  "schema_version": 8,
+  "status": "ACTIVE",
+  "supersedes_product_lock_identity": "4d45f169ed4f6eba530e181a7e61ce4ade02d63e8d21f5177b3d4d18d15a0738"
+}
