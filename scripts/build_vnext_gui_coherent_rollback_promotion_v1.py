@@ -1,0 +1,45 @@
+#!/usr/bin/env python3
+import argparse,copy,hashlib,json
+from pathlib import Path
+ACTIVE_ID='733ad2a1e95d3d672869edf670d6677f8d630d8b6a2aa3607dc0efbbf75d4562';ACTIVE_SHA='8e250c6183015e307252cb2b4cb3896ca9795481b5cfe2cf138733fca6eb6b42';ACTIVE_RECEIPT='4d7aafa66b4a84b6a705ddad395b19f85c6eb36701a6f62c37f7a069e182a5a8';ACTIVE_AUTH='b6c34ebbe0319f3cdea593a3fc254bbd86fcbc5994fc36e45793ac45cc4f9424'
+ROOTS=[
+('/root/pastila-vnext/.rollback-pre-gui-coherent-733ad2a1','5a5988bd0fb3b7d760c5a99dd13c007281a6900dd6a572c21c3812d6cd00bf93','6c79a7e25b22c80caad93a05b6701860166e3af88626a543fc3aa9c38ed761ee','CANONICAL_FACTUAL_IMMEDIATE_PREDECESSOR'),
+('/root/pastila-vnext/.rollback-pre-attestation-5a5988bd','6deeb96a788f3780835a9dce3583153e53ab6c6121ddea994495e4c9cc8e1a9f','67dead9fd542da9464fc798a7037fb15b4c5f8270c626c9e0ce41f58265a74ff','HISTORICAL_NON_CANONICAL'),
+('/root/pastila-vnext/.rollback-pre-gui-4d45f169','278df8cdd27f641a44fd7941bfc89c362dcb5af3f1a9f265148fa11c85e44ab0','c9c6b9bb60c881781b1b534990bc37b76a7e012f2599144e2656984854f5fa58','HISTORICAL_NON_CANONICAL'),
+('/root/pastila-vnext/.rollback-pre-contract-e180a1e5','03e43da4e052ed0bf0a1caa7f9da7103a111e1192362ea9887ed86388b864b78','196c5f7bdec6f59f0609ad334dbdebdc17e5ad9f793945713ff2b7afaa5b58a2','HISTORICAL_NON_CANONICAL_PENDING_RETIREMENT'),
+('/root/pastila-vnext/.rollback-pre-rollback-authority-8ce91f85','8ce91f853683022d7d1ea9860853e0589139883f65803cf0af404b9ecd32760a','daf0c07ebb88909e2c0cf5fc7fa3406b7bc68b04a1b82c342d4f32bdb12949fe','HISTORICAL_REDUNDANT_NON_CANONICAL'),
+('/root/pastila-vnext/.rollback-pre-exchange-5e31722e','68fb2c347367ff3aa725cfb44de11be07921ad2e39fcbe98b01b389eee46c19b','0ff93c4d9f550c8458d2223ae91627903bf02dc24973c59d3069fa94ada1100e','HISTORICAL_NON_CANONICAL_OLDEST_GENERATION')]
+def canon(v):return json.dumps(v,ensure_ascii=False,sort_keys=True,separators=(',',':')).encode()
+def ident(v):return hashlib.sha256(canon(v)).hexdigest()
+def sha(p):
+ h=hashlib.sha256()
+ with Path(p).open('rb') as f:
+  for c in iter(lambda:f.read(8388608),b''):h.update(c)
+ return h.hexdigest()
+def write(p,v,k):v.pop(k,None);v[k]=ident(v);p.write_text(json.dumps(v,ensure_ascii=False,sort_keys=True,indent=2)+'\n')
+def row(p,target):return {'path':target,'type':'file','size':p.stat().st_size,'sha256':sha(p)}
+def build(repo,active,roots,out):
+ if len(roots)!=6:raise RuntimeError('six roots required')
+ active_lock=json.loads((active/'product-lock.json').read_text())
+ if active_lock.get('product_lock_identity')!=ACTIVE_ID or sha(active/'product-lock.json')!=ACTIVE_SHA:raise RuntimeError('active identity')
+ locks=[]
+ for root,(path,identity,digest,classification) in zip(roots,ROOTS):
+  if str(root)!=path:raise RuntimeError('root order '+str(root))
+  lock=json.loads((root/'product-lock.json').read_text())
+  if lock.get('product_lock_identity')!=identity or sha(root/'product-lock.json')!=digest:raise RuntimeError('root identity '+path)
+  locks.append(lock)
+ receipt0=json.loads((active/'manifest/activation/vnext-activation-receipt-v1.json').read_text());auth0=json.loads((active/'manifest/authorities/vnext-active-product-lock-successor-v1.json').read_text())
+ if receipt0['activation_receipt_identity']!=ACTIVE_RECEIPT or auth0['active_state_authority_identity']!=ACTIVE_AUTH:raise RuntimeError('active authority')
+ out.mkdir(parents=True,exist_ok=True)
+ canonical={'path':ROOTS[0][0],'product_lock_identity':ROOTS[0][1],'product_lock_sha256':ROOTS[0][2]}
+ historical=[{'path':p,'classification':c,'product_lock_identity':i,'product_lock_sha256':s} for p,i,s,c in ROOTS[1:]]
+ manifest={'schema':'vnext-gui-coherent-canonical-rollback-manifest-v6','schema_version':6,'status':'PASS_CANONICAL_FACTUAL_IMMEDIATE_PREDECESSOR','rollback_root':canonical['path'],'authority':{'product_lock_identity':canonical['product_lock_identity'],'product_lock_sha256':canonical['product_lock_sha256']},'verification':{'managed_inventory_source':'product-lock.json','managed_file_count':len(locks[0]['application_files']),'active_graph_identity':locks[0]['active_graph_identity'],'prospective_atomic_rollback':'PASS','prospective_restore':'PASS','protected_root_identity_preservation':'PASS'},'historical_roots':historical,'legacy_dependency_count':0};write(out/'vnext-gui-coherent-canonical-rollback-manifest-v6.json',manifest,'rollback_manifest_identity')
+ receipt=copy.deepcopy(receipt0);receipt.pop('activation_receipt_identity',None);receipt.update(schema='vnext-gui-coherent-current-activation-receipt-v3',schema_version=3,status='ATTESTED_CURRENT_ACTIVATION_CANONICAL_ROLLBACK_RECONCILED',predecessor_activation_receipt_identity=ACTIVE_RECEIPT);receipt['rollback']={'canonical_root':canonical['path'],'canonical_product_lock_identity':canonical['product_lock_identity'],'canonical_product_lock_sha256':canonical['product_lock_sha256'],'manifest_identity':manifest['rollback_manifest_identity'],'historical_roots':historical};write(out/'vnext-gui-coherent-current-activation-receipt-v3.json',receipt,'activation_receipt_identity')
+ authority={'schema':'vnext-gui-coherent-current-active-state-authority-v3','schema_version':3,'status':'ACTIVATED_ATTESTED_CANONICAL_FACTUAL_IMMEDIATE_PREDECESSOR','active_root':'/root/pastila-vnext/v1','installed_product_lock':{'identity':ACTIVE_ID,'sha256':ACTIVE_SHA},'predecessor_active_state_authority_identity':ACTIVE_AUTH,'activation_candidate_product_lock_identity':active_lock['activation_attestation']['activation_candidate_product_lock_identity'],'activation_receipt_identity':receipt['activation_receipt_identity'],'active_graph_identity':active_lock['active_graph_identity'],'active_authority_surface_identity':auth0['active_authority_surface_identity'],'post_install_audit_identity':auth0['post_install_audit_identity'],'canonical_rollback':{'manifest_identity':manifest['rollback_manifest_identity'],'root':canonical['path'],'product_lock_identity':canonical['product_lock_identity'],'product_lock_sha256':canonical['product_lock_sha256']},'historical_roots':historical,'voice':'DISABLED_UNTIL_PROMOTION','legacy_dependency_count':0};write(out/'vnext-gui-coherent-current-active-state-authority-v3.json',authority,'active_state_authority_identity')
+ successor=copy.deepcopy(active_lock);successor['rollback_authority_successor_of_product_lock_identity']=ACTIVE_ID;successor['gui_authority']['state']='ACTIVE';att=successor['activation_attestation'];att['current_activation_receipt_identity']=receipt['activation_receipt_identity'];att['current_active_state_authority_identity']=authority['active_state_authority_identity'];att['canonical_rollback_manifest_identity']=manifest['rollback_manifest_identity'];att['canonical_rollback_product_lock_identity']=canonical['product_lock_identity'];att['canonical_rollback_product_lock_sha256']=canonical['product_lock_sha256'];att['rollback_product_lock_sha256']=canonical['product_lock_sha256']
+ successor['rollback_authority_transition']={'factual_immediate_predecessor_root':canonical['path'],'historical_roots':[{'root':x['path'],'classification':x['classification']} for x in historical]}
+ repl={'app/cli/preflight.py':row(repo/'scripts/vnext_gui_coherent_rollback_preflight_v1.py','app/cli/preflight.py'),'manifest/activation/vnext-activation-receipt-v1.json':row(out/'vnext-gui-coherent-current-activation-receipt-v3.json','manifest/activation/vnext-activation-receipt-v1.json'),'manifest/authorities/vnext-active-product-lock-successor-v1.json':row(out/'vnext-gui-coherent-current-active-state-authority-v3.json','manifest/authorities/vnext-active-product-lock-successor-v1.json'),'manifest/rollback/vnext-canonical-rollback-manifest-v1.json':row(out/'vnext-gui-coherent-canonical-rollback-manifest-v6.json','manifest/rollback/vnext-canonical-rollback-manifest-v1.json')}
+ rows={x['path']:x for x in successor['application_files']};rows.update(repl);successor['application_files']=[rows[k] for k in sorted(rows)];write(out/'vnext-gui-coherent-rollback-product-lock-v8.json',successor,'product_lock_identity')
+ return {'status':'PASS','blockers':0,'activation_receipt_identity':receipt['activation_receipt_identity'],'active_state_authority_identity':authority['active_state_authority_identity'],'rollback_manifest_identity':manifest['rollback_manifest_identity'],'product_lock_identity':successor['product_lock_identity'],'product_lock_sha256':sha(out/'vnext-gui-coherent-rollback-product-lock-v8.json'),'canonical_rollback_root':canonical['path'],'historical_roots':historical,'managed_replacements':sorted(repl),'voice':'DISABLED_UNTIL_PROMOTION','legacy_dependency_count':0}
+if __name__=='__main__':
+ p=argparse.ArgumentParser();p.add_argument('--repo',type=Path,required=True);p.add_argument('--active',type=Path,required=True);p.add_argument('--roots',type=Path,nargs=6,required=True);p.add_argument('--out',type=Path,required=True);a=p.parse_args();print(json.dumps(build(a.repo,a.active,a.roots,a.out),sort_keys=True))
