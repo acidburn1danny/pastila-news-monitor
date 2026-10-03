@@ -1,0 +1,319 @@
+PASTILA ACIDĂ — VOICE OWNER GOLD WRITING PACK #2
+====================================================
+Records: 11
+Purpose: Codex source admission / gold adjudication / mechanism annotation.
+
+OWNER COMMENTARY sections preserve the owner-written text supplied in chat.
+Do not stylistically rewrite, shorten, normalize, sanitize, or improve it.
+
+Transparent imagined dialogue, analogy, hypothetical absurdity, comic fictionalization,
+wordplay, parody, rhetorical construction, and editorial juxtaposition are commentary
+devices, not factual quotations/claims unless separately identified.
+
+FACTUAL SETUP sections are candidate authority summaries. Codex must independently
+verify/adjudicate them against SOURCES before training admission. If a source is marked
+TO BE VERIFIED, locate and bind exact authority or fail closed for that record/span.
+
+No transitions between records are included or required for this pack.
+
+IMPORTANT FOR RECORD 11:
+The Toscana fundraising/property material and the Arestul Central tents are two distinct
+factual threads. Their juxtaposition is editorial. Do not infer identical participants,
+coordination, causation, or a single action without source authority.
+
+======================================================================
+RECORD 01 — ROMÂNIA / S&P / BBB-
+======================================================================
+
+FACTUAL SETUP
+La 2 octombrie 2026, Standard & Poor’s a menținut ratingul suveran al României la BBB-, ultima treaptă din categoria investment grade, și a păstrat perspectiva negativă. Decizia nu reprezintă o retrogradare în categoria junk. Nicușor Dan a afirmat că menținerea ratingului confirmă că România rămâne un partener de încredere pentru investiții.
+
+SOURCES
+G4Media:
+https://www.g4media.ro/breaking-standard-poors-mentine-ratingul-de-tara-al-romaniei-la-nivelul-bbb-dar-pastreaza-perspectiva-negativa.html
+https://www.g4media.ro/nicusor-dan-decizia-agentiei-standard-poors-de-a-mentine-ratingul-de-tara-confirma-ca-romania-este-un-partener-de-incredere-pentru-investitii-nu-este-insa-un-moment-de-relaxare.html
+
+OWNER COMMENTARY
+România a scăpat de „junk”.
+S&P ne-a păstrat la **BBB-**, adică ultima treaptă înainte să intrăm oficial în categoria „mulțumim că ați participat”.
+Nicușor Dan spune că rămânem un partener de încredere pentru investiții.
+Da. De încredere.
+Suntem ca Dorel pe scară, cu un picior pe ultima treaptă și cu celălalt în aer, care strigă:
+**„Stai liniștit, șefu’, e stabilă!”**
+
+ADJUDICATION NOTE
+Preserve factual setup and owner commentary as distinct spans. Distinguish factual claims
+from transparent satire/fictionalization/analogy/role simulation/wordplay. Do not rewrite
+owner commentary to make it factually safer; delimit or reject unsupported factual spans
+fail-closed while preserving owner bytes.
+
+======================================================================
+RECORD 02 — DNSC / INSTITUȚIE PUBLICĂ AMENDATĂ
+======================================================================
+
+FACTUAL SETUP
+DNSC a aplicat o amendă de 50.000 de lei unei instituții din administrația publică centrală pentru neîndeplinirea în termen a obligației de notificare prevăzute de legislația de securitate cibernetică. DNSC nu a făcut public numele instituției și nu a precizat în relatarea citată împrejurările concrete ale incidentului.
+
+SOURCES
+Digi24:
+https://www.digi24.ro/stiri/actualitate/prima-institutie-publica-amendata-de-dnsc-pentru-nerespectarea-obligatiei-de-notificare-in-timp-real-3971345
+
+OWNER COMMENTARY
+DNSC a amendat cu **50.000 de lei** o instituție publică pentru că n-a notificat la timp un incident.
+Care instituție?
+**Secret.**
+Ce s-a întâmplat mai exact?
+**Tot secret.**
+Practic, avem prima amendă de securitate cibernetică în stil românesc:
+**„Important e că vinovatul știe ce-a făcut.”**
+
+ADJUDICATION NOTE
+Preserve factual setup and owner commentary as distinct spans. Distinguish factual claims
+from transparent satire/fictionalization/analogy/role simulation/wordplay. Do not rewrite
+owner commentary to make it factually safer; delimit or reject unsupported factual spans
+fail-closed while preserving owner bytes.
+
+======================================================================
+RECORD 03 — CNA / INFLUENCERI
+======================================================================
+
+FACTUAL SETUP
+Din 7 octombrie 2026 intră în vigoare o decizie CNA privind criteriile după care creatorii de conținut online pot fi considerați furnizori de servicii media audiovizuale la cerere și pot intra sub jurisdicția CNA. Existența a cel puțin 100.000 de urmăritori este unul dintre criterii, alături de alte condiții. Pragul singur nu transformă automat orice creator în televiziune.
+
+SOURCES
+Gazeta de Sud:
+https://www.gds.ro/2026/10/03/
+
+OWNER COMMENTARY
+Influencerii cu peste **100.000 de urmăritori**, dacă îndeplinesc și celelalte condiții, intră în evidența CNA.
+Adică gata cu joaca.
+Ai crescut suficient pe TikTok, faci bani din content, postezi constant?
+**Felicitări! Ești televiziune.**
+Mai lipsește să înceapă influencerii clipurile cu:
+**„Bună seara, doamnelor și domnilor. Urmează un unboxing, iar după publicitate, vă arăt curu’ în Dubai.”**
+
+ADJUDICATION NOTE
+Preserve factual setup and owner commentary as distinct spans. Distinguish factual claims
+from transparent satire/fictionalization/analogy/role simulation/wordplay. Do not rewrite
+owner commentary to make it factually safer; delimit or reject unsupported factual spans
+fail-closed while preserving owner bytes.
+
+======================================================================
+RECORD 04 — PRIMII / ANALFABETISM FUNCȚIONAL
+======================================================================
+
+FACTUAL SETUP
+Ministerul Educației a lansat programul PRIMII, finanțat cu peste 1,21 miliarde de lei, pentru prevenirea/reducerea analfabetismului funcțional și a abandonului școlar. Programul vizează aproximativ 50.000 de elevi și 1.400 de unități de învățământ. Lansarea nu demonstrează încă succesul sau eșecul programului.
+
+SOURCES
+Digi24:
+https://www.digi24.ro/stiri/economie/ministerul-educatiei-a-lansat-un-program-pentru-prevenirea-analfabetismului-functional-bugetul-depaseste-121-miliarde-de-lei-3967777
+
+OWNER COMMENTARY
+Ministerul Educației pune peste **1,21 miliarde de lei** într-un program pentru reducerea analfabetismului funcțional și a abandonului școlar.
+Aproximativ **50.000 de copii** ar urma să primească sprijin.
+Și aici, fără mișto: problema e gravă, iar programul are sens.
+Doar că în România am ajuns în punctul în care statul trebuie să investească peste un miliard ca să repare ceva ce școala trebuia să facă din prima:
+**să nu lase copilul să treacă clasa înainte să înțeleagă ce citește.**
+Sper să funcționeze.
+Pentru că următorul program n-ar trebui să se numească PRIMII.
+**Ar trebui să se numească PREA TÂRZIU.**
+
+ADJUDICATION NOTE
+Preserve factual setup and owner commentary as distinct spans. Distinguish factual claims
+from transparent satire/fictionalization/analogy/role simulation/wordplay. Do not rewrite
+owner commentary to make it factually safer; delimit or reject unsupported factual spans
+fail-closed while preserving owner bytes.
+
+======================================================================
+RECORD 05 — SMS FALSE / PARCARE
+======================================================================
+
+FACTUAL SETUP
+Au fost semnalate mesaje SMS false care imită notificări legate de plata parcării și încearcă să determine destinatarii să acceseze linkuri frauduloase. Nu rezultă că orice SMS despre parcare este fraudulos și nu este stabilită aici identitatea autorilor.
+
+SOURCES
+SOURCE AUTHORITY TO BE VERIFIED BY CODEX BEFORE ADMISSION. Locate and bind the exact contemporary source; fail closed if unsupported.
+
+OWNER COMMENTARY
+Mai nou circulă SMS-uri false în care ești anunțat că ai de plătit parcarea.
+Primești mesajul, vezi linkul dubios și primul instinct e corect:
+**„Ăsta-i scam.”**
+După care te uiți unde ai lăsat mașina și apare al doilea instinct:
+**„...da’ stai puțin, că la cum am parcat, s-ar putea să fie pe bune.”**
+
+ADJUDICATION NOTE
+Preserve factual setup and owner commentary as distinct spans. Distinguish factual claims
+from transparent satire/fictionalization/analogy/role simulation/wordplay. Do not rewrite
+owner commentary to make it factually safer; delimit or reject unsupported factual spans
+fail-closed while preserving owner bytes.
+
+======================================================================
+RECORD 06 — CAMERE DE SUPRAVEGHERE FURATE
+======================================================================
+
+FACTUAL SETUP
+Într-o localitate din România, camere de supraveghere instalate pentru siguranță/descurajarea furturilor au fost ulterior furate. Poliția a deschis cercetări. Setup-ul nu stabilește dacă autorii au fost filmați de alte camere, dacă sistemul funcționa atunci sau cum au fost sustrase echipamentele.
+
+SOURCES
+SOURCE AUTHORITY TO BE VERIFIED BY CODEX BEFORE ADMISSION. Locate and bind the exact contemporary source; fail closed if unsupported.
+
+OWNER COMMENTARY
+Într-o localitate din România, autoritățile au montat camere de supraveghere ca să descurajeze furturile.
+Și hoții le-au furat.
+Bă... când hoțul pleacă acasă **cu sistemul antifurt**, nu mai e furt.
+E feedback.
+**„Ideea e bună, șefu’. Implementarea mai trebuie lucrată.”**
+
+ADJUDICATION NOTE
+Preserve factual setup and owner commentary as distinct spans. Distinguish factual claims
+from transparent satire/fictionalization/analogy/role simulation/wordplay. Do not rewrite
+owner commentary to make it factually safer; delimit or reject unsupported factual spans
+fail-closed while preserving owner bytes.
+
+======================================================================
+RECORD 07 — EUROSTAT / TINERI / SUPRAAGLOMERARE
+======================================================================
+
+FACTUAL SETUP
+Date Eurostat indică pentru România o rată de 60,4% a supraaglomerării locuințelor în rândul tinerilor de 15–29 de ani, cea mai ridicată din UE pentru categoria menționată. Indicatorul are o definiție bazată pe numărul de camere raportat la dimensiunea și componența gospodăriei.
+
+SOURCES
+Digi24 / Eurostat — exact source authority for the 60,4% figure and ranking must be verified and bound by Codex before admission.
+
+OWNER COMMENTARY
+România e din nou **numărul 1 în Europa**!
+Doar că de data asta la... înghesuială.
+**60,4% dintre tinerii între 15 și 29 de ani** locuiesc în gospodării considerate supraaglomerate.
+Cea mai mare rată din Uniunea Europeană.
+Dacă vă întreabă cineva când mai ajunge România în topurile Europei:
+**„Puțin mai încolo, că momentan n-avem loc.”**
+
+ADJUDICATION NOTE
+Preserve factual setup and owner commentary as distinct spans. Distinguish factual claims
+from transparent satire/fictionalization/analogy/role simulation/wordplay. Do not rewrite
+owner commentary to make it factually safer; delimit or reject unsupported factual spans
+fail-closed while preserving owner bytes.
+
+======================================================================
+RECORD 08 — GAZON ARTIFICIAL / SPAȚIU VERDE
+======================================================================
+
+FACTUAL SETUP
+O autoritate locală din România a amenajat un spațiu verde folosind gazon artificial într-o zonă unde exista vegetație/iarbă naturală, invocând aspectul uniform și întreținerea mai ușoară. Nu trebuie afirmat fără documentație că gazonul artificial a fost literalmente lipit direct peste iarba existentă.
+
+SOURCES
+SOURCE AUTHORITY TO BE VERIFIED BY CODEX BEFORE ADMISSION. Locate and bind the exact contemporary source; fail closed if unsupported.
+
+OWNER COMMENTARY
+O primărie a decis să amenajeze un spațiu verde cu **gazon artificial**, deși acolo exista deja iarbă naturală.
+Motivul? Aspect uniform și întreținere mai ușoară.
+Corect.
+Iarba naturală are prostul obicei să crească, trebuie tunsă, udată...
+**Natura, în general, cere multă mentenanță.**
+Așa că primăria a rezolvat problema definitiv:
+**a păstrat verdele și a scos iarba.**
+
+ADJUDICATION NOTE
+Preserve factual setup and owner commentary as distinct spans. Distinguish factual claims
+from transparent satire/fictionalization/analogy/role simulation/wordplay. Do not rewrite
+owner commentary to make it factually safer; delimit or reject unsupported factual spans
+fail-closed while preserving owner bytes.
+
+======================================================================
+RECORD 09 — POLIȚIA / AUTOSPECIALĂ PARCATĂ NEREGULAMENTAR
+======================================================================
+
+FACTUAL SETUP
+O autospecială de poliție a fost surprinsă parcată/staționată neregulamentar. După semnalarea publică și verificarea situației, instituția a anunțat sancționarea contravențională a polițistului care folosise autospeciala.
+
+SOURCES
+SOURCE AUTHORITY TO BE VERIFIED BY CODEX BEFORE ADMISSION. Locate and bind the exact contemporary source; fail closed if unsupported.
+
+OWNER COMMENTARY
+O autospecială de poliție a fost prinsă **parcată neregulamentar**.
+Situația a ajuns publică, Poliția a verificat și l-a amendat pe polițistul care o folosise.
+Și uite că se poate.
+Pentru câteva minute, polițistul a avut ocazia să vadă sistemul și **din partea cealaltă a pixului**.
+**„Actele la control... A, tot noi. Bun. Dați-le încoace.”**
+
+ADJUDICATION NOTE
+Preserve factual setup and owner commentary as distinct spans. Distinguish factual claims
+from transparent satire/fictionalization/analogy/role simulation/wordplay. Do not rewrite
+owner commentary to make it factually safer; delimit or reject unsupported factual spans
+fail-closed while preserving owner bytes.
+
+======================================================================
+RECORD 10 — ANAF / NOTIFICĂRI / DATE FISCALE
+======================================================================
+
+FACTUAL SETUP
+ANAF transmite contribuabililor notificări atunci când identifică diferențe sau neconcordanțe prin corelarea datelor fiscale disponibile în propriile sisteme, inclusiv informații provenite din raportări ale contribuabililor. O notificare nu înseamnă automat evaziune, datorie certă sau vinovăție.
+
+SOURCES
+SOURCE AUTHORITY TO BE VERIFIED BY CODEX BEFORE ADMISSION. Verify the exact contemporary ANAF notification mechanism and bind source authority; fail closed if unsupported.
+
+OWNER COMMENTARY
+ANAF a început să trimită notificări când găsește neconcordanțe în datele fiscale.
+Date pe care, în bună parte, **tot noi i le-am trimis**.
+Adică tu îi dai statului informațiile, statul le pune cap la cap și apoi îți scrie:
+**„Bună ziua. Știm ce-ați făcut.”**
+Digitalizarea, în sfârșit, funcționează:
+**ANAF îți corelează datele și îți dereglează pulsul.**
+
+ADJUDICATION NOTE
+Preserve factual setup and owner commentary as distinct spans. Distinguish factual claims
+from transparent satire/fictionalization/analogy/role simulation/wordplay. Do not rewrite
+owner commentary to make it factually safer; delimit or reject unsupported factual spans
+fail-closed while preserving owner bytes.
+
+======================================================================
+RECORD 11 — CĂLIN GEORGESCU / TOSCANA + CORTURI
+======================================================================
+
+FACTUAL SETUP
+FIR A — Potrivit Libertatea, susținători ai lui Călin Georgescu au promovat pe TikTok o strângere de bani pentru achiziționarea unei vile în Toscana pentru acesta. Separat, stenograme publicate de HotNews conțin discuții despre o locuință în Italia și preferințe atribuite lui Georgescu pentru zone din Toscana. Nu rezultă că vila a fost cumpărată.
+
+FIR B — Separat de povestea Toscanei, Adevărul a relatat că susținători ai lui Călin Georgescu au instalat corturi în fața Arestului Central din București, unde se afla Horațiu Potra.
+
+Cele două acțiuni sunt evenimente distincte. Nu trebuie afirmat că sunt aceiași oameni sau că acțiunile au fost coordonate.
+
+SOURCES
+Libertatea:
+https://www.libertatea.ro/stiri/sustinatori-calin-georgescu-strang-bani-vila-toscana-tiktok-ncv4rvs
+HotNews:
+https://hotnews.ro/stenograme-financiar-avem-tot-ce-ne-trebuie-ce-cerinte-avea-calin-georgescu-pentru-casa-din-italia-unde-voia-azil-politic-eu-am-trei-zone-in-toscana-2355472
+Adevărul:
+https://adevarul.ro/stiri-interne/societate/sustinatorii-lui-calin-gergescu-au-instalat-2561020.html
+
+OWNER COMMENTARY
+Susținătorii lui Călin Georgescu au început pe TikTok să vorbească despre strâns bani pentru o **vilă în Toscana**.
+Separat, alți susținători au ajuns să-și instaleze **corturile în fața Arestului Central**.
+Deci avem două variante de cazare:
+**pentru lider — Toscana.**\
+**pentru popor — Quechua.**
+Suveranismul merge înainte.
+**Doar all-inclusive-ul diferă.**
+
+ADJUDICATION NOTE
+Preserve factual setup and owner commentary as distinct spans. Distinguish factual claims
+from transparent satire/fictionalization/analogy/role simulation/wordplay. Do not rewrite
+owner commentary to make it factually safer; delimit or reject unsupported factual spans
+fail-closed while preserving owner bytes.
+
+======================================================================
+CODEX ADJUDICATION REQUIREMENTS
+======================================================================
+
+- Verify every FACTUAL SETUP and every additional factual assertion in commentary before admission.
+- Preserve OWNER COMMENTARY bytes; no stylistic rewriting or normalization.
+- Derive Humor Mechanics coverage only from actual owner commentary, not prior mechanism suggestions.
+- Bind each admitted mechanism to a real commentary span and role: INDIVIDUAL / SUPPORTING / COMPOSITION.
+- No quota filling and no artificial synonym stacking.
+- Preserve factual claims versus transparent satire, imagined dialogue, analogy, hypothetical absurdity,
+  comic fictionalization, wordplay, discourse-form parody, and editorial juxtaposition.
+- Keep predecessor dataset and experimental baseline frozen.
+- Keep holdout #31–#34 and Qwen3 bakeoff sealed.
+- No training/tuning, promotion, active integration, or model-weight modification is authorized by this pack.
+- Recompute train/validation counts, commentary tokens, restraint support, mechanism coverage, remaining gaps,
+  contamination/leakage closure, and second-experiment readiness after admission.

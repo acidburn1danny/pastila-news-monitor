@@ -1,0 +1,86 @@
+{
+  "backlog_identity": "7058ab21f446673869cd93ce99088a51c7061d70a8d6b38e77e2d74d7282565f",
+  "current": {
+    "commentary_tokens": 8017,
+    "factual_restraint_support": 8,
+    "mechanism_coverage": 40,
+    "positive_gaps": 10,
+    "train_positive": 33,
+    "validation_positive": 12
+  },
+  "dataset_successor_identity": "7a08c87d894d27ec6d526713e113af14c42a639ce584ccfd5b415d5006478451",
+  "forbidden_combinations": [
+    "multiple labels on one span without distinct textual evidence",
+    "mechanism assignment from factual setup rather than owner commentary",
+    "invented or rewritten commentary",
+    "holdout or bakeoff reuse",
+    "unsupported factual bridge between independent threads"
+  ],
+  "mechanism_support_priorities": [
+    "HMCV1-B01-M01-SARCASM",
+    "HMCV1-B01-M09-REVERSAL",
+    "HMCV1-B01-M10-DEADPAN_OBSERVATION",
+    "HMCV1-B02-M04-PERSONIFICATION",
+    "HMCV1-B03-M02-RULE_OF_THREE",
+    "HMCV1-B03-M05-PARALLELISM_STRUCTURAL_SYMMETRY",
+    "HMCV1-B03-M10-PAUSE_BEAT_ELLIPTICAL_OMISSION",
+    "HMCV1-B04-M01-PERSPECTIVE_SHIFT",
+    "HMCV1-B04-M04-SELF_IMPLICATION",
+    "HMCV1-B04-M06-STATUS_REVERSAL",
+    "HMCV1-B04-M07-DOUBLE_MEANING",
+    "HMCV1-B04-M08-ZEUGMA_SPLIT_SEMANTIC_ATTACHMENT",
+    "HMCV1-B05-M04-KNOWN_UNKNOWN_PLAY",
+    "HMCV1-B05-M06-FAUX_DEFINITION",
+    "HMCV1-B05-M07-COMIC_NAMING_LABELING",
+    "HMCV1-B05-M08-APHORISTIC_COMPRESSION",
+    "HMCV1-B05-M10-SERIOUS_RESET_WITHHELD_HUMOR"
+  ],
+  "minimum_pack3": {
+    "commentary_tokens": "NO_ARTIFICIAL_QUOTA; preserve owner-written completeness",
+    "factual_restraint_independent_records": 1,
+    "reason": "close train FAIL and add independent margin above validation and restraint categories currently exactly at minimum",
+    "total_owner_written_records": 4,
+    "train_positive_records": 3,
+    "validation_positive_records": 1
+  },
+  "model_visible_abstention": "UNCHANGED_ZERO_OUT_OF_SCOPE_FOR_EXPERIMENTAL_OBJECTIVE",
+  "partition_need": {
+    "holdout": 0,
+    "train": 3,
+    "validation": 1
+  },
+  "positive_gaps": [
+    "HMCV1-B02-M01-MISDIRECTION",
+    "HMCV1-B02-M02-LITERALIZATION",
+    "HMCV1-B03-M08-ANTI_CLIMAX_BATHOS",
+    "HMCV1-B03-M09-TAG_COMIC_AFTERTHOUGHT",
+    "HMCV1-B04-M02-NAIVE_NARRATOR_FEIGNED_INNOCENCE",
+    "HMCV1-B04-M03-FAUX_COMPLIANCE",
+    "HMCV1-B04-M05-AUDIENCE_COMPLICITY_SHARED_RECOGNITION",
+    "HMCV1-B05-M02-RUNNING_GAG",
+    "HMCV1-B05-M03-CONTROLLED_AMBIGUITY",
+    "HMCV1-B05-M05-ABSURD_ALTERNATIVES_WITHOUT_SELECTION"
+  ],
+  "provenance_rules": [
+    "exact owner-written bytes",
+    "exact source URL or primary document per factual claim",
+    "strict separation of factual setup and commentary",
+    "family identity assigned before admission",
+    "no train-validation family overlap",
+    "no holdout or Qwen3 bakeoff exposure",
+    "fail closed per unsupported record or span"
+  ],
+  "quality_needs": {
+    "authentic_composition": "count a composition only when two mechanisms are both evidenced by real spans and interact",
+    "concision": "prefer at least two compact records",
+    "factual_discipline": "all records must keep setup claims source-bound and commentary devices explicit",
+    "restraint": "at least one independent record that stops after a supported concise payoff",
+    "romanian_naturalness": "add independent natural spoken-Romanian constructions without forced mechanism density",
+    "target_choice": "target decisions, systems, institutional logic, or public conduct; never protected people",
+    "variation_anti_repetition": "avoid repeated felicitari/asta-nu-mai-e/role-dialogue templates"
+  },
+  "quota_fill": false,
+  "schema": "owner-gold-writing-backlog-post-pack02",
+  "schema_version": 1,
+  "terminal_policy": "PACK3_REQUIRED_BEFORE_CORPUS_FREEZE_EVEN_IF_THRESHOLDS_PASS"
+}

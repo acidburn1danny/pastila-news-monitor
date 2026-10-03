@@ -1,0 +1,89 @@
+{
+  "active_product_modified": false,
+  "audit_identity": "124e51f7a81a003e763f3b0581d2c1c188ea6a2d1e5982ec0db7c68e20f6877d",
+  "backlog_identity": "7058ab21f446673869cd93ce99088a51c7061d70a8d6b38e77e2d74d7282565f",
+  "canonical_rollback_modified": false,
+  "cars": [
+    {
+      "car_id": "CAR-01",
+      "finding": "PACK02_RECORD_HEADERS_AND_COMMENTARY_TERMINATORS_DIFFER_FROM_PACK01_GRAMMAR",
+      "impact": "INITIAL_BUILD_STOPPED_BEFORE_ANY_SUCCESSOR_EVIDENCE_WAS_WRITTEN",
+      "repair": "BIND_PARSER_TO_PACK02_HEADING_SEPARATOR_AND_ADJUDICATION_NOTE_TERMINATOR_WITHOUT_CHANGING_SOURCE_OR_OWNER_BYTES",
+      "root_cause": "INITIAL_PARSER_EXPECTED_FACTUAL_SETUP_IMMEDIATELY_AFTER_HEADING_AND_STOPPED_ONLY_AT_RECORD_SEPARATOR"
+    },
+    {
+      "car_id": "CAR-02",
+      "finding": "WINDOWS_MOUNT_COPY_MARKED_NEW_BOUNDARY_FILES_EXECUTABLE",
+      "impact": "INITIAL_LOCAL_CHECKPOINT_TREE_WAS_NOT_MODE_CONSISTENT_WITH_THE_PACK01_PREDECESSOR",
+      "repair": "NORMALIZE_ALL_13_IN_SCOPE_FILES_TO_GIT_MODE_100644_AND_REBUILD_AUDIT_FRESH",
+      "root_cause": "SOURCE_AND_GENERATOR_FILES_INHERITED_100755_FROM_THE_WINDOWS_MOUNT_COPY_PATH"
+    }
+  ],
+  "commentary_byte_exact": true,
+  "dataset_successor_identity": "7a08c87d894d27ec6d526713e113af14c42a639ce584ccfd5b415d5006478451",
+  "deduplication": "PASS_NO_EXACT_COMMENTARY_DUPLICATES",
+  "factual_commentary_separation": "PASS",
+  "findings": [
+    {
+      "finding": "RECORDS_06_08_09_REJECTED_FOR_MISSING_EXACT_CONTEMPORARY_SOURCE_AUTHORITY",
+      "id": "F-01",
+      "severity": "EXPECTED_FAIL_CLOSED"
+    },
+    {
+      "finding": "TRAIN_POSITIVES_33_OF_36",
+      "id": "F-02",
+      "severity": "READINESS_BLOCKER"
+    },
+    {
+      "finding": "PACK3_REQUIRED_BEFORE_CORPUS_FREEZE_AND_SECOND_EXPERIMENT",
+      "id": "F-03",
+      "severity": "POLICY_GATE"
+    },
+    {
+      "finding": "FULL_REPOSITORY_REGRESSION_NOT_RUN_IN_MATCHING_PLATFORM_PYTHON_3_14_ENVIRONMENT; DEDICATED_BOUNDARY_TESTS_AND_SELF_CONTAINED_AUDIT_PASS",
+      "id": "F-04",
+      "severity": "NON_BLOCKING_ENVIRONMENT"
+    }
+  ],
+  "fresh_audit_restarts": [
+    {
+      "car_id": "CAR-01",
+      "evidence_invalidated": "INITIAL_FAILED_BUILD_ATTEMPT",
+      "restart_result": "PASS"
+    },
+    {
+      "car_id": "CAR-02",
+      "evidence_invalidated": "INITIAL_LOCAL_CHECKPOINT_COMMIT_AND_TREE",
+      "restart_result": "PASS"
+    }
+  ],
+  "holdout_exposure": 0,
+  "legacy_dependency_count": 0,
+  "mechanism_annotation": "PASS_SPAN_DERIVED_NO_QUOTA_FILL",
+  "qwen3_bakeoff_exposure": 0,
+  "records_admitted": 8,
+  "records_rejected": 3,
+  "rejections": [
+    {
+      "reason": "NO_EXACT_CONTEMPORARY_SOURCE_AUTHORITY_LOCATED_FOR_THE_ASSERTED_LOCAL_AUTHORITY_CAMERA_THEFT_EVENT",
+      "record": 6
+    },
+    {
+      "reason": "NO_EXACT_CONTEMPORARY_SOURCE_AUTHORITY_LOCATED_FOR_THE_ASSERTED_NATURAL_GRASS_TO_ARTIFICIAL_TURF_REPLACEMENT",
+      "record": 8
+    },
+    {
+      "reason": "NO_EXACT_CONTEMPORARY_SOURCE_AUTHORITY_LOCATED_FOR_THE_ASSERTED_POLICE_VEHICLE_PARKING_FINE_EVENT",
+      "record": 9
+    }
+  ],
+  "schema": "vnext-voice-owner-gold-pack02-audit",
+  "schema_version": 1,
+  "source_pack_sha256": "07e9667d269c0bf32c881238fcc2802bbcf1978d465ee673b34c245a9a5d4996",
+  "status": "PASS_0_INTEGRITY_BLOCKERS",
+  "train_validation_family_overlap": 0,
+  "training_performed": false,
+  "tuscany_tents_thread_separation": "PASS_NO_SHARED_PARTICIPANT_COORDINATION_OR_CAUSAL_INFERENCE",
+  "unsupported_fact_admitted": 0,
+  "voice_state": "DISABLED_UNTIL_PROMOTION"
+}
