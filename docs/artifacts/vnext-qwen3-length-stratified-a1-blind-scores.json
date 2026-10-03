@@ -1,0 +1,282 @@
+[
+  {
+    "candidate": "BASELINE",
+    "scores": {
+      "cases": 15,
+      "mechanism_signal_mean": 0.933333,
+      "memorization": {
+        "exact_train_commentary_copies": 0,
+        "outputs_with_12_token_train_span": 0,
+        "outputs_with_8_token_train_span": 0
+      },
+      "output_length": {
+        "max_words": 85,
+        "mean_words": 63.2
+      },
+      "projection_rejection_rate": 0.066667,
+      "projection_violations": 0,
+      "quality_composite_mean": 3.646667,
+      "quality_means": {
+        "authentic_mechanism_composition": 1.933333,
+        "concision": 4.733333,
+        "non_generic": 2.866667,
+        "pastila_acida_style": 2.8,
+        "relevance": 4.533333,
+        "restraint": 5.0,
+        "romanian_naturalness": 4.0,
+        "sarcasm_irony_roast": 1.733333,
+        "target_choice": 3.866667,
+        "variation_anti_repetition": 5.0
+      },
+      "raw_projection_rejections": 1,
+      "repetition": {
+        "max_output_words": 85,
+        "mean_output_words": 63.2,
+        "mean_pairwise_lexical_jaccard": 0.129611,
+        "repeated_openings": 1
+      },
+      "unsupported_fact_rate_after_projection": 0.0
+    },
+    "slot": "8382a1e0d023"
+  },
+  {
+    "candidate": "LORA2_SEED_1811",
+    "scores": {
+      "cases": 15,
+      "mechanism_signal_mean": 1.0,
+      "memorization": {
+        "exact_train_commentary_copies": 0,
+        "outputs_with_12_token_train_span": 0,
+        "outputs_with_8_token_train_span": 0
+      },
+      "output_length": {
+        "max_words": 127,
+        "mean_words": 81.667
+      },
+      "projection_rejection_rate": 0.066667,
+      "projection_violations": 0,
+      "quality_composite_mean": 3.58,
+      "quality_means": {
+        "authentic_mechanism_composition": 2.0,
+        "concision": 4.266667,
+        "non_generic": 3.266667,
+        "pastila_acida_style": 2.933333,
+        "relevance": 4.066667,
+        "restraint": 4.533333,
+        "romanian_naturalness": 4.0,
+        "sarcasm_irony_roast": 2.066667,
+        "target_choice": 3.666667,
+        "variation_anti_repetition": 5.0
+      },
+      "raw_projection_rejections": 1,
+      "repetition": {
+        "max_output_words": 127,
+        "mean_output_words": 81.667,
+        "mean_pairwise_lexical_jaccard": 0.109347,
+        "repeated_openings": 0
+      },
+      "unsupported_fact_rate_after_projection": 0.0
+    },
+    "slot": "ccc13d6cc2b4"
+  },
+  {
+    "candidate": "LORA2_SEED_3001",
+    "scores": {
+      "cases": 15,
+      "mechanism_signal_mean": 1.066667,
+      "memorization": {
+        "exact_train_commentary_copies": 0,
+        "outputs_with_12_token_train_span": 0,
+        "outputs_with_8_token_train_span": 0
+      },
+      "output_length": {
+        "max_words": 123,
+        "mean_words": 78.867
+      },
+      "projection_rejection_rate": 0.066667,
+      "projection_violations": 0,
+      "quality_composite_mean": 3.673333,
+      "quality_means": {
+        "authentic_mechanism_composition": 2.066667,
+        "concision": 4.333333,
+        "non_generic": 3.4,
+        "pastila_acida_style": 3.066667,
+        "relevance": 4.2,
+        "restraint": 4.6,
+        "romanian_naturalness": 4.0,
+        "sarcasm_irony_roast": 2.333333,
+        "target_choice": 3.733333,
+        "variation_anti_repetition": 5.0
+      },
+      "raw_projection_rejections": 1,
+      "repetition": {
+        "max_output_words": 123,
+        "mean_output_words": 78.867,
+        "mean_pairwise_lexical_jaccard": 0.112228,
+        "repeated_openings": 0
+      },
+      "unsupported_fact_rate_after_projection": 0.0
+    },
+    "slot": "f697a0ab8f2b"
+  },
+  {
+    "candidate": "LORA2_SEED_4621",
+    "scores": {
+      "cases": 15,
+      "mechanism_signal_mean": 0.866667,
+      "memorization": {
+        "exact_train_commentary_copies": 0,
+        "outputs_with_12_token_train_span": 0,
+        "outputs_with_8_token_train_span": 0
+      },
+      "output_length": {
+        "max_words": 144,
+        "mean_words": 90.267
+      },
+      "projection_rejection_rate": 0.133333,
+      "projection_violations": 0,
+      "quality_composite_mean": 3.62,
+      "quality_means": {
+        "authentic_mechanism_composition": 1.866667,
+        "concision": 4.133333,
+        "non_generic": 3.4,
+        "pastila_acida_style": 3.066667,
+        "relevance": 4.4,
+        "restraint": 4.266667,
+        "romanian_naturalness": 4.0,
+        "sarcasm_irony_roast": 2.266667,
+        "target_choice": 3.8,
+        "variation_anti_repetition": 5.0
+      },
+      "raw_projection_rejections": 2,
+      "repetition": {
+        "max_output_words": 144,
+        "mean_output_words": 90.267,
+        "mean_pairwise_lexical_jaccard": 0.108063,
+        "repeated_openings": 0
+      },
+      "unsupported_fact_rate_after_projection": 0.0
+    },
+    "slot": "d51e6213bd7c"
+  },
+  {
+    "candidate": "A1_SEED_1913",
+    "scores": {
+      "cases": 15,
+      "mechanism_signal_mean": 1.133333,
+      "memorization": {
+        "exact_train_commentary_copies": 0,
+        "outputs_with_12_token_train_span": 0,
+        "outputs_with_8_token_train_span": 0
+      },
+      "output_length": {
+        "max_words": 144,
+        "mean_words": 98.467
+      },
+      "projection_rejection_rate": 0.2,
+      "projection_violations": 0,
+      "quality_composite_mean": 3.533333,
+      "quality_means": {
+        "authentic_mechanism_composition": 2.133333,
+        "concision": 3.8,
+        "non_generic": 3.333333,
+        "pastila_acida_style": 3.0,
+        "relevance": 4.133333,
+        "restraint": 4.066667,
+        "romanian_naturalness": 4.0,
+        "sarcasm_irony_roast": 2.133333,
+        "target_choice": 3.733333,
+        "variation_anti_repetition": 5.0
+      },
+      "raw_projection_rejections": 3,
+      "repetition": {
+        "max_output_words": 144,
+        "mean_output_words": 98.467,
+        "mean_pairwise_lexical_jaccard": 0.111904,
+        "repeated_openings": 0
+      },
+      "unsupported_fact_rate_after_projection": 0.0
+    },
+    "slot": "7c3165bbb454"
+  },
+  {
+    "candidate": "A1_SEED_3203",
+    "scores": {
+      "cases": 15,
+      "mechanism_signal_mean": 1.066667,
+      "memorization": {
+        "exact_train_commentary_copies": 0,
+        "outputs_with_12_token_train_span": 0,
+        "outputs_with_8_token_train_span": 0
+      },
+      "output_length": {
+        "max_words": 144,
+        "mean_words": 83.933
+      },
+      "projection_rejection_rate": 0.133333,
+      "projection_violations": 0,
+      "quality_composite_mean": 3.533333,
+      "quality_means": {
+        "authentic_mechanism_composition": 2.066667,
+        "concision": 4.2,
+        "non_generic": 3.266667,
+        "pastila_acida_style": 2.8,
+        "relevance": 4.066667,
+        "restraint": 4.333333,
+        "romanian_naturalness": 4.0,
+        "sarcasm_irony_roast": 2.133333,
+        "target_choice": 3.466667,
+        "variation_anti_repetition": 5.0
+      },
+      "raw_projection_rejections": 2,
+      "repetition": {
+        "max_output_words": 144,
+        "mean_output_words": 83.933,
+        "mean_pairwise_lexical_jaccard": 0.113276,
+        "repeated_openings": 0
+      },
+      "unsupported_fact_rate_after_projection": 0.0
+    },
+    "slot": "56c7c1c6511b"
+  },
+  {
+    "candidate": "A1_SEED_4729",
+    "scores": {
+      "cases": 15,
+      "mechanism_signal_mean": 1.133333,
+      "memorization": {
+        "exact_train_commentary_copies": 0,
+        "outputs_with_12_token_train_span": 0,
+        "outputs_with_8_token_train_span": 0
+      },
+      "output_length": {
+        "max_words": 134,
+        "mean_words": 79.267
+      },
+      "projection_rejection_rate": 0.2,
+      "projection_violations": 0,
+      "quality_composite_mean": 3.673333,
+      "quality_means": {
+        "authentic_mechanism_composition": 2.133333,
+        "concision": 4.266667,
+        "non_generic": 3.4,
+        "pastila_acida_style": 3.066667,
+        "relevance": 4.266667,
+        "restraint": 4.533333,
+        "romanian_naturalness": 4.0,
+        "sarcasm_irony_roast": 2.2,
+        "target_choice": 3.866667,
+        "variation_anti_repetition": 5.0
+      },
+      "raw_projection_rejections": 3,
+      "repetition": {
+        "max_output_words": 134,
+        "mean_output_words": 79.267,
+        "mean_pairwise_lexical_jaccard": 0.114939,
+        "repeated_openings": 0
+      },
+      "unsupported_fact_rate_after_projection": 0.0
+    },
+    "slot": "aba6f441dec4"
+  }
+]

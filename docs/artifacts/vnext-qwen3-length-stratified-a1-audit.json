@@ -1,0 +1,64 @@
+{
+  "a2_justified_for_separate_authorization": true,
+  "active_product_modified": false,
+  "adapter_installed": false,
+  "audit_identity": "0ac56d4f6e6104a30dcc98d392dbb73f29f022d117bc3ef2d936e697da13eb8a",
+  "canonical_rollback_modified": false,
+  "car_history": [
+    {
+      "affected_evidence": "initial protected-state preflight only",
+      "authority_changed": false,
+      "fresh_restart": "PASS_PREFLIGHT + PASS_LIVE_AUDIT",
+      "id": "A1-CAR-01",
+      "managed_bytes_changed": false,
+      "repair": "DELETE_EXACT_REGENERABLE_CACHE"
+    }
+  ],
+  "config_identity": "383c63d7d8cbccb186d49914b3eed4b75d6adb9ad1f6bdbd675fec0f7c42c088",
+  "distribution_hypothesis": "FALSIFIED_OR_INSUFFICIENT_BY_FROZEN_CRITERIA",
+  "evaluation_result_identity": "71425e3ae010797009eec27764ff04dfcbfd9dc1a13a2150a2121043a4c099a1",
+  "findings": [
+    {
+      "car": "None. This is a valid experimental result; altering the arm is outside the boundary.",
+      "finding": "Length-stratified weighting did not meet any-seed length/restraint/concision/common-nine acceptance closure.",
+      "id": "A1-F01",
+      "impact": "A1 is non-promotable and does not confirm the length-distribution hypothesis.",
+      "root_cause": "Equalized stratum loss mass alone is insufficient to create explicit stopping, concision, or restraint pressure.",
+      "severity": "EXPERIMENTAL_RESULT"
+    },
+    {
+      "car": "Removed exactly the generated __pycache__, invalidated the failed protected-state check, then reran canonical preflight and live audit fresh.",
+      "finding": "An initial noncanonical module invocation generated app/cli/__pycache__/preflight.cpython-312.pyc and caused protected startup preflight to fail closed.",
+      "id": "A1-CAR-01",
+      "impact": "Only regenerable cache evidence was affected; no managed bytes, authority, experiment outputs, or rollback bytes changed.",
+      "root_cause": "The diagnostic invocation imported the active preflight module outside the canonical bootstrap.",
+      "severity": "TECHNICAL_CLOSED"
+    }
+  ],
+  "holdout_exposure": 0,
+  "package_manifest_identity": "518bd823a75d9440534b59c00a6d942cebff07a49846406a128941de58c75aab",
+  "promotion": false,
+  "protected_state_closure": {
+    "active_audit_identity": "f438910f98403c8de1f7137bfce6264f8c2d0b297db78c69a631aebe1fc6759d",
+    "active_graph_identity": "01d6b01a382ceb21518beeed0e6c5645f076e071767096d4358ddc5aa8ea5409",
+    "canonical_preflight": "PASS_PREFLIGHT",
+    "e2e": "EXPORTED",
+    "legacy_dependency_count": 0,
+    "live_audit": "PASS",
+    "platform_closure": "PASS_BOUND_BY_PLATFORM_LOCK",
+    "product_lock_identity": "5932d13d27f90e4289796a69f035ba5c925239c85d0c6e3e420ea1d7232f10dc",
+    "r2_closure": "PASS",
+    "repository_dependency_count": 0,
+    "rollback_integrity": "PASS",
+    "sqlite_integrity": "PASS",
+    "startup": "PASS_STARTUP_READY"
+  },
+  "qwen3_bakeoff_exposure": 0,
+  "sampling_identity": "6d0688b4630bd7a5649ef36cf7dac9d8d03ad5a44ecb26213af66851d02677fa",
+  "schema": "vnext-qwen3-length-stratified-a1-audit",
+  "schema_version": 1,
+  "status": "PASS_0_INTEGRITY_BLOCKERS_NON_PROMOTABLE",
+  "terminal": "STOP_ABLATION_ACCEPTANCE_NOT_MET",
+  "training_result_identity": "d2e6f662031f1442afc99f4dcd81b8d3ab7dbdf16a1926d404d4327234faf057",
+  "voice_state": "DISABLED_UNTIL_PROMOTION"
+}

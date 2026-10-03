@@ -1,0 +1,31 @@
+{
+  "config_identity": "383c63d7d8cbccb186d49914b3eed4b75d6adb9ad1f6bdbd675fec0f7c42c088",
+  "holdout_exposure": 0,
+  "installed": false,
+  "manifest_identity": "518bd823a75d9440534b59c00a6d942cebff07a49846406a128941de58c75aab",
+  "packages": [
+    {
+      "adapter_sha256": "ecddbf0e80f02246a1fafe836addbb38dfcde612512b6e8d1fc08561afa63ffb",
+      "external_path": "/root/vnext-qwen3-length-stratified-a1-run/seed-1913",
+      "package_identity": "1dfe67fccbde37082bfc70080d3bcb0e3a8bb9c07d944aa4f24d291cf453a45a",
+      "seed": 1913
+    },
+    {
+      "adapter_sha256": "90d0c739754060b8dae64c6cee7a08067096132de0d1d998f95bd085fe318c27",
+      "external_path": "/root/vnext-qwen3-length-stratified-a1-run/seed-3203",
+      "package_identity": "ac9cd19a26a5f23815f04a1f84a15439cebc43b17503a2b459165dc7db81ca0b",
+      "seed": 3203
+    },
+    {
+      "adapter_sha256": "bbc03fa61198cd52b0b4b48563468987d37c35da162c5dc333dba38cdd995571",
+      "external_path": "/root/vnext-qwen3-length-stratified-a1-run/seed-4729",
+      "package_identity": "e580eef4de5da942155f530d31b4415ec0de8ea09174002caa3b1980f870e990",
+      "seed": 4729
+    }
+  ],
+  "schema": "vnext-qwen3-length-stratified-a1-package-manifest",
+  "schema_version": 1,
+  "state": "EXPERIMENTAL_NON_PROMOTABLE",
+  "training_result_identity": "d2e6f662031f1442afc99f4dcd81b8d3ab7dbdf16a1926d404d4327234faf057",
+  "voice_state": "DISABLED_UNTIL_PROMOTION"
+}

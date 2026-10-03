@@ -1,0 +1,85 @@
+{
+  "acceptance_criteria": {
+    "applies_to": "EACH_A1_SEED",
+    "common9_commentary_mean_min": 3.82963,
+    "concision_min": 4.544444,
+    "direction_consistent_across_all_seeds": true,
+    "exact_or_normalized_copy_count_max": 0,
+    "mean_output_words_max": 71.0603,
+    "non_generic_min": 3.255556,
+    "pastila_acida_style_min": 2.922222,
+    "raw_projection_rejection_rate_max": 0.088889,
+    "restraint_min": 4.766667
+  },
+  "authority_commit": "d998f259dd05080e39548866edbb22b2c66e2259",
+  "base_model_identity": "be259728abcc2c864bdf4d035267a8fcf8ccc57e4e277f8bd5d0934f1963fbc",
+  "base_model_revision": "be259728abcc2c864bdf4d035267a8fcf8ccc57e4e277f8bd5d0934f1963fbc",
+  "batch_size": 1,
+  "config_identity": "383c63d7d8cbccb186d49914b3eed4b75d6adb9ad1f6bdbd675fec0f7c42c088",
+  "corpus_freeze_identity": "e2f94bb1266cbe64ea48eb244d95637c4d5f1dfdb7d250b3857834c4dc445a8c",
+  "dataset_identity": "b48426314ce66a8bfb8f1e773cf171c07de0116b170dafec2a9c85228439c4e6",
+  "dataset_sha256": {
+    "train": "0edc1b25c0e279bafbbb712da0f977bce9dd68f4b56f5bd775ab3ec965c81379",
+    "validation": "0e2d9ffba211af997b04f2f2238c3e6de7904c89b38e25167e63d109fe6bbdda"
+  },
+  "decoding": {
+    "do_sample": false,
+    "max_new_tokens": 220
+  },
+  "epochs": 4,
+  "gradient_accumulation": 3,
+  "holdout_access_before_freeze": 0,
+  "learning_rate": 5e-05,
+  "lora": {
+    "alpha": 8,
+    "dropout": 0.05,
+    "r": 4,
+    "targets": [
+      "q_proj",
+      "v_proj"
+    ]
+  },
+  "max_length": 1024,
+  "model_config_sha256": "f7c4eadfbbf522470667b797a3c89be2524832d2d599797248dc304fff447c30",
+  "model_path": "/root/vnext-voice-candidates-v1/sha256/be259728abcc2c864bdf4d035267a8fcf8ccc57e4e277f8bd5d0934f1963fbc",
+  "optimizer": "paged_adamw_8bit",
+  "predecessor_experiment": {
+    "config": "4abb9cde5011b0a7e84b135f82fd98f0bcbd52661ae5cd6db215bc915bd0111d",
+    "evaluation": "f46d83318f0eca4e9fc5cb51d2903c171aa5ff7eff2c439b0800931393a495f2"
+  },
+  "promotable": false,
+  "prompt_sha256": "3860e7a8e97268822ce8c0a14572eb12c331424a9d3ea195b8dfbfb8a8775801",
+  "quantization": "NF4_DOUBLE_BF16",
+  "sampling_algorithm": {
+    "boundaries": {
+      "concise": "<=60",
+      "long": ">120",
+      "medium": "61-120"
+    },
+    "counts": {
+      "concise": 12,
+      "long": 8,
+      "medium": 19
+    },
+    "name": "ALL_RECORDS_ONCE_PER_EPOCH_STRATUM_LOSS_WEIGHTING",
+    "record_duplication": false,
+    "record_omission": false,
+    "target_mass_per_stratum": 13,
+    "total_record_mass": 39,
+    "weights": {
+      "concise": 1.0833333333333333,
+      "long": 1.625,
+      "medium": 0.6842105263157895
+    }
+  },
+  "sampling_identity": "6d0688b4630bd7a5649ef36cf7dac9d8d03ad5a44ecb26213af66851d02677fa",
+  "schema": "vnext-qwen3-length-stratified-a1-frozen-config",
+  "schema_version": 1,
+  "seeds": [
+    1913,
+    3203,
+    4729
+  ],
+  "tokenizer_identity": "90a2903e36317f2a873560235218be86367fa0ed4209f53096b6d59325fed333",
+  "voice_state": "DISABLED_UNTIL_PROMOTION"
+}
