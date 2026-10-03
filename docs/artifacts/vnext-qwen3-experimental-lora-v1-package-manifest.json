@@ -1,0 +1,162 @@
+{
+  "audit_identity": "df0e76614fc0168863d6e7e5c262f7cb628b66c488a68bf92459090dd0b375ff",
+  "external_root": "/root/vnext-qwen3-experimental-lora-v1/df0e76614fc0168863d6e7e5c262f7cb628b66c488a68bf92459090dd0b375ff",
+  "files": [
+    {
+      "bytes": 2149,
+      "path": "audit.json",
+      "sha256": "de2fde1f851dc7e219cdd44df6a3f196d166504cc945f542e292138181befb6e"
+    },
+    {
+      "bytes": 4988,
+      "path": "baseline-validation.json",
+      "sha256": "8e0bbe2930071b3d62fab2877cb497ef4ebcdc16c3b263b050126382a89810ea"
+    },
+    {
+      "bytes": 26480,
+      "path": "blind-packet-and-scores.json",
+      "sha256": "bbb5fc8d9fadd5ca0677f89eb62dd4069f1f7bf2e22775ce3ba9d21cf27945cb"
+    },
+    {
+      "bytes": 10406,
+      "path": "evaluation-result.json",
+      "sha256": "3798f30c42640395245f6a3a9b245a4d06127e085a8e25008dcce901c1e28119"
+    },
+    {
+      "bytes": 1262,
+      "path": "frozen-config.json",
+      "sha256": "e1da7258cbbdb326e2a1f3f5cdb19deddc5fd2ef97f72f4c8b2c44583e50aa2b"
+    },
+    {
+      "bytes": 5358,
+      "path": "seed-1701/README.md",
+      "sha256": "1b18f64ffaf70d63808c449697a8ac250dbe1b545382dc8fd7afecde20899223"
+    },
+    {
+      "bytes": 1054,
+      "path": "seed-1701/adapter_config.json",
+      "sha256": "0263f7fecd3e80f6048607399932cc76d78313e4b4583687aa6cf22931ce4031"
+    },
+    {
+      "bytes": 7686680,
+      "path": "seed-1701/adapter_model.safetensors",
+      "sha256": "ea21003303a125222ce9f2ceee037ff5d85eabb384cca18fe97820f051b976db"
+    },
+    {
+      "bytes": 4168,
+      "path": "seed-1701/chat_template.jinja",
+      "sha256": "a55ee1b1660128b7098723e0abcd92caa0788061051c62d51cbe87d9cf1974d8"
+    },
+    {
+      "bytes": 1518,
+      "path": "seed-1701/run-summary.json",
+      "sha256": "72a1aabf07b3b200a6b3766a93452b449f8272b6bf2083483efcb76038b1d75f"
+    },
+    {
+      "bytes": 11422749,
+      "path": "seed-1701/tokenizer.json",
+      "sha256": "e946ac23b6a68f7a2abbe7b3c22190673c6d3d159b85305268db51b2729ac68a"
+    },
+    {
+      "bytes": 689,
+      "path": "seed-1701/tokenizer_config.json",
+      "sha256": "c5d6b44d6c8458a269be3828e81d3eb05f174a427bf67218b38f52d38db3159e"
+    },
+    {
+      "bytes": 5055,
+      "path": "seed-1701/validation-outputs.json",
+      "sha256": "af37dd0d61e9210745cbccdfcd8014b918d02b5533d5b6ad96b524e3da5861da"
+    },
+    {
+      "bytes": 5358,
+      "path": "seed-2903/README.md",
+      "sha256": "1b18f64ffaf70d63808c449697a8ac250dbe1b545382dc8fd7afecde20899223"
+    },
+    {
+      "bytes": 1054,
+      "path": "seed-2903/adapter_config.json",
+      "sha256": "0263f7fecd3e80f6048607399932cc76d78313e4b4583687aa6cf22931ce4031"
+    },
+    {
+      "bytes": 7686680,
+      "path": "seed-2903/adapter_model.safetensors",
+      "sha256": "dfb706426bdcdcc0a05df7231ae858f95781707c01d31db2d381b23cfbee12cc"
+    },
+    {
+      "bytes": 4168,
+      "path": "seed-2903/chat_template.jinja",
+      "sha256": "a55ee1b1660128b7098723e0abcd92caa0788061051c62d51cbe87d9cf1974d8"
+    },
+    {
+      "bytes": 1518,
+      "path": "seed-2903/run-summary.json",
+      "sha256": "8e06ca093d61f57120d10d612cccf94025d9fef862141360610f87488f73cba0"
+    },
+    {
+      "bytes": 11422749,
+      "path": "seed-2903/tokenizer.json",
+      "sha256": "e946ac23b6a68f7a2abbe7b3c22190673c6d3d159b85305268db51b2729ac68a"
+    },
+    {
+      "bytes": 689,
+      "path": "seed-2903/tokenizer_config.json",
+      "sha256": "c5d6b44d6c8458a269be3828e81d3eb05f174a427bf67218b38f52d38db3159e"
+    },
+    {
+      "bytes": 5318,
+      "path": "seed-2903/validation-outputs.json",
+      "sha256": "1238789bb8c2d437d83ad956b9ca30d1dc14168f8b448fd93ff2e91e56f85e8e"
+    },
+    {
+      "bytes": 5358,
+      "path": "seed-4517/README.md",
+      "sha256": "1b18f64ffaf70d63808c449697a8ac250dbe1b545382dc8fd7afecde20899223"
+    },
+    {
+      "bytes": 1054,
+      "path": "seed-4517/adapter_config.json",
+      "sha256": "0263f7fecd3e80f6048607399932cc76d78313e4b4583687aa6cf22931ce4031"
+    },
+    {
+      "bytes": 7686680,
+      "path": "seed-4517/adapter_model.safetensors",
+      "sha256": "2aa1ad1d9bd276ac9326fe0608b0a219959f79aca5d18036f6bf45069c5bbb1d"
+    },
+    {
+      "bytes": 4168,
+      "path": "seed-4517/chat_template.jinja",
+      "sha256": "a55ee1b1660128b7098723e0abcd92caa0788061051c62d51cbe87d9cf1974d8"
+    },
+    {
+      "bytes": 1515,
+      "path": "seed-4517/run-summary.json",
+      "sha256": "e47c8c8ed9ff918c1452d82f7485a2417728f8df9113fe0eb71b09b13d68b7ce"
+    },
+    {
+      "bytes": 11422749,
+      "path": "seed-4517/tokenizer.json",
+      "sha256": "e946ac23b6a68f7a2abbe7b3c22190673c6d3d159b85305268db51b2729ac68a"
+    },
+    {
+      "bytes": 689,
+      "path": "seed-4517/tokenizer_config.json",
+      "sha256": "c5d6b44d6c8458a269be3828e81d3eb05f174a427bf67218b38f52d38db3159e"
+    },
+    {
+      "bytes": 5373,
+      "path": "seed-4517/validation-outputs.json",
+      "sha256": "e790a000f67767aa0147f2fc46c80716f622ac6cf7f562f581038e96933d928b"
+    },
+    {
+      "bytes": 5566,
+      "path": "training-result.json",
+      "sha256": "e14b063b4eaf8543ce3577449653251a845fffb9a4493a4c2655178aaf55b222"
+    }
+  ],
+  "manifest_identity": "bfb2590b2e407942c2f1456525c9342e122c3d6d53fc8847b85ed5afaa74de8d",
+  "promotion": false,
+  "schema": "vnext-qwen3-experimental-lora-package-manifest",
+  "schema_version": 1,
+  "total_bytes": 57433242,
+  "voice_state": "DISABLED_UNTIL_PROMOTION"
+}

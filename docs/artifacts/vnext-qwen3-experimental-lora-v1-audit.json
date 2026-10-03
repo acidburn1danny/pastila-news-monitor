@@ -1,0 +1,62 @@
+{
+  "active_product_modified": false,
+  "audit_identity": "df0e76614fc0168863d6e7e5c262f7cb628b66c488a68bf92459090dd0b375ff",
+  "authority_commit": "1246bfc480e45f3eb1511838d230edd4f0d38367",
+  "canonical_rollback_modified": false,
+  "cars": [
+    {
+      "finding": "FROZEN_OPTIMIZER_DECLARATION_DID_NOT_MATCH_INITIAL_EXECUTOR",
+      "id": "CAR-01",
+      "impact": "ALL_INITIAL_TRAINING_AND_EVALUATION_EVIDENCE_INVALIDATED",
+      "pre_car_evidence_used": false,
+      "repair": "EXECUTOR_ALIGNED_TO_BITSANDBYTES_PAGED_ADAMW_8BIT; ALL_THREE SEEDS RETRAINED; FRESH EVALUATION_AND_AUDIT_RESTART",
+      "root_cause": "INITIAL_EXECUTOR_USED_TORCH_ADAMW_WHILE_FROZEN_CONFIG_DECLARED_PAGED_ADAMW_8BIT"
+    }
+  ],
+  "config_identity": "7c0c2e97a1a55b2cbd6453ae179d1c0203331bda0daff2084b4c1d0f7467c1d3",
+  "evaluation_result_identity": "4a24e59544c95fba72a17c7937650e1b5b19ca40e8a54c5582918c0fb62935f8",
+  "findings": [
+    {
+      "finding": "QUALITY_GAIN_ACCEPTANCE_NOT_MET",
+      "id": "F-01",
+      "impact": "NO_PROMOTION; EXPERIMENTAL EVIDENCE ONLY"
+    },
+    {
+      "finding": "RAW_OUTPUT_FACTUAL_REJECTIONS_PRESENT",
+      "id": "F-02",
+      "impact": "CONSTRAINED PROJECTION REMAINS MANDATORY"
+    },
+    {
+      "finding": "TRAINING_SIGNAL_SMALL_AND_SEED_EFFECT_WEAK",
+      "id": "F-03",
+      "impact": "LEARNABILITY_NOT_DEMONSTRATED"
+    }
+  ],
+  "fresh_audit_restarts": 1,
+  "holdout_exposure": 0,
+  "packages": [
+    {
+      "identity": "194c207d1954b757a70bab7d5426d01f72adfae13833c9c860f256f472400599",
+      "seed": 1701
+    },
+    {
+      "identity": "f24db6647cf83f0babcbb3a930f77b93f28f7241e86d0141845accc76a6fcbb3",
+      "seed": 2903
+    },
+    {
+      "identity": "0973971c5e90fa61ae9a3c2e558f624d10e21ff679b7c8a1603a9e31a8442162",
+      "seed": 4517
+    }
+  ],
+  "promotion_thresholds_unchanged": true,
+  "schema": "vnext-qwen3-experimental-lora-audit",
+  "schema_version": 1,
+  "seeds": [
+    1701,
+    2903,
+    4517
+  ],
+  "status": "PASS_0_INTEGRITY_BLOCKERS_NON_PROMOTABLE",
+  "training_result_identity": "9eef9e86d5a4c35db2f203cf5a92f599e5aa2b1942b02b86fb0a3f33d933b231",
+  "voice_state": "DISABLED_UNTIL_PROMOTION"
+}

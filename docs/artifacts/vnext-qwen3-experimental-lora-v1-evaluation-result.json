@@ -1,0 +1,380 @@
+{
+  "acceptance": {
+    "direction_consistent_3_of_3": true,
+    "exact_train_copies_zero": true,
+    "max_12_token_copy_zero": true,
+    "quality_gain_ge_0_50": false,
+    "quality_mean_ge_2_50": true,
+    "unsupported_fact_rate_after_projection_zero": true
+  },
+  "baseline_mean": 3.603175,
+  "best_lora_delta": 0.206349,
+  "candidate_mapping_unsealed_after_scoring": {
+    "BASELINE": "7bd0c6d0c44b",
+    "LORA_SEED_1701": "21e0180f4199",
+    "LORA_SEED_2903": "0cbf7a072ae3",
+    "LORA_SEED_4517": "5ec9cc76e8cd"
+  },
+  "config_identity": "7c0c2e97a1a55b2cbd6453ae179d1c0203331bda0daff2084b4c1d0f7467c1d3",
+  "factual_projection": {
+    "BASELINE": {
+      "projection_abstain": 4,
+      "projection_accept": 5,
+      "projections": [
+        {
+          "decision": "REJECT_UNSUPPORTED_FACT",
+          "findings": [
+            "UNSUPPORTED_FACT_SEMANTIC_ADJUDICATION"
+          ],
+          "record_id": "PA-EP28-01",
+          "status": "ABSTAIN"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP28-02",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "REJECT_UNSUPPORTED_FACT",
+          "findings": [
+            "UNSUPPORTED_FACT_SEMANTIC_ADJUDICATION"
+          ],
+          "record_id": "PA-EP30-01",
+          "status": "ABSTAIN"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP30-02",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP28-03",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "REJECT_UNSUPPORTED_FACT",
+          "findings": [
+            "UNSUPPORTED_FACT_SEMANTIC_ADJUDICATION"
+          ],
+          "record_id": "PA-EP30-03",
+          "status": "ABSTAIN"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP29-01",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP29-02",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "REJECT_UNSUPPORTED_FACT",
+          "findings": [
+            "UNSUPPORTED_FACT"
+          ],
+          "record_id": "PA-EP29-03",
+          "status": "ABSTAIN"
+        }
+      ],
+      "semantic_adjudication_applied": true,
+      "unsupported_fact_rate_after_projection": 0.0
+    },
+    "LORA_SEED_1701": {
+      "projection_abstain": 5,
+      "projection_accept": 4,
+      "projections": [
+        {
+          "decision": "REJECT_UNSUPPORTED_FACT",
+          "findings": [
+            "UNSUPPORTED_FACT_SEMANTIC_ADJUDICATION"
+          ],
+          "record_id": "PA-EP28-01",
+          "status": "ABSTAIN"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP28-02",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "REJECT_UNSUPPORTED_FACT",
+          "findings": [
+            "UNSUPPORTED_FACT_SEMANTIC_ADJUDICATION"
+          ],
+          "record_id": "PA-EP30-01",
+          "status": "ABSTAIN"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP30-02",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP28-03",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP30-03",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "REJECT_UNSUPPORTED_FACT",
+          "findings": [
+            "UNSUPPORTED_FACT"
+          ],
+          "record_id": "PA-EP29-01",
+          "status": "ABSTAIN"
+        },
+        {
+          "decision": "REJECT_UNSUPPORTED_FACT",
+          "findings": [
+            "UNSUPPORTED_FACT_SEMANTIC_ADJUDICATION"
+          ],
+          "record_id": "PA-EP29-02",
+          "status": "ABSTAIN"
+        },
+        {
+          "decision": "REJECT_UNSUPPORTED_FACT",
+          "findings": [
+            "UNSUPPORTED_FACT_SEMANTIC_ADJUDICATION"
+          ],
+          "record_id": "PA-EP29-03",
+          "status": "ABSTAIN"
+        }
+      ],
+      "semantic_adjudication_applied": true,
+      "unsupported_fact_rate_after_projection": 0.0
+    },
+    "LORA_SEED_2903": {
+      "projection_abstain": 3,
+      "projection_accept": 6,
+      "projections": [
+        {
+          "decision": "REJECT_UNSUPPORTED_FACT",
+          "findings": [
+            "UNSUPPORTED_FACT_SEMANTIC_ADJUDICATION"
+          ],
+          "record_id": "PA-EP28-01",
+          "status": "ABSTAIN"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP28-02",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP30-01",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP30-02",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP28-03",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP30-03",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP29-01",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "REJECT_UNSUPPORTED_FACT",
+          "findings": [
+            "UNSUPPORTED_FACT_SEMANTIC_ADJUDICATION"
+          ],
+          "record_id": "PA-EP29-02",
+          "status": "ABSTAIN"
+        },
+        {
+          "decision": "REJECT_UNSUPPORTED_FACT",
+          "findings": [
+            "UNSUPPORTED_FACT_SEMANTIC_ADJUDICATION"
+          ],
+          "record_id": "PA-EP29-03",
+          "status": "ABSTAIN"
+        }
+      ],
+      "semantic_adjudication_applied": true,
+      "unsupported_fact_rate_after_projection": 0.0
+    },
+    "LORA_SEED_4517": {
+      "projection_abstain": 6,
+      "projection_accept": 3,
+      "projections": [
+        {
+          "decision": "REJECT_UNSUPPORTED_FACT",
+          "findings": [
+            "UNSUPPORTED_FACT_SEMANTIC_ADJUDICATION"
+          ],
+          "record_id": "PA-EP28-01",
+          "status": "ABSTAIN"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP28-02",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "REJECT_UNSUPPORTED_FACT",
+          "findings": [
+            "UNSUPPORTED_FACT_SEMANTIC_ADJUDICATION"
+          ],
+          "record_id": "PA-EP30-01",
+          "status": "ABSTAIN"
+        },
+        {
+          "decision": "REJECT_UNSUPPORTED_FACT",
+          "findings": [
+            "UNSUPPORTED_FACT_SEMANTIC_ADJUDICATION"
+          ],
+          "record_id": "PA-EP30-02",
+          "status": "ABSTAIN"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP28-03",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP30-03",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "REJECT_UNSUPPORTED_FACT",
+          "findings": [
+            "UNSUPPORTED_FACT"
+          ],
+          "record_id": "PA-EP29-01",
+          "status": "ABSTAIN"
+        },
+        {
+          "decision": "REJECT_UNSUPPORTED_FACT",
+          "findings": [
+            "UNSUPPORTED_FACT_SEMANTIC_ADJUDICATION"
+          ],
+          "record_id": "PA-EP29-02",
+          "status": "ABSTAIN"
+        },
+        {
+          "decision": "REJECT_UNSUPPORTED_FACT",
+          "findings": [
+            "UNSUPPORTED_FACT_SEMANTIC_ADJUDICATION"
+          ],
+          "record_id": "PA-EP29-03",
+          "status": "ABSTAIN"
+        }
+      ],
+      "semantic_adjudication_applied": true,
+      "unsupported_fact_rate_after_projection": 0.0
+    }
+  },
+  "holdout": {
+    "reason": "VALIDATION_ACCEPTANCE_NOT_MET; NO_HOLDOUT_TUNING",
+    "unsealed": false
+  },
+  "lora_seed_means": [
+    3.714286,
+    3.809524,
+    3.714286
+  ],
+  "promotion": false,
+  "result_identity": "4a24e59544c95fba72a17c7937650e1b5b19ca40e8a54c5582918c0fb62935f8",
+  "schema": "vnext-qwen3-experimental-lora-blind-evaluation",
+  "schema_version": 1,
+  "scores": {
+    "BASELINE": {
+      "blind_slot": "7bd0c6d0c44b",
+      "cases": 9,
+      "quality_composite_mean": 3.603175,
+      "quality_means": {
+        "non_generic": 2.777778,
+        "pastila_acida_style": 3.0,
+        "relevance": 4.555556,
+        "restraint": 5.0,
+        "romanian_naturalness": 4.0,
+        "sarcasm_irony_roast": 2.0,
+        "target_choice": 3.888889
+      }
+    },
+    "LORA_SEED_1701": {
+      "blind_slot": "21e0180f4199",
+      "cases": 9,
+      "quality_composite_mean": 3.714286,
+      "quality_means": {
+        "non_generic": 3.111111,
+        "pastila_acida_style": 3.222222,
+        "relevance": 4.444444,
+        "restraint": 4.888889,
+        "romanian_naturalness": 3.888889,
+        "sarcasm_irony_roast": 2.555556,
+        "target_choice": 3.888889
+      }
+    },
+    "LORA_SEED_2903": {
+      "blind_slot": "0cbf7a072ae3",
+      "cases": 9,
+      "quality_composite_mean": 3.809524,
+      "quality_means": {
+        "non_generic": 3.111111,
+        "pastila_acida_style": 3.333333,
+        "relevance": 4.666667,
+        "restraint": 4.777778,
+        "romanian_naturalness": 3.777778,
+        "sarcasm_irony_roast": 2.888889,
+        "target_choice": 4.111111
+      }
+    },
+    "LORA_SEED_4517": {
+      "blind_slot": "5ec9cc76e8cd",
+      "cases": 9,
+      "quality_composite_mean": 3.714286,
+      "quality_means": {
+        "non_generic": 3.111111,
+        "pastila_acida_style": 3.222222,
+        "relevance": 4.666667,
+        "restraint": 4.777778,
+        "romanian_naturalness": 3.666667,
+        "sarcasm_irony_roast": 2.666667,
+        "target_choice": 3.888889
+      }
+    }
+  },
+  "scoring": "DETERMINISTIC_CANDIDATE_BLIND_RUBRIC_V1",
+  "status": "PASS_GATE_NON_PROMOTABLE",
+  "terminal": "CONTINUE_EXPERIMENTAL_EVIDENCE",
+  "voice_state": "DISABLED_UNTIL_PROMOTION"
+}

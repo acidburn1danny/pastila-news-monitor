@@ -1,0 +1,41 @@
+{
+  "authority_commit": "1246bfc480e45f3eb1511838d230edd4f0d38367",
+  "batch_size": 1,
+  "config_identity": "7c0c2e97a1a55b2cbd6453ae179d1c0203331bda0daff2084b4c1d0f7467c1d3",
+  "dataset_sha256": {
+    "train": "f34762112bba7d67d68fdcc308174fca6c8ee733009767bbccb4a74736d4eb06",
+    "validation": "eda9facfe5fc9607e7975425c130abd4ac078095d908917c24dd70bbbc774fe6"
+  },
+  "decoding": {
+    "do_sample": false,
+    "max_new_tokens": 220
+  },
+  "epochs": 4,
+  "gradient_accumulation": 3,
+  "holdout_access_before_freeze": 0,
+  "learning_rate": 5e-05,
+  "lora": {
+    "alpha": 8,
+    "dropout": 0.05,
+    "r": 4,
+    "targets": [
+      "q_proj",
+      "v_proj"
+    ]
+  },
+  "max_length": 1024,
+  "model_config_sha256": "f7c4eadfbbf522470667b797a3c89be2524832d2d599797248dc304fff447c30",
+  "model_path": "/root/vnext-voice-candidates-v1/sha256/be259728abcc2c864bdf4d035267a8fcf8ccc57e4e277f8bd5d0934f1963fbc",
+  "optimizer": "paged_adamw_8bit",
+  "promotable": false,
+  "prompt_sha256": "3860e7a8e97268822ce8c0a14572eb12c331424a9d3ea195b8dfbfb8a8775801",
+  "quantization": "NF4_DOUBLE_BF16",
+  "schema": "vnext-qwen3-experimental-lora-frozen-config",
+  "schema_version": 1,
+  "seeds": [
+    1701,
+    2903,
+    4517
+  ],
+  "voice_state": "DISABLED_UNTIL_PROMOTION"
+}

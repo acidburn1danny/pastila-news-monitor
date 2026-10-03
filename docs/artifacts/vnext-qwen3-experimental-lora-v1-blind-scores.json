@@ -1,0 +1,542 @@
+[
+  {
+    "composite": 3.428571,
+    "output": "Un guvern condus de un om care a reușit să facă din „bunăvoie” un articol de presă, a fost demis de un parlament în care majoritatea a decis că „bunăvoia” nu e suficientă. 281 de voturi, adică mai mult decât un „da” la un referendum.",
+    "record_id": "PA-EP28-01",
+    "scores": {
+      "non_generic": 3,
+      "pastila_acida_style": 3,
+      "relevance": 4,
+      "restraint": 5,
+      "romanian_naturalness": 4,
+      "sarcasm_irony_roast": 2,
+      "target_choice": 3
+    },
+    "slot": "7bd0c6d0c44b"
+  },
+  {
+    "composite": 3.857143,
+    "output": "Un nou proiect de lege vrea să amenințe cu sancțiuni mai mari pentru cei care perturbă liniștea publică, chiar și noaptea. Cine dă petreceri, pune muzică prea tare sau face scandal repetat, ar putea plăti câteva mii de lei. Iar dacă vecinii apasă de două ori la poliție, amenzi cresc – mai ales pentru cei care nu învață din experiență. Un pas în direcția în care statul încearcă să-și păstreze controlul asupra vieții de zi cu zi, chiar și în cea mai privată dintre momente.",
+    "record_id": "PA-EP28-02",
+    "scores": {
+      "non_generic": 3,
+      "pastila_acida_style": 3,
+      "relevance": 5,
+      "restraint": 5,
+      "romanian_naturalness": 4,
+      "sarcasm_irony_roast": 2,
+      "target_choice": 5
+    },
+    "slot": "7bd0c6d0c44b"
+  },
+  {
+    "composite": 4.142857,
+    "output": "Ministrul Educației a avut o zi plină de lecții: una de la eleva care vorbește despre interzicerea telefoanelor în școli, alta de la oamenii care îi spun că ar trebui să nu se uite la telefon în timpul discursului. A spus că s-a trezit la 2 dimineața, dar n-a zis că s-a trezit la 2 dimineața din cauza unui apel urgent de la un coleg care îi dădea un sfat despre cum să nu se uite la telefon în timpul discursului.",
+    "record_id": "PA-EP30-01",
+    "scores": {
+      "non_generic": 4,
+      "pastila_acida_style": 4,
+      "relevance": 5,
+      "restraint": 5,
+      "romanian_naturalness": 4,
+      "sarcasm_irony_roast": 3,
+      "target_choice": 4
+    },
+    "slot": "7bd0c6d0c44b"
+  },
+  {
+    "composite": 3.571429,
+    "output": "Un copil de 15 ani, înecat cu un sandwich în gură – nu e o metaforă, nu e un simbol, e un fapt. Într-un loc unde se învață, nu se învață să se respire. Cazul e tragic, dar mai rău e că întrebările sunt deja la un pas de a fi răspuns.",
+    "record_id": "PA-EP30-02",
+    "scores": {
+      "non_generic": 3,
+      "pastila_acida_style": 3,
+      "relevance": 4,
+      "restraint": 5,
+      "romanian_naturalness": 4,
+      "sarcasm_irony_roast": 2,
+      "target_choice": 4
+    },
+    "slot": "7bd0c6d0c44b"
+  },
+  {
+    "composite": 3.714286,
+    "output": "Un fost director al FBI, într-o postare pe Instagram, a scris „8647” cu scoici pe nisip. Administrația Trump interpretează „86” ca un cod pentru „eliminare”, iar „47” ca referire la președintele actual. Problema e că „86” e un termen de zeci de ani în slang, cu sensul de „nu mai e disponibil” – ca un produs într-un bar. Comey susține că nu a avut intenții violente. Să văd dacă „47” e un cod pentru „nu e disponibil” și dacă președintele e într-un bar.",
+    "record_id": "PA-EP28-03",
+    "scores": {
+      "non_generic": 3,
+      "pastila_acida_style": 3,
+      "relevance": 5,
+      "restraint": 5,
+      "romanian_naturalness": 4,
+      "sarcasm_irony_roast": 1,
+      "target_choice": 5
+    },
+    "slot": "7bd0c6d0c44b"
+  },
+  {
+    "composite": 3.0,
+    "output": "Un nou pas în direcția corectă, dar cu o întârziere de aproape șase luni. Când se face ceva pentru cei care au nevoie, întotdeauna e prea târziu. Sper că nu va fi ultima măsură de acest gen.",
+    "record_id": "PA-EP30-03",
+    "scores": {
+      "non_generic": 1,
+      "pastila_acida_style": 2,
+      "relevance": 4,
+      "restraint": 5,
+      "romanian_naturalness": 4,
+      "sarcasm_irony_roast": 2,
+      "target_choice": 3
+    },
+    "slot": "7bd0c6d0c44b"
+  },
+  {
+    "composite": 3.428571,
+    "output": "Primarul Tulcei pare să nu înțelege că avertizările RO-Alert nu sunt un anunț de vacanță la mare, ci un sistem de alarmă. Dacă vrea să „înțeleagă” panică, ar trebui să înceapă cu un mesaj de genul: „Dragă turist, ai ajuns în Deltea Dunării, nu într-un film de șoapte. Atenție, dronele sunt mai periculoase decât un păianjen de pe șold.”",
+    "record_id": "PA-EP29-01",
+    "scores": {
+      "non_generic": 3,
+      "pastila_acida_style": 3,
+      "relevance": 4,
+      "restraint": 5,
+      "romanian_naturalness": 4,
+      "sarcasm_irony_roast": 2,
+      "target_choice": 3
+    },
+    "slot": "7bd0c6d0c44b"
+  },
+  {
+    "composite": 3.571429,
+    "output": "Un nou pas în direcția în care Rusia își extinde drepturile de a „apărea” în orice loc, chiar și în afara țării, dacă ești cetățean. Legea nu spune „într-un conflict”, ci „pentru protejarea cetățenilor”, ceea ce înseamnă că orice anchetă, proces, sau eveniment în care un rus e implicat devine o ocazie pentru intervenție. Într-un cuvânt: puterea se extinde, iar justificarea rămâne vagă, dar suficient de flexibilă pentru a justifica orice acțiune.",
+    "record_id": "PA-EP29-02",
+    "scores": {
+      "non_generic": 2,
+      "pastila_acida_style": 3,
+      "relevance": 5,
+      "restraint": 5,
+      "romanian_naturalness": 4,
+      "sarcasm_irony_roast": 2,
+      "target_choice": 4
+    },
+    "slot": "7bd0c6d0c44b"
+  },
+  {
+    "composite": 3.714286,
+    "output": "Guvernul a decis să facă din rovinietă o taxă de lux, dar nu pentru că e lux, ci pentru că e poluare. Vehiculele mai vechi, mai murdare, vor plăti mai mult, începând cu iulie 2026. E o măsură „aliniată la standardele europene”, dar nimeni nu spune că e aliniată la standardele românești de eficiență. Poate că în Europa nu se știe că un mașinist român poate face 100 de kilometri cu un autoturism de 20 de ani, fără a se opri nici măcar la benzină.",
+    "record_id": "PA-EP29-03",
+    "scores": {
+      "non_generic": 3,
+      "pastila_acida_style": 3,
+      "relevance": 5,
+      "restraint": 5,
+      "romanian_naturalness": 4,
+      "sarcasm_irony_roast": 2,
+      "target_choice": 4
+    },
+    "slot": "7bd0c6d0c44b"
+  },
+  {
+    "composite": 4.285714,
+    "output": "Un guvern condus de un om care a reușit să-și păstreze postul de primar într-o localitate cu 10.000 de locuitori, dar nu a reușit să-și păstreze postul de prim-ministru. Cine a făcut diferența? Moțiunea de cenzură, care a trecut cu 281 de voturi. Cine a votat? Probabil cei care nu au avut ce face cu timpul.",
+    "record_id": "PA-EP28-01",
+    "scores": {
+      "non_generic": 4,
+      "pastila_acida_style": 4,
+      "relevance": 5,
+      "restraint": 5,
+      "romanian_naturalness": 4,
+      "sarcasm_irony_roast": 4,
+      "target_choice": 4
+    },
+    "slot": "21e0180f4199"
+  },
+  {
+    "composite": 3.714286,
+    "output": "Un nou proiect legislativ vrea să amenințe cu sancțiuni mai mari pentru cei care tulbureau liniștea publică, ziua și noaptea. Cei care dau petreceri, muzică prea tare sau fac scandal repetat ar putea plăti sancțiuni de până la câteva mii de lei. Iar dacă vecinii sună din nou la Poliție, amenzi cresc progresiv, mai ales pentru recidiviști. Un pas în direcția în care toți suntem deja recidiviști.",
+    "record_id": "PA-EP28-02",
+    "scores": {
+      "non_generic": 3,
+      "pastila_acida_style": 3,
+      "relevance": 5,
+      "restraint": 5,
+      "romanian_naturalness": 4,
+      "sarcasm_irony_roast": 1,
+      "target_choice": 5
+    },
+    "slot": "21e0180f4199"
+  },
+  {
+    "composite": 3.714286,
+    "output": "Ministrul Educației a avut o zi plină de lecții: una de la eleva care vorbește despre interzicerea telefoanelor în școli, alta de la oamenii care îi spun că ar trebui să nu se uite la telefon în timpul discursului. Așa că, într-o zi plină de lecții, a ales să înceapă cu una de la sine.",
+    "record_id": "PA-EP30-01",
+    "scores": {
+      "non_generic": 3,
+      "pastila_acida_style": 3,
+      "relevance": 5,
+      "restraint": 5,
+      "romanian_naturalness": 4,
+      "sarcasm_irony_roast": 2,
+      "target_choice": 4
+    },
+    "slot": "21e0180f4199"
+  },
+  {
+    "composite": 2.857143,
+    "output": "Un copil de 15 ani, înecat cu un sandwich în gură – nu e un capitol dintr-un roman de științifică ficțională, ci o realitate care ne face să ne întrebăm dacă învățământul nostru e pregătit să-și asume responsabilitatea de a proteja copiii. Cazul e un semn de alarmă, nu un capitol de științifică ficțională.",
+    "record_id": "PA-EP30-02",
+    "scores": {
+      "non_generic": 2,
+      "pastila_acida_style": 2,
+      "relevance": 4,
+      "restraint": 5,
+      "romanian_naturalness": 3,
+      "sarcasm_irony_roast": 1,
+      "target_choice": 3
+    },
+    "slot": "21e0180f4199"
+  },
+  {
+    "composite": 3.857143,
+    "output": "Un fost director al FBI, într-o postare pe Instagram, a scris „8647” cu scoici pe nisip. Administrația Trump interpretează „86” ca „eliminare”, iar „47” ca referire la președintele în funcție. Problema e că „86” e un termen de zeci de ani în slang, cu sensul de „nu mai e disponibil” – ca un produs într-un bar. Comey susține că nu a vrut nimic, dar părerea lui nu e prea ascultată.",
+    "record_id": "PA-EP28-03",
+    "scores": {
+      "non_generic": 3,
+      "pastila_acida_style": 3,
+      "relevance": 5,
+      "restraint": 5,
+      "romanian_naturalness": 4,
+      "sarcasm_irony_roast": 2,
+      "target_choice": 5
+    },
+    "slot": "21e0180f4199"
+  },
+  {
+    "composite": 3.285714,
+    "output": "Un nou pas în direcția corectă, dar cu un pic de întârziere. Să fie binevenit, dar și mai ales să fie durabil. Când o măsură e salutată de cei care ar trebui să o primească, e un semn că nu e doar o promisiune. Să fie înțeleasă, nu doar anunțată.",
+    "record_id": "PA-EP30-03",
+    "scores": {
+      "non_generic": 2,
+      "pastila_acida_style": 3,
+      "relevance": 3,
+      "restraint": 5,
+      "romanian_naturalness": 4,
+      "sarcasm_irony_roast": 3,
+      "target_choice": 3
+    },
+    "slot": "21e0180f4199"
+  },
+  {
+    "composite": 3.428571,
+    "output": "Primarul Tulcei pare să nu știe că avertizările RO-Alert nu sunt un anunț de „vacanță în siguranță”, ci un sistem de alertă. Poate că ar trebui să înceapă cu „Dragă turist, ai ajuns în Deltea Dunării, nu într-un film de șoapte. Atenție, dronele sunt aici, dar și păsările, și vântul, și păianjenii. În caz de panică, sună la 112, dar mai întâi verifică dacă ești în siguranță.”",
+    "record_id": "PA-EP29-01",
+    "scores": {
+      "non_generic": 3,
+      "pastila_acida_style": 3,
+      "relevance": 4,
+      "restraint": 5,
+      "romanian_naturalness": 4,
+      "sarcasm_irony_roast": 2,
+      "target_choice": 3
+    },
+    "slot": "21e0180f4199"
+  },
+  {
+    "composite": 3.571429,
+    "output": "Un nou pas în direcția în care Rusia își îndreaptă privirea, nu spre proprii cetățeni, ci spre orice „interese” se încurcă într-o anchetă străină. Legea de la Duma pare să aibă un singur scop: să ofere lui Putin un motiv plauzibil pentru orice acțiune militară, chiar și în locuri unde nu există niciun cetățean rus. Ironia este că, în același timp, statele occidentale încearcă să-și protejeze cetățenii din Rusia, dar nu se gândesc să le ofere un „instrument legal” pentru a face același lucru. Așa se face că, într-o lume în care toți vorbesc despre drepturile omului, unii se îndreaptă spre drepturile cetățenilor, într-un mod care pare mai",
+    "record_id": "PA-EP29-02",
+    "scores": {
+      "non_generic": 3,
+      "pastila_acida_style": 3,
+      "relevance": 4,
+      "restraint": 4,
+      "romanian_naturalness": 4,
+      "sarcasm_irony_roast": 3,
+      "target_choice": 4
+    },
+    "slot": "21e0180f4199"
+  },
+  {
+    "composite": 4.714286,
+    "output": "Guvernul a decis să taxeze rovinietă în funcție de norma EURO a mașinii. Deci, dacă ai o mașină cu normă Euro 0, ești pregătit să plătești mai mult. E o măsură „aliniată la standardele europene”, dar, evident, nu la standardele europene de echitate. Cineva a uitat să-și alinieze mașina cu norma Euro, dar a reușit să-și alinieze taxele cu norma Euro.",
+    "record_id": "PA-EP29-03",
+    "scores": {
+      "non_generic": 5,
+      "pastila_acida_style": 5,
+      "relevance": 5,
+      "restraint": 5,
+      "romanian_naturalness": 4,
+      "sarcasm_irony_roast": 5,
+      "target_choice": 4
+    },
+    "slot": "21e0180f4199"
+  },
+  {
+    "composite": 4.285714,
+    "output": "Un guvern condus de un om care a reușit să-și păstreze postul de primar într-o localitate cu 10.000 de locuitori, dar nu a reușit să-și păstreze postul de prim-ministru. Cine a făcut diferența? Moțiunea de cenzură, care a trecut cu 281 de voturi. Cine a votat? Probabil cei care nu au avut ce face cu timpul.",
+    "record_id": "PA-EP28-01",
+    "scores": {
+      "non_generic": 4,
+      "pastila_acida_style": 4,
+      "relevance": 5,
+      "restraint": 5,
+      "romanian_naturalness": 4,
+      "sarcasm_irony_roast": 4,
+      "target_choice": 4
+    },
+    "slot": "0cbf7a072ae3"
+  },
+  {
+    "composite": 4.285714,
+    "output": "Un nou proiect legislativ vrea să amenințe cu sancțiuni mai mari pe cei care tulbure liniștea publică, ziua și noaptea. Cine dă petreceri, muzică prea tare sau face scandal repetat, ar putea plăti sancțiuni de câteva mii de lei. Iar dacă vecinii sună din nou la Poliție, amenzi cresc progresiv – mai ales pentru recidiviști. Un pas în direcția în care toți suntem responsabili, dar doar pentru cei care nu știu cum să se comporte.",
+    "record_id": "PA-EP28-02",
+    "scores": {
+      "non_generic": 4,
+      "pastila_acida_style": 4,
+      "relevance": 5,
+      "restraint": 5,
+      "romanian_naturalness": 3,
+      "sarcasm_irony_roast": 4,
+      "target_choice": 5
+    },
+    "slot": "0cbf7a072ae3"
+  },
+  {
+    "composite": 3.714286,
+    "output": "Ministrul Educației a avut o zi plină de lecții: una de la eleva care vorbește despre interzicerea telefoanelor în școli, alta de la oamenii care îi spun că ar trebui să nu se uite la telefon în timpul discursului. Așa că, într-o zi plină de lecții, a ales să înceapă cu una de la sine.",
+    "record_id": "PA-EP30-01",
+    "scores": {
+      "non_generic": 3,
+      "pastila_acida_style": 3,
+      "relevance": 5,
+      "restraint": 5,
+      "romanian_naturalness": 4,
+      "sarcasm_irony_roast": 2,
+      "target_choice": 4
+    },
+    "slot": "0cbf7a072ae3"
+  },
+  {
+    "composite": 2.857143,
+    "output": "Un copil de 15 ani, înecat cu un sandwich în gură – nu e un capitol dintr-un roman de științifică ficțională, ci o realitate care ne face să ne întrebăm dacă învățământul nostru e pregătit să-și asume responsabilitatea de a proteja copiii. Cazul e un semn de alarmă, nu un capitol de științifică ficțională.",
+    "record_id": "PA-EP30-02",
+    "scores": {
+      "non_generic": 2,
+      "pastila_acida_style": 2,
+      "relevance": 4,
+      "restraint": 5,
+      "romanian_naturalness": 3,
+      "sarcasm_irony_roast": 1,
+      "target_choice": 3
+    },
+    "slot": "0cbf7a072ae3"
+  },
+  {
+    "composite": 3.857143,
+    "output": "Un fost director al FBI, într-o postare pe Instagram, a scris „8647” cu scoici pe nisip. Administrația Trump interpretează „86” ca „eliminare”, iar „47” ca referire la președintele în funcție. Problema e că „86” e un termen de zeci de ani în slang, cu sensul de „nu mai e disponibil” – ca un produs într-un bar. Comey susține că nu a vrut nimic, dar părerea lui nu e prea ascultată.",
+    "record_id": "PA-EP28-03",
+    "scores": {
+      "non_generic": 3,
+      "pastila_acida_style": 3,
+      "relevance": 5,
+      "restraint": 5,
+      "romanian_naturalness": 4,
+      "sarcasm_irony_roast": 2,
+      "target_choice": 5
+    },
+    "slot": "0cbf7a072ae3"
+  },
+  {
+    "composite": 3.571429,
+    "output": "Un nou pas în direcția corectă, dar cu un pic de întârziere. Când se face ceva pentru cei care au nevoie, e întotdeauna prea târziu. Dar, bineînțeles, nu e vina lor – e vina sistemului. Să aibă un concediu medical plătit, de la prima zi, e un lucru simplu, dar care ar trebui să fie standard. Să nu mai aibă nevoie să se lupte și cu bani, și cu timp, și cu griji. Să aibă dreptul să se odihnească, fără să se întrebe dacă va mai avea un salariu. E un pas înainte, dar și un pas în spate – pentru că orice măsură care se aplică doar „începând cu 1 iunie” pare că a fost planificată cu o lun",
+    "record_id": "PA-EP30-03",
+    "scores": {
+      "non_generic": 1,
+      "pastila_acida_style": 3,
+      "relevance": 5,
+      "restraint": 4,
+      "romanian_naturalness": 4,
+      "sarcasm_irony_roast": 3,
+      "target_choice": 5
+    },
+    "slot": "0cbf7a072ae3"
+  },
+  {
+    "composite": 3.428571,
+    "output": "Primarul Tulcei pare să nu știe că avertizările RO-Alert nu sunt un apel la turism, ci un sistem de alarmă. Dacă vrea să îl facă mai prietenos, poate începe cu „Dragă turist, suntem în Delta Dunării, nu într-un film de șoapte. Atenție la drone, dar mai ales la șoapte.”",
+    "record_id": "PA-EP29-01",
+    "scores": {
+      "non_generic": 3,
+      "pastila_acida_style": 3,
+      "relevance": 4,
+      "restraint": 5,
+      "romanian_naturalness": 4,
+      "sarcasm_irony_roast": 2,
+      "target_choice": 3
+    },
+    "slot": "0cbf7a072ae3"
+  },
+  {
+    "composite": 3.571429,
+    "output": "Un nou pas în direcția în care Rusia își îndreaptă privirea, nu spre proprii cetățeni, ci spre orice „interese” se încurcă într-o anchetă străină. Legea de la Duma pare să aibă un singur scop: să ofere lui Putin un motiv plauzibil pentru orice acțiune militară, chiar și în locuri unde nu există niciun cetățean rus. Ironia este că, în același timp, statele occidentale încearcă să-și protejeze cetățenii din Rusia, dar nu se gândesc să le ofere un „instrument legal” pentru a face același lucru. Așa se face că, într-o lume în care toți vorbesc despre drepturile omului, unii se îndreptă spre drepturile cetățenilor, dar cu o definiție",
+    "record_id": "PA-EP29-02",
+    "scores": {
+      "non_generic": 3,
+      "pastila_acida_style": 3,
+      "relevance": 4,
+      "restraint": 4,
+      "romanian_naturalness": 4,
+      "sarcasm_irony_roast": 3,
+      "target_choice": 4
+    },
+    "slot": "0cbf7a072ae3"
+  },
+  {
+    "composite": 4.714286,
+    "output": "Guvernul a decis să taxeze rovinietă în funcție de norma EURO a mașinii. Deci, dacă ai o mașină cu normă Euro 0, ești pregătit să plătești mai mult. E o măsură „aliniată la standardele europene”, dar, evident, nu la standardele europene de echitate. Cineva a uitat să-și alinieze mașina cu norma Euro, dar a reușit să-și alinieze taxele cu norma Euro.",
+    "record_id": "PA-EP29-03",
+    "scores": {
+      "non_generic": 5,
+      "pastila_acida_style": 5,
+      "relevance": 5,
+      "restraint": 5,
+      "romanian_naturalness": 4,
+      "sarcasm_irony_roast": 5,
+      "target_choice": 4
+    },
+    "slot": "0cbf7a072ae3"
+  },
+  {
+    "composite": 4.285714,
+    "output": "Un guvern condus de un om care a reușit să-și păstreze postul de primar într-o localitate cu 10.000 de locuitori, dar nu a reușit să-și păstreze postul de prim-ministru. Cine a făcut diferența? Moțiunea de cenzură, care a trecut cu 281 de voturi. Cine a votat? Probabil cei care nu au avut ce face cu timpul.",
+    "record_id": "PA-EP28-01",
+    "scores": {
+      "non_generic": 4,
+      "pastila_acida_style": 4,
+      "relevance": 5,
+      "restraint": 5,
+      "romanian_naturalness": 4,
+      "sarcasm_irony_roast": 4,
+      "target_choice": 4
+    },
+    "slot": "5ec9cc76e8cd"
+  },
+  {
+    "composite": 4.142857,
+    "output": "Un nou proiect legislativ vrea să amenințe cu sancțiuni mai mari pe cei care tulbure liniștea publică, ziua și noaptea. Cine dă petreceri, muzică prea tare sau face scandal repetat, ar putea plăti sancțiuni de câteva mii de lei. Iar dacă vecinii sună din nou la Poliție, amenzi cresc progresiv – mai ales pentru recidiviști. Un pas în direcția în care toți suntem deja recidiviști, dar cu un plus de formalism.",
+    "record_id": "PA-EP28-02",
+    "scores": {
+      "non_generic": 4,
+      "pastila_acida_style": 4,
+      "relevance": 5,
+      "restraint": 5,
+      "romanian_naturalness": 3,
+      "sarcasm_irony_roast": 3,
+      "target_choice": 5
+    },
+    "slot": "5ec9cc76e8cd"
+  },
+  {
+    "composite": 3.714286,
+    "output": "Ministrul Educației a avut o zi plină de lecții: una de la eleva care vorbește despre interzicerea telefoanelor în școli, alta de la oamenii care îi spun că ar trebui să nu se uite la telefon în timpul discursului. Așa că, într-o zi plină de lecții, a ales să înceapă cu una de la sine.",
+    "record_id": "PA-EP30-01",
+    "scores": {
+      "non_generic": 3,
+      "pastila_acida_style": 3,
+      "relevance": 5,
+      "restraint": 5,
+      "romanian_naturalness": 4,
+      "sarcasm_irony_roast": 2,
+      "target_choice": 4
+    },
+    "slot": "5ec9cc76e8cd"
+  },
+  {
+    "composite": 2.857143,
+    "output": "Un copil de 15 ani, înecat cu un sandwich în gură – nu e un capitol dintr-un roman de științifică ficțională, ci o realitate care ne face să ne întrebăm dacă învățământul nostru e pregătit să-și asume responsabilitatea de a proteja copiii. Cazul e un semn de alarmă, nu un capitol de științifică ficțională.",
+    "record_id": "PA-EP30-02",
+    "scores": {
+      "non_generic": 2,
+      "pastila_acida_style": 2,
+      "relevance": 4,
+      "restraint": 5,
+      "romanian_naturalness": 3,
+      "sarcasm_irony_roast": 1,
+      "target_choice": 3
+    },
+    "slot": "5ec9cc76e8cd"
+  },
+  {
+    "composite": 3.857143,
+    "output": "Un fost director al FBI, într-o postare pe Instagram, a scris „8647” cu scoici pe nisip. Administrația Trump interpretează „86” ca „eliminare”, iar „47” ca referire la președintele în funcție. Problema e că „86” e un termen de zeci de ani în slang, cu sensul de „nu mai e disponibil” – ca un produs într-un bar. Comey susține că nu a vrut nimic, dar părerea lui nu e prea ascultată.",
+    "record_id": "PA-EP28-03",
+    "scores": {
+      "non_generic": 3,
+      "pastila_acida_style": 3,
+      "relevance": 5,
+      "restraint": 5,
+      "romanian_naturalness": 4,
+      "sarcasm_irony_roast": 2,
+      "target_choice": 5
+    },
+    "slot": "5ec9cc76e8cd"
+  },
+  {
+    "composite": 3.142857,
+    "output": "Un nou pas în direcția corectă, dar cu un pic de întârziere. Când se face ceva pentru cei care au nevoie, e întotdeauna prea târziu. Dar, bineînțeles, nu e vina lor – e vina sistemului. Să aibă un concediu medical plătit, de la prima zi, e un lucru simplu, dar care ar trebui să fie standard. Să nu mai aibă nevoie să se lupte și cu bani, și cu timp, și cu griji. Să aibă dreptul să se odihnească, fără să se întrebe dacă va mai avea un salariu. E un pas înainte, dar și un pas în spate – pentru că toate aceste măsuri ar trebui să fie deja implementate. Dar, într-un sistem în care cei care nu pot merge la serv",
+    "record_id": "PA-EP30-03",
+    "scores": {
+      "non_generic": 1,
+      "pastila_acida_style": 2,
+      "relevance": 5,
+      "restraint": 4,
+      "romanian_naturalness": 4,
+      "sarcasm_irony_roast": 2,
+      "target_choice": 4
+    },
+    "slot": "5ec9cc76e8cd"
+  },
+  {
+    "composite": 3.428571,
+    "output": "Primarul Tulcei pare să nu știe că avertizările RO-Alert nu sunt un anunț de „vacanță în siguranță”, ci un sistem de alertă. Poate că ar trebui să înceapă cu „Dragă turist, ai ajuns în Deltea Dunării, nu într-un film de șoapte. Atenție, dronele sunt aici, dar și păsările, și vântul, și păianjenii. În caz de panică, sună la 112, dar mai întâi verifică dacă ești în siguranță.”",
+    "record_id": "PA-EP29-01",
+    "scores": {
+      "non_generic": 3,
+      "pastila_acida_style": 3,
+      "relevance": 4,
+      "restraint": 5,
+      "romanian_naturalness": 4,
+      "sarcasm_irony_roast": 2,
+      "target_choice": 3
+    },
+    "slot": "5ec9cc76e8cd"
+  },
+  {
+    "composite": 3.285714,
+    "output": "Un nou pas în direcția în care Rusia își îndreaptă privirea, nu spre proprii cetățeni, ci spre orice „interese” se încurcă într-o anchetă străină. Legea de la Duma pare să aibă un singur scop: să ofere lui Putin un motiv plauzibil pentru orice acțiune militară, chiar și în locuri unde nu există niciun cetățean rus. Ironia este că, în același timp, statele străine încearcă să-și protejeze cetățenii, dar nu pare că le este permis să folosească forța. Așa se face că, într-o lume în care toți sunt „interesați”, singura formă de protecție rămâne să te ataci.",
+    "record_id": "PA-EP29-02",
+    "scores": {
+      "non_generic": 3,
+      "pastila_acida_style": 3,
+      "relevance": 4,
+      "restraint": 4,
+      "romanian_naturalness": 3,
+      "sarcasm_irony_roast": 3,
+      "target_choice": 3
+    },
+    "slot": "5ec9cc76e8cd"
+  },
+  {
+    "composite": 4.714286,
+    "output": "Guvernul a decis să taxeze rovinietă în funcție de norma EURO a mașinii. Deci, dacă ai o mașină cu normă Euro 0, ești pregătit să plătești mai mult. E o măsură „aliniată la standardele europene”, dar, evident, nu la standardele europene de echitate. Cineva a uitat să-și alinieze mașina cu norma Euro, dar a reușit să-și alinieze taxele cu norma Euro.",
+    "record_id": "PA-EP29-03",
+    "scores": {
+      "non_generic": 5,
+      "pastila_acida_style": 5,
+      "relevance": 5,
+      "restraint": 5,
+      "romanian_naturalness": 4,
+      "sarcasm_irony_roast": 5,
+      "target_choice": 4
+    },
+    "slot": "5ec9cc76e8cd"
+  }
+]
