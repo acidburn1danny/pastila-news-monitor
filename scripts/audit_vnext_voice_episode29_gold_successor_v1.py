@@ -1,0 +1,7 @@
+import hashlib,json,sys
+from pathlib import Path
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
+from scripts.build_vnext_voice_episode29_gold_successor_v1 import build,canon,sha
+def audit(root):
+ d=build(root); checks={'identity':d['episode29_admission']['sha256']=='6d945468828d8e0570535c8c1931371b21db4b129ae17af11ef5109a6fa6d194','validation_assignment':d['dataset']['validation_families']==[28,29,30],'three_exact_records':d['span_adjudication']['admitted']==3,'dedup':d['deduplication']['status']=='PASS' and d['deduplication']['exact_commentary_duplicates']==0 and d['deduplication']['normalized_commentary_duplicates']==0,'holdout_unread':not d['contamination']['holdout_content_read'] and not d['contamination']['qwen3_bakeoff_content_read'],'frozen_hashes':all(sha(root/x['path'])==x['sha256'] for x in d['frozen_files']),'not_ready':d['qwen3_lora_readiness']=='FAIL_CLOSED_NOT_READY','protected':not d['active_product_modified'] and not d['canonical_rollback_modified']}; a={'schema':'vnext-voice-episode29-gold-successor-audit','schema_version':1,'status':'PASS' if all(checks.values()) else 'FAIL','checks':checks,'result_identity':d['result_identity']}; a['audit_identity']=hashlib.sha256(canon(a)).hexdigest(); (root/'docs/artifacts/vnext-voice-episode29-gold-successor-v1-audit.json').write_text(json.dumps(a,indent=2,sort_keys=True)+'\n'); assert a['status']=='PASS'; return a
+if __name__=='__main__': audit(Path(__file__).resolve().parents[1])

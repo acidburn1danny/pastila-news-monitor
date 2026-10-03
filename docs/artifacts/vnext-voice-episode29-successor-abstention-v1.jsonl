@@ -1,0 +1,4 @@
+{"candidate": "EP22_TOPIC1_TAIL", "label": "ABSTAIN_INSUFFICIENT_BOUNDARY", "model_visible_text": false, "reason": "FACTUAL_RESTATEMENT_INTERLEAVED_WITH_COMMENTARY", "record_id": "ABSTAIN-01"}
+{"candidate": "EP25_TOPIC1_TAIL", "label": "ABSTAIN_INSUFFICIENT_BOUNDARY", "model_visible_text": false, "reason": "SPECULATIVE_FACTUAL_LINKAGE_WITHOUT_SEPARATE_AUTHORITY", "record_id": "ABSTAIN-02"}
+{"candidate": "EP28_TOPIC3", "label": "ABSTAIN_INSUFFICIENT_BOUNDARY", "model_visible_text": false, "reason": "INCOMPLETE_QUOTED_RESPONSE_AT_CANDIDATE_BOUNDARY", "record_id": "ABSTAIN-03"}
+{"candidate": "EP30_TOPIC1", "label": "ABSTAIN_INSUFFICIENT_BOUNDARY", "model_visible_text": false, "reason": "DENSE_FACTUAL_COMMENTARY_INTERLEAVING", "record_id": "ABSTAIN-04"}

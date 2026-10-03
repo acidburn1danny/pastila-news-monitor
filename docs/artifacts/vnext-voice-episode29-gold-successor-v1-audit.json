@@ -1,0 +1,17 @@
+{
+  "audit_identity": "a2be4c4712b04d7e0a7a533310010fd453345ee41b100d7a617c33b14eb09516",
+  "checks": {
+    "dedup": true,
+    "frozen_hashes": true,
+    "holdout_unread": true,
+    "identity": true,
+    "not_ready": true,
+    "protected": true,
+    "three_exact_records": true,
+    "validation_assignment": true
+  },
+  "result_identity": "f52b5cacd39c0b8fb90a5b20f30a0c4a1d3400a1ee356c1876e5b6d20cbaf6f7",
+  "schema": "vnext-voice-episode29-gold-successor-audit",
+  "schema_version": 1,
+  "status": "PASS"
+}
