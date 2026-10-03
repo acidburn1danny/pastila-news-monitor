@@ -1,0 +1,69 @@
+{
+  "active_product_modified": false,
+  "audit_identity": "645e0b99dcd3a76c0fca5ae5a4bcd1e4ff55d8a51b358c7c202a89bc9d8f83e2",
+  "backlog_delta_identity": "4773d24f8e24b03c8aa32067f80a6f3d4d9b6137b10dfaf94f29554abca3accc",
+  "canonical_rollback_modified": false,
+  "cars": [
+    {
+      "car_id": "CAR-01",
+      "finding": "DECLARATIVE_EVIDENCE_SPANS_USED_CRLF_WHILE_SOURCE_PACK_USED_LF",
+      "impact": "INITIAL_BUILD_STOPPED_BEFORE_SUCCESSOR_EVIDENCE_WAS_WRITTEN",
+      "repair": "CANONICALIZE_ONLY_ANNOTATION_SPAN_NEWLINES_TO_SOURCE_LF_WITHOUT_CHANGING_OWNER_BYTES",
+      "root_cause": "BUILDER_LITERAL_NEWLINE_REPRESENTATION_DID_NOT_MATCH_SOURCE_ENCODING"
+    },
+    {
+      "car_id": "CAR-02",
+      "finding": "READINESS_CHECK_USED_TOTAL_PACK_RECORDS_INSTEAD_OF_DEMONSTRATED_RESTRAINT_SUPPORT",
+      "impact": "RESTRAINT_SUBGATE_WAS INCORRECTLY REPORTED PASS IN PRE_FINAL EVIDENCE",
+      "repair": "BIND_RESTRAINT_READINESS_TO_DEMONSTRATED_4_OF_8_SUPPORT_AND_REPORT_REMAINING_GAP",
+      "root_cause": "THRESHOLD_EXPRESSION_WAS_NOT_BOUND_TO_QUALITY_COVERAGE_RESTRAINT_COUNT"
+    }
+  ],
+  "commentary_byte_exact": true,
+  "dataset_successor_identity": "33ecca512d39dff8d8c4edbdc1b36c2bbe7c09df3369f4972fd4a0615217f76e",
+  "deduplication": "PASS_NO_EXACT_COMMENTARY_DUPLICATES",
+  "factual_commentary_separation": "PASS",
+  "findings": [
+    {
+      "finding": "PACK_CLOSES_ORGANIC_NATURALNESS_FACTUAL_DISCIPLINE_AND_VARIATION_BACKLOG_LINES",
+      "id": "F-01",
+      "severity": "NON_BLOCKING"
+    },
+    {
+      "finding": "SECOND_EXPERIMENT_TRAIN_POSITIVE_AND_COMMENTARY_TOKEN_THRESHOLDS_REMAIN_OPEN",
+      "id": "F-02",
+      "severity": "READINESS_BLOCKER"
+    },
+    {
+      "finding": "NO_MODEL_VISIBLE_ABSTENTION_ADMITTED_FROM_PACK",
+      "id": "F-03",
+      "severity": "NON_BLOCKING"
+    }
+  ],
+  "fresh_audit_restarts": [
+    {
+      "car_id": "CAR-01",
+      "evidence_invalidated": "INITIAL_FAILED_BUILD_ATTEMPT",
+      "restart_result": "PASS"
+    },
+    {
+      "car_id": "CAR-02",
+      "evidence_invalidated": "ALL_PRE_FINAL_SUCCESSOR_BACKLOG_AND_AUDIT_IDENTITIES",
+      "restart_result": "PASS"
+    }
+  ],
+  "holdout_exposure": 0,
+  "legacy_dependency_count": 0,
+  "mechanism_annotation": "PASS_SPAN_DERIVED",
+  "protected_target_policy": "PASS",
+  "qwen3_bakeoff_exposure": 0,
+  "records_admitted": 10,
+  "records_rejected": 0,
+  "schema": "vnext-voice-owner-gold-pack01-audit",
+  "schema_version": 1,
+  "source_pack_sha256": "0be3c092e9189c516996b60f2ca1d858de52e2162fbdddcaeb299a30d26c45d5",
+  "status": "PASS_0_INTEGRITY_BLOCKERS",
+  "train_validation_family_overlap": 0,
+  "training_performed": false,
+  "voice_state": "DISABLED_UNTIL_PROMOTION"
+}

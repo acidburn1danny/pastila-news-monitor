@@ -1,0 +1,45 @@
+{
+  "admitted_records": 10,
+  "backlog_delta_identity": "4773d24f8e24b03c8aa32067f80a6f3d4d9b6137b10dfaf94f29554abca3accc",
+  "backlog_predecessor_identity": "2af65f4653a62bbd55e1b0747cab3d99dcf0de324c2e04ef070db12978f8eacb",
+  "curriculum_designed_records": 0,
+  "dataset_successor_identity": "33ecca512d39dff8d8c4edbdc1b36c2bbe7c09df3369f4972fd4a0615217f76e",
+  "generated_owner_gold": false,
+  "organic_owner_written_records": 10,
+  "quota_fill": false,
+  "remaining_second_experiment_gap": {
+    "commentary_tokens_estimated": 745,
+    "factual_restraint_records": 4,
+    "model_visible_abstention": "OUT_OF_SCOPE_AND_STILL_ZERO",
+    "train_positive": 11,
+    "validation_positive": 0
+  },
+  "requirements": [
+    {
+      "admitted": 10,
+      "minimum": 6,
+      "requirement_id": "OG-NATURAL-01",
+      "status": "CLOSED"
+    },
+    {
+      "admitted": 10,
+      "minimum": 6,
+      "requirement_id": "OG-FACTUAL-01",
+      "status": "CLOSED"
+    },
+    {
+      "admitted": 10,
+      "minimum": 4,
+      "requirement_id": "OG-VARIATION-01",
+      "status": "CLOSED"
+    },
+    {
+      "admitted": 0,
+      "minimum": 5,
+      "requirement_id": "CD-COMPOSE-01",
+      "status": "OPEN_NO_QUOTA_FILL"
+    }
+  ],
+  "schema": "vnext-voice-owner-gold-pack01-backlog-delta",
+  "schema_version": 1
+}

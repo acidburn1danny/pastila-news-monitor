@@ -1,0 +1,151 @@
+{
+  "active_product_modified": false,
+  "admission_backlog_predecessor_identity": "2af65f4653a62bbd55e1b0747cab3d99dcf0de324c2e04ef070db12978f8eacb",
+  "canonical_rollback_modified": false,
+  "commentary_tokens": {
+    "method": "ceil(UTF8-decoded-character-count/4)-per-new-record",
+    "new_estimated": 3221,
+    "predecessor_estimated": 4034,
+    "successor_estimated": 7255
+  },
+  "counts": {
+    "model_visible_abstention": 0,
+    "negative": 27,
+    "new_positive": 10,
+    "train_positive": 25,
+    "validation_positive": 12
+  },
+  "dataset_successor_identity": "33ecca512d39dff8d8c4edbdc1b36c2bbe7c09df3369f4972fd4a0615217f76e",
+  "factual_safety": {
+    "runtime_constrained_projection_required": true,
+    "source_verified_records": 10,
+    "transparent_fiction_separated": 10,
+    "unsupported_fact_records": 0
+  },
+  "files": {
+    "admission": {
+      "path": "docs/artifacts/vnext-voice-owner-gold-pack01-v1-admission.jsonl",
+      "sha256": "809aa638605eb6247532b0d851ab1b8b03fa5b71c754b3200e814201dc974e0c"
+    },
+    "train": {
+      "path": "docs/artifacts/vnext-voice-owner-gold-pack01-v1-train-successor.jsonl",
+      "sha256": "0679de5d5130ba064d27377d9e8fb9e20bd502450211e74f20f1a0785653ac17"
+    },
+    "validation": {
+      "path": "docs/artifacts/vnext-voice-owner-gold-pack01-v1-validation-successor.jsonl",
+      "sha256": "6638e48f84c210de8142b2495c862218faa683f669cc625ff9b2ac0d72a219a4"
+    }
+  },
+  "gui_state": "ACTIVE",
+  "mechanism_coverage": {
+    "covered": [
+      "HMCV1-B01-M01-SARCASM",
+      "HMCV1-B01-M02-IRONY",
+      "HMCV1-B01-M03-CONTRAST_JUXTAPOSITION",
+      "HMCV1-B01-M04-COMIC_ANALOGY",
+      "HMCV1-B01-M05-FRAME_TRANSFER",
+      "HMCV1-B01-M06-HYPERBOLE",
+      "HMCV1-B01-M07-UNDERSTATEMENT",
+      "HMCV1-B01-M08-ESCALATION",
+      "HMCV1-B02-M03-ABSURD_LOGICAL_EXTENSION",
+      "HMCV1-B02-M04-PERSONIFICATION",
+      "HMCV1-B02-M05-COMIC_RECLASSIFICATION_CATEGORY_ERROR",
+      "HMCV1-B02-M06-MOCK_PRAISE",
+      "HMCV1-B02-M07-FALSE_CONCESSION",
+      "HMCV1-B02-M08-RHETORICAL_QUESTION",
+      "HMCV1-B02-M09-DISCOURSE_FORM_PARODY",
+      "HMCV1-B02-M10-ROLE_SIMULATION",
+      "HMCV1-B03-M01-SETUP_PAYOFF",
+      "HMCV1-B03-M02-RULE_OF_THREE",
+      "HMCV1-B03-M03-REPETITION_WITH_VARIATION",
+      "HMCV1-B03-M04-COMIC_ENUMERATION",
+      "HMCV1-B03-M06-DELAYED_PAYOFF",
+      "HMCV1-B03-M07-CALLBACK",
+      "HMCV1-B04-M01-PERSPECTIVE_SHIFT",
+      "HMCV1-B04-M06-STATUS_REVERSAL",
+      "HMCV1-B04-M09-METONYMIC_SUBSTITUTION",
+      "HMCV1-B04-M10-SENTENCE_FINAL_REINTERPRETATION",
+      "HMCV1-B05-M01-BOOKENDING",
+      "HMCV1-B05-M04-KNOWN_UNKNOWN_PLAY",
+      "HMCV1-B05-M06-FAUX_DEFINITION",
+      "HMCV1-B05-M09-FAMILIAR_EXPRESSION_SUBVERSION"
+    ],
+    "curriculum_total": 50,
+    "newly_covered": [
+      "HMCV1-B02-M04-PERSONIFICATION",
+      "HMCV1-B03-M02-RULE_OF_THREE",
+      "HMCV1-B03-M07-CALLBACK",
+      "HMCV1-B04-M06-STATUS_REVERSAL",
+      "HMCV1-B04-M10-SENTENCE_FINAL_REINTERPRETATION",
+      "HMCV1-B05-M01-BOOKENDING",
+      "HMCV1-B05-M04-KNOWN_UNKNOWN_PLAY"
+    ],
+    "positive_gaps": [
+      "HMCV1-B01-M09-REVERSAL",
+      "HMCV1-B01-M10-DEADPAN_OBSERVATION",
+      "HMCV1-B02-M01-MISDIRECTION",
+      "HMCV1-B02-M02-LITERALIZATION",
+      "HMCV1-B03-M05-PARALLELISM_STRUCTURAL_SYMMETRY",
+      "HMCV1-B03-M08-ANTI_CLIMAX_BATHOS",
+      "HMCV1-B03-M09-TAG_COMIC_AFTERTHOUGHT",
+      "HMCV1-B03-M10-PAUSE_BEAT_ELLIPTICAL_OMISSION",
+      "HMCV1-B04-M02-NAIVE_NARRATOR_FEIGNED_INNOCENCE",
+      "HMCV1-B04-M03-FAUX_COMPLIANCE",
+      "HMCV1-B04-M04-SELF_IMPLICATION",
+      "HMCV1-B04-M05-AUDIENCE_COMPLICITY_SHARED_RECOGNITION",
+      "HMCV1-B04-M07-DOUBLE_MEANING",
+      "HMCV1-B04-M08-ZEUGMA_SPLIT_SEMANTIC_ATTACHMENT",
+      "HMCV1-B05-M02-RUNNING_GAG",
+      "HMCV1-B05-M03-CONTROLLED_AMBIGUITY",
+      "HMCV1-B05-M05-ABSURD_ALTERNATIVES_WITHOUT_SELECTION",
+      "HMCV1-B05-M07-COMIC_NAMING_LABELING",
+      "HMCV1-B05-M08-APHORISTIC_COMPRESSION",
+      "HMCV1-B05-M10-SERIOUS_RESET_WITHHELD_HUMOR"
+    ],
+    "predecessor": 23,
+    "successor": 30
+  },
+  "partition": {
+    "holdout_exposure": 0,
+    "holdout_families": [
+      31,
+      32,
+      33,
+      34
+    ],
+    "new_train": 7,
+    "new_validation": 3,
+    "qwen3_bakeoff_exposure": 0
+  },
+  "predecessor_identity": "cbc0001c54bad87f17d082e6a4ce09fceee0c23deaaa650129e2c003847cc935",
+  "quality_coverage": {
+    "authentic_mechanism_composition": 10,
+    "concision": 3,
+    "factual_discipline": 10,
+    "restraint": 4,
+    "romanian_naturalness": 10,
+    "target_choice": 10,
+    "variation_anti_repetition": 10
+  },
+  "schema": "vnext-voice-owner-gold-pack01-dataset-successor",
+  "schema_version": 1,
+  "second_experiment_readiness": {
+    "commentary_tokens_min": 8000,
+    "commentary_tokens_pass": false,
+    "factual_restraint_records_pass": false,
+    "minimum_new_factual_restraint_records": 8,
+    "status": "FAIL_CLOSED_NOT_READY",
+    "train_positive_min": 36,
+    "train_positive_pass": false,
+    "validation_positive_min": 12,
+    "validation_positive_pass": true
+  },
+  "source_pack": {
+    "bytes": 23048,
+    "path": "docs/artifacts/vnext-voice-owner-gold-pack01-v1/sources/PASTILA_VOICE_OWNER_GOLD_PACK_01.txt",
+    "sha256": "0be3c092e9189c516996b60f2ca1d858de52e2162fbdddcaeb299a30d26c45d5"
+  },
+  "training_performed": false,
+  "voice_state": "DISABLED_UNTIL_PROMOTION",
+  "weights_modified": false
+}
