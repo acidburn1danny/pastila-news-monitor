@@ -1,0 +1,31 @@
+{
+  "config_identity": "4abb9cde5011b0a7e84b135f82fd98f0bcbd52661ae5cd6db215bc915bd0111d",
+  "holdout_exposure": 0,
+  "installed": false,
+  "manifest_identity": "680e2a1a577696943d50020285c700edd89c03fe838955973a8241b8e4cc973a",
+  "packages": [
+    {
+      "adapter_sha256": "051b3b41e590802f1a120830feecf1a129f28fcf69965adf976cadbb9b493b53",
+      "external_path": "/root/vnext-qwen3-experimental-lora-v2-run/seed-1811",
+      "package_identity": "faf2d0ae132622dae827a2d8fb750563fcb57e641fdd35366babe1fbe8d543b3",
+      "seed": 1811
+    },
+    {
+      "adapter_sha256": "7d3e5560b280a2757d5679737c55abfdc48d5533104b054a2ab07e8fbba9d411",
+      "external_path": "/root/vnext-qwen3-experimental-lora-v2-run/seed-3001",
+      "package_identity": "faf29cb09ba20a0be0f3c5765df53011647f5ea239d13dbe9c0ea92f81e3d6ec",
+      "seed": 3001
+    },
+    {
+      "adapter_sha256": "6bea90ee348ebce64e84875246280981f0b9a1c09bb8fa1e8c923f4221d34e10",
+      "external_path": "/root/vnext-qwen3-experimental-lora-v2-run/seed-4621",
+      "package_identity": "df16d32f78adb0ca362b94b92efe012523574746788d6599d645d24ec5b373e8",
+      "seed": 4621
+    }
+  ],
+  "schema": "vnext-qwen3-experimental-lora-v2-package-manifest",
+  "schema_version": 1,
+  "state": "EXPERIMENTAL_NON_PROMOTABLE",
+  "training_result_identity": "e5d12db78b89dc0da845be11ab33283087a9081171e49dfb73326f2a28bba61c",
+  "voice_state": "DISABLED_UNTIL_PROMOTION"
+}

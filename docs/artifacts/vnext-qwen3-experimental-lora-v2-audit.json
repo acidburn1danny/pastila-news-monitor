@@ -1,0 +1,105 @@
+{
+  "active_product_modified": false,
+  "adapter_installed": false,
+  "audit_identity": "67361918d04950b4e8b4cab48c186c020d5d08b0f4cc15d1cd893c4603e27329",
+  "authority_commit": "8305cbaf9669c6b40d4c836a96598887dca68262",
+  "canonical_rollback_modified": false,
+  "cars": [
+    {
+      "finding": "PACK03_MIXED_RECORD_SCHEMA_EPISODE_OPTIONAL",
+      "id": "CAR-01",
+      "impact": "FIRST ATTEMPT STOPPED BEFORE TRAINING; PARTIAL CONFIG INVALIDATED",
+      "pre_car_evidence_used": false,
+      "pre_car_training_runs": 0,
+      "repair": "USE EPISODE WHEN PRESENT, OTHERWISE FAMILY_IDENTITY; DELETE PARTIAL OUTPUT; FULL FRESH RESTART",
+      "root_cause": "EXPERIMENT1 EXECUTOR REQUIRED EPISODE ON EVERY RECORD; CONTEMPORARY PACK RECORDS USE FAMILY IDENTITY"
+    }
+  ],
+  "config_identity": "4abb9cde5011b0a7e84b135f82fd98f0bcbd52661ae5cd6db215bc915bd0111d",
+  "corpus_freeze_identity": "e2f94bb1266cbe64ea48eb244d95637c4d5f1dfdb7d250b3857834c4dc445a8c",
+  "dataset_identity": "b48426314ce66a8bfb8f1e773cf171c07de0116b170dafec2a9c85228439c4e6",
+  "evaluation_result_identity": "f46d83318f0eca4e9fc5cb51d2903c171aa5ff7eff2c439b0800931393a495f2",
+  "findings": [
+    {
+      "evidence": {
+        "baseline": 3.646667,
+        "lora2_seed_means": [
+          3.58,
+          3.673333,
+          3.62
+        ]
+      },
+      "finding": "LORA2_MEAN_DID_NOT_IMPROVE_MATCHING_BASELINE",
+      "id": "F-01",
+      "impact": "NO_PROMOTION; CORPUS SCALE ALONE DID NOT PRODUCE MATERIAL QUALITY GAIN"
+    },
+    {
+      "evidence": {
+        "common_lora1_mean": 3.82963,
+        "common_lora2_mean": 3.688889,
+        "common_lora2_minus_lora1": -0.140741,
+        "direction_consistent_vs_baseline": false,
+        "lora2_full_mean": 3.624444,
+        "lora2_full_stdev": 0.038232
+      },
+      "finding": "LORA2_UNDERPERFORMED_LORA1_ON_COMPATIBLE_COMMON_9",
+      "id": "F-02",
+      "impact": "SECOND EXPERIMENT DOES NOT SUPERSEDE FIRST ADAPTER EVIDENCE"
+    },
+    {
+      "evidence": {
+        "BASELINE_V2_SET": {
+          "concision": 4.733333,
+          "mean_words": 63.2,
+          "restraint": 5.0,
+          "style": 2.8
+        },
+        "LORA2_SEED_1811": {
+          "concision": 4.266667,
+          "mean_words": 81.667,
+          "restraint": 4.533333,
+          "style": 2.933333
+        },
+        "LORA2_SEED_3001": {
+          "concision": 4.333333,
+          "mean_words": 78.867,
+          "restraint": 4.6,
+          "style": 3.066667
+        },
+        "LORA2_SEED_4621": {
+          "concision": 4.133333,
+          "mean_words": 90.267,
+          "restraint": 4.266667,
+          "style": 3.066667
+        }
+      },
+      "finding": "STYLE_SIGNAL_WITH_LENGTH_AND_RESTRAINT_TRADEOFF_PERSISTS",
+      "id": "F-03",
+      "impact": "MODEL LEARNED BEHAVIOR REMAINS NON_PROMOTABLE"
+    },
+    {
+      "evidence": {
+        "BASELINE_V2_SET": 1,
+        "LORA2_SEED_1811": 1,
+        "LORA2_SEED_3001": 1,
+        "LORA2_SEED_4621": 2
+      },
+      "finding": "RAW_PROJECTION_REJECTIONS_REMAIN",
+      "id": "F-04",
+      "impact": "CONSTRAINED PROJECTION REMAINS MANDATORY; FINAL UNSUPPORTED FACT RATE IS ZERO DUE TO RUNTIME"
+    }
+  ],
+  "fresh_audit_restarts": 1,
+  "holdout_exposure": 0,
+  "package_manifest_identity": "680e2a1a577696943d50020285c700edd89c03fe838955973a8241b8e4cc973a",
+  "projection_violations": 0,
+  "promotion": false,
+  "schema": "vnext-qwen3-experimental-lora-v2-audit",
+  "schema_version": 1,
+  "status": "PASS_0_INTEGRITY_BLOCKERS_NON_PROMOTABLE",
+  "terminal": "CONTINUE_EXPERIMENTAL_EVIDENCE",
+  "train_validation_family_overlap": 0,
+  "training_result_identity": "e5d12db78b89dc0da845be11ab33283087a9081171e49dfb73326f2a28bba61c",
+  "unsupported_fact_after_projection": 0,
+  "voice_state": "DISABLED_UNTIL_PROMOTION"
+}

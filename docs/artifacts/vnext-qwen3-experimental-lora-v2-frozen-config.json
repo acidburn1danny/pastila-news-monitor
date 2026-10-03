@@ -1,0 +1,51 @@
+{
+  "authority_commit": "8305cbaf9669c6b40d4c836a96598887dca68262",
+  "base_model_identity": "be259728abcc2c864bdf4d035267a8fcf8ccc57e4e277f8bd5d0934f1963fbc",
+  "base_model_revision": "be259728abcc2c864bdf4d035267a8fcf8ccc57e4e277f8bd5d0934f1963fbc",
+  "batch_size": 1,
+  "config_identity": "4abb9cde5011b0a7e84b135f82fd98f0bcbd52661ae5cd6db215bc915bd0111d",
+  "corpus_freeze_identity": "e2f94bb1266cbe64ea48eb244d95637c4d5f1dfdb7d250b3857834c4dc445a8c",
+  "dataset_identity": "b48426314ce66a8bfb8f1e773cf171c07de0116b170dafec2a9c85228439c4e6",
+  "dataset_sha256": {
+    "train": "0edc1b25c0e279bafbbb712da0f977bce9dd68f4b56f5bd775ab3ec965c81379",
+    "validation": "0e2d9ffba211af997b04f2f2238c3e6de7904c89b38e25167e63d109fe6bbdda"
+  },
+  "decoding": {
+    "do_sample": false,
+    "max_new_tokens": 220
+  },
+  "epochs": 4,
+  "gradient_accumulation": 3,
+  "holdout_access_before_freeze": 0,
+  "learning_rate": 5e-05,
+  "lora": {
+    "alpha": 8,
+    "dropout": 0.05,
+    "r": 4,
+    "targets": [
+      "q_proj",
+      "v_proj"
+    ]
+  },
+  "max_length": 1024,
+  "model_config_sha256": "f7c4eadfbbf522470667b797a3c89be2524832d2d599797248dc304fff447c30",
+  "model_path": "/root/vnext-voice-candidates-v1/sha256/be259728abcc2c864bdf4d035267a8fcf8ccc57e4e277f8bd5d0934f1963fbc",
+  "optimizer": "paged_adamw_8bit",
+  "predecessor_experiment": {
+    "config": "7c0c2e97a1a55b2cbd6453ae179d1c0203331bda0daff2084b4c1d0f7467c1d3",
+    "evaluation": "4a24e59544c95fba72a17c7937650e1b5b19ca40e8a54c5582918c0fb62935f8",
+    "training": "9eef9e86d5a4c35db2f203cf5a92f599e5aa2b1942b02b86fb0a3f33d933b231"
+  },
+  "promotable": false,
+  "prompt_sha256": "3860e7a8e97268822ce8c0a14572eb12c331424a9d3ea195b8dfbfb8a8775801",
+  "quantization": "NF4_DOUBLE_BF16",
+  "schema": "vnext-qwen3-second-experimental-lora-frozen-config",
+  "schema_version": 1,
+  "seeds": [
+    1811,
+    3001,
+    4621
+  ],
+  "tokenizer_identity": "90a2903e36317f2a873560235218be86367fa0ed4209f53096b6d59325fed333",
+  "voice_state": "DISABLED_UNTIL_PROMOTION"
+}

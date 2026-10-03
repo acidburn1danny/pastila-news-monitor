@@ -1,0 +1,1335 @@
+{
+  "acceptance": {
+    "all_three_improve_over_matching_baseline": false,
+    "exact_train_copies_zero": true,
+    "holdout_exposure_zero": true,
+    "lora2_common_improves_lora1": false,
+    "mean_gain_over_baseline_ge_0_50": false,
+    "mean_quality_ge_2_50": true,
+    "projection_violations_zero": true,
+    "setup_commentary_boundary_violations_zero": true,
+    "train_validation_family_overlap_zero": true,
+    "unsupported_fact_rate_after_projection_zero": true
+  },
+  "compatible_common_9_scores": {
+    "BASELINE": {
+      "blind_slot": "bd0bb26a026a",
+      "cases": 9,
+      "mechanism_signal_mean": 0.888889,
+      "memorization": {
+        "exact_train_commentary_copies": 0,
+        "outputs_with_12_token_train_span": 0,
+        "outputs_with_8_token_train_span": 0
+      },
+      "output_length": {
+        "max_words": 85,
+        "mean_words": 67.556
+      },
+      "projection_rejection_rate": 0.111111,
+      "projection_violations": 0,
+      "projections": [
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP28-01",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP28-02",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP30-01",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP30-02",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP28-03",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP30-03",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP29-01",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP29-02",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "REJECT_UNSUPPORTED_FACT",
+          "findings": [
+            "UNSUPPORTED_FACT"
+          ],
+          "record_id": "PA-EP29-03",
+          "status": "ABSTAIN"
+        }
+      ],
+      "quality_composite_mean": 3.622222,
+      "quality_means": {
+        "authentic_mechanism_composition": 1.888889,
+        "concision": 4.555556,
+        "non_generic": 2.777778,
+        "pastila_acida_style": 2.666667,
+        "relevance": 4.666667,
+        "restraint": 5.0,
+        "romanian_naturalness": 4.0,
+        "sarcasm_irony_roast": 1.666667,
+        "target_choice": 4.0,
+        "variation_anti_repetition": 5.0
+      },
+      "raw_projection_rejections": 1,
+      "repetition": {
+        "max_output_words": 85,
+        "mean_output_words": 67.556,
+        "mean_pairwise_lexical_jaccard": 0.129331,
+        "repeated_openings": 1
+      },
+      "unsupported_fact_rate_after_projection": 0.0
+    },
+    "BASELINE_V2_SET": {
+      "blind_slot": "9422fd8e5225",
+      "cases": 9,
+      "mechanism_signal_mean": 0.888889,
+      "memorization": {
+        "exact_train_commentary_copies": 0,
+        "outputs_with_12_token_train_span": 0,
+        "outputs_with_8_token_train_span": 0
+      },
+      "output_length": {
+        "max_words": 85,
+        "mean_words": 67.556
+      },
+      "projection_rejection_rate": 0.111111,
+      "projection_violations": 0,
+      "projections": [
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP28-01",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP28-02",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP30-01",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP30-02",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP28-03",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP30-03",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP29-01",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP29-02",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "REJECT_UNSUPPORTED_FACT",
+          "findings": [
+            "UNSUPPORTED_FACT"
+          ],
+          "record_id": "PA-EP29-03",
+          "status": "ABSTAIN"
+        }
+      ],
+      "quality_composite_mean": 3.622222,
+      "quality_means": {
+        "authentic_mechanism_composition": 1.888889,
+        "concision": 4.555556,
+        "non_generic": 2.777778,
+        "pastila_acida_style": 2.666667,
+        "relevance": 4.666667,
+        "restraint": 5.0,
+        "romanian_naturalness": 4.0,
+        "sarcasm_irony_roast": 1.666667,
+        "target_choice": 4.0,
+        "variation_anti_repetition": 5.0
+      },
+      "raw_projection_rejections": 1,
+      "repetition": {
+        "max_output_words": 85,
+        "mean_output_words": 67.556,
+        "mean_pairwise_lexical_jaccard": 0.129331,
+        "repeated_openings": 1
+      },
+      "unsupported_fact_rate_after_projection": 0.0
+    },
+    "LORA1_SEED_1701": {
+      "blind_slot": "ce2fd277974e",
+      "cases": 9,
+      "mechanism_signal_mean": 0.888889,
+      "memorization": {
+        "exact_train_commentary_copies": 0,
+        "outputs_with_12_token_train_span": 0,
+        "outputs_with_8_token_train_span": 0
+      },
+      "output_length": {
+        "max_words": 112,
+        "mean_words": 67.111
+      },
+      "projection_rejection_rate": 0.333333,
+      "projection_violations": 0,
+      "projections": [
+        {
+          "decision": "REJECT_UNSUPPORTED_FACT",
+          "findings": [
+            "UNSUPPORTED_FACT"
+          ],
+          "record_id": "PA-EP28-01",
+          "status": "ABSTAIN"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP28-02",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP30-01",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP30-02",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP28-03",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP30-03",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "REJECT_UNSUPPORTED_FACT",
+          "findings": [
+            "UNSUPPORTED_FACT"
+          ],
+          "record_id": "PA-EP29-01",
+          "status": "ABSTAIN"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP29-02",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "REJECT_UNSUPPORTED_FACT",
+          "findings": [
+            "UNSUPPORTED_FACT"
+          ],
+          "record_id": "PA-EP29-03",
+          "status": "ABSTAIN"
+        }
+      ],
+      "quality_composite_mean": 3.788889,
+      "quality_means": {
+        "authentic_mechanism_composition": 1.888889,
+        "concision": 4.777778,
+        "non_generic": 3.333333,
+        "pastila_acida_style": 3.222222,
+        "relevance": 4.444444,
+        "restraint": 4.888889,
+        "romanian_naturalness": 4.0,
+        "sarcasm_irony_roast": 2.444444,
+        "target_choice": 3.888889,
+        "variation_anti_repetition": 5.0
+      },
+      "raw_projection_rejections": 3,
+      "repetition": {
+        "max_output_words": 112,
+        "mean_output_words": 67.111,
+        "mean_pairwise_lexical_jaccard": 0.123315,
+        "repeated_openings": 1
+      },
+      "unsupported_fact_rate_after_projection": 0.0
+    },
+    "LORA1_SEED_2903": {
+      "blind_slot": "273cd1fee39e",
+      "cases": 9,
+      "mechanism_signal_mean": 1.0,
+      "memorization": {
+        "exact_train_commentary_copies": 0,
+        "outputs_with_12_token_train_span": 0,
+        "outputs_with_8_token_train_span": 0
+      },
+      "output_length": {
+        "max_words": 118,
+        "mean_words": 73.222
+      },
+      "projection_rejection_rate": 0.222222,
+      "projection_violations": 0,
+      "projections": [
+        {
+          "decision": "REJECT_UNSUPPORTED_FACT",
+          "findings": [
+            "UNSUPPORTED_FACT"
+          ],
+          "record_id": "PA-EP28-01",
+          "status": "ABSTAIN"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP28-02",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP30-01",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP30-02",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP28-03",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP30-03",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP29-01",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP29-02",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "REJECT_UNSUPPORTED_FACT",
+          "findings": [
+            "UNSUPPORTED_FACT"
+          ],
+          "record_id": "PA-EP29-03",
+          "status": "ABSTAIN"
+        }
+      ],
+      "quality_composite_mean": 3.888889,
+      "quality_means": {
+        "authentic_mechanism_composition": 2.0,
+        "concision": 4.666667,
+        "non_generic": 3.444444,
+        "pastila_acida_style": 3.444444,
+        "relevance": 4.666667,
+        "restraint": 4.777778,
+        "romanian_naturalness": 4.0,
+        "sarcasm_irony_roast": 2.777778,
+        "target_choice": 4.111111,
+        "variation_anti_repetition": 5.0
+      },
+      "raw_projection_rejections": 2,
+      "repetition": {
+        "max_output_words": 118,
+        "mean_output_words": 73.222,
+        "mean_pairwise_lexical_jaccard": 0.125266,
+        "repeated_openings": 1
+      },
+      "unsupported_fact_rate_after_projection": 0.0
+    },
+    "LORA1_SEED_4517": {
+      "blind_slot": "b79d22e378bb",
+      "cases": 9,
+      "mechanism_signal_mean": 1.0,
+      "memorization": {
+        "exact_train_commentary_copies": 0,
+        "outputs_with_12_token_train_span": 0,
+        "outputs_with_8_token_train_span": 0
+      },
+      "output_length": {
+        "max_words": 122,
+        "mean_words": 74.0
+      },
+      "projection_rejection_rate": 0.333333,
+      "projection_violations": 0,
+      "projections": [
+        {
+          "decision": "REJECT_UNSUPPORTED_FACT",
+          "findings": [
+            "UNSUPPORTED_FACT"
+          ],
+          "record_id": "PA-EP28-01",
+          "status": "ABSTAIN"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP28-02",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP30-01",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP30-02",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP28-03",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP30-03",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "REJECT_UNSUPPORTED_FACT",
+          "findings": [
+            "UNSUPPORTED_FACT"
+          ],
+          "record_id": "PA-EP29-01",
+          "status": "ABSTAIN"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP29-02",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "REJECT_UNSUPPORTED_FACT",
+          "findings": [
+            "UNSUPPORTED_FACT"
+          ],
+          "record_id": "PA-EP29-03",
+          "status": "ABSTAIN"
+        }
+      ],
+      "quality_composite_mean": 3.811111,
+      "quality_means": {
+        "authentic_mechanism_composition": 2.0,
+        "concision": 4.666667,
+        "non_generic": 3.333333,
+        "pastila_acida_style": 3.333333,
+        "relevance": 4.666667,
+        "restraint": 4.666667,
+        "romanian_naturalness": 4.0,
+        "sarcasm_irony_roast": 2.555556,
+        "target_choice": 3.888889,
+        "variation_anti_repetition": 5.0
+      },
+      "raw_projection_rejections": 3,
+      "repetition": {
+        "max_output_words": 122,
+        "mean_output_words": 74.0,
+        "mean_pairwise_lexical_jaccard": 0.117505,
+        "repeated_openings": 1
+      },
+      "unsupported_fact_rate_after_projection": 0.0
+    },
+    "LORA2_SEED_1811": {
+      "blind_slot": "2ce77447d484",
+      "cases": 9,
+      "mechanism_signal_mean": 0.888889,
+      "memorization": {
+        "exact_train_commentary_copies": 0,
+        "outputs_with_12_token_train_span": 0,
+        "outputs_with_8_token_train_span": 0
+      },
+      "output_length": {
+        "max_words": 127,
+        "mean_words": 78.111
+      },
+      "projection_rejection_rate": 0.0,
+      "projection_violations": 0,
+      "projections": [
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP28-01",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP28-02",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP30-01",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP30-02",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP28-03",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP30-03",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP29-01",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP29-02",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP29-03",
+          "status": "COMMENTARY"
+        }
+      ],
+      "quality_composite_mean": 3.655556,
+      "quality_means": {
+        "authentic_mechanism_composition": 1.888889,
+        "concision": 4.444444,
+        "non_generic": 3.111111,
+        "pastila_acida_style": 3.0,
+        "relevance": 4.333333,
+        "restraint": 4.666667,
+        "romanian_naturalness": 4.0,
+        "sarcasm_irony_roast": 1.888889,
+        "target_choice": 4.222222,
+        "variation_anti_repetition": 5.0
+      },
+      "raw_projection_rejections": 0,
+      "repetition": {
+        "max_output_words": 127,
+        "mean_output_words": 78.111,
+        "mean_pairwise_lexical_jaccard": 0.11261,
+        "repeated_openings": 0
+      },
+      "unsupported_fact_rate_after_projection": 0.0
+    },
+    "LORA2_SEED_3001": {
+      "blind_slot": "b08ef70d51f7",
+      "cases": 9,
+      "mechanism_signal_mean": 0.777778,
+      "memorization": {
+        "exact_train_commentary_copies": 0,
+        "outputs_with_12_token_train_span": 0,
+        "outputs_with_8_token_train_span": 0
+      },
+      "output_length": {
+        "max_words": 123,
+        "mean_words": 78.556
+      },
+      "projection_rejection_rate": 0.0,
+      "projection_violations": 0,
+      "projections": [
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP28-01",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP28-02",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP30-01",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP30-02",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP28-03",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP30-03",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP29-01",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP29-02",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP29-03",
+          "status": "COMMENTARY"
+        }
+      ],
+      "quality_composite_mean": 3.7,
+      "quality_means": {
+        "authentic_mechanism_composition": 1.777778,
+        "concision": 4.444444,
+        "non_generic": 3.222222,
+        "pastila_acida_style": 3.111111,
+        "relevance": 4.555556,
+        "restraint": 4.555556,
+        "romanian_naturalness": 4.0,
+        "sarcasm_irony_roast": 2.111111,
+        "target_choice": 4.222222,
+        "variation_anti_repetition": 5.0
+      },
+      "raw_projection_rejections": 0,
+      "repetition": {
+        "max_output_words": 123,
+        "mean_output_words": 78.556,
+        "mean_pairwise_lexical_jaccard": 0.106711,
+        "repeated_openings": 0
+      },
+      "unsupported_fact_rate_after_projection": 0.0
+    },
+    "LORA2_SEED_4621": {
+      "blind_slot": "4c30d8dc4ed8",
+      "cases": 9,
+      "mechanism_signal_mean": 0.888889,
+      "memorization": {
+        "exact_train_commentary_copies": 0,
+        "outputs_with_12_token_train_span": 0,
+        "outputs_with_8_token_train_span": 0
+      },
+      "output_length": {
+        "max_words": 144,
+        "mean_words": 89.333
+      },
+      "projection_rejection_rate": 0.111111,
+      "projection_violations": 0,
+      "projections": [
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP28-01",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP28-02",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP30-01",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP30-02",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP28-03",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP30-03",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP29-01",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP29-02",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "REJECT_UNSUPPORTED_FACT",
+          "findings": [
+            "UNSUPPORTED_FACT"
+          ],
+          "record_id": "PA-EP29-03",
+          "status": "ABSTAIN"
+        }
+      ],
+      "quality_composite_mean": 3.711111,
+      "quality_means": {
+        "authentic_mechanism_composition": 1.888889,
+        "concision": 4.222222,
+        "non_generic": 3.333333,
+        "pastila_acida_style": 3.222222,
+        "relevance": 4.666667,
+        "restraint": 4.333333,
+        "romanian_naturalness": 4.0,
+        "sarcasm_irony_roast": 2.222222,
+        "target_choice": 4.222222,
+        "variation_anti_repetition": 5.0
+      },
+      "raw_projection_rejections": 1,
+      "repetition": {
+        "max_output_words": 144,
+        "mean_output_words": 89.333,
+        "mean_pairwise_lexical_jaccard": 0.107194,
+        "repeated_openings": 0
+      },
+      "unsupported_fact_rate_after_projection": 0.0
+    }
+  },
+  "config_identity": "4abb9cde5011b0a7e84b135f82fd98f0bcbd52661ae5cd6db215bc915bd0111d",
+  "full_validation_scores": {
+    "BASELINE_V2_SET": {
+      "blind_slot": "446b685ec1de",
+      "cases": 15,
+      "mechanism_signal_mean": 0.933333,
+      "memorization": {
+        "exact_train_commentary_copies": 0,
+        "outputs_with_12_token_train_span": 0,
+        "outputs_with_8_token_train_span": 0
+      },
+      "output_length": {
+        "max_words": 85,
+        "mean_words": 63.2
+      },
+      "projection_rejection_rate": 0.066667,
+      "projection_violations": 0,
+      "projections": [
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP28-01",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP28-02",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP30-01",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP30-02",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP28-03",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP30-03",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP29-01",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP29-02",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "REJECT_UNSUPPORTED_FACT",
+          "findings": [
+            "UNSUPPORTED_FACT"
+          ],
+          "record_id": "PA-EP29-03",
+          "status": "ABSTAIN"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-CONTEMP-P01-08",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-CONTEMP-P01-09",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-CONTEMP-P01-10",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-CONTEMP-P03-07",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-CONTEMP-P03-08",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-CONTEMP-P03-09",
+          "status": "COMMENTARY"
+        }
+      ],
+      "quality_composite_mean": 3.646667,
+      "quality_means": {
+        "authentic_mechanism_composition": 1.933333,
+        "concision": 4.733333,
+        "non_generic": 2.866667,
+        "pastila_acida_style": 2.8,
+        "relevance": 4.533333,
+        "restraint": 5.0,
+        "romanian_naturalness": 4.0,
+        "sarcasm_irony_roast": 1.733333,
+        "target_choice": 3.866667,
+        "variation_anti_repetition": 5.0
+      },
+      "raw_projection_rejections": 1,
+      "repetition": {
+        "max_output_words": 85,
+        "mean_output_words": 63.2,
+        "mean_pairwise_lexical_jaccard": 0.129611,
+        "repeated_openings": 1
+      },
+      "unsupported_fact_rate_after_projection": 0.0
+    },
+    "LORA2_SEED_1811": {
+      "blind_slot": "1002dd1e54b7",
+      "cases": 15,
+      "mechanism_signal_mean": 1.0,
+      "memorization": {
+        "exact_train_commentary_copies": 0,
+        "outputs_with_12_token_train_span": 0,
+        "outputs_with_8_token_train_span": 0
+      },
+      "output_length": {
+        "max_words": 127,
+        "mean_words": 81.667
+      },
+      "projection_rejection_rate": 0.066667,
+      "projection_violations": 0,
+      "projections": [
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP28-01",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP28-02",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP30-01",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP30-02",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP28-03",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP30-03",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP29-01",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP29-02",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP29-03",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-CONTEMP-P01-08",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-CONTEMP-P01-09",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-CONTEMP-P01-10",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "REJECT_UNSUPPORTED_FACT",
+          "findings": [
+            "UNSUPPORTED_FACT"
+          ],
+          "record_id": "PA-CONTEMP-P03-07",
+          "status": "ABSTAIN"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-CONTEMP-P03-08",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-CONTEMP-P03-09",
+          "status": "COMMENTARY"
+        }
+      ],
+      "quality_composite_mean": 3.58,
+      "quality_means": {
+        "authentic_mechanism_composition": 2.0,
+        "concision": 4.266667,
+        "non_generic": 3.266667,
+        "pastila_acida_style": 2.933333,
+        "relevance": 4.066667,
+        "restraint": 4.533333,
+        "romanian_naturalness": 4.0,
+        "sarcasm_irony_roast": 2.066667,
+        "target_choice": 3.666667,
+        "variation_anti_repetition": 5.0
+      },
+      "raw_projection_rejections": 1,
+      "repetition": {
+        "max_output_words": 127,
+        "mean_output_words": 81.667,
+        "mean_pairwise_lexical_jaccard": 0.109347,
+        "repeated_openings": 0
+      },
+      "unsupported_fact_rate_after_projection": 0.0
+    },
+    "LORA2_SEED_3001": {
+      "blind_slot": "4be2091d608b",
+      "cases": 15,
+      "mechanism_signal_mean": 1.066667,
+      "memorization": {
+        "exact_train_commentary_copies": 0,
+        "outputs_with_12_token_train_span": 0,
+        "outputs_with_8_token_train_span": 0
+      },
+      "output_length": {
+        "max_words": 123,
+        "mean_words": 78.867
+      },
+      "projection_rejection_rate": 0.066667,
+      "projection_violations": 0,
+      "projections": [
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP28-01",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP28-02",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP30-01",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP30-02",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP28-03",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP30-03",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP29-01",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP29-02",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP29-03",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-CONTEMP-P01-08",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-CONTEMP-P01-09",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-CONTEMP-P01-10",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "REJECT_UNSUPPORTED_FACT",
+          "findings": [
+            "UNSUPPORTED_FACT"
+          ],
+          "record_id": "PA-CONTEMP-P03-07",
+          "status": "ABSTAIN"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-CONTEMP-P03-08",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-CONTEMP-P03-09",
+          "status": "COMMENTARY"
+        }
+      ],
+      "quality_composite_mean": 3.673333,
+      "quality_means": {
+        "authentic_mechanism_composition": 2.066667,
+        "concision": 4.333333,
+        "non_generic": 3.4,
+        "pastila_acida_style": 3.066667,
+        "relevance": 4.2,
+        "restraint": 4.6,
+        "romanian_naturalness": 4.0,
+        "sarcasm_irony_roast": 2.333333,
+        "target_choice": 3.733333,
+        "variation_anti_repetition": 5.0
+      },
+      "raw_projection_rejections": 1,
+      "repetition": {
+        "max_output_words": 123,
+        "mean_output_words": 78.867,
+        "mean_pairwise_lexical_jaccard": 0.112228,
+        "repeated_openings": 0
+      },
+      "unsupported_fact_rate_after_projection": 0.0
+    },
+    "LORA2_SEED_4621": {
+      "blind_slot": "711282e5f7eb",
+      "cases": 15,
+      "mechanism_signal_mean": 0.866667,
+      "memorization": {
+        "exact_train_commentary_copies": 0,
+        "outputs_with_12_token_train_span": 0,
+        "outputs_with_8_token_train_span": 0
+      },
+      "output_length": {
+        "max_words": 144,
+        "mean_words": 90.267
+      },
+      "projection_rejection_rate": 0.133333,
+      "projection_violations": 0,
+      "projections": [
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP28-01",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP28-02",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP30-01",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP30-02",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP28-03",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP30-03",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP29-01",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-EP29-02",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "REJECT_UNSUPPORTED_FACT",
+          "findings": [
+            "UNSUPPORTED_FACT"
+          ],
+          "record_id": "PA-EP29-03",
+          "status": "ABSTAIN"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-CONTEMP-P01-08",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-CONTEMP-P01-09",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-CONTEMP-P01-10",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-CONTEMP-P03-07",
+          "status": "COMMENTARY"
+        },
+        {
+          "decision": "REJECT_UNSUPPORTED_FACT",
+          "findings": [
+            "UNSUPPORTED_FACT"
+          ],
+          "record_id": "PA-CONTEMP-P03-08",
+          "status": "ABSTAIN"
+        },
+        {
+          "decision": "ALLOW",
+          "findings": [],
+          "record_id": "PA-CONTEMP-P03-09",
+          "status": "COMMENTARY"
+        }
+      ],
+      "quality_composite_mean": 3.62,
+      "quality_means": {
+        "authentic_mechanism_composition": 1.866667,
+        "concision": 4.133333,
+        "non_generic": 3.4,
+        "pastila_acida_style": 3.066667,
+        "relevance": 4.4,
+        "restraint": 4.266667,
+        "romanian_naturalness": 4.0,
+        "sarcasm_irony_roast": 2.266667,
+        "target_choice": 3.8,
+        "variation_anti_repetition": 5.0
+      },
+      "raw_projection_rejections": 2,
+      "repetition": {
+        "max_output_words": 144,
+        "mean_output_words": 90.267,
+        "mean_pairwise_lexical_jaccard": 0.108063,
+        "repeated_openings": 0
+      },
+      "unsupported_fact_rate_after_projection": 0.0
+    }
+  },
+  "holdout": {
+    "exposure": 0,
+    "unsealed": false
+  },
+  "promotion": false,
+  "result_identity": "f46d83318f0eca4e9fc5cb51d2903c171aa5ff7eff2c439b0800931393a495f2",
+  "runtime_projection_effect": {
+    "final_unsupported_fact_rate": 0.0,
+    "safety_attribution": "RUNTIME_CONSTRAINED_PROJECTION_NOT_MODEL_WEIGHTS"
+  },
+  "schema": "vnext-qwen3-second-experimental-lora-comparative-evaluation",
+  "schema_version": 1,
+  "scoring": "DETERMINISTIC_CANDIDATE_BLIND_RUBRIC_V2",
+  "seed_stability": {
+    "common_lora1_mean": 3.82963,
+    "common_lora2_mean": 3.688889,
+    "common_lora2_minus_lora1": -0.140741,
+    "direction_consistent_vs_baseline": false,
+    "lora2_full_mean": 3.624444,
+    "lora2_full_stdev": 0.038232
+  },
+  "status": "PASS_GATE_NON_PROMOTABLE",
+  "terminal": "CONTINUE_EXPERIMENTAL_EVIDENCE",
+  "voice_state": "DISABLED_UNTIL_PROMOTION"
+}
