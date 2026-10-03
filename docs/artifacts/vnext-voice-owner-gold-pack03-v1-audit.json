@@ -1,0 +1,63 @@
+{
+  "active_product_modified": false,
+  "audit_identity": "0513a226d6d694dbdfab979142c2b90d521de3bb66e879f1d27cf970662f3bbd",
+  "backlog_identity": "b5766fb2c2463184a5a97d1bd22dffee30911ef16d0a3ce8a01cc857ac21cdf9",
+  "canonical_rollback_modified": false,
+  "cars": [
+    {
+      "car_id": "CAR-01",
+      "finding": "INITIAL_PACK03_MECHANISM_BINDINGS_USED_TWO_NONEXISTENT_FROZEN_CURRICULUM_IDS_AND_TWO_DUPLICATIVE_SPAN_LABELS",
+      "impact": "BUILD_STOPPED_FAIL_CLOSED_BEFORE_AUTHORITY_EMISSION",
+      "repair": "RESOLVE_IDS_REMOVE_DUPLICATIVE_LABELS_AND_RESTART_BUILD_AND_AUDIT_FRESH",
+      "root_cause": "PROVISIONAL_ANNOTATION_NAMES_WERE_NOT_FIRST_RESOLVED_AGAINST_THE_FROZEN_50_MECHANISM_MANIFEST"
+    },
+    {
+      "car_id": "CAR-02",
+      "finding": "INITIAL_SUPPORT_COUNTER_ASSUMED_ONLY_OBJECT_FORM_MECHANISM_ANNOTATIONS",
+      "impact": "SUCCESSOR_AGGREGATION_STOPPED_BEFORE_IDENTITY_CLOSURE",
+      "repair": "ADD_READ_ONLY_SCHEMA_COMPATIBLE_EXTRACTION_AND_REBUILD_ALL_GENERATED_EVIDENCE_FRESH",
+      "root_cause": "PREDECESSOR_DATASET_CONTAINS_HISTORICAL_STRING_FORM_AND_CURRENT_OBJECT_FORM_ANNOTATIONS"
+    },
+    {
+      "car_id": "CAR-03",
+      "finding": "OWNER_CLARIFICATION_RESOLVES_RECORD_05_LEXICAL_AMBIGUITY",
+      "impact": "RECORD_05_WAS_PREVIOUSLY_REJECTED_FAIL_CLOSED",
+      "repair": "BIND_THE_EXPRESSION_ONLY_TO_AGENCY_AUTHORITY_SENSE_ADMIT_WITHOUT_BYTE_CHANGE_AND_REBUILD_ALL_SUCCESSOR_EVIDENCE_FRESH",
+      "root_cause": "INITIAL_ADJUDICATION_DID_NOT_HAVE_OWNER_AUTHORED_INTENDED_SENSE_FOR_SENT_BY_NAPOLEON"
+    }
+  ],
+  "commentary_byte_exact": true,
+  "corpus_freeze_identity": "e2f94bb1266cbe64ea48eb244d95637c4d5f1dfdb7d250b3857834c4dc445a8c",
+  "dataset_successor_identity": "b48426314ce66a8bfb8f1e773cf171c07de0116b170dafec2a9c85228439c4e6",
+  "deduplication": "PASS_NO_EXACT_COMMENTARY_DUPLICATES",
+  "factual_commentary_separation": "PASS",
+  "findings": [
+    {
+      "finding": "RECORD_05_ADMITTED_WITH_SENT_BY_NAPOLEON_BOUND_EXCLUSIVELY_TO_SENT_ON_NAPOLEONS_ORDERS",
+      "id": "F-01",
+      "severity": "RESOLVED_BY_OWNER_CLARIFICATION"
+    },
+    {
+      "finding": "MODEL_VISIBLE_ABSTENTION_REMAINS_ZERO_AND_PRODUCTION_THRESHOLDS_REMAIN_SEPARATE",
+      "id": "F-02",
+      "severity": "NON_BLOCKING_PROMOTION_GAP"
+    }
+  ],
+  "fresh_audit_restarts": 3,
+  "holdout_exposure": 0,
+  "legacy_dependency_count": 0,
+  "mechanism_annotation": "PASS_SPAN_DERIVED_NO_QUOTA_FILL",
+  "qwen3_bakeoff_exposure": 0,
+  "record05_readjudication": "ADMITTED_AFTER_OWNER_AUTHORED_SEMANTIC_CLARIFICATION_BOUND_EXCLUSIVELY_TO_AGENCY_AUTHORITY_SENSE",
+  "records_admitted": 9,
+  "records_rejected": 0,
+  "rejection": null,
+  "schema": "vnext-voice-owner-gold-pack03-audit",
+  "schema_version": 1,
+  "source_pack_sha256": "a58954816ac8d421993fe15463790bf4b809892a875448f359d4cf36f705dd86",
+  "status": "PASS_0_INTEGRITY_BLOCKERS",
+  "train_validation_family_overlap": 0,
+  "training_performed": false,
+  "unsupported_fact_admitted": 0,
+  "voice_state": "DISABLED_UNTIL_PROMOTION"
+}

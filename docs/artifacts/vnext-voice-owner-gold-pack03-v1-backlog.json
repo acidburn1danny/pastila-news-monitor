@@ -1,0 +1,25 @@
+{
+  "backlog_identity": "b5766fb2c2463184a5a97d1bd22dffee30911ef16d0a3ce8a01cc857ac21cdf9",
+  "corpus_freeze_identity": "e2f94bb1266cbe64ea48eb244d95637c4d5f1dfdb7d250b3857834c4dc445a8c",
+  "counts": {
+    "commentary_tokens": 8926,
+    "factual_restraint": 12,
+    "mechanism_coverage": 46,
+    "positive_gaps": 4,
+    "train": 39,
+    "validation": 15
+  },
+  "dataset_successor_identity": "b48426314ce66a8bfb8f1e773cf171c07de0116b170dafec2a9c85228439c4e6",
+  "model_visible_abstention": "UNCHANGED_ZERO_OUT_OF_SCOPE_FOR_EXPERIMENTAL_OBJECTIVE",
+  "production_gaps_remain": true,
+  "quota_fill": false,
+  "remaining_positive_gaps": [
+    "HMCV1-B02-M02-LITERALIZATION",
+    "HMCV1-B04-M02-NAIVE_NARRATOR_FEIGNED_INNOCENCE",
+    "HMCV1-B05-M03-CONTROLLED_AMBIGUITY",
+    "HMCV1-B05-M05-ABSURD_ALTERNATIVES_WITHOUT_SELECTION"
+  ],
+  "schema": "owner-gold-writing-backlog-post-pack03",
+  "schema_version": 1,
+  "terminal": "CORPUS_FREEZE_READY_SECOND_EXPERIMENT_SEPARATELY_AUTHORIZED"
+}

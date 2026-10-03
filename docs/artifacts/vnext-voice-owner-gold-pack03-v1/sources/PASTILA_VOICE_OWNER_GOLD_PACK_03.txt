@@ -1,0 +1,300 @@
+PASTILA ACIDĂ — VOICE OWNER GOLD WRITING PACK #3
+
+Records: 9
+Purpose: Codex source admission / gold adjudication / mechanism
+annotation / corpus-freeze candidate.
+
+Source-verification status
+
+All 9 records have concrete source authority URLs below. Codex must
+independently re-verify every factual setup and factual assertion before
+admission. Preserve OWNER COMMENTARY exactly; do not rewrite, shorten,
+normalize or sanitize it. If an owner span overstates authority,
+delimit/reject fail-closed rather than silently changing owner bytes.
+
+------------------------------------------------------------------------
+
+RECORD 01 — PTF JIMBOLIA / 40 EURO / FAST TRACK
+
+FACTUAL SETUP
+
+La 2 octombrie 2026, la PTF Jimbolia, un cetățean sârb cu un automarfar
+s-a prezentat pe o arteră destinată autoturismelor. Poliția de Frontieră
+spune că a încercat să ofere 40 de euro pentru urgentarea intrării în
+România, motivând că se grăbea. Suma a fost refuzată; au fost sesizate
+DGA Timiș și parchetul competent. Nu se afirmă o condamnare definitivă.
+
+SOURCES
+
+PRIMARY — Poliția de Frontieră Română:
+https://www.politiadefrontiera.ro/ro/main/i-40-de-euro-pentru-trecerea-mai-rapida-a-frontierei-refuzati-de-o-politista-de-frontiera-de-la-ptf-jimbolia–44736.html
+
+OWNER COMMENTARY
+
+Un șofer sârb de TIR s-a băgat la frontieră pe banda pentru autoturisme
+și, pentru că se grăbea, a încercat să-i dea polițistului 40 de euro ca
+să intre mai repede în România. Polițistul a refuzat, iar cazul a ajuns
+la Anticorupție. Omul a vrut fast track. Și, tehnic, l-a primit. Doar că
+în loc să sară coada la frontieră, a sărit direct la DGA. Data viitoare,
+boss, dacă te grăbești: pleacă mai devreme, nu cu 40 de euro mai bogat
+în idei.
+
+------------------------------------------------------------------------
+
+RECORD 02 — ORA DE IARNĂ / 25 OCTOMBRIE / UE
+
+FACTUAL SETUP
+
+România revine la ora standard în noaptea de 24 spre 25 octombrie 2026.
+La 04:00, ceasurile sunt date înapoi cu 60 de minute; ziua de 25
+octombrie are 25 de ore. Parlamentul European și-a adoptat în martie
+2019 poziția favorabilă eliminării schimbării sezoniere, dar propunerea
+nu a devenit lege deoarece este necesar și acordul Consiliului UE.
+
+SOURCES
+
+Digi24:
+https://www.digi24.ro/magazin/cand-trecem-la-ora-de-iarna-in-2026-ue-analizeaza-renuntarea-la-schimbarea-ceasurilor-ce-urmareste-cel-mai-recent-studiu-3961069
+Digi24 background:
+https://www.digi24.ro/magazin/mai-trecem-la-ora-de-iarna-in-2026-ce-s-a-decis-dupa-anii-de-discutii-privind-renuntarea-la-acest-obicei-3915677
+
+OWNER COMMENTARY
+
+Pe 25 octombrie trecem din nou la ora de iarnă. Dăm ceasurile înapoi și
+primim o zi de 25 de ore. Ceea ce e minunat, pentru că Uniunea Europeană
+discută încă din 2019 să renunțe la schimbarea asta. Șapte ani. Pentru o
+oră. În ritmul ăsta, până se hotărăsc ei ce fac cu ora, schimbăm noi
+fusul orar.
+
+------------------------------------------------------------------------
+
+RECORD 03 — GEO MYKE / FERRARI + LEXUS / ANAF
+
+FACTUAL SETUP
+
+Geo Myke SRL a ajuns în atenția inspectorilor fiscali după achiziția
+unui Ferrari SF90 Stradale. Sursele relatează și un Lexus LX600.
+Ferrari-ul este evaluat la peste 500.000 de euro, iar Lexus-ul la peste
+200.000 de euro. ANAF a stabilit obligații fiscale suplimentare, iar
+societatea a contestat decizia în instanță. Litigiul nu stabilește
+definitiv cine are dreptate.
+
+SOURCES
+
+WikiPress:
+https://wikipress.ro/patronul-de-geo-myke-are-probleme-cu-fiscul-iesean-dupa-ce-si-a-cumparat-un-ferrari/
+Antena 1:
+https://a1.ro/news/actualitate/ce-a-descoperit-anaf-in-garajul-unei-firme-cu-afaceri-de-milioane-cu-statul-una-dintre-masini-valoreaza-peste-500000-de-euro-id1163206.html
+7Iași/WikiPress:
+https://iasi.wikipress.ro/7iasi/ce-a-gasit-anaf-in-garajul-unei-firme-care-a-strans-milioane-din-afaceri-cu-statul-un-ferrari-de-500-000-de-euro-si-un-lexus-de-250-000-de-euro/
+
+OWNER COMMENTARY
+
+ANAF a găsit în patrimoniul unei firme un Ferrari SF90 Stradale de peste
+500.000 de euro și un Lexus LX600 de peste 200.000. În urma controlului
+au fost stabilite obligații fiscale suplimentare, pe care firma le
+contestă în instanță. Deci nu știm cine are dreptate. Va decide
+instanța. Dar știm ceva: când ANAF vine în control și în parcare vede
+Ferrari și Lexus de 700.000 de euro… nu mai întreabă unde e
+contabilitatea. Întreabă: „Bună ziua. Și restul firmei unde-l țineți?”
+
+------------------------------------------------------------------------
+
+RECORD 04 — AI INFRASTRUCTURE / 31.6 TRILLION USD
+
+FACTUAL SETUP
+
+PwC, pe baza modelării Oxford Economics, estimează în scenariul central
+Global Data Centre Outlook 2026–50 că investițiile cumulative globale în
+centre de date pentru infrastructura AI ar putea ajunge la 31,6
+trilioane USD până în 2050. Este o proiecție, nu o sumă deja cheltuită
+sau o certitudine.
+
+SOURCES
+
+PRIMARY — PwC:
+https://www.pwc.com/gx/en/1/services/consulting/technology/data-centre-outlook.html
+PRIMARY — PwC press release:
+https://www.pwc.com/gx/en/news-room/press-releases/2026/global-investment-in-ai-infrastructure.html
+
+OWNER COMMENTARY
+
+Până în 2050, investițiile globale în centre de date pentru AI ar putea
+depăși 30 de trilioane de dolari. 30 de trilioane. Și întrebarea e dacă
+investiția asta va produce vreodată câștigurile de productivitate
+așteptate. Eu zic să avem răbdare. Momentan suntem în faza în care băgăm
+30 de trilioane în inteligență artificială ca să ne spună: „Ai dreptate.
+Îmi cer scuze pentru confuzie.”
+
+------------------------------------------------------------------------
+
+RECORD 05 — MESAJ NAPOLEONIC / AI / 217 ANI
+
+FACTUAL SETUP
+
+Un inginer a folosit AI pentru a descifra în aproximativ șase ore un
+document militar cifrat din 1809 rămas fără o descifrare completă
+publicată timp de peste două secole. Documentul nu a fost scris personal
+de Napoleon: provenea din cartierul general al lui Eugène de Beauharnais
+și a fost transmis lui Marmont la ordinul lui Napoleon.
+
+SOURCES
+
+Euronews:
+https://www.euronews.com/2026/10/02/ai-decodes-217-year-old-napoleonic-letter-in-6-hours
+
+OWNER COMMENTARY
+
+Și ca să nu ziceți că doar facem mișto de AI: Inteligența artificială a
+ajutat la descifrarea unui mesaj codificat trimis de Napoleon, rămas
+nedescifrat timp de 217 ani. Deci retrag ce-am zis mai devreme. AI chiar
+e utilă. I-au trebuit doar 30 de trilioane de dolari ca să afle ce voia
+Napoleon. Sper că măcar n-a fost: „Ajung în 5 minute.”
+
+ADJUDICATION NOTE
+
+Authority says the document was not personally written by Napoleon; it
+was transmitted on Napoleon’s orders. Preserve owner bytes and
+adjudicate „trimis de Napoleon” explicitly. The 30-trillion line is a
+callback to Record 04, not a factual claim about decipherment cost.
+
+------------------------------------------------------------------------
+
+RECORD 06 — RALUCA PODEA / A TREIA FACULTATE
+
+FACTUAL SETUP
+
+Raluca Podea a declarat pe rețelele sociale că, la 38 de ani, a terminat
+a treia facultate. A descris efortul și provocările studiilor.
+Libertatea redă declarația ei că preferă să învețe decât să facă
+„influencereală”.
+
+SOURCES
+
+Libertatea:
+https://www.libertatea.ro/entertainment/raluca-podea-a-terminat-a-treia-facultate-la-38-de-ani-5845649
+
+OWNER COMMENTARY
+
+Raluca Podea a terminat, la 38 de ani, a treia facultate. Și spune că
+preferă să învețe decât să facă „influencereală”. Respect. Trei
+facultăți nu-s puține. Dar îmi place că a anunțat pe social media că nu
+face influencereală. Asta e ca și cum te duci la cârciumă să le spui
+tuturor că te-ai lăsat de băut.
+
+------------------------------------------------------------------------
+
+RECORD 07 — VOYO / MIGRARE / ANULARE ABONAMENT
+
+FACTUAL SETUP
+
+PRO TV a anunțat că în perioada 4–6 octombrie 2026 VOYO trece printr-o
+migrare către o versiune nouă. Conținutul poate fi urmărit în
+continuare, dar mai multe funcționalități de administrare a contului
+sunt temporar indisponibile, inclusiv resetarea/schimbarea parolei,
+crearea contului, achiziția/prelungirea abonamentului, voucherele și
+anularea abonamentului. Indisponibilitatea este prezentată drept efect
+temporar al migrării tehnice.
+
+SOURCES
+
+Libertatea, citând anunțul oficial PRO TV/VOYO:
+https://www.libertatea.ro/stiri/voyo-ce-se-intampla-cu-aplicatia-dupa-4-octombrie-2026-anunt-oficial-pro-tv-mhb6fq3
+
+OWNER COMMENTARY
+
+Între 4 și 6 octombrie, VOYO își mută platforma pe o versiune nouă. Poți
+să te uiți în continuare, dar temporar nu poți să-ți modifici contul,
+parola, plata și nici să-ți anulezi abonamentul. Nu e nimic dubios, e
+doar migrare tehnică. Dar îmi place ordinea priorităților: Filmele merg.
+Plecările nu. Practic, VOYO intră trei zile în modul „relație toxică”:
+„Sigur, iubitule, poți să pleci când vrei.
+Doar că am încuiat ușa de la intrare.”
+
+------------------------------------------------------------------------
+
+RECORD 08 — CATH BOWIE / FORTNITE / GUINNESS
+
+FACTUAL SETUP
+
+Cath Bowie, din Aberdeen, Scoția, a împlinit 78 de ani la 1 septembrie
+2026 și deține recordul Guinness World Records pentru cea mai în vârstă
+femeie streamer de Fortnite pe Twitch. Joacă Fortnite din 2017, iar
+Guinness consemnează peste 24.000 de urmăritori pe Twitch.
+
+SOURCES
+
+PRIMARY — Guinness World Records:
+https://www.guinnessworldrecords.com/news/2026/9/scottish-gamer-gran-celebrates-turning-78-with-her-fortnite-streaming-world-record
+
+OWNER COMMENTARY
+
+Cath Bowie are 78 de ani, joacă Fortnite și a intrat în Guinness World
+Records drept cea mai în vârstă femeie care face streaming de Fortnite
+pe Twitch. Are peste 24.000 de urmăritori. Și mie îmi place enorm știrea
+asta. Pentru că undeva, în momentul ăsta, un puști de 16 ani tocmai a
+fost eliminat din Fortnite și urlă: „Bă, cine dracu’ m-a omorât?!” Cath,
+78 de ani: „Bunica, maică. Acum du-te și fă-ți temele.”
+
+------------------------------------------------------------------------
+
+RECORD 09 — GOOGLE THE FUTURE REPORT / ADOLESCENȚI ROMÂNI + AI
+
+FACTUAL SETUP
+
+Google România a publicat la 30 septembrie 2026 concluziile studiului
+„The Future Report”, realizat de Livity pe baza unui sondaj
+reprezentativ național cu 1.000 de adolescenți de 16–18 ani din România
+și analiză calitativă. Google raportează că 9 din 10 adolescenți
+folosesc AI pentru scopuri creative sau de învățare cel puțin o dată pe
+lună. 49% folosesc AI în mod regulat pentru teme și ca ajutor în
+activitatea școlară.
+
+SOURCES
+
+PRIMARY — Google România — The Future Report:
+https://blog.google/intl/ro-ro/stiri-despre-companie/the-future-report-tehnologia-digitala-instrument-de-invatare-si-creativitate-pentru-adolescentii-din-romania/
+SECONDARY — WikiPress:
+https://wikipress.ro/studiu-google-inteligenta-artificiala-folosita-de-adolescentii-din-romania/
+
+OWNER COMMENTARY
+
+Un studiu Google arată că 9 din 10 adolescenți români folosesc AI pentru
+învățare sau activități creative cel puțin o dată pe lună. Iar 49% îl
+folosesc inclusiv pentru teme și activitatea școlară. Frumos. Pe vremea
+noastră, când copiai tema, măcar trebuia să găsești un coleg mai deștept
+ca tine. Acum deschizi AI-ul și scrii: „Fă-mi tema ca pentru un elev de
+10, dar bagă două greșeli, să nu se prindă proasta.” Și uite-așa avem
+prima generație care poate lua 10 la o temă pe care n-ar fi în stare s-o
+explice nici de 5.
+
+------------------------------------------------------------------------
+
+CODEX ADJUDICATION REQUIREMENTS
+
+-   Re-verify all 9 factual setups and all additional factual assertions
+    in commentary against listed source authority.
+-   Preserve OWNER COMMENTARY bytes; no stylistic rewriting or
+    normalization.
+-   Derive Humor Mechanics coverage only from actual owner commentary,
+    not prior mechanism suggestions.
+-   Bind each admitted mechanism to a real commentary span and role:
+    INDIVIDUAL / SUPPORTING / COMPOSITION.
+-   No quota filling and no artificial synonym stacking.
+-   Distinguish factual claims from transparent satire, imagined
+    dialogue, analogy, hypothetical absurdity, comic fictionalization,
+    wordplay, parody, callback/running gag, and editorial inference.
+-   Record 05 requires explicit adjudication of „trimis de Napoleon”; do
+    not silently rewrite owner bytes.
+-   Keep predecessor dataset and experimental baseline frozen.
+-   Keep holdout #31–#34 and Qwen3 bakeoff sealed.
+-   No training/tuning, promotion, active integration or model-weight
+    modification is authorized by this source pack.
+-   Recompute train/validation counts, commentary tokens,
+    factual-restraint support, naturalness, restraint, concision,
+    variation/anti-repetition, target choice, composition support,
+    mechanism coverage/support counts, contamination/leakage, and
+    second-experiment readiness.
+-   Owner intent for Pack #3: diversity/safety margin, not mere
+    threshold filling. Gates at exact minimum PASS should gain
+    independent margin where supported by admitted evidence.

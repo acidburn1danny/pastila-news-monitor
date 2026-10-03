@@ -1,0 +1,39 @@
+{
+  "corpus_freeze_identity": "e2f94bb1266cbe64ea48eb244d95637c4d5f1dfdb7d250b3857834c4dc445a8c",
+  "dataset_successor_identity": "b48426314ce66a8bfb8f1e773cf171c07de0116b170dafec2a9c85228439c4e6",
+  "experimental_baseline_commit": "0ff0fba257b3a0ef52199b644ca9360cf75265cc",
+  "frozen_files": {
+    "admission": {
+      "path": "docs/artifacts/vnext-voice-owner-gold-pack03-v1-admission.jsonl",
+      "sha256": "b8b49fa46d871605f701cb4e8c13ac412a3cf97dfb56cea060fc1641117fe223"
+    },
+    "admitted-records": {
+      "path": "docs/artifacts/vnext-voice-owner-gold-pack03-v1-admitted-records.jsonl",
+      "sha256": "22dab62dd105ff28445731cdc280008bec351e10682aff09314b64f947357d5a"
+    },
+    "train-successor": {
+      "path": "docs/artifacts/vnext-voice-owner-gold-pack03-v1-train-successor.jsonl",
+      "sha256": "0edc1b25c0e279bafbbb712da0f977bce9dd68f4b56f5bd775ab3ec965c81379"
+    },
+    "validation-successor": {
+      "path": "docs/artifacts/vnext-voice-owner-gold-pack03-v1-validation-successor.jsonl",
+      "sha256": "0e2d9ffba211af997b04f2f2238c3e6de7904c89b38e25167e63d109fe6bbdda"
+    }
+  },
+  "holdout_exposure": 0,
+  "holdout_families": [
+    31,
+    32,
+    33,
+    34
+  ],
+  "promotion_ready": false,
+  "qwen3_bakeoff_exposure": 0,
+  "schema": "vnext-voice-owner-gold-pack03-corpus-freeze",
+  "schema_version": 1,
+  "source_pack_sha256": "a58954816ac8d421993fe15463790bf4b809892a875448f359d4cf36f705dd86",
+  "status": "FROZEN_READY_FOR_SECOND_EXPERIMENTAL_NON_PROMOTABLE_QWEN3_LORA",
+  "train_records": 39,
+  "training_authorized": false,
+  "validation_records": 15
+}
