@@ -1,0 +1,169 @@
+{
+  "acceptance": {
+    "applies_to": "EACH_OF_ALL_THREE_SEEDS",
+    "blind_incomplete_payoff_rate_max": 0.0,
+    "blind_undecidable_payoff_rate_max": 0.0,
+    "common9_quality_min": 3.82963,
+    "concision_min": 4.444444,
+    "direction_consistent_across_seeds": true,
+    "eos_terminated_rate_min": 1.0,
+    "exact_or_normalized_memorization_max": 0,
+    "failure_rule": "Any seed failing any required criterion makes A2 fail; aggregates cannot hide a failing seed.",
+    "final_unsupported_fact_rate_max": 0.0,
+    "generation_max_token_hit_rate_max": 0.0,
+    "mean_output_reduction_vs_lora2_min_fraction": 0.1,
+    "mean_output_words_max": 75.24,
+    "non_generic_min": 3.255556,
+    "outputs_with_12_token_train_span_max": 0,
+    "over_125pct_owner_target_rate_max": 0.066667,
+    "overall_blind_quality_min": 3.574444,
+    "pastila_acida_style_min": 2.922222,
+    "raw_projection_rejection_rate_max": 0.088889,
+    "restraint_min": 4.666667,
+    "romanian_naturalness_min": 3.9,
+    "under_50pct_owner_target_rate_max": 0.333333
+  },
+  "authority": {
+    "a1_config_identity": "383c63d7d8cbccb186d49914b3eed4b75d6adb9ad1f6bdbd675fec0f7c42c088",
+    "a1_evaluation_identity": "71425e3ae010797009eec27764ff04dfcbfd9dc1a13a2150a2121043a4c099a1",
+    "a1_sampling_identity": "6d0688b4630bd7a5649ef36cf7dac9d8d03ad5a44ecb26213af66851d02677fa",
+    "c0_config_identity": "4abb9cde5011b0a7e84b135f82fd98f0bcbd52661ae5cd6db215bc915bd0111d",
+    "commit": "54551baae91e1d97922afd16a6e5d14138a52bf1",
+    "corpus_freeze_identity": "e2f94bb1266cbe64ea48eb244d95637c4d5f1dfdb7d250b3857834c4dc445a8c",
+    "dataset_identity": "b48426314ce66a8bfb8f1e773cf171c07de0116b170dafec2a9c85228439c4e6",
+    "tree": "2371a91178b1fb32ad5e713ad65775af45572107"
+  },
+  "candidate_matrix_identity": "fbafef9f5e40371f93b8b63fb855ae8330e2da057214619db41ef6a20d48761d",
+  "changed_vs_c0": [
+    "token-level reduction changes from uniform mean CE to the frozen 95% content / 5% terminal-EOS convex objective"
+  ],
+  "control_matrix": {
+    "a1_role": "NEGATIVE_CONTROL_FOR_SAMPLING_ONLY",
+    "compatible_common_9": [
+      "UNTUNED_BASELINE",
+      "LORA1_EACH_SEED",
+      "LORA2_C0_EACH_SEED",
+      "A1_EACH_SEED",
+      "A2_EACH_SEED"
+    ],
+    "full_validation_15": [
+      "UNTUNED_BASELINE",
+      "LORA2_C0",
+      "A1",
+      "A2_EACH_SEED"
+    ],
+    "holdout": "SEALED",
+    "qwen3_bakeoff": "SEALED"
+  },
+  "corpus_evidence": {
+    "exactly_one_terminal_eos_per_train_target": true,
+    "new_annotations_available": false,
+    "train_records": 39,
+    "train_target_tokens": {
+      "max": 587,
+      "mean": 225.12820512820514,
+      "min": 62
+    },
+    "validation_records": 15,
+    "validation_target_tokens": {
+      "max": 516,
+      "mean": 297.26666666666665,
+      "min": 159
+    }
+  },
+  "current_objective": {
+    "eos_default_loss_share": "1/N_target_tokens",
+    "loss": "mean cross entropy across unmasked target tokens",
+    "prompt_tokens_masked": true,
+    "sampling": "uniform records with deterministic per-epoch shuffle",
+    "source_sha256": "70747330564397adadec767b9eaf7d4118fb15cea7fa6f4ac0fb89dc5eeb2554",
+    "target": "owner_commentary_plus_single_terminal_eos"
+  },
+  "design_identity": "0e58b1de172e151936c7d3e9060e37d601cc9286af1296fbe0453a039a70a49a",
+  "execution_authorized": false,
+  "frozen_seeds": [
+    2111,
+    3407,
+    4933
+  ],
+  "held_constant": {
+    "base_model_revision": true,
+    "batch_size": 1,
+    "blind_evaluation_protocol": "DETERMINISTIC_CANDIDATE_BLIND_RUBRIC_V2_PLUS_FROZEN_STOPPING_SAFEGUARDS",
+    "constrained_projection": true,
+    "corpus_bytes": true,
+    "decoding": {
+      "do_sample": false,
+      "max_new_tokens": 220
+    },
+    "epochs": 4,
+    "gradient_accumulation": 3,
+    "learning_rate": 5e-05,
+    "lora": {
+      "alpha": 8,
+      "dropout": 0.05,
+      "rank": 4,
+      "targets": [
+        "q_proj",
+        "v_proj"
+      ]
+    },
+    "max_length": 1024,
+    "optimizer": "paged_adamw_8bit",
+    "prompt_masking": true,
+    "prompt_representation": true,
+    "quantization": "NF4_DOUBLE_BF16",
+    "target_bytes_and_eos_append": true,
+    "tokenizer": true,
+    "train_validation_partition": true,
+    "uniform_c0_sampling": true,
+    "validation_set": true
+  },
+  "holdout_exposure": 0,
+  "not_inherited_from_a1": [
+    "length-stratified record weights",
+    "A1 seeds"
+  ],
+  "premature_truncation_safeguards": {
+    "blind_completion_rubric": {
+      "candidate_identity_hidden": true,
+      "incomplete_or_undecidable": "FAIL_CLOSED",
+      "instruction": "Judge only whether the commentary completes a coherent thought/payoff; do not reward brevity itself.",
+      "labels": [
+        "COMPLETE_PAYOFF",
+        "INCOMPLETE_PAYOFF",
+        "UNDECIDABLE"
+      ]
+    },
+    "record_generated_token_ids_and_finish_reason": true,
+    "require_eos_before_generation_cap": true,
+    "target_relative_underlength_guard": true
+  },
+  "promotable": false,
+  "qwen3_bakeoff_exposure": 0,
+  "schema": "vnext-qwen3-voice-a2-explicit-stopping-design-freeze",
+  "schema_version": 1,
+  "selected_intervention": {
+    "definition": {
+      "N": "number of unmasked target tokens including terminal EOS",
+      "content_ce_mean": "sum(CE_i for i=1..N-1)/(N-1)",
+      "equivalent_eos_weight": "0.05*(N-1)/0.95 with content-token weights 1 followed by normalization",
+      "loss": "0.95 * content_ce_mean + 0.05 * terminal_ce",
+      "per_example_total_loss_mass": 1.0,
+      "terminal_ce": "CE_N where target token N is EOS"
+    },
+    "id": "TARGET_RELATIVE_TERMINAL_EOS_LOSS_SHARE",
+    "implementation": "Compute shifted per-token CE with reduction=none; apply existing -100 prompt mask; assert exactly one EOS and that it is the last unmasked label; aggregate content and terminal terms using the frozen formula. Fail closed otherwise.",
+    "legitimate_long_target_preservation": "The target-specific terminal position remains after all 61..586 content tokens; no universal token/word limit or short-record oversampling is introduced.",
+    "new_annotations_required": false,
+    "owner_gold_modified": false,
+    "semantic_inference_required": false,
+    "single_causal_dimension": "relative objective mass assigned to authoritative terminal EOS",
+    "tau_terminal": 0.05,
+    "training_mass_equivalence": "Each record appears once per epoch and each per-example weighted objective sums to one; optimizer steps and gradient accumulation match C0.",
+    "why_stopping_not_generic_shortness": "EOS receives positive supervision only at the authoritative end of each complete owner target. Every earlier position remains supervised as its exact owner-written content token and receives 95% of the per-example loss mass collectively."
+  },
+  "status": "A2_DESIGN_DEFENSIBLE_FROZEN_NOT_EXECUTED",
+  "training_performed": false,
+  "voice_state": "DISABLED_UNTIL_PROMOTION"
+}

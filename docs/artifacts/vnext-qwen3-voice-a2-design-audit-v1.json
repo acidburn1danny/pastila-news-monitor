@@ -1,0 +1,61 @@
+{
+  "active_product_modified": false,
+  "adapter_modified": false,
+  "audit_identity": "57ff457e997755f056f754ab26105a80c01008b16926b971d62570c492a9ebb6",
+  "blockers": [],
+  "candidate_matrix_identity": "fbafef9f5e40371f93b8b63fb855ae8330e2da057214619db41ef6a20d48761d",
+  "canonical_rollback_modified": false,
+  "car_history": [
+    {
+      "affected_evidence": "initial design-auditor run only",
+      "design_changed": false,
+      "fresh_restart_required": true,
+      "id": "A2-CAR-01",
+      "repair": "BOUNDED_ASSERTION_POLARITY_FIX"
+    }
+  ],
+  "checks": {
+    "a1_sampling_not_inherited": true,
+    "all_nonobjective_variables_controlled": true,
+    "corpus_bytes_identical": true,
+    "criteria_frozen_before_results": true,
+    "deterministic_content_addressed_implementation_possible": true,
+    "exactly_one_causal_dimension_changes": true,
+    "holdout_exposure_zero": true,
+    "new_semantic_owner_authority_invented": false,
+    "qwen3_bakeoff_exposure_zero": true,
+    "training_executed": false,
+    "training_mass_controlled": true
+  },
+  "design_identity": "0e58b1de172e151936c7d3e9060e37d601cc9286af1296fbe0453a039a70a49a",
+  "execution_requires_separate_owner_authorization": true,
+  "findings": [
+    {
+      "disposition": "Rejected; terminal EOS is the only authoritative stopping boundary.",
+      "finding": "Post-payoff penalties are not defensible because the frozen corpus has no authoritative payoff spans.",
+      "id": "A2-D01",
+      "severity": "DESIGN_DECISION"
+    },
+    {
+      "disposition": "Frozen target-relative underlength, EOS-finish, generation-cap and blind payoff-completeness safeguards make this fail closed.",
+      "finding": "EOS pressure can cause premature termination under distribution shift.",
+      "id": "A2-D02",
+      "severity": "DESIGN_RISK_CONTROLLED"
+    },
+    {
+      "car": "Assert the no-invention check is false explicitly and require all remaining positive checks true; fresh restart audit/tests.",
+      "finding": "Initial auditor used all() across a deliberately false no-invention check.",
+      "id": "A2-CAR-01",
+      "impact": "Only the initial audit run was invalid; design identities and evidence were unaffected.",
+      "root_cause": "Harness polarity error; the design correctly records new_semantic_owner_authority_invented=false.",
+      "severity": "TECHNICAL_CLOSED"
+    }
+  ],
+  "promotion": false,
+  "schema": "vnext-qwen3-voice-a2-design-freeze-audit",
+  "schema_version": 1,
+  "status": "PASS_0_BLOCKERS_DESIGN_ONLY",
+  "training_performed": false,
+  "verdict": "A2_DESIGN_DEFENSIBLE",
+  "voice_state": "DISABLED_UNTIL_PROMOTION"
+}

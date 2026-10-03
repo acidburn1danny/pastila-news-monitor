@@ -1,0 +1,92 @@
+{
+  "authority_commit": "54551baae91e1d97922afd16a6e5d14138a52bf1",
+  "candidate_matrix_identity": "fbafef9f5e40371f93b8b63fb855ae8330e2da057214619db41ef6a20d48761d",
+  "candidates": [
+    {
+      "complexity": "LOW_MANUAL_MASKED_TOKEN_CE",
+      "decision": "SELECTED",
+      "evidence": "C0 gives the single EOS only 1/N of token-mean loss; all 39 train targets have exactly one terminal EOS; A1 record weighting was insufficient.",
+      "expected_causal_effect": "Increase probability of EOS exactly after completed gold commentary while preserving supervision for every preceding owner token.",
+      "failure_mode": "May still fail to transfer terminal behavior or may terminate prematurely under distribution shift.",
+      "id": "TARGET_RELATIVE_TERMINAL_EOS_LOSS_SHARE",
+      "mechanism": "Reserve a fixed 5% of each example loss for its authoritative terminal EOS and 95% for all owner-written content tokens.",
+      "new_annotations_required": false,
+      "premature_truncation_risk": "Bounded because every pre-terminal position remains supervised as its owner token and EOS is positive only at the true terminal position.",
+      "preserves_owner_gold_bytes": true,
+      "semantic_inference_required": false,
+      "style_risk": "Low but measured; 95% of per-example objective remains content-token behavior."
+    },
+    {
+      "complexity": "LOW",
+      "decision": "REJECTED_NOT_TARGET_RELATIVE",
+      "evidence": "EOS is underweighted in C0.",
+      "expected_causal_effect": "More terminal supervision.",
+      "failure_mode": "Relative pressure decays with target length and would treat 62-token and 587-token targets inconsistently.",
+      "id": "FIXED_EOS_MULTIPLIER",
+      "mechanism": "Multiply EOS CE by one global constant.",
+      "new_annotations_required": false,
+      "premature_truncation_risk": "Moderate.",
+      "preserves_owner_gold_bytes": true,
+      "semantic_inference_required": false,
+      "style_risk": "Low."
+    },
+    {
+      "complexity": "HIGH",
+      "decision": "REJECTED_MISSING_AUTHORITY",
+      "evidence": "Root-cause language identifies post-payoff continuation.",
+      "expected_causal_effect": "Directly suppress unnecessary tails.",
+      "failure_mode": "No authoritative payoff spans exist; inferred boundaries would invent semantic owner authority.",
+      "id": "POST_PAYOFF_CONTINUATION_PENALTY",
+      "mechanism": "Penalize tokens after an annotated payoff boundary.",
+      "new_annotations_required": true,
+      "premature_truncation_risk": "High if inferred incorrectly.",
+      "preserves_owner_gold_bytes": true,
+      "semantic_inference_required": true,
+      "style_risk": "High for authentic compositions."
+    },
+    {
+      "complexity": "HIGH",
+      "decision": "REJECTED_NOT_MINIMAL",
+      "evidence": "Gold lengths are authoritative.",
+      "expected_causal_effect": "Calibrate output length.",
+      "failure_mode": "Teacher-forced SFT has no differentiable generated-length signal without adding a second objective/RL-like machinery; can reward incomplete short sequences.",
+      "id": "TARGET_LENGTH_REGRESSION_OR_SEQUENCE_PENALTY",
+      "mechanism": "Penalize generated length deviation from target length.",
+      "new_annotations_required": false,
+      "premature_truncation_risk": "High.",
+      "preserves_owner_gold_bytes": true,
+      "semantic_inference_required": false,
+      "style_risk": "Moderate."
+    },
+    {
+      "complexity": "LOW",
+      "decision": "REJECTED_CAUSALLY_REDUNDANT_WITH_A1",
+      "evidence": "Length distribution is shifted.",
+      "expected_causal_effect": "Change influence of long versus short records.",
+      "failure_mode": "Equivalent to another sampling/record-weighting intervention already falsified by A1; does not directly train stopping.",
+      "id": "SEQUENCE_LEVEL_LENGTH_NORMALIZATION",
+      "mechanism": "Reweight whole-sequence loss by target length.",
+      "new_annotations_required": false,
+      "premature_truncation_risk": "Low.",
+      "preserves_owner_gold_bytes": true,
+      "semantic_inference_required": false,
+      "style_risk": "Moderate through distribution distortion."
+    },
+    {
+      "complexity": "MEDIUM",
+      "decision": "REJECTED_MISSING_AUTHORITY",
+      "evidence": "Could target terminal behavior.",
+      "expected_causal_effect": "Strengthen payoff completion and stopping.",
+      "failure_mode": "No authoritative terminal semantic spans beyond EOS; heuristic spans would invent labels.",
+      "id": "TERMINAL_SPAN_WEIGHTING",
+      "mechanism": "Weight a multi-token terminal/payoff span.",
+      "new_annotations_required": true,
+      "premature_truncation_risk": "Moderate.",
+      "preserves_owner_gold_bytes": true,
+      "semantic_inference_required": true,
+      "style_risk": "Moderate."
+    }
+  ],
+  "schema": "vnext-qwen3-voice-a2-candidate-interventions",
+  "schema_version": 1
+}
