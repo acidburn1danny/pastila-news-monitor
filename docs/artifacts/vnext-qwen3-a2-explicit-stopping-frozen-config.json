@@ -1,0 +1,100 @@
+{
+  "acceptance_criteria": {
+    "applies_to": "EACH_OF_ALL_THREE_SEEDS",
+    "blind_incomplete_payoff_rate_max": 0.0,
+    "blind_undecidable_payoff_rate_max": 0.0,
+    "common9_quality_min": 3.82963,
+    "concision_min": 4.444444,
+    "direction_consistent_across_seeds": true,
+    "eos_terminated_rate_min": 1.0,
+    "exact_or_normalized_memorization_max": 0,
+    "failure_rule": "Any seed failing any required criterion makes A2 fail; aggregates cannot hide a failing seed.",
+    "final_unsupported_fact_rate_max": 0.0,
+    "generation_max_token_hit_rate_max": 0.0,
+    "mean_output_reduction_vs_lora2_min_fraction": 0.1,
+    "mean_output_words_max": 75.24,
+    "non_generic_min": 3.255556,
+    "outputs_with_12_token_train_span_max": 0,
+    "over_125pct_owner_target_rate_max": 0.066667,
+    "overall_blind_quality_min": 3.574444,
+    "pastila_acida_style_min": 2.922222,
+    "raw_projection_rejection_rate_max": 0.088889,
+    "restraint_min": 4.666667,
+    "romanian_naturalness_min": 3.9,
+    "under_50pct_owner_target_rate_max": 0.333333
+  },
+  "authority_commit": "095b2dc3c3a07905e7de2fd6c6195fa2e834f03a",
+  "base_model_identity": "be259728abcc2c864bdf4d035267a8fcf8ccc57e4e277f8bd5d0934f1963fbc",
+  "base_model_revision": "be259728abcc2c864bdf4d035267a8fcf8ccc57e4e277f8bd5d0934f1963fbc",
+  "batch_size": 1,
+  "candidate_matrix_identity": "fbafef9f5e40371f93b8b63fb855ae8330e2da057214619db41ef6a20d48761d",
+  "config_identity": "c094dad85ec18620b48a00d62a15dae929df4696b13fe6e8ffcebb83cd0b2176",
+  "control_c0_config_identity": "4abb9cde5011b0a7e84b135f82fd98f0bcbd52661ae5cd6db215bc915bd0111d",
+  "corpus_freeze_identity": "e2f94bb1266cbe64ea48eb244d95637c4d5f1dfdb7d250b3857834c4dc445a8c",
+  "dataset_identity": "b48426314ce66a8bfb8f1e773cf171c07de0116b170dafec2a9c85228439c4e6",
+  "dataset_sha256": {
+    "train": "0edc1b25c0e279bafbbb712da0f977bce9dd68f4b56f5bd775ab3ec965c81379",
+    "validation": "0e2d9ffba211af997b04f2f2238c3e6de7904c89b38e25167e63d109fe6bbdda"
+  },
+  "decoding": {
+    "do_sample": false,
+    "max_new_tokens": 220
+  },
+  "design_audit_identity": "57ff457e997755f056f754ab26105a80c01008b16926b971d62570c492a9ebb6",
+  "epochs": 4,
+  "gradient_accumulation": 3,
+  "holdout_access_before_freeze": 0,
+  "implementation_identity": "ceb53950d4d1ba37a2a0b1af9bf2b86a40baf7c3c0f1fcb5d9d99284ff414895",
+  "intervention": {
+    "content_loss_share": 0.95,
+    "formula": "0.95*mean(content_token_ce)+0.05*terminal_eos_ce",
+    "id": "TARGET_RELATIVE_TERMINAL_EOS_LOSS_SHARE",
+    "per_example_total_loss_mass": 1.0,
+    "sampling": "C0_UNIFORM",
+    "terminal_eos_loss_share": 0.05
+  },
+  "intervention_identity": "50668b2539bb659b248040ee1b88782bf2af2ffc17e61f89f7ce550668d44878",
+  "learning_rate": 5e-05,
+  "lora": {
+    "alpha": 8,
+    "dropout": 0.05,
+    "r": 4,
+    "targets": [
+      "q_proj",
+      "v_proj"
+    ]
+  },
+  "max_length": 1024,
+  "model_config_sha256": "f7c4eadfbbf522470667b797a3c89be2524832d2d599797248dc304fff447c30",
+  "model_path": "/root/vnext-voice-candidates-v1/sha256/be259728abcc2c864bdf4d035267a8fcf8ccc57e4e277f8bd5d0934f1963fbc",
+  "negative_control_a1_config_identity": "383c63d7d8cbccb186d49914b3eed4b75d6adb9ad1f6bdbd675fec0f7c42c088",
+  "optimizer": "paged_adamw_8bit",
+  "premature_truncation_safeguards": {
+    "blind_completion_rubric": {
+      "candidate_identity_hidden": true,
+      "incomplete_or_undecidable": "FAIL_CLOSED",
+      "instruction": "Judge only whether the commentary completes a coherent thought/payoff; do not reward brevity itself.",
+      "labels": [
+        "COMPLETE_PAYOFF",
+        "INCOMPLETE_PAYOFF",
+        "UNDECIDABLE"
+      ]
+    },
+    "record_generated_token_ids_and_finish_reason": true,
+    "require_eos_before_generation_cap": true,
+    "target_relative_underlength_guard": true
+  },
+  "promotable": false,
+  "prompt_sha256": "3860e7a8e97268822ce8c0a14572eb12c331424a9d3ea195b8dfbfb8a8775801",
+  "published_design_identity": "0e58b1de172e151936c7d3e9060e37d601cc9286af1296fbe0453a039a70a49a",
+  "quantization": "NF4_DOUBLE_BF16",
+  "schema": "vnext-qwen3-a2-explicit-stopping-frozen-config",
+  "schema_version": 1,
+  "seeds": [
+    2111,
+    3407,
+    4933
+  ],
+  "tokenizer_identity": "90a2903e36317f2a873560235218be86367fa0ed4209f53096b6d59325fed333",
+  "voice_state": "DISABLED_UNTIL_PROMOTION"
+}

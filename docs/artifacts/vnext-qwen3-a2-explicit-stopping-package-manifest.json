@@ -1,0 +1,35 @@
+{
+  "config_identity": "c094dad85ec18620b48a00d62a15dae929df4696b13fe6e8ffcebb83cd0b2176",
+  "holdout_exposure": 0,
+  "implementation_identity": "ceb53950d4d1ba37a2a0b1af9bf2b86a40baf7c3c0f1fcb5d9d99284ff414895",
+  "installed": false,
+  "intervention_identity": "50668b2539bb659b248040ee1b88782bf2af2ffc17e61f89f7ce550668d44878",
+  "manifest_identity": "84dff48e41cd6c890a6e274552847628c276a3075b6ec2ca943ed128c5484cdc",
+  "packages": [
+    {
+      "adapter_sha256": "0608509390a72c2dca3ce17151c11cc95fe32dbd9834d6ccd98cd51c57711824",
+      "external_path": "/root/vnext-qwen3-a2-experiment-run/seed-2111",
+      "package_identity": "e0f17afa7777732b2729cad74f03629f792af74a8c02090775de2b9d39a869cf",
+      "seed": 2111
+    },
+    {
+      "adapter_sha256": "7163617964e30b5b77b4e0debb35f3f759d90f85722481bac8adad9980b48c76",
+      "external_path": "/root/vnext-qwen3-a2-experiment-run/seed-3407",
+      "package_identity": "d2ab15708ae9bcfaa0724d7bd450ed8857c161008b676dcb7c35cdd0f315e5e8",
+      "seed": 3407
+    },
+    {
+      "adapter_sha256": "54fe3bab1a2f041ab95b5b58777b007c2c4d15ce86cae834b1303f49cb2a5e98",
+      "external_path": "/root/vnext-qwen3-a2-experiment-run/seed-4933",
+      "package_identity": "39d7fea751c66a12a6701f922256bbdc0e54fb7f1afb4cc6126dbae4759f2f41",
+      "seed": 4933
+    }
+  ],
+  "published_design_identity": "0e58b1de172e151936c7d3e9060e37d601cc9286af1296fbe0453a039a70a49a",
+  "qwen3_bakeoff_exposure": 0,
+  "schema": "vnext-qwen3-a2-explicit-stopping-package-manifest",
+  "schema_version": 1,
+  "state": "EXPERIMENTAL_NON_PROMOTABLE",
+  "training_result_identity": "101b21f11722677f865cb27f583bfffab45210c0f996648ed1a77535d3588939",
+  "voice_state": "DISABLED_UNTIL_PROMOTION"
+}

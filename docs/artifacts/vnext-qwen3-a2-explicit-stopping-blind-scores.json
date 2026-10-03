@@ -1,0 +1,642 @@
+[
+  {
+    "candidate": "BASELINE",
+    "scores": {
+      "cases": 15,
+      "mechanism_signal_mean": 0.933333,
+      "memorization": {
+        "exact_train_commentary_copies": 0,
+        "outputs_with_12_token_train_span": 0,
+        "outputs_with_8_token_train_span": 0
+      },
+      "output_length": {
+        "max_words": 85,
+        "mean_words": 63.2
+      },
+      "projection_rejection_rate": 0.066667,
+      "projection_violations": 0,
+      "quality_composite_mean": 3.646667,
+      "quality_means": {
+        "authentic_mechanism_composition": 1.933333,
+        "concision": 4.733333,
+        "non_generic": 2.866667,
+        "pastila_acida_style": 2.8,
+        "relevance": 4.533333,
+        "restraint": 5.0,
+        "romanian_naturalness": 4.0,
+        "sarcasm_irony_roast": 1.733333,
+        "target_choice": 3.866667,
+        "variation_anti_repetition": 5.0
+      },
+      "raw_projection_rejections": 1,
+      "repetition": {
+        "max_output_words": 85,
+        "mean_output_words": 63.2,
+        "mean_pairwise_lexical_jaccard": 0.129611,
+        "repeated_openings": 1
+      },
+      "unsupported_fact_rate_after_projection": 0.0
+    },
+    "slot": "0415fda06219"
+  },
+  {
+    "candidate": "LORA2_SEED_1811",
+    "scores": {
+      "cases": 15,
+      "mechanism_signal_mean": 1.0,
+      "memorization": {
+        "exact_train_commentary_copies": 0,
+        "outputs_with_12_token_train_span": 0,
+        "outputs_with_8_token_train_span": 0
+      },
+      "output_length": {
+        "max_words": 127,
+        "mean_words": 81.667
+      },
+      "projection_rejection_rate": 0.066667,
+      "projection_violations": 0,
+      "quality_composite_mean": 3.58,
+      "quality_means": {
+        "authentic_mechanism_composition": 2.0,
+        "concision": 4.266667,
+        "non_generic": 3.266667,
+        "pastila_acida_style": 2.933333,
+        "relevance": 4.066667,
+        "restraint": 4.533333,
+        "romanian_naturalness": 4.0,
+        "sarcasm_irony_roast": 2.066667,
+        "target_choice": 3.666667,
+        "variation_anti_repetition": 5.0
+      },
+      "raw_projection_rejections": 1,
+      "repetition": {
+        "max_output_words": 127,
+        "mean_output_words": 81.667,
+        "mean_pairwise_lexical_jaccard": 0.109347,
+        "repeated_openings": 0
+      },
+      "unsupported_fact_rate_after_projection": 0.0
+    },
+    "slot": "0ed469b86860"
+  },
+  {
+    "candidate": "LORA2_SEED_3001",
+    "scores": {
+      "cases": 15,
+      "mechanism_signal_mean": 1.066667,
+      "memorization": {
+        "exact_train_commentary_copies": 0,
+        "outputs_with_12_token_train_span": 0,
+        "outputs_with_8_token_train_span": 0
+      },
+      "output_length": {
+        "max_words": 123,
+        "mean_words": 78.867
+      },
+      "projection_rejection_rate": 0.066667,
+      "projection_violations": 0,
+      "quality_composite_mean": 3.673333,
+      "quality_means": {
+        "authentic_mechanism_composition": 2.066667,
+        "concision": 4.333333,
+        "non_generic": 3.4,
+        "pastila_acida_style": 3.066667,
+        "relevance": 4.2,
+        "restraint": 4.6,
+        "romanian_naturalness": 4.0,
+        "sarcasm_irony_roast": 2.333333,
+        "target_choice": 3.733333,
+        "variation_anti_repetition": 5.0
+      },
+      "raw_projection_rejections": 1,
+      "repetition": {
+        "max_output_words": 123,
+        "mean_output_words": 78.867,
+        "mean_pairwise_lexical_jaccard": 0.112228,
+        "repeated_openings": 0
+      },
+      "unsupported_fact_rate_after_projection": 0.0
+    },
+    "slot": "4d3a5c5f8b51"
+  },
+  {
+    "candidate": "LORA2_SEED_4621",
+    "scores": {
+      "cases": 15,
+      "mechanism_signal_mean": 0.866667,
+      "memorization": {
+        "exact_train_commentary_copies": 0,
+        "outputs_with_12_token_train_span": 0,
+        "outputs_with_8_token_train_span": 0
+      },
+      "output_length": {
+        "max_words": 144,
+        "mean_words": 90.267
+      },
+      "projection_rejection_rate": 0.133333,
+      "projection_violations": 0,
+      "quality_composite_mean": 3.62,
+      "quality_means": {
+        "authentic_mechanism_composition": 1.866667,
+        "concision": 4.133333,
+        "non_generic": 3.4,
+        "pastila_acida_style": 3.066667,
+        "relevance": 4.4,
+        "restraint": 4.266667,
+        "romanian_naturalness": 4.0,
+        "sarcasm_irony_roast": 2.266667,
+        "target_choice": 3.8,
+        "variation_anti_repetition": 5.0
+      },
+      "raw_projection_rejections": 2,
+      "repetition": {
+        "max_output_words": 144,
+        "mean_output_words": 90.267,
+        "mean_pairwise_lexical_jaccard": 0.108063,
+        "repeated_openings": 0
+      },
+      "unsupported_fact_rate_after_projection": 0.0
+    },
+    "slot": "944b23bc1758"
+  },
+  {
+    "candidate": "A1_SEED_1913",
+    "scores": {
+      "cases": 15,
+      "mechanism_signal_mean": 1.133333,
+      "memorization": {
+        "exact_train_commentary_copies": 0,
+        "outputs_with_12_token_train_span": 0,
+        "outputs_with_8_token_train_span": 0
+      },
+      "output_length": {
+        "max_words": 144,
+        "mean_words": 98.467
+      },
+      "projection_rejection_rate": 0.2,
+      "projection_violations": 0,
+      "quality_composite_mean": 3.533333,
+      "quality_means": {
+        "authentic_mechanism_composition": 2.133333,
+        "concision": 3.8,
+        "non_generic": 3.333333,
+        "pastila_acida_style": 3.0,
+        "relevance": 4.133333,
+        "restraint": 4.066667,
+        "romanian_naturalness": 4.0,
+        "sarcasm_irony_roast": 2.133333,
+        "target_choice": 3.733333,
+        "variation_anti_repetition": 5.0
+      },
+      "raw_projection_rejections": 3,
+      "repetition": {
+        "max_output_words": 144,
+        "mean_output_words": 98.467,
+        "mean_pairwise_lexical_jaccard": 0.111904,
+        "repeated_openings": 0
+      },
+      "unsupported_fact_rate_after_projection": 0.0
+    },
+    "slot": "ef065c4aee2d"
+  },
+  {
+    "candidate": "A1_SEED_3203",
+    "scores": {
+      "cases": 15,
+      "mechanism_signal_mean": 1.066667,
+      "memorization": {
+        "exact_train_commentary_copies": 0,
+        "outputs_with_12_token_train_span": 0,
+        "outputs_with_8_token_train_span": 0
+      },
+      "output_length": {
+        "max_words": 144,
+        "mean_words": 83.933
+      },
+      "projection_rejection_rate": 0.133333,
+      "projection_violations": 0,
+      "quality_composite_mean": 3.533333,
+      "quality_means": {
+        "authentic_mechanism_composition": 2.066667,
+        "concision": 4.2,
+        "non_generic": 3.266667,
+        "pastila_acida_style": 2.8,
+        "relevance": 4.066667,
+        "restraint": 4.333333,
+        "romanian_naturalness": 4.0,
+        "sarcasm_irony_roast": 2.133333,
+        "target_choice": 3.466667,
+        "variation_anti_repetition": 5.0
+      },
+      "raw_projection_rejections": 2,
+      "repetition": {
+        "max_output_words": 144,
+        "mean_output_words": 83.933,
+        "mean_pairwise_lexical_jaccard": 0.113276,
+        "repeated_openings": 0
+      },
+      "unsupported_fact_rate_after_projection": 0.0
+    },
+    "slot": "8331edd60090"
+  },
+  {
+    "candidate": "A1_SEED_4729",
+    "scores": {
+      "cases": 15,
+      "mechanism_signal_mean": 1.133333,
+      "memorization": {
+        "exact_train_commentary_copies": 0,
+        "outputs_with_12_token_train_span": 0,
+        "outputs_with_8_token_train_span": 0
+      },
+      "output_length": {
+        "max_words": 134,
+        "mean_words": 79.267
+      },
+      "projection_rejection_rate": 0.2,
+      "projection_violations": 0,
+      "quality_composite_mean": 3.673333,
+      "quality_means": {
+        "authentic_mechanism_composition": 2.133333,
+        "concision": 4.266667,
+        "non_generic": 3.4,
+        "pastila_acida_style": 3.066667,
+        "relevance": 4.266667,
+        "restraint": 4.533333,
+        "romanian_naturalness": 4.0,
+        "sarcasm_irony_roast": 2.2,
+        "target_choice": 3.866667,
+        "variation_anti_repetition": 5.0
+      },
+      "raw_projection_rejections": 3,
+      "repetition": {
+        "max_output_words": 134,
+        "mean_output_words": 79.267,
+        "mean_pairwise_lexical_jaccard": 0.114939,
+        "repeated_openings": 0
+      },
+      "unsupported_fact_rate_after_projection": 0.0
+    },
+    "slot": "d60d4f0a45b0"
+  },
+  {
+    "candidate": "A2_SEED_2111",
+    "completion": {
+      "dialogue_role_simulation_rate": 0.4,
+      "eos_termination_rate": 0.8,
+      "generation_cap_hits": 3,
+      "max_words": 144,
+      "mean_sentences_after_first": 5.8,
+      "mean_target_ratio": 0.678194,
+      "mean_words": 77,
+      "over_125pct_count": 1,
+      "p50_words": 75,
+      "p90_words": 117,
+      "payoff_by_record": [
+        {
+          "blind_classification": "INCOMPLETE_PAYOFF",
+          "record_id": "PA-EP28-01"
+        },
+        {
+          "blind_classification": "COMPLETE_PAYOFF",
+          "record_id": "PA-EP28-02"
+        },
+        {
+          "blind_classification": "COMPLETE_PAYOFF",
+          "record_id": "PA-EP30-01"
+        },
+        {
+          "blind_classification": "COMPLETE_PAYOFF",
+          "record_id": "PA-EP30-02"
+        },
+        {
+          "blind_classification": "COMPLETE_PAYOFF",
+          "record_id": "PA-EP28-03"
+        },
+        {
+          "blind_classification": "COMPLETE_PAYOFF",
+          "record_id": "PA-EP30-03"
+        },
+        {
+          "blind_classification": "INCOMPLETE_PAYOFF",
+          "record_id": "PA-EP29-01"
+        },
+        {
+          "blind_classification": "COMPLETE_PAYOFF",
+          "record_id": "PA-EP29-02"
+        },
+        {
+          "blind_classification": "INCOMPLETE_PAYOFF",
+          "record_id": "PA-EP29-03"
+        },
+        {
+          "blind_classification": "COMPLETE_PAYOFF",
+          "record_id": "PA-CONTEMP-P01-08"
+        },
+        {
+          "blind_classification": "COMPLETE_PAYOFF",
+          "record_id": "PA-CONTEMP-P01-09"
+        },
+        {
+          "blind_classification": "COMPLETE_PAYOFF",
+          "record_id": "PA-CONTEMP-P01-10"
+        },
+        {
+          "blind_classification": "COMPLETE_PAYOFF",
+          "record_id": "PA-CONTEMP-P03-07"
+        },
+        {
+          "blind_classification": "COMPLETE_PAYOFF",
+          "record_id": "PA-CONTEMP-P03-08"
+        },
+        {
+          "blind_classification": "COMPLETE_PAYOFF",
+          "record_id": "PA-CONTEMP-P03-09"
+        }
+      ],
+      "payoff_counts": {
+        "COMPLETE_PAYOFF": 12,
+        "INCOMPLETE_PAYOFF": 3,
+        "UNDECIDABLE": 0
+      },
+      "under_50pct_count": 5
+    },
+    "scores": {
+      "cases": 15,
+      "mechanism_signal_mean": 1.333333,
+      "memorization": {
+        "exact_train_commentary_copies": 0,
+        "outputs_with_12_token_train_span": 0,
+        "outputs_with_8_token_train_span": 0
+      },
+      "output_length": {
+        "max_words": 144,
+        "mean_words": 77.0
+      },
+      "projection_rejection_rate": 0.133333,
+      "projection_violations": 0,
+      "quality_composite_mean": 3.72,
+      "quality_means": {
+        "authentic_mechanism_composition": 2.333333,
+        "concision": 4.466667,
+        "non_generic": 3.333333,
+        "pastila_acida_style": 3.066667,
+        "relevance": 4.266667,
+        "restraint": 4.666667,
+        "romanian_naturalness": 4.0,
+        "sarcasm_irony_roast": 2.333333,
+        "target_choice": 3.733333,
+        "variation_anti_repetition": 5.0
+      },
+      "raw_projection_rejections": 2,
+      "repetition": {
+        "max_output_words": 144,
+        "mean_output_words": 77.0,
+        "mean_pairwise_lexical_jaccard": 0.119954,
+        "repeated_openings": 0
+      },
+      "unsupported_fact_rate_after_projection": 0.0
+    },
+    "slot": "53bf03823e8d"
+  },
+  {
+    "candidate": "A2_SEED_3407",
+    "completion": {
+      "dialogue_role_simulation_rate": 0.333333,
+      "eos_termination_rate": 0.6666666666666666,
+      "generation_cap_hits": 5,
+      "max_words": 119,
+      "mean_sentences_after_first": 3.933333,
+      "mean_target_ratio": 0.689432,
+      "mean_words": 73.866667,
+      "over_125pct_count": 2,
+      "p50_words": 67,
+      "p90_words": 117,
+      "payoff_by_record": [
+        {
+          "blind_classification": "COMPLETE_PAYOFF",
+          "record_id": "PA-EP28-01"
+        },
+        {
+          "blind_classification": "COMPLETE_PAYOFF",
+          "record_id": "PA-EP28-02"
+        },
+        {
+          "blind_classification": "COMPLETE_PAYOFF",
+          "record_id": "PA-EP30-01"
+        },
+        {
+          "blind_classification": "COMPLETE_PAYOFF",
+          "record_id": "PA-EP30-02"
+        },
+        {
+          "blind_classification": "COMPLETE_PAYOFF",
+          "record_id": "PA-EP28-03"
+        },
+        {
+          "blind_classification": "COMPLETE_PAYOFF",
+          "record_id": "PA-EP30-03"
+        },
+        {
+          "blind_classification": "INCOMPLETE_PAYOFF",
+          "record_id": "PA-EP29-01"
+        },
+        {
+          "blind_classification": "COMPLETE_PAYOFF",
+          "record_id": "PA-EP29-02"
+        },
+        {
+          "blind_classification": "INCOMPLETE_PAYOFF",
+          "record_id": "PA-EP29-03"
+        },
+        {
+          "blind_classification": "COMPLETE_PAYOFF",
+          "record_id": "PA-CONTEMP-P01-08"
+        },
+        {
+          "blind_classification": "COMPLETE_PAYOFF",
+          "record_id": "PA-CONTEMP-P01-09"
+        },
+        {
+          "blind_classification": "COMPLETE_PAYOFF",
+          "record_id": "PA-CONTEMP-P01-10"
+        },
+        {
+          "blind_classification": "INCOMPLETE_PAYOFF",
+          "record_id": "PA-CONTEMP-P03-07"
+        },
+        {
+          "blind_classification": "INCOMPLETE_PAYOFF",
+          "record_id": "PA-CONTEMP-P03-08"
+        },
+        {
+          "blind_classification": "INCOMPLETE_PAYOFF",
+          "record_id": "PA-CONTEMP-P03-09"
+        }
+      ],
+      "payoff_counts": {
+        "COMPLETE_PAYOFF": 10,
+        "INCOMPLETE_PAYOFF": 5,
+        "UNDECIDABLE": 0
+      },
+      "under_50pct_count": 7
+    },
+    "scores": {
+      "cases": 15,
+      "mechanism_signal_mean": 1.4,
+      "memorization": {
+        "exact_train_commentary_copies": 0,
+        "outputs_with_12_token_train_span": 0,
+        "outputs_with_8_token_train_span": 0
+      },
+      "output_length": {
+        "max_words": 119,
+        "mean_words": 73.867
+      },
+      "projection_rejection_rate": 0.133333,
+      "projection_violations": 0,
+      "quality_composite_mean": 3.753333,
+      "quality_means": {
+        "authentic_mechanism_composition": 2.4,
+        "concision": 4.533333,
+        "non_generic": 3.266667,
+        "pastila_acida_style": 3.133333,
+        "relevance": 4.333333,
+        "restraint": 4.666667,
+        "romanian_naturalness": 4.0,
+        "sarcasm_irony_roast": 2.266667,
+        "target_choice": 3.933333,
+        "variation_anti_repetition": 5.0
+      },
+      "raw_projection_rejections": 2,
+      "repetition": {
+        "max_output_words": 119,
+        "mean_output_words": 73.867,
+        "mean_pairwise_lexical_jaccard": 0.114553,
+        "repeated_openings": 0
+      },
+      "unsupported_fact_rate_after_projection": 0.0
+    },
+    "slot": "e15dd94c97c4"
+  },
+  {
+    "candidate": "A2_SEED_4933",
+    "completion": {
+      "dialogue_role_simulation_rate": 0.4,
+      "eos_termination_rate": 0.9333333333333333,
+      "generation_cap_hits": 1,
+      "max_words": 108,
+      "mean_sentences_after_first": 3.2,
+      "mean_target_ratio": 0.579702,
+      "mean_words": 65.466667,
+      "over_125pct_count": 0,
+      "p50_words": 67,
+      "p90_words": 96,
+      "payoff_by_record": [
+        {
+          "blind_classification": "COMPLETE_PAYOFF",
+          "record_id": "PA-EP28-01"
+        },
+        {
+          "blind_classification": "COMPLETE_PAYOFF",
+          "record_id": "PA-EP28-02"
+        },
+        {
+          "blind_classification": "COMPLETE_PAYOFF",
+          "record_id": "PA-EP30-01"
+        },
+        {
+          "blind_classification": "COMPLETE_PAYOFF",
+          "record_id": "PA-EP30-02"
+        },
+        {
+          "blind_classification": "COMPLETE_PAYOFF",
+          "record_id": "PA-EP28-03"
+        },
+        {
+          "blind_classification": "COMPLETE_PAYOFF",
+          "record_id": "PA-EP30-03"
+        },
+        {
+          "blind_classification": "COMPLETE_PAYOFF",
+          "record_id": "PA-EP29-01"
+        },
+        {
+          "blind_classification": "INCOMPLETE_PAYOFF",
+          "record_id": "PA-EP29-02"
+        },
+        {
+          "blind_classification": "COMPLETE_PAYOFF",
+          "record_id": "PA-EP29-03"
+        },
+        {
+          "blind_classification": "COMPLETE_PAYOFF",
+          "record_id": "PA-CONTEMP-P01-08"
+        },
+        {
+          "blind_classification": "COMPLETE_PAYOFF",
+          "record_id": "PA-CONTEMP-P01-09"
+        },
+        {
+          "blind_classification": "COMPLETE_PAYOFF",
+          "record_id": "PA-CONTEMP-P01-10"
+        },
+        {
+          "blind_classification": "COMPLETE_PAYOFF",
+          "record_id": "PA-CONTEMP-P03-07"
+        },
+        {
+          "blind_classification": "COMPLETE_PAYOFF",
+          "record_id": "PA-CONTEMP-P03-08"
+        },
+        {
+          "blind_classification": "COMPLETE_PAYOFF",
+          "record_id": "PA-CONTEMP-P03-09"
+        }
+      ],
+      "payoff_counts": {
+        "COMPLETE_PAYOFF": 14,
+        "INCOMPLETE_PAYOFF": 1,
+        "UNDECIDABLE": 0
+      },
+      "under_50pct_count": 6
+    },
+    "scores": {
+      "cases": 15,
+      "mechanism_signal_mean": 1.266667,
+      "memorization": {
+        "exact_train_commentary_copies": 0,
+        "outputs_with_12_token_train_span": 0,
+        "outputs_with_8_token_train_span": 0
+      },
+      "output_length": {
+        "max_words": 108,
+        "mean_words": 65.467
+      },
+      "projection_rejection_rate": 0.0,
+      "projection_violations": 0,
+      "quality_composite_mean": 3.846667,
+      "quality_means": {
+        "authentic_mechanism_composition": 2.266667,
+        "concision": 4.733333,
+        "non_generic": 3.4,
+        "pastila_acida_style": 3.266667,
+        "relevance": 4.466667,
+        "restraint": 4.866667,
+        "romanian_naturalness": 4.0,
+        "sarcasm_irony_roast": 2.4,
+        "target_choice": 4.066667,
+        "variation_anti_repetition": 5.0
+      },
+      "raw_projection_rejections": 0,
+      "repetition": {
+        "max_output_words": 108,
+        "mean_output_words": 65.467,
+        "mean_pairwise_lexical_jaccard": 0.117562,
+        "repeated_openings": 0
+      },
+      "unsupported_fact_rate_after_projection": 0.0
+    },
+    "slot": "814d6d624ace"
+  }
+]

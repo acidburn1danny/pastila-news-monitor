@@ -1,0 +1,49 @@
+{
+  "active_product_modified": false,
+  "adapter_installed": false,
+  "audit_identity": "943df87e33b424312c97ca4ccebc57b8bf1397a7131cf31d7b76f664d53b1021",
+  "canonical_rollback_modified": false,
+  "car_history": [],
+  "causal_verdict": "EXPLICIT_EOS_PRESSURE_PARTIAL_BUT_INSUFFICIENT_AND_UNSTABLE",
+  "config_identity": "c094dad85ec18620b48a00d62a15dae929df4696b13fe6e8ffcebb83cd0b2176",
+  "evaluation_result_identity": "4ccbfc9eab2f0ffad2f40902b6b4c4dc348ac5f7500d5cca6ea53c07a8f16605",
+  "findings": [
+    {
+      "car": "None; changing EOS share, seeds, objective or thresholds is outside this boundary.",
+      "finding": "Every A2 seed failed at least one mandatory frozen criterion.",
+      "id": "A2-F01",
+      "impact": "A2 is non-promotable and cannot be classified experimentally confirmed.",
+      "root_cause": "A fixed 5% terminal EOS share creates a useful but seed-unstable stopping signal and does not guarantee EOS completion before the 220-token cap.",
+      "severity": "EXPERIMENTAL_RESULT"
+    },
+    {
+      "car": "None; valid causal evidence.",
+      "finding": "Premature-truncation/completeness safeguards failed: incomplete payoff counts were 3, 5 and 1; under-50% counts were 5, 7 and 6.",
+      "id": "A2-F02",
+      "impact": "Length reduction cannot be accepted as a safe stopping repair.",
+      "root_cause": "Stronger terminal supervision trades against completion inconsistently across seeds.",
+      "severity": "EXPERIMENTAL_SAFEGUARD"
+    }
+  ],
+  "holdout_exposure": 0,
+  "implementation_identity": "ceb53950d4d1ba37a2a0b1af9bf2b86a40baf7c3c0f1fcb5d9d99284ff414895",
+  "interpretation": {
+    "common9": "RECOVERED_FOR_3407_AND_4933_ONLY",
+    "eos_share": "INSUFFICIENT_OR_UNSTABLE_ACROSS_SEEDS",
+    "factual_safety": "FINAL_ZERO_DUE_TO_RUNTIME_PROJECTION",
+    "premature_truncation_risk": "DEMONSTRATED_BY_UNDER_50PCT_AND_INCOMPLETE_PAYOFF_FAILURES",
+    "quality_style": "PRESERVED_OR_IMPROVED_AGGREGATE",
+    "stopping_signal": "PARTIAL_AGGREGATE_LENGTH_REDUCTION"
+  },
+  "intervention_identity": "50668b2539bb659b248040ee1b88782bf2af2ffc17e61f89f7ce550668d44878",
+  "package_manifest_identity": "84dff48e41cd6c890a6e274552847628c276a3075b6ec2ca943ed128c5484cdc",
+  "promotion": false,
+  "published_design_identity": "0e58b1de172e151936c7d3e9060e37d601cc9286af1296fbe0453a039a70a49a",
+  "qwen3_bakeoff_exposure": 0,
+  "schema": "vnext-qwen3-a2-explicit-stopping-audit",
+  "schema_version": 1,
+  "status": "PASS_0_INTEGRITY_BLOCKERS_NON_PROMOTABLE",
+  "terminal": "A2_ACCEPTANCE_NOT_MET",
+  "training_result_identity": "101b21f11722677f865cb27f583bfffab45210c0f996648ed1a77535d3588939",
+  "voice_state": "DISABLED_UNTIL_PROMOTION"
+}
