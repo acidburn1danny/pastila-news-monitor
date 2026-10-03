@@ -1,0 +1,165 @@
+{
+  "active_product_modified": false,
+  "authority_parent": "3162518455cc3b0daeb5669357397dcee1e98978",
+  "canonical_rollback_modified": false,
+  "contamination": {
+    "denylisted_paths": [
+      "docs/artifacts/vnext-voice-candidate-bakeoff-v1-blind-review.jsonl",
+      "docs/artifacts/vnext-qwen3-blind-commentary-adjudication-v1.json"
+    ],
+    "historical_evidence_training_exposure": false,
+    "owner_holdout_content_read": false,
+    "owner_holdout_episodes": [
+      31,
+      32,
+      33,
+      34
+    ],
+    "qwen3_bakeoff_content_read": false,
+    "qwen3_bakeoff_training_exposure": false,
+    "status": "PASS_FAMILY_AND_IDENTITY_CLOSURE",
+    "train_validation_family_overlap": 0
+  },
+  "deduplication": {
+    "exact_commentary_duplicates": 0,
+    "normalized_commentary_duplicates": 0,
+    "record_id_duplicates": 0,
+    "status": "PASS"
+  },
+  "factual_safety": {
+    "abstention_model_visible_text": false,
+    "constrained_projection_remains_runtime": true,
+    "negative_new_text_generated": false,
+    "positive_rewrites": 0,
+    "runtime_factual_authority_unchanged": true
+  },
+  "gold_volume": {
+    "estimated_tokens": 3582,
+    "total_commentary_characters": 14330,
+    "train_commentary_characters": 9179,
+    "validation_commentary_characters": 5151
+  },
+  "gui_state": "ACTIVE",
+  "legacy_dependency_count": 0,
+  "mechanism_coverage": {
+    "composition": [
+      "HMCV1-B01-M03-CONTRAST_JUXTAPOSITION",
+      "HMCV1-B01-M04-COMIC_ANALOGY",
+      "HMCV1-B01-M08-ESCALATION",
+      "HMCV1-B02-M10-ROLE_SIMULATION",
+      "HMCV1-B03-M01-SETUP_PAYOFF",
+      "HMCV1-B03-M03-REPETITION_WITH_VARIATION",
+      "HMCV1-B03-M06-DELAYED_PAYOFF",
+      "HMCV1-B04-M01-PERSPECTIVE_SHIFT",
+      "HMCV1-B04-M09-METONYMIC_SUBSTITUTION",
+      "HMCV1-B05-M09-FAMILIAR_EXPRESSION_SUBVERSION"
+    ],
+    "covered": [
+      "HMCV1-B01-M02-IRONY",
+      "HMCV1-B01-M03-CONTRAST_JUXTAPOSITION",
+      "HMCV1-B01-M04-COMIC_ANALOGY",
+      "HMCV1-B01-M05-FRAME_TRANSFER",
+      "HMCV1-B01-M06-HYPERBOLE",
+      "HMCV1-B01-M07-UNDERSTATEMENT",
+      "HMCV1-B01-M08-ESCALATION",
+      "HMCV1-B02-M05-COMIC_RECLASSIFICATION_CATEGORY_ERROR",
+      "HMCV1-B02-M06-MOCK_PRAISE",
+      "HMCV1-B02-M07-FALSE_CONCESSION",
+      "HMCV1-B02-M08-RHETORICAL_QUESTION",
+      "HMCV1-B02-M10-ROLE_SIMULATION",
+      "HMCV1-B03-M01-SETUP_PAYOFF",
+      "HMCV1-B03-M03-REPETITION_WITH_VARIATION",
+      "HMCV1-B03-M04-COMIC_ENUMERATION",
+      "HMCV1-B03-M06-DELAYED_PAYOFF",
+      "HMCV1-B04-M01-PERSPECTIVE_SHIFT",
+      "HMCV1-B04-M09-METONYMIC_SUBSTITUTION",
+      "HMCV1-B05-M06-FAUX_DEFINITION",
+      "HMCV1-B05-M09-FAMILIAR_EXPRESSION_SUBVERSION"
+    ],
+    "covered_total": 20,
+    "curriculum_total": 50,
+    "individual": [
+      "HMCV1-B01-M02-IRONY",
+      "HMCV1-B01-M03-CONTRAST_JUXTAPOSITION",
+      "HMCV1-B01-M04-COMIC_ANALOGY",
+      "HMCV1-B01-M05-FRAME_TRANSFER",
+      "HMCV1-B01-M07-UNDERSTATEMENT",
+      "HMCV1-B02-M05-COMIC_RECLASSIFICATION_CATEGORY_ERROR",
+      "HMCV1-B02-M06-MOCK_PRAISE",
+      "HMCV1-B02-M07-FALSE_CONCESSION",
+      "HMCV1-B02-M08-RHETORICAL_QUESTION",
+      "HMCV1-B02-M10-ROLE_SIMULATION"
+    ],
+    "positive_gaps": [
+      "HMCV1-B01-M01-SARCASM",
+      "HMCV1-B01-M09-REVERSAL",
+      "HMCV1-B01-M10-DEADPAN_OBSERVATION",
+      "HMCV1-B02-M01-MISDIRECTION",
+      "HMCV1-B02-M02-LITERALIZATION",
+      "HMCV1-B02-M03-ABSURD_LOGICAL_EXTENSION",
+      "HMCV1-B02-M04-PERSONIFICATION",
+      "HMCV1-B02-M09-DISCOURSE_FORM_PARODY",
+      "HMCV1-B03-M02-RULE_OF_THREE",
+      "HMCV1-B03-M05-PARALLELISM_STRUCTURAL_SYMMETRY",
+      "HMCV1-B03-M07-CALLBACK",
+      "HMCV1-B03-M08-ANTI_CLIMAX_BATHOS",
+      "HMCV1-B03-M09-TAG_COMIC_AFTERTHOUGHT",
+      "HMCV1-B03-M10-PAUSE_BEAT_ELLIPTICAL_OMISSION",
+      "HMCV1-B04-M02-NAIVE_NARRATOR_FEIGNED_INNOCENCE",
+      "HMCV1-B04-M03-FAUX_COMPLIANCE",
+      "HMCV1-B04-M04-SELF_IMPLICATION",
+      "HMCV1-B04-M05-AUDIENCE_COMPLICITY_SHARED_RECOGNITION",
+      "HMCV1-B04-M06-STATUS_REVERSAL",
+      "HMCV1-B04-M07-DOUBLE_MEANING",
+      "HMCV1-B04-M08-ZEUGMA_SPLIT_SEMANTIC_ATTACHMENT",
+      "HMCV1-B04-M10-SENTENCE_FINAL_REINTERPRETATION",
+      "HMCV1-B05-M01-BOOKENDING",
+      "HMCV1-B05-M02-RUNNING_GAG",
+      "HMCV1-B05-M03-CONTROLLED_AMBIGUITY",
+      "HMCV1-B05-M04-KNOWN_UNKNOWN_PLAY",
+      "HMCV1-B05-M05-ABSURD_ALTERNATIVES_WITHOUT_SELECTION",
+      "HMCV1-B05-M07-COMIC_NAMING_LABELING",
+      "HMCV1-B05-M08-APHORISTIC_COMPRESSION",
+      "HMCV1-B05-M10-SERIOUS_RESET_WITHHELD_HUMOR"
+    ],
+    "quota_fill": false,
+    "supporting": [
+      "HMCV1-B01-M03-CONTRAST_JUXTAPOSITION",
+      "HMCV1-B01-M04-COMIC_ANALOGY",
+      "HMCV1-B01-M06-HYPERBOLE",
+      "HMCV1-B01-M07-UNDERSTATEMENT",
+      "HMCV1-B01-M08-ESCALATION",
+      "HMCV1-B02-M05-COMIC_RECLASSIFICATION_CATEGORY_ERROR",
+      "HMCV1-B02-M06-MOCK_PRAISE",
+      "HMCV1-B02-M08-RHETORICAL_QUESTION",
+      "HMCV1-B02-M10-ROLE_SIMULATION",
+      "HMCV1-B03-M01-SETUP_PAYOFF",
+      "HMCV1-B03-M03-REPETITION_WITH_VARIATION",
+      "HMCV1-B03-M04-COMIC_ENUMERATION",
+      "HMCV1-B05-M06-FAUX_DEFINITION"
+    ]
+  },
+  "records": {
+    "abstention": 4,
+    "negative": 24,
+    "positive": 24,
+    "train_positive": 18,
+    "validation_positive": 6
+  },
+  "result_identity": "201ecf4469421c2970cc4e87cfd03181d09780a90db925e73ca3aca4d8b4d562",
+  "schema": "vnext-voice-owner-gold-scale-negative-abstention-contamination-boundary",
+  "schema_version": 1,
+  "status": "PASS_DATASET_EXPANDED_NOT_LORA_READY",
+  "training_readiness": {
+    "blockers": [
+      "24_POSITIVE_RECORDS_AND_APPROX_4K_TOKENS_INSUFFICIENT",
+      "MECHANISM_COVERAGE_INCOMPLETE",
+      "ABSTENTION_EVIDENCE_METADATA_ONLY",
+      "NO_TRAINING_HYPERPARAMETER_AND_BLIND_EVAL_GATE"
+    ],
+    "qwen3_lora": "NOT_READY",
+    "training_performed": false,
+    "weights_modified": false
+  },
+  "voice_state": "DISABLED_UNTIL_PROMOTION"
+}

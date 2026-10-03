@@ -1,0 +1,18 @@
+{
+  "audit_identity": "33133230c9d920405d1bccf7823baa285b79ff5a18286858aeedbbed64c2eb16",
+  "checks": {
+    "abstention_4": true,
+    "dedup_clean": true,
+    "family_clean": true,
+    "holdout_unread": true,
+    "negative_24": true,
+    "no_rewrite": true,
+    "not_training_ready": true,
+    "positive_24": true,
+    "protected": true
+  },
+  "result_identity": "201ecf4469421c2970cc4e87cfd03181d09780a90db925e73ca3aca4d8b4d562",
+  "schema": "vnext-voice-owner-gold-scale-audit",
+  "schema_version": 1,
+  "status": "PASS"
+}

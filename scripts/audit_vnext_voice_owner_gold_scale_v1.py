@@ -1,0 +1,7 @@
+import hashlib,json,sys
+from pathlib import Path
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
+from scripts.build_vnext_voice_owner_gold_scale_v1 import build,canon
+def audit(root):
+ d=build(root); checks={'positive_24':d['records']['positive']==24,'negative_24':d['records']['negative']==24,'abstention_4':d['records']['abstention']==4,'dedup_clean':all(d['deduplication'][k]==0 for k in ['exact_commentary_duplicates','normalized_commentary_duplicates','record_id_duplicates']),'family_clean':d['contamination']['train_validation_family_overlap']==0,'holdout_unread':not d['contamination']['owner_holdout_content_read'] and not d['contamination']['qwen3_bakeoff_content_read'],'no_rewrite':d['factual_safety']['positive_rewrites']==0 and not d['factual_safety']['negative_new_text_generated'],'not_training_ready':d['training_readiness']['qwen3_lora']=='NOT_READY','protected':not d['active_product_modified'] and not d['canonical_rollback_modified']}; a={'schema':'vnext-voice-owner-gold-scale-audit','schema_version':1,'status':'PASS' if all(checks.values()) else 'FAIL','checks':checks,'result_identity':d['result_identity']}; a['audit_identity']=hashlib.sha256(canon(a)).hexdigest(); (root/'docs/artifacts/vnext-voice-owner-gold-scale-v1-audit.json').write_text(json.dumps(a,indent=2,sort_keys=True)+'\n'); assert a['status']=='PASS'; return a
+if __name__=='__main__': audit(Path(__file__).resolve().parents[1])
