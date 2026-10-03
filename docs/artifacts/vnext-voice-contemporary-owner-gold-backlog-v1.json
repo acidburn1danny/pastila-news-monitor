@@ -1,0 +1,60 @@
+{
+  "backlog_identity": "2af65f4653a62bbd55e1b0747cab3d99dcf0de324c2e04ef070db12978f8eacb",
+  "generated_owner_gold": false,
+  "holdout_access": "DENIED",
+  "holdout_families": [
+    31,
+    32,
+    33,
+    34
+  ],
+  "organic_and_curriculum_separated": true,
+  "quota_fill": false,
+  "requirements": [
+    {
+      "admitted": 0,
+      "focus": [
+        "ROMANIAN_NATURALNESS",
+        "RESTRAINT"
+      ],
+      "minimum_new_records": 6,
+      "requirement_id": "OG-NATURAL-01",
+      "stream": "ORGANIC_OWNER_WRITTEN"
+    },
+    {
+      "admitted": 0,
+      "focus": [
+        "FACTUAL_DISCIPLINE",
+        "COMMENTARY_SETUP_SEPARATION"
+      ],
+      "minimum_new_records": 6,
+      "requirement_id": "OG-FACTUAL-01",
+      "stream": "ORGANIC_OWNER_WRITTEN"
+    },
+    {
+      "admitted": 0,
+      "focus": [
+        "VARIATION",
+        "ANTI_REPETITION",
+        "CONCISION"
+      ],
+      "minimum_new_records": 4,
+      "requirement_id": "OG-VARIATION-01",
+      "stream": "ORGANIC_OWNER_WRITTEN"
+    },
+    {
+      "admitted": 0,
+      "commentary_status": "REQUIRES_OWNER_WRITTEN_OR_EXPLICITLY_APPROVED_BYTES",
+      "factual_setup_status": "REQUIRES_SEPARATE_AUTHORIZED_SOURCE_BYTES",
+      "focus": [
+        "AUTHENTIC_MECHANISM_COMPOSITION",
+        "TARGET_CHOICE"
+      ],
+      "minimum_new_records": 5,
+      "requirement_id": "CD-COMPOSE-01",
+      "stream": "CURRICULUM_DESIGNED_PENDING_OWNER"
+    }
+  ],
+  "schema": "vnext-voice-contemporary-owner-gold-admission-backlog",
+  "schema_version": 1
+}

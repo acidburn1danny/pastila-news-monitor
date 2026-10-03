@@ -1,0 +1,94 @@
+{
+  "active_product_modified": false,
+  "admission_rules": {
+    "exact_source_bytes_required": true,
+    "factual_setup_commentary_separation_required": true,
+    "holdout_access": false,
+    "model_generated_text_is_owner_gold": false,
+    "organic_curriculum_separation_required": true,
+    "owner_authorship_or_explicit_approval_required": true,
+    "quota_fill": false
+  },
+  "authority_parent_commit": "0ff0fba257b3a0ef52199b644ca9360cf75265cc",
+  "backlog_identity": "2af65f4653a62bbd55e1b0747cab3d99dcf0de324c2e04ef070db12978f8eacb",
+  "baseline_experiment": {
+    "best_delta": 0.206349,
+    "commit": "0ff0fba257b3a0ef52199b644ca9360cf75265cc",
+    "config_identity": "7c0c2e97a1a55b2cbd6453ae179d1c0203331bda0daff2084b4c1d0f7467c1d3",
+    "evaluation_identity": "4a24e59544c95fba72a17c7937650e1b5b19ca40e8a54c5582918c0fb62935f8",
+    "frozen": true
+  },
+  "canonical_rollback_modified": false,
+  "coverage": {
+    "composition_targeted_new_records": 0,
+    "curriculum_total": 50,
+    "factual_discipline_targeted_new_records": 0,
+    "mechanisms_covered": 23,
+    "naturalness_targeted_new_records": 0,
+    "restraint_targeted_new_records": 0,
+    "variation_targeted_new_records": 0
+  },
+  "dataset": {
+    "commentary_tokens_estimated": 4034,
+    "curriculum_designed_gold_admitted": 0,
+    "model_visible_abstention": 0,
+    "negative": 27,
+    "new_owner_gold_admitted": 0,
+    "organic_gold_admitted": 0,
+    "train_positive": 18,
+    "validation_positive": 9
+  },
+  "dataset_predecessor_identity": "f52b5cacd39c0b8fb90a5b20f30a0c4a1d3400a1ee356c1876e5b6d20cbaf6f7",
+  "gui_state": "ACTIVE",
+  "predecessor_files": [
+    {
+      "bytes": 34234,
+      "path": "docs/artifacts/vnext-voice-episode29-successor-train-v1.jsonl",
+      "role": "train",
+      "sha256": "f34762112bba7d67d68fdcc308174fca6c8ee733009767bbccb4a74736d4eb06"
+    },
+    {
+      "bytes": 20339,
+      "path": "docs/artifacts/vnext-voice-episode29-successor-validation-v1.jsonl",
+      "role": "validation",
+      "sha256": "eda9facfe5fc9607e7975425c130abd4ac078095d908917c24dd70bbbc774fe6"
+    },
+    {
+      "bytes": 47980,
+      "path": "docs/artifacts/vnext-voice-episode29-successor-negatives-v1.jsonl",
+      "role": "negative",
+      "sha256": "84eef8f2bf58d10a5497216093ac564e624e566607b725bd14125e4f67ebf186"
+    },
+    {
+      "bytes": 760,
+      "path": "docs/artifacts/vnext-voice-episode29-successor-abstention-v1.jsonl",
+      "role": "abstention",
+      "sha256": "ebf66f7e1de296a8762d0d66fc010fd8ec20af5657dbcdb12a2ae3571711fa5b"
+    }
+  ],
+  "promotion_thresholds_unchanged": {
+    "commentary_tokens_min": 20000,
+    "model_visible_abstention_min": 16,
+    "train_positive_min": 60,
+    "validation_positive_min": 20
+  },
+  "schema": "vnext-voice-contemporary-owner-gold-dataset-successor",
+  "schema_version": 1,
+  "second_experiment_readiness": {
+    "maximum_curriculum_designed_fraction_of_new_positive": 0.3,
+    "minimum_new_factual_restraint_records": 8,
+    "minimum_total_commentary_tokens": 8000,
+    "minimum_total_train_positive": 36,
+    "minimum_total_validation_positive": 12,
+    "required_no_naturalness_regression": true,
+    "required_no_restraint_regression": true,
+    "required_quality_gain_over_frozen_baseline": 0.5,
+    "required_unsupported_fact_rate_after_projection": 0.0,
+    "status": "FAIL_CLOSED_NOT_READY"
+  },
+  "status": "PASS_BOUNDARY_SUCCESSOR_NOT_READY_FOR_SECOND_TRAIN",
+  "successor_identity": "cbc0001c54bad87f17d082e6a4ce09fceee0c23deaaa650129e2c003847cc935",
+  "training_performed": false,
+  "voice_state": "DISABLED_UNTIL_PROMOTION",
+  "weights_modified": false
+}

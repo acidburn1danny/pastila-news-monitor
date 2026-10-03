@@ -1,0 +1,32 @@
+{
+  "active_product_modified": false,
+  "audit_identity": "9f66a87e206e40d3219821c6715a1f39f2ad9a7c73ed12aae797d2045d4a12cb",
+  "backlog_identity": "2af65f4653a62bbd55e1b0747cab3d99dcf0de324c2e04ef070db12978f8eacb",
+  "canonical_rollback_modified": false,
+  "cars": [],
+  "contamination": "PASS",
+  "findings": [
+    {
+      "finding": "NO_NEW_OWNER_WRITTEN_BYTES_AVAILABLE",
+      "id": "F-01",
+      "impact": "SECOND_EXPERIMENT_REMAINS_NOT_READY"
+    },
+    {
+      "finding": "NATURALNESS_RESTRAINT_FACTUAL_DISCIPLINE_AND_COMPOSITION_SUPPORT_REMAIN_BELOW_SUCCESSOR_TARGETS",
+      "id": "F-02",
+      "impact": "OWNER_GOLD_ACQUISITION_REQUIRED"
+    }
+  ],
+  "holdout_exposure": 0,
+  "legacy_dependency_count": 0,
+  "new_gold_records": 0,
+  "predecessor_byte_exact": true,
+  "qwen3_bakeoff_exposure": 0,
+  "schema": "vnext-voice-contemporary-owner-gold-dataset-successor-audit",
+  "schema_version": 1,
+  "status": "PASS_0_INTEGRITY_BLOCKERS_DATA_NOT_ADMITTED",
+  "successor_identity": "cbc0001c54bad87f17d082e6a4ce09fceee0c23deaaa650129e2c003847cc935",
+  "train_validation_family_overlap": 0,
+  "training_performed": false,
+  "voice_state": "DISABLED_UNTIL_PROMOTION"
+}
