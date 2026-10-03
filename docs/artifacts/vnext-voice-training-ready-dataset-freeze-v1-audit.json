@@ -1,0 +1,17 @@
+{
+  "audit_identity": "464ee4e53fc70dc092dd80f17078f836223b40906a760b13881bce2d002b28de",
+  "checks": {
+    "accounting": true,
+    "all_69_topics_inventoried": true,
+    "dedup_clean": true,
+    "frozen_hashes": true,
+    "holdout_content_denied": true,
+    "no_model_visible_abstention_invention": true,
+    "not_ready": true,
+    "protected": true
+  },
+  "result_identity": "b032d8db929ef9b636b55e1f158fa167f9aa9ca78cb2ea395e51884862a96cd4",
+  "schema": "vnext-voice-training-ready-dataset-freeze-audit",
+  "schema_version": 1,
+  "status": "PASS"
+}

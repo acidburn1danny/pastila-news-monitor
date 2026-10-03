@@ -1,0 +1,325 @@
+{
+  "active_product_modified": false,
+  "actuals": {
+    "blind_evaluation": "NOT_RUN_FOR_FROZEN_DATASET",
+    "covered_mechanisms": 20,
+    "exact_duplicates": 0,
+    "family_overlap": 0,
+    "gold_commentary_tokens_estimated": 3582,
+    "holdout_exposure": 0,
+    "model_visible_abstention_records": 0,
+    "negative_to_positive_ratio": 1.0,
+    "normalized_duplicates": 0,
+    "positive_train_records": 18,
+    "positive_validation_records": 6
+  },
+  "authority_parent": "7736fec40516b3781b0a777de4dcb6b66b9753cd",
+  "canonical_rollback_modified": false,
+  "contamination": {
+    "denylisted_paths": [
+      "docs/artifacts/vnext-voice-candidate-bakeoff-v1-blind-review.jsonl",
+      "docs/artifacts/vnext-qwen3-blind-commentary-adjudication-v1.json"
+    ],
+    "historical_evidence_training_exposure": false,
+    "owner_holdout_content_read": false,
+    "owner_holdout_episodes": [
+      31,
+      32,
+      33,
+      34
+    ],
+    "qwen3_bakeoff_content_read": false,
+    "qwen3_bakeoff_training_exposure": false,
+    "status": "PASS_FAMILY_AND_IDENTITY_CLOSURE",
+    "train_validation_family_overlap": 0
+  },
+  "deduplication": {
+    "exact_commentary_duplicates": 0,
+    "normalized_commentary_duplicates": 0,
+    "record_id_duplicates": 0,
+    "status": "PASS"
+  },
+  "exhaustive_span_adjudication": {
+    "exclusion_reason": "NO_ADDITIONAL_EXACT_FACTUAL_COMMENTARY_PAIR_ADJUDICATED_WITHOUT_REWRITE_OR_INFERENCE",
+    "inventory": [
+      {
+        "admitted_gold_records": 3,
+        "disposition": "EXHAUSTED_UNDER_EXACT_SEPARATION_CRITERION",
+        "episode": 22,
+        "excluded_sections": 5,
+        "family_identity": "PASTILA_ACIDA_EPISODE_22",
+        "topic_sections": 8
+      },
+      {
+        "admitted_gold_records": 3,
+        "disposition": "EXHAUSTED_UNDER_EXACT_SEPARATION_CRITERION",
+        "episode": 23,
+        "excluded_sections": 6,
+        "family_identity": "PASTILA_ACIDA_EPISODE_23",
+        "topic_sections": 9
+      },
+      {
+        "admitted_gold_records": 3,
+        "disposition": "EXHAUSTED_UNDER_EXACT_SEPARATION_CRITERION",
+        "episode": 24,
+        "excluded_sections": 6,
+        "family_identity": "PASTILA_ACIDA_EPISODE_24",
+        "topic_sections": 9
+      },
+      {
+        "admitted_gold_records": 3,
+        "disposition": "EXHAUSTED_UNDER_EXACT_SEPARATION_CRITERION",
+        "episode": 25,
+        "excluded_sections": 5,
+        "family_identity": "PASTILA_ACIDA_EPISODE_25",
+        "topic_sections": 8
+      },
+      {
+        "admitted_gold_records": 3,
+        "disposition": "EXHAUSTED_UNDER_EXACT_SEPARATION_CRITERION",
+        "episode": 26,
+        "excluded_sections": 6,
+        "family_identity": "PASTILA_ACIDA_EPISODE_26",
+        "topic_sections": 9
+      },
+      {
+        "admitted_gold_records": 3,
+        "disposition": "EXHAUSTED_UNDER_EXACT_SEPARATION_CRITERION",
+        "episode": 27,
+        "excluded_sections": 6,
+        "family_identity": "PASTILA_ACIDA_EPISODE_27",
+        "topic_sections": 9
+      },
+      {
+        "admitted_gold_records": 3,
+        "disposition": "EXHAUSTED_UNDER_EXACT_SEPARATION_CRITERION",
+        "episode": 28,
+        "excluded_sections": 5,
+        "family_identity": "PASTILA_ACIDA_EPISODE_28",
+        "topic_sections": 8
+      },
+      {
+        "admitted_gold_records": 3,
+        "disposition": "EXHAUSTED_UNDER_EXACT_SEPARATION_CRITERION",
+        "episode": 30,
+        "excluded_sections": 6,
+        "family_identity": "PASTILA_ACIDA_EPISODE_30",
+        "topic_sections": 9
+      }
+    ],
+    "owner_corpus_defensibly_exhausted": true,
+    "positive_records_admitted": 24,
+    "sections_not_admitted": 45,
+    "topic_sections_total": 69
+  },
+  "factual_safety": {
+    "abstention_model_visible_text": false,
+    "constrained_projection_remains_runtime": true,
+    "negative_new_text_generated": false,
+    "positive_rewrites": 0,
+    "runtime_factual_authority_unchanged": true
+  },
+  "frozen_dataset": {
+    "abstention_evidence_records": 4,
+    "files": [
+      {
+        "bytes": 34234,
+        "path": "docs/artifacts/vnext-voice-owner-gold-scale-train-v1.jsonl",
+        "sha256": "f34762112bba7d67d68fdcc308174fca6c8ee733009767bbccb4a74736d4eb06"
+      },
+      {
+        "bytes": 14244,
+        "path": "docs/artifacts/vnext-voice-owner-gold-scale-validation-v1.jsonl",
+        "sha256": "c1d61e2e12709526b55c49de910e14f0bc91be82493618c5cbf59fa14e390067"
+      },
+      {
+        "bytes": 41532,
+        "path": "docs/artifacts/vnext-voice-owner-gold-scale-negatives-v1.jsonl",
+        "sha256": "08317224cfb268f923d0b8967c9c274779a6a83e3d81df258c022ba6fb222f3d"
+      },
+      {
+        "bytes": 760,
+        "path": "docs/artifacts/vnext-voice-owner-gold-scale-abstention-v1.jsonl",
+        "sha256": "ebf66f7e1de296a8762d0d66fc010fd8ec20af5657dbcdb12a2ae3571711fa5b"
+      }
+    ],
+    "holdout_families": [
+      {
+        "content_access": "DENIED",
+        "episode": 31,
+        "family_identity": "PASTILA_ACIDA_EPISODE_31",
+        "source_sha256": "429779895057340b1332376a76c9f8a21fa68def55bdc99acb2bcdbb02f01c44"
+      },
+      {
+        "content_access": "DENIED",
+        "episode": 32,
+        "family_identity": "PASTILA_ACIDA_EPISODE_32",
+        "source_sha256": "966f90b79e9b3d1a580b8fbebbe70c4efa650c715239eefb6bddf811a7666f69"
+      },
+      {
+        "content_access": "DENIED",
+        "episode": 33,
+        "family_identity": "PASTILA_ACIDA_EPISODE_33",
+        "source_sha256": "4ecf35a7a35a3dfd2b360754758b10c9221639ab05be9bb21587daf4e391934e"
+      },
+      {
+        "content_access": "DENIED",
+        "episode": 34,
+        "family_identity": "PASTILA_ACIDA_EPISODE_34",
+        "source_sha256": "c191f5afffae44db252741430f03afa7dea37de7967b628af921a4311ae659dc"
+      }
+    ],
+    "model_visible_abstention_records": 0,
+    "negative_records": 24,
+    "positive_records": 24,
+    "qwen3_bakeoff": "EVALUATION_ONLY_CONTENT_ACCESS_DENIED",
+    "train_families": [
+      22,
+      23,
+      24,
+      25,
+      26,
+      27
+    ],
+    "validation_families": [
+      28,
+      30
+    ]
+  },
+  "gui_state": "ACTIVE",
+  "legacy_dependency_count": 0,
+  "mechanism_coverage": {
+    "composition": [
+      "HMCV1-B01-M03-CONTRAST_JUXTAPOSITION",
+      "HMCV1-B01-M04-COMIC_ANALOGY",
+      "HMCV1-B01-M08-ESCALATION",
+      "HMCV1-B02-M10-ROLE_SIMULATION",
+      "HMCV1-B03-M01-SETUP_PAYOFF",
+      "HMCV1-B03-M03-REPETITION_WITH_VARIATION",
+      "HMCV1-B03-M06-DELAYED_PAYOFF",
+      "HMCV1-B04-M01-PERSPECTIVE_SHIFT",
+      "HMCV1-B04-M09-METONYMIC_SUBSTITUTION",
+      "HMCV1-B05-M09-FAMILIAR_EXPRESSION_SUBVERSION"
+    ],
+    "covered": [
+      "HMCV1-B01-M02-IRONY",
+      "HMCV1-B01-M03-CONTRAST_JUXTAPOSITION",
+      "HMCV1-B01-M04-COMIC_ANALOGY",
+      "HMCV1-B01-M05-FRAME_TRANSFER",
+      "HMCV1-B01-M06-HYPERBOLE",
+      "HMCV1-B01-M07-UNDERSTATEMENT",
+      "HMCV1-B01-M08-ESCALATION",
+      "HMCV1-B02-M05-COMIC_RECLASSIFICATION_CATEGORY_ERROR",
+      "HMCV1-B02-M06-MOCK_PRAISE",
+      "HMCV1-B02-M07-FALSE_CONCESSION",
+      "HMCV1-B02-M08-RHETORICAL_QUESTION",
+      "HMCV1-B02-M10-ROLE_SIMULATION",
+      "HMCV1-B03-M01-SETUP_PAYOFF",
+      "HMCV1-B03-M03-REPETITION_WITH_VARIATION",
+      "HMCV1-B03-M04-COMIC_ENUMERATION",
+      "HMCV1-B03-M06-DELAYED_PAYOFF",
+      "HMCV1-B04-M01-PERSPECTIVE_SHIFT",
+      "HMCV1-B04-M09-METONYMIC_SUBSTITUTION",
+      "HMCV1-B05-M06-FAUX_DEFINITION",
+      "HMCV1-B05-M09-FAMILIAR_EXPRESSION_SUBVERSION"
+    ],
+    "covered_total": 20,
+    "curriculum_total": 50,
+    "individual": [
+      "HMCV1-B01-M02-IRONY",
+      "HMCV1-B01-M03-CONTRAST_JUXTAPOSITION",
+      "HMCV1-B01-M04-COMIC_ANALOGY",
+      "HMCV1-B01-M05-FRAME_TRANSFER",
+      "HMCV1-B01-M07-UNDERSTATEMENT",
+      "HMCV1-B02-M05-COMIC_RECLASSIFICATION_CATEGORY_ERROR",
+      "HMCV1-B02-M06-MOCK_PRAISE",
+      "HMCV1-B02-M07-FALSE_CONCESSION",
+      "HMCV1-B02-M08-RHETORICAL_QUESTION",
+      "HMCV1-B02-M10-ROLE_SIMULATION"
+    ],
+    "positive_gaps": [
+      "HMCV1-B01-M01-SARCASM",
+      "HMCV1-B01-M09-REVERSAL",
+      "HMCV1-B01-M10-DEADPAN_OBSERVATION",
+      "HMCV1-B02-M01-MISDIRECTION",
+      "HMCV1-B02-M02-LITERALIZATION",
+      "HMCV1-B02-M03-ABSURD_LOGICAL_EXTENSION",
+      "HMCV1-B02-M04-PERSONIFICATION",
+      "HMCV1-B02-M09-DISCOURSE_FORM_PARODY",
+      "HMCV1-B03-M02-RULE_OF_THREE",
+      "HMCV1-B03-M05-PARALLELISM_STRUCTURAL_SYMMETRY",
+      "HMCV1-B03-M07-CALLBACK",
+      "HMCV1-B03-M08-ANTI_CLIMAX_BATHOS",
+      "HMCV1-B03-M09-TAG_COMIC_AFTERTHOUGHT",
+      "HMCV1-B03-M10-PAUSE_BEAT_ELLIPTICAL_OMISSION",
+      "HMCV1-B04-M02-NAIVE_NARRATOR_FEIGNED_INNOCENCE",
+      "HMCV1-B04-M03-FAUX_COMPLIANCE",
+      "HMCV1-B04-M04-SELF_IMPLICATION",
+      "HMCV1-B04-M05-AUDIENCE_COMPLICITY_SHARED_RECOGNITION",
+      "HMCV1-B04-M06-STATUS_REVERSAL",
+      "HMCV1-B04-M07-DOUBLE_MEANING",
+      "HMCV1-B04-M08-ZEUGMA_SPLIT_SEMANTIC_ATTACHMENT",
+      "HMCV1-B04-M10-SENTENCE_FINAL_REINTERPRETATION",
+      "HMCV1-B05-M01-BOOKENDING",
+      "HMCV1-B05-M02-RUNNING_GAG",
+      "HMCV1-B05-M03-CONTROLLED_AMBIGUITY",
+      "HMCV1-B05-M04-KNOWN_UNKNOWN_PLAY",
+      "HMCV1-B05-M05-ABSURD_ALTERNATIVES_WITHOUT_SELECTION",
+      "HMCV1-B05-M07-COMIC_NAMING_LABELING",
+      "HMCV1-B05-M08-APHORISTIC_COMPRESSION",
+      "HMCV1-B05-M10-SERIOUS_RESET_WITHHELD_HUMOR"
+    ],
+    "quota_fill": false,
+    "supporting": [
+      "HMCV1-B01-M03-CONTRAST_JUXTAPOSITION",
+      "HMCV1-B01-M04-COMIC_ANALOGY",
+      "HMCV1-B01-M06-HYPERBOLE",
+      "HMCV1-B01-M07-UNDERSTATEMENT",
+      "HMCV1-B01-M08-ESCALATION",
+      "HMCV1-B02-M05-COMIC_RECLASSIFICATION_CATEGORY_ERROR",
+      "HMCV1-B02-M06-MOCK_PRAISE",
+      "HMCV1-B02-M08-RHETORICAL_QUESTION",
+      "HMCV1-B02-M10-ROLE_SIMULATION",
+      "HMCV1-B03-M01-SETUP_PAYOFF",
+      "HMCV1-B03-M03-REPETITION_WITH_VARIATION",
+      "HMCV1-B03-M04-COMIC_ENUMERATION",
+      "HMCV1-B05-M06-FAUX_DEFINITION"
+    ]
+  },
+  "qwen3_lora_readiness": "FAIL_CLOSED_NOT_READY",
+  "readiness_gates": {
+    "blind_evaluation": false,
+    "deduplication": true,
+    "family_isolation": true,
+    "gold_commentary_tokens": false,
+    "holdout_isolation": true,
+    "model_visible_abstention": false,
+    "negative_ratio": true,
+    "per_mechanism_train_support": false,
+    "per_mechanism_validation_support": false,
+    "positive_train_records": false,
+    "positive_validation_records": false
+  },
+  "readiness_thresholds": {
+    "exact_duplicates_max": 0,
+    "family_overlap_max": 0,
+    "gold_commentary_tokens_min": 20000,
+    "holdout_exposure_max": 0,
+    "model_visible_abstention_records_min": 16,
+    "negative_to_positive_ratio_min": 1.0,
+    "normalized_duplicates_max": 0,
+    "per_covered_mechanism_train_examples_min": 3,
+    "per_covered_mechanism_validation_examples_min": 1,
+    "positive_train_records_min": 60,
+    "positive_validation_records_min": 20,
+    "required_blind_evaluation": "PASS",
+    "unsupported_fact_rate_max": 0.0
+  },
+  "result_identity": "b032d8db929ef9b636b55e1f158fa167f9aa9ca78cb2ea395e51884862a96cd4",
+  "schema": "vnext-voice-training-ready-dataset-freeze",
+  "schema_version": 1,
+  "status": "PASS_FREEZE_DATASET_NOT_TRAINING_READY",
+  "training_performed": false,
+  "voice_state": "DISABLED_UNTIL_PROMOTION",
+  "weights_modified": false
+}

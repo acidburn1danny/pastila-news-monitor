@@ -1,0 +1,7 @@
+import hashlib,json,sys
+from pathlib import Path
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
+from scripts.build_vnext_voice_training_ready_dataset_freeze_v1 import build,canon,sha
+def audit(root):
+ d=build(root); checks={'all_69_topics_inventoried':d['exhaustive_span_adjudication']['topic_sections_total']==69,'accounting':d['exhaustive_span_adjudication']['positive_records_admitted']+d['exhaustive_span_adjudication']['sections_not_admitted']==69,'frozen_hashes':all(sha(root/x['path'])==x['sha256'] for x in d['frozen_dataset']['files']),'holdout_content_denied':all(x['content_access']=='DENIED' for x in d['frozen_dataset']['holdout_families']),'no_model_visible_abstention_invention':d['frozen_dataset']['model_visible_abstention_records']==0,'dedup_clean':d['deduplication']['status']=='PASS','not_ready':d['qwen3_lora_readiness']=='FAIL_CLOSED_NOT_READY','protected':not d['active_product_modified'] and not d['canonical_rollback_modified']}; a={'schema':'vnext-voice-training-ready-dataset-freeze-audit','schema_version':1,'status':'PASS' if all(checks.values()) else 'FAIL','checks':checks,'result_identity':d['result_identity']}; a['audit_identity']=hashlib.sha256(canon(a)).hexdigest(); (root/'docs/artifacts/vnext-voice-training-ready-dataset-freeze-v1-audit.json').write_text(json.dumps(a,indent=2,sort_keys=True)+'\n'); assert a['status']=='PASS'; return a
+if __name__=='__main__': audit(Path(__file__).resolve().parents[1])
